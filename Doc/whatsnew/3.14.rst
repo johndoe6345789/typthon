@@ -339,7 +339,7 @@ For convenience, CPython implements this interface through the :mod:`sys` module
 
     sys.remote_exec(pid, script_path)
 
-This function allows sending Python code to be executed in a target process at the next safe
+This function allows sending Typthon code to be executed in a target process at the next safe
 execution point. However, tool authors can also implement the protocol directly as described
 in the PEP, which details the underlying mechanisms used to safely attach to running processes.
 
@@ -438,7 +438,7 @@ using a new ``-p PID`` command-line option:
    python -m pdb -p 1234
 
 This will connect to the Python process with the given PID and allow you to
-debug it interactively. Notice that due to how the Python interpreter works
+debug it interactively. Notice that due to how the Typthon interpreter works
 attaching to a remote process that is blocked in a system call or waiting for
 I/O will only work once the next bytecode instruction is executed or when the
 process receives a signal.
@@ -909,7 +909,7 @@ It uses tail calls between small C functions that implement individual
 Python opcodes, rather than one large C case statement.
 For certain newer compilers, this interpreter provides
 significantly better performance. Preliminary numbers on our machines suggest
-anywhere up to 30% faster Python code, and a geometric mean of 3-5%
+anywhere up to 30% faster Typthon code, and a geometric mean of 3-5%
 faster on ``pyperformance`` depending on platform and architecture. The
 baseline is Python 3.14 built with Clang 19 without this new interpreter.
 
@@ -929,7 +929,7 @@ For further information on how to build Python, see
    functions, which is currently not implemented in CPython.
 
    This new interpreter type is an internal implementation detail of the CPython
-   interpreter.  It doesn't change the visible behavior of Python programs at
+   interpreter.  It doesn't change the visible behavior of Typthon programs at
    all.  It can improve their performance, but doesn't change anything else.
 
    __ https://en.wikipedia.org/wiki/Tail_call
@@ -1303,7 +1303,7 @@ concurrent.futures
 
 * Add :class:`~concurrent.futures.InterpreterPoolExecutor`,
   which exposes "subinterpreters" (multiple Python interpreters in the
-  same process) to Python code.  This is separate from the proposed API
+  same process) to Typthon code.  This is separate from the proposed API
   in :pep:`734`.
   (Contributed by Eric Snow in :gh:`124548`.)
 
@@ -2951,7 +2951,7 @@ New features
   (Contributed by Serhiy Storchaka in :gh:`112068`.)
 
 * Add macros :c:func:`Py_PACK_VERSION` and :c:func:`Py_PACK_FULL_VERSION` for
-  bit-packing Python version numbers.
+  bit-packing Typthon version numbers.
   (Contributed by Petr Viktorin in :gh:`128629`.)
 
 * Add :c:func:`PyUnstable_IsImmortal` for determining whether an object is :term:`immortal`,

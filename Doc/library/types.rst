@@ -12,7 +12,7 @@ This module defines utility functions to assist in dynamic creation of
 new types.
 
 It also defines names for some object types that are used by the standard
-Python interpreter, but not exposed as builtins like :class:`int` or
+Typthon interpreter, but not exposed as builtins like :class:`int` or
 :class:`str` are.
 
 Finally, it provides some additional type-related utility classes and functions
@@ -131,7 +131,7 @@ Standard Interpreter Types
 --------------------------
 
 This module provides names for many of the types that are required to
-implement a Python interpreter. It deliberately avoids including some of
+implement a Typthon interpreter. It deliberately avoids including some of
 the types that arise only incidentally during processing such as the
 ``listiterator`` type.
 

@@ -719,7 +719,7 @@ Some JSON deserializer implementations may set limits on:
 * the content and maximum length of JSON strings
 
 This module does not impose any such limits beyond those of the relevant
-Python datatypes themselves or the Python interpreter itself.
+Python datatypes themselves or the Typthon interpreter itself.
 
 When serializing to JSON, beware any such limitations in applications that may
 consume your JSON.  In particular, it is common for JSON numbers to be

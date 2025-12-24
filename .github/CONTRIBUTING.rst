@@ -1,4 +1,4 @@
-Contributing to Python
+Contributing to Typthon
 ======================
 
 Build Status
@@ -11,8 +11,8 @@ Build Status
 
 Thank You
 ---------
-First off, thanks for contributing to the maintenance of the Python programming
-language and the CPython interpreter! Even if your contribution is not
+First off, thanks for contributing to the maintenance of the Typthon programming
+language and the CTypthon interpreter! Even if your contribution is not
 ultimately accepted, the fact you put time and effort into helping out is
 greatly appreciated.
 

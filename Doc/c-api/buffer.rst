@@ -83,7 +83,7 @@ it could be a raw block of memory for manipulation before passing to an
 operating system library, or it could be used to pass around structured data
 in its native, in-memory format.
 
-Contrary to most data types exposed by the Python interpreter, buffers
+Contrary to most data types exposed by the Typthon interpreter, buffers
 are not :c:type:`PyObject` pointers but rather simple C structures.  This
 allows them to be created and copied very simply.  When a generic wrapper
 around a buffer is needed, a :ref:`memoryview <memoryview-objects>` object

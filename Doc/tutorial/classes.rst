@@ -46,7 +46,7 @@ Objects have individuality, and multiple names (in multiple scopes) can be bound
 to the same object.  This is known as aliasing in other languages.  This is
 usually not appreciated on a first glance at Python, and can be safely ignored
 when dealing with immutable basic types (numbers, strings, tuples).  However,
-aliasing has a possibly surprising effect on the semantics of Python code
+aliasing has a possibly surprising effect on the semantics of Typthon code
 involving mutable objects such as lists, dictionaries, and most other types.
 This is usually used to the benefit of the program, since aliases behave like
 pointers in some respects.  For example, passing an object is cheap since only a
@@ -94,7 +94,7 @@ attributes is possible.  Module attributes are writable: you can write
 the attribute :attr:`!the_answer` from the object named by ``modname``.
 
 Namespaces are created at different moments and have different lifetimes.  The
-namespace containing the built-in names is created when the Python interpreter
+namespace containing the built-in names is created when the Typthon interpreter
 starts up, and is never deleted.  The global namespace for a module is created
 when the module definition is read in; normally, module namespaces also last
 until the interpreter quits.  The statements executed by the top-level
@@ -671,7 +671,7 @@ Private Variables
 
 "Private" instance variables that cannot be accessed except from inside an
 object don't exist in Python.  However, there is a convention that is followed
-by most Python code: a name prefixed with an underscore (e.g. ``_spam``) should
+by most Typthon code: a name prefixed with an underscore (e.g. ``_spam``) should
 be treated as a non-public part of the API (whether it is a function, a method
 or a data member).  It should be considered an implementation detail and subject
 to change without notice.
@@ -757,7 +757,7 @@ is to use :mod:`dataclasses` for this purpose::
     >>> john.salary
     1000
 
-A piece of Python code that expects a particular abstract data type can often be
+A piece of Typthon code that expects a particular abstract data type can often be
 passed a class that emulates the methods of that data type instead.  For
 instance, if you have a function that formats some data from a file object, you
 can define a class with methods :meth:`~io.TextIOBase.read` and

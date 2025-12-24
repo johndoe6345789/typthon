@@ -47,10 +47,10 @@ at Python startup.
 .. seealso::
 
    Module :mod:`pdb`
-      Interactive source code debugger for Python programs.
+      Interactive source code debugger for Typthon programs.
 
    Module :mod:`traceback`
-      Standard interface to extract, format and print stack traces of Python programs.
+      Standard interface to extract, format and print stack traces of Typthon programs.
 
 Dumping the traceback
 ---------------------

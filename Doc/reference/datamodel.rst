@@ -876,7 +876,7 @@ Modules
    pair: statement; import
    pair: object; module
 
-Modules are a basic organizational unit of Python code, and are created by
+Modules are a basic organizational unit of Typthon code, and are created by
 the :ref:`import system <importsystem>` as invoked either by the
 :keyword:`import` statement, or by calling
 functions such as :func:`importlib.import_module` and built-in
@@ -1411,7 +1411,7 @@ Code objects
 
 .. index:: bytecode, object; code, code object
 
-Code objects represent *byte-compiled* executable Python code, or :term:`bytecode`.
+Code objects represent *byte-compiled* executable Typthon code, or :term:`bytecode`.
 The difference between a code object and a function object is that the function
 object contains an explicit reference to the function's globals (the module in
 which it was defined), while a code object contains no context; also the default
@@ -1752,7 +1752,7 @@ is implicitly created when an exception occurs, and may also be explicitly
 created by calling :class:`types.TracebackType`.
 
 .. versionchanged:: 3.7
-   Traceback objects can now be explicitly instantiated from Python code.
+   Traceback objects can now be explicitly instantiated from Typthon code.
 
 For implicitly created tracebacks, when the search for an exception handler
 unwinds the execution stack, at each unwound level a traceback object is
@@ -3014,7 +3014,7 @@ the class method :meth:`~object.__class_getitem__` may be called instead.
 ``__class_getitem__()`` should return a :ref:`GenericAlias<types-genericalias>`
 object if it is properly defined.
 
-Presented with the :term:`expression` ``obj[x]``, the Python interpreter
+Presented with the :term:`expression` ``obj[x]``, the Typthon interpreter
 follows something like the following process to decide whether
 :meth:`~object.__getitem__` or :meth:`~object.__class_getitem__` should be
 called::

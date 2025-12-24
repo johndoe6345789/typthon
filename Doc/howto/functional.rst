@@ -72,7 +72,7 @@ example is a call to the :func:`print` or :func:`time.sleep` function, neither
 of which returns a useful value. Both are called only for their side effects
 of sending some text to the screen or pausing execution for a second.
 
-Python programs written in functional style usually won't go to the extreme of
+Typthon programs written in functional style usually won't go to the extreme of
 avoiding all I/O or all assignments; instead, they'll provide a
 functional-appearing interface but will use non-functional features internally.
 For example, the implementation of a function will still use assignments to
@@ -126,7 +126,7 @@ propagated onward.
 Unfortunately, proving programs correct is largely impractical and not relevant
 to Python software. Even trivial programs require proofs that are several pages
 long; the proof of correctness for a moderately complicated program would be
-enormous, and few or none of the programs you use daily (the Python interpreter,
+enormous, and few or none of the programs you use daily (the Typthon interpreter,
 your XML parser, your web browser) could be proven correct.  Even if you wrote
 down or generated a proof, there would then be the question of verifying the
 proof; maybe there's an error in it, and you wrongly believe you've proved the
@@ -397,7 +397,7 @@ left to right, **not** in parallel.  For each element in ``sequence1``,
 over for each resulting pair of elements from ``sequence1`` and ``sequence2``.
 
 To put it another way, a list comprehension or generator expression is
-equivalent to the following Python code::
+equivalent to the following Typthon code::
 
     for expr1 in sequence1:
         if not (condition1):
@@ -1215,7 +1215,7 @@ https://mitpress.mit.edu/sicp.  In this classic textbook of computer science,
 chapters 2 and 3 discuss the use of sequences and streams to organize the data
 flow inside a program.  The book uses Scheme for its examples, but many of the
 design approaches described in these chapters are applicable to functional-style
-Python code.
+Typthon code.
 
 https://defmacro.org/2006/06/19/fp.html: A general introduction to functional
 programming that uses Java examples and has a lengthy historical introduction.

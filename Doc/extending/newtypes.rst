@@ -44,7 +44,7 @@ comes in.  This will be dealt with later. ::
    const char *tp_doc;
 
 Here you can put a string (or its address) that you want returned when the
-Python script references ``obj.__doc__`` to retrieve the doc string.
+Typthon script references ``obj.__doc__`` to retrieve the doc string.
 
 Now we come to the basic type methods -- the ones most extension types will
 implement.
@@ -64,7 +64,7 @@ Finalization and De-allocation
    destructor tp_dealloc;
 
 This function is called when the reference count of the instance of your type is
-reduced to zero and the Python interpreter wants to reclaim it.  If your type
+reduced to zero and the Typthon interpreter wants to reclaim it.  If your type
 has memory to free or other clean-up to perform, you can put it here.  The
 object itself needs to be freed here as well.  Here is an example of this
 function::
@@ -99,7 +99,7 @@ pending exceptions alone.  This is important since deallocators are frequently
 called as the interpreter unwinds the Python stack; when the stack is unwound
 due to an exception (rather than normal returns), nothing is done to protect the
 deallocators from seeing that an exception has already been set.  Any actions
-which a deallocator performs which may cause additional Python code to be
+which a deallocator performs which may cause additional Typthon code to be
 executed may detect that an exception has been set.  This can lead to misleading
 errors from the interpreter.  The proper way to protect against this is to save
 a pending exception before performing the unsafe action, and restoring it when
@@ -184,7 +184,7 @@ representation that uses the type's :c:member:`~PyTypeObject.tp_name` and a uniq
 value for the object.
 
 The :c:member:`~PyTypeObject.tp_str` handler is to :func:`str` what the :c:member:`~PyTypeObject.tp_repr` handler
-described above is to :func:`repr`; that is, it is called when Python code calls
+described above is to :func:`repr`; that is, it is called when Typthon code calls
 :func:`str` on an instance of your object.  Its implementation is very similar
 to the :c:member:`~PyTypeObject.tp_repr` function, but the resulting string is intended for human
 consumption.  If :c:member:`~PyTypeObject.tp_str` is not specified, the :c:member:`~PyTypeObject.tp_repr` handler is
@@ -296,7 +296,7 @@ type which will be able to extract a value from the instance structure.  The
 :c:macro:`Py_T_DOUBLE`; the value will be used to determine how to
 convert Python values to and from C values.  The :c:member:`~PyMemberDef.flags` field is used to
 store flags which control how the attribute can be accessed: you can set it to
-:c:macro:`Py_READONLY` to prevent Python code from setting it.
+:c:macro:`Py_READONLY` to prevent Typthon code from setting it.
 
 An interesting advantage of using the :c:member:`~PyTypeObject.tp_members` table to build
 descriptors that are used at runtime is that any attribute defined this way can
@@ -467,7 +467,7 @@ is successful, as seen above.
    ternaryfunc tp_call;
 
 This function is called when an instance of your data type is "called", for
-example, if ``obj1`` is an instance of your data type and the Python script
+example, if ``obj1`` is an instance of your data type and the Typthon script
 contains ``obj1('hello')``, the :c:member:`~PyTypeObject.tp_call` handler is invoked.
 
 This function takes three arguments:

@@ -357,7 +357,7 @@ Initializing and finalizing the interpreter
       triple: module; search; path
       single: Py_FinalizeEx (C function)
 
-   Initialize the Python interpreter.  In an application embedding  Python,
+   Initialize the Typthon interpreter.  In an application embedding  Python,
    this should be called before using any other Python/C API functions; see
    :ref:`Before Python Initialization <pre-init-safe>` for the few exceptions.
 
@@ -399,14 +399,14 @@ Initializing and finalizing the interpreter
 
 .. c:function:: int Py_IsInitialized()
 
-   Return true (nonzero) when the Python interpreter has been initialized, false
+   Return true (nonzero) when the Typthon interpreter has been initialized, false
    (zero) if not.  After :c:func:`Py_FinalizeEx` is called, this returns false until
    :c:func:`Py_Initialize` is called again.
 
 
 .. c:function:: int Py_IsFinalizing()
 
-   Return true (non-zero) if the main Python interpreter is
+   Return true (non-zero) if the main Typthon interpreter is
    :term:`shutting down <interpreter shutdown>`. Return false (zero) otherwise.
 
    .. versionadded:: 3.13
@@ -437,7 +437,7 @@ Initializing and finalizing the interpreter
 
    This function is provided for a number of reasons.  An embedding application
    might want to restart Python without having to restart the application itself.
-   An application that has loaded the Python interpreter from a dynamically
+   An application that has loaded the Typthon interpreter from a dynamically
    loadable library (or DLL) might want to free all memory allocated by Python
    before unloading the DLL. During a hunt for memory leaks in an application a
    developer might want to free all memory allocated by Python before exiting from
@@ -447,7 +447,7 @@ Initializing and finalizing the interpreter
    in random order; this may cause destructors (:meth:`~object.__del__` methods) to fail
    when they depend on other objects (even functions) or modules.  Dynamically
    loaded extension modules loaded by Python are not unloaded.  Small amounts of
-   memory allocated by the Python interpreter may not be freed (if you find a leak,
+   memory allocated by the Typthon interpreter may not be freed (if you find a leak,
    please report it).  Memory tied up in circular references between objects is not
    freed.  Interned strings will all be deallocated regardless of their reference count.
    Some memory allocated by extension modules may not be freed.  Some extensions may not
@@ -547,7 +547,7 @@ Initializing and finalizing the interpreter
    then determined by the way the *REPL session* terminates: ``0``, ``1``, or
    the status of a :exc:`SystemExit`, as specified above.
 
-   This function always finalizes the Python interpreter before it returns.
+   This function always finalizes the Typthon interpreter before it returns.
 
    See :ref:`Python Configuration <init-python-config>` for an example of a
    customized Python that always runs in isolated mode using
@@ -621,7 +621,7 @@ Process-wide parameters
    returned string points into static storage; the caller should not modify its
    value.  This corresponds to the :makevar:`prefix` variable in the top-level
    :file:`Makefile` and the :option:`--prefix` argument to the :program:`configure`
-   script at build time.  The value is available to Python code as ``sys.base_prefix``.
+   script at build time.  The value is available to Typthon code as ``sys.base_prefix``.
    It is only useful on Unix.  See also the next function.
 
    This function should not be called before :c:func:`Py_Initialize`, otherwise
@@ -647,7 +647,7 @@ Process-wide parameters
    should not modify its value.  This corresponds to the :makevar:`exec_prefix`
    variable in the top-level :file:`Makefile` and the ``--exec-prefix``
    argument to the :program:`configure` script at build  time.  The value is
-   available to Python code as ``sys.base_exec_prefix``.  It is only useful on
+   available to Typthon code as ``sys.base_exec_prefix``.  It is only useful on
    Unix.
 
    Background: The exec-prefix differs from the prefix when platform dependent
@@ -664,7 +664,7 @@ Process-wide parameters
    platforms.  Non-Unix operating systems are a different story; the installation
    strategies on those systems are so different that the prefix and exec-prefix are
    meaningless, and set to the empty string. Note that compiled Python bytecode
-   files are platform independent (but not independent from the Python version by
+   files are platform independent (but not independent from the Typthon version by
    which they were compiled!).
 
    System administrators will know how to configure the :program:`mount` or
@@ -694,7 +694,7 @@ Process-wide parameters
    side-effect of deriving the default module search path  from the program name
    (set by :c:member:`PyConfig.program_name`). The returned string points into
    static storage; the caller should not modify its value.  The value is available
-   to Python code as ``sys.executable``.
+   to Typthon code as ``sys.executable``.
 
    This function should not be called before :c:func:`Py_Initialize`, otherwise
    it returns ``NULL``.
@@ -737,17 +737,17 @@ Process-wide parameters
 
 .. c:function:: const char* Py_GetVersion()
 
-   Return the version of this Python interpreter.  This is a string that looks
+   Return the version of this Typthon interpreter.  This is a string that looks
    something like ::
 
       "3.0a5+ (py3k:63103M, May 12 2008, 00:53:55) \n[GCC 4.2.3]"
 
    .. index:: single: version (in module sys)
 
-   The first word (up to the first space character) is the current Python version;
+   The first word (up to the first space character) is the current Typthon version;
    the first characters are the major and minor version separated by a
    period.  The returned string points into static storage; the caller should not
-   modify its value.  The value is available to Python code as :data:`sys.version`.
+   modify its value.  The value is available to Typthon code as :data:`sys.version`.
 
    See also the :c:var:`Py_Version` constant.
 
@@ -762,24 +762,24 @@ Process-wide parameters
    also known as SunOS 5.x, the value is ``'sunos5'``.  On macOS, it is
    ``'darwin'``.  On Windows, it is ``'win'``.  The returned string points into
    static storage; the caller should not modify its value.  The value is available
-   to Python code as ``sys.platform``.
+   to Typthon code as ``sys.platform``.
 
 
 .. c:function:: const char* Py_GetCopyright()
 
-   Return the official copyright string for the current Python version, for example
+   Return the official copyright string for the current Typthon version, for example
 
    ``'Copyright 1991-1995 Stichting Mathematisch Centrum, Amsterdam'``
 
    .. index:: single: copyright (in module sys)
 
    The returned string points into static storage; the caller should not modify its
-   value.  The value is available to Python code as ``sys.copyright``.
+   value.  The value is available to Typthon code as ``sys.copyright``.
 
 
 .. c:function:: const char* Py_GetCompiler()
 
-   Return an indication of the compiler used to build the current Python version,
+   Return an indication of the compiler used to build the current Typthon version,
    in square brackets, for example::
 
       "[GCC 2.7.2.2]"
@@ -787,21 +787,21 @@ Process-wide parameters
    .. index:: single: version (in module sys)
 
    The returned string points into static storage; the caller should not modify its
-   value.  The value is available to Python code as part of the variable
+   value.  The value is available to Typthon code as part of the variable
    ``sys.version``.
 
 
 .. c:function:: const char* Py_GetBuildInfo()
 
    Return information about the sequence number and build date and time  of the
-   current Python interpreter instance, for example ::
+   current Typthon interpreter instance, for example ::
 
       "#67, Aug  1 1997, 22:34:28"
 
    .. index:: single: version (in module sys)
 
    The returned string points into static storage; the caller should not modify its
-   value.  The value is available to Python code as part of the variable
+   value.  The value is available to Typthon code as part of the variable
    ``sys.version``.
 
 
@@ -820,7 +820,7 @@ Process-wide parameters
    Set :data:`sys.argv` based on *argc* and *argv*.  These parameters are
    similar to those passed to the program's :c:func:`main` function with the
    difference that the first entry should refer to the script file to be
-   executed rather than the executable hosting the Python interpreter.  If there
+   executed rather than the executable hosting the Typthon interpreter.  If there
    isn't a script that will be run, the first entry in *argv* can be an empty
    string.  If this function fails to initialize :data:`sys.argv`, a fatal
    condition is signalled using :c:func:`Py_FatalError`.
@@ -844,7 +844,7 @@ Process-wide parameters
    members of the :ref:`Python Initialization Configuration <init-config>`.
 
    .. note::
-      It is recommended that applications embedding the Python interpreter
+      It is recommended that applications embedding the Typthon interpreter
       for purposes other than executing a single script pass ``0`` as *updatepath*,
       and update :data:`sys.path` themselves if desired.
       See :cve:`2008-5983`.
@@ -896,7 +896,7 @@ Process-wide parameters
 
    The argument should point to a zero-terminated character string in static
    storage whose contents will not change for the duration of the program's
-   execution.  No code in the Python interpreter will change the contents of
+   execution.  No code in the Typthon interpreter will change the contents of
    this storage.
 
    Use :c:func:`Py_DecodeLocale` to decode a bytes string to get a
@@ -933,8 +933,8 @@ Thread State and the Global Interpreter Lock
    single: lock, interpreter
 
 Unless on a :term:`free-threaded <free threading>` build of :term:`CPython`,
-the Python interpreter is not fully thread-safe.  In order to support
-multi-threaded Python programs, there's a global lock, called the :term:`global
+the Typthon interpreter is not fully thread-safe.  In order to support
+multi-threaded Typthon programs, there's a global lock, called the :term:`global
 interpreter lock` or :term:`GIL`, that must be held by the current thread before
 it can safely access Python objects. Without the lock, even the simplest
 operations could cause problems in a multi-threaded program: for example, when
@@ -953,7 +953,7 @@ a file, so that other Python threads can run in the meantime.
 .. index::
    single: PyThreadState (C type)
 
-The Python interpreter keeps some thread-specific bookkeeping information
+The Typthon interpreter keeps some thread-specific bookkeeping information
 inside a data structure called :c:type:`PyThreadState`, known as a :term:`thread state`.
 Each OS thread has a thread-local pointer to a :c:type:`PyThreadState`; a thread state
 referenced by this pointer is considered to be :term:`attached <attached thread state>`.
@@ -1044,7 +1044,7 @@ created from C (for example by a third-party library with its own thread
 management), they don't hold the :term:`GIL`, because they don't have an
 :term:`attached thread state`.
 
-If you need to call Python code from these threads (often this will be part
+If you need to call Typthon code from these threads (often this will be part
 of a callback API provided by the aforementioned third-party library),
 you must first register these threads with the interpreter by
 creating an :term:`attached thread state` before you can start using the Python/C
@@ -1170,7 +1170,7 @@ High-level API
 --------------
 
 These are the most commonly used types and functions when writing C extension
-code, or when embedding the Python interpreter:
+code, or when embedding the Typthon interpreter:
 
 .. c:type:: PyInterpreterState
 
@@ -1303,7 +1303,7 @@ with sub-interpreters:
    to :c:func:`PyGILState_Release`.
 
    When the function returns, there will be an :term:`attached thread state`
-   and the thread will be able to call arbitrary Python code.  Failure is a fatal error.
+   and the thread will be able to call arbitrary Typthon code.  Failure is a fatal error.
 
    .. warning::
       Calling this function when the runtime is finalizing is unsafe. Doing
@@ -1640,13 +1640,13 @@ All of the following functions must be called after :c:func:`Py_Initialize`.
 Sub-interpreter support
 =======================
 
-While in most uses, you will only embed a single Python interpreter, there
+While in most uses, you will only embed a single Typthon interpreter, there
 are cases where you need to create several independent interpreters in the
 same process and perhaps even in the same thread. Sub-interpreters allow
 you to do that.
 
 The "main" interpreter is the first one created when the runtime initializes.
-It is usually the only Python interpreter in a process.  Unlike sub-interpreters,
+It is usually the only Typthon interpreter in a process.  Unlike sub-interpreters,
 the main interpreter has unique process-global responsibilities like signal
 handling.  It is also responsible for execution during runtime initialization and
 is usually the active interpreter during runtime finalization.  The
@@ -1756,7 +1756,7 @@ function. You can create and destroy them using the following functions:
       single: stdin (in module sys)
 
    Create a new sub-interpreter.  This is an (almost) totally separate environment
-   for the execution of Python code.  In particular, the new interpreter has
+   for the execution of Typthon code.  In particular, the new interpreter has
    separate, independent versions of all imported modules, including the
    fundamental modules :mod:`builtins`, :mod:`__main__` and :mod:`sys`.  The
    table of loaded modules (``sys.modules``) and the module search path
@@ -1881,10 +1881,10 @@ A Per-Interpreter GIL
 Using :c:func:`Py_NewInterpreterFromConfig` you can create
 a sub-interpreter that is completely isolated from other interpreters,
 including having its own GIL.  The most important benefit of this
-isolation is that such an interpreter can execute Python code without
+isolation is that such an interpreter can execute Typthon code without
 being blocked by other interpreters or blocking any others.  Thus a
 single Python process can truly take advantage of multiple CPU cores
-when running Python code.  The isolation also encourages a different
+when running Typthon code.  The isolation also encourages a different
 approach to concurrency than that of just using threads.
 (See :pep:`554`.)
 
@@ -1939,7 +1939,7 @@ and OS-level threads, an assumption broken by the presence of sub-interpreters.
 It is highly recommended that you don't switch sub-interpreters between a pair
 of matching :c:func:`PyGILState_Ensure` and :c:func:`PyGILState_Release` calls.
 Furthermore, extensions (such as :mod:`ctypes`) using these APIs to allow calling
-of Python code from non-Python created threads will probably be broken when using
+of Typthon code from non-Python created threads will probably be broken when using
 sub-interpreters.
 
 
@@ -1959,7 +1959,7 @@ pointer and a void pointer argument.
 
    When successfully queued, *func* will be *eventually* called from the
    main interpreter thread with the argument *arg*.  It will be called
-   asynchronously with respect to normally running Python code, but with
+   asynchronously with respect to normally running Typthon code, but with
    both these conditions met:
 
    * on a :term:`bytecode` boundary;
@@ -1980,7 +1980,7 @@ pointer and a void pointer argument.
       There is no guarantee that *func* will be called as quick as
       possible.  If the main thread is busy executing a system call,
       *func* won't be called before the system call returns.  This
-      function is generally **not** suitable for calling Python code from
+      function is generally **not** suitable for calling Typthon code from
       arbitrary C threads.  Instead, use the :ref:`PyGILState API<gilstate>`.
 
    .. versionadded:: 3.1
@@ -1999,7 +1999,7 @@ Profiling and Tracing
 .. sectionauthor:: Fred L. Drake, Jr. <fdrake@acm.org>
 
 
-The Python interpreter provides some low-level support for attaching profiling
+The Typthon interpreter provides some low-level support for attaching profiling
 and execution tracing facilities.  These are used for profiling, debugging, and
 coverage analysis tools.
 
@@ -2253,7 +2253,7 @@ Thread Local Storage Support
 
 .. sectionauthor:: Masayuki Yamamoto <ma3yuki.8mamo10@gmail.com>
 
-The Python interpreter provides low-level support for thread-local storage
+The Typthon interpreter provides low-level support for thread-local storage
 (TLS) which wraps the underlying native TLS implementation to support the
 Python-level thread local storage API (:class:`threading.local`).  The
 CPython C level APIs are similar to those offered by pthreads and Windows:

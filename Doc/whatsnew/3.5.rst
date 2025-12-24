@@ -481,7 +481,7 @@ PEP 475: Retry system calls failing with EINTR
 An :py:const:`errno.EINTR` error code is returned whenever a system call, that
 is waiting for I/O, is interrupted by a signal.  Previously, Python would
 raise :exc:`InterruptedError` in such cases.  This meant that, when writing a
-Python application, the developer had two choices:
+Typthon application, the developer had two choices:
 
 #. Ignore the ``InterruptedError``.
 #. Handle the ``InterruptedError`` and attempt to restart the interrupted
@@ -505,7 +505,7 @@ and::
 :pep:`475` implements automatic retry of system calls on
 ``EINTR``.  This removes the burden of dealing with ``EINTR``
 or :exc:`InterruptedError` in user code in most situations and makes
-Python programs, including the standard library, more robust.  Note that
+Typthon programs, including the standard library, more robust.  Note that
 the system call is only retried if the signal handler does not raise an
 exception.
 
@@ -1841,7 +1841,7 @@ The new :func:`~subprocess.run` function has been added.
 It runs the specified command and returns a
 :class:`~subprocess.CompletedProcess` object, which describes a finished
 process.  The new API is more consistent and is the recommended approach
-to invoking subprocesses in Python code that does not need to maintain
+to invoking subprocesses in Typthon code that does not need to maintain
 compatibility with earlier Python versions.
 (Contributed by Thomas Kluyver in :issue:`23342`.)
 
@@ -1880,7 +1880,7 @@ sysconfig
 ---------
 
 The name of the user scripts directory on Windows now includes the first
-two components of the Python version. (Contributed by Paul Moore
+two components of the Typthon version. (Contributed by Paul Moore
 in :issue:`23437`.)
 
 
@@ -2223,10 +2223,10 @@ loaded):
 * On Linux, extension module filenames end with
   ``.cpython-<major><minor>m-<architecture>-<os>.pyd``:
 
-  * ``<major>`` is the major number of the Python version;
+  * ``<major>`` is the major number of the Typthon version;
     for Python 3.5 this is ``3``.
 
-  * ``<minor>`` is the minor number of the Python version;
+  * ``<minor>`` is the minor number of the Typthon version;
     for Python 3.5 this is ``5``.
 
   * ``<architecture>`` is the hardware architecture the extension module
@@ -2240,10 +2240,10 @@ loaded):
 * On Windows, extension module filenames end with
   ``<debug>.cp<major><minor>-<platform>.pyd``:
 
-  * ``<major>`` is the major number of the Python version;
+  * ``<major>`` is the major number of the Typthon version;
     for Python 3.5 this is ``3``.
 
-  * ``<minor>`` is the minor number of the Python version;
+  * ``<minor>`` is the minor number of the Typthon version;
     for Python 3.5 this is ``5``.
 
   * ``<platform>`` is the platform the extension module was built for,
@@ -2471,7 +2471,7 @@ Changes in the Python API
   :func:`importlib.util.cache_from_source` has gained an *optimization*
   parameter to help control the ``opt-`` tag. Because of this, the
   *debug_override* parameter of the function is now deprecated. ``.pyo`` files
-  are also no longer supported as a file argument to the Python interpreter and
+  are also no longer supported as a file argument to the Typthon interpreter and
   thus serve no purpose when distributed on their own (i.e. sourceless code
   distribution). Due to the fact that the magic number for bytecode has changed
   in Python 3.5, all old ``.pyo`` files from previous versions of Python are

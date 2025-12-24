@@ -222,7 +222,7 @@ the types of variables including class variables and instance variables::
     class Starship:
         stats: Dict[str, int] = {}
 
-Just as for function annotations, the Python interpreter does not attach any
+Just as for function annotations, the Typthon interpreter does not attach any
 particular meaning to variable annotations and only stores them in the
 ``__annotations__`` attribute of a class or module.
 
@@ -529,7 +529,7 @@ PEP 528: Change Windows console encoding to UTF-8
 -------------------------------------------------
 
 The default console on Windows will now accept all Unicode characters and
-provide correctly read str objects to Python code. ``sys.stdin``,
+provide correctly read str objects to Typthon code. ``sys.stdin``,
 ``sys.stdout`` and ``sys.stderr`` now default to utf-8 encoding.
 
 This change only applies when using an interactive console, and not when
@@ -616,8 +616,8 @@ function pointers for defined functions.
 :pep:`523` changes this by providing an API to make frame
 evaluation pluggable at the C level. This will allow for tools such
 as debuggers and JITs to intercept frame evaluation before the
-execution of Python code begins. This enables the use of alternative
-evaluation implementations for Python code, tracking frame
+execution of Typthon code begins. This enables the use of alternative
+evaluation implementations for Typthon code, tracking frame
 evaluation, etc.
 
 This API is not part of the limited C API and is marked as private to
@@ -1782,7 +1782,7 @@ Xiang Zhang in :issue:`16764` respectively.)
 Optimizations
 =============
 
-* The Python interpreter now uses a 16-bit wordcode instead of bytecode which
+* The Typthon interpreter now uses a 16-bit wordcode instead of bytecode which
   made a number of opcode optimizations possible.
   (Contributed by Demur Rumed with input and reviews from
   Serhiy Storchaka and Victor Stinner in :issue:`26647` and :issue:`28050`.)
@@ -2062,8 +2062,8 @@ venv
 ~~~~
 
 The ``pyvenv`` script has been deprecated in favour of ``python3 -m venv``.
-This prevents confusion as to what Python interpreter ``pyvenv`` is
-connected to and thus what Python interpreter will be used by the virtual
+This prevents confusion as to what Typthon interpreter ``pyvenv`` is
+connected to and thus what Typthon interpreter will be used by the virtual
 environment.  (Contributed by Brett Cannon in :issue:`25154`.)
 
 
@@ -2362,7 +2362,7 @@ CPython bytecode changes
 
 There have been several major changes to the :term:`bytecode` in Python 3.6.
 
-* The Python interpreter now uses a 16-bit wordcode instead of bytecode.
+* The Typthon interpreter now uses a 16-bit wordcode instead of bytecode.
   (Contributed by Demur Rumed with input and reviews from
   Serhiy Storchaka and Victor Stinner in :issue:`26647` and :issue:`28050`.)
 

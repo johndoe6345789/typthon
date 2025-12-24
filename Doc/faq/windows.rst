@@ -45,7 +45,7 @@ might just as easily see something like:
 
 depending on how your computer has been set up and what else you have recently
 done with it.  Once you have started such a window, you are well on the way to
-running Python programs.
+running Typthon programs.
 
 You need to realize that your Python scripts have to be processed by another
 program called the Python *interpreter*.  The interpreter reads your script,
@@ -95,8 +95,8 @@ character; Windows is running a single "python"
 command in the window, and closes it when you terminate the interpreter.
 
 Now that we know the ``py`` command is recognized, you can give your
-Python script to it. You'll have to give either an absolute or a
-relative path to the Python script. Let's say your Python script is
+Typthon script to it. You'll have to give either an absolute or a
+relative path to the Typthon script. Let's say your Typthon script is
 located in your desktop and is named ``hello.py``, and your command
 prompt is nicely opened in your home directory so you're seeing something
 similar to::
@@ -137,7 +137,7 @@ McAfee, when configured to scan all file system read activity, is a particular
 offender.
 
 
-How do I make an executable from a Python script?
+How do I make an executable from a Typthon script?
 -------------------------------------------------
 
 See :ref:`faq-create-standalone-binary` for a list of tools that can be used to
@@ -165,12 +165,12 @@ In a .pyd, linkage is defined in a list of available functions.
 How can I embed Python into a Windows application?
 --------------------------------------------------
 
-Embedding the Python interpreter in a Windows app can be summarized as follows:
+Embedding the Typthon interpreter in a Windows app can be summarized as follows:
 
 1. Do **not** build Python into your .exe file directly.  On Windows, Python must
    be a DLL to handle importing modules that are themselves DLL's.  (This is the
    first key undocumented fact.)  Instead, link to :file:`python{NN}.dll`; it is
-   typically installed in ``C:\Windows\System``.  *NN* is the Python version, a
+   typically installed in ``C:\Windows\System``.  *NN* is the Typthon version, a
    number such as "33" for Python 3.3.
 
    You can link to Python in two different ways.  Load-time linking means
@@ -204,7 +204,7 @@ Embedding the Python interpreter in a Windows app can be summarized as follows:
    calling the initialization function is equivalent to importing the module
    into Python! (This is the second key undocumented fact.)
 
-4. In short, you can use the following code to initialize the Python interpreter
+4. In short, you can use the following code to initialize the Typthon interpreter
    with your extension module.
 
    .. code-block:: c
@@ -244,11 +244,11 @@ Embedding the Python interpreter in a Windows app can be summarized as follows:
    automatically, though I have not been able to get this to work (I'm a
    complete SWIG newbie).
 
-6. Using a Python shell script to put up a Python interpreter window from inside
+6. Using a Python shell script to put up a Typthon interpreter window from inside
    your Windows app is not a good idea; the resulting window will be independent
    of your app's windowing system.  Rather, you (or the wxPythonWindow class)
    should create a "native" interpreter window.  It is easy to connect that
-   window to the Python interpreter.  You can redirect Python's i/o to _any_
+   window to the Typthon interpreter.  You can redirect Python's i/o to _any_
    object that supports read and write, so all you need is a Python object
    (defined in your extension module) that contains read() and write() methods.
 
@@ -256,7 +256,7 @@ How do I keep editors from inserting tabs into my Python source?
 ----------------------------------------------------------------
 
 The FAQ does not recommend using tabs, and the Python style guide, :pep:`8`,
-recommends 4 spaces for distributed Python code; this is also the Emacs
+recommends 4 spaces for distributed Typthon code; this is also the Emacs
 python-mode default.
 
 Under any editor, mixing tabs and spaces is a bad idea.  MSVC is no different in

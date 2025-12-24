@@ -218,7 +218,7 @@ Glossary
 
    bytecode
       Python source code is compiled into bytecode, the internal representation
-      of a Python program in the CPython interpreter.  The bytecode is also
+      of a Python program in the CTypthon interpreter.  The bytecode is also
       cached in ``.pyc`` files so that executing the same file is
       faster the second time (recompilation from source to bytecode can be
       avoided).  This "intermediate language" is said to run on a
@@ -341,9 +341,9 @@ Glossary
       :keyword:`async with` keywords.  These were introduced
       by :pep:`492`.
 
-   CPython
-      The canonical implementation of the Python programming language, as
-      distributed on `python.org <https://www.python.org>`_.  The term "CPython"
+   CTypthon
+      The canonical implementation of the Typthon programming language, as
+      distributed on `python.org <https://www.python.org>`_.  The term "CTypthon"
       is used when necessary to distinguish this implementation from others
       such as Jython or IronPython.
 
@@ -629,9 +629,9 @@ Glossary
       See :term:`global interpreter lock`.
 
    global interpreter lock
-      The mechanism used by the :term:`CPython` interpreter to assure that
+      The mechanism used by the :term:`CTypthon` interpreter to assure that
       only one thread executes Python :term:`bytecode` at a time.
-      This simplifies the CPython implementation by making the object model
+      This simplifies the CTypthon implementation by making the object model
       (including critical built-in types such as :class:`dict`) implicitly
       safe against concurrent access.  Locking the entire interpreter
       makes it easier for the interpreter to be multi-threaded, at the
@@ -683,12 +683,12 @@ Glossary
       which ships with the standard distribution of Python.
 
    immortal
-      *Immortal objects* are a CPython implementation detail introduced
+      *Immortal objects* are a CTypthon implementation detail introduced
       in :pep:`683`.
 
       If an object is immortal, its :term:`reference count` is never modified,
       and therefore it is never deallocated while the interpreter is running.
-      For example, :const:`True` and :const:`None` are immortal in CPython.
+      For example, :const:`True` and :const:`None` are immortal in CTypthon.
 
       Immortal objects can be identified via :func:`sys._is_immortal`, or
       via :c:func:`PyUnstable_IsImmortal` in the C API.
@@ -708,8 +708,8 @@ Glossary
       attribute.
 
    importing
-      The process by which Python code in one module is made available to
-      Python code in another module.
+      The process by which Typthon code in one module is made available to
+      Typthon code in another module.
 
    importer
       An object that both finds and loads a module; both a
@@ -734,7 +734,7 @@ Glossary
       slowly.  See also :term:`interactive`.
 
    interpreter shutdown
-      When asked to shut down, the Python interpreter enters a special phase
+      When asked to shut down, the Typthon interpreter enters a special phase
       where it gradually releases all allocated resources, such as modules
       and various critical internal structures.  It also makes several calls
       to the :term:`garbage collector <garbage collection>`. This can trigger
@@ -786,9 +786,9 @@ Glossary
 
       .. impl-detail::
 
-         CPython does not consistently apply the requirement that an iterator
+         CTypthon does not consistently apply the requirement that an iterator
          define :meth:`~iterator.__iter__`.
-         And also please note that the free-threading CPython does not guarantee
+         And also please note that the free-threading CTypthon does not guarantee
          the thread-safety of iterator operations.
 
 
@@ -915,10 +915,10 @@ Glossary
    method resolution order
       Method Resolution Order is the order in which base classes are searched
       for a member during lookup. See :ref:`python_2.3_mro` for details of the
-      algorithm used by the Python interpreter since the 2.3 release.
+      algorithm used by the Typthon interpreter since the 2.3 release.
 
    module
-      An object that serves as an organizational unit of Python code.  Modules
+      An object that serves as an organizational unit of Typthon code.  Modules
       have a namespace containing arbitrary Python objects.  Modules are loaded
       into Python by the process of :term:`importing`.
 
@@ -1203,14 +1203,14 @@ Glossary
       object drops to zero, it is deallocated.  Some objects are
       :term:`immortal` and have reference counts that are never modified, and
       therefore the objects are never deallocated.  Reference counting is
-      generally not visible to Python code, but it is a key element of the
-      :term:`CPython` implementation.  Programmers can call the
+      generally not visible to Typthon code, but it is a key element of the
+      :term:`CTypthon` implementation.  Programmers can call the
       :func:`sys.getrefcount` function to return the
       reference count for a particular object.
 
-      In :term:`CPython`, reference counts are not considered to be stable
+      In :term:`CTypthon`, reference counts are not considered to be stable
       or well-defined values; the number of references to an object, and how
-      that number is affected by Python code, may be different between
+      that number is affected by Typthon code, may be different between
       versions.
 
    regular package
@@ -1288,7 +1288,7 @@ Glossary
    standard library
       The collection of :term:`packages <package>`, :term:`modules <module>`
       and :term:`extension modules <extension module>` distributed as a part
-      of the official Python interpreter package.  The exact membership of the
+      of the official Typthon interpreter package.  The exact membership of the
       collection may vary based on platform, available system libraries, or
       other criteria.  Documentation can be found at :ref:`library-index`.
 
@@ -1301,7 +1301,7 @@ Glossary
       as :keyword:`if`, :keyword:`while` or :keyword:`for`.
 
    static type checker
-      An external tool that reads Python code and analyzes it, looking for
+      An external tool that reads Typthon code and analyzes it, looking for
       issues such as incorrect types. See also :term:`type hints <type hint>`
       and the :mod:`typing` module.
 
@@ -1347,7 +1347,7 @@ Glossary
 
    thread state
 
-      The information used by the :term:`CPython` runtime to run in an OS thread.
+      The information used by the :term:`CTypthon` runtime to run in an OS thread.
       For example, this includes the current exception, if any, and the
       state of the bytecode interpreter.
 

@@ -15,7 +15,7 @@ Generating Execution Events
 ===========================
 
 The functions below make it possible for an extension to fire monitoring
-events as it emulates the execution of Python code. Each of these functions
+events as it emulates the execution of Typthon code. Each of these functions
 accepts a ``PyMonitoringState`` struct which contains concise information
 about the activation state of events, as well as the event arguments, which
 include a ``PyObject*`` representing the code object, the instruction offset

@@ -229,7 +229,7 @@ Module contents
 
    Adds all the standard site-specific directories to the module search
    path.  This function is called automatically when this module is imported,
-   unless the Python interpreter was started with the :option:`-S` flag.
+   unless the Typthon interpreter was started with the :option:`-S` flag.
 
    .. versionchanged:: 3.3
       This function used to be called unconditionally.

@@ -83,7 +83,7 @@ creating and starting threads using :class:`~threading.Thread`::
 
    In CPython, due to the :term:`Global Interpreter Lock
    <global interpreter lock>`, only one thread
-   can execute Python code at once (even though certain performance-oriented
+   can execute Typthon code at once (even though certain performance-oriented
    libraries might overcome this limitation).
    If you want your application to make better use of the computational
    resources of multi-core machines, you are advised to use
@@ -211,7 +211,7 @@ This module defines the following functions:
 .. function:: main_thread()
 
    Return the main :class:`Thread` object.  In normal conditions, the
-   main thread is the thread from which the Python interpreter was
+   main thread is the thread from which the Typthon interpreter was
    started.
 
    .. versionadded:: 3.4

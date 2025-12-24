@@ -144,13 +144,13 @@ prog
 
 
 By default, :class:`ArgumentParser` calculates the name of the program
-to display in help messages depending on the way the Python interpreter was run:
+to display in help messages depending on the way the Typthon interpreter was run:
 
 * The :func:`base name <os.path.basename>` of ``sys.argv[0]`` if a file was
   passed as argument.
-* The Python interpreter name followed by ``sys.argv[0]`` if a directory or
+* The Typthon interpreter name followed by ``sys.argv[0]`` if a directory or
   a zipfile was passed as argument.
-* The Python interpreter name followed by ``-m`` followed by the
+* The Typthon interpreter name followed by ``-m`` followed by the
   module or package name if the :option:`-m` option was used.
 
 This default is almost always desirable because it will make the help messages

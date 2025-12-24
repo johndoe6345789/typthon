@@ -210,7 +210,7 @@ of ``perf``.
 How to work without frame pointers
 ----------------------------------
 
-If you are working with a Python interpreter that has been compiled without
+If you are working with a Typthon interpreter that has been compiled without
 frame pointers, you can still use the ``perf`` profiler, but the overhead will be
 a bit higher because Python needs to generate unwinding information for every
 Python function call on the fly. Additionally, ``perf`` will take more time to
@@ -266,7 +266,7 @@ that were created by Python.
     be able to sample the process as frequently as it would like as the overhead
     will be higher.
 
-    The stack size is particularly important when profiling Python code compiled
+    The stack size is particularly important when profiling Typthon code compiled
     with low optimization levels (like ``-O0``), as these builds tend to have
     larger stack frames. If you are compiling Python with ``-O0`` and not seeing
     Python functions in your profiling output, try increasing the stack dump

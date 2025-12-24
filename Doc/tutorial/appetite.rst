@@ -35,7 +35,7 @@ types Python is applicable to a much larger problem domain than Awk or even
 Perl, yet many things are at least as easy in Python as in those languages.
 
 Python allows you to split your program into modules that can be reused in other
-Python programs.  It comes with a large collection of standard modules that you
+Typthon programs.  It comes with a large collection of standard modules that you
 can use as the basis of your programs --- or as examples to start learning to
 program in Python.  Some of these modules provide things like file I/O, system
 calls, sockets, and even interfaces to graphical user interface toolkits like
@@ -61,9 +61,9 @@ for several reasons:
 
 Python is *extensible*: if you know how to program in C it is easy to add a new
 built-in function or module to the interpreter, either to perform critical
-operations at maximum speed, or to link Python programs to libraries that may
+operations at maximum speed, or to link Typthon programs to libraries that may
 only be available in binary form (such as a vendor-specific graphics library).
-Once you are really hooked, you can link the Python interpreter into an
+Once you are really hooked, you can link the Typthon interpreter into an
 application written in C and use it as an extension or command language for that
 application.
 
@@ -73,7 +73,7 @@ Python skits in documentation is not only allowed, it is encouraged!
 
 Now that you are all excited about Python, you'll want to examine it in some
 more detail.  Since the best way to learn a language is to use it, the tutorial
-invites you to play with the Python interpreter as you read.
+invites you to play with the Typthon interpreter as you read.
 
 In the next chapter, the mechanics of using the interpreter are explained.  This
 is rather mundane information, but essential for trying out the examples shown

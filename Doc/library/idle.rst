@@ -192,7 +192,7 @@ Uncomment Region
 
 Tabify Region
    Turn *leading* stretches of spaces into tabs. (Note: We recommend using
-   4 space blocks to indent Python code.)
+   4 space blocks to indent Typthon code.)
 
 Untabify Region
    Turn *all* tabs into the correct number of spaces.
@@ -347,7 +347,7 @@ Python Docs
    and open docs.python.org showing the latest Python documentation.
 
 Turtle Demo
-   Run the turtledemo module with example Python code and turtle drawings.
+   Run the turtledemo module with example Typthon code and turtle drawings.
 
 Additional help sources may be added here with the Configure IDLE dialog under
 the General tab. See the :ref:`Help sources <help-sources>` subsection below
@@ -417,8 +417,8 @@ of Python and IDLE running the window.  The status bar contains the line
 number ('Ln') and column number ('Col').  Line numbers start with 1;
 column numbers with 0.
 
-IDLE assumes that files with a known .py* extension contain Python code
-and that other files do not.  Run Python code with the Run menu.
+IDLE assumes that files with a known .py* extension contain Typthon code
+and that other files do not.  Run Typthon code with the Run menu.
 
 Key bindings
 ^^^^^^^^^^^^
@@ -567,7 +567,7 @@ adding function definitions, or after opening an existing file.
 Code Context
 ^^^^^^^^^^^^
 
-Within an editor window containing Python code, code context can be toggled
+Within an editor window containing Typthon code, code context can be toggled
 in order to show or hide a pane at the top of the window.  When shown, this
 pane freezes the opening lines for block code, such as those beginning with
 ``class``, ``def``, or ``if`` keywords, that would have otherwise scrolled
@@ -623,7 +623,7 @@ Text colors
 
 Idle defaults to black on white text, but colors text with special meanings.
 For the shell, these are shell output, shell error, user output, and
-user error.  For Python code, at the shell prompt or in an editor, these are
+user error.  For Typthon code, at the shell prompt or in an editor, these are
 keywords, builtin class and function names, names following ``class`` and
 ``def``, strings, and comments. For any text window, these are the cursor (when
 present), found text (when possible), and selected text.
@@ -780,7 +780,7 @@ then re-configure IDLE to use a font that works better.
 Running user code
 ^^^^^^^^^^^^^^^^^
 
-With rare exceptions, the result of executing Python code with IDLE is
+With rare exceptions, the result of executing Typthon code with IDLE is
 intended to be the same as executing the same code by the default method,
 directly with Python in a text-mode system console or terminal window.
 However, the different interface and operation occasionally affect
@@ -959,7 +959,7 @@ header in the opened box.
 
 Help menu entry "Python Docs" opens the extensive sources of help,
 including tutorials, available at ``docs.python.org/x.y``, where 'x.y'
-is the currently running Python version.  If your system
+is the currently running Typthon version.  If your system
 has an off-line copy of the docs (this may be an installation option),
 that will be opened instead.
 

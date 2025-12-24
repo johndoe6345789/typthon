@@ -37,7 +37,7 @@ The solution is to use Python's raw string notation for regular expression
 patterns; backslashes are not handled in any special way in a string literal
 prefixed with ``'r'``.  So ``r"\n"`` is a two-character string containing
 ``'\'`` and ``'n'``, while ``"\n"`` is a one-character string containing a
-newline.  Usually patterns will be expressed in Python code using this raw
+newline.  Usually patterns will be expressed in Typthon code using this raw
 string notation.
 
 It is important to note that most regular expression operations are available as

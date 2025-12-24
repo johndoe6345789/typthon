@@ -1,12 +1,12 @@
-Python Documentation README
+Typthon Documentation README
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This directory contains the reStructuredText (reST) sources to the Python
+This directory contains the reStructuredText (reST) sources to the Typthon
 documentation.  You don't need to build them yourself, `prebuilt versions are
 available <https://docs.python.org/dev/download.html>`_.
 
-Documentation on authoring Python documentation, including information about
-both style and markup, is available in the "`Documenting Python
+Documentation on authoring Typthon documentation, including information about
+both style and markup, is available in the "`Documenting Typthon
 <https://devguide.python.org/documenting/>`_" chapter of the
 developers guide.
 
@@ -45,7 +45,7 @@ installed on your process ``PATH`` (configurable with the ``SPHINXBUILD`` and
 ``BLURB`` variables).
 
 On Windows, we try to emulate the ``Makefile`` as closely as possible with a
-``make.bat`` file. If you need to specify the Python interpreter to use,
+``make.bat`` file. If you need to specify the Typthon interpreter to use,
 set the ``PYTHON`` environment variable.
 
 Available make targets are:

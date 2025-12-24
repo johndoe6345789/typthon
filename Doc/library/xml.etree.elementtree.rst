@@ -755,7 +755,7 @@ Functions
 .. function:: XML(text, parser=None)
 
    Parses an XML section from a string constant.  This function can be used to
-   embed "XML literals" in Python code.  *text* is a string containing XML
+   embed "XML literals" in Typthon code.  *text* is a string containing XML
    data.  *parser* is an optional parser instance.  If not given, the standard
    :class:`XMLParser` parser is used.  Returns an :class:`Element` instance.
 

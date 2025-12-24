@@ -383,7 +383,7 @@ functions.
       For maximum reliability, use a fully qualified path for the executable.
       To search for an unqualified name on :envvar:`PATH`, use
       :meth:`shutil.which`. On all platforms, passing :data:`sys.executable`
-      is the recommended way to launch the current Python interpreter again,
+      is the recommended way to launch the current Typthon interpreter again,
       and use the ``-m`` command-line format to launch an installed module.
 
       Resolving the path of *executable* (or the first item of *args*) is
@@ -1592,7 +1592,7 @@ improves performance.
 
    subprocess._USE_POSIX_SPAWN = False  # See CPython issue gh-NNNNNN.
 
-It is safe to set this to false on any Python version. It will have no
+It is safe to set this to false on any Typthon version. It will have no
 effect on older or newer versions where unsupported. Do not assume the attribute
 is available to read. Despite the name, a true value does not indicate the
 corresponding function will be used, only that it may be.

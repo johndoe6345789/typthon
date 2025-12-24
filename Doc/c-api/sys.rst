@@ -68,7 +68,7 @@ Operating System Utilities
    Function to update internal interpreter state after a process fork.
    This must be called from the child process after calling :c:func:`fork`,
    or any similar function that clones the current process, if there is
-   any chance the process will call back into the Python interpreter.
+   any chance the process will call back into the Typthon interpreter.
    Only available on systems where :c:func:`fork` is defined.
 
    .. warning::
@@ -88,7 +88,7 @@ Operating System Utilities
 .. c:function:: void PyOS_AfterFork()
 
    Function to update some internal state after a process fork; this should be
-   called in the new process if the Python interpreter will continue to be used.
+   called in the new process if the Typthon interpreter will continue to be used.
    If a new executable is loaded into the new process, this function does not need
    to be called.
 
@@ -341,7 +341,7 @@ accessible to C code.  They all work with the current interpreter thread's
    Note that ``#`` format characters should always be treated as
    :c:type:`Py_ssize_t`, regardless of whether ``PY_SSIZE_T_CLEAN`` was defined.
 
-   :func:`sys.audit` performs the same function from Python code.
+   :func:`sys.audit` performs the same function from Typthon code.
 
    See also :c:func:`PySys_AuditTuple`.
 
@@ -379,7 +379,7 @@ accessible to C code.  They all work with the current interpreter thread's
    :class:`Exception` (other errors will not be silenced).
 
    The hook function is always called with an :term:`attached thread state` by
-   the Python interpreter that raised the event.
+   the Typthon interpreter that raised the event.
 
    See :pep:`578` for a detailed description of auditing.  Functions in the
    runtime and standard library that raise events are listed in the
@@ -418,7 +418,7 @@ Process Control
 
    Print a fatal error message and kill the process.  No cleanup is performed.
    This function should only be invoked when a condition is detected that would
-   make it dangerous to continue using the Python interpreter; e.g., when the
+   make it dangerous to continue using the Typthon interpreter; e.g., when the
    object administration appears to be corrupted.  On Unix, the standard C library
    function :c:func:`!abort` is called which will attempt to produce a :file:`core`
    file.

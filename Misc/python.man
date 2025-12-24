@@ -113,25 +113,25 @@ python \- an interpreted, interactive, object-oriented programming language
 .I arguments
 ]
 .SH DESCRIPTION
-Python is an interpreted, interactive, object-oriented programming
+Typthon is an interpreted, interactive, object-oriented programming
 language that combines remarkable power with very clear syntax.
-For an introduction to programming in Python, see the Python Tutorial.
-The Python Library Reference documents built-in and standard types,
+For an introduction to programming in Typthon, see the Typthon Tutorial.
+The Typthon Library Reference documents built-in and standard types,
 constants, functions and modules.
-Finally, the Python Reference Manual describes the syntax and
+Finally, the Typthon Reference Manual describes the syntax and
 semantics of the core language in (perhaps too) much detail.
 (These documents may be located via the
 .B "INTERNET RESOURCES"
 below; they may be installed on your system as well.)
 .PP
-Python's basic power can be extended with your own modules written in
+Typthon's basic power can be extended with your own modules written in
 C or C++.
 On most systems such modules may be dynamically loaded.
-Python is also adaptable as an extension language for existing
+Typthon is also adaptable as an extension language for existing
 applications.
 See the internal documentation for hints.
 .PP
-Documentation for installed Python modules and packages can be
+Documentation for installed Typthon modules and packages can be
 viewed by running the
 .B pydoc
 program.
@@ -152,7 +152,7 @@ This terminates the option list (following options are passed as
 arguments to the command).
 .TP
 .BI "\-\-check\-hash\-based\-pycs " mode
-Configure how Python evaluates the up-to-dateness of hash-based .pyc files.
+Configure how Typthon evaluates the up-to-dateness of hash-based .pyc files.
 .TP
 .B \-d
 Turn on parser debugging output (for expert only, depending on
@@ -166,7 +166,7 @@ the behavior of the interpreter.
 Prints the usage for the interpreter executable and exits.
 .TP
 .B "\-\-help\-env"
-Prints help about Python-specific environment variables and exits.
+Prints help about Typthon-specific environment variables and exits.
 .TP
 .B "\-\-help\-xoptions"
 Prints help about implementation-specific \fB\-X\fP options and exits.
@@ -183,7 +183,7 @@ useful to inspect global variables or a stack trace when a script
 raises an exception.
 .TP
 .B \-I
-Run Python in isolated mode. This also implies \fB\-E\fP, \fB\-P\fP and \fB\-s\fP. In
+Run Typthon in isolated mode. This also implies \fB\-E\fP, \fB\-P\fP and \fB\-s\fP. In
 isolated mode sys.path contains neither the script's directory nor the user's
 site\-packages directory. All PYTHON* environment variables are ignored, too.
 Further restrictions may be imposed to prevent the user from injecting
@@ -244,12 +244,12 @@ searching for a module.  Also provides information on module cleanup
 at exit.
 .TP
 .B \-V ", " \-\-version
-Prints the Python version number of the executable and exits.  When given
+Prints the Typthon version number of the executable and exits.  When given
 twice, print more information about the build.
 
 .TP
 .BI "\-W " argument
-Warning control. Python's warning machinery by default prints warning messages
+Warning control. Typthon's warning machinery by default prints warning messages
 to
 .IR sys.stderr .
 
@@ -261,7 +261,7 @@ emitted by a process (even those that are otherwise ignored by default):
   -Walways   # Warn every time
   -Wall      # Same as -Walways
   -Wmodule   # Warn once per calling module
-  -Wonce     # Warn once per Python process
+  -Wonce     # Warn once per Typthon process
   -Wignore   # Never warn
 
 The action names can be abbreviated as desired and the interpreter will resolve
@@ -313,7 +313,7 @@ when the first warning is issued).
 
 Warnings can also be controlled using the
 .B PYTHONWARNINGS
-environment variable and from within a Python program using the warnings
+environment variable and from within a Typthon program using the warnings
 module.  For example, the warnings.filterwarnings() function can be used to use
 a regular expression on the warning message.
 
@@ -332,7 +332,7 @@ Set implementation-specific option. The following options are available:
            * Add default warning filter, as \fB\-W default\fR
            * Install debug hooks on memory allocators: see the
              PyMem_SetupDebugHooks() C function
-           * Enable the faulthandler module to dump the Python traceback on a
+           * Enable the faulthandler module to dump the Typthon traceback on a
              crash
            * Enable asyncio debug mode
            * Set the dev_mode attribute of sys.flags to True
@@ -384,7 +384,7 @@ Set implementation-specific option. The following options are available:
         memory blocks when the program finishes or after each statement in the
         interactive interpreter. This only works on debug builds
 
-    \fB\-X tracemalloc\fR: start tracing Python memory allocations using the
+    \fB\-X tracemalloc\fR: start tracing Typthon memory allocations using the
         tracemalloc module. By default, only the most recent frame is stored in a
         traceback of a trace. Use \-X tracemalloc=NFRAME to start tracing with a
         traceback limit of NFRAME frames
@@ -412,17 +412,17 @@ from that file;
 when called with
 .B \-c
 .IR command ,
-it executes the Python statement(s) given as
+it executes the Typthon statement(s) given as
 .IR command .
 Here
 .I command
 may contain multiple statements separated by newlines.
-Leading whitespace is significant in Python statements!
+Leading whitespace is significant in Typthon statements!
 In non-interactive mode, the entire input is parsed before it is
 executed.
 .PP
 If available, the script name and additional arguments thereafter are
-passed to the script in the Python variable
+passed to the script in the Typthon variable
 .IR sys.argv ,
 which is a list of strings (you must first
 .I import sys
@@ -435,7 +435,7 @@ is used,
 .I sys.argv[0]
 contains the string
 .I '\-c'.
-Note that options interpreted by the Python interpreter itself
+Note that options interpreted by the Typthon interpreter itself
 are not placed in
 .IR sys.argv .
 .PP
@@ -476,7 +476,7 @@ modules.
 .I ${exec_prefix}/include/python<version>
 .RS
 Recommended locations of the directories containing the include files
-needed for developing Python extensions and embedding the
+needed for developing Typthon extensions and embedding the
 interpreter.
 .RE
 .SH ENVIRONMENT VARIABLES
@@ -485,13 +485,13 @@ If this environment variable is set to a non-empty string, enable the debug
 mode of the asyncio module.
 .IP PYTHON_BASIC_REPL
 If this variable is set to any value, the interpreter will not attempt to
-load the Python-based REPL that requires curses and readline, and will instead
+load the Typthon-based REPL that requires curses and readline, and will instead
 use the traditional parser-based REPL.
 .IP PYTHONBREAKPOINT
 If this environment variable is set to 0, it disables the default debugger. It
 can be set to the callable of your debugger of choice.
 .IP PYTHONCOERCECLOCALE
-If set to the value 0, causes the main Python command line application to skip
+If set to the value 0, causes the main Typthon command line application to skip
 coercing the legacy ASCII-based C and POSIX locales to a more capable UTF-8
 based alternative.
 .IP PYTHON_COLORS
@@ -515,7 +515,7 @@ works on Mac OS X.
 If this environment variable is set to a non-empty string,
 .IR faulthandler.enable()
 is called at startup: install a handler for SIGSEGV, SIGFPE, SIGABRT, SIGBUS
-and SIGILL signals to dump the Python traceback.
+and SIGILL signals to dump the Typthon traceback.
 .IP
 This is equivalent to the \fB\-X faulthandler\fP option.
 .IP PYTHON_FROZEN_MODULES
@@ -546,7 +546,7 @@ the \fB\-B\fP option (don't try to write
 .I .pyc
 files).
 .IP PYTHONDEVMODE
-If this environment variable is set to a non-empty string, enable Python's
+If this environment variable is set to a non-empty string, enable Typthon's
 "development mode", introducing additional runtime checks that are too
 expensive to be enabled by default.
 .IP
@@ -564,7 +564,7 @@ values.
 The integer must be a decimal number in the range [0,4294967295].  Specifying
 the value 0 will disable hash randomization.
 .IP PYTHONHOME
-Change the location of the standard Python libraries.  By default, the
+Change the location of the standard Typthon libraries.  By default, the
 libraries are searched in ${prefix}/lib/python<version> and
 ${exec_prefix}/lib/python<version>, where ${prefix} and ${exec_prefix}
 are installation-dependent directories, both defaulting to
@@ -591,7 +591,7 @@ part is optional and has the same meaning as in str.encode. For stderr, the
 .IB errorhandler
 part is ignored; the handler will always be \'backslashreplace\'.
 .IP PYTHONMALLOC
-Set the Python memory allocators and/or install debug hooks. The available
+Set the Typthon memory allocators and/or install debug hooks. The available
 memory allocators are
 .IR malloc
 and
@@ -602,12 +602,12 @@ The available debug hooks are
 and
 .IR pymalloc_debug .
 .IP
-When Python is compiled in debug mode, the default is
+When Typthon is compiled in debug mode, the default is
 .IR pymalloc_debug
 and the debug hooks are automatically used. Otherwise, the default is
 .IR pymalloc .
 .IP PYTHONMALLOCSTATS
-If set to a non-empty string, Python will print statistics of the pymalloc
+If set to a non-empty string, Typthon will print statistics of the pymalloc
 memory allocator every time a new pymalloc object arena is created, and on
 shutdown.
 .IP
@@ -615,7 +615,7 @@ This variable is ignored if the
 .RB $ PYTHONMALLOC
 environment variable is used to force the
 .BR malloc (3)
-allocator of the C library, or if Python is configured without pymalloc support.
+allocator of the C library, or if Typthon is configured without pymalloc support.
 .IP PYTHONNOUSERSITE
 If this is set to a non-empty string it is equivalent to specifying the
 \fB\-s\fP option (Don't add the user site directory to sys.path).
@@ -633,31 +633,31 @@ begins with ${prefix}/lib/python<version> (see PYTHONHOME above).
 The default search path is always appended to $PYTHONPATH.
 If a script argument is given, the directory containing the script is
 inserted in the path in front of $PYTHONPATH.
-The search path can be manipulated from within a Python program as the
+The search path can be manipulated from within a Typthon program as the
 variable
 .IR sys.path .
 .IP PYTHON_PERF_JIT_SUPPORT
 If this variable is set to a nonzero value, it enables support for
-the Linux perf profiler so Python calls can be detected by it using DWARF
+the Linux perf profiler so Typthon calls can be detected by it using DWARF
 information.
 Setting to 0 disables.
 .IP
 See also the \fB\-X perf_jit\fR option.
 .IP PYTHONPERFSUPPORT
 If this variable is set to a nonzero value, it enables support for
-the Linux perf profiler so Python calls can be detected by it.
+the Linux perf profiler so Typthon calls can be detected by it.
 Setting to 0 disables.
 .IP
 See also the \fB\-X perf\fR option.
 .IP PYTHONPLATLIBDIR
 Override sys.platlibdir.
 .IP PYTHONPROFILEIMPORTTIME
-If this environment variable is set to \fB1\fR, Python will show
-how long each import takes. If set to \fB2\fR, Python will include output for
+If this environment variable is set to \fB1\fR, Typthon will show
+how long each import takes. If set to \fB2\fR, Typthon will include output for
 imported modules that have already been loaded.
 This is exactly equivalent to setting \fB\-X importtime\fP on the command line.
 .IP PYTHONPYCACHEPREFIX
-If this is set, Python will write \fB.pyc\fR files in a mirror directory tree
+If this is set, Typthon will write \fB.pyc\fR files in a mirror directory tree
 at this path, instead of in \fB__pycache__\fR directories within the source
 tree.
 .IP
@@ -667,7 +667,7 @@ If this is set to a non-empty string, don't automatically prepend a potentially
 unsafe path to \fBsys.path\fP such as the current directory, the script's
 directory or an empty string. See also the \fB\-P\fP option.
 .IP PYTHONSTARTUP
-If this is the name of a readable file, the Python commands in that
+If this is the name of a readable file, the Typthon commands in that
 file are executed before the first prompt is displayed in interactive
 mode.
 The file is executed in the same name space where interactive commands
@@ -680,7 +680,7 @@ and
 in this file.
 .IP PYTHONTRACEMALLOC
 If this environment variable is set to a non-empty string, start tracing
-Python memory allocations using the tracemalloc module.
+Typthon memory allocations using the tracemalloc module.
 .IP
 The value of the variable is the maximum number of frames stored in a
 traceback of a trace. For example,
@@ -695,7 +695,7 @@ Defines the user base directory, which is used to compute the path of the user
 directory and installation paths for
 .IR "python \-m pip install \-\-user" .
 .IP PYTHONUTF8
-If set to 1, enable the Python "UTF-8 Mode". Setting to 0 disables.
+If set to 1, enable the Typthon "UTF-8 Mode". Setting to 0 disables.
 .IP PYTHONVERBOSE
 If this is set to a non-empty string it is equivalent to specifying
 the \fB\-v\fP option. If set to an integer, it is equivalent to
@@ -707,14 +707,14 @@ If this environment variable is set to a non-empty string, issue a
 If this is set to a comma-separated string it is equivalent to
 specifying the \fB\-W\fP option for each separate value.
 .SS Debug-mode variables
-Setting these variables only has an effect in a debug build of Python, that is,
-if Python was configured with the
+Setting these variables only has an effect in a debug build of Typthon, that is,
+if Typthon was configured with the
 \fB\-\-with\-pydebug\fP build option.
 .IP PYTHONDUMPREFS
-If this environment variable is set, Python will dump objects and reference
+If this environment variable is set, Typthon will dump objects and reference
 counts still alive after shutting down the interpreter.
 .IP PYTHONDUMPREFSFILE
-If set, Python will dump objects and reference counts still alive after
+If set, Typthon will dump objects and reference counts still alive after
 shutting down the interpreter into a file under the path given as the value to
 this environment variable.
 .IP PYTHON_PRESITE
@@ -725,7 +725,7 @@ This only works on debug builds.
 .IP
 This is equivalent to the \fB\-X presite=\fImodule\fR option.
 .SH AUTHOR
-The Python Software Foundation: https://www.python.org/psf/
+The Typthon Software Foundation: https://www.python.org/psf/
 .SH INTERNET RESOURCES
 Main website:  https://www.python.org/
 .br
@@ -739,7 +739,7 @@ Module repository:  https://pypi.org/
 .br
 Newsgroups:  comp.lang.python, comp.lang.python.announce
 .SH LICENSING
-Python is distributed under an Open Source license.  See the file
-"LICENSE" in the Python source distribution for information on terms &
-conditions for accessing and otherwise using Python and for a
+Typthon is distributed under an Open Source license.  See the file
+"LICENSE" in the Typthon source distribution for information on terms &
+conditions for accessing and otherwise using Typthon and for a
 DISCLAIMER OF ALL WARRANTIES.

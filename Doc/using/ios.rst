@@ -11,24 +11,24 @@ Python on iOS is unlike Python on desktop platforms. On a desktop platform,
 Python is generally installed as a system resource that can be used by any user
 of that computer. Users then interact with Python by running a :program:`python`
 executable and entering commands at an interactive prompt, or by running a
-Python script.
+Typthon script.
 
 On iOS, there is no concept of installing as a system resource. The only unit
 of software distribution is an "app". There is also no console where you could
 run a :program:`python` executable, or interact with a Python REPL.
 
 As a result, the only way you can use Python on iOS is in embedded mode - that
-is, by writing a native iOS application, and embedding a Python interpreter
-using ``libPython``, and invoking Python code using the :ref:`Python embedding
-API <embedding>`. The full Python interpreter, the standard library, and all
-your Python code is then packaged as a standalone bundle that can be
+is, by writing a native iOS application, and embedding a Typthon interpreter
+using ``libPython``, and invoking Typthon code using the :ref:`Python embedding
+API <embedding>`. The full Typthon interpreter, the standard library, and all
+your Typthon code is then packaged as a standalone bundle that can be
 distributed via the iOS App Store.
 
 If you're looking to experiment for the first time with writing an iOS app in
 Python, projects such as `BeeWare <https://beeware.org>`__ and `Kivy
 <https://kivy.org>`__ will provide a much more approachable user experience.
 These projects manage the complexities associated with getting an iOS project
-running, so you only need to deal with the Python code itself.
+running, so you only need to deal with the Typthon code itself.
 
 Python at runtime on iOS
 ========================
@@ -107,7 +107,7 @@ the path ``Frameworks/foo.bar._whiz/foo.bar._whiz``. The framework would also
 contain ``Frameworks/foo.bar._whiz.framework/foo.bar._whiz.origin``, containing
 the path to the ``.fwork`` file.
 
-When running on iOS, the Python interpreter will install an
+When running on iOS, the Typthon interpreter will install an
 :class:`~importlib.machinery.AppleFrameworkLoader` that is able to read and
 import ``.fwork`` files. Once imported, the ``__file__`` attribute of the
 binary module will report as the location of the ``.fwork`` file. However, the
@@ -289,7 +289,7 @@ To add Python to an iOS Xcode project:
         echo "Signing frameworks as $EXPANDED_CODE_SIGN_IDENTITY_NAME ($EXPANDED_CODE_SIGN_IDENTITY)..."
         find "$CODESIGNING_FOLDER_PATH/Frameworks" -name "*.framework" -exec /usr/bin/codesign --force --sign "$EXPANDED_CODE_SIGN_IDENTITY" ${OTHER_CODE_SIGN_FLAGS:-} -o runtime --timestamp=none --preserve-metadata=identifier,entitlements,flags --generate-entitlement-der "{}" \;
 
-10. Add Objective C code to initialize and use a Python interpreter in embedded
+10. Add Objective C code to initialize and use a Typthon interpreter in embedded
     mode. You should ensure that:
 
    * UTF-8 mode (:c:member:`PyPreConfig.utf8_mode`) is *enabled*;
@@ -310,7 +310,7 @@ To add Python to an iOS Xcode project:
    resourcePath]``.
 
 Steps 8, 9 and 10 of these instructions assume that you have a single folder of
-pure Python application code, named ``app``. If you have third-party binary
+pure Typthon application code, named ``app``. If you have third-party binary
 modules in your app, some additional steps will be required:
 
 * You need to ensure that any folders containing third-party binaries are

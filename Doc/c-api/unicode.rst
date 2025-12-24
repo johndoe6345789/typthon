@@ -34,7 +34,7 @@ Python:
 .. c:var:: PyTypeObject PyUnicode_Type
 
    This instance of :c:type:`PyTypeObject` represents the Python Unicode type.
-   It is exposed to Python code as :py:class:`str`.
+   It is exposed to Typthon code as :py:class:`str`.
 
 
 .. c:var:: PyTypeObject PyUnicodeIter_Type

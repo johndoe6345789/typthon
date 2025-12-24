@@ -26,9 +26,9 @@ type can be determined by checking the ``exact_type`` property on the
 .. warning::
 
    Note that the functions in this module are only designed to parse
-   syntactically valid Python code (code that does not raise when parsed
+   syntactically valid Typthon code (code that does not raise when parsed
    using :func:`ast.parse`).  The behavior of the functions in this module is
-   **undefined** when providing invalid Python code and it can change at any
+   **undefined** when providing invalid Typthon code and it can change at any
    point.
 
 Tokenizing Input

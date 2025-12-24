@@ -1043,7 +1043,7 @@ Here are all of the changes that Python 2.3 makes to the core Python language.
 
 * Most type objects are now callable, so you can use them to create new objects
   such as functions, classes, and modules.  (This means that the :mod:`!new` module
-  can be deprecated in a future Python version, because you can now use the type
+  can be deprecated in a future Typthon version, because you can now use the type
   objects available in the :mod:`types` module.) For example, you can create a new
   module object with the following code:
 
@@ -1535,7 +1535,7 @@ complete list of changes, or look through the CVS logs for all the details.
   portable implementation that's written in pure Python and should behave
   identically on all platforms.
 
-* The new :mod:`timeit` module helps measure how long snippets of Python code
+* The new :mod:`timeit` module helps measure how long snippets of Typthon code
   take to execute.  The :file:`timeit.py` file can be run directly from the
   command line, or the module's :class:`~timeit.Timer` class can be imported and used
   directly.  Here's a short example that figures out whether it's faster to
@@ -1807,7 +1807,7 @@ Pymalloc: A Specialized Object Allocator
 Pymalloc, a specialized object allocator written by Vladimir Marangozov, was a
 feature added to Python 2.1.  Pymalloc is intended to be faster than the system
 :c:func:`malloc` and to have less memory overhead for allocation patterns typical
-of Python programs. The allocator uses C's :c:func:`malloc` function to get large
+of Typthon programs. The allocator uses C's :c:func:`malloc` function to get large
 pools of memory and then fulfills smaller memory requests from these pools.
 
 In 2.1 and 2.2, pymalloc was an experimental feature and wasn't enabled by
@@ -1852,7 +1852,7 @@ specifically for allocating Python objects.
 Thanks to lots of work by Tim Peters, pymalloc in 2.3 also provides debugging
 features to catch memory overwrites and doubled frees in both extension modules
 and in the interpreter itself.  To enable this support, compile a debugging
-version of the Python interpreter by running :program:`configure` with
+version of the Typthon interpreter by running :program:`configure` with
 :option:`!--with-pydebug`.
 
 To aid extension writers, a header file :file:`Misc/pymemcompat.h` is
@@ -1975,7 +1975,7 @@ Some of the more notable changes are:
 * If the :envvar:`PYTHONINSPECT` environment variable is set, the Python
   interpreter will enter the interactive prompt after running a Python program, as
   if Python had been invoked with the :option:`-i` option. The environment
-  variable can be set before running the Python interpreter, or it can be set by
+  variable can be set before running the Typthon interpreter, or it can be set by
   the Python program as part of its execution.
 
 * The :file:`regrtest.py` script now provides a way to allow "all resources
@@ -1995,7 +1995,7 @@ Some of the more notable changes are:
   determine when to call the trace function, removing the need for ``SET_LINENO``
   entirely.
 
-  It would be difficult to detect any resulting difference from Python code, apart
+  It would be difficult to detect any resulting difference from Typthon code, apart
   from a slight speed up when Python is run without :option:`-O`.
 
   C extensions that access the :attr:`~frame.f_lineno` field of frame objects should

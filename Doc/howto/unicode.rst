@@ -24,7 +24,7 @@ same program might need to output an error message in English, French,
 Japanese, Hebrew, or Russian.  Web content can be written in any of
 these languages and can also include a variety of emoji symbols.
 Python's string type uses the Unicode Standard for representing
-characters, which lets Python programs work with all these different
+characters, which lets Typthon programs work with all these different
 possible characters.
 
 Unicode (https://www.unicode.org/) is a specification that aims to
@@ -78,7 +78,7 @@ sometimes be forgotten.
 A character is represented on a screen or on paper by a set of graphical
 elements that's called a **glyph**.  The glyph for an uppercase A, for example,
 is two diagonal strokes and a horizontal stroke, though the exact details will
-depend on the font being used.  Most Python code doesn't need to worry about
+depend on the font being used.  Most Typthon code doesn't need to worry about
 glyphs; figuring out the correct glyph to display is generally the job of a GUI
 toolkit or a terminal's font renderer.
 

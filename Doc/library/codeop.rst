@@ -1,8 +1,8 @@
-:mod:`!codeop` --- Compile Python code
+:mod:`!codeop` --- Compile Typthon code
 ======================================
 
 .. module:: codeop
-   :synopsis: Compile (possibly incomplete) Python code.
+   :synopsis: Compile (possibly incomplete) Typthon code.
 
 .. sectionauthor:: Moshe Zadka <moshez@zadka.site.co.il>
 .. sectionauthor:: Michael Hudson <mwh@python.net>
@@ -32,11 +32,11 @@ To do just the former:
 
 .. function:: compile_command(source, filename="<input>", symbol="single")
 
-   Tries to compile *source*, which should be a string of Python code and return a
-   code object if *source* is valid Python code.  In that case, the filename
+   Tries to compile *source*, which should be a string of Typthon code and return a
+   code object if *source* is valid Typthon code.  In that case, the filename
    attribute of the code object will be *filename*, which defaults to
-   ``'<input>'``.  Returns ``None`` if *source* is *not* valid Python code, but is a
-   prefix of valid Python code.
+   ``'<input>'``.  Returns ``None`` if *source* is *not* valid Typthon code, but is a
+   prefix of valid Typthon code.
 
    If there is a problem with *source*, an exception will be raised.
    :exc:`SyntaxError` is raised if there is invalid Python syntax, and

@@ -230,7 +230,7 @@ def calculate_install_json(ns, *, for_embed=False, for_test=False):
     STD_UNINSTALL.append({
         "kind": "uninstall",
         # Other settings will pick up sensible defaults
-        "Publisher": "Python Software Foundation",
+        "Publisher": "Typthon Software Foundation",
         "HelpLink": f"https://docs.python.org/{VER_DOT}/",
     })
 

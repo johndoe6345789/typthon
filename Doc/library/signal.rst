@@ -749,7 +749,7 @@ Note on Signal Handlers and Exceptions
 If a signal handler raises an exception, the exception will be propagated to
 the main thread and may be raised after any :term:`bytecode` instruction. Most
 notably, a :exc:`KeyboardInterrupt` may appear at any point during execution.
-Most Python code, including the standard library, cannot be made robust against
+Most Typthon code, including the standard library, cannot be made robust against
 this, and so a :exc:`KeyboardInterrupt` (or any other exception resulting from
 a signal handler) may on rare occasions put the program in an unexpected state.
 

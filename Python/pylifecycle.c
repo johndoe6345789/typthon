@@ -218,7 +218,7 @@ _Py_LegacyLocaleDetected(int warn)
 
 #ifndef MS_WINDOWS
 static const char *_C_LOCALE_WARNING =
-    "Python runtime initialized with LC_CTYPE=C (a locale with default ASCII "
+    "Typthon runtime initialized with LC_CTYPE=C (a locale with default ASCII "
     "encoding), which may cause Unicode compatibility problems. Using C.UTF-8, "
     "C.utf8, or UTF-8 (if available) as alternative Unicode-compatible "
     "locales is recommended.\n";
@@ -260,7 +260,7 @@ _Py_IsLocaleCoercionTarget(const char *ctype_loc)
 
 #ifdef PY_COERCE_C_LOCALE
 static const char C_LOCALE_COERCION_WARNING[] =
-    "Python detected LC_CTYPE=C: LC_CTYPE coerced to %.20s (set another locale "
+    "Typthon detected LC_CTYPE=C: LC_CTYPE coerced to %.20s (set another locale "
     "or PYTHONCOERCECLOCALE=0 to disable this locale coercion behavior).\n";
 
 static int
@@ -3119,7 +3119,7 @@ fatal_output_debug(const char *msg)
 static void
 fatal_error_dump_runtime(int fd, _PyRuntimeState *runtime)
 {
-    PUTS(fd, "Python runtime state: ");
+    PUTS(fd, "Typthon runtime state: ");
     PyThreadState *finalizing = _PyRuntimeState_GetFinalizing(runtime);
     if (finalizing) {
         PUTS(fd, "finalizing (tstate=0x");

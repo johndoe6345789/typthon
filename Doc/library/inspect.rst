@@ -1656,7 +1656,7 @@ updated as expected:
 Code Objects Bit Flags
 ----------------------
 
-Python code objects have a :attr:`~codeobject.co_flags` attribute,
+Typthon code objects have a :attr:`~codeobject.co_flags` attribute,
 which is a bitmap of the following flags:
 
 .. data:: CO_OPTIMIZED

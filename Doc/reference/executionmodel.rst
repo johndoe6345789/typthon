@@ -361,7 +361,7 @@ is *raised* at the point where the error is detected; it may be *handled* by the
 surrounding code block or by any code block that directly or indirectly invoked
 the code block where the error occurred.
 
-The Python interpreter raises an exception when it detects a run-time error
+The Typthon interpreter raises an exception when it detects a run-time error
 (such as division by zero).  A Python program can also explicitly raise an
 exception with the :keyword:`raise` statement. Exception handlers are specified
 with the :keyword:`try` ... :keyword:`except` statement.  The :keyword:`finally`

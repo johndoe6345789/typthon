@@ -13,13 +13,13 @@ does not fully define the semantics.  (On the other hand, the language core does
 define syntactic properties like the spelling and priorities of operators.)
 
 The library also contains built-in functions and exceptions --- objects that can
-be used by all Python code without the need of an :keyword:`import` statement.
+be used by all Typthon code without the need of an :keyword:`import` statement.
 Some of these are defined by the core language, but many are not essential for
 the core semantics and are only described here.
 
 The bulk of the library, however, consists of a collection of modules. There are
 many ways to dissect this collection.  Some modules are written in C and built
-in to the Python interpreter; others are written in Python and imported in
+in to the Typthon interpreter; others are written in Python and imported in
 source form.  Some modules provide interfaces that are highly specific to
 Python, like printing a stack trace; some provide interfaces that are specific
 to particular operating systems, such as access to specific hardware; others
@@ -132,7 +132,7 @@ there are several major differences:
 
 * Mobile platforms can only use Python in "embedded" mode. There is no Python
   REPL, and no ability to use separate executables such as :program:`python` or
-  :program:`pip`. To add Python code to your mobile app, you must use
+  :program:`pip`. To add Typthon code to your mobile app, you must use
   the :ref:`Python embedding API <embedding>`. For more details, see
   :ref:`using-android` and :ref:`using-ios`.
 

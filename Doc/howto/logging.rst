@@ -609,7 +609,7 @@ Programmers can configure logging in three ways:
 
 For the reference documentation on the last two options, see
 :ref:`logging-config-api`.  The following example configures a very simple
-logger, a console handler, and a simple formatter using Python code::
+logger, a console handler, and a simple formatter using Typthon code::
 
     import logging
 
@@ -749,7 +749,7 @@ can populate that dictionary using different means, you have more options for
 configuration. For example, you can use a configuration file in JSON format,
 or, if you have access to YAML processing functionality, a file in YAML
 format, to populate the configuration dictionary. Or, of course, you can
-construct the dictionary in Python code, receive it in pickled form over a
+construct the dictionary in Typthon code, receive it in pickled form over a
 socket, or use whatever approach makes sense for your application.
 
 Here's an example of the same configuration as above, in YAML format for

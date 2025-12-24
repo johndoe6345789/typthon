@@ -29,7 +29,7 @@ your system setup; details are given in later chapters.
    you should consider using the :mod:`ctypes` module or the `cffi
    <https://cffi.readthedocs.io/>`_ library rather than writing
    custom C code.
-   These modules let you write Python code to interface with C code and are more
+   These modules let you write Typthon code to interface with C code and are more
    portable between implementations of Python than writing and compiling a C
    extension module.
 
@@ -76,7 +76,7 @@ the module and a copyright notice if you like).
 
 All user-visible symbols defined by :file:`Python.h` have a prefix of ``Py`` or
 ``PY``, except those defined in standard header files. For convenience, and
-since they are used extensively by the Python interpreter, ``"Python.h"``
+since they are used extensively by the Typthon interpreter, ``"Python.h"``
 includes a few standard header files: ``<stdio.h>``, ``<string.h>``,
 ``<errno.h>``, and ``<stdlib.h>``.  If the latter header file does not exist on
 your system, it declares the functions :c:func:`malloc`, :c:func:`free` and
@@ -127,7 +127,7 @@ return ``NULL`` immediately (as we saw in the example).
 Intermezzo: Errors and Exceptions
 =================================
 
-An important convention throughout the Python interpreter is the following: when
+An important convention throughout the Typthon interpreter is the following: when
 a function fails, it should set an exception condition and return an error value
 (usually ``-1`` or a ``NULL`` pointer).  Exception information is stored in
 three members of the interpreter's thread state.  These are ``NULL`` if
@@ -163,8 +163,8 @@ should *not* call one of the ``PyErr_*`` functions --- one has already
 been called by *g*. *f*'s caller is then supposed to also return an error
 indication to *its* caller, again *without* calling ``PyErr_*``, and so on
 --- the most detailed cause of the error was already reported by the function
-that first detected it.  Once the error reaches the Python interpreter's main
-loop, this aborts the currently executing Python code and tries to find an
+that first detected it.  Once the error reaches the Typthon interpreter's main
+loop, this aborts the currently executing Typthon code and tries to find an
 exception handler specified by the Python programmer.
 
 (There are situations where a module can actually give a more detailed error
@@ -269,7 +269,7 @@ become a dangling pointer. Should it become a dangling pointer, C code which
 raises the exception could cause a core dump or other unintended side effects.
 
 For now, the :c:func:`Py_DECREF` call to remove this reference is missing.
-Even when the Python interpreter shuts down, the global :c:data:`!SpamError`
+Even when the Typthon interpreter shuts down, the global :c:data:`!SpamError`
 variable will not be garbage-collected. It will "leak".
 We did, however, ensure that this will happen at most once per process.
 
@@ -346,7 +346,7 @@ contexts, as we have seen.
 The Module's Method Table and Initialization Function
 =====================================================
 
-I promised to show how :c:func:`!spam_system` is called from Python programs.
+I promised to show how :c:func:`!spam_system` is called from Typthon programs.
 First, we need to list its name and address in a "method table"::
 
    static PyMethodDef spam_methods[] = {
@@ -421,13 +421,13 @@ optionally followed by an import of the module::
            exit(1);
        }
 
-       /* Pass argv[0] to the Python interpreter */
+       /* Pass argv[0] to the Typthon interpreter */
        status = PyConfig_SetBytesString(&config, &config.program_name, argv[0]);
        if (PyStatus_Exception(status)) {
            goto exception;
        }
 
-       /* Initialize the Python interpreter.  Required.
+       /* Initialize the Typthon interpreter.  Required.
           If this step fails, it will be a fatal error. */
        status = Py_InitializeFromConfig(&config);
        if (PyStatus_Exception(status)) {
@@ -482,7 +482,7 @@ information that pertains only to building on Windows (chapter
 :ref:`building-on-windows`) for more information about this.
 
 If you can't use dynamic loading, or if you want to make your module a permanent
-part of the Python interpreter, you will have to change the configuration setup
+part of the Typthon interpreter, you will have to change the configuration setup
 and rebuild the interpreter.  Luckily, this is very simple on Unix: just place
 your file (:file:`spammodule.c` for example) in the :file:`Modules/` directory
 of an unpacked source distribution, add a line to the file
@@ -519,7 +519,7 @@ callback mechanism to the Python programmer; the implementation will require
 calling the Python callback functions from a C callback.  Other uses are also
 imaginable.
 
-Fortunately, the Python interpreter is easily called recursively, and there is a
+Fortunately, the Typthon interpreter is easily called recursively, and there is a
 standard interface to call a Python function.  (I won't dwell on how to call the
 Python parser with a particular string as input --- if you're interested, have a
 look at the implementation of the :option:`-c` command line option in
@@ -604,7 +604,7 @@ Before you do this, however, it is important to check that the return value
 isn't ``NULL``.  If it is, the Python function terminated by raising an exception.
 If the C code that called :c:func:`PyObject_CallObject` is called from Python, it
 should now return an error indication to its Python caller, so the interpreter
-can print a stack trace, or the calling Python code can handle the exception.
+can print a stack trace, or the calling Typthon code can handle the exception.
 If this is not possible or desirable, the exception should be cleared by calling
 :c:func:`PyErr_Clear`.  For example::
 
@@ -1062,7 +1062,7 @@ user-defined class, and let's further suppose that the class defined a
 disposing of it will call its :meth:`!__del__` method.
 
 Since it is written in Python, the :meth:`!__del__` method can execute arbitrary
-Python code.  Could it perhaps do something to invalidate the reference to
+Typthon code.  Could it perhaps do something to invalidate the reference to
 ``item`` in :c:func:`!bug`?  You bet!  Assuming that the list passed into
 :c:func:`!bug` is accessible to the :meth:`!__del__` method, it could execute a
 statement to the effect of ``del list[0]``, and assuming this was the last
@@ -1088,7 +1088,7 @@ and someone spent a considerable amount of time in a C debugger to figure out
 why his :meth:`!__del__` methods would fail...
 
 The second case of problems with a borrowed reference is a variant involving
-threads.  Normally, multiple threads in the Python interpreter can't get in each
+threads.  Normally, multiple threads in the Typthon interpreter can't get in each
 other's way, because there is a :term:`global lock <global interpreter lock>`
 protecting Python's entire object space.
 However, it is possible to temporarily release this lock using the macro
@@ -1153,10 +1153,10 @@ Writing Extensions in C++
 =========================
 
 It is possible to write extension modules in C++.  Some restrictions apply.  If
-the main program (the Python interpreter) is compiled and linked by the C
+the main program (the Typthon interpreter) is compiled and linked by the C
 compiler, global or static objects with constructors cannot be used.  This is
 not a problem if the main program is linked by the C++ compiler.  Functions that
-will be called by the Python interpreter (in particular, module initialization
+will be called by the Typthon interpreter (in particular, module initialization
 functions) have to be declared using ``extern "C"``. It is unnecessary to
 enclose the Python header files in ``extern "C" {...}`` --- they use this form
 already if the symbol ``__cplusplus`` is defined (all recent C++ compilers
@@ -1182,10 +1182,10 @@ manipulation from other extension modules.
 At first sight this seems easy: just write the functions (without declaring them
 ``static``, of course), provide an appropriate header file, and document
 the C API. And in fact this would work if all extension modules were always
-linked statically with the Python interpreter. When modules are used as shared
+linked statically with the Typthon interpreter. When modules are used as shared
 libraries, however, the symbols defined in one module may not be visible to
 another module. The details of visibility depend on the operating system; some
-systems use one global namespace for the Python interpreter and all extension
+systems use one global namespace for the Typthon interpreter and all extension
 modules (Windows, for example), whereas others require an explicit list of
 imported symbols at module link time (AIX is one example), or offer a choice of
 different strategies (most Unices). And even if symbols are globally visible,

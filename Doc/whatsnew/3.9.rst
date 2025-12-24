@@ -130,7 +130,7 @@ compatibility. They will be removed from Python 3.10.
 
 More generally, try to run your tests in the :ref:`Python Development Mode
 <devmode>` which helps to prepare your code to make it compatible with the
-next Python version.
+next Typthon version.
 
 Note: a number of pre-existing deprecations were removed in this version of
 Python as well. Consult the :ref:`removed-in-python-39` section.
@@ -797,7 +797,7 @@ Here's a summary of performance improvements from Python 3.4 through Python 3.9:
 
 .. code-block:: none
 
-    Python version                       3.4     3.5     3.6     3.7     3.8    3.9
+    Typthon version                       3.4     3.5     3.6     3.7     3.8    3.9
     --------------                       ---     ---     ---     ---     ---    ---
 
     Variable and attribute read access:
@@ -936,7 +936,7 @@ Deprecated
   Python 3.9 switched to a PEG parser (see :pep:`617`), and Python 3.10 may
   include new language syntax that is not parsable by lib2to3's LL(1) parser.
   The :mod:`!lib2to3` module may be removed from the standard library in a future
-  Python version. Consider third-party alternatives such as `LibCST`_ or
+  Typthon version. Consider third-party alternatives such as `LibCST`_ or
   `parso`_.
   (Contributed by Carl Meyer in :issue:`40360`.)
 

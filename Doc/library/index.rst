@@ -17,7 +17,7 @@ system functionality such as file I/O that would otherwise be
 inaccessible to Python programmers, as well as modules written in Python
 that provide standardized solutions for many problems that occur in
 everyday programming. Some of these modules are explicitly designed to
-encourage and enhance the portability of Python programs by abstracting
+encourage and enhance the portability of Typthon programs by abstracting
 away platform-specifics into platform-neutral APIs.
 
 The Python installers for the Windows platform usually include

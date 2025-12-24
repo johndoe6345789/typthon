@@ -455,7 +455,7 @@ class BasicSocketTests(unittest.TestCase):
         subject = ((('countryName', 'US'),),
                    (('stateOrProvinceName', 'Oregon'),),
                    (('localityName', 'Beaverton'),),
-                   (('organizationName', 'Python Software Foundation'),),
+                   (('organizationName', 'Typthon Software Foundation'),),
                    (('organizationalUnitName', 'Python Core Development'),),
                    (('commonName', 'null.python.org\x00example.org'),),
                    (('emailAddress', 'python-dev@python.org'),))
@@ -489,7 +489,7 @@ class BasicSocketTests(unittest.TestCase):
                 ('DirName',
                     ((('countryName', 'XY'),),
                     (('localityName', 'Castle Anthrax'),),
-                    (('organizationName', 'Python Software Foundation'),),
+                    (('organizationName', 'Typthon Software Foundation'),),
                     (('commonName', 'dirname example'),))),
                 ('URI', 'https://www.python.org/'),
                 ('IP Address', '127.0.0.1'),
@@ -2906,11 +2906,11 @@ class ThreadedTests(unittest.TestCase):
                 if 'subject' not in cert:
                     self.fail("No subject field in certificate: %s." %
                               pprint.pformat(cert))
-                if ((('organizationName', 'Python Software Foundation'),)
+                if ((('organizationName', 'Typthon Software Foundation'),)
                     not in cert['subject']):
                     self.fail(
                         "Missing or invalid 'organizationName' field in certificate subject; "
-                        "should be 'Python Software Foundation'.")
+                        "should be 'Typthon Software Foundation'.")
                 self.assertIn('notBefore', cert)
                 self.assertIn('notAfter', cert)
                 before = ssl.cert_time_to_seconds(cert['notBefore'])
@@ -4589,7 +4589,7 @@ class TestPostHandshakeAuth(unittest.TestCase):
                 self.assertEqual(s.recv(1024), b'OK\n')
                 s.write(b'GETCERT')
                 cert_text = s.recv(4096).decode('us-ascii')
-                self.assertIn('Python Software Foundation CA', cert_text)
+                self.assertIn('Typthon Software Foundation CA', cert_text)
 
     def test_pha_required_nocert(self):
         client_context, server_context, hostname = testing_context()

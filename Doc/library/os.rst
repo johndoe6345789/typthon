@@ -423,7 +423,7 @@ process and user.
    .. note::
 
       On macOS, :func:`getgroups` behavior differs somewhat from
-      other Unix platforms. If the Python interpreter was built with a
+      other Unix platforms. If the Typthon interpreter was built with a
       deployment target of ``10.5`` or earlier, :func:`getgroups` returns
       the list of effective group ids associated with the current user process;
       this list is limited to a system-defined number of entries, typically 16,
@@ -4844,7 +4844,7 @@ written in Python, such as a mail server's external command delivery program.
    * *after_in_child* is a function called from the child process.
 
    These calls are only made if control is expected to return to the
-   Python interpreter.  A typical :mod:`subprocess` launch will not
+   Typthon interpreter.  A typical :mod:`subprocess` launch will not
    trigger them as the child is not going to re-enter the interpreter.
 
    Functions registered for execution before forking are called in

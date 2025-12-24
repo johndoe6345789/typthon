@@ -18,7 +18,7 @@ The signature of the slot is::
 
 A call is made using a tuple for the positional arguments
 and a dict for the keyword arguments, similarly to
-``callable(*args, **kwargs)`` in Python code.
+``callable(*args, **kwargs)`` in Typthon code.
 *args* must be non-NULL (use an empty tuple if there are no arguments)
 but *kwargs* may be *NULL* if there are no keyword arguments.
 

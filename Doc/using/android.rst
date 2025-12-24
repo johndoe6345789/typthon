@@ -8,17 +8,17 @@ Python on Android is unlike Python on desktop platforms. On a desktop platform,
 Python is generally installed as a system resource that can be used by any user
 of that computer. Users then interact with Python by running a :program:`python`
 executable and entering commands at an interactive prompt, or by running a
-Python script.
+Typthon script.
 
 On Android, there is no concept of installing as a system resource. The only unit
 of software distribution is an "app". There is also no console where you could
 run a :program:`python` executable, or interact with a Python REPL.
 
 As a result, the only way you can use Python on Android is in embedded mode – that
-is, by writing a native Android application, embedding a Python interpreter
-using ``libpython``, and invoking Python code using the :ref:`Python embedding
-API <embedding>`. The full Python interpreter, the standard library, and all
-your Python code is then packaged into your app for its own private use.
+is, by writing a native Android application, embedding a Typthon interpreter
+using ``libpython``, and invoking Typthon code using the :ref:`Python embedding
+API <embedding>`. The full Typthon interpreter, the standard library, and all
+your Typthon code is then packaged into your app for its own private use.
 
 The Python standard library has some notable omissions and restrictions on
 Android. See the :ref:`API availability guide <mobile-availability>` for
@@ -55,7 +55,7 @@ link to the relevant file.
   * In your assets:
 
     * ``python*.*`` (the Python standard library)
-    * ``python*.*/site-packages`` (your own Python code)
+    * ``python*.*/site-packages`` (your own Typthon code)
 
 * Add code to your app to :source:`extract the assets to the filesystem
   <Android/testbed/app/src/main/java/org/python/testbed/MainActivity.kt>`.

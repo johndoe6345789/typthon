@@ -13,7 +13,7 @@ that no new bug reports, fixes, or changes will be made to Python 2 - it's
 no longer supported: see :pep:`373` and
 `status of Python versions <https://devguide.python.org/versions>`_.
 
-If you are looking to port an extension module instead of pure Python code,
+If you are looking to port an extension module instead of pure Typthon code,
 please see :ref:`cporting-howto`.
 
 The archived python-porting_ mailing list may contain some useful guidance.

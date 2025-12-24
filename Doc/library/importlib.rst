@@ -146,7 +146,7 @@ Functions
    Reload a previously imported *module*.  The argument must be a module object,
    so it must have been successfully imported before.  This is useful if you
    have edited the module source file using an external editor and want to try
-   out the new version without leaving the Python interpreter.  The return value
+   out the new version without leaving the Typthon interpreter.  The return value
    is the module object (which can be different if re-importing causes a
    different object to be placed in :data:`sys.modules`).
 
@@ -1670,7 +1670,7 @@ classes defined within this package)::
 Approximating :func:`importlib.import_module`
 '''''''''''''''''''''''''''''''''''''''''''''
 
-Import itself is implemented in Python code, making it possible to
+Import itself is implemented in Typthon code, making it possible to
 expose most of the import machinery through importlib. The following
 helps illustrate the various APIs that importlib exposes by providing an
 approximate implementation of

@@ -10,7 +10,7 @@ Using the Python Interpreter
 Invoking the Interpreter
 ========================
 
-The Python interpreter is usually installed as |usr_local_bin_python_x_dot_y_literal|
+The Typthon interpreter is usually installed as |usr_local_bin_python_x_dot_y_literal|
 on those machines where it is available; putting :file:`/usr/local/bin` in your
 Unix shell's search path makes it possible to start it by typing the command:
 
@@ -79,7 +79,7 @@ are given, ``sys.argv[0]`` is an empty string.  When the script name is given as
 :option:`-c` *command* is used, ``sys.argv[0]`` is set to ``'-c'``.  When
 :option:`-m` *module* is used, ``sys.argv[0]``  is set to the full name of the
 located module.  Options found after  :option:`-c` *command* or :option:`-m`
-*module* are not consumed  by the Python interpreter's option processing but
+*module* are not consumed  by the Typthon interpreter's option processing but
 left in ``sys.argv`` for  the command or module to handle.
 
 

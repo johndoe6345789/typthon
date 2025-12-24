@@ -625,7 +625,7 @@ the current locale is.  But since the return value can only be used portably to
 restore it, that is not very useful (except perhaps to find out whether or not
 the locale is ``C``).
 
-When Python code uses the :mod:`locale` module to change the locale, this also
+When Typthon code uses the :mod:`locale` module to change the locale, this also
 affects the embedding application.  If the embedding application doesn't want
 this to happen, it should remove the :mod:`!_locale` extension module (which does
 all the work) from the table of built-in modules in the :file:`config.c` file,

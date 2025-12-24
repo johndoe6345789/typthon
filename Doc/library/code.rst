@@ -31,7 +31,7 @@ build applications which provide an interactive interpreter prompt.
 
 .. class:: InteractiveConsole(locals=None, filename="<console>", local_exit=False)
 
-   Closely emulate the behavior of the interactive Python interpreter. This class
+   Closely emulate the behavior of the interactive Typthon interpreter. This class
    builds on :class:`InteractiveInterpreter` and adds prompting using the familiar
    ``sys.ps1`` and ``sys.ps2``, and input buffering. If *local_exit* is true,
    ``exit()`` and ``quit()`` in the console will not raise :exc:`SystemExit`, but
@@ -157,7 +157,7 @@ interpreter objects as well as the following additions.
 
    Closely emulate the interactive Python console. The optional *banner* argument
    specify the banner to print before the first interaction; by default it prints a
-   banner similar to the one printed by the standard Python interpreter, followed
+   banner similar to the one printed by the standard Typthon interpreter, followed
    by the class name of the console object in parentheses (so as not to confuse
    this with the real interpreter -- since it's so close!).
 

@@ -589,7 +589,7 @@ review:
   implemented in pure Python, with an optional accelerated version
   implemented as a C extension; for example, :mod:`pickle` and
   :mod:`!cPickle`.  This places the burden of importing the accelerated
-  version and falling back on the pure Python version on each user of
+  version and falling back on the pure Typthon version on each user of
   these modules.  In Python 3.0, the accelerated versions are
   considered implementation details of the pure Python versions.
   Users should always import the standard version, which attempts to

@@ -147,7 +147,7 @@ compile Python sources.
 
 
 There is no command-line option to control the optimization level used by the
-:func:`compile` function, because the Python interpreter itself already
+:func:`compile` function, because the Typthon interpreter itself already
 provides the option: :program:`python -O -m compileall`.
 
 Similarly, the :func:`compile` function respects the :data:`sys.pycache_prefix`

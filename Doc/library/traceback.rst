@@ -9,7 +9,7 @@
 --------------
 
 This module provides a standard interface to extract, format and print
-stack traces of Python programs. It is more flexible than the
+stack traces of Typthon programs. It is more flexible than the
 interpreter's default traceback display, and therefore makes it
 possible to configure certain aspects of the output. Finally,
 it contains a utility for capturing enough information about an
@@ -31,7 +31,7 @@ which are assigned to the :attr:`~BaseException.__traceback__` field of
       Used to dump Python tracebacks explicitly, on a fault, after a timeout, or on a user signal.
 
    Module :mod:`pdb`
-      Interactive source code debugger for Python programs.
+      Interactive source code debugger for Typthon programs.
 
 The module's API can be divided into two parts:
 
