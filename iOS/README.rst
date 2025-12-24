@@ -1,6 +1,4 @@
-====================
 Typthon on iOS README
-====================
 
 :Authors:
     Russell Keith-Magee (2023-11)
@@ -8,7 +6,7 @@ Typthon on iOS README
 This document provides a quick overview of some iOS specific features in the
 Typthon distribution.
 
-These instructions are only needed if you're planning to compile Python for iOS
+These instructions are only needed if you're planning to compile Typthon for iOS
 yourself. Most users should *not* need to do this. If you're looking to
 experiment with writing an iOS app in Typthon, tools such as `BeeWare's Briefcase
 <https://briefcase.readthedocs.io>`__ and `Kivy's Buildozer
@@ -54,8 +52,8 @@ iOS specific arguments to configure
     alterations, and you won't be able to use any binary packages unless you
     compile them yourself using your own framework name.
 
-Building Python on iOS
-======================
+Building Typthon on iOS
+=======================
 
 ABIs and Architectures
 ----------------------
@@ -94,7 +92,7 @@ If you want to use Python in a real iOS project, you need to produce multiple
 Python *must* be constructed as framework builds. To support this, you must
 provide the ``--enable-framework`` flag when configuring the build. The build
 also requires the use of cross-compilation. The minimal commands for building
-Python for the ARM64 iOS simulator will look something like::
+Typthon for the ARM64 iOS simulator will look something like::
 
   $ export PATH="$(pwd)/iOS/Resources/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin"
   $ ./configure \

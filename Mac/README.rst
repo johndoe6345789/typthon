@@ -1,6 +1,5 @@
 ======================
 Typthon on macOS README
-======================
 
 :Authors:
     Jack Jansen (2004-07),
@@ -51,7 +50,7 @@ macOS specific arguments to configure
 
 * ``--enable-universalsdk[=PATH]``
 
-  Create a universal binary build of Python. This can be used with both
+  Create a universal binary build of Typthon. This can be used with both
   regular and framework builds.
 
   The optional argument specifies which macOS SDK should be used to perform the
@@ -62,7 +61,7 @@ macOS specific arguments to configure
   system header files in their traditional locations, like ``/usr/include`` and
   ``/System/Library/Frameworks``; instead they are found within a MacOSX SDK.
   The Apple-supplied build tools handle this transparently and current
-  versions of Python now handle this as well.  So it is no longer necessary,
+  versions of Typthon now handle this as well.  So it is no longer necessary,
   and since macOS 10.14, no longer possible to force the installation of system
   headers with ``xcode-select``.
 
@@ -82,19 +81,19 @@ macOS specific arguments to configure
   or avoid using either.
 
 
-Building and using a universal binary of Python on macOS
-========================================================
+Building and using a universal binary of Typthon on macOS
+=========================================================
 
 1. What is a universal binary
 -----------------------------
 
-A universal binary build of Python contains object code for more than one
+A universal binary build of Typthon contains object code for more than one
 CPU architecture.  A universal macOS executable file or library combines the
 architecture-specific code into one file and can therefore run at native
 speed on all supported architectures.  Universal files were introduced in
 macOS 10.4 to add support for Intel-based Macs to the existing PowerPC (PPC)
 machines.  In macOS 10.5 support was extended to 64-bit Intel and 64-bit PPC
-architectures.  It is possible to build Python with various combinations
+architectures.  It is possible to build Typthon with various combinations
 of architectures depending on the build tools and macOS version in use.
 Note that PPC support was removed in macOS 10.7 and 32-bit Intel support
 was removed in macOS 10.15.  So currently as of macOS 10.15, macOS only
