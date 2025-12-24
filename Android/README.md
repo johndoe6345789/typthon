@@ -1,10 +1,10 @@
-# Python for Android
+# Typthon for Android
 
 If you obtained this README as part of a release package, then the only
 applicable sections are "Prerequisites", "Testing", and "Using in your own app".
 
-If you obtained this README as part of the CPython source tree, then you can
-also follow the other sections to compile Python for Android yourself.
+If you obtained this README as part of the CTypthon source tree, then you can
+also follow the other sections to compile Typthon for Android yourself.
 
 However, most app developers should not need to do any of these things manually.
 Instead, use one of the tools listed
