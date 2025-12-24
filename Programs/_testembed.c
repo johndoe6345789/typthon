@@ -1857,7 +1857,7 @@ error:
     {
         const char *err_msg;
         (void)PyInitConfig_GetError(config, &err_msg);
-        printf("Python init failed: %s\n", err_msg);
+        printf("Typthon init failed: %s\n", err_msg);
         exit(1);
     }
 }
@@ -2007,7 +2007,7 @@ error:
     {
         const char *err_msg;
         (void)PyInitConfig_GetError(config, &err_msg);
-        printf("Python init failed: %s\n", err_msg);
+        printf("Typthon init failed: %s\n", err_msg);
         exit(1);
     }
 }
@@ -2449,7 +2449,7 @@ int main(int argc, char *argv[])
     }
 
     /* No match found, or no test name provided, so display usage */
-    printf("Python " PY_VERSION " _testembed executable for embedded interpreter tests\n"
+    printf("Typthon " PY_VERSION " _testembed executable for embedded interpreter tests\n"
            "Normally executed via 'EmbeddingTests' in Lib/test/test_embed.py\n\n"
            "Usage: %s TESTNAME\n\nAll available tests:\n", argv[0]);
     for (struct TestCase *tc = TestCases; tc && tc->name; tc++) {

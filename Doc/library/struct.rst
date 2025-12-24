@@ -21,14 +21,14 @@ as Python :class:`bytes` objects.  Compact :ref:`format strings <struct-format-s
 describe the intended conversions to/from Python values.
 The module's functions and objects can be used for two largely
 distinct applications, data exchange with external sources (files or
-network connections), or data transfer between the Python application
+network connections), or data transfer between the Typthon application
 and the C layer.
 
 .. note::
 
    When no prefix character is given, native mode is the default. It
    packs or unpacks data based on the platform and compiler on which
-   the Python interpreter was built.
+   the Typthon interpreter was built.
    The result of packing a given C struct includes pad bytes which
    maintain proper alignment for the C types involved; similarly,
    alignment is taken into account when unpacking.  In contrast, when

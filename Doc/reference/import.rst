@@ -7,7 +7,7 @@ The import system
 
 .. index:: single: import machinery
 
-Python code in one :term:`module` gains access to the code in another module
+Typthon code in one :term:`module` gains access to the code in another module
 by the process of :term:`importing` it.  The :keyword:`import` statement is
 the most common way of invoking the import machinery, but it is not the only
 way.  Functions such as :func:`importlib.import_module` and built-in
@@ -102,7 +102,7 @@ A regular package is typically implemented as a directory containing an
 ``__init__.py`` file.  When a regular package is imported, this
 ``__init__.py`` file is implicitly executed, and the objects it defines are
 bound to names in the package's namespace.  The ``__init__.py`` file can
-contain the same Python code that any other module can contain, and Python
+contain the same Typthon code that any other module can contain, and Python
 will add some additional attributes to the module when it is imported.
 
 For example, the following file system layout defines a top level ``parent``

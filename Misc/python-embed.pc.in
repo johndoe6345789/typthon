@@ -4,8 +4,8 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: Python
-Description: Embed Python into an application
+Name: Typthon
+Description: Embed Typthon into an application
 Requires:
 Version: @VERSION@
 Libs.private: @LIBS@

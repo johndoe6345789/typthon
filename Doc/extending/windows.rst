@@ -132,7 +132,7 @@ When creating DLLs in Windows, you can use the CPython library in two ways:
    The first command created three files: :file:`spam.obj`, :file:`spam.dll`
    and :file:`spam.lib`.  :file:`Spam.dll` does not contain any Python
    functions (such as :c:func:`PyArg_ParseTuple`), but it does know how to find
-   the Python code thanks to the implicitly linked :file:`pythonXY.lib`.
+   the Typthon code thanks to the implicitly linked :file:`pythonXY.lib`.
 
    The second command created :file:`ni.dll` (and :file:`.obj` and
    :file:`.lib`), which knows how to find the necessary functions from spam,
@@ -150,7 +150,7 @@ When creating DLLs in Windows, you can use the CPython library in two ways:
    The first command created three files: :file:`spam.obj`, :file:`spam.dll`
    and :file:`spam.lib`.  :file:`Spam.dll` does not contain any Python
    functions (such as :c:func:`PyArg_ParseTuple`), but it does know how to find
-   the Python code thanks to :file:`pythonXY.lib`.
+   the Typthon code thanks to :file:`pythonXY.lib`.
 
    The second command created :file:`ni.dll` (and :file:`.obj` and
    :file:`.lib`), which knows how to find the necessary functions from spam,

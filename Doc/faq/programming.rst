@@ -69,7 +69,7 @@ source code.
 
 .. _faq-create-standalone-binary:
 
-How can I create a stand-alone binary from a Python script?
+How can I create a stand-alone binary from a Typthon script?
 -----------------------------------------------------------
 
 You don't need the ability to compile Python to C code if all you want is a
@@ -103,7 +103,7 @@ executables:
 * `py2app <https://github.com/ronaldoussoren/py2app>`_ (macOS only)
 * `py2exe <https://www.py2exe.org/>`_ (Windows only)
 
-Are there coding standards or a style guide for Python programs?
+Are there coding standards or a style guide for Typthon programs?
 ----------------------------------------------------------------
 
 Yes.  The coding style required for standard library modules is documented as
@@ -815,7 +815,7 @@ or uppercase "o".  For example, to set the variable "a" to the octal value "10"
 
 Hexadecimal is just as easy.  Simply precede the hexadecimal number with a zero,
 and then a lower or uppercase "x".  Hexadecimal digits can be specified in lower
-or uppercase.  For example, in the Python interpreter::
+or uppercase.  For example, in the Typthon interpreter::
 
    >>> a = 0xa5
    >>> a
@@ -1087,7 +1087,7 @@ remember before diving further:
   or any other technique) before potentially introducing regressions hidden
   in sophisticated optimizations.
 
-That being said, there are many tricks to speed up Python code.  Here are
+That being said, there are many tricks to speed up Typthon code.  Here are
 some general principles which go a long way towards reaching acceptable
 performance levels:
 
@@ -1114,7 +1114,7 @@ performance levels:
 
 If you have reached the limit of what pure Python can allow, there are tools
 to take you further away.  For example, `Cython <https://cython.org>`_ can
-compile a slightly modified version of Python code into a C extension, and
+compile a slightly modified version of Typthon code into a C extension, and
 can be used on many different platforms.  Cython can take advantage of
 compilation (and optional type annotations) to make your code significantly
 faster than when interpreted.  If you are confident in your C programming

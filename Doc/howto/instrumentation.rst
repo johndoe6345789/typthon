@@ -131,7 +131,7 @@ Static DTrace probes
 --------------------
 
 The following example DTrace script can be used to show the call/return
-hierarchy of a Python script, only tracing within the invocation of
+hierarchy of a Typthon script, only tracing within the invocation of
 a function called "start". In other words, import-time function
 invocations are not going to be listed:
 
@@ -205,7 +205,7 @@ markers directly.  This requires you to explicitly state the binary file
 containing them.
 
 For example, this SystemTap script can be used to show the call/return
-hierarchy of a Python script:
+hierarchy of a Typthon script:
 
 .. code-block:: none
 
@@ -306,12 +306,12 @@ Available static markers
 
 .. object:: gc__start(int generation)
 
-   Fires when the Python interpreter starts a garbage collection cycle.
+   Fires when the Typthon interpreter starts a garbage collection cycle.
    ``arg0`` is the generation to scan, like :func:`gc.collect`.
 
 .. object:: gc__done(long collected)
 
-   Fires when the Python interpreter finishes a garbage collection
+   Fires when the Typthon interpreter finishes a garbage collection
    cycle. ``arg0`` is the number of collected objects.
 
 .. object:: import__find__load__start(str modulename)

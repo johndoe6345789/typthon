@@ -3032,7 +3032,7 @@ config_parse_cmdline(PyConfig *config, PyWideStringList *warnoptions,
     } while (1);
 
     if (print_version) {
-        printf("Python %s\n",
+        printf("Typthon %s\n",
                 (print_version >= 2) ? Py_GetVersion() : PY_VERSION);
         return _PyStatus_EXIT(0);
     }
@@ -3621,7 +3621,7 @@ _Py_DumpPathConfig(PyThreadState *tstate)
 {
     PyObject *exc = _PyErr_GetRaisedException(tstate);
 
-    PySys_WriteStderr("Python path configuration:\n");
+    PySys_WriteStderr("Typthon path configuration:\n");
 
 #define DUMP_CONFIG(NAME, FIELD) \
         do { \

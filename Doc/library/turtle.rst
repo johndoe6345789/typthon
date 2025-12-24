@@ -290,7 +290,7 @@ multiple turtles on screen at once.
 
 In this approach, the various turtle commands are methods of objects (mostly of
 ``Turtle`` objects). You *can* use the object-oriented approach in the shell,
-but it would be more typical in a Python script.
+but it would be more typical in a Typthon script.
 
 The example above then becomes::
 
@@ -2651,10 +2651,10 @@ Screen and Turtle.
 
    :param filename: a string, used as filename
 
-   Create and write docstring-dictionary to a Python script with the given
+   Create and write docstring-dictionary to a Typthon script with the given
    filename.  This function has to be called explicitly (it is not used by the
    turtle graphics classes).  The docstring dictionary will be written to the
-   Python script :file:`{filename}.py`.  It is intended to serve as a template
+   Typthon script :file:`{filename}.py`.  It is intended to serve as a template
    for translation of the docstrings into different languages.
 
 If you (or your students) want to use :mod:`turtle` with online help in your

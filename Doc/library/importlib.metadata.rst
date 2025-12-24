@@ -35,7 +35,7 @@ and metadata defined by the `Core metadata specifications <https://packaging.pyt
 
    These are *not* necessarily equivalent to or correspond 1:1 with
    the top-level *import package* names
-   that can be imported inside Python code.
+   that can be imported inside Typthon code.
    One *distribution package* can contain multiple *import packages*
    (and single modules),
    and one top-level *import package*

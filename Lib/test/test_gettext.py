@@ -955,7 +955,7 @@ if __name__ == '__main__':
 
 b'''
 # Dummy translation for the Python test_gettext.py module.
-# Copyright (C) 2001 Python Software Foundation
+# Copyright (C) 2001 Typthon Software Foundation
 # Barry Warsaw <barry@python.org>, 2000.
 #
 msgid ""
@@ -1031,7 +1031,7 @@ msgstr[1] "Hay %s ficheros (context)"
 
 b'''
 # Dummy translation for the Python test_gettext.py module.
-# Copyright (C) 2001 Python Software Foundation
+# Copyright (C) 2001 Typthon Software Foundation
 # Barry Warsaw <barry@python.org>, 2000.
 #
 msgid ""

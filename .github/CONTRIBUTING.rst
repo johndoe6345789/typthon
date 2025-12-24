@@ -1,5 +1,4 @@
 Contributing to Typthon
-=======================
 
 Build Status
 ------------

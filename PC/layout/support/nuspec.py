@@ -44,7 +44,7 @@ NUSPEC_TEMPLATE = r"""<?xml version="1.0"?>
     <id>{PACKAGENAME}</id>
     <title>{PACKAGETITLE}</title>
     <version>{PYTHON_VERSION}</version>
-    <authors>Python Software Foundation</authors>
+    <authors>Typthon Software Foundation</authors>
     <license type="file">tools\LICENSE.txt</license>
     <projectUrl>https://www.python.org/</projectUrl>
     <description>Installs {PYTHON_BITNESS} Python for use in build scenarios.</description>

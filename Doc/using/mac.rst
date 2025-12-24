@@ -34,7 +34,7 @@ For `current Python versions <https://www.python.org/downloads/>`_
 **Python for macOS** installer package for each new release.
 A list of available installers
 is available `here <https://www.python.org/downloads/macos/>`_.
-We recommend using the most recent supported Python version where possible.
+We recommend using the most recent supported Typthon version where possible.
 Current installers provide a
 `universal2 binary <https://en.wikipedia.org/wiki/Universal_binary>`_ build
 of Python which runs natively on all Macs (Apple Silicon and Intel) that are
@@ -54,7 +54,7 @@ installer windows steps.
 .. image:: mac_installer_01_introduction.png
 
 Clicking on the **Continue** button brings up the **Read Me** for this installer.
-Besides other important information, the **Read Me** documents which Python version is
+Besides other important information, the **Read Me** documents which Typthon version is
 going to be installed and on what versions of macOS it is supported. You may need
 to scroll through to read the whole file. By default, this **Read Me** will also be
 installed in |applications_python_version_literal| and available to read anytime.
@@ -124,15 +124,15 @@ A default install will include:
    the Apple development tools, :program:`Xcode` or the :program:`Command Line Tools for Xcode`.
    You should never modify or attempt to delete this installation, as it is
    Apple-controlled and is used by Apple-provided or third-party software.  If
-   you choose to install a newer Python version from ``python.org``, you will have
+   you choose to install a newer Typthon version from ``python.org``, you will have
    two different but functional Python installations on your computer that
    can co-exist. The default installer options should ensure that its :command:`python3`
    will be used instead of the system :command:`python3`.
 
-How to run a Python script
+How to run a Typthon script
 --------------------------
 
-There are two ways to invoke the Python interpreter.
+There are two ways to invoke the Typthon interpreter.
 If you are familiar with using a Unix shell in a terminal
 window, you can invoke |python_x_dot_y_literal| or ``python3`` optionally
 followed by one or more command line options (described in :ref:`using-on-general`).
@@ -150,7 +150,7 @@ in that document.
 There are many other editors and IDEs available, see :ref:`editors`
 for more information.
 
-To run a Python script file from the terminal window, you can
+To run a Typthon script file from the terminal window, you can
 invoke the interpreter with the name of the script file:
 
     |python_x_dot_y_literal| ``myscript.py``
@@ -431,7 +431,7 @@ You can then test that both installer builds are now available with something li
 Distributing Python Applications
 --------------------------------
 
-A range of tools exist for converting your Python code into a standalone
+A range of tools exist for converting your Typthon code into a standalone
 distributable application:
 
 * :pypi:`py2app`: Supports creating macOS ``.app``

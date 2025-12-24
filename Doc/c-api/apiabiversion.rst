@@ -40,7 +40,7 @@ See :ref:`stable` for a discussion of API and ABI stability across versions.
 
 .. c:macro:: PY_VERSION_HEX
 
-   The Python version number encoded in a single integer.
+   The Typthon version number encoded in a single integer.
    See :c:func:`Py_PACK_FULL_VERSION` for the encoding details.
 
    Use this for numeric comparisons, for example,
@@ -54,7 +54,7 @@ Run-time version
 
    The Python runtime version number encoded in a single constant integer.
    See :c:func:`Py_PACK_FULL_VERSION` for the encoding details.
-   This contains the Python version used at run time.
+   This contains the Typthon version used at run time.
 
    Use this for numeric comparisons, for example, ``if (Py_Version >= ...)``.
 

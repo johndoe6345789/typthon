@@ -82,7 +82,7 @@ Encoding declarations
 .. index:: source character set, encoding declarations (source file)
    single: # (hash); source encoding declaration
 
-If a comment in the first or second line of the Python script matches the
+If a comment in the first or second line of the Typthon script matches the
 regular expression ``coding[=:]\s*([-\w.]+)``, this comment is processed as an
 encoding declaration; the first group of this expression names the encoding of
 the source code file. The encoding declaration must appear on a line of its
@@ -663,7 +663,7 @@ Notes:
 
    .. versionchanged:: 3.12
       Octal escapes with value larger than ``0o377`` produce a
-      :exc:`SyntaxWarning`. In a future Python version they will be eventually
+      :exc:`SyntaxWarning`. In a future Typthon version they will be eventually
       a :exc:`SyntaxError`.
 
 (3)
@@ -700,7 +700,7 @@ unrecognized escapes for bytes literals.
 
 .. versionchanged:: 3.12
    Unrecognized escape sequences produce a :exc:`SyntaxWarning`. In a future
-   Python version they will be eventually a :exc:`SyntaxError`.
+   Typthon version they will be eventually a :exc:`SyntaxError`.
 
 Even in a raw literal, quotes can be escaped with a backslash, but the
 backslash remains in the result; for example, ``r"\""`` is a valid string

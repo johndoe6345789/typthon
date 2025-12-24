@@ -78,7 +78,7 @@ that must be true for *B* to occur after *A*.
      #. :c:member:`~PyTypeObject.tp_init` initializes the newly created object.
         :c:member:`!tp_init` can be called again to re-initialize an object, if
         desired. The :c:member:`!tp_init` call can also be skipped entirely,
-        for example by Python code calling :py:meth:`~object.__new__`.
+        for example by Typthon code calling :py:meth:`~object.__new__`.
 
    * After :c:member:`!tp_init` completes, the object is ready to use.
    * Some time after the last reference to an object is removed:
@@ -205,7 +205,7 @@ enough to detangle them from each other, then
 
 Unlike clearing, finalization is not a phase of destruction.  A finalized
 object must still behave properly by continuing to fulfill its design
-contracts.  An object's finalizer is allowed to execute arbitrary Python code,
+contracts.  An object's finalizer is allowed to execute arbitrary Typthon code,
 and is even allowed to prevent the impending destruction by adding a reference.
 The finalizer is only related to destruction by call order---if it runs, it runs
 before destruction, which starts with :c:member:`~PyTypeObject.tp_clear` (if

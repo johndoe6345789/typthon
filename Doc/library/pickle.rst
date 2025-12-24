@@ -63,7 +63,7 @@ The :mod:`pickle` module differs from :mod:`marshal` in several significant ways
   This has implications both for recursive objects and object sharing.  Recursive
   objects are objects that contain references to themselves.  These are not
   handled by marshal, and in fact, attempting to marshal recursive objects will
-  crash your Python interpreter.  Object sharing happens when there are multiple
+  crash your Typthon interpreter.  Object sharing happens when there are multiple
   references to the same object in different places in the object hierarchy being
   serialized.  :mod:`pickle` stores such objects only once, and ensures that all
   other references point to the master copy.  Shared objects remain shared, which
@@ -126,7 +126,7 @@ Data stream format
 The data format used by :mod:`pickle` is Python-specific.  This has the
 advantage that there are no restrictions imposed by external standards such as
 JSON (which can't represent pointer sharing); however it means that
-non-Python programs may not be able to reconstruct pickled Python objects.
+non-Typthon programs may not be able to reconstruct pickled Python objects.
 
 By default, the :mod:`pickle` data format uses a relatively compact binary
 representation.  If you need optimal size characteristics, you can efficiently

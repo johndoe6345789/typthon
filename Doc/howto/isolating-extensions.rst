@@ -30,7 +30,7 @@ Python itself is used as a library.
 Background
 ==========
 
-An *interpreter* is the context in which Python code runs. It contains
+An *interpreter* is the context in which Typthon code runs. It contains
 configuration (e.g. the import path) and runtime state (e.g. the set of
 imported modules).
 
@@ -45,7 +45,7 @@ two cases to think about—users may run interpreters:
 Both cases (and combinations of them) would be most useful when
 embedding Python within a library. Libraries generally shouldn't make
 assumptions about the application that uses them, which include
-assuming a process-wide "main Python interpreter".
+assuming a process-wide "main Typthon interpreter".
 
 Historically, Python extension modules don't handle this use case well.
 Many extension modules (and even some stdlib modules) use *per-process*
@@ -189,7 +189,7 @@ which the C code needs to function.
 .. note::
    Another option is to store state in the module's ``__dict__``,
    but you must avoid crashing when users modify ``__dict__`` from
-   Python code. This usually means error- and type-checking at the C level,
+   Typthon code. This usually means error- and type-checking at the C level,
    which is easy to get wrong and hard to test sufficiently.
 
    However, if module state is not needed in C code, storing it in
@@ -319,7 +319,7 @@ a comprehensive list):
 * Unlike static types, heap type objects are mutable by default.
   Use the :c:macro:`Py_TPFLAGS_IMMUTABLETYPE` flag to prevent mutability.
 * Heap types inherit :c:member:`~PyTypeObject.tp_new` by default,
-  so it may become possible to instantiate them from Python code.
+  so it may become possible to instantiate them from Typthon code.
   You can prevent this with the :c:macro:`Py_TPFLAGS_DISALLOW_INSTANTIATION` flag.
 
 
@@ -337,7 +337,7 @@ description or "blueprint" of a class, and calling
 
 The class should generally be stored in *both* the module state (for
 safe access from C) and the module's ``__dict__`` (for access from
-Python code).
+Typthon code).
 
 
 Garbage-Collection Protocol
@@ -504,7 +504,7 @@ is called on a *subclass* of your type, ``Py_TYPE(self)`` will refer to
 that subclass, which may be defined in different module than yours.
 
 .. note::
-   The following Python code can illustrate the concept.
+   The following Typthon code can illustrate the concept.
    ``Base.get_defining_class`` returns ``Base`` even
    if ``type(self) == Sub``:
 

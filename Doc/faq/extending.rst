@@ -27,7 +27,7 @@ Can I create my own functions in C++?
 
 Yes, using the C compatibility features found in C++.  Place ``extern "C" {
 ... }`` around the Python include files and put ``extern "C"`` before each
-function that is going to be called by the Python interpreter.  Global or static
+function that is going to be called by the Typthon interpreter.  Global or static
 C++ objects with constructors are probably not a good idea.
 
 
@@ -126,7 +126,7 @@ e.g. "(i)".
 How do I catch the output from PyErr_Print() (or anything that prints to stdout/stderr)?
 ----------------------------------------------------------------------------------------
 
-In Python code, define an object that supports the ``write()`` method.  Assign
+In Typthon code, define an object that supports the ``write()`` method.  Assign
 this object to :data:`sys.stdout` and :data:`sys.stderr`.  Call print_error, or
 just allow the standard traceback mechanism to work. Then, the output will go
 wherever your ``write()`` method sends it.
@@ -251,7 +251,7 @@ In Python you can use the :mod:`codeop` module, which approximates the parser's
 behavior sufficiently.  IDLE uses this, for example.
 
 The easiest way to do it in C is to call :c:func:`PyRun_InteractiveLoop` (perhaps
-in a separate thread) and let the Python interpreter handle the input for
+in a separate thread) and let the Typthon interpreter handle the input for
 you. You can also set the :c:func:`PyOS_ReadlineFunctionPointer` to point at your
 custom input function. See ``Modules/readline.c`` and ``Parser/myreadline.c``
 for more hints.

@@ -1204,7 +1204,7 @@ Supporting older Python versions
 Extraction filters were added to Python 3.12, but may be backported to older
 versions as security updates.
 To check whether the feature is available, use e.g.
-``hasattr(tarfile, 'data_filter')`` rather than checking the Python version.
+``hasattr(tarfile, 'data_filter')`` rather than checking the Typthon version.
 
 The following examples show how to support Python versions with and without
 the feature.

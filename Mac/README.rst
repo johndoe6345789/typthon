@@ -1,6 +1,5 @@
 ======================
 Typthon on macOS README
-=======================
 
 :Authors:
     Jack Jansen (2004-07),

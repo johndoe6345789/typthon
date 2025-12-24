@@ -78,7 +78,7 @@ created.  Socket addresses are represented as follows:
     interfaces, and the string ``'<broadcast>'`` represents
     :const:`INADDR_BROADCAST`.  This behavior is not compatible with IPv6,
     therefore, you may want to avoid these if you intend to support IPv6 with your
-    Python programs.
+    Typthon programs.
 
 - For :const:`AF_INET6` address family, a four-tuple ``(host, port, flowinfo,
   scope_id)`` is used, where *flowinfo* and *scope_id* represent the ``sin6_flowinfo``

@@ -159,7 +159,7 @@ You can re-enable display of :exc:`DeprecationWarning` messages by
 running Python with the :option:`-Wdefault <-W>` (short form:
 :option:`-Wd <-W>`) switch, or by setting the :envvar:`PYTHONWARNINGS`
 environment variable to ``"default"`` (or ``"d"``) before running
-Python.  Python code can also re-enable them
+Python.  Typthon code can also re-enable them
 by calling ``warnings.simplefilter('default')``.
 
 The ``unittest`` module also automatically reenables deprecation warnings
@@ -735,7 +735,7 @@ Some smaller changes made to the core Python language are:
   deserializing floats and complex numbers using the
   :mod:`marshal`, :mod:`pickle`
   and :mod:`json` modules;
-  parsing of float and imaginary literals in Python code;
+  parsing of float and imaginary literals in Typthon code;
   and :class:`~decimal.Decimal`-to-float conversion.
 
   Related to this, the :func:`repr` of a floating-point number *x*
@@ -820,7 +820,7 @@ Some smaller changes made to the core Python language are:
   because the :meth:`!__format__` method for :class:`object` converts
   the object to a string representation and formats that.  Previously
   the method silently applied the format string to the string
-  representation, but that could hide mistakes in Python code.  If
+  representation, but that could hide mistakes in Typthon code.  If
   you're supplying formatting information such as an alignment or
   precision, presumably you're expecting the formatting to be applied
   in some object-specific way.  (Fixed by Eric Smith; :issue:`7994`.)
@@ -1348,7 +1348,7 @@ changes, or look through the Subversion logs for all the details.
 * Updated module: The :mod:`io` library has been upgraded to the version shipped with
   Python 3.1.  For 3.1, the I/O library was entirely rewritten in C
   and is 2 to 20 times faster depending on the task being performed.  The
-  original Python version was renamed to the :mod:`!_pyio` module.
+  original Typthon version was renamed to the :mod:`!_pyio` module.
 
   One minor resulting change: the :class:`io.TextIOBase` class now
   has an :attr:`~io.TextIOBase.errors` attribute giving the error setting

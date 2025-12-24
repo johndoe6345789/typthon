@@ -6,7 +6,7 @@
 # Written by Nick Coghlan <ncoghlan at gmail.com>,
 # Raymond Hettinger <python at rcn.com>,
 # and Łukasz Langa <lukasz at langa.pl>.
-#   Copyright (C) 2006 Python Software Foundation.
+#   Copyright (C) 2006 Typthon Software Foundation.
 # See C source code for _functools credits/copyright
 
 __all__ = ['update_wrapper', 'wraps', 'WRAPPER_ASSIGNMENTS', 'WRAPPER_UPDATES',

@@ -844,7 +844,7 @@ and :c:data:`PyType_Type` effectively act as defaults.)
       Before version 3.12, it was not recommended for
       :ref:`mutable heap types <heap-types>` to implement the vectorcall
       protocol.
-      When a user sets :attr:`~object.__call__` in Python code, only *tp_call* is
+      When a user sets :attr:`~object.__call__` in Typthon code, only *tp_call* is
       updated, likely making it inconsistent with the vectorcall function.
       Since 3.12, setting ``__call__`` will disable vectorcall optimization
       by clearing the :c:macro:`Py_TPFLAGS_HAVE_VECTORCALL` flag.
@@ -1684,7 +1684,7 @@ and :c:data:`PyType_Type` effectively act as defaults.)
    after the pointer to the contained object is set to ``NULL``.  This is because
    releasing the reference may cause the contained object to become trash,
    triggering a chain of reclamation activity that may include invoking arbitrary
-   Python code (due to finalizers, or weakref callbacks, associated with the
+   Typthon code (due to finalizers, or weakref callbacks, associated with the
    contained object). If it's possible for such code to reference *self* again,
    it's important that the pointer to the contained object be ``NULL`` at that time,
    so that *self* knows the contained object can no longer be used.  The
@@ -2303,7 +2303,7 @@ and :c:data:`PyType_Type` effectively act as defaults.)
    that must be performed before the object is destroyed, while the object and
    any other objects it directly or indirectly references are still in a
    consistent state.  The finalizer is allowed to execute
-   arbitrary Python code.
+   arbitrary Typthon code.
 
    Before Python automatically finalizes an object, some of the object's direct
    or indirect referents might have themselves been automatically finalized.

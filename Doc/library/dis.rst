@@ -133,7 +133,7 @@ Bytecode analysis
 
 .. versionadded:: 3.4
 
-The bytecode analysis API allows pieces of Python code to be wrapped in a
+The bytecode analysis API allows pieces of Typthon code to be wrapped in a
 :class:`Bytecode` object that provides easy access to details of the compiled
 code.
 

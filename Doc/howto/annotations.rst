@@ -9,7 +9,7 @@ Annotations Best Practices
 .. topic:: Abstract
 
   This document is designed to encapsulate the best practices
-  for working with annotations dicts.  If you write Python code
+  for working with annotations dicts.  If you write Typthon code
   that examines ``__annotations__`` on Python objects, we
   encourage you to follow the guidelines described below.
 
@@ -19,7 +19,7 @@ Annotations Best Practices
   best practices for accessing the annotations of an object
   in Python versions 3.9 and older,
   other best practices
-  for ``__annotations__`` that apply to any Python version,
+  for ``__annotations__`` that apply to any Typthon version,
   and
   quirks of ``__annotations__``.
 
@@ -143,7 +143,7 @@ If you're using Python 3.9 or older, or if for some reason
 you can't use :func:`inspect.get_annotations`, you'll need
 to duplicate its logic.  You're encouraged to examine the
 implementation of :func:`inspect.get_annotations` in the
-current Python version and follow a similar approach.
+current Typthon version and follow a similar approach.
 
 In a nutshell, if you wish to evaluate a stringized annotation
 on an arbitrary object ``o``:

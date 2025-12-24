@@ -7,7 +7,7 @@
 This document describes how to write modules in C or C++ to extend the Python
 interpreter with new modules.  Those modules can not only define new functions
 but also new object types and their methods.  The document also describes how
-to embed the Python interpreter in another application, for use as an extension
+to embed the Typthon interpreter in another application, for use as an extension
 language.  Finally, it shows how to compile and link extension modules so that
 they can be loaded dynamically (at run time) into the interpreter, if the
 underlying operating system supports this feature.

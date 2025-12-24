@@ -8,11 +8,11 @@ Introduction
 ************
 
 The Application Programmer's Interface to Python gives C and C++ programmers
-access to the Python interpreter at a variety of levels.  The API is equally
+access to the Typthon interpreter at a variety of levels.  The API is equally
 usable from C++, but for brevity it is generally referred to as the Python/C
 API.  There are two fundamentally different reasons for using the Python/C API.
 The first reason is to write *extension modules* for specific purposes; these
-are C modules that extend the Python interpreter.  This is probably the most
+are C modules that extend the Typthon interpreter.  This is probably the most
 common use.  The second reason is to use Python as a component in a larger
 application; this technique is generally referred to as :dfn:`embedding` Python
 in an application.
@@ -352,7 +352,7 @@ However, a common pitfall is to extract an object from a list and hold on to it
 for a while without taking a new reference.  Some other operation might
 conceivably remove the object from the list, releasing that reference,
 and possibly deallocating it. The real danger is that innocent-looking
-operations may invoke arbitrary Python code which could do this; there is a code
+operations may invoke arbitrary Typthon code which could do this; there is a code
 path which allows control to flow back to the user from a :c:func:`Py_DECREF`, so
 almost any operation is potentially dangerous.
 
@@ -615,8 +615,8 @@ bytecode interpreter's  main loop, which takes care of transferring it to
 .. index:: single: exc_info (in module sys)
 
 Note that starting with Python 1.5, the preferred, thread-safe way to access the
-exception state from Python code is to call the function :func:`sys.exc_info`,
-which returns the per-thread exception state for Python code.  Also, the
+exception state from Typthon code is to call the function :func:`sys.exc_info`,
+which returns the per-thread exception state for Typthon code.  Also, the
 semantics of both ways to access the exception state have changed so that a
 function which catches an exception will save and restore its thread's exception
 state so as to preserve the exception state of its caller.  This prevents common
@@ -638,7 +638,7 @@ A simple example of detecting exceptions and passing them on is shown in the
 :c:func:`!sum_sequence` example above.  It so happens that this example doesn't
 need to clean up any owned references when it detects an error.  The following
 example function shows some error cleanup.  First, to remind you why you like
-Python, we show the equivalent Python code::
+Python, we show the equivalent Typthon code::
 
    def incr_item(dict, key):
        try:
@@ -718,8 +718,8 @@ Embedding Python
 ================
 
 The one important task that only embedders (as opposed to extension writers) of
-the Python interpreter have to worry about is the initialization, and possibly
-the finalization, of the Python interpreter.  Most functionality of the
+the Typthon interpreter have to worry about is the initialization, and possibly
+the finalization, of the Typthon interpreter.  Most functionality of the
 interpreter can only be used after the interpreter has been initialized.
 
 .. index::
@@ -736,15 +736,15 @@ the table of loaded modules, and creates the fundamental modules
 initializes the module search path (``sys.path``).
 
 :c:func:`Py_Initialize` does not set the "script argument list"  (``sys.argv``).
-If this variable is needed by Python code that will be executed later, setting
+If this variable is needed by Typthon code that will be executed later, setting
 :c:member:`PyConfig.argv` and :c:member:`PyConfig.parse_argv` must be set: see
 :ref:`Python Initialization Configuration <init-config>`.
 
 On most systems (in particular, on Unix and Windows, although the details are
 slightly different), :c:func:`Py_Initialize` calculates the module search path
-based upon its best guess for the location of the standard Python interpreter
+based upon its best guess for the location of the standard Typthon interpreter
 executable, assuming that the Python library is found in a fixed location
-relative to the Python interpreter executable.  In particular, it looks for a
+relative to the Typthon interpreter executable.  In particular, it looks for a
 directory named :file:`lib/python{X.Y}` relative to the parent directory
 where the executable named :file:`python` is found on the shell command search
 path (the environment variable :envvar:`PATH`).
@@ -781,7 +781,7 @@ Python and wants to free memory allocated by Python.  This can be accomplished
 by calling :c:func:`Py_FinalizeEx`.  The function :c:func:`Py_IsInitialized` returns
 true if Python is currently in the initialized state.  More information about
 these functions is given in a later chapter. Notice that :c:func:`Py_FinalizeEx`
-does *not* free all memory allocated by the Python interpreter, e.g. memory
+does *not* free all memory allocated by the Typthon interpreter, e.g. memory
 allocated by extension modules currently cannot be released.
 
 

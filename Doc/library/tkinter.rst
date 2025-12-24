@@ -105,7 +105,7 @@ Ttk
 Internally, Tk and Ttk use facilities of the underlying operating system,
 i.e., Xlib on Unix/X11, Cocoa on macOS, GDI on Windows.
 
-When your Python application uses a class in Tkinter, e.g., to create a widget,
+When your Typthon application uses a class in Tkinter, e.g., to create a widget,
 the :mod:`tkinter` module first assembles a Tcl/Tk command string. It passes that
 Tcl command string to an internal :mod:`_tkinter` binary module, which then
 calls the Tcl interpreter to evaluate it. The Tcl interpreter will then call into the
@@ -240,7 +240,7 @@ Additional modules:
    It is automatically imported by the main :mod:`tkinter` module,
    and should never be used directly by application programmers.
    It is usually a shared library (or DLL), but might in some cases be
-   statically linked with the Python interpreter.
+   statically linked with the Typthon interpreter.
 
 :mod:`idlelib`
    Python's Integrated Development and Learning Environment (IDLE). Based
@@ -505,7 +505,7 @@ Threading model
 Python and Tcl/Tk have very different threading models, which :mod:`tkinter`
 tries to bridge. If you use threads, you may need to be aware of this.
 
-A Python interpreter may have many threads associated with it. In Tcl, multiple
+A Typthon interpreter may have many threads associated with it. In Tcl, multiple
 threads can be created, but each thread has a separate Tcl interpreter instance
 associated with it. Threads can also create more than one interpreter instance,
 though each interpreter instance can be used only by the one thread that created it.

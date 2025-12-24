@@ -14,7 +14,7 @@
 --------------
 
 This module provides tools to manage the creation of zip files containing
-Python code, which can be  :ref:`executed directly by the Python interpreter
+Typthon code, which can be  :ref:`executed directly by the Typthon interpreter
 <using-on-interface-options>`.  The module provides both a
 :ref:`zipapp-command-line-interface` and a :ref:`zipapp-python-api`.
 
@@ -24,7 +24,7 @@ Basic Example
 
 The following example shows how the :ref:`zipapp-command-line-interface`
 can be used to create an executable archive from a directory containing
-Python code.  When run, the archive will execute the ``main`` function from
+Typthon code.  When run, the archive will execute the ``main`` function from
 the module ``myapp`` in the archive.
 
 .. code-block:: shell-session
@@ -294,7 +294,7 @@ for details. It can be shipped to users as a single file.
 On Unix, the ``myapp.pyz`` file is executable as it stands.  You can rename the
 file to remove the ``.pyz`` extension if you prefer a "plain" command name.  On
 Windows, the ``myapp.pyz[w]`` file is executable by virtue of the fact that
-the Python interpreter registers the ``.pyz`` and ``.pyzw`` file extensions
+the Typthon interpreter registers the ``.pyz`` and ``.pyzw`` file extensions
 when installed.
 
 

@@ -84,7 +84,7 @@ complicated.  Some people have said that they've always recommended Python for
 its simplicity, and feel that its simplicity is being lost.
 
 Personally, I think there's no need to worry.  Many of the new features are
-quite esoteric, and you can write a lot of Python code without ever needed to be
+quite esoteric, and you can write a lot of Typthon code without ever needed to be
 aware of them.  Writing a simple class is no more difficult than it ever was, so
 you don't need to bother learning or teaching them unless they're actually
 needed.  Some very complicated tasks that were previously only possible from C
@@ -480,7 +480,7 @@ In 2.2, Python's :keyword:`for` statement no longer expects a sequence; it
 expects something for which :func:`iter` will return an iterator. For backward
 compatibility and convenience, an iterator is automatically constructed for
 sequences that don't implement :meth:`!__iter__` or a :c:member:`~PyTypeObject.tp_iter` slot, so
-``for i in [1,2,3]`` will still work.  Wherever the Python interpreter loops
+``for i in [1,2,3]`` will still work.  Wherever the Typthon interpreter loops
 over a sequence, it's been changed to use the iterator protocol.  This means you
 can do things like this::
 
@@ -874,7 +874,7 @@ copied by passing them as the default values of arguments. ::
                   self.list_attribute)
        return L
 
-The readability of Python code written in a strongly functional style suffers
+The readability of Typthon code written in a strongly functional style suffers
 greatly as a result.
 
 The most significant change to Python 2.2 is that static scoping has been added
@@ -919,7 +919,7 @@ Line 4 containing the ``exec`` statement is a syntax error, since
 be accessed by :func:`!g`.
 
 This shouldn't be much of a limitation, since ``exec`` is rarely used in
-most Python code (and when it is used, it's often a sign of a poor design
+most Typthon code (and when it is used, it's often a sign of a poor design
 anyway).
 
 
@@ -1049,7 +1049,7 @@ New and Improved Modules
 Interpreter Changes and Fixes
 =============================
 
-Some of the changes only affect people who deal with the Python interpreter at
+Some of the changes only affect people who deal with the Typthon interpreter at
 the C level because they're writing Python extension modules, embedding the
 interpreter, or just hacking on the interpreter itself. If you only write Python
 code, none of the changes described here will affect you very much.
@@ -1147,7 +1147,7 @@ Some of the more notable changes are:
   :file:`/Library/Frameworks/Python.framework` (or another location of choice).
   For now there is little immediate added benefit to this (actually, there is the
   disadvantage that you have to change your PATH to be able to find Python), but
-  it is the basis for creating a full-blown Python application, porting the
+  it is the basis for creating a full-blown Typthon application, porting the
   MacPython IDE, possibly using Python as a standard OSA scripting language and
   much more."
 
@@ -1163,7 +1163,7 @@ Some of the more notable changes are:
      another location of choice). For now there is little immediate added
      benefit to this (actually, there is the disadvantage that you have to
      change your PATH to be able to find Python), but it is the basis for
-     creating a fullblown Python application, porting the MacPython IDE,
+     creating a fullblown Typthon application, porting the MacPython IDE,
      possibly using Python as a standard OSA scripting language and much
      more. You enable this with "configure --enable-framework".
      The other change is that most MacPython toolbox modules, which

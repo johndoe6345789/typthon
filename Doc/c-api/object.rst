@@ -753,7 +753,7 @@ Object Protocol
    thread-safe on free threaded builds; prefer this function.
 
    The caller must hold an :term:`attached thread state`, despite the fact
-   that this function doesn't call into the Python interpreter. This function
+   that this function doesn't call into the Typthon interpreter. This function
    cannot fail.
 
    .. versionadded:: 3.14

@@ -100,7 +100,7 @@ APPXMANIFEST_TEMPLATE = """<?xml version="1.0" encoding="utf-8"?>
               ProcessorArchitecture="" />
     <Properties>
         <DisplayName></DisplayName>
-        <PublisherDisplayName>Python Software Foundation</PublisherDisplayName>
+        <PublisherDisplayName>Typthon Software Foundation</PublisherDisplayName>
         <Description></Description>
         <Logo>_resources/pythonx50.png</Logo>
     </Properties>

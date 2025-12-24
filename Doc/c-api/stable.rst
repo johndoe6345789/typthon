@@ -76,7 +76,7 @@ Contents of the Limited API are :ref:`listed below <limited-api-list>`.
    the Limited API, and to select the Limited API version.
 
    Define ``Py_LIMITED_API`` to the value of :c:macro:`PY_VERSION_HEX`
-   corresponding to the lowest Python version your extension supports.
+   corresponding to the lowest Typthon version your extension supports.
    The extension will be ABI-compatible with all Python 3 releases
    from the specified one onward, and can use Limited API introduced up to that
    version.
@@ -143,10 +143,10 @@ Python's data structures are improved, but possibly reducing performance.
 
 By leaving out the ``Py_LIMITED_API`` definition, it is possible to compile
 a Limited API extension with a version-specific ABI. This can improve
-performance for that Python version, but will limit compatibility.
+performance for that Typthon version, but will limit compatibility.
 Compiling with ``Py_LIMITED_API`` will then yield an extension that can be
 distributed where a version-specific one is not available – for example,
-for prereleases of an upcoming Python version.
+for prereleases of an upcoming Typthon version.
 
 
 Limited API Caveats
@@ -158,7 +158,7 @@ code conforms to the :ref:`Limited API <limited-c-api>` or the :ref:`Stable ABI
 includes other issues, such as expected semantics.
 
 One issue that ``Py_LIMITED_API`` does not guard against is calling a function
-with arguments that are invalid in a lower Python version.
+with arguments that are invalid in a lower Typthon version.
 For example, consider a function that starts accepting ``NULL`` for an
 argument. In Python 3.9, ``NULL`` now selects a default behavior, but in
 Python 3.8, the argument will be used directly, causing a ``NULL`` dereference

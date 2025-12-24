@@ -23,7 +23,7 @@ Cross platform
 
 .. function:: architecture(executable=sys.executable, bits='', linkage='')
 
-   Queries the given executable (defaults to the Python interpreter binary) for
+   Queries the given executable (defaults to the Typthon interpreter binary) for
    various architecture information.
 
    Returns a tuple ``(bits, linkage)`` which contain information about the bit
@@ -32,12 +32,12 @@ Cross platform
 
    Values that cannot be determined are returned as given by the parameter presets.
    If bits is given as ``''``, the ``sizeof(pointer)`` (or
-   ``sizeof(long)`` on Python version < 1.5.2) is used as indicator for the
+   ``sizeof(long)`` on Typthon version < 1.5.2) is used as indicator for the
    supported pointer size.
 
    The function relies on the system's :file:`file` command to do the actual work.
    This is available on most if not all Unix  platforms and some non-Unix platforms
-   and then only if the executable points to the Python interpreter.  Reasonable
+   and then only if the executable points to the Typthon interpreter.  Reasonable
    defaults are used when the above needs are not met.
 
    .. note::
@@ -123,7 +123,7 @@ Cross platform
 
 .. function:: python_version()
 
-   Returns the Python version as string ``'major.minor.patchlevel'``.
+   Returns the Typthon version as string ``'major.minor.patchlevel'``.
 
    Note that unlike the Python ``sys.version``, the returned value will always
    include the patchlevel (it defaults to 0).
@@ -131,7 +131,7 @@ Cross platform
 
 .. function:: python_version_tuple()
 
-   Returns the Python version as tuple ``(major, minor, patchlevel)`` of strings.
+   Returns the Typthon version as tuple ``(major, minor, patchlevel)`` of strings.
 
    Note that unlike the Python ``sys.version``, the returned value will always
    include the patchlevel (it defaults to ``'0'``).
@@ -277,7 +277,7 @@ Unix platforms
 .. function:: libc_ver(executable=sys.executable, lib='', version='', chunksize=16384)
 
    Tries to determine the libc version against which the file executable (defaults
-   to the Python interpreter) is linked.  Returns a tuple of strings ``(lib,
+   to the Typthon interpreter) is linked.  Returns a tuple of strings ``(lib,
    version)`` which default to the given parameters in case the lookup fails.
 
    Note that this function has intimate knowledge of how different libc versions

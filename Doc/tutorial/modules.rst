@@ -4,7 +4,7 @@
 Modules
 *******
 
-If you quit from the Python interpreter and enter it again, the definitions you
+If you quit from the Typthon interpreter and enter it again, the definitions you
 have made (functions and variables) are lost. Therefore, if you want to write a
 somewhat longer program, you are better off using a text editor to prepare the
 input for the interpreter and running it with that file as input instead.  This
@@ -44,7 +44,7 @@ called :file:`fibo.py` in the current directory with the following contents::
            a, b = b, a+b
        return result
 
-Now enter the Python interpreter and import this module with the following
+Now enter the Typthon interpreter and import this module with the following
 command::
 
    >>> import fibo
@@ -205,7 +205,7 @@ More details are at :ref:`sys-path-init`.
    script is calculated after the symlink is followed. In other words the
    directory containing the symlink is **not** added to the module search path.
 
-After initialization, Python programs can modify :data:`sys.path`.  The
+After initialization, Typthon programs can modify :data:`sys.path`.  The
 directory containing the script being run is placed at the beginning of the
 search path, ahead of the standard library path. This means that scripts in that
 directory will be loaded instead of modules of the same name in the library
@@ -223,7 +223,7 @@ directory. This is an error unless the replacement is intended.  See section
 To speed up loading modules, Python caches the compiled version of each module
 in the ``__pycache__`` directory under the name :file:`module.{version}.pyc`,
 where the version encodes the format of the compiled file; it generally contains
-the Python version number.  For example, in CPython release 3.3 the compiled
+the Typthon version number.  For example, in CPython release 3.3 the compiled
 version of spam.py would be cached as ``__pycache__/spam.cpython-33.pyc``.  This
 naming convention allows compiled modules from different releases and different
 versions of Python to coexist.
@@ -276,7 +276,7 @@ for efficiency or to provide access to operating system primitives such as
 system calls.  The set of such modules is a configuration option which also
 depends on the underlying platform.  For example, the :mod:`winreg` module is only
 provided on Windows systems. One particular module deserves some attention:
-:mod:`sys`, which is built into every Python interpreter.  The variables
+:mod:`sys`, which is built into every Typthon interpreter.  The variables
 ``sys.ps1`` and ``sys.ps2`` define the strings used as primary and secondary
 prompts::
 
@@ -581,7 +581,7 @@ module for example, you might use::
 
 Note that relative imports are based on the name of the current module's package.
 Since the main module does not have a package, modules intended for use
-as the main module of a Python application must always use absolute imports.
+as the main module of a Typthon application must always use absolute imports.
 
 
 Packages in Multiple Directories

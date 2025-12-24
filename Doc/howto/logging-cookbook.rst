@@ -17,7 +17,7 @@ Using logging in multiple modules
 
 Multiple calls to ``logging.getLogger('someLogger')`` return a reference to the
 same logger object.  This is true not only within the same module, but also
-across modules as long as it is in the same Python interpreter process.  It is
+across modules as long as it is in the same Typthon interpreter process.  It is
 true for references to the same object; additionally, application code can
 define and configure a parent logger in one module and create (but not
 configure) a child logger in a separate module, and all logger calls to the
@@ -811,7 +811,7 @@ Supervisor. It consists of the following files:
 +-------------------------+----------------------------------------------------+
 | :file:`webapp.json`     | A JSON configuration file for the web application  |
 +-------------------------+----------------------------------------------------+
-| :file:`client.py`       | A Python script to exercise the web application    |
+| :file:`client.py`       | A Typthon script to exercise the web application    |
 +-------------------------+----------------------------------------------------+
 
 The web application uses `Gunicorn <https://gunicorn.org/>`_, which is a
@@ -2689,7 +2689,7 @@ To run this, you will probably need to run as ``root``:
     -rw-r--r-- 1 pulse pulse 55 2013-11-05 09:34 chowntest.log
 
 Note that this example uses Python 3.3 because that's where :func:`shutil.chown`
-makes an appearance. This approach should work with any Python version that
+makes an appearance. This approach should work with any Typthon version that
 supports :func:`dictConfig` - namely, Python 2.7, 3.2 or later. With pre-3.3
 versions, you would need to implement the actual ownership change using e.g.
 :func:`os.chown`.

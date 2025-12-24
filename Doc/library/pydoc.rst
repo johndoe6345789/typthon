@@ -30,7 +30,7 @@ the top of the module (see :func:`inspect.getcomments`).
 The built-in function :func:`help` invokes the online help system in the
 interactive interpreter, which uses :mod:`!pydoc` to generate its documentation
 as text on the console.  The same text documentation can also be viewed from
-outside the Python interpreter by running :program:`pydoc` as a script at the
+outside the Typthon interpreter by running :program:`pydoc` as a script at the
 operating system's command prompt. For example, running ::
 
    python -m pydoc sys
@@ -86,11 +86,11 @@ keyword in their synopsis line, and go to the *Module index*, *Topics* and
 When :program:`pydoc` generates documentation, it uses the current environment
 and path to locate modules.  Thus, invoking :program:`pydoc spam`
 documents precisely the version of the module you would get if you started the
-Python interpreter and typed ``import spam``.
+Typthon interpreter and typed ``import spam``.
 
 Module docs for core modules are assumed to reside in
 ``https://docs.python.org/X.Y/library/`` where ``X`` and ``Y`` are the
-major and minor version numbers of the Python interpreter.  This can
+major and minor version numbers of the Typthon interpreter.  This can
 be overridden by setting the :envvar:`!PYTHONDOCS` environment variable
 to a different URL or to a local directory containing the Library
 Reference Manual pages.

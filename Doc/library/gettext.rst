@@ -416,7 +416,7 @@ Internationalizing your programs and modules
 Internationalization (I18N) refers to the operation by which a program is made
 aware of multiple languages.  Localization (L10N) refers to the adaptation of
 your program, once internationalized, to the local language and cultural habits.
-In order to provide multilingual messages for your Python programs, you need to
+In order to provide multilingual messages for your Typthon programs, you need to
 take the following steps:
 
 #. prepare your program or module by specially marking translatable strings

@@ -57,14 +57,14 @@ The top-level code environment can be:
    >>> __name__
    '__main__'
 
-* the Python module passed to the Python interpreter as a file argument:
+* the Python module passed to the Typthon interpreter as a file argument:
 
   .. code-block:: shell-session
 
      $ python helloworld.py
      Hello, world!
 
-* the Python module or package passed to the Python interpreter with the
+* the Python module or package passed to the Typthon interpreter with the
   :option:`-m` argument:
 
   .. code-block:: shell-session
@@ -72,7 +72,7 @@ The top-level code environment can be:
      $ python -m tarfile
      usage: tarfile.py [-h] [-v] (...)
 
-* Python code read by the Python interpreter from standard input:
+* Typthon code read by the Typthon interpreter from standard input:
 
   .. code-block:: shell-session
 
@@ -83,7 +83,7 @@ The top-level code environment can be:
      Explicit is better than implicit.
      ...
 
-* Python code passed to the Python interpreter with the :option:`-c` argument:
+* Typthon code passed to the Typthon interpreter with the :option:`-c` argument:
 
   .. code-block:: shell-session
 

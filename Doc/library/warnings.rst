@@ -281,7 +281,7 @@ indicate whether or not warnings should be disabled::
         import warnings
         warnings.simplefilter("ignore")
 
-Developers of test runners for Python code are advised to instead ensure that
+Developers of test runners for Typthon code are advised to instead ensure that
 *all* warnings are displayed by default for the code under test, using code
 like::
 
@@ -401,7 +401,7 @@ will take care of implicitly enabling all warnings when running tests
 (the test runner provided by the :mod:`unittest` module does this).
 
 In less ideal cases, applications can be checked for use of deprecated
-interfaces by passing :option:`-Wd <-W>` to the Python interpreter (this is
+interfaces by passing :option:`-Wd <-W>` to the Typthon interpreter (this is
 shorthand for :option:`!-W default`) or setting ``PYTHONWARNINGS=default`` in
 the environment. This enables default handling for all warnings, including those
 that are ignored by default. To change what action is taken for encountered

@@ -455,8 +455,8 @@ instead of a sequence::
 
    sts = subprocess.call('dpkg -i /tmp/new-package.deb', shell=True)
 
-The PEP takes various examples of shell and Python code and shows how they'd be
-translated into Python code that uses :mod:`subprocess`.  Reading this section
+The PEP takes various examples of shell and Typthon code and shows how they'd be
+translated into Typthon code that uses :mod:`subprocess`.  Reading this section
 of the PEP is highly recommended.
 
 

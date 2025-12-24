@@ -43,7 +43,7 @@ There are (at least) three kinds of modules in Python:
       print(sys.builtin_module_names)
 
 
-How do I make a Python script executable on Unix?
+How do I make a Typthon script executable on Unix?
 -------------------------------------------------
 
 You need to do two things: the script file's mode must be executable and the
@@ -61,9 +61,9 @@ write ::
 as the very first line of your file, using the pathname for where the Python
 interpreter is installed on your platform.
 
-If you would like the script to be independent of where the Python interpreter
+If you would like the script to be independent of where the Typthon interpreter
 lives, you can use the :program:`env` program.  Almost all Unix variants support
-the following, assuming the Python interpreter is in a directory on the user's
+the following, assuming the Typthon interpreter is in a directory on the user's
 :envvar:`PATH`::
 
   #!/usr/bin/env python
@@ -408,7 +408,7 @@ Can't we get rid of the Global Interpreter Lock?
 The :term:`global interpreter lock` (GIL) is often seen as a hindrance to Python's
 deployment on high-end multiprocessor server machines, because a multi-threaded
 Python program effectively only uses one CPU, due to the insistence that
-(almost) all Python code can only run while the GIL is held.
+(almost) all Typthon code can only run while the GIL is held.
 
 With the approval of :pep:`703` work is now underway to remove the GIL from the
 CPython implementation of Python.  Initially it will be implemented as an
@@ -606,7 +606,7 @@ You can find a collection of useful links on the `Web Programming wiki page
 <https://wiki.python.org/moin/WebProgramming>`_.
 
 
-How do I send mail from a Python script?
+How do I send mail from a Typthon script?
 ----------------------------------------
 
 Use the standard library module :mod:`smtplib`.

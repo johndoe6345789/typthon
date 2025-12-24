@@ -65,7 +65,7 @@ Py_FrozenMain(int argc, char **argv)
 #endif
 
     if (_Py_GetConfig()->verbose) {
-        fprintf(stderr, "Python %s\n%s\n",
+        fprintf(stderr, "Typthon %s\n%s\n",
                 Py_GetVersion(), Py_GetCopyright());
     }
 

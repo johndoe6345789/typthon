@@ -18,7 +18,7 @@ Introduction to the profilers
    single: profiling, deterministic
 
 :mod:`cProfile` and :mod:`profile` provide :dfn:`deterministic profiling` of
-Python programs. A :dfn:`profile` is a set of statistics that describes how
+Typthon programs. A :dfn:`profile` is a set of statistics that describes how
 often and for how long various parts of the program executed. These statistics
 can be formatted into reports via the :mod:`pstats` module.
 
@@ -40,7 +40,7 @@ profiling interface:
    The profiler modules are designed to provide an execution profile for a given
    program, not for benchmarking purposes (for that, there is :mod:`timeit` for
    reasonably accurate results).  This particularly applies to benchmarking
-   Python code against C code: the profilers introduce overhead for Python code,
+   Typthon code against C code: the profilers introduce overhead for Typthon code,
    but not for C-level functions, and so the C code would seem faster than any
    Python one.
 
