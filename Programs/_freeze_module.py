@@ -31,8 +31,10 @@ def _check_type(value, expected_type, param_name: str) -> None:
         TypeError: If the value doesn't match the expected type
     """
     if not isinstance(value, expected_type):
+        # Handle types that may not have __name__ attribute
+        type_name = getattr(expected_type, '__name__', str(expected_type))
         raise TypeError(
-            f"Parameter '{param_name}' must be of type {expected_type.__name__}, "
+            f"Parameter '{param_name}' must be of type {type_name}, "
             f"got {type(value).__name__}"
         )
 
@@ -171,11 +173,6 @@ def main() -> None:
     name: str = sys.argv[1]
     inpath: str = sys.argv[2]
     outpath: str = sys.argv[3]
-    
-    # Validate that arguments are strings
-    _check_type(name, str, "name")
-    _check_type(inpath, str, "inpath")
-    _check_type(outpath, str, "outpath")
 
     text: bytes = read_text(inpath)
     marshalled: bytes = compile_and_marshal(name, text)
