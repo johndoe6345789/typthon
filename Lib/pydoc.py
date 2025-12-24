@@ -1824,12 +1824,12 @@ def _introdoc():
         mode (press again to exit).
         '''
     return textwrap.dedent(f'''\
-        Welcome to Python {ver}'s help utility! If this is your first time using
-        Python, you should definitely check out the tutorial at
+        Welcome to Typthon {ver}'s help utility! If this is your first time using
+        Typthon, you should definitely check out the tutorial at
         https://docs.python.org/{ver}/tutorial/.
 
         Enter the name of any module, keyword, or topic to get help on writing
-        Python programs and using Python modules.  To get a list of available
+        Typthon programs and using Typthon modules.  To get a list of available
         modules, keywords, symbols, or topics, enter "modules", "keywords",
         "symbols", or "topics".
         {pyrepl_keys}

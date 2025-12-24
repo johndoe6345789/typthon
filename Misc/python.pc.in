@@ -4,8 +4,8 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: Python
-Description: Build a C extension for Python
+Name: Typthon
+Description: Build a C extension for Typthon
 Requires:
 Version: @VERSION@
 Libs.private: @LIBS@
