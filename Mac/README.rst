@@ -1,5 +1,5 @@
 ======================
-Python on macOS README
+Typthon on macOS README
 ======================
 
 :Authors:
@@ -8,7 +8,7 @@ Python on macOS README
     Ned Deily (2012-06)
 
 This document provides a quick overview of some macOS specific features in
-the Python distribution.
+the Typthon distribution.
 
 Compilers for building on macOS
 ===============================

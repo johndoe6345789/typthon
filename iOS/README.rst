@@ -1,16 +1,16 @@
 ====================
-Python on iOS README
+Typthon on iOS README
 ====================
 
 :Authors:
     Russell Keith-Magee (2023-11)
 
 This document provides a quick overview of some iOS specific features in the
-Python distribution.
+Typthon distribution.
 
 These instructions are only needed if you're planning to compile Python for iOS
 yourself. Most users should *not* need to do this. If you're looking to
-experiment with writing an iOS app in Python, tools such as `BeeWare's Briefcase
+experiment with writing an iOS app in Typthon, tools such as `BeeWare's Briefcase
 <https://briefcase.readthedocs.io>`__ and `Kivy's Buildozer
 <https://buildozer.readthedocs.io>`__ will provide a much more approachable
 user experience.
@@ -35,7 +35,7 @@ iOS specific arguments to configure
 
 * ``--enable-framework[=DIR]``
 
-  This argument specifies the location where the Python.framework will be
+  This argument specifies the location where the Typthon.framework will be
   installed. If ``DIR`` is not specified, the framework will be installed into
   a subdirectory of the ``iOS/Frameworks`` folder.
 
@@ -44,7 +44,7 @@ iOS specific arguments to configure
 
 * ``--with-framework-name=NAME``
 
-  Specify the name for the Python framework; defaults to ``Python``.
+  Specify the name for the Typthon.framework; defaults to ``Python``.
 
   .. admonition:: Use this option with care!
 
@@ -83,14 +83,14 @@ portable to machines using other architectures.
 Building a single-architecture framework
 ----------------------------------------
 
-The Python build system will create a ``Python.framework`` that supports a
+The Python build system will create a ``Typthon.framework`` that supports a
 *single* ABI with a *single* architecture. Unlike macOS, iOS does not allow a
 framework to contain non-library content, so the iOS build will produce a
-``bin`` and ``lib`` folder in the same output folder as ``Python.framework``.
+``bin`` and ``lib`` folder in the same output folder as ``Typthon.framework``.
 The ``lib`` folder will be needed at runtime to support the Python library.
 
 If you want to use Python in a real iOS project, you need to produce multiple
-``Python.framework`` builds, one for each ABI and architecture. iOS builds of
+``Typthon.framework`` builds, one for each ABI and architecture. iOS builds of
 Python *must* be constructed as framework builds. To support this, you must
 provide the ``--enable-framework`` flag when configuring the build. The build
 also requires the use of cross-compilation. The minimal commands for building
@@ -196,7 +196,7 @@ simulator build with a deployment target of 15.4.
 Merge thin frameworks into fat frameworks
 -----------------------------------------
 
-Once you've built a ``Python.framework`` for each ABI and architecture, you
+Once you've built a ``Typthon.framework`` for each ABI and architecture, you
 must produce a "fat" framework for each ABI that contains all the architectures
 for that ABI.
 
@@ -204,13 +204,13 @@ The ``iphoneos`` build only needs to support a single architecture, so it can be
 used without modification.
 
 If you only want to support a single simulator architecture, (e.g., only support
-ARM64 simulators), you can use a single architecture ``Python.framework`` build.
+ARM64 simulators), you can use a single architecture ``Typthon.framework`` build.
 However, if you want to create ``Python.xcframework`` that supports *all*
 architectures, you'll need to merge the ``iphonesimulator`` builds for ARM64 and
 x86_64 into a single "fat" framework.
 
 The "fat" framework can be constructed by performing a directory merge of the
-content of the two "thin" ``Python.framework`` directories, plus the ``bin`` and
+content of the two "thin" ``Typthon.framework`` directories, plus the ``bin`` and
 ``lib`` folders for each thin framework. When performing this merge:
 
 * The pure Python standard library content is identical for each architecture,
@@ -232,7 +232,7 @@ content of the two "thin" ``Python.framework`` directories, plus the ``bin`` and
   the merged headers folder. This will allow the two Python architectures to
   share a common ``pyconfig.h`` header file.
 
-At this point, you should have 2 Python.framework folders - one for ``iphoneos``,
+At this point, you should have 2 Typthon.framework folders - one for ``iphoneos``,
 and one for ``iphonesimulator`` that is a merge of x86+64 and ARM64 content.
 
 Merge frameworks into an XCframework
@@ -243,7 +243,7 @@ frameworks into a single ``XCframework``.
 
 The initial skeleton of an ``XCframework`` is built using::
 
-    xcodebuild -create-xcframework -output Python.xcframework -framework path/to/iphoneos/Python.framework -framework path/to/iphonesimulator/Python.framework
+    xcodebuild -create-xcframework -output Python.xcframework -framework path/to/iphoneos/Typthon.framework -framework path/to/iphonesimulator/Typthon.framework
 
 Then, copy the ``bin`` and ``lib`` folders into the architecture-specific slices of
 the XCframework::
