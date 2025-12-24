@@ -48,7 +48,7 @@ and debuggers.
 
    **Example:**
 
-   The following Python code:
+   The following Typthon code:
 
    .. code-block:: python
 

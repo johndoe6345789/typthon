@@ -93,7 +93,7 @@ The following events are supported:
 
 .. monitoring-event:: CALL
 
-   A call in Python code (event occurs before the call).
+   A call in Typthon code (event occurs before the call).
 
 .. monitoring-event:: C_RAISE
 

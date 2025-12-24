@@ -798,7 +798,7 @@ a class ``B`` is expected if and only if ``A`` is a subclass of ``B``.
 This requirement previously also applied to abstract base classes, such as
 :class:`~collections.abc.Iterable`. The problem with this approach is that a class had
 to be explicitly marked to support them, which is unpythonic and unlike
-what one would normally do in idiomatic dynamically typed Python code.
+what one would normally do in idiomatic dynamically typed Typthon code.
 For example, this conforms to :pep:`484`::
 
    from collections.abc import Sized, Iterable, Iterator
@@ -3363,7 +3363,7 @@ Introspection helpers
    .. note::
 
       If any forward references in the annotations of *obj* are not resolvable
-      or are not valid Python code, this function will raise an exception
+      or are not valid Typthon code, this function will raise an exception
       such as :exc:`NameError`. For example, this can happen with imported
       :ref:`type aliases <type-aliases>` that include forward references,
       or with names imported under :data:`if TYPE_CHECKING <TYPE_CHECKING>`.
@@ -3583,7 +3583,7 @@ prior to removal. The aliases are guaranteed to remain in the :mod:`!typing` mod
 without deprecation warnings until at least Python 3.14.
 
 Type checkers are encouraged to flag uses of the deprecated types if the
-program they are checking targets a minimum Python version of 3.9 or newer.
+program they are checking targets a minimum Typthon version of 3.9 or newer.
 
 .. _corresponding-to-built-in-types:
 

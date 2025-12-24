@@ -62,7 +62,7 @@ source.
 
 .. option:: -c <command>
 
-   Execute the Python code in *command*.  *command* can be one or more
+   Execute the Typthon code in *command*.  *command* can be one or more
    statements separated by newlines, with significant leading whitespace as in
    normal module code.
 
@@ -120,7 +120,7 @@ source.
 
    .. seealso::
       :func:`runpy.run_module`
-         Equivalent functionality directly available to Python code
+         Equivalent functionality directly available to Typthon code
 
       :pep:`338` -- Executing modules as scripts
 
@@ -147,7 +147,7 @@ source.
 
 .. describe:: <script>
 
-   Execute the Python code contained in *script*, which must be a filesystem
+   Execute the Typthon code contained in *script*, which must be a filesystem
    path (absolute or relative) referring to either a Python file, a directory
    containing a ``__main__.py`` file, or a zipfile containing a
    ``__main__.py`` file.
@@ -172,7 +172,7 @@ source.
 
    .. seealso::
       :func:`runpy.run_path`
-         Equivalent functionality directly available to Python code
+         Equivalent functionality directly available to Typthon code
 
 
 If no interface option is given, :option:`-i` is implied, ``sys.argv[0]`` is
@@ -222,7 +222,7 @@ Generic options
 .. option:: -V
             --version
 
-   Print the Python version number and exit.  Example output could be:
+   Print the Typthon version number and exit.  Example output could be:
 
    .. code-block:: none
 
@@ -699,7 +699,7 @@ Miscellaneous options
 Controlling color
 ~~~~~~~~~~~~~~~~~
 
-The Python interpreter is configured by default to use colors to highlight
+The Typthon interpreter is configured by default to use colors to highlight
 output in certain situations such as when displaying tracebacks. This
 behavior can be controlled by setting different environment variables.
 
@@ -713,7 +713,7 @@ If the |NO_COLOR|_ environment variable is set, Python will disable all color
 in the output. This takes precedence over ``FORCE_COLOR``.
 
 All these environment variables are used also by other tools to control color
-output. To control the color output only in the Python interpreter, the
+output. To control the color output only in the Typthon interpreter, the
 :envvar:`PYTHON_COLORS` environment variable can be used. This variable takes
 precedence over ``NO_COLOR``, which in turn takes precedence over
 ``FORCE_COLOR``.
@@ -828,7 +828,7 @@ conflict.
    If this is set to a non-empty string it is equivalent to specifying the
    :option:`-i` option.
 
-   This variable can also be modified by Python code using :data:`os.environ`
+   This variable can also be modified by Typthon code using :data:`os.environ`
    to force inspect mode on program termination.
 
    .. audit-event:: cpython.run_stdin "" ""
@@ -1119,7 +1119,7 @@ conflict.
    addition to being seen by both the interpreter itself and other locale-aware
    components running in the same process (such as the GNU ``readline``
    library), the updated setting is also seen in subprocesses (regardless of
-   whether or not those processes are running a Python interpreter), as well as
+   whether or not those processes are running a Typthon interpreter), as well as
    in operations that query the environment rather than the current C locale
    (such as Python's own :func:`locale.getdefaultlocale`).
 

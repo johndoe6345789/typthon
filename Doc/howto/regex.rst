@@ -43,7 +43,7 @@ The regular expression language is relatively small and restricted, so not all
 possible string processing tasks can be done using regular expressions.  There
 are also tasks that *can* be done with regular expressions, but the expressions
 turn out to be very complicated.  In these cases, you may be better off writing
-Python code to do the processing; while Python code will be slower than an
+Typthon code to do the processing; while Typthon code will be slower than an
 elaborate regular expression, it will also probably be more understandable.
 
 
@@ -331,7 +331,7 @@ The solution is to use Python's raw string notation for regular expressions;
 backslashes are not handled in any special way in a string literal prefixed with
 ``'r'``, so ``r"\n"`` is a two-character string containing ``'\'`` and ``'n'``,
 while ``"\n"`` is a one-character string containing a newline. Regular
-expressions will often be written in Python code using this raw string notation.
+expressions will often be written in Typthon code using this raw string notation.
 
 In addition, special escape sequences that are valid in regular expressions,
 but not valid as Python string literals, now result in a
@@ -383,8 +383,8 @@ it matched, and more.
 You can learn about this by interactively experimenting with the :mod:`re`
 module.
 
-This HOWTO uses the standard Python interpreter for its examples. First, run the
-Python interpreter, import the :mod:`re` module, and compile a RE::
+This HOWTO uses the standard Typthon interpreter for its examples. First, run the
+Typthon interpreter, import the :mod:`re` module, and compile a RE::
 
    >>> import re
    >>> p = re.compile('[a-z]+')

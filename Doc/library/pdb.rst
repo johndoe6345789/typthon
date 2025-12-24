@@ -15,7 +15,7 @@
 The module :mod:`pdb` defines an interactive source code debugger for Python
 programs.  It supports setting (conditional) breakpoints and single stepping at
 the source line level, inspection of stack frames, source code listing, and
-evaluation of arbitrary Python code in the context of any stack frame.  It also
+evaluation of arbitrary Typthon code in the context of any stack frame.  It also
 supports post-mortem debugging and can be called under program control.
 
 .. index::
@@ -34,7 +34,7 @@ extension interface uses the modules :mod:`bdb` and :mod:`cmd`.
       or on a user signal.
 
    Module :mod:`traceback`
-      Standard interface to extract, format and print stack traces of Python programs.
+      Standard interface to extract, format and print stack traces of Typthon programs.
 
 The typical usage to break into the debugger is to insert::
 

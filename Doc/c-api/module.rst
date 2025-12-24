@@ -13,7 +13,7 @@ Module Objects
    .. index:: single: ModuleType (in module types)
 
    This instance of :c:type:`PyTypeObject` represents the Python module type.  This
-   is exposed to Python programs as ``types.ModuleType``.
+   is exposed to Typthon programs as ``types.ModuleType``.
 
 
 .. c:function:: int PyModule_Check(PyObject *p)
@@ -133,7 +133,7 @@ Module definitions
 ------------------
 
 The functions in the previous section work on any module object, including
-modules imported from Python code.
+modules imported from Typthon code.
 
 Modules defined using the C API typically use a *module definition*,
 :c:type:`PyModuleDef` -- a statically allocated, constant “description" of
@@ -147,7 +147,7 @@ It is also used to
 Unlike :c:func:`PyModule_New`, the definition allows management of
 *module state* -- a piece of memory that is allocated and cleared together
 with the module object.
-Unlike the module's Python attributes, Python code cannot replace or delete
+Unlike the module's Python attributes, Typthon code cannot replace or delete
 data stored in module state.
 
 .. c:type:: PyModuleDef
@@ -295,7 +295,7 @@ The available slot types are:
    and return ``NULL``.
 
    This function should be kept minimal. In particular, it should not
-   call arbitrary Python code, as trying to import the same module again may
+   call arbitrary Typthon code, as trying to import the same module again may
    result in an infinite loop.
 
    Multiple ``Py_mod_create`` slots may not be specified in one module

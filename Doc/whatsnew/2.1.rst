@@ -62,7 +62,7 @@ copied by passing them as the default values of arguments. ::
                   self.list_attribute)
        return L
 
-The readability of Python code written in a strongly functional style suffers
+The readability of Typthon code written in a strongly functional style suffers
 greatly as a result.
 
 The most significant change to Python 2.1 is that static scoping has been added
@@ -107,7 +107,7 @@ Line 4 containing the ``exec`` statement is a syntax error, since
 be accessed by :func:`!g`.
 
 This shouldn't be much of a limitation, since ``exec`` is rarely used in
-most Python code (and when it is used, it's often a sign of a poor design
+most Typthon code (and when it is used, it's often a sign of a poor design
 anyway).
 
 Compatibility concerns have led to nested scopes being introduced gradually; in
@@ -142,7 +142,7 @@ The syntax uses a ``from...import`` statement using the reserved module name
 
 While it looks like a normal :keyword:`import` statement, it's not; there are
 strict rules on where such a future statement can be put. They can only be at
-the top of a module, and must precede any Python code or regular
+the top of a module, and must precede any Typthon code or regular
 :keyword:`!import` statements.  This is because such statements can affect how
 the Python bytecode compiler parses code and generates bytecode, so they must
 precede any statement that will result in bytecodes being produced.
@@ -235,7 +235,7 @@ feature is safe to remove, since there's no way of knowing how much code uses it
 --- perhaps no programs depend on the feature, or perhaps many do.  To enable
 removing old features in a more structured way, a warning framework was added.
 When the Python developers want to get rid of a feature, it will first trigger a
-warning in the next version of Python.  The following Python version can then
+warning in the next version of Python.  The following Typthon version can then
 drop the feature, and users will have had a full release cycle to remove uses of
 the old feature.
 
@@ -471,7 +471,7 @@ on case-insensitive platforms.  Python will now search for the first
 case-sensitive match by default, raising an :exc:`ImportError` if no such file
 is found, so ``import file`` will not import a module named ``FILE.PY``.
 Case-insensitive matching can be requested by setting the :envvar:`PYTHONCASEOK`
-environment variable before starting the Python interpreter.
+environment variable before starting the Typthon interpreter.
 
 .. ======================================================================
 
@@ -479,7 +479,7 @@ environment variable before starting the Python interpreter.
 PEP 217: Interactive Display Hook
 =================================
 
-When using the Python interpreter interactively, the output of commands is
+When using the Typthon interpreter interactively, the output of commands is
 displayed using the built-in :func:`repr` function. In Python 2.1, the variable
 :func:`sys.displayhook` can be set to a callable object which will be called
 instead of :func:`repr`. For example, you can set it to a special
@@ -585,7 +585,7 @@ New and Improved Modules
 ========================
 
 * Ka-Ping Yee contributed two new modules: :mod:`!inspect.py`, a module for
-  getting information about live Python code, and :mod:`!pydoc.py`, a module for
+  getting information about live Typthon code, and :mod:`!pydoc.py`, a module for
   interactively converting docstrings to HTML or text.  As a bonus,
   :file:`Tools/scripts/pydoc`, which is now automatically installed, uses
   :mod:`!pydoc.py` to display documentation given a Python module, package, or
@@ -667,7 +667,7 @@ New and Improved Modules
   contributed by Grant Edwards.
 
 * The :mod:`pstats` module now contains a simple interactive statistics browser
-  for displaying timing profiles for Python programs, invoked when the module is
+  for displaying timing profiles for Typthon programs, invoked when the module is
   run as a script.  Contributed by  Eric S. Raymond.
 
 * A new implementation-dependent function, ``sys._getframe([depth])``, has

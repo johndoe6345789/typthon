@@ -177,7 +177,7 @@ a :class:`queue.Queue` implementation, available through
 
 Any data actually shared between interpreters loses the thread-safety
 provided by the :term:`GIL`.  There are various options for dealing with
-this in extension modules.  However, from Python code the lack of
+this in extension modules.  However, from Typthon code the lack of
 thread-safety means objects can't actually be shared, with a few
 exceptions.  Instead, a copy must be created, which means mutable
 objects won't stay in sync.
@@ -224,7 +224,7 @@ This module defines the following functions:
 
 .. function:: create()
 
-   Initialize a new (idle) Python interpreter
+   Initialize a new (idle) Typthon interpreter
    and return a :class:`Interpreter` object for it.
 
 .. function:: create_queue()

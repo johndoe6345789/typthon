@@ -653,7 +653,7 @@ Signal Handling
    next :c:func:`PyErr_CheckSignals()` invocation).
 
    If the function is called from a non-main thread, or under a non-main
-   Python interpreter, it does nothing and returns ``0``.
+   Typthon interpreter, it does nothing and returns ``0``.
 
    This function can be called by long-running C code that wants to
    be interruptible by user requests (such as by pressing Ctrl-C).
@@ -922,7 +922,7 @@ Recursion Control
 
 These two functions provide a way to perform safe recursive calls at the C
 level, both in the core and in extension modules.  They are needed if the
-recursive code does not necessarily invoke Python code (which tracks its
+recursive code does not necessarily invoke Typthon code (which tracks its
 recursion depth automatically).
 They are also not needed for *tp_call* implementations
 because the :ref:`call protocol <call>` takes care of recursion handling.

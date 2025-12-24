@@ -12,7 +12,7 @@
 
 This module provides a :class:`ModuleFinder` class that can be used to determine
 the set of modules imported by a script. ``modulefinder.py`` can also be run as
-a script, giving the filename of a Python script as its argument, after which a
+a script, giving the filename of a Typthon script as its argument, after which a
 report of the imported modules will be printed.
 
 

@@ -12,7 +12,7 @@ Defining Extension Types: Tutorial
 
 
 Python allows the writer of a C extension module to define new types that
-can be manipulated from Python code, much like the built-in :class:`str`
+can be manipulated from Typthon code, much like the built-in :class:`str`
 and :class:`list` types.  The code for all extension types follows a
 pattern, but there are some details that you need to understand before you
 can get started.  This document is a gentle introduction to the topic.

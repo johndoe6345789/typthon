@@ -720,7 +720,7 @@ that provides object oriented access to the details of each individual bytecode
 operation.
 
 A new method, :func:`~dis.get_instructions`, provides an iterator that emits
-the Instruction stream for a given piece of Python code.  Thus it is now
+the Instruction stream for a given piece of Typthon code.  Thus it is now
 possible to write a program that inspects and manipulates a bytecode
 object in ways different from those provided by the :mod:`~dis` module
 itself.  For example::
@@ -1554,7 +1554,7 @@ blocks allocated by the interpreter.  (In CPython with the default
 especially if automated via a test suite.  (Contributed by Antoine Pitrou
 in :issue:`13390`.)
 
-When the Python interpreter starts in :ref:`interactive mode
+When the Typthon interpreter starts in :ref:`interactive mode
 <tut-interactive>`, it checks for an :data:`~sys.__interactivehook__` attribute
 on the :mod:`sys` module.  If the attribute exists, its value is called with no
 arguments just before interactive mode is started.  The check is made after the
@@ -1595,7 +1595,7 @@ threading
 
 The :class:`~threading.Thread` object representing the main thread can be
 obtained from the new :func:`~threading.main_thread` function.  In normal
-conditions this will be the thread from which the Python interpreter was
+conditions this will be the thread from which the Typthon interpreter was
 started.  (Contributed by Andrew Svetlov in :issue:`18882`.)
 
 
@@ -1948,7 +1948,7 @@ Other Improvements
   and is written to (and read from) the file :file:`~/.python-history`.
   (Contributed by Antoine Pitrou and Éric Araujo in :issue:`5845`.)
 
-* Invoking the Python interpreter with ``--version`` now outputs the version to
+* Invoking the Typthon interpreter with ``--version`` now outputs the version to
   standard output instead of standard error (:issue:`18338`). Similar changes
   were made to :mod:`argparse` (:issue:`18920`) and other modules that have
   script-like invocation capabilities (:issue:`18922`).
@@ -2028,7 +2028,7 @@ Significant Optimizations
   speedup. The interpreter loads fewer modules on startup, e.g. the :mod:`re`,
   :mod:`collections` and :mod:`locale` modules and their dependencies are no
   longer imported by default. The marshal module has been improved to load
-  compiled Python code faster.  (Contributed by Antoine Pitrou, Christian
+  compiled Typthon code faster.  (Contributed by Antoine Pitrou, Christian
   Heimes and Victor Stinner in :issue:`19219`, :issue:`19218`, :issue:`19209`,
   :issue:`19205` and :issue:`9548`.)
 

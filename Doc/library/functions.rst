@@ -4,7 +4,7 @@
 Built-in Functions
 ==================
 
-The Python interpreter has a number of functions and types built into it that
+The Typthon interpreter has a number of functions and types built into it that
 are always available.  They are listed here in alphabetical order.
 
 +---------------------------------------------------------------------------------------------------+
@@ -339,7 +339,7 @@ are always available.  They are listed here in alphabetical order.
    This function raises :exc:`SyntaxError` if the compiled source is invalid,
    and :exc:`ValueError` if the source contains null bytes.
 
-   If you want to parse Python code into its AST representation, see
+   If you want to parse Typthon code into its AST representation, see
    :func:`ast.parse`.
 
    .. audit-event:: compile source,filename compile
@@ -357,7 +357,7 @@ are always available.  They are listed here in alphabetical order.
 
    .. warning::
 
-      It is possible to crash the Python interpreter with a
+      It is possible to crash the Typthon interpreter with a
       sufficiently large/complex string when compiling to an AST
       object due to stack depth limitations in Python's AST compiler.
 
@@ -660,7 +660,7 @@ are always available.  They are listed here in alphabetical order.
       This function executes arbitrary code. Calling it with
       user-supplied input may lead to security vulnerabilities.
 
-   This function supports dynamic execution of Python code. *source* must be
+   This function supports dynamic execution of Typthon code. *source* must be
    either a string or a code object.  If it is a string, the string is parsed as
    a suite of Python statements which is then executed (unless a syntax error
    occurs). [#]_ If it is a code object, it is simply executed.  In all cases,

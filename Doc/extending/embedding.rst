@@ -19,12 +19,12 @@ more easily.
 
 Embedding Python is similar to extending it, but not quite.  The difference is
 that when you extend Python, the main program of the application is still the
-Python interpreter, while if you embed Python, the main program may have nothing
+Typthon interpreter, while if you embed Python, the main program may have nothing
 to do with Python --- instead, some parts of the application occasionally call
-the Python interpreter to run some Python code.
+the Typthon interpreter to run some Typthon code.
 
 So if you are embedding Python, you are providing your own main program.  One of
-the things this main program has to do is initialize the Python interpreter.  At
+the things this main program has to do is initialize the Typthon interpreter.  At
 the very least, you have to call the function :c:func:`Py_Initialize`.  There are
 optional calls to pass command line arguments to Python.  Then later you can
 call the interpreter from any part of the application.
@@ -49,7 +49,7 @@ Very High Level Embedding
 =========================
 
 The simplest form of embedding Python is the use of the very high level
-interface. This interface is intended to execute a Python script without needing
+interface. This interface is intended to execute a Typthon script without needing
 to interact with the application directly. This can for example be used to
 perform some operation on a file. ::
 
@@ -96,12 +96,12 @@ perform some operation on a file. ::
 
 Setting :c:member:`PyConfig.program_name` should be called before
 :c:func:`Py_InitializeFromConfig` to inform the interpreter about paths to Python run-time
-libraries.  Next, the Python interpreter is initialized with
-:c:func:`Py_Initialize`, followed by the execution of a hard-coded Python script
+libraries.  Next, the Typthon interpreter is initialized with
+:c:func:`Py_Initialize`, followed by the execution of a hard-coded Typthon script
 that prints the date and time.  Afterwards, the :c:func:`Py_FinalizeEx` call shuts
 the interpreter down, followed by the end of the program.  In a real program,
-you may want to get the Python script from another source, perhaps a text-editor
-routine, a file, or a database.  Getting the Python code from a file can better
+you may want to get the Typthon script from another source, perhaps a text-editor
+routine, a file, or a database.  Getting the Typthon code from a file can better
 be done by using the :c:func:`PyRun_SimpleFile` function, which saves you the
 trouble of allocating memory space and loading the file contents.
 
@@ -112,7 +112,7 @@ Beyond Very High Level Embedding: An overview
 =============================================
 
 The high level interface gives you the ability to execute arbitrary pieces of
-Python code from your application, but exchanging data values is quite
+Typthon code from your application, but exchanging data values is quite
 cumbersome to say the least. If you want that, you should use lower level calls.
 At the cost of having to write more C code, you can achieve almost anything.
 
@@ -152,17 +152,17 @@ you can refer to earlier chapters for the required information.
 Pure Embedding
 ==============
 
-The first program aims to execute a function in a Python script. Like in the
-section about the very high level interface, the Python interpreter does not
+The first program aims to execute a function in a Typthon script. Like in the
+section about the very high level interface, the Typthon interpreter does not
 directly interact with the application (but that will change in the next
 section).
 
-The code to run a function defined in a Python script is:
+The code to run a function defined in a Typthon script is:
 
 .. literalinclude:: ../includes/run-func.c
 
 
-This code loads a Python script using ``argv[1]``, and calls the function named
+This code loads a Typthon script using ``argv[1]``, and calls the function named
 in ``argv[2]``.  Its integer arguments are the other values of the ``argv``
 array.  If you :ref:`compile and link <compiling>` this program (let's call
 the finished executable :program:`call`), and use it to execute a Python
@@ -225,11 +225,11 @@ after examining the value.
 Extending Embedded Python
 =========================
 
-Until now, the embedded Python interpreter had no access to functionality from
+Until now, the embedded Typthon interpreter had no access to functionality from
 the application itself.  The Python API allows this by extending the embedded
 interpreter.  That is, the embedded interpreter gets extended with routines
 provided by the application. While it sounds complex, it is not so bad.  Simply
-forget for a while that the application starts the Python interpreter.  Instead,
+forget for a while that the application starts the Typthon interpreter.  Instead,
 consider the application to be a set of subroutines, and write some glue code
 that gives Python access to those routines, just like you would write a normal
 Python extension.  For example::
@@ -271,8 +271,8 @@ following two statements before the call to :c:func:`Py_Initialize`::
    PyImport_AppendInittab("emb", &PyInit_emb);
 
 These two lines initialize the ``numargs`` variable, and make the
-:func:`!emb.numargs` function accessible to the embedded Python interpreter.
-With these extensions, the Python script can do things like
+:func:`!emb.numargs` function accessible to the embedded Typthon interpreter.
+With these extensions, the Typthon script can do things like
 
 .. code-block:: python
 
@@ -303,7 +303,7 @@ Compiling and Linking under Unix-like systems
 =============================================
 
 It is not necessarily trivial to find the right flags to pass to your
-compiler (and linker) in order to embed the Python interpreter into your
+compiler (and linker) in order to embed the Typthon interpreter into your
 application, particularly because Python needs to load library modules
 implemented as C dynamic extensions (:file:`.so` files) linked against
 it.

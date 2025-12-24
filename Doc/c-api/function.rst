@@ -69,7 +69,7 @@ There are a few functions specific to Python functions.
    It can be *NULL*.
 
    This is normally a :class:`string <str>` containing the module name,
-   but can be set to any other object by Python code.
+   but can be set to any other object by Typthon code.
 
 
 .. c:function:: PyObject* PyFunction_GetDefaults(PyObject *op)
@@ -195,7 +195,7 @@ There are a few functions specific to Python functions.
    function objects when possible. In such cases no event will be emitted.
    Although this creates the possibility of an observable difference of
    runtime behavior depending on optimization decisions, it does not change
-   the semantics of the Python code being executed.
+   the semantics of the Typthon code being executed.
 
    If *event* is ``PyFunction_EVENT_DESTROY``,  Taking a reference in the
    callback to the about-to-be-destroyed function will resurrect it, preventing

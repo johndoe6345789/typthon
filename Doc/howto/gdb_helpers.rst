@@ -262,7 +262,7 @@ Again, the implementation details can be revealed with a cast to
 
    The frame numbers correspond to those displayed by GDB's standard
    ``backtrace`` command.
-   The command skips C frames which are not executing Python code.
+   The command skips C frames which are not executing Typthon code.
 
    Going back down::
 

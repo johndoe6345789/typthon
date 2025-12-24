@@ -339,7 +339,7 @@ the same library that the Python runtime is using.
 
    .. c:member:: int cf_feature_version
 
-      *cf_feature_version* is the minor Python version. It should be
+      *cf_feature_version* is the minor Typthon version. It should be
       initialized to ``PY_MINOR_VERSION``.
 
       The field is ignored by default, it is used if and only if

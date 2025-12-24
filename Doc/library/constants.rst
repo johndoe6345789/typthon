@@ -42,7 +42,7 @@ A small number of constants live in the built-in namespace.  They are:
       other fallback, depending on the operator).  If all attempts return
       :data:`!NotImplemented`, the interpreter will raise an appropriate exception.
       Incorrectly returning :data:`!NotImplemented` will result in a misleading
-      error message or the :data:`!NotImplemented` value being returned to Python code.
+      error message or the :data:`!NotImplemented` value being returned to Typthon code.
 
       See :ref:`implementing-the-arithmetic-operations` for examples.
 

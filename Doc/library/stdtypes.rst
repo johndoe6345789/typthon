@@ -795,7 +795,7 @@ Here are the rules in detail:
   1))``.  Again, if the result is ``-1``, it's replaced with ``-2``.
 
 
-To clarify the above rules, here's some example Python code,
+To clarify the above rules, here's some example Typthon code,
 equivalent to the built-in hash, for computing the hash of a rational
 number, :class:`float`, or :class:`complex`::
 
@@ -4130,7 +4130,7 @@ Notes:
 Memory Views
 ------------
 
-:class:`memoryview` objects allow Python code to access the internal data
+:class:`memoryview` objects allow Typthon code to access the internal data
 of an object that supports the :ref:`buffer protocol <bufferobjects>` without
 copying.
 
@@ -5797,7 +5797,7 @@ Code Objects
    single: __code__ (function object attribute)
 
 Code objects are used by the implementation to represent "pseudo-compiled"
-executable Python code such as a function body. They differ from function
+executable Typthon code such as a function body. They differ from function
 objects because they don't contain a reference to their global execution
 environment.  Code objects are returned by the built-in :func:`compile` function
 and can be extracted from function objects through their
@@ -6065,7 +6065,7 @@ Recommended configuration
 
 The default :data:`sys.int_info.default_max_str_digits` is expected to be
 reasonable for most applications. If your application requires a different
-limit, set it from your main entry point using Python version agnostic code as
+limit, set it from your main entry point using Typthon version agnostic code as
 these APIs were added in security patch releases in versions before 3.12.
 
 Example::

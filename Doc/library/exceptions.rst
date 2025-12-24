@@ -582,8 +582,8 @@ The following exceptions are the exceptions that are usually raised.
 
    If you're confident that this exception wasn't your fault, or the fault of
    a package you're using, you should report this to the author or maintainer
-   of your Python interpreter.
-   Be sure to report the version of the Python interpreter (``sys.version``; it is
+   of your Typthon interpreter.
+   Be sure to report the version of the Typthon interpreter (``sys.version``; it is
    also printed at the start of an interactive Python session), the exact error
    message (the exception's associated value) and if possible the source of the
    program that triggered the error.
@@ -595,7 +595,7 @@ The following exceptions are the exceptions that are usually raised.
    :exc:`BaseException` instead of :exc:`Exception` so that it is not accidentally
    caught by code that catches :exc:`Exception`.  This allows the exception to
    properly propagate up and cause the interpreter to exit.  When it is not
-   handled, the Python interpreter exits; no stack traceback is printed.  The
+   handled, the Typthon interpreter exits; no stack traceback is printed.  The
    constructor accepts the same optional argument passed to :func:`sys.exit`.
    If the value is an integer, it specifies the system exit status (passed to
    C's :c:func:`!exit` function); if it is ``None``, the exit status is zero; if

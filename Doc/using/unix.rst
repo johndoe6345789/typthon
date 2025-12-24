@@ -147,7 +147,7 @@ usually ::
 
    #!/usr/bin/env python3
 
-which searches for the Python interpreter in the whole :envvar:`PATH`.  However,
+which searches for the Typthon interpreter in the whole :envvar:`PATH`.  However,
 some Unices may not have the :program:`env` command, so you may need to hardcode
 ``/usr/bin/python3`` as the interpreter path.
 

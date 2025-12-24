@@ -1667,7 +1667,7 @@ Debugging
 
 Doctest provides several mechanisms for debugging doctest examples:
 
-* Several functions convert doctests to executable Python programs, which can be
+* Several functions convert doctests to executable Typthon programs, which can be
   run under the Python debugger, :mod:`pdb`.
 
 * The :class:`DebugRunner` class is a subclass of :class:`DocTestRunner` that
@@ -1726,7 +1726,7 @@ Doctest provides several mechanisms for debugging doctest examples:
      >>>
 
 
-Functions that convert doctests to Python code, and possibly run the synthesized
+Functions that convert doctests to Typthon code, and possibly run the synthesized
 code under the debugger:
 
 
@@ -1735,7 +1735,7 @@ code under the debugger:
    Convert text with examples to a script.
 
    Argument *s* is a string containing doctest examples.  The string is converted
-   to a Python script, where doctest examples in *s* are converted to regular code,
+   to a Typthon script, where doctest examples in *s* are converted to regular code,
    and everything else is converted to Python comments.  The generated script is
    returned as a string. For example, ::
 
@@ -1771,7 +1771,7 @@ code under the debugger:
    Argument *module* is a module object, or dotted name of a module, containing the
    object whose doctests are of interest.  Argument *name* is the name (within the
    module) of the object with the doctests of interest.  The result is a string,
-   containing the object's docstring converted to a Python script, as described for
+   containing the object's docstring converted to a Typthon script, as described for
    :func:`script_from_examples` above.  For example, if module :file:`a.py`
    contains a top-level function :func:`!f`, then ::
 
@@ -1787,7 +1787,7 @@ code under the debugger:
    Debug the doctests for an object.
 
    The *module* and *name* arguments are the same as for function
-   :func:`testsource` above.  The synthesized Python script for the named object's
+   :func:`testsource` above.  The synthesized Typthon script for the named object's
    docstring is written to a temporary file, and then that file is run under the
    control of the Python debugger, :mod:`pdb`.
 

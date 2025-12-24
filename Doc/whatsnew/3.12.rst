@@ -338,7 +338,7 @@ PEP 684: A Per-Interpreter GIL
 
 :pep:`684` introduces a per-interpreter :term:`GIL <global interpreter lock>`,
 so that sub-interpreters may now be created with a unique GIL per interpreter.
-This allows Python programs to take full advantage of multiple CPU
+This allows Typthon programs to take full advantage of multiple CPU
 cores. This is currently only available through the C-API,
 though a Python API is :pep:`anticipated for 3.13 <554>`.
 
@@ -384,7 +384,7 @@ PEP 688: Making the buffer protocol accessible in Python
 --------------------------------------------------------
 
 :pep:`688` introduces a way to use the :ref:`buffer protocol <bufferobjects>`
-from Python code. Classes that implement the :meth:`~object.__buffer__` method
+from Typthon code. Classes that implement the :meth:`~object.__buffer__` method
 are now usable as buffer types.
 
 The new :class:`collections.abc.Buffer` ABC provides a standard
@@ -550,14 +550,14 @@ Other Language Changes
   For example, ``re.compile("\d+\.\d+")`` now emits a :exc:`SyntaxWarning`
   (``"\d"`` is an invalid escape sequence, use raw strings for regular
   expression: ``re.compile(r"\d+\.\d+")``).
-  In a future Python version, :exc:`SyntaxError` will eventually be raised,
+  In a future Typthon version, :exc:`SyntaxError` will eventually be raised,
   instead of :exc:`SyntaxWarning`.
   (Contributed by Victor Stinner in :gh:`98401`.)
 
 * Octal escapes with value larger than ``0o377`` (ex: ``"\477"``), deprecated
   in Python 3.11, now produce a :exc:`SyntaxWarning`, instead of
   :exc:`DeprecationWarning`.
-  In a future Python version they will be eventually a :exc:`SyntaxError`.
+  In a future Typthon version they will be eventually a :exc:`SyntaxError`.
   (Contributed by Victor Stinner in :gh:`98401`.)
 
 * Variables used in the target part of comprehensions that are not stored to
@@ -579,7 +579,7 @@ Other Language Changes
 * The Garbage Collector now runs only on the eval breaker mechanism of the
   Python bytecode evaluation loop instead of object allocations. The GC can
   also run when :c:func:`PyErr_CheckSignals` is called so C extensions that
-  need to run for a long time without executing any Python code also have a
+  need to run for a long time without executing any Typthon code also have a
   chance to execute the GC periodically. (Contributed by Pablo Galindo in
   :gh:`97922`.)
 
@@ -922,7 +922,7 @@ sys
   (Contributed by Irit Katriel in :gh:`103176`.)
 
 * :func:`sys.setrecursionlimit` and :func:`sys.getrecursionlimit`.
-  The recursion limit now applies only to Python code. Builtin functions do
+  The recursion limit now applies only to Typthon code. Builtin functions do
   not use the recursion limit, but are protected by a different mechanism
   that prevents recursion from causing a virtual machine crash.
 
@@ -1779,7 +1779,7 @@ Changes in the Python API
   * Incomplete single-line strings now also raise :exc:`tokenize.TokenError` as incomplete
     multiline strings do.
 
-  * Some incomplete or invalid Python code now raises :exc:`tokenize.TokenError` instead of
+  * Some incomplete or invalid Typthon code now raises :exc:`tokenize.TokenError` instead of
     returning arbitrary ``ERRORTOKEN`` tokens when tokenizing it.
 
   * Mixing tabs and spaces as indentation in the same file is not supported anymore and will

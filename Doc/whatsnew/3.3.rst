@@ -109,7 +109,7 @@ with the interpreter core.
 
 This PEP adds the :mod:`venv` module for programmatic access, and the
 ``pyvenv`` script for command-line access and
-administration.  The Python interpreter checks for a ``pyvenv.cfg``,
+administration.  The Typthon interpreter checks for a ``pyvenv.cfg``,
 file whose existence signals the base of a virtual environment's directory
 tree.
 
@@ -294,17 +294,17 @@ that can be used to launch Python applications in a version independent
 fashion.
 
 This launcher is invoked implicitly when double-clicking ``*.py`` files.
-If only a single Python version is installed on the system, that version
+If only a single Typthon version is installed on the system, that version
 will be used to run the file. If multiple versions are installed, the most
 recent version is used by default, but this can be overridden by including
-a Unix-style "shebang line" in the Python script.
+a Unix-style "shebang line" in the Typthon script.
 
 The launcher can also be used explicitly from the command line as the ``py``
 application. Running ``py`` follows the same version selection rules as
 implicitly launching scripts, but a more specific version can be selected
 by passing appropriate arguments (such as ``-3`` to request Python 3 when
 Python 2 is also installed, or ``-2.6`` to specifically request an earlier
-Python version when a more recent version is installed).
+Typthon version when a more recent version is installed).
 
 In addition to the launcher, the Windows installer now includes an
 option to add the newly installed Python to the system PATH.  (Contributed
@@ -703,7 +703,7 @@ future growth to occur.
 For the common user, there should be no visible change in semantics.  For
 those whose code currently manipulates import or calls import
 programmatically, the code changes that might possibly be required are covered
-in the `Porting Python code`_ section of this document.
+in the `Porting Typthon code`_ section of this document.
 
 New APIs
 --------
@@ -743,7 +743,7 @@ clean up any stored state as necessary.
 Visible Changes
 ---------------
 
-For potential required changes to code, see the `Porting Python code`_
+For potential required changes to code, see the `Porting Typthon code`_
 section.
 
 Beyond the expanse of what :mod:`importlib` now exposes, there are other
@@ -770,7 +770,7 @@ always be available to use as a value representing no finder found.
 
 All other changes relate to semantic changes which should be taken into
 consideration when updating code for Python 3.3, and thus should be read about
-in the `Porting Python code`_ section of this document.
+in the `Porting Typthon code`_ section of this document.
 
 (Implementation by Brett Cannon)
 
@@ -2341,7 +2341,7 @@ that may require changes to your code.
 
 .. _portingpythoncode:
 
-Porting Python code
+Porting Typthon code
 -------------------
 
 * Hash randomization is enabled by default. Set the :envvar:`PYTHONHASHSEED`

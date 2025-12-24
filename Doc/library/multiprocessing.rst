@@ -110,7 +110,7 @@ to start a process.  These *start methods* are
   .. _multiprocessing-start-method-spawn:
 
   *spawn*
-    The parent process starts a fresh Python interpreter process.  The
+    The parent process starts a fresh Typthon interpreter process.  The
     child process will only inherit those resources necessary to run
     the process object's :meth:`~Process.run` method.  In particular,
     unnecessary file descriptors and handles from the parent process
@@ -1154,7 +1154,7 @@ Miscellaneous
 
 .. function:: set_executable(executable)
 
-   Set the path of the Python interpreter to use when starting a child process.
+   Set the path of the Typthon interpreter to use when starting a child process.
    (By default :data:`sys.executable` is used).  Embedders will probably need to
    do some thing like ::
 
@@ -3110,7 +3110,7 @@ Safe importing of main module
     (The ``freeze_support()`` line can be omitted if the program will be run
     normally instead of frozen.)
 
-    This allows the newly spawned Python interpreter to safely import the module
+    This allows the newly spawned Typthon interpreter to safely import the module
     and then run the module's ``foo()`` function.
 
     Similar restrictions apply if a pool or manager is created in the main

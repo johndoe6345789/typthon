@@ -252,7 +252,7 @@ Secret Labs AB.
 
 A ``-U`` command line option was added which causes the Python compiler to
 interpret all string literals as Unicode string literals. This is intended to be
-used in testing and future-proofing your Python code, since some future version
+used in testing and future-proofing your Typthon code, since some future version
 of Python may drop support for 8-bit strings and provide only Unicode strings.
 
 .. ======================================================================
@@ -305,7 +305,7 @@ is optional; if present, *expression* is only evaluated and added to the result
 if *condition* is true.
 
 To make the semantics very clear, a list comprehension is equivalent to the
-following Python code::
+following Typthon code::
 
    for expr1 in sequence1:
        for expr2 in sequence2:
@@ -459,7 +459,7 @@ the other is from the ``myself`` attribute of the instance.
 If the next line of code is ``del instance``, what happens?  The reference count
 of ``instance`` is decreased by 1, so it has a reference count of 1; the
 reference in the ``myself`` attribute still exists.  Yet the instance is no
-longer accessible through Python code, and it could be deleted.  Several objects
+longer accessible through Typthon code, and it could be deleted.  Several objects
 can participate in a cycle if they have references to each other, causing all of
 the objects to be leaked.
 
@@ -594,7 +594,7 @@ raised should still work. ::
 
 Two new exceptions, :exc:`TabError` and :exc:`IndentationError`, have been
 introduced.  They're both subclasses of :exc:`SyntaxError`, and are raised when
-Python code is found to be improperly indented.
+Typthon code is found to be improperly indented.
 
 
 Changes to Built-in Functions
@@ -650,7 +650,7 @@ New Python releases try hard to be compatible with previous releases, and the
 record has been pretty good.  However, some changes are considered useful
 enough, usually because they fix initial design decisions that turned out to be
 actively mistaken, that breaking backward compatibility can't always be avoided.
-This section lists the changes in Python 2.0 that may cause old Python code to
+This section lists the changes in Python 2.0 that may cause old Typthon code to
 break.
 
 The change which will probably break the most code is tightening up the
@@ -679,7 +679,7 @@ the documentation actually used the erroneous multiple argument form, many
 people wrote code which would break with the stricter checking.  GvR backed out
 the changes in the face of public reaction, so for the :mod:`socket` module, the
 documentation was fixed and the multiple argument form is simply marked as
-deprecated; it *will* be tightened up again in a future Python version.
+deprecated; it *will* be tightened up again in a future Typthon version.
 
 The ``\x`` escape in string literals now takes exactly 2 hex digits.  Previously
 it would consume all the hex digits following the 'x' and take the lowest 8 bits
@@ -740,7 +740,7 @@ Extending/Embedding Changes
 ===========================
 
 Some of the changes are under the covers, and will only be apparent to people
-writing C extension modules or embedding a Python interpreter in a larger
+writing C extension modules or embedding a Typthon interpreter in a larger
 application.  If you aren't dealing with Python's C API, you can safely skip
 this section.
 
@@ -765,7 +765,7 @@ directory that held various portability hacks; they've been merged into a single
 file, :file:`Include/pyport.h`.
 
 Vladimir Marangozov's long-awaited malloc restructuring was completed, to make
-it easy to have the Python interpreter use a custom allocator instead of C's
+it easy to have the Typthon interpreter use a custom allocator instead of C's
 standard :c:func:`malloc`.  For documentation, read the comments in
 :file:`Include/pymem.h` and :file:`Include/objimpl.h`.  For the lengthy
 discussions during which the interface was hammered out, see the web archives of
@@ -790,7 +790,7 @@ only supports K&R C.
 Previously the Python virtual machine used 16-bit numbers in its bytecode,
 limiting the size of source files.  In particular, this affected the maximum
 size of literal lists and dictionaries in Python source; occasionally people who
-are generating Python code would run into this limit.  A patch by Charles G.
+are generating Typthon code would run into this limit.  A patch by Charles G.
 Waldman raises the limit from ``2**16`` to ``2**32``.
 
 Three new convenience functions intended for adding constants to a module's
@@ -1001,7 +1001,7 @@ the different :class:`!Node` classes and their various methods.
 Relationship to PyXML
 ---------------------
 
-The XML Special Interest Group has been working on XML-related Python code for a
+The XML Special Interest Group has been working on XML-related Typthon code for a
 while.  Its code distribution, called PyXML, is available from the SIG's web
 pages at https://www.python.org/community/sigs/current/xml-sig. The PyXML distribution also used
 the package name ``xml``.  If you've written programs that used PyXML, you're
@@ -1092,7 +1092,7 @@ module.
   MacMillan and Moshe Zadka.)
 
 * :mod:`gettext`: This module provides internationalization (I18N) and
-  localization (L10N) support for Python programs by providing an interface to the
+  localization (L10N) support for Typthon programs by providing an interface to the
   GNU gettext message catalog library. (Integrated by Barry Warsaw, from separate
   contributions by Martin  von Löwis, Peter Funk, and James Henstridge.)
 

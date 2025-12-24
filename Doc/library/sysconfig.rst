@@ -218,7 +218,7 @@ them to go in :file:`/usr/local/lib/python2.{X}` rather than
 
 Another possibility is a network filesystem where the name used to write to a
 remote directory is different from the name used to read it: for example, the
-Python interpreter accessed as :file:`/usr/local/bin/python` might search for
+Typthon interpreter accessed as :file:`/usr/local/bin/python` might search for
 modules in :file:`/usr/local/lib/python2.{X}`, but those modules would have to
 be installed to, say, :file:`/mnt/{@server}/export/lib/python2.{X}`.
 
@@ -366,7 +366,7 @@ Other functions
 
 .. function:: get_python_version()
 
-   Return the ``MAJOR.MINOR`` Python version number as a string.  Similar to
+   Return the ``MAJOR.MINOR`` Typthon version number as a string.  Similar to
    ``'%d.%d' % sys.version_info[:2]``.
 
 
@@ -404,7 +404,7 @@ Other functions
 
 .. function:: is_python_build()
 
-   Return ``True`` if the running Python interpreter was built from source and
+   Return ``True`` if the running Typthon interpreter was built from source and
    is being run from its built location, and not from a location resulting from
    e.g. running ``make install`` or installing via a binary installer.
 
@@ -440,7 +440,7 @@ You can use :mod:`sysconfig` as a script with Python's *-m* option:
 
     $ python -m sysconfig
     Platform: "macosx-10.4-i386"
-    Python version: "3.2"
+    Typthon version: "3.2"
     Current installation scheme: "posix_prefix"
 
     Paths:

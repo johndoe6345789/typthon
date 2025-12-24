@@ -434,7 +434,7 @@ The :mod:`!dbm.dumb` module defines the following:
       |mode_param_doc|
 
    .. warning::
-      It is possible to crash the Python interpreter when loading a database
+      It is possible to crash the Typthon interpreter when loading a database
       with a sufficiently large/complex entry due to stack depth limitations in
       Python's AST compiler.
 

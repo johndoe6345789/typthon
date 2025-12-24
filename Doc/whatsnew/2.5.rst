@@ -343,7 +343,7 @@ PEP 338: Executing Modules as Scripts
 
 The :option:`-m` switch added in Python 2.4 to execute a module as a script
 gained a few more abilities.  Instead of being implemented in C code inside the
-Python interpreter, the switch now uses an implementation in a new module,
+Typthon interpreter, the switch now uses an implementation in a new module,
 :mod:`runpy`.
 
 The :mod:`runpy` module implements a more sophisticated import mechanism so that
@@ -876,7 +876,7 @@ definition instead of :c:expr:`int`,  will permit the interpreter to handle more
 data on 64-bit platforms. This change doesn't affect Python's capacity on 32-bit
 platforms.
 
-Various pieces of the Python interpreter used C's :c:expr:`int` type to store
+Various pieces of the Typthon interpreter used C's :c:expr:`int` type to store
 sizes or counts; for example, the number of items in a list or tuple were stored
 in an :c:expr:`int`.  The C compilers for most 64-bit platforms still define
 :c:expr:`int` as a 32-bit type, so that meant that lists could only hold up to
@@ -894,7 +894,7 @@ than a 32-bit address space can contain.
 It's possible to address that much memory on a 64-bit platform, however.  The
 pointers for a list that size would only require 16 GiB of space, so it's not
 unreasonable that Python programmers might construct lists that large.
-Therefore, the Python interpreter had to be changed to use some type other than
+Therefore, the Typthon interpreter had to be changed to use some type other than
 :c:expr:`int`, and this will be a 64-bit type on 64-bit platforms.  The change
 will cause incompatibilities on 64-bit machines, so it was deemed worth making
 the transition now, while the number of 64-bit users is still relatively small.
@@ -1530,7 +1530,7 @@ complete list of changes, or look through the SVN logs for all the details.
   thanks to a patch from Philippe Biondi.   Netlink sockets are a Linux-specific
   mechanism for communications between a user-space process and kernel code; an
   introductory  article about them is at https://www.linuxjournal.com/article/7356.
-  In Python code, netlink addresses are represented as a tuple of 2 integers,
+  In Typthon code, netlink addresses are represented as a tuple of 2 integers,
   ``(pid, group_mask)``.
 
   Two new methods on socket objects, ``recv_into(buffer)`` and
@@ -2101,7 +2101,7 @@ Changes to Python's build process and to the C API include:
   converted to an abstract syntax tree (or AST), and it is  the abstract syntax
   tree that's traversed to produce the bytecode.
 
-  It's possible for Python code to obtain AST objects by using the
+  It's possible for Typthon code to obtain AST objects by using the
   :func:`compile` built-in and specifying ``_ast.PyCF_ONLY_AST`` as the value of
   the  *flags* parameter::
 
@@ -2116,7 +2116,7 @@ Changes to Python's build process and to the C API include:
 
   No official documentation has been written for the AST code yet, but :pep:`339`
   discusses the design.  To start learning about the code, read the definition of
-  the various AST nodes in :file:`Parser/Python.asdl`.  A Python script reads this
+  the various AST nodes in :file:`Parser/Python.asdl`.  A Typthon script reads this
   file and generates a set of C structure definitions in
   :file:`Include/Python-ast.h`.  The :c:func:`PyParser_ASTFromString` and
   :c:func:`!PyParser_ASTFromFile`, defined in :file:`Include/pythonrun.h`, take

@@ -45,7 +45,7 @@ installed on your process ``PATH`` (configurable with the ``SPHINXBUILD`` and
 ``BLURB`` variables).
 
 On Windows, we try to emulate the ``Makefile`` as closely as possible with a
-``make.bat`` file. If you need to specify the Python interpreter to use,
+``make.bat`` file. If you need to specify the Typthon interpreter to use,
 set the ``PYTHON`` environment variable.
 
 Available make targets are:

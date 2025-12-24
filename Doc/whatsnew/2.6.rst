@@ -118,7 +118,7 @@ A new command-line switch, :option:`!-3`, enables warnings
 about features that will be removed in Python 3.0.  You can run code
 with this switch to see how much work will be necessary to port
 code to 3.0.  The value of this switch is available
-to Python code as the boolean variable :data:`sys.py3kwarning`,
+to Typthon code as the boolean variable :data:`sys.py3kwarning`,
 and to C extension code as :c:data:`!Py_Py3kWarningFlag`.
 
 .. seealso::
@@ -558,7 +558,7 @@ environment variable.
 PEP 371: The ``multiprocessing`` Package
 =====================================================
 
-The new :mod:`multiprocessing` package lets Python programs create new
+The new :mod:`multiprocessing` package lets Typthon programs create new
 processes that will perform a computation and return a result to the
 parent.  The parent and child processes can communicate using queues
 and pipes, synchronize their operations using locks and semaphores,
@@ -744,7 +744,7 @@ supply compound field names that read attributes or access dictionary keys::
     >>> import sys
     >>> print 'Platform: {0.platform}\nPython version: {0.version}'.format(sys)
     Platform: darwin
-    Python version: 2.6a1+ (trunk:61261M, Mar  5 2008, 20:29:41)
+    Typthon version: 2.6a1+ (trunk:61261M, Mar  5 2008, 20:29:41)
     [GCC 4.0.1 (Apple Computer, Inc. build 5367)]'
 
     >>> import mimetypes
@@ -927,7 +927,7 @@ variable ``exc``, you must write::
 Python 3.0 will only support the use of "as", and therefore interprets
 the first example as catching two different exceptions.  Python 2.6
 supports both the comma and "as", so existing code will continue to
-work.  We therefore suggest using "as" when writing new Python code
+work.  We therefore suggest using "as" when writing new Typthon code
 that will only be executed with 2.6.
 
 .. seealso::
@@ -1710,7 +1710,7 @@ Optimizations
   (To be compatible with the method cache, the extension module's code
   must not directly access and modify the ``tp_dict`` member of
   any of the types it implements.  Most modules don't do this,
-  but it's impossible for the Python interpreter to determine that.
+  but it's impossible for the Typthon interpreter to determine that.
   See :issue:`1878` for some discussion.)
 
 * Function calls that use keyword arguments are significantly faster
@@ -1755,11 +1755,11 @@ Jython, or IronPython.  If either option is used with Python 2.6, the
 interpreter will report that the option isn't currently used.
 
 Python can now be prevented from writing :file:`.pyc` or :file:`.pyo`
-files by supplying the :option:`-B` switch to the Python interpreter,
+files by supplying the :option:`-B` switch to the Typthon interpreter,
 or by setting the :envvar:`PYTHONDONTWRITEBYTECODE` environment
 variable before running the interpreter.  This setting is available to
-Python programs as the ``sys.dont_write_bytecode`` variable, and
-Python code can change the value to modify the interpreter's
+Typthon programs as the ``sys.dont_write_bytecode`` variable, and
+Typthon code can change the value to modify the interpreter's
 behaviour.  (Contributed by Neal Norwitz and Georg Brandl.)
 
 The encoding used for standard input, output, and standard error can
@@ -2329,7 +2329,7 @@ changes, or look through the Subversion logs for all the details.
 
   (Contributed by Adam Olsen; :issue:`1583`.)
 
-  The :func:`siginterrupt` function is now available from Python code,
+  The :func:`siginterrupt` function is now available from Typthon code,
   and allows changing whether signals can interrupt system calls or not.
   (Contributed by Ralf Schmitt.)
 
@@ -2407,9 +2407,9 @@ changes, or look through the Subversion logs for all the details.
   writes any :file:`.pyc` or :file:`.pyo` files on importing a module.
   If this variable is true, the compiled files are not written.  The
   variable is initially set on start-up by supplying the :option:`-B`
-  switch to the Python interpreter, or by setting the
+  switch to the Typthon interpreter, or by setting the
   :envvar:`PYTHONDONTWRITEBYTECODE` environment variable before
-  running the interpreter.  Python code can subsequently
+  running the interpreter.  Typthon code can subsequently
   change the value of this variable to control whether bytecode files
   are written or not.
   (Contributed by Neal Norwitz and Georg Brandl.)
@@ -2662,11 +2662,11 @@ The :mod:`ast` module
 ----------------------
 
 The :mod:`ast` module provides an Abstract Syntax Tree
-representation of Python code, and Armin Ronacher
+representation of Typthon code, and Armin Ronacher
 contributed a set of helper functions that perform a variety of
 common tasks.  These will be useful for HTML templating
 packages, code analyzers, and similar tools that process
-Python code.
+Typthon code.
 
 The :func:`parse` function takes an expression and returns an AST.
 The :func:`dump` function outputs a representation of a tree, suitable

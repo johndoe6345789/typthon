@@ -26,7 +26,7 @@ Therefore, the Python maintainers reserve the right to modify the marshal format
 in backward incompatible ways should the need arise.
 The format of code objects is not compatible between Python versions,
 even if the version of the format is the same.
-De-serializing a code object in the incorrect Python version has undefined behavior.
+De-serializing a code object in the incorrect Typthon version has undefined behavior.
 If you're serializing and
 de-serializing Python objects, use the :mod:`pickle` module instead -- the
 performance is comparable, version independence is guaranteed, and pickle
@@ -97,7 +97,7 @@ The module defines these functions:
 .. function:: load(file, /, *, allow_code=True)
 
    Read one value from the open file and return it.  If no valid value is read
-   (e.g. because the data has a different Python version's incompatible marshal
+   (e.g. because the data has a different Typthon version's incompatible marshal
    format), raise :exc:`EOFError`, :exc:`ValueError` or :exc:`TypeError`.
    :ref:`Code objects <code-objects>` are only supported if *allow_code* is true.
    The file must be a readable :term:`binary file`.

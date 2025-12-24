@@ -7,7 +7,7 @@ Top-level components
 
 .. index:: single: interpreter
 
-The Python interpreter can get its input from a number of sources: from a script
+The Typthon interpreter can get its input from a number of sources: from a script
 passed to it as standard input or as program argument, typed in interactively,
 from a module source file, etc.  This chapter gives the syntax used in these
 cases.
@@ -15,7 +15,7 @@ cases.
 
 .. _programs:
 
-Complete Python programs
+Complete Typthon programs
 ========================
 
 .. index:: single: program

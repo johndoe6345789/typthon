@@ -856,7 +856,7 @@ language, and the embedded Python distribution can be used for this purpose. In
 general, the majority of the application is in native code, and some part will
 either invoke ``python.exe`` or directly use ``python3.dll``. For either case,
 extracting the embedded distribution to a subdirectory of the application
-installation is sufficient to provide a loadable Python interpreter.
+installation is sufficient to provide a loadable Typthon interpreter.
 
 As with the application use, packages can be installed to any location as there
 is an opportunity to specify search paths before initializing the interpreter.
@@ -1529,7 +1529,7 @@ Python Launcher for Windows (Deprecated)
 
 The Python launcher for Windows is a utility which aids in locating and
 executing of different Python versions.  It allows scripts (or the
-command-line) to indicate a preference for a specific Python version, and
+command-line) to indicate a preference for a specific Typthon version, and
 will locate and execute that version.
 
 Unlike the :envvar:`PATH` variable, the launcher will correctly select the most
@@ -1615,17 +1615,17 @@ Virtual environments
 
 .. versionadded:: 3.5
 
-If the launcher is run with no explicit Python version specification, and a
+If the launcher is run with no explicit Typthon version specification, and a
 virtual environment (created with the standard library :mod:`venv` module or
 the external ``virtualenv`` tool) active, the launcher will run the virtual
 environment's interpreter rather than the global one.  To run the global
 interpreter, either deactivate the virtual environment, or explicitly specify
-the global Python version.
+the global Typthon version.
 
 From a script
 ^^^^^^^^^^^^^
 
-Let's create a test Python script - create a file called ``hello.py`` with the
+Let's create a test Typthon script - create a file called ``hello.py`` with the
 following contents
 
 .. code-block:: python
@@ -1761,7 +1761,7 @@ Arguments in shebang lines
 --------------------------
 
 The shebang lines can also specify additional options to be passed to the
-Python interpreter.  For example, if you have a shebang line:
+Typthon interpreter.  For example, if you have a shebang line:
 
 .. code-block:: sh
 
@@ -1815,7 +1815,7 @@ although not guaranteed, to be the most recently installed version in that
 family.
 
 On 64-bit Windows with both 32-bit and 64-bit implementations of the same
-(major.minor) Python version installed, the 64-bit version will always be
+(major.minor) Typthon version installed, the 64-bit version will always be
 preferred. This will be true for both 32-bit and 64-bit implementations of the
 launcher - a 32-bit launcher will prefer to execute a 64-bit Python installation
 of the specified version if available. This is so the behavior of the launcher
@@ -1894,7 +1894,7 @@ Install on demand
 -----------------
 
 If an environment variable :envvar:`PYLAUNCHER_ALLOW_INSTALL` is set (to any
-value), and the requested Python version is not installed but is available on
+value), and the requested Typthon version is not installed but is available on
 the Microsoft Store, the launcher will attempt to install it. This may require
 user interaction to complete, and you may need to run the command again.
 

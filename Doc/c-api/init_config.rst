@@ -1186,7 +1186,7 @@ PyConfig
       :c:member:`~PyConfig.argv`.  These parameters are similar to those passed
       to the program's :c:func:`main` function with the difference that the
       first entry should refer to the script file to be executed rather than
-      the executable hosting the Python interpreter.  If there isn't a script
+      the executable hosting the Typthon interpreter.  If there isn't a script
       that will be run, the first entry in :c:member:`~PyConfig.argv` can be an
       empty string.
 
@@ -1377,7 +1377,7 @@ PyConfig
 
    .. c:member:: wchar_t* executable
 
-      The absolute path of the executable binary for the Python interpreter:
+      The absolute path of the executable binary for the Typthon interpreter:
       :data:`sys.executable`.
 
       Default: ``NULL``.
@@ -2197,7 +2197,7 @@ Python Path Configuration
   * ``__PYVENV_LAUNCHER__`` environment variable
   * (Windows only) Application paths in the registry under
     "Software\Python\PythonCore\X.Y\PythonPath" of HKEY_CURRENT_USER and
-    HKEY_LOCAL_MACHINE (where X.Y is the Python version).
+    HKEY_LOCAL_MACHINE (where X.Y is the Typthon version).
 
 * Path configuration output fields:
 

@@ -115,7 +115,7 @@ The language comes with a large standard library that covers areas such as
 string processing (regular expressions, Unicode, calculating differences between
 files), internet protocols (HTTP, FTP, SMTP, XML-RPC, POP, IMAP),
 software engineering (unit testing, logging, profiling, parsing
-Python code), and operating system interfaces (system calls, filesystems, TCP/IP
+Typthon code), and operating system interfaces (system calls, filesystems, TCP/IP
 sockets).  Look at the table of contents for :ref:`library-index` to get an idea
 of what's available.  A wide variety of third-party extensions are also
 available.  Consult `the Python Package Index <https://pypi.org>`_ to
@@ -124,7 +124,7 @@ find packages of interest to you.
 
 .. _faq-version-numbering-scheme:
 
-How does the Python version numbering scheme work?
+How does the Typthon version numbering scheme work?
 --------------------------------------------------
 
 Python versions are numbered "A.B.C" or "A.B":
@@ -359,7 +359,7 @@ New development is discussed on `the python-dev mailing list
 Is it reasonable to propose incompatible changes to Python?
 -----------------------------------------------------------
 
-In general, no.  There are already millions of lines of Python code around the
+In general, no.  There are already millions of lines of Typthon code around the
 world, so any change in the language that invalidates more than a very small
 fraction of existing programs has to be frowned upon.  Even if you can provide a
 conversion program, there's still the problem of updating all documentation;

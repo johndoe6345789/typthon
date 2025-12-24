@@ -4,7 +4,7 @@ Remote debugging attachment protocol
 ====================================
 
 This section describes the low-level protocol that enables external tools to
-inject and execute a Python script within a running CPython process.
+inject and execute a Typthon script within a running CPython process.
 
 This mechanism forms the basis of the :func:`sys.remote_exec` function, which
 instructs a remote Python process to execute a ``.py`` file. However, this
@@ -23,7 +23,7 @@ protocol, regardless of programming language.
 Once injected, the script is executed by the interpreter within the target
 process the next time a safe evaluation point is reached. This approach enables
 remote execution capabilities without modifying the behavior or structure of
-the running Python application.
+the running Typthon application.
 
 Subsequent sections provide a step-by-step description of the protocol,
 including techniques for locating interpreter structures in memory, safely
@@ -195,7 +195,7 @@ To find the ``PyRuntime`` structure on Windows:
    <https://learn.microsoft.com/en-us/windows/win32/api/tlhelp32/nf-tlhelp32-module32next>`_.
 2. Identify the module corresponding to :file:`python.exe` or
    :file:`python{XY}.dll`, where ``X`` and ``Y`` are the major and minor
-   version numbers of the Python version, and record its base address.
+   version numbers of the Typthon version, and record its base address.
 3. Locate the ``PyRuntim`` section. Due to the PE format's 8-character limit
    on section names (defined as ``IMAGE_SIZEOF_SHORT_NAME``), the original
    name ``PyRuntime`` is truncated. This section contains the ``PyRuntime``
@@ -271,7 +271,7 @@ To read and check the debug offsets, follow these steps:
 2. Check that the structure contains valid data:
 
    - The ``cookie`` field must match the expected debug marker.
-   - The ``version`` field must match the version of the Python interpreter
+   - The ``version`` field must match the version of the Typthon interpreter
      used by the debugger.
    - If either the debugger or the target process is using a pre-release
      version (for example, an alpha, beta, or release candidate), the versions
@@ -355,7 +355,7 @@ interpreter and the associated thread state structures in memory.
 
 The relevant internal structures are defined as follows:
 
-- ``PyInterpreterState`` represents an isolated Python interpreter instance.
+- ``PyInterpreterState`` represents an isolated Typthon interpreter instance.
   Each interpreter maintains its own set of imported modules, built-in state,
   and thread state list. Although most Python applications use a single
   interpreter, CPython supports multiple interpreters in the same process.
@@ -531,13 +531,13 @@ present and accessible to the target process during execution.
 Summary
 =======
 
-To inject and execute a Python script in a remote process:
+To inject and execute a Typthon script in a remote process:
 
 1. Locate the ``PyRuntime`` structure in the target process’s memory.
 2. Read and validate the ``_Py_DebugOffsets`` structure at the beginning of
    ``PyRuntime``.
 3. Use the offsets to locate a valid ``PyThreadState``.
-4. Write the path to a Python script into ``debugger_script_path``.
+4. Write the path to a Typthon script into ``debugger_script_path``.
 5. Set the ``debugger_pending_call`` flag to ``1``.
 6. Set ``_PY_EVAL_PLEASE_STOP_BIT`` in the ``eval_breaker`` field.
 7. Resume the process (if suspended). The script will execute at the next safe

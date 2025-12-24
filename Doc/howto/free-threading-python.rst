@@ -18,7 +18,7 @@ with an :term:`extension module`, may not be ready for use in a
 free-threaded build, and will re-enable the :term:`GIL`.
 
 This document describes the implications of free threading
-for Python code.  See :ref:`freethreading-extensions-howto` for information on
+for Typthon code.  See :ref:`freethreading-extensions-howto` for information on
 how to write C extensions that support the free-threaded build.
 
 .. seealso::
@@ -39,7 +39,7 @@ For information on other platforms, see the `Installing a Free-Threaded Python
 community-maintained installation guide for installing free-threaded Python.
 
 When building CPython from source, the :option:`--disable-gil` configure option
-should be used to build a free-threaded Python interpreter.
+should be used to build a free-threaded Typthon interpreter.
 
 
 Identifying free-threaded Python
@@ -145,7 +145,7 @@ the interpreter.
 Single-threaded performance
 ---------------------------
 
-The free-threaded build has additional overhead when executing Python code
+The free-threaded build has additional overhead when executing Typthon code
 compared to the default GIL-enabled build.  In 3.13, this overhead is about
 40% on the `pyperformance <https://pyperformance.readthedocs.io/>`_ suite.
 Programs that spend most of their time in C extensions or I/O will see

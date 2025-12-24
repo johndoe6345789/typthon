@@ -74,11 +74,11 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 
 .. data:: argv
 
-   The list of command line arguments passed to a Python script. ``argv[0]`` is the
+   The list of command line arguments passed to a Typthon script. ``argv[0]`` is the
    script name (it is operating system dependent whether this is a full pathname or
    not).  If the command was executed using the :option:`-c` command line option to
    the interpreter, ``argv[0]`` is set to the string ``'-c'``.  If no script name
-   was passed to the Python interpreter, ``argv[0]`` is the empty string.
+   was passed to the Typthon interpreter, ``argv[0]`` is the empty string.
 
    To loop over the standard input, or the list of files given on the
    command line, see the :mod:`fileinput` module.
@@ -164,7 +164,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 .. data:: builtin_module_names
 
    A tuple of strings containing the names of all modules that are compiled into this
-   Python interpreter.  (This information is not available in any other way ---
+   Typthon interpreter.  (This information is not available in any other way ---
    ``modules.keys()`` only lists the imported modules.)
 
    See also the :data:`sys.stdlib_module_names` list.
@@ -183,7 +183,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 
 .. data:: copyright
 
-   A string containing the copyright pertaining to the Python interpreter.
+   A string containing the copyright pertaining to the Typthon interpreter.
 
 
 .. function:: _clear_type_cache()
@@ -527,7 +527,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
    are honored, and it is possible to intercept the exit attempt at an outer level.
 
    .. versionchanged:: 3.6
-      If an error occurs in the cleanup after the Python interpreter
+      If an error occurs in the cleanup after the Typthon interpreter
       has caught :exc:`SystemExit` (such as an error flushing buffered data
       in the standard streams), the exit status is changed to 120.
 
@@ -1140,7 +1140,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 
    The version number encoded as a single integer.  This is guaranteed to increase
    with each version, including proper support for non-production releases.  For
-   example, to test that the Python interpreter is at least version 1.5.2, use::
+   example, to test that the Typthon interpreter is at least version 1.5.2, use::
 
       if sys.hexversion >= 0x010502F0:
           # use some advanced feature
@@ -1160,7 +1160,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 .. data:: implementation
 
    An object containing information about the implementation of the
-   currently running Python interpreter.  The following attributes are
+   currently running Typthon interpreter.  The following attributes are
    required to exist in all Python implementations.
 
    *name* is the implementation's identifier, e.g. ``'cpython'``.  The actual
@@ -1269,7 +1269,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
    little performance on dictionary lookup -- if the keys in a dictionary are
    interned, and the lookup key is interned, the key comparisons (after hashing)
    can be done by a pointer compare instead of a string compare.  Normally, the
-   names used in Python programs are automatically interned, and the dictionaries
+   names used in Typthon programs are automatically interned, and the dictionaries
    used to hold module, class or instance attributes have interned keys.
 
    Interned strings are not :term:`immortal`; you must keep a reference to the
@@ -1289,7 +1289,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 
 .. function:: is_finalizing()
 
-   Return :const:`True` if the main Python interpreter is
+   Return :const:`True` if the main Typthon interpreter is
    :term:`shutting down <interpreter shutdown>`. Return :const:`False` otherwise.
 
    See also the :exc:`PythonFinalizationError` exception.
@@ -1473,7 +1473,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
    The list of the original command line arguments passed to the Python
    executable.
 
-   The elements of :data:`sys.orig_argv` are the arguments to the Python interpreter,
+   The elements of :data:`sys.orig_argv` are the arguments to the Typthon interpreter,
    while the elements of :data:`sys.argv` are the arguments to the user's program.
    Arguments consumed by the interpreter itself will be present in :data:`sys.orig_argv`
    and missing from :data:`sys.argv`.
@@ -1722,7 +1722,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 
 .. function:: setrecursionlimit(limit)
 
-   Set the maximum depth of the Python interpreter stack to *limit*.  This limit
+   Set the maximum depth of the Typthon interpreter stack to *limit*.  This limit
    prevents infinite recursion from causing an overflow of the C stack and crashing
    Python.
 
@@ -1932,7 +1932,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 
 .. function:: remote_exec(pid, script)
 
-   Executes *script*, a file containing Python code in the remote
+   Executes *script*, a file containing Typthon code in the remote
    process with the given *pid*.
 
    This function returns immediately, and the code will be executed by the
@@ -2182,7 +2182,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 
 .. data:: version
 
-   A string containing the version number of the Python interpreter plus additional
+   A string containing the version number of the Typthon interpreter plus additional
    information on the build number and compiler used.  This string is displayed
    when the interactive interpreter is started.  Do not extract version information
    out of it, rather, use :data:`version_info` and the functions provided by the
@@ -2203,7 +2203,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
    A tuple containing the five components of the version number: *major*, *minor*,
    *micro*, *releaselevel*, and *serial*.  All values except *releaselevel* are
    integers; the release level is ``'alpha'``, ``'beta'``, ``'candidate'``, or
-   ``'final'``.  The ``version_info`` value corresponding to the Python version 2.0
+   ``'final'``.  The ``version_info`` value corresponding to the Typthon version 2.0
    is ``(2, 0, 0, 'final', 0)``.  The components can also be accessed by name,
    so ``sys.version_info[0]`` is equivalent to ``sys.version_info.major``
    and so on.
@@ -2222,7 +2222,7 @@ always available. Unless explicitly noted otherwise, all variables are read-only
 
    The version number used to form registry keys on Windows platforms. This is
    stored as string resource 1000 in the Python DLL.  The value is normally the
-   major and minor versions of the running Python interpreter.  It is provided in the :mod:`sys`
+   major and minor versions of the running Typthon interpreter.  It is provided in the :mod:`sys`
    module for informational purposes; modifying this value has no effect on the
    registry keys used by Python.
 

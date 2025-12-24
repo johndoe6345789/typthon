@@ -603,7 +603,7 @@ Access to external objects
 
 There are times where a configuration needs to refer to objects
 external to the configuration, for example ``sys.stderr``.  If the
-configuration dict is constructed using Python code, this is
+configuration dict is constructed using Typthon code, this is
 straightforward, but a problem arises when the configuration is
 provided via a text file (e.g. JSON, YAML).  In a text file, there is
 no standard way to distinguish ``sys.stderr`` from the literal string

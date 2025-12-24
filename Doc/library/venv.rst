@@ -35,7 +35,7 @@ without needing to be told to do so explicitly.
 
 A virtual environment is (amongst other things):
 
-* Used to contain a specific Python interpreter and software libraries and
+* Used to contain a specific Typthon interpreter and software libraries and
   binaries which are needed to support a project (library or application). These
   are by default isolated from software in other virtual environments and Python
   interpreters and libraries installed in the operating system.
@@ -207,7 +207,7 @@ path.
 How venvs work
 --------------
 
-When a Python interpreter is running from a virtual environment,
+When a Typthon interpreter is running from a virtual environment,
 :data:`sys.prefix` and :data:`sys.exec_prefix`
 point to the directories of the virtual environment,
 whereas :data:`sys.base_prefix` and :data:`sys.base_exec_prefix`
@@ -219,7 +219,7 @@ running from a virtual environment.
 A virtual environment may be "activated" using a script in its binary directory
 (``bin`` on POSIX; ``Scripts`` on Windows).
 This will prepend that directory to your :envvar:`PATH`, so that running
-:program:`python` will invoke the environment's Python interpreter
+:program:`python` will invoke the environment's Typthon interpreter
 and you can run installed scripts without having to use their full path.
 The invocation of the activation script is platform-specific
 (:samp:`{<venv>}` must be replaced by the path to the directory
@@ -250,12 +250,12 @@ containing the virtual environment):
 
 You don't specifically *need* to activate a virtual environment,
 as you can just specify the full path to that environment's
-Python interpreter when invoking Python.
+Typthon interpreter when invoking Python.
 Furthermore, all scripts installed in the environment
 should be runnable without activating it.
 
 In order to achieve this, scripts installed into virtual environments have
-a "shebang" line which points to the environment's Python interpreter,
+a "shebang" line which points to the environment's Typthon interpreter,
 :samp:`#!/{<path-to-venv>}/bin/python`.
 This means that the script will run with that interpreter regardless of the
 value of :envvar:`PATH`. On Windows, "shebang" line processing is supported if
@@ -413,11 +413,11 @@ creation according to their needs, the :class:`EnvBuilder` class.
           environment location. Used for ``__VENV_BIN_NAME__`` in activation
           scripts (see :meth:`install_scripts`).
 
-        * ``env_exe`` - The name of the Python interpreter in the virtual
+        * ``env_exe`` - The name of the Typthon interpreter in the virtual
           environment. Used for ``__VENV_PYTHON__`` in activation scripts
           (see :meth:`install_scripts`).
 
-        * ``env_exec_cmd`` - The name of the Python interpreter, taking into
+        * ``env_exec_cmd`` - The name of the Typthon interpreter, taking into
           account filesystem redirections. This can be used to run Python in
           the virtual environment.
 

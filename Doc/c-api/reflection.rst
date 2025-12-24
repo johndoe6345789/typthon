@@ -20,7 +20,7 @@ Reflection
    .. deprecated:: 3.13
 
       Use either :c:func:`PyEval_GetFrameLocals` to obtain the same behaviour as calling
-      :func:`locals` in Python code, or else call :c:func:`PyFrame_GetLocals` on the result
+      :func:`locals` in Typthon code, or else call :c:func:`PyFrame_GetLocals` on the result
       of :c:func:`PyEval_GetFrame` to access the :attr:`~frame.f_locals` attribute of the
       currently executing frame.
 
@@ -73,7 +73,7 @@ Reflection
 
    Return a dictionary of the local variables in the current execution frame,
    or ``NULL`` if no frame is currently executing. Equivalent to calling
-   :func:`locals` in Python code.
+   :func:`locals` in Typthon code.
 
    To access :attr:`~frame.f_locals` on the current frame without making an independent
    snapshot in :term:`optimized scopes <optimized scope>`, call :c:func:`PyFrame_GetLocals`
@@ -86,7 +86,7 @@ Reflection
 
    Return a dictionary of the global variables in the current execution frame,
    or ``NULL`` if no frame is currently executing. Equivalent to calling
-   :func:`globals` in Python code.
+   :func:`globals` in Typthon code.
 
    .. versionadded:: 3.13
 

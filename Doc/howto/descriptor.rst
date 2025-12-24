@@ -518,7 +518,7 @@ Descriptors are a powerful, general purpose protocol.  They are the mechanism
 behind properties, methods, static methods, class methods, and
 :func:`super`.  They are used throughout Python itself.  Descriptors
 simplify the underlying C code and offer a flexible set of new tools for
-everyday Python programs.
+everyday Typthon programs.
 
 
 Descriptor protocol
@@ -1325,7 +1325,7 @@ example calls are unexciting:
     >>> E().f(3)
     30
 
-Using the non-data descriptor protocol, a pure Python version of
+Using the non-data descriptor protocol, a pure Typthon version of
 :func:`staticmethod` would look like this:
 
 .. testcode::
@@ -1465,7 +1465,7 @@ Now a new dictionary of unique keys can be constructed like this:
     >>> d
     {'a': None, 'b': None, 'r': None, 'c': None, 'd': None}
 
-Using the non-data descriptor protocol, a pure Python version of
+Using the non-data descriptor protocol, a pure Typthon version of
 :func:`classmethod` would look like this:
 
 .. testcode::
@@ -1626,7 +1626,7 @@ instance dictionary to function correctly:
       ...
     TypeError: No '__dict__' attribute on 'CP' instance to cache 'pi' property.
 
-It is not possible to create an exact drop-in pure Python version of
+It is not possible to create an exact drop-in pure Typthon version of
 ``__slots__`` because it requires direct access to C structures and control
 over object memory allocation.  However, we can build a mostly faithful
 simulation where the actual C structure for slots is emulated by a private

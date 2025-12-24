@@ -347,7 +347,7 @@ collector's parameters.
 Other implementations (such as `Jython <https://www.jython.org>`_ or
 `PyPy <https://pypy.org>`_), however, can rely on a different mechanism
 such as a full-blown garbage collector.  This difference can cause some
-subtle porting problems if your Python code depends on the behavior of the
+subtle porting problems if your Typthon code depends on the behavior of the
 reference counting implementation.
 
 In some Python implementations, the following code (which is fine in CPython)
