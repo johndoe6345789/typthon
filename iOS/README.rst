@@ -1,16 +1,16 @@
-====================
-Python on iOS README
-====================
+=====================
+Typthon on iOS README
+=====================
 
 :Authors:
     Russell Keith-Magee (2023-11)
 
 This document provides a quick overview of some iOS specific features in the
-Python distribution.
+Typthon distribution.
 
-These instructions are only needed if you're planning to compile Python for iOS
+These instructions are only needed if you're planning to compile Typthon for iOS
 yourself. Most users should *not* need to do this. If you're looking to
-experiment with writing an iOS app in Python, tools such as `BeeWare's Briefcase
+experiment with writing an iOS app in Typthon, tools such as `BeeWare's Briefcase
 <https://briefcase.readthedocs.io>`__ and `Kivy's Buildozer
 <https://buildozer.readthedocs.io>`__ will provide a much more approachable
 user experience.
@@ -54,8 +54,8 @@ iOS specific arguments to configure
     alterations, and you won't be able to use any binary packages unless you
     compile them yourself using your own framework name.
 
-Building Python on iOS
-======================
+Building Typthon on iOS
+=======================
 
 ABIs and Architectures
 ----------------------
@@ -83,18 +83,18 @@ portable to machines using other architectures.
 Building a single-architecture framework
 ----------------------------------------
 
-The Python build system will create a ``Python.framework`` that supports a
+The Typthon build system will create a ``Python.framework`` that supports a
 *single* ABI with a *single* architecture. Unlike macOS, iOS does not allow a
 framework to contain non-library content, so the iOS build will produce a
 ``bin`` and ``lib`` folder in the same output folder as ``Python.framework``.
-The ``lib`` folder will be needed at runtime to support the Python library.
+The ``lib`` folder will be needed at runtime to support the Typthon library.
 
-If you want to use Python in a real iOS project, you need to produce multiple
+If you want to use Typthon in a real iOS project, you need to produce multiple
 ``Python.framework`` builds, one for each ABI and architecture. iOS builds of
-Python *must* be constructed as framework builds. To support this, you must
+Typthon *must* be constructed as framework builds. To support this, you must
 provide the ``--enable-framework`` flag when configuring the build. The build
 also requires the use of cross-compilation. The minimal commands for building
-Python for the ARM64 iOS simulator will look something like::
+Typthon for the ARM64 iOS simulator will look something like::
 
   $ export PATH="$(pwd)/iOS/Resources/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin"
   $ ./configure \
