@@ -9,6 +9,46 @@ from pathlib import Path
 from shutil import copy2
 
 
+def _scripts_dir_for_root(root):
+    scripts_dir = Path(sysconfig.get_path('scripts'))
+    if not root:
+        return scripts_dir
+
+    try:
+        relative_scripts = scripts_dir.relative_to(scripts_dir.anchor)
+    except ValueError:
+        relative_scripts = scripts_dir
+
+    return Path(root) / relative_scripts
+
+
+def _ensure_typthon_pip_aliases(root):
+    scripts_dir = _scripts_dir_for_root(root)
+    if not scripts_dir.exists():
+        return
+
+    exe_suffix = sysconfig.get_config_var('EXE') or ''
+    pip_script_names = [
+        'pip',
+        f"pip{sys.version_info[0]}",
+        f"pip{sys.version_info[0]}.{sys.version_info[1]}",
+    ]
+
+    for base_name in pip_script_names:
+        source = scripts_dir / f"{base_name}{exe_suffix}"
+        if not source.exists():
+            continue
+
+        destination = scripts_dir / f"typthon-{base_name}{exe_suffix}"
+        if destination.exists() or destination.is_symlink():
+            destination.unlink()
+
+        try:
+            destination.symlink_to(source)
+        except (OSError, NotImplementedError):
+            copy2(source, destination)
+
+
 __all__ = ["version", "bootstrap"]
 _PIP_VERSION = "25.1.1"
 
@@ -169,7 +209,9 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
         if verbosity:
             args += ["-" + "v" * verbosity]
 
-        return _run_pip([*args, "pip"], [os.fsdecode(tmp_wheel_path)])
+        status_code = _run_pip([*args, "pip"], [os.fsdecode(tmp_wheel_path)])
+        _ensure_typthon_pip_aliases(root)
+        return status_code
 
 
 def _uninstall_helper(*, verbosity=0):

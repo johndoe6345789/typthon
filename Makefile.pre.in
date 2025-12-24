@@ -2400,7 +2400,15 @@ altbininstall: $(BUILDPYTHON) @FRAMEWORKPYTHONW@
 		if test -f $(DESTDIR)$(BINDIR)/python$(VERSION)$(EXE) -o -h $(DESTDIR)$(BINDIR)/python$(VERSION)$(EXE); \
 		then rm -f $(DESTDIR)$(BINDIR)/python$(VERSION)$(EXE); \
 		fi; \
-		(cd $(DESTDIR)$(BINDIR); $(LN) python$(LDVERSION)$(EXE) python$(VERSION)$(EXE)); \
+	(cd $(DESTDIR)$(BINDIR); $(LN) python$(LDVERSION)$(EXE) python$(VERSION)$(EXE)); \
+	fi
+	-rm -f $(DESTDIR)$(BINDIR)/typthon$(LDVERSION)$(EXE)
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(LDVERSION)$(EXE) typthon$(LDVERSION)$(EXE))
+	-if test "$(VERSION)" != "$(LDVERSION)"; then \
+		if test -f $(DESTDIR)$(BINDIR)/typthon$(VERSION)$(EXE) -o -h $(DESTDIR)$(BINDIR)/typthon$(VERSION)$(EXE); \
+		then rm -f $(DESTDIR)$(BINDIR)/typthon$(VERSION)$(EXE); \
+		fi; \
+		(cd $(DESTDIR)$(BINDIR); $(LN) typthon$(LDVERSION)$(EXE) typthon$(VERSION)$(EXE)); \
 	fi
 	@if test "$(PY_ENABLE_SHARED)" = 1 -o "$(STATIC_LIBPYTHON)" = 1; then \
 		if test -f $(LDLIBRARY) && test "$(PYTHONFRAMEWORKDIR)" = "no-framework" ; then \
@@ -2462,24 +2470,38 @@ bininstall: commoninstall altbininstall
 	else true; \
 	fi
 	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)$(EXE) python3$(EXE))
+	-rm -f $(DESTDIR)$(BINDIR)/typthon$(VERSION)$(EXE)
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)$(EXE) typthon$(VERSION)$(EXE))
+	-rm -f $(DESTDIR)$(BINDIR)/typthon3$(EXE)
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s typthon$(VERSION)$(EXE) typthon3$(EXE))
+	-rm -f $(DESTDIR)$(BINDIR)/typthon$(EXE)
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s typthon3$(EXE) typthon$(EXE))
 	-if test "$(VERSION)" != "$(LDVERSION)"; then \
-		rm -f $(DESTDIR)$(BINDIR)/python$(VERSION)-config; \
-		(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(LDVERSION)-config python$(VERSION)-config); \
-		rm -f $(DESTDIR)$(LIBPC)/python-$(VERSION).pc; \
-		(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(LDVERSION).pc python-$(VERSION).pc); \
-		rm -f $(DESTDIR)$(LIBPC)/python-$(VERSION)-embed.pc; \
-		(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(LDVERSION)-embed.pc python-$(VERSION)-embed.pc); \
+	rm -f $(DESTDIR)$(BINDIR)/python$(VERSION)-config; \
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(LDVERSION)-config python$(VERSION)-config); \
+	rm -f $(DESTDIR)$(LIBPC)/python-$(VERSION).pc; \
+	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(LDVERSION).pc python-$(VERSION).pc); \
+	rm -f $(DESTDIR)$(LIBPC)/python-$(VERSION)-embed.pc; \
+	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(LDVERSION)-embed.pc python-$(VERSION)-embed.pc); \
 	fi
+	-rm -f $(DESTDIR)$(BINDIR)/typthon$(VERSION)-config
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s typthon$(LDVERSION)-config typthon$(VERSION)-config)
 	-rm -f $(DESTDIR)$(BINDIR)/python3-config
 	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)-config python3-config)
+	-rm -f $(DESTDIR)$(BINDIR)/typthon3-config
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s typthon$(VERSION)-config typthon3-config)
 	-rm -f $(DESTDIR)$(LIBPC)/python3.pc
 	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(VERSION).pc python3.pc)
 	-rm -f $(DESTDIR)$(LIBPC)/python3-embed.pc
 	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(VERSION)-embed.pc python3-embed.pc)
 	-rm -f $(DESTDIR)$(BINDIR)/idle3
 	(cd $(DESTDIR)$(BINDIR); $(LN) -s idle$(VERSION) idle3)
+	-rm -f $(DESTDIR)$(BINDIR)/typthon-idle3
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s typthon-idle$(VERSION) typthon-idle3)
 	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
 	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
+	-rm -f $(DESTDIR)$(BINDIR)/typthon-pydoc3
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s typthon-pydoc$(VERSION) typthon-pydoc3)
 	if test "x$(LIPO_32BIT_FLAGS)" != "x" ; then \
 		rm -f $(DESTDIR)$(BINDIR)/python3-32$(EXE); \
 		(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)-32$(EXE) python3-32$(EXE)) \
@@ -2922,8 +2944,14 @@ libainstall: all scripts
 	$(INSTALL_SCRIPT) $(srcdir)/install-sh $(DESTDIR)$(LIBPL)/install-sh
 	$(INSTALL_SCRIPT) python-config.py $(DESTDIR)$(LIBPL)/python-config.py
 	$(INSTALL_SCRIPT) python-config $(DESTDIR)$(BINDIR)/python$(LDVERSION)-config
+	-rm -f $(DESTDIR)$(BINDIR)/typthon$(LDVERSION)-config
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(LDVERSION)-config typthon$(LDVERSION)-config)
 	$(INSTALL_SCRIPT) $(SCRIPT_IDLE) $(DESTDIR)$(BINDIR)/idle$(VERSION)
+	-rm -f $(DESTDIR)$(BINDIR)/typthon-idle$(VERSION)
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s idle$(VERSION) typthon-idle$(VERSION))
 	$(INSTALL_SCRIPT) $(SCRIPT_PYDOC) $(DESTDIR)$(BINDIR)/pydoc$(VERSION)
+	-rm -f $(DESTDIR)$(BINDIR)/typthon-pydoc$(VERSION)
+	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) typthon-pydoc$(VERSION))
 	@if [ -s Modules/python.exp -a \
 		"`echo $(MACHDEP) | sed 's/^\(...\).*/\1/'`" = "aix" ]; then \
 		echo; echo "Installing support files for building shared extension modules on AIX:"; \

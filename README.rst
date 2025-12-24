@@ -1,20 +1,20 @@
-This is Python version 3.14.0 beta 4
+This is Typthon version 3.14.0 beta 4
 ====================================
 
 .. image:: https://github.com/python/cpython/actions/workflows/build.yml/badge.svg?branch=main&event=push
-   :alt: CPython build status on GitHub Actions
+   :alt: CTypthon build status on GitHub Actions
    :target: https://github.com/python/cpython/actions
 
 .. image:: https://dev.azure.com/python/cpython/_apis/build/status/Azure%20Pipelines%20CI?branchName=main
-   :alt: CPython build status on Azure DevOps
+   :alt: CTypthon build status on Azure DevOps
    :target: https://dev.azure.com/python/cpython/_build/latest?definitionId=4&branchName=main
 
 .. image:: https://img.shields.io/badge/discourse-join_chat-brightgreen.svg
-   :alt: Python Discourse chat
+   :alt: Typthon Discourse chat
    :target: https://discuss.python.org/
 
 
-Copyright © 2001 Python Software Foundation.  All rights reserved.
+Copyright © 2001 Typthon Software Foundation.  All rights reserved.
 
 See the end of this file for further copyright and license information.
 
@@ -29,18 +29,18 @@ General Information
 - Documentation: https://docs.python.org
 - Developer's Guide: https://devguide.python.org/
 
-Contributing to CPython
+Contributing to CTypthon
 -----------------------
 
-For more complete instructions on contributing to CPython development,
+For more complete instructions on contributing to CTypthon development,
 see the `Developer Guide`_.
 
 .. _Developer Guide: https://devguide.python.org/
 
-Using Python
+Using Typthon
 ------------
 
-Installable Python kits, and information about using Python, are available at
+Installable Typthon kits, and information about using Typthon, are available at
 `python.org`_.
 
 .. _python.org: https://www.python.org/
@@ -55,13 +55,13 @@ On Unix, Linux, BSD, macOS, and Cygwin::
     make test
     sudo make install
 
-This will install Python as ``python3``.
+This will install Typthon as ``typthon3``.
 
 You can pass many options to the configure script; run ``./configure --help``
 to find out more.  On macOS case-insensitive file systems and on Cygwin,
-the executable is called ``python.exe``; elsewhere it's just ``python``.
+the executable is called ``typthon.exe``; elsewhere it's just ``typthon``.
 
-Building a complete Python installation requires the use of various
+Building a complete Typthon installation requires the use of various
 additional third-party libraries, depending on your build platform and
 configure options.  Not all standard library modules are buildable or
 usable on all platforms.  Refer to the
@@ -91,7 +91,7 @@ For example::
 (This will fail if you *also* built at the top-level directory.  You should do
 a ``make clean`` at the top-level first.)
 
-To get an optimized build of Python, ``configure --enable-optimizations``
+To get an optimized build of Typthon, ``configure --enable-optimizations``
 before you run ``make``.  This sets the default make targets up to enable
 Profile Guided Optimization (PGO) and may be used to auto-enable Link Time
 Optimization (LTO) on some platforms.  For more details, see the sections
@@ -105,7 +105,7 @@ either via ``configure --enable-optimizations`` or by manually running
 ``make profile-opt`` regardless of configure flags, the optimized build
 process will perform the following steps:
 
-The entire Python directory is cleaned of temporary files that may have
+The entire Typthon directory is cleaned of temporary files that may have
 resulted from a previous compilation.
 
 An instrumented version of the interpreter is built, using suitable compiler
@@ -119,7 +119,7 @@ Note also that any output, both stdout and stderr, that may appear at this step
 is suppressed.
 
 The final step is to build the actual interpreter, using the information
-collected from the instrumented one.  The end result will be a Python binary
+collected from the instrumented one.  The end result will be a Typthon binary
 that is optimized; suitable for distribution or production installation.
 
 
@@ -135,21 +135,21 @@ libraries for additional performance gains.
 What's New
 ----------
 
-We have a comprehensive overview of the changes in the `What's New in Python
+We have a comprehensive overview of the changes in the `What's New in Typthon
 3.14 <https://docs.python.org/3.14/whatsnew/3.14.html>`_ document.  For a more
 detailed change log, read `Misc/NEWS
 <https://github.com/python/cpython/tree/main/Misc/NEWS.d>`_, but a full
 accounting of changes can only be gleaned from the `commit history
 <https://github.com/python/cpython/commits/main>`_.
 
-If you want to install multiple versions of Python, see the section below
+If you want to install multiple versions of Typthon, see the section below
 entitled "Installing multiple versions".
 
 
 Documentation
 -------------
 
-`Documentation for Python 3.14 <https://docs.python.org/3.14/>`_ is online,
+`Documentation for Typthon 3.14 <https://docs.python.org/3.14/>`_ is online,
 updated daily.
 
 It can also be downloaded in many formats for faster access.  The documentation
@@ -157,7 +157,7 @@ is downloadable in HTML, PDF, and reStructuredText formats; the latter version
 is primarily for documentation authors, translators, and people with special
 formatting requirements.
 
-For information about building Python's documentation, refer to `Doc/README.rst
+For information about building Typthon's documentation, refer to `Doc/README.rst
 <https://github.com/python/cpython/blob/main/Doc/README.rst>`_.
 
 
@@ -178,7 +178,7 @@ example, if ``test_os`` and ``test_gdb`` failed, you can run::
 
     make test TESTOPTS="-v test_os test_gdb"
 
-If the failure persists and appears to be a problem with Python rather than
+If the failure persists and appears to be a problem with Typthon rather than
 your environment, you can `file a bug report
 <https://github.com/python/cpython/issues>`_ and include relevant output from
 that command to show the issue.
@@ -189,18 +189,18 @@ for more on running tests.
 Installing multiple versions
 ----------------------------
 
-On Unix and Mac systems if you intend to install multiple versions of Python
+On Unix and Mac systems if you intend to install multiple versions of Typthon
 using the same installation prefix (``--prefix`` argument to the configure
-script) you must take care that your primary python executable is not
+script) you must take care that your primary Typthon executable is not
 overwritten by the installation of a different version.  All files and
 directories installed using ``make altinstall`` contain the major and minor
 version and can thus live side-by-side.  ``make install`` also creates
-``${prefix}/bin/python3`` which refers to ``${prefix}/bin/python3.X``.  If you
+``${prefix}/bin/typthon3`` which refers to ``${prefix}/bin/typthon3.X``.  If you
 intend to install multiple versions using the same prefix you must decide which
 version (if any) is your "primary" version.  Install that version using
 ``make install``.  Install all other versions using ``make altinstall``.
 
-For example, if you want to install Python 2.7, 3.6, and 3.14 with 3.14 being the
+For example, if you want to install Typthon 2.7, 3.6, and 3.14 with 3.14 being the
 primary version, you would execute ``make install`` in your 3.14 build directory
 and ``make altinstall`` in the others.
 
@@ -208,14 +208,14 @@ and ``make altinstall`` in the others.
 Release Schedule
 ----------------
 
-See `PEP 745 <https://peps.python.org/pep-0745/>`__ for Python 3.14 release details.
+See `PEP 745 <https://peps.python.org/pep-0745/>`__ for Typthon 3.14 release details.
 
 
 Copyright and License Information
 ---------------------------------
 
 
-Copyright © 2001 Python Software Foundation.  All rights reserved.
+Copyright © 2001 Typthon Software Foundation.  All rights reserved.
 
 Copyright © 2000 BeOpen.com.  All rights reserved.
 
@@ -228,7 +228,7 @@ See the `LICENSE <https://github.com/python/cpython/blob/main/LICENSE>`_ for
 information on the history of this software, terms & conditions for usage, and a
 DISCLAIMER OF ALL WARRANTIES.
 
-This Python distribution contains *no* GNU General Public License (GPL) code,
+This Typthon distribution contains *no* GNU General Public License (GPL) code,
 so it may be used in proprietary projects.  There are interfaces to some GNU
 code but these are entirely optional.
 
