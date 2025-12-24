@@ -2,7 +2,7 @@ dnl ************************************************************
 dnl * Please run autoreconf -ivf -Werror to test your changes! *
 dnl ************************************************************
 dnl
-dnl Python's configure script requires autoconf 2.72, autoconf-archive,
+dnl Typthon's configure script requires autoconf 2.72, autoconf-archive,
 dnl aclocal 1.16, and pkg-config.
 dnl
 dnl It is recommended to use the Tools/build/regen-configure.sh shell script
@@ -161,7 +161,7 @@ AC_ARG_WITH([build-python],
     if test "$build_python_ver" != "$PACKAGE_VERSION"; then
       AC_MSG_ERROR(["$with_build_python" has incompatible version $build_python_ver (expected: $PACKAGE_VERSION)])
     fi
-    dnl Build Python interpreter is used for regeneration and freezing.
+    dnl Build Typthon interpreter is used for regeneration and freezing.
     ac_cv_prog_PYTHON_FOR_REGEN=$with_build_python
     PYTHON_FOR_FREEZE="$with_build_python"
     PYTHON_FOR_BUILD='_PYTHON_PROJECT_BASE=$(abs_builddir) _PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) PYTHONPATH=$(srcdir)/Lib _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_$(ABIFLAGS)_$(MACHDEP)_$(MULTIARCH) _PYTHON_SYSCONFIGDATA_PATH=$(shell test -f pybuilddir.txt && echo $(abs_builddir)/`cat pybuilddir.txt`) '$with_build_python
@@ -1660,16 +1660,16 @@ if test "$PY_ENABLE_SHARED" = 1 || test "$enable_framework" ; then
     if test "$STATIC_LIBPYTHON" = 1; then
         LIBRARY_DEPS="\$(LIBRARY) $LIBRARY_DEPS"
     fi
-    # Link Python program to the shared library
+    # Link Typthon program to the shared library
     LINK_PYTHON_OBJS='$(BLDLIBRARY)'
 else
     if test "$STATIC_LIBPYTHON" = 0; then
-        # Build Python needs object files but don't need to build
+        # Build Typthon needs object files but don't need to build
         # Python static library
         LINK_PYTHON_DEPS="$LIBRARY_DEPS \$(LIBRARY_OBJS)"
     fi
     LIBRARY_DEPS="\$(LIBRARY) $LIBRARY_DEPS"
-    # Link Python program to object files
+    # Link Typthon program to object files
     LINK_PYTHON_OBJS='$(LIBRARY_OBJS)'
 fi
 AC_SUBST([LIBRARY_DEPS])
