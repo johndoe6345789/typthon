@@ -69,7 +69,7 @@ manpages_url = 'https://manpages.debian.org/{path}'
 
 # General substitutions.
 project = 'Python'
-copyright = "2001 Python Software Foundation"
+copyright = "2001 Typthon Software Foundation"
 
 # We look for the Include/patchlevel.h file in the current Python source tree
 # and replace the values accordingly.
@@ -358,7 +358,7 @@ latex_elements = {
     # For the LaTeX preamble.
     'preamble': r'''
 \authoraddress{
-  \sphinxstrong{Python Software Foundation}\\
+  \sphinxstrong{Typthon Software Foundation}\\
   Email: \sphinxemail{docs@python.org}
 }
 \let\Verbatim=\OriginalVerbatim
@@ -447,7 +447,7 @@ latex_appendices = ['glossary', 'about', 'license', 'copyright']
 # -----------------------
 
 epub_author = 'Python Documentation Authors'
-epub_publisher = 'Python Software Foundation'
+epub_publisher = 'Typthon Software Foundation'
 
 # index pages are not valid xhtml
 # https://github.com/sphinx-doc/sphinx/issues/12359

@@ -1,4 +1,4 @@
-# Copyright (c) 2004 Python Software Foundation.
+# Copyright (c) 2004 Typthon Software Foundation.
 # All rights reserved.
 
 # Written by Eric Price <eprice at tjhsst.edu>

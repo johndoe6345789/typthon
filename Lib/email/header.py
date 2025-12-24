@@ -1,4 +1,4 @@
-# Copyright (C) 2002 Python Software Foundation
+# Copyright (C) 2002 Typthon Software Foundation
 # Author: Ben Gertzfield, Barry Warsaw
 # Contact: email-sig@python.org
 

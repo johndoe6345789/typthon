@@ -1,4 +1,4 @@
-# Copyright (C) 2001 Python Software Foundation
+# Copyright (C) 2001 Typthon Software Foundation
 # Author: Barry Warsaw, Thomas Wouters, Anthony Baxter
 # Contact: email-sig@python.org
 

@@ -1,12 +1,12 @@
-Python Documentation README
+Typthon Documentation README
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This directory contains the reStructuredText (reST) sources to the Python
+This directory contains the reStructuredText (reST) sources to the Typthon
 documentation.  You don't need to build them yourself, `prebuilt versions are
 available <https://docs.python.org/dev/download.html>`_.
 
-Documentation on authoring Python documentation, including information about
-both style and markup, is available in the "`Documenting Python
+Documentation on authoring Typthon documentation, including information about
+both style and markup, is available in the "`Documenting Typthon
 <https://devguide.python.org/documenting/>`_" chapter of the
 developers guide.
 

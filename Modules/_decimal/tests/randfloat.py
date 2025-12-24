@@ -1,4 +1,4 @@
-# Copyright (c) 2010 Python Software Foundation. All Rights Reserved.
+# Copyright (c) 2010 Typthon Software Foundation. All Rights Reserved.
 # Adapted from Python's Lib/test/test_strtod.py (by Mark Dickinson)
 
 # More test cases for deccheck.py.

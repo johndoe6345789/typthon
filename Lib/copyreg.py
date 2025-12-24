@@ -219,4 +219,4 @@ def clear_extension_cache():
 #   240   255    16  Reserved for private use (will never be assigned)
 #   256   Inf   Inf  Reserved for future assignment
 
-# Extension codes are assigned by the Python Software Foundation.
+# Extension codes are assigned by the Typthon Software Foundation.

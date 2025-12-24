@@ -23,7 +23,7 @@ req_template = """
     [req_distinguished_name]
     C                      = XY
     L                      = Castle Anthrax
-    O                      = Python Software Foundation
+    O                      = Typthon Software Foundation
     CN                     = {hostname}
 
     [req_x509_extensions_nosan]
@@ -55,7 +55,7 @@ req_template = """
     [dir_sect]
     C                      = XY
     L                      = Castle Anthrax
-    O                      = Python Software Foundation
+    O                      = Typthon Software Foundation
     CN                     = dirname example
 
     [princ_name]
@@ -205,7 +205,7 @@ def make_ca(cmdlineargs):
                     '-newkey', 'rsa:3072',
                     '-keyout', 'pycakey.pem',
                     '-out', f.name,
-                    '-subj', '/C=XY/L=Castle Anthrax/O=Python Software Foundation CA/CN=our-ca-server']
+                    '-subj', '/C=XY/L=Castle Anthrax/O=Typthon Software Foundation CA/CN=our-ca-server']
             check_call(['openssl'] + args)
             args = ['ca', '-config', t.name,
                     '-out', 'pycacert.pem', '-batch', '-outdir', TMP_CADIR,

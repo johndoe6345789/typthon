@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2001 Python Software Foundation. All Rights Reserved.
+# Copyright (C) 2001 Typthon Software Foundation. All Rights Reserved.
 # Modified and extended by Stefan Krah.
 #
 
