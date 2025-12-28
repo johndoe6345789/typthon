@@ -16,6 +16,28 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Generate git version information
+find_package(Git QUIET)
+if(GIT_FOUND)
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+  )
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_BRANCH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+  )
+else()
+  set(GIT_COMMIT_HASH "unknown")
+  set(GIT_BRANCH "unknown")
+endif()
+
 # Platform detection
 if(UNIX AND NOT APPLE)
   set(LINUX TRUE)
@@ -26,6 +48,12 @@ if(NOT MSVC)
   add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers)
   add_compile_options(-fwrapv -fno-strict-aliasing)
 endif()
+
+# Add git version information as compile definitions
+add_compile_definitions(
+  GIT_COMMIT_HASH="${GIT_COMMIT_HASH}"
+  GIT_BRANCH="${GIT_BRANCH}"
+)
 
 # Collect Python core source files
 file(GLOB PYTHON_SOURCES Python/*.c)

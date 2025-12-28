@@ -34,12 +34,19 @@ All stubs are implemented in: `Python/frozen_stubs.c`
 
 **Purpose**: Provide version and build metadata to the interpreter.
 
-**Stubs Created**:
-- `Py_GetBuildInfo()` - Returns build date/time string
-- `_Py_gitidentifier()` - Returns git branch identifier ("default")
-- `_Py_gitversion()` - Returns version string ("Typthon 3.14.0")
+**Status**: ✅ **IMPROVED** - Git metadata is now dynamically generated at build time.
 
-**Implementation**: Simple string returns with minimal metadata.
+**Implementation**: 
+- `Py_GetBuildInfo()` - Returns build string with git branch, commit hash, and build timestamp
+- `_Py_gitidentifier()` - Returns actual git branch name from CMake
+- `_Py_gitversion()` - Returns version string with commit hash
+
+**Resolution**: Added CMake configuration to detect git information at build time and pass it as compile definitions. The functions now return actual git metadata instead of placeholder values.
+
+**Changes Made**:
+- Modified `CMakeLists.txt` to detect git branch and commit hash
+- Updated `Python/frozen_stubs.c` to use CMake-generated definitions
+- Build info now shows: "Typthon 3.14.0 (branch:hash, date time)" format
 
 ### 4. Dynamic Loading
 
@@ -111,7 +118,7 @@ These stubs mean the following features are not available in this build:
 1. **No frozen modules**: Cannot embed Python code as frozen C arrays
 2. ~~**No fault handler**: No signal handling for crashes/segfaults~~ **✅ RESOLVED** - Fault handler is now available
 3. **No plock**: No Solaris-style process memory locking
-4. **Minimal build info**: Git metadata is stubbed with placeholder values
+4. ~~**Minimal build info**: Git metadata is stubbed with placeholder values~~ **✅ IMPROVED** - Git metadata now shows actual branch and commit
 5. **No custom built-in modules**: Only modules explicitly linked are available
 
 ## Future Improvements
@@ -121,7 +128,7 @@ To get a fully-functional Python interpreter, the following would be needed:
 1. Generate actual frozen modules using `Tools/build/freeze_modules.py`
 2. ~~Re-enable and fix the faulthandler module compilation~~ **✅ COMPLETED**
 3. Implement proper path configuration in `_PyConfig_InitPathConfig()`
-4. Generate real build information with git metadata
+4. ~~Generate real build information with git metadata~~ **✅ COMPLETED**
 5. Add more built-in modules to the `_PyImport_Inittab` table
 
 ## Testing
