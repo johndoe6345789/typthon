@@ -505,28 +505,6 @@ def mac_ver(release='', versioninfo=('', '', ''), machine=''):
     return release, versioninfo, machine
 
 
-# A namedtuple for iOS version information.
-IOSVersionInfo = collections.namedtuple(
-    "IOSVersionInfo",
-    ["system", "release", "model", "is_simulator"]
-)
-
-
-def ios_ver(system="", release="", model="", is_simulator=False):
-    """Get iOS version information, and return it as a namedtuple:
-        (system, release, model, is_simulator).
-
-    If values can't be determined, they are set to values provided as
-    parameters.
-    """
-    if sys.platform == "ios":
-        import _ios_support
-        result = _ios_support.get_platform_ios()
-        if result is not None:
-            return IOSVersionInfo(*result)
-
-    return IOSVersionInfo(system, release, model, is_simulator)
-
 
 def _java_getprop(name, default):
     """This private helper is deprecated in 3.13 and will be removed in 3.15"""
@@ -1058,10 +1036,6 @@ def uname():
         system = 'Android'
         release = android_ver().release
 
-    # Normalize responses on iOS
-    if sys.platform == 'ios':
-        system, release, _, _ = ios_ver()
-
     vals = system, node, release, version, machine
     # Replace 'unknown' values with the more portable ''
     _uname_cache = uname_result(*map(_unknown_as_blank, vals))
@@ -1347,14 +1321,11 @@ def platform(aliased=False, terse=False):
         system, release, version = system_alias(system, release, version)
 
     if system == 'Darwin':
-        # macOS and iOS both report as a "Darwin" kernel
-        if sys.platform == "ios":
-            system, release, _, _ = ios_ver()
-        else:
-            macos_release = mac_ver()[0]
-            if macos_release:
-                system = 'macOS'
-                release = macos_release
+        # macOS reports as a "Darwin" kernel
+        macos_release = mac_ver()[0]
+        if macos_release:
+            system = 'macOS'
+            release = macos_release
 
     if system == 'Windows':
         # MS platforms

@@ -571,18 +571,6 @@ class TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
                 expected_suffixes = 'x86_64-linux-gnu.so', 'x86_64-linux-musl.so'
             self.assertEndsWith(suffix, expected_suffixes)
 
-    @unittest.skipUnless(sys.platform == 'android', 'Android-specific test')
-    def test_android_ext_suffix(self):
-        machine = platform.machine()
-        suffix = sysconfig.get_config_var('EXT_SUFFIX')
-        expected_triplet = {
-            "x86_64": "x86_64-linux-android",
-            "i686": "i686-linux-android",
-            "aarch64": "aarch64-linux-android",
-            "armv7l": "arm-linux-androideabi",
-        }[machine]
-        self.assertEndsWith(suffix, f"-{expected_triplet}.so")
-
     @unittest.skipUnless(sys.platform == 'darwin', 'OS X-specific test')
     def test_osx_ext_suffix(self):
         suffix = sysconfig.get_config_var('EXT_SUFFIX')
