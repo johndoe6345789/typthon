@@ -1,19 +1,6 @@
 This is Typthon version 3.14.0 beta 4
 ====================================
 
-.. image:: https://github.com/python/cpython/actions/workflows/build.yml/badge.svg?branch=main&event=push
-   :alt: CTypthon build status on GitHub Actions
-   :target: https://github.com/python/cpython/actions
-
-.. image:: https://dev.azure.com/python/cpython/_apis/build/status/Azure%20Pipelines%20CI?branchName=main
-   :alt: CTypthon build status on Azure DevOps
-   :target: https://dev.azure.com/python/cpython/_build/latest?definitionId=4&branchName=main
-
-.. image:: https://img.shields.io/badge/discourse-join_chat-brightgreen.svg
-   :alt: Typthon Discourse chat
-   :target: https://discuss.python.org/
-
-
 Copyright © 2001 Typthon Software Foundation.  All rights reserved.
 
 See the end of this file for further copyright and license information.
@@ -23,27 +10,20 @@ See the end of this file for further copyright and license information.
 General Information
 -------------------
 
-- Website: https://www.python.org
-- Source code: https://github.com/python/cpython
-- Issue tracker: https://github.com/python/cpython/issues
-- Documentation: https://docs.python.org
-- Developer's Guide: https://devguide.python.org/
-
-Contributing to CTypthon
------------------------
-
-For more complete instructions on contributing to CTypthon development,
-see the `Developer Guide`_.
-
-.. _Developer Guide: https://devguide.python.org/
+- Source code: https://github.com/johndoe6345789/typthon
+- Issue tracker: https://github.com/johndoe6345789/typthon/issues
 
 Using Typthon
 ------------
 
-Installable Typthon kits, and information about using Typthon, are available at
-`python.org`_.
+Typthon is a lightweight runtime system. For usage information, run::
 
-.. _python.org: https://www.python.org/
+    typthon --help
+
+To see the version::
+
+    typthon --version
+
 
 Build Instructions
 ------------------
@@ -95,32 +75,6 @@ for different configurations::
     cmake --build .
 
 
-What's New
-----------
-
-We have a comprehensive overview of the changes in the `What's New in Typthon
-3.14 <https://docs.python.org/3.14/whatsnew/3.14.html>`_ document.  For a more
-detailed change log, read `Misc/NEWS
-<https://github.com/python/cpython/tree/main/Misc/NEWS.d>`_, but a full
-accounting of changes can only be gleaned from the `commit history
-<https://github.com/python/cpython/commits/main>`_.
-
-If you want to install multiple versions of Typthon, see the section below
-entitled "Installing multiple versions".
-
-
-Documentation
--------------
-
-Typthon is a lightweight runtime system. For usage information, run::
-
-    typthon --help
-
-To see the version::
-
-    typthon --version
-
-
 Testing
 -------
 
@@ -161,12 +115,6 @@ This allows you to have multiple versions installed side-by-side in different
 directories.
 
 
-Release Schedule
-----------------
-
-See `PEP 745 <https://peps.python.org/pep-0745/>`__ for Typthon 3.14 release details.
-
-
 Copyright and License Information
 ---------------------------------
 
@@ -180,7 +128,7 @@ rights reserved.
 
 Copyright © 1991-1995 Stichting Mathematisch Centrum.  All rights reserved.
 
-See the `LICENSE <https://github.com/python/cpython/blob/main/LICENSE>`_ for
+See the `LICENSE <https://github.com/johndoe6345789/typthon/blob/main/LICENSE>`_ for
 information on the history of this software, terms & conditions for usage, and a
 DISCLAIMER OF ALL WARRANTIES.
 
