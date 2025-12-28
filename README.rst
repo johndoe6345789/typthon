@@ -48,88 +48,51 @@ Installable Typthon kits, and information about using Typthon, are available at
 Build Instructions
 ------------------
 
-On Unix, Linux, BSD, macOS, and Cygwin::
+Typthon uses CMake as its build system. On Unix, Linux, BSD, macOS, and Windows::
 
-    ./configure
-    make
-    make test
-    sudo make install
+    mkdir build
+    cd build
+    cmake .. -DCMAKE_BUILD_TYPE=Release
+    cmake --build .
+    ctest --output-on-failure
+    sudo cmake --install .
 
-This will install Typthon as ``typthon3``.
+This will install Typthon as ``typthon``.
 
-You can pass many options to the configure script; run ``./configure --help``
-to find out more.  On macOS case-insensitive file systems and on Cygwin,
-the executable is called ``typthon.exe``; elsewhere it's just ``typthon``.
+You can pass many options to CMake; run ``cmake --help`` or see the
+`CMake documentation <https://cmake.org/cmake/help/latest/>`_ to find out more.
 
-Building a complete Typthon installation requires the use of various
-additional third-party libraries, depending on your build platform and
-configure options.  Not all standard library modules are buildable or
-usable on all platforms.  Refer to the
-`Install dependencies <https://devguide.python.org/getting-started/setup-building.html#build-dependencies>`_
-section of the `Developer Guide`_ for current detailed information on
-dependencies for various Linux distributions and macOS.
+Building with different build types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-On macOS, there are additional configure and build options related
-to macOS framework and universal builds.  Refer to `Mac/README.rst
-<https://github.com/python/cpython/blob/main/Mac/README.rst>`_.
+CMake supports several build types through the ``CMAKE_BUILD_TYPE`` option:
 
-On Windows, see `PCbuild/readme.txt
-<https://github.com/python/cpython/blob/main/PCbuild/readme.txt>`_.
+- ``Release`` - Optimized build for production use
+- ``Debug`` - Build with debug symbols for debugging
+- ``RelWithDebInfo`` - Release build with debug information
+- ``MinSizeRel`` - Optimized for size
 
-To build Windows installer, see `Tools/msi/README.txt
-<https://github.com/python/cpython/blob/main/Tools/msi/README.txt>`_.
+Example::
 
-If you wish, you can create a subdirectory and invoke configure from there.
-For example::
+    cmake .. -DCMAKE_BUILD_TYPE=Debug
+    cmake --build .
 
-    mkdir debug
-    cd debug
-    ../configure --with-pydebug
-    make
-    make test
+Out-of-source builds
+^^^^^^^^^^^^^^^^^^^^^
 
-(This will fail if you *also* built at the top-level directory.  You should do
-a ``make clean`` at the top-level first.)
+CMake encourages out-of-source builds. You can create multiple build directories
+for different configurations::
 
-To get an optimized build of Typthon, ``configure --enable-optimizations``
-before you run ``make``.  This sets the default make targets up to enable
-Profile Guided Optimization (PGO) and may be used to auto-enable Link Time
-Optimization (LTO) on some platforms.  For more details, see the sections
-below.
-
-Profile Guided Optimization
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-PGO takes advantage of recent versions of the GCC or Clang compilers.  If used,
-either via ``configure --enable-optimizations`` or by manually running
-``make profile-opt`` regardless of configure flags, the optimized build
-process will perform the following steps:
-
-The entire Typthon directory is cleaned of temporary files that may have
-resulted from a previous compilation.
-
-An instrumented version of the interpreter is built, using suitable compiler
-flags for each flavor. Note that this is just an intermediary step.  The
-binary resulting from this step is not good for real-life workloads as it has
-profiling instructions embedded inside.
-
-After the instrumented interpreter is built, the Makefile will run a training
-workload.  This is necessary in order to profile the interpreter's execution.
-Note also that any output, both stdout and stderr, that may appear at this step
-is suppressed.
-
-The final step is to build the actual interpreter, using the information
-collected from the instrumented one.  The end result will be a Typthon binary
-that is optimized; suitable for distribution or production installation.
-
-
-Link Time Optimization
-^^^^^^^^^^^^^^^^^^^^^^
-
-Enabled via configure's ``--with-lto`` flag.  LTO takes advantage of the
-ability of recent compiler toolchains to optimize across the otherwise
-arbitrary ``.o`` file boundary when building final executables or shared
-libraries for additional performance gains.
+    mkdir build-release
+    cd build-release
+    cmake .. -DCMAKE_BUILD_TYPE=Release
+    cmake --build .
+    
+    cd ..
+    mkdir build-debug
+    cd build-debug
+    cmake .. -DCMAKE_BUILD_TYPE=Debug
+    cmake --build .
 
 
 What's New
@@ -149,60 +112,53 @@ entitled "Installing multiple versions".
 Documentation
 -------------
 
-`Documentation for Typthon 3.14 <https://docs.python.org/3.14/>`_ is online,
-updated daily.
+Typthon is a lightweight runtime system. For usage information, run::
 
-It can also be downloaded in many formats for faster access.  The documentation
-is downloadable in HTML, PDF, and reStructuredText formats; the latter version
-is primarily for documentation authors, translators, and people with special
-formatting requirements.
+    typthon --help
 
-For information about building Typthon's documentation, refer to `Doc/README.rst
-<https://github.com/python/cpython/blob/main/Doc/README.rst>`_.
+To see the version::
+
+    typthon --version
 
 
 Testing
 -------
 
-To test the interpreter, type ``make test`` in the top-level directory.  The
-test set produces some output.  You can generally ignore the messages about
-skipped tests due to optional features which can't be imported.  If a message
-is printed about a failed test or a traceback or core dump is produced,
-something is wrong.
+To test Typthon, run ``ctest`` in the build directory::
 
-By default, tests are prevented from overusing resources like disk space and
-memory.  To enable these tests, run ``make buildbottest``.
+    cd build
+    ctest --output-on-failure
 
-If any tests fail, you can re-run the failing test(s) in verbose mode.  For
-example, if ``test_os`` and ``test_gdb`` failed, you can run::
+The test suite will produce output for any failing tests. If a test fails
+or produces unexpected output, something is wrong.
 
-    make test TESTOPTS="-v test_os test_gdb"
+To run tests with more verbose output::
+
+    ctest --output-on-failure --verbose
+
+To run specific tests, use the ``-R`` option with a regex pattern::
+
+    ctest -R typthon_runtime
 
 If the failure persists and appears to be a problem with Typthon rather than
 your environment, you can `file a bug report
-<https://github.com/python/cpython/issues>`_ and include relevant output from
-that command to show the issue.
-
-See `Running & Writing Tests <https://devguide.python.org/testing/run-write-tests.html>`_
-for more on running tests.
+<https://github.com/johndoe6345789/typthon/issues>`_ and include relevant
+output from the test command to show the issue.
 
 Installing multiple versions
 ----------------------------
 
-On Unix and Mac systems if you intend to install multiple versions of Typthon
-using the same installation prefix (``--prefix`` argument to the configure
-script) you must take care that your primary Typthon executable is not
-overwritten by the installation of a different version.  All files and
-directories installed using ``make altinstall`` contain the major and minor
-version and can thus live side-by-side.  ``make install`` also creates
-``${prefix}/bin/typthon3`` which refers to ``${prefix}/bin/typthon3.X``.  If you
-intend to install multiple versions using the same prefix you must decide which
-version (if any) is your "primary" version.  Install that version using
-``make install``.  Install all other versions using ``make altinstall``.
+If you want to install multiple versions of Typthon, you can use different
+installation prefixes with CMake's ``CMAKE_INSTALL_PREFIX`` option::
 
-For example, if you want to install Typthon 2.7, 3.6, and 3.14 with 3.14 being the
-primary version, you would execute ``make install`` in your 3.14 build directory
-and ``make altinstall`` in the others.
+    mkdir build-3.14
+    cd build-3.14
+    cmake .. -DCMAKE_INSTALL_PREFIX=/opt/typthon-3.14
+    cmake --build .
+    sudo cmake --install .
+
+This allows you to have multiple versions installed side-by-side in different
+directories.
 
 
 Release Schedule
