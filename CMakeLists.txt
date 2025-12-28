@@ -102,7 +102,7 @@ set(OTHER_MODULE_SOURCES
   Modules/symtablemodule.c
   Modules/xxsubtype.c
   Modules/atexitmodule.c
-  # Modules/faulthandler.c  # Has compilation issues with constant initialization
+  Modules/faulthandler.c
   Modules/_datetimemodule.c
   Modules/_tracemalloc.c
 )

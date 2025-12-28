@@ -63,13 +63,14 @@ All stubs are implemented in: `Python/frozen_stubs.c`
 
 **Purpose**: Signal handling and crash reporting module.
 
-**Stubs Created**:
-- `_PyFaulthandler_Init()` - Initialize fault handler
-- `_PyFaulthandler_Fini()` - Finalize fault handler
+**Status**: ✅ **RESOLVED** - Faulthandler module is now fully functional and included in the build.
 
-**Implementation**: No-op functions that return success. Fault handler module excluded from build due to compilation issues.
+**Resolution**: Fixed the constant initialization error by replacing `Py_ARRAY_LENGTH()` macro with direct `sizeof` calculation for the `faulthandler_nsignals` variable. The macro's type-checking feature using `__builtin_types_compatible_p` is not a constant expression, so using simple `sizeof(array) / sizeof(array[0])` resolves the compilation issue.
 
-**Note**: The faulthandler module was excluded from compilation (`Modules/faulthandler.c`) due to constant initialization errors with `Py_ARRAY_LENGTH` macro.
+**Changes Made**:
+- Modified `Modules/faulthandler.c` to use `sizeof` instead of `Py_ARRAY_LENGTH` for array length calculation
+- Enabled faulthandler module in `CMakeLists.txt`
+- Removed stub implementations from `Python/frozen_stubs.c`
 
 ### 7. POSIX Functions
 
@@ -97,16 +98,18 @@ This prevents the code from attempting to call the non-existent `plock()` functi
 
 ## Module Exclusions
 
-The following module was excluded from the build:
+~~The following module was excluded from the build:~~
 
-- **faulthandler** (`Modules/faulthandler.c`) - Excluded due to compilation errors with non-constant array initialization
+~~- **faulthandler** (`Modules/faulthandler.c`) - Excluded due to compilation errors with non-constant array initialization~~
+
+**Update**: No modules are currently excluded. The faulthandler module has been fixed and is now included in the build.
 
 ## Impact on Functionality
 
 These stubs mean the following features are not available in this build:
 
 1. **No frozen modules**: Cannot embed Python code as frozen C arrays
-2. **No fault handler**: No signal handling for crashes/segfaults
+2. ~~**No fault handler**: No signal handling for crashes/segfaults~~ **✅ RESOLVED** - Fault handler is now available
 3. **No plock**: No Solaris-style process memory locking
 4. **Minimal build info**: Git metadata is stubbed with placeholder values
 5. **No custom built-in modules**: Only modules explicitly linked are available
@@ -116,7 +119,7 @@ These stubs mean the following features are not available in this build:
 To get a fully-functional Python interpreter, the following would be needed:
 
 1. Generate actual frozen modules using `Tools/build/freeze_modules.py`
-2. Re-enable and fix the faulthandler module compilation
+2. ~~Re-enable and fix the faulthandler module compilation~~ **✅ COMPLETED**
 3. Implement proper path configuration in `_PyConfig_InitPathConfig()`
 4. Generate real build information with git metadata
 5. Add more built-in modules to the `_PyImport_Inittab` table
@@ -131,7 +134,7 @@ The interpreter successfully:
 
 ## Build Statistics
 
-- **Total source files compiled**: 177
+- **Total source files compiled**: 178 (increased from 177 with faulthandler enabled)
 - **Core library size**: libpython_core.a
 - **Executable**: typthon
 - **Build tool**: Ninja (recommended) or Unix Makefiles

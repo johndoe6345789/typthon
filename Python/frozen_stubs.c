@@ -66,19 +66,6 @@ _PyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
     return PyStatus_Ok();
 }
 
-/* Faulthandler stubs - module excluded from build */
-int
-_PyFaulthandler_Init(int enable)
-{
-    return 0;
-}
-
-void
-_PyFaulthandler_Fini(void)
-{
-    /* No-op */
-}
-
 /* plock stub - not available on all systems */
 #ifndef HAVE_PLOCK
 int plock(int op)
