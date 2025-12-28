@@ -14,7 +14,7 @@ All stubs are implemented in: `Python/frozen_stubs.c`
 
 **Stubs Created**:
 - `_PyImport_FrozenBootstrap` - Bootstrap frozen modules
-- `_PyImport_FrozenStdlib` - Standard library frozen modules
+- `_PyImport_FrozenStdlib` - Standard library frozen modules  
 - `_PyImport_FrozenTest` - Test frozen modules
 - `PyImport_FrozenModules` - Main frozen modules array
 - `_PyImport_FrozenAliases` - Frozen module aliases
@@ -78,7 +78,7 @@ All stubs are implemented in: `Python/frozen_stubs.c`
 **Stubs Created**:
 - `plock()` - Process memory locking (Solaris-specific)
 
-**Implementation**: Returns -1 with errno set to `ENOSYS` (not implemented). Also commented out `HAVE_PLOCK` in `Include/pyconfig.h`.
+**Implementation**: Returns -1 with errno set to `ENOSYS` (not implemented). Also removed `HAVE_PLOCK` from pyconfig.h.
 
 **Note**: `plock()` is a legacy Solaris function not available on modern Linux systems.
 
@@ -86,7 +86,7 @@ All stubs are implemented in: `Python/frozen_stubs.c`
 
 ### pyconfig.h Modifications
 
-The following configuration define was commented out in `Include/pyconfig.h`:
+The following configuration define was commented out:
 
 ```c
 /* plock is not available on modern Linux systems */
