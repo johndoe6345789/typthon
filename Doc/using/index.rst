@@ -19,6 +19,4 @@ interpreter and things that make working with Python easier.
    configure.rst
    windows.rst
    mac.rst
-   android.rst
-   ios.rst
    editors.rst
