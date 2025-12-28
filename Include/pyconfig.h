@@ -97,6 +97,7 @@
 #define HAVE_ALARM 1
 #define HAVE_CHOWN 1
 #define HAVE_CLOCK 1
+#define HAVE_CLOCK_GETTIME 1
 #define HAVE_CONFSTR 1
 #define HAVE_FORK 1
 #define HAVE_FSEEK64 1
@@ -125,7 +126,8 @@
 #define HAVE_NICE 1
 #define HAVE_NL_LANGINFO 1
 #define HAVE_PAUSE 1
-#define HAVE_PLOCK 1
+/* plock is not available on modern Linux systems */
+/* #define HAVE_PLOCK 1 */
 #define HAVE_POLL 1
 #define HAVE_PTHREAD_KILL 1
 #define HAVE_PUTENV 1

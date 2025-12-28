@@ -53,6 +53,9 @@ list(FILTER PYTHON_SOURCES EXCLUDE REGEX "Python/emscripten_.*\\.c$")
 list(FILTER OBJECTS_SOURCES EXCLUDE REGEX ".*_test.*")
 list(FILTER PARSER_SOURCES EXCLUDE REGEX ".*_test.*")
 
+# Add back our stub file for missing symbols (was excluded by frozen filter)
+list(APPEND PYTHON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Python/frozen_stubs.c)
+
 # Essential built-in modules (excluding those that need generated files)
 set(BUILTIN_MODULE_SOURCES
   Modules/gcmodule.c
@@ -98,6 +101,22 @@ set(OTHER_MODULE_SOURCES
   Modules/_stat.c
   Modules/symtablemodule.c
   Modules/xxsubtype.c
+  Modules/atexitmodule.c
+  # Modules/faulthandler.c  # Has compilation issues with constant initialization
+  Modules/_datetimemodule.c
+  Modules/_tracemalloc.c
+)
+
+# Tokenizer sources
+set(TOKENIZER_SOURCES
+  Parser/tokenizer/readline_tokenizer.c
+  Parser/tokenizer/file_tokenizer.c
+  Parser/tokenizer/utf8_tokenizer.c
+  Parser/tokenizer/string_tokenizer.c
+  Parser/tokenizer/helpers.c
+  Parser/lexer/state.c
+  Parser/lexer/lexer.c
+  Parser/lexer/buffer.c
 )
 
 # Build Python core library
@@ -105,6 +124,7 @@ add_library(python_core STATIC
   ${PYTHON_SOURCES}
   ${OBJECTS_SOURCES}
   ${PARSER_SOURCES}
+  ${TOKENIZER_SOURCES}
   ${BUILTIN_MODULE_SOURCES}
   ${IO_MODULE_SOURCES}
   ${OTHER_MODULE_SOURCES}
