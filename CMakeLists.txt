@@ -11,51 +11,45 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/generated/typthon/version.h
-  @ONLY
-)
+# NOTE: Building CPython requires proper configuration (./configure)
+# This CMakeLists.txt is a work in progress to wire to the real interpreter
 
-add_library(typthon_core STATIC src/runtime.c)
-target_include_directories(
-  typthon_core
-  PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_BINARY_DIR}/generated
-)
-target_compile_features(typthon_core PUBLIC c_std_11)
+# Platform detection
+if(UNIX AND NOT APPLE)
+  set(LINUX TRUE)
+endif()
 
-add_executable(typthon src/main.c)
-target_link_libraries(typthon PRIVATE typthon_core)
+# TODO: Collect and build Python core source files from:
+# - Python/*.c (interpreter core)
+# - Objects/*.c (built-in types)
+# - Parser/*.c (parser)
+# - Modules/*.c (built-in modules)
+
+# TODO: Generate or provide pyconfig.h
+# CPython normally generates this via ./configure
+
+# Placeholder: Build Python executable
+add_executable(typthon Programs/python.c)
+
+# TODO: Link against Python core library once built
+# target_link_libraries(typthon PRIVATE python_core)
+
+if(UNIX)
+  target_link_libraries(typthon PRIVATE m dl pthread util)
+endif()
+
+target_include_directories(typthon
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/Include
+)
 
 include(GNUInstallDirs)
 install(
-  TARGETS typthon_core typthon
+  TARGETS typthon
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
-install(
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
-install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/generated/typthon/version.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/typthon
 )
 
 include(CTest)
 if(BUILD_TESTING)
-  add_executable(typthon_smoketest tests/smoke.c)
-  target_include_directories(
-    typthon_smoketest
-    PRIVATE
-      ${CMAKE_CURRENT_SOURCE_DIR}/include
-      ${CMAKE_CURRENT_BINARY_DIR}/generated
-  )
-  target_link_libraries(typthon_smoketest PRIVATE typthon_core)
-
-  add_test(NAME typthon_cli COMMAND typthon --version)
-  add_test(NAME typthon_runtime_version COMMAND typthon_smoketest)
+  add_test(NAME typthon_version COMMAND typthon --version)
 endif()
