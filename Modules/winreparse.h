@@ -1,5 +1,5 @@
-#ifndef Py_WINREPARSE_H
-#define Py_WINREPARSE_H
+#ifndef Ty_WINREPARSE_H
+#define Ty_WINREPARSE_H
 
 #ifdef MS_WINDOWS
 #include <windows.h>
@@ -39,11 +39,11 @@ typedef struct {
             UCHAR  DataBuffer[1];
         } GenericReparseBuffer;
     };
-} _Py_REPARSE_DATA_BUFFER, *_Py_PREPARSE_DATA_BUFFER;
+} _Ty_REPARSE_DATA_BUFFER, *_Ty_PREPARSE_DATA_BUFFER;
 
-#define _Py_REPARSE_DATA_BUFFER_HEADER_SIZE \
-    FIELD_OFFSET(_Py_REPARSE_DATA_BUFFER, GenericReparseBuffer)
-#define _Py_MAXIMUM_REPARSE_DATA_BUFFER_SIZE  ( 16 * 1024 )
+#define _Ty_REPARSE_DATA_BUFFER_HEADER_SIZE \
+    FIELD_OFFSET(_Ty_REPARSE_DATA_BUFFER, GenericReparseBuffer)
+#define _Ty_MAXIMUM_REPARSE_DATA_BUFFER_SIZE  ( 16 * 1024 )
 
 // Defined in WinBase.h in 'recent' versions of Windows 10 SDK
 #ifndef SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE
@@ -56,4 +56,4 @@ typedef struct {
 
 #endif /* MS_WINDOWS */
 
-#endif /* !Py_WINREPARSE_H */
+#endif /* !Ty_WINREPARSE_H */

@@ -5,9 +5,9 @@ from ctypes import (Structure, Array, ARRAY, sizeof, addressof,
                     create_string_buffer, create_unicode_buffer,
                     c_char, c_wchar, c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint,
                     c_long, c_ulonglong, c_float, c_double, c_longdouble)
-from test.support import bigmemtest, _2G, threading_helper, Py_GIL_DISABLED
-from ._support import (_CData, PyCArrayType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
-                       Py_TPFLAGS_IMMUTABLETYPE)
+from test.support import bigmemtest, _2G, threading_helper, Ty_GIL_DISABLED
+from ._support import (_CData, PyCArrayType, Ty_TPFLAGS_DISALLOW_INSTANTIATION,
+                       Ty_TPFLAGS_IMMUTABLETYPE)
 
 
 formats = "bBhHiIlLqQfd"
@@ -26,8 +26,8 @@ class ArrayTestCase(unittest.TestCase):
     def test_type_flags(self):
         for cls in Array, PyCArrayType:
             with self.subTest(cls=cls):
-                self.assertTrue(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertTrue(cls.__flags__ & Ty_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalse(cls.__flags__ & Ty_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Abstract classes (whose metaclass __init__ was not called) can't be
@@ -268,7 +268,7 @@ class ArrayTestCase(unittest.TestCase):
         c_char * size
 
     @threading_helper.requires_working_threading()
-    @unittest.skipUnless(Py_GIL_DISABLED, "only meaningful if the GIL is disabled")
+    @unittest.skipUnless(Ty_GIL_DISABLED, "only meaningful if the GIL is disabled")
     def test_thread_safety(self):
         from threading import Thread
 

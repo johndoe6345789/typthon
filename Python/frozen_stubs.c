@@ -22,14 +22,14 @@ static const struct _module_alias _frozen_aliases_list[] = {
     {0, 0}
 };
 
-const struct _frozen *_PyImport_FrozenBootstrap = _frozen_bootstrap_list;
-const struct _frozen *_PyImport_FrozenStdlib = _frozen_stdlib_list;
-const struct _frozen *_PyImport_FrozenTest = _frozen_test_list;
-const struct _frozen *PyImport_FrozenModules = NULL;
-const struct _module_alias *_PyImport_FrozenAliases = _frozen_aliases_list;
+const struct _frozen *_TyImport_FrozenBootstrap = _frozen_bootstrap_list;
+const struct _frozen *_TyImport_FrozenStdlib = _frozen_stdlib_list;
+const struct _frozen *_TyImport_FrozenTest = _frozen_test_list;
+const struct _frozen *TyImport_FrozenModules = NULL;
+const struct _module_alias *_TyImport_FrozenAliases = _frozen_aliases_list;
 
 /* Inittab stub */
-struct _inittab _PyImport_Inittab[] = {
+struct _inittab _TyImport_Inittab[] = {
     {0, 0}
 };
 
@@ -45,35 +45,35 @@ struct _inittab _PyImport_Inittab[] = {
 #endif
 
 const char *
-Py_GetBuildInfo(void)
+Ty_GetBuildInfo(void)
 {
     return "Typthon 3.14.0 (" GIT_BRANCH ":" GIT_COMMIT_HASH ", " __DATE__ " " __TIME__ ")";
 }
 
 const char *
-_Py_gitidentifier(void)
+_Ty_gitidentifier(void)
 {
     return GIT_BRANCH;
 }
 
 const char *
-_Py_gitversion(void)
+_Ty_gitversion(void)
 {
     return "Typthon 3.14.0:" GIT_COMMIT_HASH;
 }
 
 /* DL open flags stub */
 int
-_PyImport_GetDLOpenFlags(PyInterpreterState *interp)
+_TyImport_GetDLOpenFlags(TyInterpreterState *interp)
 {
     return 0x102; /* RTLD_NOW | RTLD_GLOBAL */
 }
 
 /* Path config stub - minimal implementation */
-PyStatus
-_PyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
+TyStatus
+_TyConfig_InitPathConfig(TyConfig *config, int compute_path_config)
 {
-    return PyStatus_Ok();
+    return TyStatus_Ok();
 }
 
 /* plock stub - not available on all systems */

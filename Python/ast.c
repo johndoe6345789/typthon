@@ -1,21 +1,21 @@
 /*
- * This file exposes PyAST_Validate interface to check the integrity
+ * This file exposes TyAST_Validate interface to check the integrity
  * of the given abstract syntax tree (potentially constructed manually).
  */
 #include "Python.h"
 #include "pycore_ast.h"           // asdl_stmt_seq
-#include "pycore_pystate.h"       // _PyThreadState_GET()
-#include "pycore_unicodeobject.h" // _PyUnicode_EqualToASCIIString()
+#include "pycore_pystate.h"       // _TyThreadState_GET()
+#include "pycore_unicodeobject.h" // _TyUnicode_EqualToASCIIString()
 
 #include <stdbool.h>              // bool
 
 
 #define ENTER_RECURSIVE() \
-if (Py_EnterRecursiveCall(" during compilation")) { \
+if (Ty_EnterRecursiveCall(" during compilation")) { \
     return 0; \
 }
 
-#define LEAVE_RECURSIVE() Py_LeaveRecursiveCall();
+#define LEAVE_RECURSIVE() Ty_LeaveRecursiveCall();
 
 static int validate_stmts(asdl_stmt_seq *);
 static int validate_exprs(asdl_expr_seq *, expr_context_ty, int);
@@ -29,30 +29,30 @@ static int validate_typeparam(type_param_ty);
 
 #define VALIDATE_POSITIONS(node) \
     if (node->lineno > node->end_lineno) { \
-        PyErr_Format(PyExc_ValueError, \
+        TyErr_Format(TyExc_ValueError, \
                      "AST node line range (%d, %d) is not valid", \
                      node->lineno, node->end_lineno); \
         return 0; \
     } \
     if ((node->lineno < 0 && node->end_lineno != node->lineno) || \
         (node->col_offset < 0 && node->col_offset != node->end_col_offset)) { \
-        PyErr_Format(PyExc_ValueError, \
+        TyErr_Format(TyExc_ValueError, \
                      "AST node column range (%d, %d) for line range (%d, %d) is not valid", \
                      node->col_offset, node->end_col_offset, node->lineno, node->end_lineno); \
         return 0; \
     } \
     if (node->lineno == node->end_lineno && node->col_offset > node->end_col_offset) { \
-        PyErr_Format(PyExc_ValueError, \
+        TyErr_Format(TyExc_ValueError, \
                      "line %d, column %d-%d is not a valid range", \
                      node->lineno, node->col_offset, node->end_col_offset); \
         return 0; \
     }
 
 static int
-validate_name(PyObject *name)
+validate_name(TyObject *name)
 {
-    assert(!PyErr_Occurred());
-    assert(PyUnicode_Check(name));
+    assert(!TyErr_Occurred());
+    assert(TyUnicode_Check(name));
     static const char * const forbidden[] = {
         "None",
         "True",
@@ -60,8 +60,8 @@ validate_name(PyObject *name)
         NULL
     };
     for (int i = 0; forbidden[i] != NULL; i++) {
-        if (_PyUnicode_EqualToASCIIString(name, forbidden[i])) {
-            PyErr_Format(PyExc_ValueError, "identifier field can't represent '%s' constant", forbidden[i]);
+        if (_TyUnicode_EqualToASCIIString(name, forbidden[i])) {
+            TyErr_Format(TyExc_ValueError, "identifier field can't represent '%s' constant", forbidden[i]);
             return 0;
         }
     }
@@ -71,12 +71,12 @@ validate_name(PyObject *name)
 static int
 validate_comprehension(asdl_comprehension_seq *gens)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     if (!asdl_seq_LEN(gens)) {
-        PyErr_SetString(PyExc_ValueError, "comprehension with no generators");
+        TyErr_SetString(TyExc_ValueError, "comprehension with no generators");
         return 0;
     }
-    for (Py_ssize_t i = 0; i < asdl_seq_LEN(gens); i++) {
+    for (Ty_ssize_t i = 0; i < asdl_seq_LEN(gens); i++) {
         comprehension_ty comp = asdl_seq_GET(gens, i);
         if (!validate_expr(comp->target, Store) ||
             !validate_expr(comp->iter, Load) ||
@@ -89,8 +89,8 @@ validate_comprehension(asdl_comprehension_seq *gens)
 static int
 validate_keywords(asdl_keyword_seq *keywords)
 {
-    assert(!PyErr_Occurred());
-    for (Py_ssize_t i = 0; i < asdl_seq_LEN(keywords); i++)
+    assert(!TyErr_Occurred());
+    for (Ty_ssize_t i = 0; i < asdl_seq_LEN(keywords); i++)
         if (!validate_expr((asdl_seq_GET(keywords, i))->value, Load))
             return 0;
     return 1;
@@ -99,12 +99,12 @@ validate_keywords(asdl_keyword_seq *keywords)
 static int
 validate_args(asdl_arg_seq *args, int require_annotations)
 {
-    assert(!PyErr_Occurred());
-    for (Py_ssize_t i = 0; i < asdl_seq_LEN(args); i++) {
+    assert(!TyErr_Occurred());
+    for (Ty_ssize_t i = 0; i < asdl_seq_LEN(args); i++) {
         arg_ty arg = asdl_seq_GET(args, i);
         VALIDATE_POSITIONS(arg);
         if (require_annotations && arg->annotation == NULL) {
-            PyErr_Format(PyExc_SyntaxError,
+            TyErr_Format(TyExc_SyntaxError,
                          "missing type annotation for argument '%U'",
                          arg->arg);
             return 0;
@@ -127,14 +127,14 @@ expr_context_name(expr_context_ty ctx)
         return "Del";
     // No default case so compiler emits warning for unhandled cases
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
 
 static int
 validate_vararg(arg_ty arg, int require_annotations)
 {
     if (require_annotations && arg->annotation == NULL) {
-        PyErr_Format(PyExc_SyntaxError,
+        TyErr_Format(TyExc_SyntaxError,
                      "missing type annotation for argument '%U'",
                      arg->arg);
         return 0;
@@ -148,7 +148,7 @@ validate_vararg(arg_ty arg, int require_annotations)
 static int
 validate_arguments(arguments_ty args, int require_annotations)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     if (!validate_args(args->posonlyargs, require_annotations)
         || !validate_args(args->args, require_annotations)) {
         return 0;
@@ -162,11 +162,11 @@ validate_arguments(arguments_ty args, int require_annotations)
         return 0;
     }
     if (asdl_seq_LEN(args->defaults) > asdl_seq_LEN(args->posonlyargs) + asdl_seq_LEN(args->args)) {
-        PyErr_SetString(PyExc_ValueError, "more positional defaults than args on arguments");
+        TyErr_SetString(TyExc_ValueError, "more positional defaults than args on arguments");
         return 0;
     }
     if (asdl_seq_LEN(args->kw_defaults) != asdl_seq_LEN(args->kwonlyargs)) {
-        PyErr_SetString(PyExc_ValueError, "length of kwonlyargs is not the same as "
+        TyErr_SetString(TyExc_ValueError, "length of kwonlyargs is not the same as "
                         "kw_defaults on arguments");
         return 0;
     }
@@ -174,54 +174,54 @@ validate_arguments(arguments_ty args, int require_annotations)
 }
 
 static int
-validate_constant(PyObject *value)
+validate_constant(TyObject *value)
 {
-    assert(!PyErr_Occurred());
-    if (value == Py_None || value == Py_Ellipsis)
+    assert(!TyErr_Occurred());
+    if (value == Ty_None || value == Ty_Ellipsis)
         return 1;
 
-    if (PyLong_CheckExact(value)
-            || PyFloat_CheckExact(value)
-            || PyComplex_CheckExact(value)
-            || PyBool_Check(value)
-            || PyUnicode_CheckExact(value)
-            || PyBytes_CheckExact(value))
+    if (TyLong_CheckExact(value)
+            || TyFloat_CheckExact(value)
+            || TyComplex_CheckExact(value)
+            || TyBool_Check(value)
+            || TyUnicode_CheckExact(value)
+            || TyBytes_CheckExact(value))
         return 1;
 
-    if (PyTuple_CheckExact(value) || PyFrozenSet_CheckExact(value)) {
+    if (TyTuple_CheckExact(value) || TyFrozenSet_CheckExact(value)) {
         ENTER_RECURSIVE();
 
-        PyObject *it = PyObject_GetIter(value);
+        TyObject *it = PyObject_GetIter(value);
         if (it == NULL)
             return 0;
 
         while (1) {
-            PyObject *item = PyIter_Next(it);
+            TyObject *item = TyIter_Next(it);
             if (item == NULL) {
-                if (PyErr_Occurred()) {
-                    Py_DECREF(it);
+                if (TyErr_Occurred()) {
+                    Ty_DECREF(it);
                     return 0;
                 }
                 break;
             }
 
             if (!validate_constant(item)) {
-                Py_DECREF(it);
-                Py_DECREF(item);
+                Ty_DECREF(it);
+                Ty_DECREF(item);
                 return 0;
             }
-            Py_DECREF(item);
+            Ty_DECREF(item);
         }
 
-        Py_DECREF(it);
+        Ty_DECREF(it);
         LEAVE_RECURSIVE();
         return 1;
     }
 
-    if (!PyErr_Occurred()) {
-        PyErr_Format(PyExc_TypeError,
+    if (!TyErr_Occurred()) {
+        TyErr_Format(TyExc_TypeError,
                      "got an invalid type in Constant: %s",
-                     _PyType_Name(Py_TYPE(value)));
+                     _TyType_Name(Ty_TYPE(value)));
     }
     return 0;
 }
@@ -229,7 +229,7 @@ validate_constant(PyObject *value)
 static int
 validate_expr(expr_ty exp, expr_context_ty ctx)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     VALIDATE_POSITIONS(exp);
     int ret = -1;
     ENTER_RECURSIVE();
@@ -261,7 +261,7 @@ validate_expr(expr_ty exp, expr_context_ty ctx)
         break;
     default:
         if (ctx != Load) {
-            PyErr_Format(PyExc_ValueError, "expression which can't be "
+            TyErr_Format(TyExc_ValueError, "expression which can't be "
                          "assigned to in %s context", expr_context_name(ctx));
             return 0;
         }
@@ -270,7 +270,7 @@ validate_expr(expr_ty exp, expr_context_ty ctx)
         actual_ctx = 0;
     }
     if (check_ctx && actual_ctx != ctx) {
-        PyErr_Format(PyExc_ValueError, "expression must have %s context but has %s instead",
+        TyErr_Format(TyExc_ValueError, "expression must have %s context but has %s instead",
                      expr_context_name(ctx), expr_context_name(actual_ctx));
         return 0;
     }
@@ -279,7 +279,7 @@ validate_expr(expr_ty exp, expr_context_ty ctx)
     switch (exp->kind) {
     case BoolOp_kind:
         if (asdl_seq_LEN(exp->v.BoolOp.values) < 2) {
-            PyErr_SetString(PyExc_ValueError, "BoolOp with less than 2 values");
+            TyErr_SetString(TyExc_ValueError, "BoolOp with less than 2 values");
             return 0;
         }
         ret = validate_exprs(exp->v.BoolOp.values, Load, 0);
@@ -302,7 +302,7 @@ validate_expr(expr_ty exp, expr_context_ty ctx)
         break;
     case Dict_kind:
         if (asdl_seq_LEN(exp->v.Dict.keys) != asdl_seq_LEN(exp->v.Dict.values)) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "Dict doesn't have the same number of keys as values");
             return 0;
         }
@@ -339,12 +339,12 @@ validate_expr(expr_ty exp, expr_context_ty ctx)
         break;
     case Compare_kind:
         if (!asdl_seq_LEN(exp->v.Compare.comparators)) {
-            PyErr_SetString(PyExc_ValueError, "Compare with no comparators");
+            TyErr_SetString(TyExc_ValueError, "Compare with no comparators");
             return 0;
         }
         if (asdl_seq_LEN(exp->v.Compare.comparators) !=
             asdl_seq_LEN(exp->v.Compare.ops)) {
-            PyErr_SetString(PyExc_ValueError, "Compare has a different number "
+            TyErr_SetString(TyExc_ValueError, "Compare has a different number "
                             "of comparators and operands");
             return 0;
         }
@@ -409,7 +409,7 @@ validate_expr(expr_ty exp, expr_context_ty ctx)
         break;
     case NamedExpr_kind:
         if (exp->v.NamedExpr.target->kind != Name_kind) {
-            PyErr_SetString(PyExc_TypeError,
+            TyErr_SetString(TyExc_TypeError,
                             "NamedExpr target must be a Name");
             return 0;
         }
@@ -422,7 +422,7 @@ validate_expr(expr_ty exp, expr_context_ty ctx)
     // No default case so compiler emits warning for unhandled cases
     }
     if (ret < 0) {
-        PyErr_SetString(PyExc_SystemError, "unexpected expression");
+        TyErr_SetString(TyExc_SystemError, "unexpected expression");
         ret = 0;
     }
     LEAVE_RECURSIVE();
@@ -437,10 +437,10 @@ static int
 ensure_literal_number(expr_ty exp, bool allow_real, bool allow_imaginary)
 {
     assert(exp->kind == Constant_kind);
-    PyObject *value = exp->v.Constant.value;
-    return (allow_real && PyFloat_CheckExact(value)) ||
-           (allow_real && PyLong_CheckExact(value)) ||
-           (allow_imaginary && PyComplex_CheckExact(value));
+    TyObject *value = exp->v.Constant.value;
+    return (allow_real && TyFloat_CheckExact(value)) ||
+           (allow_real && TyLong_CheckExact(value)) ||
+           (allow_imaginary && TyComplex_CheckExact(value));
 }
 
 static int
@@ -503,7 +503,7 @@ ensure_literal_complex(expr_ty exp)
 static int
 validate_pattern_match_value(expr_ty exp)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     if (!validate_expr(exp, Load)) {
         return 0;
     }
@@ -517,13 +517,13 @@ validate_pattern_match_value(expr_ty exp)
             if (!validate_expr(exp, Load)) {
                 return 0;
             }
-            PyObject *literal = exp->v.Constant.value;
-            if (PyLong_CheckExact(literal) || PyFloat_CheckExact(literal) ||
-                PyBytes_CheckExact(literal) || PyComplex_CheckExact(literal) ||
-                PyUnicode_CheckExact(literal)) {
+            TyObject *literal = exp->v.Constant.value;
+            if (TyLong_CheckExact(literal) || TyFloat_CheckExact(literal) ||
+                TyBytes_CheckExact(literal) || TyComplex_CheckExact(literal) ||
+                TyUnicode_CheckExact(literal)) {
                 return 1;
             }
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "unexpected constant inside of a literal pattern");
             return 0;
         case Attribute_kind:
@@ -550,17 +550,17 @@ validate_pattern_match_value(expr_ty exp)
         default:
             break;
     }
-    PyErr_SetString(PyExc_ValueError,
+    TyErr_SetString(TyExc_ValueError,
                     "patterns may only match literals and attribute lookups");
     return 0;
 }
 
 static int
-validate_capture(PyObject *name)
+validate_capture(TyObject *name)
 {
-    assert(!PyErr_Occurred());
-    if (_PyUnicode_EqualToASCIIString(name, "_")) {
-        PyErr_Format(PyExc_ValueError, "can't capture name '_' in patterns");
+    assert(!TyErr_Occurred());
+    if (_TyUnicode_EqualToASCIIString(name, "_")) {
+        TyErr_Format(TyExc_ValueError, "can't capture name '_' in patterns");
         return 0;
     }
     return validate_name(name);
@@ -569,7 +569,7 @@ validate_capture(PyObject *name)
 static int
 validate_pattern(pattern_ty p, int star_ok)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     VALIDATE_POSITIONS(p);
     int ret = -1;
     ENTER_RECURSIVE();
@@ -578,9 +578,9 @@ validate_pattern(pattern_ty p, int star_ok)
             ret = validate_pattern_match_value(p->v.MatchValue.value);
             break;
         case MatchSingleton_kind:
-            ret = p->v.MatchSingleton.value == Py_None || PyBool_Check(p->v.MatchSingleton.value);
+            ret = p->v.MatchSingleton.value == Ty_None || TyBool_Check(p->v.MatchSingleton.value);
             if (!ret) {
-                PyErr_SetString(PyExc_ValueError,
+                TyErr_SetString(TyExc_ValueError,
                                 "MatchSingleton can only contain True, False and None");
             }
             break;
@@ -589,7 +589,7 @@ validate_pattern(pattern_ty p, int star_ok)
             break;
         case MatchMapping_kind:
             if (asdl_seq_LEN(p->v.MatchMapping.keys) != asdl_seq_LEN(p->v.MatchMapping.patterns)) {
-                PyErr_SetString(PyExc_ValueError,
+                TyErr_SetString(TyExc_ValueError,
                                 "MatchMapping doesn't have the same number of keys as patterns");
                 ret = 0;
                 break;
@@ -601,11 +601,11 @@ validate_pattern(pattern_ty p, int star_ok)
             }
 
             asdl_expr_seq *keys = p->v.MatchMapping.keys;
-            for (Py_ssize_t i = 0; i < asdl_seq_LEN(keys); i++) {
+            for (Ty_ssize_t i = 0; i < asdl_seq_LEN(keys); i++) {
                 expr_ty key = asdl_seq_GET(keys, i);
                 if (key->kind == Constant_kind) {
-                    PyObject *literal = key->v.Constant.value;
-                    if (literal == Py_None || PyBool_Check(literal)) {
+                    TyObject *literal = key->v.Constant.value;
+                    if (literal == Ty_None || TyBool_Check(literal)) {
                         /* validate_pattern_match_value will ensure the key
                            doesn't contain True, False and None but it is
                            syntactically valid, so we will pass those on in
@@ -625,7 +625,7 @@ validate_pattern(pattern_ty p, int star_ok)
             break;
         case MatchClass_kind:
             if (asdl_seq_LEN(p->v.MatchClass.kwd_attrs) != asdl_seq_LEN(p->v.MatchClass.kwd_patterns)) {
-                PyErr_SetString(PyExc_ValueError,
+                TyErr_SetString(TyExc_ValueError,
                                 "MatchClass doesn't have the same number of keyword attributes as patterns");
                 ret = 0;
                 break;
@@ -645,7 +645,7 @@ validate_pattern(pattern_ty p, int star_ok)
                     continue;
                 }
                 else {
-                    PyErr_SetString(PyExc_ValueError,
+                    TyErr_SetString(TyExc_ValueError,
                                     "MatchClass cls field can only contain Name or Attribute nodes.");
                     ret = 0;
                     break;
@@ -655,8 +655,8 @@ validate_pattern(pattern_ty p, int star_ok)
                 break;
             }
 
-            for (Py_ssize_t i = 0; i < asdl_seq_LEN(p->v.MatchClass.kwd_attrs); i++) {
-                PyObject *identifier = asdl_seq_GET(p->v.MatchClass.kwd_attrs, i);
+            for (Ty_ssize_t i = 0; i < asdl_seq_LEN(p->v.MatchClass.kwd_attrs); i++) {
+                TyObject *identifier = asdl_seq_GET(p->v.MatchClass.kwd_attrs, i);
                 if (!validate_name(identifier)) {
                     ret = 0;
                     break;
@@ -675,7 +675,7 @@ validate_pattern(pattern_ty p, int star_ok)
             break;
         case MatchStar_kind:
             if (!star_ok) {
-                PyErr_SetString(PyExc_ValueError, "can't use MatchStar here");
+                TyErr_SetString(TyExc_ValueError, "can't use MatchStar here");
                 ret = 0;
                 break;
             }
@@ -690,7 +690,7 @@ validate_pattern(pattern_ty p, int star_ok)
                 ret = 1;
             }
             else if (p->v.MatchAs.name == NULL) {
-                PyErr_SetString(PyExc_ValueError,
+                TyErr_SetString(TyExc_ValueError,
                                 "MatchAs must specify a target name if a pattern is given");
                 ret = 0;
             }
@@ -700,7 +700,7 @@ validate_pattern(pattern_ty p, int star_ok)
             break;
         case MatchOr_kind:
             if (asdl_seq_LEN(p->v.MatchOr.patterns) < 2) {
-                PyErr_SetString(PyExc_ValueError,
+                TyErr_SetString(TyExc_ValueError,
                                 "MatchOr requires at least 2 patterns");
                 ret = 0;
                 break;
@@ -711,7 +711,7 @@ validate_pattern(pattern_ty p, int star_ok)
     // kinds are added without being handled here
     }
     if (ret < 0) {
-        PyErr_SetString(PyExc_SystemError, "unexpected pattern");
+        TyErr_SetString(TyExc_SystemError, "unexpected pattern");
         ret = 0;
     }
     LEAVE_RECURSIVE();
@@ -723,7 +723,7 @@ _validate_nonempty_seq(asdl_seq *seq, const char *what, const char *owner)
 {
     if (asdl_seq_LEN(seq))
         return 1;
-    PyErr_Format(PyExc_ValueError, "empty %s on %s", what, owner);
+    TyErr_Format(TyExc_ValueError, "empty %s on %s", what, owner);
     return 0;
 }
 #define validate_nonempty_seq(seq, what, owner) _validate_nonempty_seq((asdl_seq*)seq, what, owner)
@@ -731,7 +731,7 @@ _validate_nonempty_seq(asdl_seq *seq, const char *what, const char *owner)
 static int
 validate_assignlist(asdl_expr_seq *targets, expr_context_ty ctx)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     return validate_nonempty_seq(targets, "targets", ctx == Del ? "Delete" : "Assign") &&
         validate_exprs(targets, ctx, 0);
 }
@@ -739,14 +739,14 @@ validate_assignlist(asdl_expr_seq *targets, expr_context_ty ctx)
 static int
 validate_body(asdl_stmt_seq *body, const char *owner)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     return validate_nonempty_seq(body, "body", owner) && validate_stmts(body);
 }
 
 static int
 validate_stmt(stmt_ty stmt)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     VALIDATE_POSITIONS(stmt);
     int ret = -1;
     ENTER_RECURSIVE();
@@ -783,7 +783,7 @@ validate_stmt(stmt_ty stmt)
     case AnnAssign_kind:
         if (stmt->v.AnnAssign.target->kind != Name_kind &&
             stmt->v.AnnAssign.simple) {
-            PyErr_SetString(PyExc_TypeError,
+            TyErr_SetString(TyExc_TypeError,
                             "AnnAssign with simple non-Name target");
             return 0;
         }
@@ -794,7 +794,7 @@ validate_stmt(stmt_ty stmt)
         break;
     case TypeAlias_kind:
         if (stmt->v.TypeAlias.name->kind != Name_kind) {
-            PyErr_SetString(PyExc_TypeError,
+            TyErr_SetString(TyExc_TypeError,
                             "TypeAlias with non-Name name");
             return 0;
         }
@@ -827,7 +827,7 @@ validate_stmt(stmt_ty stmt)
     case With_kind:
         if (!validate_nonempty_seq(stmt->v.With.items, "items", "With"))
             return 0;
-        for (Py_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.With.items); i++) {
+        for (Ty_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.With.items); i++) {
             withitem_ty item = asdl_seq_GET(stmt->v.With.items, i);
             if (!validate_expr(item->context_expr, Load) ||
                 (item->optional_vars && !validate_expr(item->optional_vars, Store)))
@@ -838,7 +838,7 @@ validate_stmt(stmt_ty stmt)
     case AsyncWith_kind:
         if (!validate_nonempty_seq(stmt->v.AsyncWith.items, "items", "AsyncWith"))
             return 0;
-        for (Py_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.AsyncWith.items); i++) {
+        for (Ty_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.AsyncWith.items); i++) {
             withitem_ty item = asdl_seq_GET(stmt->v.AsyncWith.items, i);
             if (!validate_expr(item->context_expr, Load) ||
                 (item->optional_vars && !validate_expr(item->optional_vars, Store)))
@@ -851,7 +851,7 @@ validate_stmt(stmt_ty stmt)
             || !validate_nonempty_seq(stmt->v.Match.cases, "cases", "Match")) {
             return 0;
         }
-        for (Py_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.Match.cases); i++) {
+        for (Ty_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.Match.cases); i++) {
             match_case_ty m = asdl_seq_GET(stmt->v.Match.cases, i);
             if (!validate_pattern(m->pattern, /*star_ok=*/0)
                 || (m->guard && !validate_expr(m->guard, Load))
@@ -868,7 +868,7 @@ validate_stmt(stmt_ty stmt)
             break;
         }
         if (stmt->v.Raise.cause) {
-            PyErr_SetString(PyExc_ValueError, "Raise with cause but no exception");
+            TyErr_SetString(TyExc_ValueError, "Raise with cause but no exception");
             return 0;
         }
         ret = 1;
@@ -878,15 +878,15 @@ validate_stmt(stmt_ty stmt)
             return 0;
         if (!asdl_seq_LEN(stmt->v.Try.handlers) &&
             !asdl_seq_LEN(stmt->v.Try.finalbody)) {
-            PyErr_SetString(PyExc_ValueError, "Try has neither except handlers nor finalbody");
+            TyErr_SetString(TyExc_ValueError, "Try has neither except handlers nor finalbody");
             return 0;
         }
         if (!asdl_seq_LEN(stmt->v.Try.handlers) &&
             asdl_seq_LEN(stmt->v.Try.orelse)) {
-            PyErr_SetString(PyExc_ValueError, "Try has orelse but no except handlers");
+            TyErr_SetString(TyExc_ValueError, "Try has orelse but no except handlers");
             return 0;
         }
-        for (Py_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.Try.handlers); i++) {
+        for (Ty_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.Try.handlers); i++) {
             excepthandler_ty handler = asdl_seq_GET(stmt->v.Try.handlers, i);
             VALIDATE_POSITIONS(handler);
             if ((handler->v.ExceptHandler.type &&
@@ -904,15 +904,15 @@ validate_stmt(stmt_ty stmt)
             return 0;
         if (!asdl_seq_LEN(stmt->v.TryStar.handlers) &&
             !asdl_seq_LEN(stmt->v.TryStar.finalbody)) {
-            PyErr_SetString(PyExc_ValueError, "TryStar has neither except handlers nor finalbody");
+            TyErr_SetString(TyExc_ValueError, "TryStar has neither except handlers nor finalbody");
             return 0;
         }
         if (!asdl_seq_LEN(stmt->v.TryStar.handlers) &&
             asdl_seq_LEN(stmt->v.TryStar.orelse)) {
-            PyErr_SetString(PyExc_ValueError, "TryStar has orelse but no except handlers");
+            TyErr_SetString(TyExc_ValueError, "TryStar has orelse but no except handlers");
             return 0;
         }
-        for (Py_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.TryStar.handlers); i++) {
+        for (Ty_ssize_t i = 0; i < asdl_seq_LEN(stmt->v.TryStar.handlers); i++) {
             excepthandler_ty handler = asdl_seq_GET(stmt->v.TryStar.handlers, i);
             if ((handler->v.ExceptHandler.type &&
                  !validate_expr(handler->v.ExceptHandler.type, Load)) ||
@@ -933,7 +933,7 @@ validate_stmt(stmt_ty stmt)
         break;
     case ImportFrom_kind:
         if (stmt->v.ImportFrom.level < 0) {
-            PyErr_SetString(PyExc_ValueError, "Negative ImportFrom level");
+            TyErr_SetString(TyExc_ValueError, "Negative ImportFrom level");
             return 0;
         }
         ret = validate_nonempty_seq(stmt->v.ImportFrom.names, "names", "ImportFrom");
@@ -963,7 +963,7 @@ validate_stmt(stmt_ty stmt)
     // No default case so compiler emits warning for unhandled cases
     }
     if (ret < 0) {
-        PyErr_SetString(PyExc_SystemError, "unexpected statement");
+        TyErr_SetString(TyExc_SystemError, "unexpected statement");
         ret = 0;
     }
     LEAVE_RECURSIVE();
@@ -973,15 +973,15 @@ validate_stmt(stmt_ty stmt)
 static int
 validate_stmts(asdl_stmt_seq *seq)
 {
-    assert(!PyErr_Occurred());
-    for (Py_ssize_t i = 0; i < asdl_seq_LEN(seq); i++) {
+    assert(!TyErr_Occurred());
+    for (Ty_ssize_t i = 0; i < asdl_seq_LEN(seq); i++) {
         stmt_ty stmt = asdl_seq_GET(seq, i);
         if (stmt) {
             if (!validate_stmt(stmt))
                 return 0;
         }
         else {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "None disallowed in statement list");
             return 0;
         }
@@ -992,15 +992,15 @@ validate_stmts(asdl_stmt_seq *seq)
 static int
 validate_exprs(asdl_expr_seq *exprs, expr_context_ty ctx, int null_ok)
 {
-    assert(!PyErr_Occurred());
-    for (Py_ssize_t i = 0; i < asdl_seq_LEN(exprs); i++) {
+    assert(!TyErr_Occurred());
+    for (Ty_ssize_t i = 0; i < asdl_seq_LEN(exprs); i++) {
         expr_ty expr = asdl_seq_GET(exprs, i);
         if (expr) {
             if (!validate_expr(expr, ctx))
                 return 0;
         }
         else if (!null_ok) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "None disallowed in expression list");
             return 0;
         }
@@ -1012,8 +1012,8 @@ validate_exprs(asdl_expr_seq *exprs, expr_context_ty ctx, int null_ok)
 static int
 validate_patterns(asdl_pattern_seq *patterns, int star_ok)
 {
-    assert(!PyErr_Occurred());
-    for (Py_ssize_t i = 0; i < asdl_seq_LEN(patterns); i++) {
+    assert(!TyErr_Occurred());
+    for (Ty_ssize_t i = 0; i < asdl_seq_LEN(patterns); i++) {
         pattern_ty pattern = asdl_seq_GET(patterns, i);
         if (!validate_pattern(pattern, star_ok)) {
             return 0;
@@ -1052,7 +1052,7 @@ validate_typeparam(type_param_ty tp)
 static int
 validate_type_params(asdl_type_param_seq *tps)
 {
-    Py_ssize_t i;
+    Ty_ssize_t i;
     for (i = 0; i < asdl_seq_LEN(tps); i++) {
         type_param_ty tp = asdl_seq_GET(tps, i);
         if (tp) {
@@ -1064,9 +1064,9 @@ validate_type_params(asdl_type_param_seq *tps)
 }
 
 int
-_PyAST_Validate(mod_ty mod)
+_TyAST_Validate(mod_ty mod)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     int res = -1;
 
     switch (mod->kind) {
@@ -1087,14 +1087,14 @@ _PyAST_Validate(mod_ty mod)
     }
 
     if (res < 0) {
-        PyErr_SetString(PyExc_SystemError, "impossible module node");
+        TyErr_SetString(TyExc_SystemError, "impossible module node");
         return 0;
     }
     return res;
 }
 
-PyObject *
-_PyAST_GetDocString(asdl_stmt_seq *body)
+TyObject *
+_TyAST_GetDocString(asdl_stmt_seq *body)
 {
     if (!asdl_seq_LEN(body)) {
         return NULL;
@@ -1104,7 +1104,7 @@ _PyAST_GetDocString(asdl_stmt_seq *body)
         return NULL;
     }
     expr_ty e = st->v.Expr.value;
-    if (e->kind == Constant_kind && PyUnicode_CheckExact(e->v.Constant.value)) {
+    if (e->kind == Constant_kind && TyUnicode_CheckExact(e->v.Constant.value)) {
         return e->v.Constant.value;
     }
     return NULL;

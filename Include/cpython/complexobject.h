@@ -1,20 +1,20 @@
-#ifndef Py_CPYTHON_COMPLEXOBJECT_H
+#ifndef Ty_CPYTHON_COMPLEXOBJECT_H
 #  error "this header file must not be included directly"
 #endif
 
 typedef struct {
     double real;
     double imag;
-} Py_complex;
+} Ty_complex;
 
 // Operations on complex numbers.
-PyAPI_FUNC(Py_complex) _Py_c_sum(Py_complex, Py_complex);
-PyAPI_FUNC(Py_complex) _Py_c_diff(Py_complex, Py_complex);
-PyAPI_FUNC(Py_complex) _Py_c_neg(Py_complex);
-PyAPI_FUNC(Py_complex) _Py_c_prod(Py_complex, Py_complex);
-PyAPI_FUNC(Py_complex) _Py_c_quot(Py_complex, Py_complex);
-PyAPI_FUNC(Py_complex) _Py_c_pow(Py_complex, Py_complex);
-PyAPI_FUNC(double) _Py_c_abs(Py_complex);
+PyAPI_FUNC(Ty_complex) _Ty_c_sum(Ty_complex, Ty_complex);
+PyAPI_FUNC(Ty_complex) _Ty_c_diff(Ty_complex, Ty_complex);
+PyAPI_FUNC(Ty_complex) _Ty_c_neg(Ty_complex);
+PyAPI_FUNC(Ty_complex) _Ty_c_prod(Ty_complex, Ty_complex);
+PyAPI_FUNC(Ty_complex) _Ty_c_quot(Ty_complex, Ty_complex);
+PyAPI_FUNC(Ty_complex) _Ty_c_pow(Ty_complex, Ty_complex);
+PyAPI_FUNC(double) _Ty_c_abs(Ty_complex);
 
 
 /* Complex object interface */
@@ -25,9 +25,9 @@ real and imaginary parts.
 */
 typedef struct {
     PyObject_HEAD
-    Py_complex cval;
+    Ty_complex cval;
 } PyComplexObject;
 
-PyAPI_FUNC(PyObject *) PyComplex_FromCComplex(Py_complex);
+PyAPI_FUNC(TyObject *) TyComplex_FromCComplex(Ty_complex);
 
-PyAPI_FUNC(Py_complex) PyComplex_AsCComplex(PyObject *op);
+PyAPI_FUNC(Ty_complex) TyComplex_AsCComplex(TyObject *op);

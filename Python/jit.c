@@ -1,4 +1,4 @@
-#ifdef _Py_JIT
+#ifdef _Ty_JIT
 
 #include "Python.h"
 
@@ -54,7 +54,7 @@ jit_error(const char *message)
 #else
     int hint = errno;
 #endif
-    PyErr_Format(PyExc_RuntimeWarning, "JIT %s (%d)", message, hint);
+    TyErr_Format(TyExc_RuntimeWarning, "JIT %s (%d)", message, hint);
 }
 
 static unsigned char *
@@ -458,9 +458,9 @@ patch_aarch64_trampoline(unsigned char *location, int ordinal, jit_state *state)
 
     // Count the number of set bits in the trampoline mask lower than ordinal,
     // this gives the index into the array of trampolines.
-    int index = _Py_popcount32(trampoline_mask & (symbol_mask - 1));
+    int index = _Ty_popcount32(trampoline_mask & (symbol_mask - 1));
     for (int i = 0; i < ordinal / 32; i++) {
-        index += _Py_popcount32(state->trampolines.mask[i]);
+        index += _Ty_popcount32(state->trampolines.mask[i]);
     }
 
     uint32_t *p = (uint32_t*)(state->trampolines.mem + index * TRAMPOLINE_SIZE);
@@ -516,8 +516,8 @@ _PyJIT_Compile(_PyExecutorObject *executor, const _PyUOpInstruction trace[], siz
     data_size += group->data_size;
     combine_symbol_mask(group->trampoline_mask, state.trampolines.mask);
     // Calculate the size of the trampolines required by the whole trace
-    for (size_t i = 0; i < Py_ARRAY_LENGTH(state.trampolines.mask); i++) {
-        state.trampolines.size += _Py_popcount32(state.trampolines.mask[i]) * TRAMPOLINE_SIZE;
+    for (size_t i = 0; i < Ty_ARRAY_LENGTH(state.trampolines.mask); i++) {
+        state.trampolines.size += _Ty_popcount32(state.trampolines.mask[i]) * TRAMPOLINE_SIZE;
     }
     // Round up to the nearest page:
     size_t page_size = get_page_size();
@@ -591,10 +591,10 @@ _PyJIT_Free(_PyExecutorObject *executor)
         executor->jit_side_entry = NULL;
         executor->jit_size = 0;
         if (jit_free(memory, size)) {
-            PyErr_FormatUnraisable("Exception ignored while "
+            TyErr_FormatUnraisable("Exception ignored while "
                                    "freeing JIT memory");
         }
     }
 }
 
-#endif  // _Py_JIT
+#endif  // _Ty_JIT

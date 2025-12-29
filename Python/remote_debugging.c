@@ -5,23 +5,23 @@
 #include "internal/pycore_runtime.h"
 #include "internal/pycore_ceval.h"
 
-#if defined(Py_REMOTE_DEBUG) && defined(Py_SUPPORTS_REMOTE_DEBUG)
+#if defined(Ty_REMOTE_DEBUG) && defined(Ty_SUPPORTS_REMOTE_DEBUG)
 #include "remote_debug.h"
 
 static int
 init_proc_handle(proc_handle_t *handle, pid_t pid) {
-    return _Py_RemoteDebug_InitProcHandle(handle, pid);
+    return _Ty_RemoteDebug_InitProcHandle(handle, pid);
 }
 
 static void
 cleanup_proc_handle(proc_handle_t *handle) {
-    _Py_RemoteDebug_CleanupProcHandle(handle);
+    _Ty_RemoteDebug_CleanupProcHandle(handle);
 }
 
 static int
 read_memory(proc_handle_t *handle, uint64_t remote_address, size_t len, void* dst)
 {
-    return _Py_RemoteDebug_ReadRemoteMemory(handle, remote_address, len, dst);
+    return _Ty_RemoteDebug_ReadRemoteMemory(handle, remote_address, len, dst);
 }
 
 // Why is pwritev not guarded? Except on Android API level 23 (no longer
@@ -37,8 +37,8 @@ write_memory_fallback(proc_handle_t *handle, uintptr_t remote_address, size_t le
     }
 
     struct iovec local[1];
-    Py_ssize_t result = 0;
-    Py_ssize_t written = 0;
+    Ty_ssize_t result = 0;
+    Ty_ssize_t written = 0;
 
     do {
         local[0].iov_base = (char*)src + result;
@@ -47,7 +47,7 @@ write_memory_fallback(proc_handle_t *handle, uintptr_t remote_address, size_t le
 
         written = pwritev(handle->memfd, local, 1, offset);
         if (written < 0) {
-            PyErr_SetFromErrno(PyExc_OSError);
+            TyErr_SetFromErrno(TyExc_OSError);
             return -1;
         }
 
@@ -65,7 +65,7 @@ write_memory(proc_handle_t *handle, uintptr_t remote_address, size_t len, const 
     SIZE_T result = 0;
     do {
         if (!WriteProcessMemory(handle->hProcess, (LPVOID)(remote_address + result), (const char*)src + result, len - result, &written)) {
-            PyErr_SetFromWindowsErr(0);
+            TyErr_SetFromWindowsErr(0);
             return -1;
         }
         result += written;
@@ -77,8 +77,8 @@ write_memory(proc_handle_t *handle, uintptr_t remote_address, size_t len, const 
     }
     struct iovec local[1];
     struct iovec remote[1];
-    Py_ssize_t result = 0;
-    Py_ssize_t written = 0;
+    Ty_ssize_t result = 0;
+    Ty_ssize_t written = 0;
 
     do {
         local[0].iov_base = (void*)((char*)src + result);
@@ -91,7 +91,7 @@ write_memory(proc_handle_t *handle, uintptr_t remote_address, size_t len, const 
             if (errno == ENOSYS) {
                 return write_memory_fallback(handle, remote_address, len, src);
             }
-            PyErr_SetFromErrno(PyExc_OSError);
+            TyErr_SetFromErrno(TyExc_OSError);
             return -1;
         }
 
@@ -108,19 +108,19 @@ write_memory(proc_handle_t *handle, uintptr_t remote_address, size_t len, const 
     if (kr != KERN_SUCCESS) {
         switch (kr) {
         case KERN_PROTECTION_FAILURE:
-            PyErr_SetString(PyExc_PermissionError, "Not enough permissions to write memory");
+            TyErr_SetString(TyExc_PermissionError, "Not enough permissions to write memory");
             break;
         case KERN_INVALID_ARGUMENT:
-            PyErr_SetString(PyExc_PermissionError, "Invalid argument to mach_vm_write");
+            TyErr_SetString(TyExc_PermissionError, "Invalid argument to mach_vm_write");
             break;
         default:
-            PyErr_Format(PyExc_RuntimeError, "Unknown error writing memory: %d", (int)kr);
+            TyErr_Format(TyExc_RuntimeError, "Unknown error writing memory: %d", (int)kr);
         }
         return -1;
     }
     return 0;
 #else
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 #endif
 }
 
@@ -131,29 +131,29 @@ is_prerelease_version(uint64_t version)
 }
 
 static int
-ensure_debug_offset_compatibility(const _Py_DebugOffsets* debug_offsets)
+ensure_debug_offset_compatibility(const _Ty_DebugOffsets* debug_offsets)
 {
-    if (memcmp(debug_offsets->cookie, _Py_Debug_Cookie, sizeof(debug_offsets->cookie)) != 0) {
+    if (memcmp(debug_offsets->cookie, _Ty_Debug_Cookie, sizeof(debug_offsets->cookie)) != 0) {
         // The remote is probably running a Python version predating debug offsets.
-        PyErr_SetString(
-            PyExc_RuntimeError,
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Can't determine the Python version of the remote process");
         return -1;
     }
 
     // Assume debug offsets could change from one pre-release version to another,
     // or one minor version to another, but are stable across patch versions.
-    if (is_prerelease_version(Py_Version) && Py_Version != debug_offsets->version) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+    if (is_prerelease_version(Ty_Version) && Ty_Version != debug_offsets->version) {
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Can't send commands from a pre-release Python interpreter"
             " to a process running a different Python version");
         return -1;
     }
 
-    if (is_prerelease_version(debug_offsets->version) && Py_Version != debug_offsets->version) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+    if (is_prerelease_version(debug_offsets->version) && Ty_Version != debug_offsets->version) {
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Can't send commands to a pre-release Python interpreter"
             " from a process running a different Python version");
         return -1;
@@ -163,25 +163,25 @@ ensure_debug_offset_compatibility(const _Py_DebugOffsets* debug_offsets)
     unsigned int remote_minor = (debug_offsets->version >> 16) & 0xFF;
 
     if (PY_MAJOR_VERSION != remote_major || PY_MINOR_VERSION != remote_minor) {
-        PyErr_Format(
-            PyExc_RuntimeError,
+        TyErr_Format(
+            TyExc_RuntimeError,
             "Can't send commands from a Python %d.%d process to a Python %d.%d process",
             PY_MAJOR_VERSION, PY_MINOR_VERSION, remote_major, remote_minor);
         return -1;
     }
 
     // The debug offsets differ between free threaded and non-free threaded builds.
-    if (_Py_Debug_Free_Threaded && !debug_offsets->free_threaded) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+    if (_Ty_Debug_Free_Threaded && !debug_offsets->free_threaded) {
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Cannot send commands from a free-threaded Python process"
             " to a process running a non-free-threaded version");
         return -1;
     }
 
-    if (!_Py_Debug_Free_Threaded && debug_offsets->free_threaded) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+    if (!_Ty_Debug_Free_Threaded && debug_offsets->free_threaded) {
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Cannot send commands to a free-threaded Python process"
             " from a process running a non-free-threaded version");
         return -1;
@@ -194,9 +194,9 @@ static int
 read_offsets(
     proc_handle_t *handle,
     uintptr_t *runtime_start_address,
-    _Py_DebugOffsets* debug_offsets
+    _Ty_DebugOffsets* debug_offsets
 ) {
-    if (_Py_RemoteDebug_ReadDebugOffsets(handle, runtime_start_address, debug_offsets)) {
+    if (_Ty_RemoteDebug_ReadDebugOffsets(handle, runtime_start_address, debug_offsets)) {
         return -1;
     }
     if (ensure_debug_offset_compatibility(debug_offsets)) {
@@ -209,7 +209,7 @@ static int
 send_exec_to_proc_handle(proc_handle_t *handle, int tid, const char *debugger_script_path)
 {
     uintptr_t runtime_start_address;
-    struct _Py_DebugOffsets debug_offsets;
+    struct _Ty_DebugOffsets debug_offsets;
 
     if (read_offsets(handle, &runtime_start_address, &debug_offsets)) {
         return -1;
@@ -228,7 +228,7 @@ send_exec_to_proc_handle(proc_handle_t *handle, int tid, const char *debugger_sc
     }
 
     if (interpreter_state_addr == 0) {
-        PyErr_SetString(PyExc_RuntimeError, "Can't find a running interpreter in the remote process");
+        TyErr_SetString(TyExc_RuntimeError, "Can't find a running interpreter in the remote process");
         return -1;
     }
 
@@ -243,8 +243,8 @@ send_exec_to_proc_handle(proc_handle_t *handle, int tid, const char *debugger_sc
     }
 
     if (is_remote_debugging_enabled != 1) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Remote debugging is not enabled in the remote process");
         return -1;
     }
@@ -286,8 +286,8 @@ send_exec_to_proc_handle(proc_handle_t *handle, int tid, const char *debugger_sc
         }
 
         if (thread_state_addr == 0) {
-            PyErr_SetString(
-                PyExc_RuntimeError,
+            TyErr_SetString(
+                TyExc_RuntimeError,
                 "Can't find the specified thread in the remote process");
             return -1;
         }
@@ -302,8 +302,8 @@ send_exec_to_proc_handle(proc_handle_t *handle, int tid, const char *debugger_sc
         }
 
         if (thread_state_addr == 0) {
-            PyErr_SetString(
-                PyExc_RuntimeError,
+            TyErr_SetString(
+                TyExc_RuntimeError,
                 "Can't find the main thread in the remote process");
             return -1;
         }
@@ -311,7 +311,7 @@ send_exec_to_proc_handle(proc_handle_t *handle, int tid, const char *debugger_sc
 
     // Ensure our path is not too long
     if (debug_offsets.debugger_support.debugger_script_path_size <= strlen(debugger_script_path)) {
-        PyErr_SetString(PyExc_ValueError, "Debugger script path is too long");
+        TyErr_SetString(TyExc_ValueError, "Debugger script path is too long");
         return -1;
     }
 
@@ -368,23 +368,23 @@ send_exec_to_proc_handle(proc_handle_t *handle, int tid, const char *debugger_sc
     return 0;
 }
 
-#endif // defined(Py_REMOTE_DEBUG) && defined(Py_SUPPORTS_REMOTE_DEBUG)
+#endif // defined(Ty_REMOTE_DEBUG) && defined(Ty_SUPPORTS_REMOTE_DEBUG)
 
 int
 _PySysRemoteDebug_SendExec(int pid, int tid, const char *debugger_script_path)
 {
-#if !defined(Py_SUPPORTS_REMOTE_DEBUG)
-    PyErr_SetString(PyExc_RuntimeError, "Remote debugging is not supported on this platform");
+#if !defined(Ty_SUPPORTS_REMOTE_DEBUG)
+    TyErr_SetString(TyExc_RuntimeError, "Remote debugging is not supported on this platform");
     return -1;
-#elif !defined(Py_REMOTE_DEBUG)
-    PyErr_SetString(PyExc_RuntimeError, "Remote debugging support has not been compiled in");
+#elif !defined(Ty_REMOTE_DEBUG)
+    TyErr_SetString(TyExc_RuntimeError, "Remote debugging support has not been compiled in");
     return -1;
 #else
 
-    PyThreadState *tstate = _PyThreadState_GET();
-    const PyConfig *config = _PyInterpreterState_GetConfig(tstate->interp);
+    TyThreadState *tstate = _TyThreadState_GET();
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->remote_debug != 1) {
-        PyErr_SetString(PyExc_RuntimeError, "Remote debugging is not enabled");
+        TyErr_SetString(TyExc_RuntimeError, "Remote debugging is not enabled");
         return -1;
     }
 

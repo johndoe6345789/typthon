@@ -2049,7 +2049,7 @@ class ReTests(unittest.TestCase):
         self.assertEqual(re.match(r".{65536}", string).span(), (0, 65536))
         self.assertEqual(re.match(r".{,65536}", string).span(), (0, 65536))
         self.assertEqual(re.match(r".{65536,}?", string).span(), (0, 65536))
-        # 2**128 should be big enough to overflow both SRE_CODE and Py_ssize_t.
+        # 2**128 should be big enough to overflow both SRE_CODE and Ty_ssize_t.
         self.assertRaises(OverflowError, re.compile, r".{%d}" % 2**128)
         self.assertRaises(OverflowError, re.compile, r".{,%d}" % 2**128)
         self.assertRaises(OverflowError, re.compile, r".{%d,}?" % 2**128)

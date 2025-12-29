@@ -2,8 +2,8 @@
     unicode_format.h -- implementation of str.format().
 */
 
-#include "pycore_complexobject.h" // _PyComplex_FormatAdvancedWriter()
-#include "pycore_floatobject.h"   // _PyFloat_FormatAdvancedWriter()
+#include "pycore_complexobject.h" // _TyComplex_FormatAdvancedWriter()
+#include "pycore_floatobject.h"   // _TyFloat_FormatAdvancedWriter()
 
 /************************************************************************/
 /***********   Global data structures and forward declarations  *********/
@@ -14,8 +14,8 @@
    unicode pointers.
 */
 typedef struct {
-    PyObject *str; /* borrowed reference */
-    Py_ssize_t start, end;
+    TyObject *str; /* borrowed reference */
+    Ty_ssize_t start, end;
 } SubString;
 
 
@@ -33,8 +33,8 @@ typedef struct {
 
 
 /* forward declaration for recursion */
-static PyObject *
-build_string(SubString *input, PyObject *args, PyObject *kwargs,
+static TyObject *
+build_string(SubString *input, TyObject *args, TyObject *kwargs,
              int recursion_depth, AutoNumber *auto_number);
 
 
@@ -51,8 +51,8 @@ AutoNumber_Init(AutoNumber *auto_number)
 }
 
 /* fill in a SubString from a pointer and length */
-Py_LOCAL_INLINE(void)
-SubString_init(SubString *str, PyObject *s, Py_ssize_t start, Py_ssize_t end)
+Ty_LOCAL_INLINE(void)
+SubString_init(SubString *str, TyObject *s, Ty_ssize_t start, Ty_ssize_t end)
 {
     str->str = s;
     str->start = start;
@@ -60,20 +60,20 @@ SubString_init(SubString *str, PyObject *s, Py_ssize_t start, Py_ssize_t end)
 }
 
 /* return a new string.  if str->str is NULL, return None */
-Py_LOCAL_INLINE(PyObject *)
+Ty_LOCAL_INLINE(TyObject *)
 SubString_new_object(SubString *str)
 {
     if (str->str == NULL)
         Py_RETURN_NONE;
-    return PyUnicode_Substring(str->str, str->start, str->end);
+    return TyUnicode_Substring(str->str, str->start, str->end);
 }
 
 /* return a new string.  if str->str is NULL, return a new empty string */
-Py_LOCAL_INLINE(PyObject *)
+Ty_LOCAL_INLINE(TyObject *)
 SubString_new_object_or_empty(SubString *str)
 {
     if (str->str == NULL) {
-        return Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+        return Ty_GetConstant(Ty_CONSTANT_EMPTY_STR);
     }
     return SubString_new_object(str);
 }
@@ -86,7 +86,7 @@ autonumber_state_error(AutoNumberState state, int field_name_is_empty)
 {
     if (state == ANS_MANUAL) {
         if (field_name_is_empty) {
-            PyErr_SetString(PyExc_ValueError, "cannot switch from "
+            TyErr_SetString(TyExc_ValueError, "cannot switch from "
                             "manual field specification to "
                             "automatic field numbering");
             return 1;
@@ -94,7 +94,7 @@ autonumber_state_error(AutoNumberState state, int field_name_is_empty)
     }
     else {
         if (!field_name_is_empty) {
-            PyErr_SetString(PyExc_ValueError, "cannot switch from "
+            TyErr_SetString(TyExc_ValueError, "cannot switch from "
                             "automatic field numbering to "
                             "manual field specification");
             return 1;
@@ -108,19 +108,19 @@ autonumber_state_error(AutoNumberState state, int field_name_is_empty)
 /***********  Format string parsing -- integers and identifiers *********/
 /************************************************************************/
 
-static Py_ssize_t
+static Ty_ssize_t
 get_integer(const SubString *str)
 {
-    Py_ssize_t accumulator = 0;
-    Py_ssize_t digitval;
-    Py_ssize_t i;
+    Ty_ssize_t accumulator = 0;
+    Ty_ssize_t digitval;
+    Ty_ssize_t i;
 
     /* empty string is an error */
     if (str->start >= str->end)
         return -1;
 
     for (i = str->start; i < str->end; i++) {
-        digitval = Py_UNICODE_TODECIMAL(PyUnicode_READ_CHAR(str->str, i));
+        digitval = Ty_UNICODE_TODECIMAL(TyUnicode_READ_CHAR(str->str, i));
         if (digitval < 0)
             return -1;
         /*
@@ -130,7 +130,7 @@ get_integer(const SubString *str)
               accumulator > (PY_SSIZE_T_MAX - digitval) / 10.
         */
         if (accumulator > (PY_SSIZE_T_MAX - digitval) / 10) {
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                          "Too many decimal digits in format string");
             return -1;
         }
@@ -144,48 +144,48 @@ get_integer(const SubString *str)
 /************************************************************************/
 
 /* do the equivalent of obj.name */
-static PyObject *
-getattr(PyObject *obj, SubString *name)
+static TyObject *
+getattr(TyObject *obj, SubString *name)
 {
-    PyObject *newobj;
-    PyObject *str = SubString_new_object(name);
+    TyObject *newobj;
+    TyObject *str = SubString_new_object(name);
     if (str == NULL)
         return NULL;
     newobj = PyObject_GetAttr(obj, str);
-    Py_DECREF(str);
+    Ty_DECREF(str);
     return newobj;
 }
 
 /* do the equivalent of obj[idx], where obj is a sequence */
-static PyObject *
-getitem_sequence(PyObject *obj, Py_ssize_t idx)
+static TyObject *
+getitem_sequence(TyObject *obj, Ty_ssize_t idx)
 {
     return PySequence_GetItem(obj, idx);
 }
 
 /* do the equivalent of obj[idx], where obj is not a sequence */
-static PyObject *
-getitem_idx(PyObject *obj, Py_ssize_t idx)
+static TyObject *
+getitem_idx(TyObject *obj, Ty_ssize_t idx)
 {
-    PyObject *newobj;
-    PyObject *idx_obj = PyLong_FromSsize_t(idx);
+    TyObject *newobj;
+    TyObject *idx_obj = TyLong_FromSsize_t(idx);
     if (idx_obj == NULL)
         return NULL;
     newobj = PyObject_GetItem(obj, idx_obj);
-    Py_DECREF(idx_obj);
+    Ty_DECREF(idx_obj);
     return newobj;
 }
 
 /* do the equivalent of obj[name] */
-static PyObject *
-getitem_str(PyObject *obj, SubString *name)
+static TyObject *
+getitem_str(TyObject *obj, SubString *name)
 {
-    PyObject *newobj;
-    PyObject *str = SubString_new_object(name);
+    TyObject *newobj;
+    TyObject *str = SubString_new_object(name);
     if (str == NULL)
         return NULL;
     newobj = PyObject_GetItem(obj, str);
-    Py_DECREF(str);
+    Ty_DECREF(str);
     return newobj;
 }
 
@@ -196,13 +196,13 @@ typedef struct {
     SubString str;
 
     /* index to where we are inside field_name */
-    Py_ssize_t index;
+    Ty_ssize_t index;
 } FieldNameIterator;
 
 
 static int
-FieldNameIterator_init(FieldNameIterator *self, PyObject *s,
-                       Py_ssize_t start, Py_ssize_t end)
+FieldNameIterator_init(FieldNameIterator *self, TyObject *s,
+                       Ty_ssize_t start, Ty_ssize_t end)
 {
     SubString_init(&self->str, s, start, end);
     self->index = start;
@@ -212,14 +212,14 @@ FieldNameIterator_init(FieldNameIterator *self, PyObject *s,
 static int
 _FieldNameIterator_attr(FieldNameIterator *self, SubString *name)
 {
-    Py_UCS4 c;
+    Ty_UCS4 c;
 
     name->str = self->str.str;
     name->start = self->index;
 
     /* return everything until '.' or '[' */
     while (self->index < self->str.end) {
-        c = PyUnicode_READ_CHAR(self->str.str, self->index++);
+        c = TyUnicode_READ_CHAR(self->str.str, self->index++);
         switch (c) {
         case '[':
         case '.':
@@ -240,14 +240,14 @@ static int
 _FieldNameIterator_item(FieldNameIterator *self, SubString *name)
 {
     int bracket_seen = 0;
-    Py_UCS4 c;
+    Ty_UCS4 c;
 
     name->str = self->str.str;
     name->start = self->index;
 
     /* return everything until ']' */
     while (self->index < self->str.end) {
-        c = PyUnicode_READ_CHAR(self->str.str, self->index++);
+        c = TyUnicode_READ_CHAR(self->str.str, self->index++);
         switch (c) {
         case ']':
             bracket_seen = 1;
@@ -259,7 +259,7 @@ _FieldNameIterator_item(FieldNameIterator *self, SubString *name)
     }
     /* make sure we ended with a ']' */
     if (!bracket_seen) {
-        PyErr_SetString(PyExc_ValueError, "Missing ']' in format string");
+        TyErr_SetString(TyExc_ValueError, "Missing ']' in format string");
         return 0;
     }
 
@@ -272,13 +272,13 @@ _FieldNameIterator_item(FieldNameIterator *self, SubString *name)
 /* returns 0 on error, 1 on non-error termination, and 2 if it returns a value */
 static int
 FieldNameIterator_next(FieldNameIterator *self, int *is_attribute,
-                       Py_ssize_t *name_idx, SubString *name)
+                       Ty_ssize_t *name_idx, SubString *name)
 {
     /* check at end of input */
     if (self->index >= self->str.end)
         return 1;
 
-    switch (PyUnicode_READ_CHAR(self->str.str, self->index++)) {
+    switch (TyUnicode_READ_CHAR(self->str.str, self->index++)) {
     case '.':
         *is_attribute = 1;
         if (_FieldNameIterator_attr(self, name) == 0)
@@ -290,19 +290,19 @@ FieldNameIterator_next(FieldNameIterator *self, int *is_attribute,
         if (_FieldNameIterator_item(self, name) == 0)
             return 0;
         *name_idx = get_integer(name);
-        if (*name_idx == -1 && PyErr_Occurred())
+        if (*name_idx == -1 && TyErr_Occurred())
             return 0;
         break;
     default:
         /* Invalid character follows ']' */
-        PyErr_SetString(PyExc_ValueError, "Only '.' or '[' may "
+        TyErr_SetString(TyExc_ValueError, "Only '.' or '[' may "
                         "follow ']' in format field specifier");
         return 0;
     }
 
     /* empty string is an error */
     if (name->start == name->end) {
-        PyErr_SetString(PyExc_ValueError, "Empty attribute in format string");
+        TyErr_SetString(TyExc_ValueError, "Empty attribute in format string");
         return 0;
     }
 
@@ -317,18 +317,18 @@ FieldNameIterator_next(FieldNameIterator *self, int *is_attribute,
            'rest' is an iterator to return the rest
 */
 static int
-field_name_split(PyObject *str, Py_ssize_t start, Py_ssize_t end, SubString *first,
-                 Py_ssize_t *first_idx, FieldNameIterator *rest,
+field_name_split(TyObject *str, Ty_ssize_t start, Ty_ssize_t end, SubString *first,
+                 Ty_ssize_t *first_idx, FieldNameIterator *rest,
                  AutoNumber *auto_number)
 {
-    Py_UCS4 c;
-    Py_ssize_t i = start;
+    Ty_UCS4 c;
+    Ty_ssize_t i = start;
     int field_name_is_empty;
     int using_numeric_index;
 
     /* find the part up until the first '.' or '[' */
     while (i < end) {
-        switch (c = PyUnicode_READ_CHAR(str, i++)) {
+        switch (c = TyUnicode_READ_CHAR(str, i++)) {
         case '[':
         case '.':
             /* backup so that we this character is available to the
@@ -347,7 +347,7 @@ field_name_split(PyObject *str, Py_ssize_t start, Py_ssize_t end, SubString *fir
 
     /* see if "first" is an integer, in which case it's used as an index */
     *first_idx = get_integer(first);
-    if (*first_idx == -1 && PyErr_Occurred())
+    if (*first_idx == -1 && TyErr_Occurred())
         return 0;
 
     field_name_is_empty = first->start >= first->end;
@@ -393,16 +393,16 @@ field_name_split(PyObject *str, Py_ssize_t start, Py_ssize_t end, SubString *fir
     format_spec.  It handles getindex and getattr lookups and consumes
     the entire input string.
 */
-static PyObject *
-get_field_object(SubString *input, PyObject *args, PyObject *kwargs,
+static TyObject *
+get_field_object(SubString *input, TyObject *args, TyObject *kwargs,
                  AutoNumber *auto_number)
 {
-    PyObject *obj = NULL;
+    TyObject *obj = NULL;
     int ok;
     int is_attribute;
     SubString name;
     SubString first;
-    Py_ssize_t index;
+    Ty_ssize_t index;
     FieldNameIterator rest;
 
     if (!field_name_split(input->str, input->start, input->end, &first,
@@ -412,20 +412,20 @@ get_field_object(SubString *input, PyObject *args, PyObject *kwargs,
 
     if (index == -1) {
         /* look up in kwargs */
-        PyObject *key = SubString_new_object(&first);
+        TyObject *key = SubString_new_object(&first);
         if (key == NULL) {
             goto error;
         }
         if (kwargs == NULL) {
-            PyErr_SetObject(PyExc_KeyError, key);
-            Py_DECREF(key);
+            TyErr_SetObject(TyExc_KeyError, key);
+            Ty_DECREF(key);
             goto error;
         }
-        /* Use PyObject_GetItem instead of PyDict_GetItem because this
+        /* Use PyObject_GetItem instead of TyDict_GetItem because this
            code is no longer just used with kwargs. It might be passed
            a non-dict when called through format_map. */
         obj = PyObject_GetItem(kwargs, key);
-        Py_DECREF(key);
+        Ty_DECREF(key);
         if (obj == NULL) {
             goto error;
         }
@@ -436,7 +436,7 @@ get_field_object(SubString *input, PyObject *args, PyObject *kwargs,
            used with format_map(), where positional arguments are not
            allowed. */
         if (args == NULL) {
-            PyErr_SetString(PyExc_ValueError, "Format string contains "
+            TyErr_SetString(TyExc_ValueError, "Format string contains "
                             "positional fields");
             goto error;
         }
@@ -444,7 +444,7 @@ get_field_object(SubString *input, PyObject *args, PyObject *kwargs,
         /* look up in args */
         obj = PySequence_GetItem(args, index);
         if (obj == NULL) {
-            PyErr_Format(PyExc_IndexError,
+            TyErr_Format(TyExc_IndexError,
                          "Replacement index %zd out of range for positional "
                          "args tuple",
                          index);
@@ -455,7 +455,7 @@ get_field_object(SubString *input, PyObject *args, PyObject *kwargs,
     /* iterate over the rest of the field_name */
     while ((ok = FieldNameIterator_next(&rest, &is_attribute, &index,
                                         &name)) == 2) {
-        PyObject *tmp;
+        TyObject *tmp;
 
         if (is_attribute)
             /* getattr lookup "." */
@@ -474,13 +474,13 @@ get_field_object(SubString *input, PyObject *args, PyObject *kwargs,
             goto error;
 
         /* assign to obj */
-        Py_SETREF(obj, tmp);
+        Ty_SETREF(obj, tmp);
     }
     /* end of iterator, this is the non-error case */
     if (ok == 1)
         return obj;
 error:
-    Py_XDECREF(obj);
+    Ty_XDECREF(obj);
     return NULL;
 }
 
@@ -497,24 +497,24 @@ error:
     appends to the output.
 */
 static int
-render_field(PyObject *fieldobj, SubString *format_spec, _PyUnicodeWriter *writer)
+render_field(TyObject *fieldobj, SubString *format_spec, _PyUnicodeWriter *writer)
 {
     int ok = 0;
-    PyObject *result = NULL;
-    PyObject *format_spec_object = NULL;
-    int (*formatter) (_PyUnicodeWriter*, PyObject *, PyObject *, Py_ssize_t, Py_ssize_t) = NULL;
+    TyObject *result = NULL;
+    TyObject *format_spec_object = NULL;
+    int (*formatter) (_PyUnicodeWriter*, TyObject *, TyObject *, Ty_ssize_t, Ty_ssize_t) = NULL;
     int err;
 
     /* If we know the type exactly, skip the lookup of __format__ and just
        call the formatter directly. */
-    if (PyUnicode_CheckExact(fieldobj))
-        formatter = _PyUnicode_FormatAdvancedWriter;
-    else if (PyLong_CheckExact(fieldobj))
-        formatter = _PyLong_FormatAdvancedWriter;
-    else if (PyFloat_CheckExact(fieldobj))
-        formatter = _PyFloat_FormatAdvancedWriter;
-    else if (PyComplex_CheckExact(fieldobj))
-        formatter = _PyComplex_FormatAdvancedWriter;
+    if (TyUnicode_CheckExact(fieldobj))
+        formatter = _TyUnicode_FormatAdvancedWriter;
+    else if (TyLong_CheckExact(fieldobj))
+        formatter = _TyLong_FormatAdvancedWriter;
+    else if (TyFloat_CheckExact(fieldobj))
+        formatter = _TyFloat_FormatAdvancedWriter;
+    else if (TyComplex_CheckExact(fieldobj))
+        formatter = _TyComplex_FormatAdvancedWriter;
 
     if (formatter) {
         /* we know exactly which formatter will be called when __format__ is
@@ -527,11 +527,11 @@ render_field(PyObject *fieldobj, SubString *format_spec, _PyUnicodeWriter *write
         /* We need to create an object out of the pointers we have, because
            __format__ takes a string/unicode object for format_spec. */
         if (format_spec->str)
-            format_spec_object = PyUnicode_Substring(format_spec->str,
+            format_spec_object = TyUnicode_Substring(format_spec->str,
                                                      format_spec->start,
                                                      format_spec->end);
         else
-            format_spec_object = Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+            format_spec_object = Ty_GetConstant(Ty_CONSTANT_EMPTY_STR);
         if (format_spec_object == NULL)
             goto done;
 
@@ -545,20 +545,20 @@ render_field(PyObject *fieldobj, SubString *format_spec, _PyUnicodeWriter *write
     ok = 1;
 
 done:
-    Py_XDECREF(format_spec_object);
-    Py_XDECREF(result);
+    Ty_XDECREF(format_spec_object);
+    Ty_XDECREF(result);
     return ok;
 }
 
 static int
 parse_field(SubString *str, SubString *field_name, SubString *format_spec,
-            int *format_spec_needs_expanding, Py_UCS4 *conversion)
+            int *format_spec_needs_expanding, Ty_UCS4 *conversion)
 {
     /* Note this function works if the field name is zero length,
        which is good.  Zero length field names are handled later, in
        field_name_split. */
 
-    Py_UCS4 c = 0;
+    Ty_UCS4 c = 0;
 
     /* initialize these, as they may be empty */
     *conversion = '\0';
@@ -569,13 +569,13 @@ parse_field(SubString *str, SubString *field_name, SubString *format_spec,
     field_name->str = str->str;
     field_name->start = str->start;
     while (str->start < str->end) {
-        switch ((c = PyUnicode_READ_CHAR(str->str, str->start++))) {
+        switch ((c = TyUnicode_READ_CHAR(str->str, str->start++))) {
         case '{':
-            PyErr_SetString(PyExc_ValueError, "unexpected '{' in field name");
+            TyErr_SetString(TyExc_ValueError, "unexpected '{' in field name");
             return 0;
         case '[':
             for (; str->start < str->end; str->start++)
-                if (PyUnicode_READ_CHAR(str->str, str->start) == ']')
+                if (TyUnicode_READ_CHAR(str->str, str->start) == ']')
                     break;
             continue;
         case '}':
@@ -590,7 +590,7 @@ parse_field(SubString *str, SubString *field_name, SubString *format_spec,
 
     field_name->end = str->start - 1;
     if (c == '!' || c == ':') {
-        Py_ssize_t count;
+        Ty_ssize_t count;
         /* we have a format specifier and/or a conversion */
         /* don't include the last character */
 
@@ -598,19 +598,19 @@ parse_field(SubString *str, SubString *field_name, SubString *format_spec,
         if (c == '!') {
             /* there must be another character present */
             if (str->start >= str->end) {
-                PyErr_SetString(PyExc_ValueError,
+                TyErr_SetString(TyExc_ValueError,
                                 "end of string while looking for conversion "
                                 "specifier");
                 return 0;
             }
-            *conversion = PyUnicode_READ_CHAR(str->str, str->start++);
+            *conversion = TyUnicode_READ_CHAR(str->str, str->start++);
 
             if (str->start < str->end) {
-                c = PyUnicode_READ_CHAR(str->str, str->start++);
+                c = TyUnicode_READ_CHAR(str->str, str->start++);
                 if (c == '}')
                     return 1;
                 if (c != ':') {
-                    PyErr_SetString(PyExc_ValueError,
+                    TyErr_SetString(TyExc_ValueError,
                                     "expected ':' after conversion specifier");
                     return 0;
                 }
@@ -620,7 +620,7 @@ parse_field(SubString *str, SubString *field_name, SubString *format_spec,
         format_spec->start = str->start;
         count = 1;
         while (str->start < str->end) {
-            switch ((c = PyUnicode_READ_CHAR(str->str, str->start++))) {
+            switch ((c = TyUnicode_READ_CHAR(str->str, str->start++))) {
             case '{':
                 *format_spec_needs_expanding = 1;
                 count++;
@@ -637,11 +637,11 @@ parse_field(SubString *str, SubString *field_name, SubString *format_spec,
             }
         }
 
-        PyErr_SetString(PyExc_ValueError, "unmatched '{' in format spec");
+        TyErr_SetString(TyExc_ValueError, "unmatched '{' in format spec");
         return 0;
     }
     else if (c != '}') {
-        PyErr_SetString(PyExc_ValueError, "expected '}' before end of string");
+        TyErr_SetString(TyExc_ValueError, "expected '}' before end of string");
         return 0;
     }
 
@@ -662,8 +662,8 @@ typedef struct {
 } MarkupIterator;
 
 static int
-MarkupIterator_init(MarkupIterator *self, PyObject *str,
-                    Py_ssize_t start, Py_ssize_t end)
+MarkupIterator_init(MarkupIterator *self, TyObject *str,
+                    Ty_ssize_t start, Ty_ssize_t end)
 {
     SubString_init(&self->str, str, start, end);
     return 1;
@@ -674,13 +674,13 @@ MarkupIterator_init(MarkupIterator *self, PyObject *str,
 static int
 MarkupIterator_next(MarkupIterator *self, SubString *literal,
                     int *field_present, SubString *field_name,
-                    SubString *format_spec, Py_UCS4 *conversion,
+                    SubString *format_spec, Ty_UCS4 *conversion,
                     int *format_spec_needs_expanding)
 {
     int at_end;
-    Py_UCS4 c = 0;
-    Py_ssize_t start;
-    Py_ssize_t len;
+    Ty_UCS4 c = 0;
+    Ty_ssize_t start;
+    Ty_ssize_t len;
     int markup_follows = 0;
 
     /* initialize all of the output variables */
@@ -706,7 +706,7 @@ MarkupIterator_next(MarkupIterator *self, SubString *literal,
        through, we'll return the rest of the literal, skipping past
        the second consecutive brace. */
     while (self->str.start < self->str.end) {
-        switch (c = PyUnicode_READ_CHAR(self->str.str, self->str.start++)) {
+        switch (c = TyUnicode_READ_CHAR(self->str.str, self->str.start++)) {
         case '{':
         case '}':
             markup_follows = 1;
@@ -721,19 +721,19 @@ MarkupIterator_next(MarkupIterator *self, SubString *literal,
     len = self->str.start - start;
 
     if ((c == '}') && (at_end ||
-                       (c != PyUnicode_READ_CHAR(self->str.str,
+                       (c != TyUnicode_READ_CHAR(self->str.str,
                                                  self->str.start)))) {
-        PyErr_SetString(PyExc_ValueError, "Single '}' encountered "
+        TyErr_SetString(TyExc_ValueError, "Single '}' encountered "
                         "in format string");
         return 0;
     }
     if (at_end && c == '{') {
-        PyErr_SetString(PyExc_ValueError, "Single '{' encountered "
+        TyErr_SetString(TyExc_ValueError, "Single '{' encountered "
                         "in format string");
         return 0;
     }
     if (!at_end) {
-        if (c == PyUnicode_READ_CHAR(self->str.str, self->str.start)) {
+        if (c == TyUnicode_READ_CHAR(self->str.str, self->str.start)) {
             /* escaped } or {, skip it in the input.  there is no
                markup object following us, just this literal text */
             self->str.start++;
@@ -761,8 +761,8 @@ MarkupIterator_next(MarkupIterator *self, SubString *literal,
 
 
 /* do the !r or !s conversion on obj */
-static PyObject *
-do_conversion(PyObject *obj, Py_UCS4 conversion)
+static TyObject *
+do_conversion(TyObject *obj, Ty_UCS4 conversion)
 {
     /* XXX in pre-3.0, do we need to convert this to unicode, since it
        might have returned a string? */
@@ -778,11 +778,11 @@ do_conversion(PyObject *obj, Py_UCS4 conversion)
                 /* It's the ASCII subrange; casting to char is safe
                    (assuming the execution character set is an ASCII
                    superset). */
-                PyErr_Format(PyExc_ValueError,
+                TyErr_Format(TyExc_ValueError,
                      "Unknown conversion specifier %c",
                      (char)conversion);
         } else
-                PyErr_Format(PyExc_ValueError,
+                TyErr_Format(TyExc_ValueError,
                      "Unknown conversion specifier \\x%x",
                      (unsigned int)conversion);
         return NULL;
@@ -804,12 +804,12 @@ do_conversion(PyObject *obj, Py_UCS4 conversion)
 
 static int
 output_markup(SubString *field_name, SubString *format_spec,
-              int format_spec_needs_expanding, Py_UCS4 conversion,
-              _PyUnicodeWriter *writer, PyObject *args, PyObject *kwargs,
+              int format_spec_needs_expanding, Ty_UCS4 conversion,
+              _PyUnicodeWriter *writer, TyObject *args, TyObject *kwargs,
               int recursion_depth, AutoNumber *auto_number)
 {
-    PyObject *tmp = NULL;
-    PyObject *fieldobj = NULL;
+    TyObject *tmp = NULL;
+    TyObject *fieldobj = NULL;
     SubString expanded_format_spec;
     SubString *actual_format_spec;
     int result = 0;
@@ -825,7 +825,7 @@ output_markup(SubString *field_name, SubString *format_spec,
             goto done;
 
         /* do the assignment, transferring ownership: fieldobj = tmp */
-        Py_SETREF(fieldobj, tmp);
+        Ty_SETREF(fieldobj, tmp);
         tmp = NULL;
     }
 
@@ -839,7 +839,7 @@ output_markup(SubString *field_name, SubString *format_spec,
         /* note that in the case we're expanding the format string,
            tmp must be kept around until after the call to
            render_field. */
-        SubString_init(&expanded_format_spec, tmp, 0, PyUnicode_GET_LENGTH(tmp));
+        SubString_init(&expanded_format_spec, tmp, 0, TyUnicode_GET_LENGTH(tmp));
         actual_format_spec = &expanded_format_spec;
     }
     else
@@ -851,8 +851,8 @@ output_markup(SubString *field_name, SubString *format_spec,
     result = 1;
 
 done:
-    Py_XDECREF(fieldobj);
-    Py_XDECREF(tmp);
+    Ty_XDECREF(fieldobj);
+    Ty_XDECREF(tmp);
 
     return result;
 }
@@ -864,7 +864,7 @@ done:
     and to perform the markup to the output.
 */
 static int
-do_markup(SubString *input, PyObject *args, PyObject *kwargs,
+do_markup(SubString *input, TyObject *args, TyObject *kwargs,
           _PyUnicodeWriter *writer, int recursion_depth, AutoNumber *auto_number)
 {
     MarkupIterator iter;
@@ -874,7 +874,7 @@ do_markup(SubString *input, PyObject *args, PyObject *kwargs,
     SubString literal;
     SubString field_name;
     SubString format_spec;
-    Py_UCS4 conversion;
+    Ty_UCS4 conversion;
 
     MarkupIterator_init(&iter, input->str, input->start, input->end);
     while ((result = MarkupIterator_next(&iter, &literal, &field_present,
@@ -906,22 +906,22 @@ do_markup(SubString *input, PyObject *args, PyObject *kwargs,
     build_string allocates the output string and then
     calls do_markup to do the heavy lifting.
 */
-static PyObject *
-build_string(SubString *input, PyObject *args, PyObject *kwargs,
+static TyObject *
+build_string(SubString *input, TyObject *args, TyObject *kwargs,
              int recursion_depth, AutoNumber *auto_number)
 {
     _PyUnicodeWriter writer;
 
     /* check the recursion level */
     if (recursion_depth <= 0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Max string recursion exceeded");
         return NULL;
     }
 
     _PyUnicodeWriter_Init(&writer);
     writer.overallocate = 1;
-    writer.min_length = PyUnicode_GET_LENGTH(input->str) + 100;
+    writer.min_length = TyUnicode_GET_LENGTH(input->str) + 100;
 
     if (!do_markup(input, args, kwargs, &writer, recursion_depth,
                    auto_number)) {
@@ -937,8 +937,8 @@ build_string(SubString *input, PyObject *args, PyObject *kwargs,
 /************************************************************************/
 
 /* this is the main entry point */
-static PyObject *
-do_string_format(PyObject *self, PyObject *args, PyObject *kwargs)
+static TyObject *
+do_string_format(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     SubString input;
 
@@ -950,12 +950,12 @@ do_string_format(PyObject *self, PyObject *args, PyObject *kwargs)
 
     AutoNumber auto_number;
     AutoNumber_Init(&auto_number);
-    SubString_init(&input, self, 0, PyUnicode_GET_LENGTH(self));
+    SubString_init(&input, self, 0, TyUnicode_GET_LENGTH(self));
     return build_string(&input, args, kwargs, recursion_depth, &auto_number);
 }
 
-static PyObject *
-do_string_format_map(PyObject *self, PyObject *obj)
+static TyObject *
+do_string_format_map(TyObject *self, TyObject *obj)
 {
     return do_string_format(self, NULL, obj);
 }
@@ -972,15 +972,15 @@ do_string_format_map(PyObject *self, PyObject *obj)
 
 typedef struct {
     PyObject_HEAD
-    PyObject *str;
+    TyObject *str;
     MarkupIterator it_markup;
 } formatteriterobject;
 
 static void
-formatteriter_dealloc(PyObject *op)
+formatteriter_dealloc(TyObject *op)
 {
     formatteriterobject *it = (formatteriterobject*)op;
-    Py_XDECREF(it->str);
+    Ty_XDECREF(it->str);
     PyObject_Free(it);
 }
 
@@ -992,14 +992,14 @@ formatteriter_dealloc(PyObject *op)
    format_spec is the string after the ':'.  mibht be None
    conversion is either None, or the string after the '!'
 */
-static PyObject *
-formatteriter_next(PyObject *op)
+static TyObject *
+formatteriter_next(TyObject *op)
 {
     formatteriterobject *it = (formatteriterobject*)op;
     SubString literal;
     SubString field_name;
     SubString format_spec;
-    Py_UCS4 conversion;
+    Ty_UCS4 conversion;
     int format_spec_needs_expanding;
     int field_present;
     int result = MarkupIterator_next(&it->it_markup, &literal, &field_present,
@@ -1013,11 +1013,11 @@ formatteriter_next(PyObject *op)
         /* if 0, error has already been set, if 1, iterator is empty */
         return NULL;
     else {
-        PyObject *literal_str = NULL;
-        PyObject *field_name_str = NULL;
-        PyObject *format_spec_str = NULL;
-        PyObject *conversion_str = NULL;
-        PyObject *tuple = NULL;
+        TyObject *literal_str = NULL;
+        TyObject *field_name_str = NULL;
+        TyObject *format_spec_str = NULL;
+        TyObject *conversion_str = NULL;
+        TyObject *tuple = NULL;
 
         literal_str = SubString_new_object(&literal);
         if (literal_str == NULL)
@@ -1039,31 +1039,31 @@ formatteriter_next(PyObject *op)
            otherwise create a one length string with the conversion
            character */
         if (conversion == '\0') {
-            conversion_str = Py_NewRef(Py_None);
+            conversion_str = Ty_NewRef(Ty_None);
         }
         else
-            conversion_str = PyUnicode_FromKindAndData(PyUnicode_4BYTE_KIND,
+            conversion_str = TyUnicode_FromKindAndData(TyUnicode_4BYTE_KIND,
                                                        &conversion, 1);
         if (conversion_str == NULL)
             goto done;
 
-        tuple = PyTuple_Pack(4, literal_str, field_name_str, format_spec_str,
+        tuple = TyTuple_Pack(4, literal_str, field_name_str, format_spec_str,
                              conversion_str);
     done:
-        Py_XDECREF(literal_str);
-        Py_XDECREF(field_name_str);
-        Py_XDECREF(format_spec_str);
-        Py_XDECREF(conversion_str);
+        Ty_XDECREF(literal_str);
+        Ty_XDECREF(field_name_str);
+        Ty_XDECREF(format_spec_str);
+        Ty_XDECREF(conversion_str);
         return tuple;
     }
 }
 
-static PyMethodDef formatteriter_methods[] = {
+static TyMethodDef formatteriter_methods[] = {
     {NULL,              NULL}           /* sentinel */
 };
 
-static PyTypeObject PyFormatterIter_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+static TyTypeObject PyFormatterIter_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "formatteriterator",                /* tp_name */
     sizeof(formatteriterobject),        /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -1083,7 +1083,7 @@ static PyTypeObject PyFormatterIter_Type = {
     PyObject_GenericGetAttr,            /* tp_getattro */
     0,                                  /* tp_setattro */
     0,                                  /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,                 /* tp_flags */
+    Ty_TPFLAGS_DEFAULT,                 /* tp_flags */
     0,                                  /* tp_doc */
     0,                                  /* tp_traverse */
     0,                                  /* tp_clear */
@@ -1099,13 +1099,13 @@ static PyTypeObject PyFormatterIter_Type = {
    string.Formatter.vformat.  it parses a string and returns tuples
    describing the parsed elements.  It's a wrapper around
    stringlib/string_format.h's MarkupIterator */
-static PyObject *
-formatter_parser(PyObject *Py_UNUSED(module), PyObject *self)
+static TyObject *
+formatter_parser(TyObject *Py_UNUSED(module), TyObject *self)
 {
     formatteriterobject *it;
 
-    if (!PyUnicode_Check(self)) {
-        PyErr_Format(PyExc_TypeError, "expected str, got %s", Py_TYPE(self)->tp_name);
+    if (!TyUnicode_Check(self)) {
+        TyErr_Format(TyExc_TypeError, "expected str, got %s", Ty_TYPE(self)->tp_name);
         return NULL;
     }
 
@@ -1114,11 +1114,11 @@ formatter_parser(PyObject *Py_UNUSED(module), PyObject *self)
         return NULL;
 
     /* take ownership, give the object to the iterator */
-    it->str = Py_NewRef(self);
+    it->str = Ty_NewRef(self);
 
     /* initialize the contained MarkupIterator */
-    MarkupIterator_init(&it->it_markup, (PyObject*)self, 0, PyUnicode_GET_LENGTH(self));
-    return (PyObject *)it;
+    MarkupIterator_init(&it->it_markup, (TyObject*)self, 0, TyUnicode_GET_LENGTH(self));
+    return (TyObject *)it;
 }
 
 
@@ -1133,15 +1133,15 @@ formatter_parser(PyObject *Py_UNUSED(module), PyObject *self)
 
 typedef struct {
     PyObject_HEAD
-    PyObject *str;
+    TyObject *str;
     FieldNameIterator it_field;
 } fieldnameiterobject;
 
 static void
-fieldnameiter_dealloc(PyObject *op)
+fieldnameiter_dealloc(TyObject *op)
 {
     fieldnameiterobject *it = (fieldnameiterobject*)op;
-    Py_XDECREF(it->str);
+    Ty_XDECREF(it->str);
     PyObject_Free(it);
 }
 
@@ -1151,13 +1151,13 @@ fieldnameiter_dealloc(PyObject *op)
               false if we used index syntax (e.g., '[foo]')
    value is an integer or string
 */
-static PyObject *
-fieldnameiter_next(PyObject *op)
+static TyObject *
+fieldnameiter_next(TyObject *op)
 {
     fieldnameiterobject *it = (fieldnameiterobject*)op;
     int result;
     int is_attr;
-    Py_ssize_t idx;
+    Ty_ssize_t idx;
     SubString name;
 
     result = FieldNameIterator_next(&it->it_field, &is_attr,
@@ -1166,38 +1166,38 @@ fieldnameiter_next(PyObject *op)
         /* if 0, error has already been set, if 1, iterator is empty */
         return NULL;
     else {
-        PyObject* result = NULL;
-        PyObject* is_attr_obj = NULL;
-        PyObject* obj = NULL;
+        TyObject* result = NULL;
+        TyObject* is_attr_obj = NULL;
+        TyObject* obj = NULL;
 
-        is_attr_obj = PyBool_FromLong(is_attr);
+        is_attr_obj = TyBool_FromLong(is_attr);
         if (is_attr_obj == NULL)
             goto done;
 
         /* either an integer or a string */
         if (idx != -1)
-            obj = PyLong_FromSsize_t(idx);
+            obj = TyLong_FromSsize_t(idx);
         else
             obj = SubString_new_object(&name);
         if (obj == NULL)
             goto done;
 
         /* return a tuple of values */
-        result = PyTuple_Pack(2, is_attr_obj, obj);
+        result = TyTuple_Pack(2, is_attr_obj, obj);
 
     done:
-        Py_XDECREF(is_attr_obj);
-        Py_XDECREF(obj);
+        Ty_XDECREF(is_attr_obj);
+        Ty_XDECREF(obj);
         return result;
     }
 }
 
-static PyMethodDef fieldnameiter_methods[] = {
+static TyMethodDef fieldnameiter_methods[] = {
     {NULL,              NULL}           /* sentinel */
 };
 
-static PyTypeObject PyFieldNameIter_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+static TyTypeObject PyFieldNameIter_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "fieldnameiterator",                /* tp_name */
     sizeof(fieldnameiterobject),        /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -1217,7 +1217,7 @@ static PyTypeObject PyFieldNameIter_Type = {
     PyObject_GenericGetAttr,            /* tp_getattro */
     0,                                  /* tp_setattro */
     0,                                  /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,                 /* tp_flags */
+    Ty_TPFLAGS_DEFAULT,                 /* tp_flags */
     0,                                  /* tp_doc */
     0,                                  /* tp_traverse */
     0,                                  /* tp_clear */
@@ -1235,18 +1235,18 @@ static PyTypeObject PyFieldNameIter_Type = {
    name.  it's a wrapper around stringlib/string_format.h's
    field_name_split.  The iterator it returns is a
    FieldNameIterator */
-static PyObject *
-formatter_field_name_split(PyObject *Py_UNUSED(module), PyObject *self)
+static TyObject *
+formatter_field_name_split(TyObject *Py_UNUSED(module), TyObject *self)
 {
     SubString first;
-    Py_ssize_t first_idx;
+    Ty_ssize_t first_idx;
     fieldnameiterobject *it;
 
-    PyObject *first_obj = NULL;
-    PyObject *result = NULL;
+    TyObject *first_obj = NULL;
+    TyObject *result = NULL;
 
-    if (!PyUnicode_Check(self)) {
-        PyErr_Format(PyExc_TypeError, "expected str, got %s", Py_TYPE(self)->tp_name);
+    if (!TyUnicode_Check(self)) {
+        TyErr_Format(TyExc_TypeError, "expected str, got %s", Ty_TYPE(self)->tp_name);
         return NULL;
     }
 
@@ -1256,17 +1256,17 @@ formatter_field_name_split(PyObject *Py_UNUSED(module), PyObject *self)
 
     /* take ownership, give the object to the iterator.  this is
        just to keep the field_name alive */
-    it->str = Py_NewRef(self);
+    it->str = Ty_NewRef(self);
 
     /* Pass in auto_number = NULL. We'll return an empty string for
        first_obj in that case. */
-    if (!field_name_split((PyObject*)self, 0, PyUnicode_GET_LENGTH(self),
+    if (!field_name_split((TyObject*)self, 0, TyUnicode_GET_LENGTH(self),
                           &first, &first_idx, &it->it_field, NULL))
         goto done;
 
     /* first becomes an integer, if possible; else a string */
     if (first_idx != -1)
-        first_obj = PyLong_FromSsize_t(first_idx);
+        first_obj = TyLong_FromSsize_t(first_idx);
     else
         /* convert "first" into a string object */
         first_obj = SubString_new_object(&first);
@@ -1274,10 +1274,10 @@ formatter_field_name_split(PyObject *Py_UNUSED(module), PyObject *self)
         goto done;
 
     /* return a tuple of values */
-    result = PyTuple_Pack(2, first_obj, it);
+    result = TyTuple_Pack(2, first_obj, it);
 
 done:
-    Py_XDECREF(it);
-    Py_XDECREF(first_obj);
+    Ty_XDECREF(it);
+    Ty_XDECREF(first_obj);
     return result;
 }

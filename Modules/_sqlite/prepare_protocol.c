@@ -24,53 +24,53 @@
 #include "prepare_protocol.h"
 
 static int
-pysqlite_prepare_protocol_init(PyObject *self, PyObject *args, PyObject *kwargs)
+pysqlite_prepare_protocol_init(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     return 0;
 }
 
 static int
-pysqlite_prepare_protocol_traverse(PyObject *self, visitproc visit, void *arg)
+pysqlite_prepare_protocol_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    Py_VISIT(Py_TYPE(self));
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
 static void
-pysqlite_prepare_protocol_dealloc(PyObject *self)
+pysqlite_prepare_protocol_dealloc(TyObject *self)
 {
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     PyObject_GC_UnTrack(self);
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
-PyDoc_STRVAR(doc, "PEP 246 style object adaption protocol type.");
+TyDoc_STRVAR(doc, "PEP 246 style object adaption protocol type.");
 
-static PyType_Slot type_slots[] = {
-    {Py_tp_dealloc, pysqlite_prepare_protocol_dealloc},
-    {Py_tp_init, pysqlite_prepare_protocol_init},
-    {Py_tp_traverse, pysqlite_prepare_protocol_traverse},
-    {Py_tp_doc, (void *)doc},
+static TyType_Slot type_slots[] = {
+    {Ty_tp_dealloc, pysqlite_prepare_protocol_dealloc},
+    {Ty_tp_init, pysqlite_prepare_protocol_init},
+    {Ty_tp_traverse, pysqlite_prepare_protocol_traverse},
+    {Ty_tp_doc, (void *)doc},
     {0, NULL},
 };
 
-static PyType_Spec type_spec = {
+static TyType_Spec type_spec = {
     .name = MODULE_NAME ".PrepareProtocol",
     .basicsize = sizeof(pysqlite_PrepareProtocol),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-              Py_TPFLAGS_IMMUTABLETYPE),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC |
+              Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = type_slots,
 };
 
 int
-pysqlite_prepare_protocol_setup_types(PyObject *module)
+pysqlite_prepare_protocol_setup_types(TyObject *module)
 {
-    PyObject *type = PyType_FromModuleAndSpec(module, &type_spec, NULL);
+    TyObject *type = TyType_FromModuleAndSpec(module, &type_spec, NULL);
     if (type == NULL) {
         return -1;
     }
     pysqlite_state *state = pysqlite_get_state(module);
-    state->PrepareProtocolType = (PyTypeObject *)type;
+    state->PrepareProtocolType = (TyTypeObject *)type;
     return 0;
 }

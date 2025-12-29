@@ -1,36 +1,36 @@
-#ifndef Py_INTERNAL_RUNTIME_INIT_H
-#define Py_INTERNAL_RUNTIME_INIT_H
+#ifndef Ty_INTERNAL_RUNTIME_INIT_H
+#define Ty_INTERNAL_RUNTIME_INIT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_structs.h"
-#include "pycore_ceval_state.h"   // _PyEval_RUNTIME_PERF_INIT
-#include "pycore_debug_offsets.h"  // _Py_DebugOffsets_INIT()
+#include "pycore_ceval_state.h"   // _TyEval_RUNTIME_PERF_INIT
+#include "pycore_debug_offsets.h"  // _Ty_DebugOffsets_INIT()
 #include "pycore_dtoa.h"          // _dtoa_state_INIT()
 #include "pycore_faulthandler.h"  // _faulthandler_runtime_state_INIT
 #include "pycore_floatobject.h"   // _py_float_format_unknown
 #include "pycore_function.h"
-#include "pycore_hamt.h"          // _PyHamt_BitmapNode_Type
+#include "pycore_hamt.h"          // _TyHamt_BitmapNode_Type
 #include "pycore_import.h"        // IMPORTS_INIT
-#include "pycore_object.h"        // _PyObject_HEAD_INIT
+#include "pycore_object.h"        // _TyObject_HEAD_INIT
 #include "pycore_obmalloc_init.h" // _obmalloc_global_state_INIT
 #include "pycore_parser.h"        // _parser_runtime_state_INIT
 #include "pycore_pyhash.h"        // pyhash_state_INIT
 #include "pycore_pymem_init.h"    // _pymem_allocators_standard_INIT
 #include "pycore_pythread.h"      // _pythread_RUNTIME_INIT
 #include "pycore_qsbr.h"          // QSBR_INITIAL
-#include "pycore_runtime_init_generated.h"  // _Py_bytes_characters_INIT
+#include "pycore_runtime_init_generated.h"  // _Ty_bytes_characters_INIT
 #include "pycore_signal.h"        // _signals_RUNTIME_INIT
 #include "pycore_tracemalloc.h"   // _tracemalloc_runtime_state_INIT
-#include "pycore_tuple.h"         // _PyTuple_HASH_EMPTY
+#include "pycore_tuple.h"         // _TyTuple_HASH_EMPTY
 
 
-extern PyTypeObject _PyExc_MemoryError;
+extern TyTypeObject _TyExc_MemoryError;
 
 
 /* The static initializers defined here should only be used
@@ -38,7 +38,7 @@ extern PyTypeObject _PyExc_MemoryError;
 
 #define _PyRuntimeState_INIT(runtime, debug_cookie) \
     { \
-        .debug_offsets = _Py_DebugOffsets_INIT(debug_cookie), \
+        .debug_offsets = _Ty_DebugOffsets_INIT(debug_cookie), \
         .allocators = { \
             .standard = _pymem_allocators_standard_INIT(runtime), \
             .debug = _pymem_allocators_debug_INIT, \
@@ -51,7 +51,7 @@ extern PyTypeObject _PyExc_MemoryError;
         .signals = _signals_RUNTIME_INIT, \
         .interpreters = { \
             /* This prevents interpreters from getting created \
-              until _PyInterpreterState_Enable() is called. */ \
+              until _TyInterpreterState_Enable() is called. */ \
             .next_id = -1, \
         }, \
         .xi = { \
@@ -61,16 +61,16 @@ extern PyTypeObject _PyExc_MemoryError;
                 }, \
             }, \
         }, \
-        /* A TSS key must be initialized with Py_tss_NEEDS_INIT \
+        /* A TSS key must be initialized with Ty_tss_NEEDS_INIT \
            in accordance with the specification. */ \
-        .autoTSSkey = Py_tss_NEEDS_INIT, \
+        .autoTSSkey = Ty_tss_NEEDS_INIT, \
         .parser = _parser_runtime_state_INIT, \
         .ceval = { \
             .pending_mainthread = { \
                 .max = MAXPENDINGCALLS_MAIN, \
                 .maxloop = MAXPENDINGCALLSLOOP_MAIN, \
             }, \
-            .perf = _PyEval_RUNTIME_PERF_INIT, \
+            .perf = _TyEval_RUNTIME_PERF_INIT, \
         }, \
         .gilstate = { \
             .check_enabled = 1, \
@@ -92,44 +92,44 @@ extern PyTypeObject _PyExc_MemoryError;
             .double_format = _py_float_format_unknown, \
         }, \
         .types = { \
-            .next_version_tag = _Py_TYPE_VERSION_NEXT, \
+            .next_version_tag = _Ty_TYPE_VERSION_NEXT, \
         }, \
         .static_objects = { \
             .singletons = { \
-                .small_ints = _Py_small_ints_INIT, \
-                .bytes_empty = _PyBytes_SIMPLE_INIT(0, 0), \
-                .bytes_characters = _Py_bytes_characters_INIT, \
+                .small_ints = _Ty_small_ints_INIT, \
+                .bytes_empty = _TyBytes_SIMPLE_INIT(0, 0), \
+                .bytes_characters = _Ty_bytes_characters_INIT, \
                 .strings = { \
-                    .literals = _Py_str_literals_INIT, \
-                    .identifiers = _Py_str_identifiers_INIT, \
-                    .ascii = _Py_str_ascii_INIT, \
-                    .latin1 = _Py_str_latin1_INIT, \
+                    .literals = _Ty_str_literals_INIT, \
+                    .identifiers = _Ty_str_identifiers_INIT, \
+                    .ascii = _Ty_str_ascii_INIT, \
+                    .latin1 = _Ty_str_latin1_INIT, \
                 }, \
                 .tuple_empty = { \
-                    .ob_base = _PyVarObject_HEAD_INIT(&PyTuple_Type, 0), \
-                    .ob_hash = _PyTuple_HASH_EMPTY, \
+                    .ob_base = _PyVarObject_HEAD_INIT(&TyTuple_Type, 0), \
+                    .ob_hash = _TyTuple_HASH_EMPTY, \
                 }, \
                 .hamt_bitmap_node_empty = { \
-                    .ob_base = _PyVarObject_HEAD_INIT(&_PyHamt_BitmapNode_Type, 0), \
+                    .ob_base = _PyVarObject_HEAD_INIT(&_TyHamt_BitmapNode_Type, 0), \
                 }, \
                 .context_token_missing = { \
-                    .ob_base = _PyObject_HEAD_INIT(&_PyContextTokenMissing_Type), \
+                    .ob_base = _TyObject_HEAD_INIT(&_PyContextTokenMissing_Type), \
                 }, \
             }, \
         }, \
-        ._main_interpreter = _PyInterpreterState_INIT(runtime._main_interpreter), \
+        ._main_interpreter = _TyInterpreterState_INIT(runtime._main_interpreter), \
     }
 
-#define _PyInterpreterState_INIT(INTERP) \
+#define _TyInterpreterState_INIT(INTERP) \
     { \
         .id_refcount = -1, \
-        ._whence = _PyInterpreterState_WHENCE_NOTSET, \
+        ._whence = _TyInterpreterState_WHENCE_NOTSET, \
         .threads = { \
             .preallocated = &(INTERP)._initial_thread, \
         }, \
         .imports = IMPORTS_INIT, \
         .ceval = { \
-            .recursion_limit = Py_DEFAULT_RECURSION_LIMIT, \
+            .recursion_limit = Ty_DEFAULT_RECURSION_LIMIT, \
             .pending = { \
                 .max = MAXPENDINGCALLS, \
                 .maxloop = MAXPENDINGCALLSLOOP, \
@@ -151,23 +151,23 @@ extern PyTypeObject _PyExc_MemoryError;
         }, \
         .dtoa = _dtoa_state_INIT(&(INTERP)), \
         .dict_state = _dict_state_INIT, \
-        .mem_free_queue = _Py_mem_free_queue_INIT(INTERP.mem_free_queue), \
+        .mem_free_queue = _Ty_mem_free_queue_INIT(INTERP.mem_free_queue), \
         .func_state = { \
             .next_version = FUNC_VERSION_FIRST_VALID, \
         }, \
         .types = { \
-            .next_version_tag = _Py_TYPE_BASE_VERSION_TAG, \
+            .next_version_tag = _Ty_TYPE_BASE_VERSION_TAG, \
         }, \
         .static_objects = { \
             .singletons = { \
                 ._not_used = 1, \
                 .hamt_empty = { \
-                    .ob_base = _PyObject_HEAD_INIT(&_PyHamt_Type), \
-                    .h_root = (PyHamtNode*)&_Py_SINGLETON(hamt_bitmap_node_empty), \
+                    .ob_base = _TyObject_HEAD_INIT(&_TyHamt_Type), \
+                    .h_root = (PyHamtNode*)&_Ty_SINGLETON(hamt_bitmap_node_empty), \
                 }, \
                 .last_resort_memory_error = { \
-                    _PyObject_HEAD_INIT(&_PyExc_MemoryError), \
-                    .args = (PyObject*)&_Py_SINGLETON(tuple_empty) \
+                    _TyObject_HEAD_INIT(&_TyExc_MemoryError), \
+                    .args = (TyObject*)&_Ty_SINGLETON(tuple_empty) \
                 }, \
             }, \
         }, \
@@ -176,35 +176,35 @@ extern PyTypeObject _PyExc_MemoryError;
 
 #define _PyThreadStateImpl_INIT \
     { \
-        .base = _PyThreadState_INIT, \
+        .base = _TyThreadState_INIT, \
         /* The thread and the interpreter's linked list hold a reference */ \
         .refcount = 2, \
     }
 
-#define _PyThreadState_INIT \
+#define _TyThreadState_INIT \
     { \
-        ._whence = _PyThreadState_WHENCE_NOTSET, \
-        .py_recursion_limit = Py_DEFAULT_RECURSION_LIMIT, \
+        ._whence = _TyThreadState_WHENCE_NOTSET, \
+        .py_recursion_limit = Ty_DEFAULT_RECURSION_LIMIT, \
         .context_ver = 1, \
     }
 
 
 // global objects
 
-#define _PyBytes_SIMPLE_INIT(CH, LEN) \
+#define _TyBytes_SIMPLE_INIT(CH, LEN) \
     { \
-        _PyVarObject_HEAD_INIT(&PyBytes_Type, (LEN)), \
+        _PyVarObject_HEAD_INIT(&TyBytes_Type, (LEN)), \
         .ob_shash = -1, \
         .ob_sval = { (CH) }, \
     }
-#define _PyBytes_CHAR_INIT(CH) \
+#define _TyBytes_CHAR_INIT(CH) \
     { \
-        _PyBytes_SIMPLE_INIT((CH), 1) \
+        _TyBytes_SIMPLE_INIT((CH), 1) \
     }
 
-#define _PyUnicode_ASCII_BASE_INIT(LITERAL, ASCII) \
+#define _TyUnicode_ASCII_BASE_INIT(LITERAL, ASCII) \
     { \
-        .ob_base = _PyObject_HEAD_INIT(&PyUnicode_Type), \
+        .ob_base = _TyObject_HEAD_INIT(&TyUnicode_Type), \
         .length = sizeof(LITERAL) - 1, \
         .hash = -1, \
         .state = { \
@@ -216,17 +216,17 @@ extern PyTypeObject _PyExc_MemoryError;
     }
 #define _PyASCIIObject_INIT(LITERAL) \
     { \
-        ._ascii = _PyUnicode_ASCII_BASE_INIT((LITERAL), 1), \
+        ._ascii = _TyUnicode_ASCII_BASE_INIT((LITERAL), 1), \
         ._data = (LITERAL) \
     }
 #define INIT_STR(NAME, LITERAL) \
     ._py_ ## NAME = _PyASCIIObject_INIT(LITERAL)
 #define INIT_ID(NAME) \
     ._py_ ## NAME = _PyASCIIObject_INIT(#NAME)
-#define _PyUnicode_LATIN1_INIT(LITERAL, UTF8) \
+#define _TyUnicode_LATIN1_INIT(LITERAL, UTF8) \
     { \
         ._latin1 = { \
-            ._base = _PyUnicode_ASCII_BASE_INIT((LITERAL), 0), \
+            ._base = _TyUnicode_ASCII_BASE_INIT((LITERAL), 0), \
             .utf8 = (UTF8), \
             .utf8_length = sizeof(UTF8) - 1, \
         }, \
@@ -236,4 +236,4 @@ extern PyTypeObject _PyExc_MemoryError;
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_RUNTIME_INIT_H */
+#endif /* !Ty_INTERNAL_RUNTIME_INIT_H */

@@ -1,7 +1,7 @@
 import unittest
 import sys
 from ctypes import Structure, Union, sizeof, c_byte, c_char, c_int, CField
-from ._support import Py_TPFLAGS_IMMUTABLETYPE, StructCheckMixin
+from ._support import Ty_TPFLAGS_IMMUTABLETYPE, StructCheckMixin
 
 
 NOTHING = object()
@@ -89,7 +89,7 @@ class FieldsTestBase(StructCheckMixin):
     def test_max_field_size_gh126937(self):
         # Classes for big structs should be created successfully.
         # (But they most likely can't be instantiated.)
-        # The size must fit in Py_ssize_t.
+        # The size must fit in Ty_ssize_t.
 
         max_field_size = sys.maxsize
 
@@ -105,7 +105,7 @@ class FieldsTestBase(StructCheckMixin):
             _fields_ = [('largeField', c_char * max_field_size)]
         self.check_struct(Z)
 
-        # The *bit* size overflows Py_ssize_t.
+        # The *bit* size overflows Ty_ssize_t.
         self.assertEqual(Y.largeField.bit_size, max_field_size * 8)
         self.assertEqual(Z.largeField.bit_size, max_field_size * 8)
 
@@ -149,7 +149,7 @@ class StructFieldsTestCase(unittest.TestCase, FieldsTestBase):
     cls = Structure
 
     def test_cfield_type_flags(self):
-        self.assertTrue(CField.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
+        self.assertTrue(CField.__flags__ & Ty_TPFLAGS_IMMUTABLETYPE)
 
     def test_cfield_inheritance_hierarchy(self):
         self.assertEqual(CField.mro(), [CField, object])

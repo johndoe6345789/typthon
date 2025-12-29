@@ -1,36 +1,36 @@
-#ifndef Py_CPYTHON_PYLIFECYCLE_H
+#ifndef Ty_CPYTHON_PYLIFECYCLE_H
 #  error "this header file must not be included directly"
 #endif
 
-/* Py_FrozenMain is kept out of the Limited API until documented and present
+/* Ty_FrozenMain is kept out of the Limited API until documented and present
    in all builds of Python */
-PyAPI_FUNC(int) Py_FrozenMain(int argc, char **argv);
+PyAPI_FUNC(int) Ty_FrozenMain(int argc, char **argv);
 
 /* PEP 432 Multi-phase initialization API (Private while provisional!) */
 
-PyAPI_FUNC(PyStatus) Py_PreInitialize(
-    const PyPreConfig *src_config);
-PyAPI_FUNC(PyStatus) Py_PreInitializeFromBytesArgs(
-    const PyPreConfig *src_config,
-    Py_ssize_t argc,
+PyAPI_FUNC(TyStatus) Ty_PreInitialize(
+    const TyPreConfig *src_config);
+PyAPI_FUNC(TyStatus) Ty_PreInitializeFromBytesArgs(
+    const TyPreConfig *src_config,
+    Ty_ssize_t argc,
     char **argv);
-PyAPI_FUNC(PyStatus) Py_PreInitializeFromArgs(
-    const PyPreConfig *src_config,
-    Py_ssize_t argc,
+PyAPI_FUNC(TyStatus) Ty_PreInitializeFromArgs(
+    const TyPreConfig *src_config,
+    Ty_ssize_t argc,
     wchar_t **argv);
 
 
 /* Initialization and finalization */
 
-PyAPI_FUNC(PyStatus) Py_InitializeFromConfig(
-    const PyConfig *config);
+PyAPI_FUNC(TyStatus) Ty_InitializeFromConfig(
+    const TyConfig *config);
 
-PyAPI_FUNC(int) Py_RunMain(void);
+PyAPI_FUNC(int) Ty_RunMain(void);
 
 
-PyAPI_FUNC(void) _Py_NO_RETURN Py_ExitStatusException(PyStatus err);
+PyAPI_FUNC(void) _Ty_NO_RETURN Ty_ExitStatusException(TyStatus err);
 
-PyAPI_FUNC(int) Py_FdIsInteractive(FILE *, const char *);
+PyAPI_FUNC(int) Ty_FdIsInteractive(FILE *, const char *);
 
 /* --- PyInterpreterConfig ------------------------------------ */
 
@@ -63,7 +63,7 @@ typedef struct {
 // gh-117649: The free-threaded build does not currently support single-phase
 // init extensions in subinterpreters. For now, we ensure that
 // `check_multi_interp_extensions` is always `1`, even in the legacy config.
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 #  define _PyInterpreterConfig_LEGACY_CHECK_MULTI_INTERP_EXTENSIONS 1
 #else
 #  define _PyInterpreterConfig_LEGACY_CHECK_MULTI_INTERP_EXTENSIONS 0
@@ -80,10 +80,10 @@ typedef struct {
         .gil = PyInterpreterConfig_SHARED_GIL, \
     }
 
-PyAPI_FUNC(PyStatus) Py_NewInterpreterFromConfig(
-    PyThreadState **tstate_p,
+PyAPI_FUNC(TyStatus) Ty_NewInterpreterFromConfig(
+    TyThreadState **tstate_p,
     const PyInterpreterConfig *config);
 
 typedef void (*atexit_datacallbackfunc)(void *);
 PyAPI_FUNC(int) PyUnstable_AtExit(
-        PyInterpreterState *, atexit_datacallbackfunc, void *);
+        TyInterpreterState *, atexit_datacallbackfunc, void *);

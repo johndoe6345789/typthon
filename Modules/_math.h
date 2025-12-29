@@ -5,7 +5,7 @@
  */
 
 static double
-_Py_log1p(double x)
+_Ty_log1p(double x)
 {
     /* Some platforms (e.g. MacOS X 10.8, see gh-59682) supply a log1p function
        but don't respect the sign of zero:  log1p(-0.0) gives 0.0 instead of
@@ -22,4 +22,4 @@ _Py_log1p(double x)
     }
 }
 
-#define m_log1p _Py_log1p
+#define m_log1p _Ty_log1p

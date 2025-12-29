@@ -6,8 +6,8 @@
 // in some cases, we want to allow reads to happen concurrently with updates.
 // In this case, we need to delay freeing ("reclaiming") any memory that may be
 // concurrently accessed by a reader. The QSBR APIs provide a way to do this.
-#ifndef Py_INTERNAL_QSBR_H
-#define Py_INTERNAL_QSBR_H
+#ifndef Ty_INTERNAL_QSBR_H
+#define Ty_INTERNAL_QSBR_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -16,8 +16,8 @@
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 // The shared write sequence is always odd and incremented by two. Detached
@@ -46,7 +46,7 @@ struct _qsbr_thread_state {
     struct _qsbr_shared *shared;
 
     // Thread state (or NULL)
-    PyThreadState *tstate;
+    TyThreadState *tstate;
 
     // Number of held items added by this thread since the last write sequence
     // advance
@@ -85,7 +85,7 @@ struct _qsbr_shared {
 
     // Array of QSBR thread states.
     struct _qsbr_pad *array;
-    Py_ssize_t size;
+    Ty_ssize_t size;
 
     // Freelist of unused _qsbr_thread_states (protected by mutex)
     PyMutex mutex;
@@ -93,43 +93,43 @@ struct _qsbr_shared {
 };
 
 static inline uint64_t
-_Py_qsbr_shared_current(struct _qsbr_shared *shared)
+_Ty_qsbr_shared_current(struct _qsbr_shared *shared)
 {
-    return _Py_atomic_load_uint64_acquire(&shared->wr_seq);
+    return _Ty_atomic_load_uint64_acquire(&shared->wr_seq);
 }
 
 // Reports a quiescent state: the caller no longer holds any pointer to shared
 // data not protected by locks or reference counts.
 static inline void
-_Py_qsbr_quiescent_state(struct _qsbr_thread_state *qsbr)
+_Ty_qsbr_quiescent_state(struct _qsbr_thread_state *qsbr)
 {
-    uint64_t seq = _Py_qsbr_shared_current(qsbr->shared);
-    _Py_atomic_store_uint64_release(&qsbr->seq, seq);
+    uint64_t seq = _Ty_qsbr_shared_current(qsbr->shared);
+    _Ty_atomic_store_uint64_release(&qsbr->seq, seq);
 }
 
-// Have the read sequences advanced to the given goal? Like `_Py_qsbr_poll()`,
+// Have the read sequences advanced to the given goal? Like `_Ty_qsbr_poll()`,
 // but does not perform a scan of threads.
 static inline bool
-_Py_qbsr_goal_reached(struct _qsbr_thread_state *qsbr, uint64_t goal)
+_Ty_qbsr_goal_reached(struct _qsbr_thread_state *qsbr, uint64_t goal)
 {
-    uint64_t rd_seq = _Py_atomic_load_uint64(&qsbr->shared->rd_seq);
+    uint64_t rd_seq = _Ty_atomic_load_uint64(&qsbr->shared->rd_seq);
     return QSBR_LEQ(goal, rd_seq);
 }
 
 // Advance the write sequence and return the new goal. This should be called
-// after data is removed. The returned goal is used with `_Py_qsbr_poll()` to
+// after data is removed. The returned goal is used with `_Ty_qsbr_poll()` to
 // determine when it is safe to reclaim (free) the memory.
 extern uint64_t
-_Py_qsbr_advance(struct _qsbr_shared *shared);
+_Ty_qsbr_advance(struct _qsbr_shared *shared);
 
 // Return the next value for the write sequence (current plus the increment).
 extern uint64_t
-_Py_qsbr_shared_next(struct _qsbr_shared *shared);
+_Ty_qsbr_shared_next(struct _qsbr_shared *shared);
 
 // Return true if deferred memory frees held by QSBR should be processed to
 // determine if they can be safely freed.
 static inline bool
-_Py_qsbr_should_process(struct _qsbr_thread_state *qsbr)
+_Ty_qsbr_should_process(struct _qsbr_thread_state *qsbr)
 {
     return qsbr->should_process;
 }
@@ -137,36 +137,36 @@ _Py_qsbr_should_process(struct _qsbr_thread_state *qsbr)
 // Have the read sequences advanced to the given goal? If this returns true,
 // it safe to reclaim any memory tagged with the goal (or earlier goal).
 extern bool
-_Py_qsbr_poll(struct _qsbr_thread_state *qsbr, uint64_t goal);
+_Ty_qsbr_poll(struct _qsbr_thread_state *qsbr, uint64_t goal);
 
 // Called when thread attaches to interpreter
 extern void
-_Py_qsbr_attach(struct _qsbr_thread_state *qsbr);
+_Ty_qsbr_attach(struct _qsbr_thread_state *qsbr);
 
 // Called when thread detaches from interpreter
 extern void
-_Py_qsbr_detach(struct _qsbr_thread_state *qsbr);
+_Ty_qsbr_detach(struct _qsbr_thread_state *qsbr);
 
 // Reserves (allocates) a QSBR state and returns its index.
-extern Py_ssize_t
-_Py_qsbr_reserve(PyInterpreterState *interp);
+extern Ty_ssize_t
+_Ty_qsbr_reserve(TyInterpreterState *interp);
 
-// Associates a PyThreadState with the QSBR state at the given index
+// Associates a TyThreadState with the QSBR state at the given index
 extern void
-_Py_qsbr_register(struct _PyThreadStateImpl *tstate,
-                  PyInterpreterState *interp, Py_ssize_t index);
+_Ty_qsbr_register(struct _PyThreadStateImpl *tstate,
+                  TyInterpreterState *interp, Ty_ssize_t index);
 
-// Disassociates a PyThreadState from the QSBR state and frees the QSBR state.
+// Disassociates a TyThreadState from the QSBR state and frees the QSBR state.
 extern void
-_Py_qsbr_unregister(PyThreadState *tstate);
-
-extern void
-_Py_qsbr_fini(PyInterpreterState *interp);
+_Ty_qsbr_unregister(TyThreadState *tstate);
 
 extern void
-_Py_qsbr_after_fork(struct _PyThreadStateImpl *tstate);
+_Ty_qsbr_fini(TyInterpreterState *interp);
+
+extern void
+_Ty_qsbr_after_fork(struct _PyThreadStateImpl *tstate);
 
 #ifdef __cplusplus
 }
 #endif
-#endif   /* !Py_INTERNAL_QSBR_H */
+#endif   /* !Ty_INTERNAL_QSBR_H */

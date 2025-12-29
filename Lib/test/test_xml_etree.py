@@ -2788,7 +2788,7 @@ class BadElementTest(ElementTestCase, unittest.TestCase):
             # Test removing root[0] from [Z()].
             #
             # Since we call root.remove() with root[0], Z.__eq__()
-            # will not be called (we branch on the fast Py_EQ path).
+            # will not be called (we branch on the fast Ty_EQ path).
             with self.subTest("remove root[0] from [Z()]"):
                 root = E('top')
                 root.append(Z('rem'))
@@ -2809,7 +2809,7 @@ class BadElementTest(ElementTestCase, unittest.TestCase):
                 #
                 # Since checking root[1] still uses the old reference
                 # to the children list, PyObject_RichCompareBool() branches
-                # to the fast Py_EQ path and Y.__eq__() is called exactly
+                # to the fast Ty_EQ path and Y.__eq__() is called exactly
                 # once (when checking root[0]).
                 continue
             else:

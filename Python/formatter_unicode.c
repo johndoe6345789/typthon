@@ -3,27 +3,27 @@
    of int.__float__, etc., that take and return unicode objects */
 
 #include "Python.h"
-#include "pycore_fileutils.h"     // _Py_GetLocaleconvNumeric()
-#include "pycore_long.h"          // _PyLong_FormatWriter()
-#include "pycore_unicodeobject.h" // PyUnicode_MAX_CHAR_VALUE()
+#include "pycore_fileutils.h"     // _Ty_GetLocaleconvNumeric()
+#include "pycore_long.h"          // _TyLong_FormatWriter()
+#include "pycore_unicodeobject.h" // TyUnicode_MAX_CHAR_VALUE()
 #include <locale.h>
 
 /* Raises an exception about an unknown presentation type for this
  * type. */
 
 static void
-unknown_presentation_type(Py_UCS4 presentation_type,
+unknown_presentation_type(Ty_UCS4 presentation_type,
                           const char* type_name)
 {
     /* %c might be out-of-range, hence the two cases. */
     if (presentation_type > 32 && presentation_type < 128)
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "Unknown format code '%c' "
                      "for object of type '%.200s'",
                      (char)presentation_type,
                      type_name);
     else
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "Unknown format code '\\x%x' "
                      "for object of type '%.200s'",
                      (unsigned int)presentation_type,
@@ -31,15 +31,15 @@ unknown_presentation_type(Py_UCS4 presentation_type,
 }
 
 static void
-invalid_thousands_separator_type(char specifier, Py_UCS4 presentation_type)
+invalid_thousands_separator_type(char specifier, Ty_UCS4 presentation_type)
 {
     assert(specifier == ',' || specifier == '_');
     if (presentation_type > 32 && presentation_type < 128)
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "Cannot specify '%c' with '%c'.",
                      specifier, (char)presentation_type);
     else
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "Cannot specify '%c' with '\\x%x'.",
                      specifier, (unsigned int)presentation_type);
 }
@@ -47,7 +47,7 @@ invalid_thousands_separator_type(char specifier, Py_UCS4 presentation_type)
 static void
 invalid_comma_and_underscore(void)
 {
-    PyErr_Format(PyExc_ValueError, "Cannot specify both ',' and '_'.");
+    TyErr_Format(TyExc_ValueError, "Cannot specify both ',' and '_'.");
 }
 
 /*
@@ -58,17 +58,17 @@ invalid_comma_and_underscore(void)
     returns -1 on error.
 */
 static int
-get_integer(PyObject *str, Py_ssize_t *ppos, Py_ssize_t end,
-                  Py_ssize_t *result)
+get_integer(TyObject *str, Ty_ssize_t *ppos, Ty_ssize_t end,
+                  Ty_ssize_t *result)
 {
-    Py_ssize_t accumulator, digitval, pos = *ppos;
+    Ty_ssize_t accumulator, digitval, pos = *ppos;
     int numdigits;
-    int kind = PyUnicode_KIND(str);
-    const void *data = PyUnicode_DATA(str);
+    int kind = TyUnicode_KIND(str);
+    const void *data = TyUnicode_DATA(str);
 
     accumulator = numdigits = 0;
     for (; pos < end; pos++, numdigits++) {
-        digitval = Py_UNICODE_TODECIMAL(PyUnicode_READ(kind, data, pos));
+        digitval = Ty_UNICODE_TODECIMAL(TyUnicode_READ(kind, data, pos));
         if (digitval < 0)
             break;
         /*
@@ -78,7 +78,7 @@ get_integer(PyObject *str, Py_ssize_t *ppos, Py_ssize_t end,
               accumulator > (PY_SSIZE_T_MAX - digitval) / 10.
         */
         if (accumulator > (PY_SSIZE_T_MAX - digitval) / 10) {
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                          "Too many decimal digits in format string");
             *ppos = pos;
             return -1;
@@ -95,8 +95,8 @@ get_integer(PyObject *str, Py_ssize_t *ppos, Py_ssize_t end,
 /************************************************************************/
 
 /* returns true if this character is a specifier alignment token */
-Py_LOCAL_INLINE(int)
-is_alignment_token(Py_UCS4 c)
+Ty_LOCAL_INLINE(int)
+is_alignment_token(Ty_UCS4 c)
 {
     switch (c) {
     case '<': case '>': case '=': case '^':
@@ -107,8 +107,8 @@ is_alignment_token(Py_UCS4 c)
 }
 
 /* returns true if this character is a sign element */
-Py_LOCAL_INLINE(int)
-is_sign_element(Py_UCS4 c)
+Ty_LOCAL_INLINE(int)
+is_sign_element(Ty_UCS4 c)
 {
     switch (c) {
     case ' ': case '+': case '-':
@@ -128,16 +128,16 @@ enum LocaleType {
 };
 
 typedef struct {
-    Py_UCS4 fill_char;
-    Py_UCS4 align;
+    Ty_UCS4 fill_char;
+    Ty_UCS4 align;
     int alternate;
     int no_neg_0;
-    Py_UCS4 sign;
-    Py_ssize_t width;
+    Ty_UCS4 sign;
+    Ty_ssize_t width;
     enum LocaleType thousands_separators;
-    Py_ssize_t precision;
+    Ty_ssize_t precision;
     enum LocaleType frac_thousands_separator;
-    Py_UCS4 type;
+    Ty_UCS4 type;
 } InternalFormatSpec;
 
 
@@ -148,21 +148,21 @@ typedef struct {
   if failure, sets the exception
 */
 static int
-parse_internal_render_format_spec(PyObject *obj,
-                                  PyObject *format_spec,
-                                  Py_ssize_t start, Py_ssize_t end,
+parse_internal_render_format_spec(TyObject *obj,
+                                  TyObject *format_spec,
+                                  Ty_ssize_t start, Ty_ssize_t end,
                                   InternalFormatSpec *format,
                                   char default_type,
                                   char default_align)
 {
-    Py_ssize_t pos = start;
-    int kind = PyUnicode_KIND(format_spec);
-    const void *data = PyUnicode_DATA(format_spec);
+    Ty_ssize_t pos = start;
+    int kind = TyUnicode_KIND(format_spec);
+    const void *data = TyUnicode_DATA(format_spec);
     /* end-pos is used throughout this code to specify the length of
        the input string */
-#define READ_spec(index) PyUnicode_READ(kind, data, index)
+#define READ_spec(index) TyUnicode_READ(kind, data, index)
 
-    Py_ssize_t consumed;
+    Ty_ssize_t consumed;
     int align_specified = 0;
     int fill_char_specified = 0;
 
@@ -293,7 +293,7 @@ parse_internal_render_format_spec(PyObject *obj,
         /* Not having a precision or underscore/comma after a dot
            is an error. */
         if (consumed == 0) {
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                          "Format specifier missing precision");
             return 0;
         }
@@ -307,14 +307,14 @@ parse_internal_render_format_spec(PyObject *obj,
            specifier. */
         /* Create a temporary object that contains the format spec we're
            operating on.  It's format_spec[start:end] (in Python syntax). */
-        PyObject* actual_format_spec = PyUnicode_FromKindAndData(kind,
+        TyObject* actual_format_spec = TyUnicode_FromKindAndData(kind,
                                          (char*)data + kind*start,
                                          end-start);
         if (actual_format_spec != NULL) {
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                 "Invalid format specifier '%U' for object of type '%.200s'",
-                actual_format_spec, Py_TYPE(obj)->tp_name);
-            Py_DECREF(actual_format_spec);
+                actual_format_spec, Ty_TYPE(obj)->tp_name);
+            Ty_DECREF(actual_format_spec);
         }
         return 0;
     }
@@ -351,7 +351,7 @@ parse_internal_render_format_spec(PyObject *obj,
                 format->thousands_separators = LT_UNDER_FOUR_LOCALE;
                 break;
             }
-            _Py_FALLTHROUGH;
+            _Ty_FALLTHROUGH;
         default:
             invalid_thousands_separator_type(format->thousands_separators, format->type);
             return 0;
@@ -373,9 +373,9 @@ parse_internal_render_format_spec(PyObject *obj,
 
 /* Calculate the padding needed. */
 static void
-calc_padding(Py_ssize_t nchars, Py_ssize_t width, Py_UCS4 align,
-             Py_ssize_t *n_lpadding, Py_ssize_t *n_rpadding,
-             Py_ssize_t *n_total)
+calc_padding(Ty_ssize_t nchars, Ty_ssize_t width, Ty_UCS4 align,
+             Ty_ssize_t *n_lpadding, Ty_ssize_t *n_rpadding,
+             Ty_ssize_t *n_total)
 {
     if (width >= 0) {
         if (nchars > width)
@@ -398,7 +398,7 @@ calc_padding(Py_ssize_t nchars, Py_ssize_t width, Py_UCS4 align,
         *n_lpadding = 0;
     else {
         /* We should never have an unspecified alignment. */
-        Py_UNREACHABLE();
+        Ty_UNREACHABLE();
     }
 
     *n_rpadding = *n_total - nchars - *n_lpadding;
@@ -408,22 +408,22 @@ calc_padding(Py_ssize_t nchars, Py_ssize_t width, Py_UCS4 align,
    content goes. */
 static int
 fill_padding(_PyUnicodeWriter *writer,
-             Py_ssize_t nchars,
-             Py_UCS4 fill_char, Py_ssize_t n_lpadding,
-             Py_ssize_t n_rpadding)
+             Ty_ssize_t nchars,
+             Ty_UCS4 fill_char, Ty_ssize_t n_lpadding,
+             Ty_ssize_t n_rpadding)
 {
-    Py_ssize_t pos;
+    Ty_ssize_t pos;
 
     /* Pad on left. */
     if (n_lpadding) {
         pos = writer->pos;
-        _PyUnicode_FastFill(writer->buffer, pos, n_lpadding, fill_char);
+        _TyUnicode_FastFill(writer->buffer, pos, n_lpadding, fill_char);
     }
 
     /* Pad on right. */
     if (n_rpadding) {
         pos = writer->pos + nchars + n_lpadding;
-        _PyUnicode_FastFill(writer->buffer, pos, n_rpadding, fill_char);
+        _TyUnicode_FastFill(writer->buffer, pos, n_rpadding, fill_char);
     }
 
     /* Pointer to the user content. */
@@ -439,9 +439,9 @@ fill_padding(_PyUnicodeWriter *writer,
    before and including the decimal. Note that locales only support
    8-bit chars, not unicode. */
 typedef struct {
-    PyObject *decimal_point;
-    PyObject *thousands_sep;
-    PyObject *frac_thousands_sep;
+    TyObject *decimal_point;
+    TyObject *thousands_sep;
+    TyObject *frac_thousands_sep;
     const char *grouping;
     char *grouping_buffer;
 } LocaleInfo;
@@ -451,26 +451,26 @@ typedef struct {
 /* describes the layout for an integer, see the comment in
    calc_number_widths() for details */
 typedef struct {
-    Py_ssize_t n_lpadding;
-    Py_ssize_t n_prefix;
-    Py_ssize_t n_spadding;
-    Py_ssize_t n_rpadding;
+    Ty_ssize_t n_lpadding;
+    Ty_ssize_t n_prefix;
+    Ty_ssize_t n_spadding;
+    Ty_ssize_t n_rpadding;
     char sign;
-    Py_ssize_t n_sign;      /* number of digits needed for sign (0/1) */
-    Py_ssize_t n_grouped_digits; /* Space taken up by the digits, including
+    Ty_ssize_t n_sign;      /* number of digits needed for sign (0/1) */
+    Ty_ssize_t n_grouped_digits; /* Space taken up by the digits, including
                                     any grouping chars. */
-    Py_ssize_t n_decimal;   /* 0 if only an integer */
-    Py_ssize_t n_remainder; /* Digits in decimal and/or exponent part,
+    Ty_ssize_t n_decimal;   /* 0 if only an integer */
+    Ty_ssize_t n_remainder; /* Digits in decimal and/or exponent part,
                                excluding the decimal itself, if
                                present. */
-    Py_ssize_t n_frac;
-    Py_ssize_t n_grouped_frac_digits;
+    Ty_ssize_t n_frac;
+    Ty_ssize_t n_grouped_frac_digits;
 
     /* These 2 are not the widths of fields, but are needed by
        STRINGLIB_GROUPING. */
-    Py_ssize_t n_digits;    /* The number of digits before a decimal
+    Ty_ssize_t n_digits;    /* The number of digits before a decimal
                                or exponent. */
-    Py_ssize_t n_min_width; /* The min_width we used when we computed
+    Ty_ssize_t n_min_width; /* The min_width we used when we computed
                                the n_grouped_digits width. */
 } NumberFieldWidths;
 
@@ -486,20 +486,20 @@ typedef struct {
     formatted strings.
 */
 static void
-parse_number(PyObject *s, Py_ssize_t pos, Py_ssize_t end,
-             Py_ssize_t *n_remainder, Py_ssize_t *n_frac, int *has_decimal)
+parse_number(TyObject *s, Ty_ssize_t pos, Ty_ssize_t end,
+             Ty_ssize_t *n_remainder, Ty_ssize_t *n_frac, int *has_decimal)
 {
-    Py_ssize_t frac;
-    int kind = PyUnicode_KIND(s);
-    const void *data = PyUnicode_DATA(s);
+    Ty_ssize_t frac;
+    int kind = TyUnicode_KIND(s);
+    const void *data = TyUnicode_DATA(s);
 
-    while (pos<end && Py_ISDIGIT(PyUnicode_READ(kind, data, pos))) {
+    while (pos<end && Ty_ISDIGIT(TyUnicode_READ(kind, data, pos))) {
         ++pos;
     }
     frac = pos;
 
     /* Does remainder start with a decimal point? */
-    *has_decimal = pos<end && PyUnicode_READ(kind, data, frac) == '.';
+    *has_decimal = pos<end && TyUnicode_READ(kind, data, frac) == '.';
 
     /* Skip the decimal point. */
     if (*has_decimal) {
@@ -507,7 +507,7 @@ parse_number(PyObject *s, Py_ssize_t pos, Py_ssize_t end,
         pos++;
     }
 
-    while (pos<end && Py_ISDIGIT(PyUnicode_READ(kind, data, pos))) {
+    while (pos<end && Ty_ISDIGIT(TyUnicode_READ(kind, data, pos))) {
         ++pos;
     }
 
@@ -520,20 +520,20 @@ parse_number(PyObject *s, Py_ssize_t pos, Py_ssize_t end,
    about what it does?  or is passing a single format parameter easier
    and more efficient enough to justify a little obfuscation?
    Return -1 on error. */
-static Py_ssize_t
-calc_number_widths(NumberFieldWidths *spec, Py_ssize_t n_prefix,
-                   Py_UCS4 sign_char, Py_ssize_t n_start,
-                   Py_ssize_t n_end, Py_ssize_t n_remainder, Py_ssize_t n_frac,
+static Ty_ssize_t
+calc_number_widths(NumberFieldWidths *spec, Ty_ssize_t n_prefix,
+                   Ty_UCS4 sign_char, Ty_ssize_t n_start,
+                   Ty_ssize_t n_end, Ty_ssize_t n_remainder, Ty_ssize_t n_frac,
                    int has_decimal, const LocaleInfo *locale,
-                   const InternalFormatSpec *format, Py_UCS4 *maxchar)
+                   const InternalFormatSpec *format, Ty_UCS4 *maxchar)
 {
-    Py_ssize_t n_non_digit_non_padding;
-    Py_ssize_t n_padding;
+    Ty_ssize_t n_non_digit_non_padding;
+    Ty_ssize_t n_padding;
 
     spec->n_digits = n_end - n_start - n_frac - n_remainder - (has_decimal?1:0);
     spec->n_lpadding = 0;
     spec->n_prefix = n_prefix;
-    spec->n_decimal = has_decimal ? PyUnicode_GET_LENGTH(locale->decimal_point) : 0;
+    spec->n_decimal = has_decimal ? TyUnicode_GET_LENGTH(locale->decimal_point) : 0;
     spec->n_remainder = n_remainder;
     spec->n_frac = n_frac;
     spec->n_spadding = 0;
@@ -583,8 +583,8 @@ calc_number_widths(NumberFieldWidths *spec, Py_ssize_t n_prefix,
         spec->n_grouped_frac_digits = 0;
     }
     else {
-        Py_UCS4 grouping_maxchar;
-        spec->n_grouped_frac_digits = _PyUnicode_InsertThousandsGrouping(
+        Ty_UCS4 grouping_maxchar;
+        spec->n_grouped_frac_digits = _TyUnicode_InsertThousandsGrouping(
             NULL, 0,
             NULL, 0, spec->n_frac,
             spec->n_frac,
@@ -592,7 +592,7 @@ calc_number_widths(NumberFieldWidths *spec, Py_ssize_t n_prefix,
         if (spec->n_grouped_frac_digits == -1) {
             return -1;
         }
-        *maxchar = Py_MAX(*maxchar, grouping_maxchar);
+        *maxchar = Ty_MAX(*maxchar, grouping_maxchar);
     }
 
     /* The number of chars used for non-digits and non-padding. */
@@ -613,8 +613,8 @@ calc_number_widths(NumberFieldWidths *spec, Py_ssize_t n_prefix,
            to have at least one character. */
         spec->n_grouped_digits = 0;
     else {
-        Py_UCS4 grouping_maxchar;
-        spec->n_grouped_digits = _PyUnicode_InsertThousandsGrouping(
+        Ty_UCS4 grouping_maxchar;
+        spec->n_grouped_digits = _TyUnicode_InsertThousandsGrouping(
             NULL, 0,
             NULL, 0, spec->n_digits,
             spec->n_min_width,
@@ -622,7 +622,7 @@ calc_number_widths(NumberFieldWidths *spec, Py_ssize_t n_prefix,
         if (spec->n_grouped_digits == -1) {
             return -1;
         }
-        *maxchar = Py_MAX(*maxchar, grouping_maxchar);
+        *maxchar = Ty_MAX(*maxchar, grouping_maxchar);
     }
 
     /* Given the desired width and the total of digit and non-digit
@@ -650,15 +650,15 @@ calc_number_widths(NumberFieldWidths *spec, Py_ssize_t n_prefix,
             break;
         default:
             /* Shouldn't get here */
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
         }
     }
 
     if (spec->n_lpadding || spec->n_spadding || spec->n_rpadding)
-        *maxchar = Py_MAX(*maxchar, format->fill_char);
+        *maxchar = Ty_MAX(*maxchar, format->fill_char);
 
     if (spec->n_decimal)
-        *maxchar = Py_MAX(*maxchar, PyUnicode_MAX_CHAR_VALUE(locale->decimal_point));
+        *maxchar = Ty_MAX(*maxchar, TyUnicode_MAX_CHAR_VALUE(locale->decimal_point));
 
     return spec->n_lpadding + spec->n_sign + spec->n_prefix +
         spec->n_spadding + spec->n_grouped_digits + spec->n_decimal +
@@ -670,43 +670,43 @@ calc_number_widths(NumberFieldWidths *spec, Py_ssize_t n_prefix,
    Return -1 on error, or 0 on success. */
 static int
 fill_number(_PyUnicodeWriter *writer, const NumberFieldWidths *spec,
-            PyObject *digits, Py_ssize_t d_start,
-            PyObject *prefix, Py_ssize_t p_start,
-            Py_UCS4 fill_char,
+            TyObject *digits, Ty_ssize_t d_start,
+            TyObject *prefix, Ty_ssize_t p_start,
+            Ty_UCS4 fill_char,
             LocaleInfo *locale, int toupper)
 {
     /* Used to keep track of digits, decimal, and remainder. */
-    Py_ssize_t d_pos = d_start;
+    Ty_ssize_t d_pos = d_start;
     const int kind = writer->kind;
     const void *data = writer->data;
-    Py_ssize_t r;
+    Ty_ssize_t r;
 
     if (spec->n_lpadding) {
-        _PyUnicode_FastFill(writer->buffer,
+        _TyUnicode_FastFill(writer->buffer,
                             writer->pos, spec->n_lpadding, fill_char);
         writer->pos += spec->n_lpadding;
     }
     if (spec->n_sign == 1) {
-        PyUnicode_WRITE(kind, data, writer->pos, spec->sign);
+        TyUnicode_WRITE(kind, data, writer->pos, spec->sign);
         writer->pos++;
     }
     if (spec->n_prefix) {
-        _PyUnicode_FastCopyCharacters(writer->buffer, writer->pos,
+        _TyUnicode_FastCopyCharacters(writer->buffer, writer->pos,
                                       prefix, p_start,
                                       spec->n_prefix);
         if (toupper) {
-            Py_ssize_t t;
+            Ty_ssize_t t;
             for (t = 0; t < spec->n_prefix; t++) {
-                Py_UCS4 c = PyUnicode_READ(kind, data, writer->pos + t);
-                c = Py_TOUPPER(c);
+                Ty_UCS4 c = TyUnicode_READ(kind, data, writer->pos + t);
+                c = Ty_TOUPPER(c);
                 assert (c <= 127);
-                PyUnicode_WRITE(kind, data, writer->pos + t, c);
+                TyUnicode_WRITE(kind, data, writer->pos + t, c);
             }
         }
         writer->pos += spec->n_prefix;
     }
     if (spec->n_spadding) {
-        _PyUnicode_FastFill(writer->buffer,
+        _TyUnicode_FastFill(writer->buffer,
                             writer->pos, spec->n_spadding, fill_char);
         writer->pos += spec->n_spadding;
     }
@@ -714,7 +714,7 @@ fill_number(_PyUnicodeWriter *writer, const NumberFieldWidths *spec,
     /* Only for type 'c' special case, it has no digits. */
     if (spec->n_digits != 0) {
         /* Fill the digits with InsertThousandsGrouping. */
-        r = _PyUnicode_InsertThousandsGrouping(
+        r = _TyUnicode_InsertThousandsGrouping(
                 writer, spec->n_grouped_digits,
                 digits, d_pos, spec->n_digits,
                 spec->n_min_width,
@@ -725,21 +725,21 @@ fill_number(_PyUnicodeWriter *writer, const NumberFieldWidths *spec,
         d_pos += spec->n_digits;
     }
     if (toupper) {
-        Py_ssize_t t;
+        Ty_ssize_t t;
         for (t = 0; t < spec->n_grouped_digits; t++) {
-            Py_UCS4 c = PyUnicode_READ(kind, data, writer->pos + t);
-            c = Py_TOUPPER(c);
+            Ty_UCS4 c = TyUnicode_READ(kind, data, writer->pos + t);
+            c = Ty_TOUPPER(c);
             if (c > 127) {
-                PyErr_SetString(PyExc_SystemError, "non-ascii grouped digit");
+                TyErr_SetString(TyExc_SystemError, "non-ascii grouped digit");
                 return -1;
             }
-            PyUnicode_WRITE(kind, data, writer->pos + t, c);
+            TyUnicode_WRITE(kind, data, writer->pos + t, c);
         }
     }
     writer->pos += spec->n_grouped_digits;
 
     if (spec->n_decimal) {
-        _PyUnicode_FastCopyCharacters(
+        _TyUnicode_FastCopyCharacters(
             writer->buffer, writer->pos,
             locale->decimal_point, 0, spec->n_decimal);
         writer->pos += spec->n_decimal;
@@ -747,7 +747,7 @@ fill_number(_PyUnicodeWriter *writer, const NumberFieldWidths *spec,
     }
 
     if (spec->n_frac) {
-        r = _PyUnicode_InsertThousandsGrouping(
+        r = _TyUnicode_InsertThousandsGrouping(
                 writer, spec->n_grouped_frac_digits,
                 digits, d_pos, spec->n_frac, spec->n_frac,
                 locale->grouping, locale->frac_thousands_sep, NULL, 1);
@@ -760,7 +760,7 @@ fill_number(_PyUnicodeWriter *writer, const NumberFieldWidths *spec,
     }
 
     if (spec->n_remainder) {
-        _PyUnicode_FastCopyCharacters(
+        _TyUnicode_FastCopyCharacters(
             writer->buffer, writer->pos,
             digits, d_pos, spec->n_remainder);
         writer->pos += spec->n_remainder;
@@ -768,7 +768,7 @@ fill_number(_PyUnicodeWriter *writer, const NumberFieldWidths *spec,
     }
 
     if (spec->n_rpadding) {
-        _PyUnicode_FastFill(writer->buffer,
+        _TyUnicode_FastFill(writer->buffer,
                             writer->pos, spec->n_rpadding,
                             fill_char);
         writer->pos += spec->n_rpadding;
@@ -789,7 +789,7 @@ get_locale_info(enum LocaleType type, enum LocaleType frac_type,
     switch (type) {
     case LT_CURRENT_LOCALE: {
         struct lconv *lc = localeconv();
-        if (_Py_GetLocaleconvNumeric(lc,
+        if (_Ty_GetLocaleconvNumeric(lc,
                                      &locale_info->decimal_point,
                                      &locale_info->thousands_sep) < 0) {
             return -1;
@@ -798,9 +798,9 @@ get_locale_info(enum LocaleType type, enum LocaleType frac_type,
         /* localeconv() grouping can become a dangling pointer or point
            to a different string if another thread calls localeconv() during
            the string formatting. Copy the string to avoid this risk. */
-        locale_info->grouping_buffer = _PyMem_Strdup(lc->grouping);
+        locale_info->grouping_buffer = _TyMem_Strdup(lc->grouping);
         if (locale_info->grouping_buffer == NULL) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return -1;
         }
         locale_info->grouping = locale_info->grouping_buffer;
@@ -809,8 +809,8 @@ get_locale_info(enum LocaleType type, enum LocaleType frac_type,
     case LT_DEFAULT_LOCALE:
     case LT_UNDERSCORE_LOCALE:
     case LT_UNDER_FOUR_LOCALE:
-        locale_info->decimal_point = PyUnicode_FromOrdinal('.');
-        locale_info->thousands_sep = PyUnicode_FromOrdinal(
+        locale_info->decimal_point = TyUnicode_FromOrdinal('.');
+        locale_info->thousands_sep = TyUnicode_FromOrdinal(
             type == LT_DEFAULT_LOCALE ? ',' : '_');
         if (!locale_info->decimal_point || !locale_info->thousands_sep)
             return -1;
@@ -822,15 +822,15 @@ get_locale_info(enum LocaleType type, enum LocaleType frac_type,
             locale_info->grouping = "\4"; /* Bin/oct/hex group every four. */
         break;
     case LT_NO_LOCALE:
-        locale_info->decimal_point = PyUnicode_FromOrdinal('.');
-        locale_info->thousands_sep = Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+        locale_info->decimal_point = TyUnicode_FromOrdinal('.');
+        locale_info->thousands_sep = Ty_GetConstant(Ty_CONSTANT_EMPTY_STR);
         if (!locale_info->decimal_point || !locale_info->thousands_sep)
             return -1;
         locale_info->grouping = no_grouping;
         break;
     }
     if (frac_type != LT_NO_LOCALE) {
-        locale_info->frac_thousands_sep = PyUnicode_FromOrdinal(
+        locale_info->frac_thousands_sep = TyUnicode_FromOrdinal(
             frac_type == LT_DEFAULT_LOCALE ? ',' : '_');
         if (!locale_info->frac_thousands_sep) {
             return -1;
@@ -840,7 +840,7 @@ get_locale_info(enum LocaleType type, enum LocaleType frac_type,
         }
     }
     else {
-        locale_info->frac_thousands_sep = Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+        locale_info->frac_thousands_sep = Ty_GetConstant(Ty_CONSTANT_EMPTY_STR);
     }
     return 0;
 }
@@ -848,10 +848,10 @@ get_locale_info(enum LocaleType type, enum LocaleType frac_type,
 static void
 free_locale_info(LocaleInfo *locale_info)
 {
-    Py_XDECREF(locale_info->decimal_point);
-    Py_XDECREF(locale_info->thousands_sep);
-    Py_XDECREF(locale_info->frac_thousands_sep);
-    PyMem_Free(locale_info->grouping_buffer);
+    Ty_XDECREF(locale_info->decimal_point);
+    Ty_XDECREF(locale_info->thousands_sep);
+    Ty_XDECREF(locale_info->frac_thousands_sep);
+    TyMem_Free(locale_info->grouping_buffer);
 }
 
 /************************************************************************/
@@ -859,26 +859,26 @@ free_locale_info(LocaleInfo *locale_info)
 /************************************************************************/
 
 static int
-format_string_internal(PyObject *value, const InternalFormatSpec *format,
+format_string_internal(TyObject *value, const InternalFormatSpec *format,
                        _PyUnicodeWriter *writer)
 {
-    Py_ssize_t lpad;
-    Py_ssize_t rpad;
-    Py_ssize_t total;
-    Py_ssize_t len;
+    Ty_ssize_t lpad;
+    Ty_ssize_t rpad;
+    Ty_ssize_t total;
+    Ty_ssize_t len;
     int result = -1;
-    Py_UCS4 maxchar;
+    Ty_UCS4 maxchar;
 
-    len = PyUnicode_GET_LENGTH(value);
+    len = TyUnicode_GET_LENGTH(value);
 
     /* sign is not allowed on strings */
     if (format->sign != '\0') {
         if (format->sign == ' ') {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                 "Space not allowed in string format specifier");
         }
         else {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                 "Sign not allowed in string format specifier");
         }
         goto done;
@@ -886,7 +886,7 @@ format_string_internal(PyObject *value, const InternalFormatSpec *format,
 
     /* negative 0 coercion is not allowed on strings */
     if (format->no_neg_0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Negative zero coercion (z) not allowed in string format "
                         "specifier");
         goto done;
@@ -894,7 +894,7 @@ format_string_internal(PyObject *value, const InternalFormatSpec *format,
 
     /* alternate is not allowed on strings */
     if (format->alternate) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Alternate form (#) not allowed in string format "
                         "specifier");
         goto done;
@@ -902,7 +902,7 @@ format_string_internal(PyObject *value, const InternalFormatSpec *format,
 
     /* '=' alignment not allowed on strings */
     if (format->align == '=') {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "'=' alignment not allowed "
                         "in string format specifier");
         goto done;
@@ -924,10 +924,10 @@ format_string_internal(PyObject *value, const InternalFormatSpec *format,
 
     maxchar = writer->maxchar;
     if (lpad != 0 || rpad != 0)
-        maxchar = Py_MAX(maxchar, format->fill_char);
-    if (PyUnicode_MAX_CHAR_VALUE(value) > maxchar) {
-        Py_UCS4 valmaxchar = _PyUnicode_FindMaxChar(value, 0, len);
-        maxchar = Py_MAX(maxchar, valmaxchar);
+        maxchar = Ty_MAX(maxchar, format->fill_char);
+    if (TyUnicode_MAX_CHAR_VALUE(value) > maxchar) {
+        Ty_UCS4 valmaxchar = _TyUnicode_FindMaxChar(value, 0, len);
+        maxchar = Ty_MAX(maxchar, valmaxchar);
     }
 
     /* allocate the resulting string */
@@ -941,7 +941,7 @@ format_string_internal(PyObject *value, const InternalFormatSpec *format,
 
     /* Then the source string. */
     if (len) {
-        _PyUnicode_FastCopyCharacters(writer->buffer, writer->pos,
+        _TyUnicode_FastCopyCharacters(writer->buffer, writer->pos,
                                       value, 0, len);
     }
     writer->pos += (len + rpad);
@@ -957,21 +957,21 @@ done:
 /************************************************************************/
 
 static int
-format_long_internal(PyObject *value, const InternalFormatSpec *format,
+format_long_internal(TyObject *value, const InternalFormatSpec *format,
                      _PyUnicodeWriter *writer)
 {
     int result = -1;
-    Py_UCS4 maxchar = 127;
-    PyObject *tmp = NULL;
-    Py_ssize_t inumeric_chars;
-    Py_UCS4 sign_char = '\0';
-    Py_ssize_t n_digits;       /* count of digits need from the computed
+    Ty_UCS4 maxchar = 127;
+    TyObject *tmp = NULL;
+    Ty_ssize_t inumeric_chars;
+    Ty_UCS4 sign_char = '\0';
+    Ty_ssize_t n_digits;       /* count of digits need from the computed
                                   string */
-    Py_ssize_t n_remainder = 0; /* Used only for 'c' formatting, which
+    Ty_ssize_t n_remainder = 0; /* Used only for 'c' formatting, which
                                    produces non-digits */
-    Py_ssize_t n_prefix = 0;   /* Count of prefix chars, (e.g., '0x') */
-    Py_ssize_t n_total;
-    Py_ssize_t prefix = 0;
+    Ty_ssize_t n_prefix = 0;   /* Count of prefix chars, (e.g., '0x') */
+    Ty_ssize_t n_total;
+    Ty_ssize_t prefix = 0;
     NumberFieldWidths spec;
     long x;
 
@@ -981,13 +981,13 @@ format_long_internal(PyObject *value, const InternalFormatSpec *format,
 
     /* no precision allowed on integers */
     if (format->precision != -1) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Precision not allowed in integer format specifier");
         goto done;
     }
     /* no negative zero coercion on integers */
     if (format->no_neg_0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Negative zero coercion (z) not allowed in integer"
                         " format specifier");
         goto done;
@@ -997,14 +997,14 @@ format_long_internal(PyObject *value, const InternalFormatSpec *format,
     if (format->type == 'c') {
         /* error to specify a sign */
         if (format->sign != '\0') {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "Sign not allowed with integer"
                             " format specifier 'c'");
             goto done;
         }
         /* error to request alternate format */
         if (format->alternate) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "Alternate form (#) not allowed with integer"
                             " format specifier 'c'");
             goto done;
@@ -1012,18 +1012,18 @@ format_long_internal(PyObject *value, const InternalFormatSpec *format,
 
         /* taken from unicodeobject.c formatchar() */
         /* Integer input truncated to a character */
-        x = PyLong_AsLong(value);
-        if (x == -1 && PyErr_Occurred())
+        x = TyLong_AsLong(value);
+        if (x == -1 && TyErr_Occurred())
             goto done;
         if (x < 0 || x > 0x10ffff) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "%c arg not in range(0x110000)");
             goto done;
         }
-        tmp = PyUnicode_FromOrdinal(x);
+        tmp = TyUnicode_FromOrdinal(x);
         inumeric_chars = 0;
         n_digits = 1;
-        maxchar = Py_MAX(maxchar, (Py_UCS4)x);
+        maxchar = Ty_MAX(maxchar, (Ty_UCS4)x);
 
         /* As a sort-of hack, we tell calc_number_widths that we only
            have "remainder" characters. calc_number_widths thinks
@@ -1065,10 +1065,10 @@ format_long_internal(PyObject *value, const InternalFormatSpec *format,
             && format->width == -1
             && format->type != 'X' && format->type != 'n'
             && !format->thousands_separators
-            && PyLong_CheckExact(value))
+            && TyLong_CheckExact(value))
         {
             /* Fast path */
-            return _PyLong_FormatWriter(writer, value, base, format->alternate);
+            return _TyLong_FormatWriter(writer, value, base, format->alternate);
         }
 
         /* The number of prefix chars is the same as the leading
@@ -1077,18 +1077,18 @@ format_long_internal(PyObject *value, const InternalFormatSpec *format,
             n_prefix = leading_chars_to_skip;
 
         /* Do the hard part, converting to a string in a given base */
-        tmp = _PyLong_Format(value, base);
+        tmp = _TyLong_Format(value, base);
         if (tmp == NULL)
             goto done;
 
         inumeric_chars = 0;
-        n_digits = PyUnicode_GET_LENGTH(tmp);
+        n_digits = TyUnicode_GET_LENGTH(tmp);
 
         prefix = inumeric_chars;
 
         /* Is a sign character present in the output?  If so, remember it
            and skip it */
-        if (PyUnicode_READ_CHAR(tmp, inumeric_chars) == '-') {
+        if (TyUnicode_READ_CHAR(tmp, inumeric_chars) == '-') {
             sign_char = '-';
             ++prefix;
             ++leading_chars_to_skip;
@@ -1124,7 +1124,7 @@ format_long_internal(PyObject *value, const InternalFormatSpec *format,
                          &locale, format->type == 'X');
 
 done:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     free_locale_info(&locale);
     return result;
 }
@@ -1135,49 +1135,49 @@ done:
 
 /* much of this is taken from unicodeobject.c */
 static int
-format_float_internal(PyObject *value,
+format_float_internal(TyObject *value,
                       const InternalFormatSpec *format,
                       _PyUnicodeWriter *writer)
 {
-    char *buf = NULL;       /* buffer returned from PyOS_double_to_string */
-    Py_ssize_t n_digits;
-    Py_ssize_t n_remainder;
-    Py_ssize_t n_frac;
-    Py_ssize_t n_total;
+    char *buf = NULL;       /* buffer returned from TyOS_double_to_string */
+    Ty_ssize_t n_digits;
+    Ty_ssize_t n_remainder;
+    Ty_ssize_t n_frac;
+    Ty_ssize_t n_total;
     int has_decimal;
     double val;
     int precision, default_precision = 6;
-    Py_UCS4 type = format->type;
+    Ty_UCS4 type = format->type;
     int add_pct = 0;
-    Py_ssize_t index;
+    Ty_ssize_t index;
     NumberFieldWidths spec;
     int flags = 0;
     int result = -1;
-    Py_UCS4 maxchar = 127;
-    Py_UCS4 sign_char = '\0';
+    Ty_UCS4 maxchar = 127;
+    Ty_UCS4 sign_char = '\0';
     int float_type; /* Used to see if we have a nan, inf, or regular float. */
-    PyObject *unicode_tmp = NULL;
+    TyObject *unicode_tmp = NULL;
 
     /* Locale settings, either from the actual locale or
        from a hard-code pseudo-locale */
     LocaleInfo locale = LocaleInfo_STATIC_INIT;
 
     if (format->precision > INT_MAX) {
-        PyErr_SetString(PyExc_ValueError, "precision too big");
+        TyErr_SetString(TyExc_ValueError, "precision too big");
         goto done;
     }
     precision = (int)format->precision;
 
     if (format->alternate)
-        flags |= Py_DTSF_ALT;
+        flags |= Ty_DTSF_ALT;
     if (format->no_neg_0)
-        flags |= Py_DTSF_NO_NEG_0;
+        flags |= Ty_DTSF_NO_NEG_0;
 
     if (type == '\0') {
         /* Omitted type specifier.  Behaves in the same way as repr(x)
            and str(x) if no precision is given, else like 'g', but with
            at least one digit after the decimal point. */
-        flags |= Py_DTSF_ADD_DOT_0;
+        flags |= Ty_DTSF_ADD_DOT_0;
         type = 'r';
         default_precision = 0;
     }
@@ -1187,8 +1187,8 @@ format_float_internal(PyObject *value,
            format the result. We take care of that later. */
         type = 'g';
 
-    val = PyFloat_AsDouble(value);
-    if (val == -1.0 && PyErr_Occurred())
+    val = TyFloat_AsDouble(value);
+    if (val == -1.0 && TyErr_Occurred())
         goto done;
 
     if (type == '%') {
@@ -1205,7 +1205,7 @@ format_float_internal(PyObject *value,
     /* Cast "type", because if we're in unicode we need to pass an
        8-bit char. This is safe, because we've restricted what "type"
        can be. */
-    buf = PyOS_double_to_string(val, (char)type, precision, flags,
+    buf = TyOS_double_to_string(val, (char)type, precision, flags,
                                 &float_type);
     if (buf == NULL)
         goto done;
@@ -1227,21 +1227,21 @@ format_float_internal(PyObject *value,
     {
         /* Fast path */
         result = _PyUnicodeWriter_WriteASCIIString(writer, buf, n_digits);
-        PyMem_Free(buf);
+        TyMem_Free(buf);
         return result;
     }
 
-    /* Since there is no unicode version of PyOS_double_to_string,
+    /* Since there is no unicode version of TyOS_double_to_string,
        just use the 8 bit version and then convert to unicode. */
-    unicode_tmp = _PyUnicode_FromASCII(buf, n_digits);
-    PyMem_Free(buf);
+    unicode_tmp = _TyUnicode_FromASCII(buf, n_digits);
+    TyMem_Free(buf);
     if (unicode_tmp == NULL)
         goto done;
 
     /* Is a sign character present in the output?  If so, remember it
        and skip it */
     index = 0;
-    if (PyUnicode_READ_CHAR(unicode_tmp, index) == '-') {
+    if (TyUnicode_READ_CHAR(unicode_tmp, index) == '-') {
         sign_char = '-';
         ++index;
         --n_digits;
@@ -1278,7 +1278,7 @@ format_float_internal(PyObject *value,
                          &locale, 0);
 
 done:
-    Py_XDECREF(unicode_tmp);
+    Ty_XDECREF(unicode_tmp);
     free_locale_info(&locale);
     return result;
 }
@@ -1288,62 +1288,62 @@ done:
 /************************************************************************/
 
 static int
-format_complex_internal(PyObject *value,
+format_complex_internal(TyObject *value,
                         const InternalFormatSpec *format,
                         _PyUnicodeWriter *writer)
 {
     double re;
     double im;
-    char *re_buf = NULL;       /* buffer returned from PyOS_double_to_string */
-    char *im_buf = NULL;       /* buffer returned from PyOS_double_to_string */
+    char *re_buf = NULL;       /* buffer returned from TyOS_double_to_string */
+    char *im_buf = NULL;       /* buffer returned from TyOS_double_to_string */
 
     InternalFormatSpec tmp_format = *format;
-    Py_ssize_t n_re_digits;
-    Py_ssize_t n_im_digits;
-    Py_ssize_t n_re_remainder;
-    Py_ssize_t n_im_remainder;
-    Py_ssize_t n_re_frac;
-    Py_ssize_t n_im_frac;
-    Py_ssize_t n_re_total;
-    Py_ssize_t n_im_total;
+    Ty_ssize_t n_re_digits;
+    Ty_ssize_t n_im_digits;
+    Ty_ssize_t n_re_remainder;
+    Ty_ssize_t n_im_remainder;
+    Ty_ssize_t n_re_frac;
+    Ty_ssize_t n_im_frac;
+    Ty_ssize_t n_re_total;
+    Ty_ssize_t n_im_total;
     int re_has_decimal;
     int im_has_decimal;
     int precision, default_precision = 6;
-    Py_UCS4 type = format->type;
-    Py_ssize_t i_re;
-    Py_ssize_t i_im;
+    Ty_UCS4 type = format->type;
+    Ty_ssize_t i_re;
+    Ty_ssize_t i_im;
     NumberFieldWidths re_spec;
     NumberFieldWidths im_spec;
     int flags = 0;
     int result = -1;
-    Py_UCS4 maxchar = 127;
+    Ty_UCS4 maxchar = 127;
     int rkind;
     void *rdata;
-    Py_UCS4 re_sign_char = '\0';
-    Py_UCS4 im_sign_char = '\0';
+    Ty_UCS4 re_sign_char = '\0';
+    Ty_UCS4 im_sign_char = '\0';
     int re_float_type; /* Used to see if we have a nan, inf, or regular float. */
     int im_float_type;
     int add_parens = 0;
     int skip_re = 0;
-    Py_ssize_t lpad;
-    Py_ssize_t rpad;
-    Py_ssize_t total;
-    PyObject *re_unicode_tmp = NULL;
-    PyObject *im_unicode_tmp = NULL;
+    Ty_ssize_t lpad;
+    Ty_ssize_t rpad;
+    Ty_ssize_t total;
+    TyObject *re_unicode_tmp = NULL;
+    TyObject *im_unicode_tmp = NULL;
 
     /* Locale settings, either from the actual locale or
        from a hard-code pseudo-locale */
     LocaleInfo locale = LocaleInfo_STATIC_INIT;
 
     if (format->precision > INT_MAX) {
-        PyErr_SetString(PyExc_ValueError, "precision too big");
+        TyErr_SetString(TyExc_ValueError, "precision too big");
         goto done;
     }
     precision = (int)format->precision;
 
     /* Zero padding is not allowed. */
     if (format->fill_char == '0') {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Zero padding is not allowed in complex format "
                         "specifier");
         goto done;
@@ -1351,23 +1351,23 @@ format_complex_internal(PyObject *value,
 
     /* Neither is '=' alignment . */
     if (format->align == '=') {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "'=' alignment flag is not allowed in complex format "
                         "specifier");
         goto done;
     }
 
-    re = PyComplex_RealAsDouble(value);
-    if (re == -1.0 && PyErr_Occurred())
+    re = TyComplex_RealAsDouble(value);
+    if (re == -1.0 && TyErr_Occurred())
         goto done;
-    im = PyComplex_ImagAsDouble(value);
-    if (im == -1.0 && PyErr_Occurred())
+    im = TyComplex_ImagAsDouble(value);
+    if (im == -1.0 && TyErr_Occurred())
         goto done;
 
     if (format->alternate)
-        flags |= Py_DTSF_ALT;
+        flags |= Ty_DTSF_ALT;
     if (format->no_neg_0)
-        flags |= Py_DTSF_NO_NEG_0;
+        flags |= Ty_DTSF_NO_NEG_0;
 
     if (type == '\0') {
         /* Omitted type specifier. Should be like str(self). */
@@ -1392,11 +1392,11 @@ format_complex_internal(PyObject *value,
     /* Cast "type", because if we're in unicode we need to pass an
        8-bit char. This is safe, because we've restricted what "type"
        can be. */
-    re_buf = PyOS_double_to_string(re, (char)type, precision, flags,
+    re_buf = TyOS_double_to_string(re, (char)type, precision, flags,
                                    &re_float_type);
     if (re_buf == NULL)
         goto done;
-    im_buf = PyOS_double_to_string(im, (char)type, precision, flags,
+    im_buf = TyOS_double_to_string(im, (char)type, precision, flags,
                                    &im_float_type);
     if (im_buf == NULL)
         goto done;
@@ -1404,26 +1404,26 @@ format_complex_internal(PyObject *value,
     n_re_digits = strlen(re_buf);
     n_im_digits = strlen(im_buf);
 
-    /* Since there is no unicode version of PyOS_double_to_string,
+    /* Since there is no unicode version of TyOS_double_to_string,
        just use the 8 bit version and then convert to unicode. */
-    re_unicode_tmp = _PyUnicode_FromASCII(re_buf, n_re_digits);
+    re_unicode_tmp = _TyUnicode_FromASCII(re_buf, n_re_digits);
     if (re_unicode_tmp == NULL)
         goto done;
     i_re = 0;
 
-    im_unicode_tmp = _PyUnicode_FromASCII(im_buf, n_im_digits);
+    im_unicode_tmp = _TyUnicode_FromASCII(im_buf, n_im_digits);
     if (im_unicode_tmp == NULL)
         goto done;
     i_im = 0;
 
     /* Is a sign character present in the output?  If so, remember it
        and skip it */
-    if (PyUnicode_READ_CHAR(re_unicode_tmp, i_re) == '-') {
+    if (TyUnicode_READ_CHAR(re_unicode_tmp, i_re) == '-') {
         re_sign_char = '-';
         ++i_re;
         --n_re_digits;
     }
-    if (PyUnicode_READ_CHAR(im_unicode_tmp, i_im) == '-') {
+    if (TyUnicode_READ_CHAR(im_unicode_tmp, i_im) == '-') {
         im_sign_char = '-';
         ++i_im;
         --n_im_digits;
@@ -1479,7 +1479,7 @@ format_complex_internal(PyObject *value,
                  format->width, format->align, &lpad, &rpad, &total);
 
     if (lpad || rpad)
-        maxchar = Py_MAX(maxchar, format->fill_char);
+        maxchar = Ty_MAX(maxchar, format->fill_char);
 
     if (_PyUnicodeWriter_Prepare(writer, total, maxchar) == -1)
         goto done;
@@ -1494,7 +1494,7 @@ format_complex_internal(PyObject *value,
         goto done;
 
     if (add_parens) {
-        PyUnicode_WRITE(rkind, rdata, writer->pos, '(');
+        TyUnicode_WRITE(rkind, rdata, writer->pos, '(');
         writer->pos++;
     }
 
@@ -1514,21 +1514,21 @@ format_complex_internal(PyObject *value,
                          &locale, 0);
     if (result == -1)
         goto done;
-    PyUnicode_WRITE(rkind, rdata, writer->pos, 'j');
+    TyUnicode_WRITE(rkind, rdata, writer->pos, 'j');
     writer->pos++;
 
     if (add_parens) {
-        PyUnicode_WRITE(rkind, rdata, writer->pos, ')');
+        TyUnicode_WRITE(rkind, rdata, writer->pos, ')');
         writer->pos++;
     }
 
     writer->pos += rpad;
 
 done:
-    PyMem_Free(re_buf);
-    PyMem_Free(im_buf);
-    Py_XDECREF(re_unicode_tmp);
-    Py_XDECREF(im_unicode_tmp);
+    TyMem_Free(re_buf);
+    TyMem_Free(im_buf);
+    Ty_XDECREF(re_unicode_tmp);
+    Ty_XDECREF(im_unicode_tmp);
     free_locale_info(&locale);
     return result;
 }
@@ -1537,33 +1537,33 @@ done:
 /*********** built in formatters ****************************************/
 /************************************************************************/
 static int
-format_obj(PyObject *obj, _PyUnicodeWriter *writer)
+format_obj(TyObject *obj, _PyUnicodeWriter *writer)
 {
-    PyObject *str;
+    TyObject *str;
     int err;
 
     str = PyObject_Str(obj);
     if (str == NULL)
         return -1;
     err = _PyUnicodeWriter_WriteStr(writer, str);
-    Py_DECREF(str);
+    Ty_DECREF(str);
     return err;
 }
 
 int
-_PyUnicode_FormatAdvancedWriter(_PyUnicodeWriter *writer,
-                                PyObject *obj,
-                                PyObject *format_spec,
-                                Py_ssize_t start, Py_ssize_t end)
+_TyUnicode_FormatAdvancedWriter(_PyUnicodeWriter *writer,
+                                TyObject *obj,
+                                TyObject *format_spec,
+                                Ty_ssize_t start, Ty_ssize_t end)
 {
     InternalFormatSpec format;
 
-    assert(PyUnicode_Check(obj));
+    assert(TyUnicode_Check(obj));
 
     /* check for the special case of zero length format spec, make
        it equivalent to str(obj) */
     if (start == end) {
-        if (PyUnicode_CheckExact(obj))
+        if (TyUnicode_CheckExact(obj))
             return _PyUnicodeWriter_WriteStr(writer, obj);
         else
             return format_obj(obj, writer);
@@ -1581,26 +1581,26 @@ _PyUnicode_FormatAdvancedWriter(_PyUnicodeWriter *writer,
         return format_string_internal(obj, &format, writer);
     default:
         /* unknown */
-        unknown_presentation_type(format.type, Py_TYPE(obj)->tp_name);
+        unknown_presentation_type(format.type, Ty_TYPE(obj)->tp_name);
         return -1;
     }
 }
 
 int
-_PyLong_FormatAdvancedWriter(_PyUnicodeWriter *writer,
-                             PyObject *obj,
-                             PyObject *format_spec,
-                             Py_ssize_t start, Py_ssize_t end)
+_TyLong_FormatAdvancedWriter(_PyUnicodeWriter *writer,
+                             TyObject *obj,
+                             TyObject *format_spec,
+                             Ty_ssize_t start, Ty_ssize_t end)
 {
-    PyObject *tmp = NULL;
+    TyObject *tmp = NULL;
     InternalFormatSpec format;
     int result = -1;
 
     /* check for the special case of zero length format spec, make
        it equivalent to str(obj) */
     if (start == end) {
-        if (PyLong_CheckExact(obj))
-            return _PyLong_FormatWriter(writer, obj, 10, 0);
+        if (TyLong_CheckExact(obj))
+            return _TyLong_FormatWriter(writer, obj, 10, 0);
         else
             return format_obj(obj, writer);
     }
@@ -1639,20 +1639,20 @@ _PyLong_FormatAdvancedWriter(_PyUnicodeWriter *writer,
 
     default:
         /* unknown */
-        unknown_presentation_type(format.type, Py_TYPE(obj)->tp_name);
+        unknown_presentation_type(format.type, Ty_TYPE(obj)->tp_name);
         goto done;
     }
 
 done:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return result;
 }
 
 int
-_PyFloat_FormatAdvancedWriter(_PyUnicodeWriter *writer,
-                              PyObject *obj,
-                              PyObject *format_spec,
-                              Py_ssize_t start, Py_ssize_t end)
+_TyFloat_FormatAdvancedWriter(_PyUnicodeWriter *writer,
+                              TyObject *obj,
+                              TyObject *format_spec,
+                              Ty_ssize_t start, Ty_ssize_t end)
 {
     InternalFormatSpec format;
 
@@ -1682,16 +1682,16 @@ _PyFloat_FormatAdvancedWriter(_PyUnicodeWriter *writer,
 
     default:
         /* unknown */
-        unknown_presentation_type(format.type, Py_TYPE(obj)->tp_name);
+        unknown_presentation_type(format.type, Ty_TYPE(obj)->tp_name);
         return -1;
     }
 }
 
 int
-_PyComplex_FormatAdvancedWriter(_PyUnicodeWriter *writer,
-                                PyObject *obj,
-                                PyObject *format_spec,
-                                Py_ssize_t start, Py_ssize_t end)
+_TyComplex_FormatAdvancedWriter(_PyUnicodeWriter *writer,
+                                TyObject *obj,
+                                TyObject *format_spec,
+                                Ty_ssize_t start, Ty_ssize_t end)
 {
     InternalFormatSpec format;
 
@@ -1720,7 +1720,7 @@ _PyComplex_FormatAdvancedWriter(_PyUnicodeWriter *writer,
 
     default:
         /* unknown */
-        unknown_presentation_type(format.type, Py_TYPE(obj)->tp_name);
+        unknown_presentation_type(format.type, Ty_TYPE(obj)->tp_name);
         return -1;
     }
 }

@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_CEVAL_STATE_H
-#define Py_INTERNAL_CEVAL_STATE_H
+#ifndef Ty_INTERNAL_CEVAL_STATE_H
+#define Ty_INTERNAL_CEVAL_STATE_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_gil.h"             // struct _gil_runtime_state
@@ -31,18 +31,18 @@ extern "C" {
 
 
 #ifdef PY_HAVE_PERF_TRAMPOLINE
-# define _PyEval_RUNTIME_PERF_INIT \
+# define _TyEval_RUNTIME_PERF_INIT \
     { \
         .status = PERF_STATUS_NO_INIT, \
         .extra_code_index = -1, \
         .persist_after_fork = 0, \
     }
 #else
-# define _PyEval_RUNTIME_PERF_INIT {0}
+# define _TyEval_RUNTIME_PERF_INIT {0}
 #endif
 
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_CEVAL_STATE_H */
+#endif /* !Ty_INTERNAL_CEVAL_STATE_H */

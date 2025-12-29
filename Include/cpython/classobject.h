@@ -2,56 +2,56 @@
 
 /* Revealing some structures (not for general use) */
 
-#ifndef Py_LIMITED_API
-#ifndef Py_CLASSOBJECT_H
-#define Py_CLASSOBJECT_H
+#ifndef Ty_LIMITED_API
+#ifndef Ty_CLASSOBJECT_H
+#define Ty_CLASSOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 typedef struct {
     PyObject_HEAD
-    PyObject *im_func;   /* The callable object implementing the method */
-    PyObject *im_self;   /* The instance it is bound to */
-    PyObject *im_weakreflist; /* List of weak references */
+    TyObject *im_func;   /* The callable object implementing the method */
+    TyObject *im_self;   /* The instance it is bound to */
+    TyObject *im_weakreflist; /* List of weak references */
     vectorcallfunc vectorcall;
 } PyMethodObject;
 
-PyAPI_DATA(PyTypeObject) PyMethod_Type;
+PyAPI_DATA(TyTypeObject) TyMethod_Type;
 
-#define PyMethod_Check(op) Py_IS_TYPE((op), &PyMethod_Type)
+#define TyMethod_Check(op) Ty_IS_TYPE((op), &TyMethod_Type)
 
-PyAPI_FUNC(PyObject *) PyMethod_New(PyObject *, PyObject *);
+PyAPI_FUNC(TyObject *) TyMethod_New(TyObject *, TyObject *);
 
-PyAPI_FUNC(PyObject *) PyMethod_Function(PyObject *);
-PyAPI_FUNC(PyObject *) PyMethod_Self(PyObject *);
+PyAPI_FUNC(TyObject *) TyMethod_Function(TyObject *);
+PyAPI_FUNC(TyObject *) TyMethod_Self(TyObject *);
 
 #define _PyMethod_CAST(meth) \
-    (assert(PyMethod_Check(meth)), _Py_CAST(PyMethodObject*, meth))
+    (assert(TyMethod_Check(meth)), _Py_CAST(PyMethodObject*, meth))
 
 /* Static inline functions for direct access to these values.
    Type checks are *not* done, so use with care. */
-static inline PyObject* PyMethod_GET_FUNCTION(PyObject *meth) {
+static inline TyObject* TyMethod_GET_FUNCTION(TyObject *meth) {
     return _PyMethod_CAST(meth)->im_func;
 }
-#define PyMethod_GET_FUNCTION(meth) PyMethod_GET_FUNCTION(_PyObject_CAST(meth))
+#define TyMethod_GET_FUNCTION(meth) TyMethod_GET_FUNCTION(_TyObject_CAST(meth))
 
-static inline PyObject* PyMethod_GET_SELF(PyObject *meth) {
+static inline TyObject* TyMethod_GET_SELF(TyObject *meth) {
     return _PyMethod_CAST(meth)->im_self;
 }
-#define PyMethod_GET_SELF(meth) PyMethod_GET_SELF(_PyObject_CAST(meth))
+#define TyMethod_GET_SELF(meth) TyMethod_GET_SELF(_TyObject_CAST(meth))
 
 typedef struct {
     PyObject_HEAD
-    PyObject *func;
+    TyObject *func;
 } PyInstanceMethodObject;
 
-PyAPI_DATA(PyTypeObject) PyInstanceMethod_Type;
+PyAPI_DATA(TyTypeObject) PyInstanceMethod_Type;
 
-#define PyInstanceMethod_Check(op) Py_IS_TYPE((op), &PyInstanceMethod_Type)
+#define PyInstanceMethod_Check(op) Ty_IS_TYPE((op), &PyInstanceMethod_Type)
 
-PyAPI_FUNC(PyObject *) PyInstanceMethod_New(PyObject *);
-PyAPI_FUNC(PyObject *) PyInstanceMethod_Function(PyObject *);
+PyAPI_FUNC(TyObject *) PyInstanceMethod_New(TyObject *);
+PyAPI_FUNC(TyObject *) PyInstanceMethod_Function(TyObject *);
 
 #define _PyInstanceMethod_CAST(meth) \
     (assert(PyInstanceMethod_Check(meth)), \
@@ -59,13 +59,13 @@ PyAPI_FUNC(PyObject *) PyInstanceMethod_Function(PyObject *);
 
 /* Static inline function for direct access to these values.
    Type checks are *not* done, so use with care. */
-static inline PyObject* PyInstanceMethod_GET_FUNCTION(PyObject *meth) {
+static inline TyObject* PyInstanceMethod_GET_FUNCTION(TyObject *meth) {
     return _PyInstanceMethod_CAST(meth)->func;
 }
-#define PyInstanceMethod_GET_FUNCTION(meth) PyInstanceMethod_GET_FUNCTION(_PyObject_CAST(meth))
+#define PyInstanceMethod_GET_FUNCTION(meth) PyInstanceMethod_GET_FUNCTION(_TyObject_CAST(meth))
 
 #ifdef __cplusplus
 }
 #endif
-#endif   // !Py_CLASSOBJECT_H
-#endif   // !Py_LIMITED_API
+#endif   // !Ty_CLASSOBJECT_H
+#endif   // !Ty_LIMITED_API

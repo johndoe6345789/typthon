@@ -2,13 +2,13 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_runtime.h"     // _Py_SINGLETON()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_runtime.h"     // _Ty_SINGLETON()
 #endif
-#include "pycore_abstract.h"      // _Py_convert_optional_to_ssize_t()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_abstract.h"      // _Ty_convert_optional_to_ssize_t()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_io__IOBase_seek__doc__,
+TyDoc_STRVAR(_io__IOBase_seek__doc__,
 "seek($self, offset, whence=os.SEEK_SET, /)\n"
 "--\n"
 "\n"
@@ -31,45 +31,45 @@ PyDoc_STRVAR(_io__IOBase_seek__doc__,
 #define _IO__IOBASE_SEEK_METHODDEF    \
     {"seek", _PyCFunction_CAST(_io__IOBase_seek), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io__IOBase_seek__doc__},
 
-static PyObject *
-_io__IOBase_seek_impl(PyObject *self, PyTypeObject *cls,
+static TyObject *
+_io__IOBase_seek_impl(TyObject *self, TyTypeObject *cls,
                       int Py_UNUSED(offset), int Py_UNUSED(whence));
 
-static PyObject *
-_io__IOBase_seek(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io__IOBase_seek(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", "", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "seek",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     int offset;
     int whence = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    offset = PyLong_AsInt(args[0]);
-    if (offset == -1 && PyErr_Occurred()) {
+    offset = TyLong_AsInt(args[0]);
+    if (offset == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (nargs < 2) {
         goto skip_optional_posonly;
     }
-    whence = PyLong_AsInt(args[1]);
-    if (whence == -1 && PyErr_Occurred()) {
+    whence = TyLong_AsInt(args[1]);
+    if (whence == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_posonly:
@@ -79,7 +79,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__IOBase_tell__doc__,
+TyDoc_STRVAR(_io__IOBase_tell__doc__,
 "tell($self, /)\n"
 "--\n"
 "\n"
@@ -88,16 +88,16 @@ PyDoc_STRVAR(_io__IOBase_tell__doc__,
 #define _IO__IOBASE_TELL_METHODDEF    \
     {"tell", (PyCFunction)_io__IOBase_tell, METH_NOARGS, _io__IOBase_tell__doc__},
 
-static PyObject *
-_io__IOBase_tell_impl(PyObject *self);
+static TyObject *
+_io__IOBase_tell_impl(TyObject *self);
 
-static PyObject *
-_io__IOBase_tell(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__IOBase_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__IOBase_tell_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_truncate__doc__,
+TyDoc_STRVAR(_io__IOBase_truncate__doc__,
 "truncate($self, size=None, /)\n"
 "--\n"
 "\n"
@@ -109,31 +109,31 @@ PyDoc_STRVAR(_io__IOBase_truncate__doc__,
 #define _IO__IOBASE_TRUNCATE_METHODDEF    \
     {"truncate", _PyCFunction_CAST(_io__IOBase_truncate), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io__IOBase_truncate__doc__},
 
-static PyObject *
-_io__IOBase_truncate_impl(PyObject *self, PyTypeObject *cls,
-                          PyObject *Py_UNUSED(size));
+static TyObject *
+_io__IOBase_truncate_impl(TyObject *self, TyTypeObject *cls,
+                          TyObject *Py_UNUSED(size));
 
-static PyObject *
-_io__IOBase_truncate(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io__IOBase_truncate(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "truncate",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *size = Py_None;
+    TyObject *argsbuf[1];
+    TyObject *size = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -149,7 +149,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__IOBase_flush__doc__,
+TyDoc_STRVAR(_io__IOBase_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n"
@@ -160,16 +160,16 @@ PyDoc_STRVAR(_io__IOBase_flush__doc__,
 #define _IO__IOBASE_FLUSH_METHODDEF    \
     {"flush", (PyCFunction)_io__IOBase_flush, METH_NOARGS, _io__IOBase_flush__doc__},
 
-static PyObject *
-_io__IOBase_flush_impl(PyObject *self);
+static TyObject *
+_io__IOBase_flush_impl(TyObject *self);
 
-static PyObject *
-_io__IOBase_flush(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__IOBase_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__IOBase_flush_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_close__doc__,
+TyDoc_STRVAR(_io__IOBase_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -180,16 +180,16 @@ PyDoc_STRVAR(_io__IOBase_close__doc__,
 #define _IO__IOBASE_CLOSE_METHODDEF    \
     {"close", (PyCFunction)_io__IOBase_close, METH_NOARGS, _io__IOBase_close__doc__},
 
-static PyObject *
-_io__IOBase_close_impl(PyObject *self);
+static TyObject *
+_io__IOBase_close_impl(TyObject *self);
 
-static PyObject *
-_io__IOBase_close(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__IOBase_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__IOBase_close_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_seekable__doc__,
+TyDoc_STRVAR(_io__IOBase_seekable__doc__,
 "seekable($self, /)\n"
 "--\n"
 "\n"
@@ -201,16 +201,16 @@ PyDoc_STRVAR(_io__IOBase_seekable__doc__,
 #define _IO__IOBASE_SEEKABLE_METHODDEF    \
     {"seekable", (PyCFunction)_io__IOBase_seekable, METH_NOARGS, _io__IOBase_seekable__doc__},
 
-static PyObject *
-_io__IOBase_seekable_impl(PyObject *self);
+static TyObject *
+_io__IOBase_seekable_impl(TyObject *self);
 
-static PyObject *
-_io__IOBase_seekable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__IOBase_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__IOBase_seekable_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_readable__doc__,
+TyDoc_STRVAR(_io__IOBase_readable__doc__,
 "readable($self, /)\n"
 "--\n"
 "\n"
@@ -221,16 +221,16 @@ PyDoc_STRVAR(_io__IOBase_readable__doc__,
 #define _IO__IOBASE_READABLE_METHODDEF    \
     {"readable", (PyCFunction)_io__IOBase_readable, METH_NOARGS, _io__IOBase_readable__doc__},
 
-static PyObject *
-_io__IOBase_readable_impl(PyObject *self);
+static TyObject *
+_io__IOBase_readable_impl(TyObject *self);
 
-static PyObject *
-_io__IOBase_readable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__IOBase_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__IOBase_readable_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_writable__doc__,
+TyDoc_STRVAR(_io__IOBase_writable__doc__,
 "writable($self, /)\n"
 "--\n"
 "\n"
@@ -241,16 +241,16 @@ PyDoc_STRVAR(_io__IOBase_writable__doc__,
 #define _IO__IOBASE_WRITABLE_METHODDEF    \
     {"writable", (PyCFunction)_io__IOBase_writable, METH_NOARGS, _io__IOBase_writable__doc__},
 
-static PyObject *
-_io__IOBase_writable_impl(PyObject *self);
+static TyObject *
+_io__IOBase_writable_impl(TyObject *self);
 
-static PyObject *
-_io__IOBase_writable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__IOBase_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__IOBase_writable_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_fileno__doc__,
+TyDoc_STRVAR(_io__IOBase_fileno__doc__,
 "fileno($self, /)\n"
 "--\n"
 "\n"
@@ -261,20 +261,20 @@ PyDoc_STRVAR(_io__IOBase_fileno__doc__,
 #define _IO__IOBASE_FILENO_METHODDEF    \
     {"fileno", _PyCFunction_CAST(_io__IOBase_fileno), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io__IOBase_fileno__doc__},
 
-static PyObject *
-_io__IOBase_fileno_impl(PyObject *self, PyTypeObject *cls);
+static TyObject *
+_io__IOBase_fileno_impl(TyObject *self, TyTypeObject *cls);
 
-static PyObject *
-_io__IOBase_fileno(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io__IOBase_fileno(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "fileno() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "fileno() takes no arguments");
         return NULL;
     }
     return _io__IOBase_fileno_impl(self, cls);
 }
 
-PyDoc_STRVAR(_io__IOBase_isatty__doc__,
+TyDoc_STRVAR(_io__IOBase_isatty__doc__,
 "isatty($self, /)\n"
 "--\n"
 "\n"
@@ -285,16 +285,16 @@ PyDoc_STRVAR(_io__IOBase_isatty__doc__,
 #define _IO__IOBASE_ISATTY_METHODDEF    \
     {"isatty", (PyCFunction)_io__IOBase_isatty, METH_NOARGS, _io__IOBase_isatty__doc__},
 
-static PyObject *
-_io__IOBase_isatty_impl(PyObject *self);
+static TyObject *
+_io__IOBase_isatty_impl(TyObject *self);
 
-static PyObject *
-_io__IOBase_isatty(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__IOBase_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__IOBase_isatty_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_readline__doc__,
+TyDoc_STRVAR(_io__IOBase_readline__doc__,
 "readline($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -309,22 +309,22 @@ PyDoc_STRVAR(_io__IOBase_readline__doc__,
 #define _IO__IOBASE_READLINE_METHODDEF    \
     {"readline", _PyCFunction_CAST(_io__IOBase_readline), METH_FASTCALL, _io__IOBase_readline__doc__},
 
-static PyObject *
-_io__IOBase_readline_impl(PyObject *self, Py_ssize_t limit);
+static TyObject *
+_io__IOBase_readline_impl(TyObject *self, Ty_ssize_t limit);
 
-static PyObject *
-_io__IOBase_readline(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io__IOBase_readline(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t limit = -1;
+    TyObject *return_value = NULL;
+    Ty_ssize_t limit = -1;
 
-    if (!_PyArg_CheckPositional("readline", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("readline", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_Py_convert_optional_to_ssize_t(args[0], &limit)) {
+    if (!_Ty_convert_optional_to_ssize_t(args[0], &limit)) {
         goto exit;
     }
 skip_optional:
@@ -334,7 +334,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__IOBase_readlines__doc__,
+TyDoc_STRVAR(_io__IOBase_readlines__doc__,
 "readlines($self, hint=-1, /)\n"
 "--\n"
 "\n"
@@ -347,22 +347,22 @@ PyDoc_STRVAR(_io__IOBase_readlines__doc__,
 #define _IO__IOBASE_READLINES_METHODDEF    \
     {"readlines", _PyCFunction_CAST(_io__IOBase_readlines), METH_FASTCALL, _io__IOBase_readlines__doc__},
 
-static PyObject *
-_io__IOBase_readlines_impl(PyObject *self, Py_ssize_t hint);
+static TyObject *
+_io__IOBase_readlines_impl(TyObject *self, Ty_ssize_t hint);
 
-static PyObject *
-_io__IOBase_readlines(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io__IOBase_readlines(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t hint = -1;
+    TyObject *return_value = NULL;
+    Ty_ssize_t hint = -1;
 
-    if (!_PyArg_CheckPositional("readlines", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("readlines", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_Py_convert_optional_to_ssize_t(args[0], &hint)) {
+    if (!_Ty_convert_optional_to_ssize_t(args[0], &hint)) {
         goto exit;
     }
 skip_optional:
@@ -372,7 +372,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__IOBase_writelines__doc__,
+TyDoc_STRVAR(_io__IOBase_writelines__doc__,
 "writelines($self, lines, /)\n"
 "--\n"
 "\n"
@@ -384,7 +384,7 @@ PyDoc_STRVAR(_io__IOBase_writelines__doc__,
 #define _IO__IOBASE_WRITELINES_METHODDEF    \
     {"writelines", (PyCFunction)_io__IOBase_writelines, METH_O, _io__IOBase_writelines__doc__},
 
-PyDoc_STRVAR(_io__RawIOBase_read__doc__,
+TyDoc_STRVAR(_io__RawIOBase_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n");
@@ -392,29 +392,29 @@ PyDoc_STRVAR(_io__RawIOBase_read__doc__,
 #define _IO__RAWIOBASE_READ_METHODDEF    \
     {"read", _PyCFunction_CAST(_io__RawIOBase_read), METH_FASTCALL, _io__RawIOBase_read__doc__},
 
-static PyObject *
-_io__RawIOBase_read_impl(PyObject *self, Py_ssize_t n);
+static TyObject *
+_io__RawIOBase_read_impl(TyObject *self, Ty_ssize_t n);
 
-static PyObject *
-_io__RawIOBase_read(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io__RawIOBase_read(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t n = -1;
+    TyObject *return_value = NULL;
+    Ty_ssize_t n = -1;
 
-    if (!_PyArg_CheckPositional("read", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("read", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         n = ival;
@@ -426,7 +426,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__RawIOBase_readall__doc__,
+TyDoc_STRVAR(_io__RawIOBase_readall__doc__,
 "readall($self, /)\n"
 "--\n"
 "\n"
@@ -435,11 +435,11 @@ PyDoc_STRVAR(_io__RawIOBase_readall__doc__,
 #define _IO__RAWIOBASE_READALL_METHODDEF    \
     {"readall", (PyCFunction)_io__RawIOBase_readall, METH_NOARGS, _io__RawIOBase_readall__doc__},
 
-static PyObject *
-_io__RawIOBase_readall_impl(PyObject *self);
+static TyObject *
+_io__RawIOBase_readall_impl(TyObject *self);
 
-static PyObject *
-_io__RawIOBase_readall(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__RawIOBase_readall(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__RawIOBase_readall_impl(self);
 }

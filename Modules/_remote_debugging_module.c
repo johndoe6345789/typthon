@@ -19,15 +19,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef Py_BUILD_CORE_BUILTIN
-#    define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#    define Ty_BUILD_CORE_MODULE 1
 #endif
 #include "Python.h"
-#include <internal/pycore_debug_offsets.h>  // _Py_DebugOffsets
+#include <internal/pycore_debug_offsets.h>  // _Ty_DebugOffsets
 #include <internal/pycore_frame.h>          // FRAME_SUSPENDED_YIELD_FROM
 #include <internal/pycore_interpframe.h>    // FRAME_OWNED_BY_CSTACK
 #include <internal/pycore_llist.h>          // struct llist_node
-#include <internal/pycore_stackref.h>       // Py_TAG_BITS
+#include <internal/pycore_stackref.h>       // Ty_TAG_BITS
 #include "../Python/remote_debug.h"
 
 #ifndef HAVE_PROCESS_VM_READV
@@ -39,7 +39,7 @@
  * ============================================================================ */
 
 #define GET_MEMBER(type, obj, offset) (*(type*)((char*)(obj) + (offset)))
-#define CLEAR_PTR_TAG(ptr) (((uintptr_t)(ptr) & ~Py_TAG_BITS))
+#define CLEAR_PTR_TAG(ptr) (((uintptr_t)(ptr) & ~Ty_TAG_BITS))
 #define GET_MEMBER_NO_TAG(type, obj, offset) (type)(CLEAR_PTR_TAG(*(type*)((char*)(obj) + (offset))))
 
 /* Size macros for opaque buffers */
@@ -49,11 +49,11 @@
 #define SIZEOF_INTERP_FRAME sizeof(_PyInterpreterFrame)
 #define SIZEOF_LLIST_NODE sizeof(struct llist_node)
 #define SIZEOF_PAGE_CACHE_ENTRY sizeof(page_cache_entry_t)
-#define SIZEOF_PYOBJECT sizeof(PyObject)
+#define SIZEOF_PYOBJECT sizeof(TyObject)
 #define SIZEOF_SET_OBJ sizeof(PySetObject)
 #define SIZEOF_TASK_OBJ 4096
-#define SIZEOF_THREAD_STATE sizeof(PyThreadState)
-#define SIZEOF_TYPE_OBJ sizeof(PyTypeObject)
+#define SIZEOF_THREAD_STATE sizeof(TyThreadState)
+#define SIZEOF_TYPE_OBJ sizeof(TyTypeObject)
 #define SIZEOF_UNICODE_OBJ sizeof(PyUnicodeObject)
 #define SIZEOF_LONG_OBJ sizeof(PyLongObject)
 
@@ -63,15 +63,15 @@
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #endif
 
-#ifdef Py_GIL_DISABLED
-#define INTERP_STATE_MIN_SIZE MAX(MAX(MAX(offsetof(PyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
-                                          offsetof(PyInterpreterState, tlbc_indices.tlbc_generation) + sizeof(uint32_t)), \
-                                      offsetof(PyInterpreterState, threads.head) + sizeof(void*)), \
-                                  offsetof(PyInterpreterState, _gil.last_holder) + sizeof(PyThreadState*))
+#ifdef Ty_GIL_DISABLED
+#define INTERP_STATE_MIN_SIZE MAX(MAX(MAX(offsetof(TyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
+                                          offsetof(TyInterpreterState, tlbc_indices.tlbc_generation) + sizeof(uint32_t)), \
+                                      offsetof(TyInterpreterState, threads.head) + sizeof(void*)), \
+                                  offsetof(TyInterpreterState, _gil.last_holder) + sizeof(TyThreadState*))
 #else
-#define INTERP_STATE_MIN_SIZE MAX(MAX(offsetof(PyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
-                                      offsetof(PyInterpreterState, threads.head) + sizeof(void*)), \
-                                  offsetof(PyInterpreterState, _gil.last_holder) + sizeof(PyThreadState*))
+#define INTERP_STATE_MIN_SIZE MAX(MAX(offsetof(TyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
+                                      offsetof(TyInterpreterState, threads.head) + sizeof(void*)), \
+                                  offsetof(TyInterpreterState, _gil.last_holder) + sizeof(TyThreadState*))
 #endif
 #define INTERP_STATE_BUFFER_SIZE MAX(INTERP_STATE_MIN_SIZE, 256)
 
@@ -79,7 +79,7 @@
 
 // Copied from Modules/_asynciomodule.c because it's not exported
 
-struct _Py_AsyncioModuleDebugOffsets {
+struct _Ty_AsyncioModuleDebugOffsets {
     struct _asyncio_task_object {
         uint64_t size;
         uint64_t task_name;
@@ -106,7 +106,7 @@ struct _Py_AsyncioModuleDebugOffsets {
  * ============================================================================ */
 
 // TaskInfo structseq type - replaces 4-tuple (task_id, task_name, coroutine_stack, awaited_by)
-static PyStructSequence_Field TaskInfo_fields[] = {
+static TyStructSequence_Field TaskInfo_fields[] = {
     {"task_id", "Task ID (memory address)"},
     {"task_name", "Task name"},
     {"coroutine_stack", "Coroutine call stack"},
@@ -114,7 +114,7 @@ static PyStructSequence_Field TaskInfo_fields[] = {
     {NULL}
 };
 
-static PyStructSequence_Desc TaskInfo_desc = {
+static TyStructSequence_Desc TaskInfo_desc = {
     "_remote_debugging.TaskInfo",
     "Information about an asyncio task",
     TaskInfo_fields,
@@ -122,14 +122,14 @@ static PyStructSequence_Desc TaskInfo_desc = {
 };
 
 // FrameInfo structseq type - replaces 3-tuple (filename, lineno, funcname)
-static PyStructSequence_Field FrameInfo_fields[] = {
+static TyStructSequence_Field FrameInfo_fields[] = {
     {"filename", "Source code filename"},
     {"lineno", "Line number"},
     {"funcname", "Function name"},
     {NULL}
 };
 
-static PyStructSequence_Desc FrameInfo_desc = {
+static TyStructSequence_Desc FrameInfo_desc = {
     "_remote_debugging.FrameInfo",
     "Information about a frame",
     FrameInfo_fields,
@@ -137,13 +137,13 @@ static PyStructSequence_Desc FrameInfo_desc = {
 };
 
 // CoroInfo structseq type - replaces 2-tuple (call_stack, task_name)
-static PyStructSequence_Field CoroInfo_fields[] = {
+static TyStructSequence_Field CoroInfo_fields[] = {
     {"call_stack", "Coroutine call stack"},
     {"task_name", "Task name"},
     {NULL}
 };
 
-static PyStructSequence_Desc CoroInfo_desc = {
+static TyStructSequence_Desc CoroInfo_desc = {
     "_remote_debugging.CoroInfo",
     "Information about a coroutine",
     CoroInfo_fields,
@@ -151,13 +151,13 @@ static PyStructSequence_Desc CoroInfo_desc = {
 };
 
 // ThreadInfo structseq type - replaces 2-tuple (thread_id, frame_info)
-static PyStructSequence_Field ThreadInfo_fields[] = {
+static TyStructSequence_Field ThreadInfo_fields[] = {
     {"thread_id", "Thread ID"},
     {"frame_info", "Frame information"},
     {NULL}
 };
 
-static PyStructSequence_Desc ThreadInfo_desc = {
+static TyStructSequence_Desc ThreadInfo_desc = {
     "_remote_debugging.ThreadInfo",
     "Information about a thread",
     ThreadInfo_fields,
@@ -165,13 +165,13 @@ static PyStructSequence_Desc ThreadInfo_desc = {
 };
 
 // AwaitedInfo structseq type - replaces 2-tuple (tid, awaited_by_list)
-static PyStructSequence_Field AwaitedInfo_fields[] = {
+static TyStructSequence_Field AwaitedInfo_fields[] = {
     {"thread_id", "Thread ID"},
     {"awaited_by", "List of tasks awaited by this thread"},
     {NULL}
 };
 
-static PyStructSequence_Desc AwaitedInfo_desc = {
+static TyStructSequence_Desc AwaitedInfo_desc = {
     "_remote_debugging.AwaitedInfo",
     "Information about what a thread is awaiting",
     AwaitedInfo_fields,
@@ -179,41 +179,41 @@ static PyStructSequence_Desc AwaitedInfo_desc = {
 };
 
 typedef struct {
-    PyObject *func_name;
-    PyObject *file_name;
+    TyObject *func_name;
+    TyObject *file_name;
     int first_lineno;
-    PyObject *linetable;  // bytes
+    TyObject *linetable;  // bytes
     uintptr_t addr_code_adaptive;
 } CachedCodeMetadata;
 
 typedef struct {
     /* Types */
-    PyTypeObject *RemoteDebugging_Type;
-    PyTypeObject *TaskInfo_Type;
-    PyTypeObject *FrameInfo_Type;
-    PyTypeObject *CoroInfo_Type;
-    PyTypeObject *ThreadInfo_Type;
-    PyTypeObject *AwaitedInfo_Type;
+    TyTypeObject *RemoteDebugging_Type;
+    TyTypeObject *TaskInfo_Type;
+    TyTypeObject *FrameInfo_Type;
+    TyTypeObject *CoroInfo_Type;
+    TyTypeObject *ThreadInfo_Type;
+    TyTypeObject *AwaitedInfo_Type;
 } RemoteDebuggingState;
 
 typedef struct {
     PyObject_HEAD
     proc_handle_t handle;
     uintptr_t runtime_start_address;
-    struct _Py_DebugOffsets debug_offsets;
+    struct _Ty_DebugOffsets debug_offsets;
     int async_debug_offsets_available;
-    struct _Py_AsyncioModuleDebugOffsets async_debug_offsets;
+    struct _Ty_AsyncioModuleDebugOffsets async_debug_offsets;
     uintptr_t interpreter_addr;
     uintptr_t tstate_addr;
     uint64_t code_object_generation;
-    _Py_hashtable_t *code_object_cache;
+    _Ty_hashtable_t *code_object_cache;
     int debug;
     int only_active_thread;
     RemoteDebuggingState *cached_state;  // Cached module state
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     // TLBC cache invalidation tracking
     uint32_t tlbc_generation;  // Track TLBC index pool changes
-    _Py_hashtable_t *tlbc_cache;  // Cache of TLBC arrays by code object address
+    _Ty_hashtable_t *tlbc_cache;  // Cache of TLBC arrays by code object address
 #endif
 } RemoteUnwinderObject;
 
@@ -275,20 +275,20 @@ static int
 parse_task(
     RemoteUnwinderObject *unwinder,
     uintptr_t task_address,
-    PyObject *render_to
+    TyObject *render_to
 );
 
 static int
 parse_coro_chain(
     RemoteUnwinderObject *unwinder,
     uintptr_t coro_address,
-    PyObject *render_to
+    TyObject *render_to
 );
 
 /* Forward declarations for task parsing functions */
 static int parse_frame_object(
     RemoteUnwinderObject *unwinder,
-    PyObject** result,
+    TyObject** result,
     uintptr_t address,
     uintptr_t* address_of_code_object,
     uintptr_t* previous_frame
@@ -297,19 +297,19 @@ static int parse_frame_object(
 static int
 parse_async_frame_chain(
     RemoteUnwinderObject *unwinder,
-    PyObject *calls,
+    TyObject *calls,
     uintptr_t address_of_thread,
     uintptr_t running_task_code_obj
 );
 
 static int read_py_ptr(RemoteUnwinderObject *unwinder, uintptr_t address, uintptr_t *ptr_addr);
-static int read_Py_ssize_t(RemoteUnwinderObject *unwinder, uintptr_t address, Py_ssize_t *size);
+static int read_Py_ssize_t(RemoteUnwinderObject *unwinder, uintptr_t address, Ty_ssize_t *size);
 
-static int process_task_and_waiters(RemoteUnwinderObject *unwinder, uintptr_t task_addr, PyObject *result);
+static int process_task_and_waiters(RemoteUnwinderObject *unwinder, uintptr_t task_addr, TyObject *result);
 static int process_task_awaited_by(RemoteUnwinderObject *unwinder, uintptr_t task_address, set_entry_processor_func processor, void *context);
 static int find_running_task_in_thread(RemoteUnwinderObject *unwinder, uintptr_t thread_state_addr, uintptr_t *running_task_addr);
 static int get_task_code_object(RemoteUnwinderObject *unwinder, uintptr_t task_addr, uintptr_t *code_obj_addr);
-static int append_awaited_by(RemoteUnwinderObject *unwinder, unsigned long tid, uintptr_t head_addr, PyObject *result);
+static int append_awaited_by(RemoteUnwinderObject *unwinder, unsigned long tid, uintptr_t head_addr, TyObject *result);
 
 /* ============================================================================
  * UTILITY FUNCTIONS AND HELPERS
@@ -324,34 +324,34 @@ static void
 cached_code_metadata_destroy(void *ptr)
 {
     CachedCodeMetadata *meta = (CachedCodeMetadata *)ptr;
-    Py_DECREF(meta->func_name);
-    Py_DECREF(meta->file_name);
-    Py_DECREF(meta->linetable);
-    PyMem_RawFree(meta);
+    Ty_DECREF(meta->func_name);
+    Ty_DECREF(meta->file_name);
+    Ty_DECREF(meta->linetable);
+    TyMem_RawFree(meta);
 }
 
 static inline RemoteDebuggingState *
-RemoteDebugging_GetState(PyObject *module)
+RemoteDebugging_GetState(TyObject *module)
 {
-    void *state = _PyModule_GetState(module);
+    void *state = _TyModule_GetState(module);
     assert(state != NULL);
     return (RemoteDebuggingState *)state;
 }
 
 static inline RemoteDebuggingState *
-RemoteDebugging_GetStateFromType(PyTypeObject *type)
+RemoteDebugging_GetStateFromType(TyTypeObject *type)
 {
-    PyObject *module = PyType_GetModule(type);
+    TyObject *module = TyType_GetModule(type);
     assert(module != NULL);
     return RemoteDebugging_GetState(module);
 }
 
 static inline RemoteDebuggingState *
-RemoteDebugging_GetStateFromObject(PyObject *obj)
+RemoteDebugging_GetStateFromObject(TyObject *obj)
 {
     RemoteUnwinderObject *unwinder = (RemoteUnwinderObject *)obj;
     if (unwinder->cached_state == NULL) {
-        unwinder->cached_state = RemoteDebugging_GetStateFromType(Py_TYPE(obj));
+        unwinder->cached_state = RemoteDebugging_GetStateFromType(Ty_TYPE(obj));
     }
     return unwinder->cached_state;
 }
@@ -369,29 +369,29 @@ is_prerelease_version(uint64_t version)
 }
 
 static inline int
-validate_debug_offsets(struct _Py_DebugOffsets *debug_offsets)
+validate_debug_offsets(struct _Ty_DebugOffsets *debug_offsets)
 {
-    if (memcmp(debug_offsets->cookie, _Py_Debug_Cookie, sizeof(debug_offsets->cookie)) != 0) {
+    if (memcmp(debug_offsets->cookie, _Ty_Debug_Cookie, sizeof(debug_offsets->cookie)) != 0) {
         // The remote is probably running a Python version predating debug offsets.
-        PyErr_SetString(
-            PyExc_RuntimeError,
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Can't determine the Python version of the remote process");
         return -1;
     }
 
     // Assume debug offsets could change from one pre-release version to another,
     // or one minor version to another, but are stable across patch versions.
-    if (is_prerelease_version(Py_Version) && Py_Version != debug_offsets->version) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+    if (is_prerelease_version(Ty_Version) && Ty_Version != debug_offsets->version) {
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Can't attach from a pre-release Python interpreter"
             " to a process running a different Python version");
         return -1;
     }
 
-    if (is_prerelease_version(debug_offsets->version) && Py_Version != debug_offsets->version) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+    if (is_prerelease_version(debug_offsets->version) && Ty_Version != debug_offsets->version) {
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Can't attach to a pre-release Python interpreter"
             " from a process running a different Python version");
         return -1;
@@ -401,25 +401,25 @@ validate_debug_offsets(struct _Py_DebugOffsets *debug_offsets)
     unsigned int remote_minor = (debug_offsets->version >> 16) & 0xFF;
 
     if (PY_MAJOR_VERSION != remote_major || PY_MINOR_VERSION != remote_minor) {
-        PyErr_Format(
-            PyExc_RuntimeError,
+        TyErr_Format(
+            TyExc_RuntimeError,
             "Can't attach from a Python %d.%d process to a Python %d.%d process",
             PY_MAJOR_VERSION, PY_MINOR_VERSION, remote_major, remote_minor);
         return -1;
     }
 
     // The debug offsets differ between free threaded and non-free threaded builds.
-    if (_Py_Debug_Free_Threaded && !debug_offsets->free_threaded) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+    if (_Ty_Debug_Free_Threaded && !debug_offsets->free_threaded) {
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Cannot attach from a free-threaded Python process"
             " to a process running a non-free-threaded version");
         return -1;
     }
 
-    if (!_Py_Debug_Free_Threaded && debug_offsets->free_threaded) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+    if (!_Ty_Debug_Free_Threaded && debug_offsets->free_threaded) {
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "Cannot attach to a free-threaded Python process"
             " from a process running a non-free-threaded version");
         return -1;
@@ -438,24 +438,24 @@ iterate_threads(
     uintptr_t thread_state_addr;
     unsigned long tid = 0;
 
-    if (0 > _Py_RemoteDebug_PagedReadRemoteMemory(
+    if (0 > _Ty_RemoteDebug_PagedReadRemoteMemory(
                 &unwinder->handle,
                 unwinder->interpreter_addr + unwinder->debug_offsets.interpreter_state.threads_main,
                 sizeof(void*),
                 &thread_state_addr))
     {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read main thread state");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read main thread state");
         return -1;
     }
 
     while (thread_state_addr != 0) {
-        if (0 > _Py_RemoteDebug_PagedReadRemoteMemory(
+        if (0 > _Ty_RemoteDebug_PagedReadRemoteMemory(
                     &unwinder->handle,
                     thread_state_addr + unwinder->debug_offsets.thread_state.native_thread_id,
                     sizeof(tid),
                     &tid))
         {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read thread ID");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read thread ID");
             return -1;
         }
 
@@ -465,13 +465,13 @@ iterate_threads(
         }
 
         // Move to next thread
-        if (0 > _Py_RemoteDebug_PagedReadRemoteMemory(
+        if (0 > _Ty_RemoteDebug_PagedReadRemoteMemory(
                     &unwinder->handle,
                     thread_state_addr + unwinder->debug_offsets.thread_state.next,
                     sizeof(void*),
                     &thread_state_addr))
         {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read next thread state");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read next thread state");
             return -1;
         }
     }
@@ -488,29 +488,29 @@ iterate_set_entries(
     void *context
 ) {
     char set_object[SIZEOF_SET_OBJ];
-    if (_Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, set_addr,
+    if (_Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, set_addr,
                                               SIZEOF_SET_OBJ, set_object) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read set object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read set object");
         return -1;
     }
 
-    Py_ssize_t num_els = GET_MEMBER(Py_ssize_t, set_object, unwinder->debug_offsets.set_object.used);
-    Py_ssize_t set_len = GET_MEMBER(Py_ssize_t, set_object, unwinder->debug_offsets.set_object.mask) + 1;
+    Ty_ssize_t num_els = GET_MEMBER(Ty_ssize_t, set_object, unwinder->debug_offsets.set_object.used);
+    Ty_ssize_t set_len = GET_MEMBER(Ty_ssize_t, set_object, unwinder->debug_offsets.set_object.mask) + 1;
     uintptr_t table_ptr = GET_MEMBER(uintptr_t, set_object, unwinder->debug_offsets.set_object.table);
 
-    Py_ssize_t i = 0;
-    Py_ssize_t els = 0;
+    Ty_ssize_t i = 0;
+    Ty_ssize_t els = 0;
     while (i < set_len && els < num_els) {
         uintptr_t key_addr;
         if (read_py_ptr(unwinder, table_ptr, &key_addr) < 0) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read set entry key");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read set entry key");
             return -1;
         }
 
         if ((void*)key_addr != NULL) {
-            Py_ssize_t ref_cnt;
+            Ty_ssize_t ref_cnt;
             if (read_Py_ssize_t(unwinder, table_ptr, &ref_cnt) < 0) {
-                set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read set entry ref count");
+                set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read set entry ref count");
                 return -1;
             }
 
@@ -536,7 +536,7 @@ process_waiter_task(
     uintptr_t key_addr,
     void *context
 ) {
-    PyObject *result = (PyObject *)context;
+    TyObject *result = (TyObject *)context;
     return process_task_and_waiters(unwinder, key_addr, result);
 }
 
@@ -547,7 +547,7 @@ process_task_parser(
     uintptr_t key_addr,
     void *context
 ) {
-    PyObject *awaited_by = (PyObject *)context;
+    TyObject *awaited_by = (TyObject *)context;
     return parse_task(unwinder, key_addr, awaited_by);
 }
 
@@ -559,26 +559,26 @@ process_task_parser(
 static inline int \
 read_##type_name(RemoteUnwinderObject *unwinder, uintptr_t address, c_type *result) \
 { \
-    int res = _Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, address, sizeof(c_type), result); \
+    int res = _Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, address, sizeof(c_type), result); \
     if (res < 0) { \
-        set_exception_cause(unwinder, PyExc_RuntimeError, error_msg); \
+        set_exception_cause(unwinder, TyExc_RuntimeError, error_msg); \
         return -1; \
     } \
     return 0; \
 }
 
 DEFINE_MEMORY_READER(ptr, uintptr_t, "Failed to read pointer from remote memory")
-DEFINE_MEMORY_READER(Py_ssize_t, Py_ssize_t, "Failed to read Py_ssize_t from remote memory")
+DEFINE_MEMORY_READER(Ty_ssize_t, Ty_ssize_t, "Failed to read Ty_ssize_t from remote memory")
 DEFINE_MEMORY_READER(char, char, "Failed to read char from remote memory")
 
 static int
 read_py_ptr(RemoteUnwinderObject *unwinder, uintptr_t address, uintptr_t *ptr_addr)
 {
     if (read_ptr(unwinder, address, ptr_addr)) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read Python pointer");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read Python pointer");
         return -1;
     }
-    *ptr_addr &= ~Py_TAG_BITS;
+    *ptr_addr &= ~Ty_TAG_BITS;
     return 0;
 }
 
@@ -586,126 +586,126 @@ read_py_ptr(RemoteUnwinderObject *unwinder, uintptr_t address, uintptr_t *ptr_ad
  * PYTHON OBJECT READING FUNCTIONS
  * ============================================================================ */
 
-static PyObject *
+static TyObject *
 read_py_str(
     RemoteUnwinderObject *unwinder,
     uintptr_t address,
-    Py_ssize_t max_len
+    Ty_ssize_t max_len
 ) {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     char *buf = NULL;
 
     // Read the entire PyUnicodeObject at once
     char unicode_obj[SIZEOF_UNICODE_OBJ];
-    int res = _Py_RemoteDebug_PagedReadRemoteMemory(
+    int res = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle,
         address,
         SIZEOF_UNICODE_OBJ,
         unicode_obj
     );
     if (res < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read PyUnicodeObject");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read PyUnicodeObject");
         goto err;
     }
 
-    Py_ssize_t len = GET_MEMBER(Py_ssize_t, unicode_obj, unwinder->debug_offsets.unicode_object.length);
+    Ty_ssize_t len = GET_MEMBER(Ty_ssize_t, unicode_obj, unwinder->debug_offsets.unicode_object.length);
     if (len < 0 || len > max_len) {
-        PyErr_Format(PyExc_RuntimeError,
+        TyErr_Format(TyExc_RuntimeError,
                      "Invalid string length (%zd) at 0x%lx", len, address);
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Invalid string length in remote Unicode object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Invalid string length in remote Unicode object");
         return NULL;
     }
 
-    buf = (char *)PyMem_RawMalloc(len+1);
+    buf = (char *)TyMem_RawMalloc(len+1);
     if (buf == NULL) {
-        PyErr_NoMemory();
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to allocate buffer for string reading");
+        TyErr_NoMemory();
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to allocate buffer for string reading");
         return NULL;
     }
 
     size_t offset = unwinder->debug_offsets.unicode_object.asciiobject_size;
-    res = _Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, address + offset, len, buf);
+    res = _Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, address + offset, len, buf);
     if (res < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read string data from remote memory");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read string data from remote memory");
         goto err;
     }
     buf[len] = '\0';
 
-    result = PyUnicode_FromStringAndSize(buf, len);
+    result = TyUnicode_FromStringAndSize(buf, len);
     if (result == NULL) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create PyUnicode from remote string data");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create PyUnicode from remote string data");
         goto err;
     }
 
-    PyMem_RawFree(buf);
+    TyMem_RawFree(buf);
     assert(result != NULL);
     return result;
 
 err:
     if (buf != NULL) {
-        PyMem_RawFree(buf);
+        TyMem_RawFree(buf);
     }
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 read_py_bytes(
     RemoteUnwinderObject *unwinder,
     uintptr_t address,
-    Py_ssize_t max_len
+    Ty_ssize_t max_len
 ) {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     char *buf = NULL;
 
     // Read the entire PyBytesObject at once
     char bytes_obj[SIZEOF_BYTES_OBJ];
-    int res = _Py_RemoteDebug_PagedReadRemoteMemory(
+    int res = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle,
         address,
         SIZEOF_BYTES_OBJ,
         bytes_obj
     );
     if (res < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read PyBytesObject");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read PyBytesObject");
         goto err;
     }
 
-    Py_ssize_t len = GET_MEMBER(Py_ssize_t, bytes_obj, unwinder->debug_offsets.bytes_object.ob_size);
+    Ty_ssize_t len = GET_MEMBER(Ty_ssize_t, bytes_obj, unwinder->debug_offsets.bytes_object.ob_size);
     if (len < 0 || len > max_len) {
-        PyErr_Format(PyExc_RuntimeError,
+        TyErr_Format(TyExc_RuntimeError,
                      "Invalid bytes length (%zd) at 0x%lx", len, address);
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Invalid bytes length in remote bytes object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Invalid bytes length in remote bytes object");
         return NULL;
     }
 
-    buf = (char *)PyMem_RawMalloc(len+1);
+    buf = (char *)TyMem_RawMalloc(len+1);
     if (buf == NULL) {
-        PyErr_NoMemory();
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to allocate buffer for bytes reading");
+        TyErr_NoMemory();
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to allocate buffer for bytes reading");
         return NULL;
     }
 
     size_t offset = unwinder->debug_offsets.bytes_object.ob_sval;
-    res = _Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, address + offset, len, buf);
+    res = _Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, address + offset, len, buf);
     if (res < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read bytes data from remote memory");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read bytes data from remote memory");
         goto err;
     }
     buf[len] = '\0';
 
-    result = PyBytes_FromStringAndSize(buf, len);
+    result = TyBytes_FromStringAndSize(buf, len);
     if (result == NULL) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create PyBytes from remote bytes data");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create PyBytes from remote bytes data");
         goto err;
     }
 
-    PyMem_RawFree(buf);
+    TyMem_RawFree(buf);
     assert(result != NULL);
     return result;
 
 err:
     if (buf != NULL) {
-        PyMem_RawFree(buf);
+        TyMem_RawFree(buf);
     }
     return NULL;
 }
@@ -720,19 +720,19 @@ read_py_long(
 
     // Read the entire PyLongObject at once
     char long_obj[SIZEOF_LONG_OBJ];
-    int bytes_read = _Py_RemoteDebug_PagedReadRemoteMemory(
+    int bytes_read = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle,
         address,
         unwinder->debug_offsets.long_object.size,
         long_obj);
     if (bytes_read < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read PyLongObject");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read PyLongObject");
         return -1;
     }
 
     uintptr_t lv_tag = GET_MEMBER(uintptr_t, long_obj, unwinder->debug_offsets.long_object.lv_tag);
     int negative = (lv_tag & 3) == 2;
-    Py_ssize_t size = lv_tag >> 3;
+    Ty_ssize_t size = lv_tag >> 3;
 
     if (size == 0) {
         return 0;
@@ -742,30 +742,30 @@ read_py_long(
     digit *digits;
     if (size <= _PY_NSMALLNEGINTS + _PY_NSMALLPOSINTS) {
         // For small integers, digits are inline in the long_value.ob_digit array
-        digits = (digit *)PyMem_RawMalloc(size * sizeof(digit));
+        digits = (digit *)TyMem_RawMalloc(size * sizeof(digit));
         if (!digits) {
-            PyErr_NoMemory();
-            set_exception_cause(unwinder, PyExc_MemoryError, "Failed to allocate digits for small PyLong");
+            TyErr_NoMemory();
+            set_exception_cause(unwinder, TyExc_MemoryError, "Failed to allocate digits for small PyLong");
             return -1;
         }
         memcpy(digits, long_obj + unwinder->debug_offsets.long_object.ob_digit, size * sizeof(digit));
     } else {
         // For larger integers, we need to read the digits separately
-        digits = (digit *)PyMem_RawMalloc(size * sizeof(digit));
+        digits = (digit *)TyMem_RawMalloc(size * sizeof(digit));
         if (!digits) {
-            PyErr_NoMemory();
-            set_exception_cause(unwinder, PyExc_MemoryError, "Failed to allocate digits for large PyLong");
+            TyErr_NoMemory();
+            set_exception_cause(unwinder, TyExc_MemoryError, "Failed to allocate digits for large PyLong");
             return -1;
         }
 
-        bytes_read = _Py_RemoteDebug_PagedReadRemoteMemory(
+        bytes_read = _Ty_RemoteDebug_PagedReadRemoteMemory(
             &unwinder->handle,
             address + unwinder->debug_offsets.long_object.ob_digit,
             sizeof(digit) * size,
             digits
         );
         if (bytes_read < 0) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read PyLong digits from remote memory");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read PyLong digits from remote memory");
             goto error;
         }
     }
@@ -776,17 +776,17 @@ read_py_long(
     // we can't use __builtin_mul_overflow because it fails to link with
     // __muloti4 on aarch64. In practice this is fine because all we're
     // testing here are task numbers that would fit in a single byte.
-    for (Py_ssize_t i = 0; i < size; ++i) {
-        long long factor = digits[i] * (1UL << (Py_ssize_t)(shift * i));
+    for (Ty_ssize_t i = 0; i < size; ++i) {
+        long long factor = digits[i] * (1UL << (Ty_ssize_t)(shift * i));
         value += factor;
     }
-    PyMem_RawFree(digits);
+    TyMem_RawFree(digits);
     if (negative) {
         value *= -1;
     }
     return (long)value;
 error:
-    PyMem_RawFree(digits);
+    TyMem_RawFree(digits);
     return -1;
 }
 
@@ -796,7 +796,7 @@ error:
 
 // Get the PyAsyncioDebug section address for any platform
 static uintptr_t
-_Py_RemoteDebug_GetAsyncioDebugAddress(proc_handle_t* handle)
+_Ty_RemoteDebug_GetAsyncioDebugAddress(proc_handle_t* handle)
 {
     uintptr_t address;
 
@@ -805,34 +805,34 @@ _Py_RemoteDebug_GetAsyncioDebugAddress(proc_handle_t* handle)
     address = search_windows_map_for_section(handle, "AsyncioD", L"_asyncio");
     if (address == 0) {
         // Error out: 'python' substring covers both executable and DLL
-        PyObject *exc = PyErr_GetRaisedException();
-        PyErr_SetString(PyExc_RuntimeError, "Failed to find the AsyncioDebug section in the process.");
-        _PyErr_ChainExceptions1(exc);
+        TyObject *exc = TyErr_GetRaisedException();
+        TyErr_SetString(TyExc_RuntimeError, "Failed to find the AsyncioDebug section in the process.");
+        _TyErr_ChainExceptions1(exc);
     }
 #elif defined(__linux__)
     // On Linux, search for asyncio debug in executable or DLL
     address = search_linux_map_for_section(handle, "AsyncioDebug", "_asyncio.cpython");
     if (address == 0) {
         // Error out: 'python' substring covers both executable and DLL
-        PyObject *exc = PyErr_GetRaisedException();
-        PyErr_SetString(PyExc_RuntimeError, "Failed to find the AsyncioDebug section in the process.");
-        _PyErr_ChainExceptions1(exc);
+        TyObject *exc = TyErr_GetRaisedException();
+        TyErr_SetString(TyExc_RuntimeError, "Failed to find the AsyncioDebug section in the process.");
+        _TyErr_ChainExceptions1(exc);
     }
 #elif defined(__APPLE__) && TARGET_OS_OSX
     // On macOS, try libpython first, then fall back to python
     address = search_map_for_section(handle, "AsyncioDebug", "_asyncio.cpython");
     if (address == 0) {
-        PyErr_Clear();
+        TyErr_Clear();
         address = search_map_for_section(handle, "AsyncioDebug", "_asyncio.cpython");
     }
     if (address == 0) {
         // Error out: 'python' substring covers both executable and DLL
-        PyObject *exc = PyErr_GetRaisedException();
-        PyErr_SetString(PyExc_RuntimeError, "Failed to find the AsyncioDebug section in the process.");
-        _PyErr_ChainExceptions1(exc);
+        TyObject *exc = TyErr_GetRaisedException();
+        TyErr_SetString(TyExc_RuntimeError, "Failed to find the AsyncioDebug section in the process.");
+        _TyErr_ChainExceptions1(exc);
     }
 #else
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 #endif
 
     return address;
@@ -842,16 +842,16 @@ static int
 read_async_debug(
     RemoteUnwinderObject *unwinder
 ) {
-    uintptr_t async_debug_addr = _Py_RemoteDebug_GetAsyncioDebugAddress(&unwinder->handle);
+    uintptr_t async_debug_addr = _Ty_RemoteDebug_GetAsyncioDebugAddress(&unwinder->handle);
     if (!async_debug_addr) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to get AsyncioDebug address");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to get AsyncioDebug address");
         return -1;
     }
 
-    size_t size = sizeof(struct _Py_AsyncioModuleDebugOffsets);
-    int result = _Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, async_debug_addr, size, &unwinder->async_debug_offsets);
+    size_t size = sizeof(struct _Ty_AsyncioModuleDebugOffsets);
+    int result = _Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, async_debug_addr, size, &unwinder->async_debug_offsets);
     if (result < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read AsyncioDebug offsets");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read AsyncioDebug offsets");
     }
     return result;
 }
@@ -860,20 +860,20 @@ read_async_debug(
  * ASYNCIO TASK PARSING FUNCTIONS
  * ============================================================================ */
 
-static PyObject *
+static TyObject *
 parse_task_name(
     RemoteUnwinderObject *unwinder,
     uintptr_t task_address
 ) {
     // Read the entire TaskObj at once
     char task_obj[SIZEOF_TASK_OBJ];
-    int err = _Py_RemoteDebug_PagedReadRemoteMemory(
+    int err = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle,
         task_address,
         unwinder->async_debug_offsets.asyncio_task_object.size,
         task_obj);
     if (err < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read task object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read task object");
         return NULL;
     }
 
@@ -881,40 +881,40 @@ parse_task_name(
 
     // The task name can be a long or a string so we need to check the type
     char task_name_obj[SIZEOF_PYOBJECT];
-    err = _Py_RemoteDebug_PagedReadRemoteMemory(
+    err = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle,
         task_name_addr,
         SIZEOF_PYOBJECT,
         task_name_obj);
     if (err < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read task name object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read task name object");
         return NULL;
     }
 
     // Now read the type object to get the flags
     char type_obj[SIZEOF_TYPE_OBJ];
-    err = _Py_RemoteDebug_PagedReadRemoteMemory(
+    err = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle,
         GET_MEMBER(uintptr_t, task_name_obj, unwinder->debug_offsets.pyobject.ob_type),
         SIZEOF_TYPE_OBJ,
         type_obj);
     if (err < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read task name type object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read task name type object");
         return NULL;
     }
 
-    if ((GET_MEMBER(unsigned long, type_obj, unwinder->debug_offsets.type_object.tp_flags) & Py_TPFLAGS_LONG_SUBCLASS)) {
+    if ((GET_MEMBER(unsigned long, type_obj, unwinder->debug_offsets.type_object.tp_flags) & Ty_TPFLAGS_LONG_SUBCLASS)) {
         long res = read_py_long(unwinder, task_name_addr);
         if (res == -1) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Task name PyLong parsing failed");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Task name PyLong parsing failed");
             return NULL;
         }
-        return PyUnicode_FromFormat("Task-%d", res);
+        return TyUnicode_FromFormat("Task-%d", res);
     }
 
-    if(!(GET_MEMBER(unsigned long, type_obj, unwinder->debug_offsets.type_object.tp_flags) & Py_TPFLAGS_UNICODE_SUBCLASS)) {
-        PyErr_SetString(PyExc_RuntimeError, "Invalid task name object");
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Task name object is neither long nor unicode");
+    if(!(GET_MEMBER(unsigned long, type_obj, unwinder->debug_offsets.type_object.tp_flags) & Ty_TPFLAGS_UNICODE_SUBCLASS)) {
+        TyErr_SetString(TyExc_RuntimeError, "Invalid task name object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Task name object is neither long nor unicode");
         return NULL;
     }
 
@@ -928,7 +928,7 @@ parse_task_name(
 static int parse_task_awaited_by(
     RemoteUnwinderObject *unwinder,
     uintptr_t task_address,
-    PyObject *awaited_by
+    TyObject *awaited_by
 ) {
     return process_task_awaited_by(unwinder, task_address, process_task_parser, awaited_by);
 }
@@ -938,25 +938,25 @@ handle_yield_from_frame(
     RemoteUnwinderObject *unwinder,
     uintptr_t gi_iframe_addr,
     uintptr_t gen_type_addr,
-    PyObject *render_to
+    TyObject *render_to
 ) {
     // Read the entire interpreter frame at once
     char iframe[SIZEOF_INTERP_FRAME];
-    int err = _Py_RemoteDebug_PagedReadRemoteMemory(
+    int err = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle,
         gi_iframe_addr,
         SIZEOF_INTERP_FRAME,
         iframe);
     if (err < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read interpreter frame in yield_from handler");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read interpreter frame in yield_from handler");
         return -1;
     }
 
     if (GET_MEMBER(char, iframe, unwinder->debug_offsets.interpreter_frame.owner) != FRAME_OWNED_BY_GENERATOR) {
-        PyErr_SetString(
-            PyExc_RuntimeError,
+        TyErr_SetString(
+            TyExc_RuntimeError,
             "generator doesn't own its frame \\_o_/");
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Frame ownership mismatch in yield_from");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Frame ownership mismatch in yield_from");
         return -1;
     }
 
@@ -969,7 +969,7 @@ handle_yield_from_frame(
             stackpointer_addr - sizeof(void*),
             &gi_await_addr);
         if (err) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read gi_await address");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read gi_await address");
             return -1;
         }
 
@@ -980,7 +980,7 @@ handle_yield_from_frame(
                 gi_await_addr + unwinder->debug_offsets.pyobject.ob_type,
                 &gi_await_addr_type_addr);
             if (err) {
-                set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read gi_await type address");
+                set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read gi_await type address");
                 return -1;
             }
 
@@ -997,7 +997,7 @@ handle_yield_from_frame(
                 */
                 err = parse_coro_chain(unwinder, gi_await_addr, render_to);
                 if (err) {
-                    set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to parse coroutine chain in yield_from");
+                    set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to parse coroutine chain in yield_from");
                     return -1;
                 }
             }
@@ -1011,19 +1011,19 @@ static int
 parse_coro_chain(
     RemoteUnwinderObject *unwinder,
     uintptr_t coro_address,
-    PyObject *render_to
+    TyObject *render_to
 ) {
     assert((void*)coro_address != NULL);
 
     // Read the entire generator object at once
     char gen_object[SIZEOF_GEN_OBJ];
-    int err = _Py_RemoteDebug_PagedReadRemoteMemory(
+    int err = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle,
         coro_address,
         SIZEOF_GEN_OBJ,
         gen_object);
     if (err < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read generator object in coro chain");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read generator object in coro chain");
         return -1;
     }
 
@@ -1034,14 +1034,14 @@ parse_coro_chain(
 
     uintptr_t gen_type_addr = GET_MEMBER(uintptr_t, gen_object, unwinder->debug_offsets.pyobject.ob_type);
 
-    PyObject* name = NULL;
+    TyObject* name = NULL;
 
     // Parse the previous frame using the gi_iframe from local copy
     uintptr_t prev_frame;
     uintptr_t gi_iframe_addr = coro_address + unwinder->debug_offsets.gen_object.gi_iframe;
     uintptr_t address_of_code_object = 0;
     if (parse_frame_object(unwinder, &name, gi_iframe_addr, &address_of_code_object, &prev_frame) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to parse frame object in coro chain");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to parse frame object in coro chain");
         return -1;
     }
 
@@ -1049,12 +1049,12 @@ parse_coro_chain(
         return 0;
     }
 
-    if (PyList_Append(render_to, name)) {
-        Py_DECREF(name);
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to append frame to coro chain");
+    if (TyList_Append(render_to, name)) {
+        Ty_DECREF(name);
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append frame to coro chain");
         return -1;
     }
-    Py_DECREF(name);
+    Ty_DECREF(name);
 
     if (frame_state == FRAME_SUSPENDED_YIELD_FROM) {
         return handle_yield_from_frame(unwinder, gi_iframe_addr, gen_type_addr, render_to);
@@ -1063,36 +1063,36 @@ parse_coro_chain(
     return 0;
 }
 
-static PyObject*
+static TyObject*
 create_task_result(
     RemoteUnwinderObject *unwinder,
     uintptr_t task_address
 ) {
-    PyObject* result = NULL;
-    PyObject *call_stack = NULL;
-    PyObject *tn = NULL;
+    TyObject* result = NULL;
+    TyObject *call_stack = NULL;
+    TyObject *tn = NULL;
     char task_obj[SIZEOF_TASK_OBJ];
     uintptr_t coro_addr;
 
     // Create call_stack first since it's the first tuple element
-    call_stack = PyList_New(0);
+    call_stack = TyList_New(0);
     if (call_stack == NULL) {
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create call stack list");
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create call stack list");
         goto error;
     }
 
     // Create task name/address for second tuple element
-    tn = PyLong_FromUnsignedLongLong(task_address);
+    tn = TyLong_FromUnsignedLongLong(task_address);
     if (tn == NULL) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create task name/address");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create task name/address");
         goto error;
     }
 
     // Parse coroutine chain
-    if (_Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, task_address,
+    if (_Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, task_address,
                                               unwinder->async_debug_offsets.asyncio_task_object.size,
                                               task_obj) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read task object for coro chain");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read task object for coro chain");
         goto error;
     }
 
@@ -1100,34 +1100,34 @@ create_task_result(
 
     if ((void*)coro_addr != NULL) {
         if (parse_coro_chain(unwinder, coro_addr, call_stack) < 0) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to parse coroutine chain");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to parse coroutine chain");
             goto error;
         }
 
-        if (PyList_Reverse(call_stack)) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to reverse call stack");
+        if (TyList_Reverse(call_stack)) {
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to reverse call stack");
             goto error;
         }
     }
 
     // Create final CoroInfo result
-    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((PyObject*)unwinder);
-    result = PyStructSequence_New(state->CoroInfo_Type);
+    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
+    result = TyStructSequence_New(state->CoroInfo_Type);
     if (result == NULL) {
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create CoroInfo");
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create CoroInfo");
         goto error;
     }
 
-    // PyStructSequence_SetItem steals references, so we don't need to DECREF on success
-    PyStructSequence_SetItem(result, 0, call_stack);  // This steals the reference
-    PyStructSequence_SetItem(result, 1, tn);  // This steals the reference
+    // TyStructSequence_SetItem steals references, so we don't need to DECREF on success
+    TyStructSequence_SetItem(result, 0, call_stack);  // This steals the reference
+    TyStructSequence_SetItem(result, 1, tn);  // This steals the reference
 
     return result;
 
 error:
-    Py_XDECREF(result);
-    Py_XDECREF(call_stack);
-    Py_XDECREF(tn);
+    Ty_XDECREF(result);
+    Ty_XDECREF(call_stack);
+    Ty_XDECREF(tn);
     return NULL;
 }
 
@@ -1135,10 +1135,10 @@ static int
 parse_task(
     RemoteUnwinderObject *unwinder,
     uintptr_t task_address,
-    PyObject *render_to
+    TyObject *render_to
 ) {
     char is_task;
-    PyObject* result = NULL;
+    TyObject* result = NULL;
     int err;
 
     err = read_char(
@@ -1146,48 +1146,48 @@ parse_task(
         task_address + unwinder->async_debug_offsets.asyncio_task_object.task_is_task,
         &is_task);
     if (err) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read is_task flag");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read is_task flag");
         goto error;
     }
 
     if (is_task) {
         result = create_task_result(unwinder, task_address);
         if (!result) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create task result");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create task result");
             goto error;
         }
     } else {
         // Create an empty CoroInfo for non-task objects
-        RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((PyObject*)unwinder);
-        result = PyStructSequence_New(state->CoroInfo_Type);
+        RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
+        result = TyStructSequence_New(state->CoroInfo_Type);
         if (result == NULL) {
-            set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create empty CoroInfo");
+            set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create empty CoroInfo");
             goto error;
         }
-        PyObject *empty_list = PyList_New(0);
+        TyObject *empty_list = TyList_New(0);
         if (empty_list == NULL) {
-            set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create empty list");
+            set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create empty list");
             goto error;
         }
-        PyObject *task_name = PyLong_FromUnsignedLongLong(task_address);
+        TyObject *task_name = TyLong_FromUnsignedLongLong(task_address);
         if (task_name == NULL) {
-            Py_DECREF(empty_list);
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create task name");
+            Ty_DECREF(empty_list);
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create task name");
             goto error;
         }
-        PyStructSequence_SetItem(result, 0, empty_list);  // This steals the reference
-        PyStructSequence_SetItem(result, 1, task_name);  // This steals the reference
+        TyStructSequence_SetItem(result, 0, empty_list);  // This steals the reference
+        TyStructSequence_SetItem(result, 1, task_name);  // This steals the reference
     }
-    if (PyList_Append(render_to, result)) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to append task result to render list");
+    if (TyList_Append(render_to, result)) {
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append task result to render list");
         goto error;
     }
 
-    Py_DECREF(result);
+    Ty_DECREF(result);
     return 0;
 
 error:
-    Py_XDECREF(result);
+    Ty_XDECREF(result);
     return -1;
 }
 
@@ -1195,56 +1195,56 @@ static int
 process_single_task_node(
     RemoteUnwinderObject *unwinder,
     uintptr_t task_addr,
-    PyObject **task_info,
-    PyObject *result
+    TyObject **task_info,
+    TyObject *result
 ) {
-    PyObject *tn = NULL;
-    PyObject *current_awaited_by = NULL;
-    PyObject *task_id = NULL;
-    PyObject *result_item = NULL;
-    PyObject *coroutine_stack = NULL;
+    TyObject *tn = NULL;
+    TyObject *current_awaited_by = NULL;
+    TyObject *task_id = NULL;
+    TyObject *result_item = NULL;
+    TyObject *coroutine_stack = NULL;
 
     tn = parse_task_name(unwinder, task_addr);
     if (tn == NULL) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to parse task name in single task node");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to parse task name in single task node");
         goto error;
     }
 
-    current_awaited_by = PyList_New(0);
+    current_awaited_by = TyList_New(0);
     if (current_awaited_by == NULL) {
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create awaited_by list in single task node");
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create awaited_by list in single task node");
         goto error;
     }
 
     // Extract the coroutine stack for this task
-    coroutine_stack = PyList_New(0);
+    coroutine_stack = TyList_New(0);
     if (coroutine_stack == NULL) {
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create coroutine stack list in single task node");
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create coroutine stack list in single task node");
         goto error;
     }
 
     if (parse_task(unwinder, task_addr, coroutine_stack) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to parse task coroutine stack in single task node");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to parse task coroutine stack in single task node");
         goto error;
     }
 
-    task_id = PyLong_FromUnsignedLongLong(task_addr);
+    task_id = TyLong_FromUnsignedLongLong(task_addr);
     if (task_id == NULL) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create task ID in single task node");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create task ID in single task node");
         goto error;
     }
 
-    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((PyObject*)unwinder);
-    result_item = PyStructSequence_New(state->TaskInfo_Type);
+    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
+    result_item = TyStructSequence_New(state->TaskInfo_Type);
     if (result_item == NULL) {
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create TaskInfo in single task node");
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create TaskInfo in single task node");
         goto error;
     }
 
-    PyStructSequence_SetItem(result_item, 0, task_id);  // steals ref
-    PyStructSequence_SetItem(result_item, 1, tn);  // steals ref
-    PyStructSequence_SetItem(result_item, 2, coroutine_stack);  // steals ref
-    PyStructSequence_SetItem(result_item, 3, current_awaited_by);  // steals ref
+    TyStructSequence_SetItem(result_item, 0, task_id);  // steals ref
+    TyStructSequence_SetItem(result_item, 1, tn);  // steals ref
+    TyStructSequence_SetItem(result_item, 2, coroutine_stack);  // steals ref
+    TyStructSequence_SetItem(result_item, 3, current_awaited_by);  // steals ref
 
     // References transferred to tuple
     task_id = NULL;
@@ -1252,20 +1252,20 @@ process_single_task_node(
     coroutine_stack = NULL;
     current_awaited_by = NULL;
 
-    if (PyList_Append(result, result_item)) {
-        Py_DECREF(result_item);
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to append result item in single task node");
+    if (TyList_Append(result, result_item)) {
+        Ty_DECREF(result_item);
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append result item in single task node");
         return -1;
     }
     if (task_info != NULL) {
         *task_info = result_item;
     }
-    Py_DECREF(result_item);
+    Ty_DECREF(result_item);
 
     // Get back current_awaited_by reference for parse_task_awaited_by
-    current_awaited_by = PyStructSequence_GetItem(result_item, 3);
+    current_awaited_by = TyStructSequence_GetItem(result_item, 3);
     if (parse_task_awaited_by(unwinder, task_addr, current_awaited_by) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to parse awaited_by in single task node");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to parse awaited_by in single task node");
         // No cleanup needed here since all references were transferred to result_item
         // and result_item was already added to result list and decreffed
         return -1;
@@ -1274,11 +1274,11 @@ process_single_task_node(
     return 0;
 
 error:
-    Py_XDECREF(tn);
-    Py_XDECREF(current_awaited_by);
-    Py_XDECREF(task_id);
-    Py_XDECREF(result_item);
-    Py_XDECREF(coroutine_stack);
+    Ty_XDECREF(tn);
+    Ty_XDECREF(current_awaited_by);
+    Ty_XDECREF(task_id);
+    Ty_XDECREF(result_item);
+    Ty_XDECREF(coroutine_stack);
     return -1;
 }
 
@@ -1290,7 +1290,7 @@ process_thread_for_awaited_by(
     unsigned long tid,
     void *context
 ) {
-    PyObject *result = (PyObject *)context;
+    TyObject *result = (TyObject *)context;
     uintptr_t head_addr = thread_state_addr + unwinder->async_debug_offsets.asyncio_thread_state.asyncio_tasks_head;
     return append_awaited_by(unwinder, tid, head_addr, result);
 }
@@ -1305,10 +1305,10 @@ process_task_awaited_by(
 ) {
     // Read the entire TaskObj at once
     char task_obj[SIZEOF_TASK_OBJ];
-    if (_Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, task_address,
+    if (_Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, task_address,
                                               unwinder->async_debug_offsets.asyncio_task_object.size,
                                               task_obj) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read task object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read task object");
         return -1;
     }
 
@@ -1332,7 +1332,7 @@ process_running_task_chain(
     RemoteUnwinderObject *unwinder,
     uintptr_t running_task_addr,
     uintptr_t thread_state_addr,
-    PyObject *result
+    TyObject *result
 ) {
     uintptr_t running_task_code_obj = 0;
     if(get_task_code_object(unwinder, running_task_addr, &running_task_code_obj) < 0) {
@@ -1340,26 +1340,26 @@ process_running_task_chain(
     }
 
     // First, add this task to the result
-    PyObject *task_info = NULL;
+    TyObject *task_info = NULL;
     if (process_single_task_node(unwinder, running_task_addr, &task_info, result) < 0) {
         return -1;
     }
 
     // Get the chain from the current frame to this task
-    PyObject *coro_chain = PyStructSequence_GET_ITEM(task_info, 2);
+    TyObject *coro_chain = TyStructSequence_GET_ITEM(task_info, 2);
     assert(coro_chain != NULL);
-    if (PyList_GET_SIZE(coro_chain) != 1) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Coro chain is not a single item");
+    if (TyList_GET_SIZE(coro_chain) != 1) {
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Coro chain is not a single item");
         return -1;
     }
-    PyObject *coro_info = PyList_GET_ITEM(coro_chain, 0);
+    TyObject *coro_info = TyList_GET_ITEM(coro_chain, 0);
     assert(coro_info != NULL);
-    PyObject *frame_chain = PyStructSequence_GET_ITEM(coro_info, 0);
+    TyObject *frame_chain = TyStructSequence_GET_ITEM(coro_info, 0);
     assert(frame_chain != NULL);
 
     // Clear the coro_chain
-    if (PyList_Clear(frame_chain) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to clear coroutine chain");
+    if (TyList_Clear(frame_chain) < 0) {
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to clear coroutine chain");
         return -1;
     }
 
@@ -1384,7 +1384,7 @@ process_thread_for_async_stack_trace(
     unsigned long tid,
     void *context
 ) {
-    PyObject *result = (PyObject *)context;
+    TyObject *result = (TyObject *)context;
 
     // Find running task in this thread
     uintptr_t running_task_addr;
@@ -1394,44 +1394,44 @@ process_thread_for_async_stack_trace(
 
     // If we found a running task, process it and its waiters
     if ((void*)running_task_addr != NULL) {
-        PyObject *task_list = PyList_New(0);
+        TyObject *task_list = TyList_New(0);
         if (task_list == NULL) {
-            set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create task list for thread");
+            set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create task list for thread");
             return -1;
         }
 
         if (process_running_task_chain(unwinder, running_task_addr, thread_state_addr, task_list) < 0) {
-            Py_DECREF(task_list);
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to process running task chain");
+            Ty_DECREF(task_list);
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to process running task chain");
             return -1;
         }
 
         // Create AwaitedInfo structure for this thread
-        PyObject *tid_py = PyLong_FromUnsignedLong(tid);
+        TyObject *tid_py = TyLong_FromUnsignedLong(tid);
         if (tid_py == NULL) {
-            Py_DECREF(task_list);
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create thread ID");
+            Ty_DECREF(task_list);
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create thread ID");
             return -1;
         }
 
-        RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((PyObject*)unwinder);
-        PyObject *awaited_info = PyStructSequence_New(state->AwaitedInfo_Type);
+        RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
+        TyObject *awaited_info = TyStructSequence_New(state->AwaitedInfo_Type);
         if (awaited_info == NULL) {
-            Py_DECREF(tid_py);
-            Py_DECREF(task_list);
-            set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create AwaitedInfo");
+            Ty_DECREF(tid_py);
+            Ty_DECREF(task_list);
+            set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create AwaitedInfo");
             return -1;
         }
 
-        PyStructSequence_SetItem(awaited_info, 0, tid_py);  // steals ref
-        PyStructSequence_SetItem(awaited_info, 1, task_list);  // steals ref
+        TyStructSequence_SetItem(awaited_info, 0, tid_py);  // steals ref
+        TyStructSequence_SetItem(awaited_info, 1, task_list);  // steals ref
 
-        if (PyList_Append(result, awaited_info)) {
-            Py_DECREF(awaited_info);
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to append AwaitedInfo to result");
+        if (TyList_Append(result, awaited_info)) {
+            Ty_DECREF(awaited_info);
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append AwaitedInfo to result");
             return -1;
         }
-        Py_DECREF(awaited_info);
+        Ty_DECREF(awaited_info);
     }
 
     return 0;
@@ -1441,7 +1441,7 @@ static int
 process_task_and_waiters(
     RemoteUnwinderObject *unwinder,
     uintptr_t task_addr,
-    PyObject *result
+    TyObject *result
 ) {
     // First, add this task to the result
     if (process_single_task_node(unwinder, task_addr, NULL, result) < 0) {
@@ -1466,7 +1466,7 @@ find_running_task_in_thread(
         thread_state_addr + unwinder->async_debug_offsets.asyncio_thread_state.asyncio_running_loop,
         &address_of_running_loop);
     if (bytes_read == -1) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read running loop address");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read running loop address");
         return -1;
     }
 
@@ -1480,7 +1480,7 @@ find_running_task_in_thread(
         thread_state_addr + unwinder->async_debug_offsets.asyncio_thread_state.asyncio_running_task,
         running_task_addr);
     if (err) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read running task address");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read running task address");
         return -1;
     }
 
@@ -1495,13 +1495,13 @@ get_task_code_object(RemoteUnwinderObject *unwinder, uintptr_t task_addr, uintpt
         unwinder,
         task_addr + unwinder->async_debug_offsets.asyncio_task_object.task_coro,
         &running_coro_addr) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Running task coro read failed");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Running task coro read failed");
         return -1;
     }
 
     if (running_coro_addr == 0) {
-        PyErr_SetString(PyExc_RuntimeError, "Running task coro is NULL");
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Running task coro address is NULL");
+        TyErr_SetString(TyExc_RuntimeError, "Running task coro is NULL");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Running task coro address is NULL");
         return -1;
     }
 
@@ -1510,13 +1510,13 @@ get_task_code_object(RemoteUnwinderObject *unwinder, uintptr_t task_addr, uintpt
     if (read_py_ptr(
         unwinder,
         running_coro_addr + unwinder->debug_offsets.gen_object.gi_iframe, code_obj_addr) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read running task code object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read running task code object");
         return -1;
     }
 
     if (*code_obj_addr == 0) {
-        PyErr_SetString(PyExc_RuntimeError, "Running task code object is NULL");
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Running task code object address is NULL");
+        TyErr_SetString(TyExc_RuntimeError, "Running task code object is NULL");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Running task code object address is NULL");
         return -1;
     }
 
@@ -1527,11 +1527,11 @@ get_task_code_object(RemoteUnwinderObject *unwinder, uintptr_t task_addr, uintpt
  * TLBC CACHING FUNCTIONS
  * ============================================================================ */
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 
 typedef struct {
     void *tlbc_array;  // Local copy of the TLBC array
-    Py_ssize_t tlbc_array_size;  // Size of the TLBC array
+    Ty_ssize_t tlbc_array_size;  // Size of the TLBC array
     uint32_t generation;  // Generation when this was cached
 } TLBCCacheEntry;
 
@@ -1540,20 +1540,20 @@ tlbc_cache_entry_destroy(void *ptr)
 {
     TLBCCacheEntry *entry = (TLBCCacheEntry *)ptr;
     if (entry->tlbc_array) {
-        PyMem_RawFree(entry->tlbc_array);
+        TyMem_RawFree(entry->tlbc_array);
     }
-    PyMem_RawFree(entry);
+    TyMem_RawFree(entry);
 }
 
 static TLBCCacheEntry *
 get_tlbc_cache_entry(RemoteUnwinderObject *self, uintptr_t code_addr, uint32_t current_generation)
 {
     void *key = (void *)code_addr;
-    TLBCCacheEntry *entry = _Py_hashtable_get(self->tlbc_cache, key);
+    TLBCCacheEntry *entry = _Ty_hashtable_get(self->tlbc_cache, key);
 
     if (entry && entry->generation != current_generation) {
         // Entry is stale, remove it by setting to NULL
-        _Py_hashtable_set(self->tlbc_cache, key, NULL);
+        _Ty_hashtable_set(self->tlbc_cache, key, NULL);
         entry = NULL;
     }
 
@@ -1569,36 +1569,36 @@ cache_tlbc_array(RemoteUnwinderObject *unwinder, uintptr_t code_addr, uintptr_t 
 
     // Read the TLBC array pointer
     if (read_ptr(unwinder, tlbc_array_addr, &tlbc_array_ptr) != 0 || tlbc_array_ptr == 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read TLBC array pointer");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read TLBC array pointer");
         return 0; // No TLBC array
     }
 
     // Read the TLBC array size
-    Py_ssize_t tlbc_size;
-    if (_Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, tlbc_array_ptr, sizeof(tlbc_size), &tlbc_size) != 0 || tlbc_size <= 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read TLBC array size");
+    Ty_ssize_t tlbc_size;
+    if (_Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, tlbc_array_ptr, sizeof(tlbc_size), &tlbc_size) != 0 || tlbc_size <= 0) {
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read TLBC array size");
         return 0; // Invalid size
     }
 
     // Allocate and read the entire TLBC array
     size_t array_data_size = tlbc_size * sizeof(void*);
-    tlbc_array = PyMem_RawMalloc(sizeof(Py_ssize_t) + array_data_size);
+    tlbc_array = TyMem_RawMalloc(sizeof(Ty_ssize_t) + array_data_size);
     if (!tlbc_array) {
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to allocate TLBC array");
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to allocate TLBC array");
         return 0; // Memory error
     }
 
-    if (_Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, tlbc_array_ptr, sizeof(Py_ssize_t) + array_data_size, tlbc_array) != 0) {
-        PyMem_RawFree(tlbc_array);
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read TLBC array data");
+    if (_Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, tlbc_array_ptr, sizeof(Ty_ssize_t) + array_data_size, tlbc_array) != 0) {
+        TyMem_RawFree(tlbc_array);
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read TLBC array data");
         return 0; // Read error
     }
 
     // Create cache entry
-    entry = PyMem_RawMalloc(sizeof(TLBCCacheEntry));
+    entry = TyMem_RawMalloc(sizeof(TLBCCacheEntry));
     if (!entry) {
-        PyMem_RawFree(tlbc_array);
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to allocate TLBC cache entry");
+        TyMem_RawFree(tlbc_array);
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to allocate TLBC cache entry");
         return 0; // Memory error
     }
 
@@ -1608,9 +1608,9 @@ cache_tlbc_array(RemoteUnwinderObject *unwinder, uintptr_t code_addr, uintptr_t 
 
     // Store in cache
     void *key = (void *)code_addr;
-    if (_Py_hashtable_set(unwinder->tlbc_cache, key, entry) < 0) {
+    if (_Ty_hashtable_set(unwinder->tlbc_cache, key, entry) < 0) {
         tlbc_cache_entry_destroy(entry);
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to store TLBC entry in cache");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to store TLBC entry in cache");
         return 0; // Cache error
     }
 
@@ -1719,7 +1719,7 @@ parse_linetable(const uintptr_t addrq, const char* linetable, int firstlineno, L
 
 static int
 parse_code_object(RemoteUnwinderObject *unwinder,
-                  PyObject **result,
+                  TyObject **result,
                   uintptr_t address,
                   uintptr_t instruction_pointer,
                   uintptr_t *previous_frame,
@@ -1727,13 +1727,13 @@ parse_code_object(RemoteUnwinderObject *unwinder,
 {
     void *key = (void *)address;
     CachedCodeMetadata *meta = NULL;
-    PyObject *func = NULL;
-    PyObject *file = NULL;
-    PyObject *linetable = NULL;
-    PyObject *lineno = NULL;
-    PyObject *tuple = NULL;
+    TyObject *func = NULL;
+    TyObject *file = NULL;
+    TyObject *linetable = NULL;
+    TyObject *lineno = NULL;
+    TyObject *tuple = NULL;
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     // In free threading builds, code object addresses might have the low bit set
     // as a flag, so we need to mask it off to get the real address
     uintptr_t real_address = address & (~1);
@@ -1742,42 +1742,42 @@ parse_code_object(RemoteUnwinderObject *unwinder,
 #endif
 
     if (unwinder && unwinder->code_object_cache != NULL) {
-        meta = _Py_hashtable_get(unwinder->code_object_cache, key);
+        meta = _Ty_hashtable_get(unwinder->code_object_cache, key);
     }
 
     if (meta == NULL) {
         char code_object[SIZEOF_CODE_OBJ];
-        if (_Py_RemoteDebug_PagedReadRemoteMemory(
+        if (_Ty_RemoteDebug_PagedReadRemoteMemory(
                 &unwinder->handle, real_address, SIZEOF_CODE_OBJ, code_object) < 0)
         {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read code object");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read code object");
             goto error;
         }
 
         func = read_py_str(unwinder,
             GET_MEMBER(uintptr_t, code_object, unwinder->debug_offsets.code_object.qualname), 1024);
         if (!func) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read function name from code object");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read function name from code object");
             goto error;
         }
 
         file = read_py_str(unwinder,
             GET_MEMBER(uintptr_t, code_object, unwinder->debug_offsets.code_object.filename), 1024);
         if (!file) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read filename from code object");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read filename from code object");
             goto error;
         }
 
         linetable = read_py_bytes(unwinder,
             GET_MEMBER(uintptr_t, code_object, unwinder->debug_offsets.code_object.linetable), 4096);
         if (!linetable) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read linetable from code object");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read linetable from code object");
             goto error;
         }
 
-        meta = PyMem_RawMalloc(sizeof(CachedCodeMetadata));
+        meta = TyMem_RawMalloc(sizeof(CachedCodeMetadata));
         if (!meta) {
-            set_exception_cause(unwinder, PyExc_MemoryError, "Failed to allocate cached code metadata");
+            set_exception_cause(unwinder, TyExc_MemoryError, "Failed to allocate cached code metadata");
             goto error;
         }
 
@@ -1787,9 +1787,9 @@ parse_code_object(RemoteUnwinderObject *unwinder,
         meta->first_lineno = GET_MEMBER(int, code_object, unwinder->debug_offsets.code_object.firstlineno);
         meta->addr_code_adaptive = real_address + unwinder->debug_offsets.code_object.co_code_adaptive;
 
-        if (unwinder && unwinder->code_object_cache && _Py_hashtable_set(unwinder->code_object_cache, key, meta) < 0) {
+        if (unwinder && unwinder->code_object_cache && _Ty_hashtable_set(unwinder->code_object_cache, key, meta) < 0) {
             cached_code_metadata_destroy(meta);
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to cache code metadata");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to cache code metadata");
             goto error;
         }
 
@@ -1802,7 +1802,7 @@ parse_code_object(RemoteUnwinderObject *unwinder,
     uintptr_t ip = instruction_pointer;
     ptrdiff_t addrq;
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     // Handle thread-local bytecode (TLBC) in free threading builds
     if (tlbc_index == 0 || unwinder->debug_offsets.code_object.co_tlbc == 0 || unwinder == NULL) {
         // No TLBC or no unwinder - use main bytecode directly
@@ -1816,7 +1816,7 @@ parse_code_object(RemoteUnwinderObject *unwinder,
     if (!tlbc_entry) {
         // Cache miss - try to read and cache TLBC array
         if (!cache_tlbc_array(unwinder, real_address, real_address + unwinder->debug_offsets.code_object.co_tlbc, unwinder->tlbc_generation)) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to cache TLBC array");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to cache TLBC array");
             goto error;
         }
         tlbc_entry = get_tlbc_cache_entry(unwinder, real_address, unwinder->tlbc_generation);
@@ -1824,7 +1824,7 @@ parse_code_object(RemoteUnwinderObject *unwinder,
 
     if (tlbc_entry && tlbc_index < tlbc_entry->tlbc_array_size) {
         // Use cached TLBC data
-        uintptr_t *entries = (uintptr_t *)((char *)tlbc_entry->tlbc_array + sizeof(Py_ssize_t));
+        uintptr_t *entries = (uintptr_t *)((char *)tlbc_entry->tlbc_array + sizeof(Ty_ssize_t));
         uintptr_t tlbc_bytecode_addr = entries[tlbc_index];
 
         if (tlbc_bytecode_addr != 0) {
@@ -1846,40 +1846,40 @@ done_tlbc:
 #endif
     ;  // Empty statement to avoid C23 extension warning
     LocationInfo info = {0};
-    bool ok = parse_linetable(addrq, PyBytes_AS_STRING(meta->linetable),
+    bool ok = parse_linetable(addrq, TyBytes_AS_STRING(meta->linetable),
                               meta->first_lineno, &info);
     if (!ok) {
         info.lineno = -1;
     }
 
-    lineno = PyLong_FromLong(info.lineno);
+    lineno = TyLong_FromLong(info.lineno);
     if (!lineno) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create line number object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create line number object");
         goto error;
     }
 
-    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((PyObject*)unwinder);
-    tuple = PyStructSequence_New(state->FrameInfo_Type);
+    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
+    tuple = TyStructSequence_New(state->FrameInfo_Type);
     if (!tuple) {
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create FrameInfo for code object");
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create FrameInfo for code object");
         goto error;
     }
 
-    Py_INCREF(meta->func_name);
-    Py_INCREF(meta->file_name);
-    PyStructSequence_SetItem(tuple, 0, meta->file_name);
-    PyStructSequence_SetItem(tuple, 1, lineno);
-    PyStructSequence_SetItem(tuple, 2, meta->func_name);
+    Ty_INCREF(meta->func_name);
+    Ty_INCREF(meta->file_name);
+    TyStructSequence_SetItem(tuple, 0, meta->file_name);
+    TyStructSequence_SetItem(tuple, 1, lineno);
+    TyStructSequence_SetItem(tuple, 2, meta->func_name);
 
     *result = tuple;
     return 0;
 
 error:
-    Py_XDECREF(func);
-    Py_XDECREF(file);
-    Py_XDECREF(linetable);
-    Py_XDECREF(lineno);
-    Py_XDECREF(tuple);
+    Ty_XDECREF(func);
+    Ty_XDECREF(file);
+    Ty_XDECREF(linetable);
+    Ty_XDECREF(lineno);
+    Ty_XDECREF(tuple);
     return -1;
 }
 
@@ -1891,9 +1891,9 @@ static void
 cleanup_stack_chunks(StackChunkList *chunks)
 {
     for (size_t i = 0; i < chunks->count; ++i) {
-        PyMem_RawFree(chunks->chunks[i].local_copy);
+        TyMem_RawFree(chunks->chunks[i].local_copy);
     }
-    PyMem_RawFree(chunks->chunks);
+    TyMem_RawFree(chunks->chunks);
 }
 
 static int
@@ -1905,32 +1905,32 @@ process_single_stack_chunk(
     // Start with default size assumption
     size_t current_size = _PY_DATA_STACK_CHUNK_SIZE;
 
-    char *this_chunk = PyMem_RawMalloc(current_size);
+    char *this_chunk = TyMem_RawMalloc(current_size);
     if (!this_chunk) {
-        PyErr_NoMemory();
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to allocate stack chunk buffer");
+        TyErr_NoMemory();
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to allocate stack chunk buffer");
         return -1;
     }
 
-    if (_Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, chunk_addr, current_size, this_chunk) < 0) {
-        PyMem_RawFree(this_chunk);
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read stack chunk");
+    if (_Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, chunk_addr, current_size, this_chunk) < 0) {
+        TyMem_RawFree(this_chunk);
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read stack chunk");
         return -1;
     }
 
     // Check actual size and reread if necessary
     size_t actual_size = GET_MEMBER(size_t, this_chunk, offsetof(_PyStackChunk, size));
     if (actual_size != current_size) {
-        this_chunk = PyMem_RawRealloc(this_chunk, actual_size);
+        this_chunk = TyMem_RawRealloc(this_chunk, actual_size);
         if (!this_chunk) {
-            PyErr_NoMemory();
-            set_exception_cause(unwinder, PyExc_MemoryError, "Failed to reallocate stack chunk buffer");
+            TyErr_NoMemory();
+            set_exception_cause(unwinder, TyExc_MemoryError, "Failed to reallocate stack chunk buffer");
             return -1;
         }
 
-        if (_Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, chunk_addr, actual_size, this_chunk) < 0) {
-            PyMem_RawFree(this_chunk);
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to reread stack chunk with correct size");
+        if (_Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, chunk_addr, actual_size, this_chunk) < 0) {
+            TyMem_RawFree(this_chunk);
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to reread stack chunk with correct size");
             return -1;
         }
         current_size = actual_size;
@@ -1953,14 +1953,14 @@ copy_stack_chunks(RemoteUnwinderObject *unwinder,
     size_t max_chunks = 16;
 
     if (read_ptr(unwinder, tstate_addr + unwinder->debug_offsets.thread_state.datastack_chunk, &chunk_addr)) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read initial stack chunk address");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read initial stack chunk address");
         return -1;
     }
 
-    chunks = PyMem_RawMalloc(max_chunks * sizeof(StackChunkInfo));
+    chunks = TyMem_RawMalloc(max_chunks * sizeof(StackChunkInfo));
     if (!chunks) {
-        PyErr_NoMemory();
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to allocate stack chunks array");
+        TyErr_NoMemory();
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to allocate stack chunks array");
         return -1;
     }
 
@@ -1968,10 +1968,10 @@ copy_stack_chunks(RemoteUnwinderObject *unwinder,
         // Grow array if needed
         if (count >= max_chunks) {
             max_chunks *= 2;
-            StackChunkInfo *new_chunks = PyMem_RawRealloc(chunks, max_chunks * sizeof(StackChunkInfo));
+            StackChunkInfo *new_chunks = TyMem_RawRealloc(chunks, max_chunks * sizeof(StackChunkInfo));
             if (!new_chunks) {
-                PyErr_NoMemory();
-                set_exception_cause(unwinder, PyExc_MemoryError, "Failed to grow stack chunks array");
+                TyErr_NoMemory();
+                set_exception_cause(unwinder, TyExc_MemoryError, "Failed to grow stack chunks array");
                 goto error;
             }
             chunks = new_chunks;
@@ -1979,7 +1979,7 @@ copy_stack_chunks(RemoteUnwinderObject *unwinder,
 
         // Process this chunk
         if (process_single_stack_chunk(unwinder, chunk_addr, &chunks[count]) < 0) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to process stack chunk");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to process stack chunk");
             goto error;
         }
 
@@ -1994,9 +1994,9 @@ copy_stack_chunks(RemoteUnwinderObject *unwinder,
 
 error:
     for (size_t i = 0; i < count; ++i) {
-        PyMem_RawFree(chunks[i].local_copy);
+        TyMem_RawFree(chunks[i].local_copy);
     }
-    PyMem_RawFree(chunks);
+    TyMem_RawFree(chunks);
     return -1;
 }
 
@@ -2017,14 +2017,14 @@ find_frame_in_chunks(StackChunkList *chunks, uintptr_t remote_ptr)
 static int
 parse_frame_from_chunks(
     RemoteUnwinderObject *unwinder,
-    PyObject **result,
+    TyObject **result,
     uintptr_t address,
     uintptr_t *previous_frame,
     StackChunkList *chunks
 ) {
     void *frame_ptr = find_frame_in_chunks(chunks, address);
     if (!frame_ptr) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Frame not found in stack chunks");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Frame not found in stack chunks");
         return -1;
     }
 
@@ -2040,7 +2040,7 @@ parse_frame_from_chunks(
 
     // Get tlbc_index for free threading builds
     int32_t tlbc_index = 0;
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     if (unwinder->debug_offsets.interpreter_frame.tlbc_index != 0) {
         tlbc_index = GET_MEMBER(int32_t, frame, unwinder->debug_offsets.interpreter_frame.tlbc_index);
     }
@@ -2065,19 +2065,19 @@ populate_initial_state_data(
         unwinder->debug_offsets.runtime_state.interpreters_head;
 
     uintptr_t address_of_interpreter_state;
-    int bytes_read = _Py_RemoteDebug_PagedReadRemoteMemory(
+    int bytes_read = _Ty_RemoteDebug_PagedReadRemoteMemory(
             &unwinder->handle,
             runtime_start_address + interpreter_state_list_head,
             sizeof(void*),
             &address_of_interpreter_state);
     if (bytes_read < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read interpreter state address");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read interpreter state address");
         return -1;
     }
 
     if (address_of_interpreter_state == 0) {
-        PyErr_SetString(PyExc_RuntimeError, "No interpreter state found");
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Interpreter state is NULL");
+        TyErr_SetString(TyExc_RuntimeError, "No interpreter state found");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Interpreter state is NULL");
         return -1;
     }
 
@@ -2091,12 +2091,12 @@ populate_initial_state_data(
     uintptr_t address_of_thread = address_of_interpreter_state +
                     unwinder->debug_offsets.interpreter_state.threads_main;
 
-    if (_Py_RemoteDebug_PagedReadRemoteMemory(
+    if (_Ty_RemoteDebug_PagedReadRemoteMemory(
             &unwinder->handle,
             address_of_thread,
             sizeof(void*),
             tstate) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read main thread state address");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read main thread state address");
         return -1;
     }
 
@@ -2116,7 +2116,7 @@ find_running_frame(
             address_of_thread + unwinder->debug_offsets.thread_state.current_frame,
             frame);
         if (err) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read current frame pointer");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read current frame pointer");
             return -1;
         }
         return 0;
@@ -2149,9 +2149,9 @@ is_frame_valid(
 
     if (GET_MEMBER(char, frame, unwinder->debug_offsets.interpreter_frame.owner) != FRAME_OWNED_BY_GENERATOR
         && GET_MEMBER(char, frame, unwinder->debug_offsets.interpreter_frame.owner) != FRAME_OWNED_BY_THREAD) {
-        PyErr_Format(PyExc_RuntimeError, "Unhandled frame owner %d.\n",
+        TyErr_Format(TyExc_RuntimeError, "Unhandled frame owner %d.\n",
                     GET_MEMBER(char, frame, unwinder->debug_offsets.interpreter_frame.owner));
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Unhandled frame owner type in async frame");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Unhandled frame owner type in async frame");
         return -1;
     }
     return 1;
@@ -2160,7 +2160,7 @@ is_frame_valid(
 static int
 parse_frame_object(
     RemoteUnwinderObject *unwinder,
-    PyObject** result,
+    TyObject** result,
     uintptr_t address,
     uintptr_t* address_of_code_object,
     uintptr_t* previous_frame
@@ -2168,14 +2168,14 @@ parse_frame_object(
     char frame[SIZEOF_INTERP_FRAME];
     *address_of_code_object = 0;
 
-    Py_ssize_t bytes_read = _Py_RemoteDebug_PagedReadRemoteMemory(
+    Ty_ssize_t bytes_read = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle,
         address,
         SIZEOF_INTERP_FRAME,
         frame
     );
     if (bytes_read < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read interpreter frame");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read interpreter frame");
         return -1;
     }
 
@@ -2190,7 +2190,7 @@ parse_frame_object(
 
     // Get tlbc_index for free threading builds
     int32_t tlbc_index = 0;
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     if (unwinder->debug_offsets.interpreter_frame.tlbc_index != 0) {
         tlbc_index = GET_MEMBER(int32_t, frame, unwinder->debug_offsets.interpreter_frame.tlbc_index);
     }
@@ -2203,18 +2203,18 @@ parse_frame_object(
 static int
  parse_async_frame_chain(
     RemoteUnwinderObject *unwinder,
-    PyObject *calls,
+    TyObject *calls,
     uintptr_t address_of_thread,
     uintptr_t running_task_code_obj
 ) {
     uintptr_t address_of_current_frame;
     if (find_running_frame(unwinder, address_of_thread, &address_of_current_frame) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Running frame search failed in async chain");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Running frame search failed in async chain");
         return -1;
     }
 
     while ((void*)address_of_current_frame != NULL) {
-        PyObject* frame_info = NULL;
+        TyObject* frame_info = NULL;
         uintptr_t address_of_code_object;
         int res = parse_frame_object(
             unwinder,
@@ -2225,7 +2225,7 @@ static int
         );
 
         if (res < 0) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Async frame object parsing failed in chain");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Async frame object parsing failed in chain");
             return -1;
         }
 
@@ -2233,13 +2233,13 @@ static int
             continue;
         }
 
-        if (PyList_Append(calls, frame_info) == -1) {
-            Py_DECREF(frame_info);
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to append frame info to async chain");
+        if (TyList_Append(calls, frame_info) == -1) {
+            Ty_DECREF(frame_info);
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append frame info to async chain");
             return -1;
         }
 
-        Py_DECREF(frame_info);
+        Ty_DECREF(frame_info);
 
         if (address_of_code_object == running_task_code_obj) {
             break;
@@ -2257,13 +2257,13 @@ static int
 append_awaited_by_for_thread(
     RemoteUnwinderObject *unwinder,
     uintptr_t head_addr,
-    PyObject *result
+    TyObject *result
 ) {
     char task_node[SIZEOF_LLIST_NODE];
 
-    if (_Py_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, head_addr,
+    if (_Ty_RemoteDebug_PagedReadRemoteMemory(&unwinder->handle, head_addr,
                                               sizeof(task_node), task_node) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read task node head");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read task node head");
         return -1;
     }
 
@@ -2272,15 +2272,15 @@ append_awaited_by_for_thread(
 
     while (GET_MEMBER(uintptr_t, task_node, unwinder->debug_offsets.llist_node.next) != head_addr) {
         if (++iteration_count > MAX_ITERATIONS) {
-            PyErr_SetString(PyExc_RuntimeError, "Task list appears corrupted");
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Task list iteration limit exceeded");
+            TyErr_SetString(TyExc_RuntimeError, "Task list appears corrupted");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Task list iteration limit exceeded");
             return -1;
         }
 
         if (GET_MEMBER(uintptr_t, task_node, unwinder->debug_offsets.llist_node.next) == 0) {
-            PyErr_SetString(PyExc_RuntimeError,
+            TyErr_SetString(TyExc_RuntimeError,
                            "Invalid linked list structure reading remote memory");
-            set_exception_cause(unwinder, PyExc_RuntimeError, "NULL pointer in task linked list");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "NULL pointer in task linked list");
             return -1;
         }
 
@@ -2288,17 +2288,17 @@ append_awaited_by_for_thread(
             - unwinder->async_debug_offsets.asyncio_task_object.task_node;
 
         if (process_single_task_node(unwinder, task_addr, NULL, result) < 0) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to process task node in awaited_by");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to process task node in awaited_by");
             return -1;
         }
 
         // Read next node
-        if (_Py_RemoteDebug_PagedReadRemoteMemory(
+        if (_Ty_RemoteDebug_PagedReadRemoteMemory(
                 &unwinder->handle,
                 (uintptr_t)GET_MEMBER(uintptr_t, task_node, unwinder->debug_offsets.llist_node.next),
                 sizeof(task_node),
                 task_node) < 0) {
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read next task node in awaited_by");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read next task node in awaited_by");
             return -1;
         }
     }
@@ -2311,42 +2311,42 @@ append_awaited_by(
     RemoteUnwinderObject *unwinder,
     unsigned long tid,
     uintptr_t head_addr,
-    PyObject *result)
+    TyObject *result)
 {
-    PyObject *tid_py = PyLong_FromUnsignedLong(tid);
+    TyObject *tid_py = TyLong_FromUnsignedLong(tid);
     if (tid_py == NULL) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create thread ID object");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create thread ID object");
         return -1;
     }
 
-    PyObject* awaited_by_for_thread = PyList_New(0);
+    TyObject* awaited_by_for_thread = TyList_New(0);
     if (awaited_by_for_thread == NULL) {
-        Py_DECREF(tid_py);
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create awaited_by thread list");
+        Ty_DECREF(tid_py);
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create awaited_by thread list");
         return -1;
     }
 
-    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((PyObject*)unwinder);
-    PyObject *result_item = PyStructSequence_New(state->AwaitedInfo_Type);
+    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
+    TyObject *result_item = TyStructSequence_New(state->AwaitedInfo_Type);
     if (result_item == NULL) {
-        Py_DECREF(tid_py);
-        Py_DECREF(awaited_by_for_thread);
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create AwaitedInfo");
+        Ty_DECREF(tid_py);
+        Ty_DECREF(awaited_by_for_thread);
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create AwaitedInfo");
         return -1;
     }
 
-    PyStructSequence_SetItem(result_item, 0, tid_py);  // steals ref
-    PyStructSequence_SetItem(result_item, 1, awaited_by_for_thread);  // steals ref
-    if (PyList_Append(result, result_item)) {
-        Py_DECREF(result_item);
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to append awaited_by result item");
+    TyStructSequence_SetItem(result_item, 0, tid_py);  // steals ref
+    TyStructSequence_SetItem(result_item, 1, awaited_by_for_thread);  // steals ref
+    if (TyList_Append(result, result_item)) {
+        Ty_DECREF(result_item);
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append awaited_by result item");
         return -1;
     }
-    Py_DECREF(result_item);
+    Ty_DECREF(result_item);
 
     if (append_awaited_by_for_thread(unwinder, head_addr, awaited_by_for_thread))
     {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to append awaited_by for thread");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append awaited_by for thread");
         return -1;
     }
 
@@ -2362,7 +2362,7 @@ process_frame_chain(
     RemoteUnwinderObject *unwinder,
     uintptr_t initial_frame_addr,
     StackChunkList *chunks,
-    PyObject *frame_info
+    TyObject *frame_info
 ) {
     uintptr_t frame_addr = initial_frame_addr;
     uintptr_t prev_frame_addr = 0;
@@ -2370,21 +2370,21 @@ process_frame_chain(
     size_t frame_count = 0;
 
     while ((void*)frame_addr != NULL) {
-        PyObject *frame = NULL;
+        TyObject *frame = NULL;
         uintptr_t next_frame_addr = 0;
 
         if (++frame_count > MAX_FRAMES) {
-            PyErr_SetString(PyExc_RuntimeError, "Too many stack frames (possible infinite loop)");
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Frame chain iteration limit exceeded");
+            TyErr_SetString(TyExc_RuntimeError, "Too many stack frames (possible infinite loop)");
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Frame chain iteration limit exceeded");
             return -1;
         }
 
         // Try chunks first, fallback to direct memory read
         if (parse_frame_from_chunks(unwinder, &frame, frame_addr, &next_frame_addr, chunks) < 0) {
-            PyErr_Clear();
+            TyErr_Clear();
             uintptr_t address_of_code_object = 0;
             if (parse_frame_object(unwinder, &frame, frame_addr, &address_of_code_object ,&next_frame_addr) < 0) {
-                set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to parse frame object in chain");
+                set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to parse frame object in chain");
                 return -1;
             }
         }
@@ -2394,20 +2394,20 @@ process_frame_chain(
         }
 
         if (prev_frame_addr && frame_addr != prev_frame_addr) {
-            PyErr_Format(PyExc_RuntimeError,
+            TyErr_Format(TyExc_RuntimeError,
                         "Broken frame chain: expected frame at 0x%lx, got 0x%lx",
                         prev_frame_addr, frame_addr);
-            Py_DECREF(frame);
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Frame chain consistency check failed");
+            Ty_DECREF(frame);
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Frame chain consistency check failed");
             return -1;
         }
 
-        if (PyList_Append(frame_info, frame) == -1) {
-            Py_DECREF(frame);
-            set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to append frame to frame info list");
+        if (TyList_Append(frame_info, frame) == -1) {
+            Ty_DECREF(frame);
+            set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append frame to frame info list");
             return -1;
         }
-        Py_DECREF(frame);
+        Ty_DECREF(frame);
 
         prev_frame_addr = next_frame_addr;
         frame_addr = next_frame_addr;
@@ -2416,68 +2416,68 @@ process_frame_chain(
     return 0;
 }
 
-static PyObject*
+static TyObject*
 unwind_stack_for_thread(
     RemoteUnwinderObject *unwinder,
     uintptr_t *current_tstate
 ) {
-    PyObject *frame_info = NULL;
-    PyObject *thread_id = NULL;
-    PyObject *result = NULL;
+    TyObject *frame_info = NULL;
+    TyObject *thread_id = NULL;
+    TyObject *result = NULL;
     StackChunkList chunks = {0};
 
     char ts[SIZEOF_THREAD_STATE];
-    int bytes_read = _Py_RemoteDebug_PagedReadRemoteMemory(
+    int bytes_read = _Ty_RemoteDebug_PagedReadRemoteMemory(
         &unwinder->handle, *current_tstate, unwinder->debug_offsets.thread_state.size, ts);
     if (bytes_read < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to read thread state");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to read thread state");
         goto error;
     }
 
     uintptr_t frame_addr = GET_MEMBER(uintptr_t, ts, unwinder->debug_offsets.thread_state.current_frame);
 
-    frame_info = PyList_New(0);
+    frame_info = TyList_New(0);
     if (!frame_info) {
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create frame info list");
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create frame info list");
         goto error;
     }
 
     if (copy_stack_chunks(unwinder, *current_tstate, &chunks) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to copy stack chunks");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to copy stack chunks");
         goto error;
     }
 
     if (process_frame_chain(unwinder, frame_addr, &chunks, frame_info) < 0) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to process frame chain");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to process frame chain");
         goto error;
     }
 
     *current_tstate = GET_MEMBER(uintptr_t, ts, unwinder->debug_offsets.thread_state.next);
 
-    thread_id = PyLong_FromLongLong(
+    thread_id = TyLong_FromLongLong(
         GET_MEMBER(long, ts, unwinder->debug_offsets.thread_state.native_thread_id));
     if (thread_id == NULL) {
-        set_exception_cause(unwinder, PyExc_RuntimeError, "Failed to create thread ID");
+        set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create thread ID");
         goto error;
     }
 
-    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((PyObject*)unwinder);
-    result = PyStructSequence_New(state->ThreadInfo_Type);
+    RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
+    result = TyStructSequence_New(state->ThreadInfo_Type);
     if (result == NULL) {
-        set_exception_cause(unwinder, PyExc_MemoryError, "Failed to create ThreadInfo");
+        set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create ThreadInfo");
         goto error;
     }
 
-    PyStructSequence_SetItem(result, 0, thread_id);  // Steals reference
-    PyStructSequence_SetItem(result, 1, frame_info); // Steals reference
+    TyStructSequence_SetItem(result, 0, thread_id);  // Steals reference
+    TyStructSequence_SetItem(result, 1, frame_info); // Steals reference
 
     cleanup_stack_chunks(&chunks);
     return result;
 
 error:
-    Py_XDECREF(frame_info);
-    Py_XDECREF(thread_id);
-    Py_XDECREF(result);
+    Ty_XDECREF(frame_info);
+    Ty_XDECREF(thread_id);
+    Ty_XDECREF(result);
     cleanup_stack_chunks(&chunks);
     return NULL;
 }
@@ -2530,15 +2530,15 @@ _remote_debugging_RemoteUnwinder___init___impl(RemoteUnwinderObject *self,
 {
     // Validate that all_threads and only_active_thread are not both True
     if (all_threads && only_active_thread) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                        "all_threads and only_active_thread cannot both be True");
         return -1;
     }
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     if (only_active_thread) {
-        PyErr_SetString(PyExc_ValueError,
-                       "only_active_thread is not supported when Py_GIL_DISABLED is not defined");
+        TyErr_SetString(TyExc_ValueError,
+                       "only_active_thread is not supported when Ty_GIL_DISABLED is not defined");
         return -1;
     }
 #endif
@@ -2546,35 +2546,35 @@ _remote_debugging_RemoteUnwinder___init___impl(RemoteUnwinderObject *self,
     self->debug = debug;
     self->only_active_thread = only_active_thread;
     self->cached_state = NULL;
-    if (_Py_RemoteDebug_InitProcHandle(&self->handle, pid) < 0) {
-        set_exception_cause(self, PyExc_RuntimeError, "Failed to initialize process handle");
+    if (_Ty_RemoteDebug_InitProcHandle(&self->handle, pid) < 0) {
+        set_exception_cause(self, TyExc_RuntimeError, "Failed to initialize process handle");
         return -1;
     }
 
-    self->runtime_start_address = _Py_RemoteDebug_GetPyRuntimeAddress(&self->handle);
+    self->runtime_start_address = _Ty_RemoteDebug_GetPyRuntimeAddress(&self->handle);
     if (self->runtime_start_address == 0) {
-        set_exception_cause(self, PyExc_RuntimeError, "Failed to get Python runtime address");
+        set_exception_cause(self, TyExc_RuntimeError, "Failed to get Python runtime address");
         return -1;
     }
 
-    if (_Py_RemoteDebug_ReadDebugOffsets(&self->handle,
+    if (_Ty_RemoteDebug_ReadDebugOffsets(&self->handle,
                                          &self->runtime_start_address,
                                          &self->debug_offsets) < 0)
     {
-        set_exception_cause(self, PyExc_RuntimeError, "Failed to read debug offsets");
+        set_exception_cause(self, TyExc_RuntimeError, "Failed to read debug offsets");
         return -1;
     }
 
     // Validate that the debug offsets are valid
     if(validate_debug_offsets(&self->debug_offsets) == -1) {
-        set_exception_cause(self, PyExc_RuntimeError, "Invalid debug offsets found");
+        set_exception_cause(self, TyExc_RuntimeError, "Invalid debug offsets found");
         return -1;
     }
 
     // Try to read async debug offsets, but don't fail if they're not available
     self->async_debug_offsets_available = 1;
     if (read_async_debug(self) < 0) {
-        PyErr_Clear();
+        TyErr_Clear();
         memset(&self->async_debug_offsets, 0, sizeof(self->async_debug_offsets));
         self->async_debug_offsets_available = 0;
     }
@@ -2582,37 +2582,37 @@ _remote_debugging_RemoteUnwinder___init___impl(RemoteUnwinderObject *self,
     if (populate_initial_state_data(all_threads, self, self->runtime_start_address,
                     &self->interpreter_addr ,&self->tstate_addr) < 0)
     {
-        set_exception_cause(self, PyExc_RuntimeError, "Failed to populate initial state data");
+        set_exception_cause(self, TyExc_RuntimeError, "Failed to populate initial state data");
         return -1;
     }
 
-    self->code_object_cache = _Py_hashtable_new_full(
-        _Py_hashtable_hash_ptr,
-        _Py_hashtable_compare_direct,
+    self->code_object_cache = _Ty_hashtable_new_full(
+        _Ty_hashtable_hash_ptr,
+        _Ty_hashtable_compare_direct,
         NULL,  // keys are stable pointers, don't destroy
         cached_code_metadata_destroy,
         NULL
     );
     if (self->code_object_cache == NULL) {
-        PyErr_NoMemory();
-        set_exception_cause(self, PyExc_MemoryError, "Failed to create code object cache");
+        TyErr_NoMemory();
+        set_exception_cause(self, TyExc_MemoryError, "Failed to create code object cache");
         return -1;
     }
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     // Initialize TLBC cache
     self->tlbc_generation = 0;
-    self->tlbc_cache = _Py_hashtable_new_full(
-        _Py_hashtable_hash_ptr,
-        _Py_hashtable_compare_direct,
+    self->tlbc_cache = _Ty_hashtable_new_full(
+        _Ty_hashtable_hash_ptr,
+        _Ty_hashtable_compare_direct,
         NULL,  // keys are stable pointers, don't destroy
         tlbc_cache_entry_destroy,
         NULL
     );
     if (self->tlbc_cache == NULL) {
-        _Py_hashtable_destroy(self->code_object_cache);
-        PyErr_NoMemory();
-        set_exception_cause(self, PyExc_MemoryError, "Failed to create TLBC cache");
+        _Ty_hashtable_destroy(self->code_object_cache);
+        TyErr_NoMemory();
+        set_exception_cause(self, TyExc_MemoryError, "Failed to create TLBC cache");
         return -1;
     }
 #endif
@@ -2657,19 +2657,19 @@ Raises:
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _remote_debugging_RemoteUnwinder_get_stack_trace_impl(RemoteUnwinderObject *self)
 /*[clinic end generated code: output=666192b90c69d567 input=f756f341206f9116]*/
 {
-    PyObject* result = NULL;
+    TyObject* result = NULL;
     // Read interpreter state into opaque buffer
     char interp_state_buffer[INTERP_STATE_BUFFER_SIZE];
-    if (_Py_RemoteDebug_PagedReadRemoteMemory(
+    if (_Ty_RemoteDebug_PagedReadRemoteMemory(
             &self->handle,
             self->interpreter_addr,
             INTERP_STATE_BUFFER_SIZE,
             interp_state_buffer) < 0) {
-        set_exception_cause(self, PyExc_RuntimeError, "Failed to read interpreter state buffer");
+        set_exception_cause(self, TyExc_RuntimeError, "Failed to read interpreter state buffer");
         goto exit;
     }
 
@@ -2679,11 +2679,11 @@ _remote_debugging_RemoteUnwinder_get_stack_trace_impl(RemoteUnwinderObject *self
 
     if (code_object_generation != self->code_object_generation) {
         self->code_object_generation = code_object_generation;
-        _Py_hashtable_clear(self->code_object_cache);
+        _Ty_hashtable_clear(self->code_object_cache);
     }
 
     // If only_active_thread is true, we need to determine which thread holds the GIL
-    PyThreadState* gil_holder = NULL;
+    TyThreadState* gil_holder = NULL;
     if (self->only_active_thread) {
         // The GIL state is already in interp_state_buffer, just read from there
         // Check if GIL is locked
@@ -2692,25 +2692,25 @@ _remote_debugging_RemoteUnwinder_get_stack_trace_impl(RemoteUnwinderObject *self
 
         if (gil_locked) {
             // Get the last holder (current holder when GIL is locked)
-            gil_holder = GET_MEMBER(PyThreadState*, interp_state_buffer,
+            gil_holder = GET_MEMBER(TyThreadState*, interp_state_buffer,
                 self->debug_offsets.interpreter_state.gil_runtime_state_holder);
         } else {
             // GIL is not locked, return empty list
-            result = PyList_New(0);
+            result = TyList_New(0);
             if (!result) {
-                set_exception_cause(self, PyExc_MemoryError, "Failed to create empty result list");
+                set_exception_cause(self, TyExc_MemoryError, "Failed to create empty result list");
             }
             goto exit;
         }
     }
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     // Check TLBC generation and invalidate cache if needed
     uint32_t current_tlbc_generation = GET_MEMBER(uint32_t, interp_state_buffer,
                                                   self->debug_offsets.interpreter_state.tlbc_generation);
     if (current_tlbc_generation != self->tlbc_generation) {
         self->tlbc_generation = current_tlbc_generation;
-        _Py_hashtable_clear(self->tlbc_cache);
+        _Ty_hashtable_clear(self->tlbc_cache);
     }
 #endif
 
@@ -2726,27 +2726,27 @@ _remote_debugging_RemoteUnwinder_get_stack_trace_impl(RemoteUnwinderObject *self
         current_tstate = self->tstate_addr;
     }
 
-    result = PyList_New(0);
+    result = TyList_New(0);
     if (!result) {
-        set_exception_cause(self, PyExc_MemoryError, "Failed to create stack trace result list");
+        set_exception_cause(self, TyExc_MemoryError, "Failed to create stack trace result list");
         goto exit;
     }
 
     while (current_tstate != 0) {
-        PyObject* frame_info = unwind_stack_for_thread(self, &current_tstate);
+        TyObject* frame_info = unwind_stack_for_thread(self, &current_tstate);
         if (!frame_info) {
-            Py_CLEAR(result);
-            set_exception_cause(self, PyExc_RuntimeError, "Failed to unwind stack for thread");
+            Ty_CLEAR(result);
+            set_exception_cause(self, TyExc_RuntimeError, "Failed to unwind stack for thread");
             goto exit;
         }
 
-        if (PyList_Append(result, frame_info) == -1) {
-            Py_DECREF(frame_info);
-            Py_CLEAR(result);
-            set_exception_cause(self, PyExc_RuntimeError, "Failed to append thread frame info");
+        if (TyList_Append(result, frame_info) == -1) {
+            Ty_DECREF(frame_info);
+            Ty_CLEAR(result);
+            set_exception_cause(self, TyExc_RuntimeError, "Failed to append thread frame info");
             goto exit;
         }
-        Py_DECREF(frame_info);
+        Ty_DECREF(frame_info);
 
         // We are targeting a single tstate, break here
         if (self->tstate_addr) {
@@ -2760,7 +2760,7 @@ _remote_debugging_RemoteUnwinder_get_stack_trace_impl(RemoteUnwinderObject *self
     }
 
 exit:
-   _Py_RemoteDebug_ClearCache(&self->handle);
+   _Ty_RemoteDebug_ClearCache(&self->handle);
     return result;
 }
 
@@ -2808,19 +2808,19 @@ Example output:
 ]
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _remote_debugging_RemoteUnwinder_get_all_awaited_by_impl(RemoteUnwinderObject *self)
 /*[clinic end generated code: output=6a49cd345e8aec53 input=a452c652bb00701a]*/
 {
     if (!self->async_debug_offsets_available) {
-        PyErr_SetString(PyExc_RuntimeError, "AsyncioDebug section not available");
-        set_exception_cause(self, PyExc_RuntimeError, "AsyncioDebug section unavailable in get_all_awaited_by");
+        TyErr_SetString(TyExc_RuntimeError, "AsyncioDebug section not available");
+        set_exception_cause(self, TyExc_RuntimeError, "AsyncioDebug section unavailable in get_all_awaited_by");
         return NULL;
     }
 
-    PyObject *result = PyList_New(0);
+    TyObject *result = TyList_New(0);
     if (result == NULL) {
-        set_exception_cause(self, PyExc_MemoryError, "Failed to create awaited_by result list");
+        set_exception_cause(self, TyExc_MemoryError, "Failed to create awaited_by result list");
         goto result_err;
     }
 
@@ -2839,16 +2839,16 @@ _remote_debugging_RemoteUnwinder_get_all_awaited_by_impl(RemoteUnwinderObject *s
     // interesting for debugging.
     if (append_awaited_by(self, 0, head_addr, result))
     {
-        set_exception_cause(self, PyExc_RuntimeError, "Failed to append interpreter awaited_by in get_all_awaited_by");
+        set_exception_cause(self, TyExc_RuntimeError, "Failed to append interpreter awaited_by in get_all_awaited_by");
         goto result_err;
     }
 
-    _Py_RemoteDebug_ClearCache(&self->handle);
+    _Ty_RemoteDebug_ClearCache(&self->handle);
     return result;
 
 result_err:
-    _Py_RemoteDebug_ClearCache(&self->handle);
-    Py_XDECREF(result);
+    _Ty_RemoteDebug_ClearCache(&self->handle);
+    Ty_XDECREF(result);
     return NULL;
 }
 
@@ -2897,19 +2897,19 @@ Example output (similar structure to get_all_awaited_by but only for running tas
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _remote_debugging_RemoteUnwinder_get_async_stack_trace_impl(RemoteUnwinderObject *self)
 /*[clinic end generated code: output=6433d52b55e87bbe input=8744b47c9ec2220a]*/
 {
     if (!self->async_debug_offsets_available) {
-        PyErr_SetString(PyExc_RuntimeError, "AsyncioDebug section not available");
-        set_exception_cause(self, PyExc_RuntimeError, "AsyncioDebug section unavailable in get_async_stack_trace");
+        TyErr_SetString(TyExc_RuntimeError, "AsyncioDebug section not available");
+        set_exception_cause(self, TyExc_RuntimeError, "AsyncioDebug section unavailable in get_async_stack_trace");
         return NULL;
     }
 
-    PyObject *result = PyList_New(0);
+    TyObject *result = TyList_New(0);
     if (result == NULL) {
-        set_exception_cause(self, PyExc_MemoryError, "Failed to create result list in get_async_stack_trace");
+        set_exception_cause(self, TyExc_MemoryError, "Failed to create result list in get_async_stack_trace");
         return NULL;
     }
 
@@ -2918,15 +2918,15 @@ _remote_debugging_RemoteUnwinder_get_async_stack_trace_impl(RemoteUnwinderObject
         goto result_err;
     }
 
-    _Py_RemoteDebug_ClearCache(&self->handle);
+    _Ty_RemoteDebug_ClearCache(&self->handle);
     return result;
 result_err:
-    _Py_RemoteDebug_ClearCache(&self->handle);
-    Py_XDECREF(result);
+    _Ty_RemoteDebug_ClearCache(&self->handle);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-static PyMethodDef RemoteUnwinder_methods[] = {
+static TyMethodDef RemoteUnwinder_methods[] = {
     _REMOTE_DEBUGGING_REMOTEUNWINDER_GET_STACK_TRACE_METHODDEF
     _REMOTE_DEBUGGING_REMOTEUNWINDER_GET_ALL_AWAITED_BY_METHODDEF
     _REMOTE_DEBUGGING_REMOTEUNWINDER_GET_ASYNC_STACK_TRACE_METHODDEF
@@ -2934,38 +2934,38 @@ static PyMethodDef RemoteUnwinder_methods[] = {
 };
 
 static void
-RemoteUnwinder_dealloc(PyObject *op)
+RemoteUnwinder_dealloc(TyObject *op)
 {
     RemoteUnwinderObject *self = RemoteUnwinder_CAST(op);
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     if (self->code_object_cache) {
-        _Py_hashtable_destroy(self->code_object_cache);
+        _Ty_hashtable_destroy(self->code_object_cache);
     }
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     if (self->tlbc_cache) {
-        _Py_hashtable_destroy(self->tlbc_cache);
+        _Ty_hashtable_destroy(self->tlbc_cache);
     }
 #endif
     if (self->handle.pid != 0) {
-        _Py_RemoteDebug_ClearCache(&self->handle);
-        _Py_RemoteDebug_CleanupProcHandle(&self->handle);
+        _Ty_RemoteDebug_ClearCache(&self->handle);
+        _Ty_RemoteDebug_CleanupProcHandle(&self->handle);
     }
     PyObject_Del(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
-static PyType_Slot RemoteUnwinder_slots[] = {
-    {Py_tp_doc, (void *)"RemoteUnwinder(pid): Inspect stack of a remote Python process."},
-    {Py_tp_methods, RemoteUnwinder_methods},
-    {Py_tp_init, _remote_debugging_RemoteUnwinder___init__},
-    {Py_tp_dealloc, RemoteUnwinder_dealloc},
+static TyType_Slot RemoteUnwinder_slots[] = {
+    {Ty_tp_doc, (void *)"RemoteUnwinder(pid): Inspect stack of a remote Python process."},
+    {Ty_tp_methods, RemoteUnwinder_methods},
+    {Ty_tp_init, _remote_debugging_RemoteUnwinder___init__},
+    {Ty_tp_dealloc, RemoteUnwinder_dealloc},
     {0, NULL}
 };
 
-static PyType_Spec RemoteUnwinder_spec = {
+static TyType_Spec RemoteUnwinder_spec = {
     .name = "_remote_debugging.RemoteUnwinder",
     .basicsize = sizeof(RemoteUnwinderObject),
-    .flags = Py_TPFLAGS_DEFAULT,
+    .flags = Ty_TPFLAGS_DEFAULT,
     .slots = RemoteUnwinder_slots,
 };
 
@@ -2974,12 +2974,12 @@ static PyType_Spec RemoteUnwinder_spec = {
  * ============================================================================ */
 
 static int
-_remote_debugging_exec(PyObject *m)
+_remote_debugging_exec(TyObject *m)
 {
     RemoteDebuggingState *st = RemoteDebugging_GetState(m);
 #define CREATE_TYPE(mod, type, spec)                                        \
     do {                                                                    \
-        type = (PyTypeObject *)PyType_FromMetaclass(NULL, mod, spec, NULL); \
+        type = (TyTypeObject *)TyType_FromMetaclass(NULL, mod, spec, NULL); \
         if (type == NULL) {                                                 \
             return -1;                                                      \
         }                                                                   \
@@ -2987,54 +2987,54 @@ _remote_debugging_exec(PyObject *m)
 
     CREATE_TYPE(m, st->RemoteDebugging_Type, &RemoteUnwinder_spec);
 
-    if (PyModule_AddType(m, st->RemoteDebugging_Type) < 0) {
+    if (TyModule_AddType(m, st->RemoteDebugging_Type) < 0) {
         return -1;
     }
 
     // Initialize structseq types
-    st->TaskInfo_Type = PyStructSequence_NewType(&TaskInfo_desc);
+    st->TaskInfo_Type = TyStructSequence_NewType(&TaskInfo_desc);
     if (st->TaskInfo_Type == NULL) {
         return -1;
     }
-    if (PyModule_AddType(m, st->TaskInfo_Type) < 0) {
+    if (TyModule_AddType(m, st->TaskInfo_Type) < 0) {
         return -1;
     }
 
-    st->FrameInfo_Type = PyStructSequence_NewType(&FrameInfo_desc);
+    st->FrameInfo_Type = TyStructSequence_NewType(&FrameInfo_desc);
     if (st->FrameInfo_Type == NULL) {
         return -1;
     }
-    if (PyModule_AddType(m, st->FrameInfo_Type) < 0) {
+    if (TyModule_AddType(m, st->FrameInfo_Type) < 0) {
         return -1;
     }
 
-    st->CoroInfo_Type = PyStructSequence_NewType(&CoroInfo_desc);
+    st->CoroInfo_Type = TyStructSequence_NewType(&CoroInfo_desc);
     if (st->CoroInfo_Type == NULL) {
         return -1;
     }
-    if (PyModule_AddType(m, st->CoroInfo_Type) < 0) {
+    if (TyModule_AddType(m, st->CoroInfo_Type) < 0) {
         return -1;
     }
 
-    st->ThreadInfo_Type = PyStructSequence_NewType(&ThreadInfo_desc);
+    st->ThreadInfo_Type = TyStructSequence_NewType(&ThreadInfo_desc);
     if (st->ThreadInfo_Type == NULL) {
         return -1;
     }
-    if (PyModule_AddType(m, st->ThreadInfo_Type) < 0) {
+    if (TyModule_AddType(m, st->ThreadInfo_Type) < 0) {
         return -1;
     }
 
-    st->AwaitedInfo_Type = PyStructSequence_NewType(&AwaitedInfo_desc);
+    st->AwaitedInfo_Type = TyStructSequence_NewType(&AwaitedInfo_desc);
     if (st->AwaitedInfo_Type == NULL) {
         return -1;
     }
-    if (PyModule_AddType(m, st->AwaitedInfo_Type) < 0) {
+    if (TyModule_AddType(m, st->AwaitedInfo_Type) < 0) {
         return -1;
     }
-#ifdef Py_GIL_DISABLED
-    PyUnstable_Module_SetGIL(m, Py_MOD_GIL_NOT_USED);
+#ifdef Ty_GIL_DISABLED
+    PyUnstable_Module_SetGIL(m, Ty_MOD_GIL_NOT_USED);
 #endif
-    int rc = PyModule_AddIntConstant(m, "PROCESS_VM_READV_SUPPORTED", HAVE_PROCESS_VM_READV);
+    int rc = TyModule_AddIntConstant(m, "PROCESS_VM_READV_SUPPORTED", HAVE_PROCESS_VM_READV);
     if (rc < 0) {
         return -1;
     }
@@ -3045,49 +3045,49 @@ _remote_debugging_exec(PyObject *m)
 }
 
 static int
-remote_debugging_traverse(PyObject *mod, visitproc visit, void *arg)
+remote_debugging_traverse(TyObject *mod, visitproc visit, void *arg)
 {
     RemoteDebuggingState *state = RemoteDebugging_GetState(mod);
-    Py_VISIT(state->RemoteDebugging_Type);
-    Py_VISIT(state->TaskInfo_Type);
-    Py_VISIT(state->FrameInfo_Type);
-    Py_VISIT(state->CoroInfo_Type);
-    Py_VISIT(state->ThreadInfo_Type);
-    Py_VISIT(state->AwaitedInfo_Type);
+    Ty_VISIT(state->RemoteDebugging_Type);
+    Ty_VISIT(state->TaskInfo_Type);
+    Ty_VISIT(state->FrameInfo_Type);
+    Ty_VISIT(state->CoroInfo_Type);
+    Ty_VISIT(state->ThreadInfo_Type);
+    Ty_VISIT(state->AwaitedInfo_Type);
     return 0;
 }
 
 static int
-remote_debugging_clear(PyObject *mod)
+remote_debugging_clear(TyObject *mod)
 {
     RemoteDebuggingState *state = RemoteDebugging_GetState(mod);
-    Py_CLEAR(state->RemoteDebugging_Type);
-    Py_CLEAR(state->TaskInfo_Type);
-    Py_CLEAR(state->FrameInfo_Type);
-    Py_CLEAR(state->CoroInfo_Type);
-    Py_CLEAR(state->ThreadInfo_Type);
-    Py_CLEAR(state->AwaitedInfo_Type);
+    Ty_CLEAR(state->RemoteDebugging_Type);
+    Ty_CLEAR(state->TaskInfo_Type);
+    Ty_CLEAR(state->FrameInfo_Type);
+    Ty_CLEAR(state->CoroInfo_Type);
+    Ty_CLEAR(state->ThreadInfo_Type);
+    Ty_CLEAR(state->AwaitedInfo_Type);
     return 0;
 }
 
 static void
 remote_debugging_free(void *mod)
 {
-    (void)remote_debugging_clear((PyObject *)mod);
+    (void)remote_debugging_clear((TyObject *)mod);
 }
 
 static PyModuleDef_Slot remote_debugging_slots[] = {
-    {Py_mod_exec, _remote_debugging_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, _remote_debugging_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyMethodDef remote_debugging_methods[] = {
+static TyMethodDef remote_debugging_methods[] = {
     {NULL, NULL, 0, NULL},
 };
 
-static struct PyModuleDef remote_debugging_module = {
+static struct TyModuleDef remote_debugging_module = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_remote_debugging",
     .m_size = sizeof(RemoteDebuggingState),

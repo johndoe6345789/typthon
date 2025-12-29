@@ -136,8 +136,8 @@ class _incompatible_extension_module_restrictions:
 
     Likewise for modules import in a subinterpreter with its own GIL
     when the extension does not support a per-interpreter GIL.  This
-    implies the module does not have a Py_mod_multiple_interpreters slot
-    set to Py_MOD_PER_INTERPRETER_GIL_SUPPORTED.
+    implies the module does not have a Ty_mod_multiple_interpreters slot
+    set to Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED.
 
     In both cases, this context manager may be used to temporarily
     disable the check for compatible extension modules.

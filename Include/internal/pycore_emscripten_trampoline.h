@@ -1,5 +1,5 @@
-#ifndef Py_EMSCRIPTEN_TRAMPOLINE_H
-#define Py_EMSCRIPTEN_TRAMPOLINE_H
+#ifndef Ty_EMSCRIPTEN_TRAMPOLINE_H
+#define Ty_EMSCRIPTEN_TRAMPOLINE_H
 
 #include "pycore_typedefs.h"      // _PyRuntimeState
 
@@ -28,13 +28,13 @@
 #if defined(__EMSCRIPTEN__) && defined(PY_CALL_TRAMPOLINE)
 
 void
-_Py_EmscriptenTrampoline_Init(_PyRuntimeState *runtime);
+_Ty_EmscriptenTrampoline_Init(_PyRuntimeState *runtime);
 
-PyObject*
+TyObject*
 _PyEM_TrampolineCall(PyCFunctionWithKeywords func,
-                     PyObject* self,
-                     PyObject* args,
-                     PyObject* kw);
+                     TyObject* self,
+                     TyObject* args,
+                     TyObject* kw);
 
 #define _PyCFunction_TrampolineCall(meth, self, args) \
     _PyEM_TrampolineCall(*_PyCFunctionWithKeywords_CAST(meth), (self), (args), NULL)
@@ -44,11 +44,11 @@ _PyEM_TrampolineCall(PyCFunctionWithKeywords func,
 
 #define descr_set_trampoline_call(set, obj, value, closure)                 \
     ((int)_PyEM_TrampolineCall(_PyCFunctionWithKeywords_CAST(set), (obj),   \
-                               (value), (PyObject*)(closure)))
+                               (value), (TyObject*)(closure)))
 
 #define descr_get_trampoline_call(get, obj, closure)                \
     _PyEM_TrampolineCall(_PyCFunctionWithKeywords_CAST(get), (obj), \
-                         (PyObject*)(closure), NULL)
+                         (TyObject*)(closure), NULL)
 
 
 #else // defined(__EMSCRIPTEN__) && defined(PY_CALL_TRAMPOLINE)
@@ -67,4 +67,4 @@ _PyEM_TrampolineCall(PyCFunctionWithKeywords func,
 
 #endif // defined(__EMSCRIPTEN__) && defined(PY_CALL_TRAMPOLINE)
 
-#endif // ndef Py_EMSCRIPTEN_SIGNAL_H
+#endif // ndef Ty_EMSCRIPTEN_SIGNAL_H

@@ -3,13 +3,13 @@
 #include "Python.h"
 #include "pycore_ast.h"
 #include "pycore_ast_state.h"     // struct ast_state
-#include "pycore_ceval.h"         // _Py_EnterRecursiveCall()
+#include "pycore_ceval.h"         // _Ty_EnterRecursiveCall()
 #include "pycore_lock.h"          // _PyOnceFlag
-#include "pycore_modsupport.h"    // _PyArg_NoPositional()
-#include "pycore_pystate.h"       // _PyInterpreterState_GET()
-#include "pycore_runtime.h"       // _Py_ID()
-#include "pycore_setobject.h"     // _PySet_NextEntry()
-#include "pycore_unionobject.h"   // _Py_union_type_or
+#include "pycore_modsupport.h"    // _TyArg_NoPositional()
+#include "pycore_pystate.h"       // _TyInterpreterState_GET()
+#include "pycore_runtime.h"       // _Ty_ID()
+#include "pycore_setobject.h"     // _TySet_NextEntry()
+#include "pycore_unionobject.h"   // _Ty_union_type_or
 
 #include <stddef.h>               // offsetof()
 
@@ -20,265 +20,265 @@ static int init_types(void *arg);
 static struct ast_state*
 get_ast_state(void)
 {
-    PyInterpreterState *interp = _PyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct ast_state *state = &interp->ast;
     assert(!state->finalized);
-    if (_PyOnceFlag_CallOnce(&state->once, (_Py_once_fn_t *)&init_types, state) < 0) {
+    if (_PyOnceFlag_CallOnce(&state->once, (_Ty_once_fn_t *)&init_types, state) < 0) {
         return NULL;
     }
     return state;
 }
 
-void _PyAST_Fini(PyInterpreterState *interp)
+void _TyAST_Fini(TyInterpreterState *interp)
 {
     struct ast_state *state = &interp->ast;
 
-    Py_CLEAR(state->AST_type);
-    Py_CLEAR(state->Add_singleton);
-    Py_CLEAR(state->Add_type);
-    Py_CLEAR(state->And_singleton);
-    Py_CLEAR(state->And_type);
-    Py_CLEAR(state->AnnAssign_type);
-    Py_CLEAR(state->Assert_type);
-    Py_CLEAR(state->Assign_type);
-    Py_CLEAR(state->AsyncFor_type);
-    Py_CLEAR(state->AsyncFunctionDef_type);
-    Py_CLEAR(state->AsyncWith_type);
-    Py_CLEAR(state->Attribute_type);
-    Py_CLEAR(state->AugAssign_type);
-    Py_CLEAR(state->Await_type);
-    Py_CLEAR(state->BinOp_type);
-    Py_CLEAR(state->BitAnd_singleton);
-    Py_CLEAR(state->BitAnd_type);
-    Py_CLEAR(state->BitOr_singleton);
-    Py_CLEAR(state->BitOr_type);
-    Py_CLEAR(state->BitXor_singleton);
-    Py_CLEAR(state->BitXor_type);
-    Py_CLEAR(state->BoolOp_type);
-    Py_CLEAR(state->Break_type);
-    Py_CLEAR(state->Call_type);
-    Py_CLEAR(state->ClassDef_type);
-    Py_CLEAR(state->Compare_type);
-    Py_CLEAR(state->Constant_type);
-    Py_CLEAR(state->Continue_type);
-    Py_CLEAR(state->Del_singleton);
-    Py_CLEAR(state->Del_type);
-    Py_CLEAR(state->Delete_type);
-    Py_CLEAR(state->DictComp_type);
-    Py_CLEAR(state->Dict_type);
-    Py_CLEAR(state->Div_singleton);
-    Py_CLEAR(state->Div_type);
-    Py_CLEAR(state->Eq_singleton);
-    Py_CLEAR(state->Eq_type);
-    Py_CLEAR(state->ExceptHandler_type);
-    Py_CLEAR(state->Expr_type);
-    Py_CLEAR(state->Expression_type);
-    Py_CLEAR(state->FloorDiv_singleton);
-    Py_CLEAR(state->FloorDiv_type);
-    Py_CLEAR(state->For_type);
-    Py_CLEAR(state->FormattedValue_type);
-    Py_CLEAR(state->FunctionDef_type);
-    Py_CLEAR(state->FunctionType_type);
-    Py_CLEAR(state->GeneratorExp_type);
-    Py_CLEAR(state->Global_type);
-    Py_CLEAR(state->GtE_singleton);
-    Py_CLEAR(state->GtE_type);
-    Py_CLEAR(state->Gt_singleton);
-    Py_CLEAR(state->Gt_type);
-    Py_CLEAR(state->IfExp_type);
-    Py_CLEAR(state->If_type);
-    Py_CLEAR(state->ImportFrom_type);
-    Py_CLEAR(state->Import_type);
-    Py_CLEAR(state->In_singleton);
-    Py_CLEAR(state->In_type);
-    Py_CLEAR(state->Interactive_type);
-    Py_CLEAR(state->Interpolation_type);
-    Py_CLEAR(state->Invert_singleton);
-    Py_CLEAR(state->Invert_type);
-    Py_CLEAR(state->IsNot_singleton);
-    Py_CLEAR(state->IsNot_type);
-    Py_CLEAR(state->Is_singleton);
-    Py_CLEAR(state->Is_type);
-    Py_CLEAR(state->JoinedStr_type);
-    Py_CLEAR(state->LShift_singleton);
-    Py_CLEAR(state->LShift_type);
-    Py_CLEAR(state->Lambda_type);
-    Py_CLEAR(state->ListComp_type);
-    Py_CLEAR(state->List_type);
-    Py_CLEAR(state->Load_singleton);
-    Py_CLEAR(state->Load_type);
-    Py_CLEAR(state->LtE_singleton);
-    Py_CLEAR(state->LtE_type);
-    Py_CLEAR(state->Lt_singleton);
-    Py_CLEAR(state->Lt_type);
-    Py_CLEAR(state->MatMult_singleton);
-    Py_CLEAR(state->MatMult_type);
-    Py_CLEAR(state->MatchAs_type);
-    Py_CLEAR(state->MatchClass_type);
-    Py_CLEAR(state->MatchMapping_type);
-    Py_CLEAR(state->MatchOr_type);
-    Py_CLEAR(state->MatchSequence_type);
-    Py_CLEAR(state->MatchSingleton_type);
-    Py_CLEAR(state->MatchStar_type);
-    Py_CLEAR(state->MatchValue_type);
-    Py_CLEAR(state->Match_type);
-    Py_CLEAR(state->Mod_singleton);
-    Py_CLEAR(state->Mod_type);
-    Py_CLEAR(state->Module_type);
-    Py_CLEAR(state->Mult_singleton);
-    Py_CLEAR(state->Mult_type);
-    Py_CLEAR(state->Name_type);
-    Py_CLEAR(state->NamedExpr_type);
-    Py_CLEAR(state->Nonlocal_type);
-    Py_CLEAR(state->NotEq_singleton);
-    Py_CLEAR(state->NotEq_type);
-    Py_CLEAR(state->NotIn_singleton);
-    Py_CLEAR(state->NotIn_type);
-    Py_CLEAR(state->Not_singleton);
-    Py_CLEAR(state->Not_type);
-    Py_CLEAR(state->Or_singleton);
-    Py_CLEAR(state->Or_type);
-    Py_CLEAR(state->ParamSpec_type);
-    Py_CLEAR(state->Pass_type);
-    Py_CLEAR(state->Pow_singleton);
-    Py_CLEAR(state->Pow_type);
-    Py_CLEAR(state->RShift_singleton);
-    Py_CLEAR(state->RShift_type);
-    Py_CLEAR(state->Raise_type);
-    Py_CLEAR(state->Return_type);
-    Py_CLEAR(state->SetComp_type);
-    Py_CLEAR(state->Set_type);
-    Py_CLEAR(state->Slice_type);
-    Py_CLEAR(state->Starred_type);
-    Py_CLEAR(state->Store_singleton);
-    Py_CLEAR(state->Store_type);
-    Py_CLEAR(state->Sub_singleton);
-    Py_CLEAR(state->Sub_type);
-    Py_CLEAR(state->Subscript_type);
-    Py_CLEAR(state->TemplateStr_type);
-    Py_CLEAR(state->TryStar_type);
-    Py_CLEAR(state->Try_type);
-    Py_CLEAR(state->Tuple_type);
-    Py_CLEAR(state->TypeAlias_type);
-    Py_CLEAR(state->TypeIgnore_type);
-    Py_CLEAR(state->TypeVarTuple_type);
-    Py_CLEAR(state->TypeVar_type);
-    Py_CLEAR(state->UAdd_singleton);
-    Py_CLEAR(state->UAdd_type);
-    Py_CLEAR(state->USub_singleton);
-    Py_CLEAR(state->USub_type);
-    Py_CLEAR(state->UnaryOp_type);
-    Py_CLEAR(state->While_type);
-    Py_CLEAR(state->With_type);
-    Py_CLEAR(state->YieldFrom_type);
-    Py_CLEAR(state->Yield_type);
-    Py_CLEAR(state->__dict__);
-    Py_CLEAR(state->__doc__);
-    Py_CLEAR(state->__match_args__);
-    Py_CLEAR(state->__module__);
-    Py_CLEAR(state->_attributes);
-    Py_CLEAR(state->_fields);
-    Py_CLEAR(state->alias_type);
-    Py_CLEAR(state->annotation);
-    Py_CLEAR(state->arg);
-    Py_CLEAR(state->arg_type);
-    Py_CLEAR(state->args);
-    Py_CLEAR(state->argtypes);
-    Py_CLEAR(state->arguments_type);
-    Py_CLEAR(state->asname);
-    Py_CLEAR(state->ast);
-    Py_CLEAR(state->attr);
-    Py_CLEAR(state->bases);
-    Py_CLEAR(state->body);
-    Py_CLEAR(state->boolop_type);
-    Py_CLEAR(state->bound);
-    Py_CLEAR(state->cases);
-    Py_CLEAR(state->cause);
-    Py_CLEAR(state->cls);
-    Py_CLEAR(state->cmpop_type);
-    Py_CLEAR(state->col_offset);
-    Py_CLEAR(state->comparators);
-    Py_CLEAR(state->comprehension_type);
-    Py_CLEAR(state->context_expr);
-    Py_CLEAR(state->conversion);
-    Py_CLEAR(state->ctx);
-    Py_CLEAR(state->decorator_list);
-    Py_CLEAR(state->default_value);
-    Py_CLEAR(state->defaults);
-    Py_CLEAR(state->elt);
-    Py_CLEAR(state->elts);
-    Py_CLEAR(state->end_col_offset);
-    Py_CLEAR(state->end_lineno);
-    Py_CLEAR(state->exc);
-    Py_CLEAR(state->excepthandler_type);
-    Py_CLEAR(state->expr_context_type);
-    Py_CLEAR(state->expr_type);
-    Py_CLEAR(state->finalbody);
-    Py_CLEAR(state->format_spec);
-    Py_CLEAR(state->func);
-    Py_CLEAR(state->generators);
-    Py_CLEAR(state->guard);
-    Py_CLEAR(state->handlers);
-    Py_CLEAR(state->id);
-    Py_CLEAR(state->ifs);
-    Py_CLEAR(state->is_async);
-    Py_CLEAR(state->items);
-    Py_CLEAR(state->iter);
-    Py_CLEAR(state->key);
-    Py_CLEAR(state->keys);
-    Py_CLEAR(state->keyword_type);
-    Py_CLEAR(state->keywords);
-    Py_CLEAR(state->kind);
-    Py_CLEAR(state->kw_defaults);
-    Py_CLEAR(state->kwarg);
-    Py_CLEAR(state->kwd_attrs);
-    Py_CLEAR(state->kwd_patterns);
-    Py_CLEAR(state->kwonlyargs);
-    Py_CLEAR(state->left);
-    Py_CLEAR(state->level);
-    Py_CLEAR(state->lineno);
-    Py_CLEAR(state->lower);
-    Py_CLEAR(state->match_case_type);
-    Py_CLEAR(state->mod_type);
-    Py_CLEAR(state->module);
-    Py_CLEAR(state->msg);
-    Py_CLEAR(state->name);
-    Py_CLEAR(state->names);
-    Py_CLEAR(state->op);
-    Py_CLEAR(state->operand);
-    Py_CLEAR(state->operator_type);
-    Py_CLEAR(state->ops);
-    Py_CLEAR(state->optional_vars);
-    Py_CLEAR(state->orelse);
-    Py_CLEAR(state->pattern);
-    Py_CLEAR(state->pattern_type);
-    Py_CLEAR(state->patterns);
-    Py_CLEAR(state->posonlyargs);
-    Py_CLEAR(state->rest);
-    Py_CLEAR(state->returns);
-    Py_CLEAR(state->right);
-    Py_CLEAR(state->simple);
-    Py_CLEAR(state->slice);
-    Py_CLEAR(state->step);
-    Py_CLEAR(state->stmt_type);
-    Py_CLEAR(state->str);
-    Py_CLEAR(state->subject);
-    Py_CLEAR(state->tag);
-    Py_CLEAR(state->target);
-    Py_CLEAR(state->targets);
-    Py_CLEAR(state->test);
-    Py_CLEAR(state->type);
-    Py_CLEAR(state->type_comment);
-    Py_CLEAR(state->type_ignore_type);
-    Py_CLEAR(state->type_ignores);
-    Py_CLEAR(state->type_param_type);
-    Py_CLEAR(state->type_params);
-    Py_CLEAR(state->unaryop_type);
-    Py_CLEAR(state->upper);
-    Py_CLEAR(state->value);
-    Py_CLEAR(state->values);
-    Py_CLEAR(state->vararg);
-    Py_CLEAR(state->withitem_type);
+    Ty_CLEAR(state->AST_type);
+    Ty_CLEAR(state->Add_singleton);
+    Ty_CLEAR(state->Add_type);
+    Ty_CLEAR(state->And_singleton);
+    Ty_CLEAR(state->And_type);
+    Ty_CLEAR(state->AnnAssign_type);
+    Ty_CLEAR(state->Assert_type);
+    Ty_CLEAR(state->Assign_type);
+    Ty_CLEAR(state->AsyncFor_type);
+    Ty_CLEAR(state->AsyncFunctionDef_type);
+    Ty_CLEAR(state->AsyncWith_type);
+    Ty_CLEAR(state->Attribute_type);
+    Ty_CLEAR(state->AugAssign_type);
+    Ty_CLEAR(state->Await_type);
+    Ty_CLEAR(state->BinOp_type);
+    Ty_CLEAR(state->BitAnd_singleton);
+    Ty_CLEAR(state->BitAnd_type);
+    Ty_CLEAR(state->BitOr_singleton);
+    Ty_CLEAR(state->BitOr_type);
+    Ty_CLEAR(state->BitXor_singleton);
+    Ty_CLEAR(state->BitXor_type);
+    Ty_CLEAR(state->BoolOp_type);
+    Ty_CLEAR(state->Break_type);
+    Ty_CLEAR(state->Call_type);
+    Ty_CLEAR(state->ClassDef_type);
+    Ty_CLEAR(state->Compare_type);
+    Ty_CLEAR(state->Constant_type);
+    Ty_CLEAR(state->Continue_type);
+    Ty_CLEAR(state->Del_singleton);
+    Ty_CLEAR(state->Del_type);
+    Ty_CLEAR(state->Delete_type);
+    Ty_CLEAR(state->DictComp_type);
+    Ty_CLEAR(state->Dict_type);
+    Ty_CLEAR(state->Div_singleton);
+    Ty_CLEAR(state->Div_type);
+    Ty_CLEAR(state->Eq_singleton);
+    Ty_CLEAR(state->Eq_type);
+    Ty_CLEAR(state->ExceptHandler_type);
+    Ty_CLEAR(state->Expr_type);
+    Ty_CLEAR(state->Expression_type);
+    Ty_CLEAR(state->FloorDiv_singleton);
+    Ty_CLEAR(state->FloorDiv_type);
+    Ty_CLEAR(state->For_type);
+    Ty_CLEAR(state->FormattedValue_type);
+    Ty_CLEAR(state->FunctionDef_type);
+    Ty_CLEAR(state->FunctionType_type);
+    Ty_CLEAR(state->GeneratorExp_type);
+    Ty_CLEAR(state->Global_type);
+    Ty_CLEAR(state->GtE_singleton);
+    Ty_CLEAR(state->GtE_type);
+    Ty_CLEAR(state->Gt_singleton);
+    Ty_CLEAR(state->Gt_type);
+    Ty_CLEAR(state->IfExp_type);
+    Ty_CLEAR(state->If_type);
+    Ty_CLEAR(state->ImportFrom_type);
+    Ty_CLEAR(state->Import_type);
+    Ty_CLEAR(state->In_singleton);
+    Ty_CLEAR(state->In_type);
+    Ty_CLEAR(state->Interactive_type);
+    Ty_CLEAR(state->Interpolation_type);
+    Ty_CLEAR(state->Invert_singleton);
+    Ty_CLEAR(state->Invert_type);
+    Ty_CLEAR(state->IsNot_singleton);
+    Ty_CLEAR(state->IsNot_type);
+    Ty_CLEAR(state->Is_singleton);
+    Ty_CLEAR(state->Is_type);
+    Ty_CLEAR(state->JoinedStr_type);
+    Ty_CLEAR(state->LShift_singleton);
+    Ty_CLEAR(state->LShift_type);
+    Ty_CLEAR(state->Lambda_type);
+    Ty_CLEAR(state->ListComp_type);
+    Ty_CLEAR(state->List_type);
+    Ty_CLEAR(state->Load_singleton);
+    Ty_CLEAR(state->Load_type);
+    Ty_CLEAR(state->LtE_singleton);
+    Ty_CLEAR(state->LtE_type);
+    Ty_CLEAR(state->Lt_singleton);
+    Ty_CLEAR(state->Lt_type);
+    Ty_CLEAR(state->MatMult_singleton);
+    Ty_CLEAR(state->MatMult_type);
+    Ty_CLEAR(state->MatchAs_type);
+    Ty_CLEAR(state->MatchClass_type);
+    Ty_CLEAR(state->MatchMapping_type);
+    Ty_CLEAR(state->MatchOr_type);
+    Ty_CLEAR(state->MatchSequence_type);
+    Ty_CLEAR(state->MatchSingleton_type);
+    Ty_CLEAR(state->MatchStar_type);
+    Ty_CLEAR(state->MatchValue_type);
+    Ty_CLEAR(state->Match_type);
+    Ty_CLEAR(state->Mod_singleton);
+    Ty_CLEAR(state->Mod_type);
+    Ty_CLEAR(state->Module_type);
+    Ty_CLEAR(state->Mult_singleton);
+    Ty_CLEAR(state->Mult_type);
+    Ty_CLEAR(state->Name_type);
+    Ty_CLEAR(state->NamedExpr_type);
+    Ty_CLEAR(state->Nonlocal_type);
+    Ty_CLEAR(state->NotEq_singleton);
+    Ty_CLEAR(state->NotEq_type);
+    Ty_CLEAR(state->NotIn_singleton);
+    Ty_CLEAR(state->NotIn_type);
+    Ty_CLEAR(state->Not_singleton);
+    Ty_CLEAR(state->Not_type);
+    Ty_CLEAR(state->Or_singleton);
+    Ty_CLEAR(state->Or_type);
+    Ty_CLEAR(state->ParamSpec_type);
+    Ty_CLEAR(state->Pass_type);
+    Ty_CLEAR(state->Pow_singleton);
+    Ty_CLEAR(state->Pow_type);
+    Ty_CLEAR(state->RShift_singleton);
+    Ty_CLEAR(state->RShift_type);
+    Ty_CLEAR(state->Raise_type);
+    Ty_CLEAR(state->Return_type);
+    Ty_CLEAR(state->SetComp_type);
+    Ty_CLEAR(state->Set_type);
+    Ty_CLEAR(state->Slice_type);
+    Ty_CLEAR(state->Starred_type);
+    Ty_CLEAR(state->Store_singleton);
+    Ty_CLEAR(state->Store_type);
+    Ty_CLEAR(state->Sub_singleton);
+    Ty_CLEAR(state->Sub_type);
+    Ty_CLEAR(state->Subscript_type);
+    Ty_CLEAR(state->TemplateStr_type);
+    Ty_CLEAR(state->TryStar_type);
+    Ty_CLEAR(state->Try_type);
+    Ty_CLEAR(state->Tuple_type);
+    Ty_CLEAR(state->TypeAlias_type);
+    Ty_CLEAR(state->TypeIgnore_type);
+    Ty_CLEAR(state->TypeVarTuple_type);
+    Ty_CLEAR(state->TypeVar_type);
+    Ty_CLEAR(state->UAdd_singleton);
+    Ty_CLEAR(state->UAdd_type);
+    Ty_CLEAR(state->USub_singleton);
+    Ty_CLEAR(state->USub_type);
+    Ty_CLEAR(state->UnaryOp_type);
+    Ty_CLEAR(state->While_type);
+    Ty_CLEAR(state->With_type);
+    Ty_CLEAR(state->YieldFrom_type);
+    Ty_CLEAR(state->Yield_type);
+    Ty_CLEAR(state->__dict__);
+    Ty_CLEAR(state->__doc__);
+    Ty_CLEAR(state->__match_args__);
+    Ty_CLEAR(state->__module__);
+    Ty_CLEAR(state->_attributes);
+    Ty_CLEAR(state->_fields);
+    Ty_CLEAR(state->alias_type);
+    Ty_CLEAR(state->annotation);
+    Ty_CLEAR(state->arg);
+    Ty_CLEAR(state->arg_type);
+    Ty_CLEAR(state->args);
+    Ty_CLEAR(state->argtypes);
+    Ty_CLEAR(state->arguments_type);
+    Ty_CLEAR(state->asname);
+    Ty_CLEAR(state->ast);
+    Ty_CLEAR(state->attr);
+    Ty_CLEAR(state->bases);
+    Ty_CLEAR(state->body);
+    Ty_CLEAR(state->boolop_type);
+    Ty_CLEAR(state->bound);
+    Ty_CLEAR(state->cases);
+    Ty_CLEAR(state->cause);
+    Ty_CLEAR(state->cls);
+    Ty_CLEAR(state->cmpop_type);
+    Ty_CLEAR(state->col_offset);
+    Ty_CLEAR(state->comparators);
+    Ty_CLEAR(state->comprehension_type);
+    Ty_CLEAR(state->context_expr);
+    Ty_CLEAR(state->conversion);
+    Ty_CLEAR(state->ctx);
+    Ty_CLEAR(state->decorator_list);
+    Ty_CLEAR(state->default_value);
+    Ty_CLEAR(state->defaults);
+    Ty_CLEAR(state->elt);
+    Ty_CLEAR(state->elts);
+    Ty_CLEAR(state->end_col_offset);
+    Ty_CLEAR(state->end_lineno);
+    Ty_CLEAR(state->exc);
+    Ty_CLEAR(state->excepthandler_type);
+    Ty_CLEAR(state->expr_context_type);
+    Ty_CLEAR(state->expr_type);
+    Ty_CLEAR(state->finalbody);
+    Ty_CLEAR(state->format_spec);
+    Ty_CLEAR(state->func);
+    Ty_CLEAR(state->generators);
+    Ty_CLEAR(state->guard);
+    Ty_CLEAR(state->handlers);
+    Ty_CLEAR(state->id);
+    Ty_CLEAR(state->ifs);
+    Ty_CLEAR(state->is_async);
+    Ty_CLEAR(state->items);
+    Ty_CLEAR(state->iter);
+    Ty_CLEAR(state->key);
+    Ty_CLEAR(state->keys);
+    Ty_CLEAR(state->keyword_type);
+    Ty_CLEAR(state->keywords);
+    Ty_CLEAR(state->kind);
+    Ty_CLEAR(state->kw_defaults);
+    Ty_CLEAR(state->kwarg);
+    Ty_CLEAR(state->kwd_attrs);
+    Ty_CLEAR(state->kwd_patterns);
+    Ty_CLEAR(state->kwonlyargs);
+    Ty_CLEAR(state->left);
+    Ty_CLEAR(state->level);
+    Ty_CLEAR(state->lineno);
+    Ty_CLEAR(state->lower);
+    Ty_CLEAR(state->match_case_type);
+    Ty_CLEAR(state->mod_type);
+    Ty_CLEAR(state->module);
+    Ty_CLEAR(state->msg);
+    Ty_CLEAR(state->name);
+    Ty_CLEAR(state->names);
+    Ty_CLEAR(state->op);
+    Ty_CLEAR(state->operand);
+    Ty_CLEAR(state->operator_type);
+    Ty_CLEAR(state->ops);
+    Ty_CLEAR(state->optional_vars);
+    Ty_CLEAR(state->orelse);
+    Ty_CLEAR(state->pattern);
+    Ty_CLEAR(state->pattern_type);
+    Ty_CLEAR(state->patterns);
+    Ty_CLEAR(state->posonlyargs);
+    Ty_CLEAR(state->rest);
+    Ty_CLEAR(state->returns);
+    Ty_CLEAR(state->right);
+    Ty_CLEAR(state->simple);
+    Ty_CLEAR(state->slice);
+    Ty_CLEAR(state->step);
+    Ty_CLEAR(state->stmt_type);
+    Ty_CLEAR(state->str);
+    Ty_CLEAR(state->subject);
+    Ty_CLEAR(state->tag);
+    Ty_CLEAR(state->target);
+    Ty_CLEAR(state->targets);
+    Ty_CLEAR(state->test);
+    Ty_CLEAR(state->type);
+    Ty_CLEAR(state->type_comment);
+    Ty_CLEAR(state->type_ignore_type);
+    Ty_CLEAR(state->type_ignores);
+    Ty_CLEAR(state->type_param_type);
+    Ty_CLEAR(state->type_params);
+    Ty_CLEAR(state->unaryop_type);
+    Ty_CLEAR(state->upper);
+    Ty_CLEAR(state->value);
+    Ty_CLEAR(state->values);
+    Ty_CLEAR(state->vararg);
+    Ty_CLEAR(state->withitem_type);
 
     state->finalized = 1;
     state->once = (_PyOnceFlag){0};
@@ -286,94 +286,94 @@ void _PyAST_Fini(PyInterpreterState *interp)
 
 static int init_identifiers(struct ast_state *state)
 {
-    if ((state->__dict__ = PyUnicode_InternFromString("__dict__")) == NULL) return -1;
-    if ((state->__doc__ = PyUnicode_InternFromString("__doc__")) == NULL) return -1;
-    if ((state->__match_args__ = PyUnicode_InternFromString("__match_args__")) == NULL) return -1;
-    if ((state->__module__ = PyUnicode_InternFromString("__module__")) == NULL) return -1;
-    if ((state->_attributes = PyUnicode_InternFromString("_attributes")) == NULL) return -1;
-    if ((state->_fields = PyUnicode_InternFromString("_fields")) == NULL) return -1;
-    if ((state->annotation = PyUnicode_InternFromString("annotation")) == NULL) return -1;
-    if ((state->arg = PyUnicode_InternFromString("arg")) == NULL) return -1;
-    if ((state->args = PyUnicode_InternFromString("args")) == NULL) return -1;
-    if ((state->argtypes = PyUnicode_InternFromString("argtypes")) == NULL) return -1;
-    if ((state->asname = PyUnicode_InternFromString("asname")) == NULL) return -1;
-    if ((state->ast = PyUnicode_InternFromString("ast")) == NULL) return -1;
-    if ((state->attr = PyUnicode_InternFromString("attr")) == NULL) return -1;
-    if ((state->bases = PyUnicode_InternFromString("bases")) == NULL) return -1;
-    if ((state->body = PyUnicode_InternFromString("body")) == NULL) return -1;
-    if ((state->bound = PyUnicode_InternFromString("bound")) == NULL) return -1;
-    if ((state->cases = PyUnicode_InternFromString("cases")) == NULL) return -1;
-    if ((state->cause = PyUnicode_InternFromString("cause")) == NULL) return -1;
-    if ((state->cls = PyUnicode_InternFromString("cls")) == NULL) return -1;
-    if ((state->col_offset = PyUnicode_InternFromString("col_offset")) == NULL) return -1;
-    if ((state->comparators = PyUnicode_InternFromString("comparators")) == NULL) return -1;
-    if ((state->context_expr = PyUnicode_InternFromString("context_expr")) == NULL) return -1;
-    if ((state->conversion = PyUnicode_InternFromString("conversion")) == NULL) return -1;
-    if ((state->ctx = PyUnicode_InternFromString("ctx")) == NULL) return -1;
-    if ((state->decorator_list = PyUnicode_InternFromString("decorator_list")) == NULL) return -1;
-    if ((state->default_value = PyUnicode_InternFromString("default_value")) == NULL) return -1;
-    if ((state->defaults = PyUnicode_InternFromString("defaults")) == NULL) return -1;
-    if ((state->elt = PyUnicode_InternFromString("elt")) == NULL) return -1;
-    if ((state->elts = PyUnicode_InternFromString("elts")) == NULL) return -1;
-    if ((state->end_col_offset = PyUnicode_InternFromString("end_col_offset")) == NULL) return -1;
-    if ((state->end_lineno = PyUnicode_InternFromString("end_lineno")) == NULL) return -1;
-    if ((state->exc = PyUnicode_InternFromString("exc")) == NULL) return -1;
-    if ((state->finalbody = PyUnicode_InternFromString("finalbody")) == NULL) return -1;
-    if ((state->format_spec = PyUnicode_InternFromString("format_spec")) == NULL) return -1;
-    if ((state->func = PyUnicode_InternFromString("func")) == NULL) return -1;
-    if ((state->generators = PyUnicode_InternFromString("generators")) == NULL) return -1;
-    if ((state->guard = PyUnicode_InternFromString("guard")) == NULL) return -1;
-    if ((state->handlers = PyUnicode_InternFromString("handlers")) == NULL) return -1;
-    if ((state->id = PyUnicode_InternFromString("id")) == NULL) return -1;
-    if ((state->ifs = PyUnicode_InternFromString("ifs")) == NULL) return -1;
-    if ((state->is_async = PyUnicode_InternFromString("is_async")) == NULL) return -1;
-    if ((state->items = PyUnicode_InternFromString("items")) == NULL) return -1;
-    if ((state->iter = PyUnicode_InternFromString("iter")) == NULL) return -1;
-    if ((state->key = PyUnicode_InternFromString("key")) == NULL) return -1;
-    if ((state->keys = PyUnicode_InternFromString("keys")) == NULL) return -1;
-    if ((state->keywords = PyUnicode_InternFromString("keywords")) == NULL) return -1;
-    if ((state->kind = PyUnicode_InternFromString("kind")) == NULL) return -1;
-    if ((state->kw_defaults = PyUnicode_InternFromString("kw_defaults")) == NULL) return -1;
-    if ((state->kwarg = PyUnicode_InternFromString("kwarg")) == NULL) return -1;
-    if ((state->kwd_attrs = PyUnicode_InternFromString("kwd_attrs")) == NULL) return -1;
-    if ((state->kwd_patterns = PyUnicode_InternFromString("kwd_patterns")) == NULL) return -1;
-    if ((state->kwonlyargs = PyUnicode_InternFromString("kwonlyargs")) == NULL) return -1;
-    if ((state->left = PyUnicode_InternFromString("left")) == NULL) return -1;
-    if ((state->level = PyUnicode_InternFromString("level")) == NULL) return -1;
-    if ((state->lineno = PyUnicode_InternFromString("lineno")) == NULL) return -1;
-    if ((state->lower = PyUnicode_InternFromString("lower")) == NULL) return -1;
-    if ((state->module = PyUnicode_InternFromString("module")) == NULL) return -1;
-    if ((state->msg = PyUnicode_InternFromString("msg")) == NULL) return -1;
-    if ((state->name = PyUnicode_InternFromString("name")) == NULL) return -1;
-    if ((state->names = PyUnicode_InternFromString("names")) == NULL) return -1;
-    if ((state->op = PyUnicode_InternFromString("op")) == NULL) return -1;
-    if ((state->operand = PyUnicode_InternFromString("operand")) == NULL) return -1;
-    if ((state->ops = PyUnicode_InternFromString("ops")) == NULL) return -1;
-    if ((state->optional_vars = PyUnicode_InternFromString("optional_vars")) == NULL) return -1;
-    if ((state->orelse = PyUnicode_InternFromString("orelse")) == NULL) return -1;
-    if ((state->pattern = PyUnicode_InternFromString("pattern")) == NULL) return -1;
-    if ((state->patterns = PyUnicode_InternFromString("patterns")) == NULL) return -1;
-    if ((state->posonlyargs = PyUnicode_InternFromString("posonlyargs")) == NULL) return -1;
-    if ((state->rest = PyUnicode_InternFromString("rest")) == NULL) return -1;
-    if ((state->returns = PyUnicode_InternFromString("returns")) == NULL) return -1;
-    if ((state->right = PyUnicode_InternFromString("right")) == NULL) return -1;
-    if ((state->simple = PyUnicode_InternFromString("simple")) == NULL) return -1;
-    if ((state->slice = PyUnicode_InternFromString("slice")) == NULL) return -1;
-    if ((state->step = PyUnicode_InternFromString("step")) == NULL) return -1;
-    if ((state->str = PyUnicode_InternFromString("str")) == NULL) return -1;
-    if ((state->subject = PyUnicode_InternFromString("subject")) == NULL) return -1;
-    if ((state->tag = PyUnicode_InternFromString("tag")) == NULL) return -1;
-    if ((state->target = PyUnicode_InternFromString("target")) == NULL) return -1;
-    if ((state->targets = PyUnicode_InternFromString("targets")) == NULL) return -1;
-    if ((state->test = PyUnicode_InternFromString("test")) == NULL) return -1;
-    if ((state->type = PyUnicode_InternFromString("type")) == NULL) return -1;
-    if ((state->type_comment = PyUnicode_InternFromString("type_comment")) == NULL) return -1;
-    if ((state->type_ignores = PyUnicode_InternFromString("type_ignores")) == NULL) return -1;
-    if ((state->type_params = PyUnicode_InternFromString("type_params")) == NULL) return -1;
-    if ((state->upper = PyUnicode_InternFromString("upper")) == NULL) return -1;
-    if ((state->value = PyUnicode_InternFromString("value")) == NULL) return -1;
-    if ((state->values = PyUnicode_InternFromString("values")) == NULL) return -1;
-    if ((state->vararg = PyUnicode_InternFromString("vararg")) == NULL) return -1;
+    if ((state->__dict__ = TyUnicode_InternFromString("__dict__")) == NULL) return -1;
+    if ((state->__doc__ = TyUnicode_InternFromString("__doc__")) == NULL) return -1;
+    if ((state->__match_args__ = TyUnicode_InternFromString("__match_args__")) == NULL) return -1;
+    if ((state->__module__ = TyUnicode_InternFromString("__module__")) == NULL) return -1;
+    if ((state->_attributes = TyUnicode_InternFromString("_attributes")) == NULL) return -1;
+    if ((state->_fields = TyUnicode_InternFromString("_fields")) == NULL) return -1;
+    if ((state->annotation = TyUnicode_InternFromString("annotation")) == NULL) return -1;
+    if ((state->arg = TyUnicode_InternFromString("arg")) == NULL) return -1;
+    if ((state->args = TyUnicode_InternFromString("args")) == NULL) return -1;
+    if ((state->argtypes = TyUnicode_InternFromString("argtypes")) == NULL) return -1;
+    if ((state->asname = TyUnicode_InternFromString("asname")) == NULL) return -1;
+    if ((state->ast = TyUnicode_InternFromString("ast")) == NULL) return -1;
+    if ((state->attr = TyUnicode_InternFromString("attr")) == NULL) return -1;
+    if ((state->bases = TyUnicode_InternFromString("bases")) == NULL) return -1;
+    if ((state->body = TyUnicode_InternFromString("body")) == NULL) return -1;
+    if ((state->bound = TyUnicode_InternFromString("bound")) == NULL) return -1;
+    if ((state->cases = TyUnicode_InternFromString("cases")) == NULL) return -1;
+    if ((state->cause = TyUnicode_InternFromString("cause")) == NULL) return -1;
+    if ((state->cls = TyUnicode_InternFromString("cls")) == NULL) return -1;
+    if ((state->col_offset = TyUnicode_InternFromString("col_offset")) == NULL) return -1;
+    if ((state->comparators = TyUnicode_InternFromString("comparators")) == NULL) return -1;
+    if ((state->context_expr = TyUnicode_InternFromString("context_expr")) == NULL) return -1;
+    if ((state->conversion = TyUnicode_InternFromString("conversion")) == NULL) return -1;
+    if ((state->ctx = TyUnicode_InternFromString("ctx")) == NULL) return -1;
+    if ((state->decorator_list = TyUnicode_InternFromString("decorator_list")) == NULL) return -1;
+    if ((state->default_value = TyUnicode_InternFromString("default_value")) == NULL) return -1;
+    if ((state->defaults = TyUnicode_InternFromString("defaults")) == NULL) return -1;
+    if ((state->elt = TyUnicode_InternFromString("elt")) == NULL) return -1;
+    if ((state->elts = TyUnicode_InternFromString("elts")) == NULL) return -1;
+    if ((state->end_col_offset = TyUnicode_InternFromString("end_col_offset")) == NULL) return -1;
+    if ((state->end_lineno = TyUnicode_InternFromString("end_lineno")) == NULL) return -1;
+    if ((state->exc = TyUnicode_InternFromString("exc")) == NULL) return -1;
+    if ((state->finalbody = TyUnicode_InternFromString("finalbody")) == NULL) return -1;
+    if ((state->format_spec = TyUnicode_InternFromString("format_spec")) == NULL) return -1;
+    if ((state->func = TyUnicode_InternFromString("func")) == NULL) return -1;
+    if ((state->generators = TyUnicode_InternFromString("generators")) == NULL) return -1;
+    if ((state->guard = TyUnicode_InternFromString("guard")) == NULL) return -1;
+    if ((state->handlers = TyUnicode_InternFromString("handlers")) == NULL) return -1;
+    if ((state->id = TyUnicode_InternFromString("id")) == NULL) return -1;
+    if ((state->ifs = TyUnicode_InternFromString("ifs")) == NULL) return -1;
+    if ((state->is_async = TyUnicode_InternFromString("is_async")) == NULL) return -1;
+    if ((state->items = TyUnicode_InternFromString("items")) == NULL) return -1;
+    if ((state->iter = TyUnicode_InternFromString("iter")) == NULL) return -1;
+    if ((state->key = TyUnicode_InternFromString("key")) == NULL) return -1;
+    if ((state->keys = TyUnicode_InternFromString("keys")) == NULL) return -1;
+    if ((state->keywords = TyUnicode_InternFromString("keywords")) == NULL) return -1;
+    if ((state->kind = TyUnicode_InternFromString("kind")) == NULL) return -1;
+    if ((state->kw_defaults = TyUnicode_InternFromString("kw_defaults")) == NULL) return -1;
+    if ((state->kwarg = TyUnicode_InternFromString("kwarg")) == NULL) return -1;
+    if ((state->kwd_attrs = TyUnicode_InternFromString("kwd_attrs")) == NULL) return -1;
+    if ((state->kwd_patterns = TyUnicode_InternFromString("kwd_patterns")) == NULL) return -1;
+    if ((state->kwonlyargs = TyUnicode_InternFromString("kwonlyargs")) == NULL) return -1;
+    if ((state->left = TyUnicode_InternFromString("left")) == NULL) return -1;
+    if ((state->level = TyUnicode_InternFromString("level")) == NULL) return -1;
+    if ((state->lineno = TyUnicode_InternFromString("lineno")) == NULL) return -1;
+    if ((state->lower = TyUnicode_InternFromString("lower")) == NULL) return -1;
+    if ((state->module = TyUnicode_InternFromString("module")) == NULL) return -1;
+    if ((state->msg = TyUnicode_InternFromString("msg")) == NULL) return -1;
+    if ((state->name = TyUnicode_InternFromString("name")) == NULL) return -1;
+    if ((state->names = TyUnicode_InternFromString("names")) == NULL) return -1;
+    if ((state->op = TyUnicode_InternFromString("op")) == NULL) return -1;
+    if ((state->operand = TyUnicode_InternFromString("operand")) == NULL) return -1;
+    if ((state->ops = TyUnicode_InternFromString("ops")) == NULL) return -1;
+    if ((state->optional_vars = TyUnicode_InternFromString("optional_vars")) == NULL) return -1;
+    if ((state->orelse = TyUnicode_InternFromString("orelse")) == NULL) return -1;
+    if ((state->pattern = TyUnicode_InternFromString("pattern")) == NULL) return -1;
+    if ((state->patterns = TyUnicode_InternFromString("patterns")) == NULL) return -1;
+    if ((state->posonlyargs = TyUnicode_InternFromString("posonlyargs")) == NULL) return -1;
+    if ((state->rest = TyUnicode_InternFromString("rest")) == NULL) return -1;
+    if ((state->returns = TyUnicode_InternFromString("returns")) == NULL) return -1;
+    if ((state->right = TyUnicode_InternFromString("right")) == NULL) return -1;
+    if ((state->simple = TyUnicode_InternFromString("simple")) == NULL) return -1;
+    if ((state->slice = TyUnicode_InternFromString("slice")) == NULL) return -1;
+    if ((state->step = TyUnicode_InternFromString("step")) == NULL) return -1;
+    if ((state->str = TyUnicode_InternFromString("str")) == NULL) return -1;
+    if ((state->subject = TyUnicode_InternFromString("subject")) == NULL) return -1;
+    if ((state->tag = TyUnicode_InternFromString("tag")) == NULL) return -1;
+    if ((state->target = TyUnicode_InternFromString("target")) == NULL) return -1;
+    if ((state->targets = TyUnicode_InternFromString("targets")) == NULL) return -1;
+    if ((state->test = TyUnicode_InternFromString("test")) == NULL) return -1;
+    if ((state->type = TyUnicode_InternFromString("type")) == NULL) return -1;
+    if ((state->type_comment = TyUnicode_InternFromString("type_comment")) == NULL) return -1;
+    if ((state->type_ignores = TyUnicode_InternFromString("type_ignores")) == NULL) return -1;
+    if ((state->type_params = TyUnicode_InternFromString("type_params")) == NULL) return -1;
+    if ((state->upper = TyUnicode_InternFromString("upper")) == NULL) return -1;
+    if ((state->value = TyUnicode_InternFromString("value")) == NULL) return -1;
+    if ((state->values = TyUnicode_InternFromString("values")) == NULL) return -1;
+    if ((state->vararg = TyUnicode_InternFromString("vararg")) == NULL) return -1;
     return 0;
 };
 
@@ -392,7 +392,7 @@ GENERATE_ASDL_SEQ_CONSTRUCTOR(pattern, pattern_ty)
 GENERATE_ASDL_SEQ_CONSTRUCTOR(type_ignore, type_ignore_ty)
 GENERATE_ASDL_SEQ_CONSTRUCTOR(type_param, type_param_ty)
 
-static PyObject* ast2obj_mod(struct ast_state *state, void*);
+static TyObject* ast2obj_mod(struct ast_state *state, void*);
 static const char * const Module_fields[]={
     "body",
     "type_ignores",
@@ -413,7 +413,7 @@ static const char * const stmt_attributes[] = {
     "end_lineno",
     "end_col_offset",
 };
-static PyObject* ast2obj_stmt(struct ast_state *state, void*);
+static TyObject* ast2obj_stmt(struct ast_state *state, void*);
 static const char * const FunctionDef_fields[]={
     "name",
     "args",
@@ -548,7 +548,7 @@ static const char * const expr_attributes[] = {
     "end_lineno",
     "end_col_offset",
 };
-static PyObject* ast2obj_expr(struct ast_state *state, void*);
+static TyObject* ast2obj_expr(struct ast_state *state, void*);
 static const char * const BoolOp_fields[]={
     "op",
     "values",
@@ -670,12 +670,12 @@ static const char * const Slice_fields[]={
     "upper",
     "step",
 };
-static PyObject* ast2obj_expr_context(struct ast_state *state, expr_context_ty);
-static PyObject* ast2obj_boolop(struct ast_state *state, boolop_ty);
-static PyObject* ast2obj_operator(struct ast_state *state, operator_ty);
-static PyObject* ast2obj_unaryop(struct ast_state *state, unaryop_ty);
-static PyObject* ast2obj_cmpop(struct ast_state *state, cmpop_ty);
-static PyObject* ast2obj_comprehension(struct ast_state *state, void*);
+static TyObject* ast2obj_expr_context(struct ast_state *state, expr_context_ty);
+static TyObject* ast2obj_boolop(struct ast_state *state, boolop_ty);
+static TyObject* ast2obj_operator(struct ast_state *state, operator_ty);
+static TyObject* ast2obj_unaryop(struct ast_state *state, unaryop_ty);
+static TyObject* ast2obj_cmpop(struct ast_state *state, cmpop_ty);
+static TyObject* ast2obj_comprehension(struct ast_state *state, void*);
 static const char * const comprehension_fields[]={
     "target",
     "iter",
@@ -688,13 +688,13 @@ static const char * const excepthandler_attributes[] = {
     "end_lineno",
     "end_col_offset",
 };
-static PyObject* ast2obj_excepthandler(struct ast_state *state, void*);
+static TyObject* ast2obj_excepthandler(struct ast_state *state, void*);
 static const char * const ExceptHandler_fields[]={
     "type",
     "name",
     "body",
 };
-static PyObject* ast2obj_arguments(struct ast_state *state, void*);
+static TyObject* ast2obj_arguments(struct ast_state *state, void*);
 static const char * const arguments_fields[]={
     "posonlyargs",
     "args",
@@ -704,7 +704,7 @@ static const char * const arguments_fields[]={
     "kwarg",
     "defaults",
 };
-static PyObject* ast2obj_arg(struct ast_state *state, void*);
+static TyObject* ast2obj_arg(struct ast_state *state, void*);
 static const char * const arg_attributes[] = {
     "lineno",
     "col_offset",
@@ -716,7 +716,7 @@ static const char * const arg_fields[]={
     "annotation",
     "type_comment",
 };
-static PyObject* ast2obj_keyword(struct ast_state *state, void*);
+static TyObject* ast2obj_keyword(struct ast_state *state, void*);
 static const char * const keyword_attributes[] = {
     "lineno",
     "col_offset",
@@ -727,7 +727,7 @@ static const char * const keyword_fields[]={
     "arg",
     "value",
 };
-static PyObject* ast2obj_alias(struct ast_state *state, void*);
+static TyObject* ast2obj_alias(struct ast_state *state, void*);
 static const char * const alias_attributes[] = {
     "lineno",
     "col_offset",
@@ -738,12 +738,12 @@ static const char * const alias_fields[]={
     "name",
     "asname",
 };
-static PyObject* ast2obj_withitem(struct ast_state *state, void*);
+static TyObject* ast2obj_withitem(struct ast_state *state, void*);
 static const char * const withitem_fields[]={
     "context_expr",
     "optional_vars",
 };
-static PyObject* ast2obj_match_case(struct ast_state *state, void*);
+static TyObject* ast2obj_match_case(struct ast_state *state, void*);
 static const char * const match_case_fields[]={
     "pattern",
     "guard",
@@ -755,7 +755,7 @@ static const char * const pattern_attributes[] = {
     "end_lineno",
     "end_col_offset",
 };
-static PyObject* ast2obj_pattern(struct ast_state *state, void*);
+static TyObject* ast2obj_pattern(struct ast_state *state, void*);
 static const char * const MatchValue_fields[]={
     "value",
 };
@@ -786,7 +786,7 @@ static const char * const MatchAs_fields[]={
 static const char * const MatchOr_fields[]={
     "patterns",
 };
-static PyObject* ast2obj_type_ignore(struct ast_state *state, void*);
+static TyObject* ast2obj_type_ignore(struct ast_state *state, void*);
 static const char * const TypeIgnore_fields[]={
     "lineno",
     "tag",
@@ -797,7 +797,7 @@ static const char * const type_param_attributes[] = {
     "end_lineno",
     "end_col_offset",
 };
-static PyObject* ast2obj_type_param(struct ast_state *state, void*);
+static TyObject* ast2obj_type_param(struct ast_state *state, void*);
 static const char * const TypeVar_fields[]={
     "name",
     "bound",
@@ -817,4304 +817,4304 @@ static int
 add_ast_annotations(struct ast_state *state)
 {
     bool cond;
-    PyObject *Module_annotations = PyDict_New();
+    TyObject *Module_annotations = TyDict_New();
     if (!Module_annotations) return 0;
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Module_annotations);
+            Ty_DECREF(Module_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Module_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Module_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Module_annotations);
+            Ty_DECREF(Module_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->type_ignore_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->type_ignore_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Module_annotations);
+            Ty_DECREF(Module_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Module_annotations, "type_ignores", type)
+        cond = TyDict_SetItemString(Module_annotations, "type_ignores", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Module_annotations);
+            Ty_DECREF(Module_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Module_type, "_field_types",
                                   Module_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Module_annotations);
+        Ty_DECREF(Module_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Module_type, "__annotations__",
                                   Module_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Module_annotations);
+        Ty_DECREF(Module_annotations);
         return 0;
     }
-    Py_DECREF(Module_annotations);
-    PyObject *Interactive_annotations = PyDict_New();
+    Ty_DECREF(Module_annotations);
+    TyObject *Interactive_annotations = TyDict_New();
     if (!Interactive_annotations) return 0;
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Interactive_annotations);
+            Ty_DECREF(Interactive_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Interactive_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Interactive_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Interactive_annotations);
+            Ty_DECREF(Interactive_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Interactive_type, "_field_types",
                                   Interactive_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Interactive_annotations);
+        Ty_DECREF(Interactive_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Interactive_type, "__annotations__",
                                   Interactive_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Interactive_annotations);
+        Ty_DECREF(Interactive_annotations);
         return 0;
     }
-    Py_DECREF(Interactive_annotations);
-    PyObject *Expression_annotations = PyDict_New();
+    Ty_DECREF(Interactive_annotations);
+    TyObject *Expression_annotations = TyDict_New();
     if (!Expression_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Expression_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Expression_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Expression_annotations);
+            Ty_DECREF(Expression_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Expression_type, "_field_types",
                                   Expression_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Expression_annotations);
+        Ty_DECREF(Expression_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Expression_type, "__annotations__",
                                   Expression_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Expression_annotations);
+        Ty_DECREF(Expression_annotations);
         return 0;
     }
-    Py_DECREF(Expression_annotations);
-    PyObject *FunctionType_annotations = PyDict_New();
+    Ty_DECREF(Expression_annotations);
+    TyObject *FunctionType_annotations = TyDict_New();
     if (!FunctionType_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(FunctionType_annotations);
+            Ty_DECREF(FunctionType_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(FunctionType_annotations, "argtypes", type)
+        cond = TyDict_SetItemString(FunctionType_annotations, "argtypes", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FunctionType_annotations);
+            Ty_DECREF(FunctionType_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(FunctionType_annotations, "returns", type)
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(FunctionType_annotations, "returns", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FunctionType_annotations);
+            Ty_DECREF(FunctionType_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->FunctionType_type, "_field_types",
                                   FunctionType_annotations) == 0;
     if (!cond) {
-        Py_DECREF(FunctionType_annotations);
+        Ty_DECREF(FunctionType_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->FunctionType_type, "__annotations__",
                                   FunctionType_annotations) == 0;
     if (!cond) {
-        Py_DECREF(FunctionType_annotations);
+        Ty_DECREF(FunctionType_annotations);
         return 0;
     }
-    Py_DECREF(FunctionType_annotations);
-    PyObject *FunctionDef_annotations = PyDict_New();
+    Ty_DECREF(FunctionType_annotations);
+    TyObject *FunctionDef_annotations = TyDict_New();
     if (!FunctionDef_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(FunctionDef_annotations, "name", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(FunctionDef_annotations, "name", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->arguments_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(FunctionDef_annotations, "args", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->arguments_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(FunctionDef_annotations, "args", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(FunctionDef_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(FunctionDef_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(FunctionDef_annotations, "decorator_list",
+        cond = TyDict_SetItemString(FunctionDef_annotations, "decorator_list",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(FunctionDef_annotations, "returns", type)
+        cond = TyDict_SetItemString(FunctionDef_annotations, "returns", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(FunctionDef_annotations, "type_comment",
+        cond = TyDict_SetItemString(FunctionDef_annotations, "type_comment",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->type_param_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->type_param_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(FunctionDef_annotations, "type_params",
+        cond = TyDict_SetItemString(FunctionDef_annotations, "type_params",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FunctionDef_annotations);
+            Ty_DECREF(FunctionDef_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->FunctionDef_type, "_field_types",
                                   FunctionDef_annotations) == 0;
     if (!cond) {
-        Py_DECREF(FunctionDef_annotations);
+        Ty_DECREF(FunctionDef_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->FunctionDef_type, "__annotations__",
                                   FunctionDef_annotations) == 0;
     if (!cond) {
-        Py_DECREF(FunctionDef_annotations);
+        Ty_DECREF(FunctionDef_annotations);
         return 0;
     }
-    Py_DECREF(FunctionDef_annotations);
-    PyObject *AsyncFunctionDef_annotations = PyDict_New();
+    Ty_DECREF(FunctionDef_annotations);
+    TyObject *AsyncFunctionDef_annotations = TyDict_New();
     if (!AsyncFunctionDef_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AsyncFunctionDef_annotations, "name", type)
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AsyncFunctionDef_annotations, "name", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->arguments_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AsyncFunctionDef_annotations, "args", type)
+        TyObject *type = state->arguments_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AsyncFunctionDef_annotations, "args", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncFunctionDef_annotations, "body", type)
+        cond = TyDict_SetItemString(AsyncFunctionDef_annotations, "body", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncFunctionDef_annotations,
+        cond = TyDict_SetItemString(AsyncFunctionDef_annotations,
                                     "decorator_list", type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncFunctionDef_annotations, "returns",
+        cond = TyDict_SetItemString(AsyncFunctionDef_annotations, "returns",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncFunctionDef_annotations,
+        cond = TyDict_SetItemString(AsyncFunctionDef_annotations,
                                     "type_comment", type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->type_param_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->type_param_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncFunctionDef_annotations,
+        cond = TyDict_SetItemString(AsyncFunctionDef_annotations,
                                     "type_params", type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFunctionDef_annotations);
+            Ty_DECREF(AsyncFunctionDef_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->AsyncFunctionDef_type, "_field_types",
                                   AsyncFunctionDef_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AsyncFunctionDef_annotations);
+        Ty_DECREF(AsyncFunctionDef_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->AsyncFunctionDef_type,
                                   "__annotations__",
                                   AsyncFunctionDef_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AsyncFunctionDef_annotations);
+        Ty_DECREF(AsyncFunctionDef_annotations);
         return 0;
     }
-    Py_DECREF(AsyncFunctionDef_annotations);
-    PyObject *ClassDef_annotations = PyDict_New();
+    Ty_DECREF(AsyncFunctionDef_annotations);
+    TyObject *ClassDef_annotations = TyDict_New();
     if (!ClassDef_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(ClassDef_annotations, "name", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(ClassDef_annotations, "name", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ClassDef_annotations, "bases", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(ClassDef_annotations, "bases", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->keyword_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->keyword_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ClassDef_annotations, "keywords", type) ==
+        cond = TyDict_SetItemString(ClassDef_annotations, "keywords", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ClassDef_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(ClassDef_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ClassDef_annotations, "decorator_list",
+        cond = TyDict_SetItemString(ClassDef_annotations, "decorator_list",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->type_param_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->type_param_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ClassDef_annotations, "type_params", type)
+        cond = TyDict_SetItemString(ClassDef_annotations, "type_params", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ClassDef_annotations);
+            Ty_DECREF(ClassDef_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->ClassDef_type, "_field_types",
                                   ClassDef_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ClassDef_annotations);
+        Ty_DECREF(ClassDef_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->ClassDef_type, "__annotations__",
                                   ClassDef_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ClassDef_annotations);
+        Ty_DECREF(ClassDef_annotations);
         return 0;
     }
-    Py_DECREF(ClassDef_annotations);
-    PyObject *Return_annotations = PyDict_New();
+    Ty_DECREF(ClassDef_annotations);
+    TyObject *Return_annotations = TyDict_New();
     if (!Return_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Return_annotations);
+            Ty_DECREF(Return_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Return_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Return_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Return_annotations);
+            Ty_DECREF(Return_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Return_type, "_field_types",
                                   Return_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Return_annotations);
+        Ty_DECREF(Return_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Return_type, "__annotations__",
                                   Return_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Return_annotations);
+        Ty_DECREF(Return_annotations);
         return 0;
     }
-    Py_DECREF(Return_annotations);
-    PyObject *Delete_annotations = PyDict_New();
+    Ty_DECREF(Return_annotations);
+    TyObject *Delete_annotations = TyDict_New();
     if (!Delete_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Delete_annotations);
+            Ty_DECREF(Delete_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Delete_annotations, "targets", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Delete_annotations, "targets", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Delete_annotations);
+            Ty_DECREF(Delete_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Delete_type, "_field_types",
                                   Delete_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Delete_annotations);
+        Ty_DECREF(Delete_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Delete_type, "__annotations__",
                                   Delete_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Delete_annotations);
+        Ty_DECREF(Delete_annotations);
         return 0;
     }
-    Py_DECREF(Delete_annotations);
-    PyObject *Assign_annotations = PyDict_New();
+    Ty_DECREF(Delete_annotations);
+    TyObject *Assign_annotations = TyDict_New();
     if (!Assign_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Assign_annotations);
+            Ty_DECREF(Assign_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Assign_annotations, "targets", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Assign_annotations, "targets", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Assign_annotations);
+            Ty_DECREF(Assign_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Assign_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Assign_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Assign_annotations);
+            Ty_DECREF(Assign_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Assign_annotations);
+            Ty_DECREF(Assign_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Assign_annotations, "type_comment", type)
+        cond = TyDict_SetItemString(Assign_annotations, "type_comment", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Assign_annotations);
+            Ty_DECREF(Assign_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Assign_type, "_field_types",
                                   Assign_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Assign_annotations);
+        Ty_DECREF(Assign_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Assign_type, "__annotations__",
                                   Assign_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Assign_annotations);
+        Ty_DECREF(Assign_annotations);
         return 0;
     }
-    Py_DECREF(Assign_annotations);
-    PyObject *TypeAlias_annotations = PyDict_New();
+    Ty_DECREF(Assign_annotations);
+    TyObject *TypeAlias_annotations = TyDict_New();
     if (!TypeAlias_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(TypeAlias_annotations, "name", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(TypeAlias_annotations, "name", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeAlias_annotations);
+            Ty_DECREF(TypeAlias_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->type_param_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->type_param_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(TypeAlias_annotations);
+            Ty_DECREF(TypeAlias_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(TypeAlias_annotations, "type_params", type)
+        cond = TyDict_SetItemString(TypeAlias_annotations, "type_params", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeAlias_annotations);
+            Ty_DECREF(TypeAlias_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(TypeAlias_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(TypeAlias_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeAlias_annotations);
+            Ty_DECREF(TypeAlias_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->TypeAlias_type, "_field_types",
                                   TypeAlias_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TypeAlias_annotations);
+        Ty_DECREF(TypeAlias_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->TypeAlias_type, "__annotations__",
                                   TypeAlias_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TypeAlias_annotations);
+        Ty_DECREF(TypeAlias_annotations);
         return 0;
     }
-    Py_DECREF(TypeAlias_annotations);
-    PyObject *AugAssign_annotations = PyDict_New();
+    Ty_DECREF(TypeAlias_annotations);
+    TyObject *AugAssign_annotations = TyDict_New();
     if (!AugAssign_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AugAssign_annotations, "target", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AugAssign_annotations, "target", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AugAssign_annotations);
+            Ty_DECREF(AugAssign_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->operator_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AugAssign_annotations, "op", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->operator_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AugAssign_annotations, "op", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AugAssign_annotations);
+            Ty_DECREF(AugAssign_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AugAssign_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AugAssign_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AugAssign_annotations);
+            Ty_DECREF(AugAssign_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->AugAssign_type, "_field_types",
                                   AugAssign_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AugAssign_annotations);
+        Ty_DECREF(AugAssign_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->AugAssign_type, "__annotations__",
                                   AugAssign_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AugAssign_annotations);
+        Ty_DECREF(AugAssign_annotations);
         return 0;
     }
-    Py_DECREF(AugAssign_annotations);
-    PyObject *AnnAssign_annotations = PyDict_New();
+    Ty_DECREF(AugAssign_annotations);
+    TyObject *AnnAssign_annotations = TyDict_New();
     if (!AnnAssign_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AnnAssign_annotations, "target", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AnnAssign_annotations, "target", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AnnAssign_annotations);
+            Ty_DECREF(AnnAssign_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AnnAssign_annotations, "annotation", type)
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AnnAssign_annotations, "annotation", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AnnAssign_annotations);
+            Ty_DECREF(AnnAssign_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AnnAssign_annotations);
+            Ty_DECREF(AnnAssign_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AnnAssign_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(AnnAssign_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AnnAssign_annotations);
+            Ty_DECREF(AnnAssign_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyLong_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AnnAssign_annotations, "simple", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyLong_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AnnAssign_annotations, "simple", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AnnAssign_annotations);
+            Ty_DECREF(AnnAssign_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->AnnAssign_type, "_field_types",
                                   AnnAssign_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AnnAssign_annotations);
+        Ty_DECREF(AnnAssign_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->AnnAssign_type, "__annotations__",
                                   AnnAssign_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AnnAssign_annotations);
+        Ty_DECREF(AnnAssign_annotations);
         return 0;
     }
-    Py_DECREF(AnnAssign_annotations);
-    PyObject *For_annotations = PyDict_New();
+    Ty_DECREF(AnnAssign_annotations);
+    TyObject *For_annotations = TyDict_New();
     if (!For_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(For_annotations, "target", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(For_annotations, "target", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(For_annotations);
+            Ty_DECREF(For_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(For_annotations, "iter", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(For_annotations, "iter", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(For_annotations);
+            Ty_DECREF(For_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(For_annotations);
+            Ty_DECREF(For_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(For_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(For_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(For_annotations);
-            return 0;
-        }
-    }
-    {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
-        cond = type != NULL;
-        if (!cond) {
-            Py_DECREF(For_annotations);
-            return 0;
-        }
-        cond = PyDict_SetItemString(For_annotations, "orelse", type) == 0;
-        Py_DECREF(type);
-        if (!cond) {
-            Py_DECREF(For_annotations);
+            Ty_DECREF(For_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(For_annotations);
+            Ty_DECREF(For_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(For_annotations, "type_comment", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(For_annotations, "orelse", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(For_annotations);
+            Ty_DECREF(For_annotations);
+            return 0;
+        }
+    }
+    {
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
+        cond = type != NULL;
+        if (!cond) {
+            Ty_DECREF(For_annotations);
+            return 0;
+        }
+        cond = TyDict_SetItemString(For_annotations, "type_comment", type) == 0;
+        Ty_DECREF(type);
+        if (!cond) {
+            Ty_DECREF(For_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->For_type, "_field_types",
                                   For_annotations) == 0;
     if (!cond) {
-        Py_DECREF(For_annotations);
+        Ty_DECREF(For_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->For_type, "__annotations__",
                                   For_annotations) == 0;
     if (!cond) {
-        Py_DECREF(For_annotations);
+        Ty_DECREF(For_annotations);
         return 0;
     }
-    Py_DECREF(For_annotations);
-    PyObject *AsyncFor_annotations = PyDict_New();
+    Ty_DECREF(For_annotations);
+    TyObject *AsyncFor_annotations = TyDict_New();
     if (!AsyncFor_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AsyncFor_annotations, "target", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AsyncFor_annotations, "target", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFor_annotations);
+            Ty_DECREF(AsyncFor_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(AsyncFor_annotations, "iter", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(AsyncFor_annotations, "iter", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFor_annotations);
+            Ty_DECREF(AsyncFor_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncFor_annotations);
+            Ty_DECREF(AsyncFor_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncFor_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(AsyncFor_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFor_annotations);
+            Ty_DECREF(AsyncFor_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncFor_annotations);
+            Ty_DECREF(AsyncFor_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncFor_annotations, "orelse", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(AsyncFor_annotations, "orelse", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFor_annotations);
+            Ty_DECREF(AsyncFor_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncFor_annotations);
+            Ty_DECREF(AsyncFor_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncFor_annotations, "type_comment", type)
+        cond = TyDict_SetItemString(AsyncFor_annotations, "type_comment", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncFor_annotations);
+            Ty_DECREF(AsyncFor_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->AsyncFor_type, "_field_types",
                                   AsyncFor_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AsyncFor_annotations);
+        Ty_DECREF(AsyncFor_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->AsyncFor_type, "__annotations__",
                                   AsyncFor_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AsyncFor_annotations);
+        Ty_DECREF(AsyncFor_annotations);
         return 0;
     }
-    Py_DECREF(AsyncFor_annotations);
-    PyObject *While_annotations = PyDict_New();
+    Ty_DECREF(AsyncFor_annotations);
+    TyObject *While_annotations = TyDict_New();
     if (!While_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(While_annotations, "test", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(While_annotations, "test", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(While_annotations);
+            Ty_DECREF(While_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(While_annotations);
+            Ty_DECREF(While_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(While_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(While_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(While_annotations);
+            Ty_DECREF(While_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(While_annotations);
+            Ty_DECREF(While_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(While_annotations, "orelse", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(While_annotations, "orelse", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(While_annotations);
+            Ty_DECREF(While_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->While_type, "_field_types",
                                   While_annotations) == 0;
     if (!cond) {
-        Py_DECREF(While_annotations);
+        Ty_DECREF(While_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->While_type, "__annotations__",
                                   While_annotations) == 0;
     if (!cond) {
-        Py_DECREF(While_annotations);
+        Ty_DECREF(While_annotations);
         return 0;
     }
-    Py_DECREF(While_annotations);
-    PyObject *If_annotations = PyDict_New();
+    Ty_DECREF(While_annotations);
+    TyObject *If_annotations = TyDict_New();
     if (!If_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(If_annotations, "test", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(If_annotations, "test", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(If_annotations);
+            Ty_DECREF(If_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(If_annotations);
+            Ty_DECREF(If_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(If_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(If_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(If_annotations);
+            Ty_DECREF(If_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(If_annotations);
+            Ty_DECREF(If_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(If_annotations, "orelse", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(If_annotations, "orelse", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(If_annotations);
+            Ty_DECREF(If_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->If_type, "_field_types",
                                   If_annotations) == 0;
     if (!cond) {
-        Py_DECREF(If_annotations);
+        Ty_DECREF(If_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->If_type, "__annotations__",
                                   If_annotations) == 0;
     if (!cond) {
-        Py_DECREF(If_annotations);
+        Ty_DECREF(If_annotations);
         return 0;
     }
-    Py_DECREF(If_annotations);
-    PyObject *With_annotations = PyDict_New();
+    Ty_DECREF(If_annotations);
+    TyObject *With_annotations = TyDict_New();
     if (!With_annotations) return 0;
     {
-        PyObject *type = state->withitem_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->withitem_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(With_annotations);
+            Ty_DECREF(With_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(With_annotations, "items", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(With_annotations, "items", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(With_annotations);
+            Ty_DECREF(With_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(With_annotations);
+            Ty_DECREF(With_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(With_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(With_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(With_annotations);
+            Ty_DECREF(With_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(With_annotations);
+            Ty_DECREF(With_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(With_annotations, "type_comment", type) ==
+        cond = TyDict_SetItemString(With_annotations, "type_comment", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(With_annotations);
+            Ty_DECREF(With_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->With_type, "_field_types",
                                   With_annotations) == 0;
     if (!cond) {
-        Py_DECREF(With_annotations);
+        Ty_DECREF(With_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->With_type, "__annotations__",
                                   With_annotations) == 0;
     if (!cond) {
-        Py_DECREF(With_annotations);
+        Ty_DECREF(With_annotations);
         return 0;
     }
-    Py_DECREF(With_annotations);
-    PyObject *AsyncWith_annotations = PyDict_New();
+    Ty_DECREF(With_annotations);
+    TyObject *AsyncWith_annotations = TyDict_New();
     if (!AsyncWith_annotations) return 0;
     {
-        PyObject *type = state->withitem_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->withitem_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncWith_annotations);
+            Ty_DECREF(AsyncWith_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncWith_annotations, "items", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(AsyncWith_annotations, "items", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncWith_annotations);
+            Ty_DECREF(AsyncWith_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncWith_annotations);
+            Ty_DECREF(AsyncWith_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncWith_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(AsyncWith_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncWith_annotations);
+            Ty_DECREF(AsyncWith_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(AsyncWith_annotations);
+            Ty_DECREF(AsyncWith_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(AsyncWith_annotations, "type_comment",
+        cond = TyDict_SetItemString(AsyncWith_annotations, "type_comment",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(AsyncWith_annotations);
+            Ty_DECREF(AsyncWith_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->AsyncWith_type, "_field_types",
                                   AsyncWith_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AsyncWith_annotations);
+        Ty_DECREF(AsyncWith_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->AsyncWith_type, "__annotations__",
                                   AsyncWith_annotations) == 0;
     if (!cond) {
-        Py_DECREF(AsyncWith_annotations);
+        Ty_DECREF(AsyncWith_annotations);
         return 0;
     }
-    Py_DECREF(AsyncWith_annotations);
-    PyObject *Match_annotations = PyDict_New();
+    Ty_DECREF(AsyncWith_annotations);
+    TyObject *Match_annotations = TyDict_New();
     if (!Match_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Match_annotations, "subject", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Match_annotations, "subject", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Match_annotations);
+            Ty_DECREF(Match_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->match_case_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->match_case_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Match_annotations);
+            Ty_DECREF(Match_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Match_annotations, "cases", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Match_annotations, "cases", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Match_annotations);
+            Ty_DECREF(Match_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Match_type, "_field_types",
                                   Match_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Match_annotations);
+        Ty_DECREF(Match_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Match_type, "__annotations__",
                                   Match_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Match_annotations);
+        Ty_DECREF(Match_annotations);
         return 0;
     }
-    Py_DECREF(Match_annotations);
-    PyObject *Raise_annotations = PyDict_New();
+    Ty_DECREF(Match_annotations);
+    TyObject *Raise_annotations = TyDict_New();
     if (!Raise_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Raise_annotations);
+            Ty_DECREF(Raise_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Raise_annotations, "exc", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Raise_annotations, "exc", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Raise_annotations);
+            Ty_DECREF(Raise_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Raise_annotations);
+            Ty_DECREF(Raise_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Raise_annotations, "cause", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Raise_annotations, "cause", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Raise_annotations);
+            Ty_DECREF(Raise_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Raise_type, "_field_types",
                                   Raise_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Raise_annotations);
+        Ty_DECREF(Raise_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Raise_type, "__annotations__",
                                   Raise_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Raise_annotations);
+        Ty_DECREF(Raise_annotations);
         return 0;
     }
-    Py_DECREF(Raise_annotations);
-    PyObject *Try_annotations = PyDict_New();
+    Ty_DECREF(Raise_annotations);
+    TyObject *Try_annotations = TyDict_New();
     if (!Try_annotations) return 0;
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Try_annotations);
+            Ty_DECREF(Try_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Try_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Try_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Try_annotations);
+            Ty_DECREF(Try_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->excepthandler_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->excepthandler_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Try_annotations);
+            Ty_DECREF(Try_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Try_annotations, "handlers", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Try_annotations, "handlers", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Try_annotations);
+            Ty_DECREF(Try_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Try_annotations);
+            Ty_DECREF(Try_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Try_annotations, "orelse", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Try_annotations, "orelse", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Try_annotations);
+            Ty_DECREF(Try_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Try_annotations);
+            Ty_DECREF(Try_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Try_annotations, "finalbody", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Try_annotations, "finalbody", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Try_annotations);
+            Ty_DECREF(Try_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Try_type, "_field_types",
                                   Try_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Try_annotations);
+        Ty_DECREF(Try_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Try_type, "__annotations__",
                                   Try_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Try_annotations);
+        Ty_DECREF(Try_annotations);
         return 0;
     }
-    Py_DECREF(Try_annotations);
-    PyObject *TryStar_annotations = PyDict_New();
+    Ty_DECREF(Try_annotations);
+    TyObject *TryStar_annotations = TyDict_New();
     if (!TryStar_annotations) return 0;
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(TryStar_annotations);
+            Ty_DECREF(TryStar_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(TryStar_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(TryStar_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TryStar_annotations);
+            Ty_DECREF(TryStar_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->excepthandler_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->excepthandler_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(TryStar_annotations);
+            Ty_DECREF(TryStar_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(TryStar_annotations, "handlers", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(TryStar_annotations, "handlers", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TryStar_annotations);
+            Ty_DECREF(TryStar_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(TryStar_annotations);
+            Ty_DECREF(TryStar_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(TryStar_annotations, "orelse", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(TryStar_annotations, "orelse", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TryStar_annotations);
+            Ty_DECREF(TryStar_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(TryStar_annotations);
+            Ty_DECREF(TryStar_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(TryStar_annotations, "finalbody", type) ==
+        cond = TyDict_SetItemString(TryStar_annotations, "finalbody", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TryStar_annotations);
+            Ty_DECREF(TryStar_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->TryStar_type, "_field_types",
                                   TryStar_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TryStar_annotations);
+        Ty_DECREF(TryStar_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->TryStar_type, "__annotations__",
                                   TryStar_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TryStar_annotations);
+        Ty_DECREF(TryStar_annotations);
         return 0;
     }
-    Py_DECREF(TryStar_annotations);
-    PyObject *Assert_annotations = PyDict_New();
+    Ty_DECREF(TryStar_annotations);
+    TyObject *Assert_annotations = TyDict_New();
     if (!Assert_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Assert_annotations, "test", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Assert_annotations, "test", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Assert_annotations);
+            Ty_DECREF(Assert_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Assert_annotations);
+            Ty_DECREF(Assert_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Assert_annotations, "msg", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Assert_annotations, "msg", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Assert_annotations);
+            Ty_DECREF(Assert_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Assert_type, "_field_types",
                                   Assert_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Assert_annotations);
+        Ty_DECREF(Assert_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Assert_type, "__annotations__",
                                   Assert_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Assert_annotations);
+        Ty_DECREF(Assert_annotations);
         return 0;
     }
-    Py_DECREF(Assert_annotations);
-    PyObject *Import_annotations = PyDict_New();
+    Ty_DECREF(Assert_annotations);
+    TyObject *Import_annotations = TyDict_New();
     if (!Import_annotations) return 0;
     {
-        PyObject *type = state->alias_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->alias_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Import_annotations);
+            Ty_DECREF(Import_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Import_annotations, "names", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Import_annotations, "names", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Import_annotations);
+            Ty_DECREF(Import_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Import_type, "_field_types",
                                   Import_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Import_annotations);
+        Ty_DECREF(Import_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Import_type, "__annotations__",
                                   Import_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Import_annotations);
+        Ty_DECREF(Import_annotations);
         return 0;
     }
-    Py_DECREF(Import_annotations);
-    PyObject *ImportFrom_annotations = PyDict_New();
+    Ty_DECREF(Import_annotations);
+    TyObject *ImportFrom_annotations = TyDict_New();
     if (!ImportFrom_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ImportFrom_annotations);
+            Ty_DECREF(ImportFrom_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ImportFrom_annotations, "module", type) ==
+        cond = TyDict_SetItemString(ImportFrom_annotations, "module", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ImportFrom_annotations);
+            Ty_DECREF(ImportFrom_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->alias_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->alias_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ImportFrom_annotations);
+            Ty_DECREF(ImportFrom_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ImportFrom_annotations, "names", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(ImportFrom_annotations, "names", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ImportFrom_annotations);
+            Ty_DECREF(ImportFrom_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyLong_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyLong_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ImportFrom_annotations);
+            Ty_DECREF(ImportFrom_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ImportFrom_annotations, "level", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(ImportFrom_annotations, "level", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ImportFrom_annotations);
+            Ty_DECREF(ImportFrom_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->ImportFrom_type, "_field_types",
                                   ImportFrom_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ImportFrom_annotations);
+        Ty_DECREF(ImportFrom_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->ImportFrom_type, "__annotations__",
                                   ImportFrom_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ImportFrom_annotations);
+        Ty_DECREF(ImportFrom_annotations);
         return 0;
     }
-    Py_DECREF(ImportFrom_annotations);
-    PyObject *Global_annotations = PyDict_New();
+    Ty_DECREF(ImportFrom_annotations);
+    TyObject *Global_annotations = TyDict_New();
     if (!Global_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Global_annotations);
+            Ty_DECREF(Global_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Global_annotations, "names", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Global_annotations, "names", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Global_annotations);
+            Ty_DECREF(Global_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Global_type, "_field_types",
                                   Global_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Global_annotations);
+        Ty_DECREF(Global_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Global_type, "__annotations__",
                                   Global_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Global_annotations);
+        Ty_DECREF(Global_annotations);
         return 0;
     }
-    Py_DECREF(Global_annotations);
-    PyObject *Nonlocal_annotations = PyDict_New();
+    Ty_DECREF(Global_annotations);
+    TyObject *Nonlocal_annotations = TyDict_New();
     if (!Nonlocal_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Nonlocal_annotations);
+            Ty_DECREF(Nonlocal_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Nonlocal_annotations, "names", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Nonlocal_annotations, "names", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Nonlocal_annotations);
+            Ty_DECREF(Nonlocal_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Nonlocal_type, "_field_types",
                                   Nonlocal_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Nonlocal_annotations);
+        Ty_DECREF(Nonlocal_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Nonlocal_type, "__annotations__",
                                   Nonlocal_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Nonlocal_annotations);
+        Ty_DECREF(Nonlocal_annotations);
         return 0;
     }
-    Py_DECREF(Nonlocal_annotations);
-    PyObject *Expr_annotations = PyDict_New();
+    Ty_DECREF(Nonlocal_annotations);
+    TyObject *Expr_annotations = TyDict_New();
     if (!Expr_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Expr_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Expr_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Expr_annotations);
+            Ty_DECREF(Expr_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Expr_type, "_field_types",
                                   Expr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Expr_annotations);
+        Ty_DECREF(Expr_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Expr_type, "__annotations__",
                                   Expr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Expr_annotations);
+        Ty_DECREF(Expr_annotations);
         return 0;
     }
-    Py_DECREF(Expr_annotations);
-    PyObject *Pass_annotations = PyDict_New();
+    Ty_DECREF(Expr_annotations);
+    TyObject *Pass_annotations = TyDict_New();
     if (!Pass_annotations) return 0;
     cond = PyObject_SetAttrString(state->Pass_type, "_field_types",
                                   Pass_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Pass_annotations);
+        Ty_DECREF(Pass_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Pass_type, "__annotations__",
                                   Pass_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Pass_annotations);
+        Ty_DECREF(Pass_annotations);
         return 0;
     }
-    Py_DECREF(Pass_annotations);
-    PyObject *Break_annotations = PyDict_New();
+    Ty_DECREF(Pass_annotations);
+    TyObject *Break_annotations = TyDict_New();
     if (!Break_annotations) return 0;
     cond = PyObject_SetAttrString(state->Break_type, "_field_types",
                                   Break_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Break_annotations);
+        Ty_DECREF(Break_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Break_type, "__annotations__",
                                   Break_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Break_annotations);
+        Ty_DECREF(Break_annotations);
         return 0;
     }
-    Py_DECREF(Break_annotations);
-    PyObject *Continue_annotations = PyDict_New();
+    Ty_DECREF(Break_annotations);
+    TyObject *Continue_annotations = TyDict_New();
     if (!Continue_annotations) return 0;
     cond = PyObject_SetAttrString(state->Continue_type, "_field_types",
                                   Continue_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Continue_annotations);
+        Ty_DECREF(Continue_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Continue_type, "__annotations__",
                                   Continue_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Continue_annotations);
+        Ty_DECREF(Continue_annotations);
         return 0;
     }
-    Py_DECREF(Continue_annotations);
-    PyObject *BoolOp_annotations = PyDict_New();
+    Ty_DECREF(Continue_annotations);
+    TyObject *BoolOp_annotations = TyDict_New();
     if (!BoolOp_annotations) return 0;
     {
-        PyObject *type = state->boolop_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(BoolOp_annotations, "op", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->boolop_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(BoolOp_annotations, "op", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(BoolOp_annotations);
+            Ty_DECREF(BoolOp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(BoolOp_annotations);
+            Ty_DECREF(BoolOp_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(BoolOp_annotations, "values", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(BoolOp_annotations, "values", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(BoolOp_annotations);
+            Ty_DECREF(BoolOp_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->BoolOp_type, "_field_types",
                                   BoolOp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BoolOp_annotations);
+        Ty_DECREF(BoolOp_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->BoolOp_type, "__annotations__",
                                   BoolOp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BoolOp_annotations);
+        Ty_DECREF(BoolOp_annotations);
         return 0;
     }
-    Py_DECREF(BoolOp_annotations);
-    PyObject *NamedExpr_annotations = PyDict_New();
+    Ty_DECREF(BoolOp_annotations);
+    TyObject *NamedExpr_annotations = TyDict_New();
     if (!NamedExpr_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(NamedExpr_annotations, "target", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(NamedExpr_annotations, "target", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(NamedExpr_annotations);
+            Ty_DECREF(NamedExpr_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(NamedExpr_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(NamedExpr_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(NamedExpr_annotations);
+            Ty_DECREF(NamedExpr_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->NamedExpr_type, "_field_types",
                                   NamedExpr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(NamedExpr_annotations);
+        Ty_DECREF(NamedExpr_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->NamedExpr_type, "__annotations__",
                                   NamedExpr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(NamedExpr_annotations);
+        Ty_DECREF(NamedExpr_annotations);
         return 0;
     }
-    Py_DECREF(NamedExpr_annotations);
-    PyObject *BinOp_annotations = PyDict_New();
+    Ty_DECREF(NamedExpr_annotations);
+    TyObject *BinOp_annotations = TyDict_New();
     if (!BinOp_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(BinOp_annotations, "left", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(BinOp_annotations, "left", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(BinOp_annotations);
+            Ty_DECREF(BinOp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->operator_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(BinOp_annotations, "op", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->operator_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(BinOp_annotations, "op", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(BinOp_annotations);
+            Ty_DECREF(BinOp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(BinOp_annotations, "right", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(BinOp_annotations, "right", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(BinOp_annotations);
+            Ty_DECREF(BinOp_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->BinOp_type, "_field_types",
                                   BinOp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BinOp_annotations);
+        Ty_DECREF(BinOp_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->BinOp_type, "__annotations__",
                                   BinOp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BinOp_annotations);
+        Ty_DECREF(BinOp_annotations);
         return 0;
     }
-    Py_DECREF(BinOp_annotations);
-    PyObject *UnaryOp_annotations = PyDict_New();
+    Ty_DECREF(BinOp_annotations);
+    TyObject *UnaryOp_annotations = TyDict_New();
     if (!UnaryOp_annotations) return 0;
     {
-        PyObject *type = state->unaryop_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(UnaryOp_annotations, "op", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->unaryop_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(UnaryOp_annotations, "op", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(UnaryOp_annotations);
+            Ty_DECREF(UnaryOp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(UnaryOp_annotations, "operand", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(UnaryOp_annotations, "operand", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(UnaryOp_annotations);
+            Ty_DECREF(UnaryOp_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->UnaryOp_type, "_field_types",
                                   UnaryOp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(UnaryOp_annotations);
+        Ty_DECREF(UnaryOp_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->UnaryOp_type, "__annotations__",
                                   UnaryOp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(UnaryOp_annotations);
+        Ty_DECREF(UnaryOp_annotations);
         return 0;
     }
-    Py_DECREF(UnaryOp_annotations);
-    PyObject *Lambda_annotations = PyDict_New();
+    Ty_DECREF(UnaryOp_annotations);
+    TyObject *Lambda_annotations = TyDict_New();
     if (!Lambda_annotations) return 0;
     {
-        PyObject *type = state->arguments_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Lambda_annotations, "args", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->arguments_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Lambda_annotations, "args", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Lambda_annotations);
+            Ty_DECREF(Lambda_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Lambda_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Lambda_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Lambda_annotations);
+            Ty_DECREF(Lambda_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Lambda_type, "_field_types",
                                   Lambda_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Lambda_annotations);
+        Ty_DECREF(Lambda_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Lambda_type, "__annotations__",
                                   Lambda_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Lambda_annotations);
+        Ty_DECREF(Lambda_annotations);
         return 0;
     }
-    Py_DECREF(Lambda_annotations);
-    PyObject *IfExp_annotations = PyDict_New();
+    Ty_DECREF(Lambda_annotations);
+    TyObject *IfExp_annotations = TyDict_New();
     if (!IfExp_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(IfExp_annotations, "test", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(IfExp_annotations, "test", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(IfExp_annotations);
+            Ty_DECREF(IfExp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(IfExp_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(IfExp_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(IfExp_annotations);
+            Ty_DECREF(IfExp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(IfExp_annotations, "orelse", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(IfExp_annotations, "orelse", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(IfExp_annotations);
+            Ty_DECREF(IfExp_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->IfExp_type, "_field_types",
                                   IfExp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(IfExp_annotations);
+        Ty_DECREF(IfExp_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->IfExp_type, "__annotations__",
                                   IfExp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(IfExp_annotations);
+        Ty_DECREF(IfExp_annotations);
         return 0;
     }
-    Py_DECREF(IfExp_annotations);
-    PyObject *Dict_annotations = PyDict_New();
+    Ty_DECREF(IfExp_annotations);
+    TyObject *Dict_annotations = TyDict_New();
     if (!Dict_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Dict_annotations);
+            Ty_DECREF(Dict_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Dict_annotations, "keys", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Dict_annotations, "keys", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Dict_annotations);
+            Ty_DECREF(Dict_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Dict_annotations);
+            Ty_DECREF(Dict_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Dict_annotations, "values", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Dict_annotations, "values", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Dict_annotations);
+            Ty_DECREF(Dict_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Dict_type, "_field_types",
                                   Dict_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Dict_annotations);
+        Ty_DECREF(Dict_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Dict_type, "__annotations__",
                                   Dict_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Dict_annotations);
+        Ty_DECREF(Dict_annotations);
         return 0;
     }
-    Py_DECREF(Dict_annotations);
-    PyObject *Set_annotations = PyDict_New();
+    Ty_DECREF(Dict_annotations);
+    TyObject *Set_annotations = TyDict_New();
     if (!Set_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Set_annotations);
+            Ty_DECREF(Set_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Set_annotations, "elts", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Set_annotations, "elts", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Set_annotations);
+            Ty_DECREF(Set_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Set_type, "_field_types",
                                   Set_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Set_annotations);
+        Ty_DECREF(Set_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Set_type, "__annotations__",
                                   Set_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Set_annotations);
+        Ty_DECREF(Set_annotations);
         return 0;
     }
-    Py_DECREF(Set_annotations);
-    PyObject *ListComp_annotations = PyDict_New();
+    Ty_DECREF(Set_annotations);
+    TyObject *ListComp_annotations = TyDict_New();
     if (!ListComp_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(ListComp_annotations, "elt", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(ListComp_annotations, "elt", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ListComp_annotations);
+            Ty_DECREF(ListComp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->comprehension_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->comprehension_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ListComp_annotations);
+            Ty_DECREF(ListComp_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ListComp_annotations, "generators", type)
+        cond = TyDict_SetItemString(ListComp_annotations, "generators", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ListComp_annotations);
+            Ty_DECREF(ListComp_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->ListComp_type, "_field_types",
                                   ListComp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ListComp_annotations);
+        Ty_DECREF(ListComp_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->ListComp_type, "__annotations__",
                                   ListComp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ListComp_annotations);
+        Ty_DECREF(ListComp_annotations);
         return 0;
     }
-    Py_DECREF(ListComp_annotations);
-    PyObject *SetComp_annotations = PyDict_New();
+    Ty_DECREF(ListComp_annotations);
+    TyObject *SetComp_annotations = TyDict_New();
     if (!SetComp_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(SetComp_annotations, "elt", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(SetComp_annotations, "elt", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(SetComp_annotations);
+            Ty_DECREF(SetComp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->comprehension_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->comprehension_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(SetComp_annotations);
+            Ty_DECREF(SetComp_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(SetComp_annotations, "generators", type) ==
+        cond = TyDict_SetItemString(SetComp_annotations, "generators", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(SetComp_annotations);
+            Ty_DECREF(SetComp_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->SetComp_type, "_field_types",
                                   SetComp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(SetComp_annotations);
+        Ty_DECREF(SetComp_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->SetComp_type, "__annotations__",
                                   SetComp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(SetComp_annotations);
+        Ty_DECREF(SetComp_annotations);
         return 0;
     }
-    Py_DECREF(SetComp_annotations);
-    PyObject *DictComp_annotations = PyDict_New();
+    Ty_DECREF(SetComp_annotations);
+    TyObject *DictComp_annotations = TyDict_New();
     if (!DictComp_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(DictComp_annotations, "key", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(DictComp_annotations, "key", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(DictComp_annotations);
+            Ty_DECREF(DictComp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(DictComp_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(DictComp_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(DictComp_annotations);
+            Ty_DECREF(DictComp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->comprehension_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->comprehension_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(DictComp_annotations);
+            Ty_DECREF(DictComp_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(DictComp_annotations, "generators", type)
+        cond = TyDict_SetItemString(DictComp_annotations, "generators", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(DictComp_annotations);
+            Ty_DECREF(DictComp_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->DictComp_type, "_field_types",
                                   DictComp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(DictComp_annotations);
+        Ty_DECREF(DictComp_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->DictComp_type, "__annotations__",
                                   DictComp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(DictComp_annotations);
+        Ty_DECREF(DictComp_annotations);
         return 0;
     }
-    Py_DECREF(DictComp_annotations);
-    PyObject *GeneratorExp_annotations = PyDict_New();
+    Ty_DECREF(DictComp_annotations);
+    TyObject *GeneratorExp_annotations = TyDict_New();
     if (!GeneratorExp_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(GeneratorExp_annotations, "elt", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(GeneratorExp_annotations, "elt", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(GeneratorExp_annotations);
+            Ty_DECREF(GeneratorExp_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->comprehension_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->comprehension_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(GeneratorExp_annotations);
+            Ty_DECREF(GeneratorExp_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(GeneratorExp_annotations, "generators",
+        cond = TyDict_SetItemString(GeneratorExp_annotations, "generators",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(GeneratorExp_annotations);
+            Ty_DECREF(GeneratorExp_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->GeneratorExp_type, "_field_types",
                                   GeneratorExp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(GeneratorExp_annotations);
+        Ty_DECREF(GeneratorExp_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->GeneratorExp_type, "__annotations__",
                                   GeneratorExp_annotations) == 0;
     if (!cond) {
-        Py_DECREF(GeneratorExp_annotations);
+        Ty_DECREF(GeneratorExp_annotations);
         return 0;
     }
-    Py_DECREF(GeneratorExp_annotations);
-    PyObject *Await_annotations = PyDict_New();
+    Ty_DECREF(GeneratorExp_annotations);
+    TyObject *Await_annotations = TyDict_New();
     if (!Await_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Await_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Await_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Await_annotations);
+            Ty_DECREF(Await_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Await_type, "_field_types",
                                   Await_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Await_annotations);
+        Ty_DECREF(Await_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Await_type, "__annotations__",
                                   Await_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Await_annotations);
+        Ty_DECREF(Await_annotations);
         return 0;
     }
-    Py_DECREF(Await_annotations);
-    PyObject *Yield_annotations = PyDict_New();
+    Ty_DECREF(Await_annotations);
+    TyObject *Yield_annotations = TyDict_New();
     if (!Yield_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Yield_annotations);
+            Ty_DECREF(Yield_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Yield_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Yield_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Yield_annotations);
+            Ty_DECREF(Yield_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Yield_type, "_field_types",
                                   Yield_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Yield_annotations);
+        Ty_DECREF(Yield_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Yield_type, "__annotations__",
                                   Yield_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Yield_annotations);
+        Ty_DECREF(Yield_annotations);
         return 0;
     }
-    Py_DECREF(Yield_annotations);
-    PyObject *YieldFrom_annotations = PyDict_New();
+    Ty_DECREF(Yield_annotations);
+    TyObject *YieldFrom_annotations = TyDict_New();
     if (!YieldFrom_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(YieldFrom_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(YieldFrom_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(YieldFrom_annotations);
+            Ty_DECREF(YieldFrom_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->YieldFrom_type, "_field_types",
                                   YieldFrom_annotations) == 0;
     if (!cond) {
-        Py_DECREF(YieldFrom_annotations);
+        Ty_DECREF(YieldFrom_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->YieldFrom_type, "__annotations__",
                                   YieldFrom_annotations) == 0;
     if (!cond) {
-        Py_DECREF(YieldFrom_annotations);
+        Ty_DECREF(YieldFrom_annotations);
         return 0;
     }
-    Py_DECREF(YieldFrom_annotations);
-    PyObject *Compare_annotations = PyDict_New();
+    Ty_DECREF(YieldFrom_annotations);
+    TyObject *Compare_annotations = TyDict_New();
     if (!Compare_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Compare_annotations, "left", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Compare_annotations, "left", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Compare_annotations);
+            Ty_DECREF(Compare_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->cmpop_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->cmpop_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Compare_annotations);
+            Ty_DECREF(Compare_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Compare_annotations, "ops", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Compare_annotations, "ops", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Compare_annotations);
+            Ty_DECREF(Compare_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Compare_annotations);
+            Ty_DECREF(Compare_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Compare_annotations, "comparators", type)
+        cond = TyDict_SetItemString(Compare_annotations, "comparators", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Compare_annotations);
+            Ty_DECREF(Compare_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Compare_type, "_field_types",
                                   Compare_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Compare_annotations);
+        Ty_DECREF(Compare_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Compare_type, "__annotations__",
                                   Compare_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Compare_annotations);
+        Ty_DECREF(Compare_annotations);
         return 0;
     }
-    Py_DECREF(Compare_annotations);
-    PyObject *Call_annotations = PyDict_New();
+    Ty_DECREF(Compare_annotations);
+    TyObject *Call_annotations = TyDict_New();
     if (!Call_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Call_annotations, "func", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Call_annotations, "func", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Call_annotations);
+            Ty_DECREF(Call_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Call_annotations);
+            Ty_DECREF(Call_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Call_annotations, "args", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Call_annotations, "args", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Call_annotations);
+            Ty_DECREF(Call_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->keyword_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->keyword_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Call_annotations);
+            Ty_DECREF(Call_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Call_annotations, "keywords", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Call_annotations, "keywords", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Call_annotations);
+            Ty_DECREF(Call_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Call_type, "_field_types",
                                   Call_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Call_annotations);
+        Ty_DECREF(Call_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Call_type, "__annotations__",
                                   Call_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Call_annotations);
+        Ty_DECREF(Call_annotations);
         return 0;
     }
-    Py_DECREF(Call_annotations);
-    PyObject *FormattedValue_annotations = PyDict_New();
+    Ty_DECREF(Call_annotations);
+    TyObject *FormattedValue_annotations = TyDict_New();
     if (!FormattedValue_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(FormattedValue_annotations, "value", type)
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(FormattedValue_annotations, "value", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FormattedValue_annotations);
+            Ty_DECREF(FormattedValue_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyLong_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(FormattedValue_annotations, "conversion",
+        TyObject *type = (TyObject *)&TyLong_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(FormattedValue_annotations, "conversion",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FormattedValue_annotations);
+            Ty_DECREF(FormattedValue_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(FormattedValue_annotations);
+            Ty_DECREF(FormattedValue_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(FormattedValue_annotations, "format_spec",
+        cond = TyDict_SetItemString(FormattedValue_annotations, "format_spec",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(FormattedValue_annotations);
+            Ty_DECREF(FormattedValue_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->FormattedValue_type, "_field_types",
                                   FormattedValue_annotations) == 0;
     if (!cond) {
-        Py_DECREF(FormattedValue_annotations);
+        Ty_DECREF(FormattedValue_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->FormattedValue_type,
                                   "__annotations__",
                                   FormattedValue_annotations) == 0;
     if (!cond) {
-        Py_DECREF(FormattedValue_annotations);
+        Ty_DECREF(FormattedValue_annotations);
         return 0;
     }
-    Py_DECREF(FormattedValue_annotations);
-    PyObject *Interpolation_annotations = PyDict_New();
+    Ty_DECREF(FormattedValue_annotations);
+    TyObject *Interpolation_annotations = TyDict_New();
     if (!Interpolation_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Interpolation_annotations, "value", type)
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Interpolation_annotations, "value", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Interpolation_annotations);
+            Ty_DECREF(Interpolation_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyBaseObject_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Interpolation_annotations, "str", type) ==
+        TyObject *type = (TyObject *)&PyBaseObject_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Interpolation_annotations, "str", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Interpolation_annotations);
+            Ty_DECREF(Interpolation_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyLong_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Interpolation_annotations, "conversion",
+        TyObject *type = (TyObject *)&TyLong_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Interpolation_annotations, "conversion",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Interpolation_annotations);
+            Ty_DECREF(Interpolation_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Interpolation_annotations);
+            Ty_DECREF(Interpolation_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Interpolation_annotations, "format_spec",
+        cond = TyDict_SetItemString(Interpolation_annotations, "format_spec",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Interpolation_annotations);
+            Ty_DECREF(Interpolation_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Interpolation_type, "_field_types",
                                   Interpolation_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Interpolation_annotations);
+        Ty_DECREF(Interpolation_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Interpolation_type, "__annotations__",
                                   Interpolation_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Interpolation_annotations);
+        Ty_DECREF(Interpolation_annotations);
         return 0;
     }
-    Py_DECREF(Interpolation_annotations);
-    PyObject *JoinedStr_annotations = PyDict_New();
+    Ty_DECREF(Interpolation_annotations);
+    TyObject *JoinedStr_annotations = TyDict_New();
     if (!JoinedStr_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(JoinedStr_annotations);
+            Ty_DECREF(JoinedStr_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(JoinedStr_annotations, "values", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(JoinedStr_annotations, "values", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(JoinedStr_annotations);
+            Ty_DECREF(JoinedStr_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->JoinedStr_type, "_field_types",
                                   JoinedStr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(JoinedStr_annotations);
+        Ty_DECREF(JoinedStr_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->JoinedStr_type, "__annotations__",
                                   JoinedStr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(JoinedStr_annotations);
+        Ty_DECREF(JoinedStr_annotations);
         return 0;
     }
-    Py_DECREF(JoinedStr_annotations);
-    PyObject *TemplateStr_annotations = PyDict_New();
+    Ty_DECREF(JoinedStr_annotations);
+    TyObject *TemplateStr_annotations = TyDict_New();
     if (!TemplateStr_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(TemplateStr_annotations);
+            Ty_DECREF(TemplateStr_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(TemplateStr_annotations, "values", type) ==
+        cond = TyDict_SetItemString(TemplateStr_annotations, "values", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TemplateStr_annotations);
+            Ty_DECREF(TemplateStr_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->TemplateStr_type, "_field_types",
                                   TemplateStr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TemplateStr_annotations);
+        Ty_DECREF(TemplateStr_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->TemplateStr_type, "__annotations__",
                                   TemplateStr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TemplateStr_annotations);
+        Ty_DECREF(TemplateStr_annotations);
         return 0;
     }
-    Py_DECREF(TemplateStr_annotations);
-    PyObject *Constant_annotations = PyDict_New();
+    Ty_DECREF(TemplateStr_annotations);
+    TyObject *Constant_annotations = TyDict_New();
     if (!Constant_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyBaseObject_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Constant_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&PyBaseObject_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Constant_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Constant_annotations);
+            Ty_DECREF(Constant_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Constant_annotations);
+            Ty_DECREF(Constant_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Constant_annotations, "kind", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Constant_annotations, "kind", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Constant_annotations);
+            Ty_DECREF(Constant_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Constant_type, "_field_types",
                                   Constant_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Constant_annotations);
+        Ty_DECREF(Constant_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Constant_type, "__annotations__",
                                   Constant_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Constant_annotations);
+        Ty_DECREF(Constant_annotations);
         return 0;
     }
-    Py_DECREF(Constant_annotations);
-    PyObject *Attribute_annotations = PyDict_New();
+    Ty_DECREF(Constant_annotations);
+    TyObject *Attribute_annotations = TyDict_New();
     if (!Attribute_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Attribute_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Attribute_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Attribute_annotations);
+            Ty_DECREF(Attribute_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Attribute_annotations, "attr", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Attribute_annotations, "attr", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Attribute_annotations);
+            Ty_DECREF(Attribute_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_context_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Attribute_annotations, "ctx", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_context_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Attribute_annotations, "ctx", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Attribute_annotations);
+            Ty_DECREF(Attribute_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Attribute_type, "_field_types",
                                   Attribute_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Attribute_annotations);
+        Ty_DECREF(Attribute_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Attribute_type, "__annotations__",
                                   Attribute_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Attribute_annotations);
+        Ty_DECREF(Attribute_annotations);
         return 0;
     }
-    Py_DECREF(Attribute_annotations);
-    PyObject *Subscript_annotations = PyDict_New();
+    Ty_DECREF(Attribute_annotations);
+    TyObject *Subscript_annotations = TyDict_New();
     if (!Subscript_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Subscript_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Subscript_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Subscript_annotations);
+            Ty_DECREF(Subscript_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Subscript_annotations, "slice", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Subscript_annotations, "slice", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Subscript_annotations);
+            Ty_DECREF(Subscript_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_context_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Subscript_annotations, "ctx", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_context_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Subscript_annotations, "ctx", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Subscript_annotations);
+            Ty_DECREF(Subscript_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Subscript_type, "_field_types",
                                   Subscript_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Subscript_annotations);
+        Ty_DECREF(Subscript_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Subscript_type, "__annotations__",
                                   Subscript_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Subscript_annotations);
+        Ty_DECREF(Subscript_annotations);
         return 0;
     }
-    Py_DECREF(Subscript_annotations);
-    PyObject *Starred_annotations = PyDict_New();
+    Ty_DECREF(Subscript_annotations);
+    TyObject *Starred_annotations = TyDict_New();
     if (!Starred_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Starred_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Starred_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Starred_annotations);
+            Ty_DECREF(Starred_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_context_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Starred_annotations, "ctx", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_context_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Starred_annotations, "ctx", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Starred_annotations);
+            Ty_DECREF(Starred_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Starred_type, "_field_types",
                                   Starred_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Starred_annotations);
+        Ty_DECREF(Starred_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Starred_type, "__annotations__",
                                   Starred_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Starred_annotations);
+        Ty_DECREF(Starred_annotations);
         return 0;
     }
-    Py_DECREF(Starred_annotations);
-    PyObject *Name_annotations = PyDict_New();
+    Ty_DECREF(Starred_annotations);
+    TyObject *Name_annotations = TyDict_New();
     if (!Name_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Name_annotations, "id", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Name_annotations, "id", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Name_annotations);
+            Ty_DECREF(Name_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_context_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Name_annotations, "ctx", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_context_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Name_annotations, "ctx", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Name_annotations);
+            Ty_DECREF(Name_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Name_type, "_field_types",
                                   Name_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Name_annotations);
+        Ty_DECREF(Name_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Name_type, "__annotations__",
                                   Name_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Name_annotations);
+        Ty_DECREF(Name_annotations);
         return 0;
     }
-    Py_DECREF(Name_annotations);
-    PyObject *List_annotations = PyDict_New();
+    Ty_DECREF(Name_annotations);
+    TyObject *List_annotations = TyDict_New();
     if (!List_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(List_annotations);
+            Ty_DECREF(List_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(List_annotations, "elts", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(List_annotations, "elts", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(List_annotations);
+            Ty_DECREF(List_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_context_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(List_annotations, "ctx", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_context_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(List_annotations, "ctx", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(List_annotations);
+            Ty_DECREF(List_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->List_type, "_field_types",
                                   List_annotations) == 0;
     if (!cond) {
-        Py_DECREF(List_annotations);
+        Ty_DECREF(List_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->List_type, "__annotations__",
                                   List_annotations) == 0;
     if (!cond) {
-        Py_DECREF(List_annotations);
+        Ty_DECREF(List_annotations);
         return 0;
     }
-    Py_DECREF(List_annotations);
-    PyObject *Tuple_annotations = PyDict_New();
+    Ty_DECREF(List_annotations);
+    TyObject *Tuple_annotations = TyDict_New();
     if (!Tuple_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Tuple_annotations);
+            Ty_DECREF(Tuple_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Tuple_annotations, "elts", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Tuple_annotations, "elts", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Tuple_annotations);
+            Ty_DECREF(Tuple_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_context_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(Tuple_annotations, "ctx", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_context_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(Tuple_annotations, "ctx", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Tuple_annotations);
+            Ty_DECREF(Tuple_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Tuple_type, "_field_types",
                                   Tuple_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Tuple_annotations);
+        Ty_DECREF(Tuple_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Tuple_type, "__annotations__",
                                   Tuple_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Tuple_annotations);
+        Ty_DECREF(Tuple_annotations);
         return 0;
     }
-    Py_DECREF(Tuple_annotations);
-    PyObject *Slice_annotations = PyDict_New();
+    Ty_DECREF(Tuple_annotations);
+    TyObject *Slice_annotations = TyDict_New();
     if (!Slice_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Slice_annotations);
+            Ty_DECREF(Slice_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Slice_annotations, "lower", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Slice_annotations, "lower", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Slice_annotations);
+            Ty_DECREF(Slice_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Slice_annotations);
+            Ty_DECREF(Slice_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Slice_annotations, "upper", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Slice_annotations, "upper", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Slice_annotations);
+            Ty_DECREF(Slice_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(Slice_annotations);
+            Ty_DECREF(Slice_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(Slice_annotations, "step", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(Slice_annotations, "step", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(Slice_annotations);
+            Ty_DECREF(Slice_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->Slice_type, "_field_types",
                                   Slice_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Slice_annotations);
+        Ty_DECREF(Slice_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Slice_type, "__annotations__",
                                   Slice_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Slice_annotations);
+        Ty_DECREF(Slice_annotations);
         return 0;
     }
-    Py_DECREF(Slice_annotations);
-    PyObject *Load_annotations = PyDict_New();
+    Ty_DECREF(Slice_annotations);
+    TyObject *Load_annotations = TyDict_New();
     if (!Load_annotations) return 0;
     cond = PyObject_SetAttrString(state->Load_type, "_field_types",
                                   Load_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Load_annotations);
+        Ty_DECREF(Load_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Load_type, "__annotations__",
                                   Load_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Load_annotations);
+        Ty_DECREF(Load_annotations);
         return 0;
     }
-    Py_DECREF(Load_annotations);
-    PyObject *Store_annotations = PyDict_New();
+    Ty_DECREF(Load_annotations);
+    TyObject *Store_annotations = TyDict_New();
     if (!Store_annotations) return 0;
     cond = PyObject_SetAttrString(state->Store_type, "_field_types",
                                   Store_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Store_annotations);
+        Ty_DECREF(Store_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Store_type, "__annotations__",
                                   Store_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Store_annotations);
+        Ty_DECREF(Store_annotations);
         return 0;
     }
-    Py_DECREF(Store_annotations);
-    PyObject *Del_annotations = PyDict_New();
+    Ty_DECREF(Store_annotations);
+    TyObject *Del_annotations = TyDict_New();
     if (!Del_annotations) return 0;
     cond = PyObject_SetAttrString(state->Del_type, "_field_types",
                                   Del_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Del_annotations);
+        Ty_DECREF(Del_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Del_type, "__annotations__",
                                   Del_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Del_annotations);
+        Ty_DECREF(Del_annotations);
         return 0;
     }
-    Py_DECREF(Del_annotations);
-    PyObject *And_annotations = PyDict_New();
+    Ty_DECREF(Del_annotations);
+    TyObject *And_annotations = TyDict_New();
     if (!And_annotations) return 0;
     cond = PyObject_SetAttrString(state->And_type, "_field_types",
                                   And_annotations) == 0;
     if (!cond) {
-        Py_DECREF(And_annotations);
+        Ty_DECREF(And_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->And_type, "__annotations__",
                                   And_annotations) == 0;
     if (!cond) {
-        Py_DECREF(And_annotations);
+        Ty_DECREF(And_annotations);
         return 0;
     }
-    Py_DECREF(And_annotations);
-    PyObject *Or_annotations = PyDict_New();
+    Ty_DECREF(And_annotations);
+    TyObject *Or_annotations = TyDict_New();
     if (!Or_annotations) return 0;
     cond = PyObject_SetAttrString(state->Or_type, "_field_types",
                                   Or_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Or_annotations);
+        Ty_DECREF(Or_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Or_type, "__annotations__",
                                   Or_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Or_annotations);
+        Ty_DECREF(Or_annotations);
         return 0;
     }
-    Py_DECREF(Or_annotations);
-    PyObject *Add_annotations = PyDict_New();
+    Ty_DECREF(Or_annotations);
+    TyObject *Add_annotations = TyDict_New();
     if (!Add_annotations) return 0;
     cond = PyObject_SetAttrString(state->Add_type, "_field_types",
                                   Add_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Add_annotations);
+        Ty_DECREF(Add_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Add_type, "__annotations__",
                                   Add_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Add_annotations);
+        Ty_DECREF(Add_annotations);
         return 0;
     }
-    Py_DECREF(Add_annotations);
-    PyObject *Sub_annotations = PyDict_New();
+    Ty_DECREF(Add_annotations);
+    TyObject *Sub_annotations = TyDict_New();
     if (!Sub_annotations) return 0;
     cond = PyObject_SetAttrString(state->Sub_type, "_field_types",
                                   Sub_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Sub_annotations);
+        Ty_DECREF(Sub_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Sub_type, "__annotations__",
                                   Sub_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Sub_annotations);
+        Ty_DECREF(Sub_annotations);
         return 0;
     }
-    Py_DECREF(Sub_annotations);
-    PyObject *Mult_annotations = PyDict_New();
+    Ty_DECREF(Sub_annotations);
+    TyObject *Mult_annotations = TyDict_New();
     if (!Mult_annotations) return 0;
     cond = PyObject_SetAttrString(state->Mult_type, "_field_types",
                                   Mult_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Mult_annotations);
+        Ty_DECREF(Mult_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Mult_type, "__annotations__",
                                   Mult_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Mult_annotations);
+        Ty_DECREF(Mult_annotations);
         return 0;
     }
-    Py_DECREF(Mult_annotations);
-    PyObject *MatMult_annotations = PyDict_New();
+    Ty_DECREF(Mult_annotations);
+    TyObject *MatMult_annotations = TyDict_New();
     if (!MatMult_annotations) return 0;
     cond = PyObject_SetAttrString(state->MatMult_type, "_field_types",
                                   MatMult_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatMult_annotations);
+        Ty_DECREF(MatMult_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->MatMult_type, "__annotations__",
                                   MatMult_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatMult_annotations);
+        Ty_DECREF(MatMult_annotations);
         return 0;
     }
-    Py_DECREF(MatMult_annotations);
-    PyObject *Div_annotations = PyDict_New();
+    Ty_DECREF(MatMult_annotations);
+    TyObject *Div_annotations = TyDict_New();
     if (!Div_annotations) return 0;
     cond = PyObject_SetAttrString(state->Div_type, "_field_types",
                                   Div_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Div_annotations);
+        Ty_DECREF(Div_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Div_type, "__annotations__",
                                   Div_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Div_annotations);
+        Ty_DECREF(Div_annotations);
         return 0;
     }
-    Py_DECREF(Div_annotations);
-    PyObject *Mod_annotations = PyDict_New();
+    Ty_DECREF(Div_annotations);
+    TyObject *Mod_annotations = TyDict_New();
     if (!Mod_annotations) return 0;
     cond = PyObject_SetAttrString(state->Mod_type, "_field_types",
                                   Mod_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Mod_annotations);
+        Ty_DECREF(Mod_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Mod_type, "__annotations__",
                                   Mod_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Mod_annotations);
+        Ty_DECREF(Mod_annotations);
         return 0;
     }
-    Py_DECREF(Mod_annotations);
-    PyObject *Pow_annotations = PyDict_New();
+    Ty_DECREF(Mod_annotations);
+    TyObject *Pow_annotations = TyDict_New();
     if (!Pow_annotations) return 0;
     cond = PyObject_SetAttrString(state->Pow_type, "_field_types",
                                   Pow_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Pow_annotations);
+        Ty_DECREF(Pow_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Pow_type, "__annotations__",
                                   Pow_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Pow_annotations);
+        Ty_DECREF(Pow_annotations);
         return 0;
     }
-    Py_DECREF(Pow_annotations);
-    PyObject *LShift_annotations = PyDict_New();
+    Ty_DECREF(Pow_annotations);
+    TyObject *LShift_annotations = TyDict_New();
     if (!LShift_annotations) return 0;
     cond = PyObject_SetAttrString(state->LShift_type, "_field_types",
                                   LShift_annotations) == 0;
     if (!cond) {
-        Py_DECREF(LShift_annotations);
+        Ty_DECREF(LShift_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->LShift_type, "__annotations__",
                                   LShift_annotations) == 0;
     if (!cond) {
-        Py_DECREF(LShift_annotations);
+        Ty_DECREF(LShift_annotations);
         return 0;
     }
-    Py_DECREF(LShift_annotations);
-    PyObject *RShift_annotations = PyDict_New();
+    Ty_DECREF(LShift_annotations);
+    TyObject *RShift_annotations = TyDict_New();
     if (!RShift_annotations) return 0;
     cond = PyObject_SetAttrString(state->RShift_type, "_field_types",
                                   RShift_annotations) == 0;
     if (!cond) {
-        Py_DECREF(RShift_annotations);
+        Ty_DECREF(RShift_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->RShift_type, "__annotations__",
                                   RShift_annotations) == 0;
     if (!cond) {
-        Py_DECREF(RShift_annotations);
+        Ty_DECREF(RShift_annotations);
         return 0;
     }
-    Py_DECREF(RShift_annotations);
-    PyObject *BitOr_annotations = PyDict_New();
+    Ty_DECREF(RShift_annotations);
+    TyObject *BitOr_annotations = TyDict_New();
     if (!BitOr_annotations) return 0;
     cond = PyObject_SetAttrString(state->BitOr_type, "_field_types",
                                   BitOr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BitOr_annotations);
+        Ty_DECREF(BitOr_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->BitOr_type, "__annotations__",
                                   BitOr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BitOr_annotations);
+        Ty_DECREF(BitOr_annotations);
         return 0;
     }
-    Py_DECREF(BitOr_annotations);
-    PyObject *BitXor_annotations = PyDict_New();
+    Ty_DECREF(BitOr_annotations);
+    TyObject *BitXor_annotations = TyDict_New();
     if (!BitXor_annotations) return 0;
     cond = PyObject_SetAttrString(state->BitXor_type, "_field_types",
                                   BitXor_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BitXor_annotations);
+        Ty_DECREF(BitXor_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->BitXor_type, "__annotations__",
                                   BitXor_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BitXor_annotations);
+        Ty_DECREF(BitXor_annotations);
         return 0;
     }
-    Py_DECREF(BitXor_annotations);
-    PyObject *BitAnd_annotations = PyDict_New();
+    Ty_DECREF(BitXor_annotations);
+    TyObject *BitAnd_annotations = TyDict_New();
     if (!BitAnd_annotations) return 0;
     cond = PyObject_SetAttrString(state->BitAnd_type, "_field_types",
                                   BitAnd_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BitAnd_annotations);
+        Ty_DECREF(BitAnd_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->BitAnd_type, "__annotations__",
                                   BitAnd_annotations) == 0;
     if (!cond) {
-        Py_DECREF(BitAnd_annotations);
+        Ty_DECREF(BitAnd_annotations);
         return 0;
     }
-    Py_DECREF(BitAnd_annotations);
-    PyObject *FloorDiv_annotations = PyDict_New();
+    Ty_DECREF(BitAnd_annotations);
+    TyObject *FloorDiv_annotations = TyDict_New();
     if (!FloorDiv_annotations) return 0;
     cond = PyObject_SetAttrString(state->FloorDiv_type, "_field_types",
                                   FloorDiv_annotations) == 0;
     if (!cond) {
-        Py_DECREF(FloorDiv_annotations);
+        Ty_DECREF(FloorDiv_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->FloorDiv_type, "__annotations__",
                                   FloorDiv_annotations) == 0;
     if (!cond) {
-        Py_DECREF(FloorDiv_annotations);
+        Ty_DECREF(FloorDiv_annotations);
         return 0;
     }
-    Py_DECREF(FloorDiv_annotations);
-    PyObject *Invert_annotations = PyDict_New();
+    Ty_DECREF(FloorDiv_annotations);
+    TyObject *Invert_annotations = TyDict_New();
     if (!Invert_annotations) return 0;
     cond = PyObject_SetAttrString(state->Invert_type, "_field_types",
                                   Invert_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Invert_annotations);
+        Ty_DECREF(Invert_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Invert_type, "__annotations__",
                                   Invert_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Invert_annotations);
+        Ty_DECREF(Invert_annotations);
         return 0;
     }
-    Py_DECREF(Invert_annotations);
-    PyObject *Not_annotations = PyDict_New();
+    Ty_DECREF(Invert_annotations);
+    TyObject *Not_annotations = TyDict_New();
     if (!Not_annotations) return 0;
     cond = PyObject_SetAttrString(state->Not_type, "_field_types",
                                   Not_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Not_annotations);
+        Ty_DECREF(Not_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Not_type, "__annotations__",
                                   Not_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Not_annotations);
+        Ty_DECREF(Not_annotations);
         return 0;
     }
-    Py_DECREF(Not_annotations);
-    PyObject *UAdd_annotations = PyDict_New();
+    Ty_DECREF(Not_annotations);
+    TyObject *UAdd_annotations = TyDict_New();
     if (!UAdd_annotations) return 0;
     cond = PyObject_SetAttrString(state->UAdd_type, "_field_types",
                                   UAdd_annotations) == 0;
     if (!cond) {
-        Py_DECREF(UAdd_annotations);
+        Ty_DECREF(UAdd_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->UAdd_type, "__annotations__",
                                   UAdd_annotations) == 0;
     if (!cond) {
-        Py_DECREF(UAdd_annotations);
+        Ty_DECREF(UAdd_annotations);
         return 0;
     }
-    Py_DECREF(UAdd_annotations);
-    PyObject *USub_annotations = PyDict_New();
+    Ty_DECREF(UAdd_annotations);
+    TyObject *USub_annotations = TyDict_New();
     if (!USub_annotations) return 0;
     cond = PyObject_SetAttrString(state->USub_type, "_field_types",
                                   USub_annotations) == 0;
     if (!cond) {
-        Py_DECREF(USub_annotations);
+        Ty_DECREF(USub_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->USub_type, "__annotations__",
                                   USub_annotations) == 0;
     if (!cond) {
-        Py_DECREF(USub_annotations);
+        Ty_DECREF(USub_annotations);
         return 0;
     }
-    Py_DECREF(USub_annotations);
-    PyObject *Eq_annotations = PyDict_New();
+    Ty_DECREF(USub_annotations);
+    TyObject *Eq_annotations = TyDict_New();
     if (!Eq_annotations) return 0;
     cond = PyObject_SetAttrString(state->Eq_type, "_field_types",
                                   Eq_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Eq_annotations);
+        Ty_DECREF(Eq_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Eq_type, "__annotations__",
                                   Eq_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Eq_annotations);
+        Ty_DECREF(Eq_annotations);
         return 0;
     }
-    Py_DECREF(Eq_annotations);
-    PyObject *NotEq_annotations = PyDict_New();
+    Ty_DECREF(Eq_annotations);
+    TyObject *NotEq_annotations = TyDict_New();
     if (!NotEq_annotations) return 0;
     cond = PyObject_SetAttrString(state->NotEq_type, "_field_types",
                                   NotEq_annotations) == 0;
     if (!cond) {
-        Py_DECREF(NotEq_annotations);
+        Ty_DECREF(NotEq_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->NotEq_type, "__annotations__",
                                   NotEq_annotations) == 0;
     if (!cond) {
-        Py_DECREF(NotEq_annotations);
+        Ty_DECREF(NotEq_annotations);
         return 0;
     }
-    Py_DECREF(NotEq_annotations);
-    PyObject *Lt_annotations = PyDict_New();
+    Ty_DECREF(NotEq_annotations);
+    TyObject *Lt_annotations = TyDict_New();
     if (!Lt_annotations) return 0;
     cond = PyObject_SetAttrString(state->Lt_type, "_field_types",
                                   Lt_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Lt_annotations);
+        Ty_DECREF(Lt_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Lt_type, "__annotations__",
                                   Lt_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Lt_annotations);
+        Ty_DECREF(Lt_annotations);
         return 0;
     }
-    Py_DECREF(Lt_annotations);
-    PyObject *LtE_annotations = PyDict_New();
+    Ty_DECREF(Lt_annotations);
+    TyObject *LtE_annotations = TyDict_New();
     if (!LtE_annotations) return 0;
     cond = PyObject_SetAttrString(state->LtE_type, "_field_types",
                                   LtE_annotations) == 0;
     if (!cond) {
-        Py_DECREF(LtE_annotations);
+        Ty_DECREF(LtE_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->LtE_type, "__annotations__",
                                   LtE_annotations) == 0;
     if (!cond) {
-        Py_DECREF(LtE_annotations);
+        Ty_DECREF(LtE_annotations);
         return 0;
     }
-    Py_DECREF(LtE_annotations);
-    PyObject *Gt_annotations = PyDict_New();
+    Ty_DECREF(LtE_annotations);
+    TyObject *Gt_annotations = TyDict_New();
     if (!Gt_annotations) return 0;
     cond = PyObject_SetAttrString(state->Gt_type, "_field_types",
                                   Gt_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Gt_annotations);
+        Ty_DECREF(Gt_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Gt_type, "__annotations__",
                                   Gt_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Gt_annotations);
+        Ty_DECREF(Gt_annotations);
         return 0;
     }
-    Py_DECREF(Gt_annotations);
-    PyObject *GtE_annotations = PyDict_New();
+    Ty_DECREF(Gt_annotations);
+    TyObject *GtE_annotations = TyDict_New();
     if (!GtE_annotations) return 0;
     cond = PyObject_SetAttrString(state->GtE_type, "_field_types",
                                   GtE_annotations) == 0;
     if (!cond) {
-        Py_DECREF(GtE_annotations);
+        Ty_DECREF(GtE_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->GtE_type, "__annotations__",
                                   GtE_annotations) == 0;
     if (!cond) {
-        Py_DECREF(GtE_annotations);
+        Ty_DECREF(GtE_annotations);
         return 0;
     }
-    Py_DECREF(GtE_annotations);
-    PyObject *Is_annotations = PyDict_New();
+    Ty_DECREF(GtE_annotations);
+    TyObject *Is_annotations = TyDict_New();
     if (!Is_annotations) return 0;
     cond = PyObject_SetAttrString(state->Is_type, "_field_types",
                                   Is_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Is_annotations);
+        Ty_DECREF(Is_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->Is_type, "__annotations__",
                                   Is_annotations) == 0;
     if (!cond) {
-        Py_DECREF(Is_annotations);
+        Ty_DECREF(Is_annotations);
         return 0;
     }
-    Py_DECREF(Is_annotations);
-    PyObject *IsNot_annotations = PyDict_New();
+    Ty_DECREF(Is_annotations);
+    TyObject *IsNot_annotations = TyDict_New();
     if (!IsNot_annotations) return 0;
     cond = PyObject_SetAttrString(state->IsNot_type, "_field_types",
                                   IsNot_annotations) == 0;
     if (!cond) {
-        Py_DECREF(IsNot_annotations);
+        Ty_DECREF(IsNot_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->IsNot_type, "__annotations__",
                                   IsNot_annotations) == 0;
     if (!cond) {
-        Py_DECREF(IsNot_annotations);
+        Ty_DECREF(IsNot_annotations);
         return 0;
     }
-    Py_DECREF(IsNot_annotations);
-    PyObject *In_annotations = PyDict_New();
+    Ty_DECREF(IsNot_annotations);
+    TyObject *In_annotations = TyDict_New();
     if (!In_annotations) return 0;
     cond = PyObject_SetAttrString(state->In_type, "_field_types",
                                   In_annotations) == 0;
     if (!cond) {
-        Py_DECREF(In_annotations);
+        Ty_DECREF(In_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->In_type, "__annotations__",
                                   In_annotations) == 0;
     if (!cond) {
-        Py_DECREF(In_annotations);
+        Ty_DECREF(In_annotations);
         return 0;
     }
-    Py_DECREF(In_annotations);
-    PyObject *NotIn_annotations = PyDict_New();
+    Ty_DECREF(In_annotations);
+    TyObject *NotIn_annotations = TyDict_New();
     if (!NotIn_annotations) return 0;
     cond = PyObject_SetAttrString(state->NotIn_type, "_field_types",
                                   NotIn_annotations) == 0;
     if (!cond) {
-        Py_DECREF(NotIn_annotations);
+        Ty_DECREF(NotIn_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->NotIn_type, "__annotations__",
                                   NotIn_annotations) == 0;
     if (!cond) {
-        Py_DECREF(NotIn_annotations);
+        Ty_DECREF(NotIn_annotations);
         return 0;
     }
-    Py_DECREF(NotIn_annotations);
-    PyObject *comprehension_annotations = PyDict_New();
+    Ty_DECREF(NotIn_annotations);
+    TyObject *comprehension_annotations = TyDict_New();
     if (!comprehension_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(comprehension_annotations, "target", type)
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(comprehension_annotations, "target", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(comprehension_annotations);
+            Ty_DECREF(comprehension_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(comprehension_annotations, "iter", type) ==
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(comprehension_annotations, "iter", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(comprehension_annotations);
+            Ty_DECREF(comprehension_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(comprehension_annotations);
+            Ty_DECREF(comprehension_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(comprehension_annotations, "ifs", type) ==
+        cond = TyDict_SetItemString(comprehension_annotations, "ifs", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(comprehension_annotations);
+            Ty_DECREF(comprehension_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyLong_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(comprehension_annotations, "is_async",
+        TyObject *type = (TyObject *)&TyLong_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(comprehension_annotations, "is_async",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(comprehension_annotations);
+            Ty_DECREF(comprehension_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->comprehension_type, "_field_types",
                                   comprehension_annotations) == 0;
     if (!cond) {
-        Py_DECREF(comprehension_annotations);
+        Ty_DECREF(comprehension_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->comprehension_type, "__annotations__",
                                   comprehension_annotations) == 0;
     if (!cond) {
-        Py_DECREF(comprehension_annotations);
+        Ty_DECREF(comprehension_annotations);
         return 0;
     }
-    Py_DECREF(comprehension_annotations);
-    PyObject *ExceptHandler_annotations = PyDict_New();
+    Ty_DECREF(comprehension_annotations);
+    TyObject *ExceptHandler_annotations = TyDict_New();
     if (!ExceptHandler_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ExceptHandler_annotations);
+            Ty_DECREF(ExceptHandler_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ExceptHandler_annotations, "type", type) ==
+        cond = TyDict_SetItemString(ExceptHandler_annotations, "type", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ExceptHandler_annotations);
+            Ty_DECREF(ExceptHandler_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ExceptHandler_annotations);
+            Ty_DECREF(ExceptHandler_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ExceptHandler_annotations, "name", type) ==
+        cond = TyDict_SetItemString(ExceptHandler_annotations, "name", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ExceptHandler_annotations);
+            Ty_DECREF(ExceptHandler_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ExceptHandler_annotations);
+            Ty_DECREF(ExceptHandler_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ExceptHandler_annotations, "body", type) ==
+        cond = TyDict_SetItemString(ExceptHandler_annotations, "body", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ExceptHandler_annotations);
+            Ty_DECREF(ExceptHandler_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->ExceptHandler_type, "_field_types",
                                   ExceptHandler_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ExceptHandler_annotations);
+        Ty_DECREF(ExceptHandler_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->ExceptHandler_type, "__annotations__",
                                   ExceptHandler_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ExceptHandler_annotations);
+        Ty_DECREF(ExceptHandler_annotations);
         return 0;
     }
-    Py_DECREF(ExceptHandler_annotations);
-    PyObject *arguments_annotations = PyDict_New();
+    Ty_DECREF(ExceptHandler_annotations);
+    TyObject *arguments_annotations = TyDict_New();
     if (!arguments_annotations) return 0;
     {
-        PyObject *type = state->arg_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->arg_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(arguments_annotations, "posonlyargs", type)
+        cond = TyDict_SetItemString(arguments_annotations, "posonlyargs", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->arg_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->arg_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(arguments_annotations, "args", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(arguments_annotations, "args", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->arg_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->arg_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(arguments_annotations, "vararg", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(arguments_annotations, "vararg", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->arg_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->arg_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(arguments_annotations, "kwonlyargs", type)
+        cond = TyDict_SetItemString(arguments_annotations, "kwonlyargs", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(arguments_annotations, "kw_defaults", type)
+        cond = TyDict_SetItemString(arguments_annotations, "kw_defaults", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->arg_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->arg_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(arguments_annotations, "kwarg", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(arguments_annotations, "kwarg", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(arguments_annotations, "defaults", type) ==
+        cond = TyDict_SetItemString(arguments_annotations, "defaults", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arguments_annotations);
+            Ty_DECREF(arguments_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->arguments_type, "_field_types",
                                   arguments_annotations) == 0;
     if (!cond) {
-        Py_DECREF(arguments_annotations);
+        Ty_DECREF(arguments_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->arguments_type, "__annotations__",
                                   arguments_annotations) == 0;
     if (!cond) {
-        Py_DECREF(arguments_annotations);
+        Ty_DECREF(arguments_annotations);
         return 0;
     }
-    Py_DECREF(arguments_annotations);
-    PyObject *arg_annotations = PyDict_New();
+    Ty_DECREF(arguments_annotations);
+    TyObject *arg_annotations = TyDict_New();
     if (!arg_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(arg_annotations, "arg", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(arg_annotations, "arg", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arg_annotations);
+            Ty_DECREF(arg_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(arg_annotations);
+            Ty_DECREF(arg_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(arg_annotations, "annotation", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(arg_annotations, "annotation", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arg_annotations);
+            Ty_DECREF(arg_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(arg_annotations);
+            Ty_DECREF(arg_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(arg_annotations, "type_comment", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(arg_annotations, "type_comment", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(arg_annotations);
+            Ty_DECREF(arg_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->arg_type, "_field_types",
                                   arg_annotations) == 0;
     if (!cond) {
-        Py_DECREF(arg_annotations);
+        Ty_DECREF(arg_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->arg_type, "__annotations__",
                                   arg_annotations) == 0;
     if (!cond) {
-        Py_DECREF(arg_annotations);
+        Ty_DECREF(arg_annotations);
         return 0;
     }
-    Py_DECREF(arg_annotations);
-    PyObject *keyword_annotations = PyDict_New();
+    Ty_DECREF(arg_annotations);
+    TyObject *keyword_annotations = TyDict_New();
     if (!keyword_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(keyword_annotations);
+            Ty_DECREF(keyword_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(keyword_annotations, "arg", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(keyword_annotations, "arg", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(keyword_annotations);
+            Ty_DECREF(keyword_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(keyword_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(keyword_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(keyword_annotations);
+            Ty_DECREF(keyword_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->keyword_type, "_field_types",
                                   keyword_annotations) == 0;
     if (!cond) {
-        Py_DECREF(keyword_annotations);
+        Ty_DECREF(keyword_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->keyword_type, "__annotations__",
                                   keyword_annotations) == 0;
     if (!cond) {
-        Py_DECREF(keyword_annotations);
+        Ty_DECREF(keyword_annotations);
         return 0;
     }
-    Py_DECREF(keyword_annotations);
-    PyObject *alias_annotations = PyDict_New();
+    Ty_DECREF(keyword_annotations);
+    TyObject *alias_annotations = TyDict_New();
     if (!alias_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(alias_annotations, "name", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(alias_annotations, "name", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(alias_annotations);
+            Ty_DECREF(alias_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(alias_annotations);
+            Ty_DECREF(alias_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(alias_annotations, "asname", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(alias_annotations, "asname", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(alias_annotations);
+            Ty_DECREF(alias_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->alias_type, "_field_types",
                                   alias_annotations) == 0;
     if (!cond) {
-        Py_DECREF(alias_annotations);
+        Ty_DECREF(alias_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->alias_type, "__annotations__",
                                   alias_annotations) == 0;
     if (!cond) {
-        Py_DECREF(alias_annotations);
+        Ty_DECREF(alias_annotations);
         return 0;
     }
-    Py_DECREF(alias_annotations);
-    PyObject *withitem_annotations = PyDict_New();
+    Ty_DECREF(alias_annotations);
+    TyObject *withitem_annotations = TyDict_New();
     if (!withitem_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(withitem_annotations, "context_expr", type)
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(withitem_annotations, "context_expr", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(withitem_annotations);
+            Ty_DECREF(withitem_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(withitem_annotations);
+            Ty_DECREF(withitem_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(withitem_annotations, "optional_vars",
+        cond = TyDict_SetItemString(withitem_annotations, "optional_vars",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(withitem_annotations);
+            Ty_DECREF(withitem_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->withitem_type, "_field_types",
                                   withitem_annotations) == 0;
     if (!cond) {
-        Py_DECREF(withitem_annotations);
+        Ty_DECREF(withitem_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->withitem_type, "__annotations__",
                                   withitem_annotations) == 0;
     if (!cond) {
-        Py_DECREF(withitem_annotations);
+        Ty_DECREF(withitem_annotations);
         return 0;
     }
-    Py_DECREF(withitem_annotations);
-    PyObject *match_case_annotations = PyDict_New();
+    Ty_DECREF(withitem_annotations);
+    TyObject *match_case_annotations = TyDict_New();
     if (!match_case_annotations) return 0;
     {
-        PyObject *type = state->pattern_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(match_case_annotations, "pattern", type) ==
+        TyObject *type = state->pattern_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(match_case_annotations, "pattern", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(match_case_annotations);
+            Ty_DECREF(match_case_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(match_case_annotations);
+            Ty_DECREF(match_case_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(match_case_annotations, "guard", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(match_case_annotations, "guard", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(match_case_annotations);
+            Ty_DECREF(match_case_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->stmt_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->stmt_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(match_case_annotations);
+            Ty_DECREF(match_case_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(match_case_annotations, "body", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(match_case_annotations, "body", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(match_case_annotations);
+            Ty_DECREF(match_case_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->match_case_type, "_field_types",
                                   match_case_annotations) == 0;
     if (!cond) {
-        Py_DECREF(match_case_annotations);
+        Ty_DECREF(match_case_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->match_case_type, "__annotations__",
                                   match_case_annotations) == 0;
     if (!cond) {
-        Py_DECREF(match_case_annotations);
+        Ty_DECREF(match_case_annotations);
         return 0;
     }
-    Py_DECREF(match_case_annotations);
-    PyObject *MatchValue_annotations = PyDict_New();
+    Ty_DECREF(match_case_annotations);
+    TyObject *MatchValue_annotations = TyDict_New();
     if (!MatchValue_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(MatchValue_annotations, "value", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(MatchValue_annotations, "value", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchValue_annotations);
+            Ty_DECREF(MatchValue_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->MatchValue_type, "_field_types",
                                   MatchValue_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchValue_annotations);
+        Ty_DECREF(MatchValue_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->MatchValue_type, "__annotations__",
                                   MatchValue_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchValue_annotations);
+        Ty_DECREF(MatchValue_annotations);
         return 0;
     }
-    Py_DECREF(MatchValue_annotations);
-    PyObject *MatchSingleton_annotations = PyDict_New();
+    Ty_DECREF(MatchValue_annotations);
+    TyObject *MatchSingleton_annotations = TyDict_New();
     if (!MatchSingleton_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyBaseObject_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(MatchSingleton_annotations, "value", type)
+        TyObject *type = (TyObject *)&PyBaseObject_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(MatchSingleton_annotations, "value", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchSingleton_annotations);
+            Ty_DECREF(MatchSingleton_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->MatchSingleton_type, "_field_types",
                                   MatchSingleton_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchSingleton_annotations);
+        Ty_DECREF(MatchSingleton_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->MatchSingleton_type,
                                   "__annotations__",
                                   MatchSingleton_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchSingleton_annotations);
+        Ty_DECREF(MatchSingleton_annotations);
         return 0;
     }
-    Py_DECREF(MatchSingleton_annotations);
-    PyObject *MatchSequence_annotations = PyDict_New();
+    Ty_DECREF(MatchSingleton_annotations);
+    TyObject *MatchSequence_annotations = TyDict_New();
     if (!MatchSequence_annotations) return 0;
     {
-        PyObject *type = state->pattern_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->pattern_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchSequence_annotations);
+            Ty_DECREF(MatchSequence_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchSequence_annotations, "patterns",
+        cond = TyDict_SetItemString(MatchSequence_annotations, "patterns",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchSequence_annotations);
+            Ty_DECREF(MatchSequence_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->MatchSequence_type, "_field_types",
                                   MatchSequence_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchSequence_annotations);
+        Ty_DECREF(MatchSequence_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->MatchSequence_type, "__annotations__",
                                   MatchSequence_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchSequence_annotations);
+        Ty_DECREF(MatchSequence_annotations);
         return 0;
     }
-    Py_DECREF(MatchSequence_annotations);
-    PyObject *MatchMapping_annotations = PyDict_New();
+    Ty_DECREF(MatchSequence_annotations);
+    TyObject *MatchMapping_annotations = TyDict_New();
     if (!MatchMapping_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->expr_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchMapping_annotations);
+            Ty_DECREF(MatchMapping_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchMapping_annotations, "keys", type) ==
+        cond = TyDict_SetItemString(MatchMapping_annotations, "keys", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchMapping_annotations);
+            Ty_DECREF(MatchMapping_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->pattern_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->pattern_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchMapping_annotations);
+            Ty_DECREF(MatchMapping_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchMapping_annotations, "patterns", type)
+        cond = TyDict_SetItemString(MatchMapping_annotations, "patterns", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchMapping_annotations);
+            Ty_DECREF(MatchMapping_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchMapping_annotations);
+            Ty_DECREF(MatchMapping_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchMapping_annotations, "rest", type) ==
+        cond = TyDict_SetItemString(MatchMapping_annotations, "rest", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchMapping_annotations);
+            Ty_DECREF(MatchMapping_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->MatchMapping_type, "_field_types",
                                   MatchMapping_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchMapping_annotations);
+        Ty_DECREF(MatchMapping_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->MatchMapping_type, "__annotations__",
                                   MatchMapping_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchMapping_annotations);
+        Ty_DECREF(MatchMapping_annotations);
         return 0;
     }
-    Py_DECREF(MatchMapping_annotations);
-    PyObject *MatchClass_annotations = PyDict_New();
+    Ty_DECREF(MatchMapping_annotations);
+    TyObject *MatchClass_annotations = TyDict_New();
     if (!MatchClass_annotations) return 0;
     {
-        PyObject *type = state->expr_type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(MatchClass_annotations, "cls", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = state->expr_type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(MatchClass_annotations, "cls", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchClass_annotations);
+            Ty_DECREF(MatchClass_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->pattern_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->pattern_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchClass_annotations);
+            Ty_DECREF(MatchClass_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchClass_annotations, "patterns", type)
+        cond = TyDict_SetItemString(MatchClass_annotations, "patterns", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchClass_annotations);
+            Ty_DECREF(MatchClass_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchClass_annotations);
+            Ty_DECREF(MatchClass_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchClass_annotations, "kwd_attrs", type)
+        cond = TyDict_SetItemString(MatchClass_annotations, "kwd_attrs", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchClass_annotations);
+            Ty_DECREF(MatchClass_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->pattern_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->pattern_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchClass_annotations);
+            Ty_DECREF(MatchClass_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchClass_annotations, "kwd_patterns",
+        cond = TyDict_SetItemString(MatchClass_annotations, "kwd_patterns",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchClass_annotations);
+            Ty_DECREF(MatchClass_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->MatchClass_type, "_field_types",
                                   MatchClass_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchClass_annotations);
+        Ty_DECREF(MatchClass_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->MatchClass_type, "__annotations__",
                                   MatchClass_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchClass_annotations);
+        Ty_DECREF(MatchClass_annotations);
         return 0;
     }
-    Py_DECREF(MatchClass_annotations);
-    PyObject *MatchStar_annotations = PyDict_New();
+    Ty_DECREF(MatchClass_annotations);
+    TyObject *MatchStar_annotations = TyDict_New();
     if (!MatchStar_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchStar_annotations);
+            Ty_DECREF(MatchStar_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchStar_annotations, "name", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(MatchStar_annotations, "name", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchStar_annotations);
+            Ty_DECREF(MatchStar_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->MatchStar_type, "_field_types",
                                   MatchStar_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchStar_annotations);
+        Ty_DECREF(MatchStar_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->MatchStar_type, "__annotations__",
                                   MatchStar_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchStar_annotations);
+        Ty_DECREF(MatchStar_annotations);
         return 0;
     }
-    Py_DECREF(MatchStar_annotations);
-    PyObject *MatchAs_annotations = PyDict_New();
+    Ty_DECREF(MatchStar_annotations);
+    TyObject *MatchAs_annotations = TyDict_New();
     if (!MatchAs_annotations) return 0;
     {
-        PyObject *type = state->pattern_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->pattern_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchAs_annotations);
+            Ty_DECREF(MatchAs_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchAs_annotations, "pattern", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(MatchAs_annotations, "pattern", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchAs_annotations);
+            Ty_DECREF(MatchAs_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchAs_annotations);
+            Ty_DECREF(MatchAs_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchAs_annotations, "name", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(MatchAs_annotations, "name", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchAs_annotations);
+            Ty_DECREF(MatchAs_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->MatchAs_type, "_field_types",
                                   MatchAs_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchAs_annotations);
+        Ty_DECREF(MatchAs_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->MatchAs_type, "__annotations__",
                                   MatchAs_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchAs_annotations);
+        Ty_DECREF(MatchAs_annotations);
         return 0;
     }
-    Py_DECREF(MatchAs_annotations);
-    PyObject *MatchOr_annotations = PyDict_New();
+    Ty_DECREF(MatchAs_annotations);
+    TyObject *MatchOr_annotations = TyDict_New();
     if (!MatchOr_annotations) return 0;
     {
-        PyObject *type = state->pattern_type;
-        type = Py_GenericAlias((PyObject *)&PyList_Type, type);
+        TyObject *type = state->pattern_type;
+        type = Ty_GenericAlias((TyObject *)&TyList_Type, type);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(MatchOr_annotations);
+            Ty_DECREF(MatchOr_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(MatchOr_annotations, "patterns", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(MatchOr_annotations, "patterns", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(MatchOr_annotations);
+            Ty_DECREF(MatchOr_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->MatchOr_type, "_field_types",
                                   MatchOr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchOr_annotations);
+        Ty_DECREF(MatchOr_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->MatchOr_type, "__annotations__",
                                   MatchOr_annotations) == 0;
     if (!cond) {
-        Py_DECREF(MatchOr_annotations);
+        Ty_DECREF(MatchOr_annotations);
         return 0;
     }
-    Py_DECREF(MatchOr_annotations);
-    PyObject *TypeIgnore_annotations = PyDict_New();
+    Ty_DECREF(MatchOr_annotations);
+    TyObject *TypeIgnore_annotations = TyDict_New();
     if (!TypeIgnore_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyLong_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(TypeIgnore_annotations, "lineno", type) ==
+        TyObject *type = (TyObject *)&TyLong_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(TypeIgnore_annotations, "lineno", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeIgnore_annotations);
+            Ty_DECREF(TypeIgnore_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(TypeIgnore_annotations, "tag", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(TypeIgnore_annotations, "tag", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeIgnore_annotations);
+            Ty_DECREF(TypeIgnore_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->TypeIgnore_type, "_field_types",
                                   TypeIgnore_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TypeIgnore_annotations);
+        Ty_DECREF(TypeIgnore_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->TypeIgnore_type, "__annotations__",
                                   TypeIgnore_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TypeIgnore_annotations);
+        Ty_DECREF(TypeIgnore_annotations);
         return 0;
     }
-    Py_DECREF(TypeIgnore_annotations);
-    PyObject *TypeVar_annotations = PyDict_New();
+    Ty_DECREF(TypeIgnore_annotations);
+    TyObject *TypeVar_annotations = TyDict_New();
     if (!TypeVar_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(TypeVar_annotations, "name", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(TypeVar_annotations, "name", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeVar_annotations);
+            Ty_DECREF(TypeVar_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(TypeVar_annotations);
+            Ty_DECREF(TypeVar_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(TypeVar_annotations, "bound", type) == 0;
-        Py_DECREF(type);
+        cond = TyDict_SetItemString(TypeVar_annotations, "bound", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeVar_annotations);
+            Ty_DECREF(TypeVar_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(TypeVar_annotations);
+            Ty_DECREF(TypeVar_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(TypeVar_annotations, "default_value", type)
+        cond = TyDict_SetItemString(TypeVar_annotations, "default_value", type)
                                     == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeVar_annotations);
+            Ty_DECREF(TypeVar_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->TypeVar_type, "_field_types",
                                   TypeVar_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TypeVar_annotations);
+        Ty_DECREF(TypeVar_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->TypeVar_type, "__annotations__",
                                   TypeVar_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TypeVar_annotations);
+        Ty_DECREF(TypeVar_annotations);
         return 0;
     }
-    Py_DECREF(TypeVar_annotations);
-    PyObject *ParamSpec_annotations = PyDict_New();
+    Ty_DECREF(TypeVar_annotations);
+    TyObject *ParamSpec_annotations = TyDict_New();
     if (!ParamSpec_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(ParamSpec_annotations, "name", type) == 0;
-        Py_DECREF(type);
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(ParamSpec_annotations, "name", type) == 0;
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ParamSpec_annotations);
+            Ty_DECREF(ParamSpec_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(ParamSpec_annotations);
+            Ty_DECREF(ParamSpec_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(ParamSpec_annotations, "default_value",
+        cond = TyDict_SetItemString(ParamSpec_annotations, "default_value",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(ParamSpec_annotations);
+            Ty_DECREF(ParamSpec_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->ParamSpec_type, "_field_types",
                                   ParamSpec_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ParamSpec_annotations);
+        Ty_DECREF(ParamSpec_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->ParamSpec_type, "__annotations__",
                                   ParamSpec_annotations) == 0;
     if (!cond) {
-        Py_DECREF(ParamSpec_annotations);
+        Ty_DECREF(ParamSpec_annotations);
         return 0;
     }
-    Py_DECREF(ParamSpec_annotations);
-    PyObject *TypeVarTuple_annotations = PyDict_New();
+    Ty_DECREF(ParamSpec_annotations);
+    TyObject *TypeVarTuple_annotations = TyDict_New();
     if (!TypeVarTuple_annotations) return 0;
     {
-        PyObject *type = (PyObject *)&PyUnicode_Type;
-        Py_INCREF(type);
-        cond = PyDict_SetItemString(TypeVarTuple_annotations, "name", type) ==
+        TyObject *type = (TyObject *)&TyUnicode_Type;
+        Ty_INCREF(type);
+        cond = TyDict_SetItemString(TypeVarTuple_annotations, "name", type) ==
                                     0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeVarTuple_annotations);
+            Ty_DECREF(TypeVarTuple_annotations);
             return 0;
         }
     }
     {
-        PyObject *type = state->expr_type;
-        type = _Py_union_type_or(type, Py_None);
+        TyObject *type = state->expr_type;
+        type = _Ty_union_type_or(type, Ty_None);
         cond = type != NULL;
         if (!cond) {
-            Py_DECREF(TypeVarTuple_annotations);
+            Ty_DECREF(TypeVarTuple_annotations);
             return 0;
         }
-        cond = PyDict_SetItemString(TypeVarTuple_annotations, "default_value",
+        cond = TyDict_SetItemString(TypeVarTuple_annotations, "default_value",
                                     type) == 0;
-        Py_DECREF(type);
+        Ty_DECREF(type);
         if (!cond) {
-            Py_DECREF(TypeVarTuple_annotations);
+            Ty_DECREF(TypeVarTuple_annotations);
             return 0;
         }
     }
     cond = PyObject_SetAttrString(state->TypeVarTuple_type, "_field_types",
                                   TypeVarTuple_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TypeVarTuple_annotations);
+        Ty_DECREF(TypeVarTuple_annotations);
         return 0;
     }
     cond = PyObject_SetAttrString(state->TypeVarTuple_type, "__annotations__",
                                   TypeVarTuple_annotations) == 0;
     if (!cond) {
-        Py_DECREF(TypeVarTuple_annotations);
+        Ty_DECREF(TypeVarTuple_annotations);
         return 0;
     }
-    Py_DECREF(TypeVarTuple_annotations);
+    Ty_DECREF(TypeVarTuple_annotations);
 
     return 1;
 }
@@ -5123,53 +5123,53 @@ add_ast_annotations(struct ast_state *state)
 
 typedef struct {
     PyObject_HEAD
-    PyObject *dict;
+    TyObject *dict;
 } AST_object;
 
 static void
-ast_dealloc(PyObject *op)
+ast_dealloc(TyObject *op)
 {
     AST_object *self = (AST_object*)op;
     /* bpo-31095: UnTrack is needed before calling any callbacks */
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     PyObject_GC_UnTrack(self);
-    Py_CLEAR(self->dict);
-    freefunc free_func = PyType_GetSlot(tp, Py_tp_free);
+    Ty_CLEAR(self->dict);
+    freefunc free_func = TyType_GetSlot(tp, Ty_tp_free);
     assert(free_func != NULL);
     free_func(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
 static int
-ast_traverse(PyObject *op, visitproc visit, void *arg)
+ast_traverse(TyObject *op, visitproc visit, void *arg)
 {
     AST_object *self = (AST_object*)op;
-    Py_VISIT(Py_TYPE(self));
-    Py_VISIT(self->dict);
+    Ty_VISIT(Ty_TYPE(self));
+    Ty_VISIT(self->dict);
     return 0;
 }
 
 static int
-ast_clear(PyObject *op)
+ast_clear(TyObject *op)
 {
     AST_object *self = (AST_object*)op;
-    Py_CLEAR(self->dict);
+    Ty_CLEAR(self->dict);
     return 0;
 }
 
 static int
-ast_type_init(PyObject *self, PyObject *args, PyObject *kw)
+ast_type_init(TyObject *self, TyObject *args, TyObject *kw)
 {
     struct ast_state *state = get_ast_state();
     if (state == NULL) {
         return -1;
     }
 
-    Py_ssize_t i, numfields = 0;
+    Ty_ssize_t i, numfields = 0;
     int res = -1;
-    PyObject *key, *value, *fields, *attributes = NULL, *remaining_fields = NULL;
+    TyObject *key, *value, *fields, *attributes = NULL, *remaining_fields = NULL;
 
-    fields = PyObject_GetAttr((PyObject*)Py_TYPE(self), state->_fields);
+    fields = PyObject_GetAttr((TyObject*)Ty_TYPE(self), state->_fields);
     if (fields == NULL) {
         goto cleanup;
     }
@@ -5178,56 +5178,56 @@ ast_type_init(PyObject *self, PyObject *args, PyObject *kw)
     if (numfields == -1) {
         goto cleanup;
     }
-    remaining_fields = PySet_New(fields);
+    remaining_fields = TySet_New(fields);
     if (remaining_fields == NULL) {
         goto cleanup;
     }
 
     res = 0; /* if no error occurs, this stays 0 to the end */
-    if (numfields < PyTuple_GET_SIZE(args)) {
-        PyErr_Format(PyExc_TypeError, "%.400s constructor takes at most "
+    if (numfields < TyTuple_GET_SIZE(args)) {
+        TyErr_Format(TyExc_TypeError, "%.400s constructor takes at most "
                      "%zd positional argument%s",
-                     _PyType_Name(Py_TYPE(self)),
+                     _TyType_Name(Ty_TYPE(self)),
                      numfields, numfields == 1 ? "" : "s");
         res = -1;
         goto cleanup;
     }
-    for (i = 0; i < PyTuple_GET_SIZE(args); i++) {
+    for (i = 0; i < TyTuple_GET_SIZE(args); i++) {
         /* cannot be reached when fields is NULL */
-        PyObject *name = PySequence_GetItem(fields, i);
+        TyObject *name = PySequence_GetItem(fields, i);
         if (!name) {
             res = -1;
             goto cleanup;
         }
-        res = PyObject_SetAttr(self, name, PyTuple_GET_ITEM(args, i));
-        if (PySet_Discard(remaining_fields, name) < 0) {
+        res = PyObject_SetAttr(self, name, TyTuple_GET_ITEM(args, i));
+        if (TySet_Discard(remaining_fields, name) < 0) {
             res = -1;
-            Py_DECREF(name);
+            Ty_DECREF(name);
             goto cleanup;
         }
-        Py_DECREF(name);
+        Ty_DECREF(name);
         if (res < 0) {
             goto cleanup;
         }
     }
     if (kw) {
-        i = 0;  /* needed by PyDict_Next */
-        while (PyDict_Next(kw, &i, &key, &value)) {
+        i = 0;  /* needed by TyDict_Next */
+        while (TyDict_Next(kw, &i, &key, &value)) {
             int contains = PySequence_Contains(fields, key);
             if (contains == -1) {
                 res = -1;
                 goto cleanup;
             }
             else if (contains == 1) {
-                int p = PySet_Discard(remaining_fields, key);
+                int p = TySet_Discard(remaining_fields, key);
                 if (p == -1) {
                     res = -1;
                     goto cleanup;
                 }
                 if (p == 0) {
-                    PyErr_Format(PyExc_TypeError,
+                    TyErr_Format(TyExc_TypeError,
                         "%.400s got multiple values for argument '%U'",
-                        Py_TYPE(self)->tp_name, key);
+                        Ty_TYPE(self)->tp_name, key);
                     res = -1;
                     goto cleanup;
                 }
@@ -5235,7 +5235,7 @@ ast_type_init(PyObject *self, PyObject *args, PyObject *kw)
             else {
                 // Lazily initialize "attributes"
                 if (attributes == NULL) {
-                    attributes = PyObject_GetAttr((PyObject*)Py_TYPE(self), state->_attributes);
+                    attributes = PyObject_GetAttr((TyObject*)Ty_TYPE(self), state->_attributes);
                     if (attributes == NULL) {
                         res = -1;
                         goto cleanup;
@@ -5247,12 +5247,12 @@ ast_type_init(PyObject *self, PyObject *args, PyObject *kw)
                     goto cleanup;
                 }
                 else if (contains == 0) {
-                    if (PyErr_WarnFormat(
-                        PyExc_DeprecationWarning, 1,
+                    if (TyErr_WarnFormat(
+                        TyExc_DeprecationWarning, 1,
                         "%.400s.__init__ got an unexpected keyword argument '%U'. "
                         "Support for arbitrary keyword arguments is deprecated "
                         "and will be removed in Python 3.15.",
-                        Py_TYPE(self)->tp_name, key
+                        Ty_TYPE(self)->tp_name, key
                     ) < 0) {
                         res = -1;
                         goto cleanup;
@@ -5265,10 +5265,10 @@ ast_type_init(PyObject *self, PyObject *args, PyObject *kw)
             }
         }
     }
-    Py_ssize_t size = PySet_Size(remaining_fields);
-    PyObject *field_types = NULL, *remaining_list = NULL;
+    Ty_ssize_t size = TySet_Size(remaining_fields);
+    TyObject *field_types = NULL, *remaining_list = NULL;
     if (size > 0) {
-        if (PyObject_GetOptionalAttr((PyObject*)Py_TYPE(self), &_Py_ID(_field_types),
+        if (PyObject_GetOptionalAttr((TyObject*)Ty_TYPE(self), &_Ty_ID(_field_types),
                                      &field_types) < 0) {
             res = -1;
             goto cleanup;
@@ -5283,19 +5283,19 @@ ast_type_init(PyObject *self, PyObject *args, PyObject *kw)
         if (!remaining_list) {
             goto set_remaining_cleanup;
         }
-        for (Py_ssize_t i = 0; i < size; i++) {
-            PyObject *name = PyList_GET_ITEM(remaining_list, i);
-            PyObject *type = PyDict_GetItemWithError(field_types, name);
+        for (Ty_ssize_t i = 0; i < size; i++) {
+            TyObject *name = TyList_GET_ITEM(remaining_list, i);
+            TyObject *type = TyDict_GetItemWithError(field_types, name);
             if (!type) {
-                if (PyErr_Occurred()) {
+                if (TyErr_Occurred()) {
                     goto set_remaining_cleanup;
                 }
                 else {
-                    if (PyErr_WarnFormat(
-                        PyExc_DeprecationWarning, 1,
+                    if (TyErr_WarnFormat(
+                        TyExc_DeprecationWarning, 1,
                         "Field '%U' is missing from %.400s._field_types. "
                         "This will become an error in Python 3.15.",
-                        name, Py_TYPE(self)->tp_name
+                        name, Ty_TYPE(self)->tp_name
                     ) < 0) {
                         goto set_remaining_cleanup;
                     }
@@ -5305,14 +5305,14 @@ ast_type_init(PyObject *self, PyObject *args, PyObject *kw)
                 // optional field
                 // do nothing, we'll have set a None default on the class
             }
-            else if (Py_IS_TYPE(type, &Py_GenericAliasType)) {
+            else if (Ty_IS_TYPE(type, &Ty_GenericAliasType)) {
                 // list field
-                PyObject *empty = PyList_New(0);
+                TyObject *empty = TyList_New(0);
                 if (!empty) {
                     goto set_remaining_cleanup;
                 }
                 res = PyObject_SetAttr(self, name, empty);
-                Py_DECREF(empty);
+                Ty_DECREF(empty);
                 if (res < 0) {
                     goto set_remaining_cleanup;
                 }
@@ -5326,45 +5326,45 @@ ast_type_init(PyObject *self, PyObject *args, PyObject *kw)
             }
             else {
                 // simple field (e.g., identifier)
-                if (PyErr_WarnFormat(
-                    PyExc_DeprecationWarning, 1,
+                if (TyErr_WarnFormat(
+                    TyExc_DeprecationWarning, 1,
                     "%.400s.__init__ missing 1 required positional argument: '%U'. "
                     "This will become an error in Python 3.15.",
-                    Py_TYPE(self)->tp_name, name
+                    Ty_TYPE(self)->tp_name, name
                 ) < 0) {
                     goto set_remaining_cleanup;
                 }
             }
         }
-        Py_DECREF(remaining_list);
-        Py_DECREF(field_types);
+        Ty_DECREF(remaining_list);
+        Ty_DECREF(field_types);
     }
   cleanup:
-    Py_XDECREF(attributes);
-    Py_XDECREF(fields);
-    Py_XDECREF(remaining_fields);
+    Ty_XDECREF(attributes);
+    Ty_XDECREF(fields);
+    Ty_XDECREF(remaining_fields);
     return res;
   set_remaining_cleanup:
-    Py_XDECREF(remaining_list);
-    Py_XDECREF(field_types);
+    Ty_XDECREF(remaining_list);
+    Ty_XDECREF(field_types);
     res = -1;
     goto cleanup;
 }
 
 /* Pickling support */
-static PyObject *
-ast_type_reduce(PyObject *self, PyObject *unused)
+static TyObject *
+ast_type_reduce(TyObject *self, TyObject *unused)
 {
     struct ast_state *state = get_ast_state();
     if (state == NULL) {
         return NULL;
     }
 
-    PyObject *dict = NULL, *fields = NULL, *positional_args = NULL;
+    TyObject *dict = NULL, *fields = NULL, *positional_args = NULL;
     if (PyObject_GetOptionalAttr(self, state->__dict__, &dict) < 0) {
         return NULL;
     }
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     if (dict) {
         // Unpickling (or copying) works as follows:
         // - Construct the object with only positional arguments
@@ -5376,55 +5376,55 @@ ast_type_reduce(PyObject *self, PyObject *unused)
         //   that may trigger runaway recursion during copying (gh-120108).
         // To satisfy both constraints, we set all the fields to None in the
         // initial list of positional args, and then set the fields from the dict.
-        if (PyObject_GetOptionalAttr((PyObject*)Py_TYPE(self), state->_fields, &fields) < 0) {
+        if (PyObject_GetOptionalAttr((TyObject*)Ty_TYPE(self), state->_fields, &fields) < 0) {
             goto cleanup;
         }
         if (fields) {
-            Py_ssize_t numfields = PySequence_Size(fields);
+            Ty_ssize_t numfields = PySequence_Size(fields);
             if (numfields == -1) {
-                Py_DECREF(dict);
+                Ty_DECREF(dict);
                 goto cleanup;
             }
-            positional_args = PyList_New(0);
+            positional_args = TyList_New(0);
             if (!positional_args) {
                 goto cleanup;
             }
-            for (Py_ssize_t i = 0; i < numfields; i++) {
-                PyObject *name = PySequence_GetItem(fields, i);
+            for (Ty_ssize_t i = 0; i < numfields; i++) {
+                TyObject *name = PySequence_GetItem(fields, i);
                 if (!name) {
                     goto cleanup;
                 }
-                PyObject *value;
-                int rc = PyDict_GetItemRef(dict, name, &value);
-                Py_DECREF(name);
+                TyObject *value;
+                int rc = TyDict_GetItemRef(dict, name, &value);
+                Ty_DECREF(name);
                 if (rc < 0) {
                     goto cleanup;
                 }
                 if (!value) {
                     break;
                 }
-                rc = PyList_Append(positional_args, Py_None);
-                Py_DECREF(value);
+                rc = TyList_Append(positional_args, Ty_None);
+                Ty_DECREF(value);
                 if (rc < 0) {
                     goto cleanup;
                 }
             }
-            PyObject *args_tuple = PyList_AsTuple(positional_args);
+            TyObject *args_tuple = TyList_AsTuple(positional_args);
             if (!args_tuple) {
                 goto cleanup;
             }
-            result = Py_BuildValue("ONN", Py_TYPE(self), args_tuple, dict);
+            result = Ty_BuildValue("ONN", Ty_TYPE(self), args_tuple, dict);
         }
         else {
-            result = Py_BuildValue("O()N", Py_TYPE(self), dict);
+            result = Ty_BuildValue("O()N", Ty_TYPE(self), dict);
         }
     }
     else {
-        result = Py_BuildValue("O()", Py_TYPE(self));
+        result = Ty_BuildValue("O()", Ty_TYPE(self));
     }
 cleanup:
-    Py_XDECREF(fields);
-    Py_XDECREF(positional_args);
+    Ty_XDECREF(fields);
+    Ty_XDECREF(positional_args);
     return result;
 }
 
@@ -5452,23 +5452,23 @@ cleanup:
  *       will be done inside the constructor.
  */
 static inline int
-ast_type_replace_check(PyObject *self,
-                       PyObject *dict,
-                       PyObject *fields,
-                       PyObject *attributes,
-                       PyObject *kwargs)
+ast_type_replace_check(TyObject *self,
+                       TyObject *dict,
+                       TyObject *fields,
+                       TyObject *attributes,
+                       TyObject *kwargs)
 {
     // While it is possible to make some fast paths that would avoid
     // allocating objects on the stack, this would cost us readability.
     // For instance, if 'fields' and 'attributes' are both empty, and
     // 'kwargs' is not empty, we could raise a TypeError immediately.
-    PyObject *expecting = PySet_New(fields);
+    TyObject *expecting = TySet_New(fields);
     if (expecting == NULL) {
         return -1;
     }
     if (attributes) {
-        if (_PySet_Update(expecting, attributes) < 0) {
-            Py_DECREF(expecting);
+        if (_TySet_Update(expecting, attributes) < 0) {
+            Ty_DECREF(expecting);
             return -1;
         }
     }
@@ -5480,34 +5480,34 @@ ast_type_replace_check(PyObject *self,
     //  1) it is given in 'kwargs', or
     //  2) it already exists on 'self'.
     if (kwargs) {
-        Py_ssize_t pos = 0;
-        PyObject *key, *value;
-        while (PyDict_Next(kwargs, &pos, &key, &value)) {
-            int rc = PySet_Discard(expecting, key);
+        Ty_ssize_t pos = 0;
+        TyObject *key, *value;
+        while (TyDict_Next(kwargs, &pos, &key, &value)) {
+            int rc = TySet_Discard(expecting, key);
             if (rc < 0) {
-                Py_DECREF(expecting);
+                Ty_DECREF(expecting);
                 return -1;
             }
             if (rc == 0) {
-                PyErr_Format(PyExc_TypeError,
+                TyErr_Format(TyExc_TypeError,
                              "%.400s.__replace__ got an unexpected keyword "
-                             "argument '%U'.", Py_TYPE(self)->tp_name, key);
-                Py_DECREF(expecting);
+                             "argument '%U'.", Ty_TYPE(self)->tp_name, key);
+                Ty_DECREF(expecting);
                 return -1;
             }
         }
     }
     // check that the remaining fields or attributes would be filled
     if (dict) {
-        Py_ssize_t pos = 0;
-        PyObject *key, *value;
-        while (PyDict_Next(dict, &pos, &key, &value)) {
+        Ty_ssize_t pos = 0;
+        TyObject *key, *value;
+        while (TyDict_Next(dict, &pos, &key, &value)) {
             // Mark fields or attributes that are found on the instance
             // as non-mandatory. If they are not given in 'kwargs', they
             // will be shallow-coied; otherwise, they would be replaced
             // (not in this function).
-            if (PySet_Discard(expecting, key) < 0) {
-                Py_DECREF(expecting);
+            if (TySet_Discard(expecting, key) < 0) {
+                Ty_DECREF(expecting);
                 return -1;
             }
         }
@@ -5518,88 +5518,88 @@ ast_type_replace_check(PyObject *self,
             //
             // Note that fields must still be entirely determined when
             // calling the constructor later.
-            PyObject *unused = PyObject_CallMethodOneArg(expecting,
-                                                         &_Py_ID(difference_update),
+            TyObject *unused = PyObject_CallMethodOneArg(expecting,
+                                                         &_Ty_ID(difference_update),
                                                          attributes);
             if (unused == NULL) {
-                Py_DECREF(expecting);
+                Ty_DECREF(expecting);
                 return -1;
             }
-            Py_DECREF(unused);
+            Ty_DECREF(unused);
         }
     }
 
     // Discard fields from 'expecting' that default to None
-    PyObject *field_types = NULL;
-    if (PyObject_GetOptionalAttr((PyObject*)Py_TYPE(self),
-                                 &_Py_ID(_field_types),
+    TyObject *field_types = NULL;
+    if (PyObject_GetOptionalAttr((TyObject*)Ty_TYPE(self),
+                                 &_Ty_ID(_field_types),
                                  &field_types) < 0)
     {
-        Py_DECREF(expecting);
+        Ty_DECREF(expecting);
         return -1;
     }
     if (field_types != NULL) {
-        Py_ssize_t pos = 0;
-        PyObject *field_name, *field_type;
-        while (PyDict_Next(field_types, &pos, &field_name, &field_type)) {
+        Ty_ssize_t pos = 0;
+        TyObject *field_name, *field_type;
+        while (TyDict_Next(field_types, &pos, &field_name, &field_type)) {
             if (_PyUnion_Check(field_type)) {
                 // optional field
-                if (PySet_Discard(expecting, field_name) < 0) {
-                    Py_DECREF(expecting);
-                    Py_DECREF(field_types);
+                if (TySet_Discard(expecting, field_name) < 0) {
+                    Ty_DECREF(expecting);
+                    Ty_DECREF(field_types);
                     return -1;
                 }
             }
         }
-        Py_DECREF(field_types);
+        Ty_DECREF(field_types);
     }
 
     // Now 'expecting' contains the fields or attributes
     // that would not be filled inside ast_type_replace().
-    Py_ssize_t m = PySet_GET_SIZE(expecting);
+    Ty_ssize_t m = TySet_GET_SIZE(expecting);
     if (m > 0) {
-        PyObject *names = PyList_New(m);
+        TyObject *names = TyList_New(m);
         if (names == NULL) {
-            Py_DECREF(expecting);
+            Ty_DECREF(expecting);
             return -1;
         }
-        Py_ssize_t i = 0, pos = 0;
-        PyObject *item;
-        Py_hash_t hash;
-        while (_PySet_NextEntry(expecting, &pos, &item, &hash)) {
-            PyObject *name = PyObject_Repr(item);
+        Ty_ssize_t i = 0, pos = 0;
+        TyObject *item;
+        Ty_hash_t hash;
+        while (_TySet_NextEntry(expecting, &pos, &item, &hash)) {
+            TyObject *name = PyObject_Repr(item);
             if (name == NULL) {
-                Py_DECREF(expecting);
-                Py_DECREF(names);
+                Ty_DECREF(expecting);
+                Ty_DECREF(names);
                 return -1;
             }
             // steal the reference 'name'
-            PyList_SET_ITEM(names, i++, name);
+            TyList_SET_ITEM(names, i++, name);
         }
-        Py_DECREF(expecting);
-        if (PyList_Sort(names) < 0) {
-            Py_DECREF(names);
+        Ty_DECREF(expecting);
+        if (TyList_Sort(names) < 0) {
+            Ty_DECREF(names);
             return -1;
         }
-        PyObject *sep = PyUnicode_FromString(", ");
+        TyObject *sep = TyUnicode_FromString(", ");
         if (sep == NULL) {
-            Py_DECREF(names);
+            Ty_DECREF(names);
             return -1;
         }
-        PyObject *str_names = PyUnicode_Join(sep, names);
-        Py_DECREF(sep);
-        Py_DECREF(names);
+        TyObject *str_names = TyUnicode_Join(sep, names);
+        Ty_DECREF(sep);
+        Ty_DECREF(names);
         if (str_names == NULL) {
             return -1;
         }
-        PyErr_Format(PyExc_TypeError,
+        TyErr_Format(TyExc_TypeError,
                      "%.400s.__replace__ missing %ld keyword argument%s: %U.",
-                     Py_TYPE(self)->tp_name, m, m == 1 ? "" : "s", str_names);
-        Py_DECREF(str_names);
+                     Ty_TYPE(self)->tp_name, m, m == 1 ? "" : "s", str_names);
+        Ty_DECREF(str_names);
         return -1;
     }
     else {
-        Py_DECREF(expecting);
+        Ty_DECREF(expecting);
         return 1;
     }
 }
@@ -5623,38 +5623,38 @@ ast_type_replace_check(PyObject *self,
  *      dict      The AST node instance dictionary (must not be NULL).
  */
 static inline int
-ast_type_replace_update_payload(PyObject *payload,
-                                PyObject *keys,
-                                PyObject *dict)
+ast_type_replace_update_payload(TyObject *payload,
+                                TyObject *keys,
+                                TyObject *dict)
 {
     assert(dict != NULL);
     if (keys == NULL) {
         return 0;
     }
-    Py_ssize_t n = PySequence_Size(keys);
+    Ty_ssize_t n = PySequence_Size(keys);
     if (n == -1) {
         return -1;
     }
-    for (Py_ssize_t i = 0; i < n; i++) {
-        PyObject *key = PySequence_GetItem(keys, i);
+    for (Ty_ssize_t i = 0; i < n; i++) {
+        TyObject *key = PySequence_GetItem(keys, i);
         if (key == NULL) {
             return -1;
         }
-        PyObject *value;
-        if (PyDict_GetItemRef(dict, key, &value) < 0) {
-            Py_DECREF(key);
+        TyObject *value;
+        if (TyDict_GetItemRef(dict, key, &value) < 0) {
+            Ty_DECREF(key);
             return -1;
         }
         if (value == NULL) {
-            Py_DECREF(key);
+            Ty_DECREF(key);
             // If a field or attribute is not present at runtime, it should
             // be explicitly given in 'kwargs'. If not, the constructor will
             // issue a warning (which becomes an error in 3.15).
             continue;
         }
-        int rc = PyDict_SetItem(payload, key, value);
-        Py_DECREF(key);
-        Py_DECREF(value);
+        int rc = TyDict_SetItem(payload, key, value);
+        Ty_DECREF(key);
+        Ty_DECREF(value);
         if (rc < 0) {
             return -1;
         }
@@ -5663,10 +5663,10 @@ ast_type_replace_update_payload(PyObject *payload,
 }
 
 /* copy.replace() support (shallow copy) */
-static PyObject *
-ast_type_replace(PyObject *self, PyObject *args, PyObject *kwargs)
+static TyObject *
+ast_type_replace(TyObject *self, TyObject *args, TyObject *kwargs)
 {
-    if (!_PyArg_NoPositional("__replace__", args)) {
+    if (!_TyArg_NoPositional("__replace__", args)) {
         return NULL;
     }
 
@@ -5675,15 +5675,15 @@ ast_type_replace(PyObject *self, PyObject *args, PyObject *kwargs)
         return NULL;
     }
 
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     // known AST class fields and attributes
-    PyObject *fields = NULL, *attributes = NULL;
+    TyObject *fields = NULL, *attributes = NULL;
     // current instance dictionary
-    PyObject *dict = NULL;
+    TyObject *dict = NULL;
     // constructor positional and keyword arguments
-    PyObject *empty_tuple = NULL, *payload = NULL;
+    TyObject *empty_tuple = NULL, *payload = NULL;
 
-    PyObject *type = (PyObject *)Py_TYPE(self);
+    TyObject *type = (TyObject *)Ty_TYPE(self);
     if (PyObject_GetOptionalAttr(type, state->_fields, &fields) < 0) {
         goto cleanup;
     }
@@ -5696,11 +5696,11 @@ ast_type_replace(PyObject *self, PyObject *args, PyObject *kwargs)
     if (ast_type_replace_check(self, dict, fields, attributes, kwargs) < 0) {
         goto cleanup;
     }
-    empty_tuple = PyTuple_New(0);
+    empty_tuple = TyTuple_New(0);
     if (empty_tuple == NULL) {
         goto cleanup;
     }
-    payload = PyDict_New();
+    payload = TyDict_New();
     if (payload == NULL) {
         goto cleanup;
     }
@@ -5714,39 +5714,39 @@ ast_type_replace(PyObject *self, PyObject *args, PyObject *kwargs)
             goto cleanup;
         }
     }
-    if (kwargs && PyDict_Update(payload, kwargs) < 0) {
+    if (kwargs && TyDict_Update(payload, kwargs) < 0) {
         goto cleanup;
     }
     result = PyObject_Call(type, empty_tuple, payload);
 cleanup:
-    Py_XDECREF(payload);
-    Py_XDECREF(empty_tuple);
-    Py_XDECREF(dict);
-    Py_XDECREF(attributes);
-    Py_XDECREF(fields);
+    Ty_XDECREF(payload);
+    Ty_XDECREF(empty_tuple);
+    Ty_XDECREF(dict);
+    Ty_XDECREF(attributes);
+    Ty_XDECREF(fields);
     return result;
 }
 
-static PyMemberDef ast_type_members[] = {
-    {"__dictoffset__", Py_T_PYSSIZET, offsetof(AST_object, dict), Py_READONLY},
+static TyMemberDef ast_type_members[] = {
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(AST_object, dict), Py_READONLY},
     {NULL}  /* Sentinel */
 };
 
-static PyMethodDef ast_type_methods[] = {
+static TyMethodDef ast_type_methods[] = {
     {"__reduce__", ast_type_reduce, METH_NOARGS, NULL},
     {"__replace__", _PyCFunction_CAST(ast_type_replace), METH_VARARGS | METH_KEYWORDS,
-     PyDoc_STR("__replace__($self, /, **fields)\n--\n\n"
+     TyDoc_STR("__replace__($self, /, **fields)\n--\n\n"
                "Return a copy of the AST node with new values "
                "for the specified fields.")},
     {NULL}
 };
 
-static PyGetSetDef ast_type_getsets[] = {
+static TyGetSetDef ast_type_getsets[] = {
     {"__dict__", PyObject_GenericGetDict, PyObject_GenericSetDict},
     {NULL}
 };
 
-static PyObject *
+static TyObject *
 ast_repr_max_depth(AST_object *self, int depth);
 
 /* Format list and tuple properties of AST nodes.
@@ -5754,17 +5754,17 @@ ast_repr_max_depth(AST_object *self, int depth);
    Anything in between is represented with an ellipsis ('...').
    For example, the list [1, 2, 3] is formatted as
    'List(elts=[Constant(1), ..., Constant(3)])'. */
-static PyObject *
-ast_repr_list(PyObject *list, int depth)
+static TyObject *
+ast_repr_list(TyObject *list, int depth)
 {
-    assert(PyList_Check(list) || PyTuple_Check(list));
+    assert(TyList_Check(list) || TyTuple_Check(list));
 
     struct ast_state *state = get_ast_state();
     if (state == NULL) {
         return NULL;
     }
 
-    Py_ssize_t length = PySequence_Size(list);
+    Ty_ssize_t length = PySequence_Size(list);
     if (length < 0) {
         return NULL;
     }
@@ -5772,7 +5772,7 @@ ast_repr_list(PyObject *list, int depth)
         return PyObject_Repr(list);
     }
 
-    PyObject *items[2] = {NULL, NULL};
+    TyObject *items[2] = {NULL, NULL};
     PyUnicodeWriter *writer = PyUnicodeWriter_Create(0);
     if (writer == NULL) {
         goto error;
@@ -5789,30 +5789,30 @@ ast_repr_list(PyObject *list, int depth)
         }
     }
 
-    bool is_list = PyList_Check(list);
+    bool is_list = TyList_Check(list);
     if (PyUnicodeWriter_WriteChar(writer, is_list ? '[' : '(') < 0) {
         goto error;
     }
 
-    for (Py_ssize_t i = 0; i < Py_MIN(length, 2); i++) {
+    for (Ty_ssize_t i = 0; i < Ty_MIN(length, 2); i++) {
         if (i > 0) {
             if (PyUnicodeWriter_WriteASCII(writer, ", ", 2) < 0) {
                 goto error;
             }
         }
 
-        PyObject *item = items[i];
-        if (PyType_IsSubtype(Py_TYPE(item), (PyTypeObject *)state->AST_type)) {
-            PyObject *item_repr;
+        TyObject *item = items[i];
+        if (TyType_IsSubtype(Ty_TYPE(item), (TyTypeObject *)state->AST_type)) {
+            TyObject *item_repr;
             item_repr = ast_repr_max_depth((AST_object*)item, depth - 1);
             if (!item_repr) {
                 goto error;
             }
             if (PyUnicodeWriter_WriteStr(writer, item_repr) < 0) {
-                Py_DECREF(item_repr);
+                Ty_DECREF(item_repr);
                 goto error;
             }
-            Py_DECREF(item_repr);
+            Ty_DECREF(item_repr);
         } else {
             if (PyUnicodeWriter_WriteRepr(writer, item) < 0) {
                 goto error;
@@ -5830,18 +5830,18 @@ ast_repr_list(PyObject *list, int depth)
         goto error;
     }
 
-    Py_XDECREF(items[0]);
-    Py_XDECREF(items[1]);
+    Ty_XDECREF(items[0]);
+    Ty_XDECREF(items[1]);
     return PyUnicodeWriter_Finish(writer);
 
 error:
-    Py_XDECREF(items[0]);
-    Py_XDECREF(items[1]);
+    Ty_XDECREF(items[0]);
+    Ty_XDECREF(items[1]);
     PyUnicodeWriter_Discard(writer);
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 ast_repr_max_depth(AST_object *self, int depth)
 {
     struct ast_state *state = get_ast_state();
@@ -5850,37 +5850,37 @@ ast_repr_max_depth(AST_object *self, int depth)
     }
 
     if (depth <= 0) {
-        return PyUnicode_FromFormat("%s(...)", Py_TYPE(self)->tp_name);
+        return TyUnicode_FromFormat("%s(...)", Ty_TYPE(self)->tp_name);
     }
 
-    int status = Py_ReprEnter((PyObject *)self);
+    int status = Ty_ReprEnter((TyObject *)self);
     if (status != 0) {
         if (status < 0) {
             return NULL;
         }
-        return PyUnicode_FromFormat("%s(...)", Py_TYPE(self)->tp_name);
+        return TyUnicode_FromFormat("%s(...)", Ty_TYPE(self)->tp_name);
     }
 
-    PyObject *fields;
-    if (PyObject_GetOptionalAttr((PyObject *)Py_TYPE(self), state->_fields, &fields) < 0) {
-        Py_ReprLeave((PyObject *)self);
+    TyObject *fields;
+    if (PyObject_GetOptionalAttr((TyObject *)Ty_TYPE(self), state->_fields, &fields) < 0) {
+        Ty_ReprLeave((TyObject *)self);
         return NULL;
     }
 
-    Py_ssize_t numfields = PySequence_Size(fields);
+    Ty_ssize_t numfields = PySequence_Size(fields);
     if (numfields < 0) {
-        Py_ReprLeave((PyObject *)self);
-        Py_DECREF(fields);
+        Ty_ReprLeave((TyObject *)self);
+        Ty_DECREF(fields);
         return NULL;
     }
 
     if (numfields == 0) {
-        Py_ReprLeave((PyObject *)self);
-        Py_DECREF(fields);
-        return PyUnicode_FromFormat("%s()", Py_TYPE(self)->tp_name);
+        Ty_ReprLeave((TyObject *)self);
+        Ty_DECREF(fields);
+        return TyUnicode_FromFormat("%s()", Ty_TYPE(self)->tp_name);
     }
 
-    const char* tp_name = Py_TYPE(self)->tp_name;
+    const char* tp_name = Ty_TYPE(self)->tp_name;
     PyUnicodeWriter *writer = PyUnicodeWriter_Create(0);
     if (writer == NULL) {
         goto error;
@@ -5893,205 +5893,205 @@ ast_repr_max_depth(AST_object *self, int depth)
         goto error;
     }
 
-    for (Py_ssize_t i = 0; i < numfields; i++) {
-        PyObject *name = PySequence_GetItem(fields, i);
+    for (Ty_ssize_t i = 0; i < numfields; i++) {
+        TyObject *name = PySequence_GetItem(fields, i);
         if (!name) {
             goto error;
         }
 
-        PyObject *value = PyObject_GetAttr((PyObject *)self, name);
+        TyObject *value = PyObject_GetAttr((TyObject *)self, name);
         if (!value) {
-            Py_DECREF(name);
+            Ty_DECREF(name);
             goto error;
         }
 
-        PyObject *value_repr;
-        if (PyList_Check(value) || PyTuple_Check(value)) {
+        TyObject *value_repr;
+        if (TyList_Check(value) || TyTuple_Check(value)) {
             value_repr = ast_repr_list(value, depth);
         }
-        else if (PyType_IsSubtype(Py_TYPE(value), (PyTypeObject *)state->AST_type)) {
+        else if (TyType_IsSubtype(Ty_TYPE(value), (TyTypeObject *)state->AST_type)) {
             value_repr = ast_repr_max_depth((AST_object*)value, depth - 1);
         }
         else {
             value_repr = PyObject_Repr(value);
         }
 
-        Py_DECREF(value);
+        Ty_DECREF(value);
 
         if (!value_repr) {
-            Py_DECREF(name);
+            Ty_DECREF(name);
             goto error;
         }
 
         if (i > 0) {
             if (PyUnicodeWriter_WriteASCII(writer, ", ", 2) < 0) {
-                Py_DECREF(name);
-                Py_DECREF(value_repr);
+                Ty_DECREF(name);
+                Ty_DECREF(value_repr);
                 goto error;
             }
         }
         if (PyUnicodeWriter_WriteStr(writer, name) < 0) {
-            Py_DECREF(name);
-            Py_DECREF(value_repr);
+            Ty_DECREF(name);
+            Ty_DECREF(value_repr);
             goto error;
         }
 
-        Py_DECREF(name);
+        Ty_DECREF(name);
 
         if (PyUnicodeWriter_WriteChar(writer, '=') < 0) {
-            Py_DECREF(value_repr);
+            Ty_DECREF(value_repr);
             goto error;
         }
         if (PyUnicodeWriter_WriteStr(writer, value_repr) < 0) {
-            Py_DECREF(value_repr);
+            Ty_DECREF(value_repr);
             goto error;
         }
 
-        Py_DECREF(value_repr);
+        Ty_DECREF(value_repr);
     }
 
     if (PyUnicodeWriter_WriteChar(writer, ')') < 0) {
         goto error;
     }
-    Py_ReprLeave((PyObject *)self);
-    Py_DECREF(fields);
+    Ty_ReprLeave((TyObject *)self);
+    Ty_DECREF(fields);
     return PyUnicodeWriter_Finish(writer);
 
 error:
-    Py_ReprLeave((PyObject *)self);
-    Py_DECREF(fields);
+    Ty_ReprLeave((TyObject *)self);
+    Ty_DECREF(fields);
     PyUnicodeWriter_Discard(writer);
     return NULL;
 }
 
-static PyObject *
-ast_repr(PyObject *self)
+static TyObject *
+ast_repr(TyObject *self)
 {
     return ast_repr_max_depth((AST_object*)self, 3);
 }
 
-static PyType_Slot AST_type_slots[] = {
-    {Py_tp_dealloc, ast_dealloc},
-    {Py_tp_repr, ast_repr},
-    {Py_tp_getattro, PyObject_GenericGetAttr},
-    {Py_tp_setattro, PyObject_GenericSetAttr},
-    {Py_tp_traverse, ast_traverse},
-    {Py_tp_clear, ast_clear},
-    {Py_tp_members, ast_type_members},
-    {Py_tp_methods, ast_type_methods},
-    {Py_tp_getset, ast_type_getsets},
-    {Py_tp_init, ast_type_init},
-    {Py_tp_alloc, PyType_GenericAlloc},
-    {Py_tp_new, PyType_GenericNew},
-    {Py_tp_free, PyObject_GC_Del},
+static TyType_Slot AST_type_slots[] = {
+    {Ty_tp_dealloc, ast_dealloc},
+    {Ty_tp_repr, ast_repr},
+    {Ty_tp_getattro, PyObject_GenericGetAttr},
+    {Ty_tp_setattro, PyObject_GenericSetAttr},
+    {Ty_tp_traverse, ast_traverse},
+    {Ty_tp_clear, ast_clear},
+    {Ty_tp_members, ast_type_members},
+    {Ty_tp_methods, ast_type_methods},
+    {Ty_tp_getset, ast_type_getsets},
+    {Ty_tp_init, ast_type_init},
+    {Ty_tp_alloc, TyType_GenericAlloc},
+    {Ty_tp_new, TyType_GenericNew},
+    {Ty_tp_free, PyObject_GC_Del},
     {0, 0},
 };
 
-static PyType_Spec AST_type_spec = {
+static TyType_Spec AST_type_spec = {
     "ast.AST",
     sizeof(AST_object),
     0,
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     AST_type_slots
 };
 
-static PyObject *
-make_type(struct ast_state *state, const char *type, PyObject* base,
+static TyObject *
+make_type(struct ast_state *state, const char *type, TyObject* base,
           const char* const* fields, int num_fields, const char *doc)
 {
-    PyObject *fnames, *result;
+    TyObject *fnames, *result;
     int i;
-    fnames = PyTuple_New(num_fields);
+    fnames = TyTuple_New(num_fields);
     if (!fnames) return NULL;
     for (i = 0; i < num_fields; i++) {
-        PyObject *field = PyUnicode_InternFromString(fields[i]);
+        TyObject *field = TyUnicode_InternFromString(fields[i]);
         if (!field) {
-            Py_DECREF(fnames);
+            Ty_DECREF(fnames);
             return NULL;
         }
-        PyTuple_SET_ITEM(fnames, i, field);
+        TyTuple_SET_ITEM(fnames, i, field);
     }
-    result = PyObject_CallFunction((PyObject*)&PyType_Type, "s(O){OOOOOOOs}",
+    result = PyObject_CallFunction((TyObject*)&TyType_Type, "s(O){OOOOOOOs}",
                     type, base,
                     state->_fields, fnames,
                     state->__match_args__, fnames,
                     state->__module__,
                     state->ast,
                     state->__doc__, doc);
-    Py_DECREF(fnames);
+    Ty_DECREF(fnames);
     return result;
 }
 
 static int
-add_attributes(struct ast_state *state, PyObject *type, const char * const *attrs, int num_fields)
+add_attributes(struct ast_state *state, TyObject *type, const char * const *attrs, int num_fields)
 {
     int i, result;
-    PyObject *s, *l = PyTuple_New(num_fields);
+    TyObject *s, *l = TyTuple_New(num_fields);
     if (!l)
         return -1;
     for (i = 0; i < num_fields; i++) {
-        s = PyUnicode_InternFromString(attrs[i]);
+        s = TyUnicode_InternFromString(attrs[i]);
         if (!s) {
-            Py_DECREF(l);
+            Ty_DECREF(l);
             return -1;
         }
-        PyTuple_SET_ITEM(l, i, s);
+        TyTuple_SET_ITEM(l, i, s);
     }
     result = PyObject_SetAttr(type, state->_attributes, l);
-    Py_DECREF(l);
+    Ty_DECREF(l);
     return result;
 }
 
 /* Conversion AST -> Python */
 
-static PyObject* ast2obj_list(struct ast_state *state, asdl_seq *seq,
-                              PyObject* (*func)(struct ast_state *state, void*))
+static TyObject* ast2obj_list(struct ast_state *state, asdl_seq *seq,
+                              TyObject* (*func)(struct ast_state *state, void*))
 {
-    Py_ssize_t i, n = asdl_seq_LEN(seq);
-    PyObject *result = PyList_New(n);
-    PyObject *value;
+    Ty_ssize_t i, n = asdl_seq_LEN(seq);
+    TyObject *result = TyList_New(n);
+    TyObject *value;
     if (!result)
         return NULL;
     for (i = 0; i < n; i++) {
         value = func(state, asdl_seq_GET_UNTYPED(seq, i));
         if (!value) {
-            Py_DECREF(result);
+            Ty_DECREF(result);
             return NULL;
         }
-        PyList_SET_ITEM(result, i, value);
+        TyList_SET_ITEM(result, i, value);
     }
     return result;
 }
 
-static PyObject* ast2obj_object(struct ast_state *Py_UNUSED(state), void *o)
+static TyObject* ast2obj_object(struct ast_state *Py_UNUSED(state), void *o)
 {
-    PyObject *op = (PyObject*)o;
+    TyObject *op = (TyObject*)o;
     if (!op) {
-        op = Py_None;
+        op = Ty_None;
     }
-    return Py_NewRef(op);
+    return Ty_NewRef(op);
 }
 #define ast2obj_constant ast2obj_object
 #define ast2obj_identifier ast2obj_object
 #define ast2obj_string ast2obj_object
 
-static PyObject* ast2obj_int(struct ast_state *Py_UNUSED(state), long b)
+static TyObject* ast2obj_int(struct ast_state *Py_UNUSED(state), long b)
 {
-    return PyLong_FromLong(b);
+    return TyLong_FromLong(b);
 }
 
 /* Conversion Python -> AST */
 
-static int obj2ast_object(struct ast_state *Py_UNUSED(state), PyObject* obj, PyObject** out, PyArena* arena)
+static int obj2ast_object(struct ast_state *Py_UNUSED(state), TyObject* obj, TyObject** out, PyArena* arena)
 {
-    if (obj == Py_None)
+    if (obj == Ty_None)
         obj = NULL;
     if (obj) {
-        if (_PyArena_AddPyObject(arena, obj) < 0) {
+        if (_TyArena_AddPyObject(arena, obj) < 0) {
             *out = NULL;
             return -1;
         }
-        *out = Py_NewRef(obj);
+        *out = Ty_NewRef(obj);
     }
     else {
         *out = NULL;
@@ -6099,44 +6099,44 @@ static int obj2ast_object(struct ast_state *Py_UNUSED(state), PyObject* obj, PyO
     return 0;
 }
 
-static int obj2ast_constant(struct ast_state *Py_UNUSED(state), PyObject* obj, PyObject** out, PyArena* arena)
+static int obj2ast_constant(struct ast_state *Py_UNUSED(state), TyObject* obj, TyObject** out, PyArena* arena)
 {
-    if (_PyArena_AddPyObject(arena, obj) < 0) {
+    if (_TyArena_AddPyObject(arena, obj) < 0) {
         *out = NULL;
         return -1;
     }
-    *out = Py_NewRef(obj);
+    *out = Ty_NewRef(obj);
     return 0;
 }
 
-static int obj2ast_identifier(struct ast_state *state, PyObject* obj, PyObject** out, PyArena* arena)
+static int obj2ast_identifier(struct ast_state *state, TyObject* obj, TyObject** out, PyArena* arena)
 {
-    if (!PyUnicode_CheckExact(obj) && obj != Py_None) {
-        PyErr_SetString(PyExc_TypeError, "AST identifier must be of type str");
+    if (!TyUnicode_CheckExact(obj) && obj != Ty_None) {
+        TyErr_SetString(TyExc_TypeError, "AST identifier must be of type str");
         return -1;
     }
     return obj2ast_object(state, obj, out, arena);
 }
 
-static int obj2ast_string(struct ast_state *state, PyObject* obj, PyObject** out, PyArena* arena)
+static int obj2ast_string(struct ast_state *state, TyObject* obj, TyObject** out, PyArena* arena)
 {
-    if (!PyUnicode_CheckExact(obj) && !PyBytes_CheckExact(obj)) {
-        PyErr_SetString(PyExc_TypeError, "AST string must be of type str");
+    if (!TyUnicode_CheckExact(obj) && !TyBytes_CheckExact(obj)) {
+        TyErr_SetString(TyExc_TypeError, "AST string must be of type str");
         return -1;
     }
     return obj2ast_object(state, obj, out, arena);
 }
 
-static int obj2ast_int(struct ast_state* Py_UNUSED(state), PyObject* obj, int* out, PyArena* arena)
+static int obj2ast_int(struct ast_state* Py_UNUSED(state), TyObject* obj, int* out, PyArena* arena)
 {
     int i;
-    if (!PyLong_Check(obj)) {
-        PyErr_Format(PyExc_ValueError, "invalid integer value: %R", obj);
+    if (!TyLong_Check(obj)) {
+        TyErr_Format(TyExc_ValueError, "invalid integer value: %R", obj);
         return -1;
     }
 
-    i = PyLong_AsInt(obj);
-    if (i == -1 && PyErr_Occurred())
+    i = TyLong_AsInt(obj);
+    if (i == -1 && TyErr_Occurred())
         return -1;
     *out = i;
     return 0;
@@ -6144,16 +6144,16 @@ static int obj2ast_int(struct ast_state* Py_UNUSED(state), PyObject* obj, int* o
 
 static int add_ast_fields(struct ast_state *state)
 {
-    PyObject *empty_tuple;
-    empty_tuple = PyTuple_New(0);
+    TyObject *empty_tuple;
+    empty_tuple = TyTuple_New(0);
     if (!empty_tuple ||
         PyObject_SetAttrString(state->AST_type, "_fields", empty_tuple) < 0 ||
         PyObject_SetAttrString(state->AST_type, "__match_args__", empty_tuple) < 0 ||
         PyObject_SetAttrString(state->AST_type, "_attributes", empty_tuple) < 0) {
-        Py_XDECREF(empty_tuple);
+        Ty_XDECREF(empty_tuple);
         return -1;
     }
-    Py_DECREF(empty_tuple);
+    Ty_DECREF(empty_tuple);
     return 0;
 }
 
@@ -6166,7 +6166,7 @@ init_types(void *arg)
     if (init_identifiers(state) < 0) {
         return -1;
     }
-    state->AST_type = PyType_FromSpec(&AST_type_spec);
+    state->AST_type = TyType_FromSpec(&AST_type_spec);
     if (!state->AST_type) {
         return -1;
     }
@@ -6229,19 +6229,19 @@ init_types(void *arg)
     if (!state->stmt_type) return -1;
     if (add_attributes(state, state->stmt_type, stmt_attributes, 4) < 0) return
         -1;
-    if (PyObject_SetAttr(state->stmt_type, state->end_lineno, Py_None) == -1)
+    if (PyObject_SetAttr(state->stmt_type, state->end_lineno, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->stmt_type, state->end_col_offset, Py_None) ==
+    if (PyObject_SetAttr(state->stmt_type, state->end_col_offset, Ty_None) ==
         -1)
         return -1;
     state->FunctionDef_type = make_type(state, "FunctionDef", state->stmt_type,
                                         FunctionDef_fields, 7,
         "FunctionDef(identifier name, arguments args, stmt* body, expr* decorator_list, expr? returns, string? type_comment, type_param* type_params)");
     if (!state->FunctionDef_type) return -1;
-    if (PyObject_SetAttr(state->FunctionDef_type, state->returns, Py_None) ==
+    if (PyObject_SetAttr(state->FunctionDef_type, state->returns, Ty_None) ==
         -1)
         return -1;
-    if (PyObject_SetAttr(state->FunctionDef_type, state->type_comment, Py_None)
+    if (PyObject_SetAttr(state->FunctionDef_type, state->type_comment, Ty_None)
         == -1)
         return -1;
     state->AsyncFunctionDef_type = make_type(state, "AsyncFunctionDef",
@@ -6249,11 +6249,11 @@ init_types(void *arg)
                                              AsyncFunctionDef_fields, 7,
         "AsyncFunctionDef(identifier name, arguments args, stmt* body, expr* decorator_list, expr? returns, string? type_comment, type_param* type_params)");
     if (!state->AsyncFunctionDef_type) return -1;
-    if (PyObject_SetAttr(state->AsyncFunctionDef_type, state->returns, Py_None)
+    if (PyObject_SetAttr(state->AsyncFunctionDef_type, state->returns, Ty_None)
         == -1)
         return -1;
     if (PyObject_SetAttr(state->AsyncFunctionDef_type, state->type_comment,
-        Py_None) == -1)
+        Ty_None) == -1)
         return -1;
     state->ClassDef_type = make_type(state, "ClassDef", state->stmt_type,
                                      ClassDef_fields, 6,
@@ -6263,7 +6263,7 @@ init_types(void *arg)
                                    Return_fields, 1,
         "Return(expr? value)");
     if (!state->Return_type) return -1;
-    if (PyObject_SetAttr(state->Return_type, state->value, Py_None) == -1)
+    if (PyObject_SetAttr(state->Return_type, state->value, Ty_None) == -1)
         return -1;
     state->Delete_type = make_type(state, "Delete", state->stmt_type,
                                    Delete_fields, 1,
@@ -6273,7 +6273,7 @@ init_types(void *arg)
                                    Assign_fields, 3,
         "Assign(expr* targets, expr value, string? type_comment)");
     if (!state->Assign_type) return -1;
-    if (PyObject_SetAttr(state->Assign_type, state->type_comment, Py_None) ==
+    if (PyObject_SetAttr(state->Assign_type, state->type_comment, Ty_None) ==
         -1)
         return -1;
     state->TypeAlias_type = make_type(state, "TypeAlias", state->stmt_type,
@@ -6288,18 +6288,18 @@ init_types(void *arg)
                                       AnnAssign_fields, 4,
         "AnnAssign(expr target, expr annotation, expr? value, int simple)");
     if (!state->AnnAssign_type) return -1;
-    if (PyObject_SetAttr(state->AnnAssign_type, state->value, Py_None) == -1)
+    if (PyObject_SetAttr(state->AnnAssign_type, state->value, Ty_None) == -1)
         return -1;
     state->For_type = make_type(state, "For", state->stmt_type, For_fields, 5,
         "For(expr target, expr iter, stmt* body, stmt* orelse, string? type_comment)");
     if (!state->For_type) return -1;
-    if (PyObject_SetAttr(state->For_type, state->type_comment, Py_None) == -1)
+    if (PyObject_SetAttr(state->For_type, state->type_comment, Ty_None) == -1)
         return -1;
     state->AsyncFor_type = make_type(state, "AsyncFor", state->stmt_type,
                                      AsyncFor_fields, 5,
         "AsyncFor(expr target, expr iter, stmt* body, stmt* orelse, string? type_comment)");
     if (!state->AsyncFor_type) return -1;
-    if (PyObject_SetAttr(state->AsyncFor_type, state->type_comment, Py_None) ==
+    if (PyObject_SetAttr(state->AsyncFor_type, state->type_comment, Ty_None) ==
         -1)
         return -1;
     state->While_type = make_type(state, "While", state->stmt_type,
@@ -6313,13 +6313,13 @@ init_types(void *arg)
                                  3,
         "With(withitem* items, stmt* body, string? type_comment)");
     if (!state->With_type) return -1;
-    if (PyObject_SetAttr(state->With_type, state->type_comment, Py_None) == -1)
+    if (PyObject_SetAttr(state->With_type, state->type_comment, Ty_None) == -1)
         return -1;
     state->AsyncWith_type = make_type(state, "AsyncWith", state->stmt_type,
                                       AsyncWith_fields, 3,
         "AsyncWith(withitem* items, stmt* body, string? type_comment)");
     if (!state->AsyncWith_type) return -1;
-    if (PyObject_SetAttr(state->AsyncWith_type, state->type_comment, Py_None)
+    if (PyObject_SetAttr(state->AsyncWith_type, state->type_comment, Ty_None)
         == -1)
         return -1;
     state->Match_type = make_type(state, "Match", state->stmt_type,
@@ -6330,9 +6330,9 @@ init_types(void *arg)
                                   Raise_fields, 2,
         "Raise(expr? exc, expr? cause)");
     if (!state->Raise_type) return -1;
-    if (PyObject_SetAttr(state->Raise_type, state->exc, Py_None) == -1)
+    if (PyObject_SetAttr(state->Raise_type, state->exc, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->Raise_type, state->cause, Py_None) == -1)
+    if (PyObject_SetAttr(state->Raise_type, state->cause, Ty_None) == -1)
         return -1;
     state->Try_type = make_type(state, "Try", state->stmt_type, Try_fields, 4,
         "Try(stmt* body, excepthandler* handlers, stmt* orelse, stmt* finalbody)");
@@ -6345,7 +6345,7 @@ init_types(void *arg)
                                    Assert_fields, 2,
         "Assert(expr test, expr? msg)");
     if (!state->Assert_type) return -1;
-    if (PyObject_SetAttr(state->Assert_type, state->msg, Py_None) == -1)
+    if (PyObject_SetAttr(state->Assert_type, state->msg, Ty_None) == -1)
         return -1;
     state->Import_type = make_type(state, "Import", state->stmt_type,
                                    Import_fields, 1,
@@ -6355,9 +6355,9 @@ init_types(void *arg)
                                        ImportFrom_fields, 3,
         "ImportFrom(identifier? module, alias* names, int? level)");
     if (!state->ImportFrom_type) return -1;
-    if (PyObject_SetAttr(state->ImportFrom_type, state->module, Py_None) == -1)
+    if (PyObject_SetAttr(state->ImportFrom_type, state->module, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->ImportFrom_type, state->level, Py_None) == -1)
+    if (PyObject_SetAttr(state->ImportFrom_type, state->level, Ty_None) == -1)
         return -1;
     state->Global_type = make_type(state, "Global", state->stmt_type,
                                    Global_fields, 1,
@@ -6414,9 +6414,9 @@ init_types(void *arg)
     if (!state->expr_type) return -1;
     if (add_attributes(state, state->expr_type, expr_attributes, 4) < 0) return
         -1;
-    if (PyObject_SetAttr(state->expr_type, state->end_lineno, Py_None) == -1)
+    if (PyObject_SetAttr(state->expr_type, state->end_lineno, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->expr_type, state->end_col_offset, Py_None) ==
+    if (PyObject_SetAttr(state->expr_type, state->end_col_offset, Ty_None) ==
         -1)
         return -1;
     state->BoolOp_type = make_type(state, "BoolOp", state->expr_type,
@@ -6475,7 +6475,7 @@ init_types(void *arg)
                                   Yield_fields, 1,
         "Yield(expr? value)");
     if (!state->Yield_type) return -1;
-    if (PyObject_SetAttr(state->Yield_type, state->value, Py_None) == -1)
+    if (PyObject_SetAttr(state->Yield_type, state->value, Ty_None) == -1)
         return -1;
     state->YieldFrom_type = make_type(state, "YieldFrom", state->expr_type,
                                       YieldFrom_fields, 1,
@@ -6495,7 +6495,7 @@ init_types(void *arg)
         "FormattedValue(expr value, int conversion, expr? format_spec)");
     if (!state->FormattedValue_type) return -1;
     if (PyObject_SetAttr(state->FormattedValue_type, state->format_spec,
-        Py_None) == -1)
+        Ty_None) == -1)
         return -1;
     state->Interpolation_type = make_type(state, "Interpolation",
                                           state->expr_type,
@@ -6503,7 +6503,7 @@ init_types(void *arg)
         "Interpolation(expr value, constant str, int conversion, expr? format_spec)");
     if (!state->Interpolation_type) return -1;
     if (PyObject_SetAttr(state->Interpolation_type, state->format_spec,
-        Py_None) == -1)
+        Ty_None) == -1)
         return -1;
     state->JoinedStr_type = make_type(state, "JoinedStr", state->expr_type,
                                       JoinedStr_fields, 1,
@@ -6517,7 +6517,7 @@ init_types(void *arg)
                                      Constant_fields, 2,
         "Constant(constant value, string? kind)");
     if (!state->Constant_type) return -1;
-    if (PyObject_SetAttr(state->Constant_type, state->kind, Py_None) == -1)
+    if (PyObject_SetAttr(state->Constant_type, state->kind, Ty_None) == -1)
         return -1;
     state->Attribute_type = make_type(state, "Attribute", state->expr_type,
                                       Attribute_fields, 3,
@@ -6547,11 +6547,11 @@ init_types(void *arg)
                                   Slice_fields, 3,
         "Slice(expr? lower, expr? upper, expr? step)");
     if (!state->Slice_type) return -1;
-    if (PyObject_SetAttr(state->Slice_type, state->lower, Py_None) == -1)
+    if (PyObject_SetAttr(state->Slice_type, state->lower, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->Slice_type, state->upper, Py_None) == -1)
+    if (PyObject_SetAttr(state->Slice_type, state->upper, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->Slice_type, state->step, Py_None) == -1)
+    if (PyObject_SetAttr(state->Slice_type, state->step, Ty_None) == -1)
         return -1;
     state->expr_context_type = make_type(state, "expr_context",
                                          state->AST_type, NULL, 0,
@@ -6562,20 +6562,20 @@ init_types(void *arg)
                                  0,
         "Load");
     if (!state->Load_type) return -1;
-    state->Load_singleton = PyType_GenericNew((PyTypeObject *)state->Load_type,
+    state->Load_singleton = TyType_GenericNew((TyTypeObject *)state->Load_type,
                                               NULL, NULL);
     if (!state->Load_singleton) return -1;
     state->Store_type = make_type(state, "Store", state->expr_context_type,
                                   NULL, 0,
         "Store");
     if (!state->Store_type) return -1;
-    state->Store_singleton = PyType_GenericNew((PyTypeObject
+    state->Store_singleton = TyType_GenericNew((TyTypeObject
                                                *)state->Store_type, NULL, NULL);
     if (!state->Store_singleton) return -1;
     state->Del_type = make_type(state, "Del", state->expr_context_type, NULL, 0,
         "Del");
     if (!state->Del_type) return -1;
-    state->Del_singleton = PyType_GenericNew((PyTypeObject *)state->Del_type,
+    state->Del_singleton = TyType_GenericNew((TyTypeObject *)state->Del_type,
                                              NULL, NULL);
     if (!state->Del_singleton) return -1;
     state->boolop_type = make_type(state, "boolop", state->AST_type, NULL, 0,
@@ -6585,13 +6585,13 @@ init_types(void *arg)
     state->And_type = make_type(state, "And", state->boolop_type, NULL, 0,
         "And");
     if (!state->And_type) return -1;
-    state->And_singleton = PyType_GenericNew((PyTypeObject *)state->And_type,
+    state->And_singleton = TyType_GenericNew((TyTypeObject *)state->And_type,
                                              NULL, NULL);
     if (!state->And_singleton) return -1;
     state->Or_type = make_type(state, "Or", state->boolop_type, NULL, 0,
         "Or");
     if (!state->Or_type) return -1;
-    state->Or_singleton = PyType_GenericNew((PyTypeObject *)state->Or_type,
+    state->Or_singleton = TyType_GenericNew((TyTypeObject *)state->Or_type,
                                             NULL, NULL);
     if (!state->Or_singleton) return -1;
     state->operator_type = make_type(state, "operator", state->AST_type, NULL,
@@ -6602,52 +6602,52 @@ init_types(void *arg)
     state->Add_type = make_type(state, "Add", state->operator_type, NULL, 0,
         "Add");
     if (!state->Add_type) return -1;
-    state->Add_singleton = PyType_GenericNew((PyTypeObject *)state->Add_type,
+    state->Add_singleton = TyType_GenericNew((TyTypeObject *)state->Add_type,
                                              NULL, NULL);
     if (!state->Add_singleton) return -1;
     state->Sub_type = make_type(state, "Sub", state->operator_type, NULL, 0,
         "Sub");
     if (!state->Sub_type) return -1;
-    state->Sub_singleton = PyType_GenericNew((PyTypeObject *)state->Sub_type,
+    state->Sub_singleton = TyType_GenericNew((TyTypeObject *)state->Sub_type,
                                              NULL, NULL);
     if (!state->Sub_singleton) return -1;
     state->Mult_type = make_type(state, "Mult", state->operator_type, NULL, 0,
         "Mult");
     if (!state->Mult_type) return -1;
-    state->Mult_singleton = PyType_GenericNew((PyTypeObject *)state->Mult_type,
+    state->Mult_singleton = TyType_GenericNew((TyTypeObject *)state->Mult_type,
                                               NULL, NULL);
     if (!state->Mult_singleton) return -1;
     state->MatMult_type = make_type(state, "MatMult", state->operator_type,
                                     NULL, 0,
         "MatMult");
     if (!state->MatMult_type) return -1;
-    state->MatMult_singleton = PyType_GenericNew((PyTypeObject
+    state->MatMult_singleton = TyType_GenericNew((TyTypeObject
                                                  *)state->MatMult_type, NULL,
                                                  NULL);
     if (!state->MatMult_singleton) return -1;
     state->Div_type = make_type(state, "Div", state->operator_type, NULL, 0,
         "Div");
     if (!state->Div_type) return -1;
-    state->Div_singleton = PyType_GenericNew((PyTypeObject *)state->Div_type,
+    state->Div_singleton = TyType_GenericNew((TyTypeObject *)state->Div_type,
                                              NULL, NULL);
     if (!state->Div_singleton) return -1;
     state->Mod_type = make_type(state, "Mod", state->operator_type, NULL, 0,
         "Mod");
     if (!state->Mod_type) return -1;
-    state->Mod_singleton = PyType_GenericNew((PyTypeObject *)state->Mod_type,
+    state->Mod_singleton = TyType_GenericNew((TyTypeObject *)state->Mod_type,
                                              NULL, NULL);
     if (!state->Mod_singleton) return -1;
     state->Pow_type = make_type(state, "Pow", state->operator_type, NULL, 0,
         "Pow");
     if (!state->Pow_type) return -1;
-    state->Pow_singleton = PyType_GenericNew((PyTypeObject *)state->Pow_type,
+    state->Pow_singleton = TyType_GenericNew((TyTypeObject *)state->Pow_type,
                                              NULL, NULL);
     if (!state->Pow_singleton) return -1;
     state->LShift_type = make_type(state, "LShift", state->operator_type, NULL,
                                    0,
         "LShift");
     if (!state->LShift_type) return -1;
-    state->LShift_singleton = PyType_GenericNew((PyTypeObject
+    state->LShift_singleton = TyType_GenericNew((TyTypeObject
                                                 *)state->LShift_type, NULL,
                                                 NULL);
     if (!state->LShift_singleton) return -1;
@@ -6655,21 +6655,21 @@ init_types(void *arg)
                                    0,
         "RShift");
     if (!state->RShift_type) return -1;
-    state->RShift_singleton = PyType_GenericNew((PyTypeObject
+    state->RShift_singleton = TyType_GenericNew((TyTypeObject
                                                 *)state->RShift_type, NULL,
                                                 NULL);
     if (!state->RShift_singleton) return -1;
     state->BitOr_type = make_type(state, "BitOr", state->operator_type, NULL, 0,
         "BitOr");
     if (!state->BitOr_type) return -1;
-    state->BitOr_singleton = PyType_GenericNew((PyTypeObject
+    state->BitOr_singleton = TyType_GenericNew((TyTypeObject
                                                *)state->BitOr_type, NULL, NULL);
     if (!state->BitOr_singleton) return -1;
     state->BitXor_type = make_type(state, "BitXor", state->operator_type, NULL,
                                    0,
         "BitXor");
     if (!state->BitXor_type) return -1;
-    state->BitXor_singleton = PyType_GenericNew((PyTypeObject
+    state->BitXor_singleton = TyType_GenericNew((TyTypeObject
                                                 *)state->BitXor_type, NULL,
                                                 NULL);
     if (!state->BitXor_singleton) return -1;
@@ -6677,7 +6677,7 @@ init_types(void *arg)
                                    0,
         "BitAnd");
     if (!state->BitAnd_type) return -1;
-    state->BitAnd_singleton = PyType_GenericNew((PyTypeObject
+    state->BitAnd_singleton = TyType_GenericNew((TyTypeObject
                                                 *)state->BitAnd_type, NULL,
                                                 NULL);
     if (!state->BitAnd_singleton) return -1;
@@ -6685,7 +6685,7 @@ init_types(void *arg)
                                      NULL, 0,
         "FloorDiv");
     if (!state->FloorDiv_type) return -1;
-    state->FloorDiv_singleton = PyType_GenericNew((PyTypeObject
+    state->FloorDiv_singleton = TyType_GenericNew((TyTypeObject
                                                   *)state->FloorDiv_type, NULL,
                                                   NULL);
     if (!state->FloorDiv_singleton) return -1;
@@ -6697,26 +6697,26 @@ init_types(void *arg)
                                    0,
         "Invert");
     if (!state->Invert_type) return -1;
-    state->Invert_singleton = PyType_GenericNew((PyTypeObject
+    state->Invert_singleton = TyType_GenericNew((TyTypeObject
                                                 *)state->Invert_type, NULL,
                                                 NULL);
     if (!state->Invert_singleton) return -1;
     state->Not_type = make_type(state, "Not", state->unaryop_type, NULL, 0,
         "Not");
     if (!state->Not_type) return -1;
-    state->Not_singleton = PyType_GenericNew((PyTypeObject *)state->Not_type,
+    state->Not_singleton = TyType_GenericNew((TyTypeObject *)state->Not_type,
                                              NULL, NULL);
     if (!state->Not_singleton) return -1;
     state->UAdd_type = make_type(state, "UAdd", state->unaryop_type, NULL, 0,
         "UAdd");
     if (!state->UAdd_type) return -1;
-    state->UAdd_singleton = PyType_GenericNew((PyTypeObject *)state->UAdd_type,
+    state->UAdd_singleton = TyType_GenericNew((TyTypeObject *)state->UAdd_type,
                                               NULL, NULL);
     if (!state->UAdd_singleton) return -1;
     state->USub_type = make_type(state, "USub", state->unaryop_type, NULL, 0,
         "USub");
     if (!state->USub_type) return -1;
-    state->USub_singleton = PyType_GenericNew((PyTypeObject *)state->USub_type,
+    state->USub_singleton = TyType_GenericNew((TyTypeObject *)state->USub_type,
                                               NULL, NULL);
     if (!state->USub_singleton) return -1;
     state->cmpop_type = make_type(state, "cmpop", state->AST_type, NULL, 0,
@@ -6726,61 +6726,61 @@ init_types(void *arg)
     state->Eq_type = make_type(state, "Eq", state->cmpop_type, NULL, 0,
         "Eq");
     if (!state->Eq_type) return -1;
-    state->Eq_singleton = PyType_GenericNew((PyTypeObject *)state->Eq_type,
+    state->Eq_singleton = TyType_GenericNew((TyTypeObject *)state->Eq_type,
                                             NULL, NULL);
     if (!state->Eq_singleton) return -1;
     state->NotEq_type = make_type(state, "NotEq", state->cmpop_type, NULL, 0,
         "NotEq");
     if (!state->NotEq_type) return -1;
-    state->NotEq_singleton = PyType_GenericNew((PyTypeObject
+    state->NotEq_singleton = TyType_GenericNew((TyTypeObject
                                                *)state->NotEq_type, NULL, NULL);
     if (!state->NotEq_singleton) return -1;
     state->Lt_type = make_type(state, "Lt", state->cmpop_type, NULL, 0,
         "Lt");
     if (!state->Lt_type) return -1;
-    state->Lt_singleton = PyType_GenericNew((PyTypeObject *)state->Lt_type,
+    state->Lt_singleton = TyType_GenericNew((TyTypeObject *)state->Lt_type,
                                             NULL, NULL);
     if (!state->Lt_singleton) return -1;
     state->LtE_type = make_type(state, "LtE", state->cmpop_type, NULL, 0,
         "LtE");
     if (!state->LtE_type) return -1;
-    state->LtE_singleton = PyType_GenericNew((PyTypeObject *)state->LtE_type,
+    state->LtE_singleton = TyType_GenericNew((TyTypeObject *)state->LtE_type,
                                              NULL, NULL);
     if (!state->LtE_singleton) return -1;
     state->Gt_type = make_type(state, "Gt", state->cmpop_type, NULL, 0,
         "Gt");
     if (!state->Gt_type) return -1;
-    state->Gt_singleton = PyType_GenericNew((PyTypeObject *)state->Gt_type,
+    state->Gt_singleton = TyType_GenericNew((TyTypeObject *)state->Gt_type,
                                             NULL, NULL);
     if (!state->Gt_singleton) return -1;
     state->GtE_type = make_type(state, "GtE", state->cmpop_type, NULL, 0,
         "GtE");
     if (!state->GtE_type) return -1;
-    state->GtE_singleton = PyType_GenericNew((PyTypeObject *)state->GtE_type,
+    state->GtE_singleton = TyType_GenericNew((TyTypeObject *)state->GtE_type,
                                              NULL, NULL);
     if (!state->GtE_singleton) return -1;
     state->Is_type = make_type(state, "Is", state->cmpop_type, NULL, 0,
         "Is");
     if (!state->Is_type) return -1;
-    state->Is_singleton = PyType_GenericNew((PyTypeObject *)state->Is_type,
+    state->Is_singleton = TyType_GenericNew((TyTypeObject *)state->Is_type,
                                             NULL, NULL);
     if (!state->Is_singleton) return -1;
     state->IsNot_type = make_type(state, "IsNot", state->cmpop_type, NULL, 0,
         "IsNot");
     if (!state->IsNot_type) return -1;
-    state->IsNot_singleton = PyType_GenericNew((PyTypeObject
+    state->IsNot_singleton = TyType_GenericNew((TyTypeObject
                                                *)state->IsNot_type, NULL, NULL);
     if (!state->IsNot_singleton) return -1;
     state->In_type = make_type(state, "In", state->cmpop_type, NULL, 0,
         "In");
     if (!state->In_type) return -1;
-    state->In_singleton = PyType_GenericNew((PyTypeObject *)state->In_type,
+    state->In_singleton = TyType_GenericNew((TyTypeObject *)state->In_type,
                                             NULL, NULL);
     if (!state->In_singleton) return -1;
     state->NotIn_type = make_type(state, "NotIn", state->cmpop_type, NULL, 0,
         "NotIn");
     if (!state->NotIn_type) return -1;
-    state->NotIn_singleton = PyType_GenericNew((PyTypeObject
+    state->NotIn_singleton = TyType_GenericNew((TyTypeObject
                                                *)state->NotIn_type, NULL, NULL);
     if (!state->NotIn_singleton) return -1;
     state->comprehension_type = make_type(state, "comprehension",
@@ -6796,42 +6796,42 @@ init_types(void *arg)
     if (!state->excepthandler_type) return -1;
     if (add_attributes(state, state->excepthandler_type,
         excepthandler_attributes, 4) < 0) return -1;
-    if (PyObject_SetAttr(state->excepthandler_type, state->end_lineno, Py_None)
+    if (PyObject_SetAttr(state->excepthandler_type, state->end_lineno, Ty_None)
         == -1)
         return -1;
     if (PyObject_SetAttr(state->excepthandler_type, state->end_col_offset,
-        Py_None) == -1)
+        Ty_None) == -1)
         return -1;
     state->ExceptHandler_type = make_type(state, "ExceptHandler",
                                           state->excepthandler_type,
                                           ExceptHandler_fields, 3,
         "ExceptHandler(expr? type, identifier? name, stmt* body)");
     if (!state->ExceptHandler_type) return -1;
-    if (PyObject_SetAttr(state->ExceptHandler_type, state->type, Py_None) == -1)
+    if (PyObject_SetAttr(state->ExceptHandler_type, state->type, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->ExceptHandler_type, state->name, Py_None) == -1)
+    if (PyObject_SetAttr(state->ExceptHandler_type, state->name, Ty_None) == -1)
         return -1;
     state->arguments_type = make_type(state, "arguments", state->AST_type,
                                       arguments_fields, 7,
         "arguments(arg* posonlyargs, arg* args, arg? vararg, arg* kwonlyargs, expr* kw_defaults, arg? kwarg, expr* defaults)");
     if (!state->arguments_type) return -1;
     if (add_attributes(state, state->arguments_type, NULL, 0) < 0) return -1;
-    if (PyObject_SetAttr(state->arguments_type, state->vararg, Py_None) == -1)
+    if (PyObject_SetAttr(state->arguments_type, state->vararg, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->arguments_type, state->kwarg, Py_None) == -1)
+    if (PyObject_SetAttr(state->arguments_type, state->kwarg, Ty_None) == -1)
         return -1;
     state->arg_type = make_type(state, "arg", state->AST_type, arg_fields, 3,
         "arg(identifier arg, expr? annotation, string? type_comment)");
     if (!state->arg_type) return -1;
     if (add_attributes(state, state->arg_type, arg_attributes, 4) < 0) return
         -1;
-    if (PyObject_SetAttr(state->arg_type, state->annotation, Py_None) == -1)
+    if (PyObject_SetAttr(state->arg_type, state->annotation, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->arg_type, state->type_comment, Py_None) == -1)
+    if (PyObject_SetAttr(state->arg_type, state->type_comment, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->arg_type, state->end_lineno, Py_None) == -1)
+    if (PyObject_SetAttr(state->arg_type, state->end_lineno, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->arg_type, state->end_col_offset, Py_None) == -1)
+    if (PyObject_SetAttr(state->arg_type, state->end_col_offset, Ty_None) == -1)
         return -1;
     state->keyword_type = make_type(state, "keyword", state->AST_type,
                                     keyword_fields, 2,
@@ -6839,11 +6839,11 @@ init_types(void *arg)
     if (!state->keyword_type) return -1;
     if (add_attributes(state, state->keyword_type, keyword_attributes, 4) < 0)
         return -1;
-    if (PyObject_SetAttr(state->keyword_type, state->arg, Py_None) == -1)
+    if (PyObject_SetAttr(state->keyword_type, state->arg, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->keyword_type, state->end_lineno, Py_None) == -1)
+    if (PyObject_SetAttr(state->keyword_type, state->end_lineno, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->keyword_type, state->end_col_offset, Py_None)
+    if (PyObject_SetAttr(state->keyword_type, state->end_col_offset, Ty_None)
         == -1)
         return -1;
     state->alias_type = make_type(state, "alias", state->AST_type,
@@ -6852,11 +6852,11 @@ init_types(void *arg)
     if (!state->alias_type) return -1;
     if (add_attributes(state, state->alias_type, alias_attributes, 4) < 0)
         return -1;
-    if (PyObject_SetAttr(state->alias_type, state->asname, Py_None) == -1)
+    if (PyObject_SetAttr(state->alias_type, state->asname, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->alias_type, state->end_lineno, Py_None) == -1)
+    if (PyObject_SetAttr(state->alias_type, state->end_lineno, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->alias_type, state->end_col_offset, Py_None) ==
+    if (PyObject_SetAttr(state->alias_type, state->end_col_offset, Ty_None) ==
         -1)
         return -1;
     state->withitem_type = make_type(state, "withitem", state->AST_type,
@@ -6864,7 +6864,7 @@ init_types(void *arg)
         "withitem(expr context_expr, expr? optional_vars)");
     if (!state->withitem_type) return -1;
     if (add_attributes(state, state->withitem_type, NULL, 0) < 0) return -1;
-    if (PyObject_SetAttr(state->withitem_type, state->optional_vars, Py_None)
+    if (PyObject_SetAttr(state->withitem_type, state->optional_vars, Ty_None)
         == -1)
         return -1;
     state->match_case_type = make_type(state, "match_case", state->AST_type,
@@ -6872,7 +6872,7 @@ init_types(void *arg)
         "match_case(pattern pattern, expr? guard, stmt* body)");
     if (!state->match_case_type) return -1;
     if (add_attributes(state, state->match_case_type, NULL, 0) < 0) return -1;
-    if (PyObject_SetAttr(state->match_case_type, state->guard, Py_None) == -1)
+    if (PyObject_SetAttr(state->match_case_type, state->guard, Ty_None) == -1)
         return -1;
     state->pattern_type = make_type(state, "pattern", state->AST_type, NULL, 0,
         "pattern = MatchValue(expr value)\n"
@@ -6906,7 +6906,7 @@ init_types(void *arg)
                                          MatchMapping_fields, 3,
         "MatchMapping(expr* keys, pattern* patterns, identifier? rest)");
     if (!state->MatchMapping_type) return -1;
-    if (PyObject_SetAttr(state->MatchMapping_type, state->rest, Py_None) == -1)
+    if (PyObject_SetAttr(state->MatchMapping_type, state->rest, Ty_None) == -1)
         return -1;
     state->MatchClass_type = make_type(state, "MatchClass",
                                        state->pattern_type, MatchClass_fields,
@@ -6917,15 +6917,15 @@ init_types(void *arg)
                                       MatchStar_fields, 1,
         "MatchStar(identifier? name)");
     if (!state->MatchStar_type) return -1;
-    if (PyObject_SetAttr(state->MatchStar_type, state->name, Py_None) == -1)
+    if (PyObject_SetAttr(state->MatchStar_type, state->name, Ty_None) == -1)
         return -1;
     state->MatchAs_type = make_type(state, "MatchAs", state->pattern_type,
                                     MatchAs_fields, 2,
         "MatchAs(pattern? pattern, identifier? name)");
     if (!state->MatchAs_type) return -1;
-    if (PyObject_SetAttr(state->MatchAs_type, state->pattern, Py_None) == -1)
+    if (PyObject_SetAttr(state->MatchAs_type, state->pattern, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->MatchAs_type, state->name, Py_None) == -1)
+    if (PyObject_SetAttr(state->MatchAs_type, state->name, Ty_None) == -1)
         return -1;
     state->MatchOr_type = make_type(state, "MatchOr", state->pattern_type,
                                     MatchOr_fields, 1,
@@ -6953,9 +6953,9 @@ init_types(void *arg)
                                     TypeVar_fields, 3,
         "TypeVar(identifier name, expr? bound, expr? default_value)");
     if (!state->TypeVar_type) return -1;
-    if (PyObject_SetAttr(state->TypeVar_type, state->bound, Py_None) == -1)
+    if (PyObject_SetAttr(state->TypeVar_type, state->bound, Ty_None) == -1)
         return -1;
-    if (PyObject_SetAttr(state->TypeVar_type, state->default_value, Py_None) ==
+    if (PyObject_SetAttr(state->TypeVar_type, state->default_value, Ty_None) ==
         -1)
         return -1;
     state->ParamSpec_type = make_type(state, "ParamSpec",
@@ -6963,7 +6963,7 @@ init_types(void *arg)
                                       2,
         "ParamSpec(identifier name, expr? default_value)");
     if (!state->ParamSpec_type) return -1;
-    if (PyObject_SetAttr(state->ParamSpec_type, state->default_value, Py_None)
+    if (PyObject_SetAttr(state->ParamSpec_type, state->default_value, Ty_None)
         == -1)
         return -1;
     state->TypeVarTuple_type = make_type(state, "TypeVarTuple",
@@ -6972,7 +6972,7 @@ init_types(void *arg)
         "TypeVarTuple(identifier name, expr? default_value)");
     if (!state->TypeVarTuple_type) return -1;
     if (PyObject_SetAttr(state->TypeVarTuple_type, state->default_value,
-        Py_None) == -1)
+        Ty_None) == -1)
         return -1;
 
     if (!add_ast_annotations(state)) {
@@ -6981,51 +6981,51 @@ init_types(void *arg)
     return 0;
 }
 
-static int obj2ast_mod(struct ast_state *state, PyObject* obj, mod_ty* out,
+static int obj2ast_mod(struct ast_state *state, TyObject* obj, mod_ty* out,
                        PyArena* arena);
-static int obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out,
+static int obj2ast_stmt(struct ast_state *state, TyObject* obj, stmt_ty* out,
                         PyArena* arena);
-static int obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out,
+static int obj2ast_expr(struct ast_state *state, TyObject* obj, expr_ty* out,
                         PyArena* arena);
-static int obj2ast_expr_context(struct ast_state *state, PyObject* obj,
+static int obj2ast_expr_context(struct ast_state *state, TyObject* obj,
                                 expr_context_ty* out, PyArena* arena);
-static int obj2ast_boolop(struct ast_state *state, PyObject* obj, boolop_ty*
+static int obj2ast_boolop(struct ast_state *state, TyObject* obj, boolop_ty*
                           out, PyArena* arena);
-static int obj2ast_operator(struct ast_state *state, PyObject* obj,
+static int obj2ast_operator(struct ast_state *state, TyObject* obj,
                             operator_ty* out, PyArena* arena);
-static int obj2ast_unaryop(struct ast_state *state, PyObject* obj, unaryop_ty*
+static int obj2ast_unaryop(struct ast_state *state, TyObject* obj, unaryop_ty*
                            out, PyArena* arena);
-static int obj2ast_cmpop(struct ast_state *state, PyObject* obj, cmpop_ty* out,
+static int obj2ast_cmpop(struct ast_state *state, TyObject* obj, cmpop_ty* out,
                          PyArena* arena);
-static int obj2ast_comprehension(struct ast_state *state, PyObject* obj,
+static int obj2ast_comprehension(struct ast_state *state, TyObject* obj,
                                  comprehension_ty* out, PyArena* arena);
-static int obj2ast_excepthandler(struct ast_state *state, PyObject* obj,
+static int obj2ast_excepthandler(struct ast_state *state, TyObject* obj,
                                  excepthandler_ty* out, PyArena* arena);
-static int obj2ast_arguments(struct ast_state *state, PyObject* obj,
+static int obj2ast_arguments(struct ast_state *state, TyObject* obj,
                              arguments_ty* out, PyArena* arena);
-static int obj2ast_arg(struct ast_state *state, PyObject* obj, arg_ty* out,
+static int obj2ast_arg(struct ast_state *state, TyObject* obj, arg_ty* out,
                        PyArena* arena);
-static int obj2ast_keyword(struct ast_state *state, PyObject* obj, keyword_ty*
+static int obj2ast_keyword(struct ast_state *state, TyObject* obj, keyword_ty*
                            out, PyArena* arena);
-static int obj2ast_alias(struct ast_state *state, PyObject* obj, alias_ty* out,
+static int obj2ast_alias(struct ast_state *state, TyObject* obj, alias_ty* out,
                          PyArena* arena);
-static int obj2ast_withitem(struct ast_state *state, PyObject* obj,
+static int obj2ast_withitem(struct ast_state *state, TyObject* obj,
                             withitem_ty* out, PyArena* arena);
-static int obj2ast_match_case(struct ast_state *state, PyObject* obj,
+static int obj2ast_match_case(struct ast_state *state, TyObject* obj,
                               match_case_ty* out, PyArena* arena);
-static int obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty*
+static int obj2ast_pattern(struct ast_state *state, TyObject* obj, pattern_ty*
                            out, PyArena* arena);
-static int obj2ast_type_ignore(struct ast_state *state, PyObject* obj,
+static int obj2ast_type_ignore(struct ast_state *state, TyObject* obj,
                                type_ignore_ty* out, PyArena* arena);
-static int obj2ast_type_param(struct ast_state *state, PyObject* obj,
+static int obj2ast_type_param(struct ast_state *state, TyObject* obj,
                               type_param_ty* out, PyArena* arena);
 
 mod_ty
-_PyAST_Module(asdl_stmt_seq * body, asdl_type_ignore_seq * type_ignores,
+_TyAST_Module(asdl_stmt_seq * body, asdl_type_ignore_seq * type_ignores,
               PyArena *arena)
 {
     mod_ty p;
-    p = (mod_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (mod_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Module_kind;
@@ -7035,10 +7035,10 @@ _PyAST_Module(asdl_stmt_seq * body, asdl_type_ignore_seq * type_ignores,
 }
 
 mod_ty
-_PyAST_Interactive(asdl_stmt_seq * body, PyArena *arena)
+_TyAST_Interactive(asdl_stmt_seq * body, PyArena *arena)
 {
     mod_ty p;
-    p = (mod_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (mod_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Interactive_kind;
@@ -7047,15 +7047,15 @@ _PyAST_Interactive(asdl_stmt_seq * body, PyArena *arena)
 }
 
 mod_ty
-_PyAST_Expression(expr_ty body, PyArena *arena)
+_TyAST_Expression(expr_ty body, PyArena *arena)
 {
     mod_ty p;
     if (!body) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'body' is required for Expression");
         return NULL;
     }
-    p = (mod_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (mod_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Expression_kind;
@@ -7064,15 +7064,15 @@ _PyAST_Expression(expr_ty body, PyArena *arena)
 }
 
 mod_ty
-_PyAST_FunctionType(asdl_expr_seq * argtypes, expr_ty returns, PyArena *arena)
+_TyAST_FunctionType(asdl_expr_seq * argtypes, expr_ty returns, PyArena *arena)
 {
     mod_ty p;
     if (!returns) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'returns' is required for FunctionType");
         return NULL;
     }
-    p = (mod_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (mod_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = FunctionType_kind;
@@ -7082,7 +7082,7 @@ _PyAST_FunctionType(asdl_expr_seq * argtypes, expr_ty returns, PyArena *arena)
 }
 
 stmt_ty
-_PyAST_FunctionDef(identifier name, arguments_ty args, asdl_stmt_seq * body,
+_TyAST_FunctionDef(identifier name, arguments_ty args, asdl_stmt_seq * body,
                    asdl_expr_seq * decorator_list, expr_ty returns, string
                    type_comment, asdl_type_param_seq * type_params, int lineno,
                    int col_offset, int end_lineno, int end_col_offset, PyArena
@@ -7090,16 +7090,16 @@ _PyAST_FunctionDef(identifier name, arguments_ty args, asdl_stmt_seq * body,
 {
     stmt_ty p;
     if (!name) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'name' is required for FunctionDef");
         return NULL;
     }
     if (!args) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'args' is required for FunctionDef");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = FunctionDef_kind;
@@ -7118,7 +7118,7 @@ _PyAST_FunctionDef(identifier name, arguments_ty args, asdl_stmt_seq * body,
 }
 
 stmt_ty
-_PyAST_AsyncFunctionDef(identifier name, arguments_ty args, asdl_stmt_seq *
+_TyAST_AsyncFunctionDef(identifier name, arguments_ty args, asdl_stmt_seq *
                         body, asdl_expr_seq * decorator_list, expr_ty returns,
                         string type_comment, asdl_type_param_seq * type_params,
                         int lineno, int col_offset, int end_lineno, int
@@ -7126,16 +7126,16 @@ _PyAST_AsyncFunctionDef(identifier name, arguments_ty args, asdl_stmt_seq *
 {
     stmt_ty p;
     if (!name) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'name' is required for AsyncFunctionDef");
         return NULL;
     }
     if (!args) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'args' is required for AsyncFunctionDef");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = AsyncFunctionDef_kind;
@@ -7154,18 +7154,18 @@ _PyAST_AsyncFunctionDef(identifier name, arguments_ty args, asdl_stmt_seq *
 }
 
 stmt_ty
-_PyAST_ClassDef(identifier name, asdl_expr_seq * bases, asdl_keyword_seq *
+_TyAST_ClassDef(identifier name, asdl_expr_seq * bases, asdl_keyword_seq *
                 keywords, asdl_stmt_seq * body, asdl_expr_seq * decorator_list,
                 asdl_type_param_seq * type_params, int lineno, int col_offset,
                 int end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
     if (!name) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'name' is required for ClassDef");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = ClassDef_kind;
@@ -7183,11 +7183,11 @@ _PyAST_ClassDef(identifier name, asdl_expr_seq * bases, asdl_keyword_seq *
 }
 
 stmt_ty
-_PyAST_Return(expr_ty value, int lineno, int col_offset, int end_lineno, int
+_TyAST_Return(expr_ty value, int lineno, int col_offset, int end_lineno, int
               end_col_offset, PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Return_kind;
@@ -7200,11 +7200,11 @@ _PyAST_Return(expr_ty value, int lineno, int col_offset, int end_lineno, int
 }
 
 stmt_ty
-_PyAST_Delete(asdl_expr_seq * targets, int lineno, int col_offset, int
+_TyAST_Delete(asdl_expr_seq * targets, int lineno, int col_offset, int
               end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Delete_kind;
@@ -7217,17 +7217,17 @@ _PyAST_Delete(asdl_expr_seq * targets, int lineno, int col_offset, int
 }
 
 stmt_ty
-_PyAST_Assign(asdl_expr_seq * targets, expr_ty value, string type_comment, int
+_TyAST_Assign(asdl_expr_seq * targets, expr_ty value, string type_comment, int
               lineno, int col_offset, int end_lineno, int end_col_offset,
               PyArena *arena)
 {
     stmt_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for Assign");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Assign_kind;
@@ -7242,22 +7242,22 @@ _PyAST_Assign(asdl_expr_seq * targets, expr_ty value, string type_comment, int
 }
 
 stmt_ty
-_PyAST_TypeAlias(expr_ty name, asdl_type_param_seq * type_params, expr_ty
+_TyAST_TypeAlias(expr_ty name, asdl_type_param_seq * type_params, expr_ty
                  value, int lineno, int col_offset, int end_lineno, int
                  end_col_offset, PyArena *arena)
 {
     stmt_ty p;
     if (!name) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'name' is required for TypeAlias");
         return NULL;
     }
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for TypeAlias");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = TypeAlias_kind;
@@ -7272,26 +7272,26 @@ _PyAST_TypeAlias(expr_ty name, asdl_type_param_seq * type_params, expr_ty
 }
 
 stmt_ty
-_PyAST_AugAssign(expr_ty target, operator_ty op, expr_ty value, int lineno, int
+_TyAST_AugAssign(expr_ty target, operator_ty op, expr_ty value, int lineno, int
                  col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
     if (!target) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'target' is required for AugAssign");
         return NULL;
     }
     if (!op) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'op' is required for AugAssign");
         return NULL;
     }
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for AugAssign");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = AugAssign_kind;
@@ -7306,22 +7306,22 @@ _PyAST_AugAssign(expr_ty target, operator_ty op, expr_ty value, int lineno, int
 }
 
 stmt_ty
-_PyAST_AnnAssign(expr_ty target, expr_ty annotation, expr_ty value, int simple,
+_TyAST_AnnAssign(expr_ty target, expr_ty annotation, expr_ty value, int simple,
                  int lineno, int col_offset, int end_lineno, int
                  end_col_offset, PyArena *arena)
 {
     stmt_ty p;
     if (!target) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'target' is required for AnnAssign");
         return NULL;
     }
     if (!annotation) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'annotation' is required for AnnAssign");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = AnnAssign_kind;
@@ -7337,22 +7337,22 @@ _PyAST_AnnAssign(expr_ty target, expr_ty annotation, expr_ty value, int simple,
 }
 
 stmt_ty
-_PyAST_For(expr_ty target, expr_ty iter, asdl_stmt_seq * body, asdl_stmt_seq *
+_TyAST_For(expr_ty target, expr_ty iter, asdl_stmt_seq * body, asdl_stmt_seq *
            orelse, string type_comment, int lineno, int col_offset, int
            end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
     if (!target) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'target' is required for For");
         return NULL;
     }
     if (!iter) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'iter' is required for For");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = For_kind;
@@ -7369,22 +7369,22 @@ _PyAST_For(expr_ty target, expr_ty iter, asdl_stmt_seq * body, asdl_stmt_seq *
 }
 
 stmt_ty
-_PyAST_AsyncFor(expr_ty target, expr_ty iter, asdl_stmt_seq * body,
+_TyAST_AsyncFor(expr_ty target, expr_ty iter, asdl_stmt_seq * body,
                 asdl_stmt_seq * orelse, string type_comment, int lineno, int
                 col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
     if (!target) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'target' is required for AsyncFor");
         return NULL;
     }
     if (!iter) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'iter' is required for AsyncFor");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = AsyncFor_kind;
@@ -7401,17 +7401,17 @@ _PyAST_AsyncFor(expr_ty target, expr_ty iter, asdl_stmt_seq * body,
 }
 
 stmt_ty
-_PyAST_While(expr_ty test, asdl_stmt_seq * body, asdl_stmt_seq * orelse, int
+_TyAST_While(expr_ty test, asdl_stmt_seq * body, asdl_stmt_seq * orelse, int
              lineno, int col_offset, int end_lineno, int end_col_offset,
              PyArena *arena)
 {
     stmt_ty p;
     if (!test) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'test' is required for While");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = While_kind;
@@ -7426,17 +7426,17 @@ _PyAST_While(expr_ty test, asdl_stmt_seq * body, asdl_stmt_seq * orelse, int
 }
 
 stmt_ty
-_PyAST_If(expr_ty test, asdl_stmt_seq * body, asdl_stmt_seq * orelse, int
+_TyAST_If(expr_ty test, asdl_stmt_seq * body, asdl_stmt_seq * orelse, int
           lineno, int col_offset, int end_lineno, int end_col_offset, PyArena
           *arena)
 {
     stmt_ty p;
     if (!test) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'test' is required for If");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = If_kind;
@@ -7451,12 +7451,12 @@ _PyAST_If(expr_ty test, asdl_stmt_seq * body, asdl_stmt_seq * orelse, int
 }
 
 stmt_ty
-_PyAST_With(asdl_withitem_seq * items, asdl_stmt_seq * body, string
+_TyAST_With(asdl_withitem_seq * items, asdl_stmt_seq * body, string
             type_comment, int lineno, int col_offset, int end_lineno, int
             end_col_offset, PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = With_kind;
@@ -7471,12 +7471,12 @@ _PyAST_With(asdl_withitem_seq * items, asdl_stmt_seq * body, string
 }
 
 stmt_ty
-_PyAST_AsyncWith(asdl_withitem_seq * items, asdl_stmt_seq * body, string
+_TyAST_AsyncWith(asdl_withitem_seq * items, asdl_stmt_seq * body, string
                  type_comment, int lineno, int col_offset, int end_lineno, int
                  end_col_offset, PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = AsyncWith_kind;
@@ -7491,16 +7491,16 @@ _PyAST_AsyncWith(asdl_withitem_seq * items, asdl_stmt_seq * body, string
 }
 
 stmt_ty
-_PyAST_Match(expr_ty subject, asdl_match_case_seq * cases, int lineno, int
+_TyAST_Match(expr_ty subject, asdl_match_case_seq * cases, int lineno, int
              col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
     if (!subject) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'subject' is required for Match");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Match_kind;
@@ -7514,11 +7514,11 @@ _PyAST_Match(expr_ty subject, asdl_match_case_seq * cases, int lineno, int
 }
 
 stmt_ty
-_PyAST_Raise(expr_ty exc, expr_ty cause, int lineno, int col_offset, int
+_TyAST_Raise(expr_ty exc, expr_ty cause, int lineno, int col_offset, int
              end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Raise_kind;
@@ -7532,12 +7532,12 @@ _PyAST_Raise(expr_ty exc, expr_ty cause, int lineno, int col_offset, int
 }
 
 stmt_ty
-_PyAST_Try(asdl_stmt_seq * body, asdl_excepthandler_seq * handlers,
+_TyAST_Try(asdl_stmt_seq * body, asdl_excepthandler_seq * handlers,
            asdl_stmt_seq * orelse, asdl_stmt_seq * finalbody, int lineno, int
            col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Try_kind;
@@ -7553,13 +7553,13 @@ _PyAST_Try(asdl_stmt_seq * body, asdl_excepthandler_seq * handlers,
 }
 
 stmt_ty
-_PyAST_TryStar(asdl_stmt_seq * body, asdl_excepthandler_seq * handlers,
+_TyAST_TryStar(asdl_stmt_seq * body, asdl_excepthandler_seq * handlers,
                asdl_stmt_seq * orelse, asdl_stmt_seq * finalbody, int lineno,
                int col_offset, int end_lineno, int end_col_offset, PyArena
                *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = TryStar_kind;
@@ -7575,16 +7575,16 @@ _PyAST_TryStar(asdl_stmt_seq * body, asdl_excepthandler_seq * handlers,
 }
 
 stmt_ty
-_PyAST_Assert(expr_ty test, expr_ty msg, int lineno, int col_offset, int
+_TyAST_Assert(expr_ty test, expr_ty msg, int lineno, int col_offset, int
               end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
     if (!test) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'test' is required for Assert");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Assert_kind;
@@ -7598,11 +7598,11 @@ _PyAST_Assert(expr_ty test, expr_ty msg, int lineno, int col_offset, int
 }
 
 stmt_ty
-_PyAST_Import(asdl_alias_seq * names, int lineno, int col_offset, int
+_TyAST_Import(asdl_alias_seq * names, int lineno, int col_offset, int
               end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Import_kind;
@@ -7615,12 +7615,12 @@ _PyAST_Import(asdl_alias_seq * names, int lineno, int col_offset, int
 }
 
 stmt_ty
-_PyAST_ImportFrom(identifier module, asdl_alias_seq * names, int level, int
+_TyAST_ImportFrom(identifier module, asdl_alias_seq * names, int level, int
                   lineno, int col_offset, int end_lineno, int end_col_offset,
                   PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = ImportFrom_kind;
@@ -7635,11 +7635,11 @@ _PyAST_ImportFrom(identifier module, asdl_alias_seq * names, int level, int
 }
 
 stmt_ty
-_PyAST_Global(asdl_identifier_seq * names, int lineno, int col_offset, int
+_TyAST_Global(asdl_identifier_seq * names, int lineno, int col_offset, int
               end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Global_kind;
@@ -7652,11 +7652,11 @@ _PyAST_Global(asdl_identifier_seq * names, int lineno, int col_offset, int
 }
 
 stmt_ty
-_PyAST_Nonlocal(asdl_identifier_seq * names, int lineno, int col_offset, int
+_TyAST_Nonlocal(asdl_identifier_seq * names, int lineno, int col_offset, int
                 end_lineno, int end_col_offset, PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Nonlocal_kind;
@@ -7669,16 +7669,16 @@ _PyAST_Nonlocal(asdl_identifier_seq * names, int lineno, int col_offset, int
 }
 
 stmt_ty
-_PyAST_Expr(expr_ty value, int lineno, int col_offset, int end_lineno, int
+_TyAST_Expr(expr_ty value, int lineno, int col_offset, int end_lineno, int
             end_col_offset, PyArena *arena)
 {
     stmt_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for Expr");
         return NULL;
     }
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Expr_kind;
@@ -7691,11 +7691,11 @@ _PyAST_Expr(expr_ty value, int lineno, int col_offset, int end_lineno, int
 }
 
 stmt_ty
-_PyAST_Pass(int lineno, int col_offset, int end_lineno, int end_col_offset,
+_TyAST_Pass(int lineno, int col_offset, int end_lineno, int end_col_offset,
             PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Pass_kind;
@@ -7707,11 +7707,11 @@ _PyAST_Pass(int lineno, int col_offset, int end_lineno, int end_col_offset,
 }
 
 stmt_ty
-_PyAST_Break(int lineno, int col_offset, int end_lineno, int end_col_offset,
+_TyAST_Break(int lineno, int col_offset, int end_lineno, int end_col_offset,
              PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Break_kind;
@@ -7723,11 +7723,11 @@ _PyAST_Break(int lineno, int col_offset, int end_lineno, int end_col_offset,
 }
 
 stmt_ty
-_PyAST_Continue(int lineno, int col_offset, int end_lineno, int end_col_offset,
+_TyAST_Continue(int lineno, int col_offset, int end_lineno, int end_col_offset,
                 PyArena *arena)
 {
     stmt_ty p;
-    p = (stmt_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (stmt_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Continue_kind;
@@ -7739,16 +7739,16 @@ _PyAST_Continue(int lineno, int col_offset, int end_lineno, int end_col_offset,
 }
 
 expr_ty
-_PyAST_BoolOp(boolop_ty op, asdl_expr_seq * values, int lineno, int col_offset,
+_TyAST_BoolOp(boolop_ty op, asdl_expr_seq * values, int lineno, int col_offset,
               int end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!op) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'op' is required for BoolOp");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = BoolOp_kind;
@@ -7762,21 +7762,21 @@ _PyAST_BoolOp(boolop_ty op, asdl_expr_seq * values, int lineno, int col_offset,
 }
 
 expr_ty
-_PyAST_NamedExpr(expr_ty target, expr_ty value, int lineno, int col_offset, int
+_TyAST_NamedExpr(expr_ty target, expr_ty value, int lineno, int col_offset, int
                  end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!target) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'target' is required for NamedExpr");
         return NULL;
     }
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for NamedExpr");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = NamedExpr_kind;
@@ -7790,26 +7790,26 @@ _PyAST_NamedExpr(expr_ty target, expr_ty value, int lineno, int col_offset, int
 }
 
 expr_ty
-_PyAST_BinOp(expr_ty left, operator_ty op, expr_ty right, int lineno, int
+_TyAST_BinOp(expr_ty left, operator_ty op, expr_ty right, int lineno, int
              col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!left) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'left' is required for BinOp");
         return NULL;
     }
     if (!op) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'op' is required for BinOp");
         return NULL;
     }
     if (!right) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'right' is required for BinOp");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = BinOp_kind;
@@ -7824,21 +7824,21 @@ _PyAST_BinOp(expr_ty left, operator_ty op, expr_ty right, int lineno, int
 }
 
 expr_ty
-_PyAST_UnaryOp(unaryop_ty op, expr_ty operand, int lineno, int col_offset, int
+_TyAST_UnaryOp(unaryop_ty op, expr_ty operand, int lineno, int col_offset, int
                end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!op) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'op' is required for UnaryOp");
         return NULL;
     }
     if (!operand) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'operand' is required for UnaryOp");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = UnaryOp_kind;
@@ -7852,21 +7852,21 @@ _PyAST_UnaryOp(unaryop_ty op, expr_ty operand, int lineno, int col_offset, int
 }
 
 expr_ty
-_PyAST_Lambda(arguments_ty args, expr_ty body, int lineno, int col_offset, int
+_TyAST_Lambda(arguments_ty args, expr_ty body, int lineno, int col_offset, int
               end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!args) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'args' is required for Lambda");
         return NULL;
     }
     if (!body) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'body' is required for Lambda");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Lambda_kind;
@@ -7880,26 +7880,26 @@ _PyAST_Lambda(arguments_ty args, expr_ty body, int lineno, int col_offset, int
 }
 
 expr_ty
-_PyAST_IfExp(expr_ty test, expr_ty body, expr_ty orelse, int lineno, int
+_TyAST_IfExp(expr_ty test, expr_ty body, expr_ty orelse, int lineno, int
              col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!test) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'test' is required for IfExp");
         return NULL;
     }
     if (!body) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'body' is required for IfExp");
         return NULL;
     }
     if (!orelse) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'orelse' is required for IfExp");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = IfExp_kind;
@@ -7914,11 +7914,11 @@ _PyAST_IfExp(expr_ty test, expr_ty body, expr_ty orelse, int lineno, int
 }
 
 expr_ty
-_PyAST_Dict(asdl_expr_seq * keys, asdl_expr_seq * values, int lineno, int
+_TyAST_Dict(asdl_expr_seq * keys, asdl_expr_seq * values, int lineno, int
             col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Dict_kind;
@@ -7932,11 +7932,11 @@ _PyAST_Dict(asdl_expr_seq * keys, asdl_expr_seq * values, int lineno, int
 }
 
 expr_ty
-_PyAST_Set(asdl_expr_seq * elts, int lineno, int col_offset, int end_lineno,
+_TyAST_Set(asdl_expr_seq * elts, int lineno, int col_offset, int end_lineno,
            int end_col_offset, PyArena *arena)
 {
     expr_ty p;
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Set_kind;
@@ -7949,17 +7949,17 @@ _PyAST_Set(asdl_expr_seq * elts, int lineno, int col_offset, int end_lineno,
 }
 
 expr_ty
-_PyAST_ListComp(expr_ty elt, asdl_comprehension_seq * generators, int lineno,
+_TyAST_ListComp(expr_ty elt, asdl_comprehension_seq * generators, int lineno,
                 int col_offset, int end_lineno, int end_col_offset, PyArena
                 *arena)
 {
     expr_ty p;
     if (!elt) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'elt' is required for ListComp");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = ListComp_kind;
@@ -7973,17 +7973,17 @@ _PyAST_ListComp(expr_ty elt, asdl_comprehension_seq * generators, int lineno,
 }
 
 expr_ty
-_PyAST_SetComp(expr_ty elt, asdl_comprehension_seq * generators, int lineno,
+_TyAST_SetComp(expr_ty elt, asdl_comprehension_seq * generators, int lineno,
                int col_offset, int end_lineno, int end_col_offset, PyArena
                *arena)
 {
     expr_ty p;
     if (!elt) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'elt' is required for SetComp");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = SetComp_kind;
@@ -7997,22 +7997,22 @@ _PyAST_SetComp(expr_ty elt, asdl_comprehension_seq * generators, int lineno,
 }
 
 expr_ty
-_PyAST_DictComp(expr_ty key, expr_ty value, asdl_comprehension_seq *
+_TyAST_DictComp(expr_ty key, expr_ty value, asdl_comprehension_seq *
                 generators, int lineno, int col_offset, int end_lineno, int
                 end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!key) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'key' is required for DictComp");
         return NULL;
     }
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for DictComp");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = DictComp_kind;
@@ -8027,17 +8027,17 @@ _PyAST_DictComp(expr_ty key, expr_ty value, asdl_comprehension_seq *
 }
 
 expr_ty
-_PyAST_GeneratorExp(expr_ty elt, asdl_comprehension_seq * generators, int
+_TyAST_GeneratorExp(expr_ty elt, asdl_comprehension_seq * generators, int
                     lineno, int col_offset, int end_lineno, int end_col_offset,
                     PyArena *arena)
 {
     expr_ty p;
     if (!elt) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'elt' is required for GeneratorExp");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = GeneratorExp_kind;
@@ -8051,16 +8051,16 @@ _PyAST_GeneratorExp(expr_ty elt, asdl_comprehension_seq * generators, int
 }
 
 expr_ty
-_PyAST_Await(expr_ty value, int lineno, int col_offset, int end_lineno, int
+_TyAST_Await(expr_ty value, int lineno, int col_offset, int end_lineno, int
              end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for Await");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Await_kind;
@@ -8073,11 +8073,11 @@ _PyAST_Await(expr_ty value, int lineno, int col_offset, int end_lineno, int
 }
 
 expr_ty
-_PyAST_Yield(expr_ty value, int lineno, int col_offset, int end_lineno, int
+_TyAST_Yield(expr_ty value, int lineno, int col_offset, int end_lineno, int
              end_col_offset, PyArena *arena)
 {
     expr_ty p;
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Yield_kind;
@@ -8090,16 +8090,16 @@ _PyAST_Yield(expr_ty value, int lineno, int col_offset, int end_lineno, int
 }
 
 expr_ty
-_PyAST_YieldFrom(expr_ty value, int lineno, int col_offset, int end_lineno, int
+_TyAST_YieldFrom(expr_ty value, int lineno, int col_offset, int end_lineno, int
                  end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for YieldFrom");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = YieldFrom_kind;
@@ -8112,17 +8112,17 @@ _PyAST_YieldFrom(expr_ty value, int lineno, int col_offset, int end_lineno, int
 }
 
 expr_ty
-_PyAST_Compare(expr_ty left, asdl_int_seq * ops, asdl_expr_seq * comparators,
+_TyAST_Compare(expr_ty left, asdl_int_seq * ops, asdl_expr_seq * comparators,
                int lineno, int col_offset, int end_lineno, int end_col_offset,
                PyArena *arena)
 {
     expr_ty p;
     if (!left) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'left' is required for Compare");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Compare_kind;
@@ -8137,17 +8137,17 @@ _PyAST_Compare(expr_ty left, asdl_int_seq * ops, asdl_expr_seq * comparators,
 }
 
 expr_ty
-_PyAST_Call(expr_ty func, asdl_expr_seq * args, asdl_keyword_seq * keywords,
+_TyAST_Call(expr_ty func, asdl_expr_seq * args, asdl_keyword_seq * keywords,
             int lineno, int col_offset, int end_lineno, int end_col_offset,
             PyArena *arena)
 {
     expr_ty p;
     if (!func) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'func' is required for Call");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Call_kind;
@@ -8162,17 +8162,17 @@ _PyAST_Call(expr_ty func, asdl_expr_seq * args, asdl_keyword_seq * keywords,
 }
 
 expr_ty
-_PyAST_FormattedValue(expr_ty value, int conversion, expr_ty format_spec, int
+_TyAST_FormattedValue(expr_ty value, int conversion, expr_ty format_spec, int
                       lineno, int col_offset, int end_lineno, int
                       end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for FormattedValue");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = FormattedValue_kind;
@@ -8187,22 +8187,22 @@ _PyAST_FormattedValue(expr_ty value, int conversion, expr_ty format_spec, int
 }
 
 expr_ty
-_PyAST_Interpolation(expr_ty value, constant str, int conversion, expr_ty
+_TyAST_Interpolation(expr_ty value, constant str, int conversion, expr_ty
                      format_spec, int lineno, int col_offset, int end_lineno,
                      int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for Interpolation");
         return NULL;
     }
     if (!str) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'str' is required for Interpolation");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Interpolation_kind;
@@ -8218,11 +8218,11 @@ _PyAST_Interpolation(expr_ty value, constant str, int conversion, expr_ty
 }
 
 expr_ty
-_PyAST_JoinedStr(asdl_expr_seq * values, int lineno, int col_offset, int
+_TyAST_JoinedStr(asdl_expr_seq * values, int lineno, int col_offset, int
                  end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = JoinedStr_kind;
@@ -8235,11 +8235,11 @@ _PyAST_JoinedStr(asdl_expr_seq * values, int lineno, int col_offset, int
 }
 
 expr_ty
-_PyAST_TemplateStr(asdl_expr_seq * values, int lineno, int col_offset, int
+_TyAST_TemplateStr(asdl_expr_seq * values, int lineno, int col_offset, int
                    end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = TemplateStr_kind;
@@ -8252,16 +8252,16 @@ _PyAST_TemplateStr(asdl_expr_seq * values, int lineno, int col_offset, int
 }
 
 expr_ty
-_PyAST_Constant(constant value, string kind, int lineno, int col_offset, int
+_TyAST_Constant(constant value, string kind, int lineno, int col_offset, int
                 end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for Constant");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Constant_kind;
@@ -8275,27 +8275,27 @@ _PyAST_Constant(constant value, string kind, int lineno, int col_offset, int
 }
 
 expr_ty
-_PyAST_Attribute(expr_ty value, identifier attr, expr_context_ty ctx, int
+_TyAST_Attribute(expr_ty value, identifier attr, expr_context_ty ctx, int
                  lineno, int col_offset, int end_lineno, int end_col_offset,
                  PyArena *arena)
 {
     expr_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for Attribute");
         return NULL;
     }
     if (!attr) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'attr' is required for Attribute");
         return NULL;
     }
     if (!ctx) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'ctx' is required for Attribute");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Attribute_kind;
@@ -8310,27 +8310,27 @@ _PyAST_Attribute(expr_ty value, identifier attr, expr_context_ty ctx, int
 }
 
 expr_ty
-_PyAST_Subscript(expr_ty value, expr_ty slice, expr_context_ty ctx, int lineno,
+_TyAST_Subscript(expr_ty value, expr_ty slice, expr_context_ty ctx, int lineno,
                  int col_offset, int end_lineno, int end_col_offset, PyArena
                  *arena)
 {
     expr_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for Subscript");
         return NULL;
     }
     if (!slice) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'slice' is required for Subscript");
         return NULL;
     }
     if (!ctx) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'ctx' is required for Subscript");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Subscript_kind;
@@ -8345,21 +8345,21 @@ _PyAST_Subscript(expr_ty value, expr_ty slice, expr_context_ty ctx, int lineno,
 }
 
 expr_ty
-_PyAST_Starred(expr_ty value, expr_context_ty ctx, int lineno, int col_offset,
+_TyAST_Starred(expr_ty value, expr_context_ty ctx, int lineno, int col_offset,
                int end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for Starred");
         return NULL;
     }
     if (!ctx) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'ctx' is required for Starred");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Starred_kind;
@@ -8373,21 +8373,21 @@ _PyAST_Starred(expr_ty value, expr_context_ty ctx, int lineno, int col_offset,
 }
 
 expr_ty
-_PyAST_Name(identifier id, expr_context_ty ctx, int lineno, int col_offset, int
+_TyAST_Name(identifier id, expr_context_ty ctx, int lineno, int col_offset, int
             end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!id) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'id' is required for Name");
         return NULL;
     }
     if (!ctx) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'ctx' is required for Name");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Name_kind;
@@ -8401,16 +8401,16 @@ _PyAST_Name(identifier id, expr_context_ty ctx, int lineno, int col_offset, int
 }
 
 expr_ty
-_PyAST_List(asdl_expr_seq * elts, expr_context_ty ctx, int lineno, int
+_TyAST_List(asdl_expr_seq * elts, expr_context_ty ctx, int lineno, int
             col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!ctx) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'ctx' is required for List");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = List_kind;
@@ -8424,16 +8424,16 @@ _PyAST_List(asdl_expr_seq * elts, expr_context_ty ctx, int lineno, int
 }
 
 expr_ty
-_PyAST_Tuple(asdl_expr_seq * elts, expr_context_ty ctx, int lineno, int
+_TyAST_Tuple(asdl_expr_seq * elts, expr_context_ty ctx, int lineno, int
              col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
     if (!ctx) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'ctx' is required for Tuple");
         return NULL;
     }
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Tuple_kind;
@@ -8447,11 +8447,11 @@ _PyAST_Tuple(asdl_expr_seq * elts, expr_context_ty ctx, int lineno, int
 }
 
 expr_ty
-_PyAST_Slice(expr_ty lower, expr_ty upper, expr_ty step, int lineno, int
+_TyAST_Slice(expr_ty lower, expr_ty upper, expr_ty step, int lineno, int
              col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     expr_ty p;
-    p = (expr_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (expr_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = Slice_kind;
@@ -8466,21 +8466,21 @@ _PyAST_Slice(expr_ty lower, expr_ty upper, expr_ty step, int lineno, int
 }
 
 comprehension_ty
-_PyAST_comprehension(expr_ty target, expr_ty iter, asdl_expr_seq * ifs, int
+_TyAST_comprehension(expr_ty target, expr_ty iter, asdl_expr_seq * ifs, int
                      is_async, PyArena *arena)
 {
     comprehension_ty p;
     if (!target) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'target' is required for comprehension");
         return NULL;
     }
     if (!iter) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'iter' is required for comprehension");
         return NULL;
     }
-    p = (comprehension_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (comprehension_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->target = target;
@@ -8491,12 +8491,12 @@ _PyAST_comprehension(expr_ty target, expr_ty iter, asdl_expr_seq * ifs, int
 }
 
 excepthandler_ty
-_PyAST_ExceptHandler(expr_ty type, identifier name, asdl_stmt_seq * body, int
+_TyAST_ExceptHandler(expr_ty type, identifier name, asdl_stmt_seq * body, int
                      lineno, int col_offset, int end_lineno, int
                      end_col_offset, PyArena *arena)
 {
     excepthandler_ty p;
-    p = (excepthandler_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (excepthandler_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = ExceptHandler_kind;
@@ -8511,13 +8511,13 @@ _PyAST_ExceptHandler(expr_ty type, identifier name, asdl_stmt_seq * body, int
 }
 
 arguments_ty
-_PyAST_arguments(asdl_arg_seq * posonlyargs, asdl_arg_seq * args, arg_ty
+_TyAST_arguments(asdl_arg_seq * posonlyargs, asdl_arg_seq * args, arg_ty
                  vararg, asdl_arg_seq * kwonlyargs, asdl_expr_seq *
                  kw_defaults, arg_ty kwarg, asdl_expr_seq * defaults, PyArena
                  *arena)
 {
     arguments_ty p;
-    p = (arguments_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (arguments_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->posonlyargs = posonlyargs;
@@ -8531,16 +8531,16 @@ _PyAST_arguments(asdl_arg_seq * posonlyargs, asdl_arg_seq * args, arg_ty
 }
 
 arg_ty
-_PyAST_arg(identifier arg, expr_ty annotation, string type_comment, int lineno,
+_TyAST_arg(identifier arg, expr_ty annotation, string type_comment, int lineno,
            int col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     arg_ty p;
     if (!arg) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'arg' is required for arg");
         return NULL;
     }
-    p = (arg_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (arg_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->arg = arg;
@@ -8554,16 +8554,16 @@ _PyAST_arg(identifier arg, expr_ty annotation, string type_comment, int lineno,
 }
 
 keyword_ty
-_PyAST_keyword(identifier arg, expr_ty value, int lineno, int col_offset, int
+_TyAST_keyword(identifier arg, expr_ty value, int lineno, int col_offset, int
                end_lineno, int end_col_offset, PyArena *arena)
 {
     keyword_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for keyword");
         return NULL;
     }
-    p = (keyword_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (keyword_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->arg = arg;
@@ -8576,16 +8576,16 @@ _PyAST_keyword(identifier arg, expr_ty value, int lineno, int col_offset, int
 }
 
 alias_ty
-_PyAST_alias(identifier name, identifier asname, int lineno, int col_offset,
+_TyAST_alias(identifier name, identifier asname, int lineno, int col_offset,
              int end_lineno, int end_col_offset, PyArena *arena)
 {
     alias_ty p;
     if (!name) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'name' is required for alias");
         return NULL;
     }
-    p = (alias_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (alias_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->name = name;
@@ -8598,15 +8598,15 @@ _PyAST_alias(identifier name, identifier asname, int lineno, int col_offset,
 }
 
 withitem_ty
-_PyAST_withitem(expr_ty context_expr, expr_ty optional_vars, PyArena *arena)
+_TyAST_withitem(expr_ty context_expr, expr_ty optional_vars, PyArena *arena)
 {
     withitem_ty p;
     if (!context_expr) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'context_expr' is required for withitem");
         return NULL;
     }
-    p = (withitem_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (withitem_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->context_expr = context_expr;
@@ -8615,16 +8615,16 @@ _PyAST_withitem(expr_ty context_expr, expr_ty optional_vars, PyArena *arena)
 }
 
 match_case_ty
-_PyAST_match_case(pattern_ty pattern, expr_ty guard, asdl_stmt_seq * body,
+_TyAST_match_case(pattern_ty pattern, expr_ty guard, asdl_stmt_seq * body,
                   PyArena *arena)
 {
     match_case_ty p;
     if (!pattern) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'pattern' is required for match_case");
         return NULL;
     }
-    p = (match_case_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (match_case_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->pattern = pattern;
@@ -8634,16 +8634,16 @@ _PyAST_match_case(pattern_ty pattern, expr_ty guard, asdl_stmt_seq * body,
 }
 
 pattern_ty
-_PyAST_MatchValue(expr_ty value, int lineno, int col_offset, int end_lineno,
+_TyAST_MatchValue(expr_ty value, int lineno, int col_offset, int end_lineno,
                   int end_col_offset, PyArena *arena)
 {
     pattern_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for MatchValue");
         return NULL;
     }
-    p = (pattern_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (pattern_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = MatchValue_kind;
@@ -8656,16 +8656,16 @@ _PyAST_MatchValue(expr_ty value, int lineno, int col_offset, int end_lineno,
 }
 
 pattern_ty
-_PyAST_MatchSingleton(constant value, int lineno, int col_offset, int
+_TyAST_MatchSingleton(constant value, int lineno, int col_offset, int
                       end_lineno, int end_col_offset, PyArena *arena)
 {
     pattern_ty p;
     if (!value) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'value' is required for MatchSingleton");
         return NULL;
     }
-    p = (pattern_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (pattern_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = MatchSingleton_kind;
@@ -8678,11 +8678,11 @@ _PyAST_MatchSingleton(constant value, int lineno, int col_offset, int
 }
 
 pattern_ty
-_PyAST_MatchSequence(asdl_pattern_seq * patterns, int lineno, int col_offset,
+_TyAST_MatchSequence(asdl_pattern_seq * patterns, int lineno, int col_offset,
                      int end_lineno, int end_col_offset, PyArena *arena)
 {
     pattern_ty p;
-    p = (pattern_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (pattern_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = MatchSequence_kind;
@@ -8695,12 +8695,12 @@ _PyAST_MatchSequence(asdl_pattern_seq * patterns, int lineno, int col_offset,
 }
 
 pattern_ty
-_PyAST_MatchMapping(asdl_expr_seq * keys, asdl_pattern_seq * patterns,
+_TyAST_MatchMapping(asdl_expr_seq * keys, asdl_pattern_seq * patterns,
                     identifier rest, int lineno, int col_offset, int
                     end_lineno, int end_col_offset, PyArena *arena)
 {
     pattern_ty p;
-    p = (pattern_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (pattern_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = MatchMapping_kind;
@@ -8715,18 +8715,18 @@ _PyAST_MatchMapping(asdl_expr_seq * keys, asdl_pattern_seq * patterns,
 }
 
 pattern_ty
-_PyAST_MatchClass(expr_ty cls, asdl_pattern_seq * patterns, asdl_identifier_seq
+_TyAST_MatchClass(expr_ty cls, asdl_pattern_seq * patterns, asdl_identifier_seq
                   * kwd_attrs, asdl_pattern_seq * kwd_patterns, int lineno, int
                   col_offset, int end_lineno, int end_col_offset, PyArena
                   *arena)
 {
     pattern_ty p;
     if (!cls) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'cls' is required for MatchClass");
         return NULL;
     }
-    p = (pattern_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (pattern_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = MatchClass_kind;
@@ -8742,11 +8742,11 @@ _PyAST_MatchClass(expr_ty cls, asdl_pattern_seq * patterns, asdl_identifier_seq
 }
 
 pattern_ty
-_PyAST_MatchStar(identifier name, int lineno, int col_offset, int end_lineno,
+_TyAST_MatchStar(identifier name, int lineno, int col_offset, int end_lineno,
                  int end_col_offset, PyArena *arena)
 {
     pattern_ty p;
-    p = (pattern_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (pattern_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = MatchStar_kind;
@@ -8759,11 +8759,11 @@ _PyAST_MatchStar(identifier name, int lineno, int col_offset, int end_lineno,
 }
 
 pattern_ty
-_PyAST_MatchAs(pattern_ty pattern, identifier name, int lineno, int col_offset,
+_TyAST_MatchAs(pattern_ty pattern, identifier name, int lineno, int col_offset,
                int end_lineno, int end_col_offset, PyArena *arena)
 {
     pattern_ty p;
-    p = (pattern_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (pattern_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = MatchAs_kind;
@@ -8777,11 +8777,11 @@ _PyAST_MatchAs(pattern_ty pattern, identifier name, int lineno, int col_offset,
 }
 
 pattern_ty
-_PyAST_MatchOr(asdl_pattern_seq * patterns, int lineno, int col_offset, int
+_TyAST_MatchOr(asdl_pattern_seq * patterns, int lineno, int col_offset, int
                end_lineno, int end_col_offset, PyArena *arena)
 {
     pattern_ty p;
-    p = (pattern_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (pattern_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = MatchOr_kind;
@@ -8794,15 +8794,15 @@ _PyAST_MatchOr(asdl_pattern_seq * patterns, int lineno, int col_offset, int
 }
 
 type_ignore_ty
-_PyAST_TypeIgnore(int lineno, string tag, PyArena *arena)
+_TyAST_TypeIgnore(int lineno, string tag, PyArena *arena)
 {
     type_ignore_ty p;
     if (!tag) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'tag' is required for TypeIgnore");
         return NULL;
     }
-    p = (type_ignore_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (type_ignore_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = TypeIgnore_kind;
@@ -8812,17 +8812,17 @@ _PyAST_TypeIgnore(int lineno, string tag, PyArena *arena)
 }
 
 type_param_ty
-_PyAST_TypeVar(identifier name, expr_ty bound, expr_ty default_value, int
+_TyAST_TypeVar(identifier name, expr_ty bound, expr_ty default_value, int
                lineno, int col_offset, int end_lineno, int end_col_offset,
                PyArena *arena)
 {
     type_param_ty p;
     if (!name) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'name' is required for TypeVar");
         return NULL;
     }
-    p = (type_param_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (type_param_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = TypeVar_kind;
@@ -8837,16 +8837,16 @@ _PyAST_TypeVar(identifier name, expr_ty bound, expr_ty default_value, int
 }
 
 type_param_ty
-_PyAST_ParamSpec(identifier name, expr_ty default_value, int lineno, int
+_TyAST_ParamSpec(identifier name, expr_ty default_value, int lineno, int
                  col_offset, int end_lineno, int end_col_offset, PyArena *arena)
 {
     type_param_ty p;
     if (!name) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'name' is required for ParamSpec");
         return NULL;
     }
-    p = (type_param_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (type_param_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = ParamSpec_kind;
@@ -8860,17 +8860,17 @@ _PyAST_ParamSpec(identifier name, expr_ty default_value, int lineno, int
 }
 
 type_param_ty
-_PyAST_TypeVarTuple(identifier name, expr_ty default_value, int lineno, int
+_TyAST_TypeVarTuple(identifier name, expr_ty default_value, int lineno, int
                     col_offset, int end_lineno, int end_col_offset, PyArena
                     *arena)
 {
     type_param_ty p;
     if (!name) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "field 'name' is required for TypeVarTuple");
         return NULL;
     }
-    p = (type_param_ty)_PyArena_Malloc(arena, sizeof(*p));
+    p = (type_param_ty)_TyArena_Malloc(arena, sizeof(*p));
     if (!p)
         return NULL;
     p->kind = TypeVarTuple_kind;
@@ -8884,654 +8884,654 @@ _PyAST_TypeVarTuple(identifier name, expr_ty default_value, int lineno, int
 }
 
 
-PyObject*
+TyObject*
 ast2obj_mod(struct ast_state *state, void* _o)
 {
     mod_ty o = (mod_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
     switch (o->kind) {
     case Module_kind:
-        tp = (PyTypeObject *)state->Module_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Module_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Module.body, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.Module.type_ignores,
                              ast2obj_type_ignore);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_ignores, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Interactive_kind:
-        tp = (PyTypeObject *)state->Interactive_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Interactive_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Interactive.body,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Expression_kind:
-        tp = (PyTypeObject *)state->Expression_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Expression_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Expression.body);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case FunctionType_kind:
-        tp = (PyTypeObject *)state->FunctionType_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->FunctionType_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.FunctionType.argtypes,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->argtypes, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.FunctionType.returns);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->returns, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     }
-    Py_LeaveRecursiveCall();
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_stmt(struct ast_state *state, void* _o)
 {
     stmt_ty o = (stmt_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
     switch (o->kind) {
     case FunctionDef_kind:
-        tp = (PyTypeObject *)state->FunctionDef_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->FunctionDef_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_identifier(state, o->v.FunctionDef.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_arguments(state, o->v.FunctionDef.args);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->args, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.FunctionDef.body,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.FunctionDef.decorator_list,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->decorator_list, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.FunctionDef.returns);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->returns, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_string(state, o->v.FunctionDef.type_comment);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_comment, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.FunctionDef.type_params,
                              ast2obj_type_param);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_params, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case AsyncFunctionDef_kind:
-        tp = (PyTypeObject *)state->AsyncFunctionDef_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->AsyncFunctionDef_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_identifier(state, o->v.AsyncFunctionDef.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_arguments(state, o->v.AsyncFunctionDef.args);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->args, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.AsyncFunctionDef.body,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state,
                              (asdl_seq*)o->v.AsyncFunctionDef.decorator_list,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->decorator_list, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.AsyncFunctionDef.returns);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->returns, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_string(state, o->v.AsyncFunctionDef.type_comment);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_comment, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state,
                              (asdl_seq*)o->v.AsyncFunctionDef.type_params,
                              ast2obj_type_param);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_params, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case ClassDef_kind:
-        tp = (PyTypeObject *)state->ClassDef_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->ClassDef_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_identifier(state, o->v.ClassDef.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.ClassDef.bases,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->bases, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.ClassDef.keywords,
                              ast2obj_keyword);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->keywords, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.ClassDef.body,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.ClassDef.decorator_list,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->decorator_list, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.ClassDef.type_params,
                              ast2obj_type_param);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_params, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Return_kind:
-        tp = (PyTypeObject *)state->Return_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Return_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Return.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Delete_kind:
-        tp = (PyTypeObject *)state->Delete_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Delete_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Delete.targets,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->targets, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Assign_kind:
-        tp = (PyTypeObject *)state->Assign_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Assign_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Assign.targets,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->targets, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.Assign.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_string(state, o->v.Assign.type_comment);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_comment, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case TypeAlias_kind:
-        tp = (PyTypeObject *)state->TypeAlias_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->TypeAlias_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.TypeAlias.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.TypeAlias.type_params,
                              ast2obj_type_param);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_params, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.TypeAlias.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case AugAssign_kind:
-        tp = (PyTypeObject *)state->AugAssign_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->AugAssign_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.AugAssign.target);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->target, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_operator(state, o->v.AugAssign.op);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->op, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.AugAssign.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case AnnAssign_kind:
-        tp = (PyTypeObject *)state->AnnAssign_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->AnnAssign_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.AnnAssign.target);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->target, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.AnnAssign.annotation);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->annotation, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.AnnAssign.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_int(state, o->v.AnnAssign.simple);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->simple, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case For_kind:
-        tp = (PyTypeObject *)state->For_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->For_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.For.target);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->target, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.For.iter);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->iter, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.For.body, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.For.orelse, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->orelse, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_string(state, o->v.For.type_comment);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_comment, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case AsyncFor_kind:
-        tp = (PyTypeObject *)state->AsyncFor_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->AsyncFor_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.AsyncFor.target);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->target, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.AsyncFor.iter);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->iter, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.AsyncFor.body,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.AsyncFor.orelse,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->orelse, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_string(state, o->v.AsyncFor.type_comment);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_comment, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case While_kind:
-        tp = (PyTypeObject *)state->While_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->While_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.While.test);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->test, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.While.body, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.While.orelse, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->orelse, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case If_kind:
-        tp = (PyTypeObject *)state->If_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->If_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.If.test);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->test, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.If.body, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.If.orelse, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->orelse, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case With_kind:
-        tp = (PyTypeObject *)state->With_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->With_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.With.items,
                              ast2obj_withitem);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->items, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.With.body, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_string(state, o->v.With.type_comment);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_comment, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case AsyncWith_kind:
-        tp = (PyTypeObject *)state->AsyncWith_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->AsyncWith_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.AsyncWith.items,
                              ast2obj_withitem);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->items, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.AsyncWith.body,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_string(state, o->v.AsyncWith.type_comment);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type_comment, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Match_kind:
-        tp = (PyTypeObject *)state->Match_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Match_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Match.subject);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->subject, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.Match.cases,
                              ast2obj_match_case);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->cases, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Raise_kind:
-        tp = (PyTypeObject *)state->Raise_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Raise_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Raise.exc);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->exc, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.Raise.cause);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->cause, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Try_kind:
-        tp = (PyTypeObject *)state->Try_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Try_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Try.body, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.Try.handlers,
                              ast2obj_excepthandler);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->handlers, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.Try.orelse, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->orelse, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.Try.finalbody,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->finalbody, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case TryStar_kind:
-        tp = (PyTypeObject *)state->TryStar_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->TryStar_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.TryStar.body, ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.TryStar.handlers,
                              ast2obj_excepthandler);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->handlers, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.TryStar.orelse,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->orelse, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.TryStar.finalbody,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->finalbody, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Assert_kind:
-        tp = (PyTypeObject *)state->Assert_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Assert_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Assert.test);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->test, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.Assert.msg);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->msg, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Import_kind:
-        tp = (PyTypeObject *)state->Import_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Import_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Import.names,
                              ast2obj_alias);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->names, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case ImportFrom_kind:
-        tp = (PyTypeObject *)state->ImportFrom_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->ImportFrom_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_identifier(state, o->v.ImportFrom.module);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->module, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.ImportFrom.names,
                              ast2obj_alias);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->names, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_int(state, o->v.ImportFrom.level);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->level, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Global_kind:
-        tp = (PyTypeObject *)state->Global_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Global_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Global.names,
                              ast2obj_identifier);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->names, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Nonlocal_kind:
-        tp = (PyTypeObject *)state->Nonlocal_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Nonlocal_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Nonlocal.names,
                              ast2obj_identifier);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->names, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Expr_kind:
-        tp = (PyTypeObject *)state->Expr_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Expr_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Expr.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Pass_kind:
-        tp = (PyTypeObject *)state->Pass_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Pass_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         break;
     case Break_kind:
-        tp = (PyTypeObject *)state->Break_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Break_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         break;
     case Continue_kind:
-        tp = (PyTypeObject *)state->Continue_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Continue_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         break;
     }
@@ -9539,1351 +9539,1351 @@ ast2obj_stmt(struct ast_state *state, void* _o)
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_expr(struct ast_state *state, void* _o)
 {
     expr_ty o = (expr_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
     switch (o->kind) {
     case BoolOp_kind:
-        tp = (PyTypeObject *)state->BoolOp_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->BoolOp_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_boolop(state, o->v.BoolOp.op);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->op, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.BoolOp.values,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->values, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case NamedExpr_kind:
-        tp = (PyTypeObject *)state->NamedExpr_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->NamedExpr_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.NamedExpr.target);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->target, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.NamedExpr.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case BinOp_kind:
-        tp = (PyTypeObject *)state->BinOp_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->BinOp_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.BinOp.left);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->left, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_operator(state, o->v.BinOp.op);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->op, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.BinOp.right);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->right, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case UnaryOp_kind:
-        tp = (PyTypeObject *)state->UnaryOp_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->UnaryOp_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_unaryop(state, o->v.UnaryOp.op);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->op, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.UnaryOp.operand);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->operand, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Lambda_kind:
-        tp = (PyTypeObject *)state->Lambda_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Lambda_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_arguments(state, o->v.Lambda.args);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->args, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.Lambda.body);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case IfExp_kind:
-        tp = (PyTypeObject *)state->IfExp_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->IfExp_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.IfExp.test);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->test, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.IfExp.body);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.IfExp.orelse);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->orelse, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Dict_kind:
-        tp = (PyTypeObject *)state->Dict_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Dict_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Dict.keys, ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->keys, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.Dict.values, ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->values, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Set_kind:
-        tp = (PyTypeObject *)state->Set_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Set_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Set.elts, ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->elts, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case ListComp_kind:
-        tp = (PyTypeObject *)state->ListComp_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->ListComp_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.ListComp.elt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->elt, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.ListComp.generators,
                              ast2obj_comprehension);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->generators, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case SetComp_kind:
-        tp = (PyTypeObject *)state->SetComp_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->SetComp_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.SetComp.elt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->elt, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.SetComp.generators,
                              ast2obj_comprehension);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->generators, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case DictComp_kind:
-        tp = (PyTypeObject *)state->DictComp_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->DictComp_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.DictComp.key);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->key, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.DictComp.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.DictComp.generators,
                              ast2obj_comprehension);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->generators, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case GeneratorExp_kind:
-        tp = (PyTypeObject *)state->GeneratorExp_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->GeneratorExp_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.GeneratorExp.elt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->elt, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.GeneratorExp.generators,
                              ast2obj_comprehension);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->generators, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Await_kind:
-        tp = (PyTypeObject *)state->Await_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Await_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Await.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Yield_kind:
-        tp = (PyTypeObject *)state->Yield_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Yield_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Yield.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case YieldFrom_kind:
-        tp = (PyTypeObject *)state->YieldFrom_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->YieldFrom_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.YieldFrom.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Compare_kind:
-        tp = (PyTypeObject *)state->Compare_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Compare_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Compare.left);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->left, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         {
-            Py_ssize_t i, n = asdl_seq_LEN(o->v.Compare.ops);
-            value = PyList_New(n);
+            Ty_ssize_t i, n = asdl_seq_LEN(o->v.Compare.ops);
+            value = TyList_New(n);
             if (!value) goto failed;
             for(i = 0; i < n; i++)
-                PyList_SET_ITEM(value, i, ast2obj_cmpop(state, (cmpop_ty)asdl_seq_GET(o->v.Compare.ops, i)));
+                TyList_SET_ITEM(value, i, ast2obj_cmpop(state, (cmpop_ty)asdl_seq_GET(o->v.Compare.ops, i)));
         }
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->ops, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.Compare.comparators,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->comparators, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Call_kind:
-        tp = (PyTypeObject *)state->Call_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Call_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Call.func);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->func, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.Call.args, ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->args, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.Call.keywords,
                              ast2obj_keyword);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->keywords, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case FormattedValue_kind:
-        tp = (PyTypeObject *)state->FormattedValue_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->FormattedValue_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.FormattedValue.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_int(state, o->v.FormattedValue.conversion);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->conversion, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.FormattedValue.format_spec);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->format_spec, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Interpolation_kind:
-        tp = (PyTypeObject *)state->Interpolation_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Interpolation_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Interpolation.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_constant(state, o->v.Interpolation.str);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->str, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_int(state, o->v.Interpolation.conversion);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->conversion, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.Interpolation.format_spec);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->format_spec, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case JoinedStr_kind:
-        tp = (PyTypeObject *)state->JoinedStr_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->JoinedStr_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.JoinedStr.values,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->values, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case TemplateStr_kind:
-        tp = (PyTypeObject *)state->TemplateStr_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->TemplateStr_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.TemplateStr.values,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->values, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Constant_kind:
-        tp = (PyTypeObject *)state->Constant_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Constant_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_constant(state, o->v.Constant.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_string(state, o->v.Constant.kind);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->kind, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Attribute_kind:
-        tp = (PyTypeObject *)state->Attribute_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Attribute_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Attribute.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_identifier(state, o->v.Attribute.attr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->attr, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr_context(state, o->v.Attribute.ctx);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->ctx, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Subscript_kind:
-        tp = (PyTypeObject *)state->Subscript_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Subscript_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Subscript.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.Subscript.slice);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->slice, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr_context(state, o->v.Subscript.ctx);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->ctx, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Starred_kind:
-        tp = (PyTypeObject *)state->Starred_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Starred_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Starred.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr_context(state, o->v.Starred.ctx);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->ctx, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Name_kind:
-        tp = (PyTypeObject *)state->Name_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Name_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_identifier(state, o->v.Name.id);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->id, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr_context(state, o->v.Name.ctx);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->ctx, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case List_kind:
-        tp = (PyTypeObject *)state->List_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->List_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.List.elts, ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->elts, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr_context(state, o->v.List.ctx);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->ctx, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Tuple_kind:
-        tp = (PyTypeObject *)state->Tuple_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Tuple_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.Tuple.elts, ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->elts, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr_context(state, o->v.Tuple.ctx);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->ctx, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case Slice_kind:
-        tp = (PyTypeObject *)state->Slice_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->Slice_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.Slice.lower);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->lower, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.Slice.upper);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->upper, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.Slice.step);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->step, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     }
     value = ast2obj_int(state, o->lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject* ast2obj_expr_context(struct ast_state *state, expr_context_ty o)
+TyObject* ast2obj_expr_context(struct ast_state *state, expr_context_ty o)
 {
     switch(o) {
         case Load:
-            return Py_NewRef(state->Load_singleton);
+            return Ty_NewRef(state->Load_singleton);
         case Store:
-            return Py_NewRef(state->Store_singleton);
+            return Ty_NewRef(state->Store_singleton);
         case Del:
-            return Py_NewRef(state->Del_singleton);
+            return Ty_NewRef(state->Del_singleton);
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
-PyObject* ast2obj_boolop(struct ast_state *state, boolop_ty o)
+TyObject* ast2obj_boolop(struct ast_state *state, boolop_ty o)
 {
     switch(o) {
         case And:
-            return Py_NewRef(state->And_singleton);
+            return Ty_NewRef(state->And_singleton);
         case Or:
-            return Py_NewRef(state->Or_singleton);
+            return Ty_NewRef(state->Or_singleton);
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
-PyObject* ast2obj_operator(struct ast_state *state, operator_ty o)
+TyObject* ast2obj_operator(struct ast_state *state, operator_ty o)
 {
     switch(o) {
         case Add:
-            return Py_NewRef(state->Add_singleton);
+            return Ty_NewRef(state->Add_singleton);
         case Sub:
-            return Py_NewRef(state->Sub_singleton);
+            return Ty_NewRef(state->Sub_singleton);
         case Mult:
-            return Py_NewRef(state->Mult_singleton);
+            return Ty_NewRef(state->Mult_singleton);
         case MatMult:
-            return Py_NewRef(state->MatMult_singleton);
+            return Ty_NewRef(state->MatMult_singleton);
         case Div:
-            return Py_NewRef(state->Div_singleton);
+            return Ty_NewRef(state->Div_singleton);
         case Mod:
-            return Py_NewRef(state->Mod_singleton);
+            return Ty_NewRef(state->Mod_singleton);
         case Pow:
-            return Py_NewRef(state->Pow_singleton);
+            return Ty_NewRef(state->Pow_singleton);
         case LShift:
-            return Py_NewRef(state->LShift_singleton);
+            return Ty_NewRef(state->LShift_singleton);
         case RShift:
-            return Py_NewRef(state->RShift_singleton);
+            return Ty_NewRef(state->RShift_singleton);
         case BitOr:
-            return Py_NewRef(state->BitOr_singleton);
+            return Ty_NewRef(state->BitOr_singleton);
         case BitXor:
-            return Py_NewRef(state->BitXor_singleton);
+            return Ty_NewRef(state->BitXor_singleton);
         case BitAnd:
-            return Py_NewRef(state->BitAnd_singleton);
+            return Ty_NewRef(state->BitAnd_singleton);
         case FloorDiv:
-            return Py_NewRef(state->FloorDiv_singleton);
+            return Ty_NewRef(state->FloorDiv_singleton);
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
-PyObject* ast2obj_unaryop(struct ast_state *state, unaryop_ty o)
+TyObject* ast2obj_unaryop(struct ast_state *state, unaryop_ty o)
 {
     switch(o) {
         case Invert:
-            return Py_NewRef(state->Invert_singleton);
+            return Ty_NewRef(state->Invert_singleton);
         case Not:
-            return Py_NewRef(state->Not_singleton);
+            return Ty_NewRef(state->Not_singleton);
         case UAdd:
-            return Py_NewRef(state->UAdd_singleton);
+            return Ty_NewRef(state->UAdd_singleton);
         case USub:
-            return Py_NewRef(state->USub_singleton);
+            return Ty_NewRef(state->USub_singleton);
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
-PyObject* ast2obj_cmpop(struct ast_state *state, cmpop_ty o)
+TyObject* ast2obj_cmpop(struct ast_state *state, cmpop_ty o)
 {
     switch(o) {
         case Eq:
-            return Py_NewRef(state->Eq_singleton);
+            return Ty_NewRef(state->Eq_singleton);
         case NotEq:
-            return Py_NewRef(state->NotEq_singleton);
+            return Ty_NewRef(state->NotEq_singleton);
         case Lt:
-            return Py_NewRef(state->Lt_singleton);
+            return Ty_NewRef(state->Lt_singleton);
         case LtE:
-            return Py_NewRef(state->LtE_singleton);
+            return Ty_NewRef(state->LtE_singleton);
         case Gt:
-            return Py_NewRef(state->Gt_singleton);
+            return Ty_NewRef(state->Gt_singleton);
         case GtE:
-            return Py_NewRef(state->GtE_singleton);
+            return Ty_NewRef(state->GtE_singleton);
         case Is:
-            return Py_NewRef(state->Is_singleton);
+            return Ty_NewRef(state->Is_singleton);
         case IsNot:
-            return Py_NewRef(state->IsNot_singleton);
+            return Ty_NewRef(state->IsNot_singleton);
         case In:
-            return Py_NewRef(state->In_singleton);
+            return Ty_NewRef(state->In_singleton);
         case NotIn:
-            return Py_NewRef(state->NotIn_singleton);
+            return Ty_NewRef(state->NotIn_singleton);
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
-PyObject*
+TyObject*
 ast2obj_comprehension(struct ast_state *state, void* _o)
 {
     comprehension_ty o = (comprehension_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
-    tp = (PyTypeObject *)state->comprehension_type;
-    result = PyType_GenericNew(tp, NULL, NULL);
+    tp = (TyTypeObject *)state->comprehension_type;
+    result = TyType_GenericNew(tp, NULL, NULL);
     if (!result) return NULL;
     value = ast2obj_expr(state, o->target);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->target, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_expr(state, o->iter);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->iter, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_list(state, (asdl_seq*)o->ifs, ast2obj_expr);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->ifs, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->is_async);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->is_async, value) == -1)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_excepthandler(struct ast_state *state, void* _o)
 {
     excepthandler_ty o = (excepthandler_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
     switch (o->kind) {
     case ExceptHandler_kind:
-        tp = (PyTypeObject *)state->ExceptHandler_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->ExceptHandler_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.ExceptHandler.type);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->type, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_identifier(state, o->v.ExceptHandler.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.ExceptHandler.body,
                              ast2obj_stmt);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->body, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     }
     value = ast2obj_int(state, o->lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_arguments(struct ast_state *state, void* _o)
 {
     arguments_ty o = (arguments_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
-    tp = (PyTypeObject *)state->arguments_type;
-    result = PyType_GenericNew(tp, NULL, NULL);
+    tp = (TyTypeObject *)state->arguments_type;
+    result = TyType_GenericNew(tp, NULL, NULL);
     if (!result) return NULL;
     value = ast2obj_list(state, (asdl_seq*)o->posonlyargs, ast2obj_arg);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->posonlyargs, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_list(state, (asdl_seq*)o->args, ast2obj_arg);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->args, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_arg(state, o->vararg);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->vararg, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_list(state, (asdl_seq*)o->kwonlyargs, ast2obj_arg);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->kwonlyargs, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_list(state, (asdl_seq*)o->kw_defaults, ast2obj_expr);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->kw_defaults, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_arg(state, o->kwarg);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->kwarg, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_list(state, (asdl_seq*)o->defaults, ast2obj_expr);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->defaults, value) == -1)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_arg(struct ast_state *state, void* _o)
 {
     arg_ty o = (arg_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
-    tp = (PyTypeObject *)state->arg_type;
-    result = PyType_GenericNew(tp, NULL, NULL);
+    tp = (TyTypeObject *)state->arg_type;
+    result = TyType_GenericNew(tp, NULL, NULL);
     if (!result) return NULL;
     value = ast2obj_identifier(state, o->arg);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->arg, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_expr(state, o->annotation);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->annotation, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_string(state, o->type_comment);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->type_comment, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_keyword(struct ast_state *state, void* _o)
 {
     keyword_ty o = (keyword_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
-    tp = (PyTypeObject *)state->keyword_type;
-    result = PyType_GenericNew(tp, NULL, NULL);
+    tp = (TyTypeObject *)state->keyword_type;
+    result = TyType_GenericNew(tp, NULL, NULL);
     if (!result) return NULL;
     value = ast2obj_identifier(state, o->arg);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->arg, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_expr(state, o->value);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->value, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_alias(struct ast_state *state, void* _o)
 {
     alias_ty o = (alias_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
-    tp = (PyTypeObject *)state->alias_type;
-    result = PyType_GenericNew(tp, NULL, NULL);
+    tp = (TyTypeObject *)state->alias_type;
+    result = TyType_GenericNew(tp, NULL, NULL);
     if (!result) return NULL;
     value = ast2obj_identifier(state, o->name);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->name, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_identifier(state, o->asname);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->asname, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_withitem(struct ast_state *state, void* _o)
 {
     withitem_ty o = (withitem_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
-    tp = (PyTypeObject *)state->withitem_type;
-    result = PyType_GenericNew(tp, NULL, NULL);
+    tp = (TyTypeObject *)state->withitem_type;
+    result = TyType_GenericNew(tp, NULL, NULL);
     if (!result) return NULL;
     value = ast2obj_expr(state, o->context_expr);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->context_expr, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_expr(state, o->optional_vars);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->optional_vars, value) == -1)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_match_case(struct ast_state *state, void* _o)
 {
     match_case_ty o = (match_case_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
-    tp = (PyTypeObject *)state->match_case_type;
-    result = PyType_GenericNew(tp, NULL, NULL);
+    tp = (TyTypeObject *)state->match_case_type;
+    result = TyType_GenericNew(tp, NULL, NULL);
     if (!result) return NULL;
     value = ast2obj_pattern(state, o->pattern);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->pattern, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_expr(state, o->guard);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->guard, value) == -1)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_list(state, (asdl_seq*)o->body, ast2obj_stmt);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->body, value) == -1)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_pattern(struct ast_state *state, void* _o)
 {
     pattern_ty o = (pattern_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
     switch (o->kind) {
     case MatchValue_kind:
-        tp = (PyTypeObject *)state->MatchValue_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->MatchValue_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.MatchValue.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case MatchSingleton_kind:
-        tp = (PyTypeObject *)state->MatchSingleton_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->MatchSingleton_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_constant(state, o->v.MatchSingleton.value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case MatchSequence_kind:
-        tp = (PyTypeObject *)state->MatchSequence_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->MatchSequence_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.MatchSequence.patterns,
                              ast2obj_pattern);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->patterns, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case MatchMapping_kind:
-        tp = (PyTypeObject *)state->MatchMapping_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->MatchMapping_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.MatchMapping.keys,
                              ast2obj_expr);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->keys, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.MatchMapping.patterns,
                              ast2obj_pattern);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->patterns, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_identifier(state, o->v.MatchMapping.rest);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->rest, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case MatchClass_kind:
-        tp = (PyTypeObject *)state->MatchClass_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->MatchClass_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_expr(state, o->v.MatchClass.cls);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->cls, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.MatchClass.patterns,
                              ast2obj_pattern);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->patterns, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.MatchClass.kwd_attrs,
                              ast2obj_identifier);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->kwd_attrs, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_list(state, (asdl_seq*)o->v.MatchClass.kwd_patterns,
                              ast2obj_pattern);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->kwd_patterns, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case MatchStar_kind:
-        tp = (PyTypeObject *)state->MatchStar_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->MatchStar_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_identifier(state, o->v.MatchStar.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case MatchAs_kind:
-        tp = (PyTypeObject *)state->MatchAs_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->MatchAs_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_pattern(state, o->v.MatchAs.pattern);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->pattern, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_identifier(state, o->v.MatchAs.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case MatchOr_kind:
-        tp = (PyTypeObject *)state->MatchOr_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->MatchOr_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_list(state, (asdl_seq*)o->v.MatchOr.patterns,
                              ast2obj_pattern);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->patterns, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     }
     value = ast2obj_int(state, o->lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_type_ignore(struct ast_state *state, void* _o)
 {
     type_ignore_ty o = (type_ignore_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
     switch (o->kind) {
     case TypeIgnore_kind:
-        tp = (PyTypeObject *)state->TypeIgnore_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->TypeIgnore_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_int(state, o->v.TypeIgnore.lineno);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->lineno, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_string(state, o->v.TypeIgnore.tag);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->tag, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     }
-    Py_LeaveRecursiveCall();
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-PyObject*
+TyObject*
 ast2obj_type_param(struct ast_state *state, void* _o)
 {
     type_param_ty o = (type_param_ty)_o;
-    PyObject *result = NULL, *value = NULL;
-    PyTypeObject *tp;
+    TyObject *result = NULL, *value = NULL;
+    TyTypeObject *tp;
     if (!o) {
         Py_RETURN_NONE;
     }
-    if (Py_EnterRecursiveCall("during  ast construction")) {
+    if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
     }
     switch (o->kind) {
     case TypeVar_kind:
-        tp = (PyTypeObject *)state->TypeVar_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->TypeVar_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_identifier(state, o->v.TypeVar.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.TypeVar.bound);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->bound, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.TypeVar.default_value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->default_value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case ParamSpec_kind:
-        tp = (PyTypeObject *)state->ParamSpec_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->ParamSpec_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_identifier(state, o->v.ParamSpec.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.ParamSpec.default_value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->default_value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     case TypeVarTuple_kind:
-        tp = (PyTypeObject *)state->TypeVarTuple_type;
-        result = PyType_GenericNew(tp, NULL, NULL);
+        tp = (TyTypeObject *)state->TypeVarTuple_type;
+        result = TyType_GenericNew(tp, NULL, NULL);
         if (!result) goto failed;
         value = ast2obj_identifier(state, o->v.TypeVarTuple.name);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->name, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         value = ast2obj_expr(state, o->v.TypeVarTuple.default_value);
         if (!value) goto failed;
         if (PyObject_SetAttr(result, state->default_value, value) == -1)
             goto failed;
-        Py_DECREF(value);
+        Ty_DECREF(value);
         break;
     }
     value = ast2obj_int(state, o->lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_lineno);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_lineno, value) < 0)
         goto failed;
-    Py_DECREF(value);
+    Ty_DECREF(value);
     value = ast2obj_int(state, o->end_col_offset);
     if (!value) goto failed;
     if (PyObject_SetAttr(result, state->end_col_offset, value) < 0)
         goto failed;
-    Py_DECREF(value);
-    Py_LeaveRecursiveCall();
+    Ty_DECREF(value);
+    Ty_LeaveRecursiveCall();
     return result;
 failed:
-    Py_LeaveRecursiveCall();
-    Py_XDECREF(value);
-    Py_XDECREF(result);
+    Ty_LeaveRecursiveCall();
+    Ty_XDECREF(value);
+    Ty_XDECREF(result);
     return NULL;
 }
 
 
 int
-obj2ast_mod(struct ast_state *state, PyObject* obj, mod_ty* out, PyArena* arena)
+obj2ast_mod(struct ast_state *state, TyObject* obj, mod_ty* out, PyArena* arena)
 {
     int isinstance;
 
-    PyObject *tmp = NULL;
-    PyObject *tp;
+    TyObject *tmp = NULL;
+    TyObject *tp;
 
-    if (obj == Py_None) {
+    if (obj == Ty_None) {
         *out = NULL;
         return 0;
     }
@@ -10900,79 +10900,79 @@ obj2ast_mod(struct ast_state *state, PyObject* obj, mod_ty* out, PyArena* arena)
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Module field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Module field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Module' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Module' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Module field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Module field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_ignores, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Module field \"type_ignores\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Module field \"type_ignores\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            type_ignores = _Py_asdl_type_ignore_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            type_ignores = _Ty_asdl_type_ignore_seq_new(len, arena);
             if (type_ignores == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 type_ignore_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Module' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Module' node")) {
                     goto failed;
                 }
                 res = obj2ast_type_ignore(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Module field \"type_ignores\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Module field \"type_ignores\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(type_ignores, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Module(body, type_ignores, arena);
+        *out = _TyAST_Module(body, type_ignores, arena);
         if (*out == NULL) goto failed;
         return 0;
     }
@@ -10988,41 +10988,41 @@ obj2ast_mod(struct ast_state *state, PyObject* obj, mod_ty* out, PyArena* arena)
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Interactive field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Interactive field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Interactive' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Interactive' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Interactive field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Interactive field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Interactive(body, arena);
+        *out = _TyAST_Interactive(body, arena);
         if (*out == NULL) goto failed;
         return 0;
     }
@@ -11038,20 +11038,20 @@ obj2ast_mod(struct ast_state *state, PyObject* obj, mod_ty* out, PyArena* arena)
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"body\" missing from Expression");
+            TyErr_SetString(TyExc_TypeError, "required field \"body\" missing from Expression");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Expression' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Expression' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &body, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Expression(body, arena);
+        *out = _TyAST_Expression(body, arena);
         if (*out == NULL) goto failed;
         return 0;
     }
@@ -11068,82 +11068,82 @@ obj2ast_mod(struct ast_state *state, PyObject* obj, mod_ty* out, PyArena* arena)
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "FunctionType field \"argtypes\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "FunctionType field \"argtypes\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            argtypes = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            argtypes = _Ty_asdl_expr_seq_new(len, arena);
             if (argtypes == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'FunctionType' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'FunctionType' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "FunctionType field \"argtypes\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "FunctionType field \"argtypes\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(argtypes, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->returns, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"returns\" missing from FunctionType");
+            TyErr_SetString(TyExc_TypeError, "required field \"returns\" missing from FunctionType");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'FunctionType' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'FunctionType' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &returns, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_FunctionType(argtypes, returns, arena);
+        *out = _TyAST_FunctionType(argtypes, returns, arena);
         if (*out == NULL) goto failed;
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of mod, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of mod, but got %R", obj);
     failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
+obj2ast_stmt(struct ast_state *state, TyObject* obj, stmt_ty* out, PyArena*
              arena)
 {
     int isinstance;
 
-    PyObject *tmp = NULL;
-    PyObject *tp;
+    TyObject *tmp = NULL;
+    TyObject *tp;
     int lineno;
     int col_offset;
     int end_lineno;
     int end_col_offset;
 
-    if (obj == Py_None) {
+    if (obj == Ty_None) {
         *out = NULL;
         return 0;
     }
@@ -11151,69 +11151,69 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"lineno\" missing from stmt");
+        TyErr_SetString(TyExc_TypeError, "required field \"lineno\" missing from stmt");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'stmt' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'stmt' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"col_offset\" missing from stmt");
+        TyErr_SetString(TyExc_TypeError, "required field \"col_offset\" missing from stmt");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'stmt' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'stmt' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_lineno, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_lineno = lineno;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'stmt' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'stmt' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_col_offset, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_col_offset = col_offset;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'stmt' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'stmt' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     tp = state->FunctionDef_type;
     isinstance = PyObject_IsInstance(obj, tp);
@@ -11233,185 +11233,185 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"name\" missing from FunctionDef");
+            TyErr_SetString(TyExc_TypeError, "required field \"name\" missing from FunctionDef");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->args, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"args\" missing from FunctionDef");
+            TyErr_SetString(TyExc_TypeError, "required field \"args\" missing from FunctionDef");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
                 goto failed;
             }
             res = obj2ast_arguments(state, tmp, &args, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "FunctionDef field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "FunctionDef field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "FunctionDef field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "FunctionDef field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->decorator_list, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "FunctionDef field \"decorator_list\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "FunctionDef field \"decorator_list\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            decorator_list = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            decorator_list = _Ty_asdl_expr_seq_new(len, arena);
             if (decorator_list == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "FunctionDef field \"decorator_list\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "FunctionDef field \"decorator_list\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(decorator_list, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->returns, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             returns = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &returns, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_comment, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             type_comment = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
                 goto failed;
             }
             res = obj2ast_string(state, tmp, &type_comment, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_params, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "FunctionDef field \"type_params\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "FunctionDef field \"type_params\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            type_params = _Py_asdl_type_param_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            type_params = _Ty_asdl_type_param_seq_new(len, arena);
             if (type_params == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 type_param_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'FunctionDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_type_param(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "FunctionDef field \"type_params\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "FunctionDef field \"type_params\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(type_params, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_FunctionDef(name, args, body, decorator_list, returns,
+        *out = _TyAST_FunctionDef(name, args, body, decorator_list, returns,
                                   type_comment, type_params, lineno,
                                   col_offset, end_lineno, end_col_offset,
                                   arena);
@@ -11436,185 +11436,185 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"name\" missing from AsyncFunctionDef");
+            TyErr_SetString(TyExc_TypeError, "required field \"name\" missing from AsyncFunctionDef");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->args, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"args\" missing from AsyncFunctionDef");
+            TyErr_SetString(TyExc_TypeError, "required field \"args\" missing from AsyncFunctionDef");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
                 goto failed;
             }
             res = obj2ast_arguments(state, tmp, &args, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "AsyncFunctionDef field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "AsyncFunctionDef field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "AsyncFunctionDef field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "AsyncFunctionDef field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->decorator_list, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "AsyncFunctionDef field \"decorator_list\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "AsyncFunctionDef field \"decorator_list\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            decorator_list = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            decorator_list = _Ty_asdl_expr_seq_new(len, arena);
             if (decorator_list == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "AsyncFunctionDef field \"decorator_list\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "AsyncFunctionDef field \"decorator_list\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(decorator_list, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->returns, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             returns = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &returns, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_comment, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             type_comment = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
                 goto failed;
             }
             res = obj2ast_string(state, tmp, &type_comment, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_params, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "AsyncFunctionDef field \"type_params\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "AsyncFunctionDef field \"type_params\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            type_params = _Py_asdl_type_param_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            type_params = _Ty_asdl_type_param_seq_new(len, arena);
             if (type_params == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 type_param_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFunctionDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_type_param(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "AsyncFunctionDef field \"type_params\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "AsyncFunctionDef field \"type_params\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(type_params, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_AsyncFunctionDef(name, args, body, decorator_list,
+        *out = _TyAST_AsyncFunctionDef(name, args, body, decorator_list,
                                        returns, type_comment, type_params,
                                        lineno, col_offset, end_lineno,
                                        end_col_offset, arena);
@@ -11638,210 +11638,210 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"name\" missing from ClassDef");
+            TyErr_SetString(TyExc_TypeError, "required field \"name\" missing from ClassDef");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->bases, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "ClassDef field \"bases\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "ClassDef field \"bases\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            bases = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            bases = _Ty_asdl_expr_seq_new(len, arena);
             if (bases == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "ClassDef field \"bases\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "ClassDef field \"bases\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(bases, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->keywords, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "ClassDef field \"keywords\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "ClassDef field \"keywords\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            keywords = _Py_asdl_keyword_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            keywords = _Ty_asdl_keyword_seq_new(len, arena);
             if (keywords == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 keyword_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_keyword(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "ClassDef field \"keywords\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "ClassDef field \"keywords\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(keywords, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "ClassDef field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "ClassDef field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "ClassDef field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "ClassDef field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->decorator_list, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "ClassDef field \"decorator_list\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "ClassDef field \"decorator_list\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            decorator_list = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            decorator_list = _Ty_asdl_expr_seq_new(len, arena);
             if (decorator_list == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "ClassDef field \"decorator_list\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "ClassDef field \"decorator_list\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(decorator_list, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_params, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "ClassDef field \"type_params\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "ClassDef field \"type_params\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            type_params = _Py_asdl_type_param_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            type_params = _Ty_asdl_type_param_seq_new(len, arena);
             if (type_params == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 type_param_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'ClassDef' node")) {
                     goto failed;
                 }
                 res = obj2ast_type_param(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "ClassDef field \"type_params\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "ClassDef field \"type_params\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(type_params, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_ClassDef(name, bases, keywords, body, decorator_list,
+        *out = _TyAST_ClassDef(name, bases, keywords, body, decorator_list,
                                type_params, lineno, col_offset, end_lineno,
                                end_col_offset, arena);
         if (*out == NULL) goto failed;
@@ -11858,21 +11858,21 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
         if (PyObject_GetOptionalAttr(obj, state->value, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             value = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Return' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Return' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Return(value, lineno, col_offset, end_lineno,
+        *out = _TyAST_Return(value, lineno, col_offset, end_lineno,
                              end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -11889,41 +11889,41 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Delete field \"targets\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Delete field \"targets\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            targets = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            targets = _Ty_asdl_expr_seq_new(len, arena);
             if (targets == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Delete' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Delete' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Delete field \"targets\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Delete field \"targets\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(targets, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Delete(targets, lineno, col_offset, end_lineno,
+        *out = _TyAST_Delete(targets, lineno, col_offset, end_lineno,
                              end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -11942,75 +11942,75 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Assign field \"targets\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Assign field \"targets\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            targets = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            targets = _Ty_asdl_expr_seq_new(len, arena);
             if (targets == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Assign' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Assign' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Assign field \"targets\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Assign field \"targets\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(targets, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->value, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from Assign");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from Assign");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Assign' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Assign' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_comment, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             type_comment = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Assign' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Assign' node")) {
                 goto failed;
             }
             res = obj2ast_string(state, tmp, &type_comment, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Assign(targets, value, type_comment, lineno, col_offset,
+        *out = _TyAST_Assign(targets, value, type_comment, lineno, col_offset,
                              end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -12029,75 +12029,75 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"name\" missing from TypeAlias");
+            TyErr_SetString(TyExc_TypeError, "required field \"name\" missing from TypeAlias");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'TypeAlias' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'TypeAlias' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_params, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "TypeAlias field \"type_params\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "TypeAlias field \"type_params\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            type_params = _Py_asdl_type_param_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            type_params = _Ty_asdl_type_param_seq_new(len, arena);
             if (type_params == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 type_param_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'TypeAlias' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'TypeAlias' node")) {
                     goto failed;
                 }
                 res = obj2ast_type_param(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "TypeAlias field \"type_params\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "TypeAlias field \"type_params\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(type_params, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->value, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from TypeAlias");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from TypeAlias");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'TypeAlias' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'TypeAlias' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_TypeAlias(name, type_params, value, lineno, col_offset,
+        *out = _TyAST_TypeAlias(name, type_params, value, lineno, col_offset,
                                 end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -12116,54 +12116,54 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"target\" missing from AugAssign");
+            TyErr_SetString(TyExc_TypeError, "required field \"target\" missing from AugAssign");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AugAssign' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AugAssign' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &target, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->op, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"op\" missing from AugAssign");
+            TyErr_SetString(TyExc_TypeError, "required field \"op\" missing from AugAssign");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AugAssign' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AugAssign' node")) {
                 goto failed;
             }
             res = obj2ast_operator(state, tmp, &op, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->value, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from AugAssign");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from AugAssign");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AugAssign' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AugAssign' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_AugAssign(target, op, value, lineno, col_offset,
+        *out = _TyAST_AugAssign(target, op, value, lineno, col_offset,
                                 end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -12183,71 +12183,71 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"target\" missing from AnnAssign");
+            TyErr_SetString(TyExc_TypeError, "required field \"target\" missing from AnnAssign");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AnnAssign' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AnnAssign' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &target, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->annotation, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"annotation\" missing from AnnAssign");
+            TyErr_SetString(TyExc_TypeError, "required field \"annotation\" missing from AnnAssign");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AnnAssign' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AnnAssign' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &annotation, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->value, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             value = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AnnAssign' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AnnAssign' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->simple, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"simple\" missing from AnnAssign");
+            TyErr_SetString(TyExc_TypeError, "required field \"simple\" missing from AnnAssign");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AnnAssign' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AnnAssign' node")) {
                 goto failed;
             }
             res = obj2ast_int(state, tmp, &simple, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_AnnAssign(target, annotation, value, simple, lineno,
+        *out = _TyAST_AnnAssign(target, annotation, value, simple, lineno,
                                 col_offset, end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -12268,130 +12268,130 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"target\" missing from For");
+            TyErr_SetString(TyExc_TypeError, "required field \"target\" missing from For");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'For' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'For' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &target, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->iter, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"iter\" missing from For");
+            TyErr_SetString(TyExc_TypeError, "required field \"iter\" missing from For");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'For' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'For' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &iter, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "For field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "For field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'For' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'For' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "For field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "For field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->orelse, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "For field \"orelse\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "For field \"orelse\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            orelse = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            orelse = _Ty_asdl_stmt_seq_new(len, arena);
             if (orelse == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'For' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'For' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "For field \"orelse\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "For field \"orelse\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(orelse, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_comment, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             type_comment = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'For' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'For' node")) {
                 goto failed;
             }
             res = obj2ast_string(state, tmp, &type_comment, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_For(target, iter, body, orelse, type_comment, lineno,
+        *out = _TyAST_For(target, iter, body, orelse, type_comment, lineno,
                           col_offset, end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -12412,130 +12412,130 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"target\" missing from AsyncFor");
+            TyErr_SetString(TyExc_TypeError, "required field \"target\" missing from AsyncFor");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &target, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->iter, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"iter\" missing from AsyncFor");
+            TyErr_SetString(TyExc_TypeError, "required field \"iter\" missing from AsyncFor");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &iter, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "AsyncFor field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "AsyncFor field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "AsyncFor field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "AsyncFor field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->orelse, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "AsyncFor field \"orelse\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "AsyncFor field \"orelse\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            orelse = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            orelse = _Ty_asdl_stmt_seq_new(len, arena);
             if (orelse == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "AsyncFor field \"orelse\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "AsyncFor field \"orelse\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(orelse, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_comment, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             type_comment = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AsyncFor' node")) {
                 goto failed;
             }
             res = obj2ast_string(state, tmp, &type_comment, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_AsyncFor(target, iter, body, orelse, type_comment,
+        *out = _TyAST_AsyncFor(target, iter, body, orelse, type_comment,
                                lineno, col_offset, end_lineno, end_col_offset,
                                arena);
         if (*out == NULL) goto failed;
@@ -12555,96 +12555,96 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"test\" missing from While");
+            TyErr_SetString(TyExc_TypeError, "required field \"test\" missing from While");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'While' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'While' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &test, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "While field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "While field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'While' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'While' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "While field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "While field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->orelse, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "While field \"orelse\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "While field \"orelse\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            orelse = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            orelse = _Ty_asdl_stmt_seq_new(len, arena);
             if (orelse == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'While' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'While' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "While field \"orelse\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "While field \"orelse\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(orelse, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_While(test, body, orelse, lineno, col_offset, end_lineno,
+        *out = _TyAST_While(test, body, orelse, lineno, col_offset, end_lineno,
                             end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -12663,96 +12663,96 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"test\" missing from If");
+            TyErr_SetString(TyExc_TypeError, "required field \"test\" missing from If");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'If' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'If' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &test, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "If field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "If field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'If' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'If' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "If field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "If field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->orelse, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "If field \"orelse\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "If field \"orelse\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            orelse = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            orelse = _Ty_asdl_stmt_seq_new(len, arena);
             if (orelse == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'If' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'If' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "If field \"orelse\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "If field \"orelse\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(orelse, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_If(test, body, orelse, lineno, col_offset, end_lineno,
+        *out = _TyAST_If(test, body, orelse, lineno, col_offset, end_lineno,
                          end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -12771,96 +12771,96 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "With field \"items\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "With field \"items\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            items = _Py_asdl_withitem_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            items = _Ty_asdl_withitem_seq_new(len, arena);
             if (items == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 withitem_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'With' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'With' node")) {
                     goto failed;
                 }
                 res = obj2ast_withitem(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "With field \"items\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "With field \"items\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(items, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "With field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "With field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'With' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'With' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "With field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "With field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_comment, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             type_comment = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'With' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'With' node")) {
                 goto failed;
             }
             res = obj2ast_string(state, tmp, &type_comment, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_With(items, body, type_comment, lineno, col_offset,
+        *out = _TyAST_With(items, body, type_comment, lineno, col_offset,
                            end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -12879,96 +12879,96 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "AsyncWith field \"items\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "AsyncWith field \"items\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            items = _Py_asdl_withitem_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            items = _Ty_asdl_withitem_seq_new(len, arena);
             if (items == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 withitem_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'AsyncWith' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'AsyncWith' node")) {
                     goto failed;
                 }
                 res = obj2ast_withitem(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "AsyncWith field \"items\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "AsyncWith field \"items\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(items, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "AsyncWith field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "AsyncWith field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'AsyncWith' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'AsyncWith' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "AsyncWith field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "AsyncWith field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->type_comment, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             type_comment = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'AsyncWith' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'AsyncWith' node")) {
                 goto failed;
             }
             res = obj2ast_string(state, tmp, &type_comment, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_AsyncWith(items, body, type_comment, lineno, col_offset,
+        *out = _TyAST_AsyncWith(items, body, type_comment, lineno, col_offset,
                                 end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -12986,58 +12986,58 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"subject\" missing from Match");
+            TyErr_SetString(TyExc_TypeError, "required field \"subject\" missing from Match");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Match' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Match' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &subject, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->cases, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Match field \"cases\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Match field \"cases\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            cases = _Py_asdl_match_case_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            cases = _Ty_asdl_match_case_seq_new(len, arena);
             if (cases == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 match_case_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Match' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Match' node")) {
                     goto failed;
                 }
                 res = obj2ast_match_case(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Match field \"cases\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Match field \"cases\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(cases, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Match(subject, cases, lineno, col_offset, end_lineno,
+        *out = _TyAST_Match(subject, cases, lineno, col_offset, end_lineno,
                             end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13054,38 +13054,38 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
         if (PyObject_GetOptionalAttr(obj, state->exc, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             exc = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Raise' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Raise' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &exc, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->cause, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             cause = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Raise' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Raise' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &cause, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Raise(exc, cause, lineno, col_offset, end_lineno,
+        *out = _TyAST_Raise(exc, cause, lineno, col_offset, end_lineno,
                             end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13105,155 +13105,155 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Try field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Try field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Try' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Try' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Try field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Try field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->handlers, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Try field \"handlers\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Try field \"handlers\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            handlers = _Py_asdl_excepthandler_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            handlers = _Ty_asdl_excepthandler_seq_new(len, arena);
             if (handlers == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 excepthandler_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Try' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Try' node")) {
                     goto failed;
                 }
                 res = obj2ast_excepthandler(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Try field \"handlers\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Try field \"handlers\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(handlers, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->orelse, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Try field \"orelse\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Try field \"orelse\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            orelse = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            orelse = _Ty_asdl_stmt_seq_new(len, arena);
             if (orelse == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Try' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Try' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Try field \"orelse\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Try field \"orelse\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(orelse, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->finalbody, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Try field \"finalbody\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Try field \"finalbody\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            finalbody = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            finalbody = _Ty_asdl_stmt_seq_new(len, arena);
             if (finalbody == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Try' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Try' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Try field \"finalbody\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Try field \"finalbody\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(finalbody, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Try(body, handlers, orelse, finalbody, lineno,
+        *out = _TyAST_Try(body, handlers, orelse, finalbody, lineno,
                           col_offset, end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13273,155 +13273,155 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "TryStar field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "TryStar field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'TryStar' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'TryStar' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "TryStar field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "TryStar field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->handlers, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "TryStar field \"handlers\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "TryStar field \"handlers\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            handlers = _Py_asdl_excepthandler_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            handlers = _Ty_asdl_excepthandler_seq_new(len, arena);
             if (handlers == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 excepthandler_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'TryStar' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'TryStar' node")) {
                     goto failed;
                 }
                 res = obj2ast_excepthandler(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "TryStar field \"handlers\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "TryStar field \"handlers\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(handlers, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->orelse, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "TryStar field \"orelse\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "TryStar field \"orelse\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            orelse = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            orelse = _Ty_asdl_stmt_seq_new(len, arena);
             if (orelse == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'TryStar' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'TryStar' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "TryStar field \"orelse\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "TryStar field \"orelse\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(orelse, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->finalbody, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "TryStar field \"finalbody\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "TryStar field \"finalbody\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            finalbody = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            finalbody = _Ty_asdl_stmt_seq_new(len, arena);
             if (finalbody == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'TryStar' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'TryStar' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "TryStar field \"finalbody\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "TryStar field \"finalbody\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(finalbody, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_TryStar(body, handlers, orelse, finalbody, lineno,
+        *out = _TyAST_TryStar(body, handlers, orelse, finalbody, lineno,
                               col_offset, end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13439,37 +13439,37 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"test\" missing from Assert");
+            TyErr_SetString(TyExc_TypeError, "required field \"test\" missing from Assert");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Assert' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Assert' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &test, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->msg, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             msg = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Assert' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Assert' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &msg, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Assert(test, msg, lineno, col_offset, end_lineno,
+        *out = _TyAST_Assert(test, msg, lineno, col_offset, end_lineno,
                              end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13486,41 +13486,41 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Import field \"names\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Import field \"names\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            names = _Py_asdl_alias_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            names = _Ty_asdl_alias_seq_new(len, arena);
             if (names == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 alias_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Import' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Import' node")) {
                     goto failed;
                 }
                 res = obj2ast_alias(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Import field \"names\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Import field \"names\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(names, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Import(names, lineno, col_offset, end_lineno,
+        *out = _TyAST_Import(names, lineno, col_offset, end_lineno,
                              end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13538,76 +13538,76 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
         if (PyObject_GetOptionalAttr(obj, state->module, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             module = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'ImportFrom' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'ImportFrom' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &module, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->names, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "ImportFrom field \"names\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "ImportFrom field \"names\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            names = _Py_asdl_alias_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            names = _Ty_asdl_alias_seq_new(len, arena);
             if (names == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 alias_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'ImportFrom' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'ImportFrom' node")) {
                     goto failed;
                 }
                 res = obj2ast_alias(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "ImportFrom field \"names\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "ImportFrom field \"names\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(names, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->level, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             level = 0;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'ImportFrom' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'ImportFrom' node")) {
                 goto failed;
             }
             res = obj2ast_int(state, tmp, &level, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_ImportFrom(module, names, level, lineno, col_offset,
+        *out = _TyAST_ImportFrom(module, names, level, lineno, col_offset,
                                  end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13624,41 +13624,41 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Global field \"names\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Global field \"names\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            names = _Py_asdl_identifier_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            names = _Ty_asdl_identifier_seq_new(len, arena);
             if (names == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 identifier val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Global' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Global' node")) {
                     goto failed;
                 }
                 res = obj2ast_identifier(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Global field \"names\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Global field \"names\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(names, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Global(names, lineno, col_offset, end_lineno,
+        *out = _TyAST_Global(names, lineno, col_offset, end_lineno,
                              end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13675,41 +13675,41 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Nonlocal field \"names\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Nonlocal field \"names\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            names = _Py_asdl_identifier_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            names = _Ty_asdl_identifier_seq_new(len, arena);
             if (names == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 identifier val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Nonlocal' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Nonlocal' node")) {
                     goto failed;
                 }
                 res = obj2ast_identifier(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Nonlocal field \"names\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Nonlocal field \"names\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(names, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Nonlocal(names, lineno, col_offset, end_lineno,
+        *out = _TyAST_Nonlocal(names, lineno, col_offset, end_lineno,
                                end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13726,20 +13726,20 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from Expr");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from Expr");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Expr' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Expr' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Expr(value, lineno, col_offset, end_lineno,
+        *out = _TyAST_Expr(value, lineno, col_offset, end_lineno,
                            end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13751,7 +13751,7 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
     }
     if (isinstance) {
 
-        *out = _PyAST_Pass(lineno, col_offset, end_lineno, end_col_offset,
+        *out = _TyAST_Pass(lineno, col_offset, end_lineno, end_col_offset,
                            arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13763,7 +13763,7 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
     }
     if (isinstance) {
 
-        *out = _PyAST_Break(lineno, col_offset, end_lineno, end_col_offset,
+        *out = _TyAST_Break(lineno, col_offset, end_lineno, end_col_offset,
                             arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13775,32 +13775,32 @@ obj2ast_stmt(struct ast_state *state, PyObject* obj, stmt_ty* out, PyArena*
     }
     if (isinstance) {
 
-        *out = _PyAST_Continue(lineno, col_offset, end_lineno, end_col_offset,
+        *out = _TyAST_Continue(lineno, col_offset, end_lineno, end_col_offset,
                                arena);
         if (*out == NULL) goto failed;
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of stmt, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of stmt, but got %R", obj);
     failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
+obj2ast_expr(struct ast_state *state, TyObject* obj, expr_ty* out, PyArena*
              arena)
 {
     int isinstance;
 
-    PyObject *tmp = NULL;
-    PyObject *tp;
+    TyObject *tmp = NULL;
+    TyObject *tp;
     int lineno;
     int col_offset;
     int end_lineno;
     int end_col_offset;
 
-    if (obj == Py_None) {
+    if (obj == Ty_None) {
         *out = NULL;
         return 0;
     }
@@ -13808,69 +13808,69 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"lineno\" missing from expr");
+        TyErr_SetString(TyExc_TypeError, "required field \"lineno\" missing from expr");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'expr' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'expr' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"col_offset\" missing from expr");
+        TyErr_SetString(TyExc_TypeError, "required field \"col_offset\" missing from expr");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'expr' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'expr' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_lineno, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_lineno = lineno;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'expr' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'expr' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_col_offset, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_col_offset = col_offset;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'expr' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'expr' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     tp = state->BoolOp_type;
     isinstance = PyObject_IsInstance(obj, tp);
@@ -13885,58 +13885,58 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"op\" missing from BoolOp");
+            TyErr_SetString(TyExc_TypeError, "required field \"op\" missing from BoolOp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'BoolOp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'BoolOp' node")) {
                 goto failed;
             }
             res = obj2ast_boolop(state, tmp, &op, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->values, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "BoolOp field \"values\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "BoolOp field \"values\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            values = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            values = _Ty_asdl_expr_seq_new(len, arena);
             if (values == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'BoolOp' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'BoolOp' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "BoolOp field \"values\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "BoolOp field \"values\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(values, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_BoolOp(op, values, lineno, col_offset, end_lineno,
+        *out = _TyAST_BoolOp(op, values, lineno, col_offset, end_lineno,
                              end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -13954,37 +13954,37 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"target\" missing from NamedExpr");
+            TyErr_SetString(TyExc_TypeError, "required field \"target\" missing from NamedExpr");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'NamedExpr' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'NamedExpr' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &target, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->value, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from NamedExpr");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from NamedExpr");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'NamedExpr' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'NamedExpr' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_NamedExpr(target, value, lineno, col_offset, end_lineno,
+        *out = _TyAST_NamedExpr(target, value, lineno, col_offset, end_lineno,
                                 end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14003,54 +14003,54 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"left\" missing from BinOp");
+            TyErr_SetString(TyExc_TypeError, "required field \"left\" missing from BinOp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'BinOp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'BinOp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &left, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->op, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"op\" missing from BinOp");
+            TyErr_SetString(TyExc_TypeError, "required field \"op\" missing from BinOp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'BinOp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'BinOp' node")) {
                 goto failed;
             }
             res = obj2ast_operator(state, tmp, &op, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->right, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"right\" missing from BinOp");
+            TyErr_SetString(TyExc_TypeError, "required field \"right\" missing from BinOp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'BinOp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'BinOp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &right, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_BinOp(left, op, right, lineno, col_offset, end_lineno,
+        *out = _TyAST_BinOp(left, op, right, lineno, col_offset, end_lineno,
                             end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14068,37 +14068,37 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"op\" missing from UnaryOp");
+            TyErr_SetString(TyExc_TypeError, "required field \"op\" missing from UnaryOp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'UnaryOp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'UnaryOp' node")) {
                 goto failed;
             }
             res = obj2ast_unaryop(state, tmp, &op, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->operand, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"operand\" missing from UnaryOp");
+            TyErr_SetString(TyExc_TypeError, "required field \"operand\" missing from UnaryOp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'UnaryOp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'UnaryOp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &operand, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_UnaryOp(op, operand, lineno, col_offset, end_lineno,
+        *out = _TyAST_UnaryOp(op, operand, lineno, col_offset, end_lineno,
                               end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14116,37 +14116,37 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"args\" missing from Lambda");
+            TyErr_SetString(TyExc_TypeError, "required field \"args\" missing from Lambda");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Lambda' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Lambda' node")) {
                 goto failed;
             }
             res = obj2ast_arguments(state, tmp, &args, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"body\" missing from Lambda");
+            TyErr_SetString(TyExc_TypeError, "required field \"body\" missing from Lambda");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Lambda' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Lambda' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &body, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Lambda(args, body, lineno, col_offset, end_lineno,
+        *out = _TyAST_Lambda(args, body, lineno, col_offset, end_lineno,
                              end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14165,54 +14165,54 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"test\" missing from IfExp");
+            TyErr_SetString(TyExc_TypeError, "required field \"test\" missing from IfExp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'IfExp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'IfExp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &test, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"body\" missing from IfExp");
+            TyErr_SetString(TyExc_TypeError, "required field \"body\" missing from IfExp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'IfExp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'IfExp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &body, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->orelse, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"orelse\" missing from IfExp");
+            TyErr_SetString(TyExc_TypeError, "required field \"orelse\" missing from IfExp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'IfExp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'IfExp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &orelse, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_IfExp(test, body, orelse, lineno, col_offset, end_lineno,
+        *out = _TyAST_IfExp(test, body, orelse, lineno, col_offset, end_lineno,
                             end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14230,79 +14230,79 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Dict field \"keys\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Dict field \"keys\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            keys = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            keys = _Ty_asdl_expr_seq_new(len, arena);
             if (keys == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Dict' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Dict' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Dict field \"keys\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Dict field \"keys\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(keys, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->values, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Dict field \"values\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Dict field \"values\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            values = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            values = _Ty_asdl_expr_seq_new(len, arena);
             if (values == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Dict' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Dict' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Dict field \"values\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Dict field \"values\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(values, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Dict(keys, values, lineno, col_offset, end_lineno,
+        *out = _TyAST_Dict(keys, values, lineno, col_offset, end_lineno,
                            end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14319,41 +14319,41 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Set field \"elts\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Set field \"elts\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            elts = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            elts = _Ty_asdl_expr_seq_new(len, arena);
             if (elts == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Set' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Set' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Set field \"elts\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Set field \"elts\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(elts, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Set(elts, lineno, col_offset, end_lineno, end_col_offset,
+        *out = _TyAST_Set(elts, lineno, col_offset, end_lineno, end_col_offset,
                           arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14371,58 +14371,58 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"elt\" missing from ListComp");
+            TyErr_SetString(TyExc_TypeError, "required field \"elt\" missing from ListComp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'ListComp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'ListComp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &elt, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->generators, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "ListComp field \"generators\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "ListComp field \"generators\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            generators = _Py_asdl_comprehension_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            generators = _Ty_asdl_comprehension_seq_new(len, arena);
             if (generators == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 comprehension_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'ListComp' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'ListComp' node")) {
                     goto failed;
                 }
                 res = obj2ast_comprehension(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "ListComp field \"generators\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "ListComp field \"generators\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(generators, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_ListComp(elt, generators, lineno, col_offset, end_lineno,
+        *out = _TyAST_ListComp(elt, generators, lineno, col_offset, end_lineno,
                                end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14440,58 +14440,58 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"elt\" missing from SetComp");
+            TyErr_SetString(TyExc_TypeError, "required field \"elt\" missing from SetComp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'SetComp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'SetComp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &elt, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->generators, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "SetComp field \"generators\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "SetComp field \"generators\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            generators = _Py_asdl_comprehension_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            generators = _Ty_asdl_comprehension_seq_new(len, arena);
             if (generators == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 comprehension_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'SetComp' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'SetComp' node")) {
                     goto failed;
                 }
                 res = obj2ast_comprehension(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "SetComp field \"generators\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "SetComp field \"generators\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(generators, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_SetComp(elt, generators, lineno, col_offset, end_lineno,
+        *out = _TyAST_SetComp(elt, generators, lineno, col_offset, end_lineno,
                               end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14510,75 +14510,75 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"key\" missing from DictComp");
+            TyErr_SetString(TyExc_TypeError, "required field \"key\" missing from DictComp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'DictComp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'DictComp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &key, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->value, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from DictComp");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from DictComp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'DictComp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'DictComp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->generators, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "DictComp field \"generators\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "DictComp field \"generators\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            generators = _Py_asdl_comprehension_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            generators = _Ty_asdl_comprehension_seq_new(len, arena);
             if (generators == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 comprehension_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'DictComp' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'DictComp' node")) {
                     goto failed;
                 }
                 res = obj2ast_comprehension(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "DictComp field \"generators\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "DictComp field \"generators\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(generators, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_DictComp(key, value, generators, lineno, col_offset,
+        *out = _TyAST_DictComp(key, value, generators, lineno, col_offset,
                                end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14596,58 +14596,58 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"elt\" missing from GeneratorExp");
+            TyErr_SetString(TyExc_TypeError, "required field \"elt\" missing from GeneratorExp");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'GeneratorExp' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'GeneratorExp' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &elt, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->generators, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "GeneratorExp field \"generators\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "GeneratorExp field \"generators\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            generators = _Py_asdl_comprehension_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            generators = _Ty_asdl_comprehension_seq_new(len, arena);
             if (generators == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 comprehension_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'GeneratorExp' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'GeneratorExp' node")) {
                     goto failed;
                 }
                 res = obj2ast_comprehension(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "GeneratorExp field \"generators\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "GeneratorExp field \"generators\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(generators, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_GeneratorExp(elt, generators, lineno, col_offset,
+        *out = _TyAST_GeneratorExp(elt, generators, lineno, col_offset,
                                    end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14664,20 +14664,20 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from Await");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from Await");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Await' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Await' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Await(value, lineno, col_offset, end_lineno,
+        *out = _TyAST_Await(value, lineno, col_offset, end_lineno,
                             end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14693,21 +14693,21 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
         if (PyObject_GetOptionalAttr(obj, state->value, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             value = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Yield' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Yield' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Yield(value, lineno, col_offset, end_lineno,
+        *out = _TyAST_Yield(value, lineno, col_offset, end_lineno,
                             end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14724,20 +14724,20 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from YieldFrom");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from YieldFrom");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'YieldFrom' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'YieldFrom' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_YieldFrom(value, lineno, col_offset, end_lineno,
+        *out = _TyAST_YieldFrom(value, lineno, col_offset, end_lineno,
                                 end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14756,96 +14756,96 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"left\" missing from Compare");
+            TyErr_SetString(TyExc_TypeError, "required field \"left\" missing from Compare");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Compare' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Compare' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &left, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->ops, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Compare field \"ops\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Compare field \"ops\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            ops = _Py_asdl_int_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            ops = _Ty_asdl_int_seq_new(len, arena);
             if (ops == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 cmpop_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Compare' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Compare' node")) {
                     goto failed;
                 }
                 res = obj2ast_cmpop(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Compare field \"ops\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Compare field \"ops\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(ops, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->comparators, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Compare field \"comparators\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Compare field \"comparators\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            comparators = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            comparators = _Ty_asdl_expr_seq_new(len, arena);
             if (comparators == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Compare' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Compare' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Compare field \"comparators\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Compare field \"comparators\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(comparators, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Compare(left, ops, comparators, lineno, col_offset,
+        *out = _TyAST_Compare(left, ops, comparators, lineno, col_offset,
                               end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14864,96 +14864,96 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"func\" missing from Call");
+            TyErr_SetString(TyExc_TypeError, "required field \"func\" missing from Call");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Call' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Call' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &func, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->args, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Call field \"args\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Call field \"args\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            args = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            args = _Ty_asdl_expr_seq_new(len, arena);
             if (args == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Call' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Call' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Call field \"args\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Call field \"args\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(args, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->keywords, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Call field \"keywords\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Call field \"keywords\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            keywords = _Py_asdl_keyword_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            keywords = _Ty_asdl_keyword_seq_new(len, arena);
             if (keywords == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 keyword_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Call' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Call' node")) {
                     goto failed;
                 }
                 res = obj2ast_keyword(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Call field \"keywords\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Call field \"keywords\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(keywords, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Call(func, args, keywords, lineno, col_offset,
+        *out = _TyAST_Call(func, args, keywords, lineno, col_offset,
                            end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -14972,54 +14972,54 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from FormattedValue");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from FormattedValue");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'FormattedValue' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'FormattedValue' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->conversion, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"conversion\" missing from FormattedValue");
+            TyErr_SetString(TyExc_TypeError, "required field \"conversion\" missing from FormattedValue");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'FormattedValue' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'FormattedValue' node")) {
                 goto failed;
             }
             res = obj2ast_int(state, tmp, &conversion, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->format_spec, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             format_spec = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'FormattedValue' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'FormattedValue' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &format_spec, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_FormattedValue(value, conversion, format_spec, lineno,
+        *out = _TyAST_FormattedValue(value, conversion, format_spec, lineno,
                                      col_offset, end_lineno, end_col_offset,
                                      arena);
         if (*out == NULL) goto failed;
@@ -15040,71 +15040,71 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from Interpolation");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from Interpolation");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Interpolation' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Interpolation' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->str, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"str\" missing from Interpolation");
+            TyErr_SetString(TyExc_TypeError, "required field \"str\" missing from Interpolation");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Interpolation' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Interpolation' node")) {
                 goto failed;
             }
             res = obj2ast_constant(state, tmp, &str, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->conversion, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"conversion\" missing from Interpolation");
+            TyErr_SetString(TyExc_TypeError, "required field \"conversion\" missing from Interpolation");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Interpolation' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Interpolation' node")) {
                 goto failed;
             }
             res = obj2ast_int(state, tmp, &conversion, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->format_spec, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             format_spec = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Interpolation' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Interpolation' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &format_spec, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Interpolation(value, str, conversion, format_spec,
+        *out = _TyAST_Interpolation(value, str, conversion, format_spec,
                                     lineno, col_offset, end_lineno,
                                     end_col_offset, arena);
         if (*out == NULL) goto failed;
@@ -15122,41 +15122,41 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "JoinedStr field \"values\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "JoinedStr field \"values\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            values = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            values = _Ty_asdl_expr_seq_new(len, arena);
             if (values == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'JoinedStr' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'JoinedStr' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "JoinedStr field \"values\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "JoinedStr field \"values\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(values, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_JoinedStr(values, lineno, col_offset, end_lineno,
+        *out = _TyAST_JoinedStr(values, lineno, col_offset, end_lineno,
                                 end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -15173,41 +15173,41 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "TemplateStr field \"values\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "TemplateStr field \"values\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            values = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            values = _Ty_asdl_expr_seq_new(len, arena);
             if (values == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'TemplateStr' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'TemplateStr' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "TemplateStr field \"values\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "TemplateStr field \"values\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(values, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_TemplateStr(values, lineno, col_offset, end_lineno,
+        *out = _TyAST_TemplateStr(values, lineno, col_offset, end_lineno,
                                   end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -15225,37 +15225,37 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from Constant");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from Constant");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Constant' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Constant' node")) {
                 goto failed;
             }
             res = obj2ast_constant(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->kind, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             kind = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Constant' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Constant' node")) {
                 goto failed;
             }
             res = obj2ast_string(state, tmp, &kind, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Constant(value, kind, lineno, col_offset, end_lineno,
+        *out = _TyAST_Constant(value, kind, lineno, col_offset, end_lineno,
                                end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -15274,54 +15274,54 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from Attribute");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from Attribute");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Attribute' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Attribute' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->attr, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"attr\" missing from Attribute");
+            TyErr_SetString(TyExc_TypeError, "required field \"attr\" missing from Attribute");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Attribute' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Attribute' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &attr, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->ctx, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"ctx\" missing from Attribute");
+            TyErr_SetString(TyExc_TypeError, "required field \"ctx\" missing from Attribute");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Attribute' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Attribute' node")) {
                 goto failed;
             }
             res = obj2ast_expr_context(state, tmp, &ctx, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Attribute(value, attr, ctx, lineno, col_offset,
+        *out = _TyAST_Attribute(value, attr, ctx, lineno, col_offset,
                                 end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -15340,54 +15340,54 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from Subscript");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from Subscript");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Subscript' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Subscript' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->slice, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"slice\" missing from Subscript");
+            TyErr_SetString(TyExc_TypeError, "required field \"slice\" missing from Subscript");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Subscript' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Subscript' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &slice, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->ctx, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"ctx\" missing from Subscript");
+            TyErr_SetString(TyExc_TypeError, "required field \"ctx\" missing from Subscript");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Subscript' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Subscript' node")) {
                 goto failed;
             }
             res = obj2ast_expr_context(state, tmp, &ctx, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Subscript(value, slice, ctx, lineno, col_offset,
+        *out = _TyAST_Subscript(value, slice, ctx, lineno, col_offset,
                                 end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -15405,37 +15405,37 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from Starred");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from Starred");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Starred' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Starred' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->ctx, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"ctx\" missing from Starred");
+            TyErr_SetString(TyExc_TypeError, "required field \"ctx\" missing from Starred");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Starred' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Starred' node")) {
                 goto failed;
             }
             res = obj2ast_expr_context(state, tmp, &ctx, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Starred(value, ctx, lineno, col_offset, end_lineno,
+        *out = _TyAST_Starred(value, ctx, lineno, col_offset, end_lineno,
                               end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -15453,37 +15453,37 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"id\" missing from Name");
+            TyErr_SetString(TyExc_TypeError, "required field \"id\" missing from Name");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Name' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Name' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &id, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->ctx, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"ctx\" missing from Name");
+            TyErr_SetString(TyExc_TypeError, "required field \"ctx\" missing from Name");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Name' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Name' node")) {
                 goto failed;
             }
             res = obj2ast_expr_context(state, tmp, &ctx, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Name(id, ctx, lineno, col_offset, end_lineno,
+        *out = _TyAST_Name(id, ctx, lineno, col_offset, end_lineno,
                            end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -15501,58 +15501,58 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "List field \"elts\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "List field \"elts\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            elts = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            elts = _Ty_asdl_expr_seq_new(len, arena);
             if (elts == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'List' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'List' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "List field \"elts\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "List field \"elts\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(elts, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->ctx, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"ctx\" missing from List");
+            TyErr_SetString(TyExc_TypeError, "required field \"ctx\" missing from List");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'List' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'List' node")) {
                 goto failed;
             }
             res = obj2ast_expr_context(state, tmp, &ctx, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_List(elts, ctx, lineno, col_offset, end_lineno,
+        *out = _TyAST_List(elts, ctx, lineno, col_offset, end_lineno,
                            end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -15570,58 +15570,58 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "Tuple field \"elts\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "Tuple field \"elts\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            elts = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            elts = _Ty_asdl_expr_seq_new(len, arena);
             if (elts == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'Tuple' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'Tuple' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "Tuple field \"elts\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "Tuple field \"elts\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(elts, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->ctx, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"ctx\" missing from Tuple");
+            TyErr_SetString(TyExc_TypeError, "required field \"ctx\" missing from Tuple");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Tuple' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Tuple' node")) {
                 goto failed;
             }
             res = obj2ast_expr_context(state, tmp, &ctx, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Tuple(elts, ctx, lineno, col_offset, end_lineno,
+        *out = _TyAST_Tuple(elts, ctx, lineno, col_offset, end_lineno,
                             end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -15639,68 +15639,68 @@ obj2ast_expr(struct ast_state *state, PyObject* obj, expr_ty* out, PyArena*
         if (PyObject_GetOptionalAttr(obj, state->lower, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             lower = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Slice' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Slice' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &lower, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->upper, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             upper = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Slice' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Slice' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &upper, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->step, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             step = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'Slice' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'Slice' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &step, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_Slice(lower, upper, step, lineno, col_offset, end_lineno,
+        *out = _TyAST_Slice(lower, upper, step, lineno, col_offset, end_lineno,
                             end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of expr, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of expr, but got %R", obj);
     failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_expr_context(struct ast_state *state, PyObject* obj, expr_context_ty*
+obj2ast_expr_context(struct ast_state *state, TyObject* obj, expr_context_ty*
                      out, PyArena* arena)
 {
     int isinstance;
@@ -15730,12 +15730,12 @@ obj2ast_expr_context(struct ast_state *state, PyObject* obj, expr_context_ty*
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of expr_context, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of expr_context, but got %R", obj);
     return -1;
 }
 
 int
-obj2ast_boolop(struct ast_state *state, PyObject* obj, boolop_ty* out, PyArena*
+obj2ast_boolop(struct ast_state *state, TyObject* obj, boolop_ty* out, PyArena*
                arena)
 {
     int isinstance;
@@ -15757,12 +15757,12 @@ obj2ast_boolop(struct ast_state *state, PyObject* obj, boolop_ty* out, PyArena*
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of boolop, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of boolop, but got %R", obj);
     return -1;
 }
 
 int
-obj2ast_operator(struct ast_state *state, PyObject* obj, operator_ty* out,
+obj2ast_operator(struct ast_state *state, TyObject* obj, operator_ty* out,
                  PyArena* arena)
 {
     int isinstance;
@@ -15872,12 +15872,12 @@ obj2ast_operator(struct ast_state *state, PyObject* obj, operator_ty* out,
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of operator, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of operator, but got %R", obj);
     return -1;
 }
 
 int
-obj2ast_unaryop(struct ast_state *state, PyObject* obj, unaryop_ty* out,
+obj2ast_unaryop(struct ast_state *state, TyObject* obj, unaryop_ty* out,
                 PyArena* arena)
 {
     int isinstance;
@@ -15915,12 +15915,12 @@ obj2ast_unaryop(struct ast_state *state, PyObject* obj, unaryop_ty* out,
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of unaryop, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of unaryop, but got %R", obj);
     return -1;
 }
 
 int
-obj2ast_cmpop(struct ast_state *state, PyObject* obj, cmpop_ty* out, PyArena*
+obj2ast_cmpop(struct ast_state *state, TyObject* obj, cmpop_ty* out, PyArena*
               arena)
 {
     int isinstance;
@@ -16006,15 +16006,15 @@ obj2ast_cmpop(struct ast_state *state, PyObject* obj, cmpop_ty* out, PyArena*
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of cmpop, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of cmpop, but got %R", obj);
     return -1;
 }
 
 int
-obj2ast_comprehension(struct ast_state *state, PyObject* obj, comprehension_ty*
+obj2ast_comprehension(struct ast_state *state, TyObject* obj, comprehension_ty*
                       out, PyArena* arena)
 {
-    PyObject* tmp = NULL;
+    TyObject* tmp = NULL;
     expr_ty target;
     expr_ty iter;
     asdl_expr_seq* ifs;
@@ -16024,113 +16024,113 @@ obj2ast_comprehension(struct ast_state *state, PyObject* obj, comprehension_ty*
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"target\" missing from comprehension");
+        TyErr_SetString(TyExc_TypeError, "required field \"target\" missing from comprehension");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'comprehension' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'comprehension' node")) {
             goto failed;
         }
         res = obj2ast_expr(state, tmp, &target, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->iter, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"iter\" missing from comprehension");
+        TyErr_SetString(TyExc_TypeError, "required field \"iter\" missing from comprehension");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'comprehension' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'comprehension' node")) {
             goto failed;
         }
         res = obj2ast_expr(state, tmp, &iter, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->ifs, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        tmp = PyList_New(0);
+        tmp = TyList_New(0);
         if (tmp == NULL) {
             return -1;
         }
     }
     {
         int res;
-        Py_ssize_t len;
-        Py_ssize_t i;
-        if (!PyList_Check(tmp)) {
-            PyErr_Format(PyExc_TypeError, "comprehension field \"ifs\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+        Ty_ssize_t len;
+        Ty_ssize_t i;
+        if (!TyList_Check(tmp)) {
+            TyErr_Format(TyExc_TypeError, "comprehension field \"ifs\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
             goto failed;
         }
-        len = PyList_GET_SIZE(tmp);
-        ifs = _Py_asdl_expr_seq_new(len, arena);
+        len = TyList_GET_SIZE(tmp);
+        ifs = _Ty_asdl_expr_seq_new(len, arena);
         if (ifs == NULL) goto failed;
         for (i = 0; i < len; i++) {
             expr_ty val;
-            PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-            if (_Py_EnterRecursiveCall(" while traversing 'comprehension' node")) {
+            TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+            if (_Ty_EnterRecursiveCall(" while traversing 'comprehension' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp2, &val, arena);
-            _Py_LeaveRecursiveCall();
-            Py_DECREF(tmp2);
+            _Ty_LeaveRecursiveCall();
+            Ty_DECREF(tmp2);
             if (res != 0) goto failed;
-            if (len != PyList_GET_SIZE(tmp)) {
-                PyErr_SetString(PyExc_RuntimeError, "comprehension field \"ifs\" changed size during iteration");
+            if (len != TyList_GET_SIZE(tmp)) {
+                TyErr_SetString(TyExc_RuntimeError, "comprehension field \"ifs\" changed size during iteration");
                 goto failed;
             }
             asdl_seq_SET(ifs, i, val);
         }
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->is_async, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"is_async\" missing from comprehension");
+        TyErr_SetString(TyExc_TypeError, "required field \"is_async\" missing from comprehension");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'comprehension' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'comprehension' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &is_async, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
-    *out = _PyAST_comprehension(target, iter, ifs, is_async, arena);
+    *out = _TyAST_comprehension(target, iter, ifs, is_async, arena);
     if (*out == NULL) goto failed;
     return 0;
 failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_excepthandler(struct ast_state *state, PyObject* obj, excepthandler_ty*
+obj2ast_excepthandler(struct ast_state *state, TyObject* obj, excepthandler_ty*
                       out, PyArena* arena)
 {
     int isinstance;
 
-    PyObject *tmp = NULL;
-    PyObject *tp;
+    TyObject *tmp = NULL;
+    TyObject *tp;
     int lineno;
     int col_offset;
     int end_lineno;
     int end_col_offset;
 
-    if (obj == Py_None) {
+    if (obj == Ty_None) {
         *out = NULL;
         return 0;
     }
@@ -16138,69 +16138,69 @@ obj2ast_excepthandler(struct ast_state *state, PyObject* obj, excepthandler_ty*
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"lineno\" missing from excepthandler");
+        TyErr_SetString(TyExc_TypeError, "required field \"lineno\" missing from excepthandler");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'excepthandler' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'excepthandler' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"col_offset\" missing from excepthandler");
+        TyErr_SetString(TyExc_TypeError, "required field \"col_offset\" missing from excepthandler");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'excepthandler' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'excepthandler' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_lineno, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_lineno = lineno;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'excepthandler' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'excepthandler' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_col_offset, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_col_offset = col_offset;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'excepthandler' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'excepthandler' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     tp = state->ExceptHandler_type;
     isinstance = PyObject_IsInstance(obj, tp);
@@ -16215,92 +16215,92 @@ obj2ast_excepthandler(struct ast_state *state, PyObject* obj, excepthandler_ty*
         if (PyObject_GetOptionalAttr(obj, state->type, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             type = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'ExceptHandler' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'ExceptHandler' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &type, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->name, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             name = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'ExceptHandler' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'ExceptHandler' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "ExceptHandler field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "ExceptHandler field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            body = _Py_asdl_stmt_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            body = _Ty_asdl_stmt_seq_new(len, arena);
             if (body == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 stmt_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'ExceptHandler' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'ExceptHandler' node")) {
                     goto failed;
                 }
                 res = obj2ast_stmt(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "ExceptHandler field \"body\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "ExceptHandler field \"body\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(body, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_ExceptHandler(type, name, body, lineno, col_offset,
+        *out = _TyAST_ExceptHandler(type, name, body, lineno, col_offset,
                                     end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of excepthandler, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of excepthandler, but got %R", obj);
     failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_arguments(struct ast_state *state, PyObject* obj, arguments_ty* out,
+obj2ast_arguments(struct ast_state *state, TyObject* obj, arguments_ty* out,
                   PyArena* arena)
 {
-    PyObject* tmp = NULL;
+    TyObject* tmp = NULL;
     asdl_arg_seq* posonlyargs;
     asdl_arg_seq* args;
     arg_ty vararg;
@@ -16313,239 +16313,239 @@ obj2ast_arguments(struct ast_state *state, PyObject* obj, arguments_ty* out,
         return -1;
     }
     if (tmp == NULL) {
-        tmp = PyList_New(0);
+        tmp = TyList_New(0);
         if (tmp == NULL) {
             return -1;
         }
     }
     {
         int res;
-        Py_ssize_t len;
-        Py_ssize_t i;
-        if (!PyList_Check(tmp)) {
-            PyErr_Format(PyExc_TypeError, "arguments field \"posonlyargs\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+        Ty_ssize_t len;
+        Ty_ssize_t i;
+        if (!TyList_Check(tmp)) {
+            TyErr_Format(TyExc_TypeError, "arguments field \"posonlyargs\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
             goto failed;
         }
-        len = PyList_GET_SIZE(tmp);
-        posonlyargs = _Py_asdl_arg_seq_new(len, arena);
+        len = TyList_GET_SIZE(tmp);
+        posonlyargs = _Ty_asdl_arg_seq_new(len, arena);
         if (posonlyargs == NULL) goto failed;
         for (i = 0; i < len; i++) {
             arg_ty val;
-            PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-            if (_Py_EnterRecursiveCall(" while traversing 'arguments' node")) {
+            TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+            if (_Ty_EnterRecursiveCall(" while traversing 'arguments' node")) {
                 goto failed;
             }
             res = obj2ast_arg(state, tmp2, &val, arena);
-            _Py_LeaveRecursiveCall();
-            Py_DECREF(tmp2);
+            _Ty_LeaveRecursiveCall();
+            Ty_DECREF(tmp2);
             if (res != 0) goto failed;
-            if (len != PyList_GET_SIZE(tmp)) {
-                PyErr_SetString(PyExc_RuntimeError, "arguments field \"posonlyargs\" changed size during iteration");
+            if (len != TyList_GET_SIZE(tmp)) {
+                TyErr_SetString(TyExc_RuntimeError, "arguments field \"posonlyargs\" changed size during iteration");
                 goto failed;
             }
             asdl_seq_SET(posonlyargs, i, val);
         }
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->args, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        tmp = PyList_New(0);
+        tmp = TyList_New(0);
         if (tmp == NULL) {
             return -1;
         }
     }
     {
         int res;
-        Py_ssize_t len;
-        Py_ssize_t i;
-        if (!PyList_Check(tmp)) {
-            PyErr_Format(PyExc_TypeError, "arguments field \"args\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+        Ty_ssize_t len;
+        Ty_ssize_t i;
+        if (!TyList_Check(tmp)) {
+            TyErr_Format(TyExc_TypeError, "arguments field \"args\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
             goto failed;
         }
-        len = PyList_GET_SIZE(tmp);
-        args = _Py_asdl_arg_seq_new(len, arena);
+        len = TyList_GET_SIZE(tmp);
+        args = _Ty_asdl_arg_seq_new(len, arena);
         if (args == NULL) goto failed;
         for (i = 0; i < len; i++) {
             arg_ty val;
-            PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-            if (_Py_EnterRecursiveCall(" while traversing 'arguments' node")) {
+            TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+            if (_Ty_EnterRecursiveCall(" while traversing 'arguments' node")) {
                 goto failed;
             }
             res = obj2ast_arg(state, tmp2, &val, arena);
-            _Py_LeaveRecursiveCall();
-            Py_DECREF(tmp2);
+            _Ty_LeaveRecursiveCall();
+            Ty_DECREF(tmp2);
             if (res != 0) goto failed;
-            if (len != PyList_GET_SIZE(tmp)) {
-                PyErr_SetString(PyExc_RuntimeError, "arguments field \"args\" changed size during iteration");
+            if (len != TyList_GET_SIZE(tmp)) {
+                TyErr_SetString(TyExc_RuntimeError, "arguments field \"args\" changed size during iteration");
                 goto failed;
             }
             asdl_seq_SET(args, i, val);
         }
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->vararg, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         vararg = NULL;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'arguments' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'arguments' node")) {
             goto failed;
         }
         res = obj2ast_arg(state, tmp, &vararg, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->kwonlyargs, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        tmp = PyList_New(0);
+        tmp = TyList_New(0);
         if (tmp == NULL) {
             return -1;
         }
     }
     {
         int res;
-        Py_ssize_t len;
-        Py_ssize_t i;
-        if (!PyList_Check(tmp)) {
-            PyErr_Format(PyExc_TypeError, "arguments field \"kwonlyargs\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+        Ty_ssize_t len;
+        Ty_ssize_t i;
+        if (!TyList_Check(tmp)) {
+            TyErr_Format(TyExc_TypeError, "arguments field \"kwonlyargs\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
             goto failed;
         }
-        len = PyList_GET_SIZE(tmp);
-        kwonlyargs = _Py_asdl_arg_seq_new(len, arena);
+        len = TyList_GET_SIZE(tmp);
+        kwonlyargs = _Ty_asdl_arg_seq_new(len, arena);
         if (kwonlyargs == NULL) goto failed;
         for (i = 0; i < len; i++) {
             arg_ty val;
-            PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-            if (_Py_EnterRecursiveCall(" while traversing 'arguments' node")) {
+            TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+            if (_Ty_EnterRecursiveCall(" while traversing 'arguments' node")) {
                 goto failed;
             }
             res = obj2ast_arg(state, tmp2, &val, arena);
-            _Py_LeaveRecursiveCall();
-            Py_DECREF(tmp2);
+            _Ty_LeaveRecursiveCall();
+            Ty_DECREF(tmp2);
             if (res != 0) goto failed;
-            if (len != PyList_GET_SIZE(tmp)) {
-                PyErr_SetString(PyExc_RuntimeError, "arguments field \"kwonlyargs\" changed size during iteration");
+            if (len != TyList_GET_SIZE(tmp)) {
+                TyErr_SetString(TyExc_RuntimeError, "arguments field \"kwonlyargs\" changed size during iteration");
                 goto failed;
             }
             asdl_seq_SET(kwonlyargs, i, val);
         }
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->kw_defaults, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        tmp = PyList_New(0);
+        tmp = TyList_New(0);
         if (tmp == NULL) {
             return -1;
         }
     }
     {
         int res;
-        Py_ssize_t len;
-        Py_ssize_t i;
-        if (!PyList_Check(tmp)) {
-            PyErr_Format(PyExc_TypeError, "arguments field \"kw_defaults\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+        Ty_ssize_t len;
+        Ty_ssize_t i;
+        if (!TyList_Check(tmp)) {
+            TyErr_Format(TyExc_TypeError, "arguments field \"kw_defaults\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
             goto failed;
         }
-        len = PyList_GET_SIZE(tmp);
-        kw_defaults = _Py_asdl_expr_seq_new(len, arena);
+        len = TyList_GET_SIZE(tmp);
+        kw_defaults = _Ty_asdl_expr_seq_new(len, arena);
         if (kw_defaults == NULL) goto failed;
         for (i = 0; i < len; i++) {
             expr_ty val;
-            PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-            if (_Py_EnterRecursiveCall(" while traversing 'arguments' node")) {
+            TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+            if (_Ty_EnterRecursiveCall(" while traversing 'arguments' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp2, &val, arena);
-            _Py_LeaveRecursiveCall();
-            Py_DECREF(tmp2);
+            _Ty_LeaveRecursiveCall();
+            Ty_DECREF(tmp2);
             if (res != 0) goto failed;
-            if (len != PyList_GET_SIZE(tmp)) {
-                PyErr_SetString(PyExc_RuntimeError, "arguments field \"kw_defaults\" changed size during iteration");
+            if (len != TyList_GET_SIZE(tmp)) {
+                TyErr_SetString(TyExc_RuntimeError, "arguments field \"kw_defaults\" changed size during iteration");
                 goto failed;
             }
             asdl_seq_SET(kw_defaults, i, val);
         }
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->kwarg, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         kwarg = NULL;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'arguments' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'arguments' node")) {
             goto failed;
         }
         res = obj2ast_arg(state, tmp, &kwarg, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->defaults, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        tmp = PyList_New(0);
+        tmp = TyList_New(0);
         if (tmp == NULL) {
             return -1;
         }
     }
     {
         int res;
-        Py_ssize_t len;
-        Py_ssize_t i;
-        if (!PyList_Check(tmp)) {
-            PyErr_Format(PyExc_TypeError, "arguments field \"defaults\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+        Ty_ssize_t len;
+        Ty_ssize_t i;
+        if (!TyList_Check(tmp)) {
+            TyErr_Format(TyExc_TypeError, "arguments field \"defaults\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
             goto failed;
         }
-        len = PyList_GET_SIZE(tmp);
-        defaults = _Py_asdl_expr_seq_new(len, arena);
+        len = TyList_GET_SIZE(tmp);
+        defaults = _Ty_asdl_expr_seq_new(len, arena);
         if (defaults == NULL) goto failed;
         for (i = 0; i < len; i++) {
             expr_ty val;
-            PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-            if (_Py_EnterRecursiveCall(" while traversing 'arguments' node")) {
+            TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+            if (_Ty_EnterRecursiveCall(" while traversing 'arguments' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp2, &val, arena);
-            _Py_LeaveRecursiveCall();
-            Py_DECREF(tmp2);
+            _Ty_LeaveRecursiveCall();
+            Ty_DECREF(tmp2);
             if (res != 0) goto failed;
-            if (len != PyList_GET_SIZE(tmp)) {
-                PyErr_SetString(PyExc_RuntimeError, "arguments field \"defaults\" changed size during iteration");
+            if (len != TyList_GET_SIZE(tmp)) {
+                TyErr_SetString(TyExc_RuntimeError, "arguments field \"defaults\" changed size during iteration");
                 goto failed;
             }
             asdl_seq_SET(defaults, i, val);
         }
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
-    *out = _PyAST_arguments(posonlyargs, args, vararg, kwonlyargs, kw_defaults,
+    *out = _TyAST_arguments(posonlyargs, args, vararg, kwonlyargs, kw_defaults,
                             kwarg, defaults, arena);
     if (*out == NULL) goto failed;
     return 0;
 failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_arg(struct ast_state *state, PyObject* obj, arg_ty* out, PyArena* arena)
+obj2ast_arg(struct ast_state *state, TyObject* obj, arg_ty* out, PyArena* arena)
 {
-    PyObject* tmp = NULL;
+    TyObject* tmp = NULL;
     identifier arg;
     expr_ty annotation;
     string type_comment;
@@ -16558,135 +16558,135 @@ obj2ast_arg(struct ast_state *state, PyObject* obj, arg_ty* out, PyArena* arena)
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"arg\" missing from arg");
+        TyErr_SetString(TyExc_TypeError, "required field \"arg\" missing from arg");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'arg' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'arg' node")) {
             goto failed;
         }
         res = obj2ast_identifier(state, tmp, &arg, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->annotation, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         annotation = NULL;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'arg' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'arg' node")) {
             goto failed;
         }
         res = obj2ast_expr(state, tmp, &annotation, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->type_comment, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         type_comment = NULL;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'arg' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'arg' node")) {
             goto failed;
         }
         res = obj2ast_string(state, tmp, &type_comment, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->lineno, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"lineno\" missing from arg");
+        TyErr_SetString(TyExc_TypeError, "required field \"lineno\" missing from arg");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'arg' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'arg' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"col_offset\" missing from arg");
+        TyErr_SetString(TyExc_TypeError, "required field \"col_offset\" missing from arg");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'arg' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'arg' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_lineno, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_lineno = lineno;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'arg' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'arg' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_col_offset, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_col_offset = col_offset;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'arg' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'arg' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
-    *out = _PyAST_arg(arg, annotation, type_comment, lineno, col_offset,
+    *out = _TyAST_arg(arg, annotation, type_comment, lineno, col_offset,
                       end_lineno, end_col_offset, arena);
     if (*out == NULL) goto failed;
     return 0;
 failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_keyword(struct ast_state *state, PyObject* obj, keyword_ty* out,
+obj2ast_keyword(struct ast_state *state, TyObject* obj, keyword_ty* out,
                 PyArena* arena)
 {
-    PyObject* tmp = NULL;
+    TyObject* tmp = NULL;
     identifier arg;
     expr_ty value;
     int lineno;
@@ -16697,119 +16697,119 @@ obj2ast_keyword(struct ast_state *state, PyObject* obj, keyword_ty* out,
     if (PyObject_GetOptionalAttr(obj, state->arg, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         arg = NULL;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'keyword' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'keyword' node")) {
             goto failed;
         }
         res = obj2ast_identifier(state, tmp, &arg, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->value, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from keyword");
+        TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from keyword");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'keyword' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'keyword' node")) {
             goto failed;
         }
         res = obj2ast_expr(state, tmp, &value, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->lineno, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"lineno\" missing from keyword");
+        TyErr_SetString(TyExc_TypeError, "required field \"lineno\" missing from keyword");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'keyword' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'keyword' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"col_offset\" missing from keyword");
+        TyErr_SetString(TyExc_TypeError, "required field \"col_offset\" missing from keyword");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'keyword' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'keyword' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_lineno, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_lineno = lineno;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'keyword' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'keyword' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_col_offset, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_col_offset = col_offset;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'keyword' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'keyword' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
-    *out = _PyAST_keyword(arg, value, lineno, col_offset, end_lineno,
+    *out = _TyAST_keyword(arg, value, lineno, col_offset, end_lineno,
                           end_col_offset, arena);
     if (*out == NULL) goto failed;
     return 0;
 failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_alias(struct ast_state *state, PyObject* obj, alias_ty* out, PyArena*
+obj2ast_alias(struct ast_state *state, TyObject* obj, alias_ty* out, PyArena*
               arena)
 {
-    PyObject* tmp = NULL;
+    TyObject* tmp = NULL;
     identifier name;
     identifier asname;
     int lineno;
@@ -16821,118 +16821,118 @@ obj2ast_alias(struct ast_state *state, PyObject* obj, alias_ty* out, PyArena*
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"name\" missing from alias");
+        TyErr_SetString(TyExc_TypeError, "required field \"name\" missing from alias");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'alias' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'alias' node")) {
             goto failed;
         }
         res = obj2ast_identifier(state, tmp, &name, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->asname, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         asname = NULL;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'alias' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'alias' node")) {
             goto failed;
         }
         res = obj2ast_identifier(state, tmp, &asname, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->lineno, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"lineno\" missing from alias");
+        TyErr_SetString(TyExc_TypeError, "required field \"lineno\" missing from alias");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'alias' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'alias' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"col_offset\" missing from alias");
+        TyErr_SetString(TyExc_TypeError, "required field \"col_offset\" missing from alias");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'alias' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'alias' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_lineno, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_lineno = lineno;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'alias' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'alias' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_col_offset, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         end_col_offset = col_offset;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'alias' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'alias' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
-    *out = _PyAST_alias(name, asname, lineno, col_offset, end_lineno,
+    *out = _TyAST_alias(name, asname, lineno, col_offset, end_lineno,
                         end_col_offset, arena);
     if (*out == NULL) goto failed;
     return 0;
 failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_withitem(struct ast_state *state, PyObject* obj, withitem_ty* out,
+obj2ast_withitem(struct ast_state *state, TyObject* obj, withitem_ty* out,
                  PyArena* arena)
 {
-    PyObject* tmp = NULL;
+    TyObject* tmp = NULL;
     expr_ty context_expr;
     expr_ty optional_vars;
 
@@ -16940,49 +16940,49 @@ obj2ast_withitem(struct ast_state *state, PyObject* obj, withitem_ty* out,
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"context_expr\" missing from withitem");
+        TyErr_SetString(TyExc_TypeError, "required field \"context_expr\" missing from withitem");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'withitem' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'withitem' node")) {
             goto failed;
         }
         res = obj2ast_expr(state, tmp, &context_expr, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->optional_vars, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         optional_vars = NULL;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'withitem' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'withitem' node")) {
             goto failed;
         }
         res = obj2ast_expr(state, tmp, &optional_vars, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
-    *out = _PyAST_withitem(context_expr, optional_vars, arena);
+    *out = _TyAST_withitem(context_expr, optional_vars, arena);
     if (*out == NULL) goto failed;
     return 0;
 failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_match_case(struct ast_state *state, PyObject* obj, match_case_ty* out,
+obj2ast_match_case(struct ast_state *state, TyObject* obj, match_case_ty* out,
                    PyArena* arena)
 {
-    PyObject* tmp = NULL;
+    TyObject* tmp = NULL;
     pattern_ty pattern;
     expr_ty guard;
     asdl_stmt_seq* body;
@@ -16991,96 +16991,96 @@ obj2ast_match_case(struct ast_state *state, PyObject* obj, match_case_ty* out,
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"pattern\" missing from match_case");
+        TyErr_SetString(TyExc_TypeError, "required field \"pattern\" missing from match_case");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'match_case' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'match_case' node")) {
             goto failed;
         }
         res = obj2ast_pattern(state, tmp, &pattern, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->guard, &tmp) < 0) {
         return -1;
     }
-    if (tmp == NULL || tmp == Py_None) {
-        Py_CLEAR(tmp);
+    if (tmp == NULL || tmp == Ty_None) {
+        Ty_CLEAR(tmp);
         guard = NULL;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'match_case' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'match_case' node")) {
             goto failed;
         }
         res = obj2ast_expr(state, tmp, &guard, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->body, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        tmp = PyList_New(0);
+        tmp = TyList_New(0);
         if (tmp == NULL) {
             return -1;
         }
     }
     {
         int res;
-        Py_ssize_t len;
-        Py_ssize_t i;
-        if (!PyList_Check(tmp)) {
-            PyErr_Format(PyExc_TypeError, "match_case field \"body\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+        Ty_ssize_t len;
+        Ty_ssize_t i;
+        if (!TyList_Check(tmp)) {
+            TyErr_Format(TyExc_TypeError, "match_case field \"body\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
             goto failed;
         }
-        len = PyList_GET_SIZE(tmp);
-        body = _Py_asdl_stmt_seq_new(len, arena);
+        len = TyList_GET_SIZE(tmp);
+        body = _Ty_asdl_stmt_seq_new(len, arena);
         if (body == NULL) goto failed;
         for (i = 0; i < len; i++) {
             stmt_ty val;
-            PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-            if (_Py_EnterRecursiveCall(" while traversing 'match_case' node")) {
+            TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+            if (_Ty_EnterRecursiveCall(" while traversing 'match_case' node")) {
                 goto failed;
             }
             res = obj2ast_stmt(state, tmp2, &val, arena);
-            _Py_LeaveRecursiveCall();
-            Py_DECREF(tmp2);
+            _Ty_LeaveRecursiveCall();
+            Ty_DECREF(tmp2);
             if (res != 0) goto failed;
-            if (len != PyList_GET_SIZE(tmp)) {
-                PyErr_SetString(PyExc_RuntimeError, "match_case field \"body\" changed size during iteration");
+            if (len != TyList_GET_SIZE(tmp)) {
+                TyErr_SetString(TyExc_RuntimeError, "match_case field \"body\" changed size during iteration");
                 goto failed;
             }
             asdl_seq_SET(body, i, val);
         }
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
-    *out = _PyAST_match_case(pattern, guard, body, arena);
+    *out = _TyAST_match_case(pattern, guard, body, arena);
     if (*out == NULL) goto failed;
     return 0;
 failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
+obj2ast_pattern(struct ast_state *state, TyObject* obj, pattern_ty* out,
                 PyArena* arena)
 {
     int isinstance;
 
-    PyObject *tmp = NULL;
-    PyObject *tp;
+    TyObject *tmp = NULL;
+    TyObject *tp;
     int lineno;
     int col_offset;
     int end_lineno;
     int end_col_offset;
 
-    if (obj == Py_None) {
+    if (obj == Ty_None) {
         *out = NULL;
         return 0;
     }
@@ -17088,69 +17088,69 @@ obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"lineno\" missing from pattern");
+        TyErr_SetString(TyExc_TypeError, "required field \"lineno\" missing from pattern");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'pattern' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'pattern' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"col_offset\" missing from pattern");
+        TyErr_SetString(TyExc_TypeError, "required field \"col_offset\" missing from pattern");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'pattern' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'pattern' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_lineno, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"end_lineno\" missing from pattern");
+        TyErr_SetString(TyExc_TypeError, "required field \"end_lineno\" missing from pattern");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'pattern' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'pattern' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"end_col_offset\" missing from pattern");
+        TyErr_SetString(TyExc_TypeError, "required field \"end_col_offset\" missing from pattern");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'pattern' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'pattern' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     tp = state->MatchValue_type;
     isinstance = PyObject_IsInstance(obj, tp);
@@ -17164,20 +17164,20 @@ obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from MatchValue");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from MatchValue");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'MatchValue' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'MatchValue' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_MatchValue(value, lineno, col_offset, end_lineno,
+        *out = _TyAST_MatchValue(value, lineno, col_offset, end_lineno,
                                  end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -17194,20 +17194,20 @@ obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"value\" missing from MatchSingleton");
+            TyErr_SetString(TyExc_TypeError, "required field \"value\" missing from MatchSingleton");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'MatchSingleton' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'MatchSingleton' node")) {
                 goto failed;
             }
             res = obj2ast_constant(state, tmp, &value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_MatchSingleton(value, lineno, col_offset, end_lineno,
+        *out = _TyAST_MatchSingleton(value, lineno, col_offset, end_lineno,
                                      end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -17224,41 +17224,41 @@ obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "MatchSequence field \"patterns\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "MatchSequence field \"patterns\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            patterns = _Py_asdl_pattern_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            patterns = _Ty_asdl_pattern_seq_new(len, arena);
             if (patterns == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 pattern_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'MatchSequence' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'MatchSequence' node")) {
                     goto failed;
                 }
                 res = obj2ast_pattern(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "MatchSequence field \"patterns\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "MatchSequence field \"patterns\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(patterns, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_MatchSequence(patterns, lineno, col_offset, end_lineno,
+        *out = _TyAST_MatchSequence(patterns, lineno, col_offset, end_lineno,
                                     end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -17277,96 +17277,96 @@ obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "MatchMapping field \"keys\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "MatchMapping field \"keys\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            keys = _Py_asdl_expr_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            keys = _Ty_asdl_expr_seq_new(len, arena);
             if (keys == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 expr_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'MatchMapping' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'MatchMapping' node")) {
                     goto failed;
                 }
                 res = obj2ast_expr(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "MatchMapping field \"keys\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "MatchMapping field \"keys\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(keys, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->patterns, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "MatchMapping field \"patterns\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "MatchMapping field \"patterns\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            patterns = _Py_asdl_pattern_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            patterns = _Ty_asdl_pattern_seq_new(len, arena);
             if (patterns == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 pattern_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'MatchMapping' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'MatchMapping' node")) {
                     goto failed;
                 }
                 res = obj2ast_pattern(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "MatchMapping field \"patterns\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "MatchMapping field \"patterns\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(patterns, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->rest, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             rest = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'MatchMapping' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'MatchMapping' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &rest, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_MatchMapping(keys, patterns, rest, lineno, col_offset,
+        *out = _TyAST_MatchMapping(keys, patterns, rest, lineno, col_offset,
                                    end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -17386,134 +17386,134 @@ obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"cls\" missing from MatchClass");
+            TyErr_SetString(TyExc_TypeError, "required field \"cls\" missing from MatchClass");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'MatchClass' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'MatchClass' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &cls, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->patterns, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "MatchClass field \"patterns\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "MatchClass field \"patterns\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            patterns = _Py_asdl_pattern_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            patterns = _Ty_asdl_pattern_seq_new(len, arena);
             if (patterns == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 pattern_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'MatchClass' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'MatchClass' node")) {
                     goto failed;
                 }
                 res = obj2ast_pattern(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "MatchClass field \"patterns\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "MatchClass field \"patterns\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(patterns, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->kwd_attrs, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "MatchClass field \"kwd_attrs\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "MatchClass field \"kwd_attrs\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            kwd_attrs = _Py_asdl_identifier_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            kwd_attrs = _Ty_asdl_identifier_seq_new(len, arena);
             if (kwd_attrs == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 identifier val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'MatchClass' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'MatchClass' node")) {
                     goto failed;
                 }
                 res = obj2ast_identifier(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "MatchClass field \"kwd_attrs\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "MatchClass field \"kwd_attrs\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(kwd_attrs, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->kwd_patterns, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "MatchClass field \"kwd_patterns\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "MatchClass field \"kwd_patterns\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            kwd_patterns = _Py_asdl_pattern_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            kwd_patterns = _Ty_asdl_pattern_seq_new(len, arena);
             if (kwd_patterns == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 pattern_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'MatchClass' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'MatchClass' node")) {
                     goto failed;
                 }
                 res = obj2ast_pattern(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "MatchClass field \"kwd_patterns\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "MatchClass field \"kwd_patterns\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(kwd_patterns, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_MatchClass(cls, patterns, kwd_attrs, kwd_patterns,
+        *out = _TyAST_MatchClass(cls, patterns, kwd_attrs, kwd_patterns,
                                  lineno, col_offset, end_lineno,
                                  end_col_offset, arena);
         if (*out == NULL) goto failed;
@@ -17530,21 +17530,21 @@ obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
         if (PyObject_GetOptionalAttr(obj, state->name, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             name = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'MatchStar' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'MatchStar' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_MatchStar(name, lineno, col_offset, end_lineno,
+        *out = _TyAST_MatchStar(name, lineno, col_offset, end_lineno,
                                 end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -17561,38 +17561,38 @@ obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
         if (PyObject_GetOptionalAttr(obj, state->pattern, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             pattern = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'MatchAs' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'MatchAs' node")) {
                 goto failed;
             }
             res = obj2ast_pattern(state, tmp, &pattern, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->name, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             name = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'MatchAs' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'MatchAs' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_MatchAs(pattern, name, lineno, col_offset, end_lineno,
+        *out = _TyAST_MatchAs(pattern, name, lineno, col_offset, end_lineno,
                               end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -17609,62 +17609,62 @@ obj2ast_pattern(struct ast_state *state, PyObject* obj, pattern_ty* out,
             return -1;
         }
         if (tmp == NULL) {
-            tmp = PyList_New(0);
+            tmp = TyList_New(0);
             if (tmp == NULL) {
                 return -1;
             }
         }
         {
             int res;
-            Py_ssize_t len;
-            Py_ssize_t i;
-            if (!PyList_Check(tmp)) {
-                PyErr_Format(PyExc_TypeError, "MatchOr field \"patterns\" must be a list, not a %.200s", _PyType_Name(Py_TYPE(tmp)));
+            Ty_ssize_t len;
+            Ty_ssize_t i;
+            if (!TyList_Check(tmp)) {
+                TyErr_Format(TyExc_TypeError, "MatchOr field \"patterns\" must be a list, not a %.200s", _TyType_Name(Ty_TYPE(tmp)));
                 goto failed;
             }
-            len = PyList_GET_SIZE(tmp);
-            patterns = _Py_asdl_pattern_seq_new(len, arena);
+            len = TyList_GET_SIZE(tmp);
+            patterns = _Ty_asdl_pattern_seq_new(len, arena);
             if (patterns == NULL) goto failed;
             for (i = 0; i < len; i++) {
                 pattern_ty val;
-                PyObject *tmp2 = Py_NewRef(PyList_GET_ITEM(tmp, i));
-                if (_Py_EnterRecursiveCall(" while traversing 'MatchOr' node")) {
+                TyObject *tmp2 = Ty_NewRef(TyList_GET_ITEM(tmp, i));
+                if (_Ty_EnterRecursiveCall(" while traversing 'MatchOr' node")) {
                     goto failed;
                 }
                 res = obj2ast_pattern(state, tmp2, &val, arena);
-                _Py_LeaveRecursiveCall();
-                Py_DECREF(tmp2);
+                _Ty_LeaveRecursiveCall();
+                Ty_DECREF(tmp2);
                 if (res != 0) goto failed;
-                if (len != PyList_GET_SIZE(tmp)) {
-                    PyErr_SetString(PyExc_RuntimeError, "MatchOr field \"patterns\" changed size during iteration");
+                if (len != TyList_GET_SIZE(tmp)) {
+                    TyErr_SetString(TyExc_RuntimeError, "MatchOr field \"patterns\" changed size during iteration");
                     goto failed;
                 }
                 asdl_seq_SET(patterns, i, val);
             }
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_MatchOr(patterns, lineno, col_offset, end_lineno,
+        *out = _TyAST_MatchOr(patterns, lineno, col_offset, end_lineno,
                               end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of pattern, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of pattern, but got %R", obj);
     failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_type_ignore(struct ast_state *state, PyObject* obj, type_ignore_ty*
+obj2ast_type_ignore(struct ast_state *state, TyObject* obj, type_ignore_ty*
                     out, PyArena* arena)
 {
     int isinstance;
 
-    PyObject *tmp = NULL;
-    PyObject *tp;
+    TyObject *tmp = NULL;
+    TyObject *tp;
 
-    if (obj == Py_None) {
+    if (obj == Ty_None) {
         *out = NULL;
         return 0;
     }
@@ -17681,61 +17681,61 @@ obj2ast_type_ignore(struct ast_state *state, PyObject* obj, type_ignore_ty*
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"lineno\" missing from TypeIgnore");
+            TyErr_SetString(TyExc_TypeError, "required field \"lineno\" missing from TypeIgnore");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'TypeIgnore' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'TypeIgnore' node")) {
                 goto failed;
             }
             res = obj2ast_int(state, tmp, &lineno, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->tag, &tmp) < 0) {
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"tag\" missing from TypeIgnore");
+            TyErr_SetString(TyExc_TypeError, "required field \"tag\" missing from TypeIgnore");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'TypeIgnore' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'TypeIgnore' node")) {
                 goto failed;
             }
             res = obj2ast_string(state, tmp, &tag, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_TypeIgnore(lineno, tag, arena);
+        *out = _TyAST_TypeIgnore(lineno, tag, arena);
         if (*out == NULL) goto failed;
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of type_ignore, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of type_ignore, but got %R", obj);
     failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 int
-obj2ast_type_param(struct ast_state *state, PyObject* obj, type_param_ty* out,
+obj2ast_type_param(struct ast_state *state, TyObject* obj, type_param_ty* out,
                    PyArena* arena)
 {
     int isinstance;
 
-    PyObject *tmp = NULL;
-    PyObject *tp;
+    TyObject *tmp = NULL;
+    TyObject *tp;
     int lineno;
     int col_offset;
     int end_lineno;
     int end_col_offset;
 
-    if (obj == Py_None) {
+    if (obj == Ty_None) {
         *out = NULL;
         return 0;
     }
@@ -17743,69 +17743,69 @@ obj2ast_type_param(struct ast_state *state, PyObject* obj, type_param_ty* out,
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"lineno\" missing from type_param");
+        TyErr_SetString(TyExc_TypeError, "required field \"lineno\" missing from type_param");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'type_param' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'type_param' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"col_offset\" missing from type_param");
+        TyErr_SetString(TyExc_TypeError, "required field \"col_offset\" missing from type_param");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'type_param' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'type_param' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_lineno, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"end_lineno\" missing from type_param");
+        TyErr_SetString(TyExc_TypeError, "required field \"end_lineno\" missing from type_param");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'type_param' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'type_param' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_lineno, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     if (PyObject_GetOptionalAttr(obj, state->end_col_offset, &tmp) < 0) {
         return -1;
     }
     if (tmp == NULL) {
-        PyErr_SetString(PyExc_TypeError, "required field \"end_col_offset\" missing from type_param");
+        TyErr_SetString(TyExc_TypeError, "required field \"end_col_offset\" missing from type_param");
         return -1;
     }
     else {
         int res;
-        if (_Py_EnterRecursiveCall(" while traversing 'type_param' node")) {
+        if (_Ty_EnterRecursiveCall(" while traversing 'type_param' node")) {
             goto failed;
         }
         res = obj2ast_int(state, tmp, &end_col_offset, arena);
-        _Py_LeaveRecursiveCall();
+        _Ty_LeaveRecursiveCall();
         if (res != 0) goto failed;
-        Py_CLEAR(tmp);
+        Ty_CLEAR(tmp);
     }
     tp = state->TypeVar_type;
     isinstance = PyObject_IsInstance(obj, tp);
@@ -17821,54 +17821,54 @@ obj2ast_type_param(struct ast_state *state, PyObject* obj, type_param_ty* out,
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"name\" missing from TypeVar");
+            TyErr_SetString(TyExc_TypeError, "required field \"name\" missing from TypeVar");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'TypeVar' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'TypeVar' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->bound, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             bound = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'TypeVar' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'TypeVar' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &bound, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->default_value, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             default_value = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'TypeVar' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'TypeVar' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &default_value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_TypeVar(name, bound, default_value, lineno, col_offset,
+        *out = _TyAST_TypeVar(name, bound, default_value, lineno, col_offset,
                               end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -17886,37 +17886,37 @@ obj2ast_type_param(struct ast_state *state, PyObject* obj, type_param_ty* out,
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"name\" missing from ParamSpec");
+            TyErr_SetString(TyExc_TypeError, "required field \"name\" missing from ParamSpec");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'ParamSpec' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'ParamSpec' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->default_value, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             default_value = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'ParamSpec' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'ParamSpec' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &default_value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_ParamSpec(name, default_value, lineno, col_offset,
+        *out = _TyAST_ParamSpec(name, default_value, lineno, col_offset,
                                 end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
@@ -17934,456 +17934,456 @@ obj2ast_type_param(struct ast_state *state, PyObject* obj, type_param_ty* out,
             return -1;
         }
         if (tmp == NULL) {
-            PyErr_SetString(PyExc_TypeError, "required field \"name\" missing from TypeVarTuple");
+            TyErr_SetString(TyExc_TypeError, "required field \"name\" missing from TypeVarTuple");
             return -1;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'TypeVarTuple' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'TypeVarTuple' node")) {
                 goto failed;
             }
             res = obj2ast_identifier(state, tmp, &name, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
         if (PyObject_GetOptionalAttr(obj, state->default_value, &tmp) < 0) {
             return -1;
         }
-        if (tmp == NULL || tmp == Py_None) {
-            Py_CLEAR(tmp);
+        if (tmp == NULL || tmp == Ty_None) {
+            Ty_CLEAR(tmp);
             default_value = NULL;
         }
         else {
             int res;
-            if (_Py_EnterRecursiveCall(" while traversing 'TypeVarTuple' node")) {
+            if (_Ty_EnterRecursiveCall(" while traversing 'TypeVarTuple' node")) {
                 goto failed;
             }
             res = obj2ast_expr(state, tmp, &default_value, arena);
-            _Py_LeaveRecursiveCall();
+            _Ty_LeaveRecursiveCall();
             if (res != 0) goto failed;
-            Py_CLEAR(tmp);
+            Ty_CLEAR(tmp);
         }
-        *out = _PyAST_TypeVarTuple(name, default_value, lineno, col_offset,
+        *out = _TyAST_TypeVarTuple(name, default_value, lineno, col_offset,
                                    end_lineno, end_col_offset, arena);
         if (*out == NULL) goto failed;
         return 0;
     }
 
-    PyErr_Format(PyExc_TypeError, "expected some sort of type_param, but got %R", obj);
+    TyErr_Format(TyExc_TypeError, "expected some sort of type_param, but got %R", obj);
     failed:
-    Py_XDECREF(tmp);
+    Ty_XDECREF(tmp);
     return -1;
 }
 
 
 static int
-astmodule_exec(PyObject *m)
+astmodule_exec(TyObject *m)
 {
     struct ast_state *state = get_ast_state();
     if (state == NULL) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "AST", state->AST_type) < 0) {
+    if (TyModule_AddObjectRef(m, "AST", state->AST_type) < 0) {
         return -1;
     }
-    if (PyModule_AddIntMacro(m, PyCF_ALLOW_TOP_LEVEL_AWAIT) < 0) {
+    if (TyModule_AddIntMacro(m, PyCF_ALLOW_TOP_LEVEL_AWAIT) < 0) {
         return -1;
     }
-    if (PyModule_AddIntMacro(m, PyCF_ONLY_AST) < 0) {
+    if (TyModule_AddIntMacro(m, PyCF_ONLY_AST) < 0) {
         return -1;
     }
-    if (PyModule_AddIntMacro(m, PyCF_TYPE_COMMENTS) < 0) {
+    if (TyModule_AddIntMacro(m, PyCF_TYPE_COMMENTS) < 0) {
         return -1;
     }
-    if (PyModule_AddIntMacro(m, PyCF_OPTIMIZED_AST) < 0) {
+    if (TyModule_AddIntMacro(m, PyCF_OPTIMIZED_AST) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "mod", state->mod_type) < 0) {
+    if (TyModule_AddObjectRef(m, "mod", state->mod_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Module", state->Module_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Module", state->Module_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Interactive", state->Interactive_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Interactive", state->Interactive_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Expression", state->Expression_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Expression", state->Expression_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "FunctionType", state->FunctionType_type) < 0)
+    if (TyModule_AddObjectRef(m, "FunctionType", state->FunctionType_type) < 0)
         {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "stmt", state->stmt_type) < 0) {
+    if (TyModule_AddObjectRef(m, "stmt", state->stmt_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "FunctionDef", state->FunctionDef_type) < 0) {
+    if (TyModule_AddObjectRef(m, "FunctionDef", state->FunctionDef_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "AsyncFunctionDef",
+    if (TyModule_AddObjectRef(m, "AsyncFunctionDef",
         state->AsyncFunctionDef_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "ClassDef", state->ClassDef_type) < 0) {
+    if (TyModule_AddObjectRef(m, "ClassDef", state->ClassDef_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Return", state->Return_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Return", state->Return_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Delete", state->Delete_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Delete", state->Delete_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Assign", state->Assign_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Assign", state->Assign_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "TypeAlias", state->TypeAlias_type) < 0) {
+    if (TyModule_AddObjectRef(m, "TypeAlias", state->TypeAlias_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "AugAssign", state->AugAssign_type) < 0) {
+    if (TyModule_AddObjectRef(m, "AugAssign", state->AugAssign_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "AnnAssign", state->AnnAssign_type) < 0) {
+    if (TyModule_AddObjectRef(m, "AnnAssign", state->AnnAssign_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "For", state->For_type) < 0) {
+    if (TyModule_AddObjectRef(m, "For", state->For_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "AsyncFor", state->AsyncFor_type) < 0) {
+    if (TyModule_AddObjectRef(m, "AsyncFor", state->AsyncFor_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "While", state->While_type) < 0) {
+    if (TyModule_AddObjectRef(m, "While", state->While_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "If", state->If_type) < 0) {
+    if (TyModule_AddObjectRef(m, "If", state->If_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "With", state->With_type) < 0) {
+    if (TyModule_AddObjectRef(m, "With", state->With_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "AsyncWith", state->AsyncWith_type) < 0) {
+    if (TyModule_AddObjectRef(m, "AsyncWith", state->AsyncWith_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Match", state->Match_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Match", state->Match_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Raise", state->Raise_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Raise", state->Raise_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Try", state->Try_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Try", state->Try_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "TryStar", state->TryStar_type) < 0) {
+    if (TyModule_AddObjectRef(m, "TryStar", state->TryStar_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Assert", state->Assert_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Assert", state->Assert_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Import", state->Import_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Import", state->Import_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "ImportFrom", state->ImportFrom_type) < 0) {
+    if (TyModule_AddObjectRef(m, "ImportFrom", state->ImportFrom_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Global", state->Global_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Global", state->Global_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Nonlocal", state->Nonlocal_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Nonlocal", state->Nonlocal_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Expr", state->Expr_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Expr", state->Expr_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Pass", state->Pass_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Pass", state->Pass_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Break", state->Break_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Break", state->Break_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Continue", state->Continue_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Continue", state->Continue_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "expr", state->expr_type) < 0) {
+    if (TyModule_AddObjectRef(m, "expr", state->expr_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "BoolOp", state->BoolOp_type) < 0) {
+    if (TyModule_AddObjectRef(m, "BoolOp", state->BoolOp_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "NamedExpr", state->NamedExpr_type) < 0) {
+    if (TyModule_AddObjectRef(m, "NamedExpr", state->NamedExpr_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "BinOp", state->BinOp_type) < 0) {
+    if (TyModule_AddObjectRef(m, "BinOp", state->BinOp_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "UnaryOp", state->UnaryOp_type) < 0) {
+    if (TyModule_AddObjectRef(m, "UnaryOp", state->UnaryOp_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Lambda", state->Lambda_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Lambda", state->Lambda_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "IfExp", state->IfExp_type) < 0) {
+    if (TyModule_AddObjectRef(m, "IfExp", state->IfExp_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Dict", state->Dict_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Dict", state->Dict_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Set", state->Set_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Set", state->Set_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "ListComp", state->ListComp_type) < 0) {
+    if (TyModule_AddObjectRef(m, "ListComp", state->ListComp_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "SetComp", state->SetComp_type) < 0) {
+    if (TyModule_AddObjectRef(m, "SetComp", state->SetComp_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "DictComp", state->DictComp_type) < 0) {
+    if (TyModule_AddObjectRef(m, "DictComp", state->DictComp_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "GeneratorExp", state->GeneratorExp_type) < 0)
+    if (TyModule_AddObjectRef(m, "GeneratorExp", state->GeneratorExp_type) < 0)
         {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Await", state->Await_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Await", state->Await_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Yield", state->Yield_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Yield", state->Yield_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "YieldFrom", state->YieldFrom_type) < 0) {
+    if (TyModule_AddObjectRef(m, "YieldFrom", state->YieldFrom_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Compare", state->Compare_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Compare", state->Compare_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Call", state->Call_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Call", state->Call_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "FormattedValue", state->FormattedValue_type)
+    if (TyModule_AddObjectRef(m, "FormattedValue", state->FormattedValue_type)
         < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Interpolation", state->Interpolation_type) <
+    if (TyModule_AddObjectRef(m, "Interpolation", state->Interpolation_type) <
         0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "JoinedStr", state->JoinedStr_type) < 0) {
+    if (TyModule_AddObjectRef(m, "JoinedStr", state->JoinedStr_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "TemplateStr", state->TemplateStr_type) < 0) {
+    if (TyModule_AddObjectRef(m, "TemplateStr", state->TemplateStr_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Constant", state->Constant_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Constant", state->Constant_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Attribute", state->Attribute_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Attribute", state->Attribute_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Subscript", state->Subscript_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Subscript", state->Subscript_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Starred", state->Starred_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Starred", state->Starred_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Name", state->Name_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Name", state->Name_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "List", state->List_type) < 0) {
+    if (TyModule_AddObjectRef(m, "List", state->List_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Tuple", state->Tuple_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Tuple", state->Tuple_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Slice", state->Slice_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Slice", state->Slice_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "expr_context", state->expr_context_type) < 0)
+    if (TyModule_AddObjectRef(m, "expr_context", state->expr_context_type) < 0)
         {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Load", state->Load_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Load", state->Load_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Store", state->Store_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Store", state->Store_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Del", state->Del_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Del", state->Del_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "boolop", state->boolop_type) < 0) {
+    if (TyModule_AddObjectRef(m, "boolop", state->boolop_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "And", state->And_type) < 0) {
+    if (TyModule_AddObjectRef(m, "And", state->And_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Or", state->Or_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Or", state->Or_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "operator", state->operator_type) < 0) {
+    if (TyModule_AddObjectRef(m, "operator", state->operator_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Add", state->Add_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Add", state->Add_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Sub", state->Sub_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Sub", state->Sub_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Mult", state->Mult_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Mult", state->Mult_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "MatMult", state->MatMult_type) < 0) {
+    if (TyModule_AddObjectRef(m, "MatMult", state->MatMult_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Div", state->Div_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Div", state->Div_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Mod", state->Mod_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Mod", state->Mod_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Pow", state->Pow_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Pow", state->Pow_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "LShift", state->LShift_type) < 0) {
+    if (TyModule_AddObjectRef(m, "LShift", state->LShift_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "RShift", state->RShift_type) < 0) {
+    if (TyModule_AddObjectRef(m, "RShift", state->RShift_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "BitOr", state->BitOr_type) < 0) {
+    if (TyModule_AddObjectRef(m, "BitOr", state->BitOr_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "BitXor", state->BitXor_type) < 0) {
+    if (TyModule_AddObjectRef(m, "BitXor", state->BitXor_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "BitAnd", state->BitAnd_type) < 0) {
+    if (TyModule_AddObjectRef(m, "BitAnd", state->BitAnd_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "FloorDiv", state->FloorDiv_type) < 0) {
+    if (TyModule_AddObjectRef(m, "FloorDiv", state->FloorDiv_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "unaryop", state->unaryop_type) < 0) {
+    if (TyModule_AddObjectRef(m, "unaryop", state->unaryop_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Invert", state->Invert_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Invert", state->Invert_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Not", state->Not_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Not", state->Not_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "UAdd", state->UAdd_type) < 0) {
+    if (TyModule_AddObjectRef(m, "UAdd", state->UAdd_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "USub", state->USub_type) < 0) {
+    if (TyModule_AddObjectRef(m, "USub", state->USub_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "cmpop", state->cmpop_type) < 0) {
+    if (TyModule_AddObjectRef(m, "cmpop", state->cmpop_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Eq", state->Eq_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Eq", state->Eq_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "NotEq", state->NotEq_type) < 0) {
+    if (TyModule_AddObjectRef(m, "NotEq", state->NotEq_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Lt", state->Lt_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Lt", state->Lt_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "LtE", state->LtE_type) < 0) {
+    if (TyModule_AddObjectRef(m, "LtE", state->LtE_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Gt", state->Gt_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Gt", state->Gt_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "GtE", state->GtE_type) < 0) {
+    if (TyModule_AddObjectRef(m, "GtE", state->GtE_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "Is", state->Is_type) < 0) {
+    if (TyModule_AddObjectRef(m, "Is", state->Is_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "IsNot", state->IsNot_type) < 0) {
+    if (TyModule_AddObjectRef(m, "IsNot", state->IsNot_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "In", state->In_type) < 0) {
+    if (TyModule_AddObjectRef(m, "In", state->In_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "NotIn", state->NotIn_type) < 0) {
+    if (TyModule_AddObjectRef(m, "NotIn", state->NotIn_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "comprehension", state->comprehension_type) <
+    if (TyModule_AddObjectRef(m, "comprehension", state->comprehension_type) <
         0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "excepthandler", state->excepthandler_type) <
+    if (TyModule_AddObjectRef(m, "excepthandler", state->excepthandler_type) <
         0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "ExceptHandler", state->ExceptHandler_type) <
+    if (TyModule_AddObjectRef(m, "ExceptHandler", state->ExceptHandler_type) <
         0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "arguments", state->arguments_type) < 0) {
+    if (TyModule_AddObjectRef(m, "arguments", state->arguments_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "arg", state->arg_type) < 0) {
+    if (TyModule_AddObjectRef(m, "arg", state->arg_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "keyword", state->keyword_type) < 0) {
+    if (TyModule_AddObjectRef(m, "keyword", state->keyword_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "alias", state->alias_type) < 0) {
+    if (TyModule_AddObjectRef(m, "alias", state->alias_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "withitem", state->withitem_type) < 0) {
+    if (TyModule_AddObjectRef(m, "withitem", state->withitem_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "match_case", state->match_case_type) < 0) {
+    if (TyModule_AddObjectRef(m, "match_case", state->match_case_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "pattern", state->pattern_type) < 0) {
+    if (TyModule_AddObjectRef(m, "pattern", state->pattern_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "MatchValue", state->MatchValue_type) < 0) {
+    if (TyModule_AddObjectRef(m, "MatchValue", state->MatchValue_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "MatchSingleton", state->MatchSingleton_type)
+    if (TyModule_AddObjectRef(m, "MatchSingleton", state->MatchSingleton_type)
         < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "MatchSequence", state->MatchSequence_type) <
+    if (TyModule_AddObjectRef(m, "MatchSequence", state->MatchSequence_type) <
         0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "MatchMapping", state->MatchMapping_type) < 0)
+    if (TyModule_AddObjectRef(m, "MatchMapping", state->MatchMapping_type) < 0)
         {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "MatchClass", state->MatchClass_type) < 0) {
+    if (TyModule_AddObjectRef(m, "MatchClass", state->MatchClass_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "MatchStar", state->MatchStar_type) < 0) {
+    if (TyModule_AddObjectRef(m, "MatchStar", state->MatchStar_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "MatchAs", state->MatchAs_type) < 0) {
+    if (TyModule_AddObjectRef(m, "MatchAs", state->MatchAs_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "MatchOr", state->MatchOr_type) < 0) {
+    if (TyModule_AddObjectRef(m, "MatchOr", state->MatchOr_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "type_ignore", state->type_ignore_type) < 0) {
+    if (TyModule_AddObjectRef(m, "type_ignore", state->type_ignore_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "TypeIgnore", state->TypeIgnore_type) < 0) {
+    if (TyModule_AddObjectRef(m, "TypeIgnore", state->TypeIgnore_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "type_param", state->type_param_type) < 0) {
+    if (TyModule_AddObjectRef(m, "type_param", state->type_param_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "TypeVar", state->TypeVar_type) < 0) {
+    if (TyModule_AddObjectRef(m, "TypeVar", state->TypeVar_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "ParamSpec", state->ParamSpec_type) < 0) {
+    if (TyModule_AddObjectRef(m, "ParamSpec", state->ParamSpec_type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "TypeVarTuple", state->TypeVarTuple_type) < 0)
+    if (TyModule_AddObjectRef(m, "TypeVarTuple", state->TypeVarTuple_type) < 0)
         {
         return -1;
     }
@@ -18391,16 +18391,16 @@ astmodule_exec(PyObject *m)
 }
 
 static PyModuleDef_Slot astmodule_slots[] = {
-    {Py_mod_exec, astmodule_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, astmodule_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef _astmodule = {
+static struct TyModuleDef _astmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_ast",
-    // The _ast module uses a per-interpreter state (PyInterpreterState.ast)
+    // The _ast module uses a per-interpreter state (TyInterpreterState.ast)
     .m_size = 0,
     .m_slots = astmodule_slots,
 };
@@ -18412,19 +18412,19 @@ PyInit__ast(void)
 }
 
 
-PyObject* PyAST_mod2obj(mod_ty t)
+TyObject* TyAST_mod2obj(mod_ty t)
 {
     struct ast_state *state = get_ast_state();
     if (state == NULL) {
         return NULL;
     }
-    PyObject *result = ast2obj_mod(state, t);
+    TyObject *result = ast2obj_mod(state, t);
 
     return result;
 }
 
 /* mode is 0 for "exec", 1 for "eval" and 2 for "single" input */
-int PyAst_CheckMode(PyObject *ast, int mode)
+int PyAst_CheckMode(TyObject *ast, int mode)
 {
     const char * const req_name[] = {"Module", "Expression", "Interactive"};
 
@@ -18433,7 +18433,7 @@ int PyAst_CheckMode(PyObject *ast, int mode)
         return -1;
     }
 
-    PyObject *req_type[3];
+    TyObject *req_type[3];
     req_type[0] = state->Module_type;
     req_type[1] = state->Expression_type;
     req_type[2] = state->Interactive_type;
@@ -18444,16 +18444,16 @@ int PyAst_CheckMode(PyObject *ast, int mode)
         return -1;
     }
     if (!isinstance) {
-        PyErr_Format(PyExc_TypeError, "expected %s node, got %.400s",
-                     req_name[mode], _PyType_Name(Py_TYPE(ast)));
+        TyErr_Format(TyExc_TypeError, "expected %s node, got %.400s",
+                     req_name[mode], _TyType_Name(Ty_TYPE(ast)));
         return -1;
     }
     return 0;
 }
 
-mod_ty PyAST_obj2mod(PyObject* ast, PyArena* arena, int mode)
+mod_ty TyAST_obj2mod(TyObject* ast, PyArena* arena, int mode)
 {
-    if (PySys_Audit("compile", "OO", ast, Py_None) < 0) {
+    if (TySys_Audit("compile", "OO", ast, Ty_None) < 0) {
         return NULL;
     }
 
@@ -18473,7 +18473,7 @@ mod_ty PyAST_obj2mod(PyObject* ast, PyArena* arena, int mode)
         return res;
 }
 
-int PyAST_Check(PyObject* obj)
+int TyAST_Check(TyObject* obj)
 {
     struct ast_state *state = get_ast_state();
     if (state == NULL) {

@@ -60,7 +60,7 @@
 #   Otherwise, leave None and it will be calculated from executable
 # executable_dir    -- [in, optional] real directory containing binary
 #   If None, will be calculated from real_executable or executable
-# py_setpath        -- [in] argument provided to Py_SetPath
+# py_setpath        -- [in] argument provided to Ty_SetPath
 #   If None, 'prefix' and 'exec_prefix' may be updated in config
 # library           -- [in, optional] path of dylib/DLL/so
 #   Only used for locating ._pth files
@@ -91,7 +91,7 @@
 # as best as is possible, but most imports will fail.
 
 # Before any searches are done, the location of the executable is
-# determined.  If Py_SetPath() was called, or if we are running on
+# determined.  If Ty_SetPath() was called, or if we are running on
 # Windows, the 'real_executable' path is used (if known).  Otherwise,
 # we use the config-specified program name or default to argv[0].
 # If this has one or more slashes in it, it is made absolute against
@@ -101,7 +101,7 @@
 # $PATH (or there was no $PATH environment variable), the original
 # argv[0] string is used.
 
-# At this point, provided Py_SetPath was not used, the
+# At this point, provided Ty_SetPath was not used, the
 # __PYVENV_LAUNCHER__ variable may override the executable (on macOS,
 # the PYTHON_EXECUTABLE variable may also override). This allows
 # certain launchers that run Python as a subprocess to properly
@@ -122,7 +122,7 @@
 # and contains precisely the intended contents of sys.path as relative
 # paths (to its own location). Its presence also enables isolated mode
 # and suppresses other environment variable usage. Unless already
-# specified by Py_SetHome(), the directory containing the ._pth file is
+# specified by Ty_SetHome(), the directory containing the ._pth file is
 # set as 'home'.
 
 # Step 3. Are we running python out of the build directory?  This is
@@ -134,7 +134,7 @@
 # prefix is then found by searching up for a file that should only
 # exist in the source tree, and the stdlib dir is set to prefix/Lib.
 
-# Step 4. If 'home' is set, either by Py_SetHome(), ENV_PYTHONHOME,
+# Step 4. If 'home' is set, either by Ty_SetHome(), ENV_PYTHONHOME,
 # a pyvenv.cfg file, ._pth file, or by detecting a build directory, it
 # is assumed to point to prefix and exec_prefix. $PYTHONHOME can be a
 # single directory, which is used for both, or the prefix and exec_prefix
@@ -164,7 +164,7 @@
 # known use of sys.prefix and sys.exec_prefix is for the ILU installation
 # process to find the installed Python tree.
 
-# An embedding application can use Py_SetPath() to override all of
+# An embedding application can use Ty_SetPath() to override all of
 # these automatic path computations.
 
 
@@ -259,7 +259,7 @@ if EXE_SUFFIX and not hassuffix(program_name, EXE_SUFFIX) and isxfile(program_na
 # ******************************************************************************
 
 if py_setpath:
-    # When Py_SetPath has been called, executable defaults to
+    # When Ty_SetPath has been called, executable defaults to
     # the real executable path.
     if not executable:
         executable = real_executable
@@ -328,7 +328,7 @@ if ENV_PYTHONEXECUTABLE or ENV___PYVENV_LAUNCHER__:
 # CALCULATE (default) home
 # ******************************************************************************
 
-# Used later to distinguish between Py_SetPythonHome and other
+# Used later to distinguish between Ty_SetPythonHome and other
 # ways that it may have been set
 home_was_set = False
 
@@ -344,8 +344,8 @@ elif use_environment and ENV_PYTHONHOME and not py_setpath:
 
 venv_prefix = None
 
-# Calling Py_SetPath() will override venv detection.
-# Calling Py_SetPythonHome() or setting $PYTHONHOME will override the 'home' key
+# Calling Ty_SetPath() will override venv detection.
+# Calling Ty_SetPythonHome() or setting $PYTHONHOME will override the 'home' key
 # specified in pyvenv.cfg.
 if not py_setpath:
     try:
@@ -463,7 +463,7 @@ if not real_executable_dir and real_executable:
 pth = None
 pth_dir = None
 
-# Calling Py_SetPythonHome() or Py_SetPath() will override ._pth search,
+# Calling Ty_SetPythonHome() or Ty_SetPath() will override ._pth search,
 # but environment variables and command-line options cannot.
 if not py_setpath and not home_was_set:
     # 1. Check adjacent to the main DLL/dylib/so (if set)
@@ -551,7 +551,7 @@ if ((not home_was_set and real_executable_dir and not py_setpath)
 # ******************************************************************************
 
 if py_setpath:
-    # As documented, calling Py_SetPath will force both prefix
+    # As documented, calling Ty_SetPath will force both prefix
     # and exec_prefix to the empty string.
     prefix = exec_prefix = ''
 
@@ -675,7 +675,7 @@ if not base_exec_prefix:
 # ******************************************************************************
 
 if py_setpath:
-    # If Py_SetPath was called then it overrides any existing search path
+    # If Ty_SetPath was called then it overrides any existing search path
     config['module_search_paths'] = py_setpath.split(DELIM)
     config['module_search_paths_set'] = 1
 

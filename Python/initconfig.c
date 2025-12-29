@@ -1,17 +1,17 @@
 #include "Python.h"
-#include "pycore_fileutils.h"     // _Py_HasFileSystemDefaultEncodeErrors
-#include "pycore_getopt.h"        // _PyOS_GetOpt()
-#include "pycore_initconfig.h"    // _PyStatus_OK()
+#include "pycore_fileutils.h"     // _Ty_HasFileSystemDefaultEncodeErrors
+#include "pycore_getopt.h"        // _TyOS_GetOpt()
+#include "pycore_initconfig.h"    // _TyStatus_OK()
 #include "pycore_interp.h"        // _PyInterpreterState.runtime
 #include "pycore_long.h"          // _PY_LONG_MAX_STR_DIGITS_THRESHOLD
-#include "pycore_pathconfig.h"    // _Py_path_config
-#include "pycore_pyerrors.h"      // _PyErr_GetRaisedException()
-#include "pycore_pylifecycle.h"   // _Py_PreInitializeFromConfig()
-#include "pycore_pymem.h"         // _PyMem_DefaultRawMalloc()
-#include "pycore_pyhash.h"        // _Py_HashSecret
-#include "pycore_pystate.h"       // _PyThreadState_GET()
-#include "pycore_pystats.h"       // _Py_StatsOn()
-#include "pycore_sysmodule.h"     // _PySys_SetIntMaxStrDigits()
+#include "pycore_pathconfig.h"    // _Ty_path_config
+#include "pycore_pyerrors.h"      // _TyErr_GetRaisedException()
+#include "pycore_pylifecycle.h"   // _Ty_PreInitializeFromConfig()
+#include "pycore_pymem.h"         // _TyMem_DefaultRawMalloc()
+#include "pycore_pyhash.h"        // _Ty_HashSecret
+#include "pycore_pystate.h"       // _TyThreadState_GET()
+#include "pycore_pystats.h"       // _Ty_StatsOn()
+#include "pycore_sysmodule.h"     // _TySys_SetIntMaxStrDigits()
 
 #include "osdefs.h"               // DELIM
 
@@ -37,45 +37,45 @@
 
 #include "config_common.h"
 
-/* --- PyConfig setters ------------------------------------------- */
+/* --- TyConfig setters ------------------------------------------- */
 
-typedef PyObject* (*config_sys_flag_setter) (int value);
+typedef TyObject* (*config_sys_flag_setter) (int value);
 
-static PyObject*
+static TyObject*
 config_sys_flag_long(int value)
 {
-    return PyLong_FromLong(value);
+    return TyLong_FromLong(value);
 }
 
-static PyObject*
+static TyObject*
 config_sys_flag_not(int value)
 {
     value = (!value);
     return config_sys_flag_long(value);
 }
 
-/* --- PyConfig spec ---------------------------------------------- */
+/* --- TyConfig spec ---------------------------------------------- */
 
 typedef enum {
-    PyConfig_MEMBER_INT = 0,
-    PyConfig_MEMBER_UINT = 1,
-    PyConfig_MEMBER_ULONG = 2,
-    PyConfig_MEMBER_BOOL = 3,
+    TyConfig_MEMBER_INT = 0,
+    TyConfig_MEMBER_UINT = 1,
+    TyConfig_MEMBER_ULONG = 2,
+    TyConfig_MEMBER_BOOL = 3,
 
-    PyConfig_MEMBER_WSTR = 10,
-    PyConfig_MEMBER_WSTR_OPT = 11,
-    PyConfig_MEMBER_WSTR_LIST = 12,
+    TyConfig_MEMBER_WSTR = 10,
+    TyConfig_MEMBER_WSTR_OPT = 11,
+    TyConfig_MEMBER_WSTR_LIST = 12,
 } PyConfigMemberType;
 
 typedef enum {
-    // Option which cannot be get or set by PyConfig_Get() and PyConfig_Set()
-    PyConfig_MEMBER_INIT_ONLY = 0,
+    // Option which cannot be get or set by TyConfig_Get() and TyConfig_Set()
+    TyConfig_MEMBER_INIT_ONLY = 0,
 
-    // Option which cannot be set by PyConfig_Set()
-    PyConfig_MEMBER_READ_ONLY = 1,
+    // Option which cannot be set by TyConfig_Set()
+    TyConfig_MEMBER_READ_ONLY = 1,
 
-    // Public option: can be get and set by PyConfig_Get() and PyConfig_Set()
-    PyConfig_MEMBER_PUBLIC = 2,
+    // Public option: can be get and set by TyConfig_Get() and TyConfig_Set()
+    TyConfig_MEMBER_PUBLIC = 2,
 } PyConfigMemberVisibility;
 
 typedef struct {
@@ -93,8 +93,8 @@ typedef struct {
 } PyConfigSpec;
 
 #define SPEC(MEMBER, TYPE, VISIBILITY, sys) \
-    {#MEMBER, offsetof(PyConfig, MEMBER), \
-     PyConfig_MEMBER_##TYPE, PyConfig_MEMBER_##VISIBILITY, sys}
+    {#MEMBER, offsetof(TyConfig, MEMBER), \
+     TyConfig_MEMBER_##TYPE, TyConfig_MEMBER_##VISIBILITY, sys}
 
 #define SYS_ATTR(name) {name, -1, NULL}
 #define SYS_FLAG_SETTER(index, setter) {NULL, index, setter}
@@ -132,7 +132,7 @@ static const PyConfigSpec PYCONFIG_SPEC[] = {
 
     // --- Read-only options -----------
 
-#ifdef Py_STATS
+#ifdef Ty_STATS
     SPEC(_pystats, BOOL, READ_ONLY, NO_SYS),
 #endif
     SPEC(buffered_stdio, BOOL, READ_ONLY, NO_SYS),
@@ -142,7 +142,7 @@ static const PyConfigSpec PYCONFIG_SPEC[] = {
     SPEC(dev_mode, BOOL, READ_ONLY, NO_SYS),  // sys.flags.dev_mode
     SPEC(dump_refs, BOOL, READ_ONLY, NO_SYS),
     SPEC(dump_refs_file, WSTR_OPT, READ_ONLY, NO_SYS),
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     SPEC(enable_gil, INT, READ_ONLY, NO_SYS),
     SPEC(tlbc_enabled, INT, READ_ONLY, NO_SYS),
 #endif
@@ -169,7 +169,7 @@ static const PyConfigSpec PYCONFIG_SPEC[] = {
     SPEC(run_command, WSTR_OPT, READ_ONLY, NO_SYS),
     SPEC(run_filename, WSTR_OPT, READ_ONLY, NO_SYS),
     SPEC(run_module, WSTR_OPT, READ_ONLY, NO_SYS),
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     SPEC(run_presite, WSTR_OPT, READ_ONLY, NO_SYS),
 #endif
     SPEC(safe_path, BOOL, READ_ONLY, NO_SYS),
@@ -203,8 +203,8 @@ static const PyConfigSpec PYCONFIG_SPEC[] = {
 
 #undef SPEC
 #define SPEC(MEMBER, TYPE, VISIBILITY) \
-    {#MEMBER, offsetof(PyPreConfig, MEMBER), PyConfig_MEMBER_##TYPE, \
-     PyConfig_MEMBER_##VISIBILITY, NO_SYS}
+    {#MEMBER, offsetof(TyPreConfig, MEMBER), TyConfig_MEMBER_##TYPE, \
+     TyConfig_MEMBER_##VISIBILITY, NO_SYS}
 
 static const PyConfigSpec PYPRECONFIG_SPEC[] = {
     // --- Read-only options -----------
@@ -239,8 +239,8 @@ static const PyConfigSpec PYPRECONFIG_SPEC[] = {
 
 
 // Forward declarations
-static PyObject*
-config_get(const PyConfig *config, const PyConfigSpec *spec,
+static TyObject*
+config_get(const TyConfig *config, const PyConfigSpec *spec,
            int use_sys);
 
 
@@ -308,7 +308,7 @@ The following implementation-specific options are available:\n\
          for installed Python and \"off\" for a local build;\n\
          also PYTHON_FROZEN_MODULES\n\
 "
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 "-X gil=[0|1]: enable (1) or disable (0) the GIL; also PYTHON_GIL\n"
 #endif
 "\
@@ -323,21 +323,21 @@ The following implementation-specific options are available:\n\
          also PYTHON_PERF_JIT_SUPPORT=1\n\
 -X disable-remote-debug: disable remote debugging; also PYTHON_DISABLE_REMOTE_DEBUG\n\
 "
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 "-X presite=MOD: import this module before site; also PYTHON_PRESITE\n"
 #endif
 "\
 -X pycache_prefix=PATH: write .pyc files to a parallel tree instead of to the\n\
          code tree; also PYTHONPYCACHEPREFIX\n\
 "
-#ifdef Py_STATS
+#ifdef Ty_STATS
 "-X pystats: enable pystats collection at startup; also PYTHONSTATS\n"
 #endif
 "\
 -X showrefcount: output the total reference count and number of used\n\
          memory blocks when the program finishes or after each statement in\n\
          the interactive interpreter; only works on debug builds\n"
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 "-X tlbc=[0|1]: enable (1) or disable (0) thread-local bytecode. Also\n\
          PYTHON_TLBC\n"
 #endif
@@ -388,7 +388,7 @@ static const char usage_envvars[] =
 "                  this behavior.\n"
 "PYTHON_HISTORY  : the location of a .python_history file.\n"
 "PYTHONASYNCIODEBUG: enable asyncio debug mode\n"
-#ifdef Py_TRACE_REFS
+#ifdef Ty_TRACE_REFS
 "PYTHONDUMPREFS  : dump objects and reference counts still alive after shutdown\n"
 "PYTHONDUMPREFSFILE: dump objects and reference counts to the specified file\n"
 #endif
@@ -411,7 +411,7 @@ static const char usage_envvars[] =
 "PYTHON_FROZEN_MODULES: whether to use frozen modules; the default is \"on\"\n"
 "                  for installed Python and \"off\" for a local build\n"
 "                  (-X frozen_modules)\n"
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 "PYTHON_GIL      : when set to 0, disables the GIL (-X gil)\n"
 #endif
 "PYTHONINSPECT   : inspect interactively after running script (-i)\n"
@@ -424,17 +424,17 @@ static const char usage_envvars[] =
 "PYTHONPERFSUPPORT: support the Linux \"perf\" profiler (-X perf)\n"
 "PYTHON_PERF_JIT_SUPPORT: enable Linux \"perf\" profiler support with JIT\n"
 "                  (-X perf_jit)\n"
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 "PYTHON_PRESITE: import this module before site (-X presite)\n"
 #endif
 "PYTHONPROFILEIMPORTTIME: show how long each import takes (-X importtime)\n"
 "PYTHONPYCACHEPREFIX: root directory for bytecode cache (pyc) files\n"
 "                  (-X pycache_prefix)\n"
 "PYTHONSAFEPATH  : don't prepend a potentially unsafe path to sys.path.\n"
-#ifdef Py_STATS
+#ifdef Ty_STATS
 "PYTHONSTATS     : turns on statistics gathering (-X pystats)\n"
 #endif
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 "PYTHON_TLBC     : when set to 0, disables thread-local bytecode (-X tlbc)\n"
 #endif
 "PYTHON_THREAD_INHERIT_CONTEXT: if true (1), threads inherit context vars\n"
@@ -461,36 +461,36 @@ static const char usage_envvars[] =
 
 /* UTF-8 mode (PEP 540): if equals to 1, use the UTF-8 encoding, and change
    stdin and stdout error handler to "surrogateescape". */
-int Py_UTF8Mode = 0;
-int Py_DebugFlag = 0; /* Needed by parser.c */
-int Py_VerboseFlag = 0; /* Needed by import.c */
-int Py_QuietFlag = 0; /* Needed by sysmodule.c */
-int Py_InteractiveFlag = 0; /* Previously, was used by Py_FdIsInteractive() */
-int Py_InspectFlag = 0; /* Needed to determine whether to exit at SystemExit */
-int Py_OptimizeFlag = 0; /* Needed by compile.c */
-int Py_NoSiteFlag = 0; /* Suppress 'import site' */
-int Py_BytesWarningFlag = 0; /* Warn on str(bytes) and str(buffer) */
-int Py_FrozenFlag = 0; /* Needed by getpath.c */
-int Py_IgnoreEnvironmentFlag = 0; /* e.g. PYTHONPATH, PYTHONHOME */
-int Py_DontWriteBytecodeFlag = 0; /* Suppress writing bytecode files (*.pyc) */
-int Py_NoUserSiteDirectory = 0; /* for -s and site.py */
-int Py_UnbufferedStdioFlag = 0; /* Unbuffered binary std{in,out,err} */
-int Py_HashRandomizationFlag = 0; /* for -R and PYTHONHASHSEED */
-int Py_IsolatedFlag = 0; /* for -I, isolate from user's env */
+int Ty_UTF8Mode = 0;
+int Ty_DebugFlag = 0; /* Needed by parser.c */
+int Ty_VerboseFlag = 0; /* Needed by import.c */
+int Ty_QuietFlag = 0; /* Needed by sysmodule.c */
+int Ty_InteractiveFlag = 0; /* Previously, was used by Ty_FdIsInteractive() */
+int Ty_InspectFlag = 0; /* Needed to determine whether to exit at SystemExit */
+int Ty_OptimizeFlag = 0; /* Needed by compile.c */
+int Ty_NoSiteFlag = 0; /* Suppress 'import site' */
+int Ty_BytesWarningFlag = 0; /* Warn on str(bytes) and str(buffer) */
+int Ty_FrozenFlag = 0; /* Needed by getpath.c */
+int Ty_IgnoreEnvironmentFlag = 0; /* e.g. PYTHONPATH, PYTHONHOME */
+int Ty_DontWriteBytecodeFlag = 0; /* Suppress writing bytecode files (*.pyc) */
+int Ty_NoUserSiteDirectory = 0; /* for -s and site.py */
+int Ty_UnbufferedStdioFlag = 0; /* Unbuffered binary std{in,out,err} */
+int Ty_HashRandomizationFlag = 0; /* for -R and PYTHONHASHSEED */
+int Ty_IsolatedFlag = 0; /* for -I, isolate from user's env */
 #ifdef MS_WINDOWS
-int Py_LegacyWindowsFSEncodingFlag = 0; /* Uses mbcs instead of utf-8 */
-int Py_LegacyWindowsStdioFlag = 0; /* Uses FileIO instead of WindowsConsoleIO */
+int Ty_LegacyWindowsFSEncodingFlag = 0; /* Uses mbcs instead of utf-8 */
+int Ty_LegacyWindowsStdioFlag = 0; /* Uses FileIO instead of WindowsConsoleIO */
 #endif
 
 
-static PyObject *
-_Py_GetGlobalVariablesAsDict(void)
+static TyObject *
+_Ty_GetGlobalVariablesAsDict(void)
 {
-_Py_COMP_DIAG_PUSH
-_Py_COMP_DIAG_IGNORE_DEPR_DECLS
-    PyObject *dict, *obj;
+_Ty_COMP_DIAG_PUSH
+_Ty_COMP_DIAG_IGNORE_DEPR_DECLS
+    TyObject *dict, *obj;
 
-    dict = PyDict_New();
+    dict = TyDict_New();
     if (dict == NULL) {
         return NULL;
     }
@@ -501,259 +501,259 @@ _Py_COMP_DIAG_IGNORE_DEPR_DECLS
             if (obj == NULL) { \
                 return NULL; \
             } \
-            int res = PyDict_SetItemString(dict, (KEY), obj); \
-            Py_DECREF(obj); \
+            int res = TyDict_SetItemString(dict, (KEY), obj); \
+            Ty_DECREF(obj); \
             if (res < 0) { \
                 goto fail; \
             } \
         } while (0)
 #define SET_ITEM_INT(VAR) \
-    SET_ITEM(#VAR, PyLong_FromLong(VAR))
+    SET_ITEM(#VAR, TyLong_FromLong(VAR))
 #define FROM_STRING(STR) \
     ((STR != NULL) ? \
-        PyUnicode_FromString(STR) \
-        : Py_NewRef(Py_None))
+        TyUnicode_FromString(STR) \
+        : Ty_NewRef(Ty_None))
 #define SET_ITEM_STR(VAR) \
     SET_ITEM(#VAR, FROM_STRING(VAR))
 
-    SET_ITEM_STR(Py_FileSystemDefaultEncoding);
-    SET_ITEM_INT(Py_HasFileSystemDefaultEncoding);
-    SET_ITEM_STR(Py_FileSystemDefaultEncodeErrors);
-    SET_ITEM_INT(_Py_HasFileSystemDefaultEncodeErrors);
+    SET_ITEM_STR(Ty_FileSystemDefaultEncoding);
+    SET_ITEM_INT(Ty_HasFileSystemDefaultEncoding);
+    SET_ITEM_STR(Ty_FileSystemDefaultEncodeErrors);
+    SET_ITEM_INT(_Ty_HasFileSystemDefaultEncodeErrors);
 
-    SET_ITEM_INT(Py_UTF8Mode);
-    SET_ITEM_INT(Py_DebugFlag);
-    SET_ITEM_INT(Py_VerboseFlag);
-    SET_ITEM_INT(Py_QuietFlag);
-    SET_ITEM_INT(Py_InteractiveFlag);
-    SET_ITEM_INT(Py_InspectFlag);
+    SET_ITEM_INT(Ty_UTF8Mode);
+    SET_ITEM_INT(Ty_DebugFlag);
+    SET_ITEM_INT(Ty_VerboseFlag);
+    SET_ITEM_INT(Ty_QuietFlag);
+    SET_ITEM_INT(Ty_InteractiveFlag);
+    SET_ITEM_INT(Ty_InspectFlag);
 
-    SET_ITEM_INT(Py_OptimizeFlag);
-    SET_ITEM_INT(Py_NoSiteFlag);
-    SET_ITEM_INT(Py_BytesWarningFlag);
-    SET_ITEM_INT(Py_FrozenFlag);
-    SET_ITEM_INT(Py_IgnoreEnvironmentFlag);
-    SET_ITEM_INT(Py_DontWriteBytecodeFlag);
-    SET_ITEM_INT(Py_NoUserSiteDirectory);
-    SET_ITEM_INT(Py_UnbufferedStdioFlag);
-    SET_ITEM_INT(Py_HashRandomizationFlag);
-    SET_ITEM_INT(Py_IsolatedFlag);
+    SET_ITEM_INT(Ty_OptimizeFlag);
+    SET_ITEM_INT(Ty_NoSiteFlag);
+    SET_ITEM_INT(Ty_BytesWarningFlag);
+    SET_ITEM_INT(Ty_FrozenFlag);
+    SET_ITEM_INT(Ty_IgnoreEnvironmentFlag);
+    SET_ITEM_INT(Ty_DontWriteBytecodeFlag);
+    SET_ITEM_INT(Ty_NoUserSiteDirectory);
+    SET_ITEM_INT(Ty_UnbufferedStdioFlag);
+    SET_ITEM_INT(Ty_HashRandomizationFlag);
+    SET_ITEM_INT(Ty_IsolatedFlag);
 
 #ifdef MS_WINDOWS
-    SET_ITEM_INT(Py_LegacyWindowsFSEncodingFlag);
-    SET_ITEM_INT(Py_LegacyWindowsStdioFlag);
+    SET_ITEM_INT(Ty_LegacyWindowsFSEncodingFlag);
+    SET_ITEM_INT(Ty_LegacyWindowsStdioFlag);
 #endif
 
     return dict;
 
 fail:
-    Py_DECREF(dict);
+    Ty_DECREF(dict);
     return NULL;
 
 #undef FROM_STRING
 #undef SET_ITEM
 #undef SET_ITEM_INT
 #undef SET_ITEM_STR
-_Py_COMP_DIAG_POP
+_Ty_COMP_DIAG_POP
 }
 
 char*
-Py_GETENV(const char *name)
+Ty_GETENV(const char *name)
 {
-_Py_COMP_DIAG_PUSH
-_Py_COMP_DIAG_IGNORE_DEPR_DECLS
-    if (Py_IgnoreEnvironmentFlag) {
+_Ty_COMP_DIAG_PUSH
+_Ty_COMP_DIAG_IGNORE_DEPR_DECLS
+    if (Ty_IgnoreEnvironmentFlag) {
         return NULL;
     }
     return getenv(name);
-_Py_COMP_DIAG_POP
+_Ty_COMP_DIAG_POP
 }
 
-/* --- PyStatus ----------------------------------------------- */
+/* --- TyStatus ----------------------------------------------- */
 
-PyStatus PyStatus_Ok(void)
-{ return _PyStatus_OK(); }
+TyStatus TyStatus_Ok(void)
+{ return _TyStatus_OK(); }
 
-PyStatus PyStatus_Error(const char *err_msg)
+TyStatus TyStatus_Error(const char *err_msg)
 {
     assert(err_msg != NULL);
-    return (PyStatus){._type = _PyStatus_TYPE_ERROR,
+    return (TyStatus){._type = _TyStatus_TYPE_ERROR,
                       .err_msg = err_msg};
 }
 
-PyStatus PyStatus_NoMemory(void)
-{ return PyStatus_Error("memory allocation failed"); }
+TyStatus TyStatus_NoMemory(void)
+{ return TyStatus_Error("memory allocation failed"); }
 
-PyStatus PyStatus_Exit(int exitcode)
-{ return _PyStatus_EXIT(exitcode); }
+TyStatus TyStatus_Exit(int exitcode)
+{ return _TyStatus_EXIT(exitcode); }
 
 
-int PyStatus_IsError(PyStatus status)
-{ return _PyStatus_IS_ERROR(status); }
+int TyStatus_IsError(TyStatus status)
+{ return _TyStatus_IS_ERROR(status); }
 
-int PyStatus_IsExit(PyStatus status)
-{ return _PyStatus_IS_EXIT(status); }
+int TyStatus_IsExit(TyStatus status)
+{ return _TyStatus_IS_EXIT(status); }
 
-int PyStatus_Exception(PyStatus status)
-{ return _PyStatus_EXCEPTION(status); }
+int TyStatus_Exception(TyStatus status)
+{ return _TyStatus_EXCEPTION(status); }
 
 void
-_PyErr_SetFromPyStatus(PyStatus status)
+_TyErr_SetFromPyStatus(TyStatus status)
 {
-    if (!_PyStatus_IS_ERROR(status)) {
-        PyErr_Format(PyExc_SystemError,
-                     "_PyErr_SetFromPyStatus() status is not an error");
+    if (!_TyStatus_IS_ERROR(status)) {
+        TyErr_Format(TyExc_SystemError,
+                     "_TyErr_SetFromPyStatus() status is not an error");
         return;
     }
 
     const char *err_msg = status.err_msg;
     if (err_msg == NULL || strlen(err_msg) == 0) {
-        PyErr_Format(PyExc_SystemError,
-                     "_PyErr_SetFromPyStatus() status has no error message");
+        TyErr_Format(TyExc_SystemError,
+                     "_TyErr_SetFromPyStatus() status has no error message");
         return;
     }
 
-    if (strcmp(err_msg, _PyStatus_NO_MEMORY_ERRMSG) == 0) {
-        PyErr_NoMemory();
+    if (strcmp(err_msg, _TyStatus_NO_MEMORY_ERRMSG) == 0) {
+        TyErr_NoMemory();
         return;
     }
 
     const char *func = status.func;
     if (func) {
-        PyErr_Format(PyExc_RuntimeError, "%s: %s", func, err_msg);
+        TyErr_Format(TyExc_RuntimeError, "%s: %s", func, err_msg);
     }
     else {
-        PyErr_Format(PyExc_RuntimeError, "%s", err_msg);
+        TyErr_Format(TyExc_RuntimeError, "%s", err_msg);
     }
 }
 
 
-/* --- PyWideStringList ------------------------------------------------ */
+/* --- TyWideStringList ------------------------------------------------ */
 
 #ifndef NDEBUG
 int
-_PyWideStringList_CheckConsistency(const PyWideStringList *list)
+_TyWideStringList_CheckConsistency(const TyWideStringList *list)
 {
     assert(list->length >= 0);
     if (list->length != 0) {
         assert(list->items != NULL);
     }
-    for (Py_ssize_t i = 0; i < list->length; i++) {
+    for (Ty_ssize_t i = 0; i < list->length; i++) {
         assert(list->items[i] != NULL);
     }
     return 1;
 }
-#endif   /* Py_DEBUG */
+#endif   /* Ty_DEBUG */
 
 
 static void
-_PyWideStringList_ClearEx(PyWideStringList *list,
+_TyWideStringList_ClearEx(TyWideStringList *list,
                           bool use_default_allocator)
 {
-    assert(_PyWideStringList_CheckConsistency(list));
-    for (Py_ssize_t i=0; i < list->length; i++) {
+    assert(_TyWideStringList_CheckConsistency(list));
+    for (Ty_ssize_t i=0; i < list->length; i++) {
         if (use_default_allocator) {
-            _PyMem_DefaultRawFree(list->items[i]);
+            _TyMem_DefaultRawFree(list->items[i]);
         }
         else {
-            PyMem_RawFree(list->items[i]);
+            TyMem_RawFree(list->items[i]);
         }
     }
     if (use_default_allocator) {
-        _PyMem_DefaultRawFree(list->items);
+        _TyMem_DefaultRawFree(list->items);
     }
     else {
-        PyMem_RawFree(list->items);
+        TyMem_RawFree(list->items);
     }
     list->length = 0;
     list->items = NULL;
 }
 
 void
-_PyWideStringList_Clear(PyWideStringList *list)
+_TyWideStringList_Clear(TyWideStringList *list)
 {
-    _PyWideStringList_ClearEx(list, false);
+    _TyWideStringList_ClearEx(list, false);
 }
 
 static int
-_PyWideStringList_CopyEx(PyWideStringList *list,
-                         const PyWideStringList *list2,
+_TyWideStringList_CopyEx(TyWideStringList *list,
+                         const TyWideStringList *list2,
                          bool use_default_allocator)
 {
-    assert(_PyWideStringList_CheckConsistency(list));
-    assert(_PyWideStringList_CheckConsistency(list2));
+    assert(_TyWideStringList_CheckConsistency(list));
+    assert(_TyWideStringList_CheckConsistency(list2));
 
     if (list2->length == 0) {
-        _PyWideStringList_ClearEx(list, use_default_allocator);
+        _TyWideStringList_ClearEx(list, use_default_allocator);
         return 0;
     }
 
-    PyWideStringList copy = _PyWideStringList_INIT;
+    TyWideStringList copy = _TyWideStringList_INIT;
 
     size_t size = list2->length * sizeof(list2->items[0]);
     if (use_default_allocator) {
-        copy.items = _PyMem_DefaultRawMalloc(size);
+        copy.items = _TyMem_DefaultRawMalloc(size);
     }
     else {
-        copy.items = PyMem_RawMalloc(size);
+        copy.items = TyMem_RawMalloc(size);
     }
     if (copy.items == NULL) {
         return -1;
     }
 
-    for (Py_ssize_t i=0; i < list2->length; i++) {
+    for (Ty_ssize_t i=0; i < list2->length; i++) {
         wchar_t *item;
         if (use_default_allocator) {
-            item = _PyMem_DefaultRawWcsdup(list2->items[i]);
+            item = _TyMem_DefaultRawWcsdup(list2->items[i]);
         }
         else {
-            item = _PyMem_RawWcsdup(list2->items[i]);
+            item = _TyMem_RawWcsdup(list2->items[i]);
         }
         if (item == NULL) {
-            _PyWideStringList_ClearEx(&copy, use_default_allocator);
+            _TyWideStringList_ClearEx(&copy, use_default_allocator);
             return -1;
         }
         copy.items[i] = item;
         copy.length = i + 1;
     }
 
-    _PyWideStringList_ClearEx(list, use_default_allocator);
+    _TyWideStringList_ClearEx(list, use_default_allocator);
     *list = copy;
     return 0;
 }
 
 int
-_PyWideStringList_Copy(PyWideStringList *list, const PyWideStringList *list2)
+_TyWideStringList_Copy(TyWideStringList *list, const TyWideStringList *list2)
 {
-    return _PyWideStringList_CopyEx(list, list2, false);
+    return _TyWideStringList_CopyEx(list, list2, false);
 }
 
-PyStatus
-PyWideStringList_Insert(PyWideStringList *list,
-                        Py_ssize_t index, const wchar_t *item)
+TyStatus
+TyWideStringList_Insert(TyWideStringList *list,
+                        Ty_ssize_t index, const wchar_t *item)
 {
-    Py_ssize_t len = list->length;
+    Ty_ssize_t len = list->length;
     if (len == PY_SSIZE_T_MAX) {
         /* length+1 would overflow */
-        return _PyStatus_NO_MEMORY();
+        return _TyStatus_NO_MEMORY();
     }
     if (index < 0) {
-        return _PyStatus_ERR("PyWideStringList_Insert index must be >= 0");
+        return _TyStatus_ERR("TyWideStringList_Insert index must be >= 0");
     }
     if (index > len) {
         index = len;
     }
 
-    wchar_t *item2 = _PyMem_RawWcsdup(item);
+    wchar_t *item2 = _TyMem_RawWcsdup(item);
     if (item2 == NULL) {
-        return _PyStatus_NO_MEMORY();
+        return _TyStatus_NO_MEMORY();
     }
 
     size_t size = (len + 1) * sizeof(list->items[0]);
-    wchar_t **items2 = (wchar_t **)PyMem_RawRealloc(list->items, size);
+    wchar_t **items2 = (wchar_t **)TyMem_RawRealloc(list->items, size);
     if (items2 == NULL) {
-        PyMem_RawFree(item2);
-        return _PyStatus_NO_MEMORY();
+        TyMem_RawFree(item2);
+        return _TyStatus_NO_MEMORY();
     }
 
     if (index < len) {
@@ -765,34 +765,34 @@ PyWideStringList_Insert(PyWideStringList *list,
     items2[index] = item2;
     list->items = items2;
     list->length++;
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
-PyStatus
-PyWideStringList_Append(PyWideStringList *list, const wchar_t *item)
+TyStatus
+TyWideStringList_Append(TyWideStringList *list, const wchar_t *item)
 {
-    return PyWideStringList_Insert(list, list->length, item);
+    return TyWideStringList_Insert(list, list->length, item);
 }
 
 
-PyStatus
-_PyWideStringList_Extend(PyWideStringList *list, const PyWideStringList *list2)
+TyStatus
+_TyWideStringList_Extend(TyWideStringList *list, const TyWideStringList *list2)
 {
-    for (Py_ssize_t i = 0; i < list2->length; i++) {
-        PyStatus status = PyWideStringList_Append(list, list2->items[i]);
-        if (_PyStatus_EXCEPTION(status)) {
+    for (Ty_ssize_t i = 0; i < list2->length; i++) {
+        TyStatus status = TyWideStringList_Append(list, list2->items[i]);
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
 static int
-_PyWideStringList_Find(PyWideStringList *list, const wchar_t *item)
+_TyWideStringList_Find(TyWideStringList *list, const wchar_t *item)
 {
-    for (Py_ssize_t i = 0; i < list->length; i++) {
+    for (Ty_ssize_t i = 0; i < list->length; i++) {
         if (wcscmp(list->items[i], item) == 0) {
             return 1;
         }
@@ -801,87 +801,87 @@ _PyWideStringList_Find(PyWideStringList *list, const wchar_t *item)
 }
 
 
-PyObject*
-_PyWideStringList_AsList(const PyWideStringList *list)
+TyObject*
+_TyWideStringList_AsList(const TyWideStringList *list)
 {
-    assert(_PyWideStringList_CheckConsistency(list));
+    assert(_TyWideStringList_CheckConsistency(list));
 
-    PyObject *pylist = PyList_New(list->length);
+    TyObject *pylist = TyList_New(list->length);
     if (pylist == NULL) {
         return NULL;
     }
 
-    for (Py_ssize_t i = 0; i < list->length; i++) {
-        PyObject *item = PyUnicode_FromWideChar(list->items[i], -1);
+    for (Ty_ssize_t i = 0; i < list->length; i++) {
+        TyObject *item = TyUnicode_FromWideChar(list->items[i], -1);
         if (item == NULL) {
-            Py_DECREF(pylist);
+            Ty_DECREF(pylist);
             return NULL;
         }
-        PyList_SET_ITEM(pylist, i, item);
+        TyList_SET_ITEM(pylist, i, item);
     }
     return pylist;
 }
 
 
-static PyObject*
-_PyWideStringList_AsTuple(const PyWideStringList *list)
+static TyObject*
+_TyWideStringList_AsTuple(const TyWideStringList *list)
 {
-    assert(_PyWideStringList_CheckConsistency(list));
+    assert(_TyWideStringList_CheckConsistency(list));
 
-    PyObject *tuple = PyTuple_New(list->length);
+    TyObject *tuple = TyTuple_New(list->length);
     if (tuple == NULL) {
         return NULL;
     }
 
-    for (Py_ssize_t i = 0; i < list->length; i++) {
-        PyObject *item = PyUnicode_FromWideChar(list->items[i], -1);
+    for (Ty_ssize_t i = 0; i < list->length; i++) {
+        TyObject *item = TyUnicode_FromWideChar(list->items[i], -1);
         if (item == NULL) {
-            Py_DECREF(tuple);
+            Ty_DECREF(tuple);
             return NULL;
         }
-        PyTuple_SET_ITEM(tuple, i, item);
+        TyTuple_SET_ITEM(tuple, i, item);
     }
     return tuple;
 }
 
 
-/* --- Py_GetArgcArgv() ------------------------------------------- */
+/* --- Ty_GetArgcArgv() ------------------------------------------- */
 
 void
-_Py_ClearArgcArgv(void)
+_Ty_ClearArgcArgv(void)
 {
-    _PyWideStringList_ClearEx(&_PyRuntime.orig_argv, true);
+    _TyWideStringList_ClearEx(&_PyRuntime.orig_argv, true);
 }
 
 
 static int
-_Py_SetArgcArgv(Py_ssize_t argc, wchar_t * const *argv)
+_Ty_SetArgcArgv(Ty_ssize_t argc, wchar_t * const *argv)
 {
-    const PyWideStringList argv_list = {.length = argc, .items = (wchar_t **)argv};
+    const TyWideStringList argv_list = {.length = argc, .items = (wchar_t **)argv};
 
-    // XXX _PyRuntime.orig_argv only gets cleared by Py_Main(),
+    // XXX _PyRuntime.orig_argv only gets cleared by Ty_Main(),
     // so it currently leaks for embedders.
-    return _PyWideStringList_CopyEx(&_PyRuntime.orig_argv, &argv_list, true);
+    return _TyWideStringList_CopyEx(&_PyRuntime.orig_argv, &argv_list, true);
 }
 
 
-// _PyConfig_Write() calls _Py_SetArgcArgv() with PyConfig.orig_argv.
+// _TyConfig_Write() calls _Ty_SetArgcArgv() with TyConfig.orig_argv.
 void
-Py_GetArgcArgv(int *argc, wchar_t ***argv)
+Ty_GetArgcArgv(int *argc, wchar_t ***argv)
 {
     *argc = (int)_PyRuntime.orig_argv.length;
     *argv = _PyRuntime.orig_argv.items;
 }
 
 
-/* --- PyConfig ---------------------------------------------- */
+/* --- TyConfig ---------------------------------------------- */
 
 #define MAX_HASH_SEED 4294967295UL
 
 
 #ifndef NDEBUG
 static int
-config_check_consistency(const PyConfig *config)
+config_check_consistency(const TyConfig *config)
 {
     /* Check config consistency */
     assert(config->isolated >= 0);
@@ -911,13 +911,13 @@ config_check_consistency(const PyConfig *config)
     assert(config->parse_argv >= 0);
     assert(config->configure_c_stdio >= 0);
     assert(config->buffered_stdio >= 0);
-    assert(_PyWideStringList_CheckConsistency(&config->orig_argv));
-    assert(_PyWideStringList_CheckConsistency(&config->argv));
+    assert(_TyWideStringList_CheckConsistency(&config->orig_argv));
+    assert(_TyWideStringList_CheckConsistency(&config->argv));
     /* sys.argv must be non-empty: empty argv is replaced with [''] */
     assert(config->argv.length >= 1);
-    assert(_PyWideStringList_CheckConsistency(&config->xoptions));
-    assert(_PyWideStringList_CheckConsistency(&config->warnoptions));
-    assert(_PyWideStringList_CheckConsistency(&config->module_search_paths));
+    assert(_TyWideStringList_CheckConsistency(&config->xoptions));
+    assert(_TyWideStringList_CheckConsistency(&config->warnoptions));
+    assert(_TyWideStringList_CheckConsistency(&config->module_search_paths));
     assert(config->module_search_paths_set >= 0);
     assert(config->filesystem_encoding != NULL);
     assert(config->filesystem_errors != NULL);
@@ -937,13 +937,13 @@ config_check_consistency(const PyConfig *config)
     // cpu_count can be -1 if the user doesn't override it.
     assert(config->cpu_count != 0);
     // config->use_frozen_modules is initialized later
-    // by _PyConfig_InitImportConfig().
+    // by _TyConfig_InitImportConfig().
     assert(config->thread_inherit_context >= 0);
     assert(config->context_aware_warnings >= 0);
 #ifdef __APPLE__
     assert(config->use_system_logger >= 0);
 #endif
-#ifdef Py_STATS
+#ifdef Ty_STATS
     assert(config->_pystats >= 0);
 #endif
     return 1;
@@ -953,11 +953,11 @@ config_check_consistency(const PyConfig *config)
 
 /* Free memory allocated in config, but don't clear all attributes */
 void
-PyConfig_Clear(PyConfig *config)
+TyConfig_Clear(TyConfig *config)
 {
 #define CLEAR(ATTR) \
     do { \
-        PyMem_RawFree(ATTR); \
+        TyMem_RawFree(ATTR); \
         ATTR = NULL; \
     } while (0)
 
@@ -966,10 +966,10 @@ PyConfig_Clear(PyConfig *config)
     CLEAR(config->home);
     CLEAR(config->program_name);
 
-    _PyWideStringList_Clear(&config->argv);
-    _PyWideStringList_Clear(&config->warnoptions);
-    _PyWideStringList_Clear(&config->xoptions);
-    _PyWideStringList_Clear(&config->module_search_paths);
+    _TyWideStringList_Clear(&config->argv);
+    _TyWideStringList_Clear(&config->warnoptions);
+    _TyWideStringList_Clear(&config->xoptions);
+    _TyWideStringList_Clear(&config->module_search_paths);
     config->module_search_paths_set = 0;
     CLEAR(config->stdlib_dir);
 
@@ -990,21 +990,21 @@ PyConfig_Clear(PyConfig *config)
     CLEAR(config->run_module);
     CLEAR(config->run_filename);
     CLEAR(config->check_hash_pycs_mode);
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     CLEAR(config->run_presite);
 #endif
 
-    _PyWideStringList_Clear(&config->orig_argv);
+    _TyWideStringList_Clear(&config->orig_argv);
 #undef CLEAR
 }
 
 
 void
-_PyConfig_InitCompatConfig(PyConfig *config)
+_TyConfig_InitCompatConfig(TyConfig *config)
 {
     memset(config, 0, sizeof(*config));
 
-    config->_config_init = (int)_PyConfig_INIT_COMPAT;
+    config->_config_init = (int)_TyConfig_INIT_COMPAT;
     config->import_time = -1;
     config->isolated = -1;
     config->use_environment = -1;
@@ -1037,7 +1037,7 @@ _PyConfig_InitCompatConfig(PyConfig *config)
 #ifdef MS_WINDOWS
     config->legacy_windows_stdio = -1;
 #endif
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     config->use_frozen_modules = 0;
 #else
     config->use_frozen_modules = 1;
@@ -1047,7 +1047,7 @@ _PyConfig_InitCompatConfig(PyConfig *config)
     config->_is_python_build = 0;
     config->code_debug_ranges = 1;
     config->cpu_count = -1;
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     config->thread_inherit_context = 1;
     config->context_aware_warnings = 1;
 #else
@@ -1057,17 +1057,17 @@ _PyConfig_InitCompatConfig(PyConfig *config)
 #ifdef __APPLE__
     config->use_system_logger = USE_SYSTEM_LOGGER_DEFAULT;
 #endif
-#ifdef Py_GIL_DISABLED
-    config->enable_gil = _PyConfig_GIL_DEFAULT;
+#ifdef Ty_GIL_DISABLED
+    config->enable_gil = _TyConfig_GIL_DEFAULT;
     config->tlbc_enabled = 1;
 #endif
 }
 
 
 static void
-config_init_defaults(PyConfig *config)
+config_init_defaults(TyConfig *config)
 {
-    _PyConfig_InitCompatConfig(config);
+    _TyConfig_InitCompatConfig(config);
 
     config->isolated = 0;
     config->use_environment = 1;
@@ -1086,7 +1086,7 @@ config_init_defaults(PyConfig *config)
 #ifdef MS_WINDOWS
     config->legacy_windows_stdio = 0;
 #endif
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     config->thread_inherit_context = 1;
     config->context_aware_warnings = 1;
 #else
@@ -1100,22 +1100,22 @@ config_init_defaults(PyConfig *config)
 
 
 void
-PyConfig_InitPythonConfig(PyConfig *config)
+TyConfig_InitTyphonConfig(TyConfig *config)
 {
     config_init_defaults(config);
 
-    config->_config_init = (int)_PyConfig_INIT_PYTHON;
+    config->_config_init = (int)_TyConfig_INIT_PYTHON;
     config->configure_c_stdio = 1;
     config->parse_argv = 1;
 }
 
 
 void
-PyConfig_InitIsolatedConfig(PyConfig *config)
+TyConfig_InitIsolatedConfig(TyConfig *config)
 {
     config_init_defaults(config);
 
-    config->_config_init = (int)_PyConfig_INIT_ISOLATED;
+    config->_config_init = (int)_TyConfig_INIT_ISOLATED;
     config->isolated = 1;
     config->use_environment = 0;
     config->user_site_directory = 0;
@@ -1127,7 +1127,7 @@ PyConfig_InitIsolatedConfig(PyConfig *config)
     config->int_max_str_digits = _PY_LONG_DEFAULT_MAX_STR_DIGITS;
     config->safe_path = 1;
     config->pathconfig_warnings = 0;
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     config->thread_inherit_context = 1;
 #else
     config->thread_inherit_context = 0;
@@ -1142,58 +1142,58 @@ PyConfig_InitIsolatedConfig(PyConfig *config)
 
 
 /* Copy str into *config_str (duplicate the string) */
-PyStatus
-PyConfig_SetString(PyConfig *config, wchar_t **config_str, const wchar_t *str)
+TyStatus
+TyConfig_SetString(TyConfig *config, wchar_t **config_str, const wchar_t *str)
 {
-    PyStatus status = _Py_PreInitializeFromConfig(config, NULL);
-    if (_PyStatus_EXCEPTION(status)) {
+    TyStatus status = _Ty_PreInitializeFromConfig(config, NULL);
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
     wchar_t *str2;
     if (str != NULL) {
-        str2 = _PyMem_RawWcsdup(str);
+        str2 = _TyMem_RawWcsdup(str);
         if (str2 == NULL) {
-            return _PyStatus_NO_MEMORY();
+            return _TyStatus_NO_MEMORY();
         }
     }
     else {
         str2 = NULL;
     }
-    PyMem_RawFree(*config_str);
+    TyMem_RawFree(*config_str);
     *config_str = str2;
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
-static PyStatus
-config_set_bytes_string(PyConfig *config, wchar_t **config_str,
+static TyStatus
+config_set_bytes_string(TyConfig *config, wchar_t **config_str,
                         const char *str, const char *decode_err_msg)
 {
-    PyStatus status = _Py_PreInitializeFromConfig(config, NULL);
-    if (_PyStatus_EXCEPTION(status)) {
+    TyStatus status = _Ty_PreInitializeFromConfig(config, NULL);
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
     wchar_t *str2;
     if (str != NULL) {
         size_t len;
-        str2 = Py_DecodeLocale(str, &len);
+        str2 = Ty_DecodeLocale(str, &len);
         if (str2 == NULL) {
             if (len == (size_t)-2) {
-                return _PyStatus_ERR(decode_err_msg);
+                return _TyStatus_ERR(decode_err_msg);
             }
             else {
-                return  _PyStatus_NO_MEMORY();
+                return  _TyStatus_NO_MEMORY();
             }
         }
     }
     else {
         str2 = NULL;
     }
-    PyMem_RawFree(*config_str);
+    TyMem_RawFree(*config_str);
     *config_str = str2;
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
@@ -1201,11 +1201,11 @@ config_set_bytes_string(PyConfig *config, wchar_t **config_str,
     config_set_bytes_string(config, config_str, str, "cannot decode " NAME)
 
 
-/* Decode str using Py_DecodeLocale() and set the result into *config_str.
+/* Decode str using Ty_DecodeLocale() and set the result into *config_str.
    Pre-initialize Python if needed to ensure that encodings are properly
    configured. */
-PyStatus
-PyConfig_SetBytesString(PyConfig *config, wchar_t **config_str,
+TyStatus
+TyConfig_SetBytesString(TyConfig *config, wchar_t **config_str,
                         const char *str)
 {
     return CONFIG_SET_BYTES_STR(config, config_str, str, "string");
@@ -1213,88 +1213,88 @@ PyConfig_SetBytesString(PyConfig *config, wchar_t **config_str,
 
 
 static inline void*
-config_get_spec_member(const PyConfig *config, const PyConfigSpec *spec)
+config_get_spec_member(const TyConfig *config, const PyConfigSpec *spec)
 {
     return (char *)config + spec->offset;
 }
 
 
 static inline void*
-preconfig_get_spec_member(const PyPreConfig *preconfig, const PyConfigSpec *spec)
+preconfig_get_spec_member(const TyPreConfig *preconfig, const PyConfigSpec *spec)
 {
     return (char *)preconfig + spec->offset;
 }
 
 
-PyStatus
-_PyConfig_Copy(PyConfig *config, const PyConfig *config2)
+TyStatus
+_TyConfig_Copy(TyConfig *config, const TyConfig *config2)
 {
-    PyConfig_Clear(config);
+    TyConfig_Clear(config);
 
-    PyStatus status;
+    TyStatus status;
     const PyConfigSpec *spec = PYCONFIG_SPEC;
     for (; spec->name != NULL; spec++) {
         void *member = config_get_spec_member(config, spec);
-        const void *member2 = config_get_spec_member((PyConfig*)config2, spec);
+        const void *member2 = config_get_spec_member((TyConfig*)config2, spec);
         switch (spec->type) {
-        case PyConfig_MEMBER_INT:
-        case PyConfig_MEMBER_UINT:
-        case PyConfig_MEMBER_BOOL:
+        case TyConfig_MEMBER_INT:
+        case TyConfig_MEMBER_UINT:
+        case TyConfig_MEMBER_BOOL:
         {
             *(int*)member = *(int*)member2;
             break;
         }
-        case PyConfig_MEMBER_ULONG:
+        case TyConfig_MEMBER_ULONG:
         {
             *(unsigned long*)member = *(unsigned long*)member2;
             break;
         }
-        case PyConfig_MEMBER_WSTR:
-        case PyConfig_MEMBER_WSTR_OPT:
+        case TyConfig_MEMBER_WSTR:
+        case TyConfig_MEMBER_WSTR_OPT:
         {
             const wchar_t *str = *(const wchar_t**)member2;
-            status = PyConfig_SetString(config, (wchar_t**)member, str);
-            if (_PyStatus_EXCEPTION(status)) {
+            status = TyConfig_SetString(config, (wchar_t**)member, str);
+            if (_TyStatus_EXCEPTION(status)) {
                 return status;
             }
             break;
         }
-        case PyConfig_MEMBER_WSTR_LIST:
+        case TyConfig_MEMBER_WSTR_LIST:
         {
-            if (_PyWideStringList_Copy((PyWideStringList*)member,
-                                       (const PyWideStringList*)member2) < 0) {
-                return _PyStatus_NO_MEMORY();
+            if (_TyWideStringList_Copy((TyWideStringList*)member,
+                                       (const TyWideStringList*)member2) < 0) {
+                return _TyStatus_NO_MEMORY();
             }
             break;
         }
         default:
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
         }
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
-PyObject *
-_PyConfig_AsDict(const PyConfig *config)
+TyObject *
+_TyConfig_AsDict(const TyConfig *config)
 {
-    PyObject *dict = PyDict_New();
+    TyObject *dict = TyDict_New();
     if (dict == NULL) {
         return NULL;
     }
 
     const PyConfigSpec *spec = PYCONFIG_SPEC;
     for (; spec->name != NULL; spec++) {
-        PyObject *obj = config_get(config, spec, 0);
+        TyObject *obj = config_get(config, spec, 0);
         if (obj == NULL) {
-            Py_DECREF(dict);
+            Ty_DECREF(dict);
             return NULL;
         }
 
-        int res = PyDict_SetItemString(dict, spec->name, obj);
-        Py_DECREF(obj);
+        int res = TyDict_SetItemString(dict, spec->name, obj);
+        Ty_DECREF(obj);
         if (res < 0) {
-            Py_DECREF(dict);
+            Ty_DECREF(dict);
             return NULL;
         }
     }
@@ -1305,24 +1305,24 @@ _PyConfig_AsDict(const PyConfig *config)
 static void
 config_dict_invalid_value(const char *name)
 {
-    PyErr_Format(PyExc_ValueError, "invalid config value: %s", name);
+    TyErr_Format(TyExc_ValueError, "invalid config value: %s", name);
 }
 
 
 static int
-config_dict_get_int(PyObject *dict, const char *name, int *result)
+config_dict_get_int(TyObject *dict, const char *name, int *result)
 {
-    PyObject *item = config_dict_get(dict, name);
+    TyObject *item = config_dict_get(dict, name);
     if (item == NULL) {
         return -1;
     }
-    int value = PyLong_AsInt(item);
-    Py_DECREF(item);
-    if (value == -1 && PyErr_Occurred()) {
-        if (PyErr_ExceptionMatches(PyExc_TypeError)) {
+    int value = TyLong_AsInt(item);
+    Ty_DECREF(item);
+    if (value == -1 && TyErr_Occurred()) {
+        if (TyErr_ExceptionMatches(TyExc_TypeError)) {
             config_dict_invalid_type(name);
         }
-        else if (PyErr_ExceptionMatches(PyExc_OverflowError)) {
+        else if (TyErr_ExceptionMatches(TyExc_OverflowError)) {
             config_dict_invalid_value(name);
         }
         return -1;
@@ -1333,19 +1333,19 @@ config_dict_get_int(PyObject *dict, const char *name, int *result)
 
 
 static int
-config_dict_get_ulong(PyObject *dict, const char *name, unsigned long *result)
+config_dict_get_ulong(TyObject *dict, const char *name, unsigned long *result)
 {
-    PyObject *item = config_dict_get(dict, name);
+    TyObject *item = config_dict_get(dict, name);
     if (item == NULL) {
         return -1;
     }
-    unsigned long value = PyLong_AsUnsignedLong(item);
-    Py_DECREF(item);
-    if (value == (unsigned long)-1 && PyErr_Occurred()) {
-        if (PyErr_ExceptionMatches(PyExc_TypeError)) {
+    unsigned long value = TyLong_AsUnsignedLong(item);
+    Ty_DECREF(item);
+    if (value == (unsigned long)-1 && TyErr_Occurred()) {
+        if (TyErr_ExceptionMatches(TyExc_TypeError)) {
             config_dict_invalid_type(name);
         }
-        else if (PyErr_ExceptionMatches(PyExc_OverflowError)) {
+        else if (TyErr_ExceptionMatches(TyExc_OverflowError)) {
             config_dict_invalid_value(name);
         }
         return -1;
@@ -1356,164 +1356,164 @@ config_dict_get_ulong(PyObject *dict, const char *name, unsigned long *result)
 
 
 static int
-config_dict_get_wstr(PyObject *dict, const char *name, PyConfig *config,
+config_dict_get_wstr(TyObject *dict, const char *name, TyConfig *config,
                      wchar_t **result)
 {
-    PyObject *item = config_dict_get(dict, name);
+    TyObject *item = config_dict_get(dict, name);
     if (item == NULL) {
         return -1;
     }
 
-    PyStatus status;
-    if (item == Py_None) {
-        status = PyConfig_SetString(config, result, NULL);
+    TyStatus status;
+    if (item == Ty_None) {
+        status = TyConfig_SetString(config, result, NULL);
     }
-    else if (!PyUnicode_Check(item)) {
+    else if (!TyUnicode_Check(item)) {
         config_dict_invalid_type(name);
         goto error;
     }
     else {
-        wchar_t *wstr = PyUnicode_AsWideCharString(item, NULL);
+        wchar_t *wstr = TyUnicode_AsWideCharString(item, NULL);
         if (wstr == NULL) {
             goto error;
         }
-        status = PyConfig_SetString(config, result, wstr);
-        PyMem_Free(wstr);
+        status = TyConfig_SetString(config, result, wstr);
+        TyMem_Free(wstr);
     }
-    if (_PyStatus_EXCEPTION(status)) {
-        PyErr_NoMemory();
+    if (_TyStatus_EXCEPTION(status)) {
+        TyErr_NoMemory();
         goto error;
     }
-    Py_DECREF(item);
+    Ty_DECREF(item);
     return 0;
 
 error:
-    Py_DECREF(item);
+    Ty_DECREF(item);
     return -1;
 }
 
 
 static int
-config_dict_get_wstrlist(PyObject *dict, const char *name, PyConfig *config,
-                         PyWideStringList *result)
+config_dict_get_wstrlist(TyObject *dict, const char *name, TyConfig *config,
+                         TyWideStringList *result)
 {
-    PyObject *list = config_dict_get(dict, name);
+    TyObject *list = config_dict_get(dict, name);
     if (list == NULL) {
         return -1;
     }
 
-    int is_list = PyList_CheckExact(list);
-    if (!is_list && !PyTuple_CheckExact(list)) {
-        Py_DECREF(list);
+    int is_list = TyList_CheckExact(list);
+    if (!is_list && !TyTuple_CheckExact(list)) {
+        Ty_DECREF(list);
         config_dict_invalid_type(name);
         return -1;
     }
 
-    PyWideStringList wstrlist = _PyWideStringList_INIT;
-    Py_ssize_t len = is_list ? PyList_GET_SIZE(list) : PyTuple_GET_SIZE(list);
-    for (Py_ssize_t i=0; i < len; i++) {
-        PyObject *item = is_list ? PyList_GET_ITEM(list, i) : PyTuple_GET_ITEM(list, i);
+    TyWideStringList wstrlist = _TyWideStringList_INIT;
+    Ty_ssize_t len = is_list ? TyList_GET_SIZE(list) : TyTuple_GET_SIZE(list);
+    for (Ty_ssize_t i=0; i < len; i++) {
+        TyObject *item = is_list ? TyList_GET_ITEM(list, i) : TyTuple_GET_ITEM(list, i);
 
-        if (item == Py_None) {
+        if (item == Ty_None) {
             config_dict_invalid_value(name);
             goto error;
         }
-        else if (!PyUnicode_Check(item)) {
+        else if (!TyUnicode_Check(item)) {
             config_dict_invalid_type(name);
             goto error;
         }
-        wchar_t *wstr = PyUnicode_AsWideCharString(item, NULL);
+        wchar_t *wstr = TyUnicode_AsWideCharString(item, NULL);
         if (wstr == NULL) {
             goto error;
         }
-        PyStatus status = PyWideStringList_Append(&wstrlist, wstr);
-        PyMem_Free(wstr);
-        if (_PyStatus_EXCEPTION(status)) {
-            PyErr_NoMemory();
+        TyStatus status = TyWideStringList_Append(&wstrlist, wstr);
+        TyMem_Free(wstr);
+        if (_TyStatus_EXCEPTION(status)) {
+            TyErr_NoMemory();
             goto error;
         }
     }
 
-    if (_PyWideStringList_Copy(result, &wstrlist) < 0) {
-        PyErr_NoMemory();
+    if (_TyWideStringList_Copy(result, &wstrlist) < 0) {
+        TyErr_NoMemory();
         goto error;
     }
-    _PyWideStringList_Clear(&wstrlist);
-    Py_DECREF(list);
+    _TyWideStringList_Clear(&wstrlist);
+    Ty_DECREF(list);
     return 0;
 
 error:
-    _PyWideStringList_Clear(&wstrlist);
-    Py_DECREF(list);
+    _TyWideStringList_Clear(&wstrlist);
+    Ty_DECREF(list);
     return -1;
 }
 
 
 static int
-config_dict_get_xoptions(PyObject *dict, const char *name, PyConfig *config,
-                         PyWideStringList *result)
+config_dict_get_xoptions(TyObject *dict, const char *name, TyConfig *config,
+                         TyWideStringList *result)
 {
-    PyObject *xoptions = config_dict_get(dict, name);
+    TyObject *xoptions = config_dict_get(dict, name);
     if (xoptions == NULL) {
         return -1;
     }
 
-    if (!PyDict_CheckExact(xoptions)) {
-        Py_DECREF(xoptions);
+    if (!TyDict_CheckExact(xoptions)) {
+        Ty_DECREF(xoptions);
         config_dict_invalid_type(name);
         return -1;
     }
 
-    Py_ssize_t pos = 0;
-    PyObject *key, *value;
-    PyWideStringList wstrlist = _PyWideStringList_INIT;
-    while (PyDict_Next(xoptions, &pos, &key, &value)) {
-        PyObject *item;
+    Ty_ssize_t pos = 0;
+    TyObject *key, *value;
+    TyWideStringList wstrlist = _TyWideStringList_INIT;
+    while (TyDict_Next(xoptions, &pos, &key, &value)) {
+        TyObject *item;
 
-        if (value != Py_True) {
-            item = PyUnicode_FromFormat("%S=%S", key, value);
+        if (value != Ty_True) {
+            item = TyUnicode_FromFormat("%S=%S", key, value);
             if (item == NULL) {
                 goto error;
             }
         }
         else {
-            item = Py_NewRef(key);
+            item = Ty_NewRef(key);
         }
 
-        wchar_t *wstr = PyUnicode_AsWideCharString(item, NULL);
-        Py_DECREF(item);
+        wchar_t *wstr = TyUnicode_AsWideCharString(item, NULL);
+        Ty_DECREF(item);
         if (wstr == NULL) {
             goto error;
         }
 
-        PyStatus status = PyWideStringList_Append(&wstrlist, wstr);
-        PyMem_Free(wstr);
-        if (_PyStatus_EXCEPTION(status)) {
-            PyErr_NoMemory();
+        TyStatus status = TyWideStringList_Append(&wstrlist, wstr);
+        TyMem_Free(wstr);
+        if (_TyStatus_EXCEPTION(status)) {
+            TyErr_NoMemory();
             goto error;
         }
     }
 
-    if (_PyWideStringList_Copy(result, &wstrlist) < 0) {
-        PyErr_NoMemory();
+    if (_TyWideStringList_Copy(result, &wstrlist) < 0) {
+        TyErr_NoMemory();
         goto error;
     }
-    _PyWideStringList_Clear(&wstrlist);
-    Py_DECREF(xoptions);
+    _TyWideStringList_Clear(&wstrlist);
+    Ty_DECREF(xoptions);
     return 0;
 
 error:
-    _PyWideStringList_Clear(&wstrlist);
-    Py_DECREF(xoptions);
+    _TyWideStringList_Clear(&wstrlist);
+    Ty_DECREF(xoptions);
     return -1;
 }
 
 
 int
-_PyConfig_FromDict(PyConfig *config, PyObject *dict)
+_TyConfig_FromDict(TyConfig *config, TyObject *dict)
 {
-    if (!PyDict_Check(dict)) {
-        PyErr_SetString(PyExc_TypeError, "dict expected");
+    if (!TyDict_Check(dict)) {
+        TyErr_SetString(TyExc_TypeError, "dict expected");
         return -1;
     }
 
@@ -1521,16 +1521,16 @@ _PyConfig_FromDict(PyConfig *config, PyObject *dict)
     for (; spec->name != NULL; spec++) {
         char *member = (char *)config + spec->offset;
         switch (spec->type) {
-        case PyConfig_MEMBER_INT:
-        case PyConfig_MEMBER_UINT:
-        case PyConfig_MEMBER_BOOL:
+        case TyConfig_MEMBER_INT:
+        case TyConfig_MEMBER_UINT:
+        case TyConfig_MEMBER_BOOL:
         {
             int value;
             if (config_dict_get_int(dict, spec->name, &value) < 0) {
                 return -1;
             }
-            if (spec->type == PyConfig_MEMBER_BOOL
-                || spec->type == PyConfig_MEMBER_UINT)
+            if (spec->type == TyConfig_MEMBER_BOOL
+                || spec->type == TyConfig_MEMBER_UINT)
             {
                 if (value < 0) {
                     config_dict_invalid_value(spec->name);
@@ -1540,7 +1540,7 @@ _PyConfig_FromDict(PyConfig *config, PyObject *dict)
             *(int*)member = value;
             break;
         }
-        case PyConfig_MEMBER_ULONG:
+        case TyConfig_MEMBER_ULONG:
         {
             if (config_dict_get_ulong(dict, spec->name,
                                       (unsigned long*)member) < 0) {
@@ -1548,7 +1548,7 @@ _PyConfig_FromDict(PyConfig *config, PyObject *dict)
             }
             break;
         }
-        case PyConfig_MEMBER_WSTR:
+        case TyConfig_MEMBER_WSTR:
         {
             wchar_t **wstr = (wchar_t**)member;
             if (config_dict_get_wstr(dict, spec->name, config, wstr) < 0) {
@@ -1560,7 +1560,7 @@ _PyConfig_FromDict(PyConfig *config, PyObject *dict)
             }
             break;
         }
-        case PyConfig_MEMBER_WSTR_OPT:
+        case TyConfig_MEMBER_WSTR_OPT:
         {
             wchar_t **wstr = (wchar_t**)member;
             if (config_dict_get_wstr(dict, spec->name, config, wstr) < 0) {
@@ -1568,30 +1568,30 @@ _PyConfig_FromDict(PyConfig *config, PyObject *dict)
             }
             break;
         }
-        case PyConfig_MEMBER_WSTR_LIST:
+        case TyConfig_MEMBER_WSTR_LIST:
         {
             if (strcmp(spec->name, "xoptions") == 0) {
                 if (config_dict_get_xoptions(dict, spec->name, config,
-                                             (PyWideStringList*)member) < 0) {
+                                             (TyWideStringList*)member) < 0) {
                     return -1;
                 }
             }
             else {
                 if (config_dict_get_wstrlist(dict, spec->name, config,
-                                             (PyWideStringList*)member) < 0) {
+                                             (TyWideStringList*)member) < 0) {
                     return -1;
                 }
             }
             break;
         }
         default:
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
         }
     }
 
-    if (!(config->_config_init == _PyConfig_INIT_COMPAT
-          || config->_config_init == _PyConfig_INIT_PYTHON
-          || config->_config_init == _PyConfig_INIT_ISOLATED))
+    if (!(config->_config_init == _TyConfig_INIT_COMPAT
+          || config->_config_init == _TyConfig_INIT_PYTHON
+          || config->_config_init == _TyConfig_INIT_ISOLATED))
     {
         config_dict_invalid_value("_config_init");
         return -1;
@@ -1606,17 +1606,17 @@ _PyConfig_FromDict(PyConfig *config, PyObject *dict)
 
 
 static const char*
-config_get_env(const PyConfig *config, const char *name)
+config_get_env(const TyConfig *config, const char *name)
 {
-    return _Py_GetEnv(config->use_environment, name);
+    return _Ty_GetEnv(config->use_environment, name);
 }
 
 
 /* Get a copy of the environment variable as wchar_t*.
    Return 0 on success, but *dest can be NULL.
    Return -1 on memory allocation failure. Return -2 on decoding error. */
-static PyStatus
-config_get_env_dup(PyConfig *config,
+static TyStatus
+config_get_env_dup(TyConfig *config,
                    wchar_t **dest,
                    wchar_t *wname, char *name,
                    const char *decode_err_msg)
@@ -1626,22 +1626,22 @@ config_get_env_dup(PyConfig *config,
 
     if (!config->use_environment) {
         *dest = NULL;
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
 
 #ifdef MS_WINDOWS
     const wchar_t *var = _wgetenv(wname);
     if (!var || var[0] == '\0') {
         *dest = NULL;
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
 
-    return PyConfig_SetString(config, dest, var);
+    return TyConfig_SetString(config, dest, var);
 #else
     const char *var = getenv(name);
     if (!var || var[0] == '\0') {
         *dest = NULL;
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
 
     return config_set_bytes_string(config, dest, var, decode_err_msg);
@@ -1654,11 +1654,11 @@ config_get_env_dup(PyConfig *config,
 
 
 static void
-config_get_global_vars(PyConfig *config)
+config_get_global_vars(TyConfig *config)
 {
-_Py_COMP_DIAG_PUSH
-_Py_COMP_DIAG_IGNORE_DEPR_DECLS
-    if (config->_config_init != _PyConfig_INIT_COMPAT) {
+_Ty_COMP_DIAG_PUSH
+_Ty_COMP_DIAG_IGNORE_DEPR_DECLS
+    if (config->_config_init != _TyConfig_INIT_COMPAT) {
         /* Python and Isolated configuration ignore global variables */
         return;
     }
@@ -1672,37 +1672,37 @@ _Py_COMP_DIAG_IGNORE_DEPR_DECLS
             config->ATTR = !(VALUE); \
         }
 
-    COPY_FLAG(isolated, Py_IsolatedFlag);
-    COPY_NOT_FLAG(use_environment, Py_IgnoreEnvironmentFlag);
-    COPY_FLAG(bytes_warning, Py_BytesWarningFlag);
-    COPY_FLAG(inspect, Py_InspectFlag);
-    COPY_FLAG(interactive, Py_InteractiveFlag);
-    COPY_FLAG(optimization_level, Py_OptimizeFlag);
-    COPY_FLAG(parser_debug, Py_DebugFlag);
-    COPY_FLAG(verbose, Py_VerboseFlag);
-    COPY_FLAG(quiet, Py_QuietFlag);
+    COPY_FLAG(isolated, Ty_IsolatedFlag);
+    COPY_NOT_FLAG(use_environment, Ty_IgnoreEnvironmentFlag);
+    COPY_FLAG(bytes_warning, Ty_BytesWarningFlag);
+    COPY_FLAG(inspect, Ty_InspectFlag);
+    COPY_FLAG(interactive, Ty_InteractiveFlag);
+    COPY_FLAG(optimization_level, Ty_OptimizeFlag);
+    COPY_FLAG(parser_debug, Ty_DebugFlag);
+    COPY_FLAG(verbose, Ty_VerboseFlag);
+    COPY_FLAG(quiet, Ty_QuietFlag);
 #ifdef MS_WINDOWS
-    COPY_FLAG(legacy_windows_stdio, Py_LegacyWindowsStdioFlag);
+    COPY_FLAG(legacy_windows_stdio, Ty_LegacyWindowsStdioFlag);
 #endif
-    COPY_NOT_FLAG(pathconfig_warnings, Py_FrozenFlag);
+    COPY_NOT_FLAG(pathconfig_warnings, Ty_FrozenFlag);
 
-    COPY_NOT_FLAG(buffered_stdio, Py_UnbufferedStdioFlag);
-    COPY_NOT_FLAG(site_import, Py_NoSiteFlag);
-    COPY_NOT_FLAG(write_bytecode, Py_DontWriteBytecodeFlag);
-    COPY_NOT_FLAG(user_site_directory, Py_NoUserSiteDirectory);
+    COPY_NOT_FLAG(buffered_stdio, Ty_UnbufferedStdioFlag);
+    COPY_NOT_FLAG(site_import, Ty_NoSiteFlag);
+    COPY_NOT_FLAG(write_bytecode, Ty_DontWriteBytecodeFlag);
+    COPY_NOT_FLAG(user_site_directory, Ty_NoUserSiteDirectory);
 
 #undef COPY_FLAG
 #undef COPY_NOT_FLAG
-_Py_COMP_DIAG_POP
+_Ty_COMP_DIAG_POP
 }
 
 
-/* Set Py_xxx global configuration variables from 'config' configuration. */
+/* Set Ty_xxx global configuration variables from 'config' configuration. */
 static void
-config_set_global_vars(const PyConfig *config)
+config_set_global_vars(const TyConfig *config)
 {
-_Py_COMP_DIAG_PUSH
-_Py_COMP_DIAG_IGNORE_DEPR_DECLS
+_Ty_COMP_DIAG_PUSH
+_Ty_COMP_DIAG_IGNORE_DEPR_DECLS
 #define COPY_FLAG(ATTR, VAR) \
         if (config->ATTR != -1) { \
             VAR = config->ATTR; \
@@ -1712,43 +1712,43 @@ _Py_COMP_DIAG_IGNORE_DEPR_DECLS
             VAR = !config->ATTR; \
         }
 
-    COPY_FLAG(isolated, Py_IsolatedFlag);
-    COPY_NOT_FLAG(use_environment, Py_IgnoreEnvironmentFlag);
-    COPY_FLAG(bytes_warning, Py_BytesWarningFlag);
-    COPY_FLAG(inspect, Py_InspectFlag);
-    COPY_FLAG(interactive, Py_InteractiveFlag);
-    COPY_FLAG(optimization_level, Py_OptimizeFlag);
-    COPY_FLAG(parser_debug, Py_DebugFlag);
-    COPY_FLAG(verbose, Py_VerboseFlag);
-    COPY_FLAG(quiet, Py_QuietFlag);
+    COPY_FLAG(isolated, Ty_IsolatedFlag);
+    COPY_NOT_FLAG(use_environment, Ty_IgnoreEnvironmentFlag);
+    COPY_FLAG(bytes_warning, Ty_BytesWarningFlag);
+    COPY_FLAG(inspect, Ty_InspectFlag);
+    COPY_FLAG(interactive, Ty_InteractiveFlag);
+    COPY_FLAG(optimization_level, Ty_OptimizeFlag);
+    COPY_FLAG(parser_debug, Ty_DebugFlag);
+    COPY_FLAG(verbose, Ty_VerboseFlag);
+    COPY_FLAG(quiet, Ty_QuietFlag);
 #ifdef MS_WINDOWS
-    COPY_FLAG(legacy_windows_stdio, Py_LegacyWindowsStdioFlag);
+    COPY_FLAG(legacy_windows_stdio, Ty_LegacyWindowsStdioFlag);
 #endif
-    COPY_NOT_FLAG(pathconfig_warnings, Py_FrozenFlag);
+    COPY_NOT_FLAG(pathconfig_warnings, Ty_FrozenFlag);
 
-    COPY_NOT_FLAG(buffered_stdio, Py_UnbufferedStdioFlag);
-    COPY_NOT_FLAG(site_import, Py_NoSiteFlag);
-    COPY_NOT_FLAG(write_bytecode, Py_DontWriteBytecodeFlag);
-    COPY_NOT_FLAG(user_site_directory, Py_NoUserSiteDirectory);
+    COPY_NOT_FLAG(buffered_stdio, Ty_UnbufferedStdioFlag);
+    COPY_NOT_FLAG(site_import, Ty_NoSiteFlag);
+    COPY_NOT_FLAG(write_bytecode, Ty_DontWriteBytecodeFlag);
+    COPY_NOT_FLAG(user_site_directory, Ty_NoUserSiteDirectory);
 
     /* Random or non-zero hash seed */
-    Py_HashRandomizationFlag = (config->use_hash_seed == 0 ||
+    Ty_HashRandomizationFlag = (config->use_hash_seed == 0 ||
                                 config->hash_seed != 0);
 
 #undef COPY_FLAG
 #undef COPY_NOT_FLAG
-_Py_COMP_DIAG_POP
+_Ty_COMP_DIAG_POP
 }
 
 
 static const wchar_t*
-config_get_xoption(const PyConfig *config, wchar_t *name)
+config_get_xoption(const TyConfig *config, wchar_t *name)
 {
-    return _Py_get_xoption(&config->xoptions, name);
+    return _Ty_get_xoption(&config->xoptions, name);
 }
 
 static const wchar_t*
-config_get_xoption_value(const PyConfig *config, wchar_t *name)
+config_get_xoption_value(const TyConfig *config, wchar_t *name)
 {
     const wchar_t *xoption = config_get_xoption(config, name);
     if (xoption == NULL) {
@@ -1759,11 +1759,11 @@ config_get_xoption_value(const PyConfig *config, wchar_t *name)
 }
 
 
-static PyStatus
-config_init_hash_seed(PyConfig *config)
+static TyStatus
+config_init_hash_seed(TyConfig *config)
 {
-    static_assert(sizeof(_Py_HashSecret_t) == sizeof(_Py_HashSecret.uc),
-                  "_Py_HashSecret_t has wrong size");
+    static_assert(sizeof(_Ty_HashSecret_t) == sizeof(_Ty_HashSecret.uc),
+                  "_Ty_HashSecret_t has wrong size");
 
     const char *seed_text = config_get_env(config, "PYTHONHASHSEED");
 
@@ -1777,7 +1777,7 @@ config_init_hash_seed(PyConfig *config)
             || seed > MAX_HASH_SEED
             || (errno == ERANGE && seed == ULONG_MAX))
         {
-            return _PyStatus_ERR("PYTHONHASHSEED must be \"random\" "
+            return _TyStatus_ERR("PYTHONHASHSEED must be \"random\" "
                                 "or an integer in range [0; 4294967295]");
         }
         /* Use a specific hash */
@@ -1789,7 +1789,7 @@ config_init_hash_seed(PyConfig *config)
         config->use_hash_seed = 0;
         config->hash_seed = 0;
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
@@ -1810,61 +1810,61 @@ config_wstr_to_int(const wchar_t *wstr, int *result)
     return 0;
 }
 
-static PyStatus
-config_read_gil(PyConfig *config, size_t len, wchar_t first_char)
+static TyStatus
+config_read_gil(TyConfig *config, size_t len, wchar_t first_char)
 {
     if (len == 1 && first_char == L'0') {
-#ifdef Py_GIL_DISABLED
-        config->enable_gil = _PyConfig_GIL_DISABLE;
+#ifdef Ty_GIL_DISABLED
+        config->enable_gil = _TyConfig_GIL_DISABLE;
 #else
-        return _PyStatus_ERR("Disabling the GIL is not supported by this build");
+        return _TyStatus_ERR("Disabling the GIL is not supported by this build");
 #endif
     }
     else if (len == 1 && first_char == L'1') {
-#ifdef Py_GIL_DISABLED
-        config->enable_gil = _PyConfig_GIL_ENABLE;
+#ifdef Ty_GIL_DISABLED
+        config->enable_gil = _TyConfig_GIL_ENABLE;
 #else
-        return _PyStatus_OK();
+        return _TyStatus_OK();
 #endif
     }
     else {
-        return _PyStatus_ERR("PYTHON_GIL / -X gil must be \"0\" or \"1\"");
+        return _TyStatus_ERR("PYTHON_GIL / -X gil must be \"0\" or \"1\"");
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
-static PyStatus
-config_read_env_vars(PyConfig *config)
+static TyStatus
+config_read_env_vars(TyConfig *config)
 {
-    PyStatus status;
+    TyStatus status;
     int use_env = config->use_environment;
 
     /* Get environment variables */
-    _Py_get_env_flag(use_env, &config->parser_debug, "PYTHONDEBUG");
-    _Py_get_env_flag(use_env, &config->verbose, "PYTHONVERBOSE");
-    _Py_get_env_flag(use_env, &config->optimization_level, "PYTHONOPTIMIZE");
-    _Py_get_env_flag(use_env, &config->inspect, "PYTHONINSPECT");
+    _Ty_get_env_flag(use_env, &config->parser_debug, "PYTHONDEBUG");
+    _Ty_get_env_flag(use_env, &config->verbose, "PYTHONVERBOSE");
+    _Ty_get_env_flag(use_env, &config->optimization_level, "PYTHONOPTIMIZE");
+    _Ty_get_env_flag(use_env, &config->inspect, "PYTHONINSPECT");
 
     int dont_write_bytecode = 0;
-    _Py_get_env_flag(use_env, &dont_write_bytecode, "PYTHONDONTWRITEBYTECODE");
+    _Ty_get_env_flag(use_env, &dont_write_bytecode, "PYTHONDONTWRITEBYTECODE");
     if (dont_write_bytecode) {
         config->write_bytecode = 0;
     }
 
     int no_user_site_directory = 0;
-    _Py_get_env_flag(use_env, &no_user_site_directory, "PYTHONNOUSERSITE");
+    _Ty_get_env_flag(use_env, &no_user_site_directory, "PYTHONNOUSERSITE");
     if (no_user_site_directory) {
         config->user_site_directory = 0;
     }
 
     int unbuffered_stdio = 0;
-    _Py_get_env_flag(use_env, &unbuffered_stdio, "PYTHONUNBUFFERED");
+    _Ty_get_env_flag(use_env, &unbuffered_stdio, "PYTHONUNBUFFERED");
     if (unbuffered_stdio) {
         config->buffered_stdio = 0;
     }
 
 #ifdef MS_WINDOWS
-    _Py_get_env_flag(use_env, &config->legacy_windows_stdio,
+    _Ty_get_env_flag(use_env, &config->legacy_windows_stdio,
                      "PYTHONLEGACYWINDOWSSTDIO");
 #endif
 
@@ -1878,7 +1878,7 @@ config_read_env_vars(PyConfig *config)
     if (config->dump_refs_file == NULL) {
         status = CONFIG_GET_ENV_DUP(config, &config->dump_refs_file,
                                     L"PYTHONDUMPREFSFILE", "PYTHONDUMPREFSFILE");
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
@@ -1886,7 +1886,7 @@ config_read_env_vars(PyConfig *config)
     if (config->pythonpath_env == NULL) {
         status = CONFIG_GET_ENV_DUP(config, &config->pythonpath_env,
                                     L"PYTHONPATH", "PYTHONPATH");
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
@@ -1894,14 +1894,14 @@ config_read_env_vars(PyConfig *config)
     if(config->platlibdir == NULL) {
         status = CONFIG_GET_ENV_DUP(config, &config->platlibdir,
                                     L"PYTHONPLATLIBDIR", "PYTHONPLATLIBDIR");
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     if (config->use_hash_seed < 0) {
         status = config_init_hash_seed(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
@@ -1914,16 +1914,16 @@ config_read_env_vars(PyConfig *config)
     if (gil != NULL) {
         size_t len = strlen(gil);
         status = config_read_gil(config, len, gil[0]);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
-static PyStatus
-config_init_cpu_count(PyConfig *config)
+static TyStatus
+config_init_cpu_count(TyConfig *config)
 {
     const char *env = config_get_env(config, "PYTHON_CPU_COUNT");
     if (env) {
@@ -1931,7 +1931,7 @@ config_init_cpu_count(PyConfig *config)
         if (strcmp(env, "default") == 0) {
             cpu_count = -1;
         }
-        else if (_Py_str_to_int(env, &cpu_count) < 0 || cpu_count < 1) {
+        else if (_Ty_str_to_int(env, &cpu_count) < 0 || cpu_count < 1) {
             goto error;
         }
         config->cpu_count = cpu_count;
@@ -1954,21 +1954,21 @@ config_init_cpu_count(PyConfig *config)
         }
         config->cpu_count = cpu_count;
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 
 error:
-    return _PyStatus_ERR("-X cpu_count=n option: n is missing or an invalid number, "
+    return _TyStatus_ERR("-X cpu_count=n option: n is missing or an invalid number, "
                          "n must be greater than 0");
 }
 
-static PyStatus
-config_init_thread_inherit_context(PyConfig *config)
+static TyStatus
+config_init_thread_inherit_context(TyConfig *config)
 {
     const char *env = config_get_env(config, "PYTHON_THREAD_INHERIT_CONTEXT");
     if (env) {
         int enabled;
-        if (_Py_str_to_int(env, &enabled) < 0 || (enabled < 0) || (enabled > 1)) {
-            return _PyStatus_ERR(
+        if (_Ty_str_to_int(env, &enabled) < 0 || (enabled < 0) || (enabled > 1)) {
+            return _TyStatus_ERR(
                 "PYTHON_THREAD_INHERIT_CONTEXT=N: N is missing or invalid");
         }
         config->thread_inherit_context = enabled;
@@ -1979,22 +1979,22 @@ config_init_thread_inherit_context(PyConfig *config)
         int enabled;
         const wchar_t *sep = wcschr(xoption, L'=');
         if (!sep || (config_wstr_to_int(sep + 1, &enabled) < 0) || (enabled < 0) || (enabled > 1)) {
-            return _PyStatus_ERR(
+            return _TyStatus_ERR(
                 "-X thread_inherit_context=n: n is missing or invalid");
         }
         config->thread_inherit_context = enabled;
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
-static PyStatus
-config_init_context_aware_warnings(PyConfig *config)
+static TyStatus
+config_init_context_aware_warnings(TyConfig *config)
 {
     const char *env = config_get_env(config, "PYTHON_CONTEXT_AWARE_WARNINGS");
     if (env) {
         int enabled;
-        if (_Py_str_to_int(env, &enabled) < 0 || (enabled < 0) || (enabled > 1)) {
-            return _PyStatus_ERR(
+        if (_Ty_str_to_int(env, &enabled) < 0 || (enabled < 0) || (enabled > 1)) {
+            return _TyStatus_ERR(
                 "PYTHON_CONTEXT_AWARE_WARNINGS=N: N is missing or invalid");
         }
         config->context_aware_warnings = enabled;
@@ -2005,23 +2005,23 @@ config_init_context_aware_warnings(PyConfig *config)
         int enabled;
         const wchar_t *sep = wcschr(xoption, L'=');
         if (!sep || (config_wstr_to_int(sep + 1, &enabled) < 0) || (enabled < 0) || (enabled > 1)) {
-            return _PyStatus_ERR(
+            return _TyStatus_ERR(
                 "-X context_aware_warnings=n: n is missing or invalid");
         }
         config->context_aware_warnings = enabled;
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
-static PyStatus
-config_init_tlbc(PyConfig *config)
+static TyStatus
+config_init_tlbc(TyConfig *config)
 {
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     const char *env = config_get_env(config, "PYTHON_TLBC");
     if (env) {
         int enabled;
-        if (_Py_str_to_int(env, &enabled) < 0 || (enabled < 0) || (enabled > 1)) {
-            return _PyStatus_ERR(
+        if (_Ty_str_to_int(env, &enabled) < 0 || (enabled < 0) || (enabled > 1)) {
+            return _TyStatus_ERR(
                 "PYTHON_TLBC=N: N is missing or invalid");
         }
         config->tlbc_enabled = enabled;
@@ -2032,24 +2032,24 @@ config_init_tlbc(PyConfig *config)
         int enabled;
         const wchar_t *sep = wcschr(xoption, L'=');
         if (!sep || (config_wstr_to_int(sep + 1, &enabled) < 0) || (enabled < 0) || (enabled > 1)) {
-            return _PyStatus_ERR(
+            return _TyStatus_ERR(
                 "-X tlbc=n: n is missing or invalid");
         }
         config->tlbc_enabled = enabled;
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 #else
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 #endif
 }
 
-static PyStatus
-config_init_perf_profiling(PyConfig *config)
+static TyStatus
+config_init_perf_profiling(TyConfig *config)
 {
     int active = 0;
     const char *env = config_get_env(config, "PYTHONPERFSUPPORT");
     if (env) {
-        if (_Py_str_to_int(env, &active) != 0) {
+        if (_Ty_str_to_int(env, &active) != 0) {
             active = 0;
         }
         if (active) {
@@ -2062,7 +2062,7 @@ config_init_perf_profiling(PyConfig *config)
     }
     env = config_get_env(config, "PYTHON_PERF_JIT_SUPPORT");
     if (env) {
-        if (_Py_str_to_int(env, &active) != 0) {
+        if (_Ty_str_to_int(env, &active) != 0) {
             active = 0;
         }
         if (active) {
@@ -2074,18 +2074,18 @@ config_init_perf_profiling(PyConfig *config)
         config->perf_profiling = 2;
     }
 
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 
 }
 
-static PyStatus
-config_init_remote_debug(PyConfig *config)
+static TyStatus
+config_init_remote_debug(TyConfig *config)
 {
-#ifndef Py_REMOTE_DEBUG
+#ifndef Ty_REMOTE_DEBUG
     config->remote_debug = 0;
 #else
     int active = 1;
-    const char *env = Py_GETENV("PYTHON_DISABLE_REMOTE_DEBUG");
+    const char *env = Ty_GETENV("PYTHON_DISABLE_REMOTE_DEBUG");
     if (env) {
         active = 0;
     }
@@ -2096,26 +2096,26 @@ config_init_remote_debug(PyConfig *config)
 
     config->remote_debug = active;
 #endif
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 
 }
 
-static PyStatus
-config_init_tracemalloc(PyConfig *config)
+static TyStatus
+config_init_tracemalloc(TyConfig *config)
 {
     int nframe;
     int valid;
 
     const char *env = config_get_env(config, "PYTHONTRACEMALLOC");
     if (env) {
-        if (!_Py_str_to_int(env, &nframe)) {
+        if (!_Ty_str_to_int(env, &nframe)) {
             valid = (nframe >= 0);
         }
         else {
             valid = 0;
         }
         if (!valid) {
-            return _PyStatus_ERR("PYTHONTRACEMALLOC: invalid number of frames");
+            return _TyStatus_ERR("PYTHONTRACEMALLOC: invalid number of frames");
         }
         config->tracemalloc = nframe;
     }
@@ -2131,7 +2131,7 @@ config_init_tracemalloc(PyConfig *config)
                 valid = 0;
             }
             if (!valid) {
-                return _PyStatus_ERR("-X tracemalloc=NFRAME: "
+                return _TyStatus_ERR("-X tracemalloc=NFRAME: "
                                      "invalid number of frames");
             }
         }
@@ -2141,24 +2141,24 @@ config_init_tracemalloc(PyConfig *config)
         }
         config->tracemalloc = nframe;
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
-static PyStatus
-config_init_int_max_str_digits(PyConfig *config)
+static TyStatus
+config_init_int_max_str_digits(TyConfig *config)
 {
     int maxdigits;
 
     const char *env = config_get_env(config, "PYTHONINTMAXSTRDIGITS");
     if (env) {
         bool valid = 0;
-        if (!_Py_str_to_int(env, &maxdigits)) {
+        if (!_Ty_str_to_int(env, &maxdigits)) {
             valid = ((maxdigits == 0) || (maxdigits >= _PY_LONG_MAX_STR_DIGITS_THRESHOLD));
         }
         if (!valid) {
 #define STRINGIFY(VAL) _STRINGIFY(VAL)
 #define _STRINGIFY(VAL) #VAL
-            return _PyStatus_ERR(
+            return _TyStatus_ERR(
                     "PYTHONINTMAXSTRDIGITS: invalid limit; must be >= "
                     STRINGIFY(_PY_LONG_MAX_STR_DIGITS_THRESHOLD)
                     " or 0 for unlimited.");
@@ -2176,7 +2176,7 @@ config_init_int_max_str_digits(PyConfig *config)
             }
         }
         if (!valid) {
-            return _PyStatus_ERR(
+            return _TyStatus_ERR(
                     "-X int_max_str_digits: invalid limit; must be >= "
                     STRINGIFY(_PY_LONG_MAX_STR_DIGITS_THRESHOLD)
                     " or 0 for unlimited.");
@@ -2188,11 +2188,11 @@ config_init_int_max_str_digits(PyConfig *config)
     if (config->int_max_str_digits < 0) {
         config->int_max_str_digits = _PY_LONG_DEFAULT_MAX_STR_DIGITS;
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
-static PyStatus
-config_init_pycache_prefix(PyConfig *config)
+static TyStatus
+config_init_pycache_prefix(TyConfig *config)
 {
     assert(config->pycache_prefix == NULL);
 
@@ -2200,9 +2200,9 @@ config_init_pycache_prefix(PyConfig *config)
     if (xoption) {
         const wchar_t *sep = wcschr(xoption, L'=');
         if (sep && wcslen(sep) > 1) {
-            config->pycache_prefix = _PyMem_RawWcsdup(sep + 1);
+            config->pycache_prefix = _TyMem_RawWcsdup(sep + 1);
             if (config->pycache_prefix == NULL) {
-                return _PyStatus_NO_MEMORY();
+                return _TyStatus_NO_MEMORY();
             }
         }
         else {
@@ -2210,7 +2210,7 @@ config_init_pycache_prefix(PyConfig *config)
             // if "-X pycache_prefix=" option is used
             config->pycache_prefix = NULL;
         }
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
 
     return CONFIG_GET_ENV_DUP(config, &config->pycache_prefix,
@@ -2219,9 +2219,9 @@ config_init_pycache_prefix(PyConfig *config)
 }
 
 
-#ifdef Py_DEBUG
-static PyStatus
-config_init_run_presite(PyConfig *config)
+#ifdef Ty_DEBUG
+static TyStatus
+config_init_run_presite(TyConfig *config)
 {
     assert(config->run_presite == NULL);
 
@@ -2229,9 +2229,9 @@ config_init_run_presite(PyConfig *config)
     if (xoption) {
         const wchar_t *sep = wcschr(xoption, L'=');
         if (sep && wcslen(sep) > 1) {
-            config->run_presite = _PyMem_RawWcsdup(sep + 1);
+            config->run_presite = _TyMem_RawWcsdup(sep + 1);
             if (config->run_presite == NULL) {
-                return _PyStatus_NO_MEMORY();
+                return _TyStatus_NO_MEMORY();
             }
         }
         else {
@@ -2239,7 +2239,7 @@ config_init_run_presite(PyConfig *config)
             // if "-X presite=" option is used
             config->run_presite = NULL;
         }
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
 
     return CONFIG_GET_ENV_DUP(config, &config->run_presite,
@@ -2248,18 +2248,18 @@ config_init_run_presite(PyConfig *config)
 }
 #endif
 
-static PyStatus
-config_init_import_time(PyConfig *config)
+static TyStatus
+config_init_import_time(TyConfig *config)
 {
     int importtime = 0;
 
     const char *env = config_get_env(config, "PYTHONPROFILEIMPORTTIME");
     if (env) {
-        if (_Py_str_to_int(env, &importtime) != 0) {
+        if (_Ty_str_to_int(env, &importtime) != 0) {
             importtime = 1;
         }
         if (importtime < 0 || importtime > 2) {
-            return _PyStatus_ERR(
+            return _TyStatus_ERR(
                 "PYTHONPROFILEIMPORTTIME: numeric values other than 1 and 2 "
                 "are reserved for future use.");
         }
@@ -2271,18 +2271,18 @@ config_init_import_time(PyConfig *config)
             importtime = 1;
         }
         if (importtime < 0 || importtime > 2) {
-            return _PyStatus_ERR(
+            return _TyStatus_ERR(
                 "-X importtime: values other than 1 and 2 "
                 "are reserved for future use.");
         }
     }
 
     config->import_time = importtime;
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
-static PyStatus
-config_read_complex_options(PyConfig *config)
+static TyStatus
+config_read_complex_options(TyConfig *config)
 {
     /* More complex options configured by env var and -X option */
     if (config->faulthandler < 0) {
@@ -2296,86 +2296,86 @@ config_read_complex_options(PyConfig *config)
         config->code_debug_ranges = 0;
     }
 
-    PyStatus status;
+    TyStatus status;
     if (config->import_time < 0) {
         status = config_init_import_time(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     if (config->tracemalloc < 0) {
         status = config_init_tracemalloc(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     if (config->perf_profiling < 0) {
         status = config_init_perf_profiling(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     if (config->remote_debug < 0) {
         status = config_init_remote_debug(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     if (config->int_max_str_digits < 0) {
         status = config_init_int_max_str_digits(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     if (config->cpu_count < 0) {
         status = config_init_cpu_count(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     if (config->pycache_prefix == NULL) {
         status = config_init_pycache_prefix(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     if (config->run_presite == NULL) {
         status = config_init_run_presite(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 #endif
 
     status = config_init_thread_inherit_context(config);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
     status = config_init_context_aware_warnings(config);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
     status = config_init_tlbc(config);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
 static const wchar_t *
-config_get_stdio_errors(const PyPreConfig *preconfig)
+config_get_stdio_errors(const TyPreConfig *preconfig)
 {
     if (preconfig->utf8_mode) {
         /* UTF-8 Mode uses UTF-8/surrogateescape */
@@ -2392,7 +2392,7 @@ config_get_stdio_errors(const PyPreConfig *preconfig)
 
 #ifdef PY_COERCE_C_LOCALE
         /* surrogateescape is the default in locale coercion target locales */
-        if (_Py_IsLocaleCoercionTarget(loc)) {
+        if (_Ty_IsLocaleCoercionTarget(loc)) {
             return L"surrogateescape";
         }
 #endif
@@ -2407,43 +2407,43 @@ config_get_stdio_errors(const PyPreConfig *preconfig)
 
 
 // See also config_get_fs_encoding()
-static PyStatus
-config_get_locale_encoding(PyConfig *config, const PyPreConfig *preconfig,
+static TyStatus
+config_get_locale_encoding(TyConfig *config, const TyPreConfig *preconfig,
                            wchar_t **locale_encoding)
 {
     wchar_t *encoding;
     if (preconfig->utf8_mode) {
-        encoding = _PyMem_RawWcsdup(L"utf-8");
+        encoding = _TyMem_RawWcsdup(L"utf-8");
     }
     else {
-        encoding = _Py_GetLocaleEncoding();
+        encoding = _Ty_GetLocaleEncoding();
     }
     if (encoding == NULL) {
-        return _PyStatus_NO_MEMORY();
+        return _TyStatus_NO_MEMORY();
     }
-    PyStatus status = PyConfig_SetString(config, locale_encoding, encoding);
-    PyMem_RawFree(encoding);
+    TyStatus status = TyConfig_SetString(config, locale_encoding, encoding);
+    TyMem_RawFree(encoding);
     return status;
 }
 
 
-static PyStatus
-config_init_stdio_encoding(PyConfig *config,
-                           const PyPreConfig *preconfig)
+static TyStatus
+config_init_stdio_encoding(TyConfig *config,
+                           const TyPreConfig *preconfig)
 {
-    PyStatus status;
+    TyStatus status;
 
     // Exit if encoding and errors are defined
     if (config->stdio_encoding != NULL && config->stdio_errors != NULL) {
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
 
     /* PYTHONIOENCODING environment variable */
     const char *opt = config_get_env(config, "PYTHONIOENCODING");
     if (opt) {
-        char *pythonioencoding = _PyMem_RawStrdup(opt);
+        char *pythonioencoding = _TyMem_RawStrdup(opt);
         if (pythonioencoding == NULL) {
-            return _PyStatus_NO_MEMORY();
+            return _TyStatus_NO_MEMORY();
         }
 
         char *errors = strchr(pythonioencoding, ':');
@@ -2461,8 +2461,8 @@ config_init_stdio_encoding(PyConfig *config,
                 status = CONFIG_SET_BYTES_STR(config, &config->stdio_encoding,
                                               pythonioencoding,
                                               "PYTHONIOENCODING environment variable");
-                if (_PyStatus_EXCEPTION(status)) {
-                    PyMem_RawFree(pythonioencoding);
+                if (_TyStatus_EXCEPTION(status)) {
+                    TyMem_RawFree(pythonioencoding);
                     return status;
                 }
             }
@@ -2480,20 +2480,20 @@ config_init_stdio_encoding(PyConfig *config,
             status = CONFIG_SET_BYTES_STR(config, &config->stdio_errors,
                                           errors,
                                           "PYTHONIOENCODING environment variable");
-            if (_PyStatus_EXCEPTION(status)) {
-                PyMem_RawFree(pythonioencoding);
+            if (_TyStatus_EXCEPTION(status)) {
+                TyMem_RawFree(pythonioencoding);
                 return status;
             }
         }
 
-        PyMem_RawFree(pythonioencoding);
+        TyMem_RawFree(pythonioencoding);
     }
 
     /* Choose the default error handler based on the current locale. */
     if (config->stdio_encoding == NULL) {
         status = config_get_locale_encoding(config, preconfig,
                                             &config->stdio_encoding);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
@@ -2501,23 +2501,23 @@ config_init_stdio_encoding(PyConfig *config,
         const wchar_t *errors = config_get_stdio_errors(preconfig);
         assert(errors != NULL);
 
-        status = PyConfig_SetString(config, &config->stdio_errors, errors);
-        if (_PyStatus_EXCEPTION(status)) {
+        status = TyConfig_SetString(config, &config->stdio_errors, errors);
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
 // See also config_get_locale_encoding()
-static PyStatus
-config_get_fs_encoding(PyConfig *config, const PyPreConfig *preconfig,
+static TyStatus
+config_get_fs_encoding(TyConfig *config, const TyPreConfig *preconfig,
                        wchar_t **fs_encoding)
 {
-#ifdef _Py_FORCE_UTF8_FS_ENCODING
-    return PyConfig_SetString(config, fs_encoding, L"utf-8");
+#ifdef _Ty_FORCE_UTF8_FS_ENCODING
+    return TyConfig_SetString(config, fs_encoding, L"utf-8");
 #elif defined(MS_WINDOWS)
     const wchar_t *encoding;
     if (preconfig->legacy_windows_fs_encoding) {
@@ -2528,14 +2528,14 @@ config_get_fs_encoding(PyConfig *config, const PyPreConfig *preconfig,
         // Windows defaults to utf-8/surrogatepass (PEP 529)
         encoding = L"utf-8";
     }
-     return PyConfig_SetString(config, fs_encoding, encoding);
+     return TyConfig_SetString(config, fs_encoding, encoding);
 #else  // !MS_WINDOWS
     if (preconfig->utf8_mode) {
-        return PyConfig_SetString(config, fs_encoding, L"utf-8");
+        return TyConfig_SetString(config, fs_encoding, L"utf-8");
     }
 
-    if (_Py_GetForceASCII()) {
-        return PyConfig_SetString(config, fs_encoding, L"ascii");
+    if (_Ty_GetForceASCII()) {
+        return TyConfig_SetString(config, fs_encoding, L"ascii");
     }
 
     return config_get_locale_encoding(config, preconfig, fs_encoding);
@@ -2543,15 +2543,15 @@ config_get_fs_encoding(PyConfig *config, const PyPreConfig *preconfig,
 }
 
 
-static PyStatus
-config_init_fs_encoding(PyConfig *config, const PyPreConfig *preconfig)
+static TyStatus
+config_init_fs_encoding(TyConfig *config, const TyPreConfig *preconfig)
 {
-    PyStatus status;
+    TyStatus status;
 
     if (config->filesystem_encoding == NULL) {
         status = config_get_fs_encoding(config, preconfig,
                                         &config->filesystem_encoding);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
@@ -2568,22 +2568,22 @@ config_init_fs_encoding(PyConfig *config, const PyPreConfig *preconfig)
 #else
         errors = L"surrogateescape";
 #endif
-        status = PyConfig_SetString(config, &config->filesystem_errors, errors);
-        if (_PyStatus_EXCEPTION(status)) {
+        status = TyConfig_SetString(config, &config->filesystem_errors, errors);
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
-static PyStatus
-config_init_import(PyConfig *config, int compute_path_config)
+static TyStatus
+config_init_import(TyConfig *config, int compute_path_config)
 {
-    PyStatus status;
+    TyStatus status;
 
-    status = _PyConfig_InitPathConfig(config, compute_path_config);
-    if (_PyStatus_EXCEPTION(status)) {
+    status = _TyConfig_InitPathConfig(config, compute_path_config);
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
@@ -2596,7 +2596,7 @@ config_init_import(PyConfig *config, int compute_path_config)
     else if (strcmp(env, "off") == 0) {
         config->use_frozen_modules = 0;
     } else {
-        return PyStatus_Error("bad value for PYTHON_FROZEN_MODULES "
+        return TyStatus_Error("bad value for PYTHON_FROZEN_MODULES "
                               "(expected \"on\" or \"off\")");
     }
 
@@ -2615,30 +2615,30 @@ config_init_import(PyConfig *config, int compute_path_config)
         config->use_frozen_modules = 1;
     }
     else {
-        return PyStatus_Error("bad value for option -X frozen_modules "
+        return TyStatus_Error("bad value for option -X frozen_modules "
                               "(expected \"on\" or \"off\")");
     }
 
     assert(config->use_frozen_modules >= 0);
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
-PyStatus
-_PyConfig_InitImportConfig(PyConfig *config)
+TyStatus
+_TyConfig_InitImportConfig(TyConfig *config)
 {
     return config_init_import(config, 1);
 }
 
 
-static PyStatus
-config_read(PyConfig *config, int compute_path_config)
+static TyStatus
+config_read(TyConfig *config, int compute_path_config)
 {
-    PyStatus status;
-    const PyPreConfig *preconfig = &_PyRuntime.preconfig;
+    TyStatus status;
+    const TyPreConfig *preconfig = &_PyRuntime.preconfig;
 
     if (config->use_environment) {
         status = config_read_env_vars(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
@@ -2652,12 +2652,12 @@ config_read(PyConfig *config, int compute_path_config)
     if (x_gil != NULL) {
         size_t len = wcslen(x_gil);
         status = config_read_gil(config, len, x_gil[0]);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
-#ifdef Py_STATS
+#ifdef Ty_STATS
     if (config_get_xoption(config, L"pystats")) {
         config->_pystats = 1;
     }
@@ -2670,13 +2670,13 @@ config_read(PyConfig *config, int compute_path_config)
 #endif
 
     status = config_read_complex_options(config);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
     if (config->_install_importlib) {
         status = config_init_import(config, compute_path_config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
@@ -2706,28 +2706,28 @@ config_read(PyConfig *config, int compute_path_config)
 
     if (config->filesystem_encoding == NULL || config->filesystem_errors == NULL) {
         status = config_init_fs_encoding(config, preconfig);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     status = config_init_stdio_encoding(config, preconfig);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
     if (config->argv.length < 1) {
         /* Ensure at least one (empty) argument is seen */
-        status = PyWideStringList_Append(&config->argv, L"");
-        if (_PyStatus_EXCEPTION(status)) {
+        status = TyWideStringList_Append(&config->argv, L"");
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     if (config->check_hash_pycs_mode == NULL) {
-        status = PyConfig_SetString(config, &config->check_hash_pycs_mode,
+        status = TyConfig_SetString(config, &config->check_hash_pycs_mode,
                                     L"default");
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
@@ -2741,12 +2741,12 @@ config_read(PyConfig *config, int compute_path_config)
         config->parse_argv = 2;
     }
 
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
 static void
-config_init_stdio(const PyConfig *config)
+config_init_stdio(const TyConfig *config)
 {
 #if defined(MS_WINDOWS) || defined(__CYGWIN__)
     /* don't translate newlines (\r\n <=> \n) */
@@ -2784,10 +2784,10 @@ config_init_stdio(const PyConfig *config)
 
 /* Write the configuration:
 
-   - set Py_xxx global configuration variables
+   - set Ty_xxx global configuration variables
    - initialize C standard streams (stdin, stdout, stderr) */
-PyStatus
-_PyConfig_Write(const PyConfig *config, _PyRuntimeState *runtime)
+TyStatus
+_TyConfig_Write(const TyConfig *config, _PyRuntimeState *runtime)
 {
     config_set_global_vars(config);
 
@@ -2796,28 +2796,28 @@ _PyConfig_Write(const PyConfig *config, _PyRuntimeState *runtime)
     }
 
     /* Write the new pre-configuration into _PyRuntime */
-    PyPreConfig *preconfig = &runtime->preconfig;
+    TyPreConfig *preconfig = &runtime->preconfig;
     preconfig->isolated = config->isolated;
     preconfig->use_environment = config->use_environment;
     preconfig->dev_mode = config->dev_mode;
 
-    if (_Py_SetArgcArgv(config->orig_argv.length,
+    if (_Ty_SetArgcArgv(config->orig_argv.length,
                         config->orig_argv.items) < 0)
     {
-        return _PyStatus_NO_MEMORY();
+        return _TyStatus_NO_MEMORY();
     }
 
-#ifdef Py_STATS
+#ifdef Ty_STATS
     if (config->_pystats) {
-        _Py_StatsOn();
+        _Ty_StatsOn();
     }
 #endif
 
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
-/* --- PyConfig command line parser -------------------------- */
+/* --- TyConfig command line parser -------------------------- */
 
 static void
 config_usage(int error, const wchar_t* program)
@@ -2856,22 +2856,22 @@ config_complete_usage(const wchar_t* program)
 
 
 /* Parse the command line arguments */
-static PyStatus
-config_parse_cmdline(PyConfig *config, PyWideStringList *warnoptions,
-                     Py_ssize_t *opt_index)
+static TyStatus
+config_parse_cmdline(TyConfig *config, TyWideStringList *warnoptions,
+                     Ty_ssize_t *opt_index)
 {
-    PyStatus status;
-    const PyWideStringList *argv = &config->argv;
+    TyStatus status;
+    const TyWideStringList *argv = &config->argv;
     int print_version = 0;
     const wchar_t* program = config->program_name;
     if (!program && argv->length >= 1) {
         program = argv->items[0];
     }
 
-    _PyOS_ResetGetOpt();
+    _TyOS_ResetGetOpt();
     do {
         int longindex = -1;
-        int c = _PyOS_GetOpt(argv->length, argv->items, &longindex);
+        int c = _TyOS_GetOpt(argv->length, argv->items, &longindex);
         if (c == EOF) {
             break;
         }
@@ -2881,12 +2881,12 @@ config_parse_cmdline(PyConfig *config, PyWideStringList *warnoptions,
                 /* -c is the last option; following arguments
                    that look like options are left for the
                    command to interpret. */
-                size_t len = wcslen(_PyOS_optarg) + 1 + 1;
-                wchar_t *command = PyMem_RawMalloc(sizeof(wchar_t) * len);
+                size_t len = wcslen(_TyOS_optarg) + 1 + 1;
+                wchar_t *command = TyMem_RawMalloc(sizeof(wchar_t) * len);
                 if (command == NULL) {
-                    return _PyStatus_NO_MEMORY();
+                    return _TyStatus_NO_MEMORY();
                 }
-                memcpy(command, _PyOS_optarg, (len - 2) * sizeof(wchar_t));
+                memcpy(command, _TyOS_optarg, (len - 2) * sizeof(wchar_t));
                 command[len - 2] = '\n';
                 command[len - 1] = 0;
                 config->run_command = command;
@@ -2899,9 +2899,9 @@ config_parse_cmdline(PyConfig *config, PyWideStringList *warnoptions,
                that look like options are left for the
                module to interpret. */
             if (config->run_module == NULL) {
-                config->run_module = _PyMem_RawWcsdup(_PyOS_optarg);
+                config->run_module = _TyMem_RawWcsdup(_TyOS_optarg);
                 if (config->run_module == NULL) {
-                    return _PyStatus_NO_MEMORY();
+                    return _TyStatus_NO_MEMORY();
                 }
             }
             break;
@@ -2911,37 +2911,37 @@ config_parse_cmdline(PyConfig *config, PyWideStringList *warnoptions,
         // Integers represent long options, see Python/getopt.c
         case 0:
             // check-hash-based-pycs
-            if (wcscmp(_PyOS_optarg, L"always") == 0
-                || wcscmp(_PyOS_optarg, L"never") == 0
-                || wcscmp(_PyOS_optarg, L"default") == 0)
+            if (wcscmp(_TyOS_optarg, L"always") == 0
+                || wcscmp(_TyOS_optarg, L"never") == 0
+                || wcscmp(_TyOS_optarg, L"default") == 0)
             {
-                status = PyConfig_SetString(config, &config->check_hash_pycs_mode,
-                                            _PyOS_optarg);
-                if (_PyStatus_EXCEPTION(status)) {
+                status = TyConfig_SetString(config, &config->check_hash_pycs_mode,
+                                            _TyOS_optarg);
+                if (_TyStatus_EXCEPTION(status)) {
                     return status;
                 }
             } else {
                 fprintf(stderr, "--check-hash-based-pycs must be one of "
                         "'default', 'always', or 'never'\n");
                 config_usage(1, program);
-                return _PyStatus_EXIT(2);
+                return _TyStatus_EXIT(2);
             }
             break;
 
         case 1:
             // help-all
             config_complete_usage(program);
-            return _PyStatus_EXIT(0);
+            return _TyStatus_EXIT(0);
 
         case 2:
             // help-env
             config_envvars_usage();
-            return _PyStatus_EXIT(0);
+            return _TyStatus_EXIT(0);
 
         case 3:
             // help-xoptions
             config_xoptions_usage();
-            return _PyStatus_EXIT(0);
+            return _TyStatus_EXIT(0);
 
         case 'b':
             config->bytes_warning++;
@@ -3001,15 +3001,15 @@ config_parse_cmdline(PyConfig *config, PyWideStringList *warnoptions,
         case 'h':
         case '?':
             config_usage(0, program);
-            return _PyStatus_EXIT(0);
+            return _TyStatus_EXIT(0);
 
         case 'V':
             print_version++;
             break;
 
         case 'W':
-            status = PyWideStringList_Append(warnoptions, _PyOS_optarg);
-            if (_PyStatus_EXCEPTION(status)) {
+            status = TyWideStringList_Append(warnoptions, _TyOS_optarg);
+            if (_TyStatus_EXCEPTION(status)) {
                 return status;
             }
             break;
@@ -3027,35 +3027,35 @@ config_parse_cmdline(PyConfig *config, PyWideStringList *warnoptions,
         default:
             /* unknown argument: parsing failed */
             config_usage(1, program);
-            return _PyStatus_EXIT(2);
+            return _TyStatus_EXIT(2);
         }
     } while (1);
 
     if (print_version) {
         printf("Typthon %s\n",
-                (print_version >= 2) ? Py_GetVersion() : PY_VERSION);
-        return _PyStatus_EXIT(0);
+                (print_version >= 2) ? Ty_GetVersion() : PY_VERSION);
+        return _TyStatus_EXIT(0);
     }
 
     if (config->run_command == NULL && config->run_module == NULL
-        && _PyOS_optind < argv->length
-        && wcscmp(argv->items[_PyOS_optind], L"-") != 0
+        && _TyOS_optind < argv->length
+        && wcscmp(argv->items[_TyOS_optind], L"-") != 0
         && config->run_filename == NULL)
     {
-        config->run_filename = _PyMem_RawWcsdup(argv->items[_PyOS_optind]);
+        config->run_filename = _TyMem_RawWcsdup(argv->items[_TyOS_optind]);
         if (config->run_filename == NULL) {
-            return _PyStatus_NO_MEMORY();
+            return _TyStatus_NO_MEMORY();
         }
     }
 
     if (config->run_command != NULL || config->run_module != NULL) {
-        /* Backup _PyOS_optind */
-        _PyOS_optind--;
+        /* Backup _TyOS_optind */
+        _TyOS_optind--;
     }
 
-    *opt_index = _PyOS_optind;
+    *opt_index = _TyOS_optind;
 
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
@@ -3066,21 +3066,21 @@ config_parse_cmdline(PyConfig *config, PyWideStringList *warnoptions,
 #endif
 
 /* Get warning options from PYTHONWARNINGS environment variable. */
-static PyStatus
-config_init_env_warnoptions(PyConfig *config, PyWideStringList *warnoptions)
+static TyStatus
+config_init_env_warnoptions(TyConfig *config, TyWideStringList *warnoptions)
 {
-    PyStatus status;
+    TyStatus status;
     /* CONFIG_GET_ENV_DUP requires dest to be initialized to NULL */
     wchar_t *env = NULL;
     status = CONFIG_GET_ENV_DUP(config, &env,
                              L"PYTHONWARNINGS", "PYTHONWARNINGS");
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
     /* env var is not set or is empty */
     if (env == NULL) {
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
 
 
@@ -3089,75 +3089,75 @@ config_init_env_warnoptions(PyConfig *config, PyWideStringList *warnoptions)
          warning != NULL;
          warning = WCSTOK(NULL, L",", &context))
     {
-        status = PyWideStringList_Append(warnoptions, warning);
-        if (_PyStatus_EXCEPTION(status)) {
-            PyMem_RawFree(env);
+        status = TyWideStringList_Append(warnoptions, warning);
+        if (_TyStatus_EXCEPTION(status)) {
+            TyMem_RawFree(env);
             return status;
         }
     }
-    PyMem_RawFree(env);
-    return _PyStatus_OK();
+    TyMem_RawFree(env);
+    return _TyStatus_OK();
 }
 
 
-static PyStatus
-warnoptions_append(PyConfig *config, PyWideStringList *options,
+static TyStatus
+warnoptions_append(TyConfig *config, TyWideStringList *options,
                    const wchar_t *option)
 {
     /* config_init_warnoptions() add existing config warnoptions at the end:
        ensure that the new option is not already present in this list to
        prevent change the options order when config_init_warnoptions() is
        called twice. */
-    if (_PyWideStringList_Find(&config->warnoptions, option)) {
+    if (_TyWideStringList_Find(&config->warnoptions, option)) {
         /* Already present: do nothing */
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
-    if (_PyWideStringList_Find(options, option)) {
+    if (_TyWideStringList_Find(options, option)) {
         /* Already present: do nothing */
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
-    return PyWideStringList_Append(options, option);
+    return TyWideStringList_Append(options, option);
 }
 
 
-static PyStatus
-warnoptions_extend(PyConfig *config, PyWideStringList *options,
-                   const PyWideStringList *options2)
+static TyStatus
+warnoptions_extend(TyConfig *config, TyWideStringList *options,
+                   const TyWideStringList *options2)
 {
-    const Py_ssize_t len = options2->length;
+    const Ty_ssize_t len = options2->length;
     wchar_t *const *items = options2->items;
 
-    for (Py_ssize_t i = 0; i < len; i++) {
-        PyStatus status = warnoptions_append(config, options, items[i]);
-        if (_PyStatus_EXCEPTION(status)) {
+    for (Ty_ssize_t i = 0; i < len; i++) {
+        TyStatus status = warnoptions_append(config, options, items[i]);
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
-static PyStatus
-config_init_warnoptions(PyConfig *config,
-                        const PyWideStringList *cmdline_warnoptions,
-                        const PyWideStringList *env_warnoptions,
-                        const PyWideStringList *sys_warnoptions)
+static TyStatus
+config_init_warnoptions(TyConfig *config,
+                        const TyWideStringList *cmdline_warnoptions,
+                        const TyWideStringList *env_warnoptions,
+                        const TyWideStringList *sys_warnoptions)
 {
-    PyStatus status;
-    PyWideStringList options = _PyWideStringList_INIT;
+    TyStatus status;
+    TyWideStringList options = _TyWideStringList_INIT;
 
     /* Priority of warnings options, lowest to highest:
      *
      * - any implicit filters added by _warnings.c/warnings.py
-     * - PyConfig.dev_mode: "default" filter
+     * - TyConfig.dev_mode: "default" filter
      * - PYTHONWARNINGS environment variable
      * - '-W' command line options
-     * - PyConfig.bytes_warning ('-b' and '-bb' command line options):
+     * - TyConfig.bytes_warning ('-b' and '-bb' command line options):
      *   "default::BytesWarning" or "error::BytesWarning" filter
-     * - early PySys_AddWarnOption() calls
-     * - PyConfig.warnoptions
+     * - early TySys_AddWarnOption() calls
+     * - TyConfig.warnoptions
      *
-     * PyConfig.warnoptions is copied to sys.warnoptions. Since the warnings
+     * TyConfig.warnoptions is copied to sys.warnoptions. Since the warnings
      * module works on the basis of "the most recently added filter will be
      * checked first", we add the lowest precedence entries first so that later
      * entries override them.
@@ -3165,18 +3165,18 @@ config_init_warnoptions(PyConfig *config,
 
     if (config->dev_mode) {
         status = warnoptions_append(config, &options, L"default");
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             goto error;
         }
     }
 
     status = warnoptions_extend(config, &options, env_warnoptions);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         goto error;
     }
 
     status = warnoptions_extend(config, &options, cmdline_warnoptions);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         goto error;
     }
 
@@ -3193,52 +3193,52 @@ config_init_warnoptions(PyConfig *config,
             filter = L"default::BytesWarning";
         }
         status = warnoptions_append(config, &options, filter);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             goto error;
         }
     }
 
     status = warnoptions_extend(config, &options, sys_warnoptions);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         goto error;
     }
 
-    /* Always add all PyConfig.warnoptions options */
-    status = _PyWideStringList_Extend(&options, &config->warnoptions);
-    if (_PyStatus_EXCEPTION(status)) {
+    /* Always add all TyConfig.warnoptions options */
+    status = _TyWideStringList_Extend(&options, &config->warnoptions);
+    if (_TyStatus_EXCEPTION(status)) {
         goto error;
     }
 
-    _PyWideStringList_Clear(&config->warnoptions);
+    _TyWideStringList_Clear(&config->warnoptions);
     config->warnoptions = options;
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 
 error:
-    _PyWideStringList_Clear(&options);
+    _TyWideStringList_Clear(&options);
     return status;
 }
 
 
-static PyStatus
-config_update_argv(PyConfig *config, Py_ssize_t opt_index)
+static TyStatus
+config_update_argv(TyConfig *config, Ty_ssize_t opt_index)
 {
-    const PyWideStringList *cmdline_argv = &config->argv;
-    PyWideStringList config_argv = _PyWideStringList_INIT;
+    const TyWideStringList *cmdline_argv = &config->argv;
+    TyWideStringList config_argv = _TyWideStringList_INIT;
 
     /* Copy argv to be able to modify it (to force -c/-m) */
     if (cmdline_argv->length <= opt_index) {
         /* Ensure at least one (empty) argument is seen */
-        PyStatus status = PyWideStringList_Append(&config_argv, L"");
-        if (_PyStatus_EXCEPTION(status)) {
+        TyStatus status = TyWideStringList_Append(&config_argv, L"");
+        if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
     else {
-        PyWideStringList slice;
+        TyWideStringList slice;
         slice.length = cmdline_argv->length - opt_index;
         slice.items = &cmdline_argv->items[opt_index];
-        if (_PyWideStringList_Copy(&config_argv, &slice) < 0) {
-            return _PyStatus_NO_MEMORY();
+        if (_TyWideStringList_Copy(&config_argv, &slice) < 0) {
+            return _TyStatus_NO_MEMORY();
         }
     }
     assert(config_argv.length >= 1);
@@ -3254,132 +3254,132 @@ config_update_argv(PyConfig *config, Py_ssize_t opt_index)
     }
 
     if (arg0 != NULL) {
-        arg0 = _PyMem_RawWcsdup(arg0);
+        arg0 = _TyMem_RawWcsdup(arg0);
         if (arg0 == NULL) {
-            _PyWideStringList_Clear(&config_argv);
-            return _PyStatus_NO_MEMORY();
+            _TyWideStringList_Clear(&config_argv);
+            return _TyStatus_NO_MEMORY();
         }
 
-        PyMem_RawFree(config_argv.items[0]);
+        TyMem_RawFree(config_argv.items[0]);
         config_argv.items[0] = arg0;
     }
 
-    _PyWideStringList_Clear(&config->argv);
+    _TyWideStringList_Clear(&config->argv);
     config->argv = config_argv;
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
-static PyStatus
-core_read_precmdline(PyConfig *config, _PyPreCmdline *precmdline)
+static TyStatus
+core_read_precmdline(TyConfig *config, _PyPreCmdline *precmdline)
 {
-    PyStatus status;
+    TyStatus status;
 
     if (config->parse_argv == 1) {
-        if (_PyWideStringList_Copy(&precmdline->argv, &config->argv) < 0) {
-            return _PyStatus_NO_MEMORY();
+        if (_TyWideStringList_Copy(&precmdline->argv, &config->argv) < 0) {
+            return _TyStatus_NO_MEMORY();
         }
     }
 
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
 
-    status = _PyPreConfig_InitFromPreConfig(&preconfig, &_PyRuntime.preconfig);
-    if (_PyStatus_EXCEPTION(status)) {
+    status = _TyPreConfig_InitFromPreConfig(&preconfig, &_PyRuntime.preconfig);
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
-    _PyPreConfig_GetConfig(&preconfig, config);
+    _TyPreConfig_GetConfig(&preconfig, config);
 
     status = _PyPreCmdline_Read(precmdline, &preconfig);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
     status = _PyPreCmdline_SetConfig(precmdline, config);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
 /* Get run_filename absolute path */
-static PyStatus
-config_run_filename_abspath(PyConfig *config)
+static TyStatus
+config_run_filename_abspath(TyConfig *config)
 {
     if (!config->run_filename) {
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
 
 #ifndef MS_WINDOWS
-    if (_Py_isabs(config->run_filename)) {
+    if (_Ty_isabs(config->run_filename)) {
         /* path is already absolute */
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
 #endif
 
     wchar_t *abs_filename;
-    if (_Py_abspath(config->run_filename, &abs_filename) < 0) {
+    if (_Ty_abspath(config->run_filename, &abs_filename) < 0) {
         /* failed to get the absolute path of the command line filename:
            ignore the error, keep the relative path */
-        return _PyStatus_OK();
+        return _TyStatus_OK();
     }
     if (abs_filename == NULL) {
-        return _PyStatus_NO_MEMORY();
+        return _TyStatus_NO_MEMORY();
     }
 
-    PyMem_RawFree(config->run_filename);
+    TyMem_RawFree(config->run_filename);
     config->run_filename = abs_filename;
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
-static PyStatus
-config_read_cmdline(PyConfig *config)
+static TyStatus
+config_read_cmdline(TyConfig *config)
 {
-    PyStatus status;
-    PyWideStringList cmdline_warnoptions = _PyWideStringList_INIT;
-    PyWideStringList env_warnoptions = _PyWideStringList_INIT;
-    PyWideStringList sys_warnoptions = _PyWideStringList_INIT;
+    TyStatus status;
+    TyWideStringList cmdline_warnoptions = _TyWideStringList_INIT;
+    TyWideStringList env_warnoptions = _TyWideStringList_INIT;
+    TyWideStringList sys_warnoptions = _TyWideStringList_INIT;
 
     if (config->parse_argv < 0) {
         config->parse_argv = 1;
     }
 
     if (config->parse_argv == 1) {
-        Py_ssize_t opt_index;
+        Ty_ssize_t opt_index;
         status = config_parse_cmdline(config, &cmdline_warnoptions, &opt_index);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             goto done;
         }
 
         status = config_run_filename_abspath(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             goto done;
         }
 
         status = config_update_argv(config, opt_index);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             goto done;
         }
     }
     else {
         status = config_run_filename_abspath(config);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             goto done;
         }
     }
 
     if (config->use_environment) {
         status = config_init_env_warnoptions(config, &env_warnoptions);
-        if (_PyStatus_EXCEPTION(status)) {
+        if (_TyStatus_EXCEPTION(status)) {
             goto done;
         }
     }
 
-    /* Handle early PySys_AddWarnOption() calls */
-    status = _PySys_ReadPreinitWarnOptions(&sys_warnoptions);
-    if (_PyStatus_EXCEPTION(status)) {
+    /* Handle early TySys_AddWarnOption() calls */
+    status = _TySys_ReadPreinitWarnOptions(&sys_warnoptions);
+    if (_TyStatus_EXCEPTION(status)) {
         goto done;
     }
 
@@ -3387,25 +3387,25 @@ config_read_cmdline(PyConfig *config)
                                      &cmdline_warnoptions,
                                      &env_warnoptions,
                                      &sys_warnoptions);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         goto done;
     }
 
-    status = _PyStatus_OK();
+    status = _TyStatus_OK();
 
 done:
-    _PyWideStringList_Clear(&cmdline_warnoptions);
-    _PyWideStringList_Clear(&env_warnoptions);
-    _PyWideStringList_Clear(&sys_warnoptions);
+    _TyWideStringList_Clear(&cmdline_warnoptions);
+    _TyWideStringList_Clear(&env_warnoptions);
+    _TyWideStringList_Clear(&sys_warnoptions);
     return status;
 }
 
 
-PyStatus
-_PyConfig_SetPyArgv(PyConfig *config, const _PyArgv *args)
+TyStatus
+_TyConfig_SetPyArgv(TyConfig *config, const _PyArgv *args)
 {
-    PyStatus status = _Py_PreInitializeFromConfig(config, args);
-    if (_PyStatus_EXCEPTION(status)) {
+    TyStatus status = _Ty_PreInitializeFromConfig(config, args);
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
@@ -3413,63 +3413,63 @@ _PyConfig_SetPyArgv(PyConfig *config, const _PyArgv *args)
 }
 
 
-/* Set config.argv: decode argv using Py_DecodeLocale(). Pre-initialize Python
+/* Set config.argv: decode argv using Ty_DecodeLocale(). Pre-initialize Python
    if needed to ensure that encodings are properly configured. */
-PyStatus
-PyConfig_SetBytesArgv(PyConfig *config, Py_ssize_t argc, char * const *argv)
+TyStatus
+TyConfig_SetBytesArgv(TyConfig *config, Ty_ssize_t argc, char * const *argv)
 {
     _PyArgv args = {
         .argc = argc,
         .use_bytes_argv = 1,
         .bytes_argv = argv,
         .wchar_argv = NULL};
-    return _PyConfig_SetPyArgv(config, &args);
+    return _TyConfig_SetPyArgv(config, &args);
 }
 
 
-PyStatus
-PyConfig_SetArgv(PyConfig *config, Py_ssize_t argc, wchar_t * const *argv)
+TyStatus
+TyConfig_SetArgv(TyConfig *config, Ty_ssize_t argc, wchar_t * const *argv)
 {
     _PyArgv args = {
         .argc = argc,
         .use_bytes_argv = 0,
         .bytes_argv = NULL,
         .wchar_argv = argv};
-    return _PyConfig_SetPyArgv(config, &args);
+    return _TyConfig_SetPyArgv(config, &args);
 }
 
 
-PyStatus
-PyConfig_SetWideStringList(PyConfig *config, PyWideStringList *list,
-                           Py_ssize_t length, wchar_t **items)
+TyStatus
+TyConfig_SetWideStringList(TyConfig *config, TyWideStringList *list,
+                           Ty_ssize_t length, wchar_t **items)
 {
-    PyStatus status = _Py_PreInitializeFromConfig(config, NULL);
-    if (_PyStatus_EXCEPTION(status)) {
+    TyStatus status = _Ty_PreInitializeFromConfig(config, NULL);
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
-    PyWideStringList list2 = {.length = length, .items = items};
-    if (_PyWideStringList_Copy(list, &list2) < 0) {
-        return _PyStatus_NO_MEMORY();
+    TyWideStringList list2 = {.length = length, .items = items};
+    if (_TyWideStringList_Copy(list, &list2) < 0) {
+        return _TyStatus_NO_MEMORY();
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 
-/* Read the configuration into PyConfig from:
+/* Read the configuration into TyConfig from:
 
    * Command line arguments
    * Environment variables
-   * Py_xxx global configuration variables
+   * Ty_xxx global configuration variables
 
-   The only side effects are to modify config and to call _Py_SetArgcArgv(). */
-PyStatus
-_PyConfig_Read(PyConfig *config, int compute_path_config)
+   The only side effects are to modify config and to call _Ty_SetArgcArgv(). */
+TyStatus
+_TyConfig_Read(TyConfig *config, int compute_path_config)
 {
-    PyStatus status;
+    TyStatus status;
 
-    status = _Py_PreInitializeFromConfig(config, NULL);
-    if (_PyStatus_EXCEPTION(status)) {
+    status = _Ty_PreInitializeFromConfig(config, NULL);
+    if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
@@ -3479,14 +3479,14 @@ _PyConfig_Read(PyConfig *config, int compute_path_config)
         && !(config->argv.length == 1
              && wcscmp(config->argv.items[0], L"") == 0))
     {
-        if (_PyWideStringList_Copy(&config->orig_argv, &config->argv) < 0) {
-            return _PyStatus_NO_MEMORY();
+        if (_TyWideStringList_Copy(&config->orig_argv, &config->argv) < 0) {
+            return _TyStatus_NO_MEMORY();
         }
     }
 
     _PyPreCmdline precmdline = _PyPreCmdline_INIT;
     status = core_read_precmdline(config, &precmdline);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         goto done;
     }
 
@@ -3498,24 +3498,24 @@ _PyConfig_Read(PyConfig *config, int compute_path_config)
     }
 
     status = config_read_cmdline(config);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         goto done;
     }
 
-    /* Handle early PySys_AddXOption() calls */
-    status = _PySys_ReadPreinitXOptions(config);
-    if (_PyStatus_EXCEPTION(status)) {
+    /* Handle early TySys_AddXOption() calls */
+    status = _TySys_ReadPreinitXOptions(config);
+    if (_TyStatus_EXCEPTION(status)) {
         goto done;
     }
 
     status = config_read(config, compute_path_config);
-    if (_PyStatus_EXCEPTION(status)) {
+    if (_TyStatus_EXCEPTION(status)) {
         goto done;
     }
 
     assert(config_check_consistency(config));
 
-    status = _PyStatus_OK();
+    status = _TyStatus_OK();
 
 done:
     _PyPreCmdline_Clear(&precmdline);
@@ -3523,62 +3523,62 @@ done:
 }
 
 
-PyStatus
-PyConfig_Read(PyConfig *config)
+TyStatus
+TyConfig_Read(TyConfig *config)
 {
-    return _PyConfig_Read(config, 0);
+    return _TyConfig_Read(config, 0);
 }
 
 
-PyObject*
-_Py_GetConfigsAsDict(void)
+TyObject*
+_Ty_GetConfigsAsDict(void)
 {
-    PyObject *result = NULL;
-    PyObject *dict = NULL;
+    TyObject *result = NULL;
+    TyObject *dict = NULL;
 
-    result = PyDict_New();
+    result = TyDict_New();
     if (result == NULL) {
         goto error;
     }
 
     /* global result */
-    dict = _Py_GetGlobalVariablesAsDict();
+    dict = _Ty_GetGlobalVariablesAsDict();
     if (dict == NULL) {
         goto error;
     }
-    if (PyDict_SetItemString(result, "global_config", dict) < 0) {
+    if (TyDict_SetItemString(result, "global_config", dict) < 0) {
         goto error;
     }
-    Py_CLEAR(dict);
+    Ty_CLEAR(dict);
 
     /* pre config */
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    const PyPreConfig *pre_config = &interp->runtime->preconfig;
-    dict = _PyPreConfig_AsDict(pre_config);
+    TyInterpreterState *interp = _TyInterpreterState_GET();
+    const TyPreConfig *pre_config = &interp->runtime->preconfig;
+    dict = _TyPreConfig_AsDict(pre_config);
     if (dict == NULL) {
         goto error;
     }
-    if (PyDict_SetItemString(result, "pre_config", dict) < 0) {
+    if (TyDict_SetItemString(result, "pre_config", dict) < 0) {
         goto error;
     }
-    Py_CLEAR(dict);
+    Ty_CLEAR(dict);
 
     /* core config */
-    const PyConfig *config = _PyInterpreterState_GetConfig(interp);
-    dict = _PyConfig_AsDict(config);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
+    dict = _TyConfig_AsDict(config);
     if (dict == NULL) {
         goto error;
     }
-    if (PyDict_SetItemString(result, "config", dict) < 0) {
+    if (TyDict_SetItemString(result, "config", dict) < 0) {
         goto error;
     }
-    Py_CLEAR(dict);
+    Ty_CLEAR(dict);
 
     return result;
 
 error:
-    Py_XDECREF(result);
-    Py_XDECREF(dict);
+    Ty_XDECREF(result);
+    Ty_XDECREF(dict);
     return NULL;
 }
 
@@ -3587,80 +3587,80 @@ static void
 init_dump_ascii_wstr(const wchar_t *str)
 {
     if (str == NULL) {
-        PySys_WriteStderr("(not set)");
+        TySys_WriteStderr("(not set)");
         return;
     }
 
-    PySys_WriteStderr("'");
+    TySys_WriteStderr("'");
     for (; *str != L'\0'; str++) {
         unsigned int ch = (unsigned int)*str;
         if (ch == L'\'') {
-            PySys_WriteStderr("\\'");
+            TySys_WriteStderr("\\'");
         } else if (0x20 <= ch && ch < 0x7f) {
-            PySys_WriteStderr("%c", ch);
+            TySys_WriteStderr("%c", ch);
         }
         else if (ch <= 0xff) {
-            PySys_WriteStderr("\\x%02x", ch);
+            TySys_WriteStderr("\\x%02x", ch);
         }
 #if SIZEOF_WCHAR_T > 2
         else if (ch > 0xffff) {
-            PySys_WriteStderr("\\U%08x", ch);
+            TySys_WriteStderr("\\U%08x", ch);
         }
 #endif
         else {
-            PySys_WriteStderr("\\u%04x", ch);
+            TySys_WriteStderr("\\u%04x", ch);
         }
     }
-    PySys_WriteStderr("'");
+    TySys_WriteStderr("'");
 }
 
 
 /* Dump the Python path configuration into sys.stderr */
 void
-_Py_DumpPathConfig(PyThreadState *tstate)
+_Ty_DumpPathConfig(TyThreadState *tstate)
 {
-    PyObject *exc = _PyErr_GetRaisedException(tstate);
+    TyObject *exc = _TyErr_GetRaisedException(tstate);
 
-    PySys_WriteStderr("Typthon path configuration:\n");
+    TySys_WriteStderr("Typthon path configuration:\n");
 
 #define DUMP_CONFIG(NAME, FIELD) \
         do { \
-            PySys_WriteStderr("  " NAME " = "); \
+            TySys_WriteStderr("  " NAME " = "); \
             init_dump_ascii_wstr(config->FIELD); \
-            PySys_WriteStderr("\n"); \
+            TySys_WriteStderr("\n"); \
         } while (0)
 
-    const PyConfig *config = _PyInterpreterState_GetConfig(tstate->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     DUMP_CONFIG("PYTHONHOME", home);
     DUMP_CONFIG("PYTHONPATH", pythonpath_env);
     DUMP_CONFIG("program name", program_name);
-    PySys_WriteStderr("  isolated = %i\n", config->isolated);
-    PySys_WriteStderr("  environment = %i\n", config->use_environment);
-    PySys_WriteStderr("  user site = %i\n", config->user_site_directory);
-    PySys_WriteStderr("  safe_path = %i\n", config->safe_path);
-    PySys_WriteStderr("  import site = %i\n", config->site_import);
-    PySys_WriteStderr("  is in build tree = %i\n", config->_is_python_build);
+    TySys_WriteStderr("  isolated = %i\n", config->isolated);
+    TySys_WriteStderr("  environment = %i\n", config->use_environment);
+    TySys_WriteStderr("  user site = %i\n", config->user_site_directory);
+    TySys_WriteStderr("  safe_path = %i\n", config->safe_path);
+    TySys_WriteStderr("  import site = %i\n", config->site_import);
+    TySys_WriteStderr("  is in build tree = %i\n", config->_is_python_build);
     DUMP_CONFIG("stdlib dir", stdlib_dir);
     DUMP_CONFIG("sys.path[0]", sys_path_0);
 #undef DUMP_CONFIG
 
 #define DUMP_SYS(NAME) \
         do { \
-            PySys_FormatStderr("  sys.%s = ", #NAME); \
-            if (_PySys_GetOptionalAttrString(#NAME, &obj) < 0) { \
-                PyErr_Clear(); \
+            TySys_FormatStderr("  sys.%s = ", #NAME); \
+            if (_TySys_GetOptionalAttrString(#NAME, &obj) < 0) { \
+                TyErr_Clear(); \
             } \
             if (obj != NULL) { \
-                PySys_FormatStderr("%A", obj); \
-                Py_DECREF(obj); \
+                TySys_FormatStderr("%A", obj); \
+                Ty_DECREF(obj); \
             } \
             else { \
-                PySys_WriteStderr("(not set)"); \
+                TySys_WriteStderr("(not set)"); \
             } \
-            PySys_FormatStderr("\n"); \
+            TySys_FormatStderr("\n"); \
         } while (0)
 
-    PyObject *obj;
+    TyObject *obj;
     DUMP_SYS(_base_executable);
     DUMP_SYS(base_prefix);
     DUMP_SYS(base_exec_prefix);
@@ -3670,31 +3670,31 @@ _Py_DumpPathConfig(PyThreadState *tstate)
     DUMP_SYS(exec_prefix);
 #undef DUMP_SYS
 
-    PyObject *sys_path;
-    (void) _PySys_GetOptionalAttrString("path", &sys_path);
-    if (sys_path != NULL && PyList_Check(sys_path)) {
-        PySys_WriteStderr("  sys.path = [\n");
-        Py_ssize_t len = PyList_GET_SIZE(sys_path);
-        for (Py_ssize_t i=0; i < len; i++) {
-            PyObject *path = PyList_GET_ITEM(sys_path, i);
-            PySys_FormatStderr("    %A,\n", path);
+    TyObject *sys_path;
+    (void) _TySys_GetOptionalAttrString("path", &sys_path);
+    if (sys_path != NULL && TyList_Check(sys_path)) {
+        TySys_WriteStderr("  sys.path = [\n");
+        Ty_ssize_t len = TyList_GET_SIZE(sys_path);
+        for (Ty_ssize_t i=0; i < len; i++) {
+            TyObject *path = TyList_GET_ITEM(sys_path, i);
+            TySys_FormatStderr("    %A,\n", path);
         }
-        PySys_WriteStderr("  ]\n");
+        TySys_WriteStderr("  ]\n");
     }
-    Py_XDECREF(sys_path);
+    Ty_XDECREF(sys_path);
 
-    _PyErr_SetRaisedException(tstate, exc);
+    _TyErr_SetRaisedException(tstate, exc);
 }
 
 
 // --- PyInitConfig API ---------------------------------------------------
 
 struct PyInitConfig {
-    PyPreConfig preconfig;
-    PyConfig config;
+    TyPreConfig preconfig;
+    TyConfig config;
     struct _inittab *inittab;
-    Py_ssize_t inittab_size;
-    PyStatus status;
+    Ty_ssize_t inittab_size;
+    TyStatus status;
     char *err_msg;
 };
 
@@ -3712,9 +3712,9 @@ PyInitConfig_Create(void)
     if (config == NULL) {
         return NULL;
     }
-    PyPreConfig_InitIsolatedConfig(&config->preconfig);
-    PyConfig_InitIsolatedConfig(&config->config);
-    config->status = _PyStatus_OK();
+    TyPreConfig_InitIsolatedConfig(&config->preconfig);
+    TyConfig_InitIsolatedConfig(&config->config);
+    config->status = _TyStatus_OK();
     return config;
 }
 
@@ -3733,9 +3733,9 @@ PyInitConfig_Free(PyInitConfig *config)
 int
 PyInitConfig_GetError(PyInitConfig* config, const char **perr_msg)
 {
-    if (_PyStatus_IS_EXIT(config->status)) {
+    if (_TyStatus_IS_EXIT(config->status)) {
         char buffer[22];  // len("exit code -2147483648\0")
-        PyOS_snprintf(buffer, sizeof(buffer),
+        TyOS_snprintf(buffer, sizeof(buffer),
                       "exit code %i",
                       config->status.exitcode);
 
@@ -3747,10 +3747,10 @@ PyInitConfig_GetError(PyInitConfig* config, const char **perr_msg)
             *perr_msg = config->err_msg;
             return 1;
         }
-        config->status = _PyStatus_NO_MEMORY();
+        config->status = _TyStatus_NO_MEMORY();
     }
 
-    if (_PyStatus_IS_ERROR(config->status) && config->status.err_msg != NULL) {
+    if (_TyStatus_IS_ERROR(config->status) && config->status.err_msg != NULL) {
         *perr_msg = config->status.err_msg;
         return 1;
     }
@@ -3764,7 +3764,7 @@ PyInitConfig_GetError(PyInitConfig* config, const char **perr_msg)
 int
 PyInitConfig_GetExitCode(PyInitConfig* config, int *exitcode)
 {
-    if (_PyStatus_IS_EXIT(config->status)) {
+    if (_TyStatus_IS_EXIT(config->status)) {
         *exitcode = config->status.exitcode;
         return 1;
     }
@@ -3777,7 +3777,7 @@ PyInitConfig_GetExitCode(PyInitConfig* config, int *exitcode)
 static void
 initconfig_set_error(PyInitConfig *config, const char *err_msg)
 {
-    config->status = _PyStatus_ERR(err_msg);
+    config->status = _TyStatus_ERR(err_msg);
 }
 
 
@@ -3834,16 +3834,16 @@ PyInitConfig_GetInt(PyInitConfig *config, const char *name, int64_t *value)
     }
 
     switch (spec->type) {
-    case PyConfig_MEMBER_INT:
-    case PyConfig_MEMBER_UINT:
-    case PyConfig_MEMBER_BOOL:
+    case TyConfig_MEMBER_INT:
+    case TyConfig_MEMBER_UINT:
+    case TyConfig_MEMBER_BOOL:
     {
         int *member = raw_member;
         *value = *member;
         break;
     }
 
-    case PyConfig_MEMBER_ULONG:
+    case TyConfig_MEMBER_ULONG:
     {
         unsigned long *member = raw_member;
 #if SIZEOF_LONG >= 8
@@ -3869,13 +3869,13 @@ static char*
 wstr_to_utf8(PyInitConfig *config, wchar_t *wstr)
 {
     char *utf8;
-    int res = _Py_EncodeUTF8Ex(wstr, &utf8, NULL, NULL, 1, _Py_ERROR_STRICT);
+    int res = _Ty_EncodeUTF8Ex(wstr, &utf8, NULL, NULL, 1, _Ty_ERROR_STRICT);
     if (res == -2) {
         initconfig_set_error(config, "encoding error");
         return NULL;
     }
     if (res < 0) {
-        config->status = _PyStatus_NO_MEMORY();
+        config->status = _TyStatus_NO_MEMORY();
         return NULL;
     }
 
@@ -3883,13 +3883,13 @@ wstr_to_utf8(PyInitConfig *config, wchar_t *wstr)
     size_t size = strlen(utf8) + 1;
     char *str = malloc(size);
     if (str == NULL) {
-        PyMem_RawFree(utf8);
-        config->status = _PyStatus_NO_MEMORY();
+        TyMem_RawFree(utf8);
+        config->status = _TyStatus_NO_MEMORY();
         return NULL;
     }
 
     memcpy(str, utf8, size);
-    PyMem_RawFree(utf8);
+    TyMem_RawFree(utf8);
     return str;
 }
 
@@ -3903,8 +3903,8 @@ PyInitConfig_GetStr(PyInitConfig *config, const char *name, char **value)
         return -1;
     }
 
-    if (spec->type != PyConfig_MEMBER_WSTR
-        && spec->type != PyConfig_MEMBER_WSTR_OPT)
+    if (spec->type != TyConfig_MEMBER_WSTR
+        && spec->type != TyConfig_MEMBER_WSTR_OPT)
     {
         initconfig_set_error(config, "config option type is not string");
         return -1;
@@ -3933,21 +3933,21 @@ PyInitConfig_GetStrList(PyInitConfig *config, const char *name, size_t *length, 
         return -1;
     }
 
-    if (spec->type != PyConfig_MEMBER_WSTR_LIST) {
+    if (spec->type != TyConfig_MEMBER_WSTR_LIST) {
         initconfig_set_error(config, "config option type is not string list");
         return -1;
     }
 
-    PyWideStringList *list = raw_member;
+    TyWideStringList *list = raw_member;
     *length = list->length;
 
     *items = malloc(list->length * sizeof(char*));
     if (*items == NULL) {
-        config->status = _PyStatus_NO_MEMORY();
+        config->status = _TyStatus_NO_MEMORY();
         return -1;
     }
 
-    for (Py_ssize_t i=0; i < list->length; i++) {
+    for (Ty_ssize_t i=0; i < list->length; i++) {
         (*items)[i] = wstr_to_utf8(config, list->items[i]);
         if ((*items)[i] == NULL) {
             PyInitConfig_FreeStrList(i, *items);
@@ -3978,7 +3978,7 @@ PyInitConfig_SetInt(PyInitConfig *config, const char *name, int64_t value)
     }
 
     switch (spec->type) {
-    case PyConfig_MEMBER_INT:
+    case TyConfig_MEMBER_INT:
     {
         if (value < (int64_t)INT_MIN || (int64_t)INT_MAX < value) {
             initconfig_set_error(config,
@@ -3992,8 +3992,8 @@ PyInitConfig_SetInt(PyInitConfig *config, const char *name, int64_t value)
         break;
     }
 
-    case PyConfig_MEMBER_UINT:
-    case PyConfig_MEMBER_BOOL:
+    case TyConfig_MEMBER_UINT:
+    case TyConfig_MEMBER_BOOL:
     {
         if (value < 0 || (uint64_t)UINT_MAX < (uint64_t)value) {
             initconfig_set_error(config,
@@ -4007,7 +4007,7 @@ PyInitConfig_SetInt(PyInitConfig *config, const char *name, int64_t value)
         break;
     }
 
-    case PyConfig_MEMBER_ULONG:
+    case TyConfig_MEMBER_ULONG:
     {
         if (value < 0 || (uint64_t)ULONG_MAX < (uint64_t)value) {
             initconfig_set_error(config,
@@ -4039,13 +4039,13 @@ utf8_to_wstr(PyInitConfig *config, const char *str)
 {
     wchar_t *wstr;
     size_t wlen;
-    int res = _Py_DecodeUTF8Ex(str, strlen(str), &wstr, &wlen, NULL, _Py_ERROR_STRICT);
+    int res = _Ty_DecodeUTF8Ex(str, strlen(str), &wstr, &wlen, NULL, _Ty_ERROR_STRICT);
     if (res == -2) {
         initconfig_set_error(config, "decoding error");
         return NULL;
     }
     if (res < 0) {
-        config->status = _PyStatus_NO_MEMORY();
+        config->status = _TyStatus_NO_MEMORY();
         return NULL;
     }
 
@@ -4053,13 +4053,13 @@ utf8_to_wstr(PyInitConfig *config, const char *str)
     size_t size = (wlen + 1) * sizeof(wchar_t);
     wchar_t *wstr2 = malloc(size);
     if (wstr2 == NULL) {
-        PyMem_RawFree(wstr);
-        config->status = _PyStatus_NO_MEMORY();
+        TyMem_RawFree(wstr);
+        config->status = _TyStatus_NO_MEMORY();
         return NULL;
     }
 
     memcpy(wstr2, wstr, size);
-    PyMem_RawFree(wstr);
+    TyMem_RawFree(wstr);
     return wstr2;
 }
 
@@ -4073,13 +4073,13 @@ PyInitConfig_SetStr(PyInitConfig *config, const char *name, const char* value)
         return -1;
     }
 
-    if (spec->type != PyConfig_MEMBER_WSTR
-            && spec->type != PyConfig_MEMBER_WSTR_OPT) {
+    if (spec->type != TyConfig_MEMBER_WSTR
+            && spec->type != TyConfig_MEMBER_WSTR_OPT) {
         initconfig_set_error(config, "config option type is not string");
         return -1;
     }
 
-    if (value == NULL && spec->type != PyConfig_MEMBER_WSTR_OPT) {
+    if (value == NULL && spec->type != TyConfig_MEMBER_WSTR_OPT) {
         initconfig_set_error(config, "config option string cannot be NULL");
     }
 
@@ -4094,28 +4094,28 @@ PyInitConfig_SetStr(PyInitConfig *config, const char *name, const char* value)
 
 
 static int
-_PyWideStringList_FromUTF8(PyInitConfig *config, PyWideStringList *list,
-                           Py_ssize_t length, char * const *items)
+_TyWideStringList_FromUTF8(PyInitConfig *config, TyWideStringList *list,
+                           Ty_ssize_t length, char * const *items)
 {
-    PyWideStringList wlist = _PyWideStringList_INIT;
+    TyWideStringList wlist = _TyWideStringList_INIT;
     size_t size = sizeof(wchar_t*) * length;
-    wlist.items = (wchar_t **)PyMem_RawMalloc(size);
+    wlist.items = (wchar_t **)TyMem_RawMalloc(size);
     if (wlist.items == NULL) {
-        config->status = _PyStatus_NO_MEMORY();
+        config->status = _TyStatus_NO_MEMORY();
         return -1;
     }
 
-    for (Py_ssize_t i = 0; i < length; i++) {
+    for (Ty_ssize_t i = 0; i < length; i++) {
         wchar_t *arg = utf8_to_wstr(config, items[i]);
         if (arg == NULL) {
-            _PyWideStringList_Clear(&wlist);
+            _TyWideStringList_Clear(&wlist);
             return -1;
         }
         wlist.items[i] = arg;
         wlist.length++;
     }
 
-    _PyWideStringList_Clear(list);
+    _TyWideStringList_Clear(list);
     *list = wlist;
     return 0;
 }
@@ -4131,12 +4131,12 @@ PyInitConfig_SetStrList(PyInitConfig *config, const char *name,
         return -1;
     }
 
-    if (spec->type != PyConfig_MEMBER_WSTR_LIST) {
+    if (spec->type != TyConfig_MEMBER_WSTR_LIST) {
         initconfig_set_error(config, "config option type is not strings list");
         return -1;
     }
-    PyWideStringList *list = raw_member;
-    if (_PyWideStringList_FromUTF8(config, list, length, items) < 0) {
+    TyWideStringList *list = raw_member;
+    if (_TyWideStringList_FromUTF8(config, list, length, items) < 0) {
         return -1;
     }
 
@@ -4149,12 +4149,12 @@ PyInitConfig_SetStrList(PyInitConfig *config, const char *name,
 
 int
 PyInitConfig_AddModule(PyInitConfig *config, const char *name,
-                       PyObject* (*initfunc)(void))
+                       TyObject* (*initfunc)(void))
 {
     size_t size = sizeof(struct _inittab) * (config->inittab_size + 2);
-    struct _inittab *new_inittab = PyMem_RawRealloc(config->inittab, size);
+    struct _inittab *new_inittab = TyMem_RawRealloc(config->inittab, size);
     if (new_inittab == NULL) {
-        config->status = _PyStatus_NO_MEMORY();
+        config->status = _TyStatus_NO_MEMORY();
         return -1;
     }
     config->inittab = new_inittab;
@@ -4174,27 +4174,27 @@ PyInitConfig_AddModule(PyInitConfig *config, const char *name,
 
 
 int
-Py_InitializeFromInitConfig(PyInitConfig *config)
+Ty_InitializeFromInitConfig(PyInitConfig *config)
 {
     if (config->inittab_size >= 1) {
-        if (PyImport_ExtendInittab(config->inittab) < 0) {
-            config->status = _PyStatus_NO_MEMORY();
+        if (TyImport_ExtendInittab(config->inittab) < 0) {
+            config->status = _TyStatus_NO_MEMORY();
             return -1;
         }
     }
 
-    _PyPreConfig_GetConfig(&config->preconfig, &config->config);
+    _TyPreConfig_GetConfig(&config->preconfig, &config->config);
 
-    config->status = Py_PreInitializeFromArgs(
+    config->status = Ty_PreInitializeFromArgs(
         &config->preconfig,
         config->config.argv.length,
         config->config.argv.items);
-    if (_PyStatus_EXCEPTION(config->status)) {
+    if (_TyStatus_EXCEPTION(config->status)) {
         return -1;
     }
 
-    config->status = Py_InitializeFromConfig(&config->config);
-    if (_PyStatus_EXCEPTION(config->status)) {
+    config->status = Ty_InitializeFromConfig(&config->config);
+    if (_TyStatus_EXCEPTION(config->status)) {
         return -1;
     }
 
@@ -4202,13 +4202,13 @@ Py_InitializeFromInitConfig(PyInitConfig *config)
 }
 
 
-// --- PyConfig_Get() -------------------------------------------------------
+// --- TyConfig_Get() -------------------------------------------------------
 
 static const PyConfigSpec*
 config_generic_find_spec(const PyConfigSpec *spec, const char *name)
 {
     for (; spec->name != NULL; spec++) {
-        if (spec->visibility == PyConfig_MEMBER_INIT_ONLY) {
+        if (spec->visibility == TyConfig_MEMBER_INIT_ONLY) {
             continue;
         }
         if (strcmp(name, spec->name) == 0) {
@@ -4234,56 +4234,56 @@ preconfig_find_spec(const char *name)
 
 
 static int
-config_add_xoption(PyObject *dict, const wchar_t *str)
+config_add_xoption(TyObject *dict, const wchar_t *str)
 {
-    PyObject *name = NULL, *value = NULL;
+    TyObject *name = NULL, *value = NULL;
 
     const wchar_t *name_end = wcschr(str, L'=');
     if (!name_end) {
-        name = PyUnicode_FromWideChar(str, -1);
+        name = TyUnicode_FromWideChar(str, -1);
         if (name == NULL) {
             goto error;
         }
-        value = Py_NewRef(Py_True);
+        value = Ty_NewRef(Ty_True);
     }
     else {
-        name = PyUnicode_FromWideChar(str, name_end - str);
+        name = TyUnicode_FromWideChar(str, name_end - str);
         if (name == NULL) {
             goto error;
         }
-        value = PyUnicode_FromWideChar(name_end + 1, -1);
+        value = TyUnicode_FromWideChar(name_end + 1, -1);
         if (value == NULL) {
             goto error;
         }
     }
-    if (PyDict_SetItem(dict, name, value) < 0) {
+    if (TyDict_SetItem(dict, name, value) < 0) {
         goto error;
     }
-    Py_DECREF(name);
-    Py_DECREF(value);
+    Ty_DECREF(name);
+    Ty_DECREF(value);
     return 0;
 
 error:
-    Py_XDECREF(name);
-    Py_XDECREF(value);
+    Ty_XDECREF(name);
+    Ty_XDECREF(value);
     return -1;
 }
 
 
-PyObject*
-_PyConfig_CreateXOptionsDict(const PyConfig *config)
+TyObject*
+_TyConfig_CreateXOptionsDict(const TyConfig *config)
 {
-    PyObject *dict = PyDict_New();
+    TyObject *dict = TyDict_New();
     if (dict == NULL) {
         return NULL;
     }
 
-    Py_ssize_t nxoption = config->xoptions.length;
+    Ty_ssize_t nxoption = config->xoptions.length;
     wchar_t **xoptions = config->xoptions.items;
-    for (Py_ssize_t i=0; i < nxoption; i++) {
+    for (Ty_ssize_t i=0; i < nxoption; i++) {
         const wchar_t *option = xoptions[i];
         if (config_add_xoption(dict, option) < 0) {
-            Py_DECREF(dict);
+            Ty_DECREF(dict);
             return NULL;
         }
     }
@@ -4292,15 +4292,15 @@ _PyConfig_CreateXOptionsDict(const PyConfig *config)
 
 
 static int
-config_get_sys_write_bytecode(const PyConfig *config, int *value)
+config_get_sys_write_bytecode(const TyConfig *config, int *value)
 {
-    PyObject *attr = _PySys_GetRequiredAttrString("dont_write_bytecode");
+    TyObject *attr = _TySys_GetRequiredAttrString("dont_write_bytecode");
     if (attr == NULL) {
         return -1;
     }
 
     int is_true = PyObject_IsTrue(attr);
-    Py_DECREF(attr);
+    Ty_DECREF(attr);
     if (is_true < 0) {
         return -1;
     }
@@ -4309,13 +4309,13 @@ config_get_sys_write_bytecode(const PyConfig *config, int *value)
 }
 
 
-static PyObject*
-config_get(const PyConfig *config, const PyConfigSpec *spec,
+static TyObject*
+config_get(const TyConfig *config, const PyConfigSpec *spec,
            int use_sys)
 {
     if (use_sys) {
         if (spec->sys.attr != NULL) {
-            return _PySys_GetRequiredAttrString(spec->sys.attr);
+            return _TySys_GetRequiredAttrString(spec->sys.attr);
         }
 
         if (strcmp(spec->name, "write_bytecode") == 0) {
@@ -4323,80 +4323,80 @@ config_get(const PyConfig *config, const PyConfigSpec *spec,
             if (config_get_sys_write_bytecode(config, &value) < 0) {
                 return NULL;
             }
-            return PyBool_FromLong(value);
+            return TyBool_FromLong(value);
         }
 
         if (strcmp(spec->name, "int_max_str_digits") == 0) {
-            PyInterpreterState *interp = _PyInterpreterState_GET();
-            return PyLong_FromLong(interp->long_state.max_str_digits);
+            TyInterpreterState *interp = _TyInterpreterState_GET();
+            return TyLong_FromLong(interp->long_state.max_str_digits);
         }
     }
 
     void *member = config_get_spec_member(config, spec);
     switch (spec->type) {
-    case PyConfig_MEMBER_INT:
-    case PyConfig_MEMBER_UINT:
+    case TyConfig_MEMBER_INT:
+    case TyConfig_MEMBER_UINT:
     {
         int value = *(int *)member;
-        return PyLong_FromLong(value);
+        return TyLong_FromLong(value);
     }
 
-    case PyConfig_MEMBER_BOOL:
+    case TyConfig_MEMBER_BOOL:
     {
         int value = *(int *)member;
-        return PyBool_FromLong(value != 0);
+        return TyBool_FromLong(value != 0);
     }
 
-    case PyConfig_MEMBER_ULONG:
+    case TyConfig_MEMBER_ULONG:
     {
         unsigned long value = *(unsigned long *)member;
-        return PyLong_FromUnsignedLong(value);
+        return TyLong_FromUnsignedLong(value);
     }
 
-    case PyConfig_MEMBER_WSTR:
-    case PyConfig_MEMBER_WSTR_OPT:
+    case TyConfig_MEMBER_WSTR:
+    case TyConfig_MEMBER_WSTR_OPT:
     {
         wchar_t *wstr = *(wchar_t **)member;
         if (wstr != NULL) {
-            return PyUnicode_FromWideChar(wstr, -1);
+            return TyUnicode_FromWideChar(wstr, -1);
         }
         else {
-            return Py_NewRef(Py_None);
+            return Ty_NewRef(Ty_None);
         }
     }
 
-    case PyConfig_MEMBER_WSTR_LIST:
+    case TyConfig_MEMBER_WSTR_LIST:
     {
         if (strcmp(spec->name, "xoptions") == 0) {
-            return _PyConfig_CreateXOptionsDict(config);
+            return _TyConfig_CreateXOptionsDict(config);
         }
         else {
-            const PyWideStringList *list = (const PyWideStringList *)member;
-            return _PyWideStringList_AsTuple(list);
+            const TyWideStringList *list = (const TyWideStringList *)member;
+            return _TyWideStringList_AsTuple(list);
         }
     }
 
     default:
-        Py_UNREACHABLE();
+        Ty_UNREACHABLE();
     }
 }
 
 
-static PyObject*
-preconfig_get(const PyPreConfig *preconfig, const PyConfigSpec *spec)
+static TyObject*
+preconfig_get(const TyPreConfig *preconfig, const PyConfigSpec *spec)
 {
     // The type of all PYPRECONFIG_SPEC members is INT or BOOL.
-    assert(spec->type == PyConfig_MEMBER_INT
-           || spec->type == PyConfig_MEMBER_BOOL);
+    assert(spec->type == TyConfig_MEMBER_INT
+           || spec->type == TyConfig_MEMBER_BOOL);
 
     char *member = (char *)preconfig + spec->offset;
     int value = *(int *)member;
 
-    if (spec->type == PyConfig_MEMBER_BOOL) {
-        return PyBool_FromLong(value != 0);
+    if (spec->type == TyConfig_MEMBER_BOOL) {
+        return TyBool_FromLong(value != 0);
     }
     else {
-        return PyLong_FromLong(value);
+        return TyLong_FromLong(value);
     }
 }
 
@@ -4404,22 +4404,22 @@ preconfig_get(const PyPreConfig *preconfig, const PyConfigSpec *spec)
 static void
 config_unknown_name_error(const char *name)
 {
-    PyErr_Format(PyExc_ValueError, "unknown config option name: %s", name);
+    TyErr_Format(TyExc_ValueError, "unknown config option name: %s", name);
 }
 
 
-PyObject*
-PyConfig_Get(const char *name)
+TyObject*
+TyConfig_Get(const char *name)
 {
     const PyConfigSpec *spec = config_find_spec(name);
     if (spec != NULL) {
-        const PyConfig *config = _Py_GetConfig();
+        const TyConfig *config = _Ty_GetConfig();
         return config_get(config, spec, 1);
     }
 
     spec = preconfig_find_spec(name);
     if (spec != NULL) {
-        const PyPreConfig *preconfig = &_PyRuntime.preconfig;
+        const TyPreConfig *preconfig = &_PyRuntime.preconfig;
         return preconfig_get(preconfig, spec);
     }
 
@@ -4429,25 +4429,25 @@ PyConfig_Get(const char *name)
 
 
 int
-PyConfig_GetInt(const char *name, int *value)
+TyConfig_GetInt(const char *name, int *value)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
 
-    PyObject *obj = PyConfig_Get(name);
+    TyObject *obj = TyConfig_Get(name);
     if (obj == NULL) {
         return -1;
     }
 
-    if (!PyLong_Check(obj)) {
-        Py_DECREF(obj);
-        PyErr_Format(PyExc_TypeError, "config option %s is not an int", name);
+    if (!TyLong_Check(obj)) {
+        Ty_DECREF(obj);
+        TyErr_Format(TyExc_TypeError, "config option %s is not an int", name);
         return -1;
     }
 
-    int as_int = PyLong_AsInt(obj);
-    Py_DECREF(obj);
-    if (as_int == -1 && PyErr_Occurred()) {
-        PyErr_Format(PyExc_OverflowError,
+    int as_int = TyLong_AsInt(obj);
+    Ty_DECREF(obj);
+    if (as_int == -1 && TyErr_Occurred()) {
+        TyErr_Format(TyExc_OverflowError,
                      "config option %s value does not fit into a C int", name);
         return -1;
     }
@@ -4458,18 +4458,18 @@ PyConfig_GetInt(const char *name, int *value)
 
 
 static int
-config_names_add(PyObject *names, const PyConfigSpec *spec)
+config_names_add(TyObject *names, const PyConfigSpec *spec)
 {
     for (; spec->name != NULL; spec++) {
-        if (spec->visibility == PyConfig_MEMBER_INIT_ONLY) {
+        if (spec->visibility == TyConfig_MEMBER_INIT_ONLY) {
             continue;
         }
-        PyObject *name = PyUnicode_FromString(spec->name);
+        TyObject *name = TyUnicode_FromString(spec->name);
         if (name == NULL) {
             return -1;
         }
-        int res = PyList_Append(names, name);
-        Py_DECREF(name);
+        int res = TyList_Append(names, name);
+        Ty_DECREF(name);
         if (res < 0) {
             return -1;
         }
@@ -4478,10 +4478,10 @@ config_names_add(PyObject *names, const PyConfigSpec *spec)
 }
 
 
-PyObject*
-PyConfig_Names(void)
+TyObject*
+TyConfig_Names(void)
 {
-    PyObject *names = PyList_New(0);
+    TyObject *names = TyList_New(0);
     if (names == NULL) {
         goto error;
     }
@@ -4493,32 +4493,32 @@ PyConfig_Names(void)
         goto error;
     }
 
-    PyObject *frozen = PyFrozenSet_New(names);
-    Py_DECREF(names);
+    TyObject *frozen = TyFrozenSet_New(names);
+    Ty_DECREF(names);
     return frozen;
 
 error:
-    Py_XDECREF(names);
+    Ty_XDECREF(names);
     return NULL;
 }
 
 
-// --- PyConfig_Set() -------------------------------------------------------
+// --- TyConfig_Set() -------------------------------------------------------
 
 static int
 config_set_sys_flag(const PyConfigSpec *spec, int int_value)
 {
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    PyConfig *config = &interp->config;
+    TyInterpreterState *interp = _TyInterpreterState_GET();
+    TyConfig *config = &interp->config;
 
-    if (spec->type == PyConfig_MEMBER_BOOL) {
+    if (spec->type == TyConfig_MEMBER_BOOL) {
         if (int_value != 0) {
             // convert values < 0 and values > 1 to 1
             int_value = 1;
         }
     }
 
-    PyObject *value;
+    TyObject *value;
     if (spec->sys.flag_setter) {
         value = spec->sys.flag_setter(int_value);
     }
@@ -4530,40 +4530,40 @@ config_set_sys_flag(const PyConfigSpec *spec, int int_value)
     }
 
     // Set sys.flags.FLAG
-    Py_ssize_t pos = spec->sys.flag_index;
-    if (_PySys_SetFlagObj(pos, value) < 0) {
+    Ty_ssize_t pos = spec->sys.flag_index;
+    if (_TySys_SetFlagObj(pos, value) < 0) {
         goto error;
     }
 
-    // Set PyConfig.ATTR
-    assert(spec->type == PyConfig_MEMBER_INT
-           || spec->type == PyConfig_MEMBER_UINT
-           || spec->type == PyConfig_MEMBER_BOOL);
+    // Set TyConfig.ATTR
+    assert(spec->type == TyConfig_MEMBER_INT
+           || spec->type == TyConfig_MEMBER_UINT
+           || spec->type == TyConfig_MEMBER_BOOL);
     int *member = config_get_spec_member(config, spec);
     *member = int_value;
 
     // Set sys.dont_write_bytecode attribute
     if (strcmp(spec->name, "write_bytecode") == 0) {
-        if (PySys_SetObject("dont_write_bytecode", value) < 0) {
+        if (TySys_SetObject("dont_write_bytecode", value) < 0) {
             goto error;
         }
     }
 
-    Py_DECREF(value);
+    Ty_DECREF(value);
     return 0;
 
 error:
-    Py_DECREF(value);
+    Ty_DECREF(value);
     return -1;
 }
 
 
-// Set PyConfig.ATTR integer member
+// Set TyConfig.ATTR integer member
 static int
 config_set_int_attr(const PyConfigSpec *spec, int value)
 {
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    PyConfig *config = &interp->config;
+    TyInterpreterState *interp = _TyInterpreterState_GET();
+    TyConfig *config = &interp->config;
     int *member = config_get_spec_member(config, spec);
     *member = value;
     return 0;
@@ -4571,9 +4571,9 @@ config_set_int_attr(const PyConfigSpec *spec, int value)
 
 
 int
-PyConfig_Set(const char *name, PyObject *value)
+TyConfig_Set(const char *name, TyObject *value)
 {
-    if (PySys_Audit("cpython.PyConfig_Set", "sO", name, value) < 0) {
+    if (TySys_Audit("cpython.TyConfig_Set", "sO", name, value) < 0) {
         return -1;
     }
 
@@ -4584,11 +4584,11 @@ PyConfig_Set(const char *name, PyObject *value)
             config_unknown_name_error(name);
             return -1;
         }
-        assert(spec->visibility != PyConfig_MEMBER_PUBLIC);
+        assert(spec->visibility != TyConfig_MEMBER_PUBLIC);
     }
 
-    if (spec->visibility != PyConfig_MEMBER_PUBLIC) {
-        PyErr_Format(PyExc_ValueError, "cannot set read-only option %s",
+    if (spec->visibility != TyConfig_MEMBER_PUBLIC) {
+        TyErr_Format(TyExc_ValueError, "cannot set read-only option %s",
                      name);
         return -1;
     }
@@ -4597,53 +4597,53 @@ PyConfig_Set(const char *name, PyObject *value)
     int has_int_value = 0;
 
     switch (spec->type) {
-    case PyConfig_MEMBER_INT:
-    case PyConfig_MEMBER_UINT:
-    case PyConfig_MEMBER_BOOL:
-        if (!PyLong_Check(value)) {
-            PyErr_Format(PyExc_TypeError, "expected int or bool, got %T", value);
+    case TyConfig_MEMBER_INT:
+    case TyConfig_MEMBER_UINT:
+    case TyConfig_MEMBER_BOOL:
+        if (!TyLong_Check(value)) {
+            TyErr_Format(TyExc_TypeError, "expected int or bool, got %T", value);
             return -1;
         }
-        int_value = PyLong_AsInt(value);
-        if (int_value == -1 && PyErr_Occurred()) {
+        int_value = TyLong_AsInt(value);
+        if (int_value == -1 && TyErr_Occurred()) {
             return -1;
         }
-        if (int_value < 0 && spec->type != PyConfig_MEMBER_INT) {
-            PyErr_Format(PyExc_ValueError, "value must be >= 0");
+        if (int_value < 0 && spec->type != TyConfig_MEMBER_INT) {
+            TyErr_Format(TyExc_ValueError, "value must be >= 0");
             return -1;
         }
         has_int_value = 1;
         break;
 
-    case PyConfig_MEMBER_ULONG:
+    case TyConfig_MEMBER_ULONG:
         // not implemented: only hash_seed uses this type, and it's read-only
         goto cannot_set;
 
-    case PyConfig_MEMBER_WSTR:
-        if (!PyUnicode_CheckExact(value)) {
-            PyErr_Format(PyExc_TypeError, "expected str, got %T", value);
+    case TyConfig_MEMBER_WSTR:
+        if (!TyUnicode_CheckExact(value)) {
+            TyErr_Format(TyExc_TypeError, "expected str, got %T", value);
             return -1;
         }
         break;
 
-    case PyConfig_MEMBER_WSTR_OPT:
-        if (value != Py_None && !PyUnicode_CheckExact(value)) {
-            PyErr_Format(PyExc_TypeError, "expected str or None, got %T", value);
+    case TyConfig_MEMBER_WSTR_OPT:
+        if (value != Ty_None && !TyUnicode_CheckExact(value)) {
+            TyErr_Format(TyExc_TypeError, "expected str or None, got %T", value);
             return -1;
         }
         break;
 
-    case PyConfig_MEMBER_WSTR_LIST:
+    case TyConfig_MEMBER_WSTR_LIST:
         if (strcmp(spec->name, "xoptions") != 0) {
-            if (!PyList_Check(value)) {
-                PyErr_Format(PyExc_TypeError, "expected list[str], got %T",
+            if (!TyList_Check(value)) {
+                TyErr_Format(TyExc_TypeError, "expected list[str], got %T",
                              value);
                 return -1;
             }
-            for (Py_ssize_t i=0; i < PyList_GET_SIZE(value); i++) {
-                PyObject *item = PyList_GET_ITEM(value, i);
-                if (!PyUnicode_Check(item)) {
-                    PyErr_Format(PyExc_TypeError,
+            for (Ty_ssize_t i=0; i < TyList_GET_SIZE(value); i++) {
+                TyObject *item = TyList_GET_ITEM(value, i);
+                if (!TyUnicode_Check(item)) {
+                    TyErr_Format(TyExc_TypeError,
                                  "expected str, list item %zd has type %T",
                                  i, item);
                     return -1;
@@ -4652,24 +4652,24 @@ PyConfig_Set(const char *name, PyObject *value)
         }
         else {
             // xoptions type is dict[str, str]
-            if (!PyDict_Check(value)) {
-                PyErr_Format(PyExc_TypeError,
+            if (!TyDict_Check(value)) {
+                TyErr_Format(TyExc_TypeError,
                              "expected dict[str, str | bool], got %T",
                              value);
                 return -1;
             }
 
-            Py_ssize_t pos = 0;
-            PyObject *key, *item;
-            while (PyDict_Next(value, &pos, &key, &item)) {
-                if (!PyUnicode_Check(key)) {
-                    PyErr_Format(PyExc_TypeError,
+            Ty_ssize_t pos = 0;
+            TyObject *key, *item;
+            while (TyDict_Next(value, &pos, &key, &item)) {
+                if (!TyUnicode_Check(key)) {
+                    TyErr_Format(TyExc_TypeError,
                                  "expected str, "
                                  "got dict key type %T", key);
                     return -1;
                 }
-                if (!PyUnicode_Check(item) && !PyBool_Check(item)) {
-                    PyErr_Format(PyExc_TypeError,
+                if (!TyUnicode_Check(item) && !TyBool_Check(item)) {
+                    TyErr_Format(TyExc_TypeError,
                                  "expected str or bool, "
                                  "got dict value type %T", key);
                     return -1;
@@ -4679,20 +4679,20 @@ PyConfig_Set(const char *name, PyObject *value)
         break;
 
     default:
-        Py_UNREACHABLE();
+        Ty_UNREACHABLE();
     }
 
     if (spec->sys.attr != NULL) {
-        // Set the sys attribute, but don't set PyInterpreterState.config
+        // Set the sys attribute, but don't set TyInterpreterState.config
         // to keep the code simple.
-        return PySys_SetObject(spec->sys.attr, value);
+        return TySys_SetObject(spec->sys.attr, value);
     }
     else if (has_int_value) {
         if (spec->sys.flag_index >= 0) {
             return config_set_sys_flag(spec, int_value);
         }
         else if (strcmp(spec->name, "int_max_str_digits") == 0) {
-            return _PySys_SetIntMaxStrDigits(int_value);
+            return _TySys_SetIntMaxStrDigits(int_value);
         }
         else {
             return config_set_int_attr(spec, int_value);
@@ -4700,6 +4700,6 @@ PyConfig_Set(const char *name, PyObject *value)
     }
 
 cannot_set:
-    PyErr_Format(PyExc_ValueError, "cannot set option %s", name);
+    TyErr_Format(TyExc_ValueError, "cannot set option %s", name);
     return -1;
 }

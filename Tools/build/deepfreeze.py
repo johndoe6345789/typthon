@@ -172,14 +172,14 @@ class Printer:
 
     def generate_bytes(self, name: str, b: bytes) -> str:
         if b == b"":
-            return "(PyObject *)&_Py_SINGLETON(bytes_empty)"
+            return "(PyObject *)&_Ty_SINGLETON(bytes_empty)"
         if len(b) == 1:
-            return f"(PyObject *)&_Py_SINGLETON(bytes_characters[{b[0]}])"
+            return f"(PyObject *)&_Ty_SINGLETON(bytes_characters[{b[0]}])"
         self.write("static")
         with self.indent():
             with self.block("struct"):
                 self.write("PyObject_VAR_HEAD")
-                self.write("Py_hash_t ob_shash;")
+                self.write("Ty_hash_t ob_shash;")
                 self.write(f"char ob_sval[{len(b) + 1}];")
         with self.block(f"{name} =", ";"):
             self.object_var_head("PyBytes_Type", len(b))
@@ -189,15 +189,15 @@ class Printer:
 
     def generate_unicode(self, name: str, s: str) -> str:
         if s in self.strings:
-            return f"&_Py_STR({self.strings[s]})"
+            return f"&_Ty_STR({self.strings[s]})"
         if s in self.identifiers:
-            return f"&_Py_ID({s})"
+            return f"&_Ty_ID({s})"
         if len(s) == 1:
             c = ord(s)
             if c < 128:
-                return f"(PyObject *)&_Py_SINGLETON(strings).ascii[{c}]"
+                return f"(PyObject *)&_Ty_SINGLETON(strings).ascii[{c}]"
             elif c < 256:
-                return f"(PyObject *)&_Py_SINGLETON(strings).latin1[{c - 128}]"
+                return f"(PyObject *)&_Ty_SINGLETON(strings).latin1[{c - 128}]"
         if re.match(r'\A[A-Za-z0-9_]+\Z', s):
             name = f"const_str_{s}"
         kind, ascii = analyze_character_width(s)
@@ -322,7 +322,7 @@ class Printer:
 
     def generate_tuple(self, name: str, t: tuple[object, ...]) -> str:
         if len(t) == 0:
-            return f"(PyObject *)& _Py_SINGLETON(tuple_empty)"
+            return f"(PyObject *)& _Ty_SINGLETON(tuple_empty)"
         items = [self.generate(f"{name}_{i}", it) for i, it in enumerate(t)]
         self.write("static")
         with self.indent():
@@ -426,9 +426,9 @@ class Printer:
         elif isinstance(obj, bytes):
             val = self.generate_bytes(name, obj)
         elif obj is True:
-            return "Py_True"
+            return "Ty_True"
         elif obj is False:
-            return "Py_False"
+            return "Ty_False"
         elif isinstance(obj, int):
             val = self.generate_int(name, obj)
         elif isinstance(obj, float):
@@ -438,9 +438,9 @@ class Printer:
         elif isinstance(obj, frozenset):
             val = self.generate_frozenset(name, obj)
         elif obj is builtins.Ellipsis:
-            return "Py_Ellipsis"
+            return "Ty_Ellipsis"
         elif obj is None:
-            return "Py_None"
+            return "Ty_None"
         else:
             raise TypeError(
                 f"Cannot generate code for {type(obj).__name__} object")
@@ -451,9 +451,9 @@ class Printer:
 
 EPILOGUE = """
 PyObject *
-_Py_get_{name}_toplevel(void)
+_Ty_get_{name}_toplevel(void)
 {{
-    return Py_NewRef((PyObject *) &{name}_toplevel);
+    return Ty_NewRef((PyObject *) &{name}_toplevel);
 }}
 """
 
@@ -495,7 +495,7 @@ def generate(args: list[str], output: TextIO) -> None:
             with printer.block(f"if ({p} < 0)"):
                 printer.write("return -1;")
         printer.write("return 0;")
-    printer.write(f"\nuint32_t _Py_next_func_version = {next_code_version};\n")
+    printer.write(f"\nuint32_t _Ty_next_func_version = {next_code_version};\n")
     if verbose:
         print(f"Cache hits: {printer.hits}, misses: {printer.misses}")
 

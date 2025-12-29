@@ -1,7 +1,7 @@
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-   // Need limited C API 3.14 to test PyLong_AsInt64()
-#  define Py_LIMITED_API 0x030e0000
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+   // Need limited C API 3.14 to test TyLong_AsInt64()
+#  define Ty_LIMITED_API 0x030e0000
 #endif
 
 #include "parts.h"
@@ -14,15 +14,15 @@ module _testlimitedcapi
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=2700057f9c1135ba]*/
 
 
-static PyObject *
+static TyObject *
 raiseTestError(const char* test_name, const char* msg)
 {
-    PyErr_Format(PyExc_AssertionError, "%s: %s", test_name, msg);
+    TyErr_Format(TyExc_AssertionError, "%s: %s", test_name, msg);
     return NULL;
 }
 
-/* Tests of PyLong_{As, From}{Unsigned,}Long(), and
-   PyLong_{As, From}{Unsigned,}LongLong().
+/* Tests of TyLong_{As, From}{Unsigned,}Long(), and
+   TyLong_{As, From}{Unsigned,}LongLong().
 
    Note that the meat of the test is contained in testcapi_long.h.
    This is revolting, but delicate code duplication is worse:  "almost
@@ -36,23 +36,23 @@ raiseTestError(const char* test_name, const char* msg)
    error function directly, and crawl back from there in the debugger.
 */
 
-#define UNBIND(X)  Py_DECREF(X); (X) = NULL
+#define UNBIND(X)  Ty_DECREF(X); (X) = NULL
 
-static PyObject *
+static TyObject *
 raise_test_long_error(const char* msg)
 {
     return raiseTestError("test_long_api", msg);
 }
 
-// Test PyLong_FromLong()/PyLong_AsLong()
-// and PyLong_FromUnsignedLong()/PyLong_AsUnsignedLong().
+// Test TyLong_FromLong()/TyLong_AsLong()
+// and TyLong_FromUnsignedLong()/TyLong_AsUnsignedLong().
 
 #define TESTNAME        test_long_api_inner
 #define TYPENAME        long
-#define F_S_TO_PY       PyLong_FromLong
-#define F_PY_TO_S       PyLong_AsLong
-#define F_U_TO_PY       PyLong_FromUnsignedLong
-#define F_PY_TO_U       PyLong_AsUnsignedLong
+#define F_S_TO_PY       TyLong_FromLong
+#define F_PY_TO_S       TyLong_AsLong
+#define F_U_TO_PY       TyLong_FromUnsignedLong
+#define F_PY_TO_U       TyLong_AsUnsignedLong
 
 #include "testcapi_long.h"
 
@@ -60,8 +60,8 @@ raise_test_long_error(const char* msg)
 _testlimitedcapi.test_long_api
 [clinic start generated code]*/
 
-static PyObject *
-_testlimitedcapi_test_long_api_impl(PyObject *module)
+static TyObject *
+_testlimitedcapi_test_long_api_impl(TyObject *module)
 /*[clinic end generated code: output=06a2c02366d1853a input=9012b3d6a483df63]*/
 {
     return TESTNAME(raise_test_long_error);
@@ -74,10 +74,10 @@ _testlimitedcapi_test_long_api_impl(PyObject *module)
 #undef F_U_TO_PY
 #undef F_PY_TO_U
 
-// Test PyLong_FromLongLong()/PyLong_AsLongLong()
-// and PyLong_FromUnsignedLongLong()/PyLong_AsUnsignedLongLong().
+// Test TyLong_FromLongLong()/TyLong_AsLongLong()
+// and TyLong_FromUnsignedLongLong()/TyLong_AsUnsignedLongLong().
 
-static PyObject *
+static TyObject *
 raise_test_longlong_error(const char* msg)
 {
     return raiseTestError("test_longlong_api", msg);
@@ -85,10 +85,10 @@ raise_test_longlong_error(const char* msg)
 
 #define TESTNAME        test_longlong_api_inner
 #define TYPENAME        long long
-#define F_S_TO_PY       PyLong_FromLongLong
-#define F_PY_TO_S       PyLong_AsLongLong
-#define F_U_TO_PY       PyLong_FromUnsignedLongLong
-#define F_PY_TO_U       PyLong_AsUnsignedLongLong
+#define F_S_TO_PY       TyLong_FromLongLong
+#define F_PY_TO_S       TyLong_AsLongLong
+#define F_U_TO_PY       TyLong_FromUnsignedLongLong
+#define F_PY_TO_U       TyLong_AsUnsignedLongLong
 
 #include "testcapi_long.h"
 
@@ -96,8 +96,8 @@ raise_test_longlong_error(const char* msg)
 _testlimitedcapi.test_longlong_api
 [clinic start generated code]*/
 
-static PyObject *
-_testlimitedcapi_test_longlong_api_impl(PyObject *module)
+static TyObject *
+_testlimitedcapi_test_longlong_api_impl(TyObject *module)
 /*[clinic end generated code: output=8faa10e1c35214bf input=2b582a9d25bd68e7]*/
 {
     return TESTNAME(raise_test_longlong_error);
@@ -114,29 +114,29 @@ _testlimitedcapi_test_longlong_api_impl(PyObject *module)
 /*[clinic input]
 _testlimitedcapi.test_long_and_overflow
 
-Test the PyLong_AsLongAndOverflow API.
+Test the TyLong_AsLongAndOverflow API.
 
 General conversion to PY_LONG is tested by test_long_api_inner.
 This test will concentrate on proper handling of overflow.
 [clinic start generated code]*/
 
-static PyObject *
-_testlimitedcapi_test_long_and_overflow_impl(PyObject *module)
+static TyObject *
+_testlimitedcapi_test_long_and_overflow_impl(TyObject *module)
 /*[clinic end generated code: output=fdfd3c1eeabb6d14 input=e3a18791de6519fe]*/
 {
-    PyObject *num, *one, *temp;
+    TyObject *num, *one, *temp;
     long value;
     int overflow;
 
     /* Test that overflow is set properly for a large value. */
     /* num is a number larger than LONG_MAX even on 64-bit platforms */
-    num = PyLong_FromString("FFFFFFFFFFFFFFFFFFFFFFFF", NULL, 16);
+    num = TyLong_FromString("FFFFFFFFFFFFFFFFFFFFFFFF", NULL, 16);
     if (num == NULL)
         return NULL;
     overflow = 1234;
-    value = PyLong_AsLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -1)
         return raiseTestError("test_long_and_overflow",
@@ -146,24 +146,24 @@ _testlimitedcapi_test_long_and_overflow_impl(PyObject *module)
             "overflow was not set to 1");
 
     /* Same again, with num = LONG_MAX + 1 */
-    num = PyLong_FromLong(LONG_MAX);
+    num = TyLong_FromLong(LONG_MAX);
     if (num == NULL)
         return NULL;
-    one = PyLong_FromLong(1L);
+    one = TyLong_FromLong(1L);
     if (one == NULL) {
-        Py_DECREF(num);
+        Ty_DECREF(num);
         return NULL;
     }
     temp = PyNumber_Add(num, one);
-    Py_DECREF(one);
-    Py_DECREF(num);
+    Ty_DECREF(one);
+    Ty_DECREF(num);
     num = temp;
     if (num == NULL)
         return NULL;
     overflow = 0;
-    value = PyLong_AsLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -1)
         return raiseTestError("test_long_and_overflow",
@@ -174,13 +174,13 @@ _testlimitedcapi_test_long_and_overflow_impl(PyObject *module)
 
     /* Test that overflow is set properly for a large negative value. */
     /* num is a number smaller than LONG_MIN even on 64-bit platforms */
-    num = PyLong_FromString("-FFFFFFFFFFFFFFFFFFFFFFFF", NULL, 16);
+    num = TyLong_FromString("-FFFFFFFFFFFFFFFFFFFFFFFF", NULL, 16);
     if (num == NULL)
         return NULL;
     overflow = 1234;
-    value = PyLong_AsLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -1)
         return raiseTestError("test_long_and_overflow",
@@ -190,23 +190,23 @@ _testlimitedcapi_test_long_and_overflow_impl(PyObject *module)
             "overflow was not set to -1");
 
     /* Same again, with num = LONG_MIN - 1 */
-    num = PyLong_FromLong(LONG_MIN);
+    num = TyLong_FromLong(LONG_MIN);
     if (num == NULL)
         return NULL;
-    one = PyLong_FromLong(1L);
+    one = TyLong_FromLong(1L);
     if (one == NULL) {
-        Py_DECREF(num);
+        Ty_DECREF(num);
         return NULL;
     }
     temp = PyNumber_Subtract(num, one);
-    Py_DECREF(one);
-    Py_DECREF(num); num = temp;
+    Ty_DECREF(one);
+    Ty_DECREF(num); num = temp;
     if (num == NULL)
         return NULL;
     overflow = 0;
-    value = PyLong_AsLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -1)
         return raiseTestError("test_long_and_overflow",
@@ -216,13 +216,13 @@ _testlimitedcapi_test_long_and_overflow_impl(PyObject *module)
             "overflow was not set to -1");
 
     /* Test that overflow is cleared properly for small values. */
-    num = PyLong_FromString("FF", NULL, 16);
+    num = TyLong_FromString("FF", NULL, 16);
     if (num == NULL)
         return NULL;
     overflow = 1234;
-    value = PyLong_AsLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != 0xFF)
         return raiseTestError("test_long_and_overflow",
@@ -231,13 +231,13 @@ _testlimitedcapi_test_long_and_overflow_impl(PyObject *module)
         return raiseTestError("test_long_and_overflow",
             "overflow was not cleared");
 
-    num = PyLong_FromString("-FF", NULL, 16);
+    num = TyLong_FromString("-FF", NULL, 16);
     if (num == NULL)
         return NULL;
     overflow = 0;
-    value = PyLong_AsLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -0xFF)
         return raiseTestError("test_long_and_overflow",
@@ -246,13 +246,13 @@ _testlimitedcapi_test_long_and_overflow_impl(PyObject *module)
         return raiseTestError("test_long_and_overflow",
             "overflow was set incorrectly");
 
-    num = PyLong_FromLong(LONG_MAX);
+    num = TyLong_FromLong(LONG_MAX);
     if (num == NULL)
         return NULL;
     overflow = 1234;
-    value = PyLong_AsLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != LONG_MAX)
         return raiseTestError("test_long_and_overflow",
@@ -261,13 +261,13 @@ _testlimitedcapi_test_long_and_overflow_impl(PyObject *module)
         return raiseTestError("test_long_and_overflow",
             "overflow was not cleared");
 
-    num = PyLong_FromLong(LONG_MIN);
+    num = TyLong_FromLong(LONG_MIN);
     if (num == NULL)
         return NULL;
     overflow = 0;
-    value = PyLong_AsLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != LONG_MIN)
         return raiseTestError("test_long_and_overflow",
@@ -282,29 +282,29 @@ _testlimitedcapi_test_long_and_overflow_impl(PyObject *module)
 /*[clinic input]
 _testlimitedcapi.test_long_long_and_overflow
 
-Test the PyLong_AsLongLongAndOverflow API.
+Test the TyLong_AsLongLongAndOverflow API.
 
 General conversion to long long is tested by test_long_api_inner.
 This test will concentrate on proper handling of overflow.
 [clinic start generated code]*/
 
-static PyObject *
-_testlimitedcapi_test_long_long_and_overflow_impl(PyObject *module)
+static TyObject *
+_testlimitedcapi_test_long_long_and_overflow_impl(TyObject *module)
 /*[clinic end generated code: output=3d2721a49c09a307 input=741c593b606cc6b3]*/
 {
-    PyObject *num, *one, *temp;
+    TyObject *num, *one, *temp;
     long long value;
     int overflow;
 
     /* Test that overflow is set properly for a large value. */
     /* num is a number larger than LLONG_MAX on a typical machine. */
-    num = PyLong_FromString("FFFFFFFFFFFFFFFFFFFFFFFF", NULL, 16);
+    num = TyLong_FromString("FFFFFFFFFFFFFFFFFFFFFFFF", NULL, 16);
     if (num == NULL)
         return NULL;
     overflow = 1234;
-    value = PyLong_AsLongLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -1)
         return raiseTestError("test_long_long_and_overflow",
@@ -314,23 +314,23 @@ _testlimitedcapi_test_long_long_and_overflow_impl(PyObject *module)
             "overflow was not set to 1");
 
     /* Same again, with num = LLONG_MAX + 1 */
-    num = PyLong_FromLongLong(LLONG_MAX);
+    num = TyLong_FromLongLong(LLONG_MAX);
     if (num == NULL)
         return NULL;
-    one = PyLong_FromLong(1L);
+    one = TyLong_FromLong(1L);
     if (one == NULL) {
-        Py_DECREF(num);
+        Ty_DECREF(num);
         return NULL;
     }
     temp = PyNumber_Add(num, one);
-    Py_DECREF(one);
-    Py_DECREF(num); num = temp;
+    Ty_DECREF(one);
+    Ty_DECREF(num); num = temp;
     if (num == NULL)
         return NULL;
     overflow = 0;
-    value = PyLong_AsLongLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -1)
         return raiseTestError("test_long_long_and_overflow",
@@ -341,13 +341,13 @@ _testlimitedcapi_test_long_long_and_overflow_impl(PyObject *module)
 
     /* Test that overflow is set properly for a large negative value. */
     /* num is a number smaller than LLONG_MIN on a typical platform */
-    num = PyLong_FromString("-FFFFFFFFFFFFFFFFFFFFFFFF", NULL, 16);
+    num = TyLong_FromString("-FFFFFFFFFFFFFFFFFFFFFFFF", NULL, 16);
     if (num == NULL)
         return NULL;
     overflow = 1234;
-    value = PyLong_AsLongLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -1)
         return raiseTestError("test_long_long_and_overflow",
@@ -357,23 +357,23 @@ _testlimitedcapi_test_long_long_and_overflow_impl(PyObject *module)
             "overflow was not set to -1");
 
     /* Same again, with num = LLONG_MIN - 1 */
-    num = PyLong_FromLongLong(LLONG_MIN);
+    num = TyLong_FromLongLong(LLONG_MIN);
     if (num == NULL)
         return NULL;
-    one = PyLong_FromLong(1L);
+    one = TyLong_FromLong(1L);
     if (one == NULL) {
-        Py_DECREF(num);
+        Ty_DECREF(num);
         return NULL;
     }
     temp = PyNumber_Subtract(num, one);
-    Py_DECREF(one);
-    Py_DECREF(num); num = temp;
+    Ty_DECREF(one);
+    Ty_DECREF(num); num = temp;
     if (num == NULL)
         return NULL;
     overflow = 0;
-    value = PyLong_AsLongLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -1)
         return raiseTestError("test_long_long_and_overflow",
@@ -383,13 +383,13 @@ _testlimitedcapi_test_long_long_and_overflow_impl(PyObject *module)
             "overflow was not set to -1");
 
     /* Test that overflow is cleared properly for small values. */
-    num = PyLong_FromString("FF", NULL, 16);
+    num = TyLong_FromString("FF", NULL, 16);
     if (num == NULL)
         return NULL;
     overflow = 1234;
-    value = PyLong_AsLongLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != 0xFF)
         return raiseTestError("test_long_long_and_overflow",
@@ -398,13 +398,13 @@ _testlimitedcapi_test_long_long_and_overflow_impl(PyObject *module)
         return raiseTestError("test_long_long_and_overflow",
             "overflow was not cleared");
 
-    num = PyLong_FromString("-FF", NULL, 16);
+    num = TyLong_FromString("-FF", NULL, 16);
     if (num == NULL)
         return NULL;
     overflow = 0;
-    value = PyLong_AsLongLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != -0xFF)
         return raiseTestError("test_long_long_and_overflow",
@@ -413,13 +413,13 @@ _testlimitedcapi_test_long_long_and_overflow_impl(PyObject *module)
         return raiseTestError("test_long_long_and_overflow",
             "overflow was set incorrectly");
 
-    num = PyLong_FromLongLong(LLONG_MAX);
+    num = TyLong_FromLongLong(LLONG_MAX);
     if (num == NULL)
         return NULL;
     overflow = 1234;
-    value = PyLong_AsLongLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != LLONG_MAX)
         return raiseTestError("test_long_long_and_overflow",
@@ -428,13 +428,13 @@ _testlimitedcapi_test_long_long_and_overflow_impl(PyObject *module)
         return raiseTestError("test_long_long_and_overflow",
             "overflow was not cleared");
 
-    num = PyLong_FromLongLong(LLONG_MIN);
+    num = TyLong_FromLongLong(LLONG_MIN);
     if (num == NULL)
         return NULL;
     overflow = 0;
-    value = PyLong_AsLongLongAndOverflow(num, &overflow);
-    Py_DECREF(num);
-    if (value == -1 && PyErr_Occurred())
+    value = TyLong_AsLongLongAndOverflow(num, &overflow);
+    Ty_DECREF(num);
+    if (value == -1 && TyErr_Occurred())
         return NULL;
     if (value != LLONG_MIN)
         return raiseTestError("test_long_long_and_overflow",
@@ -449,66 +449,66 @@ _testlimitedcapi_test_long_long_and_overflow_impl(PyObject *module)
 /*[clinic input]
 _testlimitedcapi.test_long_as_size_t
 
-Test the PyLong_As{Size,Ssize}_t API.
+Test the TyLong_As{Size,Ssize}_t API.
 
 At present this just tests that non-integer arguments are handled correctly.
 It should be extended to test overflow handling.
 [clinic start generated code]*/
 
-static PyObject *
-_testlimitedcapi_test_long_as_size_t_impl(PyObject *module)
+static TyObject *
+_testlimitedcapi_test_long_as_size_t_impl(TyObject *module)
 /*[clinic end generated code: output=297a9f14a42f55af input=8923d8f2038c46f4]*/
 {
     size_t out_u;
-    Py_ssize_t out_s;
+    Ty_ssize_t out_s;
 
-    Py_INCREF(Py_None);
+    Ty_INCREF(Ty_None);
 
-    out_u = PyLong_AsSize_t(Py_None);
-    if (out_u != (size_t)-1 || !PyErr_Occurred())
+    out_u = TyLong_AsSize_t(Ty_None);
+    if (out_u != (size_t)-1 || !TyErr_Occurred())
         return raiseTestError("test_long_as_size_t",
-                              "PyLong_AsSize_t(None) didn't complain");
-    if (!PyErr_ExceptionMatches(PyExc_TypeError))
+                              "TyLong_AsSize_t(None) didn't complain");
+    if (!TyErr_ExceptionMatches(TyExc_TypeError))
         return raiseTestError("test_long_as_size_t",
-                              "PyLong_AsSize_t(None) raised "
+                              "TyLong_AsSize_t(None) raised "
                               "something other than TypeError");
-    PyErr_Clear();
+    TyErr_Clear();
 
-    out_s = PyLong_AsSsize_t(Py_None);
-    if (out_s != (Py_ssize_t)-1 || !PyErr_Occurred())
+    out_s = TyLong_AsSsize_t(Ty_None);
+    if (out_s != (Ty_ssize_t)-1 || !TyErr_Occurred())
         return raiseTestError("test_long_as_size_t",
-                              "PyLong_AsSsize_t(None) didn't complain");
-    if (!PyErr_ExceptionMatches(PyExc_TypeError))
+                              "TyLong_AsSsize_t(None) didn't complain");
+    if (!TyErr_ExceptionMatches(TyExc_TypeError))
         return raiseTestError("test_long_as_size_t",
-                              "PyLong_AsSsize_t(None) raised "
+                              "TyLong_AsSsize_t(None) raised "
                               "something other than TypeError");
-    PyErr_Clear();
+    TyErr_Clear();
 
-    /* Py_INCREF(Py_None) omitted - we already have a reference to it. */
-    return Py_None;
+    /* Ty_INCREF(Ty_None) omitted - we already have a reference to it. */
+    return Ty_None;
 }
 
 /*[clinic input]
 _testlimitedcapi.test_long_as_unsigned_long_long_mask
 [clinic start generated code]*/
 
-static PyObject *
-_testlimitedcapi_test_long_as_unsigned_long_long_mask_impl(PyObject *module)
+static TyObject *
+_testlimitedcapi_test_long_as_unsigned_long_long_mask_impl(TyObject *module)
 /*[clinic end generated code: output=90be09ffeec8ecab input=17c660bd58becad5]*/
 {
-    unsigned long long res = PyLong_AsUnsignedLongLongMask(NULL);
+    unsigned long long res = TyLong_AsUnsignedLongLongMask(NULL);
 
-    if (res != (unsigned long long)-1 || !PyErr_Occurred()) {
+    if (res != (unsigned long long)-1 || !TyErr_Occurred()) {
         return raiseTestError("test_long_as_unsigned_long_long_mask",
-                              "PyLong_AsUnsignedLongLongMask(NULL) didn't "
+                              "TyLong_AsUnsignedLongLongMask(NULL) didn't "
                               "complain");
     }
-    if (!PyErr_ExceptionMatches(PyExc_SystemError)) {
+    if (!TyErr_ExceptionMatches(TyExc_SystemError)) {
         return raiseTestError("test_long_as_unsigned_long_long_mask",
-                              "PyLong_AsUnsignedLongLongMask(NULL) raised "
+                              "TyLong_AsUnsignedLongLongMask(NULL) raised "
                               "something other than SystemError");
     }
-    PyErr_Clear();
+    TyErr_Clear();
     Py_RETURN_NONE;
 }
 
@@ -516,295 +516,295 @@ _testlimitedcapi_test_long_as_unsigned_long_long_mask_impl(PyObject *module)
 _testlimitedcapi.test_long_as_double
 [clinic start generated code]*/
 
-static PyObject *
-_testlimitedcapi_test_long_as_double_impl(PyObject *module)
+static TyObject *
+_testlimitedcapi_test_long_as_double_impl(TyObject *module)
 /*[clinic end generated code: output=0e688c2acf224f88 input=e7b5712385064a48]*/
 {
     double out;
 
-    Py_INCREF(Py_None);
+    Ty_INCREF(Ty_None);
 
-    out = PyLong_AsDouble(Py_None);
-    if (out != -1.0 || !PyErr_Occurred())
+    out = TyLong_AsDouble(Ty_None);
+    if (out != -1.0 || !TyErr_Occurred())
         return raiseTestError("test_long_as_double",
-                              "PyLong_AsDouble(None) didn't complain");
-    if (!PyErr_ExceptionMatches(PyExc_TypeError))
+                              "TyLong_AsDouble(None) didn't complain");
+    if (!TyErr_ExceptionMatches(TyExc_TypeError))
         return raiseTestError("test_long_as_double",
-                              "PyLong_AsDouble(None) raised "
+                              "TyLong_AsDouble(None) raised "
                               "something other than TypeError");
-    PyErr_Clear();
+    TyErr_Clear();
 
-    /* Py_INCREF(Py_None) omitted - we already have a reference to it. */
-    return Py_None;
+    /* Ty_INCREF(Ty_None) omitted - we already have a reference to it. */
+    return Ty_None;
 }
 
-static PyObject *
-pylong_check(PyObject *module, PyObject *obj)
+static TyObject *
+pylong_check(TyObject *module, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyLong_Check(obj));
+    return TyLong_FromLong(TyLong_Check(obj));
 }
 
-static PyObject *
-pylong_checkexact(PyObject *module, PyObject *obj)
+static TyObject *
+pylong_checkexact(TyObject *module, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyLong_CheckExact(obj));
+    return TyLong_FromLong(TyLong_CheckExact(obj));
 }
 
-static PyObject *
-pylong_fromdouble(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_fromdouble(TyObject *module, TyObject *arg)
 {
     double value;
-    if (!PyArg_Parse(arg, "d", &value)) {
+    if (!TyArg_Parse(arg, "d", &value)) {
         return NULL;
     }
-    return PyLong_FromDouble(value);
+    return TyLong_FromDouble(value);
 }
 
-static PyObject *
-pylong_fromstring(PyObject *module, PyObject *args)
+static TyObject *
+pylong_fromstring(TyObject *module, TyObject *args)
 {
     const char *str;
-    Py_ssize_t len;
+    Ty_ssize_t len;
     int base;
     char *end = UNINITIALIZED_PTR;
-    if (!PyArg_ParseTuple(args, "z#i", &str, &len, &base)) {
+    if (!TyArg_ParseTuple(args, "z#i", &str, &len, &base)) {
         return NULL;
     }
 
-    PyObject *result = PyLong_FromString(str, &end, base);
+    TyObject *result = TyLong_FromString(str, &end, base);
     if (result == NULL) {
         // XXX 'end' is not always set.
         return NULL;
     }
-    return Py_BuildValue("Nn", result, (Py_ssize_t)(end - str));
+    return Ty_BuildValue("Nn", result, (Ty_ssize_t)(end - str));
 }
 
-static PyObject *
-pylong_fromvoidptr(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_fromvoidptr(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    return PyLong_FromVoidPtr((void *)arg);
+    return TyLong_FromVoidPtr((void *)arg);
 }
 
 /*[clinic input]
-_testlimitedcapi.PyLong_AsInt
+_testlimitedcapi.TyLong_AsInt
     arg: object
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testlimitedcapi_PyLong_AsInt(PyObject *module, PyObject *arg)
+static TyObject *
+_testlimitedcapi_PyLong_AsInt(TyObject *module, TyObject *arg)
 /*[clinic end generated code: output=d91db4c1287f85fa input=32c66be86f3265a1]*/
 {
     NULLABLE(arg);
-    assert(!PyErr_Occurred());
-    int value = PyLong_AsInt(arg);
-    if (value == -1 && PyErr_Occurred()) {
+    assert(!TyErr_Occurred());
+    int value = TyLong_AsInt(arg);
+    if (value == -1 && TyErr_Occurred()) {
         return NULL;
     }
-    return PyLong_FromLong(value);
+    return TyLong_FromLong(value);
 }
 
-static PyObject *
-pylong_aslong(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_aslong(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    long value = PyLong_AsLong(arg);
-    if (value == -1 && PyErr_Occurred()) {
+    long value = TyLong_AsLong(arg);
+    if (value == -1 && TyErr_Occurred()) {
         return NULL;
     }
-    return PyLong_FromLong(value);
+    return TyLong_FromLong(value);
 }
 
-static PyObject *
-pylong_aslongandoverflow(PyObject *module, PyObject *arg)
-{
-    NULLABLE(arg);
-    int overflow = UNINITIALIZED_INT;
-    long value = PyLong_AsLongAndOverflow(arg, &overflow);
-    if (value == -1 && PyErr_Occurred()) {
-        assert(overflow == 0);
-        return NULL;
-    }
-    return Py_BuildValue("li", value, overflow);
-}
-
-static PyObject *
-pylong_asunsignedlong(PyObject *module, PyObject *arg)
-{
-    NULLABLE(arg);
-    unsigned long value = PyLong_AsUnsignedLong(arg);
-    if (value == (unsigned long)-1 && PyErr_Occurred()) {
-        return NULL;
-    }
-    return PyLong_FromUnsignedLong(value);
-}
-
-static PyObject *
-pylong_asunsignedlongmask(PyObject *module, PyObject *arg)
-{
-    NULLABLE(arg);
-    unsigned long value = PyLong_AsUnsignedLongMask(arg);
-    if (value == (unsigned long)-1 && PyErr_Occurred()) {
-        return NULL;
-    }
-    return PyLong_FromUnsignedLong(value);
-}
-
-static PyObject *
-pylong_aslonglong(PyObject *module, PyObject *arg)
-{
-    NULLABLE(arg);
-    long long value = PyLong_AsLongLong(arg);
-    if (value == -1 && PyErr_Occurred()) {
-        return NULL;
-    }
-    return PyLong_FromLongLong(value);
-}
-
-static PyObject *
-pylong_aslonglongandoverflow(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_aslongandoverflow(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
     int overflow = UNINITIALIZED_INT;
-    long long value = PyLong_AsLongLongAndOverflow(arg, &overflow);
-    if (value == -1 && PyErr_Occurred()) {
+    long value = TyLong_AsLongAndOverflow(arg, &overflow);
+    if (value == -1 && TyErr_Occurred()) {
         assert(overflow == 0);
         return NULL;
     }
-    return Py_BuildValue("Li", value, overflow);
+    return Ty_BuildValue("li", value, overflow);
 }
 
-static PyObject *
-pylong_asunsignedlonglong(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_asunsignedlong(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    unsigned long long value = PyLong_AsUnsignedLongLong(arg);
-    if (value == (unsigned long long)-1 && PyErr_Occurred()) {
+    unsigned long value = TyLong_AsUnsignedLong(arg);
+    if (value == (unsigned long)-1 && TyErr_Occurred()) {
         return NULL;
     }
-    return PyLong_FromUnsignedLongLong(value);
+    return TyLong_FromUnsignedLong(value);
 }
 
-static PyObject *
-pylong_asunsignedlonglongmask(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_asunsignedlongmask(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    unsigned long long value = PyLong_AsUnsignedLongLongMask(arg);
-    if (value == (unsigned long long)-1 && PyErr_Occurred()) {
+    unsigned long value = TyLong_AsUnsignedLongMask(arg);
+    if (value == (unsigned long)-1 && TyErr_Occurred()) {
         return NULL;
     }
-    return PyLong_FromUnsignedLongLong(value);
+    return TyLong_FromUnsignedLong(value);
 }
 
-static PyObject *
-pylong_as_ssize_t(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_aslonglong(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    Py_ssize_t value = PyLong_AsSsize_t(arg);
-    if (value == -1 && PyErr_Occurred()) {
+    long long value = TyLong_AsLongLong(arg);
+    if (value == -1 && TyErr_Occurred()) {
         return NULL;
     }
-    return PyLong_FromSsize_t(value);
+    return TyLong_FromLongLong(value);
 }
 
-static PyObject *
-pylong_as_size_t(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_aslonglongandoverflow(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    size_t value = PyLong_AsSize_t(arg);
-    if (value == (size_t)-1 && PyErr_Occurred()) {
+    int overflow = UNINITIALIZED_INT;
+    long long value = TyLong_AsLongLongAndOverflow(arg, &overflow);
+    if (value == -1 && TyErr_Occurred()) {
+        assert(overflow == 0);
         return NULL;
     }
-    return PyLong_FromSize_t(value);
+    return Ty_BuildValue("Li", value, overflow);
 }
 
-static PyObject *
-pylong_asdouble(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_asunsignedlonglong(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    double value = PyLong_AsDouble(arg);
-    if (value == -1.0 && PyErr_Occurred()) {
+    unsigned long long value = TyLong_AsUnsignedLongLong(arg);
+    if (value == (unsigned long long)-1 && TyErr_Occurred()) {
         return NULL;
     }
-    return PyFloat_FromDouble(value);
+    return TyLong_FromUnsignedLongLong(value);
 }
 
-static PyObject *
-pylong_asvoidptr(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_asunsignedlonglongmask(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    void *value = PyLong_AsVoidPtr(arg);
+    unsigned long long value = TyLong_AsUnsignedLongLongMask(arg);
+    if (value == (unsigned long long)-1 && TyErr_Occurred()) {
+        return NULL;
+    }
+    return TyLong_FromUnsignedLongLong(value);
+}
+
+static TyObject *
+pylong_as_ssize_t(TyObject *module, TyObject *arg)
+{
+    NULLABLE(arg);
+    Ty_ssize_t value = TyLong_AsSsize_t(arg);
+    if (value == -1 && TyErr_Occurred()) {
+        return NULL;
+    }
+    return TyLong_FromSsize_t(value);
+}
+
+static TyObject *
+pylong_as_size_t(TyObject *module, TyObject *arg)
+{
+    NULLABLE(arg);
+    size_t value = TyLong_AsSize_t(arg);
+    if (value == (size_t)-1 && TyErr_Occurred()) {
+        return NULL;
+    }
+    return TyLong_FromSize_t(value);
+}
+
+static TyObject *
+pylong_asdouble(TyObject *module, TyObject *arg)
+{
+    NULLABLE(arg);
+    double value = TyLong_AsDouble(arg);
+    if (value == -1.0 && TyErr_Occurred()) {
+        return NULL;
+    }
+    return TyFloat_FromDouble(value);
+}
+
+static TyObject *
+pylong_asvoidptr(TyObject *module, TyObject *arg)
+{
+    NULLABLE(arg);
+    void *value = TyLong_AsVoidPtr(arg);
     if (value == NULL) {
-        if (PyErr_Occurred()) {
+        if (TyErr_Occurred()) {
             return NULL;
         }
         Py_RETURN_NONE;
     }
-    return Py_NewRef((PyObject *)value);
+    return Ty_NewRef((TyObject *)value);
 }
 
-static PyObject *
-pylong_aspid(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_aspid(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    pid_t value = PyLong_AsPid(arg);
-    if (value == -1 && PyErr_Occurred()) {
+    pid_t value = TyLong_AsPid(arg);
+    if (value == -1 && TyErr_Occurred()) {
         return NULL;
     }
-    return PyLong_FromPid(value);
+    return TyLong_FromPid(value);
 }
 
 
-static PyObject *
-pylong_asint32(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_asint32(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
     int32_t value;
-    if (PyLong_AsInt32(arg, &value) < 0) {
+    if (TyLong_AsInt32(arg, &value) < 0) {
         return NULL;
     }
-    return PyLong_FromInt32(value);
+    return TyLong_FromInt32(value);
 }
 
-static PyObject *
-pylong_asuint32(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_asuint32(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
     uint32_t value;
-    if (PyLong_AsUInt32(arg, &value) < 0) {
+    if (TyLong_AsUInt32(arg, &value) < 0) {
         return NULL;
     }
-    return PyLong_FromUInt32(value);
+    return TyLong_FromUInt32(value);
 }
 
 
-static PyObject *
-pylong_asint64(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_asint64(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
     int64_t value;
-    if (PyLong_AsInt64(arg, &value) < 0) {
+    if (TyLong_AsInt64(arg, &value) < 0) {
         return NULL;
     }
-    return PyLong_FromInt64(value);
+    return TyLong_FromInt64(value);
 }
 
-static PyObject *
-pylong_asuint64(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_asuint64(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
     uint64_t value;
-    if (PyLong_AsUInt64(arg, &value) < 0) {
+    if (TyLong_AsUInt64(arg, &value) < 0) {
         return NULL;
     }
-    return PyLong_FromUInt64(value);
+    return TyLong_FromUInt64(value);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     _TESTLIMITEDCAPI_TEST_LONG_AND_OVERFLOW_METHODDEF
     _TESTLIMITEDCAPI_TEST_LONG_API_METHODDEF
     _TESTLIMITEDCAPI_TEST_LONG_AS_DOUBLE_METHODDEF
@@ -839,9 +839,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Long(PyObject *mod)
+_PyTestLimitedCAPI_Init_Long(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
     return 0;

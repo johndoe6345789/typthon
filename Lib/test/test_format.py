@@ -330,7 +330,7 @@ class FormatTest(unittest.TestCase):
         testcommon(b"%5c", 65, b"    A")
         testcommon(b"%-5c", 65, b"A    ")
         # %b will insert a series of bytes, either from a type that supports
-        # the Py_buffer protocol, or something that has a __bytes__ method
+        # the Ty_buffer protocol, or something that has a __bytes__ method
         class FakeBytes(object):
             def __bytes__(self):
                 return b'123'

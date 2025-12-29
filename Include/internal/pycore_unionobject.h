@@ -1,26 +1,26 @@
-#ifndef Py_INTERNAL_UNIONOBJECT_H
-#define Py_INTERNAL_UNIONOBJECT_H
+#ifndef Ty_INTERNAL_UNIONOBJECT_H
+#define Ty_INTERNAL_UNIONOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 // For extensions created by test_peg_generator
-PyAPI_DATA(PyTypeObject) _PyUnion_Type;
-PyAPI_FUNC(PyObject *) _Py_union_type_or(PyObject *, PyObject *);
+PyAPI_DATA(TyTypeObject) _PyUnion_Type;
+PyAPI_FUNC(TyObject *) _Ty_union_type_or(TyObject *, TyObject *);
 
-#define _PyUnion_Check(op) Py_IS_TYPE((op), &_PyUnion_Type)
+#define _PyUnion_Check(op) Ty_IS_TYPE((op), &_PyUnion_Type)
 
-#define _PyGenericAlias_Check(op) PyObject_TypeCheck((op), &Py_GenericAliasType)
-extern PyObject *_Py_subs_parameters(PyObject *, PyObject *, PyObject *, PyObject *);
-extern PyObject *_Py_make_parameters(PyObject *);
-extern PyObject *_Py_union_args(PyObject *self);
-extern PyObject *_Py_union_from_tuple(PyObject *args);
+#define _PyGenericAlias_Check(op) PyObject_TypeCheck((op), &Ty_GenericAliasType)
+extern TyObject *_Ty_subs_parameters(TyObject *, TyObject *, TyObject *, TyObject *);
+extern TyObject *_Ty_make_parameters(TyObject *);
+extern TyObject *_Ty_union_args(TyObject *self);
+extern TyObject *_Ty_union_from_tuple(TyObject *args);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_UNIONOBJECT_H */
+#endif /* !Ty_INTERNAL_UNIONOBJECT_H */

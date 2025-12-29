@@ -179,7 +179,7 @@ class TestTracemallocEnabled(unittest.TestCase):
 
     def find_trace(self, traces, traceback, size):
         # filter also by size to ignore the memory allocated by
-        # _PyRefchain_Trace() if Python is built with Py_TRACE_REFS.
+        # _PyRefchain_Trace() if Python is built with Ty_TRACE_REFS.
         for trace in traces:
             if trace[2] == traceback._frames and trace[1] == size:
                 return trace
@@ -1113,7 +1113,7 @@ class TestCAPI(unittest.TestCase):
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
     @threading_helper.requires_working_threading()
     # gh-128679: Test crash on a debug build (especially on FreeBSD).
-    @unittest.skipIf(support.Py_DEBUG, 'need release build')
+    @unittest.skipIf(support.Ty_DEBUG, 'need release build')
     @support.skip_if_sanitizer('gh-131566: race when setting allocator', thread=True)
     def test_tracemalloc_track_race(self):
         # gh-128679: Test fix for tracemalloc.stop() race condition

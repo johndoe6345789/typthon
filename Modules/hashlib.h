@@ -3,18 +3,18 @@
 #include "pycore_lock.h"        // PyMutex
 
 /*
- * Given a PyObject* obj, fill in the Py_buffer* viewp with the result
+ * Given a TyObject* obj, fill in the Ty_buffer* viewp with the result
  * of PyObject_GetBuffer.  Sets an exception and issues the erraction
  * on any errors, e.g. 'return NULL' or 'goto error'.
  */
 #define GET_BUFFER_VIEW_OR_ERROR(obj, viewp, erraction) do { \
-        if (PyUnicode_Check((obj))) { \
-            PyErr_SetString(PyExc_TypeError, \
+        if (TyUnicode_Check((obj))) { \
+            TyErr_SetString(TyExc_TypeError, \
                             "Strings must be encoded before hashing");\
             erraction; \
         } \
         if (!PyObject_CheckBuffer((obj))) { \
-            PyErr_SetString(PyExc_TypeError, \
+            TyErr_SetString(TyExc_TypeError, \
                             "object supporting the buffer API required"); \
             erraction; \
         } \
@@ -22,7 +22,7 @@
             erraction; \
         } \
         if ((viewp)->ndim > 1) { \
-            PyErr_SetString(PyExc_BufferError, \
+            TyErr_SetString(TyExc_BufferError, \
                             "Buffer must be single dimension"); \
             PyBuffer_Release((viewp)); \
             erraction; \
@@ -58,7 +58,7 @@
         PyMutex_Unlock(&(obj)->mutex); \
     }
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 #define HASHLIB_INIT_MUTEX(obj) \
     do { \
         (obj)->mutex = (PyMutex){0}; \
@@ -77,7 +77,7 @@
 #define HASHLIB_GIL_MINSIZE 2048
 
 static inline int
-_Py_hashlib_data_argument(PyObject **res, PyObject *data, PyObject *string)
+_Ty_hashlib_data_argument(TyObject **res, TyObject *data, TyObject *string)
 {
     if (data != NULL && string == NULL) {
         // called as H(data) or H(data=...)
@@ -91,14 +91,14 @@ _Py_hashlib_data_argument(PyObject **res, PyObject *data, PyObject *string)
     }
     else if (data == NULL && string == NULL) {
         // fast path when no data is given
-        assert(!PyErr_Occurred());
+        assert(!TyErr_Occurred());
         *res = NULL;
         return 0;
     }
     else {
         // called as H(data=..., string)
         *res = NULL;
-        PyErr_SetString(PyExc_TypeError,
+        TyErr_SetString(TyExc_TypeError,
                         "'data' and 'string' are mutually exclusive "
                         "and support for 'string' keyword parameter "
                         "is slated for removal in a future version.");

@@ -367,9 +367,9 @@ def generate_opcode_metadata(
 ) -> None:
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, False)
-    with out.header_guard("Py_CORE_OPCODE_METADATA_H"):
-        out.emit("#ifndef Py_BUILD_CORE\n")
-        out.emit('#  error "this header requires Py_BUILD_CORE define"\n')
+    with out.header_guard("Ty_CORE_OPCODE_METADATA_H"):
+        out.emit("#ifndef Ty_BUILD_CORE\n")
+        out.emit('#  error "this header requires Ty_BUILD_CORE define"\n')
         out.emit("#endif\n\n")
         out.emit("#include <stdbool.h>              // bool\n")
         out.emit('#include "opcode_ids.h"\n')

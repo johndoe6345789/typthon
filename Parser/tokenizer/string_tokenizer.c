@@ -29,14 +29,14 @@ tok_underflow_string(struct tok_state *tok) {
 /* Fetch a byte from TOK, using the string buffer. */
 static int
 buf_getc(struct tok_state *tok) {
-    return Py_CHARMASK(*tok->str++);
+    return Ty_CHARMASK(*tok->str++);
 }
 
 /* Unfetch a byte from TOK, using the string buffer. */
 static void
 buf_ungetc(int c, struct tok_state *tok) {
     tok->str--;
-    assert(Py_CHARMASK(*tok->str) == c);        /* tok->cur may point to read-only segment */
+    assert(Ty_CHARMASK(*tok->str) == c);        /* tok->cur may point to read-only segment */
 }
 
 /* Set the readline function for TOK to ENC. For the string-based
@@ -53,7 +53,7 @@ buf_setreadl(struct tok_state *tok, const char* enc) {
 static char *
 decode_str(const char *input, int single, struct tok_state *tok, int preserve_crlf)
 {
-    PyObject* utf8 = NULL;
+    TyObject* utf8 = NULL;
     char *str;
     const char *s;
     const char *newl[2] = {NULL, NULL};
@@ -71,7 +71,7 @@ decode_str(const char *input, int single, struct tok_state *tok, int preserve_cr
         utf8 = _PyTokenizer_translate_into_utf8(str, tok->enc);
         if (utf8 == NULL)
             return _PyTokenizer_error_ret(tok);
-        str = PyBytes_AsString(utf8);
+        str = TyBytes_AsString(utf8);
     }
     for (s = str;; s++) {
         if (*s == '\0') break;
@@ -100,7 +100,7 @@ decode_str(const char *input, int single, struct tok_state *tok, int preserve_cr
         utf8 = _PyTokenizer_translate_into_utf8(str, tok->enc);
         if (utf8 == NULL)
             return _PyTokenizer_error_ret(tok);
-        str = PyBytes_AS_STRING(utf8);
+        str = TyBytes_AS_STRING(utf8);
     }
     assert(tok->decoding_buffer == NULL);
     tok->decoding_buffer = utf8; /* CAUTION */

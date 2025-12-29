@@ -1,8 +1,8 @@
 /* UNIX group file access module */
 
 // Argument Clinic uses the internal C API
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
@@ -19,7 +19,7 @@ module grp
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=cade63f2ed1bd9f8]*/
 
-static PyStructSequence_Field struct_group_type_fields[] = {
+static TyStructSequence_Field struct_group_type_fields[] = {
    {"gr_name", "group name"},
    {"gr_passwd", "password"},
    {"gr_gid", "group id"},
@@ -27,13 +27,13 @@ static PyStructSequence_Field struct_group_type_fields[] = {
    {0}
 };
 
-PyDoc_STRVAR(struct_group__doc__,
+TyDoc_STRVAR(struct_group__doc__,
 "grp.struct_group: Results from getgr*() routines.\n\n\
 This object may be accessed either as a tuple of\n\
   (gr_name,gr_passwd,gr_gid,gr_mem)\n\
 or via the object attributes as named in the above tuple.\n");
 
-static PyStructSequence_Desc struct_group_type_desc = {
+static TyStructSequence_Desc struct_group_type_desc = {
    "grp.struct_group",
    struct_group__doc__,
    struct_group_type_fields,
@@ -42,18 +42,18 @@ static PyStructSequence_Desc struct_group_type_desc = {
 
 
 typedef struct {
-  PyTypeObject *StructGrpType;
+  TyTypeObject *StructGrpType;
 } grpmodulestate;
 
 static inline grpmodulestate*
-get_grp_state(PyObject *module)
+get_grp_state(TyObject *module)
 {
-    void *state = PyModule_GetState(module);
+    void *state = TyModule_GetState(module);
     assert(state != NULL);
     return (grpmodulestate *)state;
 }
 
-static struct PyModuleDef grpmodule;
+static struct TyModuleDef grpmodule;
 
 /* Mutex to protect calls to getgrgid(), getgrnam(), and getgrent().
  * These functions return pointer to static data structure, which
@@ -62,19 +62,19 @@ static PyMutex group_db_mutex = {0};
 
 #define DEFAULT_BUFFER_SIZE 1024
 
-static PyObject *
-mkgrent(PyObject *module, struct group *p)
+static TyObject *
+mkgrent(TyObject *module, struct group *p)
 {
     int setIndex = 0;
-    PyObject *v, *w;
+    TyObject *v, *w;
     char **member;
 
-    v = PyStructSequence_New(get_grp_state(module)->StructGrpType);
+    v = TyStructSequence_New(get_grp_state(module)->StructGrpType);
     if (v == NULL)
         return NULL;
 
-    if ((w = PyList_New(0)) == NULL) {
-        Py_DECREF(v);
+    if ((w = TyList_New(0)) == NULL) {
+        Ty_DECREF(v);
         return NULL;
     }
     for (member = p->gr_mem; ; member++) {
@@ -84,30 +84,30 @@ mkgrent(PyObject *module, struct group *p)
         if (group_member == NULL) {
             break;
         }
-        PyObject *x = PyUnicode_DecodeFSDefault(group_member);
-        if (x == NULL || PyList_Append(w, x) != 0) {
-            Py_XDECREF(x);
-            Py_DECREF(w);
-            Py_DECREF(v);
+        TyObject *x = TyUnicode_DecodeFSDefault(group_member);
+        if (x == NULL || TyList_Append(w, x) != 0) {
+            Ty_XDECREF(x);
+            Ty_DECREF(w);
+            Ty_DECREF(v);
             return NULL;
         }
-        Py_DECREF(x);
+        Ty_DECREF(x);
     }
 
-#define SET(i,val) PyStructSequence_SetItem(v, i, val)
-    SET(setIndex++, PyUnicode_DecodeFSDefault(p->gr_name));
+#define SET(i,val) TyStructSequence_SetItem(v, i, val)
+    SET(setIndex++, TyUnicode_DecodeFSDefault(p->gr_name));
     if (p->gr_passwd)
-            SET(setIndex++, PyUnicode_DecodeFSDefault(p->gr_passwd));
+            SET(setIndex++, TyUnicode_DecodeFSDefault(p->gr_passwd));
     else {
-            SET(setIndex++, Py_None);
-            Py_INCREF(Py_None);
+            SET(setIndex++, Ty_None);
+            Ty_INCREF(Ty_None);
     }
-    SET(setIndex++, _PyLong_FromGid(p->gr_gid));
+    SET(setIndex++, _TyLong_FromGid(p->gr_gid));
     SET(setIndex++, w);
 #undef SET
 
-    if (PyErr_Occurred()) {
-        Py_DECREF(v);
+    if (TyErr_Occurred()) {
+        Ty_DECREF(v);
         return NULL;
     }
 
@@ -124,33 +124,33 @@ Return the group database entry for the given numeric group ID.
 If id is not valid, raise KeyError.
 [clinic start generated code]*/
 
-static PyObject *
-grp_getgrgid_impl(PyObject *module, PyObject *id)
+static TyObject *
+grp_getgrgid_impl(TyObject *module, TyObject *id)
 /*[clinic end generated code: output=30797c289504a1ba input=15fa0e2ccf5cda25]*/
 {
-    PyObject *retval = NULL;
+    TyObject *retval = NULL;
     int nomem = 0;
     char *buf = NULL, *buf2 = NULL;
     gid_t gid;
     struct group *p;
 
-    if (!_Py_Gid_Converter(id, &gid)) {
+    if (!_Ty_Gid_Converter(id, &gid)) {
         return NULL;
     }
 #ifdef HAVE_GETGRGID_R
     int status;
-    Py_ssize_t bufsize;
+    Ty_ssize_t bufsize;
     /* Note: 'grp' will be used via pointer 'p' on getgrgid_r success. */
     struct group grp;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     bufsize = sysconf(_SC_GETGR_R_SIZE_MAX);
     if (bufsize == -1) {
         bufsize = DEFAULT_BUFFER_SIZE;
     }
 
     while (1) {
-        buf2 = PyMem_RawRealloc(buf, bufsize);
+        buf2 = TyMem_RawRealloc(buf, bufsize);
         if (buf2 == NULL) {
             p = NULL;
             nomem = 1;
@@ -171,7 +171,7 @@ grp_getgrgid_impl(PyObject *module, PyObject *id)
         bufsize <<= 1;
     }
 
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 #else
     PyMutex_Lock(&group_db_mutex);
     // The getgrgid() function need not be thread-safe.
@@ -182,20 +182,20 @@ grp_getgrgid_impl(PyObject *module, PyObject *id)
 #ifndef HAVE_GETGRGID_R
         PyMutex_Unlock(&group_db_mutex);
 #endif
-        PyMem_RawFree(buf);
+        TyMem_RawFree(buf);
         if (nomem == 1) {
-            return PyErr_NoMemory();
+            return TyErr_NoMemory();
         }
-        PyObject *gid_obj = _PyLong_FromGid(gid);
+        TyObject *gid_obj = _TyLong_FromGid(gid);
         if (gid_obj == NULL)
             return NULL;
-        PyErr_Format(PyExc_KeyError, "getgrgid(): gid not found: %S", gid_obj);
-        Py_DECREF(gid_obj);
+        TyErr_Format(TyExc_KeyError, "getgrgid(): gid not found: %S", gid_obj);
+        Ty_DECREF(gid_obj);
         return NULL;
     }
     retval = mkgrent(module, p);
 #ifdef HAVE_GETGRGID_R
-    PyMem_RawFree(buf);
+    TyMem_RawFree(buf);
 #else
     PyMutex_Unlock(&group_db_mutex);
 #endif
@@ -212,34 +212,34 @@ Return the group database entry for the given group name.
 If name is not valid, raise KeyError.
 [clinic start generated code]*/
 
-static PyObject *
-grp_getgrnam_impl(PyObject *module, PyObject *name)
+static TyObject *
+grp_getgrnam_impl(TyObject *module, TyObject *name)
 /*[clinic end generated code: output=67905086f403c21c input=08ded29affa3c863]*/
 {
     char *buf = NULL, *buf2 = NULL, *name_chars;
     int nomem = 0;
     struct group *p;
-    PyObject *bytes, *retval = NULL;
+    TyObject *bytes, *retval = NULL;
 
-    if ((bytes = PyUnicode_EncodeFSDefault(name)) == NULL)
+    if ((bytes = TyUnicode_EncodeFSDefault(name)) == NULL)
         return NULL;
     /* check for embedded null bytes */
-    if (PyBytes_AsStringAndSize(bytes, &name_chars, NULL) == -1)
+    if (TyBytes_AsStringAndSize(bytes, &name_chars, NULL) == -1)
         goto out;
 #ifdef HAVE_GETGRNAM_R
     int status;
-    Py_ssize_t bufsize;
+    Ty_ssize_t bufsize;
     /* Note: 'grp' will be used via pointer 'p' on getgrnam_r success. */
     struct group grp;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     bufsize = sysconf(_SC_GETGR_R_SIZE_MAX);
     if (bufsize == -1) {
         bufsize = DEFAULT_BUFFER_SIZE;
     }
 
     while(1) {
-        buf2 = PyMem_RawRealloc(buf, bufsize);
+        buf2 = TyMem_RawRealloc(buf, bufsize);
         if (buf2 == NULL) {
             p = NULL;
             nomem = 1;
@@ -260,7 +260,7 @@ grp_getgrnam_impl(PyObject *module, PyObject *name)
         bufsize <<= 1;
     }
 
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 #else
     PyMutex_Lock(&group_db_mutex);
     // The getgrnam() function need not be thread-safe.
@@ -272,10 +272,10 @@ grp_getgrnam_impl(PyObject *module, PyObject *name)
         PyMutex_Unlock(&group_db_mutex);
 #endif
         if (nomem == 1) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
         }
         else {
-            PyErr_Format(PyExc_KeyError, "getgrnam(): name not found: %R", name);
+            TyErr_Format(TyExc_KeyError, "getgrnam(): name not found: %R", name);
         }
         goto out;
     }
@@ -284,8 +284,8 @@ grp_getgrnam_impl(PyObject *module, PyObject *name)
     PyMutex_Unlock(&group_db_mutex);
 #endif
 out:
-    PyMem_RawFree(buf);
-    Py_DECREF(bytes);
+    TyMem_RawFree(buf);
+    Ty_DECREF(bytes);
     return retval;
 }
 
@@ -298,11 +298,11 @@ An entry whose name starts with '+' or '-' represents an instruction
 to use YP/NIS and may not be accessible via getgrnam or getgrgid.
 [clinic start generated code]*/
 
-static PyObject *
-grp_getgrall_impl(PyObject *module)
+static TyObject *
+grp_getgrall_impl(TyObject *module)
 /*[clinic end generated code: output=585dad35e2e763d7 input=d7df76c825c367df]*/
 {
-    PyObject *d = PyList_New(0);
+    TyObject *d = TyList_New(0);
     if (d == NULL) {
         return NULL;
     }
@@ -316,13 +316,13 @@ grp_getgrall_impl(PyObject *module)
         // setgrent()/endgrent() are not reentrant / thread-safe. A deadlock
         // is unlikely since mkgrent() should not be able to call arbitrary
         // Python code.
-        PyObject *v = mkgrent(module, p);
-        if (v == NULL || PyList_Append(d, v) != 0) {
-            Py_XDECREF(v);
-            Py_CLEAR(d);
+        TyObject *v = mkgrent(module, p);
+        if (v == NULL || TyList_Append(d, v) != 0) {
+            Ty_XDECREF(v);
+            Ty_CLEAR(d);
             goto done;
         }
-        Py_DECREF(v);
+        Ty_DECREF(v);
     }
 
 done:
@@ -331,14 +331,14 @@ done:
     return d;
 }
 
-static PyMethodDef grp_methods[] = {
+static TyMethodDef grp_methods[] = {
     GRP_GETGRGID_METHODDEF
     GRP_GETGRNAM_METHODDEF
     GRP_GETGRALL_METHODDEF
     {NULL, NULL}
 };
 
-PyDoc_STRVAR(grp__doc__,
+TyDoc_STRVAR(grp__doc__,
 "Access to the Unix group database.\n\
 \n\
 Group entries are reported as 4-tuples containing the following fields\n\
@@ -355,42 +355,42 @@ according to the password database.  Check both databases to get\n\
 complete membership information.)");
 
 static int
-grpmodule_exec(PyObject *module)
+grpmodule_exec(TyObject *module)
 {
     grpmodulestate *state = get_grp_state(module);
 
-    state->StructGrpType = PyStructSequence_NewType(&struct_group_type_desc);
+    state->StructGrpType = TyStructSequence_NewType(&struct_group_type_desc);
     if (state->StructGrpType == NULL) {
         return -1;
     }
-    if (PyModule_AddType(module, state->StructGrpType) < 0) {
+    if (TyModule_AddType(module, state->StructGrpType) < 0) {
         return -1;
     }
     return 0;
 }
 
 static PyModuleDef_Slot grpmodule_slots[] = {
-    {Py_mod_exec, grpmodule_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, grpmodule_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static int grpmodule_traverse(PyObject *m, visitproc visit, void *arg) {
-    Py_VISIT(get_grp_state(m)->StructGrpType);
+static int grpmodule_traverse(TyObject *m, visitproc visit, void *arg) {
+    Ty_VISIT(get_grp_state(m)->StructGrpType);
     return 0;
 }
 
-static int grpmodule_clear(PyObject *m) {
-    Py_CLEAR(get_grp_state(m)->StructGrpType);
+static int grpmodule_clear(TyObject *m) {
+    Ty_CLEAR(get_grp_state(m)->StructGrpType);
     return 0;
 }
 
 static void grpmodule_free(void *m) {
-    grpmodule_clear((PyObject *)m);
+    grpmodule_clear((TyObject *)m);
 }
 
-static struct PyModuleDef grpmodule = {
+static struct TyModuleDef grpmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "grp",
     .m_doc = grp__doc__,

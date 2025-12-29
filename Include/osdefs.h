@@ -7,8 +7,8 @@
 // - MAXPATHLEN
 // - SEP
 
-#ifndef Py_OSDEFS_H
-#define Py_OSDEFS_H
+#ifndef Ty_OSDEFS_H
+#define Ty_OSDEFS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -54,4 +54,4 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#endif   // !Py_OSDEFS_H
+#endif   // !Ty_OSDEFS_H

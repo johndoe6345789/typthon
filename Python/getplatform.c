@@ -6,7 +6,7 @@
 #endif
 
 const char *
-Py_GetPlatform(void)
+Ty_GetPlatform(void)
 {
     return PLATFORM;
 }

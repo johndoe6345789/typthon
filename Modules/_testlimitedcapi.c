@@ -7,11 +7,11 @@
 
 #include "_testlimitedcapi/parts.h"
 
-static PyMethodDef TestMethods[] = {
+static TyMethodDef TestMethods[] = {
     {NULL, NULL} /* sentinel */
 };
 
-static struct PyModuleDef _testlimitedcapimodule = {
+static struct TyModuleDef _testlimitedcapimodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testlimitedcapi",
     .m_size = 0,
@@ -21,12 +21,12 @@ static struct PyModuleDef _testlimitedcapimodule = {
 PyMODINIT_FUNC
 PyInit__testlimitedcapi(void)
 {
-    PyObject *mod = PyModule_Create(&_testlimitedcapimodule);
+    TyObject *mod = TyModule_Create(&_testlimitedcapimodule);
     if (mod == NULL) {
         return NULL;
     }
-#ifdef Py_GIL_DISABLED
-    PyUnstable_Module_SetGIL(mod, Py_MOD_GIL_NOT_USED);
+#ifdef Ty_GIL_DISABLED
+    PyUnstable_Module_SetGIL(mod, Ty_MOD_GIL_NOT_USED);
 #endif
 
     if (_PyTestLimitedCAPI_Init_Abstract(mod) < 0) {

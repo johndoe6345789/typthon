@@ -2,10 +2,10 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
-#include "pycore_modsupport.h"    // _PyArg_BadArgument()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
+#include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
-PyDoc_STRVAR(BaseException___reduce____doc__,
+TyDoc_STRVAR(BaseException___reduce____doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n");
@@ -13,22 +13,22 @@ PyDoc_STRVAR(BaseException___reduce____doc__,
 #define BASEEXCEPTION___REDUCE___METHODDEF    \
     {"__reduce__", (PyCFunction)BaseException___reduce__, METH_NOARGS, BaseException___reduce____doc__},
 
-static PyObject *
-BaseException___reduce___impl(PyBaseExceptionObject *self);
+static TyObject *
+BaseException___reduce___impl(TyBaseExceptionObject *self);
 
-static PyObject *
-BaseException___reduce__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+BaseException___reduce__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException___reduce___impl((PyBaseExceptionObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException___reduce___impl((TyBaseExceptionObject *)self);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-PyDoc_STRVAR(BaseException___setstate____doc__,
+TyDoc_STRVAR(BaseException___setstate____doc__,
 "__setstate__($self, state, /)\n"
 "--\n"
 "\n");
@@ -36,22 +36,22 @@ PyDoc_STRVAR(BaseException___setstate____doc__,
 #define BASEEXCEPTION___SETSTATE___METHODDEF    \
     {"__setstate__", (PyCFunction)BaseException___setstate__, METH_O, BaseException___setstate____doc__},
 
-static PyObject *
-BaseException___setstate___impl(PyBaseExceptionObject *self, PyObject *state);
+static TyObject *
+BaseException___setstate___impl(TyBaseExceptionObject *self, TyObject *state);
 
-static PyObject *
-BaseException___setstate__(PyObject *self, PyObject *state)
+static TyObject *
+BaseException___setstate__(TyObject *self, TyObject *state)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException___setstate___impl((PyBaseExceptionObject *)self, state);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException___setstate___impl((TyBaseExceptionObject *)self, state);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-PyDoc_STRVAR(BaseException_with_traceback__doc__,
+TyDoc_STRVAR(BaseException_with_traceback__doc__,
 "with_traceback($self, tb, /)\n"
 "--\n"
 "\n"
@@ -60,22 +60,22 @@ PyDoc_STRVAR(BaseException_with_traceback__doc__,
 #define BASEEXCEPTION_WITH_TRACEBACK_METHODDEF    \
     {"with_traceback", (PyCFunction)BaseException_with_traceback, METH_O, BaseException_with_traceback__doc__},
 
-static PyObject *
-BaseException_with_traceback_impl(PyBaseExceptionObject *self, PyObject *tb);
+static TyObject *
+BaseException_with_traceback_impl(TyBaseExceptionObject *self, TyObject *tb);
 
-static PyObject *
-BaseException_with_traceback(PyObject *self, PyObject *tb)
+static TyObject *
+BaseException_with_traceback(TyObject *self, TyObject *tb)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException_with_traceback_impl((PyBaseExceptionObject *)self, tb);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException_with_traceback_impl((TyBaseExceptionObject *)self, tb);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-PyDoc_STRVAR(BaseException_add_note__doc__,
+TyDoc_STRVAR(BaseException_add_note__doc__,
 "add_note($self, note, /)\n"
 "--\n"
 "\n"
@@ -84,23 +84,23 @@ PyDoc_STRVAR(BaseException_add_note__doc__,
 #define BASEEXCEPTION_ADD_NOTE_METHODDEF    \
     {"add_note", (PyCFunction)BaseException_add_note, METH_O, BaseException_add_note__doc__},
 
-static PyObject *
-BaseException_add_note_impl(PyBaseExceptionObject *self, PyObject *note);
+static TyObject *
+BaseException_add_note_impl(TyBaseExceptionObject *self, TyObject *note);
 
-static PyObject *
-BaseException_add_note(PyObject *self, PyObject *arg)
+static TyObject *
+BaseException_add_note(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *note;
+    TyObject *return_value = NULL;
+    TyObject *note;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("add_note", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("add_note", "argument", "str", arg);
         goto exit;
     }
     note = arg;
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException_add_note_impl((PyBaseExceptionObject *)self, note);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException_add_note_impl((TyBaseExceptionObject *)self, note);
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -116,17 +116,17 @@ exit:
 #  define BASEEXCEPTION_ARGS_GETSETDEF {"args", (getter)BaseException_args_get, NULL, BaseException_args_DOCSTR},
 #endif
 
-static PyObject *
-BaseException_args_get_impl(PyBaseExceptionObject *self);
+static TyObject *
+BaseException_args_get_impl(TyBaseExceptionObject *self);
 
-static PyObject *
-BaseException_args_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+BaseException_args_get(TyObject *self, void *Py_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException_args_get_impl((PyBaseExceptionObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException_args_get_impl((TyBaseExceptionObject *)self);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -142,16 +142,16 @@ BaseException_args_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-BaseException_args_set_impl(PyBaseExceptionObject *self, PyObject *value);
+BaseException_args_set_impl(TyBaseExceptionObject *self, TyObject *value);
 
 static int
-BaseException_args_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+BaseException_args_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException_args_set_impl((PyBaseExceptionObject *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException_args_set_impl((TyBaseExceptionObject *)self, value);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -166,17 +166,17 @@ BaseException_args_set(PyObject *self, PyObject *value, void *Py_UNUSED(context)
 #  define BASEEXCEPTION___TRACEBACK___GETSETDEF {"__traceback__", (getter)BaseException___traceback___get, NULL, BaseException___traceback___DOCSTR},
 #endif
 
-static PyObject *
-BaseException___traceback___get_impl(PyBaseExceptionObject *self);
+static TyObject *
+BaseException___traceback___get_impl(TyBaseExceptionObject *self);
 
-static PyObject *
-BaseException___traceback___get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+BaseException___traceback___get(TyObject *self, void *Py_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException___traceback___get_impl((PyBaseExceptionObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException___traceback___get_impl((TyBaseExceptionObject *)self);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -192,17 +192,17 @@ BaseException___traceback___get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-BaseException___traceback___set_impl(PyBaseExceptionObject *self,
-                                     PyObject *value);
+BaseException___traceback___set_impl(TyBaseExceptionObject *self,
+                                     TyObject *value);
 
 static int
-BaseException___traceback___set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+BaseException___traceback___set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException___traceback___set_impl((PyBaseExceptionObject *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException___traceback___set_impl((TyBaseExceptionObject *)self, value);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -217,17 +217,17 @@ BaseException___traceback___set(PyObject *self, PyObject *value, void *Py_UNUSED
 #  define BASEEXCEPTION___CONTEXT___GETSETDEF {"__context__", (getter)BaseException___context___get, NULL, BaseException___context___DOCSTR},
 #endif
 
-static PyObject *
-BaseException___context___get_impl(PyBaseExceptionObject *self);
+static TyObject *
+BaseException___context___get_impl(TyBaseExceptionObject *self);
 
-static PyObject *
-BaseException___context___get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+BaseException___context___get(TyObject *self, void *Py_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException___context___get_impl((PyBaseExceptionObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException___context___get_impl((TyBaseExceptionObject *)self);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -243,17 +243,17 @@ BaseException___context___get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-BaseException___context___set_impl(PyBaseExceptionObject *self,
-                                   PyObject *value);
+BaseException___context___set_impl(TyBaseExceptionObject *self,
+                                   TyObject *value);
 
 static int
-BaseException___context___set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+BaseException___context___set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException___context___set_impl((PyBaseExceptionObject *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException___context___set_impl((TyBaseExceptionObject *)self, value);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -268,17 +268,17 @@ BaseException___context___set(PyObject *self, PyObject *value, void *Py_UNUSED(c
 #  define BASEEXCEPTION___CAUSE___GETSETDEF {"__cause__", (getter)BaseException___cause___get, NULL, BaseException___cause___DOCSTR},
 #endif
 
-static PyObject *
-BaseException___cause___get_impl(PyBaseExceptionObject *self);
+static TyObject *
+BaseException___cause___get_impl(TyBaseExceptionObject *self);
 
-static PyObject *
-BaseException___cause___get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+BaseException___cause___get(TyObject *self, void *Py_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException___cause___get_impl((PyBaseExceptionObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException___cause___get_impl((TyBaseExceptionObject *)self);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -294,22 +294,22 @@ BaseException___cause___get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-BaseException___cause___set_impl(PyBaseExceptionObject *self,
-                                 PyObject *value);
+BaseException___cause___set_impl(TyBaseExceptionObject *self,
+                                 TyObject *value);
 
 static int
-BaseException___cause___set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+BaseException___cause___set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseException___cause___set_impl((PyBaseExceptionObject *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseException___cause___set_impl((TyBaseExceptionObject *)self, value);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-PyDoc_STRVAR(BaseExceptionGroup_derive__doc__,
+TyDoc_STRVAR(BaseExceptionGroup_derive__doc__,
 "derive($self, excs, /)\n"
 "--\n"
 "\n");
@@ -317,23 +317,23 @@ PyDoc_STRVAR(BaseExceptionGroup_derive__doc__,
 #define BASEEXCEPTIONGROUP_DERIVE_METHODDEF    \
     {"derive", (PyCFunction)BaseExceptionGroup_derive, METH_O, BaseExceptionGroup_derive__doc__},
 
-static PyObject *
-BaseExceptionGroup_derive_impl(PyBaseExceptionGroupObject *self,
-                               PyObject *excs);
+static TyObject *
+BaseExceptionGroup_derive_impl(TyBaseExceptionGroupObject *self,
+                               TyObject *excs);
 
-static PyObject *
-BaseExceptionGroup_derive(PyObject *self, PyObject *excs)
+static TyObject *
+BaseExceptionGroup_derive(TyObject *self, TyObject *excs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseExceptionGroup_derive_impl((PyBaseExceptionGroupObject *)self, excs);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseExceptionGroup_derive_impl((TyBaseExceptionGroupObject *)self, excs);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-PyDoc_STRVAR(BaseExceptionGroup_split__doc__,
+TyDoc_STRVAR(BaseExceptionGroup_split__doc__,
 "split($self, matcher_value, /)\n"
 "--\n"
 "\n");
@@ -341,23 +341,23 @@ PyDoc_STRVAR(BaseExceptionGroup_split__doc__,
 #define BASEEXCEPTIONGROUP_SPLIT_METHODDEF    \
     {"split", (PyCFunction)BaseExceptionGroup_split, METH_O, BaseExceptionGroup_split__doc__},
 
-static PyObject *
-BaseExceptionGroup_split_impl(PyBaseExceptionGroupObject *self,
-                              PyObject *matcher_value);
+static TyObject *
+BaseExceptionGroup_split_impl(TyBaseExceptionGroupObject *self,
+                              TyObject *matcher_value);
 
-static PyObject *
-BaseExceptionGroup_split(PyObject *self, PyObject *matcher_value)
+static TyObject *
+BaseExceptionGroup_split(TyObject *self, TyObject *matcher_value)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseExceptionGroup_split_impl((PyBaseExceptionGroupObject *)self, matcher_value);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseExceptionGroup_split_impl((TyBaseExceptionGroupObject *)self, matcher_value);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-PyDoc_STRVAR(BaseExceptionGroup_subgroup__doc__,
+TyDoc_STRVAR(BaseExceptionGroup_subgroup__doc__,
 "subgroup($self, matcher_value, /)\n"
 "--\n"
 "\n");
@@ -365,18 +365,18 @@ PyDoc_STRVAR(BaseExceptionGroup_subgroup__doc__,
 #define BASEEXCEPTIONGROUP_SUBGROUP_METHODDEF    \
     {"subgroup", (PyCFunction)BaseExceptionGroup_subgroup, METH_O, BaseExceptionGroup_subgroup__doc__},
 
-static PyObject *
-BaseExceptionGroup_subgroup_impl(PyBaseExceptionGroupObject *self,
-                                 PyObject *matcher_value);
+static TyObject *
+BaseExceptionGroup_subgroup_impl(TyBaseExceptionGroupObject *self,
+                                 TyObject *matcher_value);
 
-static PyObject *
-BaseExceptionGroup_subgroup(PyObject *self, PyObject *matcher_value)
+static TyObject *
+BaseExceptionGroup_subgroup(TyObject *self, TyObject *matcher_value)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
-    return_value = BaseExceptionGroup_subgroup_impl((PyBaseExceptionGroupObject *)self, matcher_value);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(self);
+    return_value = BaseExceptionGroup_subgroup_impl((TyBaseExceptionGroupObject *)self, matcher_value);
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }

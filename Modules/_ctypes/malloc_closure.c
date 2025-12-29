@@ -1,5 +1,5 @@
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include <Python.h>
@@ -28,7 +28,7 @@
 /******************************************************************/
 
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 static PyMutex malloc_closure_lock;
 # define MALLOC_CLOSURE_LOCK()   PyMutex_Lock(&malloc_closure_lock)
 # define MALLOC_CLOSURE_UNLOCK() PyMutex_Unlock(&malloc_closure_lock)
@@ -104,7 +104,7 @@ static void more_core(void)
 /******************************************************************/
 
 /* put the item back into the free list */
-void Py_ffi_closure_free(void *p)
+void Ty_ffi_closure_free(void *p)
 {
 #ifdef HAVE_FFI_CLOSURE_ALLOC
 #ifdef USING_APPLE_OS_LIBFFI
@@ -128,7 +128,7 @@ void Py_ffi_closure_free(void *p)
 }
 
 /* return one item from the free list, allocating more if needed */
-void *Py_ffi_closure_alloc(size_t size, void** codeloc)
+void *Ty_ffi_closure_alloc(size_t size, void** codeloc)
 {
 #ifdef HAVE_FFI_CLOSURE_ALLOC
 #ifdef USING_APPLE_OS_LIBFFI

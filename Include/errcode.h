@@ -6,15 +6,15 @@
 // the parser only returns E_EOF when it hits EOF immediately, and it
 // never returns E_OK.
 //
-// The public PyRun_InteractiveOneObjectEx() function can return E_EOF,
+// The public TyRun_InteractiveOneObjectEx() function can return E_EOF,
 // same as its variants:
 //
-// * PyRun_InteractiveOneObject()
-// * PyRun_InteractiveOneFlags()
-// * PyRun_InteractiveOne()
+// * TyRun_InteractiveOneObject()
+// * TyRun_InteractiveOneFlags()
+// * TyRun_InteractiveOne()
 
-#ifndef Py_ERRCODE_H
-#define Py_ERRCODE_H
+#ifndef Ty_ERRCODE_H
+#define Ty_ERRCODE_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -42,4 +42,4 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_ERRCODE_H */
+#endif /* !Ty_ERRCODE_H */

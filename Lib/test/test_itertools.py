@@ -2408,7 +2408,7 @@ class RegressionTests(unittest.TestCase):
     def test_long_chain_of_empty_iterables(self):
         # Make sure itertools.chain doesn't run into recursion limits when
         # dealing with long chains of empty iterables. Even with a high
-        # number this would probably only fail in Py_DEBUG mode.
+        # number this would probably only fail in Ty_DEBUG mode.
         it = chain.from_iterable(() for unused in range(10000000))
         with self.assertRaises(StopIteration):
             next(it)

@@ -1,7 +1,7 @@
 #include "Python.h"
-#include "pycore_freelist.h"   // _PyObject_ClearFreeLists()
+#include "pycore_freelist.h"   // _TyObject_ClearFreeLists()
 
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
 
 /* Clear all free lists
  * All free lists are cleared during the collection of the highest generation.
@@ -9,9 +9,9 @@
  * Clearing the free lists may give back memory to the OS earlier.
  */
 void
-_PyGC_ClearAllFreeLists(PyInterpreterState *interp)
+_TyGC_ClearAllFreeLists(TyInterpreterState *interp)
 {
-    _PyObject_ClearFreeLists(&interp->object_state.freelists, 0);
+    _TyObject_ClearFreeLists(&interp->object_state.freelists, 0);
 }
 
 #endif

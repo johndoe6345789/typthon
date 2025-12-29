@@ -4,7 +4,7 @@ preserve
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_testconsole_write_input__doc__,
+TyDoc_STRVAR(_testconsole_write_input__doc__,
 "write_input($module, /, file, s)\n"
 "--\n"
 "\n"
@@ -13,18 +13,18 @@ PyDoc_STRVAR(_testconsole_write_input__doc__,
 #define _TESTCONSOLE_WRITE_INPUT_METHODDEF    \
     {"write_input", (PyCFunction)(void(*)(void))_testconsole_write_input, METH_VARARGS|METH_KEYWORDS, _testconsole_write_input__doc__},
 
-static PyObject *
-_testconsole_write_input_impl(PyObject *module, PyObject *file, Py_buffer *s);
+static TyObject *
+_testconsole_write_input_impl(TyObject *module, TyObject *file, Ty_buffer *s);
 
-static PyObject *
-_testconsole_write_input(PyObject *module, PyObject *args, PyObject *kwargs)
+static TyObject *
+_testconsole_write_input(TyObject *module, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     static char *_keywords[] = {"file", "s", NULL};
-    PyObject *file;
-    Py_buffer s = {NULL, NULL};
+    TyObject *file;
+    Ty_buffer s = {NULL, NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "Oy*:write_input", _keywords,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs, "Oy*:write_input", _keywords,
         &file, &s))
         goto exit;
     return_value = _testconsole_write_input_impl(module, file, &s);
@@ -42,7 +42,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_testconsole_read_output__doc__,
+TyDoc_STRVAR(_testconsole_read_output__doc__,
 "read_output($module, /, file)\n"
 "--\n"
 "\n"
@@ -51,17 +51,17 @@ PyDoc_STRVAR(_testconsole_read_output__doc__,
 #define _TESTCONSOLE_READ_OUTPUT_METHODDEF    \
     {"read_output", (PyCFunction)(void(*)(void))_testconsole_read_output, METH_VARARGS|METH_KEYWORDS, _testconsole_read_output__doc__},
 
-static PyObject *
-_testconsole_read_output_impl(PyObject *module, PyObject *file);
+static TyObject *
+_testconsole_read_output_impl(TyObject *module, TyObject *file);
 
-static PyObject *
-_testconsole_read_output(PyObject *module, PyObject *args, PyObject *kwargs)
+static TyObject *
+_testconsole_read_output(TyObject *module, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     static char *_keywords[] = {"file", NULL};
-    PyObject *file;
+    TyObject *file;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:read_output", _keywords,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs, "O:read_output", _keywords,
         &file))
         goto exit;
     return_value = _testconsole_read_output_impl(module, file);

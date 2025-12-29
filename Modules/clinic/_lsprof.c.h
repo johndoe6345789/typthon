@@ -2,13 +2,13 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_lsprof_Profiler_getstats__doc__,
+TyDoc_STRVAR(_lsprof_Profiler_getstats__doc__,
 "getstats($self, /)\n"
 "--\n"
 "\n"
@@ -39,20 +39,20 @@ PyDoc_STRVAR(_lsprof_Profiler_getstats__doc__,
 #define _LSPROF_PROFILER_GETSTATS_METHODDEF    \
     {"getstats", _PyCFunction_CAST(_lsprof_Profiler_getstats), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _lsprof_Profiler_getstats__doc__},
 
-static PyObject *
-_lsprof_Profiler_getstats_impl(ProfilerObject *self, PyTypeObject *cls);
+static TyObject *
+_lsprof_Profiler_getstats_impl(ProfilerObject *self, TyTypeObject *cls);
 
-static PyObject *
-_lsprof_Profiler_getstats(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_lsprof_Profiler_getstats(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "getstats() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "getstats() takes no arguments");
         return NULL;
     }
     return _lsprof_Profiler_getstats_impl((ProfilerObject *)self, cls);
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__pystart_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__pystart_callback__doc__,
 "_pystart_callback($self, code, instruction_offset, /)\n"
 "--\n"
 "\n");
@@ -60,18 +60,18 @@ PyDoc_STRVAR(_lsprof_Profiler__pystart_callback__doc__,
 #define _LSPROF_PROFILER__PYSTART_CALLBACK_METHODDEF    \
     {"_pystart_callback", _PyCFunction_CAST(_lsprof_Profiler__pystart_callback), METH_FASTCALL, _lsprof_Profiler__pystart_callback__doc__},
 
-static PyObject *
-_lsprof_Profiler__pystart_callback_impl(ProfilerObject *self, PyObject *code,
-                                        PyObject *instruction_offset);
+static TyObject *
+_lsprof_Profiler__pystart_callback_impl(ProfilerObject *self, TyObject *code,
+                                        TyObject *instruction_offset);
 
-static PyObject *
-_lsprof_Profiler__pystart_callback(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_lsprof_Profiler__pystart_callback(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *code;
-    PyObject *instruction_offset;
+    TyObject *return_value = NULL;
+    TyObject *code;
+    TyObject *instruction_offset;
 
-    if (!_PyArg_CheckPositional("_pystart_callback", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("_pystart_callback", nargs, 2, 2)) {
         goto exit;
     }
     code = args[0];
@@ -82,7 +82,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__pythrow_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__pythrow_callback__doc__,
 "_pythrow_callback($self, code, instruction_offset, exception, /)\n"
 "--\n"
 "\n");
@@ -90,20 +90,20 @@ PyDoc_STRVAR(_lsprof_Profiler__pythrow_callback__doc__,
 #define _LSPROF_PROFILER__PYTHROW_CALLBACK_METHODDEF    \
     {"_pythrow_callback", _PyCFunction_CAST(_lsprof_Profiler__pythrow_callback), METH_FASTCALL, _lsprof_Profiler__pythrow_callback__doc__},
 
-static PyObject *
-_lsprof_Profiler__pythrow_callback_impl(ProfilerObject *self, PyObject *code,
-                                        PyObject *instruction_offset,
-                                        PyObject *exception);
+static TyObject *
+_lsprof_Profiler__pythrow_callback_impl(ProfilerObject *self, TyObject *code,
+                                        TyObject *instruction_offset,
+                                        TyObject *exception);
 
-static PyObject *
-_lsprof_Profiler__pythrow_callback(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_lsprof_Profiler__pythrow_callback(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *code;
-    PyObject *instruction_offset;
-    PyObject *exception;
+    TyObject *return_value = NULL;
+    TyObject *code;
+    TyObject *instruction_offset;
+    TyObject *exception;
 
-    if (!_PyArg_CheckPositional("_pythrow_callback", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("_pythrow_callback", nargs, 3, 3)) {
         goto exit;
     }
     code = args[0];
@@ -115,7 +115,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__pyreturn_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__pyreturn_callback__doc__,
 "_pyreturn_callback($self, code, instruction_offset, retval, /)\n"
 "--\n"
 "\n");
@@ -123,21 +123,21 @@ PyDoc_STRVAR(_lsprof_Profiler__pyreturn_callback__doc__,
 #define _LSPROF_PROFILER__PYRETURN_CALLBACK_METHODDEF    \
     {"_pyreturn_callback", _PyCFunction_CAST(_lsprof_Profiler__pyreturn_callback), METH_FASTCALL, _lsprof_Profiler__pyreturn_callback__doc__},
 
-static PyObject *
+static TyObject *
 _lsprof_Profiler__pyreturn_callback_impl(ProfilerObject *self,
-                                         PyObject *code,
-                                         PyObject *instruction_offset,
-                                         PyObject *retval);
+                                         TyObject *code,
+                                         TyObject *instruction_offset,
+                                         TyObject *retval);
 
-static PyObject *
-_lsprof_Profiler__pyreturn_callback(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_lsprof_Profiler__pyreturn_callback(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *code;
-    PyObject *instruction_offset;
-    PyObject *retval;
+    TyObject *return_value = NULL;
+    TyObject *code;
+    TyObject *instruction_offset;
+    TyObject *retval;
 
-    if (!_PyArg_CheckPositional("_pyreturn_callback", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("_pyreturn_callback", nargs, 3, 3)) {
         goto exit;
     }
     code = args[0];
@@ -149,7 +149,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__ccall_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__ccall_callback__doc__,
 "_ccall_callback($self, code, instruction_offset, callable, self_arg, /)\n"
 "--\n"
 "\n");
@@ -157,21 +157,21 @@ PyDoc_STRVAR(_lsprof_Profiler__ccall_callback__doc__,
 #define _LSPROF_PROFILER__CCALL_CALLBACK_METHODDEF    \
     {"_ccall_callback", _PyCFunction_CAST(_lsprof_Profiler__ccall_callback), METH_FASTCALL, _lsprof_Profiler__ccall_callback__doc__},
 
-static PyObject *
-_lsprof_Profiler__ccall_callback_impl(ProfilerObject *self, PyObject *code,
-                                      PyObject *instruction_offset,
-                                      PyObject *callable, PyObject *self_arg);
+static TyObject *
+_lsprof_Profiler__ccall_callback_impl(ProfilerObject *self, TyObject *code,
+                                      TyObject *instruction_offset,
+                                      TyObject *callable, TyObject *self_arg);
 
-static PyObject *
-_lsprof_Profiler__ccall_callback(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_lsprof_Profiler__ccall_callback(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *code;
-    PyObject *instruction_offset;
-    PyObject *callable;
-    PyObject *self_arg;
+    TyObject *return_value = NULL;
+    TyObject *code;
+    TyObject *instruction_offset;
+    TyObject *callable;
+    TyObject *self_arg;
 
-    if (!_PyArg_CheckPositional("_ccall_callback", nargs, 4, 4)) {
+    if (!_TyArg_CheckPositional("_ccall_callback", nargs, 4, 4)) {
         goto exit;
     }
     code = args[0];
@@ -184,7 +184,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__creturn_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__creturn_callback__doc__,
 "_creturn_callback($self, code, instruction_offset, callable, self_arg,\n"
 "                  /)\n"
 "--\n"
@@ -193,22 +193,22 @@ PyDoc_STRVAR(_lsprof_Profiler__creturn_callback__doc__,
 #define _LSPROF_PROFILER__CRETURN_CALLBACK_METHODDEF    \
     {"_creturn_callback", _PyCFunction_CAST(_lsprof_Profiler__creturn_callback), METH_FASTCALL, _lsprof_Profiler__creturn_callback__doc__},
 
-static PyObject *
-_lsprof_Profiler__creturn_callback_impl(ProfilerObject *self, PyObject *code,
-                                        PyObject *instruction_offset,
-                                        PyObject *callable,
-                                        PyObject *self_arg);
+static TyObject *
+_lsprof_Profiler__creturn_callback_impl(ProfilerObject *self, TyObject *code,
+                                        TyObject *instruction_offset,
+                                        TyObject *callable,
+                                        TyObject *self_arg);
 
-static PyObject *
-_lsprof_Profiler__creturn_callback(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_lsprof_Profiler__creturn_callback(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *code;
-    PyObject *instruction_offset;
-    PyObject *callable;
-    PyObject *self_arg;
+    TyObject *return_value = NULL;
+    TyObject *code;
+    TyObject *instruction_offset;
+    TyObject *callable;
+    TyObject *self_arg;
 
-    if (!_PyArg_CheckPositional("_creturn_callback", nargs, 4, 4)) {
+    if (!_TyArg_CheckPositional("_creturn_callback", nargs, 4, 4)) {
         goto exit;
     }
     code = args[0];
@@ -221,7 +221,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler_enable__doc__,
+TyDoc_STRVAR(_lsprof_Profiler_enable__doc__,
 "enable($self, /, subcalls=True, builtins=True)\n"
 "--\n"
 "\n"
@@ -237,47 +237,47 @@ PyDoc_STRVAR(_lsprof_Profiler_enable__doc__,
 #define _LSPROF_PROFILER_ENABLE_METHODDEF    \
     {"enable", _PyCFunction_CAST(_lsprof_Profiler_enable), METH_FASTCALL|METH_KEYWORDS, _lsprof_Profiler_enable__doc__},
 
-static PyObject *
+static TyObject *
 _lsprof_Profiler_enable_impl(ProfilerObject *self, int subcalls,
                              int builtins);
 
-static PyObject *
-_lsprof_Profiler_enable(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_lsprof_Profiler_enable(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(subcalls), &_Py_ID(builtins), },
+        .ob_item = { &_Ty_ID(subcalls), &_Ty_ID(builtins), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"subcalls", "builtins", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "enable",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int subcalls = 1;
     int builtins = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -305,7 +305,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler_disable__doc__,
+TyDoc_STRVAR(_lsprof_Profiler_disable__doc__,
 "disable($self, /)\n"
 "--\n"
 "\n"
@@ -314,16 +314,16 @@ PyDoc_STRVAR(_lsprof_Profiler_disable__doc__,
 #define _LSPROF_PROFILER_DISABLE_METHODDEF    \
     {"disable", (PyCFunction)_lsprof_Profiler_disable, METH_NOARGS, _lsprof_Profiler_disable__doc__},
 
-static PyObject *
+static TyObject *
 _lsprof_Profiler_disable_impl(ProfilerObject *self);
 
-static PyObject *
-_lsprof_Profiler_disable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_lsprof_Profiler_disable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _lsprof_Profiler_disable_impl((ProfilerObject *)self);
 }
 
-PyDoc_STRVAR(_lsprof_Profiler_clear__doc__,
+TyDoc_STRVAR(_lsprof_Profiler_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -332,16 +332,16 @@ PyDoc_STRVAR(_lsprof_Profiler_clear__doc__,
 #define _LSPROF_PROFILER_CLEAR_METHODDEF    \
     {"clear", (PyCFunction)_lsprof_Profiler_clear, METH_NOARGS, _lsprof_Profiler_clear__doc__},
 
-static PyObject *
+static TyObject *
 _lsprof_Profiler_clear_impl(ProfilerObject *self);
 
-static PyObject *
-_lsprof_Profiler_clear(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_lsprof_Profiler_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _lsprof_Profiler_clear_impl((ProfilerObject *)self);
 }
 
-PyDoc_STRVAR(profiler_init__doc__,
+TyDoc_STRVAR(profiler_init__doc__,
 "Profiler(timer=None, timeunit=0.0, subcalls=True, builtins=True)\n"
 "--\n"
 "\n"
@@ -353,50 +353,50 @@ PyDoc_STRVAR(profiler_init__doc__,
 "is, in seconds).");
 
 static int
-profiler_init_impl(ProfilerObject *self, PyObject *timer, double timeunit,
+profiler_init_impl(ProfilerObject *self, TyObject *timer, double timeunit,
                    int subcalls, int builtins);
 
 static int
-profiler_init(PyObject *self, PyObject *args, PyObject *kwargs)
+profiler_init(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(timer), &_Py_ID(timeunit), &_Py_ID(subcalls), &_Py_ID(builtins), },
+        .ob_item = { &_Ty_ID(timer), &_Ty_ID(timeunit), &_Ty_ID(subcalls), &_Ty_ID(builtins), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"timer", "timeunit", "subcalls", "builtins", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "Profiler",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 0;
-    PyObject *timer = NULL;
+    TyObject *argsbuf[4];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 0;
+    TyObject *timer = NULL;
     double timeunit = 0.0;
     int subcalls = 1;
     int builtins = 1;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 0, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -411,13 +411,13 @@ profiler_init(PyObject *self, PyObject *args, PyObject *kwargs)
         }
     }
     if (fastargs[1]) {
-        if (PyFloat_CheckExact(fastargs[1])) {
-            timeunit = PyFloat_AS_DOUBLE(fastargs[1]);
+        if (TyFloat_CheckExact(fastargs[1])) {
+            timeunit = TyFloat_AS_DOUBLE(fastargs[1]);
         }
         else
         {
-            timeunit = PyFloat_AsDouble(fastargs[1]);
-            if (timeunit == -1.0 && PyErr_Occurred()) {
+            timeunit = TyFloat_AsDouble(fastargs[1]);
+            if (timeunit == -1.0 && TyErr_Occurred()) {
                 goto exit;
             }
         }

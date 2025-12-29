@@ -1,79 +1,79 @@
 #include "parts.h"
 #include "util.h"
 
-static PyObject *
-eval_get_func_name(PyObject *self, PyObject *func)
+static TyObject *
+eval_get_func_name(TyObject *self, TyObject *func)
 {
-    return PyUnicode_FromString(PyEval_GetFuncName(func));
+    return TyUnicode_FromString(TyEval_GetFuncName(func));
 }
 
-static PyObject *
-eval_get_func_desc(PyObject *self, PyObject *func)
+static TyObject *
+eval_get_func_desc(TyObject *self, TyObject *func)
 {
-    return PyUnicode_FromString(PyEval_GetFuncDesc(func));
+    return TyUnicode_FromString(TyEval_GetFuncDesc(func));
 }
 
-static PyObject *
-eval_getlocals(PyObject *module, PyObject *Py_UNUSED(args))
+static TyObject *
+eval_getlocals(TyObject *module, TyObject *Py_UNUSED(args))
 {
-    return Py_XNewRef(PyEval_GetLocals());
+    return Ty_XNewRef(TyEval_GetLocals());
 }
 
-static PyObject *
-eval_getglobals(PyObject *module, PyObject *Py_UNUSED(args))
+static TyObject *
+eval_getglobals(TyObject *module, TyObject *Py_UNUSED(args))
 {
-    return Py_XNewRef(PyEval_GetGlobals());
+    return Ty_XNewRef(TyEval_GetGlobals());
 }
 
-static PyObject *
-eval_getbuiltins(PyObject *module, PyObject *Py_UNUSED(args))
+static TyObject *
+eval_getbuiltins(TyObject *module, TyObject *Py_UNUSED(args))
 {
-    return Py_XNewRef(PyEval_GetBuiltins());
+    return Ty_XNewRef(TyEval_GetBuiltins());
 }
 
-static PyObject *
-eval_getframe(PyObject *module, PyObject *Py_UNUSED(args))
+static TyObject *
+eval_getframe(TyObject *module, TyObject *Py_UNUSED(args))
 {
-    return Py_XNewRef(PyEval_GetFrame());
+    return Ty_XNewRef(TyEval_GetFrame());
 }
 
-static PyObject *
-eval_getframe_builtins(PyObject *module, PyObject *Py_UNUSED(args))
+static TyObject *
+eval_getframe_builtins(TyObject *module, TyObject *Py_UNUSED(args))
 {
-    return PyEval_GetFrameBuiltins();
+    return TyEval_GetFrameBuiltins();
 }
 
-static PyObject *
-eval_getframe_globals(PyObject *module, PyObject *Py_UNUSED(args))
+static TyObject *
+eval_getframe_globals(TyObject *module, TyObject *Py_UNUSED(args))
 {
-    return PyEval_GetFrameGlobals();
+    return TyEval_GetFrameGlobals();
 }
 
-static PyObject *
-eval_getframe_locals(PyObject *module, PyObject *Py_UNUSED(args))
+static TyObject *
+eval_getframe_locals(TyObject *module, TyObject *Py_UNUSED(args))
 {
-    return PyEval_GetFrameLocals();
+    return TyEval_GetFrameLocals();
 }
 
-static PyObject *
-eval_get_recursion_limit(PyObject *module, PyObject *Py_UNUSED(args))
+static TyObject *
+eval_get_recursion_limit(TyObject *module, TyObject *Py_UNUSED(args))
 {
-    int limit = Py_GetRecursionLimit();
-    return PyLong_FromLong(limit);
+    int limit = Ty_GetRecursionLimit();
+    return TyLong_FromLong(limit);
 }
 
-static PyObject *
-eval_set_recursion_limit(PyObject *module, PyObject *args)
+static TyObject *
+eval_set_recursion_limit(TyObject *module, TyObject *args)
 {
     int limit;
-    if (!PyArg_ParseTuple(args, "i", &limit)) {
+    if (!TyArg_ParseTuple(args, "i", &limit)) {
         return NULL;
     }
-    Py_SetRecursionLimit(limit);
+    Ty_SetRecursionLimit(limit);
     Py_RETURN_NONE;
 }
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"eval_get_func_name", eval_get_func_name, METH_O, NULL},
     {"eval_get_func_desc", eval_get_func_desc, METH_O, NULL},
     {"eval_getlocals", eval_getlocals, METH_NOARGS},
@@ -89,7 +89,7 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Eval(PyObject *m)
+_PyTestLimitedCAPI_Init_Eval(TyObject *m)
 {
-    return PyModule_AddFunctions(m, test_methods);
+    return TyModule_AddFunctions(m, test_methods);
 }

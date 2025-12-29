@@ -3,8 +3,8 @@
 
 // === Codecs registration and un-registration ================================
 
-static PyObject *
-codec_register(PyObject *Py_UNUSED(module), PyObject *search_function)
+static TyObject *
+codec_register(TyObject *Py_UNUSED(module), TyObject *search_function)
 {
     if (PyCodec_Register(search_function) < 0) {
         return NULL;
@@ -12,8 +12,8 @@ codec_register(PyObject *Py_UNUSED(module), PyObject *search_function)
     Py_RETURN_NONE;
 }
 
-static PyObject *
-codec_unregister(PyObject *Py_UNUSED(module), PyObject *search_function)
+static TyObject *
+codec_unregister(TyObject *Py_UNUSED(module), TyObject *search_function)
 {
     if (PyCodec_Unregister(search_function) < 0) {
         return NULL;
@@ -21,103 +21,103 @@ codec_unregister(PyObject *Py_UNUSED(module), PyObject *search_function)
     Py_RETURN_NONE;
 }
 
-static PyObject *
-codec_known_encoding(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_known_encoding(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
-    if (!PyArg_ParseTuple(args, "z", &encoding)) {
+    if (!TyArg_ParseTuple(args, "z", &encoding)) {
         return NULL;
     }
-    return PyCodec_KnownEncoding(encoding) ? Py_True : Py_False;
+    return PyCodec_KnownEncoding(encoding) ? Ty_True : Ty_False;
 }
 
 // === Codecs encoding and decoding interfaces ================================
 
-static PyObject *
-codec_encode(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_encode(TyObject *Py_UNUSED(module), TyObject *args)
 {
-    PyObject *input;
+    TyObject *input;
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
     const char *errors;                     // can be NULL
-    if (!PyArg_ParseTuple(args, "O|zz", &input, &encoding, &errors)) {
+    if (!TyArg_ParseTuple(args, "O|zz", &input, &encoding, &errors)) {
         return NULL;
     }
     return PyCodec_Encode(input, encoding, errors);
 }
 
-static PyObject *
-codec_decode(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_decode(TyObject *Py_UNUSED(module), TyObject *args)
 {
-    PyObject *input;
+    TyObject *input;
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
     const char *errors;                     // can be NULL
-    if (!PyArg_ParseTuple(args, "O|zz", &input, &encoding, &errors)) {
+    if (!TyArg_ParseTuple(args, "O|zz", &input, &encoding, &errors)) {
         return NULL;
     }
     return PyCodec_Decode(input, encoding, errors);
 }
 
-static PyObject *
-codec_encoder(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_encoder(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
-    if (!PyArg_ParseTuple(args, "z", &encoding)) {
+    if (!TyArg_ParseTuple(args, "z", &encoding)) {
         return NULL;
     }
     return PyCodec_Encoder(encoding);
 }
 
-static PyObject *
-codec_decoder(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_decoder(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
-    if (!PyArg_ParseTuple(args, "z", &encoding)) {
+    if (!TyArg_ParseTuple(args, "z", &encoding)) {
         return NULL;
     }
     return PyCodec_Decoder(encoding);
 }
 
-static PyObject *
-codec_incremental_encoder(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_incremental_encoder(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
     const char *errors;                     // can be NULL
-    if (!PyArg_ParseTuple(args, "zz", &encoding, &errors)) {
+    if (!TyArg_ParseTuple(args, "zz", &encoding, &errors)) {
         return NULL;
     }
     return PyCodec_IncrementalEncoder(encoding, errors);
 }
 
-static PyObject *
-codec_incremental_decoder(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_incremental_decoder(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
     const char *errors;                     // can be NULL
-    if (!PyArg_ParseTuple(args, "zz", &encoding, &errors)) {
+    if (!TyArg_ParseTuple(args, "zz", &encoding, &errors)) {
         return NULL;
     }
     return PyCodec_IncrementalDecoder(encoding, errors);
 }
 
-static PyObject *
-codec_stream_reader(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_stream_reader(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
-    PyObject *stream;
+    TyObject *stream;
     const char *errors;                     // can be NULL
-    if (!PyArg_ParseTuple(args, "zOz", &encoding, &stream, &errors)) {
+    if (!TyArg_ParseTuple(args, "zOz", &encoding, &stream, &errors)) {
         return NULL;
     }
     return PyCodec_StreamReader(encoding, stream, errors);
 }
 
-static PyObject *
-codec_stream_writer(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_stream_writer(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
-    PyObject *stream;
+    TyObject *stream;
     const char *errors;                     // can be NULL
-    if (!PyArg_ParseTuple(args, "zOz", &encoding, &stream, &errors)) {
+    if (!TyArg_ParseTuple(args, "zOz", &encoding, &stream, &errors)) {
         return NULL;
     }
     return PyCodec_StreamWriter(encoding, stream, errors);
@@ -125,12 +125,12 @@ codec_stream_writer(PyObject *Py_UNUSED(module), PyObject *args)
 
 // === Codecs errors handlers =================================================
 
-static PyObject *
-codec_register_error(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_register_error(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *encoding;   // must not be NULL
-    PyObject *error;
-    if (!PyArg_ParseTuple(args, "sO", &encoding, &error)) {
+    TyObject *error;
+    if (!TyArg_ParseTuple(args, "sO", &encoding, &error)) {
         return NULL;
     }
     if (PyCodec_RegisterError(encoding, error) < 0) {
@@ -139,52 +139,52 @@ codec_register_error(PyObject *Py_UNUSED(module), PyObject *args)
     Py_RETURN_NONE;
 }
 
-static PyObject *
-codec_lookup_error(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+codec_lookup_error(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *NULL_WOULD_RAISE(encoding); // NULL case will be tested
-    if (!PyArg_ParseTuple(args, "z", &encoding)) {
+    if (!TyArg_ParseTuple(args, "z", &encoding)) {
         return NULL;
     }
     return PyCodec_LookupError(encoding);
 }
 
-static PyObject *
-codec_strict_errors(PyObject *Py_UNUSED(module), PyObject *exc)
+static TyObject *
+codec_strict_errors(TyObject *Py_UNUSED(module), TyObject *exc)
 {
     assert(exc != NULL);
     return PyCodec_StrictErrors(exc);
 }
 
-static PyObject *
-codec_ignore_errors(PyObject *Py_UNUSED(module), PyObject *exc)
+static TyObject *
+codec_ignore_errors(TyObject *Py_UNUSED(module), TyObject *exc)
 {
     assert(exc != NULL);
     return PyCodec_IgnoreErrors(exc);
 }
 
-static PyObject *
-codec_replace_errors(PyObject *Py_UNUSED(module), PyObject *exc)
+static TyObject *
+codec_replace_errors(TyObject *Py_UNUSED(module), TyObject *exc)
 {
     assert(exc != NULL);
     return PyCodec_ReplaceErrors(exc);
 }
 
-static PyObject *
-codec_xmlcharrefreplace_errors(PyObject *Py_UNUSED(module), PyObject *exc)
+static TyObject *
+codec_xmlcharrefreplace_errors(TyObject *Py_UNUSED(module), TyObject *exc)
 {
     assert(exc != NULL);
     return PyCodec_XMLCharRefReplaceErrors(exc);
 }
 
-static PyObject *
-codec_backslashreplace_errors(PyObject *Py_UNUSED(module), PyObject *exc)
+static TyObject *
+codec_backslashreplace_errors(TyObject *Py_UNUSED(module), TyObject *exc)
 {
     assert(exc != NULL);
     return PyCodec_BackslashReplaceErrors(exc);
 }
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     /* codecs registration */
     {"codec_register", codec_register, METH_O},
     {"codec_unregister", codec_unregister, METH_O},
@@ -211,9 +211,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Codec(PyObject *m)
+_PyTestCapi_Init_Codec(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

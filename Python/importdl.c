@@ -2,12 +2,12 @@
 /* Support for dynamic loading of extension modules */
 
 #include "Python.h"
-#include "pycore_call.h"          // _PyObject_CallMethod()
-#include "pycore_import.h"        // _PyImport_SwapPackageContext()
+#include "pycore_call.h"          // _TyObject_CallMethod()
+#include "pycore_import.h"        // _TyImport_SwapPackageContext()
 #include "pycore_importdl.h"
-#include "pycore_moduleobject.h"  // _PyModule_GetDef()
-#include "pycore_pyerrors.h"      // _PyErr_FormatFromCause()
-#include "pycore_runtime.h"       // _Py_ID()
+#include "pycore_moduleobject.h"  // _TyModule_GetDef()
+#include "pycore_pyerrors.h"      // _TyErr_FormatFromCause()
+#include "pycore_runtime.h"       // _Ty_ID()
 
 
 /* ./configure sets HAVE_DYNAMIC_LOADING if dynamic loading of modules is
@@ -18,12 +18,12 @@
 #ifdef HAVE_DYNAMIC_LOADING
 
 #ifdef MS_WINDOWS
-extern dl_funcptr _PyImport_FindSharedFuncptrWindows(const char *prefix,
+extern dl_funcptr _TyImport_FindSharedFuncptrWindows(const char *prefix,
                                                      const char *shortname,
-                                                     PyObject *pathname,
+                                                     TyObject *pathname,
                                                      FILE *fp);
 #else
-extern dl_funcptr _PyImport_FindSharedFuncptr(const char *prefix,
+extern dl_funcptr _TyImport_FindSharedFuncptr(const char *prefix,
                                               const char *shortname,
                                               const char *pathname, FILE *fp);
 #endif
@@ -44,39 +44,39 @@ static const char * const nonascii_prefix = "PyInitU";
  * The hook_prefix pointer is set to either ascii_only_prefix or
  * nonascii_prefix, as appropriate.
  */
-static PyObject *
-get_encoded_name(PyObject *name, const char **hook_prefix) {
-    PyObject *tmp;
-    PyObject *encoded = NULL;
-    PyObject *modname = NULL;
-    Py_ssize_t name_len, lastdot;
+static TyObject *
+get_encoded_name(TyObject *name, const char **hook_prefix) {
+    TyObject *tmp;
+    TyObject *encoded = NULL;
+    TyObject *modname = NULL;
+    Ty_ssize_t name_len, lastdot;
 
     /* Get the short name (substring after last dot) */
-    name_len = PyUnicode_GetLength(name);
+    name_len = TyUnicode_GetLength(name);
     if (name_len < 0) {
         return NULL;
     }
-    lastdot = PyUnicode_FindChar(name, '.', 0, name_len, -1);
+    lastdot = TyUnicode_FindChar(name, '.', 0, name_len, -1);
     if (lastdot < -1) {
         return NULL;
     } else if (lastdot >= 0) {
-        tmp = PyUnicode_Substring(name, lastdot + 1, name_len);
+        tmp = TyUnicode_Substring(name, lastdot + 1, name_len);
         if (tmp == NULL)
             return NULL;
         name = tmp;
         /* "name" now holds a new reference to the substring */
     } else {
-        Py_INCREF(name);
+        Ty_INCREF(name);
     }
 
     /* Encode to ASCII or Punycode, as needed */
-    encoded = PyUnicode_AsEncodedString(name, "ascii", NULL);
+    encoded = TyUnicode_AsEncodedString(name, "ascii", NULL);
     if (encoded != NULL) {
         *hook_prefix = ascii_only_prefix;
     } else {
-        if (PyErr_ExceptionMatches(PyExc_UnicodeEncodeError)) {
-            PyErr_Clear();
-            encoded = PyUnicode_AsEncodedString(name, "punycode", NULL);
+        if (TyErr_ExceptionMatches(TyExc_UnicodeEncodeError)) {
+            TyErr_Clear();
+            encoded = TyUnicode_AsEncodedString(name, "punycode", NULL);
             if (encoded == NULL) {
                 goto error;
             }
@@ -87,74 +87,74 @@ get_encoded_name(PyObject *name, const char **hook_prefix) {
     }
 
     /* Replace '-' by '_' */
-    modname = _PyObject_CallMethod(encoded, &_Py_ID(replace), "cc", '-', '_');
+    modname = _TyObject_CallMethod(encoded, &_Ty_ID(replace), "cc", '-', '_');
     if (modname == NULL)
         goto error;
 
-    Py_DECREF(name);
-    Py_DECREF(encoded);
+    Ty_DECREF(name);
+    Ty_DECREF(encoded);
     return modname;
 error:
-    Py_DECREF(name);
-    Py_XDECREF(encoded);
+    Ty_DECREF(name);
+    Ty_XDECREF(encoded);
     return NULL;
 }
 
 void
-_Py_ext_module_loader_info_clear(struct _Py_ext_module_loader_info *info)
+_Ty_ext_module_loader_info_clear(struct _Ty_ext_module_loader_info *info)
 {
-    Py_CLEAR(info->filename);
+    Ty_CLEAR(info->filename);
 #ifndef MS_WINDOWS
-    Py_CLEAR(info->filename_encoded);
+    Ty_CLEAR(info->filename_encoded);
 #endif
-    Py_CLEAR(info->name);
-    Py_CLEAR(info->name_encoded);
+    Ty_CLEAR(info->name);
+    Ty_CLEAR(info->name_encoded);
 }
 
 int
-_Py_ext_module_loader_info_init(struct _Py_ext_module_loader_info *p_info,
-                                PyObject *name, PyObject *filename,
-                                _Py_ext_module_origin origin)
+_Ty_ext_module_loader_info_init(struct _Ty_ext_module_loader_info *p_info,
+                                TyObject *name, TyObject *filename,
+                                _Ty_ext_module_origin origin)
 {
-    struct _Py_ext_module_loader_info info = {
+    struct _Ty_ext_module_loader_info info = {
         .origin=origin,
     };
 
     assert(name != NULL);
-    if (!PyUnicode_Check(name)) {
-        PyErr_SetString(PyExc_TypeError,
+    if (!TyUnicode_Check(name)) {
+        TyErr_SetString(TyExc_TypeError,
                         "module name must be a string");
-        _Py_ext_module_loader_info_clear(&info);
+        _Ty_ext_module_loader_info_clear(&info);
         return -1;
     }
-    assert(PyUnicode_GetLength(name) > 0);
-    info.name = Py_NewRef(name);
+    assert(TyUnicode_GetLength(name) > 0);
+    info.name = Ty_NewRef(name);
 
     info.name_encoded = get_encoded_name(info.name, &info.hook_prefix);
     if (info.name_encoded == NULL) {
-        _Py_ext_module_loader_info_clear(&info);
+        _Ty_ext_module_loader_info_clear(&info);
         return -1;
     }
 
-    info.newcontext = PyUnicode_AsUTF8(info.name);
+    info.newcontext = TyUnicode_AsUTF8(info.name);
     if (info.newcontext == NULL) {
-        _Py_ext_module_loader_info_clear(&info);
+        _Ty_ext_module_loader_info_clear(&info);
         return -1;
     }
 
     if (filename != NULL) {
-        if (!PyUnicode_Check(filename)) {
-            PyErr_SetString(PyExc_TypeError,
+        if (!TyUnicode_Check(filename)) {
+            TyErr_SetString(TyExc_TypeError,
                             "module filename must be a string");
-            _Py_ext_module_loader_info_clear(&info);
+            _Ty_ext_module_loader_info_clear(&info);
             return -1;
         }
-        info.filename = Py_NewRef(filename);
+        info.filename = Ty_NewRef(filename);
 
 #ifndef MS_WINDOWS
-        info.filename_encoded = PyUnicode_EncodeFSDefault(info.filename);
+        info.filename_encoded = TyUnicode_EncodeFSDefault(info.filename);
         if (info.filename_encoded == NULL) {
-            _Py_ext_module_loader_info_clear(&info);
+            _Ty_ext_module_loader_info_clear(&info);
             return -1;
         }
 #endif
@@ -170,25 +170,25 @@ _Py_ext_module_loader_info_init(struct _Py_ext_module_loader_info *p_info,
 }
 
 int
-_Py_ext_module_loader_info_init_for_builtin(
-                            struct _Py_ext_module_loader_info *info,
-                            PyObject *name)
+_Ty_ext_module_loader_info_init_for_builtin(
+                            struct _Ty_ext_module_loader_info *info,
+                            TyObject *name)
 {
-    assert(PyUnicode_Check(name));
-    assert(PyUnicode_FindChar(name, '.', 0, PyUnicode_GetLength(name), -1) == -1);
-    assert(PyUnicode_GetLength(name) > 0);
+    assert(TyUnicode_Check(name));
+    assert(TyUnicode_FindChar(name, '.', 0, TyUnicode_GetLength(name), -1) == -1);
+    assert(TyUnicode_GetLength(name) > 0);
 
-    PyObject *name_encoded = PyUnicode_AsEncodedString(name, "ascii", NULL);
+    TyObject *name_encoded = TyUnicode_AsEncodedString(name, "ascii", NULL);
     if (name_encoded == NULL) {
         return -1;
     }
 
-    *info = (struct _Py_ext_module_loader_info){
-        .name=Py_NewRef(name),
+    *info = (struct _Ty_ext_module_loader_info){
+        .name=Ty_NewRef(name),
         .name_encoded=name_encoded,
         /* We won't need filename. */
         .path=name,
-        .origin=_Py_ext_module_origin_BUILTIN,
+        .origin=_Ty_ext_module_origin_BUILTIN,
         .hook_prefix=ascii_only_prefix,
         .newcontext=NULL,
     };
@@ -196,37 +196,37 @@ _Py_ext_module_loader_info_init_for_builtin(
 }
 
 int
-_Py_ext_module_loader_info_init_for_core(
-                            struct _Py_ext_module_loader_info *info,
-                            PyObject *name)
+_Ty_ext_module_loader_info_init_for_core(
+                            struct _Ty_ext_module_loader_info *info,
+                            TyObject *name)
 {
-    if (_Py_ext_module_loader_info_init_for_builtin(info, name) < 0) {
+    if (_Ty_ext_module_loader_info_init_for_builtin(info, name) < 0) {
         return -1;
     }
-    info->origin = _Py_ext_module_origin_CORE;
+    info->origin = _Ty_ext_module_origin_CORE;
     return 0;
 }
 
 #ifdef HAVE_DYNAMIC_LOADING
 int
-_Py_ext_module_loader_info_init_from_spec(
-                            struct _Py_ext_module_loader_info *p_info,
-                            PyObject *spec)
+_Ty_ext_module_loader_info_init_from_spec(
+                            struct _Ty_ext_module_loader_info *p_info,
+                            TyObject *spec)
 {
-    PyObject *name = PyObject_GetAttrString(spec, "name");
+    TyObject *name = PyObject_GetAttrString(spec, "name");
     if (name == NULL) {
         return -1;
     }
-    PyObject *filename = PyObject_GetAttrString(spec, "origin");
+    TyObject *filename = PyObject_GetAttrString(spec, "origin");
     if (filename == NULL) {
-        Py_DECREF(name);
+        Ty_DECREF(name);
         return -1;
     }
     /* We could also accommodate builtin modules here without much trouble. */
-    _Py_ext_module_origin origin = _Py_ext_module_origin_DYNAMIC;
-    int err = _Py_ext_module_loader_info_init(p_info, name, filename, origin);
-    Py_DECREF(name);
-    Py_DECREF(filename);
+    _Ty_ext_module_origin origin = _Ty_ext_module_origin_DYNAMIC;
+    int err = _Ty_ext_module_loader_info_init(p_info, name, filename, origin);
+    Ty_DECREF(name);
+    Ty_DECREF(filename);
     return err;
 }
 #endif /* HAVE_DYNAMIC_LOADING */
@@ -237,31 +237,31 @@ _Py_ext_module_loader_info_init_from_spec(
 /********************************/
 
 void
-_Py_ext_module_loader_result_clear(struct _Py_ext_module_loader_result *res)
+_Ty_ext_module_loader_result_clear(struct _Ty_ext_module_loader_result *res)
 {
     /* Instead, the caller should have called
-     * _Py_ext_module_loader_result_apply_error(). */
+     * _Ty_ext_module_loader_result_apply_error(). */
     assert(res->err == NULL);
-    *res = (struct _Py_ext_module_loader_result){0};
+    *res = (struct _Ty_ext_module_loader_result){0};
 }
 
 static void
-_Py_ext_module_loader_result_set_error(
-                            struct _Py_ext_module_loader_result *res,
-                            enum _Py_ext_module_loader_result_error_kind kind)
+_Ty_ext_module_loader_result_set_error(
+                            struct _Ty_ext_module_loader_result *res,
+                            enum _Ty_ext_module_loader_result_error_kind kind)
 {
 #ifndef NDEBUG
     switch (kind) {
-    case _Py_ext_module_loader_result_EXCEPTION: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_UNREPORTED_EXC:
-        assert(PyErr_Occurred());
+    case _Ty_ext_module_loader_result_EXCEPTION: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_UNREPORTED_EXC:
+        assert(TyErr_Occurred());
         break;
-    case _Py_ext_module_loader_result_ERR_MISSING: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_UNINITIALIZED: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_NOT_MODULE: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_MISSING_DEF:
-        assert(!PyErr_Occurred());
+    case _Ty_ext_module_loader_result_ERR_MISSING: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_UNINITIALIZED: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_NOT_MODULE: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_MISSING_DEF:
+        assert(!TyErr_Occurred());
         break;
     default:
         /* We added a new error kind but forgot to add it to this switch. */
@@ -271,24 +271,24 @@ _Py_ext_module_loader_result_set_error(
 
     assert(res->err == NULL && res->_err.exc == NULL);
     res->err = &res->_err;
-    *res->err = (struct _Py_ext_module_loader_result_error){
+    *res->err = (struct _Ty_ext_module_loader_result_error){
         .kind=kind,
-        .exc=PyErr_GetRaisedException(),
+        .exc=TyErr_GetRaisedException(),
     };
 
     /* For some kinds, we also set/check res->kind. */
     switch (kind) {
-    case _Py_ext_module_loader_result_ERR_UNINITIALIZED:
-        assert(res->kind == _Py_ext_module_kind_UNKNOWN);
-        res->kind = _Py_ext_module_kind_INVALID;
+    case _Ty_ext_module_loader_result_ERR_UNINITIALIZED:
+        assert(res->kind == _Ty_ext_module_kind_UNKNOWN);
+        res->kind = _Ty_ext_module_kind_INVALID;
         break;
     /* None of the rest affect the result kind. */
-    case _Py_ext_module_loader_result_EXCEPTION: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_MISSING: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_UNREPORTED_EXC: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_NOT_MODULE: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_MISSING_DEF:
+    case _Ty_ext_module_loader_result_EXCEPTION: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_MISSING: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_UNREPORTED_EXC: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_NOT_MODULE: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_MISSING_DEF:
         break;
     default:
         /* We added a new error kind but forgot to add it to this switch. */
@@ -297,29 +297,29 @@ _Py_ext_module_loader_result_set_error(
 }
 
 void
-_Py_ext_module_loader_result_apply_error(
-                            struct _Py_ext_module_loader_result *res,
+_Ty_ext_module_loader_result_apply_error(
+                            struct _Ty_ext_module_loader_result *res,
                             const char *name)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     assert(res->err != NULL && res->err == &res->_err);
-    struct _Py_ext_module_loader_result_error err = *res->err;
+    struct _Ty_ext_module_loader_result_error err = *res->err;
     res->err = NULL;
 
     /* We're otherwise done with the result at this point. */
-    _Py_ext_module_loader_result_clear(res);
+    _Ty_ext_module_loader_result_clear(res);
 
 #ifndef NDEBUG
     switch (err.kind) {
-    case _Py_ext_module_loader_result_EXCEPTION: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_UNREPORTED_EXC:
+    case _Ty_ext_module_loader_result_EXCEPTION: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_UNREPORTED_EXC:
         assert(err.exc != NULL);
         break;
-    case _Py_ext_module_loader_result_ERR_MISSING: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_UNINITIALIZED: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_NOT_MODULE: _Py_FALLTHROUGH;
-    case _Py_ext_module_loader_result_ERR_MISSING_DEF:
+    case _Ty_ext_module_loader_result_ERR_MISSING: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_UNINITIALIZED: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_NOT_MODULE: _Ty_FALLTHROUGH;
+    case _Ty_ext_module_loader_result_ERR_MISSING_DEF:
         assert(err.exc == NULL);
         break;
     default:
@@ -330,44 +330,44 @@ _Py_ext_module_loader_result_apply_error(
 
     const char *msg = NULL;
     switch (err.kind) {
-    case _Py_ext_module_loader_result_EXCEPTION:
+    case _Ty_ext_module_loader_result_EXCEPTION:
         break;
-    case _Py_ext_module_loader_result_ERR_MISSING:
+    case _Ty_ext_module_loader_result_ERR_MISSING:
         msg = "initialization of %s failed without raising an exception";
         break;
-    case _Py_ext_module_loader_result_ERR_UNREPORTED_EXC:
+    case _Ty_ext_module_loader_result_ERR_UNREPORTED_EXC:
         msg = "initialization of %s raised unreported exception";
         break;
-    case _Py_ext_module_loader_result_ERR_UNINITIALIZED:
+    case _Ty_ext_module_loader_result_ERR_UNINITIALIZED:
         msg = "init function of %s returned uninitialized object";
         break;
-    case _Py_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE:
-        msg = "initialization of %s did not return PyModuleDef";
+    case _Ty_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE:
+        msg = "initialization of %s did not return TyModuleDef";
         break;
-    case _Py_ext_module_loader_result_ERR_NOT_MODULE:
+    case _Ty_ext_module_loader_result_ERR_NOT_MODULE:
         msg = "initialization of %s did not return an extension module";
         break;
-    case _Py_ext_module_loader_result_ERR_MISSING_DEF:
+    case _Ty_ext_module_loader_result_ERR_MISSING_DEF:
         msg = "initialization of %s did not return a valid extension module";
         break;
     default:
         /* We added a new error kind but forgot to add it to this switch. */
         assert(0);
-        PyErr_Format(PyExc_SystemError,
+        TyErr_Format(TyExc_SystemError,
                      "loading %s failed due to init function", name);
         return;
     }
 
     if (err.exc != NULL) {
-        PyErr_SetRaisedException(err.exc);
-        err.exc = NULL;  /* PyErr_SetRaisedException() stole our reference. */
+        TyErr_SetRaisedException(err.exc);
+        err.exc = NULL;  /* TyErr_SetRaisedException() stole our reference. */
         if (msg != NULL) {
-            _PyErr_FormatFromCause(PyExc_SystemError, msg, name);
+            _TyErr_FormatFromCause(TyExc_SystemError, msg, name);
         }
     }
     else {
         assert(msg != NULL);
-        PyErr_Format(PyExc_SystemError, msg, name);
+        TyErr_Format(TyExc_SystemError, msg, name);
     }
 }
 
@@ -378,32 +378,32 @@ _Py_ext_module_loader_result_apply_error(
 
 #ifdef HAVE_DYNAMIC_LOADING
 PyModInitFunction
-_PyImport_GetModInitFunc(struct _Py_ext_module_loader_info *info,
+_TyImport_GetModInitFunc(struct _Ty_ext_module_loader_info *info,
                          FILE *fp)
 {
-    const char *name_buf = PyBytes_AS_STRING(info->name_encoded);
+    const char *name_buf = TyBytes_AS_STRING(info->name_encoded);
     dl_funcptr exportfunc;
 #ifdef MS_WINDOWS
-    exportfunc = _PyImport_FindSharedFuncptrWindows(
+    exportfunc = _TyImport_FindSharedFuncptrWindows(
             info->hook_prefix, name_buf, info->filename, fp);
 #else
     {
-        const char *path_buf = PyBytes_AS_STRING(info->filename_encoded);
-        exportfunc = _PyImport_FindSharedFuncptr(
+        const char *path_buf = TyBytes_AS_STRING(info->filename_encoded);
+        exportfunc = _TyImport_FindSharedFuncptr(
                         info->hook_prefix, name_buf, path_buf, fp);
     }
 #endif
 
     if (exportfunc == NULL) {
-        if (!PyErr_Occurred()) {
-            PyObject *msg;
-            msg = PyUnicode_FromFormat(
+        if (!TyErr_Occurred()) {
+            TyObject *msg;
+            msg = TyUnicode_FromFormat(
                 "dynamic module does not define "
                 "module export function (%s_%s)",
                 info->hook_prefix, name_buf);
             if (msg != NULL) {
-                PyErr_SetImportError(msg, info->name, info->filename);
-                Py_DECREF(msg);
+                TyErr_SetImportError(msg, info->name, info->filename);
+                Ty_DECREF(msg);
             }
         }
         return NULL;
@@ -414,43 +414,43 @@ _PyImport_GetModInitFunc(struct _Py_ext_module_loader_info *info,
 #endif /* HAVE_DYNAMIC_LOADING */
 
 int
-_PyImport_RunModInitFunc(PyModInitFunction p0,
-                         struct _Py_ext_module_loader_info *info,
-                         struct _Py_ext_module_loader_result *p_res)
+_TyImport_RunModInitFunc(PyModInitFunction p0,
+                         struct _Ty_ext_module_loader_info *info,
+                         struct _Ty_ext_module_loader_result *p_res)
 {
-    struct _Py_ext_module_loader_result res = {
-        .kind=_Py_ext_module_kind_UNKNOWN,
+    struct _Ty_ext_module_loader_result res = {
+        .kind=_Ty_ext_module_kind_UNKNOWN,
     };
 
     /* Call the module init function. */
 
     /* Package context is needed for single-phase init */
-    const char *oldcontext = _PyImport_SwapPackageContext(info->newcontext);
-    PyObject *m = p0();
-    _PyImport_SwapPackageContext(oldcontext);
+    const char *oldcontext = _TyImport_SwapPackageContext(info->newcontext);
+    TyObject *m = p0();
+    _TyImport_SwapPackageContext(oldcontext);
 
     /* Validate the result (and populate "res". */
 
     if (m == NULL) {
         /* The init func for multi-phase init modules is expected
-         * to return a PyModuleDef after calling PyModuleDef_Init().
+         * to return a TyModuleDef after calling PyModuleDef_Init().
          * That function never raises an exception nor returns NULL,
          * so at this point it must be a single-phase init modules. */
-        res.kind = _Py_ext_module_kind_SINGLEPHASE;
-        if (PyErr_Occurred()) {
-            _Py_ext_module_loader_result_set_error(
-                        &res, _Py_ext_module_loader_result_EXCEPTION);
+        res.kind = _Ty_ext_module_kind_SINGLEPHASE;
+        if (TyErr_Occurred()) {
+            _Ty_ext_module_loader_result_set_error(
+                        &res, _Ty_ext_module_loader_result_EXCEPTION);
         }
         else {
-            _Py_ext_module_loader_result_set_error(
-                        &res, _Py_ext_module_loader_result_ERR_MISSING);
+            _Ty_ext_module_loader_result_set_error(
+                        &res, _Ty_ext_module_loader_result_ERR_MISSING);
         }
         goto error;
-    } else if (PyErr_Occurred()) {
+    } else if (TyErr_Occurred()) {
         /* Likewise, we infer that this is a single-phase init module. */
-        res.kind = _Py_ext_module_kind_SINGLEPHASE;
-        _Py_ext_module_loader_result_set_error(
-                &res, _Py_ext_module_loader_result_ERR_UNREPORTED_EXC);
+        res.kind = _Ty_ext_module_kind_SINGLEPHASE;
+        _Ty_ext_module_loader_result_set_error(
+                &res, _Ty_ext_module_loader_result_ERR_UNREPORTED_EXC);
         /* We would probably be correct to decref m here,
          * but we weren't doing so before,
          * so we stick with doing nothing. */
@@ -458,12 +458,12 @@ _PyImport_RunModInitFunc(PyModInitFunction p0,
         goto error;
     }
 
-    if (Py_IS_TYPE(m, NULL)) {
-        /* This can happen when a PyModuleDef is returned without calling
+    if (Ty_IS_TYPE(m, NULL)) {
+        /* This can happen when a TyModuleDef is returned without calling
          * PyModuleDef_Init on it
          */
-        _Py_ext_module_loader_result_set_error(
-                &res, _Py_ext_module_loader_result_ERR_UNINITIALIZED);
+        _Ty_ext_module_loader_result_set_error(
+                &res, _Ty_ext_module_loader_result_ERR_UNINITIALIZED);
         /* Likewise, decref'ing here makes sense.  However, the original
          * code has a note about "prevent segfault in DECREF",
          * so we play it safe and leave it alone. */
@@ -473,47 +473,47 @@ _PyImport_RunModInitFunc(PyModInitFunction p0,
 
     if (PyObject_TypeCheck(m, &PyModuleDef_Type)) {
         /* multi-phase init */
-        res.kind = _Py_ext_module_kind_MULTIPHASE;
-        res.def = (PyModuleDef *)m;
-        /* Run PyModule_FromDefAndSpec() to finish loading the module. */
+        res.kind = _Ty_ext_module_kind_MULTIPHASE;
+        res.def = (TyModuleDef *)m;
+        /* Run TyModule_FromDefAndSpec() to finish loading the module. */
     }
     else if (info->hook_prefix == nonascii_prefix) {
         /* Non-ASCII is only supported for multi-phase init. */
-        res.kind = _Py_ext_module_kind_MULTIPHASE;
+        res.kind = _Ty_ext_module_kind_MULTIPHASE;
         /* Don't allow legacy init for non-ASCII module names. */
-        _Py_ext_module_loader_result_set_error(
-                &res, _Py_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE);
+        _Ty_ext_module_loader_result_set_error(
+                &res, _Ty_ext_module_loader_result_ERR_NONASCII_NOT_MULTIPHASE);
         goto error;
     }
     else {
         /* single-phase init (legacy) */
-        res.kind = _Py_ext_module_kind_SINGLEPHASE;
+        res.kind = _Ty_ext_module_kind_SINGLEPHASE;
         res.module = m;
 
-        if (!PyModule_Check(m)) {
-            _Py_ext_module_loader_result_set_error(
-                    &res, _Py_ext_module_loader_result_ERR_NOT_MODULE);
+        if (!TyModule_Check(m)) {
+            _Ty_ext_module_loader_result_set_error(
+                    &res, _Ty_ext_module_loader_result_ERR_NOT_MODULE);
             goto error;
         }
 
-        res.def = _PyModule_GetDef(m);
+        res.def = _TyModule_GetDef(m);
         if (res.def == NULL) {
-            PyErr_Clear();
-            _Py_ext_module_loader_result_set_error(
-                    &res, _Py_ext_module_loader_result_ERR_MISSING_DEF);
+            TyErr_Clear();
+            _Ty_ext_module_loader_result_set_error(
+                    &res, _Ty_ext_module_loader_result_ERR_MISSING_DEF);
             goto error;
         }
     }
 
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     assert(res.err == NULL);
     *p_res = res;
     return 0;
 
 error:
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     assert(res.err != NULL);
-    Py_CLEAR(res.module);
+    Ty_CLEAR(res.module);
     res.def = NULL;
     *p_res = res;
     p_res->err = &p_res->_err;

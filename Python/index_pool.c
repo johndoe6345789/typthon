@@ -5,10 +5,10 @@
 
 #include <stdbool.h>
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 
 static inline void
-swap(int32_t *values, Py_ssize_t i, Py_ssize_t j)
+swap(int32_t *values, Ty_ssize_t i, Ty_ssize_t j)
 {
     int32_t tmp = values[i];
     values[i] = values[j];
@@ -16,7 +16,7 @@ swap(int32_t *values, Py_ssize_t i, Py_ssize_t j)
 }
 
 static bool
-heap_try_swap(_PyIndexHeap *heap, Py_ssize_t i, Py_ssize_t j)
+heap_try_swap(_PyIndexHeap *heap, Ty_ssize_t i, Ty_ssize_t j)
 {
     if (i < 0 || i >= heap->size) {
         return 0;
@@ -36,20 +36,20 @@ heap_try_swap(_PyIndexHeap *heap, Py_ssize_t i, Py_ssize_t j)
     return 1;
 }
 
-static inline Py_ssize_t
-parent(Py_ssize_t i)
+static inline Ty_ssize_t
+parent(Ty_ssize_t i)
 {
     return (i - 1) / 2;
 }
 
-static inline Py_ssize_t
-left_child(Py_ssize_t i)
+static inline Ty_ssize_t
+left_child(Ty_ssize_t i)
 {
     return 2 * i + 1;
 }
 
-static inline Py_ssize_t
-right_child(Py_ssize_t i)
+static inline Ty_ssize_t
+right_child(Ty_ssize_t i)
 {
     return 2 * i + 2;
 }
@@ -62,20 +62,20 @@ heap_add(_PyIndexHeap *heap, int32_t val)
     heap->values[heap->size] = val;
     heap->size++;
     // Sift up
-    for (Py_ssize_t cur = heap->size - 1; cur > 0; cur = parent(cur)) {
+    for (Ty_ssize_t cur = heap->size - 1; cur > 0; cur = parent(cur)) {
         if (!heap_try_swap(heap, cur, parent(cur))) {
             break;
         }
     }
 }
 
-static Py_ssize_t
-heap_min_child(_PyIndexHeap *heap, Py_ssize_t i)
+static Ty_ssize_t
+heap_min_child(_PyIndexHeap *heap, Ty_ssize_t i)
 {
     if (left_child(i) < heap->size) {
         if (right_child(i) < heap->size) {
-            Py_ssize_t lval = heap->values[left_child(i)];
-            Py_ssize_t rval = heap->values[right_child(i)];
+            Ty_ssize_t lval = heap->values[left_child(i)];
+            Ty_ssize_t rval = heap->values[right_child(i)];
             return lval < rval ? left_child(i) : right_child(i);
         }
         return left_child(i);
@@ -95,8 +95,8 @@ heap_pop(_PyIndexHeap *heap)
     heap->values[0] = heap->values[heap->size - 1];
     heap->size--;
     // Sift down
-    for (Py_ssize_t cur = 0; cur < heap->size;) {
-        Py_ssize_t min_child = heap_min_child(heap, cur);
+    for (Ty_ssize_t cur = 0; cur < heap->size;) {
+        Ty_ssize_t min_child = heap_min_child(heap, cur);
         if (min_child > -1 && heap_try_swap(heap, cur, min_child)) {
             cur = min_child;
         }
@@ -108,26 +108,26 @@ heap_pop(_PyIndexHeap *heap)
 }
 
 static int
-heap_ensure_capacity(_PyIndexHeap *heap, Py_ssize_t limit)
+heap_ensure_capacity(_PyIndexHeap *heap, Ty_ssize_t limit)
 {
     assert(limit > 0);
     if (heap->capacity > limit) {
         return 0;
     }
-    Py_ssize_t new_capacity = heap->capacity ? heap->capacity : 1024;
+    Ty_ssize_t new_capacity = heap->capacity ? heap->capacity : 1024;
     while (new_capacity && new_capacity < limit) {
         new_capacity <<= 1;
     }
     if (!new_capacity) {
         return -1;
     }
-    int32_t *new_values = PyMem_RawCalloc(new_capacity, sizeof(int32_t));
+    int32_t *new_values = TyMem_RawCalloc(new_capacity, sizeof(int32_t));
     if (new_values == NULL) {
         return -1;
     }
     if (heap->values != NULL) {
         memcpy(new_values, heap->values, heap->capacity);
-        PyMem_RawFree(heap->values);
+        TyMem_RawFree(heap->values);
     }
     heap->values = new_values;
     heap->capacity = new_capacity;
@@ -138,14 +138,14 @@ static void
 heap_fini(_PyIndexHeap *heap)
 {
     if (heap->values != NULL) {
-        PyMem_RawFree(heap->values);
+        TyMem_RawFree(heap->values);
         heap->values = NULL;
     }
     heap->size = -1;
     heap->capacity = -1;
 }
 
-#define LOCK_POOL(pool) PyMutex_LockFlags(&pool->mutex, _Py_LOCK_DONT_DETACH)
+#define LOCK_POOL(pool) PyMutex_LockFlags(&pool->mutex, _Ty_LOCK_DONT_DETACH)
 #define UNLOCK_POOL(pool) PyMutex_Unlock(&pool->mutex)
 
 int32_t
@@ -164,7 +164,7 @@ _PyIndexPool_AllocIndex(_PyIndexPool *pool)
         // where we are better equipped to deal with failure.
         if (heap_ensure_capacity(free_indices, pool->next_index + 1) < 0) {
             UNLOCK_POOL(pool);
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return -1;
         }
         index = pool->next_index++;
@@ -194,4 +194,4 @@ _PyIndexPool_Fini(_PyIndexPool *pool)
     heap_fini(&pool->free_indices);
 }
 
-#endif  // Py_GIL_DISABLED
+#endif  // Ty_GIL_DISABLED

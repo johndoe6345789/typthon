@@ -2,39 +2,39 @@
 #include "util.h"
 
 
-static PyObject *
-object_repr(PyObject *self, PyObject *arg)
+static TyObject *
+object_repr(TyObject *self, TyObject *arg)
 {
     NULLABLE(arg);
     return PyObject_Repr(arg);
 }
 
-static PyObject *
-object_ascii(PyObject *self, PyObject *arg)
+static TyObject *
+object_ascii(TyObject *self, TyObject *arg)
 {
     NULLABLE(arg);
     return PyObject_ASCII(arg);
 }
 
-static PyObject *
-object_str(PyObject *self, PyObject *arg)
+static TyObject *
+object_str(TyObject *self, TyObject *arg)
 {
     NULLABLE(arg);
     return PyObject_Str(arg);
 }
 
-static PyObject *
-object_bytes(PyObject *self, PyObject *arg)
+static TyObject *
+object_bytes(TyObject *self, TyObject *arg)
 {
     NULLABLE(arg);
     return PyObject_Bytes(arg);
 }
 
-static PyObject *
-object_getattr(PyObject *self, PyObject *args)
+static TyObject *
+object_getattr(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *attr_name;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
+    TyObject *obj, *attr_name;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -42,49 +42,49 @@ object_getattr(PyObject *self, PyObject *args)
     return PyObject_GetAttr(obj, attr_name);
 }
 
-static PyObject *
-object_getattrstring(PyObject *self, PyObject *args)
+static TyObject *
+object_getattrstring(TyObject *self, TyObject *args)
 {
-    PyObject *obj;
+    TyObject *obj;
     const char *attr_name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
         return NULL;
     }
     NULLABLE(obj);
     return PyObject_GetAttrString(obj, attr_name);
 }
 
-static PyObject *
-object_hasattr(PyObject *self, PyObject *args)
+static TyObject *
+object_hasattr(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *attr_name;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
+    TyObject *obj, *attr_name;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
         return NULL;
     }
     NULLABLE(obj);
     NULLABLE(attr_name);
-    return PyLong_FromLong(PyObject_HasAttr(obj, attr_name));
+    return TyLong_FromLong(PyObject_HasAttr(obj, attr_name));
 }
 
-static PyObject *
-object_hasattrstring(PyObject *self, PyObject *args)
+static TyObject *
+object_hasattrstring(TyObject *self, TyObject *args)
 {
-    PyObject *obj;
+    TyObject *obj;
     const char *attr_name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
         return NULL;
     }
     NULLABLE(obj);
-    return PyLong_FromLong(PyObject_HasAttrString(obj, attr_name));
+    return TyLong_FromLong(PyObject_HasAttrString(obj, attr_name));
 }
 
-static PyObject *
-object_setattr(PyObject *self, PyObject *args)
+static TyObject *
+object_setattr(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *attr_name, *value;
-    if (!PyArg_ParseTuple(args, "OOO", &obj, &attr_name, &value)) {
+    TyObject *obj, *attr_name, *value;
+    if (!TyArg_ParseTuple(args, "OOO", &obj, &attr_name, &value)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -93,13 +93,13 @@ object_setattr(PyObject *self, PyObject *args)
     RETURN_INT(PyObject_SetAttr(obj, attr_name, value));
 }
 
-static PyObject *
-object_setattrstring(PyObject *self, PyObject *args)
+static TyObject *
+object_setattrstring(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *value;
+    TyObject *obj, *value;
     const char *attr_name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#O", &obj, &attr_name, &size, &value)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#O", &obj, &attr_name, &size, &value)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -107,11 +107,11 @@ object_setattrstring(PyObject *self, PyObject *args)
     RETURN_INT(PyObject_SetAttrString(obj, attr_name, value));
 }
 
-static PyObject *
-object_delattr(PyObject *self, PyObject *args)
+static TyObject *
+object_delattr(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *attr_name;
-if (!PyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
+    TyObject *obj, *attr_name;
+if (!TyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -119,52 +119,52 @@ if (!PyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
     RETURN_INT(PyObject_DelAttr(obj, attr_name));
 }
 
-static PyObject *
-object_delattrstring(PyObject *self, PyObject *args)
+static TyObject *
+object_delattrstring(TyObject *self, TyObject *args)
 {
-    PyObject *obj;
+    TyObject *obj;
     const char *attr_name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
         return NULL;
     }
     NULLABLE(obj);
     RETURN_INT(PyObject_DelAttrString(obj, attr_name));
 }
 
-static PyObject *
-number_check(PyObject *self, PyObject *obj)
+static TyObject *
+number_check(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyBool_FromLong(PyNumber_Check(obj));
+    return TyBool_FromLong(PyNumber_Check(obj));
 }
 
-static PyObject *
-mapping_check(PyObject *self, PyObject *obj)
+static TyObject *
+mapping_check(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyMapping_Check(obj));
+    return TyLong_FromLong(PyMapping_Check(obj));
 }
 
-static PyObject *
-mapping_size(PyObject *self, PyObject *obj)
+static TyObject *
+mapping_size(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_SIZE(PyMapping_Size(obj));
 }
 
-static PyObject *
-mapping_length(PyObject *self, PyObject *obj)
+static TyObject *
+mapping_length(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_SIZE(PyMapping_Length(obj));
 }
 
-static PyObject *
-object_getitem(PyObject *self, PyObject *args)
+static TyObject *
+object_getitem(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key;
-    if (!PyArg_ParseTuple(args, "OO", &mapping, &key)) {
+    TyObject *mapping, *key;
+    if (!TyArg_ParseTuple(args, "OO", &mapping, &key)) {
         return NULL;
     }
     NULLABLE(mapping);
@@ -172,49 +172,49 @@ object_getitem(PyObject *self, PyObject *args)
     return PyObject_GetItem(mapping, key);
 }
 
-static PyObject *
-mapping_getitemstring(PyObject *self, PyObject *args)
+static TyObject *
+mapping_getitemstring(TyObject *self, TyObject *args)
 {
-    PyObject *mapping;
+    TyObject *mapping;
     const char *key;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
         return NULL;
     }
     NULLABLE(mapping);
     return PyMapping_GetItemString(mapping, key);
 }
 
-static PyObject *
-mapping_haskey(PyObject *self, PyObject *args)
+static TyObject *
+mapping_haskey(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key;
-    if (!PyArg_ParseTuple(args, "OO", &mapping, &key)) {
+    TyObject *mapping, *key;
+    if (!TyArg_ParseTuple(args, "OO", &mapping, &key)) {
         return NULL;
     }
     NULLABLE(mapping);
     NULLABLE(key);
-    return PyLong_FromLong(PyMapping_HasKey(mapping, key));
+    return TyLong_FromLong(PyMapping_HasKey(mapping, key));
 }
 
-static PyObject *
-mapping_haskeystring(PyObject *self, PyObject *args)
+static TyObject *
+mapping_haskeystring(TyObject *self, TyObject *args)
 {
-    PyObject *mapping;
+    TyObject *mapping;
     const char *key;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
         return NULL;
     }
     NULLABLE(mapping);
-    return PyLong_FromLong(PyMapping_HasKeyString(mapping, key));
+    return TyLong_FromLong(PyMapping_HasKeyString(mapping, key));
 }
 
-static PyObject *
-mapping_haskeywitherror(PyObject *self, PyObject *args)
+static TyObject *
+mapping_haskeywitherror(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key;
-    if (!PyArg_ParseTuple(args, "OO", &mapping, &key)) {
+    TyObject *mapping, *key;
+    if (!TyArg_ParseTuple(args, "OO", &mapping, &key)) {
         return NULL;
     }
     NULLABLE(mapping);
@@ -222,24 +222,24 @@ mapping_haskeywitherror(PyObject *self, PyObject *args)
     RETURN_INT(PyMapping_HasKeyWithError(mapping, key));
 }
 
-static PyObject *
-mapping_haskeystringwitherror(PyObject *self, PyObject *args)
+static TyObject *
+mapping_haskeystringwitherror(TyObject *self, TyObject *args)
 {
-    PyObject *mapping;
+    TyObject *mapping;
     const char *key;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
         return NULL;
     }
     NULLABLE(mapping);
     RETURN_INT(PyMapping_HasKeyStringWithError(mapping, key));
 }
 
-static PyObject *
-object_setitem(PyObject *self, PyObject *args)
+static TyObject *
+object_setitem(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key, *value;
-    if (!PyArg_ParseTuple(args, "OOO", &mapping, &key, &value)) {
+    TyObject *mapping, *key, *value;
+    if (!TyArg_ParseTuple(args, "OOO", &mapping, &key, &value)) {
         return NULL;
     }
     NULLABLE(mapping);
@@ -248,13 +248,13 @@ object_setitem(PyObject *self, PyObject *args)
     RETURN_INT(PyObject_SetItem(mapping, key, value));
 }
 
-static PyObject *
-mapping_setitemstring(PyObject *self, PyObject *args)
+static TyObject *
+mapping_setitemstring(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *value;
+    TyObject *mapping, *value;
     const char *key;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#O", &mapping, &key, &size, &value)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#O", &mapping, &key, &size, &value)) {
         return NULL;
     }
     NULLABLE(mapping);
@@ -262,11 +262,11 @@ mapping_setitemstring(PyObject *self, PyObject *args)
     RETURN_INT(PyMapping_SetItemString(mapping, key, value));
 }
 
-static PyObject *
-object_delitem(PyObject *self, PyObject *args)
+static TyObject *
+object_delitem(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key;
-    if (!PyArg_ParseTuple(args, "OO", &mapping, &key)) {
+    TyObject *mapping, *key;
+    if (!TyArg_ParseTuple(args, "OO", &mapping, &key)) {
         return NULL;
     }
     NULLABLE(mapping);
@@ -274,11 +274,11 @@ object_delitem(PyObject *self, PyObject *args)
     RETURN_INT(PyObject_DelItem(mapping, key));
 }
 
-static PyObject *
-mapping_delitem(PyObject *self, PyObject *args)
+static TyObject *
+mapping_delitem(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key;
-    if (!PyArg_ParseTuple(args, "OO", &mapping, &key)) {
+    TyObject *mapping, *key;
+    if (!TyArg_ParseTuple(args, "OO", &mapping, &key)) {
         return NULL;
     }
     NULLABLE(mapping);
@@ -286,67 +286,67 @@ mapping_delitem(PyObject *self, PyObject *args)
     RETURN_INT(PyMapping_DelItem(mapping, key));
 }
 
-static PyObject *
-mapping_delitemstring(PyObject *self, PyObject *args)
+static TyObject *
+mapping_delitemstring(TyObject *self, TyObject *args)
 {
-    PyObject *mapping;
+    TyObject *mapping;
     const char *key;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
         return NULL;
     }
     NULLABLE(mapping);
     RETURN_INT(PyMapping_DelItemString(mapping, key));
 }
 
-static PyObject *
-mapping_keys(PyObject *self, PyObject *obj)
+static TyObject *
+mapping_keys(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     return PyMapping_Keys(obj);
 }
 
-static PyObject *
-mapping_values(PyObject *self, PyObject *obj)
+static TyObject *
+mapping_values(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     return PyMapping_Values(obj);
 }
 
-static PyObject *
-mapping_items(PyObject *self, PyObject *obj)
+static TyObject *
+mapping_items(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     return PyMapping_Items(obj);
 }
 
 
-static PyObject *
-sequence_check(PyObject* self, PyObject *obj)
+static TyObject *
+sequence_check(TyObject* self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PySequence_Check(obj));
+    return TyLong_FromLong(PySequence_Check(obj));
 }
 
-static PyObject *
-sequence_size(PyObject* self, PyObject *obj)
+static TyObject *
+sequence_size(TyObject* self, TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_SIZE(PySequence_Size(obj));
 }
 
-static PyObject *
-sequence_length(PyObject* self, PyObject *obj)
+static TyObject *
+sequence_length(TyObject* self, TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_SIZE(PySequence_Length(obj));
 }
 
-static PyObject *
-sequence_concat(PyObject *self, PyObject *args)
+static TyObject *
+sequence_concat(TyObject *self, TyObject *args)
 {
-    PyObject *seq1, *seq2;
-    if (!PyArg_ParseTuple(args, "OO", &seq1, &seq2)) {
+    TyObject *seq1, *seq2;
+    if (!TyArg_ParseTuple(args, "OO", &seq1, &seq2)) {
         return NULL;
     }
     NULLABLE(seq1);
@@ -355,12 +355,12 @@ sequence_concat(PyObject *self, PyObject *args)
     return PySequence_Concat(seq1, seq2);
 }
 
-static PyObject *
-sequence_repeat(PyObject *self, PyObject *args)
+static TyObject *
+sequence_repeat(TyObject *self, TyObject *args)
 {
-    PyObject *seq;
-    Py_ssize_t count;
-    if (!PyArg_ParseTuple(args, "On", &seq, &count)) {
+    TyObject *seq;
+    Ty_ssize_t count;
+    if (!TyArg_ParseTuple(args, "On", &seq, &count)) {
         return NULL;
     }
     NULLABLE(seq);
@@ -368,11 +368,11 @@ sequence_repeat(PyObject *self, PyObject *args)
     return PySequence_Repeat(seq, count);
 }
 
-static PyObject *
-sequence_inplaceconcat(PyObject *self, PyObject *args)
+static TyObject *
+sequence_inplaceconcat(TyObject *self, TyObject *args)
 {
-    PyObject *seq1, *seq2;
-    if (!PyArg_ParseTuple(args, "OO", &seq1, &seq2)) {
+    TyObject *seq1, *seq2;
+    if (!TyArg_ParseTuple(args, "OO", &seq1, &seq2)) {
         return NULL;
     }
     NULLABLE(seq1);
@@ -381,12 +381,12 @@ sequence_inplaceconcat(PyObject *self, PyObject *args)
     return PySequence_InPlaceConcat(seq1, seq2);
 }
 
-static PyObject *
-sequence_inplacerepeat(PyObject *self, PyObject *args)
+static TyObject *
+sequence_inplacerepeat(TyObject *self, TyObject *args)
 {
-    PyObject *seq;
-    Py_ssize_t count;
-    if (!PyArg_ParseTuple(args, "On", &seq, &count)) {
+    TyObject *seq;
+    Ty_ssize_t count;
+    if (!TyArg_ParseTuple(args, "On", &seq, &count)) {
         return NULL;
     }
     NULLABLE(seq);
@@ -394,12 +394,12 @@ sequence_inplacerepeat(PyObject *self, PyObject *args)
     return PySequence_InPlaceRepeat(seq, count);
 }
 
-static PyObject *
-sequence_getitem(PyObject *self, PyObject *args)
+static TyObject *
+sequence_getitem(TyObject *self, TyObject *args)
 {
-    PyObject *seq;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "On", &seq, &i)) {
+    TyObject *seq;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "On", &seq, &i)) {
         return NULL;
     }
     NULLABLE(seq);
@@ -407,12 +407,12 @@ sequence_getitem(PyObject *self, PyObject *args)
     return PySequence_GetItem(seq, i);
 }
 
-static PyObject *
-sequence_setitem(PyObject *self, PyObject *args)
+static TyObject *
+sequence_setitem(TyObject *self, TyObject *args)
 {
-    Py_ssize_t i;
-    PyObject *seq, *val;
-    if (!PyArg_ParseTuple(args, "OnO", &seq, &i, &val)) {
+    Ty_ssize_t i;
+    TyObject *seq, *val;
+    if (!TyArg_ParseTuple(args, "OnO", &seq, &i, &val)) {
         return NULL;
     }
     NULLABLE(seq);
@@ -422,12 +422,12 @@ sequence_setitem(PyObject *self, PyObject *args)
 }
 
 
-static PyObject *
-sequence_delitem(PyObject *self, PyObject *args)
+static TyObject *
+sequence_delitem(TyObject *self, TyObject *args)
 {
-    Py_ssize_t i;
-    PyObject *seq;
-    if (!PyArg_ParseTuple(args, "On", &seq, &i)) {
+    Ty_ssize_t i;
+    TyObject *seq;
+    if (!TyArg_ParseTuple(args, "On", &seq, &i)) {
         return NULL;
     }
     NULLABLE(seq);
@@ -435,12 +435,12 @@ sequence_delitem(PyObject *self, PyObject *args)
     RETURN_INT(PySequence_DelItem(seq, i));
 }
 
-static PyObject *
-sequence_setslice(PyObject* self, PyObject *args)
+static TyObject *
+sequence_setslice(TyObject* self, TyObject *args)
 {
-    PyObject *sequence, *obj;
-    Py_ssize_t i1, i2;
-    if (!PyArg_ParseTuple(args, "OnnO", &sequence, &i1, &i2, &obj)) {
+    TyObject *sequence, *obj;
+    Ty_ssize_t i1, i2;
+    if (!TyArg_ParseTuple(args, "OnnO", &sequence, &i1, &i2, &obj)) {
         return NULL;
     }
     NULLABLE(sequence);
@@ -449,12 +449,12 @@ sequence_setslice(PyObject* self, PyObject *args)
     RETURN_INT(PySequence_SetSlice(sequence, i1, i2, obj));
 }
 
-static PyObject *
-sequence_delslice(PyObject *self, PyObject *args)
+static TyObject *
+sequence_delslice(TyObject *self, TyObject *args)
 {
-    PyObject *sequence;
-    Py_ssize_t i1, i2;
-    if (!PyArg_ParseTuple(args, "Onn", &sequence, &i1, &i2)) {
+    TyObject *sequence;
+    Ty_ssize_t i1, i2;
+    if (!TyArg_ParseTuple(args, "Onn", &sequence, &i1, &i2)) {
         return NULL;
     }
     NULLABLE(sequence);
@@ -462,11 +462,11 @@ sequence_delslice(PyObject *self, PyObject *args)
     RETURN_INT(PySequence_DelSlice(sequence, i1, i2));
 }
 
-static PyObject *
-sequence_count(PyObject *self, PyObject *args)
+static TyObject *
+sequence_count(TyObject *self, TyObject *args)
 {
-    PyObject *seq, *value;
-    if (!PyArg_ParseTuple(args, "OO", &seq, &value)) {
+    TyObject *seq, *value;
+    if (!TyArg_ParseTuple(args, "OO", &seq, &value)) {
         return NULL;
     }
     NULLABLE(seq);
@@ -475,11 +475,11 @@ sequence_count(PyObject *self, PyObject *args)
     RETURN_SIZE(PySequence_Count(seq, value));
 }
 
-static PyObject *
-sequence_contains(PyObject *self, PyObject *args)
+static TyObject *
+sequence_contains(TyObject *self, TyObject *args)
 {
-    PyObject *seq, *value;
-    if (!PyArg_ParseTuple(args, "OO", &seq, &value)) {
+    TyObject *seq, *value;
+    if (!TyArg_ParseTuple(args, "OO", &seq, &value)) {
         return NULL;
     }
     NULLABLE(seq);
@@ -488,11 +488,11 @@ sequence_contains(PyObject *self, PyObject *args)
     RETURN_INT(PySequence_Contains(seq, value));
 }
 
-static PyObject *
-sequence_index(PyObject *self, PyObject *args)
+static TyObject *
+sequence_index(TyObject *self, TyObject *args)
 {
-    PyObject *seq, *value;
-    if (!PyArg_ParseTuple(args, "OO", &seq, &value)) {
+    TyObject *seq, *value;
+    if (!TyArg_ParseTuple(args, "OO", &seq, &value)) {
         return NULL;
     }
     NULLABLE(seq);
@@ -501,27 +501,27 @@ sequence_index(PyObject *self, PyObject *args)
     RETURN_SIZE(PySequence_Index(seq, value));
 }
 
-static PyObject *
-sequence_list(PyObject *self, PyObject *obj)
+static TyObject *
+sequence_list(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     return PySequence_List(obj);
 }
 
-static PyObject *
-sequence_tuple(PyObject *self, PyObject *obj)
+static TyObject *
+sequence_tuple(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     return PySequence_Tuple(obj);
 }
 
 
-static PyObject *
-sequence_fast(PyObject *self, PyObject *args)
+static TyObject *
+sequence_fast(TyObject *self, TyObject *args)
 {
-    PyObject *obj;
+    TyObject *obj;
     const char *err_msg;
-    if (!PyArg_ParseTuple(args, "Os", &obj, &err_msg)) {
+    if (!TyArg_ParseTuple(args, "Os", &obj, &err_msg)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -529,7 +529,7 @@ sequence_fast(PyObject *self, PyObject *args)
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"object_repr", object_repr, METH_O},
     {"object_ascii", object_ascii, METH_O},
     {"object_str", object_str, METH_O},
@@ -586,9 +586,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Abstract(PyObject *m)
+_PyTestLimitedCAPI_Init_Abstract(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

@@ -1,10 +1,10 @@
 /* AST pre-processing */
 #include "Python.h"
-#include "pycore_ast.h"           // _PyAST_GetDocString()
-#include "pycore_c_array.h"       // _Py_CArray_EnsureCapacity()
+#include "pycore_ast.h"           // _TyAST_GetDocString()
+#include "pycore_c_array.h"       // _Ty_CArray_EnsureCapacity()
 #include "pycore_format.h"        // F_LJUST
-#include "pycore_runtime.h"       // _Py_STR()
-#include "pycore_unicodeobject.h" // _PyUnicode_EqualToASCIIString()
+#include "pycore_runtime.h"       // _Ty_STR()
+#include "pycore_unicodeobject.h" // _TyUnicode_EqualToASCIIString()
 
 
 /* See PEP 765 */
@@ -15,21 +15,21 @@ typedef struct {
 } ControlFlowInFinallyContext;
 
 typedef struct {
-    PyObject *filename;
+    TyObject *filename;
     int optimize;
     int ff_features;
     int syntax_check_only;
 
-    _Py_c_array_t cf_finally;       /* context for PEP 765 check */
+    _Ty_c_array_t cf_finally;       /* context for PEP 765 check */
     int cf_finally_used;
 } _PyASTPreprocessState;
 
 #define ENTER_RECURSIVE() \
-if (Py_EnterRecursiveCall(" during compilation")) { \
+if (Ty_EnterRecursiveCall(" during compilation")) { \
     return 0; \
 }
 
-#define LEAVE_RECURSIVE() Py_LeaveRecursiveCall();
+#define LEAVE_RECURSIVE() Ty_LeaveRecursiveCall();
 
 static ControlFlowInFinallyContext*
 get_cf_finally_top(_PyASTPreprocessState *state)
@@ -41,7 +41,7 @@ get_cf_finally_top(_PyASTPreprocessState *state)
 static int
 push_cf_context(_PyASTPreprocessState *state, stmt_ty node, bool finally, bool funcdef, bool loop)
 {
-    if (_Py_CArray_EnsureCapacity(&state->cf_finally, state->cf_finally_used+1) < 0) {
+    if (_Ty_CArray_EnsureCapacity(&state->cf_finally, state->cf_finally_used+1) < 0) {
         return 0;
     }
 
@@ -64,14 +64,14 @@ pop_cf_context(_PyASTPreprocessState *state)
 static int
 control_flow_in_finally_warning(const char *kw, stmt_ty n, _PyASTPreprocessState *state)
 {
-    PyObject *msg = PyUnicode_FromFormat("'%s' in a 'finally' block", kw);
+    TyObject *msg = TyUnicode_FromFormat("'%s' in a 'finally' block", kw);
     if (msg == NULL) {
         return 0;
     }
-    int ret = _PyErr_EmitSyntaxWarning(msg, state->filename, n->lineno,
+    int ret = _TyErr_EmitSyntaxWarning(msg, state->filename, n->lineno,
                                        n->col_offset + 1, n->end_lineno,
                                        n->end_col_offset + 1);
-    Py_DECREF(msg);
+    Ty_DECREF(msg);
     return ret < 0 ? 0 : 1;
 }
 
@@ -128,19 +128,19 @@ before_loop_exit(_PyASTPreprocessState *state, stmt_ty node_, const char *kw)
     }
 
 static int
-make_const(expr_ty node, PyObject *val, PyArena *arena)
+make_const(expr_ty node, TyObject *val, PyArena *arena)
 {
     // Even if no new value was calculated, make_const may still
     // need to clear an error (e.g. for division by zero)
     if (val == NULL) {
-        if (PyErr_ExceptionMatches(PyExc_KeyboardInterrupt)) {
+        if (TyErr_ExceptionMatches(TyExc_KeyboardInterrupt)) {
             return 0;
         }
-        PyErr_Clear();
+        TyErr_Clear();
         return 1;
     }
-    if (_PyArena_AddPyObject(arena, val) < 0) {
-        Py_DECREF(val);
+    if (_TyArena_AddPyObject(arena, val) < 0) {
+        Ty_DECREF(val);
         return 0;
     }
     node->kind = Constant_kind;
@@ -154,8 +154,8 @@ make_const(expr_ty node, PyObject *val, PyArena *arena)
 static int
 has_starred(asdl_expr_seq *elts)
 {
-    Py_ssize_t n = asdl_seq_LEN(elts);
-    for (Py_ssize_t i = 0; i < n; i++) {
+    Ty_ssize_t n = asdl_seq_LEN(elts);
+    for (Ty_ssize_t i = 0; i < n; i++) {
         expr_ty e = (expr_ty)asdl_seq_GET(elts, i);
         if (e->kind == Starred_kind) {
             return 1;
@@ -165,19 +165,19 @@ has_starred(asdl_expr_seq *elts)
 }
 
 static expr_ty
-parse_literal(PyObject *fmt, Py_ssize_t *ppos, PyArena *arena)
+parse_literal(TyObject *fmt, Ty_ssize_t *ppos, PyArena *arena)
 {
-    const void *data = PyUnicode_DATA(fmt);
-    int kind = PyUnicode_KIND(fmt);
-    Py_ssize_t size = PyUnicode_GET_LENGTH(fmt);
-    Py_ssize_t start, pos;
+    const void *data = TyUnicode_DATA(fmt);
+    int kind = TyUnicode_KIND(fmt);
+    Ty_ssize_t size = TyUnicode_GET_LENGTH(fmt);
+    Ty_ssize_t start, pos;
     int has_percents = 0;
     start = pos = *ppos;
     while (pos < size) {
-        if (PyUnicode_READ(kind, data, pos) != '%') {
+        if (TyUnicode_READ(kind, data, pos) != '%') {
             pos++;
         }
-        else if (pos+1 < size && PyUnicode_READ(kind, data, pos+1) == '%') {
+        else if (pos+1 < size && TyUnicode_READ(kind, data, pos+1) == '%') {
             has_percents = 1;
             pos += 2;
         }
@@ -189,38 +189,38 @@ parse_literal(PyObject *fmt, Py_ssize_t *ppos, PyArena *arena)
     if (pos == start) {
         return NULL;
     }
-    PyObject *str = PyUnicode_Substring(fmt, start, pos);
+    TyObject *str = TyUnicode_Substring(fmt, start, pos);
     /* str = str.replace('%%', '%') */
     if (str && has_percents) {
-        _Py_DECLARE_STR(dbl_percent, "%%");
-        Py_SETREF(str, PyUnicode_Replace(str, &_Py_STR(dbl_percent),
-                                         _Py_LATIN1_CHR('%'), -1));
+        _Ty_DECLARE_STR(dbl_percent, "%%");
+        Ty_SETREF(str, TyUnicode_Replace(str, &_Ty_STR(dbl_percent),
+                                         _Ty_LATIN1_CHR('%'), -1));
     }
     if (!str) {
         return NULL;
     }
 
-    if (_PyArena_AddPyObject(arena, str) < 0) {
-        Py_DECREF(str);
+    if (_TyArena_AddPyObject(arena, str) < 0) {
+        Ty_DECREF(str);
         return NULL;
     }
-    return _PyAST_Constant(str, NULL, -1, -1, -1, -1, arena);
+    return _TyAST_Constant(str, NULL, -1, -1, -1, -1, arena);
 }
 
 #define MAXDIGITS 3
 
 static int
-simple_format_arg_parse(PyObject *fmt, Py_ssize_t *ppos,
+simple_format_arg_parse(TyObject *fmt, Ty_ssize_t *ppos,
                         int *spec, int *flags, int *width, int *prec)
 {
-    Py_ssize_t pos = *ppos, len = PyUnicode_GET_LENGTH(fmt);
-    Py_UCS4 ch;
+    Ty_ssize_t pos = *ppos, len = TyUnicode_GET_LENGTH(fmt);
+    Ty_UCS4 ch;
 
 #define NEXTC do {                      \
     if (pos >= len) {                   \
         return 0;                       \
     }                                   \
-    ch = PyUnicode_READ_CHAR(fmt, pos); \
+    ch = TyUnicode_READ_CHAR(fmt, pos); \
     pos++;                              \
 } while (0)
 
@@ -270,7 +270,7 @@ simple_format_arg_parse(PyObject *fmt, Py_ssize_t *ppos,
 }
 
 static expr_ty
-parse_format(PyObject *fmt, Py_ssize_t *ppos, expr_ty arg, PyArena *arena)
+parse_format(TyObject *fmt, Ty_ssize_t *ppos, expr_ty arg, PyArena *arena)
 {
     int spec, flags, width = -1, prec = -1;
     if (!simple_format_arg_parse(fmt, ppos, &spec, &flags, &width, &prec)) {
@@ -290,20 +290,20 @@ parse_format(PyObject *fmt, Py_ssize_t *ppos, expr_ty arg, PyArena *arena)
         }
         expr_ty format_spec = NULL;
         if (p != buf) {
-            PyObject *str = PyUnicode_FromString(buf);
+            TyObject *str = TyUnicode_FromString(buf);
             if (str == NULL) {
                 return NULL;
             }
-            if (_PyArena_AddPyObject(arena, str) < 0) {
-                Py_DECREF(str);
+            if (_TyArena_AddPyObject(arena, str) < 0) {
+                Ty_DECREF(str);
                 return NULL;
             }
-            format_spec = _PyAST_Constant(str, NULL, -1, -1, -1, -1, arena);
+            format_spec = _TyAST_Constant(str, NULL, -1, -1, -1, -1, arena);
             if (format_spec == NULL) {
                 return NULL;
             }
         }
-        return _PyAST_FormattedValue(arg, spec, format_spec,
+        return _TyAST_FormattedValue(arg, spec, format_spec,
                                      arg->lineno, arg->col_offset,
                                      arg->end_lineno, arg->end_col_offset,
                                      arena);
@@ -313,11 +313,11 @@ parse_format(PyObject *fmt, Py_ssize_t *ppos, expr_ty arg, PyArena *arena)
 }
 
 static int
-optimize_format(expr_ty node, PyObject *fmt, asdl_expr_seq *elts, PyArena *arena)
+optimize_format(expr_ty node, TyObject *fmt, asdl_expr_seq *elts, PyArena *arena)
 {
-    Py_ssize_t pos = 0;
-    Py_ssize_t cnt = 0;
-    asdl_expr_seq *seq = _Py_asdl_expr_seq_new(asdl_seq_LEN(elts) * 2 + 1, arena);
+    Ty_ssize_t pos = 0;
+    Ty_ssize_t cnt = 0;
+    asdl_expr_seq *seq = _Ty_asdl_expr_seq_new(asdl_seq_LEN(elts) * 2 + 1, arena);
     if (!seq) {
         return 0;
     }
@@ -328,23 +328,23 @@ optimize_format(expr_ty node, PyObject *fmt, asdl_expr_seq *elts, PyArena *arena
         if (lit) {
             asdl_seq_SET(seq, seq->size++, lit);
         }
-        else if (PyErr_Occurred()) {
+        else if (TyErr_Occurred()) {
             return 0;
         }
 
-        if (pos >= PyUnicode_GET_LENGTH(fmt)) {
+        if (pos >= TyUnicode_GET_LENGTH(fmt)) {
             break;
         }
         if (cnt >= asdl_seq_LEN(elts)) {
             // More format units than items.
             return 1;
         }
-        assert(PyUnicode_READ_CHAR(fmt, pos) == '%');
+        assert(TyUnicode_READ_CHAR(fmt, pos) == '%');
         pos++;
         expr_ty expr = parse_format(fmt, &pos, asdl_seq_GET(elts, cnt), arena);
         cnt++;
         if (!expr) {
-            return !PyErr_Occurred();
+            return !TyErr_Occurred();
         }
         asdl_seq_SET(seq, seq->size++, expr);
     }
@@ -352,7 +352,7 @@ optimize_format(expr_ty node, PyObject *fmt, asdl_expr_seq *elts, PyArena *arena
         // More items than format units.
         return 1;
     }
-    expr_ty res = _PyAST_JoinedStr(seq,
+    expr_ty res = _TyAST_JoinedStr(seq,
                                    node->lineno, node->col_offset,
                                    node->end_lineno, node->end_col_offset,
                                    arena);
@@ -360,7 +360,7 @@ optimize_format(expr_ty node, PyObject *fmt, asdl_expr_seq *elts, PyArena *arena
         return 0;
     }
     COPY_NODE(node, res);
-//     PySys_FormatStderr("format = %R\n", fmt);
+//     TySys_FormatStderr("format = %R\n", fmt);
     return 1;
 }
 
@@ -376,11 +376,11 @@ fold_binop(expr_ty node, PyArena *arena, _PyASTPreprocessState *state)
     if (lhs->kind != Constant_kind) {
         return 1;
     }
-    PyObject *lv = lhs->v.Constant.value;
+    TyObject *lv = lhs->v.Constant.value;
 
     if (node->v.BinOp.op == Mod &&
         rhs->kind == Tuple_kind &&
-        PyUnicode_Check(lv) &&
+        TyUnicode_Check(lv) &&
         !has_starred(rhs->v.Tuple.elts))
     {
         return optimize_format(node, lv, rhs->v.Tuple.elts, arena);
@@ -411,7 +411,7 @@ static int astfold_type_param(type_param_ty node_, PyArena *ctx_, _PyASTPreproce
         return 0;
 
 #define CALL_SEQ(FUNC, TYPE, ARG) { \
-    Py_ssize_t i; \
+    Ty_ssize_t i; \
     asdl_ ## TYPE ## _seq *seq = (ARG); /* avoid variable capture */ \
     for (i = 0; i < asdl_seq_LEN(seq); i++) { \
         TYPE ## _ty elt = (TYPE ## _ty)asdl_seq_GET(seq, i); \
@@ -422,12 +422,12 @@ static int astfold_type_param(type_param_ty node_, PyArena *ctx_, _PyASTPreproce
 
 
 static int
-stmt_seq_remove_item(asdl_stmt_seq *stmts, Py_ssize_t idx)
+stmt_seq_remove_item(asdl_stmt_seq *stmts, Ty_ssize_t idx)
 {
     if (idx >= asdl_seq_LEN(stmts)) {
         return 0;
     }
-    for (Py_ssize_t i = idx; i < asdl_seq_LEN(stmts) - 1; i++) {
+    for (Ty_ssize_t i = idx; i < asdl_seq_LEN(stmts) - 1; i++) {
         stmt_ty st = (stmt_ty)asdl_seq_GET(stmts, i+1);
         asdl_seq_SET(stmts, i, st);
     }
@@ -438,7 +438,7 @@ stmt_seq_remove_item(asdl_stmt_seq *stmts, Py_ssize_t idx)
 static int
 astfold_body(asdl_stmt_seq *stmts, PyArena *ctx_, _PyASTPreprocessState *state)
 {
-    int docstring = _PyAST_GetDocString(stmts) != NULL;
+    int docstring = _TyAST_GetDocString(stmts) != NULL;
     if (docstring && (state->optimize >= 2)) {
         /* remove the docstring */
         if (!stmt_seq_remove_item(stmts, 0)) {
@@ -447,14 +447,14 @@ astfold_body(asdl_stmt_seq *stmts, PyArena *ctx_, _PyASTPreprocessState *state)
         docstring = 0;
     }
     CALL_SEQ(astfold_stmt, stmt, stmts);
-    if (!docstring && _PyAST_GetDocString(stmts) != NULL) {
+    if (!docstring && _TyAST_GetDocString(stmts) != NULL) {
         stmt_ty st = (stmt_ty)asdl_seq_GET(stmts, 0);
-        asdl_expr_seq *values = _Py_asdl_expr_seq_new(1, ctx_);
+        asdl_expr_seq *values = _Ty_asdl_expr_seq_new(1, ctx_);
         if (!values) {
             return 0;
         }
         asdl_seq_SET(values, 0, st->v.Expr.value);
-        expr_ty expr = _PyAST_JoinedStr(values, st->lineno, st->col_offset,
+        expr_ty expr = _TyAST_JoinedStr(values, st->lineno, st->col_offset,
                                         st->end_lineno, st->end_col_offset,
                                         ctx_);
         if (!expr) {
@@ -594,9 +594,9 @@ astfold_expr(expr_ty node_, PyArena *ctx_, _PyASTPreprocessState *state)
             break;
         }
         if (node_->v.Name.ctx == Load &&
-                _PyUnicode_EqualToASCIIString(node_->v.Name.id, "__debug__")) {
+                _TyUnicode_EqualToASCIIString(node_->v.Name.id, "__debug__")) {
             LEAVE_RECURSIVE();
-            return make_const(node_, PyBool_FromLong(!state->optimize), ctx_);
+            return make_const(node_, TyBool_FromLong(!state->optimize), ctx_);
         }
         break;
     case NamedExpr_kind:
@@ -840,8 +840,8 @@ fold_const_match_patterns(expr_ty node, PyArena *ctx_, _PyASTPreprocessState *st
             if (node->v.UnaryOp.op == USub &&
                 node->v.UnaryOp.operand->kind == Constant_kind)
             {
-                PyObject *operand = node->v.UnaryOp.operand->v.Constant.value;
-                PyObject *folded = PyNumber_Negative(operand);
+                TyObject *operand = node->v.UnaryOp.operand->v.Constant.value;
+                TyObject *folded = PyNumber_Negative(operand);
                 return make_const(node, folded, ctx_);
             }
             break;
@@ -854,9 +854,9 @@ fold_const_match_patterns(expr_ty node, PyArena *ctx_, _PyASTPreprocessState *st
             {
                 CALL(fold_const_match_patterns, expr_ty, node->v.BinOp.left);
                 if (node->v.BinOp.left->kind == Constant_kind) {
-                    PyObject *left = node->v.BinOp.left->v.Constant.value;
-                    PyObject *right = node->v.BinOp.right->v.Constant.value;
-                    PyObject *folded = op == Add ? PyNumber_Add(left, right) : PyNumber_Subtract(left, right);
+                    TyObject *left = node->v.BinOp.left->v.Constant.value;
+                    TyObject *right = node->v.BinOp.right->v.Constant.value;
+                    TyObject *folded = op == Add ? PyNumber_Add(left, right) : PyNumber_Subtract(left, right);
                     return make_const(node, folded, ctx_);
                 }
             }
@@ -942,7 +942,7 @@ astfold_type_param(type_param_ty node_, PyArena *ctx_, _PyASTPreprocessState *st
 #undef CALL_SEQ
 
 int
-_PyAST_Preprocess(mod_ty mod, PyArena *arena, PyObject *filename, int optimize,
+_TyAST_Preprocess(mod_ty mod, PyArena *arena, TyObject *filename, int optimize,
                   int ff_features, int syntax_check_only)
 {
     _PyASTPreprocessState state;
@@ -951,13 +951,13 @@ _PyAST_Preprocess(mod_ty mod, PyArena *arena, PyObject *filename, int optimize,
     state.optimize = optimize;
     state.ff_features = ff_features;
     state.syntax_check_only = syntax_check_only;
-    if (_Py_CArray_Init(&state.cf_finally, sizeof(ControlFlowInFinallyContext), 20) < 0) {
+    if (_Ty_CArray_Init(&state.cf_finally, sizeof(ControlFlowInFinallyContext), 20) < 0) {
         return -1;
     }
 
     int ret = astfold_mod(mod, arena, &state);
-    assert(ret || PyErr_Occurred());
+    assert(ret || TyErr_Occurred());
 
-    _Py_CArray_Fini(&state.cf_finally);
+    _Ty_CArray_Fini(&state.cf_finally);
     return ret;
 }

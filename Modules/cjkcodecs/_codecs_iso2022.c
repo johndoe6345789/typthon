@@ -123,11 +123,11 @@
 /*-*- internal data structures -*-*/
 
 typedef int (*iso2022_init_func)(const MultibyteCodec *codec);
-typedef Py_UCS4 (*iso2022_decode_func)(const MultibyteCodec *codec,
+typedef Ty_UCS4 (*iso2022_decode_func)(const MultibyteCodec *codec,
                                        const unsigned char *data);
 typedef DBCHAR (*iso2022_encode_func)(const MultibyteCodec *codec,
-                                      const Py_UCS4 *data,
-                                      Py_ssize_t *length);
+                                      const Ty_UCS4 *data,
+                                      Ty_ssize_t *length);
 
 struct iso2022_designation {
     unsigned char mark;
@@ -184,8 +184,8 @@ ENCODER(iso2022)
     while (*inpos < inlen) {
         const struct iso2022_designation *dsg;
         DBCHAR encoded;
-        Py_UCS4 c = INCHAR1;
-        Py_ssize_t insize;
+        Ty_UCS4 c = INCHAR1;
+        Ty_ssize_t insize;
 
         if (c < 0x80) {
             if (STATE_G0 != CHARSET_ASCII) {
@@ -207,8 +207,8 @@ ENCODER(iso2022)
 
         encoded = MAP_UNMAPPABLE;
         for (dsg = CONFIG_DESIGNATIONS; dsg->mark; dsg++) {
-            Py_UCS4 buf[2] = {c, 0};
-            Py_ssize_t length = 1;
+            Ty_UCS4 buf[2] = {c, 0};
+            Ty_ssize_t length = 1;
             encoded = dsg->encoder(codec, buf, &length);
             if (encoded == MAP_MULTIPLE_AVAIL) {
                 /* this implementation won't work for pair
@@ -316,12 +316,12 @@ DECODER_RESET(iso2022)
     return 0;
 }
 
-static Py_ssize_t
+static Ty_ssize_t
 iso2022processesc(const MultibyteCodec *codec, MultibyteCodec_State *state,
-                  const unsigned char **inbuf, Py_ssize_t *inleft)
+                  const unsigned char **inbuf, Ty_ssize_t *inleft)
 {
     unsigned char charset, designation;
-    Py_ssize_t i, esclen = 0;
+    Ty_ssize_t i, esclen = 0;
 
     for (i = 1;i < MAX_ESCSEQLEN;i++) {
         if (i >= *inleft)
@@ -416,9 +416,9 @@ iso2022processesc(const MultibyteCodec *codec, MultibyteCodec_State *state,
         OUTCHAR(0x2015);                                           \
     }
 
-static Py_ssize_t
+static Ty_ssize_t
 iso2022processg2(const MultibyteCodec *codec, MultibyteCodec_State *state,
-                 const unsigned char **inbuf, Py_ssize_t *inleft,
+                 const unsigned char **inbuf, Ty_ssize_t *inleft,
                  _PyUnicodeWriter *writer)
 {
     /* not written to use encoder, decoder functions because only few
@@ -454,7 +454,7 @@ DECODER(iso2022)
 
     while (inleft > 0) {
         unsigned char c = INBYTE1;
-        Py_ssize_t err;
+        Ty_ssize_t err;
 
         if (STATE_GETFLAG(F_ESCTHROUGHOUT)) {
             /* ESC throughout mode:
@@ -514,7 +514,7 @@ DECODER(iso2022)
             else {
                 const struct iso2022_designation *dsg;
                 unsigned char charset;
-                Py_UCS4 decoded;
+                Ty_UCS4 decoded;
 
                 if (STATE_GETFLAG(F_SHIFTED))
                     charset = STATE_G1;
@@ -534,7 +534,7 @@ bypass:
                 else {
                     for (dsg = CONFIG_DESIGNATIONS;
                          dsg->mark != charset
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
                             && dsg->mark != '\0'
 #endif
                          ; dsg++)
@@ -581,10 +581,10 @@ ksx1001_init(const MultibyteCodec *codec)
     return 0;
 }
 
-static Py_UCS4
+static Ty_UCS4
 ksx1001_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     if (TRYMAP_DEC_ST(ksx1001, u, data[0], data[1]))
         return u;
     else
@@ -592,8 +592,8 @@ ksx1001_decoder(const MultibyteCodec *codec, const unsigned char *data)
 }
 
 static DBCHAR
-ksx1001_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                Py_ssize_t *length)
+ksx1001_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                Ty_ssize_t *length)
 {
     DBCHAR coded;
     assert(*length == 1);
@@ -618,10 +618,10 @@ jisx0208_init(const MultibyteCodec *codec)
     return 0;
 }
 
-static Py_UCS4
+static Ty_UCS4
 jisx0208_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     if (data[0] == 0x21 && data[1] == 0x40) /* F/W REVERSE SOLIDUS */
         return 0xff3c;
     else if (TRYMAP_DEC_ST(jisx0208, u, data[0], data[1]))
@@ -631,8 +631,8 @@ jisx0208_decoder(const MultibyteCodec *codec, const unsigned char *data)
 }
 
 static DBCHAR
-jisx0208_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                 Py_ssize_t *length)
+jisx0208_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                 Ty_ssize_t *length)
 {
     DBCHAR coded;
     assert(*length == 1);
@@ -659,10 +659,10 @@ jisx0212_init(const MultibyteCodec *codec)
     return 0;
 }
 
-static Py_UCS4
+static Ty_UCS4
 jisx0212_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     if (TRYMAP_DEC_ST(jisx0212, u, data[0], data[1]))
         return u;
     else
@@ -670,8 +670,8 @@ jisx0212_decoder(const MultibyteCodec *codec, const unsigned char *data)
 }
 
 static DBCHAR
-jisx0212_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                 Py_ssize_t *length)
+jisx0212_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                 Ty_ssize_t *length)
 {
     DBCHAR coded;
     assert(*length == 1);
@@ -704,10 +704,10 @@ jisx0213_init(const MultibyteCodec *codec)
 }
 
 #define config ((void *)2000)
-static Py_UCS4
+static Ty_UCS4
 jisx0213_2000_1_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     EMULATE_JISX0213_2000_DECODE_PLANE1(config, u, data[0], data[1])
     else if (data[0] == 0x21 && data[1] == 0x40) /* F/W REVERSE SOLIDUS */
         return 0xff3c;
@@ -724,10 +724,10 @@ jisx0213_2000_1_decoder(const MultibyteCodec *codec, const unsigned char *data)
     return u;
 }
 
-static Py_UCS4
+static Ty_UCS4
 jisx0213_2000_2_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     EMULATE_JISX0213_2000_DECODE_PLANE2_CHAR(config, u, data[0], data[1])
     if (TRYMAP_DEC_ST(jisx0213_2_bmp, u, data[0], data[1]))
         ;
@@ -739,10 +739,10 @@ jisx0213_2000_2_decoder(const MultibyteCodec *codec, const unsigned char *data)
 }
 #undef config
 
-static Py_UCS4
+static Ty_UCS4
 jisx0213_2004_1_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     if (data[0] == 0x21 && data[1] == 0x40) /* F/W REVERSE SOLIDUS */
         return 0xff3c;
     else if (TRYMAP_DEC_ST(jisx0208, u, data[0], data[1]))
@@ -758,10 +758,10 @@ jisx0213_2004_1_decoder(const MultibyteCodec *codec, const unsigned char *data)
     return u;
 }
 
-static Py_UCS4
+static Ty_UCS4
 jisx0213_2004_2_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     if (TRYMAP_DEC_ST(jisx0213_2_bmp, u, data[0], data[1]))
         ;
     else if (TRYMAP_DEC_ST(jisx0213_2_emp, u, data[0], data[1]))
@@ -772,8 +772,8 @@ jisx0213_2004_2_decoder(const MultibyteCodec *codec, const unsigned char *data)
 }
 
 static DBCHAR
-jisx0213_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                 Py_ssize_t *length, const void *config)
+jisx0213_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                 Ty_ssize_t *length, const void *config)
 {
     DBCHAR coded;
 
@@ -806,7 +806,7 @@ jisx0213_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
                                 jisx0213_pair_encmap, JISX0213_ENCPAIRS);
         if (coded != DBCINV)
             return coded;
-        _Py_FALLTHROUGH;
+        _Ty_FALLTHROUGH;
 
     case -1: /* flush unterminated */
         *length = 1;
@@ -824,8 +824,8 @@ jisx0213_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
 }
 
 static DBCHAR
-jisx0213_2000_1_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                        Py_ssize_t *length)
+jisx0213_2000_1_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                        Ty_ssize_t *length)
 {
     DBCHAR coded = jisx0213_encoder(codec, data, length, (void *)2000);
     if (coded == MAP_UNMAPPABLE || coded == MAP_MULTIPLE_AVAIL)
@@ -838,10 +838,10 @@ jisx0213_2000_1_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
 
 static DBCHAR
 jisx0213_2000_1_encoder_paironly(const MultibyteCodec *codec,
-                                 const Py_UCS4 *data, Py_ssize_t *length)
+                                 const Ty_UCS4 *data, Ty_ssize_t *length)
 {
     DBCHAR coded;
-    Py_ssize_t ilength = *length;
+    Ty_ssize_t ilength = *length;
 
     coded = jisx0213_encoder(codec, data, length, (void *)2000);
     switch (ilength) {
@@ -861,8 +861,8 @@ jisx0213_2000_1_encoder_paironly(const MultibyteCodec *codec,
 }
 
 static DBCHAR
-jisx0213_2000_2_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                        Py_ssize_t *length)
+jisx0213_2000_2_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                        Ty_ssize_t *length)
 {
     DBCHAR coded = jisx0213_encoder(codec, data, length, (void *)2000);
     if (coded == MAP_UNMAPPABLE || coded == MAP_MULTIPLE_AVAIL)
@@ -874,8 +874,8 @@ jisx0213_2000_2_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
 }
 
 static DBCHAR
-jisx0213_2004_1_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                        Py_ssize_t *length)
+jisx0213_2004_1_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                        Ty_ssize_t *length)
 {
     DBCHAR coded = jisx0213_encoder(codec, data, length, NULL);
     if (coded == MAP_UNMAPPABLE || coded == MAP_MULTIPLE_AVAIL)
@@ -888,10 +888,10 @@ jisx0213_2004_1_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
 
 static DBCHAR
 jisx0213_2004_1_encoder_paironly(const MultibyteCodec *codec,
-                                 const Py_UCS4 *data, Py_ssize_t *length)
+                                 const Ty_UCS4 *data, Ty_ssize_t *length)
 {
     DBCHAR coded;
-    Py_ssize_t ilength = *length;
+    Ty_ssize_t ilength = *length;
 
     coded = jisx0213_encoder(codec, data, length, NULL);
     switch (ilength) {
@@ -911,8 +911,8 @@ jisx0213_2004_1_encoder_paironly(const MultibyteCodec *codec,
 }
 
 static DBCHAR
-jisx0213_2004_2_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                        Py_ssize_t *length)
+jisx0213_2004_2_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                        Ty_ssize_t *length)
 {
     DBCHAR coded = jisx0213_encoder(codec, data, length, NULL);
     if (coded == MAP_UNMAPPABLE || coded == MAP_MULTIPLE_AVAIL)
@@ -923,10 +923,10 @@ jisx0213_2004_2_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
         return MAP_UNMAPPABLE;
 }
 
-static Py_UCS4
+static Ty_UCS4
 jisx0201_r_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     JISX0201_R_DECODE_CHAR(*data, u)
     else
         return MAP_UNMAPPABLE;
@@ -934,8 +934,8 @@ jisx0201_r_decoder(const MultibyteCodec *codec, const unsigned char *data)
 }
 
 static DBCHAR
-jisx0201_r_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                   Py_ssize_t *length)
+jisx0201_r_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                   Ty_ssize_t *length)
 {
     DBCHAR coded;
     JISX0201_R_ENCODE(*data, coded)
@@ -944,10 +944,10 @@ jisx0201_r_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
     return coded;
 }
 
-static Py_UCS4
+static Ty_UCS4
 jisx0201_k_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     JISX0201_K_DECODE_CHAR(*data ^ 0x80, u)
     else
         return MAP_UNMAPPABLE;
@@ -955,8 +955,8 @@ jisx0201_k_decoder(const MultibyteCodec *codec, const unsigned char *data)
 }
 
 static DBCHAR
-jisx0201_k_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-                   Py_ssize_t *length)
+jisx0201_k_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+                   Ty_ssize_t *length)
 {
     DBCHAR coded;
     JISX0201_K_ENCODE(*data, coded)
@@ -977,10 +977,10 @@ gb2312_init(const MultibyteCodec *codec)
     return 0;
 }
 
-static Py_UCS4
+static Ty_UCS4
 gb2312_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
-    Py_UCS4 u;
+    Ty_UCS4 u;
     if (TRYMAP_DEC_ST(gb2312, u, data[0], data[1]))
         return u;
     else
@@ -988,8 +988,8 @@ gb2312_decoder(const MultibyteCodec *codec, const unsigned char *data)
 }
 
 static DBCHAR
-gb2312_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-               Py_ssize_t *length)
+gb2312_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+               Ty_ssize_t *length)
 {
     DBCHAR coded;
     assert(*length == 1);
@@ -1003,15 +1003,15 @@ gb2312_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
 }
 
 
-static Py_UCS4
+static Ty_UCS4
 dummy_decoder(const MultibyteCodec *codec, const unsigned char *data)
 {
     return MAP_UNMAPPABLE;
 }
 
 static DBCHAR
-dummy_encoder(const MultibyteCodec *codec, const Py_UCS4 *data,
-              Py_ssize_t *length)
+dummy_encoder(const MultibyteCodec *codec, const Ty_UCS4 *data,
+              Ty_ssize_t *length)
 {
     return MAP_UNMAPPABLE;
 }

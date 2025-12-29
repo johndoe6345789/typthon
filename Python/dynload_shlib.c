@@ -2,11 +2,11 @@
 /* Support for dynamic loading of extension modules */
 
 #include "Python.h"
-#include "pycore_fileutils.h"     // struct _Py_stat_struct
-#include "pycore_import.h"        // _PyImport_GetDLOpenFlags()
+#include "pycore_fileutils.h"     // struct _Ty_stat_struct
+#include "pycore_import.h"        // _TyImport_GetDLOpenFlags()
 #include "pycore_importdl.h"
 #include "pycore_interp.h"        // _PyInterpreterState.dlopenflags
-#include "pycore_pystate.h"       // _PyInterpreterState_GET()
+#include "pycore_pystate.h"       // _TyInterpreterState_GET()
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -36,7 +36,7 @@
    live in the same directory.  E.g. foomodule.cpython-32.so
 */
 
-const char *_PyImport_DynLoadFiletab[] = {
+const char *_TyImport_DynLoadFiletab[] = {
 #ifdef __CYGWIN__
     ".dll",
 #else  /* !__CYGWIN__ */
@@ -52,7 +52,7 @@ const char *_PyImport_DynLoadFiletab[] = {
 
 
 dl_funcptr
-_PyImport_FindSharedFuncptr(const char *prefix,
+_TyImport_FindSharedFuncptr(const char *prefix,
                             const char *shortname,
                             const char *pathname, FILE *fp)
 {
@@ -64,48 +64,48 @@ _PyImport_FindSharedFuncptr(const char *prefix,
 
     if (strchr(pathname, '/') == NULL) {
         /* Prefix bare filename with "./" */
-        PyOS_snprintf(pathbuf, sizeof(pathbuf), "./%-.255s", pathname);
+        TyOS_snprintf(pathbuf, sizeof(pathbuf), "./%-.255s", pathname);
         pathname = pathbuf;
     }
 
-    PyOS_snprintf(funcname, sizeof(funcname),
+    TyOS_snprintf(funcname, sizeof(funcname),
                   LEAD_UNDERSCORE "%.20s_%.200s", prefix, shortname);
 
     if (fp != NULL) {
-        struct _Py_stat_struct status;
-        if (_Py_fstat(fileno(fp), &status) == -1)
+        struct _Ty_stat_struct status;
+        if (_Ty_fstat(fileno(fp), &status) == -1)
             return NULL;
     }
 
-    dlopenflags = _PyImport_GetDLOpenFlags(_PyInterpreterState_GET());
+    dlopenflags = _TyImport_GetDLOpenFlags(_TyInterpreterState_GET());
 
     handle = dlopen(pathname, dlopenflags);
 
     if (handle == NULL) {
-        PyObject *mod_name;
-        PyObject *path;
-        PyObject *error_ob;
+        TyObject *mod_name;
+        TyObject *path;
+        TyObject *error_ob;
         const char *error = dlerror();
         if (error == NULL)
             error = "unknown dlopen() error";
-        error_ob = PyUnicode_DecodeLocale(error, "surrogateescape");
+        error_ob = TyUnicode_DecodeLocale(error, "surrogateescape");
         if (error_ob == NULL)
             return NULL;
-        mod_name = PyUnicode_FromString(shortname);
+        mod_name = TyUnicode_FromString(shortname);
         if (mod_name == NULL) {
-            Py_DECREF(error_ob);
+            Ty_DECREF(error_ob);
             return NULL;
         }
-        path = PyUnicode_DecodeFSDefault(pathname);
+        path = TyUnicode_DecodeFSDefault(pathname);
         if (path == NULL) {
-            Py_DECREF(error_ob);
-            Py_DECREF(mod_name);
+            Ty_DECREF(error_ob);
+            Ty_DECREF(mod_name);
             return NULL;
         }
-        PyErr_SetImportError(error_ob, mod_name, path);
-        Py_DECREF(error_ob);
-        Py_DECREF(mod_name);
-        Py_DECREF(path);
+        TyErr_SetImportError(error_ob, mod_name, path);
+        Ty_DECREF(error_ob);
+        Ty_DECREF(mod_name);
+        Ty_DECREF(path);
         return NULL;
     }
     p = (dl_funcptr) dlsym(handle, funcname);

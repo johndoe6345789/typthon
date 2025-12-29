@@ -13,11 +13,11 @@ typedef struct {
        read-only.
        c_dicts is a dict, int(compressionLevel):PyCapsule(ZSTD_CDict*) */
     ZSTD_DDict *d_dict;
-    PyObject *c_dicts;
+    TyObject *c_dicts;
 
     /* Dictionary content. */
     char *dict_buffer;
-    Py_ssize_t dict_len;
+    Ty_ssize_t dict_len;
 
     /* Dictionary id */
     uint32_t dict_id;

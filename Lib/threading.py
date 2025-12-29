@@ -1551,7 +1551,7 @@ from _thread import stack_size
 
 # Create the main thread object,
 # and make it available for the interpreter
-# (Py_Main) as threading._shutdown.
+# (Ty_Main) as threading._shutdown.
 
 _main_thread = _MainThread()
 

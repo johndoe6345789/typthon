@@ -1,51 +1,51 @@
-#ifndef Py_CPYTHON_LONGOBJECT_H
+#ifndef Ty_CPYTHON_LONGOBJECT_H
 #  error "this header file must not be included directly"
 #endif
 
-#define _PyLong_CAST(op) \
-    (assert(PyLong_Check(op)), _Py_CAST(PyLongObject*, (op)))
+#define _TyLong_CAST(op) \
+    (assert(TyLong_Check(op)), _Py_CAST(PyLongObject*, (op)))
 
-PyAPI_FUNC(PyObject*) PyLong_FromUnicodeObject(PyObject *u, int base);
+PyAPI_FUNC(TyObject*) TyLong_FromUnicodeObject(TyObject *u, int base);
 
 PyAPI_FUNC(int) PyUnstable_Long_IsCompact(const PyLongObject* op);
-PyAPI_FUNC(Py_ssize_t) PyUnstable_Long_CompactValue(const PyLongObject* op);
+PyAPI_FUNC(Ty_ssize_t) PyUnstable_Long_CompactValue(const PyLongObject* op);
 
-/* PyLong_IsPositive.  Check if the integer object is positive.
+/* TyLong_IsPositive.  Check if the integer object is positive.
 
    - On success, return 1 if *obj is positive, and 0 otherwise.
    - On failure, set an exception, and return -1. */
-PyAPI_FUNC(int) PyLong_IsPositive(PyObject *obj);
+PyAPI_FUNC(int) TyLong_IsPositive(TyObject *obj);
 
-/* PyLong_IsNegative.  Check if the integer object is negative.
+/* TyLong_IsNegative.  Check if the integer object is negative.
 
    - On success, return 1 if *obj is negative, and 0 otherwise.
    - On failure, set an exception, and return -1. */
-PyAPI_FUNC(int) PyLong_IsNegative(PyObject *obj);
+PyAPI_FUNC(int) TyLong_IsNegative(TyObject *obj);
 
-/* PyLong_IsZero.  Check if the integer object is zero.
+/* TyLong_IsZero.  Check if the integer object is zero.
 
    - On success, return 1 if *obj is zero, and 0 if it is non-zero.
    - On failure, set an exception, and return -1. */
-PyAPI_FUNC(int) PyLong_IsZero(PyObject *obj);
+PyAPI_FUNC(int) TyLong_IsZero(TyObject *obj);
 
-/* PyLong_GetSign.  Get the sign of an integer object:
+/* TyLong_GetSign.  Get the sign of an integer object:
    0, -1 or +1 for zero, negative or positive integer, respectively.
 
    - On success, set '*sign' to the integer sign, and return 0.
    - On failure, set an exception, and return -1. */
-PyAPI_FUNC(int) PyLong_GetSign(PyObject *v, int *sign);
+PyAPI_FUNC(int) TyLong_GetSign(TyObject *v, int *sign);
 
-Py_DEPRECATED(3.14) PyAPI_FUNC(int) _PyLong_Sign(PyObject *v);
+Ty_DEPRECATED(3.14) PyAPI_FUNC(int) _TyLong_Sign(TyObject *v);
 
-/* _PyLong_NumBits.  Return the number of bits needed to represent the
+/* _TyLong_NumBits.  Return the number of bits needed to represent the
    absolute value of a long.  For example, this returns 1 for 1 and -1, 2
    for 2 and -2, and 2 for 3 and -3.  It returns 0 for 0.
    v must not be NULL, and must be a normalized long.
    Always successful.
 */
-PyAPI_FUNC(int64_t) _PyLong_NumBits(PyObject *v);
+PyAPI_FUNC(int64_t) _TyLong_NumBits(TyObject *v);
 
-/* _PyLong_FromByteArray:  View the n unsigned bytes as a binary integer in
+/* _TyLong_FromByteArray:  View the n unsigned bytes as a binary integer in
    base 256, and return a Python int with the same numeric value.
    If n is 0, the integer is 0.  Else:
    If little_endian is 1/true, bytes[n-1] is the MSB and bytes[0] the LSB;
@@ -58,11 +58,11 @@ PyAPI_FUNC(int64_t) _PyLong_NumBits(PyObject *v);
    + Return NULL with the appropriate exception set if there's not
      enough memory to create the Python int.
 */
-PyAPI_FUNC(PyObject *) _PyLong_FromByteArray(
+PyAPI_FUNC(TyObject *) _TyLong_FromByteArray(
     const unsigned char* bytes, size_t n,
     int little_endian, int is_signed);
 
-/* _PyLong_AsByteArray: Convert the least-significant 8*n bits of long
+/* _TyLong_AsByteArray: Convert the least-significant 8*n bits of long
    v to a base-256 integer, stored in array bytes.  Normally return 0,
    return -1 on error.
    If little_endian is 1/true, store the MSB at bytes[n-1] and the LSB at
@@ -81,9 +81,9 @@ PyAPI_FUNC(PyObject *) _PyLong_FromByteArray(
      being large enough to hold a sign bit.  OverflowError is set in this
      case, but bytes holds the least-significant n bytes of the true value.
 */
-PyAPI_FUNC(int) _PyLong_AsByteArray(PyLongObject* v,
+PyAPI_FUNC(int) _TyLong_AsByteArray(PyLongObject* v,
     unsigned char* bytes, size_t n,
     int little_endian, int is_signed, int with_exceptions);
 
 /* For use by the gcd function in mathmodule.c */
-PyAPI_FUNC(PyObject *) _PyLong_GCD(PyObject *, PyObject *);
+PyAPI_FUNC(TyObject *) _TyLong_GCD(TyObject *, TyObject *);

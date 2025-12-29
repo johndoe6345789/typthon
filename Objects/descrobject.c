@@ -1,107 +1,107 @@
 /* Descriptors -- a new, flexible way to describe attributes */
 
 #include "Python.h"
-#include "pycore_abstract.h"      // _PyObject_RealIsSubclass()
+#include "pycore_abstract.h"      // _TyObject_RealIsSubclass()
 #include "pycore_call.h"          // _PyStack_AsDict()
-#include "pycore_ceval.h"         // _Py_EnterRecursiveCallTstate()
+#include "pycore_ceval.h"         // _Ty_EnterRecursiveCallTstate()
 #include "pycore_emscripten_trampoline.h" // descr_set_trampoline_call(), descr_get_trampoline_call()
 #include "pycore_descrobject.h"   // _PyMethodWrapper_Type
-#include "pycore_modsupport.h"    // _PyArg_UnpackStack()
-#include "pycore_object.h"        // _PyObject_GC_UNTRACK()
-#include "pycore_object_deferred.h" // _PyObject_SetDeferredRefcount()
-#include "pycore_pystate.h"       // _PyThreadState_GET()
-#include "pycore_tuple.h"         // _PyTuple_ITEMS()
+#include "pycore_modsupport.h"    // _TyArg_UnpackStack()
+#include "pycore_object.h"        // _TyObject_GC_UNTRACK()
+#include "pycore_object_deferred.h" // _TyObject_SetDeferredRefcount()
+#include "pycore_pystate.h"       // _TyThreadState_GET()
+#include "pycore_tuple.h"         // _TyTuple_ITEMS()
 
 
 /*[clinic input]
 class mappingproxy "mappingproxyobject *" "&PyDictProxy_Type"
-class property "propertyobject *" "&PyProperty_Type"
+class property "propertyobject *" "&TyProperty_Type"
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=556352653fd4c02e]*/
 
 static void
-descr_dealloc(PyObject *self)
+descr_dealloc(TyObject *self)
 {
     PyDescrObject *descr = (PyDescrObject *)self;
-    _PyObject_GC_UNTRACK(descr);
-    Py_XDECREF(descr->d_type);
-    Py_XDECREF(descr->d_name);
-    Py_XDECREF(descr->d_qualname);
+    _TyObject_GC_UNTRACK(descr);
+    Ty_XDECREF(descr->d_type);
+    Ty_XDECREF(descr->d_name);
+    Ty_XDECREF(descr->d_qualname);
     PyObject_GC_Del(descr);
 }
 
-static PyObject *
+static TyObject *
 descr_name(PyDescrObject *descr)
 {
-    if (descr->d_name != NULL && PyUnicode_Check(descr->d_name))
+    if (descr->d_name != NULL && TyUnicode_Check(descr->d_name))
         return descr->d_name;
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 descr_repr(PyDescrObject *descr, const char *format)
 {
-    PyObject *name = NULL;
-    if (descr->d_name != NULL && PyUnicode_Check(descr->d_name))
+    TyObject *name = NULL;
+    if (descr->d_name != NULL && TyUnicode_Check(descr->d_name))
         name = descr->d_name;
 
-    return PyUnicode_FromFormat(format, name, "?", descr->d_type->tp_name);
+    return TyUnicode_FromFormat(format, name, "?", descr->d_type->tp_name);
 }
 
-static PyObject *
-method_repr(PyObject *descr)
+static TyObject *
+method_repr(TyObject *descr)
 {
     return descr_repr((PyDescrObject *)descr,
                       "<method '%V' of '%s' objects>");
 }
 
-static PyObject *
-member_repr(PyObject *descr)
+static TyObject *
+member_repr(TyObject *descr)
 {
     return descr_repr((PyDescrObject *)descr,
                       "<member '%V' of '%s' objects>");
 }
 
-static PyObject *
-getset_repr(PyObject *descr)
+static TyObject *
+getset_repr(TyObject *descr)
 {
     return descr_repr((PyDescrObject *)descr,
                       "<attribute '%V' of '%s' objects>");
 }
 
-static PyObject *
-wrapperdescr_repr(PyObject *descr)
+static TyObject *
+wrapperdescr_repr(TyObject *descr)
 {
     return descr_repr((PyDescrObject *)descr,
                       "<slot wrapper '%V' of '%s' objects>");
 }
 
 static int
-descr_check(PyDescrObject *descr, PyObject *obj)
+descr_check(PyDescrObject *descr, TyObject *obj)
 {
     if (!PyObject_TypeCheck(obj, descr->d_type)) {
-        PyErr_Format(PyExc_TypeError,
+        TyErr_Format(TyExc_TypeError,
                      "descriptor '%V' for '%.100s' objects "
                      "doesn't apply to a '%.100s' object",
                      descr_name((PyDescrObject *)descr), "?",
                      descr->d_type->tp_name,
-                     Py_TYPE(obj)->tp_name);
+                     Ty_TYPE(obj)->tp_name);
         return -1;
     }
     return 0;
 }
 
-static PyObject *
-classmethod_get(PyObject *self, PyObject *obj, PyObject *type)
+static TyObject *
+classmethod_get(TyObject *self, TyObject *obj, TyObject *type)
 {
     PyMethodDescrObject *descr = (PyMethodDescrObject *)self;
     /* Ensure a valid type.  Class methods ignore obj. */
     if (type == NULL) {
         if (obj != NULL)
-            type = (PyObject *)Py_TYPE(obj);
+            type = (TyObject *)Ty_TYPE(obj);
         else {
             /* Wot - no type?! */
-            PyErr_Format(PyExc_TypeError,
+            TyErr_Format(TyExc_TypeError,
                          "descriptor '%V' for type '%.100s' "
                          "needs either an object or a type",
                          descr_name((PyDescrObject *)descr), "?",
@@ -109,49 +109,49 @@ classmethod_get(PyObject *self, PyObject *obj, PyObject *type)
             return NULL;
         }
     }
-    if (!PyType_Check(type)) {
-        PyErr_Format(PyExc_TypeError,
+    if (!TyType_Check(type)) {
+        TyErr_Format(TyExc_TypeError,
                      "descriptor '%V' for type '%.100s' "
                      "needs a type, not a '%.100s' as arg 2",
                      descr_name((PyDescrObject *)descr), "?",
                      PyDescr_TYPE(descr)->tp_name,
-                     Py_TYPE(type)->tp_name);
+                     Ty_TYPE(type)->tp_name);
         return NULL;
     }
-    if (!PyType_IsSubtype((PyTypeObject *)type, PyDescr_TYPE(descr))) {
-        PyErr_Format(PyExc_TypeError,
+    if (!TyType_IsSubtype((TyTypeObject *)type, PyDescr_TYPE(descr))) {
+        TyErr_Format(TyExc_TypeError,
                      "descriptor '%V' requires a subtype of '%.100s' "
                      "but received '%.100s'",
                      descr_name((PyDescrObject *)descr), "?",
                      PyDescr_TYPE(descr)->tp_name,
-                     ((PyTypeObject *)type)->tp_name);
+                     ((TyTypeObject *)type)->tp_name);
         return NULL;
     }
-    PyTypeObject *cls = NULL;
+    TyTypeObject *cls = NULL;
     if (descr->d_method->ml_flags & METH_METHOD) {
         cls = descr->d_common.d_type;
     }
     return PyCMethod_New(descr->d_method, type, NULL, cls);
 }
 
-static PyObject *
-method_get(PyObject *self, PyObject *obj, PyObject *type)
+static TyObject *
+method_get(TyObject *self, TyObject *obj, TyObject *type)
 {
     PyMethodDescrObject *descr = (PyMethodDescrObject *)self;
     if (obj == NULL) {
-        return Py_NewRef(descr);
+        return Ty_NewRef(descr);
     }
     if (descr_check((PyDescrObject *)descr, obj) < 0) {
         return NULL;
     }
     if (descr->d_method->ml_flags & METH_METHOD) {
-        if (type == NULL || PyType_Check(type)) {
+        if (type == NULL || TyType_Check(type)) {
             return PyCMethod_New(descr->d_method, obj, NULL, descr->d_common.d_type);
         } else {
-            PyErr_Format(PyExc_TypeError,
+            TyErr_Format(TyExc_TypeError,
                         "descriptor '%V' needs a type, not '%s', as arg 2",
                         descr_name((PyDescrObject *)descr),
-                        Py_TYPE(type)->tp_name);
+                        Ty_TYPE(type)->tp_name);
             return NULL;
         }
     } else {
@@ -159,20 +159,20 @@ method_get(PyObject *self, PyObject *obj, PyObject *type)
     }
 }
 
-static PyObject *
-member_get(PyObject *self, PyObject *obj, PyObject *type)
+static TyObject *
+member_get(TyObject *self, TyObject *obj, TyObject *type)
 {
     PyMemberDescrObject *descr = (PyMemberDescrObject *)self;
     if (obj == NULL) {
-        return Py_NewRef(descr);
+        return Ty_NewRef(descr);
     }
     if (descr_check((PyDescrObject *)descr, obj) < 0) {
         return NULL;
     }
 
-    if (descr->d_member->flags & Py_AUDIT_READ) {
-        if (PySys_Audit("object.__getattr__", "Os",
-            obj ? obj : Py_None, descr->d_member->name) < 0) {
+    if (descr->d_member->flags & Ty_AUDIT_READ) {
+        if (TySys_Audit("object.__getattr__", "Os",
+            obj ? obj : Ty_None, descr->d_member->name) < 0) {
             return NULL;
         }
     }
@@ -180,12 +180,12 @@ member_get(PyObject *self, PyObject *obj, PyObject *type)
     return PyMember_GetOne((char *)obj, descr->d_member);
 }
 
-static PyObject *
-getset_get(PyObject *self, PyObject *obj, PyObject *type)
+static TyObject *
+getset_get(TyObject *self, TyObject *obj, TyObject *type)
 {
     PyGetSetDescrObject *descr = (PyGetSetDescrObject *)self;
     if (obj == NULL) {
-        return Py_NewRef(descr);
+        return Ty_NewRef(descr);
     }
     if (descr_check((PyDescrObject *)descr, obj) < 0) {
         return NULL;
@@ -193,44 +193,44 @@ getset_get(PyObject *self, PyObject *obj, PyObject *type)
     if (descr->d_getset->get != NULL)
         return descr_get_trampoline_call(
             descr->d_getset->get, obj, descr->d_getset->closure);
-    PyErr_Format(PyExc_AttributeError,
+    TyErr_Format(TyExc_AttributeError,
                  "attribute '%V' of '%.100s' objects is not readable",
                  descr_name((PyDescrObject *)descr), "?",
                  PyDescr_TYPE(descr)->tp_name);
     return NULL;
 }
 
-static PyObject *
-wrapperdescr_get(PyObject *self, PyObject *obj, PyObject *type)
+static TyObject *
+wrapperdescr_get(TyObject *self, TyObject *obj, TyObject *type)
 {
     PyWrapperDescrObject *descr = (PyWrapperDescrObject *)self;
     if (obj == NULL) {
-        return Py_NewRef(descr);
+        return Ty_NewRef(descr);
     }
     if (descr_check((PyDescrObject *)descr, obj) < 0) {
         return NULL;
     }
-    return PyWrapper_New((PyObject *)descr, obj);
+    return TyWrapper_New((TyObject *)descr, obj);
 }
 
 static int
-descr_setcheck(PyDescrObject *descr, PyObject *obj, PyObject *value)
+descr_setcheck(PyDescrObject *descr, TyObject *obj, TyObject *value)
 {
     assert(obj != NULL);
     if (!PyObject_TypeCheck(obj, descr->d_type)) {
-        PyErr_Format(PyExc_TypeError,
+        TyErr_Format(TyExc_TypeError,
                      "descriptor '%V' for '%.100s' objects "
                      "doesn't apply to a '%.100s' object",
                      descr_name(descr), "?",
                      descr->d_type->tp_name,
-                     Py_TYPE(obj)->tp_name);
+                     Ty_TYPE(obj)->tp_name);
         return -1;
     }
     return 0;
 }
 
 static int
-member_set(PyObject *self, PyObject *obj, PyObject *value)
+member_set(TyObject *self, TyObject *obj, TyObject *value)
 {
     PyMemberDescrObject *descr = (PyMemberDescrObject *)self;
     if (descr_setcheck((PyDescrObject *)descr, obj, value) < 0) {
@@ -240,7 +240,7 @@ member_set(PyObject *self, PyObject *obj, PyObject *value)
 }
 
 static int
-getset_set(PyObject *self, PyObject *obj, PyObject *value)
+getset_set(TyObject *self, TyObject *obj, TyObject *value)
 {
     PyGetSetDescrObject *descr = (PyGetSetDescrObject *)self;
     if (descr_setcheck((PyDescrObject *)descr, obj, value) < 0) {
@@ -251,7 +251,7 @@ getset_set(PyObject *self, PyObject *obj, PyObject *value)
             descr->d_getset->set, obj, value,
             descr->d_getset->closure);
     }
-    PyErr_Format(PyExc_AttributeError,
+    TyErr_Format(TyExc_AttributeError,
                  "attribute '%V' of '%.100s' objects is not writable",
                  descr_name((PyDescrObject *)descr), "?",
                  PyDescr_TYPE(descr)->tp_name);
@@ -264,28 +264,28 @@ getset_set(PyObject *self, PyObject *obj, PyObject *value)
  * First, common helpers
  */
 static inline int
-method_check_args(PyObject *func, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+method_check_args(TyObject *func, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     if (nargs < 1) {
-        PyObject *funcstr = _PyObject_FunctionStr(func);
+        TyObject *funcstr = _TyObject_FunctionStr(func);
         if (funcstr != NULL) {
-            PyErr_Format(PyExc_TypeError,
+            TyErr_Format(TyExc_TypeError,
                          "unbound method %U needs an argument", funcstr);
-            Py_DECREF(funcstr);
+            Ty_DECREF(funcstr);
         }
         return -1;
     }
-    PyObject *self = args[0];
+    TyObject *self = args[0];
     if (descr_check((PyDescrObject *)func, self) < 0) {
         return -1;
     }
-    if (kwnames && PyTuple_GET_SIZE(kwnames)) {
-        PyObject *funcstr = _PyObject_FunctionStr(func);
+    if (kwnames && TyTuple_GET_SIZE(kwnames)) {
+        TyObject *funcstr = _TyObject_FunctionStr(func);
         if (funcstr != NULL) {
-            PyErr_Format(PyExc_TypeError,
+            TyErr_Format(TyExc_TypeError,
                          "%U takes no keyword arguments", funcstr);
-            Py_DECREF(funcstr);
+            Ty_DECREF(funcstr);
         }
         return -1;
     }
@@ -295,57 +295,57 @@ method_check_args(PyObject *func, PyObject *const *args, Py_ssize_t nargs, PyObj
 typedef void (*funcptr)(void);
 
 static inline funcptr
-method_enter_call(PyThreadState *tstate, PyObject *func)
+method_enter_call(TyThreadState *tstate, TyObject *func)
 {
-    if (_Py_EnterRecursiveCallTstate(tstate, " while calling a Python object")) {
+    if (_Ty_EnterRecursiveCallTstate(tstate, " while calling a Python object")) {
         return NULL;
     }
     return (funcptr)((PyMethodDescrObject *)func)->d_method->ml_meth;
 }
 
 /* Now the actual vectorcall functions */
-static PyObject *
+static TyObject *
 method_vectorcall_VARARGS(
-    PyObject *func, PyObject *const *args, size_t nargsf, PyObject *kwnames)
+    TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
-    Py_ssize_t nargs = PyVectorcall_NARGS(nargsf);
+    TyThreadState *tstate = _TyThreadState_GET();
+    Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, kwnames)) {
         return NULL;
     }
-    PyObject *argstuple = _PyTuple_FromArray(args+1, nargs-1);
+    TyObject *argstuple = _TyTuple_FromArray(args+1, nargs-1);
     if (argstuple == NULL) {
         return NULL;
     }
     PyCFunction meth = (PyCFunction)method_enter_call(tstate, func);
     if (meth == NULL) {
-        Py_DECREF(argstuple);
+        Ty_DECREF(argstuple);
         return NULL;
     }
-    PyObject *result = _PyCFunction_TrampolineCall(
+    TyObject *result = _PyCFunction_TrampolineCall(
         meth, args[0], argstuple);
-    Py_DECREF(argstuple);
-    _Py_LeaveRecursiveCallTstate(tstate);
+    Ty_DECREF(argstuple);
+    _Ty_LeaveRecursiveCallTstate(tstate);
     return result;
 }
 
-static PyObject *
+static TyObject *
 method_vectorcall_VARARGS_KEYWORDS(
-    PyObject *func, PyObject *const *args, size_t nargsf, PyObject *kwnames)
+    TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
-    Py_ssize_t nargs = PyVectorcall_NARGS(nargsf);
+    TyThreadState *tstate = _TyThreadState_GET();
+    Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, NULL)) {
         return NULL;
     }
-    PyObject *argstuple = _PyTuple_FromArray(args+1, nargs-1);
+    TyObject *argstuple = _TyTuple_FromArray(args+1, nargs-1);
     if (argstuple == NULL) {
         return NULL;
     }
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     /* Create a temporary dict for keyword arguments */
-    PyObject *kwdict = NULL;
-    if (kwnames != NULL && PyTuple_GET_SIZE(kwnames) > 0) {
+    TyObject *kwdict = NULL;
+    if (kwnames != NULL && TyTuple_GET_SIZE(kwnames) > 0) {
         kwdict = _PyStack_AsDict(args + nargs, kwnames);
         if (kwdict == NULL) {
             goto exit;
@@ -358,19 +358,19 @@ method_vectorcall_VARARGS_KEYWORDS(
     }
     result = _PyCFunctionWithKeywords_TrampolineCall(
         meth, args[0], argstuple, kwdict);
-    _Py_LeaveRecursiveCallTstate(tstate);
+    _Ty_LeaveRecursiveCallTstate(tstate);
 exit:
-    Py_DECREF(argstuple);
-    Py_XDECREF(kwdict);
+    Ty_DECREF(argstuple);
+    Ty_XDECREF(kwdict);
     return result;
 }
 
-static PyObject *
+static TyObject *
 method_vectorcall_FASTCALL_KEYWORDS_METHOD(
-    PyObject *func, PyObject *const *args, size_t nargsf, PyObject *kwnames)
+    TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
-    Py_ssize_t nargs = PyVectorcall_NARGS(nargsf);
+    TyThreadState *tstate = _TyThreadState_GET();
+    Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, NULL)) {
         return NULL;
     }
@@ -378,19 +378,19 @@ method_vectorcall_FASTCALL_KEYWORDS_METHOD(
     if (meth == NULL) {
         return NULL;
     }
-    PyObject *result = meth(args[0],
+    TyObject *result = meth(args[0],
                             ((PyMethodDescrObject *)func)->d_common.d_type,
                             args+1, nargs-1, kwnames);
-    _Py_LeaveRecursiveCall();
+    _Ty_LeaveRecursiveCall();
     return result;
 }
 
-static PyObject *
+static TyObject *
 method_vectorcall_FASTCALL(
-    PyObject *func, PyObject *const *args, size_t nargsf, PyObject *kwnames)
+    TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
-    Py_ssize_t nargs = PyVectorcall_NARGS(nargsf);
+    TyThreadState *tstate = _TyThreadState_GET();
+    Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, kwnames)) {
         return NULL;
     }
@@ -399,17 +399,17 @@ method_vectorcall_FASTCALL(
     if (meth == NULL) {
         return NULL;
     }
-    PyObject *result = meth(args[0], args+1, nargs-1);
-    _Py_LeaveRecursiveCallTstate(tstate);
+    TyObject *result = meth(args[0], args+1, nargs-1);
+    _Ty_LeaveRecursiveCallTstate(tstate);
     return result;
 }
 
-static PyObject *
+static TyObject *
 method_vectorcall_FASTCALL_KEYWORDS(
-    PyObject *func, PyObject *const *args, size_t nargsf, PyObject *kwnames)
+    TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
-    Py_ssize_t nargs = PyVectorcall_NARGS(nargsf);
+    TyThreadState *tstate = _TyThreadState_GET();
+    Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, NULL)) {
         return NULL;
     }
@@ -418,26 +418,26 @@ method_vectorcall_FASTCALL_KEYWORDS(
     if (meth == NULL) {
         return NULL;
     }
-    PyObject *result = meth(args[0], args+1, nargs-1, kwnames);
-    _Py_LeaveRecursiveCallTstate(tstate);
+    TyObject *result = meth(args[0], args+1, nargs-1, kwnames);
+    _Ty_LeaveRecursiveCallTstate(tstate);
     return result;
 }
 
-static PyObject *
+static TyObject *
 method_vectorcall_NOARGS(
-    PyObject *func, PyObject *const *args, size_t nargsf, PyObject *kwnames)
+    TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
-    Py_ssize_t nargs = PyVectorcall_NARGS(nargsf);
+    TyThreadState *tstate = _TyThreadState_GET();
+    Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, kwnames)) {
         return NULL;
     }
     if (nargs != 1) {
-        PyObject *funcstr = _PyObject_FunctionStr(func);
+        TyObject *funcstr = _TyObject_FunctionStr(func);
         if (funcstr != NULL) {
-            PyErr_Format(PyExc_TypeError,
+            TyErr_Format(TyExc_TypeError,
                 "%U takes no arguments (%zd given)", funcstr, nargs-1);
-            Py_DECREF(funcstr);
+            Ty_DECREF(funcstr);
         }
         return NULL;
     }
@@ -445,27 +445,27 @@ method_vectorcall_NOARGS(
     if (meth == NULL) {
         return NULL;
     }
-    PyObject *result = _PyCFunction_TrampolineCall(meth, args[0], NULL);
-    _Py_LeaveRecursiveCallTstate(tstate);
+    TyObject *result = _PyCFunction_TrampolineCall(meth, args[0], NULL);
+    _Ty_LeaveRecursiveCallTstate(tstate);
     return result;
 }
 
-static PyObject *
+static TyObject *
 method_vectorcall_O(
-    PyObject *func, PyObject *const *args, size_t nargsf, PyObject *kwnames)
+    TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
-    Py_ssize_t nargs = PyVectorcall_NARGS(nargsf);
+    TyThreadState *tstate = _TyThreadState_GET();
+    Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, kwnames)) {
         return NULL;
     }
     if (nargs != 2) {
-        PyObject *funcstr = _PyObject_FunctionStr(func);
+        TyObject *funcstr = _TyObject_FunctionStr(func);
         if (funcstr != NULL) {
-            PyErr_Format(PyExc_TypeError,
+            TyErr_Format(TyExc_TypeError,
                 "%U takes exactly one argument (%zd given)",
                 funcstr, nargs-1);
-            Py_DECREF(funcstr);
+            Ty_DECREF(funcstr);
         }
         return NULL;
     }
@@ -473,8 +473,8 @@ method_vectorcall_O(
     if (meth == NULL) {
         return NULL;
     }
-    PyObject *result = _PyCFunction_TrampolineCall(meth, args[0], args[1]);
-    _Py_LeaveRecursiveCallTstate(tstate);
+    TyObject *result = _PyCFunction_TrampolineCall(meth, args[0], args[1]);
+    _Ty_LeaveRecursiveCallTstate(tstate);
     return result;
 }
 
@@ -487,44 +487,44 @@ method_vectorcall_O(
    This is just an excuse to say that this doesn't need to be optimized:
    we implement this simply by calling __get__ and then calling the result.
 */
-static PyObject *
-classmethoddescr_call(PyObject *_descr, PyObject *args,
-                      PyObject *kwds)
+static TyObject *
+classmethoddescr_call(TyObject *_descr, TyObject *args,
+                      TyObject *kwds)
 {
     PyMethodDescrObject *descr = (PyMethodDescrObject *)_descr;
-    Py_ssize_t argc = PyTuple_GET_SIZE(args);
+    Ty_ssize_t argc = TyTuple_GET_SIZE(args);
     if (argc < 1) {
-        PyErr_Format(PyExc_TypeError,
+        TyErr_Format(TyExc_TypeError,
                      "descriptor '%V' of '%.100s' "
                      "object needs an argument",
                      descr_name((PyDescrObject *)descr), "?",
                      PyDescr_TYPE(descr)->tp_name);
         return NULL;
     }
-    PyObject *self = PyTuple_GET_ITEM(args, 0);
-    PyObject *bound = classmethod_get((PyObject *)descr, NULL, self);
+    TyObject *self = TyTuple_GET_ITEM(args, 0);
+    TyObject *bound = classmethod_get((TyObject *)descr, NULL, self);
     if (bound == NULL) {
         return NULL;
     }
-    PyObject *res = PyObject_VectorcallDict(bound, _PyTuple_ITEMS(args)+1,
+    TyObject *res = PyObject_VectorcallDict(bound, _TyTuple_ITEMS(args)+1,
                                            argc-1, kwds);
-    Py_DECREF(bound);
+    Ty_DECREF(bound);
     return res;
 }
 
-Py_LOCAL_INLINE(PyObject *)
-wrapperdescr_raw_call(PyWrapperDescrObject *descr, PyObject *self,
-                      PyObject *args, PyObject *kwds)
+Ty_LOCAL_INLINE(TyObject *)
+wrapperdescr_raw_call(PyWrapperDescrObject *descr, TyObject *self,
+                      TyObject *args, TyObject *kwds)
 {
     wrapperfunc wrapper = descr->d_base->wrapper;
 
     if (descr->d_base->flags & PyWrapperFlag_KEYWORDS) {
-        wrapperfunc_kwds wk = _Py_FUNC_CAST(wrapperfunc_kwds, wrapper);
+        wrapperfunc_kwds wk = _Ty_FUNC_CAST(wrapperfunc_kwds, wrapper);
         return (*wk)(self, args, descr->d_wrapped, kwds);
     }
 
-    if (kwds != NULL && (!PyDict_Check(kwds) || PyDict_GET_SIZE(kwds) != 0)) {
-        PyErr_Format(PyExc_TypeError,
+    if (kwds != NULL && (!TyDict_Check(kwds) || TyDict_GET_SIZE(kwds) != 0)) {
+        TyErr_Format(TyExc_TypeError,
                      "wrapper %s() takes no keyword arguments",
                      descr->d_base->name);
         return NULL;
@@ -532,174 +532,174 @@ wrapperdescr_raw_call(PyWrapperDescrObject *descr, PyObject *self,
     return (*wrapper)(self, args, descr->d_wrapped);
 }
 
-static PyObject *
-wrapperdescr_call(PyObject *_descr, PyObject *args, PyObject *kwds)
+static TyObject *
+wrapperdescr_call(TyObject *_descr, TyObject *args, TyObject *kwds)
 {
     PyWrapperDescrObject *descr = (PyWrapperDescrObject *)_descr;
-    Py_ssize_t argc;
-    PyObject *self, *result;
+    Ty_ssize_t argc;
+    TyObject *self, *result;
 
     /* Make sure that the first argument is acceptable as 'self' */
-    assert(PyTuple_Check(args));
-    argc = PyTuple_GET_SIZE(args);
+    assert(TyTuple_Check(args));
+    argc = TyTuple_GET_SIZE(args);
     if (argc < 1) {
-        PyErr_Format(PyExc_TypeError,
+        TyErr_Format(TyExc_TypeError,
                      "descriptor '%V' of '%.100s' "
                      "object needs an argument",
                      descr_name((PyDescrObject *)descr), "?",
                      PyDescr_TYPE(descr)->tp_name);
         return NULL;
     }
-    self = PyTuple_GET_ITEM(args, 0);
-    if (!_PyObject_RealIsSubclass((PyObject *)Py_TYPE(self),
-                                  (PyObject *)PyDescr_TYPE(descr))) {
-        PyErr_Format(PyExc_TypeError,
+    self = TyTuple_GET_ITEM(args, 0);
+    if (!_TyObject_RealIsSubclass((TyObject *)Ty_TYPE(self),
+                                  (TyObject *)PyDescr_TYPE(descr))) {
+        TyErr_Format(TyExc_TypeError,
                      "descriptor '%V' "
                      "requires a '%.100s' object "
                      "but received a '%.100s'",
                      descr_name((PyDescrObject *)descr), "?",
                      PyDescr_TYPE(descr)->tp_name,
-                     Py_TYPE(self)->tp_name);
+                     Ty_TYPE(self)->tp_name);
         return NULL;
     }
 
-    args = PyTuple_GetSlice(args, 1, argc);
+    args = TyTuple_GetSlice(args, 1, argc);
     if (args == NULL) {
         return NULL;
     }
     result = wrapperdescr_raw_call(descr, self, args, kwds);
-    Py_DECREF(args);
+    Ty_DECREF(args);
     return result;
 }
 
 
-static PyObject *
-method_get_doc(PyObject *_descr, void *closure)
+static TyObject *
+method_get_doc(TyObject *_descr, void *closure)
 {
     PyMethodDescrObject *descr = (PyMethodDescrObject *)_descr;
-    return _PyType_GetDocFromInternalDoc(descr->d_method->ml_name, descr->d_method->ml_doc);
+    return _TyType_GetDocFromInternalDoc(descr->d_method->ml_name, descr->d_method->ml_doc);
 }
 
-static PyObject *
-method_get_text_signature(PyObject *_descr, void *closure)
+static TyObject *
+method_get_text_signature(TyObject *_descr, void *closure)
 {
     PyMethodDescrObject *descr = (PyMethodDescrObject *)_descr;
-    return _PyType_GetTextSignatureFromInternalDoc(descr->d_method->ml_name,
+    return _TyType_GetTextSignatureFromInternalDoc(descr->d_method->ml_name,
                                                    descr->d_method->ml_doc,
                                                    descr->d_method->ml_flags);
 }
 
-static PyObject *
+static TyObject *
 calculate_qualname(PyDescrObject *descr)
 {
-    PyObject *type_qualname, *res;
+    TyObject *type_qualname, *res;
 
-    if (descr->d_name == NULL || !PyUnicode_Check(descr->d_name)) {
-        PyErr_SetString(PyExc_TypeError,
+    if (descr->d_name == NULL || !TyUnicode_Check(descr->d_name)) {
+        TyErr_SetString(TyExc_TypeError,
                         "<descriptor>.__name__ is not a unicode object");
         return NULL;
     }
 
     type_qualname = PyObject_GetAttr(
-            (PyObject *)descr->d_type, &_Py_ID(__qualname__));
+            (TyObject *)descr->d_type, &_Ty_ID(__qualname__));
     if (type_qualname == NULL)
         return NULL;
 
-    if (!PyUnicode_Check(type_qualname)) {
-        PyErr_SetString(PyExc_TypeError, "<descriptor>.__objclass__."
+    if (!TyUnicode_Check(type_qualname)) {
+        TyErr_SetString(TyExc_TypeError, "<descriptor>.__objclass__."
                         "__qualname__ is not a unicode object");
-        Py_XDECREF(type_qualname);
+        Ty_XDECREF(type_qualname);
         return NULL;
     }
 
-    res = PyUnicode_FromFormat("%S.%S", type_qualname, descr->d_name);
-    Py_DECREF(type_qualname);
+    res = TyUnicode_FromFormat("%S.%S", type_qualname, descr->d_name);
+    Ty_DECREF(type_qualname);
     return res;
 }
 
-static PyObject *
-descr_get_qualname(PyObject *self, void *Py_UNUSED(ignored))
+static TyObject *
+descr_get_qualname(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyDescrObject *descr = (PyDescrObject *)self;
     if (descr->d_qualname == NULL)
         descr->d_qualname = calculate_qualname(descr);
-    return Py_XNewRef(descr->d_qualname);
+    return Ty_XNewRef(descr->d_qualname);
 }
 
-static PyObject *
-descr_reduce(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+descr_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     PyDescrObject *descr = (PyDescrObject *)self;
-    return Py_BuildValue("N(OO)", _PyEval_GetBuiltin(&_Py_ID(getattr)),
+    return Ty_BuildValue("N(OO)", _TyEval_GetBuiltin(&_Ty_ID(getattr)),
                          PyDescr_TYPE(descr), PyDescr_NAME(descr));
 }
 
-static PyMethodDef descr_methods[] = {
+static TyMethodDef descr_methods[] = {
     {"__reduce__", descr_reduce, METH_NOARGS, NULL},
     {NULL, NULL}
 };
 
-static PyMemberDef descr_members[] = {
-    {"__objclass__", _Py_T_OBJECT, offsetof(PyDescrObject, d_type), Py_READONLY},
-    {"__name__", _Py_T_OBJECT, offsetof(PyDescrObject, d_name), Py_READONLY},
+static TyMemberDef descr_members[] = {
+    {"__objclass__", _Ty_T_OBJECT, offsetof(PyDescrObject, d_type), Py_READONLY},
+    {"__name__", _Ty_T_OBJECT, offsetof(PyDescrObject, d_name), Py_READONLY},
     {0}
 };
 
-static PyGetSetDef method_getset[] = {
+static TyGetSetDef method_getset[] = {
     {"__doc__", method_get_doc},
     {"__qualname__", descr_get_qualname},
     {"__text_signature__", method_get_text_signature},
     {0}
 };
 
-static PyObject *
-member_get_doc(PyObject *_descr, void *closure)
+static TyObject *
+member_get_doc(TyObject *_descr, void *closure)
 {
     PyMemberDescrObject *descr = (PyMemberDescrObject *)_descr;
     if (descr->d_member->doc == NULL) {
         Py_RETURN_NONE;
     }
-    return PyUnicode_FromString(descr->d_member->doc);
+    return TyUnicode_FromString(descr->d_member->doc);
 }
 
-static PyGetSetDef member_getset[] = {
+static TyGetSetDef member_getset[] = {
     {"__doc__", member_get_doc},
     {"__qualname__", descr_get_qualname},
     {0}
 };
 
-static PyObject *
-getset_get_doc(PyObject *self, void *closure)
+static TyObject *
+getset_get_doc(TyObject *self, void *closure)
 {
     PyGetSetDescrObject *descr = (PyGetSetDescrObject *)self;
     if (descr->d_getset->doc == NULL) {
         Py_RETURN_NONE;
     }
-    return PyUnicode_FromString(descr->d_getset->doc);
+    return TyUnicode_FromString(descr->d_getset->doc);
 }
 
-static PyGetSetDef getset_getset[] = {
+static TyGetSetDef getset_getset[] = {
     {"__doc__", getset_get_doc},
     {"__qualname__", descr_get_qualname},
     {0}
 };
 
-static PyObject *
-wrapperdescr_get_doc(PyObject *self, void *closure)
+static TyObject *
+wrapperdescr_get_doc(TyObject *self, void *closure)
 {
     PyWrapperDescrObject *descr = (PyWrapperDescrObject *)self;
-    return _PyType_GetDocFromInternalDoc(descr->d_base->name, descr->d_base->doc);
+    return _TyType_GetDocFromInternalDoc(descr->d_base->name, descr->d_base->doc);
 }
 
-static PyObject *
-wrapperdescr_get_text_signature(PyObject *self, void *closure)
+static TyObject *
+wrapperdescr_get_text_signature(TyObject *self, void *closure)
 {
     PyWrapperDescrObject *descr = (PyWrapperDescrObject *)self;
-    return _PyType_GetTextSignatureFromInternalDoc(descr->d_base->name,
+    return _TyType_GetTextSignatureFromInternalDoc(descr->d_base->name,
                                                    descr->d_base->doc, 0);
 }
 
-static PyGetSetDef wrapperdescr_getset[] = {
+static TyGetSetDef wrapperdescr_getset[] = {
     {"__doc__", wrapperdescr_get_doc},
     {"__qualname__", descr_get_qualname},
     {"__text_signature__", wrapperdescr_get_text_signature},
@@ -707,15 +707,15 @@ static PyGetSetDef wrapperdescr_getset[] = {
 };
 
 static int
-descr_traverse(PyObject *self, visitproc visit, void *arg)
+descr_traverse(TyObject *self, visitproc visit, void *arg)
 {
     PyDescrObject *descr = (PyDescrObject *)self;
-    Py_VISIT(descr->d_type);
+    Ty_VISIT(descr->d_type);
     return 0;
 }
 
-PyTypeObject PyMethodDescr_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyMethodDescr_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "method_descriptor",
     sizeof(PyMethodDescrObject),
     0,
@@ -734,9 +734,9 @@ PyTypeObject PyMethodDescr_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-    Py_TPFLAGS_HAVE_VECTORCALL |
-    Py_TPFLAGS_METHOD_DESCRIPTOR,               /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC |
+    Ty_TPFLAGS_HAVE_VECTORCALL |
+    Ty_TPFLAGS_METHOD_DESCRIPTOR,               /* tp_flags */
     0,                                          /* tp_doc */
     descr_traverse,                             /* tp_traverse */
     0,                                          /* tp_clear */
@@ -754,8 +754,8 @@ PyTypeObject PyMethodDescr_Type = {
 };
 
 /* This is for METH_CLASS in C, not for "f = classmethod(f)" in Python! */
-PyTypeObject PyClassMethodDescr_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyClassMethodDescr_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "classmethod_descriptor",
     sizeof(PyMethodDescrObject),
     0,
@@ -774,7 +774,7 @@ PyTypeObject PyClassMethodDescr_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC, /* tp_flags */
     0,                                          /* tp_doc */
     descr_traverse,                             /* tp_traverse */
     0,                                          /* tp_clear */
@@ -791,8 +791,8 @@ PyTypeObject PyClassMethodDescr_Type = {
     0,                                          /* tp_descr_set */
 };
 
-PyTypeObject PyMemberDescr_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyMemberDescr_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "member_descriptor",
     sizeof(PyMemberDescrObject),
     0,
@@ -811,7 +811,7 @@ PyTypeObject PyMemberDescr_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC, /* tp_flags */
     0,                                          /* tp_doc */
     descr_traverse,                             /* tp_traverse */
     0,                                          /* tp_clear */
@@ -828,8 +828,8 @@ PyTypeObject PyMemberDescr_Type = {
     member_set,                                 /* tp_descr_set */
 };
 
-PyTypeObject PyGetSetDescr_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyGetSetDescr_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "getset_descriptor",
     sizeof(PyGetSetDescrObject),
     0,
@@ -848,7 +848,7 @@ PyTypeObject PyGetSetDescr_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC, /* tp_flags */
     0,                                          /* tp_doc */
     descr_traverse,                             /* tp_traverse */
     0,                                          /* tp_clear */
@@ -865,8 +865,8 @@ PyTypeObject PyGetSetDescr_Type = {
     getset_set,                                 /* tp_descr_set */
 };
 
-PyTypeObject PyWrapperDescr_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyWrapperDescr_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "wrapper_descriptor",
     sizeof(PyWrapperDescrObject),
     0,
@@ -885,8 +885,8 @@ PyTypeObject PyWrapperDescr_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-    Py_TPFLAGS_METHOD_DESCRIPTOR,               /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC |
+    Ty_TPFLAGS_METHOD_DESCRIPTOR,               /* tp_flags */
     0,                                          /* tp_doc */
     descr_traverse,                             /* tp_traverse */
     0,                                          /* tp_clear */
@@ -904,17 +904,17 @@ PyTypeObject PyWrapperDescr_Type = {
 };
 
 static PyDescrObject *
-descr_new(PyTypeObject *descrtype, PyTypeObject *type, const char *name)
+descr_new(TyTypeObject *descrtype, TyTypeObject *type, const char *name)
 {
     PyDescrObject *descr;
 
-    descr = (PyDescrObject *)PyType_GenericAlloc(descrtype, 0);
+    descr = (PyDescrObject *)TyType_GenericAlloc(descrtype, 0);
     if (descr != NULL) {
-        _PyObject_SetDeferredRefcount((PyObject *)descr);
-        descr->d_type = (PyTypeObject*)Py_XNewRef(type);
-        descr->d_name = PyUnicode_InternFromString(name);
+        _TyObject_SetDeferredRefcount((TyObject *)descr);
+        descr->d_type = (TyTypeObject*)Ty_XNewRef(type);
+        descr->d_name = TyUnicode_InternFromString(name);
         if (descr->d_name == NULL) {
-            Py_SETREF(descr, NULL);
+            Ty_SETREF(descr, NULL);
         }
         else {
             descr->d_qualname = NULL;
@@ -923,8 +923,8 @@ descr_new(PyTypeObject *descrtype, PyTypeObject *type, const char *name)
     return descr;
 }
 
-PyObject *
-PyDescr_NewMethod(PyTypeObject *type, PyMethodDef *method)
+TyObject *
+PyDescr_NewMethod(TyTypeObject *type, TyMethodDef *method)
 {
     /* Figure out correct vectorcall function to use */
     vectorcallfunc vectorcall;
@@ -953,7 +953,7 @@ PyDescr_NewMethod(PyTypeObject *type, PyMethodDef *method)
             vectorcall = method_vectorcall_FASTCALL_KEYWORDS_METHOD;
             break;
         default:
-            PyErr_Format(PyExc_SystemError,
+            TyErr_Format(TyExc_SystemError,
                          "%s() method: bad call flags", method->ml_name);
             return NULL;
     }
@@ -966,11 +966,11 @@ PyDescr_NewMethod(PyTypeObject *type, PyMethodDef *method)
         descr->d_method = method;
         descr->vectorcall = vectorcall;
     }
-    return (PyObject *)descr;
+    return (TyObject *)descr;
 }
 
-PyObject *
-PyDescr_NewClassMethod(PyTypeObject *type, PyMethodDef *method)
+TyObject *
+PyDescr_NewClassMethod(TyTypeObject *type, TyMethodDef *method)
 {
     PyMethodDescrObject *descr;
 
@@ -978,29 +978,29 @@ PyDescr_NewClassMethod(PyTypeObject *type, PyMethodDef *method)
                                              type, method->ml_name);
     if (descr != NULL)
         descr->d_method = method;
-    return (PyObject *)descr;
+    return (TyObject *)descr;
 }
 
-PyObject *
-PyDescr_NewMember(PyTypeObject *type, PyMemberDef *member)
+TyObject *
+PyDescr_NewMember(TyTypeObject *type, TyMemberDef *member)
 {
     PyMemberDescrObject *descr;
 
-    if (member->flags & Py_RELATIVE_OFFSET) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "PyDescr_NewMember used with Py_RELATIVE_OFFSET");
+    if (member->flags & Ty_RELATIVE_OFFSET) {
+        TyErr_SetString(
+            TyExc_SystemError,
+            "PyDescr_NewMember used with Ty_RELATIVE_OFFSET");
         return NULL;
     }
     descr = (PyMemberDescrObject *)descr_new(&PyMemberDescr_Type,
                                              type, member->name);
     if (descr != NULL)
         descr->d_member = member;
-    return (PyObject *)descr;
+    return (TyObject *)descr;
 }
 
-PyObject *
-PyDescr_NewGetSet(PyTypeObject *type, PyGetSetDef *getset)
+TyObject *
+PyDescr_NewGetSet(TyTypeObject *type, TyGetSetDef *getset)
 {
     PyGetSetDescrObject *descr;
 
@@ -1008,11 +1008,11 @@ PyDescr_NewGetSet(PyTypeObject *type, PyGetSetDef *getset)
                                              type, getset->name);
     if (descr != NULL)
         descr->d_getset = getset;
-    return (PyObject *)descr;
+    return (TyObject *)descr;
 }
 
-PyObject *
-PyDescr_NewWrapper(PyTypeObject *type, struct wrapperbase *base, void *wrapped)
+TyObject *
+PyDescr_NewWrapper(TyTypeObject *type, struct wrapperbase *base, void *wrapped)
 {
     PyWrapperDescrObject *descr;
 
@@ -1022,13 +1022,13 @@ PyDescr_NewWrapper(PyTypeObject *type, struct wrapperbase *base, void *wrapped)
         descr->d_base = base;
         descr->d_wrapped = wrapped;
     }
-    return (PyObject *)descr;
+    return (TyObject *)descr;
 }
 
 int
-PyDescr_IsData(PyObject *ob)
+PyDescr_IsData(TyObject *ob)
 {
-    return Py_TYPE(ob)->tp_descr_set != NULL;
+    return Ty_TYPE(ob)->tp_descr_set != NULL;
 }
 
 /* --- mappingproxy: read-only proxy for mappings --- */
@@ -1038,18 +1038,18 @@ PyDescr_IsData(PyObject *ob)
 
 typedef struct {
     PyObject_HEAD
-    PyObject *mapping;
+    TyObject *mapping;
 } mappingproxyobject;
 
-static Py_ssize_t
-mappingproxy_len(PyObject *self)
+static Ty_ssize_t
+mappingproxy_len(TyObject *self)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_Size(pp->mapping);
 }
 
-static PyObject *
-mappingproxy_getitem(PyObject *self, PyObject *key)
+static TyObject *
+mappingproxy_getitem(TyObject *self, TyObject *key)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_GetItem(pp->mapping, key);
@@ -1061,8 +1061,8 @@ static PyMappingMethods mappingproxy_as_mapping = {
     0,                                          /* mp_ass_subscript */
 };
 
-static PyObject *
-mappingproxy_or(PyObject *left, PyObject *right)
+static TyObject *
+mappingproxy_or(TyObject *left, TyObject *right)
 {
     if (PyObject_TypeCheck(left, &PyDictProxy_Type)) {
         left = ((mappingproxyobject*)left)->mapping;
@@ -1073,24 +1073,24 @@ mappingproxy_or(PyObject *left, PyObject *right)
     return PyNumber_Or(left, right);
 }
 
-static PyObject *
-mappingproxy_ior(PyObject *self, PyObject *Py_UNUSED(other))
+static TyObject *
+mappingproxy_ior(TyObject *self, TyObject *Py_UNUSED(other))
 {
-    return PyErr_Format(PyExc_TypeError,
-        "'|=' is not supported by %s; use '|' instead", Py_TYPE(self)->tp_name);
+    return TyErr_Format(TyExc_TypeError,
+        "'|=' is not supported by %s; use '|' instead", Ty_TYPE(self)->tp_name);
 }
 
-static PyNumberMethods mappingproxy_as_number = {
+static TyNumberMethods mappingproxy_as_number = {
     .nb_or = mappingproxy_or,
     .nb_inplace_or = mappingproxy_ior,
 };
 
 static int
-mappingproxy_contains(PyObject *self, PyObject *key)
+mappingproxy_contains(TyObject *self, TyObject *key)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
-    if (PyDict_CheckExact(pp->mapping))
-        return PyDict_Contains(pp->mapping, key);
+    if (TyDict_CheckExact(pp->mapping))
+        return TyDict_Contains(pp->mapping, key);
     else
         return PySequence_Contains(pp->mapping, key);
 }
@@ -1108,143 +1108,143 @@ static PySequenceMethods mappingproxy_as_sequence = {
     0,                                          /* sq_inplace_repeat */
 };
 
-static PyObject *
-mappingproxy_get(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+mappingproxy_get(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     /* newargs: mapping, key, default=None */
-    PyObject *newargs[3];
+    TyObject *newargs[3];
     newargs[0] = pp->mapping;
-    newargs[2] = Py_None;
+    newargs[2] = Ty_None;
 
-    if (!_PyArg_UnpackStack(args, nargs, "get", 1, 2,
+    if (!_TyArg_UnpackStack(args, nargs, "get", 1, 2,
                             &newargs[1], &newargs[2]))
     {
         return NULL;
     }
-    return PyObject_VectorcallMethod(&_Py_ID(get), newargs,
+    return PyObject_VectorcallMethod(&_Ty_ID(get), newargs,
                                      3 | PY_VECTORCALL_ARGUMENTS_OFFSET,
                                      NULL);
 }
 
-static PyObject *
-mappingproxy_keys(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+mappingproxy_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
-    return PyObject_CallMethodNoArgs(pp->mapping, &_Py_ID(keys));
+    return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(keys));
 }
 
-static PyObject *
-mappingproxy_values(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+mappingproxy_values(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
-    return PyObject_CallMethodNoArgs(pp->mapping, &_Py_ID(values));
+    return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(values));
 }
 
-static PyObject *
-mappingproxy_items(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+mappingproxy_items(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
-    return PyObject_CallMethodNoArgs(pp->mapping, &_Py_ID(items));
+    return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(items));
 }
 
-static PyObject *
-mappingproxy_copy(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+mappingproxy_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
-    return PyObject_CallMethodNoArgs(pp->mapping, &_Py_ID(copy));
+    return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(copy));
 }
 
-static PyObject *
-mappingproxy_reversed(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+mappingproxy_reversed(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
-    return PyObject_CallMethodNoArgs(pp->mapping, &_Py_ID(__reversed__));
+    return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(__reversed__));
 }
 
 /* WARNING: mappingproxy methods must not give access
             to the underlying mapping */
 
-static PyMethodDef mappingproxy_methods[] = {
+static TyMethodDef mappingproxy_methods[] = {
     {"get",       _PyCFunction_CAST(mappingproxy_get), METH_FASTCALL,
-     PyDoc_STR("get($self, key, default=None, /)\n--\n\n"
+     TyDoc_STR("get($self, key, default=None, /)\n--\n\n"
         "Return the value for key if key is in the mapping, else default.")},
     {"keys",      mappingproxy_keys,       METH_NOARGS,
-     PyDoc_STR("D.keys() -> a set-like object providing a view on D's keys")},
+     TyDoc_STR("D.keys() -> a set-like object providing a view on D's keys")},
     {"values",    mappingproxy_values,     METH_NOARGS,
-     PyDoc_STR("D.values() -> an object providing a view on D's values")},
+     TyDoc_STR("D.values() -> an object providing a view on D's values")},
     {"items",     mappingproxy_items,      METH_NOARGS,
-     PyDoc_STR("D.items() -> a set-like object providing a view on D's items")},
+     TyDoc_STR("D.items() -> a set-like object providing a view on D's items")},
     {"copy",      mappingproxy_copy,       METH_NOARGS,
-     PyDoc_STR("D.copy() -> a shallow copy of D")},
-    {"__class_getitem__", Py_GenericAlias, METH_O|METH_CLASS,
-     PyDoc_STR("See PEP 585")},
+     TyDoc_STR("D.copy() -> a shallow copy of D")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS,
+     TyDoc_STR("See PEP 585")},
     {"__reversed__", mappingproxy_reversed, METH_NOARGS,
-     PyDoc_STR("D.__reversed__() -> reverse iterator")},
+     TyDoc_STR("D.__reversed__() -> reverse iterator")},
     {0}
 };
 
 static void
-mappingproxy_dealloc(PyObject *self)
+mappingproxy_dealloc(TyObject *self)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
-    _PyObject_GC_UNTRACK(pp);
-    Py_DECREF(pp->mapping);
+    _TyObject_GC_UNTRACK(pp);
+    Ty_DECREF(pp->mapping);
     PyObject_GC_Del(pp);
 }
 
-static PyObject *
-mappingproxy_getiter(PyObject *self)
+static TyObject *
+mappingproxy_getiter(TyObject *self)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_GetIter(pp->mapping);
 }
 
-static Py_hash_t
-mappingproxy_hash(PyObject *self)
+static Ty_hash_t
+mappingproxy_hash(TyObject *self)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_Hash(pp->mapping);
 }
 
-static PyObject *
-mappingproxy_str(PyObject *self)
+static TyObject *
+mappingproxy_str(TyObject *self)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_Str(pp->mapping);
 }
 
-static PyObject *
-mappingproxy_repr(PyObject *self)
+static TyObject *
+mappingproxy_repr(TyObject *self)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
-    return PyUnicode_FromFormat("mappingproxy(%R)", pp->mapping);
+    return TyUnicode_FromFormat("mappingproxy(%R)", pp->mapping);
 }
 
 static int
-mappingproxy_traverse(PyObject *self, visitproc visit, void *arg)
+mappingproxy_traverse(TyObject *self, visitproc visit, void *arg)
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
-    Py_VISIT(pp->mapping);
+    Ty_VISIT(pp->mapping);
     return 0;
 }
 
-static PyObject *
-mappingproxy_richcompare(PyObject *self, PyObject *w, int op)
+static TyObject *
+mappingproxy_richcompare(TyObject *self, TyObject *w, int op)
 {
     mappingproxyobject *v = (mappingproxyobject *)self;
     return PyObject_RichCompare(v->mapping, w, op);
 }
 
 static int
-mappingproxy_check_mapping(PyObject *mapping)
+mappingproxy_check_mapping(TyObject *mapping)
 {
     if (!PyMapping_Check(mapping)
-        || PyList_Check(mapping)
-        || PyTuple_Check(mapping)) {
-        PyErr_Format(PyExc_TypeError,
+        || TyList_Check(mapping)
+        || TyTuple_Check(mapping)) {
+        TyErr_Format(TyExc_TypeError,
                     "mappingproxy() argument must be a mapping, not %s",
-                    Py_TYPE(mapping)->tp_name);
+                    Ty_TYPE(mapping)->tp_name);
         return -1;
     }
     return 0;
@@ -1259,8 +1259,8 @@ mappingproxy.__new__ as mappingproxy_new
 Read-only proxy of a mapping.
 [clinic start generated code]*/
 
-static PyObject *
-mappingproxy_new_impl(PyTypeObject *type, PyObject *mapping)
+static TyObject *
+mappingproxy_new_impl(TyTypeObject *type, TyObject *mapping)
 /*[clinic end generated code: output=65f27f02d5b68fa7 input=c156df096ef7590c]*/
 {
     mappingproxyobject *mappingproxy;
@@ -1271,13 +1271,13 @@ mappingproxy_new_impl(PyTypeObject *type, PyObject *mapping)
     mappingproxy = PyObject_GC_New(mappingproxyobject, &PyDictProxy_Type);
     if (mappingproxy == NULL)
         return NULL;
-    mappingproxy->mapping = Py_NewRef(mapping);
-    _PyObject_GC_TRACK(mappingproxy);
-    return (PyObject *)mappingproxy;
+    mappingproxy->mapping = Ty_NewRef(mapping);
+    _TyObject_GC_TRACK(mappingproxy);
+    return (TyObject *)mappingproxy;
 }
 
-PyObject *
-PyDictProxy_New(PyObject *mapping)
+TyObject *
+PyDictProxy_New(TyObject *mapping)
 {
     mappingproxyobject *pp;
 
@@ -1286,10 +1286,10 @@ PyDictProxy_New(PyObject *mapping)
 
     pp = PyObject_GC_New(mappingproxyobject, &PyDictProxy_Type);
     if (pp != NULL) {
-        pp->mapping = Py_NewRef(mapping);
-        _PyObject_GC_TRACK(pp);
+        pp->mapping = Ty_NewRef(mapping);
+        _TyObject_GC_TRACK(pp);
     }
-    return (PyObject *)pp;
+    return (TyObject *)pp;
 }
 
 
@@ -1301,23 +1301,23 @@ PyDictProxy_New(PyObject *mapping)
 typedef struct {
     PyObject_HEAD
     PyWrapperDescrObject *descr;
-    PyObject *self;
+    TyObject *self;
 } wrapperobject;
 
-#define Wrapper_Check(v) Py_IS_TYPE(v, &_PyMethodWrapper_Type)
+#define Wrapper_Check(v) Ty_IS_TYPE(v, &_PyMethodWrapper_Type)
 
 static void
-wrapper_dealloc(PyObject *self)
+wrapper_dealloc(TyObject *self)
 {
     wrapperobject *wp = (wrapperobject *)self;
     PyObject_GC_UnTrack(wp);
-    Py_XDECREF(wp->descr);
-    Py_XDECREF(wp->self);
+    Ty_XDECREF(wp->descr);
+    Ty_XDECREF(wp->self);
     PyObject_GC_Del(wp);
 }
 
-static PyObject *
-wrapper_richcompare(PyObject *a, PyObject *b, int op)
+static TyObject *
+wrapper_richcompare(TyObject *a, TyObject *b, int op)
 {
     wrapperobject *wa, *wb;
     int eq;
@@ -1342,86 +1342,86 @@ wrapper_richcompare(PyObject *a, PyObject *b, int op)
     }
 }
 
-static Py_hash_t
-wrapper_hash(PyObject *self)
+static Ty_hash_t
+wrapper_hash(TyObject *self)
 {
     wrapperobject *wp = (wrapperobject *)self;
-    Py_hash_t x, y;
+    Ty_hash_t x, y;
     x = PyObject_GenericHash(wp->self);
-    y = Py_HashPointer(wp->descr);
+    y = Ty_HashPointer(wp->descr);
     x = x ^ y;
     if (x == -1)
         x = -2;
     return x;
 }
 
-static PyObject *
-wrapper_repr(PyObject *self)
+static TyObject *
+wrapper_repr(TyObject *self)
 {
     wrapperobject *wp = (wrapperobject *)self;
-    return PyUnicode_FromFormat("<method-wrapper '%s' of %s object at %p>",
+    return TyUnicode_FromFormat("<method-wrapper '%s' of %s object at %p>",
                                wp->descr->d_base->name,
-                               Py_TYPE(wp->self)->tp_name,
+                               Ty_TYPE(wp->self)->tp_name,
                                wp->self);
 }
 
-static PyObject *
-wrapper_reduce(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+wrapper_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     wrapperobject *wp = (wrapperobject *)self;
-    return Py_BuildValue("N(OO)", _PyEval_GetBuiltin(&_Py_ID(getattr)),
+    return Ty_BuildValue("N(OO)", _TyEval_GetBuiltin(&_Ty_ID(getattr)),
                          wp->self, PyDescr_NAME(wp->descr));
 }
 
-static PyMethodDef wrapper_methods[] = {
+static TyMethodDef wrapper_methods[] = {
     {"__reduce__", wrapper_reduce, METH_NOARGS, NULL},
     {NULL, NULL}
 };
 
-static PyMemberDef wrapper_members[] = {
-    {"__self__", _Py_T_OBJECT, offsetof(wrapperobject, self), Py_READONLY},
+static TyMemberDef wrapper_members[] = {
+    {"__self__", _Ty_T_OBJECT, offsetof(wrapperobject, self), Py_READONLY},
     {0}
 };
 
-static PyObject *
-wrapper_objclass(PyObject *wp, void *Py_UNUSED(ignored))
+static TyObject *
+wrapper_objclass(TyObject *wp, void *Py_UNUSED(ignored))
 {
-    PyObject *c = (PyObject *)PyDescr_TYPE(((wrapperobject *)wp)->descr);
+    TyObject *c = (TyObject *)PyDescr_TYPE(((wrapperobject *)wp)->descr);
 
-    return Py_NewRef(c);
+    return Ty_NewRef(c);
 }
 
-static PyObject *
-wrapper_name(PyObject *wp, void *Py_UNUSED(ignored))
+static TyObject *
+wrapper_name(TyObject *wp, void *Py_UNUSED(ignored))
 {
     const char *s = ((wrapperobject *)wp)->descr->d_base->name;
 
-    return PyUnicode_FromString(s);
+    return TyUnicode_FromString(s);
 }
 
-static PyObject *
-wrapper_doc(PyObject *self, void *Py_UNUSED(ignored))
+static TyObject *
+wrapper_doc(TyObject *self, void *Py_UNUSED(ignored))
 {
     wrapperobject *wp = (wrapperobject *)self;
-    return _PyType_GetDocFromInternalDoc(wp->descr->d_base->name, wp->descr->d_base->doc);
+    return _TyType_GetDocFromInternalDoc(wp->descr->d_base->name, wp->descr->d_base->doc);
 }
 
-static PyObject *
-wrapper_text_signature(PyObject *self, void *Py_UNUSED(ignored))
+static TyObject *
+wrapper_text_signature(TyObject *self, void *Py_UNUSED(ignored))
 {
     wrapperobject *wp = (wrapperobject *)self;
-    return _PyType_GetTextSignatureFromInternalDoc(wp->descr->d_base->name,
+    return _TyType_GetTextSignatureFromInternalDoc(wp->descr->d_base->name,
                                                    wp->descr->d_base->doc, 0);
 }
 
-static PyObject *
-wrapper_qualname(PyObject *self, void *Py_UNUSED(ignored))
+static TyObject *
+wrapper_qualname(TyObject *self, void *Py_UNUSED(ignored))
 {
     wrapperobject *wp = (wrapperobject *)self;
-    return descr_get_qualname((PyObject *)wp->descr, NULL);
+    return descr_get_qualname((TyObject *)wp->descr, NULL);
 }
 
-static PyGetSetDef wrapper_getsets[] = {
+static TyGetSetDef wrapper_getsets[] = {
     {"__objclass__", wrapper_objclass},
     {"__name__", wrapper_name},
     {"__qualname__", wrapper_qualname},
@@ -1430,24 +1430,24 @@ static PyGetSetDef wrapper_getsets[] = {
     {0}
 };
 
-static PyObject *
-wrapper_call(PyObject *self, PyObject *args, PyObject *kwds)
+static TyObject *
+wrapper_call(TyObject *self, TyObject *args, TyObject *kwds)
 {
     wrapperobject *wp = (wrapperobject *)self;
     return wrapperdescr_raw_call(wp->descr, wp->self, args, kwds);
 }
 
 static int
-wrapper_traverse(PyObject *self, visitproc visit, void *arg)
+wrapper_traverse(TyObject *self, visitproc visit, void *arg)
 {
     wrapperobject *wp = (wrapperobject *)self;
-    Py_VISIT(wp->descr);
-    Py_VISIT(wp->self);
+    Ty_VISIT(wp->descr);
+    Ty_VISIT(wp->self);
     return 0;
 }
 
-PyTypeObject _PyMethodWrapper_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject _PyMethodWrapper_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "method-wrapper",                           /* tp_name */
     sizeof(wrapperobject),                      /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -1467,7 +1467,7 @@ PyTypeObject _PyMethodWrapper_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC, /* tp_flags */
     0,                                          /* tp_doc */
     wrapper_traverse,                           /* tp_traverse */
     0,                                          /* tp_clear */
@@ -1484,24 +1484,24 @@ PyTypeObject _PyMethodWrapper_Type = {
     0,                                          /* tp_descr_set */
 };
 
-PyObject *
-PyWrapper_New(PyObject *d, PyObject *self)
+TyObject *
+TyWrapper_New(TyObject *d, TyObject *self)
 {
     wrapperobject *wp;
     PyWrapperDescrObject *descr;
 
     assert(PyObject_TypeCheck(d, &PyWrapperDescr_Type));
     descr = (PyWrapperDescrObject *)d;
-    assert(_PyObject_RealIsSubclass((PyObject *)Py_TYPE(self),
-                                    (PyObject *)PyDescr_TYPE(descr)));
+    assert(_TyObject_RealIsSubclass((TyObject *)Ty_TYPE(self),
+                                    (TyObject *)PyDescr_TYPE(descr)));
 
     wp = PyObject_GC_New(wrapperobject, &_PyMethodWrapper_Type);
     if (wp != NULL) {
-        wp->descr = (PyWrapperDescrObject*)Py_NewRef(descr);
-        wp->self = Py_NewRef(self);
-        _PyObject_GC_TRACK(wp);
+        wp->descr = (PyWrapperDescrObject*)Ty_NewRef(descr);
+        wp->self = Ty_NewRef(self);
+        _TyObject_GC_TRACK(wp);
     }
-    return (PyObject *)wp;
+    return (TyObject *)wp;
 }
 
 
@@ -1554,73 +1554,73 @@ class property(object):
 
 */
 
-static PyObject * property_copy(PyObject *, PyObject *, PyObject *,
-                                  PyObject *);
+static TyObject * property_copy(TyObject *, TyObject *, TyObject *,
+                                  TyObject *);
 
-static PyMemberDef property_members[] = {
-    {"fget", _Py_T_OBJECT, offsetof(propertyobject, prop_get), Py_READONLY},
-    {"fset", _Py_T_OBJECT, offsetof(propertyobject, prop_set), Py_READONLY},
-    {"fdel", _Py_T_OBJECT, offsetof(propertyobject, prop_del), Py_READONLY},
-    {"__doc__",  _Py_T_OBJECT, offsetof(propertyobject, prop_doc), 0},
+static TyMemberDef property_members[] = {
+    {"fget", _Ty_T_OBJECT, offsetof(propertyobject, prop_get), Py_READONLY},
+    {"fset", _Ty_T_OBJECT, offsetof(propertyobject, prop_set), Py_READONLY},
+    {"fdel", _Ty_T_OBJECT, offsetof(propertyobject, prop_del), Py_READONLY},
+    {"__doc__",  _Ty_T_OBJECT, offsetof(propertyobject, prop_doc), 0},
     {0}
 };
 
 
-PyDoc_STRVAR(getter_doc,
+TyDoc_STRVAR(getter_doc,
              "Descriptor to obtain a copy of the property with a different getter.");
 
-static PyObject *
-property_getter(PyObject *self, PyObject *getter)
+static TyObject *
+property_getter(TyObject *self, TyObject *getter)
 {
     return property_copy(self, getter, NULL, NULL);
 }
 
 
-PyDoc_STRVAR(setter_doc,
+TyDoc_STRVAR(setter_doc,
              "Descriptor to obtain a copy of the property with a different setter.");
 
-static PyObject *
-property_setter(PyObject *self, PyObject *setter)
+static TyObject *
+property_setter(TyObject *self, TyObject *setter)
 {
     return property_copy(self, NULL, setter, NULL);
 }
 
 
-PyDoc_STRVAR(deleter_doc,
+TyDoc_STRVAR(deleter_doc,
              "Descriptor to obtain a copy of the property with a different deleter.");
 
-static PyObject *
-property_deleter(PyObject *self, PyObject *deleter)
+static TyObject *
+property_deleter(TyObject *self, TyObject *deleter)
 {
     return property_copy(self, NULL, NULL, deleter);
 }
 
 
-PyDoc_STRVAR(set_name_doc,
+TyDoc_STRVAR(set_name_doc,
              "__set_name__($self, owner, name, /)\n"
              "--\n"
              "\n"
              "Method to set name of a property.");
 
-static PyObject *
-property_set_name(PyObject *self, PyObject *args) {
-    if (PyTuple_GET_SIZE(args) != 2) {
-        PyErr_Format(
-                PyExc_TypeError,
+static TyObject *
+property_set_name(TyObject *self, TyObject *args) {
+    if (TyTuple_GET_SIZE(args) != 2) {
+        TyErr_Format(
+                TyExc_TypeError,
                 "__set_name__() takes 2 positional arguments but %d were given",
-                PyTuple_GET_SIZE(args));
+                TyTuple_GET_SIZE(args));
         return NULL;
     }
 
     propertyobject *prop = (propertyobject *)self;
-    PyObject *name = PyTuple_GET_ITEM(args, 1);
+    TyObject *name = TyTuple_GET_ITEM(args, 1);
 
-    Py_XSETREF(prop->prop_name, Py_XNewRef(name));
+    Ty_XSETREF(prop->prop_name, Ty_XNewRef(name));
 
     Py_RETURN_NONE;
 }
 
-static PyMethodDef property_methods[] = {
+static TyMethodDef property_methods[] = {
     {"getter", property_getter, METH_O, getter_doc},
     {"setter", property_setter, METH_O, setter_doc},
     {"deleter", property_deleter, METH_O, deleter_doc},
@@ -1630,63 +1630,63 @@ static PyMethodDef property_methods[] = {
 
 
 static void
-property_dealloc(PyObject *self)
+property_dealloc(TyObject *self)
 {
     propertyobject *gs = (propertyobject *)self;
 
-    _PyObject_GC_UNTRACK(self);
-    Py_XDECREF(gs->prop_get);
-    Py_XDECREF(gs->prop_set);
-    Py_XDECREF(gs->prop_del);
-    Py_XDECREF(gs->prop_doc);
-    Py_XDECREF(gs->prop_name);
-    Py_TYPE(self)->tp_free(self);
+    _TyObject_GC_UNTRACK(self);
+    Ty_XDECREF(gs->prop_get);
+    Ty_XDECREF(gs->prop_set);
+    Ty_XDECREF(gs->prop_del);
+    Ty_XDECREF(gs->prop_doc);
+    Ty_XDECREF(gs->prop_name);
+    Ty_TYPE(self)->tp_free(self);
 }
 
 static int
-property_name(propertyobject *prop, PyObject **name)
+property_name(propertyobject *prop, TyObject **name)
 {
     if (prop->prop_name != NULL) {
-        *name = Py_NewRef(prop->prop_name);
+        *name = Ty_NewRef(prop->prop_name);
         return 1;
     }
     if (prop->prop_get == NULL) {
         *name = NULL;
         return 0;
     }
-    return PyObject_GetOptionalAttr(prop->prop_get, &_Py_ID(__name__), name);
+    return PyObject_GetOptionalAttr(prop->prop_get, &_Ty_ID(__name__), name);
 }
 
-static PyObject *
-property_descr_get(PyObject *self, PyObject *obj, PyObject *type)
+static TyObject *
+property_descr_get(TyObject *self, TyObject *obj, TyObject *type)
 {
-    if (obj == NULL || obj == Py_None) {
-        return Py_NewRef(self);
+    if (obj == NULL || obj == Ty_None) {
+        return Ty_NewRef(self);
     }
 
     propertyobject *gs = (propertyobject *)self;
     if (gs->prop_get == NULL) {
-        PyObject *propname;
+        TyObject *propname;
         if (property_name(gs, &propname) < 0) {
             return NULL;
         }
-        PyObject *qualname = PyType_GetQualName(Py_TYPE(obj));
+        TyObject *qualname = TyType_GetQualName(Ty_TYPE(obj));
         if (propname != NULL && qualname != NULL) {
-            PyErr_Format(PyExc_AttributeError,
+            TyErr_Format(TyExc_AttributeError,
                          "property %R of %R object has no getter",
                          propname,
                          qualname);
         }
         else if (qualname != NULL) {
-            PyErr_Format(PyExc_AttributeError,
+            TyErr_Format(TyExc_AttributeError,
                          "property of %R object has no getter",
                          qualname);
         } else {
-            PyErr_SetString(PyExc_AttributeError,
+            TyErr_SetString(TyExc_AttributeError,
                             "property has no getter");
         }
-        Py_XDECREF(propname);
-        Py_XDECREF(qualname);
+        Ty_XDECREF(propname);
+        Ty_XDECREF(qualname);
         return NULL;
     }
 
@@ -1694,10 +1694,10 @@ property_descr_get(PyObject *self, PyObject *obj, PyObject *type)
 }
 
 static int
-property_descr_set(PyObject *self, PyObject *obj, PyObject *value)
+property_descr_set(TyObject *self, TyObject *obj, TyObject *value)
 {
     propertyobject *gs = (propertyobject *)self;
-    PyObject *func, *res;
+    TyObject *func, *res;
 
     if (value == NULL) {
         func = gs->prop_del;
@@ -1707,16 +1707,16 @@ property_descr_set(PyObject *self, PyObject *obj, PyObject *value)
     }
 
     if (func == NULL) {
-        PyObject *propname;
+        TyObject *propname;
         if (property_name(gs, &propname) < 0) {
             return -1;
         }
-        PyObject *qualname = NULL;
+        TyObject *qualname = NULL;
         if (obj != NULL) {
-            qualname = PyType_GetQualName(Py_TYPE(obj));
+            qualname = TyType_GetQualName(Ty_TYPE(obj));
         }
         if (propname != NULL && qualname != NULL) {
-            PyErr_Format(PyExc_AttributeError,
+            TyErr_Format(TyExc_AttributeError,
                         value == NULL ?
                         "property %R of %R object has no deleter" :
                         "property %R of %R object has no setter",
@@ -1724,20 +1724,20 @@ property_descr_set(PyObject *self, PyObject *obj, PyObject *value)
                         qualname);
         }
         else if (qualname != NULL) {
-            PyErr_Format(PyExc_AttributeError,
+            TyErr_Format(TyExc_AttributeError,
                             value == NULL ?
                             "property of %R object has no deleter" :
                             "property of %R object has no setter",
                             qualname);
         }
         else {
-            PyErr_SetString(PyExc_AttributeError,
+            TyErr_SetString(TyExc_AttributeError,
                          value == NULL ?
                          "property has no deleter" :
                          "property has no setter");
         }
-        Py_XDECREF(propname);
-        Py_XDECREF(qualname);
+        Ty_XDECREF(propname);
+        Ty_XDECREF(qualname);
         return -1;
     }
 
@@ -1746,7 +1746,7 @@ property_descr_set(PyObject *self, PyObject *obj, PyObject *value)
     }
     else {
         EVAL_CALL_STAT_INC_IF_FUNCTION(EVAL_CALL_API, func);
-        PyObject *args[] = { obj, value };
+        TyObject *args[] = { obj, value };
         res = PyObject_Vectorcall(func, args, 2, NULL);
     }
 
@@ -1754,44 +1754,44 @@ property_descr_set(PyObject *self, PyObject *obj, PyObject *value)
         return -1;
     }
 
-    Py_DECREF(res);
+    Ty_DECREF(res);
     return 0;
 }
 
-static PyObject *
-property_copy(PyObject *old, PyObject *get, PyObject *set, PyObject *del)
+static TyObject *
+property_copy(TyObject *old, TyObject *get, TyObject *set, TyObject *del)
 {
     propertyobject *pold = (propertyobject *)old;
-    PyObject *new, *type, *doc;
+    TyObject *new, *type, *doc;
 
     type = PyObject_Type(old);
     if (type == NULL)
         return NULL;
 
-    if (get == NULL || get == Py_None) {
-        get = pold->prop_get ? pold->prop_get : Py_None;
+    if (get == NULL || get == Ty_None) {
+        get = pold->prop_get ? pold->prop_get : Ty_None;
     }
-    if (set == NULL || set == Py_None) {
-        set = pold->prop_set ? pold->prop_set : Py_None;
+    if (set == NULL || set == Ty_None) {
+        set = pold->prop_set ? pold->prop_set : Ty_None;
     }
-    if (del == NULL || del == Py_None) {
-        del = pold->prop_del ? pold->prop_del : Py_None;
+    if (del == NULL || del == Ty_None) {
+        del = pold->prop_del ? pold->prop_del : Ty_None;
     }
-    if (pold->getter_doc && get != Py_None) {
+    if (pold->getter_doc && get != Ty_None) {
         /* make _init use __doc__ from getter */
-        doc = Py_None;
+        doc = Ty_None;
     }
     else {
-        doc = pold->prop_doc ? pold->prop_doc : Py_None;
+        doc = pold->prop_doc ? pold->prop_doc : Ty_None;
     }
 
     new =  PyObject_CallFunctionObjArgs(type, get, set, del, doc, NULL);
-    Py_DECREF(type);
+    Ty_DECREF(type);
     if (new == NULL)
         return NULL;
 
-    if (PyObject_TypeCheck((new), &PyProperty_Type)) {
-        Py_XSETREF(((propertyobject *) new)->prop_name, Py_XNewRef(pold->prop_name));
+    if (PyObject_TypeCheck((new), &TyProperty_Type)) {
+        Ty_XSETREF(((propertyobject *) new)->prop_name, Ty_XNewRef(pold->prop_name));
     }
     return new;
 }
@@ -1834,38 +1834,38 @@ class C(object):
 [clinic start generated code]*/
 
 static int
-property_init_impl(propertyobject *self, PyObject *fget, PyObject *fset,
-                   PyObject *fdel, PyObject *doc)
+property_init_impl(propertyobject *self, TyObject *fget, TyObject *fset,
+                   TyObject *fdel, TyObject *doc)
 /*[clinic end generated code: output=01a960742b692b57 input=dfb5dbbffc6932d5]*/
 {
-    if (fget == Py_None)
+    if (fget == Ty_None)
         fget = NULL;
-    if (fset == Py_None)
+    if (fset == Ty_None)
         fset = NULL;
-    if (fdel == Py_None)
+    if (fdel == Ty_None)
         fdel = NULL;
 
-    Py_XSETREF(self->prop_get, Py_XNewRef(fget));
-    Py_XSETREF(self->prop_set, Py_XNewRef(fset));
-    Py_XSETREF(self->prop_del, Py_XNewRef(fdel));
-    Py_XSETREF(self->prop_doc, NULL);
-    Py_XSETREF(self->prop_name, NULL);
+    Ty_XSETREF(self->prop_get, Ty_XNewRef(fget));
+    Ty_XSETREF(self->prop_set, Ty_XNewRef(fset));
+    Ty_XSETREF(self->prop_del, Ty_XNewRef(fdel));
+    Ty_XSETREF(self->prop_doc, NULL);
+    Ty_XSETREF(self->prop_name, NULL);
 
     self->getter_doc = 0;
-    PyObject *prop_doc = NULL;
+    TyObject *prop_doc = NULL;
 
-    if (doc != NULL && doc != Py_None) {
-        prop_doc = Py_XNewRef(doc);
+    if (doc != NULL && doc != Ty_None) {
+        prop_doc = Ty_XNewRef(doc);
     }
     /* if no docstring given and the getter has one, use that one */
     else if (fget != NULL) {
-        int rc = PyObject_GetOptionalAttr(fget, &_Py_ID(__doc__), &prop_doc);
+        int rc = PyObject_GetOptionalAttr(fget, &_Ty_ID(__doc__), &prop_doc);
         if (rc < 0) {
             return rc;
         }
-        if (prop_doc == Py_None) {
+        if (prop_doc == Ty_None) {
             prop_doc = NULL;
-            Py_DECREF(Py_None);
+            Ty_DECREF(Ty_None);
         }
         if (prop_doc != NULL){
             self->getter_doc = 1;
@@ -1875,25 +1875,25 @@ property_init_impl(propertyobject *self, PyObject *fget, PyObject *fset,
     /* At this point `prop_doc` is either NULL or
        a non-None object with incremented ref counter */
 
-    if (Py_IS_TYPE(self, &PyProperty_Type)) {
-        Py_XSETREF(self->prop_doc, prop_doc);
+    if (Ty_IS_TYPE(self, &TyProperty_Type)) {
+        Ty_XSETREF(self->prop_doc, prop_doc);
     } else {
         /* If this is a property subclass, put __doc__ in the dict
            or designated slot of the subclass instance instead, otherwise
            it gets shadowed by __doc__ in the class's dict. */
 
         if (prop_doc == NULL) {
-            prop_doc = Py_NewRef(Py_None);
+            prop_doc = Ty_NewRef(Ty_None);
         }
         int err = PyObject_SetAttr(
-                    (PyObject *)self, &_Py_ID(__doc__), prop_doc);
-        Py_DECREF(prop_doc);
+                    (TyObject *)self, &_Ty_ID(__doc__), prop_doc);
+        Ty_DECREF(prop_doc);
         if (err < 0) {
-            assert(PyErr_Occurred());
+            assert(TyErr_Occurred());
             if (!self->getter_doc &&
-                PyErr_ExceptionMatches(PyExc_AttributeError))
+                TyErr_ExceptionMatches(TyExc_AttributeError))
             {
-                PyErr_Clear();
+                TyErr_Clear();
                 // https://github.com/python/cpython/issues/98963#issuecomment-1574413319
                 // Python silently dropped this doc assignment through 3.11.
                 // We preserve that behavior for backwards compatibility.
@@ -1911,34 +1911,34 @@ property_init_impl(propertyobject *self, PyObject *fget, PyObject *fset,
     return 0;
 }
 
-static PyObject *
-property_get__name__(PyObject *op, void *Py_UNUSED(ignored))
+static TyObject *
+property_get__name__(TyObject *op, void *Py_UNUSED(ignored))
 {
     propertyobject *prop = _propertyobject_CAST(op);
-    PyObject *name;
+    TyObject *name;
     if (property_name(prop, &name) < 0) {
         return NULL;
     }
     if (name == NULL) {
-        PyErr_SetString(PyExc_AttributeError,
+        TyErr_SetString(TyExc_AttributeError,
                         "'property' object has no attribute '__name__'");
     }
     return name;
 }
 
 static int
-property_set__name__(PyObject *op, PyObject *value, void *Py_UNUSED(ignored))
+property_set__name__(TyObject *op, TyObject *value, void *Py_UNUSED(ignored))
 {
     propertyobject *prop = _propertyobject_CAST(op);
-    Py_XSETREF(prop->prop_name, Py_XNewRef(value));
+    Ty_XSETREF(prop->prop_name, Ty_XNewRef(value));
     return 0;
 }
 
-static PyObject *
-property_get___isabstractmethod__(PyObject *op, void *closure)
+static TyObject *
+property_get___isabstractmethod__(TyObject *op, void *closure)
 {
     propertyobject *prop = _propertyobject_CAST(op);
-    int res = _PyObject_IsAbstract(prop->prop_get);
+    int res = _TyObject_IsAbstract(prop->prop_get);
     if (res == -1) {
         return NULL;
     }
@@ -1946,7 +1946,7 @@ property_get___isabstractmethod__(PyObject *op, void *closure)
         Py_RETURN_TRUE;
     }
 
-    res = _PyObject_IsAbstract(prop->prop_set);
+    res = _TyObject_IsAbstract(prop->prop_set);
     if (res == -1) {
         return NULL;
     }
@@ -1954,7 +1954,7 @@ property_get___isabstractmethod__(PyObject *op, void *closure)
         Py_RETURN_TRUE;
     }
 
-    res = _PyObject_IsAbstract(prop->prop_del);
+    res = _TyObject_IsAbstract(prop->prop_del);
     if (res == -1) {
         return NULL;
     }
@@ -1964,7 +1964,7 @@ property_get___isabstractmethod__(PyObject *op, void *closure)
     Py_RETURN_FALSE;
 }
 
-static PyGetSetDef property_getsetlist[] = {
+static TyGetSetDef property_getsetlist[] = {
     {"__name__", property_get__name__, property_set__name__, NULL, NULL},
     {"__isabstractmethod__", property_get___isabstractmethod__, NULL,
      NULL,
@@ -1973,29 +1973,29 @@ static PyGetSetDef property_getsetlist[] = {
 };
 
 static int
-property_traverse(PyObject *self, visitproc visit, void *arg)
+property_traverse(TyObject *self, visitproc visit, void *arg)
 {
     propertyobject *pp = (propertyobject *)self;
-    Py_VISIT(pp->prop_get);
-    Py_VISIT(pp->prop_set);
-    Py_VISIT(pp->prop_del);
-    Py_VISIT(pp->prop_doc);
-    Py_VISIT(pp->prop_name);
+    Ty_VISIT(pp->prop_get);
+    Ty_VISIT(pp->prop_set);
+    Ty_VISIT(pp->prop_del);
+    Ty_VISIT(pp->prop_doc);
+    Ty_VISIT(pp->prop_name);
     return 0;
 }
 
 static int
-property_clear(PyObject *self)
+property_clear(TyObject *self)
 {
     propertyobject *pp = (propertyobject *)self;
-    Py_CLEAR(pp->prop_doc);
+    Ty_CLEAR(pp->prop_doc);
     return 0;
 }
 
 #include "clinic/descrobject.c.h"
 
-PyTypeObject PyDictProxy_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyDictProxy_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "mappingproxy",                             /* tp_name */
     sizeof(mappingproxyobject),                 /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -2015,8 +2015,8 @@ PyTypeObject PyDictProxy_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-        Py_TPFLAGS_MAPPING,                     /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC |
+        Ty_TPFLAGS_MAPPING,                     /* tp_flags */
     mappingproxy_new__doc__,                    /* tp_doc */
     mappingproxy_traverse,                      /* tp_traverse */
     0,                                          /* tp_clear */
@@ -2037,8 +2037,8 @@ PyTypeObject PyDictProxy_Type = {
     mappingproxy_new,                           /* tp_new */
 };
 
-PyTypeObject PyProperty_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject TyProperty_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "property",                                 /* tp_name */
     sizeof(propertyobject),                     /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -2058,8 +2058,8 @@ PyTypeObject PyProperty_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-        Py_TPFLAGS_BASETYPE,                    /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC |
+        Ty_TPFLAGS_BASETYPE,                    /* tp_flags */
     property_init__doc__,                       /* tp_doc */
     property_traverse,                          /* tp_traverse */
     property_clear,                             /* tp_clear */
@@ -2076,7 +2076,7 @@ PyTypeObject PyProperty_Type = {
     property_descr_set,                         /* tp_descr_set */
     0,                                          /* tp_dictoffset */
     property_init,                              /* tp_init */
-    PyType_GenericAlloc,                        /* tp_alloc */
-    PyType_GenericNew,                          /* tp_new */
+    TyType_GenericAlloc,                        /* tp_alloc */
+    TyType_GenericNew,                          /* tp_new */
     PyObject_GC_Del,                            /* tp_free */
 };

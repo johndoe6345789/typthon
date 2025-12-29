@@ -1,14 +1,14 @@
-#ifndef Py_INTERNAL_PYTHREAD_H
-#define Py_INTERNAL_PYTHREAD_H
+#ifndef Ty_INTERNAL_PYTHREAD_H
+#define Ty_INTERNAL_PYTHREAD_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-#include "dynamic_annotations.h"     // _Py_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX
+#include "dynamic_annotations.h"     // _Ty_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX
 #include "pycore_llist.h"            // struct llist_node
 
 // Get _POSIX_THREADS and _POSIX_SEMAPHORES macros if available
@@ -91,17 +91,17 @@ struct _pythread_runtime_state {
 /* Private function to reinitialize a lock at fork in the child process.
    Reset the lock to the unlocked state.
    Return 0 on success, return -1 on error. */
-extern int _PyThread_at_fork_reinit(PyThread_type_lock *lock);
+extern int _PyThread_at_fork_reinit(TyThread_type_lock *lock);
 extern void _PyThread_AfterFork(struct _pythread_runtime_state *state);
 #endif  /* HAVE_FORK */
 
 
 // unset: -1 seconds, in nanoseconds
-#define PyThread_UNSET_TIMEOUT ((PyTime_t)(-1 * 1000 * 1000 * 1000))
+#define TyThread_UNSET_TIMEOUT ((TyTime_t)(-1 * 1000 * 1000 * 1000))
 
 // Exported for the _interpchannels module.
-PyAPI_FUNC(int) PyThread_ParseTimeoutArg(
-    PyObject *arg,
+PyAPI_FUNC(int) TyThread_ParseTimeoutArg(
+    TyObject *arg,
     int blocking,
     PY_TIMEOUT_T *timeout);
 
@@ -112,46 +112,46 @@ PyAPI_FUNC(int) PyThread_ParseTimeoutArg(
  * timeout.
  */
 // Exported for the _interpchannels module.
-PyAPI_FUNC(PyLockStatus) PyThread_acquire_lock_timed_with_retries(
-    PyThread_type_lock,
+PyAPI_FUNC(TyLockStatus) TyThread_acquire_lock_timed_with_retries(
+    TyThread_type_lock,
     PY_TIMEOUT_T microseconds);
 
-typedef unsigned long long PyThread_ident_t;
-typedef Py_uintptr_t PyThread_handle_t;
+typedef unsigned long long TyThread_ident_t;
+typedef Ty_uintptr_t TyThread_handle_t;
 
 #define PY_FORMAT_THREAD_IDENT_T "llu"
-#define Py_PARSE_THREAD_IDENT_T "K"
+#define Ty_PARSE_THREAD_IDENT_T "K"
 
-PyAPI_FUNC(PyThread_ident_t) PyThread_get_thread_ident_ex(void);
+PyAPI_FUNC(TyThread_ident_t) TyThread_get_thread_ident_ex(void);
 
 /* Thread joining APIs.
  *
  * These APIs have a strict contract:
- *  - Either PyThread_join_thread or PyThread_detach_thread must be called
+ *  - Either TyThread_join_thread or TyThread_detach_thread must be called
  *    exactly once with the given handle.
- *  - Calling neither PyThread_join_thread nor PyThread_detach_thread results
+ *  - Calling neither TyThread_join_thread nor TyThread_detach_thread results
  *    in a resource leak until the end of the process.
- *  - Any other usage, such as calling both PyThread_join_thread and
- *    PyThread_detach_thread, or calling them more than once (including
+ *  - Any other usage, such as calling both TyThread_join_thread and
+ *    TyThread_detach_thread, or calling them more than once (including
  *    simultaneously), results in undefined behavior.
  */
-PyAPI_FUNC(int) PyThread_start_joinable_thread(void (*func)(void *),
+PyAPI_FUNC(int) TyThread_start_joinable_thread(void (*func)(void *),
                                                void *arg,
-                                               PyThread_ident_t* ident,
-                                               PyThread_handle_t* handle);
+                                               TyThread_ident_t* ident,
+                                               TyThread_handle_t* handle);
 /*
- * Join a thread started with `PyThread_start_joinable_thread`.
+ * Join a thread started with `TyThread_start_joinable_thread`.
  * This function cannot be interrupted. It returns 0 on success,
  * a non-zero value on failure.
  */
-PyAPI_FUNC(int) PyThread_join_thread(PyThread_handle_t);
+PyAPI_FUNC(int) TyThread_join_thread(TyThread_handle_t);
 /*
- * Detach a thread started with `PyThread_start_joinable_thread`, such
+ * Detach a thread started with `TyThread_start_joinable_thread`, such
  * that its resources are released as soon as it exits.
  * This function cannot be interrupted. It returns 0 on success,
  * a non-zero value on failure.
  */
-PyAPI_FUNC(int) PyThread_detach_thread(PyThread_handle_t);
+PyAPI_FUNC(int) TyThread_detach_thread(TyThread_handle_t);
 /*
  * Hangs the thread indefinitely without exiting it.
  *
@@ -164,9 +164,9 @@ PyAPI_FUNC(int) PyThread_detach_thread(PyThread_handle_t);
  * when they're done with the interpreter, but our C API design does not allow
  * for safely exiting threads attempting to re-enter Python post finalization.
  */
-void _Py_NO_RETURN PyThread_hang_thread(void);
+void _Ty_NO_RETURN TyThread_hang_thread(void);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_PYTHREAD_H */
+#endif /* !Ty_INTERNAL_PYTHREAD_H */

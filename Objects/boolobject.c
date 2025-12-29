@@ -2,75 +2,75 @@
 
 #include "Python.h"
 #include "pycore_long.h"          // FALSE_TAG TRUE_TAG
-#include "pycore_modsupport.h"    // _PyArg_NoKwnames()
-#include "pycore_object.h"        // _Py_FatalRefcountError()
-#include "pycore_runtime.h"       // _Py_ID()
+#include "pycore_modsupport.h"    // _TyArg_NoKwnames()
+#include "pycore_object.h"        // _Ty_FatalRefcountError()
+#include "pycore_runtime.h"       // _Ty_ID()
 
 #include <stddef.h>
 
 /* We define bool_repr to return "False" or "True" */
 
-static PyObject *
-bool_repr(PyObject *self)
+static TyObject *
+bool_repr(TyObject *self)
 {
-    return self == Py_True ? &_Py_ID(True) : &_Py_ID(False);
+    return self == Ty_True ? &_Ty_ID(True) : &_Ty_ID(False);
 }
 
 /* Function to return a bool from a C long */
 
-PyObject *PyBool_FromLong(long ok)
+TyObject *TyBool_FromLong(long ok)
 {
-    return ok ? Py_True : Py_False;
+    return ok ? Ty_True : Ty_False;
 }
 
-/* We define bool_new to always return either Py_True or Py_False */
+/* We define bool_new to always return either Ty_True or Ty_False */
 
-static PyObject *
-bool_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+static TyObject *
+bool_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 {
-    PyObject *x = Py_False;
+    TyObject *x = Ty_False;
     long ok;
 
-    if (!_PyArg_NoKeywords("bool", kwds))
+    if (!_TyArg_NoKeywords("bool", kwds))
         return NULL;
-    if (!PyArg_UnpackTuple(args, "bool", 0, 1, &x))
+    if (!TyArg_UnpackTuple(args, "bool", 0, 1, &x))
         return NULL;
     ok = PyObject_IsTrue(x);
     if (ok < 0)
         return NULL;
-    return PyBool_FromLong(ok);
+    return TyBool_FromLong(ok);
 }
 
-static PyObject *
-bool_vectorcall(PyObject *type, PyObject * const*args,
-                size_t nargsf, PyObject *kwnames)
+static TyObject *
+bool_vectorcall(TyObject *type, TyObject * const*args,
+                size_t nargsf, TyObject *kwnames)
 {
     long ok = 0;
-    if (!_PyArg_NoKwnames("bool", kwnames)) {
+    if (!_TyArg_NoKwnames("bool", kwnames)) {
         return NULL;
     }
 
-    Py_ssize_t nargs = PyVectorcall_NARGS(nargsf);
-    if (!_PyArg_CheckPositional("bool", nargs, 0, 1)) {
+    Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
+    if (!_TyArg_CheckPositional("bool", nargs, 0, 1)) {
         return NULL;
     }
 
-    assert(PyType_Check(type));
+    assert(TyType_Check(type));
     if (nargs) {
         ok = PyObject_IsTrue(args[0]);
         if (ok < 0) {
             return NULL;
         }
     }
-    return PyBool_FromLong(ok);
+    return TyBool_FromLong(ok);
 }
 
 /* Arithmetic operations redefined to return bool if both args are bool. */
 
-static PyObject *
-bool_invert(PyObject *v)
+static TyObject *
+bool_invert(TyObject *v)
 {
-    if (PyErr_WarnEx(PyExc_DeprecationWarning,
+    if (TyErr_WarnEx(TyExc_DeprecationWarning,
                      "Bitwise inversion '~' on bool is deprecated and will be removed in "
                      "Python 3.16. This returns the bitwise inversion of the underlying int "
                      "object and is usually not what you expect from negating "
@@ -80,36 +80,36 @@ bool_invert(PyObject *v)
                      1) < 0) {
         return NULL;
     }
-    return PyLong_Type.tp_as_number->nb_invert(v);
+    return TyLong_Type.tp_as_number->nb_invert(v);
 }
 
-static PyObject *
-bool_and(PyObject *a, PyObject *b)
+static TyObject *
+bool_and(TyObject *a, TyObject *b)
 {
-    if (!PyBool_Check(a) || !PyBool_Check(b))
-        return PyLong_Type.tp_as_number->nb_and(a, b);
-    return PyBool_FromLong((a == Py_True) & (b == Py_True));
+    if (!TyBool_Check(a) || !TyBool_Check(b))
+        return TyLong_Type.tp_as_number->nb_and(a, b);
+    return TyBool_FromLong((a == Ty_True) & (b == Ty_True));
 }
 
-static PyObject *
-bool_or(PyObject *a, PyObject *b)
+static TyObject *
+bool_or(TyObject *a, TyObject *b)
 {
-    if (!PyBool_Check(a) || !PyBool_Check(b))
-        return PyLong_Type.tp_as_number->nb_or(a, b);
-    return PyBool_FromLong((a == Py_True) | (b == Py_True));
+    if (!TyBool_Check(a) || !TyBool_Check(b))
+        return TyLong_Type.tp_as_number->nb_or(a, b);
+    return TyBool_FromLong((a == Ty_True) | (b == Ty_True));
 }
 
-static PyObject *
-bool_xor(PyObject *a, PyObject *b)
+static TyObject *
+bool_xor(TyObject *a, TyObject *b)
 {
-    if (!PyBool_Check(a) || !PyBool_Check(b))
-        return PyLong_Type.tp_as_number->nb_xor(a, b);
-    return PyBool_FromLong((a == Py_True) ^ (b == Py_True));
+    if (!TyBool_Check(a) || !TyBool_Check(b))
+        return TyLong_Type.tp_as_number->nb_xor(a, b);
+    return TyBool_FromLong((a == Ty_True) ^ (b == Ty_True));
 }
 
 /* Doc string */
 
-PyDoc_STRVAR(bool_doc,
+TyDoc_STRVAR(bool_doc,
 "bool(object=False, /)\n\
 --\n\
 \n\
@@ -119,7 +119,7 @@ The class bool is a subclass of the class int, and cannot be subclassed.");
 
 /* Arithmetic methods -- only so we can override &, |, ^. */
 
-static PyNumberMethods bool_as_number = {
+static TyNumberMethods bool_as_number = {
     0,                          /* nb_add */
     0,                          /* nb_subtract */
     0,                          /* nb_multiply */
@@ -157,19 +157,19 @@ static PyNumberMethods bool_as_number = {
 };
 
 static void
-bool_dealloc(PyObject *boolean)
+bool_dealloc(TyObject *boolean)
 {
     /* This should never get called, but we also don't want to SEGV if
      * we accidentally decref Booleans out of existence. Instead,
      * since bools are immortal, re-set the reference count.
      */
-    _Py_SetImmortal(boolean);
+    _Ty_SetImmortal(boolean);
 }
 
 /* The type object for bool.  Note that this cannot be subclassed! */
 
-PyTypeObject PyBool_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject TyBool_Type = {
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "bool",
     offsetof(struct _longobject, long_value.ob_digit),  /* tp_basicsize */
     sizeof(digit),                              /* tp_itemsize */
@@ -188,7 +188,7 @@ PyTypeObject PyBool_Type = {
     0,                                          /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,                         /* tp_flags */
+    Ty_TPFLAGS_DEFAULT,                         /* tp_flags */
     bool_doc,                                   /* tp_doc */
     0,                                          /* tp_traverse */
     0,                                          /* tp_clear */
@@ -199,7 +199,7 @@ PyTypeObject PyBool_Type = {
     0,                                          /* tp_methods */
     0,                                          /* tp_members */
     0,                                          /* tp_getset */
-    &PyLong_Type,                               /* tp_base */
+    &TyLong_Type,                               /* tp_base */
     0,                                          /* tp_dict */
     0,                                          /* tp_descr_get */
     0,                                          /* tp_descr_set */
@@ -212,16 +212,16 @@ PyTypeObject PyBool_Type = {
 
 /* The objects representing bool values False and True */
 
-struct _longobject _Py_FalseStruct = {
-    PyObject_HEAD_INIT(&PyBool_Type)
-    { .lv_tag = _PyLong_FALSE_TAG,
+struct _longobject _Ty_FalseStruct = {
+    PyObject_HEAD_INIT(&TyBool_Type)
+    { .lv_tag = _TyLong_FALSE_TAG,
         { 0 }
     }
 };
 
-struct _longobject _Py_TrueStruct = {
-    PyObject_HEAD_INIT(&PyBool_Type)
-    { .lv_tag = _PyLong_TRUE_TAG,
+struct _longobject _Ty_TrueStruct = {
+    PyObject_HEAD_INIT(&TyBool_Type)
+    { .lv_tag = _TyLong_TRUE_TAG,
         { 1 }
     }
 };

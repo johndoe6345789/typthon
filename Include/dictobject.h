@@ -1,5 +1,5 @@
-#ifndef Py_DICTOBJECT_H
-#define Py_DICTOBJECT_H
+#ifndef Ty_DICTOBJECT_H
+#define Ty_DICTOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -12,71 +12,71 @@ extern "C" {
    tuning dictionaries, and several ideas for possible optimizations.
 */
 
-PyAPI_DATA(PyTypeObject) PyDict_Type;
+PyAPI_DATA(TyTypeObject) TyDict_Type;
 
-#define PyDict_Check(op) \
-                 PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_DICT_SUBCLASS)
-#define PyDict_CheckExact(op) Py_IS_TYPE((op), &PyDict_Type)
+#define TyDict_Check(op) \
+                 TyType_FastSubclass(Ty_TYPE(op), Ty_TPFLAGS_DICT_SUBCLASS)
+#define TyDict_CheckExact(op) Ty_IS_TYPE((op), &TyDict_Type)
 
-PyAPI_FUNC(PyObject *) PyDict_New(void);
-PyAPI_FUNC(PyObject *) PyDict_GetItem(PyObject *mp, PyObject *key);
-PyAPI_FUNC(PyObject *) PyDict_GetItemWithError(PyObject *mp, PyObject *key);
-PyAPI_FUNC(int) PyDict_SetItem(PyObject *mp, PyObject *key, PyObject *item);
-PyAPI_FUNC(int) PyDict_DelItem(PyObject *mp, PyObject *key);
-PyAPI_FUNC(void) PyDict_Clear(PyObject *mp);
-PyAPI_FUNC(int) PyDict_Next(
-    PyObject *mp, Py_ssize_t *pos, PyObject **key, PyObject **value);
-PyAPI_FUNC(PyObject *) PyDict_Keys(PyObject *mp);
-PyAPI_FUNC(PyObject *) PyDict_Values(PyObject *mp);
-PyAPI_FUNC(PyObject *) PyDict_Items(PyObject *mp);
-PyAPI_FUNC(Py_ssize_t) PyDict_Size(PyObject *mp);
-PyAPI_FUNC(PyObject *) PyDict_Copy(PyObject *mp);
-PyAPI_FUNC(int) PyDict_Contains(PyObject *mp, PyObject *key);
+PyAPI_FUNC(TyObject *) TyDict_New(void);
+PyAPI_FUNC(TyObject *) TyDict_GetItem(TyObject *mp, TyObject *key);
+PyAPI_FUNC(TyObject *) TyDict_GetItemWithError(TyObject *mp, TyObject *key);
+PyAPI_FUNC(int) TyDict_SetItem(TyObject *mp, TyObject *key, TyObject *item);
+PyAPI_FUNC(int) TyDict_DelItem(TyObject *mp, TyObject *key);
+PyAPI_FUNC(void) TyDict_Clear(TyObject *mp);
+PyAPI_FUNC(int) TyDict_Next(
+    TyObject *mp, Ty_ssize_t *pos, TyObject **key, TyObject **value);
+PyAPI_FUNC(TyObject *) TyDict_Keys(TyObject *mp);
+PyAPI_FUNC(TyObject *) TyDict_Values(TyObject *mp);
+PyAPI_FUNC(TyObject *) TyDict_Items(TyObject *mp);
+PyAPI_FUNC(Ty_ssize_t) TyDict_Size(TyObject *mp);
+PyAPI_FUNC(TyObject *) TyDict_Copy(TyObject *mp);
+PyAPI_FUNC(int) TyDict_Contains(TyObject *mp, TyObject *key);
 
-/* PyDict_Update(mp, other) is equivalent to PyDict_Merge(mp, other, 1). */
-PyAPI_FUNC(int) PyDict_Update(PyObject *mp, PyObject *other);
+/* TyDict_Update(mp, other) is equivalent to TyDict_Merge(mp, other, 1). */
+PyAPI_FUNC(int) TyDict_Update(TyObject *mp, TyObject *other);
 
-/* PyDict_Merge updates/merges from a mapping object (an object that
+/* TyDict_Merge updates/merges from a mapping object (an object that
    supports PyMapping_Keys() and PyObject_GetItem()).  If override is true,
    the last occurrence of a key wins, else the first.  The Python
-   dict.update(other) is equivalent to PyDict_Merge(dict, other, 1).
+   dict.update(other) is equivalent to TyDict_Merge(dict, other, 1).
 */
-PyAPI_FUNC(int) PyDict_Merge(PyObject *mp,
-                             PyObject *other,
+PyAPI_FUNC(int) TyDict_Merge(TyObject *mp,
+                             TyObject *other,
                              int override);
 
-/* PyDict_MergeFromSeq2 updates/merges from an iterable object producing
+/* TyDict_MergeFromSeq2 updates/merges from an iterable object producing
    iterable objects of length 2.  If override is true, the last occurrence
    of a key wins, else the first.  The Python dict constructor dict(seq2)
-   is equivalent to dict={}; PyDict_MergeFromSeq(dict, seq2, 1).
+   is equivalent to dict={}; TyDict_MergeFromSeq(dict, seq2, 1).
 */
-PyAPI_FUNC(int) PyDict_MergeFromSeq2(PyObject *d,
-                                     PyObject *seq2,
+PyAPI_FUNC(int) TyDict_MergeFromSeq2(TyObject *d,
+                                     TyObject *seq2,
                                      int override);
 
-PyAPI_FUNC(PyObject *) PyDict_GetItemString(PyObject *dp, const char *key);
-PyAPI_FUNC(int) PyDict_SetItemString(PyObject *dp, const char *key, PyObject *item);
-PyAPI_FUNC(int) PyDict_DelItemString(PyObject *dp, const char *key);
+PyAPI_FUNC(TyObject *) TyDict_GetItemString(TyObject *dp, const char *key);
+PyAPI_FUNC(int) TyDict_SetItemString(TyObject *dp, const char *key, TyObject *item);
+PyAPI_FUNC(int) TyDict_DelItemString(TyObject *dp, const char *key);
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030D0000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030D0000
 // Return the object from dictionary *op* which has a key *key*.
 // - If the key is present, set *result to a new strong reference to the value
 //   and return 1.
 // - If the key is missing, set *result to NULL and return 0 .
 // - On error, raise an exception and return -1.
-PyAPI_FUNC(int) PyDict_GetItemRef(PyObject *mp, PyObject *key, PyObject **result);
-PyAPI_FUNC(int) PyDict_GetItemStringRef(PyObject *mp, const char *key, PyObject **result);
+PyAPI_FUNC(int) TyDict_GetItemRef(TyObject *mp, TyObject *key, TyObject **result);
+PyAPI_FUNC(int) TyDict_GetItemStringRef(TyObject *mp, const char *key, TyObject **result);
 #endif
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030A0000
-PyAPI_FUNC(PyObject *) PyObject_GenericGetDict(PyObject *, void *);
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030A0000
+PyAPI_FUNC(TyObject *) PyObject_GenericGetDict(TyObject *, void *);
 #endif
 
 /* Dictionary (keys, values, items) views */
 
-PyAPI_DATA(PyTypeObject) PyDictKeys_Type;
-PyAPI_DATA(PyTypeObject) PyDictValues_Type;
-PyAPI_DATA(PyTypeObject) PyDictItems_Type;
+PyAPI_DATA(TyTypeObject) PyDictKeys_Type;
+PyAPI_DATA(TyTypeObject) PyDictValues_Type;
+PyAPI_DATA(TyTypeObject) PyDictItems_Type;
 
 #define PyDictKeys_Check(op) PyObject_TypeCheck((op), &PyDictKeys_Type)
 #define PyDictValues_Check(op) PyObject_TypeCheck((op), &PyDictValues_Type)
@@ -87,22 +87,22 @@ PyAPI_DATA(PyTypeObject) PyDictItems_Type;
 
 /* Dictionary (key, value, items) iterators */
 
-PyAPI_DATA(PyTypeObject) PyDictIterKey_Type;
-PyAPI_DATA(PyTypeObject) PyDictIterValue_Type;
-PyAPI_DATA(PyTypeObject) PyDictIterItem_Type;
+PyAPI_DATA(TyTypeObject) PyDictIterKey_Type;
+PyAPI_DATA(TyTypeObject) PyDictIterValue_Type;
+PyAPI_DATA(TyTypeObject) PyDictIterItem_Type;
 
-PyAPI_DATA(PyTypeObject) PyDictRevIterKey_Type;
-PyAPI_DATA(PyTypeObject) PyDictRevIterItem_Type;
-PyAPI_DATA(PyTypeObject) PyDictRevIterValue_Type;
+PyAPI_DATA(TyTypeObject) PyDictRevIterKey_Type;
+PyAPI_DATA(TyTypeObject) PyDictRevIterItem_Type;
+PyAPI_DATA(TyTypeObject) PyDictRevIterValue_Type;
 
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_DICTOBJECT_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_DICTOBJECT_H
 #  include "cpython/dictobject.h"
-#  undef Py_CPYTHON_DICTOBJECT_H
+#  undef Ty_CPYTHON_DICTOBJECT_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_DICTOBJECT_H */
+#endif /* !Ty_DICTOBJECT_H */

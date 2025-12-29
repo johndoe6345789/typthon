@@ -157,20 +157,20 @@ def generate_tier1(
 #define TIER_ONE 1
 """)
     outfile.write(f"""
-#if !Py_TAIL_CALL_INTERP
+#if !Ty_TAIL_CALL_INTERP
 #if !USE_COMPUTED_GOTOS
     dispatch_opcode:
         switch (opcode)
 #endif
         {{
-#endif /* Py_TAIL_CALL_INTERP */
+#endif /* Ty_TAIL_CALL_INTERP */
             {INSTRUCTION_START_MARKER}
 """
     )
     generate_tier1_cases(analysis, outfile, lines)
     outfile.write(f"""
             {INSTRUCTION_END_MARKER}
-#if !Py_TAIL_CALL_INTERP
+#if !Ty_TAIL_CALL_INTERP
 #if USE_COMPUTED_GOTOS
         _unknown_opcode:
 #else
@@ -185,8 +185,8 @@ def generate_tier1(
 
         /* This should never be reached. Every opcode should end with DISPATCH()
            or goto error. */
-        Py_UNREACHABLE();
-#endif /* Py_TAIL_CALL_INTERP */
+        Ty_UNREACHABLE();
+#endif /* Ty_TAIL_CALL_INTERP */
         {LABEL_START_MARKER}
 """)
     out = CWriter(outfile, 2, lines)
@@ -226,17 +226,17 @@ def generate_tier1_cases(
         popped = get_popped(inst, analysis)
         # We need to ifdef it because this breaks platforms
         # without computed gotos/tail calling.
-        out.emit(f"#if Py_TAIL_CALL_INTERP\n")
+        out.emit(f"#if Ty_TAIL_CALL_INTERP\n")
         out.emit(f"int opcode = {name};\n")
         out.emit(f"(void)(opcode);\n")
         out.emit(f"#endif\n")
         needs_this = uses_this(inst)
         unused_guard = "(void)this_instr;\n"
         if inst.properties.needs_prev:
-            out.emit(f"_Py_CODEUNIT* const prev_instr = frame->instr_ptr;\n")
+            out.emit(f"_Ty_CODEUNIT* const prev_instr = frame->instr_ptr;\n")
 
         if needs_this and not inst.is_target:
-            out.emit(f"_Py_CODEUNIT* const this_instr = next_instr;\n")
+            out.emit(f"_Ty_CODEUNIT* const this_instr = next_instr;\n")
             out.emit(unused_guard)
         if not inst.properties.no_save_ip:
             out.emit(f"frame->instr_ptr = next_instr;\n")
@@ -246,7 +246,7 @@ def generate_tier1_cases(
         if inst.is_target:
             out.emit(f"PREDICTED_{name}:;\n")
             if needs_this:
-                out.emit(f"_Py_CODEUNIT* const this_instr = next_instr - {inst.size};\n")
+                out.emit(f"_Ty_CODEUNIT* const this_instr = next_instr - {inst.size};\n")
                 out.emit(unused_guard)
         if inst.properties.uses_opcode:
             out.emit(f"opcode = {name};\n")

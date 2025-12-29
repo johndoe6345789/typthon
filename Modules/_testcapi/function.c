@@ -2,49 +2,49 @@
 #include "util.h"
 
 
-static PyObject *
-function_get_code(PyObject *self, PyObject *func)
+static TyObject *
+function_get_code(TyObject *self, TyObject *func)
 {
-    PyObject *code = PyFunction_GetCode(func);
+    TyObject *code = TyFunction_GetCode(func);
     if (code != NULL) {
-        return Py_NewRef(code);
+        return Ty_NewRef(code);
     } else {
         return NULL;
     }
 }
 
 
-static PyObject *
-function_get_globals(PyObject *self, PyObject *func)
+static TyObject *
+function_get_globals(TyObject *self, TyObject *func)
 {
-    PyObject *globals = PyFunction_GetGlobals(func);
+    TyObject *globals = TyFunction_GetGlobals(func);
     if (globals != NULL) {
-        return Py_NewRef(globals);
+        return Ty_NewRef(globals);
     } else {
         return NULL;
     }
 }
 
 
-static PyObject *
-function_get_module(PyObject *self, PyObject *func)
+static TyObject *
+function_get_module(TyObject *self, TyObject *func)
 {
-    PyObject *module = PyFunction_GetModule(func);
+    TyObject *module = TyFunction_GetModule(func);
     if (module != NULL) {
-        return Py_NewRef(module);
+        return Ty_NewRef(module);
     } else {
         return NULL;
     }
 }
 
 
-static PyObject *
-function_get_defaults(PyObject *self, PyObject *func)
+static TyObject *
+function_get_defaults(TyObject *self, TyObject *func)
 {
-    PyObject *defaults = PyFunction_GetDefaults(func);
+    TyObject *defaults = TyFunction_GetDefaults(func);
     if (defaults != NULL) {
-        return Py_NewRef(defaults);
-    } else if (PyErr_Occurred()) {
+        return Ty_NewRef(defaults);
+    } else if (TyErr_Occurred()) {
         return NULL;
     } else {
         Py_RETURN_NONE;  // This can happen when `defaults` are set to `None`
@@ -52,27 +52,27 @@ function_get_defaults(PyObject *self, PyObject *func)
 }
 
 
-static PyObject *
-function_set_defaults(PyObject *self, PyObject *args)
+static TyObject *
+function_set_defaults(TyObject *self, TyObject *args)
 {
-    PyObject *func = NULL, *defaults = NULL;
-    if (!PyArg_ParseTuple(args, "OO", &func, &defaults)) {
+    TyObject *func = NULL, *defaults = NULL;
+    if (!TyArg_ParseTuple(args, "OO", &func, &defaults)) {
         return NULL;
     }
-    int result = PyFunction_SetDefaults(func, defaults);
+    int result = TyFunction_SetDefaults(func, defaults);
     if (result == -1)
         return NULL;
     Py_RETURN_NONE;
 }
 
 
-static PyObject *
-function_get_kw_defaults(PyObject *self, PyObject *func)
+static TyObject *
+function_get_kw_defaults(TyObject *self, TyObject *func)
 {
-    PyObject *defaults = PyFunction_GetKwDefaults(func);
+    TyObject *defaults = TyFunction_GetKwDefaults(func);
     if (defaults != NULL) {
-        return Py_NewRef(defaults);
-    } else if (PyErr_Occurred()) {
+        return Ty_NewRef(defaults);
+    } else if (TyErr_Occurred()) {
         return NULL;
     } else {
         Py_RETURN_NONE;  // This can happen when `kwdefaults` are set to `None`
@@ -80,27 +80,27 @@ function_get_kw_defaults(PyObject *self, PyObject *func)
 }
 
 
-static PyObject *
-function_set_kw_defaults(PyObject *self, PyObject *args)
+static TyObject *
+function_set_kw_defaults(TyObject *self, TyObject *args)
 {
-    PyObject *func = NULL, *defaults = NULL;
-    if (!PyArg_ParseTuple(args, "OO", &func, &defaults)) {
+    TyObject *func = NULL, *defaults = NULL;
+    if (!TyArg_ParseTuple(args, "OO", &func, &defaults)) {
         return NULL;
     }
-    int result = PyFunction_SetKwDefaults(func, defaults);
+    int result = TyFunction_SetKwDefaults(func, defaults);
     if (result == -1)
         return NULL;
     Py_RETURN_NONE;
 }
 
 
-static PyObject *
-function_get_closure(PyObject *self, PyObject *func)
+static TyObject *
+function_get_closure(TyObject *self, TyObject *func)
 {
-    PyObject *closure = PyFunction_GetClosure(func);
+    TyObject *closure = TyFunction_GetClosure(func);
     if (closure != NULL) {
-        return Py_NewRef(closure);
-    } else if (PyErr_Occurred()) {
+        return Ty_NewRef(closure);
+    } else if (TyErr_Occurred()) {
         return NULL;
     } else {
         Py_RETURN_NONE;  // This can happen when `closure` is set to `None`
@@ -108,14 +108,14 @@ function_get_closure(PyObject *self, PyObject *func)
 }
 
 
-static PyObject *
-function_set_closure(PyObject *self, PyObject *args)
+static TyObject *
+function_set_closure(TyObject *self, TyObject *args)
 {
-    PyObject *func = NULL, *closure = NULL;
-    if (!PyArg_ParseTuple(args, "OO", &func, &closure)) {
+    TyObject *func = NULL, *closure = NULL;
+    if (!TyArg_ParseTuple(args, "OO", &func, &closure)) {
         return NULL;
     }
-    int result = PyFunction_SetClosure(func, closure);
+    int result = TyFunction_SetClosure(func, closure);
     if (result == -1) {
         return NULL;
     }
@@ -123,7 +123,7 @@ function_set_closure(PyObject *self, PyObject *args)
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"function_get_code", function_get_code, METH_O, NULL},
     {"function_get_globals", function_get_globals, METH_O, NULL},
     {"function_get_module", function_get_module, METH_O, NULL},
@@ -137,7 +137,7 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Function(PyObject *m)
+_PyTestCapi_Init_Function(TyObject *m)
 {
-    return PyModule_AddFunctions(m, test_methods);
+    return TyModule_AddFunctions(m, test_methods);
 }

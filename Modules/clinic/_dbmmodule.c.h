@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_runtime.h"     // _Py_SINGLETON()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_runtime.h"     // _Ty_SINGLETON()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_dbm_dbm_close__doc__,
+TyDoc_STRVAR(_dbm_dbm_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -16,16 +16,16 @@ PyDoc_STRVAR(_dbm_dbm_close__doc__,
 #define _DBM_DBM_CLOSE_METHODDEF    \
     {"close", (PyCFunction)_dbm_dbm_close, METH_NOARGS, _dbm_dbm_close__doc__},
 
-static PyObject *
+static TyObject *
 _dbm_dbm_close_impl(dbmobject *self);
 
-static PyObject *
-_dbm_dbm_close(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_dbm_dbm_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _dbm_dbm_close_impl((dbmobject *)self);
 }
 
-PyDoc_STRVAR(_dbm_dbm_keys__doc__,
+TyDoc_STRVAR(_dbm_dbm_keys__doc__,
 "keys($self, /)\n"
 "--\n"
 "\n"
@@ -34,20 +34,20 @@ PyDoc_STRVAR(_dbm_dbm_keys__doc__,
 #define _DBM_DBM_KEYS_METHODDEF    \
     {"keys", _PyCFunction_CAST(_dbm_dbm_keys), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _dbm_dbm_keys__doc__},
 
-static PyObject *
-_dbm_dbm_keys_impl(dbmobject *self, PyTypeObject *cls);
+static TyObject *
+_dbm_dbm_keys_impl(dbmobject *self, TyTypeObject *cls);
 
-static PyObject *
-_dbm_dbm_keys(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_dbm_dbm_keys(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "keys() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "keys() takes no arguments");
         return NULL;
     }
     return _dbm_dbm_keys_impl((dbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_dbm_dbm_get__doc__,
+TyDoc_STRVAR(_dbm_dbm_get__doc__,
 "get($self, key, default=None, /)\n"
 "--\n"
 "\n"
@@ -56,32 +56,32 @@ PyDoc_STRVAR(_dbm_dbm_get__doc__,
 #define _DBM_DBM_GET_METHODDEF    \
     {"get", _PyCFunction_CAST(_dbm_dbm_get), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _dbm_dbm_get__doc__},
 
-static PyObject *
-_dbm_dbm_get_impl(dbmobject *self, PyTypeObject *cls, const char *key,
-                  Py_ssize_t key_length, PyObject *default_value);
+static TyObject *
+_dbm_dbm_get_impl(dbmobject *self, TyTypeObject *cls, const char *key,
+                  Ty_ssize_t key_length, TyObject *default_value);
 
-static PyObject *
-_dbm_dbm_get(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_dbm_dbm_get(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", "", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .format = "s#|O:get",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
     const char *key;
-    Py_ssize_t key_length;
-    PyObject *default_value = Py_None;
+    Ty_ssize_t key_length;
+    TyObject *default_value = Ty_None;
 
-    if (!_PyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
+    if (!_TyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
         &key, &key_length, &default_value)) {
         goto exit;
     }
@@ -91,7 +91,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_dbm_dbm_setdefault__doc__,
+TyDoc_STRVAR(_dbm_dbm_setdefault__doc__,
 "setdefault($self, key, default=b\'\', /)\n"
 "--\n"
 "\n"
@@ -102,32 +102,32 @@ PyDoc_STRVAR(_dbm_dbm_setdefault__doc__,
 #define _DBM_DBM_SETDEFAULT_METHODDEF    \
     {"setdefault", _PyCFunction_CAST(_dbm_dbm_setdefault), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _dbm_dbm_setdefault__doc__},
 
-static PyObject *
-_dbm_dbm_setdefault_impl(dbmobject *self, PyTypeObject *cls, const char *key,
-                         Py_ssize_t key_length, PyObject *default_value);
+static TyObject *
+_dbm_dbm_setdefault_impl(dbmobject *self, TyTypeObject *cls, const char *key,
+                         Ty_ssize_t key_length, TyObject *default_value);
 
-static PyObject *
-_dbm_dbm_setdefault(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_dbm_dbm_setdefault(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", "", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .format = "s#|O:setdefault",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
     const char *key;
-    Py_ssize_t key_length;
-    PyObject *default_value = NULL;
+    Ty_ssize_t key_length;
+    TyObject *default_value = NULL;
 
-    if (!_PyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
+    if (!_TyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
         &key, &key_length, &default_value)) {
         goto exit;
     }
@@ -137,7 +137,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_dbm_dbm_clear__doc__,
+TyDoc_STRVAR(_dbm_dbm_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -146,20 +146,20 @@ PyDoc_STRVAR(_dbm_dbm_clear__doc__,
 #define _DBM_DBM_CLEAR_METHODDEF    \
     {"clear", _PyCFunction_CAST(_dbm_dbm_clear), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _dbm_dbm_clear__doc__},
 
-static PyObject *
-_dbm_dbm_clear_impl(dbmobject *self, PyTypeObject *cls);
+static TyObject *
+_dbm_dbm_clear_impl(dbmobject *self, TyTypeObject *cls);
 
-static PyObject *
-_dbm_dbm_clear(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_dbm_dbm_clear(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "clear() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "clear() takes no arguments");
         return NULL;
     }
     return _dbm_dbm_clear_impl((dbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(dbmopen__doc__,
+TyDoc_STRVAR(dbmopen__doc__,
 "open($module, filename, flags=\'r\', mode=0o666, /)\n"
 "--\n"
 "\n"
@@ -176,43 +176,43 @@ PyDoc_STRVAR(dbmopen__doc__,
 #define DBMOPEN_METHODDEF    \
     {"open", _PyCFunction_CAST(dbmopen), METH_FASTCALL, dbmopen__doc__},
 
-static PyObject *
-dbmopen_impl(PyObject *module, PyObject *filename, const char *flags,
+static TyObject *
+dbmopen_impl(TyObject *module, TyObject *filename, const char *flags,
              int mode);
 
-static PyObject *
-dbmopen(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+dbmopen(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *filename;
+    TyObject *return_value = NULL;
+    TyObject *filename;
     const char *flags = "r";
     int mode = 438;
 
-    if (!_PyArg_CheckPositional("open", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("open", nargs, 1, 3)) {
         goto exit;
     }
     filename = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("open", "argument 2", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("open", "argument 2", "str", args[1]);
         goto exit;
     }
-    Py_ssize_t flags_length;
-    flags = PyUnicode_AsUTF8AndSize(args[1], &flags_length);
+    Ty_ssize_t flags_length;
+    flags = TyUnicode_AsUTF8AndSize(args[1], &flags_length);
     if (flags == NULL) {
         goto exit;
     }
     if (strlen(flags) != (size_t)flags_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    mode = PyLong_AsInt(args[2]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[2]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:

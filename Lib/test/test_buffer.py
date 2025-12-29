@@ -423,7 +423,7 @@ def multislice_assign(llst, rlst, lslices, rslices):
 
 #
 # PEP-3118 is very permissive with respect to the contents of a
-# Py_buffer. In particular:
+# Ty_buffer. In particular:
 #
 #   - shape can be zero
 #   - strides can be any integer, including zero

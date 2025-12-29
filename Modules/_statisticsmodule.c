@@ -1,9 +1,9 @@
 /* statistics accelerator C extension: _statistics module. */
 
-// Need limited C API version 3.13 for Py_mod_gil
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for Ty_mod_gil
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "Python.h"
@@ -32,7 +32,7 @@ _statistics._normal_dist_inv_cdf -> double
 [clinic start generated code]*/
 
 static double
-_statistics__normal_dist_inv_cdf_impl(PyObject *module, double p, double mu,
+_statistics__normal_dist_inv_cdf_impl(TyObject *module, double p, double mu,
                                       double sigma)
 /*[clinic end generated code: output=02fd19ddaab36602 input=24715a74be15296a]*/
 {
@@ -121,26 +121,26 @@ _statistics__normal_dist_inv_cdf_impl(PyObject *module, double p, double mu,
     return mu + (x * sigma);
 
   error:
-    PyErr_SetString(PyExc_ValueError, "inv_cdf undefined for these parameters");
+    TyErr_SetString(TyExc_ValueError, "inv_cdf undefined for these parameters");
     return -1.0;
 }
 
 
-static PyMethodDef statistics_methods[] = {
+static TyMethodDef statistics_methods[] = {
     _STATISTICS__NORMAL_DIST_INV_CDF_METHODDEF
     {NULL, NULL, 0, NULL}
 };
 
-PyDoc_STRVAR(statistics_doc,
+TyDoc_STRVAR(statistics_doc,
 "Accelerators for the statistics module.\n");
 
 static struct PyModuleDef_Slot _statisticsmodule_slots[] = {
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef statisticsmodule = {
+static struct TyModuleDef statisticsmodule = {
         PyModuleDef_HEAD_INIT,
         "_statistics",
         statistics_doc,

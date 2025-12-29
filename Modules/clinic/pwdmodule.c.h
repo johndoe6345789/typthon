@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(pwd_getpwuid__doc__,
+TyDoc_STRVAR(pwd_getpwuid__doc__,
 "getpwuid($module, uidobj, /)\n"
 "--\n"
 "\n"
@@ -13,7 +13,7 @@ PyDoc_STRVAR(pwd_getpwuid__doc__,
 #define PWD_GETPWUID_METHODDEF    \
     {"getpwuid", (PyCFunction)pwd_getpwuid, METH_O, pwd_getpwuid__doc__},
 
-PyDoc_STRVAR(pwd_getpwnam__doc__,
+TyDoc_STRVAR(pwd_getpwnam__doc__,
 "getpwnam($module, name, /)\n"
 "--\n"
 "\n"
@@ -24,17 +24,17 @@ PyDoc_STRVAR(pwd_getpwnam__doc__,
 #define PWD_GETPWNAM_METHODDEF    \
     {"getpwnam", (PyCFunction)pwd_getpwnam, METH_O, pwd_getpwnam__doc__},
 
-static PyObject *
-pwd_getpwnam_impl(PyObject *module, PyObject *name);
+static TyObject *
+pwd_getpwnam_impl(TyObject *module, TyObject *name);
 
-static PyObject *
-pwd_getpwnam(PyObject *module, PyObject *arg)
+static TyObject *
+pwd_getpwnam(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *name;
+    TyObject *return_value = NULL;
+    TyObject *name;
 
-    if (!PyUnicode_Check(arg)) {
-        PyErr_Format(PyExc_TypeError, "getpwnam() argument must be str, not %T", arg);
+    if (!TyUnicode_Check(arg)) {
+        TyErr_Format(TyExc_TypeError, "getpwnam() argument must be str, not %T", arg);
         goto exit;
     }
     name = arg;
@@ -46,7 +46,7 @@ exit:
 
 #if defined(HAVE_GETPWENT)
 
-PyDoc_STRVAR(pwd_getpwall__doc__,
+TyDoc_STRVAR(pwd_getpwall__doc__,
 "getpwall($module, /)\n"
 "--\n"
 "\n"
@@ -57,11 +57,11 @@ PyDoc_STRVAR(pwd_getpwall__doc__,
 #define PWD_GETPWALL_METHODDEF    \
     {"getpwall", (PyCFunction)pwd_getpwall, METH_NOARGS, pwd_getpwall__doc__},
 
-static PyObject *
-pwd_getpwall_impl(PyObject *module);
+static TyObject *
+pwd_getpwall_impl(TyObject *module);
 
-static PyObject *
-pwd_getpwall(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+pwd_getpwall(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return pwd_getpwall_impl(module);
 }

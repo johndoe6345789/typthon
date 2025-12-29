@@ -43,7 +43,7 @@ import _ssl
 
 from ssl import Purpose, TLSVersion, _TLSContentType, _TLSMessageType, _TLSAlertType
 
-Py_DEBUG_WIN32 = support.Py_DEBUG and sys.platform == 'win32'
+Ty_DEBUG_WIN32 = support.Ty_DEBUG and sys.platform == 'win32'
 
 PROTOCOLS = sorted(ssl._PROTOCOL_NAMES)
 HOST = socket_helper.HOST
@@ -1328,7 +1328,7 @@ class ContextTests(unittest.TestCase):
         try:
             ctx.load_dh_params(DHFILE)
         except RuntimeError:
-            if Py_DEBUG_WIN32:
+            if Ty_DEBUG_WIN32:
                 self.skipTest("not supported on Win32 debug build")
             raise
         ctx.load_dh_params(BYTES_DHFILE)
@@ -1466,7 +1466,7 @@ class ContextTests(unittest.TestCase):
             self.assertEqual(ctx.cert_store_stats(), {"crl": 0, "x509": 1, "x509_ca": 0})
 
     @unittest.skipUnless(sys.platform == "win32", "Windows specific")
-    @unittest.skipIf(support.Py_DEBUG,
+    @unittest.skipIf(support.Ty_DEBUG,
                      "Debug build does not share environment between CRTs")
     def test_load_default_certs_env_windows(self):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -1661,7 +1661,7 @@ class SSLErrorTests(unittest.TestCase):
             with self.assertRaises(ssl.SSLError) as cm:
                 ctx.load_dh_params(CERTFILE)
         except RuntimeError:
-            if Py_DEBUG_WIN32:
+            if Ty_DEBUG_WIN32:
                 self.skipTest("not supported on Win32 debug build")
             raise
 
@@ -2839,7 +2839,7 @@ class ThreadedTests(unittest.TestCase):
                 'Cannot create a client socket with a PROTOCOL_TLS_SERVER context',
                 str(e.exception))
 
-    @unittest.skipUnless(support.Py_GIL_DISABLED, "test is only useful if the GIL is disabled")
+    @unittest.skipUnless(support.Ty_GIL_DISABLED, "test is only useful if the GIL is disabled")
     def test_ssl_in_multiple_threads(self):
         # See GH-124984: OpenSSL is not thread safe.
         threads = []
@@ -4082,7 +4082,7 @@ class ThreadedTests(unittest.TestCase):
         try:
             server_context.load_dh_params(DHFILE)
         except RuntimeError:
-            if Py_DEBUG_WIN32:
+            if Ty_DEBUG_WIN32:
                 self.skipTest("not supported on Win32 debug build")
             raise
         server_context.set_ciphers("kEDH")
@@ -4874,7 +4874,7 @@ class TestSSLDebug(unittest.TestCase):
         try:
             ctx.keylog_filename = os_helper.TESTFN
         except RuntimeError:
-            if Py_DEBUG_WIN32:
+            if Ty_DEBUG_WIN32:
                 self.skipTest("not supported on Win32 debug build")
             raise
         self.assertEqual(ctx.keylog_filename, os_helper.TESTFN)
@@ -4900,7 +4900,7 @@ class TestSSLDebug(unittest.TestCase):
         try:
             client_context.keylog_filename = os_helper.TESTFN
         except RuntimeError:
-            if Py_DEBUG_WIN32:
+            if Ty_DEBUG_WIN32:
                 self.skipTest("not supported on Win32 debug build")
             raise
 
@@ -4948,7 +4948,7 @@ class TestSSLDebug(unittest.TestCase):
             try:
                 ctx = ssl.create_default_context()
             except RuntimeError:
-                if Py_DEBUG_WIN32:
+                if Ty_DEBUG_WIN32:
                     self.skipTest("not supported on Win32 debug build")
                 raise
             self.assertEqual(ctx.keylog_filename, os_helper.TESTFN)

@@ -64,7 +64,7 @@
 ENCODER(gb2312)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
 
         if (c < 0x80) {
@@ -97,7 +97,7 @@ DECODER(gb2312)
 {
     while (inleft > 0) {
         unsigned char c = **inbuf;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c < 0x80) {
             OUTCHAR(c);
@@ -125,7 +125,7 @@ DECODER(gb2312)
 ENCODER(gbk)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
 
         if (c < 0x80) {
@@ -158,7 +158,7 @@ DECODER(gbk)
 {
     while (inleft > 0) {
         unsigned char c = INBYTE1;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c < 0x80) {
             OUTCHAR(c);
@@ -186,7 +186,7 @@ DECODER(gbk)
 ENCODER(gb18030)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
 
         if (c < 0x80) {
@@ -196,7 +196,7 @@ ENCODER(gb18030)
         }
 
         if (c >= 0x10000) {
-            Py_UCS4 tc = c - 0x10000;
+            Ty_UCS4 tc = c - 0x10000;
             assert (c <= 0x10FFFF);
 
             REQUIRE_OUTBUF(4);
@@ -228,7 +228,7 @@ ENCODER(gb18030)
                  utrrange++)
                 if (utrrange->first <= c &&
                     c <= utrrange->last) {
-                    Py_UCS4 tc;
+                    Ty_UCS4 tc;
 
                     tc = c - utrrange->first +
                          utrrange->base;
@@ -266,7 +266,7 @@ DECODER(gb18030)
 {
     while (inleft > 0) {
         unsigned char c = INBYTE1, c2;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c < 0x80) {
             OUTCHAR(c);
@@ -280,7 +280,7 @@ DECODER(gb18030)
         if (c2 >= 0x30 && c2 <= 0x39) { /* 4 bytes seq */
             const struct _gb18030_to_unibmp_ranges *utr;
             unsigned char c3, c4;
-            Py_UCS4 lseq;
+            Ty_UCS4 lseq;
 
             REQUIRE_INBUF(4);
             c3 = INBYTE3;
@@ -293,8 +293,8 @@ DECODER(gb18030)
             c3 -= 0x81; c4 -= 0x30;
 
             if (c < 4) { /* U+0080 - U+FFFF */
-                lseq = ((Py_UCS4)c * 10 + c2) * 1260 +
-                    (Py_UCS4)c3 * 10 + c4;
+                lseq = ((Ty_UCS4)c * 10 + c2) * 1260 +
+                    (Ty_UCS4)c3 * 10 + c4;
                 if (lseq < 39420) {
                     for (utr = gb18030_to_unibmp_ranges;
                          lseq >= (utr + 1)->base;
@@ -305,8 +305,8 @@ DECODER(gb18030)
                 }
             }
             else if (c >= 15) { /* U+10000 - U+10FFFF */
-                lseq = 0x10000 + (((Py_UCS4)c-15) * 10 + c2)
-                    * 1260 + (Py_UCS4)c3 * 10 + c4;
+                lseq = 0x10000 + (((Ty_UCS4)c-15) * 10 + c2)
+                    * 1260 + (Ty_UCS4)c3 * 10 + c4;
                 if (lseq <= 0x10FFFF) {
                     OUTCHAR(lseq);
                     NEXT_IN(4);
@@ -352,7 +352,7 @@ ENCODER_RESET(hz)
 ENCODER(hz)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
 
         if (c < 0x80) {
@@ -411,7 +411,7 @@ DECODER(hz)
 {
     while (inleft > 0) {
         unsigned char c = INBYTE1;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c == '~') {
             unsigned char c2 = INBYTE2;

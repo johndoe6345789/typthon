@@ -2,15 +2,15 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_long.h"          // _PyLong_UnsignedLong_Converter()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_long.h"          // _TyLong_UnsignedLong_Converter()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(EVP_copy__doc__,
+TyDoc_STRVAR(EVP_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -19,16 +19,16 @@ PyDoc_STRVAR(EVP_copy__doc__,
 #define EVP_COPY_METHODDEF    \
     {"copy", (PyCFunction)EVP_copy, METH_NOARGS, EVP_copy__doc__},
 
-static PyObject *
+static TyObject *
 EVP_copy_impl(EVPobject *self);
 
-static PyObject *
-EVP_copy(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+EVP_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return EVP_copy_impl((EVPobject *)self);
 }
 
-PyDoc_STRVAR(EVP_digest__doc__,
+TyDoc_STRVAR(EVP_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -37,16 +37,16 @@ PyDoc_STRVAR(EVP_digest__doc__,
 #define EVP_DIGEST_METHODDEF    \
     {"digest", (PyCFunction)EVP_digest, METH_NOARGS, EVP_digest__doc__},
 
-static PyObject *
+static TyObject *
 EVP_digest_impl(EVPobject *self);
 
-static PyObject *
-EVP_digest(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+EVP_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return EVP_digest_impl((EVPobject *)self);
 }
 
-PyDoc_STRVAR(EVP_hexdigest__doc__,
+TyDoc_STRVAR(EVP_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -55,16 +55,16 @@ PyDoc_STRVAR(EVP_hexdigest__doc__,
 #define EVP_HEXDIGEST_METHODDEF    \
     {"hexdigest", (PyCFunction)EVP_hexdigest, METH_NOARGS, EVP_hexdigest__doc__},
 
-static PyObject *
+static TyObject *
 EVP_hexdigest_impl(EVPobject *self);
 
-static PyObject *
-EVP_hexdigest(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+EVP_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return EVP_hexdigest_impl((EVPobject *)self);
 }
 
-PyDoc_STRVAR(EVP_update__doc__,
+TyDoc_STRVAR(EVP_update__doc__,
 "update($self, obj, /)\n"
 "--\n"
 "\n"
@@ -73,13 +73,13 @@ PyDoc_STRVAR(EVP_update__doc__,
 #define EVP_UPDATE_METHODDEF    \
     {"update", (PyCFunction)EVP_update, METH_O, EVP_update__doc__},
 
-static PyObject *
-EVP_update_impl(EVPobject *self, PyObject *obj);
+static TyObject *
+EVP_update_impl(EVPobject *self, TyObject *obj);
 
-static PyObject *
-EVP_update(PyObject *self, PyObject *obj)
+static TyObject *
+EVP_update(TyObject *self, TyObject *obj)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = EVP_update_impl((EVPobject *)self, obj);
 
@@ -88,7 +88,7 @@ EVP_update(PyObject *self, PyObject *obj)
 
 #if defined(PY_OPENSSL_HAS_SHAKE)
 
-PyDoc_STRVAR(EVPXOF_digest__doc__,
+TyDoc_STRVAR(EVPXOF_digest__doc__,
 "digest($self, /, length)\n"
 "--\n"
 "\n"
@@ -97,56 +97,56 @@ PyDoc_STRVAR(EVPXOF_digest__doc__,
 #define EVPXOF_DIGEST_METHODDEF    \
     {"digest", _PyCFunction_CAST(EVPXOF_digest), METH_FASTCALL|METH_KEYWORDS, EVPXOF_digest__doc__},
 
-static PyObject *
-EVPXOF_digest_impl(EVPobject *self, Py_ssize_t length);
+static TyObject *
+EVPXOF_digest_impl(EVPobject *self, Ty_ssize_t length);
 
-static PyObject *
-EVPXOF_digest(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+EVPXOF_digest(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(length), },
+        .ob_item = { &_Ty_ID(length), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"length", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "digest",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t length;
+    TyObject *argsbuf[1];
+    Ty_ssize_t length;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         length = ival;
@@ -161,7 +161,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHAKE)
 
-PyDoc_STRVAR(EVPXOF_hexdigest__doc__,
+TyDoc_STRVAR(EVPXOF_hexdigest__doc__,
 "hexdigest($self, /, length)\n"
 "--\n"
 "\n"
@@ -170,56 +170,56 @@ PyDoc_STRVAR(EVPXOF_hexdigest__doc__,
 #define EVPXOF_HEXDIGEST_METHODDEF    \
     {"hexdigest", _PyCFunction_CAST(EVPXOF_hexdigest), METH_FASTCALL|METH_KEYWORDS, EVPXOF_hexdigest__doc__},
 
-static PyObject *
-EVPXOF_hexdigest_impl(EVPobject *self, Py_ssize_t length);
+static TyObject *
+EVPXOF_hexdigest_impl(EVPobject *self, Ty_ssize_t length);
 
-static PyObject *
-EVPXOF_hexdigest(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+EVPXOF_hexdigest(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(length), },
+        .ob_item = { &_Ty_ID(length), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"length", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "hexdigest",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t length;
+    TyObject *argsbuf[1];
+    Ty_ssize_t length;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         length = ival;
@@ -232,7 +232,7 @@ exit:
 
 #endif /* defined(PY_OPENSSL_HAS_SHAKE) */
 
-PyDoc_STRVAR(_hashlib_new__doc__,
+TyDoc_STRVAR(_hashlib_new__doc__,
 "new($module, /, name, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -246,64 +246,64 @@ PyDoc_STRVAR(_hashlib_new__doc__,
 #define _HASHLIB_NEW_METHODDEF    \
     {"new", _PyCFunction_CAST(_hashlib_new), METH_FASTCALL|METH_KEYWORDS, _hashlib_new__doc__},
 
-static PyObject *
-_hashlib_new_impl(PyObject *module, const char *name, PyObject *data,
-                  int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_new_impl(TyObject *module, const char *name, TyObject *data,
+                  int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_new(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_new(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(name), &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(name), &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"name", "data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "new",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     const char *name;
-    PyObject *data = NULL;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("new", "argument 'name'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("new", "argument 'name'", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t name_length;
-    name = PyUnicode_AsUTF8AndSize(args[0], &name_length);
+    Ty_ssize_t name_length;
+    name = TyUnicode_AsUTF8AndSize(args[0], &name_length);
     if (name == NULL) {
         goto exit;
     }
     if (strlen(name) != (size_t)name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     if (!noptargs) {
@@ -336,7 +336,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_md5__doc__,
+TyDoc_STRVAR(_hashlib_openssl_md5__doc__,
 "openssl_md5($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -345,48 +345,48 @@ PyDoc_STRVAR(_hashlib_openssl_md5__doc__,
 #define _HASHLIB_OPENSSL_MD5_METHODDEF    \
     {"openssl_md5", _PyCFunction_CAST(_hashlib_openssl_md5), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_md5__doc__},
 
-static PyObject *
-_hashlib_openssl_md5_impl(PyObject *module, PyObject *data,
-                          int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_md5_impl(TyObject *module, TyObject *data,
+                          int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_md5(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_md5(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_md5",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -421,7 +421,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha1__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha1__doc__,
 "openssl_sha1($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -430,48 +430,48 @@ PyDoc_STRVAR(_hashlib_openssl_sha1__doc__,
 #define _HASHLIB_OPENSSL_SHA1_METHODDEF    \
     {"openssl_sha1", _PyCFunction_CAST(_hashlib_openssl_sha1), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_sha1__doc__},
 
-static PyObject *
-_hashlib_openssl_sha1_impl(PyObject *module, PyObject *data,
-                           int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_sha1_impl(TyObject *module, TyObject *data,
+                           int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_sha1(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_sha1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_sha1",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -506,7 +506,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha224__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha224__doc__,
 "openssl_sha224($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "               string=None)\n"
 "--\n"
@@ -516,48 +516,48 @@ PyDoc_STRVAR(_hashlib_openssl_sha224__doc__,
 #define _HASHLIB_OPENSSL_SHA224_METHODDEF    \
     {"openssl_sha224", _PyCFunction_CAST(_hashlib_openssl_sha224), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_sha224__doc__},
 
-static PyObject *
-_hashlib_openssl_sha224_impl(PyObject *module, PyObject *data,
-                             int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_sha224_impl(TyObject *module, TyObject *data,
+                             int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_sha224(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_sha224(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_sha224",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -592,7 +592,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha256__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha256__doc__,
 "openssl_sha256($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "               string=None)\n"
 "--\n"
@@ -602,48 +602,48 @@ PyDoc_STRVAR(_hashlib_openssl_sha256__doc__,
 #define _HASHLIB_OPENSSL_SHA256_METHODDEF    \
     {"openssl_sha256", _PyCFunction_CAST(_hashlib_openssl_sha256), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_sha256__doc__},
 
-static PyObject *
-_hashlib_openssl_sha256_impl(PyObject *module, PyObject *data,
-                             int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_sha256_impl(TyObject *module, TyObject *data,
+                             int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_sha256(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_sha256(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_sha256",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -678,7 +678,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha384__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha384__doc__,
 "openssl_sha384($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "               string=None)\n"
 "--\n"
@@ -688,48 +688,48 @@ PyDoc_STRVAR(_hashlib_openssl_sha384__doc__,
 #define _HASHLIB_OPENSSL_SHA384_METHODDEF    \
     {"openssl_sha384", _PyCFunction_CAST(_hashlib_openssl_sha384), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_sha384__doc__},
 
-static PyObject *
-_hashlib_openssl_sha384_impl(PyObject *module, PyObject *data,
-                             int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_sha384_impl(TyObject *module, TyObject *data,
+                             int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_sha384(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_sha384(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_sha384",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -764,7 +764,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha512__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha512__doc__,
 "openssl_sha512($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "               string=None)\n"
 "--\n"
@@ -774,48 +774,48 @@ PyDoc_STRVAR(_hashlib_openssl_sha512__doc__,
 #define _HASHLIB_OPENSSL_SHA512_METHODDEF    \
     {"openssl_sha512", _PyCFunction_CAST(_hashlib_openssl_sha512), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_sha512__doc__},
 
-static PyObject *
-_hashlib_openssl_sha512_impl(PyObject *module, PyObject *data,
-                             int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_sha512_impl(TyObject *module, TyObject *data,
+                             int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_sha512(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_sha512(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_sha512",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -852,7 +852,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHA3)
 
-PyDoc_STRVAR(_hashlib_openssl_sha3_224__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha3_224__doc__,
 "openssl_sha3_224($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                 string=None)\n"
 "--\n"
@@ -862,48 +862,48 @@ PyDoc_STRVAR(_hashlib_openssl_sha3_224__doc__,
 #define _HASHLIB_OPENSSL_SHA3_224_METHODDEF    \
     {"openssl_sha3_224", _PyCFunction_CAST(_hashlib_openssl_sha3_224), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_sha3_224__doc__},
 
-static PyObject *
-_hashlib_openssl_sha3_224_impl(PyObject *module, PyObject *data,
-                               int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_sha3_224_impl(TyObject *module, TyObject *data,
+                               int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_sha3_224(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_sha3_224(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_sha3_224",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -942,7 +942,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHA3)
 
-PyDoc_STRVAR(_hashlib_openssl_sha3_256__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha3_256__doc__,
 "openssl_sha3_256($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                 string=None)\n"
 "--\n"
@@ -952,48 +952,48 @@ PyDoc_STRVAR(_hashlib_openssl_sha3_256__doc__,
 #define _HASHLIB_OPENSSL_SHA3_256_METHODDEF    \
     {"openssl_sha3_256", _PyCFunction_CAST(_hashlib_openssl_sha3_256), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_sha3_256__doc__},
 
-static PyObject *
-_hashlib_openssl_sha3_256_impl(PyObject *module, PyObject *data,
-                               int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_sha3_256_impl(TyObject *module, TyObject *data,
+                               int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_sha3_256(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_sha3_256(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_sha3_256",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1032,7 +1032,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHA3)
 
-PyDoc_STRVAR(_hashlib_openssl_sha3_384__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha3_384__doc__,
 "openssl_sha3_384($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                 string=None)\n"
 "--\n"
@@ -1042,48 +1042,48 @@ PyDoc_STRVAR(_hashlib_openssl_sha3_384__doc__,
 #define _HASHLIB_OPENSSL_SHA3_384_METHODDEF    \
     {"openssl_sha3_384", _PyCFunction_CAST(_hashlib_openssl_sha3_384), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_sha3_384__doc__},
 
-static PyObject *
-_hashlib_openssl_sha3_384_impl(PyObject *module, PyObject *data,
-                               int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_sha3_384_impl(TyObject *module, TyObject *data,
+                               int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_sha3_384(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_sha3_384(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_sha3_384",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1122,7 +1122,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHA3)
 
-PyDoc_STRVAR(_hashlib_openssl_sha3_512__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha3_512__doc__,
 "openssl_sha3_512($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                 string=None)\n"
 "--\n"
@@ -1132,48 +1132,48 @@ PyDoc_STRVAR(_hashlib_openssl_sha3_512__doc__,
 #define _HASHLIB_OPENSSL_SHA3_512_METHODDEF    \
     {"openssl_sha3_512", _PyCFunction_CAST(_hashlib_openssl_sha3_512), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_sha3_512__doc__},
 
-static PyObject *
-_hashlib_openssl_sha3_512_impl(PyObject *module, PyObject *data,
-                               int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_sha3_512_impl(TyObject *module, TyObject *data,
+                               int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_sha3_512(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_sha3_512(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_sha3_512",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1212,7 +1212,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHAKE)
 
-PyDoc_STRVAR(_hashlib_openssl_shake_128__doc__,
+TyDoc_STRVAR(_hashlib_openssl_shake_128__doc__,
 "openssl_shake_128($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                  string=None)\n"
 "--\n"
@@ -1222,48 +1222,48 @@ PyDoc_STRVAR(_hashlib_openssl_shake_128__doc__,
 #define _HASHLIB_OPENSSL_SHAKE_128_METHODDEF    \
     {"openssl_shake_128", _PyCFunction_CAST(_hashlib_openssl_shake_128), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_shake_128__doc__},
 
-static PyObject *
-_hashlib_openssl_shake_128_impl(PyObject *module, PyObject *data,
-                                int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_shake_128_impl(TyObject *module, TyObject *data,
+                                int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_shake_128(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_shake_128(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_shake_128",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1302,7 +1302,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHAKE)
 
-PyDoc_STRVAR(_hashlib_openssl_shake_256__doc__,
+TyDoc_STRVAR(_hashlib_openssl_shake_256__doc__,
 "openssl_shake_256($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                  string=None)\n"
 "--\n"
@@ -1312,48 +1312,48 @@ PyDoc_STRVAR(_hashlib_openssl_shake_256__doc__,
 #define _HASHLIB_OPENSSL_SHAKE_256_METHODDEF    \
     {"openssl_shake_256", _PyCFunction_CAST(_hashlib_openssl_shake_256), METH_FASTCALL|METH_KEYWORDS, _hashlib_openssl_shake_256__doc__},
 
-static PyObject *
-_hashlib_openssl_shake_256_impl(PyObject *module, PyObject *data,
-                                int usedforsecurity, PyObject *string);
+static TyObject *
+_hashlib_openssl_shake_256_impl(TyObject *module, TyObject *data,
+                                int usedforsecurity, TyObject *string);
 
-static PyObject *
-_hashlib_openssl_shake_256(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_openssl_shake_256(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "openssl_shake_256",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *data = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *data = NULL;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1390,7 +1390,7 @@ exit:
 
 #endif /* defined(PY_OPENSSL_HAS_SHAKE) */
 
-PyDoc_STRVAR(pbkdf2_hmac__doc__,
+TyDoc_STRVAR(pbkdf2_hmac__doc__,
 "pbkdf2_hmac($module, /, hash_name, password, salt, iterations,\n"
 "            dklen=None)\n"
 "--\n"
@@ -1400,66 +1400,66 @@ PyDoc_STRVAR(pbkdf2_hmac__doc__,
 #define PBKDF2_HMAC_METHODDEF    \
     {"pbkdf2_hmac", _PyCFunction_CAST(pbkdf2_hmac), METH_FASTCALL|METH_KEYWORDS, pbkdf2_hmac__doc__},
 
-static PyObject *
-pbkdf2_hmac_impl(PyObject *module, const char *hash_name,
-                 Py_buffer *password, Py_buffer *salt, long iterations,
-                 PyObject *dklen_obj);
+static TyObject *
+pbkdf2_hmac_impl(TyObject *module, const char *hash_name,
+                 Ty_buffer *password, Ty_buffer *salt, long iterations,
+                 TyObject *dklen_obj);
 
-static PyObject *
-pbkdf2_hmac(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pbkdf2_hmac(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(hash_name), &_Py_ID(password), &_Py_ID(salt), &_Py_ID(iterations), &_Py_ID(dklen), },
+        .ob_item = { &_Ty_ID(hash_name), &_Ty_ID(password), &_Ty_ID(salt), &_Ty_ID(iterations), &_Ty_ID(dklen), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"hash_name", "password", "salt", "iterations", "dklen", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "pbkdf2_hmac",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 4;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 4;
     const char *hash_name;
-    Py_buffer password = {NULL, NULL};
-    Py_buffer salt = {NULL, NULL};
+    Ty_buffer password = {NULL, NULL};
+    Ty_buffer salt = {NULL, NULL};
     long iterations;
-    PyObject *dklen_obj = Py_None;
+    TyObject *dklen_obj = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 4, /*maxpos*/ 5, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("pbkdf2_hmac", "argument 'hash_name'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("pbkdf2_hmac", "argument 'hash_name'", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t hash_name_length;
-    hash_name = PyUnicode_AsUTF8AndSize(args[0], &hash_name_length);
+    Ty_ssize_t hash_name_length;
+    hash_name = TyUnicode_AsUTF8AndSize(args[0], &hash_name_length);
     if (hash_name == NULL) {
         goto exit;
     }
     if (strlen(hash_name) != (size_t)hash_name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     if (PyObject_GetBuffer(args[1], &password, PyBUF_SIMPLE) != 0) {
@@ -1468,8 +1468,8 @@ pbkdf2_hmac(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject 
     if (PyObject_GetBuffer(args[2], &salt, PyBUF_SIMPLE) != 0) {
         goto exit;
     }
-    iterations = PyLong_AsLong(args[3]);
-    if (iterations == -1 && PyErr_Occurred()) {
+    iterations = TyLong_AsLong(args[3]);
+    if (iterations == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!noptargs) {
@@ -1494,7 +1494,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SCRYPT)
 
-PyDoc_STRVAR(_hashlib_scrypt__doc__,
+TyDoc_STRVAR(_hashlib_scrypt__doc__,
 "scrypt($module, /, password, *, salt, n, r, p, maxmem=0, dklen=64)\n"
 "--\n"
 "\n"
@@ -1503,53 +1503,53 @@ PyDoc_STRVAR(_hashlib_scrypt__doc__,
 #define _HASHLIB_SCRYPT_METHODDEF    \
     {"scrypt", _PyCFunction_CAST(_hashlib_scrypt), METH_FASTCALL|METH_KEYWORDS, _hashlib_scrypt__doc__},
 
-static PyObject *
-_hashlib_scrypt_impl(PyObject *module, Py_buffer *password, Py_buffer *salt,
+static TyObject *
+_hashlib_scrypt_impl(TyObject *module, Ty_buffer *password, Ty_buffer *salt,
                      unsigned long n, unsigned long r, unsigned long p,
                      long maxmem, long dklen);
 
-static PyObject *
-_hashlib_scrypt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_scrypt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 7
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(password), &_Py_ID(salt), _Py_LATIN1_CHR('n'), _Py_LATIN1_CHR('r'), _Py_LATIN1_CHR('p'), &_Py_ID(maxmem), &_Py_ID(dklen), },
+        .ob_item = { &_Ty_ID(password), &_Ty_ID(salt), _Ty_LATIN1_CHR('n'), _Ty_LATIN1_CHR('r'), _Ty_LATIN1_CHR('p'), &_Ty_ID(maxmem), &_Ty_ID(dklen), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"password", "salt", "n", "r", "p", "maxmem", "dklen", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "scrypt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[7];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 5;
-    Py_buffer password = {NULL, NULL};
-    Py_buffer salt = {NULL, NULL};
+    TyObject *argsbuf[7];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 5;
+    Ty_buffer password = {NULL, NULL};
+    Ty_buffer salt = {NULL, NULL};
     unsigned long n;
     unsigned long r;
     unsigned long p;
     long maxmem = 0;
     long dklen = 64;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 4, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1560,29 +1560,29 @@ _hashlib_scrypt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObj
     if (PyObject_GetBuffer(args[1], &salt, PyBUF_SIMPLE) != 0) {
         goto exit;
     }
-    if (!_PyLong_UnsignedLong_Converter(args[2], &n)) {
+    if (!_TyLong_UnsignedLong_Converter(args[2], &n)) {
         goto exit;
     }
-    if (!_PyLong_UnsignedLong_Converter(args[3], &r)) {
+    if (!_TyLong_UnsignedLong_Converter(args[3], &r)) {
         goto exit;
     }
-    if (!_PyLong_UnsignedLong_Converter(args[4], &p)) {
+    if (!_TyLong_UnsignedLong_Converter(args[4], &p)) {
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_kwonly;
     }
     if (args[5]) {
-        maxmem = PyLong_AsLong(args[5]);
-        if (maxmem == -1 && PyErr_Occurred()) {
+        maxmem = TyLong_AsLong(args[5]);
+        if (maxmem == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
-    dklen = PyLong_AsLong(args[6]);
-    if (dklen == -1 && PyErr_Occurred()) {
+    dklen = TyLong_AsLong(args[6]);
+    if (dklen == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_kwonly:
@@ -1603,7 +1603,7 @@ exit:
 
 #endif /* defined(PY_OPENSSL_HAS_SCRYPT) */
 
-PyDoc_STRVAR(_hashlib_hmac_singleshot__doc__,
+TyDoc_STRVAR(_hashlib_hmac_singleshot__doc__,
 "hmac_digest($module, /, key, msg, digest)\n"
 "--\n"
 "\n"
@@ -1612,47 +1612,47 @@ PyDoc_STRVAR(_hashlib_hmac_singleshot__doc__,
 #define _HASHLIB_HMAC_SINGLESHOT_METHODDEF    \
     {"hmac_digest", _PyCFunction_CAST(_hashlib_hmac_singleshot), METH_FASTCALL|METH_KEYWORDS, _hashlib_hmac_singleshot__doc__},
 
-static PyObject *
-_hashlib_hmac_singleshot_impl(PyObject *module, Py_buffer *key,
-                              Py_buffer *msg, PyObject *digest);
+static TyObject *
+_hashlib_hmac_singleshot_impl(TyObject *module, Ty_buffer *key,
+                              Ty_buffer *msg, TyObject *digest);
 
-static PyObject *
-_hashlib_hmac_singleshot(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_hmac_singleshot(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(key), &_Py_ID(msg), &_Py_ID(digest), },
+        .ob_item = { &_Ty_ID(key), &_Ty_ID(msg), &_Ty_ID(digest), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"key", "msg", "digest", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "hmac_digest",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_buffer key = {NULL, NULL};
-    Py_buffer msg = {NULL, NULL};
-    PyObject *digest;
+    TyObject *argsbuf[3];
+    Ty_buffer key = {NULL, NULL};
+    Ty_buffer msg = {NULL, NULL};
+    TyObject *digest;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1679,7 +1679,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_hmac_new__doc__,
+TyDoc_STRVAR(_hashlib_hmac_new__doc__,
 "hmac_new($module, /, key, msg=b\'\', digestmod=None)\n"
 "--\n"
 "\n"
@@ -1688,48 +1688,48 @@ PyDoc_STRVAR(_hashlib_hmac_new__doc__,
 #define _HASHLIB_HMAC_NEW_METHODDEF    \
     {"hmac_new", _PyCFunction_CAST(_hashlib_hmac_new), METH_FASTCALL|METH_KEYWORDS, _hashlib_hmac_new__doc__},
 
-static PyObject *
-_hashlib_hmac_new_impl(PyObject *module, Py_buffer *key, PyObject *msg_obj,
-                       PyObject *digestmod);
+static TyObject *
+_hashlib_hmac_new_impl(TyObject *module, Ty_buffer *key, TyObject *msg_obj,
+                       TyObject *digestmod);
 
-static PyObject *
-_hashlib_hmac_new(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_hmac_new(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(key), &_Py_ID(msg), &_Py_ID(digestmod), },
+        .ob_item = { &_Ty_ID(key), &_Ty_ID(msg), &_Ty_ID(digestmod), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"key", "msg", "digestmod", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "hmac_new",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer key = {NULL, NULL};
-    PyObject *msg_obj = NULL;
-    PyObject *digestmod = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer key = {NULL, NULL};
+    TyObject *msg_obj = NULL;
+    TyObject *digestmod = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1759,7 +1759,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_HMAC_copy__doc__,
+TyDoc_STRVAR(_hashlib_HMAC_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -1768,16 +1768,16 @@ PyDoc_STRVAR(_hashlib_HMAC_copy__doc__,
 #define _HASHLIB_HMAC_COPY_METHODDEF    \
     {"copy", (PyCFunction)_hashlib_HMAC_copy, METH_NOARGS, _hashlib_HMAC_copy__doc__},
 
-static PyObject *
+static TyObject *
 _hashlib_HMAC_copy_impl(HMACobject *self);
 
-static PyObject *
-_hashlib_HMAC_copy(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_hashlib_HMAC_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _hashlib_HMAC_copy_impl((HMACobject *)self);
 }
 
-PyDoc_STRVAR(_hashlib_HMAC_update__doc__,
+TyDoc_STRVAR(_hashlib_HMAC_update__doc__,
 "update($self, /, msg)\n"
 "--\n"
 "\n"
@@ -1786,44 +1786,44 @@ PyDoc_STRVAR(_hashlib_HMAC_update__doc__,
 #define _HASHLIB_HMAC_UPDATE_METHODDEF    \
     {"update", _PyCFunction_CAST(_hashlib_HMAC_update), METH_FASTCALL|METH_KEYWORDS, _hashlib_HMAC_update__doc__},
 
-static PyObject *
-_hashlib_HMAC_update_impl(HMACobject *self, PyObject *msg);
+static TyObject *
+_hashlib_HMAC_update_impl(HMACobject *self, TyObject *msg);
 
-static PyObject *
-_hashlib_HMAC_update(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_hashlib_HMAC_update(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(msg), },
+        .ob_item = { &_Ty_ID(msg), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"msg", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "update",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *msg;
+    TyObject *argsbuf[1];
+    TyObject *msg;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1835,7 +1835,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_HMAC_digest__doc__,
+TyDoc_STRVAR(_hashlib_HMAC_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -1844,16 +1844,16 @@ PyDoc_STRVAR(_hashlib_HMAC_digest__doc__,
 #define _HASHLIB_HMAC_DIGEST_METHODDEF    \
     {"digest", (PyCFunction)_hashlib_HMAC_digest, METH_NOARGS, _hashlib_HMAC_digest__doc__},
 
-static PyObject *
+static TyObject *
 _hashlib_HMAC_digest_impl(HMACobject *self);
 
-static PyObject *
-_hashlib_HMAC_digest(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_hashlib_HMAC_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _hashlib_HMAC_digest_impl((HMACobject *)self);
 }
 
-PyDoc_STRVAR(_hashlib_HMAC_hexdigest__doc__,
+TyDoc_STRVAR(_hashlib_HMAC_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -1865,16 +1865,16 @@ PyDoc_STRVAR(_hashlib_HMAC_hexdigest__doc__,
 #define _HASHLIB_HMAC_HEXDIGEST_METHODDEF    \
     {"hexdigest", (PyCFunction)_hashlib_HMAC_hexdigest, METH_NOARGS, _hashlib_HMAC_hexdigest__doc__},
 
-static PyObject *
+static TyObject *
 _hashlib_HMAC_hexdigest_impl(HMACobject *self);
 
-static PyObject *
-_hashlib_HMAC_hexdigest(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_hashlib_HMAC_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _hashlib_HMAC_hexdigest_impl((HMACobject *)self);
 }
 
-PyDoc_STRVAR(_hashlib_get_fips_mode__doc__,
+TyDoc_STRVAR(_hashlib_get_fips_mode__doc__,
 "get_fips_mode($module, /)\n"
 "--\n"
 "\n"
@@ -1891,25 +1891,25 @@ PyDoc_STRVAR(_hashlib_get_fips_mode__doc__,
     {"get_fips_mode", (PyCFunction)_hashlib_get_fips_mode, METH_NOARGS, _hashlib_get_fips_mode__doc__},
 
 static int
-_hashlib_get_fips_mode_impl(PyObject *module);
+_hashlib_get_fips_mode_impl(TyObject *module);
 
-static PyObject *
-_hashlib_get_fips_mode(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_hashlib_get_fips_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = _hashlib_get_fips_mode_impl(module);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_compare_digest__doc__,
+TyDoc_STRVAR(_hashlib_compare_digest__doc__,
 "compare_digest($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1928,17 +1928,17 @@ PyDoc_STRVAR(_hashlib_compare_digest__doc__,
 #define _HASHLIB_COMPARE_DIGEST_METHODDEF    \
     {"compare_digest", _PyCFunction_CAST(_hashlib_compare_digest), METH_FASTCALL, _hashlib_compare_digest__doc__},
 
-static PyObject *
-_hashlib_compare_digest_impl(PyObject *module, PyObject *a, PyObject *b);
+static TyObject *
+_hashlib_compare_digest_impl(TyObject *module, TyObject *a, TyObject *b);
 
-static PyObject *
-_hashlib_compare_digest(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_hashlib_compare_digest(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
-    PyObject *b;
+    TyObject *return_value = NULL;
+    TyObject *a;
+    TyObject *b;
 
-    if (!_PyArg_CheckPositional("compare_digest", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("compare_digest", nargs, 2, 2)) {
         goto exit;
     }
     a = args[0];

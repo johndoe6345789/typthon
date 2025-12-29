@@ -3,28 +3,28 @@
 // Only use a forward declaration if there is an interdependency between two
 // header files.
 
-#ifndef Py_PYTYPEDEFS_H
-#define Py_PYTYPEDEFS_H
+#ifndef Ty_PYTYPEDEFS_H
+#define Ty_PYTYPEDEFS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct PyModuleDef PyModuleDef;
+typedef struct TyModuleDef TyModuleDef;
 typedef struct PyModuleDef_Slot PyModuleDef_Slot;
-typedef struct PyMethodDef PyMethodDef;
-typedef struct PyGetSetDef PyGetSetDef;
-typedef struct PyMemberDef PyMemberDef;
+typedef struct TyMethodDef TyMethodDef;
+typedef struct TyGetSetDef TyGetSetDef;
+typedef struct TyMemberDef TyMemberDef;
 
-typedef struct _object PyObject;
+typedef struct _object TyObject;
 typedef struct _longobject PyLongObject;
-typedef struct _typeobject PyTypeObject;
+typedef struct _typeobject TyTypeObject;
 typedef struct PyCodeObject PyCodeObject;
 typedef struct _frame PyFrameObject;
 
-typedef struct _ts PyThreadState;
-typedef struct _is PyInterpreterState;
+typedef struct _ts TyThreadState;
+typedef struct _is TyInterpreterState;
 
 #ifdef __cplusplus
 }
 #endif
-#endif   // !Py_PYTYPEDEFS_H
+#endif   // !Ty_PYTYPEDEFS_H

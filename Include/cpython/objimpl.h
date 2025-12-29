@@ -1,12 +1,12 @@
-#ifndef Py_CPYTHON_OBJIMPL_H
+#ifndef Ty_CPYTHON_OBJIMPL_H
 #  error "this header file must not be included directly"
 #endif
 
-static inline size_t _PyObject_SIZE(PyTypeObject *type) {
-    return _Py_STATIC_CAST(size_t, type->tp_basicsize);
+static inline size_t _TyObject_SIZE(TyTypeObject *type) {
+    return _Ty_STATIC_CAST(size_t, type->tp_basicsize);
 }
 
-/* _PyObject_VAR_SIZE returns the number of bytes (as size_t) allocated for a
+/* _TyObject_VAR_SIZE returns the number of bytes (as size_t) allocated for a
    vrbl-size object with nitems items, exclusive of gc overhead (if any).  The
    value is rounded up to the closest multiple of sizeof(void *), in order to
    ensure that pointer fields at the end of the object are correctly aligned
@@ -17,13 +17,13 @@ static inline size_t _PyObject_SIZE(PyTypeObject *type) {
    return (at worst) pointer-aligned memory anyway.
 */
 #if ((SIZEOF_VOID_P - 1) & SIZEOF_VOID_P) != 0
-#   error "_PyObject_VAR_SIZE requires SIZEOF_VOID_P be a power of 2"
+#   error "_TyObject_VAR_SIZE requires SIZEOF_VOID_P be a power of 2"
 #endif
 
-static inline size_t _PyObject_VAR_SIZE(PyTypeObject *type, Py_ssize_t nitems) {
-    size_t size = _Py_STATIC_CAST(size_t, type->tp_basicsize);
-    size += _Py_STATIC_CAST(size_t, nitems) * _Py_STATIC_CAST(size_t, type->tp_itemsize);
-    return _Py_SIZE_ROUND_UP(size, SIZEOF_VOID_P);
+static inline size_t _TyObject_VAR_SIZE(TyTypeObject *type, Ty_ssize_t nitems) {
+    size_t size = _Ty_STATIC_CAST(size_t, type->tp_basicsize);
+    size += _Ty_STATIC_CAST(size_t, nitems) * _Ty_STATIC_CAST(size_t, type->tp_itemsize);
+    return _Ty_SIZE_ROUND_UP(size, SIZEOF_VOID_P);
 }
 
 
@@ -34,14 +34,14 @@ static inline size_t _PyObject_VAR_SIZE(PyTypeObject *type, Py_ssize_t nitems) {
        2) the initialization of the Python specific fields
       in this storage with PyObject_{Init, InitVar}.
 
-   PyObject *
+   TyObject *
    YourObject_New(...)
    {
-       PyObject *op;
+       TyObject *op;
 
-       op = (PyObject *) Your_Allocator(_PyObject_SIZE(YourTypeStruct));
+       op = (TyObject *) Your_Allocator(_TyObject_SIZE(YourTypeStruct));
        if (op == NULL) {
-           return PyErr_NoMemory();
+           return TyErr_NoMemory();
        }
 
        PyObject_Init(op, &YourTypeStruct);
@@ -75,15 +75,15 @@ PyAPI_FUNC(void) PyObject_SetArenaAllocator(PyObjectArenaAllocator *allocator);
 
 
 /* Test if an object implements the garbage collector protocol */
-PyAPI_FUNC(int) PyObject_IS_GC(PyObject *obj);
+PyAPI_FUNC(int) PyObject_IS_GC(TyObject *obj);
 
 
 // Test if a type supports weak references
-PyAPI_FUNC(int) PyType_SUPPORTS_WEAKREFS(PyTypeObject *type);
+PyAPI_FUNC(int) TyType_SUPPORTS_WEAKREFS(TyTypeObject *type);
 
-PyAPI_FUNC(PyObject **) PyObject_GET_WEAKREFS_LISTPTR(PyObject *op);
+PyAPI_FUNC(TyObject **) PyObject_GET_WEAKREFS_LISTPTR(TyObject *op);
 
-PyAPI_FUNC(PyObject *) PyUnstable_Object_GC_NewWithExtraData(PyTypeObject *,
+PyAPI_FUNC(TyObject *) PyUnstable_Object_GC_NewWithExtraData(TyTypeObject *,
                                                              size_t);
 
 
@@ -100,5 +100,5 @@ PyAPI_FUNC(PyObject *) PyUnstable_Object_GC_NewWithExtraData(PyTypeObject *,
  * collection in the callback may lead to undefined behaviour e.g. visiting the
  * same objects multiple times or not at all.
  */
-typedef int (*gcvisitobjects_t)(PyObject*, void*);
+typedef int (*gcvisitobjects_t)(TyObject*, void*);
 PyAPI_FUNC(void) PyUnstable_GC_VisitObjects(gcvisitobjects_t callback, void* arg);

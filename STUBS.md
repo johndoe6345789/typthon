@@ -10,7 +10,7 @@ All stubs are implemented in: `Python/frozen_stubs.c`
 
 ### 1. Frozen Modules
 
-**Purpose**: CPython's frozen modules system allows embedding Python code as C arrays. These are normally generated during the build process.
+**Purpose**: Typthon's frozen modules system allows embedding Typthon code as C arrays. These are normally generated during the build process.
 
 **Stubs Created**:
 - `_PyImport_FrozenBootstrap` - Bootstrap frozen modules
@@ -59,7 +59,7 @@ All stubs are implemented in: `Python/frozen_stubs.c`
 
 ### 5. Path Configuration
 
-**Purpose**: Initialize Python module search paths.
+**Purpose**: Initialize Typthon module search paths.
 
 **Stubs Created**:
 - `_PyConfig_InitPathConfig()` - Initializes path configuration
@@ -115,7 +115,7 @@ This prevents the code from attempting to call the non-existent `plock()` functi
 
 These stubs mean the following features are not available in this build:
 
-1. **No frozen modules**: Cannot embed Python code as frozen C arrays
+1. **No frozen modules**: Cannot embed Typthon code as frozen C arrays
 2. ~~**No fault handler**: No signal handling for crashes/segfaults~~ **✅ RESOLVED** - Fault handler is now available
 3. **No plock**: No Solaris-style process memory locking
 4. ~~**Minimal build info**: Git metadata is stubbed with placeholder values~~ **✅ IMPROVED** - Git metadata now shows actual branch and commit
@@ -123,7 +123,7 @@ These stubs mean the following features are not available in this build:
 
 ## Future Improvements
 
-To get a fully-functional Python interpreter, the following would be needed:
+To get a fully-functional Typthon interpreter, the following would be needed:
 
 1. Generate actual frozen modules using `Tools/build/freeze_modules.py`
 2. ~~Re-enable and fix the faulthandler module compilation~~ **✅ COMPLETED**

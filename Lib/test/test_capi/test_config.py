@@ -12,8 +12,8 @@ from test.support import import_helper
 _testcapi = import_helper.import_module('_testcapi')
 
 
-# Is the Py_STATS macro defined?
-Py_STATS = hasattr(sys, '_stats_on')
+# Is the Ty_STATS macro defined?
+Ty_STATS = hasattr(sys, '_stats_on')
 
 
 class CAPITests(unittest.TestCase):
@@ -99,9 +99,9 @@ class CAPITests(unittest.TestCase):
             ("write_bytecode", bool, None),
             ("xoptions", dict[str, str | bool], "_xoptions"),
         ]
-        if support.Py_DEBUG:
+        if support.Ty_DEBUG:
             options.append(("run_presite", str | None, None))
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             options.append(("enable_gil", int, None))
             options.append(("tlbc_enabled", int, None))
         if support.MS_WINDOWS:
@@ -109,7 +109,7 @@ class CAPITests(unittest.TestCase):
                 ("legacy_windows_stdio", bool, None),
                 ("legacy_windows_fs_encoding", bool, None),
             ))
-        if Py_STATS:
+        if Ty_STATS:
             options.extend((
                 ("_pystats", bool, None),
             ))
@@ -185,15 +185,15 @@ class CAPITests(unittest.TestCase):
                          config_get('use_hash_seed') == 0
                          or config_get('hash_seed') != 0)
 
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             value = config_get('enable_gil')
             expected = (value if value != -1 else None)
             self.assertEqual(sys.flags.gil, expected)
 
-        expected_inherit_context = 1 if support.Py_GIL_DISABLED else 0
+        expected_inherit_context = 1 if support.Ty_GIL_DISABLED else 0
         self.assertEqual(sys.flags.thread_inherit_context, expected_inherit_context)
 
-        expected_safe_warnings = 1 if support.Py_GIL_DISABLED else 0
+        expected_safe_warnings = 1 if support.Ty_GIL_DISABLED else 0
         self.assertEqual(sys.flags.context_aware_warnings, expected_safe_warnings)
 
     def test_config_get_non_existent(self):

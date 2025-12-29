@@ -5,7 +5,7 @@
 
 #include "clinic/watchers.c.h"
 
-#define Py_BUILD_CORE
+#define Ty_BUILD_CORE
 #include "pycore_function.h"      // FUNC_MAX_WATCHERS
 #include "pycore_interp_structs.h" // CODE_MAX_WATCHERS
 #include "pycore_context.h"       // CONTEXT_MAX_WATCHERS
@@ -16,62 +16,62 @@ module _testcapi
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=6361033e795369fc]*/
 
 // Test dict watching
-static PyObject *g_dict_watch_events = NULL;
+static TyObject *g_dict_watch_events = NULL;
 static int g_dict_watchers_installed = 0;
 
 static int
-dict_watch_callback(PyDict_WatchEvent event,
-                    PyObject *dict,
-                    PyObject *key,
-                    PyObject *new_value)
+dict_watch_callback(TyDict_WatchEvent event,
+                    TyObject *dict,
+                    TyObject *key,
+                    TyObject *new_value)
 {
-    PyObject *msg;
+    TyObject *msg;
     switch (event) {
-        case PyDict_EVENT_CLEARED:
-            msg = PyUnicode_FromString("clear");
+        case TyDict_EVENT_CLEARED:
+            msg = TyUnicode_FromString("clear");
             break;
-        case PyDict_EVENT_DEALLOCATED:
-            msg = PyUnicode_FromString("dealloc");
+        case TyDict_EVENT_DEALLOCATED:
+            msg = TyUnicode_FromString("dealloc");
             break;
-        case PyDict_EVENT_CLONED:
-            msg = PyUnicode_FromString("clone");
+        case TyDict_EVENT_CLONED:
+            msg = TyUnicode_FromString("clone");
             break;
-        case PyDict_EVENT_ADDED:
-            msg = PyUnicode_FromFormat("new:%S:%S", key, new_value);
+        case TyDict_EVENT_ADDED:
+            msg = TyUnicode_FromFormat("new:%S:%S", key, new_value);
             break;
-        case PyDict_EVENT_MODIFIED:
-            msg = PyUnicode_FromFormat("mod:%S:%S", key, new_value);
+        case TyDict_EVENT_MODIFIED:
+            msg = TyUnicode_FromFormat("mod:%S:%S", key, new_value);
             break;
-        case PyDict_EVENT_DELETED:
-            msg = PyUnicode_FromFormat("del:%S", key);
+        case TyDict_EVENT_DELETED:
+            msg = TyUnicode_FromFormat("del:%S", key);
             break;
         default:
-            msg = PyUnicode_FromString("unknown");
+            msg = TyUnicode_FromString("unknown");
     }
     if (msg == NULL) {
         return -1;
     }
-    assert(PyList_Check(g_dict_watch_events));
-    if (PyList_Append(g_dict_watch_events, msg) < 0) {
-        Py_DECREF(msg);
+    assert(TyList_Check(g_dict_watch_events));
+    if (TyList_Append(g_dict_watch_events, msg) < 0) {
+        Ty_DECREF(msg);
         return -1;
     }
-    Py_DECREF(msg);
+    Ty_DECREF(msg);
     return 0;
 }
 
 static int
-dict_watch_callback_second(PyDict_WatchEvent event,
-                           PyObject *dict,
-                           PyObject *key,
-                           PyObject *new_value)
+dict_watch_callback_second(TyDict_WatchEvent event,
+                           TyObject *dict,
+                           TyObject *key,
+                           TyObject *new_value)
 {
-    PyObject *msg = PyUnicode_FromString("second");
+    TyObject *msg = TyUnicode_FromString("second");
     if (msg == NULL) {
         return -1;
     }
-    int rc = PyList_Append(g_dict_watch_events, msg);
-    Py_DECREF(msg);
+    int rc = TyList_Append(g_dict_watch_events, msg);
+    Ty_DECREF(msg);
     if (rc < 0) {
         return -1;
     }
@@ -79,53 +79,53 @@ dict_watch_callback_second(PyDict_WatchEvent event,
 }
 
 static int
-dict_watch_callback_error(PyDict_WatchEvent event,
-                          PyObject *dict,
-                          PyObject *key,
-                          PyObject *new_value)
+dict_watch_callback_error(TyDict_WatchEvent event,
+                          TyObject *dict,
+                          TyObject *key,
+                          TyObject *new_value)
 {
-    PyErr_SetString(PyExc_RuntimeError, "boom!");
+    TyErr_SetString(TyExc_RuntimeError, "boom!");
     return -1;
 }
 
-static PyObject *
-add_dict_watcher(PyObject *self, PyObject *kind)
+static TyObject *
+add_dict_watcher(TyObject *self, TyObject *kind)
 {
     int watcher_id;
-    assert(PyLong_Check(kind));
-    long kind_l = PyLong_AsLong(kind);
+    assert(TyLong_Check(kind));
+    long kind_l = TyLong_AsLong(kind);
     if (kind_l == 2) {
-        watcher_id = PyDict_AddWatcher(dict_watch_callback_second);
+        watcher_id = TyDict_AddWatcher(dict_watch_callback_second);
     }
     else if (kind_l == 1) {
-        watcher_id = PyDict_AddWatcher(dict_watch_callback_error);
+        watcher_id = TyDict_AddWatcher(dict_watch_callback_error);
     }
     else {
-        watcher_id = PyDict_AddWatcher(dict_watch_callback);
+        watcher_id = TyDict_AddWatcher(dict_watch_callback);
     }
     if (watcher_id < 0) {
         return NULL;
     }
     if (!g_dict_watchers_installed) {
         assert(!g_dict_watch_events);
-        if (!(g_dict_watch_events = PyList_New(0))) {
+        if (!(g_dict_watch_events = TyList_New(0))) {
             return NULL;
         }
     }
     g_dict_watchers_installed++;
-    return PyLong_FromLong(watcher_id);
+    return TyLong_FromLong(watcher_id);
 }
 
-static PyObject *
-clear_dict_watcher(PyObject *self, PyObject *watcher_id)
+static TyObject *
+clear_dict_watcher(TyObject *self, TyObject *watcher_id)
 {
-    if (PyDict_ClearWatcher(PyLong_AsLong(watcher_id))) {
+    if (TyDict_ClearWatcher(TyLong_AsLong(watcher_id))) {
         return NULL;
     }
     g_dict_watchers_installed--;
     if (!g_dict_watchers_installed) {
         assert(g_dict_watch_events);
-        Py_CLEAR(g_dict_watch_events);
+        Ty_CLEAR(g_dict_watch_events);
     }
     Py_RETURN_NONE;
 }
@@ -137,11 +137,11 @@ _testcapi.watch_dict
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_watch_dict_impl(PyObject *module, int watcher_id, PyObject *dict)
+static TyObject *
+_testcapi_watch_dict_impl(TyObject *module, int watcher_id, TyObject *dict)
 /*[clinic end generated code: output=1426e0273cebe2d8 input=269b006d60c358bd]*/
 {
-    if (PyDict_Watch(watcher_id, dict)) {
+    if (TyDict_Watch(watcher_id, dict)) {
         return NULL;
     }
     Py_RETURN_NONE;
@@ -151,117 +151,117 @@ _testcapi_watch_dict_impl(PyObject *module, int watcher_id, PyObject *dict)
 _testcapi.unwatch_dict = _testcapi.watch_dict
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_unwatch_dict_impl(PyObject *module, int watcher_id, PyObject *dict)
+static TyObject *
+_testcapi_unwatch_dict_impl(TyObject *module, int watcher_id, TyObject *dict)
 /*[clinic end generated code: output=512b1a71ae33c351 input=cae7dc1b6f7713b8]*/
 {
-    if (PyDict_Unwatch(watcher_id, dict)) {
+    if (TyDict_Unwatch(watcher_id, dict)) {
         return NULL;
     }
     Py_RETURN_NONE;
 }
 
-static PyObject *
-get_dict_watcher_events(PyObject *self, PyObject *Py_UNUSED(args))
+static TyObject *
+get_dict_watcher_events(TyObject *self, TyObject *Py_UNUSED(args))
 {
     if (!g_dict_watch_events) {
-        PyErr_SetString(PyExc_RuntimeError, "no watchers active");
+        TyErr_SetString(TyExc_RuntimeError, "no watchers active");
         return NULL;
     }
-    return Py_NewRef(g_dict_watch_events);
+    return Ty_NewRef(g_dict_watch_events);
 }
 
 // Test type watchers
-static PyObject *g_type_modified_events;
+static TyObject *g_type_modified_events;
 static int g_type_watchers_installed;
 
 static int
-type_modified_callback(PyTypeObject *type)
+type_modified_callback(TyTypeObject *type)
 {
-    assert(PyList_Check(g_type_modified_events));
-    if(PyList_Append(g_type_modified_events, (PyObject *)type) < 0) {
+    assert(TyList_Check(g_type_modified_events));
+    if(TyList_Append(g_type_modified_events, (TyObject *)type) < 0) {
         return -1;
     }
     return 0;
 }
 
 static int
-type_modified_callback_wrap(PyTypeObject *type)
+type_modified_callback_wrap(TyTypeObject *type)
 {
-    assert(PyList_Check(g_type_modified_events));
-    PyObject *list = PyList_New(0);
+    assert(TyList_Check(g_type_modified_events));
+    TyObject *list = TyList_New(0);
     if (list == NULL) {
         return -1;
     }
-    if (PyList_Append(list, (PyObject *)type) < 0) {
-        Py_DECREF(list);
+    if (TyList_Append(list, (TyObject *)type) < 0) {
+        Ty_DECREF(list);
         return -1;
     }
-    if (PyList_Append(g_type_modified_events, list) < 0) {
-        Py_DECREF(list);
+    if (TyList_Append(g_type_modified_events, list) < 0) {
+        Ty_DECREF(list);
         return -1;
     }
-    Py_DECREF(list);
+    Ty_DECREF(list);
     return 0;
 }
 
 static int
-type_modified_callback_error(PyTypeObject *type)
+type_modified_callback_error(TyTypeObject *type)
 {
-    PyErr_SetString(PyExc_RuntimeError, "boom!");
+    TyErr_SetString(TyExc_RuntimeError, "boom!");
     return -1;
 }
 
-static PyObject *
-add_type_watcher(PyObject *self, PyObject *kind)
+static TyObject *
+add_type_watcher(TyObject *self, TyObject *kind)
 {
     int watcher_id;
-    assert(PyLong_Check(kind));
-    long kind_l = PyLong_AsLong(kind);
+    assert(TyLong_Check(kind));
+    long kind_l = TyLong_AsLong(kind);
     if (kind_l == 2) {
-        watcher_id = PyType_AddWatcher(type_modified_callback_wrap);
+        watcher_id = TyType_AddWatcher(type_modified_callback_wrap);
     }
     else if (kind_l == 1) {
-        watcher_id = PyType_AddWatcher(type_modified_callback_error);
+        watcher_id = TyType_AddWatcher(type_modified_callback_error);
     }
     else {
-        watcher_id = PyType_AddWatcher(type_modified_callback);
+        watcher_id = TyType_AddWatcher(type_modified_callback);
     }
     if (watcher_id < 0) {
         return NULL;
     }
     if (!g_type_watchers_installed) {
         assert(!g_type_modified_events);
-        if (!(g_type_modified_events = PyList_New(0))) {
+        if (!(g_type_modified_events = TyList_New(0))) {
             return NULL;
         }
     }
     g_type_watchers_installed++;
-    return PyLong_FromLong(watcher_id);
+    return TyLong_FromLong(watcher_id);
 }
 
-static PyObject *
-clear_type_watcher(PyObject *self, PyObject *watcher_id)
+static TyObject *
+clear_type_watcher(TyObject *self, TyObject *watcher_id)
 {
-    if (PyType_ClearWatcher(PyLong_AsLong(watcher_id))) {
+    if (TyType_ClearWatcher(TyLong_AsLong(watcher_id))) {
         return NULL;
     }
     g_type_watchers_installed--;
     if (!g_type_watchers_installed) {
         assert(g_type_modified_events);
-        Py_CLEAR(g_type_modified_events);
+        Ty_CLEAR(g_type_modified_events);
     }
     Py_RETURN_NONE;
 }
 
-static PyObject *
-get_type_modified_events(PyObject *self, PyObject *Py_UNUSED(args))
+static TyObject *
+get_type_modified_events(TyObject *self, TyObject *Py_UNUSED(args))
 {
     if (!g_type_modified_events) {
-        PyErr_SetString(PyExc_RuntimeError, "no watchers active");
+        TyErr_SetString(TyExc_RuntimeError, "no watchers active");
         return NULL;
     }
-    return Py_NewRef(g_type_modified_events);
+    return Ty_NewRef(g_type_modified_events);
 }
 
 /*[clinic input]
@@ -271,11 +271,11 @@ _testcapi.watch_type
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_watch_type_impl(PyObject *module, int watcher_id, PyObject *type)
+static TyObject *
+_testcapi_watch_type_impl(TyObject *module, int watcher_id, TyObject *type)
 /*[clinic end generated code: output=fdf4777126724fc4 input=5a808bf12be7e3ed]*/
 {
-    if (PyType_Watch(watcher_id, type)) {
+    if (TyType_Watch(watcher_id, type)) {
         return NULL;
     }
     Py_RETURN_NONE;
@@ -285,11 +285,11 @@ _testcapi_watch_type_impl(PyObject *module, int watcher_id, PyObject *type)
 _testcapi.unwatch_type = _testcapi.watch_type
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_unwatch_type_impl(PyObject *module, int watcher_id, PyObject *type)
+static TyObject *
+_testcapi_unwatch_type_impl(TyObject *module, int watcher_id, TyObject *type)
 /*[clinic end generated code: output=0389672d4ad5f68b input=6701911fb45edc9e]*/
 {
-    if (PyType_Unwatch(watcher_id, type)) {
+    if (TyType_Unwatch(watcher_id, type)) {
         return NULL;
     }
     Py_RETURN_NONE;
@@ -338,47 +338,47 @@ noop_code_event_handler(PyCodeEvent event, PyCodeObject *co)
 static int
 error_code_event_handler(PyCodeEvent event, PyCodeObject *co)
 {
-    PyErr_SetString(PyExc_RuntimeError, "boom!");
+    TyErr_SetString(TyExc_RuntimeError, "boom!");
     return -1;
 }
 
-static PyObject *
-add_code_watcher(PyObject *self, PyObject *which_watcher)
+static TyObject *
+add_code_watcher(TyObject *self, TyObject *which_watcher)
 {
     int watcher_id;
-    assert(PyLong_Check(which_watcher));
-    long which_l = PyLong_AsLong(which_watcher);
+    assert(TyLong_Check(which_watcher));
+    long which_l = TyLong_AsLong(which_watcher);
     if (which_l == 0) {
-        watcher_id = PyCode_AddWatcher(first_code_object_callback);
+        watcher_id = TyCode_AddWatcher(first_code_object_callback);
         code_watcher_ids[0] = watcher_id;
         num_code_object_created_events[0] = 0;
         num_code_object_destroyed_events[0] = 0;
     }
     else if (which_l == 1) {
-        watcher_id = PyCode_AddWatcher(second_code_object_callback);
+        watcher_id = TyCode_AddWatcher(second_code_object_callback);
         code_watcher_ids[1] = watcher_id;
         num_code_object_created_events[1] = 0;
         num_code_object_destroyed_events[1] = 0;
     }
     else if (which_l == 2) {
-        watcher_id = PyCode_AddWatcher(error_code_event_handler);
+        watcher_id = TyCode_AddWatcher(error_code_event_handler);
     }
     else {
-        PyErr_Format(PyExc_ValueError, "invalid watcher %d", which_l);
+        TyErr_Format(TyExc_ValueError, "invalid watcher %d", which_l);
         return NULL;
     }
     if (watcher_id < 0) {
         return NULL;
     }
-    return PyLong_FromLong(watcher_id);
+    return TyLong_FromLong(watcher_id);
 }
 
-static PyObject *
-clear_code_watcher(PyObject *self, PyObject *watcher_id)
+static TyObject *
+clear_code_watcher(TyObject *self, TyObject *watcher_id)
 {
-    assert(PyLong_Check(watcher_id));
-    long watcher_id_l = PyLong_AsLong(watcher_id);
-    if (PyCode_ClearWatcher(watcher_id_l) < 0) {
+    assert(TyLong_Check(watcher_id));
+    long watcher_id_l = TyLong_AsLong(watcher_id);
+    if (TyCode_ClearWatcher(watcher_id_l) < 0) {
         return NULL;
     }
     // reset static events counters
@@ -394,50 +394,50 @@ clear_code_watcher(PyObject *self, PyObject *watcher_id)
     Py_RETURN_NONE;
 }
 
-static PyObject *
-get_code_watcher_num_created_events(PyObject *self, PyObject *watcher_id)
+static TyObject *
+get_code_watcher_num_created_events(TyObject *self, TyObject *watcher_id)
 {
-    assert(PyLong_Check(watcher_id));
-    long watcher_id_l = PyLong_AsLong(watcher_id);
+    assert(TyLong_Check(watcher_id));
+    long watcher_id_l = TyLong_AsLong(watcher_id);
     assert(watcher_id_l >= 0 && watcher_id_l < NUM_CODE_WATCHERS);
-    return PyLong_FromLong(num_code_object_created_events[watcher_id_l]);
+    return TyLong_FromLong(num_code_object_created_events[watcher_id_l]);
 }
 
-static PyObject *
-get_code_watcher_num_destroyed_events(PyObject *self, PyObject *watcher_id)
+static TyObject *
+get_code_watcher_num_destroyed_events(TyObject *self, TyObject *watcher_id)
 {
-    assert(PyLong_Check(watcher_id));
-    long watcher_id_l = PyLong_AsLong(watcher_id);
+    assert(TyLong_Check(watcher_id));
+    long watcher_id_l = TyLong_AsLong(watcher_id);
     assert(watcher_id_l >= 0 && watcher_id_l < NUM_CODE_WATCHERS);
-    return PyLong_FromLong(num_code_object_destroyed_events[watcher_id_l]);
+    return TyLong_FromLong(num_code_object_destroyed_events[watcher_id_l]);
 }
 
-static PyObject *
-allocate_too_many_code_watchers(PyObject *self, PyObject *Py_UNUSED(args))
+static TyObject *
+allocate_too_many_code_watchers(TyObject *self, TyObject *Py_UNUSED(args))
 {
     int watcher_ids[CODE_MAX_WATCHERS + 1];
     int num_watchers = 0;
     for (unsigned long i = 0; i < sizeof(watcher_ids) / sizeof(int); i++) {
-        int watcher_id = PyCode_AddWatcher(noop_code_event_handler);
+        int watcher_id = TyCode_AddWatcher(noop_code_event_handler);
         if (watcher_id == -1) {
             break;
         }
         watcher_ids[i] = watcher_id;
         num_watchers++;
     }
-    PyObject *exc = PyErr_GetRaisedException();
+    TyObject *exc = TyErr_GetRaisedException();
     for (int i = 0; i < num_watchers; i++) {
-        if (PyCode_ClearWatcher(watcher_ids[i]) < 0) {
-            PyErr_FormatUnraisable("Exception ignored while "
+        if (TyCode_ClearWatcher(watcher_ids[i]) < 0) {
+            TyErr_FormatUnraisable("Exception ignored while "
                                    "clearing code watcher");
             break;
         }
     }
     if (exc) {
-        PyErr_SetRaisedException(exc);
+        TyErr_SetRaisedException(exc);
         return NULL;
     }
-    else if (PyErr_Occurred()) {
+    else if (TyErr_Occurred()) {
         return NULL;
     }
     Py_RETURN_NONE;
@@ -446,97 +446,97 @@ allocate_too_many_code_watchers(PyObject *self, PyObject *Py_UNUSED(args))
 // Test function watchers
 
 #define NUM_TEST_FUNC_WATCHERS 2
-static PyObject *pyfunc_watchers[NUM_TEST_FUNC_WATCHERS];
+static TyObject *pyfunc_watchers[NUM_TEST_FUNC_WATCHERS];
 static int func_watcher_ids[NUM_TEST_FUNC_WATCHERS] = {-1, -1};
 
-static PyObject *
-get_id(PyObject *obj)
+static TyObject *
+get_id(TyObject *obj)
 {
-    PyObject *builtins = PyEval_GetBuiltins();  // borrowed ref.
+    TyObject *builtins = TyEval_GetBuiltins();  // borrowed ref.
     if (builtins == NULL) {
         return NULL;
     }
-    PyObject *id_str = PyUnicode_FromString("id");
+    TyObject *id_str = TyUnicode_FromString("id");
     if (id_str == NULL) {
         return NULL;
     }
-    PyObject *id_func = PyObject_GetItem(builtins, id_str);
-    Py_DECREF(id_str);
+    TyObject *id_func = PyObject_GetItem(builtins, id_str);
+    Ty_DECREF(id_str);
     if (id_func == NULL) {
         return NULL;
     }
-    PyObject *stack[] = {obj};
-    PyObject *id = PyObject_Vectorcall(id_func, stack, 1, NULL);
-    Py_DECREF(id_func);
+    TyObject *stack[] = {obj};
+    TyObject *id = PyObject_Vectorcall(id_func, stack, 1, NULL);
+    Ty_DECREF(id_func);
     return id;
 }
 
 static int
-call_pyfunc_watcher(PyObject *watcher, PyFunction_WatchEvent event,
-                    PyFunctionObject *func, PyObject *new_value)
+call_pyfunc_watcher(TyObject *watcher, TyFunction_WatchEvent event,
+                    PyFunctionObject *func, TyObject *new_value)
 {
-    PyObject *event_obj = PyLong_FromLong(event);
+    TyObject *event_obj = TyLong_FromLong(event);
     if (event_obj == NULL) {
         return -1;
     }
     if (new_value == NULL) {
-        new_value = Py_None;
+        new_value = Ty_None;
     }
-    Py_INCREF(new_value);
-    PyObject *func_or_id = NULL;
-    if (event == PyFunction_EVENT_DESTROY) {
+    Ty_INCREF(new_value);
+    TyObject *func_or_id = NULL;
+    if (event == TyFunction_EVENT_DESTROY) {
         /* Don't expose a function that's about to be destroyed to managed code */
-        func_or_id = get_id((PyObject *) func);
+        func_or_id = get_id((TyObject *) func);
         if (func_or_id == NULL) {
-            Py_DECREF(event_obj);
-            Py_DECREF(new_value);
+            Ty_DECREF(event_obj);
+            Ty_DECREF(new_value);
             return -1;
         }
     }
     else {
-        Py_INCREF(func);
-        func_or_id = (PyObject *) func;
+        Ty_INCREF(func);
+        func_or_id = (TyObject *) func;
     }
-    PyObject *stack[] = {event_obj, func_or_id, new_value};
-    PyObject *res = PyObject_Vectorcall(watcher, stack, 3, NULL);
+    TyObject *stack[] = {event_obj, func_or_id, new_value};
+    TyObject *res = PyObject_Vectorcall(watcher, stack, 3, NULL);
     int st = (res == NULL) ? -1 : 0;
-    Py_XDECREF(res);
-    Py_DECREF(new_value);
-    Py_DECREF(event_obj);
-    Py_DECREF(func_or_id);
+    Ty_XDECREF(res);
+    Ty_DECREF(new_value);
+    Ty_DECREF(event_obj);
+    Ty_DECREF(func_or_id);
     return st;
 }
 
 static int
-first_func_watcher_callback(PyFunction_WatchEvent event, PyFunctionObject *func,
-                            PyObject *new_value)
+first_func_watcher_callback(TyFunction_WatchEvent event, PyFunctionObject *func,
+                            TyObject *new_value)
 {
     return call_pyfunc_watcher(pyfunc_watchers[0], event, func, new_value);
 }
 
 static int
-second_func_watcher_callback(PyFunction_WatchEvent event,
-                             PyFunctionObject *func, PyObject *new_value)
+second_func_watcher_callback(TyFunction_WatchEvent event,
+                             PyFunctionObject *func, TyObject *new_value)
 {
     return call_pyfunc_watcher(pyfunc_watchers[1], event, func, new_value);
 }
 
-static PyFunction_WatchCallback func_watcher_callbacks[NUM_TEST_FUNC_WATCHERS] = {
+static TyFunction_WatchCallback func_watcher_callbacks[NUM_TEST_FUNC_WATCHERS] = {
     first_func_watcher_callback,
     second_func_watcher_callback
 };
 
 static int
-add_func_event(PyObject *module, const char *name, PyFunction_WatchEvent event)
+add_func_event(TyObject *module, const char *name, TyFunction_WatchEvent event)
 {
-    return PyModule_Add(module, name, PyLong_FromLong(event));
+    return TyModule_Add(module, name, TyLong_FromLong(event));
 }
 
-static PyObject *
-add_func_watcher(PyObject *self, PyObject *func)
+static TyObject *
+add_func_watcher(TyObject *self, TyObject *func)
 {
-    if (!PyFunction_Check(func)) {
-        PyErr_SetString(PyExc_TypeError, "'func' must be a function");
+    if (!TyFunction_Check(func)) {
+        TyErr_SetString(TyExc_TypeError, "'func' must be a function");
         return NULL;
     }
     int idx = -1;
@@ -547,31 +547,31 @@ add_func_watcher(PyObject *self, PyObject *func)
         }
     }
     if (idx == -1) {
-        PyErr_SetString(PyExc_RuntimeError, "no free test watchers");
+        TyErr_SetString(TyExc_RuntimeError, "no free test watchers");
         return NULL;
     }
-    func_watcher_ids[idx] = PyFunction_AddWatcher(func_watcher_callbacks[idx]);
+    func_watcher_ids[idx] = TyFunction_AddWatcher(func_watcher_callbacks[idx]);
     if (func_watcher_ids[idx] < 0) {
         return NULL;
     }
-    pyfunc_watchers[idx] = Py_NewRef(func);
-    PyObject *result = PyLong_FromLong(func_watcher_ids[idx]);
+    pyfunc_watchers[idx] = Ty_NewRef(func);
+    TyObject *result = TyLong_FromLong(func_watcher_ids[idx]);
     if (result == NULL) {
         return NULL;
     }
     return result;
 }
 
-static PyObject *
-clear_func_watcher(PyObject *self, PyObject *watcher_id_obj)
+static TyObject *
+clear_func_watcher(TyObject *self, TyObject *watcher_id_obj)
 {
-    long watcher_id = PyLong_AsLong(watcher_id_obj);
+    long watcher_id = TyLong_AsLong(watcher_id_obj);
     if ((watcher_id < INT_MIN) || (watcher_id > INT_MAX)) {
-        PyErr_SetString(PyExc_ValueError, "invalid watcher ID");
+        TyErr_SetString(TyExc_ValueError, "invalid watcher ID");
         return NULL;
     }
     int wid = (int) watcher_id;
-    if (PyFunction_ClearWatcher(wid) < 0) {
+    if (TyFunction_ClearWatcher(wid) < 0) {
         return NULL;
     }
     int idx = -1;
@@ -582,44 +582,44 @@ clear_func_watcher(PyObject *self, PyObject *watcher_id_obj)
         }
     }
     assert(idx != -1);
-    Py_CLEAR(pyfunc_watchers[idx]);
+    Ty_CLEAR(pyfunc_watchers[idx]);
     func_watcher_ids[idx] = -1;
     Py_RETURN_NONE;
 }
 
 static int
-noop_func_event_handler(PyFunction_WatchEvent event, PyFunctionObject *func,
-             PyObject *new_value)
+noop_func_event_handler(TyFunction_WatchEvent event, PyFunctionObject *func,
+             TyObject *new_value)
 {
     return 0;
 }
 
-static PyObject *
-allocate_too_many_func_watchers(PyObject *self, PyObject *args)
+static TyObject *
+allocate_too_many_func_watchers(TyObject *self, TyObject *args)
 {
     int watcher_ids[FUNC_MAX_WATCHERS + 1];
     int num_watchers = 0;
     for (unsigned long i = 0; i < sizeof(watcher_ids) / sizeof(int); i++) {
-        int watcher_id = PyFunction_AddWatcher(noop_func_event_handler);
+        int watcher_id = TyFunction_AddWatcher(noop_func_event_handler);
         if (watcher_id == -1) {
             break;
         }
         watcher_ids[i] = watcher_id;
         num_watchers++;
     }
-    PyObject *exc = PyErr_GetRaisedException();
+    TyObject *exc = TyErr_GetRaisedException();
     for (int i = 0; i < num_watchers; i++) {
-        if (PyFunction_ClearWatcher(watcher_ids[i]) < 0) {
-            PyErr_FormatUnraisable("Exception ignored while "
+        if (TyFunction_ClearWatcher(watcher_ids[i]) < 0) {
+            TyErr_FormatUnraisable("Exception ignored while "
                                    "clearing function watcher");
             break;
         }
     }
     if (exc) {
-        PyErr_SetRaisedException(exc);
+        TyErr_SetRaisedException(exc);
         return NULL;
     }
-    else if (PyErr_Occurred()) {
+    else if (TyErr_Occurred()) {
         return NULL;
     }
     Py_RETURN_NONE;
@@ -628,12 +628,12 @@ allocate_too_many_func_watchers(PyObject *self, PyObject *args)
 // Test contexct object watchers
 #define NUM_CONTEXT_WATCHERS 2
 static int context_watcher_ids[NUM_CONTEXT_WATCHERS] = {-1, -1};
-static PyObject *context_switches[NUM_CONTEXT_WATCHERS];
+static TyObject *context_switches[NUM_CONTEXT_WATCHERS];
 
 static int
-handle_context_watcher_event(int which_watcher, PyContextEvent event, PyObject *ctx) {
+handle_context_watcher_event(int which_watcher, PyContextEvent event, TyObject *ctx) {
     if (event == Py_CONTEXT_SWITCHED) {
-        PyList_Append(context_switches[which_watcher], ctx);
+        TyList_Append(context_switches[which_watcher], ctx);
     }
     else {
         return -1;
@@ -642,38 +642,38 @@ handle_context_watcher_event(int which_watcher, PyContextEvent event, PyObject *
 }
 
 static int
-first_context_watcher_callback(PyContextEvent event, PyObject *ctx) {
+first_context_watcher_callback(PyContextEvent event, TyObject *ctx) {
     return handle_context_watcher_event(0, event, ctx);
 }
 
 static int
-second_context_watcher_callback(PyContextEvent event, PyObject *ctx) {
+second_context_watcher_callback(PyContextEvent event, TyObject *ctx) {
     return handle_context_watcher_event(1, event, ctx);
 }
 
 static int
-noop_context_event_handler(PyContextEvent event, PyObject *ctx) {
+noop_context_event_handler(PyContextEvent event, TyObject *ctx) {
     return 0;
 }
 
 static int
-error_context_event_handler(PyContextEvent event, PyObject *ctx) {
-    PyErr_SetString(PyExc_RuntimeError, "boom!");
+error_context_event_handler(PyContextEvent event, TyObject *ctx) {
+    TyErr_SetString(TyExc_RuntimeError, "boom!");
     return -1;
 }
 
-static PyObject *
-add_context_watcher(PyObject *self, PyObject *which_watcher)
+static TyObject *
+add_context_watcher(TyObject *self, TyObject *which_watcher)
 {
     static const PyContext_WatchCallback callbacks[] = {
         &first_context_watcher_callback,
         &second_context_watcher_callback,
         &error_context_event_handler,
     };
-    assert(PyLong_Check(which_watcher));
-    long which_l = PyLong_AsLong(which_watcher);
-    if (which_l < 0 || which_l >= (long)Py_ARRAY_LENGTH(callbacks)) {
-        PyErr_Format(PyExc_ValueError, "invalid watcher %d", which_l);
+    assert(TyLong_Check(which_watcher));
+    long which_l = TyLong_AsLong(which_watcher);
+    if (which_l < 0 || which_l >= (long)Ty_ARRAY_LENGTH(callbacks)) {
+        TyErr_Format(TyExc_ValueError, "invalid watcher %d", which_l);
         return NULL;
     }
     int watcher_id = PyContext_AddWatcher(callbacks[which_l]);
@@ -682,19 +682,19 @@ add_context_watcher(PyObject *self, PyObject *which_watcher)
     }
     if (which_l >= 0 && which_l < NUM_CONTEXT_WATCHERS) {
         context_watcher_ids[which_l] = watcher_id;
-        Py_XSETREF(context_switches[which_l], PyList_New(0));
+        Ty_XSETREF(context_switches[which_l], TyList_New(0));
         if (context_switches[which_l] == NULL) {
             return NULL;
         }
     }
-    return PyLong_FromLong(watcher_id);
+    return TyLong_FromLong(watcher_id);
 }
 
-static PyObject *
-clear_context_watcher(PyObject *self, PyObject *watcher_id)
+static TyObject *
+clear_context_watcher(TyObject *self, TyObject *watcher_id)
 {
-    assert(PyLong_Check(watcher_id));
-    long watcher_id_l = PyLong_AsLong(watcher_id);
+    assert(TyLong_Check(watcher_id));
+    long watcher_id_l = TyLong_AsLong(watcher_id);
     if (PyContext_ClearWatcher(watcher_id_l) < 0) {
         return NULL;
     }
@@ -703,46 +703,46 @@ clear_context_watcher(PyObject *self, PyObject *watcher_id)
         for (int i = 0; i < NUM_CONTEXT_WATCHERS; i++) {
             if (watcher_id_l == context_watcher_ids[i]) {
                 context_watcher_ids[i] = -1;
-                Py_CLEAR(context_switches[i]);
+                Ty_CLEAR(context_switches[i]);
             }
         }
     }
     Py_RETURN_NONE;
 }
 
-static PyObject *
-clear_context_stack(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args))
+static TyObject *
+clear_context_stack(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
-    PyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     if (tstate->context == NULL) {
         Py_RETURN_NONE;
     }
     if (((PyContext *)tstate->context)->ctx_prev != NULL) {
-        PyErr_SetString(PyExc_RuntimeError,
+        TyErr_SetString(TyExc_RuntimeError,
                         "must first exit all non-base contexts");
         return NULL;
     }
-    Py_CLEAR(tstate->context);
+    Ty_CLEAR(tstate->context);
     Py_RETURN_NONE;
 }
 
-static PyObject *
-get_context_switches(PyObject *Py_UNUSED(self), PyObject *watcher_id)
+static TyObject *
+get_context_switches(TyObject *Py_UNUSED(self), TyObject *watcher_id)
 {
-    assert(PyLong_Check(watcher_id));
-    long watcher_id_l = PyLong_AsLong(watcher_id);
+    assert(TyLong_Check(watcher_id));
+    long watcher_id_l = TyLong_AsLong(watcher_id);
     if (watcher_id_l < 0 || watcher_id_l >= NUM_CONTEXT_WATCHERS) {
-        PyErr_Format(PyExc_ValueError, "invalid watcher %ld", watcher_id_l);
+        TyErr_Format(TyExc_ValueError, "invalid watcher %ld", watcher_id_l);
         return NULL;
     }
     if (context_switches[watcher_id_l] == NULL) {
-        return PyList_New(0);
+        return TyList_New(0);
     }
-    return Py_NewRef(context_switches[watcher_id_l]);
+    return Ty_NewRef(context_switches[watcher_id_l]);
 }
 
-static PyObject *
-allocate_too_many_context_watchers(PyObject *self, PyObject *Py_UNUSED(args))
+static TyObject *
+allocate_too_many_context_watchers(TyObject *self, TyObject *Py_UNUSED(args))
 {
     int watcher_ids[CONTEXT_MAX_WATCHERS + 1];
     int num_watchers = 0;
@@ -754,19 +754,19 @@ allocate_too_many_context_watchers(PyObject *self, PyObject *Py_UNUSED(args))
         watcher_ids[i] = watcher_id;
         num_watchers++;
     }
-    PyObject *exc = PyErr_GetRaisedException();
+    TyObject *exc = TyErr_GetRaisedException();
     for (int i = 0; i < num_watchers; i++) {
         if (PyContext_ClearWatcher(watcher_ids[i]) < 0) {
-            PyErr_FormatUnraisable("Exception ignored while "
+            TyErr_FormatUnraisable("Exception ignored while "
                                    "clearing context watcher");
             break;
         }
     }
     if (exc) {
-        PyErr_SetRaisedException(exc);
+        TyErr_SetRaisedException(exc);
         return NULL;
     }
-    else if (PyErr_Occurred()) {
+    else if (TyErr_Occurred()) {
         return NULL;
     }
     Py_RETURN_NONE;
@@ -779,12 +779,12 @@ _testcapi.set_func_defaults_via_capi
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_set_func_defaults_via_capi_impl(PyObject *module, PyObject *func,
-                                          PyObject *defaults)
+static TyObject *
+_testcapi_set_func_defaults_via_capi_impl(TyObject *module, TyObject *func,
+                                          TyObject *defaults)
 /*[clinic end generated code: output=caf0cb39db31ac24 input=e04a8508ca9d42fc]*/
 {
-    if (PyFunction_SetDefaults(func, defaults) < 0) {
+    if (TyFunction_SetDefaults(func, defaults) < 0) {
         return NULL;
     }
     Py_RETURN_NONE;
@@ -794,18 +794,18 @@ _testcapi_set_func_defaults_via_capi_impl(PyObject *module, PyObject *func,
 _testcapi.set_func_kwdefaults_via_capi = _testcapi.set_func_defaults_via_capi
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_set_func_kwdefaults_via_capi_impl(PyObject *module, PyObject *func,
-                                            PyObject *defaults)
+static TyObject *
+_testcapi_set_func_kwdefaults_via_capi_impl(TyObject *module, TyObject *func,
+                                            TyObject *defaults)
 /*[clinic end generated code: output=9ed3b08177025070 input=f3cd1ca3c18de8ce]*/
 {
-    if (PyFunction_SetKwDefaults(func, defaults) < 0) {
+    if (TyFunction_SetKwDefaults(func, defaults) < 0) {
         return NULL;
     }
     Py_RETURN_NONE;
 }
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     // Dict watchers.
     {"add_dict_watcher",         add_dict_watcher,        METH_O,       NULL},
     {"clear_dict_watcher",       clear_dict_watcher,      METH_O,       NULL},
@@ -850,16 +850,16 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Watchers(PyObject *mod)
+_PyTestCapi_Init_Watchers(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 
     /* Expose each event as an attribute on the module */
 #define ADD_EVENT(event)  \
     if (add_func_event(mod, "PYFUNC_EVENT_" #event,   \
-                       PyFunction_EVENT_##event)) {   \
+                       TyFunction_EVENT_##event)) {   \
         return -1;                                    \
     }
     PY_FOREACH_FUNC_EVENT(ADD_EVENT);

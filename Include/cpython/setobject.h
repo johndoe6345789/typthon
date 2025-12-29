@@ -1,4 +1,4 @@
-#ifndef Py_CPYTHON_SETOBJECT_H
+#ifndef Ty_CPYTHON_SETOBJECT_H
 #  error "this header file must not be included directly"
 #endif
 
@@ -15,11 +15,11 @@ meaning that dummy entries can be detected by
 either entry->key==dummy or by entry->hash==-1.
 */
 
-#define PySet_MINSIZE 8
+#define TySet_MINSIZE 8
 
 typedef struct {
-    PyObject *key;
-    Py_hash_t hash;             /* Cached hash code of the key */
+    TyObject *key;
+    Ty_hash_t hash;             /* Cached hash code of the key */
 } setentry;
 
 /* The SetObject data structure is shared by set and frozenset objects.
@@ -36,14 +36,14 @@ Invariants for frozensets:
 typedef struct {
     PyObject_HEAD
 
-    Py_ssize_t fill;            /* Number active and dummy entries*/
-    Py_ssize_t used;            /* Number active entries */
+    Ty_ssize_t fill;            /* Number active and dummy entries*/
+    Ty_ssize_t used;            /* Number active entries */
 
     /* The table contains mask + 1 slots, and that's a power of 2.
      * We store the mask instead of the size because the mask is more
      * frequently needed.
      */
-    Py_ssize_t mask;
+    Ty_ssize_t mask;
 
     /* The table points to a fixed-size smalltable for small tables
      * or to additional malloc'ed memory for bigger tables.
@@ -51,21 +51,21 @@ typedef struct {
      * runtime null-tests.
      */
     setentry *table;
-    Py_hash_t hash;             /* Only used by frozenset objects */
-    Py_ssize_t finger;          /* Search finger for pop() */
+    Ty_hash_t hash;             /* Only used by frozenset objects */
+    Ty_ssize_t finger;          /* Search finger for pop() */
 
-    setentry smalltable[PySet_MINSIZE];
-    PyObject *weakreflist;      /* List of weak references */
+    setentry smalltable[TySet_MINSIZE];
+    TyObject *weakreflist;      /* List of weak references */
 } PySetObject;
 
-#define _PySet_CAST(so) \
+#define _TySet_CAST(so) \
     (assert(PyAnySet_Check(so)), _Py_CAST(PySetObject*, so))
 
-static inline Py_ssize_t PySet_GET_SIZE(PyObject *so) {
-#ifdef Py_GIL_DISABLED
-    return _Py_atomic_load_ssize_relaxed(&(_PySet_CAST(so)->used));
+static inline Ty_ssize_t TySet_GET_SIZE(TyObject *so) {
+#ifdef Ty_GIL_DISABLED
+    return _Ty_atomic_load_ssize_relaxed(&(_TySet_CAST(so)->used));
 #else
-    return _PySet_CAST(so)->used;
+    return _TySet_CAST(so)->used;
 #endif
 }
-#define PySet_GET_SIZE(so) PySet_GET_SIZE(_PyObject_CAST(so))
+#define TySet_GET_SIZE(so) TySet_GET_SIZE(_TyObject_CAST(so))

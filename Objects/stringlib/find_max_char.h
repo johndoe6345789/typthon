@@ -17,14 +17,14 @@
 
 #if STRINGLIB_SIZEOF_CHAR == 1
 
-Py_LOCAL_INLINE(Py_UCS4)
+Ty_LOCAL_INLINE(Ty_UCS4)
 STRINGLIB(find_max_char)(const STRINGLIB_CHAR *begin, const STRINGLIB_CHAR *end)
 {
     const unsigned char *p = (const unsigned char *) begin;
     const unsigned char *_end = (const unsigned char *)end;
 
     while (p < _end) {
-        if (_Py_IS_ALIGNED(p, ALIGNOF_SIZE_T)) {
+        if (_Ty_IS_ALIGNED(p, ALIGNOF_SIZE_T)) {
             /* Help register allocation */
             const unsigned char *_p = p;
             while (_p + SIZEOF_SIZE_T <= _end) {
@@ -56,23 +56,23 @@ STRINGLIB(find_max_char)(const STRINGLIB_CHAR *begin, const STRINGLIB_CHAR *end)
 #define MAX_CHAR_UCS2  0xffff
 #define MAX_CHAR_UCS4  0x10ffff
 
-Py_LOCAL_INLINE(Py_UCS4)
+Ty_LOCAL_INLINE(Ty_UCS4)
 STRINGLIB(find_max_char)(const STRINGLIB_CHAR *begin, const STRINGLIB_CHAR *end)
 {
 #if STRINGLIB_SIZEOF_CHAR == 2
-    const Py_UCS4 mask_limit = MASK_UCS1;
-    const Py_UCS4 max_char_limit = MAX_CHAR_UCS2;
+    const Ty_UCS4 mask_limit = MASK_UCS1;
+    const Ty_UCS4 max_char_limit = MAX_CHAR_UCS2;
 #elif STRINGLIB_SIZEOF_CHAR == 4
-    const Py_UCS4 mask_limit = MASK_UCS2;
-    const Py_UCS4 max_char_limit = MAX_CHAR_UCS4;
+    const Ty_UCS4 mask_limit = MASK_UCS2;
+    const Ty_UCS4 max_char_limit = MAX_CHAR_UCS4;
 #else
 #error Invalid STRINGLIB_SIZEOF_CHAR (must be 1, 2 or 4)
 #endif
-    Py_UCS4 mask;
-    Py_ssize_t n = end - begin;
+    Ty_UCS4 mask;
+    Ty_ssize_t n = end - begin;
     const STRINGLIB_CHAR *p = begin;
-    const STRINGLIB_CHAR *unrolled_end = begin + _Py_SIZE_ROUND_DOWN(n, 4);
-    Py_UCS4 max_char;
+    const STRINGLIB_CHAR *unrolled_end = begin + _Ty_SIZE_ROUND_DOWN(n, 4);
+    Ty_UCS4 max_char;
 
     max_char = MAX_CHAR_ASCII;
     mask = MASK_ASCII;

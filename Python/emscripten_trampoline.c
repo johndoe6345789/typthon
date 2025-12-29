@@ -168,7 +168,7 @@ addOnPreRun(() => {
 );
 
 void
-_Py_EmscriptenTrampoline_Init(_PyRuntimeState *runtime)
+_Ty_EmscriptenTrampoline_Init(_PyRuntimeState *runtime)
 {
     runtime->emscripten_count_args_function = _PyEM_GetCountArgsPtr();
 }
@@ -181,20 +181,20 @@ _Py_EmscriptenTrampoline_Init(_PyRuntimeState *runtime)
 /**
  * Backwards compatible trampoline works with all JS runtimes
  */
-EM_JS(PyObject*, _PyEM_TrampolineCall_JS, (PyCFunctionWithKeywords func, PyObject *arg1, PyObject *arg2, PyObject *arg3), {
+EM_JS(TyObject*, _PyEM_TrampolineCall_JS, (PyCFunctionWithKeywords func, TyObject *arg1, TyObject *arg2, TyObject *arg3), {
     return wasmTable.get(func)(arg1, arg2, arg3);
 });
 
-typedef PyObject* (*zero_arg)(void);
-typedef PyObject* (*one_arg)(PyObject*);
-typedef PyObject* (*two_arg)(PyObject*, PyObject*);
-typedef PyObject* (*three_arg)(PyObject*, PyObject*, PyObject*);
+typedef TyObject* (*zero_arg)(void);
+typedef TyObject* (*one_arg)(TyObject*);
+typedef TyObject* (*two_arg)(TyObject*, TyObject*);
+typedef TyObject* (*three_arg)(TyObject*, TyObject*, TyObject*);
 
-PyObject*
+TyObject*
 _PyEM_TrampolineCall(PyCFunctionWithKeywords func,
-                     PyObject* self,
-                     PyObject* args,
-                     PyObject* kw)
+                     TyObject* self,
+                     TyObject* args,
+                     TyObject* kw)
 {
     CountArgsFunc count_args = _PyRuntime.emscripten_count_args_function;
     if (count_args == 0) {
@@ -210,7 +210,7 @@ _PyEM_TrampolineCall(PyCFunctionWithKeywords func,
         case 3:
             return ((three_arg)func)(self, args, kw);
         default:
-            PyErr_SetString(PyExc_SystemError, "Handler takes too many arguments");
+            TyErr_SetString(TyExc_SystemError, "Handler takes too many arguments");
             return NULL;
     }
 }

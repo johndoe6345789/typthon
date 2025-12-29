@@ -8,40 +8,40 @@
 
 static int
 tok_readline_string(struct tok_state* tok) {
-    PyObject* line = NULL;
-    PyObject* raw_line = PyObject_CallNoArgs(tok->readline);
+    TyObject* line = NULL;
+    TyObject* raw_line = PyObject_CallNoArgs(tok->readline);
     if (raw_line == NULL) {
-        if (PyErr_ExceptionMatches(PyExc_StopIteration)) {
-            PyErr_Clear();
+        if (TyErr_ExceptionMatches(TyExc_StopIteration)) {
+            TyErr_Clear();
             return 1;
         }
         _PyTokenizer_error_ret(tok);
         goto error;
     }
     if(tok->encoding != NULL) {
-        if (!PyBytes_Check(raw_line)) {
-            PyErr_Format(PyExc_TypeError, "readline() returned a non-bytes object");
+        if (!TyBytes_Check(raw_line)) {
+            TyErr_Format(TyExc_TypeError, "readline() returned a non-bytes object");
             _PyTokenizer_error_ret(tok);
             goto error;
         }
-        line = PyUnicode_Decode(PyBytes_AS_STRING(raw_line), PyBytes_GET_SIZE(raw_line),
+        line = TyUnicode_Decode(TyBytes_AS_STRING(raw_line), TyBytes_GET_SIZE(raw_line),
                                 tok->encoding, "replace");
-        Py_CLEAR(raw_line);
+        Ty_CLEAR(raw_line);
         if (line == NULL) {
             _PyTokenizer_error_ret(tok);
             goto error;
         }
     } else {
-        if(!PyUnicode_Check(raw_line)) {
-            PyErr_Format(PyExc_TypeError, "readline() returned a non-string object");
+        if(!TyUnicode_Check(raw_line)) {
+            TyErr_Format(TyExc_TypeError, "readline() returned a non-string object");
             _PyTokenizer_error_ret(tok);
             goto error;
         }
         line = raw_line;
         raw_line = NULL;
     }
-    Py_ssize_t buflen;
-    const char* buf = PyUnicode_AsUTF8AndSize(line, &buflen);
+    Ty_ssize_t buflen;
+    const char* buf = TyUnicode_AsUTF8AndSize(line, &buflen);
     if (buf == NULL) {
         _PyTokenizer_error_ret(tok);
         goto error;
@@ -59,11 +59,11 @@ tok_readline_string(struct tok_state* tok) {
     *tok->inp = '\0';
 
     tok->line_start = tok->cur;
-    Py_DECREF(line);
+    Ty_DECREF(line);
     return 1;
 error:
-    Py_XDECREF(raw_line);
-    Py_XDECREF(line);
+    Ty_XDECREF(raw_line);
+    Ty_XDECREF(line);
     return 0;
 }
 
@@ -106,13 +106,13 @@ tok_underflow_readline(struct tok_state* tok) {
 }
 
 struct tok_state *
-_PyTokenizer_FromReadline(PyObject* readline, const char* enc,
+_PyTokenizer_FromReadline(TyObject* readline, const char* enc,
                           int exec_input, int preserve_crlf)
 {
     struct tok_state *tok = _PyTokenizer_tok_new();
     if (tok == NULL)
         return NULL;
-    if ((tok->buf = (char *)PyMem_Malloc(BUFSIZ)) == NULL) {
+    if ((tok->buf = (char *)TyMem_Malloc(BUFSIZ)) == NULL) {
         _PyTokenizer_Free(tok);
         return NULL;
     }
@@ -128,7 +128,7 @@ _PyTokenizer_FromReadline(PyObject* readline, const char* enc,
     }
     tok->decoding_state = STATE_NORMAL;
     tok->underflow = &tok_underflow_readline;
-    Py_INCREF(readline);
+    Ty_INCREF(readline);
     tok->readline = readline;
     return tok;
 }

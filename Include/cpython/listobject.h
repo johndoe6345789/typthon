@@ -1,11 +1,11 @@
-#ifndef Py_CPYTHON_LISTOBJECT_H
+#ifndef Ty_CPYTHON_LISTOBJECT_H
 #  error "this header file must not be included directly"
 #endif
 
 typedef struct {
     PyObject_VAR_HEAD
     /* Vector of pointers to list elements.  list[0] is ob_item[0], etc. */
-    PyObject **ob_item;
+    TyObject **ob_item;
 
     /* ob_item contains space for 'allocated' elements.  The number
      * currently in use is ob_size.
@@ -18,36 +18,36 @@ typedef struct {
      * Items must normally not be NULL, except during construction when
      * the list is not yet visible outside the function that builds it.
      */
-    Py_ssize_t allocated;
+    Ty_ssize_t allocated;
 } PyListObject;
 
 /* Cast argument to PyListObject* type. */
-#define _PyList_CAST(op) \
-    (assert(PyList_Check(op)), _Py_CAST(PyListObject*, (op)))
+#define _TyList_CAST(op) \
+    (assert(TyList_Check(op)), _Py_CAST(PyListObject*, (op)))
 
 // Macros and static inline functions, trading safety for speed
 
-static inline Py_ssize_t PyList_GET_SIZE(PyObject *op) {
-    PyListObject *list = _PyList_CAST(op);
-#ifdef Py_GIL_DISABLED
-    return _Py_atomic_load_ssize_relaxed(&(_PyVarObject_CAST(list)->ob_size));
+static inline Ty_ssize_t TyList_GET_SIZE(TyObject *op) {
+    PyListObject *list = _TyList_CAST(op);
+#ifdef Ty_GIL_DISABLED
+    return _Ty_atomic_load_ssize_relaxed(&(_PyVarObject_CAST(list)->ob_size));
 #else
-    return Py_SIZE(list);
+    return Ty_SIZE(list);
 #endif
 }
-#define PyList_GET_SIZE(op) PyList_GET_SIZE(_PyObject_CAST(op))
+#define TyList_GET_SIZE(op) TyList_GET_SIZE(_TyObject_CAST(op))
 
-#define PyList_GET_ITEM(op, index) (_PyList_CAST(op)->ob_item[(index)])
+#define TyList_GET_ITEM(op, index) (_TyList_CAST(op)->ob_item[(index)])
 
 static inline void
-PyList_SET_ITEM(PyObject *op, Py_ssize_t index, PyObject *value) {
-    PyListObject *list = _PyList_CAST(op);
+TyList_SET_ITEM(TyObject *op, Ty_ssize_t index, TyObject *value) {
+    PyListObject *list = _TyList_CAST(op);
     assert(0 <= index);
     assert(index < list->allocated);
     list->ob_item[index] = value;
 }
-#define PyList_SET_ITEM(op, index, value) \
-    PyList_SET_ITEM(_PyObject_CAST(op), (index), _PyObject_CAST(value))
+#define TyList_SET_ITEM(op, index, value) \
+    TyList_SET_ITEM(_TyObject_CAST(op), (index), _TyObject_CAST(value))
 
-PyAPI_FUNC(int) PyList_Extend(PyObject *self, PyObject *iterable);
-PyAPI_FUNC(int) PyList_Clear(PyObject *self);
+PyAPI_FUNC(int) TyList_Extend(TyObject *self, TyObject *iterable);
+PyAPI_FUNC(int) TyList_Clear(TyObject *self);

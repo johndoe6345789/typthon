@@ -7,68 +7,68 @@
 
 typedef struct {
     PyObject_HEAD
-    PyObject *obj;
-    Py_ssize_t references;
+    TyObject *obj;
+    Ty_ssize_t references;
 } testBufObject;
 
 #define testBufObject_CAST(op)  ((testBufObject *)(op))
 
-static PyObject *
-testbuf_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+static TyObject *
+testbuf_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 {
-    PyObject *obj = PyBytes_FromString("test");
+    TyObject *obj = TyBytes_FromString("test");
     if (obj == NULL) {
         return NULL;
     }
     testBufObject *self = (testBufObject *)type->tp_alloc(type, 0);
     if (self == NULL) {
-        Py_DECREF(obj);
+        Ty_DECREF(obj);
         return NULL;
     }
     self->obj = obj;
     self->references = 0;
-    return (PyObject *)self;
+    return (TyObject *)self;
 }
 
 static int
-testbuf_traverse(PyObject *op, visitproc visit, void *arg)
+testbuf_traverse(TyObject *op, visitproc visit, void *arg)
 {
     testBufObject *self = testBufObject_CAST(op);
-    Py_VISIT(self->obj);
+    Ty_VISIT(self->obj);
     return 0;
 }
 
 static int
-testbuf_clear(PyObject *op)
+testbuf_clear(TyObject *op)
 {
     testBufObject *self = testBufObject_CAST(op);
-    Py_CLEAR(self->obj);
+    Ty_CLEAR(self->obj);
     return 0;
 }
 
 static void
-testbuf_dealloc(PyObject *op)
+testbuf_dealloc(TyObject *op)
 {
     testBufObject *self = testBufObject_CAST(op);
     PyObject_GC_UnTrack(self);
-    Py_XDECREF(self->obj);
-    Py_TYPE(self)->tp_free(self);
+    Ty_XDECREF(self->obj);
+    Ty_TYPE(self)->tp_free(self);
 }
 
 static int
-testbuf_getbuf(PyObject *op, Py_buffer *view, int flags)
+testbuf_getbuf(TyObject *op, Ty_buffer *view, int flags)
 {
     testBufObject *self = testBufObject_CAST(op);
     int buf = PyObject_GetBuffer(self->obj, view, flags);
     if (buf == 0) {
-        Py_SETREF(view->obj, Py_NewRef(self));
+        Ty_SETREF(view->obj, Ty_NewRef(self));
         self->references++;
     }
     return buf;
 }
 
 static void
-testbuf_releasebuf(PyObject *op, Py_buffer *Py_UNUSED(view))
+testbuf_releasebuf(TyObject *op, Ty_buffer *Py_UNUSED(view))
 {
     testBufObject *self = testBufObject_CAST(op);
     self->references--;
@@ -80,16 +80,16 @@ static PyBufferProcs testbuf_as_buffer = {
     .bf_releasebuffer = testbuf_releasebuf,
 };
 
-static struct PyMemberDef testbuf_members[] = {
-    {"references", Py_T_PYSSIZET, offsetof(testBufObject, references), Py_READONLY},
+static struct TyMemberDef testbuf_members[] = {
+    {"references", Ty_T_PYSSIZET, offsetof(testBufObject, references), Py_READONLY},
     {NULL},
 };
 
-static PyTypeObject testBufType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+static TyTypeObject testBufType = {
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "testBufType",
     .tp_basicsize = sizeof(testBufObject),
-    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+    .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,
     .tp_new = testbuf_new,
     .tp_dealloc = testbuf_dealloc,
     .tp_traverse = testbuf_traverse,
@@ -99,11 +99,11 @@ static PyTypeObject testBufType = {
 };
 
 int
-_PyTestCapi_Init_Buffer(PyObject *m) {
-    if (PyType_Ready(&testBufType) < 0) {
+_PyTestCapi_Init_Buffer(TyObject *m) {
+    if (TyType_Ready(&testBufType) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(m, "testBuf", (PyObject *)&testBufType)) {
+    if (TyModule_AddObjectRef(m, "testBuf", (TyObject *)&testBufType)) {
         return -1;
     }
 

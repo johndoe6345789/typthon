@@ -175,10 +175,10 @@ Here are the modules:
 Module state:
 
 * fields
-   * <PyTime_t> initialized - when the module was first initialized
-   * <PyObject> *error
-   * <PyObject> *int_const
-   * <PyObject> *str_const
+   * <TyTime_t> initialized - when the module was first initialized
+   * <TyObject> *error
+   * <TyObject> *int_const
+   * <TyObject> *str_const
 * initialization
    1. set state.initialized to the current time
    2. set state.error to a new exception class
@@ -202,8 +202,8 @@ See Python/import.c, especially the long comments, for more about
 single-phase init modules.
 */
 
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 //#include <time.h>
@@ -212,10 +212,10 @@ single-phase init modules.
 
 
 typedef struct {
-    PyTime_t initialized;
-    PyObject *error;
-    PyObject *int_const;
-    PyObject *str_const;
+    TyTime_t initialized;
+    TyObject *error;
+    TyObject *int_const;
+    TyObject *str_const;
 } module_state;
 
 
@@ -241,9 +241,9 @@ clear_global_state(void)
 
 
 static inline module_state *
-get_module_state(PyObject *module)
+get_module_state(TyObject *module)
 {
-    PyModuleDef *def = PyModule_GetDef(module);
+    TyModuleDef *def = TyModule_GetDef(module);
     if (def->m_size == -1) {
         return &global_state.module;
     }
@@ -251,7 +251,7 @@ get_module_state(PyObject *module)
         return NULL;
     }
     else {
-        module_state *state = (module_state*)PyModule_GetState(module);
+        module_state *state = (module_state*)TyModule_GetState(module);
         assert(state != NULL);
         return state;
     }
@@ -261,21 +261,21 @@ static void
 clear_state(module_state *state)
 {
     state->initialized = 0;
-    Py_CLEAR(state->error);
-    Py_CLEAR(state->int_const);
-    Py_CLEAR(state->str_const);
+    Ty_CLEAR(state->error);
+    Ty_CLEAR(state->int_const);
+    Ty_CLEAR(state->str_const);
 }
 
 static int
-_set_initialized(PyTime_t *initialized)
+_set_initialized(TyTime_t *initialized)
 {
     /* We go strictly monotonic to ensure each time is unique. */
-    PyTime_t prev;
+    TyTime_t prev;
     if (PyTime_Monotonic(&prev) != 0) {
         return -1;
     }
     /* We do a busy sleep since the interval should be super short. */
-    PyTime_t t;
+    TyTime_t t;
     do {
         if (PyTime_Monotonic(&t) != 0) {
             return -1;
@@ -300,17 +300,17 @@ init_state(module_state *state)
     assert(state->initialized > 0);
 
     /* Add an exception type */
-    state->error = PyErr_NewException("_testsinglephase.error", NULL, NULL);
+    state->error = TyErr_NewException("_testsinglephase.error", NULL, NULL);
     if (state->error == NULL) {
         goto error;
     }
 
-    state->int_const = PyLong_FromLong(1969);
+    state->int_const = TyLong_FromLong(1969);
     if (state->int_const == NULL) {
         goto error;
     }
 
-    state->str_const = PyUnicode_FromString("something different");
+    state->str_const = TyUnicode_FromString("something different");
     if (state->str_const == NULL) {
         goto error;
     }
@@ -324,20 +324,20 @@ error:
 
 
 static int
-init_module(PyObject *module, module_state *state)
+init_module(TyObject *module, module_state *state)
 {
-    if (PyModule_AddObjectRef(module, "error", state->error) != 0) {
+    if (TyModule_AddObjectRef(module, "error", state->error) != 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(module, "int_const", state->int_const) != 0) {
+    if (TyModule_AddObjectRef(module, "int_const", state->int_const) != 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(module, "str_const", state->str_const) != 0) {
+    if (TyModule_AddObjectRef(module, "str_const", state->str_const) != 0) {
         return -1;
     }
 
     double d = PyTime_AsSecondsDouble(state->initialized);
-    if (PyModule_Add(module, "_module_initialized", PyFloat_FromDouble(d)) < 0) {
+    if (TyModule_Add(module, "_module_initialized", TyFloat_FromDouble(d)) < 0) {
         return -1;
     }
 
@@ -345,20 +345,20 @@ init_module(PyObject *module, module_state *state)
 }
 
 
-PyDoc_STRVAR(common_state_initialized_doc,
+TyDoc_STRVAR(common_state_initialized_doc,
 "state_initialized()\n\
 \n\
 Return the seconds-since-epoch when the module state was initialized.");
 
-static PyObject *
-common_state_initialized(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+common_state_initialized(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     module_state *state = get_module_state(self);
     if (state == NULL) {
         Py_RETURN_NONE;
     }
     double d = PyTime_AsSecondsDouble(state->initialized);
-    return PyFloat_FromDouble(d);
+    return TyFloat_FromDouble(d);
 }
 
 #define STATE_INITIALIZED_METHODDEF \
@@ -366,19 +366,19 @@ common_state_initialized(PyObject *self, PyObject *Py_UNUSED(ignored))
      common_state_initialized_doc}
 
 
-PyDoc_STRVAR(common_look_up_self_doc,
+TyDoc_STRVAR(common_look_up_self_doc,
 "look_up_self()\n\
 \n\
 Return the module associated with this module's def.m_base.m_index.");
 
-static PyObject *
-common_look_up_self(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+common_look_up_self(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyModuleDef *def = PyModule_GetDef(self);
+    TyModuleDef *def = TyModule_GetDef(self);
     if (def == NULL) {
         return NULL;
     }
-    return Py_NewRef(
+    return Ty_NewRef(
             PyState_FindModule(def));
 }
 
@@ -388,36 +388,36 @@ common_look_up_self(PyObject *self, PyObject *Py_UNUSED(ignored))
 
 /* Function of two integers returning integer */
 
-PyDoc_STRVAR(common_sum_doc,
+TyDoc_STRVAR(common_sum_doc,
 "sum(i,j)\n\
 \n\
 Return the sum of i and j.");
 
-static PyObject *
-common_sum(PyObject *self, PyObject *args)
+static TyObject *
+common_sum(TyObject *self, TyObject *args)
 {
     long i, j;
     long res;
-    if (!PyArg_ParseTuple(args, "ll:sum", &i, &j))
+    if (!TyArg_ParseTuple(args, "ll:sum", &i, &j))
         return NULL;
     res = i + j;
-    return PyLong_FromLong(res);
+    return TyLong_FromLong(res);
 }
 
 #define SUM_METHODDEF \
     {"sum", common_sum, METH_VARARGS, common_sum_doc}
 
 
-PyDoc_STRVAR(basic_initialized_count_doc,
+TyDoc_STRVAR(basic_initialized_count_doc,
 "initialized_count()\n\
 \n\
 Return how many times the module has been initialized.");
 
-static PyObject *
-basic_initialized_count(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+basic_initialized_count(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    assert(PyModule_GetDef(self)->m_size == -1);
-    return PyLong_FromLong(global_state.initialized_count);
+    assert(TyModule_GetDef(self)->m_size == -1);
+    return TyLong_FromLong(global_state.initialized_count);
 }
 
 #define INITIALIZED_COUNT_METHODDEF \
@@ -425,15 +425,15 @@ basic_initialized_count(PyObject *self, PyObject *Py_UNUSED(ignored))
      basic_initialized_count_doc}
 
 
-PyDoc_STRVAR(basic__clear_globals_doc,
+TyDoc_STRVAR(basic__clear_globals_doc,
 "_clear_globals()\n\
 \n\
 Free all global state and set it to uninitialized.");
 
-static PyObject *
-basic__clear_globals(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+basic__clear_globals(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    assert(PyModule_GetDef(self)->m_size == -1);
+    assert(TyModule_GetDef(self)->m_size == -1);
     clear_global_state();
     Py_RETURN_NONE;
 }
@@ -443,12 +443,12 @@ basic__clear_globals(PyObject *self, PyObject *Py_UNUSED(ignored))
      basic__clear_globals_doc}
 
 
-PyDoc_STRVAR(basic__clear_module_state_doc, "_clear_module_state()\n\
+TyDoc_STRVAR(basic__clear_module_state_doc, "_clear_module_state()\n\
 \n\
 Free the module state and set it to uninitialized.");
 
-static PyObject *
-basic__clear_module_state(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+basic__clear_module_state(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     module_state *state = get_module_state(self);
     if (state != NULL) {
@@ -478,7 +478,7 @@ basic__clear_module_state(PyObject *self, PyObject *Py_UNUSED(ignored))
    it is cached in interp->module_by_index (using mod->md_def->m_base.m_index).
  */
 
-static PyMethodDef TestMethods_Basic[] = {
+static TyMethodDef TestMethods_Basic[] = {
     LOOK_UP_SELF_METHODDEF,
     SUM_METHODDEF,
     STATE_INITIALIZED_METHODDEF,
@@ -487,39 +487,39 @@ static PyMethodDef TestMethods_Basic[] = {
     {NULL, NULL}           /* sentinel */
 };
 
-static struct PyModuleDef _testsinglephase_basic = {
+static struct TyModuleDef _testsinglephase_basic = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testsinglephase",
-    .m_doc = PyDoc_STR("Test module _testsinglephase"),
+    .m_doc = TyDoc_STR("Test module _testsinglephase"),
     .m_size = -1,  // no module state
     .m_methods = TestMethods_Basic,
 };
 
-static PyObject *
-init__testsinglephase_basic(PyModuleDef *def)
+static TyObject *
+init__testsinglephase_basic(TyModuleDef *def)
 {
     if (global_state.initialized_count == -1) {
         global_state.initialized_count = 0;
     }
 
-    PyObject *module = PyModule_Create(def);
+    TyObject *module = TyModule_Create(def);
     if (module == NULL) {
         return NULL;
     }
-#ifdef Py_GIL_DISABLED
-    PyUnstable_Module_SetGIL(module, Py_MOD_GIL_NOT_USED);
+#ifdef Ty_GIL_DISABLED
+    PyUnstable_Module_SetGIL(module, Ty_MOD_GIL_NOT_USED);
 #endif
 
     module_state *state = &global_state.module;
     // It may have been set by a previous run or under a different name.
     clear_state(state);
     if (init_state(state) < 0) {
-        Py_CLEAR(module);
+        Ty_CLEAR(module);
         return NULL;
     }
 
     if (init_module(module, state) < 0) {
-        Py_CLEAR(module);
+        Ty_CLEAR(module);
         goto finally;
     }
 
@@ -546,10 +546,10 @@ PyInit__testsinglephase_basic_wrapper(void)
 PyMODINIT_FUNC
 PyInit__testsinglephase_basic_copy(void)
 {
-    static struct PyModuleDef def = {
+    static struct TyModuleDef def = {
         PyModuleDef_HEAD_INIT,
         .m_name = "_testsinglephase_basic_copy",
-        .m_doc = PyDoc_STR("Test module _testsinglephase_basic_copy"),
+        .m_doc = TyDoc_STR("Test module _testsinglephase_basic_copy"),
         .m_size = -1,  // no module state
         .m_methods = TestMethods_Basic,
     };
@@ -576,17 +576,17 @@ PyInit__testsinglephase_basic_copy(void)
     but supports repeated initialization.)
  */
 
-static PyMethodDef TestMethods_Reinit[] = {
+static TyMethodDef TestMethods_Reinit[] = {
     LOOK_UP_SELF_METHODDEF,
     SUM_METHODDEF,
     STATE_INITIALIZED_METHODDEF,
     {NULL, NULL}           /* sentinel */
 };
 
-static struct PyModuleDef _testsinglephase_with_reinit = {
+static struct TyModuleDef _testsinglephase_with_reinit = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testsinglephase_with_reinit",
-    .m_doc = PyDoc_STR("Test module _testsinglephase_with_reinit"),
+    .m_doc = TyDoc_STR("Test module _testsinglephase_with_reinit"),
     .m_size = 0,
     .m_methods = TestMethods_Reinit,
 };
@@ -596,24 +596,24 @@ PyInit__testsinglephase_with_reinit(void)
 {
     /* We purposefully do not try PyState_FindModule() first here
        since we want to check the behavior of re-loading the module. */
-    PyObject *module = PyModule_Create(&_testsinglephase_with_reinit);
+    TyObject *module = TyModule_Create(&_testsinglephase_with_reinit);
     if (module == NULL) {
         return NULL;
     }
-#ifdef Py_GIL_DISABLED
-    PyUnstable_Module_SetGIL(module, Py_MOD_GIL_NOT_USED);
+#ifdef Ty_GIL_DISABLED
+    PyUnstable_Module_SetGIL(module, Ty_MOD_GIL_NOT_USED);
 #endif
 
     assert(get_module_state(module) == NULL);
 
     module_state state = {0};
     if (init_state(&state) < 0) {
-        Py_CLEAR(module);
+        Ty_CLEAR(module);
         return NULL;
     }
 
     if (init_module(module, &state) < 0) {
-        Py_CLEAR(module);
+        Ty_CLEAR(module);
         goto finally;
     }
 
@@ -640,7 +640,7 @@ finally:
    and most extensions predate multi-phase init.
  */
 
-static PyMethodDef TestMethods_WithState[] = {
+static TyMethodDef TestMethods_WithState[] = {
     LOOK_UP_SELF_METHODDEF,
     SUM_METHODDEF,
     STATE_INITIALIZED_METHODDEF,
@@ -648,10 +648,10 @@ static PyMethodDef TestMethods_WithState[] = {
     {NULL, NULL}           /* sentinel */
 };
 
-static struct PyModuleDef _testsinglephase_with_state = {
+static struct TyModuleDef _testsinglephase_with_state = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testsinglephase_with_state",
-    .m_doc = PyDoc_STR("Test module _testsinglephase_with_state"),
+    .m_doc = TyDoc_STR("Test module _testsinglephase_with_state"),
     .m_size = sizeof(module_state),
     .m_methods = TestMethods_WithState,
 };
@@ -661,24 +661,24 @@ PyInit__testsinglephase_with_state(void)
 {
     /* We purposefully do not try PyState_FindModule() first here
        since we want to check the behavior of re-loading the module. */
-    PyObject *module = PyModule_Create(&_testsinglephase_with_state);
+    TyObject *module = TyModule_Create(&_testsinglephase_with_state);
     if (module == NULL) {
         return NULL;
     }
-#ifdef Py_GIL_DISABLED
-    PyUnstable_Module_SetGIL(module, Py_MOD_GIL_NOT_USED);
+#ifdef Ty_GIL_DISABLED
+    PyUnstable_Module_SetGIL(module, Ty_MOD_GIL_NOT_USED);
 #endif
 
     module_state *state = get_module_state(module);
     assert(state != NULL);
     if (init_state(state) < 0) {
-        Py_CLEAR(module);
+        Ty_CLEAR(module);
         return NULL;
     }
 
     if (init_module(module, state) < 0) {
         clear_state(state);
-        Py_CLEAR(module);
+        Ty_CLEAR(module);
         goto finally;
     }
 
@@ -694,10 +694,10 @@ finally:
 /* Each of these modules should only be freshly loaded.  That means
    clearing the caches and each module def's m_base after each load. */
 
-static struct PyModuleDef _testsinglephase_check_cache_first = {
+static struct TyModuleDef _testsinglephase_check_cache_first = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testsinglephase_check_cache_first",
-    .m_doc = PyDoc_STR("Test module _testsinglephase_check_cache_first"),
+    .m_doc = TyDoc_STR("Test module _testsinglephase_check_cache_first"),
     .m_size = -1,  // no module state
 };
 
@@ -705,18 +705,18 @@ PyMODINIT_FUNC
 PyInit__testsinglephase_check_cache_first(void)
 {
     assert(_testsinglephase_check_cache_first.m_base.m_index == 0);
-    PyObject *mod = PyState_FindModule(&_testsinglephase_check_cache_first);
+    TyObject *mod = PyState_FindModule(&_testsinglephase_check_cache_first);
     if (mod != NULL) {
-        return Py_NewRef(mod);
+        return Ty_NewRef(mod);
     }
-    return PyModule_Create(&_testsinglephase_check_cache_first);
+    return TyModule_Create(&_testsinglephase_check_cache_first);
 }
 
 
-static struct PyModuleDef _testsinglephase_with_reinit_check_cache_first = {
+static struct TyModuleDef _testsinglephase_with_reinit_check_cache_first = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testsinglephase_with_reinit_check_cache_first",
-    .m_doc = PyDoc_STR("Test module _testsinglephase_with_reinit_check_cache_first"),
+    .m_doc = TyDoc_STR("Test module _testsinglephase_with_reinit_check_cache_first"),
     .m_size = 0,  // no module state
 };
 
@@ -724,18 +724,18 @@ PyMODINIT_FUNC
 PyInit__testsinglephase_with_reinit_check_cache_first(void)
 {
     assert(_testsinglephase_with_reinit_check_cache_first.m_base.m_index == 0);
-    PyObject *mod = PyState_FindModule(&_testsinglephase_with_reinit_check_cache_first);
+    TyObject *mod = PyState_FindModule(&_testsinglephase_with_reinit_check_cache_first);
     if (mod != NULL) {
-        return Py_NewRef(mod);
+        return Ty_NewRef(mod);
     }
-    return PyModule_Create(&_testsinglephase_with_reinit_check_cache_first);
+    return TyModule_Create(&_testsinglephase_with_reinit_check_cache_first);
 }
 
 
-static struct PyModuleDef _testsinglephase_with_state_check_cache_first = {
+static struct TyModuleDef _testsinglephase_with_state_check_cache_first = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testsinglephase_with_state_check_cache_first",
-    .m_doc = PyDoc_STR("Test module _testsinglephase_with_state_check_cache_first"),
+    .m_doc = TyDoc_STR("Test module _testsinglephase_with_state_check_cache_first"),
     .m_size = 42,  // not used
 };
 
@@ -743,11 +743,11 @@ PyMODINIT_FUNC
 PyInit__testsinglephase_with_state_check_cache_first(void)
 {
     assert(_testsinglephase_with_state_check_cache_first.m_base.m_index == 0);
-    PyObject *mod = PyState_FindModule(&_testsinglephase_with_state_check_cache_first);
+    TyObject *mod = PyState_FindModule(&_testsinglephase_with_state_check_cache_first);
     if (mod != NULL) {
-        return Py_NewRef(mod);
+        return Ty_NewRef(mod);
     }
-    return PyModule_Create(&_testsinglephase_with_state_check_cache_first);
+    return TyModule_Create(&_testsinglephase_with_state_check_cache_first);
 }
 
 
@@ -755,21 +755,21 @@ PyInit__testsinglephase_with_state_check_cache_first(void)
 /* the _testsinglephase_circular module */
 /****************************************/
 
-static PyObject *static_module_circular;
+static TyObject *static_module_circular;
 
-static PyObject *
-circularmod_clear_static_var(PyObject *self, PyObject *arg)
+static TyObject *
+circularmod_clear_static_var(TyObject *self, TyObject *arg)
 {
-    PyObject *result = static_module_circular;
+    TyObject *result = static_module_circular;
     static_module_circular = NULL;
     return result;
 }
 
-static struct PyModuleDef _testsinglephase_circular = {
+static struct TyModuleDef _testsinglephase_circular = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testsinglephase_circular",
-    .m_doc = PyDoc_STR("Test module _testsinglephase_circular"),
-    .m_methods = (PyMethodDef[]) {
+    .m_doc = TyDoc_STR("Test module _testsinglephase_circular"),
+    .m_methods = (TyMethodDef[]) {
         {"clear_static_var", circularmod_clear_static_var, METH_NOARGS,
          "Clear the static variable and return its previous value."},
         {NULL, NULL}           /* sentinel */
@@ -780,22 +780,22 @@ PyMODINIT_FUNC
 PyInit__testsinglephase_circular(void)
 {
     if (!static_module_circular) {
-        static_module_circular = PyModule_Create(&_testsinglephase_circular);
+        static_module_circular = TyModule_Create(&_testsinglephase_circular);
         if (!static_module_circular) {
             return NULL;
         }
     }
     static const char helper_mod_name[] = (
         "test.test_import.data.circular_imports.singlephase");
-    PyObject *helper_mod = PyImport_ImportModule(helper_mod_name);
-    Py_XDECREF(helper_mod);
+    TyObject *helper_mod = TyImport_ImportModule(helper_mod_name);
+    Ty_XDECREF(helper_mod);
     if (!helper_mod) {
         return NULL;
     }
-    if(PyModule_AddStringConstant(static_module_circular,
+    if(TyModule_AddStringConstant(static_module_circular,
                                   "helper_mod_name",
                                   helper_mod_name) < 0) {
         return NULL;
     }
-    return Py_NewRef(static_module_circular);
+    return Ty_NewRef(static_module_circular);
 }

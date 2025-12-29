@@ -107,7 +107,7 @@ def compile_and_marshal(name: str, text: bytes) -> bytes:
     _check_type(text, bytes, "text")
     
     filename: str = f"<frozen {name}>"
-    # exec == Py_file_input
+    # exec == Ty_file_input
     code = compile(text, filename, "exec", optimize=0, dont_inherit=True)
     result: bytes = marshal.dumps(code)
     
@@ -188,7 +188,7 @@ def write_frozen(outpath: str, inpath: str, name: str, marshalled: bytes) -> Non
     with open(outpath, "w") as outfile:
         outfile.write(header)
         outfile.write("\n")
-        arrayname: str = get_varname(name, "_Py_M__")
+        arrayname: str = get_varname(name, "_Ty_M__")
         write_code(outfile, marshalled, arrayname)
 
 

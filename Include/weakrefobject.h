@@ -1,46 +1,46 @@
 /* Weak references objects for Python. */
 
-#ifndef Py_WEAKREFOBJECT_H
-#define Py_WEAKREFOBJECT_H
+#ifndef Ty_WEAKREFOBJECT_H
+#define Ty_WEAKREFOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 typedef struct _PyWeakReference PyWeakReference;
 
-PyAPI_DATA(PyTypeObject) _PyWeakref_RefType;
-PyAPI_DATA(PyTypeObject) _PyWeakref_ProxyType;
-PyAPI_DATA(PyTypeObject) _PyWeakref_CallableProxyType;
+PyAPI_DATA(TyTypeObject) _TyWeakref_RefType;
+PyAPI_DATA(TyTypeObject) _TyWeakref_ProxyType;
+PyAPI_DATA(TyTypeObject) _TyWeakref_CallableProxyType;
 
-#define PyWeakref_CheckRef(op) PyObject_TypeCheck((op), &_PyWeakref_RefType)
+#define PyWeakref_CheckRef(op) PyObject_TypeCheck((op), &_TyWeakref_RefType)
 #define PyWeakref_CheckRefExact(op) \
-        Py_IS_TYPE((op), &_PyWeakref_RefType)
+        Ty_IS_TYPE((op), &_TyWeakref_RefType)
 #define PyWeakref_CheckProxy(op) \
-        (Py_IS_TYPE((op), &_PyWeakref_ProxyType) \
-         || Py_IS_TYPE((op), &_PyWeakref_CallableProxyType))
+        (Ty_IS_TYPE((op), &_TyWeakref_ProxyType) \
+         || Ty_IS_TYPE((op), &_TyWeakref_CallableProxyType))
 
 #define PyWeakref_Check(op) \
         (PyWeakref_CheckRef(op) || PyWeakref_CheckProxy(op))
 
 
-PyAPI_FUNC(PyObject *) PyWeakref_NewRef(PyObject *ob,
-                                        PyObject *callback);
-PyAPI_FUNC(PyObject *) PyWeakref_NewProxy(PyObject *ob,
-                                          PyObject *callback);
-Py_DEPRECATED(3.13) PyAPI_FUNC(PyObject *) PyWeakref_GetObject(PyObject *ref);
+PyAPI_FUNC(TyObject *) PyWeakref_NewRef(TyObject *ob,
+                                        TyObject *callback);
+PyAPI_FUNC(TyObject *) PyWeakref_NewProxy(TyObject *ob,
+                                          TyObject *callback);
+Ty_DEPRECATED(3.13) PyAPI_FUNC(TyObject *) PyWeakref_GetObject(TyObject *ref);
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030D0000
-PyAPI_FUNC(int) PyWeakref_GetRef(PyObject *ref, PyObject **pobj);
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030D0000
+PyAPI_FUNC(int) PyWeakref_GetRef(TyObject *ref, TyObject **pobj);
 #endif
 
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_WEAKREFOBJECT_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_WEAKREFOBJECT_H
 #  include "cpython/weakrefobject.h"
-#  undef Py_CPYTHON_WEAKREFOBJECT_H
+#  undef Ty_CPYTHON_WEAKREFOBJECT_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_WEAKREFOBJECT_H */
+#endif /* !Ty_WEAKREFOBJECT_H */

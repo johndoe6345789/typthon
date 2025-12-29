@@ -8,17 +8,17 @@
 #define GETDATA(FUNC) ((_PyXIData_getdata_t){.basic=FUNC})
 
 static int
-ensure_xid_class(PyTypeObject *cls, _PyXIData_getdata_t getdata)
+ensure_xid_class(TyTypeObject *cls, _PyXIData_getdata_t getdata)
 {
-    PyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     return _PyXIData_RegisterClass(tstate, cls, getdata);
 }
 
 #ifdef REGISTERS_HEAP_TYPES
 static int
-clear_xid_class(PyTypeObject *cls)
+clear_xid_class(TyTypeObject *cls)
 {
-    PyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     return _PyXIData_UnregisterClass(tstate, cls);
 }
 #endif
@@ -30,10 +30,10 @@ _get_interpid(_PyXIData_t *data)
     int64_t interpid;
     if (data != NULL) {
         interpid = _PyXIData_INTERPID(data);
-        assert(!PyErr_Occurred());
+        assert(!TyErr_Occurred());
     }
     else {
-        interpid = PyInterpreterState_GetID(PyInterpreterState_Get());
+        interpid = TyInterpreterState_GetID(TyInterpreterState_Get());
     }
     return interpid;
 }
@@ -56,7 +56,7 @@ resolve_fallback(int arg, xidata_fallback_t dflt,
         fallback = _PyXIDATA_FULL_FALLBACK;
     }
     else {
-        PyErr_Format(PyExc_ValueError, "unsupported fallback %d", arg);
+        TyErr_Format(TyExc_ValueError, "unsupported fallback %d", arg);
         return -1;
     }
     *p_fallback = fallback;
@@ -113,7 +113,7 @@ resolve_unboundop(int arg, unboundop_t dflt, unboundop_t *p_unboundop)
         op = UNBOUND_REPLACE;
     }
     else {
-        PyErr_Format(PyExc_ValueError, "unsupported unboundop %d", arg);
+        TyErr_Format(TyExc_ValueError, "unsupported unboundop %d", arg);
         return -1;
     }
     *p_unboundop = op;

@@ -4,63 +4,63 @@
 #include "Python.h"
 #include "marshal.h"              // PyMarshal_WriteObjectToString()
 #include "osdefs.h"               // MAXPATHLEN
-#include "pycore_ceval.h"         // _Py_simple_func
+#include "pycore_ceval.h"         // _Ty_simple_func
 #include "pycore_crossinterp.h"   // _PyXIData_t
-#include "pycore_function.h"      // _PyFunction_VerifyStateless()
-#include "pycore_global_strings.h"  // _Py_ID()
-#include "pycore_import.h"        // _PyImport_SetModule()
-#include "pycore_initconfig.h"    // _PyStatus_OK()
+#include "pycore_function.h"      // _TyFunction_VerifyStateless()
+#include "pycore_global_strings.h"  // _Ty_ID()
+#include "pycore_import.h"        // _TyImport_SetModule()
+#include "pycore_initconfig.h"    // _TyStatus_OK()
 #include "pycore_namespace.h"     // _PyNamespace_New()
-#include "pycore_pythonrun.h"     // _Py_SourceAsString()
+#include "pycore_pythonrun.h"     // _Ty_SourceAsString()
 #include "pycore_runtime.h"       // _PyRuntime
-#include "pycore_setobject.h"     // _PySet_NextEntry()
+#include "pycore_setobject.h"     // _TySet_NextEntry()
 #include "pycore_typeobject.h"    // _PyStaticType_InitBuiltin()
 
 
-static Py_ssize_t
-_Py_GetMainfile(char *buffer, size_t maxlen)
+static Ty_ssize_t
+_Ty_GetMainfile(char *buffer, size_t maxlen)
 {
     // We don't expect subinterpreters to have the __main__ module's
     // __name__ set, but proceed just in case.
-    PyThreadState *tstate = _PyThreadState_GET();
-    PyObject *module = _Py_GetMainModule(tstate);
-    if (_Py_CheckMainModule(module) < 0) {
-        Py_XDECREF(module);
+    TyThreadState *tstate = _TyThreadState_GET();
+    TyObject *module = _Ty_GetMainModule(tstate);
+    if (_Ty_CheckMainModule(module) < 0) {
+        Ty_XDECREF(module);
         return -1;
     }
-    Py_ssize_t size = _PyModule_GetFilenameUTF8(module, buffer, maxlen);
-    Py_DECREF(module);
+    Ty_ssize_t size = _TyModule_GetFilenameUTF8(module, buffer, maxlen);
+    Ty_DECREF(module);
     return size;
 }
 
 
-static PyObject *
+static TyObject *
 runpy_run_path(const char *filename, const char *modname)
 {
-    PyObject *run_path = PyImport_ImportModuleAttrString("runpy", "run_path");
+    TyObject *run_path = TyImport_ImportModuleAttrString("runpy", "run_path");
     if (run_path == NULL) {
         return NULL;
     }
-    PyObject *args = Py_BuildValue("(sOs)", filename, Py_None, modname);
+    TyObject *args = Ty_BuildValue("(sOs)", filename, Ty_None, modname);
     if (args == NULL) {
-        Py_DECREF(run_path);
+        Ty_DECREF(run_path);
         return NULL;
     }
-    PyObject *ns = PyObject_Call(run_path, args, NULL);
-    Py_DECREF(run_path);
-    Py_DECREF(args);
+    TyObject *ns = PyObject_Call(run_path, args, NULL);
+    Ty_DECREF(run_path);
+    Ty_DECREF(args);
     return ns;
 }
 
 
 static void
-set_exc_with_cause(PyObject *exctype, const char *msg)
+set_exc_with_cause(TyObject *exctype, const char *msg)
 {
-    PyObject *cause = PyErr_GetRaisedException();
-    PyErr_SetString(exctype, msg);
-    PyObject *exc = PyErr_GetRaisedException();
+    TyObject *cause = TyErr_GetRaisedException();
+    TyErr_SetString(exctype, msg);
+    TyObject *exc = TyErr_GetRaisedException();
     PyException_SetCause(exc, cause);
-    PyErr_SetRaisedException(exc);
+    TyErr_SetRaisedException(exc);
 }
 
 
@@ -69,9 +69,9 @@ set_exc_with_cause(PyObject *exctype, const char *msg)
 /****************************/
 
 struct sync_module_result {
-    PyObject *module;
-    PyObject *loaded;
-    PyObject *failed;
+    TyObject *module;
+    TyObject *loaded;
+    TyObject *failed;
 };
 
 struct sync_module {
@@ -84,18 +84,18 @@ static void
 sync_module_clear(struct sync_module *data)
 {
     data->filename = NULL;
-    Py_CLEAR(data->cached.module);
-    Py_CLEAR(data->cached.loaded);
-    Py_CLEAR(data->cached.failed);
+    Ty_CLEAR(data->cached.module);
+    Ty_CLEAR(data->cached.loaded);
+    Ty_CLEAR(data->cached.failed);
 }
 
 static void
-sync_module_capture_exc(PyThreadState *tstate, struct sync_module *data)
+sync_module_capture_exc(TyThreadState *tstate, struct sync_module *data)
 {
-    assert(_PyErr_Occurred(tstate));
-    PyObject *context = data->cached.failed;
-    PyObject *exc = _PyErr_GetRaisedException(tstate);
-    _PyErr_SetRaisedException(tstate, Py_NewRef(exc));
+    assert(_TyErr_Occurred(tstate));
+    TyObject *context = data->cached.failed;
+    TyObject *exc = _TyErr_GetRaisedException(tstate);
+    _TyErr_SetRaisedException(tstate, Ty_NewRef(exc));
     if (context != NULL) {
         PyException_SetContext(exc, context);
     }
@@ -104,7 +104,7 @@ sync_module_capture_exc(PyThreadState *tstate, struct sync_module *data)
 
 
 static int
-ensure_isolated_main(PyThreadState *tstate, struct sync_module *main)
+ensure_isolated_main(TyThreadState *tstate, struct sync_module *main)
 {
     // Load the module from the original file (or from a cache).
 
@@ -122,64 +122,64 @@ ensure_isolated_main(PyThreadState *tstate, struct sync_module *main)
     assert(main->cached.module == NULL);
 
     if (main->filename == NULL) {
-        _PyErr_SetString(tstate, PyExc_NotImplementedError, "");
+        _TyErr_SetString(tstate, TyExc_NotImplementedError, "");
         return -1;
     }
 
     // It wasn't in the local cache so we'll need to populate it.
-    PyObject *mod = _Py_GetMainModule(tstate);
-    if (_Py_CheckMainModule(mod) < 0) {
+    TyObject *mod = _Ty_GetMainModule(tstate);
+    if (_Ty_CheckMainModule(mod) < 0) {
         // This is probably unrecoverable, so don't bother caching the error.
-        assert(_PyErr_Occurred(tstate));
-        Py_XDECREF(mod);
+        assert(_TyErr_Occurred(tstate));
+        Ty_XDECREF(mod);
         return -1;
     }
-    PyObject *loaded = NULL;
+    TyObject *loaded = NULL;
 
     // Try the per-interpreter cache for the loaded module.
     // XXX Store it in sys.modules?
-    PyObject *interpns = PyInterpreterState_GetDict(tstate->interp);
+    TyObject *interpns = PyInterpreterState_GetDict(tstate->interp);
     assert(interpns != NULL);
-    PyObject *key = PyUnicode_FromString("CACHED_MODULE_NS___main__");
+    TyObject *key = TyUnicode_FromString("CACHED_MODULE_NS___main__");
     if (key == NULL) {
         // It's probably unrecoverable, so don't bother caching the error.
-        Py_DECREF(mod);
+        Ty_DECREF(mod);
         return -1;
     }
-    else if (PyDict_GetItemRef(interpns, key, &loaded) < 0) {
+    else if (TyDict_GetItemRef(interpns, key, &loaded) < 0) {
         // It's probably unrecoverable, so don't bother caching the error.
-        Py_DECREF(mod);
-        Py_DECREF(key);
+        Ty_DECREF(mod);
+        Ty_DECREF(key);
         return -1;
     }
     else if (loaded == NULL) {
         // It wasn't already loaded from file.
-        loaded = PyModule_NewObject(&_Py_ID(__main__));
+        loaded = TyModule_NewObject(&_Ty_ID(__main__));
         if (loaded == NULL) {
             goto error;
         }
-        PyObject *ns = _PyModule_GetDict(loaded);
+        TyObject *ns = _TyModule_GetDict(loaded);
 
         // We don't want to trigger "if __name__ == '__main__':",
         // so we use a bogus module name.
-        PyObject *loaded_ns =
+        TyObject *loaded_ns =
                     runpy_run_path(main->filename, "<fake __main__>");
         if (loaded_ns == NULL) {
             goto error;
         }
-        int res = PyDict_Update(ns, loaded_ns);
-        Py_DECREF(loaded_ns);
+        int res = TyDict_Update(ns, loaded_ns);
+        Ty_DECREF(loaded_ns);
         if (res < 0) {
             goto error;
         }
 
         // Set the per-interpreter cache entry.
-        if (PyDict_SetItem(interpns, key, loaded) < 0) {
+        if (TyDict_SetItem(interpns, key, loaded) < 0) {
             goto error;
         }
     }
 
-    Py_DECREF(key);
+    Ty_DECREF(key);
     main->cached = (struct sync_module_result){
        .module = mod,
        .loaded = loaded,
@@ -188,36 +188,36 @@ ensure_isolated_main(PyThreadState *tstate, struct sync_module *main)
 
 error:
     sync_module_capture_exc(tstate, main);
-    Py_XDECREF(loaded);
-    Py_DECREF(mod);
-    Py_XDECREF(key);
+    Ty_XDECREF(loaded);
+    Ty_DECREF(mod);
+    Ty_XDECREF(key);
     return -1;
 }
 
 #ifndef NDEBUG
 static int
-main_mod_matches(PyObject *expected)
+main_mod_matches(TyObject *expected)
 {
-    PyObject *mod = PyImport_GetModule(&_Py_ID(__main__));
-    Py_XDECREF(mod);
+    TyObject *mod = TyImport_GetModule(&_Ty_ID(__main__));
+    Ty_XDECREF(mod);
     return mod == expected;
 }
 #endif
 
 static int
-apply_isolated_main(PyThreadState *tstate, struct sync_module *main)
+apply_isolated_main(TyThreadState *tstate, struct sync_module *main)
 {
     assert((main->cached.loaded == NULL) == (main->cached.loaded == NULL));
     if (main->cached.failed != NULL) {
         // It must have failed previously.
         assert(main->cached.loaded == NULL);
-        _PyErr_SetRaisedException(tstate, main->cached.failed);
+        _TyErr_SetRaisedException(tstate, main->cached.failed);
         return -1;
     }
     assert(main->cached.loaded != NULL);
 
     assert(main_mod_matches(main->cached.module));
-    if (_PyImport_SetModule(&_Py_ID(__main__), main->cached.loaded) < 0) {
+    if (_TyImport_SetModule(&_Ty_ID(__main__), main->cached.loaded) < 0) {
         sync_module_capture_exc(tstate, main);
         return -1;
     }
@@ -225,19 +225,19 @@ apply_isolated_main(PyThreadState *tstate, struct sync_module *main)
 }
 
 static void
-restore_main(PyThreadState *tstate, struct sync_module *main)
+restore_main(TyThreadState *tstate, struct sync_module *main)
 {
     assert(main->cached.failed == NULL);
     assert(main->cached.module != NULL);
     assert(main->cached.loaded != NULL);
-    PyObject *exc = _PyErr_GetRaisedException(tstate);
+    TyObject *exc = _TyErr_GetRaisedException(tstate);
     assert(main_mod_matches(main->cached.loaded));
-    int res = _PyImport_SetModule(&_Py_ID(__main__), main->cached.module);
+    int res = _TyImport_SetModule(&_Ty_ID(__main__), main->cached.module);
     assert(res == 0);
     if (res < 0) {
-        PyErr_FormatUnraisable("Exception ignored while restoring __main__");
+        TyErr_FormatUnraisable("Exception ignored while restoring __main__");
     }
-    _PyErr_SetRaisedException(tstate, exc);
+    _TyErr_SetRaisedException(tstate, exc);
 }
 
 
@@ -246,8 +246,8 @@ restore_main(PyThreadState *tstate, struct sync_module *main)
 /**************/
 
 typedef struct xi_exceptions exceptions_t;
-static int init_static_exctypes(exceptions_t *, PyInterpreterState *);
-static void fini_static_exctypes(exceptions_t *, PyInterpreterState *);
+static int init_static_exctypes(exceptions_t *, TyInterpreterState *);
+static void fini_static_exctypes(exceptions_t *, TyInterpreterState *);
 static int init_heap_exctypes(exceptions_t *);
 static void fini_heap_exctypes(exceptions_t *);
 #include "crossinterp_exceptions.h"
@@ -258,28 +258,28 @@ static void fini_heap_exctypes(exceptions_t *);
 /***************************/
 
 int
-_Py_CallInInterpreter(PyInterpreterState *interp,
-                      _Py_simple_func func, void *arg)
+_Ty_CallInInterpreter(TyInterpreterState *interp,
+                      _Ty_simple_func func, void *arg)
 {
     if (interp == PyInterpreterState_Get()) {
         return func(arg);
     }
     // XXX Emit a warning if this fails?
-    _PyEval_AddPendingCall(interp, (_Py_pending_call_func)func, arg, 0);
+    _TyEval_AddPendingCall(interp, (_Ty_pending_call_func)func, arg, 0);
     return 0;
 }
 
 int
-_Py_CallInInterpreterAndRawFree(PyInterpreterState *interp,
-                                _Py_simple_func func, void *arg)
+_Ty_CallInInterpreterAndRawFree(TyInterpreterState *interp,
+                                _Ty_simple_func func, void *arg)
 {
     if (interp == PyInterpreterState_Get()) {
         int res = func(arg);
-        PyMem_RawFree(arg);
+        TyMem_RawFree(arg);
         return res;
     }
     // XXX Emit a warning if this fails?
-    _PyEval_AddPendingCall(interp, func, arg, _Py_PENDING_RAWFREE);
+    _TyEval_AddPendingCall(interp, func, arg, _Ty_PENDING_RAWFREE);
     return 0;
 }
 
@@ -297,7 +297,7 @@ _Py_CallInInterpreterAndRawFree(PyInterpreterState *interp,
 static void xid_lookup_init(_PyXIData_lookup_t *);
 static void xid_lookup_fini(_PyXIData_lookup_t *);
 struct _dlcontext;
-static _PyXIData_getdata_t lookup_getdata(struct _dlcontext *, PyObject *);
+static _PyXIData_getdata_t lookup_getdata(struct _dlcontext *, TyObject *);
 #include "crossinterp_data_lookup.h"
 
 
@@ -308,7 +308,7 @@ _PyXIData_New(void)
 {
     _PyXIData_t *xid = PyMem_RawCalloc(1, sizeof(_PyXIData_t));
     if (xid == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
     }
     return xid;
 }
@@ -316,9 +316,9 @@ _PyXIData_New(void)
 void
 _PyXIData_Free(_PyXIData_t *xid)
 {
-    PyInterpreterState *interp = PyInterpreterState_Get();
+    TyInterpreterState *interp = PyInterpreterState_Get();
     _PyXIData_Clear(interp, xid);
-    PyMem_RawFree(xid);
+    TyMem_RawFree(xid);
 }
 
 
@@ -348,13 +348,13 @@ _xidata_clear(_PyXIData_t *xidata)
         }
         xidata->data = NULL;
     }
-    Py_CLEAR(xidata->obj);
+    Ty_CLEAR(xidata->obj);
 }
 
 void
 _PyXIData_Init(_PyXIData_t *xidata,
-               PyInterpreterState *interp,
-               void *shared, PyObject *obj,
+               TyInterpreterState *interp,
+               void *shared, TyObject *obj,
                xid_newobjfunc new_object)
 {
     assert(xidata != NULL);
@@ -364,7 +364,7 @@ _PyXIData_Init(_PyXIData_t *xidata,
     if (obj != NULL) {
         assert(interp != NULL);
         // released in _PyXIData_Clear()
-        xidata->obj = Py_NewRef(obj);
+        xidata->obj = Ty_NewRef(obj);
     }
     // Ideally every object would know its owning interpreter.
     // Until then, we have to rely on the caller to identify it
@@ -377,8 +377,8 @@ _PyXIData_Init(_PyXIData_t *xidata,
 
 int
 _PyXIData_InitWithSize(_PyXIData_t *xidata,
-                       PyInterpreterState *interp,
-                       const size_t size, PyObject *obj,
+                       TyInterpreterState *interp,
+                       const size_t size, TyObject *obj,
                        xid_newobjfunc new_object)
 {
     assert(size > 0);
@@ -390,12 +390,12 @@ _PyXIData_InitWithSize(_PyXIData_t *xidata,
     if (xidata->data == NULL) {
         return -1;
     }
-    xidata->free = PyMem_RawFree;
+    xidata->free = TyMem_RawFree;
     return 0;
 }
 
 void
-_PyXIData_Clear(PyInterpreterState *interp, _PyXIData_t *xidata)
+_PyXIData_Clear(TyInterpreterState *interp, _PyXIData_t *xidata)
 {
     assert(xidata != NULL);
     // This must be called in the owning interpreter.
@@ -409,8 +409,8 @@ _PyXIData_Clear(PyInterpreterState *interp, _PyXIData_t *xidata)
 /* getting cross-interpreter data */
 
 static inline void
-_set_xid_lookup_failure(PyThreadState *tstate, PyObject *obj, const char *msg,
-                        PyObject *cause)
+_set_xid_lookup_failure(TyThreadState *tstate, TyObject *obj, const char *msg,
+                        TyObject *cause)
 {
     if (msg != NULL) {
         assert(obj == NULL);
@@ -428,7 +428,7 @@ _set_xid_lookup_failure(PyThreadState *tstate, PyObject *obj, const char *msg,
 
 
 int
-_PyObject_CheckXIData(PyThreadState *tstate, PyObject *obj)
+_TyObject_CheckXIData(TyThreadState *tstate, TyObject *obj)
 {
     dlcontext_t ctx;
     if (get_lookup_context(tstate, &ctx) < 0) {
@@ -436,7 +436,7 @@ _PyObject_CheckXIData(PyThreadState *tstate, PyObject *obj)
     }
     _PyXIData_getdata_t getdata = lookup_getdata(&ctx, obj);
     if (getdata.basic == NULL && getdata.fallback == NULL) {
-        if (!_PyErr_Occurred(tstate)) {
+        if (!_TyErr_Occurred(tstate)) {
             _set_xid_lookup_failure(tstate, obj, NULL, NULL);
         }
         return -1;
@@ -445,19 +445,19 @@ _PyObject_CheckXIData(PyThreadState *tstate, PyObject *obj)
 }
 
 static int
-_check_xidata(PyThreadState *tstate, _PyXIData_t *xidata)
+_check_xidata(TyThreadState *tstate, _PyXIData_t *xidata)
 {
     // xidata->data can be anything, including NULL, so we don't check it.
 
     // xidata->obj may be NULL, so we don't check it.
 
     if (_PyXIData_INTERPID(xidata) < 0) {
-        PyErr_SetString(PyExc_SystemError, "missing interp");
+        TyErr_SetString(TyExc_SystemError, "missing interp");
         return -1;
     }
 
     if (xidata->new_object == NULL) {
-        PyErr_SetString(PyExc_SystemError, "missing new_object func");
+        TyErr_SetString(TyExc_SystemError, "missing new_object func");
         return -1;
     }
 
@@ -467,15 +467,15 @@ _check_xidata(PyThreadState *tstate, _PyXIData_t *xidata)
 }
 
 static int
-_get_xidata(PyThreadState *tstate,
-            PyObject *obj, xidata_fallback_t fallback, _PyXIData_t *xidata)
+_get_xidata(TyThreadState *tstate,
+            TyObject *obj, xidata_fallback_t fallback, _PyXIData_t *xidata)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     assert(xidata->data == NULL);
     assert(xidata->obj == NULL);
     if (xidata->data != NULL || xidata->obj != NULL) {
-        _PyErr_SetString(tstate, PyExc_ValueError, "xidata not cleared");
+        _TyErr_SetString(tstate, TyExc_ValueError, "xidata not cleared");
         return -1;
     }
 
@@ -484,16 +484,16 @@ _get_xidata(PyThreadState *tstate,
     if (get_lookup_context(tstate, &ctx) < 0) {
         return -1;
     }
-    Py_INCREF(obj);
+    Ty_INCREF(obj);
     _PyXIData_getdata_t getdata = lookup_getdata(&ctx, obj);
     if (getdata.basic == NULL && getdata.fallback == NULL) {
-        if (PyErr_Occurred()) {
-            Py_DECREF(obj);
+        if (TyErr_Occurred()) {
+            Ty_DECREF(obj);
             return -1;
         }
         // Fall back to obj
-        Py_DECREF(obj);
-        if (!_PyErr_Occurred(tstate)) {
+        Ty_DECREF(obj);
+        if (!_TyErr_Occurred(tstate)) {
             _set_xid_lookup_failure(tstate, obj, NULL, NULL);
         }
         return -1;
@@ -501,12 +501,12 @@ _get_xidata(PyThreadState *tstate,
     int res = getdata.basic != NULL
         ? getdata.basic(tstate, obj, xidata)
         : getdata.fallback(tstate, obj, fallback, xidata);
-    Py_DECREF(obj);
+    Ty_DECREF(obj);
     if (res != 0) {
-        PyObject *cause = _PyErr_GetRaisedException(tstate);
+        TyObject *cause = _TyErr_GetRaisedException(tstate);
         assert(cause != NULL);
         _set_xid_lookup_failure(tstate, obj, NULL, cause);
-        Py_XDECREF(cause);
+        Ty_XDECREF(cause);
         return -1;
     }
 
@@ -521,15 +521,15 @@ _get_xidata(PyThreadState *tstate,
 }
 
 int
-_PyObject_GetXIDataNoFallback(PyThreadState *tstate,
-                              PyObject *obj, _PyXIData_t *xidata)
+_TyObject_GetXIDataNoFallback(TyThreadState *tstate,
+                              TyObject *obj, _PyXIData_t *xidata)
 {
     return _get_xidata(tstate, obj, _PyXIDATA_XIDATA_ONLY, xidata);
 }
 
 int
-_PyObject_GetXIData(PyThreadState *tstate,
-                    PyObject *obj, xidata_fallback_t fallback,
+_TyObject_GetXIData(TyThreadState *tstate,
+                    TyObject *obj, xidata_fallback_t fallback,
                     _PyXIData_t *xidata)
 {
     switch (fallback) {
@@ -539,27 +539,27 @@ _PyObject_GetXIData(PyThreadState *tstate,
             if (_get_xidata(tstate, obj, fallback, xidata) == 0) {
                 return 0;
             }
-            PyObject *exc = _PyErr_GetRaisedException(tstate);
-            if (PyFunction_Check(obj)) {
-                if (_PyFunction_GetXIData(tstate, obj, xidata) == 0) {
-                    Py_DECREF(exc);
+            TyObject *exc = _TyErr_GetRaisedException(tstate);
+            if (TyFunction_Check(obj)) {
+                if (_TyFunction_GetXIData(tstate, obj, xidata) == 0) {
+                    Ty_DECREF(exc);
                     return 0;
                 }
-                _PyErr_Clear(tstate);
+                _TyErr_Clear(tstate);
             }
-            // We could try _PyMarshal_GetXIData() but we won't for now.
+            // We could try _TyMarshal_GetXIData() but we won't for now.
             if (_PyPickle_GetXIData(tstate, obj, xidata) == 0) {
-                Py_DECREF(exc);
+                Ty_DECREF(exc);
                 return 0;
             }
             // Raise the original exception.
-            _PyErr_SetRaisedException(tstate, exc);
+            _TyErr_SetRaisedException(tstate, exc);
             return -1;
         default:
-#ifdef Py_DEBUG
-            Py_FatalError("unsupported xidata fallback option");
+#ifdef Ty_DEBUG
+            Ty_FatalError("unsupported xidata fallback option");
 #endif
-            _PyErr_SetString(tstate, PyExc_SystemError,
+            _TyErr_SetString(tstate, TyExc_SystemError,
                              "unsupported xidata fallback option");
             return -1;
     }
@@ -569,24 +569,24 @@ _PyObject_GetXIData(PyThreadState *tstate,
 /* pickle C-API */
 
 struct _pickle_context {
-    PyThreadState *tstate;
+    TyThreadState *tstate;
 };
 
-static PyObject *
-_PyPickle_Dumps(struct _pickle_context *ctx, PyObject *obj)
+static TyObject *
+_PyPickle_Dumps(struct _pickle_context *ctx, TyObject *obj)
 {
-    PyObject *dumps = PyImport_ImportModuleAttrString("pickle", "dumps");
+    TyObject *dumps = TyImport_ImportModuleAttrString("pickle", "dumps");
     if (dumps == NULL) {
         return NULL;
     }
-    PyObject *bytes = PyObject_CallOneArg(dumps, obj);
-    Py_DECREF(dumps);
+    TyObject *bytes = PyObject_CallOneArg(dumps, obj);
+    Ty_DECREF(dumps);
     return bytes;
 }
 
 
 struct _unpickle_context {
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     // We only special-case the __main__ module,
     // since other modules behave consistently.
     struct sync_module main;
@@ -599,57 +599,57 @@ _unpickle_context_clear(struct _unpickle_context *ctx)
 }
 
 static int
-check_missing___main___attr(PyObject *exc)
+check_missing___main___attr(TyObject *exc)
 {
-    assert(!PyErr_Occurred());
-    if (!PyErr_GivenExceptionMatches(exc, PyExc_AttributeError)) {
+    assert(!TyErr_Occurred());
+    if (!TyErr_GivenExceptionMatches(exc, TyExc_AttributeError)) {
         return 0;
     }
 
     // Get the error message.
-    PyObject *args = PyException_GetArgs(exc);
-    if (args == NULL || args == Py_None || PyObject_Size(args) < 1) {
-        assert(!PyErr_Occurred());
+    TyObject *args = PyException_GetArgs(exc);
+    if (args == NULL || args == Ty_None || PyObject_Size(args) < 1) {
+        assert(!TyErr_Occurred());
         return 0;
     }
-    PyObject *msgobj = args;
-    if (!PyUnicode_Check(msgobj)) {
+    TyObject *msgobj = args;
+    if (!TyUnicode_Check(msgobj)) {
         msgobj = PySequence_GetItem(args, 0);
-        Py_DECREF(args);
+        Ty_DECREF(args);
         if (msgobj == NULL) {
-            PyErr_Clear();
+            TyErr_Clear();
             return 0;
         }
     }
-    const char *err = PyUnicode_AsUTF8(msgobj);
+    const char *err = TyUnicode_AsUTF8(msgobj);
 
     // Check if it's a missing __main__ attr.
     int cmp = strncmp(err, "module '__main__' has no attribute '", 36);
-    Py_DECREF(msgobj);
+    Ty_DECREF(msgobj);
     return cmp == 0;
 }
 
-static PyObject *
-_PyPickle_Loads(struct _unpickle_context *ctx, PyObject *pickled)
+static TyObject *
+_PyPickle_Loads(struct _unpickle_context *ctx, TyObject *pickled)
 {
-    PyThreadState *tstate = ctx->tstate;
+    TyThreadState *tstate = ctx->tstate;
 
-    PyObject *exc = NULL;
-    PyObject *loads = PyImport_ImportModuleAttrString("pickle", "loads");
+    TyObject *exc = NULL;
+    TyObject *loads = TyImport_ImportModuleAttrString("pickle", "loads");
     if (loads == NULL) {
         return NULL;
     }
 
     // Make an initial attempt to unpickle.
-    PyObject *obj = PyObject_CallOneArg(loads, pickled);
+    TyObject *obj = PyObject_CallOneArg(loads, pickled);
     if (obj != NULL) {
         goto finally;
     }
-    assert(_PyErr_Occurred(tstate));
+    assert(_TyErr_Occurred(tstate));
     if (ctx == NULL) {
         goto finally;
     }
-    exc = _PyErr_GetRaisedException(tstate);
+    exc = _TyErr_GetRaisedException(tstate);
     if (!check_missing___main___attr(exc)) {
         goto finally;
     }
@@ -670,18 +670,18 @@ _PyPickle_Loads(struct _unpickle_context *ctx, PyObject *pickled)
     if (obj == NULL) {
         goto finally;
     }
-    Py_CLEAR(exc);
+    Ty_CLEAR(exc);
 
 finally:
     if (exc != NULL) {
-        if (_PyErr_Occurred(tstate)) {
+        if (_TyErr_Occurred(tstate)) {
             sync_module_capture_exc(tstate, &ctx->main);
         }
         // We restore the original exception.
         // It might make sense to chain it (__context__).
-        _PyErr_SetRaisedException(tstate, exc);
+        _TyErr_SetRaisedException(tstate, exc);
     }
-    Py_DECREF(loads);
+    Ty_DECREF(loads);
     return obj;
 }
 
@@ -698,13 +698,13 @@ struct _pickle_xid_context {
 };
 
 static int
-_set_pickle_xid_context(PyThreadState *tstate, struct _pickle_xid_context *ctx)
+_set_pickle_xid_context(TyThreadState *tstate, struct _pickle_xid_context *ctx)
 {
     // Set mainfile if possible.
-    Py_ssize_t len = _Py_GetMainfile(ctx->mainfile._utf8, MAXPATHLEN);
+    Ty_ssize_t len = _Ty_GetMainfile(ctx->mainfile._utf8, MAXPATHLEN);
     if (len < 0) {
         // For now we ignore any exceptions.
-        PyErr_Clear();
+        TyErr_Clear();
     }
     else if (len > 0) {
         ctx->mainfile.utf8 = ctx->mainfile._utf8;
@@ -716,19 +716,19 @@ _set_pickle_xid_context(PyThreadState *tstate, struct _pickle_xid_context *ctx)
 
 
 struct _shared_pickle_data {
-    _PyBytes_data_t pickled;  // Must be first if we use _PyBytes_FromXIData().
+    _TyBytes_data_t pickled;  // Must be first if we use _TyBytes_FromXIData().
     struct _pickle_xid_context ctx;
 };
 
-PyObject *
+TyObject *
 _PyPickle_LoadFromXIData(_PyXIData_t *xidata)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     struct _shared_pickle_data *shared =
                             (struct _shared_pickle_data *)xidata->data;
     // We avoid copying the pickled data by wrapping it in a memoryview.
-    // The alternative is to get a bytes object using _PyBytes_FromXIData().
-    PyObject *pickled = PyMemoryView_FromMemory(
+    // The alternative is to get a bytes object using _TyBytes_FromXIData().
+    TyObject *pickled = TyMemoryView_FromMemory(
             (char *)shared->pickled.bytes, shared->pickled.len, PyBUF_READ);
     if (pickled == NULL) {
         return NULL;
@@ -741,45 +741,45 @@ _PyPickle_LoadFromXIData(_PyXIData_t *xidata)
             .filename = shared->ctx.mainfile.utf8,
         },
     };
-    PyObject *obj = _PyPickle_Loads(&ctx, pickled);
-    Py_DECREF(pickled);
+    TyObject *obj = _PyPickle_Loads(&ctx, pickled);
+    Ty_DECREF(pickled);
     _unpickle_context_clear(&ctx);
     if (obj == NULL) {
-        PyObject *cause = _PyErr_GetRaisedException(tstate);
+        TyObject *cause = _TyErr_GetRaisedException(tstate);
         assert(cause != NULL);
         _set_xid_lookup_failure(
                     tstate, NULL, "object could not be unpickled", cause);
-        Py_DECREF(cause);
+        Ty_DECREF(cause);
     }
     return obj;
 }
 
 
 int
-_PyPickle_GetXIData(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
+_PyPickle_GetXIData(TyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
     // Pickle the object.
     struct _pickle_context ctx = {
         .tstate = tstate,
     };
-    PyObject *bytes = _PyPickle_Dumps(&ctx, obj);
+    TyObject *bytes = _PyPickle_Dumps(&ctx, obj);
     if (bytes == NULL) {
-        PyObject *cause = _PyErr_GetRaisedException(tstate);
+        TyObject *cause = _TyErr_GetRaisedException(tstate);
         assert(cause != NULL);
         _set_xid_lookup_failure(
                     tstate, NULL, "object could not be pickled", cause);
-        Py_DECREF(cause);
+        Ty_DECREF(cause);
         return -1;
     }
 
     // If we had an "unwrapper" mechnanism, we could call
-    // _PyObject_GetXIData() on the bytes object directly and add
+    // _TyObject_GetXIData() on the bytes object directly and add
     // a simple unwrapper to call pickle.loads() on the bytes.
     size_t size = sizeof(struct _shared_pickle_data);
     struct _shared_pickle_data *shared =
-            (struct _shared_pickle_data *)_PyBytes_GetXIDataWrapped(
+            (struct _shared_pickle_data *)_TyBytes_GetXIDataWrapped(
                     tstate, bytes, size, _PyPickle_LoadFromXIData, xidata);
-    Py_DECREF(bytes);
+    Ty_DECREF(bytes);
     if (shared == NULL) {
         return -1;
     }
@@ -797,39 +797,39 @@ _PyPickle_GetXIData(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
 
 /* marshal wrapper */
 
-PyObject *
-_PyMarshal_ReadObjectFromXIData(_PyXIData_t *xidata)
+TyObject *
+_TyMarshal_ReadObjectFromXIData(_PyXIData_t *xidata)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
-    _PyBytes_data_t *shared = (_PyBytes_data_t *)xidata->data;
-    PyObject *obj = PyMarshal_ReadObjectFromString(shared->bytes, shared->len);
+    TyThreadState *tstate = _TyThreadState_GET();
+    _TyBytes_data_t *shared = (_TyBytes_data_t *)xidata->data;
+    TyObject *obj = PyMarshal_ReadObjectFromString(shared->bytes, shared->len);
     if (obj == NULL) {
-        PyObject *cause = _PyErr_GetRaisedException(tstate);
+        TyObject *cause = _TyErr_GetRaisedException(tstate);
         assert(cause != NULL);
         _set_xid_lookup_failure(
                     tstate, NULL, "object could not be unmarshalled", cause);
-        Py_DECREF(cause);
+        Ty_DECREF(cause);
         return NULL;
     }
     return obj;
 }
 
 int
-_PyMarshal_GetXIData(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
+_TyMarshal_GetXIData(TyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
-    PyObject *bytes = PyMarshal_WriteObjectToString(obj, Py_MARSHAL_VERSION);
+    TyObject *bytes = PyMarshal_WriteObjectToString(obj, Ty_MARSHAL_VERSION);
     if (bytes == NULL) {
-        PyObject *cause = _PyErr_GetRaisedException(tstate);
+        TyObject *cause = _TyErr_GetRaisedException(tstate);
         assert(cause != NULL);
         _set_xid_lookup_failure(
                     tstate, NULL, "object could not be marshalled", cause);
-        Py_DECREF(cause);
+        Ty_DECREF(cause);
         return -1;
     }
-    size_t size = sizeof(_PyBytes_data_t);
-    _PyBytes_data_t *shared = _PyBytes_GetXIDataWrapped(
-            tstate, bytes, size, _PyMarshal_ReadObjectFromXIData, xidata);
-    Py_DECREF(bytes);
+    size_t size = sizeof(_TyBytes_data_t);
+    _TyBytes_data_t *shared = _TyBytes_GetXIDataWrapped(
+            tstate, bytes, size, _TyMarshal_ReadObjectFromXIData, xidata);
+    Ty_DECREF(bytes);
     if (shared == NULL) {
         return -1;
     }
@@ -840,18 +840,18 @@ _PyMarshal_GetXIData(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
 /* script wrapper */
 
 static int
-verify_script(PyThreadState *tstate, PyCodeObject *co, int checked, int pure)
+verify_script(TyThreadState *tstate, PyCodeObject *co, int checked, int pure)
 {
     // Make sure it isn't a closure and (optionally) doesn't use globals.
-    PyObject *builtins = NULL;
+    TyObject *builtins = NULL;
     if (pure) {
-        builtins = _PyEval_GetBuiltins(tstate);
+        builtins = _TyEval_GetBuiltins(tstate);
         assert(builtins != NULL);
     }
     if (checked) {
-        assert(_PyCode_VerifyStateless(tstate, co, NULL, NULL, builtins) == 0);
+        assert(_TyCode_VerifyStateless(tstate, co, NULL, NULL, builtins) == 0);
     }
-    else if (_PyCode_VerifyStateless(tstate, co, NULL, NULL, builtins) < 0) {
+    else if (_TyCode_VerifyStateless(tstate, co, NULL, NULL, builtins) < 0) {
         return -1;
     }
     // Make sure it doesn't have args.
@@ -860,13 +860,13 @@ verify_script(PyThreadState *tstate, PyCodeObject *co, int checked, int pure)
         || co->co_kwonlyargcount > 0
         || co->co_flags & (CO_VARARGS | CO_VARKEYWORDS))
     {
-        _PyErr_SetString(tstate, PyExc_ValueError,
+        _TyErr_SetString(tstate, TyExc_ValueError,
                          "code with args not supported");
         return -1;
     }
     // Make sure it doesn't return anything.
-    if (!_PyCode_ReturnsOnlyNone(co)) {
-        _PyErr_SetString(tstate, PyExc_ValueError,
+    if (!_TyCode_ReturnsOnlyNone(co)) {
+        _TyErr_SetString(tstate, TyExc_ValueError,
                          "code that returns a value is not a script");
         return -1;
     }
@@ -874,22 +874,22 @@ verify_script(PyThreadState *tstate, PyCodeObject *co, int checked, int pure)
 }
 
 static int
-get_script_xidata(PyThreadState *tstate, PyObject *obj, int pure,
+get_script_xidata(TyThreadState *tstate, TyObject *obj, int pure,
                   _PyXIData_t *xidata)
 {
     // Get the corresponding code object.
-    PyObject *code = NULL;
+    TyObject *code = NULL;
     int checked = 0;
-    if (PyCode_Check(obj)) {
+    if (TyCode_Check(obj)) {
         code = obj;
-        Py_INCREF(code);
+        Ty_INCREF(code);
     }
-    else if (PyFunction_Check(obj)) {
-        code = PyFunction_GET_CODE(obj);
+    else if (TyFunction_Check(obj)) {
+        code = TyFunction_GET_CODE(obj);
         assert(code != NULL);
-        Py_INCREF(code);
+        Ty_INCREF(code);
         if (pure) {
-            if (_PyFunction_VerifyStateless(tstate, obj) < 0) {
+            if (_TyFunction_VerifyStateless(tstate, obj) < 0) {
                 goto error;
             }
             checked = 1;
@@ -900,26 +900,26 @@ get_script_xidata(PyThreadState *tstate, PyObject *obj, int pure,
         int optimize = 0;
         PyCompilerFlags cf = _PyCompilerFlags_INIT;
         cf.cf_flags = PyCF_SOURCE_IS_UTF8;
-        PyObject *ref = NULL;
-        const char *script = _Py_SourceAsString(obj, "???", "???", &cf, &ref);
+        TyObject *ref = NULL;
+        const char *script = _Ty_SourceAsString(obj, "???", "???", &cf, &ref);
         if (script == NULL) {
-            if (!_PyObject_SupportedAsScript(obj)) {
+            if (!_TyObject_SupportedAsScript(obj)) {
                 // We discard the raised exception.
-                _PyErr_Format(tstate, PyExc_TypeError,
+                _TyErr_Format(tstate, TyExc_TypeError,
                               "unsupported script %R", obj);
             }
             goto error;
         }
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
         // Don't immortalize code constants to avoid memory leaks.
         ((_PyThreadStateImpl *)tstate)->suppress_co_const_immortalization++;
 #endif
-        code = Py_CompileStringExFlags(
-                    script, filename, Py_file_input, &cf, optimize);
-#ifdef Py_GIL_DISABLED
+        code = Ty_CompileStringExFlags(
+                    script, filename, Ty_file_input, &cf, optimize);
+#ifdef Ty_GIL_DISABLED
         ((_PyThreadStateImpl *)tstate)->suppress_co_const_immortalization--;
 #endif
-        Py_XDECREF(ref);
+        Ty_XDECREF(ref);
         if (code == NULL) {
             goto error;
         }
@@ -937,33 +937,33 @@ get_script_xidata(PyThreadState *tstate, PyObject *obj, int pure,
     }
 
     // Convert the code object.
-    int res = _PyCode_GetXIData(tstate, code, xidata);
-    Py_DECREF(code);
+    int res = _TyCode_GetXIData(tstate, code, xidata);
+    Ty_DECREF(code);
     if (res < 0) {
         return -1;
     }
     return 0;
 
 error:
-    Py_XDECREF(code);
-    PyObject *cause = _PyErr_GetRaisedException(tstate);
+    Ty_XDECREF(code);
+    TyObject *cause = _TyErr_GetRaisedException(tstate);
     assert(cause != NULL);
     _set_xid_lookup_failure(
                 tstate, NULL, "object not a valid script", cause);
-    Py_DECREF(cause);
+    Ty_DECREF(cause);
     return -1;
 }
 
 int
-_PyCode_GetScriptXIData(PyThreadState *tstate,
-                        PyObject *obj, _PyXIData_t *xidata)
+_TyCode_GetScriptXIData(TyThreadState *tstate,
+                        TyObject *obj, _PyXIData_t *xidata)
 {
     return get_script_xidata(tstate, obj, 0, xidata);
 }
 
 int
-_PyCode_GetPureScriptXIData(PyThreadState *tstate,
-                            PyObject *obj, _PyXIData_t *xidata)
+_TyCode_GetPureScriptXIData(TyThreadState *tstate,
+                            TyObject *obj, _PyXIData_t *xidata)
 {
     return get_script_xidata(tstate, obj, 1, xidata);
 }
@@ -971,7 +971,7 @@ _PyCode_GetPureScriptXIData(PyThreadState *tstate,
 
 /* using cross-interpreter data */
 
-PyObject *
+TyObject *
 _PyXIData_NewObject(_PyXIData_t *xidata)
 {
     return xidata->new_object(xidata);
@@ -990,7 +990,7 @@ _xidata_release(_PyXIData_t *xidata, int rawfree)
     if ((xidata->data == NULL || xidata->free == NULL) && xidata->obj == NULL) {
         // Nothing to release!
         if (rawfree) {
-            PyMem_RawFree(xidata);
+            TyMem_RawFree(xidata);
         }
         else {
             xidata->data = NULL;
@@ -999,25 +999,25 @@ _xidata_release(_PyXIData_t *xidata, int rawfree)
     }
 
     // Switch to the original interpreter.
-    PyInterpreterState *interp = _PyInterpreterState_LookUpID(
+    TyInterpreterState *interp = _TyInterpreterState_LookUpID(
                                         _PyXIData_INTERPID(xidata));
     if (interp == NULL) {
         // The interpreter was already destroyed.
         // This function shouldn't have been called.
         // XXX Someone leaked some memory...
-        assert(PyErr_Occurred());
+        assert(TyErr_Occurred());
         if (rawfree) {
-            PyMem_RawFree(xidata);
+            TyMem_RawFree(xidata);
         }
         return -1;
     }
 
     // "Release" the data and/or the object.
     if (rawfree) {
-        return _Py_CallInInterpreterAndRawFree(interp, _call_clear_xidata, xidata);
+        return _Ty_CallInInterpreterAndRawFree(interp, _call_clear_xidata, xidata);
     }
     else {
-        return _Py_CallInInterpreter(interp, _call_clear_xidata, xidata);
+        return _Ty_CallInInterpreter(interp, _call_clear_xidata, xidata);
     }
 }
 
@@ -1039,22 +1039,22 @@ _PyXIData_ReleaseAndRawFree(_PyXIData_t *xidata)
 /*************************/
 
 static const char *
-_copy_string_obj_raw(PyObject *strobj, Py_ssize_t *p_size)
+_copy_string_obj_raw(TyObject *strobj, Ty_ssize_t *p_size)
 {
-    Py_ssize_t size = -1;
-    const char *str = PyUnicode_AsUTF8AndSize(strobj, &size);
+    Ty_ssize_t size = -1;
+    const char *str = TyUnicode_AsUTF8AndSize(strobj, &size);
     if (str == NULL) {
         return NULL;
     }
 
-    if (size != (Py_ssize_t)strlen(str)) {
-        PyErr_SetString(PyExc_ValueError, "found embedded NULL character");
+    if (size != (Ty_ssize_t)strlen(str)) {
+        TyErr_SetString(TyExc_ValueError, "found embedded NULL character");
         return NULL;
     }
 
     char *copied = PyMem_RawMalloc(size+1);
     if (copied == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     strcpy(copied, str);
@@ -1066,45 +1066,45 @@ _copy_string_obj_raw(PyObject *strobj, Py_ssize_t *p_size)
 
 
 static int
-_convert_exc_to_TracebackException(PyObject *exc, PyObject **p_tbexc)
+_convert_exc_to_TracebackException(TyObject *exc, TyObject **p_tbexc)
 {
-    PyObject *args = NULL;
-    PyObject *kwargs = NULL;
-    PyObject *create = NULL;
+    TyObject *args = NULL;
+    TyObject *kwargs = NULL;
+    TyObject *create = NULL;
 
-    // This is inspired by _PyErr_Display().
-    PyObject *tbexc_type = PyImport_ImportModuleAttrString(
+    // This is inspired by _TyErr_Display().
+    TyObject *tbexc_type = TyImport_ImportModuleAttrString(
         "traceback",
         "TracebackException");
     if (tbexc_type == NULL) {
         return -1;
     }
     create = PyObject_GetAttrString(tbexc_type, "from_exception");
-    Py_DECREF(tbexc_type);
+    Ty_DECREF(tbexc_type);
     if (create == NULL) {
         return -1;
     }
 
-    args = PyTuple_Pack(1, exc);
+    args = TyTuple_Pack(1, exc);
     if (args == NULL) {
         goto error;
     }
 
-    kwargs = PyDict_New();
+    kwargs = TyDict_New();
     if (kwargs == NULL) {
         goto error;
     }
-    if (PyDict_SetItemString(kwargs, "save_exc_type", Py_False) < 0) {
+    if (TyDict_SetItemString(kwargs, "save_exc_type", Ty_False) < 0) {
         goto error;
     }
-    if (PyDict_SetItemString(kwargs, "lookup_lines", Py_False) < 0) {
+    if (TyDict_SetItemString(kwargs, "lookup_lines", Ty_False) < 0) {
         goto error;
     }
 
-    PyObject *tbexc = PyObject_Call(create, args, kwargs);
-    Py_DECREF(args);
-    Py_DECREF(kwargs);
-    Py_DECREF(create);
+    TyObject *tbexc = PyObject_Call(create, args, kwargs);
+    Ty_DECREF(args);
+    Ty_DECREF(kwargs);
+    Ty_DECREF(create);
     if (tbexc == NULL) {
         goto error;
     }
@@ -1113,34 +1113,34 @@ _convert_exc_to_TracebackException(PyObject *exc, PyObject **p_tbexc)
     return 0;
 
 error:
-    Py_XDECREF(args);
-    Py_XDECREF(kwargs);
-    Py_XDECREF(create);
+    Ty_XDECREF(args);
+    Ty_XDECREF(kwargs);
+    Ty_XDECREF(create);
     return -1;
 }
 
 // We accommodate backports here.
-#ifndef _Py_EMPTY_STR
-# define _Py_EMPTY_STR &_Py_STR(empty)
+#ifndef _Ty_EMPTY_STR
+# define _Ty_EMPTY_STR &_Ty_STR(empty)
 #endif
 
 static const char *
-_format_TracebackException(PyObject *tbexc)
+_format_TracebackException(TyObject *tbexc)
 {
-    PyObject *lines = PyObject_CallMethod(tbexc, "format", NULL);
+    TyObject *lines = PyObject_CallMethod(tbexc, "format", NULL);
     if (lines == NULL) {
         return NULL;
     }
-    assert(_Py_EMPTY_STR != NULL);
-    PyObject *formatted_obj = PyUnicode_Join(_Py_EMPTY_STR, lines);
-    Py_DECREF(lines);
+    assert(_Ty_EMPTY_STR != NULL);
+    TyObject *formatted_obj = TyUnicode_Join(_Ty_EMPTY_STR, lines);
+    Ty_DECREF(lines);
     if (formatted_obj == NULL) {
         return NULL;
     }
 
-    Py_ssize_t size = -1;
+    Ty_ssize_t size = -1;
     const char *formatted = _copy_string_obj_raw(formatted_obj, &size);
-    Py_DECREF(formatted_obj);
+    Ty_DECREF(formatted_obj);
     // We remove trailing the newline added by TracebackException.format().
     assert(formatted[size-1] == '\n');
     ((char *)formatted)[size-1] = '\0';
@@ -1151,7 +1151,7 @@ _format_TracebackException(PyObject *tbexc)
 static int
 _release_xid_data(_PyXIData_t *xidata, int rawfree)
 {
-    PyObject *exc = PyErr_GetRaisedException();
+    TyObject *exc = TyErr_GetRaisedException();
     int res = rawfree
         ? _PyXIData_Release(xidata)
         : _PyXIData_ReleaseAndRawFree(xidata);
@@ -1159,9 +1159,9 @@ _release_xid_data(_PyXIData_t *xidata, int rawfree)
         /* The owning interpreter is already destroyed. */
         _PyXIData_Clear(NULL, xidata);
         // XXX Emit a warning?
-        PyErr_Clear();
+        TyErr_Clear();
     }
-    PyErr_SetRaisedException(exc);
+    TyErr_SetRaisedException(exc);
     return res;
 }
 
@@ -1171,17 +1171,17 @@ _release_xid_data(_PyXIData_t *xidata, int rawfree)
 /***********************/
 
 static int
-_excinfo_init_type_from_exception(struct _excinfo_type *info, PyObject *exc)
+_excinfo_init_type_from_exception(struct _excinfo_type *info, TyObject *exc)
 {
     /* Note that this copies directly rather than into an intermediate
        struct and does not clear on error.  If we need that then we
        should have a separate function to wrap this one
        and do all that there. */
-    PyObject *strobj = NULL;
+    TyObject *strobj = NULL;
 
-    PyTypeObject *type = Py_TYPE(exc);
-    if (type->tp_flags & _Py_TPFLAGS_STATIC_BUILTIN) {
-        assert(_Py_IsImmortal((PyObject *)type));
+    TyTypeObject *type = Ty_TYPE(exc);
+    if (type->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
+        assert(_Ty_IsImmortal((TyObject *)type));
         info->builtin = type;
     }
     else {
@@ -1190,34 +1190,34 @@ _excinfo_init_type_from_exception(struct _excinfo_type *info, PyObject *exc)
     }
 
     // __name__
-    strobj = PyType_GetName(type);
+    strobj = TyType_GetName(type);
     if (strobj == NULL) {
         return -1;
     }
     info->name = _copy_string_obj_raw(strobj, NULL);
-    Py_DECREF(strobj);
+    Ty_DECREF(strobj);
     if (info->name == NULL) {
         return -1;
     }
 
     // __qualname__
-    strobj = PyType_GetQualName(type);
+    strobj = TyType_GetQualName(type);
     if (strobj == NULL) {
         return -1;
     }
     info->qualname = _copy_string_obj_raw(strobj, NULL);
-    Py_DECREF(strobj);
+    Ty_DECREF(strobj);
     if (info->qualname == NULL) {
         return -1;
     }
 
     // __module__
-    strobj = PyType_GetModuleName(type);
+    strobj = TyType_GetModuleName(type);
     if (strobj == NULL) {
         return -1;
     }
     info->module = _copy_string_obj_raw(strobj, NULL);
-    Py_DECREF(strobj);
+    Ty_DECREF(strobj);
     if (info->module == NULL) {
         return -1;
     }
@@ -1226,9 +1226,9 @@ _excinfo_init_type_from_exception(struct _excinfo_type *info, PyObject *exc)
 }
 
 static int
-_excinfo_init_type_from_object(struct _excinfo_type *info, PyObject *exctype)
+_excinfo_init_type_from_object(struct _excinfo_type *info, TyObject *exctype)
 {
-    PyObject *strobj = NULL;
+    TyObject *strobj = NULL;
 
     // __name__
     strobj = PyObject_GetAttrString(exctype, "__name__");
@@ -1236,7 +1236,7 @@ _excinfo_init_type_from_object(struct _excinfo_type *info, PyObject *exctype)
         return -1;
     }
     info->name = _copy_string_obj_raw(strobj, NULL);
-    Py_DECREF(strobj);
+    Ty_DECREF(strobj);
     if (info->name == NULL) {
         return -1;
     }
@@ -1247,7 +1247,7 @@ _excinfo_init_type_from_object(struct _excinfo_type *info, PyObject *exctype)
         return -1;
     }
     info->qualname = _copy_string_obj_raw(strobj, NULL);
-    Py_DECREF(strobj);
+    Ty_DECREF(strobj);
     if (info->qualname == NULL) {
         return -1;
     }
@@ -1258,7 +1258,7 @@ _excinfo_init_type_from_object(struct _excinfo_type *info, PyObject *exctype)
         return -1;
     }
     info->module = _copy_string_obj_raw(strobj, NULL);
-    Py_DECREF(strobj);
+    Ty_DECREF(strobj);
     if (info->module == NULL) {
         return -1;
     }
@@ -1270,17 +1270,17 @@ static void
 _excinfo_clear_type(struct _excinfo_type *info)
 {
     if (info->builtin != NULL) {
-        assert(info->builtin->tp_flags & _Py_TPFLAGS_STATIC_BUILTIN);
-        assert(_Py_IsImmortal((PyObject *)info->builtin));
+        assert(info->builtin->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN);
+        assert(_Ty_IsImmortal((TyObject *)info->builtin));
     }
     if (info->name != NULL) {
-        PyMem_RawFree((void *)info->name);
+        TyMem_RawFree((void *)info->name);
     }
     if (info->qualname != NULL) {
-        PyMem_RawFree((void *)info->qualname);
+        TyMem_RawFree((void *)info->qualname);
     }
     if (info->module != NULL) {
-        PyMem_RawFree((void *)info->module);
+        TyMem_RawFree((void *)info->module);
     }
     *info = (struct _excinfo_type){NULL};
 }
@@ -1326,15 +1326,15 @@ _PyXI_excinfo_clear(_PyXI_excinfo *info)
 {
     _excinfo_clear_type(&info->type);
     if (info->msg != NULL) {
-        PyMem_RawFree((void *)info->msg);
+        TyMem_RawFree((void *)info->msg);
     }
     if (info->errdisplay != NULL) {
-        PyMem_RawFree((void *)info->errdisplay);
+        TyMem_RawFree((void *)info->errdisplay);
     }
     *info = (_PyXI_excinfo){{NULL}};
 }
 
-PyObject *
+TyObject *
 _PyXI_excinfo_format(_PyXI_excinfo *info)
 {
     const char *module, *qualname;
@@ -1342,24 +1342,24 @@ _PyXI_excinfo_format(_PyXI_excinfo *info)
     if (qualname != NULL) {
         if (module != NULL) {
             if (info->msg != NULL) {
-                return PyUnicode_FromFormat("%s.%s: %s",
+                return TyUnicode_FromFormat("%s.%s: %s",
                                             module, qualname, info->msg);
             }
             else {
-                return PyUnicode_FromFormat("%s.%s", module, qualname);
+                return TyUnicode_FromFormat("%s.%s", module, qualname);
             }
         }
         else {
             if (info->msg != NULL) {
-                return PyUnicode_FromFormat("%s: %s", qualname, info->msg);
+                return TyUnicode_FromFormat("%s: %s", qualname, info->msg);
             }
             else {
-                return PyUnicode_FromString(qualname);
+                return TyUnicode_FromString(qualname);
             }
         }
     }
     else if (info->msg != NULL) {
-        return PyUnicode_FromString(info->msg);
+        return TyUnicode_FromString(info->msg);
     }
     else {
         Py_RETURN_NONE;
@@ -1367,11 +1367,11 @@ _PyXI_excinfo_format(_PyXI_excinfo *info)
 }
 
 static const char *
-_PyXI_excinfo_InitFromException(_PyXI_excinfo *info, PyObject *exc)
+_PyXI_excinfo_InitFromException(_PyXI_excinfo *info, TyObject *exc)
 {
     assert(exc != NULL);
 
-    if (PyErr_GivenExceptionMatches(exc, PyExc_MemoryError)) {
+    if (TyErr_GivenExceptionMatches(exc, TyExc_MemoryError)) {
         _PyXI_excinfo_clear(info);
         return NULL;
     }
@@ -1383,34 +1383,34 @@ _PyXI_excinfo_InitFromException(_PyXI_excinfo *info, PyObject *exc)
     }
 
     // Extract the exception message.
-    PyObject *msgobj = PyObject_Str(exc);
+    TyObject *msgobj = PyObject_Str(exc);
     if (msgobj == NULL) {
         failure = "error while formatting exception";
         goto error;
     }
     info->msg = _copy_string_obj_raw(msgobj, NULL);
-    Py_DECREF(msgobj);
+    Ty_DECREF(msgobj);
     if (info->msg == NULL) {
         failure = "error while copying exception message";
         goto error;
     }
 
     // Pickle a traceback.TracebackException.
-    PyObject *tbexc = NULL;
+    TyObject *tbexc = NULL;
     if (_convert_exc_to_TracebackException(exc, &tbexc) < 0) {
-#ifdef Py_DEBUG
-        PyErr_FormatUnraisable("Exception ignored while creating TracebackException");
+#ifdef Ty_DEBUG
+        TyErr_FormatUnraisable("Exception ignored while creating TracebackException");
 #endif
-        PyErr_Clear();
+        TyErr_Clear();
     }
     else {
         info->errdisplay = _format_TracebackException(tbexc);
-        Py_DECREF(tbexc);
+        Ty_DECREF(tbexc);
         if (info->errdisplay == NULL) {
-#ifdef Py_DEBUG
-            PyErr_FormatUnraisable("Exception ignored while formatting TracebackException");
+#ifdef Ty_DEBUG
+            TyErr_FormatUnraisable("Exception ignored while formatting TracebackException");
 #endif
-            PyErr_Clear();
+            TyErr_Clear();
         }
     }
 
@@ -1423,43 +1423,43 @@ error:
 }
 
 static const char *
-_PyXI_excinfo_InitFromObject(_PyXI_excinfo *info, PyObject *obj)
+_PyXI_excinfo_InitFromObject(_PyXI_excinfo *info, TyObject *obj)
 {
     const char *failure = NULL;
 
-    PyObject *exctype = PyObject_GetAttrString(obj, "type");
+    TyObject *exctype = PyObject_GetAttrString(obj, "type");
     if (exctype == NULL) {
         failure = "exception snapshot missing 'type' attribute";
         goto error;
     }
     int res = _excinfo_init_type_from_object(&info->type, exctype);
-    Py_DECREF(exctype);
+    Ty_DECREF(exctype);
     if (res < 0) {
         failure = "error while initializing exception type snapshot";
         goto error;
     }
 
     // Extract the exception message.
-    PyObject *msgobj = PyObject_GetAttrString(obj, "msg");
+    TyObject *msgobj = PyObject_GetAttrString(obj, "msg");
     if (msgobj == NULL) {
         failure = "exception snapshot missing 'msg' attribute";
         goto error;
     }
     info->msg = _copy_string_obj_raw(msgobj, NULL);
-    Py_DECREF(msgobj);
+    Ty_DECREF(msgobj);
     if (info->msg == NULL) {
         failure = "error while copying exception message";
         goto error;
     }
 
     // Pickle a traceback.TracebackException.
-    PyObject *errdisplay = PyObject_GetAttrString(obj, "errdisplay");
+    TyObject *errdisplay = PyObject_GetAttrString(obj, "errdisplay");
     if (errdisplay == NULL) {
         failure = "exception snapshot missing 'errdisplay' attribute";
         goto error;
     }
     info->errdisplay = _copy_string_obj_raw(errdisplay, NULL);
-    Py_DECREF(errdisplay);
+    Ty_DECREF(errdisplay);
     if (info->errdisplay == NULL) {
         failure = "error while copying exception error display";
         goto error;
@@ -1474,55 +1474,55 @@ error:
 }
 
 static void
-_PyXI_excinfo_Apply(_PyXI_excinfo *info, PyObject *exctype)
+_PyXI_excinfo_Apply(_PyXI_excinfo *info, TyObject *exctype)
 {
-    PyObject *tbexc = NULL;
+    TyObject *tbexc = NULL;
     if (info->errdisplay != NULL) {
-        tbexc = PyUnicode_FromString(info->errdisplay);
+        tbexc = TyUnicode_FromString(info->errdisplay);
         if (tbexc == NULL) {
-            PyErr_Clear();
+            TyErr_Clear();
         }
         else {
-            PyErr_SetObject(exctype, tbexc);
-            Py_DECREF(tbexc);
+            TyErr_SetObject(exctype, tbexc);
+            Ty_DECREF(tbexc);
             return;
         }
     }
 
-    PyObject *formatted = _PyXI_excinfo_format(info);
-    PyErr_SetObject(exctype, formatted);
-    Py_DECREF(formatted);
+    TyObject *formatted = _PyXI_excinfo_format(info);
+    TyErr_SetObject(exctype, formatted);
+    Ty_DECREF(formatted);
 
     if (tbexc != NULL) {
-        PyObject *exc = PyErr_GetRaisedException();
+        TyObject *exc = TyErr_GetRaisedException();
         if (PyObject_SetAttrString(exc, "_errdisplay", tbexc) < 0) {
-#ifdef Py_DEBUG
-            PyErr_FormatUnraisable("Exception ignored while "
+#ifdef Ty_DEBUG
+            TyErr_FormatUnraisable("Exception ignored while "
                                    "setting _errdisplay");
 #endif
-            PyErr_Clear();
+            TyErr_Clear();
         }
-        Py_DECREF(tbexc);
-        PyErr_SetRaisedException(exc);
+        Ty_DECREF(tbexc);
+        TyErr_SetRaisedException(exc);
     }
 }
 
-static PyObject *
+static TyObject *
 _PyXI_excinfo_TypeAsObject(_PyXI_excinfo *info)
 {
-    PyObject *ns = _PyNamespace_New(NULL);
+    TyObject *ns = _PyNamespace_New(NULL);
     if (ns == NULL) {
         return NULL;
     }
     int empty = 1;
 
     if (info->type.name != NULL) {
-        PyObject *name = PyUnicode_FromString(info->type.name);
+        TyObject *name = TyUnicode_FromString(info->type.name);
         if (name == NULL) {
             goto error;
         }
         int res = PyObject_SetAttrString(ns, "__name__", name);
-        Py_DECREF(name);
+        Ty_DECREF(name);
         if (res < 0) {
             goto error;
         }
@@ -1530,12 +1530,12 @@ _PyXI_excinfo_TypeAsObject(_PyXI_excinfo *info)
     }
 
     if (info->type.qualname != NULL) {
-        PyObject *qualname = PyUnicode_FromString(info->type.qualname);
+        TyObject *qualname = TyUnicode_FromString(info->type.qualname);
         if (qualname == NULL) {
             goto error;
         }
         int res = PyObject_SetAttrString(ns, "__qualname__", qualname);
-        Py_DECREF(qualname);
+        Ty_DECREF(qualname);
         if (res < 0) {
             goto error;
         }
@@ -1543,12 +1543,12 @@ _PyXI_excinfo_TypeAsObject(_PyXI_excinfo *info)
     }
 
     if (info->type.module != NULL) {
-        PyObject *module = PyUnicode_FromString(info->type.module);
+        TyObject *module = TyUnicode_FromString(info->type.module);
         if (module == NULL) {
             goto error;
         }
         int res = PyObject_SetAttrString(ns, "__module__", module);
-        Py_DECREF(module);
+        Ty_DECREF(module);
         if (res < 0) {
             goto error;
         }
@@ -1556,68 +1556,68 @@ _PyXI_excinfo_TypeAsObject(_PyXI_excinfo *info)
     }
 
     if (empty) {
-        Py_CLEAR(ns);
+        Ty_CLEAR(ns);
     }
 
     return ns;
 
 error:
-    Py_DECREF(ns);
+    Ty_DECREF(ns);
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 _PyXI_excinfo_AsObject(_PyXI_excinfo *info)
 {
-    PyObject *ns = _PyNamespace_New(NULL);
+    TyObject *ns = _PyNamespace_New(NULL);
     if (ns == NULL) {
         return NULL;
     }
     int res;
 
-    PyObject *type = _PyXI_excinfo_TypeAsObject(info);
+    TyObject *type = _PyXI_excinfo_TypeAsObject(info);
     if (type == NULL) {
-        if (PyErr_Occurred()) {
+        if (TyErr_Occurred()) {
             goto error;
         }
-        type = Py_NewRef(Py_None);
+        type = Ty_NewRef(Ty_None);
     }
     res = PyObject_SetAttrString(ns, "type", type);
-    Py_DECREF(type);
+    Ty_DECREF(type);
     if (res < 0) {
         goto error;
     }
 
-    PyObject *msg = info->msg != NULL
-        ? PyUnicode_FromString(info->msg)
-        : Py_NewRef(Py_None);
+    TyObject *msg = info->msg != NULL
+        ? TyUnicode_FromString(info->msg)
+        : Ty_NewRef(Ty_None);
     if (msg == NULL) {
         goto error;
     }
     res = PyObject_SetAttrString(ns, "msg", msg);
-    Py_DECREF(msg);
+    Ty_DECREF(msg);
     if (res < 0) {
         goto error;
     }
 
-    PyObject *formatted = _PyXI_excinfo_format(info);
+    TyObject *formatted = _PyXI_excinfo_format(info);
     if (formatted == NULL) {
         goto error;
     }
     res = PyObject_SetAttrString(ns, "formatted", formatted);
-    Py_DECREF(formatted);
+    Ty_DECREF(formatted);
     if (res < 0) {
         goto error;
     }
 
     if (info->errdisplay != NULL) {
-        PyObject *tbexc = PyUnicode_FromString(info->errdisplay);
+        TyObject *tbexc = TyUnicode_FromString(info->errdisplay);
         if (tbexc == NULL) {
-            PyErr_Clear();
+            TyErr_Clear();
         }
         else {
             res = PyObject_SetAttrString(ns, "errdisplay", tbexc);
-            Py_DECREF(tbexc);
+            Ty_DECREF(tbexc);
             if (res < 0) {
                 goto error;
             }
@@ -1627,17 +1627,17 @@ _PyXI_excinfo_AsObject(_PyXI_excinfo *info)
     return ns;
 
 error:
-    Py_DECREF(ns);
+    Ty_DECREF(ns);
     return NULL;
 }
 
 
 _PyXI_excinfo *
-_PyXI_NewExcInfo(PyObject *exc)
+_PyXI_NewExcInfo(TyObject *exc)
 {
-    assert(!PyErr_Occurred());
-    if (exc == NULL || exc == Py_None) {
-        PyErr_SetString(PyExc_ValueError, "missing exc");
+    assert(!TyErr_Occurred());
+    if (exc == NULL || exc == Ty_None) {
+        TyErr_SetString(TyExc_ValueError, "missing exc");
         return NULL;
     }
     _PyXI_excinfo *info = PyMem_RawCalloc(1, sizeof(_PyXI_excinfo));
@@ -1652,8 +1652,8 @@ _PyXI_NewExcInfo(PyObject *exc)
         failure = _PyXI_excinfo_InitFromObject(info, exc);
     }
     if (failure != NULL) {
-        PyMem_RawFree(info);
-        set_exc_with_cause(PyExc_Exception, failure);
+        TyMem_RawFree(info);
+        set_exc_with_cause(TyExc_Exception, failure);
         return NULL;
     }
     return info;
@@ -1663,16 +1663,16 @@ void
 _PyXI_FreeExcInfo(_PyXI_excinfo *info)
 {
     _PyXI_excinfo_clear(info);
-    PyMem_RawFree(info);
+    TyMem_RawFree(info);
 }
 
-PyObject *
+TyObject *
 _PyXI_FormatExcInfo(_PyXI_excinfo *info)
 {
     return _PyXI_excinfo_format(info);
 }
 
-PyObject *
+TyObject *
 _PyXI_ExcInfoAsObject(_PyXI_excinfo *info)
 {
     return _PyXI_excinfo_AsObject(info);
@@ -1686,52 +1686,52 @@ _PyXI_ExcInfoAsObject(_PyXI_excinfo *info)
 /* error codes */
 
 static int
-_PyXI_ApplyErrorCode(_PyXI_errcode code, PyInterpreterState *interp)
+_PyXI_ApplyErrorCode(_PyXI_errcode code, TyInterpreterState *interp)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     assert(code != _PyXI_ERR_NO_ERROR);
     assert(code != _PyXI_ERR_UNCAUGHT_EXCEPTION);
     switch (code) {
     case _PyXI_ERR_OTHER:
         // XXX msg?
-        PyErr_SetNone(PyExc_InterpreterError);
+        TyErr_SetNone(TyExc_InterpreterError);
         break;
     case _PyXI_ERR_NO_MEMORY:
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         break;
     case _PyXI_ERR_ALREADY_RUNNING:
         assert(interp != NULL);
-        _PyErr_SetInterpreterAlreadyRunning();
+        _TyErr_SetInterpreterAlreadyRunning();
         break;
     case _PyXI_ERR_MAIN_NS_FAILURE:
-        PyErr_SetString(PyExc_InterpreterError,
+        TyErr_SetString(TyExc_InterpreterError,
                         "failed to get __main__ namespace");
         break;
     case _PyXI_ERR_APPLY_NS_FAILURE:
-        PyErr_SetString(PyExc_InterpreterError,
+        TyErr_SetString(TyExc_InterpreterError,
                         "failed to apply namespace to __main__");
         break;
     case _PyXI_ERR_PRESERVE_FAILURE:
-        PyErr_SetString(PyExc_InterpreterError,
+        TyErr_SetString(TyExc_InterpreterError,
                         "failed to preserve objects across session");
         break;
     case _PyXI_ERR_EXC_PROPAGATION_FAILURE:
-        PyErr_SetString(PyExc_InterpreterError,
+        TyErr_SetString(TyExc_InterpreterError,
                         "failed to transfer exception between interpreters");
         break;
     case _PyXI_ERR_NOT_SHAREABLE:
         _set_xid_lookup_failure(tstate, NULL, NULL, NULL);
         break;
     default:
-#ifdef Py_DEBUG
-        Py_FatalError("unsupported error code");
+#ifdef Ty_DEBUG
+        Ty_FatalError("unsupported error code");
 #else
-        PyErr_Format(PyExc_RuntimeError, "unsupported error code %d", code);
+        TyErr_Format(TyExc_RuntimeError, "unsupported error code %d", code);
 #endif
     }
-    assert(PyErr_Occurred());
+    assert(TyErr_Occurred());
     return -1;
 }
 
@@ -1751,7 +1751,7 @@ static void
 clear_xi_failure(_PyXI_failure *failure)
 {
     if (failure->msg != NULL && failure->msg_owned) {
-        PyMem_RawFree((void*)failure->msg);
+        TyMem_RawFree((void*)failure->msg);
     }
     *failure = XI_FAILURE_INIT;
 }
@@ -1768,7 +1768,7 @@ _PyXI_NewFailure(void)
 {
     _PyXI_failure *failure = PyMem_RawMalloc(sizeof(_PyXI_failure));
     if (failure == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     *failure = XI_FAILURE_INIT;
@@ -1779,7 +1779,7 @@ void
 _PyXI_FreeFailure(_PyXI_failure *failure)
 {
     clear_xi_failure(failure);
-    PyMem_RawFree(failure);
+    TyMem_RawFree(failure);
 }
 
 _PyXI_errcode
@@ -1803,17 +1803,17 @@ _PyXI_InitFailureUTF8(_PyXI_failure *failure,
 }
 
 int
-_PyXI_InitFailure(_PyXI_failure *failure, _PyXI_errcode code, PyObject *obj)
+_PyXI_InitFailure(_PyXI_failure *failure, _PyXI_errcode code, TyObject *obj)
 {
-    PyObject *msgobj = PyObject_Str(obj);
+    TyObject *msgobj = PyObject_Str(obj);
     if (msgobj == NULL) {
         return -1;
     }
     // This will leak if not paired with clear_xi_failure().
     // That happens automatically in _capture_current_exception().
     const char *msg = _copy_string_obj_raw(msgobj, NULL);
-    Py_DECREF(msgobj);
-    if (PyErr_Occurred()) {
+    Ty_DECREF(msgobj);
+    if (TyErr_Occurred()) {
         return -1;
     }
     *failure = (_PyXI_failure){
@@ -1828,7 +1828,7 @@ _PyXI_InitFailure(_PyXI_failure *failure, _PyXI_errcode code, PyObject *obj)
 
 typedef struct {
     // The originating interpreter.
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
     // The error to propagate, if different from the uncaught exception.
     _PyXI_failure *override;
     _PyXI_failure _override;
@@ -1870,13 +1870,13 @@ xi_error_has_override(_PyXI_error *err)
             && err->override->code != _PyXI_ERR_UNCAUGHT_EXCEPTION);
 }
 
-static PyObject *
-xi_error_resolve_current_exc(PyThreadState *tstate,
+static TyObject *
+xi_error_resolve_current_exc(TyThreadState *tstate,
                              _PyXI_failure *override)
 {
     assert(override == NULL || override->code != _PyXI_ERR_NO_ERROR);
 
-    PyObject *exc = _PyErr_GetRaisedException(tstate);
+    TyObject *exc = _TyErr_GetRaisedException(tstate);
     if (exc == NULL) {
         assert(override == NULL
                || override->code != _PyXI_ERR_UNCAUGHT_EXCEPTION);
@@ -1891,7 +1891,7 @@ xi_error_resolve_current_exc(PyThreadState *tstate,
         // It might make sense to do similarly for other codes.
         if (override->code == _PyXI_ERR_ALREADY_RUNNING) {
             // We don't need the exception info.
-            Py_CLEAR(exc);
+            Ty_CLEAR(exc);
         }
         // ...else we want to actually capture the current exception.
     }
@@ -1899,7 +1899,7 @@ xi_error_resolve_current_exc(PyThreadState *tstate,
 }
 
 static void
-xi_error_set_override(PyThreadState *tstate, _PyXI_error *err,
+xi_error_set_override(TyThreadState *tstate, _PyXI_error *err,
                       _PyXI_failure *override)
 {
     assert(err->override == NULL);
@@ -1914,7 +1914,7 @@ xi_error_set_override(PyThreadState *tstate, _PyXI_error *err,
 }
 
 static void
-xi_error_set_override_code(PyThreadState *tstate, _PyXI_error *err,
+xi_error_set_override_code(TyThreadState *tstate, _PyXI_error *err,
                            _PyXI_errcode code)
 {
     _PyXI_failure override = XI_FAILURE_INIT;
@@ -1923,9 +1923,9 @@ xi_error_set_override_code(PyThreadState *tstate, _PyXI_error *err,
 }
 
 static const char *
-xi_error_set_exc(PyThreadState *tstate, _PyXI_error *err, PyObject *exc)
+xi_error_set_exc(TyThreadState *tstate, _PyXI_error *err, TyObject *exc)
 {
-    assert(!_PyErr_Occurred(tstate));
+    assert(!_TyErr_Occurred(tstate));
     assert(!xi_error_is_set(err));
     assert(err->override == NULL);
     assert(err->interp == NULL);
@@ -1936,21 +1936,21 @@ xi_error_set_exc(PyThreadState *tstate, _PyXI_error *err, PyObject *exc)
         // We failed to initialize err->uncaught.
         // XXX Print the excobj/traceback?  Emit a warning?
         // XXX Print the current exception/traceback?
-        if (_PyErr_ExceptionMatches(tstate, PyExc_MemoryError)) {
+        if (_TyErr_ExceptionMatches(tstate, TyExc_MemoryError)) {
             xi_error_set_override_code(tstate, err, _PyXI_ERR_NO_MEMORY);
         }
         else {
             xi_error_set_override_code(tstate, err, _PyXI_ERR_OTHER);
         }
-        PyErr_Clear();
+        TyErr_Clear();
     }
     return failure;
 }
 
-static PyObject *
+static TyObject *
 _PyXI_ApplyError(_PyXI_error *error, const char *failure)
 {
-    PyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *tstate = PyThreadState_Get();
 
     if (failure != NULL) {
         xi_error_clear(error);
@@ -1969,20 +1969,20 @@ _PyXI_ApplyError(_PyXI_error *error, const char *failure)
     }
     else if (code == _PyXI_ERR_NOT_SHAREABLE) {
         // Propagate the exception directly.
-        assert(!_PyErr_Occurred(tstate));
-        PyObject *cause = NULL;
+        assert(!_TyErr_Occurred(tstate));
+        TyObject *cause = NULL;
         if (excinfo_is_set(&error->uncaught)) {
-            // Maybe instead set a PyExc_ExceptionSnapshot as __cause__?
+            // Maybe instead set a TyExc_ExceptionSnapshot as __cause__?
             // That type doesn't exist currently
             // but would look like interpreters.ExecutionFailed.
-            _PyXI_excinfo_Apply(&error->uncaught, PyExc_Exception);
-            cause = _PyErr_GetRaisedException(tstate);
+            _PyXI_excinfo_Apply(&error->uncaught, TyExc_Exception);
+            cause = _TyErr_GetRaisedException(tstate);
         }
         const char *msg = error->override != NULL
             ? error->override->msg
             : error->uncaught.msg;
         _set_xid_lookup_failure(tstate, NULL, msg, cause);
-        Py_XDECREF(cause);
+        Ty_XDECREF(cause);
     }
     else {
         // Raise an exception corresponding to the code.
@@ -1990,15 +1990,15 @@ _PyXI_ApplyError(_PyXI_error *error, const char *failure)
         assert(error->override == NULL || error->override->msg == NULL);
         if (excinfo_is_set(&error->uncaught)) {
             // __context__ will be set to a proxy of the propagated exception.
-            // (or use PyExc_ExceptionSnapshot like _PyXI_ERR_NOT_SHAREABLE?)
-            PyObject *exc = _PyErr_GetRaisedException(tstate);
-            _PyXI_excinfo_Apply(&error->uncaught, PyExc_InterpreterError);
-            PyObject *exc2 = _PyErr_GetRaisedException(tstate);
+            // (or use TyExc_ExceptionSnapshot like _PyXI_ERR_NOT_SHAREABLE?)
+            TyObject *exc = _TyErr_GetRaisedException(tstate);
+            _PyXI_excinfo_Apply(&error->uncaught, TyExc_InterpreterError);
+            TyObject *exc2 = _TyErr_GetRaisedException(tstate);
             PyException_SetContext(exc, exc2);
-            _PyErr_SetRaisedException(tstate, exc);
+            _TyErr_SetRaisedException(tstate, exc);
         }
     }
-    assert(PyErr_Occurred());
+    assert(TyErr_Occurred());
     return NULL;
 }
 
@@ -2038,7 +2038,7 @@ _sharednsitem_is_initialized(_PyXI_namespace_item *item)
 #endif
 
 static int
-_sharednsitem_init(_PyXI_namespace_item *item, PyObject *key)
+_sharednsitem_init(_PyXI_namespace_item *item, TyObject *key)
 {
     item->name = _copy_string_obj_raw(key, NULL);
     if (item->name == NULL) {
@@ -2063,7 +2063,7 @@ _sharednsitem_has_value(_PyXI_namespace_item *item, int64_t *p_interpid)
 }
 
 static int
-_sharednsitem_set_value(_PyXI_namespace_item *item, PyObject *value,
+_sharednsitem_set_value(_PyXI_namespace_item *item, TyObject *value,
                         xidata_fallback_t fallback)
 {
     assert(_sharednsitem_is_initialized(item));
@@ -2072,11 +2072,11 @@ _sharednsitem_set_value(_PyXI_namespace_item *item, PyObject *value,
     if (item->xidata == NULL) {
         return -1;
     }
-    PyThreadState *tstate = PyThreadState_Get();
-    if (_PyObject_GetXIData(tstate, value, fallback, item->xidata) < 0) {
-        PyMem_RawFree(item->xidata);
+    TyThreadState *tstate = PyThreadState_Get();
+    if (_TyObject_GetXIData(tstate, value, fallback, item->xidata) < 0) {
+        TyMem_RawFree(item->xidata);
         item->xidata = NULL;
-        // The caller may want to propagate PyExc_NotShareableError
+        // The caller may want to propagate TyExc_NotShareableError
         // if currently switched between interpreters.
         return -1;
     }
@@ -2098,21 +2098,21 @@ static void
 _sharednsitem_clear(_PyXI_namespace_item *item)
 {
     if (item->name != NULL) {
-        PyMem_RawFree((void *)item->name);
+        TyMem_RawFree((void *)item->name);
         item->name = NULL;
     }
     _sharednsitem_clear_value(item);
 }
 
 static int
-_sharednsitem_copy_from_ns(struct _sharednsitem *item, PyObject *ns,
+_sharednsitem_copy_from_ns(struct _sharednsitem *item, TyObject *ns,
                            xidata_fallback_t fallback)
 {
     assert(item->name != NULL);
     assert(item->xidata == NULL);
-    PyObject *value = PyDict_GetItemString(ns, item->name);  // borrowed
+    TyObject *value = TyDict_GetItemString(ns, item->name);  // borrowed
     if (value == NULL) {
-        if (PyErr_Occurred()) {
+        if (TyErr_Occurred()) {
             return -1;
         }
         // When applied, this item will be set to the default (or fail).
@@ -2125,34 +2125,34 @@ _sharednsitem_copy_from_ns(struct _sharednsitem *item, PyObject *ns,
 }
 
 static int
-_sharednsitem_apply(_PyXI_namespace_item *item, PyObject *ns, PyObject *dflt)
+_sharednsitem_apply(_PyXI_namespace_item *item, TyObject *ns, TyObject *dflt)
 {
-    PyObject *name = PyUnicode_FromString(item->name);
+    TyObject *name = TyUnicode_FromString(item->name);
     if (name == NULL) {
         return -1;
     }
-    PyObject *value;
+    TyObject *value;
     if (item->xidata != NULL) {
         value = _PyXIData_NewObject(item->xidata);
         if (value == NULL) {
-            Py_DECREF(name);
+            Ty_DECREF(name);
             return -1;
         }
     }
     else {
-        value = Py_NewRef(dflt);
+        value = Ty_NewRef(dflt);
     }
-    int res = PyDict_SetItem(ns, name, value);
-    Py_DECREF(name);
-    Py_DECREF(value);
+    int res = TyDict_SetItem(ns, name, value);
+    Ty_DECREF(name);
+    Ty_DECREF(value);
     return res;
 }
 
 
 typedef struct {
-    Py_ssize_t maxitems;
-    Py_ssize_t numnames;
-    Py_ssize_t numvalues;
+    Ty_ssize_t maxitems;
+    Ty_ssize_t numnames;
+    Ty_ssize_t numvalues;
     _PyXI_namespace_item items[1];
 } _PyXI_namespace;
 
@@ -2185,7 +2185,7 @@ _sharedns_check_consistency(_PyXI_namespace *ns)
         return 0;
     }
 
-    Py_ssize_t i = 0;
+    Ty_ssize_t i = 0;
     _PyXI_namespace_item *item;
     if (ns->numvalues > 0) {
         item = &ns->items[0];
@@ -2234,16 +2234,16 @@ _sharedns_check_consistency(_PyXI_namespace *ns)
 #endif
 
 static _PyXI_namespace *
-_sharedns_alloc(Py_ssize_t maxitems)
+_sharedns_alloc(Ty_ssize_t maxitems)
 {
     if (maxitems < 0) {
-        if (!PyErr_Occurred()) {
-            PyErr_BadInternalCall();
+        if (!TyErr_Occurred()) {
+            TyErr_BadInternalCall();
         }
         return NULL;
     }
     else if (maxitems == 0) {
-        PyErr_SetString(PyExc_ValueError, "empty namespaces not allowed");
+        TyErr_SetString(TyExc_ValueError, "empty namespaces not allowed");
         return NULL;
     }
 
@@ -2252,7 +2252,7 @@ _sharedns_alloc(Py_ssize_t maxitems)
     if ((size_t)maxitems >
         ((size_t)PY_SSIZE_T_MAX - fixedsize) / sizeof(_PyXI_namespace_item))
     {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
 
@@ -2261,7 +2261,7 @@ _sharedns_alloc(Py_ssize_t maxitems)
 
     _PyXI_namespace *ns = PyMem_RawCalloc(size, 1);
     if (ns == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     ns->maxitems = maxitems;
@@ -2277,7 +2277,7 @@ _sharedns_free(_PyXI_namespace *ns)
     // to call _sharedns_free(), to avoid the race between freeing
     // the shared namespace and releasing the XI data.
     assert(_sharedns_check_counts(ns));
-    Py_ssize_t i = 0;
+    Ty_ssize_t i = 0;
     _PyXI_namespace_item *item;
     if (ns->numvalues > 0) {
         // One or more items may have interpreter-specific data.
@@ -2312,15 +2312,15 @@ _sharedns_free(_PyXI_namespace *ns)
     }
 #endif
 
-    PyMem_RawFree(ns);
+    TyMem_RawFree(ns);
 }
 
 static _PyXI_namespace *
-_create_sharedns(PyObject *names)
+_create_sharedns(TyObject *names)
 {
     assert(names != NULL);
-    Py_ssize_t numnames = PyDict_CheckExact(names)
-        ? PyDict_Size(names)
+    Ty_ssize_t numnames = TyDict_CheckExact(names)
+        ? TyDict_Size(names)
         : PySequence_Size(names);
 
     _PyXI_namespace *ns = _sharedns_alloc(numnames);
@@ -2330,11 +2330,11 @@ _create_sharedns(PyObject *names)
     _PyXI_namespace_item *items = ns->items;
 
     // Fill in the names.
-    if (PyDict_CheckExact(names)) {
-        Py_ssize_t i = 0;
-        Py_ssize_t pos = 0;
-        PyObject *name;
-        while(PyDict_Next(names, &pos, &name, NULL)) {
+    if (TyDict_CheckExact(names)) {
+        Ty_ssize_t i = 0;
+        Ty_ssize_t pos = 0;
+        TyObject *name;
+        while(TyDict_Next(names, &pos, &name, NULL)) {
             if (_sharednsitem_init(&items[i], name) < 0) {
                 goto error;
             }
@@ -2343,13 +2343,13 @@ _create_sharedns(PyObject *names)
         }
     }
     else if (PySequence_Check(names)) {
-        for (Py_ssize_t i = 0; i < numnames; i++) {
-            PyObject *name = PySequence_GetItem(names, i);
+        for (Ty_ssize_t i = 0; i < numnames; i++) {
+            TyObject *name = PySequence_GetItem(names, i);
             if (name == NULL) {
                 goto error;
             }
             int res = _sharednsitem_init(&items[i], name);
-            Py_DECREF(name);
+            Ty_DECREF(name);
             if (res < 0) {
                 goto error;
             }
@@ -2357,7 +2357,7 @@ _create_sharedns(PyObject *names)
         }
     }
     else {
-        PyErr_SetString(PyExc_NotImplementedError,
+        TyErr_SetString(TyExc_NotImplementedError,
                         "non-sequence namespace not supported");
         goto error;
     }
@@ -2369,25 +2369,25 @@ error:
     return NULL;
 }
 
-static void _propagate_not_shareable_error(PyThreadState *,
+static void _propagate_not_shareable_error(TyThreadState *,
                                            _PyXI_failure *);
 
 static int
-_fill_sharedns(_PyXI_namespace *ns, PyObject *nsobj,
+_fill_sharedns(_PyXI_namespace *ns, TyObject *nsobj,
                xidata_fallback_t fallback, _PyXI_failure *p_err)
 {
     // All items are expected to be shareable.
     assert(_sharedns_check_counts(ns));
     assert(ns->numnames == ns->maxitems);
     assert(ns->numvalues == 0);
-    PyThreadState *tstate = PyThreadState_Get();
-    for (Py_ssize_t i=0; i < ns->maxitems; i++) {
+    TyThreadState *tstate = PyThreadState_Get();
+    for (Ty_ssize_t i=0; i < ns->maxitems; i++) {
         if (_sharednsitem_copy_from_ns(&ns->items[i], nsobj, fallback) < 0) {
             if (p_err != NULL) {
                 _propagate_not_shareable_error(tstate, p_err);
             }
             // Clear out the ones we set so far.
-            for (Py_ssize_t j=0; j < i; j++) {
+            for (Ty_ssize_t j=0; j < i; j++) {
                 _sharednsitem_clear_value(&ns->items[j]);
                 ns->numvalues -= 1;
             }
@@ -2422,7 +2422,7 @@ _destroy_sharedns(_PyXI_namespace *ns)
         _sharedns_free(ns);
         return;
     }
-    PyInterpreterState *interp = _PyInterpreterState_LookUpID(interpid0);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpID(interpid0);
     if (interp == PyInterpreterState_Get()) {
         _sharedns_free(ns);
         return;
@@ -2432,13 +2432,13 @@ _destroy_sharedns(_PyXI_namespace *ns)
     // Currently the xidata for each value is dynamically allocated,
     // so technically we don't need to worry about that.
     // However, explicitly adding a pending call here is simpler.
-    (void)_Py_CallInInterpreter(interp, _sharedns_free_pending, ns);
+    (void)_Ty_CallInInterpreter(interp, _sharedns_free_pending, ns);
 }
 
 static int
-_apply_sharedns(_PyXI_namespace *ns, PyObject *nsobj, PyObject *dflt)
+_apply_sharedns(_PyXI_namespace *ns, TyObject *nsobj, TyObject *dflt)
 {
-    for (Py_ssize_t i=0; i < ns->maxitems; i++) {
+    for (Ty_ssize_t i=0; i < ns->maxitems; i++) {
         if (_sharednsitem_apply(&ns->items[i], nsobj, dflt) != 0) {
             return -1;
         }
@@ -2461,10 +2461,10 @@ struct xi_session {
     // current before the session.  If it is different from cur_tstate
     // then we must have switched interpreters.  Either way, this will
     // be the current tstate once we exit the session.
-    PyThreadState *prev_tstate;
+    TyThreadState *prev_tstate;
     // Once a session has been entered, this is the current tstate.
     // It must be current when the session exits.
-    PyThreadState *init_tstate;
+    TyThreadState *init_tstate;
     // This is true if init_tstate needs cleanup during exit.
     int own_init_tstate;
 
@@ -2477,12 +2477,12 @@ struct xi_session {
     // This is a cached reference to the __dict__ of the entered
     // interpreter's __main__ module.  It is looked up when at the
     // beginning of the session as a convenience.
-    PyObject *main_ns;
+    TyObject *main_ns;
 
     // This is a dict of objects that will be available (via sharing)
     // once the session exits.  Do not access this directly; use
     // _PyXI_Preserve() and _PyXI_GetPreserved() instead;
-    PyObject *_preserved;
+    TyObject *_preserved;
 };
 
 _PyXI_session *
@@ -2490,7 +2490,7 @@ _PyXI_NewSession(void)
 {
     _PyXI_session *session = PyMem_RawCalloc(1, sizeof(_PyXI_session));
     if (session == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     return session;
@@ -2500,7 +2500,7 @@ void
 _PyXI_FreeSession(_PyXI_session *session)
 {
     assert(session->status == SESSION_UNUSED);
-    PyMem_RawFree(session);
+    TyMem_RawFree(session);
 }
 
 
@@ -2514,7 +2514,7 @@ _session_is_active(_PyXI_session *session)
 /* enter/exit a cross-interpreter session */
 
 static void
-_enter_session(_PyXI_session *session, PyInterpreterState *interp)
+_enter_session(_PyXI_session *session, TyInterpreterState *interp)
 {
     // Set here and cleared in _exit_session().
     assert(session->status == SESSION_UNUSED);
@@ -2526,13 +2526,13 @@ _enter_session(_PyXI_session *session, PyInterpreterState *interp)
     assert(session->main_ns == NULL);
 
     // Switch to interpreter.
-    PyThreadState *tstate = PyThreadState_Get();
-    PyThreadState *prev = tstate;
+    TyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *prev = tstate;
     int same_interp = (interp == tstate->interp);
     if (!same_interp) {
-        tstate = _PyThreadState_NewBound(interp, _PyThreadState_WHENCE_EXEC);
+        tstate = _TyThreadState_NewBound(interp, _TyThreadState_WHENCE_EXEC);
         // XXX Possible GILState issues?
-        PyThreadState *swapped = PyThreadState_Swap(tstate);
+        TyThreadState *swapped = PyThreadState_Swap(tstate);
         assert(swapped == prev);
         (void)swapped;
     }
@@ -2549,19 +2549,19 @@ _enter_session(_PyXI_session *session, PyInterpreterState *interp)
 static void
 _exit_session(_PyXI_session *session)
 {
-    PyThreadState *tstate = session->init_tstate;
+    TyThreadState *tstate = session->init_tstate;
     assert(tstate != NULL);
     assert(PyThreadState_Get() == tstate);
-    assert(!_PyErr_Occurred(tstate));
+    assert(!_TyErr_Occurred(tstate));
 
     // Release any of the entered interpreters resources.
-    Py_CLEAR(session->main_ns);
-    Py_CLEAR(session->_preserved);
+    Ty_CLEAR(session->main_ns);
+    Ty_CLEAR(session->_preserved);
 
     // Ensure this thread no longer owns __main__.
     if (session->running) {
-        _PyInterpreterState_SetNotRunningMain(tstate->interp);
-        assert(!_PyErr_Occurred(tstate));
+        _TyInterpreterState_SetNotRunningMain(tstate->interp);
+        assert(!_TyErr_Occurred(tstate));
         session->running = 0;
     }
 
@@ -2582,17 +2582,17 @@ _exit_session(_PyXI_session *session)
 }
 
 static void
-_propagate_not_shareable_error(PyThreadState *tstate,
+_propagate_not_shareable_error(TyThreadState *tstate,
                                _PyXI_failure *override)
 {
     assert(override != NULL);
-    PyObject *exctype = get_notshareableerror_type(tstate);
+    TyObject *exctype = get_notshareableerror_type(tstate);
     if (exctype == NULL) {
-        PyErr_FormatUnraisable(
+        TyErr_FormatUnraisable(
                 "Exception ignored while propagating not shareable error");
         return;
     }
-    if (PyErr_ExceptionMatches(exctype)) {
+    if (TyErr_ExceptionMatches(exctype)) {
         // We want to propagate the exception directly.
         *override = (_PyXI_failure){
             .code = _PyXI_ERR_NOT_SHAREABLE,
@@ -2607,18 +2607,18 @@ static const char * capture_session_error(_PyXI_session *, _PyXI_error *,
 
 int
 _PyXI_Enter(_PyXI_session *session,
-            PyInterpreterState *interp, PyObject *nsupdates,
+            TyInterpreterState *interp, TyObject *nsupdates,
             _PyXI_session_result *result)
 {
 #ifndef NDEBUG
-    PyThreadState *tstate = _PyThreadState_GET();  // Only used for asserts
+    TyThreadState *tstate = _TyThreadState_GET();  // Only used for asserts
 #endif
 
     // Convert the attrs for cross-interpreter use.
     _PyXI_namespace *sharedns = NULL;
     if (nsupdates != NULL) {
-        assert(PyDict_Check(nsupdates));
-        Py_ssize_t len = PyDict_Size(nsupdates);
+        assert(TyDict_Check(nsupdates));
+        Ty_ssize_t len = TyDict_Size(nsupdates);
         if (len < 0) {
             if (result != NULL) {
                 result->errcode = _PyXI_ERR_APPLY_NS_FAILURE;
@@ -2637,7 +2637,7 @@ _PyXI_Enter(_PyXI_session *session,
             xidata_fallback_t fallback = _PyXIDATA_XIDATA_ONLY;
             _PyXI_failure _err = XI_FAILURE_INIT;
             if (_fill_sharedns(sharedns, nsupdates, fallback, &_err) < 0) {
-                assert(_PyErr_Occurred(tstate));
+                assert(_TyErr_Occurred(tstate));
                 if (_err.code == _PyXI_ERR_NO_ERROR) {
                     _err.code = _PyXI_ERR_UNCAUGHT_EXCEPTION;
                 }
@@ -2656,11 +2656,11 @@ _PyXI_Enter(_PyXI_session *session,
     _PyXI_failure override = XI_FAILURE_INIT;
     override.code = _PyXI_ERR_UNCAUGHT_EXCEPTION;
 #ifndef NDEBUG
-    tstate = _PyThreadState_GET();
+    tstate = _TyThreadState_GET();
 #endif
 
     // Ensure this thread owns __main__.
-    if (_PyInterpreterState_SetRunningMain(interp) < 0) {
+    if (_TyInterpreterState_SetRunningMain(interp) < 0) {
         // In the case where we didn't switch interpreters, it would
         // be more efficient to leave the exception in place and return
         // immediately.  However, life is simpler if we don't.
@@ -2682,7 +2682,7 @@ _PyXI_Enter(_PyXI_session *session,
     }
 
     override.code = _PyXI_ERR_NO_ERROR;
-    assert(!_PyErr_Occurred(tstate));
+    assert(!_TyErr_Occurred(tstate));
     return 0;
 
 error:
@@ -2694,7 +2694,7 @@ error:
     // Exit the session.
     _exit_session(session);
 #ifndef NDEBUG
-    tstate = _PyThreadState_GET();
+    tstate = _TyThreadState_GET();
 #endif
 
     if (sharedns != NULL) {
@@ -2702,33 +2702,33 @@ error:
     }
 
     // Apply the error from the other interpreter.
-    PyObject *excinfo = _PyXI_ApplyError(&err, failure);
+    TyObject *excinfo = _PyXI_ApplyError(&err, failure);
     xi_error_clear(&err);
     if (excinfo != NULL) {
         if (result != NULL) {
             result->excinfo = excinfo;
         }
         else {
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
             fprintf(stderr, "_PyXI_Enter(): uncaught exception discarded");
 #endif
-            Py_DECREF(excinfo);
+            Ty_DECREF(excinfo);
         }
     }
-    assert(_PyErr_Occurred(tstate));
+    assert(_TyErr_Occurred(tstate));
 
     return -1;
 }
 
-static int _pop_preserved(_PyXI_session *, _PyXI_namespace **, PyObject **,
+static int _pop_preserved(_PyXI_session *, _PyXI_namespace **, TyObject **,
                           _PyXI_failure *);
-static int _finish_preserved(_PyXI_namespace *, PyObject **);
+static int _finish_preserved(_PyXI_namespace *, TyObject **);
 
 int
 _PyXI_Exit(_PyXI_session *session, _PyXI_failure *override,
            _PyXI_session_result *result)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     int res = 0;
 
     // Capture the raised exception, if any.
@@ -2738,7 +2738,7 @@ _PyXI_Exit(_PyXI_session *session, _PyXI_failure *override,
         assert(override->msg == NULL);
         override = NULL;
     }
-    if (_PyErr_Occurred(tstate)) {
+    if (_TyErr_Occurred(tstate)) {
         failure = capture_session_error(session, &err, override);
     }
     else {
@@ -2747,9 +2747,9 @@ _PyXI_Exit(_PyXI_session *session, _PyXI_failure *override,
 
     // Capture the preserved namespace.
     _PyXI_namespace *preserved = NULL;
-    PyObject *preservedobj = NULL;
+    TyObject *preservedobj = NULL;
     if (result != NULL) {
-        assert(!_PyErr_Occurred(tstate));
+        assert(!_TyErr_Occurred(tstate));
         _PyXI_failure _override = XI_FAILURE_INIT;
         if (_pop_preserved(
                     session, &preserved, &preservedobj, &_override) < 0)
@@ -2758,7 +2758,7 @@ _PyXI_Exit(_PyXI_session *session, _PyXI_failure *override,
             assert(preservedobj == NULL);
             if (xi_error_is_set(&err)) {
                 // XXX Chain the exception (i.e. set __context__)?
-                PyErr_FormatUnraisable(
+                TyErr_FormatUnraisable(
                     "Exception ignored while capturing preserved objects");
                 clear_xi_failure(&_override);
             }
@@ -2772,9 +2772,9 @@ _PyXI_Exit(_PyXI_session *session, _PyXI_failure *override,
     }
 
     // Exit the session.
-    assert(!_PyErr_Occurred(tstate));
+    assert(!_TyErr_Occurred(tstate));
     _exit_session(session);
-    tstate = _PyThreadState_GET();
+    tstate = _TyThreadState_GET();
 
     // Restore the preserved namespace.
     assert(preserved == NULL || preservedobj == NULL);
@@ -2782,7 +2782,7 @@ _PyXI_Exit(_PyXI_session *session, _PyXI_failure *override,
         assert(preservedobj == NULL);
         if (xi_error_is_set(&err)) {
             // XXX Chain the exception (i.e. set __context__)?
-            PyErr_FormatUnraisable(
+            TyErr_FormatUnraisable(
                 "Exception ignored while capturing preserved objects");
         }
         else {
@@ -2801,10 +2801,10 @@ _PyXI_Exit(_PyXI_session *session, _PyXI_failure *override,
     // Apply the error from the other interpreter, if any.
     if (xi_error_is_set(&err)) {
         res = -1;
-        assert(!_PyErr_Occurred(tstate));
-        PyObject *excinfo = _PyXI_ApplyError(&err, failure);
+        assert(!_TyErr_Occurred(tstate));
+        TyObject *excinfo = _PyXI_ApplyError(&err, failure);
         if (excinfo == NULL) {
-            assert(_PyErr_Occurred(tstate));
+            assert(_TyErr_Occurred(tstate));
             if (result != NULL && !xi_error_has_override(&err)) {
                 _PyXI_ClearResult(result);
                 *result = (_PyXI_session_result){
@@ -2816,10 +2816,10 @@ _PyXI_Exit(_PyXI_session *session, _PyXI_failure *override,
             result->excinfo = excinfo;
         }
         else {
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
             fprintf(stderr, "_PyXI_Exit(): uncaught exception discarded");
 #endif
-            Py_DECREF(excinfo);
+            Ty_DECREF(excinfo);
         }
         xi_error_clear(&err);
     }
@@ -2835,7 +2835,7 @@ capture_session_error(_PyXI_session *session, _PyXI_error *err,
 {
     assert(_session_is_active(session));
     assert(!xi_error_is_set(err));
-    PyThreadState *tstate = session->init_tstate;
+    TyThreadState *tstate = session->init_tstate;
 
     // Normalize the exception override.
     if (override != NULL) {
@@ -2850,13 +2850,13 @@ capture_session_error(_PyXI_session *session, _PyXI_error *err,
 
     // Handle the exception, if any.
     const char *failure = NULL;
-    PyObject *exc = xi_error_resolve_current_exc(tstate, override);
+    TyObject *exc = xi_error_resolve_current_exc(tstate, override);
     if (exc != NULL) {
         // There is an unhandled exception we need to preserve.
         failure = xi_error_set_exc(tstate, err, exc);
-        Py_DECREF(exc);
-        if (_PyErr_Occurred(tstate)) {
-            PyErr_FormatUnraisable(failure);
+        Ty_DECREF(exc);
+        if (_TyErr_Occurred(tstate)) {
+            TyErr_FormatUnraisable(failure);
         }
     }
 
@@ -2866,7 +2866,7 @@ capture_session_error(_PyXI_session *session, _PyXI_error *err,
     }
 
     // Finished!
-    assert(!_PyErr_Occurred(tstate));
+    assert(!_TyErr_Occurred(tstate));
     return failure;
 }
 
@@ -2874,14 +2874,14 @@ static int
 _ensure_main_ns(_PyXI_session *session, _PyXI_failure *failure)
 {
     assert(_session_is_active(session));
-    PyThreadState *tstate = session->init_tstate;
+    TyThreadState *tstate = session->init_tstate;
     if (session->main_ns != NULL) {
         return 0;
     }
     // Cache __main__.__dict__.
-    PyObject *main_mod = _Py_GetMainModule(tstate);
-    if (_Py_CheckMainModule(main_mod) < 0) {
-        Py_XDECREF(main_mod);
+    TyObject *main_mod = _Ty_GetMainModule(tstate);
+    if (_Ty_CheckMainModule(main_mod) < 0) {
+        Ty_XDECREF(main_mod);
         if (failure != NULL) {
             *failure = (_PyXI_failure){
                 .code = _PyXI_ERR_MAIN_NS_FAILURE,
@@ -2889,8 +2889,8 @@ _ensure_main_ns(_PyXI_session *session, _PyXI_failure *failure)
         }
         return -1;
     }
-    PyObject *ns = PyModule_GetDict(main_mod);  // borrowed
-    Py_DECREF(main_mod);
+    TyObject *ns = TyModule_GetDict(main_mod);  // borrowed
+    Ty_DECREF(main_mod);
     if (ns == NULL) {
         if (failure != NULL) {
             *failure = (_PyXI_failure){
@@ -2899,15 +2899,15 @@ _ensure_main_ns(_PyXI_session *session, _PyXI_failure *failure)
         }
         return -1;
     }
-    session->main_ns = Py_NewRef(ns);
+    session->main_ns = Ty_NewRef(ns);
     return 0;
 }
 
-PyObject *
+TyObject *
 _PyXI_GetMainNamespace(_PyXI_session *session, _PyXI_failure *failure)
 {
     if (!_session_is_active(session)) {
-        PyErr_SetString(PyExc_RuntimeError, "session not active");
+        TyErr_SetString(TyExc_RuntimeError, "session not active");
         return NULL;
     }
     if (_ensure_main_ns(session, failure) < 0) {
@@ -2919,12 +2919,12 @@ _PyXI_GetMainNamespace(_PyXI_session *session, _PyXI_failure *failure)
 
 static int
 _pop_preserved(_PyXI_session *session,
-               _PyXI_namespace **p_xidata, PyObject **p_obj,
+               _PyXI_namespace **p_xidata, TyObject **p_obj,
                _PyXI_failure *p_failure)
 {
     _PyXI_failure failure = XI_FAILURE_INIT;
     _PyXI_namespace *xidata = NULL;
-    assert(_PyThreadState_GET() == session->init_tstate);  // active session
+    assert(_TyThreadState_GET() == session->init_tstate);  // active session
 
     if (session->_preserved == NULL) {
         *p_xidata = NULL;
@@ -2941,7 +2941,7 @@ _pop_preserved(_PyXI_session *session,
     *p_obj = NULL;
 
     // We did switch interpreters.
-    Py_ssize_t len = PyDict_Size(session->_preserved);
+    Ty_ssize_t len = TyDict_Size(session->_preserved);
     if (len < 0) {
         failure.code = _PyXI_ERR_PRESERVE_FAILURE;
         goto error;
@@ -2966,7 +2966,7 @@ _pop_preserved(_PyXI_session *session,
         }
         *p_xidata = xidata;
     }
-    Py_CLEAR(session->_preserved);
+    Ty_CLEAR(session->_preserved);
     return 0;
 
 error:
@@ -2980,19 +2980,19 @@ error:
 }
 
 static int
-_finish_preserved(_PyXI_namespace *xidata, PyObject **p_preserved)
+_finish_preserved(_PyXI_namespace *xidata, TyObject **p_preserved)
 {
     if (xidata == NULL) {
         return 0;
     }
     int res = -1;
     if (p_preserved != NULL) {
-        PyObject *ns = PyDict_New();
+        TyObject *ns = TyDict_New();
         if (ns == NULL) {
             goto finally;
         }
         if (_apply_sharedns(xidata, ns, NULL) < 0) {
-            Py_CLEAR(ns);
+            Ty_CLEAR(ns);
             goto finally;
         }
         *p_preserved = ns;
@@ -3005,25 +3005,25 @@ finally:
 }
 
 int
-_PyXI_Preserve(_PyXI_session *session, const char *name, PyObject *value,
+_PyXI_Preserve(_PyXI_session *session, const char *name, TyObject *value,
                _PyXI_failure *p_failure)
 {
     _PyXI_failure failure = XI_FAILURE_INIT;
     if (!_session_is_active(session)) {
-        PyErr_SetString(PyExc_RuntimeError, "session not active");
+        TyErr_SetString(TyExc_RuntimeError, "session not active");
         return -1;
     }
     if (session->_preserved == NULL) {
-        session->_preserved = PyDict_New();
+        session->_preserved = TyDict_New();
         if (session->_preserved == NULL) {
-            set_exc_with_cause(PyExc_RuntimeError,
+            set_exc_with_cause(TyExc_RuntimeError,
                                "failed to initialize preserved objects");
             failure.code = _PyXI_ERR_PRESERVE_FAILURE;
             goto error;
         }
     }
-    if (PyDict_SetItemString(session->_preserved, name, value) < 0) {
-        set_exc_with_cause(PyExc_RuntimeError, "failed to preserve object");
+    if (TyDict_SetItemString(session->_preserved, name, value) < 0) {
+        set_exc_with_cause(TyExc_RuntimeError, "failed to preserve object");
         failure.code = _PyXI_ERR_PRESERVE_FAILURE;
         goto error;
     }
@@ -3036,12 +3036,12 @@ error:
     return -1;
 }
 
-PyObject *
+TyObject *
 _PyXI_GetPreserved(_PyXI_session_result *result, const char *name)
 {
-    PyObject *value = NULL;
+    TyObject *value = NULL;
     if (result->preserved != NULL) {
-        (void)PyDict_GetItemStringRef(result->preserved, name, &value);
+        (void)TyDict_GetItemStringRef(result->preserved, name, &value);
     }
     return value;
 }
@@ -3049,8 +3049,8 @@ _PyXI_GetPreserved(_PyXI_session_result *result, const char *name)
 void
 _PyXI_ClearResult(_PyXI_session_result *result)
 {
-    Py_CLEAR(result->preserved);
-    Py_CLEAR(result->excinfo);
+    Ty_CLEAR(result->preserved);
+    Ty_CLEAR(result->excinfo);
 }
 
 
@@ -3059,7 +3059,7 @@ _PyXI_ClearResult(_PyXI_session_result *result)
 /*********************/
 
 int
-_Py_xi_global_state_init(_PyXI_global_state_t *state)
+_Ty_xi_global_state_init(_PyXI_global_state_t *state)
 {
     assert(state != NULL);
     xid_lookup_init(&state->data_lookup);
@@ -3067,14 +3067,14 @@ _Py_xi_global_state_init(_PyXI_global_state_t *state)
 }
 
 void
-_Py_xi_global_state_fini(_PyXI_global_state_t *state)
+_Ty_xi_global_state_fini(_PyXI_global_state_t *state)
 {
     assert(state != NULL);
     xid_lookup_fini(&state->data_lookup);
 }
 
 int
-_Py_xi_state_init(_PyXI_state_t *state, PyInterpreterState *interp)
+_Ty_xi_state_init(_PyXI_state_t *state, TyInterpreterState *interp)
 {
     assert(state != NULL);
     assert(interp == NULL || state == _PyXI_GET_STATE(interp));
@@ -3096,7 +3096,7 @@ _Py_xi_state_init(_PyXI_state_t *state, PyInterpreterState *interp)
 }
 
 void
-_Py_xi_state_fini(_PyXI_state_t *state, PyInterpreterState *interp)
+_Ty_xi_state_fini(_PyXI_state_t *state, TyInterpreterState *interp)
 {
     assert(state != NULL);
     assert(interp == NULL || state == _PyXI_GET_STATE(interp));
@@ -3110,78 +3110,78 @@ _Py_xi_state_fini(_PyXI_state_t *state, PyInterpreterState *interp)
 }
 
 
-PyStatus
-_PyXI_Init(PyInterpreterState *interp)
+TyStatus
+_PyXI_Init(TyInterpreterState *interp)
 {
-    if (_Py_IsMainInterpreter(interp)) {
+    if (_Ty_IsMainInterpreter(interp)) {
         _PyXI_global_state_t *global_state = _PyXI_GET_GLOBAL_STATE(interp);
         if (global_state == NULL) {
-            PyErr_PrintEx(0);
-            return _PyStatus_ERR(
+            TyErr_PrintEx(0);
+            return _TyStatus_ERR(
                     "failed to get global cross-interpreter state");
         }
-        if (_Py_xi_global_state_init(global_state) < 0) {
-            PyErr_PrintEx(0);
-            return _PyStatus_ERR(
+        if (_Ty_xi_global_state_init(global_state) < 0) {
+            TyErr_PrintEx(0);
+            return _TyStatus_ERR(
                     "failed to initialize  global cross-interpreter state");
         }
     }
 
     _PyXI_state_t *state = _PyXI_GET_STATE(interp);
     if (state == NULL) {
-        PyErr_PrintEx(0);
-        return _PyStatus_ERR(
+        TyErr_PrintEx(0);
+        return _TyStatus_ERR(
                 "failed to get interpreter's cross-interpreter state");
     }
     // The static types were already initialized in _PyXI_InitTypes(),
     // so we pass in NULL here to avoid initializing them again.
-    if (_Py_xi_state_init(state, NULL) < 0) {
-        PyErr_PrintEx(0);
-        return _PyStatus_ERR(
+    if (_Ty_xi_state_init(state, NULL) < 0) {
+        TyErr_PrintEx(0);
+        return _TyStatus_ERR(
                 "failed to initialize interpreter's cross-interpreter state");
     }
 
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 // _PyXI_Fini() must be called before the interpreter is cleared,
 // since we must clear some heap objects.
 
 void
-_PyXI_Fini(PyInterpreterState *interp)
+_PyXI_Fini(TyInterpreterState *interp)
 {
     _PyXI_state_t *state = _PyXI_GET_STATE(interp);
 #ifndef NDEBUG
     if (state == NULL) {
-        PyErr_PrintEx(0);
+        TyErr_PrintEx(0);
         return;
     }
 #endif
     // The static types will be finalized soon in _PyXI_FiniTypes(),
     // so we pass in NULL here to avoid finalizing them right now.
-    _Py_xi_state_fini(state, NULL);
+    _Ty_xi_state_fini(state, NULL);
 
-    if (_Py_IsMainInterpreter(interp)) {
+    if (_Ty_IsMainInterpreter(interp)) {
         _PyXI_global_state_t *global_state = _PyXI_GET_GLOBAL_STATE(interp);
-        _Py_xi_global_state_fini(global_state);
+        _Ty_xi_global_state_fini(global_state);
     }
 }
 
-PyStatus
-_PyXI_InitTypes(PyInterpreterState *interp)
+TyStatus
+_PyXI_InitTypes(TyInterpreterState *interp)
 {
     if (init_static_exctypes(&_PyXI_GET_STATE(interp)->exceptions, interp) < 0) {
-        PyErr_PrintEx(0);
-        return _PyStatus_ERR(
+        TyErr_PrintEx(0);
+        return _TyStatus_ERR(
                 "failed to initialize the cross-interpreter exception types");
     }
     // We would initialize heap types here too but that leads to ref leaks.
     // Instead, we intialize them in _PyXI_Init().
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 void
-_PyXI_FiniTypes(PyInterpreterState *interp)
+_PyXI_FiniTypes(TyInterpreterState *interp)
 {
     // We would finalize heap types here too but that leads to ref leaks.
     // Instead, we finalize them in _PyXI_Fini().
@@ -3193,35 +3193,35 @@ _PyXI_FiniTypes(PyInterpreterState *interp)
 /* other API */
 /*************/
 
-PyInterpreterState *
+TyInterpreterState *
 _PyXI_NewInterpreter(PyInterpreterConfig *config, long *maybe_whence,
-                     PyThreadState **p_tstate, PyThreadState **p_save_tstate)
+                     TyThreadState **p_tstate, TyThreadState **p_save_tstate)
 {
-    PyThreadState *save_tstate = PyThreadState_Swap(NULL);
+    TyThreadState *save_tstate = PyThreadState_Swap(NULL);
     assert(save_tstate != NULL);
 
-    PyThreadState *tstate;
-    PyStatus status = Py_NewInterpreterFromConfig(&tstate, config);
-    if (PyStatus_Exception(status)) {
+    TyThreadState *tstate;
+    TyStatus status = Ty_NewInterpreterFromConfig(&tstate, config);
+    if (TyStatus_Exception(status)) {
         // Since no new thread state was created, there is no exception
         // to propagate; raise a fresh one after swapping back in the
         // old thread state.
         PyThreadState_Swap(save_tstate);
-        _PyErr_SetFromPyStatus(status);
-        PyObject *exc = PyErr_GetRaisedException();
-        PyErr_SetString(PyExc_InterpreterError,
+        _TyErr_SetFromPyStatus(status);
+        TyObject *exc = TyErr_GetRaisedException();
+        TyErr_SetString(TyExc_InterpreterError,
                         "sub-interpreter creation failed");
-        _PyErr_ChainExceptions1(exc);
+        _TyErr_ChainExceptions1(exc);
         return NULL;
     }
     assert(tstate != NULL);
-    PyInterpreterState *interp = PyThreadState_GetInterpreter(tstate);
+    TyInterpreterState *interp = PyThreadState_GetInterpreter(tstate);
 
-    long whence = _PyInterpreterState_WHENCE_XI;
+    long whence = _TyInterpreterState_WHENCE_XI;
     if (maybe_whence != NULL) {
         whence = *maybe_whence;
     }
-    _PyInterpreterState_SetWhence(interp, whence);
+    _TyInterpreterState_SetWhence(interp, whence);
 
     if (p_tstate != NULL) {
         // We leave the new thread state as the current one.
@@ -3241,16 +3241,16 @@ _PyXI_NewInterpreter(PyInterpreterConfig *config, long *maybe_whence,
 }
 
 void
-_PyXI_EndInterpreter(PyInterpreterState *interp,
-                     PyThreadState *tstate, PyThreadState **p_save_tstate)
+_PyXI_EndInterpreter(TyInterpreterState *interp,
+                     TyThreadState *tstate, TyThreadState **p_save_tstate)
 {
 #ifndef NDEBUG
-    long whence = _PyInterpreterState_GetWhence(interp);
+    long whence = _TyInterpreterState_GetWhence(interp);
 #endif
-    assert(whence != _PyInterpreterState_WHENCE_RUNTIME);
+    assert(whence != _TyInterpreterState_WHENCE_RUNTIME);
 
-    if (!_PyInterpreterState_IsReady(interp)) {
-        assert(whence == _PyInterpreterState_WHENCE_UNKNOWN);
+    if (!_TyInterpreterState_IsReady(interp)) {
+        assert(whence == _TyInterpreterState_WHENCE_UNKNOWN);
         // PyInterpreterState_Clear() requires the GIL,
         // which a not-ready does not have, so we don't clear it.
         // That means there may be leaks here until clearing the
@@ -3258,16 +3258,16 @@ _PyXI_EndInterpreter(PyInterpreterState *interp,
         PyInterpreterState_Delete(interp);
         return;
     }
-    assert(whence != _PyInterpreterState_WHENCE_UNKNOWN);
+    assert(whence != _TyInterpreterState_WHENCE_UNKNOWN);
 
-    PyThreadState *save_tstate = NULL;
-    PyThreadState *cur_tstate = PyThreadState_GET();
+    TyThreadState *save_tstate = NULL;
+    TyThreadState *cur_tstate = PyThreadState_GET();
     if (tstate == NULL) {
         if (PyThreadState_GetInterpreter(cur_tstate) == interp) {
             tstate = cur_tstate;
         }
         else {
-            tstate = _PyThreadState_NewBound(interp, _PyThreadState_WHENCE_FINI);
+            tstate = _TyThreadState_NewBound(interp, _TyThreadState_WHENCE_FINI);
             assert(tstate != NULL);
             save_tstate = PyThreadState_Swap(tstate);
         }
@@ -3280,7 +3280,7 @@ _PyXI_EndInterpreter(PyInterpreterState *interp,
         }
     }
 
-    Py_EndInterpreter(tstate);
+    Ty_EndInterpreter(tstate);
 
     if (p_save_tstate != NULL) {
         save_tstate = *p_save_tstate;

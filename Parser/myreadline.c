@@ -10,10 +10,10 @@
 */
 
 #include "Python.h"
-#include "pycore_fileutils.h"     // _Py_BEGIN_SUPPRESS_IPH
-#include "pycore_interp.h"        // _PyInterpreterState_GetConfig()
-#include "pycore_pystate.h"       // _PyThreadState_GET()
-#include "pycore_signal.h"        // _PyOS_SigintEvent()
+#include "pycore_fileutils.h"     // _Ty_BEGIN_SUPPRESS_IPH
+#include "pycore_interp.h"        // _TyInterpreterState_GetConfig()
+#include "pycore_pystate.h"       // _TyThreadState_GET()
+#include "pycore_signal.h"        // _TyOS_SigintEvent()
 #ifdef MS_WINDOWS
 #  ifndef WIN32_LEAN_AND_MEAN
 #    define WIN32_LEAN_AND_MEAN
@@ -27,24 +27,24 @@
 
 
 // Export the symbol since it's used by the readline shared extension
-PyAPI_DATA(PyThreadState*) _PyOS_ReadlineTState;
-PyThreadState *_PyOS_ReadlineTState = NULL;
+PyAPI_DATA(TyThreadState*) _TyOS_ReadlineTState;
+TyThreadState *_TyOS_ReadlineTState = NULL;
 
-static PyMutex _PyOS_ReadlineLock;
+static PyMutex _TyOS_ReadlineLock;
 
-int (*PyOS_InputHook)(void) = NULL;
+int (*TyOS_InputHook)(void) = NULL;
 
 /* This function restarts a fgets() after an EINTR error occurred
-   except if _PyOS_InterruptOccurred() returns true. */
+   except if _TyOS_InterruptOccurred() returns true. */
 
 static int
-my_fgets(PyThreadState* tstate, char *buf, int len, FILE *fp)
+my_fgets(TyThreadState* tstate, char *buf, int len, FILE *fp)
 {
 #ifdef MS_WINDOWS
     HANDLE handle;
-    _Py_BEGIN_SUPPRESS_IPH
+    _Ty_BEGIN_SUPPRESS_IPH
     handle = (HANDLE)_get_osfhandle(fileno(fp));
-    _Py_END_SUPPRESS_IPH
+    _Ty_END_SUPPRESS_IPH
 
     /* bpo-40826: fgets(fp) does crash if fileno(fp) is closed */
     if (handle == INVALID_HANDLE_VALUE) {
@@ -53,11 +53,11 @@ my_fgets(PyThreadState* tstate, char *buf, int len, FILE *fp)
 #endif
 
     while (1) {
-        if (PyOS_InputHook != NULL &&
-            // GH-104668: See PyOS_ReadlineFunctionPointer's comment below...
-            _Py_IsMainInterpreter(tstate->interp))
+        if (TyOS_InputHook != NULL &&
+            // GH-104668: See TyOS_ReadlineFunctionPointer's comment below...
+            _Ty_IsMainInterpreter(tstate->interp))
         {
-            (void)(PyOS_InputHook)();
+            (void)(TyOS_InputHook)();
         }
 
         errno = 0;
@@ -73,7 +73,7 @@ my_fgets(PyThreadState* tstate, char *buf, int len, FILE *fp)
            on a line will set ERROR_OPERATION_ABORTED. Under normal
            circumstances Ctrl-C will also have caused the SIGINT handler
            to fire which will have set the event object returned by
-           _PyOS_SigintEvent. This signal fires in another thread and
+           _TyOS_SigintEvent. This signal fires in another thread and
            is not guaranteed to have occurred before this point in the
            code.
 
@@ -83,7 +83,7 @@ my_fgets(PyThreadState* tstate, char *buf, int len, FILE *fp)
            through to check for EOF.
         */
         if (GetLastError()==ERROR_OPERATION_ABORTED) {
-            HANDLE hInterruptEvent = _PyOS_SigintEvent();
+            HANDLE hInterruptEvent = _TyOS_SigintEvent();
             switch (WaitForSingleObjectEx(hInterruptEvent, 10, FALSE)) {
             case WAIT_OBJECT_0:
                 ResetEvent(hInterruptEvent);
@@ -101,9 +101,9 @@ my_fgets(PyThreadState* tstate, char *buf, int len, FILE *fp)
 
 #ifdef EINTR
         if (err == EINTR) {
-            PyEval_RestoreThread(tstate);
-            int s = PyErr_CheckSignals();
-            PyEval_SaveThread();
+            TyEval_RestoreThread(tstate);
+            int s = TyErr_CheckSignals();
+            TyEval_SaveThread();
 
             if (s < 0) {
                 return 1;
@@ -113,7 +113,7 @@ my_fgets(PyThreadState* tstate, char *buf, int len, FILE *fp)
         }
 #endif
 
-        if (_PyOS_InterruptOccurred(tstate)) {
+        if (_TyOS_InterruptOccurred(tstate)) {
             return 1; /* Interrupt */
         }
         return -2; /* Error */
@@ -127,7 +127,7 @@ my_fgets(PyThreadState* tstate, char *buf, int len, FILE *fp)
 extern char _get_console_type(HANDLE handle);
 
 char *
-_PyOS_WindowsConsoleReadline(PyThreadState *tstate, HANDLE hStdIn)
+_TyOS_WindowsConsoleReadline(TyThreadState *tstate, HANDLE hStdIn)
 {
     static wchar_t wbuf_local[1024 * 16];
     const DWORD chunk_size = 1024;
@@ -142,11 +142,11 @@ _PyOS_WindowsConsoleReadline(PyThreadState *tstate, HANDLE hStdIn)
     wbuf = wbuf_local;
     wbuflen = sizeof(wbuf_local) / sizeof(wbuf_local[0]) - 1;
     while (1) {
-        if (PyOS_InputHook != NULL &&
-            // GH-104668: See PyOS_ReadlineFunctionPointer's comment below...
-            _Py_IsMainInterpreter(tstate->interp))
+        if (TyOS_InputHook != NULL &&
+            // GH-104668: See TyOS_ReadlineFunctionPointer's comment below...
+            _Ty_IsMainInterpreter(tstate->interp))
         {
-            (void)(PyOS_InputHook)();
+            (void)(TyOS_InputHook)();
         }
         if (!ReadConsoleW(hStdIn, &wbuf[total_read], wbuflen - total_read, &n_read, NULL)) {
             err = GetLastError();
@@ -161,13 +161,13 @@ _PyOS_WindowsConsoleReadline(PyThreadState *tstate, HANDLE hStdIn)
             if (err != ERROR_OPERATION_ABORTED)
                 goto exit;
             err = 0;
-            HANDLE hInterruptEvent = _PyOS_SigintEvent();
+            HANDLE hInterruptEvent = _TyOS_SigintEvent();
             if (WaitForSingleObjectEx(hInterruptEvent, 100, FALSE)
                     == WAIT_OBJECT_0) {
                 ResetEvent(hInterruptEvent);
-                PyEval_RestoreThread(tstate);
-                s = PyErr_CheckSignals();
-                PyEval_SaveThread();
+                TyEval_RestoreThread(tstate);
+                s = TyErr_CheckSignals();
+                TyEval_SaveThread();
                 if (s < 0) {
                     goto exit;
                 }
@@ -182,23 +182,23 @@ _PyOS_WindowsConsoleReadline(PyThreadState *tstate, HANDLE hStdIn)
         wbuflen += chunk_size;
         if (wbuf == wbuf_local) {
             wbuf[total_read] = '\0';
-            wbuf = (wchar_t*)PyMem_RawMalloc(wbuflen * sizeof(wchar_t));
+            wbuf = (wchar_t*)TyMem_RawMalloc(wbuflen * sizeof(wchar_t));
             if (wbuf) {
                 wcscpy_s(wbuf, wbuflen, wbuf_local);
             }
             else {
-                PyEval_RestoreThread(tstate);
-                PyErr_NoMemory();
-                PyEval_SaveThread();
+                TyEval_RestoreThread(tstate);
+                TyErr_NoMemory();
+                TyEval_SaveThread();
                 goto exit;
             }
         }
         else {
-            wchar_t *tmp = PyMem_RawRealloc(wbuf, wbuflen * sizeof(wchar_t));
+            wchar_t *tmp = TyMem_RawRealloc(wbuf, wbuflen * sizeof(wchar_t));
             if (tmp == NULL) {
-                PyEval_RestoreThread(tstate);
-                PyErr_NoMemory();
-                PyEval_SaveThread();
+                TyEval_RestoreThread(tstate);
+                TyErr_NoMemory();
+                TyEval_SaveThread();
                 goto exit;
             }
             wbuf = tmp;
@@ -206,14 +206,14 @@ _PyOS_WindowsConsoleReadline(PyThreadState *tstate, HANDLE hStdIn)
     }
 
     if (wbuf[0] == '\x1a') {
-        buf = PyMem_RawMalloc(1);
+        buf = TyMem_RawMalloc(1);
         if (buf) {
             buf[0] = '\0';
         }
         else {
-            PyEval_RestoreThread(tstate);
-            PyErr_NoMemory();
-            PyEval_SaveThread();
+            TyEval_RestoreThread(tstate);
+            TyErr_NoMemory();
+            TyEval_SaveThread();
         }
         goto exit;
     }
@@ -222,11 +222,11 @@ _PyOS_WindowsConsoleReadline(PyThreadState *tstate, HANDLE hStdIn)
                                 wbuf, total_read,
                                 NULL, 0,
                                 NULL, NULL);
-    buf = PyMem_RawMalloc(u8len + 1);
+    buf = TyMem_RawMalloc(u8len + 1);
     if (buf == NULL) {
-        PyEval_RestoreThread(tstate);
-        PyErr_NoMemory();
-        PyEval_SaveThread();
+        TyEval_RestoreThread(tstate);
+        TyErr_NoMemory();
+        TyEval_SaveThread();
         goto exit;
     }
 
@@ -238,13 +238,13 @@ _PyOS_WindowsConsoleReadline(PyThreadState *tstate, HANDLE hStdIn)
 
 exit:
     if (wbuf != wbuf_local) {
-        PyMem_RawFree(wbuf);
+        TyMem_RawFree(wbuf);
     }
 
     if (err) {
-        PyEval_RestoreThread(tstate);
-        PyErr_SetFromWindowsErr(err);
-        PyEval_SaveThread();
+        TyEval_RestoreThread(tstate);
+        TyErr_SetFromWindowsErr(err);
+        TyEval_SaveThread();
     }
     return buf;
 }
@@ -255,20 +255,20 @@ exit:
 /* Readline implementation using fgets() */
 
 char *
-PyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
+TyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 {
     size_t n;
     char *p, *pr;
-    PyThreadState *tstate = _PyOS_ReadlineTState;
+    TyThreadState *tstate = _TyOS_ReadlineTState;
     assert(tstate != NULL);
 
 #ifdef HAVE_WINDOWS_CONSOLE_IO
-    const PyConfig *config = _PyInterpreterState_GetConfig(tstate->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (!config->legacy_windows_stdio && sys_stdin == stdin) {
         HANDLE hStdIn, hStdErr;
 
-        hStdIn = _Py_get_osfhandle_noraise(fileno(sys_stdin));
-        hStdErr = _Py_get_osfhandle_noraise(fileno(stderr));
+        hStdIn = _Ty_get_osfhandle_noraise(fileno(sys_stdin));
+        hStdErr = _Ty_get_osfhandle_noraise(fileno(stderr));
 
         if (_get_console_type(hStdIn) == 'r') {
             fflush(sys_stdout);
@@ -279,11 +279,11 @@ PyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
                     wlen = MultiByteToWideChar(CP_UTF8, 0, prompt, -1,
                             NULL, 0);
                     if (wlen) {
-                        wbuf = PyMem_RawMalloc(wlen * sizeof(wchar_t));
+                        wbuf = TyMem_RawMalloc(wlen * sizeof(wchar_t));
                         if (wbuf == NULL) {
-                            PyEval_RestoreThread(tstate);
-                            PyErr_NoMemory();
-                            PyEval_SaveThread();
+                            TyEval_RestoreThread(tstate);
+                            TyErr_NoMemory();
+                            TyEval_SaveThread();
                             return NULL;
                         }
                         wlen = MultiByteToWideChar(CP_UTF8, 0, prompt, -1,
@@ -294,7 +294,7 @@ PyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
                             /* wlen includes null terminator, so subtract 1 */
                             WriteConsoleW(hStdErr, wbuf, wlen - 1, &n, NULL);
                         }
-                        PyMem_RawFree(wbuf);
+                        TyMem_RawFree(wbuf);
                     }
                 } else {
                     fprintf(stderr, "%s", prompt);
@@ -302,7 +302,7 @@ PyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
                 }
             }
             clearerr(sys_stdin);
-            return _PyOS_WindowsConsoleReadline(tstate, hStdIn);
+            return _TyOS_WindowsConsoleReadline(tstate, hStdIn);
         }
     }
 #endif
@@ -318,25 +318,25 @@ PyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
     do {
         size_t incr = (n > 0) ? n + 2 : 100;
         if (incr > INT_MAX) {
-            PyMem_RawFree(p);
-            PyEval_RestoreThread(tstate);
-            PyErr_SetString(PyExc_OverflowError, "input line too long");
-            PyEval_SaveThread();
+            TyMem_RawFree(p);
+            TyEval_RestoreThread(tstate);
+            TyErr_SetString(TyExc_OverflowError, "input line too long");
+            TyEval_SaveThread();
             return NULL;
         }
-        pr = (char *)PyMem_RawRealloc(p, n + incr);
+        pr = (char *)TyMem_RawRealloc(p, n + incr);
         if (pr == NULL) {
-            PyMem_RawFree(p);
-            PyEval_RestoreThread(tstate);
-            PyErr_NoMemory();
-            PyEval_SaveThread();
+            TyMem_RawFree(p);
+            TyEval_RestoreThread(tstate);
+            TyErr_NoMemory();
+            TyEval_SaveThread();
             return NULL;
         }
         p = pr;
         int err = my_fgets(tstate, p + n, (int)incr, sys_stdin);
         if (err == 1) {
             // Interrupt
-            PyMem_RawFree(p);
+            TyMem_RawFree(p);
             return NULL;
         } else if (err != 0) {
             // EOF or error
@@ -346,12 +346,12 @@ PyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
         n += strlen(p + n);
     } while (p[n-1] != '\n');
 
-    pr = (char *)PyMem_RawRealloc(p, n+1);
+    pr = (char *)TyMem_RawRealloc(p, n+1);
     if (pr == NULL) {
-        PyMem_RawFree(p);
-        PyEval_RestoreThread(tstate);
-        PyErr_NoMemory();
-        PyEval_SaveThread();
+        TyMem_RawFree(p);
+        TyEval_RestoreThread(tstate);
+        TyErr_NoMemory();
+        TyEval_SaveThread();
         return NULL;
     }
     return pr;
@@ -361,34 +361,34 @@ PyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 /* By initializing this function pointer, systems embedding Python can
    override the readline function.
 
-   Note: Python expects in return a buffer allocated with PyMem_Malloc. */
+   Note: Python expects in return a buffer allocated with TyMem_Malloc. */
 
-char *(*PyOS_ReadlineFunctionPointer)(FILE *, FILE *, const char *) = NULL;
+char *(*TyOS_ReadlineFunctionPointer)(FILE *, FILE *, const char *) = NULL;
 
 
 /* Interface used by file_tokenizer.c and bltinmodule.c */
 
 char *
-PyOS_Readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
+TyOS_Readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 {
     char *rv, *res;
     size_t len;
 
-    PyThreadState *tstate = _PyThreadState_GET();
-    if (_Py_atomic_load_ptr_relaxed(&_PyOS_ReadlineTState) == tstate) {
-        PyErr_SetString(PyExc_RuntimeError,
+    TyThreadState *tstate = _TyThreadState_GET();
+    if (_Ty_atomic_load_ptr_relaxed(&_TyOS_ReadlineTState) == tstate) {
+        TyErr_SetString(TyExc_RuntimeError,
                         "can't re-enter readline");
         return NULL;
     }
 
     // GH-123321: We need to acquire the lock before setting
-    // _PyOS_ReadlineTState, otherwise the variable may be nullified by a
+    // _TyOS_ReadlineTState, otherwise the variable may be nullified by a
     // different thread.
-    Py_BEGIN_ALLOW_THREADS
-    PyMutex_Lock(&_PyOS_ReadlineLock);
-    _Py_atomic_store_ptr_relaxed(&_PyOS_ReadlineTState, tstate);
-    if (PyOS_ReadlineFunctionPointer == NULL) {
-        PyOS_ReadlineFunctionPointer = PyOS_StdioReadline;
+    Ty_BEGIN_ALLOW_THREADS
+    PyMutex_Lock(&_TyOS_ReadlineLock);
+    _Ty_atomic_store_ptr_relaxed(&_TyOS_ReadlineTState, tstate);
+    if (TyOS_ReadlineFunctionPointer == NULL) {
+        TyOS_ReadlineFunctionPointer = TyOS_StdioReadline;
     }
 
     /* This is needed to handle the unlikely case that the
@@ -397,8 +397,8 @@ PyOS_Readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
      * this: python -i < test1.py
      */
     if (!isatty(fileno(sys_stdin)) || !isatty(fileno(sys_stdout)) ||
-        // GH-104668: Don't call global callbacks like PyOS_InputHook or
-        // PyOS_ReadlineFunctionPointer from subinterpreters, since it seems
+        // GH-104668: Don't call global callbacks like TyOS_InputHook or
+        // TyOS_ReadlineFunctionPointer from subinterpreters, since it seems
         // like there's no good way for users (like readline and tkinter) to
         // avoid using global state to manage them. Plus, we generally don't
         // want to cause trouble for libraries that don't know/care about
@@ -406,32 +406,32 @@ PyOS_Readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
         // work per-interpreter and have ways to access module state, we can
         // certainly add them later (but for now we'll cross our fingers and
         // hope that nobody actually cares):
-        !_Py_IsMainInterpreter(tstate->interp))
+        !_Ty_IsMainInterpreter(tstate->interp))
     {
-        rv = PyOS_StdioReadline(sys_stdin, sys_stdout, prompt);
+        rv = TyOS_StdioReadline(sys_stdin, sys_stdout, prompt);
     }
     else {
-        rv = (*PyOS_ReadlineFunctionPointer)(sys_stdin, sys_stdout, prompt);
+        rv = (*TyOS_ReadlineFunctionPointer)(sys_stdin, sys_stdout, prompt);
     }
 
     // gh-123321: Must set the variable and then release the lock before
     // taking the GIL. Otherwise a deadlock or segfault may occur.
-    _Py_atomic_store_ptr_relaxed(&_PyOS_ReadlineTState, NULL);
-    PyMutex_Unlock(&_PyOS_ReadlineLock);
-    Py_END_ALLOW_THREADS
+    _Ty_atomic_store_ptr_relaxed(&_TyOS_ReadlineTState, NULL);
+    PyMutex_Unlock(&_TyOS_ReadlineLock);
+    Ty_END_ALLOW_THREADS
 
     if (rv == NULL)
         return NULL;
 
     len = strlen(rv) + 1;
-    res = PyMem_Malloc(len);
+    res = TyMem_Malloc(len);
     if (res != NULL) {
         memcpy(res, rv, len);
     }
     else {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
     }
-    PyMem_RawFree(rv);
+    TyMem_RawFree(rv);
 
     return res;
 }

@@ -2436,13 +2436,13 @@ class ClinicParserTest(TestCase):
                 # Now, check that we'll produce correct code.
                 decl = p.simple_declaration(in_parser=False)
                 if unused:
-                    self.assertIn("Py_UNUSED", decl)
+                    self.assertIn("Ty_UNUSED", decl)
                 else:
-                    self.assertNotIn("Py_UNUSED", decl)
+                    self.assertNotIn("Ty_UNUSED", decl)
 
-                # Make sure the Py_UNUSED macro is not used in the parser body.
+                # Make sure the Ty_UNUSED macro is not used in the parser body.
                 parser_decl = p.simple_declaration(in_parser=True)
-                self.assertNotIn("Py_UNUSED", parser_decl)
+                self.assertNotIn("Ty_UNUSED", parser_decl)
 
     def test_scaffolding(self):
         # test repr on special values
@@ -2817,10 +2817,10 @@ class ClinicExternalTest(TestCase):
             "long",
             "long_long",
             "object",
-            "Py_buffer",
-            "Py_complex",
-            "Py_ssize_t",
-            "Py_UNICODE",
+            "Ty_buffer",
+            "Ty_complex",
+            "Ty_ssize_t",
+            "Ty_UNICODE",
             "PyByteArrayObject",
             "PyBytesObject",
             "self",
@@ -2847,7 +2847,7 @@ class ClinicExternalTest(TestCase):
                 int()
                 long()
                 object()
-                Py_ssize_t()
+                Ty_ssize_t()
                 size_t()
                 unsigned_int()
                 unsigned_long()

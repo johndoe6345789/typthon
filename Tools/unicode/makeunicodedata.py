@@ -386,7 +386,7 @@ def makeunicodedata(unicode, trace):
             fprint("};")
             Array("changes_%s_index" % cversion, index1).dump(fp, trace)
             Array("changes_%s_data" % cversion, index2).dump(fp, trace)
-            fprint("static const change_record* get_change_%s(Py_UCS4 n)" % cversion)
+            fprint("static const change_record* get_change_%s(Ty_UCS4 n)" % cversion)
             fprint("{")
             fprint("    int index;")
             fprint("    if (n >= 0x110000) index = 0;")
@@ -397,7 +397,7 @@ def makeunicodedata(unicode, trace):
             fprint("    }")
             fprint("    return change_records_%s+index;" % cversion)
             fprint("}\n")
-            fprint("static Py_UCS4 normalization_%s(Py_UCS4 n)" % cversion)
+            fprint("static Ty_UCS4 normalization_%s(Ty_UCS4 n)" % cversion)
             fprint("{")
             fprint("    switch(n) {")
             for k, v in normalization:
@@ -547,7 +547,7 @@ def makeunicodetype(unicode, trace):
 
         fprint("/* extended case mappings */")
         fprint()
-        fprint("const Py_UCS4 _PyUnicode_ExtendedCase[] = {")
+        fprint("const Ty_UCS4 _PyUnicode_ExtendedCase[] = {")
         for c in extra_casing:
             fprint("    %d," % c)
         fprint("};")
@@ -566,7 +566,7 @@ def makeunicodetype(unicode, trace):
         fprint('/* Returns the numeric value as double for Unicode characters')
         fprint(' * having this property, -1.0 otherwise.')
         fprint(' */')
-        fprint('double _PyUnicode_ToNumeric(Py_UCS4 ch)')
+        fprint('double _PyUnicode_ToNumeric(Ty_UCS4 ch)')
         fprint('{')
         fprint('    switch (ch) {')
         for value, codepoints in numeric_items:
@@ -588,7 +588,7 @@ def makeunicodetype(unicode, trace):
         fprint("/* Returns 1 for Unicode characters having the bidirectional")
         fprint(" * type 'WS', 'B' or 'S' or the category 'Zs', 0 otherwise.")
         fprint(" */")
-        fprint('int _PyUnicode_IsWhitespace(const Py_UCS4 ch)')
+        fprint('int _PyUnicode_IsWhitespace(const Ty_UCS4 ch)')
         fprint('{')
         fprint('    switch (ch) {')
 
@@ -606,7 +606,7 @@ def makeunicodetype(unicode, trace):
         fprint(" * property 'BK', 'CR', 'LF' or 'NL' or having bidirectional")
         fprint(" * type 'B', 0 otherwise.")
         fprint(" */")
-        fprint('int _PyUnicode_IsLinebreak(const Py_UCS4 ch)')
+        fprint('int _PyUnicode_IsLinebreak(const Ty_UCS4 ch)')
         fprint('{')
         fprint('    switch (ch) {')
         for codepoint in sorted(linebreaks):
@@ -677,13 +677,13 @@ def makeunicodename(unicode, trace):
         fprint('};')
 
         # In Unicode 6.0.0, the sequences contain at most 4 BMP chars,
-        # so we are using Py_UCS2 seq[4].  This needs to be updated if longer
+        # so we are using Ty_UCS2 seq[4].  This needs to be updated if longer
         # sequences or sequences with non-BMP chars are added.
         # unicodedata_lookup should be adapted too.
         fprint(dedent("""
             typedef struct NamedSequence {
                 int seqlen;
-                Py_UCS2 seq[4];
+                Ty_UCS2 seq[4];
             } named_sequence;
             """))
 
@@ -967,8 +967,8 @@ class UnicodeData:
             for name, chars in UcdFile(NAMED_SEQUENCES, version):
                 chars = tuple(int(char, 16) for char in chars.split())
                 # check that the structure defined in makeunicodename is OK
-                assert 2 <= len(chars) <= 4, "change the Py_UCS2 array size"
-                assert all(c <= 0xFFFF for c in chars), ("use Py_UCS4 in "
+                assert 2 <= len(chars) <= 4, "change the Ty_UCS2 array size"
+                assert all(c <= 0xFFFF for c in chars), ("use Ty_UCS4 in "
                     "the NamedSequence struct and in unicodedata_lookup")
                 self.named_sequences.append((name, chars))
                 # also store these in the PUA 1

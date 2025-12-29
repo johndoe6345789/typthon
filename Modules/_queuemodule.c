@@ -1,49 +1,49 @@
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
-#include "pycore_ceval.h"         // Py_MakePendingCalls()
-#include "pycore_moduleobject.h"  // _PyModule_GetState()
+#include "pycore_ceval.h"         // Ty_MakePendingCalls()
+#include "pycore_moduleobject.h"  // _TyModule_GetState()
 #include "pycore_parking_lot.h"
-#include "pycore_time.h"          // _PyTime_FromSecondsObject()
+#include "pycore_time.h"          // _TyTime_FromSecondsObject()
 #include "pycore_weakref.h"       // FT_CLEAR_WEAKREFS()
 
 #include <stdbool.h>
 #include <stddef.h>               // offsetof()
 
 typedef struct {
-    PyTypeObject *SimpleQueueType;
-    PyObject *EmptyError;
+    TyTypeObject *SimpleQueueType;
+    TyObject *EmptyError;
 } simplequeue_state;
 
 static simplequeue_state *
-simplequeue_get_state(PyObject *module)
+simplequeue_get_state(TyObject *module)
 {
-    simplequeue_state *state = _PyModule_GetState(module);
+    simplequeue_state *state = _TyModule_GetState(module);
     assert(state);
     return state;
 }
-static struct PyModuleDef queuemodule;
+static struct TyModuleDef queuemodule;
 #define simplequeue_get_state_by_type(type) \
-    (simplequeue_get_state(PyType_GetModuleByDef(type, &queuemodule)))
+    (simplequeue_get_state(TyType_GetModuleByDef(type, &queuemodule)))
 
-static const Py_ssize_t INITIAL_RING_BUF_CAPACITY = 8;
+static const Ty_ssize_t INITIAL_RING_BUF_CAPACITY = 8;
 
 typedef struct {
     // Where to place the next item
-    Py_ssize_t put_idx;
+    Ty_ssize_t put_idx;
 
     // Where to get the next item
-    Py_ssize_t get_idx;
+    Ty_ssize_t get_idx;
 
-    PyObject **items;
+    TyObject **items;
 
     // Total number of items that may be stored
-    Py_ssize_t items_cap;
+    Ty_ssize_t items_cap;
 
     // Number of items stored
-    Py_ssize_t num_items;
+    Ty_ssize_t num_items;
 } RingBuf;
 
 static int
@@ -53,16 +53,16 @@ RingBuf_Init(RingBuf *buf)
     buf->get_idx = 0;
     buf->items_cap = INITIAL_RING_BUF_CAPACITY;
     buf->num_items = 0;
-    buf->items = PyMem_Calloc(buf->items_cap, sizeof(PyObject *));
+    buf->items = TyMem_Calloc(buf->items_cap, sizeof(TyObject *));
     if (buf->items == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
     return 0;
 }
 
-static PyObject *
-RingBuf_At(RingBuf *buf, Py_ssize_t idx)
+static TyObject *
+RingBuf_At(RingBuf *buf, Ty_ssize_t idx)
 {
     assert(idx >= 0 && idx < buf->num_items);
     return buf->items[(buf->get_idx + idx) % buf->items_cap];
@@ -71,19 +71,19 @@ RingBuf_At(RingBuf *buf, Py_ssize_t idx)
 static void
 RingBuf_Fini(RingBuf *buf)
 {
-    PyObject **items = buf->items;
-    Py_ssize_t num_items = buf->num_items;
-    Py_ssize_t cap = buf->items_cap;
-    Py_ssize_t idx = buf->get_idx;
+    TyObject **items = buf->items;
+    Ty_ssize_t num_items = buf->num_items;
+    Ty_ssize_t cap = buf->items_cap;
+    Ty_ssize_t idx = buf->get_idx;
     buf->items = NULL;
     buf->put_idx = 0;
     buf->get_idx = 0;
     buf->num_items = 0;
     buf->items_cap = 0;
-    for (Py_ssize_t n = num_items; n > 0; idx = (idx + 1) % cap, n--) {
-        Py_DECREF(items[idx]);
+    for (Ty_ssize_t n = num_items; n > 0; idx = (idx + 1) % cap, n--) {
+        Ty_DECREF(items[idx]);
     }
-    PyMem_Free(items);
+    TyMem_Free(items);
 }
 
 // Resize the underlying items array of buf to the new capacity and arrange
@@ -91,37 +91,37 @@ RingBuf_Fini(RingBuf *buf)
 //
 // Returns -1 on allocation failure or 0 on success.
 static int
-resize_ringbuf(RingBuf *buf, Py_ssize_t capacity)
+resize_ringbuf(RingBuf *buf, Ty_ssize_t capacity)
 {
-    Py_ssize_t new_capacity = Py_MAX(INITIAL_RING_BUF_CAPACITY, capacity);
+    Ty_ssize_t new_capacity = Ty_MAX(INITIAL_RING_BUF_CAPACITY, capacity);
     if (new_capacity == buf->items_cap) {
         return 0;
     }
     assert(buf->num_items <= new_capacity);
 
-    PyObject **new_items = PyMem_Calloc(new_capacity, sizeof(PyObject *));
+    TyObject **new_items = TyMem_Calloc(new_capacity, sizeof(TyObject *));
     if (new_items == NULL) {
         return -1;
     }
 
     // Copy the "tail" of the old items array. This corresponds to "head" of
     // the abstract ring buffer.
-    Py_ssize_t tail_size =
-        Py_MIN(buf->num_items, buf->items_cap - buf->get_idx);
+    Ty_ssize_t tail_size =
+        Ty_MIN(buf->num_items, buf->items_cap - buf->get_idx);
     if (tail_size > 0) {
         memcpy(new_items, buf->items + buf->get_idx,
-               tail_size * sizeof(PyObject *));
+               tail_size * sizeof(TyObject *));
     }
 
     // Copy the "head" of the old items array, if any. This corresponds to the
     // "tail" of the abstract ring buffer.
-    Py_ssize_t head_size = buf->num_items - tail_size;
+    Ty_ssize_t head_size = buf->num_items - tail_size;
     if (head_size > 0) {
         memcpy(new_items + tail_size, buf->items,
-               head_size * sizeof(PyObject *));
+               head_size * sizeof(TyObject *));
     }
 
-    PyMem_Free(buf->items);
+    TyMem_Free(buf->items);
     buf->items = new_items;
     buf->items_cap = new_capacity;
     buf->get_idx = 0;
@@ -131,7 +131,7 @@ resize_ringbuf(RingBuf *buf, Py_ssize_t capacity)
 }
 
 // Returns a strong reference from the head of the buffer.
-static PyObject *
+static TyObject *
 RingBuf_Get(RingBuf *buf)
 {
     assert(buf->num_items > 0);
@@ -146,7 +146,7 @@ RingBuf_Get(RingBuf *buf)
         (void)resize_ringbuf(buf, buf->items_cap / 2);
     }
 
-    PyObject *item = buf->items[buf->get_idx];
+    TyObject *item = buf->items[buf->get_idx];
     buf->items[buf->get_idx] = NULL;
     buf->get_idx = (buf->get_idx + 1) % buf->items_cap;
     buf->num_items--;
@@ -157,14 +157,14 @@ RingBuf_Get(RingBuf *buf)
 //
 // Steals a reference to item.
 static int
-RingBuf_Put(RingBuf *buf, PyObject *item)
+RingBuf_Put(RingBuf *buf, TyObject *item)
 {
     assert(buf->num_items <= buf->items_cap);
 
     if (buf->num_items == buf->items_cap) {
         // Buffer is full, grow it.
         if (resize_ringbuf(buf, buf->items_cap * 2) < 0) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return -1;
         }
     }
@@ -174,7 +174,7 @@ RingBuf_Put(RingBuf *buf, PyObject *item)
     return 0;
 }
 
-static Py_ssize_t
+static Ty_ssize_t
 RingBuf_Len(RingBuf *buf)
 {
     return buf->num_items;
@@ -195,7 +195,7 @@ typedef struct {
     // Items in the queue
     RingBuf buf;
 
-    PyObject *weakreflist;
+    TyObject *weakreflist;
 } simplequeueobject;
 
 #define simplequeueobject_CAST(op)  ((simplequeueobject *)(op))
@@ -207,7 +207,7 @@ class _queue.SimpleQueue "simplequeueobject *" "simplequeue_get_state_by_type(ty
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=0a4023fe4d198c8d]*/
 
 static int
-simplequeue_clear(PyObject *op)
+simplequeue_clear(TyObject *op)
 {
     simplequeueobject *self = simplequeueobject_CAST(op);
     RingBuf_Fini(&self->buf);
@@ -215,27 +215,27 @@ simplequeue_clear(PyObject *op)
 }
 
 static void
-simplequeue_dealloc(PyObject *op)
+simplequeue_dealloc(TyObject *op)
 {
     simplequeueobject *self = simplequeueobject_CAST(op);
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
 
     PyObject_GC_UnTrack(self);
     (void)simplequeue_clear(op);
     FT_CLEAR_WEAKREFS(op, self->weakreflist);
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
 static int
-simplequeue_traverse(PyObject *op, visitproc visit, void *arg)
+simplequeue_traverse(TyObject *op, visitproc visit, void *arg)
 {
     simplequeueobject *self = simplequeueobject_CAST(op);
     RingBuf *buf = &self->buf;
-    for (Py_ssize_t i = 0, num_items = buf->num_items; i < num_items; i++) {
-        Py_VISIT(RingBuf_At(buf, i));
+    for (Ty_ssize_t i = 0, num_items = buf->num_items; i < num_items; i++) {
+        Ty_VISIT(RingBuf_At(buf, i));
     }
-    Py_VISIT(Py_TYPE(self));
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
@@ -246,8 +246,8 @@ _queue.SimpleQueue.__new__ as simplequeue_new
 Simple, unbounded, reentrant FIFO queue.
 [clinic start generated code]*/
 
-static PyObject *
-simplequeue_new_impl(PyTypeObject *type)
+static TyObject *
+simplequeue_new_impl(TyTypeObject *type)
 /*[clinic end generated code: output=ba97740608ba31cd input=a0674a1643e3e2fb]*/
 {
     simplequeueobject *self;
@@ -256,25 +256,25 @@ simplequeue_new_impl(PyTypeObject *type)
     if (self != NULL) {
         self->weakreflist = NULL;
         if (RingBuf_Init(&self->buf) < 0) {
-            Py_DECREF(self);
+            Ty_DECREF(self);
             return NULL;
         }
     }
 
-    return (PyObject *) self;
+    return (TyObject *) self;
 }
 
 typedef struct {
     bool handed_off;
     simplequeueobject *queue;
-    PyObject *item;
+    TyObject *item;
 } HandoffData;
 
 static void
 maybe_handoff_item(void *arg, void *park_arg, int has_more_waiters)
 {
     HandoffData *data = (HandoffData*)arg;
-    PyObject **item = (PyObject**)park_arg;
+    TyObject **item = (TyObject**)park_arg;
     if (item == NULL) {
         // No threads were waiting
         data->handed_off = false;
@@ -301,14 +301,14 @@ never blocks.  They are provided for compatibility with the Queue class.
 
 [clinic start generated code]*/
 
-static PyObject *
-_queue_SimpleQueue_put_impl(simplequeueobject *self, PyObject *item,
-                            int block, PyObject *timeout)
+static TyObject *
+_queue_SimpleQueue_put_impl(simplequeueobject *self, TyObject *item,
+                            int block, TyObject *timeout)
 /*[clinic end generated code: output=4333136e88f90d8b input=a16dbb33363c0fa8]*/
 {
     HandoffData data = {
         .handed_off = 0,
-        .item = Py_NewRef(item),
+        .item = Ty_NewRef(item),
         .queue = self,
     };
     if (self->has_threads_waiting) {
@@ -336,20 +336,20 @@ for compatibility with the Queue class.
 
 [clinic start generated code]*/
 
-static PyObject *
-_queue_SimpleQueue_put_nowait_impl(simplequeueobject *self, PyObject *item)
+static TyObject *
+_queue_SimpleQueue_put_nowait_impl(simplequeueobject *self, TyObject *item)
 /*[clinic end generated code: output=0990536715efb1f1 input=ce949cc2cd8a4119]*/
 {
-    return _queue_SimpleQueue_put_impl(self, item, 0, Py_None);
+    return _queue_SimpleQueue_put_impl(self, item, 0, Ty_None);
 }
 
-static PyObject *
-empty_error(PyTypeObject *cls)
+static TyObject *
+empty_error(TyTypeObject *cls)
 {
-    PyObject *module = PyType_GetModule(cls);
+    TyObject *module = TyType_GetModule(cls);
     assert(module != NULL);
     simplequeue_state *state = simplequeue_get_state(module);
-    PyErr_SetNone(state->EmptyError);
+    TyErr_SetNone(state->EmptyError);
     return NULL;
 }
 
@@ -374,24 +374,24 @@ in that case).
 
 [clinic start generated code]*/
 
-static PyObject *
-_queue_SimpleQueue_get_impl(simplequeueobject *self, PyTypeObject *cls,
-                            int block, PyObject *timeout_obj)
+static TyObject *
+_queue_SimpleQueue_get_impl(simplequeueobject *self, TyTypeObject *cls,
+                            int block, TyObject *timeout_obj)
 /*[clinic end generated code: output=5c2cca914cd1e55b input=f7836c65e5839c51]*/
 {
-    PyTime_t endtime = 0;
+    TyTime_t endtime = 0;
 
-    // XXX Use PyThread_ParseTimeoutArg().
+    // XXX Use TyThread_ParseTimeoutArg().
 
-    if (block != 0 && !Py_IsNone(timeout_obj)) {
+    if (block != 0 && !Ty_IsNone(timeout_obj)) {
         /* With timeout */
-        PyTime_t timeout;
-        if (_PyTime_FromSecondsObject(&timeout,
-                                      timeout_obj, _PyTime_ROUND_CEILING) < 0) {
+        TyTime_t timeout;
+        if (_TyTime_FromSecondsObject(&timeout,
+                                      timeout_obj, _TyTime_ROUND_CEILING) < 0) {
             return NULL;
         }
         if (timeout < 0) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "'timeout' must be a non-negative number");
             return NULL;
         }
@@ -418,26 +418,26 @@ _queue_SimpleQueue_get_impl(simplequeueobject *self, PyTypeObject *cls,
         bool waiting = 1;
         self->has_threads_waiting = waiting;
 
-        PyObject *item = NULL;
+        TyObject *item = NULL;
         int st = _PyParkingLot_Park(&self->has_threads_waiting, &waiting,
                                     sizeof(bool), timeout_ns, &item,
                                     /* detach */ 1);
         switch (st) {
-            case Py_PARK_OK: {
+            case Ty_PARK_OK: {
                 assert(item != NULL);
                 return item;
             }
-            case Py_PARK_TIMEOUT: {
+            case Ty_PARK_TIMEOUT: {
                 return empty_error(cls);
             }
-            case Py_PARK_INTR: {
+            case Ty_PARK_INTR: {
                 // Interrupted
-                if (Py_MakePendingCalls() < 0) {
+                if (Ty_MakePendingCalls() < 0) {
                     return NULL;
                 }
                 break;
             }
-            case Py_PARK_AGAIN: {
+            case Ty_PARK_AGAIN: {
                 // This should be impossible with the current implementation of
                 // PyParkingLot, but would be possible if critical sections /
                 // the GIL were released before the thread was added to the
@@ -445,7 +445,7 @@ _queue_SimpleQueue_get_impl(simplequeueobject *self, PyTypeObject *cls,
                 break;
             }
             default: {
-                Py_UNREACHABLE();
+                Ty_UNREACHABLE();
             }
         }
     }
@@ -464,12 +464,12 @@ Only get an item if one is immediately available. Otherwise
 raise the Empty exception.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _queue_SimpleQueue_get_nowait_impl(simplequeueobject *self,
-                                   PyTypeObject *cls)
+                                   TyTypeObject *cls)
 /*[clinic end generated code: output=620c58e2750f8b8a input=d48be63633fefae9]*/
 {
-    return _queue_SimpleQueue_get_impl(self, cls, 0, Py_None);
+    return _queue_SimpleQueue_get_impl(self, cls, 0, Ty_None);
 }
 
 /*[clinic input]
@@ -488,12 +488,12 @@ _queue_SimpleQueue_empty_impl(simplequeueobject *self)
 
 /*[clinic input]
 @critical_section
-_queue.SimpleQueue.qsize -> Py_ssize_t
+_queue.SimpleQueue.qsize -> Ty_ssize_t
 
 Return the approximate size of the queue (not reliable!).
 [clinic start generated code]*/
 
-static Py_ssize_t
+static Ty_ssize_t
 _queue_SimpleQueue_qsize_impl(simplequeueobject *self)
 /*[clinic end generated code: output=f9dcd9d0a90e121e input=e218623cb8c16a79]*/
 {
@@ -501,97 +501,97 @@ _queue_SimpleQueue_qsize_impl(simplequeueobject *self)
 }
 
 static int
-queue_traverse(PyObject *m, visitproc visit, void *arg)
+queue_traverse(TyObject *m, visitproc visit, void *arg)
 {
     simplequeue_state *state = simplequeue_get_state(m);
-    Py_VISIT(state->SimpleQueueType);
-    Py_VISIT(state->EmptyError);
+    Ty_VISIT(state->SimpleQueueType);
+    Ty_VISIT(state->EmptyError);
     return 0;
 }
 
 static int
-queue_clear(PyObject *m)
+queue_clear(TyObject *m)
 {
     simplequeue_state *state = simplequeue_get_state(m);
-    Py_CLEAR(state->SimpleQueueType);
-    Py_CLEAR(state->EmptyError);
+    Ty_CLEAR(state->SimpleQueueType);
+    Ty_CLEAR(state->EmptyError);
     return 0;
 }
 
 static void
 queue_free(void *m)
 {
-    (void)queue_clear((PyObject *)m);
+    (void)queue_clear((TyObject *)m);
 }
 
 #include "clinic/_queuemodule.c.h"
 
 
-static PyMethodDef simplequeue_methods[] = {
+static TyMethodDef simplequeue_methods[] = {
     _QUEUE_SIMPLEQUEUE_EMPTY_METHODDEF
     _QUEUE_SIMPLEQUEUE_GET_METHODDEF
     _QUEUE_SIMPLEQUEUE_GET_NOWAIT_METHODDEF
     _QUEUE_SIMPLEQUEUE_PUT_METHODDEF
     _QUEUE_SIMPLEQUEUE_PUT_NOWAIT_METHODDEF
     _QUEUE_SIMPLEQUEUE_QSIZE_METHODDEF
-    {"__class_getitem__",    Py_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    {"__class_getitem__",    Ty_GenericAlias,
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     {NULL,           NULL}              /* sentinel */
 };
 
-static struct PyMemberDef simplequeue_members[] = {
-    {"__weaklistoffset__", Py_T_PYSSIZET, offsetof(simplequeueobject, weakreflist), Py_READONLY},
+static struct TyMemberDef simplequeue_members[] = {
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(simplequeueobject, weakreflist), Py_READONLY},
     {NULL},
 };
 
-static PyType_Slot simplequeue_slots[] = {
-    {Py_tp_dealloc, simplequeue_dealloc},
-    {Py_tp_doc, (void *)simplequeue_new__doc__},
-    {Py_tp_traverse, simplequeue_traverse},
-    {Py_tp_clear, simplequeue_clear},
-    {Py_tp_members, simplequeue_members},
-    {Py_tp_methods, simplequeue_methods},
-    {Py_tp_new, simplequeue_new},
+static TyType_Slot simplequeue_slots[] = {
+    {Ty_tp_dealloc, simplequeue_dealloc},
+    {Ty_tp_doc, (void *)simplequeue_new__doc__},
+    {Ty_tp_traverse, simplequeue_traverse},
+    {Ty_tp_clear, simplequeue_clear},
+    {Ty_tp_members, simplequeue_members},
+    {Ty_tp_methods, simplequeue_methods},
+    {Ty_tp_new, simplequeue_new},
     {0, NULL},
 };
 
-static PyType_Spec simplequeue_spec = {
+static TyType_Spec simplequeue_spec = {
     .name = "_queue.SimpleQueue",
     .basicsize = sizeof(simplequeueobject),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC |
-              Py_TPFLAGS_IMMUTABLETYPE),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC |
+              Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = simplequeue_slots,
 };
 
 
 /* Initialization function */
 
-PyDoc_STRVAR(queue_module_doc,
+TyDoc_STRVAR(queue_module_doc,
 "C implementation of the Python queue module.\n\
 This module is an implementation detail, please do not use it directly.");
 
 static int
-queuemodule_exec(PyObject *module)
+queuemodule_exec(TyObject *module)
 {
     simplequeue_state *state = simplequeue_get_state(module);
 
-    state->EmptyError = PyErr_NewExceptionWithDoc(
+    state->EmptyError = TyErr_NewExceptionWithDoc(
         "_queue.Empty",
         "Exception raised by Queue.get(block=0)/get_nowait().",
         NULL, NULL);
     if (state->EmptyError == NULL) {
         return -1;
     }
-    if (PyModule_AddObjectRef(module, "Empty", state->EmptyError) < 0) {
+    if (TyModule_AddObjectRef(module, "Empty", state->EmptyError) < 0) {
         return -1;
     }
 
-    state->SimpleQueueType = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->SimpleQueueType = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &simplequeue_spec, NULL);
     if (state->SimpleQueueType == NULL) {
         return -1;
     }
-    if (PyModule_AddType(module, state->SimpleQueueType) < 0) {
+    if (TyModule_AddType(module, state->SimpleQueueType) < 0) {
         return -1;
     }
 
@@ -599,14 +599,14 @@ queuemodule_exec(PyObject *module)
 }
 
 static PyModuleDef_Slot queuemodule_slots[] = {
-    {Py_mod_exec, queuemodule_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, queuemodule_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
 
-static struct PyModuleDef queuemodule = {
+static struct TyModuleDef queuemodule = {
     .m_base = PyModuleDef_HEAD_INIT,
     .m_name = "_queue",
     .m_doc = queue_module_doc,

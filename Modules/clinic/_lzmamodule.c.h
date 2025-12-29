@@ -2,14 +2,14 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_modsupport.h"    // _PyArg_BadArgument()
+#include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
-PyDoc_STRVAR(_lzma_LZMACompressor_compress__doc__,
+TyDoc_STRVAR(_lzma_LZMACompressor_compress__doc__,
 "compress($self, data, /)\n"
 "--\n"
 "\n"
@@ -23,14 +23,14 @@ PyDoc_STRVAR(_lzma_LZMACompressor_compress__doc__,
 #define _LZMA_LZMACOMPRESSOR_COMPRESS_METHODDEF    \
     {"compress", (PyCFunction)_lzma_LZMACompressor_compress, METH_O, _lzma_LZMACompressor_compress__doc__},
 
-static PyObject *
-_lzma_LZMACompressor_compress_impl(Compressor *self, Py_buffer *data);
+static TyObject *
+_lzma_LZMACompressor_compress_impl(Compressor *self, Ty_buffer *data);
 
-static PyObject *
-_lzma_LZMACompressor_compress(PyObject *self, PyObject *arg)
+static TyObject *
+_lzma_LZMACompressor_compress(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer data = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &data, PyBUF_SIMPLE) != 0) {
         goto exit;
@@ -46,7 +46,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lzma_LZMACompressor_flush__doc__,
+TyDoc_STRVAR(_lzma_LZMACompressor_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n"
@@ -59,16 +59,16 @@ PyDoc_STRVAR(_lzma_LZMACompressor_flush__doc__,
 #define _LZMA_LZMACOMPRESSOR_FLUSH_METHODDEF    \
     {"flush", (PyCFunction)_lzma_LZMACompressor_flush, METH_NOARGS, _lzma_LZMACompressor_flush__doc__},
 
-static PyObject *
+static TyObject *
 _lzma_LZMACompressor_flush_impl(Compressor *self);
 
-static PyObject *
-_lzma_LZMACompressor_flush(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_lzma_LZMACompressor_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _lzma_LZMACompressor_flush_impl((Compressor *)self);
 }
 
-PyDoc_STRVAR(_lzma_LZMADecompressor_decompress__doc__,
+TyDoc_STRVAR(_lzma_LZMADecompressor_decompress__doc__,
 "decompress($self, /, data, max_length=-1)\n"
 "--\n"
 "\n"
@@ -90,47 +90,47 @@ PyDoc_STRVAR(_lzma_LZMADecompressor_decompress__doc__,
 #define _LZMA_LZMADECOMPRESSOR_DECOMPRESS_METHODDEF    \
     {"decompress", _PyCFunction_CAST(_lzma_LZMADecompressor_decompress), METH_FASTCALL|METH_KEYWORDS, _lzma_LZMADecompressor_decompress__doc__},
 
-static PyObject *
-_lzma_LZMADecompressor_decompress_impl(Decompressor *self, Py_buffer *data,
-                                       Py_ssize_t max_length);
+static TyObject *
+_lzma_LZMADecompressor_decompress_impl(Decompressor *self, Ty_buffer *data,
+                                       Ty_ssize_t max_length);
 
-static PyObject *
-_lzma_LZMADecompressor_decompress(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_lzma_LZMADecompressor_decompress(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(max_length), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(max_length), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "max_length", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "decompress",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
-    Py_ssize_t max_length = -1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
+    Ty_ssize_t max_length = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -142,13 +142,13 @@ _lzma_LZMADecompressor_decompress(PyObject *self, PyObject *const *args, Py_ssiz
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         max_length = ival;
@@ -165,7 +165,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lzma_LZMADecompressor__doc__,
+TyDoc_STRVAR(_lzma_LZMADecompressor__doc__,
 "LZMADecompressor(format=FORMAT_AUTO, memlimit=None, filters=None)\n"
 "--\n"
 "\n"
@@ -188,50 +188,50 @@ PyDoc_STRVAR(_lzma_LZMADecompressor__doc__,
 "\n"
 "For one-shot decompression, use the decompress() function instead.");
 
-static PyObject *
-_lzma_LZMADecompressor_impl(PyTypeObject *type, int format,
-                            PyObject *memlimit, PyObject *filters);
+static TyObject *
+_lzma_LZMADecompressor_impl(TyTypeObject *type, int format,
+                            TyObject *memlimit, TyObject *filters);
 
-static PyObject *
-_lzma_LZMADecompressor(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+_lzma_LZMADecompressor(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(format), &_Py_ID(memlimit), &_Py_ID(filters), },
+        .ob_item = { &_Ty_ID(format), &_Ty_ID(memlimit), &_Ty_ID(filters), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"format", "memlimit", "filters", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "LZMADecompressor",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 0;
+    TyObject *argsbuf[3];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 0;
     int format = FORMAT_AUTO;
-    PyObject *memlimit = Py_None;
-    PyObject *filters = Py_None;
+    TyObject *memlimit = Ty_None;
+    TyObject *filters = Ty_None;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 0, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -240,8 +240,8 @@ _lzma_LZMADecompressor(PyTypeObject *type, PyObject *args, PyObject *kwargs)
         goto skip_optional_pos;
     }
     if (fastargs[0]) {
-        format = PyLong_AsInt(fastargs[0]);
-        if (format == -1 && PyErr_Occurred()) {
+        format = TyLong_AsInt(fastargs[0]);
+        if (format == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -262,7 +262,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lzma_is_check_supported__doc__,
+TyDoc_STRVAR(_lzma_is_check_supported__doc__,
 "is_check_supported($module, check_id, /)\n"
 "--\n"
 "\n"
@@ -273,17 +273,17 @@ PyDoc_STRVAR(_lzma_is_check_supported__doc__,
 #define _LZMA_IS_CHECK_SUPPORTED_METHODDEF    \
     {"is_check_supported", (PyCFunction)_lzma_is_check_supported, METH_O, _lzma_is_check_supported__doc__},
 
-static PyObject *
-_lzma_is_check_supported_impl(PyObject *module, int check_id);
+static TyObject *
+_lzma_is_check_supported_impl(TyObject *module, int check_id);
 
-static PyObject *
-_lzma_is_check_supported(PyObject *module, PyObject *arg)
+static TyObject *
+_lzma_is_check_supported(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int check_id;
 
-    check_id = PyLong_AsInt(arg);
-    if (check_id == -1 && PyErr_Occurred()) {
+    check_id = TyLong_AsInt(arg);
+    if (check_id == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _lzma_is_check_supported_impl(module, check_id);
@@ -292,7 +292,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lzma__decode_filter_properties__doc__,
+TyDoc_STRVAR(_lzma__decode_filter_properties__doc__,
 "_decode_filter_properties($module, filter_id, encoded_props, /)\n"
 "--\n"
 "\n"
@@ -303,18 +303,18 @@ PyDoc_STRVAR(_lzma__decode_filter_properties__doc__,
 #define _LZMA__DECODE_FILTER_PROPERTIES_METHODDEF    \
     {"_decode_filter_properties", _PyCFunction_CAST(_lzma__decode_filter_properties), METH_FASTCALL, _lzma__decode_filter_properties__doc__},
 
-static PyObject *
-_lzma__decode_filter_properties_impl(PyObject *module, lzma_vli filter_id,
-                                     Py_buffer *encoded_props);
+static TyObject *
+_lzma__decode_filter_properties_impl(TyObject *module, lzma_vli filter_id,
+                                     Ty_buffer *encoded_props);
 
-static PyObject *
-_lzma__decode_filter_properties(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_lzma__decode_filter_properties(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     lzma_vli filter_id;
-    Py_buffer encoded_props = {NULL, NULL};
+    Ty_buffer encoded_props = {NULL, NULL};
 
-    if (!_PyArg_CheckPositional("_decode_filter_properties", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("_decode_filter_properties", nargs, 2, 2)) {
         goto exit;
     }
     if (!lzma_vli_converter(args[0], &filter_id)) {

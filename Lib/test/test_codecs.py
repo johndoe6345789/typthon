@@ -3721,7 +3721,7 @@ class StreamRecoderTest(unittest.TestCase):
 @unittest.skipIf(_testinternalcapi is None, 'need _testinternalcapi module')
 class LocaleCodecTest(unittest.TestCase):
     """
-    Test indirectly _Py_DecodeUTF8Ex() and _Py_EncodeUTF8Ex().
+    Test indirectly _Ty_DecodeUTF8Ex() and _Ty_EncodeUTF8Ex().
     """
     ENCODING = sys.getfilesystemencoding()
     STRINGS = ("ascii", "ulatin1:\xa7\xe9",

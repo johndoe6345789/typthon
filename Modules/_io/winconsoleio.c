@@ -7,9 +7,9 @@
 */
 
 #include "Python.h"
-#include "pycore_fileutils.h"     // _Py_BEGIN_SUPPRESS_IPH
-#include "pycore_object.h"        // _PyObject_GC_UNTRACK()
-#include "pycore_pyerrors.h"      // _PyErr_ChainExceptions1()
+#include "pycore_fileutils.h"     // _Ty_BEGIN_SUPPRESS_IPH
+#include "pycore_object.h"        // _TyObject_GC_UNTRACK()
+#include "pycore_pyerrors.h"      // _TyErr_ChainExceptions1()
 #include "pycore_weakref.h"       // FT_CLEAR_WEAKREFS()
 
 #ifdef HAVE_WINDOWS_CONSOLE_IO
@@ -64,27 +64,27 @@ char _get_console_type(HANDLE handle) {
     return 'w';
 }
 
-char _PyIO_get_console_type(PyObject *path_or_fd) {
-    int fd = PyLong_AsLong(path_or_fd);
-    PyErr_Clear();
+char _PyIO_get_console_type(TyObject *path_or_fd) {
+    int fd = TyLong_AsLong(path_or_fd);
+    TyErr_Clear();
     if (fd >= 0) {
-        HANDLE handle = _Py_get_osfhandle_noraise(fd);
+        HANDLE handle = _Ty_get_osfhandle_noraise(fd);
         if (handle == INVALID_HANDLE_VALUE)
             return '\0';
         return _get_console_type(handle);
     }
 
-    PyObject *decoded;
+    TyObject *decoded;
     wchar_t *decoded_wstr;
 
-    if (!PyUnicode_FSDecoder(path_or_fd, &decoded)) {
-        PyErr_Clear();
+    if (!TyUnicode_FSDecoder(path_or_fd, &decoded)) {
+        TyErr_Clear();
         return '\0';
     }
-    decoded_wstr = PyUnicode_AsWideCharString(decoded, NULL);
-    Py_CLEAR(decoded);
+    decoded_wstr = TyUnicode_AsWideCharString(decoded, NULL);
+    Ty_CLEAR(decoded);
     if (!decoded_wstr) {
-        PyErr_Clear();
+        TyErr_Clear();
         return '\0';
     }
 
@@ -97,7 +97,7 @@ char _PyIO_get_console_type(PyObject *path_or_fd) {
         m = 'x';
     }
     if (m) {
-        PyMem_Free(decoded_wstr);
+        TyMem_Free(decoded_wstr);
         return m;
     }
 
@@ -106,13 +106,13 @@ char _PyIO_get_console_type(PyObject *path_or_fd) {
 
     length = GetFullPathNameW(decoded_wstr, MAX_PATH, pname_buf, NULL);
     if (length > MAX_PATH) {
-        pname_buf = PyMem_New(wchar_t, length);
+        pname_buf = TyMem_New(wchar_t, length);
         if (pname_buf)
             length = GetFullPathNameW(decoded_wstr, length, pname_buf, NULL);
         else
             length = 0;
     }
-    PyMem_Free(decoded_wstr);
+    TyMem_Free(decoded_wstr);
 
     if (length) {
         wchar_t *name = pname_buf;
@@ -131,7 +131,7 @@ char _PyIO_get_console_type(PyObject *path_or_fd) {
     }
 
     if (pname_buf != name_buf)
-        PyMem_Free(pname_buf);
+        TyMem_Free(pname_buf);
     return m;
 }
 
@@ -216,8 +216,8 @@ typedef struct {
     unsigned int closefd : 1;
     char finalizing;
     unsigned int blksize;
-    PyObject *weakreflist;
-    PyObject *dict;
+    TyObject *weakreflist;
+    TyObject *dict;
     char buf[SMALLBUF];
     wchar_t wbuf;
 } winconsoleio;
@@ -225,7 +225,7 @@ typedef struct {
 #define winconsoleio_CAST(op)   ((winconsoleio *)(op))
 
 int
-_PyWindowsConsoleIO_closed(PyObject *self)
+_PyWindowsConsoleIO_closed(TyObject *self)
 {
     return ((winconsoleio *)self)->fd == -1;
 }
@@ -237,9 +237,9 @@ internal_close(winconsoleio *self)
 {
     if (self->fd != -1) {
         if (self->closefd) {
-            _Py_BEGIN_SUPPRESS_IPH
+            _Ty_BEGIN_SUPPRESS_IPH
             close(self->fd);
-            _Py_END_SUPPRESS_IPH
+            _Ty_END_SUPPRESS_IPH
         }
         self->fd = -1;
     }
@@ -257,36 +257,36 @@ A closed console object cannot be used for further I/O operations.
 close() may be called more than once without error.
 [clinic start generated code]*/
 
-static PyObject *
-_io__WindowsConsoleIO_close_impl(winconsoleio *self, PyTypeObject *cls)
+static TyObject *
+_io__WindowsConsoleIO_close_impl(winconsoleio *self, TyTypeObject *cls)
 /*[clinic end generated code: output=e50c1808c063e1e2 input=161001bd2a649a4b]*/
 {
-    PyObject *res;
-    PyObject *exc;
+    TyObject *res;
+    TyObject *exc;
     int rc;
 
     _PyIO_State *state = get_io_state_by_cls(cls);
-    res = PyObject_CallMethodOneArg((PyObject*)state->PyRawIOBase_Type,
-                                    &_Py_ID(close), (PyObject*)self);
+    res = PyObject_CallMethodOneArg((TyObject*)state->PyRawIOBase_Type,
+                                    &_Ty_ID(close), (TyObject*)self);
     if (!self->closefd) {
         self->fd = -1;
         return res;
     }
     if (res == NULL) {
-        exc = PyErr_GetRaisedException();
+        exc = TyErr_GetRaisedException();
     }
     rc = internal_close(self);
     if (res == NULL) {
-        _PyErr_ChainExceptions1(exc);
+        _TyErr_ChainExceptions1(exc);
     }
     if (rc < 0) {
-        Py_CLEAR(res);
+        Ty_CLEAR(res);
     }
     return res;
 }
 
-static PyObject *
-winconsoleio_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+static TyObject *
+winconsoleio_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 {
     winconsoleio *self;
 
@@ -303,7 +303,7 @@ winconsoleio_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->weakreflist = NULL;
     }
 
-    return (PyObject *) self;
+    return (TyObject *) self;
 }
 
 /*[clinic input]
@@ -321,9 +321,9 @@ omitted. The *opener* parameter is always ignored.
 [clinic start generated code]*/
 
 static int
-_io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
+_io__WindowsConsoleIO___init___impl(winconsoleio *self, TyObject *nameobj,
                                     const char *mode, int closefd,
-                                    PyObject *opener)
+                                    TyObject *opener)
 /*[clinic end generated code: output=3fd9cbcdd8d95429 input=7a3eed6bbe998fd9]*/
 {
     const char *s;
@@ -335,7 +335,7 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
     HANDLE handle = NULL;
 
 #ifndef NDEBUG
-    _PyIO_State *state = find_io_state_by_def(Py_TYPE(self));
+    _PyIO_State *state = find_io_state_by_def(Ty_TYPE(self));
     assert(PyObject_TypeCheck(self, state->PyWindowsConsoleIO_Type));
 #endif
     if (self->fd >= 0) {
@@ -348,34 +348,34 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
             self->fd = -1;
     }
 
-    if (PyBool_Check(nameobj)) {
-        if (PyErr_WarnEx(PyExc_RuntimeWarning,
+    if (TyBool_Check(nameobj)) {
+        if (TyErr_WarnEx(TyExc_RuntimeWarning,
                 "bool is used as a file descriptor", 1))
         {
             return -1;
         }
     }
-    fd = PyLong_AsInt(nameobj);
+    fd = TyLong_AsInt(nameobj);
     if (fd < 0) {
-        if (!PyErr_Occurred()) {
-            PyErr_SetString(PyExc_ValueError,
+        if (!TyErr_Occurred()) {
+            TyErr_SetString(TyExc_ValueError,
                             "negative file descriptor");
             return -1;
         }
-        PyErr_Clear();
+        TyErr_Clear();
     }
     self->fd = fd;
 
     if (fd < 0) {
-        PyObject *decodedname;
+        TyObject *decodedname;
 
-        int d = PyUnicode_FSDecoder(nameobj, (void*)&decodedname);
+        int d = TyUnicode_FSDecoder(nameobj, (void*)&decodedname);
         if (!d)
             return -1;
 
-        name = PyUnicode_AsWideCharString(decodedname, NULL);
+        name = TyUnicode_AsWideCharString(decodedname, NULL);
         console_type = _PyIO_get_console_type(decodedname);
-        Py_CLEAR(decodedname);
+        Ty_CLEAR(decodedname);
         if (name == NULL)
             return -1;
     }
@@ -405,7 +405,7 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
                 console_type = 'w';
             break;
         default:
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                          "invalid mode: %.200s", mode);
             goto error;
         }
@@ -415,14 +415,14 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
         goto bad_mode;
 
     if (fd >= 0) {
-        handle = _Py_get_osfhandle_noraise(fd);
+        handle = _Ty_get_osfhandle_noraise(fd);
         self->closefd = 0;
     } else {
         DWORD access = GENERIC_READ;
 
         self->closefd = 1;
         if (!closefd) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                 "Cannot use closefd=False with file name");
             goto error;
         }
@@ -430,7 +430,7 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
         if (self->writable)
             access = GENERIC_WRITE;
 
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         /* Attempt to open for read/write initially, then fall back
            on the specific access. This is required for modern names
            CONIN$ and CONOUT$, which allow reading/writing state as
@@ -440,19 +440,19 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
         if (handle == INVALID_HANDLE_VALUE)
             handle = CreateFileW(name, access,
                 FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (handle == INVALID_HANDLE_VALUE) {
-            PyErr_SetExcFromWindowsErrWithFilenameObject(PyExc_OSError, GetLastError(), nameobj);
+            TyErr_SetExcFromWindowsErrWithFilenameObject(TyExc_OSError, GetLastError(), nameobj);
             goto error;
         }
 
         if (self->writable)
-            self->fd = _Py_open_osfhandle_noraise(handle, _O_WRONLY | _O_BINARY | _O_NOINHERIT);
+            self->fd = _Ty_open_osfhandle_noraise(handle, _O_WRONLY | _O_BINARY | _O_NOINHERIT);
         else
-            self->fd = _Py_open_osfhandle_noraise(handle, _O_RDONLY | _O_BINARY | _O_NOINHERIT);
+            self->fd = _Ty_open_osfhandle_noraise(handle, _O_RDONLY | _O_BINARY | _O_NOINHERIT);
         if (self->fd < 0) {
-            PyErr_SetFromErrnoWithFilenameObject(PyExc_OSError, nameobj);
+            TyErr_SetFromErrnoWithFilenameObject(TyExc_OSError, nameobj);
             CloseHandle(handle);
             goto error;
         }
@@ -462,12 +462,12 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
         console_type = _get_console_type(handle);
 
     if (self->writable && console_type != 'w') {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
             "Cannot open console input buffer for writing");
         goto error;
     }
     if (self->readable && console_type != 'r') {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
             "Cannot open console output buffer for reading");
         goto error;
     }
@@ -475,13 +475,13 @@ _io__WindowsConsoleIO___init___impl(winconsoleio *self, PyObject *nameobj,
     self->blksize = DEFAULT_BUFFER_SIZE;
     memset(self->buf, 0, 4);
 
-    if (PyObject_SetAttr((PyObject *)self, &_Py_ID(name), nameobj) < 0)
+    if (PyObject_SetAttr((TyObject *)self, &_Ty_ID(name), nameobj) < 0)
         goto error;
 
     goto done;
 
 bad_mode:
-    PyErr_SetString(PyExc_ValueError,
+    TyErr_SetString(TyExc_ValueError,
                     "Must have exactly one of read or write mode");
 error:
     ret = -1;
@@ -489,53 +489,53 @@ error:
 
 done:
     if (name)
-        PyMem_Free(name);
+        TyMem_Free(name);
     return ret;
 }
 
 static int
-winconsoleio_traverse(PyObject *op, visitproc visit, void *arg)
+winconsoleio_traverse(TyObject *op, visitproc visit, void *arg)
 {
     winconsoleio *self = winconsoleio_CAST(op);
-    Py_VISIT(Py_TYPE(self));
-    Py_VISIT(self->dict);
+    Ty_VISIT(Ty_TYPE(self));
+    Ty_VISIT(self->dict);
     return 0;
 }
 
 static int
-winconsoleio_clear(PyObject *op)
+winconsoleio_clear(TyObject *op)
 {
     winconsoleio *self = winconsoleio_CAST(op);
-    Py_CLEAR(self->dict);
+    Ty_CLEAR(self->dict);
     return 0;
 }
 
 static void
-winconsoleio_dealloc(PyObject *op)
+winconsoleio_dealloc(TyObject *op)
 {
     winconsoleio *self = winconsoleio_CAST(op);
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     self->finalizing = 1;
     if (_PyIOBase_finalize(op) < 0)
         return;
-    _PyObject_GC_UNTRACK(self);
+    _TyObject_GC_UNTRACK(self);
     FT_CLEAR_WEAKREFS(op, self->weakreflist);
-    Py_CLEAR(self->dict);
+    Ty_CLEAR(self->dict);
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
-static PyObject *
+static TyObject *
 err_closed(void)
 {
-    PyErr_SetString(PyExc_ValueError, "I/O operation on closed file");
+    TyErr_SetString(TyExc_ValueError, "I/O operation on closed file");
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 err_mode(_PyIO_State *state, const char *action)
 {
-    return PyErr_Format(state->unsupported_operation,
+    return TyErr_Format(state->unsupported_operation,
                         "Console buffer does not support %s", action);
 }
 
@@ -546,13 +546,13 @@ Return the underlying file descriptor (an integer).
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io__WindowsConsoleIO_fileno_impl(winconsoleio *self)
 /*[clinic end generated code: output=006fa74ce3b5cfbf input=845c47ebbc3a2f67]*/
 {
     if (self->fd < 0)
         return err_closed();
-    return PyLong_FromLong(self->fd);
+    return TyLong_FromLong(self->fd);
 }
 
 /*[clinic input]
@@ -561,13 +561,13 @@ _io._WindowsConsoleIO.readable
 True if console is an input buffer.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io__WindowsConsoleIO_readable_impl(winconsoleio *self)
 /*[clinic end generated code: output=daf9cef2743becf0 input=6be9defb5302daae]*/
 {
     if (self->fd == -1)
         return err_closed();
-    return PyBool_FromLong((long) self->readable);
+    return TyBool_FromLong((long) self->readable);
 }
 
 /*[clinic input]
@@ -576,13 +576,13 @@ _io._WindowsConsoleIO.writable
 True if console is an output buffer.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io__WindowsConsoleIO_writable_impl(winconsoleio *self)
 /*[clinic end generated code: output=e0a2ad7eae5abf67 input=cefbd8abc24df6a0]*/
 {
     if (self->fd == -1)
         return err_closed();
-    return PyBool_FromLong((long) self->writable);
+    return TyBool_FromLong((long) self->writable);
 }
 
 static DWORD
@@ -614,16 +614,16 @@ static wchar_t *
 read_console_w(HANDLE handle, DWORD maxlen, DWORD *readlen) {
     int err = 0, sig = 0;
 
-    wchar_t *buf = (wchar_t*)PyMem_Malloc(maxlen * sizeof(wchar_t));
+    wchar_t *buf = (wchar_t*)TyMem_Malloc(maxlen * sizeof(wchar_t));
     if (!buf) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         goto error;
     }
 
     *readlen = 0;
 
     //DebugBreak();
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     DWORD off = 0;
     while (off < maxlen) {
         DWORD n = (DWORD)-1;
@@ -643,13 +643,13 @@ read_console_w(HANDLE handle, DWORD maxlen, DWORD *readlen) {
             if (err != ERROR_OPERATION_ABORTED)
                 break;
             err = 0;
-            HANDLE hInterruptEvent = _PyOS_SigintEvent();
+            HANDLE hInterruptEvent = _TyOS_SigintEvent();
             if (WaitForSingleObjectEx(hInterruptEvent, 100, FALSE)
                     == WAIT_OBJECT_0) {
                 ResetEvent(hInterruptEvent);
-                Py_BLOCK_THREADS
-                sig = PyErr_CheckSignals();
-                Py_UNBLOCK_THREADS
+                Ty_BLOCK_THREADS
+                sig = TyErr_CheckSignals();
+                Ty_UNBLOCK_THREADS
                 if (sig < 0)
                     break;
             }
@@ -671,12 +671,12 @@ read_console_w(HANDLE handle, DWORD maxlen, DWORD *readlen) {
             char_type == C3_HIGHSURROGATE) {
             wchar_t *newbuf;
             maxlen += 1;
-            Py_BLOCK_THREADS
-            newbuf = (wchar_t*)PyMem_Realloc(buf, maxlen * sizeof(wchar_t));
-            Py_UNBLOCK_THREADS
+            Ty_BLOCK_THREADS
+            newbuf = (wchar_t*)TyMem_Realloc(buf, maxlen * sizeof(wchar_t));
+            Ty_UNBLOCK_THREADS
             if (!newbuf) {
                 sig = -1;
-                PyErr_NoMemory();
+                TyErr_NoMemory();
                 break;
             }
             buf = newbuf;
@@ -688,20 +688,20 @@ read_console_w(HANDLE handle, DWORD maxlen, DWORD *readlen) {
         off += BUFSIZ;
     }
 
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (sig)
         goto error;
     if (err) {
-        PyErr_SetFromWindowsErr(err);
+        TyErr_SetFromWindowsErr(err);
         goto error;
     }
 
     if (*readlen > 0 && buf[0] == L'\x1a') {
-        PyMem_Free(buf);
-        buf = (wchar_t *)PyMem_Malloc(sizeof(wchar_t));
+        TyMem_Free(buf);
+        buf = (wchar_t *)TyMem_Malloc(sizeof(wchar_t));
         if (!buf) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             goto error;
         }
         buf[0] = L'\0';
@@ -712,13 +712,13 @@ read_console_w(HANDLE handle, DWORD maxlen, DWORD *readlen) {
 
 error:
     if (buf)
-        PyMem_Free(buf);
+        TyMem_Free(buf);
     return NULL;
 }
 
 
-static Py_ssize_t
-readinto(_PyIO_State *state, winconsoleio *self, char *buf, Py_ssize_t len)
+static Ty_ssize_t
+readinto(_PyIO_State *state, winconsoleio *self, char *buf, Ty_ssize_t len)
 {
     if (self->fd == -1) {
         err_closed();
@@ -731,11 +731,11 @@ readinto(_PyIO_State *state, winconsoleio *self, char *buf, Py_ssize_t len)
     if (len == 0)
         return 0;
     if (len > BUFMAX) {
-        PyErr_Format(PyExc_ValueError, "cannot read more than %d bytes", BUFMAX);
+        TyErr_Format(TyExc_ValueError, "cannot read more than %d bytes", BUFMAX);
         return -1;
     }
 
-    HANDLE handle = _Py_get_osfhandle(self->fd);
+    HANDLE handle = _Ty_get_osfhandle(self->fd);
     if (handle == INVALID_HANDLE_VALUE)
         return -1;
 
@@ -764,14 +764,14 @@ readinto(_PyIO_State *state, winconsoleio *self, char *buf, Py_ssize_t len)
     if (wbuf == NULL)
         return -1;
     if (n == 0) {
-        PyMem_Free(wbuf);
+        TyMem_Free(wbuf);
         return read_len;
     }
 
     int err = 0;
     DWORD u8n = 0;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (len < 4) {
         if (WideCharToMultiByte(CP_UTF8, 0, wbuf, n,
                 self->buf, sizeof(self->buf) / sizeof(self->buf[0]),
@@ -795,18 +795,18 @@ readinto(_PyIO_State *state, winconsoleio *self, char *buf, Py_ssize_t len)
                 NULL, 0, NULL, NULL);
         }
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
-    PyMem_Free(wbuf);
+    TyMem_Free(wbuf);
 
     if (u8n) {
-        PyErr_Format(PyExc_SystemError,
+        TyErr_Format(TyExc_SystemError,
             "Buffer had room for %zd bytes but %u bytes required",
             len, u8n);
         return -1;
     }
     if (err) {
-        PyErr_SetFromWindowsErr(err);
+        TyErr_SetFromWindowsErr(err);
         return -1;
     }
 
@@ -816,23 +816,23 @@ readinto(_PyIO_State *state, winconsoleio *self, char *buf, Py_ssize_t len)
 /*[clinic input]
 _io._WindowsConsoleIO.readinto
     cls: defining_class
-    buffer: Py_buffer(accept={rwbuffer})
+    buffer: Ty_buffer(accept={rwbuffer})
     /
 
 Same as RawIOBase.readinto().
 [clinic start generated code]*/
 
-static PyObject *
-_io__WindowsConsoleIO_readinto_impl(winconsoleio *self, PyTypeObject *cls,
-                                    Py_buffer *buffer)
+static TyObject *
+_io__WindowsConsoleIO_readinto_impl(winconsoleio *self, TyTypeObject *cls,
+                                    Ty_buffer *buffer)
 /*[clinic end generated code: output=96717c74f6204b79 input=4b0627c3b1645f78]*/
 {
     _PyIO_State *state = get_io_state_by_cls(cls);
-    Py_ssize_t len = readinto(state, self, buffer->buf, buffer->len);
+    Ty_ssize_t len = readinto(state, self, buffer->buf, buffer->len);
     if (len < 0)
         return NULL;
 
-    return PyLong_FromSsize_t(len);
+    return TyLong_FromSsize_t(len);
 }
 
 static DWORD
@@ -861,52 +861,52 @@ Read all data from the console, returned as bytes.
 Return an empty bytes object at EOF.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io__WindowsConsoleIO_readall_impl(winconsoleio *self)
 /*[clinic end generated code: output=e6d312c684f6e23b input=4024d649a1006e69]*/
 {
     wchar_t *buf;
     DWORD bufsize, n, len = 0;
-    PyObject *bytes;
+    TyObject *bytes;
     DWORD bytes_size, rn;
     HANDLE handle;
 
     if (self->fd == -1)
         return err_closed();
 
-    handle = _Py_get_osfhandle(self->fd);
+    handle = _Ty_get_osfhandle(self->fd);
     if (handle == INVALID_HANDLE_VALUE)
         return NULL;
 
     bufsize = BUFSIZ;
 
-    buf = (wchar_t*)PyMem_Malloc((bufsize + 1) * sizeof(wchar_t));
+    buf = (wchar_t*)TyMem_Malloc((bufsize + 1) * sizeof(wchar_t));
     if (buf == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
 
     while (1) {
         wchar_t *subbuf;
 
-        if (len >= (Py_ssize_t)bufsize) {
+        if (len >= (Ty_ssize_t)bufsize) {
             DWORD newsize = new_buffersize(self, len);
             if (newsize > BUFMAX)
                 break;
             if (newsize < bufsize) {
-                PyErr_SetString(PyExc_OverflowError,
+                TyErr_SetString(TyExc_OverflowError,
                                 "unbounded read returned more bytes "
                                 "than a Python bytes object can hold");
-                PyMem_Free(buf);
+                TyMem_Free(buf);
                 return NULL;
             }
             bufsize = newsize;
 
-            wchar_t *tmp = PyMem_Realloc(buf,
+            wchar_t *tmp = TyMem_Realloc(buf,
                                          (bufsize + 1) * sizeof(wchar_t));
             if (tmp == NULL) {
-                PyMem_Free(buf);
-                PyErr_NoMemory();
+                TyMem_Free(buf);
+                TyErr_NoMemory();
                 return NULL;
             }
             buf = tmp;
@@ -915,14 +915,14 @@ _io__WindowsConsoleIO_readall_impl(winconsoleio *self)
         subbuf = read_console_w(handle, bufsize - len, &n);
 
         if (subbuf == NULL) {
-            PyMem_Free(buf);
+            TyMem_Free(buf);
             return NULL;
         }
 
         if (n > 0)
             wcsncpy_s(&buf[len], bufsize - len + 1, subbuf, n);
 
-        PyMem_Free(subbuf);
+        TyMem_Free(subbuf);
 
         /* when the read is empty we break */
         if (n == 0)
@@ -933,50 +933,50 @@ _io__WindowsConsoleIO_readall_impl(winconsoleio *self)
 
     if (len == 0 && _buflen(self) == 0) {
         /* when the result starts with ^Z we return an empty buffer */
-        PyMem_Free(buf);
-        return PyBytes_FromStringAndSize(NULL, 0);
+        TyMem_Free(buf);
+        return TyBytes_FromStringAndSize(NULL, 0);
     }
 
     if (len) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         bytes_size = WideCharToMultiByte(CP_UTF8, 0, buf, len,
             NULL, 0, NULL, NULL);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (!bytes_size) {
             DWORD err = GetLastError();
-            PyMem_Free(buf);
-            return PyErr_SetFromWindowsErr(err);
+            TyMem_Free(buf);
+            return TyErr_SetFromWindowsErr(err);
         }
     } else {
         bytes_size = 0;
     }
 
     bytes_size += _buflen(self);
-    bytes = PyBytes_FromStringAndSize(NULL, bytes_size);
-    rn = _copyfrombuf(self, PyBytes_AS_STRING(bytes), bytes_size);
+    bytes = TyBytes_FromStringAndSize(NULL, bytes_size);
+    rn = _copyfrombuf(self, TyBytes_AS_STRING(bytes), bytes_size);
 
     if (len) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         bytes_size = WideCharToMultiByte(CP_UTF8, 0, buf, len,
-            &PyBytes_AS_STRING(bytes)[rn], bytes_size - rn, NULL, NULL);
-        Py_END_ALLOW_THREADS
+            &TyBytes_AS_STRING(bytes)[rn], bytes_size - rn, NULL, NULL);
+        Ty_END_ALLOW_THREADS
 
         if (!bytes_size) {
             DWORD err = GetLastError();
-            PyMem_Free(buf);
-            Py_CLEAR(bytes);
-            return PyErr_SetFromWindowsErr(err);
+            TyMem_Free(buf);
+            Ty_CLEAR(bytes);
+            return TyErr_SetFromWindowsErr(err);
         }
 
         /* add back the number of preserved bytes */
         bytes_size += rn;
     }
 
-    PyMem_Free(buf);
-    if (bytes_size < (size_t)PyBytes_GET_SIZE(bytes)) {
-        if (_PyBytes_Resize(&bytes, n * sizeof(wchar_t)) < 0) {
-            Py_CLEAR(bytes);
+    TyMem_Free(buf);
+    if (bytes_size < (size_t)TyBytes_GET_SIZE(bytes)) {
+        if (_TyBytes_Resize(&bytes, n * sizeof(wchar_t)) < 0) {
+            Ty_CLEAR(bytes);
             return NULL;
         }
     }
@@ -986,7 +986,7 @@ _io__WindowsConsoleIO_readall_impl(winconsoleio *self)
 /*[clinic input]
 _io._WindowsConsoleIO.read
     cls: defining_class
-    size: Py_ssize_t(accept={int, NoneType}) = -1
+    size: Ty_ssize_t(accept={int, NoneType}) = -1
     /
 
 Read at most size bytes, returned as bytes.
@@ -996,13 +996,13 @@ so less data may be returned than requested.
 Return an empty bytes object at EOF.
 [clinic start generated code]*/
 
-static PyObject *
-_io__WindowsConsoleIO_read_impl(winconsoleio *self, PyTypeObject *cls,
-                                Py_ssize_t size)
+static TyObject *
+_io__WindowsConsoleIO_read_impl(winconsoleio *self, TyTypeObject *cls,
+                                Ty_ssize_t size)
 /*[clinic end generated code: output=7e569a586537c0ae input=a14570a5da273365]*/
 {
-    PyObject *bytes;
-    Py_ssize_t bytes_size;
+    TyObject *bytes;
+    Ty_ssize_t bytes_size;
 
     if (self->fd == -1)
         return err_closed();
@@ -1014,25 +1014,25 @@ _io__WindowsConsoleIO_read_impl(winconsoleio *self, PyTypeObject *cls,
     if (size < 0)
         return _io__WindowsConsoleIO_readall_impl(self);
     if (size > BUFMAX) {
-        PyErr_Format(PyExc_ValueError, "cannot read more than %d bytes", BUFMAX);
+        TyErr_Format(TyExc_ValueError, "cannot read more than %d bytes", BUFMAX);
         return NULL;
     }
 
-    bytes = PyBytes_FromStringAndSize(NULL, size);
+    bytes = TyBytes_FromStringAndSize(NULL, size);
     if (bytes == NULL)
         return NULL;
 
     _PyIO_State *state = get_io_state_by_cls(cls);
-    bytes_size = readinto(state, self, PyBytes_AS_STRING(bytes),
-                          PyBytes_GET_SIZE(bytes));
+    bytes_size = readinto(state, self, TyBytes_AS_STRING(bytes),
+                          TyBytes_GET_SIZE(bytes));
     if (bytes_size < 0) {
-        Py_CLEAR(bytes);
+        Ty_CLEAR(bytes);
         return NULL;
     }
 
-    if (bytes_size < PyBytes_GET_SIZE(bytes)) {
-        if (_PyBytes_Resize(&bytes, bytes_size) < 0) {
-            Py_CLEAR(bytes);
+    if (bytes_size < TyBytes_GET_SIZE(bytes)) {
+        if (_TyBytes_Resize(&bytes, bytes_size) < 0) {
+            Ty_CLEAR(bytes);
             return NULL;
         }
     }
@@ -1043,7 +1043,7 @@ _io__WindowsConsoleIO_read_impl(winconsoleio *self, PyTypeObject *cls,
 /*[clinic input]
 _io._WindowsConsoleIO.write
     cls: defining_class
-    b: Py_buffer
+    b: Ty_buffer
     /
 
 Write buffer b to file, return number of bytes written.
@@ -1052,9 +1052,9 @@ Only makes one system call, so not all of the data may be written.
 The number of bytes actually written is returned.
 [clinic start generated code]*/
 
-static PyObject *
-_io__WindowsConsoleIO_write_impl(winconsoleio *self, PyTypeObject *cls,
-                                 Py_buffer *b)
+static TyObject *
+_io__WindowsConsoleIO_write_impl(winconsoleio *self, TyTypeObject *cls,
+                                 Ty_buffer *b)
 /*[clinic end generated code: output=e8019f480243cb29 input=10ac37c19339dfbe]*/
 {
     BOOL res = TRUE;
@@ -1069,19 +1069,19 @@ _io__WindowsConsoleIO_write_impl(winconsoleio *self, PyTypeObject *cls,
         return err_mode(state, "writing");
     }
 
-    handle = _Py_get_osfhandle(self->fd);
+    handle = _Ty_get_osfhandle(self->fd);
     if (handle == INVALID_HANDLE_VALUE)
         return NULL;
 
     if (!b->len) {
-        return PyLong_FromLong(0);
+        return TyLong_FromLong(0);
     }
     if (b->len > BUFMAX)
         len = BUFMAX;
     else
         len = (DWORD)b->len;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     /* issue11395 there is an unspecified upper bound on how many bytes
        can be written at once. We cap at 32k - the caller will have to
        handle partial writes.
@@ -1089,7 +1089,7 @@ _io__WindowsConsoleIO_write_impl(winconsoleio *self, PyTypeObject *cls,
        have to reduce and recalculate. */
     const DWORD max_wlen = 32766 / sizeof(wchar_t);
     /* UTF-8 to wchar ratio is at most 3:1. */
-    len = Py_MIN(len, max_wlen * 3);
+    len = Ty_MIN(len, max_wlen * 3);
     while (1) {
         /* Fix for github issues gh-110913 and gh-82052. */
         len = _find_last_utf8_boundary(b->buf, len);
@@ -1099,23 +1099,23 @@ _io__WindowsConsoleIO_write_impl(winconsoleio *self, PyTypeObject *cls,
         }
         len /= 2;
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (!wlen) {
-        return PyLong_FromLong(0);
+        return TyLong_FromLong(0);
     }
 
-    wbuf = (wchar_t*)PyMem_Malloc(wlen * sizeof(wchar_t));
+    wbuf = (wchar_t*)TyMem_Malloc(wlen * sizeof(wchar_t));
     if (!wbuf) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     wlen = MultiByteToWideChar(CP_UTF8, 0, b->buf, len, wbuf, wlen);
     if (wlen) {
         res = WriteConsoleW(handle, wbuf, wlen, &n, NULL);
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
         if (res) {
 #else
         if (res && n < wlen) {
@@ -1128,40 +1128,40 @@ _io__WindowsConsoleIO_write_impl(winconsoleio *self, PyTypeObject *cls,
         }
     } else
         res = 0;
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (!res) {
         DWORD err = GetLastError();
-        PyMem_Free(wbuf);
-        return PyErr_SetFromWindowsErr(err);
+        TyMem_Free(wbuf);
+        return TyErr_SetFromWindowsErr(err);
     }
 
-    PyMem_Free(wbuf);
-    return PyLong_FromSsize_t(len);
+    TyMem_Free(wbuf);
+    return TyLong_FromSsize_t(len);
 }
 
-static PyObject *
-winconsoleio_repr(PyObject *op)
+static TyObject *
+winconsoleio_repr(TyObject *op)
 {
     winconsoleio *self = winconsoleio_CAST(op);
-    const char *type_name = Py_TYPE(self)->tp_name;
+    const char *type_name = Ty_TYPE(self)->tp_name;
 
     if (self->fd == -1) {
-        return PyUnicode_FromFormat("<%.100s [closed]>", type_name);
+        return TyUnicode_FromFormat("<%.100s [closed]>", type_name);
     }
 
     if (self->readable) {
-        return PyUnicode_FromFormat("<%.100s mode='rb' closefd=%s>",
+        return TyUnicode_FromFormat("<%.100s mode='rb' closefd=%s>",
                                     type_name,
                                     self->closefd ? "True" : "False");
     }
     if (self->writable) {
-        return PyUnicode_FromFormat("<%.100s mode='wb' closefd=%s>",
+        return TyUnicode_FromFormat("<%.100s mode='wb' closefd=%s>",
                                     type_name,
                                     self->closefd ? "True" : "False");
     }
 
-    PyErr_SetString(PyExc_SystemError, "_WindowsConsoleIO has invalid mode");
+    TyErr_SetString(TyExc_SystemError, "_WindowsConsoleIO has invalid mode");
     return NULL;
 }
 
@@ -1171,7 +1171,7 @@ _io._WindowsConsoleIO.isatty
 Always True.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io__WindowsConsoleIO_isatty_impl(winconsoleio *self)
 /*[clinic end generated code: output=9eac09d287c11bd7 input=9b91591dbe356f86]*/
 {
@@ -1181,11 +1181,11 @@ _io__WindowsConsoleIO_isatty_impl(winconsoleio *self)
     Py_RETURN_TRUE;
 }
 
-#define clinic_state() (find_io_state_by_def(Py_TYPE(self)))
+#define clinic_state() (find_io_state_by_def(Ty_TYPE(self)))
 #include "clinic/winconsoleio.c.h"
 #undef clinic_state
 
-static PyMethodDef winconsoleio_methods[] = {
+static TyMethodDef winconsoleio_methods[] = {
     _IO__WINDOWSCONSOLEIO_READ_METHODDEF
     _IO__WINDOWSCONSOLEIO_READALL_METHODDEF
     _IO__WINDOWSCONSOLEIO_READINTO_METHODDEF
@@ -1201,28 +1201,28 @@ static PyMethodDef winconsoleio_methods[] = {
 
 /* 'closed' and 'mode' are attributes for compatibility with FileIO. */
 
-static PyObject *
-get_closed(PyObject *op, void *Py_UNUSED(closure))
+static TyObject *
+get_closed(TyObject *op, void *Py_UNUSED(closure))
 {
     winconsoleio *self = winconsoleio_CAST(op);
-    return PyBool_FromLong((long)(self->fd == -1));
+    return TyBool_FromLong((long)(self->fd == -1));
 }
 
-static PyObject *
-get_closefd(PyObject *op, void *Py_UNUSED(closure))
+static TyObject *
+get_closefd(TyObject *op, void *Py_UNUSED(closure))
 {
     winconsoleio *self = winconsoleio_CAST(op);
-    return PyBool_FromLong((long)(self->closefd));
+    return TyBool_FromLong((long)(self->closefd));
 }
 
-static PyObject *
-get_mode(PyObject *op, void *Py_UNUSED(closure))
+static TyObject *
+get_mode(TyObject *op, void *Py_UNUSED(closure))
 {
     winconsoleio *self = winconsoleio_CAST(op);
-    return PyUnicode_FromString(self->readable ? "rb" : "wb");
+    return TyUnicode_FromString(self->readable ? "rb" : "wb");
 }
 
-static PyGetSetDef winconsoleio_getsetlist[] = {
+static TyGetSetDef winconsoleio_getsetlist[] = {
     {"closed", get_closed, NULL, "True if the file is closed"},
     {"closefd", get_closefd, NULL,
         "True if the file descriptor will be closed by close()."},
@@ -1230,34 +1230,34 @@ static PyGetSetDef winconsoleio_getsetlist[] = {
     {NULL},
 };
 
-static PyMemberDef winconsoleio_members[] = {
-    {"_blksize", Py_T_UINT, offsetof(winconsoleio, blksize), 0},
-    {"_finalizing", Py_T_BOOL, offsetof(winconsoleio, finalizing), 0},
-    {"__weaklistoffset__", Py_T_PYSSIZET, offsetof(winconsoleio, weakreflist), Py_READONLY},
-    {"__dictoffset__", Py_T_PYSSIZET, offsetof(winconsoleio, dict), Py_READONLY},
+static TyMemberDef winconsoleio_members[] = {
+    {"_blksize", Ty_T_UINT, offsetof(winconsoleio, blksize), 0},
+    {"_finalizing", Ty_T_BOOL, offsetof(winconsoleio, finalizing), 0},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(winconsoleio, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(winconsoleio, dict), Py_READONLY},
     {NULL}
 };
 
-static PyType_Slot winconsoleio_slots[] = {
-    {Py_tp_dealloc, winconsoleio_dealloc},
-    {Py_tp_repr, winconsoleio_repr},
-    {Py_tp_getattro, PyObject_GenericGetAttr},
-    {Py_tp_doc, (void *)_io__WindowsConsoleIO___init____doc__},
-    {Py_tp_traverse, winconsoleio_traverse},
-    {Py_tp_clear, winconsoleio_clear},
-    {Py_tp_methods, winconsoleio_methods},
-    {Py_tp_members, winconsoleio_members},
-    {Py_tp_getset, winconsoleio_getsetlist},
-    {Py_tp_init, _io__WindowsConsoleIO___init__},
-    {Py_tp_new, winconsoleio_new},
+static TyType_Slot winconsoleio_slots[] = {
+    {Ty_tp_dealloc, winconsoleio_dealloc},
+    {Ty_tp_repr, winconsoleio_repr},
+    {Ty_tp_getattro, PyObject_GenericGetAttr},
+    {Ty_tp_doc, (void *)_io__WindowsConsoleIO___init____doc__},
+    {Ty_tp_traverse, winconsoleio_traverse},
+    {Ty_tp_clear, winconsoleio_clear},
+    {Ty_tp_methods, winconsoleio_methods},
+    {Ty_tp_members, winconsoleio_members},
+    {Ty_tp_getset, winconsoleio_getsetlist},
+    {Ty_tp_init, _io__WindowsConsoleIO___init__},
+    {Ty_tp_new, winconsoleio_new},
     {0, NULL},
 };
 
-PyType_Spec winconsoleio_spec = {
+TyType_Spec winconsoleio_spec = {
     .name = "_io._WindowsConsoleIO",
     .basicsize = sizeof(winconsoleio),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC |
-              Py_TPFLAGS_IMMUTABLETYPE),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC |
+              Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = winconsoleio_slots,
 };
 

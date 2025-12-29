@@ -5,32 +5,32 @@
 
 #include "Python.h"
 
-#ifdef Py_ENABLE_SHARED
+#ifdef Ty_ENABLE_SHARED
 /* Define extern variables omitted from minimal builds */
 void *PyWin_DLLhModule = NULL;
 #endif
 
 
-extern PyObject* PyInit_faulthandler(void);
-extern PyObject* PyInit__tracemalloc(void);
-extern PyObject* PyInit_gc(void);
-extern PyObject* PyInit_nt(void);
-extern PyObject* PyInit__signal(void);
+extern TyObject* PyInit_faulthandler(void);
+extern TyObject* PyInit__tracemalloc(void);
+extern TyObject* PyInit_gc(void);
+extern TyObject* PyInit_nt(void);
+extern TyObject* PyInit__signal(void);
 #if defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES)
-extern PyObject* PyInit_winreg(void);
+extern TyObject* PyInit_winreg(void);
 #endif
 
-extern PyObject* PyInit__ast(void);
-extern PyObject* PyInit__io(void);
-extern PyObject* PyInit_atexit(void);
-extern PyObject* _PyWarnings_Init(void);
-extern PyObject* PyInit__string(void);
-extern PyObject* PyInit__tokenize(void);
+extern TyObject* PyInit__ast(void);
+extern TyObject* PyInit__io(void);
+extern TyObject* PyInit_atexit(void);
+extern TyObject* _TyWarnings_Init(void);
+extern TyObject* PyInit__string(void);
+extern TyObject* PyInit__tokenize(void);
 
-extern PyObject* PyMarshal_Init(void);
-extern PyObject* PyInit__imp(void);
+extern TyObject* TyMarshal_Init(void);
+extern TyObject* PyInit__imp(void);
 
-struct _inittab _PyImport_Inittab[] = {
+struct _inittab _TyImport_Inittab[] = {
     {"_ast", PyInit__ast},
     {"faulthandler", PyInit_faulthandler},
     {"gc", PyInit_gc},
@@ -44,7 +44,7 @@ struct _inittab _PyImport_Inittab[] = {
 #endif
 
     /* This module "lives in" with marshal.c */
-    {"marshal", PyMarshal_Init},
+    {"marshal", TyMarshal_Init},
 
     /* This lives it with import.c */
     {"_imp", PyInit__imp},
@@ -52,7 +52,7 @@ struct _inittab _PyImport_Inittab[] = {
     /* These entries are here for sys.builtin_module_names */
     {"builtins", NULL},
     {"sys", NULL},
-    {"_warnings", _PyWarnings_Init},
+    {"_warnings", _TyWarnings_Init},
     {"_string", PyInit__string},
 
     {"_io", PyInit__io},

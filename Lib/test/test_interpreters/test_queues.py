@@ -4,7 +4,7 @@ import threading
 from textwrap import dedent
 import unittest
 
-from test.support import import_helper, Py_DEBUG
+from test.support import import_helper, Ty_DEBUG
 # Raise SkipTest if subinterpreters not supported.
 _queues = import_helper.import_module('_interpqueues')
 from concurrent import interpreters
@@ -61,7 +61,7 @@ class LowLevelTests(TestBase):
                 """),
         )
         self.assertEqual(stdout, '')
-        if Py_DEBUG:
+        if Ty_DEBUG:
             self.assertNotEqual(stderr, '')
         else:
             self.assertEqual(stderr, '')

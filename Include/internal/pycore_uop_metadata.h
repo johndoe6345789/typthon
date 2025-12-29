@@ -3,8 +3,8 @@
 //   Python/bytecodes.c
 // Do not edit!
 
-#ifndef Py_CORE_UOP_METADATA_H
-#define Py_CORE_UOP_METADATA_H
+#ifndef Ty_CORE_UOP_METADATA_H
+#define Ty_CORE_UOP_METADATA_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -13,7 +13,7 @@ extern "C" {
 #include "pycore_uop_ids.h"
 extern const uint16_t _PyUop_Flags[MAX_UOP_ID+1];
 extern const uint8_t _PyUop_Replication[MAX_UOP_ID+1];
-extern const char * const _PyOpcode_uop_name[MAX_UOP_ID+1];
+extern const char * const _TyOpcode_uop_name[MAX_UOP_ID+1];
 
 extern int _PyUop_num_popped(int opcode, int oparg);
 
@@ -318,7 +318,7 @@ const uint8_t _PyUop_Replication[MAX_UOP_ID+1] = {
     [_INIT_CALL_PY_EXACT_ARGS] = 5,
 };
 
-const char *const _PyOpcode_uop_name[MAX_UOP_ID+1] = {
+const char *const _TyOpcode_uop_name[MAX_UOP_ID+1] = {
     [_BINARY_OP] = "_BINARY_OP",
     [_BINARY_OP_ADD_FLOAT] = "_BINARY_OP_ADD_FLOAT",
     [_BINARY_OP_ADD_INT] = "_BINARY_OP_ADD_INT",
@@ -1201,4 +1201,4 @@ int _PyUop_num_popped(int opcode, int oparg)
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_CORE_UOP_METADATA_H */
+#endif /* !Ty_CORE_UOP_METADATA_H */

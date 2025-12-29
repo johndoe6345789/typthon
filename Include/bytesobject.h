@@ -1,7 +1,7 @@
 // Bytes object interface
 
-#ifndef Py_BYTESOBJECT_H
-#define Py_BYTESOBJECT_H
+#ifndef Ty_BYTESOBJECT_H
+#define Ty_BYTESOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -21,46 +21,46 @@ variant that assumes a zero-terminated string.  Note that none of the
 functions should be applied to NULL pointer.
 */
 
-PyAPI_DATA(PyTypeObject) PyBytes_Type;
-PyAPI_DATA(PyTypeObject) PyBytesIter_Type;
+PyAPI_DATA(TyTypeObject) TyBytes_Type;
+PyAPI_DATA(TyTypeObject) PyBytesIter_Type;
 
-#define PyBytes_Check(op) \
-                 PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_BYTES_SUBCLASS)
-#define PyBytes_CheckExact(op) Py_IS_TYPE((op), &PyBytes_Type)
+#define TyBytes_Check(op) \
+                 TyType_FastSubclass(Ty_TYPE(op), Ty_TPFLAGS_BYTES_SUBCLASS)
+#define TyBytes_CheckExact(op) Ty_IS_TYPE((op), &TyBytes_Type)
 
-PyAPI_FUNC(PyObject *) PyBytes_FromStringAndSize(const char *, Py_ssize_t);
-PyAPI_FUNC(PyObject *) PyBytes_FromString(const char *);
-PyAPI_FUNC(PyObject *) PyBytes_FromObject(PyObject *);
-PyAPI_FUNC(PyObject *) PyBytes_FromFormatV(const char*, va_list)
-                                Py_GCC_ATTRIBUTE((format(printf, 1, 0)));
-PyAPI_FUNC(PyObject *) PyBytes_FromFormat(const char*, ...)
-                                Py_GCC_ATTRIBUTE((format(printf, 1, 2)));
-PyAPI_FUNC(Py_ssize_t) PyBytes_Size(PyObject *);
-PyAPI_FUNC(char *) PyBytes_AsString(PyObject *);
-PyAPI_FUNC(PyObject *) PyBytes_Repr(PyObject *, int);
-PyAPI_FUNC(void) PyBytes_Concat(PyObject **, PyObject *);
-PyAPI_FUNC(void) PyBytes_ConcatAndDel(PyObject **, PyObject *);
-PyAPI_FUNC(PyObject *) PyBytes_DecodeEscape(const char *, Py_ssize_t,
-                                            const char *, Py_ssize_t,
+PyAPI_FUNC(TyObject *) TyBytes_FromStringAndSize(const char *, Ty_ssize_t);
+PyAPI_FUNC(TyObject *) TyBytes_FromString(const char *);
+PyAPI_FUNC(TyObject *) TyBytes_FromObject(TyObject *);
+PyAPI_FUNC(TyObject *) TyBytes_FromFormatV(const char*, va_list)
+                                Ty_GCC_ATTRIBUTE((format(printf, 1, 0)));
+PyAPI_FUNC(TyObject *) TyBytes_FromFormat(const char*, ...)
+                                Ty_GCC_ATTRIBUTE((format(printf, 1, 2)));
+PyAPI_FUNC(Ty_ssize_t) TyBytes_Size(TyObject *);
+PyAPI_FUNC(char *) TyBytes_AsString(TyObject *);
+PyAPI_FUNC(TyObject *) TyBytes_Repr(TyObject *, int);
+PyAPI_FUNC(void) TyBytes_Concat(TyObject **, TyObject *);
+PyAPI_FUNC(void) TyBytes_ConcatAndDel(TyObject **, TyObject *);
+PyAPI_FUNC(TyObject *) TyBytes_DecodeEscape(const char *, Ty_ssize_t,
+                                            const char *, Ty_ssize_t,
                                             const char *);
 
 /* Provides access to the internal data buffer and size of a bytes object.
    Passing NULL as len parameter will force the string buffer to be
    0-terminated (passing a string with embedded NUL characters will
    cause an exception).  */
-PyAPI_FUNC(int) PyBytes_AsStringAndSize(
-    PyObject *obj,      /* bytes object */
+PyAPI_FUNC(int) TyBytes_AsStringAndSize(
+    TyObject *obj,      /* bytes object */
     char **s,           /* pointer to buffer variable */
-    Py_ssize_t *len     /* pointer to length variable or NULL */
+    Ty_ssize_t *len     /* pointer to length variable or NULL */
     );
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_BYTESOBJECT_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_BYTESOBJECT_H
 #  include "cpython/bytesobject.h"
-#  undef Py_CPYTHON_BYTESOBJECT_H
+#  undef Ty_CPYTHON_BYTESOBJECT_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_BYTESOBJECT_H */
+#endif /* !Ty_BYTESOBJECT_H */

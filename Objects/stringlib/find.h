@@ -4,12 +4,12 @@
 #error must include "stringlib/fastsearch.h" before including this module
 #endif
 
-Py_LOCAL_INLINE(Py_ssize_t)
-STRINGLIB(find)(const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-               const STRINGLIB_CHAR* sub, Py_ssize_t sub_len,
-               Py_ssize_t offset)
+Ty_LOCAL_INLINE(Ty_ssize_t)
+STRINGLIB(find)(const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+               const STRINGLIB_CHAR* sub, Ty_ssize_t sub_len,
+               Ty_ssize_t offset)
 {
-    Py_ssize_t pos;
+    Ty_ssize_t pos;
 
     assert(str_len >= 0);
     if (sub_len == 0)
@@ -23,12 +23,12 @@ STRINGLIB(find)(const STRINGLIB_CHAR* str, Py_ssize_t str_len,
     return pos;
 }
 
-Py_LOCAL_INLINE(Py_ssize_t)
-STRINGLIB(rfind)(const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                const STRINGLIB_CHAR* sub, Py_ssize_t sub_len,
-                Py_ssize_t offset)
+Ty_LOCAL_INLINE(Ty_ssize_t)
+STRINGLIB(rfind)(const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                const STRINGLIB_CHAR* sub, Ty_ssize_t sub_len,
+                Ty_ssize_t offset)
 {
-    Py_ssize_t pos;
+    Ty_ssize_t pos;
 
     assert(str_len >= 0);
     if (sub_len == 0)
@@ -42,26 +42,26 @@ STRINGLIB(rfind)(const STRINGLIB_CHAR* str, Py_ssize_t str_len,
     return pos;
 }
 
-Py_LOCAL_INLINE(Py_ssize_t)
-STRINGLIB(find_slice)(const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                     const STRINGLIB_CHAR* sub, Py_ssize_t sub_len,
-                     Py_ssize_t start, Py_ssize_t end)
+Ty_LOCAL_INLINE(Ty_ssize_t)
+STRINGLIB(find_slice)(const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                     const STRINGLIB_CHAR* sub, Ty_ssize_t sub_len,
+                     Ty_ssize_t start, Ty_ssize_t end)
 {
     return STRINGLIB(find)(str + start, end - start, sub, sub_len, start);
 }
 
-Py_LOCAL_INLINE(Py_ssize_t)
-STRINGLIB(rfind_slice)(const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                      const STRINGLIB_CHAR* sub, Py_ssize_t sub_len,
-                      Py_ssize_t start, Py_ssize_t end)
+Ty_LOCAL_INLINE(Ty_ssize_t)
+STRINGLIB(rfind_slice)(const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                      const STRINGLIB_CHAR* sub, Ty_ssize_t sub_len,
+                      Ty_ssize_t start, Ty_ssize_t end)
 {
     return STRINGLIB(rfind)(str + start, end - start, sub, sub_len, start);
 }
 
 #ifdef STRINGLIB_WANT_CONTAINS_OBJ
 
-Py_LOCAL_INLINE(int)
-STRINGLIB(contains_obj)(PyObject* str, PyObject* sub)
+Ty_LOCAL_INLINE(int)
+STRINGLIB(contains_obj)(TyObject* str, TyObject* sub)
 {
     return STRINGLIB(find)(
         STRINGLIB_STR(str), STRINGLIB_LEN(str),

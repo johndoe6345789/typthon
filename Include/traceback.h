@@ -1,5 +1,5 @@
-#ifndef Py_TRACEBACK_H
-#define Py_TRACEBACK_H
+#ifndef Ty_TRACEBACK_H
+#define Ty_TRACEBACK_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -7,20 +7,20 @@ extern "C" {
 /* Traceback interface */
 
 PyAPI_FUNC(int) PyTraceBack_Here(PyFrameObject *);
-PyAPI_FUNC(int) PyTraceBack_Print(PyObject *, PyObject *);
+PyAPI_FUNC(int) PyTraceBack_Print(TyObject *, TyObject *);
 
 /* Reveal traceback type so we can typecheck traceback objects */
-PyAPI_DATA(PyTypeObject) PyTraceBack_Type;
-#define PyTraceBack_Check(v) Py_IS_TYPE((v), &PyTraceBack_Type)
+PyAPI_DATA(TyTypeObject) PyTraceBack_Type;
+#define PyTraceBack_Check(v) Ty_IS_TYPE((v), &PyTraceBack_Type)
 
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_TRACEBACK_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_TRACEBACK_H
 #  include "cpython/traceback.h"
-#  undef Py_CPYTHON_TRACEBACK_H
+#  undef Ty_CPYTHON_TRACEBACK_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_TRACEBACK_H */
+#endif /* !Ty_TRACEBACK_H */

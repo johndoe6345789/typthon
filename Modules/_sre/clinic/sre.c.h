@@ -2,14 +2,14 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_sre_getcodesize__doc__,
+TyDoc_STRVAR(_sre_getcodesize__doc__,
 "getcodesize($module, /)\n"
 "--\n"
 "\n");
@@ -18,25 +18,25 @@ PyDoc_STRVAR(_sre_getcodesize__doc__,
     {"getcodesize", (PyCFunction)_sre_getcodesize, METH_NOARGS, _sre_getcodesize__doc__},
 
 static int
-_sre_getcodesize_impl(PyObject *module);
+_sre_getcodesize_impl(TyObject *module);
 
-static PyObject *
-_sre_getcodesize(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_sre_getcodesize(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = _sre_getcodesize_impl(module);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_ascii_iscased__doc__,
+TyDoc_STRVAR(_sre_ascii_iscased__doc__,
 "ascii_iscased($module, character, /)\n"
 "--\n"
 "\n");
@@ -45,30 +45,30 @@ PyDoc_STRVAR(_sre_ascii_iscased__doc__,
     {"ascii_iscased", (PyCFunction)_sre_ascii_iscased, METH_O, _sre_ascii_iscased__doc__},
 
 static int
-_sre_ascii_iscased_impl(PyObject *module, int character);
+_sre_ascii_iscased_impl(TyObject *module, int character);
 
-static PyObject *
-_sre_ascii_iscased(PyObject *module, PyObject *arg)
+static TyObject *
+_sre_ascii_iscased(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int character;
     int _return_value;
 
-    character = PyLong_AsInt(arg);
-    if (character == -1 && PyErr_Occurred()) {
+    character = TyLong_AsInt(arg);
+    if (character == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = _sre_ascii_iscased_impl(module, character);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_unicode_iscased__doc__,
+TyDoc_STRVAR(_sre_unicode_iscased__doc__,
 "unicode_iscased($module, character, /)\n"
 "--\n"
 "\n");
@@ -77,30 +77,30 @@ PyDoc_STRVAR(_sre_unicode_iscased__doc__,
     {"unicode_iscased", (PyCFunction)_sre_unicode_iscased, METH_O, _sre_unicode_iscased__doc__},
 
 static int
-_sre_unicode_iscased_impl(PyObject *module, int character);
+_sre_unicode_iscased_impl(TyObject *module, int character);
 
-static PyObject *
-_sre_unicode_iscased(PyObject *module, PyObject *arg)
+static TyObject *
+_sre_unicode_iscased(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int character;
     int _return_value;
 
-    character = PyLong_AsInt(arg);
-    if (character == -1 && PyErr_Occurred()) {
+    character = TyLong_AsInt(arg);
+    if (character == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = _sre_unicode_iscased_impl(module, character);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_ascii_tolower__doc__,
+TyDoc_STRVAR(_sre_ascii_tolower__doc__,
 "ascii_tolower($module, character, /)\n"
 "--\n"
 "\n");
@@ -109,30 +109,30 @@ PyDoc_STRVAR(_sre_ascii_tolower__doc__,
     {"ascii_tolower", (PyCFunction)_sre_ascii_tolower, METH_O, _sre_ascii_tolower__doc__},
 
 static int
-_sre_ascii_tolower_impl(PyObject *module, int character);
+_sre_ascii_tolower_impl(TyObject *module, int character);
 
-static PyObject *
-_sre_ascii_tolower(PyObject *module, PyObject *arg)
+static TyObject *
+_sre_ascii_tolower(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int character;
     int _return_value;
 
-    character = PyLong_AsInt(arg);
-    if (character == -1 && PyErr_Occurred()) {
+    character = TyLong_AsInt(arg);
+    if (character == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = _sre_ascii_tolower_impl(module, character);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_unicode_tolower__doc__,
+TyDoc_STRVAR(_sre_unicode_tolower__doc__,
 "unicode_tolower($module, character, /)\n"
 "--\n"
 "\n");
@@ -141,30 +141,30 @@ PyDoc_STRVAR(_sre_unicode_tolower__doc__,
     {"unicode_tolower", (PyCFunction)_sre_unicode_tolower, METH_O, _sre_unicode_tolower__doc__},
 
 static int
-_sre_unicode_tolower_impl(PyObject *module, int character);
+_sre_unicode_tolower_impl(TyObject *module, int character);
 
-static PyObject *
-_sre_unicode_tolower(PyObject *module, PyObject *arg)
+static TyObject *
+_sre_unicode_tolower(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int character;
     int _return_value;
 
-    character = PyLong_AsInt(arg);
-    if (character == -1 && PyErr_Occurred()) {
+    character = TyLong_AsInt(arg);
+    if (character == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = _sre_unicode_tolower_impl(module, character);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_match__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_match__doc__,
 "match($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -173,49 +173,49 @@ PyDoc_STRVAR(_sre_SRE_Pattern_match__doc__,
 #define _SRE_SRE_PATTERN_MATCH_METHODDEF    \
     {"match", _PyCFunction_CAST(_sre_SRE_Pattern_match), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Pattern_match__doc__},
 
-static PyObject *
-_sre_SRE_Pattern_match_impl(PatternObject *self, PyTypeObject *cls,
-                            PyObject *string, Py_ssize_t pos,
-                            Py_ssize_t endpos);
+static TyObject *
+_sre_SRE_Pattern_match_impl(PatternObject *self, TyTypeObject *cls,
+                            TyObject *string, Ty_ssize_t pos,
+                            Ty_ssize_t endpos);
 
-static PyObject *
-_sre_SRE_Pattern_match(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Pattern_match(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(string), &_Py_ID(pos), &_Py_ID(endpos), },
+        .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"string", "pos", "endpos", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "match",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *string;
-    Py_ssize_t pos = 0;
-    Py_ssize_t endpos = PY_SSIZE_T_MAX;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *string;
+    Ty_ssize_t pos = 0;
+    Ty_ssize_t endpos = PY_SSIZE_T_MAX;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -226,13 +226,13 @@ _sre_SRE_Pattern_match(PyObject *self, PyTypeObject *cls, PyObject *const *args,
     }
     if (args[1]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[1]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[1]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             pos = ival;
@@ -242,13 +242,13 @@ _sre_SRE_Pattern_match(PyObject *self, PyTypeObject *cls, PyObject *const *args,
         }
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         endpos = ival;
@@ -260,7 +260,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_fullmatch__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_fullmatch__doc__,
 "fullmatch($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -269,49 +269,49 @@ PyDoc_STRVAR(_sre_SRE_Pattern_fullmatch__doc__,
 #define _SRE_SRE_PATTERN_FULLMATCH_METHODDEF    \
     {"fullmatch", _PyCFunction_CAST(_sre_SRE_Pattern_fullmatch), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Pattern_fullmatch__doc__},
 
-static PyObject *
-_sre_SRE_Pattern_fullmatch_impl(PatternObject *self, PyTypeObject *cls,
-                                PyObject *string, Py_ssize_t pos,
-                                Py_ssize_t endpos);
+static TyObject *
+_sre_SRE_Pattern_fullmatch_impl(PatternObject *self, TyTypeObject *cls,
+                                TyObject *string, Ty_ssize_t pos,
+                                Ty_ssize_t endpos);
 
-static PyObject *
-_sre_SRE_Pattern_fullmatch(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Pattern_fullmatch(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(string), &_Py_ID(pos), &_Py_ID(endpos), },
+        .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"string", "pos", "endpos", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fullmatch",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *string;
-    Py_ssize_t pos = 0;
-    Py_ssize_t endpos = PY_SSIZE_T_MAX;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *string;
+    Ty_ssize_t pos = 0;
+    Ty_ssize_t endpos = PY_SSIZE_T_MAX;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -322,13 +322,13 @@ _sre_SRE_Pattern_fullmatch(PyObject *self, PyTypeObject *cls, PyObject *const *a
     }
     if (args[1]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[1]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[1]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             pos = ival;
@@ -338,13 +338,13 @@ _sre_SRE_Pattern_fullmatch(PyObject *self, PyTypeObject *cls, PyObject *const *a
         }
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         endpos = ival;
@@ -356,7 +356,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_search__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_search__doc__,
 "search($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -367,49 +367,49 @@ PyDoc_STRVAR(_sre_SRE_Pattern_search__doc__,
 #define _SRE_SRE_PATTERN_SEARCH_METHODDEF    \
     {"search", _PyCFunction_CAST(_sre_SRE_Pattern_search), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Pattern_search__doc__},
 
-static PyObject *
-_sre_SRE_Pattern_search_impl(PatternObject *self, PyTypeObject *cls,
-                             PyObject *string, Py_ssize_t pos,
-                             Py_ssize_t endpos);
+static TyObject *
+_sre_SRE_Pattern_search_impl(PatternObject *self, TyTypeObject *cls,
+                             TyObject *string, Ty_ssize_t pos,
+                             Ty_ssize_t endpos);
 
-static PyObject *
-_sre_SRE_Pattern_search(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Pattern_search(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(string), &_Py_ID(pos), &_Py_ID(endpos), },
+        .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"string", "pos", "endpos", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "search",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *string;
-    Py_ssize_t pos = 0;
-    Py_ssize_t endpos = PY_SSIZE_T_MAX;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *string;
+    Ty_ssize_t pos = 0;
+    Ty_ssize_t endpos = PY_SSIZE_T_MAX;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -420,13 +420,13 @@ _sre_SRE_Pattern_search(PyObject *self, PyTypeObject *cls, PyObject *const *args
     }
     if (args[1]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[1]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[1]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             pos = ival;
@@ -436,13 +436,13 @@ _sre_SRE_Pattern_search(PyObject *self, PyTypeObject *cls, PyObject *const *args
         }
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         endpos = ival;
@@ -454,7 +454,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_findall__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_findall__doc__,
 "findall($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -463,48 +463,48 @@ PyDoc_STRVAR(_sre_SRE_Pattern_findall__doc__,
 #define _SRE_SRE_PATTERN_FINDALL_METHODDEF    \
     {"findall", _PyCFunction_CAST(_sre_SRE_Pattern_findall), METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Pattern_findall__doc__},
 
-static PyObject *
-_sre_SRE_Pattern_findall_impl(PatternObject *self, PyObject *string,
-                              Py_ssize_t pos, Py_ssize_t endpos);
+static TyObject *
+_sre_SRE_Pattern_findall_impl(PatternObject *self, TyObject *string,
+                              Ty_ssize_t pos, Ty_ssize_t endpos);
 
-static PyObject *
-_sre_SRE_Pattern_findall(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Pattern_findall(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(string), &_Py_ID(pos), &_Py_ID(endpos), },
+        .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"string", "pos", "endpos", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "findall",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *string;
-    Py_ssize_t pos = 0;
-    Py_ssize_t endpos = PY_SSIZE_T_MAX;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *string;
+    Ty_ssize_t pos = 0;
+    Ty_ssize_t endpos = PY_SSIZE_T_MAX;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -515,13 +515,13 @@ _sre_SRE_Pattern_findall(PyObject *self, PyObject *const *args, Py_ssize_t nargs
     }
     if (args[1]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[1]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[1]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             pos = ival;
@@ -531,13 +531,13 @@ _sre_SRE_Pattern_findall(PyObject *self, PyObject *const *args, Py_ssize_t nargs
         }
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         endpos = ival;
@@ -549,7 +549,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_finditer__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_finditer__doc__,
 "finditer($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -560,49 +560,49 @@ PyDoc_STRVAR(_sre_SRE_Pattern_finditer__doc__,
 #define _SRE_SRE_PATTERN_FINDITER_METHODDEF    \
     {"finditer", _PyCFunction_CAST(_sre_SRE_Pattern_finditer), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Pattern_finditer__doc__},
 
-static PyObject *
-_sre_SRE_Pattern_finditer_impl(PatternObject *self, PyTypeObject *cls,
-                               PyObject *string, Py_ssize_t pos,
-                               Py_ssize_t endpos);
+static TyObject *
+_sre_SRE_Pattern_finditer_impl(PatternObject *self, TyTypeObject *cls,
+                               TyObject *string, Ty_ssize_t pos,
+                               Ty_ssize_t endpos);
 
-static PyObject *
-_sre_SRE_Pattern_finditer(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Pattern_finditer(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(string), &_Py_ID(pos), &_Py_ID(endpos), },
+        .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"string", "pos", "endpos", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "finditer",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *string;
-    Py_ssize_t pos = 0;
-    Py_ssize_t endpos = PY_SSIZE_T_MAX;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *string;
+    Ty_ssize_t pos = 0;
+    Ty_ssize_t endpos = PY_SSIZE_T_MAX;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -613,13 +613,13 @@ _sre_SRE_Pattern_finditer(PyObject *self, PyTypeObject *cls, PyObject *const *ar
     }
     if (args[1]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[1]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[1]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             pos = ival;
@@ -629,13 +629,13 @@ _sre_SRE_Pattern_finditer(PyObject *self, PyTypeObject *cls, PyObject *const *ar
         }
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         endpos = ival;
@@ -647,7 +647,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_scanner__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_scanner__doc__,
 "scanner($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n");
@@ -655,49 +655,49 @@ PyDoc_STRVAR(_sre_SRE_Pattern_scanner__doc__,
 #define _SRE_SRE_PATTERN_SCANNER_METHODDEF    \
     {"scanner", _PyCFunction_CAST(_sre_SRE_Pattern_scanner), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Pattern_scanner__doc__},
 
-static PyObject *
-_sre_SRE_Pattern_scanner_impl(PatternObject *self, PyTypeObject *cls,
-                              PyObject *string, Py_ssize_t pos,
-                              Py_ssize_t endpos);
+static TyObject *
+_sre_SRE_Pattern_scanner_impl(PatternObject *self, TyTypeObject *cls,
+                              TyObject *string, Ty_ssize_t pos,
+                              Ty_ssize_t endpos);
 
-static PyObject *
-_sre_SRE_Pattern_scanner(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Pattern_scanner(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(string), &_Py_ID(pos), &_Py_ID(endpos), },
+        .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"string", "pos", "endpos", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "scanner",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *string;
-    Py_ssize_t pos = 0;
-    Py_ssize_t endpos = PY_SSIZE_T_MAX;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *string;
+    Ty_ssize_t pos = 0;
+    Ty_ssize_t endpos = PY_SSIZE_T_MAX;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -708,13 +708,13 @@ _sre_SRE_Pattern_scanner(PyObject *self, PyTypeObject *cls, PyObject *const *arg
     }
     if (args[1]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[1]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[1]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             pos = ival;
@@ -724,13 +724,13 @@ _sre_SRE_Pattern_scanner(PyObject *self, PyTypeObject *cls, PyObject *const *arg
         }
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         endpos = ival;
@@ -742,7 +742,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_split__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_split__doc__,
 "split($self, /, string, maxsplit=0)\n"
 "--\n"
 "\n"
@@ -751,47 +751,47 @@ PyDoc_STRVAR(_sre_SRE_Pattern_split__doc__,
 #define _SRE_SRE_PATTERN_SPLIT_METHODDEF    \
     {"split", _PyCFunction_CAST(_sre_SRE_Pattern_split), METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Pattern_split__doc__},
 
-static PyObject *
-_sre_SRE_Pattern_split_impl(PatternObject *self, PyObject *string,
-                            Py_ssize_t maxsplit);
+static TyObject *
+_sre_SRE_Pattern_split_impl(PatternObject *self, TyObject *string,
+                            Ty_ssize_t maxsplit);
 
-static PyObject *
-_sre_SRE_Pattern_split(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Pattern_split(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(string), &_Py_ID(maxsplit), },
+        .ob_item = { &_Ty_ID(string), &_Ty_ID(maxsplit), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"string", "maxsplit", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "split",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *string;
-    Py_ssize_t maxsplit = 0;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *string;
+    Ty_ssize_t maxsplit = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -801,13 +801,13 @@ _sre_SRE_Pattern_split(PyObject *self, PyObject *const *args, Py_ssize_t nargs, 
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         maxsplit = ival;
@@ -819,7 +819,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_sub__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_sub__doc__,
 "sub($self, /, repl, string, count=0)\n"
 "--\n"
 "\n"
@@ -828,48 +828,48 @@ PyDoc_STRVAR(_sre_SRE_Pattern_sub__doc__,
 #define _SRE_SRE_PATTERN_SUB_METHODDEF    \
     {"sub", _PyCFunction_CAST(_sre_SRE_Pattern_sub), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Pattern_sub__doc__},
 
-static PyObject *
-_sre_SRE_Pattern_sub_impl(PatternObject *self, PyTypeObject *cls,
-                          PyObject *repl, PyObject *string, Py_ssize_t count);
+static TyObject *
+_sre_SRE_Pattern_sub_impl(PatternObject *self, TyTypeObject *cls,
+                          TyObject *repl, TyObject *string, Ty_ssize_t count);
 
-static PyObject *
-_sre_SRE_Pattern_sub(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Pattern_sub(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(repl), &_Py_ID(string), &_Py_ID(count), },
+        .ob_item = { &_Ty_ID(repl), &_Ty_ID(string), &_Ty_ID(count), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"repl", "string", "count", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "sub",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *repl;
-    PyObject *string;
-    Py_ssize_t count = 0;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *repl;
+    TyObject *string;
+    Ty_ssize_t count = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -880,13 +880,13 @@ _sre_SRE_Pattern_sub(PyObject *self, PyTypeObject *cls, PyObject *const *args, P
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         count = ival;
@@ -898,7 +898,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_subn__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_subn__doc__,
 "subn($self, /, repl, string, count=0)\n"
 "--\n"
 "\n"
@@ -907,49 +907,49 @@ PyDoc_STRVAR(_sre_SRE_Pattern_subn__doc__,
 #define _SRE_SRE_PATTERN_SUBN_METHODDEF    \
     {"subn", _PyCFunction_CAST(_sre_SRE_Pattern_subn), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Pattern_subn__doc__},
 
-static PyObject *
-_sre_SRE_Pattern_subn_impl(PatternObject *self, PyTypeObject *cls,
-                           PyObject *repl, PyObject *string,
-                           Py_ssize_t count);
+static TyObject *
+_sre_SRE_Pattern_subn_impl(PatternObject *self, TyTypeObject *cls,
+                           TyObject *repl, TyObject *string,
+                           Ty_ssize_t count);
 
-static PyObject *
-_sre_SRE_Pattern_subn(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Pattern_subn(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(repl), &_Py_ID(string), &_Py_ID(count), },
+        .ob_item = { &_Ty_ID(repl), &_Ty_ID(string), &_Ty_ID(count), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"repl", "string", "count", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "subn",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *repl;
-    PyObject *string;
-    Py_ssize_t count = 0;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *repl;
+    TyObject *string;
+    Ty_ssize_t count = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -960,13 +960,13 @@ _sre_SRE_Pattern_subn(PyObject *self, PyTypeObject *cls, PyObject *const *args, 
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         count = ival;
@@ -978,7 +978,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern___copy____doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern___copy____doc__,
 "__copy__($self, /)\n"
 "--\n"
 "\n");
@@ -986,16 +986,16 @@ PyDoc_STRVAR(_sre_SRE_Pattern___copy____doc__,
 #define _SRE_SRE_PATTERN___COPY___METHODDEF    \
     {"__copy__", (PyCFunction)_sre_SRE_Pattern___copy__, METH_NOARGS, _sre_SRE_Pattern___copy____doc__},
 
-static PyObject *
+static TyObject *
 _sre_SRE_Pattern___copy___impl(PatternObject *self);
 
-static PyObject *
-_sre_SRE_Pattern___copy__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_sre_SRE_Pattern___copy__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _sre_SRE_Pattern___copy___impl((PatternObject *)self);
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern___deepcopy____doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern___deepcopy____doc__,
 "__deepcopy__($self, memo, /)\n"
 "--\n"
 "\n");
@@ -1003,22 +1003,22 @@ PyDoc_STRVAR(_sre_SRE_Pattern___deepcopy____doc__,
 #define _SRE_SRE_PATTERN___DEEPCOPY___METHODDEF    \
     {"__deepcopy__", (PyCFunction)_sre_SRE_Pattern___deepcopy__, METH_O, _sre_SRE_Pattern___deepcopy____doc__},
 
-static PyObject *
-_sre_SRE_Pattern___deepcopy___impl(PatternObject *self, PyObject *memo);
+static TyObject *
+_sre_SRE_Pattern___deepcopy___impl(PatternObject *self, TyObject *memo);
 
-static PyObject *
-_sre_SRE_Pattern___deepcopy__(PyObject *self, PyObject *memo)
+static TyObject *
+_sre_SRE_Pattern___deepcopy__(TyObject *self, TyObject *memo)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = _sre_SRE_Pattern___deepcopy___impl((PatternObject *)self, memo);
 
     return return_value;
 }
 
-#if defined(Py_DEBUG)
+#if defined(Ty_DEBUG)
 
-PyDoc_STRVAR(_sre_SRE_Pattern__fail_after__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern__fail_after__doc__,
 "_fail_after($self, count, exception, /)\n"
 "--\n"
 "\n"
@@ -1027,22 +1027,22 @@ PyDoc_STRVAR(_sre_SRE_Pattern__fail_after__doc__,
 #define _SRE_SRE_PATTERN__FAIL_AFTER_METHODDEF    \
     {"_fail_after", _PyCFunction_CAST(_sre_SRE_Pattern__fail_after), METH_FASTCALL, _sre_SRE_Pattern__fail_after__doc__},
 
-static PyObject *
+static TyObject *
 _sre_SRE_Pattern__fail_after_impl(PatternObject *self, int count,
-                                  PyObject *exception);
+                                  TyObject *exception);
 
-static PyObject *
-_sre_SRE_Pattern__fail_after(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_sre_SRE_Pattern__fail_after(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int count;
-    PyObject *exception;
+    TyObject *exception;
 
-    if (!_PyArg_CheckPositional("_fail_after", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("_fail_after", nargs, 2, 2)) {
         goto exit;
     }
-    count = PyLong_AsInt(args[0]);
-    if (count == -1 && PyErr_Occurred()) {
+    count = TyLong_AsInt(args[0]);
+    if (count == -1 && TyErr_Occurred()) {
         goto exit;
     }
     exception = args[1];
@@ -1052,9 +1052,9 @@ exit:
     return return_value;
 }
 
-#endif /* defined(Py_DEBUG) */
+#endif /* defined(Ty_DEBUG) */
 
-PyDoc_STRVAR(_sre_compile__doc__,
+TyDoc_STRVAR(_sre_compile__doc__,
 "compile($module, /, pattern, flags, code, groups, groupindex,\n"
 "        indexgroup)\n"
 "--\n"
@@ -1063,84 +1063,84 @@ PyDoc_STRVAR(_sre_compile__doc__,
 #define _SRE_COMPILE_METHODDEF    \
     {"compile", _PyCFunction_CAST(_sre_compile), METH_FASTCALL|METH_KEYWORDS, _sre_compile__doc__},
 
-static PyObject *
-_sre_compile_impl(PyObject *module, PyObject *pattern, int flags,
-                  PyObject *code, Py_ssize_t groups, PyObject *groupindex,
-                  PyObject *indexgroup);
+static TyObject *
+_sre_compile_impl(TyObject *module, TyObject *pattern, int flags,
+                  TyObject *code, Ty_ssize_t groups, TyObject *groupindex,
+                  TyObject *indexgroup);
 
-static PyObject *
-_sre_compile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_compile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 6
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(pattern), &_Py_ID(flags), &_Py_ID(code), &_Py_ID(groups), &_Py_ID(groupindex), &_Py_ID(indexgroup), },
+        .ob_item = { &_Ty_ID(pattern), &_Ty_ID(flags), &_Ty_ID(code), &_Ty_ID(groups), &_Ty_ID(groupindex), &_Ty_ID(indexgroup), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"pattern", "flags", "code", "groups", "groupindex", "indexgroup", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "compile",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[6];
-    PyObject *pattern;
+    TyObject *argsbuf[6];
+    TyObject *pattern;
     int flags;
-    PyObject *code;
-    Py_ssize_t groups;
-    PyObject *groupindex;
-    PyObject *indexgroup;
+    TyObject *code;
+    Ty_ssize_t groups;
+    TyObject *groupindex;
+    TyObject *indexgroup;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 6, /*maxpos*/ 6, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     pattern = args[0];
-    flags = PyLong_AsInt(args[1]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[1]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!PyList_Check(args[2])) {
-        _PyArg_BadArgument("compile", "argument 'code'", "list", args[2]);
+    if (!TyList_Check(args[2])) {
+        _TyArg_BadArgument("compile", "argument 'code'", "list", args[2]);
         goto exit;
     }
     code = args[2];
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[3]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[3]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         groups = ival;
     }
-    if (!PyDict_Check(args[4])) {
-        _PyArg_BadArgument("compile", "argument 'groupindex'", "dict", args[4]);
+    if (!TyDict_Check(args[4])) {
+        _TyArg_BadArgument("compile", "argument 'groupindex'", "dict", args[4]);
         goto exit;
     }
     groupindex = args[4];
-    if (!PyTuple_Check(args[5])) {
-        _PyArg_BadArgument("compile", "argument 'indexgroup'", "tuple", args[5]);
+    if (!TyTuple_Check(args[5])) {
+        _TyArg_BadArgument("compile", "argument 'indexgroup'", "tuple", args[5]);
         goto exit;
     }
     indexgroup = args[5];
@@ -1150,7 +1150,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_template__doc__,
+TyDoc_STRVAR(_sre_template__doc__,
 "template($module, pattern, template, /)\n"
 "--\n"
 "\n"
@@ -1164,22 +1164,22 @@ PyDoc_STRVAR(_sre_template__doc__,
 #define _SRE_TEMPLATE_METHODDEF    \
     {"template", _PyCFunction_CAST(_sre_template), METH_FASTCALL, _sre_template__doc__},
 
-static PyObject *
-_sre_template_impl(PyObject *module, PyObject *pattern, PyObject *template);
+static TyObject *
+_sre_template_impl(TyObject *module, TyObject *pattern, TyObject *template);
 
-static PyObject *
-_sre_template(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_sre_template(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *pattern;
-    PyObject *template;
+    TyObject *return_value = NULL;
+    TyObject *pattern;
+    TyObject *template;
 
-    if (!_PyArg_CheckPositional("template", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("template", nargs, 2, 2)) {
         goto exit;
     }
     pattern = args[0];
-    if (!PyList_Check(args[1])) {
-        _PyArg_BadArgument("template", "argument 2", "list", args[1]);
+    if (!TyList_Check(args[1])) {
+        _TyArg_BadArgument("template", "argument 2", "list", args[1]);
         goto exit;
     }
     template = args[1];
@@ -1189,7 +1189,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_expand__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_expand__doc__,
 "expand($self, /, template)\n"
 "--\n"
 "\n"
@@ -1198,44 +1198,44 @@ PyDoc_STRVAR(_sre_SRE_Match_expand__doc__,
 #define _SRE_SRE_MATCH_EXPAND_METHODDEF    \
     {"expand", _PyCFunction_CAST(_sre_SRE_Match_expand), METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Match_expand__doc__},
 
-static PyObject *
-_sre_SRE_Match_expand_impl(MatchObject *self, PyObject *template);
+static TyObject *
+_sre_SRE_Match_expand_impl(MatchObject *self, TyObject *template);
 
-static PyObject *
-_sre_SRE_Match_expand(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Match_expand(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(template), },
+        .ob_item = { &_Ty_ID(template), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"template", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "expand",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *template;
+    TyObject *argsbuf[1];
+    TyObject *template;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1247,7 +1247,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_groups__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_groups__doc__,
 "groups($self, /, default=None)\n"
 "--\n"
 "\n"
@@ -1259,45 +1259,45 @@ PyDoc_STRVAR(_sre_SRE_Match_groups__doc__,
 #define _SRE_SRE_MATCH_GROUPS_METHODDEF    \
     {"groups", _PyCFunction_CAST(_sre_SRE_Match_groups), METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Match_groups__doc__},
 
-static PyObject *
-_sre_SRE_Match_groups_impl(MatchObject *self, PyObject *default_value);
+static TyObject *
+_sre_SRE_Match_groups_impl(MatchObject *self, TyObject *default_value);
 
-static PyObject *
-_sre_SRE_Match_groups(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Match_groups(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(default), },
+        .ob_item = { &_Ty_ID(default), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"default", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "groups",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *default_value = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *default_value = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1313,7 +1313,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_groupdict__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_groupdict__doc__,
 "groupdict($self, /, default=None)\n"
 "--\n"
 "\n"
@@ -1325,45 +1325,45 @@ PyDoc_STRVAR(_sre_SRE_Match_groupdict__doc__,
 #define _SRE_SRE_MATCH_GROUPDICT_METHODDEF    \
     {"groupdict", _PyCFunction_CAST(_sre_SRE_Match_groupdict), METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Match_groupdict__doc__},
 
-static PyObject *
-_sre_SRE_Match_groupdict_impl(MatchObject *self, PyObject *default_value);
+static TyObject *
+_sre_SRE_Match_groupdict_impl(MatchObject *self, TyObject *default_value);
 
-static PyObject *
-_sre_SRE_Match_groupdict(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Match_groupdict(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(default), },
+        .ob_item = { &_Ty_ID(default), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"default", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "groupdict",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *default_value = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *default_value = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1379,7 +1379,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_start__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_start__doc__,
 "start($self, group=0, /)\n"
 "--\n"
 "\n"
@@ -1388,17 +1388,17 @@ PyDoc_STRVAR(_sre_SRE_Match_start__doc__,
 #define _SRE_SRE_MATCH_START_METHODDEF    \
     {"start", _PyCFunction_CAST(_sre_SRE_Match_start), METH_FASTCALL, _sre_SRE_Match_start__doc__},
 
-static Py_ssize_t
-_sre_SRE_Match_start_impl(MatchObject *self, PyObject *group);
+static Ty_ssize_t
+_sre_SRE_Match_start_impl(MatchObject *self, TyObject *group);
 
-static PyObject *
-_sre_SRE_Match_start(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_sre_SRE_Match_start(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *group = NULL;
-    Py_ssize_t _return_value;
+    TyObject *return_value = NULL;
+    TyObject *group = NULL;
+    Ty_ssize_t _return_value;
 
-    if (!_PyArg_CheckPositional("start", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("start", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -1407,16 +1407,16 @@ _sre_SRE_Match_start(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
     group = args[0];
 skip_optional:
     _return_value = _sre_SRE_Match_start_impl((MatchObject *)self, group);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_end__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_end__doc__,
 "end($self, group=0, /)\n"
 "--\n"
 "\n"
@@ -1425,17 +1425,17 @@ PyDoc_STRVAR(_sre_SRE_Match_end__doc__,
 #define _SRE_SRE_MATCH_END_METHODDEF    \
     {"end", _PyCFunction_CAST(_sre_SRE_Match_end), METH_FASTCALL, _sre_SRE_Match_end__doc__},
 
-static Py_ssize_t
-_sre_SRE_Match_end_impl(MatchObject *self, PyObject *group);
+static Ty_ssize_t
+_sre_SRE_Match_end_impl(MatchObject *self, TyObject *group);
 
-static PyObject *
-_sre_SRE_Match_end(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_sre_SRE_Match_end(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *group = NULL;
-    Py_ssize_t _return_value;
+    TyObject *return_value = NULL;
+    TyObject *group = NULL;
+    Ty_ssize_t _return_value;
 
-    if (!_PyArg_CheckPositional("end", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("end", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -1444,16 +1444,16 @@ _sre_SRE_Match_end(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
     group = args[0];
 skip_optional:
     _return_value = _sre_SRE_Match_end_impl((MatchObject *)self, group);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_span__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_span__doc__,
 "span($self, group=0, /)\n"
 "--\n"
 "\n"
@@ -1462,16 +1462,16 @@ PyDoc_STRVAR(_sre_SRE_Match_span__doc__,
 #define _SRE_SRE_MATCH_SPAN_METHODDEF    \
     {"span", _PyCFunction_CAST(_sre_SRE_Match_span), METH_FASTCALL, _sre_SRE_Match_span__doc__},
 
-static PyObject *
-_sre_SRE_Match_span_impl(MatchObject *self, PyObject *group);
+static TyObject *
+_sre_SRE_Match_span_impl(MatchObject *self, TyObject *group);
 
-static PyObject *
-_sre_SRE_Match_span(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_sre_SRE_Match_span(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *group = NULL;
+    TyObject *return_value = NULL;
+    TyObject *group = NULL;
 
-    if (!_PyArg_CheckPositional("span", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("span", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -1485,7 +1485,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match___copy____doc__,
+TyDoc_STRVAR(_sre_SRE_Match___copy____doc__,
 "__copy__($self, /)\n"
 "--\n"
 "\n");
@@ -1493,16 +1493,16 @@ PyDoc_STRVAR(_sre_SRE_Match___copy____doc__,
 #define _SRE_SRE_MATCH___COPY___METHODDEF    \
     {"__copy__", (PyCFunction)_sre_SRE_Match___copy__, METH_NOARGS, _sre_SRE_Match___copy____doc__},
 
-static PyObject *
+static TyObject *
 _sre_SRE_Match___copy___impl(MatchObject *self);
 
-static PyObject *
-_sre_SRE_Match___copy__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_sre_SRE_Match___copy__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _sre_SRE_Match___copy___impl((MatchObject *)self);
 }
 
-PyDoc_STRVAR(_sre_SRE_Match___deepcopy____doc__,
+TyDoc_STRVAR(_sre_SRE_Match___deepcopy____doc__,
 "__deepcopy__($self, memo, /)\n"
 "--\n"
 "\n");
@@ -1510,20 +1510,20 @@ PyDoc_STRVAR(_sre_SRE_Match___deepcopy____doc__,
 #define _SRE_SRE_MATCH___DEEPCOPY___METHODDEF    \
     {"__deepcopy__", (PyCFunction)_sre_SRE_Match___deepcopy__, METH_O, _sre_SRE_Match___deepcopy____doc__},
 
-static PyObject *
-_sre_SRE_Match___deepcopy___impl(MatchObject *self, PyObject *memo);
+static TyObject *
+_sre_SRE_Match___deepcopy___impl(MatchObject *self, TyObject *memo);
 
-static PyObject *
-_sre_SRE_Match___deepcopy__(PyObject *self, PyObject *memo)
+static TyObject *
+_sre_SRE_Match___deepcopy__(TyObject *self, TyObject *memo)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = _sre_SRE_Match___deepcopy___impl((MatchObject *)self, memo);
 
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Scanner_match__doc__,
+TyDoc_STRVAR(_sre_SRE_Scanner_match__doc__,
 "match($self, /)\n"
 "--\n"
 "\n");
@@ -1531,20 +1531,20 @@ PyDoc_STRVAR(_sre_SRE_Scanner_match__doc__,
 #define _SRE_SRE_SCANNER_MATCH_METHODDEF    \
     {"match", _PyCFunction_CAST(_sre_SRE_Scanner_match), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Scanner_match__doc__},
 
-static PyObject *
-_sre_SRE_Scanner_match_impl(ScannerObject *self, PyTypeObject *cls);
+static TyObject *
+_sre_SRE_Scanner_match_impl(ScannerObject *self, TyTypeObject *cls);
 
-static PyObject *
-_sre_SRE_Scanner_match(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Scanner_match(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "match() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "match() takes no arguments");
         return NULL;
     }
     return _sre_SRE_Scanner_match_impl((ScannerObject *)self, cls);
 }
 
-PyDoc_STRVAR(_sre_SRE_Scanner_search__doc__,
+TyDoc_STRVAR(_sre_SRE_Scanner_search__doc__,
 "search($self, /)\n"
 "--\n"
 "\n");
@@ -1552,14 +1552,14 @@ PyDoc_STRVAR(_sre_SRE_Scanner_search__doc__,
 #define _SRE_SRE_SCANNER_SEARCH_METHODDEF    \
     {"search", _PyCFunction_CAST(_sre_SRE_Scanner_search), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _sre_SRE_Scanner_search__doc__},
 
-static PyObject *
-_sre_SRE_Scanner_search_impl(ScannerObject *self, PyTypeObject *cls);
+static TyObject *
+_sre_SRE_Scanner_search_impl(ScannerObject *self, TyTypeObject *cls);
 
-static PyObject *
-_sre_SRE_Scanner_search(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_sre_SRE_Scanner_search(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "search() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "search() takes no arguments");
         return NULL;
     }
     return _sre_SRE_Scanner_search_impl((ScannerObject *)self, cls);

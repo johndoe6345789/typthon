@@ -29,9 +29,9 @@
 #include <wchar.h>
 #include "pycore_getopt.h"
 
-int _PyOS_opterr = 1;                 /* generate error messages */
-Py_ssize_t _PyOS_optind = 1;          /* index into argv array   */
-const wchar_t *_PyOS_optarg = NULL;   /* optional argument       */
+int _TyOS_opterr = 1;                 /* generate error messages */
+Ty_ssize_t _TyOS_optind = 1;          /* index into argv array   */
+const wchar_t *_TyOS_optarg = NULL;   /* optional argument       */
 
 static const wchar_t *opt_ptr = L"";
 
@@ -39,7 +39,7 @@ static const wchar_t *opt_ptr = L"";
 
 #define SHORT_OPTS L"bBc:dEhiIm:OPqRsStuvVW:xX:?"
 
-static const _PyOS_LongOption longopts[] = {
+static const _TyOS_LongOption longopts[] = {
     /* name, has_arg, val (used in switch in initconfig.c) */
     {L"check-hash-based-pycs", 1, 0},
     {L"help-all", 0, 1},
@@ -49,50 +49,50 @@ static const _PyOS_LongOption longopts[] = {
 };
 
 
-void _PyOS_ResetGetOpt(void)
+void _TyOS_ResetGetOpt(void)
 {
-    _PyOS_opterr = 1;
-    _PyOS_optind = 1;
-    _PyOS_optarg = NULL;
+    _TyOS_opterr = 1;
+    _TyOS_optind = 1;
+    _TyOS_optarg = NULL;
     opt_ptr = L"";
 }
 
-int _PyOS_GetOpt(Py_ssize_t argc, wchar_t * const *argv, int *longindex)
+int _TyOS_GetOpt(Ty_ssize_t argc, wchar_t * const *argv, int *longindex)
 {
     wchar_t *ptr;
     wchar_t option;
 
     if (*opt_ptr == '\0') {
 
-        if (_PyOS_optind >= argc)
+        if (_TyOS_optind >= argc)
             return -1;
 #ifdef MS_WINDOWS
-        else if (wcscmp(argv[_PyOS_optind], L"/?") == 0) {
-            ++_PyOS_optind;
+        else if (wcscmp(argv[_TyOS_optind], L"/?") == 0) {
+            ++_TyOS_optind;
             return 'h';
         }
 #endif
 
-        else if (argv[_PyOS_optind][0] != L'-' ||
-                 argv[_PyOS_optind][1] == L'\0' /* lone dash */ )
+        else if (argv[_TyOS_optind][0] != L'-' ||
+                 argv[_TyOS_optind][1] == L'\0' /* lone dash */ )
             return -1;
 
-        else if (wcscmp(argv[_PyOS_optind], L"--") == 0) {
-            ++_PyOS_optind;
+        else if (wcscmp(argv[_TyOS_optind], L"--") == 0) {
+            ++_TyOS_optind;
             return -1;
         }
 
-        else if (wcscmp(argv[_PyOS_optind], L"--help") == 0) {
-            ++_PyOS_optind;
+        else if (wcscmp(argv[_TyOS_optind], L"--help") == 0) {
+            ++_TyOS_optind;
             return 'h';
         }
 
-        else if (wcscmp(argv[_PyOS_optind], L"--version") == 0) {
-            ++_PyOS_optind;
+        else if (wcscmp(argv[_TyOS_optind], L"--version") == 0) {
+            ++_TyOS_optind;
             return 'V';
         }
 
-        opt_ptr = &argv[_PyOS_optind++][1];
+        opt_ptr = &argv[_TyOS_optind++][1];
     }
 
     if ((option = *opt_ptr++) == L'\0')
@@ -101,20 +101,20 @@ int _PyOS_GetOpt(Py_ssize_t argc, wchar_t * const *argv, int *longindex)
     if (option == L'-') {
         // Parse long option.
         if (*opt_ptr == L'\0') {
-            if (_PyOS_opterr) {
+            if (_TyOS_opterr) {
                 fprintf(stderr, "Expected long option\n");
             }
             return -1;
         }
         *longindex = 0;
-        const _PyOS_LongOption *opt;
+        const _TyOS_LongOption *opt;
         for (opt = &longopts[*longindex]; opt->name; opt = &longopts[++(*longindex)]) {
             if (!wcscmp(opt->name, opt_ptr))
                 break;
         }
         if (!opt->name) {
-            if (_PyOS_opterr) {
-                fprintf(stderr, "Unknown option: %ls\n", argv[_PyOS_optind - 1]);
+            if (_TyOS_opterr) {
+                fprintf(stderr, "Unknown option: %ls\n", argv[_TyOS_optind - 1]);
             }
             return '_';
         }
@@ -122,19 +122,19 @@ int _PyOS_GetOpt(Py_ssize_t argc, wchar_t * const *argv, int *longindex)
         if (!opt->has_arg) {
             return opt->val;
         }
-        if (_PyOS_optind >= argc) {
-            if (_PyOS_opterr) {
+        if (_TyOS_optind >= argc) {
+            if (_TyOS_opterr) {
                 fprintf(stderr, "Argument expected for the %ls options\n",
-                        argv[_PyOS_optind - 1]);
+                        argv[_TyOS_optind - 1]);
             }
             return '_';
         }
-        _PyOS_optarg = argv[_PyOS_optind++];
+        _TyOS_optarg = argv[_TyOS_optind++];
         return opt->val;
     }
 
     if ((ptr = wcschr(SHORT_OPTS, option)) == NULL) {
-        if (_PyOS_opterr) {
+        if (_TyOS_opterr) {
             fprintf(stderr, "Unknown option: -%c\n", (char)option);
         }
         return '_';
@@ -142,20 +142,20 @@ int _PyOS_GetOpt(Py_ssize_t argc, wchar_t * const *argv, int *longindex)
 
     if (*(ptr + 1) == L':') {
         if (*opt_ptr != L'\0') {
-            _PyOS_optarg  = opt_ptr;
+            _TyOS_optarg  = opt_ptr;
             opt_ptr = L"";
         }
 
         else {
-            if (_PyOS_optind >= argc) {
-                if (_PyOS_opterr) {
+            if (_TyOS_optind >= argc) {
+                if (_TyOS_opterr) {
                     fprintf(stderr,
                         "Argument expected for the -%c option\n", (char)option);
                 }
                 return '_';
             }
 
-            _PyOS_optarg = argv[_PyOS_optind++];
+            _TyOS_optarg = argv[_TyOS_optind++];
         }
     }
 

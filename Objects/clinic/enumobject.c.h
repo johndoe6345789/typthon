@@ -2,13 +2,13 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(enum_new__doc__,
+TyDoc_STRVAR(enum_new__doc__,
 "enumerate(iterable, start=0)\n"
 "--\n"
 "\n"
@@ -23,48 +23,48 @@ PyDoc_STRVAR(enum_new__doc__,
 "enumerate is useful for obtaining an indexed list:\n"
 "    (0, seq[0]), (1, seq[1]), (2, seq[2]), ...");
 
-static PyObject *
-enum_new_impl(PyTypeObject *type, PyObject *iterable, PyObject *start);
+static TyObject *
+enum_new_impl(TyTypeObject *type, TyObject *iterable, TyObject *start);
 
-static PyObject *
-enum_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+enum_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(iterable), &_Py_ID(start), },
+        .ob_item = { &_Ty_ID(iterable), &_Ty_ID(start), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"iterable", "start", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "enumerate",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *iterable;
-    PyObject *start = 0;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *iterable;
+    TyObject *start = 0;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -81,30 +81,30 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(reversed_new__doc__,
+TyDoc_STRVAR(reversed_new__doc__,
 "reversed(sequence, /)\n"
 "--\n"
 "\n"
 "Return a reverse iterator over the values of the given sequence.");
 
-static PyObject *
-reversed_new_impl(PyTypeObject *type, PyObject *seq);
+static TyObject *
+reversed_new_impl(TyTypeObject *type, TyObject *seq);
 
-static PyObject *
-reversed_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+reversed_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = &PyReversed_Type;
-    PyObject *seq;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = &PyReversed_Type;
+    TyObject *seq;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("reversed", kwargs)) {
+        !_TyArg_NoKeywords("reversed", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("reversed", PyTuple_GET_SIZE(args), 1, 1)) {
+    if (!_TyArg_CheckPositional("reversed", TyTuple_GET_SIZE(args), 1, 1)) {
         goto exit;
     }
-    seq = PyTuple_GET_ITEM(args, 0);
+    seq = TyTuple_GET_ITEM(args, 0);
     return_value = reversed_new_impl(type, seq);
 
 exit:

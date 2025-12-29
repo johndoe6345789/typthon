@@ -1,6 +1,6 @@
 
-#ifndef Py_CURSES_H
-#define Py_CURSES_H
+#ifndef Ty_CURSES_H
+#define Ty_CURSES_H
 
 #ifdef __APPLE__
 /*
@@ -93,12 +93,12 @@ typedef struct PyCursesWindowObject {
 
 static void **PyCurses_API;
 
-#define PyCursesWindow_Type (*_PyType_CAST(PyCurses_API[0]))
+#define PyCursesWindow_Type (*_TyType_CAST(PyCurses_API[0]))
 #define PyCursesSetupTermCalled  {if (! ((int (*)(void))PyCurses_API[1]) () ) return NULL;}
 #define PyCursesInitialised      {if (! ((int (*)(void))PyCurses_API[2]) () ) return NULL;}
 #define PyCursesInitialisedColor {if (! ((int (*)(void))PyCurses_API[3]) () ) return NULL;}
 
-#define PyCursesWindow_Check(v)     Py_IS_TYPE((v), &PyCursesWindow_Type)
+#define PyCursesWindow_Check(v)     Ty_IS_TYPE((v), &PyCursesWindow_Type)
 
 #define import_curses() \
     PyCurses_API = (void **)PyCapsule_Import(PyCurses_CAPSULE_NAME, 1);
@@ -113,5 +113,5 @@ static const char catchall_NULL[] = "curses function returned NULL";
 }
 #endif
 
-#endif /* !defined(Py_CURSES_H) */
+#endif /* !defined(Ty_CURSES_H) */
 

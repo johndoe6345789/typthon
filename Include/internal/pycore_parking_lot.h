@@ -8,34 +8,34 @@
 // The core functionality is an atomic "compare-and-sleep" operation along with
 // an atomic "wake-up" operation.
 
-#ifndef Py_INTERNAL_PARKING_LOT_H
-#define Py_INTERNAL_PARKING_LOT_H
+#ifndef Ty_INTERNAL_PARKING_LOT_H
+#define Ty_INTERNAL_PARKING_LOT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 
 enum {
     // The thread was unparked by another thread.
-    Py_PARK_OK = 0,
+    Ty_PARK_OK = 0,
 
     // The value of `address` did not match `expected`.
-    Py_PARK_AGAIN = -1,
+    Ty_PARK_AGAIN = -1,
 
     // The thread was unparked due to a timeout.
-    Py_PARK_TIMEOUT = -2,
+    Ty_PARK_TIMEOUT = -2,
 
     // The thread was interrupted by a signal.
-    Py_PARK_INTR = -3,
+    Ty_PARK_INTR = -3,
 };
 
 // Checks that `*address == *expected` and puts the thread to sleep until an
 // unpark operation is called on the same `address`. Otherwise, the function
-// returns `Py_PARK_AGAIN`. The comparison behaves like memcmp, but is
+// returns `Ty_PARK_AGAIN`. The comparison behaves like memcmp, but is
 // performed atomically with respect to unpark operations.
 //
 // The `address_size` argument is the size of the data pointed to by the
@@ -52,14 +52,14 @@ enum {
 //
 // Example usage:
 //
-//  if (_Py_atomic_compare_exchange_uint8(address, &expected, new_value)) {
+//  if (_Ty_atomic_compare_exchange_uint8(address, &expected, new_value)) {
 //    int res = _PyParkingLot_Park(address, &new_value, sizeof(*address),
 //                                 timeout_ns, NULL, 1);
 //    ...
 //  }
 PyAPI_FUNC(int)
 _PyParkingLot_Park(const void *address, const void *expected,
-                   size_t address_size, PyTime_t timeout_ns,
+                   size_t address_size, TyTime_t timeout_ns,
                    void *park_arg, int detach);
 
 // Callback for _PyParkingLot_Unpark:
@@ -71,7 +71,7 @@ _PyParkingLot_Park(const void *address, const void *expected,
 // `has_more_waiters` is true if there are more threads waiting on the same
 //      address. May be true in cases where threads are waiting on a different
 //      address that map to the same internal bucket.
-typedef void _Py_unpark_fn_t(void *arg, void *park_arg, int has_more_waiters);
+typedef void _Ty_unpark_fn_t(void *arg, void *park_arg, int has_more_waiters);
 
 // Unparks a single thread waiting on `address`.
 //
@@ -83,7 +83,7 @@ typedef void _Py_unpark_fn_t(void *arg, void *park_arg, int has_more_waiters);
 //  void callback(void *arg, void *park_arg, int has_more_waiters);
 //  _PyParkingLot_Unpark(address, &callback, arg);
 PyAPI_FUNC(void)
-_PyParkingLot_Unpark(const void *address, _Py_unpark_fn_t *fn, void *arg);
+_PyParkingLot_Unpark(const void *address, _Ty_unpark_fn_t *fn, void *arg);
 
 // Unparks all threads waiting on `address`.
 PyAPI_FUNC(void) _PyParkingLot_UnparkAll(const void *address);
@@ -94,4 +94,4 @@ PyAPI_FUNC(void) _PyParkingLot_AfterFork(void);
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_PARKING_LOT_H */
+#endif /* !Ty_INTERNAL_PARKING_LOT_H */

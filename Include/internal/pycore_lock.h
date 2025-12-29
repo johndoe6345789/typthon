@@ -3,33 +3,33 @@
 // These implementations are based on WebKit's WTF::Lock. See
 // https://webkit.org/blog/6161/locking-in-webkit/ for a description of the
 // design.
-#ifndef Py_INTERNAL_LOCK_H
-#define Py_INTERNAL_LOCK_H
+#ifndef Ty_INTERNAL_LOCK_H
+#define Ty_INTERNAL_LOCK_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-//_Py_UNLOCKED is defined as 0 and _Py_LOCKED as 1 in Include/cpython/lock.h
-#define _Py_HAS_PARKED  2
-#define _Py_ONCE_INITIALIZED 4
+//_Ty_UNLOCKED is defined as 0 and _Ty_LOCKED as 1 in Include/cpython/lock.h
+#define _Ty_HAS_PARKED  2
+#define _Ty_ONCE_INITIALIZED 4
 
 static inline int
 PyMutex_LockFast(PyMutex *m)
 {
-    uint8_t expected = _Py_UNLOCKED;
+    uint8_t expected = _Ty_UNLOCKED;
     uint8_t *lock_bits = &m->_bits;
-    return _Py_atomic_compare_exchange_uint8(lock_bits, &expected, _Py_LOCKED);
+    return _Ty_atomic_compare_exchange_uint8(lock_bits, &expected, _Ty_LOCKED);
 }
 
 // Checks if the mutex is currently locked.
 static inline int
 PyMutex_IsLocked(PyMutex *m)
 {
-    return (_Py_atomic_load_uint8(&m->_bits) & _Py_LOCKED) != 0;
+    return (_Ty_atomic_load_uint8(&m->_bits) & _Ty_LOCKED) != 0;
 }
 
 // Re-initializes the mutex after a fork to the unlocked state.
@@ -41,7 +41,7 @@ _PyMutex_at_fork_reinit(PyMutex *m)
 
 typedef enum _PyLockFlags {
     // Do not detach/release the GIL when waiting on the lock.
-    _Py_LOCK_DONT_DETACH = 0,
+    _Ty_LOCK_DONT_DETACH = 0,
 
     // Detach/release the GIL while waiting on the lock.
     _PY_LOCK_DETACH = 1,
@@ -52,15 +52,15 @@ typedef enum _PyLockFlags {
 
 // Lock a mutex with an optional timeout and additional options. See
 // _PyLockFlags for details.
-extern PyAPI_FUNC(PyLockStatus)
-_PyMutex_LockTimed(PyMutex *m, PyTime_t timeout_ns, _PyLockFlags flags);
+extern PyAPI_FUNC(TyLockStatus)
+_PyMutex_LockTimed(PyMutex *m, TyTime_t timeout_ns, _PyLockFlags flags);
 
 // Lock a mutex with additional options. See _PyLockFlags for details.
 static inline void
 PyMutex_LockFlags(PyMutex *m, _PyLockFlags flags)
 {
-    uint8_t expected = _Py_UNLOCKED;
-    if (!_Py_atomic_compare_exchange_uint8(&m->_bits, &expected, _Py_LOCKED)) {
+    uint8_t expected = _Ty_UNLOCKED;
+    if (!_Ty_atomic_compare_exchange_uint8(&m->_bits, &expected, _Ty_LOCKED)) {
         _PyMutex_LockTimed(m, -1, flags);
     }
 }
@@ -92,7 +92,7 @@ PyAPI_FUNC(void) PyEvent_Wait(PyEvent *evt);
 // and 0 if the timeout expired or thread was interrupted. If `detach` is
 // true, then the thread will detach/release the GIL while waiting.
 PyAPI_FUNC(int)
-PyEvent_WaitTimed(PyEvent *evt, PyTime_t timeout_ns, int detach);
+PyEvent_WaitTimed(PyEvent *evt, TyTime_t timeout_ns, int detach);
 
 // _PyRawMutex implements a word-sized mutex that that does not depend on the
 // parking lot API, and therefore can be used in the parking lot
@@ -112,8 +112,8 @@ extern void _PyRawMutex_UnlockSlow(_PyRawMutex *m);
 static inline void
 _PyRawMutex_Lock(_PyRawMutex *m)
 {
-    uintptr_t unlocked = _Py_UNLOCKED;
-    if (_Py_atomic_compare_exchange_uintptr(&m->v, &unlocked, _Py_LOCKED)) {
+    uintptr_t unlocked = _Ty_UNLOCKED;
+    if (_Ty_atomic_compare_exchange_uintptr(&m->v, &unlocked, _Ty_LOCKED)) {
         return;
     }
     _PyRawMutex_LockSlow(m);
@@ -122,8 +122,8 @@ _PyRawMutex_Lock(_PyRawMutex *m)
 static inline void
 _PyRawMutex_Unlock(_PyRawMutex *m)
 {
-    uintptr_t locked = _Py_LOCKED;
-    if (_Py_atomic_compare_exchange_uintptr(&m->v, &locked, _Py_UNLOCKED)) {
+    uintptr_t locked = _Ty_LOCKED;
+    if (_Ty_atomic_compare_exchange_uintptr(&m->v, &locked, _Ty_UNLOCKED)) {
         return;
     }
     _PyRawMutex_UnlockSlow(m);
@@ -131,11 +131,11 @@ _PyRawMutex_Unlock(_PyRawMutex *m)
 
 // Type signature for one-time initialization functions. The function should
 // return 0 on success and -1 on failure.
-typedef int _Py_once_fn_t(void *arg);
+typedef int _Ty_once_fn_t(void *arg);
 
 // (private) slow path for one time initialization
 PyAPI_FUNC(int)
-_PyOnceFlag_CallOnceSlow(_PyOnceFlag *flag, _Py_once_fn_t *fn, void *arg);
+_PyOnceFlag_CallOnceSlow(_PyOnceFlag *flag, _Ty_once_fn_t *fn, void *arg);
 
 // Calls `fn` once using `flag`. The `arg` is passed to the call to `fn`.
 //
@@ -144,9 +144,9 @@ _PyOnceFlag_CallOnceSlow(_PyOnceFlag *flag, _Py_once_fn_t *fn, void *arg);
 // If `fn` returns 0 (success), then subsequent calls immediately return 0.
 // If `fn` returns -1 (failure), then subsequent calls will retry the call.
 static inline int
-_PyOnceFlag_CallOnce(_PyOnceFlag *flag, _Py_once_fn_t *fn, void *arg)
+_PyOnceFlag_CallOnce(_PyOnceFlag *flag, _Ty_once_fn_t *fn, void *arg)
 {
-    if (_Py_atomic_load_uint8(&flag->v) == _Py_ONCE_INITIALIZED) {
+    if (_Ty_atomic_load_uint8(&flag->v) == _Ty_ONCE_INITIALIZED) {
         return 0;
     }
     return _PyOnceFlag_CallOnceSlow(flag, fn, arg);
@@ -155,13 +155,13 @@ _PyOnceFlag_CallOnce(_PyOnceFlag *flag, _Py_once_fn_t *fn, void *arg)
 // A recursive mutex. The mutex should zero-initialized.
 typedef struct {
     PyMutex mutex;
-    unsigned long long thread;  // i.e., PyThread_get_thread_ident_ex()
+    unsigned long long thread;  // i.e., TyThread_get_thread_ident_ex()
     size_t level;
 } _PyRecursiveMutex;
 
 PyAPI_FUNC(int) _PyRecursiveMutex_IsLockedByCurrentThread(_PyRecursiveMutex *m);
 PyAPI_FUNC(void) _PyRecursiveMutex_Lock(_PyRecursiveMutex *m);
-extern PyLockStatus _PyRecursiveMutex_LockTimed(_PyRecursiveMutex *m, PyTime_t timeout, _PyLockFlags flags);
+extern TyLockStatus _PyRecursiveMutex_LockTimed(_PyRecursiveMutex *m, TyTime_t timeout, _PyLockFlags flags);
 PyAPI_FUNC(void) _PyRecursiveMutex_Unlock(_PyRecursiveMutex *m);
 extern int _PyRecursiveMutex_TryUnlock(_PyRecursiveMutex *m);
 
@@ -240,4 +240,4 @@ PyAPI_FUNC(int) _PySeqLock_AfterFork(_PySeqLock *seqlock);
 #ifdef __cplusplus
 }
 #endif
-#endif   /* !Py_INTERNAL_LOCK_H */
+#endif   /* !Ty_INTERNAL_LOCK_H */

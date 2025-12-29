@@ -1,15 +1,15 @@
-#ifndef Py_INTERNAL_LONG_H
-#define Py_INTERNAL_LONG_H
+#ifndef Ty_INTERNAL_LONG_H
+#define Ty_INTERNAL_LONG_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_bytesobject.h"   // _PyBytesWriter
-#include "pycore_runtime.h"       // _Py_SINGLETON()
+#include "pycore_runtime.h"       // _Ty_SINGLETON()
 
 /*
  * Default int base conversion size limitation: Denial of Service prevention.
@@ -48,18 +48,18 @@ extern "C" {
 
 /* runtime lifecycle */
 
-extern PyStatus _PyLong_InitTypes(PyInterpreterState *);
-extern void _PyLong_FiniTypes(PyInterpreterState *interp);
+extern TyStatus _TyLong_InitTypes(TyInterpreterState *);
+extern void _TyLong_FiniTypes(TyInterpreterState *interp);
 
 
 /* other API */
 
-PyAPI_FUNC(void) _PyLong_ExactDealloc(PyObject *self);
+PyAPI_FUNC(void) _TyLong_ExactDealloc(TyObject *self);
 
-#define _PyLong_SMALL_INTS _Py_SINGLETON(small_ints)
+#define _TyLong_SMALL_INTS _Ty_SINGLETON(small_ints)
 
-// _PyLong_GetZero() and _PyLong_GetOne() must always be available
-// _PyLong_FromUnsignedChar must always be available
+// _TyLong_GetZero() and _TyLong_GetOne() must always be available
+// _TyLong_FromUnsignedChar must always be available
 #if _PY_NSMALLPOSINTS < 257
 #  error "_PY_NSMALLPOSINTS must be greater than or equal to 257"
 #endif
@@ -68,100 +68,100 @@ PyAPI_FUNC(void) _PyLong_ExactDealloc(PyObject *self);
 
 // Return a reference to the immortal zero singleton.
 // The function cannot return NULL.
-static inline PyObject* _PyLong_GetZero(void)
-{ return (PyObject *)&_PyLong_SMALL_INTS[_PY_NSMALLNEGINTS]; }
+static inline TyObject* _TyLong_GetZero(void)
+{ return (TyObject *)&_TyLong_SMALL_INTS[_PY_NSMALLNEGINTS]; }
 
 // Return a reference to the immortal one singleton.
 // The function cannot return NULL.
-static inline PyObject* _PyLong_GetOne(void)
-{ return (PyObject *)&_PyLong_SMALL_INTS[_PY_NSMALLNEGINTS+1]; }
+static inline TyObject* _TyLong_GetOne(void)
+{ return (TyObject *)&_TyLong_SMALL_INTS[_PY_NSMALLNEGINTS+1]; }
 
-static inline PyObject* _PyLong_FromUnsignedChar(unsigned char i)
+static inline TyObject* _TyLong_FromUnsignedChar(unsigned char i)
 {
-    return (PyObject *)&_PyLong_SMALL_INTS[_PY_NSMALLNEGINTS+i];
+    return (TyObject *)&_TyLong_SMALL_INTS[_PY_NSMALLNEGINTS+i];
 }
 
-// _PyLong_Frexp returns a double x and an exponent e such that the
+// _TyLong_Frexp returns a double x and an exponent e such that the
 // true value is approximately equal to x * 2**e.  x is
 // 0.0 if and only if the input is 0 (in which case, e and x are both
 // zeroes); otherwise, 0.5 <= abs(x) < 1.0.
 // Always successful.
 //
 // Export for 'math' shared extension
-PyAPI_DATA(double) _PyLong_Frexp(PyLongObject *a, int64_t *e);
+PyAPI_DATA(double) _TyLong_Frexp(PyLongObject *a, int64_t *e);
 
-extern PyObject* _PyLong_FromBytes(const char *, Py_ssize_t, int);
+extern TyObject* _TyLong_FromBytes(const char *, Ty_ssize_t, int);
 
-// _PyLong_DivmodNear.  Given integers a and b, compute the nearest
+// _TyLong_DivmodNear.  Given integers a and b, compute the nearest
 // integer q to the exact quotient a / b, rounding to the nearest even integer
 // in the case of a tie.  Return (q, r), where r = a - q*b.  The remainder r
 // will satisfy abs(r) <= abs(b)/2, with equality possible only if q is
 // even.
 //
 // Export for '_datetime' shared extension.
-PyAPI_DATA(PyObject*) _PyLong_DivmodNear(PyObject *, PyObject *);
+PyAPI_DATA(TyObject*) _TyLong_DivmodNear(TyObject *, TyObject *);
 
-// _PyLong_Format: Convert the long to a string object with given base,
+// _TyLong_Format: Convert the long to a string object with given base,
 // appending a base prefix of 0[box] if base is 2, 8 or 16.
 // Export for '_tkinter' shared extension.
-PyAPI_DATA(PyObject*) _PyLong_Format(PyObject *obj, int base);
+PyAPI_DATA(TyObject*) _TyLong_Format(TyObject *obj, int base);
 
 // Export for 'math' shared extension
-PyAPI_DATA(PyObject*) _PyLong_Rshift(PyObject *, int64_t);
+PyAPI_DATA(TyObject*) _TyLong_Rshift(TyObject *, int64_t);
 
 // Export for 'math' shared extension
-PyAPI_DATA(PyObject*) _PyLong_Lshift(PyObject *, int64_t);
+PyAPI_DATA(TyObject*) _TyLong_Lshift(TyObject *, int64_t);
 
-PyAPI_FUNC(PyObject*) _PyLong_Add(PyLongObject *left, PyLongObject *right);
-PyAPI_FUNC(PyObject*) _PyLong_Multiply(PyLongObject *left, PyLongObject *right);
-PyAPI_FUNC(PyObject*) _PyLong_Subtract(PyLongObject *left, PyLongObject *right);
+PyAPI_FUNC(TyObject*) _TyLong_Add(PyLongObject *left, PyLongObject *right);
+PyAPI_FUNC(TyObject*) _TyLong_Multiply(PyLongObject *left, PyLongObject *right);
+PyAPI_FUNC(TyObject*) _TyLong_Subtract(PyLongObject *left, PyLongObject *right);
 
 // Export for 'binascii' shared extension.
-PyAPI_DATA(unsigned char) _PyLong_DigitValue[256];
+PyAPI_DATA(unsigned char) _TyLong_DigitValue[256];
 
 /* Format the object based on the format_spec, as defined in PEP 3101
    (Advanced String Formatting). */
-extern int _PyLong_FormatAdvancedWriter(
+extern int _TyLong_FormatAdvancedWriter(
     _PyUnicodeWriter *writer,
-    PyObject *obj,
-    PyObject *format_spec,
-    Py_ssize_t start,
-    Py_ssize_t end);
+    TyObject *obj,
+    TyObject *format_spec,
+    Ty_ssize_t start,
+    Ty_ssize_t end);
 
-extern int _PyLong_FormatWriter(
+extern int _TyLong_FormatWriter(
     _PyUnicodeWriter *writer,
-    PyObject *obj,
+    TyObject *obj,
     int base,
     int alternate);
 
-extern char* _PyLong_FormatBytesWriter(
+extern char* _TyLong_FormatBytesWriter(
     _PyBytesWriter *writer,
     char *str,
-    PyObject *obj,
+    TyObject *obj,
     int base,
     int alternate);
 
 // Argument converters used by Argument Clinic
 
 // Export for 'select' shared extension (Argument Clinic code)
-PyAPI_FUNC(int) _PyLong_UnsignedShort_Converter(PyObject *, void *);
+PyAPI_FUNC(int) _TyLong_UnsignedShort_Converter(TyObject *, void *);
 
 // Export for '_testclinic' shared extension (Argument Clinic code)
-PyAPI_FUNC(int) _PyLong_UnsignedInt_Converter(PyObject *, void *);
+PyAPI_FUNC(int) _TyLong_UnsignedInt_Converter(TyObject *, void *);
 
 // Export for '_blake2' shared extension (Argument Clinic code)
-PyAPI_FUNC(int) _PyLong_UnsignedLong_Converter(PyObject *, void *);
+PyAPI_FUNC(int) _TyLong_UnsignedLong_Converter(TyObject *, void *);
 
 // Export for '_blake2' shared extension (Argument Clinic code)
-PyAPI_FUNC(int) _PyLong_UnsignedLongLong_Converter(PyObject *, void *);
+PyAPI_FUNC(int) _TyLong_UnsignedLongLong_Converter(TyObject *, void *);
 
 // Export for '_testclinic' shared extension (Argument Clinic code)
-PyAPI_FUNC(int) _PyLong_Size_t_Converter(PyObject *, void *);
+PyAPI_FUNC(int) _TyLong_Size_t_Converter(TyObject *, void *);
 
-PyAPI_FUNC(int) _PyLong_UInt8_Converter(PyObject *, void *);
-PyAPI_FUNC(int) _PyLong_UInt16_Converter(PyObject *, void *);
-PyAPI_FUNC(int) _PyLong_UInt32_Converter(PyObject *, void *);
-PyAPI_FUNC(int) _PyLong_UInt64_Converter(PyObject *, void *);
+PyAPI_FUNC(int) _TyLong_UInt8_Converter(TyObject *, void *);
+PyAPI_FUNC(int) _TyLong_UInt16_Converter(TyObject *, void *);
+PyAPI_FUNC(int) _TyLong_UInt32_Converter(TyObject *, void *);
+PyAPI_FUNC(int) _TyLong_UInt64_Converter(TyObject *, void *);
 
 /* Long value tag bits:
  * 0-1: Sign bits value = (1-sign), ie. negative=2, positive=0, zero=1.
@@ -174,7 +174,7 @@ PyAPI_FUNC(int) _PyLong_UInt64_Converter(PyObject *, void *);
 #define NON_SIZE_BITS 3
 #define IMMORTALITY_BIT_MASK (1 << 2)
 
-/* The functions _PyLong_IsCompact and _PyLong_CompactValue are defined
+/* The functions _TyLong_IsCompact and _TyLong_CompactValue are defined
  * in Include/cpython/longobject.h, since they need to be inline.
  *
  * "Compact" values have at least one bit to spare,
@@ -182,91 +182,91 @@ PyAPI_FUNC(int) _PyLong_UInt64_Converter(PyObject *, void *);
  * without risk of overflow.
  *
  * The inline functions need tag bits.
- * For readability, rather than do `#define SIGN_MASK _PyLong_SIGN_MASK`
+ * For readability, rather than do `#define SIGN_MASK _TyLong_SIGN_MASK`
  * we define them to the numbers in both places and then assert that
  * they're the same.
  */
-#if SIGN_MASK != _PyLong_SIGN_MASK
-#  error "SIGN_MASK does not match _PyLong_SIGN_MASK"
+#if SIGN_MASK != _TyLong_SIGN_MASK
+#  error "SIGN_MASK does not match _TyLong_SIGN_MASK"
 #endif
-#if NON_SIZE_BITS != _PyLong_NON_SIZE_BITS
-#  error "NON_SIZE_BITS does not match _PyLong_NON_SIZE_BITS"
+#if NON_SIZE_BITS != _TyLong_NON_SIZE_BITS
+#  error "NON_SIZE_BITS does not match _TyLong_NON_SIZE_BITS"
 #endif
 
 /* All *compact" values are guaranteed to fit into
- * a Py_ssize_t with at least one bit to spare.
+ * a Ty_ssize_t with at least one bit to spare.
  * In other words, for 64 bit machines, compact
  * will be signed 63 (or fewer) bit values
  */
 
 /* Return 1 if the argument is compact int */
 static inline int
-_PyLong_IsNonNegativeCompact(const PyLongObject* op) {
-    assert(PyLong_Check(op));
+_TyLong_IsNonNegativeCompact(const PyLongObject* op) {
+    assert(TyLong_Check(op));
     return ((op->long_value.lv_tag & ~IMMORTALITY_BIT_MASK) <= (1 << NON_SIZE_BITS));
 }
 
 
 static inline int
-_PyLong_BothAreCompact(const PyLongObject* a, const PyLongObject* b) {
-    assert(PyLong_Check(a));
-    assert(PyLong_Check(b));
+_TyLong_BothAreCompact(const PyLongObject* a, const PyLongObject* b) {
+    assert(TyLong_Check(a));
+    assert(TyLong_Check(b));
     return (a->long_value.lv_tag | b->long_value.lv_tag) < (2 << NON_SIZE_BITS);
 }
 
 static inline bool
-_PyLong_IsZero(const PyLongObject *op)
+_TyLong_IsZero(const PyLongObject *op)
 {
     return (op->long_value.lv_tag & SIGN_MASK) == SIGN_ZERO;
 }
 
 static inline bool
-_PyLong_IsNegative(const PyLongObject *op)
+_TyLong_IsNegative(const PyLongObject *op)
 {
     return (op->long_value.lv_tag & SIGN_MASK) == SIGN_NEGATIVE;
 }
 
 static inline bool
-_PyLong_IsPositive(const PyLongObject *op)
+_TyLong_IsPositive(const PyLongObject *op)
 {
     return (op->long_value.lv_tag & SIGN_MASK) == 0;
 }
 
-static inline Py_ssize_t
-_PyLong_DigitCount(const PyLongObject *op)
+static inline Ty_ssize_t
+_TyLong_DigitCount(const PyLongObject *op)
 {
-    assert(PyLong_Check(op));
-    return (Py_ssize_t)(op->long_value.lv_tag >> NON_SIZE_BITS);
+    assert(TyLong_Check(op));
+    return (Ty_ssize_t)(op->long_value.lv_tag >> NON_SIZE_BITS);
 }
 
-/* Equivalent to _PyLong_DigitCount(op) * _PyLong_NonCompactSign(op) */
-static inline Py_ssize_t
-_PyLong_SignedDigitCount(const PyLongObject *op)
+/* Equivalent to _TyLong_DigitCount(op) * _TyLong_NonCompactSign(op) */
+static inline Ty_ssize_t
+_TyLong_SignedDigitCount(const PyLongObject *op)
 {
-    assert(PyLong_Check(op));
-    Py_ssize_t sign = 1 - (op->long_value.lv_tag & SIGN_MASK);
-    return sign * (Py_ssize_t)(op->long_value.lv_tag >> NON_SIZE_BITS);
+    assert(TyLong_Check(op));
+    Ty_ssize_t sign = 1 - (op->long_value.lv_tag & SIGN_MASK);
+    return sign * (Ty_ssize_t)(op->long_value.lv_tag >> NON_SIZE_BITS);
 }
 
 static inline int
-_PyLong_CompactSign(const PyLongObject *op)
+_TyLong_CompactSign(const PyLongObject *op)
 {
-    assert(PyLong_Check(op));
-    assert(_PyLong_IsCompact((PyLongObject *)op));
+    assert(TyLong_Check(op));
+    assert(_TyLong_IsCompact((PyLongObject *)op));
     return 1 - (op->long_value.lv_tag & SIGN_MASK);
 }
 
 static inline int
-_PyLong_NonCompactSign(const PyLongObject *op)
+_TyLong_NonCompactSign(const PyLongObject *op)
 {
-    assert(PyLong_Check(op));
-    assert(!_PyLong_IsCompact((PyLongObject *)op));
+    assert(TyLong_Check(op));
+    assert(!_TyLong_IsCompact((PyLongObject *)op));
     return 1 - (op->long_value.lv_tag & SIGN_MASK);
 }
 
 /* Do a and b have the same sign? */
 static inline int
-_PyLong_SameSign(const PyLongObject *a, const PyLongObject *b)
+_TyLong_SameSign(const PyLongObject *a, const PyLongObject *b)
 {
     return (a->long_value.lv_tag & SIGN_MASK) == (b->long_value.lv_tag & SIGN_MASK);
 }
@@ -275,7 +275,7 @@ _PyLong_SameSign(const PyLongObject *a, const PyLongObject *b)
     ((uintptr_t)(1 - (sign)) | ((uintptr_t)(size) << NON_SIZE_BITS))
 
 static inline void
-_PyLong_SetSignAndDigitCount(PyLongObject *op, int sign, Py_ssize_t size)
+_TyLong_SetSignAndDigitCount(PyLongObject *op, int sign, Ty_ssize_t size)
 {
     assert(size >= 0);
     assert(-1 <= sign && sign <= 1);
@@ -284,7 +284,7 @@ _PyLong_SetSignAndDigitCount(PyLongObject *op, int sign, Py_ssize_t size)
 }
 
 static inline void
-_PyLong_SetDigitCount(PyLongObject *op, Py_ssize_t size)
+_TyLong_SetDigitCount(PyLongObject *op, Ty_ssize_t size)
 {
     assert(size >= 0);
     op->long_value.lv_tag = (((size_t)size) << NON_SIZE_BITS) | (op->long_value.lv_tag & SIGN_MASK);
@@ -293,15 +293,15 @@ _PyLong_SetDigitCount(PyLongObject *op, Py_ssize_t size)
 #define NON_SIZE_MASK ~(uintptr_t)((1 << NON_SIZE_BITS) - 1)
 
 static inline void
-_PyLong_FlipSign(PyLongObject *op) {
+_TyLong_FlipSign(PyLongObject *op) {
     unsigned int flipped_sign = 2 - (op->long_value.lv_tag & SIGN_MASK);
     op->long_value.lv_tag &= NON_SIZE_MASK;
     op->long_value.lv_tag |= flipped_sign;
 }
 
-#define _PyLong_DIGIT_INIT(val) \
+#define _TyLong_DIGIT_INIT(val) \
     { \
-        .ob_base = _PyObject_HEAD_INIT(&PyLong_Type), \
+        .ob_base = _TyObject_HEAD_INIT(&TyLong_Type), \
         .long_value  = { \
             .lv_tag = TAG_FROM_SIGN_AND_SIZE( \
                 (val) == 0 ? 0 : ((val) < 0 ? -1 : 1), \
@@ -310,10 +310,10 @@ _PyLong_FlipSign(PyLongObject *op) {
         } \
     }
 
-#define _PyLong_FALSE_TAG TAG_FROM_SIGN_AND_SIZE(0, 0)
-#define _PyLong_TRUE_TAG TAG_FROM_SIGN_AND_SIZE(1, 1)
+#define _TyLong_FALSE_TAG TAG_FROM_SIGN_AND_SIZE(0, 0)
+#define _TyLong_TRUE_TAG TAG_FROM_SIGN_AND_SIZE(1, 1)
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_LONG_H */
+#endif /* !Ty_INTERNAL_LONG_H */

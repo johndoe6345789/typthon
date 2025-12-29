@@ -6,8 +6,8 @@
    Stuff shared by all thread_*.h files is collected here. */
 
 #include "Python.h"
-#include "pycore_ceval.h"         // _PyEval_MakePendingCalls()
-#include "pycore_pystate.h"       // _PyInterpreterState_GET()
+#include "pycore_ceval.h"         // _TyEval_MakePendingCalls()
+#include "pycore_pystate.h"       // _TyInterpreterState_GET()
 #include "pycore_pythread.h"      // _POSIX_THREADS
 #include "pycore_runtime.h"       // _PyRuntime
 #include "pycore_structseq.h"     // _PyStructSequence_FiniBuiltin()
@@ -21,7 +21,7 @@
 
 // Define PY_TIMEOUT_MAX constant.
 #ifdef _POSIX_THREADS
-   // PyThread_acquire_lock_timed() uses (us * 1000) to convert microseconds
+   // TyThread_acquire_lock_timed() uses (us * 1000) to convert microseconds
    // to nanoseconds.
 #  define PY_TIMEOUT_MAX_VALUE (LLONG_MAX / 1000)
 #elif defined (NT_THREADS)
@@ -39,18 +39,18 @@
 const long long PY_TIMEOUT_MAX = PY_TIMEOUT_MAX_VALUE;
 
 
-static void PyThread__init_thread(void); /* Forward */
+static void TyThread__init_thread(void); /* Forward */
 
 #define initialized _PyRuntime.threads.initialized
 
 void
-PyThread_init_thread(void)
+TyThread_init_thread(void)
 {
     if (initialized) {
         return;
     }
     initialized = 1;
-    PyThread__init_thread();
+    TyThread__init_thread();
 }
 
 #if defined(HAVE_PTHREAD_STUBS)
@@ -73,9 +73,9 @@ PyThread_init_thread(void)
 
 /* return the current thread stack size */
 size_t
-PyThread_get_stacksize(void)
+TyThread_get_stacksize(void)
 {
-    return _PyInterpreterState_GET()->threads.stacksize;
+    return _TyInterpreterState_GET()->threads.stacksize;
 }
 
 /* Only platforms defining a THREAD_SET_STACKSIZE() macro
@@ -84,7 +84,7 @@ PyThread_get_stacksize(void)
       -1 if stack size value is invalid,
       -2 if setting stack size is not supported. */
 int
-PyThread_set_stacksize(size_t size)
+TyThread_set_stacksize(size_t size)
 {
 #if defined(THREAD_SET_STACKSIZE)
     return THREAD_SET_STACKSIZE(size);
@@ -95,32 +95,32 @@ PyThread_set_stacksize(size_t size)
 
 
 int
-PyThread_ParseTimeoutArg(PyObject *arg, int blocking, PY_TIMEOUT_T *timeout_p)
+TyThread_ParseTimeoutArg(TyObject *arg, int blocking, PY_TIMEOUT_T *timeout_p)
 {
-    assert(_PyTime_FromSeconds(-1) == PyThread_UNSET_TIMEOUT);
-    if (arg == NULL || arg == Py_None) {
-        *timeout_p = blocking ? PyThread_UNSET_TIMEOUT : 0;
+    assert(_TyTime_FromSeconds(-1) == TyThread_UNSET_TIMEOUT);
+    if (arg == NULL || arg == Ty_None) {
+        *timeout_p = blocking ? TyThread_UNSET_TIMEOUT : 0;
         return 0;
     }
     if (!blocking) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "can't specify a timeout for a non-blocking call");
         return -1;
     }
 
-    PyTime_t timeout;
-    if (_PyTime_FromSecondsObject(&timeout, arg, _PyTime_ROUND_TIMEOUT) < 0) {
+    TyTime_t timeout;
+    if (_TyTime_FromSecondsObject(&timeout, arg, _TyTime_ROUND_TIMEOUT) < 0) {
         return -1;
     }
     if (timeout < 0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "timeout value must be a non-negative number");
         return -1;
     }
 
-    if (_PyTime_AsMicroseconds(timeout,
-                               _PyTime_ROUND_TIMEOUT) > PY_TIMEOUT_MAX) {
-        PyErr_SetString(PyExc_OverflowError,
+    if (_TyTime_AsMicroseconds(timeout,
+                               _TyTime_ROUND_TIMEOUT) > PY_TIMEOUT_MAX) {
+        TyErr_SetString(TyExc_OverflowError,
                         "timeout value is too large");
         return -1;
     }
@@ -128,34 +128,34 @@ PyThread_ParseTimeoutArg(PyObject *arg, int blocking, PY_TIMEOUT_T *timeout_p)
     return 0;
 }
 
-PyLockStatus
-PyThread_acquire_lock_timed_with_retries(PyThread_type_lock lock,
+TyLockStatus
+TyThread_acquire_lock_timed_with_retries(TyThread_type_lock lock,
                                          PY_TIMEOUT_T timeout)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
-    PyTime_t endtime = 0;
+    TyThreadState *tstate = _TyThreadState_GET();
+    TyTime_t endtime = 0;
     if (timeout > 0) {
         endtime = _PyDeadline_Init(timeout);
     }
 
-    PyLockStatus r;
+    TyLockStatus r;
     do {
-        PyTime_t microseconds;
-        microseconds = _PyTime_AsMicroseconds(timeout, _PyTime_ROUND_CEILING);
+        TyTime_t microseconds;
+        microseconds = _TyTime_AsMicroseconds(timeout, _TyTime_ROUND_CEILING);
 
         /* first a simple non-blocking try without releasing the GIL */
-        r = PyThread_acquire_lock_timed(lock, 0, 0);
+        r = TyThread_acquire_lock_timed(lock, 0, 0);
         if (r == PY_LOCK_FAILURE && microseconds != 0) {
-            Py_BEGIN_ALLOW_THREADS
-            r = PyThread_acquire_lock_timed(lock, microseconds, 1);
-            Py_END_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
+            r = TyThread_acquire_lock_timed(lock, microseconds, 1);
+            Ty_END_ALLOW_THREADS
         }
 
         if (r == PY_LOCK_INTR) {
             /* Run signal handlers if we were interrupted.  Propagate
              * exceptions from signal handlers, such as KeyboardInterrupt, by
              * passing up PY_LOCK_INTR.  */
-            if (_PyEval_MakePendingCalls(tstate) < 0) {
+            if (_TyEval_MakePendingCalls(tstate) < 0) {
                 return PY_LOCK_INTR;
             }
 
@@ -182,10 +182,10 @@ PyThread_acquire_lock_timed_with_retries(PyThread_type_lock lock,
    Cross-platform components of TSS API implementation.
 */
 
-Py_tss_t *
-PyThread_tss_alloc(void)
+Ty_tss_t *
+TyThread_tss_alloc(void)
 {
-    Py_tss_t *new_key = (Py_tss_t *)PyMem_RawMalloc(sizeof(Py_tss_t));
+    Ty_tss_t *new_key = (Ty_tss_t *)TyMem_RawMalloc(sizeof(Ty_tss_t));
     if (new_key == NULL) {
         return NULL;
     }
@@ -194,47 +194,47 @@ PyThread_tss_alloc(void)
 }
 
 void
-PyThread_tss_free(Py_tss_t *key)
+TyThread_tss_free(Ty_tss_t *key)
 {
     if (key != NULL) {
-        PyThread_tss_delete(key);
-        PyMem_RawFree((void *)key);
+        TyThread_tss_delete(key);
+        TyMem_RawFree((void *)key);
     }
 }
 
 int
-PyThread_tss_is_created(Py_tss_t *key)
+TyThread_tss_is_created(Ty_tss_t *key)
 {
     assert(key != NULL);
     return key->_is_initialized;
 }
 
 
-PyDoc_STRVAR(threadinfo__doc__,
+TyDoc_STRVAR(threadinfo__doc__,
 "sys.thread_info\n\
 \n\
 A named tuple holding information about the thread implementation.");
 
-static PyStructSequence_Field threadinfo_fields[] = {
+static TyStructSequence_Field threadinfo_fields[] = {
     {"name",    "name of the thread implementation"},
     {"lock",    "name of the lock implementation"},
     {"version", "name and version of the thread library"},
     {0}
 };
 
-static PyStructSequence_Desc threadinfo_desc = {
+static TyStructSequence_Desc threadinfo_desc = {
     "sys.thread_info",           /* name */
     threadinfo__doc__,           /* doc */
     threadinfo_fields,           /* fields */
     3
 };
 
-static PyTypeObject ThreadInfoType;
+static TyTypeObject ThreadInfoType;
 
-PyObject*
-PyThread_GetInfo(void)
+TyObject*
+TyThread_GetInfo(void)
 {
-    PyObject *threadinfo, *value;
+    TyObject *threadinfo, *value;
     int pos = 0;
 #if (defined(_POSIX_THREADS) && defined(HAVE_CONFSTR) \
      && defined(_CS_GNU_LIBPTHREAD_VERSION))
@@ -242,60 +242,60 @@ PyThread_GetInfo(void)
     int len;
 #endif
 
-    PyInterpreterState *interp = _PyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (_PyStructSequence_InitBuiltin(interp, &ThreadInfoType, &threadinfo_desc) < 0) {
         return NULL;
     }
 
-    threadinfo = PyStructSequence_New(&ThreadInfoType);
+    threadinfo = TyStructSequence_New(&ThreadInfoType);
     if (threadinfo == NULL)
         return NULL;
 
-    value = PyUnicode_FromString(PYTHREAD_NAME);
+    value = TyUnicode_FromString(PYTHREAD_NAME);
     if (value == NULL) {
-        Py_DECREF(threadinfo);
+        Ty_DECREF(threadinfo);
         return NULL;
     }
-    PyStructSequence_SET_ITEM(threadinfo, pos++, value);
+    TyStructSequence_SET_ITEM(threadinfo, pos++, value);
 
 #ifdef HAVE_PTHREAD_STUBS
-    value = Py_NewRef(Py_None);
+    value = Ty_NewRef(Ty_None);
 #elif defined(_POSIX_THREADS)
 #ifdef USE_SEMAPHORES
-    value = PyUnicode_FromString("semaphore");
+    value = TyUnicode_FromString("semaphore");
 #else
-    value = PyUnicode_FromString("mutex+cond");
+    value = TyUnicode_FromString("mutex+cond");
 #endif
     if (value == NULL) {
-        Py_DECREF(threadinfo);
+        Ty_DECREF(threadinfo);
         return NULL;
     }
 #else
-    value = Py_NewRef(Py_None);
+    value = Ty_NewRef(Ty_None);
 #endif
-    PyStructSequence_SET_ITEM(threadinfo, pos++, value);
+    TyStructSequence_SET_ITEM(threadinfo, pos++, value);
 
 #if (defined(_POSIX_THREADS) && defined(HAVE_CONFSTR) \
      && defined(_CS_GNU_LIBPTHREAD_VERSION))
     value = NULL;
     len = confstr(_CS_GNU_LIBPTHREAD_VERSION, buffer, sizeof(buffer));
     if (1 < len && (size_t)len < sizeof(buffer)) {
-        value = PyUnicode_DecodeFSDefaultAndSize(buffer, len-1);
+        value = TyUnicode_DecodeFSDefaultAndSize(buffer, len-1);
         if (value == NULL)
-            PyErr_Clear();
+            TyErr_Clear();
     }
     if (value == NULL)
 #endif
     {
-        value = Py_NewRef(Py_None);
+        value = Ty_NewRef(Ty_None);
     }
-    PyStructSequence_SET_ITEM(threadinfo, pos++, value);
+    TyStructSequence_SET_ITEM(threadinfo, pos++, value);
     return threadinfo;
 }
 
 
 void
-_PyThread_FiniType(PyInterpreterState *interp)
+_PyThread_FiniType(TyInterpreterState *interp)
 {
     _PyStructSequence_FiniBuiltin(interp, &ThreadInfoType);
 }

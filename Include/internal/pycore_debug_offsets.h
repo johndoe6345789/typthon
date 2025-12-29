@@ -1,15 +1,15 @@
-#ifndef Py_INTERNAL_DEBUG_OFFSETS_H
-#define Py_INTERNAL_DEBUG_OFFSETS_H
+#ifndef Ty_INTERNAL_DEBUG_OFFSETS_H
+#define Ty_INTERNAL_DEBUG_OFFSETS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 
-#define _Py_Debug_Cookie "xdebugpy"
+#define _Ty_Debug_Cookie "xdebugpy"
 
 #if defined(__APPLE__)
 #  include <mach-o/loader.h>
@@ -27,15 +27,15 @@ extern "C" {
 // on Windows!
 #if defined(MS_WINDOWS)
 #define _GENERATE_DEBUG_SECTION_WINDOWS(name)                       \
-   _Pragma(Py_STRINGIFY(section(Py_STRINGIFY(name), read, write))) \
-   __declspec(allocate(Py_STRINGIFY(name)))
+   _Pragma(Ty_STRINGIFY(section(Ty_STRINGIFY(name), read, write))) \
+   __declspec(allocate(Ty_STRINGIFY(name)))
 #else
 #define _GENERATE_DEBUG_SECTION_WINDOWS(name)
 #endif
 
 #if defined(__APPLE__)
 #define _GENERATE_DEBUG_SECTION_APPLE(name) \
-   __attribute__((section(SEG_DATA "," Py_STRINGIFY(name))))      \
+   __attribute__((section(SEG_DATA "," Ty_STRINGIFY(name))))      \
    __attribute__((used))
 #else
 #define _GENERATE_DEBUG_SECTION_APPLE(name)
@@ -43,29 +43,29 @@ extern "C" {
 
 #if defined(__linux__) && (defined(__GNUC__) || defined(__clang__))
 #define _GENERATE_DEBUG_SECTION_LINUX(name) \
-   __attribute__((section("." Py_STRINGIFY(name))))               \
+   __attribute__((section("." Ty_STRINGIFY(name))))               \
    __attribute__((used))
 #else
 #define _GENERATE_DEBUG_SECTION_LINUX(name)
 #endif
 
-#ifdef Py_GIL_DISABLED
-# define _Py_Debug_gilruntimestate_enabled offsetof(struct _gil_runtime_state, enabled)
-# define _Py_Debug_Free_Threaded 1
-# define _Py_Debug_code_object_co_tlbc offsetof(PyCodeObject, co_tlbc)
-# define _Py_Debug_interpreter_frame_tlbc_index offsetof(_PyInterpreterFrame, tlbc_index)
-# define _Py_Debug_interpreter_state_tlbc_generation offsetof(PyInterpreterState, tlbc_indices.tlbc_generation)
+#ifdef Ty_GIL_DISABLED
+# define _Ty_Debug_gilruntimestate_enabled offsetof(struct _gil_runtime_state, enabled)
+# define _Ty_Debug_Free_Threaded 1
+# define _Ty_Debug_code_object_co_tlbc offsetof(PyCodeObject, co_tlbc)
+# define _Ty_Debug_interpreter_frame_tlbc_index offsetof(_PyInterpreterFrame, tlbc_index)
+# define _Ty_Debug_interpreter_state_tlbc_generation offsetof(TyInterpreterState, tlbc_indices.tlbc_generation)
 #else
-# define _Py_Debug_gilruntimestate_enabled 0
-# define _Py_Debug_Free_Threaded 0
-# define _Py_Debug_code_object_co_tlbc 0
-# define _Py_Debug_interpreter_frame_tlbc_index 0
-# define _Py_Debug_interpreter_state_tlbc_generation 0
+# define _Ty_Debug_gilruntimestate_enabled 0
+# define _Ty_Debug_Free_Threaded 0
+# define _Ty_Debug_code_object_co_tlbc 0
+# define _Ty_Debug_interpreter_frame_tlbc_index 0
+# define _Ty_Debug_interpreter_state_tlbc_generation 0
 #endif
 
 
-typedef struct _Py_DebugOffsets {
-    char cookie[8] _Py_NONSTRING;
+typedef struct _Ty_DebugOffsets {
+    char cookie[8] _Ty_NONSTRING;
     uint64_t version;
     uint64_t free_threaded;
     // Runtime state offset;
@@ -135,13 +135,13 @@ typedef struct _Py_DebugOffsets {
         uint64_t co_tlbc;
     } code_object;
 
-    // PyObject offset;
+    // TyObject offset;
     struct _pyobject {
         uint64_t size;
         uint64_t ob_type;
     } pyobject;
 
-    // PyTypeObject object offset;
+    // TyTypeObject object offset;
     struct _type_object {
         uint64_t size;
         uint64_t tp_name;
@@ -233,46 +233,46 @@ typedef struct _Py_DebugOffsets {
         uint64_t debugger_script_path;
         uint64_t debugger_script_path_size;
     } debugger_support;
-} _Py_DebugOffsets;
+} _Ty_DebugOffsets;
 
 
-#define _Py_DebugOffsets_INIT(debug_cookie) { \
+#define _Ty_DebugOffsets_INIT(debug_cookie) { \
     .cookie = debug_cookie, \
     .version = PY_VERSION_HEX, \
-    .free_threaded = _Py_Debug_Free_Threaded, \
+    .free_threaded = _Ty_Debug_Free_Threaded, \
     .runtime_state = { \
         .size = sizeof(_PyRuntimeState), \
         .finalizing = offsetof(_PyRuntimeState, _finalizing), \
         .interpreters_head = offsetof(_PyRuntimeState, interpreters.head), \
     }, \
     .interpreter_state = { \
-        .size = sizeof(PyInterpreterState), \
-        .id = offsetof(PyInterpreterState, id), \
-        .next = offsetof(PyInterpreterState, next), \
-        .threads_head = offsetof(PyInterpreterState, threads.head), \
-        .threads_main = offsetof(PyInterpreterState, threads.main), \
-        .gc = offsetof(PyInterpreterState, gc), \
-        .imports_modules = offsetof(PyInterpreterState, imports.modules), \
-        .sysdict = offsetof(PyInterpreterState, sysdict), \
-        .builtins = offsetof(PyInterpreterState, builtins), \
-        .ceval_gil = offsetof(PyInterpreterState, ceval.gil), \
-        .gil_runtime_state = offsetof(PyInterpreterState, _gil), \
-        .gil_runtime_state_enabled = _Py_Debug_gilruntimestate_enabled, \
-        .gil_runtime_state_locked = offsetof(PyInterpreterState, _gil.locked), \
-        .gil_runtime_state_holder = offsetof(PyInterpreterState, _gil.last_holder), \
-        .code_object_generation = offsetof(PyInterpreterState, _code_object_generation), \
-        .tlbc_generation = _Py_Debug_interpreter_state_tlbc_generation, \
+        .size = sizeof(TyInterpreterState), \
+        .id = offsetof(TyInterpreterState, id), \
+        .next = offsetof(TyInterpreterState, next), \
+        .threads_head = offsetof(TyInterpreterState, threads.head), \
+        .threads_main = offsetof(TyInterpreterState, threads.main), \
+        .gc = offsetof(TyInterpreterState, gc), \
+        .imports_modules = offsetof(TyInterpreterState, imports.modules), \
+        .sysdict = offsetof(TyInterpreterState, sysdict), \
+        .builtins = offsetof(TyInterpreterState, builtins), \
+        .ceval_gil = offsetof(TyInterpreterState, ceval.gil), \
+        .gil_runtime_state = offsetof(TyInterpreterState, _gil), \
+        .gil_runtime_state_enabled = _Ty_Debug_gilruntimestate_enabled, \
+        .gil_runtime_state_locked = offsetof(TyInterpreterState, _gil.locked), \
+        .gil_runtime_state_holder = offsetof(TyInterpreterState, _gil.last_holder), \
+        .code_object_generation = offsetof(TyInterpreterState, _code_object_generation), \
+        .tlbc_generation = _Ty_Debug_interpreter_state_tlbc_generation, \
     }, \
     .thread_state = { \
-        .size = sizeof(PyThreadState), \
-        .prev = offsetof(PyThreadState, prev), \
-        .next = offsetof(PyThreadState, next), \
-        .interp = offsetof(PyThreadState, interp), \
-        .current_frame = offsetof(PyThreadState, current_frame), \
-        .thread_id = offsetof(PyThreadState, thread_id), \
-        .native_thread_id = offsetof(PyThreadState, native_thread_id), \
-        .datastack_chunk = offsetof(PyThreadState, datastack_chunk), \
-        .status = offsetof(PyThreadState, _status), \
+        .size = sizeof(TyThreadState), \
+        .prev = offsetof(TyThreadState, prev), \
+        .next = offsetof(TyThreadState, next), \
+        .interp = offsetof(TyThreadState, interp), \
+        .current_frame = offsetof(TyThreadState, current_frame), \
+        .thread_id = offsetof(TyThreadState, thread_id), \
+        .native_thread_id = offsetof(TyThreadState, native_thread_id), \
+        .datastack_chunk = offsetof(TyThreadState, datastack_chunk), \
+        .status = offsetof(TyThreadState, _status), \
     }, \
     .interpreter_frame = { \
         .size = sizeof(_PyInterpreterFrame), \
@@ -282,7 +282,7 @@ typedef struct _Py_DebugOffsets {
         .localsplus = offsetof(_PyInterpreterFrame, localsplus), \
         .owner = offsetof(_PyInterpreterFrame, owner), \
         .stackpointer = offsetof(_PyInterpreterFrame, stackpointer), \
-        .tlbc_index = _Py_Debug_interpreter_frame_tlbc_index, \
+        .tlbc_index = _Ty_Debug_interpreter_frame_tlbc_index, \
     }, \
     .code_object = { \
         .size = sizeof(PyCodeObject), \
@@ -295,17 +295,17 @@ typedef struct _Py_DebugOffsets {
         .localsplusnames = offsetof(PyCodeObject, co_localsplusnames), \
         .localspluskinds = offsetof(PyCodeObject, co_localspluskinds), \
         .co_code_adaptive = offsetof(PyCodeObject, co_code_adaptive), \
-        .co_tlbc = _Py_Debug_code_object_co_tlbc, \
+        .co_tlbc = _Ty_Debug_code_object_co_tlbc, \
     }, \
     .pyobject = { \
-        .size = sizeof(PyObject), \
-        .ob_type = offsetof(PyObject, ob_type), \
+        .size = sizeof(TyObject), \
+        .ob_type = offsetof(TyObject, ob_type), \
     }, \
     .type_object = { \
-        .size = sizeof(PyTypeObject), \
-        .tp_name = offsetof(PyTypeObject, tp_name), \
-        .tp_repr = offsetof(PyTypeObject, tp_repr), \
-        .tp_flags = offsetof(PyTypeObject, tp_flags), \
+        .size = sizeof(TyTypeObject), \
+        .tp_name = offsetof(TyTypeObject, tp_name), \
+        .tp_repr = offsetof(TyTypeObject, tp_repr), \
+        .tp_flags = offsetof(TyTypeObject, tp_flags), \
     }, \
     .tuple_object = { \
         .size = sizeof(PyTupleObject), \
@@ -363,12 +363,12 @@ typedef struct _Py_DebugOffsets {
         .prev = offsetof(struct llist_node, prev), \
     }, \
     .debugger_support = { \
-        .eval_breaker = offsetof(PyThreadState, eval_breaker), \
-        .remote_debugger_support = offsetof(PyThreadState, remote_debugger_support),  \
-        .remote_debugging_enabled = offsetof(PyInterpreterState, config.remote_debug),  \
+        .eval_breaker = offsetof(TyThreadState, eval_breaker), \
+        .remote_debugger_support = offsetof(TyThreadState, remote_debugger_support),  \
+        .remote_debugging_enabled = offsetof(TyInterpreterState, config.remote_debug),  \
         .debugger_pending_call = offsetof(_PyRemoteDebuggerSupport, debugger_pending_call),  \
         .debugger_script_path = offsetof(_PyRemoteDebuggerSupport, debugger_script_path),  \
-        .debugger_script_path_size = Py_MAX_SCRIPT_PATH_SIZE, \
+        .debugger_script_path_size = Ty_MAX_SCRIPT_PATH_SIZE, \
     }, \
 }
 
@@ -376,4 +376,4 @@ typedef struct _Py_DebugOffsets {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_DEBUG_OFFSETS_H */
+#endif /* !Ty_INTERNAL_DEBUG_OFFSETS_H */

@@ -27,8 +27,8 @@
 
 #include "Python.h"
 #include "pycore_fileutils.h"     // _PyIsSelectable_fd()
-#include "pycore_long.h"          // _PyLong_UnsignedLongLong_Converter()
-#include "pycore_pyerrors.h"      // _PyErr_ChainExceptions1()
+#include "pycore_long.h"          // _TyLong_UnsignedLongLong_Converter()
+#include "pycore_pyerrors.h"      // _TyErr_ChainExceptions1()
 #include "pycore_time.h"          // _PyDeadline_Init()
 
 /* Include symbols from _socket module */
@@ -44,11 +44,11 @@
 #define _PySSL_FIX_ERRNO
 
 #define PySSL_BEGIN_ALLOW_THREADS_S(save) \
-    do { (save) = PyEval_SaveThread(); } while(0)
+    do { (save) = TyEval_SaveThread(); } while(0)
 #define PySSL_END_ALLOW_THREADS_S(save) \
-    do { PyEval_RestoreThread(save); _PySSL_FIX_ERRNO; } while(0)
+    do { TyEval_RestoreThread(save); _PySSL_FIX_ERRNO; } while(0)
 #define PySSL_BEGIN_ALLOW_THREADS { \
-            PyThreadState *_save = NULL;  \
+            TyThreadState *_save = NULL;  \
             PySSL_BEGIN_ALLOW_THREADS_S(_save);
 #define PySSL_END_ALLOW_THREADS PySSL_END_ALLOW_THREADS_S(_save); }
 
@@ -86,7 +86,7 @@ struct py_ssl_library_code {
     int code;
 };
 
-#if defined(MS_WINDOWS) && defined(Py_DEBUG)
+#if defined(MS_WINDOWS) && defined(Ty_DEBUG)
 /* Debug builds on Windows rely on getting errno directly from OpenSSL.
  * However, because it uses a different CRT, we need to transfer the
  * value of errno from OpenSSL into our debug CRT.
@@ -294,20 +294,20 @@ typedef struct {
     SSL_CTX *ctx;
     unsigned char *alpn_protocols;
     unsigned int alpn_protocols_len;
-    PyObject *set_sni_cb;
+    TyObject *set_sni_cb;
     int check_hostname;
     int protocol;
 #if defined(PySSL_HAVE_POST_HS_AUTH)
     int post_handshake_auth;
 #endif
-    PyObject *msg_cb;
-    PyObject *keylog_filename;
+    TyObject *msg_cb;
+    TyObject *keylog_filename;
     BIO *keylog_bio;
     /* Cached module state, also used in SSLSocket and SSLSession code. */
     _sslmodulestate *state;
 #ifndef OPENSSL_NO_PSK
-    PyObject *psk_client_callback;
-    PyObject *psk_server_callback;
+    TyObject *psk_client_callback;
+    TyObject *psk_server_callback;
 #endif
 } PySSLContext;
 
@@ -323,19 +323,19 @@ typedef struct {
 
 typedef struct {
     PyObject_HEAD
-    PyObject *Socket; /* weakref to socket on which we're layered */
+    TyObject *Socket; /* weakref to socket on which we're layered */
     SSL *ssl;
     PySSLContext *ctx; /* weakref to SSL context */
     char shutdown_seen_zero;
     enum py_ssl_server_or_client socket_type;
-    PyObject *owner; /* Python level "owner" passed to servername callback */
-    PyObject *server_hostname;
+    TyObject *owner; /* Python level "owner" passed to servername callback */
+    TyObject *server_hostname;
     _PySSLError err; /* last seen error from various sources */
     /* Some SSL callbacks don't have error reporting. Callback wrappers
      * store exception information on the socket. The handshake, read, write,
      * and shutdown methods check for chained exceptions.
      */
-    PyObject *exc;
+    TyObject *exc;
 } PySSLSocket;
 
 #define PySSLSocket_CAST(op)    ((PySSLSocket *)(op))
@@ -381,7 +381,7 @@ class _ssl.SSLSession "PySSLSession *" "get_state_type(type)->PySSLSession_Type"
 
 #include "clinic/_ssl.c.h"
 
-static int PySSL_select(PySocketSockObject *s, int writing, PyTime_t timeout);
+static int PySSL_select(PySocketSockObject *s, int writing, TyTime_t timeout);
 
 typedef enum {
     SOCKET_IS_NONBLOCKING,
@@ -400,14 +400,14 @@ typedef enum {
 // Return a borrowed reference.
 static inline PySocketSockObject* GET_SOCKET(PySSLSocket *obj) {
     if (obj->Socket) {
-        PyObject *sock;
+        TyObject *sock;
         if (PyWeakref_GetRef(obj->Socket, &sock)) {
             // GET_SOCKET() returns a borrowed reference
-            Py_DECREF(sock);
+            Ty_DECREF(sock);
         }
         else {
             // dead weak reference
-            sock = Py_None;
+            sock = Ty_None;
         }
         return (PySocketSockObject *)sock;  // borrowed reference
     }
@@ -426,61 +426,61 @@ static inline PySocketSockObject* GET_SOCKET(PySSLSocket *obj) {
  * SSL errors.
  */
 
-PyDoc_STRVAR(SSLError_doc,
+TyDoc_STRVAR(SSLError_doc,
 "An error occurred in the SSL implementation.");
 
-PyDoc_STRVAR(SSLCertVerificationError_doc,
+TyDoc_STRVAR(SSLCertVerificationError_doc,
 "A certificate could not be verified.");
 
-PyDoc_STRVAR(SSLZeroReturnError_doc,
+TyDoc_STRVAR(SSLZeroReturnError_doc,
 "SSL/TLS session closed cleanly.");
 
-PyDoc_STRVAR(SSLWantReadError_doc,
+TyDoc_STRVAR(SSLWantReadError_doc,
 "Non-blocking SSL socket needs to read more data\n"
 "before the requested operation can be completed.");
 
-PyDoc_STRVAR(SSLWantWriteError_doc,
+TyDoc_STRVAR(SSLWantWriteError_doc,
 "Non-blocking SSL socket needs to write more data\n"
 "before the requested operation can be completed.");
 
-PyDoc_STRVAR(SSLSyscallError_doc,
+TyDoc_STRVAR(SSLSyscallError_doc,
 "System error when attempting SSL operation.");
 
-PyDoc_STRVAR(SSLEOFError_doc,
+TyDoc_STRVAR(SSLEOFError_doc,
 "SSL/TLS connection terminated abruptly.");
 
-static PyObject *
-SSLError_str(PyObject *op)
+static TyObject *
+SSLError_str(TyObject *op)
 {
-    PyOSErrorObject *self = (PyOSErrorObject*)op;
-    if (self->strerror != NULL && PyUnicode_Check(self->strerror)) {
-        return Py_NewRef(self->strerror);
+    TyOSErrorObject *self = (TyOSErrorObject*)op;
+    if (self->strerror != NULL && TyUnicode_Check(self->strerror)) {
+        return Ty_NewRef(self->strerror);
     }
     else
         return PyObject_Str(self->args);
 }
 
-static PyType_Slot sslerror_type_slots[] = {
+static TyType_Slot sslerror_type_slots[] = {
     {Py_tp_doc, (void*)SSLError_doc},
     {Py_tp_str, SSLError_str},
     {0, 0},
 };
 
-static PyType_Spec sslerror_type_spec = {
+static TyType_Spec sslerror_type_spec = {
     .name = "ssl.SSLError",
-    .basicsize = sizeof(PyOSErrorObject),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_IMMUTABLETYPE),
+    .basicsize = sizeof(TyOSErrorObject),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = sslerror_type_slots
 };
 
 static void
 fill_and_set_sslerror(_sslmodulestate *state,
-                      PySSLSocket *sslsock, PyObject *type, int ssl_errno,
+                      PySSLSocket *sslsock, TyObject *type, int ssl_errno,
                       const char *errstr, int lineno, unsigned long errcode)
 {
-    PyObject *err_value = NULL, *reason_obj = NULL, *lib_obj = NULL;
-    PyObject *verify_obj = NULL, *verify_code_obj = NULL;
-    PyObject *init_value, *msg, *key;
+    TyObject *err_value = NULL, *reason_obj = NULL, *lib_obj = NULL;
+    TyObject *verify_obj = NULL, *verify_code_obj = NULL;
+    TyObject *init_value, *msg, *key;
     PyUnicodeWriter *writer = NULL;
 
     if (errcode != 0) {
@@ -488,20 +488,20 @@ fill_and_set_sslerror(_sslmodulestate *state,
 
         lib = ERR_GET_LIB(errcode);
         reason = ERR_GET_REASON(errcode);
-        key = Py_BuildValue("ii", lib, reason);
+        key = Ty_BuildValue("ii", lib, reason);
         if (key == NULL)
             goto fail;
-        reason_obj = PyDict_GetItemWithError(state->err_codes_to_names, key);
-        Py_DECREF(key);
-        if (reason_obj == NULL && PyErr_Occurred()) {
+        reason_obj = TyDict_GetItemWithError(state->err_codes_to_names, key);
+        Ty_DECREF(key);
+        if (reason_obj == NULL && TyErr_Occurred()) {
             goto fail;
         }
-        key = PyLong_FromLong(lib);
+        key = TyLong_FromLong(lib);
         if (key == NULL)
             goto fail;
-        lib_obj = PyDict_GetItemWithError(state->lib_codes_to_names, key);
-        Py_DECREF(key);
-        if (lib_obj == NULL && PyErr_Occurred()) {
+        lib_obj = TyDict_GetItemWithError(state->lib_codes_to_names, key);
+        Ty_DECREF(key);
+        if (lib_obj == NULL && TyErr_Occurred()) {
             goto fail;
         }
         if (errstr == NULL) {
@@ -515,20 +515,20 @@ fill_and_set_sslerror(_sslmodulestate *state,
         long verify_code;
 
         verify_code = SSL_get_verify_result(sslsock->ssl);
-        verify_code_obj = PyLong_FromLong(verify_code);
+        verify_code_obj = TyLong_FromLong(verify_code);
         if (verify_code_obj == NULL) {
             goto fail;
         }
 
         switch (verify_code) {
         case X509_V_ERR_HOSTNAME_MISMATCH:
-            verify_obj = PyUnicode_FromFormat(
+            verify_obj = TyUnicode_FromFormat(
                 "Hostname mismatch, certificate is not valid for '%S'.",
                 sslsock->server_hostname
             );
             break;
         case X509_V_ERR_IP_ADDRESS_MISMATCH:
-            verify_obj = PyUnicode_FromFormat(
+            verify_obj = TyUnicode_FromFormat(
                 "IP address mismatch, certificate is not valid for '%S'.",
                 sslsock->server_hostname
             );
@@ -536,9 +536,9 @@ fill_and_set_sslerror(_sslmodulestate *state,
         default:
             verify_str = X509_verify_cert_error_string(verify_code);
             if (verify_str != NULL) {
-                verify_obj = PyUnicode_FromString(verify_str);
+                verify_obj = TyUnicode_FromString(verify_str);
             } else {
-                verify_obj = Py_NewRef(Py_None);
+                verify_obj = Ty_NewRef(Ty_None);
             }
             break;
         }
@@ -592,22 +592,22 @@ fill_and_set_sslerror(_sslmodulestate *state,
         goto fail;
     }
 
-    init_value = Py_BuildValue("iN", ERR_GET_REASON(ssl_errno), msg);
+    init_value = Ty_BuildValue("iN", ERR_GET_REASON(ssl_errno), msg);
     if (init_value == NULL)
         goto fail;
 
     err_value = PyObject_CallObject(type, init_value);
-    Py_DECREF(init_value);
+    Ty_DECREF(init_value);
     if (err_value == NULL)
         goto fail;
 
     if (reason_obj == NULL)
-        reason_obj = Py_None;
+        reason_obj = Ty_None;
     if (PyObject_SetAttr(err_value, state->str_reason, reason_obj))
         goto fail;
 
     if (lib_obj == NULL)
-        lib_obj = Py_None;
+        lib_obj = Ty_None;
     if (PyObject_SetAttr(err_value, state->str_library, lib_obj))
         goto fail;
 
@@ -620,11 +620,11 @@ fill_and_set_sslerror(_sslmodulestate *state,
             goto fail;
     }
 
-    PyErr_SetObject(type, err_value);
+    TyErr_SetObject(type, err_value);
 fail:
-    Py_XDECREF(err_value);
-    Py_XDECREF(verify_code_obj);
-    Py_XDECREF(verify_obj);
+    Ty_XDECREF(err_value);
+    Ty_XDECREF(verify_code_obj);
+    Ty_XDECREF(verify_obj);
     PyUnicodeWriter_Discard(writer);
 }
 
@@ -633,15 +633,15 @@ PySSL_ChainExceptions(PySSLSocket *sslsock) {
     if (sslsock->exc == NULL)
         return 0;
 
-    _PyErr_ChainExceptions1(sslsock->exc);
+    _TyErr_ChainExceptions1(sslsock->exc);
     sslsock->exc = NULL;
     return -1;
 }
 
-static PyObject *
+static TyObject *
 PySSL_SetError(PySSLSocket *sslsock, const char *filename, int lineno)
 {
-    PyObject *type;
+    TyObject *type;
     char *errstr = NULL;
     _PySSLError err;
     enum py_ssl_error p = PY_SSL_ERROR_NONE;
@@ -689,12 +689,12 @@ PySSL_SetError(PySSLSocket *sslsock, const char *filename, int lineno)
                 ERR_clear_error();
 #ifdef MS_WINDOWS
                 if (err.ws) {
-                    return PyErr_SetFromWindowsErr(err.ws);
+                    return TyErr_SetFromWindowsErr(err.ws);
                 }
 #endif
                 if (err.c) {
                     errno = err.c;
-                    return PyErr_SetFromErrno(PyExc_OSError);
+                    return TyErr_SetFromErrno(TyExc_OSError);
                 }
                 else {
                     p = PY_SSL_ERROR_EOF;
@@ -709,7 +709,7 @@ PySSL_SetError(PySSLSocket *sslsock, const char *filename, int lineno)
                 if (ERR_GET_LIB(e) == ERR_LIB_SYS) {
                     // A system error is being reported; reason is set to errno
                     errno = ERR_GET_REASON(e);
-                    return PyErr_SetFromErrno(PyExc_OSError);
+                    return TyErr_SetFromErrno(TyExc_OSError);
                 }
                 p = PY_SSL_ERROR_SYSCALL;
             }
@@ -739,7 +739,7 @@ PySSL_SetError(PySSLSocket *sslsock, const char *filename, int lineno)
             if (ERR_GET_LIB(e) == ERR_LIB_SYS) {
                 // A system error is being reported; reason is set to errno
                 errno = ERR_GET_REASON(e);
-                return PyErr_SetFromErrno(PyExc_OSError);
+                return TyErr_SetFromErrno(TyExc_OSError);
             }
             break;
         }
@@ -754,7 +754,7 @@ PySSL_SetError(PySSLSocket *sslsock, const char *filename, int lineno)
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 _setSSLError (_sslmodulestate *state, const char *errstr, int errcode, const char *filename, int lineno)
 {
     if (errstr == NULL)
@@ -768,8 +768,8 @@ _setSSLError (_sslmodulestate *state, const char *errstr, int errcode, const cha
 
 static int
 _ssl_deprecated(const char* msg, int stacklevel) {
-    return PyErr_WarnEx(
-        PyExc_DeprecationWarning, msg, stacklevel
+    return TyErr_WarnEx(
+        TyExc_DeprecationWarning, msg, stacklevel
     );
 }
 
@@ -785,7 +785,7 @@ _ssl_configure_hostname(PySSLSocket *self, const char* server_hostname)
 {
     int retval = -1;
     ASN1_OCTET_STRING *ip;
-    PyObject *hostname;
+    TyObject *hostname;
     size_t len;
 
     assert(server_hostname);
@@ -796,8 +796,8 @@ _ssl_configure_hostname(PySSLSocket *self, const char* server_hostname)
      */
     len = strlen(server_hostname);
     if (len == 0 || *server_hostname == '.') {
-        PyErr_SetString(
-            PyExc_ValueError,
+        TyErr_SetString(
+            TyExc_ValueError,
             "server_hostname cannot be an empty string or start with a "
             "leading dot.");
         return retval;
@@ -809,7 +809,7 @@ _ssl_configure_hostname(PySSLSocket *self, const char* server_hostname)
         ERR_clear_error();
     }
 
-    hostname = PyUnicode_Decode(server_hostname, len, "ascii", "strict");
+    hostname = TyUnicode_Decode(server_hostname, len, "ascii", "strict");
     if (hostname == NULL) {
         goto error;
     }
@@ -850,7 +850,7 @@ static PySSLSocket *
 newPySSLSocket(PySSLContext *sslctx, PySocketSockObject *sock,
                enum py_ssl_server_or_client socket_type,
                char *server_hostname,
-               PyObject *owner, PyObject *session,
+               TyObject *owner, TyObject *session,
                PySSLMemoryBIO *inbio, PySSLMemoryBIO *outbio)
 {
     PySSLSocket *self;
@@ -879,7 +879,7 @@ newPySSLSocket(PySSLContext *sslctx, PySocketSockObject *sock,
 
     self->ssl = NULL;
     self->Socket = NULL;
-    self->ctx = (PySSLContext*)Py_NewRef(sslctx);
+    self->ctx = (PySSLContext*)Ty_NewRef(sslctx);
     self->shutdown_seen_zero = 0;
     self->owner = NULL;
     self->server_hostname = NULL;
@@ -893,7 +893,7 @@ newPySSLSocket(PySSLContext *sslctx, PySocketSockObject *sock,
     self->ssl = SSL_new(ctx);
     PySSL_END_ALLOW_THREADS
     if (self->ssl == NULL) {
-        Py_DECREF(self);
+        Ty_DECREF(self);
         _setSSLError(get_state_ctx(self), NULL, 0, __FILE__, __LINE__);
         return NULL;
     }
@@ -916,7 +916,7 @@ newPySSLSocket(PySSLContext *sslctx, PySocketSockObject *sock,
 #endif
     SSL_set_app_data(self->ssl, self);
     if (sock) {
-        SSL_set_fd(self->ssl, Py_SAFE_DOWNCAST(sock->sock_fd, SOCKET_T, int));
+        SSL_set_fd(self->ssl, Ty_SAFE_DOWNCAST(sock->sock_fd, SOCKET_T, int));
     } else {
         /* BIOs are reference counted and SSL_set_bio borrows our reference.
          * To prevent a double free in memory_bio_dealloc() we need to take an
@@ -948,7 +948,7 @@ newPySSLSocket(PySSLContext *sslctx, PySocketSockObject *sock,
 
     if (server_hostname != NULL) {
         if (_ssl_configure_hostname(self, server_hostname) < 0) {
-            Py_DECREF(self);
+            Ty_DECREF(self);
             return NULL;
         }
     }
@@ -969,21 +969,21 @@ newPySSLSocket(PySSLContext *sslctx, PySocketSockObject *sock,
 
     self->socket_type = socket_type;
     if (sock != NULL) {
-        self->Socket = PyWeakref_NewRef((PyObject *) sock, NULL);
+        self->Socket = PyWeakref_NewRef((TyObject *) sock, NULL);
         if (self->Socket == NULL) {
-            Py_DECREF(self);
+            Ty_DECREF(self);
             return NULL;
         }
     }
-    if (owner && owner != Py_None) {
-        if (_ssl__SSLSocket_owner_set((PyObject *)self, owner, NULL) < 0) {
-            Py_DECREF(self);
+    if (owner && owner != Ty_None) {
+        if (_ssl__SSLSocket_owner_set((TyObject *)self, owner, NULL) < 0) {
+            Ty_DECREF(self);
             return NULL;
         }
     }
-    if (session && session != Py_None) {
-        if (_ssl__SSLSocket_session_set((PyObject *)self, session, NULL) < 0) {
-            Py_DECREF(self);
+    if (session && session != Ty_None) {
+        if (_ssl__SSLSocket_session_set((TyObject *)self, session, NULL) < 0) {
+            Ty_DECREF(self);
             return NULL;
         }
     }
@@ -999,7 +999,7 @@ newPySSLSocket(PySSLContext *sslctx, PySocketSockObject *sock,
 _ssl._SSLSocket.do_handshake
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_do_handshake_impl(PySSLSocket *self)
 /*[clinic end generated code: output=6c0898a8936548f6 input=65619a7a4bea3176]*/
 {
@@ -1007,17 +1007,17 @@ _ssl__SSLSocket_do_handshake_impl(PySSLSocket *self)
     _PySSLError err;
     int sockstate, nonblocking;
     PySocketSockObject *sock = GET_SOCKET(self);
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
     int has_timeout;
 
     if (sock) {
-        if (((PyObject*)sock) == Py_None) {
+        if (((TyObject*)sock) == Ty_None) {
             _setSSLError(get_state_sock(self),
                          "Underlying socket connection gone",
                          PY_SSL_ERROR_NO_SOCKET, __FILE__, __LINE__);
             return NULL;
         }
-        Py_INCREF(sock);
+        Ty_INCREF(sock);
 
         /* just in case the blocking state of the socket has been changed */
         nonblocking = (sock->sock_timeout >= 0);
@@ -1040,7 +1040,7 @@ _ssl__SSLSocket_do_handshake_impl(PySSLSocket *self)
         PySSL_END_ALLOW_THREADS
         self->err = err;
 
-        if (PyErr_CheckSignals())
+        if (TyErr_CheckSignals())
             goto error;
 
         if (has_timeout)
@@ -1055,15 +1055,15 @@ _ssl__SSLSocket_do_handshake_impl(PySSLSocket *self)
         }
 
         if (sockstate == SOCKET_HAS_TIMED_OUT) {
-            PyErr_SetString(PyExc_TimeoutError,
+            TyErr_SetString(TyExc_TimeoutError,
                             ERRSTR("The handshake operation timed out"));
             goto error;
         } else if (sockstate == SOCKET_HAS_BEEN_CLOSED) {
-            PyErr_SetString(get_state_sock(self)->PySSLErrorObject,
+            TyErr_SetString(get_state_sock(self)->PySSLErrorObject,
                             ERRSTR("Underlying socket has been closed."));
             goto error;
         } else if (sockstate == SOCKET_TOO_LARGE_FOR_SELECT) {
-            PyErr_SetString(get_state_sock(self)->PySSLErrorObject,
+            TyErr_SetString(get_state_sock(self)->PySSLErrorObject,
                             ERRSTR("Underlying socket too large for select()."));
             goto error;
         } else if (sockstate == SOCKET_IS_NONBLOCKING) {
@@ -1071,7 +1071,7 @@ _ssl__SSLSocket_do_handshake_impl(PySSLSocket *self)
         }
     } while (err.ssl == SSL_ERROR_WANT_READ ||
              err.ssl == SSL_ERROR_WANT_WRITE);
-    Py_XDECREF(sock);
+    Ty_XDECREF(sock);
 
     if (ret < 1)
         return PySSL_SetError(self, __FILE__, __LINE__);
@@ -1079,18 +1079,18 @@ _ssl__SSLSocket_do_handshake_impl(PySSLSocket *self)
         return NULL;
     Py_RETURN_NONE;
 error:
-    Py_XDECREF(sock);
+    Ty_XDECREF(sock);
     PySSL_ChainExceptions(self);
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 _asn1obj2py(_sslmodulestate *state, const ASN1_OBJECT *name, int no_name)
 {
     char buf[X509_NAME_MAXLEN];
     char *namebuf = buf;
     int buflen;
-    PyObject *name_obj = NULL;
+    TyObject *name_obj = NULL;
 
     buflen = OBJ_obj2txt(namebuf, X509_NAME_MAXLEN, name, no_name);
     if (buflen < 0) {
@@ -1102,9 +1102,9 @@ _asn1obj2py(_sslmodulestate *state, const ASN1_OBJECT *name, int no_name)
         /* make OBJ_obj2txt() calculate the required buflen */
         buflen = OBJ_obj2txt(NULL, 0, name, no_name);
         /* allocate len + 1 for terminating NULL byte */
-        namebuf = PyMem_Malloc(buflen + 1);
+        namebuf = TyMem_Malloc(buflen + 1);
         if (namebuf == NULL) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return NULL;
         }
         buflen = OBJ_obj2txt(namebuf, buflen + 1, name, no_name);
@@ -1114,26 +1114,26 @@ _asn1obj2py(_sslmodulestate *state, const ASN1_OBJECT *name, int no_name)
         }
     }
     if (!buflen && no_name) {
-        name_obj = Py_NewRef(Py_None);
+        name_obj = Ty_NewRef(Ty_None);
     }
     else {
-        name_obj = PyUnicode_FromStringAndSize(namebuf, buflen);
+        name_obj = TyUnicode_FromStringAndSize(namebuf, buflen);
     }
 
   done:
     if (buf != namebuf) {
-        PyMem_Free(namebuf);
+        TyMem_Free(namebuf);
     }
     return name_obj;
 }
 
-static PyObject *
+static TyObject *
 _create_tuple_for_attribute(_sslmodulestate *state,
                             ASN1_OBJECT *name, ASN1_STRING *value)
 {
-    Py_ssize_t buflen;
-    PyObject *pyattr;
-    PyObject *pyname = _asn1obj2py(state, name, 0);
+    Ty_ssize_t buflen;
+    TyObject *pyattr;
+    TyObject *pyname = _asn1obj2py(state, name, 0);
 
     if (pyname == NULL) {
         _setSSLError(state, NULL, 0, __FILE__, __LINE__);
@@ -1142,28 +1142,28 @@ _create_tuple_for_attribute(_sslmodulestate *state,
 
     if (ASN1_STRING_type(value) == V_ASN1_BIT_STRING) {
         buflen = ASN1_STRING_length(value);
-        pyattr = Py_BuildValue("Ny#", pyname, ASN1_STRING_get0_data(value), buflen);
+        pyattr = Ty_BuildValue("Ny#", pyname, ASN1_STRING_get0_data(value), buflen);
     } else {
         unsigned char *valuebuf = NULL;
         buflen = ASN1_STRING_to_UTF8(&valuebuf, value);
         if (buflen < 0) {
             _setSSLError(state, NULL, 0, __FILE__, __LINE__);
-            Py_DECREF(pyname);
+            Ty_DECREF(pyname);
             return NULL;
         }
-        pyattr = Py_BuildValue("Ns#", pyname, valuebuf, buflen);
+        pyattr = Ty_BuildValue("Ns#", pyname, valuebuf, buflen);
         OPENSSL_free(valuebuf);
     }
     return pyattr;
 }
 
-static PyObject *
+static TyObject *
 _create_tuple_for_X509_NAME (_sslmodulestate *state, X509_NAME *xname)
 {
-    PyObject *dn = NULL;    /* tuple which represents the "distinguished name" */
-    PyObject *rdn = NULL;   /* tuple to hold a "relative distinguished name" */
-    PyObject *rdnt;
-    PyObject *attr = NULL;   /* tuple to hold an attribute */
+    TyObject *dn = NULL;    /* tuple which represents the "distinguished name" */
+    TyObject *rdn = NULL;   /* tuple to hold a "relative distinguished name" */
+    TyObject *rdnt;
+    TyObject *attr = NULL;   /* tuple to hold an attribute */
     int entry_count = X509_NAME_entry_count(xname);
     X509_NAME_ENTRY *entry;
     ASN1_OBJECT *name;
@@ -1172,11 +1172,11 @@ _create_tuple_for_X509_NAME (_sslmodulestate *state, X509_NAME *xname)
     int rdn_level = -1;
     int retcode;
 
-    dn = PyList_New(0);
+    dn = TyList_New(0);
     if (dn == NULL)
         return NULL;
     /* now create another tuple to hold the top-level RDN */
-    rdn = PyList_New(0);
+    rdn = TyList_New(0);
     if (rdn == NULL)
         goto fail0;
 
@@ -1191,16 +1191,16 @@ _create_tuple_for_X509_NAME (_sslmodulestate *state, X509_NAME *xname)
             if (rdn_level != X509_NAME_ENTRY_set(entry)) {
                 /* yes, new RDN */
                 /* add old RDN to DN */
-                rdnt = PyList_AsTuple(rdn);
-                Py_DECREF(rdn);
+                rdnt = TyList_AsTuple(rdn);
+                Ty_DECREF(rdn);
                 if (rdnt == NULL)
                     goto fail0;
-                retcode = PyList_Append(dn, rdnt);
-                Py_DECREF(rdnt);
+                retcode = TyList_Append(dn, rdnt);
+                Ty_DECREF(rdnt);
                 if (retcode < 0)
                     goto fail0;
                 /* create new RDN */
-                rdn = PyList_New(0);
+                rdn = TyList_New(0);
                 if (rdn == NULL)
                     goto fail0;
             }
@@ -1214,49 +1214,49 @@ _create_tuple_for_X509_NAME (_sslmodulestate *state, X509_NAME *xname)
         /*
         fprintf(stderr, "RDN level %d, attribute %s: %s\n",
             entry->set,
-            PyBytes_AS_STRING(PyTuple_GET_ITEM(attr, 0)),
-            PyBytes_AS_STRING(PyTuple_GET_ITEM(attr, 1)));
+            TyBytes_AS_STRING(TyTuple_GET_ITEM(attr, 0)),
+            TyBytes_AS_STRING(TyTuple_GET_ITEM(attr, 1)));
         */
         if (attr == NULL)
             goto fail1;
-        retcode = PyList_Append(rdn, attr);
-        Py_DECREF(attr);
+        retcode = TyList_Append(rdn, attr);
+        Ty_DECREF(attr);
         if (retcode < 0)
             goto fail1;
     }
     /* now, there's typically a dangling RDN */
     if (rdn != NULL) {
-        if (PyList_GET_SIZE(rdn) > 0) {
-            rdnt = PyList_AsTuple(rdn);
-            Py_DECREF(rdn);
+        if (TyList_GET_SIZE(rdn) > 0) {
+            rdnt = TyList_AsTuple(rdn);
+            Ty_DECREF(rdn);
             if (rdnt == NULL)
                 goto fail0;
-            retcode = PyList_Append(dn, rdnt);
-            Py_DECREF(rdnt);
+            retcode = TyList_Append(dn, rdnt);
+            Ty_DECREF(rdnt);
             if (retcode < 0)
                 goto fail0;
         }
         else {
-            Py_DECREF(rdn);
+            Ty_DECREF(rdn);
         }
     }
 
     /* convert list to tuple */
-    rdnt = PyList_AsTuple(dn);
-    Py_DECREF(dn);
+    rdnt = TyList_AsTuple(dn);
+    Ty_DECREF(dn);
     if (rdnt == NULL)
         return NULL;
     return rdnt;
 
   fail1:
-    Py_XDECREF(rdn);
+    Ty_XDECREF(rdn);
 
   fail0:
-    Py_XDECREF(dn);
+    Ty_XDECREF(dn);
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 _get_peer_alt_names (_sslmodulestate *state, X509 *certificate) {
 
     /* this code follows the procedure outlined in
@@ -1266,8 +1266,8 @@ _get_peer_alt_names (_sslmodulestate *state, X509 *certificate) {
        names. */
 
     int j;
-    PyObject *peer_alt_names = Py_None;
-    PyObject *v = NULL, *t;
+    TyObject *peer_alt_names = Ty_None;
+    TyObject *v = NULL, *t;
     GENERAL_NAMES *names = NULL;
     GENERAL_NAME *name;
     BIO *biobuf = NULL;
@@ -1281,15 +1281,15 @@ _get_peer_alt_names (_sslmodulestate *state, X509 *certificate) {
     /* get a memory buffer */
     biobuf = BIO_new(BIO_s_mem());
     if (biobuf == NULL) {
-        PyErr_SetString(state->PySSLErrorObject, "failed to allocate BIO");
+        TyErr_SetString(state->PySSLErrorObject, "failed to allocate BIO");
         return NULL;
     }
 
     names = (GENERAL_NAMES *)X509_get_ext_d2i(
         certificate, NID_subject_alt_name, NULL, NULL);
     if (names != NULL) {
-        if (peer_alt_names == Py_None) {
-            peer_alt_names = PyList_New(0);
+        if (peer_alt_names == Ty_None) {
+            peer_alt_names = TyList_New(0);
             if (peer_alt_names == NULL)
                 goto fail;
         }
@@ -1306,24 +1306,24 @@ _get_peer_alt_names (_sslmodulestate *state, X509 *certificate) {
                 /* we special-case DirName as a tuple of
                    tuples of attributes */
 
-                t = PyTuple_New(2);
+                t = TyTuple_New(2);
                 if (t == NULL) {
                     goto fail;
                 }
 
-                v = PyUnicode_FromString("DirName");
+                v = TyUnicode_FromString("DirName");
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 0, v);
+                TyTuple_SET_ITEM(t, 0, v);
 
                 v = _create_tuple_for_X509_NAME(state, name->d.dirn);
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 1, v);
+                TyTuple_SET_ITEM(t, 1, v);
                 break;
 
             case GEN_EMAIL:
@@ -1331,90 +1331,90 @@ _get_peer_alt_names (_sslmodulestate *state, X509 *certificate) {
             case GEN_URI:
                 /* GENERAL_NAME_print() doesn't handle NULL bytes in ASN1_string
                    correctly, CVE-2013-4238 */
-                t = PyTuple_New(2);
+                t = TyTuple_New(2);
                 if (t == NULL)
                     goto fail;
                 switch (gntype) {
                 case GEN_EMAIL:
-                    v = PyUnicode_FromString("email");
+                    v = TyUnicode_FromString("email");
                     as = name->d.rfc822Name;
                     break;
                 case GEN_DNS:
-                    v = PyUnicode_FromString("DNS");
+                    v = TyUnicode_FromString("DNS");
                     as = name->d.dNSName;
                     break;
                 case GEN_URI:
-                    v = PyUnicode_FromString("URI");
+                    v = TyUnicode_FromString("URI");
                     as = name->d.uniformResourceIdentifier;
                     break;
                 }
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 0, v);
-                v = PyUnicode_FromStringAndSize((char *)ASN1_STRING_get0_data(as),
+                TyTuple_SET_ITEM(t, 0, v);
+                v = TyUnicode_FromStringAndSize((char *)ASN1_STRING_get0_data(as),
                                                 ASN1_STRING_length(as));
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 1, v);
+                TyTuple_SET_ITEM(t, 1, v);
                 break;
 
             case GEN_RID:
-                t = PyTuple_New(2);
+                t = TyTuple_New(2);
                 if (t == NULL)
                     goto fail;
 
-                v = PyUnicode_FromString("Registered ID");
+                v = TyUnicode_FromString("Registered ID");
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 0, v);
+                TyTuple_SET_ITEM(t, 0, v);
 
                 len = i2t_ASN1_OBJECT(buf, sizeof(buf)-1, name->d.rid);
                 if (len < 0) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     _setSSLError(state, NULL, 0, __FILE__, __LINE__);
                     goto fail;
                 } else if (len >= (int)sizeof(buf)) {
-                    v = PyUnicode_FromString("<INVALID>");
+                    v = TyUnicode_FromString("<INVALID>");
                 } else {
-                    v = PyUnicode_FromStringAndSize(buf, len);
+                    v = TyUnicode_FromStringAndSize(buf, len);
                 }
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 1, v);
+                TyTuple_SET_ITEM(t, 1, v);
                 break;
 
             case GEN_IPADD:
                 /* OpenSSL < 3.0.0 adds a trailing \n to IPv6. 3.0.0 removed
                  * the trailing newline. Remove it in all versions
                  */
-                t = PyTuple_New(2);
+                t = TyTuple_New(2);
                 if (t == NULL)
                     goto fail;
 
-                v = PyUnicode_FromString("IP Address");
+                v = TyUnicode_FromString("IP Address");
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 0, v);
+                TyTuple_SET_ITEM(t, 0, v);
 
                 if (name->d.ip->length == 4) {
                     unsigned char *p = name->d.ip->data;
-                    v = PyUnicode_FromFormat(
+                    v = TyUnicode_FromFormat(
                         "%d.%d.%d.%d",
                         p[0], p[1], p[2], p[3]
                     );
                 } else if (name->d.ip->length == 16) {
                     unsigned char *p = name->d.ip->data;
-                    v = PyUnicode_FromFormat(
+                    v = TyUnicode_FromFormat(
                         "%X:%X:%X:%X:%X:%X:%X:%X",
                         p[0] << 8 | p[1],
                         p[2] << 8 | p[3],
@@ -1426,14 +1426,14 @@ _get_peer_alt_names (_sslmodulestate *state, X509 *certificate) {
                         p[14] << 8 | p[15]
                     );
                 } else {
-                    v = PyUnicode_FromString("<invalid>");
+                    v = TyUnicode_FromString("<invalid>");
                 }
 
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 1, v);
+                TyTuple_SET_ITEM(t, 1, v);
                 break;
 
             default:
@@ -1446,7 +1446,7 @@ _get_peer_alt_names (_sslmodulestate *state, X509 *certificate) {
                     case GEN_RID:
                         break;
                     default:
-                        if (PyErr_WarnFormat(PyExc_RuntimeWarning, 1,
+                        if (TyErr_WarnFormat(TyExc_RuntimeWarning, 1,
                                              "Unknown general name type %d",
                                              gntype) == -1) {
                             goto fail;
@@ -1462,44 +1462,44 @@ _get_peer_alt_names (_sslmodulestate *state, X509 *certificate) {
                 }
                 vptr = strchr(buf, ':');
                 if (vptr == NULL) {
-                    PyErr_Format(PyExc_ValueError,
+                    TyErr_Format(TyExc_ValueError,
                                  "Invalid value %.200s",
                                  buf);
                     goto fail;
                 }
-                t = PyTuple_New(2);
+                t = TyTuple_New(2);
                 if (t == NULL)
                     goto fail;
-                v = PyUnicode_FromStringAndSize(buf, (vptr - buf));
+                v = TyUnicode_FromStringAndSize(buf, (vptr - buf));
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 0, v);
-                v = PyUnicode_FromStringAndSize((vptr + 1),
+                TyTuple_SET_ITEM(t, 0, v);
+                v = TyUnicode_FromStringAndSize((vptr + 1),
                                                 (len - (vptr - buf + 1)));
                 if (v == NULL) {
-                    Py_DECREF(t);
+                    Ty_DECREF(t);
                     goto fail;
                 }
-                PyTuple_SET_ITEM(t, 1, v);
+                TyTuple_SET_ITEM(t, 1, v);
                 break;
             }
 
             /* and add that rendering to the list */
 
-            if (PyList_Append(peer_alt_names, t) < 0) {
-                Py_DECREF(t);
+            if (TyList_Append(peer_alt_names, t) < 0) {
+                Ty_DECREF(t);
                 goto fail;
             }
-            Py_DECREF(t);
+            Ty_DECREF(t);
         }
         sk_GENERAL_NAME_pop_free(names, GENERAL_NAME_free);
     }
     BIO_free(biobuf);
-    if (peer_alt_names != Py_None) {
-        v = PyList_AsTuple(peer_alt_names);
-        Py_DECREF(peer_alt_names);
+    if (peer_alt_names != Ty_None) {
+        v = TyList_AsTuple(peer_alt_names);
+        Ty_DECREF(peer_alt_names);
         return v;
     } else {
         return peer_alt_names;
@@ -1510,28 +1510,28 @@ _get_peer_alt_names (_sslmodulestate *state, X509 *certificate) {
     if (biobuf != NULL)
         BIO_free(biobuf);
 
-    if (peer_alt_names != Py_None) {
-        Py_XDECREF(peer_alt_names);
+    if (peer_alt_names != Ty_None) {
+        Ty_XDECREF(peer_alt_names);
     }
 
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 _get_aia_uri(X509 *certificate, int nid) {
-    PyObject *lst = NULL, *ostr = NULL;
+    TyObject *lst = NULL, *ostr = NULL;
     int i, result;
     AUTHORITY_INFO_ACCESS *info;
 
     info = X509_get_ext_d2i(certificate, NID_info_access, NULL, NULL);
     if (info == NULL)
-        return Py_None;
+        return Ty_None;
     if (sk_ACCESS_DESCRIPTION_num(info) == 0) {
         AUTHORITY_INFO_ACCESS_free(info);
-        return Py_None;
+        return Ty_None;
     }
 
-    if ((lst = PyList_New(0)) == NULL) {
+    if ((lst = TyList_New(0)) == NULL) {
         goto fail;
     }
 
@@ -1544,13 +1544,13 @@ _get_aia_uri(X509 *certificate, int nid) {
             continue;
         }
         uri = ad->location->d.uniformResourceIdentifier;
-        ostr = PyUnicode_FromStringAndSize((char *)uri->data,
+        ostr = TyUnicode_FromStringAndSize((char *)uri->data,
                                            uri->length);
         if (ostr == NULL) {
             goto fail;
         }
-        result = PyList_Append(lst, ostr);
-        Py_DECREF(ostr);
+        result = TyList_Append(lst, ostr);
+        Ty_DECREF(ostr);
         if (result < 0) {
             goto fail;
         }
@@ -1558,34 +1558,34 @@ _get_aia_uri(X509 *certificate, int nid) {
     AUTHORITY_INFO_ACCESS_free(info);
 
     /* convert to tuple or None */
-    if (PyList_Size(lst) == 0) {
-        Py_DECREF(lst);
-        return Py_None;
+    if (TyList_Size(lst) == 0) {
+        Ty_DECREF(lst);
+        return Ty_None;
     } else {
-        PyObject *tup;
-        tup = PyList_AsTuple(lst);
-        Py_DECREF(lst);
+        TyObject *tup;
+        tup = TyList_AsTuple(lst);
+        Ty_DECREF(lst);
         return tup;
     }
 
   fail:
     AUTHORITY_INFO_ACCESS_free(info);
-    Py_XDECREF(lst);
+    Ty_XDECREF(lst);
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 _get_crl_dp(X509 *certificate) {
     STACK_OF(DIST_POINT) *dps;
     int i, j;
-    PyObject *lst, *res = NULL;
+    TyObject *lst, *res = NULL;
 
     dps = X509_get_ext_d2i(certificate, NID_crl_distribution_points, NULL, NULL);
 
     if (dps == NULL)
-        return Py_None;
+        return Ty_None;
 
-    lst = PyList_New(0);
+    lst = TyList_New(0);
     if (lst == NULL)
         goto done;
 
@@ -1603,7 +1603,7 @@ _get_crl_dp(X509 *certificate) {
         for (j=0; j < sk_GENERAL_NAME_num(gns); j++) {
             GENERAL_NAME *gn;
             ASN1_IA5STRING *uri;
-            PyObject *ouri;
+            TyObject *ouri;
             int err;
 
             gn = sk_GENERAL_NAME_value(gns, j);
@@ -1611,45 +1611,45 @@ _get_crl_dp(X509 *certificate) {
                 continue;
             }
             uri = gn->d.uniformResourceIdentifier;
-            ouri = PyUnicode_FromStringAndSize((char *)uri->data,
+            ouri = TyUnicode_FromStringAndSize((char *)uri->data,
                                                uri->length);
             if (ouri == NULL)
                 goto done;
 
-            err = PyList_Append(lst, ouri);
-            Py_DECREF(ouri);
+            err = TyList_Append(lst, ouri);
+            Ty_DECREF(ouri);
             if (err < 0)
                 goto done;
         }
     }
 
     /* Convert to tuple. */
-    res = (PyList_GET_SIZE(lst) > 0) ? PyList_AsTuple(lst) : Py_None;
+    res = (TyList_GET_SIZE(lst) > 0) ? TyList_AsTuple(lst) : Ty_None;
 
   done:
-    Py_XDECREF(lst);
+    Ty_XDECREF(lst);
     CRL_DIST_POINTS_free(dps);
     return res;
 }
 
-static PyObject *
+static TyObject *
 _decode_certificate(_sslmodulestate *state, X509 *certificate) {
 
-    PyObject *retval = NULL;
+    TyObject *retval = NULL;
     BIO *biobuf = NULL;
-    PyObject *peer;
-    PyObject *peer_alt_names = NULL;
-    PyObject *issuer;
-    PyObject *version;
-    PyObject *sn_obj;
-    PyObject *obj;
+    TyObject *peer;
+    TyObject *peer_alt_names = NULL;
+    TyObject *issuer;
+    TyObject *version;
+    TyObject *sn_obj;
+    TyObject *obj;
     ASN1_INTEGER *serialNumber;
     char buf[2048];
     int len, result;
     const ASN1_TIME *notBefore, *notAfter;
-    PyObject *pnotBefore, *pnotAfter;
+    TyObject *pnotBefore, *pnotAfter;
 
-    retval = PyDict_New();
+    retval = TyDict_New();
     if (retval == NULL)
         return NULL;
 
@@ -1658,36 +1658,36 @@ _decode_certificate(_sslmodulestate *state, X509 *certificate) {
         X509_get_subject_name(certificate));
     if (peer == NULL)
         goto fail0;
-    if (PyDict_SetItemString(retval, (const char *) "subject", peer) < 0) {
-        Py_DECREF(peer);
+    if (TyDict_SetItemString(retval, (const char *) "subject", peer) < 0) {
+        Ty_DECREF(peer);
         goto fail0;
     }
-    Py_DECREF(peer);
+    Ty_DECREF(peer);
 
     issuer = _create_tuple_for_X509_NAME(
         state,
         X509_get_issuer_name(certificate));
     if (issuer == NULL)
         goto fail0;
-    if (PyDict_SetItemString(retval, (const char *)"issuer", issuer) < 0) {
-        Py_DECREF(issuer);
+    if (TyDict_SetItemString(retval, (const char *)"issuer", issuer) < 0) {
+        Ty_DECREF(issuer);
         goto fail0;
     }
-    Py_DECREF(issuer);
+    Ty_DECREF(issuer);
 
-    version = PyLong_FromLong(X509_get_version(certificate) + 1);
+    version = TyLong_FromLong(X509_get_version(certificate) + 1);
     if (version == NULL)
         goto fail0;
-    if (PyDict_SetItemString(retval, "version", version) < 0) {
-        Py_DECREF(version);
+    if (TyDict_SetItemString(retval, "version", version) < 0) {
+        Ty_DECREF(version);
         goto fail0;
     }
-    Py_DECREF(version);
+    Ty_DECREF(version);
 
     /* get a memory buffer */
     biobuf = BIO_new(BIO_s_mem());
     if (biobuf == NULL) {
-        PyErr_SetString(state->PySSLErrorObject, "failed to allocate BIO");
+        TyErr_SetString(state->PySSLErrorObject, "failed to allocate BIO");
         goto fail0;
     }
 
@@ -1700,14 +1700,14 @@ _decode_certificate(_sslmodulestate *state, X509 *certificate) {
         _setSSLError(state, NULL, 0, __FILE__, __LINE__);
         goto fail1;
     }
-    sn_obj = PyUnicode_FromStringAndSize(buf, len);
+    sn_obj = TyUnicode_FromStringAndSize(buf, len);
     if (sn_obj == NULL)
         goto fail1;
-    if (PyDict_SetItemString(retval, "serialNumber", sn_obj) < 0) {
-        Py_DECREF(sn_obj);
+    if (TyDict_SetItemString(retval, "serialNumber", sn_obj) < 0) {
+        Ty_DECREF(sn_obj);
         goto fail1;
     }
-    Py_DECREF(sn_obj);
+    Ty_DECREF(sn_obj);
 
     (void) BIO_reset(biobuf);
     notBefore = X509_get0_notBefore(certificate);
@@ -1717,14 +1717,14 @@ _decode_certificate(_sslmodulestate *state, X509 *certificate) {
         _setSSLError(state, NULL, 0, __FILE__, __LINE__);
         goto fail1;
     }
-    pnotBefore = PyUnicode_FromStringAndSize(buf, len);
+    pnotBefore = TyUnicode_FromStringAndSize(buf, len);
     if (pnotBefore == NULL)
         goto fail1;
-    if (PyDict_SetItemString(retval, "notBefore", pnotBefore) < 0) {
-        Py_DECREF(pnotBefore);
+    if (TyDict_SetItemString(retval, "notBefore", pnotBefore) < 0) {
+        Ty_DECREF(pnotBefore);
         goto fail1;
     }
-    Py_DECREF(pnotBefore);
+    Ty_DECREF(pnotBefore);
 
     (void) BIO_reset(biobuf);
     notAfter = X509_get0_notAfter(certificate);
@@ -1734,36 +1734,36 @@ _decode_certificate(_sslmodulestate *state, X509 *certificate) {
         _setSSLError(state, NULL, 0, __FILE__, __LINE__);
         goto fail1;
     }
-    pnotAfter = PyUnicode_FromStringAndSize(buf, len);
+    pnotAfter = TyUnicode_FromStringAndSize(buf, len);
     if (pnotAfter == NULL)
         goto fail1;
-    if (PyDict_SetItemString(retval, "notAfter", pnotAfter) < 0) {
-        Py_DECREF(pnotAfter);
+    if (TyDict_SetItemString(retval, "notAfter", pnotAfter) < 0) {
+        Ty_DECREF(pnotAfter);
         goto fail1;
     }
-    Py_DECREF(pnotAfter);
+    Ty_DECREF(pnotAfter);
 
     /* Now look for subjectAltName */
 
     peer_alt_names = _get_peer_alt_names(state, certificate);
     if (peer_alt_names == NULL)
         goto fail1;
-    else if (peer_alt_names != Py_None) {
-        if (PyDict_SetItemString(retval, "subjectAltName",
+    else if (peer_alt_names != Ty_None) {
+        if (TyDict_SetItemString(retval, "subjectAltName",
                                  peer_alt_names) < 0) {
-            Py_DECREF(peer_alt_names);
+            Ty_DECREF(peer_alt_names);
             goto fail1;
         }
-        Py_DECREF(peer_alt_names);
+        Ty_DECREF(peer_alt_names);
     }
 
     /* Authority Information Access: OCSP URIs */
     obj = _get_aia_uri(certificate, NID_ad_OCSP);
     if (obj == NULL) {
         goto fail1;
-    } else if (obj != Py_None) {
-        result = PyDict_SetItemString(retval, "OCSP", obj);
-        Py_DECREF(obj);
+    } else if (obj != Ty_None) {
+        result = TyDict_SetItemString(retval, "OCSP", obj);
+        Ty_DECREF(obj);
         if (result < 0) {
             goto fail1;
         }
@@ -1772,9 +1772,9 @@ _decode_certificate(_sslmodulestate *state, X509 *certificate) {
     obj = _get_aia_uri(certificate, NID_ad_ca_issuers);
     if (obj == NULL) {
         goto fail1;
-    } else if (obj != Py_None) {
-        result = PyDict_SetItemString(retval, "caIssuers", obj);
-        Py_DECREF(obj);
+    } else if (obj != Ty_None) {
+        result = TyDict_SetItemString(retval, "caIssuers", obj);
+        Ty_DECREF(obj);
         if (result < 0) {
             goto fail1;
         }
@@ -1784,9 +1784,9 @@ _decode_certificate(_sslmodulestate *state, X509 *certificate) {
     obj = _get_crl_dp(certificate);
     if (obj == NULL) {
         goto fail1;
-    } else if (obj != Py_None) {
-        result = PyDict_SetItemString(retval, "crlDistributionPoints", obj);
-        Py_DECREF(obj);
+    } else if (obj != Ty_None) {
+        result = TyDict_SetItemString(retval, "crlDistributionPoints", obj);
+        Ty_DECREF(obj);
         if (result < 0) {
             goto fail1;
         }
@@ -1799,16 +1799,16 @@ _decode_certificate(_sslmodulestate *state, X509 *certificate) {
     if (biobuf != NULL)
         BIO_free(biobuf);
   fail0:
-    Py_XDECREF(retval);
+    Ty_XDECREF(retval);
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 _certificate_to_der(_sslmodulestate *state, X509 *certificate)
 {
     unsigned char *bytes_buf = NULL;
     int len;
-    PyObject *retval;
+    TyObject *retval;
 
     bytes_buf = NULL;
     len = i2d_X509(certificate, &bytes_buf);
@@ -1817,7 +1817,7 @@ _certificate_to_der(_sslmodulestate *state, X509 *certificate)
         return NULL;
     }
     /* this is actually an immutable bytes sequence */
-    retval = PyBytes_FromStringAndSize((const char *) bytes_buf, len);
+    retval = TyBytes_FromStringAndSize((const char *) bytes_buf, len);
     OPENSSL_free(bytes_buf);
     return retval;
 }
@@ -1827,35 +1827,35 @@ _certificate_to_der(_sslmodulestate *state, X509 *certificate)
 
 /*[clinic input]
 _ssl._test_decode_cert
-    path: object(converter="PyUnicode_FSConverter")
+    path: object(converter="TyUnicode_FSConverter")
     /
 
 [clinic start generated code]*/
 
-static PyObject *
-_ssl__test_decode_cert_impl(PyObject *module, PyObject *path)
+static TyObject *
+_ssl__test_decode_cert_impl(TyObject *module, TyObject *path)
 /*[clinic end generated code: output=96becb9abb23c091 input=cdeaaf02d4346628]*/
 {
-    PyObject *retval = NULL;
+    TyObject *retval = NULL;
     X509 *x=NULL;
     BIO *cert;
     _sslmodulestate *state = get_ssl_state(module);
 
     if ((cert=BIO_new(BIO_s_file())) == NULL) {
-        PyErr_SetString(state->PySSLErrorObject,
+        TyErr_SetString(state->PySSLErrorObject,
                         "Can't malloc memory to read file");
         goto fail0;
     }
 
-    if (BIO_read_filename(cert, PyBytes_AsString(path)) <= 0) {
-        PyErr_SetString(state->PySSLErrorObject,
+    if (BIO_read_filename(cert, TyBytes_AsString(path)) <= 0) {
+        TyErr_SetString(state->PySSLErrorObject,
                         "Can't open file");
         goto fail0;
     }
 
     x = PEM_read_bio_X509(cert, NULL, NULL, NULL);
     if (x == NULL) {
-        PyErr_SetString(state->PySSLErrorObject,
+        TyErr_SetString(state->PySSLErrorObject,
                         "Error decoding PEM-encoded file");
         goto fail0;
     }
@@ -1864,7 +1864,7 @@ _ssl__test_decode_cert_impl(PyObject *module, PyObject *path)
     X509_free(x);
 
   fail0:
-    Py_DECREF(path);
+    Ty_DECREF(path);
     if (cert != NULL) BIO_free(cert);
     return retval;
 }
@@ -1887,16 +1887,16 @@ peer certificate, or None if no certificate was provided.  This will
 return the certificate even if it wasn't validated.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_getpeercert_impl(PySSLSocket *self, int binary_mode)
 /*[clinic end generated code: output=1f0ab66dfb693c88 input=e35af55fa5f9bab8]*/
 {
     int verification;
     X509 *peer_cert;
-    PyObject *result;
+    TyObject *result;
 
     if (!SSL_is_init_finished(self->ssl)) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "handshake not done yet");
         return NULL;
     }
@@ -1910,7 +1910,7 @@ _ssl__SSLSocket_getpeercert_impl(PySSLSocket *self, int binary_mode)
     } else {
         verification = SSL_CTX_get_verify_mode(SSL_get_SSL_CTX(self->ssl));
         if ((verification & SSL_VERIFY_PEER) == 0)
-            result = PyDict_New();
+            result = TyDict_New();
         else
             result = _decode_certificate(get_state_sock(self), peer_cert);
     }
@@ -1924,7 +1924,7 @@ _ssl._SSLSocket.get_verified_chain
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_get_verified_chain_impl(PySSLSocket *self)
 /*[clinic end generated code: output=802421163cdc3110 input=83035fe238ec057b]*/
 {
@@ -1942,11 +1942,11 @@ _ssl._SSLSocket.get_unverified_chain
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_get_unverified_chain_impl(PySSLSocket *self)
 /*[clinic end generated code: output=5acdae414e13f913 input=079f8ff5c205cb3b]*/
 {
-    PyObject *retval;
+    TyObject *retval;
     /* borrowed reference */
     /* TODO: include SSL_get_peer_certificate() for server-side sockets */
     STACK_OF(X509) *chain = SSL_get_peer_cert_chain(self->ssl);
@@ -1959,71 +1959,71 @@ _ssl__SSLSocket_get_unverified_chain_impl(PySSLSocket *self)
     }
     /* OpenSSL does not include peer cert for server side connections */
     if (self->socket_type == PY_SSL_SERVER) {
-        PyObject *peerobj = NULL;
+        TyObject *peerobj = NULL;
         X509 *peer = SSL_get_peer_certificate(self->ssl);
 
         if (peer == NULL) {
-            peerobj = Py_NewRef(Py_None);
+            peerobj = Ty_NewRef(Ty_None);
         } else {
             /* consume X509 reference on success */
             peerobj = _PySSL_CertificateFromX509(self->ctx->state, peer, 0);
             if (peerobj == NULL) {
                 X509_free(peer);
-                Py_DECREF(retval);
+                Ty_DECREF(retval);
                 return NULL;
             }
         }
-        int res = PyList_Insert(retval, 0, peerobj);
-        Py_DECREF(peerobj);
+        int res = TyList_Insert(retval, 0, peerobj);
+        Ty_DECREF(peerobj);
         if (res < 0) {
-            Py_DECREF(retval);
+            Ty_DECREF(retval);
             return NULL;
         }
     }
     return retval;
 }
 
-static PyObject *
+static TyObject *
 cipher_to_tuple(const SSL_CIPHER *cipher)
 {
     const char *cipher_name, *cipher_protocol;
-    PyObject *v, *retval = PyTuple_New(3);
+    TyObject *v, *retval = TyTuple_New(3);
     if (retval == NULL)
         return NULL;
 
     cipher_name = SSL_CIPHER_get_name(cipher);
     if (cipher_name == NULL) {
-        PyTuple_SET_ITEM(retval, 0, Py_NewRef(Py_None));
+        TyTuple_SET_ITEM(retval, 0, Ty_NewRef(Ty_None));
     } else {
-        v = PyUnicode_FromString(cipher_name);
+        v = TyUnicode_FromString(cipher_name);
         if (v == NULL)
             goto fail;
-        PyTuple_SET_ITEM(retval, 0, v);
+        TyTuple_SET_ITEM(retval, 0, v);
     }
 
     cipher_protocol = SSL_CIPHER_get_version(cipher);
     if (cipher_protocol == NULL) {
-        PyTuple_SET_ITEM(retval, 1, Py_NewRef(Py_None));
+        TyTuple_SET_ITEM(retval, 1, Ty_NewRef(Ty_None));
     } else {
-        v = PyUnicode_FromString(cipher_protocol);
+        v = TyUnicode_FromString(cipher_protocol);
         if (v == NULL)
             goto fail;
-        PyTuple_SET_ITEM(retval, 1, v);
+        TyTuple_SET_ITEM(retval, 1, v);
     }
 
-    v = PyLong_FromLong(SSL_CIPHER_get_bits(cipher, NULL));
+    v = TyLong_FromLong(SSL_CIPHER_get_bits(cipher, NULL));
     if (v == NULL)
         goto fail;
-    PyTuple_SET_ITEM(retval, 2, v);
+    TyTuple_SET_ITEM(retval, 2, v);
 
     return retval;
 
   fail:
-    Py_DECREF(retval);
+    Ty_DECREF(retval);
     return NULL;
 }
 
-static PyObject *
+static TyObject *
 cipher_to_dict(const SSL_CIPHER *cipher)
 {
     const char *cipher_name, *cipher_protocol;
@@ -2055,7 +2055,7 @@ cipher_to_dict(const SSL_CIPHER *cipher)
     nid = SSL_CIPHER_get_auth_nid(cipher);
     auth = nid != NID_undef ? OBJ_nid2ln(nid) : NULL;
 
-    return Py_BuildValue(
+    return Ty_BuildValue(
         "{sksssssssisi"
         "sOssssssss"
         "}",
@@ -2065,7 +2065,7 @@ cipher_to_dict(const SSL_CIPHER *cipher)
         "description", buf,
         "strength_bits", strength_bits,
         "alg_bits", alg_bits
-        ,"aead", aead ? Py_True : Py_False,
+        ,"aead", aead ? Ty_True : Ty_False,
         "symmetric", skcipher,
         "digest", digest,
         "kea", kx,
@@ -2078,14 +2078,14 @@ cipher_to_dict(const SSL_CIPHER *cipher)
 _ssl._SSLSocket.shared_ciphers
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_shared_ciphers_impl(PySSLSocket *self)
 /*[clinic end generated code: output=3d174ead2e42c4fd input=869645271e3bc6d0]*/
 {
     STACK_OF(SSL_CIPHER) *server_ciphers;
     STACK_OF(SSL_CIPHER) *client_ciphers;
     int i, len;
-    PyObject *res;
+    TyObject *res;
     const SSL_CIPHER* cipher;
 
     /* Rather than use SSL_get_shared_ciphers, we use an equivalent algorithm because:
@@ -2103,7 +2103,7 @@ _ssl__SSLSocket_shared_ciphers_impl(PySSLSocket *self)
     if (!client_ciphers)
         Py_RETURN_NONE;
 
-    res = PyList_New(sk_SSL_CIPHER_num(server_ciphers));
+    res = TyList_New(sk_SSL_CIPHER_num(server_ciphers));
     if (!res)
         return NULL;
     len = 0;
@@ -2112,12 +2112,12 @@ _ssl__SSLSocket_shared_ciphers_impl(PySSLSocket *self)
         if (sk_SSL_CIPHER_find(client_ciphers, cipher) < 0)
             continue;
 
-        PyObject *tup = cipher_to_tuple(cipher);
+        TyObject *tup = cipher_to_tuple(cipher);
         if (!tup) {
-            Py_DECREF(res);
+            Ty_DECREF(res);
             return NULL;
         }
-        PyList_SET_ITEM(res, len++, tup);
+        TyList_SET_ITEM(res, len++, tup);
     }
     Py_SET_SIZE(res, len);
     return res;
@@ -2128,7 +2128,7 @@ _ssl__SSLSocket_shared_ciphers_impl(PySSLSocket *self)
 _ssl._SSLSocket.cipher
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_cipher_impl(PySSLSocket *self)
 /*[clinic end generated code: output=376417c16d0e5815 input=39e180269a36f486]*/
 {
@@ -2147,7 +2147,7 @@ _ssl__SSLSocket_cipher_impl(PySSLSocket *self)
 _ssl._SSLSocket.version
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_version_impl(PySSLSocket *self)
 /*[clinic end generated code: output=178aed33193b2cdb input=2732bc3f7f597d09]*/
 {
@@ -2162,7 +2162,7 @@ _ssl__SSLSocket_version_impl(PySSLSocket *self)
     version = SSL_get_version(self->ssl);
     if (!strcmp(version, "unknown"))
         Py_RETURN_NONE;
-    return PyUnicode_FromString(version);
+    return TyUnicode_FromString(version);
 }
 
 /*[clinic input]
@@ -2170,7 +2170,7 @@ _ssl__SSLSocket_version_impl(PySSLSocket *self)
 _ssl._SSLSocket.selected_alpn_protocol
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_selected_alpn_protocol_impl(PySSLSocket *self)
 /*[clinic end generated code: output=ec33688b303d250f input=f0b53506c9acdf8c]*/
 {
@@ -2181,14 +2181,14 @@ _ssl__SSLSocket_selected_alpn_protocol_impl(PySSLSocket *self)
 
     if (out == NULL)
         Py_RETURN_NONE;
-    return PyUnicode_FromStringAndSize((char *)out, outlen);
+    return TyUnicode_FromStringAndSize((char *)out, outlen);
 }
 
 /*[clinic input]
 _ssl._SSLSocket.compression
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_compression_impl(PySSLSocket *self)
 /*[clinic end generated code: output=bd16cb1bb4646ae7 input=5d059d0a2bbc32c8]*/
 {
@@ -2206,7 +2206,7 @@ _ssl__SSLSocket_compression_impl(PySSLSocket *self)
     short_name = OBJ_nid2sn(COMP_get_type(comp_method));
     if (short_name == NULL)
         Py_RETURN_NONE;
-    return PyUnicode_DecodeFSDefault(short_name);
+    return TyUnicode_DecodeFSDefault(short_name);
 #endif
 }
 
@@ -2222,11 +2222,11 @@ on the SSLContext to change the certificate information associated with the
 SSLSocket before the cryptographic exchange handshake messages.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_context_get_impl(PySSLSocket *self)
 /*[clinic end generated code: output=d23e82f72f32e3d7 input=7cbb97407c2ace30]*/
 {
-    return Py_NewRef(self->ctx);
+    return Ty_NewRef(self->ctx);
 }
 
 /*[clinic input]
@@ -2236,11 +2236,11 @@ _ssl._SSLSocket.context
 [clinic start generated code]*/
 
 static int
-_ssl__SSLSocket_context_set_impl(PySSLSocket *self, PyObject *value)
+_ssl__SSLSocket_context_set_impl(PySSLSocket *self, TyObject *value)
 /*[clinic end generated code: output=6b0a6cc5cf33d9fe input=48ece77724fd9dd4]*/
 {
     if (PyObject_TypeCheck(value, self->ctx->state->PySSLContext_Type)) {
-        Py_SETREF(self->ctx, (PySSLContext *)Py_NewRef(value));
+        Ty_SETREF(self->ctx, (PySSLContext *)Ty_NewRef(value));
         SSL_set_SSL_CTX(self->ssl, self->ctx->ctx);
         /* Set SSL* internal msg_callback to state of new context's state */
         SSL_set_msg_callback(
@@ -2248,7 +2248,7 @@ _ssl__SSLSocket_context_set_impl(PySSLSocket *self, PyObject *value)
             self->ctx->msg_cb ? _PySSL_msg_callback : NULL
         );
     } else {
-        PyErr_SetString(PyExc_TypeError, "The value must be a SSLContext");
+        TyErr_SetString(TyExc_TypeError, "The value must be a SSLContext");
         return -1;
     }
 
@@ -2263,11 +2263,11 @@ _ssl._SSLSocket.server_side
 Whether this is a server-side socket.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_server_side_get_impl(PySSLSocket *self)
 /*[clinic end generated code: output=ae51e372489148e3 input=b09b320510bc7cae]*/
 {
-    return PyBool_FromLong(self->socket_type == PY_SSL_SERVER);
+    return TyBool_FromLong(self->socket_type == PY_SSL_SERVER);
 }
 
 /*[clinic input]
@@ -2278,13 +2278,13 @@ _ssl._SSLSocket.server_hostname
 The currently set server hostname (for SNI).
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_server_hostname_get_impl(PySSLSocket *self)
 /*[clinic end generated code: output=1f40ea5a076de8e7 input=55d12a1dc6634b08]*/
 {
     if (self->server_hostname == NULL)
         Py_RETURN_NONE;
-    return Py_NewRef(self->server_hostname);
+    return Ty_NewRef(self->server_hostname);
 }
 
 /*[clinic input]
@@ -2297,14 +2297,14 @@ The Python-level owner of this object.
 Passed as "self" in servername callback.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_owner_get_impl(PySSLSocket *self)
 /*[clinic end generated code: output=1f278cb930382927 input=978a8382d9c25c92]*/
 {
     if (self->owner == NULL) {
         Py_RETURN_NONE;
     }
-    PyObject *owner;
+    TyObject *owner;
     if (!PyWeakref_GetRef(self->owner, &owner)) {
         Py_RETURN_NONE;
     }
@@ -2318,37 +2318,37 @@ _ssl._SSLSocket.owner
 [clinic start generated code]*/
 
 static int
-_ssl__SSLSocket_owner_set_impl(PySSLSocket *self, PyObject *value)
+_ssl__SSLSocket_owner_set_impl(PySSLSocket *self, TyObject *value)
 /*[clinic end generated code: output=2e3924498f2b6cde input=875666fd32367a73]*/
 {
-    Py_XSETREF(self->owner, PyWeakref_NewRef(value, NULL));
+    Ty_XSETREF(self->owner, PyWeakref_NewRef(value, NULL));
     if (self->owner == NULL)
         return -1;
     return 0;
 }
 
 static int
-PySSL_traverse(PyObject *op, visitproc visit, void *arg)
+PySSL_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PySSLSocket *self = PySSLSocket_CAST(op);
-    Py_VISIT(self->exc);
-    Py_VISIT(Py_TYPE(self));
+    Ty_VISIT(self->exc);
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
 static int
-PySSL_clear(PyObject *op)
+PySSL_clear(TyObject *op)
 {
     PySSLSocket *self = PySSLSocket_CAST(op);
-    Py_CLEAR(self->exc);
+    Ty_CLEAR(self->exc);
     return 0;
 }
 
 static void
-PySSL_dealloc(PyObject *op)
+PySSL_dealloc(TyObject *op)
 {
     PySSLSocket *self = PySSLSocket_CAST(op);
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     PyObject_GC_UnTrack(self);
     if (self->ssl) {
         // If we free the SSL socket object without having called SSL_shutdown,
@@ -2364,12 +2364,12 @@ PySSL_dealloc(PyObject *op)
         SSL_set_shutdown(self->ssl, SSL_SENT_SHUTDOWN | SSL_get_shutdown(self->ssl));
         SSL_free(self->ssl);
     }
-    Py_XDECREF(self->Socket);
-    Py_XDECREF(self->ctx);
-    Py_XDECREF(self->server_hostname);
-    Py_XDECREF(self->owner);
+    Ty_XDECREF(self->Socket);
+    Ty_XDECREF(self->ctx);
+    Ty_XDECREF(self->server_hostname);
+    Ty_XDECREF(self->owner);
     PyObject_GC_Del(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
 /* If the socket has a timeout, do a select()/poll() on the socket.
@@ -2378,12 +2378,12 @@ PySSL_dealloc(PyObject *op)
  */
 
 static int
-PySSL_select(PySocketSockObject *s, int writing, PyTime_t timeout)
+PySSL_select(PySocketSockObject *s, int writing, TyTime_t timeout)
 {
     int rc;
 #ifdef HAVE_POLL
     struct pollfd pollfd;
-    PyTime_t ms;
+    TyTime_t ms;
 #else
     int nfds;
     fd_set fds;
@@ -2411,7 +2411,7 @@ PySSL_select(PySocketSockObject *s, int writing, PyTime_t timeout)
     pollfd.events = writing ? POLLOUT : POLLIN;
 
     /* timeout is in seconds, poll() uses milliseconds */
-    ms = (int)_PyTime_AsMilliseconds(timeout, _PyTime_ROUND_CEILING);
+    ms = (int)_TyTime_AsMilliseconds(timeout, _TyTime_ROUND_CEILING);
     assert(ms <= INT_MAX);
 
     PySSL_BEGIN_ALLOW_THREADS
@@ -2422,14 +2422,14 @@ PySSL_select(PySocketSockObject *s, int writing, PyTime_t timeout)
     if (!_PyIsSelectable_fd(s->sock_fd))
         return SOCKET_TOO_LARGE_FOR_SELECT;
 
-    _PyTime_AsTimeval_clamp(timeout, &tv, _PyTime_ROUND_CEILING);
+    _TyTime_AsTimeval_clamp(timeout, &tv, _TyTime_ROUND_CEILING);
 
     FD_ZERO(&fds);
     FD_SET(s->sock_fd, &fds);
 
     /* Wait until the socket becomes ready */
     PySSL_BEGIN_ALLOW_THREADS
-    nfds = Py_SAFE_DOWNCAST(s->sock_fd+1, SOCKET_T, int);
+    nfds = Ty_SAFE_DOWNCAST(s->sock_fd+1, SOCKET_T, int);
     if (writing)
         rc = select(nfds, NULL, &fds, NULL, &tv);
     else
@@ -2445,7 +2445,7 @@ PySSL_select(PySocketSockObject *s, int writing, PyTime_t timeout)
 /*[clinic input]
 @critical_section
 _ssl._SSLSocket.write
-    b: Py_buffer
+    b: Ty_buffer
     /
 
 Writes the bytes-like object b into the SSL object.
@@ -2453,8 +2453,8 @@ Writes the bytes-like object b into the SSL object.
 Returns the number of bytes written.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl__SSLSocket_write_impl(PySSLSocket *self, Py_buffer *b)
+static TyObject *
+_ssl__SSLSocket_write_impl(PySSLSocket *self, Ty_buffer *b)
 /*[clinic end generated code: output=aa7a6be5527358d8 input=967b5feeae641a26]*/
 {
     size_t count = 0;
@@ -2463,17 +2463,17 @@ _ssl__SSLSocket_write_impl(PySSLSocket *self, Py_buffer *b)
     _PySSLError err;
     int nonblocking;
     PySocketSockObject *sock = GET_SOCKET(self);
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
     int has_timeout;
 
     if (sock != NULL) {
-        if (((PyObject*)sock) == Py_None) {
+        if (((TyObject*)sock) == Ty_None) {
             _setSSLError(get_state_sock(self),
                          "Underlying socket connection gone",
                          PY_SSL_ERROR_NO_SOCKET, __FILE__, __LINE__);
             return NULL;
         }
-        Py_INCREF(sock);
+        Ty_INCREF(sock);
     }
 
     if (sock != NULL) {
@@ -2491,15 +2491,15 @@ _ssl__SSLSocket_write_impl(PySSLSocket *self, Py_buffer *b)
 
     sockstate = PySSL_select(sock, 1, timeout);
     if (sockstate == SOCKET_HAS_TIMED_OUT) {
-        PyErr_SetString(PyExc_TimeoutError,
+        TyErr_SetString(TyExc_TimeoutError,
                         "The write operation timed out");
         goto error;
     } else if (sockstate == SOCKET_HAS_BEEN_CLOSED) {
-        PyErr_SetString(get_state_sock(self)->PySSLErrorObject,
+        TyErr_SetString(get_state_sock(self)->PySSLErrorObject,
                         "Underlying socket has been closed.");
         goto error;
     } else if (sockstate == SOCKET_TOO_LARGE_FOR_SELECT) {
-        PyErr_SetString(get_state_sock(self)->PySSLErrorObject,
+        TyErr_SetString(get_state_sock(self)->PySSLErrorObject,
                         "Underlying socket too large for select().");
         goto error;
     }
@@ -2511,7 +2511,7 @@ _ssl__SSLSocket_write_impl(PySSLSocket *self, Py_buffer *b)
         PySSL_END_ALLOW_THREADS
         self->err = err;
 
-        if (PyErr_CheckSignals())
+        if (TyErr_CheckSignals())
             goto error;
 
         if (has_timeout) {
@@ -2527,11 +2527,11 @@ _ssl__SSLSocket_write_impl(PySSLSocket *self, Py_buffer *b)
         }
 
         if (sockstate == SOCKET_HAS_TIMED_OUT) {
-            PyErr_SetString(PyExc_TimeoutError,
+            TyErr_SetString(TyExc_TimeoutError,
                             "The write operation timed out");
             goto error;
         } else if (sockstate == SOCKET_HAS_BEEN_CLOSED) {
-            PyErr_SetString(get_state_sock(self)->PySSLErrorObject,
+            TyErr_SetString(get_state_sock(self)->PySSLErrorObject,
                             "Underlying socket has been closed.");
             goto error;
         } else if (sockstate == SOCKET_IS_NONBLOCKING) {
@@ -2540,14 +2540,14 @@ _ssl__SSLSocket_write_impl(PySSLSocket *self, Py_buffer *b)
     } while (err.ssl == SSL_ERROR_WANT_READ ||
              err.ssl == SSL_ERROR_WANT_WRITE);
 
-    Py_XDECREF(sock);
+    Ty_XDECREF(sock);
     if (retval == 0)
         return PySSL_SetError(self, __FILE__, __LINE__);
     if (PySSL_ChainExceptions(self) < 0)
         return NULL;
-    return PyLong_FromSize_t(count);
+    return TyLong_FromSize_t(count);
 error:
-    Py_XDECREF(sock);
+    Ty_XDECREF(sock);
     PySSL_ChainExceptions(self);
     return NULL;
 }
@@ -2559,7 +2559,7 @@ _ssl._SSLSocket.pending
 Returns the number of already decrypted bytes available for read, pending on the connection.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_pending_impl(PySSLSocket *self)
 /*[clinic end generated code: output=983d9fecdc308a83 input=32ab982a254e8866]*/
 {
@@ -2575,27 +2575,27 @@ _ssl__SSLSocket_pending_impl(PySSLSocket *self)
     if (count < 0)
         return PySSL_SetError(self, __FILE__, __LINE__);
     else
-        return PyLong_FromLong(count);
+        return TyLong_FromLong(count);
 }
 
 /*[clinic input]
 @critical_section
 _ssl._SSLSocket.read
-    size as len: Py_ssize_t
+    size as len: Ty_ssize_t
     [
-    buffer: Py_buffer(accept={rwbuffer})
+    buffer: Ty_buffer(accept={rwbuffer})
     ]
     /
 
 Read up to size bytes from the SSL socket.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl__SSLSocket_read_impl(PySSLSocket *self, Py_ssize_t len,
-                          int group_right_1, Py_buffer *buffer)
+static TyObject *
+_ssl__SSLSocket_read_impl(PySSLSocket *self, Ty_ssize_t len,
+                          int group_right_1, Ty_buffer *buffer)
 /*[clinic end generated code: output=49b16e6406023734 input=80ed30436df01a71]*/
 {
-    PyObject *dest = NULL;
+    TyObject *dest = NULL;
     char *mem;
     size_t count = 0;
     int retval;
@@ -2603,40 +2603,40 @@ _ssl__SSLSocket_read_impl(PySSLSocket *self, Py_ssize_t len,
     _PySSLError err;
     int nonblocking;
     PySocketSockObject *sock = GET_SOCKET(self);
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
     int has_timeout;
 
     if (!group_right_1 && len < 0) {
-        PyErr_SetString(PyExc_ValueError, "size should not be negative");
+        TyErr_SetString(TyExc_ValueError, "size should not be negative");
         return NULL;
     }
 
     if (sock != NULL) {
-        if (((PyObject*)sock) == Py_None) {
+        if (((TyObject*)sock) == Ty_None) {
             _setSSLError(get_state_sock(self),
                          "Underlying socket connection gone",
                          PY_SSL_ERROR_NO_SOCKET, __FILE__, __LINE__);
             return NULL;
         }
-        Py_INCREF(sock);
+        Ty_INCREF(sock);
     }
 
     if (!group_right_1) {
-        dest = PyBytes_FromStringAndSize(NULL, len);
+        dest = TyBytes_FromStringAndSize(NULL, len);
         if (dest == NULL)
             goto error;
         if (len == 0) {
-            Py_XDECREF(sock);
+            Ty_XDECREF(sock);
             return dest;
         }
-        mem = PyBytes_AS_STRING(dest);
+        mem = TyBytes_AS_STRING(dest);
     }
     else {
         mem = buffer->buf;
         if (len <= 0 || len > buffer->len) {
             len = (int) buffer->len;
             if (buffer->len != len) {
-                PyErr_SetString(PyExc_OverflowError,
+                TyErr_SetString(TyExc_OverflowError,
                                 "maximum length can't fit in a C 'int'");
                 goto error;
             }
@@ -2666,7 +2666,7 @@ _ssl__SSLSocket_read_impl(PySSLSocket *self, Py_ssize_t len,
         PySSL_END_ALLOW_THREADS
         self->err = err;
 
-        if (PyErr_CheckSignals())
+        if (TyErr_CheckSignals())
             goto error;
 
         if (has_timeout) {
@@ -2687,7 +2687,7 @@ _ssl__SSLSocket_read_impl(PySSLSocket *self, Py_ssize_t len,
             sockstate = SOCKET_OPERATION_OK;
 
         if (sockstate == SOCKET_HAS_TIMED_OUT) {
-            PyErr_SetString(PyExc_TimeoutError,
+            TyErr_SetString(TyExc_TimeoutError,
                             "The read operation timed out");
             goto error;
         } else if (sockstate == SOCKET_IS_NONBLOCKING) {
@@ -2704,20 +2704,20 @@ _ssl__SSLSocket_read_impl(PySSLSocket *self, Py_ssize_t len,
         goto error;
 
 done:
-    Py_XDECREF(sock);
+    Ty_XDECREF(sock);
     if (!group_right_1) {
-        _PyBytes_Resize(&dest, count);
+        _TyBytes_Resize(&dest, count);
         return dest;
     }
     else {
-        return PyLong_FromSize_t(count);
+        return TyLong_FromSize_t(count);
     }
 
 error:
     PySSL_ChainExceptions(self);
-    Py_XDECREF(sock);
+    Ty_XDECREF(sock);
     if (!group_right_1)
-        Py_XDECREF(dest);
+        Ty_XDECREF(dest);
     return NULL;
 }
 
@@ -2728,7 +2728,7 @@ _ssl._SSLSocket.shutdown
 Does the SSL shutdown handshake with the remote end.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_shutdown_impl(PySSLSocket *self)
 /*[clinic end generated code: output=ca1aa7ed9d25ca42 input=98d9635cd4e16514]*/
 {
@@ -2736,18 +2736,18 @@ _ssl__SSLSocket_shutdown_impl(PySSLSocket *self)
     int sockstate, nonblocking, ret;
     int zeros = 0;
     PySocketSockObject *sock = GET_SOCKET(self);
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
     int has_timeout;
 
     if (sock != NULL) {
         /* Guard against closed socket */
-        if ((((PyObject*)sock) == Py_None) || (sock->sock_fd == INVALID_SOCKET)) {
+        if ((((TyObject*)sock) == Ty_None) || (sock->sock_fd == INVALID_SOCKET)) {
             _setSSLError(get_state_sock(self),
                          "Underlying socket connection gone",
                          PY_SSL_ERROR_NO_SOCKET, __FILE__, __LINE__);
             return NULL;
         }
-        Py_INCREF(sock);
+        Ty_INCREF(sock);
 
         /* Just in case the blocking state of the socket has been changed */
         nonblocking = (sock->sock_timeout >= 0);
@@ -2806,15 +2806,15 @@ _ssl__SSLSocket_shutdown_impl(PySSLSocket *self)
 
         if (sockstate == SOCKET_HAS_TIMED_OUT) {
             if (err.ssl == SSL_ERROR_WANT_READ)
-                PyErr_SetString(PyExc_TimeoutError,
+                TyErr_SetString(TyExc_TimeoutError,
                                 "The read operation timed out");
             else
-                PyErr_SetString(PyExc_TimeoutError,
+                TyErr_SetString(TyExc_TimeoutError,
                                 "The write operation timed out");
             goto error;
         }
         else if (sockstate == SOCKET_TOO_LARGE_FOR_SELECT) {
-            PyErr_SetString(get_state_sock(self)->PySSLErrorObject,
+            TyErr_SetString(get_state_sock(self)->PySSLErrorObject,
                             "Underlying socket too large for select().");
             goto error;
         }
@@ -2823,7 +2823,7 @@ _ssl__SSLSocket_shutdown_impl(PySSLSocket *self)
             break;
     }
     if (ret < 0) {
-        Py_XDECREF(sock);
+        Ty_XDECREF(sock);
         PySSL_SetError(self, __FILE__, __LINE__);
         return NULL;
     }
@@ -2831,12 +2831,12 @@ _ssl__SSLSocket_shutdown_impl(PySSLSocket *self)
         goto error;
     if (sock)
         /* It's already INCREF'ed */
-        return (PyObject *) sock;
+        return (TyObject *) sock;
     else
         Py_RETURN_NONE;
 
 error:
-    Py_XDECREF(sock);
+    Ty_XDECREF(sock);
     PySSL_ChainExceptions(self);
     return NULL;
 }
@@ -2853,7 +2853,7 @@ of the data or None if the data is not available (e.g. before the handshake).
 Only 'tls-unique' channel binding data from RFC 5929 is supported.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_get_channel_binding_impl(PySSLSocket *self,
                                          const char *cb_type)
 /*[clinic end generated code: output=34bac9acb6a61d31 input=e008004fc08744db]*/
@@ -2872,8 +2872,8 @@ _ssl__SSLSocket_get_channel_binding_impl(PySSLSocket *self,
         }
     }
     else {
-        PyErr_Format(
-            PyExc_ValueError,
+        TyErr_Format(
+            TyExc_ValueError,
             "'%s' channel binding type not implemented",
             cb_type
         );
@@ -2884,7 +2884,7 @@ _ssl__SSLSocket_get_channel_binding_impl(PySSLSocket *self,
     if (len == 0)
         Py_RETURN_NONE;
 
-    return PyBytes_FromStringAndSize(buf, len);
+    return TyBytes_FromStringAndSize(buf, len);
 }
 
 /*[clinic input]
@@ -2894,7 +2894,7 @@ _ssl._SSLSocket.verify_client_post_handshake
 Initiate TLS 1.3 post-handshake authentication
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_verify_client_post_handshake_impl(PySSLSocket *self)
 /*[clinic end generated code: output=532147f3b1341425 input=42b5bb1f0981eda1]*/
 {
@@ -2905,7 +2905,7 @@ _ssl__SSLSocket_verify_client_post_handshake_impl(PySSLSocket *self)
     else
         Py_RETURN_NONE;
 #else
-    PyErr_SetString(PyExc_NotImplementedError,
+    TyErr_SetString(TyExc_NotImplementedError,
                     "Post-handshake auth is not supported by your "
                     "OpenSSL version.");
     return NULL;
@@ -2920,7 +2920,7 @@ _ssl._SSLSocket.session
 The underlying SSLSession object.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_session_get_impl(PySSLSocket *self)
 /*[clinic end generated code: output=a5cd5755b35da670 input=d427318604244bf8]*/
 {
@@ -2942,10 +2942,10 @@ _ssl__SSLSocket_session_get_impl(PySSLSocket *self)
     }
 
     assert(self->ctx);
-    pysess->ctx = (PySSLContext*)Py_NewRef(self->ctx);
+    pysess->ctx = (PySSLContext*)Ty_NewRef(self->ctx);
     pysess->session = session;
     PyObject_GC_Track(pysess);
-    return (PyObject *)pysess;
+    return (TyObject *)pysess;
 }
 
 /*[clinic input]
@@ -2955,29 +2955,29 @@ _ssl._SSLSocket.session
 [clinic start generated code]*/
 
 static int
-_ssl__SSLSocket_session_set_impl(PySSLSocket *self, PyObject *value)
+_ssl__SSLSocket_session_set_impl(PySSLSocket *self, TyObject *value)
 /*[clinic end generated code: output=a3fa2ddd7c2d54a2 input=5fa5f921640db98b]*/
 {
     PySSLSession *pysess;
 
     if (!Py_IS_TYPE(value, get_state_sock(self)->PySSLSession_Type)) {
-        PyErr_SetString(PyExc_TypeError, "Value is not a SSLSession.");
+        TyErr_SetString(TyExc_TypeError, "Value is not a SSLSession.");
         return -1;
     }
     pysess = (PySSLSession *)value;
 
     if (self->ctx->ctx != pysess->ctx->ctx) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Session refers to a different SSLContext.");
         return -1;
     }
     if (self->socket_type != PY_SSL_CLIENT) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Cannot set session for server-side SSLSocket.");
         return -1;
     }
     if (SSL_is_init_finished(self->ssl)) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Cannot set session after handshake.");
         return -1;
     }
@@ -2997,15 +2997,15 @@ _ssl._SSLSocket.session_reused
 Was the client session reused during handshake?
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_session_reused_get_impl(PySSLSocket *self)
 /*[clinic end generated code: output=c8916909bcb80893 input=cec8bfec73a4461e]*/
 {
     int res = SSL_session_reused(self->ssl);
-    return res ? Py_True : Py_False;
+    return res ? Ty_True : Ty_False;
 }
 
-static PyGetSetDef ssl_getsetlist[] = {
+static TyGetSetDef ssl_getsetlist[] = {
     _SSL__SSLSOCKET_CONTEXT_GETSETDEF
     _SSL__SSLSOCKET_SERVER_SIDE_GETSETDEF
     _SSL__SSLSOCKET_SERVER_HOSTNAME_GETSETDEF
@@ -3015,7 +3015,7 @@ static PyGetSetDef ssl_getsetlist[] = {
     {NULL},            /* sentinel */
 };
 
-static PyMethodDef PySSLMethods[] = {
+static TyMethodDef PySSLMethods[] = {
     _SSL__SSLSOCKET_DO_HANDSHAKE_METHODDEF
     _SSL__SSLSOCKET_WRITE_METHODDEF
     _SSL__SSLSOCKET_READ_METHODDEF
@@ -3034,20 +3034,20 @@ static PyMethodDef PySSLMethods[] = {
     {NULL, NULL}
 };
 
-static PyType_Slot PySSLSocket_slots[] = {
-    {Py_tp_methods, PySSLMethods},
+static TyType_Slot PySSLSocket_slots[] = {
+    {Ty_tp_methods, PySSLMethods},
     {Py_tp_getset, ssl_getsetlist},
-    {Py_tp_dealloc, PySSL_dealloc},
+    {Ty_tp_dealloc, PySSL_dealloc},
     {Py_tp_traverse, PySSL_traverse},
     {Py_tp_clear, PySSL_clear},
     {0, 0},
 };
 
-static PyType_Spec PySSLSocket_spec = {
+static TyType_Spec PySSLSocket_spec = {
     .name = "_ssl._SSLSocket",
     .basicsize = sizeof(PySSLSocket),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_IMMUTABLETYPE |
-              Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_DISALLOW_INSTANTIATION),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_IMMUTABLETYPE |
+              Ty_TPFLAGS_HAVE_GC | Ty_TPFLAGS_DISALLOW_INSTANTIATION),
     .slots = PySSLSocket_slots,
 };
 
@@ -3071,7 +3071,7 @@ _set_verify_mode(PySSLContext *self, enum py_ssl_cert_requirements n)
         mode = SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
         break;
     default:
-         PyErr_SetString(PyExc_ValueError,
+         TyErr_SetString(TyExc_ValueError,
                         "invalid value for verify_mode");
         return -1;
     }
@@ -3091,8 +3091,8 @@ _ssl._SSLContext.__new__
     /
 [clinic start generated code]*/
 
-static PyObject *
-_ssl__SSLContext_impl(PyTypeObject *type, int proto_version)
+static TyObject *
+_ssl__SSLContext_impl(TyTypeObject *type, int proto_version)
 /*[clinic end generated code: output=2cf0d7a0741b6bd1 input=6fc79e62ae9d143c]*/
 {
     PySSLContext *self;
@@ -3103,10 +3103,10 @@ _ssl__SSLContext_impl(PyTypeObject *type, int proto_version)
     int result;
 
    /* slower approach, walk MRO and get borrowed reference to module.
-    * PyType_GetModuleByDef is required for SSLContext subclasses */
-    PyObject *module = PyType_GetModuleByDef(type, &_sslmodule_def);
+    * TyType_GetModuleByDef is required for SSLContext subclasses */
+    TyObject *module = TyType_GetModuleByDef(type, &_sslmodule_def);
     if (module == NULL) {
-        PyErr_SetString(PyExc_RuntimeError,
+        TyErr_SetString(TyExc_RuntimeError,
                         "Cannot find internal module state");
         return NULL;
     }
@@ -3157,7 +3157,7 @@ _ssl__SSLContext_impl(PyTypeObject *type, int proto_version)
     }
 
     if (method == NULL) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "invalid or unsupported protocol version %i",
                      proto_version);
         return NULL;
@@ -3199,13 +3199,13 @@ _ssl__SSLContext_impl(PyTypeObject *type, int proto_version)
     if (proto_version == PY_SSL_VERSION_TLS_CLIENT) {
         self->check_hostname = 1;
         if (_set_verify_mode(self, PY_SSL_CERT_REQUIRED) == -1) {
-            Py_DECREF(self);
+            Ty_DECREF(self);
             return NULL;
         }
     } else {
         self->check_hostname = 0;
         if (_set_verify_mode(self, PY_SSL_CERT_NONE) == -1) {
-            Py_DECREF(self);
+            Ty_DECREF(self);
             return NULL;
         }
     }
@@ -3246,7 +3246,7 @@ _ssl__SSLContext_impl(PyTypeObject *type, int proto_version)
     }
     if (result == 0) {
         ERR_clear_error();
-        PyErr_SetString(get_state_ctx(self)->PySSLErrorObject,
+        TyErr_SetString(get_state_ctx(self)->PySSLErrorObject,
                         "No cipher can be selected.");
         goto error;
     }
@@ -3257,7 +3257,7 @@ _ssl__SSLContext_impl(PyTypeObject *type, int proto_version)
     case PY_SSL_VERSION_TLS_SERVER:
         result = SSL_CTX_set_min_proto_version(ctx, PY_SSL_MIN_PROTOCOL);
         if (result == 0) {
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                          "Failed to set minimum protocol 0x%x",
                           PY_SSL_MIN_PROTOCOL);
             goto error;
@@ -3283,33 +3283,33 @@ _ssl__SSLContext_impl(PyTypeObject *type, int proto_version)
     SSL_CTX_set_post_handshake_auth(self->ctx, self->post_handshake_auth);
 #endif
 
-    return (PyObject *)self;
+    return (TyObject *)self;
   error:
-    Py_XDECREF(self);
+    Ty_XDECREF(self);
     ERR_clear_error();
     return NULL;
 }
 
 static int
-context_traverse(PyObject *op, visitproc visit, void *arg)
+context_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PySSLContext *self = PySSLContext_CAST(op);
-    Py_VISIT(self->set_sni_cb);
-    Py_VISIT(self->msg_cb);
-    Py_VISIT(Py_TYPE(self));
+    Ty_VISIT(self->set_sni_cb);
+    Ty_VISIT(self->msg_cb);
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
 static int
-context_clear(PyObject *op)
+context_clear(TyObject *op)
 {
     PySSLContext *self = PySSLContext_CAST(op);
-    Py_CLEAR(self->set_sni_cb);
-    Py_CLEAR(self->msg_cb);
-    Py_CLEAR(self->keylog_filename);
+    Ty_CLEAR(self->set_sni_cb);
+    Ty_CLEAR(self->msg_cb);
+    Ty_CLEAR(self->keylog_filename);
 #ifndef OPENSSL_NO_PSK
-    Py_CLEAR(self->psk_client_callback);
-    Py_CLEAR(self->psk_server_callback);
+    Ty_CLEAR(self->psk_client_callback);
+    Ty_CLEAR(self->psk_server_callback);
 #endif
     if (self->keylog_bio != NULL) {
         PySSL_BEGIN_ALLOW_THREADS
@@ -3321,17 +3321,17 @@ context_clear(PyObject *op)
 }
 
 static void
-context_dealloc(PyObject *op)
+context_dealloc(TyObject *op)
 {
     PySSLContext *self = PySSLContext_CAST(op);
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     /* bpo-31095: UnTrack is needed before calling any callbacks */
     PyObject_GC_UnTrack(self);
     (void)context_clear(op);
     SSL_CTX_free(self->ctx);
-    PyMem_FREE(self->alpn_protocols);
+    TyMem_FREE(self->alpn_protocols);
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
 /*[clinic input]
@@ -3341,7 +3341,7 @@ _ssl._SSLContext.set_ciphers
     /
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_set_ciphers_impl(PySSLContext *self, const char *cipherlist)
 /*[clinic end generated code: output=3a3162f3557c0f3f input=40b583cded5c6ff9]*/
 {
@@ -3351,7 +3351,7 @@ _ssl__SSLContext_set_ciphers_impl(PySSLContext *self, const char *cipherlist)
            otherwise the error will be reported again when another SSL call
            is done. */
         ERR_clear_error();
-        PyErr_SetString(get_state_ctx(self)->PySSLErrorObject,
+        TyErr_SetString(get_state_ctx(self)->PySSLErrorObject,
                         "No cipher can be selected.");
         return NULL;
     }
@@ -3363,7 +3363,7 @@ _ssl__SSLContext_set_ciphers_impl(PySSLContext *self, const char *cipherlist)
 _ssl._SSLContext.get_ciphers
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_get_ciphers_impl(PySSLContext *self)
 /*[clinic end generated code: output=a56e4d68a406dfc4 input=d7fff51631a260ae]*/
 {
@@ -3371,7 +3371,7 @@ _ssl__SSLContext_get_ciphers_impl(PySSLContext *self)
     STACK_OF(SSL_CIPHER) *sk = NULL;
     const SSL_CIPHER *cipher;
     int i=0;
-    PyObject *result = NULL, *dct;
+    TyObject *result = NULL, *dct;
 
     ssl = SSL_new(self->ctx);
     if (ssl == NULL) {
@@ -3380,7 +3380,7 @@ _ssl__SSLContext_get_ciphers_impl(PySSLContext *self)
     }
     sk = SSL_get_ciphers(ssl);
 
-    result = PyList_New(sk_SSL_CIPHER_num(sk));
+    result = TyList_New(sk_SSL_CIPHER_num(sk));
     if (result == NULL) {
         goto exit;
     }
@@ -3389,10 +3389,10 @@ _ssl__SSLContext_get_ciphers_impl(PySSLContext *self)
         cipher = sk_SSL_CIPHER_value(sk, i);
         dct = cipher_to_dict(cipher);
         if (dct == NULL) {
-            Py_CLEAR(result);
+            Ty_CLEAR(result);
             goto exit;
         }
-        PyList_SET_ITEM(result, i, dct);
+        TyList_SET_ITEM(result, i, dct);
     }
 
   exit:
@@ -3442,30 +3442,30 @@ _selectALPN_cb(SSL *s,
 /*[clinic input]
 @critical_section
 _ssl._SSLContext._set_alpn_protocols
-    protos: Py_buffer
+    protos: Ty_buffer
     /
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext__set_alpn_protocols_impl(PySSLContext *self,
-                                          Py_buffer *protos)
+                                          Ty_buffer *protos)
 /*[clinic end generated code: output=87599a7f76651a9b input=b5096b186e49287d]*/
 {
     if ((size_t)protos->len > UINT_MAX) {
-        PyErr_Format(PyExc_OverflowError,
+        TyErr_Format(TyExc_OverflowError,
             "protocols longer than %u bytes", UINT_MAX);
         return NULL;
     }
 
-    PyMem_Free(self->alpn_protocols);
-    self->alpn_protocols = PyMem_Malloc(protos->len);
+    TyMem_Free(self->alpn_protocols);
+    self->alpn_protocols = TyMem_Malloc(protos->len);
     if (!self->alpn_protocols) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     memcpy(self->alpn_protocols, protos->buf, protos->len);
     self->alpn_protocols_len = (unsigned int)protos->len;
     if (SSL_CTX_set_alpn_protos(self->ctx, self->alpn_protocols, self->alpn_protocols_len)) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     SSL_CTX_set_alpn_select_cb(self->ctx, _selectALPN_cb, self);
 
@@ -3478,7 +3478,7 @@ _ssl__SSLContext__set_alpn_protocols_impl(PySSLContext *self,
 _ssl._SSLContext.verify_mode
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_verify_mode_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=3e788736cc7229bc input=7e3c7f4454121d0a]*/
 {
@@ -3488,13 +3488,13 @@ _ssl__SSLContext_verify_mode_get_impl(PySSLContext *self)
     int verify_mode = SSL_CTX_get_verify_mode(self->ctx);
     switch (verify_mode & mask) {
     case SSL_VERIFY_NONE:
-        return PyLong_FromLong(PY_SSL_CERT_NONE);
+        return TyLong_FromLong(PY_SSL_CERT_NONE);
     case SSL_VERIFY_PEER:
-        return PyLong_FromLong(PY_SSL_CERT_OPTIONAL);
+        return TyLong_FromLong(PY_SSL_CERT_OPTIONAL);
     case SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT:
-        return PyLong_FromLong(PY_SSL_CERT_REQUIRED);
+        return TyLong_FromLong(PY_SSL_CERT_REQUIRED);
     }
-    PyErr_SetString(get_state_ctx(self)->PySSLErrorObject,
+    TyErr_SetString(get_state_ctx(self)->PySSLErrorObject,
                     "invalid return value from SSL_CTX_get_verify_mode");
     return NULL;
 }
@@ -3506,14 +3506,14 @@ _ssl._SSLContext.verify_mode
 [clinic start generated code]*/
 
 static int
-_ssl__SSLContext_verify_mode_set_impl(PySSLContext *self, PyObject *value)
+_ssl__SSLContext_verify_mode_set_impl(PySSLContext *self, TyObject *value)
 /*[clinic end generated code: output=d698e16c58db3118 input=3ee60057c3a22378]*/
 {
     int n;
-    if (!PyArg_Parse(value, "i", &n))
+    if (!TyArg_Parse(value, "i", &n))
         return -1;
     if (n == PY_SSL_CERT_NONE && self->check_hostname) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Cannot set verify_mode to CERT_NONE when "
                         "check_hostname is enabled.");
         return -1;
@@ -3527,7 +3527,7 @@ _ssl__SSLContext_verify_mode_set_impl(PySSLContext *self, PyObject *value)
 _ssl._SSLContext.verify_flags
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_verify_flags_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=fbbf8ba28ad6e56e input=c1ec36d610b3f391]*/
 {
@@ -3536,7 +3536,7 @@ _ssl__SSLContext_verify_flags_get_impl(PySSLContext *self)
 
     ssl_verification_params = SSL_CTX_get0_param(self->ctx);
     flags = X509_VERIFY_PARAM_get_flags(ssl_verification_params);
-    return PyLong_FromUnsignedLong(flags);
+    return TyLong_FromUnsignedLong(flags);
 }
 
 /*[clinic input]
@@ -3546,13 +3546,13 @@ _ssl._SSLContext.verify_flags
 [clinic start generated code]*/
 
 static int
-_ssl__SSLContext_verify_flags_set_impl(PySSLContext *self, PyObject *value)
+_ssl__SSLContext_verify_flags_set_impl(PySSLContext *self, TyObject *value)
 /*[clinic end generated code: output=a3e3b2a0ce6c2e99 input=b2a0c42583d4f34e]*/
 {
     X509_VERIFY_PARAM *ssl_verification_params;
     unsigned long new_flags, flags, set, clear;
 
-    if (!PyArg_Parse(value, "k", &new_flags))
+    if (!TyArg_Parse(value, "k", &new_flags))
         return -1;
     ssl_verification_params = SSL_CTX_get0_param(self->ctx);
     flags = X509_VERIFY_PARAM_get_flags(ssl_verification_params);
@@ -3575,26 +3575,26 @@ _ssl__SSLContext_verify_flags_set_impl(PySSLContext *self, PyObject *value)
 
 /* Getter and setter for protocol version */
 static int
-set_min_max_proto_version(PySSLContext *self, PyObject *arg, int what)
+set_min_max_proto_version(PySSLContext *self, TyObject *arg, int what)
 {
     long v;
     int result;
 
-    if (!PyArg_Parse(arg, "l", &v))
+    if (!TyArg_Parse(arg, "l", &v))
         return -1;
     if (v > INT_MAX) {
-        PyErr_SetString(PyExc_OverflowError, "Option is too long");
+        TyErr_SetString(TyExc_OverflowError, "Option is too long");
         return -1;
     }
 
     switch(self->protocol) {
-    case PY_SSL_VERSION_TLS_CLIENT: _Py_FALLTHROUGH;
-    case PY_SSL_VERSION_TLS_SERVER: _Py_FALLTHROUGH;
+    case PY_SSL_VERSION_TLS_CLIENT: _Ty_FALLTHROUGH;
+    case PY_SSL_VERSION_TLS_SERVER: _Ty_FALLTHROUGH;
     case PY_SSL_VERSION_TLS:
         break;
     default:
-        PyErr_SetString(
-            PyExc_ValueError,
+        TyErr_SetString(
+            TyExc_ValueError,
             "The context's protocol doesn't support modification of "
             "highest and lowest version."
         );
@@ -3619,7 +3619,7 @@ set_min_max_proto_version(PySSLContext *self, PyObject *arg, int what)
             /* ok */
             break;
         default:
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                      "Unsupported TLS/SSL version 0x%x", v);
             return -1;
     }
@@ -3653,7 +3653,7 @@ set_min_max_proto_version(PySSLContext *self, PyObject *arg, int what)
         result = SSL_CTX_set_max_proto_version(self->ctx, v);
     }
     if (result == 0) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "Unsupported protocol version 0x%x", v);
         return -1;
     }
@@ -3666,7 +3666,7 @@ set_min_max_proto_version(PySSLContext *self, PyObject *arg, int what)
 _ssl._SSLContext.minimum_version
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_minimum_version_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=27fa8382276635ed input=6832821e7e974d40]*/
 {
@@ -3674,7 +3674,7 @@ _ssl__SSLContext_minimum_version_get_impl(PySSLContext *self)
     if (v == 0) {
         v = PY_PROTO_MINIMUM_SUPPORTED;
     }
-    return PyLong_FromLong(v);
+    return TyLong_FromLong(v);
 }
 
 /*[clinic input]
@@ -3685,7 +3685,7 @@ _ssl._SSLContext.minimum_version
 
 static int
 _ssl__SSLContext_minimum_version_set_impl(PySSLContext *self,
-                                          PyObject *value)
+                                          TyObject *value)
 /*[clinic end generated code: output=482e82f7372afb78 input=2c64724901a514b3]*/
 {
     return set_min_max_proto_version(self, value, 0);
@@ -3697,7 +3697,7 @@ _ssl__SSLContext_minimum_version_set_impl(PySSLContext *self,
 _ssl._SSLContext.maximum_version
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_maximum_version_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=889249475112826a input=2b9e4c2d45f16b14]*/
 {
@@ -3705,7 +3705,7 @@ _ssl__SSLContext_maximum_version_get_impl(PySSLContext *self)
     if (v == 0) {
         v = PY_PROTO_MAXIMUM_SUPPORTED;
     }
-    return PyLong_FromLong(v);
+    return TyLong_FromLong(v);
 }
 
 /*[clinic input]
@@ -3716,7 +3716,7 @@ _ssl._SSLContext.maximum_version
 
 static int
 _ssl__SSLContext_maximum_version_set_impl(PySSLContext *self,
-                                          PyObject *value)
+                                          TyObject *value)
 /*[clinic end generated code: output=4c0eed3042ca20d5 input=fe27e9fbbeb73c89]*/
 {
     return set_min_max_proto_version(self, value, 1);
@@ -3730,13 +3730,13 @@ _ssl._SSLContext.num_tickets
 Control the number of TLSv1.3 session tickets.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_num_tickets_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=3d06d016318846c9 input=1e2599a2e22564ff]*/
 {
     // Clinic seems to be misbehaving when the comment is wrapped with in directive
 #if defined(TLS1_3_VERSION) && !defined(OPENSSL_NO_TLS1_3)
-    PyObject *res = PyLong_FromSize_t(SSL_CTX_get_num_tickets(self->ctx));
+    TyObject *res = TyLong_FromSize_t(SSL_CTX_get_num_tickets(self->ctx));
     return res;
 #else
     return 0;
@@ -3750,23 +3750,23 @@ _ssl._SSLContext.num_tickets
 [clinic start generated code]*/
 
 static int
-_ssl__SSLContext_num_tickets_set_impl(PySSLContext *self, PyObject *value)
+_ssl__SSLContext_num_tickets_set_impl(PySSLContext *self, TyObject *value)
 /*[clinic end generated code: output=ced81b46f3beab09 input=6ef8067ac55607e7]*/
 {
     long num;
-    if (!PyArg_Parse(value, "l", &num))
+    if (!TyArg_Parse(value, "l", &num))
         return -1;
     if (num < 0) {
-        PyErr_SetString(PyExc_ValueError, "value must be non-negative");
+        TyErr_SetString(TyExc_ValueError, "value must be non-negative");
         return -1;
     }
     if (self->protocol != PY_SSL_VERSION_TLS_SERVER) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "SSLContext is not a server context.");
         return -1;
     }
     if (SSL_CTX_set_num_tickets(self->ctx, num) != 1) {
-        PyErr_SetString(PyExc_ValueError, "failed to set num tickets.");
+        TyErr_SetString(TyExc_ValueError, "failed to set num tickets.");
         return -1;
     }
     return 0;
@@ -3780,11 +3780,11 @@ _ssl._SSLContext.security_level
 The current security level.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_security_level_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=56ece09e6a9572d0 input=2bdeecb57bb86e3f]*/
 {
-    PyObject *res = PyLong_FromLong(SSL_CTX_get_security_level(self->ctx));
+    TyObject *res = TyLong_FromLong(SSL_CTX_get_security_level(self->ctx));
     return res;
 }
 
@@ -3794,13 +3794,13 @@ _ssl__SSLContext_security_level_get_impl(PySSLContext *self)
 _ssl._SSLContext.options
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_options_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=3dfa6a74837f525b input=f5a2805c7cda6f25]*/
 {
     uint64_t options = SSL_CTX_get_options(self->ctx);
-    Py_BUILD_ASSERT(sizeof(unsigned long long) >= sizeof(options));
-    return PyLong_FromUnsignedLongLong(options);
+    Ty_BUILD_ASSERT(sizeof(unsigned long long) >= sizeof(options));
+    return TyLong_FromUnsignedLongLong(options);
 }
 
 /*[clinic input]
@@ -3810,7 +3810,7 @@ _ssl._SSLContext.options
 [clinic start generated code]*/
 
 static int
-_ssl__SSLContext_options_set_impl(PySSLContext *self, PyObject *value)
+_ssl__SSLContext_options_set_impl(PySSLContext *self, TyObject *value)
 /*[clinic end generated code: output=92ca34731ece5dbb input=2b94bf789e9ae5dd]*/
 {
     unsigned long long new_opts_arg;
@@ -3820,10 +3820,10 @@ _ssl__SSLContext_options_set_impl(PySSLContext *self, PyObject *value)
         SSL_OP_NO_TLSv1_1 | SSL_OP_NO_TLSv1_2 | SSL_OP_NO_TLSv1_3
     );
 
-    if (!PyArg_Parse(value, "O&", _PyLong_UnsignedLongLong_Converter, &new_opts_arg)) {
+    if (!TyArg_Parse(value, "O&", _TyLong_UnsignedLongLong_Converter, &new_opts_arg)) {
         return -1;
     }
-    Py_BUILD_ASSERT(sizeof(new_opts) >= sizeof(new_opts_arg));
+    Ty_BUILD_ASSERT(sizeof(new_opts) >= sizeof(new_opts_arg));
     new_opts = (uint64_t)new_opts_arg;
 
     opts = SSL_CTX_get_options(self->ctx);
@@ -3851,7 +3851,7 @@ _ssl__SSLContext_options_set_impl(PySSLContext *self, PyObject *value)
 _ssl._SSLContext._host_flags
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext__host_flags_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=0f9db6654ce32582 input=8e3c49499eefd0e5]*/
 {
@@ -3860,7 +3860,7 @@ _ssl__SSLContext__host_flags_get_impl(PySSLContext *self)
 
     ssl_verification_params = SSL_CTX_get0_param(self->ctx);
     host_flags = X509_VERIFY_PARAM_get_hostflags(ssl_verification_params);
-    return PyLong_FromUnsignedLong(host_flags);
+    return TyLong_FromUnsignedLong(host_flags);
 }
 
 /*[clinic input]
@@ -3870,13 +3870,13 @@ _ssl._SSLContext._host_flags
 [clinic start generated code]*/
 
 static int
-_ssl__SSLContext__host_flags_set_impl(PySSLContext *self, PyObject *value)
+_ssl__SSLContext__host_flags_set_impl(PySSLContext *self, TyObject *value)
 /*[clinic end generated code: output=1ed6f4027aaf2e3e input=28caf1fb9c32f6cb]*/
 {
     X509_VERIFY_PARAM *ssl_verification_params;
     unsigned int new_flags = 0;
 
-    if (!PyArg_Parse(value, "I", &new_flags))
+    if (!TyArg_Parse(value, "I", &new_flags))
         return -1;
 
     ssl_verification_params = SSL_CTX_get0_param(self->ctx);
@@ -3890,11 +3890,11 @@ _ssl__SSLContext__host_flags_set_impl(PySSLContext *self, PyObject *value)
 _ssl._SSLContext.check_hostname
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_check_hostname_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=e046d6eeefc76063 input=1b8341e705f9ecf5]*/
 {
-    return PyBool_FromLong(self->check_hostname);
+    return TyBool_FromLong(self->check_hostname);
 }
 
 /*[clinic input]
@@ -3904,11 +3904,11 @@ _ssl._SSLContext.check_hostname
 [clinic start generated code]*/
 
 static int
-_ssl__SSLContext_check_hostname_set_impl(PySSLContext *self, PyObject *value)
+_ssl__SSLContext_check_hostname_set_impl(PySSLContext *self, TyObject *value)
 /*[clinic end generated code: output=0e767b4784e7dc3f input=e6a771cb5919f74d]*/
 {
     int check_hostname;
-    if (!PyArg_Parse(value, "p", &check_hostname))
+    if (!TyArg_Parse(value, "p", &check_hostname))
         return -1;
     int verify_mode = check_hostname ? SSL_CTX_get_verify_mode(self->ctx) : 0;
     if (check_hostname &&
@@ -3922,12 +3922,12 @@ _ssl__SSLContext_check_hostname_set_impl(PySSLContext *self, PyObject *value)
     return 0;
 }
 
-static PyObject *
-get_post_handshake_auth(PyObject *op, void *Py_UNUSED(closure))
+static TyObject *
+get_post_handshake_auth(TyObject *op, void *Py_UNUSED(closure))
 {
     PySSLContext *self = PySSLContext_CAST(op);
 #if defined(PySSL_HAVE_POST_HS_AUTH)
-    return PyBool_FromLong(self->post_handshake_auth);
+    return TyBool_FromLong(self->post_handshake_auth);
 #else
     Py_RETURN_NONE;
 #endif
@@ -3935,11 +3935,11 @@ get_post_handshake_auth(PyObject *op, void *Py_UNUSED(closure))
 
 #if defined(PySSL_HAVE_POST_HS_AUTH)
 static int
-set_post_handshake_auth(PyObject *op, PyObject *arg, void *Py_UNUSED(closure))
+set_post_handshake_auth(TyObject *op, TyObject *arg, void *Py_UNUSED(closure))
 {
     PySSLContext *self = PySSLContext_CAST(op);
     if (arg == NULL) {
-        PyErr_SetString(PyExc_AttributeError, "cannot delete attribute");
+        TyErr_SetString(TyExc_AttributeError, "cannot delete attribute");
         return -1;
     }
     int pha = PyObject_IsTrue(arg);
@@ -3962,72 +3962,72 @@ set_post_handshake_auth(PyObject *op, PyObject *arg, void *Py_UNUSED(closure))
 _ssl._SSLContext.protocol
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_protocol_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=a9a48febc16cee22 input=c9f5fa1a2bd4b8a8]*/
 {
-    return PyLong_FromLong(self->protocol);
+    return TyLong_FromLong(self->protocol);
 }
 
 typedef struct {
-    PyThreadState *thread_state;
-    PyObject *callable;
+    TyThreadState *thread_state;
+    TyObject *callable;
     char *password;
     int size;
     int error;
 } _PySSLPasswordInfo;
 
 static int
-_pwinfo_set(_PySSLPasswordInfo *pw_info, PyObject* password,
+_pwinfo_set(_PySSLPasswordInfo *pw_info, TyObject* password,
             const char *bad_type_error)
 {
     /* Set the password and size fields of a _PySSLPasswordInfo struct
        from a unicode, bytes, or byte array object.
        The password field will be dynamically allocated and must be freed
        by the caller */
-    PyObject *password_bytes = NULL;
+    TyObject *password_bytes = NULL;
     const char *data = NULL;
-    Py_ssize_t size;
+    Ty_ssize_t size;
 
-    if (PyUnicode_Check(password)) {
-        password_bytes = PyUnicode_AsUTF8String(password);
+    if (TyUnicode_Check(password)) {
+        password_bytes = TyUnicode_AsUTF8String(password);
         if (!password_bytes) {
             goto error;
         }
-        data = PyBytes_AS_STRING(password_bytes);
-        size = PyBytes_GET_SIZE(password_bytes);
-    } else if (PyBytes_Check(password)) {
-        data = PyBytes_AS_STRING(password);
-        size = PyBytes_GET_SIZE(password);
-    } else if (PyByteArray_Check(password)) {
-        data = PyByteArray_AS_STRING(password);
-        size = PyByteArray_GET_SIZE(password);
+        data = TyBytes_AS_STRING(password_bytes);
+        size = TyBytes_GET_SIZE(password_bytes);
+    } else if (TyBytes_Check(password)) {
+        data = TyBytes_AS_STRING(password);
+        size = TyBytes_GET_SIZE(password);
+    } else if (TyByteArray_Check(password)) {
+        data = TyByteArray_AS_STRING(password);
+        size = TyByteArray_GET_SIZE(password);
     } else {
-        PyErr_SetString(PyExc_TypeError, bad_type_error);
+        TyErr_SetString(TyExc_TypeError, bad_type_error);
         goto error;
     }
 
-    if (size > (Py_ssize_t)INT_MAX) {
-        PyErr_Format(PyExc_ValueError,
+    if (size > (Ty_ssize_t)INT_MAX) {
+        TyErr_Format(TyExc_ValueError,
                      "password cannot be longer than %d bytes", INT_MAX);
         goto error;
     }
 
-    PyMem_Free(pw_info->password);
-    pw_info->password = PyMem_Malloc(size);
+    TyMem_Free(pw_info->password);
+    pw_info->password = TyMem_Malloc(size);
     if (!pw_info->password) {
-        PyErr_SetString(PyExc_MemoryError,
+        TyErr_SetString(TyExc_MemoryError,
                         "unable to allocate password buffer");
         goto error;
     }
     memcpy(pw_info->password, data, size);
     pw_info->size = (int)size;
 
-    Py_XDECREF(password_bytes);
+    Ty_XDECREF(password_bytes);
     return 1;
 
 error:
-    Py_XDECREF(password_bytes);
+    Ty_XDECREF(password_bytes);
     return 0;
 }
 
@@ -4035,7 +4035,7 @@ static int
 _password_callback(char *buf, int size, int rwflag, void *userdata)
 {
     _PySSLPasswordInfo *pw_info = (_PySSLPasswordInfo*) userdata;
-    PyObject *fn_ret = NULL;
+    TyObject *fn_ret = NULL;
 
     PySSL_END_ALLOW_THREADS_S(pw_info->thread_state);
 
@@ -4058,11 +4058,11 @@ _password_callback(char *buf, int size, int rwflag, void *userdata)
                          "password callback must return a string")) {
             goto error;
         }
-        Py_CLEAR(fn_ret);
+        Ty_CLEAR(fn_ret);
     }
 
     if (pw_info->size > size) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "password cannot be longer than %d bytes", size);
         goto error;
     }
@@ -4072,7 +4072,7 @@ _password_callback(char *buf, int size, int rwflag, void *userdata)
     return pw_info->size;
 
 error:
-    Py_XDECREF(fn_ret);
+    Ty_XDECREF(fn_ret);
     PySSL_BEGIN_ALLOW_THREADS_S(pw_info->thread_state);
     pw_info->error = 1;
     return -1;
@@ -4087,12 +4087,12 @@ _ssl._SSLContext.load_cert_chain
 
 [clinic start generated code]*/
 
-static PyObject *
-_ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, PyObject *certfile,
-                                      PyObject *keyfile, PyObject *password)
+static TyObject *
+_ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, TyObject *certfile,
+                                      TyObject *keyfile, TyObject *password)
 /*[clinic end generated code: output=9480bc1c380e2095 input=6c7c5e8b73e4264b]*/
 {
-    PyObject *certfile_bytes = NULL, *keyfile_bytes = NULL;
+    TyObject *certfile_bytes = NULL, *keyfile_bytes = NULL;
     pem_password_cb *orig_passwd_cb = SSL_CTX_get_default_passwd_cb(self->ctx);
     void *orig_passwd_userdata = SSL_CTX_get_default_passwd_cb_userdata(self->ctx);
     _PySSLPasswordInfo pw_info = { NULL, NULL, NULL, 0, 0 };
@@ -4100,23 +4100,23 @@ _ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, PyObject *certfile,
 
     errno = 0;
     ERR_clear_error();
-    if (keyfile == Py_None)
+    if (keyfile == Ty_None)
         keyfile = NULL;
-    if (!PyUnicode_FSConverter(certfile, &certfile_bytes)) {
-        if (PyErr_ExceptionMatches(PyExc_TypeError)) {
-            PyErr_SetString(PyExc_TypeError,
+    if (!TyUnicode_FSConverter(certfile, &certfile_bytes)) {
+        if (TyErr_ExceptionMatches(TyExc_TypeError)) {
+            TyErr_SetString(TyExc_TypeError,
                             "certfile should be a valid filesystem path");
         }
         return NULL;
     }
-    if (keyfile && !PyUnicode_FSConverter(keyfile, &keyfile_bytes)) {
-        if (PyErr_ExceptionMatches(PyExc_TypeError)) {
-            PyErr_SetString(PyExc_TypeError,
+    if (keyfile && !TyUnicode_FSConverter(keyfile, &keyfile_bytes)) {
+        if (TyErr_ExceptionMatches(TyExc_TypeError)) {
+            TyErr_SetString(TyExc_TypeError,
                             "keyfile should be a valid filesystem path");
         }
         goto error;
     }
-    if (password != Py_None) {
+    if (password != Ty_None) {
         if (PyCallable_Check(password)) {
             pw_info.callable = password;
         } else if (!_pwinfo_set(&pw_info, password,
@@ -4128,7 +4128,7 @@ _ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, PyObject *certfile,
     }
     PySSL_BEGIN_ALLOW_THREADS_S(pw_info.thread_state);
     r = SSL_CTX_use_certificate_chain_file(self->ctx,
-        PyBytes_AS_STRING(certfile_bytes));
+        TyBytes_AS_STRING(certfile_bytes));
     PySSL_END_ALLOW_THREADS_S(pw_info.thread_state);
     if (r != 1) {
         if (pw_info.error) {
@@ -4136,7 +4136,7 @@ _ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, PyObject *certfile,
             /* the password callback has already set the error information */
         }
         else if (errno != 0) {
-            PyErr_SetFromErrno(PyExc_OSError);
+            TyErr_SetFromErrno(TyExc_OSError);
             ERR_clear_error();
         }
         else {
@@ -4146,18 +4146,18 @@ _ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, PyObject *certfile,
     }
     PySSL_BEGIN_ALLOW_THREADS_S(pw_info.thread_state);
     r = SSL_CTX_use_PrivateKey_file(self->ctx,
-        PyBytes_AS_STRING(keyfile ? keyfile_bytes : certfile_bytes),
+        TyBytes_AS_STRING(keyfile ? keyfile_bytes : certfile_bytes),
         SSL_FILETYPE_PEM);
     PySSL_END_ALLOW_THREADS_S(pw_info.thread_state);
-    Py_CLEAR(keyfile_bytes);
-    Py_CLEAR(certfile_bytes);
+    Ty_CLEAR(keyfile_bytes);
+    Ty_CLEAR(certfile_bytes);
     if (r != 1) {
         if (pw_info.error) {
             ERR_clear_error();
             /* the password callback has already set the error information */
         }
         else if (errno != 0) {
-            PyErr_SetFromErrno(PyExc_OSError);
+            TyErr_SetFromErrno(TyExc_OSError);
             ERR_clear_error();
         }
         else {
@@ -4174,22 +4174,22 @@ _ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, PyObject *certfile,
     }
     SSL_CTX_set_default_passwd_cb(self->ctx, orig_passwd_cb);
     SSL_CTX_set_default_passwd_cb_userdata(self->ctx, orig_passwd_userdata);
-    PyMem_Free(pw_info.password);
+    TyMem_Free(pw_info.password);
     Py_RETURN_NONE;
 
 error:
     SSL_CTX_set_default_passwd_cb(self->ctx, orig_passwd_cb);
     SSL_CTX_set_default_passwd_cb_userdata(self->ctx, orig_passwd_userdata);
-    PyMem_Free(pw_info.password);
-    Py_XDECREF(keyfile_bytes);
-    Py_XDECREF(certfile_bytes);
+    TyMem_Free(pw_info.password);
+    Ty_XDECREF(keyfile_bytes);
+    Ty_XDECREF(certfile_bytes);
     return NULL;
 }
 
 /* internal helper function, returns -1 on error
  */
 static int
-_add_ca_certs(PySSLContext *self, const void *data, Py_ssize_t len,
+_add_ca_certs(PySSLContext *self, const void *data, Ty_ssize_t len,
               int filetype)
 {
     BIO *biobuf = NULL;
@@ -4199,11 +4199,11 @@ _add_ca_certs(PySSLContext *self, const void *data, Py_ssize_t len,
     assert(filetype == SSL_FILETYPE_ASN1 || filetype == SSL_FILETYPE_PEM);
 
     if (len <= 0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Empty certificate data");
         return -1;
     } else if (len > INT_MAX) {
-        PyErr_SetString(PyExc_OverflowError,
+        TyErr_SetString(TyExc_OverflowError,
                         "Certificate data is too long.");
         return -1;
     }
@@ -4292,40 +4292,40 @@ _ssl._SSLContext.load_verify_locations
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_load_verify_locations_impl(PySSLContext *self,
-                                            PyObject *cafile,
-                                            PyObject *capath,
-                                            PyObject *cadata)
+                                            TyObject *cafile,
+                                            TyObject *capath,
+                                            TyObject *cadata)
 /*[clinic end generated code: output=454c7e41230ca551 input=b178852b41618414]*/
 {
-    PyObject *cafile_bytes = NULL, *capath_bytes = NULL;
+    TyObject *cafile_bytes = NULL, *capath_bytes = NULL;
     const char *cafile_buf = NULL, *capath_buf = NULL;
     int r = 0, ok = 1;
 
     errno = 0;
-    if (cafile == Py_None)
+    if (cafile == Ty_None)
         cafile = NULL;
-    if (capath == Py_None)
+    if (capath == Ty_None)
         capath = NULL;
-    if (cadata == Py_None)
+    if (cadata == Ty_None)
         cadata = NULL;
 
     if (cafile == NULL && capath == NULL && cadata == NULL) {
-        PyErr_SetString(PyExc_TypeError,
+        TyErr_SetString(TyExc_TypeError,
                         "cafile, capath and cadata cannot be all omitted");
         goto error;
     }
-    if (cafile && !PyUnicode_FSConverter(cafile, &cafile_bytes)) {
-        if (PyErr_ExceptionMatches(PyExc_TypeError)) {
-            PyErr_SetString(PyExc_TypeError,
+    if (cafile && !TyUnicode_FSConverter(cafile, &cafile_bytes)) {
+        if (TyErr_ExceptionMatches(TyExc_TypeError)) {
+            TyErr_SetString(TyExc_TypeError,
                             "cafile should be a valid filesystem path");
         }
         goto error;
     }
-    if (capath && !PyUnicode_FSConverter(capath, &capath_bytes)) {
-        if (PyErr_ExceptionMatches(PyExc_TypeError)) {
-            PyErr_SetString(PyExc_TypeError,
+    if (capath && !TyUnicode_FSConverter(capath, &capath_bytes)) {
+        if (TyErr_ExceptionMatches(TyExc_TypeError)) {
+            TyErr_SetString(TyExc_TypeError,
                             "capath should be a valid filesystem path");
         }
         goto error;
@@ -4333,32 +4333,32 @@ _ssl__SSLContext_load_verify_locations_impl(PySSLContext *self,
 
     /* validate cadata type and load cadata */
     if (cadata) {
-        if (PyUnicode_Check(cadata)) {
-            PyObject *cadata_ascii = PyUnicode_AsASCIIString(cadata);
+        if (TyUnicode_Check(cadata)) {
+            TyObject *cadata_ascii = TyUnicode_AsASCIIString(cadata);
             if (cadata_ascii == NULL) {
-                if (PyErr_ExceptionMatches(PyExc_UnicodeEncodeError)) {
+                if (TyErr_ExceptionMatches(TyExc_UnicodeEncodeError)) {
                     goto invalid_cadata;
                 }
                 goto error;
             }
             r = _add_ca_certs(self,
-                              PyBytes_AS_STRING(cadata_ascii),
-                              PyBytes_GET_SIZE(cadata_ascii),
+                              TyBytes_AS_STRING(cadata_ascii),
+                              TyBytes_GET_SIZE(cadata_ascii),
                               SSL_FILETYPE_PEM);
-            Py_DECREF(cadata_ascii);
+            Ty_DECREF(cadata_ascii);
             if (r == -1) {
                 goto error;
             }
         }
         else if (PyObject_CheckBuffer(cadata)) {
-            Py_buffer buf;
+            Ty_buffer buf;
             if (PyObject_GetBuffer(cadata, &buf, PyBUF_SIMPLE)) {
                 goto error;
             }
             assert(PyBuffer_IsContiguous(&buf, 'C'));
             if (buf.ndim > 1) {
                 PyBuffer_Release(&buf);
-                PyErr_SetString(PyExc_TypeError,
+                TyErr_SetString(TyExc_TypeError,
                                 "cadata should be a contiguous buffer with "
                                 "a single dimension");
                 goto error;
@@ -4371,7 +4371,7 @@ _ssl__SSLContext_load_verify_locations_impl(PySSLContext *self,
         }
         else {
   invalid_cadata:
-            PyErr_SetString(PyExc_TypeError,
+            TyErr_SetString(TyExc_TypeError,
                             "cadata should be an ASCII string or a "
                             "bytes-like object");
             goto error;
@@ -4381,15 +4381,15 @@ _ssl__SSLContext_load_verify_locations_impl(PySSLContext *self,
     /* load cafile or capath */
     if (cafile || capath) {
         if (cafile)
-            cafile_buf = PyBytes_AS_STRING(cafile_bytes);
+            cafile_buf = TyBytes_AS_STRING(cafile_bytes);
         if (capath)
-            capath_buf = PyBytes_AS_STRING(capath_bytes);
+            capath_buf = TyBytes_AS_STRING(capath_bytes);
         PySSL_BEGIN_ALLOW_THREADS
         r = SSL_CTX_load_verify_locations(self->ctx, cafile_buf, capath_buf);
         PySSL_END_ALLOW_THREADS
         if (r != 1) {
             if (errno != 0) {
-                PyErr_SetFromErrno(PyExc_OSError);
+                TyErr_SetFromErrno(TyExc_OSError);
                 ERR_clear_error();
             }
             else {
@@ -4403,8 +4403,8 @@ _ssl__SSLContext_load_verify_locations_impl(PySSLContext *self,
   error:
     ok = 0;
   end:
-    Py_XDECREF(cafile_bytes);
-    Py_XDECREF(capath_bytes);
+    Ty_XDECREF(cafile_bytes);
+    Ty_XDECREF(capath_bytes);
     if (ok) {
         Py_RETURN_NONE;
     } else {
@@ -4420,20 +4420,20 @@ _ssl._SSLContext.load_dh_params
 
 [clinic start generated code]*/
 
-static PyObject *
-_ssl__SSLContext_load_dh_params_impl(PySSLContext *self, PyObject *filepath)
+static TyObject *
+_ssl__SSLContext_load_dh_params_impl(PySSLContext *self, TyObject *filepath)
 /*[clinic end generated code: output=dd74b3c524dd2723 input=832769a0734b8c4d]*/
 {
     FILE *f;
     DH *dh;
 
 #if defined(MS_WINDOWS) && defined(_DEBUG)
-    PyErr_SetString(PyExc_NotImplementedError,
+    TyErr_SetString(TyExc_NotImplementedError,
                     "load_dh_params: unavailable on Windows debug build");
     return NULL;
 #endif
 
-    f = Py_fopen(filepath, "rb");
+    f = Ty_fopen(filepath, "rb");
     if (f == NULL)
         return NULL;
 
@@ -4444,7 +4444,7 @@ _ssl__SSLContext_load_dh_params_impl(PySSLContext *self, PyObject *filepath)
     PySSL_END_ALLOW_THREADS
     if (dh == NULL) {
         if (errno != 0) {
-            PyErr_SetFromErrnoWithFilenameObject(PyExc_OSError, filepath);
+            TyErr_SetFromErrnoWithFilenameObject(TyExc_OSError, filepath);
             ERR_clear_error();
         }
         else {
@@ -4472,28 +4472,28 @@ _ssl._SSLContext._wrap_socket
 
 [clinic start generated code]*/
 
-static PyObject *
-_ssl__SSLContext__wrap_socket_impl(PySSLContext *self, PyObject *sock,
-                                   int server_side, PyObject *hostname_obj,
-                                   PyObject *owner, PyObject *session)
+static TyObject *
+_ssl__SSLContext__wrap_socket_impl(PySSLContext *self, TyObject *sock,
+                                   int server_side, TyObject *hostname_obj,
+                                   TyObject *owner, TyObject *session)
 /*[clinic end generated code: output=f103f238633940b4 input=eceadcee4434a06f]*/
 {
     char *hostname = NULL;
-    PyObject *res;
+    TyObject *res;
 
     /* server_hostname is either None (or absent), or to be encoded
        as IDN A-label (ASCII str) without NULL bytes. */
-    if (hostname_obj != Py_None) {
-        if (!PyArg_Parse(hostname_obj, "es", "ascii", &hostname))
+    if (hostname_obj != Ty_None) {
+        if (!TyArg_Parse(hostname_obj, "es", "ascii", &hostname))
             return NULL;
     }
 
-    res = (PyObject *) newPySSLSocket(self, (PySocketSockObject *)sock,
+    res = (TyObject *) newPySSLSocket(self, (PySocketSockObject *)sock,
                                       server_side, hostname,
                                       owner, session,
                                       NULL, NULL);
     if (hostname != NULL)
-        PyMem_Free(hostname);
+        TyMem_Free(hostname);
     return res;
 }
 
@@ -4510,28 +4510,28 @@ _ssl._SSLContext._wrap_bio
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext__wrap_bio_impl(PySSLContext *self, PySSLMemoryBIO *incoming,
                                 PySSLMemoryBIO *outgoing, int server_side,
-                                PyObject *hostname_obj, PyObject *owner,
-                                PyObject *session)
+                                TyObject *hostname_obj, TyObject *owner,
+                                TyObject *session)
 /*[clinic end generated code: output=5c5d6d9b41f99332 input=58277fc962a60182]*/
 {
     char *hostname = NULL;
-    PyObject *res;
+    TyObject *res;
 
     /* server_hostname is either None (or absent), or to be encoded
        as IDN A-label (ASCII str) without NULL bytes. */
-    if (hostname_obj != Py_None) {
-        if (!PyArg_Parse(hostname_obj, "es", "ascii", &hostname))
+    if (hostname_obj != Ty_None) {
+        if (!TyArg_Parse(hostname_obj, "es", "ascii", &hostname))
             return NULL;
     }
 
-    res = (PyObject *) newPySSLSocket(self, NULL, server_side, hostname,
+    res = (TyObject *) newPySSLSocket(self, NULL, server_side, hostname,
                                       owner, session,
                                       incoming, outgoing);
 
-    PyMem_Free(hostname);
+    TyMem_Free(hostname);
     return res;
 }
 
@@ -4540,21 +4540,21 @@ _ssl__SSLContext__wrap_bio_impl(PySSLContext *self, PySSLMemoryBIO *incoming,
 _ssl._SSLContext.session_stats
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_session_stats_impl(PySSLContext *self)
 /*[clinic end generated code: output=0d96411c42893bfb input=db62af53004127a4]*/
 {
     int r;
-    PyObject *value, *stats = PyDict_New();
+    TyObject *value, *stats = TyDict_New();
     if (!stats)
         return NULL;
 
 #define ADD_STATS(SSL_NAME, KEY_NAME) \
-    value = PyLong_FromLong(SSL_CTX_sess_ ## SSL_NAME (self->ctx)); \
+    value = TyLong_FromLong(SSL_CTX_sess_ ## SSL_NAME (self->ctx)); \
     if (value == NULL) \
         goto error; \
-    r = PyDict_SetItemString(stats, KEY_NAME, value); \
-    Py_DECREF(value); \
+    r = TyDict_SetItemString(stats, KEY_NAME, value); \
+    Ty_DECREF(value); \
     if (r < 0) \
         goto error;
 
@@ -4576,7 +4576,7 @@ _ssl__SSLContext_session_stats_impl(PySSLContext *self)
     return stats;
 
 error:
-    Py_DECREF(stats);
+    Ty_DECREF(stats);
     return NULL;
 }
 
@@ -4585,14 +4585,14 @@ error:
 _ssl._SSLContext.set_default_verify_paths
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_set_default_verify_paths_impl(PySSLContext *self)
 /*[clinic end generated code: output=0bee74e6e09deaaa input=939a88e78f634119]*/
 {
     int rc;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     rc = SSL_CTX_set_default_verify_paths(self->ctx);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (!rc) {
         _setSSLError(get_state_ctx(self), NULL, 0, __FILE__, __LINE__);
         return NULL;
@@ -4608,19 +4608,19 @@ _ssl._SSLContext.set_ecdh_curve
 
 [clinic start generated code]*/
 
-static PyObject *
-_ssl__SSLContext_set_ecdh_curve_impl(PySSLContext *self, PyObject *name)
+static TyObject *
+_ssl__SSLContext_set_ecdh_curve_impl(PySSLContext *self, TyObject *name)
 /*[clinic end generated code: output=01081151ce0ecc45 input=039df032e666870e]*/
 {
-    PyObject *name_bytes;
+    TyObject *name_bytes;
     int nid;
-    if (!PyUnicode_FSConverter(name, &name_bytes))
+    if (!TyUnicode_FSConverter(name, &name_bytes))
         return NULL;
-    assert(PyBytes_Check(name_bytes));
-    nid = OBJ_sn2nid(PyBytes_AS_STRING(name_bytes));
-    Py_DECREF(name_bytes);
+    assert(TyBytes_Check(name_bytes));
+    nid = OBJ_sn2nid(TyBytes_AS_STRING(name_bytes));
+    Ty_DECREF(name_bytes);
     if (nid == 0) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "unknown elliptic curve name %R", name);
         return NULL;
     }
@@ -4647,16 +4647,16 @@ _servername_callback(SSL *s, int *al, void *args)
     int ret;
     PySSLContext *sslctx = (PySSLContext *) args;
     PySSLSocket *ssl;
-    PyObject *result;
+    TyObject *result;
     /* The high-level ssl.SSLSocket object */
-    PyObject *ssl_socket;
+    TyObject *ssl_socket;
     const char *servername = SSL_get_servername(s, TLSEXT_NAMETYPE_host_name);
-    PyGILState_STATE gstate = PyGILState_Ensure();
+    TyGILState_STATE gstate = TyGILState_Ensure();
 
     if (sslctx->set_sni_cb == NULL) {
         /* remove race condition in this the call back while if removing the
          * callback is in progress */
-        PyGILState_Release(gstate);
+        TyGILState_Release(gstate);
         return SSL_TLSEXT_ERR_OK;
     }
 
@@ -4676,47 +4676,47 @@ _servername_callback(SSL *s, int *al, void *args)
     else if (ssl->Socket)
         PyWeakref_GetRef(ssl->Socket, &ssl_socket);
     else
-        ssl_socket = Py_NewRef(ssl);
+        ssl_socket = Ty_NewRef(ssl);
 
     if (ssl_socket == NULL)
         goto error;
 
     if (servername == NULL) {
         result = PyObject_CallFunctionObjArgs(sslctx->set_sni_cb, ssl_socket,
-                                              Py_None, sslctx, NULL);
+                                              Ty_None, sslctx, NULL);
     }
     else {
-        PyObject *servername_bytes;
-        PyObject *servername_str;
+        TyObject *servername_bytes;
+        TyObject *servername_str;
 
-        servername_bytes = PyBytes_FromString(servername);
+        servername_bytes = TyBytes_FromString(servername);
         if (servername_bytes == NULL) {
-            PyErr_FormatUnraisable("Exception ignored "
+            TyErr_FormatUnraisable("Exception ignored "
                                    "in ssl servername callback");
             goto error;
         }
         /* server_hostname was encoded to an A-label by our caller; put it
          * back into a str object, but still as an A-label (bpo-28414)
          */
-        servername_str = PyUnicode_FromEncodedObject(servername_bytes, "ascii", NULL);
+        servername_str = TyUnicode_FromEncodedObject(servername_bytes, "ascii", NULL);
         if (servername_str == NULL) {
-            PyErr_FormatUnraisable("Exception ignored "
+            TyErr_FormatUnraisable("Exception ignored "
                                    "in ssl servername callback "
                                    "while decoding name %R",
                                    servername_bytes);
-            Py_DECREF(servername_bytes);
+            Ty_DECREF(servername_bytes);
             goto error;
         }
-        Py_DECREF(servername_bytes);
+        Ty_DECREF(servername_bytes);
         result = PyObject_CallFunctionObjArgs(
             sslctx->set_sni_cb, ssl_socket, servername_str,
             sslctx, NULL);
-        Py_DECREF(servername_str);
+        Ty_DECREF(servername_str);
     }
-    Py_DECREF(ssl_socket);
+    Ty_DECREF(ssl_socket);
 
     if (result == NULL) {
-        PyErr_FormatUnraisable("Exception ignored "
+        TyErr_FormatUnraisable("Exception ignored "
                                "in ssl servername callback "
                                "while calling set SNI callback %R",
                                sslctx->set_sni_cb);
@@ -4727,12 +4727,12 @@ _servername_callback(SSL *s, int *al, void *args)
         /* Result may be None, a SSLContext or an integer
          * None and SSLContext are OK, integer or other values are an error.
          */
-        if (result == Py_None) {
+        if (result == Ty_None) {
             ret = SSL_TLSEXT_ERR_OK;
         } else {
-            *al = (int) PyLong_AsLong(result);
-            if (PyErr_Occurred()) {
-                PyErr_FormatUnraisable("Exception ignored "
+            *al = (int) TyLong_AsLong(result);
+            if (TyErr_Occurred()) {
+                TyErr_FormatUnraisable("Exception ignored "
                                        "in ssl servername callback "
                                        "while calling set SNI callback "
                                        "(result=%R)",
@@ -4741,17 +4741,17 @@ _servername_callback(SSL *s, int *al, void *args)
             }
             ret = SSL_TLSEXT_ERR_ALERT_FATAL;
         }
-        Py_DECREF(result);
+        Ty_DECREF(result);
     }
 
-    PyGILState_Release(gstate);
+    TyGILState_Release(gstate);
     return ret;
 
 error:
-    Py_DECREF(ssl_socket);
+    Ty_DECREF(ssl_socket);
     *al = SSL_AD_INTERNAL_ERROR;
     ret = SSL_TLSEXT_ERR_ALERT_FATAL;
-    PyGILState_Release(gstate);
+    TyGILState_Release(gstate);
     return ret;
 }
 
@@ -4768,15 +4768,15 @@ with the SSLSocket, the server name as a string, and the SSLContext object.
 See RFC 6066 for details of the SNI extension.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_sni_callback_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=961e6575cdfaf036 input=9b2473c5e984cfe6]*/
 {
-    PyObject *cb = self->set_sni_cb;
+    TyObject *cb = self->set_sni_cb;
     if (cb == NULL) {
         Py_RETURN_NONE;
     }
-    return Py_NewRef(cb);
+    return Ty_NewRef(cb);
 }
 
 /*[clinic input]
@@ -4786,26 +4786,26 @@ _ssl._SSLContext.sni_callback
 [clinic start generated code]*/
 
 static int
-_ssl__SSLContext_sni_callback_set_impl(PySSLContext *self, PyObject *value)
+_ssl__SSLContext_sni_callback_set_impl(PySSLContext *self, TyObject *value)
 /*[clinic end generated code: output=b32736c6b891f61a input=c3c4ff33540b3c85]*/
 {
     if (self->protocol == PY_SSL_VERSION_TLS_CLIENT) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "sni_callback cannot be set on TLS_CLIENT context");
         return -1;
     }
-    Py_CLEAR(self->set_sni_cb);
-    if (value == Py_None) {
+    Ty_CLEAR(self->set_sni_cb);
+    if (value == Ty_None) {
         SSL_CTX_set_tlsext_servername_callback(self->ctx, NULL);
     }
     else {
         if (!PyCallable_Check(value)) {
             SSL_CTX_set_tlsext_servername_callback(self->ctx, NULL);
-            PyErr_SetString(PyExc_TypeError,
+            TyErr_SetString(TyExc_TypeError,
                             "not a callable object");
             return -1;
         }
-        self->set_sni_cb = Py_NewRef(value);
+        self->set_sni_cb = Ty_NewRef(value);
         SSL_CTX_set_tlsext_servername_callback(self->ctx, _servername_callback);
         SSL_CTX_set_tlsext_servername_arg(self->ctx, self);
     }
@@ -4869,7 +4869,7 @@ NOTE: Certificates in a capath directory aren't loaded unless they have
 been used at least once.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_cert_store_stats_impl(PySSLContext *self)
 /*[clinic end generated code: output=5f356f4d9cca874d input=d13c6e3f2b48539b]*/
 {
@@ -4881,7 +4881,7 @@ _ssl__SSLContext_cert_store_stats_impl(PySSLContext *self)
     store = SSL_CTX_get_cert_store(self->ctx);
     objs = X509_STORE_get1_objects(store);
     if (objs == NULL) {
-        PyErr_SetString(PyExc_MemoryError, "failed to query cert store");
+        TyErr_SetString(TyExc_MemoryError, "failed to query cert store");
         return NULL;
     }
 
@@ -4903,7 +4903,7 @@ _ssl__SSLContext_cert_store_stats_impl(PySSLContext *self)
         }
     }
     sk_X509_OBJECT_pop_free(objs, X509_OBJECT_free);
-    return Py_BuildValue("{sisisi}", "x509", x509, "crl", crl,
+    return Ty_BuildValue("{sisisi}", "x509", x509, "crl", crl,
         "x509_ca", ca);
 }
 
@@ -4921,23 +4921,23 @@ NOTE: Certificates in a capath directory aren't loaded unless they have
 been used at least once.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_get_ca_certs_impl(PySSLContext *self, int binary_form)
 /*[clinic end generated code: output=0d58f148f37e2938 input=eb0592909c9ad6e7]*/
 {
     X509_STORE *store;
     STACK_OF(X509_OBJECT) *objs;
-    PyObject *ci = NULL, *rlist = NULL;
+    TyObject *ci = NULL, *rlist = NULL;
     int i;
 
-    if ((rlist = PyList_New(0)) == NULL) {
+    if ((rlist = TyList_New(0)) == NULL) {
         return NULL;
     }
 
     store = SSL_CTX_get_cert_store(self->ctx);
     objs = X509_STORE_get1_objects(store);
     if (objs == NULL) {
-        PyErr_SetString(PyExc_MemoryError, "failed to query cert store");
+        TyErr_SetString(TyExc_MemoryError, "failed to query cert store");
         goto error;
     }
 
@@ -4963,18 +4963,18 @@ _ssl__SSLContext_get_ca_certs_impl(PySSLContext *self, int binary_form)
         if (ci == NULL) {
             goto error;
         }
-        if (PyList_Append(rlist, ci) == -1) {
+        if (TyList_Append(rlist, ci) == -1) {
             goto error;
         }
-        Py_CLEAR(ci);
+        Ty_CLEAR(ci);
     }
     sk_X509_OBJECT_pop_free(objs, X509_OBJECT_free);
     return rlist;
 
   error:
     sk_X509_OBJECT_pop_free(objs, X509_OBJECT_free);
-    Py_XDECREF(ci);
-    Py_XDECREF(rlist);
+    Ty_XDECREF(ci);
+    Ty_XDECREF(rlist);
     return NULL;
 }
 
@@ -4986,8 +4986,8 @@ static unsigned int psk_client_callback(SSL *s,
                                         unsigned char *psk,
                                         unsigned int max_psk_len)
 {
-    PyGILState_STATE gstate = PyGILState_Ensure();
-    PyObject *callback = NULL;
+    TyGILState_STATE gstate = TyGILState_Ensure();
+    TyObject *callback = NULL;
 
     PySSLSocket *ssl = SSL_get_app_data(s);
     if (ssl == NULL || ssl->ctx == NULL) {
@@ -4998,18 +4998,18 @@ static unsigned int psk_client_callback(SSL *s,
         goto error;
     }
 
-    PyObject *hint_str = (hint != NULL && hint[0] != '\0') ?
-            PyUnicode_DecodeUTF8(hint, strlen(hint), "strict") :
-            Py_NewRef(Py_None);
+    TyObject *hint_str = (hint != NULL && hint[0] != '\0') ?
+            TyUnicode_DecodeUTF8(hint, strlen(hint), "strict") :
+            Ty_NewRef(Ty_None);
     if (hint_str == NULL) {
         /* The remote side has sent an invalid UTF-8 string
          * (breaking the standard), drop the connection without
          * raising a decode exception. */
-        PyErr_Clear();
+        TyErr_Clear();
         goto error;
     }
-    PyObject *result = PyObject_CallFunctionObjArgs(callback, hint_str, NULL);
-    Py_DECREF(hint_str);
+    TyObject *result = PyObject_CallFunctionObjArgs(callback, hint_str, NULL);
+    Ty_DECREF(hint_str);
 
     if (result == NULL) {
         goto error;
@@ -5017,17 +5017,17 @@ static unsigned int psk_client_callback(SSL *s,
 
     const char *psk_;
     const char *identity_;
-    Py_ssize_t psk_len_;
-    Py_ssize_t identity_len_ = 0;
-    if (!PyArg_ParseTuple(result, "z#y#", &identity_, &identity_len_, &psk_, &psk_len_)) {
-        Py_DECREF(result);
+    Ty_ssize_t psk_len_;
+    Ty_ssize_t identity_len_ = 0;
+    if (!TyArg_ParseTuple(result, "z#y#", &identity_, &identity_len_, &psk_, &psk_len_)) {
+        Ty_DECREF(result);
         goto error;
     }
 
     if ((size_t)identity_len_ + 1 > max_identity_len
         || (size_t)psk_len_ > max_psk_len)
     {
-        Py_DECREF(result);
+        Ty_DECREF(result);
         goto error;
     }
     memcpy(psk, psk_, psk_len_);
@@ -5036,17 +5036,17 @@ static unsigned int psk_client_callback(SSL *s,
     }
     identity[identity_len_] = 0;
 
-    Py_DECREF(result);
+    Ty_DECREF(result);
 
-    PyGILState_Release(gstate);
+    TyGILState_Release(gstate);
     return (unsigned int)psk_len_;
 
 error:
-    if (PyErr_Occurred()) {
-        PyErr_FormatUnraisable("Exception ignored in ssl PSK client callback "
+    if (TyErr_Occurred()) {
+        TyErr_FormatUnraisable("Exception ignored in ssl PSK client callback "
                                "while calling callback %R", callback);
     }
-    PyGILState_Release(gstate);
+    TyGILState_Release(gstate);
     return 0;
 }
 #endif
@@ -5058,9 +5058,9 @@ _ssl._SSLContext.set_psk_client_callback
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_set_psk_client_callback_impl(PySSLContext *self,
-                                              PyObject *callback)
+                                              TyObject *callback)
 /*[clinic end generated code: output=0aba86f6ed75119e input=1e436eea625cfc35]*/
 {
 #ifndef OPENSSL_NO_PSK
@@ -5072,27 +5072,27 @@ _ssl__SSLContext_set_psk_client_callback_impl(PySSLContext *self,
     }
 
     SSL_psk_client_cb_func ssl_callback;
-    if (callback == Py_None) {
+    if (callback == Ty_None) {
         callback = NULL;
         // Delete the existing callback
         ssl_callback = NULL;
     } else {
         if (!PyCallable_Check(callback)) {
-            PyErr_SetString(PyExc_TypeError, "callback must be callable");
+            TyErr_SetString(TyExc_TypeError, "callback must be callable");
             return NULL;
         }
         ssl_callback = psk_client_callback;
     }
 
-    Py_XDECREF(self->psk_client_callback);
-    Py_XINCREF(callback);
+    Ty_XDECREF(self->psk_client_callback);
+    Ty_XINCREF(callback);
 
     self->psk_client_callback = callback;
     SSL_CTX_set_psk_client_callback(self->ctx, ssl_callback);
 
     Py_RETURN_NONE;
 #else
-    PyErr_SetString(PyExc_NotImplementedError,
+    TyErr_SetString(TyExc_NotImplementedError,
                     "TLS-PSK is not supported by your OpenSSL version.");
     return NULL;
 #endif
@@ -5104,8 +5104,8 @@ static unsigned int psk_server_callback(SSL *s,
                                         unsigned char *psk,
                                         unsigned int max_psk_len)
 {
-    PyGILState_STATE gstate = PyGILState_Ensure();
-    PyObject *callback = NULL;
+    TyGILState_STATE gstate = TyGILState_Ensure();
+    TyObject *callback = NULL;
 
     PySSLSocket *ssl = SSL_get_app_data(s);
     if (ssl == NULL || ssl->ctx == NULL) {
@@ -5116,47 +5116,47 @@ static unsigned int psk_server_callback(SSL *s,
         goto error;
     }
 
-    PyObject *identity_str = (identity != NULL && identity[0] != '\0') ?
-            PyUnicode_DecodeUTF8(identity, strlen(identity), "strict") :
-            Py_NewRef(Py_None);
+    TyObject *identity_str = (identity != NULL && identity[0] != '\0') ?
+            TyUnicode_DecodeUTF8(identity, strlen(identity), "strict") :
+            Ty_NewRef(Ty_None);
     if (identity_str == NULL) {
         /* The remote side has sent an invalid UTF-8 string
          * (breaking the standard), drop the connection without
          * raising a decode exception. */
-        PyErr_Clear();
+        TyErr_Clear();
         goto error;
     }
-    PyObject *result = PyObject_CallFunctionObjArgs(callback, identity_str, NULL);
-    Py_DECREF(identity_str);
+    TyObject *result = PyObject_CallFunctionObjArgs(callback, identity_str, NULL);
+    Ty_DECREF(identity_str);
 
     if (result == NULL) {
         goto error;
     }
 
     char *psk_;
-    Py_ssize_t psk_len_;
-    if (PyBytes_AsStringAndSize(result, &psk_, &psk_len_) < 0) {
-        Py_DECREF(result);
+    Ty_ssize_t psk_len_;
+    if (TyBytes_AsStringAndSize(result, &psk_, &psk_len_) < 0) {
+        Ty_DECREF(result);
         goto error;
     }
 
     if ((size_t)psk_len_ > max_psk_len) {
-        Py_DECREF(result);
+        Ty_DECREF(result);
         goto error;
     }
     memcpy(psk, psk_, psk_len_);
 
-    Py_DECREF(result);
+    Ty_DECREF(result);
 
-    PyGILState_Release(gstate);
+    TyGILState_Release(gstate);
     return (unsigned int)psk_len_;
 
 error:
-    if (PyErr_Occurred()) {
-        PyErr_FormatUnraisable("Exception ignored in ssl PSK server callback "
+    if (TyErr_Occurred()) {
+        TyErr_FormatUnraisable("Exception ignored in ssl PSK server callback "
                                "while calling callback %R", callback);
     }
-    PyGILState_Release(gstate);
+    TyGILState_Release(gstate);
     return 0;
 }
 #endif
@@ -5169,9 +5169,9 @@ _ssl._SSLContext.set_psk_server_callback
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_set_psk_server_callback_impl(PySSLContext *self,
-                                              PyObject *callback,
+                                              TyObject *callback,
                                               const char *identity_hint)
 /*[clinic end generated code: output=1f4d6a4e09a92b03 input=5f79d932458284a7]*/
 {
@@ -5184,40 +5184,40 @@ _ssl__SSLContext_set_psk_server_callback_impl(PySSLContext *self,
     }
 
     SSL_psk_server_cb_func ssl_callback;
-    if (callback == Py_None) {
+    if (callback == Ty_None) {
         callback = NULL;
         // Delete the existing callback and hint
         ssl_callback = NULL;
         identity_hint = NULL;
     } else {
         if (!PyCallable_Check(callback)) {
-            PyErr_SetString(PyExc_TypeError, "callback must be callable");
+            TyErr_SetString(TyExc_TypeError, "callback must be callable");
             return NULL;
         }
         ssl_callback = psk_server_callback;
     }
 
     if (SSL_CTX_use_psk_identity_hint(self->ctx, identity_hint) != 1) {
-        PyErr_SetString(PyExc_ValueError, "failed to set identity hint");
+        TyErr_SetString(TyExc_ValueError, "failed to set identity hint");
         return NULL;
     }
 
-    Py_XDECREF(self->psk_server_callback);
-    Py_XINCREF(callback);
+    Ty_XDECREF(self->psk_server_callback);
+    Ty_XINCREF(callback);
 
     self->psk_server_callback = callback;
     SSL_CTX_set_psk_server_callback(self->ctx, ssl_callback);
 
     Py_RETURN_NONE;
 #else
-    PyErr_SetString(PyExc_NotImplementedError,
+    TyErr_SetString(TyExc_NotImplementedError,
                     "TLS-PSK is not supported by your OpenSSL version.");
     return NULL;
 #endif
 }
 
 
-static PyGetSetDef context_getsetlist[] = {
+static TyGetSetDef context_getsetlist[] = {
     _SSL__SSLCONTEXT_CHECK_HOSTNAME_GETSETDEF
     _SSL__SSLCONTEXT__HOST_FLAGS_GETSETDEF
     _SSL__SSLCONTEXT_MINIMUM_VERSION_GETSETDEF
@@ -5245,7 +5245,7 @@ static PyGetSetDef context_getsetlist[] = {
     {NULL},            /* sentinel */
 };
 
-static struct PyMethodDef context_methods[] = {
+static struct TyMethodDef context_methods[] = {
     _SSL__SSLCONTEXT__WRAP_SOCKET_METHODDEF
     _SSL__SSLCONTEXT__WRAP_BIO_METHODDEF
     _SSL__SSLCONTEXT_SET_CIPHERS_METHODDEF
@@ -5264,21 +5264,21 @@ static struct PyMethodDef context_methods[] = {
     {NULL, NULL}        /* sentinel */
 };
 
-static PyType_Slot PySSLContext_slots[] = {
-    {Py_tp_methods, context_methods},
+static TyType_Slot PySSLContext_slots[] = {
+    {Ty_tp_methods, context_methods},
     {Py_tp_getset, context_getsetlist},
     {Py_tp_new, _ssl__SSLContext},
-    {Py_tp_dealloc, context_dealloc},
+    {Ty_tp_dealloc, context_dealloc},
     {Py_tp_traverse, context_traverse},
     {Py_tp_clear, context_clear},
     {0, 0},
 };
 
-static PyType_Spec PySSLContext_spec = {
+static TyType_Spec PySSLContext_spec = {
     .name = "_ssl._SSLContext",
     .basicsize = sizeof(PySSLContext),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC |
-              Py_TPFLAGS_IMMUTABLETYPE),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC |
+              Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = PySSLContext_slots,
 };
 
@@ -5294,8 +5294,8 @@ _ssl.MemoryBIO.__new__
 
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_MemoryBIO_impl(PyTypeObject *type)
+static TyObject *
+_ssl_MemoryBIO_impl(TyTypeObject *type)
 /*[clinic end generated code: output=8820a58db78330ac input=87f146cf30af454e]*/
 {
     BIO *bio;
@@ -5303,7 +5303,7 @@ _ssl_MemoryBIO_impl(PyTypeObject *type)
 
     bio = BIO_new(BIO_s_mem());
     if (bio == NULL) {
-        PyErr_SetString(PyExc_MemoryError, "failed to allocate BIO");
+        TyErr_SetString(TyExc_MemoryError, "failed to allocate BIO");
         return NULL;
     }
     /* Since our BIO is non-blocking an empty read() does not indicate EOF,
@@ -5321,25 +5321,25 @@ _ssl_MemoryBIO_impl(PyTypeObject *type)
     self->bio = bio;
     self->eof_written = 0;
 
-    return (PyObject *) self;
+    return (TyObject *) self;
 }
 
 static int
-memory_bio_traverse(PyObject *self, visitproc visit, void *arg)
+memory_bio_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    Py_VISIT(Py_TYPE(self));
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
 static void
-memory_bio_dealloc(PyObject *op)
+memory_bio_dealloc(TyObject *op)
 {
     PySSLMemoryBIO *self = PySSLMemoryBIO_CAST(op);
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     PyObject_GC_UnTrack(self);
     (void)BIO_free(self->bio);
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
 /*[clinic input]
@@ -5350,12 +5350,12 @@ _ssl.MemoryBIO.pending
 The number of bytes pending in the memory BIO.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl_MemoryBIO_pending_get_impl(PySSLMemoryBIO *self)
 /*[clinic end generated code: output=19236a32a51ac8ff input=02d9063d8ac31732]*/
 {
     size_t res = BIO_ctrl_pending(self->bio);
-    return PyLong_FromSize_t(res);
+    return TyLong_FromSize_t(res);
 }
 
 /*[clinic input]
@@ -5366,12 +5366,12 @@ _ssl.MemoryBIO.eof
 Whether the memory BIO is at EOF.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl_MemoryBIO_eof_get_impl(PySSLMemoryBIO *self)
 /*[clinic end generated code: output=c255a9ea16e31b92 input=c6ecc12c4509de1f]*/
 {
     size_t pending = BIO_ctrl_pending(self->bio);
-    return PyBool_FromLong((pending == 0) && self->eof_written);
+    return TyBool_FromLong((pending == 0) && self->eof_written);
 }
 
 /*[clinic input]
@@ -5388,32 +5388,32 @@ EOF or that no data is available. Use the "eof" property to
 distinguish between the two.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl_MemoryBIO_read_impl(PySSLMemoryBIO *self, int len)
 /*[clinic end generated code: output=a657aa1e79cd01b3 input=21046f2d7dac3a90]*/
 {
     int avail, nbytes;
-    PyObject *result;
+    TyObject *result;
 
-    avail = (int)Py_MIN(BIO_ctrl_pending(self->bio), INT_MAX);
+    avail = (int)Ty_MIN(BIO_ctrl_pending(self->bio), INT_MAX);
     if ((len < 0) || (len > avail))
         len = avail;
 
-    result = PyBytes_FromStringAndSize(NULL, len);
+    result = TyBytes_FromStringAndSize(NULL, len);
     if ((result == NULL) || (len == 0))
         return result;
 
-    nbytes = BIO_read(self->bio, PyBytes_AS_STRING(result), len);
+    nbytes = BIO_read(self->bio, TyBytes_AS_STRING(result), len);
     if (nbytes < 0) {
         _sslmodulestate *state = get_state_mbio(self);
-        Py_DECREF(result);
+        Ty_DECREF(result);
         _setSSLError(state, NULL, 0, __FILE__, __LINE__);
         return NULL;
     }
 
     /* There should never be any short reads but check anyway. */
     if (nbytes < len) {
-        _PyBytes_Resize(&result, nbytes);
+        _TyBytes_Resize(&result, nbytes);
     }
 
     return result;
@@ -5422,7 +5422,7 @@ _ssl_MemoryBIO_read_impl(PySSLMemoryBIO *self, int len)
 /*[clinic input]
 @critical_section
 _ssl.MemoryBIO.write
-    b: Py_buffer
+    b: Ty_buffer
     /
 
 Writes the bytes b into the memory BIO.
@@ -5430,23 +5430,23 @@ Writes the bytes b into the memory BIO.
 Returns the number of bytes written.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_MemoryBIO_write_impl(PySSLMemoryBIO *self, Py_buffer *b)
+static TyObject *
+_ssl_MemoryBIO_write_impl(PySSLMemoryBIO *self, Ty_buffer *b)
 /*[clinic end generated code: output=156ec59110d75935 input=107da3f5fba26b37]*/
 {
     int nbytes;
 
     if (b->len > INT_MAX) {
-        PyErr_Format(PyExc_OverflowError,
+        TyErr_Format(TyExc_OverflowError,
                      "string longer than %d bytes", INT_MAX);
         return NULL;
     }
 
     if (self->eof_written) {
-        PyObject *module = PyType_GetModule(Py_TYPE(self));
+        TyObject *module = TyType_GetModule(Ty_TYPE(self));
         if (module == NULL)
             return NULL;
-        PyErr_SetString(get_ssl_state(module)->PySSLErrorObject,
+        TyErr_SetString(get_ssl_state(module)->PySSLErrorObject,
                         "cannot write() after write_eof()");
         return NULL;
     }
@@ -5458,7 +5458,7 @@ _ssl_MemoryBIO_write_impl(PySSLMemoryBIO *self, Py_buffer *b)
         return NULL;
     }
 
-    return PyLong_FromLong(nbytes);
+    return TyLong_FromLong(nbytes);
 }
 
 /*[clinic input]
@@ -5470,7 +5470,7 @@ Write an EOF marker to the memory BIO.
 When all data has been read, the "eof" property will be True.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl_MemoryBIO_write_eof_impl(PySSLMemoryBIO *self)
 /*[clinic end generated code: output=d4106276ccd1ed34 input=1e914231b1c5900a]*/
 {
@@ -5483,33 +5483,33 @@ _ssl_MemoryBIO_write_eof_impl(PySSLMemoryBIO *self)
     Py_RETURN_NONE;
 }
 
-static PyGetSetDef memory_bio_getsetlist[] = {
+static TyGetSetDef memory_bio_getsetlist[] = {
     _SSL_MEMORYBIO_PENDING_GETSETDEF
     _SSL_MEMORYBIO_EOF_GETSETDEF
     {NULL},            /* sentinel */
 };
 
-static struct PyMethodDef memory_bio_methods[] = {
+static struct TyMethodDef memory_bio_methods[] = {
     _SSL_MEMORYBIO_READ_METHODDEF
     _SSL_MEMORYBIO_WRITE_METHODDEF
     _SSL_MEMORYBIO_WRITE_EOF_METHODDEF
     {NULL, NULL}        /* sentinel */
 };
 
-static PyType_Slot PySSLMemoryBIO_slots[] = {
-    {Py_tp_methods, memory_bio_methods},
+static TyType_Slot PySSLMemoryBIO_slots[] = {
+    {Ty_tp_methods, memory_bio_methods},
     {Py_tp_getset, memory_bio_getsetlist},
     {Py_tp_new, _ssl_MemoryBIO},
-    {Py_tp_dealloc, memory_bio_dealloc},
+    {Ty_tp_dealloc, memory_bio_dealloc},
     {Py_tp_traverse, memory_bio_traverse},
     {0, 0},
 };
 
-static PyType_Spec PySSLMemoryBIO_spec = {
+static TyType_Spec PySSLMemoryBIO_spec = {
     .name = "_ssl.MemoryBIO",
     .basicsize = sizeof(PySSLMemoryBIO),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_IMMUTABLETYPE |
-              Py_TPFLAGS_HAVE_GC),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_IMMUTABLETYPE |
+              Ty_TPFLAGS_HAVE_GC),
     .slots = PySSLMemoryBIO_slots,
 };
 
@@ -5518,30 +5518,30 @@ static PyType_Spec PySSLMemoryBIO_spec = {
  */
 
 static void
-PySSLSession_dealloc(PyObject *op)
+PySSLSession_dealloc(TyObject *op)
 {
     PySSLSession *self = PySSLSession_CAST(op);
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     /* bpo-31095: UnTrack is needed before calling any callbacks */
     PyObject_GC_UnTrack(self);
-    Py_XDECREF(self->ctx);
+    Ty_XDECREF(self->ctx);
     if (self->session != NULL) {
         SSL_SESSION_free(self->session);
     }
     PyObject_GC_Del(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
-static PyObject *
-PySSLSession_richcompare(PyObject *left, PyObject *right, int op)
+static TyObject *
+PySSLSession_richcompare(TyObject *left, TyObject *right, int op)
 {
     if (left == NULL || right == NULL) {
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         return NULL;
     }
 
     int result;
-    PyTypeObject *sesstype = PySSLSession_CAST(left)->ctx->state->PySSLSession_Type;
+    TyTypeObject *sesstype = PySSLSession_CAST(left)->ctx->state->PySSLSession_Type;
 
     if (!Py_IS_TYPE(left, sesstype) || !Py_IS_TYPE(right, sesstype)) {
         Py_RETURN_NOTIMPLEMENTED;
@@ -5585,25 +5585,25 @@ PySSLSession_richcompare(PyObject *left, PyObject *right, int op)
         Py_RETURN_NOTIMPLEMENTED;
         break;
       default:
-        PyErr_BadArgument();
+        TyErr_BadArgument();
         return NULL;
     }
 }
 
 static int
-PySSLSession_traverse(PyObject *op, visitproc visit, void *arg)
+PySSLSession_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PySSLSession *self = PySSLSession_CAST(op);
-    Py_VISIT(self->ctx);
-    Py_VISIT(Py_TYPE(self));
+    Ty_VISIT(self->ctx);
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
 static int
-PySSLSession_clear(PyObject *op)
+PySSLSession_clear(TyObject *op)
 {
     PySSLSession *self = PySSLSession_CAST(op);
-    Py_CLEAR(self->ctx);
+    Ty_CLEAR(self->ctx);
     return 0;
 }
 
@@ -5616,14 +5616,14 @@ _ssl.SSLSession.time
 Session creation time (seconds since epoch).
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_time_get_impl(PySSLSession *self)
 /*[clinic end generated code: output=4b887b9299de9be4 input=67f2325284450ae2]*/
 {
 #if OPENSSL_VERSION_NUMBER >= 0x30300000L
-    return _PyLong_FromTime_t(SSL_SESSION_get_time_ex(self->session));
+    return _TyLong_FromTime_t(SSL_SESSION_get_time_ex(self->session));
 #else
-    return PyLong_FromLong(SSL_SESSION_get_time(self->session));
+    return TyLong_FromLong(SSL_SESSION_get_time(self->session));
 #endif
 }
 
@@ -5635,12 +5635,12 @@ _ssl.SSLSession.timeout
 Session timeout (delta in seconds).
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_timeout_get_impl(PySSLSession *self)
 /*[clinic end generated code: output=82339c148ab2f7d1 input=cd17c2b087c442f2]*/
 {
     long timeout = SSL_SESSION_get_timeout(self->session);
-    PyObject *res = PyLong_FromLong(timeout);
+    TyObject *res = TyLong_FromLong(timeout);
     return res;
 }
 
@@ -5652,12 +5652,12 @@ _ssl.SSLSession.ticket_lifetime_hint
 Ticket life time hint.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_ticket_lifetime_hint_get_impl(PySSLSession *self)
 /*[clinic end generated code: output=c8b6db498136c275 input=f0e2df50961a7806]*/
 {
     unsigned long hint = SSL_SESSION_get_ticket_lifetime_hint(self->session);
-    return PyLong_FromUnsignedLong(hint);
+    return TyLong_FromUnsignedLong(hint);
 }
 
 /*[clinic input]
@@ -5668,7 +5668,7 @@ _ssl.SSLSession.id
 Session ID.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_id_get_impl(PySSLSession *self)
 /*[clinic end generated code: output=c532fb96b10c5adf input=0a379e64312b776d]*/
 
@@ -5676,7 +5676,7 @@ _ssl_SSLSession_id_get_impl(PySSLSession *self)
     const unsigned char *id;
     unsigned int len;
     id = SSL_SESSION_get_id(self->session, &len);
-    return PyBytes_FromStringAndSize((const char *)id, len);
+    return TyBytes_FromStringAndSize((const char *)id, len);
 }
 
 /*[clinic input]
@@ -5687,15 +5687,15 @@ _ssl.SSLSession.has_ticket
 Does the session contain a ticket?
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_has_ticket_get_impl(PySSLSession *self)
 /*[clinic end generated code: output=aa3ccfc40b10b96d input=fa475555f53a5086]*/
 {
     int res = SSL_SESSION_has_ticket(self->session);
-    return res ? Py_True : Py_False;
+    return res ? Ty_True : Ty_False;
 }
 
-static PyGetSetDef PySSLSession_getsetlist[] = {
+static TyGetSetDef PySSLSession_getsetlist[] = {
     _SSL_SSLSESSION_HAS_TICKET_GETSETDEF
     _SSL_SSLSESSION_ID_GETSETDEF
     _SSL_SSLSESSION_TICKET_LIFETIME_HINT_GETSETDEF
@@ -5704,21 +5704,21 @@ static PyGetSetDef PySSLSession_getsetlist[] = {
     {NULL},            /* sentinel */
 };
 
-static PyType_Slot PySSLSession_slots[] = {
+static TyType_Slot PySSLSession_slots[] = {
     {Py_tp_getset,PySSLSession_getsetlist},
     {Py_tp_richcompare, PySSLSession_richcompare},
-    {Py_tp_dealloc, PySSLSession_dealloc},
+    {Ty_tp_dealloc, PySSLSession_dealloc},
     {Py_tp_traverse, PySSLSession_traverse},
     {Py_tp_clear, PySSLSession_clear},
     {0, 0},
 };
 
-static PyType_Spec PySSLSession_spec = {
+static TyType_Spec PySSLSession_spec = {
     .name = "_ssl.SSLSession",
     .basicsize = sizeof(PySSLSession),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-              Py_TPFLAGS_IMMUTABLETYPE |
-              Py_TPFLAGS_DISALLOW_INSTANTIATION),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC |
+              Ty_TPFLAGS_IMMUTABLETYPE |
+              Ty_TPFLAGS_DISALLOW_INSTANTIATION),
     .slots = PySSLSession_slots,
 };
 
@@ -5727,7 +5727,7 @@ static PyType_Spec PySSLSession_spec = {
 /*[clinic input]
 @critical_section
 _ssl.RAND_add
-    string as view: Py_buffer(accept={str, buffer})
+    string as view: Ty_buffer(accept={str, buffer})
     entropy: double
     /
 
@@ -5737,17 +5737,17 @@ entropy (a float) is a lower bound on the entropy contained in
 string.  See RFC 4086.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_RAND_add_impl(PyObject *module, Py_buffer *view, double entropy)
+static TyObject *
+_ssl_RAND_add_impl(TyObject *module, Ty_buffer *view, double entropy)
 /*[clinic end generated code: output=e6dd48df9c9024e9 input=313cb73b34db31d5]*/
 {
     const char *buf;
-    Py_ssize_t len, written;
+    Ty_ssize_t len, written;
 
     buf = (const char *)view->buf;
     len = view->len;
     do {
-        written = Py_MIN(len, INT_MAX);
+        written = Ty_MIN(len, INT_MAX);
         RAND_add(buf, (int)written, entropy);
         buf += written;
         len -= written;
@@ -5755,41 +5755,41 @@ _ssl_RAND_add_impl(PyObject *module, Py_buffer *view, double entropy)
     Py_RETURN_NONE;
 }
 
-static PyObject *
-PySSL_RAND(PyObject *module, int len, int pseudo)
+static TyObject *
+PySSL_RAND(TyObject *module, int len, int pseudo)
 {
     int ok;
-    PyObject *bytes;
+    TyObject *bytes;
     unsigned long err;
     const char *errstr;
-    PyObject *v;
+    TyObject *v;
 
     if (len < 0) {
-        PyErr_SetString(PyExc_ValueError, "num must be positive");
+        TyErr_SetString(TyExc_ValueError, "num must be positive");
         return NULL;
     }
 
-    bytes = PyBytes_FromStringAndSize(NULL, len);
+    bytes = TyBytes_FromStringAndSize(NULL, len);
     if (bytes == NULL)
         return NULL;
     if (pseudo) {
-        ok = RAND_bytes((unsigned char*)PyBytes_AS_STRING(bytes), len);
+        ok = RAND_bytes((unsigned char*)TyBytes_AS_STRING(bytes), len);
         if (ok == 0 || ok == 1)
-            return Py_BuildValue("NO", bytes, ok == 1 ? Py_True : Py_False);
+            return Ty_BuildValue("NO", bytes, ok == 1 ? Ty_True : Ty_False);
     }
     else {
-        ok = RAND_bytes((unsigned char*)PyBytes_AS_STRING(bytes), len);
+        ok = RAND_bytes((unsigned char*)TyBytes_AS_STRING(bytes), len);
         if (ok == 1)
             return bytes;
     }
-    Py_DECREF(bytes);
+    Ty_DECREF(bytes);
 
     err = ERR_get_error();
     errstr = ERR_reason_error_string(err);
-    v = Py_BuildValue("(ks)", err, errstr);
+    v = Ty_BuildValue("(ks)", err, errstr);
     if (v != NULL) {
-        PyErr_SetObject(get_ssl_state(module)->PySSLErrorObject, v);
-        Py_DECREF(v);
+        TyErr_SetObject(get_ssl_state(module)->PySSLErrorObject, v);
+        Ty_DECREF(v);
     }
     return NULL;
 }
@@ -5803,8 +5803,8 @@ _ssl.RAND_bytes
 Generate n cryptographically strong pseudo-random bytes.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_RAND_bytes_impl(PyObject *module, int n)
+static TyObject *
+_ssl_RAND_bytes_impl(TyObject *module, int n)
 /*[clinic end generated code: output=977da635e4838bc7 input=2e78ce1e86336776]*/
 {
     return PySSL_RAND(module, n, 0);
@@ -5821,11 +5821,11 @@ It is necessary to seed the PRNG with RAND_add() on some platforms before
 using the ssl() function.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_RAND_status_impl(PyObject *module)
+static TyObject *
+_ssl_RAND_status_impl(TyObject *module)
 /*[clinic end generated code: output=7e0aaa2d39fdc1ad input=636fb5659ea2e727]*/
 {
-    return PyBool_FromLong(RAND_status());
+    return TyBool_FromLong(RAND_status());
 }
 
 /*[clinic input]
@@ -5837,21 +5837,21 @@ Return search paths and environment vars that are used by SSLContext's set_defau
 The values are 'cert_file_env', 'cert_file', 'cert_dir_env', 'cert_dir'.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_get_default_verify_paths_impl(PyObject *module)
+static TyObject *
+_ssl_get_default_verify_paths_impl(TyObject *module)
 /*[clinic end generated code: output=e5b62a466271928b input=c6ae00bc04eb2b6e]*/
 {
-    PyObject *ofile_env = NULL;
-    PyObject *ofile = NULL;
-    PyObject *odir_env = NULL;
-    PyObject *odir = NULL;
+    TyObject *ofile_env = NULL;
+    TyObject *ofile = NULL;
+    TyObject *odir_env = NULL;
+    TyObject *odir = NULL;
 
 #define CONVERT(info, target) { \
         const char *tmp = (info); \
         target = NULL; \
-        if (!tmp) { target = Py_NewRef(Py_None); } \
-        else if ((target = PyUnicode_DecodeFSDefault(tmp)) == NULL) { \
-            target = PyBytes_FromString(tmp); } \
+        if (!tmp) { target = Ty_NewRef(Ty_None); } \
+        else if ((target = TyUnicode_DecodeFSDefault(tmp)) == NULL) { \
+            target = TyBytes_FromString(tmp); } \
         if (!target) goto error; \
     }
 
@@ -5861,17 +5861,17 @@ _ssl_get_default_verify_paths_impl(PyObject *module)
     CONVERT(X509_get_default_cert_dir(), odir);
 #undef CONVERT
 
-    return Py_BuildValue("NNNN", ofile_env, ofile, odir_env, odir);
+    return Ty_BuildValue("NNNN", ofile_env, ofile, odir_env, odir);
 
   error:
-    Py_XDECREF(ofile_env);
-    Py_XDECREF(ofile);
-    Py_XDECREF(odir_env);
-    Py_XDECREF(odir);
+    Ty_XDECREF(ofile_env);
+    Ty_XDECREF(ofile);
+    Ty_XDECREF(odir_env);
+    Ty_XDECREF(odir);
     return NULL;
 }
 
-static PyObject*
+static TyObject*
 asn1obj2py(_sslmodulestate *state, ASN1_OBJECT *obj)
 {
     int nid;
@@ -5879,12 +5879,12 @@ asn1obj2py(_sslmodulestate *state, ASN1_OBJECT *obj)
 
     nid = OBJ_obj2nid(obj);
     if (nid == NID_undef) {
-        PyErr_Format(PyExc_ValueError, "Unknown object");
+        TyErr_Format(TyExc_ValueError, "Unknown object");
         return NULL;
     }
     sn = OBJ_nid2sn(nid);
     ln = OBJ_nid2ln(nid);
-    return Py_BuildValue("issN", nid, sn, ln, _asn1obj2py(state, obj, 1));
+    return Ty_BuildValue("issN", nid, sn, ln, _asn1obj2py(state, obj, 1));
 }
 
 /*[clinic input]
@@ -5899,16 +5899,16 @@ By default objects are looked up by OID. With name=True short and
 long name are also matched.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_txt2obj_impl(PyObject *module, const char *txt, int name)
+static TyObject *
+_ssl_txt2obj_impl(TyObject *module, const char *txt, int name)
 /*[clinic end generated code: output=c38e3991347079c1 input=c99b134d70173c5e]*/
 {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     ASN1_OBJECT *obj;
 
     obj = OBJ_txt2obj(txt, name ? 0 : 1);
     if (obj == NULL) {
-        PyErr_Format(PyExc_ValueError, "unknown object '%.100s'", txt);
+        TyErr_Format(TyExc_ValueError, "unknown object '%.100s'", txt);
         return NULL;
     }
     result = asn1obj2py(get_ssl_state(module), obj);
@@ -5925,20 +5925,20 @@ _ssl.nid2obj
 Lookup NID, short name, long name and OID of an ASN1_OBJECT by NID.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_nid2obj_impl(PyObject *module, int nid)
+static TyObject *
+_ssl_nid2obj_impl(TyObject *module, int nid)
 /*[clinic end generated code: output=4a98ab691cd4f84a input=1b1170506fa83a53]*/
 {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     ASN1_OBJECT *obj;
 
     if (nid < NID_undef) {
-        PyErr_SetString(PyExc_ValueError, "NID must be positive.");
+        TyErr_SetString(TyExc_ValueError, "NID must be positive.");
         return NULL;
     }
     obj = OBJ_nid2obj(nid);
     if (obj == NULL) {
-        PyErr_Format(PyExc_ValueError, "unknown NID %i", nid);
+        TyErr_Format(TyExc_ValueError, "unknown NID %i", nid);
         return NULL;
     }
     result = asn1obj2py(get_ssl_state(module), obj);
@@ -5948,84 +5948,84 @@ _ssl_nid2obj_impl(PyObject *module, int nid)
 
 #ifdef _MSC_VER
 
-static PyObject*
+static TyObject*
 certEncodingType(DWORD encodingType)
 {
-    static PyObject *x509_asn = NULL;
-    static PyObject *pkcs_7_asn = NULL;
+    static TyObject *x509_asn = NULL;
+    static TyObject *pkcs_7_asn = NULL;
 
     if (x509_asn == NULL) {
-        x509_asn = PyUnicode_InternFromString("x509_asn");
+        x509_asn = TyUnicode_InternFromString("x509_asn");
         if (x509_asn == NULL)
             return NULL;
     }
     if (pkcs_7_asn == NULL) {
-        pkcs_7_asn = PyUnicode_InternFromString("pkcs_7_asn");
+        pkcs_7_asn = TyUnicode_InternFromString("pkcs_7_asn");
         if (pkcs_7_asn == NULL)
             return NULL;
     }
     switch(encodingType) {
     case X509_ASN_ENCODING:
-        return Py_NewRef(x509_asn);
+        return Ty_NewRef(x509_asn);
     case PKCS_7_ASN_ENCODING:
-        return Py_NewRef(pkcs_7_asn);
+        return Ty_NewRef(pkcs_7_asn);
     default:
-        return PyLong_FromLong(encodingType);
+        return TyLong_FromLong(encodingType);
     }
 }
 
-static PyObject*
+static TyObject*
 parseKeyUsage(PCCERT_CONTEXT pCertCtx, DWORD flags)
 {
     CERT_ENHKEY_USAGE *usage;
     DWORD size, error, i;
-    PyObject *retval;
+    TyObject *retval;
 
     if (!CertGetEnhancedKeyUsage(pCertCtx, flags, NULL, &size)) {
         error = GetLastError();
         if (error == CRYPT_E_NOT_FOUND) {
             Py_RETURN_TRUE;
         }
-        return PyErr_SetFromWindowsErr(error);
+        return TyErr_SetFromWindowsErr(error);
     }
 
-    usage = (CERT_ENHKEY_USAGE*)PyMem_Malloc(size);
+    usage = (CERT_ENHKEY_USAGE*)TyMem_Malloc(size);
     if (usage == NULL) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
 
     /* Now get the actual enhanced usage property */
     if (!CertGetEnhancedKeyUsage(pCertCtx, flags, usage, &size)) {
-        PyMem_Free(usage);
+        TyMem_Free(usage);
         error = GetLastError();
         if (error == CRYPT_E_NOT_FOUND) {
             Py_RETURN_TRUE;
         }
-        return PyErr_SetFromWindowsErr(error);
+        return TyErr_SetFromWindowsErr(error);
     }
-    retval = PyFrozenSet_New(NULL);
+    retval = TyFrozenSet_New(NULL);
     if (retval == NULL) {
         goto error;
     }
     for (i = 0; i < usage->cUsageIdentifier; ++i) {
         if (usage->rgpszUsageIdentifier[i]) {
-            PyObject *oid;
+            TyObject *oid;
             int err;
-            oid = PyUnicode_FromString(usage->rgpszUsageIdentifier[i]);
+            oid = TyUnicode_FromString(usage->rgpszUsageIdentifier[i]);
             if (oid == NULL) {
-                Py_CLEAR(retval);
+                Ty_CLEAR(retval);
                 goto error;
             }
-            err = PySet_Add(retval, oid);
-            Py_DECREF(oid);
+            err = TySet_Add(retval, oid);
+            Ty_DECREF(oid);
             if (err == -1) {
-                Py_CLEAR(retval);
+                Ty_CLEAR(retval);
                 goto error;
             }
         }
     }
   error:
-    PyMem_Free(usage);
+    TyMem_Free(usage);
     return retval;
 }
 
@@ -6092,61 +6092,61 @@ with X509_ASN_ENCODING or PKCS_7_ASN_ENCODING. The trust setting is either
 a set of OIDs or the boolean True.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_enum_certificates_impl(PyObject *module, const char *store_name)
+static TyObject *
+_ssl_enum_certificates_impl(TyObject *module, const char *store_name)
 /*[clinic end generated code: output=5134dc8bb3a3c893 input=263c22e6c6988cf3]*/
 {
     HCERTSTORE hCollectionStore = NULL;
     PCCERT_CONTEXT pCertCtx = NULL;
-    PyObject *keyusage = NULL, *cert = NULL, *enc = NULL, *tup = NULL;
-    PyObject *result = NULL;
+    TyObject *keyusage = NULL, *cert = NULL, *enc = NULL, *tup = NULL;
+    TyObject *result = NULL;
 
-    result = PySet_New(NULL);
+    result = TySet_New(NULL);
     if (result == NULL) {
         return NULL;
     }
     hCollectionStore = ssl_collect_certificates(store_name);
     if (hCollectionStore == NULL) {
-        Py_DECREF(result);
-        return PyErr_SetFromWindowsErr(GetLastError());
+        Ty_DECREF(result);
+        return TyErr_SetFromWindowsErr(GetLastError());
     }
 
     while ((pCertCtx = CertEnumCertificatesInStore(hCollectionStore, pCertCtx))) {
-        cert = PyBytes_FromStringAndSize((const char*)pCertCtx->pbCertEncoded,
+        cert = TyBytes_FromStringAndSize((const char*)pCertCtx->pbCertEncoded,
                                             pCertCtx->cbCertEncoded);
         if (!cert) {
-            Py_CLEAR(result);
+            Ty_CLEAR(result);
             break;
         }
         if ((enc = certEncodingType(pCertCtx->dwCertEncodingType)) == NULL) {
-            Py_CLEAR(result);
+            Ty_CLEAR(result);
             break;
         }
         keyusage = parseKeyUsage(pCertCtx, CERT_FIND_PROP_ONLY_ENHKEY_USAGE_FLAG);
-        if (keyusage == Py_True) {
-            Py_DECREF(keyusage);
+        if (keyusage == Ty_True) {
+            Ty_DECREF(keyusage);
             keyusage = parseKeyUsage(pCertCtx, CERT_FIND_EXT_ONLY_ENHKEY_USAGE_FLAG);
         }
         if (keyusage == NULL) {
-            Py_CLEAR(result);
+            Ty_CLEAR(result);
             break;
         }
-        if ((tup = PyTuple_New(3)) == NULL) {
-            Py_CLEAR(result);
+        if ((tup = TyTuple_New(3)) == NULL) {
+            Ty_CLEAR(result);
             break;
         }
-        PyTuple_SET_ITEM(tup, 0, cert);
+        TyTuple_SET_ITEM(tup, 0, cert);
         cert = NULL;
-        PyTuple_SET_ITEM(tup, 1, enc);
+        TyTuple_SET_ITEM(tup, 1, enc);
         enc = NULL;
-        PyTuple_SET_ITEM(tup, 2, keyusage);
+        TyTuple_SET_ITEM(tup, 2, keyusage);
         keyusage = NULL;
-        if (PySet_Add(result, tup) == -1) {
-            Py_CLEAR(result);
-            Py_CLEAR(tup);
+        if (TySet_Add(result, tup) == -1) {
+            Ty_CLEAR(result);
+            Ty_CLEAR(tup);
             break;
         }
-        Py_CLEAR(tup);
+        Ty_CLEAR(tup);
     }
     if (pCertCtx) {
         /* loop ended with an error, need to clean up context manually */
@@ -6154,26 +6154,26 @@ _ssl_enum_certificates_impl(PyObject *module, const char *store_name)
     }
 
     /* In error cases cert, enc and tup may not be NULL */
-    Py_XDECREF(cert);
-    Py_XDECREF(enc);
-    Py_XDECREF(keyusage);
-    Py_XDECREF(tup);
+    Ty_XDECREF(cert);
+    Ty_XDECREF(enc);
+    Ty_XDECREF(keyusage);
+    Ty_XDECREF(tup);
 
     /* CERT_CLOSE_STORE_FORCE_FLAG forces freeing of memory for all contexts
        associated with the store, in this case our collection store and the
        associated system stores. */
     if (!CertCloseStore(hCollectionStore, CERT_CLOSE_STORE_FORCE_FLAG)) {
         /* This error case might shadow another exception.*/
-        Py_XDECREF(result);
-        return PyErr_SetFromWindowsErr(GetLastError());
+        Ty_XDECREF(result);
+        return TyErr_SetFromWindowsErr(GetLastError());
     }
 
     /* convert set to list */
     if (result == NULL) {
         return NULL;
     } else {
-        PyObject *lst = PySequence_List(result);
-        Py_DECREF(result);
+        TyObject *lst = PySequence_List(result);
+        Ty_DECREF(result);
         return lst;
     }
 }
@@ -6191,51 +6191,51 @@ encoding_type) tuples.  The encoding_type flag can be interpreted with
 X509_ASN_ENCODING or PKCS_7_ASN_ENCODING.
 [clinic start generated code]*/
 
-static PyObject *
-_ssl_enum_crls_impl(PyObject *module, const char *store_name)
+static TyObject *
+_ssl_enum_crls_impl(TyObject *module, const char *store_name)
 /*[clinic end generated code: output=bce467f60ccd03b6 input=51a1b1059e55ce43]*/
 {
     HCERTSTORE hCollectionStore = NULL;
     PCCRL_CONTEXT pCrlCtx = NULL;
-    PyObject *crl = NULL, *enc = NULL, *tup = NULL;
-    PyObject *result = NULL;
+    TyObject *crl = NULL, *enc = NULL, *tup = NULL;
+    TyObject *result = NULL;
 
-    result = PySet_New(NULL);
+    result = TySet_New(NULL);
     if (result == NULL) {
         return NULL;
     }
     hCollectionStore = ssl_collect_certificates(store_name);
     if (hCollectionStore == NULL) {
-        Py_DECREF(result);
-        return PyErr_SetFromWindowsErr(GetLastError());
+        Ty_DECREF(result);
+        return TyErr_SetFromWindowsErr(GetLastError());
     }
 
     while ((pCrlCtx = CertEnumCRLsInStore(hCollectionStore, pCrlCtx))) {
-        crl = PyBytes_FromStringAndSize((const char*)pCrlCtx->pbCrlEncoded,
+        crl = TyBytes_FromStringAndSize((const char*)pCrlCtx->pbCrlEncoded,
                                             pCrlCtx->cbCrlEncoded);
         if (!crl) {
-            Py_CLEAR(result);
+            Ty_CLEAR(result);
             break;
         }
         if ((enc = certEncodingType(pCrlCtx->dwCertEncodingType)) == NULL) {
-            Py_CLEAR(result);
+            Ty_CLEAR(result);
             break;
         }
-        if ((tup = PyTuple_New(2)) == NULL) {
-            Py_CLEAR(result);
+        if ((tup = TyTuple_New(2)) == NULL) {
+            Ty_CLEAR(result);
             break;
         }
-        PyTuple_SET_ITEM(tup, 0, crl);
+        TyTuple_SET_ITEM(tup, 0, crl);
         crl = NULL;
-        PyTuple_SET_ITEM(tup, 1, enc);
+        TyTuple_SET_ITEM(tup, 1, enc);
         enc = NULL;
 
-        if (PySet_Add(result, tup) == -1) {
-            Py_CLEAR(result);
-            Py_CLEAR(tup);
+        if (TySet_Add(result, tup) == -1) {
+            Ty_CLEAR(result);
+            Ty_CLEAR(tup);
             break;
         }
-        Py_CLEAR(tup);
+        Ty_CLEAR(tup);
     }
     if (pCrlCtx) {
         /* loop ended with an error, need to clean up context manually */
@@ -6243,24 +6243,24 @@ _ssl_enum_crls_impl(PyObject *module, const char *store_name)
     }
 
     /* In error cases cert, enc and tup may not be NULL */
-    Py_XDECREF(crl);
-    Py_XDECREF(enc);
-    Py_XDECREF(tup);
+    Ty_XDECREF(crl);
+    Ty_XDECREF(enc);
+    Ty_XDECREF(tup);
 
     /* CERT_CLOSE_STORE_FORCE_FLAG forces freeing of memory for all contexts
        associated with the store, in this case our collection store and the
        associated system stores. */
     if (!CertCloseStore(hCollectionStore, CERT_CLOSE_STORE_FORCE_FLAG)) {
         /* This error case might shadow another exception.*/
-        Py_XDECREF(result);
-        return PyErr_SetFromWindowsErr(GetLastError());
+        Ty_XDECREF(result);
+        return TyErr_SetFromWindowsErr(GetLastError());
     }
     /* convert set to list */
     if (result == NULL) {
         return NULL;
     } else {
-        PyObject *lst = PySequence_List(result);
-        Py_DECREF(result);
+        TyObject *lst = PySequence_List(result);
+        Ty_DECREF(result);
         return lst;
     }
 }
@@ -6268,7 +6268,7 @@ _ssl_enum_crls_impl(PyObject *module, const char *store_name)
 #endif /* _MSC_VER */
 
 /* List of functions exported by this module. */
-static PyMethodDef PySSL_methods[] = {
+static TyMethodDef PySSL_methods[] = {
     _SSL__TEST_DECODE_CERT_METHODDEF
     _SSL_RAND_ADD_METHODDEF
     _SSL_RAND_BYTES_METHODDEF
@@ -6282,34 +6282,34 @@ static PyMethodDef PySSL_methods[] = {
 };
 
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "Implementation module for SSL socket operations.  See the socket module\n\
 for documentation.");
 
 static int
-sslmodule_init_exceptions(PyObject *module)
+sslmodule_init_exceptions(TyObject *module)
 {
     _sslmodulestate *state = get_ssl_state(module);
-    PyObject *bases = NULL;
+    TyObject *bases = NULL;
 
 #define add_exception(exc, name, doc, base)                                 \
 do {                                                                        \
-    (exc) = PyErr_NewExceptionWithDoc("ssl." name, (doc), (base), NULL);    \
+    (exc) = TyErr_NewExceptionWithDoc("ssl." name, (doc), (base), NULL);    \
     if ((state) == NULL) goto error;                                        \
-    if (PyModule_AddObjectRef(module, name, exc) < 0) goto error;           \
+    if (TyModule_AddObjectRef(module, name, exc) < 0) goto error;           \
 } while(0)
 
-    state->PySSLErrorObject = PyType_FromSpecWithBases(
-        &sslerror_type_spec, PyExc_OSError);
+    state->PySSLErrorObject = TyType_FromSpecWithBases(
+        &sslerror_type_spec, TyExc_OSError);
     if (state->PySSLErrorObject == NULL) {
         goto error;
     }
-    if (PyModule_AddObjectRef(module, "SSLError", state->PySSLErrorObject) < 0) {
+    if (TyModule_AddObjectRef(module, "SSLError", state->PySSLErrorObject) < 0) {
         goto error;
     }
 
     /* ssl.CertificateError used to be a subclass of ValueError */
-    bases = PyTuple_Pack(2, state->PySSLErrorObject, PyExc_ValueError);
+    bases = TyTuple_Pack(2, state->PySSLErrorObject, TyExc_ValueError);
     if (bases == NULL) {
         goto error;
     }
@@ -6319,7 +6319,7 @@ do {                                                                        \
         SSLCertVerificationError_doc,
         bases
     );
-    Py_CLEAR(bases);
+    Ty_CLEAR(bases);
 
     add_exception(
         state->PySSLZeroReturnErrorObject,
@@ -6359,12 +6359,12 @@ do {                                                                        \
 
     return 0;
   error:
-    Py_XDECREF(bases);
+    Ty_XDECREF(bases);
     return -1;
 }
 
 static int
-sslmodule_init_socketapi(PyObject *module)
+sslmodule_init_socketapi(TyObject *module)
 {
     _sslmodulestate *state = get_ssl_state(module);
     PySocketModule_APIObject *sockmod = PySocketModule_ImportModuleAndAPI();
@@ -6372,30 +6372,30 @@ sslmodule_init_socketapi(PyObject *module)
     if ((sockmod == NULL) || (sockmod->Sock_Type == NULL)) {
         return -1;
     }
-    state->Sock_Type = (PyTypeObject*)Py_NewRef(sockmod->Sock_Type);
+    state->Sock_Type = (TyTypeObject*)Ty_NewRef(sockmod->Sock_Type);
     return 0;
 }
 
 
 static int
-sslmodule_add_option(PyObject *m, const char *name, uint64_t value)
+sslmodule_add_option(TyObject *m, const char *name, uint64_t value)
 {
-    Py_BUILD_ASSERT(sizeof(unsigned long long) >= sizeof(value));
-    return PyModule_Add(m, name, PyLong_FromUnsignedLongLong(value));
+    Ty_BUILD_ASSERT(sizeof(unsigned long long) >= sizeof(value));
+    return TyModule_Add(m, name, TyLong_FromUnsignedLongLong(value));
 }
 
 
 static int
-sslmodule_init_constants(PyObject *m)
+sslmodule_init_constants(TyObject *m)
 {
-    if (PyModule_AddStringConstant(m, "_DEFAULT_CIPHERS",
+    if (TyModule_AddStringConstant(m, "_DEFAULT_CIPHERS",
                                    PY_SSL_DEFAULT_CIPHER_STRING) < 0)
     {
         return -1;
     }
 
 #define ADD_INT_CONST(NAME, VALUE) do {                 \
-    if (PyModule_AddIntConstant(m, NAME, VALUE) < 0) {  \
+    if (TyModule_AddIntConstant(m, NAME, VALUE) < 0) {  \
         return -1;                                      \
     }                                                   \
 } while (0)
@@ -6576,8 +6576,8 @@ sslmodule_init_constants(PyObject *m)
 
 #define addbool(m, key, value) \
     do { \
-        PyObject *bool_obj = (value) ? Py_True : Py_False; \
-        if (PyModule_AddObjectRef((m), (key), bool_obj) < 0) { \
+        TyObject *bool_obj = (value) ? Ty_True : Ty_False; \
+        if (TyModule_AddObjectRef((m), (key), bool_obj) < 0) { \
             return -1; \
         } \
     } while (0)
@@ -6639,7 +6639,7 @@ sslmodule_init_constants(PyObject *m)
 }
 
 static int
-sslmodule_init_errorcodes(PyObject *module)
+sslmodule_init_errorcodes(TyObject *module)
 {
     _sslmodulestate *state = get_ssl_state(module);
 
@@ -6647,27 +6647,27 @@ sslmodule_init_errorcodes(PyObject *module)
     struct py_ssl_library_code *libcode;
 
     /* Mappings for error codes */
-    state->err_codes_to_names = PyDict_New();
+    state->err_codes_to_names = TyDict_New();
     if (state->err_codes_to_names == NULL)
         return -1;
-    state->lib_codes_to_names = PyDict_New();
+    state->lib_codes_to_names = TyDict_New();
     if (state->lib_codes_to_names == NULL)
         return -1;
 
     errcode = error_codes;
     while (errcode->mnemonic != NULL) {
-        PyObject *mnemo = PyUnicode_FromString(errcode->mnemonic);
+        TyObject *mnemo = TyUnicode_FromString(errcode->mnemonic);
         if (mnemo == NULL) {
             return -1;
         }
-        PyObject *key = Py_BuildValue("ii", errcode->library, errcode->reason);
+        TyObject *key = Ty_BuildValue("ii", errcode->library, errcode->reason);
         if (key == NULL) {
-            Py_DECREF(mnemo);
+            Ty_DECREF(mnemo);
             return -1;
         }
-        int rc = PyDict_SetItem(state->err_codes_to_names, key, mnemo);
-        Py_DECREF(key);
-        Py_DECREF(mnemo);
+        int rc = TyDict_SetItem(state->err_codes_to_names, key, mnemo);
+        Ty_DECREF(key);
+        Ty_DECREF(mnemo);
         if (rc < 0) {
             return -1;
         }
@@ -6676,15 +6676,15 @@ sslmodule_init_errorcodes(PyObject *module)
 
     libcode = library_codes;
     while (libcode->library != NULL) {
-        PyObject *mnemo, *key;
-        key = PyLong_FromLong(libcode->code);
-        mnemo = PyUnicode_FromString(libcode->library);
+        TyObject *mnemo, *key;
+        key = TyLong_FromLong(libcode->code);
+        mnemo = TyUnicode_FromString(libcode->library);
         if (key == NULL || mnemo == NULL)
             return -1;
-        if (PyDict_SetItem(state->lib_codes_to_names, key, mnemo))
+        if (TyDict_SetItem(state->lib_codes_to_names, key, mnemo))
             return -1;
-        Py_DECREF(key);
-        Py_DECREF(mnemo);
+        Ty_DECREF(key);
+        Ty_DECREF(mnemo);
         libcode++;
     }
 
@@ -6709,9 +6709,9 @@ parse_openssl_version(unsigned long libver,
 }
 
 static int
-sslmodule_init_versioninfo(PyObject *m)
+sslmodule_init_versioninfo(TyObject *m)
 {
-    PyObject *r;
+    TyObject *r;
     unsigned long libver;
     unsigned int major, minor, fix, patch, status;
 
@@ -6720,93 +6720,93 @@ sslmodule_init_versioninfo(PyObject *m)
        which could be different from the headers version.
     */
     libver = OpenSSL_version_num();
-    r = PyLong_FromUnsignedLong(libver);
-    if (PyModule_Add(m, "OPENSSL_VERSION_NUMBER", r) < 0)
+    r = TyLong_FromUnsignedLong(libver);
+    if (TyModule_Add(m, "OPENSSL_VERSION_NUMBER", r) < 0)
         return -1;
 
     parse_openssl_version(libver, &major, &minor, &fix, &patch, &status);
-    r = Py_BuildValue("IIIII", major, minor, fix, patch, status);
-    if (PyModule_Add(m, "OPENSSL_VERSION_INFO", r) < 0)
+    r = Ty_BuildValue("IIIII", major, minor, fix, patch, status);
+    if (TyModule_Add(m, "OPENSSL_VERSION_INFO", r) < 0)
         return -1;
 
-    r = PyUnicode_FromString(OpenSSL_version(OPENSSL_VERSION));
-    if (PyModule_Add(m, "OPENSSL_VERSION", r) < 0)
+    r = TyUnicode_FromString(OpenSSL_version(OPENSSL_VERSION));
+    if (TyModule_Add(m, "OPENSSL_VERSION", r) < 0)
         return -1;
 
     libver = OPENSSL_VERSION_NUMBER;
     parse_openssl_version(libver, &major, &minor, &fix, &patch, &status);
-    r = Py_BuildValue("IIIII", major, minor, fix, patch, status);
-    if (PyModule_Add(m, "_OPENSSL_API_VERSION", r) < 0)
+    r = Ty_BuildValue("IIIII", major, minor, fix, patch, status);
+    if (TyModule_Add(m, "_OPENSSL_API_VERSION", r) < 0)
         return -1;
 
     return 0;
 }
 
 static int
-sslmodule_init_types(PyObject *module)
+sslmodule_init_types(TyObject *module)
 {
     _sslmodulestate *state = get_ssl_state(module);
 
-    state->PySSLContext_Type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->PySSLContext_Type = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &PySSLContext_spec, NULL
     );
     if (state->PySSLContext_Type == NULL)
         return -1;
 
-    state->PySSLSocket_Type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->PySSLSocket_Type = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &PySSLSocket_spec, NULL
     );
     if (state->PySSLSocket_Type == NULL)
         return -1;
 
-    state->PySSLMemoryBIO_Type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->PySSLMemoryBIO_Type = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &PySSLMemoryBIO_spec, NULL
     );
     if (state->PySSLMemoryBIO_Type == NULL)
         return -1;
 
-    state->PySSLSession_Type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->PySSLSession_Type = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &PySSLSession_spec, NULL
     );
     if (state->PySSLSession_Type == NULL)
         return -1;
 
-    state->PySSLCertificate_Type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->PySSLCertificate_Type = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &PySSLCertificate_spec, NULL
     );
     if (state->PySSLCertificate_Type == NULL)
         return -1;
 
-    if (PyModule_AddType(module, state->PySSLContext_Type))
+    if (TyModule_AddType(module, state->PySSLContext_Type))
         return -1;
-    if (PyModule_AddType(module, state->PySSLSocket_Type))
+    if (TyModule_AddType(module, state->PySSLSocket_Type))
         return -1;
-    if (PyModule_AddType(module, state->PySSLMemoryBIO_Type))
+    if (TyModule_AddType(module, state->PySSLMemoryBIO_Type))
         return -1;
-    if (PyModule_AddType(module, state->PySSLSession_Type))
+    if (TyModule_AddType(module, state->PySSLSession_Type))
         return -1;
-    if (PyModule_AddType(module, state->PySSLCertificate_Type))
+    if (TyModule_AddType(module, state->PySSLCertificate_Type))
         return -1;
     return 0;
 }
 
 static int
-sslmodule_init_strings(PyObject *module)
+sslmodule_init_strings(TyObject *module)
 {
     _sslmodulestate *state = get_ssl_state(module);
-    state->str_library = PyUnicode_InternFromString("library");
+    state->str_library = TyUnicode_InternFromString("library");
     if (state->str_library == NULL) {
         return -1;
     }
-    state->str_reason = PyUnicode_InternFromString("reason");
+    state->str_reason = TyUnicode_InternFromString("reason");
     if (state->str_reason == NULL) {
         return -1;
     }
-    state->str_verify_message = PyUnicode_InternFromString("verify_message");
+    state->str_verify_message = TyUnicode_InternFromString("verify_message");
     if (state->str_verify_message == NULL) {
         return -1;
     }
-    state->str_verify_code = PyUnicode_InternFromString("verify_code");
+    state->str_verify_code = TyUnicode_InternFromString("verify_code");
     if (state->str_verify_code == NULL) {
         return -1;
     }
@@ -6814,91 +6814,91 @@ sslmodule_init_strings(PyObject *module)
 }
 
 static int
-sslmodule_init_lock(PyObject *module)
+sslmodule_init_lock(TyObject *module)
 {
     _sslmodulestate *state = get_ssl_state(module);
-    state->keylog_lock = PyThread_allocate_lock();
+    state->keylog_lock = TyThread_allocate_lock();
     if (state->keylog_lock == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
     return 0;
 }
 
 static PyModuleDef_Slot sslmodule_slots[] = {
-    {Py_mod_exec, sslmodule_init_types},
-    {Py_mod_exec, sslmodule_init_exceptions},
-    {Py_mod_exec, sslmodule_init_socketapi},
-    {Py_mod_exec, sslmodule_init_errorcodes},
-    {Py_mod_exec, sslmodule_init_constants},
-    {Py_mod_exec, sslmodule_init_versioninfo},
-    {Py_mod_exec, sslmodule_init_strings},
-    {Py_mod_exec, sslmodule_init_lock},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, sslmodule_init_types},
+    {Ty_mod_exec, sslmodule_init_exceptions},
+    {Ty_mod_exec, sslmodule_init_socketapi},
+    {Ty_mod_exec, sslmodule_init_errorcodes},
+    {Ty_mod_exec, sslmodule_init_constants},
+    {Ty_mod_exec, sslmodule_init_versioninfo},
+    {Ty_mod_exec, sslmodule_init_strings},
+    {Ty_mod_exec, sslmodule_init_lock},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
 static int
-sslmodule_traverse(PyObject *m, visitproc visit, void *arg)
+sslmodule_traverse(TyObject *m, visitproc visit, void *arg)
 {
     _sslmodulestate *state = get_ssl_state(m);
 
-    Py_VISIT(state->PySSLContext_Type);
-    Py_VISIT(state->PySSLSocket_Type);
-    Py_VISIT(state->PySSLMemoryBIO_Type);
-    Py_VISIT(state->PySSLSession_Type);
-    Py_VISIT(state->PySSLCertificate_Type);
-    Py_VISIT(state->PySSLErrorObject);
-    Py_VISIT(state->PySSLCertVerificationErrorObject);
-    Py_VISIT(state->PySSLZeroReturnErrorObject);
-    Py_VISIT(state->PySSLWantReadErrorObject);
-    Py_VISIT(state->PySSLWantWriteErrorObject);
-    Py_VISIT(state->PySSLSyscallErrorObject);
-    Py_VISIT(state->PySSLEOFErrorObject);
-    Py_VISIT(state->err_codes_to_names);
-    Py_VISIT(state->lib_codes_to_names);
-    Py_VISIT(state->Sock_Type);
+    Ty_VISIT(state->PySSLContext_Type);
+    Ty_VISIT(state->PySSLSocket_Type);
+    Ty_VISIT(state->PySSLMemoryBIO_Type);
+    Ty_VISIT(state->PySSLSession_Type);
+    Ty_VISIT(state->PySSLCertificate_Type);
+    Ty_VISIT(state->PySSLErrorObject);
+    Ty_VISIT(state->PySSLCertVerificationErrorObject);
+    Ty_VISIT(state->PySSLZeroReturnErrorObject);
+    Ty_VISIT(state->PySSLWantReadErrorObject);
+    Ty_VISIT(state->PySSLWantWriteErrorObject);
+    Ty_VISIT(state->PySSLSyscallErrorObject);
+    Ty_VISIT(state->PySSLEOFErrorObject);
+    Ty_VISIT(state->err_codes_to_names);
+    Ty_VISIT(state->lib_codes_to_names);
+    Ty_VISIT(state->Sock_Type);
 
     return 0;
 }
 
 static int
-sslmodule_clear(PyObject *m)
+sslmodule_clear(TyObject *m)
 {
     _sslmodulestate *state = get_ssl_state(m);
 
-    Py_CLEAR(state->PySSLContext_Type);
-    Py_CLEAR(state->PySSLSocket_Type);
-    Py_CLEAR(state->PySSLMemoryBIO_Type);
-    Py_CLEAR(state->PySSLSession_Type);
-    Py_CLEAR(state->PySSLCertificate_Type);
-    Py_CLEAR(state->PySSLErrorObject);
-    Py_CLEAR(state->PySSLCertVerificationErrorObject);
-    Py_CLEAR(state->PySSLZeroReturnErrorObject);
-    Py_CLEAR(state->PySSLWantReadErrorObject);
-    Py_CLEAR(state->PySSLWantWriteErrorObject);
-    Py_CLEAR(state->PySSLSyscallErrorObject);
-    Py_CLEAR(state->PySSLEOFErrorObject);
-    Py_CLEAR(state->err_codes_to_names);
-    Py_CLEAR(state->lib_codes_to_names);
-    Py_CLEAR(state->Sock_Type);
-    Py_CLEAR(state->str_library);
-    Py_CLEAR(state->str_reason);
-    Py_CLEAR(state->str_verify_code);
-    Py_CLEAR(state->str_verify_message);
+    Ty_CLEAR(state->PySSLContext_Type);
+    Ty_CLEAR(state->PySSLSocket_Type);
+    Ty_CLEAR(state->PySSLMemoryBIO_Type);
+    Ty_CLEAR(state->PySSLSession_Type);
+    Ty_CLEAR(state->PySSLCertificate_Type);
+    Ty_CLEAR(state->PySSLErrorObject);
+    Ty_CLEAR(state->PySSLCertVerificationErrorObject);
+    Ty_CLEAR(state->PySSLZeroReturnErrorObject);
+    Ty_CLEAR(state->PySSLWantReadErrorObject);
+    Ty_CLEAR(state->PySSLWantWriteErrorObject);
+    Ty_CLEAR(state->PySSLSyscallErrorObject);
+    Ty_CLEAR(state->PySSLEOFErrorObject);
+    Ty_CLEAR(state->err_codes_to_names);
+    Ty_CLEAR(state->lib_codes_to_names);
+    Ty_CLEAR(state->Sock_Type);
+    Ty_CLEAR(state->str_library);
+    Ty_CLEAR(state->str_reason);
+    Ty_CLEAR(state->str_verify_code);
+    Ty_CLEAR(state->str_verify_message);
     return 0;
 }
 
 static void
 sslmodule_free(void *m)
 {
-    sslmodule_clear((PyObject *)m);
+    sslmodule_clear((TyObject *)m);
     _sslmodulestate *state = get_ssl_state(m);
-    PyThread_free_lock(state->keylog_lock);
+    TyThread_free_lock(state->keylog_lock);
 }
 
-static struct PyModuleDef _sslmodule_def = {
+static struct TyModuleDef _sslmodule_def = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_ssl",
     .m_doc = module_doc,

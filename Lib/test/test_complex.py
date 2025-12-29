@@ -414,7 +414,7 @@ class ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                     except OverflowError:
                         pass
 
-        # gh-113841: possible undefined division by 0 in _Py_c_pow()
+        # gh-113841: possible undefined division by 0 in _Ty_c_pow()
         x, y = 9j, 33j**3
         with self.assertRaises(OverflowError):
             x**y

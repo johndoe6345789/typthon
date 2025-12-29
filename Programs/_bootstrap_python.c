@@ -18,9 +18,9 @@
 /* Note that a negative size indicates a package. */
 
 static const struct _frozen bootstrap_modules[] = {
-    {"_frozen_importlib", _Py_M__importlib__bootstrap, (int)sizeof(_Py_M__importlib__bootstrap)},
-    {"_frozen_importlib_external", _Py_M__importlib__bootstrap_external, (int)sizeof(_Py_M__importlib__bootstrap_external)},
-    {"zipimport", _Py_M__zipimport, (int)sizeof(_Py_M__zipimport)},
+    {"_frozen_importlib", _Ty_M__importlib__bootstrap, (int)sizeof(_Ty_M__importlib__bootstrap)},
+    {"_frozen_importlib_external", _Ty_M__importlib__bootstrap_external, (int)sizeof(_Ty_M__importlib__bootstrap_external)},
+    {"zipimport", _Ty_M__zipimport, (int)sizeof(_Ty_M__zipimport)},
     {0, 0, 0} /* bootstrap sentinel */
 };
 static const struct _frozen stdlib_modules[] = {
@@ -29,21 +29,21 @@ static const struct _frozen stdlib_modules[] = {
 static const struct _frozen test_modules[] = {
     {0, 0, 0} /* test sentinel */
 };
-const struct _frozen *_PyImport_FrozenBootstrap = bootstrap_modules;
-const struct _frozen *_PyImport_FrozenStdlib = stdlib_modules;
-const struct _frozen *_PyImport_FrozenTest = test_modules;
+const struct _frozen *_TyImport_FrozenBootstrap = bootstrap_modules;
+const struct _frozen *_TyImport_FrozenStdlib = stdlib_modules;
+const struct _frozen *_TyImport_FrozenTest = test_modules;
 
 static const struct _module_alias aliases[] = {
     {"_frozen_importlib", "importlib._bootstrap"},
     {"_frozen_importlib_external", "importlib._bootstrap_external"},
     {0, 0} /* aliases sentinel */
 };
-const struct _module_alias *_PyImport_FrozenAliases = aliases;
+const struct _module_alias *_TyImport_FrozenAliases = aliases;
 
 /* Embedding apps may change this pointer to point to their favorite
    collection of frozen modules: */
 
-const struct _frozen *PyImport_FrozenModules = NULL;
+const struct _frozen *TyImport_FrozenModules = NULL;
 
 int
 #ifdef MS_WINDOWS
@@ -52,10 +52,10 @@ wmain(int argc, wchar_t **argv)
 main(int argc, char **argv)
 #endif
 {
-    PyStatus status;
+    TyStatus status;
 
-    PyConfig config;
-    PyConfig_InitIsolatedConfig(&config);
+    TyConfig config;
+    TyConfig_InitIsolatedConfig(&config);
     // don't warn, pybuilddir.txt does not exist yet
     config.pathconfig_warnings = 0;
     // parse arguments
@@ -65,23 +65,23 @@ main(int argc, char **argv)
     config.safe_path = 0;
 
 #ifdef MS_WINDOWS
-    status = PyConfig_SetArgv(&config, argc, argv);
+    status = TyConfig_SetArgv(&config, argc, argv);
 #else
-    status = PyConfig_SetBytesArgv(&config, argc, argv);
+    status = TyConfig_SetBytesArgv(&config, argc, argv);
 #endif
-    if (PyStatus_Exception(status)) {
+    if (TyStatus_Exception(status)) {
         goto error;
     }
 
-    status = PyConfig_Read(&config);
+    status = TyConfig_Read(&config);
     if (config.run_filename == NULL) {
-        status = PyStatus_Error("Run filename expected");
+        status = TyStatus_Error("Run filename expected");
         goto error;
     }
 
 #define CLEAR(ATTR) \
     do { \
-        PyMem_RawFree(ATTR); \
+        TyMem_RawFree(ATTR); \
         ATTR = NULL; \
     } while (0)
 
@@ -91,19 +91,19 @@ main(int argc, char **argv)
     CLEAR(config.base_exec_prefix);
     CLEAR(config.exec_prefix);
 
-    status = Py_InitializeFromConfig(&config);
-    if (PyStatus_Exception(status)) {
+    status = Ty_InitializeFromConfig(&config);
+    if (TyStatus_Exception(status)) {
         goto error;
     }
-    PyConfig_Clear(&config);
+    TyConfig_Clear(&config);
 
-    return Py_RunMain();
+    return Ty_RunMain();
 
 error:
-    PyConfig_Clear(&config);
-    if (PyStatus_IsExit(status)) {
+    TyConfig_Clear(&config);
+    if (TyStatus_IsExit(status)) {
         return status.exitcode;
     }
-    Py_ExitStatusException(status);
+    Ty_ExitStatusException(status);
 }
 

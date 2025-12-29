@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(termios_tcgetattr__doc__,
+TyDoc_STRVAR(termios_tcgetattr__doc__,
 "tcgetattr($module, fd, /)\n"
 "--\n"
 "\n"
@@ -18,13 +18,13 @@ PyDoc_STRVAR(termios_tcgetattr__doc__,
 #define TERMIOS_TCGETATTR_METHODDEF    \
     {"tcgetattr", (PyCFunction)termios_tcgetattr, METH_O, termios_tcgetattr__doc__},
 
-static PyObject *
-termios_tcgetattr_impl(PyObject *module, int fd);
+static TyObject *
+termios_tcgetattr_impl(TyObject *module, int fd);
 
-static PyObject *
-termios_tcgetattr(PyObject *module, PyObject *arg)
+static TyObject *
+termios_tcgetattr(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
     fd = PyObject_AsFileDescriptor(arg);
@@ -37,7 +37,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcsetattr__doc__,
+TyDoc_STRVAR(termios_tcsetattr__doc__,
 "tcsetattr($module, fd, when, attributes, /)\n"
 "--\n"
 "\n"
@@ -53,27 +53,27 @@ PyDoc_STRVAR(termios_tcsetattr__doc__,
 #define TERMIOS_TCSETATTR_METHODDEF    \
     {"tcsetattr", (PyCFunction)(void(*)(void))termios_tcsetattr, METH_FASTCALL, termios_tcsetattr__doc__},
 
-static PyObject *
-termios_tcsetattr_impl(PyObject *module, int fd, int when, PyObject *term);
+static TyObject *
+termios_tcsetattr_impl(TyObject *module, int fd, int when, TyObject *term);
 
-static PyObject *
-termios_tcsetattr(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+termios_tcsetattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int when;
-    PyObject *term;
+    TyObject *term;
 
     if (nargs != 3) {
-        PyErr_Format(PyExc_TypeError, "tcsetattr expected 3 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "tcsetattr expected 3 arguments, got %zd", nargs);
         goto exit;
     }
     fd = PyObject_AsFileDescriptor(args[0]);
     if (fd < 0) {
         goto exit;
     }
-    when = PyLong_AsInt(args[1]);
-    if (when == -1 && PyErr_Occurred()) {
+    when = TyLong_AsInt(args[1]);
+    if (when == -1 && TyErr_Occurred()) {
         goto exit;
     }
     term = args[2];
@@ -83,7 +83,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcsendbreak__doc__,
+TyDoc_STRVAR(termios_tcsendbreak__doc__,
 "tcsendbreak($module, fd, duration, /)\n"
 "--\n"
 "\n"
@@ -95,26 +95,26 @@ PyDoc_STRVAR(termios_tcsendbreak__doc__,
 #define TERMIOS_TCSENDBREAK_METHODDEF    \
     {"tcsendbreak", (PyCFunction)(void(*)(void))termios_tcsendbreak, METH_FASTCALL, termios_tcsendbreak__doc__},
 
-static PyObject *
-termios_tcsendbreak_impl(PyObject *module, int fd, int duration);
+static TyObject *
+termios_tcsendbreak_impl(TyObject *module, int fd, int duration);
 
-static PyObject *
-termios_tcsendbreak(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+termios_tcsendbreak(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int duration;
 
     if (nargs != 2) {
-        PyErr_Format(PyExc_TypeError, "tcsendbreak expected 2 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "tcsendbreak expected 2 arguments, got %zd", nargs);
         goto exit;
     }
     fd = PyObject_AsFileDescriptor(args[0]);
     if (fd < 0) {
         goto exit;
     }
-    duration = PyLong_AsInt(args[1]);
-    if (duration == -1 && PyErr_Occurred()) {
+    duration = TyLong_AsInt(args[1]);
+    if (duration == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = termios_tcsendbreak_impl(module, fd, duration);
@@ -123,7 +123,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcdrain__doc__,
+TyDoc_STRVAR(termios_tcdrain__doc__,
 "tcdrain($module, fd, /)\n"
 "--\n"
 "\n"
@@ -132,13 +132,13 @@ PyDoc_STRVAR(termios_tcdrain__doc__,
 #define TERMIOS_TCDRAIN_METHODDEF    \
     {"tcdrain", (PyCFunction)termios_tcdrain, METH_O, termios_tcdrain__doc__},
 
-static PyObject *
-termios_tcdrain_impl(PyObject *module, int fd);
+static TyObject *
+termios_tcdrain_impl(TyObject *module, int fd);
 
-static PyObject *
-termios_tcdrain(PyObject *module, PyObject *arg)
+static TyObject *
+termios_tcdrain(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
     fd = PyObject_AsFileDescriptor(arg);
@@ -151,7 +151,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcflush__doc__,
+TyDoc_STRVAR(termios_tcflush__doc__,
 "tcflush($module, fd, queue, /)\n"
 "--\n"
 "\n"
@@ -164,26 +164,26 @@ PyDoc_STRVAR(termios_tcflush__doc__,
 #define TERMIOS_TCFLUSH_METHODDEF    \
     {"tcflush", (PyCFunction)(void(*)(void))termios_tcflush, METH_FASTCALL, termios_tcflush__doc__},
 
-static PyObject *
-termios_tcflush_impl(PyObject *module, int fd, int queue);
+static TyObject *
+termios_tcflush_impl(TyObject *module, int fd, int queue);
 
-static PyObject *
-termios_tcflush(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+termios_tcflush(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int queue;
 
     if (nargs != 2) {
-        PyErr_Format(PyExc_TypeError, "tcflush expected 2 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "tcflush expected 2 arguments, got %zd", nargs);
         goto exit;
     }
     fd = PyObject_AsFileDescriptor(args[0]);
     if (fd < 0) {
         goto exit;
     }
-    queue = PyLong_AsInt(args[1]);
-    if (queue == -1 && PyErr_Occurred()) {
+    queue = TyLong_AsInt(args[1]);
+    if (queue == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = termios_tcflush_impl(module, fd, queue);
@@ -192,7 +192,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcflow__doc__,
+TyDoc_STRVAR(termios_tcflow__doc__,
 "tcflow($module, fd, action, /)\n"
 "--\n"
 "\n"
@@ -205,26 +205,26 @@ PyDoc_STRVAR(termios_tcflow__doc__,
 #define TERMIOS_TCFLOW_METHODDEF    \
     {"tcflow", (PyCFunction)(void(*)(void))termios_tcflow, METH_FASTCALL, termios_tcflow__doc__},
 
-static PyObject *
-termios_tcflow_impl(PyObject *module, int fd, int action);
+static TyObject *
+termios_tcflow_impl(TyObject *module, int fd, int action);
 
-static PyObject *
-termios_tcflow(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+termios_tcflow(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int action;
 
     if (nargs != 2) {
-        PyErr_Format(PyExc_TypeError, "tcflow expected 2 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "tcflow expected 2 arguments, got %zd", nargs);
         goto exit;
     }
     fd = PyObject_AsFileDescriptor(args[0]);
     if (fd < 0) {
         goto exit;
     }
-    action = PyLong_AsInt(args[1]);
-    if (action == -1 && PyErr_Occurred()) {
+    action = TyLong_AsInt(args[1]);
+    if (action == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = termios_tcflow_impl(module, fd, action);
@@ -233,7 +233,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcgetwinsize__doc__,
+TyDoc_STRVAR(termios_tcgetwinsize__doc__,
 "tcgetwinsize($module, fd, /)\n"
 "--\n"
 "\n"
@@ -244,13 +244,13 @@ PyDoc_STRVAR(termios_tcgetwinsize__doc__,
 #define TERMIOS_TCGETWINSIZE_METHODDEF    \
     {"tcgetwinsize", (PyCFunction)termios_tcgetwinsize, METH_O, termios_tcgetwinsize__doc__},
 
-static PyObject *
-termios_tcgetwinsize_impl(PyObject *module, int fd);
+static TyObject *
+termios_tcgetwinsize_impl(TyObject *module, int fd);
 
-static PyObject *
-termios_tcgetwinsize(PyObject *module, PyObject *arg)
+static TyObject *
+termios_tcgetwinsize(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
     fd = PyObject_AsFileDescriptor(arg);
@@ -263,7 +263,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcsetwinsize__doc__,
+TyDoc_STRVAR(termios_tcsetwinsize__doc__,
 "tcsetwinsize($module, fd, winsize, /)\n"
 "--\n"
 "\n"
@@ -275,18 +275,18 @@ PyDoc_STRVAR(termios_tcsetwinsize__doc__,
 #define TERMIOS_TCSETWINSIZE_METHODDEF    \
     {"tcsetwinsize", (PyCFunction)(void(*)(void))termios_tcsetwinsize, METH_FASTCALL, termios_tcsetwinsize__doc__},
 
-static PyObject *
-termios_tcsetwinsize_impl(PyObject *module, int fd, PyObject *winsz);
+static TyObject *
+termios_tcsetwinsize_impl(TyObject *module, int fd, TyObject *winsz);
 
-static PyObject *
-termios_tcsetwinsize(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+termios_tcsetwinsize(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    PyObject *winsz;
+    TyObject *winsz;
 
     if (nargs != 2) {
-        PyErr_Format(PyExc_TypeError, "tcsetwinsize expected 2 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "tcsetwinsize expected 2 arguments, got %zd", nargs);
         goto exit;
     }
     fd = PyObject_AsFileDescriptor(args[0]);

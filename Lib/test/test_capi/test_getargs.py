@@ -364,7 +364,7 @@ class Signed_TestCase(unittest.TestCase):
 
     def test_n(self):
         from _testcapi import getargs_n
-        # n returns 'Py_ssize_t', and does range checking
+        # n returns 'Ty_ssize_t', and does range checking
         # (PY_SSIZE_T_MIN ... PY_SSIZE_T_MAX)
         self.assertRaises(TypeError, getargs_n, 3.14)
         self.assertEqual(99, getargs_n(Index()))

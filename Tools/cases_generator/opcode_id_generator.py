@@ -26,7 +26,7 @@ def generate_opcode_header(
 ) -> None:
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, False)
-    with out.header_guard("Py_OPCODE_IDS_H"):
+    with out.header_guard("Ty_OPCODE_IDS_H"):
         out.emit("/* Instruction opcodes for compiled code */\n")
 
         def write_define(name: str, op: int) -> None:

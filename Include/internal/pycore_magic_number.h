@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_MAGIC_NUMBER_H
-#define Py_INTERNAL_MAGIC_NUMBER_H
+#ifndef Ty_INTERNAL_MAGIC_NUMBER_H
+#define Ty_INTERNAL_MAGIC_NUMBER_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 /*
@@ -300,4 +300,4 @@ PC/launcher.c must also be updated.
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_INTERNAL_MAGIC_NUMBER_H
+#endif  // !Ty_INTERNAL_MAGIC_NUMBER_H

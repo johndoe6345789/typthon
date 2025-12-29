@@ -291,11 +291,11 @@ def gen_ctypes_test(manifest, args, outfile):
 
         feature_macros = get_feature_macros()
 
-        # Stable ABI is incompatible with Py_TRACE_REFS builds due to PyObject
+        # Stable ABI is incompatible with Ty_TRACE_REFS builds due to PyObject
         # layout differences.
         # See https://github.com/python/cpython/issues/88299#issuecomment-1113366226
-        if feature_macros['Py_TRACE_REFS']:
-            raise unittest.SkipTest("incompatible with Py_TRACE_REFS.")
+        if feature_macros['Ty_TRACE_REFS']:
+            raise unittest.SkipTest("incompatible with Ty_TRACE_REFS.")
 
         ctypes_test = import_module('ctypes')
 
@@ -360,12 +360,12 @@ def gen_testcapi_feature_macros(manifest, args, outfile):
     for macro in manifest.select({'feature_macro'}):
         name = macro.name
         write(f'#ifdef {name}')
-        write(f'    res = PyDict_SetItemString(result, "{name}", Py_True);')
+        write(f'    res = PyDict_SetItemString(result, "{name}", Ty_True);')
         write('#else')
-        write(f'    res = PyDict_SetItemString(result, "{name}", Py_False);')
+        write(f'    res = PyDict_SetItemString(result, "{name}", Ty_False);')
         write('#endif')
         write('if (res) {')
-        write('    Py_DECREF(result); return NULL;')
+        write('    Ty_DECREF(result); return NULL;')
         write('}')
         write()
 
@@ -413,7 +413,7 @@ def do_unixy_check(manifest, args):
     okay &= _report_unexpected_items(
         missing_macros,
         'Some macros from are not defined from "Include/Python.h" '
-        'with Py_LIMITED_API:')
+        'with Ty_LIMITED_API:')
 
     expected_symbols = {item.name for item in manifest.select(
         {'function', 'data'}, include_abi_only=True, ifdef=feature_macros,
@@ -443,17 +443,17 @@ def do_unixy_check(manifest, args):
     okay &= _report_unexpected_items(
         missing_defs,
         'Some expected declarations were not declared in '
-        '"Include/Python.h" with Py_LIMITED_API:')
+        '"Include/Python.h" with Ty_LIMITED_API:')
 
     # Some Limited API macros are defined in terms of private symbols.
     # These are not part of Limited API (even though they're defined with
-    # Py_LIMITED_API). They must be part of the Stable ABI, though.
+    # Ty_LIMITED_API). They must be part of the Stable ABI, though.
     private_symbols = {n for n in expected_symbols if n.startswith('_')}
     extra_defs = found_defs - expected_defs - private_symbols
     okay &= _report_unexpected_items(
         extra_defs,
         'Some extra declarations were found in "Include/Python.h" '
-        'with Py_LIMITED_API:')
+        'with Ty_LIMITED_API:')
 
     return okay
 

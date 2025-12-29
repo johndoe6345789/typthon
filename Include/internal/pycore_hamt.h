@@ -1,8 +1,8 @@
-#ifndef Py_INTERNAL_HAMT_H
-#define Py_INTERNAL_HAMT_H
+#ifndef Ty_INTERNAL_HAMT_H
+#define Ty_INTERNAL_HAMT_H
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_structs.h"       // PyHamtNode
@@ -18,21 +18,21 @@ layout of the HAMT tree in `hamt.c`.
 
 This constant is used to define a datastucture for storing iteration state.
 */
-#define _Py_HAMT_MAX_TREE_DEPTH 8
+#define _Ty_HAMT_MAX_TREE_DEPTH 8
 
 
-extern PyTypeObject _PyHamt_Type;
-extern PyTypeObject _PyHamt_ArrayNode_Type;
-extern PyTypeObject _PyHamt_BitmapNode_Type;
-extern PyTypeObject _PyHamt_CollisionNode_Type;
-extern PyTypeObject _PyHamtKeys_Type;
-extern PyTypeObject _PyHamtValues_Type;
-extern PyTypeObject _PyHamtItems_Type;
+extern TyTypeObject _TyHamt_Type;
+extern TyTypeObject _TyHamt_ArrayNode_Type;
+extern TyTypeObject _TyHamt_BitmapNode_Type;
+extern TyTypeObject _TyHamt_CollisionNode_Type;
+extern TyTypeObject _PyHamtKeys_Type;
+extern TyTypeObject _PyHamtValues_Type;
+extern TyTypeObject _PyHamtItems_Type;
 
 
 /* other API */
 
-#define PyHamt_Check(o) Py_IS_TYPE((o), &_PyHamt_Type)
+#define PyHamt_Check(o) Ty_IS_TYPE((o), &_TyHamt_Type)
 
 
 /* A struct to hold the state of depth-first traverse of the tree.
@@ -48,8 +48,8 @@ extern PyTypeObject _PyHamtItems_Type;
    - i_pos: an array of positions within nodes in i_nodes.
 */
 typedef struct {
-    PyHamtNode *i_nodes[_Py_HAMT_MAX_TREE_DEPTH];
-    Py_ssize_t i_pos[_Py_HAMT_MAX_TREE_DEPTH];
+    PyHamtNode *i_nodes[_Ty_HAMT_MAX_TREE_DEPTH];
+    Ty_ssize_t i_pos[_Ty_HAMT_MAX_TREE_DEPTH];
     int8_t i_level;
 } PyHamtIteratorState;
 
@@ -71,14 +71,14 @@ typedef struct {
 
 
 /* Create a new HAMT immutable mapping. */
-PyHamtObject * _PyHamt_New(void);
+PyHamtObject * _TyHamt_New(void);
 
 /* Return a new collection based on "o", but with an additional
    key/val pair. */
-PyHamtObject * _PyHamt_Assoc(PyHamtObject *o, PyObject *key, PyObject *val);
+PyHamtObject * _TyHamt_Assoc(PyHamtObject *o, TyObject *key, TyObject *val);
 
 /* Return a new collection based on "o", but without "key". */
-PyHamtObject * _PyHamt_Without(PyHamtObject *o, PyObject *key);
+PyHamtObject * _TyHamt_Without(PyHamtObject *o, TyObject *key);
 
 /* Find "key" in the "o" collection.
 
@@ -87,7 +87,7 @@ PyHamtObject * _PyHamt_Without(PyHamtObject *o, PyObject *key);
    - 0: "key" wasn't found in "o".
    - 1: "key" is in "o"; "*val" is set to its value (a borrowed ref).
 */
-int _PyHamt_Find(PyHamtObject *o, PyObject *key, PyObject **val);
+int _TyHamt_Find(PyHamtObject *o, TyObject *key, TyObject **val);
 
 /* Check if "v" is equal to "w".
 
@@ -96,18 +96,18 @@ int _PyHamt_Find(PyHamtObject *o, PyObject *key, PyObject **val);
    - 1: v == w
    - -1: An error occurred.
 */
-int _PyHamt_Eq(PyHamtObject *v, PyHamtObject *w);
+int _TyHamt_Eq(PyHamtObject *v, PyHamtObject *w);
 
 /* Return the size of "o"; equivalent of "len(o)". */
-Py_ssize_t _PyHamt_Len(PyHamtObject *o);
+Ty_ssize_t _TyHamt_Len(PyHamtObject *o);
 
 /* Return a Keys iterator over "o". */
-PyObject * _PyHamt_NewIterKeys(PyHamtObject *o);
+TyObject * _TyHamt_NewIterKeys(PyHamtObject *o);
 
 /* Return a Values iterator over "o". */
-PyObject * _PyHamt_NewIterValues(PyHamtObject *o);
+TyObject * _TyHamt_NewIterValues(PyHamtObject *o);
 
 /* Return a Items iterator over "o". */
-PyObject * _PyHamt_NewIterItems(PyHamtObject *o);
+TyObject * _TyHamt_NewIterItems(PyHamtObject *o);
 
-#endif /* !Py_INTERNAL_HAMT_H */
+#endif /* !Ty_INTERNAL_HAMT_H */

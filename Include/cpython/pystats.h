@@ -2,9 +2,9 @@
 //
 // API:
 //
-// - _Py_INCREF_STAT_INC() and _Py_DECREF_STAT_INC() used by Py_INCREF()
-//   and Py_DECREF().
-// - _Py_stats variable
+// - _Ty_INCREF_STAT_INC() and _Ty_DECREF_STAT_INC() used by Ty_INCREF()
+//   and Ty_DECREF().
+// - _Ty_stats variable
 //
 // Functions of the sys module:
 //
@@ -14,7 +14,7 @@
 // - sys._stats_dump()
 //
 // Python must be built with ./configure --enable-pystats to define the
-// Py_STATS macro.
+// Ty_STATS macro.
 //
 // Define _PY_INTERPRETER macro to increment interpreter_increfs and
 // interpreter_decrefs. Otherwise, increment increfs and decrefs.
@@ -23,9 +23,9 @@
 // `interpreter_incref` is the number of increment operations, which is
 // not equal to the total of all reference counts. A single increment
 // operation may increase the reference count of an object by more than
-// one. For example, see `_Py_RefcntAdd`.
+// one. For example, see `_Ty_RefcntAdd`.
 
-#ifndef Py_CPYTHON_PYSTATS_H
+#ifndef Ty_CPYTHON_PYSTATS_H
 #  error "this header file must not be included directly"
 #endif
 
@@ -33,7 +33,7 @@
 
 #define SPECIALIZATION_FAILURE_KINDS 60
 
-/* Stats for determining who is calling PyEval_EvalFrame */
+/* Stats for determining who is calling TyEval_EvalFrame */
 #define EVAL_CALL_TOTAL 0
 #define EVAL_CALL_VECTOR 1
 #define EVAL_CALL_GENERATOR 2
@@ -115,7 +115,7 @@ typedef struct _uop_stats {
     uint64_t pair_count[PYSTATS_MAX_UOP_ID + 1];
 } UOpStats;
 
-#define _Py_UOP_HIST_SIZE 32
+#define _Ty_UOP_HIST_SIZE 32
 
 typedef struct _optimization_stats {
     uint64_t attempts;
@@ -133,9 +133,9 @@ typedef struct _optimization_stats {
     uint64_t executors_invalidated;
     UOpStats opcode[PYSTATS_MAX_UOP_ID + 1];
     uint64_t unsupported_opcode[256];
-    uint64_t trace_length_hist[_Py_UOP_HIST_SIZE];
-    uint64_t trace_run_length_hist[_Py_UOP_HIST_SIZE];
-    uint64_t optimized_trace_length_hist[_Py_UOP_HIST_SIZE];
+    uint64_t trace_length_hist[_Ty_UOP_HIST_SIZE];
+    uint64_t trace_run_length_hist[_Ty_UOP_HIST_SIZE];
+    uint64_t optimized_trace_length_hist[_Ty_UOP_HIST_SIZE];
     uint64_t optimizer_attempts;
     uint64_t optimizer_successes;
     uint64_t optimizer_failure_reason_no_memory;
@@ -149,7 +149,7 @@ typedef struct _optimization_stats {
     uint64_t jit_data_size;
     uint64_t jit_padding_size;
     uint64_t jit_freed_memory_size;
-    uint64_t trace_total_memory_hist[_Py_UOP_HIST_SIZE];
+    uint64_t trace_total_memory_hist[_Ty_UOP_HIST_SIZE];
 } OptimizationStats;
 
 typedef struct _rare_event_stats {
@@ -157,7 +157,7 @@ typedef struct _rare_event_stats {
     uint64_t set_class;
     /* Setting the bases of a class, cls.__bases__ = ... */
     uint64_t set_bases;
-    /* Setting the PEP 523 frame eval function, _PyInterpreterState_SetFrameEvalFunc() */
+    /* Setting the PEP 523 frame eval function, _TyInterpreterState_SetFrameEvalFunc() */
     uint64_t set_eval_frame_func;
     /* Modifying the builtins,  __builtins__.__dict__[var] = ... */
     uint64_t builtin_dict;
@@ -179,16 +179,16 @@ typedef struct _stats {
 
 
 // Export for shared extensions like 'math'
-PyAPI_DATA(PyStats*) _Py_stats;
+PyAPI_DATA(PyStats*) _Ty_stats;
 
 #ifdef _PY_INTERPRETER
-#  define _Py_INCREF_STAT_INC() do { if (_Py_stats) _Py_stats->object_stats.interpreter_increfs++; } while (0)
-#  define _Py_DECREF_STAT_INC() do { if (_Py_stats) _Py_stats->object_stats.interpreter_decrefs++; } while (0)
-#  define _Py_INCREF_IMMORTAL_STAT_INC() do { if (_Py_stats) _Py_stats->object_stats.interpreter_immortal_increfs++; } while (0)
-#  define _Py_DECREF_IMMORTAL_STAT_INC() do { if (_Py_stats) _Py_stats->object_stats.interpreter_immortal_decrefs++; } while (0)
+#  define _Ty_INCREF_STAT_INC() do { if (_Ty_stats) _Ty_stats->object_stats.interpreter_increfs++; } while (0)
+#  define _Ty_DECREF_STAT_INC() do { if (_Ty_stats) _Ty_stats->object_stats.interpreter_decrefs++; } while (0)
+#  define _Ty_INCREF_IMMORTAL_STAT_INC() do { if (_Ty_stats) _Ty_stats->object_stats.interpreter_immortal_increfs++; } while (0)
+#  define _Ty_DECREF_IMMORTAL_STAT_INC() do { if (_Ty_stats) _Ty_stats->object_stats.interpreter_immortal_decrefs++; } while (0)
 #else
-#  define _Py_INCREF_STAT_INC() do { if (_Py_stats) _Py_stats->object_stats.increfs++; } while (0)
-#  define _Py_DECREF_STAT_INC() do { if (_Py_stats) _Py_stats->object_stats.decrefs++; } while (0)
-#  define _Py_INCREF_IMMORTAL_STAT_INC() do { if (_Py_stats) _Py_stats->object_stats.immortal_increfs++; } while (0)
-#  define _Py_DECREF_IMMORTAL_STAT_INC() do { if (_Py_stats) _Py_stats->object_stats.immortal_decrefs++; } while (0)
+#  define _Ty_INCREF_STAT_INC() do { if (_Ty_stats) _Ty_stats->object_stats.increfs++; } while (0)
+#  define _Ty_DECREF_STAT_INC() do { if (_Ty_stats) _Ty_stats->object_stats.decrefs++; } while (0)
+#  define _Ty_INCREF_IMMORTAL_STAT_INC() do { if (_Ty_stats) _Ty_stats->object_stats.immortal_increfs++; } while (0)
+#  define _Ty_DECREF_IMMORTAL_STAT_INC() do { if (_Ty_stats) _Ty_stats->object_stats.immortal_decrefs++; } while (0)
 #endif

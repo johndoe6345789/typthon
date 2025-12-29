@@ -1383,7 +1383,7 @@ class EnvironmentVariableTests(BaseTest):
 
     def test_default_filter_configuration(self):
         pure_python_api = self.module is py_warnings
-        if support.Py_DEBUG:
+        if support.Ty_DEBUG:
             expected_default_filters = []
         else:
             if pure_python_api:

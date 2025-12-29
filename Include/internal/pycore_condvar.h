@@ -1,8 +1,8 @@
-#ifndef Py_INTERNAL_CONDVAR_H
-#define Py_INTERNAL_CONDVAR_H
+#ifndef Ty_INTERNAL_CONDVAR_H
+#define Ty_INTERNAL_CONDVAR_H
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_pythread.h"      // _POSIX_THREADS
@@ -12,7 +12,7 @@
 /*
  * POSIX support
  */
-#define Py_HAVE_CONDVAR
+#define Ty_HAVE_CONDVAR
 
 #ifdef HAVE_PTHREAD_H
 #  include <pthread.h>            // pthread_mutex_t
@@ -28,7 +28,7 @@
  * Emulated condition variables ones that work with XP and later, plus
  * example native support on VISTA and onwards.
  */
-#define Py_HAVE_CONDVAR
+#define Ty_HAVE_CONDVAR
 
 /* include windows if it hasn't been done before */
 #ifndef WIN32_LEAN_AND_MEAN
@@ -90,4 +90,4 @@ typedef CONDITION_VARIABLE  PyCOND_T;
 
 #endif /* _POSIX_THREADS, NT_THREADS */
 
-#endif /* Py_INTERNAL_CONDVAR_H */
+#endif /* Ty_INTERNAL_CONDVAR_H */

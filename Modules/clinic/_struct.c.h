@@ -2,14 +2,14 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(Struct___init____doc__,
+TyDoc_STRVAR(Struct___init____doc__,
 "Struct(format)\n"
 "--\n"
 "\n"
@@ -21,45 +21,45 @@ PyDoc_STRVAR(Struct___init____doc__,
 "See help(struct) for more on format strings.");
 
 static int
-Struct___init___impl(PyStructObject *self, PyObject *format);
+Struct___init___impl(PyStructObject *self, TyObject *format);
 
 static int
-Struct___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+Struct___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(format), },
+        .ob_item = { &_Ty_ID(format), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"format", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "Struct",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    PyObject *format;
+    TyObject *argsbuf[1];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    TyObject *format;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -71,7 +71,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(Struct_unpack__doc__,
+TyDoc_STRVAR(Struct_unpack__doc__,
 "unpack($self, buffer, /)\n"
 "--\n"
 "\n"
@@ -85,14 +85,14 @@ PyDoc_STRVAR(Struct_unpack__doc__,
 #define STRUCT_UNPACK_METHODDEF    \
     {"unpack", (PyCFunction)Struct_unpack, METH_O, Struct_unpack__doc__},
 
-static PyObject *
-Struct_unpack_impl(PyStructObject *self, Py_buffer *buffer);
+static TyObject *
+Struct_unpack_impl(PyStructObject *self, Ty_buffer *buffer);
 
-static PyObject *
-Struct_unpack(PyObject *self, PyObject *arg)
+static TyObject *
+Struct_unpack(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer buffer = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer buffer = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &buffer, PyBUF_SIMPLE) != 0) {
         goto exit;
@@ -108,7 +108,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(Struct_unpack_from__doc__,
+TyDoc_STRVAR(Struct_unpack_from__doc__,
 "unpack_from($self, /, buffer, offset=0)\n"
 "--\n"
 "\n"
@@ -124,47 +124,47 @@ PyDoc_STRVAR(Struct_unpack_from__doc__,
 #define STRUCT_UNPACK_FROM_METHODDEF    \
     {"unpack_from", _PyCFunction_CAST(Struct_unpack_from), METH_FASTCALL|METH_KEYWORDS, Struct_unpack_from__doc__},
 
-static PyObject *
-Struct_unpack_from_impl(PyStructObject *self, Py_buffer *buffer,
-                        Py_ssize_t offset);
+static TyObject *
+Struct_unpack_from_impl(PyStructObject *self, Ty_buffer *buffer,
+                        Ty_ssize_t offset);
 
-static PyObject *
-Struct_unpack_from(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+Struct_unpack_from(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(buffer), &_Py_ID(offset), },
+        .ob_item = { &_Ty_ID(buffer), &_Ty_ID(offset), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"buffer", "offset", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "unpack_from",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer buffer = {NULL, NULL};
-    Py_ssize_t offset = 0;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer buffer = {NULL, NULL};
+    Ty_ssize_t offset = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -176,13 +176,13 @@ Struct_unpack_from(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyOb
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         offset = ival;
@@ -199,7 +199,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(Struct_iter_unpack__doc__,
+TyDoc_STRVAR(Struct_iter_unpack__doc__,
 "iter_unpack($self, buffer, /)\n"
 "--\n"
 "\n"
@@ -213,20 +213,20 @@ PyDoc_STRVAR(Struct_iter_unpack__doc__,
 #define STRUCT_ITER_UNPACK_METHODDEF    \
     {"iter_unpack", (PyCFunction)Struct_iter_unpack, METH_O, Struct_iter_unpack__doc__},
 
-static PyObject *
-Struct_iter_unpack_impl(PyStructObject *self, PyObject *buffer);
+static TyObject *
+Struct_iter_unpack_impl(PyStructObject *self, TyObject *buffer);
 
-static PyObject *
-Struct_iter_unpack(PyObject *self, PyObject *buffer)
+static TyObject *
+Struct_iter_unpack(TyObject *self, TyObject *buffer)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = Struct_iter_unpack_impl((PyStructObject *)self, buffer);
 
     return return_value;
 }
 
-PyDoc_STRVAR(_clearcache__doc__,
+TyDoc_STRVAR(_clearcache__doc__,
 "_clearcache($module, /)\n"
 "--\n"
 "\n"
@@ -235,16 +235,16 @@ PyDoc_STRVAR(_clearcache__doc__,
 #define _CLEARCACHE_METHODDEF    \
     {"_clearcache", (PyCFunction)_clearcache, METH_NOARGS, _clearcache__doc__},
 
-static PyObject *
-_clearcache_impl(PyObject *module);
+static TyObject *
+_clearcache_impl(TyObject *module);
 
-static PyObject *
-_clearcache(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_clearcache(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _clearcache_impl(module);
 }
 
-PyDoc_STRVAR(calcsize__doc__,
+TyDoc_STRVAR(calcsize__doc__,
 "calcsize($module, format, /)\n"
 "--\n"
 "\n"
@@ -253,33 +253,33 @@ PyDoc_STRVAR(calcsize__doc__,
 #define CALCSIZE_METHODDEF    \
     {"calcsize", (PyCFunction)calcsize, METH_O, calcsize__doc__},
 
-static Py_ssize_t
-calcsize_impl(PyObject *module, PyStructObject *s_object);
+static Ty_ssize_t
+calcsize_impl(TyObject *module, PyStructObject *s_object);
 
-static PyObject *
-calcsize(PyObject *module, PyObject *arg)
+static TyObject *
+calcsize(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     PyStructObject *s_object = NULL;
-    Py_ssize_t _return_value;
+    Ty_ssize_t _return_value;
 
     if (!cache_struct_converter(module, arg, &s_object)) {
         goto exit;
     }
     _return_value = calcsize_impl(module, s_object);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     /* Cleanup for s_object */
-    Py_XDECREF(s_object);
+    Ty_XDECREF(s_object);
 
     return return_value;
 }
 
-PyDoc_STRVAR(unpack__doc__,
+TyDoc_STRVAR(unpack__doc__,
 "unpack($module, format, buffer, /)\n"
 "--\n"
 "\n"
@@ -292,17 +292,17 @@ PyDoc_STRVAR(unpack__doc__,
 #define UNPACK_METHODDEF    \
     {"unpack", _PyCFunction_CAST(unpack), METH_FASTCALL, unpack__doc__},
 
-static PyObject *
-unpack_impl(PyObject *module, PyStructObject *s_object, Py_buffer *buffer);
+static TyObject *
+unpack_impl(TyObject *module, PyStructObject *s_object, Ty_buffer *buffer);
 
-static PyObject *
-unpack(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+unpack(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     PyStructObject *s_object = NULL;
-    Py_buffer buffer = {NULL, NULL};
+    Ty_buffer buffer = {NULL, NULL};
 
-    if (!_PyArg_CheckPositional("unpack", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("unpack", nargs, 2, 2)) {
         goto exit;
     }
     if (!cache_struct_converter(module, args[0], &s_object)) {
@@ -315,7 +315,7 @@ unpack(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 
 exit:
     /* Cleanup for s_object */
-    Py_XDECREF(s_object);
+    Ty_XDECREF(s_object);
     /* Cleanup for buffer */
     if (buffer.obj) {
        PyBuffer_Release(&buffer);
@@ -324,7 +324,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unpack_from__doc__,
+TyDoc_STRVAR(unpack_from__doc__,
 "unpack_from($module, format, /, buffer, offset=0)\n"
 "--\n"
 "\n"
@@ -337,48 +337,48 @@ PyDoc_STRVAR(unpack_from__doc__,
 #define UNPACK_FROM_METHODDEF    \
     {"unpack_from", _PyCFunction_CAST(unpack_from), METH_FASTCALL|METH_KEYWORDS, unpack_from__doc__},
 
-static PyObject *
-unpack_from_impl(PyObject *module, PyStructObject *s_object,
-                 Py_buffer *buffer, Py_ssize_t offset);
+static TyObject *
+unpack_from_impl(TyObject *module, PyStructObject *s_object,
+                 Ty_buffer *buffer, Ty_ssize_t offset);
 
-static PyObject *
-unpack_from(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+unpack_from(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(buffer), &_Py_ID(offset), },
+        .ob_item = { &_Ty_ID(buffer), &_Ty_ID(offset), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "buffer", "offset", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "unpack_from",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     PyStructObject *s_object = NULL;
-    Py_buffer buffer = {NULL, NULL};
-    Py_ssize_t offset = 0;
+    Ty_buffer buffer = {NULL, NULL};
+    Ty_ssize_t offset = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -393,13 +393,13 @@ unpack_from(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject 
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         offset = ival;
@@ -409,7 +409,7 @@ skip_optional_pos:
 
 exit:
     /* Cleanup for s_object */
-    Py_XDECREF(s_object);
+    Ty_XDECREF(s_object);
     /* Cleanup for buffer */
     if (buffer.obj) {
        PyBuffer_Release(&buffer);
@@ -418,7 +418,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(iter_unpack__doc__,
+TyDoc_STRVAR(iter_unpack__doc__,
 "iter_unpack($module, format, buffer, /)\n"
 "--\n"
 "\n"
@@ -432,18 +432,18 @@ PyDoc_STRVAR(iter_unpack__doc__,
 #define ITER_UNPACK_METHODDEF    \
     {"iter_unpack", _PyCFunction_CAST(iter_unpack), METH_FASTCALL, iter_unpack__doc__},
 
-static PyObject *
-iter_unpack_impl(PyObject *module, PyStructObject *s_object,
-                 PyObject *buffer);
+static TyObject *
+iter_unpack_impl(TyObject *module, PyStructObject *s_object,
+                 TyObject *buffer);
 
-static PyObject *
-iter_unpack(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+iter_unpack(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     PyStructObject *s_object = NULL;
-    PyObject *buffer;
+    TyObject *buffer;
 
-    if (!_PyArg_CheckPositional("iter_unpack", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("iter_unpack", nargs, 2, 2)) {
         goto exit;
     }
     if (!cache_struct_converter(module, args[0], &s_object)) {
@@ -454,7 +454,7 @@ iter_unpack(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 
 exit:
     /* Cleanup for s_object */
-    Py_XDECREF(s_object);
+    Ty_XDECREF(s_object);
 
     return return_value;
 }

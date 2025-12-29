@@ -1,28 +1,28 @@
-#ifndef Py_INTERNAL_DESCROBJECT_H
-#define Py_INTERNAL_DESCROBJECT_H
+#ifndef Ty_INTERNAL_DESCROBJECT_H
+#define Ty_INTERNAL_DESCROBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 typedef struct {
     PyObject_HEAD
-    PyObject *prop_get;
-    PyObject *prop_set;
-    PyObject *prop_del;
-    PyObject *prop_doc;
-    PyObject *prop_name;
+    TyObject *prop_get;
+    TyObject *prop_set;
+    TyObject *prop_del;
+    TyObject *prop_doc;
+    TyObject *prop_name;
     int getter_doc;
 } propertyobject;
 
 typedef propertyobject _PyPropertyObject;
 
-extern PyTypeObject _PyMethodWrapper_Type;
+extern TyTypeObject _PyMethodWrapper_Type;
 
 #ifdef __cplusplus
 }
 #endif
-#endif   /* !Py_INTERNAL_DESCROBJECT_H */
+#endif   /* !Ty_INTERNAL_DESCROBJECT_H */

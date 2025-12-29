@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(_typing__idfunc__doc__,
+TyDoc_STRVAR(_typing__idfunc__doc__,
 "_idfunc($module, x, /)\n"
 "--\n"
 "\n");

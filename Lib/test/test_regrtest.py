@@ -334,7 +334,7 @@ class ParseArgsTestCase(unittest.TestCase):
                     stderr.getvalue(),
                 )
 
-    @unittest.skipUnless(support.Py_DEBUG, 'need a debug build')
+    @unittest.skipUnless(support.Ty_DEBUG, 'need a debug build')
     def test_coverage_mp(self):
         for opt in '-T', '--coverage':
             with self.subTest(opt=opt):
@@ -896,9 +896,9 @@ class ProgramsTestCase(BaseTestCase):
             test_args.append('-arm32')   # 32-bit ARM build
         elif platform.architecture()[0] == '64bit':
             test_args.append('-x64')   # 64-bit build
-        if not support.Py_DEBUG:
+        if not support.Ty_DEBUG:
             test_args.append('+d')     # Release build, use python.exe
-        if sysconfig.get_config_var("Py_GIL_DISABLED"):
+        if sysconfig.get_config_var("Ty_GIL_DISABLED"):
             test_args.append('--disable-gil')
         self.run_batch(script, *test_args, *self.tests)
 
@@ -915,9 +915,9 @@ class ProgramsTestCase(BaseTestCase):
             rt_args.append('-arm32')   # 32-bit ARM build
         elif platform.architecture()[0] == '64bit':
             rt_args.append('-x64')   # 64-bit build
-        if support.Py_DEBUG:
+        if support.Ty_DEBUG:
             rt_args.append('-d')     # Debug build, use python_d.exe
-        if sysconfig.get_config_var("Py_GIL_DISABLED"):
+        if sysconfig.get_config_var("Ty_GIL_DISABLED"):
             rt_args.append('--disable-gil')
         self.run_batch(script, *rt_args, *self.regrtest_args, *self.tests)
 
@@ -1226,7 +1226,7 @@ class ArgsTestCase(BaseTestCase):
             reflog = fp.read()
             self.assertIn(line2, reflog)
 
-    @unittest.skipUnless(support.Py_DEBUG, 'need a debug build')
+    @unittest.skipUnless(support.Ty_DEBUG, 'need a debug build')
     def check_huntrleaks(self, *, run_workers: bool):
         # test --huntrleaks
         code = textwrap.dedent("""
@@ -1246,7 +1246,7 @@ class ArgsTestCase(BaseTestCase):
     def test_huntrleaks_mp(self):
         self.check_huntrleaks(run_workers=True)
 
-    @unittest.skipUnless(support.Py_DEBUG, 'need a debug build')
+    @unittest.skipUnless(support.Ty_DEBUG, 'need a debug build')
     def test_huntrleaks_bisect(self):
         # test --huntrleaks --bisect
         code = textwrap.dedent("""
@@ -1287,7 +1287,7 @@ class ArgsTestCase(BaseTestCase):
             f"* {test}.RefLeakTest.test3\n",
             output)
 
-    @unittest.skipUnless(support.Py_DEBUG, 'need a debug build')
+    @unittest.skipUnless(support.Ty_DEBUG, 'need a debug build')
     def test_huntrleaks_fd_leak(self):
         # test --huntrleaks for file descriptor leak
         code = textwrap.dedent("""
@@ -2270,7 +2270,7 @@ class ArgsTestCase(BaseTestCase):
         self.assertNotIn('SPAM SPAM SPAM', output)
 
         # -R option needs a debug build
-        if support.Py_DEBUG:
+        if support.Ty_DEBUG:
             # Check for reference leaks, run in parallel
             output = self.run_tests("-R", "3:3", "-j1", "--verbose3", testname)
             self.check_executed_tests(output, testname, stats=1, parallel=True)

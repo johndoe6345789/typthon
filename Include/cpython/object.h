@@ -1,18 +1,18 @@
-#ifndef Py_CPYTHON_OBJECT_H
+#ifndef Ty_CPYTHON_OBJECT_H
 #  error "this header file must not be included directly"
 #endif
 
-PyAPI_FUNC(void) _Py_NewReference(PyObject *op);
-PyAPI_FUNC(void) _Py_NewReferenceNoTotal(PyObject *op);
-PyAPI_FUNC(void) _Py_ResurrectReference(PyObject *op);
-PyAPI_FUNC(void) _Py_ForgetReference(PyObject *op);
+PyAPI_FUNC(void) _Ty_NewReference(TyObject *op);
+PyAPI_FUNC(void) _Ty_NewReferenceNoTotal(TyObject *op);
+PyAPI_FUNC(void) _Ty_ResurrectReference(TyObject *op);
+PyAPI_FUNC(void) _Ty_ForgetReference(TyObject *op);
 
-#ifdef Py_REF_DEBUG
+#ifdef Ty_REF_DEBUG
 /* These are useful as debugging aids when chasing down refleaks. */
-PyAPI_FUNC(Py_ssize_t) _Py_GetGlobalRefTotal(void);
-#  define _Py_GetRefTotal() _Py_GetGlobalRefTotal()
-PyAPI_FUNC(Py_ssize_t) _Py_GetLegacyRefTotal(void);
-PyAPI_FUNC(Py_ssize_t) _PyInterpreterState_GetRefTotal(PyInterpreterState *);
+PyAPI_FUNC(Ty_ssize_t) _Ty_GetGlobalRefTotal(void);
+#  define _Ty_GetRefTotal() _Ty_GetGlobalRefTotal()
+PyAPI_FUNC(Ty_ssize_t) _Ty_GetLegacyRefTotal(void);
+PyAPI_FUNC(Ty_ssize_t) _TyInterpreterState_GetRefTotal(TyInterpreterState *);
 #endif
 
 
@@ -24,38 +24,38 @@ PyAPI_FUNC(Py_ssize_t) _PyInterpreterState_GetRefTotal(PyInterpreterState *);
 
    do
 
-       _Py_IDENTIFIER(foo);
+       _Ty_IDENTIFIER(foo);
        ...
-       r = _PyObject_CallMethodId(o, &PyId_foo, "args", ...);
+       r = _TyObject_CallMethodId(o, &PyId_foo, "args", ...);
 
    PyId_foo is a static variable, either on block level or file level. On first
    usage, the string "foo" is interned, and the structures are linked. On interpreter
    shutdown, all strings are released.
 
-   Alternatively, _Py_static_string allows choosing the variable name.
-   _PyUnicode_FromId returns a borrowed reference to the interned string.
-   _PyObject_{Get,Set,Has}AttrId are __getattr__ versions using _Py_Identifier*.
+   Alternatively, _Ty_static_string allows choosing the variable name.
+   _TyUnicode_FromId returns a borrowed reference to the interned string.
+   _TyObject_{Get,Set,Has}AttrId are __getattr__ versions using _Ty_Identifier*.
 */
-typedef struct _Py_Identifier {
+typedef struct _Ty_Identifier {
     const char* string;
-    // Index in PyInterpreterState.unicode.ids.array. It is process-wide
+    // Index in TyInterpreterState.unicode.ids.array. It is process-wide
     // unique and must be initialized to -1.
-    Py_ssize_t index;
+    Ty_ssize_t index;
     // Hidden PyMutex struct for non free-threaded build.
     struct {
         uint8_t v;
     } mutex;
-} _Py_Identifier;
+} _Ty_Identifier;
 
-#ifndef Py_BUILD_CORE
-// For now we are keeping _Py_IDENTIFIER for continued use
+#ifndef Ty_BUILD_CORE
+// For now we are keeping _Ty_IDENTIFIER for continued use
 // in non-builtin extensions (and naughty PyPI modules).
 
-#define _Py_static_string_init(value) { .string = (value), .index = -1 }
-#define _Py_static_string(varname, value)  static _Py_Identifier varname = _Py_static_string_init(value)
-#define _Py_IDENTIFIER(varname) _Py_static_string(PyId_##varname, #varname)
+#define _Ty_static_string_init(value) { .string = (value), .index = -1 }
+#define _Ty_static_string(varname, value)  static _Ty_Identifier varname = _Ty_static_string_init(value)
+#define _Ty_IDENTIFIER(varname) _Ty_static_string(PyId_##varname, #varname)
 
-#endif /* !Py_BUILD_CORE */
+#endif /* !Ty_BUILD_CORE */
 
 
 typedef struct {
@@ -103,7 +103,7 @@ typedef struct {
 
     binaryfunc nb_matrix_multiply;
     binaryfunc nb_inplace_matrix_multiply;
-} PyNumberMethods;
+} TyNumberMethods;
 
 typedef struct {
     lenfunc sq_length;
@@ -125,14 +125,14 @@ typedef struct {
     objobjargproc mp_ass_subscript;
 } PyMappingMethods;
 
-typedef PySendResult (*sendfunc)(PyObject *iter, PyObject *value, PyObject **result);
+typedef PySendResult (*sendfunc)(TyObject *iter, TyObject *value, TyObject **result);
 
 typedef struct {
     unaryfunc am_await;
     unaryfunc am_aiter;
     unaryfunc am_anext;
     sendfunc am_send;
-} PyAsyncMethods;
+} TyAsyncMethods;
 
 typedef struct {
      getbufferproc bf_getbuffer;
@@ -141,28 +141,28 @@ typedef struct {
 
 /* Allow printfunc in the tp_vectorcall_offset slot for
  * backwards-compatibility */
-typedef Py_ssize_t printfunc;
+typedef Ty_ssize_t printfunc;
 
 // If this structure is modified, Doc/includes/typestruct.h should be updated
 // as well.
 struct _typeobject {
     PyObject_VAR_HEAD
     const char *tp_name; /* For printing, in format "<module>.<name>" */
-    Py_ssize_t tp_basicsize, tp_itemsize; /* For allocation */
+    Ty_ssize_t tp_basicsize, tp_itemsize; /* For allocation */
 
     /* Methods to implement standard operations */
 
     destructor tp_dealloc;
-    Py_ssize_t tp_vectorcall_offset;
+    Ty_ssize_t tp_vectorcall_offset;
     getattrfunc tp_getattr;
     setattrfunc tp_setattr;
-    PyAsyncMethods *tp_as_async; /* formerly known as tp_compare (Python 2)
+    TyAsyncMethods *tp_as_async; /* formerly known as tp_compare (Python 2)
                                     or tp_reserved (Python 3) */
     reprfunc tp_repr;
 
     /* Method suites for standard classes */
 
-    PyNumberMethods *tp_as_number;
+    TyNumberMethods *tp_as_number;
     PySequenceMethods *tp_as_sequence;
     PyMappingMethods *tp_as_mapping;
 
@@ -194,32 +194,32 @@ struct _typeobject {
     richcmpfunc tp_richcompare;
 
     /* weak reference enabler */
-    Py_ssize_t tp_weaklistoffset;
+    Ty_ssize_t tp_weaklistoffset;
 
     /* Iterators */
     getiterfunc tp_iter;
     iternextfunc tp_iternext;
 
     /* Attribute descriptor and subclassing stuff */
-    PyMethodDef *tp_methods;
-    PyMemberDef *tp_members;
-    PyGetSetDef *tp_getset;
+    TyMethodDef *tp_methods;
+    TyMemberDef *tp_members;
+    TyGetSetDef *tp_getset;
     // Strong reference on a heap type, borrowed reference on a static type
-    PyTypeObject *tp_base;
-    PyObject *tp_dict;
+    TyTypeObject *tp_base;
+    TyObject *tp_dict;
     descrgetfunc tp_descr_get;
     descrsetfunc tp_descr_set;
-    Py_ssize_t tp_dictoffset;
+    Ty_ssize_t tp_dictoffset;
     initproc tp_init;
     allocfunc tp_alloc;
     newfunc tp_new;
     freefunc tp_free; /* Low-level free-memory routine */
     inquiry tp_is_gc; /* For PyObject_IS_GC */
-    PyObject *tp_bases;
-    PyObject *tp_mro; /* method resolution order */
-    PyObject *tp_cache; /* no longer used */
+    TyObject *tp_bases;
+    TyObject *tp_mro; /* method resolution order */
+    TyObject *tp_cache; /* no longer used */
     void *tp_subclasses;  /* for static builtin types this is an index */
-    PyObject *tp_weaklist; /* not used for static builtin types */
+    TyObject *tp_weaklist; /* not used for static builtin types */
     destructor tp_del;
 
     /* Type attribute cache version tag. Added in version 2.6.
@@ -234,14 +234,14 @@ struct _typeobject {
     unsigned char tp_watched;
 
     /* Number of tp_version_tag values used.
-     * Set to _Py_ATTR_CACHE_UNUSED if the attribute cache is
+     * Set to _Ty_ATTR_CACHE_UNUSED if the attribute cache is
      * disabled for this type (e.g. due to custom MRO entries).
      * Otherwise, limited to MAX_VERSIONS_PER_CLASS (defined elsewhere).
      */
     uint16_t tp_versions_used;
 };
 
-#define _Py_ATTR_CACHE_UNUSED (30000)  // (see tp_versions_used)
+#define _Ty_ATTR_CACHE_UNUSED (30000)  // (see tp_versions_used)
 
 /* This struct is used by the specializer
  * It should be treated as an opaque blob
@@ -249,26 +249,26 @@ struct _typeobject {
 struct _specialization_cache {
     // In order to avoid bloating the bytecode with lots of inline caches, the
     // members of this structure have a somewhat unique contract. They are set
-    // by the specialization machinery, and are invalidated by PyType_Modified.
+    // by the specialization machinery, and are invalidated by TyType_Modified.
     // The rules for using them are as follows:
     // - If getitem is non-NULL, then it is the same Python function that
-    //   PyType_Lookup(cls, "__getitem__") would return.
+    //   TyType_Lookup(cls, "__getitem__") would return.
     // - If getitem is NULL, then getitem_version is meaningless.
     // - If getitem->func_version == getitem_version, then getitem can be called
     //   with two positional arguments and no keyword arguments, and has neither
     //   *args nor **kwargs (as required by BINARY_OP_SUBSCR_GETITEM):
-    PyObject *getitem;
+    TyObject *getitem;
     uint32_t getitem_version;
-    PyObject *init;
+    TyObject *init;
 };
 
 /* The *real* layout of a type object when allocated on the heap */
 typedef struct _heaptypeobject {
     /* Note: there's a dependency on the order of these members
        in slotptr() in typeobject.c . */
-    PyTypeObject ht_type;
-    PyAsyncMethods as_async;
-    PyNumberMethods as_number;
+    TyTypeObject ht_type;
+    TyAsyncMethods as_async;
+    TyNumberMethods as_number;
     PyMappingMethods as_mapping;
     PySequenceMethods as_sequence; /* as_sequence comes after as_mapping,
                                       so that the mapping wins when both
@@ -276,118 +276,118 @@ typedef struct _heaptypeobject {
                                       a given operator (e.g. __getitem__).
                                       see add_operators() in typeobject.c . */
     PyBufferProcs as_buffer;
-    PyObject *ht_name, *ht_slots, *ht_qualname;
+    TyObject *ht_name, *ht_slots, *ht_qualname;
     struct _dictkeysobject *ht_cached_keys;
-    PyObject *ht_module;
-    char *_ht_tpname;  // Storage for "tp_name"; see PyType_FromModuleAndSpec
-    void *ht_token;  // Storage for the "Py_tp_token" slot
+    TyObject *ht_module;
+    char *_ht_tpname;  // Storage for "tp_name"; see TyType_FromModuleAndSpec
+    void *ht_token;  // Storage for the "Ty_tp_token" slot
     struct _specialization_cache _spec_cache; // For use by the specializer.
-#ifdef Py_GIL_DISABLED
-    Py_ssize_t unique_id;  // ID used for per-thread refcounting
+#ifdef Ty_GIL_DISABLED
+    Ty_ssize_t unique_id;  // ID used for per-thread refcounting
 #endif
     /* here are optional user slots, followed by the members. */
 } PyHeapTypeObject;
 
-PyAPI_FUNC(const char *) _PyType_Name(PyTypeObject *);
-PyAPI_FUNC(PyObject *) _PyType_Lookup(PyTypeObject *, PyObject *);
-PyAPI_FUNC(PyObject *) _PyType_LookupRef(PyTypeObject *, PyObject *);
-PyAPI_FUNC(PyObject *) PyType_GetDict(PyTypeObject *);
+PyAPI_FUNC(const char *) _TyType_Name(TyTypeObject *);
+PyAPI_FUNC(TyObject *) _TyType_Lookup(TyTypeObject *, TyObject *);
+PyAPI_FUNC(TyObject *) _TyType_LookupRef(TyTypeObject *, TyObject *);
+PyAPI_FUNC(TyObject *) TyType_GetDict(TyTypeObject *);
 
-PyAPI_FUNC(int) PyObject_Print(PyObject *, FILE *, int);
-PyAPI_FUNC(void) _Py_BreakPoint(void);
-PyAPI_FUNC(void) _PyObject_Dump(PyObject *);
+PyAPI_FUNC(int) PyObject_Print(TyObject *, FILE *, int);
+PyAPI_FUNC(void) _Ty_BreakPoint(void);
+PyAPI_FUNC(void) _TyObject_Dump(TyObject *);
 
-PyAPI_FUNC(PyObject*) _PyObject_GetAttrId(PyObject *, _Py_Identifier *);
+PyAPI_FUNC(TyObject*) _TyObject_GetAttrId(TyObject *, _Ty_Identifier *);
 
-PyAPI_FUNC(PyObject **) _PyObject_GetDictPtr(PyObject *);
-PyAPI_FUNC(void) PyObject_CallFinalizer(PyObject *);
-PyAPI_FUNC(int) PyObject_CallFinalizerFromDealloc(PyObject *);
+PyAPI_FUNC(TyObject **) _TyObject_GetDictPtr(TyObject *);
+PyAPI_FUNC(void) PyObject_CallFinalizer(TyObject *);
+PyAPI_FUNC(int) PyObject_CallFinalizerFromDealloc(TyObject *);
 
-PyAPI_FUNC(void) PyUnstable_Object_ClearWeakRefsNoCallbacks(PyObject *);
+PyAPI_FUNC(void) PyUnstable_Object_ClearWeakRefsNoCallbacks(TyObject *);
 
 /* Same as PyObject_Generic{Get,Set}Attr, but passing the attributes
    dict as the last parameter. */
-PyAPI_FUNC(PyObject *)
-_PyObject_GenericGetAttrWithDict(PyObject *, PyObject *, PyObject *, int);
+PyAPI_FUNC(TyObject *)
+_TyObject_GenericGetAttrWithDict(TyObject *, TyObject *, TyObject *, int);
 PyAPI_FUNC(int)
-_PyObject_GenericSetAttrWithDict(PyObject *, PyObject *,
-                                 PyObject *, PyObject *);
+_TyObject_GenericSetAttrWithDict(TyObject *, TyObject *,
+                                 TyObject *, TyObject *);
 
-PyAPI_FUNC(PyObject *) _PyObject_FunctionStr(PyObject *);
+PyAPI_FUNC(TyObject *) _TyObject_FunctionStr(TyObject *);
 
 /* Safely decref `dst` and set `dst` to `src`.
  *
- * As in case of Py_CLEAR "the obvious" code can be deadly:
+ * As in case of Ty_CLEAR "the obvious" code can be deadly:
  *
- *     Py_DECREF(dst);
+ *     Ty_DECREF(dst);
  *     dst = src;
  *
  * The safe way is:
  *
- *      Py_SETREF(dst, src);
+ *      Ty_SETREF(dst, src);
  *
  * That arranges to set `dst` to `src` _before_ decref'ing, so that any code
  * triggered as a side-effect of `dst` getting torn down no longer believes
  * `dst` points to a valid object.
  *
  * Temporary variables are used to only evaluate macro arguments once and so
- * avoid the duplication of side effects. _Py_TYPEOF() or memcpy() is used to
- * avoid a miscompilation caused by type punning. See Py_CLEAR() comment for
+ * avoid the duplication of side effects. _Ty_TYPEOF() or memcpy() is used to
+ * avoid a miscompilation caused by type punning. See Ty_CLEAR() comment for
  * implementation details about type punning.
  *
  * The memcpy() implementation does not emit a compiler warning if 'src' has
  * not the same type than 'src': any pointer type is accepted for 'src'.
  */
-#ifdef _Py_TYPEOF
-#define Py_SETREF(dst, src) \
+#ifdef _Ty_TYPEOF
+#define Ty_SETREF(dst, src) \
     do { \
-        _Py_TYPEOF(dst)* _tmp_dst_ptr = &(dst); \
-        _Py_TYPEOF(dst) _tmp_old_dst = (*_tmp_dst_ptr); \
+        _Ty_TYPEOF(dst)* _tmp_dst_ptr = &(dst); \
+        _Ty_TYPEOF(dst) _tmp_old_dst = (*_tmp_dst_ptr); \
         *_tmp_dst_ptr = (src); \
-        Py_DECREF(_tmp_old_dst); \
+        Ty_DECREF(_tmp_old_dst); \
     } while (0)
 #else
-#define Py_SETREF(dst, src) \
+#define Ty_SETREF(dst, src) \
     do { \
-        PyObject **_tmp_dst_ptr = _Py_CAST(PyObject**, &(dst)); \
-        PyObject *_tmp_old_dst = (*_tmp_dst_ptr); \
-        PyObject *_tmp_src = _PyObject_CAST(src); \
-        memcpy(_tmp_dst_ptr, &_tmp_src, sizeof(PyObject*)); \
-        Py_DECREF(_tmp_old_dst); \
+        TyObject **_tmp_dst_ptr = _Py_CAST(TyObject**, &(dst)); \
+        TyObject *_tmp_old_dst = (*_tmp_dst_ptr); \
+        TyObject *_tmp_src = _TyObject_CAST(src); \
+        memcpy(_tmp_dst_ptr, &_tmp_src, sizeof(TyObject*)); \
+        Ty_DECREF(_tmp_old_dst); \
     } while (0)
 #endif
 
-/* Py_XSETREF() is a variant of Py_SETREF() that uses Py_XDECREF() instead of
- * Py_DECREF().
+/* Ty_XSETREF() is a variant of Ty_SETREF() that uses Ty_XDECREF() instead of
+ * Ty_DECREF().
  */
-#ifdef _Py_TYPEOF
-#define Py_XSETREF(dst, src) \
+#ifdef _Ty_TYPEOF
+#define Ty_XSETREF(dst, src) \
     do { \
-        _Py_TYPEOF(dst)* _tmp_dst_ptr = &(dst); \
-        _Py_TYPEOF(dst) _tmp_old_dst = (*_tmp_dst_ptr); \
+        _Ty_TYPEOF(dst)* _tmp_dst_ptr = &(dst); \
+        _Ty_TYPEOF(dst) _tmp_old_dst = (*_tmp_dst_ptr); \
         *_tmp_dst_ptr = (src); \
-        Py_XDECREF(_tmp_old_dst); \
+        Ty_XDECREF(_tmp_old_dst); \
     } while (0)
 #else
-#define Py_XSETREF(dst, src) \
+#define Ty_XSETREF(dst, src) \
     do { \
-        PyObject **_tmp_dst_ptr = _Py_CAST(PyObject**, &(dst)); \
-        PyObject *_tmp_old_dst = (*_tmp_dst_ptr); \
-        PyObject *_tmp_src = _PyObject_CAST(src); \
-        memcpy(_tmp_dst_ptr, &_tmp_src, sizeof(PyObject*)); \
-        Py_XDECREF(_tmp_old_dst); \
+        TyObject **_tmp_dst_ptr = _Py_CAST(TyObject**, &(dst)); \
+        TyObject *_tmp_old_dst = (*_tmp_dst_ptr); \
+        TyObject *_tmp_src = _TyObject_CAST(src); \
+        memcpy(_tmp_dst_ptr, &_tmp_src, sizeof(TyObject*)); \
+        Ty_XDECREF(_tmp_old_dst); \
     } while (0)
 #endif
 
 
 /* Define a pair of assertion macros:
-   _PyObject_ASSERT_FROM(), _PyObject_ASSERT_WITH_MSG() and _PyObject_ASSERT().
+   _TyObject_ASSERT_FROM(), _TyObject_ASSERT_WITH_MSG() and _TyObject_ASSERT().
 
    These work like the regular C assert(), in that they will abort the
    process with a message on stderr if the given condition fails to hold,
    but compile away to nothing if NDEBUG is defined.
 
-   However, before aborting, Python will also try to call _PyObject_Dump() on
+   However, before aborting, Python will also try to call _TyObject_Dump() on
    the given object.  This may be of use when investigating bugs in which a
    particular object is corrupt (e.g. buggy a tp_visit method in an extension
    module breaking the garbage collector), to help locate the broken objects.
@@ -396,32 +396,32 @@ PyAPI_FUNC(PyObject *) _PyObject_FunctionStr(PyObject *);
    will attempt to print to stderr, after the object dump. */
 #ifdef NDEBUG
    /* No debugging: compile away the assertions: */
-#  define _PyObject_ASSERT_FROM(obj, expr, msg, filename, lineno, func) \
+#  define _TyObject_ASSERT_FROM(obj, expr, msg, filename, lineno, func) \
     ((void)0)
 #else
    /* With debugging: generate checks: */
-#  define _PyObject_ASSERT_FROM(obj, expr, msg, filename, lineno, func) \
+#  define _TyObject_ASSERT_FROM(obj, expr, msg, filename, lineno, func) \
     ((expr) \
       ? (void)(0) \
-      : _PyObject_AssertFailed((obj), Py_STRINGIFY(expr), \
+      : _TyObject_AssertFailed((obj), Ty_STRINGIFY(expr), \
                                (msg), (filename), (lineno), (func)))
 #endif
 
-#define _PyObject_ASSERT_WITH_MSG(obj, expr, msg) \
-    _PyObject_ASSERT_FROM((obj), expr, (msg), __FILE__, __LINE__, __func__)
-#define _PyObject_ASSERT(obj, expr) \
-    _PyObject_ASSERT_WITH_MSG((obj), expr, NULL)
+#define _TyObject_ASSERT_WITH_MSG(obj, expr, msg) \
+    _TyObject_ASSERT_FROM((obj), expr, (msg), __FILE__, __LINE__, __func__)
+#define _TyObject_ASSERT(obj, expr) \
+    _TyObject_ASSERT_WITH_MSG((obj), expr, NULL)
 
-#define _PyObject_ASSERT_FAILED_MSG(obj, msg) \
-    _PyObject_AssertFailed((obj), NULL, (msg), __FILE__, __LINE__, __func__)
+#define _TyObject_ASSERT_FAILED_MSG(obj, msg) \
+    _TyObject_AssertFailed((obj), NULL, (msg), __FILE__, __LINE__, __func__)
 
-/* Declare and define _PyObject_AssertFailed() even when NDEBUG is defined,
+/* Declare and define _TyObject_AssertFailed() even when NDEBUG is defined,
    to avoid causing compiler/linker errors when building extensions without
    NDEBUG against a Python built with NDEBUG defined.
 
    msg, expr and function can be NULL. */
-PyAPI_FUNC(void) _Py_NO_RETURN _PyObject_AssertFailed(
-    PyObject *obj,
+PyAPI_FUNC(void) _Ty_NO_RETURN _TyObject_AssertFailed(
+    TyObject *obj,
     const char *expr,
     const char *msg,
     const char *file,
@@ -429,35 +429,35 @@ PyAPI_FUNC(void) _Py_NO_RETURN _PyObject_AssertFailed(
     const char *function);
 
 
-PyAPI_FUNC(void) _PyTrash_thread_deposit_object(PyThreadState *tstate, PyObject *op);
-PyAPI_FUNC(void) _PyTrash_thread_destroy_chain(PyThreadState *tstate);
+PyAPI_FUNC(void) _PyTrash_thread_deposit_object(TyThreadState *tstate, TyObject *op);
+PyAPI_FUNC(void) _PyTrash_thread_destroy_chain(TyThreadState *tstate);
 
-PyAPI_FUNC(int) _Py_ReachedRecursionLimitWithMargin(PyThreadState *tstate, int margin_count);
+PyAPI_FUNC(int) _Ty_ReachedRecursionLimitWithMargin(TyThreadState *tstate, int margin_count);
 
 /* For backwards compatibility with the old trashcan mechanism */
-#define Py_TRASHCAN_BEGIN(op, dealloc)
-#define Py_TRASHCAN_END
+#define Ty_TRASHCAN_BEGIN(op, dealloc)
+#define Ty_TRASHCAN_END
 
 
-PyAPI_FUNC(void *) PyObject_GetItemData(PyObject *obj);
+PyAPI_FUNC(void *) PyObject_GetItemData(TyObject *obj);
 
-PyAPI_FUNC(int) PyObject_VisitManagedDict(PyObject *obj, visitproc visit, void *arg);
-PyAPI_FUNC(int) _PyObject_SetManagedDict(PyObject *obj, PyObject *new_dict);
-PyAPI_FUNC(void) PyObject_ClearManagedDict(PyObject *obj);
+PyAPI_FUNC(int) PyObject_VisitManagedDict(TyObject *obj, visitproc visit, void *arg);
+PyAPI_FUNC(int) _TyObject_SetManagedDict(TyObject *obj, TyObject *new_dict);
+PyAPI_FUNC(void) PyObject_ClearManagedDict(TyObject *obj);
 
 
-typedef int(*PyType_WatchCallback)(PyTypeObject *);
-PyAPI_FUNC(int) PyType_AddWatcher(PyType_WatchCallback callback);
-PyAPI_FUNC(int) PyType_ClearWatcher(int watcher_id);
-PyAPI_FUNC(int) PyType_Watch(int watcher_id, PyObject *type);
-PyAPI_FUNC(int) PyType_Unwatch(int watcher_id, PyObject *type);
+typedef int(*TyType_WatchCallback)(TyTypeObject *);
+PyAPI_FUNC(int) TyType_AddWatcher(TyType_WatchCallback callback);
+PyAPI_FUNC(int) TyType_ClearWatcher(int watcher_id);
+PyAPI_FUNC(int) TyType_Watch(int watcher_id, TyObject *type);
+PyAPI_FUNC(int) TyType_Unwatch(int watcher_id, TyObject *type);
 
 /* Attempt to assign a version tag to the given type.
  *
  * Returns 1 if the type already had a valid version tag or a new one was
  * assigned, or 0 if a new tag could not be assigned.
  */
-PyAPI_FUNC(int) PyUnstable_Type_AssignVersionTag(PyTypeObject *type);
+PyAPI_FUNC(int) PyUnstable_Type_AssignVersionTag(TyTypeObject *type);
 
 
 typedef enum {
@@ -465,7 +465,7 @@ typedef enum {
     PyRefTracer_DESTROY = 1,
 } PyRefTracerEvent;
 
-typedef int (*PyRefTracer)(PyObject *, PyRefTracerEvent event, void *);
+typedef int (*PyRefTracer)(TyObject *, PyRefTracerEvent event, void *);
 PyAPI_FUNC(int) PyRefTracer_SetTracer(PyRefTracer tracer, void *data);
 PyAPI_FUNC(PyRefTracer) PyRefTracer_GetTracer(void**);
 
@@ -474,20 +474,20 @@ PyAPI_FUNC(PyRefTracer) PyRefTracer_GetTracer(void**);
  * Returns 1 if deferred reference counting was successfully enabled, and
  * 0 if the runtime ignored it. This function cannot fail.
  */
-PyAPI_FUNC(int) PyUnstable_Object_EnableDeferredRefcount(PyObject *);
+PyAPI_FUNC(int) PyUnstable_Object_EnableDeferredRefcount(TyObject *);
 
 /* Determine if the object exists as a unique temporary variable on the
  * topmost frame of the interpreter.
  */
-PyAPI_FUNC(int) PyUnstable_Object_IsUniqueReferencedTemporary(PyObject *);
+PyAPI_FUNC(int) PyUnstable_Object_IsUniqueReferencedTemporary(TyObject *);
 
 /* Check whether the object is immortal. This cannot fail. */
-PyAPI_FUNC(int) PyUnstable_IsImmortal(PyObject *);
+PyAPI_FUNC(int) PyUnstable_IsImmortal(TyObject *);
 
 // Increments the reference count of the object, if it's not zero.
 // PyUnstable_EnableTryIncRef() should be called on the object
 // before calling this function in order to avoid spurious failures.
-PyAPI_FUNC(int) PyUnstable_TryIncRef(PyObject *);
-PyAPI_FUNC(void) PyUnstable_EnableTryIncRef(PyObject *);
+PyAPI_FUNC(int) PyUnstable_TryIncRef(TyObject *);
+PyAPI_FUNC(void) PyUnstable_EnableTryIncRef(TyObject *);
 
-PyAPI_FUNC(int) PyUnstable_Object_IsUniquelyReferenced(PyObject *);
+PyAPI_FUNC(int) PyUnstable_Object_IsUniquelyReferenced(TyObject *);

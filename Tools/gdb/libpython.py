@@ -86,17 +86,17 @@ def interp_frame_has_tlbc_index():
                                            for field in interp_frame.fields())
     return _INTERP_FRAME_HAS_TLBC_INDEX
 
-Py_TPFLAGS_INLINE_VALUES     = (1 << 2)
-Py_TPFLAGS_MANAGED_DICT      = (1 << 4)
-Py_TPFLAGS_HEAPTYPE          = (1 << 9)
-Py_TPFLAGS_LONG_SUBCLASS     = (1 << 24)
-Py_TPFLAGS_LIST_SUBCLASS     = (1 << 25)
-Py_TPFLAGS_TUPLE_SUBCLASS    = (1 << 26)
-Py_TPFLAGS_BYTES_SUBCLASS    = (1 << 27)
-Py_TPFLAGS_UNICODE_SUBCLASS  = (1 << 28)
-Py_TPFLAGS_DICT_SUBCLASS     = (1 << 29)
-Py_TPFLAGS_BASE_EXC_SUBCLASS = (1 << 30)
-Py_TPFLAGS_TYPE_SUBCLASS     = (1 << 31)
+Ty_TPFLAGS_INLINE_VALUES     = (1 << 2)
+Ty_TPFLAGS_MANAGED_DICT      = (1 << 4)
+Ty_TPFLAGS_HEAPTYPE          = (1 << 9)
+Ty_TPFLAGS_LONG_SUBCLASS     = (1 << 24)
+Ty_TPFLAGS_LIST_SUBCLASS     = (1 << 25)
+Ty_TPFLAGS_TUPLE_SUBCLASS    = (1 << 26)
+Ty_TPFLAGS_BYTES_SUBCLASS    = (1 << 27)
+Ty_TPFLAGS_UNICODE_SUBCLASS  = (1 << 28)
+Ty_TPFLAGS_DICT_SUBCLASS     = (1 << 29)
+Ty_TPFLAGS_BASE_EXC_SUBCLASS = (1 << 30)
+Ty_TPFLAGS_TYPE_SUBCLASS     = (1 << 31)
 
 #From pycore_frame.h
 FRAME_OWNED_BY_INTERPRETER = 3
@@ -273,8 +273,8 @@ class PyObjectPtr(object):
 
         visited: a set of all gdb.Value pyobject pointers already visited
         whilst generating this value (to guard against infinite recursion when
-        visiting object graphs with loops).  Analogous to Py_ReprEnter and
-        Py_ReprLeave
+        visiting object graphs with loops).  Analogous to Ty_ReprEnter and
+        Ty_ReprLeave
         '''
 
         class FakeRepr(object):
@@ -353,24 +353,24 @@ class PyObjectPtr(object):
         if tp_name in name_map:
             return name_map[tp_name]
 
-        if tp_flags & Py_TPFLAGS_HEAPTYPE:
+        if tp_flags & Ty_TPFLAGS_HEAPTYPE:
             return HeapTypeObjectPtr
 
-        if tp_flags & Py_TPFLAGS_LONG_SUBCLASS:
+        if tp_flags & Ty_TPFLAGS_LONG_SUBCLASS:
             return PyLongObjectPtr
-        if tp_flags & Py_TPFLAGS_LIST_SUBCLASS:
+        if tp_flags & Ty_TPFLAGS_LIST_SUBCLASS:
             return PyListObjectPtr
-        if tp_flags & Py_TPFLAGS_TUPLE_SUBCLASS:
+        if tp_flags & Ty_TPFLAGS_TUPLE_SUBCLASS:
             return PyTupleObjectPtr
-        if tp_flags & Py_TPFLAGS_BYTES_SUBCLASS:
+        if tp_flags & Ty_TPFLAGS_BYTES_SUBCLASS:
             return PyBytesObjectPtr
-        if tp_flags & Py_TPFLAGS_UNICODE_SUBCLASS:
+        if tp_flags & Ty_TPFLAGS_UNICODE_SUBCLASS:
             return PyUnicodeObjectPtr
-        if tp_flags & Py_TPFLAGS_DICT_SUBCLASS:
+        if tp_flags & Ty_TPFLAGS_DICT_SUBCLASS:
             return PyDictObjectPtr
-        if tp_flags & Py_TPFLAGS_BASE_EXC_SUBCLASS:
+        if tp_flags & Ty_TPFLAGS_BASE_EXC_SUBCLASS:
             return PyBaseExceptionObjectPtr
-        #if tp_flags & Py_TPFLAGS_TYPE_SUBCLASS:
+        #if tp_flags & Ty_TPFLAGS_TYPE_SUBCLASS:
         #    return PyTypeObjectPtr
 
         # Use the base class:
@@ -407,7 +407,7 @@ class ProxyAlreadyVisited(object):
     Placeholder proxy to use when protecting against infinite recursion due to
     loops in the object graph.
 
-    Analogous to the values emitted by the users of Py_ReprEnter and Py_ReprLeave
+    Analogous to the values emitted by the users of Ty_ReprEnter and Ty_ReprLeave
     '''
     def __init__(self, rep):
         self._rep = rep
@@ -479,7 +479,7 @@ class HeapTypeObjectPtr(PyObjectPtr):
             dictoffset = int_from_int(typeobj.field('tp_dictoffset'))
             if dictoffset != 0:
                 if dictoffset < 0:
-                    if int_from_int(typeobj.field('tp_flags')) & Py_TPFLAGS_MANAGED_DICT:
+                    if int_from_int(typeobj.field('tp_flags')) & Ty_TPFLAGS_MANAGED_DICT:
                         assert dictoffset == -1
                         dictoffset = _managed_dict_offset()
                     else:
@@ -506,7 +506,7 @@ class HeapTypeObjectPtr(PyObjectPtr):
 
     def get_keys_values(self):
         typeobj = self.type()
-        has_values =  int_from_int(typeobj.field('tp_flags')) & Py_TPFLAGS_MANAGED_DICT
+        has_values =  int_from_int(typeobj.field('tp_flags')) & Ty_TPFLAGS_MANAGED_DICT
         if not has_values:
             return None
         obj_ptr = self._gdbval.cast(_type_char_ptr())
@@ -944,7 +944,7 @@ class PyLongObjectPtr(PyObjectPtr):
 class PyBoolObjectPtr(PyLongObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyBoolObject* i.e. one of the two
-    <bool> instances (Py_True/Py_False) within the process being debugged.
+    <bool> instances (Ty_True/Ty_False) within the process being debugged.
     """
     def proxyval(self, visited):
         if PyLongObjectPtr.proxyval(self, visited):
@@ -955,7 +955,7 @@ class PyBoolObjectPtr(PyLongObjectPtr):
 class PyNoneStructPtr(PyObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyObject* pointing to the
-    singleton (we hope) _Py_NoneStruct with ob_type PyNone_Type
+    singleton (we hope) _Ty_NoneStruct with ob_type PyNone_Type
     """
     _typename = 'PyObject'
 
@@ -1101,7 +1101,7 @@ class PyFramePtr:
         return self._f_special("nlocalsplus", int_from_int)
 
     def _f_lasti(self):
-        codeunit_p = gdb.lookup_type("_Py_CODEUNIT").pointer()
+        codeunit_p = gdb.lookup_type("_Ty_CODEUNIT").pointer()
         instr_ptr = self._gdbval["instr_ptr"]
         if interp_frame_has_tlbc_index():
             tlbc_index = self._gdbval["tlbc_index"]

@@ -1,5 +1,5 @@
-#ifndef _Py_PATCHLEVEL_H
-#define _Py_PATCHLEVEL_H
+#ifndef _Ty_PATCHLEVEL_H
+#define _Ty_PATCHLEVEL_H
 /* Python version identification scheme.
 
    When the major or minor version changes, the VERSION variable in
@@ -28,7 +28,7 @@
 /*--end constants--*/
 
 
-#define _Py_PACK_FULL_VERSION(X, Y, Z, LEVEL, SERIAL) ( \
+#define _Ty_PACK_FULL_VERSION(X, Y, Z, LEVEL, SERIAL) ( \
     (((X) & 0xff) << 24) |                              \
     (((Y) & 0xff) << 16) |                              \
     (((Z) & 0xff) << 8) |                               \
@@ -37,13 +37,13 @@
 
 /* Version as a single 4-byte hex number, e.g. 0x010502B2 == 1.5.2b2.
    Use this for numeric comparisons, e.g. #if PY_VERSION_HEX >= ... */
-#define PY_VERSION_HEX _Py_PACK_FULL_VERSION( \
+#define PY_VERSION_HEX _Ty_PACK_FULL_VERSION( \
     PY_MAJOR_VERSION,                         \
     PY_MINOR_VERSION,                         \
     PY_MICRO_VERSION,                         \
     PY_RELEASE_LEVEL,                         \
     PY_RELEASE_SERIAL)
 
-// Public Py_PACK_VERSION is declared in pymacro.h; it needs <inttypes.h>.
+// Public Ty_PACK_VERSION is declared in pymacro.h; it needs <inttypes.h>.
 
-#endif //_Py_PATCHLEVEL_H
+#endif //_Ty_PATCHLEVEL_H

@@ -24,11 +24,11 @@ if TYPE_CHECKING:
 def c_id(name: str) -> str:
     if len(name) == 1 and ord(name) < 256:
         if name.isalnum():
-            return f"_Py_LATIN1_CHR('{name}')"
+            return f"_Ty_LATIN1_CHR('{name}')"
         else:
-            return f'_Py_LATIN1_CHR({ord(name)})'
+            return f'_Ty_LATIN1_CHR({ord(name)})'
     else:
-        return f'&_Py_ID({name})'
+        return f'&_Ty_ID({name})'
 
 
 class CLanguage(Language):
@@ -179,11 +179,11 @@ class CLanguage(Language):
                 elif fastcall:
                     conditions.append(f"nargs < {i+1} && PySequence_Contains(kwnames, {c_id(p.name)})")
                     containscheck = "PySequence_Contains"
-                    codegen.add_include('pycore_runtime.h', '_Py_ID()')
+                    codegen.add_include('pycore_runtime.h', '_Ty_ID()')
                 else:
                     conditions.append(f"nargs < {i+1} && PyDict_Contains(kwargs, {c_id(p.name)})")
                     containscheck = "PyDict_Contains"
-                    codegen.add_include('pycore_runtime.h', '_Py_ID()')
+                    codegen.add_include('pycore_runtime.h', '_Ty_ID()')
             else:
                 conditions = [f"nargs < {i+1}"]
         condition = ") || (".join(conditions)
@@ -381,14 +381,14 @@ class CLanguage(Language):
         if f.critical_section:
             match len(f.target_critical_section):
                 case 0:
-                    lock = 'Py_BEGIN_CRITICAL_SECTION({self_name});'
-                    unlock = 'Py_END_CRITICAL_SECTION();'
+                    lock = 'Ty_BEGIN_CRITICAL_SECTION({self_name});'
+                    unlock = 'Ty_END_CRITICAL_SECTION();'
                 case 1:
-                    lock = 'Py_BEGIN_CRITICAL_SECTION({target_critical_section});'
-                    unlock = 'Py_END_CRITICAL_SECTION();'
+                    lock = 'Ty_BEGIN_CRITICAL_SECTION({target_critical_section});'
+                    unlock = 'Ty_END_CRITICAL_SECTION();'
                 case _:
-                    lock = 'Py_BEGIN_CRITICAL_SECTION2({target_critical_section});'
-                    unlock = 'Py_END_CRITICAL_SECTION2();'
+                    lock = 'Ty_BEGIN_CRITICAL_SECTION2({target_critical_section});'
+                    unlock = 'Ty_END_CRITICAL_SECTION2();'
             data.lock.append(lock)
             data.unlock.append(unlock)
 

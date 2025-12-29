@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_runtime.h"     // _Py_SINGLETON()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_runtime.h"     // _Ty_SINGLETON()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_gdbm_gdbm_get__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_get__doc__,
 "get($self, key, default=None, /)\n"
 "--\n"
 "\n"
@@ -16,17 +16,17 @@ PyDoc_STRVAR(_gdbm_gdbm_get__doc__,
 #define _GDBM_GDBM_GET_METHODDEF    \
     {"get", _PyCFunction_CAST(_gdbm_gdbm_get), METH_FASTCALL, _gdbm_gdbm_get__doc__},
 
-static PyObject *
-_gdbm_gdbm_get_impl(gdbmobject *self, PyObject *key, PyObject *default_value);
+static TyObject *
+_gdbm_gdbm_get_impl(gdbmobject *self, TyObject *key, TyObject *default_value);
 
-static PyObject *
-_gdbm_gdbm_get(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_gdbm_gdbm_get(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *key;
-    PyObject *default_value = Py_None;
+    TyObject *return_value = NULL;
+    TyObject *key;
+    TyObject *default_value = Ty_None;
 
-    if (!_PyArg_CheckPositional("get", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("get", nargs, 1, 2)) {
         goto exit;
     }
     key = args[0];
@@ -41,7 +41,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_setdefault__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_setdefault__doc__,
 "setdefault($self, key, default=None, /)\n"
 "--\n"
 "\n"
@@ -50,18 +50,18 @@ PyDoc_STRVAR(_gdbm_gdbm_setdefault__doc__,
 #define _GDBM_GDBM_SETDEFAULT_METHODDEF    \
     {"setdefault", _PyCFunction_CAST(_gdbm_gdbm_setdefault), METH_FASTCALL, _gdbm_gdbm_setdefault__doc__},
 
-static PyObject *
-_gdbm_gdbm_setdefault_impl(gdbmobject *self, PyObject *key,
-                           PyObject *default_value);
+static TyObject *
+_gdbm_gdbm_setdefault_impl(gdbmobject *self, TyObject *key,
+                           TyObject *default_value);
 
-static PyObject *
-_gdbm_gdbm_setdefault(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_gdbm_gdbm_setdefault(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *key;
-    PyObject *default_value = Py_None;
+    TyObject *return_value = NULL;
+    TyObject *key;
+    TyObject *default_value = Ty_None;
 
-    if (!_PyArg_CheckPositional("setdefault", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("setdefault", nargs, 1, 2)) {
         goto exit;
     }
     key = args[0];
@@ -76,7 +76,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_close__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -85,16 +85,16 @@ PyDoc_STRVAR(_gdbm_gdbm_close__doc__,
 #define _GDBM_GDBM_CLOSE_METHODDEF    \
     {"close", (PyCFunction)_gdbm_gdbm_close, METH_NOARGS, _gdbm_gdbm_close__doc__},
 
-static PyObject *
+static TyObject *
 _gdbm_gdbm_close_impl(gdbmobject *self);
 
-static PyObject *
-_gdbm_gdbm_close(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_gdbm_gdbm_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _gdbm_gdbm_close_impl((gdbmobject *)self);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_keys__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_keys__doc__,
 "keys($self, /)\n"
 "--\n"
 "\n"
@@ -103,20 +103,20 @@ PyDoc_STRVAR(_gdbm_gdbm_keys__doc__,
 #define _GDBM_GDBM_KEYS_METHODDEF    \
     {"keys", _PyCFunction_CAST(_gdbm_gdbm_keys), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _gdbm_gdbm_keys__doc__},
 
-static PyObject *
-_gdbm_gdbm_keys_impl(gdbmobject *self, PyTypeObject *cls);
+static TyObject *
+_gdbm_gdbm_keys_impl(gdbmobject *self, TyTypeObject *cls);
 
-static PyObject *
-_gdbm_gdbm_keys(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_gdbm_gdbm_keys(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "keys() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "keys() takes no arguments");
         return NULL;
     }
     return _gdbm_gdbm_keys_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_firstkey__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_firstkey__doc__,
 "firstkey($self, /)\n"
 "--\n"
 "\n"
@@ -129,20 +129,20 @@ PyDoc_STRVAR(_gdbm_gdbm_firstkey__doc__,
 #define _GDBM_GDBM_FIRSTKEY_METHODDEF    \
     {"firstkey", _PyCFunction_CAST(_gdbm_gdbm_firstkey), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _gdbm_gdbm_firstkey__doc__},
 
-static PyObject *
-_gdbm_gdbm_firstkey_impl(gdbmobject *self, PyTypeObject *cls);
+static TyObject *
+_gdbm_gdbm_firstkey_impl(gdbmobject *self, TyTypeObject *cls);
 
-static PyObject *
-_gdbm_gdbm_firstkey(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_gdbm_gdbm_firstkey(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "firstkey() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "firstkey() takes no arguments");
         return NULL;
     }
     return _gdbm_gdbm_firstkey_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_nextkey__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_nextkey__doc__,
 "nextkey($self, key, /)\n"
 "--\n"
 "\n"
@@ -159,31 +159,31 @@ PyDoc_STRVAR(_gdbm_gdbm_nextkey__doc__,
 #define _GDBM_GDBM_NEXTKEY_METHODDEF    \
     {"nextkey", _PyCFunction_CAST(_gdbm_gdbm_nextkey), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _gdbm_gdbm_nextkey__doc__},
 
-static PyObject *
-_gdbm_gdbm_nextkey_impl(gdbmobject *self, PyTypeObject *cls, const char *key,
-                        Py_ssize_t key_length);
+static TyObject *
+_gdbm_gdbm_nextkey_impl(gdbmobject *self, TyTypeObject *cls, const char *key,
+                        Ty_ssize_t key_length);
 
-static PyObject *
-_gdbm_gdbm_nextkey(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_gdbm_gdbm_nextkey(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .format = "s#:nextkey",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
     const char *key;
-    Py_ssize_t key_length;
+    Ty_ssize_t key_length;
 
-    if (!_PyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
+    if (!_TyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
         &key, &key_length)) {
         goto exit;
     }
@@ -193,7 +193,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_reorganize__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_reorganize__doc__,
 "reorganize($self, /)\n"
 "--\n"
 "\n"
@@ -208,20 +208,20 @@ PyDoc_STRVAR(_gdbm_gdbm_reorganize__doc__,
 #define _GDBM_GDBM_REORGANIZE_METHODDEF    \
     {"reorganize", _PyCFunction_CAST(_gdbm_gdbm_reorganize), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _gdbm_gdbm_reorganize__doc__},
 
-static PyObject *
-_gdbm_gdbm_reorganize_impl(gdbmobject *self, PyTypeObject *cls);
+static TyObject *
+_gdbm_gdbm_reorganize_impl(gdbmobject *self, TyTypeObject *cls);
 
-static PyObject *
-_gdbm_gdbm_reorganize(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_gdbm_gdbm_reorganize(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "reorganize() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "reorganize() takes no arguments");
         return NULL;
     }
     return _gdbm_gdbm_reorganize_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_sync__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_sync__doc__,
 "sync($self, /)\n"
 "--\n"
 "\n"
@@ -233,20 +233,20 @@ PyDoc_STRVAR(_gdbm_gdbm_sync__doc__,
 #define _GDBM_GDBM_SYNC_METHODDEF    \
     {"sync", _PyCFunction_CAST(_gdbm_gdbm_sync), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _gdbm_gdbm_sync__doc__},
 
-static PyObject *
-_gdbm_gdbm_sync_impl(gdbmobject *self, PyTypeObject *cls);
+static TyObject *
+_gdbm_gdbm_sync_impl(gdbmobject *self, TyTypeObject *cls);
 
-static PyObject *
-_gdbm_gdbm_sync(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_gdbm_gdbm_sync(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "sync() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "sync() takes no arguments");
         return NULL;
     }
     return _gdbm_gdbm_sync_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_clear__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -255,20 +255,20 @@ PyDoc_STRVAR(_gdbm_gdbm_clear__doc__,
 #define _GDBM_GDBM_CLEAR_METHODDEF    \
     {"clear", _PyCFunction_CAST(_gdbm_gdbm_clear), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _gdbm_gdbm_clear__doc__},
 
-static PyObject *
-_gdbm_gdbm_clear_impl(gdbmobject *self, PyTypeObject *cls);
+static TyObject *
+_gdbm_gdbm_clear_impl(gdbmobject *self, TyTypeObject *cls);
 
-static PyObject *
-_gdbm_gdbm_clear(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_gdbm_gdbm_clear(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "clear() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "clear() takes no arguments");
         return NULL;
     }
     return _gdbm_gdbm_clear_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(dbmopen__doc__,
+TyDoc_STRVAR(dbmopen__doc__,
 "open($module, filename, flags=\'r\', mode=0o666, /)\n"
 "--\n"
 "\n"
@@ -298,43 +298,43 @@ PyDoc_STRVAR(dbmopen__doc__,
 #define DBMOPEN_METHODDEF    \
     {"open", _PyCFunction_CAST(dbmopen), METH_FASTCALL, dbmopen__doc__},
 
-static PyObject *
-dbmopen_impl(PyObject *module, PyObject *filename, const char *flags,
+static TyObject *
+dbmopen_impl(TyObject *module, TyObject *filename, const char *flags,
              int mode);
 
-static PyObject *
-dbmopen(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+dbmopen(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *filename;
+    TyObject *return_value = NULL;
+    TyObject *filename;
     const char *flags = "r";
     int mode = 438;
 
-    if (!_PyArg_CheckPositional("open", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("open", nargs, 1, 3)) {
         goto exit;
     }
     filename = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("open", "argument 2", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("open", "argument 2", "str", args[1]);
         goto exit;
     }
-    Py_ssize_t flags_length;
-    flags = PyUnicode_AsUTF8AndSize(args[1], &flags_length);
+    Ty_ssize_t flags_length;
+    flags = TyUnicode_AsUTF8AndSize(args[1], &flags_length);
     if (flags == NULL) {
         goto exit;
     }
     if (strlen(flags) != (size_t)flags_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    mode = PyLong_AsInt(args[2]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[2]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:

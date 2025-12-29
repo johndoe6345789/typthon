@@ -1,29 +1,29 @@
-// Need limited C API version 3.13 for Py_mod_gil
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for Ty_mod_gil
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
-// gh-85283: On Windows, Py_LIMITED_API requires Py_BUILD_CORE to not attempt
-// linking the extension to python3.lib (which fails). Py_BUILD_CORE_MODULE is
-// needed to import Python symbols. Then Python.h undefines Py_BUILD_CORE and
-// Py_BUILD_CORE_MODULE if Py_LIMITED_API is defined.
-#define Py_BUILD_CORE
-#define Py_BUILD_CORE_MODULE
+// gh-85283: On Windows, Ty_LIMITED_API requires Ty_BUILD_CORE to not attempt
+// linking the extension to python3.lib (which fails). Ty_BUILD_CORE_MODULE is
+// needed to import Python symbols. Then Python.h undefines Ty_BUILD_CORE and
+// Ty_BUILD_CORE_MODULE if Ty_LIMITED_API is defined.
+#define Ty_BUILD_CORE
+#define Ty_BUILD_CORE_MODULE
 
 #include <Python.h>
 
 #ifdef thread_local
-#  define _Py_thread_local thread_local
+#  define _Ty_thread_local thread_local
 #elif __STDC_VERSION__ >= 201112L && !defined(__STDC_NO_THREADS__)
-#  define _Py_thread_local _Thread_local
+#  define _Ty_thread_local _Thread_local
 #elif defined(_MSC_VER)  /* AKA NT_THREADS */
-#  define _Py_thread_local __declspec(thread)
+#  define _Ty_thread_local __declspec(thread)
 #elif defined(__GNUC__)  /* includes clang */
-#  define _Py_thread_local __thread
+#  define _Ty_thread_local __thread
 #endif
 
-#if defined(_Py_FFI_SUPPORT_C_COMPLEX)
+#if defined(_Ty_FFI_SUPPORT_C_COMPLEX)
 #  include <complex.h>            // csqrt()
 #  undef I                        // for _ctypes_test_generated.c.h
 #endif
@@ -34,7 +34,7 @@
 #  include <windows.h>
 #endif
 
-#define EXPORT(x) Py_EXPORTED_SYMBOL x
+#define EXPORT(x) Ty_EXPORTED_SYMBOL x
 
 #include "_ctypes_test_generated.c.h"
 
@@ -91,7 +91,7 @@ typedef struct {
 } TestReg;
 
 
-_Py_thread_local TestReg last_tfrsuv_arg = {0};
+_Ty_thread_local TestReg last_tfrsuv_arg = {0};
 
 
 EXPORT(void)
@@ -457,7 +457,7 @@ EXPORT(double) my_sqrt(double a)
     return sqrt(a);
 }
 
-#if defined(_Py_FFI_SUPPORT_C_COMPLEX)
+#if defined(_Ty_FFI_SUPPORT_C_COMPLEX)
 EXPORT(double complex) my_csqrt(double complex a)
 {
     return csqrt(a);
@@ -729,11 +729,11 @@ EXPORT(void) GetString(BSTR *pbstr)
 /*
  * Some do-nothing functions, for speed tests
  */
-PyObject *py_func_si(PyObject *self, PyObject *args)
+TyObject *py_func_si(TyObject *self, TyObject *args)
 {
     char *name;
     int i;
-    if (!PyArg_ParseTuple(args, "si", &name, &i))
+    if (!TyArg_ParseTuple(args, "si", &name, &i))
         return NULL;
     Py_RETURN_NONE;
 }
@@ -742,7 +742,7 @@ EXPORT(void) _py_func_si(char *s, int i)
 {
 }
 
-PyObject *py_func(PyObject *self, PyObject *args)
+TyObject *py_func(TyObject *self, TyObject *args)
 {
     Py_RETURN_NONE;
 }
@@ -751,8 +751,8 @@ EXPORT(void) _py_func(void)
 {
 }
 
-_Py_thread_local long long last_tf_arg_s = 0;
-_Py_thread_local unsigned long long last_tf_arg_u = 0;
+_Ty_thread_local long long last_tf_arg_s = 0;
+_Ty_thread_local unsigned long long last_tf_arg_u = 0;
 
 struct BITS {
     signed int A: 1, B:2, C:3, D:4, E: 5, F: 6, G: 7, H: 8, I: 9;
@@ -837,14 +837,14 @@ EXPORT(int) unpack_bitfields_msvc(struct BITS_msvc *bits, char name)
 }
 #endif
 
-PyObject *get_last_tf_arg_s(PyObject *self, PyObject *noargs)
+TyObject *get_last_tf_arg_s(TyObject *self, TyObject *noargs)
 {
-    return PyLong_FromLongLong(last_tf_arg_s);
+    return TyLong_FromLongLong(last_tf_arg_s);
 }
 
-PyObject *get_last_tf_arg_u(PyObject *self, PyObject *noargs)
+TyObject *get_last_tf_arg_u(TyObject *self, TyObject *noargs)
 {
-    return PyLong_FromUnsignedLongLong(last_tf_arg_u);
+    return TyLong_FromUnsignedLongLong(last_tf_arg_u);
 }
 
 EXPORT(TestReg) get_last_tfrsuv_arg(void)
@@ -852,7 +852,7 @@ EXPORT(TestReg) get_last_tfrsuv_arg(void)
     return last_tfrsuv_arg;
 }
 
-static PyMethodDef module_methods[] = {
+static TyMethodDef module_methods[] = {
     {"get_last_tf_arg_s", get_last_tf_arg_s, METH_NOARGS},
     {"get_last_tf_arg_u", get_last_tf_arg_u, METH_NOARGS},
     {"func_si", py_func_si, METH_VARARGS},
@@ -1278,18 +1278,18 @@ EXPORT(long) _test_i38748_runCallback(_test_i38748_funcType callback, int a, int
 #endif
 
 EXPORT(int)
-_testfunc_pylist_append(PyObject *list, PyObject *item)
+_testfunc_pylist_append(TyObject *list, TyObject *item)
 {
-    return PyList_Append(list, item);
+    return TyList_Append(list, item);
 }
 
 static struct PyModuleDef_Slot _ctypes_test_slots[] = {
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef _ctypes_testmodule = {
+static struct TyModuleDef _ctypes_testmodule = {
     PyModuleDef_HEAD_INIT,
     "_ctypes_test",
     NULL,

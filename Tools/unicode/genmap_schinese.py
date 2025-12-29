@@ -122,7 +122,7 @@ def main():
         gblinnum = 0
         fp.write("""
 static const struct _gb18030_to_unibmp_ranges {
-    Py_UCS4   first, last;
+    Ty_UCS4   first, last;
     DBCHAR       base;
 } gb18030_to_unibmp_ranges[] = {
 """)

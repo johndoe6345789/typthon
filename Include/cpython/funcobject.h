@@ -1,25 +1,25 @@
 /* Function object interface */
 
-#ifndef Py_LIMITED_API
-#ifndef Py_FUNCOBJECT_H
-#define Py_FUNCOBJECT_H
+#ifndef Ty_LIMITED_API
+#ifndef Ty_FUNCOBJECT_H
+#define Ty_FUNCOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 
-#define _Py_COMMON_FIELDS(PREFIX) \
-    PyObject *PREFIX ## globals; \
-    PyObject *PREFIX ## builtins; \
-    PyObject *PREFIX ## name; \
-    PyObject *PREFIX ## qualname; \
-    PyObject *PREFIX ## code;        /* A code object, the __code__ attribute */ \
-    PyObject *PREFIX ## defaults;    /* NULL or a tuple */ \
-    PyObject *PREFIX ## kwdefaults;  /* NULL or a dict */ \
-    PyObject *PREFIX ## closure;     /* NULL or a tuple of cell objects */
+#define _Ty_COMMON_FIELDS(PREFIX) \
+    TyObject *PREFIX ## globals; \
+    TyObject *PREFIX ## builtins; \
+    TyObject *PREFIX ## name; \
+    TyObject *PREFIX ## qualname; \
+    TyObject *PREFIX ## code;        /* A code object, the __code__ attribute */ \
+    TyObject *PREFIX ## defaults;    /* NULL or a tuple */ \
+    TyObject *PREFIX ## kwdefaults;  /* NULL or a dict */ \
+    TyObject *PREFIX ## closure;     /* NULL or a tuple of cell objects */
 
 typedef struct {
-    _Py_COMMON_FIELDS(fc_)
+    _Ty_COMMON_FIELDS(fc_)
 } PyFrameConstructor;
 
 /* Function objects and code objects should not be confused with each other:
@@ -35,14 +35,14 @@ typedef struct {
 
 typedef struct {
     PyObject_HEAD
-    _Py_COMMON_FIELDS(func_)
-    PyObject *func_doc;         /* The __doc__ attribute, can be anything */
-    PyObject *func_dict;        /* The __dict__ attribute, a dict or NULL */
-    PyObject *func_weakreflist; /* List of weak references */
-    PyObject *func_module;      /* The __module__ attribute, can be anything */
-    PyObject *func_annotations; /* Annotations, a dict or NULL */
-    PyObject *func_annotate;    /* Callable to fill the annotations dictionary */
-    PyObject *func_typeparams;  /* Tuple of active type variables or NULL */
+    _Ty_COMMON_FIELDS(func_)
+    TyObject *func_doc;         /* The __doc__ attribute, can be anything */
+    TyObject *func_dict;        /* The __dict__ attribute, a dict or NULL */
+    TyObject *func_weakreflist; /* List of weak references */
+    TyObject *func_module;      /* The __module__ attribute, can be anything */
+    TyObject *func_annotations; /* Annotations, a dict or NULL */
+    TyObject *func_annotate;    /* Callable to fill the annotations dictionary */
+    TyObject *func_typeparams;  /* Tuple of active type variables or NULL */
     vectorcallfunc vectorcall;
     /* Version number for use by specializer.
      * Can set to non-zero when we want to specialize.
@@ -56,78 +56,78 @@ typedef struct {
 
     /* Invariant:
      *     func_closure contains the bindings for func_code->co_freevars, so
-     *     PyTuple_Size(func_closure) == PyCode_GetNumFree(func_code)
-     *     (func_closure may be NULL if PyCode_GetNumFree(func_code) == 0).
+     *     TyTuple_Size(func_closure) == TyCode_GetNumFree(func_code)
+     *     (func_closure may be NULL if TyCode_GetNumFree(func_code) == 0).
      */
 } PyFunctionObject;
 
-#undef _Py_COMMON_FIELDS
+#undef _Ty_COMMON_FIELDS
 
-PyAPI_DATA(PyTypeObject) PyFunction_Type;
+PyAPI_DATA(TyTypeObject) TyFunction_Type;
 
-#define PyFunction_Check(op) Py_IS_TYPE((op), &PyFunction_Type)
+#define TyFunction_Check(op) Ty_IS_TYPE((op), &TyFunction_Type)
 
-PyAPI_FUNC(PyObject *) PyFunction_New(PyObject *, PyObject *);
-PyAPI_FUNC(PyObject *) PyFunction_NewWithQualName(PyObject *, PyObject *, PyObject *);
-PyAPI_FUNC(PyObject *) PyFunction_GetCode(PyObject *);
-PyAPI_FUNC(PyObject *) PyFunction_GetGlobals(PyObject *);
-PyAPI_FUNC(PyObject *) PyFunction_GetModule(PyObject *);
-PyAPI_FUNC(PyObject *) PyFunction_GetDefaults(PyObject *);
-PyAPI_FUNC(int) PyFunction_SetDefaults(PyObject *, PyObject *);
-PyAPI_FUNC(void) PyFunction_SetVectorcall(PyFunctionObject *, vectorcallfunc);
-PyAPI_FUNC(PyObject *) PyFunction_GetKwDefaults(PyObject *);
-PyAPI_FUNC(int) PyFunction_SetKwDefaults(PyObject *, PyObject *);
-PyAPI_FUNC(PyObject *) PyFunction_GetClosure(PyObject *);
-PyAPI_FUNC(int) PyFunction_SetClosure(PyObject *, PyObject *);
-PyAPI_FUNC(PyObject *) PyFunction_GetAnnotations(PyObject *);
-PyAPI_FUNC(int) PyFunction_SetAnnotations(PyObject *, PyObject *);
+PyAPI_FUNC(TyObject *) TyFunction_New(TyObject *, TyObject *);
+PyAPI_FUNC(TyObject *) TyFunction_NewWithQualName(TyObject *, TyObject *, TyObject *);
+PyAPI_FUNC(TyObject *) TyFunction_GetCode(TyObject *);
+PyAPI_FUNC(TyObject *) TyFunction_GetGlobals(TyObject *);
+PyAPI_FUNC(TyObject *) TyFunction_GetModule(TyObject *);
+PyAPI_FUNC(TyObject *) TyFunction_GetDefaults(TyObject *);
+PyAPI_FUNC(int) TyFunction_SetDefaults(TyObject *, TyObject *);
+PyAPI_FUNC(void) TyFunction_SetVectorcall(PyFunctionObject *, vectorcallfunc);
+PyAPI_FUNC(TyObject *) TyFunction_GetKwDefaults(TyObject *);
+PyAPI_FUNC(int) TyFunction_SetKwDefaults(TyObject *, TyObject *);
+PyAPI_FUNC(TyObject *) TyFunction_GetClosure(TyObject *);
+PyAPI_FUNC(int) TyFunction_SetClosure(TyObject *, TyObject *);
+PyAPI_FUNC(TyObject *) TyFunction_GetAnnotations(TyObject *);
+PyAPI_FUNC(int) TyFunction_SetAnnotations(TyObject *, TyObject *);
 
-#define _PyFunction_CAST(func) \
-    (assert(PyFunction_Check(func)), _Py_CAST(PyFunctionObject*, func))
+#define _TyFunction_CAST(func) \
+    (assert(TyFunction_Check(func)), _Py_CAST(PyFunctionObject*, func))
 
 /* Static inline functions for direct access to these values.
    Type checks are *not* done, so use with care. */
-static inline PyObject* PyFunction_GET_CODE(PyObject *func) {
-    return _PyFunction_CAST(func)->func_code;
+static inline TyObject* TyFunction_GET_CODE(TyObject *func) {
+    return _TyFunction_CAST(func)->func_code;
 }
-#define PyFunction_GET_CODE(func) PyFunction_GET_CODE(_PyObject_CAST(func))
+#define TyFunction_GET_CODE(func) TyFunction_GET_CODE(_TyObject_CAST(func))
 
-static inline PyObject* PyFunction_GET_GLOBALS(PyObject *func) {
-    return _PyFunction_CAST(func)->func_globals;
+static inline TyObject* TyFunction_GET_GLOBALS(TyObject *func) {
+    return _TyFunction_CAST(func)->func_globals;
 }
-#define PyFunction_GET_GLOBALS(func) PyFunction_GET_GLOBALS(_PyObject_CAST(func))
+#define TyFunction_GET_GLOBALS(func) TyFunction_GET_GLOBALS(_TyObject_CAST(func))
 
-static inline PyObject* PyFunction_GET_MODULE(PyObject *func) {
-    return _PyFunction_CAST(func)->func_module;
+static inline TyObject* TyFunction_GET_MODULE(TyObject *func) {
+    return _TyFunction_CAST(func)->func_module;
 }
-#define PyFunction_GET_MODULE(func) PyFunction_GET_MODULE(_PyObject_CAST(func))
+#define TyFunction_GET_MODULE(func) TyFunction_GET_MODULE(_TyObject_CAST(func))
 
-static inline PyObject* PyFunction_GET_DEFAULTS(PyObject *func) {
-    return _PyFunction_CAST(func)->func_defaults;
+static inline TyObject* TyFunction_GET_DEFAULTS(TyObject *func) {
+    return _TyFunction_CAST(func)->func_defaults;
 }
-#define PyFunction_GET_DEFAULTS(func) PyFunction_GET_DEFAULTS(_PyObject_CAST(func))
+#define TyFunction_GET_DEFAULTS(func) TyFunction_GET_DEFAULTS(_TyObject_CAST(func))
 
-static inline PyObject* PyFunction_GET_KW_DEFAULTS(PyObject *func) {
-    return _PyFunction_CAST(func)->func_kwdefaults;
+static inline TyObject* TyFunction_GET_KW_DEFAULTS(TyObject *func) {
+    return _TyFunction_CAST(func)->func_kwdefaults;
 }
-#define PyFunction_GET_KW_DEFAULTS(func) PyFunction_GET_KW_DEFAULTS(_PyObject_CAST(func))
+#define TyFunction_GET_KW_DEFAULTS(func) TyFunction_GET_KW_DEFAULTS(_TyObject_CAST(func))
 
-static inline PyObject* PyFunction_GET_CLOSURE(PyObject *func) {
-    return _PyFunction_CAST(func)->func_closure;
+static inline TyObject* TyFunction_GET_CLOSURE(TyObject *func) {
+    return _TyFunction_CAST(func)->func_closure;
 }
-#define PyFunction_GET_CLOSURE(func) PyFunction_GET_CLOSURE(_PyObject_CAST(func))
+#define TyFunction_GET_CLOSURE(func) TyFunction_GET_CLOSURE(_TyObject_CAST(func))
 
-static inline PyObject* PyFunction_GET_ANNOTATIONS(PyObject *func) {
-    return _PyFunction_CAST(func)->func_annotations;
+static inline TyObject* TyFunction_GET_ANNOTATIONS(TyObject *func) {
+    return _TyFunction_CAST(func)->func_annotations;
 }
-#define PyFunction_GET_ANNOTATIONS(func) PyFunction_GET_ANNOTATIONS(_PyObject_CAST(func))
+#define TyFunction_GET_ANNOTATIONS(func) TyFunction_GET_ANNOTATIONS(_TyObject_CAST(func))
 
 /* The classmethod and staticmethod types lives here, too */
-PyAPI_DATA(PyTypeObject) PyClassMethod_Type;
-PyAPI_DATA(PyTypeObject) PyStaticMethod_Type;
+PyAPI_DATA(TyTypeObject) TyClassMethod_Type;
+PyAPI_DATA(TyTypeObject) TyStaticMethod_Type;
 
-PyAPI_FUNC(PyObject *) PyClassMethod_New(PyObject *);
-PyAPI_FUNC(PyObject *) PyStaticMethod_New(PyObject *);
+PyAPI_FUNC(TyObject *) TyClassMethod_New(TyObject *);
+PyAPI_FUNC(TyObject *) TyStaticMethod_New(TyObject *);
 
 #define PY_FOREACH_FUNC_EVENT(V) \
     V(CREATE)                    \
@@ -137,10 +137,10 @@ PyAPI_FUNC(PyObject *) PyStaticMethod_New(PyObject *);
     V(MODIFY_KWDEFAULTS)
 
 typedef enum {
-    #define PY_DEF_EVENT(EVENT) PyFunction_EVENT_##EVENT,
+    #define PY_DEF_EVENT(EVENT) TyFunction_EVENT_##EVENT,
     PY_FOREACH_FUNC_EVENT(PY_DEF_EVENT)
     #undef PY_DEF_EVENT
-} PyFunction_WatchEvent;
+} TyFunction_WatchEvent;
 
 /*
  * A callback that is invoked for different events in a function's lifecycle.
@@ -157,29 +157,29 @@ typedef enum {
  * If the callback returns with an exception set, it must return -1. Otherwise
  * it should return 0.
  */
-typedef int (*PyFunction_WatchCallback)(
-  PyFunction_WatchEvent event,
+typedef int (*TyFunction_WatchCallback)(
+  TyFunction_WatchEvent event,
   PyFunctionObject *func,
-  PyObject *new_value);
+  TyObject *new_value);
 
 /*
  * Register a per-interpreter callback that will be invoked for function lifecycle
  * events.
  *
- * Returns a handle that may be passed to PyFunction_ClearWatcher on success,
+ * Returns a handle that may be passed to TyFunction_ClearWatcher on success,
  * or -1 and sets an error if no more handles are available.
  */
-PyAPI_FUNC(int) PyFunction_AddWatcher(PyFunction_WatchCallback callback);
+PyAPI_FUNC(int) TyFunction_AddWatcher(TyFunction_WatchCallback callback);
 
 /*
  * Clear the watcher associated with the watcher_id handle.
  *
  * Returns 0 on success or -1 if no watcher exists for the supplied id.
  */
-PyAPI_FUNC(int) PyFunction_ClearWatcher(int watcher_id);
+PyAPI_FUNC(int) TyFunction_ClearWatcher(int watcher_id);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_FUNCOBJECT_H */
-#endif /* Py_LIMITED_API */
+#endif /* !Ty_FUNCOBJECT_H */
+#endif /* Ty_LIMITED_API */

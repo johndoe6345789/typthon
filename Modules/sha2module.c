@@ -16,22 +16,22 @@
 */
 
 /* SHA objects */
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
-#include "pycore_bitutils.h"      // _Py_bswap32()
-#include "pycore_moduleobject.h"  // _PyModule_GetState()
-#include "pycore_typeobject.h"    // _PyType_GetModuleState()
-#include "pycore_strhex.h"        // _Py_strhex()
+#include "pycore_bitutils.h"      // _Ty_bswap32()
+#include "pycore_moduleobject.h"  // _TyModule_GetState()
+#include "pycore_typeobject.h"    // _TyType_GetModuleState()
+#include "pycore_strhex.h"        // _Ty_strhex()
 
 #include "hashlib.h"
 
 /*[clinic input]
 module _sha2
-class SHA256Type "SHA256object *" "&PyType_Type"
-class SHA512Type "SHA512object *" "&PyType_Type"
+class SHA256Type "SHA256object *" "&TyType_Type"
+class SHA512Type "SHA512object *" "&TyType_Type"
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=b5315a7b611c9afc]*/
 
@@ -75,16 +75,16 @@ typedef struct {
 /* We shall use run-time type information in the remainder of this module to
  * tell apart SHA2-224 and SHA2-256 */
 typedef struct {
-    PyTypeObject* sha224_type;
-    PyTypeObject* sha256_type;
-    PyTypeObject* sha384_type;
-    PyTypeObject* sha512_type;
+    TyTypeObject* sha224_type;
+    TyTypeObject* sha256_type;
+    TyTypeObject* sha384_type;
+    TyTypeObject* sha512_type;
 } sha2_state;
 
 static inline sha2_state*
-sha2_get_state(PyObject *module)
+sha2_get_state(TyObject *module)
 {
-    void *state = _PyModule_GetState(module);
+    void *state = _TyModule_GetState(module);
     assert(state != NULL);
     return (sha2_state *)state;
 }
@@ -95,7 +95,7 @@ SHA256copy(SHA256object *src, SHA256object *dest)
     dest->digestsize = src->digestsize;
     dest->state = Hacl_Hash_SHA2_copy_256(src->state);
     if (dest->state == NULL) {
-        (void)PyErr_NoMemory();
+        (void)TyErr_NoMemory();
         return -1;
     }
     return 0;
@@ -107,7 +107,7 @@ SHA512copy(SHA512object *src, SHA512object *dest)
     dest->digestsize = src->digestsize;
     dest->state = Hacl_Hash_SHA2_copy_512(src->state);
     if (dest->state == NULL) {
-        (void)PyErr_NoMemory();
+        (void)TyErr_NoMemory();
         return -1;
     }
     return 0;
@@ -168,45 +168,45 @@ newSHA512object(sha2_state *state)
 /* Internal methods for our hash objects. */
 
 static int
-SHA2_traverse(PyObject *ptr, visitproc visit, void *arg)
+SHA2_traverse(TyObject *ptr, visitproc visit, void *arg)
 {
-    Py_VISIT(Py_TYPE(ptr));
+    Ty_VISIT(Ty_TYPE(ptr));
     return 0;
 }
 
 static void
-SHA256_dealloc(PyObject *op)
+SHA256_dealloc(TyObject *op)
 {
     SHA256object *ptr = _SHA256object_CAST(op);
     if (ptr->state != NULL) {
         Hacl_Hash_SHA2_free_256(ptr->state);
         ptr->state = NULL;
     }
-    PyTypeObject *tp = Py_TYPE(ptr);
+    TyTypeObject *tp = Ty_TYPE(ptr);
     PyObject_GC_UnTrack(ptr);
     PyObject_GC_Del(ptr);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
 static void
-SHA512_dealloc(PyObject *op)
+SHA512_dealloc(TyObject *op)
 {
     SHA512object *ptr = _SHA512object_CAST(op);
     if (ptr->state != NULL) {
         Hacl_Hash_SHA2_free_512(ptr->state);
         ptr->state = NULL;
     }
-    PyTypeObject *tp = Py_TYPE(ptr);
+    TyTypeObject *tp = Ty_TYPE(ptr);
     PyObject_GC_UnTrack(ptr);
     PyObject_GC_Del(ptr);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
-/* HACL* takes a uint32_t for the length of its parameter, but Py_ssize_t can be
+/* HACL* takes a uint32_t for the length of its parameter, but Ty_ssize_t can be
  * 64 bits so we loop in <4gig chunks when needed. */
 
 static void
-update_256(Hacl_Hash_SHA2_state_t_256 *state, uint8_t *buf, Py_ssize_t len)
+update_256(Hacl_Hash_SHA2_state_t_256 *state, uint8_t *buf, Ty_ssize_t len)
 {
     /*
      * Note: we explicitly ignore the error code on the basis that it would
@@ -225,7 +225,7 @@ update_256(Hacl_Hash_SHA2_state_t_256 *state, uint8_t *buf, Py_ssize_t len)
 }
 
 static void
-update_512(Hacl_Hash_SHA2_state_t_512 *state, uint8_t *buf, Py_ssize_t len)
+update_512(Hacl_Hash_SHA2_state_t_512 *state, uint8_t *buf, Ty_ssize_t len)
 {
     /*
      * Note: we explicitly ignore the error code on the basis that it would
@@ -254,14 +254,14 @@ SHA256Type.copy
 Return a copy of the hash object.
 [clinic start generated code]*/
 
-static PyObject *
-SHA256Type_copy_impl(SHA256object *self, PyTypeObject *cls)
+static TyObject *
+SHA256Type_copy_impl(SHA256object *self, TyTypeObject *cls)
 /*[clinic end generated code: output=fabd515577805cd3 input=3137146fcb88e212]*/
 {
     int rc;
     SHA256object *newobj;
-    sha2_state *state = _PyType_GetModuleState(cls);
-    if (Py_IS_TYPE(self, state->sha256_type)) {
+    sha2_state *state = _TyType_GetModuleState(cls);
+    if (Ty_IS_TYPE(self, state->sha256_type)) {
         if ((newobj = newSHA256object(state)) == NULL) {
             return NULL;
         }
@@ -276,10 +276,10 @@ SHA256Type_copy_impl(SHA256object *self, PyTypeObject *cls)
     rc = SHA256copy(self, newobj);
     LEAVE_HASHLIB(self);
     if (rc < 0) {
-        Py_DECREF(newobj);
+        Ty_DECREF(newobj);
         return NULL;
     }
-    return (PyObject *)newobj;
+    return (TyObject *)newobj;
 }
 
 /*[clinic input]
@@ -290,15 +290,15 @@ SHA512Type.copy
 Return a copy of the hash object.
 [clinic start generated code]*/
 
-static PyObject *
-SHA512Type_copy_impl(SHA512object *self, PyTypeObject *cls)
+static TyObject *
+SHA512Type_copy_impl(SHA512object *self, TyTypeObject *cls)
 /*[clinic end generated code: output=66d2a8ef20de8302 input=f673a18f66527c90]*/
 {
     int rc;
     SHA512object *newobj;
-    sha2_state *state = _PyType_GetModuleState(cls);
+    sha2_state *state = _TyType_GetModuleState(cls);
 
-    if (Py_IS_TYPE((PyObject*)self, state->sha512_type)) {
+    if (Ty_IS_TYPE((TyObject*)self, state->sha512_type)) {
         if ((newobj = newSHA512object(state)) == NULL) {
             return NULL;
         }
@@ -313,10 +313,10 @@ SHA512Type_copy_impl(SHA512object *self, PyTypeObject *cls)
     rc = SHA512copy(self, newobj);
     LEAVE_HASHLIB(self);
     if (rc < 0) {
-        Py_DECREF(newobj);
+        Ty_DECREF(newobj);
         return NULL;
     }
-    return (PyObject *)newobj;
+    return (TyObject *)newobj;
 }
 
 /*[clinic input]
@@ -325,7 +325,7 @@ SHA256Type.digest
 Return the digest value as a bytes object.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 SHA256Type_digest_impl(SHA256object *self)
 /*[clinic end generated code: output=3a2e3997a98ee792 input=f1f4cfea5cbde35c]*/
 {
@@ -336,7 +336,7 @@ SHA256Type_digest_impl(SHA256object *self)
     // after this call.
     Hacl_Hash_SHA2_digest_256(self->state, digest);
     LEAVE_HASHLIB(self);
-    return PyBytes_FromStringAndSize((const char *)digest, self->digestsize);
+    return TyBytes_FromStringAndSize((const char *)digest, self->digestsize);
 }
 
 /*[clinic input]
@@ -345,7 +345,7 @@ SHA512Type.digest
 Return the digest value as a bytes object.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 SHA512Type_digest_impl(SHA512object *self)
 /*[clinic end generated code: output=dd8c6320070458e0 input=f6470dd359071f4b]*/
 {
@@ -356,7 +356,7 @@ SHA512Type_digest_impl(SHA512object *self)
     // after this call.
     Hacl_Hash_SHA2_digest_512(self->state, digest);
     LEAVE_HASHLIB(self);
-    return PyBytes_FromStringAndSize((const char *)digest, self->digestsize);
+    return TyBytes_FromStringAndSize((const char *)digest, self->digestsize);
 }
 
 /*[clinic input]
@@ -365,7 +365,7 @@ SHA256Type.hexdigest
 Return the digest value as a string of hexadecimal digits.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 SHA256Type_hexdigest_impl(SHA256object *self)
 /*[clinic end generated code: output=96cb68996a780ab3 input=0cc4c714693010d1]*/
 {
@@ -374,7 +374,7 @@ SHA256Type_hexdigest_impl(SHA256object *self)
     ENTER_HASHLIB(self);
     Hacl_Hash_SHA2_digest_256(self->state, digest);
     LEAVE_HASHLIB(self);
-    return _Py_strhex((const char *)digest, self->digestsize);
+    return _Ty_strhex((const char *)digest, self->digestsize);
 }
 
 /*[clinic input]
@@ -383,7 +383,7 @@ SHA512Type.hexdigest
 Return the digest value as a string of hexadecimal digits.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 SHA512Type_hexdigest_impl(SHA512object *self)
 /*[clinic end generated code: output=cbd6f844aba1fe7c input=498b877b25cbe0a2]*/
 {
@@ -392,7 +392,7 @@ SHA512Type_hexdigest_impl(SHA512object *self)
     ENTER_HASHLIB(self);
     Hacl_Hash_SHA2_digest_512(self->state, digest);
     LEAVE_HASHLIB(self);
-    return _Py_strhex((const char *)digest, self->digestsize);
+    return _Ty_strhex((const char *)digest, self->digestsize);
 }
 
 /*[clinic input]
@@ -404,11 +404,11 @@ SHA256Type.update
 Update this hash object's state with the provided string.
 [clinic start generated code]*/
 
-static PyObject *
-SHA256Type_update_impl(SHA256object *self, PyObject *obj)
+static TyObject *
+SHA256Type_update_impl(SHA256object *self, TyObject *obj)
 /*[clinic end generated code: output=dc58a580cf8905a5 input=b2d449d5b30f0f5a]*/
 {
-    Py_buffer buf;
+    Ty_buffer buf;
 
     GET_BUFFER_VIEW_OR_ERROUT(obj, &buf);
 
@@ -416,11 +416,11 @@ SHA256Type_update_impl(SHA256object *self, PyObject *obj)
         self->use_mutex = true;
     }
     if (self->use_mutex) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         PyMutex_Lock(&self->mutex);
         update_256(self->state, buf.buf, buf.len);
         PyMutex_Unlock(&self->mutex);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } else {
         update_256(self->state, buf.buf, buf.len);
     }
@@ -438,11 +438,11 @@ SHA512Type.update
 Update this hash object's state with the provided string.
 [clinic start generated code]*/
 
-static PyObject *
-SHA512Type_update_impl(SHA512object *self, PyObject *obj)
+static TyObject *
+SHA512Type_update_impl(SHA512object *self, TyObject *obj)
 /*[clinic end generated code: output=9af211766c0b7365 input=ded2b46656566283]*/
 {
-    Py_buffer buf;
+    Ty_buffer buf;
 
     GET_BUFFER_VIEW_OR_ERROUT(obj, &buf);
 
@@ -450,11 +450,11 @@ SHA512Type_update_impl(SHA512object *self, PyObject *obj)
         self->use_mutex = true;
     }
     if (self->use_mutex) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         PyMutex_Lock(&self->mutex);
         update_512(self->state, buf.buf, buf.len);
         PyMutex_Unlock(&self->mutex);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } else {
         update_512(self->state, buf.buf, buf.len);
     }
@@ -463,7 +463,7 @@ SHA512Type_update_impl(SHA512object *self, PyObject *obj)
     Py_RETURN_NONE;
 }
 
-static PyMethodDef SHA256_methods[] = {
+static TyMethodDef SHA256_methods[] = {
     SHA256TYPE_COPY_METHODDEF
     SHA256TYPE_DIGEST_METHODDEF
     SHA256TYPE_HEXDIGEST_METHODDEF
@@ -471,7 +471,7 @@ static PyMethodDef SHA256_methods[] = {
     {NULL,        NULL}         /* sentinel */
 };
 
-static PyMethodDef SHA512_methods[] = {
+static TyMethodDef SHA512_methods[] = {
     SHA512TYPE_COPY_METHODDEF
     SHA512TYPE_DIGEST_METHODDEF
     SHA512TYPE_HEXDIGEST_METHODDEF
@@ -479,113 +479,113 @@ static PyMethodDef SHA512_methods[] = {
     {NULL,        NULL}         /* sentinel */
 };
 
-static PyObject *
-SHA256_get_block_size(PyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
+static TyObject *
+SHA256_get_block_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
-    return PyLong_FromLong(SHA256_BLOCKSIZE);
+    return TyLong_FromLong(SHA256_BLOCKSIZE);
 }
 
-static PyObject *
-SHA512_get_block_size(PyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
+static TyObject *
+SHA512_get_block_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
-    return PyLong_FromLong(SHA512_BLOCKSIZE);
+    return TyLong_FromLong(SHA512_BLOCKSIZE);
 }
 
-static PyObject *
-SHA256_get_digest_size(PyObject *op, void *Py_UNUSED(closure))
+static TyObject *
+SHA256_get_digest_size(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA256object *self = _SHA256object_CAST(op);
-    return PyLong_FromLong(self->digestsize);
+    return TyLong_FromLong(self->digestsize);
 }
 
-static PyObject *
-SHA512_get_digest_size(PyObject *op, void *Py_UNUSED(closure))
+static TyObject *
+SHA512_get_digest_size(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA512object *self = _SHA512object_CAST(op);
-    return PyLong_FromLong(self->digestsize);
+    return TyLong_FromLong(self->digestsize);
 }
 
-static PyObject *
-SHA256_get_name(PyObject *op, void *Py_UNUSED(closure))
+static TyObject *
+SHA256_get_name(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA256object *self = _SHA256object_CAST(op);
     if (self->digestsize == 28) {
-        return PyUnicode_FromStringAndSize("sha224", 6);
+        return TyUnicode_FromStringAndSize("sha224", 6);
     }
-    return PyUnicode_FromStringAndSize("sha256", 6);
+    return TyUnicode_FromStringAndSize("sha256", 6);
 }
 
-static PyObject *
-SHA512_get_name(PyObject *op, void *Py_UNUSED(closure))
+static TyObject *
+SHA512_get_name(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA512object *self = _SHA512object_CAST(op);
     if (self->digestsize == 64) {
-        return PyUnicode_FromStringAndSize("sha512", 6);
+        return TyUnicode_FromStringAndSize("sha512", 6);
     }
-    return PyUnicode_FromStringAndSize("sha384", 6);
+    return TyUnicode_FromStringAndSize("sha384", 6);
 }
 
-static PyGetSetDef SHA256_getseters[] = {
+static TyGetSetDef SHA256_getseters[] = {
     {"block_size", SHA256_get_block_size, NULL, NULL, NULL},
     {"name", SHA256_get_name, NULL, NULL, NULL},
     {"digest_size", SHA256_get_digest_size, NULL, NULL, NULL},
     {NULL}  /* Sentinel */
 };
 
-static PyGetSetDef SHA512_getseters[] = {
+static TyGetSetDef SHA512_getseters[] = {
     {"block_size", SHA512_get_block_size, NULL, NULL, NULL},
     {"name", SHA512_get_name, NULL, NULL, NULL},
     {"digest_size", SHA512_get_digest_size, NULL, NULL, NULL},
     {NULL}  /* Sentinel */
 };
 
-static PyType_Slot sha256_types_slots[] = {
-    {Py_tp_dealloc, SHA256_dealloc},
-    {Py_tp_methods, SHA256_methods},
-    {Py_tp_getset, SHA256_getseters},
-    {Py_tp_traverse, SHA2_traverse},
+static TyType_Slot sha256_types_slots[] = {
+    {Ty_tp_dealloc, SHA256_dealloc},
+    {Ty_tp_methods, SHA256_methods},
+    {Ty_tp_getset, SHA256_getseters},
+    {Ty_tp_traverse, SHA2_traverse},
     {0,0}
 };
 
-static PyType_Slot sha512_type_slots[] = {
-    {Py_tp_dealloc, SHA512_dealloc},
-    {Py_tp_methods, SHA512_methods},
-    {Py_tp_getset, SHA512_getseters},
-    {Py_tp_traverse, SHA2_traverse},
+static TyType_Slot sha512_type_slots[] = {
+    {Ty_tp_dealloc, SHA512_dealloc},
+    {Ty_tp_methods, SHA512_methods},
+    {Ty_tp_getset, SHA512_getseters},
+    {Ty_tp_traverse, SHA2_traverse},
     {0,0}
 };
 
-// Using _PyType_GetModuleState() on these types is safe since they
-// cannot be subclassed: they don't have the Py_TPFLAGS_BASETYPE flag.
-static PyType_Spec sha224_type_spec = {
+// Using _TyType_GetModuleState() on these types is safe since they
+// cannot be subclassed: they don't have the Ty_TPFLAGS_BASETYPE flag.
+static TyType_Spec sha224_type_spec = {
     .name = "_sha2.SHA224Type",
     .basicsize = sizeof(SHA256object),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_DISALLOW_INSTANTIATION |
-              Py_TPFLAGS_IMMUTABLETYPE | Py_TPFLAGS_HAVE_GC),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_DISALLOW_INSTANTIATION |
+              Ty_TPFLAGS_IMMUTABLETYPE | Ty_TPFLAGS_HAVE_GC),
     .slots = sha256_types_slots
 };
 
-static PyType_Spec sha256_type_spec = {
+static TyType_Spec sha256_type_spec = {
     .name = "_sha2.SHA256Type",
     .basicsize = sizeof(SHA256object),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_DISALLOW_INSTANTIATION |
-              Py_TPFLAGS_IMMUTABLETYPE | Py_TPFLAGS_HAVE_GC),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_DISALLOW_INSTANTIATION |
+              Ty_TPFLAGS_IMMUTABLETYPE | Ty_TPFLAGS_HAVE_GC),
     .slots = sha256_types_slots
 };
 
-static PyType_Spec sha384_type_spec = {
+static TyType_Spec sha384_type_spec = {
     .name = "_sha2.SHA384Type",
     .basicsize =  sizeof(SHA512object),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_DISALLOW_INSTANTIATION |
-              Py_TPFLAGS_IMMUTABLETYPE | Py_TPFLAGS_HAVE_GC),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_DISALLOW_INSTANTIATION |
+              Ty_TPFLAGS_IMMUTABLETYPE | Ty_TPFLAGS_HAVE_GC),
     .slots = sha512_type_slots
 };
 
-static PyType_Spec sha512_type_spec = {
+static TyType_Spec sha512_type_spec = {
     .name = "_sha2.SHA512Type",
     .basicsize =  sizeof(SHA512object),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_DISALLOW_INSTANTIATION |
-              Py_TPFLAGS_IMMUTABLETYPE | Py_TPFLAGS_HAVE_GC),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_DISALLOW_INSTANTIATION |
+              Ty_TPFLAGS_IMMUTABLETYPE | Ty_TPFLAGS_HAVE_GC),
     .slots = sha512_type_slots
 };
 
@@ -602,14 +602,14 @@ _sha2.sha256
 Return a new SHA-256 hash object; optionally initialized with a string.
 [clinic start generated code]*/
 
-static PyObject *
-_sha2_sha256_impl(PyObject *module, PyObject *data, int usedforsecurity,
-                  PyObject *string_obj)
+static TyObject *
+_sha2_sha256_impl(TyObject *module, TyObject *data, int usedforsecurity,
+                  TyObject *string_obj)
 /*[clinic end generated code: output=49828a7bcd418f45 input=9ce1d70e669abc14]*/
 {
-    Py_buffer buf;
-    PyObject *string;
-    if (_Py_hashlib_data_argument(&string, data, string_obj) < 0) {
+    Ty_buffer buf;
+    TyObject *string;
+    if (_Ty_hashlib_data_argument(&string, data, string_obj) < 0) {
         return NULL;
     }
 
@@ -631,19 +631,19 @@ _sha2_sha256_impl(PyObject *module, PyObject *data, int usedforsecurity,
     new->digestsize = 32;
 
     if (new->state == NULL) {
-        Py_DECREF(new);
+        Ty_DECREF(new);
         if (string) {
             PyBuffer_Release(&buf);
         }
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     if (string) {
         if (buf.len >= HASHLIB_GIL_MINSIZE) {
             /* We do not initialize self->lock here as this is the constructor
              * where it is not yet possible to have concurrent access. */
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             update_256(new->state, buf.buf, buf.len);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
         }
         else {
             update_256(new->state, buf.buf, buf.len);
@@ -651,7 +651,7 @@ _sha2_sha256_impl(PyObject *module, PyObject *data, int usedforsecurity,
         PyBuffer_Release(&buf);
     }
 
-    return (PyObject *)new;
+    return (TyObject *)new;
 }
 
 /*[clinic input]
@@ -665,14 +665,14 @@ _sha2.sha224
 Return a new SHA-224 hash object; optionally initialized with a string.
 [clinic start generated code]*/
 
-static PyObject *
-_sha2_sha224_impl(PyObject *module, PyObject *data, int usedforsecurity,
-                  PyObject *string_obj)
+static TyObject *
+_sha2_sha224_impl(TyObject *module, TyObject *data, int usedforsecurity,
+                  TyObject *string_obj)
 /*[clinic end generated code: output=2163cb03b6cf6157 input=612f7682a889bc2a]*/
 {
-    Py_buffer buf;
-    PyObject *string;
-    if (_Py_hashlib_data_argument(&string, data, string_obj) < 0) {
+    Ty_buffer buf;
+    TyObject *string;
+    if (_Ty_hashlib_data_argument(&string, data, string_obj) < 0) {
         return NULL;
     }
 
@@ -693,19 +693,19 @@ _sha2_sha224_impl(PyObject *module, PyObject *data, int usedforsecurity,
     new->digestsize = 28;
 
     if (new->state == NULL) {
-        Py_DECREF(new);
+        Ty_DECREF(new);
         if (string) {
             PyBuffer_Release(&buf);
         }
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     if (string) {
         if (buf.len >= HASHLIB_GIL_MINSIZE) {
             /* We do not initialize self->lock here as this is the constructor
              * where it is not yet possible to have concurrent access. */
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             update_256(new->state, buf.buf, buf.len);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
         }
         else {
             update_256(new->state, buf.buf, buf.len);
@@ -713,7 +713,7 @@ _sha2_sha224_impl(PyObject *module, PyObject *data, int usedforsecurity,
         PyBuffer_Release(&buf);
     }
 
-    return (PyObject *)new;
+    return (TyObject *)new;
 }
 
 /*[clinic input]
@@ -727,15 +727,15 @@ _sha2.sha512
 Return a new SHA-512 hash object; optionally initialized with a string.
 [clinic start generated code]*/
 
-static PyObject *
-_sha2_sha512_impl(PyObject *module, PyObject *data, int usedforsecurity,
-                  PyObject *string_obj)
+static TyObject *
+_sha2_sha512_impl(TyObject *module, TyObject *data, int usedforsecurity,
+                  TyObject *string_obj)
 /*[clinic end generated code: output=cc3fcfce001a4538 input=19c9f2c06d59563a]*/
 {
     SHA512object *new;
-    Py_buffer buf;
-    PyObject *string;
-    if (_Py_hashlib_data_argument(&string, data, string_obj) < 0) {
+    Ty_buffer buf;
+    TyObject *string;
+    if (_Ty_hashlib_data_argument(&string, data, string_obj) < 0) {
         return NULL;
     }
 
@@ -756,19 +756,19 @@ _sha2_sha512_impl(PyObject *module, PyObject *data, int usedforsecurity,
     new->digestsize = 64;
 
     if (new->state == NULL) {
-        Py_DECREF(new);
+        Ty_DECREF(new);
         if (string) {
             PyBuffer_Release(&buf);
         }
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     if (string) {
         if (buf.len >= HASHLIB_GIL_MINSIZE) {
             /* We do not initialize self->lock here as this is the constructor
              * where it is not yet possible to have concurrent access. */
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             update_512(new->state, buf.buf, buf.len);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
         }
         else {
             update_512(new->state, buf.buf, buf.len);
@@ -776,7 +776,7 @@ _sha2_sha512_impl(PyObject *module, PyObject *data, int usedforsecurity,
         PyBuffer_Release(&buf);
     }
 
-    return (PyObject *)new;
+    return (TyObject *)new;
 }
 
 /*[clinic input]
@@ -790,15 +790,15 @@ _sha2.sha384
 Return a new SHA-384 hash object; optionally initialized with a string.
 [clinic start generated code]*/
 
-static PyObject *
-_sha2_sha384_impl(PyObject *module, PyObject *data, int usedforsecurity,
-                  PyObject *string_obj)
+static TyObject *
+_sha2_sha384_impl(TyObject *module, TyObject *data, int usedforsecurity,
+                  TyObject *string_obj)
 /*[clinic end generated code: output=b6e3db593b5a0330 input=9fd50c942ad9e0bf]*/
 {
     SHA512object *new;
-    Py_buffer buf;
-    PyObject *string;
-    if (_Py_hashlib_data_argument(&string, data, string_obj) < 0) {
+    Ty_buffer buf;
+    TyObject *string;
+    if (_Ty_hashlib_data_argument(&string, data, string_obj) < 0) {
         return NULL;
     }
 
@@ -819,19 +819,19 @@ _sha2_sha384_impl(PyObject *module, PyObject *data, int usedforsecurity,
     new->digestsize = 48;
 
     if (new->state == NULL) {
-        Py_DECREF(new);
+        Ty_DECREF(new);
         if (string) {
             PyBuffer_Release(&buf);
         }
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     if (string) {
         if (buf.len >= HASHLIB_GIL_MINSIZE) {
             /* We do not initialize self->lock here as this is the constructor
              * where it is not yet possible to have concurrent access. */
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             update_512(new->state, buf.buf, buf.len);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
         }
         else {
             update_512(new->state, buf.buf, buf.len);
@@ -839,12 +839,12 @@ _sha2_sha384_impl(PyObject *module, PyObject *data, int usedforsecurity,
         PyBuffer_Release(&buf);
     }
 
-    return (PyObject *)new;
+    return (TyObject *)new;
 }
 
 /* List of functions exported by this module */
 
-static struct PyMethodDef SHA2_functions[] = {
+static struct TyMethodDef SHA2_functions[] = {
     _SHA2_SHA256_METHODDEF
     _SHA2_SHA224_METHODDEF
     _SHA2_SHA512_METHODDEF
@@ -853,73 +853,73 @@ static struct PyMethodDef SHA2_functions[] = {
 };
 
 static int
-_sha2_traverse(PyObject *module, visitproc visit, void *arg)
+_sha2_traverse(TyObject *module, visitproc visit, void *arg)
 {
     sha2_state *state = sha2_get_state(module);
-    Py_VISIT(state->sha224_type);
-    Py_VISIT(state->sha256_type);
-    Py_VISIT(state->sha384_type);
-    Py_VISIT(state->sha512_type);
+    Ty_VISIT(state->sha224_type);
+    Ty_VISIT(state->sha256_type);
+    Ty_VISIT(state->sha384_type);
+    Ty_VISIT(state->sha512_type);
     return 0;
 }
 
 static int
-_sha2_clear(PyObject *module)
+_sha2_clear(TyObject *module)
 {
     sha2_state *state = sha2_get_state(module);
-    Py_CLEAR(state->sha224_type);
-    Py_CLEAR(state->sha256_type);
-    Py_CLEAR(state->sha384_type);
-    Py_CLEAR(state->sha512_type);
+    Ty_CLEAR(state->sha224_type);
+    Ty_CLEAR(state->sha256_type);
+    Ty_CLEAR(state->sha384_type);
+    Ty_CLEAR(state->sha512_type);
     return 0;
 }
 
 static void
 _sha2_free(void *module)
 {
-    (void)_sha2_clear((PyObject *)module);
+    (void)_sha2_clear((TyObject *)module);
 }
 
 /* Initialize this module. */
-static int sha2_exec(PyObject *module)
+static int sha2_exec(TyObject *module)
 {
     sha2_state *state = sha2_get_state(module);
 
-    state->sha224_type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->sha224_type = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &sha224_type_spec, NULL);
     if (state->sha224_type == NULL) {
         return -1;
     }
-    state->sha256_type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->sha256_type = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &sha256_type_spec, NULL);
     if (state->sha256_type == NULL) {
         return -1;
     }
-    state->sha384_type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->sha384_type = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &sha384_type_spec, NULL);
     if (state->sha384_type == NULL) {
         return -1;
     }
-    state->sha512_type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    state->sha512_type = (TyTypeObject *)TyType_FromModuleAndSpec(
         module, &sha512_type_spec, NULL);
     if (state->sha512_type == NULL) {
         return -1;
     }
 
-    if (PyModule_AddType(module, state->sha224_type) < 0) {
+    if (TyModule_AddType(module, state->sha224_type) < 0) {
         return -1;
     }
-    if (PyModule_AddType(module, state->sha256_type) < 0) {
+    if (TyModule_AddType(module, state->sha256_type) < 0) {
         return -1;
     }
-    if (PyModule_AddType(module, state->sha384_type) < 0) {
+    if (TyModule_AddType(module, state->sha384_type) < 0) {
         return -1;
     }
-    if (PyModule_AddType(module, state->sha512_type) < 0) {
+    if (TyModule_AddType(module, state->sha512_type) < 0) {
         return -1;
     }
 
-    if (PyModule_AddIntConstant(module,
+    if (TyModule_AddIntConstant(module,
                                 "_GIL_MINSIZE",
                                 HASHLIB_GIL_MINSIZE) < 0)
     {
@@ -930,13 +930,13 @@ static int sha2_exec(PyObject *module)
 }
 
 static PyModuleDef_Slot _sha2_slots[] = {
-    {Py_mod_exec, sha2_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, sha2_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef _sha2module = {
+static struct TyModuleDef _sha2module = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_sha2",
     .m_size = sizeof(sha2_state),

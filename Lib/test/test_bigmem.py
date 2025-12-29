@@ -650,7 +650,7 @@ class StrTest(unittest.TestCase, BaseStrTest):
     def test_encode_ascii(self, size):
         return self.basic_encode_test(size, 'ascii', c='A')
 
-    # str % (...) uses a Py_UCS4 intermediate representation
+    # str % (...) uses a Ty_UCS4 intermediate representation
 
     @bigmemtest(size=_2G + 10, memuse=ascii_char_size * 2 + ucs4_char_size)
     def test_format(self, size):
@@ -705,8 +705,8 @@ class StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s.count('0'), size * 2)
 
     # ascii() calls encode('ascii', 'backslashreplace'), which itself
-    # creates a temporary Py_UNICODE representation in addition to the
-    # original (Py_UCS2) one
+    # creates a temporary Ty_UNICODE representation in addition to the
+    # original (Ty_UCS2) one
     # There's also some overallocation when resizing the ascii() result
     # that isn't taken into account here.
     @bigmemtest(size=_2G // 5 + 1, memuse=ucs2_char_size +
@@ -739,7 +739,7 @@ class StrTest(unittest.TestCase, BaseStrTest):
             r = s = None
 
     # The original test_translate is overridden here, so as to get the
-    # correct size estimate: str.translate() uses an intermediate Py_UCS4
+    # correct size estimate: str.translate() uses an intermediate Ty_UCS4
     # representation.
 
     @bigmemtest(size=_2G, memuse=ascii_char_size * 2 + ucs4_char_size)

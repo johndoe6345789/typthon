@@ -23,7 +23,7 @@ def lcg(x, length=16):
     return bytes(out)
 
 def pysiphash(uint64):
-    """Convert SipHash24 output to Py_hash_t
+    """Convert SipHash24 output to Ty_hash_t
     """
     assert 0 <= uint64 < (1 << 64)
     # simple unsigned to signed int64

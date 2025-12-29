@@ -2,7 +2,7 @@
 
 #define UNIDATA_VERSION "16.0.0"
 /* a list of unique database records */
-const _PyUnicode_DatabaseRecord _PyUnicode_Database_Records[] = {
+const _TyUnicode_DatabaseRecord _TyUnicode_Database_Records[] = {
     {0, 0, 0, 0, 0, 0},
     {13, 0, 15, 0, 0, 0},
     {13, 0, 17, 0, 0, 0},
@@ -637,7 +637,7 @@ static struct reindex nfc_last[] = {
 };
 
 /* string literals */
-const char *_PyUnicode_CategoryNames[] = {
+const char *_TyUnicode_CategoryNames[] = {
     "Cn",
     "Lu",
     "Ll",
@@ -671,7 +671,7 @@ const char *_PyUnicode_CategoryNames[] = {
     "So",
     NULL
 };
-const char *_PyUnicode_BidirectionalNames[] = {
+const char *_TyUnicode_BidirectionalNames[] = {
     "",
     "L",
     "LRE",
@@ -698,7 +698,7 @@ const char *_PyUnicode_BidirectionalNames[] = {
     "PDI",
     NULL
 };
-const char *_PyUnicode_EastAsianWidthNames[] = {
+const char *_TyUnicode_EastAsianWidthNames[] = {
     "N",
     "H",
     "W",
@@ -8333,7 +8333,7 @@ static const unsigned char changes_3_2_0_data[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-static const change_record* get_change_3_2_0(Py_UCS4 n)
+static const change_record* get_change_3_2_0(Ty_UCS4 n)
 {
     int index;
     if (n >= 0x110000) index = 0;
@@ -8344,7 +8344,7 @@ static const change_record* get_change_3_2_0(Py_UCS4 n)
     return change_records_3_2_0+index;
 }
 
-static Py_UCS4 normalization_3_2_0(Py_UCS4 n)
+static Ty_UCS4 normalization_3_2_0(Ty_UCS4 n)
 {
     switch(n) {
     case 0x2f868: return 0x2136A;

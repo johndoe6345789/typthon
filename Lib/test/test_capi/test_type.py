@@ -1,4 +1,4 @@
-from test.support import import_helper, Py_GIL_DISABLED, refleak_helper
+from test.support import import_helper, Ty_GIL_DISABLED, refleak_helper
 import unittest
 
 _testcapi = import_helper.import_module('_testcapi')
@@ -129,11 +129,11 @@ class TypeTests(unittest.TestCase):
         create_type = _testcapi.create_type_with_token
         get_token = _testcapi.get_tp_token
 
-        Py_TP_USE_SPEC = _testcapi.Py_TP_USE_SPEC
-        self.assertEqual(Py_TP_USE_SPEC, 0)
+        Ty_TP_USE_SPEC = _testcapi.Ty_TP_USE_SPEC
+        self.assertEqual(Ty_TP_USE_SPEC, 0)
 
-        A1 = create_type('_testcapi.A1', Py_TP_USE_SPEC)
-        self.assertTrue(get_token(A1) != Py_TP_USE_SPEC)
+        A1 = create_type('_testcapi.A1', Ty_TP_USE_SPEC)
+        self.assertTrue(get_token(A1) != Ty_TP_USE_SPEC)
 
         B1 = create_type('_testcapi.B1', id(self))
         self.assertTrue(get_token(B1) == id(self))
@@ -228,7 +228,7 @@ class TypeTests(unittest.TestCase):
         type_freeze(D)
 
     @unittest.skipIf(
-        Py_GIL_DISABLED and refleak_helper.hunting_for_refleaks(),
+        Ty_GIL_DISABLED and refleak_helper.hunting_for_refleaks(),
         "Specialization failure triggers gh-127773")
     def test_freeze_meta(self):
         """test PyType_Freeze() with overridden MRO"""

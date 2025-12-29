@@ -15,34 +15,34 @@ _testinternalcapi = import_helper.import_module('_testinternalcapi')
 
 
 class Constant(enum.IntEnum):
-    Py_CONSTANT_NONE = 0
-    Py_CONSTANT_FALSE = 1
-    Py_CONSTANT_TRUE = 2
-    Py_CONSTANT_ELLIPSIS = 3
-    Py_CONSTANT_NOT_IMPLEMENTED = 4
-    Py_CONSTANT_ZERO = 5
-    Py_CONSTANT_ONE = 6
-    Py_CONSTANT_EMPTY_STR = 7
-    Py_CONSTANT_EMPTY_BYTES = 8
-    Py_CONSTANT_EMPTY_TUPLE = 9
+    Ty_CONSTANT_NONE = 0
+    Ty_CONSTANT_FALSE = 1
+    Ty_CONSTANT_TRUE = 2
+    Ty_CONSTANT_ELLIPSIS = 3
+    Ty_CONSTANT_NOT_IMPLEMENTED = 4
+    Ty_CONSTANT_ZERO = 5
+    Ty_CONSTANT_ONE = 6
+    Ty_CONSTANT_EMPTY_STR = 7
+    Ty_CONSTANT_EMPTY_BYTES = 8
+    Ty_CONSTANT_EMPTY_TUPLE = 9
 
-    INVALID_CONSTANT = Py_CONSTANT_EMPTY_TUPLE + 1
+    INVALID_CONSTANT = Ty_CONSTANT_EMPTY_TUPLE + 1
 
 
 class GetConstantTest(unittest.TestCase):
     def check_get_constant(self, get_constant):
-        self.assertIs(get_constant(Constant.Py_CONSTANT_NONE), None)
-        self.assertIs(get_constant(Constant.Py_CONSTANT_FALSE), False)
-        self.assertIs(get_constant(Constant.Py_CONSTANT_TRUE), True)
-        self.assertIs(get_constant(Constant.Py_CONSTANT_ELLIPSIS), Ellipsis)
-        self.assertIs(get_constant(Constant.Py_CONSTANT_NOT_IMPLEMENTED), NotImplemented)
+        self.assertIs(get_constant(Constant.Ty_CONSTANT_NONE), None)
+        self.assertIs(get_constant(Constant.Ty_CONSTANT_FALSE), False)
+        self.assertIs(get_constant(Constant.Ty_CONSTANT_TRUE), True)
+        self.assertIs(get_constant(Constant.Ty_CONSTANT_ELLIPSIS), Ellipsis)
+        self.assertIs(get_constant(Constant.Ty_CONSTANT_NOT_IMPLEMENTED), NotImplemented)
 
         for constant_id, constant_type, value in (
-            (Constant.Py_CONSTANT_ZERO, int, 0),
-            (Constant.Py_CONSTANT_ONE, int, 1),
-            (Constant.Py_CONSTANT_EMPTY_STR, str, ""),
-            (Constant.Py_CONSTANT_EMPTY_BYTES, bytes, b""),
-            (Constant.Py_CONSTANT_EMPTY_TUPLE, tuple, ()),
+            (Constant.Ty_CONSTANT_ZERO, int, 0),
+            (Constant.Ty_CONSTANT_ONE, int, 1),
+            (Constant.Ty_CONSTANT_EMPTY_STR, str, ""),
+            (Constant.Ty_CONSTANT_EMPTY_BYTES, bytes, b""),
+            (Constant.Ty_CONSTANT_EMPTY_TUPLE, tuple, ()),
         ):
             with self.subTest(constant_id=constant_id):
                 obj = get_constant(constant_id)
@@ -147,11 +147,11 @@ class EnableDeferredRefcountingTest(unittest.TestCase):
 
         self.assertEqual(_testcapi.pyobject_enable_deferred_refcount("not tracked"), 0)
         foo = []
-        self.assertEqual(_testcapi.pyobject_enable_deferred_refcount(foo), int(support.Py_GIL_DISABLED))
+        self.assertEqual(_testcapi.pyobject_enable_deferred_refcount(foo), int(support.Ty_GIL_DISABLED))
 
         # Make sure reference counting works on foo now
         self.assertEqual(foo, [])
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             self.assertTrue(_testinternalcapi.has_deferred_refcount(foo))
 
         # Make sure that PyUnstable_Object_EnableDeferredRefcount is thread safe
@@ -170,7 +170,7 @@ class EnableDeferredRefcountingTest(unittest.TestCase):
             for i in range(10):
                 silly_list.append(i)
 
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             self.assertTrue(_testinternalcapi.has_deferred_refcount(silly_list))
 
 
@@ -186,13 +186,13 @@ class IsUniquelyReferencedTest(unittest.TestCase):
 
 class CAPITest(unittest.TestCase):
     def check_negative_refcount(self, code):
-        # bpo-35059: Check that Py_DECREF() reports the correct filename
-        # when calling _Py_NegativeRefcount() to abort Python.
+        # bpo-35059: Check that Ty_DECREF() reports the correct filename
+        # when calling _Ty_NegativeRefcount() to abort Python.
         code = textwrap.dedent(code)
         rc, out, err = assert_python_failure('-c', code)
         self.assertRegex(err,
                          br'object\.c:[0-9]+: '
-                         br'_Py_NegativeRefcount: Assertion failed: '
+                         br'_Ty_NegativeRefcount: Assertion failed: '
                          br'object has negative ref count')
 
     @unittest.skipUnless(hasattr(_testcapi, 'negative_refcount'),

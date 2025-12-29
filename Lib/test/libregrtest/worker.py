@@ -3,7 +3,7 @@ import sys
 import os
 from typing import Any, NoReturn
 
-from test.support import os_helper, Py_DEBUG
+from test.support import os_helper, Ty_DEBUG
 
 from .setup import setup_process, setup_test_dir
 from .runtests import WorkerRunTests, JsonFile, JsonFileType
@@ -93,7 +93,7 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
     if runtests.coverage:
         if "test.cov" in sys.modules:  # imported by -Xpresite=
             result.covered_lines = list(sys.modules["test.cov"].coverage)
-        elif not Py_DEBUG:
+        elif not Ty_DEBUG:
             print(
                 "Gathering coverage in worker processes requires --with-pydebug",
                 flush=True,

@@ -2,15 +2,15 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_abstract.h"      // _Py_convert_optional_to_ssize_t()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
-#include "pycore_tuple.h"         // _PyTuple_FromArray()
+#include "pycore_abstract.h"      // _Ty_convert_optional_to_ssize_t()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
+#include "pycore_tuple.h"         // _TyTuple_FromArray()
 
-PyDoc_STRVAR(gc_enable__doc__,
+TyDoc_STRVAR(gc_enable__doc__,
 "enable($module, /)\n"
 "--\n"
 "\n"
@@ -19,16 +19,16 @@ PyDoc_STRVAR(gc_enable__doc__,
 #define GC_ENABLE_METHODDEF    \
     {"enable", (PyCFunction)gc_enable, METH_NOARGS, gc_enable__doc__},
 
-static PyObject *
-gc_enable_impl(PyObject *module);
+static TyObject *
+gc_enable_impl(TyObject *module);
 
-static PyObject *
-gc_enable(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_enable(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_enable_impl(module);
 }
 
-PyDoc_STRVAR(gc_disable__doc__,
+TyDoc_STRVAR(gc_disable__doc__,
 "disable($module, /)\n"
 "--\n"
 "\n"
@@ -37,16 +37,16 @@ PyDoc_STRVAR(gc_disable__doc__,
 #define GC_DISABLE_METHODDEF    \
     {"disable", (PyCFunction)gc_disable, METH_NOARGS, gc_disable__doc__},
 
-static PyObject *
-gc_disable_impl(PyObject *module);
+static TyObject *
+gc_disable_impl(TyObject *module);
 
-static PyObject *
-gc_disable(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_disable(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_disable_impl(module);
 }
 
-PyDoc_STRVAR(gc_isenabled__doc__,
+TyDoc_STRVAR(gc_isenabled__doc__,
 "isenabled($module, /)\n"
 "--\n"
 "\n"
@@ -56,25 +56,25 @@ PyDoc_STRVAR(gc_isenabled__doc__,
     {"isenabled", (PyCFunction)gc_isenabled, METH_NOARGS, gc_isenabled__doc__},
 
 static int
-gc_isenabled_impl(PyObject *module);
+gc_isenabled_impl(TyObject *module);
 
-static PyObject *
-gc_isenabled(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_isenabled(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = gc_isenabled_impl(module);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_collect__doc__,
+TyDoc_STRVAR(gc_collect__doc__,
 "collect($module, /, generation=2)\n"
 "--\n"
 "\n"
@@ -89,46 +89,46 @@ PyDoc_STRVAR(gc_collect__doc__,
 #define GC_COLLECT_METHODDEF    \
     {"collect", _PyCFunction_CAST(gc_collect), METH_FASTCALL|METH_KEYWORDS, gc_collect__doc__},
 
-static Py_ssize_t
-gc_collect_impl(PyObject *module, int generation);
+static Ty_ssize_t
+gc_collect_impl(TyObject *module, int generation);
 
-static PyObject *
-gc_collect(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+gc_collect(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(generation), },
+        .ob_item = { &_Ty_ID(generation), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"generation", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "collect",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int generation = NUM_GENERATIONS - 1;
-    Py_ssize_t _return_value;
+    Ty_ssize_t _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -136,22 +136,22 @@ gc_collect(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    generation = PyLong_AsInt(args[0]);
-    if (generation == -1 && PyErr_Occurred()) {
+    generation = TyLong_AsInt(args[0]);
+    if (generation == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
     _return_value = gc_collect_impl(module, generation);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_set_debug__doc__,
+TyDoc_STRVAR(gc_set_debug__doc__,
 "set_debug($module, flags, /)\n"
 "--\n"
 "\n"
@@ -171,17 +171,17 @@ PyDoc_STRVAR(gc_set_debug__doc__,
 #define GC_SET_DEBUG_METHODDEF    \
     {"set_debug", (PyCFunction)gc_set_debug, METH_O, gc_set_debug__doc__},
 
-static PyObject *
-gc_set_debug_impl(PyObject *module, int flags);
+static TyObject *
+gc_set_debug_impl(TyObject *module, int flags);
 
-static PyObject *
-gc_set_debug(PyObject *module, PyObject *arg)
+static TyObject *
+gc_set_debug(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int flags;
 
-    flags = PyLong_AsInt(arg);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(arg);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = gc_set_debug_impl(module, flags);
@@ -190,7 +190,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_debug__doc__,
+TyDoc_STRVAR(gc_get_debug__doc__,
 "get_debug($module, /)\n"
 "--\n"
 "\n"
@@ -200,25 +200,25 @@ PyDoc_STRVAR(gc_get_debug__doc__,
     {"get_debug", (PyCFunction)gc_get_debug, METH_NOARGS, gc_get_debug__doc__},
 
 static int
-gc_get_debug_impl(PyObject *module);
+gc_get_debug_impl(TyObject *module);
 
-static PyObject *
-gc_get_debug(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_get_debug(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = gc_get_debug_impl(module);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_set_threshold__doc__,
+TyDoc_STRVAR(gc_set_threshold__doc__,
 "set_threshold(threshold0, [threshold1, [threshold2]])\n"
 "Set the collection thresholds (the collection frequency).\n"
 "\n"
@@ -227,41 +227,41 @@ PyDoc_STRVAR(gc_set_threshold__doc__,
 #define GC_SET_THRESHOLD_METHODDEF    \
     {"set_threshold", (PyCFunction)gc_set_threshold, METH_VARARGS, gc_set_threshold__doc__},
 
-static PyObject *
-gc_set_threshold_impl(PyObject *module, int threshold0, int group_right_1,
+static TyObject *
+gc_set_threshold_impl(TyObject *module, int threshold0, int group_right_1,
                       int threshold1, int group_right_2, int threshold2);
 
-static PyObject *
-gc_set_threshold(PyObject *module, PyObject *args)
+static TyObject *
+gc_set_threshold(TyObject *module, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int threshold0;
     int group_right_1 = 0;
     int threshold1 = 0;
     int group_right_2 = 0;
     int threshold2 = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 1:
-            if (!PyArg_ParseTuple(args, "i:set_threshold", &threshold0)) {
+            if (!TyArg_ParseTuple(args, "i:set_threshold", &threshold0)) {
                 goto exit;
             }
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:set_threshold", &threshold0, &threshold1)) {
+            if (!TyArg_ParseTuple(args, "ii:set_threshold", &threshold0, &threshold1)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "iii:set_threshold", &threshold0, &threshold1, &threshold2)) {
+            if (!TyArg_ParseTuple(args, "iii:set_threshold", &threshold0, &threshold1, &threshold2)) {
                 goto exit;
             }
             group_right_1 = 1;
             group_right_2 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "gc.set_threshold requires 1 to 3 arguments");
+            TyErr_SetString(TyExc_TypeError, "gc.set_threshold requires 1 to 3 arguments");
             goto exit;
     }
     return_value = gc_set_threshold_impl(module, threshold0, group_right_1, threshold1, group_right_2, threshold2);
@@ -270,7 +270,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_threshold__doc__,
+TyDoc_STRVAR(gc_get_threshold__doc__,
 "get_threshold($module, /)\n"
 "--\n"
 "\n"
@@ -279,16 +279,16 @@ PyDoc_STRVAR(gc_get_threshold__doc__,
 #define GC_GET_THRESHOLD_METHODDEF    \
     {"get_threshold", (PyCFunction)gc_get_threshold, METH_NOARGS, gc_get_threshold__doc__},
 
-static PyObject *
-gc_get_threshold_impl(PyObject *module);
+static TyObject *
+gc_get_threshold_impl(TyObject *module);
 
-static PyObject *
-gc_get_threshold(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_get_threshold(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_get_threshold_impl(module);
 }
 
-PyDoc_STRVAR(gc_get_count__doc__,
+TyDoc_STRVAR(gc_get_count__doc__,
 "get_count($module, /)\n"
 "--\n"
 "\n"
@@ -297,16 +297,16 @@ PyDoc_STRVAR(gc_get_count__doc__,
 #define GC_GET_COUNT_METHODDEF    \
     {"get_count", (PyCFunction)gc_get_count, METH_NOARGS, gc_get_count__doc__},
 
-static PyObject *
-gc_get_count_impl(PyObject *module);
+static TyObject *
+gc_get_count_impl(TyObject *module);
 
-static PyObject *
-gc_get_count(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_get_count(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_get_count_impl(module);
 }
 
-PyDoc_STRVAR(gc_get_referrers__doc__,
+TyDoc_STRVAR(gc_get_referrers__doc__,
 "get_referrers($module, /, *objs)\n"
 "--\n"
 "\n"
@@ -315,16 +315,16 @@ PyDoc_STRVAR(gc_get_referrers__doc__,
 #define GC_GET_REFERRERS_METHODDEF    \
     {"get_referrers", _PyCFunction_CAST(gc_get_referrers), METH_FASTCALL, gc_get_referrers__doc__},
 
-static PyObject *
-gc_get_referrers_impl(PyObject *module, PyObject *objs);
+static TyObject *
+gc_get_referrers_impl(TyObject *module, TyObject *objs);
 
-static PyObject *
-gc_get_referrers(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+gc_get_referrers(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *objs = NULL;
+    TyObject *return_value = NULL;
+    TyObject *objs = NULL;
 
-    objs = _PyTuple_FromArray(args, nargs);
+    objs = _TyTuple_FromArray(args, nargs);
     if (objs == NULL) {
         goto exit;
     }
@@ -332,12 +332,12 @@ gc_get_referrers(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 
 exit:
     /* Cleanup for objs */
-    Py_XDECREF(objs);
+    Ty_XDECREF(objs);
 
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_referents__doc__,
+TyDoc_STRVAR(gc_get_referents__doc__,
 "get_referents($module, /, *objs)\n"
 "--\n"
 "\n"
@@ -346,16 +346,16 @@ PyDoc_STRVAR(gc_get_referents__doc__,
 #define GC_GET_REFERENTS_METHODDEF    \
     {"get_referents", _PyCFunction_CAST(gc_get_referents), METH_FASTCALL, gc_get_referents__doc__},
 
-static PyObject *
-gc_get_referents_impl(PyObject *module, PyObject *objs);
+static TyObject *
+gc_get_referents_impl(TyObject *module, TyObject *objs);
 
-static PyObject *
-gc_get_referents(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+gc_get_referents(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *objs = NULL;
+    TyObject *return_value = NULL;
+    TyObject *objs = NULL;
 
-    objs = _PyTuple_FromArray(args, nargs);
+    objs = _TyTuple_FromArray(args, nargs);
     if (objs == NULL) {
         goto exit;
     }
@@ -363,12 +363,12 @@ gc_get_referents(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 
 exit:
     /* Cleanup for objs */
-    Py_XDECREF(objs);
+    Ty_XDECREF(objs);
 
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_objects__doc__,
+TyDoc_STRVAR(gc_get_objects__doc__,
 "get_objects($module, /, generation=None)\n"
 "--\n"
 "\n"
@@ -383,45 +383,45 @@ PyDoc_STRVAR(gc_get_objects__doc__,
 #define GC_GET_OBJECTS_METHODDEF    \
     {"get_objects", _PyCFunction_CAST(gc_get_objects), METH_FASTCALL|METH_KEYWORDS, gc_get_objects__doc__},
 
-static PyObject *
-gc_get_objects_impl(PyObject *module, Py_ssize_t generation);
+static TyObject *
+gc_get_objects_impl(TyObject *module, Ty_ssize_t generation);
 
-static PyObject *
-gc_get_objects(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+gc_get_objects(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(generation), },
+        .ob_item = { &_Ty_ID(generation), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"generation", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "get_objects",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    Py_ssize_t generation = -1;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    Ty_ssize_t generation = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -429,7 +429,7 @@ gc_get_objects(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObje
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    if (!_Py_convert_optional_to_ssize_t(args[0], &generation)) {
+    if (!_Ty_convert_optional_to_ssize_t(args[0], &generation)) {
         goto exit;
     }
 skip_optional_pos:
@@ -439,7 +439,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_stats__doc__,
+TyDoc_STRVAR(gc_get_stats__doc__,
 "get_stats($module, /)\n"
 "--\n"
 "\n"
@@ -448,16 +448,16 @@ PyDoc_STRVAR(gc_get_stats__doc__,
 #define GC_GET_STATS_METHODDEF    \
     {"get_stats", (PyCFunction)gc_get_stats, METH_NOARGS, gc_get_stats__doc__},
 
-static PyObject *
-gc_get_stats_impl(PyObject *module);
+static TyObject *
+gc_get_stats_impl(TyObject *module);
 
-static PyObject *
-gc_get_stats(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_get_stats(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_get_stats_impl(module);
 }
 
-PyDoc_STRVAR(gc_is_tracked__doc__,
+TyDoc_STRVAR(gc_is_tracked__doc__,
 "is_tracked($module, obj, /)\n"
 "--\n"
 "\n"
@@ -469,25 +469,25 @@ PyDoc_STRVAR(gc_is_tracked__doc__,
     {"is_tracked", (PyCFunction)gc_is_tracked, METH_O, gc_is_tracked__doc__},
 
 static int
-gc_is_tracked_impl(PyObject *module, PyObject *obj);
+gc_is_tracked_impl(TyObject *module, TyObject *obj);
 
-static PyObject *
-gc_is_tracked(PyObject *module, PyObject *obj)
+static TyObject *
+gc_is_tracked(TyObject *module, TyObject *obj)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = gc_is_tracked_impl(module, obj);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_is_finalized__doc__,
+TyDoc_STRVAR(gc_is_finalized__doc__,
 "is_finalized($module, obj, /)\n"
 "--\n"
 "\n"
@@ -497,25 +497,25 @@ PyDoc_STRVAR(gc_is_finalized__doc__,
     {"is_finalized", (PyCFunction)gc_is_finalized, METH_O, gc_is_finalized__doc__},
 
 static int
-gc_is_finalized_impl(PyObject *module, PyObject *obj);
+gc_is_finalized_impl(TyObject *module, TyObject *obj);
 
-static PyObject *
-gc_is_finalized(PyObject *module, PyObject *obj)
+static TyObject *
+gc_is_finalized(TyObject *module, TyObject *obj)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = gc_is_finalized_impl(module, obj);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_freeze__doc__,
+TyDoc_STRVAR(gc_freeze__doc__,
 "freeze($module, /)\n"
 "--\n"
 "\n"
@@ -528,16 +528,16 @@ PyDoc_STRVAR(gc_freeze__doc__,
 #define GC_FREEZE_METHODDEF    \
     {"freeze", (PyCFunction)gc_freeze, METH_NOARGS, gc_freeze__doc__},
 
-static PyObject *
-gc_freeze_impl(PyObject *module);
+static TyObject *
+gc_freeze_impl(TyObject *module);
 
-static PyObject *
-gc_freeze(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_freeze(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_freeze_impl(module);
 }
 
-PyDoc_STRVAR(gc_unfreeze__doc__,
+TyDoc_STRVAR(gc_unfreeze__doc__,
 "unfreeze($module, /)\n"
 "--\n"
 "\n"
@@ -548,16 +548,16 @@ PyDoc_STRVAR(gc_unfreeze__doc__,
 #define GC_UNFREEZE_METHODDEF    \
     {"unfreeze", (PyCFunction)gc_unfreeze, METH_NOARGS, gc_unfreeze__doc__},
 
-static PyObject *
-gc_unfreeze_impl(PyObject *module);
+static TyObject *
+gc_unfreeze_impl(TyObject *module);
 
-static PyObject *
-gc_unfreeze(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_unfreeze(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_unfreeze_impl(module);
 }
 
-PyDoc_STRVAR(gc_get_freeze_count__doc__,
+TyDoc_STRVAR(gc_get_freeze_count__doc__,
 "get_freeze_count($module, /)\n"
 "--\n"
 "\n"
@@ -566,20 +566,20 @@ PyDoc_STRVAR(gc_get_freeze_count__doc__,
 #define GC_GET_FREEZE_COUNT_METHODDEF    \
     {"get_freeze_count", (PyCFunction)gc_get_freeze_count, METH_NOARGS, gc_get_freeze_count__doc__},
 
-static Py_ssize_t
-gc_get_freeze_count_impl(PyObject *module);
+static Ty_ssize_t
+gc_get_freeze_count_impl(TyObject *module);
 
-static PyObject *
-gc_get_freeze_count(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+gc_get_freeze_count(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t _return_value;
+    TyObject *return_value = NULL;
+    Ty_ssize_t _return_value;
 
     _return_value = gc_get_freeze_count_impl(module);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;

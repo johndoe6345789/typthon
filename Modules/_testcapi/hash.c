@@ -1,42 +1,42 @@
 #include "parts.h"
 #include "util.h"
 
-static PyObject *
-hash_getfuncdef(PyObject *Py_UNUSED(module), PyObject *Py_UNUSED(args))
+static TyObject *
+hash_getfuncdef(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(args))
 {
     // bind PyHash_GetFuncDef()
     PyHash_FuncDef *def = PyHash_GetFuncDef();
 
-    PyObject *types = PyImport_ImportModule("types");
+    TyObject *types = TyImport_ImportModule("types");
     if (types == NULL) {
         return NULL;
     }
 
-    PyObject *result = PyObject_CallMethod(types, "SimpleNamespace", NULL);
-    Py_DECREF(types);
+    TyObject *result = PyObject_CallMethod(types, "SimpleNamespace", NULL);
+    Ty_DECREF(types);
     if (result == NULL) {
         return NULL;
     }
 
     // ignore PyHash_FuncDef.hash
 
-    PyObject *value = PyUnicode_FromString(def->name);
+    TyObject *value = TyUnicode_FromString(def->name);
     int res = PyObject_SetAttrString(result, "name", value);
-    Py_DECREF(value);
+    Ty_DECREF(value);
     if (res < 0) {
         return NULL;
     }
 
-    value = PyLong_FromLong(def->hash_bits);
+    value = TyLong_FromLong(def->hash_bits);
     res = PyObject_SetAttrString(result, "hash_bits", value);
-    Py_DECREF(value);
+    Ty_DECREF(value);
     if (res < 0) {
         return NULL;
     }
 
-    value = PyLong_FromLong(def->seed_bits);
+    value = TyLong_FromLong(def->seed_bits);
     res = PyObject_SetAttrString(result, "seed_bits", value);
-    Py_DECREF(value);
+    Ty_DECREF(value);
     if (res < 0) {
         return NULL;
     }
@@ -45,51 +45,51 @@ hash_getfuncdef(PyObject *Py_UNUSED(module), PyObject *Py_UNUSED(args))
 }
 
 
-static PyObject *
-long_from_hash(Py_hash_t hash)
+static TyObject *
+long_from_hash(Ty_hash_t hash)
 {
-    Py_BUILD_ASSERT(sizeof(long long) >= sizeof(hash));
-    return PyLong_FromLongLong(hash);
+    Ty_BUILD_ASSERT(sizeof(long long) >= sizeof(hash));
+    return TyLong_FromLongLong(hash);
 }
 
 
-static PyObject *
-hash_pointer(PyObject *Py_UNUSED(module), PyObject *arg)
+static TyObject *
+hash_pointer(TyObject *Py_UNUSED(module), TyObject *arg)
 {
-    void *ptr = PyLong_AsVoidPtr(arg);
-    if (ptr == NULL && PyErr_Occurred()) {
+    void *ptr = TyLong_AsVoidPtr(arg);
+    if (ptr == NULL && TyErr_Occurred()) {
         return NULL;
     }
 
-    Py_hash_t hash = Py_HashPointer(ptr);
+    Ty_hash_t hash = Ty_HashPointer(ptr);
     return long_from_hash(hash);
 }
 
 
-static PyObject *
-hash_buffer(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+hash_buffer(TyObject *Py_UNUSED(module), TyObject *args)
 {
     char *ptr;
-    Py_ssize_t len;
-    if (!PyArg_ParseTuple(args, "y#", &ptr, &len)) {
+    Ty_ssize_t len;
+    if (!TyArg_ParseTuple(args, "y#", &ptr, &len)) {
         return NULL;
     }
 
-    Py_hash_t hash = Py_HashBuffer(ptr, len);
+    Ty_hash_t hash = Ty_HashBuffer(ptr, len);
     return long_from_hash(hash);
 }
 
 
-static PyObject *
-object_generichash(PyObject *Py_UNUSED(module), PyObject *arg)
+static TyObject *
+object_generichash(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
-    Py_hash_t hash = PyObject_GenericHash(arg);
+    Ty_hash_t hash = PyObject_GenericHash(arg);
     return long_from_hash(hash);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"hash_getfuncdef", hash_getfuncdef, METH_NOARGS},
     {"hash_pointer", hash_pointer, METH_O},
     {"hash_buffer", hash_buffer, METH_VARARGS},
@@ -98,7 +98,7 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Hash(PyObject *m)
+_PyTestCapi_Init_Hash(TyObject *m)
 {
-    return PyModule_AddFunctions(m, test_methods);
+    return TyModule_AddFunctions(m, test_methods);
 }

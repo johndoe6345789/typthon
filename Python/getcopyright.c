@@ -17,7 +17,7 @@ Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam.\n\
 All Rights Reserved.";
 
 const char *
-Py_GetCopyright(void)
+Ty_GetCopyright(void)
 {
     return cprt;
 }

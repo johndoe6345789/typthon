@@ -1,24 +1,24 @@
-#ifndef Py_ITEROBJECT_H
-#define Py_ITEROBJECT_H
+#ifndef Ty_ITEROBJECT_H
+#define Ty_ITEROBJECT_H
 /* Iterators (the basic kind, over a sequence) */
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-PyAPI_DATA(PyTypeObject) PySeqIter_Type;
-PyAPI_DATA(PyTypeObject) PyCallIter_Type;
+PyAPI_DATA(TyTypeObject) TySeqIter_Type;
+PyAPI_DATA(TyTypeObject) TyCallIter_Type;
 
-#define PySeqIter_Check(op) Py_IS_TYPE((op), &PySeqIter_Type)
+#define TySeqIter_Check(op) Ty_IS_TYPE((op), &TySeqIter_Type)
 
-PyAPI_FUNC(PyObject *) PySeqIter_New(PyObject *);
+PyAPI_FUNC(TyObject *) TySeqIter_New(TyObject *);
 
 
-#define PyCallIter_Check(op) Py_IS_TYPE((op), &PyCallIter_Type)
+#define TyCallIter_Check(op) Ty_IS_TYPE((op), &TyCallIter_Type)
 
-PyAPI_FUNC(PyObject *) PyCallIter_New(PyObject *, PyObject *);
+PyAPI_FUNC(TyObject *) TyCallIter_New(TyObject *, TyObject *);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_ITEROBJECT_H */
+#endif /* !Ty_ITEROBJECT_H */
 

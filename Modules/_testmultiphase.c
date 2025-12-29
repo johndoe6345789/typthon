@@ -1,12 +1,12 @@
 
 /* Testing module for multi-phase initialization of extension modules (PEP 489)
  */
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 #include "pycore_namespace.h"     // _PyNamespace_New()
 
 /* State for testing module state access from methods */
@@ -25,13 +25,13 @@ class _testmultiphase.StateAccessType "StateAccessTypeObject *" "!StateAccessTyp
 /* Example objects */
 typedef struct {
     PyObject_HEAD
-    PyObject            *x_attr;        /* Attributes dictionary */
+    TyObject            *x_attr;        /* Attributes dictionary */
 } ExampleObject;
 
 #define ExampleObject_CAST(op)  ((ExampleObject *)(op))
 
 typedef struct {
-    PyObject *integer;
+    TyObject *integer;
 } testmultiphase_state;
 
 typedef struct {
@@ -41,98 +41,98 @@ typedef struct {
 /* Example methods */
 
 static int
-Example_traverse(PyObject *op, visitproc visit, void *arg)
+Example_traverse(TyObject *op, visitproc visit, void *arg)
 {
     ExampleObject *self = ExampleObject_CAST(op);
-    Py_VISIT(self->x_attr);
+    Ty_VISIT(self->x_attr);
     return 0;
 }
 
 static void
-Example_finalize(PyObject *op)
+Example_finalize(TyObject *op)
 {
     ExampleObject *self = ExampleObject_CAST(op);
-    Py_CLEAR(self->x_attr);
+    Ty_CLEAR(self->x_attr);
 }
 
-static PyObject *
-Example_demo(PyObject *op, PyObject *args)
+static TyObject *
+Example_demo(TyObject *op, TyObject *args)
 {
-    PyObject *o = NULL;
-    if (!PyArg_ParseTuple(args, "|O:demo", &o))
+    TyObject *o = NULL;
+    if (!TyArg_ParseTuple(args, "|O:demo", &o))
         return NULL;
-    if (o != NULL && PyUnicode_Check(o)) {
-        return Py_NewRef(o);
+    if (o != NULL && TyUnicode_Check(o)) {
+        return Ty_NewRef(o);
     }
     Py_RETURN_NONE;
 }
 
 #include "clinic/_testmultiphase.c.h"
 
-static PyMethodDef Example_methods[] = {
+static TyMethodDef Example_methods[] = {
     {"demo",            Example_demo,  METH_VARARGS,
-        PyDoc_STR("demo() -> None")},
+        TyDoc_STR("demo() -> None")},
     {NULL,              NULL}           /* sentinel */
 };
 
-static PyObject *
-Example_getattro(PyObject *op, PyObject *name)
+static TyObject *
+Example_getattro(TyObject *op, TyObject *name)
 {
     ExampleObject *self = ExampleObject_CAST(op);
     if (self->x_attr != NULL) {
-        PyObject *v = PyDict_GetItemWithError(self->x_attr, name);
+        TyObject *v = TyDict_GetItemWithError(self->x_attr, name);
         if (v != NULL) {
-            return Py_NewRef(v);
+            return Ty_NewRef(v);
         }
-        else if (PyErr_Occurred()) {
+        else if (TyErr_Occurred()) {
             return NULL;
         }
     }
-    return PyObject_GenericGetAttr((PyObject *)self, name);
+    return PyObject_GenericGetAttr((TyObject *)self, name);
 }
 
 static int
-Example_setattr(PyObject *op, char *name, PyObject *v)
+Example_setattr(TyObject *op, char *name, TyObject *v)
 {
     ExampleObject *self = ExampleObject_CAST(op);
     if (self->x_attr == NULL) {
-        self->x_attr = PyDict_New();
+        self->x_attr = TyDict_New();
         if (self->x_attr == NULL)
             return -1;
     }
     if (v == NULL) {
-        int rv = PyDict_DelItemString(self->x_attr, name);
-        if (rv < 0 && PyErr_ExceptionMatches(PyExc_KeyError))
-            PyErr_SetString(PyExc_AttributeError,
+        int rv = TyDict_DelItemString(self->x_attr, name);
+        if (rv < 0 && TyErr_ExceptionMatches(TyExc_KeyError))
+            TyErr_SetString(TyExc_AttributeError,
                 "delete non-existing Example attribute");
         return rv;
     }
     else
-        return PyDict_SetItemString(self->x_attr, name, v);
+        return TyDict_SetItemString(self->x_attr, name, v);
 }
 
-static PyType_Slot Example_Type_slots[] = {
-    {Py_tp_doc, "The Example type"},
-    {Py_tp_finalize, Example_finalize},
-    {Py_tp_traverse, Example_traverse},
-    {Py_tp_getattro, Example_getattro},
-    {Py_tp_setattr, Example_setattr},
-    {Py_tp_methods, Example_methods},
+static TyType_Slot Example_Type_slots[] = {
+    {Ty_tp_doc, "The Example type"},
+    {Ty_tp_finalize, Example_finalize},
+    {Ty_tp_traverse, Example_traverse},
+    {Ty_tp_getattro, Example_getattro},
+    {Ty_tp_setattr, Example_setattr},
+    {Ty_tp_methods, Example_methods},
     {0, 0},
 };
 
-static PyType_Spec Example_Type_spec = {
+static TyType_Spec Example_Type_spec = {
     "_testimportexec.Example",
     sizeof(ExampleObject),
     0,
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,
     Example_Type_slots
 };
 
 
-static PyModuleDef def_meth_state_access;
-static PyModuleDef def_nonmodule;
-static PyModuleDef def_nonmodule_with_methods;
+static TyModuleDef def_meth_state_access;
+static TyModuleDef def_nonmodule;
+static TyModuleDef def_nonmodule_with_methods;
 
 /*[clinic input]
 _testmultiphase.StateAccessType.get_defining_module
@@ -141,22 +141,22 @@ _testmultiphase.StateAccessType.get_defining_module
 
 Return the module of the defining class.
 
-Also tests that result of PyType_GetModuleByDef matches defining_class's
+Also tests that result of TyType_GetModuleByDef matches defining_class's
 module.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _testmultiphase_StateAccessType_get_defining_module_impl(StateAccessTypeObject *self,
-                                                         PyTypeObject *cls)
+                                                         TyTypeObject *cls)
 /*[clinic end generated code: output=ba2a14284a5d0921 input=d2c7245c8a9d06f8]*/
 {
-    PyObject *retval;
-    retval = PyType_GetModule(cls);
+    TyObject *retval;
+    retval = TyType_GetModule(cls);
     if (retval == NULL) {
         return NULL;
     }
-    assert(PyType_GetModuleByDef(Py_TYPE(self), &def_meth_state_access) == retval);
-    return Py_NewRef(retval);
+    assert(TyType_GetModuleByDef(Ty_TYPE(self), &def_meth_state_access) == retval);
+    return Ty_NewRef(retval);
 }
 
 /*[clinic input]
@@ -164,16 +164,16 @@ _testmultiphase.StateAccessType.getmodulebydef_bad_def
 
     cls: defining_class
 
-Test that result of PyType_GetModuleByDef with a bad def is NULL.
+Test that result of TyType_GetModuleByDef with a bad def is NULL.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _testmultiphase_StateAccessType_getmodulebydef_bad_def_impl(StateAccessTypeObject *self,
-                                                            PyTypeObject *cls)
+                                                            TyTypeObject *cls)
 /*[clinic end generated code: output=64509074dfcdbd31 input=edaff09aa4788204]*/
 {
-    PyType_GetModuleByDef(Py_TYPE(self), &def_nonmodule);  // should raise
-    assert(PyErr_Occurred());
+    TyType_GetModuleByDef(Ty_TYPE(self), &def_nonmodule);  // should raise
+    assert(TyErr_Occurred());
     return NULL;
 }
 
@@ -193,13 +193,13 @@ Pass 'twice' to double that amount.
 This tests Argument Clinic support for defining_class.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _testmultiphase_StateAccessType_increment_count_clinic_impl(StateAccessTypeObject *self,
-                                                            PyTypeObject *cls,
+                                                            TyTypeObject *cls,
                                                             int n, int twice)
 /*[clinic end generated code: output=3b34f86bc5473204 input=551d482e1fe0b8f5]*/
 {
-    meth_state *m_state = PyType_GetModuleState(cls);
+    meth_state *m_state = TyType_GetModuleState(cls);
     if (twice) {
         n *= 2;
     }
@@ -208,7 +208,7 @@ _testmultiphase_StateAccessType_increment_count_clinic_impl(StateAccessTypeObjec
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(_StateAccessType_decrement_count__doc__,
+TyDoc_STRVAR(_StateAccessType_decrement_count__doc__,
 "decrement_count($self, /, n=1, *, twice=None)\n"
 "--\n"
 "\n"
@@ -217,38 +217,38 @@ PyDoc_STRVAR(_StateAccessType_decrement_count__doc__,
 "(This is to test both positional and keyword arguments.");
 
 // Intentionally does not use Argument Clinic
-static PyObject *
-_StateAccessType_increment_count_noclinic(PyObject *self,
-                                          PyTypeObject *defining_class,
-                                          PyObject *const *args,
-                                          Py_ssize_t nargs,
-                                          PyObject *kwnames)
+static TyObject *
+_StateAccessType_increment_count_noclinic(TyObject *self,
+                                          TyTypeObject *defining_class,
+                                          TyObject *const *args,
+                                          Ty_ssize_t nargs,
+                                          TyObject *kwnames)
 {
-    if (!_PyArg_CheckPositional("StateAccessTypeObject.decrement_count", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("StateAccessTypeObject.decrement_count", nargs, 0, 1)) {
         return NULL;
     }
     long n = 1;
     if (nargs) {
-        n = PyLong_AsLong(args[0]);
-        if (PyErr_Occurred()) {
+        n = TyLong_AsLong(args[0]);
+        if (TyErr_Occurred()) {
             return NULL;
         }
     }
-    if (kwnames && PyTuple_Check(kwnames)) {
-        if (PyTuple_GET_SIZE(kwnames) > 1 ||
-            PyUnicode_CompareWithASCIIString(
-                PyTuple_GET_ITEM(kwnames, 0),
+    if (kwnames && TyTuple_Check(kwnames)) {
+        if (TyTuple_GET_SIZE(kwnames) > 1 ||
+            TyUnicode_CompareWithASCIIString(
+                TyTuple_GET_ITEM(kwnames, 0),
                 "twice"
             )) {
-            PyErr_SetString(
-                PyExc_TypeError,
+            TyErr_SetString(
+                TyExc_TypeError,
                 "decrement_count only takes 'twice' keyword argument"
             );
             return NULL;
         }
         n *= 2;
     }
-    meth_state *m_state = PyType_GetModuleState(defining_class);
+    meth_state *m_state = TyType_GetModuleState(defining_class);
     m_state->counter += n;
 
     Py_RETURN_NONE;
@@ -262,16 +262,16 @@ _testmultiphase.StateAccessType.get_count
 Return the value of the module-state counter.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _testmultiphase_StateAccessType_get_count_impl(StateAccessTypeObject *self,
-                                               PyTypeObject *cls)
+                                               TyTypeObject *cls)
 /*[clinic end generated code: output=64600f95b499a319 input=d5d181f12384849f]*/
 {
-    meth_state *m_state = PyType_GetModuleState(cls);
-    return PyLong_FromLong(m_state->counter);
+    meth_state *m_state = TyType_GetModuleState(cls);
+    return TyLong_FromLong(m_state->counter);
 }
 
-static PyMethodDef StateAccessType_methods[] = {
+static TyMethodDef StateAccessType_methods[] = {
     _TESTMULTIPHASE_STATEACCESSTYPE_GET_DEFINING_MODULE_METHODDEF
     _TESTMULTIPHASE_STATEACCESSTYPE_GETMODULEBYDEF_BAD_DEF_METHODDEF
     _TESTMULTIPHASE_STATEACCESSTYPE_GET_COUNT_METHODDEF
@@ -285,54 +285,54 @@ static PyMethodDef StateAccessType_methods[] = {
     {NULL,              NULL}           /* sentinel */
 };
 
-static PyType_Slot StateAccessType_Type_slots[] = {
-    {Py_tp_doc, "Type for testing per-module state access from methods."},
-    {Py_tp_methods, StateAccessType_methods},
+static TyType_Slot StateAccessType_Type_slots[] = {
+    {Ty_tp_doc, "Type for testing per-module state access from methods."},
+    {Ty_tp_methods, StateAccessType_methods},
     {0, NULL}
 };
 
-static PyType_Spec StateAccessType_spec = {
+static TyType_Spec StateAccessType_spec = {
     "_testimportexec.StateAccessType",
     sizeof(StateAccessTypeObject),
     0,
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_FINALIZE | Py_TPFLAGS_BASETYPE,
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_FINALIZE | Ty_TPFLAGS_BASETYPE,
     StateAccessType_Type_slots
 };
 
 /* Function of two integers returning integer */
 
-PyDoc_STRVAR(testexport_foo_doc,
+TyDoc_STRVAR(testexport_foo_doc,
 "foo(i,j)\n\
 \n\
 Return the sum of i and j.");
 
-static PyObject *
-testexport_foo(PyObject *self, PyObject *args)
+static TyObject *
+testexport_foo(TyObject *self, TyObject *args)
 {
     long i, j;
     long res;
-    if (!PyArg_ParseTuple(args, "ll:foo", &i, &j))
+    if (!TyArg_ParseTuple(args, "ll:foo", &i, &j))
         return NULL;
     res = i + j;
-    return PyLong_FromLong(res);
+    return TyLong_FromLong(res);
 }
 
 /* Test that PyState registration fails  */
 
-PyDoc_STRVAR(call_state_registration_func_doc,
+TyDoc_STRVAR(call_state_registration_func_doc,
 "register_state(0): call PyState_FindModule()\n\
 register_state(1): call PyState_AddModule()\n\
 register_state(2): call PyState_RemoveModule()");
 
-static PyObject *
-call_state_registration_func(PyObject *mod, PyObject *args)
+static TyObject *
+call_state_registration_func(TyObject *mod, TyObject *args)
 {
     int i, ret;
-    PyModuleDef *def = PyModule_GetDef(mod);
+    TyModuleDef *def = TyModule_GetDef(mod);
     if (def == NULL) {
         return NULL;
     }
-    if (!PyArg_ParseTuple(args, "i:call_state_registration_func", &i))
+    if (!TyArg_ParseTuple(args, "i:call_state_registration_func", &i))
         return NULL;
     switch (i) {
         case 0:
@@ -358,20 +358,20 @@ call_state_registration_func(PyObject *mod, PyObject *args)
 }
 
 
-static PyType_Slot Str_Type_slots[] = {
-    {Py_tp_base, NULL}, /* filled out in module exec function */
+static TyType_Slot Str_Type_slots[] = {
+    {Ty_tp_base, NULL}, /* filled out in module exec function */
     {0, 0},
 };
 
-static PyType_Spec Str_Type_spec = {
+static TyType_Spec Str_Type_spec = {
     "_testimportexec.Str",
     0,
     0,
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE,
     Str_Type_slots
 };
 
-static PyMethodDef testexport_methods[] = {
+static TyMethodDef testexport_methods[] = {
     {"foo",             testexport_foo,         METH_VARARGS,
         testexport_foo_doc},
     {"call_state_registration_func",  call_state_registration_func,
@@ -379,39 +379,39 @@ static PyMethodDef testexport_methods[] = {
     {NULL,              NULL}           /* sentinel */
 };
 
-static int execfunc(PyObject *m)
+static int execfunc(TyObject *m)
 {
-    PyObject *temp = NULL;
+    TyObject *temp = NULL;
 
     /* Due to cross platform compiler issues the slots must be filled
      * here. It's required for portability to Windows without requiring
      * C++. */
-    Str_Type_slots[0].pfunc = &PyUnicode_Type;
+    Str_Type_slots[0].pfunc = &TyUnicode_Type;
 
     /* Add a custom type */
-    temp = PyType_FromSpec(&Example_Type_spec);
-    if (PyModule_Add(m, "Example", temp) != 0) {
+    temp = TyType_FromSpec(&Example_Type_spec);
+    if (TyModule_Add(m, "Example", temp) != 0) {
         goto fail;
     }
 
 
     /* Add an exception type */
-    temp = PyErr_NewException("_testimportexec.error", NULL, NULL);
-    if (PyModule_Add(m, "error", temp) != 0) {
+    temp = TyErr_NewException("_testimportexec.error", NULL, NULL);
+    if (TyModule_Add(m, "error", temp) != 0) {
         goto fail;
     }
 
     /* Add Str */
-    temp = PyType_FromSpec(&Str_Type_spec);
-    if (PyModule_Add(m, "Str", temp) != 0) {
+    temp = TyType_FromSpec(&Str_Type_spec);
+    if (TyModule_Add(m, "Str", temp) != 0) {
         goto fail;
     }
 
-    if (PyModule_AddIntConstant(m, "int_const", 1969) != 0) {
+    if (TyModule_AddIntConstant(m, "int_const", 1969) != 0) {
         goto fail;
     }
 
-    if (PyModule_AddStringConstant(m, "str_const", "something different") != 0) {
+    if (TyModule_AddStringConstant(m, "str_const", "something different") != 0) {
         goto fail;
     }
 
@@ -425,7 +425,7 @@ static int execfunc(PyObject *m)
 #define TEST_MODULE_DEF(name, slots, methods) { \
     PyModuleDef_HEAD_INIT,                      /* m_base */ \
     name,                                       /* m_name */ \
-    PyDoc_STR("Test module " name),             /* m_doc */ \
+    TyDoc_STR("Test module " name),             /* m_doc */ \
     0,                                          /* m_size */ \
     methods,                                    /* m_methods */ \
     slots,                                      /* m_slots */ \
@@ -435,13 +435,13 @@ static int execfunc(PyObject *m)
 }
 
 static PyModuleDef_Slot main_slots[] = {
-    {Py_mod_exec, execfunc},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, execfunc},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef main_def = TEST_MODULE_DEF("main", main_slots, testexport_methods);
+static TyModuleDef main_def = TEST_MODULE_DEF("main", main_slots, testexport_methods);
 
 PyMODINIT_FUNC
 PyInit__testmultiphase(void)
@@ -453,39 +453,39 @@ PyInit__testmultiphase(void)
 /**** Importing a non-module object ****/
 
 /* Create a SimpleNamespace(three=3) */
-static PyObject*
-createfunc_nonmodule(PyObject *spec, PyModuleDef *def)
+static TyObject*
+createfunc_nonmodule(TyObject *spec, TyModuleDef *def)
 {
-    PyObject *dct, *ns, *three;
+    TyObject *dct, *ns, *three;
 
     if (def != &def_nonmodule && def != &def_nonmodule_with_methods) {
-        PyErr_SetString(PyExc_SystemError, "def does not match");
+        TyErr_SetString(TyExc_SystemError, "def does not match");
         return NULL;
     }
 
-    dct = PyDict_New();
+    dct = TyDict_New();
     if (dct == NULL)
         return NULL;
 
-    three = PyLong_FromLong(3);
+    three = TyLong_FromLong(3);
     if (three == NULL) {
-        Py_DECREF(dct);
+        Ty_DECREF(dct);
         return NULL;
     }
-    PyDict_SetItemString(dct, "three", three);
-    Py_DECREF(three);
+    TyDict_SetItemString(dct, "three", three);
+    Ty_DECREF(three);
 
     ns = _PyNamespace_New(dct);
-    Py_DECREF(dct);
+    Ty_DECREF(dct);
     return ns;
 }
 
 static PyModuleDef_Slot slots_create_nonmodule[] = {
-    {Py_mod_create, createfunc_nonmodule},
+    {Ty_mod_create, createfunc_nonmodule},
     {0, NULL},
 };
 
-static PyModuleDef def_nonmodule = TEST_MODULE_DEF(
+static TyModuleDef def_nonmodule = TEST_MODULE_DEF(
     "_testmultiphase_nonmodule", slots_create_nonmodule, NULL);
 
 PyMODINIT_FUNC
@@ -494,28 +494,28 @@ PyInit__testmultiphase_nonmodule(void)
     return PyModuleDef_Init(&def_nonmodule);
 }
 
-PyDoc_STRVAR(nonmodule_bar_doc,
+TyDoc_STRVAR(nonmodule_bar_doc,
 "bar(i,j)\n\
 \n\
 Return the difference of i - j.");
 
-static PyObject *
-nonmodule_bar(PyObject *self, PyObject *args)
+static TyObject *
+nonmodule_bar(TyObject *self, TyObject *args)
 {
     long i, j;
     long res;
-    if (!PyArg_ParseTuple(args, "ll:bar", &i, &j))
+    if (!TyArg_ParseTuple(args, "ll:bar", &i, &j))
         return NULL;
     res = i - j;
-    return PyLong_FromLong(res);
+    return TyLong_FromLong(res);
 }
 
-static PyMethodDef nonmodule_methods[] = {
+static TyMethodDef nonmodule_methods[] = {
     {"bar", nonmodule_bar, METH_VARARGS, nonmodule_bar_doc},
     {NULL, NULL}           /* sentinel */
 };
 
-static PyModuleDef def_nonmodule_with_methods = TEST_MODULE_DEF(
+static TyModuleDef def_nonmodule_with_methods = TEST_MODULE_DEF(
     "_testmultiphase_nonmodule_with_methods", slots_create_nonmodule, nonmodule_methods);
 
 PyMODINIT_FUNC
@@ -527,14 +527,14 @@ PyInit__testmultiphase_nonmodule_with_methods(void)
 /**** Non-ASCII-named modules ****/
 
 static PyModuleDef_Slot nonascii_slots[] = {
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef def_nonascii_latin = { \
+static TyModuleDef def_nonascii_latin = { \
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "_testmultiphase_nonascii_latin",           /* m_name */
-    PyDoc_STR("Module named in Czech"),         /* m_doc */
+    TyDoc_STR("Module named in Czech"),         /* m_doc */
     0,                                          /* m_size */
     NULL,                                       /* m_methods */
     nonascii_slots,                             /* m_slots */
@@ -549,10 +549,10 @@ PyInitU__testmultiphase_zkouka_naten_evc07gi8e(void)
     return PyModuleDef_Init(&def_nonascii_latin);
 }
 
-static PyModuleDef def_nonascii_kana = { \
+static TyModuleDef def_nonascii_kana = { \
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "_testmultiphase_nonascii_kana",            /* m_name */
-    PyDoc_STR("Module named in Japanese"),      /* m_doc */
+    TyDoc_STR("Module named in Japanese"),      /* m_doc */
     0,                                          /* m_size */
     NULL,                                       /* m_methods */
     nonascii_slots,                             /* m_slots */
@@ -577,7 +577,7 @@ PyInit_x(void)
 
 /**** Testing NULL slots ****/
 
-static PyModuleDef null_slots_def = TEST_MODULE_DEF(
+static TyModuleDef null_slots_def = TEST_MODULE_DEF(
     "_testmultiphase_null_slots", NULL, NULL);
 
 PyMODINIT_FUNC
@@ -589,11 +589,11 @@ PyInit__testmultiphase_null_slots(void)
 /**** Problematic modules ****/
 
 static PyModuleDef_Slot slots_bad_large[] = {
-    {_Py_mod_LAST_SLOT + 1, NULL},
+    {_Ty_mod_LAST_SLOT + 1, NULL},
     {0, NULL},
 };
 
-static PyModuleDef def_bad_large = TEST_MODULE_DEF(
+static TyModuleDef def_bad_large = TEST_MODULE_DEF(
     "_testmultiphase_bad_slot_large", slots_bad_large, NULL);
 
 PyMODINIT_FUNC
@@ -607,7 +607,7 @@ static PyModuleDef_Slot slots_bad_negative[] = {
     {0, NULL},
 };
 
-static PyModuleDef def_bad_negative = TEST_MODULE_DEF(
+static TyModuleDef def_bad_negative = TEST_MODULE_DEF(
     "_testmultiphase_bad_slot_negative", slots_bad_negative, NULL);
 
 PyMODINIT_FUNC
@@ -616,10 +616,10 @@ PyInit__testmultiphase_bad_slot_negative(void)
     return PyModuleDef_Init(&def_bad_negative);
 }
 
-static PyModuleDef def_create_int_with_state = { \
+static TyModuleDef def_create_int_with_state = { \
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "create_with_state",                        /* m_name */
-    PyDoc_STR("Not a PyModuleObject object, but requests per-module state"),
+    TyDoc_STR("Not a PyModuleObject object, but requests per-module state"),
     10,                                         /* m_size */
     NULL,                                       /* m_methods */
     slots_create_nonmodule,                     /* m_slots */
@@ -635,10 +635,10 @@ PyInit__testmultiphase_create_int_with_state(void)
 }
 
 
-static PyModuleDef def_negative_size = { \
+static TyModuleDef def_negative_size = { \
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "negative_size",                            /* m_name */
-    PyDoc_STR("PyModuleDef with negative m_size"),
+    TyDoc_STR("TyModuleDef with negative m_size"),
     -1,                                         /* m_size */
     NULL,                                       /* m_methods */
     slots_create_nonmodule,                     /* m_slots */
@@ -654,12 +654,12 @@ PyInit__testmultiphase_negative_size(void)
 }
 
 
-static PyModuleDef uninitialized_def = TEST_MODULE_DEF("main", main_slots, testexport_methods);
+static TyModuleDef uninitialized_def = TEST_MODULE_DEF("main", main_slots, testexport_methods);
 
 PyMODINIT_FUNC
 PyInit__testmultiphase_export_uninitialized(void)
 {
-    return (PyObject*) &uninitialized_def;
+    return (TyObject*) &uninitialized_def;
 }
 
 PyMODINIT_FUNC
@@ -671,30 +671,30 @@ PyInit__testmultiphase_export_null(void)
 PyMODINIT_FUNC
 PyInit__testmultiphase_export_raise(void)
 {
-    PyErr_SetString(PyExc_SystemError, "bad export function");
+    TyErr_SetString(TyExc_SystemError, "bad export function");
     return NULL;
 }
 
 PyMODINIT_FUNC
 PyInit__testmultiphase_export_unreported_exception(void)
 {
-    PyErr_SetString(PyExc_SystemError, "bad export function");
+    TyErr_SetString(TyExc_SystemError, "bad export function");
     return PyModuleDef_Init(&main_def);
 }
 
-static PyObject*
-createfunc_noop(PyObject *spec, PyModuleDef *def)
+static TyObject*
+createfunc_noop(TyObject *spec, TyModuleDef *def)
 {
-    return PyModule_New("spam");
+    return TyModule_New("spam");
 }
 
 static PyModuleDef_Slot slots_multiple_create_slots[] = {
-    {Py_mod_create, createfunc_noop},
-    {Py_mod_create, createfunc_noop},
+    {Ty_mod_create, createfunc_noop},
+    {Ty_mod_create, createfunc_noop},
     {0, NULL},
 };
 
-static PyModuleDef def_multiple_create_slots = TEST_MODULE_DEF(
+static TyModuleDef def_multiple_create_slots = TEST_MODULE_DEF(
     "_testmultiphase_multiple_create_slots", slots_multiple_create_slots, NULL);
 
 PyMODINIT_FUNC
@@ -703,18 +703,18 @@ PyInit__testmultiphase_multiple_create_slots(void)
     return PyModuleDef_Init(&def_multiple_create_slots);
 }
 
-static PyObject*
-createfunc_null(PyObject *spec, PyModuleDef *def)
+static TyObject*
+createfunc_null(TyObject *spec, TyModuleDef *def)
 {
     return NULL;
 }
 
 static PyModuleDef_Slot slots_create_null[] = {
-    {Py_mod_create, createfunc_null},
+    {Ty_mod_create, createfunc_null},
     {0, NULL},
 };
 
-static PyModuleDef def_create_null = TEST_MODULE_DEF(
+static TyModuleDef def_create_null = TEST_MODULE_DEF(
     "_testmultiphase_create_null", slots_create_null, NULL);
 
 PyMODINIT_FUNC
@@ -723,19 +723,19 @@ PyInit__testmultiphase_create_null(void)
     return PyModuleDef_Init(&def_create_null);
 }
 
-static PyObject*
-createfunc_raise(PyObject *spec, PyModuleDef *def)
+static TyObject*
+createfunc_raise(TyObject *spec, TyModuleDef *def)
 {
-    PyErr_SetString(PyExc_SystemError, "bad create function");
+    TyErr_SetString(TyExc_SystemError, "bad create function");
     return NULL;
 }
 
 static PyModuleDef_Slot slots_create_raise[] = {
-    {Py_mod_create, createfunc_raise},
+    {Ty_mod_create, createfunc_raise},
     {0, NULL},
 };
 
-static PyModuleDef def_create_raise = TEST_MODULE_DEF(
+static TyModuleDef def_create_raise = TEST_MODULE_DEF(
     "_testmultiphase_create_null", slots_create_raise, NULL);
 
 PyMODINIT_FUNC
@@ -744,19 +744,19 @@ PyInit__testmultiphase_create_raise(void)
     return PyModuleDef_Init(&def_create_raise);
 }
 
-static PyObject*
-createfunc_unreported_exception(PyObject *spec, PyModuleDef *def)
+static TyObject*
+createfunc_unreported_exception(TyObject *spec, TyModuleDef *def)
 {
-    PyErr_SetString(PyExc_SystemError, "bad create function");
-    return PyModule_New("foo");
+    TyErr_SetString(TyExc_SystemError, "bad create function");
+    return TyModule_New("foo");
 }
 
 static PyModuleDef_Slot slots_create_unreported_exception[] = {
-    {Py_mod_create, createfunc_unreported_exception},
+    {Ty_mod_create, createfunc_unreported_exception},
     {0, NULL},
 };
 
-static PyModuleDef def_create_unreported_exception = TEST_MODULE_DEF(
+static TyModuleDef def_create_unreported_exception = TEST_MODULE_DEF(
     "_testmultiphase_create_unreported_exception", slots_create_unreported_exception, NULL);
 
 PyMODINIT_FUNC
@@ -766,14 +766,14 @@ PyInit__testmultiphase_create_unreported_exception(void)
 }
 
 static PyModuleDef_Slot slots_nonmodule_with_exec_slots[] = {
-    {Py_mod_create, createfunc_nonmodule},
-    {Py_mod_exec, execfunc},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_create, createfunc_nonmodule},
+    {Ty_mod_exec, execfunc},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef def_nonmodule_with_exec_slots = TEST_MODULE_DEF(
+static TyModuleDef def_nonmodule_with_exec_slots = TEST_MODULE_DEF(
     "_testmultiphase_nonmodule_with_exec_slots", slots_nonmodule_with_exec_slots, NULL);
 
 PyMODINIT_FUNC
@@ -783,19 +783,19 @@ PyInit__testmultiphase_nonmodule_with_exec_slots(void)
 }
 
 static int
-execfunc_err(PyObject *mod)
+execfunc_err(TyObject *mod)
 {
     return -1;
 }
 
 static PyModuleDef_Slot slots_exec_err[] = {
-    {Py_mod_exec, execfunc_err},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, execfunc_err},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef def_exec_err = TEST_MODULE_DEF(
+static TyModuleDef def_exec_err = TEST_MODULE_DEF(
     "_testmultiphase_exec_err", slots_exec_err, NULL);
 
 PyMODINIT_FUNC
@@ -805,20 +805,20 @@ PyInit__testmultiphase_exec_err(void)
 }
 
 static int
-execfunc_raise(PyObject *spec)
+execfunc_raise(TyObject *spec)
 {
-    PyErr_SetString(PyExc_SystemError, "bad exec function");
+    TyErr_SetString(TyExc_SystemError, "bad exec function");
     return -1;
 }
 
 static PyModuleDef_Slot slots_exec_raise[] = {
-    {Py_mod_exec, execfunc_raise},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, execfunc_raise},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef def_exec_raise = TEST_MODULE_DEF(
+static TyModuleDef def_exec_raise = TEST_MODULE_DEF(
     "_testmultiphase_exec_raise", slots_exec_raise, NULL);
 
 PyMODINIT_FUNC
@@ -828,20 +828,20 @@ PyInit__testmultiphase_exec_raise(void)
 }
 
 static int
-execfunc_unreported_exception(PyObject *mod)
+execfunc_unreported_exception(TyObject *mod)
 {
-    PyErr_SetString(PyExc_SystemError, "bad exec function");
+    TyErr_SetString(TyExc_SystemError, "bad exec function");
     return 0;
 }
 
 static PyModuleDef_Slot slots_exec_unreported_exception[] = {
-    {Py_mod_exec, execfunc_unreported_exception},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, execfunc_unreported_exception},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef def_exec_unreported_exception = TEST_MODULE_DEF(
+static TyModuleDef def_exec_unreported_exception = TEST_MODULE_DEF(
     "_testmultiphase_exec_unreported_exception", slots_exec_unreported_exception, NULL);
 
 PyMODINIT_FUNC
@@ -851,18 +851,18 @@ PyInit__testmultiphase_exec_unreported_exception(void)
 }
 
 static int
-meth_state_access_exec(PyObject *m)
+meth_state_access_exec(TyObject *m)
 {
-    PyObject *temp;
+    TyObject *temp;
     meth_state *m_state;
 
-    m_state = PyModule_GetState(m);
+    m_state = TyModule_GetState(m);
     if (m_state == NULL) {
         return -1;
     }
 
-    temp = PyType_FromModuleAndSpec(m, &StateAccessType_spec, NULL);
-    if (PyModule_Add(m, "StateAccessType", temp) != 0) {
+    temp = TyType_FromModuleAndSpec(m, &StateAccessType_spec, NULL);
+    if (TyModule_Add(m, "StateAccessType", temp) != 0) {
         return -1;
     }
 
@@ -871,16 +871,16 @@ meth_state_access_exec(PyObject *m)
 }
 
 static PyModuleDef_Slot meth_state_access_slots[] = {
-    {Py_mod_exec, meth_state_access_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, meth_state_access_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static PyModuleDef def_meth_state_access = {
+static TyModuleDef def_meth_state_access = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testmultiphase_meth_state_access",
-    .m_doc = PyDoc_STR("Module testing access"
+    .m_doc = TyDoc_STR("Module testing access"
                        " to state from methods."),
     .m_size = sizeof(meth_state),
     .m_slots = meth_state_access_slots,
@@ -892,26 +892,26 @@ PyInit__testmultiphase_meth_state_access(void)
     return PyModuleDef_Init(&def_meth_state_access);
 }
 
-static PyModuleDef def_module_state_shared = {
+static TyModuleDef def_module_state_shared = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_test_module_state_shared",
-    .m_doc = PyDoc_STR("Regression Test module for single-phase init."),
+    .m_doc = TyDoc_STR("Regression Test module for single-phase init."),
     .m_size = -1,
 };
 
 PyMODINIT_FUNC
 PyInit__test_module_state_shared(void)
 {
-    PyObject *module = PyModule_Create(&def_module_state_shared);
+    TyObject *module = TyModule_Create(&def_module_state_shared);
     if (module == NULL) {
         return NULL;
     }
-#ifdef Py_GIL_DISABLED
-    PyUnstable_Module_SetGIL(module, Py_MOD_GIL_NOT_USED);
+#ifdef Ty_GIL_DISABLED
+    PyUnstable_Module_SetGIL(module, Ty_MOD_GIL_NOT_USED);
 #endif
 
-    if (PyModule_AddObjectRef(module, "Error", PyExc_Exception) < 0) {
-        Py_DECREF(module);
+    if (TyModule_AddObjectRef(module, "Error", TyExc_Exception) < 0) {
+        Ty_DECREF(module);
         return NULL;
     }
     return module;
@@ -921,13 +921,13 @@ PyInit__test_module_state_shared(void)
 /* multiple interpreters support */
 
 static PyModuleDef_Slot slots_multiple_multiple_interpreters_slots[] = {
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef def_multiple_multiple_interpreters_slots = TEST_MODULE_DEF(
+static TyModuleDef def_multiple_multiple_interpreters_slots = TEST_MODULE_DEF(
     "_testmultiphase_multiple_multiple_interpreters_slots",
     slots_multiple_multiple_interpreters_slots,
     NULL);
@@ -939,13 +939,13 @@ PyInit__testmultiphase_multiple_multiple_interpreters_slots(void)
 }
 
 static PyModuleDef_Slot non_isolated_slots[] = {
-    {Py_mod_exec, execfunc},
-    {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, execfunc},
+    {Ty_mod_multiple_interpreters, Ty_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef non_isolated_def = TEST_MODULE_DEF("_test_non_isolated",
+static TyModuleDef non_isolated_def = TEST_MODULE_DEF("_test_non_isolated",
                                                       non_isolated_slots,
                                                       testexport_methods);
 
@@ -957,16 +957,16 @@ PyInit__test_non_isolated(void)
 
 
 static PyModuleDef_Slot shared_gil_only_slots[] = {
-    {Py_mod_exec, execfunc},
-    /* Note that Py_MOD_MULTIPLE_INTERPRETERS_SUPPORTED is the default.
+    {Ty_mod_exec, execfunc},
+    /* Note that Ty_MOD_MULTIPLE_INTERPRETERS_SUPPORTED is the default.
        We put it here explicitly to draw attention to the contrast
-       with Py_MOD_PER_INTERPRETER_GIL_SUPPORTED. */
-    {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+       with Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED. */
+    {Ty_mod_multiple_interpreters, Ty_MOD_MULTIPLE_INTERPRETERS_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef shared_gil_only_def = TEST_MODULE_DEF("_test_shared_gil_only",
+static TyModuleDef shared_gil_only_def = TEST_MODULE_DEF("_test_shared_gil_only",
                                                          shared_gil_only_slots,
                                                          testexport_methods);
 
@@ -978,12 +978,12 @@ PyInit__test_shared_gil_only(void)
 
 
 static PyModuleDef_Slot no_multiple_interpreter_slot_slots[] = {
-    {Py_mod_exec, execfunc},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, execfunc},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static PyModuleDef no_multiple_interpreter_slot_def = TEST_MODULE_DEF(
+static TyModuleDef no_multiple_interpreter_slot_def = TEST_MODULE_DEF(
     "_test_no_multiple_interpreter_slot",
     no_multiple_interpreter_slot_slots,
     testexport_methods);

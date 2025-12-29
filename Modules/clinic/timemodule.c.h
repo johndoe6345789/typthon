@@ -4,7 +4,7 @@ preserve
 
 #if defined(HAVE_CLOCK_GETTIME)
 
-PyDoc_STRVAR(time_clock_gettime__doc__,
+TyDoc_STRVAR(time_clock_gettime__doc__,
 "clock_gettime($module, clk_id, /)\n"
 "--\n"
 "\n"
@@ -13,13 +13,13 @@ PyDoc_STRVAR(time_clock_gettime__doc__,
 #define TIME_CLOCK_GETTIME_METHODDEF    \
     {"clock_gettime", (PyCFunction)time_clock_gettime, METH_O, time_clock_gettime__doc__},
 
-static PyObject *
-time_clock_gettime_impl(PyObject *module, clockid_t clk_id);
+static TyObject *
+time_clock_gettime_impl(TyObject *module, clockid_t clk_id);
 
-static PyObject *
-time_clock_gettime(PyObject *module, PyObject *arg)
+static TyObject *
+time_clock_gettime(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     clockid_t clk_id;
 
     if (!time_clockid_converter(arg, &clk_id)) {
@@ -35,7 +35,7 @@ exit:
 
 #if defined(HAVE_CLOCK_GETTIME)
 
-PyDoc_STRVAR(time_clock_gettime_ns__doc__,
+TyDoc_STRVAR(time_clock_gettime_ns__doc__,
 "clock_gettime_ns($module, clk_id, /)\n"
 "--\n"
 "\n"
@@ -44,13 +44,13 @@ PyDoc_STRVAR(time_clock_gettime_ns__doc__,
 #define TIME_CLOCK_GETTIME_NS_METHODDEF    \
     {"clock_gettime_ns", (PyCFunction)time_clock_gettime_ns, METH_O, time_clock_gettime_ns__doc__},
 
-static PyObject *
-time_clock_gettime_ns_impl(PyObject *module, clockid_t clk_id);
+static TyObject *
+time_clock_gettime_ns_impl(TyObject *module, clockid_t clk_id);
 
-static PyObject *
-time_clock_gettime_ns(PyObject *module, PyObject *arg)
+static TyObject *
+time_clock_gettime_ns(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     clockid_t clk_id;
 
     if (!time_clockid_converter(arg, &clk_id)) {

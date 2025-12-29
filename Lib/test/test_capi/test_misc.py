@@ -26,7 +26,7 @@ from test.support import threading_helper
 from test.support import warnings_helper
 from test.support import requires_limited_api
 from test.support import expected_failure_if_gil_disabled
-from test.support import Py_GIL_DISABLED
+from test.support import Ty_GIL_DISABLED
 from test.support.script_helper import assert_python_failure, assert_python_ok, run_python_until_end
 try:
     import _posixsubprocess
@@ -76,7 +76,7 @@ class InstanceMethod:
     testfunction = _testcapi.instancemethod(testfunction)
 
 
-CURRENT_THREAD_REGEX = r'Current thread.*:\n' if not support.Py_GIL_DISABLED else r'Stack .*:\n'
+CURRENT_THREAD_REGEX = r'Current thread.*:\n' if not support.Ty_GIL_DISABLED else r'Stack .*:\n'
 
 
 @support.force_not_colorized_test_class
@@ -107,7 +107,7 @@ class CAPITest(unittest.TestCase):
         _rc, out, err = run_result
         self.assertEqual(out, b'')
         # This used to cause an infinite loop.
-        if not support.Py_GIL_DISABLED:
+        if not support.Ty_GIL_DISABLED:
             msg = ("Fatal Python error: PyThreadState_Get: "
                    "the function must be called with the GIL held, "
                    "after Python initialization and before Python finalization, "
@@ -118,7 +118,7 @@ class CAPITest(unittest.TestCase):
                    "the function must be called with an active thread state, "
                    "after Python initialization and before Python finalization, "
                    "but it was called without an active thread state. "
-                   "Are you trying to call the C API inside of a Py_BEGIN_ALLOW_THREADS block?").encode()
+                   "Are you trying to call the C API inside of a Ty_BEGIN_ALLOW_THREADS block?").encode()
         self.assertStartsWith(err.rstrip(), msg)
 
     def test_memoryview_from_NULL_pointer(self):
@@ -222,7 +222,7 @@ class CAPITest(unittest.TestCase):
     def test_return_null_without_error(self):
         # Issue #23571: A function must not return NULL without setting an
         # error
-        if support.Py_DEBUG:
+        if support.Ty_DEBUG:
             code = textwrap.dedent("""
                 import _testcapi
                 from test import support
@@ -233,7 +233,7 @@ class CAPITest(unittest.TestCase):
             rc, out, err = assert_python_failure('-c', code)
             err = decode_stderr(err)
             self.assertRegex(err,
-                r'Fatal Python error: _Py_CheckFunctionResult: '
+                r'Fatal Python error: _Ty_CheckFunctionResult: '
                     r'a function returned NULL without setting an exception\n'
                 r'Python runtime state: initialized\n'
                 r'SystemError: <built-in function return_null_without_error> '
@@ -250,7 +250,7 @@ class CAPITest(unittest.TestCase):
 
     def test_return_result_with_error(self):
         # Issue #23571: A function must not return a result with an error set
-        if support.Py_DEBUG:
+        if support.Ty_DEBUG:
             code = textwrap.dedent("""
                 import _testcapi
                 from test import support
@@ -261,7 +261,7 @@ class CAPITest(unittest.TestCase):
             rc, out, err = assert_python_failure('-c', code)
             err = decode_stderr(err)
             self.assertRegex(err,
-                    r'Fatal Python error: _Py_CheckFunctionResult: '
+                    r'Fatal Python error: _Ty_CheckFunctionResult: '
                         r'a function returned a result with an exception set\n'
                     r'Python runtime state: initialized\n'
                     r'ValueError\n'
@@ -283,7 +283,7 @@ class CAPITest(unittest.TestCase):
                              'returned a result with an exception set')
 
     def test_getitem_with_error(self):
-        # Test _Py_CheckSlotResult(). Raise an exception and then calls
+        # Test _Ty_CheckSlotResult(). Raise an exception and then calls
         # PyObject_GetItem(): check that the assertion catches the bug.
         # PyObject_GetItem() must not be called with an exception set.
         code = textwrap.dedent("""
@@ -297,7 +297,7 @@ class CAPITest(unittest.TestCase):
         err = decode_stderr(err)
         if 'SystemError: ' not in err:
             self.assertRegex(err,
-                    r'Fatal Python error: _Py_CheckSlotResult: '
+                    r'Fatal Python error: _Ty_CheckSlotResult: '
                         r'Slot __getitem__ of type dict succeeded '
                         r'with an exception set\n'
                     r'Python runtime state: initialized\n'
@@ -309,11 +309,11 @@ class CAPITest(unittest.TestCase):
                     r'Extension modules: _testcapi \(total: 1\)\n')
         else:
             # Python built with NDEBUG macro defined:
-            # test _Py_CheckFunctionResult() instead.
+            # test _Ty_CheckFunctionResult() instead.
             self.assertIn('returned a result with an exception set', err)
 
     def test_buildvalue(self):
-        # Test Py_BuildValue() with object arguments
+        # Test Ty_BuildValue() with object arguments
         buildvalue = _testcapi.py_buildvalue
         self.assertEqual(buildvalue(''), None)
         self.assertEqual(buildvalue('()'), ())
@@ -369,7 +369,7 @@ class CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, buildvalue, '{OO}', NULL, 2)
 
     def test_buildvalue_ints(self):
-        # Test Py_BuildValue() with integer arguments
+        # Test Ty_BuildValue() with integer arguments
         buildvalue = _testcapi.py_buildvalue_ints
         from _testcapi import SHRT_MIN, SHRT_MAX, USHRT_MAX, INT_MIN, INT_MAX, UINT_MAX
         self.assertEqual(buildvalue('i', INT_MAX), INT_MAX)
@@ -504,8 +504,8 @@ class CAPITest(unittest.TestCase):
         del subclass_instance
 
         # Test that setting __class__ modified the reference counts of the types
-        if support.Py_DEBUG:
-            # gh-89373: In debug mode, _Py_Dealloc() keeps a strong reference
+        if support.Ty_DEBUG:
+            # gh-89373: In debug mode, _Ty_Dealloc() keeps a strong reference
             # to the type while calling tp_dealloc()
             self.assertEqual(type_refcnt, B.refcnt_in_del)
         else:
@@ -652,11 +652,11 @@ class CAPITest(unittest.TestCase):
         expected_type_refcnt = type_refcnt
         expected_new_type_refcnt = new_type_refcnt + 2
 
-        if not Py_GIL_DISABLED:
+        if not Ty_GIL_DISABLED:
             # In default builds the result returned from sys.getrefcount
             # includes a temporary reference that is created by the interpreter
             # when it pushes its argument on the operand stack. This temporary
-            # reference is not included in the result returned by Py_REFCNT, which
+            # reference is not included in the result returned by Ty_REFCNT, which
             # is used in the finalizer.
             #
             # In free-threaded builds the result returned from sys.getrefcount
@@ -666,8 +666,8 @@ class CAPITest(unittest.TestCase):
             expected_type_refcnt -= 1
             expected_new_type_refcnt -= 1
 
-        if support.Py_DEBUG:
-            # gh-89373: In debug mode, _Py_Dealloc() keeps a strong reference
+        if support.Ty_DEBUG:
+            # gh-89373: In debug mode, _Ty_Dealloc() keeps a strong reference
             # to the type while calling tp_dealloc()
             expected_type_refcnt += 1
 
@@ -853,15 +853,15 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(s, b'<NULL>')
 
     def test_Py_CompileString(self):
-        # Check that Py_CompileString respects the coding cookie
-        _compile = _testcapi.Py_CompileString
+        # Check that Ty_CompileString respects the coding cookie
+        _compile = _testcapi.Ty_CompileString
         code = b"# -*- coding: latin1 -*-\nprint('\xc2\xa4')\n"
         result = _compile(code)
         expected = compile(code, "<string>", "exec")
         self.assertEqual(result.co_consts, expected.co_consts)
 
     def test_export_symbols(self):
-        # bpo-44133: Ensure that the "Py_FrozenMain" and
+        # bpo-44133: Ensure that the "Ty_FrozenMain" and
         # "PyThread_get_thread_native_id" symbols are exported by the Python
         # (directly by the binary, or via by the Python dynamic library).
         ctypes = import_helper.import_module('ctypes')
@@ -877,7 +877,7 @@ class CAPITest(unittest.TestCase):
         # - PyWinFreeze_ExeTerm
         # - PyInitFrozenExtensions
         if os.name != 'nt':
-            names.append('Py_FrozenMain')
+            names.append('Ty_FrozenMain')
 
         for name in names:
             self.assertHasAttr(ctypes.pythonapi, name)
@@ -996,7 +996,7 @@ class TestHeapTypeRelative(unittest.TestCase):
     def test_heaptype_invalid_inheritance(self):
         with self.assertRaises(SystemError,
                                msg="Cannot extend variable-size class without "
-                               + "Py_TPFLAGS_ITEMS_AT_END"):
+                               + "Ty_TPFLAGS_ITEMS_AT_END"):
             _testlimitedcapi.subclass_heaptype(int, -8, 0)
 
     def test_heaptype_relative_members(self):
@@ -1042,7 +1042,7 @@ class TestHeapTypeRelative(unittest.TestCase):
     def test_heaptype_relative_members_errors(self):
         with self.assertRaisesRegex(
                 SystemError,
-                r"With Py_RELATIVE_OFFSET, basicsize must be negative"):
+                r"With Ty_RELATIVE_OFFSET, basicsize must be negative"):
             _testlimitedcapi.make_heaptype_with_member(0, 1234, 0, True)
         with self.assertRaisesRegex(
                 SystemError, r"Member offset out of range \(0\.\.-basicsize\)"):
@@ -1054,10 +1054,10 @@ class TestHeapTypeRelative(unittest.TestCase):
         Sub = _testlimitedcapi.make_heaptype_with_member(0, -8, 0, True)
         instance = Sub()
         with self.assertRaisesRegex(
-                SystemError, r"PyMember_GetOne used with Py_RELATIVE_OFFSET"):
+                SystemError, r"PyMember_GetOne used with Ty_RELATIVE_OFFSET"):
             instance.get_memb_relative()
         with self.assertRaisesRegex(
-                SystemError, r"PyMember_SetOne used with Py_RELATIVE_OFFSET"):
+                SystemError, r"PyMember_SetOne used with Ty_RELATIVE_OFFSET"):
             instance.set_memb_relative(0)
 
     def test_heaptype_relative_special_members_errors(self):
@@ -1065,14 +1065,14 @@ class TestHeapTypeRelative(unittest.TestCase):
             with self.subTest(member_name=member_name):
                 with self.assertRaisesRegex(
                         SystemError,
-                        r"With Py_RELATIVE_OFFSET, basicsize must be negative."):
+                        r"With Ty_RELATIVE_OFFSET, basicsize must be negative."):
                     _testlimitedcapi.make_heaptype_with_member(
                         basicsize=sys.getsizeof(object()) + 100,
                         add_relative_flag=True,
                         member_name=member_name,
                         member_offset=0,
-                        member_type=_testlimitedcapi.Py_T_PYSSIZET,
-                        member_flags=_testlimitedcapi.Py_READONLY,
+                        member_type=_testlimitedcapi.Ty_T_PYSSIZET,
+                        member_flags=_testlimitedcapi.Ty_READONLY,
                         )
                 with self.assertRaisesRegex(
                         SystemError,
@@ -1082,18 +1082,18 @@ class TestHeapTypeRelative(unittest.TestCase):
                         add_relative_flag=True,
                         member_name=member_name,
                         member_offset=-1,
-                        member_type=_testlimitedcapi.Py_T_PYSSIZET,
-                        member_flags=_testlimitedcapi.Py_READONLY,
+                        member_type=_testlimitedcapi.Ty_T_PYSSIZET,
+                        member_flags=_testlimitedcapi.Ty_READONLY,
                         )
                 with self.assertRaisesRegex(
                         SystemError,
-                        r"type of %s must be Py_T_PYSSIZET" % member_name):
+                        r"type of %s must be Ty_T_PYSSIZET" % member_name):
                     _testlimitedcapi.make_heaptype_with_member(
                         basicsize=-100,
                         add_relative_flag=True,
                         member_name=member_name,
                         member_offset=0,
-                        member_flags=_testlimitedcapi.Py_READONLY,
+                        member_flags=_testlimitedcapi.Ty_READONLY,
                         )
                 with self.assertRaisesRegex(
                         SystemError,
@@ -1103,7 +1103,7 @@ class TestHeapTypeRelative(unittest.TestCase):
                         add_relative_flag=True,
                         member_name=member_name,
                         member_offset=0,
-                        member_type=_testlimitedcapi.Py_T_PYSSIZET,
+                        member_type=_testlimitedcapi.Ty_T_PYSSIZET,
                         member_flags=0,
                         )
 
@@ -1114,7 +1114,7 @@ class TestHeapTypeRelative(unittest.TestCase):
             _testcapi.pyobject_getitemdata(None)
         with self.assertRaises(TypeError):
             # int is variable-length, but doesn't have the
-            # Py_TPFLAGS_ITEMS_AT_END layout (and flag)
+            # Ty_TPFLAGS_ITEMS_AT_END layout (and flag)
             _testcapi.pyobject_getitemdata(0)
 
 
@@ -1762,7 +1762,7 @@ class SubinterpreterTest(unittest.TestCase):
 
         # gh-117649: The free-threaded build does not currently allow
         # setting check_multi_interp_extensions to False.
-        if Py_GIL_DISABLED:
+        if Ty_GIL_DISABLED:
             for config in list(expected_to_work.keys()):
                 kwargs = dict(zip(kwlist, config))
                 if not kwargs['check_multi_interp_extensions']:
@@ -1861,7 +1861,7 @@ class SubinterpreterTest(unittest.TestCase):
             }
 
             r, w = os.pipe()
-            if Py_GIL_DISABLED:
+            if Ty_GIL_DISABLED:
                 # gh-117649: The test fails before `w` is closed
                 self.addCleanup(os.close, w)
             script = textwrap.dedent(f'''
@@ -1969,7 +1969,7 @@ class InterpreterConfigTests(unittest.TestCase):
             allow_exec=True,
             allow_threads=True,
             allow_daemon_threads=True,
-            check_multi_interp_extensions=bool(Py_GIL_DISABLED),
+            check_multi_interp_extensions=bool(Ty_GIL_DISABLED),
             gil='shared',
         ),
         'empty': types.SimpleNamespace(
@@ -2132,7 +2132,7 @@ class InterpreterConfigTests(unittest.TestCase):
                 check_multi_interp_extensions=False
             ),
         ]
-        if Py_GIL_DISABLED:
+        if Ty_GIL_DISABLED:
             invalid.append(dict(check_multi_interp_extensions=False))
         def match(config, override_cases):
             ns = vars(config)
@@ -2175,7 +2175,7 @@ class InterpreterConfigTests(unittest.TestCase):
         with self.subTest('main'):
             expected = _interpreters.new_config('legacy')
             expected.gil = 'own'
-            if Py_GIL_DISABLED:
+            if Ty_GIL_DISABLED:
                 expected.check_multi_interp_extensions = False
             interpid, *_ = _interpreters.get_main()
             config = _interpreters.get_config(interpid)
@@ -2198,7 +2198,7 @@ class InterpreterConfigTests(unittest.TestCase):
                 'empty',
                 use_main_obmalloc=True,
                 gil='shared',
-                check_multi_interp_extensions=bool(Py_GIL_DISABLED),
+                check_multi_interp_extensions=bool(Ty_GIL_DISABLED),
             )
             with new_interp(orig) as interpid:
                 config = _interpreters.get_config(interpid)
@@ -2574,7 +2574,7 @@ class Test_testcapi(unittest.TestCase):
         _testlimitedcapi.test_widechar()
 
     def test_version_api_data(self):
-        self.assertEqual(_testcapi.Py_Version, sys.hexversion)
+        self.assertEqual(_testcapi.Ty_Version, sys.hexversion)
 
 
 class Test_testlimitedcapi(unittest.TestCase):
@@ -2790,10 +2790,10 @@ class Test_Pep523API(unittest.TestCase):
         self.do_test(func, names)
 
 
-@unittest.skipUnless(support.Py_GIL_DISABLED, 'need Py_GIL_DISABLED')
+@unittest.skipUnless(support.Ty_GIL_DISABLED, 'need Ty_GIL_DISABLED')
 class TestPyThreadId(unittest.TestCase):
     def test_py_thread_id(self):
-        # gh-112535: Test _Py_ThreadId(): make sure that thread identifiers
+        # gh-112535: Test _Ty_ThreadId(): make sure that thread identifiers
         # in a few threads are unique
         py_thread_id = _testinternalcapi.py_thread_id
         short_sleep = 0.010
@@ -2822,14 +2822,14 @@ class TestPyThreadId(unittest.TestCase):
         for thread in threads:
             thread.started_lock.wait()
 
-        # call _Py_ThreadId() in the main thread
+        # call _Ty_ThreadId() in the main thread
         py_thread_ids = [py_thread_id()]
 
-        # now call _Py_ThreadId() in each thread
+        # now call _Ty_ThreadId() in each thread
         for thread in threads:
             thread.get_lock.release()
 
-        # call _Py_ThreadId() in each thread and wait until threads complete
+        # call _Ty_ThreadId() in each thread and wait until threads complete
         for thread in threads:
             thread.join()
             py_thread_ids.append(thread.py_tid)
@@ -2837,7 +2837,7 @@ class TestPyThreadId(unittest.TestCase):
             # For example, it should remain the same after a short sleep.
             self.assertEqual(thread.py_tid2, thread.py_tid)
 
-        # make sure that all _Py_ThreadId() are unique
+        # make sure that all _Ty_ThreadId() are unique
         for tid in py_thread_ids:
             self.assertIsInstance(tid, int)
             self.assertGreater(tid, 0)
@@ -2870,7 +2870,7 @@ class TestVersions(unittest.TestCase):
 
     def test_pack_full_version_ctypes(self):
         ctypes = import_helper.import_module('ctypes')
-        ctypes_func = ctypes.pythonapi.Py_PACK_FULL_VERSION
+        ctypes_func = ctypes.pythonapi.Ty_PACK_FULL_VERSION
         ctypes_func.restype = ctypes.c_uint32
         ctypes_func.argtypes = [ctypes.c_int] * 5
         for *args, expected in self.full_cases:
@@ -2880,7 +2880,7 @@ class TestVersions(unittest.TestCase):
 
     def test_pack_version_ctypes(self):
         ctypes = import_helper.import_module('ctypes')
-        ctypes_func = ctypes.pythonapi.Py_PACK_VERSION
+        ctypes_func = ctypes.pythonapi.Ty_PACK_VERSION
         ctypes_func.restype = ctypes.c_uint32
         ctypes_func.argtypes = [ctypes.c_int] * 2
         for *args, expected in self.xy_cases:

@@ -1,12 +1,12 @@
-#ifndef Py_CPYTHON_PYMEM_H
+#ifndef Ty_CPYTHON_PYMEM_H
 #  error "this header file must not be included directly"
 #endif
 
 typedef enum {
-    /* PyMem_RawMalloc(), PyMem_RawRealloc() and PyMem_RawFree() */
+    /* TyMem_RawMalloc(), TyMem_RawRealloc() and TyMem_RawFree() */
     PYMEM_DOMAIN_RAW,
 
-    /* PyMem_Malloc(), PyMem_Realloc() and PyMem_Free() */
+    /* TyMem_Malloc(), TyMem_Realloc() and TyMem_Free() */
     PYMEM_DOMAIN_MEM,
 
     /* PyObject_Malloc(), PyObject_Realloc() and PyObject_Free() */
@@ -48,7 +48,7 @@ typedef struct {
 } PyMemAllocatorEx;
 
 /* Get the memory block allocator of the specified domain. */
-PyAPI_FUNC(void) PyMem_GetAllocator(PyMemAllocatorDomain domain,
+PyAPI_FUNC(void) TyMem_GetAllocator(PyMemAllocatorDomain domain,
                                     PyMemAllocatorEx *allocator);
 
 /* Set the memory block allocator of the specified domain.
@@ -60,25 +60,25 @@ PyAPI_FUNC(void) PyMem_GetAllocator(PyMemAllocatorDomain domain,
    is not held when the allocator is called.
 
    If the new allocator is not a hook (don't call the previous allocator), the
-   PyMem_SetupDebugHooks() function must be called to reinstall the debug hooks
+   TyMem_SetupDebugHooks() function must be called to reinstall the debug hooks
    on top on the new allocator. */
-PyAPI_FUNC(void) PyMem_SetAllocator(PyMemAllocatorDomain domain,
+PyAPI_FUNC(void) TyMem_SetAllocator(PyMemAllocatorDomain domain,
                                     PyMemAllocatorEx *allocator);
 
 /* Setup hooks to detect bugs in the following Python memory allocator
    functions:
 
-   - PyMem_RawMalloc(), PyMem_RawRealloc(), PyMem_RawFree()
-   - PyMem_Malloc(), PyMem_Realloc(), PyMem_Free()
+   - TyMem_RawMalloc(), TyMem_RawRealloc(), TyMem_RawFree()
+   - TyMem_Malloc(), TyMem_Realloc(), TyMem_Free()
    - PyObject_Malloc(), PyObject_Realloc() and PyObject_Free()
 
    Newly allocated memory is filled with the byte 0xCB, freed memory is filled
    with the byte 0xDB. Additional checks:
 
    - detect API violations, ex: PyObject_Free() called on a buffer allocated
-     by PyMem_Malloc()
+     by TyMem_Malloc()
    - detect write before the start of the buffer (buffer underflow)
    - detect write after the end of the buffer (buffer overflow)
 
    The function does nothing if Python is not compiled is debug mode. */
-PyAPI_FUNC(void) PyMem_SetupDebugHooks(void);
+PyAPI_FUNC(void) TyMem_SetupDebugHooks(void);

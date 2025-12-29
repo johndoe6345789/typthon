@@ -1,12 +1,12 @@
-#ifndef Py_CPYTHON_DESCROBJECT_H
+#ifndef Ty_CPYTHON_DESCROBJECT_H
 #  error "this header file must not be included directly"
 #endif
 
-typedef PyObject *(*wrapperfunc)(PyObject *self, PyObject *args,
+typedef TyObject *(*wrapperfunc)(TyObject *self, TyObject *args,
                                  void *wrapped);
 
-typedef PyObject *(*wrapperfunc_kwds)(PyObject *self, PyObject *args,
-                                      void *wrapped, PyObject *kwds);
+typedef TyObject *(*wrapperfunc_kwds)(TyObject *self, TyObject *args,
+                                      void *wrapped, TyObject *kwds);
 
 struct wrapperbase {
     const char *name;
@@ -15,7 +15,7 @@ struct wrapperbase {
     wrapperfunc wrapper;
     const char *doc;
     int flags;
-    PyObject *name_strobj;
+    TyObject *name_strobj;
 };
 
 /* Flags for above struct */
@@ -25,9 +25,9 @@ struct wrapperbase {
 
 typedef struct {
     PyObject_HEAD
-    PyTypeObject *d_type;
-    PyObject *d_name;
-    PyObject *d_qualname;
+    TyTypeObject *d_type;
+    TyObject *d_name;
+    TyObject *d_qualname;
 } PyDescrObject;
 
 #define PyDescr_COMMON PyDescrObject d_common
@@ -37,18 +37,18 @@ typedef struct {
 
 typedef struct {
     PyDescr_COMMON;
-    PyMethodDef *d_method;
+    TyMethodDef *d_method;
     vectorcallfunc vectorcall;
 } PyMethodDescrObject;
 
 typedef struct {
     PyDescr_COMMON;
-    PyMemberDef *d_member;
+    TyMemberDef *d_member;
 } PyMemberDescrObject;
 
 typedef struct {
     PyDescr_COMMON;
-    PyGetSetDef *d_getset;
+    TyGetSetDef *d_getset;
 } PyGetSetDescrObject;
 
 typedef struct {
@@ -57,6 +57,6 @@ typedef struct {
     void *d_wrapped; /* This can be any function pointer */
 } PyWrapperDescrObject;
 
-PyAPI_FUNC(PyObject *) PyDescr_NewWrapper(PyTypeObject *,
+PyAPI_FUNC(TyObject *) PyDescr_NewWrapper(TyTypeObject *,
                                                 struct wrapperbase *, void *);
-PyAPI_FUNC(int) PyDescr_IsData(PyObject *);
+PyAPI_FUNC(int) PyDescr_IsData(TyObject *);

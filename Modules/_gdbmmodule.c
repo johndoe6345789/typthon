@@ -3,12 +3,12 @@
 /* Doc strings: Mitch Chapman */
 
 // clinic/_gdbmmodule.c.h uses internal pycore_modsupport.h API
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
-#include "pycore_pyerrors.h"        // _PyErr_SetLocaleString()
+#include "pycore_pyerrors.h"        // _TyErr_SetLocaleString()
 #include "gdbm.h"
 
 #include <fcntl.h>
@@ -22,14 +22,14 @@ extern const char * gdbm_strerror(gdbm_error);
 #endif
 
 typedef struct {
-    PyTypeObject *gdbm_type;
-    PyObject *gdbm_error;
+    TyTypeObject *gdbm_type;
+    TyObject *gdbm_error;
 } _gdbm_state;
 
 static inline _gdbm_state*
-get_gdbm_state(PyObject *module)
+get_gdbm_state(TyObject *module)
 {
-    void *state = PyModule_GetState(module);
+    void *state = TyModule_GetState(module);
     assert(state != NULL);
     return (_gdbm_state *)state;
 }
@@ -45,10 +45,10 @@ set_gdbm_error(_gdbm_state *state, const char *generic_error)
 {
     const char *gdbm_errmsg = gdbm_strerror(gdbm_errno);
     if (gdbm_errmsg) {
-        _PyErr_SetLocaleString(state->gdbm_error, gdbm_errmsg);
+        _TyErr_SetLocaleString(state->gdbm_error, gdbm_errmsg);
     }
     else {
-        PyErr_SetString(state->gdbm_error, generic_error);
+        TyErr_SetString(state->gdbm_error, generic_error);
     }
 }
 
@@ -58,7 +58,7 @@ class _gdbm.gdbm "gdbmobject *" "&Gdbmtype"
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=38ae71cedfc7172b]*/
 
-PyDoc_STRVAR(gdbmmodule__doc__,
+TyDoc_STRVAR(gdbmmodule__doc__,
 "This module provides an interface to the GNU DBM (GDBM) library.\n\
 \n\
 This module is quite similar to the dbm module, but uses GDBM instead to\n\
@@ -72,7 +72,7 @@ values() methods are not supported.");
 
 typedef struct {
     PyObject_HEAD
-    Py_ssize_t di_size;        /* -1 means recompute */
+    Ty_ssize_t di_size;        /* -1 means recompute */
     GDBM_FILE di_dbm;
 } gdbmobject;
 
@@ -82,11 +82,11 @@ typedef struct {
 
 #define check_gdbmobject_open(v, err)                                 \
     if ((v)->di_dbm == NULL) {                                       \
-        PyErr_SetString(err, "GDBM object has already been closed"); \
+        TyErr_SetString(err, "GDBM object has already been closed"); \
         return NULL;                                                 \
     }
 
-PyDoc_STRVAR(gdbm_object__doc__,
+TyDoc_STRVAR(gdbm_object__doc__,
 "This object represents a GDBM database.\n\
 GDBM objects behave like mappings (dictionaries), except that keys and\n\
 values are always immutable bytes-like objects or strings.  Printing\n\
@@ -96,7 +96,7 @@ values() methods are not supported.\n\
 GDBM objects also support additional operations such as firstkey,\n\
 nextkey, reorganize, and sync.");
 
-static PyObject *
+static TyObject *
 newgdbmobject(_gdbm_state *state, const char *file, int flags, int mode)
 {
     gdbmobject *dp = PyObject_GC_New(gdbmobject, state->gdbm_type);
@@ -109,45 +109,45 @@ newgdbmobject(_gdbm_state *state, const char *file, int flags, int mode)
 
     if ((dp->di_dbm = gdbm_open((char *)file, 0, flags, mode, NULL)) == 0) {
         if (errno != 0) {
-            PyErr_SetFromErrnoWithFilename(state->gdbm_error, file);
+            TyErr_SetFromErrnoWithFilename(state->gdbm_error, file);
         }
         else {
             set_gdbm_error(state, "gdbm_open() error");
         }
-        Py_DECREF(dp);
+        Ty_DECREF(dp);
         return NULL;
     }
-    return (PyObject *)dp;
+    return (TyObject *)dp;
 }
 
 /* Methods */
 static int
-gdbm_traverse(PyObject *op, visitproc visit, void *arg)
+gdbm_traverse(TyObject *op, visitproc visit, void *arg)
 {
-    Py_VISIT(Py_TYPE(op));
+    Ty_VISIT(Ty_TYPE(op));
     return 0;
 }
 
 static void
-gdbm_dealloc(PyObject *op)
+gdbm_dealloc(TyObject *op)
 {
     gdbmobject *dp = _gdbmobject_CAST(op);
-    PyTypeObject *tp = Py_TYPE(dp);
+    TyTypeObject *tp = Ty_TYPE(dp);
     PyObject_GC_UnTrack(dp);
     if (dp->di_dbm) {
         gdbm_close(dp->di_dbm);
     }
     tp->tp_free(dp);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
-static Py_ssize_t
-gdbm_length(PyObject *op)
+static Ty_ssize_t
+gdbm_length(TyObject *op)
 {
     gdbmobject *dp = _gdbmobject_CAST(op);
-    _gdbm_state *state = PyType_GetModuleState(Py_TYPE(dp));
+    _gdbm_state *state = TyType_GetModuleState(Ty_TYPE(dp));
     if (dp->di_dbm == NULL) {
-        PyErr_SetString(state->gdbm_error, "GDBM object has already been closed");
+        TyErr_SetString(state->gdbm_error, "GDBM object has already been closed");
         return -1;
     }
     if (dp->di_size < 0) {
@@ -156,7 +156,7 @@ gdbm_length(PyObject *op)
         gdbm_count_t count;
         if (gdbm_count(dp->di_dbm, &count) == -1) {
             if (errno != 0) {
-                PyErr_SetFromErrno(state->gdbm_error);
+                TyErr_SetFromErrno(state->gdbm_error);
             }
             else {
                 set_gdbm_error(state, "gdbm_count() error");
@@ -164,7 +164,7 @@ gdbm_length(PyObject *op)
             return -1;
         }
         if (count > PY_SSIZE_T_MAX) {
-            PyErr_SetString(PyExc_OverflowError, "count exceeds PY_SSIZE_T_MAX");
+            TyErr_SetString(TyExc_OverflowError, "count exceeds PY_SSIZE_T_MAX");
             return -1;
         }
         dp->di_size = count;
@@ -173,7 +173,7 @@ gdbm_length(PyObject *op)
         okey.dsize=0;
         okey.dptr=NULL;
 
-        Py_ssize_t size = 0;
+        Ty_ssize_t size = 0;
         for (key = gdbm_firstkey(dp->di_dbm); key.dptr;
              key = gdbm_nextkey(dp->di_dbm,okey)) {
             size++;
@@ -189,12 +189,12 @@ gdbm_length(PyObject *op)
 }
 
 static int
-gdbm_bool(PyObject *op)
+gdbm_bool(TyObject *op)
 {
     gdbmobject *dp = _gdbmobject_CAST(op);
-    _gdbm_state *state = PyType_GetModuleState(Py_TYPE(dp));
+    _gdbm_state *state = TyType_GetModuleState(Ty_TYPE(dp));
     if (dp->di_dbm == NULL) {
-        PyErr_SetString(state->gdbm_error, "GDBM object has already been closed");
+        TyErr_SetString(state->gdbm_error, "GDBM object has already been closed");
         return -1;
     }
     if (dp->di_size > 0) {
@@ -218,49 +218,49 @@ gdbm_bool(PyObject *op)
     return 1;
 }
 
-// Wrapper function for PyArg_Parse(o, "s#", &d.dptr, &d.size).
+// Wrapper function for TyArg_Parse(o, "s#", &d.dptr, &d.size).
 // This function is needed to support PY_SSIZE_T_CLEAN.
-// Return 1 on success, same to PyArg_Parse().
+// Return 1 on success, same to TyArg_Parse().
 static int
-parse_datum(PyObject *o, datum *d, const char *failmsg)
+parse_datum(TyObject *o, datum *d, const char *failmsg)
 {
-    Py_ssize_t size;
-    if (!PyArg_Parse(o, "s#", &d->dptr, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_Parse(o, "s#", &d->dptr, &size)) {
         if (failmsg != NULL) {
-            PyErr_SetString(PyExc_TypeError, failmsg);
+            TyErr_SetString(TyExc_TypeError, failmsg);
         }
         return 0;
     }
     if (INT_MAX < size) {
-        PyErr_SetString(PyExc_OverflowError, "size does not fit in an int");
+        TyErr_SetString(TyExc_OverflowError, "size does not fit in an int");
         return 0;
     }
     d->dsize = size;
     return 1;
 }
 
-static PyObject *
-gdbm_subscript(PyObject *op, PyObject *key)
+static TyObject *
+gdbm_subscript(TyObject *op, TyObject *key)
 {
-    PyObject *v;
+    TyObject *v;
     datum drec, krec;
     gdbmobject *dp = _gdbmobject_CAST(op);
-    _gdbm_state *state = PyType_GetModuleState(Py_TYPE(dp));
+    _gdbm_state *state = TyType_GetModuleState(Ty_TYPE(dp));
 
     if (!parse_datum(key, &krec, NULL)) {
         return NULL;
     }
     if (dp->di_dbm == NULL) {
-        PyErr_SetString(state->gdbm_error,
+        TyErr_SetString(state->gdbm_error,
                         "GDBM object has already been closed");
         return NULL;
     }
     drec = gdbm_fetch(dp->di_dbm, krec);
     if (drec.dptr == 0) {
-        PyErr_SetObject(PyExc_KeyError, key);
+        TyErr_SetObject(TyExc_KeyError, key);
         return NULL;
     }
-    v = PyBytes_FromStringAndSize(drec.dptr, drec.dsize);
+    v = TyBytes_FromStringAndSize(drec.dptr, drec.dsize);
     free(drec.dptr);
     return v;
 }
@@ -275,33 +275,33 @@ _gdbm.gdbm.get
 Get the value for key, or default if not present.
 [clinic start generated code]*/
 
-static PyObject *
-_gdbm_gdbm_get_impl(gdbmobject *self, PyObject *key, PyObject *default_value)
+static TyObject *
+_gdbm_gdbm_get_impl(gdbmobject *self, TyObject *key, TyObject *default_value)
 /*[clinic end generated code: output=92421838f3a852f4 input=a9c20423f34c17b6]*/
 {
-    PyObject *res;
+    TyObject *res;
 
-    res = gdbm_subscript((PyObject *)self, key);
-    if (res == NULL && PyErr_ExceptionMatches(PyExc_KeyError)) {
-        PyErr_Clear();
-        return Py_NewRef(default_value);
+    res = gdbm_subscript((TyObject *)self, key);
+    if (res == NULL && TyErr_ExceptionMatches(TyExc_KeyError)) {
+        TyErr_Clear();
+        return Ty_NewRef(default_value);
     }
     return res;
 }
 
 static int
-gdbm_ass_sub(PyObject *op, PyObject *v, PyObject *w)
+gdbm_ass_sub(TyObject *op, TyObject *v, TyObject *w)
 {
     datum krec, drec;
     const char *failmsg = "gdbm mappings have bytes or string indices only";
     gdbmobject *dp = _gdbmobject_CAST(op);
-    _gdbm_state *state = PyType_GetModuleState(Py_TYPE(dp));
+    _gdbm_state *state = TyType_GetModuleState(Ty_TYPE(dp));
 
     if (!parse_datum(v, &krec, failmsg)) {
         return -1;
     }
     if (dp->di_dbm == NULL) {
-        PyErr_SetString(state->gdbm_error,
+        TyErr_SetString(state->gdbm_error,
                         "GDBM object has already been closed");
         return -1;
     }
@@ -309,7 +309,7 @@ gdbm_ass_sub(PyObject *op, PyObject *v, PyObject *w)
     if (w == NULL) {
         if (gdbm_delete(dp->di_dbm, krec) < 0) {
             if (gdbm_errno == GDBM_ITEM_NOT_FOUND) {
-                PyErr_SetObject(PyExc_KeyError, v);
+                TyErr_SetObject(TyExc_KeyError, v);
             }
             else {
                 set_gdbm_error(state, "gdbm_delete() error");
@@ -324,7 +324,7 @@ gdbm_ass_sub(PyObject *op, PyObject *v, PyObject *w)
         errno = 0;
         if (gdbm_store(dp->di_dbm, krec, drec, GDBM_REPLACE) < 0) {
             if (errno != 0) {
-                PyErr_SetFromErrno(state->gdbm_error);
+                TyErr_SetFromErrno(state->gdbm_error);
             }
             else {
                 set_gdbm_error(state, "gdbm_store() error");
@@ -345,19 +345,19 @@ _gdbm.gdbm.setdefault
 Get value for key, or set it to default and return default if not present.
 [clinic start generated code]*/
 
-static PyObject *
-_gdbm_gdbm_setdefault_impl(gdbmobject *self, PyObject *key,
-                           PyObject *default_value)
+static TyObject *
+_gdbm_gdbm_setdefault_impl(gdbmobject *self, TyObject *key,
+                           TyObject *default_value)
 /*[clinic end generated code: output=f3246e880509f142 input=0db46b69e9680171]*/
 {
-    PyObject *res;
+    TyObject *res;
 
-    res = gdbm_subscript((PyObject *)self, key);
-    if (res == NULL && PyErr_ExceptionMatches(PyExc_KeyError)) {
-        PyErr_Clear();
-        if (gdbm_ass_sub((PyObject *)self, key, default_value) < 0)
+    res = gdbm_subscript((TyObject *)self, key);
+    if (res == NULL && TyErr_ExceptionMatches(TyExc_KeyError)) {
+        TyErr_Clear();
+        if (gdbm_ass_sub((TyObject *)self, key, default_value) < 0)
             return NULL;
-        return gdbm_subscript((PyObject *)self, key);
+        return gdbm_subscript((TyObject *)self, key);
     }
     return res;
 }
@@ -368,7 +368,7 @@ _gdbm.gdbm.close
 Close the database.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _gdbm_gdbm_close_impl(gdbmobject *self)
 /*[clinic end generated code: output=f5abb4d6bb9e52d5 input=0a203447379b45fd]*/
 {
@@ -388,40 +388,40 @@ _gdbm.gdbm.keys
 Get a list of all keys in the database.
 [clinic start generated code]*/
 
-static PyObject *
-_gdbm_gdbm_keys_impl(gdbmobject *self, PyTypeObject *cls)
+static TyObject *
+_gdbm_gdbm_keys_impl(gdbmobject *self, TyTypeObject *cls)
 /*[clinic end generated code: output=c24b824e81404755 input=1428b7c79703d7d5]*/
 {
-    PyObject *v, *item;
+    TyObject *v, *item;
     datum key, nextkey;
     int err;
 
-    _gdbm_state *state = PyType_GetModuleState(cls);
+    _gdbm_state *state = TyType_GetModuleState(cls);
     assert(state != NULL);
 
-    if (self == NULL || !Py_IS_TYPE(self, state->gdbm_type)) {
-        PyErr_BadInternalCall();
+    if (self == NULL || !Ty_IS_TYPE(self, state->gdbm_type)) {
+        TyErr_BadInternalCall();
         return NULL;
     }
     check_gdbmobject_open(self, state->gdbm_error);
 
-    v = PyList_New(0);
+    v = TyList_New(0);
     if (v == NULL)
         return NULL;
 
     key = gdbm_firstkey(self->di_dbm);
     while (key.dptr) {
-        item = PyBytes_FromStringAndSize(key.dptr, key.dsize);
+        item = TyBytes_FromStringAndSize(key.dptr, key.dsize);
         if (item == NULL) {
             free(key.dptr);
-            Py_DECREF(v);
+            Ty_DECREF(v);
             return NULL;
         }
-        err = PyList_Append(v, item);
-        Py_DECREF(item);
+        err = TyList_Append(v, item);
+        Ty_DECREF(item);
         if (err != 0) {
             free(key.dptr);
-            Py_DECREF(v);
+            Ty_DECREF(v);
             return NULL;
         }
         nextkey = gdbm_nextkey(self->di_dbm, key);
@@ -432,33 +432,33 @@ _gdbm_gdbm_keys_impl(gdbmobject *self, PyTypeObject *cls)
 }
 
 static int
-gdbm_contains(PyObject *self, PyObject *arg)
+gdbm_contains(TyObject *self, TyObject *arg)
 {
     gdbmobject *dp = (gdbmobject *)self;
     datum key;
-    Py_ssize_t size;
-    _gdbm_state *state = PyType_GetModuleState(Py_TYPE(dp));
+    Ty_ssize_t size;
+    _gdbm_state *state = TyType_GetModuleState(Ty_TYPE(dp));
 
     if ((dp)->di_dbm == NULL) {
-        PyErr_SetString(state->gdbm_error,
+        TyErr_SetString(state->gdbm_error,
                         "GDBM object has already been closed");
         return -1;
     }
-    if (PyUnicode_Check(arg)) {
-        key.dptr = (char *)PyUnicode_AsUTF8AndSize(arg, &size);
+    if (TyUnicode_Check(arg)) {
+        key.dptr = (char *)TyUnicode_AsUTF8AndSize(arg, &size);
         key.dsize = size;
         if (key.dptr == NULL)
             return -1;
     }
-    else if (!PyBytes_Check(arg)) {
-        PyErr_Format(PyExc_TypeError,
+    else if (!TyBytes_Check(arg)) {
+        TyErr_Format(TyExc_TypeError,
                      "gdbm key must be bytes or string, not %.100s",
-                     Py_TYPE(arg)->tp_name);
+                     Ty_TYPE(arg)->tp_name);
         return -1;
     }
     else {
-        key.dptr = PyBytes_AS_STRING(arg);
-        key.dsize = PyBytes_GET_SIZE(arg);
+        key.dptr = TyBytes_AS_STRING(arg);
+        key.dsize = TyBytes_GET_SIZE(arg);
     }
     return gdbm_exists(dp->di_dbm, key);
 }
@@ -475,19 +475,19 @@ and the nextkey() method.  The traversal is ordered by GDBM's internal
 hash values, and won't be sorted by the key values.
 [clinic start generated code]*/
 
-static PyObject *
-_gdbm_gdbm_firstkey_impl(gdbmobject *self, PyTypeObject *cls)
+static TyObject *
+_gdbm_gdbm_firstkey_impl(gdbmobject *self, TyTypeObject *cls)
 /*[clinic end generated code: output=139275e9c8b60827 input=ed8782a029a5d299]*/
 {
-    PyObject *v;
+    TyObject *v;
     datum key;
-    _gdbm_state *state = PyType_GetModuleState(cls);
+    _gdbm_state *state = TyType_GetModuleState(cls);
     assert(state != NULL);
 
     check_gdbmobject_open(self, state->gdbm_error);
     key = gdbm_firstkey(self->di_dbm);
     if (key.dptr) {
-        v = PyBytes_FromStringAndSize(key.dptr, key.dsize);
+        v = TyBytes_FromStringAndSize(key.dptr, key.dsize);
         free(key.dptr);
         return v;
     }
@@ -514,14 +514,14 @@ to create a list in memory that contains them all:
           k = db.nextkey(k)
 [clinic start generated code]*/
 
-static PyObject *
-_gdbm_gdbm_nextkey_impl(gdbmobject *self, PyTypeObject *cls, const char *key,
-                        Py_ssize_t key_length)
+static TyObject *
+_gdbm_gdbm_nextkey_impl(gdbmobject *self, TyTypeObject *cls, const char *key,
+                        Ty_ssize_t key_length)
 /*[clinic end generated code: output=c81a69300ef41766 input=365e297bc0b3db48]*/
 {
-    PyObject *v;
+    TyObject *v;
     datum dbm_key, nextkey;
-    _gdbm_state *state = PyType_GetModuleState(cls);
+    _gdbm_state *state = TyType_GetModuleState(cls);
     assert(state != NULL);
 
     dbm_key.dptr = (char *)key;
@@ -529,7 +529,7 @@ _gdbm_gdbm_nextkey_impl(gdbmobject *self, PyTypeObject *cls, const char *key,
     check_gdbmobject_open(self, state->gdbm_error);
     nextkey = gdbm_nextkey(self->di_dbm, dbm_key);
     if (nextkey.dptr) {
-        v = PyBytes_FromStringAndSize(nextkey.dptr, nextkey.dsize);
+        v = TyBytes_FromStringAndSize(nextkey.dptr, nextkey.dsize);
         free(nextkey.dptr);
         return v;
     }
@@ -552,17 +552,17 @@ by using this reorganization; otherwise, deleted file space will be
 kept and reused as new (key,value) pairs are added.
 [clinic start generated code]*/
 
-static PyObject *
-_gdbm_gdbm_reorganize_impl(gdbmobject *self, PyTypeObject *cls)
+static TyObject *
+_gdbm_gdbm_reorganize_impl(gdbmobject *self, TyTypeObject *cls)
 /*[clinic end generated code: output=d77c69e8e3dd644a input=e1359faeef844e46]*/
 {
-    _gdbm_state *state = PyType_GetModuleState(cls);
+    _gdbm_state *state = TyType_GetModuleState(cls);
     assert(state != NULL);
     check_gdbmobject_open(self, state->gdbm_error);
     errno = 0;
     if (gdbm_reorganize(self->di_dbm) < 0) {
         if (errno != 0) {
-            PyErr_SetFromErrno(state->gdbm_error);
+            TyErr_SetFromErrno(state->gdbm_error);
         }
         else {
             set_gdbm_error(state, "gdbm_reorganize() error");
@@ -583,11 +583,11 @@ When the database has been opened in fast mode, this method forces
 any unwritten data to be written to the disk.
 [clinic start generated code]*/
 
-static PyObject *
-_gdbm_gdbm_sync_impl(gdbmobject *self, PyTypeObject *cls)
+static TyObject *
+_gdbm_gdbm_sync_impl(gdbmobject *self, TyTypeObject *cls)
 /*[clinic end generated code: output=bb680a2035c3f592 input=3d749235f79b6f2a]*/
 {
-    _gdbm_state *state = PyType_GetModuleState(cls);
+    _gdbm_state *state = TyType_GetModuleState(cls);
     assert(state != NULL);
     check_gdbmobject_open(self, state->gdbm_error);
     gdbm_sync(self->di_dbm);
@@ -602,11 +602,11 @@ Remove all items from the database.
 
 [clinic start generated code]*/
 
-static PyObject *
-_gdbm_gdbm_clear_impl(gdbmobject *self, PyTypeObject *cls)
+static TyObject *
+_gdbm_gdbm_clear_impl(gdbmobject *self, TyTypeObject *cls)
 /*[clinic end generated code: output=673577c573318661 input=34136d52fcdd4210]*/
 {
-    _gdbm_state *state = PyType_GetModuleState(cls);
+    _gdbm_state *state = TyType_GetModuleState(cls);
     assert(state != NULL);
     check_gdbmobject_open(self, state->gdbm_error);
     datum key;
@@ -618,26 +618,26 @@ _gdbm_gdbm_clear_impl(gdbmobject *self, PyTypeObject *cls)
             break;
         }
         if (gdbm_delete(self->di_dbm, key) < 0) {
-            PyErr_SetString(state->gdbm_error, "cannot delete item from database");
+            TyErr_SetString(state->gdbm_error, "cannot delete item from database");
             return NULL;
         }
     }
     Py_RETURN_NONE;
 }
 
-static PyObject *
-gdbm__enter__(PyObject *self, PyObject *args)
+static TyObject *
+gdbm__enter__(TyObject *self, TyObject *args)
 {
-    return Py_NewRef(self);
+    return Ty_NewRef(self);
 }
 
-static PyObject *
-gdbm__exit__(PyObject *self, PyObject *args)
+static TyObject *
+gdbm__exit__(TyObject *self, TyObject *args)
 {
     return _gdbm_gdbm_close_impl((gdbmobject *)self);
 }
 
-static PyMethodDef gdbm_methods[] = {
+static TyMethodDef gdbm_methods[] = {
     _GDBM_GDBM_CLOSE_METHODDEF
     _GDBM_GDBM_KEYS_METHODDEF
     _GDBM_GDBM_FIRSTKEY_METHODDEF
@@ -652,28 +652,28 @@ static PyMethodDef gdbm_methods[] = {
     {NULL,              NULL}           /* sentinel */
 };
 
-static PyType_Slot gdbmtype_spec_slots[] = {
-    {Py_tp_dealloc, gdbm_dealloc},
-    {Py_tp_traverse, gdbm_traverse},
-    {Py_tp_methods, gdbm_methods},
-    {Py_sq_contains, gdbm_contains},
-    {Py_mp_length, gdbm_length},
-    {Py_mp_subscript, gdbm_subscript},
-    {Py_mp_ass_subscript, gdbm_ass_sub},
-    {Py_nb_bool, gdbm_bool},
-    {Py_tp_doc, (char*)gdbm_object__doc__},
+static TyType_Slot gdbmtype_spec_slots[] = {
+    {Ty_tp_dealloc, gdbm_dealloc},
+    {Ty_tp_traverse, gdbm_traverse},
+    {Ty_tp_methods, gdbm_methods},
+    {Ty_sq_contains, gdbm_contains},
+    {Ty_mp_length, gdbm_length},
+    {Ty_mp_subscript, gdbm_subscript},
+    {Ty_mp_ass_subscript, gdbm_ass_sub},
+    {Ty_nb_bool, gdbm_bool},
+    {Ty_tp_doc, (char*)gdbm_object__doc__},
     {0, 0}
 };
 
-static PyType_Spec gdbmtype_spec = {
+static TyType_Spec gdbmtype_spec = {
     .name = "_gdbm.gdbm",
     .basicsize = sizeof(gdbmobject),
-    // Calling PyType_GetModuleState() on a subclass is not safe.
-    // dbmtype_spec does not have Py_TPFLAGS_BASETYPE flag
+    // Calling TyType_GetModuleState() on a subclass is not safe.
+    // dbmtype_spec does not have Ty_TPFLAGS_BASETYPE flag
     // which prevents to create a subclass.
-    // So calling PyType_GetModuleState() in this file is always safe.
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_DISALLOW_INSTANTIATION |
-              Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_IMMUTABLETYPE),
+    // So calling TyType_GetModuleState() in this file is always safe.
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_DISALLOW_INSTANTIATION |
+              Ty_TPFLAGS_HAVE_GC | Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = gdbmtype_spec_slots,
 };
 
@@ -711,8 +711,8 @@ The optional mode argument is the Unix mode of the file, used only
 when the database has to be created.  It defaults to octal 0o666.
 [clinic start generated code]*/
 
-static PyObject *
-dbmopen_impl(PyObject *module, PyObject *filename, const char *flags,
+static TyObject *
+dbmopen_impl(TyObject *module, TyObject *filename, const char *flags,
              int mode)
 /*[clinic end generated code: output=9527750f5df90764 input=bca6ec81dc49292c]*/
 {
@@ -734,7 +734,7 @@ dbmopen_impl(PyObject *module, PyObject *filename, const char *flags,
         iflags = GDBM_NEWDB;
         break;
     default:
-        PyErr_SetString(state->gdbm_error,
+        TyErr_SetString(state->gdbm_error,
                         "First flag must be one of 'r', 'w', 'c' or 'n'");
         return NULL;
     }
@@ -756,25 +756,25 @@ dbmopen_impl(PyObject *module, PyObject *filename, const char *flags,
                 break;
 #endif
             default:
-                PyErr_Format(state->gdbm_error,
+                TyErr_Format(state->gdbm_error,
                              "Flag '%c' is not supported.", (unsigned char)*flags);
                 return NULL;
         }
     }
 
-    PyObject *filenamebytes;
-    if (!PyUnicode_FSConverter(filename, &filenamebytes)) {
+    TyObject *filenamebytes;
+    if (!TyUnicode_FSConverter(filename, &filenamebytes)) {
         return NULL;
     }
 
-    const char *name = PyBytes_AS_STRING(filenamebytes);
-    if (strlen(name) != (size_t)PyBytes_GET_SIZE(filenamebytes)) {
-        Py_DECREF(filenamebytes);
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+    const char *name = TyBytes_AS_STRING(filenamebytes);
+    if (strlen(name) != (size_t)TyBytes_GET_SIZE(filenamebytes)) {
+        Ty_DECREF(filenamebytes);
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         return NULL;
     }
-    PyObject *self = newgdbmobject(state, name, iflags, mode);
-    Py_DECREF(filenamebytes);
+    TyObject *self = newgdbmobject(state, name, iflags, mode);
+    Ty_DECREF(filenamebytes);
     return self;
 }
 
@@ -790,37 +790,37 @@ static const char gdbmmodule_open_flags[] = "rwcn"
 #endif
                                      ;
 
-static PyMethodDef _gdbm_module_methods[] = {
+static TyMethodDef _gdbm_module_methods[] = {
     DBMOPEN_METHODDEF
     { 0, 0 },
 };
 
 static int
-_gdbm_exec(PyObject *module)
+_gdbm_exec(TyObject *module)
 {
     _gdbm_state *state = get_gdbm_state(module);
-    state->gdbm_type = (PyTypeObject *)PyType_FromModuleAndSpec(module,
+    state->gdbm_type = (TyTypeObject *)TyType_FromModuleAndSpec(module,
                                                         &gdbmtype_spec, NULL);
     if (state->gdbm_type == NULL) {
         return -1;
     }
-    state->gdbm_error = PyErr_NewException("_gdbm.error", PyExc_OSError, NULL);
+    state->gdbm_error = TyErr_NewException("_gdbm.error", TyExc_OSError, NULL);
     if (state->gdbm_error == NULL) {
         return -1;
     }
-    if (PyModule_AddType(module, (PyTypeObject *)state->gdbm_error) < 0) {
+    if (TyModule_AddType(module, (TyTypeObject *)state->gdbm_error) < 0) {
         return -1;
     }
-    if (PyModule_AddStringConstant(module, "open_flags",
+    if (TyModule_AddStringConstant(module, "open_flags",
                                    gdbmmodule_open_flags) < 0) {
         return -1;
     }
 
 #if defined(GDBM_VERSION_MAJOR) && defined(GDBM_VERSION_MINOR) && \
     defined(GDBM_VERSION_PATCH)
-    PyObject *obj = Py_BuildValue("iii", GDBM_VERSION_MAJOR,
+    TyObject *obj = Ty_BuildValue("iii", GDBM_VERSION_MAJOR,
                                   GDBM_VERSION_MINOR, GDBM_VERSION_PATCH);
-    if (PyModule_Add(module, "_GDBM_VERSION", obj) < 0) {
+    if (TyModule_Add(module, "_GDBM_VERSION", obj) < 0) {
         return -1;
     }
 #endif
@@ -828,37 +828,37 @@ _gdbm_exec(PyObject *module)
 }
 
 static int
-_gdbm_module_traverse(PyObject *module, visitproc visit, void *arg)
+_gdbm_module_traverse(TyObject *module, visitproc visit, void *arg)
 {
     _gdbm_state *state = get_gdbm_state(module);
-    Py_VISIT(state->gdbm_error);
-    Py_VISIT(state->gdbm_type);
+    Ty_VISIT(state->gdbm_error);
+    Ty_VISIT(state->gdbm_type);
     return 0;
 }
 
 static int
-_gdbm_module_clear(PyObject *module)
+_gdbm_module_clear(TyObject *module)
 {
     _gdbm_state *state = get_gdbm_state(module);
-    Py_CLEAR(state->gdbm_error);
-    Py_CLEAR(state->gdbm_type);
+    Ty_CLEAR(state->gdbm_error);
+    Ty_CLEAR(state->gdbm_type);
     return 0;
 }
 
 static void
 _gdbm_module_free(void *module)
 {
-    (void)_gdbm_module_clear((PyObject *)module);
+    (void)_gdbm_module_clear((TyObject *)module);
 }
 
 static PyModuleDef_Slot _gdbm_module_slots[] = {
-    {Py_mod_exec, _gdbm_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, _gdbm_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef _gdbmmodule = {
+static struct TyModuleDef _gdbmmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_gdbm",
     .m_doc = gdbmmodule__doc__,

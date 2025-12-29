@@ -665,13 +665,13 @@ if __name__ == '__main__':
         #define APPEND(ITEM) {                          \\
             PyObject *item = ITEM;                      \\
             if (!item) {                                \\
-                Py_DECREF(result);                      \\
+                Ty_DECREF(result);                      \\
                 return NULL;                            \\
             }                                           \\
             int rv = PyList_Append(result, item);       \\
-            Py_DECREF(item);                            \\
+            Ty_DECREF(item);                            \\
             if (rv < 0) {                               \\
-                Py_DECREF(result);                      \\
+                Ty_DECREF(result);                      \\
                 return NULL;                            \\
             }                                           \\
         }
@@ -739,7 +739,7 @@ if __name__ == '__main__':
         if requires:
             output(f"""
             #else
-                APPEND(Py_NewRef(Py_None));
+                APPEND(Ty_NewRef(Ty_None));
                 APPEND(PyUnicode_FromString("skipped on this compiler"));
             #endif
             """)
@@ -749,7 +749,7 @@ if __name__ == '__main__':
         """)
 
     output("""
-            Py_DECREF(result);
+            Ty_DECREF(result);
             PyErr_Format(PyExc_ValueError, "unknown testcase %R", name);
             return NULL;
         }

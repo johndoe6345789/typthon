@@ -35,8 +35,8 @@ typedef struct
     int is_dml;
 } pysqlite_Statement;
 
-pysqlite_Statement *pysqlite_statement_create(pysqlite_Connection *connection, PyObject *sql);
+pysqlite_Statement *pysqlite_statement_create(pysqlite_Connection *connection, TyObject *sql);
 
-int pysqlite_statement_setup_types(PyObject *module);
+int pysqlite_statement_setup_types(TyObject *module);
 
 #endif

@@ -19,9 +19,9 @@ class _io.StringIO "stringio *" "clinic_state()->PyStringIO_Type"
 
 typedef struct {
     PyObject_HEAD
-    Py_UCS4 *buf;
-    Py_ssize_t pos;
-    Py_ssize_t string_size;
+    Ty_UCS4 *buf;
+    Ty_ssize_t pos;
+    Ty_ssize_t string_size;
     size_t buf_size;
 
     /* The stringio object can be in two states: accumulating or realized.
@@ -37,33 +37,33 @@ typedef struct {
     char closed;
     char readuniversal;
     char readtranslate;
-    PyObject *decoder;
-    PyObject *readnl;
-    PyObject *writenl;
+    TyObject *decoder;
+    TyObject *readnl;
+    TyObject *writenl;
 
-    PyObject *dict;
-    PyObject *weakreflist;
+    TyObject *dict;
+    TyObject *weakreflist;
     _PyIO_State *module_state;
 } stringio;
 
 #define stringio_CAST(op)   ((stringio *)(op))
 
-#define clinic_state() (find_io_state_by_def(Py_TYPE(self)))
+#define clinic_state() (find_io_state_by_def(Ty_TYPE(self)))
 #include "clinic/stringio.c.h"
 #undef clinic_state
 
-static int _io_StringIO___init__(PyObject *self, PyObject *args, PyObject *kwargs);
+static int _io_StringIO___init__(TyObject *self, TyObject *args, TyObject *kwargs);
 
 #define CHECK_INITIALIZED(self) \
     if (self->ok <= 0) { \
-        PyErr_SetString(PyExc_ValueError, \
+        TyErr_SetString(TyExc_ValueError, \
             "I/O operation on uninitialized object"); \
         return NULL; \
     }
 
 #define CHECK_CLOSED(self) \
     if (self->closed) { \
-        PyErr_SetString(PyExc_ValueError, \
+        TyErr_SetString(TyExc_ValueError, \
             "I/O operation on closed file"); \
         return NULL; \
     }
@@ -83,7 +83,7 @@ resize_buffer(stringio *self, size_t size)
     /* Here, unsigned types are used to avoid dealing with signed integer
        overflow, which is undefined in C. */
     size_t alloc = self->buf_size;
-    Py_UCS4 *new_buf = NULL;
+    Ty_UCS4 *new_buf = NULL;
 
     assert(self->buf != NULL);
 
@@ -111,11 +111,11 @@ resize_buffer(stringio *self, size_t size)
         alloc = size + 1;
     }
 
-    if (alloc > PY_SIZE_MAX / sizeof(Py_UCS4))
+    if (alloc > PY_SIZE_MAX / sizeof(Ty_UCS4))
         goto overflow;
-    new_buf = (Py_UCS4 *)PyMem_Realloc(self->buf, alloc * sizeof(Py_UCS4));
+    new_buf = (Ty_UCS4 *)TyMem_Realloc(self->buf, alloc * sizeof(Ty_UCS4));
     if (new_buf == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
     self->buf_size = alloc;
@@ -124,15 +124,15 @@ resize_buffer(stringio *self, size_t size)
     return 0;
 
   overflow:
-    PyErr_SetString(PyExc_OverflowError,
+    TyErr_SetString(TyExc_OverflowError,
                     "new buffer size too large");
     return -1;
 }
 
-static PyObject *
+static TyObject *
 make_intermediate(stringio *self)
 {
-    PyObject *intermediate = PyUnicodeWriter_Finish(self->writer);
+    TyObject *intermediate = PyUnicodeWriter_Finish(self->writer);
     self->writer = NULL;
     self->state = STATE_REALIZED;
     if (intermediate == NULL)
@@ -140,11 +140,11 @@ make_intermediate(stringio *self)
 
     self->writer = PyUnicodeWriter_Create(0);
     if (self->writer == NULL) {
-        Py_DECREF(intermediate);
+        Ty_DECREF(intermediate);
         return NULL;
     }
     if (PyUnicodeWriter_WriteStr(self->writer, intermediate)) {
-        Py_DECREF(intermediate);
+        Ty_DECREF(intermediate);
         return NULL;
     }
     self->state = STATE_ACCUMULATING;
@@ -154,8 +154,8 @@ make_intermediate(stringio *self)
 static int
 realize(stringio *self)
 {
-    Py_ssize_t len;
-    PyObject *intermediate;
+    Ty_ssize_t len;
+    TyObject *intermediate;
 
     if (self->state == STATE_REALIZED)
         return 0;
@@ -170,27 +170,27 @@ realize(stringio *self)
     /* Append the intermediate string to the internal buffer.
        The length should be equal to the current cursor position.
      */
-    len = PyUnicode_GET_LENGTH(intermediate);
+    len = TyUnicode_GET_LENGTH(intermediate);
     if (resize_buffer(self, len) < 0) {
-        Py_DECREF(intermediate);
+        Ty_DECREF(intermediate);
         return -1;
     }
-    if (!PyUnicode_AsUCS4(intermediate, self->buf, len, 0)) {
-        Py_DECREF(intermediate);
+    if (!TyUnicode_AsUCS4(intermediate, self->buf, len, 0)) {
+        Ty_DECREF(intermediate);
         return -1;
     }
 
-    Py_DECREF(intermediate);
+    Ty_DECREF(intermediate);
     return 0;
 }
 
 /* Internal routine for writing a whole PyUnicode object to the buffer of a
    StringIO object. Returns 0 on success, or -1 on error. */
-static Py_ssize_t
-write_str(stringio *self, PyObject *obj)
+static Ty_ssize_t
+write_str(stringio *self, TyObject *obj)
 {
-    Py_ssize_t len;
-    PyObject *decoded = NULL;
+    Ty_ssize_t len;
+    TyObject *decoded = NULL;
 
     assert(self->buf != NULL);
     assert(self->pos >= 0);
@@ -200,25 +200,25 @@ write_str(stringio *self, PyObject *obj)
             self->decoder, obj, 1 /* always final */);
     }
     else {
-        decoded = Py_NewRef(obj);
+        decoded = Ty_NewRef(obj);
     }
     if (self->writenl) {
-        PyObject *translated = PyUnicode_Replace(
-            decoded, _Py_LATIN1_CHR('\n'), self->writenl, -1);
-        Py_SETREF(decoded, translated);
+        TyObject *translated = TyUnicode_Replace(
+            decoded, _Ty_LATIN1_CHR('\n'), self->writenl, -1);
+        Ty_SETREF(decoded, translated);
     }
     if (decoded == NULL)
         return -1;
 
-    assert(PyUnicode_Check(decoded));
-    len = PyUnicode_GET_LENGTH(decoded);
+    assert(TyUnicode_Check(decoded));
+    len = TyUnicode_GET_LENGTH(decoded);
     assert(len >= 0);
 
     /* This overflow check is not strictly necessary. However, it avoids us to
        deal with funky things like comparing an unsigned and a signed
        integer. */
     if (self->pos > PY_SSIZE_T_MAX - len) {
-        PyErr_SetString(PyExc_OverflowError,
+        TyErr_SetString(TyExc_OverflowError,
                         "new position too large");
         goto fail;
     }
@@ -249,12 +249,12 @@ write_str(stringio *self, PyObject *obj)
 
         */
         memset(self->buf + self->string_size, '\0',
-               (self->pos - self->string_size) * sizeof(Py_UCS4));
+               (self->pos - self->string_size) * sizeof(Ty_UCS4));
     }
 
     /* Copy the data to the internal buffer, overwriting some of the
        existing data if self->pos < self->string_size. */
-    if (!PyUnicode_AsUCS4(decoded,
+    if (!TyUnicode_AsUCS4(decoded,
                           self->buf + self->pos,
                           self->buf_size - self->pos,
                           0))
@@ -266,11 +266,11 @@ success:
     if (self->string_size < self->pos)
         self->string_size = self->pos;
 
-    Py_DECREF(decoded);
+    Ty_DECREF(decoded);
     return 0;
 
 fail:
-    Py_XDECREF(decoded);
+    Ty_XDECREF(decoded);
     return -1;
 }
 
@@ -281,7 +281,7 @@ _io.StringIO.getvalue
 Retrieve the entire contents of the object.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO_getvalue_impl(stringio *self)
 /*[clinic end generated code: output=27b6a7bfeaebce01 input=fb5dee06b8d467f3]*/
 {
@@ -289,7 +289,7 @@ _io_StringIO_getvalue_impl(stringio *self)
     CHECK_CLOSED(self);
     if (self->state == STATE_ACCUMULATING)
         return make_intermediate(self);
-    return PyUnicode_FromKindAndData(PyUnicode_4BYTE_KIND, self->buf,
+    return TyUnicode_FromKindAndData(TyUnicode_4BYTE_KIND, self->buf,
                                      self->string_size);
 }
 
@@ -300,19 +300,19 @@ _io.StringIO.tell
 Tell the current file position.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO_tell_impl(stringio *self)
 /*[clinic end generated code: output=2e87ac67b116c77b input=98a08f3e2dae3550]*/
 {
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
-    return PyLong_FromSsize_t(self->pos);
+    return TyLong_FromSsize_t(self->pos);
 }
 
 /*[clinic input]
 @critical_section
 _io.StringIO.read
-    size: Py_ssize_t(accept={int, NoneType}) = -1
+    size: Ty_ssize_t(accept={int, NoneType}) = -1
     /
 
 Read at most size characters, returned as a string.
@@ -321,12 +321,12 @@ If the argument is negative or omitted, read until EOF
 is reached. Return an empty string at EOF.
 [clinic start generated code]*/
 
-static PyObject *
-_io_StringIO_read_impl(stringio *self, Py_ssize_t size)
+static TyObject *
+_io_StringIO_read_impl(stringio *self, Ty_ssize_t size)
 /*[clinic end generated code: output=ae8cf6002f71626c input=9fbef45d8aece8e7]*/
 {
-    Py_ssize_t n;
-    Py_UCS4 *output;
+    Ty_ssize_t n;
+    Ty_UCS4 *output;
 
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
@@ -341,7 +341,7 @@ _io_StringIO_read_impl(stringio *self, Py_ssize_t size)
 
     /* Optimization for seek(0); read() */
     if (self->state == STATE_ACCUMULATING && self->pos == 0 && size == n) {
-        PyObject *result = make_intermediate(self);
+        TyObject *result = make_intermediate(self);
         self->pos = self->string_size;
         return result;
     }
@@ -349,19 +349,19 @@ _io_StringIO_read_impl(stringio *self, Py_ssize_t size)
     ENSURE_REALIZED(self);
     output = self->buf + self->pos;
     self->pos += size;
-    return PyUnicode_FromKindAndData(PyUnicode_4BYTE_KIND, output, size);
+    return TyUnicode_FromKindAndData(TyUnicode_4BYTE_KIND, output, size);
 }
 
 /* Internal helper, used by stringio_readline and stringio_iternext */
-static PyObject *
-_stringio_readline(stringio *self, Py_ssize_t limit)
+static TyObject *
+_stringio_readline(stringio *self, Ty_ssize_t limit)
 {
-    Py_UCS4 *start, *end, old_char;
-    Py_ssize_t len, consumed;
+    Ty_UCS4 *start, *end, old_char;
+    Ty_ssize_t len, consumed;
 
     /* In case of overseek, return the empty string */
     if (self->pos >= self->string_size)
-        return Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+        return Ty_GetConstant(Ty_CONSTANT_EMPTY_STR);
 
     start = self->buf + self->pos;
     if (limit < 0 || limit > self->string_size - self->pos)
@@ -372,20 +372,20 @@ _stringio_readline(stringio *self, Py_ssize_t limit)
     *end = '\0';
     len = _PyIO_find_line_ending(
         self->readtranslate, self->readuniversal, self->readnl,
-        PyUnicode_4BYTE_KIND, (char*)start, (char*)end, &consumed);
+        TyUnicode_4BYTE_KIND, (char*)start, (char*)end, &consumed);
     *end = old_char;
     /* If we haven't found any line ending, we just return everything
        (`consumed` is ignored). */
     if (len < 0)
         len = limit;
     self->pos += len;
-    return PyUnicode_FromKindAndData(PyUnicode_4BYTE_KIND, start, len);
+    return TyUnicode_FromKindAndData(TyUnicode_4BYTE_KIND, start, len);
 }
 
 /*[clinic input]
 @critical_section
 _io.StringIO.readline
-    size: Py_ssize_t(accept={int, NoneType}) = -1
+    size: Ty_ssize_t(accept={int, NoneType}) = -1
     /
 
 Read until newline or EOF.
@@ -393,8 +393,8 @@ Read until newline or EOF.
 Returns an empty string if EOF is hit immediately.
 [clinic start generated code]*/
 
-static PyObject *
-_io_StringIO_readline_impl(stringio *self, Py_ssize_t size)
+static TyObject *
+_io_StringIO_readline_impl(stringio *self, Ty_ssize_t size)
 /*[clinic end generated code: output=cabd6452f1b7e85d input=4d14b8495dea1d98]*/
 {
     CHECK_INITIALIZED(self);
@@ -404,28 +404,28 @@ _io_StringIO_readline_impl(stringio *self, Py_ssize_t size)
     return _stringio_readline(self, size);
 }
 
-static PyObject *
-stringio_iternext(PyObject *op)
+static TyObject *
+stringio_iternext(TyObject *op)
 {
-    PyObject *line;
+    TyObject *line;
     stringio *self = stringio_CAST(op);
 
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
     ENSURE_REALIZED(self);
 
-    if (Py_IS_TYPE(self, self->module_state->PyStringIO_Type)) {
+    if (Ty_IS_TYPE(self, self->module_state->PyStringIO_Type)) {
         /* Skip method call overhead for speed */
         line = _stringio_readline(self, -1);
     }
     else {
         /* XXX is subclassing StringIO really supported? */
-        line = PyObject_CallMethodNoArgs(op, &_Py_ID(readline));
-        if (line && !PyUnicode_Check(line)) {
-            PyErr_Format(PyExc_OSError,
+        line = PyObject_CallMethodNoArgs(op, &_Ty_ID(readline));
+        if (line && !TyUnicode_Check(line)) {
+            TyErr_Format(TyExc_OSError,
                          "readline() should have returned a str object, "
-                         "not '%.200s'", Py_TYPE(line)->tp_name);
-            Py_DECREF(line);
+                         "not '%.200s'", Ty_TYPE(line)->tp_name);
+            Ty_DECREF(line);
             return NULL;
         }
     }
@@ -433,9 +433,9 @@ stringio_iternext(PyObject *op)
     if (line == NULL)
         return NULL;
 
-    if (PyUnicode_GET_LENGTH(line) == 0) {
+    if (TyUnicode_GET_LENGTH(line) == 0) {
         /* Reached EOF */
-        Py_DECREF(line);
+        Ty_DECREF(line);
         return NULL;
     }
 
@@ -445,7 +445,7 @@ stringio_iternext(PyObject *op)
 /*[clinic input]
 @critical_section
 _io.StringIO.truncate
-    pos as size: Py_ssize_t(accept={int, NoneType}, c_default="((stringio *)self)->pos") = None
+    pos as size: Ty_ssize_t(accept={int, NoneType}, c_default="((stringio *)self)->pos") = None
     /
 
 Truncate size to pos.
@@ -455,15 +455,15 @@ returned by tell().  The current file position is unchanged.
 Returns the new absolute position.
 [clinic start generated code]*/
 
-static PyObject *
-_io_StringIO_truncate_impl(stringio *self, Py_ssize_t size)
+static TyObject *
+_io_StringIO_truncate_impl(stringio *self, Ty_ssize_t size)
 /*[clinic end generated code: output=eb3aef8e06701365 input=fa8a6c98bb2ba780]*/
 {
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
 
     if (size < 0) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "Negative size value %zd", size);
         return NULL;
     }
@@ -475,13 +475,13 @@ _io_StringIO_truncate_impl(stringio *self, Py_ssize_t size)
         self->string_size = size;
     }
 
-    return PyLong_FromSsize_t(size);
+    return TyLong_FromSsize_t(size);
 }
 
 /*[clinic input]
 @critical_section
 _io.StringIO.seek
-    pos: Py_ssize_t
+    pos: Ty_ssize_t
     whence: int = 0
     /
 
@@ -494,25 +494,25 @@ Seek to character offset pos relative to position indicated by whence:
 Returns the new absolute position.
 [clinic start generated code]*/
 
-static PyObject *
-_io_StringIO_seek_impl(stringio *self, Py_ssize_t pos, int whence)
+static TyObject *
+_io_StringIO_seek_impl(stringio *self, Ty_ssize_t pos, int whence)
 /*[clinic end generated code: output=e9e0ac9a8ae71c25 input=c75ced09343a00d7]*/
 {
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
 
     if (whence != 0 && whence != 1 && whence != 2) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "Invalid whence (%i, should be 0, 1 or 2)", whence);
         return NULL;
     }
     else if (pos < 0 && whence == 0) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "Negative seek position %zd", pos);
         return NULL;
     }
     else if (whence != 0 && pos != 0) {
-        PyErr_SetString(PyExc_OSError,
+        TyErr_SetString(TyExc_OSError,
                         "Can't do nonzero cur-relative seeks");
         return NULL;
     }
@@ -529,7 +529,7 @@ _io_StringIO_seek_impl(stringio *self, Py_ssize_t pos, int whence)
 
     self->pos = pos;
 
-    return PyLong_FromSsize_t(self->pos);
+    return TyLong_FromSsize_t(self->pos);
 }
 
 /*[clinic input]
@@ -544,25 +544,25 @@ Returns the number of characters written, which is always equal to
 the length of the string.
 [clinic start generated code]*/
 
-static PyObject *
-_io_StringIO_write_impl(stringio *self, PyObject *obj)
+static TyObject *
+_io_StringIO_write_impl(stringio *self, TyObject *obj)
 /*[clinic end generated code: output=d53b1d841d7db288 input=1561272c0da4651f]*/
 {
-    Py_ssize_t size;
+    Ty_ssize_t size;
 
     CHECK_INITIALIZED(self);
-    if (!PyUnicode_Check(obj)) {
-        PyErr_Format(PyExc_TypeError, "string argument expected, got '%s'",
-                     Py_TYPE(obj)->tp_name);
+    if (!TyUnicode_Check(obj)) {
+        TyErr_Format(TyExc_TypeError, "string argument expected, got '%s'",
+                     Ty_TYPE(obj)->tp_name);
         return NULL;
     }
     CHECK_CLOSED(self);
-    size = PyUnicode_GET_LENGTH(obj);
+    size = TyUnicode_GET_LENGTH(obj);
 
     if (size > 0 && write_str(self, obj) < 0)
         return NULL;
 
-    return PyLong_FromSsize_t(size);
+    return TyLong_FromSsize_t(size);
 }
 
 /*[clinic input]
@@ -577,7 +577,7 @@ will raise a ValueError.
 This method has no effect if the file is already closed.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO_close_impl(stringio *self)
 /*[clinic end generated code: output=04399355cbe518f1 input=305d19aa29cc40b9]*/
 {
@@ -587,55 +587,55 @@ _io_StringIO_close_impl(stringio *self)
         return NULL;
     PyUnicodeWriter_Discard(self->writer);
     self->writer = NULL;
-    Py_CLEAR(self->readnl);
-    Py_CLEAR(self->writenl);
-    Py_CLEAR(self->decoder);
+    Ty_CLEAR(self->readnl);
+    Ty_CLEAR(self->writenl);
+    Ty_CLEAR(self->decoder);
     Py_RETURN_NONE;
 }
 
 static int
-stringio_traverse(PyObject *op, visitproc visit, void *arg)
+stringio_traverse(TyObject *op, visitproc visit, void *arg)
 {
     stringio *self = stringio_CAST(op);
-    Py_VISIT(Py_TYPE(self));
-    Py_VISIT(self->readnl);
-    Py_VISIT(self->writenl);
-    Py_VISIT(self->decoder);
-    Py_VISIT(self->dict);
+    Ty_VISIT(Ty_TYPE(self));
+    Ty_VISIT(self->readnl);
+    Ty_VISIT(self->writenl);
+    Ty_VISIT(self->decoder);
+    Ty_VISIT(self->dict);
     return 0;
 }
 
 static int
-stringio_clear(PyObject *op)
+stringio_clear(TyObject *op)
 {
     stringio *self = stringio_CAST(op);
-    Py_CLEAR(self->readnl);
-    Py_CLEAR(self->writenl);
-    Py_CLEAR(self->decoder);
-    Py_CLEAR(self->dict);
+    Ty_CLEAR(self->readnl);
+    Ty_CLEAR(self->writenl);
+    Ty_CLEAR(self->decoder);
+    Ty_CLEAR(self->dict);
     return 0;
 }
 
 static void
-stringio_dealloc(PyObject *op)
+stringio_dealloc(TyObject *op)
 {
     stringio *self = stringio_CAST(op);
-    PyTypeObject *tp = Py_TYPE(self);
-    _PyObject_GC_UNTRACK(self);
+    TyTypeObject *tp = Ty_TYPE(self);
+    _TyObject_GC_UNTRACK(self);
     self->ok = 0;
     if (self->buf) {
-        PyMem_Free(self->buf);
+        TyMem_Free(self->buf);
         self->buf = NULL;
     }
     PyUnicodeWriter_Discard(self->writer);
     (void)stringio_clear(op);
     FT_CLEAR_WEAKREFS(op, self->weakreflist);
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
-static PyObject *
-stringio_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+static TyObject *
+stringio_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 {
     stringio *self;
 
@@ -647,13 +647,13 @@ stringio_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     /* tp_alloc initializes all the fields to zero. So we don't have to
        initialize them here. */
 
-    self->buf = (Py_UCS4 *)PyMem_Malloc(0);
+    self->buf = (Ty_UCS4 *)TyMem_Malloc(0);
     if (self->buf == NULL) {
-        Py_DECREF(self);
-        return PyErr_NoMemory();
+        Ty_DECREF(self);
+        return TyErr_NoMemory();
     }
 
-    return (PyObject *)self;
+    return (TyObject *)self;
 }
 
 /*[clinic input]
@@ -668,26 +668,26 @@ argument is like the one of TextIOWrapper's constructor.
 [clinic start generated code]*/
 
 static int
-_io_StringIO___init___impl(stringio *self, PyObject *value,
-                           PyObject *newline_obj)
+_io_StringIO___init___impl(stringio *self, TyObject *value,
+                           TyObject *newline_obj)
 /*[clinic end generated code: output=a421ea023b22ef4e input=cee2d9181b2577a3]*/
 {
     const char *newline = "\n";
-    Py_ssize_t value_len;
+    Ty_ssize_t value_len;
 
     /* Parse the newline argument. We only want to allow unicode objects or
        None. */
-    if (newline_obj == Py_None) {
+    if (newline_obj == Ty_None) {
         newline = NULL;
     }
     else if (newline_obj) {
-        if (!PyUnicode_Check(newline_obj)) {
-            PyErr_Format(PyExc_TypeError,
+        if (!TyUnicode_Check(newline_obj)) {
+            TyErr_Format(TyExc_TypeError,
                          "newline must be str or None, not %.200s",
-                         Py_TYPE(newline_obj)->tp_name);
+                         Ty_TYPE(newline_obj)->tp_name);
             return -1;
         }
-        newline = PyUnicode_AsUTF8(newline_obj);
+        newline = TyUnicode_AsUTF8(newline_obj);
         if (newline == NULL)
             return -1;
     }
@@ -696,14 +696,14 @@ _io_StringIO___init___impl(stringio *self, PyObject *value,
         && !(newline[0] == '\n' && newline[1] == '\0')
         && !(newline[0] == '\r' && newline[1] == '\0')
         && !(newline[0] == '\r' && newline[1] == '\n' && newline[2] == '\0')) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "illegal newline value: %R", newline_obj);
         return -1;
     }
-    if (value && value != Py_None && !PyUnicode_Check(value)) {
-        PyErr_Format(PyExc_TypeError,
+    if (value && value != Ty_None && !TyUnicode_Check(value)) {
+        TyErr_Format(TyExc_TypeError,
                      "initial_value must be str or None, not %.200s",
-                     Py_TYPE(value)->tp_name);
+                     Ty_TYPE(value)->tp_name);
         return -1;
     }
 
@@ -711,15 +711,15 @@ _io_StringIO___init___impl(stringio *self, PyObject *value,
 
     PyUnicodeWriter_Discard(self->writer);
     self->writer = NULL;
-    Py_CLEAR(self->readnl);
-    Py_CLEAR(self->writenl);
-    Py_CLEAR(self->decoder);
+    Ty_CLEAR(self->readnl);
+    Ty_CLEAR(self->writenl);
+    Ty_CLEAR(self->decoder);
 
-    assert((newline != NULL && newline_obj != Py_None) ||
-           (newline == NULL && newline_obj == Py_None));
+    assert((newline != NULL && newline_obj != Ty_None) ||
+           (newline == NULL && newline_obj == Ty_None));
 
     if (newline) {
-        self->readnl = PyUnicode_FromString(newline);
+        self->readnl = TyUnicode_FromString(newline);
         if (self->readnl == NULL)
             return -1;
     }
@@ -732,14 +732,14 @@ _io_StringIO___init___impl(stringio *self, PyObject *value,
        is pointless for StringIO)
     */
     if (newline != NULL && newline[0] == '\r') {
-        self->writenl = Py_NewRef(self->readnl);
+        self->writenl = Ty_NewRef(self->readnl);
     }
 
-    _PyIO_State *module_state = find_io_state_by_def(Py_TYPE(self));
+    _PyIO_State *module_state = find_io_state_by_def(Ty_TYPE(self));
     if (self->readuniversal) {
         self->decoder = PyObject_CallFunctionObjArgs(
-            (PyObject *)module_state->PyIncrementalNewlineDecoder_Type,
-            Py_None, self->readtranslate ? Py_True : Py_False, NULL);
+            (TyObject *)module_state->PyIncrementalNewlineDecoder_Type,
+            Ty_None, self->readtranslate ? Ty_True : Ty_False, NULL);
         if (self->decoder == NULL)
             return -1;
     }
@@ -747,8 +747,8 @@ _io_StringIO___init___impl(stringio *self, PyObject *value,
     /* Now everything is set up, resize buffer to size of initial value,
        and copy it */
     self->string_size = 0;
-    if (value && value != Py_None)
-        value_len = PyUnicode_GetLength(value);
+    if (value && value != Ty_None)
+        value_len = TyUnicode_GetLength(value);
     else
         value_len = 0;
     if (value_len > 0) {
@@ -787,7 +787,7 @@ _io.StringIO.readable
 Returns True if the IO object can be read.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO_readable_impl(stringio *self)
 /*[clinic end generated code: output=b19d44dd8b1ceb99 input=6cd2ffd65a8e8763]*/
 {
@@ -803,7 +803,7 @@ _io.StringIO.writable
 Returns True if the IO object can be written.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO_writable_impl(stringio *self)
 /*[clinic end generated code: output=13e4dd77187074ca input=1b3c63dbaa761c69]*/
 {
@@ -819,7 +819,7 @@ _io.StringIO.seekable
 Returns True if the IO object can be seeked.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO_seekable_impl(stringio *self)
 /*[clinic end generated code: output=4d20b4641c756879 input=a820fad2cf085fc3]*/
 {
@@ -846,31 +846,31 @@ _io.StringIO.__getstate__
 
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO___getstate___impl(stringio *self)
 /*[clinic end generated code: output=780be4a996410199 input=76f27255ef83bb92]*/
 {
-    PyObject *initvalue = _io_StringIO_getvalue_impl(self);
-    PyObject *dict;
-    PyObject *state;
+    TyObject *initvalue = _io_StringIO_getvalue_impl(self);
+    TyObject *dict;
+    TyObject *state;
 
     if (initvalue == NULL)
         return NULL;
     if (self->dict == NULL) {
-        dict = Py_NewRef(Py_None);
+        dict = Ty_NewRef(Ty_None);
     }
     else {
-        dict = PyDict_Copy(self->dict);
+        dict = TyDict_Copy(self->dict);
         if (dict == NULL) {
-            Py_DECREF(initvalue);
+            Ty_DECREF(initvalue);
             return NULL;
         }
     }
 
-    state = Py_BuildValue("(OOnN)", initvalue,
-                          self->readnl ? self->readnl : Py_None,
+    state = Ty_BuildValue("(OOnN)", initvalue,
+                          self->readnl ? self->readnl : Ty_None,
                           self->pos, dict);
-    Py_DECREF(initvalue);
+    Ty_DECREF(initvalue);
     return state;
 }
 
@@ -882,14 +882,14 @@ _io.StringIO.__setstate__
     /
 [clinic start generated code]*/
 
-static PyObject *
-_io_StringIO___setstate___impl(stringio *self, PyObject *state)
+static TyObject *
+_io_StringIO___setstate___impl(stringio *self, TyObject *state)
 /*[clinic end generated code: output=cb3962bc6d5c5609 input=8a27784b11b82e47]*/
 {
-    PyObject *initarg;
-    PyObject *position_obj;
-    PyObject *dict;
-    Py_ssize_t pos;
+    TyObject *initarg;
+    TyObject *position_obj;
+    TyObject *dict;
+    Ty_ssize_t pos;
 
     assert(state != NULL);
     CHECK_CLOSED(self);
@@ -897,22 +897,22 @@ _io_StringIO___setstate___impl(stringio *self, PyObject *state)
     /* We allow the state tuple to be longer than 4, because we may need
        someday to extend the object's state without breaking
        backward-compatibility. */
-    if (!PyTuple_Check(state) || PyTuple_GET_SIZE(state) < 4) {
-        PyErr_Format(PyExc_TypeError,
+    if (!TyTuple_Check(state) || TyTuple_GET_SIZE(state) < 4) {
+        TyErr_Format(TyExc_TypeError,
                      "%.200s.__setstate__ argument should be 4-tuple, got %.200s",
-                     Py_TYPE(self)->tp_name, Py_TYPE(state)->tp_name);
+                     Ty_TYPE(self)->tp_name, Ty_TYPE(state)->tp_name);
         return NULL;
     }
 
     /* Initialize the object's state. */
-    initarg = PyTuple_GetSlice(state, 0, 2);
+    initarg = TyTuple_GetSlice(state, 0, 2);
     if (initarg == NULL)
         return NULL;
-    if (_io_StringIO___init__((PyObject *)self, initarg, NULL) < 0) {
-        Py_DECREF(initarg);
+    if (_io_StringIO___init__((TyObject *)self, initarg, NULL) < 0) {
+        Ty_DECREF(initarg);
         return NULL;
     }
-    Py_DECREF(initarg);
+    Ty_DECREF(initarg);
 
     /* Restore the buffer state. Even if __init__ did initialize the buffer,
        we have to initialize it again since __init__ may translate the
@@ -921,23 +921,23 @@ _io_StringIO___setstate___impl(stringio *self, PyObject *state)
        once by __init__. So we do not take any chance and replace object's
        buffer completely. */
     {
-        PyObject *item = PyTuple_GET_ITEM(state, 0);
-        if (PyUnicode_Check(item)) {
-            Py_UCS4 *buf = PyUnicode_AsUCS4Copy(item);
+        TyObject *item = TyTuple_GET_ITEM(state, 0);
+        if (TyUnicode_Check(item)) {
+            Ty_UCS4 *buf = TyUnicode_AsUCS4Copy(item);
             if (buf == NULL)
                 return NULL;
-            Py_ssize_t bufsize = PyUnicode_GET_LENGTH(item);
+            Ty_ssize_t bufsize = TyUnicode_GET_LENGTH(item);
 
             if (resize_buffer(self, bufsize) < 0) {
-                PyMem_Free(buf);
+                TyMem_Free(buf);
                 return NULL;
             }
-            memcpy(self->buf, buf, bufsize * sizeof(Py_UCS4));
-            PyMem_Free(buf);
+            memcpy(self->buf, buf, bufsize * sizeof(Ty_UCS4));
+            TyMem_Free(buf);
             self->string_size = bufsize;
         }
         else {
-            assert(item == Py_None);
+            assert(item == Ty_None);
             self->string_size = 0;
         }
     }
@@ -945,40 +945,40 @@ _io_StringIO___setstate___impl(stringio *self, PyObject *state)
     /* Set carefully the position value. Alternatively, we could use the seek
        method instead of modifying self->pos directly to better protect the
        object internal state against erroneous (or malicious) inputs. */
-    position_obj = PyTuple_GET_ITEM(state, 2);
-    if (!PyLong_Check(position_obj)) {
-        PyErr_Format(PyExc_TypeError,
+    position_obj = TyTuple_GET_ITEM(state, 2);
+    if (!TyLong_Check(position_obj)) {
+        TyErr_Format(TyExc_TypeError,
                      "third item of state must be an integer, got %.200s",
-                     Py_TYPE(position_obj)->tp_name);
+                     Ty_TYPE(position_obj)->tp_name);
         return NULL;
     }
-    pos = PyLong_AsSsize_t(position_obj);
-    if (pos == -1 && PyErr_Occurred())
+    pos = TyLong_AsSsize_t(position_obj);
+    if (pos == -1 && TyErr_Occurred())
         return NULL;
     if (pos < 0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "position value cannot be negative");
         return NULL;
     }
     self->pos = pos;
 
     /* Set the dictionary of the instance variables. */
-    dict = PyTuple_GET_ITEM(state, 3);
-    if (dict != Py_None) {
-        if (!PyDict_Check(dict)) {
-            PyErr_Format(PyExc_TypeError,
+    dict = TyTuple_GET_ITEM(state, 3);
+    if (dict != Ty_None) {
+        if (!TyDict_Check(dict)) {
+            TyErr_Format(TyExc_TypeError,
                          "fourth item of state should be a dict, got a %.200s",
-                         Py_TYPE(dict)->tp_name);
+                         Ty_TYPE(dict)->tp_name);
             return NULL;
         }
         if (self->dict) {
             /* Alternatively, we could replace the internal dictionary
                completely. However, it seems more practical to just update it. */
-            if (PyDict_Update(self->dict, dict) < 0)
+            if (TyDict_Update(self->dict, dict) < 0)
                 return NULL;
         }
         else {
-            self->dict = Py_NewRef(dict);
+            self->dict = Ty_NewRef(dict);
         }
     }
 
@@ -991,12 +991,12 @@ _io_StringIO___setstate___impl(stringio *self, PyObject *state)
 _io.StringIO.closed
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO_closed_get_impl(stringio *self)
 /*[clinic end generated code: output=531ddca7954331d6 input=178d2ef24395fd49]*/
 {
     CHECK_INITIALIZED(self);
-    return PyBool_FromLong(self->closed);
+    return TyBool_FromLong(self->closed);
 }
 
 /*[clinic input]
@@ -1005,7 +1005,7 @@ _io_StringIO_closed_get_impl(stringio *self)
 _io.StringIO.line_buffering
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO_line_buffering_get_impl(stringio *self)
 /*[clinic end generated code: output=360710e0112966ae input=6a7634e7f890745e]*/
 {
@@ -1020,7 +1020,7 @@ _io_StringIO_line_buffering_get_impl(stringio *self)
 _io.StringIO.newlines
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _io_StringIO_newlines_get_impl(stringio *self)
 /*[clinic end generated code: output=35d7c0b66d7e0160 input=092a14586718244b]*/
 {
@@ -1029,10 +1029,10 @@ _io_StringIO_newlines_get_impl(stringio *self)
     if (self->decoder == NULL) {
         Py_RETURN_NONE;
     }
-    return PyObject_GetAttr(self->decoder, &_Py_ID(newlines));
+    return PyObject_GetAttr(self->decoder, &_Ty_ID(newlines));
 }
 
-static struct PyMethodDef stringio_methods[] = {
+static struct TyMethodDef stringio_methods[] = {
     _IO_STRINGIO_CLOSE_METHODDEF
     _IO_STRINGIO_GETVALUE_METHODDEF
     _IO_STRINGIO_READ_METHODDEF
@@ -1051,7 +1051,7 @@ static struct PyMethodDef stringio_methods[] = {
     {NULL, NULL}        /* sentinel */
 };
 
-static PyGetSetDef stringio_getset[] = {
+static TyGetSetDef stringio_getset[] = {
     _IO_STRINGIO_CLOSED_GETSETDEF
     _IO_STRINGIO_NEWLINES_GETSETDEF
     /*  (following comments straight off of the original Python wrapper:)
@@ -1064,30 +1064,30 @@ static PyGetSetDef stringio_getset[] = {
     {NULL}
 };
 
-static struct PyMemberDef stringio_members[] = {
-    {"__weaklistoffset__", Py_T_PYSSIZET, offsetof(stringio, weakreflist), Py_READONLY},
-    {"__dictoffset__", Py_T_PYSSIZET, offsetof(stringio, dict), Py_READONLY},
+static struct TyMemberDef stringio_members[] = {
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(stringio, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(stringio, dict), Py_READONLY},
     {NULL},
 };
 
-static PyType_Slot stringio_slots[] = {
-    {Py_tp_dealloc, stringio_dealloc},
-    {Py_tp_doc, (void *)_io_StringIO___init____doc__},
-    {Py_tp_traverse, stringio_traverse},
-    {Py_tp_clear, stringio_clear},
-    {Py_tp_iternext, stringio_iternext},
-    {Py_tp_methods, stringio_methods},
-    {Py_tp_members, stringio_members},
-    {Py_tp_getset, stringio_getset},
-    {Py_tp_init, _io_StringIO___init__},
-    {Py_tp_new, stringio_new},
+static TyType_Slot stringio_slots[] = {
+    {Ty_tp_dealloc, stringio_dealloc},
+    {Ty_tp_doc, (void *)_io_StringIO___init____doc__},
+    {Ty_tp_traverse, stringio_traverse},
+    {Ty_tp_clear, stringio_clear},
+    {Ty_tp_iternext, stringio_iternext},
+    {Ty_tp_methods, stringio_methods},
+    {Ty_tp_members, stringio_members},
+    {Ty_tp_getset, stringio_getset},
+    {Ty_tp_init, _io_StringIO___init__},
+    {Ty_tp_new, stringio_new},
     {0, NULL},
 };
 
-PyType_Spec stringio_spec = {
+TyType_Spec stringio_spec = {
     .name = "_io.StringIO",
     .basicsize = sizeof(stringio),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC |
-              Py_TPFLAGS_IMMUTABLETYPE),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC |
+              Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = stringio_slots,
 };

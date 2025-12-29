@@ -33,20 +33,20 @@ typedef struct
 {
     PyObject_HEAD
     pysqlite_Connection* connection;
-    PyObject* description;
-    PyObject* row_cast_map;
+    TyObject* description;
+    TyObject* row_cast_map;
     int arraysize;
-    PyObject* lastrowid;
+    TyObject* lastrowid;
     long rowcount;
-    PyObject* row_factory;
+    TyObject* row_factory;
     pysqlite_Statement* statement;
     int closed;
     int locked;
     int initialized;
 
-    PyObject* in_weakreflist; /* List of weak references */
+    TyObject* in_weakreflist; /* List of weak references */
 } pysqlite_Cursor;
 
-int pysqlite_cursor_setup_types(PyObject *module);
+int pysqlite_cursor_setup_types(TyObject *module);
 
 #endif

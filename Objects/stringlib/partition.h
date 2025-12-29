@@ -9,21 +9,21 @@
 #endif
 
 
-Py_LOCAL_INLINE(PyObject*)
-STRINGLIB(partition)(PyObject* str_obj,
-                    const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                    PyObject* sep_obj,
-                    const STRINGLIB_CHAR* sep, Py_ssize_t sep_len)
+Ty_LOCAL_INLINE(TyObject*)
+STRINGLIB(partition)(TyObject* str_obj,
+                    const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                    TyObject* sep_obj,
+                    const STRINGLIB_CHAR* sep, Ty_ssize_t sep_len)
 {
-    PyObject* out;
-    Py_ssize_t pos;
+    TyObject* out;
+    Ty_ssize_t pos;
 
     if (sep_len == 0) {
-        PyErr_SetString(PyExc_ValueError, "empty separator");
+        TyErr_SetString(TyExc_ValueError, "empty separator");
         return NULL;
     }
 
-    out = PyTuple_New(3);
+    out = TyTuple_New(3);
     if (!out)
         return NULL;
 
@@ -31,56 +31,56 @@ STRINGLIB(partition)(PyObject* str_obj,
 
     if (pos < 0) {
 #if STRINGLIB_MUTABLE
-        PyTuple_SET_ITEM(out, 0, STRINGLIB_NEW(str, str_len));
-        PyTuple_SET_ITEM(out, 1, STRINGLIB_NEW(NULL, 0));
-        PyTuple_SET_ITEM(out, 2, STRINGLIB_NEW(NULL, 0));
+        TyTuple_SET_ITEM(out, 0, STRINGLIB_NEW(str, str_len));
+        TyTuple_SET_ITEM(out, 1, STRINGLIB_NEW(NULL, 0));
+        TyTuple_SET_ITEM(out, 2, STRINGLIB_NEW(NULL, 0));
 
-        if (PyErr_Occurred()) {
-            Py_DECREF(out);
+        if (TyErr_Occurred()) {
+            Ty_DECREF(out);
             return NULL;
         }
 #else
-        Py_INCREF(str_obj);
-        PyTuple_SET_ITEM(out, 0, (PyObject*) str_obj);
-        PyObject *empty = (PyObject*)STRINGLIB_GET_EMPTY();
+        Ty_INCREF(str_obj);
+        TyTuple_SET_ITEM(out, 0, (TyObject*) str_obj);
+        TyObject *empty = (TyObject*)STRINGLIB_GET_EMPTY();
         assert(empty != NULL);
-        Py_INCREF(empty);
-        PyTuple_SET_ITEM(out, 1, empty);
-        Py_INCREF(empty);
-        PyTuple_SET_ITEM(out, 2, empty);
+        Ty_INCREF(empty);
+        TyTuple_SET_ITEM(out, 1, empty);
+        Ty_INCREF(empty);
+        TyTuple_SET_ITEM(out, 2, empty);
 #endif
         return out;
     }
 
-    PyTuple_SET_ITEM(out, 0, STRINGLIB_NEW(str, pos));
-    Py_INCREF(sep_obj);
-    PyTuple_SET_ITEM(out, 1, sep_obj);
+    TyTuple_SET_ITEM(out, 0, STRINGLIB_NEW(str, pos));
+    Ty_INCREF(sep_obj);
+    TyTuple_SET_ITEM(out, 1, sep_obj);
     pos += sep_len;
-    PyTuple_SET_ITEM(out, 2, STRINGLIB_NEW(str + pos, str_len - pos));
+    TyTuple_SET_ITEM(out, 2, STRINGLIB_NEW(str + pos, str_len - pos));
 
-    if (PyErr_Occurred()) {
-        Py_DECREF(out);
+    if (TyErr_Occurred()) {
+        Ty_DECREF(out);
         return NULL;
     }
 
     return out;
 }
 
-Py_LOCAL_INLINE(PyObject*)
-STRINGLIB(rpartition)(PyObject* str_obj,
-                     const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                     PyObject* sep_obj,
-                     const STRINGLIB_CHAR* sep, Py_ssize_t sep_len)
+Ty_LOCAL_INLINE(TyObject*)
+STRINGLIB(rpartition)(TyObject* str_obj,
+                     const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                     TyObject* sep_obj,
+                     const STRINGLIB_CHAR* sep, Ty_ssize_t sep_len)
 {
-    PyObject* out;
-    Py_ssize_t pos;
+    TyObject* out;
+    Ty_ssize_t pos;
 
     if (sep_len == 0) {
-        PyErr_SetString(PyExc_ValueError, "empty separator");
+        TyErr_SetString(TyExc_ValueError, "empty separator");
         return NULL;
     }
 
-    out = PyTuple_New(3);
+    out = TyTuple_New(3);
     if (!out)
         return NULL;
 
@@ -88,35 +88,35 @@ STRINGLIB(rpartition)(PyObject* str_obj,
 
     if (pos < 0) {
 #if STRINGLIB_MUTABLE
-        PyTuple_SET_ITEM(out, 0, STRINGLIB_NEW(NULL, 0));
-        PyTuple_SET_ITEM(out, 1, STRINGLIB_NEW(NULL, 0));
-        PyTuple_SET_ITEM(out, 2, STRINGLIB_NEW(str, str_len));
+        TyTuple_SET_ITEM(out, 0, STRINGLIB_NEW(NULL, 0));
+        TyTuple_SET_ITEM(out, 1, STRINGLIB_NEW(NULL, 0));
+        TyTuple_SET_ITEM(out, 2, STRINGLIB_NEW(str, str_len));
 
-        if (PyErr_Occurred()) {
-            Py_DECREF(out);
+        if (TyErr_Occurred()) {
+            Ty_DECREF(out);
             return NULL;
         }
 #else
-        PyObject *empty = (PyObject*)STRINGLIB_GET_EMPTY();
+        TyObject *empty = (TyObject*)STRINGLIB_GET_EMPTY();
         assert(empty != NULL);
-        Py_INCREF(empty);
-        PyTuple_SET_ITEM(out, 0, empty);
-        Py_INCREF(empty);
-        PyTuple_SET_ITEM(out, 1, empty);
-        Py_INCREF(str_obj);
-        PyTuple_SET_ITEM(out, 2, (PyObject*) str_obj);
+        Ty_INCREF(empty);
+        TyTuple_SET_ITEM(out, 0, empty);
+        Ty_INCREF(empty);
+        TyTuple_SET_ITEM(out, 1, empty);
+        Ty_INCREF(str_obj);
+        TyTuple_SET_ITEM(out, 2, (TyObject*) str_obj);
 #endif
         return out;
     }
 
-    PyTuple_SET_ITEM(out, 0, STRINGLIB_NEW(str, pos));
-    Py_INCREF(sep_obj);
-    PyTuple_SET_ITEM(out, 1, sep_obj);
+    TyTuple_SET_ITEM(out, 0, STRINGLIB_NEW(str, pos));
+    Ty_INCREF(sep_obj);
+    TyTuple_SET_ITEM(out, 1, sep_obj);
     pos += sep_len;
-    PyTuple_SET_ITEM(out, 2, STRINGLIB_NEW(str + pos, str_len - pos));
+    TyTuple_SET_ITEM(out, 2, STRINGLIB_NEW(str + pos, str_len - pos));
 
-    if (PyErr_Occurred()) {
-        Py_DECREF(out);
+    if (TyErr_Occurred()) {
+        Ty_DECREF(out);
         return NULL;
     }
 

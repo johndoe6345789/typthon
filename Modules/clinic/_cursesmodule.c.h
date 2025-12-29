@@ -2,13 +2,13 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_curses_window_addch__doc__,
+TyDoc_STRVAR(_curses_window_addch__doc__,
 "addch([y, x,] ch, [attr=_curses.A_NORMAL])\n"
 "Paint the character.\n"
 "\n"
@@ -29,49 +29,49 @@ PyDoc_STRVAR(_curses_window_addch__doc__,
 #define _CURSES_WINDOW_ADDCH_METHODDEF    \
     {"addch", (PyCFunction)_curses_window_addch, METH_VARARGS, _curses_window_addch__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_addch_impl(PyCursesWindowObject *self, int group_left_1,
-                          int y, int x, PyObject *ch, int group_right_1,
+                          int y, int x, TyObject *ch, int group_right_1,
                           long attr);
 
-static PyObject *
-_curses_window_addch(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_addch(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int y = 0;
     int x = 0;
-    PyObject *ch;
+    TyObject *ch;
     int group_right_1 = 0;
     long attr = A_NORMAL;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 1:
-            if (!PyArg_ParseTuple(args, "O:addch", &ch)) {
+            if (!TyArg_ParseTuple(args, "O:addch", &ch)) {
                 goto exit;
             }
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "Ol:addch", &ch, &attr)) {
+            if (!TyArg_ParseTuple(args, "Ol:addch", &ch, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "iiO:addch", &y, &x, &ch)) {
+            if (!TyArg_ParseTuple(args, "iiO:addch", &y, &x, &ch)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiOl:addch", &y, &x, &ch, &attr)) {
+            if (!TyArg_ParseTuple(args, "iiOl:addch", &y, &x, &ch, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.addch requires 1 to 4 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.addch requires 1 to 4 arguments");
             goto exit;
     }
     return_value = _curses_window_addch_impl((PyCursesWindowObject *)self, group_left_1, y, x, ch, group_right_1, attr);
@@ -80,7 +80,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_addstr__doc__,
+TyDoc_STRVAR(_curses_window_addstr__doc__,
 "addstr([y, x,] str, [attr])\n"
 "Paint the string.\n"
 "\n"
@@ -101,49 +101,49 @@ PyDoc_STRVAR(_curses_window_addstr__doc__,
 #define _CURSES_WINDOW_ADDSTR_METHODDEF    \
     {"addstr", (PyCFunction)_curses_window_addstr, METH_VARARGS, _curses_window_addstr__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_addstr_impl(PyCursesWindowObject *self, int group_left_1,
-                           int y, int x, PyObject *str, int group_right_1,
+                           int y, int x, TyObject *str, int group_right_1,
                            long attr);
 
-static PyObject *
-_curses_window_addstr(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_addstr(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int y = 0;
     int x = 0;
-    PyObject *str;
+    TyObject *str;
     int group_right_1 = 0;
     long attr = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 1:
-            if (!PyArg_ParseTuple(args, "O:addstr", &str)) {
+            if (!TyArg_ParseTuple(args, "O:addstr", &str)) {
                 goto exit;
             }
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "Ol:addstr", &str, &attr)) {
+            if (!TyArg_ParseTuple(args, "Ol:addstr", &str, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "iiO:addstr", &y, &x, &str)) {
+            if (!TyArg_ParseTuple(args, "iiO:addstr", &y, &x, &str)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiOl:addstr", &y, &x, &str, &attr)) {
+            if (!TyArg_ParseTuple(args, "iiOl:addstr", &y, &x, &str, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.addstr requires 1 to 4 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.addstr requires 1 to 4 arguments");
             goto exit;
     }
     return_value = _curses_window_addstr_impl((PyCursesWindowObject *)self, group_left_1, y, x, str, group_right_1, attr);
@@ -152,7 +152,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_addnstr__doc__,
+TyDoc_STRVAR(_curses_window_addnstr__doc__,
 "addnstr([y, x,] str, n, [attr])\n"
 "Paint at most n characters of the string.\n"
 "\n"
@@ -175,50 +175,50 @@ PyDoc_STRVAR(_curses_window_addnstr__doc__,
 #define _CURSES_WINDOW_ADDNSTR_METHODDEF    \
     {"addnstr", (PyCFunction)_curses_window_addnstr, METH_VARARGS, _curses_window_addnstr__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_addnstr_impl(PyCursesWindowObject *self, int group_left_1,
-                            int y, int x, PyObject *str, int n,
+                            int y, int x, TyObject *str, int n,
                             int group_right_1, long attr);
 
-static PyObject *
-_curses_window_addnstr(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_addnstr(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int y = 0;
     int x = 0;
-    PyObject *str;
+    TyObject *str;
     int n;
     int group_right_1 = 0;
     long attr = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 2:
-            if (!PyArg_ParseTuple(args, "Oi:addnstr", &str, &n)) {
+            if (!TyArg_ParseTuple(args, "Oi:addnstr", &str, &n)) {
                 goto exit;
             }
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "Oil:addnstr", &str, &n, &attr)) {
+            if (!TyArg_ParseTuple(args, "Oil:addnstr", &str, &n, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiOi:addnstr", &y, &x, &str, &n)) {
+            if (!TyArg_ParseTuple(args, "iiOi:addnstr", &y, &x, &str, &n)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         case 5:
-            if (!PyArg_ParseTuple(args, "iiOil:addnstr", &y, &x, &str, &n, &attr)) {
+            if (!TyArg_ParseTuple(args, "iiOil:addnstr", &y, &x, &str, &n, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.addnstr requires 2 to 5 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.addnstr requires 2 to 5 arguments");
             goto exit;
     }
     return_value = _curses_window_addnstr_impl((PyCursesWindowObject *)self, group_left_1, y, x, str, n, group_right_1, attr);
@@ -227,7 +227,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_bkgd__doc__,
+TyDoc_STRVAR(_curses_window_bkgd__doc__,
 "bkgd($self, ch, attr=_curses.A_NORMAL, /)\n"
 "--\n"
 "\n"
@@ -241,25 +241,25 @@ PyDoc_STRVAR(_curses_window_bkgd__doc__,
 #define _CURSES_WINDOW_BKGD_METHODDEF    \
     {"bkgd", _PyCFunction_CAST(_curses_window_bkgd), METH_FASTCALL, _curses_window_bkgd__doc__},
 
-static PyObject *
-_curses_window_bkgd_impl(PyCursesWindowObject *self, PyObject *ch, long attr);
+static TyObject *
+_curses_window_bkgd_impl(PyCursesWindowObject *self, TyObject *ch, long attr);
 
-static PyObject *
-_curses_window_bkgd(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_window_bkgd(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *ch;
+    TyObject *return_value = NULL;
+    TyObject *ch;
     long attr = A_NORMAL;
 
-    if (!_PyArg_CheckPositional("bkgd", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("bkgd", nargs, 1, 2)) {
         goto exit;
     }
     ch = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    attr = PyLong_AsLong(args[1]);
-    if (attr == -1 && PyErr_Occurred()) {
+    attr = TyLong_AsLong(args[1]);
+    if (attr == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -269,7 +269,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_attroff__doc__,
+TyDoc_STRVAR(_curses_window_attroff__doc__,
 "attroff($self, attr, /)\n"
 "--\n"
 "\n"
@@ -278,17 +278,17 @@ PyDoc_STRVAR(_curses_window_attroff__doc__,
 #define _CURSES_WINDOW_ATTROFF_METHODDEF    \
     {"attroff", (PyCFunction)_curses_window_attroff, METH_O, _curses_window_attroff__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_attroff_impl(PyCursesWindowObject *self, long attr);
 
-static PyObject *
-_curses_window_attroff(PyObject *self, PyObject *arg)
+static TyObject *
+_curses_window_attroff(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     long attr;
 
-    attr = PyLong_AsLong(arg);
-    if (attr == -1 && PyErr_Occurred()) {
+    attr = TyLong_AsLong(arg);
+    if (attr == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_window_attroff_impl((PyCursesWindowObject *)self, attr);
@@ -297,7 +297,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_attron__doc__,
+TyDoc_STRVAR(_curses_window_attron__doc__,
 "attron($self, attr, /)\n"
 "--\n"
 "\n"
@@ -306,17 +306,17 @@ PyDoc_STRVAR(_curses_window_attron__doc__,
 #define _CURSES_WINDOW_ATTRON_METHODDEF    \
     {"attron", (PyCFunction)_curses_window_attron, METH_O, _curses_window_attron__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_attron_impl(PyCursesWindowObject *self, long attr);
 
-static PyObject *
-_curses_window_attron(PyObject *self, PyObject *arg)
+static TyObject *
+_curses_window_attron(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     long attr;
 
-    attr = PyLong_AsLong(arg);
-    if (attr == -1 && PyErr_Occurred()) {
+    attr = TyLong_AsLong(arg);
+    if (attr == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_window_attron_impl((PyCursesWindowObject *)self, attr);
@@ -325,7 +325,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_attrset__doc__,
+TyDoc_STRVAR(_curses_window_attrset__doc__,
 "attrset($self, attr, /)\n"
 "--\n"
 "\n"
@@ -334,17 +334,17 @@ PyDoc_STRVAR(_curses_window_attrset__doc__,
 #define _CURSES_WINDOW_ATTRSET_METHODDEF    \
     {"attrset", (PyCFunction)_curses_window_attrset, METH_O, _curses_window_attrset__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_attrset_impl(PyCursesWindowObject *self, long attr);
 
-static PyObject *
-_curses_window_attrset(PyObject *self, PyObject *arg)
+static TyObject *
+_curses_window_attrset(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     long attr;
 
-    attr = PyLong_AsLong(arg);
-    if (attr == -1 && PyErr_Occurred()) {
+    attr = TyLong_AsLong(arg);
+    if (attr == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_window_attrset_impl((PyCursesWindowObject *)self, attr);
@@ -353,7 +353,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_bkgdset__doc__,
+TyDoc_STRVAR(_curses_window_bkgdset__doc__,
 "bkgdset($self, ch, attr=_curses.A_NORMAL, /)\n"
 "--\n"
 "\n"
@@ -367,26 +367,26 @@ PyDoc_STRVAR(_curses_window_bkgdset__doc__,
 #define _CURSES_WINDOW_BKGDSET_METHODDEF    \
     {"bkgdset", _PyCFunction_CAST(_curses_window_bkgdset), METH_FASTCALL, _curses_window_bkgdset__doc__},
 
-static PyObject *
-_curses_window_bkgdset_impl(PyCursesWindowObject *self, PyObject *ch,
+static TyObject *
+_curses_window_bkgdset_impl(PyCursesWindowObject *self, TyObject *ch,
                             long attr);
 
-static PyObject *
-_curses_window_bkgdset(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_window_bkgdset(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *ch;
+    TyObject *return_value = NULL;
+    TyObject *ch;
     long attr = A_NORMAL;
 
-    if (!_PyArg_CheckPositional("bkgdset", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("bkgdset", nargs, 1, 2)) {
         goto exit;
     }
     ch = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    attr = PyLong_AsLong(args[1]);
-    if (attr == -1 && PyErr_Occurred()) {
+    attr = TyLong_AsLong(args[1]);
+    if (attr == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -396,7 +396,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_border__doc__,
+TyDoc_STRVAR(_curses_window_border__doc__,
 "border($self, ls=_curses.ACS_VLINE, rs=_curses.ACS_VLINE,\n"
 "       ts=_curses.ACS_HLINE, bs=_curses.ACS_HLINE,\n"
 "       tl=_curses.ACS_ULCORNER, tr=_curses.ACS_URCORNER,\n"
@@ -430,26 +430,26 @@ PyDoc_STRVAR(_curses_window_border__doc__,
 #define _CURSES_WINDOW_BORDER_METHODDEF    \
     {"border", _PyCFunction_CAST(_curses_window_border), METH_FASTCALL, _curses_window_border__doc__},
 
-static PyObject *
-_curses_window_border_impl(PyCursesWindowObject *self, PyObject *ls,
-                           PyObject *rs, PyObject *ts, PyObject *bs,
-                           PyObject *tl, PyObject *tr, PyObject *bl,
-                           PyObject *br);
+static TyObject *
+_curses_window_border_impl(PyCursesWindowObject *self, TyObject *ls,
+                           TyObject *rs, TyObject *ts, TyObject *bs,
+                           TyObject *tl, TyObject *tr, TyObject *bl,
+                           TyObject *br);
 
-static PyObject *
-_curses_window_border(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_window_border(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *ls = NULL;
-    PyObject *rs = NULL;
-    PyObject *ts = NULL;
-    PyObject *bs = NULL;
-    PyObject *tl = NULL;
-    PyObject *tr = NULL;
-    PyObject *bl = NULL;
-    PyObject *br = NULL;
+    TyObject *return_value = NULL;
+    TyObject *ls = NULL;
+    TyObject *rs = NULL;
+    TyObject *ts = NULL;
+    TyObject *bs = NULL;
+    TyObject *tl = NULL;
+    TyObject *tr = NULL;
+    TyObject *bl = NULL;
+    TyObject *br = NULL;
 
-    if (!_PyArg_CheckPositional("border", nargs, 0, 8)) {
+    if (!_TyArg_CheckPositional("border", nargs, 0, 8)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -491,7 +491,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_box__doc__,
+TyDoc_STRVAR(_curses_window_box__doc__,
 "box([verch=0, horch=0])\n"
 "Draw a border around the edges of the window.\n"
 "\n"
@@ -506,29 +506,29 @@ PyDoc_STRVAR(_curses_window_box__doc__,
 #define _CURSES_WINDOW_BOX_METHODDEF    \
     {"box", (PyCFunction)_curses_window_box, METH_VARARGS, _curses_window_box__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_box_impl(PyCursesWindowObject *self, int group_right_1,
-                        PyObject *verch, PyObject *horch);
+                        TyObject *verch, TyObject *horch);
 
-static PyObject *
-_curses_window_box(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_box(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_right_1 = 0;
-    PyObject *verch = _PyLong_GetZero();
-    PyObject *horch = _PyLong_GetZero();
+    TyObject *verch = _TyLong_GetZero();
+    TyObject *horch = _TyLong_GetZero();
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 0:
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "OO:box", &verch, &horch)) {
+            if (!TyArg_ParseTuple(args, "OO:box", &verch, &horch)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.box requires 0 to 2 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.box requires 0 to 2 arguments");
             goto exit;
     }
     return_value = _curses_window_box_impl((PyCursesWindowObject *)self, group_right_1, verch, horch);
@@ -537,7 +537,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_delch__doc__,
+TyDoc_STRVAR(_curses_window_delch__doc__,
 "delch([y, x])\n"
 "Delete any character at (y, x).\n"
 "\n"
@@ -549,29 +549,29 @@ PyDoc_STRVAR(_curses_window_delch__doc__,
 #define _CURSES_WINDOW_DELCH_METHODDEF    \
     {"delch", (PyCFunction)_curses_window_delch, METH_VARARGS, _curses_window_delch__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_delch_impl(PyCursesWindowObject *self, int group_right_1,
                           int y, int x);
 
-static PyObject *
-_curses_window_delch(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_delch(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_right_1 = 0;
     int y = 0;
     int x = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 0:
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:delch", &y, &x)) {
+            if (!TyArg_ParseTuple(args, "ii:delch", &y, &x)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.delch requires 0 to 2 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.delch requires 0 to 2 arguments");
             goto exit;
     }
     return_value = _curses_window_delch_impl((PyCursesWindowObject *)self, group_right_1, y, x);
@@ -580,7 +580,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_derwin__doc__,
+TyDoc_STRVAR(_curses_window_derwin__doc__,
 "derwin([nlines=0, ncols=0,] begin_y, begin_x)\n"
 "Create a sub-window (window-relative coordinates).\n"
 "\n"
@@ -600,34 +600,34 @@ PyDoc_STRVAR(_curses_window_derwin__doc__,
 #define _CURSES_WINDOW_DERWIN_METHODDEF    \
     {"derwin", (PyCFunction)_curses_window_derwin, METH_VARARGS, _curses_window_derwin__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_derwin_impl(PyCursesWindowObject *self, int group_left_1,
                            int nlines, int ncols, int begin_y, int begin_x);
 
-static PyObject *
-_curses_window_derwin(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_derwin(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int nlines = 0;
     int ncols = 0;
     int begin_y;
     int begin_x;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:derwin", &begin_y, &begin_x)) {
+            if (!TyArg_ParseTuple(args, "ii:derwin", &begin_y, &begin_x)) {
                 goto exit;
             }
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiii:derwin", &nlines, &ncols, &begin_y, &begin_x)) {
+            if (!TyArg_ParseTuple(args, "iiii:derwin", &nlines, &ncols, &begin_y, &begin_x)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.derwin requires 2 to 4 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.derwin requires 2 to 4 arguments");
             goto exit;
     }
     return_value = _curses_window_derwin_impl((PyCursesWindowObject *)self, group_left_1, nlines, ncols, begin_y, begin_x);
@@ -636,7 +636,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_echochar__doc__,
+TyDoc_STRVAR(_curses_window_echochar__doc__,
 "echochar($self, ch, attr=_curses.A_NORMAL, /)\n"
 "--\n"
 "\n"
@@ -650,26 +650,26 @@ PyDoc_STRVAR(_curses_window_echochar__doc__,
 #define _CURSES_WINDOW_ECHOCHAR_METHODDEF    \
     {"echochar", _PyCFunction_CAST(_curses_window_echochar), METH_FASTCALL, _curses_window_echochar__doc__},
 
-static PyObject *
-_curses_window_echochar_impl(PyCursesWindowObject *self, PyObject *ch,
+static TyObject *
+_curses_window_echochar_impl(PyCursesWindowObject *self, TyObject *ch,
                              long attr);
 
-static PyObject *
-_curses_window_echochar(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_window_echochar(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *ch;
+    TyObject *return_value = NULL;
+    TyObject *ch;
     long attr = A_NORMAL;
 
-    if (!_PyArg_CheckPositional("echochar", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("echochar", nargs, 1, 2)) {
         goto exit;
     }
     ch = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    attr = PyLong_AsLong(args[1]);
-    if (attr == -1 && PyErr_Occurred()) {
+    attr = TyLong_AsLong(args[1]);
+    if (attr == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -681,7 +681,7 @@ exit:
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_window_enclose__doc__,
+TyDoc_STRVAR(_curses_window_enclose__doc__,
 "enclose($self, y, x, /)\n"
 "--\n"
 "\n"
@@ -695,25 +695,25 @@ PyDoc_STRVAR(_curses_window_enclose__doc__,
 #define _CURSES_WINDOW_ENCLOSE_METHODDEF    \
     {"enclose", _PyCFunction_CAST(_curses_window_enclose), METH_FASTCALL, _curses_window_enclose__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_enclose_impl(PyCursesWindowObject *self, int y, int x);
 
-static PyObject *
-_curses_window_enclose(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_window_enclose(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int y;
     int x;
 
-    if (!_PyArg_CheckPositional("enclose", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("enclose", nargs, 2, 2)) {
         goto exit;
     }
-    y = PyLong_AsInt(args[0]);
-    if (y == -1 && PyErr_Occurred()) {
+    y = TyLong_AsInt(args[0]);
+    if (y == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    x = PyLong_AsInt(args[1]);
-    if (x == -1 && PyErr_Occurred()) {
+    x = TyLong_AsInt(args[1]);
+    if (x == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_window_enclose_impl((PyCursesWindowObject *)self, y, x);
@@ -724,7 +724,7 @@ exit:
 
 #endif /* defined(NCURSES_MOUSE_VERSION) */
 
-PyDoc_STRVAR(_curses_window_getbkgd__doc__,
+TyDoc_STRVAR(_curses_window_getbkgd__doc__,
 "getbkgd($self, /)\n"
 "--\n"
 "\n"
@@ -736,23 +736,23 @@ PyDoc_STRVAR(_curses_window_getbkgd__doc__,
 static long
 _curses_window_getbkgd_impl(PyCursesWindowObject *self);
 
-static PyObject *
-_curses_window_getbkgd(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_window_getbkgd(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     long _return_value;
 
     _return_value = _curses_window_getbkgd_impl((PyCursesWindowObject *)self);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_getch__doc__,
+TyDoc_STRVAR(_curses_window_getch__doc__,
 "getch([y, x])\n"
 "Get a character code from terminal keyboard.\n"
 "\n"
@@ -768,29 +768,29 @@ PyDoc_STRVAR(_curses_window_getch__doc__,
 #define _CURSES_WINDOW_GETCH_METHODDEF    \
     {"getch", (PyCFunction)_curses_window_getch, METH_VARARGS, _curses_window_getch__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_getch_impl(PyCursesWindowObject *self, int group_right_1,
                           int y, int x);
 
-static PyObject *
-_curses_window_getch(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_getch(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_right_1 = 0;
     int y = 0;
     int x = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 0:
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:getch", &y, &x)) {
+            if (!TyArg_ParseTuple(args, "ii:getch", &y, &x)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.getch requires 0 to 2 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.getch requires 0 to 2 arguments");
             goto exit;
     }
     return_value = _curses_window_getch_impl((PyCursesWindowObject *)self, group_right_1, y, x);
@@ -799,7 +799,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_getkey__doc__,
+TyDoc_STRVAR(_curses_window_getkey__doc__,
 "getkey([y, x])\n"
 "Get a character (string) from terminal keyboard.\n"
 "\n"
@@ -815,29 +815,29 @@ PyDoc_STRVAR(_curses_window_getkey__doc__,
 #define _CURSES_WINDOW_GETKEY_METHODDEF    \
     {"getkey", (PyCFunction)_curses_window_getkey, METH_VARARGS, _curses_window_getkey__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_getkey_impl(PyCursesWindowObject *self, int group_right_1,
                            int y, int x);
 
-static PyObject *
-_curses_window_getkey(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_getkey(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_right_1 = 0;
     int y = 0;
     int x = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 0:
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:getkey", &y, &x)) {
+            if (!TyArg_ParseTuple(args, "ii:getkey", &y, &x)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.getkey requires 0 to 2 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.getkey requires 0 to 2 arguments");
             goto exit;
     }
     return_value = _curses_window_getkey_impl((PyCursesWindowObject *)self, group_right_1, y, x);
@@ -848,7 +848,7 @@ exit:
 
 #if defined(HAVE_NCURSESW)
 
-PyDoc_STRVAR(_curses_window_get_wch__doc__,
+TyDoc_STRVAR(_curses_window_get_wch__doc__,
 "get_wch([y, x])\n"
 "Get a wide character from terminal keyboard.\n"
 "\n"
@@ -863,29 +863,29 @@ PyDoc_STRVAR(_curses_window_get_wch__doc__,
 #define _CURSES_WINDOW_GET_WCH_METHODDEF    \
     {"get_wch", (PyCFunction)_curses_window_get_wch, METH_VARARGS, _curses_window_get_wch__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_get_wch_impl(PyCursesWindowObject *self, int group_right_1,
                             int y, int x);
 
-static PyObject *
-_curses_window_get_wch(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_get_wch(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_right_1 = 0;
     int y = 0;
     int x = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 0:
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:get_wch", &y, &x)) {
+            if (!TyArg_ParseTuple(args, "ii:get_wch", &y, &x)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.get_wch requires 0 to 2 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.get_wch requires 0 to 2 arguments");
             goto exit;
     }
     return_value = _curses_window_get_wch_impl((PyCursesWindowObject *)self, group_right_1, y, x);
@@ -896,7 +896,7 @@ exit:
 
 #endif /* defined(HAVE_NCURSESW) */
 
-PyDoc_STRVAR(_curses_window_hline__doc__,
+TyDoc_STRVAR(_curses_window_hline__doc__,
 "hline([y, x,] ch, n, [attr=_curses.A_NORMAL])\n"
 "Display a horizontal line.\n"
 "\n"
@@ -914,50 +914,50 @@ PyDoc_STRVAR(_curses_window_hline__doc__,
 #define _CURSES_WINDOW_HLINE_METHODDEF    \
     {"hline", (PyCFunction)_curses_window_hline, METH_VARARGS, _curses_window_hline__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_hline_impl(PyCursesWindowObject *self, int group_left_1,
-                          int y, int x, PyObject *ch, int n,
+                          int y, int x, TyObject *ch, int n,
                           int group_right_1, long attr);
 
-static PyObject *
-_curses_window_hline(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_hline(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int y = 0;
     int x = 0;
-    PyObject *ch;
+    TyObject *ch;
     int n;
     int group_right_1 = 0;
     long attr = A_NORMAL;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 2:
-            if (!PyArg_ParseTuple(args, "Oi:hline", &ch, &n)) {
+            if (!TyArg_ParseTuple(args, "Oi:hline", &ch, &n)) {
                 goto exit;
             }
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "Oil:hline", &ch, &n, &attr)) {
+            if (!TyArg_ParseTuple(args, "Oil:hline", &ch, &n, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiOi:hline", &y, &x, &ch, &n)) {
+            if (!TyArg_ParseTuple(args, "iiOi:hline", &y, &x, &ch, &n)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         case 5:
-            if (!PyArg_ParseTuple(args, "iiOil:hline", &y, &x, &ch, &n, &attr)) {
+            if (!TyArg_ParseTuple(args, "iiOil:hline", &y, &x, &ch, &n, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.hline requires 2 to 5 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.hline requires 2 to 5 arguments");
             goto exit;
     }
     return_value = _curses_window_hline_impl((PyCursesWindowObject *)self, group_left_1, y, x, ch, n, group_right_1, attr);
@@ -966,7 +966,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_insch__doc__,
+TyDoc_STRVAR(_curses_window_insch__doc__,
 "insch([y, x,] ch, [attr=_curses.A_NORMAL])\n"
 "Insert a character before the current or specified position.\n"
 "\n"
@@ -985,49 +985,49 @@ PyDoc_STRVAR(_curses_window_insch__doc__,
 #define _CURSES_WINDOW_INSCH_METHODDEF    \
     {"insch", (PyCFunction)_curses_window_insch, METH_VARARGS, _curses_window_insch__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_insch_impl(PyCursesWindowObject *self, int group_left_1,
-                          int y, int x, PyObject *ch, int group_right_1,
+                          int y, int x, TyObject *ch, int group_right_1,
                           long attr);
 
-static PyObject *
-_curses_window_insch(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_insch(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int y = 0;
     int x = 0;
-    PyObject *ch;
+    TyObject *ch;
     int group_right_1 = 0;
     long attr = A_NORMAL;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 1:
-            if (!PyArg_ParseTuple(args, "O:insch", &ch)) {
+            if (!TyArg_ParseTuple(args, "O:insch", &ch)) {
                 goto exit;
             }
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "Ol:insch", &ch, &attr)) {
+            if (!TyArg_ParseTuple(args, "Ol:insch", &ch, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "iiO:insch", &y, &x, &ch)) {
+            if (!TyArg_ParseTuple(args, "iiO:insch", &y, &x, &ch)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiOl:insch", &y, &x, &ch, &attr)) {
+            if (!TyArg_ParseTuple(args, "iiOl:insch", &y, &x, &ch, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.insch requires 1 to 4 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.insch requires 1 to 4 arguments");
             goto exit;
     }
     return_value = _curses_window_insch_impl((PyCursesWindowObject *)self, group_left_1, y, x, ch, group_right_1, attr);
@@ -1036,7 +1036,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_inch__doc__,
+TyDoc_STRVAR(_curses_window_inch__doc__,
 "inch([y, x])\n"
 "Return the character at the given position in the window.\n"
 "\n"
@@ -1054,39 +1054,39 @@ static unsigned long
 _curses_window_inch_impl(PyCursesWindowObject *self, int group_right_1,
                          int y, int x);
 
-static PyObject *
-_curses_window_inch(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_inch(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_right_1 = 0;
     int y = 0;
     int x = 0;
     unsigned long _return_value;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 0:
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:inch", &y, &x)) {
+            if (!TyArg_ParseTuple(args, "ii:inch", &y, &x)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.inch requires 0 to 2 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.inch requires 0 to 2 arguments");
             goto exit;
     }
     _return_value = _curses_window_inch_impl((PyCursesWindowObject *)self, group_right_1, y, x);
-    if ((_return_value == (unsigned long)-1) && PyErr_Occurred()) {
+    if ((_return_value == (unsigned long)-1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromUnsignedLong(_return_value);
+    return_value = TyLong_FromUnsignedLong(_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_insstr__doc__,
+TyDoc_STRVAR(_curses_window_insstr__doc__,
 "insstr([y, x,] str, [attr])\n"
 "Insert the string before the current or specified position.\n"
 "\n"
@@ -1108,49 +1108,49 @@ PyDoc_STRVAR(_curses_window_insstr__doc__,
 #define _CURSES_WINDOW_INSSTR_METHODDEF    \
     {"insstr", (PyCFunction)_curses_window_insstr, METH_VARARGS, _curses_window_insstr__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_insstr_impl(PyCursesWindowObject *self, int group_left_1,
-                           int y, int x, PyObject *str, int group_right_1,
+                           int y, int x, TyObject *str, int group_right_1,
                            long attr);
 
-static PyObject *
-_curses_window_insstr(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_insstr(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int y = 0;
     int x = 0;
-    PyObject *str;
+    TyObject *str;
     int group_right_1 = 0;
     long attr = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 1:
-            if (!PyArg_ParseTuple(args, "O:insstr", &str)) {
+            if (!TyArg_ParseTuple(args, "O:insstr", &str)) {
                 goto exit;
             }
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "Ol:insstr", &str, &attr)) {
+            if (!TyArg_ParseTuple(args, "Ol:insstr", &str, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "iiO:insstr", &y, &x, &str)) {
+            if (!TyArg_ParseTuple(args, "iiO:insstr", &y, &x, &str)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiOl:insstr", &y, &x, &str, &attr)) {
+            if (!TyArg_ParseTuple(args, "iiOl:insstr", &y, &x, &str, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.insstr requires 1 to 4 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.insstr requires 1 to 4 arguments");
             goto exit;
     }
     return_value = _curses_window_insstr_impl((PyCursesWindowObject *)self, group_left_1, y, x, str, group_right_1, attr);
@@ -1159,7 +1159,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_insnstr__doc__,
+TyDoc_STRVAR(_curses_window_insnstr__doc__,
 "insnstr([y, x,] str, n, [attr])\n"
 "Insert at most n characters of the string.\n"
 "\n"
@@ -1184,50 +1184,50 @@ PyDoc_STRVAR(_curses_window_insnstr__doc__,
 #define _CURSES_WINDOW_INSNSTR_METHODDEF    \
     {"insnstr", (PyCFunction)_curses_window_insnstr, METH_VARARGS, _curses_window_insnstr__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_insnstr_impl(PyCursesWindowObject *self, int group_left_1,
-                            int y, int x, PyObject *str, int n,
+                            int y, int x, TyObject *str, int n,
                             int group_right_1, long attr);
 
-static PyObject *
-_curses_window_insnstr(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_insnstr(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int y = 0;
     int x = 0;
-    PyObject *str;
+    TyObject *str;
     int n;
     int group_right_1 = 0;
     long attr = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 2:
-            if (!PyArg_ParseTuple(args, "Oi:insnstr", &str, &n)) {
+            if (!TyArg_ParseTuple(args, "Oi:insnstr", &str, &n)) {
                 goto exit;
             }
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "Oil:insnstr", &str, &n, &attr)) {
+            if (!TyArg_ParseTuple(args, "Oil:insnstr", &str, &n, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiOi:insnstr", &y, &x, &str, &n)) {
+            if (!TyArg_ParseTuple(args, "iiOi:insnstr", &y, &x, &str, &n)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         case 5:
-            if (!PyArg_ParseTuple(args, "iiOil:insnstr", &y, &x, &str, &n, &attr)) {
+            if (!TyArg_ParseTuple(args, "iiOil:insnstr", &y, &x, &str, &n, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.insnstr requires 2 to 5 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.insnstr requires 2 to 5 arguments");
             goto exit;
     }
     return_value = _curses_window_insnstr_impl((PyCursesWindowObject *)self, group_left_1, y, x, str, n, group_right_1, attr);
@@ -1236,7 +1236,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_is_linetouched__doc__,
+TyDoc_STRVAR(_curses_window_is_linetouched__doc__,
 "is_linetouched($self, line, /)\n"
 "--\n"
 "\n"
@@ -1250,17 +1250,17 @@ PyDoc_STRVAR(_curses_window_is_linetouched__doc__,
 #define _CURSES_WINDOW_IS_LINETOUCHED_METHODDEF    \
     {"is_linetouched", (PyCFunction)_curses_window_is_linetouched, METH_O, _curses_window_is_linetouched__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_is_linetouched_impl(PyCursesWindowObject *self, int line);
 
-static PyObject *
-_curses_window_is_linetouched(PyObject *self, PyObject *arg)
+static TyObject *
+_curses_window_is_linetouched(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int line;
 
-    line = PyLong_AsInt(arg);
-    if (line == -1 && PyErr_Occurred()) {
+    line = TyLong_AsInt(arg);
+    if (line == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_window_is_linetouched_impl((PyCursesWindowObject *)self, line);
@@ -1271,7 +1271,7 @@ exit:
 
 #if defined(py_is_pad)
 
-PyDoc_STRVAR(_curses_window_noutrefresh__doc__,
+TyDoc_STRVAR(_curses_window_noutrefresh__doc__,
 "noutrefresh([pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol])\n"
 "Mark for refresh but wait.\n"
 "\n"
@@ -1282,16 +1282,16 @@ PyDoc_STRVAR(_curses_window_noutrefresh__doc__,
 #define _CURSES_WINDOW_NOUTREFRESH_METHODDEF    \
     {"noutrefresh", (PyCFunction)_curses_window_noutrefresh, METH_VARARGS, _curses_window_noutrefresh__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_noutrefresh_impl(PyCursesWindowObject *self,
                                 int group_right_1, int pminrow, int pmincol,
                                 int sminrow, int smincol, int smaxrow,
                                 int smaxcol);
 
-static PyObject *
-_curses_window_noutrefresh(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_noutrefresh(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_right_1 = 0;
     int pminrow = 0;
     int pmincol = 0;
@@ -1300,17 +1300,17 @@ _curses_window_noutrefresh(PyObject *self, PyObject *args)
     int smaxrow = 0;
     int smaxcol = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 0:
             break;
         case 6:
-            if (!PyArg_ParseTuple(args, "iiiiii:noutrefresh", &pminrow, &pmincol, &sminrow, &smincol, &smaxrow, &smaxcol)) {
+            if (!TyArg_ParseTuple(args, "iiiiii:noutrefresh", &pminrow, &pmincol, &sminrow, &smincol, &smaxrow, &smaxcol)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.noutrefresh requires 0 to 6 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.noutrefresh requires 0 to 6 arguments");
             goto exit;
     }
     return_value = _curses_window_noutrefresh_impl((PyCursesWindowObject *)self, group_right_1, pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol);
@@ -1323,7 +1323,7 @@ exit:
 
 #if !defined(py_is_pad)
 
-PyDoc_STRVAR(_curses_window_noutrefresh__doc__,
+TyDoc_STRVAR(_curses_window_noutrefresh__doc__,
 "noutrefresh($self, /)\n"
 "--\n"
 "\n"
@@ -1336,18 +1336,18 @@ PyDoc_STRVAR(_curses_window_noutrefresh__doc__,
 #define _CURSES_WINDOW_NOUTREFRESH_METHODDEF    \
     {"noutrefresh", (PyCFunction)_curses_window_noutrefresh, METH_NOARGS, _curses_window_noutrefresh__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_noutrefresh_impl(PyCursesWindowObject *self);
 
-static PyObject *
-_curses_window_noutrefresh(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_window_noutrefresh(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _curses_window_noutrefresh_impl((PyCursesWindowObject *)self);
 }
 
 #endif /* !defined(py_is_pad) */
 
-PyDoc_STRVAR(_curses_window_overlay__doc__,
+TyDoc_STRVAR(_curses_window_overlay__doc__,
 "overlay(destwin, [sminrow, smincol, dminrow, dmincol, dmaxrow, dmaxcol])\n"
 "Overlay the window on top of destwin.\n"
 "\n"
@@ -1363,16 +1363,16 @@ PyDoc_STRVAR(_curses_window_overlay__doc__,
 #define _CURSES_WINDOW_OVERLAY_METHODDEF    \
     {"overlay", (PyCFunction)_curses_window_overlay, METH_VARARGS, _curses_window_overlay__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_overlay_impl(PyCursesWindowObject *self,
                             PyCursesWindowObject *destwin, int group_right_1,
                             int sminrow, int smincol, int dminrow,
                             int dmincol, int dmaxrow, int dmaxcol);
 
-static PyObject *
-_curses_window_overlay(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_overlay(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     PyCursesWindowObject *destwin;
     int group_right_1 = 0;
     int sminrow = 0;
@@ -1382,20 +1382,20 @@ _curses_window_overlay(PyObject *self, PyObject *args)
     int dmaxrow = 0;
     int dmaxcol = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 1:
-            if (!PyArg_ParseTuple(args, "O!:overlay", clinic_state()->window_type, &destwin)) {
+            if (!TyArg_ParseTuple(args, "O!:overlay", clinic_state()->window_type, &destwin)) {
                 goto exit;
             }
             break;
         case 7:
-            if (!PyArg_ParseTuple(args, "O!iiiiii:overlay", clinic_state()->window_type, &destwin, &sminrow, &smincol, &dminrow, &dmincol, &dmaxrow, &dmaxcol)) {
+            if (!TyArg_ParseTuple(args, "O!iiiiii:overlay", clinic_state()->window_type, &destwin, &sminrow, &smincol, &dminrow, &dmincol, &dmaxrow, &dmaxcol)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.overlay requires 1 to 7 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.overlay requires 1 to 7 arguments");
             goto exit;
     }
     return_value = _curses_window_overlay_impl((PyCursesWindowObject *)self, destwin, group_right_1, sminrow, smincol, dminrow, dmincol, dmaxrow, dmaxcol);
@@ -1404,7 +1404,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_overwrite__doc__,
+TyDoc_STRVAR(_curses_window_overwrite__doc__,
 "overwrite(destwin, [sminrow, smincol, dminrow, dmincol, dmaxrow,\n"
 "          dmaxcol])\n"
 "Overwrite the window on top of destwin.\n"
@@ -1421,17 +1421,17 @@ PyDoc_STRVAR(_curses_window_overwrite__doc__,
 #define _CURSES_WINDOW_OVERWRITE_METHODDEF    \
     {"overwrite", (PyCFunction)_curses_window_overwrite, METH_VARARGS, _curses_window_overwrite__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_overwrite_impl(PyCursesWindowObject *self,
                               PyCursesWindowObject *destwin,
                               int group_right_1, int sminrow, int smincol,
                               int dminrow, int dmincol, int dmaxrow,
                               int dmaxcol);
 
-static PyObject *
-_curses_window_overwrite(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_overwrite(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     PyCursesWindowObject *destwin;
     int group_right_1 = 0;
     int sminrow = 0;
@@ -1441,20 +1441,20 @@ _curses_window_overwrite(PyObject *self, PyObject *args)
     int dmaxrow = 0;
     int dmaxcol = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 1:
-            if (!PyArg_ParseTuple(args, "O!:overwrite", clinic_state()->window_type, &destwin)) {
+            if (!TyArg_ParseTuple(args, "O!:overwrite", clinic_state()->window_type, &destwin)) {
                 goto exit;
             }
             break;
         case 7:
-            if (!PyArg_ParseTuple(args, "O!iiiiii:overwrite", clinic_state()->window_type, &destwin, &sminrow, &smincol, &dminrow, &dmincol, &dmaxrow, &dmaxcol)) {
+            if (!TyArg_ParseTuple(args, "O!iiiiii:overwrite", clinic_state()->window_type, &destwin, &sminrow, &smincol, &dminrow, &dmincol, &dmaxrow, &dmaxcol)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.overwrite requires 1 to 7 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.overwrite requires 1 to 7 arguments");
             goto exit;
     }
     return_value = _curses_window_overwrite_impl((PyCursesWindowObject *)self, destwin, group_right_1, sminrow, smincol, dminrow, dmincol, dmaxrow, dmaxcol);
@@ -1463,7 +1463,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_putwin__doc__,
+TyDoc_STRVAR(_curses_window_putwin__doc__,
 "putwin($self, file, /)\n"
 "--\n"
 "\n"
@@ -1474,20 +1474,20 @@ PyDoc_STRVAR(_curses_window_putwin__doc__,
 #define _CURSES_WINDOW_PUTWIN_METHODDEF    \
     {"putwin", (PyCFunction)_curses_window_putwin, METH_O, _curses_window_putwin__doc__},
 
-static PyObject *
-_curses_window_putwin_impl(PyCursesWindowObject *self, PyObject *file);
+static TyObject *
+_curses_window_putwin_impl(PyCursesWindowObject *self, TyObject *file);
 
-static PyObject *
-_curses_window_putwin(PyObject *self, PyObject *file)
+static TyObject *
+_curses_window_putwin(TyObject *self, TyObject *file)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = _curses_window_putwin_impl((PyCursesWindowObject *)self, file);
 
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_redrawln__doc__,
+TyDoc_STRVAR(_curses_window_redrawln__doc__,
 "redrawln($self, beg, num, /)\n"
 "--\n"
 "\n"
@@ -1503,25 +1503,25 @@ PyDoc_STRVAR(_curses_window_redrawln__doc__,
 #define _CURSES_WINDOW_REDRAWLN_METHODDEF    \
     {"redrawln", _PyCFunction_CAST(_curses_window_redrawln), METH_FASTCALL, _curses_window_redrawln__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_redrawln_impl(PyCursesWindowObject *self, int beg, int num);
 
-static PyObject *
-_curses_window_redrawln(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_window_redrawln(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int beg;
     int num;
 
-    if (!_PyArg_CheckPositional("redrawln", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("redrawln", nargs, 2, 2)) {
         goto exit;
     }
-    beg = PyLong_AsInt(args[0]);
-    if (beg == -1 && PyErr_Occurred()) {
+    beg = TyLong_AsInt(args[0]);
+    if (beg == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    num = PyLong_AsInt(args[1]);
-    if (num == -1 && PyErr_Occurred()) {
+    num = TyLong_AsInt(args[1]);
+    if (num == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_window_redrawln_impl((PyCursesWindowObject *)self, beg, num);
@@ -1530,7 +1530,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_refresh__doc__,
+TyDoc_STRVAR(_curses_window_refresh__doc__,
 "refresh([pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol])\n"
 "Update the display immediately.\n"
 "\n"
@@ -1549,15 +1549,15 @@ PyDoc_STRVAR(_curses_window_refresh__doc__,
 #define _CURSES_WINDOW_REFRESH_METHODDEF    \
     {"refresh", (PyCFunction)_curses_window_refresh, METH_VARARGS, _curses_window_refresh__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_refresh_impl(PyCursesWindowObject *self, int group_right_1,
                             int pminrow, int pmincol, int sminrow,
                             int smincol, int smaxrow, int smaxcol);
 
-static PyObject *
-_curses_window_refresh(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_refresh(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_right_1 = 0;
     int pminrow = 0;
     int pmincol = 0;
@@ -1566,17 +1566,17 @@ _curses_window_refresh(PyObject *self, PyObject *args)
     int smaxrow = 0;
     int smaxcol = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 0:
             break;
         case 6:
-            if (!PyArg_ParseTuple(args, "iiiiii:refresh", &pminrow, &pmincol, &sminrow, &smincol, &smaxrow, &smaxcol)) {
+            if (!TyArg_ParseTuple(args, "iiiiii:refresh", &pminrow, &pmincol, &sminrow, &smincol, &smaxrow, &smaxcol)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.refresh requires 0 to 6 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.refresh requires 0 to 6 arguments");
             goto exit;
     }
     return_value = _curses_window_refresh_impl((PyCursesWindowObject *)self, group_right_1, pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol);
@@ -1585,7 +1585,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_setscrreg__doc__,
+TyDoc_STRVAR(_curses_window_setscrreg__doc__,
 "setscrreg($self, top, bottom, /)\n"
 "--\n"
 "\n"
@@ -1601,26 +1601,26 @@ PyDoc_STRVAR(_curses_window_setscrreg__doc__,
 #define _CURSES_WINDOW_SETSCRREG_METHODDEF    \
     {"setscrreg", _PyCFunction_CAST(_curses_window_setscrreg), METH_FASTCALL, _curses_window_setscrreg__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_setscrreg_impl(PyCursesWindowObject *self, int top,
                               int bottom);
 
-static PyObject *
-_curses_window_setscrreg(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_window_setscrreg(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int top;
     int bottom;
 
-    if (!_PyArg_CheckPositional("setscrreg", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("setscrreg", nargs, 2, 2)) {
         goto exit;
     }
-    top = PyLong_AsInt(args[0]);
-    if (top == -1 && PyErr_Occurred()) {
+    top = TyLong_AsInt(args[0]);
+    if (top == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    bottom = PyLong_AsInt(args[1]);
-    if (bottom == -1 && PyErr_Occurred()) {
+    bottom = TyLong_AsInt(args[1]);
+    if (bottom == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_window_setscrreg_impl((PyCursesWindowObject *)self, top, bottom);
@@ -1629,7 +1629,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_subwin__doc__,
+TyDoc_STRVAR(_curses_window_subwin__doc__,
 "subwin([nlines=0, ncols=0,] begin_y, begin_x)\n"
 "Create a sub-window (screen-relative coordinates).\n"
 "\n"
@@ -1648,34 +1648,34 @@ PyDoc_STRVAR(_curses_window_subwin__doc__,
 #define _CURSES_WINDOW_SUBWIN_METHODDEF    \
     {"subwin", (PyCFunction)_curses_window_subwin, METH_VARARGS, _curses_window_subwin__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_subwin_impl(PyCursesWindowObject *self, int group_left_1,
                            int nlines, int ncols, int begin_y, int begin_x);
 
-static PyObject *
-_curses_window_subwin(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_subwin(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int nlines = 0;
     int ncols = 0;
     int begin_y;
     int begin_x;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:subwin", &begin_y, &begin_x)) {
+            if (!TyArg_ParseTuple(args, "ii:subwin", &begin_y, &begin_x)) {
                 goto exit;
             }
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiii:subwin", &nlines, &ncols, &begin_y, &begin_x)) {
+            if (!TyArg_ParseTuple(args, "iiii:subwin", &nlines, &ncols, &begin_y, &begin_x)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.subwin requires 2 to 4 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.subwin requires 2 to 4 arguments");
             goto exit;
     }
     return_value = _curses_window_subwin_impl((PyCursesWindowObject *)self, group_left_1, nlines, ncols, begin_y, begin_x);
@@ -1684,7 +1684,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_scroll__doc__,
+TyDoc_STRVAR(_curses_window_scroll__doc__,
 "scroll([lines=1])\n"
 "Scroll the screen or scrolling region.\n"
 "\n"
@@ -1696,28 +1696,28 @@ PyDoc_STRVAR(_curses_window_scroll__doc__,
 #define _CURSES_WINDOW_SCROLL_METHODDEF    \
     {"scroll", (PyCFunction)_curses_window_scroll, METH_VARARGS, _curses_window_scroll__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_scroll_impl(PyCursesWindowObject *self, int group_right_1,
                            int lines);
 
-static PyObject *
-_curses_window_scroll(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_scroll(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_right_1 = 0;
     int lines = 1;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 0:
             break;
         case 1:
-            if (!PyArg_ParseTuple(args, "i:scroll", &lines)) {
+            if (!TyArg_ParseTuple(args, "i:scroll", &lines)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.scroll requires 0 to 1 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.scroll requires 0 to 1 arguments");
             goto exit;
     }
     return_value = _curses_window_scroll_impl((PyCursesWindowObject *)self, group_right_1, lines);
@@ -1726,7 +1726,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_touchline__doc__,
+TyDoc_STRVAR(_curses_window_touchline__doc__,
 "touchline(start, count, [changed=True])\n"
 "Pretend count lines have been changed, starting with line start.\n"
 "\n"
@@ -1736,33 +1736,33 @@ PyDoc_STRVAR(_curses_window_touchline__doc__,
 #define _CURSES_WINDOW_TOUCHLINE_METHODDEF    \
     {"touchline", (PyCFunction)_curses_window_touchline, METH_VARARGS, _curses_window_touchline__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_touchline_impl(PyCursesWindowObject *self, int start,
                               int count, int group_right_1, int changed);
 
-static PyObject *
-_curses_window_touchline(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_touchline(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int start;
     int count;
     int group_right_1 = 0;
     int changed = 1;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:touchline", &start, &count)) {
+            if (!TyArg_ParseTuple(args, "ii:touchline", &start, &count)) {
                 goto exit;
             }
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "iip:touchline", &start, &count, &changed)) {
+            if (!TyArg_ParseTuple(args, "iip:touchline", &start, &count, &changed)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.touchline requires 2 to 3 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.touchline requires 2 to 3 arguments");
             goto exit;
     }
     return_value = _curses_window_touchline_impl((PyCursesWindowObject *)self, start, count, group_right_1, changed);
@@ -1771,7 +1771,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_vline__doc__,
+TyDoc_STRVAR(_curses_window_vline__doc__,
 "vline([y, x,] ch, n, [attr=_curses.A_NORMAL])\n"
 "Display a vertical line.\n"
 "\n"
@@ -1789,50 +1789,50 @@ PyDoc_STRVAR(_curses_window_vline__doc__,
 #define _CURSES_WINDOW_VLINE_METHODDEF    \
     {"vline", (PyCFunction)_curses_window_vline, METH_VARARGS, _curses_window_vline__doc__},
 
-static PyObject *
+static TyObject *
 _curses_window_vline_impl(PyCursesWindowObject *self, int group_left_1,
-                          int y, int x, PyObject *ch, int n,
+                          int y, int x, TyObject *ch, int n,
                           int group_right_1, long attr);
 
-static PyObject *
-_curses_window_vline(PyObject *self, PyObject *args)
+static TyObject *
+_curses_window_vline(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int group_left_1 = 0;
     int y = 0;
     int x = 0;
-    PyObject *ch;
+    TyObject *ch;
     int n;
     int group_right_1 = 0;
     long attr = A_NORMAL;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 2:
-            if (!PyArg_ParseTuple(args, "Oi:vline", &ch, &n)) {
+            if (!TyArg_ParseTuple(args, "Oi:vline", &ch, &n)) {
                 goto exit;
             }
             break;
         case 3:
-            if (!PyArg_ParseTuple(args, "Oil:vline", &ch, &n, &attr)) {
+            if (!TyArg_ParseTuple(args, "Oil:vline", &ch, &n, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiOi:vline", &y, &x, &ch, &n)) {
+            if (!TyArg_ParseTuple(args, "iiOi:vline", &y, &x, &ch, &n)) {
                 goto exit;
             }
             group_left_1 = 1;
             break;
         case 5:
-            if (!PyArg_ParseTuple(args, "iiOil:vline", &y, &x, &ch, &n, &attr)) {
+            if (!TyArg_ParseTuple(args, "iiOil:vline", &y, &x, &ch, &n, &attr)) {
                 goto exit;
             }
             group_right_1 = 1;
             group_left_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.window.vline requires 2 to 5 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.window.vline requires 2 to 5 arguments");
             goto exit;
     }
     return_value = _curses_window_vline_impl((PyCursesWindowObject *)self, group_left_1, y, x, ch, n, group_right_1, attr);
@@ -1843,7 +1843,7 @@ exit:
 
 #if defined(HAVE_CURSES_FILTER)
 
-PyDoc_STRVAR(_curses_filter__doc__,
+TyDoc_STRVAR(_curses_filter__doc__,
 "filter($module, /)\n"
 "--\n"
 "\n");
@@ -1851,18 +1851,18 @@ PyDoc_STRVAR(_curses_filter__doc__,
 #define _CURSES_FILTER_METHODDEF    \
     {"filter", (PyCFunction)_curses_filter, METH_NOARGS, _curses_filter__doc__},
 
-static PyObject *
-_curses_filter_impl(PyObject *module);
+static TyObject *
+_curses_filter_impl(TyObject *module);
 
-static PyObject *
-_curses_filter(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_filter(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_filter_impl(module);
 }
 
 #endif /* defined(HAVE_CURSES_FILTER) */
 
-PyDoc_STRVAR(_curses_baudrate__doc__,
+TyDoc_STRVAR(_curses_baudrate__doc__,
 "baudrate($module, /)\n"
 "--\n"
 "\n"
@@ -1871,16 +1871,16 @@ PyDoc_STRVAR(_curses_baudrate__doc__,
 #define _CURSES_BAUDRATE_METHODDEF    \
     {"baudrate", (PyCFunction)_curses_baudrate, METH_NOARGS, _curses_baudrate__doc__},
 
-static PyObject *
-_curses_baudrate_impl(PyObject *module);
+static TyObject *
+_curses_baudrate_impl(TyObject *module);
 
-static PyObject *
-_curses_baudrate(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_baudrate(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_baudrate_impl(module);
 }
 
-PyDoc_STRVAR(_curses_beep__doc__,
+TyDoc_STRVAR(_curses_beep__doc__,
 "beep($module, /)\n"
 "--\n"
 "\n"
@@ -1889,16 +1889,16 @@ PyDoc_STRVAR(_curses_beep__doc__,
 #define _CURSES_BEEP_METHODDEF    \
     {"beep", (PyCFunction)_curses_beep, METH_NOARGS, _curses_beep__doc__},
 
-static PyObject *
-_curses_beep_impl(PyObject *module);
+static TyObject *
+_curses_beep_impl(TyObject *module);
 
-static PyObject *
-_curses_beep(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_beep(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_beep_impl(module);
 }
 
-PyDoc_STRVAR(_curses_can_change_color__doc__,
+TyDoc_STRVAR(_curses_can_change_color__doc__,
 "can_change_color($module, /)\n"
 "--\n"
 "\n"
@@ -1907,16 +1907,16 @@ PyDoc_STRVAR(_curses_can_change_color__doc__,
 #define _CURSES_CAN_CHANGE_COLOR_METHODDEF    \
     {"can_change_color", (PyCFunction)_curses_can_change_color, METH_NOARGS, _curses_can_change_color__doc__},
 
-static PyObject *
-_curses_can_change_color_impl(PyObject *module);
+static TyObject *
+_curses_can_change_color_impl(TyObject *module);
 
-static PyObject *
-_curses_can_change_color(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_can_change_color(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_can_change_color_impl(module);
 }
 
-PyDoc_STRVAR(_curses_cbreak__doc__,
+TyDoc_STRVAR(_curses_cbreak__doc__,
 "cbreak($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -1934,16 +1934,16 @@ PyDoc_STRVAR(_curses_cbreak__doc__,
 #define _CURSES_CBREAK_METHODDEF    \
     {"cbreak", _PyCFunction_CAST(_curses_cbreak), METH_FASTCALL, _curses_cbreak__doc__},
 
-static PyObject *
-_curses_cbreak_impl(PyObject *module, int flag);
+static TyObject *
+_curses_cbreak_impl(TyObject *module, int flag);
 
-static PyObject *
-_curses_cbreak(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_cbreak(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int flag = 1;
 
-    if (!_PyArg_CheckPositional("cbreak", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("cbreak", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -1960,7 +1960,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_color_content__doc__,
+TyDoc_STRVAR(_curses_color_content__doc__,
 "color_content($module, color_number, /)\n"
 "--\n"
 "\n"
@@ -1975,13 +1975,13 @@ PyDoc_STRVAR(_curses_color_content__doc__,
 #define _CURSES_COLOR_CONTENT_METHODDEF    \
     {"color_content", (PyCFunction)_curses_color_content, METH_O, _curses_color_content__doc__},
 
-static PyObject *
-_curses_color_content_impl(PyObject *module, int color_number);
+static TyObject *
+_curses_color_content_impl(TyObject *module, int color_number);
 
-static PyObject *
-_curses_color_content(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_color_content(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int color_number;
 
     if (!color_converter(arg, &color_number)) {
@@ -1993,7 +1993,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_color_pair__doc__,
+TyDoc_STRVAR(_curses_color_pair__doc__,
 "color_pair($module, pair_number, /)\n"
 "--\n"
 "\n"
@@ -2008,17 +2008,17 @@ PyDoc_STRVAR(_curses_color_pair__doc__,
 #define _CURSES_COLOR_PAIR_METHODDEF    \
     {"color_pair", (PyCFunction)_curses_color_pair, METH_O, _curses_color_pair__doc__},
 
-static PyObject *
-_curses_color_pair_impl(PyObject *module, int pair_number);
+static TyObject *
+_curses_color_pair_impl(TyObject *module, int pair_number);
 
-static PyObject *
-_curses_color_pair(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_color_pair(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int pair_number;
 
-    pair_number = PyLong_AsInt(arg);
-    if (pair_number == -1 && PyErr_Occurred()) {
+    pair_number = TyLong_AsInt(arg);
+    if (pair_number == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_color_pair_impl(module, pair_number);
@@ -2027,7 +2027,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_curs_set__doc__,
+TyDoc_STRVAR(_curses_curs_set__doc__,
 "curs_set($module, visibility, /)\n"
 "--\n"
 "\n"
@@ -2044,17 +2044,17 @@ PyDoc_STRVAR(_curses_curs_set__doc__,
 #define _CURSES_CURS_SET_METHODDEF    \
     {"curs_set", (PyCFunction)_curses_curs_set, METH_O, _curses_curs_set__doc__},
 
-static PyObject *
-_curses_curs_set_impl(PyObject *module, int visibility);
+static TyObject *
+_curses_curs_set_impl(TyObject *module, int visibility);
 
-static PyObject *
-_curses_curs_set(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_curs_set(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int visibility;
 
-    visibility = PyLong_AsInt(arg);
-    if (visibility == -1 && PyErr_Occurred()) {
+    visibility = TyLong_AsInt(arg);
+    if (visibility == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_curs_set_impl(module, visibility);
@@ -2063,7 +2063,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_def_prog_mode__doc__,
+TyDoc_STRVAR(_curses_def_prog_mode__doc__,
 "def_prog_mode($module, /)\n"
 "--\n"
 "\n"
@@ -2076,16 +2076,16 @@ PyDoc_STRVAR(_curses_def_prog_mode__doc__,
 #define _CURSES_DEF_PROG_MODE_METHODDEF    \
     {"def_prog_mode", (PyCFunction)_curses_def_prog_mode, METH_NOARGS, _curses_def_prog_mode__doc__},
 
-static PyObject *
-_curses_def_prog_mode_impl(PyObject *module);
+static TyObject *
+_curses_def_prog_mode_impl(TyObject *module);
 
-static PyObject *
-_curses_def_prog_mode(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_def_prog_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_def_prog_mode_impl(module);
 }
 
-PyDoc_STRVAR(_curses_def_shell_mode__doc__,
+TyDoc_STRVAR(_curses_def_shell_mode__doc__,
 "def_shell_mode($module, /)\n"
 "--\n"
 "\n"
@@ -2098,16 +2098,16 @@ PyDoc_STRVAR(_curses_def_shell_mode__doc__,
 #define _CURSES_DEF_SHELL_MODE_METHODDEF    \
     {"def_shell_mode", (PyCFunction)_curses_def_shell_mode, METH_NOARGS, _curses_def_shell_mode__doc__},
 
-static PyObject *
-_curses_def_shell_mode_impl(PyObject *module);
+static TyObject *
+_curses_def_shell_mode_impl(TyObject *module);
 
-static PyObject *
-_curses_def_shell_mode(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_def_shell_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_def_shell_mode_impl(module);
 }
 
-PyDoc_STRVAR(_curses_delay_output__doc__,
+TyDoc_STRVAR(_curses_delay_output__doc__,
 "delay_output($module, ms, /)\n"
 "--\n"
 "\n"
@@ -2119,17 +2119,17 @@ PyDoc_STRVAR(_curses_delay_output__doc__,
 #define _CURSES_DELAY_OUTPUT_METHODDEF    \
     {"delay_output", (PyCFunction)_curses_delay_output, METH_O, _curses_delay_output__doc__},
 
-static PyObject *
-_curses_delay_output_impl(PyObject *module, int ms);
+static TyObject *
+_curses_delay_output_impl(TyObject *module, int ms);
 
-static PyObject *
-_curses_delay_output(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_delay_output(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int ms;
 
-    ms = PyLong_AsInt(arg);
-    if (ms == -1 && PyErr_Occurred()) {
+    ms = TyLong_AsInt(arg);
+    if (ms == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_delay_output_impl(module, ms);
@@ -2138,7 +2138,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_doupdate__doc__,
+TyDoc_STRVAR(_curses_doupdate__doc__,
 "doupdate($module, /)\n"
 "--\n"
 "\n"
@@ -2147,16 +2147,16 @@ PyDoc_STRVAR(_curses_doupdate__doc__,
 #define _CURSES_DOUPDATE_METHODDEF    \
     {"doupdate", (PyCFunction)_curses_doupdate, METH_NOARGS, _curses_doupdate__doc__},
 
-static PyObject *
-_curses_doupdate_impl(PyObject *module);
+static TyObject *
+_curses_doupdate_impl(TyObject *module);
 
-static PyObject *
-_curses_doupdate(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_doupdate(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_doupdate_impl(module);
 }
 
-PyDoc_STRVAR(_curses_echo__doc__,
+TyDoc_STRVAR(_curses_echo__doc__,
 "echo($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -2170,16 +2170,16 @@ PyDoc_STRVAR(_curses_echo__doc__,
 #define _CURSES_ECHO_METHODDEF    \
     {"echo", _PyCFunction_CAST(_curses_echo), METH_FASTCALL, _curses_echo__doc__},
 
-static PyObject *
-_curses_echo_impl(PyObject *module, int flag);
+static TyObject *
+_curses_echo_impl(TyObject *module, int flag);
 
-static PyObject *
-_curses_echo(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_echo(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int flag = 1;
 
-    if (!_PyArg_CheckPositional("echo", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("echo", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -2196,7 +2196,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_endwin__doc__,
+TyDoc_STRVAR(_curses_endwin__doc__,
 "endwin($module, /)\n"
 "--\n"
 "\n"
@@ -2205,16 +2205,16 @@ PyDoc_STRVAR(_curses_endwin__doc__,
 #define _CURSES_ENDWIN_METHODDEF    \
     {"endwin", (PyCFunction)_curses_endwin, METH_NOARGS, _curses_endwin__doc__},
 
-static PyObject *
-_curses_endwin_impl(PyObject *module);
+static TyObject *
+_curses_endwin_impl(TyObject *module);
 
-static PyObject *
-_curses_endwin(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_endwin(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_endwin_impl(module);
 }
 
-PyDoc_STRVAR(_curses_erasechar__doc__,
+TyDoc_STRVAR(_curses_erasechar__doc__,
 "erasechar($module, /)\n"
 "--\n"
 "\n"
@@ -2223,16 +2223,16 @@ PyDoc_STRVAR(_curses_erasechar__doc__,
 #define _CURSES_ERASECHAR_METHODDEF    \
     {"erasechar", (PyCFunction)_curses_erasechar, METH_NOARGS, _curses_erasechar__doc__},
 
-static PyObject *
-_curses_erasechar_impl(PyObject *module);
+static TyObject *
+_curses_erasechar_impl(TyObject *module);
 
-static PyObject *
-_curses_erasechar(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_erasechar(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_erasechar_impl(module);
 }
 
-PyDoc_STRVAR(_curses_flash__doc__,
+TyDoc_STRVAR(_curses_flash__doc__,
 "flash($module, /)\n"
 "--\n"
 "\n"
@@ -2243,16 +2243,16 @@ PyDoc_STRVAR(_curses_flash__doc__,
 #define _CURSES_FLASH_METHODDEF    \
     {"flash", (PyCFunction)_curses_flash, METH_NOARGS, _curses_flash__doc__},
 
-static PyObject *
-_curses_flash_impl(PyObject *module);
+static TyObject *
+_curses_flash_impl(TyObject *module);
 
-static PyObject *
-_curses_flash(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_flash(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_flash_impl(module);
 }
 
-PyDoc_STRVAR(_curses_flushinp__doc__,
+TyDoc_STRVAR(_curses_flushinp__doc__,
 "flushinp($module, /)\n"
 "--\n"
 "\n"
@@ -2264,18 +2264,18 @@ PyDoc_STRVAR(_curses_flushinp__doc__,
 #define _CURSES_FLUSHINP_METHODDEF    \
     {"flushinp", (PyCFunction)_curses_flushinp, METH_NOARGS, _curses_flushinp__doc__},
 
-static PyObject *
-_curses_flushinp_impl(PyObject *module);
+static TyObject *
+_curses_flushinp_impl(TyObject *module);
 
-static PyObject *
-_curses_flushinp(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_flushinp(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_flushinp_impl(module);
 }
 
 #if defined(getsyx)
 
-PyDoc_STRVAR(_curses_getsyx__doc__,
+TyDoc_STRVAR(_curses_getsyx__doc__,
 "getsyx($module, /)\n"
 "--\n"
 "\n"
@@ -2286,11 +2286,11 @@ PyDoc_STRVAR(_curses_getsyx__doc__,
 #define _CURSES_GETSYX_METHODDEF    \
     {"getsyx", (PyCFunction)_curses_getsyx, METH_NOARGS, _curses_getsyx__doc__},
 
-static PyObject *
-_curses_getsyx_impl(PyObject *module);
+static TyObject *
+_curses_getsyx_impl(TyObject *module);
 
-static PyObject *
-_curses_getsyx(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_getsyx(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_getsyx_impl(module);
 }
@@ -2299,7 +2299,7 @@ _curses_getsyx(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_getmouse__doc__,
+TyDoc_STRVAR(_curses_getmouse__doc__,
 "getmouse($module, /)\n"
 "--\n"
 "\n"
@@ -2311,11 +2311,11 @@ PyDoc_STRVAR(_curses_getmouse__doc__,
 #define _CURSES_GETMOUSE_METHODDEF    \
     {"getmouse", (PyCFunction)_curses_getmouse, METH_NOARGS, _curses_getmouse__doc__},
 
-static PyObject *
-_curses_getmouse_impl(PyObject *module);
+static TyObject *
+_curses_getmouse_impl(TyObject *module);
 
-static PyObject *
-_curses_getmouse(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_getmouse(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_getmouse_impl(module);
 }
@@ -2324,7 +2324,7 @@ _curses_getmouse(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_ungetmouse__doc__,
+TyDoc_STRVAR(_curses_ungetmouse__doc__,
 "ungetmouse($module, id, x, y, z, bstate, /)\n"
 "--\n"
 "\n"
@@ -2335,35 +2335,35 @@ PyDoc_STRVAR(_curses_ungetmouse__doc__,
 #define _CURSES_UNGETMOUSE_METHODDEF    \
     {"ungetmouse", _PyCFunction_CAST(_curses_ungetmouse), METH_FASTCALL, _curses_ungetmouse__doc__},
 
-static PyObject *
-_curses_ungetmouse_impl(PyObject *module, short id, int x, int y, int z,
+static TyObject *
+_curses_ungetmouse_impl(TyObject *module, short id, int x, int y, int z,
                         unsigned long bstate);
 
-static PyObject *
-_curses_ungetmouse(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_ungetmouse(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     short id;
     int x;
     int y;
     int z;
     unsigned long bstate;
 
-    if (!_PyArg_CheckPositional("ungetmouse", nargs, 5, 5)) {
+    if (!_TyArg_CheckPositional("ungetmouse", nargs, 5, 5)) {
         goto exit;
     }
     {
-        long ival = PyLong_AsLong(args[0]);
-        if (ival == -1 && PyErr_Occurred()) {
+        long ival = TyLong_AsLong(args[0]);
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         else if (ival < SHRT_MIN) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is less than minimum");
             goto exit;
         }
         else if (ival > SHRT_MAX) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is greater than maximum");
             goto exit;
         }
@@ -2371,23 +2371,23 @@ _curses_ungetmouse(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
             id = (short) ival;
         }
     }
-    x = PyLong_AsInt(args[1]);
-    if (x == -1 && PyErr_Occurred()) {
+    x = TyLong_AsInt(args[1]);
+    if (x == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    y = PyLong_AsInt(args[2]);
-    if (y == -1 && PyErr_Occurred()) {
+    y = TyLong_AsInt(args[2]);
+    if (y == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    z = PyLong_AsInt(args[3]);
-    if (z == -1 && PyErr_Occurred()) {
+    z = TyLong_AsInt(args[3]);
+    if (z == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!PyIndex_Check(args[4])) {
-        _PyArg_BadArgument("ungetmouse", "argument 5", "int", args[4]);
+        _TyArg_BadArgument("ungetmouse", "argument 5", "int", args[4]);
         goto exit;
     }
-    bstate = PyLong_AsUnsignedLongMask(args[4]);
+    bstate = TyLong_AsUnsignedLongMask(args[4]);
     return_value = _curses_ungetmouse_impl(module, id, x, y, z, bstate);
 
 exit:
@@ -2396,7 +2396,7 @@ exit:
 
 #endif /* defined(NCURSES_MOUSE_VERSION) */
 
-PyDoc_STRVAR(_curses_getwin__doc__,
+TyDoc_STRVAR(_curses_getwin__doc__,
 "getwin($module, file, /)\n"
 "--\n"
 "\n"
@@ -2408,7 +2408,7 @@ PyDoc_STRVAR(_curses_getwin__doc__,
 #define _CURSES_GETWIN_METHODDEF    \
     {"getwin", (PyCFunction)_curses_getwin, METH_O, _curses_getwin__doc__},
 
-PyDoc_STRVAR(_curses_halfdelay__doc__,
+TyDoc_STRVAR(_curses_halfdelay__doc__,
 "halfdelay($module, tenths, /)\n"
 "--\n"
 "\n"
@@ -2422,27 +2422,27 @@ PyDoc_STRVAR(_curses_halfdelay__doc__,
 #define _CURSES_HALFDELAY_METHODDEF    \
     {"halfdelay", (PyCFunction)_curses_halfdelay, METH_O, _curses_halfdelay__doc__},
 
-static PyObject *
-_curses_halfdelay_impl(PyObject *module, unsigned char tenths);
+static TyObject *
+_curses_halfdelay_impl(TyObject *module, unsigned char tenths);
 
-static PyObject *
-_curses_halfdelay(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_halfdelay(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned char tenths;
 
     {
-        long ival = PyLong_AsLong(arg);
-        if (ival == -1 && PyErr_Occurred()) {
+        long ival = TyLong_AsLong(arg);
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         else if (ival < 0) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "unsigned byte integer is less than minimum");
             goto exit;
         }
         else if (ival > UCHAR_MAX) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "unsigned byte integer is greater than maximum");
             goto exit;
         }
@@ -2456,7 +2456,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_has_colors__doc__,
+TyDoc_STRVAR(_curses_has_colors__doc__,
 "has_colors($module, /)\n"
 "--\n"
 "\n"
@@ -2465,16 +2465,16 @@ PyDoc_STRVAR(_curses_has_colors__doc__,
 #define _CURSES_HAS_COLORS_METHODDEF    \
     {"has_colors", (PyCFunction)_curses_has_colors, METH_NOARGS, _curses_has_colors__doc__},
 
-static PyObject *
-_curses_has_colors_impl(PyObject *module);
+static TyObject *
+_curses_has_colors_impl(TyObject *module);
 
-static PyObject *
-_curses_has_colors(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_has_colors(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_has_colors_impl(module);
 }
 
-PyDoc_STRVAR(_curses_has_ic__doc__,
+TyDoc_STRVAR(_curses_has_ic__doc__,
 "has_ic($module, /)\n"
 "--\n"
 "\n"
@@ -2483,16 +2483,16 @@ PyDoc_STRVAR(_curses_has_ic__doc__,
 #define _CURSES_HAS_IC_METHODDEF    \
     {"has_ic", (PyCFunction)_curses_has_ic, METH_NOARGS, _curses_has_ic__doc__},
 
-static PyObject *
-_curses_has_ic_impl(PyObject *module);
+static TyObject *
+_curses_has_ic_impl(TyObject *module);
 
-static PyObject *
-_curses_has_ic(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_has_ic(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_has_ic_impl(module);
 }
 
-PyDoc_STRVAR(_curses_has_il__doc__,
+TyDoc_STRVAR(_curses_has_il__doc__,
 "has_il($module, /)\n"
 "--\n"
 "\n"
@@ -2501,18 +2501,18 @@ PyDoc_STRVAR(_curses_has_il__doc__,
 #define _CURSES_HAS_IL_METHODDEF    \
     {"has_il", (PyCFunction)_curses_has_il, METH_NOARGS, _curses_has_il__doc__},
 
-static PyObject *
-_curses_has_il_impl(PyObject *module);
+static TyObject *
+_curses_has_il_impl(TyObject *module);
 
-static PyObject *
-_curses_has_il(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_has_il(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_has_il_impl(module);
 }
 
 #if defined(HAVE_CURSES_HAS_KEY)
 
-PyDoc_STRVAR(_curses_has_key__doc__,
+TyDoc_STRVAR(_curses_has_key__doc__,
 "has_key($module, key, /)\n"
 "--\n"
 "\n"
@@ -2524,17 +2524,17 @@ PyDoc_STRVAR(_curses_has_key__doc__,
 #define _CURSES_HAS_KEY_METHODDEF    \
     {"has_key", (PyCFunction)_curses_has_key, METH_O, _curses_has_key__doc__},
 
-static PyObject *
-_curses_has_key_impl(PyObject *module, int key);
+static TyObject *
+_curses_has_key_impl(TyObject *module, int key);
 
-static PyObject *
-_curses_has_key(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_has_key(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int key;
 
-    key = PyLong_AsInt(arg);
-    if (key == -1 && PyErr_Occurred()) {
+    key = TyLong_AsInt(arg);
+    if (key == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_has_key_impl(module, key);
@@ -2545,7 +2545,7 @@ exit:
 
 #endif /* defined(HAVE_CURSES_HAS_KEY) */
 
-PyDoc_STRVAR(_curses_init_color__doc__,
+TyDoc_STRVAR(_curses_init_color__doc__,
 "init_color($module, color_number, r, g, b, /)\n"
 "--\n"
 "\n"
@@ -2567,20 +2567,20 @@ PyDoc_STRVAR(_curses_init_color__doc__,
 #define _CURSES_INIT_COLOR_METHODDEF    \
     {"init_color", _PyCFunction_CAST(_curses_init_color), METH_FASTCALL, _curses_init_color__doc__},
 
-static PyObject *
-_curses_init_color_impl(PyObject *module, int color_number, short r, short g,
+static TyObject *
+_curses_init_color_impl(TyObject *module, int color_number, short r, short g,
                         short b);
 
-static PyObject *
-_curses_init_color(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_init_color(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int color_number;
     short r;
     short g;
     short b;
 
-    if (!_PyArg_CheckPositional("init_color", nargs, 4, 4)) {
+    if (!_TyArg_CheckPositional("init_color", nargs, 4, 4)) {
         goto exit;
     }
     if (!color_converter(args[0], &color_number)) {
@@ -2601,7 +2601,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_init_pair__doc__,
+TyDoc_STRVAR(_curses_init_pair__doc__,
 "init_pair($module, pair_number, fg, bg, /)\n"
 "--\n"
 "\n"
@@ -2620,18 +2620,18 @@ PyDoc_STRVAR(_curses_init_pair__doc__,
 #define _CURSES_INIT_PAIR_METHODDEF    \
     {"init_pair", _PyCFunction_CAST(_curses_init_pair), METH_FASTCALL, _curses_init_pair__doc__},
 
-static PyObject *
-_curses_init_pair_impl(PyObject *module, int pair_number, int fg, int bg);
+static TyObject *
+_curses_init_pair_impl(TyObject *module, int pair_number, int fg, int bg);
 
-static PyObject *
-_curses_init_pair(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_init_pair(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int pair_number;
     int fg;
     int bg;
 
-    if (!_PyArg_CheckPositional("init_pair", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("init_pair", nargs, 3, 3)) {
         goto exit;
     }
     if (!pair_converter(args[0], &pair_number)) {
@@ -2649,7 +2649,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_initscr__doc__,
+TyDoc_STRVAR(_curses_initscr__doc__,
 "initscr($module, /)\n"
 "--\n"
 "\n"
@@ -2660,16 +2660,16 @@ PyDoc_STRVAR(_curses_initscr__doc__,
 #define _CURSES_INITSCR_METHODDEF    \
     {"initscr", (PyCFunction)_curses_initscr, METH_NOARGS, _curses_initscr__doc__},
 
-static PyObject *
-_curses_initscr_impl(PyObject *module);
+static TyObject *
+_curses_initscr_impl(TyObject *module);
 
-static PyObject *
-_curses_initscr(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_initscr(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_initscr_impl(module);
 }
 
-PyDoc_STRVAR(_curses_setupterm__doc__,
+TyDoc_STRVAR(_curses_setupterm__doc__,
 "setupterm($module, /, term=None, fd=-1)\n"
 "--\n"
 "\n"
@@ -2685,46 +2685,46 @@ PyDoc_STRVAR(_curses_setupterm__doc__,
 #define _CURSES_SETUPTERM_METHODDEF    \
     {"setupterm", _PyCFunction_CAST(_curses_setupterm), METH_FASTCALL|METH_KEYWORDS, _curses_setupterm__doc__},
 
-static PyObject *
-_curses_setupterm_impl(PyObject *module, const char *term, int fd);
+static TyObject *
+_curses_setupterm_impl(TyObject *module, const char *term, int fd);
 
-static PyObject *
-_curses_setupterm(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_curses_setupterm(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(term), &_Py_ID(fd), },
+        .ob_item = { &_Ty_ID(term), &_Ty_ID(fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"term", "fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "setupterm",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     const char *term = NULL;
     int fd = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2733,30 +2733,30 @@ _curses_setupterm(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyO
         goto skip_optional_pos;
     }
     if (args[0]) {
-        if (args[0] == Py_None) {
+        if (args[0] == Ty_None) {
             term = NULL;
         }
-        else if (PyUnicode_Check(args[0])) {
-            Py_ssize_t term_length;
-            term = PyUnicode_AsUTF8AndSize(args[0], &term_length);
+        else if (TyUnicode_Check(args[0])) {
+            Ty_ssize_t term_length;
+            term = TyUnicode_AsUTF8AndSize(args[0], &term_length);
             if (term == NULL) {
                 goto exit;
             }
             if (strlen(term) != (size_t)term_length) {
-                PyErr_SetString(PyExc_ValueError, "embedded null character");
+                TyErr_SetString(TyExc_ValueError, "embedded null character");
                 goto exit;
             }
         }
         else {
-            _PyArg_BadArgument("setupterm", "argument 'term'", "str or None", args[0]);
+            _TyArg_BadArgument("setupterm", "argument 'term'", "str or None", args[0]);
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    fd = PyLong_AsInt(args[1]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[1]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -2768,7 +2768,7 @@ exit:
 
 #if (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102)
 
-PyDoc_STRVAR(_curses_get_escdelay__doc__,
+TyDoc_STRVAR(_curses_get_escdelay__doc__,
 "get_escdelay($module, /)\n"
 "--\n"
 "\n"
@@ -2781,11 +2781,11 @@ PyDoc_STRVAR(_curses_get_escdelay__doc__,
 #define _CURSES_GET_ESCDELAY_METHODDEF    \
     {"get_escdelay", (PyCFunction)_curses_get_escdelay, METH_NOARGS, _curses_get_escdelay__doc__},
 
-static PyObject *
-_curses_get_escdelay_impl(PyObject *module);
+static TyObject *
+_curses_get_escdelay_impl(TyObject *module);
 
-static PyObject *
-_curses_get_escdelay(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_get_escdelay(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_get_escdelay_impl(module);
 }
@@ -2794,7 +2794,7 @@ _curses_get_escdelay(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102)
 
-PyDoc_STRVAR(_curses_set_escdelay__doc__,
+TyDoc_STRVAR(_curses_set_escdelay__doc__,
 "set_escdelay($module, ms, /)\n"
 "--\n"
 "\n"
@@ -2810,17 +2810,17 @@ PyDoc_STRVAR(_curses_set_escdelay__doc__,
 #define _CURSES_SET_ESCDELAY_METHODDEF    \
     {"set_escdelay", (PyCFunction)_curses_set_escdelay, METH_O, _curses_set_escdelay__doc__},
 
-static PyObject *
-_curses_set_escdelay_impl(PyObject *module, int ms);
+static TyObject *
+_curses_set_escdelay_impl(TyObject *module, int ms);
 
-static PyObject *
-_curses_set_escdelay(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_set_escdelay(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int ms;
 
-    ms = PyLong_AsInt(arg);
-    if (ms == -1 && PyErr_Occurred()) {
+    ms = TyLong_AsInt(arg);
+    if (ms == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_set_escdelay_impl(module, ms);
@@ -2833,7 +2833,7 @@ exit:
 
 #if (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102)
 
-PyDoc_STRVAR(_curses_get_tabsize__doc__,
+TyDoc_STRVAR(_curses_get_tabsize__doc__,
 "get_tabsize($module, /)\n"
 "--\n"
 "\n"
@@ -2845,11 +2845,11 @@ PyDoc_STRVAR(_curses_get_tabsize__doc__,
 #define _CURSES_GET_TABSIZE_METHODDEF    \
     {"get_tabsize", (PyCFunction)_curses_get_tabsize, METH_NOARGS, _curses_get_tabsize__doc__},
 
-static PyObject *
-_curses_get_tabsize_impl(PyObject *module);
+static TyObject *
+_curses_get_tabsize_impl(TyObject *module);
 
-static PyObject *
-_curses_get_tabsize(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_get_tabsize(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_get_tabsize_impl(module);
 }
@@ -2858,7 +2858,7 @@ _curses_get_tabsize(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102)
 
-PyDoc_STRVAR(_curses_set_tabsize__doc__,
+TyDoc_STRVAR(_curses_set_tabsize__doc__,
 "set_tabsize($module, size, /)\n"
 "--\n"
 "\n"
@@ -2873,17 +2873,17 @@ PyDoc_STRVAR(_curses_set_tabsize__doc__,
 #define _CURSES_SET_TABSIZE_METHODDEF    \
     {"set_tabsize", (PyCFunction)_curses_set_tabsize, METH_O, _curses_set_tabsize__doc__},
 
-static PyObject *
-_curses_set_tabsize_impl(PyObject *module, int size);
+static TyObject *
+_curses_set_tabsize_impl(TyObject *module, int size);
 
-static PyObject *
-_curses_set_tabsize(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_set_tabsize(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int size;
 
-    size = PyLong_AsInt(arg);
-    if (size == -1 && PyErr_Occurred()) {
+    size = TyLong_AsInt(arg);
+    if (size == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_set_tabsize_impl(module, size);
@@ -2894,7 +2894,7 @@ exit:
 
 #endif /* (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102) */
 
-PyDoc_STRVAR(_curses_intrflush__doc__,
+TyDoc_STRVAR(_curses_intrflush__doc__,
 "intrflush($module, flag, /)\n"
 "--\n"
 "\n");
@@ -2902,13 +2902,13 @@ PyDoc_STRVAR(_curses_intrflush__doc__,
 #define _CURSES_INTRFLUSH_METHODDEF    \
     {"intrflush", (PyCFunction)_curses_intrflush, METH_O, _curses_intrflush__doc__},
 
-static PyObject *
-_curses_intrflush_impl(PyObject *module, int flag);
+static TyObject *
+_curses_intrflush_impl(TyObject *module, int flag);
 
-static PyObject *
-_curses_intrflush(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_intrflush(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int flag;
 
     flag = PyObject_IsTrue(arg);
@@ -2921,7 +2921,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_isendwin__doc__,
+TyDoc_STRVAR(_curses_isendwin__doc__,
 "isendwin($module, /)\n"
 "--\n"
 "\n"
@@ -2930,18 +2930,18 @@ PyDoc_STRVAR(_curses_isendwin__doc__,
 #define _CURSES_ISENDWIN_METHODDEF    \
     {"isendwin", (PyCFunction)_curses_isendwin, METH_NOARGS, _curses_isendwin__doc__},
 
-static PyObject *
-_curses_isendwin_impl(PyObject *module);
+static TyObject *
+_curses_isendwin_impl(TyObject *module);
 
-static PyObject *
-_curses_isendwin(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_isendwin(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_isendwin_impl(module);
 }
 
 #if defined(HAVE_CURSES_IS_TERM_RESIZED)
 
-PyDoc_STRVAR(_curses_is_term_resized__doc__,
+TyDoc_STRVAR(_curses_is_term_resized__doc__,
 "is_term_resized($module, nlines, ncols, /)\n"
 "--\n"
 "\n"
@@ -2955,25 +2955,25 @@ PyDoc_STRVAR(_curses_is_term_resized__doc__,
 #define _CURSES_IS_TERM_RESIZED_METHODDEF    \
     {"is_term_resized", _PyCFunction_CAST(_curses_is_term_resized), METH_FASTCALL, _curses_is_term_resized__doc__},
 
-static PyObject *
-_curses_is_term_resized_impl(PyObject *module, int nlines, int ncols);
+static TyObject *
+_curses_is_term_resized_impl(TyObject *module, int nlines, int ncols);
 
-static PyObject *
-_curses_is_term_resized(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_is_term_resized(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int nlines;
     int ncols;
 
-    if (!_PyArg_CheckPositional("is_term_resized", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("is_term_resized", nargs, 2, 2)) {
         goto exit;
     }
-    nlines = PyLong_AsInt(args[0]);
-    if (nlines == -1 && PyErr_Occurred()) {
+    nlines = TyLong_AsInt(args[0]);
+    if (nlines == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    ncols = PyLong_AsInt(args[1]);
-    if (ncols == -1 && PyErr_Occurred()) {
+    ncols = TyLong_AsInt(args[1]);
+    if (ncols == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_is_term_resized_impl(module, nlines, ncols);
@@ -2984,7 +2984,7 @@ exit:
 
 #endif /* defined(HAVE_CURSES_IS_TERM_RESIZED) */
 
-PyDoc_STRVAR(_curses_keyname__doc__,
+TyDoc_STRVAR(_curses_keyname__doc__,
 "keyname($module, key, /)\n"
 "--\n"
 "\n"
@@ -2996,17 +2996,17 @@ PyDoc_STRVAR(_curses_keyname__doc__,
 #define _CURSES_KEYNAME_METHODDEF    \
     {"keyname", (PyCFunction)_curses_keyname, METH_O, _curses_keyname__doc__},
 
-static PyObject *
-_curses_keyname_impl(PyObject *module, int key);
+static TyObject *
+_curses_keyname_impl(TyObject *module, int key);
 
-static PyObject *
-_curses_keyname(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_keyname(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int key;
 
-    key = PyLong_AsInt(arg);
-    if (key == -1 && PyErr_Occurred()) {
+    key = TyLong_AsInt(arg);
+    if (key == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_keyname_impl(module, key);
@@ -3015,7 +3015,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_killchar__doc__,
+TyDoc_STRVAR(_curses_killchar__doc__,
 "killchar($module, /)\n"
 "--\n"
 "\n"
@@ -3024,16 +3024,16 @@ PyDoc_STRVAR(_curses_killchar__doc__,
 #define _CURSES_KILLCHAR_METHODDEF    \
     {"killchar", (PyCFunction)_curses_killchar, METH_NOARGS, _curses_killchar__doc__},
 
-static PyObject *
-_curses_killchar_impl(PyObject *module);
+static TyObject *
+_curses_killchar_impl(TyObject *module);
 
-static PyObject *
-_curses_killchar(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_killchar(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_killchar_impl(module);
 }
 
-PyDoc_STRVAR(_curses_longname__doc__,
+TyDoc_STRVAR(_curses_longname__doc__,
 "longname($module, /)\n"
 "--\n"
 "\n"
@@ -3045,16 +3045,16 @@ PyDoc_STRVAR(_curses_longname__doc__,
 #define _CURSES_LONGNAME_METHODDEF    \
     {"longname", (PyCFunction)_curses_longname, METH_NOARGS, _curses_longname__doc__},
 
-static PyObject *
-_curses_longname_impl(PyObject *module);
+static TyObject *
+_curses_longname_impl(TyObject *module);
 
-static PyObject *
-_curses_longname(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_longname(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_longname_impl(module);
 }
 
-PyDoc_STRVAR(_curses_meta__doc__,
+TyDoc_STRVAR(_curses_meta__doc__,
 "meta($module, yes, /)\n"
 "--\n"
 "\n"
@@ -3066,13 +3066,13 @@ PyDoc_STRVAR(_curses_meta__doc__,
 #define _CURSES_META_METHODDEF    \
     {"meta", (PyCFunction)_curses_meta, METH_O, _curses_meta__doc__},
 
-static PyObject *
-_curses_meta_impl(PyObject *module, int yes);
+static TyObject *
+_curses_meta_impl(TyObject *module, int yes);
 
-static PyObject *
-_curses_meta(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_meta(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int yes;
 
     yes = PyObject_IsTrue(arg);
@@ -3087,7 +3087,7 @@ exit:
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_mouseinterval__doc__,
+TyDoc_STRVAR(_curses_mouseinterval__doc__,
 "mouseinterval($module, interval, /)\n"
 "--\n"
 "\n"
@@ -3103,17 +3103,17 @@ PyDoc_STRVAR(_curses_mouseinterval__doc__,
 #define _CURSES_MOUSEINTERVAL_METHODDEF    \
     {"mouseinterval", (PyCFunction)_curses_mouseinterval, METH_O, _curses_mouseinterval__doc__},
 
-static PyObject *
-_curses_mouseinterval_impl(PyObject *module, int interval);
+static TyObject *
+_curses_mouseinterval_impl(TyObject *module, int interval);
 
-static PyObject *
-_curses_mouseinterval(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_mouseinterval(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int interval;
 
-    interval = PyLong_AsInt(arg);
-    if (interval == -1 && PyErr_Occurred()) {
+    interval = TyLong_AsInt(arg);
+    if (interval == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_mouseinterval_impl(module, interval);
@@ -3126,7 +3126,7 @@ exit:
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_mousemask__doc__,
+TyDoc_STRVAR(_curses_mousemask__doc__,
 "mousemask($module, newmask, /)\n"
 "--\n"
 "\n"
@@ -3140,20 +3140,20 @@ PyDoc_STRVAR(_curses_mousemask__doc__,
 #define _CURSES_MOUSEMASK_METHODDEF    \
     {"mousemask", (PyCFunction)_curses_mousemask, METH_O, _curses_mousemask__doc__},
 
-static PyObject *
-_curses_mousemask_impl(PyObject *module, unsigned long newmask);
+static TyObject *
+_curses_mousemask_impl(TyObject *module, unsigned long newmask);
 
-static PyObject *
-_curses_mousemask(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_mousemask(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned long newmask;
 
     if (!PyIndex_Check(arg)) {
-        _PyArg_BadArgument("mousemask", "argument", "int", arg);
+        _TyArg_BadArgument("mousemask", "argument", "int", arg);
         goto exit;
     }
-    newmask = PyLong_AsUnsignedLongMask(arg);
+    newmask = TyLong_AsUnsignedLongMask(arg);
     return_value = _curses_mousemask_impl(module, newmask);
 
 exit:
@@ -3162,7 +3162,7 @@ exit:
 
 #endif /* defined(NCURSES_MOUSE_VERSION) */
 
-PyDoc_STRVAR(_curses_napms__doc__,
+TyDoc_STRVAR(_curses_napms__doc__,
 "napms($module, ms, /)\n"
 "--\n"
 "\n"
@@ -3175,30 +3175,30 @@ PyDoc_STRVAR(_curses_napms__doc__,
     {"napms", (PyCFunction)_curses_napms, METH_O, _curses_napms__doc__},
 
 static int
-_curses_napms_impl(PyObject *module, int ms);
+_curses_napms_impl(TyObject *module, int ms);
 
-static PyObject *
-_curses_napms(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_napms(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int ms;
     int _return_value;
 
-    ms = PyLong_AsInt(arg);
-    if (ms == -1 && PyErr_Occurred()) {
+    ms = TyLong_AsInt(arg);
+    if (ms == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = _curses_napms_impl(module, ms);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_newpad__doc__,
+TyDoc_STRVAR(_curses_newpad__doc__,
 "newpad($module, nlines, ncols, /)\n"
 "--\n"
 "\n"
@@ -3212,25 +3212,25 @@ PyDoc_STRVAR(_curses_newpad__doc__,
 #define _CURSES_NEWPAD_METHODDEF    \
     {"newpad", _PyCFunction_CAST(_curses_newpad), METH_FASTCALL, _curses_newpad__doc__},
 
-static PyObject *
-_curses_newpad_impl(PyObject *module, int nlines, int ncols);
+static TyObject *
+_curses_newpad_impl(TyObject *module, int nlines, int ncols);
 
-static PyObject *
-_curses_newpad(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_newpad(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int nlines;
     int ncols;
 
-    if (!_PyArg_CheckPositional("newpad", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("newpad", nargs, 2, 2)) {
         goto exit;
     }
-    nlines = PyLong_AsInt(args[0]);
-    if (nlines == -1 && PyErr_Occurred()) {
+    nlines = TyLong_AsInt(args[0]);
+    if (nlines == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    ncols = PyLong_AsInt(args[1]);
-    if (ncols == -1 && PyErr_Occurred()) {
+    ncols = TyLong_AsInt(args[1]);
+    if (ncols == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_newpad_impl(module, nlines, ncols);
@@ -3239,7 +3239,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_newwin__doc__,
+TyDoc_STRVAR(_curses_newwin__doc__,
 "newwin(nlines, ncols, [begin_y=0, begin_x=0])\n"
 "Return a new window.\n"
 "\n"
@@ -3258,34 +3258,34 @@ PyDoc_STRVAR(_curses_newwin__doc__,
 #define _CURSES_NEWWIN_METHODDEF    \
     {"newwin", (PyCFunction)_curses_newwin, METH_VARARGS, _curses_newwin__doc__},
 
-static PyObject *
-_curses_newwin_impl(PyObject *module, int nlines, int ncols,
+static TyObject *
+_curses_newwin_impl(TyObject *module, int nlines, int ncols,
                     int group_right_1, int begin_y, int begin_x);
 
-static PyObject *
-_curses_newwin(PyObject *module, PyObject *args)
+static TyObject *
+_curses_newwin(TyObject *module, TyObject *args)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int nlines;
     int ncols;
     int group_right_1 = 0;
     int begin_y = 0;
     int begin_x = 0;
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 2:
-            if (!PyArg_ParseTuple(args, "ii:newwin", &nlines, &ncols)) {
+            if (!TyArg_ParseTuple(args, "ii:newwin", &nlines, &ncols)) {
                 goto exit;
             }
             break;
         case 4:
-            if (!PyArg_ParseTuple(args, "iiii:newwin", &nlines, &ncols, &begin_y, &begin_x)) {
+            if (!TyArg_ParseTuple(args, "iiii:newwin", &nlines, &ncols, &begin_y, &begin_x)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_curses.newwin requires 2 to 4 arguments");
+            TyErr_SetString(TyExc_TypeError, "_curses.newwin requires 2 to 4 arguments");
             goto exit;
     }
     return_value = _curses_newwin_impl(module, nlines, ncols, group_right_1, begin_y, begin_x);
@@ -3294,7 +3294,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_nl__doc__,
+TyDoc_STRVAR(_curses_nl__doc__,
 "nl($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -3309,16 +3309,16 @@ PyDoc_STRVAR(_curses_nl__doc__,
 #define _CURSES_NL_METHODDEF    \
     {"nl", _PyCFunction_CAST(_curses_nl), METH_FASTCALL, _curses_nl__doc__},
 
-static PyObject *
-_curses_nl_impl(PyObject *module, int flag);
+static TyObject *
+_curses_nl_impl(TyObject *module, int flag);
 
-static PyObject *
-_curses_nl(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_nl(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int flag = 1;
 
-    if (!_PyArg_CheckPositional("nl", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("nl", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -3335,7 +3335,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_nocbreak__doc__,
+TyDoc_STRVAR(_curses_nocbreak__doc__,
 "nocbreak($module, /)\n"
 "--\n"
 "\n"
@@ -3346,16 +3346,16 @@ PyDoc_STRVAR(_curses_nocbreak__doc__,
 #define _CURSES_NOCBREAK_METHODDEF    \
     {"nocbreak", (PyCFunction)_curses_nocbreak, METH_NOARGS, _curses_nocbreak__doc__},
 
-static PyObject *
-_curses_nocbreak_impl(PyObject *module);
+static TyObject *
+_curses_nocbreak_impl(TyObject *module);
 
-static PyObject *
-_curses_nocbreak(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_nocbreak(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_nocbreak_impl(module);
 }
 
-PyDoc_STRVAR(_curses_noecho__doc__,
+TyDoc_STRVAR(_curses_noecho__doc__,
 "noecho($module, /)\n"
 "--\n"
 "\n"
@@ -3366,16 +3366,16 @@ PyDoc_STRVAR(_curses_noecho__doc__,
 #define _CURSES_NOECHO_METHODDEF    \
     {"noecho", (PyCFunction)_curses_noecho, METH_NOARGS, _curses_noecho__doc__},
 
-static PyObject *
-_curses_noecho_impl(PyObject *module);
+static TyObject *
+_curses_noecho_impl(TyObject *module);
 
-static PyObject *
-_curses_noecho(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_noecho(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_noecho_impl(module);
 }
 
-PyDoc_STRVAR(_curses_nonl__doc__,
+TyDoc_STRVAR(_curses_nonl__doc__,
 "nonl($module, /)\n"
 "--\n"
 "\n"
@@ -3387,16 +3387,16 @@ PyDoc_STRVAR(_curses_nonl__doc__,
 #define _CURSES_NONL_METHODDEF    \
     {"nonl", (PyCFunction)_curses_nonl, METH_NOARGS, _curses_nonl__doc__},
 
-static PyObject *
-_curses_nonl_impl(PyObject *module);
+static TyObject *
+_curses_nonl_impl(TyObject *module);
 
-static PyObject *
-_curses_nonl(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_nonl(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_nonl_impl(module);
 }
 
-PyDoc_STRVAR(_curses_noqiflush__doc__,
+TyDoc_STRVAR(_curses_noqiflush__doc__,
 "noqiflush($module, /)\n"
 "--\n"
 "\n"
@@ -3408,16 +3408,16 @@ PyDoc_STRVAR(_curses_noqiflush__doc__,
 #define _CURSES_NOQIFLUSH_METHODDEF    \
     {"noqiflush", (PyCFunction)_curses_noqiflush, METH_NOARGS, _curses_noqiflush__doc__},
 
-static PyObject *
-_curses_noqiflush_impl(PyObject *module);
+static TyObject *
+_curses_noqiflush_impl(TyObject *module);
 
-static PyObject *
-_curses_noqiflush(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_noqiflush(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_noqiflush_impl(module);
 }
 
-PyDoc_STRVAR(_curses_noraw__doc__,
+TyDoc_STRVAR(_curses_noraw__doc__,
 "noraw($module, /)\n"
 "--\n"
 "\n"
@@ -3428,16 +3428,16 @@ PyDoc_STRVAR(_curses_noraw__doc__,
 #define _CURSES_NORAW_METHODDEF    \
     {"noraw", (PyCFunction)_curses_noraw, METH_NOARGS, _curses_noraw__doc__},
 
-static PyObject *
-_curses_noraw_impl(PyObject *module);
+static TyObject *
+_curses_noraw_impl(TyObject *module);
 
-static PyObject *
-_curses_noraw(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_noraw(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_noraw_impl(module);
 }
 
-PyDoc_STRVAR(_curses_pair_content__doc__,
+TyDoc_STRVAR(_curses_pair_content__doc__,
 "pair_content($module, pair_number, /)\n"
 "--\n"
 "\n"
@@ -3449,13 +3449,13 @@ PyDoc_STRVAR(_curses_pair_content__doc__,
 #define _CURSES_PAIR_CONTENT_METHODDEF    \
     {"pair_content", (PyCFunction)_curses_pair_content, METH_O, _curses_pair_content__doc__},
 
-static PyObject *
-_curses_pair_content_impl(PyObject *module, int pair_number);
+static TyObject *
+_curses_pair_content_impl(TyObject *module, int pair_number);
 
-static PyObject *
-_curses_pair_content(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_pair_content(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int pair_number;
 
     if (!pair_converter(arg, &pair_number)) {
@@ -3467,7 +3467,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_pair_number__doc__,
+TyDoc_STRVAR(_curses_pair_number__doc__,
 "pair_number($module, attr, /)\n"
 "--\n"
 "\n"
@@ -3478,17 +3478,17 @@ PyDoc_STRVAR(_curses_pair_number__doc__,
 #define _CURSES_PAIR_NUMBER_METHODDEF    \
     {"pair_number", (PyCFunction)_curses_pair_number, METH_O, _curses_pair_number__doc__},
 
-static PyObject *
-_curses_pair_number_impl(PyObject *module, int attr);
+static TyObject *
+_curses_pair_number_impl(TyObject *module, int attr);
 
-static PyObject *
-_curses_pair_number(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_pair_number(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int attr;
 
-    attr = PyLong_AsInt(arg);
-    if (attr == -1 && PyErr_Occurred()) {
+    attr = TyLong_AsInt(arg);
+    if (attr == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_pair_number_impl(module, attr);
@@ -3497,7 +3497,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_putp__doc__,
+TyDoc_STRVAR(_curses_putp__doc__,
 "putp($module, string, /)\n"
 "--\n"
 "\n"
@@ -3508,16 +3508,16 @@ PyDoc_STRVAR(_curses_putp__doc__,
 #define _CURSES_PUTP_METHODDEF    \
     {"putp", (PyCFunction)_curses_putp, METH_O, _curses_putp__doc__},
 
-static PyObject *
-_curses_putp_impl(PyObject *module, const char *string);
+static TyObject *
+_curses_putp_impl(TyObject *module, const char *string);
 
-static PyObject *
-_curses_putp(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_putp(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *string;
 
-    if (!PyArg_Parse(arg, "y:putp", &string)) {
+    if (!TyArg_Parse(arg, "y:putp", &string)) {
         goto exit;
     }
     return_value = _curses_putp_impl(module, string);
@@ -3526,7 +3526,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_qiflush__doc__,
+TyDoc_STRVAR(_curses_qiflush__doc__,
 "qiflush($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -3541,16 +3541,16 @@ PyDoc_STRVAR(_curses_qiflush__doc__,
 #define _CURSES_QIFLUSH_METHODDEF    \
     {"qiflush", _PyCFunction_CAST(_curses_qiflush), METH_FASTCALL, _curses_qiflush__doc__},
 
-static PyObject *
-_curses_qiflush_impl(PyObject *module, int flag);
+static TyObject *
+_curses_qiflush_impl(TyObject *module, int flag);
 
-static PyObject *
-_curses_qiflush(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_qiflush(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int flag = 1;
 
-    if (!_PyArg_CheckPositional("qiflush", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("qiflush", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -3569,7 +3569,7 @@ exit:
 
 #if (defined(HAVE_CURSES_RESIZETERM) || defined(HAVE_CURSES_RESIZE_TERM))
 
-PyDoc_STRVAR(_curses_update_lines_cols__doc__,
+TyDoc_STRVAR(_curses_update_lines_cols__doc__,
 "update_lines_cols($module, /)\n"
 "--\n"
 "\n");
@@ -3577,18 +3577,18 @@ PyDoc_STRVAR(_curses_update_lines_cols__doc__,
 #define _CURSES_UPDATE_LINES_COLS_METHODDEF    \
     {"update_lines_cols", (PyCFunction)_curses_update_lines_cols, METH_NOARGS, _curses_update_lines_cols__doc__},
 
-static PyObject *
-_curses_update_lines_cols_impl(PyObject *module);
+static TyObject *
+_curses_update_lines_cols_impl(TyObject *module);
 
-static PyObject *
-_curses_update_lines_cols(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_update_lines_cols(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_update_lines_cols_impl(module);
 }
 
 #endif /* (defined(HAVE_CURSES_RESIZETERM) || defined(HAVE_CURSES_RESIZE_TERM)) */
 
-PyDoc_STRVAR(_curses_raw__doc__,
+TyDoc_STRVAR(_curses_raw__doc__,
 "raw($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -3604,16 +3604,16 @@ PyDoc_STRVAR(_curses_raw__doc__,
 #define _CURSES_RAW_METHODDEF    \
     {"raw", _PyCFunction_CAST(_curses_raw), METH_FASTCALL, _curses_raw__doc__},
 
-static PyObject *
-_curses_raw_impl(PyObject *module, int flag);
+static TyObject *
+_curses_raw_impl(TyObject *module, int flag);
 
-static PyObject *
-_curses_raw(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_raw(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int flag = 1;
 
-    if (!_PyArg_CheckPositional("raw", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("raw", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -3630,7 +3630,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_reset_prog_mode__doc__,
+TyDoc_STRVAR(_curses_reset_prog_mode__doc__,
 "reset_prog_mode($module, /)\n"
 "--\n"
 "\n"
@@ -3639,16 +3639,16 @@ PyDoc_STRVAR(_curses_reset_prog_mode__doc__,
 #define _CURSES_RESET_PROG_MODE_METHODDEF    \
     {"reset_prog_mode", (PyCFunction)_curses_reset_prog_mode, METH_NOARGS, _curses_reset_prog_mode__doc__},
 
-static PyObject *
-_curses_reset_prog_mode_impl(PyObject *module);
+static TyObject *
+_curses_reset_prog_mode_impl(TyObject *module);
 
-static PyObject *
-_curses_reset_prog_mode(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_reset_prog_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_reset_prog_mode_impl(module);
 }
 
-PyDoc_STRVAR(_curses_reset_shell_mode__doc__,
+TyDoc_STRVAR(_curses_reset_shell_mode__doc__,
 "reset_shell_mode($module, /)\n"
 "--\n"
 "\n"
@@ -3657,16 +3657,16 @@ PyDoc_STRVAR(_curses_reset_shell_mode__doc__,
 #define _CURSES_RESET_SHELL_MODE_METHODDEF    \
     {"reset_shell_mode", (PyCFunction)_curses_reset_shell_mode, METH_NOARGS, _curses_reset_shell_mode__doc__},
 
-static PyObject *
-_curses_reset_shell_mode_impl(PyObject *module);
+static TyObject *
+_curses_reset_shell_mode_impl(TyObject *module);
 
-static PyObject *
-_curses_reset_shell_mode(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_reset_shell_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_reset_shell_mode_impl(module);
 }
 
-PyDoc_STRVAR(_curses_resetty__doc__,
+TyDoc_STRVAR(_curses_resetty__doc__,
 "resetty($module, /)\n"
 "--\n"
 "\n"
@@ -3675,18 +3675,18 @@ PyDoc_STRVAR(_curses_resetty__doc__,
 #define _CURSES_RESETTY_METHODDEF    \
     {"resetty", (PyCFunction)_curses_resetty, METH_NOARGS, _curses_resetty__doc__},
 
-static PyObject *
-_curses_resetty_impl(PyObject *module);
+static TyObject *
+_curses_resetty_impl(TyObject *module);
 
-static PyObject *
-_curses_resetty(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_resetty(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_resetty_impl(module);
 }
 
 #if defined(HAVE_CURSES_RESIZETERM)
 
-PyDoc_STRVAR(_curses_resizeterm__doc__,
+TyDoc_STRVAR(_curses_resizeterm__doc__,
 "resizeterm($module, nlines, ncols, /)\n"
 "--\n"
 "\n"
@@ -3703,31 +3703,31 @@ PyDoc_STRVAR(_curses_resizeterm__doc__,
 #define _CURSES_RESIZETERM_METHODDEF    \
     {"resizeterm", _PyCFunction_CAST(_curses_resizeterm), METH_FASTCALL, _curses_resizeterm__doc__},
 
-static PyObject *
-_curses_resizeterm_impl(PyObject *module, short nlines, short ncols);
+static TyObject *
+_curses_resizeterm_impl(TyObject *module, short nlines, short ncols);
 
-static PyObject *
-_curses_resizeterm(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_resizeterm(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     short nlines;
     short ncols;
 
-    if (!_PyArg_CheckPositional("resizeterm", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("resizeterm", nargs, 2, 2)) {
         goto exit;
     }
     {
-        long ival = PyLong_AsLong(args[0]);
-        if (ival == -1 && PyErr_Occurred()) {
+        long ival = TyLong_AsLong(args[0]);
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         else if (ival < SHRT_MIN) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is less than minimum");
             goto exit;
         }
         else if (ival > SHRT_MAX) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is greater than maximum");
             goto exit;
         }
@@ -3736,17 +3736,17 @@ _curses_resizeterm(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
         }
     }
     {
-        long ival = PyLong_AsLong(args[1]);
-        if (ival == -1 && PyErr_Occurred()) {
+        long ival = TyLong_AsLong(args[1]);
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         else if (ival < SHRT_MIN) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is less than minimum");
             goto exit;
         }
         else if (ival > SHRT_MAX) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is greater than maximum");
             goto exit;
         }
@@ -3764,7 +3764,7 @@ exit:
 
 #if defined(HAVE_CURSES_RESIZE_TERM)
 
-PyDoc_STRVAR(_curses_resize_term__doc__,
+TyDoc_STRVAR(_curses_resize_term__doc__,
 "resize_term($module, nlines, ncols, /)\n"
 "--\n"
 "\n"
@@ -3784,31 +3784,31 @@ PyDoc_STRVAR(_curses_resize_term__doc__,
 #define _CURSES_RESIZE_TERM_METHODDEF    \
     {"resize_term", _PyCFunction_CAST(_curses_resize_term), METH_FASTCALL, _curses_resize_term__doc__},
 
-static PyObject *
-_curses_resize_term_impl(PyObject *module, short nlines, short ncols);
+static TyObject *
+_curses_resize_term_impl(TyObject *module, short nlines, short ncols);
 
-static PyObject *
-_curses_resize_term(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_resize_term(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     short nlines;
     short ncols;
 
-    if (!_PyArg_CheckPositional("resize_term", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("resize_term", nargs, 2, 2)) {
         goto exit;
     }
     {
-        long ival = PyLong_AsLong(args[0]);
-        if (ival == -1 && PyErr_Occurred()) {
+        long ival = TyLong_AsLong(args[0]);
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         else if (ival < SHRT_MIN) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is less than minimum");
             goto exit;
         }
         else if (ival > SHRT_MAX) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is greater than maximum");
             goto exit;
         }
@@ -3817,17 +3817,17 @@ _curses_resize_term(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
         }
     }
     {
-        long ival = PyLong_AsLong(args[1]);
-        if (ival == -1 && PyErr_Occurred()) {
+        long ival = TyLong_AsLong(args[1]);
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         else if (ival < SHRT_MIN) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is less than minimum");
             goto exit;
         }
         else if (ival > SHRT_MAX) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is greater than maximum");
             goto exit;
         }
@@ -3843,7 +3843,7 @@ exit:
 
 #endif /* defined(HAVE_CURSES_RESIZE_TERM) */
 
-PyDoc_STRVAR(_curses_savetty__doc__,
+TyDoc_STRVAR(_curses_savetty__doc__,
 "savetty($module, /)\n"
 "--\n"
 "\n"
@@ -3852,18 +3852,18 @@ PyDoc_STRVAR(_curses_savetty__doc__,
 #define _CURSES_SAVETTY_METHODDEF    \
     {"savetty", (PyCFunction)_curses_savetty, METH_NOARGS, _curses_savetty__doc__},
 
-static PyObject *
-_curses_savetty_impl(PyObject *module);
+static TyObject *
+_curses_savetty_impl(TyObject *module);
 
-static PyObject *
-_curses_savetty(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_savetty(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_savetty_impl(module);
 }
 
 #if defined(getsyx)
 
-PyDoc_STRVAR(_curses_setsyx__doc__,
+TyDoc_STRVAR(_curses_setsyx__doc__,
 "setsyx($module, y, x, /)\n"
 "--\n"
 "\n"
@@ -3879,25 +3879,25 @@ PyDoc_STRVAR(_curses_setsyx__doc__,
 #define _CURSES_SETSYX_METHODDEF    \
     {"setsyx", _PyCFunction_CAST(_curses_setsyx), METH_FASTCALL, _curses_setsyx__doc__},
 
-static PyObject *
-_curses_setsyx_impl(PyObject *module, int y, int x);
+static TyObject *
+_curses_setsyx_impl(TyObject *module, int y, int x);
 
-static PyObject *
-_curses_setsyx(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_setsyx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int y;
     int x;
 
-    if (!_PyArg_CheckPositional("setsyx", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("setsyx", nargs, 2, 2)) {
         goto exit;
     }
-    y = PyLong_AsInt(args[0]);
-    if (y == -1 && PyErr_Occurred()) {
+    y = TyLong_AsInt(args[0]);
+    if (y == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    x = PyLong_AsInt(args[1]);
-    if (x == -1 && PyErr_Occurred()) {
+    x = TyLong_AsInt(args[1]);
+    if (x == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_setsyx_impl(module, y, x);
@@ -3908,7 +3908,7 @@ exit:
 
 #endif /* defined(getsyx) */
 
-PyDoc_STRVAR(_curses_start_color__doc__,
+TyDoc_STRVAR(_curses_start_color__doc__,
 "start_color($module, /)\n"
 "--\n"
 "\n"
@@ -3924,16 +3924,16 @@ PyDoc_STRVAR(_curses_start_color__doc__,
 #define _CURSES_START_COLOR_METHODDEF    \
     {"start_color", (PyCFunction)_curses_start_color, METH_NOARGS, _curses_start_color__doc__},
 
-static PyObject *
-_curses_start_color_impl(PyObject *module);
+static TyObject *
+_curses_start_color_impl(TyObject *module);
 
-static PyObject *
-_curses_start_color(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_start_color(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_start_color_impl(module);
 }
 
-PyDoc_STRVAR(_curses_termattrs__doc__,
+TyDoc_STRVAR(_curses_termattrs__doc__,
 "termattrs($module, /)\n"
 "--\n"
 "\n"
@@ -3942,16 +3942,16 @@ PyDoc_STRVAR(_curses_termattrs__doc__,
 #define _CURSES_TERMATTRS_METHODDEF    \
     {"termattrs", (PyCFunction)_curses_termattrs, METH_NOARGS, _curses_termattrs__doc__},
 
-static PyObject *
-_curses_termattrs_impl(PyObject *module);
+static TyObject *
+_curses_termattrs_impl(TyObject *module);
 
-static PyObject *
-_curses_termattrs(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_termattrs(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_termattrs_impl(module);
 }
 
-PyDoc_STRVAR(_curses_termname__doc__,
+TyDoc_STRVAR(_curses_termname__doc__,
 "termname($module, /)\n"
 "--\n"
 "\n"
@@ -3960,16 +3960,16 @@ PyDoc_STRVAR(_curses_termname__doc__,
 #define _CURSES_TERMNAME_METHODDEF    \
     {"termname", (PyCFunction)_curses_termname, METH_NOARGS, _curses_termname__doc__},
 
-static PyObject *
-_curses_termname_impl(PyObject *module);
+static TyObject *
+_curses_termname_impl(TyObject *module);
 
-static PyObject *
-_curses_termname(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_termname(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_termname_impl(module);
 }
 
-PyDoc_STRVAR(_curses_tigetflag__doc__,
+TyDoc_STRVAR(_curses_tigetflag__doc__,
 "tigetflag($module, capname, /)\n"
 "--\n"
 "\n"
@@ -3984,26 +3984,26 @@ PyDoc_STRVAR(_curses_tigetflag__doc__,
 #define _CURSES_TIGETFLAG_METHODDEF    \
     {"tigetflag", (PyCFunction)_curses_tigetflag, METH_O, _curses_tigetflag__doc__},
 
-static PyObject *
-_curses_tigetflag_impl(PyObject *module, const char *capname);
+static TyObject *
+_curses_tigetflag_impl(TyObject *module, const char *capname);
 
-static PyObject *
-_curses_tigetflag(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_tigetflag(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *capname;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("tigetflag", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("tigetflag", "argument", "str", arg);
         goto exit;
     }
-    Py_ssize_t capname_length;
-    capname = PyUnicode_AsUTF8AndSize(arg, &capname_length);
+    Ty_ssize_t capname_length;
+    capname = TyUnicode_AsUTF8AndSize(arg, &capname_length);
     if (capname == NULL) {
         goto exit;
     }
     if (strlen(capname) != (size_t)capname_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     return_value = _curses_tigetflag_impl(module, capname);
@@ -4012,7 +4012,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_tigetnum__doc__,
+TyDoc_STRVAR(_curses_tigetnum__doc__,
 "tigetnum($module, capname, /)\n"
 "--\n"
 "\n"
@@ -4027,26 +4027,26 @@ PyDoc_STRVAR(_curses_tigetnum__doc__,
 #define _CURSES_TIGETNUM_METHODDEF    \
     {"tigetnum", (PyCFunction)_curses_tigetnum, METH_O, _curses_tigetnum__doc__},
 
-static PyObject *
-_curses_tigetnum_impl(PyObject *module, const char *capname);
+static TyObject *
+_curses_tigetnum_impl(TyObject *module, const char *capname);
 
-static PyObject *
-_curses_tigetnum(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_tigetnum(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *capname;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("tigetnum", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("tigetnum", "argument", "str", arg);
         goto exit;
     }
-    Py_ssize_t capname_length;
-    capname = PyUnicode_AsUTF8AndSize(arg, &capname_length);
+    Ty_ssize_t capname_length;
+    capname = TyUnicode_AsUTF8AndSize(arg, &capname_length);
     if (capname == NULL) {
         goto exit;
     }
     if (strlen(capname) != (size_t)capname_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     return_value = _curses_tigetnum_impl(module, capname);
@@ -4055,7 +4055,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_tigetstr__doc__,
+TyDoc_STRVAR(_curses_tigetstr__doc__,
 "tigetstr($module, capname, /)\n"
 "--\n"
 "\n"
@@ -4070,26 +4070,26 @@ PyDoc_STRVAR(_curses_tigetstr__doc__,
 #define _CURSES_TIGETSTR_METHODDEF    \
     {"tigetstr", (PyCFunction)_curses_tigetstr, METH_O, _curses_tigetstr__doc__},
 
-static PyObject *
-_curses_tigetstr_impl(PyObject *module, const char *capname);
+static TyObject *
+_curses_tigetstr_impl(TyObject *module, const char *capname);
 
-static PyObject *
-_curses_tigetstr(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_tigetstr(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *capname;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("tigetstr", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("tigetstr", "argument", "str", arg);
         goto exit;
     }
-    Py_ssize_t capname_length;
-    capname = PyUnicode_AsUTF8AndSize(arg, &capname_length);
+    Ty_ssize_t capname_length;
+    capname = TyUnicode_AsUTF8AndSize(arg, &capname_length);
     if (capname == NULL) {
         goto exit;
     }
     if (strlen(capname) != (size_t)capname_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     return_value = _curses_tigetstr_impl(module, capname);
@@ -4098,7 +4098,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_tparm__doc__,
+TyDoc_STRVAR(_curses_tparm__doc__,
 "tparm($module, str, i1=0, i2=0, i3=0, i4=0, i5=0, i6=0, i7=0, i8=0,\n"
 "      i9=0, /)\n"
 "--\n"
@@ -4111,14 +4111,14 @@ PyDoc_STRVAR(_curses_tparm__doc__,
 #define _CURSES_TPARM_METHODDEF    \
     {"tparm", _PyCFunction_CAST(_curses_tparm), METH_FASTCALL, _curses_tparm__doc__},
 
-static PyObject *
-_curses_tparm_impl(PyObject *module, const char *str, int i1, int i2, int i3,
+static TyObject *
+_curses_tparm_impl(TyObject *module, const char *str, int i1, int i2, int i3,
                    int i4, int i5, int i6, int i7, int i8, int i9);
 
-static PyObject *
-_curses_tparm(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_tparm(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *str;
     int i1 = 0;
     int i2 = 0;
@@ -4130,7 +4130,7 @@ _curses_tparm(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     int i8 = 0;
     int i9 = 0;
 
-    if (!_PyArg_ParseStack(args, nargs, "y|iiiiiiiii:tparm",
+    if (!_TyArg_ParseStack(args, nargs, "y|iiiiiiiii:tparm",
         &str, &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8, &i9)) {
         goto exit;
     }
@@ -4142,7 +4142,7 @@ exit:
 
 #if defined(HAVE_CURSES_TYPEAHEAD)
 
-PyDoc_STRVAR(_curses_typeahead__doc__,
+TyDoc_STRVAR(_curses_typeahead__doc__,
 "typeahead($module, fd, /)\n"
 "--\n"
 "\n"
@@ -4156,17 +4156,17 @@ PyDoc_STRVAR(_curses_typeahead__doc__,
 #define _CURSES_TYPEAHEAD_METHODDEF    \
     {"typeahead", (PyCFunction)_curses_typeahead, METH_O, _curses_typeahead__doc__},
 
-static PyObject *
-_curses_typeahead_impl(PyObject *module, int fd);
+static TyObject *
+_curses_typeahead_impl(TyObject *module, int fd);
 
-static PyObject *
-_curses_typeahead(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_typeahead(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
-    fd = PyLong_AsInt(arg);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(arg);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_typeahead_impl(module, fd);
@@ -4177,7 +4177,7 @@ exit:
 
 #endif /* defined(HAVE_CURSES_TYPEAHEAD) */
 
-PyDoc_STRVAR(_curses_unctrl__doc__,
+TyDoc_STRVAR(_curses_unctrl__doc__,
 "unctrl($module, ch, /)\n"
 "--\n"
 "\n"
@@ -4189,7 +4189,7 @@ PyDoc_STRVAR(_curses_unctrl__doc__,
 #define _CURSES_UNCTRL_METHODDEF    \
     {"unctrl", (PyCFunction)_curses_unctrl, METH_O, _curses_unctrl__doc__},
 
-PyDoc_STRVAR(_curses_ungetch__doc__,
+TyDoc_STRVAR(_curses_ungetch__doc__,
 "ungetch($module, ch, /)\n"
 "--\n"
 "\n"
@@ -4200,7 +4200,7 @@ PyDoc_STRVAR(_curses_ungetch__doc__,
 
 #if defined(HAVE_NCURSESW)
 
-PyDoc_STRVAR(_curses_unget_wch__doc__,
+TyDoc_STRVAR(_curses_unget_wch__doc__,
 "unget_wch($module, ch, /)\n"
 "--\n"
 "\n"
@@ -4213,7 +4213,7 @@ PyDoc_STRVAR(_curses_unget_wch__doc__,
 
 #if defined(HAVE_CURSES_USE_ENV)
 
-PyDoc_STRVAR(_curses_use_env__doc__,
+TyDoc_STRVAR(_curses_use_env__doc__,
 "use_env($module, flag, /)\n"
 "--\n"
 "\n"
@@ -4231,13 +4231,13 @@ PyDoc_STRVAR(_curses_use_env__doc__,
 #define _CURSES_USE_ENV_METHODDEF    \
     {"use_env", (PyCFunction)_curses_use_env, METH_O, _curses_use_env__doc__},
 
-static PyObject *
-_curses_use_env_impl(PyObject *module, int flag);
+static TyObject *
+_curses_use_env_impl(TyObject *module, int flag);
 
-static PyObject *
-_curses_use_env(PyObject *module, PyObject *arg)
+static TyObject *
+_curses_use_env(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int flag;
 
     flag = PyObject_IsTrue(arg);
@@ -4254,7 +4254,7 @@ exit:
 
 #if !defined(STRICT_SYSV_CURSES)
 
-PyDoc_STRVAR(_curses_use_default_colors__doc__,
+TyDoc_STRVAR(_curses_use_default_colors__doc__,
 "use_default_colors($module, /)\n"
 "--\n"
 "\n"
@@ -4263,11 +4263,11 @@ PyDoc_STRVAR(_curses_use_default_colors__doc__,
 #define _CURSES_USE_DEFAULT_COLORS_METHODDEF    \
     {"use_default_colors", (PyCFunction)_curses_use_default_colors, METH_NOARGS, _curses_use_default_colors__doc__},
 
-static PyObject *
-_curses_use_default_colors_impl(PyObject *module);
+static TyObject *
+_curses_use_default_colors_impl(TyObject *module);
 
-static PyObject *
-_curses_use_default_colors(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_use_default_colors(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_use_default_colors_impl(module);
 }
@@ -4276,7 +4276,7 @@ _curses_use_default_colors(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if !defined(STRICT_SYSV_CURSES)
 
-PyDoc_STRVAR(_curses_assume_default_colors__doc__,
+TyDoc_STRVAR(_curses_assume_default_colors__doc__,
 "assume_default_colors($module, fg, bg, /)\n"
 "--\n"
 "\n"
@@ -4290,25 +4290,25 @@ PyDoc_STRVAR(_curses_assume_default_colors__doc__,
 #define _CURSES_ASSUME_DEFAULT_COLORS_METHODDEF    \
     {"assume_default_colors", _PyCFunction_CAST(_curses_assume_default_colors), METH_FASTCALL, _curses_assume_default_colors__doc__},
 
-static PyObject *
-_curses_assume_default_colors_impl(PyObject *module, int fg, int bg);
+static TyObject *
+_curses_assume_default_colors_impl(TyObject *module, int fg, int bg);
 
-static PyObject *
-_curses_assume_default_colors(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_curses_assume_default_colors(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fg;
     int bg;
 
-    if (!_PyArg_CheckPositional("assume_default_colors", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("assume_default_colors", nargs, 2, 2)) {
         goto exit;
     }
-    fg = PyLong_AsInt(args[0]);
-    if (fg == -1 && PyErr_Occurred()) {
+    fg = TyLong_AsInt(args[0]);
+    if (fg == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    bg = PyLong_AsInt(args[1]);
-    if (bg == -1 && PyErr_Occurred()) {
+    bg = TyLong_AsInt(args[1]);
+    if (bg == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _curses_assume_default_colors_impl(module, fg, bg);
@@ -4319,7 +4319,7 @@ exit:
 
 #endif /* !defined(STRICT_SYSV_CURSES) */
 
-PyDoc_STRVAR(_curses_has_extended_color_support__doc__,
+TyDoc_STRVAR(_curses_has_extended_color_support__doc__,
 "has_extended_color_support($module, /)\n"
 "--\n"
 "\n"
@@ -4331,11 +4331,11 @@ PyDoc_STRVAR(_curses_has_extended_color_support__doc__,
 #define _CURSES_HAS_EXTENDED_COLOR_SUPPORT_METHODDEF    \
     {"has_extended_color_support", (PyCFunction)_curses_has_extended_color_support, METH_NOARGS, _curses_has_extended_color_support__doc__},
 
-static PyObject *
-_curses_has_extended_color_support_impl(PyObject *module);
+static TyObject *
+_curses_has_extended_color_support_impl(TyObject *module);
 
-static PyObject *
-_curses_has_extended_color_support(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_curses_has_extended_color_support(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_has_extended_color_support_impl(module);
 }

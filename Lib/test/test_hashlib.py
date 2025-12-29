@@ -110,7 +110,7 @@ class HashLibTestCase(unittest.TestCase):
     shakes = {'shake_128', 'shake_256'}
 
     # gh-58898: Fallback modules are always compiled under POSIX.
-    _warn_on_extension_import = (os.name == 'posix' or support.Py_DEBUG)
+    _warn_on_extension_import = (os.name == 'posix' or support.Ty_DEBUG)
 
     def _conditional_import_module(self, module_name):
         """Import a module and return a reference to it or None on failure."""

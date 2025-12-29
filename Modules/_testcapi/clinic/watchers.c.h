@@ -2,9 +2,9 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_testcapi_watch_dict__doc__,
+TyDoc_STRVAR(_testcapi_watch_dict__doc__,
 "watch_dict($module, watcher_id, dict, /)\n"
 "--\n"
 "\n");
@@ -12,21 +12,21 @@ PyDoc_STRVAR(_testcapi_watch_dict__doc__,
 #define _TESTCAPI_WATCH_DICT_METHODDEF    \
     {"watch_dict", _PyCFunction_CAST(_testcapi_watch_dict), METH_FASTCALL, _testcapi_watch_dict__doc__},
 
-static PyObject *
-_testcapi_watch_dict_impl(PyObject *module, int watcher_id, PyObject *dict);
+static TyObject *
+_testcapi_watch_dict_impl(TyObject *module, int watcher_id, TyObject *dict);
 
-static PyObject *
-_testcapi_watch_dict(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_watch_dict(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int watcher_id;
-    PyObject *dict;
+    TyObject *dict;
 
-    if (!_PyArg_CheckPositional("watch_dict", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("watch_dict", nargs, 2, 2)) {
         goto exit;
     }
-    watcher_id = PyLong_AsInt(args[0]);
-    if (watcher_id == -1 && PyErr_Occurred()) {
+    watcher_id = TyLong_AsInt(args[0]);
+    if (watcher_id == -1 && TyErr_Occurred()) {
         goto exit;
     }
     dict = args[1];
@@ -36,7 +36,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_unwatch_dict__doc__,
+TyDoc_STRVAR(_testcapi_unwatch_dict__doc__,
 "unwatch_dict($module, watcher_id, dict, /)\n"
 "--\n"
 "\n");
@@ -44,21 +44,21 @@ PyDoc_STRVAR(_testcapi_unwatch_dict__doc__,
 #define _TESTCAPI_UNWATCH_DICT_METHODDEF    \
     {"unwatch_dict", _PyCFunction_CAST(_testcapi_unwatch_dict), METH_FASTCALL, _testcapi_unwatch_dict__doc__},
 
-static PyObject *
-_testcapi_unwatch_dict_impl(PyObject *module, int watcher_id, PyObject *dict);
+static TyObject *
+_testcapi_unwatch_dict_impl(TyObject *module, int watcher_id, TyObject *dict);
 
-static PyObject *
-_testcapi_unwatch_dict(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_unwatch_dict(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int watcher_id;
-    PyObject *dict;
+    TyObject *dict;
 
-    if (!_PyArg_CheckPositional("unwatch_dict", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("unwatch_dict", nargs, 2, 2)) {
         goto exit;
     }
-    watcher_id = PyLong_AsInt(args[0]);
-    if (watcher_id == -1 && PyErr_Occurred()) {
+    watcher_id = TyLong_AsInt(args[0]);
+    if (watcher_id == -1 && TyErr_Occurred()) {
         goto exit;
     }
     dict = args[1];
@@ -68,7 +68,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_watch_type__doc__,
+TyDoc_STRVAR(_testcapi_watch_type__doc__,
 "watch_type($module, watcher_id, type, /)\n"
 "--\n"
 "\n");
@@ -76,21 +76,21 @@ PyDoc_STRVAR(_testcapi_watch_type__doc__,
 #define _TESTCAPI_WATCH_TYPE_METHODDEF    \
     {"watch_type", _PyCFunction_CAST(_testcapi_watch_type), METH_FASTCALL, _testcapi_watch_type__doc__},
 
-static PyObject *
-_testcapi_watch_type_impl(PyObject *module, int watcher_id, PyObject *type);
+static TyObject *
+_testcapi_watch_type_impl(TyObject *module, int watcher_id, TyObject *type);
 
-static PyObject *
-_testcapi_watch_type(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_watch_type(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int watcher_id;
-    PyObject *type;
+    TyObject *type;
 
-    if (!_PyArg_CheckPositional("watch_type", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("watch_type", nargs, 2, 2)) {
         goto exit;
     }
-    watcher_id = PyLong_AsInt(args[0]);
-    if (watcher_id == -1 && PyErr_Occurred()) {
+    watcher_id = TyLong_AsInt(args[0]);
+    if (watcher_id == -1 && TyErr_Occurred()) {
         goto exit;
     }
     type = args[1];
@@ -100,7 +100,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_unwatch_type__doc__,
+TyDoc_STRVAR(_testcapi_unwatch_type__doc__,
 "unwatch_type($module, watcher_id, type, /)\n"
 "--\n"
 "\n");
@@ -108,21 +108,21 @@ PyDoc_STRVAR(_testcapi_unwatch_type__doc__,
 #define _TESTCAPI_UNWATCH_TYPE_METHODDEF    \
     {"unwatch_type", _PyCFunction_CAST(_testcapi_unwatch_type), METH_FASTCALL, _testcapi_unwatch_type__doc__},
 
-static PyObject *
-_testcapi_unwatch_type_impl(PyObject *module, int watcher_id, PyObject *type);
+static TyObject *
+_testcapi_unwatch_type_impl(TyObject *module, int watcher_id, TyObject *type);
 
-static PyObject *
-_testcapi_unwatch_type(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_unwatch_type(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int watcher_id;
-    PyObject *type;
+    TyObject *type;
 
-    if (!_PyArg_CheckPositional("unwatch_type", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("unwatch_type", nargs, 2, 2)) {
         goto exit;
     }
-    watcher_id = PyLong_AsInt(args[0]);
-    if (watcher_id == -1 && PyErr_Occurred()) {
+    watcher_id = TyLong_AsInt(args[0]);
+    if (watcher_id == -1 && TyErr_Occurred()) {
         goto exit;
     }
     type = args[1];
@@ -132,7 +132,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_set_func_defaults_via_capi__doc__,
+TyDoc_STRVAR(_testcapi_set_func_defaults_via_capi__doc__,
 "set_func_defaults_via_capi($module, func, defaults, /)\n"
 "--\n"
 "\n");
@@ -140,18 +140,18 @@ PyDoc_STRVAR(_testcapi_set_func_defaults_via_capi__doc__,
 #define _TESTCAPI_SET_FUNC_DEFAULTS_VIA_CAPI_METHODDEF    \
     {"set_func_defaults_via_capi", _PyCFunction_CAST(_testcapi_set_func_defaults_via_capi), METH_FASTCALL, _testcapi_set_func_defaults_via_capi__doc__},
 
-static PyObject *
-_testcapi_set_func_defaults_via_capi_impl(PyObject *module, PyObject *func,
-                                          PyObject *defaults);
+static TyObject *
+_testcapi_set_func_defaults_via_capi_impl(TyObject *module, TyObject *func,
+                                          TyObject *defaults);
 
-static PyObject *
-_testcapi_set_func_defaults_via_capi(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_set_func_defaults_via_capi(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *func;
-    PyObject *defaults;
+    TyObject *return_value = NULL;
+    TyObject *func;
+    TyObject *defaults;
 
-    if (!_PyArg_CheckPositional("set_func_defaults_via_capi", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("set_func_defaults_via_capi", nargs, 2, 2)) {
         goto exit;
     }
     func = args[0];
@@ -162,7 +162,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_set_func_kwdefaults_via_capi__doc__,
+TyDoc_STRVAR(_testcapi_set_func_kwdefaults_via_capi__doc__,
 "set_func_kwdefaults_via_capi($module, func, defaults, /)\n"
 "--\n"
 "\n");
@@ -170,18 +170,18 @@ PyDoc_STRVAR(_testcapi_set_func_kwdefaults_via_capi__doc__,
 #define _TESTCAPI_SET_FUNC_KWDEFAULTS_VIA_CAPI_METHODDEF    \
     {"set_func_kwdefaults_via_capi", _PyCFunction_CAST(_testcapi_set_func_kwdefaults_via_capi), METH_FASTCALL, _testcapi_set_func_kwdefaults_via_capi__doc__},
 
-static PyObject *
-_testcapi_set_func_kwdefaults_via_capi_impl(PyObject *module, PyObject *func,
-                                            PyObject *defaults);
+static TyObject *
+_testcapi_set_func_kwdefaults_via_capi_impl(TyObject *module, TyObject *func,
+                                            TyObject *defaults);
 
-static PyObject *
-_testcapi_set_func_kwdefaults_via_capi(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_set_func_kwdefaults_via_capi(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *func;
-    PyObject *defaults;
+    TyObject *return_value = NULL;
+    TyObject *func;
+    TyObject *defaults;
 
-    if (!_PyArg_CheckPositional("set_func_kwdefaults_via_capi", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("set_func_kwdefaults_via_capi", nargs, 2, 2)) {
         goto exit;
     }
     func = args[0];

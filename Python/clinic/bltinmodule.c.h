@@ -2,13 +2,13 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(builtin___import____doc__,
+TyDoc_STRVAR(builtin___import____doc__,
 "__import__($module, /, name, globals=None, locals=None, fromlist=(),\n"
 "           level=0)\n"
 "--\n"
@@ -32,50 +32,50 @@ PyDoc_STRVAR(builtin___import____doc__,
 #define BUILTIN___IMPORT___METHODDEF    \
     {"__import__", _PyCFunction_CAST(builtin___import__), METH_FASTCALL|METH_KEYWORDS, builtin___import____doc__},
 
-static PyObject *
-builtin___import___impl(PyObject *module, PyObject *name, PyObject *globals,
-                        PyObject *locals, PyObject *fromlist, int level);
+static TyObject *
+builtin___import___impl(TyObject *module, TyObject *name, TyObject *globals,
+                        TyObject *locals, TyObject *fromlist, int level);
 
-static PyObject *
-builtin___import__(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+builtin___import__(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(name), &_Py_ID(globals), &_Py_ID(locals), &_Py_ID(fromlist), &_Py_ID(level), },
+        .ob_item = { &_Ty_ID(name), &_Ty_ID(globals), &_Ty_ID(locals), &_Ty_ID(fromlist), &_Ty_ID(level), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"name", "globals", "locals", "fromlist", "level", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "__import__",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *name;
-    PyObject *globals = NULL;
-    PyObject *locals = NULL;
-    PyObject *fromlist = NULL;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *name;
+    TyObject *globals = NULL;
+    TyObject *locals = NULL;
+    TyObject *fromlist = NULL;
     int level = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 5, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -102,8 +102,8 @@ builtin___import__(PyObject *module, PyObject *const *args, Py_ssize_t nargs, Py
             goto skip_optional_pos;
         }
     }
-    level = PyLong_AsInt(args[4]);
-    if (level == -1 && PyErr_Occurred()) {
+    level = TyLong_AsInt(args[4]);
+    if (level == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -113,7 +113,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_abs__doc__,
+TyDoc_STRVAR(builtin_abs__doc__,
 "abs($module, x, /)\n"
 "--\n"
 "\n"
@@ -122,7 +122,7 @@ PyDoc_STRVAR(builtin_abs__doc__,
 #define BUILTIN_ABS_METHODDEF    \
     {"abs", (PyCFunction)builtin_abs, METH_O, builtin_abs__doc__},
 
-PyDoc_STRVAR(builtin_all__doc__,
+TyDoc_STRVAR(builtin_all__doc__,
 "all($module, iterable, /)\n"
 "--\n"
 "\n"
@@ -133,7 +133,7 @@ PyDoc_STRVAR(builtin_all__doc__,
 #define BUILTIN_ALL_METHODDEF    \
     {"all", (PyCFunction)builtin_all, METH_O, builtin_all__doc__},
 
-PyDoc_STRVAR(builtin_any__doc__,
+TyDoc_STRVAR(builtin_any__doc__,
 "any($module, iterable, /)\n"
 "--\n"
 "\n"
@@ -144,7 +144,7 @@ PyDoc_STRVAR(builtin_any__doc__,
 #define BUILTIN_ANY_METHODDEF    \
     {"any", (PyCFunction)builtin_any, METH_O, builtin_any__doc__},
 
-PyDoc_STRVAR(builtin_ascii__doc__,
+TyDoc_STRVAR(builtin_ascii__doc__,
 "ascii($module, obj, /)\n"
 "--\n"
 "\n"
@@ -158,7 +158,7 @@ PyDoc_STRVAR(builtin_ascii__doc__,
 #define BUILTIN_ASCII_METHODDEF    \
     {"ascii", (PyCFunction)builtin_ascii, METH_O, builtin_ascii__doc__},
 
-PyDoc_STRVAR(builtin_bin__doc__,
+TyDoc_STRVAR(builtin_bin__doc__,
 "bin($module, number, /)\n"
 "--\n"
 "\n"
@@ -170,7 +170,7 @@ PyDoc_STRVAR(builtin_bin__doc__,
 #define BUILTIN_BIN_METHODDEF    \
     {"bin", (PyCFunction)builtin_bin, METH_O, builtin_bin__doc__},
 
-PyDoc_STRVAR(builtin_callable__doc__,
+TyDoc_STRVAR(builtin_callable__doc__,
 "callable($module, obj, /)\n"
 "--\n"
 "\n"
@@ -182,7 +182,7 @@ PyDoc_STRVAR(builtin_callable__doc__,
 #define BUILTIN_CALLABLE_METHODDEF    \
     {"callable", (PyCFunction)builtin_callable, METH_O, builtin_callable__doc__},
 
-PyDoc_STRVAR(builtin_format__doc__,
+TyDoc_STRVAR(builtin_format__doc__,
 "format($module, value, format_spec=\'\', /)\n"
 "--\n"
 "\n"
@@ -198,25 +198,25 @@ PyDoc_STRVAR(builtin_format__doc__,
 #define BUILTIN_FORMAT_METHODDEF    \
     {"format", _PyCFunction_CAST(builtin_format), METH_FASTCALL, builtin_format__doc__},
 
-static PyObject *
-builtin_format_impl(PyObject *module, PyObject *value, PyObject *format_spec);
+static TyObject *
+builtin_format_impl(TyObject *module, TyObject *value, TyObject *format_spec);
 
-static PyObject *
-builtin_format(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+builtin_format(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *value;
-    PyObject *format_spec = NULL;
+    TyObject *return_value = NULL;
+    TyObject *value;
+    TyObject *format_spec = NULL;
 
-    if (!_PyArg_CheckPositional("format", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("format", nargs, 1, 2)) {
         goto exit;
     }
     value = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("format", "argument 2", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("format", "argument 2", "str", args[1]);
         goto exit;
     }
     format_spec = args[1];
@@ -227,7 +227,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_chr__doc__,
+TyDoc_STRVAR(builtin_chr__doc__,
 "chr($module, i, /)\n"
 "--\n"
 "\n"
@@ -236,7 +236,7 @@ PyDoc_STRVAR(builtin_chr__doc__,
 #define BUILTIN_CHR_METHODDEF    \
     {"chr", (PyCFunction)builtin_chr, METH_O, builtin_chr__doc__},
 
-PyDoc_STRVAR(builtin_compile__doc__,
+TyDoc_STRVAR(builtin_compile__doc__,
 "compile($module, /, source, filename, mode, flags=0,\n"
 "        dont_inherit=False, optimize=-1, *, _feature_version=-1)\n"
 "--\n"
@@ -257,80 +257,80 @@ PyDoc_STRVAR(builtin_compile__doc__,
 #define BUILTIN_COMPILE_METHODDEF    \
     {"compile", _PyCFunction_CAST(builtin_compile), METH_FASTCALL|METH_KEYWORDS, builtin_compile__doc__},
 
-static PyObject *
-builtin_compile_impl(PyObject *module, PyObject *source, PyObject *filename,
+static TyObject *
+builtin_compile_impl(TyObject *module, TyObject *source, TyObject *filename,
                      const char *mode, int flags, int dont_inherit,
                      int optimize, int feature_version);
 
-static PyObject *
-builtin_compile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+builtin_compile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 7
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(source), &_Py_ID(filename), &_Py_ID(mode), &_Py_ID(flags), &_Py_ID(dont_inherit), &_Py_ID(optimize), &_Py_ID(_feature_version), },
+        .ob_item = { &_Ty_ID(source), &_Ty_ID(filename), &_Ty_ID(mode), &_Ty_ID(flags), &_Ty_ID(dont_inherit), &_Ty_ID(optimize), &_Ty_ID(_feature_version), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"source", "filename", "mode", "flags", "dont_inherit", "optimize", "_feature_version", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "compile",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[7];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
-    PyObject *source;
-    PyObject *filename;
+    TyObject *argsbuf[7];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *source;
+    TyObject *filename;
     const char *mode;
     int flags = 0;
     int dont_inherit = 0;
     int optimize = -1;
     int feature_version = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 6, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     source = args[0];
-    if (!PyUnicode_FSDecoder(args[1], &filename)) {
+    if (!TyUnicode_FSDecoder(args[1], &filename)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[2])) {
-        _PyArg_BadArgument("compile", "argument 'mode'", "str", args[2]);
+    if (!TyUnicode_Check(args[2])) {
+        _TyArg_BadArgument("compile", "argument 'mode'", "str", args[2]);
         goto exit;
     }
-    Py_ssize_t mode_length;
-    mode = PyUnicode_AsUTF8AndSize(args[2], &mode_length);
+    Ty_ssize_t mode_length;
+    mode = TyUnicode_AsUTF8AndSize(args[2], &mode_length);
     if (mode == NULL) {
         goto exit;
     }
     if (strlen(mode) != (size_t)mode_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_pos;
     }
     if (args[3]) {
-        flags = PyLong_AsInt(args[3]);
-        if (flags == -1 && PyErr_Occurred()) {
+        flags = TyLong_AsInt(args[3]);
+        if (flags == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -347,8 +347,8 @@ builtin_compile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObj
         }
     }
     if (args[5]) {
-        optimize = PyLong_AsInt(args[5]);
-        if (optimize == -1 && PyErr_Occurred()) {
+        optimize = TyLong_AsInt(args[5]);
+        if (optimize == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -359,8 +359,8 @@ skip_optional_pos:
     if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    feature_version = PyLong_AsInt(args[6]);
-    if (feature_version == -1 && PyErr_Occurred()) {
+    feature_version = TyLong_AsInt(args[6]);
+    if (feature_version == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_kwonly:
@@ -370,7 +370,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_divmod__doc__,
+TyDoc_STRVAR(builtin_divmod__doc__,
 "divmod($module, x, y, /)\n"
 "--\n"
 "\n"
@@ -379,17 +379,17 @@ PyDoc_STRVAR(builtin_divmod__doc__,
 #define BUILTIN_DIVMOD_METHODDEF    \
     {"divmod", _PyCFunction_CAST(builtin_divmod), METH_FASTCALL, builtin_divmod__doc__},
 
-static PyObject *
-builtin_divmod_impl(PyObject *module, PyObject *x, PyObject *y);
+static TyObject *
+builtin_divmod_impl(TyObject *module, TyObject *x, TyObject *y);
 
-static PyObject *
-builtin_divmod(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+builtin_divmod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *x;
-    PyObject *y;
+    TyObject *return_value = NULL;
+    TyObject *x;
+    TyObject *y;
 
-    if (!_PyArg_CheckPositional("divmod", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("divmod", nargs, 2, 2)) {
         goto exit;
     }
     x = args[0];
@@ -400,7 +400,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_eval__doc__,
+TyDoc_STRVAR(builtin_eval__doc__,
 "eval($module, source, /, globals=None, locals=None)\n"
 "--\n"
 "\n"
@@ -415,48 +415,48 @@ PyDoc_STRVAR(builtin_eval__doc__,
 #define BUILTIN_EVAL_METHODDEF    \
     {"eval", _PyCFunction_CAST(builtin_eval), METH_FASTCALL|METH_KEYWORDS, builtin_eval__doc__},
 
-static PyObject *
-builtin_eval_impl(PyObject *module, PyObject *source, PyObject *globals,
-                  PyObject *locals);
+static TyObject *
+builtin_eval_impl(TyObject *module, TyObject *source, TyObject *globals,
+                  TyObject *locals);
 
-static PyObject *
-builtin_eval(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+builtin_eval(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(globals), &_Py_ID(locals), },
+        .ob_item = { &_Ty_ID(globals), &_Ty_ID(locals), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "globals", "locals", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "eval",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *source;
-    PyObject *globals = Py_None;
-    PyObject *locals = Py_None;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *source;
+    TyObject *globals = Ty_None;
+    TyObject *locals = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -479,7 +479,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_exec__doc__,
+TyDoc_STRVAR(builtin_exec__doc__,
 "exec($module, source, /, globals=None, locals=None, *, closure=None)\n"
 "--\n"
 "\n"
@@ -496,49 +496,49 @@ PyDoc_STRVAR(builtin_exec__doc__,
 #define BUILTIN_EXEC_METHODDEF    \
     {"exec", _PyCFunction_CAST(builtin_exec), METH_FASTCALL|METH_KEYWORDS, builtin_exec__doc__},
 
-static PyObject *
-builtin_exec_impl(PyObject *module, PyObject *source, PyObject *globals,
-                  PyObject *locals, PyObject *closure);
+static TyObject *
+builtin_exec_impl(TyObject *module, TyObject *source, TyObject *globals,
+                  TyObject *locals, TyObject *closure);
 
-static PyObject *
-builtin_exec(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+builtin_exec(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(globals), &_Py_ID(locals), &_Py_ID(closure), },
+        .ob_item = { &_Ty_ID(globals), &_Ty_ID(locals), &_Ty_ID(closure), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "globals", "locals", "closure", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "exec",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *source;
-    PyObject *globals = Py_None;
-    PyObject *locals = Py_None;
-    PyObject *closure = NULL;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *source;
+    TyObject *globals = Ty_None;
+    TyObject *locals = Ty_None;
+    TyObject *closure = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -571,7 +571,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_globals__doc__,
+TyDoc_STRVAR(builtin_globals__doc__,
 "globals($module, /)\n"
 "--\n"
 "\n"
@@ -583,16 +583,16 @@ PyDoc_STRVAR(builtin_globals__doc__,
 #define BUILTIN_GLOBALS_METHODDEF    \
     {"globals", (PyCFunction)builtin_globals, METH_NOARGS, builtin_globals__doc__},
 
-static PyObject *
-builtin_globals_impl(PyObject *module);
+static TyObject *
+builtin_globals_impl(TyObject *module);
 
-static PyObject *
-builtin_globals(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+builtin_globals(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return builtin_globals_impl(module);
 }
 
-PyDoc_STRVAR(builtin_hasattr__doc__,
+TyDoc_STRVAR(builtin_hasattr__doc__,
 "hasattr($module, obj, name, /)\n"
 "--\n"
 "\n"
@@ -603,17 +603,17 @@ PyDoc_STRVAR(builtin_hasattr__doc__,
 #define BUILTIN_HASATTR_METHODDEF    \
     {"hasattr", _PyCFunction_CAST(builtin_hasattr), METH_FASTCALL, builtin_hasattr__doc__},
 
-static PyObject *
-builtin_hasattr_impl(PyObject *module, PyObject *obj, PyObject *name);
+static TyObject *
+builtin_hasattr_impl(TyObject *module, TyObject *obj, TyObject *name);
 
-static PyObject *
-builtin_hasattr(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+builtin_hasattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *obj;
-    PyObject *name;
+    TyObject *return_value = NULL;
+    TyObject *obj;
+    TyObject *name;
 
-    if (!_PyArg_CheckPositional("hasattr", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("hasattr", nargs, 2, 2)) {
         goto exit;
     }
     obj = args[0];
@@ -624,7 +624,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_id__doc__,
+TyDoc_STRVAR(builtin_id__doc__,
 "id($module, obj, /)\n"
 "--\n"
 "\n"
@@ -636,20 +636,20 @@ PyDoc_STRVAR(builtin_id__doc__,
 #define BUILTIN_ID_METHODDEF    \
     {"id", (PyCFunction)builtin_id, METH_O, builtin_id__doc__},
 
-static PyObject *
-builtin_id_impl(PyModuleDef *self, PyObject *v);
+static TyObject *
+builtin_id_impl(TyModuleDef *self, TyObject *v);
 
-static PyObject *
-builtin_id(PyObject *self, PyObject *v)
+static TyObject *
+builtin_id(TyObject *self, TyObject *v)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    return_value = builtin_id_impl((PyModuleDef *)self, v);
+    return_value = builtin_id_impl((TyModuleDef *)self, v);
 
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_setattr__doc__,
+TyDoc_STRVAR(builtin_setattr__doc__,
 "setattr($module, obj, name, value, /)\n"
 "--\n"
 "\n"
@@ -660,19 +660,19 @@ PyDoc_STRVAR(builtin_setattr__doc__,
 #define BUILTIN_SETATTR_METHODDEF    \
     {"setattr", _PyCFunction_CAST(builtin_setattr), METH_FASTCALL, builtin_setattr__doc__},
 
-static PyObject *
-builtin_setattr_impl(PyObject *module, PyObject *obj, PyObject *name,
-                     PyObject *value);
+static TyObject *
+builtin_setattr_impl(TyObject *module, TyObject *obj, TyObject *name,
+                     TyObject *value);
 
-static PyObject *
-builtin_setattr(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+builtin_setattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *obj;
-    PyObject *name;
-    PyObject *value;
+    TyObject *return_value = NULL;
+    TyObject *obj;
+    TyObject *name;
+    TyObject *value;
 
-    if (!_PyArg_CheckPositional("setattr", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("setattr", nargs, 3, 3)) {
         goto exit;
     }
     obj = args[0];
@@ -684,7 +684,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_delattr__doc__,
+TyDoc_STRVAR(builtin_delattr__doc__,
 "delattr($module, obj, name, /)\n"
 "--\n"
 "\n"
@@ -695,17 +695,17 @@ PyDoc_STRVAR(builtin_delattr__doc__,
 #define BUILTIN_DELATTR_METHODDEF    \
     {"delattr", _PyCFunction_CAST(builtin_delattr), METH_FASTCALL, builtin_delattr__doc__},
 
-static PyObject *
-builtin_delattr_impl(PyObject *module, PyObject *obj, PyObject *name);
+static TyObject *
+builtin_delattr_impl(TyObject *module, TyObject *obj, TyObject *name);
 
-static PyObject *
-builtin_delattr(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+builtin_delattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *obj;
-    PyObject *name;
+    TyObject *return_value = NULL;
+    TyObject *obj;
+    TyObject *name;
 
-    if (!_PyArg_CheckPositional("delattr", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("delattr", nargs, 2, 2)) {
         goto exit;
     }
     obj = args[0];
@@ -716,7 +716,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_hash__doc__,
+TyDoc_STRVAR(builtin_hash__doc__,
 "hash($module, obj, /)\n"
 "--\n"
 "\n"
@@ -728,7 +728,7 @@ PyDoc_STRVAR(builtin_hash__doc__,
 #define BUILTIN_HASH_METHODDEF    \
     {"hash", (PyCFunction)builtin_hash, METH_O, builtin_hash__doc__},
 
-PyDoc_STRVAR(builtin_hex__doc__,
+TyDoc_STRVAR(builtin_hex__doc__,
 "hex($module, number, /)\n"
 "--\n"
 "\n"
@@ -740,7 +740,7 @@ PyDoc_STRVAR(builtin_hex__doc__,
 #define BUILTIN_HEX_METHODDEF    \
     {"hex", (PyCFunction)builtin_hex, METH_O, builtin_hex__doc__},
 
-PyDoc_STRVAR(builtin_aiter__doc__,
+TyDoc_STRVAR(builtin_aiter__doc__,
 "aiter($module, async_iterable, /)\n"
 "--\n"
 "\n"
@@ -749,7 +749,7 @@ PyDoc_STRVAR(builtin_aiter__doc__,
 #define BUILTIN_AITER_METHODDEF    \
     {"aiter", (PyCFunction)builtin_aiter, METH_O, builtin_aiter__doc__},
 
-PyDoc_STRVAR(builtin_anext__doc__,
+TyDoc_STRVAR(builtin_anext__doc__,
 "anext($module, aiterator, default=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -761,18 +761,18 @@ PyDoc_STRVAR(builtin_anext__doc__,
 #define BUILTIN_ANEXT_METHODDEF    \
     {"anext", _PyCFunction_CAST(builtin_anext), METH_FASTCALL, builtin_anext__doc__},
 
-static PyObject *
-builtin_anext_impl(PyObject *module, PyObject *aiterator,
-                   PyObject *default_value);
+static TyObject *
+builtin_anext_impl(TyObject *module, TyObject *aiterator,
+                   TyObject *default_value);
 
-static PyObject *
-builtin_anext(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+builtin_anext(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *aiterator;
-    PyObject *default_value = NULL;
+    TyObject *return_value = NULL;
+    TyObject *aiterator;
+    TyObject *default_value = NULL;
 
-    if (!_PyArg_CheckPositional("anext", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("anext", nargs, 1, 2)) {
         goto exit;
     }
     aiterator = args[0];
@@ -787,7 +787,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_len__doc__,
+TyDoc_STRVAR(builtin_len__doc__,
 "len($module, obj, /)\n"
 "--\n"
 "\n"
@@ -796,7 +796,7 @@ PyDoc_STRVAR(builtin_len__doc__,
 #define BUILTIN_LEN_METHODDEF    \
     {"len", (PyCFunction)builtin_len, METH_O, builtin_len__doc__},
 
-PyDoc_STRVAR(builtin_locals__doc__,
+TyDoc_STRVAR(builtin_locals__doc__,
 "locals($module, /)\n"
 "--\n"
 "\n"
@@ -809,16 +809,16 @@ PyDoc_STRVAR(builtin_locals__doc__,
 #define BUILTIN_LOCALS_METHODDEF    \
     {"locals", (PyCFunction)builtin_locals, METH_NOARGS, builtin_locals__doc__},
 
-static PyObject *
-builtin_locals_impl(PyObject *module);
+static TyObject *
+builtin_locals_impl(TyObject *module);
 
-static PyObject *
-builtin_locals(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+builtin_locals(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return builtin_locals_impl(module);
 }
 
-PyDoc_STRVAR(builtin_oct__doc__,
+TyDoc_STRVAR(builtin_oct__doc__,
 "oct($module, number, /)\n"
 "--\n"
 "\n"
@@ -830,7 +830,7 @@ PyDoc_STRVAR(builtin_oct__doc__,
 #define BUILTIN_OCT_METHODDEF    \
     {"oct", (PyCFunction)builtin_oct, METH_O, builtin_oct__doc__},
 
-PyDoc_STRVAR(builtin_ord__doc__,
+TyDoc_STRVAR(builtin_ord__doc__,
 "ord($module, c, /)\n"
 "--\n"
 "\n"
@@ -839,7 +839,7 @@ PyDoc_STRVAR(builtin_ord__doc__,
 #define BUILTIN_ORD_METHODDEF    \
     {"ord", (PyCFunction)builtin_ord, METH_O, builtin_ord__doc__},
 
-PyDoc_STRVAR(builtin_pow__doc__,
+TyDoc_STRVAR(builtin_pow__doc__,
 "pow($module, /, base, exp, mod=None)\n"
 "--\n"
 "\n"
@@ -851,48 +851,48 @@ PyDoc_STRVAR(builtin_pow__doc__,
 #define BUILTIN_POW_METHODDEF    \
     {"pow", _PyCFunction_CAST(builtin_pow), METH_FASTCALL|METH_KEYWORDS, builtin_pow__doc__},
 
-static PyObject *
-builtin_pow_impl(PyObject *module, PyObject *base, PyObject *exp,
-                 PyObject *mod);
+static TyObject *
+builtin_pow_impl(TyObject *module, TyObject *base, TyObject *exp,
+                 TyObject *mod);
 
-static PyObject *
-builtin_pow(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+builtin_pow(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(base), &_Py_ID(exp), &_Py_ID(mod), },
+        .ob_item = { &_Ty_ID(base), &_Ty_ID(exp), &_Ty_ID(mod), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"base", "exp", "mod", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "pow",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *base;
-    PyObject *exp;
-    PyObject *mod = Py_None;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *base;
+    TyObject *exp;
+    TyObject *mod = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -910,7 +910,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_print__doc__,
+TyDoc_STRVAR(builtin_print__doc__,
 "print($module, /, *args, sep=\' \', end=\'\\n\', file=None, flush=False)\n"
 "--\n"
 "\n"
@@ -928,53 +928,53 @@ PyDoc_STRVAR(builtin_print__doc__,
 #define BUILTIN_PRINT_METHODDEF    \
     {"print", _PyCFunction_CAST(builtin_print), METH_FASTCALL|METH_KEYWORDS, builtin_print__doc__},
 
-static PyObject *
-builtin_print_impl(PyObject *module, PyObject * const *args,
-                   Py_ssize_t args_length, PyObject *sep, PyObject *end,
-                   PyObject *file, int flush);
+static TyObject *
+builtin_print_impl(TyObject *module, TyObject * const *args,
+                   Ty_ssize_t args_length, TyObject *sep, TyObject *end,
+                   TyObject *file, int flush);
 
-static PyObject *
-builtin_print(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+builtin_print(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(sep), &_Py_ID(end), &_Py_ID(file), &_Py_ID(flush), },
+        .ob_item = { &_Ty_ID(sep), &_Ty_ID(end), &_Ty_ID(file), &_Ty_ID(flush), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"sep", "end", "file", "flush", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "print",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    PyObject * const *fastargs;
-    Py_ssize_t noptargs = 0 + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject * const *__clinic_args;
-    Py_ssize_t args_length;
-    PyObject *sep = Py_None;
-    PyObject *end = Py_None;
-    PyObject *file = Py_None;
+    TyObject *argsbuf[4];
+    TyObject * const *fastargs;
+    Ty_ssize_t noptargs = 0 + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject * const *__clinic_args;
+    Ty_ssize_t args_length;
+    TyObject *sep = Ty_None;
+    TyObject *end = Ty_None;
+    TyObject *file = Ty_None;
     int flush = 0;
 
-    fastargs = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    fastargs = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 1, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -1013,7 +1013,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_input__doc__,
+TyDoc_STRVAR(builtin_input__doc__,
 "input($module, prompt=\'\', /)\n"
 "--\n"
 "\n"
@@ -1028,16 +1028,16 @@ PyDoc_STRVAR(builtin_input__doc__,
 #define BUILTIN_INPUT_METHODDEF    \
     {"input", _PyCFunction_CAST(builtin_input), METH_FASTCALL, builtin_input__doc__},
 
-static PyObject *
-builtin_input_impl(PyObject *module, PyObject *prompt);
+static TyObject *
+builtin_input_impl(TyObject *module, TyObject *prompt);
 
-static PyObject *
-builtin_input(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+builtin_input(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *prompt = NULL;
+    TyObject *return_value = NULL;
+    TyObject *prompt = NULL;
 
-    if (!_PyArg_CheckPositional("input", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("input", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -1051,7 +1051,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_repr__doc__,
+TyDoc_STRVAR(builtin_repr__doc__,
 "repr($module, obj, /)\n"
 "--\n"
 "\n"
@@ -1062,7 +1062,7 @@ PyDoc_STRVAR(builtin_repr__doc__,
 #define BUILTIN_REPR_METHODDEF    \
     {"repr", (PyCFunction)builtin_repr, METH_O, builtin_repr__doc__},
 
-PyDoc_STRVAR(builtin_round__doc__,
+TyDoc_STRVAR(builtin_round__doc__,
 "round($module, /, number, ndigits=None)\n"
 "--\n"
 "\n"
@@ -1074,46 +1074,46 @@ PyDoc_STRVAR(builtin_round__doc__,
 #define BUILTIN_ROUND_METHODDEF    \
     {"round", _PyCFunction_CAST(builtin_round), METH_FASTCALL|METH_KEYWORDS, builtin_round__doc__},
 
-static PyObject *
-builtin_round_impl(PyObject *module, PyObject *number, PyObject *ndigits);
+static TyObject *
+builtin_round_impl(TyObject *module, TyObject *number, TyObject *ndigits);
 
-static PyObject *
-builtin_round(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+builtin_round(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(number), &_Py_ID(ndigits), },
+        .ob_item = { &_Ty_ID(number), &_Ty_ID(ndigits), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"number", "ndigits", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "round",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *number;
-    PyObject *ndigits = Py_None;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *number;
+    TyObject *ndigits = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1130,7 +1130,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_sum__doc__,
+TyDoc_STRVAR(builtin_sum__doc__,
 "sum($module, iterable, /, start=0)\n"
 "--\n"
 "\n"
@@ -1143,46 +1143,46 @@ PyDoc_STRVAR(builtin_sum__doc__,
 #define BUILTIN_SUM_METHODDEF    \
     {"sum", _PyCFunction_CAST(builtin_sum), METH_FASTCALL|METH_KEYWORDS, builtin_sum__doc__},
 
-static PyObject *
-builtin_sum_impl(PyObject *module, PyObject *iterable, PyObject *start);
+static TyObject *
+builtin_sum_impl(TyObject *module, TyObject *iterable, TyObject *start);
 
-static PyObject *
-builtin_sum(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+builtin_sum(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(start), },
+        .ob_item = { &_Ty_ID(start), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "start", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "sum",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *iterable;
-    PyObject *start = NULL;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *iterable;
+    TyObject *start = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1199,7 +1199,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_isinstance__doc__,
+TyDoc_STRVAR(builtin_isinstance__doc__,
 "isinstance($module, obj, class_or_tuple, /)\n"
 "--\n"
 "\n"
@@ -1212,18 +1212,18 @@ PyDoc_STRVAR(builtin_isinstance__doc__,
 #define BUILTIN_ISINSTANCE_METHODDEF    \
     {"isinstance", _PyCFunction_CAST(builtin_isinstance), METH_FASTCALL, builtin_isinstance__doc__},
 
-static PyObject *
-builtin_isinstance_impl(PyObject *module, PyObject *obj,
-                        PyObject *class_or_tuple);
+static TyObject *
+builtin_isinstance_impl(TyObject *module, TyObject *obj,
+                        TyObject *class_or_tuple);
 
-static PyObject *
-builtin_isinstance(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+builtin_isinstance(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *obj;
-    PyObject *class_or_tuple;
+    TyObject *return_value = NULL;
+    TyObject *obj;
+    TyObject *class_or_tuple;
 
-    if (!_PyArg_CheckPositional("isinstance", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("isinstance", nargs, 2, 2)) {
         goto exit;
     }
     obj = args[0];
@@ -1234,7 +1234,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_issubclass__doc__,
+TyDoc_STRVAR(builtin_issubclass__doc__,
 "issubclass($module, cls, class_or_tuple, /)\n"
 "--\n"
 "\n"
@@ -1247,18 +1247,18 @@ PyDoc_STRVAR(builtin_issubclass__doc__,
 #define BUILTIN_ISSUBCLASS_METHODDEF    \
     {"issubclass", _PyCFunction_CAST(builtin_issubclass), METH_FASTCALL, builtin_issubclass__doc__},
 
-static PyObject *
-builtin_issubclass_impl(PyObject *module, PyObject *cls,
-                        PyObject *class_or_tuple);
+static TyObject *
+builtin_issubclass_impl(TyObject *module, TyObject *cls,
+                        TyObject *class_or_tuple);
 
-static PyObject *
-builtin_issubclass(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+builtin_issubclass(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *cls;
-    PyObject *class_or_tuple;
+    TyObject *return_value = NULL;
+    TyObject *cls;
+    TyObject *class_or_tuple;
 
-    if (!_PyArg_CheckPositional("issubclass", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("issubclass", nargs, 2, 2)) {
         goto exit;
     }
     cls = args[0];

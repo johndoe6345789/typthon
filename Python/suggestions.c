@@ -1,9 +1,9 @@
 #include "Python.h"
-#include "pycore_code.h"          // _PyCode_GetVarnames()
+#include "pycore_code.h"          // _TyCode_GetVarnames()
 #include "pycore_frame.h"
-#include "pycore_pyerrors.h"      // export _Py_UTF8_Edit_Cost()
-#include "pycore_runtime.h"       // _Py_ID()
-#include "pycore_unicodeobject.h" // _PyUnicode_Equal()
+#include "pycore_pyerrors.h"      // export _Ty_UTF8_Edit_Cost()
+#include "pycore_runtime.h"       // _Ty_ID()
+#include "pycore_unicodeobject.h" // _TyUnicode_Equal()
 
 #define MAX_CANDIDATE_ITEMS 750
 #define MAX_STRING_SIZE 40
@@ -36,7 +36,7 @@ substitution_cost(char a, char b)
 }
 
 /* Calculate the Levenshtein distance between string1 and string2 */
-static Py_ssize_t
+static Ty_ssize_t
 levenshtein_distance(const char *a, size_t a_size,
                      const char *b, size_t b_size,
                      size_t max_cost, size_t *buffer)
@@ -107,8 +107,8 @@ levenshtein_distance(const char *a, size_t a_size,
             distance = buffer[index];
             // 3) existing result is cost(b[:b_index+1], a[index])
 
-            size_t insert_delete = Py_MIN(result, distance) + MOVE_COST;
-            result = Py_MIN(insert_delete, substitute);
+            size_t insert_delete = Ty_MIN(result, distance) + MOVE_COST;
+            result = Ty_MIN(insert_delete, substitute);
 
             // cost(b[:b_index+1], a[:index+1])
             buffer[index] = result;
@@ -124,45 +124,45 @@ levenshtein_distance(const char *a, size_t a_size,
     return result;
 }
 
-PyObject *
-_Py_CalculateSuggestions(PyObject *dir,
-                      PyObject *name)
+TyObject *
+_Ty_CalculateSuggestions(TyObject *dir,
+                      TyObject *name)
 {
-    assert(!PyErr_Occurred());
-    assert(PyList_CheckExact(dir));
+    assert(!TyErr_Occurred());
+    assert(TyList_CheckExact(dir));
 
-    Py_ssize_t dir_size = PyList_GET_SIZE(dir);
+    Ty_ssize_t dir_size = TyList_GET_SIZE(dir);
     if (dir_size >= MAX_CANDIDATE_ITEMS) {
         return NULL;
     }
 
-    Py_ssize_t suggestion_distance = PY_SSIZE_T_MAX;
-    PyObject *suggestion = NULL;
-    Py_ssize_t name_size;
-    const char *name_str = PyUnicode_AsUTF8AndSize(name, &name_size);
+    Ty_ssize_t suggestion_distance = PY_SSIZE_T_MAX;
+    TyObject *suggestion = NULL;
+    Ty_ssize_t name_size;
+    const char *name_str = TyUnicode_AsUTF8AndSize(name, &name_size);
     if (name_str == NULL) {
         return NULL;
     }
-    size_t *buffer = PyMem_New(size_t, MAX_STRING_SIZE);
+    size_t *buffer = TyMem_New(size_t, MAX_STRING_SIZE);
     if (buffer == NULL) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
-    for (Py_ssize_t i = 0; i < dir_size; ++i) {
-        PyObject *item = PyList_GET_ITEM(dir, i);
-        if (_PyUnicode_Equal(name, item)) {
+    for (Ty_ssize_t i = 0; i < dir_size; ++i) {
+        TyObject *item = TyList_GET_ITEM(dir, i);
+        if (_TyUnicode_Equal(name, item)) {
             continue;
         }
-        Py_ssize_t item_size;
-        const char *item_str = PyUnicode_AsUTF8AndSize(item, &item_size);
+        Ty_ssize_t item_size;
+        const char *item_str = TyUnicode_AsUTF8AndSize(item, &item_size);
         if (item_str == NULL) {
-            PyMem_Free(buffer);
+            TyMem_Free(buffer);
             return NULL;
         }
         // No more than 1/3 of the involved characters should need changed.
-        Py_ssize_t max_distance = (name_size + item_size + 3) * MOVE_COST / 6;
+        Ty_ssize_t max_distance = (name_size + item_size + 3) * MOVE_COST / 6;
         // Don't take matches we've already beaten.
-        max_distance = Py_MIN(max_distance, suggestion_distance - 1);
-        Py_ssize_t current_distance =
+        max_distance = Ty_MIN(max_distance, suggestion_distance - 1);
+        Ty_ssize_t current_distance =
             levenshtein_distance(name_str, name_size, item_str,
                                  item_size, max_distance, buffer);
         if (current_distance > max_distance) {
@@ -173,34 +173,34 @@ _Py_CalculateSuggestions(PyObject *dir,
             suggestion_distance = current_distance;
         }
     }
-    PyMem_Free(buffer);
-    return Py_XNewRef(suggestion);
+    TyMem_Free(buffer);
+    return Ty_XNewRef(suggestion);
 }
 
-Py_ssize_t
-_Py_UTF8_Edit_Cost(PyObject *a, PyObject *b, Py_ssize_t max_cost)
+Ty_ssize_t
+_Ty_UTF8_Edit_Cost(TyObject *a, TyObject *b, Ty_ssize_t max_cost)
 {
-    assert(PyUnicode_Check(a) && PyUnicode_Check(b));
-    Py_ssize_t size_a, size_b;
-    const char *utf8_a = PyUnicode_AsUTF8AndSize(a, &size_a);
+    assert(TyUnicode_Check(a) && TyUnicode_Check(b));
+    Ty_ssize_t size_a, size_b;
+    const char *utf8_a = TyUnicode_AsUTF8AndSize(a, &size_a);
     if (utf8_a == NULL) {
         return -1;
     }
-    const char *utf8_b = PyUnicode_AsUTF8AndSize(b, &size_b);
+    const char *utf8_b = TyUnicode_AsUTF8AndSize(b, &size_b);
     if (utf8_b == NULL) {
         return -1;
     }
     if (max_cost == -1) {
-        max_cost = MOVE_COST * Py_MAX(size_a, size_b);
+        max_cost = MOVE_COST * Ty_MAX(size_a, size_b);
     }
-    size_t *buffer = PyMem_New(size_t, MAX_STRING_SIZE);
+    size_t *buffer = TyMem_New(size_t, MAX_STRING_SIZE);
     if (buffer == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
-    Py_ssize_t res = levenshtein_distance(utf8_a, size_a,
+    Ty_ssize_t res = levenshtein_distance(utf8_a, size_a,
                                     utf8_b, size_b, max_cost, buffer);
-    PyMem_Free(buffer);
+    TyMem_Free(buffer);
     return res;
 }
 

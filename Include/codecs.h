@@ -1,5 +1,5 @@
-#ifndef Py_CODECREGISTRY_H
-#define Py_CODECREGISTRY_H
+#ifndef Ty_CODECREGISTRY_H
+#define Ty_CODECREGISTRY_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -24,7 +24,7 @@ Copyright (c) Corporation for National Research Initiatives.
    The search_function's refcount is incremented by this function. */
 
 PyAPI_FUNC(int) PyCodec_Register(
-       PyObject *search_function
+       TyObject *search_function
        );
 
 /* Unregister a codec search function and clear the registry's cache.
@@ -32,7 +32,7 @@ PyAPI_FUNC(int) PyCodec_Register(
    Return 0 on success. Raise an exception and return -1 on error. */
 
 PyAPI_FUNC(int) PyCodec_Unregister(
-       PyObject *search_function
+       TyObject *search_function
        );
 
 /* Codec registry encoding check API.
@@ -56,8 +56,8 @@ PyAPI_FUNC(int) PyCodec_KnownEncoding(
 
  */
 
-PyAPI_FUNC(PyObject *) PyCodec_Encode(
-       PyObject *object,
+PyAPI_FUNC(TyObject *) PyCodec_Encode(
+       TyObject *object,
        const char *encoding,
        const char *errors
        );
@@ -72,8 +72,8 @@ PyAPI_FUNC(PyObject *) PyCodec_Encode(
 
  */
 
-PyAPI_FUNC(PyObject *) PyCodec_Decode(
-       PyObject *object,
+PyAPI_FUNC(TyObject *) PyCodec_Decode(
+       TyObject *object,
        const char *encoding,
        const char *errors
        );
@@ -99,36 +99,36 @@ PyAPI_FUNC(PyObject *) PyCodec_Decode(
 
 /* Get an encoder function for the given encoding. */
 
-PyAPI_FUNC(PyObject *) PyCodec_Encoder(const char *encoding);
+PyAPI_FUNC(TyObject *) PyCodec_Encoder(const char *encoding);
 
 /* Get a decoder function for the given encoding. */
 
-PyAPI_FUNC(PyObject *) PyCodec_Decoder(const char *encoding);
+PyAPI_FUNC(TyObject *) PyCodec_Decoder(const char *encoding);
 
 /* Get an IncrementalEncoder object for the given encoding. */
 
-PyAPI_FUNC(PyObject *) PyCodec_IncrementalEncoder(
+PyAPI_FUNC(TyObject *) PyCodec_IncrementalEncoder(
    const char *encoding,
    const char *errors);
 
 /* Get an IncrementalDecoder object function for the given encoding. */
 
-PyAPI_FUNC(PyObject *) PyCodec_IncrementalDecoder(
+PyAPI_FUNC(TyObject *) PyCodec_IncrementalDecoder(
    const char *encoding,
    const char *errors);
 
 /* Get a StreamReader factory function for the given encoding. */
 
-PyAPI_FUNC(PyObject *) PyCodec_StreamReader(
+PyAPI_FUNC(TyObject *) PyCodec_StreamReader(
    const char *encoding,
-   PyObject *stream,
+   TyObject *stream,
    const char *errors);
 
 /* Get a StreamWriter factory function for the given encoding. */
 
-PyAPI_FUNC(PyObject *) PyCodec_StreamWriter(
+PyAPI_FUNC(TyObject *) PyCodec_StreamWriter(
    const char *encoding,
-   PyObject *stream,
+   TyObject *stream,
    const char *errors);
 
 /* Unicode encoding error handling callback registry API */
@@ -139,38 +139,38 @@ PyAPI_FUNC(PyObject *) PyCodec_StreamWriter(
    callback name, when name is specified as the error parameter
    in the call to the encode/decode function.
    Return 0 on success, -1 on error */
-PyAPI_FUNC(int) PyCodec_RegisterError(const char *name, PyObject *error);
+PyAPI_FUNC(int) PyCodec_RegisterError(const char *name, TyObject *error);
 
 /* Lookup the error handling callback function registered under the given
    name. As a special case NULL can be passed, in which case
    the error handling callback for "strict" will be returned. */
-PyAPI_FUNC(PyObject *) PyCodec_LookupError(const char *name);
+PyAPI_FUNC(TyObject *) PyCodec_LookupError(const char *name);
 
 /* raise exc as an exception */
-PyAPI_FUNC(PyObject *) PyCodec_StrictErrors(PyObject *exc);
+PyAPI_FUNC(TyObject *) PyCodec_StrictErrors(TyObject *exc);
 
 /* ignore the unicode error, skipping the faulty input */
-PyAPI_FUNC(PyObject *) PyCodec_IgnoreErrors(PyObject *exc);
+PyAPI_FUNC(TyObject *) PyCodec_IgnoreErrors(TyObject *exc);
 
 /* replace the unicode encode error with ? or U+FFFD */
-PyAPI_FUNC(PyObject *) PyCodec_ReplaceErrors(PyObject *exc);
+PyAPI_FUNC(TyObject *) PyCodec_ReplaceErrors(TyObject *exc);
 
 /* replace the unicode encode error with XML character references */
-PyAPI_FUNC(PyObject *) PyCodec_XMLCharRefReplaceErrors(PyObject *exc);
+PyAPI_FUNC(TyObject *) PyCodec_XMLCharRefReplaceErrors(TyObject *exc);
 
 /* replace the unicode encode error with backslash escapes (\x, \u and \U) */
-PyAPI_FUNC(PyObject *) PyCodec_BackslashReplaceErrors(PyObject *exc);
+PyAPI_FUNC(TyObject *) PyCodec_BackslashReplaceErrors(TyObject *exc);
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03050000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03050000
 /* replace the unicode encode error with backslash escapes (\N, \x, \u and \U) */
-PyAPI_FUNC(PyObject *) PyCodec_NameReplaceErrors(PyObject *exc);
+PyAPI_FUNC(TyObject *) PyCodec_NameReplaceErrors(TyObject *exc);
 #endif
 
-#ifndef Py_LIMITED_API
-PyAPI_DATA(const char *) Py_hexdigits;
+#ifndef Ty_LIMITED_API
+PyAPI_DATA(const char *) Ty_hexdigits;
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_CODECREGISTRY_H */
+#endif /* !Ty_CODECREGISTRY_H */

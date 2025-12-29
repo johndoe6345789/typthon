@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_FILEUTILS_WINDOWS_H
-#define Py_INTERNAL_FILEUTILS_WINDOWS_H
+#ifndef Ty_INTERNAL_FILEUTILS_WINDOWS_H
+#define Ty_INTERNAL_FILEUTILS_WINDOWS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #ifdef MS_WINDOWS
@@ -45,7 +45,7 @@ typedef BOOL (WINAPI *PGetFileInformationByName)(
     ULONG FileInfoBufferSize
 );
 
-static inline BOOL _Py_GetFileInformationByName(
+static inline BOOL _Ty_GetFileInformationByName(
     PCWSTR FileName,
     FILE_INFO_BY_NAME_CLASS FileInformationClass,
     PVOID FileInfoBuffer,
@@ -75,7 +75,7 @@ static inline BOOL _Py_GetFileInformationByName(
     return GetFileInformationByName(FileName, FileInformationClass, FileInfoBuffer, FileInfoBufferSize);
 }
 
-static inline BOOL _Py_GetFileInformationByName_ErrorIsTrustworthy(int error)
+static inline BOOL _Ty_GetFileInformationByName_ErrorIsTrustworthy(int error)
 {
     switch(error) {
         case ERROR_FILE_NOT_FOUND:

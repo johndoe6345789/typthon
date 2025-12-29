@@ -5,11 +5,11 @@
  * structs.
  */
 
-#ifndef Py_INTERNAL_INTERP_FRAME_STRUCTS_H
-#define Py_INTERNAL_INTERP_FRAME_STRUCTS_H
+#ifndef Ty_INTERNAL_INTERP_FRAME_STRUCTS_H
+#define Ty_INTERNAL_INTERP_FRAME_STRUCTS_H
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_structs.h"       // _PyStackRef
@@ -31,19 +31,19 @@ struct _PyInterpreterFrame {
     _PyStackRef f_executable; /* Deferred or strong reference (code object or None) */
     struct _PyInterpreterFrame *previous;
     _PyStackRef f_funcobj; /* Deferred or strong reference. Only valid if not on C stack */
-    PyObject *f_globals; /* Borrowed reference. Only valid if not on C stack */
-    PyObject *f_builtins; /* Borrowed reference. Only valid if not on C stack */
-    PyObject *f_locals; /* Strong reference, may be NULL. Only valid if not on C stack */
+    TyObject *f_globals; /* Borrowed reference. Only valid if not on C stack */
+    TyObject *f_builtins; /* Borrowed reference. Only valid if not on C stack */
+    TyObject *f_locals; /* Strong reference, may be NULL. Only valid if not on C stack */
     PyFrameObject *frame_obj; /* Strong reference, may be NULL. Only valid if not on C stack */
-    _Py_CODEUNIT *instr_ptr; /* Instruction currently executing (or about to begin) */
+    _Ty_CODEUNIT *instr_ptr; /* Instruction currently executing (or about to begin) */
     _PyStackRef *stackpointer;
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     /* Index of thread-local bytecode containing instr_ptr. */
     int32_t tlbc_index;
 #endif
     uint16_t return_offset;  /* Only relevant during a function call */
     char owner;
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     uint8_t visited:1;
     uint8_t lltrace:7;
 #else
@@ -59,13 +59,13 @@ struct _PyInterpreterFrame {
 #define _PyGenObject_HEAD(prefix)                                           \
     PyObject_HEAD                                                           \
     /* List of weak reference. */                                           \
-    PyObject *prefix##_weakreflist;                                         \
+    TyObject *prefix##_weakreflist;                                         \
     /* Name of the generator. */                                            \
-    PyObject *prefix##_name;                                                \
+    TyObject *prefix##_name;                                                \
     /* Qualified name of the generator. */                                  \
-    PyObject *prefix##_qualname;                                            \
-    _PyErr_StackItem prefix##_exc_state;                                    \
-    PyObject *prefix##_origin_or_finalizer;                                 \
+    TyObject *prefix##_qualname;                                            \
+    _TyErr_StackItem prefix##_exc_state;                                    \
+    TyObject *prefix##_origin_or_finalizer;                                 \
     char prefix##_hooks_inited;                                             \
     char prefix##_closed;                                                   \
     char prefix##_running_async;                                            \
@@ -92,4 +92,4 @@ struct _PyAsyncGenObject {
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_INTERNAL_INTERP_FRAME_STRUCTS_H
+#endif  // !Ty_INTERNAL_INTERP_FRAME_STRUCTS_H

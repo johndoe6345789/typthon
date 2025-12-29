@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(_testcapi_call_long_compact_api__doc__,
+TyDoc_STRVAR(_testcapi_call_long_compact_api__doc__,
 "call_long_compact_api($module, arg, /)\n"
 "--\n"
 "\n");

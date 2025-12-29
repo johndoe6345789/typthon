@@ -1,51 +1,51 @@
 #include "parts.h"
 
 
-static PyObject *
-_testcapi_config_get(PyObject *module, PyObject *name_obj)
+static TyObject *
+_testcapi_config_get(TyObject *module, TyObject *name_obj)
 {
     const char *name;
-    if (PyArg_Parse(name_obj, "s", &name) < 0) {
+    if (TyArg_Parse(name_obj, "s", &name) < 0) {
         return NULL;
     }
 
-    return PyConfig_Get(name);
+    return TyConfig_Get(name);
 }
 
 
-static PyObject *
-_testcapi_config_getint(PyObject *module, PyObject *name_obj)
+static TyObject *
+_testcapi_config_getint(TyObject *module, TyObject *name_obj)
 {
     const char *name;
-    if (PyArg_Parse(name_obj, "s", &name) < 0) {
+    if (TyArg_Parse(name_obj, "s", &name) < 0) {
         return NULL;
     }
 
     int value;
-    if (PyConfig_GetInt(name, &value) < 0) {
+    if (TyConfig_GetInt(name, &value) < 0) {
         return NULL;
     }
-    return PyLong_FromLong(value);
+    return TyLong_FromLong(value);
 }
 
 
-static PyObject *
-_testcapi_config_names(PyObject *module, PyObject* Py_UNUSED(args))
+static TyObject *
+_testcapi_config_names(TyObject *module, TyObject* Py_UNUSED(args))
 {
-    return PyConfig_Names();
+    return TyConfig_Names();
 }
 
 
-static PyObject *
-_testcapi_config_set(PyObject *module, PyObject *args)
+static TyObject *
+_testcapi_config_set(TyObject *module, TyObject *args)
 {
     const char *name;
-    PyObject *value;
-    if (PyArg_ParseTuple(args, "sO", &name, &value) < 0) {
+    TyObject *value;
+    if (TyArg_ParseTuple(args, "sO", &name, &value) < 0) {
         return NULL;
     }
 
-    int res = PyConfig_Set(name, value);
+    int res = TyConfig_Set(name, value);
     if (res < 0) {
         return NULL;
     }
@@ -53,7 +53,7 @@ _testcapi_config_set(PyObject *module, PyObject *args)
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"config_get", _testcapi_config_get, METH_O},
     {"config_getint", _testcapi_config_getint, METH_O},
     {"config_names", _testcapi_config_names, METH_NOARGS},
@@ -62,7 +62,7 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Config(PyObject *mod)
+_PyTestCapi_Init_Config(TyObject *mod)
 {
-    return PyModule_AddFunctions(mod, test_methods);
+    return TyModule_AddFunctions(mod, test_methods);
 }

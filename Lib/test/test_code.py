@@ -210,7 +210,7 @@ except ImportError:
     ctypes = None
 from test.support import (cpython_only,
                           check_impl_detail, requires_debug_ranges,
-                          gc_collect, Py_GIL_DISABLED)
+                          gc_collect, Ty_GIL_DISABLED)
 from test.support.script_helper import assert_python_ok
 from test.support import threading_helper, import_helper
 from test.support.bytecode_helper import instructions_with_positions
@@ -1210,14 +1210,14 @@ class CodeConstsTest(unittest.TestCase):
         self.assertIsInterned(f())
 
     @cpython_only
-    @unittest.skipIf(Py_GIL_DISABLED, "free-threaded build interns all string constants")
+    @unittest.skipIf(Ty_GIL_DISABLED, "free-threaded build interns all string constants")
     def test_interned_string_with_null(self):
         co = compile(r'res = "str\0value!"', '?', 'exec')
         v = self.find_const(co.co_consts, 'str\0value!')
         self.assertIsNotInterned(v)
 
     @cpython_only
-    @unittest.skipUnless(Py_GIL_DISABLED, "does not intern all constants")
+    @unittest.skipUnless(Ty_GIL_DISABLED, "does not intern all constants")
     def test_interned_constants(self):
         # compile separately to avoid compile time de-duping
 
@@ -1620,7 +1620,7 @@ if check_impl_detail(cpython=True) and ctypes is not None:
                     # gh-117683: In the free-threaded build, the code object's
                     # destructor may still be running concurrently in the main
                     # thread.
-                    if not Py_GIL_DISABLED:
+                    if not Ty_GIL_DISABLED:
                         self.test.assertEqual(LAST_FREED, 500)
 
             SetExtra(f.__code__, FREE_INDEX, ctypes.c_voidp(500))

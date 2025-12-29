@@ -38,8 +38,8 @@ Revision history:
   - Minor comment accuracy fix.
 
 95/06/29 (Steve Clift)
-  - Changed arg parsing to use PyArg_ParseTuple.
-  - Added PyErr_Clear() call(s) where needed.
+  - Changed arg parsing to use TyArg_ParseTuple.
+  - Added TyErr_Clear() call(s) where needed.
   - Fix core dumps if user message contains format specifiers.
   - Change openlog arg defaults to match normal syslog behavior.
   - Plug memory leak in openlog().
@@ -50,13 +50,13 @@ Revision history:
 /* syslog module */
 
 // clinic/syslogmodule.c.h uses internal pycore_modsupport.h API
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
 #include "osdefs.h"               // SEP
-#include "pycore_sysmodule.h"     // _PySys_GetOptionalAttrString()
+#include "pycore_sysmodule.h"     // _TySys_GetOptionalAttrString()
 
 #include <syslog.h>
 
@@ -69,16 +69,16 @@ module syslog
 
 /*  only one instance, only one syslog, so globals should be ok,
  *  these fields are writable from the main interpreter only. */
-static PyObject *S_ident_o = NULL;  // identifier, held by openlog()
+static TyObject *S_ident_o = NULL;  // identifier, held by openlog()
 static char S_log_open = 0;
 
 static inline int
 is_main_interpreter(void)
 {
-    return (PyInterpreterState_Get() == PyInterpreterState_Main());
+    return (TyInterpreterState_Get() == TyInterpreterState_Main());
 }
 
-static PyObject *
+static TyObject *
 syslog_get_argv(void)
 {
     /* Figure out what to use for as the program "ident" for openlog().
@@ -87,51 +87,51 @@ syslog_get_argv(void)
      * is optional.
      */
 
-    Py_ssize_t argv_len, scriptlen;
-    PyObject *scriptobj;
-    Py_ssize_t slash;
-    PyObject *argv;
+    Ty_ssize_t argv_len, scriptlen;
+    TyObject *scriptobj;
+    Ty_ssize_t slash;
+    TyObject *argv;
 
-    if (_PySys_GetOptionalAttrString("argv", &argv) <= 0) {
+    if (_TySys_GetOptionalAttrString("argv", &argv) <= 0) {
         return NULL;
     }
 
-    argv_len = PyList_Size(argv);
+    argv_len = TyList_Size(argv);
     if (argv_len == -1) {
-        PyErr_Clear();
-        Py_DECREF(argv);
+        TyErr_Clear();
+        Ty_DECREF(argv);
         return NULL;
     }
     if (argv_len == 0) {
-        Py_DECREF(argv);
+        Ty_DECREF(argv);
         return NULL;
     }
 
-    scriptobj = PyList_GetItem(argv, 0);
-    Py_XINCREF(scriptobj);
-    Py_DECREF(argv);
+    scriptobj = TyList_GetItem(argv, 0);
+    Ty_XINCREF(scriptobj);
+    Ty_DECREF(argv);
     if (scriptobj == NULL) {
-        PyErr_Clear();
+        TyErr_Clear();
         return NULL;
     }
-    if (!PyUnicode_Check(scriptobj)) {
-        Py_DECREF(scriptobj);
+    if (!TyUnicode_Check(scriptobj)) {
+        Ty_DECREF(scriptobj);
         return NULL;
     }
-    scriptlen = PyUnicode_GET_LENGTH(scriptobj);
+    scriptlen = TyUnicode_GET_LENGTH(scriptobj);
     if (scriptlen == 0) {
-        Py_DECREF(scriptobj);
+        Ty_DECREF(scriptobj);
         return NULL;
     }
 
-    slash = PyUnicode_FindChar(scriptobj, SEP, 0, scriptlen, -1);
+    slash = TyUnicode_FindChar(scriptobj, SEP, 0, scriptlen, -1);
     if (slash == -2) {
-        PyErr_Clear();
-        Py_DECREF(scriptobj);
+        TyErr_Clear();
+        Ty_DECREF(scriptobj);
         return NULL;
     }
     if (slash != -1) {
-        Py_SETREF(scriptobj, PyUnicode_Substring(scriptobj, slash + 1, scriptlen));
+        Ty_SETREF(scriptobj, TyUnicode_Substring(scriptobj, slash + 1, scriptlen));
     }
     return scriptobj;
 }
@@ -148,27 +148,27 @@ syslog.openlog
 Set logging options of subsequent syslog() calls.
 [clinic start generated code]*/
 
-static PyObject *
-syslog_openlog_impl(PyObject *module, PyObject *ident, long logopt,
+static TyObject *
+syslog_openlog_impl(TyObject *module, TyObject *ident, long logopt,
                     long facility)
 /*[clinic end generated code: output=5476c12829b6eb75 input=ee700b8786f81c23]*/
 {
     // Since the sys.openlog changes the process level state of syslog library,
     // this operation is only allowed for the main interpreter.
     if (!is_main_interpreter()) {
-        PyErr_SetString(PyExc_RuntimeError, "subinterpreter can't use syslog.openlog()");
+        TyErr_SetString(TyExc_RuntimeError, "subinterpreter can't use syslog.openlog()");
         return NULL;
     }
 
     const char *ident_str = NULL;
 
     if (ident) {
-        Py_INCREF(ident);
+        Ty_INCREF(ident);
     }
     else {
         /* get sys.argv[0] or NULL if we can't for some reason  */
         ident = syslog_get_argv();
-        if (ident == NULL && PyErr_Occurred()) {
+        if (ident == NULL && TyErr_Occurred()) {
             return NULL;
         }
     }
@@ -178,20 +178,20 @@ syslog_openlog_impl(PyObject *module, PyObject *ident, long logopt,
      * If NULL, just let openlog figure it out (probably using C argv[0]).
      */
     if (ident) {
-        ident_str = PyUnicode_AsUTF8(ident);
+        ident_str = TyUnicode_AsUTF8(ident);
         if (ident_str == NULL) {
-            Py_DECREF(ident);
+            Ty_DECREF(ident);
             return NULL;
         }
     }
-    if (PySys_Audit("syslog.openlog", "Oll", ident ? ident : Py_None, logopt, facility) < 0) {
-        Py_XDECREF(ident);
+    if (TySys_Audit("syslog.openlog", "Oll", ident ? ident : Ty_None, logopt, facility) < 0) {
+        Ty_XDECREF(ident);
         return NULL;
     }
 
     openlog(ident_str, logopt, facility);
     S_log_open = 1;
-    Py_XSETREF(S_ident_o, ident);
+    Ty_XSETREF(S_ident_o, ident);
 
     Py_RETURN_NONE;
 }
@@ -213,42 +213,42 @@ syslog.syslog
 Send the string message to the system logger.
 [clinic start generated code]*/
 
-static PyObject *
-syslog_syslog_impl(PyObject *module, int group_left_1, int priority,
+static TyObject *
+syslog_syslog_impl(TyObject *module, int group_left_1, int priority,
                    const char *message)
 /*[clinic end generated code: output=c3dbc73445a0e078 input=6588ddb0b113af8e]*/
 {
-    if (PySys_Audit("syslog.syslog", "is", priority, message) < 0) {
+    if (TySys_Audit("syslog.syslog", "is", priority, message) < 0) {
         return NULL;
     }
 
     /*  if log is not opened, open it now  */
     if (!S_log_open) {
         if (!is_main_interpreter()) {
-            PyErr_SetString(PyExc_RuntimeError, "subinterpreter can't use syslog.syslog() "
+            TyErr_SetString(TyExc_RuntimeError, "subinterpreter can't use syslog.syslog() "
                                                 "until the syslog is opened by the main interpreter");
             return NULL;
         }
-        PyObject *openlog_ret = syslog_openlog_impl(module, NULL, 0, LOG_USER);
+        TyObject *openlog_ret = syslog_openlog_impl(module, NULL, 0, LOG_USER);
         if (openlog_ret == NULL) {
             return NULL;
         }
-        Py_DECREF(openlog_ret);
+        Ty_DECREF(openlog_ret);
     }
 
     /* Incref ident, because it can be decrefed if syslog.openlog() is
      * called when the GIL is released.
      */
-    PyObject *ident = Py_XNewRef(S_ident_o);
+    TyObject *ident = Ty_XNewRef(S_ident_o);
 #ifdef __APPLE__
     // gh-98178: On macOS, libc syslog() is not thread-safe
     syslog(priority, "%s", message);
 #else
-    Py_BEGIN_ALLOW_THREADS;
+    Ty_BEGIN_ALLOW_THREADS;
     syslog(priority, "%s", message);
-    Py_END_ALLOW_THREADS;
+    Ty_END_ALLOW_THREADS;
 #endif
-    Py_XDECREF(ident);
+    Ty_XDECREF(ident);
     Py_RETURN_NONE;
 }
 
@@ -260,23 +260,23 @@ syslog.closelog
 Reset the syslog module values and call the system library closelog().
 [clinic start generated code]*/
 
-static PyObject *
-syslog_closelog_impl(PyObject *module)
+static TyObject *
+syslog_closelog_impl(TyObject *module)
 /*[clinic end generated code: output=97890a80a24b1b84 input=167f489868bd5a72]*/
 {
     // Since the sys.closelog changes the process level state of syslog library,
     // this operation is only allowed for the main interpreter.
     if (!is_main_interpreter()) {
-        PyErr_SetString(PyExc_RuntimeError, "subinterpreter can't use syslog.closelog()");
+        TyErr_SetString(TyExc_RuntimeError, "subinterpreter can't use syslog.closelog()");
         return NULL;
     }
 
-    if (PySys_Audit("syslog.closelog", NULL) < 0) {
+    if (TySys_Audit("syslog.closelog", NULL) < 0) {
         return NULL;
     }
     if (S_log_open) {
         closelog();
-        Py_CLEAR(S_ident_o);
+        Ty_CLEAR(S_ident_o);
         S_log_open = 0;
     }
     Py_RETURN_NONE;
@@ -292,10 +292,10 @@ Set the priority mask to maskpri and return the previous mask value.
 [clinic start generated code]*/
 
 static long
-syslog_setlogmask_impl(PyObject *module, long maskpri)
+syslog_setlogmask_impl(TyObject *module, long maskpri)
 /*[clinic end generated code: output=d6ed163917b434bf input=adff2c2b76c7629c]*/
 {
-    if (PySys_Audit("syslog.setlogmask", "l", maskpri) < 0) {
+    if (TySys_Audit("syslog.setlogmask", "l", maskpri) < 0) {
         return -1;
     }
 
@@ -312,7 +312,7 @@ Calculates the mask for the individual priority pri.
 [clinic start generated code]*/
 
 static long
-syslog_LOG_MASK_impl(PyObject *module, long pri)
+syslog_LOG_MASK_impl(TyObject *module, long pri)
 /*[clinic end generated code: output=c4a5bbfcc74c7c94 input=534829cb7fb5f7d2]*/
 {
     return LOG_MASK(pri);
@@ -328,7 +328,7 @@ Calculates the mask for all priorities up to and including pri.
 [clinic start generated code]*/
 
 static long
-syslog_LOG_UPTO_impl(PyObject *module, long pri)
+syslog_LOG_UPTO_impl(TyObject *module, long pri)
 /*[clinic end generated code: output=9eab083c90601d7e input=5e906d6c406b7458]*/
 {
     return LOG_UPTO(pri);
@@ -336,7 +336,7 @@ syslog_LOG_UPTO_impl(PyObject *module, long pri)
 
 /* List of functions defined in the module */
 
-static PyMethodDef syslog_methods[] = {
+static TyMethodDef syslog_methods[] = {
     SYSLOG_OPENLOG_METHODDEF
     SYSLOG_CLOSELOG_METHODDEF
     SYSLOG_SYSLOG_METHODDEF
@@ -348,11 +348,11 @@ static PyMethodDef syslog_methods[] = {
 
 
 static int
-syslog_exec(PyObject *module)
+syslog_exec(TyObject *module)
 {
 #define ADD_INT_MACRO(module, macro)                                  \
     do {                                                              \
-        if (PyModule_AddIntConstant(module, #macro, macro) < 0) {     \
+        if (TyModule_AddIntConstant(module, #macro, macro) < 0) {     \
             return -1;                                                \
         }                                                             \
     } while (0)
@@ -446,15 +446,15 @@ syslog_exec(PyObject *module)
 }
 
 static PyModuleDef_Slot syslog_slots[] = {
-    {Py_mod_exec, syslog_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, syslog_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
 /* Initialization function for the module */
 
-static struct PyModuleDef syslogmodule = {
+static struct TyModuleDef syslogmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "syslog",
     .m_size = 0,

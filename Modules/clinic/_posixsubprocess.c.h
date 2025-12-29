@@ -2,9 +2,9 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(subprocess_fork_exec__doc__,
+TyDoc_STRVAR(subprocess_fork_exec__doc__,
 "fork_exec($module, args, executable_list, close_fds, pass_fds, cwd,\n"
 "          env, p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite,\n"
 "          errpipe_read, errpipe_write, restore_signals, call_setsid,\n"
@@ -37,29 +37,29 @@ PyDoc_STRVAR(subprocess_fork_exec__doc__,
 #define SUBPROCESS_FORK_EXEC_METHODDEF    \
     {"fork_exec", _PyCFunction_CAST(subprocess_fork_exec), METH_FASTCALL, subprocess_fork_exec__doc__},
 
-static PyObject *
-subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
-                          PyObject *executable_list, int close_fds,
-                          PyObject *py_fds_to_keep, PyObject *cwd_obj,
-                          PyObject *env_list, int p2cread, int p2cwrite,
+static TyObject *
+subprocess_fork_exec_impl(TyObject *module, TyObject *process_args,
+                          TyObject *executable_list, int close_fds,
+                          TyObject *py_fds_to_keep, TyObject *cwd_obj,
+                          TyObject *env_list, int p2cread, int p2cwrite,
                           int c2pread, int c2pwrite, int errread,
                           int errwrite, int errpipe_read, int errpipe_write,
                           int restore_signals, int call_setsid,
-                          pid_t pgid_to_set, PyObject *gid_object,
-                          PyObject *extra_groups_packed,
-                          PyObject *uid_object, int child_umask,
-                          PyObject *preexec_fn);
+                          pid_t pgid_to_set, TyObject *gid_object,
+                          TyObject *extra_groups_packed,
+                          TyObject *uid_object, int child_umask,
+                          TyObject *preexec_fn);
 
-static PyObject *
-subprocess_fork_exec(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+subprocess_fork_exec(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *process_args;
-    PyObject *executable_list;
+    TyObject *return_value = NULL;
+    TyObject *process_args;
+    TyObject *executable_list;
     int close_fds;
-    PyObject *py_fds_to_keep;
-    PyObject *cwd_obj;
-    PyObject *env_list;
+    TyObject *py_fds_to_keep;
+    TyObject *cwd_obj;
+    TyObject *env_list;
     int p2cread;
     int p2cwrite;
     int c2pread;
@@ -71,13 +71,13 @@ subprocess_fork_exec(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     int restore_signals;
     int call_setsid;
     pid_t pgid_to_set;
-    PyObject *gid_object;
-    PyObject *extra_groups_packed;
-    PyObject *uid_object;
+    TyObject *gid_object;
+    TyObject *extra_groups_packed;
+    TyObject *uid_object;
     int child_umask;
-    PyObject *preexec_fn;
+    TyObject *preexec_fn;
 
-    if (!_PyArg_CheckPositional("fork_exec", nargs, 22, 22)) {
+    if (!_TyArg_CheckPositional("fork_exec", nargs, 22, 22)) {
         goto exit;
     }
     process_args = args[0];
@@ -86,43 +86,43 @@ subprocess_fork_exec(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     if (close_fds < 0) {
         goto exit;
     }
-    if (!PyTuple_Check(args[3])) {
-        _PyArg_BadArgument("fork_exec", "argument 4", "tuple", args[3]);
+    if (!TyTuple_Check(args[3])) {
+        _TyArg_BadArgument("fork_exec", "argument 4", "tuple", args[3]);
         goto exit;
     }
     py_fds_to_keep = args[3];
     cwd_obj = args[4];
     env_list = args[5];
-    p2cread = PyLong_AsInt(args[6]);
-    if (p2cread == -1 && PyErr_Occurred()) {
+    p2cread = TyLong_AsInt(args[6]);
+    if (p2cread == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    p2cwrite = PyLong_AsInt(args[7]);
-    if (p2cwrite == -1 && PyErr_Occurred()) {
+    p2cwrite = TyLong_AsInt(args[7]);
+    if (p2cwrite == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    c2pread = PyLong_AsInt(args[8]);
-    if (c2pread == -1 && PyErr_Occurred()) {
+    c2pread = TyLong_AsInt(args[8]);
+    if (c2pread == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    c2pwrite = PyLong_AsInt(args[9]);
-    if (c2pwrite == -1 && PyErr_Occurred()) {
+    c2pwrite = TyLong_AsInt(args[9]);
+    if (c2pwrite == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    errread = PyLong_AsInt(args[10]);
-    if (errread == -1 && PyErr_Occurred()) {
+    errread = TyLong_AsInt(args[10]);
+    if (errread == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    errwrite = PyLong_AsInt(args[11]);
-    if (errwrite == -1 && PyErr_Occurred()) {
+    errwrite = TyLong_AsInt(args[11]);
+    if (errwrite == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    errpipe_read = PyLong_AsInt(args[12]);
-    if (errpipe_read == -1 && PyErr_Occurred()) {
+    errpipe_read = TyLong_AsInt(args[12]);
+    if (errpipe_read == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    errpipe_write = PyLong_AsInt(args[13]);
-    if (errpipe_write == -1 && PyErr_Occurred()) {
+    errpipe_write = TyLong_AsInt(args[13]);
+    if (errpipe_write == -1 && TyErr_Occurred()) {
         goto exit;
     }
     restore_signals = PyObject_IsTrue(args[14]);
@@ -133,15 +133,15 @@ subprocess_fork_exec(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     if (call_setsid < 0) {
         goto exit;
     }
-    pgid_to_set = PyLong_AsPid(args[16]);
-    if (pgid_to_set == -1 && PyErr_Occurred()) {
+    pgid_to_set = TyLong_AsPid(args[16]);
+    if (pgid_to_set == -1 && TyErr_Occurred()) {
         goto exit;
     }
     gid_object = args[17];
     extra_groups_packed = args[18];
     uid_object = args[19];
-    child_umask = PyLong_AsInt(args[20]);
-    if (child_umask == -1 && PyErr_Occurred()) {
+    child_umask = TyLong_AsInt(args[20]);
+    if (child_umask == -1 && TyErr_Occurred()) {
         goto exit;
     }
     preexec_fn = args[21];

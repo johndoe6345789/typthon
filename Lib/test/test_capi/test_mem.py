@@ -68,13 +68,13 @@ class PyMemDebugTests(unittest.TestCase):
 
     def check_malloc_without_gil(self, code):
         out = self.check(code)
-        if not support.Py_GIL_DISABLED:
+        if not support.Ty_GIL_DISABLED:
             expected = ('Fatal Python error: _PyMem_DebugMalloc: '
                         'Python memory allocator called without holding the GIL')
         else:
             expected = ('Fatal Python error: _PyMem_DebugMalloc: '
                         'Python memory allocator called without an active thread state. '
-                        'Are you trying to call it inside of a Py_BEGIN_ALLOW_THREADS block?')
+                        'Are you trying to call it inside of a Ty_BEGIN_ALLOW_THREADS block?')
         self.assertIn(expected, out)
 
     def test_pymem_malloc_without_gil(self):
@@ -117,9 +117,9 @@ class PyMemDebugTests(unittest.TestCase):
     def test_pyobject_freed_is_freed(self):
         self.check_pyobject_is_freed('check_pyobject_freed_is_freed')
 
-    # Python built with Py_TRACE_REFS fail with a fatal error in
+    # Python built with Ty_TRACE_REFS fail with a fatal error in
     # _PyRefchain_Trace() on memory allocation error.
-    @unittest.skipIf(support.Py_TRACE_REFS, 'cannot test Py_TRACE_REFS build')
+    @unittest.skipIf(support.Ty_TRACE_REFS, 'cannot test Ty_TRACE_REFS build')
     def test_set_nomemory(self):
         code = """if 1:
             import _testcapi
@@ -173,7 +173,7 @@ class PyMemMimallocDebugTests(PyMemDebugTests):
     PYTHONMALLOC = 'mimalloc_debug'
 
 
-@unittest.skipUnless(support.Py_DEBUG, 'need Py_DEBUG')
+@unittest.skipUnless(support.Ty_DEBUG, 'need Ty_DEBUG')
 class PyMemDefaultTests(PyMemDebugTests):
     # test default allocator of Python compiled in debug mode
     PYTHONMALLOC = ''

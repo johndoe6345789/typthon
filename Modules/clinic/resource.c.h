@@ -4,7 +4,7 @@ preserve
 
 #if defined(HAVE_GETRUSAGE)
 
-PyDoc_STRVAR(resource_getrusage__doc__,
+TyDoc_STRVAR(resource_getrusage__doc__,
 "getrusage($module, who, /)\n"
 "--\n"
 "\n");
@@ -12,17 +12,17 @@ PyDoc_STRVAR(resource_getrusage__doc__,
 #define RESOURCE_GETRUSAGE_METHODDEF    \
     {"getrusage", (PyCFunction)resource_getrusage, METH_O, resource_getrusage__doc__},
 
-static PyObject *
-resource_getrusage_impl(PyObject *module, int who);
+static TyObject *
+resource_getrusage_impl(TyObject *module, int who);
 
-static PyObject *
-resource_getrusage(PyObject *module, PyObject *arg)
+static TyObject *
+resource_getrusage(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int who;
 
-    who = PyLong_AsInt(arg);
-    if (who == -1 && PyErr_Occurred()) {
+    who = TyLong_AsInt(arg);
+    if (who == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = resource_getrusage_impl(module, who);
@@ -33,7 +33,7 @@ exit:
 
 #endif /* defined(HAVE_GETRUSAGE) */
 
-PyDoc_STRVAR(resource_getrlimit__doc__,
+TyDoc_STRVAR(resource_getrlimit__doc__,
 "getrlimit($module, resource, /)\n"
 "--\n"
 "\n");
@@ -41,17 +41,17 @@ PyDoc_STRVAR(resource_getrlimit__doc__,
 #define RESOURCE_GETRLIMIT_METHODDEF    \
     {"getrlimit", (PyCFunction)resource_getrlimit, METH_O, resource_getrlimit__doc__},
 
-static PyObject *
-resource_getrlimit_impl(PyObject *module, int resource);
+static TyObject *
+resource_getrlimit_impl(TyObject *module, int resource);
 
-static PyObject *
-resource_getrlimit(PyObject *module, PyObject *arg)
+static TyObject *
+resource_getrlimit(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int resource;
 
-    resource = PyLong_AsInt(arg);
-    if (resource == -1 && PyErr_Occurred()) {
+    resource = TyLong_AsInt(arg);
+    if (resource == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = resource_getrlimit_impl(module, resource);
@@ -60,7 +60,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(resource_setrlimit__doc__,
+TyDoc_STRVAR(resource_setrlimit__doc__,
 "setrlimit($module, resource, limits, /)\n"
 "--\n"
 "\n");
@@ -68,22 +68,22 @@ PyDoc_STRVAR(resource_setrlimit__doc__,
 #define RESOURCE_SETRLIMIT_METHODDEF    \
     {"setrlimit", (PyCFunction)(void(*)(void))resource_setrlimit, METH_FASTCALL, resource_setrlimit__doc__},
 
-static PyObject *
-resource_setrlimit_impl(PyObject *module, int resource, PyObject *limits);
+static TyObject *
+resource_setrlimit_impl(TyObject *module, int resource, TyObject *limits);
 
-static PyObject *
-resource_setrlimit(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+resource_setrlimit(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int resource;
-    PyObject *limits;
+    TyObject *limits;
 
     if (nargs != 2) {
-        PyErr_Format(PyExc_TypeError, "setrlimit expected 2 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "setrlimit expected 2 arguments, got %zd", nargs);
         goto exit;
     }
-    resource = PyLong_AsInt(args[0]);
-    if (resource == -1 && PyErr_Occurred()) {
+    resource = TyLong_AsInt(args[0]);
+    if (resource == -1 && TyErr_Occurred()) {
         goto exit;
     }
     limits = args[1];
@@ -95,7 +95,7 @@ exit:
 
 #if defined(HAVE_PRLIMIT)
 
-PyDoc_STRVAR(resource_prlimit__doc__,
+TyDoc_STRVAR(resource_prlimit__doc__,
 "prlimit($module, pid, resource, limits=None, /)\n"
 "--\n"
 "\n");
@@ -103,32 +103,32 @@ PyDoc_STRVAR(resource_prlimit__doc__,
 #define RESOURCE_PRLIMIT_METHODDEF    \
     {"prlimit", (PyCFunction)(void(*)(void))resource_prlimit, METH_FASTCALL, resource_prlimit__doc__},
 
-static PyObject *
-resource_prlimit_impl(PyObject *module, pid_t pid, int resource,
-                      PyObject *limits);
+static TyObject *
+resource_prlimit_impl(TyObject *module, pid_t pid, int resource,
+                      TyObject *limits);
 
-static PyObject *
-resource_prlimit(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+resource_prlimit(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
     int resource;
-    PyObject *limits = Py_None;
+    TyObject *limits = Ty_None;
 
     if (nargs < 2) {
-        PyErr_Format(PyExc_TypeError, "prlimit expected at least 2 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "prlimit expected at least 2 arguments, got %zd", nargs);
         goto exit;
     }
     if (nargs > 3) {
-        PyErr_Format(PyExc_TypeError, "prlimit expected at most 3 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "prlimit expected at most 3 arguments, got %zd", nargs);
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == -1 && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    resource = PyLong_AsInt(args[1]);
-    if (resource == -1 && PyErr_Occurred()) {
+    resource = TyLong_AsInt(args[1]);
+    if (resource == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (nargs < 3) {
@@ -144,7 +144,7 @@ exit:
 
 #endif /* defined(HAVE_PRLIMIT) */
 
-PyDoc_STRVAR(resource_getpagesize__doc__,
+TyDoc_STRVAR(resource_getpagesize__doc__,
 "getpagesize($module, /)\n"
 "--\n"
 "\n");
@@ -153,19 +153,19 @@ PyDoc_STRVAR(resource_getpagesize__doc__,
     {"getpagesize", (PyCFunction)resource_getpagesize, METH_NOARGS, resource_getpagesize__doc__},
 
 static int
-resource_getpagesize_impl(PyObject *module);
+resource_getpagesize_impl(TyObject *module);
 
-static PyObject *
-resource_getpagesize(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+resource_getpagesize(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = resource_getpagesize_impl(module);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;

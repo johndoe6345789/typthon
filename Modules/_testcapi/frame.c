@@ -1,120 +1,120 @@
 #include "parts.h"
 #include "util.h"
 
-#include "frameobject.h"          // PyFrame_New()
+#include "frameobject.h"          // TyFrame_New()
 
 
-static PyObject *
-frame_getlocals(PyObject *self, PyObject *frame)
+static TyObject *
+frame_getlocals(TyObject *self, TyObject *frame)
 {
-    if (!PyFrame_Check(frame)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a frame");
+    if (!TyFrame_Check(frame)) {
+        TyErr_SetString(TyExc_TypeError, "argument must be a frame");
         return NULL;
     }
-    return PyFrame_GetLocals((PyFrameObject *)frame);
+    return TyFrame_GetLocals((PyFrameObject *)frame);
 }
 
 
-static PyObject *
-frame_getglobals(PyObject *self, PyObject *frame)
+static TyObject *
+frame_getglobals(TyObject *self, TyObject *frame)
 {
-    if (!PyFrame_Check(frame)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a frame");
+    if (!TyFrame_Check(frame)) {
+        TyErr_SetString(TyExc_TypeError, "argument must be a frame");
         return NULL;
     }
-    return PyFrame_GetGlobals((PyFrameObject *)frame);
+    return TyFrame_GetGlobals((PyFrameObject *)frame);
 }
 
 
-static PyObject *
-frame_getgenerator(PyObject *self, PyObject *frame)
+static TyObject *
+frame_getgenerator(TyObject *self, TyObject *frame)
 {
-    if (!PyFrame_Check(frame)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a frame");
+    if (!TyFrame_Check(frame)) {
+        TyErr_SetString(TyExc_TypeError, "argument must be a frame");
         return NULL;
     }
-    return PyFrame_GetGenerator((PyFrameObject *)frame);
+    return TyFrame_GetGenerator((PyFrameObject *)frame);
 }
 
 
-static PyObject *
-frame_getbuiltins(PyObject *self, PyObject *frame)
+static TyObject *
+frame_getbuiltins(TyObject *self, TyObject *frame)
 {
-    if (!PyFrame_Check(frame)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a frame");
+    if (!TyFrame_Check(frame)) {
+        TyErr_SetString(TyExc_TypeError, "argument must be a frame");
         return NULL;
     }
-    return PyFrame_GetBuiltins((PyFrameObject *)frame);
+    return TyFrame_GetBuiltins((PyFrameObject *)frame);
 }
 
 
-static PyObject *
-frame_getlasti(PyObject *self, PyObject *frame)
+static TyObject *
+frame_getlasti(TyObject *self, TyObject *frame)
 {
-    if (!PyFrame_Check(frame)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a frame");
+    if (!TyFrame_Check(frame)) {
+        TyErr_SetString(TyExc_TypeError, "argument must be a frame");
         return NULL;
     }
-    int lasti = PyFrame_GetLasti((PyFrameObject *)frame);
+    int lasti = TyFrame_GetLasti((PyFrameObject *)frame);
     if (lasti < 0) {
         assert(lasti == -1);
         Py_RETURN_NONE;
     }
-    return PyLong_FromLong(lasti);
+    return TyLong_FromLong(lasti);
 }
 
 
-static PyObject *
-frame_new(PyObject *self, PyObject *args)
+static TyObject *
+frame_new(TyObject *self, TyObject *args)
 {
-    PyObject *code, *globals, *locals;
-    if (!PyArg_ParseTuple(args, "OOO", &code, &globals, &locals)) {
+    TyObject *code, *globals, *locals;
+    if (!TyArg_ParseTuple(args, "OOO", &code, &globals, &locals)) {
         return NULL;
     }
-    if (!PyCode_Check(code)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a code object");
+    if (!TyCode_Check(code)) {
+        TyErr_SetString(TyExc_TypeError, "argument must be a code object");
         return NULL;
     }
-    PyThreadState *tstate = PyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
 
-    return (PyObject *)PyFrame_New(tstate, (PyCodeObject *)code, globals, locals);
+    return (TyObject *)TyFrame_New(tstate, (PyCodeObject *)code, globals, locals);
 }
 
 
-static PyObject *
-frame_getvar(PyObject *self, PyObject *args)
+static TyObject *
+frame_getvar(TyObject *self, TyObject *args)
 {
-    PyObject *frame, *name;
-    if (!PyArg_ParseTuple(args, "OO", &frame, &name)) {
+    TyObject *frame, *name;
+    if (!TyArg_ParseTuple(args, "OO", &frame, &name)) {
         return NULL;
     }
-    if (!PyFrame_Check(frame)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a frame");
+    if (!TyFrame_Check(frame)) {
+        TyErr_SetString(TyExc_TypeError, "argument must be a frame");
         return NULL;
     }
 
-    return PyFrame_GetVar((PyFrameObject *)frame, name);
+    return TyFrame_GetVar((PyFrameObject *)frame, name);
 }
 
 
-static PyObject *
-frame_getvarstring(PyObject *self, PyObject *args)
+static TyObject *
+frame_getvarstring(TyObject *self, TyObject *args)
 {
-    PyObject *frame;
+    TyObject *frame;
     const char *name;
-    if (!PyArg_ParseTuple(args, "Oy", &frame, &name)) {
+    if (!TyArg_ParseTuple(args, "Oy", &frame, &name)) {
         return NULL;
     }
-    if (!PyFrame_Check(frame)) {
-        PyErr_SetString(PyExc_TypeError, "argument must be a frame");
+    if (!TyFrame_Check(frame)) {
+        TyErr_SetString(TyExc_TypeError, "argument must be a frame");
         return NULL;
     }
 
-    return PyFrame_GetVarString((PyFrameObject *)frame, name);
+    return TyFrame_GetVarString((PyFrameObject *)frame, name);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"frame_getlocals", frame_getlocals, METH_O, NULL},
     {"frame_getglobals", frame_getglobals, METH_O, NULL},
     {"frame_getgenerator", frame_getgenerator, METH_O, NULL},
@@ -127,8 +127,8 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Frame(PyObject *m)
+_PyTestCapi_Init_Frame(TyObject *m)
 {
-    return PyModule_AddFunctions(m, test_methods);
+    return TyModule_AddFunctions(m, test_methods);
 }
 

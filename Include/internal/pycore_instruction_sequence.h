@@ -1,8 +1,8 @@
-#ifndef Py_INTERNAL_INSTRUCTION_SEQUENCE_H
-#define Py_INTERNAL_INSTRUCTION_SEQUENCE_H
+#ifndef Ty_INTERNAL_INSTRUCTION_SEQUENCE_H
+#define Ty_INTERNAL_INSTRUCTION_SEQUENCE_H
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_symtable.h"
@@ -21,7 +21,7 @@ typedef struct {
 typedef struct {
     int i_opcode;
     int i_oparg;
-    _Py_SourceLocation i_loc;
+    _Ty_SourceLocation i_loc;
     _PyExceptHandlerInfo i_except_handler_info;
 
     /* Temporary fields, used by the assembler and in instr_sequence_to_cfg */
@@ -44,7 +44,7 @@ typedef struct instruction_sequence {
     int s_labelmap_size;
 
     /* PyList of instruction sequences of nested functions */
-    PyObject *s_nested;
+    TyObject *s_nested;
 
     /* Code for creating annotations, spliced into the main sequence later */
     struct instruction_sequence *s_annotations_code;
@@ -59,25 +59,25 @@ typedef struct {
 #define SAME_JUMP_TARGET_LABEL(L1, L2) ((L1).id == (L2).id)
 #define IS_JUMP_TARGET_LABEL(L) (!SAME_JUMP_TARGET_LABEL((L), (NO_LABEL)))
 
-PyAPI_FUNC(PyObject*)_PyInstructionSequence_New(void);
+PyAPI_FUNC(TyObject*)_PyInstructionSequence_New(void);
 
 int _PyInstructionSequence_UseLabel(_PyInstructionSequence *seq, int lbl);
 int _PyInstructionSequence_Addop(_PyInstructionSequence *seq,
                                  int opcode, int oparg,
-                                 _Py_SourceLocation loc);
+                                 _Ty_SourceLocation loc);
 _PyJumpTargetLabel _PyInstructionSequence_NewLabel(_PyInstructionSequence *seq);
 int _PyInstructionSequence_ApplyLabelMap(_PyInstructionSequence *seq);
 int _PyInstructionSequence_InsertInstruction(_PyInstructionSequence *seq, int pos,
-                                             int opcode, int oparg, _Py_SourceLocation loc);
+                                             int opcode, int oparg, _Ty_SourceLocation loc);
 int _PyInstructionSequence_SetAnnotationsCode(_PyInstructionSequence *seq,
                                               _PyInstructionSequence *annotations);
 int _PyInstructionSequence_AddNested(_PyInstructionSequence *seq, _PyInstructionSequence *nested);
 void PyInstructionSequence_Fini(_PyInstructionSequence *seq);
 
-extern PyTypeObject _PyInstructionSequence_Type;
-#define _PyInstructionSequence_Check(v) Py_IS_TYPE((v), &_PyInstructionSequence_Type)
+extern TyTypeObject _PyInstructionSequence_Type;
+#define _PyInstructionSequence_Check(v) Ty_IS_TYPE((v), &_PyInstructionSequence_Type)
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_INSTRUCTION_SEQUENCE_H */
+#endif /* !Ty_INTERNAL_INSTRUCTION_SEQUENCE_H */

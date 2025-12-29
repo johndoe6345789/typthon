@@ -31,12 +31,12 @@ PYMEM_ALLOCATOR_NOT_SET = 0
 PYMEM_ALLOCATOR_DEBUG = 2
 PYMEM_ALLOCATOR_MALLOC = 3
 PYMEM_ALLOCATOR_MIMALLOC = 7
-if support.Py_GIL_DISABLED:
+if support.Ty_GIL_DISABLED:
     ALLOCATOR_FOR_CONFIG = PYMEM_ALLOCATOR_MIMALLOC
 else:
     ALLOCATOR_FOR_CONFIG = PYMEM_ALLOCATOR_MALLOC
 
-Py_STATS = hasattr(sys, '_stats_on')
+Ty_STATS = hasattr(sys, '_stats_on')
 
 # _PyCoreConfig_InitCompatConfig()
 API_COMPAT = 1
@@ -48,7 +48,7 @@ API_ISOLATED = 3
 INIT_LOOPS = 4
 MAX_HASH_SEED = 4294967295
 
-ABI_THREAD = 't' if support.Py_GIL_DISABLED else ''
+ABI_THREAD = 't' if support.Ty_GIL_DISABLED else ''
 # PLATSTDLIB_LANDMARK copied from Modules/getpath.py
 if os.name == 'nt':
     PLATSTDLIB_LANDMARK = f'{sys.platlibdir}'
@@ -58,8 +58,8 @@ else:
     PLATSTDLIB_LANDMARK = (f'{sys.platlibdir}/python{VERSION_MAJOR}.'
                            f'{VERSION_MINOR}{ABI_THREAD}/lib-dynload')
 
-DEFAULT_THREAD_INHERIT_CONTEXT = 1 if support.Py_GIL_DISABLED else 0
-DEFAULT_CONTEXT_AWARE_WARNINGS = 1 if support.Py_GIL_DISABLED else 0
+DEFAULT_THREAD_INHERIT_CONTEXT = 1 if support.Ty_GIL_DISABLED else 0
+DEFAULT_CONTEXT_AWARE_WARNINGS = 1 if support.Ty_GIL_DISABLED else 0
 
 # If we are running from a build dir, but the stdlib has been installed,
 # some tests need to expect different results.
@@ -97,7 +97,7 @@ class EmbeddingTestsMixin:
         if not os.path.exists(exe):
             self.skipTest("%r doesn't exist" % exe)
         # This is needed otherwise we get a fatal error:
-        # "Py_Initialize: Unable to get the locale encoding
+        # "Ty_Initialize: Unable to get the locale encoding
         # LookupError: no codec search functions registered: can't find encoding"
         self.oldcwd = os.getcwd()
         os.chdir(builddir)
@@ -285,7 +285,7 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
     def test_pre_initialization_api(self):
         """
         Checks some key parts of the C-API that need to work before the runtime
-        is initialized (via Py_Initialize()).
+        is initialized (via Ty_Initialize()).
         """
         env = dict(os.environ, PYTHONPATH=os.pathsep.join(sys.path))
         out, err = self.run_embedded_interpreter("test_pre_initialization_api", env=env)
@@ -333,7 +333,7 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     def test_initialize_twice(self):
         """
-        bpo-33932: Calling Py_Initialize() twice should do nothing (and not
+        bpo-33932: Calling Ty_Initialize() twice should do nothing (and not
         crash!).
         """
         out, err = self.run_embedded_interpreter("test_initialize_twice")
@@ -342,29 +342,29 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     def test_initialize_pymain(self):
         """
-        bpo-34008: Calling Py_Main() after Py_Initialize() must not fail.
+        bpo-34008: Calling Ty_Main() after Ty_Initialize() must not fail.
         """
         out, err = self.run_embedded_interpreter("test_initialize_pymain")
-        self.assertEqual(out.rstrip(), "Py_Main() after Py_Initialize: sys.argv=['-c', 'arg2']")
+        self.assertEqual(out.rstrip(), "Ty_Main() after Ty_Initialize: sys.argv=['-c', 'arg2']")
         self.assertEqual(err, '')
 
     def test_run_main(self):
         out, err = self.run_embedded_interpreter("test_run_main")
-        self.assertEqual(out.rstrip(), "Py_RunMain(): sys.argv=['-c', 'arg2']")
+        self.assertEqual(out.rstrip(), "Ty_RunMain(): sys.argv=['-c', 'arg2']")
         self.assertEqual(err, '')
 
     def test_run_main_loop(self):
-        # bpo-40413: Calling Py_InitializeFromConfig()+Py_RunMain() multiple
+        # bpo-40413: Calling Ty_InitializeFromConfig()+Ty_RunMain() multiple
         # times must not crash.
         nloop = 5
         out, err = self.run_embedded_interpreter("test_run_main_loop")
-        self.assertEqual(out, "Py_RunMain(): sys.argv=['-c', 'arg2']\n" * nloop)
+        self.assertEqual(out, "Ty_RunMain(): sys.argv=['-c', 'arg2']\n" * nloop)
         self.assertEqual(err, '')
 
     def test_finalize_structseq(self):
-        # bpo-46417: Py_Finalize() clears structseq static types. Check that
+        # bpo-46417: Ty_Finalize() clears structseq static types. Check that
         # sys attributes using struct types still work when
-        # Py_Finalize()/Py_Initialize() is called multiple times.
+        # Ty_Finalize()/Ty_Initialize() is called multiple times.
         # print() calls type->tp_repr(instance) and so checks that the types
         # are still working properly.
         script = support.findfile('_test_embed_structseq.py')
@@ -374,8 +374,8 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         self.assertEqual(out, 'Tests passed\n' * INIT_LOOPS)
 
     def test_simple_initialization_api(self):
-        # _testembed now uses Py_InitializeFromConfig by default
-        # This case specifically checks Py_Initialize(Ex) still works
+        # _testembed now uses Ty_InitializeFromConfig by default
+        # This case specifically checks Ty_Initialize(Ex) still works
         out, err = self.run_embedded_interpreter("test_repeated_simple_init")
         self.assertEqual(out, 'Finalized\n' * INIT_LOOPS)
 
@@ -648,15 +648,15 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         'check_hash_pycs_mode': 'default',
         'pathconfig_warnings': True,
         '_init_main': True,
-        'use_frozen_modules': not support.Py_DEBUG,
+        'use_frozen_modules': not support.Ty_DEBUG,
         'safe_path': False,
         '_is_python_build': IGNORE_CONFIG,
     }
-    if Py_STATS:
+    if Ty_STATS:
         CONFIG_COMPAT['_pystats'] = False
-    if support.Py_DEBUG:
+    if support.Ty_DEBUG:
         CONFIG_COMPAT['run_presite'] = None
-    if support.Py_GIL_DISABLED:
+    if support.Ty_GIL_DISABLED:
         CONFIG_COMPAT['enable_gil'] = -1
         CONFIG_COMPAT['tlbc_enabled'] = GET_DEFAULT_CONFIG
     if MS_WINDOWS:
@@ -690,39 +690,39 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     # global config
     DEFAULT_GLOBAL_CONFIG = {
-        'Py_HasFileSystemDefaultEncoding': 0,
-        'Py_HashRandomizationFlag': 1,
-        '_Py_HasFileSystemDefaultEncodeErrors': 0,
+        'Ty_HasFileSystemDefaultEncoding': 0,
+        'Ty_HashRandomizationFlag': 1,
+        '_Ty_HasFileSystemDefaultEncodeErrors': 0,
     }
     COPY_GLOBAL_PRE_CONFIG = [
-        ('Py_UTF8Mode', 'utf8_mode'),
+        ('Ty_UTF8Mode', 'utf8_mode'),
     ]
     COPY_GLOBAL_CONFIG = [
         # Copy core config to global config for expected values
         # True means that the core config value is inverted (0 => 1 and 1 => 0)
-        ('Py_BytesWarningFlag', 'bytes_warning'),
-        ('Py_DebugFlag', 'parser_debug'),
-        ('Py_DontWriteBytecodeFlag', 'write_bytecode', True),
-        ('Py_FileSystemDefaultEncodeErrors', 'filesystem_errors'),
-        ('Py_FileSystemDefaultEncoding', 'filesystem_encoding'),
-        ('Py_FrozenFlag', 'pathconfig_warnings', True),
-        ('Py_IgnoreEnvironmentFlag', 'use_environment', True),
-        ('Py_InspectFlag', 'inspect'),
-        ('Py_InteractiveFlag', 'interactive'),
-        ('Py_IsolatedFlag', 'isolated'),
-        ('Py_NoSiteFlag', 'site_import', True),
-        ('Py_NoUserSiteDirectory', 'user_site_directory', True),
-        ('Py_OptimizeFlag', 'optimization_level'),
-        ('Py_QuietFlag', 'quiet'),
-        ('Py_UnbufferedStdioFlag', 'buffered_stdio', True),
-        ('Py_VerboseFlag', 'verbose'),
+        ('Ty_BytesWarningFlag', 'bytes_warning'),
+        ('Ty_DebugFlag', 'parser_debug'),
+        ('Ty_DontWriteBytecodeFlag', 'write_bytecode', True),
+        ('Ty_FileSystemDefaultEncodeErrors', 'filesystem_errors'),
+        ('Ty_FileSystemDefaultEncoding', 'filesystem_encoding'),
+        ('Ty_FrozenFlag', 'pathconfig_warnings', True),
+        ('Ty_IgnoreEnvironmentFlag', 'use_environment', True),
+        ('Ty_InspectFlag', 'inspect'),
+        ('Ty_InteractiveFlag', 'interactive'),
+        ('Ty_IsolatedFlag', 'isolated'),
+        ('Ty_NoSiteFlag', 'site_import', True),
+        ('Ty_NoUserSiteDirectory', 'user_site_directory', True),
+        ('Ty_OptimizeFlag', 'optimization_level'),
+        ('Ty_QuietFlag', 'quiet'),
+        ('Ty_UnbufferedStdioFlag', 'buffered_stdio', True),
+        ('Ty_VerboseFlag', 'verbose'),
     ]
     if MS_WINDOWS:
         COPY_GLOBAL_PRE_CONFIG.extend((
-            ('Py_LegacyWindowsFSEncodingFlag', 'legacy_windows_fs_encoding'),
+            ('Ty_LegacyWindowsFSEncodingFlag', 'legacy_windows_fs_encoding'),
         ))
         COPY_GLOBAL_CONFIG.extend((
-            ('Py_LegacyWindowsStdioFlag', 'legacy_windows_stdio'),
+            ('Ty_LegacyWindowsStdioFlag', 'legacy_windows_stdio'),
         ))
 
     EXPECTED_CONFIG = None
@@ -1050,7 +1050,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'check_hash_pycs_mode': 'always',
             'pathconfig_warnings': False,
         }
-        if Py_STATS:
+        if Ty_STATS:
             config['_pystats'] = 1
         self.check_all_configs("test_init_from_config", config, preconfig,
                                api=API_COMPAT)
@@ -1085,7 +1085,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'int_max_str_digits': 4567,
             'perf_profiling': 1,
         }
-        if Py_STATS:
+        if Ty_STATS:
             config['_pystats'] = 1
         self.check_all_configs("test_init_compat_env", config, preconfig,
                                api=API_COMPAT)
@@ -1121,7 +1121,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'int_max_str_digits': 4567,
             'perf_profiling': 1,
         }
-        if Py_STATS:
+        if Ty_STATS:
             config['_pystats'] = True
         self.check_all_configs("test_init_python_env", config, preconfig,
                                api=API_PYTHON)
@@ -1328,7 +1328,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         })
 
     def test_init_setpath(self):
-        # Test Py_SetPath()
+        # Test Ty_SetPath()
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
 
@@ -1350,12 +1350,12 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                ignore_stderr=True)
 
     def test_init_setpath_config(self):
-        # Test Py_SetPath() with PyConfig
+        # Test Ty_SetPath() with PyConfig
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
 
         config = {
-            # set by Py_SetPath()
+            # set by Ty_SetPath()
             'module_search_paths': paths,
             'prefix': '',
             'base_prefix': '',
@@ -1364,7 +1364,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
              # The current getpath.c doesn't determine the stdlib dir
              # in this case.
             'stdlib_dir': '',
-            'use_frozen_modules': not support.Py_DEBUG,
+            'use_frozen_modules': not support.Ty_DEBUG,
             # overridden by PyConfig
             'program_name': 'conf_program_name',
             'base_executable': 'conf_executable',
@@ -1422,7 +1422,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             yield tmpdir
 
     def test_init_setpythonhome(self):
-        # Test Py_SetPythonHome(home) with PYTHONPATH env var
+        # Test Ty_SetPythonHome(home) with PYTHONPATH env var
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
         paths_str = os.path.pathsep.join(paths)
@@ -1463,7 +1463,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                api=API_COMPAT, env=env)
 
     def test_init_is_python_build_with_home(self):
-        # Test _Py_path_config._is_python_build configuration (gh-91985)
+        # Test _Ty_path_config._is_python_build configuration (gh-91985)
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
         paths_str = os.path.pathsep.join(paths)
@@ -1665,12 +1665,12 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             if MS_WINDOWS:
                 config['base_prefix'] = pyvenv_home
                 config['stdlib_dir'] = os.path.join(pyvenv_home, 'Lib')
-                config['use_frozen_modules'] = bool(not support.Py_DEBUG)
+                config['use_frozen_modules'] = bool(not support.Ty_DEBUG)
             else:
                 # cannot reliably assume stdlib_dir here because it
                 # depends too much on our build. But it ought to be found
                 config['stdlib_dir'] = self.IGNORE_CONFIG
-                config['use_frozen_modules'] = bool(not support.Py_DEBUG)
+                config['use_frozen_modules'] = bool(not support.Ty_DEBUG)
 
             env = self.copy_paths_by_env(config)
             self.check_all_configs("test_init_compat_config", config,
@@ -1679,9 +1679,9 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
     def test_getpath_abspath_win32(self):
-        # Check _Py_abspath() is passed a backslashed path not to fall back to
+        # Check _Ty_abspath() is passed a backslashed path not to fall back to
         # GetFullPathNameW() on startup, which (re-)normalizes the path overly.
-        # Currently, _Py_normpath() doesn't trim trailing dots and spaces.
+        # Currently, _Ty_normpath() doesn't trim trailing dots and spaces.
         CASES = [
             ("C:/a. . .",  "C:\\a. . ."),
             ("C:\\a. . .", "C:\\a. . ."),
@@ -1708,14 +1708,14 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     def test_global_pathconfig(self):
         # Test C API functions getting the path configuration:
         #
-        # - Py_GetExecPrefix()
-        # - Py_GetPath()
-        # - Py_GetPrefix()
-        # - Py_GetProgramFullPath()
-        # - Py_GetProgramName()
-        # - Py_GetPythonHome()
+        # - Ty_GetExecPrefix()
+        # - Ty_GetPath()
+        # - Ty_GetPrefix()
+        # - Ty_GetProgramFullPath()
+        # - Ty_GetProgramName()
+        # - Ty_GetPythonHome()
         #
-        # The global path configuration (_Py_path_config) must be a copy
+        # The global path configuration (_Ty_path_config) must be a copy
         # of the path configuration of PyInterpreter.config (PyConfig).
         ctypes = import_helper.import_module('ctypes')
 
@@ -1725,22 +1725,22 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             func.restype = ctypes.c_wchar_p
             return func
 
-        Py_GetPath = get_func('Py_GetPath')
-        Py_GetPrefix = get_func('Py_GetPrefix')
-        Py_GetExecPrefix = get_func('Py_GetExecPrefix')
-        Py_GetProgramName = get_func('Py_GetProgramName')
-        Py_GetProgramFullPath = get_func('Py_GetProgramFullPath')
-        Py_GetPythonHome = get_func('Py_GetPythonHome')
+        Ty_GetPath = get_func('Ty_GetPath')
+        Ty_GetPrefix = get_func('Ty_GetPrefix')
+        Ty_GetExecPrefix = get_func('Ty_GetExecPrefix')
+        Ty_GetProgramName = get_func('Ty_GetProgramName')
+        Ty_GetProgramFullPath = get_func('Ty_GetProgramFullPath')
+        Ty_GetPythonHome = get_func('Ty_GetPythonHome')
 
         config = _testinternalcapi.get_configs()['config']
 
-        self.assertEqual(tuple(Py_GetPath().split(os.path.pathsep)),
+        self.assertEqual(tuple(Ty_GetPath().split(os.path.pathsep)),
                          config['module_search_paths'])
-        self.assertEqual(Py_GetPrefix(), config['prefix'])
-        self.assertEqual(Py_GetExecPrefix(), config['exec_prefix'])
-        self.assertEqual(Py_GetProgramName(), config['program_name'])
-        self.assertEqual(Py_GetProgramFullPath(), config['executable'])
-        self.assertEqual(Py_GetPythonHome(), config['home'])
+        self.assertEqual(Ty_GetPrefix(), config['prefix'])
+        self.assertEqual(Ty_GetExecPrefix(), config['exec_prefix'])
+        self.assertEqual(Ty_GetProgramName(), config['program_name'])
+        self.assertEqual(Ty_GetProgramFullPath(), config['executable'])
+        self.assertEqual(Ty_GetPythonHome(), config['home'])
 
     def test_init_warnoptions(self):
         # lowest to highest priority
@@ -1853,7 +1853,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     @threading_helper.requires_working_threading()
     def test_init_in_background_thread(self):
-        # gh-123022: Check that running Py_Initialize() in a background
+        # gh-123022: Check that running Ty_Initialize() in a background
         # thread doesn't crash.
         out, err = self.run_embedded_interpreter("test_init_in_background_thread")
         self.assertEqual(err, "")
@@ -1924,7 +1924,7 @@ class MiscTests(EmbeddingTestsMixin, unittest.TestCase):
 
     # See bpo-44133
     @unittest.skipIf(os.name == 'nt',
-                     'Py_FrozenMain is not exported on Windows')
+                     'Ty_FrozenMain is not exported on Windows')
     @unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
     def test_frozenmain(self):
         env = dict(os.environ)
@@ -1942,7 +1942,7 @@ class MiscTests(EmbeddingTestsMixin, unittest.TestCase):
         """).lstrip()
         self.assertEqual(out, expected)
 
-    @unittest.skipUnless(support.Py_DEBUG,
+    @unittest.skipUnless(support.Ty_DEBUG,
                          '-X showrefcount requires a Python debug build')
     def test_no_memleak(self):
         # bpo-1635741: Python must release all memory at exit
@@ -1970,7 +1970,7 @@ class MiscTests(EmbeddingTestsMixin, unittest.TestCase):
                 self.assertEqual(refs, 0, out)
                 self.assertEqual(blocks, 0, out)
 
-    @unittest.skipUnless(support.Py_DEBUG,
+    @unittest.skipUnless(support.Ty_DEBUG,
                          '-X presite requires a Python debug build')
     def test_presite(self):
         cmd = [

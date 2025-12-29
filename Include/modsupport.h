@@ -1,60 +1,60 @@
 // Module support interface
 
-#ifndef Py_MODSUPPORT_H
-#define Py_MODSUPPORT_H
+#ifndef Ty_MODSUPPORT_H
+#define Ty_MODSUPPORT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-PyAPI_FUNC(int) PyArg_Parse(PyObject *, const char *, ...);
-PyAPI_FUNC(int) PyArg_ParseTuple(PyObject *, const char *, ...);
-PyAPI_FUNC(int) PyArg_ParseTupleAndKeywords(PyObject *, PyObject *,
+PyAPI_FUNC(int) TyArg_Parse(TyObject *, const char *, ...);
+PyAPI_FUNC(int) TyArg_ParseTuple(TyObject *, const char *, ...);
+PyAPI_FUNC(int) TyArg_ParseTupleAndKeywords(TyObject *, TyObject *,
                                             const char *, PY_CXX_CONST char * const *, ...);
-PyAPI_FUNC(int) PyArg_VaParse(PyObject *, const char *, va_list);
-PyAPI_FUNC(int) PyArg_VaParseTupleAndKeywords(PyObject *, PyObject *,
+PyAPI_FUNC(int) TyArg_VaParse(TyObject *, const char *, va_list);
+PyAPI_FUNC(int) TyArg_VaParseTupleAndKeywords(TyObject *, TyObject *,
                                               const char *, PY_CXX_CONST char * const *, va_list);
 
-PyAPI_FUNC(int) PyArg_ValidateKeywordArguments(PyObject *);
-PyAPI_FUNC(int) PyArg_UnpackTuple(PyObject *, const char *, Py_ssize_t, Py_ssize_t, ...);
-PyAPI_FUNC(PyObject *) Py_BuildValue(const char *, ...);
-PyAPI_FUNC(PyObject *) Py_VaBuildValue(const char *, va_list);
+PyAPI_FUNC(int) TyArg_ValidateKeywordArguments(TyObject *);
+PyAPI_FUNC(int) TyArg_UnpackTuple(TyObject *, const char *, Ty_ssize_t, Ty_ssize_t, ...);
+PyAPI_FUNC(TyObject *) Ty_BuildValue(const char *, ...);
+PyAPI_FUNC(TyObject *) Ty_VaBuildValue(const char *, va_list);
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030a0000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030a0000
 // Add an attribute with name 'name' and value 'obj' to the module 'mod.
 // On success, return 0.
 // On error, raise an exception and return -1.
-PyAPI_FUNC(int) PyModule_AddObjectRef(PyObject *mod, const char *name, PyObject *value);
-#endif   /* Py_LIMITED_API */
+PyAPI_FUNC(int) TyModule_AddObjectRef(TyObject *mod, const char *name, TyObject *value);
+#endif   /* Ty_LIMITED_API */
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030d0000
-// Similar to PyModule_AddObjectRef() but steal a reference to 'value'.
-PyAPI_FUNC(int) PyModule_Add(PyObject *mod, const char *name, PyObject *value);
-#endif   /* Py_LIMITED_API */
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030d0000
+// Similar to TyModule_AddObjectRef() but steal a reference to 'value'.
+PyAPI_FUNC(int) TyModule_Add(TyObject *mod, const char *name, TyObject *value);
+#endif   /* Ty_LIMITED_API */
 
-// Similar to PyModule_AddObjectRef() and PyModule_Add() but steal
+// Similar to TyModule_AddObjectRef() and TyModule_Add() but steal
 // a reference to 'value' on success and only on success.
 // Errorprone. Should not be used in new code.
-PyAPI_FUNC(int) PyModule_AddObject(PyObject *mod, const char *, PyObject *value);
+PyAPI_FUNC(int) TyModule_AddObject(TyObject *mod, const char *, TyObject *value);
 
-PyAPI_FUNC(int) PyModule_AddIntConstant(PyObject *, const char *, long);
-PyAPI_FUNC(int) PyModule_AddStringConstant(PyObject *, const char *, const char *);
+PyAPI_FUNC(int) TyModule_AddIntConstant(TyObject *, const char *, long);
+PyAPI_FUNC(int) TyModule_AddStringConstant(TyObject *, const char *, const char *);
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03090000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03090000
 /* New in 3.9 */
-PyAPI_FUNC(int) PyModule_AddType(PyObject *module, PyTypeObject *type);
-#endif /* Py_LIMITED_API */
+PyAPI_FUNC(int) TyModule_AddType(TyObject *module, TyTypeObject *type);
+#endif /* Ty_LIMITED_API */
 
-#define PyModule_AddIntMacro(m, c) PyModule_AddIntConstant((m), #c, (c))
-#define PyModule_AddStringMacro(m, c) PyModule_AddStringConstant((m), #c, (c))
+#define TyModule_AddIntMacro(m, c) TyModule_AddIntConstant((m), #c, (c))
+#define TyModule_AddStringMacro(m, c) TyModule_AddStringConstant((m), #c, (c))
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03050000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03050000
 /* New in 3.5 */
-PyAPI_FUNC(int) PyModule_SetDocString(PyObject *, const char *);
-PyAPI_FUNC(int) PyModule_AddFunctions(PyObject *, PyMethodDef *);
-PyAPI_FUNC(int) PyModule_ExecDef(PyObject *module, PyModuleDef *def);
+PyAPI_FUNC(int) TyModule_SetDocString(TyObject *, const char *);
+PyAPI_FUNC(int) TyModule_AddFunctions(TyObject *, TyMethodDef *);
+PyAPI_FUNC(int) TyModule_ExecDef(TyObject *module, TyModuleDef *def);
 #endif
 
-#define Py_CLEANUP_SUPPORTED 0x20000
+#define Ty_CLEANUP_SUPPORTED 0x20000
 
 #define PYTHON_API_VERSION 1013
 #define PYTHON_API_STRING "1013"
@@ -78,8 +78,8 @@ PyAPI_FUNC(int) PyModule_ExecDef(PyObject *module, PyModuleDef *def);
 
    17-Jul-2001  GvR     1011    Descr-branch, just to be on the safe side
 
-   25-Jan-2001  FLD     1010    Parameters added to PyCode_New() and
-                                PyFrame_New(); Python 2.1a2
+   25-Jan-2001  FLD     1010    Parameters added to TyCode_New() and
+                                TyFrame_New(); Python 2.1a2
 
    14-Mar-2000  GvR     1009    Unicode API added
 
@@ -89,7 +89,7 @@ PyAPI_FUNC(int) PyModule_ExecDef(PyObject *module, PyModuleDef *def);
 
    18-Jan-1997  GvR     1007    string interning and other speedups
 
-   11-Oct-1996  GvR     renamed Py_Ellipses to Py_Ellipsis :-(
+   11-Oct-1996  GvR     renamed Ty_Ellipses to Ty_Ellipsis :-(
 
    30-Jul-1996  GvR     Slice and ellipses syntax added
 
@@ -108,39 +108,39 @@ PyAPI_FUNC(int) PyModule_ExecDef(PyObject *module, PyModuleDef *def);
 #define PYTHON_ABI_VERSION 3
 #define PYTHON_ABI_STRING "3"
 
-PyAPI_FUNC(PyObject *) PyModule_Create2(PyModuleDef*, int apiver);
+PyAPI_FUNC(TyObject *) TyModule_Create2(TyModuleDef*, int apiver);
 
-#ifdef Py_LIMITED_API
-#define PyModule_Create(module) \
-        PyModule_Create2((module), PYTHON_ABI_VERSION)
+#ifdef Ty_LIMITED_API
+#define TyModule_Create(module) \
+        TyModule_Create2((module), PYTHON_ABI_VERSION)
 #else
-#define PyModule_Create(module) \
-        PyModule_Create2((module), PYTHON_API_VERSION)
+#define TyModule_Create(module) \
+        TyModule_Create2((module), PYTHON_API_VERSION)
 #endif
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03050000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03050000
 /* New in 3.5 */
-PyAPI_FUNC(PyObject *) PyModule_FromDefAndSpec2(PyModuleDef *def,
-                                                PyObject *spec,
+PyAPI_FUNC(TyObject *) TyModule_FromDefAndSpec2(TyModuleDef *def,
+                                                TyObject *spec,
                                                 int module_api_version);
 
-#ifdef Py_LIMITED_API
-#define PyModule_FromDefAndSpec(module, spec) \
-    PyModule_FromDefAndSpec2((module), (spec), PYTHON_ABI_VERSION)
+#ifdef Ty_LIMITED_API
+#define TyModule_FromDefAndSpec(module, spec) \
+    TyModule_FromDefAndSpec2((module), (spec), PYTHON_ABI_VERSION)
 #else
-#define PyModule_FromDefAndSpec(module, spec) \
-    PyModule_FromDefAndSpec2((module), (spec), PYTHON_API_VERSION)
-#endif /* Py_LIMITED_API */
+#define TyModule_FromDefAndSpec(module, spec) \
+    TyModule_FromDefAndSpec2((module), (spec), PYTHON_API_VERSION)
+#endif /* Ty_LIMITED_API */
 
 #endif /* New in 3.5 */
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_MODSUPPORT_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_MODSUPPORT_H
 #  include "cpython/modsupport.h"
-#  undef Py_CPYTHON_MODSUPPORT_H
+#  undef Ty_CPYTHON_MODSUPPORT_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_MODSUPPORT_H */
+#endif /* !Ty_MODSUPPORT_H */

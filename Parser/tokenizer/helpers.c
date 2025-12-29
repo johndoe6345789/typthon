@@ -18,44 +18,44 @@ _syntaxerror_range(struct tok_state *tok, const char *format,
     if (tok->done == E_ERROR) {
         return ERRORTOKEN;
     }
-    PyObject *errmsg, *errtext, *args;
-    errmsg = PyUnicode_FromFormatV(format, vargs);
+    TyObject *errmsg, *errtext, *args;
+    errmsg = TyUnicode_FromFormatV(format, vargs);
     if (!errmsg) {
         goto error;
     }
 
-    errtext = PyUnicode_DecodeUTF8(tok->line_start, tok->cur - tok->line_start,
+    errtext = TyUnicode_DecodeUTF8(tok->line_start, tok->cur - tok->line_start,
                                    "replace");
     if (!errtext) {
         goto error;
     }
 
     if (col_offset == -1) {
-        col_offset = (int)PyUnicode_GET_LENGTH(errtext);
+        col_offset = (int)TyUnicode_GET_LENGTH(errtext);
     }
     if (end_col_offset == -1) {
         end_col_offset = col_offset;
     }
 
-    Py_ssize_t line_len = strcspn(tok->line_start, "\n");
+    Ty_ssize_t line_len = strcspn(tok->line_start, "\n");
     if (line_len != tok->cur - tok->line_start) {
-        Py_DECREF(errtext);
-        errtext = PyUnicode_DecodeUTF8(tok->line_start, line_len,
+        Ty_DECREF(errtext);
+        errtext = TyUnicode_DecodeUTF8(tok->line_start, line_len,
                                        "replace");
     }
     if (!errtext) {
         goto error;
     }
 
-    args = Py_BuildValue("(O(OiiNii))", errmsg, tok->filename, tok->lineno,
+    args = Ty_BuildValue("(O(OiiNii))", errmsg, tok->filename, tok->lineno,
                          col_offset, errtext, tok->lineno, end_col_offset);
     if (args) {
-        PyErr_SetObject(PyExc_SyntaxError, args);
-        Py_DECREF(args);
+        TyErr_SetObject(TyExc_SyntaxError, args);
+        Ty_DECREF(args);
     }
 
 error:
-    Py_XDECREF(errmsg);
+    Ty_XDECREF(errmsg);
     tok->done = E_ERROR;
     return ERRORTOKEN;
 }
@@ -96,7 +96,7 @@ _PyTokenizer_error_ret(struct tok_state *tok) /* XXX */
 {
     tok->decoding_erred = 1;
     if ((tok->fp != NULL || tok->readline != NULL) && tok->buf != NULL) {/* see _PyTokenizer_Free */
-        PyMem_Free(tok->buf);
+        TyMem_Free(tok->buf);
     }
     tok->buf = tok->cur = tok->inp = NULL;
     tok->start = NULL;
@@ -112,7 +112,7 @@ _PyTokenizer_warn_invalid_escape_sequence(struct tok_state *tok, int first_inval
         return 0;
     }
 
-    PyObject *msg = PyUnicode_FromFormat(
+    TyObject *msg = TyUnicode_FromFormat(
         "\"\\%c\" is an invalid escape sequence. "
         "Such sequences will not work in the future. "
         "Did you mean \"\\\\%c\"? A raw string is also an option.",
@@ -124,14 +124,14 @@ _PyTokenizer_warn_invalid_escape_sequence(struct tok_state *tok, int first_inval
         return -1;
     }
 
-    if (PyErr_WarnExplicitObject(PyExc_SyntaxWarning, msg, tok->filename,
+    if (TyErr_WarnExplicitObject(TyExc_SyntaxWarning, msg, tok->filename,
                                  tok->lineno, NULL, NULL) < 0) {
-        Py_DECREF(msg);
+        Ty_DECREF(msg);
 
-        if (PyErr_ExceptionMatches(PyExc_SyntaxWarning)) {
+        if (TyErr_ExceptionMatches(TyExc_SyntaxWarning)) {
             /* Replace the SyntaxWarning exception with a SyntaxError
                to get a more accurate error report */
-            PyErr_Clear();
+            TyErr_Clear();
 
             return _PyTokenizer_syntaxerror(tok,
                 "\"\\%c\" is an invalid escape sequence. "
@@ -143,41 +143,41 @@ _PyTokenizer_warn_invalid_escape_sequence(struct tok_state *tok, int first_inval
         return -1;
     }
 
-    Py_DECREF(msg);
+    Ty_DECREF(msg);
     return 0;
 }
 
 int
-_PyTokenizer_parser_warn(struct tok_state *tok, PyObject *category, const char *format, ...)
+_PyTokenizer_parser_warn(struct tok_state *tok, TyObject *category, const char *format, ...)
 {
     if (!tok->report_warnings) {
         return 0;
     }
 
-    PyObject *errmsg;
+    TyObject *errmsg;
     va_list vargs;
     va_start(vargs, format);
-    errmsg = PyUnicode_FromFormatV(format, vargs);
+    errmsg = TyUnicode_FromFormatV(format, vargs);
     va_end(vargs);
     if (!errmsg) {
         goto error;
     }
 
-    if (PyErr_WarnExplicitObject(category, errmsg, tok->filename,
+    if (TyErr_WarnExplicitObject(category, errmsg, tok->filename,
                                  tok->lineno, NULL, NULL) < 0) {
-        if (PyErr_ExceptionMatches(category)) {
+        if (TyErr_ExceptionMatches(category)) {
             /* Replace the DeprecationWarning exception with a SyntaxError
                to get a more accurate error report */
-            PyErr_Clear();
+            TyErr_Clear();
             _PyTokenizer_syntaxerror(tok, "%U", errmsg);
         }
         goto error;
     }
-    Py_DECREF(errmsg);
+    Ty_DECREF(errmsg);
     return 0;
 
 error:
-    Py_XDECREF(errmsg);
+    Ty_XDECREF(errmsg);
     tok->done = E_ERROR;
     return -1;
 }
@@ -186,9 +186,9 @@ error:
 /* ############## STRING MANIPULATION ############## */
 
 char *
-_PyTokenizer_new_string(const char *s, Py_ssize_t len, struct tok_state *tok)
+_PyTokenizer_new_string(const char *s, Ty_ssize_t len, struct tok_state *tok)
 {
-    char* result = (char *)PyMem_Malloc(len + 1);
+    char* result = (char *)TyMem_Malloc(len + 1);
     if (!result) {
         tok->done = E_NOMEM;
         return NULL;
@@ -198,14 +198,14 @@ _PyTokenizer_new_string(const char *s, Py_ssize_t len, struct tok_state *tok)
     return result;
 }
 
-PyObject *
+TyObject *
 _PyTokenizer_translate_into_utf8(const char* str, const char* enc) {
-    PyObject *utf8;
-    PyObject* buf = PyUnicode_Decode(str, strlen(str), enc, NULL);
+    TyObject *utf8;
+    TyObject* buf = TyUnicode_Decode(str, strlen(str), enc, NULL);
     if (buf == NULL)
         return NULL;
-    utf8 = PyUnicode_AsUTF8String(buf);
-    Py_DECREF(buf);
+    utf8 = TyUnicode_AsUTF8String(buf);
+    Ty_DECREF(buf);
     return utf8;
 }
 
@@ -216,7 +216,7 @@ _PyTokenizer_translate_newlines(const char *s, int exec_input, int preserve_crlf
     size_t needed_length = strlen(s) + 2, final_length;
     char *buf, *current;
     char c = '\0';
-    buf = PyMem_Malloc(needed_length);
+    buf = TyMem_Malloc(needed_length);
     if (buf == NULL) {
         tok->done = E_NOMEM;
         return NULL;
@@ -247,9 +247,9 @@ _PyTokenizer_translate_newlines(const char *s, int exec_input, int preserve_crlf
     final_length = current - buf + 1;
     if (final_length < needed_length && final_length) {
         /* should never fail */
-        char* result = PyMem_Realloc(buf, final_length);
+        char* result = TyMem_Realloc(buf, final_length);
         if (result == NULL) {
-            PyMem_Free(buf);
+            TyMem_Free(buf);
         }
         buf = result;
     }
@@ -292,7 +292,7 @@ _PyTokenizer_check_bom(int get_char(struct tok_state *),
         return 1;
     }
     if (tok->encoding != NULL)
-        PyMem_Free(tok->encoding);
+        TyMem_Free(tok->encoding);
     tok->encoding = _PyTokenizer_new_string("utf-8", 5, tok);
     if (!tok->encoding)
         return 0;
@@ -312,7 +312,7 @@ get_normal_name(const char *s)  /* for utf-8 and latin-1 */
         else if (c == '_')
             buf[i] = '-';
         else
-            buf[i] = Py_TOLOWER(c);
+            buf[i] = Ty_TOLOWER(c);
     }
     buf[i] = '\0';
     if (strcmp(buf, "utf-8") == 0 ||
@@ -331,9 +331,9 @@ get_normal_name(const char *s)  /* for utf-8 and latin-1 */
 
 /* Return the coding spec in S, or NULL if none is found.  */
 static int
-get_coding_spec(const char *s, char **spec, Py_ssize_t size, struct tok_state *tok)
+get_coding_spec(const char *s, char **spec, Ty_ssize_t size, struct tok_state *tok)
 {
-    Py_ssize_t i;
+    Ty_ssize_t i;
     *spec = NULL;
     /* Coding spec must be in a comment, and that comment must be
      * the only statement on the source code line. */
@@ -355,7 +355,7 @@ get_coding_spec(const char *s, char **spec, Py_ssize_t size, struct tok_state *t
             } while (t[0] == ' ' || t[0] == '\t');
 
             begin = t;
-            while (Py_ISALNUM(t[0]) ||
+            while (Ty_ISALNUM(t[0]) ||
                    t[0] == '-' || t[0] == '_' || t[0] == '.')
                 t++;
 
@@ -366,7 +366,7 @@ get_coding_spec(const char *s, char **spec, Py_ssize_t size, struct tok_state *t
                     return 0;
                 q = get_normal_name(r);
                 if (r != q) {
-                    PyMem_Free(r);
+                    TyMem_Free(r);
                     r = _PyTokenizer_new_string(q, strlen(q), tok);
                     if (!r)
                         return 0;
@@ -384,7 +384,7 @@ get_coding_spec(const char *s, char **spec, Py_ssize_t size, struct tok_state *t
    This function receives the tok_state and the new encoding.
    Return 1 on success, 0 on failure.  */
 int
-_PyTokenizer_check_coding_spec(const char* line, Py_ssize_t size, struct tok_state *tok,
+_PyTokenizer_check_coding_spec(const char* line, Ty_ssize_t size, struct tok_state *tok,
                   int set_readline(struct tok_state *, const char *))
 {
     char *cs;
@@ -397,7 +397,7 @@ _PyTokenizer_check_coding_spec(const char* line, Py_ssize_t size, struct tok_sta
         return 0;
     }
     if (!cs) {
-        Py_ssize_t i;
+        Ty_ssize_t i;
         for (i = 0; i < size; i++) {
             if (line[i] == '#' || line[i] == '\n' || line[i] == '\r')
                 break;
@@ -415,20 +415,20 @@ _PyTokenizer_check_coding_spec(const char* line, Py_ssize_t size, struct tok_sta
         assert(tok->decoding_readline == NULL);
         if (strcmp(cs, "utf-8") != 0 && !set_readline(tok, cs)) {
             _PyTokenizer_error_ret(tok);
-            PyErr_Format(PyExc_SyntaxError, "encoding problem: %s", cs);
-            PyMem_Free(cs);
+            TyErr_Format(TyExc_SyntaxError, "encoding problem: %s", cs);
+            TyMem_Free(cs);
             return 0;
         }
         tok->encoding = cs;
     } else {                /* then, compare cs with BOM */
         if (strcmp(tok->encoding, cs) != 0) {
             _PyTokenizer_error_ret(tok);
-            PyErr_Format(PyExc_SyntaxError,
+            TyErr_Format(TyExc_SyntaxError,
                          "encoding problem: %s with BOM", cs);
-            PyMem_Free(cs);
+            TyMem_Free(cs);
             return 0;
         }
-        PyMem_Free(cs);
+        TyMem_Free(cs);
     }
     return 1;
 }
@@ -508,7 +508,7 @@ _PyTokenizer_ensure_utf8(char *line, struct tok_state *tok)
         }
     }
     if (badchar) {
-        PyErr_Format(PyExc_SyntaxError,
+        TyErr_Format(TyExc_SyntaxError,
                      "Non-UTF-8 code starting with '\\x%.2x' "
                      "in file %U on line %i, "
                      "but no encoding declared; "
@@ -522,9 +522,9 @@ _PyTokenizer_ensure_utf8(char *line, struct tok_state *tok)
 
 /* ############## DEBUGGING STUFF ############## */
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 void
-_PyTokenizer_print_escape(FILE *f, const char *s, Py_ssize_t size)
+_PyTokenizer_print_escape(FILE *f, const char *s, Ty_ssize_t size)
 {
     if (s == NULL) {
         fputs("NULL", f);
@@ -553,7 +553,7 @@ _PyTokenizer_print_escape(FILE *f, const char *s, Py_ssize_t size)
 void
 _PyTokenizer_tok_dump(int type, char *start, char *end)
 {
-    fprintf(stderr, "%s", _PyParser_TokenNames[type]);
+    fprintf(stderr, "%s", _TyParser_TokenNames[type]);
     if (type == NAME || type == NUMBER || type == STRING || type == OP)
         fprintf(stderr, "(%.*s)", (int)(end - start), start);
 }

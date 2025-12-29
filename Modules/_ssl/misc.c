@@ -5,30 +5,30 @@
 
 /* BIO_s_mem() to PyBytes
  */
-static PyObject *
+static TyObject *
 _PySSL_BytesFromBIO(_sslmodulestate *state, BIO *bio)
 {
     long size;
     char *data = NULL;
     size = BIO_get_mem_data(bio, &data);
     if (data == NULL || size < 0) {
-        PyErr_SetString(PyExc_ValueError, "Not a memory BIO");
+        TyErr_SetString(TyExc_ValueError, "Not a memory BIO");
         return NULL;
     }
-    return PyBytes_FromStringAndSize(data, size);
+    return TyBytes_FromStringAndSize(data, size);
 }
 
 /* BIO_s_mem() to PyUnicode
  */
-static PyObject *
+static TyObject *
 _PySSL_UnicodeFromBIO(_sslmodulestate *state, BIO *bio, const char *error)
 {
     long size;
     char *data = NULL;
     size = BIO_get_mem_data(bio, &data);
     if (data == NULL || size < 0) {
-        PyErr_SetString(PyExc_ValueError, "Not a memory BIO");
+        TyErr_SetString(TyExc_ValueError, "Not a memory BIO");
         return NULL;
     }
-    return PyUnicode_DecodeUTF8(data, size, error);
+    return TyUnicode_DecodeUTF8(data, size, error);
 }

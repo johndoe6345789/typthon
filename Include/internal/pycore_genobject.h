@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_GENOBJECT_H
-#define Py_INTERNAL_GENOBJECT_H
+#ifndef Ty_INTERNAL_GENOBJECT_H
+#define Ty_INTERNAL_GENOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_interpframe_structs.h" // _PyGenObject
@@ -14,30 +14,30 @@ extern "C" {
 
 
 static inline
-PyGenObject *_PyGen_GetGeneratorFromFrame(_PyInterpreterFrame *frame)
+PyGenObject *_TyGen_GetGeneratorFromFrame(_PyInterpreterFrame *frame)
 {
     assert(frame->owner == FRAME_OWNED_BY_GENERATOR);
     size_t offset_in_gen = offsetof(PyGenObject, gi_iframe);
     return (PyGenObject *)(((char *)frame) - offset_in_gen);
 }
 
-PyAPI_FUNC(PyObject *)_PyGen_yf(PyGenObject *);
-extern void _PyGen_Finalize(PyObject *self);
+PyAPI_FUNC(TyObject *)_TyGen_yf(PyGenObject *);
+extern void _TyGen_Finalize(TyObject *self);
 
 // Export for '_asyncio' shared extension
-PyAPI_FUNC(int) _PyGen_SetStopIterationValue(PyObject *);
+PyAPI_FUNC(int) _TyGen_SetStopIterationValue(TyObject *);
 
 // Export for '_asyncio' shared extension
-PyAPI_FUNC(int) _PyGen_FetchStopIterationValue(PyObject **);
+PyAPI_FUNC(int) _TyGen_FetchStopIterationValue(TyObject **);
 
-PyAPI_FUNC(PyObject *)_PyCoro_GetAwaitableIter(PyObject *o);
-extern PyObject *_PyAsyncGenValueWrapperNew(PyThreadState *state, PyObject *);
+PyAPI_FUNC(TyObject *)_PyCoro_GetAwaitableIter(TyObject *o);
+extern TyObject *_PyAsyncGenValueWrapperNew(TyThreadState *state, TyObject *);
 
-extern PyTypeObject _PyCoroWrapper_Type;
-extern PyTypeObject _PyAsyncGenWrappedValue_Type;
-extern PyTypeObject _PyAsyncGenAThrow_Type;
+extern TyTypeObject _PyCoroWrapper_Type;
+extern TyTypeObject _PyAsyncGenWrappedValue_Type;
+extern TyTypeObject _PyAsyncGenAThrow_Type;
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_GENOBJECT_H */
+#endif /* !Ty_INTERNAL_GENOBJECT_H */

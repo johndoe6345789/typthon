@@ -1,7 +1,7 @@
 import unittest
 from ctypes import Structure, CFUNCTYPE, c_int, _SimpleCData
-from ._support import (_CData, PyCSimpleType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
-                       Py_TPFLAGS_IMMUTABLETYPE)
+from ._support import (_CData, PyCSimpleType, Ty_TPFLAGS_DISALLOW_INSTANTIATION,
+                       Ty_TPFLAGS_IMMUTABLETYPE)
 
 
 class MyInt(c_int):
@@ -23,8 +23,8 @@ class Test(unittest.TestCase):
     def test_type_flags(self):
         for cls in _SimpleCData, PyCSimpleType:
             with self.subTest(cls=cls):
-                self.assertTrue(_SimpleCData.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(_SimpleCData.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertTrue(_SimpleCData.__flags__ & Ty_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalse(_SimpleCData.__flags__ & Ty_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Abstract classes (whose metaclass __init__ was not called) can't be

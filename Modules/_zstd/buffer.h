@@ -14,12 +14,12 @@
    Return -1 on failure */
 static inline int
 _OutputBuffer_InitAndGrow(_BlocksOutputBuffer *buffer, ZSTD_outBuffer *ob,
-                        Py_ssize_t max_length)
+                        Ty_ssize_t max_length)
 {
     /* Ensure .list was set to NULL */
     assert(buffer->list == NULL);
 
-    Py_ssize_t res = _BlocksOutputBuffer_InitAndGrow(buffer, max_length,
+    Ty_ssize_t res = _BlocksOutputBuffer_InitAndGrow(buffer, max_length,
                                                      &ob->dst);
     if (res < 0) {
         return -1;
@@ -35,9 +35,9 @@ _OutputBuffer_InitAndGrow(_BlocksOutputBuffer *buffer, ZSTD_outBuffer *ob,
     Return -1 on failure */
 static inline int
 _OutputBuffer_InitWithSize(_BlocksOutputBuffer *buffer, ZSTD_outBuffer *ob,
-                            Py_ssize_t max_length, Py_ssize_t init_size)
+                            Ty_ssize_t max_length, Ty_ssize_t init_size)
 {
-    Py_ssize_t block_size;
+    Ty_ssize_t block_size;
 
     /* Ensure .list was set to NULL */
     assert(buffer->list == NULL);
@@ -50,7 +50,7 @@ _OutputBuffer_InitWithSize(_BlocksOutputBuffer *buffer, ZSTD_outBuffer *ob,
         block_size = init_size;
     }
 
-    Py_ssize_t res = _BlocksOutputBuffer_InitWithSize(buffer, block_size,
+    Ty_ssize_t res = _BlocksOutputBuffer_InitWithSize(buffer, block_size,
                                                       &ob->dst);
     if (res < 0) {
         return -1;
@@ -69,7 +69,7 @@ static inline int
 _OutputBuffer_Grow(_BlocksOutputBuffer *buffer, ZSTD_outBuffer *ob)
 {
     assert(ob->pos == ob->size);
-    Py_ssize_t res = _BlocksOutputBuffer_Grow(buffer, &ob->dst, 0);
+    Ty_ssize_t res = _BlocksOutputBuffer_Grow(buffer, &ob->dst, 0);
     if (res < 0) {
         return -1;
     }
@@ -81,7 +81,7 @@ _OutputBuffer_Grow(_BlocksOutputBuffer *buffer, ZSTD_outBuffer *ob)
 /* Finish the buffer.
     Return a bytes object on success
     Return NULL on failure */
-static inline PyObject *
+static inline TyObject *
 _OutputBuffer_Finish(_BlocksOutputBuffer *buffer, ZSTD_outBuffer *ob)
 {
     return _BlocksOutputBuffer_Finish(buffer, ob->size - ob->pos);

@@ -38,7 +38,7 @@ def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     # line option '-i' and the process name set to '<stdin>'.
     # The directory of argv[0] must match the directory of the Python
     # executable for the Popen() call to python to succeed as the directory
-    # path may be used by Py_GetPath() to build the default module search
+    # path may be used by Ty_GetPath() to build the default module search
     # path.
     stdin_fname = os.path.join(os.path.dirname(sys.executable), "<stdin>")
     cmd_line = [stdin_fname, '-I', '-i']
@@ -74,9 +74,9 @@ def run_on_interactive_mode(source):
 class TestInteractiveInterpreter(unittest.TestCase):
 
     @cpython_only
-    # Python built with Py_TRACE_REFS fail with a fatal error in
+    # Python built with Ty_TRACE_REFS fail with a fatal error in
     # _PyRefchain_Trace() on memory allocation error.
-    @unittest.skipIf(support.Py_TRACE_REFS, 'cannot test Py_TRACE_REFS build')
+    @unittest.skipIf(support.Ty_TRACE_REFS, 'cannot test Ty_TRACE_REFS build')
     def test_no_memory(self):
         import_module("_testcapi")
         # Issue #30696: Fix the interactive interpreter looping endlessly when
@@ -95,7 +95,7 @@ class TestInteractiveInterpreter(unittest.TestCase):
             p.stdin.write(user_input)
         output = kill_python(p)
         self.assertIn('After the exception.', output)
-        # Exit code 120: Py_FinalizeEx() failed to flush stdout and stderr.
+        # Exit code 120: Ty_FinalizeEx() failed to flush stdout and stderr.
         self.assertIn(p.returncode, (1, 120))
 
     @cpython_only

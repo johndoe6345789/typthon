@@ -35,9 +35,9 @@ from libclinic.app import Clinic
 #
 
 
-# Match '#define Py_LIMITED_API'.
-# Match '#  define Py_LIMITED_API 0x030d0000' (without the version).
-LIMITED_CAPI_REGEX = re.compile(r'# *define +Py_LIMITED_API')
+# Match '#define Ty_LIMITED_API'.
+# Match '#  define Ty_LIMITED_API 0x030d0000' (without the version).
+LIMITED_CAPI_REGEX = re.compile(r'# *define +Ty_LIMITED_API')
 
 
 # "extensions" maps the file extension ("c", "py") to Language classes.

@@ -6,7 +6,7 @@ import sys
 import unittest
 import warnings
 
-from test.support import is_wasi, Py_DEBUG
+from test.support import is_wasi, Ty_DEBUG
 from test.support.os_helper import (TESTFN, skip_unless_symlink,
                                     can_symlink, create_empty_file, change_cwd)
 
@@ -375,7 +375,7 @@ class GlobTests(unittest.TestCase):
         self.assertEqual(self.rglob('mypipe', '*'), [])
 
 
-    @unittest.skipIf(is_wasi and Py_DEBUG, "requires too much stack")
+    @unittest.skipIf(is_wasi and Ty_DEBUG, "requires too much stack")
     def test_glob_many_open_files(self):
         depth = 30
         base = os.path.join(self.tempdir, 'deep')

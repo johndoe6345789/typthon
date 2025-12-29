@@ -145,7 +145,7 @@ pthread_key_create(pthread_key_t *key, void (*destr_function)(void *))
         return EINVAL;
     }
     if (destr_function != NULL) {
-        Py_FatalError("pthread_key_create destructor is not supported");
+        Ty_FatalError("pthread_key_create destructor is not supported");
     }
     for (pthread_key_t idx = 0; idx < PTHREAD_KEYS_MAX; idx++) {
         if (!py_tls_entries[idx].in_use) {

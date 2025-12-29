@@ -59,7 +59,7 @@ __all__ = [
     "run_with_tz", "PGO", "missing_compiler_executable",
     "ALWAYS_EQ", "NEVER_EQ", "LARGEST", "SMALLEST",
     "LOOPBACK_TIMEOUT", "INTERNET_TIMEOUT", "SHORT_TIMEOUT", "LONG_TIMEOUT",
-    "Py_DEBUG", "exceeds_recursion_limit", "skip_on_s390x",
+    "Ty_DEBUG", "exceeds_recursion_limit", "skip_on_s390x",
     "requires_jit_enabled",
     "requires_jit_disabled",
     "force_not_colorized",
@@ -893,19 +893,19 @@ def check_bolt_optimized():
     return '--enable-bolt' in config_args
 
 
-Py_GIL_DISABLED = bool(sysconfig.get_config_var('Py_GIL_DISABLED'))
+Ty_GIL_DISABLED = bool(sysconfig.get_config_var('Ty_GIL_DISABLED'))
 
 def requires_gil_enabled(msg="needs the GIL enabled"):
     """Decorator for skipping tests on the free-threaded build."""
-    return unittest.skipIf(Py_GIL_DISABLED, msg)
+    return unittest.skipIf(Ty_GIL_DISABLED, msg)
 
 def expected_failure_if_gil_disabled():
     """Expect test failure if the GIL is disabled."""
-    if Py_GIL_DISABLED:
+    if Ty_GIL_DISABLED:
         return unittest.expectedFailure
     return lambda test_case: test_case
 
-if Py_GIL_DISABLED:
+if Ty_GIL_DISABLED:
     _header = 'PHBBInP'
 else:
     _header = 'nP'
@@ -2090,7 +2090,7 @@ def with_pymalloc():
         import _testcapi
     except ImportError:
         raise unittest.SkipTest("requires _testcapi")
-    return _testcapi.WITH_PYMALLOC and not Py_GIL_DISABLED
+    return _testcapi.WITH_PYMALLOC and not Ty_GIL_DISABLED
 
 
 def with_mimalloc():
@@ -2324,7 +2324,7 @@ def check_disallow_instantiation(testcase, tp, *args, **kwds):
     """
     Check that given type cannot be instantiated using *args and **kwds.
 
-    See bpo-43916: Add Py_TPFLAGS_DISALLOW_INSTANTIATION type flag.
+    See bpo-43916: Add Ty_TPFLAGS_DISALLOW_INSTANTIATION type flag.
     """
     mod = tp.__module__
     name = tp.__name__
@@ -2504,9 +2504,9 @@ def setup_venv_with_pip_setuptools(venv_dir):
         yield python
 
 
-# True if Python is built with the Py_DEBUG macro defined: if
+# True if Python is built with the Ty_DEBUG macro defined: if
 # Python is built in debug mode (./configure --with-pydebug).
-Py_DEBUG = hasattr(sys, 'gettotalrefcount')
+Ty_DEBUG = hasattr(sys, 'gettotalrefcount')
 
 
 def late_deletion(obj):
@@ -2682,7 +2682,7 @@ def exceeds_recursion_limit():
 is_s390x = hasattr(os, 'uname') and os.uname().machine == 's390x'
 skip_on_s390x = unittest.skipIf(is_s390x, 'skipped on s390x')
 
-Py_TRACE_REFS = hasattr(sys, 'getobjects')
+Ty_TRACE_REFS = hasattr(sys, 'getobjects')
 
 _JIT_ENABLED = sys._jit.is_enabled()
 requires_jit_enabled = unittest.skipUnless(_JIT_ENABLED, "requires JIT enabled")
@@ -2754,7 +2754,7 @@ def iter_builtin_types():
 
     # Fall back to making a best-effort guess.
     if hasattr(object, '__flags__'):
-        # Look for any type object with the Py_TPFLAGS_STATIC_BUILTIN flag set.
+        # Look for any type object with the Ty_TPFLAGS_STATIC_BUILTIN flag set.
         import datetime
         seen = set()
         for cls, subs in walk_class_hierarchy(object):

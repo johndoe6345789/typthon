@@ -1,15 +1,15 @@
-#ifndef Py_BUILD_CORE_MODULE
-#  define Py_BUILD_CORE_MODULE
+#ifndef Ty_BUILD_CORE_MODULE
+#  define Ty_BUILD_CORE_MODULE
 #endif
 
 /* Always enable assertion (even in release mode) */
 #undef NDEBUG
 
 #include <Python.h>
-#include "pycore_initconfig.h"    // _PyConfig_InitCompatConfig()
+#include "pycore_initconfig.h"    // _TyConfig_InitCompatConfig()
 #include "pycore_runtime.h"       // _PyRuntime
-#include "pycore_pythread.h"      // PyThread_start_joinable_thread()
-#include "pycore_import.h"        // _PyImport_FrozenBootstrap
+#include "pycore_pythread.h"      // TyThread_start_joinable_thread()
+#include "pycore_import.h"        // _TyImport_FrozenBootstrap
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>               // putenv()
@@ -17,9 +17,9 @@
 
 // These functions were removed from Python 3.13 API but are still exported
 // for the stable ABI. We want to test them in this program.
-extern void PySys_AddWarnOption(const wchar_t *s);
-extern void PySys_AddXOption(const wchar_t *s);
-extern void Py_SetPath(const wchar_t *path);
+extern void TySys_AddWarnOption(const wchar_t *s);
+extern void TySys_AddXOption(const wchar_t *s);
+extern void Ty_SetPath(const wchar_t *path);
 
 
 int main_argc;
@@ -40,10 +40,10 @@ char **main_argv;
 
 #define INIT_LOOPS 4
 
-// Ignore Py_DEPRECATED() compiler warnings: deprecated functions are
+// Ignore Ty_DEPRECATED() compiler warnings: deprecated functions are
 // tested on purpose here.
-_Py_COMP_DIAG_PUSH
-_Py_COMP_DIAG_IGNORE_DEPR_DECLS
+_Ty_COMP_DIAG_PUSH
+_Ty_COMP_DIAG_IGNORE_DEPR_DECLS
 
 
 static void error(const char *msg)
@@ -53,53 +53,53 @@ static void error(const char *msg)
 }
 
 
-static void config_set_string(PyConfig *config, wchar_t **config_str, const wchar_t *str)
+static void config_set_string(TyConfig *config, wchar_t **config_str, const wchar_t *str)
 {
-    PyStatus status = PyConfig_SetString(config, config_str, str);
-    if (PyStatus_Exception(status)) {
-        PyConfig_Clear(config);
-        Py_ExitStatusException(status);
+    TyStatus status = TyConfig_SetString(config, config_str, str);
+    if (TyStatus_Exception(status)) {
+        TyConfig_Clear(config);
+        Ty_ExitStatusException(status);
     }
 }
 
 
-static void config_set_program_name(PyConfig *config)
+static void config_set_program_name(TyConfig *config)
 {
     const wchar_t *program_name = PROGRAM_NAME;
     config_set_string(config, &config->program_name, program_name);
 }
 
 
-static void init_from_config_clear(PyConfig *config)
+static void init_from_config_clear(TyConfig *config)
 {
-    PyStatus status = Py_InitializeFromConfig(config);
-    PyConfig_Clear(config);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    TyStatus status = Ty_InitializeFromConfig(config);
+    TyConfig_Clear(config);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 }
 
 
 static void _testembed_Py_InitializeFromConfig(void)
 {
-    PyConfig config;
-    _PyConfig_InitCompatConfig(&config);
+    TyConfig config;
+    _TyConfig_InitCompatConfig(&config);
     config_set_program_name(&config);
     init_from_config_clear(&config);
 }
 
 static void _testembed_Py_Initialize(void)
 {
-   Py_SetProgramName(PROGRAM_NAME);
-   Py_Initialize();
+   Ty_SetProgramName(PROGRAM_NAME);
+   Ty_Initialize();
 }
 
 
 static int test_import_in_subinterpreters(void)
 {
     _testembed_Py_InitializeFromConfig();
-    PyThreadState_Swap(Py_NewInterpreter());
-    return PyRun_SimpleString("import readline"); // gh-124160
+    TyThreadState_Swap(Ty_NewInterpreter());
+    return TyRun_SimpleString("import readline"); // gh-124160
 }
 
 
@@ -111,13 +111,13 @@ static void print_subinterp(void)
 {
     /* Output information about the interpreter in the format
        expected in Lib/test/test_capi.py (test_subinterps). */
-    PyThreadState *ts = PyThreadState_Get();
-    PyInterpreterState *interp = ts->interp;
-    int64_t id = PyInterpreterState_GetID(interp);
+    TyThreadState *ts = TyThreadState_Get();
+    TyInterpreterState *interp = ts->interp;
+    int64_t id = TyInterpreterState_GetID(interp);
     printf("interp %" PRId64 " <0x%" PRIXPTR ">, thread state <0x%" PRIXPTR ">: ",
             id, (uintptr_t)interp, (uintptr_t)ts);
     fflush(stdout);
-    PyRun_SimpleString(
+    TyRun_SimpleString(
         "import sys;"
         "print('id(modules) =', id(sys.modules));"
         "sys.stdout.flush()"
@@ -126,52 +126,52 @@ static void print_subinterp(void)
 
 static int test_repeated_init_and_subinterpreters(void)
 {
-    PyThreadState *mainstate, *substate;
-    PyGILState_STATE gilstate;
+    TyThreadState *mainstate, *substate;
+    TyGILState_STATE gilstate;
 
     for (int i=1; i <= INIT_LOOPS; i++) {
         printf("--- Pass %d ---\n", i);
         _testembed_Py_InitializeFromConfig();
-        mainstate = PyThreadState_Get();
+        mainstate = TyThreadState_Get();
 
-        PyEval_ReleaseThread(mainstate);
+        TyEval_ReleaseThread(mainstate);
 
-        gilstate = PyGILState_Ensure();
+        gilstate = TyGILState_Ensure();
         print_subinterp();
-        PyThreadState_Swap(NULL);
+        TyThreadState_Swap(NULL);
 
         for (int j=0; j<3; j++) {
-            substate = Py_NewInterpreter();
+            substate = Ty_NewInterpreter();
             print_subinterp();
-            Py_EndInterpreter(substate);
+            Ty_EndInterpreter(substate);
         }
 
-        PyThreadState_Swap(mainstate);
+        TyThreadState_Swap(mainstate);
         print_subinterp();
-        PyGILState_Release(gilstate);
+        TyGILState_Release(gilstate);
 
-        PyEval_RestoreThread(mainstate);
-        Py_Finalize();
+        TyEval_RestoreThread(mainstate);
+        Ty_Finalize();
     }
     return 0;
 }
 
 #define EMBEDDED_EXT_NAME "embedded_ext"
 
-static PyModuleDef embedded_ext = {
+static TyModuleDef embedded_ext = {
     PyModuleDef_HEAD_INIT,
     .m_name = EMBEDDED_EXT_NAME,
     .m_size = 0,
 };
 
-static PyObject*
+static TyObject*
 PyInit_embedded_ext(void)
 {
-    return PyModule_Create(&embedded_ext);
+    return TyModule_Create(&embedded_ext);
 }
 
 /****************************************************************************
- * Call Py_Initialize()/Py_Finalize() multiple times and execute Python code
+ * Call Ty_Initialize()/Ty_Finalize() multiple times and execute Python code
  ***************************************************************************/
 
 // Used by bpo-46417 to test that structseq types used by the sys module are
@@ -198,8 +198,8 @@ static int test_repeated_init_exec(void)
         }
 
         _testembed_Py_InitializeFromConfig();
-        int err = PyRun_SimpleString(code);
-        Py_Finalize();
+        int err = TyRun_SimpleString(code);
+        Ty_Finalize();
         if (err) {
             return 1;
         }
@@ -208,7 +208,7 @@ static int test_repeated_init_exec(void)
 }
 
 /****************************************************************************
- * Test the Py_Initialize(Ex) convenience/compatibility wrappers
+ * Test the Ty_Initialize(Ex) convenience/compatibility wrappers
  ***************************************************************************/
 // This is here to help ensure there are no wrapper resource leaks (gh-96853)
 static int test_repeated_simple_init(void)
@@ -218,7 +218,7 @@ static int test_repeated_simple_init(void)
         fflush(stderr);
 
         _testembed_Py_Initialize();
-        Py_Finalize();
+        Ty_Finalize();
         printf("Finalized\n"); // Give test_embed some output to check
     }
     return 0;
@@ -244,8 +244,8 @@ static void check_stdio_details(const wchar_t *encoding, const wchar_t *errors)
     }
     fflush(stdout);
 
-    PyConfig config;
-    _PyConfig_InitCompatConfig(&config);
+    TyConfig config;
+    _TyConfig_InitCompatConfig(&config);
     /* Force the given IO encoding */
     if (encoding) {
         config_set_string(&config, &config.stdio_encoding, encoding);
@@ -262,14 +262,14 @@ static void check_stdio_details(const wchar_t *encoding, const wchar_t *errors)
     init_from_config_clear(&config);
 
 
-    PyRun_SimpleString(
+    TyRun_SimpleString(
         "import sys;"
         "print('stdin: {0.encoding}:{0.errors}'.format(sys.stdin));"
         "print('stdout: {0.encoding}:{0.errors}'.format(sys.stdout));"
         "print('stderr: {0.encoding}:{0.errors}'.format(sys.stderr));"
         "sys.stdout.flush()"
     );
-    Py_Finalize();
+    Ty_Finalize();
 }
 
 static int test_forced_io_encoding(void)
@@ -293,7 +293,7 @@ static int test_forced_io_encoding(void)
 /* The pre-initialization tests tend to break by segfaulting, so explicitly
  * flushed progress messages make the broken API easier to find when they fail.
  */
-#define _Py_EMBED_PREINIT_CHECK(msg) \
+#define _Ty_EMBED_PREINIT_CHECK(msg) \
     do {printf(msg); fflush(stdout);} while (0);
 
 static int test_pre_initialization_api(void)
@@ -302,47 +302,47 @@ static int test_pre_initialization_api(void)
     putenv("PYTHONMALLOC=");
 
     /* Leading "./" ensures getpath.c can still find the standard library */
-    _Py_EMBED_PREINIT_CHECK("Checking Py_DecodeLocale\n");
-    wchar_t *program = Py_DecodeLocale("./spam", NULL);
+    _Ty_EMBED_PREINIT_CHECK("Checking Ty_DecodeLocale\n");
+    wchar_t *program = Ty_DecodeLocale("./spam", NULL);
     if (program == NULL) {
         fprintf(stderr, "Fatal error: cannot decode program name\n");
         return 1;
     }
-    _Py_EMBED_PREINIT_CHECK("Checking Py_SetProgramName\n");
-    Py_SetProgramName(program);
+    _Ty_EMBED_PREINIT_CHECK("Checking Ty_SetProgramName\n");
+    Ty_SetProgramName(program);
 
-    _Py_EMBED_PREINIT_CHECK("Checking !Py_IsInitialized pre-initialization\n");
-    if (Py_IsInitialized()) {
+    _Ty_EMBED_PREINIT_CHECK("Checking !Ty_IsInitialized pre-initialization\n");
+    if (Ty_IsInitialized()) {
         fprintf(stderr, "Fatal error: initialized before initialization!\n");
         return 1;
     }
 
-    _Py_EMBED_PREINIT_CHECK("Initializing interpreter\n");
-    Py_Initialize();
+    _Ty_EMBED_PREINIT_CHECK("Initializing interpreter\n");
+    Ty_Initialize();
 
-    _Py_EMBED_PREINIT_CHECK("Checking Py_IsInitialized post-initialization\n");
-    if (!Py_IsInitialized()) {
+    _Ty_EMBED_PREINIT_CHECK("Checking Ty_IsInitialized post-initialization\n");
+    if (!Ty_IsInitialized()) {
         fprintf(stderr, "Fatal error: not initialized after initialization!\n");
         return 1;
     }
 
-    _Py_EMBED_PREINIT_CHECK("Check sys module contents\n");
-    PyRun_SimpleString(
+    _Ty_EMBED_PREINIT_CHECK("Check sys module contents\n");
+    TyRun_SimpleString(
         "import sys; "
         "print('sys.executable:', sys.executable); "
         "sys.stdout.flush(); "
     );
-    _Py_EMBED_PREINIT_CHECK("Finalizing interpreter\n");
-    Py_Finalize();
+    _Ty_EMBED_PREINIT_CHECK("Finalizing interpreter\n");
+    Ty_Finalize();
 
-    _Py_EMBED_PREINIT_CHECK("Checking !Py_IsInitialized post-finalization\n");
-    if (Py_IsInitialized()) {
+    _Ty_EMBED_PREINIT_CHECK("Checking !Ty_IsInitialized post-finalization\n");
+    if (Ty_IsInitialized()) {
         fprintf(stderr, "Fatal error: still initialized after finalization!\n");
         return 1;
     }
 
-    _Py_EMBED_PREINIT_CHECK("Freeing memory allocated by Py_DecodeLocale\n");
-    PyMem_RawFree(program);
+    _Ty_EMBED_PREINIT_CHECK("Freeing memory allocated by Ty_DecodeLocale\n");
+    TyMem_RawFree(program);
     return 0;
 }
 
@@ -351,7 +351,7 @@ static int test_pre_initialization_api(void)
 static int test_pre_initialization_sys_options(void)
 {
     /* We allocate a couple of the options dynamically, and then delete
-     * them before calling Py_Initialize. This ensures the interpreter isn't
+     * them before calling Ty_Initialize. This ensures the interpreter isn't
      * relying on the caller to keep the passed in strings alive.
      */
     const wchar_t *static_warnoption = L"once";
@@ -365,17 +365,17 @@ static int test_pre_initialization_sys_options(void)
     wcsncpy(dynamic_once_warnoption, static_warnoption, warnoption_len+1);
     wcsncpy(dynamic_xoption, static_xoption, xoption_len+1);
 
-    _Py_EMBED_PREINIT_CHECK("Checking PySys_AddWarnOption\n");
-    PySys_AddWarnOption(L"default");
-    _Py_EMBED_PREINIT_CHECK("Checking PySys_ResetWarnOptions\n");
-    PySys_ResetWarnOptions();
-    _Py_EMBED_PREINIT_CHECK("Checking PySys_AddWarnOption linked list\n");
-    PySys_AddWarnOption(dynamic_once_warnoption);
-    PySys_AddWarnOption(L"module");
-    PySys_AddWarnOption(L"default");
-    _Py_EMBED_PREINIT_CHECK("Checking PySys_AddXOption\n");
-    PySys_AddXOption(L"not_an_option=1");
-    PySys_AddXOption(dynamic_xoption);
+    _Ty_EMBED_PREINIT_CHECK("Checking TySys_AddWarnOption\n");
+    TySys_AddWarnOption(L"default");
+    _Ty_EMBED_PREINIT_CHECK("Checking TySys_ResetWarnOptions\n");
+    TySys_ResetWarnOptions();
+    _Ty_EMBED_PREINIT_CHECK("Checking TySys_AddWarnOption linked list\n");
+    TySys_AddWarnOption(dynamic_once_warnoption);
+    TySys_AddWarnOption(L"module");
+    TySys_AddWarnOption(L"default");
+    _Ty_EMBED_PREINIT_CHECK("Checking TySys_AddXOption\n");
+    TySys_AddXOption(L"not_an_option=1");
+    TySys_AddXOption(dynamic_xoption);
 
     /* Delete the dynamic options early */
     free(dynamic_once_warnoption);
@@ -383,10 +383,10 @@ static int test_pre_initialization_sys_options(void)
     free(dynamic_xoption);
     dynamic_xoption = NULL;
 
-    _Py_EMBED_PREINIT_CHECK("Initializing interpreter\n");
+    _Ty_EMBED_PREINIT_CHECK("Initializing interpreter\n");
     _testembed_Py_InitializeFromConfig();
-    _Py_EMBED_PREINIT_CHECK("Check sys module contents\n");
-    PyRun_SimpleString(
+    _Ty_EMBED_PREINIT_CHECK("Check sys module contents\n");
+    TyRun_SimpleString(
         "import sys; "
         "print('sys.warnoptions:', sys.warnoptions); "
         "print('sys._xoptions:', sys._xoptions); "
@@ -395,8 +395,8 @@ static int test_pre_initialization_sys_options(void)
         "print('warnings.filters[:3]:', latest_filters); "
         "sys.stdout.flush(); "
     );
-    _Py_EMBED_PREINIT_CHECK("Finalizing interpreter\n");
-    Py_Finalize();
+    _Ty_EMBED_PREINIT_CHECK("Finalizing interpreter\n");
+    Ty_Finalize();
 
     return 0;
 }
@@ -405,17 +405,17 @@ static int test_pre_initialization_sys_options(void)
 /* bpo-20891: Avoid race condition when initialising the GIL */
 static void bpo20891_thread(void *lockp)
 {
-    PyThread_type_lock lock = *((PyThread_type_lock*)lockp);
+    TyThread_type_lock lock = *((TyThread_type_lock*)lockp);
 
-    PyGILState_STATE state = PyGILState_Ensure();
-    if (!PyGILState_Check()) {
-        error("PyGILState_Check failed!");
+    TyGILState_STATE state = TyGILState_Ensure();
+    if (!TyGILState_Check()) {
+        error("TyGILState_Check failed!");
         abort();
     }
 
-    PyGILState_Release(state);
+    TyGILState_Release(state);
 
-    PyThread_release_lock(lock);
+    TyThread_release_lock(lock);
 }
 
 static int test_bpo20891(void)
@@ -423,31 +423,31 @@ static int test_bpo20891(void)
     /* the test doesn't support custom memory allocators */
     putenv("PYTHONMALLOC=");
 
-    /* bpo-20891: Calling PyGILState_Ensure in a non-Python thread must not
+    /* bpo-20891: Calling TyGILState_Ensure in a non-Python thread must not
        crash. */
-    PyThread_type_lock lock = PyThread_allocate_lock();
+    TyThread_type_lock lock = TyThread_allocate_lock();
     if (!lock) {
-        error("PyThread_allocate_lock failed!");
+        error("TyThread_allocate_lock failed!");
         return 1;
     }
 
     _testembed_Py_InitializeFromConfig();
 
-    unsigned long thrd = PyThread_start_new_thread(bpo20891_thread, &lock);
+    unsigned long thrd = TyThread_start_new_thread(bpo20891_thread, &lock);
     if (thrd == PYTHREAD_INVALID_THREAD_ID) {
-        error("PyThread_start_new_thread failed!");
+        error("TyThread_start_new_thread failed!");
         return 1;
     }
-    PyThread_acquire_lock(lock, WAIT_LOCK);
+    TyThread_acquire_lock(lock, WAIT_LOCK);
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     /* wait until the thread exit */
-    PyThread_acquire_lock(lock, WAIT_LOCK);
-    Py_END_ALLOW_THREADS
+    TyThread_acquire_lock(lock, WAIT_LOCK);
+    Ty_END_ALLOW_THREADS
 
-    PyThread_free_lock(lock);
+    TyThread_free_lock(lock);
 
-    Py_Finalize();
+    Ty_Finalize();
 
     return 0;
 }
@@ -456,11 +456,11 @@ static int test_initialize_twice(void)
 {
     _testembed_Py_InitializeFromConfig();
 
-    /* bpo-33932: Calling Py_Initialize() twice should do nothing
+    /* bpo-33932: Calling Ty_Initialize() twice should do nothing
      * (and not crash!). */
-    Py_Initialize();
+    Ty_Initialize();
 
-    Py_Finalize();
+    Ty_Finalize();
 
     return 0;
 }
@@ -469,15 +469,15 @@ static int test_initialize_pymain(void)
 {
     wchar_t *argv[] = {L"PYTHON", L"-c",
                        (L"import sys; "
-                        L"print(f'Py_Main() after Py_Initialize: "
+                        L"print(f'Ty_Main() after Ty_Initialize: "
                         L"sys.argv={sys.argv}')"),
                        L"arg2"};
     _testembed_Py_InitializeFromConfig();
 
-    /* bpo-34008: Calling Py_Main() after Py_Initialize() must not crash */
-    Py_Main(Py_ARRAY_LENGTH(argv), argv);
+    /* bpo-34008: Calling Ty_Main() after Ty_Initialize() must not crash */
+    Ty_Main(Ty_ARRAY_LENGTH(argv), argv);
 
-    Py_Finalize();
+    Ty_Finalize();
 
     return 0;
 }
@@ -486,7 +486,7 @@ static int test_initialize_pymain(void)
 static void
 dump_config(void)
 {
-    (void) PyRun_SimpleStringFlags(
+    (void) TyRun_SimpleStringFlags(
         "import _testinternalcapi, json; "
         "print(json.dumps(_testinternalcapi.get_configs()))",
         0);
@@ -497,55 +497,55 @@ static int test_init_initialize_config(void)
 {
     _testembed_Py_InitializeFromConfig();
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
-static void config_set_argv(PyConfig *config, Py_ssize_t argc, wchar_t * const *argv)
+static void config_set_argv(TyConfig *config, Ty_ssize_t argc, wchar_t * const *argv)
 {
-    PyStatus status = PyConfig_SetArgv(config, argc, argv);
-    if (PyStatus_Exception(status)) {
-        PyConfig_Clear(config);
-        Py_ExitStatusException(status);
+    TyStatus status = TyConfig_SetArgv(config, argc, argv);
+    if (TyStatus_Exception(status)) {
+        TyConfig_Clear(config);
+        Ty_ExitStatusException(status);
     }
 }
 
 
 static void
-config_set_wide_string_list(PyConfig *config, PyWideStringList *list,
-                            Py_ssize_t length, wchar_t **items)
+config_set_wide_string_list(TyConfig *config, TyWideStringList *list,
+                            Ty_ssize_t length, wchar_t **items)
 {
-    PyStatus status = PyConfig_SetWideStringList(config, list, length, items);
-    if (PyStatus_Exception(status)) {
-        PyConfig_Clear(config);
-        Py_ExitStatusException(status);
+    TyStatus status = TyConfig_SetWideStringList(config, list, length, items);
+    if (TyStatus_Exception(status)) {
+        TyConfig_Clear(config);
+        Ty_ExitStatusException(status);
     }
 }
 
 
 static int check_init_compat_config(int preinit)
 {
-    PyStatus status;
+    TyStatus status;
 
     if (preinit) {
-        PyPreConfig preconfig;
-        _PyPreConfig_InitCompatConfig(&preconfig);
+        TyPreConfig preconfig;
+        _TyPreConfig_InitCompatConfig(&preconfig);
 
-        status = Py_PreInitialize(&preconfig);
-        if (PyStatus_Exception(status)) {
-            Py_ExitStatusException(status);
+        status = Ty_PreInitialize(&preconfig);
+        if (TyStatus_Exception(status)) {
+            Ty_ExitStatusException(status);
         }
     }
 
-    PyConfig config;
-    _PyConfig_InitCompatConfig(&config);
+    TyConfig config;
+    _TyConfig_InitCompatConfig(&config);
 
     config_set_program_name(&config);
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -564,76 +564,76 @@ static int test_init_compat_config(void)
 
 static int test_init_global_config(void)
 {
-    /* FIXME: test Py_IgnoreEnvironmentFlag */
+    /* FIXME: test Ty_IgnoreEnvironmentFlag */
 
     putenv("PYTHONUTF8=0");
-    Py_UTF8Mode = 1;
+    Ty_UTF8Mode = 1;
 
-    /* Test initialization from global configuration variables (Py_xxx) */
-    Py_SetProgramName(L"./globalvar");
+    /* Test initialization from global configuration variables (Ty_xxx) */
+    Ty_SetProgramName(L"./globalvar");
 
-    /* Py_IsolatedFlag is not tested */
-    Py_NoSiteFlag = 1;
-    Py_BytesWarningFlag = 1;
+    /* Ty_IsolatedFlag is not tested */
+    Ty_NoSiteFlag = 1;
+    Ty_BytesWarningFlag = 1;
 
     putenv("PYTHONINSPECT=");
-    Py_InspectFlag = 1;
+    Ty_InspectFlag = 1;
 
     putenv("PYTHONOPTIMIZE=0");
-    Py_InteractiveFlag = 1;
+    Ty_InteractiveFlag = 1;
 
     putenv("PYTHONDEBUG=0");
-    Py_OptimizeFlag = 2;
+    Ty_OptimizeFlag = 2;
 
-    /* Py_DebugFlag is not tested */
+    /* Ty_DebugFlag is not tested */
 
     putenv("PYTHONDONTWRITEBYTECODE=");
-    Py_DontWriteBytecodeFlag = 1;
+    Ty_DontWriteBytecodeFlag = 1;
 
     putenv("PYTHONVERBOSE=0");
-    Py_VerboseFlag = 1;
+    Ty_VerboseFlag = 1;
 
-    Py_QuietFlag = 1;
-    Py_NoUserSiteDirectory = 1;
+    Ty_QuietFlag = 1;
+    Ty_NoUserSiteDirectory = 1;
 
     putenv("PYTHONUNBUFFERED=");
-    Py_UnbufferedStdioFlag = 1;
+    Ty_UnbufferedStdioFlag = 1;
 
-    Py_FrozenFlag = 1;
+    Ty_FrozenFlag = 1;
 
-    /* FIXME: test Py_LegacyWindowsFSEncodingFlag */
-    /* FIXME: test Py_LegacyWindowsStdioFlag */
+    /* FIXME: test Ty_LegacyWindowsFSEncodingFlag */
+    /* FIXME: test Ty_LegacyWindowsStdioFlag */
 
-    Py_Initialize();
+    Ty_Initialize();
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
 static int test_init_from_config(void)
 {
-    PyPreConfig preconfig;
-    _PyPreConfig_InitCompatConfig(&preconfig);
+    TyPreConfig preconfig;
+    _TyPreConfig_InitCompatConfig(&preconfig);
 
     putenv("PYTHONMALLOC=malloc_debug");
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
     preconfig.allocator = PYMEM_ALLOCATOR_MALLOC;
 #else
     preconfig.allocator = PYMEM_ALLOCATOR_MIMALLOC;
 #endif
 
     putenv("PYTHONUTF8=0");
-    Py_UTF8Mode = 0;
+    Ty_UTF8Mode = 0;
     preconfig.utf8_mode = 1;
 
-    PyStatus status = Py_PreInitialize(&preconfig);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    TyStatus status = Ty_PreInitialize(&preconfig);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
-    PyConfig config;
-    _PyConfig_InitCompatConfig(&config);
+    TyConfig config;
+    _TyConfig_InitCompatConfig(&config);
 
     config.install_signal_handlers = 0;
 
@@ -666,7 +666,7 @@ static int test_init_from_config(void)
     putenv("PYTHONPYCACHEPREFIX=env_pycache_prefix");
     config_set_string(&config, &config.pycache_prefix, L"conf_pycache_prefix");
 
-    Py_SetProgramName(L"./globalvar");
+    Ty_SetProgramName(L"./globalvar");
     config_set_string(&config, &config.program_name, L"./conf_program_name");
 
     wchar_t* argv[] = {
@@ -679,7 +679,7 @@ static int test_init_from_config(void)
         L"pass",
         L"arg2",
     };
-    config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     config.parse_argv = 1;
 
     wchar_t* xoptions[3] = {
@@ -688,13 +688,13 @@ static int test_init_from_config(void)
         L"config_xoption3",
     };
     config_set_wide_string_list(&config, &config.xoptions,
-                                Py_ARRAY_LENGTH(xoptions), xoptions);
+                                Ty_ARRAY_LENGTH(xoptions), xoptions);
 
     wchar_t* warnoptions[1] = {
         L"config_warnoption",
     };
     config_set_wide_string_list(&config, &config.warnoptions,
-                                Py_ARRAY_LENGTH(warnoptions), warnoptions);
+                                Ty_ARRAY_LENGTH(warnoptions), warnoptions);
 
     /* FIXME: test pythonpath_env */
     /* FIXME: test home */
@@ -704,39 +704,39 @@ static int test_init_from_config(void)
     config_set_string(&config, &config.platlibdir, L"my_platlibdir");
 
     putenv("PYTHONVERBOSE=0");
-    Py_VerboseFlag = 0;
+    Ty_VerboseFlag = 0;
     config.verbose = 1;
 
-    Py_NoSiteFlag = 0;
+    Ty_NoSiteFlag = 0;
     config.site_import = 0;
 
-    Py_BytesWarningFlag = 0;
+    Ty_BytesWarningFlag = 0;
     config.bytes_warning = 1;
 
     putenv("PYTHONINSPECT=");
-    Py_InspectFlag = 0;
+    Ty_InspectFlag = 0;
     config.inspect = 1;
 
-    Py_InteractiveFlag = 0;
+    Ty_InteractiveFlag = 0;
     config.interactive = 1;
 
     putenv("PYTHONOPTIMIZE=0");
-    Py_OptimizeFlag = 1;
+    Ty_OptimizeFlag = 1;
     config.optimization_level = 2;
 
     /* FIXME: test parser_debug */
 
     putenv("PYTHONDONTWRITEBYTECODE=");
-    Py_DontWriteBytecodeFlag = 0;
+    Ty_DontWriteBytecodeFlag = 0;
     config.write_bytecode = 0;
 
-    Py_QuietFlag = 0;
+    Ty_QuietFlag = 0;
     config.quiet = 1;
 
     config.configure_c_stdio = 1;
 
     putenv("PYTHONUNBUFFERED=");
-    Py_UnbufferedStdioFlag = 0;
+    Ty_UnbufferedStdioFlag = 0;
     config.buffered_stdio = 0;
 
     putenv("PYTHONIOENCODING=cp424");
@@ -744,16 +744,16 @@ static int test_init_from_config(void)
     config_set_string(&config, &config.stdio_errors, L"replace");
 
     putenv("PYTHONNOUSERSITE=");
-    Py_NoUserSiteDirectory = 0;
+    Ty_NoUserSiteDirectory = 0;
     config.user_site_directory = 0;
 
     config_set_string(&config, &config.check_hash_pycs_mode, L"always");
 
-    Py_FrozenFlag = 0;
+    Ty_FrozenFlag = 0;
     config.pathconfig_warnings = 0;
 
     config.safe_path = 1;
-#ifdef Py_STATS
+#ifdef Ty_STATS
     putenv("PYTHONSTATS=");
     config._pystats = 1;
 #endif
@@ -765,15 +765,15 @@ static int test_init_from_config(void)
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
 static int check_init_parse_argv(int parse_argv)
 {
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config.parse_argv = parse_argv;
 
@@ -786,11 +786,11 @@ static int check_init_parse_argv(int parse_argv)
         L"-v",
         L"arg3",
     };
-    config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -810,7 +810,7 @@ static int test_init_dont_parse_argv(void)
 static void set_most_env_vars(void)
 {
     putenv("PYTHONHASHSEED=42");
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
     putenv("PYTHONMALLOC=malloc");
 #else
     putenv("PYTHONMALLOC=mimalloc");
@@ -832,7 +832,7 @@ static void set_most_env_vars(void)
     putenv("PYTHONPLATLIBDIR=env_platlibdir");
     putenv("PYTHONSAFEPATH=1");
     putenv("PYTHONINTMAXSTRDIGITS=4567");
-#ifdef Py_STATS
+#ifdef Ty_STATS
     putenv("PYTHONSTATS=1");
 #endif
     putenv("PYTHONPERFSUPPORT=1");
@@ -851,11 +851,11 @@ static void set_all_env_vars(void)
 static int test_init_compat_env(void)
 {
     /* Test initialization from environment variables */
-    Py_IgnoreEnvironmentFlag = 0;
+    Ty_IgnoreEnvironmentFlag = 0;
     set_all_env_vars();
     _testembed_Py_InitializeFromConfig();
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -864,14 +864,14 @@ static int test_init_python_env(void)
 {
     set_all_env_vars();
 
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_program_name(&config);
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -887,11 +887,11 @@ static void set_all_env_vars_dev_mode(void)
 static int test_init_env_dev_mode(void)
 {
     /* Test initialization from environment variables */
-    Py_IgnoreEnvironmentFlag = 0;
+    Ty_IgnoreEnvironmentFlag = 0;
     set_all_env_vars_dev_mode();
     _testembed_Py_InitializeFromConfig();
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -899,27 +899,27 @@ static int test_init_env_dev_mode(void)
 static int test_init_env_dev_mode_alloc(void)
 {
     /* Test initialization from environment variables */
-    Py_IgnoreEnvironmentFlag = 0;
+    Ty_IgnoreEnvironmentFlag = 0;
     set_all_env_vars_dev_mode();
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
     putenv("PYTHONMALLOC=malloc");
 #else
     putenv("PYTHONMALLOC=mimalloc");
 #endif
     _testembed_Py_InitializeFromConfig();
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
 static int test_init_isolated_flag(void)
 {
-    /* Test PyConfig.isolated=1 */
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    /* Test TyConfig.isolated=1 */
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
-    Py_IsolatedFlag = 0;
+    Ty_IsolatedFlag = 0;
     config.isolated = 1;
     // These options are set to 1 by isolated=1
     config.safe_path = 0;
@@ -931,55 +931,55 @@ static int test_init_isolated_flag(void)
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
-/* PyPreConfig.isolated=1, PyConfig.isolated=0 */
+/* TyPreConfig.isolated=1, TyConfig.isolated=0 */
 static int test_preinit_isolated1(void)
 {
-    PyPreConfig preconfig;
-    _PyPreConfig_InitCompatConfig(&preconfig);
+    TyPreConfig preconfig;
+    _TyPreConfig_InitCompatConfig(&preconfig);
 
     preconfig.isolated = 1;
 
-    PyStatus status = Py_PreInitialize(&preconfig);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    TyStatus status = Ty_PreInitialize(&preconfig);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
-    PyConfig config;
-    _PyConfig_InitCompatConfig(&config);
+    TyConfig config;
+    _TyConfig_InitCompatConfig(&config);
 
     config_set_program_name(&config);
     set_all_env_vars();
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
-/* PyPreConfig.isolated=0, PyConfig.isolated=1 */
+/* TyPreConfig.isolated=0, TyConfig.isolated=1 */
 static int test_preinit_isolated2(void)
 {
-    PyPreConfig preconfig;
-    _PyPreConfig_InitCompatConfig(&preconfig);
+    TyPreConfig preconfig;
+    _TyPreConfig_InitCompatConfig(&preconfig);
 
     preconfig.isolated = 0;
 
-    PyStatus status = Py_PreInitialize(&preconfig);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    TyStatus status = Ty_PreInitialize(&preconfig);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
-    /* Test PyConfig.isolated=1 */
-    PyConfig config;
-    _PyConfig_InitCompatConfig(&config);
+    /* Test TyConfig.isolated=1 */
+    TyConfig config;
+    _TyConfig_InitCompatConfig(&config);
 
-    Py_IsolatedFlag = 0;
+    Ty_IsolatedFlag = 0;
     config.isolated = 1;
 
     config_set_program_name(&config);
@@ -987,15 +987,15 @@ static int test_preinit_isolated2(void)
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
 static int test_preinit_dont_parse_argv(void)
 {
-    PyPreConfig preconfig;
-    PyPreConfig_InitIsolatedConfig(&preconfig);
+    TyPreConfig preconfig;
+    TyPreConfig_InitIsolatedConfig(&preconfig);
 
     preconfig.isolated = 0;
 
@@ -1007,43 +1007,43 @@ static int test_preinit_dont_parse_argv(void)
                        L"-X", L"dev",
                        L"-X", L"utf8",
                        L"script.py"};
-    PyStatus status = Py_PreInitializeFromArgs(&preconfig,
-                                               Py_ARRAY_LENGTH(argv), argv);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    TyStatus status = Ty_PreInitializeFromArgs(&preconfig,
+                                               Ty_ARRAY_LENGTH(argv), argv);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
-    PyConfig config;
-    PyConfig_InitIsolatedConfig(&config);
+    TyConfig config;
+    TyConfig_InitIsolatedConfig(&config);
 
     config.isolated = 0;
 
     /* Pre-initialize implicitly using argv: make sure that -X dev
        is used to configure the allocation in preinitialization */
-    config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     config_set_program_name(&config);
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
 static int test_preinit_parse_argv(void)
 {
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     /* Pre-initialize implicitly using argv: make sure that -X dev
        is used to configure the allocation in preinitialization */
     wchar_t *argv[] = {L"python3", L"-X", L"dev", L"-P", L"script.py"};
-    config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     config_set_program_name(&config);
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -1052,30 +1052,30 @@ static int test_preinit_parse_argv(void)
 
 static void set_all_global_config_variables(void)
 {
-    Py_IsolatedFlag = 0;
-    Py_IgnoreEnvironmentFlag = 0;
-    Py_BytesWarningFlag = 2;
-    Py_InspectFlag = 1;
-    Py_InteractiveFlag = 1;
-    Py_OptimizeFlag = 1;
-    Py_DebugFlag = 1;
-    Py_VerboseFlag = 1;
-    Py_QuietFlag = 1;
-    Py_FrozenFlag = 0;
-    Py_UnbufferedStdioFlag = 1;
-    Py_NoSiteFlag = 1;
-    Py_DontWriteBytecodeFlag = 1;
-    Py_NoUserSiteDirectory = 1;
+    Ty_IsolatedFlag = 0;
+    Ty_IgnoreEnvironmentFlag = 0;
+    Ty_BytesWarningFlag = 2;
+    Ty_InspectFlag = 1;
+    Ty_InteractiveFlag = 1;
+    Ty_OptimizeFlag = 1;
+    Ty_DebugFlag = 1;
+    Ty_VerboseFlag = 1;
+    Ty_QuietFlag = 1;
+    Ty_FrozenFlag = 0;
+    Ty_UnbufferedStdioFlag = 1;
+    Ty_NoSiteFlag = 1;
+    Ty_DontWriteBytecodeFlag = 1;
+    Ty_NoUserSiteDirectory = 1;
 #ifdef MS_WINDOWS
-    Py_LegacyWindowsStdioFlag = 1;
+    Ty_LegacyWindowsStdioFlag = 1;
 #endif
 }
 
 
 static int check_preinit_isolated_config(int preinit)
 {
-    PyStatus status;
-    PyPreConfig *rt_preconfig;
+    TyStatus status;
+    TyPreConfig *rt_preconfig;
 
     /* environment variables must be ignored */
     set_all_env_vars();
@@ -1084,12 +1084,12 @@ static int check_preinit_isolated_config(int preinit)
     set_all_global_config_variables();
 
     if (preinit) {
-        PyPreConfig preconfig;
-        PyPreConfig_InitIsolatedConfig(&preconfig);
+        TyPreConfig preconfig;
+        TyPreConfig_InitIsolatedConfig(&preconfig);
 
-        status = Py_PreInitialize(&preconfig);
-        if (PyStatus_Exception(status)) {
-            Py_ExitStatusException(status);
+        status = Ty_PreInitialize(&preconfig);
+        if (TyStatus_Exception(status)) {
+            Ty_ExitStatusException(status);
         }
 
         rt_preconfig = &_PyRuntime.preconfig;
@@ -1097,8 +1097,8 @@ static int check_preinit_isolated_config(int preinit)
         assert(rt_preconfig->use_environment == 0);
     }
 
-    PyConfig config;
-    PyConfig_InitIsolatedConfig(&config);
+    TyConfig config;
+    TyConfig_InitIsolatedConfig(&config);
 
     config_set_program_name(&config);
     init_from_config_clear(&config);
@@ -1108,7 +1108,7 @@ static int check_preinit_isolated_config(int preinit)
     assert(rt_preconfig->use_environment == 0);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -1129,35 +1129,35 @@ static int check_init_python_config(int preinit)
 {
     /* global configuration variables must be ignored */
     set_all_global_config_variables();
-    Py_IsolatedFlag = 1;
-    Py_IgnoreEnvironmentFlag = 1;
-    Py_FrozenFlag = 1;
-    Py_UnbufferedStdioFlag = 1;
-    Py_NoSiteFlag = 1;
-    Py_DontWriteBytecodeFlag = 1;
-    Py_NoUserSiteDirectory = 1;
+    Ty_IsolatedFlag = 1;
+    Ty_IgnoreEnvironmentFlag = 1;
+    Ty_FrozenFlag = 1;
+    Ty_UnbufferedStdioFlag = 1;
+    Ty_NoSiteFlag = 1;
+    Ty_DontWriteBytecodeFlag = 1;
+    Ty_NoUserSiteDirectory = 1;
 #ifdef MS_WINDOWS
-    Py_LegacyWindowsStdioFlag = 1;
+    Ty_LegacyWindowsStdioFlag = 1;
 #endif
 
     if (preinit) {
-        PyPreConfig preconfig;
-        PyPreConfig_InitPythonConfig(&preconfig);
+        TyPreConfig preconfig;
+        TyPreConfig_InitPythonConfig(&preconfig);
 
-        PyStatus status = Py_PreInitialize(&preconfig);
-        if (PyStatus_Exception(status)) {
-            Py_ExitStatusException(status);
+        TyStatus status = Ty_PreInitialize(&preconfig);
+        if (TyStatus_Exception(status)) {
+            Ty_ExitStatusException(status);
         }
     }
 
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_program_name(&config);
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -1176,34 +1176,34 @@ static int test_init_python_config(void)
 
 static int test_init_dont_configure_locale(void)
 {
-    PyPreConfig preconfig;
-    PyPreConfig_InitPythonConfig(&preconfig);
+    TyPreConfig preconfig;
+    TyPreConfig_InitPythonConfig(&preconfig);
 
     preconfig.configure_locale = 0;
     preconfig.coerce_c_locale = 1;
     preconfig.coerce_c_locale_warn = 1;
 
-    PyStatus status = Py_PreInitialize(&preconfig);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    TyStatus status = Ty_PreInitialize(&preconfig);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_program_name(&config);
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
 static int test_init_dev_mode(void)
 {
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     putenv("PYTHONFAULTHANDLER=");
     putenv("PYTHONMALLOC=");
@@ -1212,16 +1212,16 @@ static int test_init_dev_mode(void)
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
-static PyObject *_open_code_hook(PyObject *path, void *data)
+static TyObject *_open_code_hook(TyObject *path, void *data)
 {
-    if (PyUnicode_CompareWithASCIIString(path, "$$test-filename") == 0) {
-        return PyLong_FromVoidPtr(data);
+    if (TyUnicode_CompareWithASCIIString(path, "$$test-filename") == 0) {
+        return TyLong_FromVoidPtr(data);
     }
-    PyObject *io = PyImport_ImportModule("_io");
+    TyObject *io = TyImport_ImportModule("_io");
     if (!io) {
         return NULL;
     }
@@ -1233,29 +1233,29 @@ static int test_open_code_hook(void)
     int result = 0;
 
     /* Provide a hook */
-    result = PyFile_SetOpenCodeHook(_open_code_hook, &result);
+    result = TyFile_SetOpenCodeHook(_open_code_hook, &result);
     if (result) {
         printf("Failed to set hook\n");
         return 1;
     }
     /* A second hook should fail */
-    result = PyFile_SetOpenCodeHook(_open_code_hook, &result);
+    result = TyFile_SetOpenCodeHook(_open_code_hook, &result);
     if (!result) {
         printf("Should have failed to set second hook\n");
         return 2;
     }
 
-    Py_IgnoreEnvironmentFlag = 0;
+    Ty_IgnoreEnvironmentFlag = 0;
     _testembed_Py_InitializeFromConfig();
     result = 0;
 
-    PyObject *r = PyFile_OpenCode("$$test-filename");
+    TyObject *r = TyFile_OpenCode("$$test-filename");
     if (!r) {
-        PyErr_Print();
+        TyErr_Print();
         result = 3;
     } else {
-        void *cmp = PyLong_AsVoidPtr(r);
-        Py_DECREF(r);
+        void *cmp = TyLong_AsVoidPtr(r);
+        Ty_DECREF(r);
         if (cmp != &result) {
             printf("Did not get expected result from hook\n");
             result = 4;
@@ -1263,77 +1263,77 @@ static int test_open_code_hook(void)
     }
 
     if (!result) {
-        PyObject *io = PyImport_ImportModule("_io");
-        PyObject *r = io
+        TyObject *io = TyImport_ImportModule("_io");
+        TyObject *r = io
             ? PyObject_CallMethod(io, "open_code", "s", "$$test-filename")
             : NULL;
         if (!r) {
-            PyErr_Print();
+            TyErr_Print();
             result = 5;
         } else {
-            void *cmp = PyLong_AsVoidPtr(r);
-            Py_DECREF(r);
+            void *cmp = TyLong_AsVoidPtr(r);
+            Ty_DECREF(r);
             if (cmp != &result) {
                 printf("Did not get expected result from hook\n");
                 result = 6;
             }
         }
-        Py_XDECREF(io);
+        Ty_XDECREF(io);
     }
 
-    Py_Finalize();
+    Ty_Finalize();
     return result;
 }
 
 static int _audit_hook_clear_count = 0;
 
-static int _audit_hook(const char *event, PyObject *args, void *userdata)
+static int _audit_hook(const char *event, TyObject *args, void *userdata)
 {
-    assert(args && PyTuple_CheckExact(args));
+    assert(args && TyTuple_CheckExact(args));
     if (strcmp(event, "_testembed.raise") == 0) {
-        PyErr_SetString(PyExc_RuntimeError, "Intentional error");
+        TyErr_SetString(TyExc_RuntimeError, "Intentional error");
         return -1;
     } else if (strcmp(event, "_testembed.set") == 0) {
-        if (!PyArg_ParseTuple(args, "n", userdata)) {
+        if (!TyArg_ParseTuple(args, "n", userdata)) {
             return -1;
         }
         return 0;
-    } else if (strcmp(event, "cpython._PySys_ClearAuditHooks") == 0) {
+    } else if (strcmp(event, "cpython._TySys_ClearAuditHooks") == 0) {
         _audit_hook_clear_count += 1;
     }
     return 0;
 }
 
-static int _test_audit(Py_ssize_t setValue)
+static int _test_audit(Ty_ssize_t setValue)
 {
-    Py_ssize_t sawSet = 0;
+    Ty_ssize_t sawSet = 0;
 
-    Py_IgnoreEnvironmentFlag = 0;
-    PySys_AddAuditHook(_audit_hook, &sawSet);
+    Ty_IgnoreEnvironmentFlag = 0;
+    TySys_AddAuditHook(_audit_hook, &sawSet);
     _testembed_Py_InitializeFromConfig();
 
-    if (PySys_Audit("_testembed.raise", NULL) == 0) {
+    if (TySys_Audit("_testembed.raise", NULL) == 0) {
         printf("No error raised");
         return 1;
     }
-    if (PySys_Audit("_testembed.nop", NULL) != 0) {
+    if (TySys_Audit("_testembed.nop", NULL) != 0) {
         printf("Nop event failed");
         /* Exception from above may still remain */
-        PyErr_Clear();
+        TyErr_Clear();
         return 2;
     }
-    if (!PyErr_Occurred()) {
+    if (!TyErr_Occurred()) {
         printf("Exception not preserved");
         return 3;
     }
-    PyErr_Clear();
+    TyErr_Clear();
 
-    if (PySys_Audit("_testembed.set", "n", setValue) != 0) {
-        PyErr_Print();
+    if (TySys_Audit("_testembed.set", "n", setValue) != 0) {
+        TyErr_Print();
         printf("Set event failed");
         return 4;
     }
-    if (PyErr_Occurred()) {
+    if (TyErr_Occurred()) {
         printf("Exception raised");
         return 5;
     }
@@ -1349,7 +1349,7 @@ static int _test_audit(Py_ssize_t setValue)
 static int test_audit(void)
 {
     int result = _test_audit(42);
-    Py_Finalize();
+    Ty_Finalize();
     if (_audit_hook_clear_count != 1) {
         return 0x1000 | _audit_hook_clear_count;
     }
@@ -1364,44 +1364,44 @@ static int test_audit_tuple(void)
         return (EXITCODE); \
     }
 
-    Py_ssize_t sawSet = 0;
+    Ty_ssize_t sawSet = 0;
 
     // we need at least one hook, otherwise code checking for
-    // PySys_AuditTuple() is skipped.
-    PySys_AddAuditHook(_audit_hook, &sawSet);
+    // TySys_AuditTuple() is skipped.
+    TySys_AddAuditHook(_audit_hook, &sawSet);
     _testembed_Py_InitializeFromConfig();
 
-    ASSERT(!PyErr_Occurred(), 0);
+    ASSERT(!TyErr_Occurred(), 0);
 
     // pass Python tuple object
-    PyObject *tuple = Py_BuildValue("(i)", 444);
+    TyObject *tuple = Ty_BuildValue("(i)", 444);
     if (tuple == NULL) {
         goto error;
     }
-    ASSERT(PySys_AuditTuple("_testembed.set", tuple) == 0, 10);
-    ASSERT(!PyErr_Occurred(), 11);
+    ASSERT(TySys_AuditTuple("_testembed.set", tuple) == 0, 10);
+    ASSERT(!TyErr_Occurred(), 11);
     ASSERT(sawSet == 444, 12);
-    Py_DECREF(tuple);
+    Ty_DECREF(tuple);
 
     // pass Python int object
-    PyObject *int_arg = PyLong_FromLong(555);
+    TyObject *int_arg = TyLong_FromLong(555);
     if (int_arg == NULL) {
         goto error;
     }
-    ASSERT(PySys_AuditTuple("_testembed.set", int_arg) == -1, 20);
-    ASSERT(PyErr_ExceptionMatches(PyExc_TypeError), 21);
-    PyErr_Clear();
-    Py_DECREF(int_arg);
+    ASSERT(TySys_AuditTuple("_testembed.set", int_arg) == -1, 20);
+    ASSERT(TyErr_ExceptionMatches(TyExc_TypeError), 21);
+    TyErr_Clear();
+    Ty_DECREF(int_arg);
 
     // NULL is accepted and means "no arguments"
-    ASSERT(PySys_AuditTuple("_testembed.test_audit_tuple", NULL) == 0, 30);
-    ASSERT(!PyErr_Occurred(), 31);
+    ASSERT(TySys_AuditTuple("_testembed.test_audit_tuple", NULL) == 0, 30);
+    ASSERT(!TyErr_Occurred(), 31);
 
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 
 error:
-    PyErr_Print();
+    TyErr_Print();
     return 1;
 
 #undef ASSERT
@@ -1409,10 +1409,10 @@ error:
 
 static volatile int _audit_subinterpreter_interpreter_count = 0;
 
-static int _audit_subinterpreter_hook(const char *event, PyObject *args, void *userdata)
+static int _audit_subinterpreter_hook(const char *event, TyObject *args, void *userdata)
 {
     printf("%s\n", event);
-    if (strcmp(event, "cpython.PyInterpreterState_New") == 0) {
+    if (strcmp(event, "cpython.TyInterpreterState_New") == 0) {
         _audit_subinterpreter_interpreter_count += 1;
     }
     return 0;
@@ -1420,15 +1420,15 @@ static int _audit_subinterpreter_hook(const char *event, PyObject *args, void *u
 
 static int test_audit_subinterpreter(void)
 {
-    Py_IgnoreEnvironmentFlag = 0;
-    PySys_AddAuditHook(_audit_subinterpreter_hook, NULL);
+    Ty_IgnoreEnvironmentFlag = 0;
+    TySys_AddAuditHook(_audit_subinterpreter_hook, NULL);
     _testembed_Py_InitializeFromConfig();
 
-    Py_NewInterpreter();
-    Py_NewInterpreter();
-    Py_NewInterpreter();
+    Ty_NewInterpreter();
+    Ty_NewInterpreter();
+    Ty_NewInterpreter();
 
-    Py_Finalize();
+    Ty_Finalize();
 
     switch (_audit_subinterpreter_interpreter_count) {
         case 3: return 0;
@@ -1442,7 +1442,7 @@ typedef struct {
     int exit;
 } AuditRunCommandTest;
 
-static int _audit_hook_run(const char *eventName, PyObject *args, void *userData)
+static int _audit_hook_run(const char *eventName, TyObject *args, void *userData)
 {
     AuditRunCommandTest *test = (AuditRunCommandTest*)userData;
     if (strcmp(eventName, test->expected)) {
@@ -1450,15 +1450,15 @@ static int _audit_hook_run(const char *eventName, PyObject *args, void *userData
     }
 
     if (test->exit) {
-        PyObject *msg = PyUnicode_FromFormat("detected %s(%R)", eventName, args);
+        TyObject *msg = TyUnicode_FromFormat("detected %s(%R)", eventName, args);
         if (msg) {
-            printf("%s\n", PyUnicode_AsUTF8(msg));
-            Py_DECREF(msg);
+            printf("%s\n", TyUnicode_AsUTF8(msg));
+            Ty_DECREF(msg);
         }
         exit(test->exit);
     }
 
-    PyErr_Format(PyExc_RuntimeError, "detected %s(%R)", eventName, args);
+    TyErr_Format(TyExc_RuntimeError, "detected %s(%R)", eventName, args);
     return -1;
 }
 
@@ -1467,10 +1467,10 @@ static int test_audit_run_command(void)
     AuditRunCommandTest test = {"cpython.run_command"};
     wchar_t *argv[] = {PROGRAM_NAME, L"-c", L"pass"};
 
-    Py_IgnoreEnvironmentFlag = 0;
-    PySys_AddAuditHook(_audit_hook_run, (void*)&test);
+    Ty_IgnoreEnvironmentFlag = 0;
+    TySys_AddAuditHook(_audit_hook_run, (void*)&test);
 
-    return Py_Main(Py_ARRAY_LENGTH(argv), argv);
+    return Ty_Main(Ty_ARRAY_LENGTH(argv), argv);
 }
 
 static int test_audit_run_file(void)
@@ -1478,16 +1478,16 @@ static int test_audit_run_file(void)
     AuditRunCommandTest test = {"cpython.run_file"};
     wchar_t *argv[] = {PROGRAM_NAME, L"filename.py"};
 
-    Py_IgnoreEnvironmentFlag = 0;
-    PySys_AddAuditHook(_audit_hook_run, (void*)&test);
+    Ty_IgnoreEnvironmentFlag = 0;
+    TySys_AddAuditHook(_audit_hook_run, (void*)&test);
 
-    return Py_Main(Py_ARRAY_LENGTH(argv), argv);
+    return Ty_Main(Ty_ARRAY_LENGTH(argv), argv);
 }
 
 static int run_audit_run_test(int argc, wchar_t **argv, void *test)
 {
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config.argv.length = argc;
     config.argv.items = argv;
@@ -1498,84 +1498,84 @@ static int run_audit_run_test(int argc, wchar_t **argv, void *test)
     config.use_environment = 1;
     config.quiet = 1;
 
-    PySys_AddAuditHook(_audit_hook_run, test);
+    TySys_AddAuditHook(_audit_hook_run, test);
 
-    PyStatus status = Py_InitializeFromConfig(&config);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    TyStatus status = Ty_InitializeFromConfig(&config);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
-    return Py_RunMain();
+    return Ty_RunMain();
 }
 
 static int test_audit_run_interactivehook(void)
 {
     AuditRunCommandTest test = {"cpython.run_interactivehook", 10};
     wchar_t *argv[] = {PROGRAM_NAME};
-    return run_audit_run_test(Py_ARRAY_LENGTH(argv), argv, &test);
+    return run_audit_run_test(Ty_ARRAY_LENGTH(argv), argv, &test);
 }
 
 static int test_audit_run_startup(void)
 {
     AuditRunCommandTest test = {"cpython.run_startup", 10};
     wchar_t *argv[] = {PROGRAM_NAME};
-    return run_audit_run_test(Py_ARRAY_LENGTH(argv), argv, &test);
+    return run_audit_run_test(Ty_ARRAY_LENGTH(argv), argv, &test);
 }
 
 static int test_audit_run_stdin(void)
 {
     AuditRunCommandTest test = {"cpython.run_stdin"};
     wchar_t *argv[] = {PROGRAM_NAME};
-    return run_audit_run_test(Py_ARRAY_LENGTH(argv), argv, &test);
+    return run_audit_run_test(Ty_ARRAY_LENGTH(argv), argv, &test);
 }
 
 static int test_init_read_set(void)
 {
-    PyStatus status;
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyStatus status;
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_string(&config, &config.program_name, L"./init_read_set");
 
-    status = PyConfig_Read(&config);
-    if (PyStatus_Exception(status)) {
+    status = TyConfig_Read(&config);
+    if (TyStatus_Exception(status)) {
         goto fail;
     }
 
-    status = PyWideStringList_Insert(&config.module_search_paths,
+    status = TyWideStringList_Insert(&config.module_search_paths,
                                      1, L"test_path_insert1");
-    if (PyStatus_Exception(status)) {
+    if (TyStatus_Exception(status)) {
         goto fail;
     }
 
-    status = PyWideStringList_Append(&config.module_search_paths,
+    status = TyWideStringList_Append(&config.module_search_paths,
                                      L"test_path_append");
-    if (PyStatus_Exception(status)) {
+    if (TyStatus_Exception(status)) {
         goto fail;
     }
 
-    /* override executable computed by PyConfig_Read() */
+    /* override executable computed by TyConfig_Read() */
     config_set_string(&config, &config.executable, L"my_executable");
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 
 fail:
-    PyConfig_Clear(&config);
-    Py_ExitStatusException(status);
+    TyConfig_Clear(&config);
+    Ty_ExitStatusException(status);
 }
 
 
 static int test_init_sys_add(void)
 {
-    PySys_AddXOption(L"sysadd_xoption");
-    PySys_AddXOption(L"faulthandler");
-    PySys_AddWarnOption(L"ignore:::sysadd_warnoption");
+    TySys_AddXOption(L"sysadd_xoption");
+    TySys_AddXOption(L"faulthandler");
+    TySys_AddWarnOption(L"ignore:::sysadd_warnoption");
 
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     wchar_t* argv[] = {
         L"python3",
@@ -1584,19 +1584,19 @@ static int test_init_sys_add(void)
         L"-X",
         L"cmdline_xoption",
     };
-    config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     config.parse_argv = 1;
 
-    PyStatus status;
-    status = PyWideStringList_Append(&config.xoptions,
+    TyStatus status;
+    status = TyWideStringList_Append(&config.xoptions,
                                      L"config_xoption");
-    if (PyStatus_Exception(status)) {
+    if (TyStatus_Exception(status)) {
         goto fail;
     }
 
-    status = PyWideStringList_Append(&config.warnoptions,
+    status = TyWideStringList_Append(&config.warnoptions,
                                      L"ignore:::config_warnoption");
-    if (PyStatus_Exception(status)) {
+    if (TyStatus_Exception(status)) {
         goto fail;
     }
 
@@ -1604,12 +1604,12 @@ static int test_init_sys_add(void)
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 
 fail:
-    PyConfig_Clear(&config);
-    Py_ExitStatusException(status);
+    TyConfig_Clear(&config);
+    Ty_ExitStatusException(status);
 }
 
 
@@ -1620,32 +1620,32 @@ static int test_init_setpath(void)
         error("missing TESTPATH env var");
         return 1;
     }
-    wchar_t *path = Py_DecodeLocale(env, NULL);
+    wchar_t *path = Ty_DecodeLocale(env, NULL);
     if (path == NULL) {
         error("failed to decode TESTPATH");
         return 1;
     }
-    Py_SetPath(path);
-    PyMem_RawFree(path);
+    Ty_SetPath(path);
+    TyMem_RawFree(path);
     putenv("TESTPATH=");
 
-    Py_Initialize();
+    Ty_Initialize();
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 
 static int test_init_setpath_config(void)
 {
-    PyPreConfig preconfig;
-    PyPreConfig_InitPythonConfig(&preconfig);
+    TyPreConfig preconfig;
+    TyPreConfig_InitPythonConfig(&preconfig);
 
     /* Explicitly preinitializes with Python preconfiguration to avoid
-      Py_SetPath() implicit preinitialization with compat preconfiguration. */
-    PyStatus status = Py_PreInitialize(&preconfig);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+      Ty_SetPath() implicit preinitialization with compat preconfiguration. */
+    TyStatus status = Ty_PreInitialize(&preconfig);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
     char *env = getenv("TESTPATH");
@@ -1653,24 +1653,24 @@ static int test_init_setpath_config(void)
         error("missing TESTPATH env var");
         return 1;
     }
-    wchar_t *path = Py_DecodeLocale(env, NULL);
+    wchar_t *path = Ty_DecodeLocale(env, NULL);
     if (path == NULL) {
         error("failed to decode TESTPATH");
         return 1;
     }
-    Py_SetPath(path);
-    PyMem_RawFree(path);
+    Ty_SetPath(path);
+    TyMem_RawFree(path);
     putenv("TESTPATH=");
 
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_string(&config, &config.program_name, L"conf_program_name");
     config_set_string(&config, &config.executable, L"conf_executable");
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -1682,18 +1682,18 @@ static int test_init_setpythonhome(void)
         error("missing TESTHOME env var");
         return 1;
     }
-    wchar_t *home = Py_DecodeLocale(env, NULL);
+    wchar_t *home = Ty_DecodeLocale(env, NULL);
     if (home == NULL) {
         error("failed to decode TESTHOME");
         return 1;
     }
-    Py_SetPythonHome(home);
-    PyMem_RawFree(home);
+    Ty_SetPythonHome(home);
+    TyMem_RawFree(home);
     putenv("TESTHOME=");
 
-    Py_Initialize();
+    Ty_Initialize();
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -1707,17 +1707,17 @@ static int test_init_is_python_build(void)
         error("missing TESTHOME env var");
         return 1;
     }
-    wchar_t *home = Py_DecodeLocale(env, NULL);
+    wchar_t *home = Ty_DecodeLocale(env, NULL);
     if (home == NULL) {
         error("failed to decode TESTHOME");
         return 1;
     }
 
-    PyConfig config;
-    _PyConfig_InitCompatConfig(&config);
+    TyConfig config;
+    _TyConfig_InitCompatConfig(&config);
     config_set_program_name(&config);
     config_set_string(&config, &config.home, home);
-    PyMem_RawFree(home);
+    TyMem_RawFree(home);
     putenv("TESTHOME=");
 
     // Use an impossible value so we can detect whether it isn't updated
@@ -1728,12 +1728,12 @@ static int test_init_is_python_build(void)
         config._is_python_build = INT_MIN;
     }
     init_from_config_clear(&config);
-    Py_Finalize();
+    Ty_Finalize();
     // Second initialization
     config._is_python_build = -1;
     init_from_config_clear(&config);
-    dump_config();  // home and _is_python_build are cached in _Py_path_config
-    Py_Finalize();
+    dump_config();  // home and _is_python_build are cached in _Ty_path_config
+    Ty_Finalize();
     return 0;
 }
 
@@ -1742,51 +1742,51 @@ static int test_init_warnoptions(void)
 {
     putenv("PYTHONWARNINGS=ignore:::env1,ignore:::env2");
 
-    PySys_AddWarnOption(L"ignore:::PySys_AddWarnOption1");
-    PySys_AddWarnOption(L"ignore:::PySys_AddWarnOption2");
+    TySys_AddWarnOption(L"ignore:::TySys_AddWarnOption1");
+    TySys_AddWarnOption(L"ignore:::TySys_AddWarnOption2");
 
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config.dev_mode = 1;
     config.bytes_warning = 1;
 
     config_set_program_name(&config);
 
-    PyStatus status;
-    status = PyWideStringList_Append(&config.warnoptions,
-                                     L"ignore:::PyConfig_BeforeRead");
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    TyStatus status;
+    status = TyWideStringList_Append(&config.warnoptions,
+                                     L"ignore:::TyConfig_BeforeRead");
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
     wchar_t* argv[] = {
         L"python3",
         L"-Wignore:::cmdline1",
         L"-Wignore:::cmdline2"};
-    config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     config.parse_argv = 1;
 
-    status = PyConfig_Read(&config);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    status = TyConfig_Read(&config);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
-    status = PyWideStringList_Append(&config.warnoptions,
-                                     L"ignore:::PyConfig_AfterRead");
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    status = TyWideStringList_Append(&config.warnoptions,
+                                     L"ignore:::TyConfig_AfterRead");
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
-    status = PyWideStringList_Insert(&config.warnoptions,
-                                     0, L"ignore:::PyConfig_Insert0");
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    status = TyWideStringList_Insert(&config.warnoptions,
+                                     0, L"ignore:::TyConfig_Insert0");
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
     init_from_config_clear(&config);
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -1794,7 +1794,7 @@ static int test_init_warnoptions(void)
 static int initconfig_getint(PyInitConfig *config, const char *name)
 {
     int64_t value;
-    int res = PyInitConfig_GetInt(config, name, &value);
+    int res = TyInitConfig_GetInt(config, name, &value);
     assert(res == 0);
     assert(INT_MIN <= value && value <= INT_MAX);
     return (int)value;
@@ -1803,60 +1803,60 @@ static int initconfig_getint(PyInitConfig *config, const char *name)
 
 static int test_initconfig_api(void)
 {
-    PyInitConfig *config = PyInitConfig_Create();
+    PyInitConfig *config = TyInitConfig_Create();
     if (config == NULL) {
         printf("Init allocation error\n");
         return 1;
     }
 
-    if (PyInitConfig_SetInt(config, "configure_locale", 1) < 0) {
+    if (TyInitConfig_SetInt(config, "configure_locale", 1) < 0) {
         goto error;
     }
 
-    if (PyInitConfig_SetInt(config, "dev_mode", 1) < 0) {
+    if (TyInitConfig_SetInt(config, "dev_mode", 1) < 0) {
         goto error;
     }
 
-    if (PyInitConfig_SetInt(config, "hash_seed", 10) < 0) {
+    if (TyInitConfig_SetInt(config, "hash_seed", 10) < 0) {
         goto error;
     }
 
-    if (PyInitConfig_SetInt(config, "perf_profiling", 2) < 0) {
+    if (TyInitConfig_SetInt(config, "perf_profiling", 2) < 0) {
         goto error;
     }
 
     // Set a UTF-8 string (program_name)
-    if (PyInitConfig_SetStr(config, "program_name", PROGRAM_NAME_UTF8) < 0) {
+    if (TyInitConfig_SetStr(config, "program_name", PROGRAM_NAME_UTF8) < 0) {
         goto error;
     }
 
     // Set a UTF-8 string (pycache_prefix)
-    if (PyInitConfig_SetStr(config, "pycache_prefix",
+    if (TyInitConfig_SetStr(config, "pycache_prefix",
                             "conf_pycache_prefix") < 0) {
         goto error;
     }
 
     // Set a list of UTF-8 strings (argv)
     char* xoptions[] = {"faulthandler"};
-    if (PyInitConfig_SetStrList(config, "xoptions",
-                                Py_ARRAY_LENGTH(xoptions), xoptions) < 0) {
+    if (TyInitConfig_SetStrList(config, "xoptions",
+                                Ty_ARRAY_LENGTH(xoptions), xoptions) < 0) {
         goto error;
     }
 
-    if (Py_InitializeFromInitConfig(config) < 0) {
+    if (Ty_InitializeFromInitConfig(config) < 0) {
         goto error;
     }
-    PyInitConfig_Free(config);
-    PyInitConfig_Free(NULL);
+    TyInitConfig_Free(config);
+    TyInitConfig_Free(NULL);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 
 error:
     {
         const char *err_msg;
-        (void)PyInitConfig_GetError(config, &err_msg);
+        (void)TyInitConfig_GetError(config, &err_msg);
         printf("Typthon init failed: %s\n", err_msg);
         exit(1);
     }
@@ -1865,61 +1865,61 @@ error:
 
 static int test_initconfig_get_api(void)
 {
-    PyInitConfig *config = PyInitConfig_Create();
+    PyInitConfig *config = TyInitConfig_Create();
     if (config == NULL) {
         printf("Init allocation error\n");
         return 1;
     }
 
-    // test PyInitConfig_HasOption()
-    assert(PyInitConfig_HasOption(config, "verbose") == 1);
-    assert(PyInitConfig_HasOption(config, "utf8_mode") == 1);
-    assert(PyInitConfig_HasOption(config, "non-existent") == 0);
+    // test TyInitConfig_HasOption()
+    assert(TyInitConfig_HasOption(config, "verbose") == 1);
+    assert(TyInitConfig_HasOption(config, "utf8_mode") == 1);
+    assert(TyInitConfig_HasOption(config, "non-existent") == 0);
 
-    // test PyInitConfig_GetInt()
+    // test TyInitConfig_GetInt()
     assert(initconfig_getint(config, "dev_mode") == 0);
-    assert(PyInitConfig_SetInt(config, "dev_mode", 1) == 0);
+    assert(TyInitConfig_SetInt(config, "dev_mode", 1) == 0);
     assert(initconfig_getint(config, "dev_mode") == 1);
 
-    // test PyInitConfig_GetInt() on a PyPreConfig option
+    // test TyInitConfig_GetInt() on a TyPreConfig option
     assert(initconfig_getint(config, "utf8_mode") == 0);
-    assert(PyInitConfig_SetInt(config, "utf8_mode", 1) == 0);
+    assert(TyInitConfig_SetInt(config, "utf8_mode", 1) == 0);
     assert(initconfig_getint(config, "utf8_mode") == 1);
 
-    // test PyInitConfig_GetStr()
+    // test TyInitConfig_GetStr()
     char *str;
-    assert(PyInitConfig_GetStr(config, "program_name", &str) == 0);
+    assert(TyInitConfig_GetStr(config, "program_name", &str) == 0);
     assert(str == NULL);
-    assert(PyInitConfig_SetStr(config, "program_name", PROGRAM_NAME_UTF8) == 0);
-    assert(PyInitConfig_GetStr(config, "program_name", &str) == 0);
+    assert(TyInitConfig_SetStr(config, "program_name", PROGRAM_NAME_UTF8) == 0);
+    assert(TyInitConfig_GetStr(config, "program_name", &str) == 0);
     assert(strcmp(str, PROGRAM_NAME_UTF8) == 0);
     free(str);
 
-    // test PyInitConfig_GetStrList() and PyInitConfig_FreeStrList()
+    // test TyInitConfig_GetStrList() and TyInitConfig_FreeStrList()
     size_t length;
     char **items;
-    assert(PyInitConfig_GetStrList(config, "xoptions", &length, &items) == 0);
+    assert(TyInitConfig_GetStrList(config, "xoptions", &length, &items) == 0);
     assert(length == 0);
 
     char* xoptions[] = {"faulthandler"};
-    assert(PyInitConfig_SetStrList(config, "xoptions",
-                                   Py_ARRAY_LENGTH(xoptions), xoptions) == 0);
+    assert(TyInitConfig_SetStrList(config, "xoptions",
+                                   Ty_ARRAY_LENGTH(xoptions), xoptions) == 0);
 
-    assert(PyInitConfig_GetStrList(config, "xoptions", &length, &items) == 0);
+    assert(TyInitConfig_GetStrList(config, "xoptions", &length, &items) == 0);
     assert(length == 1);
     assert(strcmp(items[0], "faulthandler") == 0);
-    PyInitConfig_FreeStrList(length, items);
+    TyInitConfig_FreeStrList(length, items);
 
     // Setting hash_seed sets use_hash_seed
     assert(initconfig_getint(config, "use_hash_seed") == 0);
-    assert(PyInitConfig_SetInt(config, "hash_seed", 123) == 0);
+    assert(TyInitConfig_SetInt(config, "hash_seed", 123) == 0);
     assert(initconfig_getint(config, "use_hash_seed") == 1);
 
     // Setting module_search_paths sets module_search_paths_set
     assert(initconfig_getint(config, "module_search_paths_set") == 0);
     char* paths[] = {"search", "path"};
-    assert(PyInitConfig_SetStrList(config, "module_search_paths",
-                                   Py_ARRAY_LENGTH(paths), paths) == 0);
+    assert(TyInitConfig_SetStrList(config, "module_search_paths",
+                                   Ty_ARRAY_LENGTH(paths), paths) == 0);
     assert(initconfig_getint(config, "module_search_paths_set") == 1);
 
     return 0;
@@ -1928,46 +1928,46 @@ static int test_initconfig_get_api(void)
 
 static int test_initconfig_exit(void)
 {
-    PyInitConfig *config = PyInitConfig_Create();
+    PyInitConfig *config = TyInitConfig_Create();
     if (config == NULL) {
         printf("Init allocation error\n");
         return 1;
     }
 
     char *argv[] = {PROGRAM_NAME_UTF8, "--help"};
-    assert(PyInitConfig_SetStrList(config, "argv",
-                                   Py_ARRAY_LENGTH(argv), argv) == 0);
+    assert(TyInitConfig_SetStrList(config, "argv",
+                                   Ty_ARRAY_LENGTH(argv), argv) == 0);
 
-    assert(PyInitConfig_SetInt(config, "parse_argv", 1) == 0);
+    assert(TyInitConfig_SetInt(config, "parse_argv", 1) == 0);
 
-    assert(Py_InitializeFromInitConfig(config) < 0);
+    assert(Ty_InitializeFromInitConfig(config) < 0);
 
     int exitcode;
-    assert(PyInitConfig_GetExitCode(config, &exitcode) == 1);
+    assert(TyInitConfig_GetExitCode(config, &exitcode) == 1);
     assert(exitcode == 0);
 
     const char *err_msg;
-    assert(PyInitConfig_GetError(config, &err_msg) == 1);
+    assert(TyInitConfig_GetError(config, &err_msg) == 1);
     assert(strcmp(err_msg, "exit code 0") == 0);
 
-    PyInitConfig_Free(config);
+    TyInitConfig_Free(config);
     return 0;
 }
 
 
 static PyModuleDef_Slot extension_slots[] = {
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef extension_module = {
+static struct TyModuleDef extension_module = {
     PyModuleDef_HEAD_INIT,
     .m_name = "my_test_extension",
     .m_size = 0,
     .m_slots = extension_slots,
 };
 
-static PyObject* init_my_test_extension(void)
+static TyObject* init_my_test_extension(void)
 {
     return PyModuleDef_Init(&extension_module);
 }
@@ -1975,45 +1975,45 @@ static PyObject* init_my_test_extension(void)
 
 static int test_initconfig_module(void)
 {
-    PyInitConfig *config = PyInitConfig_Create();
+    PyInitConfig *config = TyInitConfig_Create();
     if (config == NULL) {
         printf("Init allocation error\n");
         return 1;
     }
 
-    if (PyInitConfig_SetStr(config, "program_name", PROGRAM_NAME_UTF8) < 0) {
+    if (TyInitConfig_SetStr(config, "program_name", PROGRAM_NAME_UTF8) < 0) {
         goto error;
     }
 
-    if (PyInitConfig_AddModule(config, "my_test_extension",
+    if (TyInitConfig_AddModule(config, "my_test_extension",
                                init_my_test_extension) < 0) {
         goto error;
     }
 
-    if (Py_InitializeFromInitConfig(config) < 0) {
+    if (Ty_InitializeFromInitConfig(config) < 0) {
         goto error;
     }
-    PyInitConfig_Free(config);
+    TyInitConfig_Free(config);
 
-    if (PyRun_SimpleString("import my_test_extension") < 0) {
+    if (TyRun_SimpleString("import my_test_extension") < 0) {
         fprintf(stderr, "unable to import my_test_extension\n");
         exit(1);
     }
 
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 
 error:
     {
         const char *err_msg;
-        (void)PyInitConfig_GetError(config, &err_msg);
+        (void)TyInitConfig_GetError(config, &err_msg);
         printf("Typthon init failed: %s\n", err_msg);
         exit(1);
     }
 }
 
 
-static void configure_init_main(PyConfig *config)
+static void configure_init_main(TyConfig *config)
 {
     wchar_t* argv[] = {
         L"python3", L"-c",
@@ -2023,43 +2023,43 @@ static void configure_init_main(PyConfig *config)
 
     config->parse_argv = 1;
 
-    config_set_argv(config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(config, Ty_ARRAY_LENGTH(argv), argv);
     config_set_string(config, &config->program_name, L"./python3");
 }
 
 
 static int test_init_run_main(void)
 {
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     configure_init_main(&config);
     init_from_config_clear(&config);
 
-    return Py_RunMain();
+    return Ty_RunMain();
 }
 
 
 static int test_run_main(void)
 {
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     wchar_t *argv[] = {L"python3", L"-c",
                        (L"import sys; "
-                        L"print(f'Py_RunMain(): sys.argv={sys.argv}')"),
+                        L"print(f'Ty_RunMain(): sys.argv={sys.argv}')"),
                        L"arg2"};
-    config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     config_set_string(&config, &config.program_name, L"./python3");
     init_from_config_clear(&config);
 
-    return Py_RunMain();
+    return Ty_RunMain();
 }
 
 
 static int test_run_main_loop(void)
 {
-    // bpo-40413: Calling Py_InitializeFromConfig()+Py_RunMain() multiple
+    // bpo-40413: Calling Ty_InitializeFromConfig()+Ty_RunMain() multiple
     // times must not crash.
     for (int i=0; i<5; i++) {
         int exitcode = test_run_main();
@@ -2073,34 +2073,34 @@ static int test_run_main_loop(void)
 
 static int test_get_argc_argv(void)
 {
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     wchar_t *argv[] = {L"python3", L"-c", L"pass", L"arg2"};
-    config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     config_set_string(&config, &config.program_name, L"./python3");
 
-    // Calling PyConfig_Read() twice must not change Py_GetArgcArgv() result.
-    // The second call is done by Py_InitializeFromConfig().
-    PyStatus status = PyConfig_Read(&config);
-    if (PyStatus_Exception(status)) {
-        PyConfig_Clear(&config);
-        Py_ExitStatusException(status);
+    // Calling TyConfig_Read() twice must not change Ty_GetArgcArgv() result.
+    // The second call is done by Ty_InitializeFromConfig().
+    TyStatus status = TyConfig_Read(&config);
+    if (TyStatus_Exception(status)) {
+        TyConfig_Clear(&config);
+        Ty_ExitStatusException(status);
     }
 
     init_from_config_clear(&config);
 
     int get_argc;
     wchar_t **get_argv;
-    Py_GetArgcArgv(&get_argc, &get_argv);
+    Ty_GetArgcArgv(&get_argc, &get_argv);
     printf("argc: %i\n", get_argc);
-    assert(get_argc == Py_ARRAY_LENGTH(argv));
+    assert(get_argc == Ty_ARRAY_LENGTH(argv));
     for (int i=0; i < get_argc; i++) {
         printf("argv[%i]: %ls\n", i, get_argv[i]);
         assert(wcscmp(get_argv[i], argv[i]) == 0);
     }
 
-    Py_Finalize();
+    Ty_Finalize();
 
     printf("\n");
     printf("test ok\n");
@@ -2125,8 +2125,8 @@ static int check_use_frozen_modules(const char *rawval)
         return -1;
     }
 
-    PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config.parse_argv = 1;
 
@@ -2137,11 +2137,11 @@ static int check_use_frozen_modules(const char *rawval)
         L"-c",
         L"pass",
     };
-    config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+    config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     init_from_config_clear(&config);
 
     dump_config();
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
@@ -2154,40 +2154,40 @@ static int test_init_use_frozen_modules(void)
 
 static int test_unicode_id_init(void)
 {
-    // bpo-42882: Test that _PyUnicode_FromId() works
+    // bpo-42882: Test that _TyUnicode_FromId() works
     // when Python is initialized multiples times.
 
-    // This is equivalent to `_Py_IDENTIFIER(test_unicode_id_init)`
-    // but since `_Py_IDENTIFIER` is disabled when `Py_BUILD_CORE`
+    // This is equivalent to `_Ty_IDENTIFIER(test_unicode_id_init)`
+    // but since `_Ty_IDENTIFIER` is disabled when `Ty_BUILD_CORE`
     // is defined, it is manually expanded here.
-    static _Py_Identifier PyId_test_unicode_id_init = {
+    static _Ty_Identifier PyId_test_unicode_id_init = {
         .string = "test_unicode_id_init",
         .index = -1,
     };
 
     // Initialize Python once without using the identifier
     _testembed_Py_InitializeFromConfig();
-    Py_Finalize();
+    Ty_Finalize();
 
     // Now initialize Python multiple times and use the identifier.
-    // The first _PyUnicode_FromId() call initializes the identifier index.
+    // The first _TyUnicode_FromId() call initializes the identifier index.
     for (int i=0; i<3; i++) {
         _testembed_Py_InitializeFromConfig();
 
-        PyObject *str1, *str2;
+        TyObject *str1, *str2;
 
-        str1 = _PyUnicode_FromId(&PyId_test_unicode_id_init);
+        str1 = _TyUnicode_FromId(&PyId_test_unicode_id_init);
         assert(str1 != NULL);
-        assert(_Py_IsImmortal(str1));
+        assert(_Ty_IsImmortal(str1));
 
-        str2 = PyUnicode_FromString("test_unicode_id_init");
+        str2 = TyUnicode_FromString("test_unicode_id_init");
         assert(str2 != NULL);
 
-        assert(PyUnicode_Compare(str1, str2) == 0);
+        assert(TyUnicode_Compare(str1, str2) == 0);
 
-        Py_DECREF(str2);
+        Ty_DECREF(str2);
 
-        Py_Finalize();
+        Ty_Finalize();
     }
     return 0;
 }
@@ -2196,28 +2196,28 @@ static int test_unicode_id_init(void)
 static int test_init_main_interpreter_settings(void)
 {
     _testembed_Py_Initialize();
-    (void) PyRun_SimpleStringFlags(
+    (void) TyRun_SimpleStringFlags(
         "import _testinternalcapi, json; "
         "print(json.dumps(_testinternalcapi.get_interp_settings(0)))",
         0);
-    Py_Finalize();
+    Ty_Finalize();
     return 0;
 }
 
 static void do_init(void *unused)
 {
     _testembed_Py_Initialize();
-    Py_Finalize();
+    Ty_Finalize();
 }
 
 static int test_init_in_background_thread(void)
 {
-    PyThread_handle_t handle;
-    PyThread_ident_t ident;
-    if (PyThread_start_joinable_thread(&do_init, NULL, &ident, &handle) < 0) {
+    TyThread_handle_t handle;
+    TyThread_ident_t ident;
+    if (TyThread_start_joinable_thread(&do_init, NULL, &ident, &handle) < 0) {
         return -1;
     }
-    return PyThread_join_thread(handle);
+    return TyThread_join_thread(handle);
 }
 
 
@@ -2237,36 +2237,36 @@ static int test_frozenmain(void)
         "arg1",
         "arg2",
     };
-    PyImport_FrozenModules = frozen_modules;
-    return Py_FrozenMain(Py_ARRAY_LENGTH(argv), argv);
+    TyImport_FrozenModules = frozen_modules;
+    return Ty_FrozenMain(Ty_ARRAY_LENGTH(argv), argv);
 }
 #endif  // !MS_WINDOWS
 
 static int test_repeated_init_and_inittab(void)
 {
-    // bpo-44441: Py_RunMain() must reset PyImport_Inittab at exit.
-    // It must be possible to call PyImport_AppendInittab() or
-    // PyImport_ExtendInittab() before each Python initialization.
+    // bpo-44441: Ty_RunMain() must reset TyImport_Inittab at exit.
+    // It must be possible to call TyImport_AppendInittab() or
+    // TyImport_ExtendInittab() before each Python initialization.
     for (int i=1; i <= INIT_LOOPS; i++) {
         printf("--- Pass %d ---\n", i);
 
-        // Call PyImport_AppendInittab() at each iteration
-        if (PyImport_AppendInittab(EMBEDDED_EXT_NAME,
+        // Call TyImport_AppendInittab() at each iteration
+        if (TyImport_AppendInittab(EMBEDDED_EXT_NAME,
                                    &PyInit_embedded_ext) != 0) {
-            fprintf(stderr, "PyImport_AppendInittab() failed\n");
+            fprintf(stderr, "TyImport_AppendInittab() failed\n");
             return 1;
         }
 
         // Initialize Python
         wchar_t* argv[] = {PROGRAM_NAME, L"-c", L"pass"};
-        PyConfig config;
-        PyConfig_InitPythonConfig(&config);
+        TyConfig config;
+        TyConfig_InitTyphonConfig(&config);
         config.isolated = 1;
-        config_set_argv(&config, Py_ARRAY_LENGTH(argv), argv);
+        config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
         init_from_config_clear(&config);
 
-        // Py_RunMain() calls _PyImport_Fini2() which resets PyImport_Inittab
-        int exitcode = Py_RunMain();
+        // Ty_RunMain() calls _TyImport_Fini2() which resets TyImport_Inittab
+        int exitcode = Ty_RunMain();
         if (exitcode != 0) {
             return exitcode;
         }
@@ -2282,7 +2282,7 @@ malloc_wrapper(void *ctx, size_t size)
 {
     PyMemAllocatorEx *allocator = (PyMemAllocatorEx *)ctx;
     unwrap_allocator(allocator);
-    PyEval_GetFrame();  // BOOM!
+    TyEval_GetFrame();  // BOOM!
     wrap_allocator(allocator);
     return allocator->malloc(allocator->ctx, size);
 }
@@ -2311,7 +2311,7 @@ free_wrapper(void *ctx, void *ptr)
 static void
 wrap_allocator(PyMemAllocatorEx *allocator)
 {
-    PyMem_GetAllocator(PYMEM_DOMAIN_OBJ, allocator);
+    TyMem_GetAllocator(PYMEM_DOMAIN_OBJ, allocator);
     PyMemAllocatorEx wrapper = {
         .malloc = &malloc_wrapper,
         .calloc = &calloc_wrapper,
@@ -2319,13 +2319,13 @@ wrap_allocator(PyMemAllocatorEx *allocator)
         .free = &free_wrapper,
         .ctx = allocator,
     };
-    PyMem_SetAllocator(PYMEM_DOMAIN_OBJ, &wrapper);
+    TyMem_SetAllocator(PYMEM_DOMAIN_OBJ, &wrapper);
 }
 
 static void
 unwrap_allocator(PyMemAllocatorEx *allocator)
 {
-    PyMem_SetAllocator(PYMEM_DOMAIN_OBJ, allocator);
+    TyMem_SetAllocator(PYMEM_DOMAIN_OBJ, allocator);
 }
 
 static int
@@ -2335,9 +2335,9 @@ test_get_incomplete_frame(void)
     PyMemAllocatorEx allocator;
     wrap_allocator(&allocator);
     // Force an allocation with an incomplete (generator) frame:
-    int result = PyRun_SimpleString("(_ for _ in ())");
+    int result = TyRun_SimpleString("(_ for _ in ())");
     unwrap_allocator(&allocator);
-    Py_Finalize();
+    Ty_Finalize();
     return result;
 }
 

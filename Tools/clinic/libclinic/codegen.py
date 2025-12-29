@@ -75,16 +75,16 @@ class CRenderData:
 @dc.dataclass(slots=True, frozen=True)
 class Include:
     """
-    An include like: #include "pycore_long.h"   // _Py_ID()
+    An include like: #include "pycore_long.h"   // _Ty_ID()
     """
     # Example: "pycore_long.h".
     filename: str
 
-    # Example: "_Py_ID()".
+    # Example: "_Ty_ID()".
     reason: str
 
     # None means unconditional include.
-    # Example: "#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)".
+    # Example: "#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)".
     condition: str | None
 
     def sort_key(self) -> tuple[str, str]:

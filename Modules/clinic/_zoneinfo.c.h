@@ -2,73 +2,73 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo__doc__,
 "ZoneInfo(key)\n"
 "--\n"
 "\n"
 "Create a new ZoneInfo instance.");
 
-static PyObject *
-zoneinfo_ZoneInfo_impl(PyTypeObject *type, PyObject *key);
+static TyObject *
+zoneinfo_ZoneInfo_impl(TyTypeObject *type, TyObject *key);
 
-static PyObject *
-zoneinfo_ZoneInfo(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+zoneinfo_ZoneInfo(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(key), },
+        .ob_item = { &_Ty_ID(key), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"key", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "ZoneInfo",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    PyObject *key;
+    TyObject *argsbuf[1];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    TyObject *key;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
     }
     key = fastargs[0];
-    Py_BEGIN_CRITICAL_SECTION(type);
+    Ty_BEGIN_CRITICAL_SECTION(type);
     return_value = zoneinfo_ZoneInfo_impl(type, key);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_from_file__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_from_file__doc__,
 "from_file($type, file_obj, /, key=None)\n"
 "--\n"
 "\n"
@@ -77,47 +77,47 @@ PyDoc_STRVAR(zoneinfo_ZoneInfo_from_file__doc__,
 #define ZONEINFO_ZONEINFO_FROM_FILE_METHODDEF    \
     {"from_file", _PyCFunction_CAST(zoneinfo_ZoneInfo_from_file), METH_METHOD|METH_FASTCALL|METH_KEYWORDS|METH_CLASS, zoneinfo_ZoneInfo_from_file__doc__},
 
-static PyObject *
-zoneinfo_ZoneInfo_from_file_impl(PyTypeObject *type, PyTypeObject *cls,
-                                 PyObject *file_obj, PyObject *key);
+static TyObject *
+zoneinfo_ZoneInfo_from_file_impl(TyTypeObject *type, TyTypeObject *cls,
+                                 TyObject *file_obj, TyObject *key);
 
-static PyObject *
-zoneinfo_ZoneInfo_from_file(PyObject *type, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zoneinfo_ZoneInfo_from_file(TyObject *type, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(key), },
+        .ob_item = { &_Ty_ID(key), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "key", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "from_file",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *file_obj;
-    PyObject *key = Py_None;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *file_obj;
+    TyObject *key = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -128,13 +128,13 @@ zoneinfo_ZoneInfo_from_file(PyObject *type, PyTypeObject *cls, PyObject *const *
     }
     key = args[1];
 skip_optional_pos:
-    return_value = zoneinfo_ZoneInfo_from_file_impl((PyTypeObject *)type, cls, file_obj, key);
+    return_value = zoneinfo_ZoneInfo_from_file_impl((TyTypeObject *)type, cls, file_obj, key);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_no_cache__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_no_cache__doc__,
 "no_cache($type, /, key)\n"
 "--\n"
 "\n"
@@ -143,57 +143,57 @@ PyDoc_STRVAR(zoneinfo_ZoneInfo_no_cache__doc__,
 #define ZONEINFO_ZONEINFO_NO_CACHE_METHODDEF    \
     {"no_cache", _PyCFunction_CAST(zoneinfo_ZoneInfo_no_cache), METH_METHOD|METH_FASTCALL|METH_KEYWORDS|METH_CLASS, zoneinfo_ZoneInfo_no_cache__doc__},
 
-static PyObject *
-zoneinfo_ZoneInfo_no_cache_impl(PyTypeObject *type, PyTypeObject *cls,
-                                PyObject *key);
+static TyObject *
+zoneinfo_ZoneInfo_no_cache_impl(TyTypeObject *type, TyTypeObject *cls,
+                                TyObject *key);
 
-static PyObject *
-zoneinfo_ZoneInfo_no_cache(PyObject *type, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zoneinfo_ZoneInfo_no_cache(TyObject *type, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(key), },
+        .ob_item = { &_Ty_ID(key), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"key", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "no_cache",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *key;
+    TyObject *argsbuf[1];
+    TyObject *key;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     key = args[0];
-    return_value = zoneinfo_ZoneInfo_no_cache_impl((PyTypeObject *)type, cls, key);
+    return_value = zoneinfo_ZoneInfo_no_cache_impl((TyTypeObject *)type, cls, key);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_clear_cache__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_clear_cache__doc__,
 "clear_cache($type, /, *, only_keys=None)\n"
 "--\n"
 "\n"
@@ -202,46 +202,46 @@ PyDoc_STRVAR(zoneinfo_ZoneInfo_clear_cache__doc__,
 #define ZONEINFO_ZONEINFO_CLEAR_CACHE_METHODDEF    \
     {"clear_cache", _PyCFunction_CAST(zoneinfo_ZoneInfo_clear_cache), METH_METHOD|METH_FASTCALL|METH_KEYWORDS|METH_CLASS, zoneinfo_ZoneInfo_clear_cache__doc__},
 
-static PyObject *
-zoneinfo_ZoneInfo_clear_cache_impl(PyTypeObject *type, PyTypeObject *cls,
-                                   PyObject *only_keys);
+static TyObject *
+zoneinfo_ZoneInfo_clear_cache_impl(TyTypeObject *type, TyTypeObject *cls,
+                                   TyObject *only_keys);
 
-static PyObject *
-zoneinfo_ZoneInfo_clear_cache(PyObject *type, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zoneinfo_ZoneInfo_clear_cache(TyObject *type, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(only_keys), },
+        .ob_item = { &_Ty_ID(only_keys), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"only_keys", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "clear_cache",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *only_keys = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *only_keys = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -251,15 +251,15 @@ zoneinfo_ZoneInfo_clear_cache(PyObject *type, PyTypeObject *cls, PyObject *const
     }
     only_keys = args[0];
 skip_optional_kwonly:
-    Py_BEGIN_CRITICAL_SECTION(type);
-    return_value = zoneinfo_ZoneInfo_clear_cache_impl((PyTypeObject *)type, cls, only_keys);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(type);
+    return_value = zoneinfo_ZoneInfo_clear_cache_impl((TyTypeObject *)type, cls, only_keys);
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_utcoffset__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_utcoffset__doc__,
 "utcoffset($self, dt, /)\n"
 "--\n"
 "\n"
@@ -268,31 +268,31 @@ PyDoc_STRVAR(zoneinfo_ZoneInfo_utcoffset__doc__,
 #define ZONEINFO_ZONEINFO_UTCOFFSET_METHODDEF    \
     {"utcoffset", _PyCFunction_CAST(zoneinfo_ZoneInfo_utcoffset), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zoneinfo_ZoneInfo_utcoffset__doc__},
 
-static PyObject *
-zoneinfo_ZoneInfo_utcoffset_impl(PyObject *self, PyTypeObject *cls,
-                                 PyObject *dt);
+static TyObject *
+zoneinfo_ZoneInfo_utcoffset_impl(TyObject *self, TyTypeObject *cls,
+                                 TyObject *dt);
 
-static PyObject *
-zoneinfo_ZoneInfo_utcoffset(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zoneinfo_ZoneInfo_utcoffset(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "utcoffset",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *dt;
+    TyObject *argsbuf[1];
+    TyObject *dt;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -304,7 +304,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_dst__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_dst__doc__,
 "dst($self, dt, /)\n"
 "--\n"
 "\n"
@@ -313,30 +313,30 @@ PyDoc_STRVAR(zoneinfo_ZoneInfo_dst__doc__,
 #define ZONEINFO_ZONEINFO_DST_METHODDEF    \
     {"dst", _PyCFunction_CAST(zoneinfo_ZoneInfo_dst), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zoneinfo_ZoneInfo_dst__doc__},
 
-static PyObject *
-zoneinfo_ZoneInfo_dst_impl(PyObject *self, PyTypeObject *cls, PyObject *dt);
+static TyObject *
+zoneinfo_ZoneInfo_dst_impl(TyObject *self, TyTypeObject *cls, TyObject *dt);
 
-static PyObject *
-zoneinfo_ZoneInfo_dst(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zoneinfo_ZoneInfo_dst(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "dst",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *dt;
+    TyObject *argsbuf[1];
+    TyObject *dt;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -348,7 +348,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_tzname__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_tzname__doc__,
 "tzname($self, dt, /)\n"
 "--\n"
 "\n"
@@ -357,31 +357,31 @@ PyDoc_STRVAR(zoneinfo_ZoneInfo_tzname__doc__,
 #define ZONEINFO_ZONEINFO_TZNAME_METHODDEF    \
     {"tzname", _PyCFunction_CAST(zoneinfo_ZoneInfo_tzname), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zoneinfo_ZoneInfo_tzname__doc__},
 
-static PyObject *
-zoneinfo_ZoneInfo_tzname_impl(PyObject *self, PyTypeObject *cls,
-                              PyObject *dt);
+static TyObject *
+zoneinfo_ZoneInfo_tzname_impl(TyObject *self, TyTypeObject *cls,
+                              TyObject *dt);
 
-static PyObject *
-zoneinfo_ZoneInfo_tzname(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zoneinfo_ZoneInfo_tzname(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "tzname",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *dt;
+    TyObject *argsbuf[1];
+    TyObject *dt;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -393,7 +393,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo__unpickle__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo__unpickle__doc__,
 "_unpickle($type, key, from_cache, /)\n"
 "--\n"
 "\n"
@@ -402,47 +402,47 @@ PyDoc_STRVAR(zoneinfo_ZoneInfo__unpickle__doc__,
 #define ZONEINFO_ZONEINFO__UNPICKLE_METHODDEF    \
     {"_unpickle", _PyCFunction_CAST(zoneinfo_ZoneInfo__unpickle), METH_METHOD|METH_FASTCALL|METH_KEYWORDS|METH_CLASS, zoneinfo_ZoneInfo__unpickle__doc__},
 
-static PyObject *
-zoneinfo_ZoneInfo__unpickle_impl(PyTypeObject *type, PyTypeObject *cls,
-                                 PyObject *key, unsigned char from_cache);
+static TyObject *
+zoneinfo_ZoneInfo__unpickle_impl(TyTypeObject *type, TyTypeObject *cls,
+                                 TyObject *key, unsigned char from_cache);
 
-static PyObject *
-zoneinfo_ZoneInfo__unpickle(PyObject *type, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zoneinfo_ZoneInfo__unpickle(TyObject *type, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", "", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_unpickle",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *key;
+    TyObject *argsbuf[2];
+    TyObject *key;
     unsigned char from_cache;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     key = args[0];
     {
-        unsigned long ival = PyLong_AsUnsignedLongMask(args[1]);
-        if (ival == (unsigned long)-1 && PyErr_Occurred()) {
+        unsigned long ival = TyLong_AsUnsignedLongMask(args[1]);
+        if (ival == (unsigned long)-1 && TyErr_Occurred()) {
             goto exit;
         }
         else {
             from_cache = (unsigned char) ival;
         }
     }
-    return_value = zoneinfo_ZoneInfo__unpickle_impl((PyTypeObject *)type, cls, key, from_cache);
+    return_value = zoneinfo_ZoneInfo__unpickle_impl((TyTypeObject *)type, cls, key, from_cache);
 
 exit:
     return return_value;

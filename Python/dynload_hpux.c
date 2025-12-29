@@ -13,14 +13,14 @@
 #define FUNCNAME_PATTERN "%.20s_%.200s"
 #endif
 
-const char *_PyImport_DynLoadFiletab[] = {SHLIB_EXT, ".sl", NULL};
+const char *_TyImport_DynLoadFiletab[] = {SHLIB_EXT, ".sl", NULL};
 
-dl_funcptr _PyImport_FindSharedFuncptr(const char *prefix,
+dl_funcptr _TyImport_FindSharedFuncptr(const char *prefix,
                                        const char *shortname,
                                        const char *pathname, FILE *fp)
 {
     int flags = BIND_FIRST | BIND_DEFERRED;
-    int verbose = _Py_GetConfig()->verbose;
+    int verbose = _Ty_GetConfig()->verbose;
     if (verbose) {
         flags = BIND_FIRST | BIND_IMMEDIATE |
             BIND_NONFATAL | BIND_VERBOSE;
@@ -34,31 +34,31 @@ dl_funcptr _PyImport_FindSharedFuncptr(const char *prefix,
             perror(pathname);
         }
         char buf[256];
-        PyOS_snprintf(buf, sizeof(buf), "Failed to load %.200s",
+        TyOS_snprintf(buf, sizeof(buf), "Failed to load %.200s",
                       pathname);
-        PyObject *buf_ob = PyUnicode_DecodeFSDefault(buf);
+        TyObject *buf_ob = TyUnicode_DecodeFSDefault(buf);
         if (buf_ob == NULL)
             return NULL;
-        PyObject *shortname_ob = PyUnicode_FromString(shortname);
+        TyObject *shortname_ob = TyUnicode_FromString(shortname);
         if (shortname_ob == NULL) {
-            Py_DECREF(buf_ob);
+            Ty_DECREF(buf_ob);
             return NULL;
         }
-        PyObject *pathname_ob = PyUnicode_DecodeFSDefault(pathname);
+        TyObject *pathname_ob = TyUnicode_DecodeFSDefault(pathname);
         if (pathname_ob == NULL) {
-            Py_DECREF(buf_ob);
-            Py_DECREF(shortname_ob);
+            Ty_DECREF(buf_ob);
+            Ty_DECREF(shortname_ob);
             return NULL;
         }
-        PyErr_SetImportError(buf_ob, shortname_ob, pathname_ob);
-        Py_DECREF(buf_ob);
-        Py_DECREF(shortname_ob);
-        Py_DECREF(pathname_ob);
+        TyErr_SetImportError(buf_ob, shortname_ob, pathname_ob);
+        Ty_DECREF(buf_ob);
+        Ty_DECREF(shortname_ob);
+        Ty_DECREF(pathname_ob);
         return NULL;
     }
 
     char funcname[258];
-    PyOS_snprintf(funcname, sizeof(funcname), FUNCNAME_PATTERN,
+    TyOS_snprintf(funcname, sizeof(funcname), FUNCNAME_PATTERN,
                   prefix, shortname);
     if (verbose) {
         printf("shl_findsym %s\n", funcname);

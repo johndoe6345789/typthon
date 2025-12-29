@@ -4,7 +4,7 @@ import inspect
 from threading import Barrier
 from unittest import TestCase
 
-from test.support import threading_helper, Py_GIL_DISABLED
+from test.support import threading_helper, Ty_GIL_DISABLED
 
 threading_helper.requires_working_threading(module=True)
 
@@ -25,7 +25,7 @@ def set_func_annotation(f, b):
     return f.__annotations__
 
 
-@unittest.skipUnless(Py_GIL_DISABLED, "Enable only in FT build")
+@unittest.skipUnless(Ty_GIL_DISABLED, "Enable only in FT build")
 class TestFTFuncAnnotations(TestCase):
     NUM_THREADS = 4
 

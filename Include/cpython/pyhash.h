@@ -1,4 +1,4 @@
-#ifndef Py_CPYTHON_HASH_H
+#ifndef Ty_CPYTHON_HASH_H
 #  error "this header file must not be included directly"
 #endif
 
@@ -6,7 +6,7 @@
 #define PyHASH_MULTIPLIER 1000003UL  /* 0xf4243 */
 
 /* Parameters used for the numeric hash implementation.  See notes for
-   _Py_HashDouble in Python/pyhash.c.  Numeric hashes are based on
+   _Ty_HashDouble in Python/pyhash.c.  Numeric hashes are based on
    reduction modulo the prime 2**_PyHASH_BITS - 1. */
 
 #if SIZEOF_VOID_P >= 8
@@ -27,12 +27,12 @@
 #define _PyHASH_IMAG PyHASH_IMAG
 
 /* Helpers for hash functions */
-PyAPI_FUNC(Py_hash_t) _Py_HashDouble(PyObject *, double);
+PyAPI_FUNC(Ty_hash_t) _Ty_HashDouble(TyObject *, double);
 
 
 /* hash function definition */
 typedef struct {
-    Py_hash_t (*const hash)(const void *, Py_ssize_t);
+    Ty_hash_t (*const hash)(const void *, Ty_ssize_t);
     const char *name;
     const int hash_bits;
     const int seed_bits;
@@ -40,15 +40,15 @@ typedef struct {
 
 PyAPI_FUNC(PyHash_FuncDef*) PyHash_GetFuncDef(void);
 
-PyAPI_FUNC(Py_hash_t) Py_HashPointer(const void *ptr);
+PyAPI_FUNC(Ty_hash_t) Ty_HashPointer(const void *ptr);
 
 // Deprecated alias kept for backward compatibility
-Py_DEPRECATED(3.14) static inline Py_hash_t
-_Py_HashPointer(const void *ptr)
+Ty_DEPRECATED(3.14) static inline Ty_hash_t
+_Ty_HashPointer(const void *ptr)
 {
-    return Py_HashPointer(ptr);
+    return Ty_HashPointer(ptr);
 }
 
-PyAPI_FUNC(Py_hash_t) PyObject_GenericHash(PyObject *);
+PyAPI_FUNC(Ty_hash_t) PyObject_GenericHash(TyObject *);
 
-PyAPI_FUNC(Py_hash_t) Py_HashBuffer(const void *ptr, Py_ssize_t len);
+PyAPI_FUNC(Ty_hash_t) Ty_HashBuffer(const void *ptr, Ty_ssize_t len);

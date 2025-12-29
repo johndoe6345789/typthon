@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_CODECS_H
-#define Py_INTERNAL_CODECS_H
+#ifndef Ty_INTERNAL_CODECS_H
+#define Ty_INTERNAL_CODECS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_interp_structs.h" // struct codecs_state
@@ -13,13 +13,13 @@ extern "C" {
 /* Initialize codecs-related state for the given interpreter, including
    registering the first codec search function. Must be called before any other
    PyCodec-related functions, and while only one thread is active. */
-extern PyStatus _PyCodec_InitRegistry(PyInterpreterState *interp);
+extern TyStatus _PyCodec_InitRegistry(TyInterpreterState *interp);
 
 /* Finalize codecs-related state for the given interpreter. No PyCodec-related
    functions other than PyCodec_Unregister() may be called after this. */
-extern void _PyCodec_Fini(PyInterpreterState *interp);
+extern void _PyCodec_Fini(TyInterpreterState *interp);
 
-extern PyObject* _PyCodec_Lookup(const char *encoding);
+extern TyObject* _PyCodec_Lookup(const char *encoding);
 
 /*
  * Un-register the error handling callback function registered under
@@ -45,32 +45,32 @@ extern int _PyCodec_UnregisterError(const char *name);
    in Python 3.5+?
 
  */
-extern PyObject* _PyCodec_LookupTextEncoding(
+extern TyObject* _PyCodec_LookupTextEncoding(
    const char *encoding,
    const char *alternate_command);
 
-extern PyObject* _PyCodec_EncodeText(
-   PyObject *object,
+extern TyObject* _PyCodec_EncodeText(
+   TyObject *object,
    const char *encoding,
    const char *errors);
 
-extern PyObject* _PyCodec_DecodeText(
-   PyObject *object,
+extern TyObject* _PyCodec_DecodeText(
+   TyObject *object,
    const char *encoding,
    const char *errors);
 
 /* These two aren't actually text encoding specific, but _io.TextIOWrapper
  * is the only current API consumer.
  */
-extern PyObject* _PyCodecInfo_GetIncrementalDecoder(
-   PyObject *codec_info,
+extern TyObject* _PyCodecInfo_GetIncrementalDecoder(
+   TyObject *codec_info,
    const char *errors);
 
-extern PyObject* _PyCodecInfo_GetIncrementalEncoder(
-   PyObject *codec_info,
+extern TyObject* _PyCodecInfo_GetIncrementalEncoder(
+   TyObject *codec_info,
    const char *errors);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_CODECS_H */
+#endif /* !Ty_INTERNAL_CODECS_H */

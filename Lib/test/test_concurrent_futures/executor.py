@@ -5,7 +5,7 @@ import weakref
 from concurrent import futures
 from operator import add
 from test import support
-from test.support import Py_GIL_DISABLED
+from test.support import Ty_GIL_DISABLED
 
 
 def mul(x, y):
@@ -172,7 +172,7 @@ class ExecutorTest:
         my_object = MyObject()
         my_object_collected = threading.Event()
         def set_event():
-            if Py_GIL_DISABLED:
+            if Ty_GIL_DISABLED:
                 # gh-117688 Avoid deadlock by setting the event in a
                 # background thread. The current thread may be in the middle
                 # of the my_object_collected.wait() call, which holds locks
@@ -185,7 +185,7 @@ class ExecutorTest:
         self.executor.submit(my_object.my_method)
         del my_object
 
-        if Py_GIL_DISABLED:
+        if Ty_GIL_DISABLED:
             # Due to biased reference counting, my_object might only be
             # deallocated while the thread that created it runs -- if the
             # thread is paused waiting on an event, it may not merge the

@@ -1,40 +1,40 @@
 #include "parts.h"
 #include "../_testcapi/util.h"
 
-#define Py_BUILD_CORE
+#define Ty_BUILD_CORE
 #include "pycore_complexobject.h"
 
 
 #define _PY_CR_FUNC2(suffix)                                     \
-    static PyObject *                                            \
-    _py_cr_##suffix(PyObject *Py_UNUSED(module), PyObject *args) \
+    static TyObject *                                            \
+    _py_cr_##suffix(TyObject *Py_UNUSED(module), TyObject *args) \
     {                                                            \
-        Py_complex a, res;                                       \
+        Ty_complex a, res;                                       \
         double b;                                                \
                                                                  \
-        if (!PyArg_ParseTuple(args, "Dd", &a, &b)) {             \
+        if (!TyArg_ParseTuple(args, "Dd", &a, &b)) {             \
             return NULL;                                         \
         }                                                        \
                                                                  \
         errno = 0;                                               \
-        res = _Py_cr_##suffix(a, b);                             \
-        return Py_BuildValue("Di", &res, errno);                 \
+        res = _Ty_cr_##suffix(a, b);                             \
+        return Ty_BuildValue("Di", &res, errno);                 \
     };
 
 #define _PY_RC_FUNC2(suffix)                                     \
-    static PyObject *                                            \
-    _py_rc_##suffix(PyObject *Py_UNUSED(module), PyObject *args) \
+    static TyObject *                                            \
+    _py_rc_##suffix(TyObject *Py_UNUSED(module), TyObject *args) \
     {                                                            \
-        Py_complex b, res;                                       \
+        Ty_complex b, res;                                       \
         double a;                                                \
                                                                  \
-        if (!PyArg_ParseTuple(args, "dD", &a, &b)) {             \
+        if (!TyArg_ParseTuple(args, "dD", &a, &b)) {             \
             return NULL;                                         \
         }                                                        \
                                                                  \
         errno = 0;                                               \
-        res = _Py_rc_##suffix(a, b);                             \
-        return Py_BuildValue("Di", &res, errno);                 \
+        res = _Ty_rc_##suffix(a, b);                             \
+        return Ty_BuildValue("Di", &res, errno);                 \
     };
 
 _PY_CR_FUNC2(sum)
@@ -45,7 +45,7 @@ _PY_CR_FUNC2(quot)
 _PY_RC_FUNC2(quot)
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"_py_cr_sum", _py_cr_sum, METH_VARARGS},
     {"_py_cr_diff", _py_cr_diff, METH_VARARGS},
     {"_py_rc_diff", _py_rc_diff, METH_VARARGS},
@@ -56,9 +56,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestInternalCapi_Init_Complex(PyObject *mod)
+_PyTestInternalCapi_Init_Complex(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 

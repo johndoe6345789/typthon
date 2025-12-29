@@ -1,21 +1,21 @@
 // Simple namespace object interface
 
-#ifndef Py_INTERNAL_NAMESPACE_H
-#define Py_INTERNAL_NAMESPACE_H
+#ifndef Ty_INTERNAL_NAMESPACE_H
+#define Ty_INTERNAL_NAMESPACE_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-extern PyTypeObject _PyNamespace_Type;
+extern TyTypeObject _PyNamespace_Type;
 
 // Export for '_testmultiphase' shared extension
-PyAPI_FUNC(PyObject*) _PyNamespace_New(PyObject *kwds);
+PyAPI_FUNC(TyObject*) _PyNamespace_New(TyObject *kwds);
 
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_INTERNAL_NAMESPACE_H
+#endif  // !Ty_INTERNAL_NAMESPACE_H

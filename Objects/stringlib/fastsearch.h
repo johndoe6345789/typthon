@@ -46,8 +46,8 @@
 #  define MEMCHR_CUT_OFF 40
 #endif
 
-Py_LOCAL_INLINE(Py_ssize_t)
-STRINGLIB(find_char)(const STRINGLIB_CHAR* s, Py_ssize_t n, STRINGLIB_CHAR ch)
+Ty_LOCAL_INLINE(Ty_ssize_t)
+STRINGLIB(find_char)(const STRINGLIB_CHAR* s, Ty_ssize_t n, STRINGLIB_CHAR ch)
 {
     const STRINGLIB_CHAR *p, *e;
 
@@ -75,7 +75,7 @@ STRINGLIB(find_char)(const STRINGLIB_CHAR* s, Py_ssize_t n, STRINGLIB_CHAR ch)
                     return -1;
                 s1 = p;
                 p = (const STRINGLIB_CHAR *)
-                        _Py_ALIGN_DOWN(candidate, sizeof(STRINGLIB_CHAR));
+                        _Ty_ALIGN_DOWN(candidate, sizeof(STRINGLIB_CHAR));
                 if (*p == ch)
                     return (p - s);
                 /* False positive */
@@ -112,8 +112,8 @@ STRINGLIB(find_char)(const STRINGLIB_CHAR* s, Py_ssize_t n, STRINGLIB_CHAR ch)
 #endif
 
 
-Py_LOCAL_INLINE(Py_ssize_t)
-STRINGLIB(rfind_char)(const STRINGLIB_CHAR* s, Py_ssize_t n, STRINGLIB_CHAR ch)
+Ty_LOCAL_INLINE(Ty_ssize_t)
+STRINGLIB(rfind_char)(const STRINGLIB_CHAR* s, Ty_ssize_t n, STRINGLIB_CHAR ch)
 {
     const STRINGLIB_CHAR *p;
 #ifdef HAVE_MEMRCHR
@@ -132,7 +132,7 @@ STRINGLIB(rfind_char)(const STRINGLIB_CHAR* s, Py_ssize_t n, STRINGLIB_CHAR ch)
         /* use memrchr if we can choose a needle without too many likely
            false positives */
         const STRINGLIB_CHAR *s1;
-        Py_ssize_t n1;
+        Ty_ssize_t n1;
         unsigned char needle = ch & 0xff;
         /* If looking for a multiple of 256, we'd have too
            many false positives looking for the '\0' byte in UCS2
@@ -145,7 +145,7 @@ STRINGLIB(rfind_char)(const STRINGLIB_CHAR* s, Py_ssize_t n, STRINGLIB_CHAR ch)
                     return -1;
                 n1 = n;
                 p = (const STRINGLIB_CHAR *)
-                        _Py_ALIGN_DOWN(candidate, sizeof(STRINGLIB_CHAR));
+                        _Ty_ALIGN_DOWN(candidate, sizeof(STRINGLIB_CHAR));
                 n = p - s;
                 if (*p == ch)
                     return n;
@@ -193,18 +193,18 @@ STRINGLIB(rfind_char)(const STRINGLIB_CHAR* s, Py_ssize_t n, STRINGLIB_CHAR ch)
 # define LOG_LINEUP()
 #endif
 
-Py_LOCAL_INLINE(Py_ssize_t)
-STRINGLIB(_lex_search)(const STRINGLIB_CHAR *needle, Py_ssize_t len_needle,
-                       Py_ssize_t *return_period, int invert_alphabet)
+Ty_LOCAL_INLINE(Ty_ssize_t)
+STRINGLIB(_lex_search)(const STRINGLIB_CHAR *needle, Ty_ssize_t len_needle,
+                       Ty_ssize_t *return_period, int invert_alphabet)
 {
     /* Do a lexicographic search. Essentially this:
            >>> max(needle[i:] for i in range(len(needle)+1))
        Also find the period of the right half.   */
-    Py_ssize_t max_suffix = 0;
-    Py_ssize_t candidate = 1;
-    Py_ssize_t k = 0;
+    Ty_ssize_t max_suffix = 0;
+    Ty_ssize_t candidate = 1;
+    Ty_ssize_t k = 0;
     // The period of the right half.
-    Py_ssize_t period = 1;
+    Ty_ssize_t period = 1;
 
     while (candidate + k < len_needle) {
         // each loop increases candidate + k + max_suffix
@@ -245,10 +245,10 @@ STRINGLIB(_lex_search)(const STRINGLIB_CHAR *needle, Py_ssize_t len_needle,
     return max_suffix;
 }
 
-Py_LOCAL_INLINE(Py_ssize_t)
+Ty_LOCAL_INLINE(Ty_ssize_t)
 STRINGLIB(_factorize)(const STRINGLIB_CHAR *needle,
-                      Py_ssize_t len_needle,
-                      Py_ssize_t *return_period)
+                      Ty_ssize_t len_needle,
+                      Ty_ssize_t *return_period)
 {
     /* Do a "critical factorization", making it so that:
        >>> needle = (left := needle[:cut]) + (right := needle[cut:])
@@ -282,7 +282,7 @@ STRINGLIB(_factorize)(const STRINGLIB_CHAR *needle,
        The length of this minimal repetition is 7, which is indeed the
        period of the original string. */
 
-    Py_ssize_t cut1, period1, cut2, period2, cut, period;
+    Ty_ssize_t cut1, period1, cut2, period2, cut, period;
     cut1 = STRINGLIB(_lex_search)(needle, len_needle, &period1, 0);
     cut2 = STRINGLIB(_lex_search)(needle, len_needle, &period2, 1);
 
@@ -314,17 +314,17 @@ STRINGLIB(_factorize)(const STRINGLIB_CHAR *needle,
 
 typedef struct STRINGLIB(_pre) {
     const STRINGLIB_CHAR *needle;
-    Py_ssize_t len_needle;
-    Py_ssize_t cut;
-    Py_ssize_t period;
-    Py_ssize_t gap;
+    Ty_ssize_t len_needle;
+    Ty_ssize_t cut;
+    Ty_ssize_t period;
+    Ty_ssize_t gap;
     int is_periodic;
     SHIFT_TYPE table[TABLE_SIZE];
 } STRINGLIB(prework);
 
 
 static void
-STRINGLIB(_preprocess)(const STRINGLIB_CHAR *needle, Py_ssize_t len_needle,
+STRINGLIB(_preprocess)(const STRINGLIB_CHAR *needle, Ty_ssize_t len_needle,
                        STRINGLIB(prework) *p)
 {
     p->needle = needle;
@@ -340,13 +340,13 @@ STRINGLIB(_preprocess)(const STRINGLIB_CHAR *needle, Py_ssize_t len_needle,
     }
     else {
         // A lower bound on the period
-        p->period = Py_MAX(p->cut, len_needle - p->cut) + 1;
+        p->period = Ty_MAX(p->cut, len_needle - p->cut) + 1;
     }
     // The gap between the last character and the previous
     // occurrence of an equivalent character (modulo TABLE_SIZE)
     p->gap = len_needle;
     STRINGLIB_CHAR last = needle[len_needle - 1] & TABLE_MASK;
-    for (Py_ssize_t i = len_needle - 2; i >= 0; i--) {
+    for (Ty_ssize_t i = len_needle - 2; i >= 0; i--) {
         STRINGLIB_CHAR x = needle[i] & TABLE_MASK;
         if (x == last) {
             p->gap = len_needle - 1 - i;
@@ -354,27 +354,27 @@ STRINGLIB(_preprocess)(const STRINGLIB_CHAR *needle, Py_ssize_t len_needle,
         }
     }
     // Fill up a compressed Boyer-Moore "Bad Character" table
-    Py_ssize_t not_found_shift = Py_MIN(len_needle, MAX_SHIFT);
-    for (Py_ssize_t i = 0; i < (Py_ssize_t)TABLE_SIZE; i++) {
-        p->table[i] = Py_SAFE_DOWNCAST(not_found_shift,
-                                       Py_ssize_t, SHIFT_TYPE);
+    Ty_ssize_t not_found_shift = Ty_MIN(len_needle, MAX_SHIFT);
+    for (Ty_ssize_t i = 0; i < (Ty_ssize_t)TABLE_SIZE; i++) {
+        p->table[i] = Ty_SAFE_DOWNCAST(not_found_shift,
+                                       Ty_ssize_t, SHIFT_TYPE);
     }
-    for (Py_ssize_t i = len_needle - not_found_shift; i < len_needle; i++) {
-        SHIFT_TYPE shift = Py_SAFE_DOWNCAST(len_needle - 1 - i,
-                                            Py_ssize_t, SHIFT_TYPE);
+    for (Ty_ssize_t i = len_needle - not_found_shift; i < len_needle; i++) {
+        SHIFT_TYPE shift = Ty_SAFE_DOWNCAST(len_needle - 1 - i,
+                                            Ty_ssize_t, SHIFT_TYPE);
         p->table[needle[i] & TABLE_MASK] = shift;
     }
 }
 
-static Py_ssize_t
-STRINGLIB(_two_way)(const STRINGLIB_CHAR *haystack, Py_ssize_t len_haystack,
+static Ty_ssize_t
+STRINGLIB(_two_way)(const STRINGLIB_CHAR *haystack, Ty_ssize_t len_haystack,
                     STRINGLIB(prework) *p)
 {
     // Crochemore and Perrin's (1991) Two-Way algorithm.
     // See http://www-igm.univ-mlv.fr/~lecroq/string/node26.html#SECTION00260
-    const Py_ssize_t len_needle = p->len_needle;
-    const Py_ssize_t cut = p->cut;
-    Py_ssize_t period = p->period;
+    const Ty_ssize_t len_needle = p->len_needle;
+    const Ty_ssize_t cut = p->cut;
+    Ty_ssize_t period = p->period;
     const STRINGLIB_CHAR *const needle = p->needle;
     const STRINGLIB_CHAR *window_last = haystack + len_needle - 1;
     const STRINGLIB_CHAR *const haystack_end = haystack + len_haystack;
@@ -382,17 +382,17 @@ STRINGLIB(_two_way)(const STRINGLIB_CHAR *haystack, Py_ssize_t len_haystack,
     const STRINGLIB_CHAR *window;
     LOG("===== Two-way: \"%s\" in \"%s\". =====\n", needle, haystack);
 
-    Py_ssize_t gap = p->gap;
-    Py_ssize_t gap_jump_end = Py_MIN(len_needle, cut + gap);
+    Ty_ssize_t gap = p->gap;
+    Ty_ssize_t gap_jump_end = Ty_MIN(len_needle, cut + gap);
     if (p->is_periodic) {
         LOG("Needle is periodic.\n");
-        Py_ssize_t memory = 0;
+        Ty_ssize_t memory = 0;
       periodicwindowloop:
         while (window_last < haystack_end) {
             assert(memory == 0);
             for (;;) {
                 LOG_LINEUP();
-                Py_ssize_t shift = table[(*window_last) & TABLE_MASK];
+                Ty_ssize_t shift = table[(*window_last) & TABLE_MASK];
                 window_last += shift;
                 if (shift == 0) {
                     break;
@@ -406,7 +406,7 @@ STRINGLIB(_two_way)(const STRINGLIB_CHAR *haystack, Py_ssize_t len_haystack,
             window = window_last - len_needle + 1;
             assert((window[len_needle - 1] & TABLE_MASK) ==
                    (needle[len_needle - 1] & TABLE_MASK));
-            Py_ssize_t i = Py_MAX(cut, memory);
+            Ty_ssize_t i = Ty_MAX(cut, memory);
             for (; i < len_needle; i++) {
                 if (needle[i] != window[i]) {
                     if (i < gap_jump_end) {
@@ -431,16 +431,16 @@ STRINGLIB(_two_way)(const STRINGLIB_CHAR *haystack, Py_ssize_t len_haystack,
                     if (window_last >= haystack_end) {
                         return -1;
                     }
-                    Py_ssize_t shift = table[(*window_last) & TABLE_MASK];
+                    Ty_ssize_t shift = table[(*window_last) & TABLE_MASK];
                     if (shift) {
                         // A mismatch has been identified to the right
                         // of where i will next start, so we can jump
                         // at least as far as if the mismatch occurred
                         // on the first comparison.
-                        Py_ssize_t mem_jump = Py_MAX(cut, memory) - cut + 1;
+                        Ty_ssize_t mem_jump = Ty_MAX(cut, memory) - cut + 1;
                         LOG("Skip with Memory.\n");
                         memory = 0;
-                        window_last += Py_MAX(shift, mem_jump);
+                        window_last += Ty_MAX(shift, mem_jump);
                         goto periodicwindowloop;
                     }
                     goto no_shift;
@@ -451,13 +451,13 @@ STRINGLIB(_two_way)(const STRINGLIB_CHAR *haystack, Py_ssize_t len_haystack,
         }
     }
     else {
-        period = Py_MAX(gap, period);
+        period = Ty_MAX(gap, period);
         LOG("Needle is not periodic.\n");
       windowloop:
         while (window_last < haystack_end) {
             for (;;) {
                 LOG_LINEUP();
-                Py_ssize_t shift = table[(*window_last) & TABLE_MASK];
+                Ty_ssize_t shift = table[(*window_last) & TABLE_MASK];
                 window_last += shift;
                 if (shift == 0) {
                     break;
@@ -470,7 +470,7 @@ STRINGLIB(_two_way)(const STRINGLIB_CHAR *haystack, Py_ssize_t len_haystack,
             window = window_last - len_needle + 1;
             assert((window[len_needle - 1] & TABLE_MASK) ==
                    (needle[len_needle - 1] & TABLE_MASK));
-            Py_ssize_t i = cut;
+            Ty_ssize_t i = cut;
             for (; i < len_needle; i++) {
                 if (needle[i] != window[i]) {
                     if (i < gap_jump_end) {
@@ -486,7 +486,7 @@ STRINGLIB(_two_way)(const STRINGLIB_CHAR *haystack, Py_ssize_t len_haystack,
                     goto windowloop;
                 }
             }
-            for (Py_ssize_t i = 0; i < cut; i++) {
+            for (Ty_ssize_t i = 0; i < cut; i++) {
                 if (needle[i] != window[i]) {
                     LOG("Left half does not match.\n");
                     window_last += period;
@@ -502,11 +502,11 @@ STRINGLIB(_two_way)(const STRINGLIB_CHAR *haystack, Py_ssize_t len_haystack,
 }
 
 
-static Py_ssize_t
+static Ty_ssize_t
 STRINGLIB(_two_way_find)(const STRINGLIB_CHAR *haystack,
-                         Py_ssize_t len_haystack,
+                         Ty_ssize_t len_haystack,
                          const STRINGLIB_CHAR *needle,
-                         Py_ssize_t len_needle)
+                         Ty_ssize_t len_needle)
 {
     LOG("###### Finding \"%s\" in \"%s\".\n", needle, haystack);
     STRINGLIB(prework) p;
@@ -515,19 +515,19 @@ STRINGLIB(_two_way_find)(const STRINGLIB_CHAR *haystack,
 }
 
 
-static Py_ssize_t
+static Ty_ssize_t
 STRINGLIB(_two_way_count)(const STRINGLIB_CHAR *haystack,
-                          Py_ssize_t len_haystack,
+                          Ty_ssize_t len_haystack,
                           const STRINGLIB_CHAR *needle,
-                          Py_ssize_t len_needle,
-                          Py_ssize_t maxcount)
+                          Ty_ssize_t len_needle,
+                          Ty_ssize_t maxcount)
 {
     LOG("###### Counting \"%s\" in \"%s\".\n", needle, haystack);
     STRINGLIB(prework) p;
     STRINGLIB(_preprocess)(needle, len_needle, &p);
-    Py_ssize_t index = 0, count = 0;
+    Ty_ssize_t index = 0, count = 0;
     while (1) {
-        Py_ssize_t result;
+        Ty_ssize_t result;
         result = STRINGLIB(_two_way)(haystack + index,
                                      len_haystack - index, &p);
         if (result == -1) {
@@ -553,19 +553,19 @@ STRINGLIB(_two_way_count)(const STRINGLIB_CHAR *haystack,
 #undef LOG_STRING
 #undef LOG_LINEUP
 
-static inline Py_ssize_t
-STRINGLIB(default_find)(const STRINGLIB_CHAR* s, Py_ssize_t n,
-                        const STRINGLIB_CHAR* p, Py_ssize_t m,
-                        Py_ssize_t maxcount, int mode)
+static inline Ty_ssize_t
+STRINGLIB(default_find)(const STRINGLIB_CHAR* s, Ty_ssize_t n,
+                        const STRINGLIB_CHAR* p, Ty_ssize_t m,
+                        Ty_ssize_t maxcount, int mode)
 {
-    const Py_ssize_t w = n - m;
-    Py_ssize_t mlast = m - 1, count = 0;
-    Py_ssize_t gap = mlast;
+    const Ty_ssize_t w = n - m;
+    Ty_ssize_t mlast = m - 1, count = 0;
+    Ty_ssize_t gap = mlast;
     const STRINGLIB_CHAR last = p[mlast];
     const STRINGLIB_CHAR *const ss = &s[mlast];
 
     unsigned long mask = 0;
-    for (Py_ssize_t i = 0; i < mlast; i++) {
+    for (Ty_ssize_t i = 0; i < mlast; i++) {
         STRINGLIB_BLOOM_ADD(mask, p[i]);
         if (p[i] == last) {
             gap = mlast - i - 1;
@@ -573,10 +573,10 @@ STRINGLIB(default_find)(const STRINGLIB_CHAR* s, Py_ssize_t n,
     }
     STRINGLIB_BLOOM_ADD(mask, last);
 
-    for (Py_ssize_t i = 0; i <= w; i++) {
+    for (Ty_ssize_t i = 0; i <= w; i++) {
         if (ss[i] == last) {
             /* candidate match */
-            Py_ssize_t j;
+            Ty_ssize_t j;
             for (j = 0; j < mlast; j++) {
                 if (s[i+j] != p[j]) {
                     break;
@@ -613,20 +613,20 @@ STRINGLIB(default_find)(const STRINGLIB_CHAR* s, Py_ssize_t n,
 }
 
 
-static Py_ssize_t
-STRINGLIB(adaptive_find)(const STRINGLIB_CHAR* s, Py_ssize_t n,
-                         const STRINGLIB_CHAR* p, Py_ssize_t m,
-                         Py_ssize_t maxcount, int mode)
+static Ty_ssize_t
+STRINGLIB(adaptive_find)(const STRINGLIB_CHAR* s, Ty_ssize_t n,
+                         const STRINGLIB_CHAR* p, Ty_ssize_t m,
+                         Ty_ssize_t maxcount, int mode)
 {
-    const Py_ssize_t w = n - m;
-    Py_ssize_t mlast = m - 1, count = 0;
-    Py_ssize_t gap = mlast;
-    Py_ssize_t hits = 0, res;
+    const Ty_ssize_t w = n - m;
+    Ty_ssize_t mlast = m - 1, count = 0;
+    Ty_ssize_t gap = mlast;
+    Ty_ssize_t hits = 0, res;
     const STRINGLIB_CHAR last = p[mlast];
     const STRINGLIB_CHAR *const ss = &s[mlast];
 
     unsigned long mask = 0;
-    for (Py_ssize_t i = 0; i < mlast; i++) {
+    for (Ty_ssize_t i = 0; i < mlast; i++) {
         STRINGLIB_BLOOM_ADD(mask, p[i]);
         if (p[i] == last) {
             gap = mlast - i - 1;
@@ -634,10 +634,10 @@ STRINGLIB(adaptive_find)(const STRINGLIB_CHAR* s, Py_ssize_t n,
     }
     STRINGLIB_BLOOM_ADD(mask, last);
 
-    for (Py_ssize_t i = 0; i <= w; i++) {
+    for (Ty_ssize_t i = 0; i <= w; i++) {
         if (ss[i] == last) {
             /* candidate match */
-            Py_ssize_t j;
+            Ty_ssize_t j;
             for (j = 0; j < mlast; j++) {
                 if (s[i+j] != p[j]) {
                     break;
@@ -686,14 +686,14 @@ STRINGLIB(adaptive_find)(const STRINGLIB_CHAR* s, Py_ssize_t n,
 }
 
 
-static Py_ssize_t
-STRINGLIB(default_rfind)(const STRINGLIB_CHAR* s, Py_ssize_t n,
-                         const STRINGLIB_CHAR* p, Py_ssize_t m,
-                         Py_ssize_t maxcount, int mode)
+static Ty_ssize_t
+STRINGLIB(default_rfind)(const STRINGLIB_CHAR* s, Ty_ssize_t n,
+                         const STRINGLIB_CHAR* p, Ty_ssize_t m,
+                         Ty_ssize_t maxcount, int mode)
 {
     /* create compressed boyer-moore delta 1 table */
     unsigned long mask = 0;
-    Py_ssize_t i, j, mlast = m - 1, skip = m - 1, w = n - m;
+    Ty_ssize_t i, j, mlast = m - 1, skip = m - 1, w = n - m;
 
     /* process pattern[0] outside the loop */
     STRINGLIB_BLOOM_ADD(mask, p[0]);
@@ -736,11 +736,11 @@ STRINGLIB(default_rfind)(const STRINGLIB_CHAR* s, Py_ssize_t n,
 }
 
 
-static inline Py_ssize_t
-STRINGLIB(count_char)(const STRINGLIB_CHAR *s, Py_ssize_t n,
-                      const STRINGLIB_CHAR p0, Py_ssize_t maxcount)
+static inline Ty_ssize_t
+STRINGLIB(count_char)(const STRINGLIB_CHAR *s, Ty_ssize_t n,
+                      const STRINGLIB_CHAR p0, Ty_ssize_t maxcount)
 {
-    Py_ssize_t i, count = 0;
+    Ty_ssize_t i, count = 0;
     for (i = 0; i < n; i++) {
         if (s[i] == p0) {
             count++;
@@ -753,14 +753,14 @@ STRINGLIB(count_char)(const STRINGLIB_CHAR *s, Py_ssize_t n,
 }
 
 
-static inline Py_ssize_t
-STRINGLIB(count_char_no_maxcount)(const STRINGLIB_CHAR *s, Py_ssize_t n,
+static inline Ty_ssize_t
+STRINGLIB(count_char_no_maxcount)(const STRINGLIB_CHAR *s, Ty_ssize_t n,
                                   const STRINGLIB_CHAR p0)
 /* A specialized function of count_char that does not cut off at a maximum.
    As a result, the compiler is able to vectorize the loop. */
 {
-    Py_ssize_t count = 0;
-    for (Py_ssize_t i = 0; i < n; i++) {
+    Ty_ssize_t count = 0;
+    for (Ty_ssize_t i = 0; i < n; i++) {
         if (s[i] == p0) {
             count++;
         }
@@ -769,10 +769,10 @@ STRINGLIB(count_char_no_maxcount)(const STRINGLIB_CHAR *s, Py_ssize_t n,
 }
 
 
-Py_LOCAL_INLINE(Py_ssize_t)
-FASTSEARCH(const STRINGLIB_CHAR* s, Py_ssize_t n,
-           const STRINGLIB_CHAR* p, Py_ssize_t m,
-           Py_ssize_t maxcount, int mode)
+Ty_LOCAL_INLINE(Ty_ssize_t)
+FASTSEARCH(const STRINGLIB_CHAR* s, Ty_ssize_t n,
+           const STRINGLIB_CHAR* p, Ty_ssize_t m,
+           Ty_ssize_t maxcount, int mode)
 {
     if (n < m || (mode == FAST_COUNT && maxcount == 0)) {
         return -1;

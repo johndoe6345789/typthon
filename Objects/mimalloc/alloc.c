@@ -16,7 +16,7 @@ terms of the MIT license. A copy of the license can be found in the file
 #include <string.h>      // memset, strlen (for mi_strdup)
 #include <stdlib.h>      // malloc, abort
 
-#define _ZSt15get_new_handlerv _Py__ZSt15get_new_handlerv
+#define _ZSt15get_new_handlerv _Ty__ZSt15get_new_handlerv
 
 #define MI_IN_ALLOC_C
 #include "alloc-override.c"
@@ -609,7 +609,7 @@ bool _mi_free_delayed_block(mi_block_t* block) {
   // get segment and page
   const mi_segment_t* const segment = _mi_ptr_segment(block);
   mi_assert_internal(_mi_ptr_cookie(segment) == segment->cookie);
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
   // The GC traverses heaps of other threads, which can trigger this assert.
   mi_assert_internal(_mi_thread_id() == segment->thread_id);
 #endif

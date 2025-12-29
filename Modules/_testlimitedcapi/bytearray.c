@@ -2,105 +2,105 @@
 #include "util.h"
 
 
-/* Test PyByteArray_Check() */
-static PyObject *
-bytearray_check(PyObject *Py_UNUSED(module), PyObject *obj)
+/* Test TyByteArray_Check() */
+static TyObject *
+bytearray_check(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyByteArray_Check(obj));
+    return TyLong_FromLong(TyByteArray_Check(obj));
 }
 
-/* Test PyByteArray_CheckExact() */
-static PyObject *
-bytearray_checkexact(PyObject *Py_UNUSED(module), PyObject *obj)
+/* Test TyByteArray_CheckExact() */
+static TyObject *
+bytearray_checkexact(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyByteArray_CheckExact(obj));
+    return TyLong_FromLong(TyByteArray_CheckExact(obj));
 }
 
-/* Test PyByteArray_FromStringAndSize() */
-static PyObject *
-bytearray_fromstringandsize(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyByteArray_FromStringAndSize() */
+static TyObject *
+bytearray_fromstringandsize(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *s;
-    Py_ssize_t bsize;
-    Py_ssize_t size = -100;
+    Ty_ssize_t bsize;
+    Ty_ssize_t size = -100;
 
-    if (!PyArg_ParseTuple(args, "z#|n", &s, &bsize, &size)) {
+    if (!TyArg_ParseTuple(args, "z#|n", &s, &bsize, &size)) {
         return NULL;
     }
 
     if (size == -100) {
         size = bsize;
     }
-    return PyByteArray_FromStringAndSize(s, size);
+    return TyByteArray_FromStringAndSize(s, size);
 }
 
-/* Test PyByteArray_FromObject() */
-static PyObject *
-bytearray_fromobject(PyObject *Py_UNUSED(module), PyObject *arg)
+/* Test TyByteArray_FromObject() */
+static TyObject *
+bytearray_fromobject(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
-    return PyByteArray_FromObject(arg);
+    return TyByteArray_FromObject(arg);
 }
 
-/* Test PyByteArray_Size() */
-static PyObject *
-bytearray_size(PyObject *Py_UNUSED(module), PyObject *arg)
+/* Test TyByteArray_Size() */
+static TyObject *
+bytearray_size(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
-    RETURN_SIZE(PyByteArray_Size(arg));
+    RETURN_SIZE(TyByteArray_Size(arg));
 }
 
-/* Test PyUnicode_AsString() */
-static PyObject *
-bytearray_asstring(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyUnicode_AsString() */
+static TyObject *
+bytearray_asstring(TyObject *Py_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t buflen;
+    TyObject *obj;
+    Ty_ssize_t buflen;
     const char *s;
 
-    if (!PyArg_ParseTuple(args, "On", &obj, &buflen))
+    if (!TyArg_ParseTuple(args, "On", &obj, &buflen))
         return NULL;
 
     NULLABLE(obj);
-    s = PyByteArray_AsString(obj);
+    s = TyByteArray_AsString(obj);
     if (s == NULL)
         return NULL;
 
-    return PyByteArray_FromStringAndSize(s, buflen);
+    return TyByteArray_FromStringAndSize(s, buflen);
 }
 
-/* Test PyByteArray_Concat() */
-static PyObject *
-bytearray_concat(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyByteArray_Concat() */
+static TyObject *
+bytearray_concat(TyObject *Py_UNUSED(module), TyObject *args)
 {
-    PyObject *left, *right;
+    TyObject *left, *right;
 
-    if (!PyArg_ParseTuple(args, "OO", &left, &right))
+    if (!TyArg_ParseTuple(args, "OO", &left, &right))
         return NULL;
 
     NULLABLE(left);
     NULLABLE(right);
-    return PyByteArray_Concat(left, right);
+    return TyByteArray_Concat(left, right);
 }
 
-/* Test PyByteArray_Resize() */
-static PyObject *
-bytearray_resize(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyByteArray_Resize() */
+static TyObject *
+bytearray_resize(TyObject *Py_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t size;
+    TyObject *obj;
+    Ty_ssize_t size;
 
-    if (!PyArg_ParseTuple(args, "On", &obj, &size))
+    if (!TyArg_ParseTuple(args, "On", &obj, &size))
         return NULL;
 
     NULLABLE(obj);
-    RETURN_INT(PyByteArray_Resize(obj, size));
+    RETURN_INT(TyByteArray_Resize(obj, size));
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"bytearray_check", bytearray_check, METH_O},
     {"bytearray_checkexact", bytearray_checkexact, METH_O},
     {"bytearray_fromstringandsize", bytearray_fromstringandsize, METH_VARARGS},
@@ -113,9 +113,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_ByteArray(PyObject *m)
+_PyTestLimitedCAPI_Init_ByteArray(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

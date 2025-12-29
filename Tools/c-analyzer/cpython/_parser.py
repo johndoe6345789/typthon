@@ -146,7 +146,7 @@ glob	include
 **/*.h	Python.h
 Include/**/*.h	object.h
 
-# for Py_HAVE_CONDVAR
+# for Ty_HAVE_CONDVAR
 Include/internal/pycore_gil.h	pycore_condvar.h
 Python/thread_pthread.h	pycore_condvar.h
 
@@ -181,77 +181,77 @@ MACROS = clean_lines('''
 
 glob	name	value
 
-Include/internal/*.h	Py_BUILD_CORE	1
-Python/**/*.c	Py_BUILD_CORE	1
-Python/**/*.h	Py_BUILD_CORE	1
-Parser/**/*.c	Py_BUILD_CORE	1
-Parser/**/*.h	Py_BUILD_CORE	1
-Objects/**/*.c	Py_BUILD_CORE	1
-Objects/**/*.h	Py_BUILD_CORE	1
+Include/internal/*.h	Ty_BUILD_CORE	1
+Python/**/*.c	Ty_BUILD_CORE	1
+Python/**/*.h	Ty_BUILD_CORE	1
+Parser/**/*.c	Ty_BUILD_CORE	1
+Parser/**/*.h	Ty_BUILD_CORE	1
+Objects/**/*.c	Ty_BUILD_CORE	1
+Objects/**/*.h	Ty_BUILD_CORE	1
 
-Modules/_asynciomodule.c	Py_BUILD_CORE	1
-Modules/_codecsmodule.c	Py_BUILD_CORE	1
-Modules/_collectionsmodule.c	Py_BUILD_CORE	1
-Modules/_ctypes/_ctypes.c	Py_BUILD_CORE	1
-Modules/_ctypes/cfield.c	Py_BUILD_CORE	1
-Modules/_cursesmodule.c	Py_BUILD_CORE	1
-Modules/_datetimemodule.c	Py_BUILD_CORE	1
-Modules/_functoolsmodule.c	Py_BUILD_CORE	1
-Modules/_heapqmodule.c	Py_BUILD_CORE	1
-Modules/_io/*.c	Py_BUILD_CORE	1
-Modules/_io/*.h	Py_BUILD_CORE	1
-Modules/_localemodule.c	Py_BUILD_CORE	1
-Modules/_operator.c	Py_BUILD_CORE	1
-Modules/_posixsubprocess.c	Py_BUILD_CORE	1
-Modules/_sre/sre.c	Py_BUILD_CORE	1
-Modules/_threadmodule.c	Py_BUILD_CORE	1
-Modules/_tracemalloc.c	Py_BUILD_CORE	1
-Modules/_weakref.c	Py_BUILD_CORE	1
-Modules/_zoneinfo.c	Py_BUILD_CORE	1
-Modules/atexitmodule.c	Py_BUILD_CORE	1
-Modules/cmathmodule.c	Py_BUILD_CORE	1
-Modules/faulthandler.c	Py_BUILD_CORE	1
-Modules/gcmodule.c	Py_BUILD_CORE	1
-Modules/getpath.c	Py_BUILD_CORE	1
-Modules/getpath_noop.c	Py_BUILD_CORE	1
-Modules/itertoolsmodule.c	Py_BUILD_CORE	1
-Modules/main.c	Py_BUILD_CORE	1
-Modules/mathmodule.c	Py_BUILD_CORE	1
-Modules/posixmodule.c	Py_BUILD_CORE	1
-Modules/sha256module.c	Py_BUILD_CORE	1
-Modules/sha512module.c	Py_BUILD_CORE	1
-Modules/signalmodule.c	Py_BUILD_CORE	1
-Modules/symtablemodule.c	Py_BUILD_CORE	1
-Modules/timemodule.c	Py_BUILD_CORE	1
-Modules/unicodedata.c	Py_BUILD_CORE	1
+Modules/_asynciomodule.c	Ty_BUILD_CORE	1
+Modules/_codecsmodule.c	Ty_BUILD_CORE	1
+Modules/_collectionsmodule.c	Ty_BUILD_CORE	1
+Modules/_ctypes/_ctypes.c	Ty_BUILD_CORE	1
+Modules/_ctypes/cfield.c	Ty_BUILD_CORE	1
+Modules/_cursesmodule.c	Ty_BUILD_CORE	1
+Modules/_datetimemodule.c	Ty_BUILD_CORE	1
+Modules/_functoolsmodule.c	Ty_BUILD_CORE	1
+Modules/_heapqmodule.c	Ty_BUILD_CORE	1
+Modules/_io/*.c	Ty_BUILD_CORE	1
+Modules/_io/*.h	Ty_BUILD_CORE	1
+Modules/_localemodule.c	Ty_BUILD_CORE	1
+Modules/_operator.c	Ty_BUILD_CORE	1
+Modules/_posixsubprocess.c	Ty_BUILD_CORE	1
+Modules/_sre/sre.c	Ty_BUILD_CORE	1
+Modules/_threadmodule.c	Ty_BUILD_CORE	1
+Modules/_tracemalloc.c	Ty_BUILD_CORE	1
+Modules/_weakref.c	Ty_BUILD_CORE	1
+Modules/_zoneinfo.c	Ty_BUILD_CORE	1
+Modules/atexitmodule.c	Ty_BUILD_CORE	1
+Modules/cmathmodule.c	Ty_BUILD_CORE	1
+Modules/faulthandler.c	Ty_BUILD_CORE	1
+Modules/gcmodule.c	Ty_BUILD_CORE	1
+Modules/getpath.c	Ty_BUILD_CORE	1
+Modules/getpath_noop.c	Ty_BUILD_CORE	1
+Modules/itertoolsmodule.c	Ty_BUILD_CORE	1
+Modules/main.c	Ty_BUILD_CORE	1
+Modules/mathmodule.c	Ty_BUILD_CORE	1
+Modules/posixmodule.c	Ty_BUILD_CORE	1
+Modules/sha256module.c	Ty_BUILD_CORE	1
+Modules/sha512module.c	Ty_BUILD_CORE	1
+Modules/signalmodule.c	Ty_BUILD_CORE	1
+Modules/symtablemodule.c	Ty_BUILD_CORE	1
+Modules/timemodule.c	Ty_BUILD_CORE	1
+Modules/unicodedata.c	Ty_BUILD_CORE	1
 
-Modules/_json.c	Py_BUILD_CORE_BUILTIN	1
-Modules/_pickle.c	Py_BUILD_CORE_BUILTIN	1
-Modules/_testinternalcapi.c	Py_BUILD_CORE_BUILTIN	1
+Modules/_json.c	Ty_BUILD_CORE_BUILTIN	1
+Modules/_pickle.c	Ty_BUILD_CORE_BUILTIN	1
+Modules/_testinternalcapi.c	Ty_BUILD_CORE_BUILTIN	1
 
-Include/cpython/abstract.h	Py_CPYTHON_ABSTRACTOBJECT_H	1
-Include/cpython/bytearrayobject.h	Py_CPYTHON_BYTEARRAYOBJECT_H	1
-Include/cpython/bytesobject.h	Py_CPYTHON_BYTESOBJECT_H	1
-Include/cpython/ceval.h	Py_CPYTHON_CEVAL_H	1
-Include/cpython/code.h	Py_CPYTHON_CODE_H	1
-Include/cpython/dictobject.h	Py_CPYTHON_DICTOBJECT_H	1
-Include/cpython/fileobject.h	Py_CPYTHON_FILEOBJECT_H	1
-Include/cpython/fileutils.h	Py_CPYTHON_FILEUTILS_H	1
-Include/cpython/frameobject.h	Py_CPYTHON_FRAMEOBJECT_H	1
-Include/cpython/import.h	Py_CPYTHON_IMPORT_H	1
-Include/cpython/interpreteridobject.h	Py_CPYTHON_INTERPRETERIDOBJECT_H	1
-Include/cpython/listobject.h	Py_CPYTHON_LISTOBJECT_H	1
-Include/cpython/methodobject.h	Py_CPYTHON_METHODOBJECT_H	1
-Include/cpython/object.h	Py_CPYTHON_OBJECT_H	1
-Include/cpython/objimpl.h	Py_CPYTHON_OBJIMPL_H	1
-Include/cpython/pyerrors.h	Py_CPYTHON_ERRORS_H	1
-Include/cpython/pylifecycle.h	Py_CPYTHON_PYLIFECYCLE_H	1
-Include/cpython/pymem.h	Py_CPYTHON_PYMEM_H	1
-Include/cpython/pystate.h	Py_CPYTHON_PYSTATE_H	1
-Include/cpython/sysmodule.h	Py_CPYTHON_SYSMODULE_H	1
-Include/cpython/traceback.h	Py_CPYTHON_TRACEBACK_H	1
-Include/cpython/tupleobject.h	Py_CPYTHON_TUPLEOBJECT_H	1
-Include/cpython/unicodeobject.h	Py_CPYTHON_UNICODEOBJECT_H	1
+Include/cpython/abstract.h	Ty_CPYTHON_ABSTRACTOBJECT_H	1
+Include/cpython/bytearrayobject.h	Ty_CPYTHON_BYTEARRAYOBJECT_H	1
+Include/cpython/bytesobject.h	Ty_CPYTHON_BYTESOBJECT_H	1
+Include/cpython/ceval.h	Ty_CPYTHON_CEVAL_H	1
+Include/cpython/code.h	Ty_CPYTHON_CODE_H	1
+Include/cpython/dictobject.h	Ty_CPYTHON_DICTOBJECT_H	1
+Include/cpython/fileobject.h	Ty_CPYTHON_FILEOBJECT_H	1
+Include/cpython/fileutils.h	Ty_CPYTHON_FILEUTILS_H	1
+Include/cpython/frameobject.h	Ty_CPYTHON_FRAMEOBJECT_H	1
+Include/cpython/import.h	Ty_CPYTHON_IMPORT_H	1
+Include/cpython/interpreteridobject.h	Ty_CPYTHON_INTERPRETERIDOBJECT_H	1
+Include/cpython/listobject.h	Ty_CPYTHON_LISTOBJECT_H	1
+Include/cpython/methodobject.h	Ty_CPYTHON_METHODOBJECT_H	1
+Include/cpython/object.h	Ty_CPYTHON_OBJECT_H	1
+Include/cpython/objimpl.h	Ty_CPYTHON_OBJIMPL_H	1
+Include/cpython/pyerrors.h	Ty_CPYTHON_ERRORS_H	1
+Include/cpython/pylifecycle.h	Ty_CPYTHON_PYLIFECYCLE_H	1
+Include/cpython/pymem.h	Ty_CPYTHON_PYMEM_H	1
+Include/cpython/pystate.h	Ty_CPYTHON_PYSTATE_H	1
+Include/cpython/sysmodule.h	Ty_CPYTHON_SYSMODULE_H	1
+Include/cpython/traceback.h	Ty_CPYTHON_TRACEBACK_H	1
+Include/cpython/tupleobject.h	Ty_CPYTHON_TUPLEOBJECT_H	1
+Include/cpython/unicodeobject.h	Ty_CPYTHON_UNICODEOBJECT_H	1
 
 # implied include of <unistd.h>
 Include/**/*.h	_POSIX_THREADS	1
@@ -290,7 +290,7 @@ Modules/_dbmmodule.c	HAVE_GDBM_DASH_NDBM_H	1
 Modules/_sre/sre_lib.h	LOCAL(type)	static inline type
 Modules/_sre/sre_lib.h	SRE(F)	sre_ucs2_##F
 Objects/stringlib/codecs.h	STRINGLIB_IS_UNICODE	1
-Include/internal/pycore_crossinterp_data_registry.h	Py_CORE_CROSSINTERP_DATA_REGISTRY_H	1
+Include/internal/pycore_crossinterp_data_registry.h	Ty_CORE_CROSSINTERP_DATA_REGISTRY_H	1
 
 # @end=tsv@
 ''')[1:]

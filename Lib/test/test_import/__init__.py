@@ -38,9 +38,9 @@ from test.support import (
     is_wasi,
     run_in_subinterp,
     run_in_subinterp_with_config,
-    Py_TRACE_REFS,
+    Ty_TRACE_REFS,
     requires_gil_enabled,
-    Py_GIL_DISABLED,
+    Ty_GIL_DISABLED,
     no_rerun,
     force_not_colorized_test_class,
 )
@@ -2375,7 +2375,7 @@ class SubinterpImportTests(unittest.TestCase):
         # since they still don't implement multi-phase init.
         module = '_imp'
         require_builtin(module)
-        if not Py_GIL_DISABLED:
+        if not Ty_GIL_DISABLED:
             with self.subTest(f'{module}: not strict'):
                 self.check_compatible_here(module, strict=False)
         with self.subTest(f'{module}: strict, not fresh'):
@@ -2388,7 +2388,7 @@ class SubinterpImportTests(unittest.TestCase):
         require_frozen(module, skip=True)
         if __import__(module).__spec__.origin != 'frozen':
             raise unittest.SkipTest(f'{module} is unexpectedly not frozen')
-        if not Py_GIL_DISABLED:
+        if not Ty_GIL_DISABLED:
             with self.subTest(f'{module}: not strict'):
                 self.check_compatible_here(module, strict=False)
         with self.subTest(f'{module}: strict, not fresh'):
@@ -2409,11 +2409,11 @@ class SubinterpImportTests(unittest.TestCase):
 
     @unittest.skipIf(_testmultiphase is None, "test requires _testmultiphase module")
     def test_multi_init_extension_compat(self):
-        # Module with Py_MOD_PER_INTERPRETER_GIL_SUPPORTED
+        # Module with Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED
         module = '_testmultiphase'
         require_extension(module)
 
-        if not Py_GIL_DISABLED:
+        if not Ty_GIL_DISABLED:
             with self.subTest(f'{module}: not strict'):
                 self.check_compatible_here(module, strict=False)
         with self.subTest(f'{module}: strict, not fresh'):
@@ -2423,8 +2423,8 @@ class SubinterpImportTests(unittest.TestCase):
 
     @unittest.skipIf(_testmultiphase is None, "test requires _testmultiphase module")
     def test_multi_init_extension_non_isolated_compat(self):
-        # Module with Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED
-        # and Py_MOD_GIL_NOT_USED
+        # Module with Ty_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED
+        # and Ty_MOD_GIL_NOT_USED
         modname = '_test_non_isolated'
         filename = _testmultiphase.__file__
         module = import_extension_from_file(modname, filename)
@@ -2434,7 +2434,7 @@ class SubinterpImportTests(unittest.TestCase):
             self.check_incompatible_here(modname, filename, isolated=True)
         with self.subTest(f'{modname}: not isolated'):
             self.check_incompatible_here(modname, filename, isolated=False)
-        if not Py_GIL_DISABLED:
+        if not Ty_GIL_DISABLED:
             with self.subTest(f'{modname}: not strict'):
                 self.check_compatible_here(modname, filename, strict=False)
 
@@ -2442,11 +2442,11 @@ class SubinterpImportTests(unittest.TestCase):
     def test_multi_init_extension_per_interpreter_gil_compat(self):
 
         # _test_shared_gil_only:
-        #   Explicit Py_MOD_MULTIPLE_INTERPRETERS_SUPPORTED (default)
-        #   and Py_MOD_GIL_NOT_USED
+        #   Explicit Ty_MOD_MULTIPLE_INTERPRETERS_SUPPORTED (default)
+        #   and Ty_MOD_GIL_NOT_USED
         # _test_no_multiple_interpreter_slot:
-        #   No Py_mod_multiple_interpreters slot
-        #   and Py_MOD_GIL_NOT_USED
+        #   No Ty_mod_multiple_interpreters slot
+        #   and Ty_MOD_GIL_NOT_USED
         for modname in ('_test_shared_gil_only',
                         '_test_no_multiple_interpreter_slot'):
             with self.subTest(modname=modname):
@@ -2461,7 +2461,7 @@ class SubinterpImportTests(unittest.TestCase):
                 with self.subTest(f'{modname}: not isolated, strict'):
                     self.check_compatible_here(modname, filename,
                                                strict=True, isolated=False)
-                if not Py_GIL_DISABLED:
+                if not Ty_GIL_DISABLED:
                     with self.subTest(f'{modname}: not isolated, not strict'):
                         self.check_compatible_here(
                             modname, filename, strict=False, isolated=False)
@@ -2470,7 +2470,7 @@ class SubinterpImportTests(unittest.TestCase):
     def test_python_compat(self):
         module = 'threading'
         require_pure_python(module)
-        if not Py_GIL_DISABLED:
+        if not Ty_GIL_DISABLED:
             with self.subTest(f'{module}: not strict'):
                 self.check_compatible_here(module, strict=False)
         with self.subTest(f'{module}: strict, not fresh'):
@@ -3232,11 +3232,11 @@ class SinglephaseInitTests(unittest.TestCase):
     def test_basic_multiple_interpreters_deleted_no_reset(self):
         # without resetting; already loaded in a deleted interpreter
 
-        if Py_TRACE_REFS:
-            # It's a Py_TRACE_REFS build.
+        if Ty_TRACE_REFS:
+            # It's a Ty_TRACE_REFS build.
             # This test breaks interpreter isolation a little,
-            # which causes problems on Py_TRACE_REF builds.
-            raise unittest.SkipTest('crashes on Py_TRACE_REFS builds')
+            # which causes problems on Ty_TRACE_REF builds.
+            raise unittest.SkipTest('crashes on Ty_TRACE_REFS builds')
 
         # At this point:
         #  * alive in 0 interpreters

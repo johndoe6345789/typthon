@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
-#include "pycore_long.h"          // _PyLong_UInt64_Converter()
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
+#include "pycore_long.h"          // _TyLong_UInt64_Converter()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_random_Random_random__doc__,
+TyDoc_STRVAR(_random_Random_random__doc__,
 "random($self, /)\n"
 "--\n"
 "\n"
@@ -15,22 +15,22 @@ PyDoc_STRVAR(_random_Random_random__doc__,
 #define _RANDOM_RANDOM_RANDOM_METHODDEF    \
     {"random", (PyCFunction)_random_Random_random, METH_NOARGS, _random_Random_random__doc__},
 
-static PyObject *
+static TyObject *
 _random_Random_random_impl(RandomObject *self);
 
-static PyObject *
-_random_Random_random(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_random_Random_random(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _random_Random_random_impl((RandomObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-PyDoc_STRVAR(_random_Random_seed__doc__,
+TyDoc_STRVAR(_random_Random_seed__doc__,
 "seed($self, n=None, /)\n"
 "--\n"
 "\n"
@@ -42,16 +42,16 @@ PyDoc_STRVAR(_random_Random_seed__doc__,
 #define _RANDOM_RANDOM_SEED_METHODDEF    \
     {"seed", _PyCFunction_CAST(_random_Random_seed), METH_FASTCALL, _random_Random_seed__doc__},
 
-static PyObject *
-_random_Random_seed_impl(RandomObject *self, PyObject *n);
+static TyObject *
+_random_Random_seed_impl(RandomObject *self, TyObject *n);
 
-static PyObject *
-_random_Random_seed(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_random_Random_seed(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *n = Py_None;
+    TyObject *return_value = NULL;
+    TyObject *n = Ty_None;
 
-    if (!_PyArg_CheckPositional("seed", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("seed", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -59,15 +59,15 @@ _random_Random_seed(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
     }
     n = args[0];
 skip_optional:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _random_Random_seed_impl((RandomObject *)self, n);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_random_Random_getstate__doc__,
+TyDoc_STRVAR(_random_Random_getstate__doc__,
 "getstate($self, /)\n"
 "--\n"
 "\n"
@@ -76,22 +76,22 @@ PyDoc_STRVAR(_random_Random_getstate__doc__,
 #define _RANDOM_RANDOM_GETSTATE_METHODDEF    \
     {"getstate", (PyCFunction)_random_Random_getstate, METH_NOARGS, _random_Random_getstate__doc__},
 
-static PyObject *
+static TyObject *
 _random_Random_getstate_impl(RandomObject *self);
 
-static PyObject *
-_random_Random_getstate(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_random_Random_getstate(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _random_Random_getstate_impl((RandomObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-PyDoc_STRVAR(_random_Random_setstate__doc__,
+TyDoc_STRVAR(_random_Random_setstate__doc__,
 "setstate($self, state, /)\n"
 "--\n"
 "\n"
@@ -100,22 +100,22 @@ PyDoc_STRVAR(_random_Random_setstate__doc__,
 #define _RANDOM_RANDOM_SETSTATE_METHODDEF    \
     {"setstate", (PyCFunction)_random_Random_setstate, METH_O, _random_Random_setstate__doc__},
 
-static PyObject *
-_random_Random_setstate_impl(RandomObject *self, PyObject *state);
+static TyObject *
+_random_Random_setstate_impl(RandomObject *self, TyObject *state);
 
-static PyObject *
-_random_Random_setstate(PyObject *self, PyObject *state)
+static TyObject *
+_random_Random_setstate(TyObject *self, TyObject *state)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _random_Random_setstate_impl((RandomObject *)self, state);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-PyDoc_STRVAR(_random_Random_getrandbits__doc__,
+TyDoc_STRVAR(_random_Random_getrandbits__doc__,
 "getrandbits($self, k, /)\n"
 "--\n"
 "\n"
@@ -124,21 +124,21 @@ PyDoc_STRVAR(_random_Random_getrandbits__doc__,
 #define _RANDOM_RANDOM_GETRANDBITS_METHODDEF    \
     {"getrandbits", (PyCFunction)_random_Random_getrandbits, METH_O, _random_Random_getrandbits__doc__},
 
-static PyObject *
+static TyObject *
 _random_Random_getrandbits_impl(RandomObject *self, uint64_t k);
 
-static PyObject *
-_random_Random_getrandbits(PyObject *self, PyObject *arg)
+static TyObject *
+_random_Random_getrandbits(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     uint64_t k;
 
-    if (!_PyLong_UInt64_Converter(arg, &k)) {
+    if (!_TyLong_UInt64_Converter(arg, &k)) {
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _random_Random_getrandbits_impl((RandomObject *)self, k);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;

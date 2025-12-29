@@ -2,15 +2,15 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_long.h"          // _PyLong_UnsignedInt_Converter()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_long.h"          // _TyLong_UnsignedInt_Converter()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(os_stat__doc__,
+TyDoc_STRVAR(os_stat__doc__,
 "stat($module, /, path, *, dir_fd=None, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -38,47 +38,47 @@ PyDoc_STRVAR(os_stat__doc__,
 #define OS_STAT_METHODDEF    \
     {"stat", _PyCFunction_CAST(os_stat), METH_FASTCALL|METH_KEYWORDS, os_stat__doc__},
 
-static PyObject *
-os_stat_impl(PyObject *module, path_t *path, int dir_fd, int follow_symlinks);
+static TyObject *
+os_stat_impl(TyObject *module, path_t *path, int dir_fd, int follow_symlinks);
 
-static PyObject *
-os_stat(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_stat(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(dir_fd), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "dir_fd", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "stat",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("stat", "path", 0, 0, 0, 1);
     int dir_fd = DEFAULT_DIR_FD;
     int follow_symlinks = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -111,7 +111,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_lstat__doc__,
+TyDoc_STRVAR(os_lstat__doc__,
 "lstat($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -123,46 +123,46 @@ PyDoc_STRVAR(os_lstat__doc__,
 #define OS_LSTAT_METHODDEF    \
     {"lstat", _PyCFunction_CAST(os_lstat), METH_FASTCALL|METH_KEYWORDS, os_lstat__doc__},
 
-static PyObject *
-os_lstat_impl(PyObject *module, path_t *path, int dir_fd);
+static TyObject *
+os_lstat_impl(TyObject *module, path_t *path, int dir_fd);
 
-static PyObject *
-os_lstat(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_lstat(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "lstat",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("lstat", "path", 0, 0, 0, 0);
     int dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -186,7 +186,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_access__doc__,
+TyDoc_STRVAR(os_access__doc__,
 "access($module, /, path, mode, *, dir_fd=None, effective_ids=False,\n"
 "       follow_symlinks=True)\n"
 "--\n"
@@ -222,42 +222,42 @@ PyDoc_STRVAR(os_access__doc__,
     {"access", _PyCFunction_CAST(os_access), METH_FASTCALL|METH_KEYWORDS, os_access__doc__},
 
 static int
-os_access_impl(PyObject *module, path_t *path, int mode, int dir_fd,
+os_access_impl(TyObject *module, path_t *path, int mode, int dir_fd,
                int effective_ids, int follow_symlinks);
 
-static PyObject *
-os_access(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_access(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(mode), &_Py_ID(dir_fd), &_Py_ID(effective_ids), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(dir_fd), &_Ty_ID(effective_ids), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "mode", "dir_fd", "effective_ids", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "access",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t path = PATH_T_INITIALIZE_P("access", "path", 0, 0, 0, 0);
     int mode;
     int dir_fd = DEFAULT_DIR_FD;
@@ -265,7 +265,7 @@ os_access(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *k
     int follow_symlinks = 1;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -273,8 +273,8 @@ os_access(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *k
     if (!path_converter(args[0], &path)) {
         goto exit;
     }
-    mode = PyLong_AsInt(args[1]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[1]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!noptargs) {
@@ -303,10 +303,10 @@ os_access(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *k
     }
 skip_optional_kwonly:
     _return_value = os_access_impl(module, &path, mode, dir_fd, effective_ids, follow_symlinks);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     /* Cleanup for path */
@@ -317,7 +317,7 @@ exit:
 
 #if defined(HAVE_TTYNAME_R)
 
-PyDoc_STRVAR(os_ttyname__doc__,
+TyDoc_STRVAR(os_ttyname__doc__,
 "ttyname($module, fd, /)\n"
 "--\n"
 "\n"
@@ -329,17 +329,17 @@ PyDoc_STRVAR(os_ttyname__doc__,
 #define OS_TTYNAME_METHODDEF    \
     {"ttyname", (PyCFunction)os_ttyname, METH_O, os_ttyname__doc__},
 
-static PyObject *
-os_ttyname_impl(PyObject *module, int fd);
+static TyObject *
+os_ttyname_impl(TyObject *module, int fd);
 
-static PyObject *
-os_ttyname(PyObject *module, PyObject *arg)
+static TyObject *
+os_ttyname(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
-    fd = PyLong_AsInt(arg);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(arg);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_ttyname_impl(module, fd);
@@ -352,7 +352,7 @@ exit:
 
 #if defined(HAVE_CTERMID)
 
-PyDoc_STRVAR(os_ctermid__doc__,
+TyDoc_STRVAR(os_ctermid__doc__,
 "ctermid($module, /)\n"
 "--\n"
 "\n"
@@ -361,18 +361,18 @@ PyDoc_STRVAR(os_ctermid__doc__,
 #define OS_CTERMID_METHODDEF    \
     {"ctermid", (PyCFunction)os_ctermid, METH_NOARGS, os_ctermid__doc__},
 
-static PyObject *
-os_ctermid_impl(PyObject *module);
+static TyObject *
+os_ctermid_impl(TyObject *module);
 
-static PyObject *
-os_ctermid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_ctermid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_ctermid_impl(module);
 }
 
 #endif /* defined(HAVE_CTERMID) */
 
-PyDoc_STRVAR(os_chdir__doc__,
+TyDoc_STRVAR(os_chdir__doc__,
 "chdir($module, /, path)\n"
 "--\n"
 "\n"
@@ -385,44 +385,44 @@ PyDoc_STRVAR(os_chdir__doc__,
 #define OS_CHDIR_METHODDEF    \
     {"chdir", _PyCFunction_CAST(os_chdir), METH_FASTCALL|METH_KEYWORDS, os_chdir__doc__},
 
-static PyObject *
-os_chdir_impl(PyObject *module, path_t *path);
+static TyObject *
+os_chdir_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os_chdir(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_chdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "chdir",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("chdir", "path", 0, 0, 0, PATH_HAVE_FCHDIR);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -441,7 +441,7 @@ exit:
 
 #if defined(HAVE_FCHDIR)
 
-PyDoc_STRVAR(os_fchdir__doc__,
+TyDoc_STRVAR(os_fchdir__doc__,
 "fchdir($module, /, fd)\n"
 "--\n"
 "\n"
@@ -453,44 +453,44 @@ PyDoc_STRVAR(os_fchdir__doc__,
 #define OS_FCHDIR_METHODDEF    \
     {"fchdir", _PyCFunction_CAST(os_fchdir), METH_FASTCALL|METH_KEYWORDS, os_fchdir__doc__},
 
-static PyObject *
-os_fchdir_impl(PyObject *module, int fd);
+static TyObject *
+os_fchdir_impl(TyObject *module, int fd);
 
-static PyObject *
-os_fchdir(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_fchdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), },
+        .ob_item = { &_Ty_ID(fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fchdir",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int fd;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -507,7 +507,7 @@ exit:
 
 #endif /* defined(HAVE_FCHDIR) */
 
-PyDoc_STRVAR(os_chmod__doc__,
+TyDoc_STRVAR(os_chmod__doc__,
 "chmod($module, /, path, mode, *, dir_fd=None,\n"
 "      follow_symlinks=(os.name != \'nt\'))\n"
 "--\n"
@@ -540,49 +540,49 @@ PyDoc_STRVAR(os_chmod__doc__,
 #define OS_CHMOD_METHODDEF    \
     {"chmod", _PyCFunction_CAST(os_chmod), METH_FASTCALL|METH_KEYWORDS, os_chmod__doc__},
 
-static PyObject *
-os_chmod_impl(PyObject *module, path_t *path, int mode, int dir_fd,
+static TyObject *
+os_chmod_impl(TyObject *module, path_t *path, int mode, int dir_fd,
               int follow_symlinks);
 
-static PyObject *
-os_chmod(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_chmod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(mode), &_Py_ID(dir_fd), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(dir_fd), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "mode", "dir_fd", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "chmod",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t path = PATH_T_INITIALIZE_P("chmod", "path", 0, 0, 0, PATH_HAVE_FCHMOD);
     int mode;
     int dir_fd = DEFAULT_DIR_FD;
     int follow_symlinks = CHMOD_DEFAULT_FOLLOW_SYMLINKS;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -590,8 +590,8 @@ os_chmod(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
     if (!path_converter(args[0], &path)) {
         goto exit;
     }
-    mode = PyLong_AsInt(args[1]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[1]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!noptargs) {
@@ -621,7 +621,7 @@ exit:
 
 #if (defined(HAVE_FCHMOD) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(os_fchmod__doc__,
+TyDoc_STRVAR(os_fchmod__doc__,
 "fchmod($module, /, fd, mode)\n"
 "--\n"
 "\n"
@@ -640,55 +640,55 @@ PyDoc_STRVAR(os_fchmod__doc__,
 #define OS_FCHMOD_METHODDEF    \
     {"fchmod", _PyCFunction_CAST(os_fchmod), METH_FASTCALL|METH_KEYWORDS, os_fchmod__doc__},
 
-static PyObject *
-os_fchmod_impl(PyObject *module, int fd, int mode);
+static TyObject *
+os_fchmod_impl(TyObject *module, int fd, int mode);
 
-static PyObject *
-os_fchmod(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_fchmod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), &_Py_ID(mode), },
+        .ob_item = { &_Ty_ID(fd), &_Ty_ID(mode), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", "mode", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fchmod",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     int fd;
     int mode;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    mode = PyLong_AsInt(args[1]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[1]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_fchmod_impl(module, fd, mode);
@@ -701,7 +701,7 @@ exit:
 
 #if (defined(HAVE_LCHMOD) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(os_lchmod__doc__,
+TyDoc_STRVAR(os_lchmod__doc__,
 "lchmod($module, /, path, mode)\n"
 "--\n"
 "\n"
@@ -713,45 +713,45 @@ PyDoc_STRVAR(os_lchmod__doc__,
 #define OS_LCHMOD_METHODDEF    \
     {"lchmod", _PyCFunction_CAST(os_lchmod), METH_FASTCALL|METH_KEYWORDS, os_lchmod__doc__},
 
-static PyObject *
-os_lchmod_impl(PyObject *module, path_t *path, int mode);
+static TyObject *
+os_lchmod_impl(TyObject *module, path_t *path, int mode);
 
-static PyObject *
-os_lchmod(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_lchmod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(mode), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "mode", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "lchmod",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     path_t path = PATH_T_INITIALIZE_P("lchmod", "path", 0, 0, 0, 0);
     int mode;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -759,8 +759,8 @@ os_lchmod(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *k
     if (!path_converter(args[0], &path)) {
         goto exit;
     }
-    mode = PyLong_AsInt(args[1]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[1]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_lchmod_impl(module, &path, mode);
@@ -776,7 +776,7 @@ exit:
 
 #if defined(HAVE_CHFLAGS)
 
-PyDoc_STRVAR(os_chflags__doc__,
+TyDoc_STRVAR(os_chflags__doc__,
 "chflags($module, /, path, flags, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -791,48 +791,48 @@ PyDoc_STRVAR(os_chflags__doc__,
 #define OS_CHFLAGS_METHODDEF    \
     {"chflags", _PyCFunction_CAST(os_chflags), METH_FASTCALL|METH_KEYWORDS, os_chflags__doc__},
 
-static PyObject *
-os_chflags_impl(PyObject *module, path_t *path, unsigned long flags,
+static TyObject *
+os_chflags_impl(TyObject *module, path_t *path, unsigned long flags,
                 int follow_symlinks);
 
-static PyObject *
-os_chflags(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_chflags(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(flags), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(flags), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "flags", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "chflags",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t path = PATH_T_INITIALIZE_P("chflags", "path", 0, 0, 0, 0);
     unsigned long flags;
     int follow_symlinks = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -841,10 +841,10 @@ os_chflags(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *
         goto exit;
     }
     if (!PyIndex_Check(args[1])) {
-        _PyArg_BadArgument("chflags", "argument 'flags'", "int", args[1]);
+        _TyArg_BadArgument("chflags", "argument 'flags'", "int", args[1]);
         goto exit;
     }
-    flags = PyLong_AsUnsignedLongMask(args[1]);
+    flags = TyLong_AsUnsignedLongMask(args[1]);
     if (!noptargs) {
         goto skip_optional_pos;
     }
@@ -866,7 +866,7 @@ exit:
 
 #if defined(HAVE_LCHFLAGS)
 
-PyDoc_STRVAR(os_lchflags__doc__,
+TyDoc_STRVAR(os_lchflags__doc__,
 "lchflags($module, /, path, flags)\n"
 "--\n"
 "\n"
@@ -878,45 +878,45 @@ PyDoc_STRVAR(os_lchflags__doc__,
 #define OS_LCHFLAGS_METHODDEF    \
     {"lchflags", _PyCFunction_CAST(os_lchflags), METH_FASTCALL|METH_KEYWORDS, os_lchflags__doc__},
 
-static PyObject *
-os_lchflags_impl(PyObject *module, path_t *path, unsigned long flags);
+static TyObject *
+os_lchflags_impl(TyObject *module, path_t *path, unsigned long flags);
 
-static PyObject *
-os_lchflags(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_lchflags(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "lchflags",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     path_t path = PATH_T_INITIALIZE_P("lchflags", "path", 0, 0, 0, 0);
     unsigned long flags;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -925,10 +925,10 @@ os_lchflags(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject 
         goto exit;
     }
     if (!PyIndex_Check(args[1])) {
-        _PyArg_BadArgument("lchflags", "argument 'flags'", "int", args[1]);
+        _TyArg_BadArgument("lchflags", "argument 'flags'", "int", args[1]);
         goto exit;
     }
-    flags = PyLong_AsUnsignedLongMask(args[1]);
+    flags = TyLong_AsUnsignedLongMask(args[1]);
     return_value = os_lchflags_impl(module, &path, flags);
 
 exit:
@@ -942,7 +942,7 @@ exit:
 
 #if defined(HAVE_CHROOT)
 
-PyDoc_STRVAR(os_chroot__doc__,
+TyDoc_STRVAR(os_chroot__doc__,
 "chroot($module, /, path)\n"
 "--\n"
 "\n"
@@ -951,44 +951,44 @@ PyDoc_STRVAR(os_chroot__doc__,
 #define OS_CHROOT_METHODDEF    \
     {"chroot", _PyCFunction_CAST(os_chroot), METH_FASTCALL|METH_KEYWORDS, os_chroot__doc__},
 
-static PyObject *
-os_chroot_impl(PyObject *module, path_t *path);
+static TyObject *
+os_chroot_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os_chroot(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_chroot(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "chroot",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("chroot", "path", 0, 0, 0, 0);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1009,7 +1009,7 @@ exit:
 
 #if defined(HAVE_FSYNC)
 
-PyDoc_STRVAR(os_fsync__doc__,
+TyDoc_STRVAR(os_fsync__doc__,
 "fsync($module, /, fd)\n"
 "--\n"
 "\n"
@@ -1018,44 +1018,44 @@ PyDoc_STRVAR(os_fsync__doc__,
 #define OS_FSYNC_METHODDEF    \
     {"fsync", _PyCFunction_CAST(os_fsync), METH_FASTCALL|METH_KEYWORDS, os_fsync__doc__},
 
-static PyObject *
-os_fsync_impl(PyObject *module, int fd);
+static TyObject *
+os_fsync_impl(TyObject *module, int fd);
 
-static PyObject *
-os_fsync(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_fsync(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), },
+        .ob_item = { &_Ty_ID(fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fsync",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int fd;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1074,7 +1074,7 @@ exit:
 
 #if defined(HAVE_SYNC)
 
-PyDoc_STRVAR(os_sync__doc__,
+TyDoc_STRVAR(os_sync__doc__,
 "sync($module, /)\n"
 "--\n"
 "\n"
@@ -1083,11 +1083,11 @@ PyDoc_STRVAR(os_sync__doc__,
 #define OS_SYNC_METHODDEF    \
     {"sync", (PyCFunction)os_sync, METH_NOARGS, os_sync__doc__},
 
-static PyObject *
-os_sync_impl(PyObject *module);
+static TyObject *
+os_sync_impl(TyObject *module);
 
-static PyObject *
-os_sync(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_sync(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_sync_impl(module);
 }
@@ -1096,7 +1096,7 @@ os_sync(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_FDATASYNC)
 
-PyDoc_STRVAR(os_fdatasync__doc__,
+TyDoc_STRVAR(os_fdatasync__doc__,
 "fdatasync($module, /, fd)\n"
 "--\n"
 "\n"
@@ -1105,44 +1105,44 @@ PyDoc_STRVAR(os_fdatasync__doc__,
 #define OS_FDATASYNC_METHODDEF    \
     {"fdatasync", _PyCFunction_CAST(os_fdatasync), METH_FASTCALL|METH_KEYWORDS, os_fdatasync__doc__},
 
-static PyObject *
-os_fdatasync_impl(PyObject *module, int fd);
+static TyObject *
+os_fdatasync_impl(TyObject *module, int fd);
 
-static PyObject *
-os_fdatasync(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_fdatasync(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), },
+        .ob_item = { &_Ty_ID(fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fdatasync",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int fd;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1161,7 +1161,7 @@ exit:
 
 #if defined(HAVE_CHOWN)
 
-PyDoc_STRVAR(os_chown__doc__,
+TyDoc_STRVAR(os_chown__doc__,
 "chown($module, /, path, uid, gid, *, dir_fd=None, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -1194,50 +1194,50 @@ PyDoc_STRVAR(os_chown__doc__,
 #define OS_CHOWN_METHODDEF    \
     {"chown", _PyCFunction_CAST(os_chown), METH_FASTCALL|METH_KEYWORDS, os_chown__doc__},
 
-static PyObject *
-os_chown_impl(PyObject *module, path_t *path, uid_t uid, gid_t gid,
+static TyObject *
+os_chown_impl(TyObject *module, path_t *path, uid_t uid, gid_t gid,
               int dir_fd, int follow_symlinks);
 
-static PyObject *
-os_chown(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_chown(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(uid), &_Py_ID(gid), &_Py_ID(dir_fd), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(uid), &_Ty_ID(gid), &_Ty_ID(dir_fd), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "uid", "gid", "dir_fd", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "chown",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
     path_t path = PATH_T_INITIALIZE_P("chown", "path", 0, 0, 0, PATH_HAVE_FCHOWN);
     uid_t uid;
     gid_t gid;
     int dir_fd = DEFAULT_DIR_FD;
     int follow_symlinks = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1245,10 +1245,10 @@ os_chown(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
     if (!path_converter(args[0], &path)) {
         goto exit;
     }
-    if (!_Py_Uid_Converter(args[1], &uid)) {
+    if (!_Ty_Uid_Converter(args[1], &uid)) {
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[2], &gid)) {
+    if (!_Ty_Gid_Converter(args[2], &gid)) {
         goto exit;
     }
     if (!noptargs) {
@@ -1280,7 +1280,7 @@ exit:
 
 #if defined(HAVE_FCHOWN)
 
-PyDoc_STRVAR(os_fchown__doc__,
+TyDoc_STRVAR(os_fchown__doc__,
 "fchown($module, /, fd, uid, gid)\n"
 "--\n"
 "\n"
@@ -1291,58 +1291,58 @@ PyDoc_STRVAR(os_fchown__doc__,
 #define OS_FCHOWN_METHODDEF    \
     {"fchown", _PyCFunction_CAST(os_fchown), METH_FASTCALL|METH_KEYWORDS, os_fchown__doc__},
 
-static PyObject *
-os_fchown_impl(PyObject *module, int fd, uid_t uid, gid_t gid);
+static TyObject *
+os_fchown_impl(TyObject *module, int fd, uid_t uid, gid_t gid);
 
-static PyObject *
-os_fchown(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_fchown(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), &_Py_ID(uid), &_Py_ID(gid), },
+        .ob_item = { &_Ty_ID(fd), &_Ty_ID(uid), &_Ty_ID(gid), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", "uid", "gid", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fchown",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
+    TyObject *argsbuf[3];
     int fd;
     uid_t uid;
     gid_t gid;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!_Py_Uid_Converter(args[1], &uid)) {
+    if (!_Ty_Uid_Converter(args[1], &uid)) {
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[2], &gid)) {
+    if (!_Ty_Gid_Converter(args[2], &gid)) {
         goto exit;
     }
     return_value = os_fchown_impl(module, fd, uid, gid);
@@ -1355,7 +1355,7 @@ exit:
 
 #if defined(HAVE_LCHOWN)
 
-PyDoc_STRVAR(os_lchown__doc__,
+TyDoc_STRVAR(os_lchown__doc__,
 "lchown($module, /, path, uid, gid)\n"
 "--\n"
 "\n"
@@ -1367,46 +1367,46 @@ PyDoc_STRVAR(os_lchown__doc__,
 #define OS_LCHOWN_METHODDEF    \
     {"lchown", _PyCFunction_CAST(os_lchown), METH_FASTCALL|METH_KEYWORDS, os_lchown__doc__},
 
-static PyObject *
-os_lchown_impl(PyObject *module, path_t *path, uid_t uid, gid_t gid);
+static TyObject *
+os_lchown_impl(TyObject *module, path_t *path, uid_t uid, gid_t gid);
 
-static PyObject *
-os_lchown(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_lchown(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(uid), &_Py_ID(gid), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(uid), &_Ty_ID(gid), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "uid", "gid", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "lchown",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
+    TyObject *argsbuf[3];
     path_t path = PATH_T_INITIALIZE_P("lchown", "path", 0, 0, 0, 0);
     uid_t uid;
     gid_t gid;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1414,10 +1414,10 @@ os_lchown(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *k
     if (!path_converter(args[0], &path)) {
         goto exit;
     }
-    if (!_Py_Uid_Converter(args[1], &uid)) {
+    if (!_Ty_Uid_Converter(args[1], &uid)) {
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[2], &gid)) {
+    if (!_Ty_Gid_Converter(args[2], &gid)) {
         goto exit;
     }
     return_value = os_lchown_impl(module, &path, uid, gid);
@@ -1431,7 +1431,7 @@ exit:
 
 #endif /* defined(HAVE_LCHOWN) */
 
-PyDoc_STRVAR(os_getcwd__doc__,
+TyDoc_STRVAR(os_getcwd__doc__,
 "getcwd($module, /)\n"
 "--\n"
 "\n"
@@ -1440,16 +1440,16 @@ PyDoc_STRVAR(os_getcwd__doc__,
 #define OS_GETCWD_METHODDEF    \
     {"getcwd", (PyCFunction)os_getcwd, METH_NOARGS, os_getcwd__doc__},
 
-static PyObject *
-os_getcwd_impl(PyObject *module);
+static TyObject *
+os_getcwd_impl(TyObject *module);
 
-static PyObject *
-os_getcwd(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getcwd(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getcwd_impl(module);
 }
 
-PyDoc_STRVAR(os_getcwdb__doc__,
+TyDoc_STRVAR(os_getcwdb__doc__,
 "getcwdb($module, /)\n"
 "--\n"
 "\n"
@@ -1458,18 +1458,18 @@ PyDoc_STRVAR(os_getcwdb__doc__,
 #define OS_GETCWDB_METHODDEF    \
     {"getcwdb", (PyCFunction)os_getcwdb, METH_NOARGS, os_getcwdb__doc__},
 
-static PyObject *
-os_getcwdb_impl(PyObject *module);
+static TyObject *
+os_getcwdb_impl(TyObject *module);
 
-static PyObject *
-os_getcwdb(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getcwdb(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getcwdb_impl(module);
 }
 
 #if defined(HAVE_LINK)
 
-PyDoc_STRVAR(os_link__doc__,
+TyDoc_STRVAR(os_link__doc__,
 "link($module, /, src, dst, *, src_dir_fd=None, dst_dir_fd=None,\n"
 "     follow_symlinks=(os.name != \'nt\'))\n"
 "--\n"
@@ -1489,50 +1489,50 @@ PyDoc_STRVAR(os_link__doc__,
 #define OS_LINK_METHODDEF    \
     {"link", _PyCFunction_CAST(os_link), METH_FASTCALL|METH_KEYWORDS, os_link__doc__},
 
-static PyObject *
-os_link_impl(PyObject *module, path_t *src, path_t *dst, int src_dir_fd,
+static TyObject *
+os_link_impl(TyObject *module, path_t *src, path_t *dst, int src_dir_fd,
              int dst_dir_fd, int follow_symlinks);
 
-static PyObject *
-os_link(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_link(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(src), &_Py_ID(dst), &_Py_ID(src_dir_fd), &_Py_ID(dst_dir_fd), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(src_dir_fd), &_Ty_ID(dst_dir_fd), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"src", "dst", "src_dir_fd", "dst_dir_fd", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "link",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t src = PATH_T_INITIALIZE_P("link", "src", 0, 0, 0, 0);
     path_t dst = PATH_T_INITIALIZE_P("link", "dst", 0, 0, 0, 0);
     int src_dir_fd = DEFAULT_DIR_FD;
     int dst_dir_fd = DEFAULT_DIR_FD;
     int follow_symlinks = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1580,7 +1580,7 @@ exit:
 
 #endif /* defined(HAVE_LINK) */
 
-PyDoc_STRVAR(os_listdir__doc__,
+TyDoc_STRVAR(os_listdir__doc__,
 "listdir($module, /, path=None)\n"
 "--\n"
 "\n"
@@ -1600,45 +1600,45 @@ PyDoc_STRVAR(os_listdir__doc__,
 #define OS_LISTDIR_METHODDEF    \
     {"listdir", _PyCFunction_CAST(os_listdir), METH_FASTCALL|METH_KEYWORDS, os_listdir__doc__},
 
-static PyObject *
-os_listdir_impl(PyObject *module, path_t *path);
+static TyObject *
+os_listdir_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os_listdir(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_listdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "listdir",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     path_t path = PATH_T_INITIALIZE_P("listdir", "path", 1, 0, 0, PATH_HAVE_FDOPENDIR);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1661,7 +1661,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_listdrives__doc__,
+TyDoc_STRVAR(os_listdrives__doc__,
 "listdrives($module, /)\n"
 "--\n"
 "\n"
@@ -1672,11 +1672,11 @@ PyDoc_STRVAR(os_listdrives__doc__,
 #define OS_LISTDRIVES_METHODDEF    \
     {"listdrives", (PyCFunction)os_listdrives, METH_NOARGS, os_listdrives__doc__},
 
-static PyObject *
-os_listdrives_impl(PyObject *module);
+static TyObject *
+os_listdrives_impl(TyObject *module);
 
-static PyObject *
-os_listdrives(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_listdrives(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_listdrives_impl(module);
 }
@@ -1685,7 +1685,7 @@ os_listdrives(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_listvolumes__doc__,
+TyDoc_STRVAR(os_listvolumes__doc__,
 "listvolumes($module, /)\n"
 "--\n"
 "\n"
@@ -1696,11 +1696,11 @@ PyDoc_STRVAR(os_listvolumes__doc__,
 #define OS_LISTVOLUMES_METHODDEF    \
     {"listvolumes", (PyCFunction)os_listvolumes, METH_NOARGS, os_listvolumes__doc__},
 
-static PyObject *
-os_listvolumes_impl(PyObject *module);
+static TyObject *
+os_listvolumes_impl(TyObject *module);
 
-static PyObject *
-os_listvolumes(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_listvolumes(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_listvolumes_impl(module);
 }
@@ -1709,7 +1709,7 @@ os_listvolumes(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_listmounts__doc__,
+TyDoc_STRVAR(os_listmounts__doc__,
 "listmounts($module, /, volume)\n"
 "--\n"
 "\n"
@@ -1720,44 +1720,44 @@ PyDoc_STRVAR(os_listmounts__doc__,
 #define OS_LISTMOUNTS_METHODDEF    \
     {"listmounts", _PyCFunction_CAST(os_listmounts), METH_FASTCALL|METH_KEYWORDS, os_listmounts__doc__},
 
-static PyObject *
-os_listmounts_impl(PyObject *module, path_t *volume);
+static TyObject *
+os_listmounts_impl(TyObject *module, path_t *volume);
 
-static PyObject *
-os_listmounts(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_listmounts(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(volume), },
+        .ob_item = { &_Ty_ID(volume), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"volume", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "listmounts",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t volume = PATH_T_INITIALIZE_P("listmounts", "volume", 0, 0, 0, 0);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1778,7 +1778,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_isdevdrive__doc__,
+TyDoc_STRVAR(os__path_isdevdrive__doc__,
 "_path_isdevdrive($module, /, path)\n"
 "--\n"
 "\n"
@@ -1787,44 +1787,44 @@ PyDoc_STRVAR(os__path_isdevdrive__doc__,
 #define OS__PATH_ISDEVDRIVE_METHODDEF    \
     {"_path_isdevdrive", _PyCFunction_CAST(os__path_isdevdrive), METH_FASTCALL|METH_KEYWORDS, os__path_isdevdrive__doc__},
 
-static PyObject *
-os__path_isdevdrive_impl(PyObject *module, path_t *path);
+static TyObject *
+os__path_isdevdrive_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_isdevdrive(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_isdevdrive(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_isdevdrive",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_path_isdevdrive", "path", 0, 0, 0, 0);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1845,7 +1845,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__getfullpathname__doc__,
+TyDoc_STRVAR(os__getfullpathname__doc__,
 "_getfullpathname($module, path, /)\n"
 "--\n"
 "\n");
@@ -1853,13 +1853,13 @@ PyDoc_STRVAR(os__getfullpathname__doc__,
 #define OS__GETFULLPATHNAME_METHODDEF    \
     {"_getfullpathname", (PyCFunction)os__getfullpathname, METH_O, os__getfullpathname__doc__},
 
-static PyObject *
-os__getfullpathname_impl(PyObject *module, path_t *path);
+static TyObject *
+os__getfullpathname_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__getfullpathname(PyObject *module, PyObject *arg)
+static TyObject *
+os__getfullpathname(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     path_t path = PATH_T_INITIALIZE_P("_getfullpathname", "path", 0, 0, 0, 0);
 
     if (!path_converter(arg, &path)) {
@@ -1878,7 +1878,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__getfinalpathname__doc__,
+TyDoc_STRVAR(os__getfinalpathname__doc__,
 "_getfinalpathname($module, path, /)\n"
 "--\n"
 "\n"
@@ -1887,13 +1887,13 @@ PyDoc_STRVAR(os__getfinalpathname__doc__,
 #define OS__GETFINALPATHNAME_METHODDEF    \
     {"_getfinalpathname", (PyCFunction)os__getfinalpathname, METH_O, os__getfinalpathname__doc__},
 
-static PyObject *
-os__getfinalpathname_impl(PyObject *module, path_t *path);
+static TyObject *
+os__getfinalpathname_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__getfinalpathname(PyObject *module, PyObject *arg)
+static TyObject *
+os__getfinalpathname(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     path_t path = PATH_T_INITIALIZE_P("_getfinalpathname", "path", 0, 0, 0, 0);
 
     if (!path_converter(arg, &path)) {
@@ -1912,7 +1912,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__findfirstfile__doc__,
+TyDoc_STRVAR(os__findfirstfile__doc__,
 "_findfirstfile($module, path, /)\n"
 "--\n"
 "\n"
@@ -1921,13 +1921,13 @@ PyDoc_STRVAR(os__findfirstfile__doc__,
 #define OS__FINDFIRSTFILE_METHODDEF    \
     {"_findfirstfile", (PyCFunction)os__findfirstfile, METH_O, os__findfirstfile__doc__},
 
-static PyObject *
-os__findfirstfile_impl(PyObject *module, path_t *path);
+static TyObject *
+os__findfirstfile_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__findfirstfile(PyObject *module, PyObject *arg)
+static TyObject *
+os__findfirstfile(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     path_t path = PATH_T_INITIALIZE_P("_findfirstfile", "path", 0, 0, 0, 0);
 
     if (!path_converter(arg, &path)) {
@@ -1946,7 +1946,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__getvolumepathname__doc__,
+TyDoc_STRVAR(os__getvolumepathname__doc__,
 "_getvolumepathname($module, /, path)\n"
 "--\n"
 "\n"
@@ -1955,44 +1955,44 @@ PyDoc_STRVAR(os__getvolumepathname__doc__,
 #define OS__GETVOLUMEPATHNAME_METHODDEF    \
     {"_getvolumepathname", _PyCFunction_CAST(os__getvolumepathname), METH_FASTCALL|METH_KEYWORDS, os__getvolumepathname__doc__},
 
-static PyObject *
-os__getvolumepathname_impl(PyObject *module, path_t *path);
+static TyObject *
+os__getvolumepathname_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__getvolumepathname(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__getvolumepathname(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_getvolumepathname",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_getvolumepathname", "path", 0, 0, 0, 0);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2013,7 +2013,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_splitroot__doc__,
+TyDoc_STRVAR(os__path_splitroot__doc__,
 "_path_splitroot($module, /, path)\n"
 "--\n"
 "\n"
@@ -2022,44 +2022,44 @@ PyDoc_STRVAR(os__path_splitroot__doc__,
 #define OS__PATH_SPLITROOT_METHODDEF    \
     {"_path_splitroot", _PyCFunction_CAST(os__path_splitroot), METH_FASTCALL|METH_KEYWORDS, os__path_splitroot__doc__},
 
-static PyObject *
-os__path_splitroot_impl(PyObject *module, path_t *path);
+static TyObject *
+os__path_splitroot_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_splitroot(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_splitroot(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_splitroot",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_path_splitroot", "path", 0, 0, 0, 0);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2080,7 +2080,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_exists__doc__,
+TyDoc_STRVAR(os__path_exists__doc__,
 "_path_exists($module, /, path)\n"
 "--\n"
 "\n"
@@ -2090,44 +2090,44 @@ PyDoc_STRVAR(os__path_exists__doc__,
     {"_path_exists", _PyCFunction_CAST(os__path_exists), METH_FASTCALL|METH_KEYWORDS, os__path_exists__doc__},
 
 static int
-os__path_exists_impl(PyObject *module, path_t *path);
+os__path_exists_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_exists(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_exists(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_exists",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_path_exists", "path", 0, 0, 1, 1);
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2136,10 +2136,10 @@ os__path_exists(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObj
         goto exit;
     }
     _return_value = os__path_exists_impl(module, &path);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     /* Cleanup for path */
@@ -2152,7 +2152,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_lexists__doc__,
+TyDoc_STRVAR(os__path_lexists__doc__,
 "_path_lexists($module, /, path)\n"
 "--\n"
 "\n"
@@ -2162,44 +2162,44 @@ PyDoc_STRVAR(os__path_lexists__doc__,
     {"_path_lexists", _PyCFunction_CAST(os__path_lexists), METH_FASTCALL|METH_KEYWORDS, os__path_lexists__doc__},
 
 static int
-os__path_lexists_impl(PyObject *module, path_t *path);
+os__path_lexists_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_lexists(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_lexists(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_lexists",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_path_lexists", "path", 0, 0, 1, 1);
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2208,10 +2208,10 @@ os__path_lexists(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyOb
         goto exit;
     }
     _return_value = os__path_lexists_impl(module, &path);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     /* Cleanup for path */
@@ -2224,7 +2224,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_isdir__doc__,
+TyDoc_STRVAR(os__path_isdir__doc__,
 "_path_isdir($module, /, s)\n"
 "--\n"
 "\n"
@@ -2234,44 +2234,44 @@ PyDoc_STRVAR(os__path_isdir__doc__,
     {"_path_isdir", _PyCFunction_CAST(os__path_isdir), METH_FASTCALL|METH_KEYWORDS, os__path_isdir__doc__},
 
 static int
-os__path_isdir_impl(PyObject *module, path_t *path);
+os__path_isdir_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_isdir(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_isdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('s'), },
+        .ob_item = { _Ty_LATIN1_CHR('s'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"s", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_isdir",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_path_isdir", "path", 0, 0, 1, 1);
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2280,10 +2280,10 @@ os__path_isdir(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObje
         goto exit;
     }
     _return_value = os__path_isdir_impl(module, &path);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     /* Cleanup for path */
@@ -2296,7 +2296,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_isfile__doc__,
+TyDoc_STRVAR(os__path_isfile__doc__,
 "_path_isfile($module, /, path)\n"
 "--\n"
 "\n"
@@ -2306,44 +2306,44 @@ PyDoc_STRVAR(os__path_isfile__doc__,
     {"_path_isfile", _PyCFunction_CAST(os__path_isfile), METH_FASTCALL|METH_KEYWORDS, os__path_isfile__doc__},
 
 static int
-os__path_isfile_impl(PyObject *module, path_t *path);
+os__path_isfile_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_isfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_isfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_isfile",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_path_isfile", "path", 0, 0, 1, 1);
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2352,10 +2352,10 @@ os__path_isfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObj
         goto exit;
     }
     _return_value = os__path_isfile_impl(module, &path);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     /* Cleanup for path */
@@ -2368,7 +2368,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_islink__doc__,
+TyDoc_STRVAR(os__path_islink__doc__,
 "_path_islink($module, /, path)\n"
 "--\n"
 "\n"
@@ -2378,44 +2378,44 @@ PyDoc_STRVAR(os__path_islink__doc__,
     {"_path_islink", _PyCFunction_CAST(os__path_islink), METH_FASTCALL|METH_KEYWORDS, os__path_islink__doc__},
 
 static int
-os__path_islink_impl(PyObject *module, path_t *path);
+os__path_islink_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_islink(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_islink(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_islink",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_path_islink", "path", 0, 0, 1, 1);
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2424,10 +2424,10 @@ os__path_islink(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObj
         goto exit;
     }
     _return_value = os__path_islink_impl(module, &path);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     /* Cleanup for path */
@@ -2440,7 +2440,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_isjunction__doc__,
+TyDoc_STRVAR(os__path_isjunction__doc__,
 "_path_isjunction($module, /, path)\n"
 "--\n"
 "\n"
@@ -2450,44 +2450,44 @@ PyDoc_STRVAR(os__path_isjunction__doc__,
     {"_path_isjunction", _PyCFunction_CAST(os__path_isjunction), METH_FASTCALL|METH_KEYWORDS, os__path_isjunction__doc__},
 
 static int
-os__path_isjunction_impl(PyObject *module, path_t *path);
+os__path_isjunction_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_isjunction(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_isjunction(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_isjunction",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_path_isjunction", "path", 0, 0, 1, 1);
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2496,10 +2496,10 @@ os__path_isjunction(PyObject *module, PyObject *const *args, Py_ssize_t nargs, P
         goto exit;
     }
     _return_value = os__path_isjunction_impl(module, &path);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     /* Cleanup for path */
@@ -2510,7 +2510,7 @@ exit:
 
 #endif /* defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(os__path_splitroot_ex__doc__,
+TyDoc_STRVAR(os__path_splitroot_ex__doc__,
 "_path_splitroot_ex($module, /, p)\n"
 "--\n"
 "\n"
@@ -2521,44 +2521,44 @@ PyDoc_STRVAR(os__path_splitroot_ex__doc__,
 #define OS__PATH_SPLITROOT_EX_METHODDEF    \
     {"_path_splitroot_ex", _PyCFunction_CAST(os__path_splitroot_ex), METH_FASTCALL|METH_KEYWORDS, os__path_splitroot_ex__doc__},
 
-static PyObject *
-os__path_splitroot_ex_impl(PyObject *module, path_t *path);
+static TyObject *
+os__path_splitroot_ex_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_splitroot_ex(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_splitroot_ex(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('p'), },
+        .ob_item = { _Ty_LATIN1_CHR('p'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"p", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_splitroot_ex",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE("_path_splitroot_ex", "path", 0, 1, 1, 0, 0);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2575,7 +2575,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os__path_normpath__doc__,
+TyDoc_STRVAR(os__path_normpath__doc__,
 "_path_normpath($module, /, path)\n"
 "--\n"
 "\n"
@@ -2584,44 +2584,44 @@ PyDoc_STRVAR(os__path_normpath__doc__,
 #define OS__PATH_NORMPATH_METHODDEF    \
     {"_path_normpath", _PyCFunction_CAST(os__path_normpath), METH_FASTCALL|METH_KEYWORDS, os__path_normpath__doc__},
 
-static PyObject *
-os__path_normpath_impl(PyObject *module, path_t *path);
+static TyObject *
+os__path_normpath_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__path_normpath(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__path_normpath(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_path_normpath",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE("_path_normpath", "path", 0, 1, 1, 0, 0);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2638,7 +2638,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_mkdir__doc__,
+TyDoc_STRVAR(os_mkdir__doc__,
 "mkdir($module, /, path, mode=511, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -2655,47 +2655,47 @@ PyDoc_STRVAR(os_mkdir__doc__,
 #define OS_MKDIR_METHODDEF    \
     {"mkdir", _PyCFunction_CAST(os_mkdir), METH_FASTCALL|METH_KEYWORDS, os_mkdir__doc__},
 
-static PyObject *
-os_mkdir_impl(PyObject *module, path_t *path, int mode, int dir_fd);
+static TyObject *
+os_mkdir_impl(TyObject *module, path_t *path, int mode, int dir_fd);
 
-static PyObject *
-os_mkdir(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_mkdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(mode), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "mode", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "mkdir",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("mkdir", "path", 0, 0, 0, 0);
     int mode = 511;
     int dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2707,8 +2707,8 @@ os_mkdir(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
         goto skip_optional_pos;
     }
     if (args[1]) {
-        mode = PyLong_AsInt(args[1]);
-        if (mode == -1 && PyErr_Occurred()) {
+        mode = TyLong_AsInt(args[1]);
+        if (mode == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -2734,7 +2734,7 @@ exit:
 
 #if defined(HAVE_NICE)
 
-PyDoc_STRVAR(os_nice__doc__,
+TyDoc_STRVAR(os_nice__doc__,
 "nice($module, increment, /)\n"
 "--\n"
 "\n"
@@ -2743,17 +2743,17 @@ PyDoc_STRVAR(os_nice__doc__,
 #define OS_NICE_METHODDEF    \
     {"nice", (PyCFunction)os_nice, METH_O, os_nice__doc__},
 
-static PyObject *
-os_nice_impl(PyObject *module, int increment);
+static TyObject *
+os_nice_impl(TyObject *module, int increment);
 
-static PyObject *
-os_nice(PyObject *module, PyObject *arg)
+static TyObject *
+os_nice(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int increment;
 
-    increment = PyLong_AsInt(arg);
-    if (increment == -1 && PyErr_Occurred()) {
+    increment = TyLong_AsInt(arg);
+    if (increment == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_nice_impl(module, increment);
@@ -2766,7 +2766,7 @@ exit:
 
 #if defined(HAVE_GETPRIORITY)
 
-PyDoc_STRVAR(os_getpriority__doc__,
+TyDoc_STRVAR(os_getpriority__doc__,
 "getpriority($module, /, which, who)\n"
 "--\n"
 "\n"
@@ -2775,55 +2775,55 @@ PyDoc_STRVAR(os_getpriority__doc__,
 #define OS_GETPRIORITY_METHODDEF    \
     {"getpriority", _PyCFunction_CAST(os_getpriority), METH_FASTCALL|METH_KEYWORDS, os_getpriority__doc__},
 
-static PyObject *
-os_getpriority_impl(PyObject *module, int which, int who);
+static TyObject *
+os_getpriority_impl(TyObject *module, int which, int who);
 
-static PyObject *
-os_getpriority(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_getpriority(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(which), &_Py_ID(who), },
+        .ob_item = { &_Ty_ID(which), &_Ty_ID(who), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"which", "who", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "getpriority",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     int which;
     int who;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    which = PyLong_AsInt(args[0]);
-    if (which == -1 && PyErr_Occurred()) {
+    which = TyLong_AsInt(args[0]);
+    if (which == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    who = PyLong_AsInt(args[1]);
-    if (who == -1 && PyErr_Occurred()) {
+    who = TyLong_AsInt(args[1]);
+    if (who == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_getpriority_impl(module, which, who);
@@ -2836,7 +2836,7 @@ exit:
 
 #if defined(HAVE_SETPRIORITY)
 
-PyDoc_STRVAR(os_setpriority__doc__,
+TyDoc_STRVAR(os_setpriority__doc__,
 "setpriority($module, /, which, who, priority)\n"
 "--\n"
 "\n"
@@ -2845,60 +2845,60 @@ PyDoc_STRVAR(os_setpriority__doc__,
 #define OS_SETPRIORITY_METHODDEF    \
     {"setpriority", _PyCFunction_CAST(os_setpriority), METH_FASTCALL|METH_KEYWORDS, os_setpriority__doc__},
 
-static PyObject *
-os_setpriority_impl(PyObject *module, int which, int who, int priority);
+static TyObject *
+os_setpriority_impl(TyObject *module, int which, int who, int priority);
 
-static PyObject *
-os_setpriority(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_setpriority(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(which), &_Py_ID(who), &_Py_ID(priority), },
+        .ob_item = { &_Ty_ID(which), &_Ty_ID(who), &_Ty_ID(priority), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"which", "who", "priority", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "setpriority",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
+    TyObject *argsbuf[3];
     int which;
     int who;
     int priority;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    which = PyLong_AsInt(args[0]);
-    if (which == -1 && PyErr_Occurred()) {
+    which = TyLong_AsInt(args[0]);
+    if (which == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    who = PyLong_AsInt(args[1]);
-    if (who == -1 && PyErr_Occurred()) {
+    who = TyLong_AsInt(args[1]);
+    if (who == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    priority = PyLong_AsInt(args[2]);
-    if (priority == -1 && PyErr_Occurred()) {
+    priority = TyLong_AsInt(args[2]);
+    if (priority == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_setpriority_impl(module, which, who, priority);
@@ -2909,7 +2909,7 @@ exit:
 
 #endif /* defined(HAVE_SETPRIORITY) */
 
-PyDoc_STRVAR(os_rename__doc__,
+TyDoc_STRVAR(os_rename__doc__,
 "rename($module, /, src, dst, *, src_dir_fd=None, dst_dir_fd=None)\n"
 "--\n"
 "\n"
@@ -2924,49 +2924,49 @@ PyDoc_STRVAR(os_rename__doc__,
 #define OS_RENAME_METHODDEF    \
     {"rename", _PyCFunction_CAST(os_rename), METH_FASTCALL|METH_KEYWORDS, os_rename__doc__},
 
-static PyObject *
-os_rename_impl(PyObject *module, path_t *src, path_t *dst, int src_dir_fd,
+static TyObject *
+os_rename_impl(TyObject *module, path_t *src, path_t *dst, int src_dir_fd,
                int dst_dir_fd);
 
-static PyObject *
-os_rename(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_rename(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(src), &_Py_ID(dst), &_Py_ID(src_dir_fd), &_Py_ID(dst_dir_fd), },
+        .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(src_dir_fd), &_Ty_ID(dst_dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"src", "dst", "src_dir_fd", "dst_dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "rename",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t src = PATH_T_INITIALIZE_P("rename", "src", 0, 0, 0, 0);
     path_t dst = PATH_T_INITIALIZE_P("rename", "dst", 0, 0, 0, 0);
     int src_dir_fd = DEFAULT_DIR_FD;
     int dst_dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3003,7 +3003,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_replace__doc__,
+TyDoc_STRVAR(os_replace__doc__,
 "replace($module, /, src, dst, *, src_dir_fd=None, dst_dir_fd=None)\n"
 "--\n"
 "\n"
@@ -3018,49 +3018,49 @@ PyDoc_STRVAR(os_replace__doc__,
 #define OS_REPLACE_METHODDEF    \
     {"replace", _PyCFunction_CAST(os_replace), METH_FASTCALL|METH_KEYWORDS, os_replace__doc__},
 
-static PyObject *
-os_replace_impl(PyObject *module, path_t *src, path_t *dst, int src_dir_fd,
+static TyObject *
+os_replace_impl(TyObject *module, path_t *src, path_t *dst, int src_dir_fd,
                 int dst_dir_fd);
 
-static PyObject *
-os_replace(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_replace(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(src), &_Py_ID(dst), &_Py_ID(src_dir_fd), &_Py_ID(dst_dir_fd), },
+        .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(src_dir_fd), &_Ty_ID(dst_dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"src", "dst", "src_dir_fd", "dst_dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "replace",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t src = PATH_T_INITIALIZE_P("replace", "src", 0, 0, 0, 0);
     path_t dst = PATH_T_INITIALIZE_P("replace", "dst", 0, 0, 0, 0);
     int src_dir_fd = DEFAULT_DIR_FD;
     int dst_dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3097,7 +3097,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_rmdir__doc__,
+TyDoc_STRVAR(os_rmdir__doc__,
 "rmdir($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -3111,46 +3111,46 @@ PyDoc_STRVAR(os_rmdir__doc__,
 #define OS_RMDIR_METHODDEF    \
     {"rmdir", _PyCFunction_CAST(os_rmdir), METH_FASTCALL|METH_KEYWORDS, os_rmdir__doc__},
 
-static PyObject *
-os_rmdir_impl(PyObject *module, path_t *path, int dir_fd);
+static TyObject *
+os_rmdir_impl(TyObject *module, path_t *path, int dir_fd);
 
-static PyObject *
-os_rmdir(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_rmdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "rmdir",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("rmdir", "path", 0, 0, 0, 0);
     int dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3176,7 +3176,7 @@ exit:
 
 #if defined(HAVE_SYSTEM) && defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_system__doc__,
+TyDoc_STRVAR(os_system__doc__,
 "system($module, /, command)\n"
 "--\n"
 "\n"
@@ -3186,65 +3186,65 @@ PyDoc_STRVAR(os_system__doc__,
     {"system", _PyCFunction_CAST(os_system), METH_FASTCALL|METH_KEYWORDS, os_system__doc__},
 
 static long
-os_system_impl(PyObject *module, const wchar_t *command);
+os_system_impl(TyObject *module, const wchar_t *command);
 
-static PyObject *
-os_system(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_system(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(command), },
+        .ob_item = { &_Ty_ID(command), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"command", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "system",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     const wchar_t *command = NULL;
     long _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("system", "argument 'command'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("system", "argument 'command'", "str", args[0]);
         goto exit;
     }
-    command = PyUnicode_AsWideCharString(args[0], NULL);
+    command = TyUnicode_AsWideCharString(args[0], NULL);
     if (command == NULL) {
         goto exit;
     }
     _return_value = os_system_impl(module, command);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     /* Cleanup for command */
-    PyMem_Free((void *)command);
+    TyMem_Free((void *)command);
 
     return return_value;
 }
@@ -3253,7 +3253,7 @@ exit:
 
 #if defined(HAVE_SYSTEM) && !defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_system__doc__,
+TyDoc_STRVAR(os_system__doc__,
 "system($module, /, command)\n"
 "--\n"
 "\n"
@@ -3263,60 +3263,60 @@ PyDoc_STRVAR(os_system__doc__,
     {"system", _PyCFunction_CAST(os_system), METH_FASTCALL|METH_KEYWORDS, os_system__doc__},
 
 static long
-os_system_impl(PyObject *module, PyObject *command);
+os_system_impl(TyObject *module, TyObject *command);
 
-static PyObject *
-os_system(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_system(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(command), },
+        .ob_item = { &_Ty_ID(command), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"command", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "system",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *command = NULL;
+    TyObject *argsbuf[1];
+    TyObject *command = NULL;
     long _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_FSConverter(args[0], &command)) {
+    if (!TyUnicode_FSConverter(args[0], &command)) {
         goto exit;
     }
     _return_value = os_system_impl(module, command);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     /* Cleanup for command */
-    Py_XDECREF(command);
+    Ty_XDECREF(command);
 
     return return_value;
 }
@@ -3325,7 +3325,7 @@ exit:
 
 #if defined(HAVE_UMASK)
 
-PyDoc_STRVAR(os_umask__doc__,
+TyDoc_STRVAR(os_umask__doc__,
 "umask($module, mask, /)\n"
 "--\n"
 "\n"
@@ -3334,17 +3334,17 @@ PyDoc_STRVAR(os_umask__doc__,
 #define OS_UMASK_METHODDEF    \
     {"umask", (PyCFunction)os_umask, METH_O, os_umask__doc__},
 
-static PyObject *
-os_umask_impl(PyObject *module, int mask);
+static TyObject *
+os_umask_impl(TyObject *module, int mask);
 
-static PyObject *
-os_umask(PyObject *module, PyObject *arg)
+static TyObject *
+os_umask(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int mask;
 
-    mask = PyLong_AsInt(arg);
-    if (mask == -1 && PyErr_Occurred()) {
+    mask = TyLong_AsInt(arg);
+    if (mask == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_umask_impl(module, mask);
@@ -3355,7 +3355,7 @@ exit:
 
 #endif /* defined(HAVE_UMASK) */
 
-PyDoc_STRVAR(os_unlink__doc__,
+TyDoc_STRVAR(os_unlink__doc__,
 "unlink($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -3369,46 +3369,46 @@ PyDoc_STRVAR(os_unlink__doc__,
 #define OS_UNLINK_METHODDEF    \
     {"unlink", _PyCFunction_CAST(os_unlink), METH_FASTCALL|METH_KEYWORDS, os_unlink__doc__},
 
-static PyObject *
-os_unlink_impl(PyObject *module, path_t *path, int dir_fd);
+static TyObject *
+os_unlink_impl(TyObject *module, path_t *path, int dir_fd);
 
-static PyObject *
-os_unlink(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_unlink(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "unlink",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("unlink", "path", 0, 0, 0, 0);
     int dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3432,7 +3432,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_remove__doc__,
+TyDoc_STRVAR(os_remove__doc__,
 "remove($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -3446,46 +3446,46 @@ PyDoc_STRVAR(os_remove__doc__,
 #define OS_REMOVE_METHODDEF    \
     {"remove", _PyCFunction_CAST(os_remove), METH_FASTCALL|METH_KEYWORDS, os_remove__doc__},
 
-static PyObject *
-os_remove_impl(PyObject *module, path_t *path, int dir_fd);
+static TyObject *
+os_remove_impl(TyObject *module, path_t *path, int dir_fd);
 
-static PyObject *
-os_remove(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_remove(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "remove",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("remove", "path", 0, 0, 0, 0);
     int dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3511,7 +3511,7 @@ exit:
 
 #if defined(HAVE_UNAME)
 
-PyDoc_STRVAR(os_uname__doc__,
+TyDoc_STRVAR(os_uname__doc__,
 "uname($module, /)\n"
 "--\n"
 "\n"
@@ -3523,18 +3523,18 @@ PyDoc_STRVAR(os_uname__doc__,
 #define OS_UNAME_METHODDEF    \
     {"uname", (PyCFunction)os_uname, METH_NOARGS, os_uname__doc__},
 
-static PyObject *
-os_uname_impl(PyObject *module);
+static TyObject *
+os_uname_impl(TyObject *module);
 
-static PyObject *
-os_uname(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_uname(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_uname_impl(module);
 }
 
 #endif /* defined(HAVE_UNAME) */
 
-PyDoc_STRVAR(os_utime__doc__,
+TyDoc_STRVAR(os_utime__doc__,
 "utime($module, /, path, times=None, *, ns=<unrepresentable>,\n"
 "      dir_fd=None, follow_symlinks=True)\n"
 "--\n"
@@ -3566,50 +3566,50 @@ PyDoc_STRVAR(os_utime__doc__,
 #define OS_UTIME_METHODDEF    \
     {"utime", _PyCFunction_CAST(os_utime), METH_FASTCALL|METH_KEYWORDS, os_utime__doc__},
 
-static PyObject *
-os_utime_impl(PyObject *module, path_t *path, PyObject *times, PyObject *ns,
+static TyObject *
+os_utime_impl(TyObject *module, path_t *path, TyObject *times, TyObject *ns,
               int dir_fd, int follow_symlinks);
 
-static PyObject *
-os_utime(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_utime(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(times), &_Py_ID(ns), &_Py_ID(dir_fd), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(times), &_Ty_ID(ns), &_Ty_ID(dir_fd), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "times", "ns", "dir_fd", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "utime",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("utime", "path", 0, 0, 0, PATH_UTIME_HAVE_FD);
-    PyObject *times = Py_None;
-    PyObject *ns = NULL;
+    TyObject *times = Ty_None;
+    TyObject *ns = NULL;
     int dir_fd = DEFAULT_DIR_FD;
     int follow_symlinks = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3658,7 +3658,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os__exit__doc__,
+TyDoc_STRVAR(os__exit__doc__,
 "_exit($module, /, status)\n"
 "--\n"
 "\n"
@@ -3667,50 +3667,50 @@ PyDoc_STRVAR(os__exit__doc__,
 #define OS__EXIT_METHODDEF    \
     {"_exit", _PyCFunction_CAST(os__exit), METH_FASTCALL|METH_KEYWORDS, os__exit__doc__},
 
-static PyObject *
-os__exit_impl(PyObject *module, int status);
+static TyObject *
+os__exit_impl(TyObject *module, int status);
 
-static PyObject *
-os__exit(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__exit(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(status), },
+        .ob_item = { &_Ty_ID(status), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"status", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_exit",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int status;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    status = PyLong_AsInt(args[0]);
-    if (status == -1 && PyErr_Occurred()) {
+    status = TyLong_AsInt(args[0]);
+    if (status == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os__exit_impl(module, status);
@@ -3721,7 +3721,7 @@ exit:
 
 #if defined(HAVE_EXECV)
 
-PyDoc_STRVAR(os_execv__doc__,
+TyDoc_STRVAR(os_execv__doc__,
 "execv($module, path, argv, /)\n"
 "--\n"
 "\n"
@@ -3735,17 +3735,17 @@ PyDoc_STRVAR(os_execv__doc__,
 #define OS_EXECV_METHODDEF    \
     {"execv", _PyCFunction_CAST(os_execv), METH_FASTCALL, os_execv__doc__},
 
-static PyObject *
-os_execv_impl(PyObject *module, path_t *path, PyObject *argv);
+static TyObject *
+os_execv_impl(TyObject *module, path_t *path, TyObject *argv);
 
-static PyObject *
-os_execv(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_execv(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     path_t path = PATH_T_INITIALIZE_P("execv", "path", 0, 0, 0, 0);
-    PyObject *argv;
+    TyObject *argv;
 
-    if (!_PyArg_CheckPositional("execv", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("execv", nargs, 2, 2)) {
         goto exit;
     }
     if (!path_converter(args[0], &path)) {
@@ -3765,7 +3765,7 @@ exit:
 
 #if defined(HAVE_EXECV)
 
-PyDoc_STRVAR(os_execve__doc__,
+TyDoc_STRVAR(os_execve__doc__,
 "execve($module, /, path, argv, env)\n"
 "--\n"
 "\n"
@@ -3781,46 +3781,46 @@ PyDoc_STRVAR(os_execve__doc__,
 #define OS_EXECVE_METHODDEF    \
     {"execve", _PyCFunction_CAST(os_execve), METH_FASTCALL|METH_KEYWORDS, os_execve__doc__},
 
-static PyObject *
-os_execve_impl(PyObject *module, path_t *path, PyObject *argv, PyObject *env);
+static TyObject *
+os_execve_impl(TyObject *module, path_t *path, TyObject *argv, TyObject *env);
 
-static PyObject *
-os_execve(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_execve(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(argv), &_Py_ID(env), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(argv), &_Ty_ID(env), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "argv", "env", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "execve",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
+    TyObject *argsbuf[3];
     path_t path = PATH_T_INITIALIZE_P("execve", "path", 0, 0, 0, PATH_HAVE_FEXECVE);
-    PyObject *argv;
-    PyObject *env;
+    TyObject *argv;
+    TyObject *env;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3843,7 +3843,7 @@ exit:
 
 #if defined(HAVE_POSIX_SPAWN)
 
-PyDoc_STRVAR(os_posix_spawn__doc__,
+TyDoc_STRVAR(os_posix_spawn__doc__,
 "posix_spawn($module, path, argv, env, /, *, file_actions=(),\n"
 "            setpgroup=<unrepresentable>, resetids=False, setsid=False,\n"
 "            setsigmask=(), setsigdef=(), scheduler=<unrepresentable>)\n"
@@ -3875,58 +3875,58 @@ PyDoc_STRVAR(os_posix_spawn__doc__,
 #define OS_POSIX_SPAWN_METHODDEF    \
     {"posix_spawn", _PyCFunction_CAST(os_posix_spawn), METH_FASTCALL|METH_KEYWORDS, os_posix_spawn__doc__},
 
-static PyObject *
-os_posix_spawn_impl(PyObject *module, path_t *path, PyObject *argv,
-                    PyObject *env, PyObject *file_actions,
-                    PyObject *setpgroup, int resetids, int setsid,
-                    PyObject *setsigmask, PyObject *setsigdef,
-                    PyObject *scheduler);
+static TyObject *
+os_posix_spawn_impl(TyObject *module, path_t *path, TyObject *argv,
+                    TyObject *env, TyObject *file_actions,
+                    TyObject *setpgroup, int resetids, int setsid,
+                    TyObject *setsigmask, TyObject *setsigdef,
+                    TyObject *scheduler);
 
-static PyObject *
-os_posix_spawn(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_posix_spawn(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 7
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(file_actions), &_Py_ID(setpgroup), &_Py_ID(resetids), &_Py_ID(setsid), &_Py_ID(setsigmask), &_Py_ID(setsigdef), &_Py_ID(scheduler), },
+        .ob_item = { &_Ty_ID(file_actions), &_Ty_ID(setpgroup), &_Ty_ID(resetids), &_Ty_ID(setsid), &_Ty_ID(setsigmask), &_Ty_ID(setsigdef), &_Ty_ID(scheduler), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "", "", "file_actions", "setpgroup", "resetids", "setsid", "setsigmask", "setsigdef", "scheduler", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "posix_spawn",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[10];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *argsbuf[10];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
     path_t path = PATH_T_INITIALIZE_P("posix_spawn", "path", 0, 0, 0, 0);
-    PyObject *argv;
-    PyObject *env;
-    PyObject *file_actions = NULL;
-    PyObject *setpgroup = NULL;
+    TyObject *argv;
+    TyObject *env;
+    TyObject *file_actions = NULL;
+    TyObject *setpgroup = NULL;
     int resetids = 0;
     int setsid = 0;
-    PyObject *setsigmask = NULL;
-    PyObject *setsigdef = NULL;
-    PyObject *scheduler = NULL;
+    TyObject *setsigmask = NULL;
+    TyObject *setsigdef = NULL;
+    TyObject *scheduler = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3996,7 +3996,7 @@ exit:
 
 #if defined(HAVE_POSIX_SPAWNP)
 
-PyDoc_STRVAR(os_posix_spawnp__doc__,
+TyDoc_STRVAR(os_posix_spawnp__doc__,
 "posix_spawnp($module, path, argv, env, /, *, file_actions=(),\n"
 "             setpgroup=<unrepresentable>, resetids=False, setsid=False,\n"
 "             setsigmask=(), setsigdef=(), scheduler=<unrepresentable>)\n"
@@ -4028,58 +4028,58 @@ PyDoc_STRVAR(os_posix_spawnp__doc__,
 #define OS_POSIX_SPAWNP_METHODDEF    \
     {"posix_spawnp", _PyCFunction_CAST(os_posix_spawnp), METH_FASTCALL|METH_KEYWORDS, os_posix_spawnp__doc__},
 
-static PyObject *
-os_posix_spawnp_impl(PyObject *module, path_t *path, PyObject *argv,
-                     PyObject *env, PyObject *file_actions,
-                     PyObject *setpgroup, int resetids, int setsid,
-                     PyObject *setsigmask, PyObject *setsigdef,
-                     PyObject *scheduler);
+static TyObject *
+os_posix_spawnp_impl(TyObject *module, path_t *path, TyObject *argv,
+                     TyObject *env, TyObject *file_actions,
+                     TyObject *setpgroup, int resetids, int setsid,
+                     TyObject *setsigmask, TyObject *setsigdef,
+                     TyObject *scheduler);
 
-static PyObject *
-os_posix_spawnp(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_posix_spawnp(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 7
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(file_actions), &_Py_ID(setpgroup), &_Py_ID(resetids), &_Py_ID(setsid), &_Py_ID(setsigmask), &_Py_ID(setsigdef), &_Py_ID(scheduler), },
+        .ob_item = { &_Ty_ID(file_actions), &_Ty_ID(setpgroup), &_Ty_ID(resetids), &_Ty_ID(setsid), &_Ty_ID(setsigmask), &_Ty_ID(setsigdef), &_Ty_ID(scheduler), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "", "", "file_actions", "setpgroup", "resetids", "setsid", "setsigmask", "setsigdef", "scheduler", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "posix_spawnp",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[10];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *argsbuf[10];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
     path_t path = PATH_T_INITIALIZE_P("posix_spawnp", "path", 0, 0, 0, 0);
-    PyObject *argv;
-    PyObject *env;
-    PyObject *file_actions = NULL;
-    PyObject *setpgroup = NULL;
+    TyObject *argv;
+    TyObject *env;
+    TyObject *file_actions = NULL;
+    TyObject *setpgroup = NULL;
     int resetids = 0;
     int setsid = 0;
-    PyObject *setsigmask = NULL;
-    PyObject *setsigdef = NULL;
-    PyObject *scheduler = NULL;
+    TyObject *setsigmask = NULL;
+    TyObject *setsigdef = NULL;
+    TyObject *scheduler = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -4149,7 +4149,7 @@ exit:
 
 #if (defined(HAVE_SPAWNV) || defined(HAVE_WSPAWNV) || defined(HAVE_RTPSPAWN))
 
-PyDoc_STRVAR(os_spawnv__doc__,
+TyDoc_STRVAR(os_spawnv__doc__,
 "spawnv($module, mode, path, argv, /)\n"
 "--\n"
 "\n"
@@ -4165,22 +4165,22 @@ PyDoc_STRVAR(os_spawnv__doc__,
 #define OS_SPAWNV_METHODDEF    \
     {"spawnv", _PyCFunction_CAST(os_spawnv), METH_FASTCALL, os_spawnv__doc__},
 
-static PyObject *
-os_spawnv_impl(PyObject *module, int mode, path_t *path, PyObject *argv);
+static TyObject *
+os_spawnv_impl(TyObject *module, int mode, path_t *path, TyObject *argv);
 
-static PyObject *
-os_spawnv(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_spawnv(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int mode;
     path_t path = PATH_T_INITIALIZE_P("spawnv", "path", 0, 0, 0, 0);
-    PyObject *argv;
+    TyObject *argv;
 
-    if (!_PyArg_CheckPositional("spawnv", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("spawnv", nargs, 3, 3)) {
         goto exit;
     }
-    mode = PyLong_AsInt(args[0]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[0]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!path_converter(args[1], &path)) {
@@ -4200,7 +4200,7 @@ exit:
 
 #if (defined(HAVE_SPAWNV) || defined(HAVE_WSPAWNV) || defined(HAVE_RTPSPAWN))
 
-PyDoc_STRVAR(os_spawnve__doc__,
+TyDoc_STRVAR(os_spawnve__doc__,
 "spawnve($module, mode, path, argv, env, /)\n"
 "--\n"
 "\n"
@@ -4218,24 +4218,24 @@ PyDoc_STRVAR(os_spawnve__doc__,
 #define OS_SPAWNVE_METHODDEF    \
     {"spawnve", _PyCFunction_CAST(os_spawnve), METH_FASTCALL, os_spawnve__doc__},
 
-static PyObject *
-os_spawnve_impl(PyObject *module, int mode, path_t *path, PyObject *argv,
-                PyObject *env);
+static TyObject *
+os_spawnve_impl(TyObject *module, int mode, path_t *path, TyObject *argv,
+                TyObject *env);
 
-static PyObject *
-os_spawnve(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_spawnve(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int mode;
     path_t path = PATH_T_INITIALIZE_P("spawnve", "path", 0, 0, 0, 0);
-    PyObject *argv;
-    PyObject *env;
+    TyObject *argv;
+    TyObject *env;
 
-    if (!_PyArg_CheckPositional("spawnve", nargs, 4, 4)) {
+    if (!_TyArg_CheckPositional("spawnve", nargs, 4, 4)) {
         goto exit;
     }
-    mode = PyLong_AsInt(args[0]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[0]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!path_converter(args[1], &path)) {
@@ -4256,7 +4256,7 @@ exit:
 
 #if defined(HAVE_FORK)
 
-PyDoc_STRVAR(os_register_at_fork__doc__,
+TyDoc_STRVAR(os_register_at_fork__doc__,
 "register_at_fork($module, /, *, before=<unrepresentable>,\n"
 "                 after_in_child=<unrepresentable>,\n"
 "                 after_in_parent=<unrepresentable>)\n"
@@ -4277,48 +4277,48 @@ PyDoc_STRVAR(os_register_at_fork__doc__,
 #define OS_REGISTER_AT_FORK_METHODDEF    \
     {"register_at_fork", _PyCFunction_CAST(os_register_at_fork), METH_FASTCALL|METH_KEYWORDS, os_register_at_fork__doc__},
 
-static PyObject *
-os_register_at_fork_impl(PyObject *module, PyObject *before,
-                         PyObject *after_in_child, PyObject *after_in_parent);
+static TyObject *
+os_register_at_fork_impl(TyObject *module, TyObject *before,
+                         TyObject *after_in_child, TyObject *after_in_parent);
 
-static PyObject *
-os_register_at_fork(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_register_at_fork(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(before), &_Py_ID(after_in_child), &_Py_ID(after_in_parent), },
+        .ob_item = { &_Ty_ID(before), &_Ty_ID(after_in_child), &_Ty_ID(after_in_parent), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"before", "after_in_child", "after_in_parent", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "register_at_fork",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *before = NULL;
-    PyObject *after_in_child = NULL;
-    PyObject *after_in_parent = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *before = NULL;
+    TyObject *after_in_child = NULL;
+    TyObject *after_in_parent = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -4350,7 +4350,7 @@ exit:
 
 #if defined(HAVE_FORK1)
 
-PyDoc_STRVAR(os_fork1__doc__,
+TyDoc_STRVAR(os_fork1__doc__,
 "fork1($module, /)\n"
 "--\n"
 "\n"
@@ -4361,11 +4361,11 @@ PyDoc_STRVAR(os_fork1__doc__,
 #define OS_FORK1_METHODDEF    \
     {"fork1", (PyCFunction)os_fork1, METH_NOARGS, os_fork1__doc__},
 
-static PyObject *
-os_fork1_impl(PyObject *module);
+static TyObject *
+os_fork1_impl(TyObject *module);
 
-static PyObject *
-os_fork1(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_fork1(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_fork1_impl(module);
 }
@@ -4374,7 +4374,7 @@ os_fork1(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_FORK)
 
-PyDoc_STRVAR(os_fork__doc__,
+TyDoc_STRVAR(os_fork__doc__,
 "fork($module, /)\n"
 "--\n"
 "\n"
@@ -4385,11 +4385,11 @@ PyDoc_STRVAR(os_fork__doc__,
 #define OS_FORK_METHODDEF    \
     {"fork", (PyCFunction)os_fork, METH_NOARGS, os_fork__doc__},
 
-static PyObject *
-os_fork_impl(PyObject *module);
+static TyObject *
+os_fork_impl(TyObject *module);
 
-static PyObject *
-os_fork(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_fork(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_fork_impl(module);
 }
@@ -4398,7 +4398,7 @@ os_fork(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_GET_PRIORITY_MAX)
 
-PyDoc_STRVAR(os_sched_get_priority_max__doc__,
+TyDoc_STRVAR(os_sched_get_priority_max__doc__,
 "sched_get_priority_max($module, /, policy)\n"
 "--\n"
 "\n"
@@ -4407,50 +4407,50 @@ PyDoc_STRVAR(os_sched_get_priority_max__doc__,
 #define OS_SCHED_GET_PRIORITY_MAX_METHODDEF    \
     {"sched_get_priority_max", _PyCFunction_CAST(os_sched_get_priority_max), METH_FASTCALL|METH_KEYWORDS, os_sched_get_priority_max__doc__},
 
-static PyObject *
-os_sched_get_priority_max_impl(PyObject *module, int policy);
+static TyObject *
+os_sched_get_priority_max_impl(TyObject *module, int policy);
 
-static PyObject *
-os_sched_get_priority_max(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_sched_get_priority_max(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(policy), },
+        .ob_item = { &_Ty_ID(policy), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"policy", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "sched_get_priority_max",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int policy;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    policy = PyLong_AsInt(args[0]);
-    if (policy == -1 && PyErr_Occurred()) {
+    policy = TyLong_AsInt(args[0]);
+    if (policy == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_sched_get_priority_max_impl(module, policy);
@@ -4463,7 +4463,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_GET_PRIORITY_MAX)
 
-PyDoc_STRVAR(os_sched_get_priority_min__doc__,
+TyDoc_STRVAR(os_sched_get_priority_min__doc__,
 "sched_get_priority_min($module, /, policy)\n"
 "--\n"
 "\n"
@@ -4472,50 +4472,50 @@ PyDoc_STRVAR(os_sched_get_priority_min__doc__,
 #define OS_SCHED_GET_PRIORITY_MIN_METHODDEF    \
     {"sched_get_priority_min", _PyCFunction_CAST(os_sched_get_priority_min), METH_FASTCALL|METH_KEYWORDS, os_sched_get_priority_min__doc__},
 
-static PyObject *
-os_sched_get_priority_min_impl(PyObject *module, int policy);
+static TyObject *
+os_sched_get_priority_min_impl(TyObject *module, int policy);
 
-static PyObject *
-os_sched_get_priority_min(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_sched_get_priority_min(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(policy), },
+        .ob_item = { &_Ty_ID(policy), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"policy", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "sched_get_priority_min",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int policy;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    policy = PyLong_AsInt(args[0]);
-    if (policy == -1 && PyErr_Occurred()) {
+    policy = TyLong_AsInt(args[0]);
+    if (policy == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_sched_get_priority_min_impl(module, policy);
@@ -4528,7 +4528,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETSCHEDULER)
 
-PyDoc_STRVAR(os_sched_getscheduler__doc__,
+TyDoc_STRVAR(os_sched_getscheduler__doc__,
 "sched_getscheduler($module, pid, /)\n"
 "--\n"
 "\n"
@@ -4539,17 +4539,17 @@ PyDoc_STRVAR(os_sched_getscheduler__doc__,
 #define OS_SCHED_GETSCHEDULER_METHODDEF    \
     {"sched_getscheduler", (PyCFunction)os_sched_getscheduler, METH_O, os_sched_getscheduler__doc__},
 
-static PyObject *
-os_sched_getscheduler_impl(PyObject *module, pid_t pid);
+static TyObject *
+os_sched_getscheduler_impl(TyObject *module, pid_t pid);
 
-static PyObject *
-os_sched_getscheduler(PyObject *module, PyObject *arg)
+static TyObject *
+os_sched_getscheduler(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
 
-    pid = PyLong_AsPid(arg);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(arg);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_sched_getscheduler_impl(module, pid);
@@ -4562,7 +4562,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && (defined(HAVE_SCHED_SETPARAM) || defined(HAVE_SCHED_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDPARAM))
 
-PyDoc_STRVAR(os_sched_param__doc__,
+TyDoc_STRVAR(os_sched_param__doc__,
 "sched_param(sched_priority)\n"
 "--\n"
 "\n"
@@ -4571,46 +4571,46 @@ PyDoc_STRVAR(os_sched_param__doc__,
 "  sched_priority\n"
 "    A scheduling parameter.");
 
-static PyObject *
-os_sched_param_impl(PyTypeObject *type, PyObject *sched_priority);
+static TyObject *
+os_sched_param_impl(TyTypeObject *type, TyObject *sched_priority);
 
-static PyObject *
-os_sched_param(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+os_sched_param(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(sched_priority), },
+        .ob_item = { &_Ty_ID(sched_priority), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"sched_priority", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "sched_param",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    PyObject *sched_priority;
+    TyObject *argsbuf[1];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    TyObject *sched_priority;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -4626,7 +4626,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETSCHEDULER)
 
-PyDoc_STRVAR(os_sched_setscheduler__doc__,
+TyDoc_STRVAR(os_sched_setscheduler__doc__,
 "sched_setscheduler($module, pid, policy, param, /)\n"
 "--\n"
 "\n"
@@ -4638,27 +4638,27 @@ PyDoc_STRVAR(os_sched_setscheduler__doc__,
 #define OS_SCHED_SETSCHEDULER_METHODDEF    \
     {"sched_setscheduler", _PyCFunction_CAST(os_sched_setscheduler), METH_FASTCALL, os_sched_setscheduler__doc__},
 
-static PyObject *
-os_sched_setscheduler_impl(PyObject *module, pid_t pid, int policy,
-                           PyObject *param_obj);
+static TyObject *
+os_sched_setscheduler_impl(TyObject *module, pid_t pid, int policy,
+                           TyObject *param_obj);
 
-static PyObject *
-os_sched_setscheduler(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_sched_setscheduler(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
     int policy;
-    PyObject *param_obj;
+    TyObject *param_obj;
 
-    if (!_PyArg_CheckPositional("sched_setscheduler", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("sched_setscheduler", nargs, 3, 3)) {
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
-    policy = PyLong_AsInt(args[1]);
-    if (policy == -1 && PyErr_Occurred()) {
+    policy = TyLong_AsInt(args[1]);
+    if (policy == -1 && TyErr_Occurred()) {
         goto exit;
     }
     param_obj = args[2];
@@ -4672,7 +4672,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETPARAM)
 
-PyDoc_STRVAR(os_sched_getparam__doc__,
+TyDoc_STRVAR(os_sched_getparam__doc__,
 "sched_getparam($module, pid, /)\n"
 "--\n"
 "\n"
@@ -4684,17 +4684,17 @@ PyDoc_STRVAR(os_sched_getparam__doc__,
 #define OS_SCHED_GETPARAM_METHODDEF    \
     {"sched_getparam", (PyCFunction)os_sched_getparam, METH_O, os_sched_getparam__doc__},
 
-static PyObject *
-os_sched_getparam_impl(PyObject *module, pid_t pid);
+static TyObject *
+os_sched_getparam_impl(TyObject *module, pid_t pid);
 
-static PyObject *
-os_sched_getparam(PyObject *module, PyObject *arg)
+static TyObject *
+os_sched_getparam(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
 
-    pid = PyLong_AsPid(arg);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(arg);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_sched_getparam_impl(module, pid);
@@ -4707,7 +4707,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETPARAM)
 
-PyDoc_STRVAR(os_sched_setparam__doc__,
+TyDoc_STRVAR(os_sched_setparam__doc__,
 "sched_setparam($module, pid, param, /)\n"
 "--\n"
 "\n"
@@ -4719,21 +4719,21 @@ PyDoc_STRVAR(os_sched_setparam__doc__,
 #define OS_SCHED_SETPARAM_METHODDEF    \
     {"sched_setparam", _PyCFunction_CAST(os_sched_setparam), METH_FASTCALL, os_sched_setparam__doc__},
 
-static PyObject *
-os_sched_setparam_impl(PyObject *module, pid_t pid, PyObject *param_obj);
+static TyObject *
+os_sched_setparam_impl(TyObject *module, pid_t pid, TyObject *param_obj);
 
-static PyObject *
-os_sched_setparam(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_sched_setparam(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
-    PyObject *param_obj;
+    TyObject *param_obj;
 
-    if (!_PyArg_CheckPositional("sched_setparam", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("sched_setparam", nargs, 2, 2)) {
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     param_obj = args[1];
@@ -4747,7 +4747,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_RR_GET_INTERVAL)
 
-PyDoc_STRVAR(os_sched_rr_get_interval__doc__,
+TyDoc_STRVAR(os_sched_rr_get_interval__doc__,
 "sched_rr_get_interval($module, pid, /)\n"
 "--\n"
 "\n"
@@ -4759,24 +4759,24 @@ PyDoc_STRVAR(os_sched_rr_get_interval__doc__,
     {"sched_rr_get_interval", (PyCFunction)os_sched_rr_get_interval, METH_O, os_sched_rr_get_interval__doc__},
 
 static double
-os_sched_rr_get_interval_impl(PyObject *module, pid_t pid);
+os_sched_rr_get_interval_impl(TyObject *module, pid_t pid);
 
-static PyObject *
-os_sched_rr_get_interval(PyObject *module, PyObject *arg)
+static TyObject *
+os_sched_rr_get_interval(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
     double _return_value;
 
-    pid = PyLong_AsPid(arg);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(arg);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_sched_rr_get_interval_impl(module, pid);
-    if ((_return_value == -1.0) && PyErr_Occurred()) {
+    if ((_return_value == -1.0) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyFloat_FromDouble(_return_value);
+    return_value = TyFloat_FromDouble(_return_value);
 
 exit:
     return return_value;
@@ -4786,7 +4786,7 @@ exit:
 
 #if defined(HAVE_SCHED_H)
 
-PyDoc_STRVAR(os_sched_yield__doc__,
+TyDoc_STRVAR(os_sched_yield__doc__,
 "sched_yield($module, /)\n"
 "--\n"
 "\n"
@@ -4795,11 +4795,11 @@ PyDoc_STRVAR(os_sched_yield__doc__,
 #define OS_SCHED_YIELD_METHODDEF    \
     {"sched_yield", (PyCFunction)os_sched_yield, METH_NOARGS, os_sched_yield__doc__},
 
-static PyObject *
-os_sched_yield_impl(PyObject *module);
+static TyObject *
+os_sched_yield_impl(TyObject *module);
 
-static PyObject *
-os_sched_yield(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_sched_yield(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_sched_yield_impl(module);
 }
@@ -4808,7 +4808,7 @@ os_sched_yield(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETAFFINITY)
 
-PyDoc_STRVAR(os_sched_setaffinity__doc__,
+TyDoc_STRVAR(os_sched_setaffinity__doc__,
 "sched_setaffinity($module, pid, mask, /)\n"
 "--\n"
 "\n"
@@ -4819,21 +4819,21 @@ PyDoc_STRVAR(os_sched_setaffinity__doc__,
 #define OS_SCHED_SETAFFINITY_METHODDEF    \
     {"sched_setaffinity", _PyCFunction_CAST(os_sched_setaffinity), METH_FASTCALL, os_sched_setaffinity__doc__},
 
-static PyObject *
-os_sched_setaffinity_impl(PyObject *module, pid_t pid, PyObject *mask);
+static TyObject *
+os_sched_setaffinity_impl(TyObject *module, pid_t pid, TyObject *mask);
 
-static PyObject *
-os_sched_setaffinity(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_sched_setaffinity(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
-    PyObject *mask;
+    TyObject *mask;
 
-    if (!_PyArg_CheckPositional("sched_setaffinity", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("sched_setaffinity", nargs, 2, 2)) {
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     mask = args[1];
@@ -4847,7 +4847,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETAFFINITY)
 
-PyDoc_STRVAR(os_sched_getaffinity__doc__,
+TyDoc_STRVAR(os_sched_getaffinity__doc__,
 "sched_getaffinity($module, pid, /)\n"
 "--\n"
 "\n"
@@ -4858,17 +4858,17 @@ PyDoc_STRVAR(os_sched_getaffinity__doc__,
 #define OS_SCHED_GETAFFINITY_METHODDEF    \
     {"sched_getaffinity", (PyCFunction)os_sched_getaffinity, METH_O, os_sched_getaffinity__doc__},
 
-static PyObject *
-os_sched_getaffinity_impl(PyObject *module, pid_t pid);
+static TyObject *
+os_sched_getaffinity_impl(TyObject *module, pid_t pid);
 
-static PyObject *
-os_sched_getaffinity(PyObject *module, PyObject *arg)
+static TyObject *
+os_sched_getaffinity(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
 
-    pid = PyLong_AsPid(arg);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(arg);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_sched_getaffinity_impl(module, pid);
@@ -4881,7 +4881,7 @@ exit:
 
 #if defined(HAVE_POSIX_OPENPT)
 
-PyDoc_STRVAR(os_posix_openpt__doc__,
+TyDoc_STRVAR(os_posix_openpt__doc__,
 "posix_openpt($module, oflag, /)\n"
 "--\n"
 "\n"
@@ -4895,24 +4895,24 @@ PyDoc_STRVAR(os_posix_openpt__doc__,
     {"posix_openpt", (PyCFunction)os_posix_openpt, METH_O, os_posix_openpt__doc__},
 
 static int
-os_posix_openpt_impl(PyObject *module, int oflag);
+os_posix_openpt_impl(TyObject *module, int oflag);
 
-static PyObject *
-os_posix_openpt(PyObject *module, PyObject *arg)
+static TyObject *
+os_posix_openpt(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int oflag;
     int _return_value;
 
-    oflag = PyLong_AsInt(arg);
-    if (oflag == -1 && PyErr_Occurred()) {
+    oflag = TyLong_AsInt(arg);
+    if (oflag == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_posix_openpt_impl(module, oflag);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -4922,7 +4922,7 @@ exit:
 
 #if defined(HAVE_GRANTPT)
 
-PyDoc_STRVAR(os_grantpt__doc__,
+TyDoc_STRVAR(os_grantpt__doc__,
 "grantpt($module, fd, /)\n"
 "--\n"
 "\n"
@@ -4936,13 +4936,13 @@ PyDoc_STRVAR(os_grantpt__doc__,
 #define OS_GRANTPT_METHODDEF    \
     {"grantpt", (PyCFunction)os_grantpt, METH_O, os_grantpt__doc__},
 
-static PyObject *
-os_grantpt_impl(PyObject *module, int fd);
+static TyObject *
+os_grantpt_impl(TyObject *module, int fd);
 
-static PyObject *
-os_grantpt(PyObject *module, PyObject *arg)
+static TyObject *
+os_grantpt(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
     fd = PyObject_AsFileDescriptor(arg);
@@ -4959,7 +4959,7 @@ exit:
 
 #if defined(HAVE_UNLOCKPT)
 
-PyDoc_STRVAR(os_unlockpt__doc__,
+TyDoc_STRVAR(os_unlockpt__doc__,
 "unlockpt($module, fd, /)\n"
 "--\n"
 "\n"
@@ -4973,13 +4973,13 @@ PyDoc_STRVAR(os_unlockpt__doc__,
 #define OS_UNLOCKPT_METHODDEF    \
     {"unlockpt", (PyCFunction)os_unlockpt, METH_O, os_unlockpt__doc__},
 
-static PyObject *
-os_unlockpt_impl(PyObject *module, int fd);
+static TyObject *
+os_unlockpt_impl(TyObject *module, int fd);
 
-static PyObject *
-os_unlockpt(PyObject *module, PyObject *arg)
+static TyObject *
+os_unlockpt(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
     fd = PyObject_AsFileDescriptor(arg);
@@ -4996,7 +4996,7 @@ exit:
 
 #if (defined(HAVE_PTSNAME) || defined(HAVE_PTSNAME_R))
 
-PyDoc_STRVAR(os_ptsname__doc__,
+TyDoc_STRVAR(os_ptsname__doc__,
 "ptsname($module, fd, /)\n"
 "--\n"
 "\n"
@@ -5011,13 +5011,13 @@ PyDoc_STRVAR(os_ptsname__doc__,
 #define OS_PTSNAME_METHODDEF    \
     {"ptsname", (PyCFunction)os_ptsname, METH_O, os_ptsname__doc__},
 
-static PyObject *
-os_ptsname_impl(PyObject *module, int fd);
+static TyObject *
+os_ptsname_impl(TyObject *module, int fd);
 
-static PyObject *
-os_ptsname(PyObject *module, PyObject *arg)
+static TyObject *
+os_ptsname(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
     fd = PyObject_AsFileDescriptor(arg);
@@ -5034,7 +5034,7 @@ exit:
 
 #if (defined(HAVE_OPENPTY) || defined(HAVE__GETPTY) || defined(HAVE_DEV_PTMX))
 
-PyDoc_STRVAR(os_openpty__doc__,
+TyDoc_STRVAR(os_openpty__doc__,
 "openpty($module, /)\n"
 "--\n"
 "\n"
@@ -5046,11 +5046,11 @@ PyDoc_STRVAR(os_openpty__doc__,
 #define OS_OPENPTY_METHODDEF    \
     {"openpty", (PyCFunction)os_openpty, METH_NOARGS, os_openpty__doc__},
 
-static PyObject *
-os_openpty_impl(PyObject *module);
+static TyObject *
+os_openpty_impl(TyObject *module);
 
-static PyObject *
-os_openpty(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_openpty(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_openpty_impl(module);
 }
@@ -5059,7 +5059,7 @@ os_openpty(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if (defined(HAVE_LOGIN_TTY) || defined(HAVE_FALLBACK_LOGIN_TTY))
 
-PyDoc_STRVAR(os_login_tty__doc__,
+TyDoc_STRVAR(os_login_tty__doc__,
 "login_tty($module, fd, /)\n"
 "--\n"
 "\n"
@@ -5072,13 +5072,13 @@ PyDoc_STRVAR(os_login_tty__doc__,
 #define OS_LOGIN_TTY_METHODDEF    \
     {"login_tty", (PyCFunction)os_login_tty, METH_O, os_login_tty__doc__},
 
-static PyObject *
-os_login_tty_impl(PyObject *module, int fd);
+static TyObject *
+os_login_tty_impl(TyObject *module, int fd);
 
-static PyObject *
-os_login_tty(PyObject *module, PyObject *arg)
+static TyObject *
+os_login_tty(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
     fd = PyObject_AsFileDescriptor(arg);
@@ -5095,7 +5095,7 @@ exit:
 
 #if defined(HAVE_FORKPTY)
 
-PyDoc_STRVAR(os_forkpty__doc__,
+TyDoc_STRVAR(os_forkpty__doc__,
 "forkpty($module, /)\n"
 "--\n"
 "\n"
@@ -5109,11 +5109,11 @@ PyDoc_STRVAR(os_forkpty__doc__,
 #define OS_FORKPTY_METHODDEF    \
     {"forkpty", (PyCFunction)os_forkpty, METH_NOARGS, os_forkpty__doc__},
 
-static PyObject *
-os_forkpty_impl(PyObject *module);
+static TyObject *
+os_forkpty_impl(TyObject *module);
 
-static PyObject *
-os_forkpty(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_forkpty(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_forkpty_impl(module);
 }
@@ -5122,7 +5122,7 @@ os_forkpty(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETEGID)
 
-PyDoc_STRVAR(os_getegid__doc__,
+TyDoc_STRVAR(os_getegid__doc__,
 "getegid($module, /)\n"
 "--\n"
 "\n"
@@ -5131,11 +5131,11 @@ PyDoc_STRVAR(os_getegid__doc__,
 #define OS_GETEGID_METHODDEF    \
     {"getegid", (PyCFunction)os_getegid, METH_NOARGS, os_getegid__doc__},
 
-static PyObject *
-os_getegid_impl(PyObject *module);
+static TyObject *
+os_getegid_impl(TyObject *module);
 
-static PyObject *
-os_getegid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getegid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getegid_impl(module);
 }
@@ -5144,7 +5144,7 @@ os_getegid(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETEUID)
 
-PyDoc_STRVAR(os_geteuid__doc__,
+TyDoc_STRVAR(os_geteuid__doc__,
 "geteuid($module, /)\n"
 "--\n"
 "\n"
@@ -5153,11 +5153,11 @@ PyDoc_STRVAR(os_geteuid__doc__,
 #define OS_GETEUID_METHODDEF    \
     {"geteuid", (PyCFunction)os_geteuid, METH_NOARGS, os_geteuid__doc__},
 
-static PyObject *
-os_geteuid_impl(PyObject *module);
+static TyObject *
+os_geteuid_impl(TyObject *module);
 
-static PyObject *
-os_geteuid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_geteuid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_geteuid_impl(module);
 }
@@ -5166,7 +5166,7 @@ os_geteuid(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETGID)
 
-PyDoc_STRVAR(os_getgid__doc__,
+TyDoc_STRVAR(os_getgid__doc__,
 "getgid($module, /)\n"
 "--\n"
 "\n"
@@ -5175,11 +5175,11 @@ PyDoc_STRVAR(os_getgid__doc__,
 #define OS_GETGID_METHODDEF    \
     {"getgid", (PyCFunction)os_getgid, METH_NOARGS, os_getgid__doc__},
 
-static PyObject *
-os_getgid_impl(PyObject *module);
+static TyObject *
+os_getgid_impl(TyObject *module);
 
-static PyObject *
-os_getgid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getgid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getgid_impl(module);
 }
@@ -5188,7 +5188,7 @@ os_getgid(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETPID)
 
-PyDoc_STRVAR(os_getpid__doc__,
+TyDoc_STRVAR(os_getpid__doc__,
 "getpid($module, /)\n"
 "--\n"
 "\n"
@@ -5197,11 +5197,11 @@ PyDoc_STRVAR(os_getpid__doc__,
 #define OS_GETPID_METHODDEF    \
     {"getpid", (PyCFunction)os_getpid, METH_NOARGS, os_getpid__doc__},
 
-static PyObject *
-os_getpid_impl(PyObject *module);
+static TyObject *
+os_getpid_impl(TyObject *module);
 
-static PyObject *
-os_getpid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getpid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getpid_impl(module);
 }
@@ -5210,7 +5210,7 @@ os_getpid(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETGROUPLIST) && defined(__APPLE__)
 
-PyDoc_STRVAR(os_getgrouplist__doc__,
+TyDoc_STRVAR(os_getgrouplist__doc__,
 "getgrouplist($module, user, group, /)\n"
 "--\n"
 "\n"
@@ -5224,34 +5224,34 @@ PyDoc_STRVAR(os_getgrouplist__doc__,
 #define OS_GETGROUPLIST_METHODDEF    \
     {"getgrouplist", _PyCFunction_CAST(os_getgrouplist), METH_FASTCALL, os_getgrouplist__doc__},
 
-static PyObject *
-os_getgrouplist_impl(PyObject *module, const char *user, int basegid);
+static TyObject *
+os_getgrouplist_impl(TyObject *module, const char *user, int basegid);
 
-static PyObject *
-os_getgrouplist(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_getgrouplist(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *user;
     int basegid;
 
-    if (!_PyArg_CheckPositional("getgrouplist", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("getgrouplist", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("getgrouplist", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("getgrouplist", "argument 1", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t user_length;
-    user = PyUnicode_AsUTF8AndSize(args[0], &user_length);
+    Ty_ssize_t user_length;
+    user = TyUnicode_AsUTF8AndSize(args[0], &user_length);
     if (user == NULL) {
         goto exit;
     }
     if (strlen(user) != (size_t)user_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    basegid = PyLong_AsInt(args[1]);
-    if (basegid == -1 && PyErr_Occurred()) {
+    basegid = TyLong_AsInt(args[1]);
+    if (basegid == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_getgrouplist_impl(module, user, basegid);
@@ -5264,7 +5264,7 @@ exit:
 
 #if defined(HAVE_GETGROUPLIST) && !defined(__APPLE__)
 
-PyDoc_STRVAR(os_getgrouplist__doc__,
+TyDoc_STRVAR(os_getgrouplist__doc__,
 "getgrouplist($module, user, group, /)\n"
 "--\n"
 "\n"
@@ -5278,33 +5278,33 @@ PyDoc_STRVAR(os_getgrouplist__doc__,
 #define OS_GETGROUPLIST_METHODDEF    \
     {"getgrouplist", _PyCFunction_CAST(os_getgrouplist), METH_FASTCALL, os_getgrouplist__doc__},
 
-static PyObject *
-os_getgrouplist_impl(PyObject *module, const char *user, gid_t basegid);
+static TyObject *
+os_getgrouplist_impl(TyObject *module, const char *user, gid_t basegid);
 
-static PyObject *
-os_getgrouplist(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_getgrouplist(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *user;
     gid_t basegid;
 
-    if (!_PyArg_CheckPositional("getgrouplist", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("getgrouplist", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("getgrouplist", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("getgrouplist", "argument 1", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t user_length;
-    user = PyUnicode_AsUTF8AndSize(args[0], &user_length);
+    Ty_ssize_t user_length;
+    user = TyUnicode_AsUTF8AndSize(args[0], &user_length);
     if (user == NULL) {
         goto exit;
     }
     if (strlen(user) != (size_t)user_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[1], &basegid)) {
+    if (!_Ty_Gid_Converter(args[1], &basegid)) {
         goto exit;
     }
     return_value = os_getgrouplist_impl(module, user, basegid);
@@ -5317,7 +5317,7 @@ exit:
 
 #if defined(HAVE_GETGROUPS)
 
-PyDoc_STRVAR(os_getgroups__doc__,
+TyDoc_STRVAR(os_getgroups__doc__,
 "getgroups($module, /)\n"
 "--\n"
 "\n"
@@ -5326,11 +5326,11 @@ PyDoc_STRVAR(os_getgroups__doc__,
 #define OS_GETGROUPS_METHODDEF    \
     {"getgroups", (PyCFunction)os_getgroups, METH_NOARGS, os_getgroups__doc__},
 
-static PyObject *
-os_getgroups_impl(PyObject *module);
+static TyObject *
+os_getgroups_impl(TyObject *module);
 
-static PyObject *
-os_getgroups(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getgroups(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getgroups_impl(module);
 }
@@ -5339,7 +5339,7 @@ os_getgroups(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_INITGROUPS) && defined(__APPLE__)
 
-PyDoc_STRVAR(os_initgroups__doc__,
+TyDoc_STRVAR(os_initgroups__doc__,
 "initgroups($module, username, gid, /)\n"
 "--\n"
 "\n"
@@ -5352,31 +5352,31 @@ PyDoc_STRVAR(os_initgroups__doc__,
 #define OS_INITGROUPS_METHODDEF    \
     {"initgroups", _PyCFunction_CAST(os_initgroups), METH_FASTCALL, os_initgroups__doc__},
 
-static PyObject *
-os_initgroups_impl(PyObject *module, PyObject *oname, int gid);
+static TyObject *
+os_initgroups_impl(TyObject *module, TyObject *oname, int gid);
 
-static PyObject *
-os_initgroups(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_initgroups(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *oname = NULL;
+    TyObject *return_value = NULL;
+    TyObject *oname = NULL;
     int gid;
 
-    if (!_PyArg_CheckPositional("initgroups", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("initgroups", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyUnicode_FSConverter(args[0], &oname)) {
+    if (!TyUnicode_FSConverter(args[0], &oname)) {
         goto exit;
     }
-    gid = PyLong_AsInt(args[1]);
-    if (gid == -1 && PyErr_Occurred()) {
+    gid = TyLong_AsInt(args[1]);
+    if (gid == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_initgroups_impl(module, oname, gid);
 
 exit:
     /* Cleanup for oname */
-    Py_XDECREF(oname);
+    Ty_XDECREF(oname);
 
     return return_value;
 }
@@ -5385,7 +5385,7 @@ exit:
 
 #if defined(HAVE_INITGROUPS) && !defined(__APPLE__)
 
-PyDoc_STRVAR(os_initgroups__doc__,
+TyDoc_STRVAR(os_initgroups__doc__,
 "initgroups($module, username, gid, /)\n"
 "--\n"
 "\n"
@@ -5398,30 +5398,30 @@ PyDoc_STRVAR(os_initgroups__doc__,
 #define OS_INITGROUPS_METHODDEF    \
     {"initgroups", _PyCFunction_CAST(os_initgroups), METH_FASTCALL, os_initgroups__doc__},
 
-static PyObject *
-os_initgroups_impl(PyObject *module, PyObject *oname, gid_t gid);
+static TyObject *
+os_initgroups_impl(TyObject *module, TyObject *oname, gid_t gid);
 
-static PyObject *
-os_initgroups(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_initgroups(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *oname = NULL;
+    TyObject *return_value = NULL;
+    TyObject *oname = NULL;
     gid_t gid;
 
-    if (!_PyArg_CheckPositional("initgroups", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("initgroups", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyUnicode_FSConverter(args[0], &oname)) {
+    if (!TyUnicode_FSConverter(args[0], &oname)) {
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[1], &gid)) {
+    if (!_Ty_Gid_Converter(args[1], &gid)) {
         goto exit;
     }
     return_value = os_initgroups_impl(module, oname, gid);
 
 exit:
     /* Cleanup for oname */
-    Py_XDECREF(oname);
+    Ty_XDECREF(oname);
 
     return return_value;
 }
@@ -5430,7 +5430,7 @@ exit:
 
 #if defined(HAVE_GETPGID)
 
-PyDoc_STRVAR(os_getpgid__doc__,
+TyDoc_STRVAR(os_getpgid__doc__,
 "getpgid($module, /, pid)\n"
 "--\n"
 "\n"
@@ -5439,50 +5439,50 @@ PyDoc_STRVAR(os_getpgid__doc__,
 #define OS_GETPGID_METHODDEF    \
     {"getpgid", _PyCFunction_CAST(os_getpgid), METH_FASTCALL|METH_KEYWORDS, os_getpgid__doc__},
 
-static PyObject *
-os_getpgid_impl(PyObject *module, pid_t pid);
+static TyObject *
+os_getpgid_impl(TyObject *module, pid_t pid);
 
-static PyObject *
-os_getpgid(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_getpgid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(pid), },
+        .ob_item = { &_Ty_ID(pid), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"pid", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "getpgid",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     pid_t pid;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_getpgid_impl(module, pid);
@@ -5495,7 +5495,7 @@ exit:
 
 #if defined(HAVE_GETPGRP)
 
-PyDoc_STRVAR(os_getpgrp__doc__,
+TyDoc_STRVAR(os_getpgrp__doc__,
 "getpgrp($module, /)\n"
 "--\n"
 "\n"
@@ -5504,11 +5504,11 @@ PyDoc_STRVAR(os_getpgrp__doc__,
 #define OS_GETPGRP_METHODDEF    \
     {"getpgrp", (PyCFunction)os_getpgrp, METH_NOARGS, os_getpgrp__doc__},
 
-static PyObject *
-os_getpgrp_impl(PyObject *module);
+static TyObject *
+os_getpgrp_impl(TyObject *module);
 
-static PyObject *
-os_getpgrp(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getpgrp(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getpgrp_impl(module);
 }
@@ -5517,7 +5517,7 @@ os_getpgrp(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SETPGRP)
 
-PyDoc_STRVAR(os_setpgrp__doc__,
+TyDoc_STRVAR(os_setpgrp__doc__,
 "setpgrp($module, /)\n"
 "--\n"
 "\n"
@@ -5526,11 +5526,11 @@ PyDoc_STRVAR(os_setpgrp__doc__,
 #define OS_SETPGRP_METHODDEF    \
     {"setpgrp", (PyCFunction)os_setpgrp, METH_NOARGS, os_setpgrp__doc__},
 
-static PyObject *
-os_setpgrp_impl(PyObject *module);
+static TyObject *
+os_setpgrp_impl(TyObject *module);
 
-static PyObject *
-os_setpgrp(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_setpgrp(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_setpgrp_impl(module);
 }
@@ -5539,7 +5539,7 @@ os_setpgrp(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETPPID)
 
-PyDoc_STRVAR(os_getppid__doc__,
+TyDoc_STRVAR(os_getppid__doc__,
 "getppid($module, /)\n"
 "--\n"
 "\n"
@@ -5551,11 +5551,11 @@ PyDoc_STRVAR(os_getppid__doc__,
 #define OS_GETPPID_METHODDEF    \
     {"getppid", (PyCFunction)os_getppid, METH_NOARGS, os_getppid__doc__},
 
-static PyObject *
-os_getppid_impl(PyObject *module);
+static TyObject *
+os_getppid_impl(TyObject *module);
 
-static PyObject *
-os_getppid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getppid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getppid_impl(module);
 }
@@ -5564,7 +5564,7 @@ os_getppid(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETLOGIN)
 
-PyDoc_STRVAR(os_getlogin__doc__,
+TyDoc_STRVAR(os_getlogin__doc__,
 "getlogin($module, /)\n"
 "--\n"
 "\n"
@@ -5573,11 +5573,11 @@ PyDoc_STRVAR(os_getlogin__doc__,
 #define OS_GETLOGIN_METHODDEF    \
     {"getlogin", (PyCFunction)os_getlogin, METH_NOARGS, os_getlogin__doc__},
 
-static PyObject *
-os_getlogin_impl(PyObject *module);
+static TyObject *
+os_getlogin_impl(TyObject *module);
 
-static PyObject *
-os_getlogin(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getlogin(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getlogin_impl(module);
 }
@@ -5586,7 +5586,7 @@ os_getlogin(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETUID)
 
-PyDoc_STRVAR(os_getuid__doc__,
+TyDoc_STRVAR(os_getuid__doc__,
 "getuid($module, /)\n"
 "--\n"
 "\n"
@@ -5595,11 +5595,11 @@ PyDoc_STRVAR(os_getuid__doc__,
 #define OS_GETUID_METHODDEF    \
     {"getuid", (PyCFunction)os_getuid, METH_NOARGS, os_getuid__doc__},
 
-static PyObject *
-os_getuid_impl(PyObject *module);
+static TyObject *
+os_getuid_impl(TyObject *module);
 
-static PyObject *
-os_getuid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getuid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getuid_impl(module);
 }
@@ -5608,7 +5608,7 @@ os_getuid(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_KILL)
 
-PyDoc_STRVAR(os_kill__doc__,
+TyDoc_STRVAR(os_kill__doc__,
 "kill($module, pid, signal, /)\n"
 "--\n"
 "\n"
@@ -5617,31 +5617,31 @@ PyDoc_STRVAR(os_kill__doc__,
 #define OS_KILL_METHODDEF    \
     {"kill", _PyCFunction_CAST(os_kill), METH_FASTCALL, os_kill__doc__},
 
-static PyObject *
-os_kill_impl(PyObject *module, pid_t pid, Py_ssize_t signal);
+static TyObject *
+os_kill_impl(TyObject *module, pid_t pid, Ty_ssize_t signal);
 
-static PyObject *
-os_kill(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_kill(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
-    Py_ssize_t signal;
+    Ty_ssize_t signal;
 
-    if (!_PyArg_CheckPositional("kill", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("kill", nargs, 2, 2)) {
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         signal = ival;
@@ -5656,7 +5656,7 @@ exit:
 
 #if defined(HAVE_KILLPG)
 
-PyDoc_STRVAR(os_killpg__doc__,
+TyDoc_STRVAR(os_killpg__doc__,
 "killpg($module, pgid, signal, /)\n"
 "--\n"
 "\n"
@@ -5665,25 +5665,25 @@ PyDoc_STRVAR(os_killpg__doc__,
 #define OS_KILLPG_METHODDEF    \
     {"killpg", _PyCFunction_CAST(os_killpg), METH_FASTCALL, os_killpg__doc__},
 
-static PyObject *
-os_killpg_impl(PyObject *module, pid_t pgid, int signal);
+static TyObject *
+os_killpg_impl(TyObject *module, pid_t pgid, int signal);
 
-static PyObject *
-os_killpg(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_killpg(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pgid;
     int signal;
 
-    if (!_PyArg_CheckPositional("killpg", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("killpg", nargs, 2, 2)) {
         goto exit;
     }
-    pgid = PyLong_AsPid(args[0]);
-    if (pgid == (pid_t)(-1) && PyErr_Occurred()) {
+    pgid = TyLong_AsPid(args[0]);
+    if (pgid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
-    signal = PyLong_AsInt(args[1]);
-    if (signal == -1 && PyErr_Occurred()) {
+    signal = TyLong_AsInt(args[1]);
+    if (signal == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_killpg_impl(module, pgid, signal);
@@ -5696,7 +5696,7 @@ exit:
 
 #if defined(HAVE_PLOCK)
 
-PyDoc_STRVAR(os_plock__doc__,
+TyDoc_STRVAR(os_plock__doc__,
 "plock($module, op, /)\n"
 "--\n"
 "\n"
@@ -5705,17 +5705,17 @@ PyDoc_STRVAR(os_plock__doc__,
 #define OS_PLOCK_METHODDEF    \
     {"plock", (PyCFunction)os_plock, METH_O, os_plock__doc__},
 
-static PyObject *
-os_plock_impl(PyObject *module, int op);
+static TyObject *
+os_plock_impl(TyObject *module, int op);
 
-static PyObject *
-os_plock(PyObject *module, PyObject *arg)
+static TyObject *
+os_plock(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int op;
 
-    op = PyLong_AsInt(arg);
-    if (op == -1 && PyErr_Occurred()) {
+    op = TyLong_AsInt(arg);
+    if (op == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_plock_impl(module, op);
@@ -5728,7 +5728,7 @@ exit:
 
 #if defined(HAVE_SETUID)
 
-PyDoc_STRVAR(os_setuid__doc__,
+TyDoc_STRVAR(os_setuid__doc__,
 "setuid($module, uid, /)\n"
 "--\n"
 "\n"
@@ -5737,16 +5737,16 @@ PyDoc_STRVAR(os_setuid__doc__,
 #define OS_SETUID_METHODDEF    \
     {"setuid", (PyCFunction)os_setuid, METH_O, os_setuid__doc__},
 
-static PyObject *
-os_setuid_impl(PyObject *module, uid_t uid);
+static TyObject *
+os_setuid_impl(TyObject *module, uid_t uid);
 
-static PyObject *
-os_setuid(PyObject *module, PyObject *arg)
+static TyObject *
+os_setuid(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     uid_t uid;
 
-    if (!_Py_Uid_Converter(arg, &uid)) {
+    if (!_Ty_Uid_Converter(arg, &uid)) {
         goto exit;
     }
     return_value = os_setuid_impl(module, uid);
@@ -5759,7 +5759,7 @@ exit:
 
 #if defined(HAVE_SETEUID)
 
-PyDoc_STRVAR(os_seteuid__doc__,
+TyDoc_STRVAR(os_seteuid__doc__,
 "seteuid($module, euid, /)\n"
 "--\n"
 "\n"
@@ -5768,16 +5768,16 @@ PyDoc_STRVAR(os_seteuid__doc__,
 #define OS_SETEUID_METHODDEF    \
     {"seteuid", (PyCFunction)os_seteuid, METH_O, os_seteuid__doc__},
 
-static PyObject *
-os_seteuid_impl(PyObject *module, uid_t euid);
+static TyObject *
+os_seteuid_impl(TyObject *module, uid_t euid);
 
-static PyObject *
-os_seteuid(PyObject *module, PyObject *arg)
+static TyObject *
+os_seteuid(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     uid_t euid;
 
-    if (!_Py_Uid_Converter(arg, &euid)) {
+    if (!_Ty_Uid_Converter(arg, &euid)) {
         goto exit;
     }
     return_value = os_seteuid_impl(module, euid);
@@ -5790,7 +5790,7 @@ exit:
 
 #if defined(HAVE_SETEGID)
 
-PyDoc_STRVAR(os_setegid__doc__,
+TyDoc_STRVAR(os_setegid__doc__,
 "setegid($module, egid, /)\n"
 "--\n"
 "\n"
@@ -5799,16 +5799,16 @@ PyDoc_STRVAR(os_setegid__doc__,
 #define OS_SETEGID_METHODDEF    \
     {"setegid", (PyCFunction)os_setegid, METH_O, os_setegid__doc__},
 
-static PyObject *
-os_setegid_impl(PyObject *module, gid_t egid);
+static TyObject *
+os_setegid_impl(TyObject *module, gid_t egid);
 
-static PyObject *
-os_setegid(PyObject *module, PyObject *arg)
+static TyObject *
+os_setegid(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     gid_t egid;
 
-    if (!_Py_Gid_Converter(arg, &egid)) {
+    if (!_Ty_Gid_Converter(arg, &egid)) {
         goto exit;
     }
     return_value = os_setegid_impl(module, egid);
@@ -5821,7 +5821,7 @@ exit:
 
 #if defined(HAVE_SETREUID)
 
-PyDoc_STRVAR(os_setreuid__doc__,
+TyDoc_STRVAR(os_setreuid__doc__,
 "setreuid($module, ruid, euid, /)\n"
 "--\n"
 "\n"
@@ -5830,23 +5830,23 @@ PyDoc_STRVAR(os_setreuid__doc__,
 #define OS_SETREUID_METHODDEF    \
     {"setreuid", _PyCFunction_CAST(os_setreuid), METH_FASTCALL, os_setreuid__doc__},
 
-static PyObject *
-os_setreuid_impl(PyObject *module, uid_t ruid, uid_t euid);
+static TyObject *
+os_setreuid_impl(TyObject *module, uid_t ruid, uid_t euid);
 
-static PyObject *
-os_setreuid(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_setreuid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     uid_t ruid;
     uid_t euid;
 
-    if (!_PyArg_CheckPositional("setreuid", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("setreuid", nargs, 2, 2)) {
         goto exit;
     }
-    if (!_Py_Uid_Converter(args[0], &ruid)) {
+    if (!_Ty_Uid_Converter(args[0], &ruid)) {
         goto exit;
     }
-    if (!_Py_Uid_Converter(args[1], &euid)) {
+    if (!_Ty_Uid_Converter(args[1], &euid)) {
         goto exit;
     }
     return_value = os_setreuid_impl(module, ruid, euid);
@@ -5859,7 +5859,7 @@ exit:
 
 #if defined(HAVE_SETREGID)
 
-PyDoc_STRVAR(os_setregid__doc__,
+TyDoc_STRVAR(os_setregid__doc__,
 "setregid($module, rgid, egid, /)\n"
 "--\n"
 "\n"
@@ -5868,23 +5868,23 @@ PyDoc_STRVAR(os_setregid__doc__,
 #define OS_SETREGID_METHODDEF    \
     {"setregid", _PyCFunction_CAST(os_setregid), METH_FASTCALL, os_setregid__doc__},
 
-static PyObject *
-os_setregid_impl(PyObject *module, gid_t rgid, gid_t egid);
+static TyObject *
+os_setregid_impl(TyObject *module, gid_t rgid, gid_t egid);
 
-static PyObject *
-os_setregid(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_setregid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     gid_t rgid;
     gid_t egid;
 
-    if (!_PyArg_CheckPositional("setregid", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("setregid", nargs, 2, 2)) {
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[0], &rgid)) {
+    if (!_Ty_Gid_Converter(args[0], &rgid)) {
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[1], &egid)) {
+    if (!_Ty_Gid_Converter(args[1], &egid)) {
         goto exit;
     }
     return_value = os_setregid_impl(module, rgid, egid);
@@ -5897,7 +5897,7 @@ exit:
 
 #if defined(HAVE_SETGID)
 
-PyDoc_STRVAR(os_setgid__doc__,
+TyDoc_STRVAR(os_setgid__doc__,
 "setgid($module, gid, /)\n"
 "--\n"
 "\n"
@@ -5906,16 +5906,16 @@ PyDoc_STRVAR(os_setgid__doc__,
 #define OS_SETGID_METHODDEF    \
     {"setgid", (PyCFunction)os_setgid, METH_O, os_setgid__doc__},
 
-static PyObject *
-os_setgid_impl(PyObject *module, gid_t gid);
+static TyObject *
+os_setgid_impl(TyObject *module, gid_t gid);
 
-static PyObject *
-os_setgid(PyObject *module, PyObject *arg)
+static TyObject *
+os_setgid(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     gid_t gid;
 
-    if (!_Py_Gid_Converter(arg, &gid)) {
+    if (!_Ty_Gid_Converter(arg, &gid)) {
         goto exit;
     }
     return_value = os_setgid_impl(module, gid);
@@ -5928,7 +5928,7 @@ exit:
 
 #if defined(HAVE_SETGROUPS)
 
-PyDoc_STRVAR(os_setgroups__doc__,
+TyDoc_STRVAR(os_setgroups__doc__,
 "setgroups($module, groups, /)\n"
 "--\n"
 "\n"
@@ -5941,7 +5941,7 @@ PyDoc_STRVAR(os_setgroups__doc__,
 
 #if defined(HAVE_WAIT3)
 
-PyDoc_STRVAR(os_wait3__doc__,
+TyDoc_STRVAR(os_wait3__doc__,
 "wait3($module, /, options)\n"
 "--\n"
 "\n"
@@ -5953,50 +5953,50 @@ PyDoc_STRVAR(os_wait3__doc__,
 #define OS_WAIT3_METHODDEF    \
     {"wait3", _PyCFunction_CAST(os_wait3), METH_FASTCALL|METH_KEYWORDS, os_wait3__doc__},
 
-static PyObject *
-os_wait3_impl(PyObject *module, int options);
+static TyObject *
+os_wait3_impl(TyObject *module, int options);
 
-static PyObject *
-os_wait3(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_wait3(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(options), },
+        .ob_item = { &_Ty_ID(options), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"options", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "wait3",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int options;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    options = PyLong_AsInt(args[0]);
-    if (options == -1 && PyErr_Occurred()) {
+    options = TyLong_AsInt(args[0]);
+    if (options == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_wait3_impl(module, options);
@@ -6009,7 +6009,7 @@ exit:
 
 #if defined(HAVE_WAIT4)
 
-PyDoc_STRVAR(os_wait4__doc__,
+TyDoc_STRVAR(os_wait4__doc__,
 "wait4($module, /, pid, options)\n"
 "--\n"
 "\n"
@@ -6021,55 +6021,55 @@ PyDoc_STRVAR(os_wait4__doc__,
 #define OS_WAIT4_METHODDEF    \
     {"wait4", _PyCFunction_CAST(os_wait4), METH_FASTCALL|METH_KEYWORDS, os_wait4__doc__},
 
-static PyObject *
-os_wait4_impl(PyObject *module, pid_t pid, int options);
+static TyObject *
+os_wait4_impl(TyObject *module, pid_t pid, int options);
 
-static PyObject *
-os_wait4(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_wait4(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(pid), &_Py_ID(options), },
+        .ob_item = { &_Ty_ID(pid), &_Ty_ID(options), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"pid", "options", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "wait4",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     pid_t pid;
     int options;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
-    options = PyLong_AsInt(args[1]);
-    if (options == -1 && PyErr_Occurred()) {
+    options = TyLong_AsInt(args[1]);
+    if (options == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_wait4_impl(module, pid, options);
@@ -6082,7 +6082,7 @@ exit:
 
 #if defined(HAVE_WAITID)
 
-PyDoc_STRVAR(os_waitid__doc__,
+TyDoc_STRVAR(os_waitid__doc__,
 "waitid($module, idtype, id, options, /)\n"
 "--\n"
 "\n"
@@ -6102,29 +6102,29 @@ PyDoc_STRVAR(os_waitid__doc__,
 #define OS_WAITID_METHODDEF    \
     {"waitid", _PyCFunction_CAST(os_waitid), METH_FASTCALL, os_waitid__doc__},
 
-static PyObject *
-os_waitid_impl(PyObject *module, idtype_t idtype, id_t id, int options);
+static TyObject *
+os_waitid_impl(TyObject *module, idtype_t idtype, id_t id, int options);
 
-static PyObject *
-os_waitid(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_waitid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     idtype_t idtype;
     id_t id;
     int options;
 
-    if (!_PyArg_CheckPositional("waitid", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("waitid", nargs, 3, 3)) {
         goto exit;
     }
     if (!idtype_t_converter(args[0], &idtype)) {
         goto exit;
     }
-    id = (id_t)PyLong_AsPid(args[1]);
-    if (id == (id_t)(-1) && PyErr_Occurred()) {
+    id = (id_t)TyLong_AsPid(args[1]);
+    if (id == (id_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
-    options = PyLong_AsInt(args[2]);
-    if (options == -1 && PyErr_Occurred()) {
+    options = TyLong_AsInt(args[2]);
+    if (options == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_waitid_impl(module, idtype, id, options);
@@ -6137,7 +6137,7 @@ exit:
 
 #if defined(HAVE_WAITPID)
 
-PyDoc_STRVAR(os_waitpid__doc__,
+TyDoc_STRVAR(os_waitpid__doc__,
 "waitpid($module, pid, options, /)\n"
 "--\n"
 "\n"
@@ -6151,25 +6151,25 @@ PyDoc_STRVAR(os_waitpid__doc__,
 #define OS_WAITPID_METHODDEF    \
     {"waitpid", _PyCFunction_CAST(os_waitpid), METH_FASTCALL, os_waitpid__doc__},
 
-static PyObject *
-os_waitpid_impl(PyObject *module, pid_t pid, int options);
+static TyObject *
+os_waitpid_impl(TyObject *module, pid_t pid, int options);
 
-static PyObject *
-os_waitpid(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_waitpid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
     int options;
 
-    if (!_PyArg_CheckPositional("waitpid", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("waitpid", nargs, 2, 2)) {
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
-    options = PyLong_AsInt(args[1]);
-    if (options == -1 && PyErr_Occurred()) {
+    options = TyLong_AsInt(args[1]);
+    if (options == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_waitpid_impl(module, pid, options);
@@ -6182,7 +6182,7 @@ exit:
 
 #if !defined(HAVE_WAITPID) && defined(HAVE_CWAIT)
 
-PyDoc_STRVAR(os_waitpid__doc__,
+TyDoc_STRVAR(os_waitpid__doc__,
 "waitpid($module, pid, options, /)\n"
 "--\n"
 "\n"
@@ -6196,25 +6196,25 @@ PyDoc_STRVAR(os_waitpid__doc__,
 #define OS_WAITPID_METHODDEF    \
     {"waitpid", _PyCFunction_CAST(os_waitpid), METH_FASTCALL, os_waitpid__doc__},
 
-static PyObject *
-os_waitpid_impl(PyObject *module, intptr_t pid, int options);
+static TyObject *
+os_waitpid_impl(TyObject *module, intptr_t pid, int options);
 
-static PyObject *
-os_waitpid(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_waitpid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     intptr_t pid;
     int options;
 
-    if (!_PyArg_CheckPositional("waitpid", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("waitpid", nargs, 2, 2)) {
         goto exit;
     }
-    pid = (intptr_t)PyLong_AsVoidPtr(args[0]);
-    if (!pid && PyErr_Occurred()) {
+    pid = (intptr_t)TyLong_AsVoidPtr(args[0]);
+    if (!pid && TyErr_Occurred()) {
         goto exit;
     }
-    options = PyLong_AsInt(args[1]);
-    if (options == -1 && PyErr_Occurred()) {
+    options = TyLong_AsInt(args[1]);
+    if (options == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_waitpid_impl(module, pid, options);
@@ -6227,7 +6227,7 @@ exit:
 
 #if defined(HAVE_WAIT)
 
-PyDoc_STRVAR(os_wait__doc__,
+TyDoc_STRVAR(os_wait__doc__,
 "wait($module, /)\n"
 "--\n"
 "\n"
@@ -6239,11 +6239,11 @@ PyDoc_STRVAR(os_wait__doc__,
 #define OS_WAIT_METHODDEF    \
     {"wait", (PyCFunction)os_wait, METH_NOARGS, os_wait__doc__},
 
-static PyObject *
-os_wait_impl(PyObject *module);
+static TyObject *
+os_wait_impl(TyObject *module);
 
-static PyObject *
-os_wait(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_wait(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_wait_impl(module);
 }
@@ -6252,7 +6252,7 @@ os_wait(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if (defined(__linux__) && defined(__NR_pidfd_open) && !(defined(__ANDROID__) && __ANDROID_API__ < 31))
 
-PyDoc_STRVAR(os_pidfd_open__doc__,
+TyDoc_STRVAR(os_pidfd_open__doc__,
 "pidfd_open($module, /, pid, flags=0)\n"
 "--\n"
 "\n"
@@ -6264,58 +6264,58 @@ PyDoc_STRVAR(os_pidfd_open__doc__,
 #define OS_PIDFD_OPEN_METHODDEF    \
     {"pidfd_open", _PyCFunction_CAST(os_pidfd_open), METH_FASTCALL|METH_KEYWORDS, os_pidfd_open__doc__},
 
-static PyObject *
-os_pidfd_open_impl(PyObject *module, pid_t pid, unsigned int flags);
+static TyObject *
+os_pidfd_open_impl(TyObject *module, pid_t pid, unsigned int flags);
 
-static PyObject *
-os_pidfd_open(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_pidfd_open(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(pid), &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(pid), &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"pid", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "pidfd_open",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     pid_t pid;
     unsigned int flags = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    if (!_PyLong_UnsignedInt_Converter(args[1], &flags)) {
+    if (!_TyLong_UnsignedInt_Converter(args[1], &flags)) {
         goto exit;
     }
 skip_optional_pos:
@@ -6329,7 +6329,7 @@ exit:
 
 #if defined(HAVE_SETNS)
 
-PyDoc_STRVAR(os_setns__doc__,
+TyDoc_STRVAR(os_setns__doc__,
 "setns($module, /, fd, nstype=0)\n"
 "--\n"
 "\n"
@@ -6343,46 +6343,46 @@ PyDoc_STRVAR(os_setns__doc__,
 #define OS_SETNS_METHODDEF    \
     {"setns", _PyCFunction_CAST(os_setns), METH_FASTCALL|METH_KEYWORDS, os_setns__doc__},
 
-static PyObject *
-os_setns_impl(PyObject *module, int fd, int nstype);
+static TyObject *
+os_setns_impl(TyObject *module, int fd, int nstype);
 
-static PyObject *
-os_setns(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_setns(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), &_Py_ID(nstype), },
+        .ob_item = { &_Ty_ID(fd), &_Ty_ID(nstype), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", "nstype", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "setns",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     int fd;
     int nstype = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -6394,8 +6394,8 @@ os_setns(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    nstype = PyLong_AsInt(args[1]);
-    if (nstype == -1 && PyErr_Occurred()) {
+    nstype = TyLong_AsInt(args[1]);
+    if (nstype == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -6409,7 +6409,7 @@ exit:
 
 #if defined(HAVE_UNSHARE)
 
-PyDoc_STRVAR(os_unshare__doc__,
+TyDoc_STRVAR(os_unshare__doc__,
 "unshare($module, /, flags)\n"
 "--\n"
 "\n"
@@ -6421,50 +6421,50 @@ PyDoc_STRVAR(os_unshare__doc__,
 #define OS_UNSHARE_METHODDEF    \
     {"unshare", _PyCFunction_CAST(os_unshare), METH_FASTCALL|METH_KEYWORDS, os_unshare__doc__},
 
-static PyObject *
-os_unshare_impl(PyObject *module, int flags);
+static TyObject *
+os_unshare_impl(TyObject *module, int flags);
 
-static PyObject *
-os_unshare(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_unshare(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "unshare",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int flags;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    flags = PyLong_AsInt(args[0]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[0]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_unshare_impl(module, flags);
@@ -6477,7 +6477,7 @@ exit:
 
 #if (defined(HAVE_READLINK) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(os_readlink__doc__,
+TyDoc_STRVAR(os_readlink__doc__,
 "readlink($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -6492,46 +6492,46 @@ PyDoc_STRVAR(os_readlink__doc__,
 #define OS_READLINK_METHODDEF    \
     {"readlink", _PyCFunction_CAST(os_readlink), METH_FASTCALL|METH_KEYWORDS, os_readlink__doc__},
 
-static PyObject *
-os_readlink_impl(PyObject *module, path_t *path, int dir_fd);
+static TyObject *
+os_readlink_impl(TyObject *module, path_t *path, int dir_fd);
 
-static PyObject *
-os_readlink(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_readlink(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "readlink",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("readlink", "path", 0, 0, 0, 0);
     int dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -6559,7 +6559,7 @@ exit:
 
 #if defined(HAVE_SYMLINK)
 
-PyDoc_STRVAR(os_symlink__doc__,
+TyDoc_STRVAR(os_symlink__doc__,
 "symlink($module, /, src, dst, target_is_directory=False, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -6578,49 +6578,49 @@ PyDoc_STRVAR(os_symlink__doc__,
 #define OS_SYMLINK_METHODDEF    \
     {"symlink", _PyCFunction_CAST(os_symlink), METH_FASTCALL|METH_KEYWORDS, os_symlink__doc__},
 
-static PyObject *
-os_symlink_impl(PyObject *module, path_t *src, path_t *dst,
+static TyObject *
+os_symlink_impl(TyObject *module, path_t *src, path_t *dst,
                 int target_is_directory, int dir_fd);
 
-static PyObject *
-os_symlink(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_symlink(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(src), &_Py_ID(dst), &_Py_ID(target_is_directory), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(target_is_directory), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"src", "dst", "target_is_directory", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "symlink",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t src = PATH_T_INITIALIZE_P("symlink", "src", 0, 0, 0, 0);
     path_t dst = PATH_T_INITIALIZE_P("symlink", "dst", 0, 0, 0, 0);
     int target_is_directory = 0;
     int dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -6664,7 +6664,7 @@ exit:
 
 #endif /* defined(HAVE_SYMLINK) */
 
-PyDoc_STRVAR(os_times__doc__,
+TyDoc_STRVAR(os_times__doc__,
 "times($module, /)\n"
 "--\n"
 "\n"
@@ -6677,18 +6677,18 @@ PyDoc_STRVAR(os_times__doc__,
 #define OS_TIMES_METHODDEF    \
     {"times", (PyCFunction)os_times, METH_NOARGS, os_times__doc__},
 
-static PyObject *
-os_times_impl(PyObject *module);
+static TyObject *
+os_times_impl(TyObject *module);
 
-static PyObject *
-os_times(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_times(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_times_impl(module);
 }
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_create__doc__,
+TyDoc_STRVAR(os_timerfd_create__doc__,
 "timerfd_create($module, clockid, /, *, flags=0)\n"
 "--\n"
 "\n"
@@ -6713,59 +6713,59 @@ PyDoc_STRVAR(os_timerfd_create__doc__,
 #define OS_TIMERFD_CREATE_METHODDEF    \
     {"timerfd_create", _PyCFunction_CAST(os_timerfd_create), METH_FASTCALL|METH_KEYWORDS, os_timerfd_create__doc__},
 
-static PyObject *
-os_timerfd_create_impl(PyObject *module, int clockid, int flags);
+static TyObject *
+os_timerfd_create_impl(TyObject *module, int clockid, int flags);
 
-static PyObject *
-os_timerfd_create(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_timerfd_create(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "timerfd_create",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     int clockid;
     int flags = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    clockid = PyLong_AsInt(args[0]);
-    if (clockid == -1 && PyErr_Occurred()) {
+    clockid = TyLong_AsInt(args[0]);
+    if (clockid == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    flags = PyLong_AsInt(args[1]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[1]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_kwonly:
@@ -6779,7 +6779,7 @@ exit:
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_settime__doc__,
+TyDoc_STRVAR(os_timerfd_settime__doc__,
 "timerfd_settime($module, fd, /, *, flags=0, initial=0.0, interval=0.0)\n"
 "--\n"
 "\n"
@@ -6797,49 +6797,49 @@ PyDoc_STRVAR(os_timerfd_settime__doc__,
 #define OS_TIMERFD_SETTIME_METHODDEF    \
     {"timerfd_settime", _PyCFunction_CAST(os_timerfd_settime), METH_FASTCALL|METH_KEYWORDS, os_timerfd_settime__doc__},
 
-static PyObject *
-os_timerfd_settime_impl(PyObject *module, int fd, int flags,
+static TyObject *
+os_timerfd_settime_impl(TyObject *module, int fd, int flags,
                         double initial_double, double interval_double);
 
-static PyObject *
-os_timerfd_settime(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_timerfd_settime(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(flags), &_Py_ID(initial), &_Py_ID(interval), },
+        .ob_item = { &_Ty_ID(flags), &_Ty_ID(initial), &_Ty_ID(interval), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "flags", "initial", "interval", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "timerfd_settime",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     int fd;
     int flags = 0;
     double initial_double = 0.0;
     double interval_double = 0.0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -6852,8 +6852,8 @@ os_timerfd_settime(PyObject *module, PyObject *const *args, Py_ssize_t nargs, Py
         goto skip_optional_kwonly;
     }
     if (args[1]) {
-        flags = PyLong_AsInt(args[1]);
-        if (flags == -1 && PyErr_Occurred()) {
+        flags = TyLong_AsInt(args[1]);
+        if (flags == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -6861,13 +6861,13 @@ os_timerfd_settime(PyObject *module, PyObject *const *args, Py_ssize_t nargs, Py
         }
     }
     if (args[2]) {
-        if (PyFloat_CheckExact(args[2])) {
-            initial_double = PyFloat_AS_DOUBLE(args[2]);
+        if (TyFloat_CheckExact(args[2])) {
+            initial_double = TyFloat_AS_DOUBLE(args[2]);
         }
         else
         {
-            initial_double = PyFloat_AsDouble(args[2]);
-            if (initial_double == -1.0 && PyErr_Occurred()) {
+            initial_double = TyFloat_AsDouble(args[2]);
+            if (initial_double == -1.0 && TyErr_Occurred()) {
                 goto exit;
             }
         }
@@ -6875,13 +6875,13 @@ os_timerfd_settime(PyObject *module, PyObject *const *args, Py_ssize_t nargs, Py
             goto skip_optional_kwonly;
         }
     }
-    if (PyFloat_CheckExact(args[3])) {
-        interval_double = PyFloat_AS_DOUBLE(args[3]);
+    if (TyFloat_CheckExact(args[3])) {
+        interval_double = TyFloat_AS_DOUBLE(args[3]);
     }
     else
     {
-        interval_double = PyFloat_AsDouble(args[3]);
-        if (interval_double == -1.0 && PyErr_Occurred()) {
+        interval_double = TyFloat_AsDouble(args[3]);
+        if (interval_double == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -6896,7 +6896,7 @@ exit:
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_settime_ns__doc__,
+TyDoc_STRVAR(os_timerfd_settime_ns__doc__,
 "timerfd_settime_ns($module, fd, /, *, flags=0, initial=0, interval=0)\n"
 "--\n"
 "\n"
@@ -6914,49 +6914,49 @@ PyDoc_STRVAR(os_timerfd_settime_ns__doc__,
 #define OS_TIMERFD_SETTIME_NS_METHODDEF    \
     {"timerfd_settime_ns", _PyCFunction_CAST(os_timerfd_settime_ns), METH_FASTCALL|METH_KEYWORDS, os_timerfd_settime_ns__doc__},
 
-static PyObject *
-os_timerfd_settime_ns_impl(PyObject *module, int fd, int flags,
+static TyObject *
+os_timerfd_settime_ns_impl(TyObject *module, int fd, int flags,
                            long long initial, long long interval);
 
-static PyObject *
-os_timerfd_settime_ns(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_timerfd_settime_ns(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(flags), &_Py_ID(initial), &_Py_ID(interval), },
+        .ob_item = { &_Ty_ID(flags), &_Ty_ID(initial), &_Ty_ID(interval), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "flags", "initial", "interval", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "timerfd_settime_ns",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     int fd;
     int flags = 0;
     long long initial = 0;
     long long interval = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -6969,8 +6969,8 @@ os_timerfd_settime_ns(PyObject *module, PyObject *const *args, Py_ssize_t nargs,
         goto skip_optional_kwonly;
     }
     if (args[1]) {
-        flags = PyLong_AsInt(args[1]);
-        if (flags == -1 && PyErr_Occurred()) {
+        flags = TyLong_AsInt(args[1]);
+        if (flags == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -6978,16 +6978,16 @@ os_timerfd_settime_ns(PyObject *module, PyObject *const *args, Py_ssize_t nargs,
         }
     }
     if (args[2]) {
-        initial = PyLong_AsLongLong(args[2]);
-        if (initial == -1 && PyErr_Occurred()) {
+        initial = TyLong_AsLongLong(args[2]);
+        if (initial == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
-    interval = PyLong_AsLongLong(args[3]);
-    if (interval == -1 && PyErr_Occurred()) {
+    interval = TyLong_AsLongLong(args[3]);
+    if (interval == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_kwonly:
@@ -7001,7 +7001,7 @@ exit:
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_gettime__doc__,
+TyDoc_STRVAR(os_timerfd_gettime__doc__,
 "timerfd_gettime($module, fd, /)\n"
 "--\n"
 "\n"
@@ -7013,13 +7013,13 @@ PyDoc_STRVAR(os_timerfd_gettime__doc__,
 #define OS_TIMERFD_GETTIME_METHODDEF    \
     {"timerfd_gettime", (PyCFunction)os_timerfd_gettime, METH_O, os_timerfd_gettime__doc__},
 
-static PyObject *
-os_timerfd_gettime_impl(PyObject *module, int fd);
+static TyObject *
+os_timerfd_gettime_impl(TyObject *module, int fd);
 
-static PyObject *
-os_timerfd_gettime(PyObject *module, PyObject *arg)
+static TyObject *
+os_timerfd_gettime(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
     fd = PyObject_AsFileDescriptor(arg);
@@ -7036,7 +7036,7 @@ exit:
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_gettime_ns__doc__,
+TyDoc_STRVAR(os_timerfd_gettime_ns__doc__,
 "timerfd_gettime_ns($module, fd, /)\n"
 "--\n"
 "\n"
@@ -7048,13 +7048,13 @@ PyDoc_STRVAR(os_timerfd_gettime_ns__doc__,
 #define OS_TIMERFD_GETTIME_NS_METHODDEF    \
     {"timerfd_gettime_ns", (PyCFunction)os_timerfd_gettime_ns, METH_O, os_timerfd_gettime_ns__doc__},
 
-static PyObject *
-os_timerfd_gettime_ns_impl(PyObject *module, int fd);
+static TyObject *
+os_timerfd_gettime_ns_impl(TyObject *module, int fd);
 
-static PyObject *
-os_timerfd_gettime_ns(PyObject *module, PyObject *arg)
+static TyObject *
+os_timerfd_gettime_ns(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
     fd = PyObject_AsFileDescriptor(arg);
@@ -7071,7 +7071,7 @@ exit:
 
 #if defined(HAVE_GETSID)
 
-PyDoc_STRVAR(os_getsid__doc__,
+TyDoc_STRVAR(os_getsid__doc__,
 "getsid($module, pid, /)\n"
 "--\n"
 "\n"
@@ -7080,17 +7080,17 @@ PyDoc_STRVAR(os_getsid__doc__,
 #define OS_GETSID_METHODDEF    \
     {"getsid", (PyCFunction)os_getsid, METH_O, os_getsid__doc__},
 
-static PyObject *
-os_getsid_impl(PyObject *module, pid_t pid);
+static TyObject *
+os_getsid_impl(TyObject *module, pid_t pid);
 
-static PyObject *
-os_getsid(PyObject *module, PyObject *arg)
+static TyObject *
+os_getsid(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
 
-    pid = PyLong_AsPid(arg);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(arg);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_getsid_impl(module, pid);
@@ -7103,7 +7103,7 @@ exit:
 
 #if defined(HAVE_SETSID)
 
-PyDoc_STRVAR(os_setsid__doc__,
+TyDoc_STRVAR(os_setsid__doc__,
 "setsid($module, /)\n"
 "--\n"
 "\n"
@@ -7112,11 +7112,11 @@ PyDoc_STRVAR(os_setsid__doc__,
 #define OS_SETSID_METHODDEF    \
     {"setsid", (PyCFunction)os_setsid, METH_NOARGS, os_setsid__doc__},
 
-static PyObject *
-os_setsid_impl(PyObject *module);
+static TyObject *
+os_setsid_impl(TyObject *module);
 
-static PyObject *
-os_setsid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_setsid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_setsid_impl(module);
 }
@@ -7125,7 +7125,7 @@ os_setsid(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SETPGID)
 
-PyDoc_STRVAR(os_setpgid__doc__,
+TyDoc_STRVAR(os_setpgid__doc__,
 "setpgid($module, pid, pgrp, /)\n"
 "--\n"
 "\n"
@@ -7134,25 +7134,25 @@ PyDoc_STRVAR(os_setpgid__doc__,
 #define OS_SETPGID_METHODDEF    \
     {"setpgid", _PyCFunction_CAST(os_setpgid), METH_FASTCALL, os_setpgid__doc__},
 
-static PyObject *
-os_setpgid_impl(PyObject *module, pid_t pid, pid_t pgrp);
+static TyObject *
+os_setpgid_impl(TyObject *module, pid_t pid, pid_t pgrp);
 
-static PyObject *
-os_setpgid(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_setpgid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     pid_t pid;
     pid_t pgrp;
 
-    if (!_PyArg_CheckPositional("setpgid", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("setpgid", nargs, 2, 2)) {
         goto exit;
     }
-    pid = PyLong_AsPid(args[0]);
-    if (pid == (pid_t)(-1) && PyErr_Occurred()) {
+    pid = TyLong_AsPid(args[0]);
+    if (pid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
-    pgrp = PyLong_AsPid(args[1]);
-    if (pgrp == (pid_t)(-1) && PyErr_Occurred()) {
+    pgrp = TyLong_AsPid(args[1]);
+    if (pgrp == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_setpgid_impl(module, pid, pgrp);
@@ -7165,7 +7165,7 @@ exit:
 
 #if defined(HAVE_TCGETPGRP)
 
-PyDoc_STRVAR(os_tcgetpgrp__doc__,
+TyDoc_STRVAR(os_tcgetpgrp__doc__,
 "tcgetpgrp($module, fd, /)\n"
 "--\n"
 "\n"
@@ -7174,17 +7174,17 @@ PyDoc_STRVAR(os_tcgetpgrp__doc__,
 #define OS_TCGETPGRP_METHODDEF    \
     {"tcgetpgrp", (PyCFunction)os_tcgetpgrp, METH_O, os_tcgetpgrp__doc__},
 
-static PyObject *
-os_tcgetpgrp_impl(PyObject *module, int fd);
+static TyObject *
+os_tcgetpgrp_impl(TyObject *module, int fd);
 
-static PyObject *
-os_tcgetpgrp(PyObject *module, PyObject *arg)
+static TyObject *
+os_tcgetpgrp(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
-    fd = PyLong_AsInt(arg);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(arg);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_tcgetpgrp_impl(module, fd);
@@ -7197,7 +7197,7 @@ exit:
 
 #if defined(HAVE_TCSETPGRP)
 
-PyDoc_STRVAR(os_tcsetpgrp__doc__,
+TyDoc_STRVAR(os_tcsetpgrp__doc__,
 "tcsetpgrp($module, fd, pgid, /)\n"
 "--\n"
 "\n"
@@ -7206,25 +7206,25 @@ PyDoc_STRVAR(os_tcsetpgrp__doc__,
 #define OS_TCSETPGRP_METHODDEF    \
     {"tcsetpgrp", _PyCFunction_CAST(os_tcsetpgrp), METH_FASTCALL, os_tcsetpgrp__doc__},
 
-static PyObject *
-os_tcsetpgrp_impl(PyObject *module, int fd, pid_t pgid);
+static TyObject *
+os_tcsetpgrp_impl(TyObject *module, int fd, pid_t pgid);
 
-static PyObject *
-os_tcsetpgrp(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_tcsetpgrp(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     pid_t pgid;
 
-    if (!_PyArg_CheckPositional("tcsetpgrp", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("tcsetpgrp", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    pgid = PyLong_AsPid(args[1]);
-    if (pgid == (pid_t)(-1) && PyErr_Occurred()) {
+    pgid = TyLong_AsPid(args[1]);
+    if (pgid == (pid_t)(-1) && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_tcsetpgrp_impl(module, fd, pgid);
@@ -7235,7 +7235,7 @@ exit:
 
 #endif /* defined(HAVE_TCSETPGRP) */
 
-PyDoc_STRVAR(os_open__doc__,
+TyDoc_STRVAR(os_open__doc__,
 "open($module, /, path, flags, mode=511, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -7250,48 +7250,48 @@ PyDoc_STRVAR(os_open__doc__,
     {"open", _PyCFunction_CAST(os_open), METH_FASTCALL|METH_KEYWORDS, os_open__doc__},
 
 static int
-os_open_impl(PyObject *module, path_t *path, int flags, int mode, int dir_fd);
+os_open_impl(TyObject *module, path_t *path, int flags, int mode, int dir_fd);
 
-static PyObject *
-os_open(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_open(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(flags), &_Py_ID(mode), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(flags), &_Ty_ID(mode), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "flags", "mode", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "open",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t path = PATH_T_INITIALIZE_P("open", "path", 0, 0, 0, 0);
     int flags;
     int mode = 511;
     int dir_fd = DEFAULT_DIR_FD;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -7299,16 +7299,16 @@ os_open(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwn
     if (!path_converter(args[0], &path)) {
         goto exit;
     }
-    flags = PyLong_AsInt(args[1]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[1]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_pos;
     }
     if (args[2]) {
-        mode = PyLong_AsInt(args[2]);
-        if (mode == -1 && PyErr_Occurred()) {
+        mode = TyLong_AsInt(args[2]);
+        if (mode == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -7324,10 +7324,10 @@ skip_optional_pos:
     }
 skip_optional_kwonly:
     _return_value = os_open_impl(module, &path, flags, mode, dir_fd);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     /* Cleanup for path */
@@ -7336,7 +7336,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_close__doc__,
+TyDoc_STRVAR(os_close__doc__,
 "close($module, /, fd)\n"
 "--\n"
 "\n"
@@ -7345,50 +7345,50 @@ PyDoc_STRVAR(os_close__doc__,
 #define OS_CLOSE_METHODDEF    \
     {"close", _PyCFunction_CAST(os_close), METH_FASTCALL|METH_KEYWORDS, os_close__doc__},
 
-static PyObject *
-os_close_impl(PyObject *module, int fd);
+static TyObject *
+os_close_impl(TyObject *module, int fd);
 
-static PyObject *
-os_close(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_close(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), },
+        .ob_item = { &_Ty_ID(fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "close",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int fd;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_close_impl(module, fd);
@@ -7397,7 +7397,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_closerange__doc__,
+TyDoc_STRVAR(os_closerange__doc__,
 "closerange($module, fd_low, fd_high, /)\n"
 "--\n"
 "\n"
@@ -7406,25 +7406,25 @@ PyDoc_STRVAR(os_closerange__doc__,
 #define OS_CLOSERANGE_METHODDEF    \
     {"closerange", _PyCFunction_CAST(os_closerange), METH_FASTCALL, os_closerange__doc__},
 
-static PyObject *
-os_closerange_impl(PyObject *module, int fd_low, int fd_high);
+static TyObject *
+os_closerange_impl(TyObject *module, int fd_low, int fd_high);
 
-static PyObject *
-os_closerange(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_closerange(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd_low;
     int fd_high;
 
-    if (!_PyArg_CheckPositional("closerange", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("closerange", nargs, 2, 2)) {
         goto exit;
     }
-    fd_low = PyLong_AsInt(args[0]);
-    if (fd_low == -1 && PyErr_Occurred()) {
+    fd_low = TyLong_AsInt(args[0]);
+    if (fd_low == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    fd_high = PyLong_AsInt(args[1]);
-    if (fd_high == -1 && PyErr_Occurred()) {
+    fd_high = TyLong_AsInt(args[1]);
+    if (fd_high == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_closerange_impl(module, fd_low, fd_high);
@@ -7433,7 +7433,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_dup__doc__,
+TyDoc_STRVAR(os_dup__doc__,
 "dup($module, fd, /)\n"
 "--\n"
 "\n"
@@ -7443,24 +7443,24 @@ PyDoc_STRVAR(os_dup__doc__,
     {"dup", (PyCFunction)os_dup, METH_O, os_dup__doc__},
 
 static int
-os_dup_impl(PyObject *module, int fd);
+os_dup_impl(TyObject *module, int fd);
 
-static PyObject *
-os_dup(PyObject *module, PyObject *arg)
+static TyObject *
+os_dup(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int _return_value;
 
-    fd = PyLong_AsInt(arg);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(arg);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_dup_impl(module, fd);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -7468,7 +7468,7 @@ exit:
 
 #if ((defined(HAVE_DUP3) || defined(F_DUPFD) || defined(MS_WINDOWS)))
 
-PyDoc_STRVAR(os_dup2__doc__,
+TyDoc_STRVAR(os_dup2__doc__,
 "dup2($module, /, fd, fd2, inheritable=True)\n"
 "--\n"
 "\n"
@@ -7478,57 +7478,57 @@ PyDoc_STRVAR(os_dup2__doc__,
     {"dup2", _PyCFunction_CAST(os_dup2), METH_FASTCALL|METH_KEYWORDS, os_dup2__doc__},
 
 static int
-os_dup2_impl(PyObject *module, int fd, int fd2, int inheritable);
+os_dup2_impl(TyObject *module, int fd, int fd2, int inheritable);
 
-static PyObject *
-os_dup2(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_dup2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), &_Py_ID(fd2), &_Py_ID(inheritable), },
+        .ob_item = { &_Ty_ID(fd), &_Ty_ID(fd2), &_Ty_ID(inheritable), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", "fd2", "inheritable", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "dup2",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     int fd;
     int fd2;
     int inheritable = 1;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    fd2 = PyLong_AsInt(args[1]);
-    if (fd2 == -1 && PyErr_Occurred()) {
+    fd2 = TyLong_AsInt(args[1]);
+    if (fd2 == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!noptargs) {
@@ -7540,10 +7540,10 @@ os_dup2(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwn
     }
 skip_optional_pos:
     _return_value = os_dup2_impl(module, fd, fd2, inheritable);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -7553,7 +7553,7 @@ exit:
 
 #if defined(HAVE_LOCKF)
 
-PyDoc_STRVAR(os_lockf__doc__,
+TyDoc_STRVAR(os_lockf__doc__,
 "lockf($module, fd, command, length, /)\n"
 "--\n"
 "\n"
@@ -7569,29 +7569,29 @@ PyDoc_STRVAR(os_lockf__doc__,
 #define OS_LOCKF_METHODDEF    \
     {"lockf", _PyCFunction_CAST(os_lockf), METH_FASTCALL, os_lockf__doc__},
 
-static PyObject *
-os_lockf_impl(PyObject *module, int fd, int command, Py_off_t length);
+static TyObject *
+os_lockf_impl(TyObject *module, int fd, int command, Ty_off_t length);
 
-static PyObject *
-os_lockf(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_lockf(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int command;
-    Py_off_t length;
+    Ty_off_t length;
 
-    if (!_PyArg_CheckPositional("lockf", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("lockf", nargs, 3, 3)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    command = PyLong_AsInt(args[1]);
-    if (command == -1 && PyErr_Occurred()) {
+    command = TyLong_AsInt(args[1]);
+    if (command == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[2], &length)) {
+    if (!Ty_off_t_converter(args[2], &length)) {
         goto exit;
     }
     return_value = os_lockf_impl(module, fd, command, length);
@@ -7602,7 +7602,7 @@ exit:
 
 #endif /* defined(HAVE_LOCKF) */
 
-PyDoc_STRVAR(os_lseek__doc__,
+TyDoc_STRVAR(os_lseek__doc__,
 "lseek($module, fd, position, whence, /)\n"
 "--\n"
 "\n"
@@ -7623,43 +7623,43 @@ PyDoc_STRVAR(os_lseek__doc__,
 #define OS_LSEEK_METHODDEF    \
     {"lseek", _PyCFunction_CAST(os_lseek), METH_FASTCALL, os_lseek__doc__},
 
-static Py_off_t
-os_lseek_impl(PyObject *module, int fd, Py_off_t position, int how);
+static Ty_off_t
+os_lseek_impl(TyObject *module, int fd, Ty_off_t position, int how);
 
-static PyObject *
-os_lseek(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_lseek(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    Py_off_t position;
+    Ty_off_t position;
     int how;
-    Py_off_t _return_value;
+    Ty_off_t _return_value;
 
-    if (!_PyArg_CheckPositional("lseek", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("lseek", nargs, 3, 3)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[1], &position)) {
+    if (!Ty_off_t_converter(args[1], &position)) {
         goto exit;
     }
-    how = PyLong_AsInt(args[2]);
-    if (how == -1 && PyErr_Occurred()) {
+    how = TyLong_AsInt(args[2]);
+    if (how == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_lseek_impl(module, fd, position, how);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromPy_off_t(_return_value);
+    return_value = TyLong_FromPy_off_t(_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_read__doc__,
+TyDoc_STRVAR(os_read__doc__,
 "read($module, fd, length, /)\n"
 "--\n"
 "\n"
@@ -7668,31 +7668,31 @@ PyDoc_STRVAR(os_read__doc__,
 #define OS_READ_METHODDEF    \
     {"read", _PyCFunction_CAST(os_read), METH_FASTCALL, os_read__doc__},
 
-static PyObject *
-os_read_impl(PyObject *module, int fd, Py_ssize_t length);
+static TyObject *
+os_read_impl(TyObject *module, int fd, Ty_ssize_t length);
 
-static PyObject *
-os_read(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_read(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    Py_ssize_t length;
+    Ty_ssize_t length;
 
-    if (!_PyArg_CheckPositional("read", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("read", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         length = ival;
@@ -7703,7 +7703,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_readinto__doc__,
+TyDoc_STRVAR(os_readinto__doc__,
 "readinto($module, fd, buffer, /)\n"
 "--\n"
 "\n"
@@ -7722,33 +7722,33 @@ PyDoc_STRVAR(os_readinto__doc__,
 #define OS_READINTO_METHODDEF    \
     {"readinto", _PyCFunction_CAST(os_readinto), METH_FASTCALL, os_readinto__doc__},
 
-static Py_ssize_t
-os_readinto_impl(PyObject *module, int fd, Py_buffer *buffer);
+static Ty_ssize_t
+os_readinto_impl(TyObject *module, int fd, Ty_buffer *buffer);
 
-static PyObject *
-os_readinto(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_readinto(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    Py_buffer buffer = {NULL, NULL};
-    Py_ssize_t _return_value;
+    Ty_buffer buffer = {NULL, NULL};
+    Ty_ssize_t _return_value;
 
-    if (!_PyArg_CheckPositional("readinto", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("readinto", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[1], &buffer, PyBUF_WRITABLE) < 0) {
-        _PyArg_BadArgument("readinto", "argument 2", "read-write bytes-like object", args[1]);
+        _TyArg_BadArgument("readinto", "argument 2", "read-write bytes-like object", args[1]);
         goto exit;
     }
     _return_value = os_readinto_impl(module, fd, &buffer);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     /* Cleanup for buffer */
@@ -7761,7 +7761,7 @@ exit:
 
 #if defined(HAVE_READV)
 
-PyDoc_STRVAR(os_readv__doc__,
+TyDoc_STRVAR(os_readv__doc__,
 "readv($module, fd, buffers, /)\n"
 "--\n"
 "\n"
@@ -7778,30 +7778,30 @@ PyDoc_STRVAR(os_readv__doc__,
 #define OS_READV_METHODDEF    \
     {"readv", _PyCFunction_CAST(os_readv), METH_FASTCALL, os_readv__doc__},
 
-static Py_ssize_t
-os_readv_impl(PyObject *module, int fd, PyObject *buffers);
+static Ty_ssize_t
+os_readv_impl(TyObject *module, int fd, TyObject *buffers);
 
-static PyObject *
-os_readv(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_readv(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    PyObject *buffers;
-    Py_ssize_t _return_value;
+    TyObject *buffers;
+    Ty_ssize_t _return_value;
 
-    if (!_PyArg_CheckPositional("readv", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("readv", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     buffers = args[1];
     _return_value = os_readv_impl(module, fd, buffers);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
@@ -7811,7 +7811,7 @@ exit:
 
 #if defined(HAVE_PREAD)
 
-PyDoc_STRVAR(os_pread__doc__,
+TyDoc_STRVAR(os_pread__doc__,
 "pread($module, fd, length, offset, /)\n"
 "--\n"
 "\n"
@@ -7823,37 +7823,37 @@ PyDoc_STRVAR(os_pread__doc__,
 #define OS_PREAD_METHODDEF    \
     {"pread", _PyCFunction_CAST(os_pread), METH_FASTCALL, os_pread__doc__},
 
-static PyObject *
-os_pread_impl(PyObject *module, int fd, Py_ssize_t length, Py_off_t offset);
+static TyObject *
+os_pread_impl(TyObject *module, int fd, Ty_ssize_t length, Ty_off_t offset);
 
-static PyObject *
-os_pread(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_pread(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    Py_ssize_t length;
-    Py_off_t offset;
+    Ty_ssize_t length;
+    Ty_off_t offset;
 
-    if (!_PyArg_CheckPositional("pread", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("pread", nargs, 3, 3)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         length = ival;
     }
-    if (!Py_off_t_converter(args[2], &offset)) {
+    if (!Ty_off_t_converter(args[2], &offset)) {
         goto exit;
     }
     return_value = os_pread_impl(module, fd, length, offset);
@@ -7866,7 +7866,7 @@ exit:
 
 #if (defined(HAVE_PREADV) || defined (HAVE_PREADV2))
 
-PyDoc_STRVAR(os_preadv__doc__,
+TyDoc_STRVAR(os_preadv__doc__,
 "preadv($module, fd, buffers, offset, flags=0, /)\n"
 "--\n"
 "\n"
@@ -7889,44 +7889,44 @@ PyDoc_STRVAR(os_preadv__doc__,
 #define OS_PREADV_METHODDEF    \
     {"preadv", _PyCFunction_CAST(os_preadv), METH_FASTCALL, os_preadv__doc__},
 
-static Py_ssize_t
-os_preadv_impl(PyObject *module, int fd, PyObject *buffers, Py_off_t offset,
+static Ty_ssize_t
+os_preadv_impl(TyObject *module, int fd, TyObject *buffers, Ty_off_t offset,
                int flags);
 
-static PyObject *
-os_preadv(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_preadv(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    PyObject *buffers;
-    Py_off_t offset;
+    TyObject *buffers;
+    Ty_off_t offset;
     int flags = 0;
-    Py_ssize_t _return_value;
+    Ty_ssize_t _return_value;
 
-    if (!_PyArg_CheckPositional("preadv", nargs, 3, 4)) {
+    if (!_TyArg_CheckPositional("preadv", nargs, 3, 4)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     buffers = args[1];
-    if (!Py_off_t_converter(args[2], &offset)) {
+    if (!Ty_off_t_converter(args[2], &offset)) {
         goto exit;
     }
     if (nargs < 4) {
         goto skip_optional;
     }
-    flags = PyLong_AsInt(args[3]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[3]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
     _return_value = os_preadv_impl(module, fd, buffers, offset, flags);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
@@ -7934,7 +7934,7 @@ exit:
 
 #endif /* (defined(HAVE_PREADV) || defined (HAVE_PREADV2)) */
 
-PyDoc_STRVAR(os_write__doc__,
+TyDoc_STRVAR(os_write__doc__,
 "write($module, fd, data, /)\n"
 "--\n"
 "\n"
@@ -7943,32 +7943,32 @@ PyDoc_STRVAR(os_write__doc__,
 #define OS_WRITE_METHODDEF    \
     {"write", _PyCFunction_CAST(os_write), METH_FASTCALL, os_write__doc__},
 
-static Py_ssize_t
-os_write_impl(PyObject *module, int fd, Py_buffer *data);
+static Ty_ssize_t
+os_write_impl(TyObject *module, int fd, Ty_buffer *data);
 
-static PyObject *
-os_write(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_write(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    Py_buffer data = {NULL, NULL};
-    Py_ssize_t _return_value;
+    Ty_buffer data = {NULL, NULL};
+    Ty_ssize_t _return_value;
 
-    if (!_PyArg_CheckPositional("write", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("write", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[1], &data, PyBUF_SIMPLE) != 0) {
         goto exit;
     }
     _return_value = os_write_impl(module, fd, &data);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     /* Cleanup for data */
@@ -7981,7 +7981,7 @@ exit:
 
 #if defined(HAVE_SENDFILE) && defined(__APPLE__)
 
-PyDoc_STRVAR(os_sendfile__doc__,
+TyDoc_STRVAR(os_sendfile__doc__,
 "sendfile($module, /, out_fd, in_fd, offset, count, headers=(),\n"
 "         trailers=(), flags=0)\n"
 "--\n"
@@ -7991,69 +7991,69 @@ PyDoc_STRVAR(os_sendfile__doc__,
 #define OS_SENDFILE_METHODDEF    \
     {"sendfile", _PyCFunction_CAST(os_sendfile), METH_FASTCALL|METH_KEYWORDS, os_sendfile__doc__},
 
-static PyObject *
-os_sendfile_impl(PyObject *module, int out_fd, int in_fd, Py_off_t offset,
-                 Py_off_t sbytes, PyObject *headers, PyObject *trailers,
+static TyObject *
+os_sendfile_impl(TyObject *module, int out_fd, int in_fd, Ty_off_t offset,
+                 Ty_off_t sbytes, TyObject *headers, TyObject *trailers,
                  int flags);
 
-static PyObject *
-os_sendfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_sendfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 7
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(out_fd), &_Py_ID(in_fd), &_Py_ID(offset), &_Py_ID(count), &_Py_ID(headers), &_Py_ID(trailers), &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(out_fd), &_Ty_ID(in_fd), &_Ty_ID(offset), &_Ty_ID(count), &_Ty_ID(headers), &_Ty_ID(trailers), &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"out_fd", "in_fd", "offset", "count", "headers", "trailers", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "sendfile",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[7];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 4;
+    TyObject *argsbuf[7];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 4;
     int out_fd;
     int in_fd;
-    Py_off_t offset;
-    Py_off_t sbytes;
-    PyObject *headers = NULL;
-    PyObject *trailers = NULL;
+    Ty_off_t offset;
+    Ty_off_t sbytes;
+    TyObject *headers = NULL;
+    TyObject *trailers = NULL;
     int flags = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 4, /*maxpos*/ 7, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    out_fd = PyLong_AsInt(args[0]);
-    if (out_fd == -1 && PyErr_Occurred()) {
+    out_fd = TyLong_AsInt(args[0]);
+    if (out_fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    in_fd = PyLong_AsInt(args[1]);
-    if (in_fd == -1 && PyErr_Occurred()) {
+    in_fd = TyLong_AsInt(args[1]);
+    if (in_fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[2], &offset)) {
+    if (!Ty_off_t_converter(args[2], &offset)) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[3], &sbytes)) {
+    if (!Ty_off_t_converter(args[3], &sbytes)) {
         goto exit;
     }
     if (!noptargs) {
@@ -8071,8 +8071,8 @@ os_sendfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject 
             goto skip_optional_pos;
         }
     }
-    flags = PyLong_AsInt(args[6]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[6]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -8086,7 +8086,7 @@ exit:
 
 #if defined(HAVE_SENDFILE) && !defined(__APPLE__) && (defined(__FreeBSD__) || defined(__DragonFly__))
 
-PyDoc_STRVAR(os_sendfile__doc__,
+TyDoc_STRVAR(os_sendfile__doc__,
 "sendfile($module, /, out_fd, in_fd, offset, count, headers=(),\n"
 "         trailers=(), flags=0)\n"
 "--\n"
@@ -8096,76 +8096,76 @@ PyDoc_STRVAR(os_sendfile__doc__,
 #define OS_SENDFILE_METHODDEF    \
     {"sendfile", _PyCFunction_CAST(os_sendfile), METH_FASTCALL|METH_KEYWORDS, os_sendfile__doc__},
 
-static PyObject *
-os_sendfile_impl(PyObject *module, int out_fd, int in_fd, Py_off_t offset,
-                 Py_ssize_t count, PyObject *headers, PyObject *trailers,
+static TyObject *
+os_sendfile_impl(TyObject *module, int out_fd, int in_fd, Ty_off_t offset,
+                 Ty_ssize_t count, TyObject *headers, TyObject *trailers,
                  int flags);
 
-static PyObject *
-os_sendfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_sendfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 7
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(out_fd), &_Py_ID(in_fd), &_Py_ID(offset), &_Py_ID(count), &_Py_ID(headers), &_Py_ID(trailers), &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(out_fd), &_Ty_ID(in_fd), &_Ty_ID(offset), &_Ty_ID(count), &_Ty_ID(headers), &_Ty_ID(trailers), &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"out_fd", "in_fd", "offset", "count", "headers", "trailers", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "sendfile",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[7];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 4;
+    TyObject *argsbuf[7];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 4;
     int out_fd;
     int in_fd;
-    Py_off_t offset;
-    Py_ssize_t count;
-    PyObject *headers = NULL;
-    PyObject *trailers = NULL;
+    Ty_off_t offset;
+    Ty_ssize_t count;
+    TyObject *headers = NULL;
+    TyObject *trailers = NULL;
     int flags = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 4, /*maxpos*/ 7, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    out_fd = PyLong_AsInt(args[0]);
-    if (out_fd == -1 && PyErr_Occurred()) {
+    out_fd = TyLong_AsInt(args[0]);
+    if (out_fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    in_fd = PyLong_AsInt(args[1]);
-    if (in_fd == -1 && PyErr_Occurred()) {
+    in_fd = TyLong_AsInt(args[1]);
+    if (in_fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[2], &offset)) {
+    if (!Ty_off_t_converter(args[2], &offset)) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[3]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[3]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         count = ival;
@@ -8185,8 +8185,8 @@ os_sendfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject 
             goto skip_optional_pos;
         }
     }
-    flags = PyLong_AsInt(args[6]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[6]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -8200,7 +8200,7 @@ exit:
 
 #if defined(HAVE_SENDFILE) && !defined(__APPLE__) && !(defined(__FreeBSD__) || defined(__DragonFly__))
 
-PyDoc_STRVAR(os_sendfile__doc__,
+TyDoc_STRVAR(os_sendfile__doc__,
 "sendfile($module, /, out_fd, in_fd, offset, count)\n"
 "--\n"
 "\n"
@@ -8209,69 +8209,69 @@ PyDoc_STRVAR(os_sendfile__doc__,
 #define OS_SENDFILE_METHODDEF    \
     {"sendfile", _PyCFunction_CAST(os_sendfile), METH_FASTCALL|METH_KEYWORDS, os_sendfile__doc__},
 
-static PyObject *
-os_sendfile_impl(PyObject *module, int out_fd, int in_fd, PyObject *offobj,
-                 Py_ssize_t count);
+static TyObject *
+os_sendfile_impl(TyObject *module, int out_fd, int in_fd, TyObject *offobj,
+                 Ty_ssize_t count);
 
-static PyObject *
-os_sendfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_sendfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(out_fd), &_Py_ID(in_fd), &_Py_ID(offset), &_Py_ID(count), },
+        .ob_item = { &_Ty_ID(out_fd), &_Ty_ID(in_fd), &_Ty_ID(offset), &_Ty_ID(count), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"out_fd", "in_fd", "offset", "count", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "sendfile",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
+    TyObject *argsbuf[4];
     int out_fd;
     int in_fd;
-    PyObject *offobj;
-    Py_ssize_t count;
+    TyObject *offobj;
+    Ty_ssize_t count;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 4, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    out_fd = PyLong_AsInt(args[0]);
-    if (out_fd == -1 && PyErr_Occurred()) {
+    out_fd = TyLong_AsInt(args[0]);
+    if (out_fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    in_fd = PyLong_AsInt(args[1]);
-    if (in_fd == -1 && PyErr_Occurred()) {
+    in_fd = TyLong_AsInt(args[1]);
+    if (in_fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     offobj = args[2];
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[3]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[3]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         count = ival;
@@ -8286,7 +8286,7 @@ exit:
 
 #if defined(__APPLE__)
 
-PyDoc_STRVAR(os__fcopyfile__doc__,
+TyDoc_STRVAR(os__fcopyfile__doc__,
 "_fcopyfile($module, in_fd, out_fd, flags, /)\n"
 "--\n"
 "\n"
@@ -8295,30 +8295,30 @@ PyDoc_STRVAR(os__fcopyfile__doc__,
 #define OS__FCOPYFILE_METHODDEF    \
     {"_fcopyfile", _PyCFunction_CAST(os__fcopyfile), METH_FASTCALL, os__fcopyfile__doc__},
 
-static PyObject *
-os__fcopyfile_impl(PyObject *module, int in_fd, int out_fd, int flags);
+static TyObject *
+os__fcopyfile_impl(TyObject *module, int in_fd, int out_fd, int flags);
 
-static PyObject *
-os__fcopyfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os__fcopyfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int in_fd;
     int out_fd;
     int flags;
 
-    if (!_PyArg_CheckPositional("_fcopyfile", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("_fcopyfile", nargs, 3, 3)) {
         goto exit;
     }
-    in_fd = PyLong_AsInt(args[0]);
-    if (in_fd == -1 && PyErr_Occurred()) {
+    in_fd = TyLong_AsInt(args[0]);
+    if (in_fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    out_fd = PyLong_AsInt(args[1]);
-    if (out_fd == -1 && PyErr_Occurred()) {
+    out_fd = TyLong_AsInt(args[1]);
+    if (out_fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    flags = PyLong_AsInt(args[2]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[2]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os__fcopyfile_impl(module, in_fd, out_fd, flags);
@@ -8329,7 +8329,7 @@ exit:
 
 #endif /* defined(__APPLE__) */
 
-PyDoc_STRVAR(os_fstat__doc__,
+TyDoc_STRVAR(os_fstat__doc__,
 "fstat($module, /, fd)\n"
 "--\n"
 "\n"
@@ -8341,50 +8341,50 @@ PyDoc_STRVAR(os_fstat__doc__,
 #define OS_FSTAT_METHODDEF    \
     {"fstat", _PyCFunction_CAST(os_fstat), METH_FASTCALL|METH_KEYWORDS, os_fstat__doc__},
 
-static PyObject *
-os_fstat_impl(PyObject *module, int fd);
+static TyObject *
+os_fstat_impl(TyObject *module, int fd);
 
-static PyObject *
-os_fstat(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_fstat(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), },
+        .ob_item = { &_Ty_ID(fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fstat",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int fd;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_fstat_impl(module, fd);
@@ -8393,7 +8393,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_isatty__doc__,
+TyDoc_STRVAR(os_isatty__doc__,
 "isatty($module, fd, /)\n"
 "--\n"
 "\n"
@@ -8406,24 +8406,24 @@ PyDoc_STRVAR(os_isatty__doc__,
     {"isatty", (PyCFunction)os_isatty, METH_O, os_isatty__doc__},
 
 static int
-os_isatty_impl(PyObject *module, int fd);
+os_isatty_impl(TyObject *module, int fd);
 
-static PyObject *
-os_isatty(PyObject *module, PyObject *arg)
+static TyObject *
+os_isatty(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int _return_value;
 
-    fd = PyLong_AsInt(arg);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(arg);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_isatty_impl(module, fd);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -8431,7 +8431,7 @@ exit:
 
 #if defined(HAVE_PIPE)
 
-PyDoc_STRVAR(os_pipe__doc__,
+TyDoc_STRVAR(os_pipe__doc__,
 "pipe($module, /)\n"
 "--\n"
 "\n"
@@ -8443,11 +8443,11 @@ PyDoc_STRVAR(os_pipe__doc__,
 #define OS_PIPE_METHODDEF    \
     {"pipe", (PyCFunction)os_pipe, METH_NOARGS, os_pipe__doc__},
 
-static PyObject *
-os_pipe_impl(PyObject *module);
+static TyObject *
+os_pipe_impl(TyObject *module);
 
-static PyObject *
-os_pipe(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_pipe(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_pipe_impl(module);
 }
@@ -8456,7 +8456,7 @@ os_pipe(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_PIPE2)
 
-PyDoc_STRVAR(os_pipe2__doc__,
+TyDoc_STRVAR(os_pipe2__doc__,
 "pipe2($module, flags, /)\n"
 "--\n"
 "\n"
@@ -8471,17 +8471,17 @@ PyDoc_STRVAR(os_pipe2__doc__,
 #define OS_PIPE2_METHODDEF    \
     {"pipe2", (PyCFunction)os_pipe2, METH_O, os_pipe2__doc__},
 
-static PyObject *
-os_pipe2_impl(PyObject *module, int flags);
+static TyObject *
+os_pipe2_impl(TyObject *module, int flags);
 
-static PyObject *
-os_pipe2(PyObject *module, PyObject *arg)
+static TyObject *
+os_pipe2(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int flags;
 
-    flags = PyLong_AsInt(arg);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(arg);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_pipe2_impl(module, flags);
@@ -8494,7 +8494,7 @@ exit:
 
 #if defined(HAVE_WRITEV)
 
-PyDoc_STRVAR(os_writev__doc__,
+TyDoc_STRVAR(os_writev__doc__,
 "writev($module, fd, buffers, /)\n"
 "--\n"
 "\n"
@@ -8506,30 +8506,30 @@ PyDoc_STRVAR(os_writev__doc__,
 #define OS_WRITEV_METHODDEF    \
     {"writev", _PyCFunction_CAST(os_writev), METH_FASTCALL, os_writev__doc__},
 
-static Py_ssize_t
-os_writev_impl(PyObject *module, int fd, PyObject *buffers);
+static Ty_ssize_t
+os_writev_impl(TyObject *module, int fd, TyObject *buffers);
 
-static PyObject *
-os_writev(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_writev(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    PyObject *buffers;
-    Py_ssize_t _return_value;
+    TyObject *buffers;
+    Ty_ssize_t _return_value;
 
-    if (!_PyArg_CheckPositional("writev", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("writev", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     buffers = args[1];
     _return_value = os_writev_impl(module, fd, buffers);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
@@ -8539,7 +8539,7 @@ exit:
 
 #if defined(HAVE_PWRITE)
 
-PyDoc_STRVAR(os_pwrite__doc__,
+TyDoc_STRVAR(os_pwrite__doc__,
 "pwrite($module, fd, buffer, offset, /)\n"
 "--\n"
 "\n"
@@ -8552,36 +8552,36 @@ PyDoc_STRVAR(os_pwrite__doc__,
 #define OS_PWRITE_METHODDEF    \
     {"pwrite", _PyCFunction_CAST(os_pwrite), METH_FASTCALL, os_pwrite__doc__},
 
-static Py_ssize_t
-os_pwrite_impl(PyObject *module, int fd, Py_buffer *buffer, Py_off_t offset);
+static Ty_ssize_t
+os_pwrite_impl(TyObject *module, int fd, Ty_buffer *buffer, Ty_off_t offset);
 
-static PyObject *
-os_pwrite(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_pwrite(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    Py_buffer buffer = {NULL, NULL};
-    Py_off_t offset;
-    Py_ssize_t _return_value;
+    Ty_buffer buffer = {NULL, NULL};
+    Ty_off_t offset;
+    Ty_ssize_t _return_value;
 
-    if (!_PyArg_CheckPositional("pwrite", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("pwrite", nargs, 3, 3)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[1], &buffer, PyBUF_SIMPLE) != 0) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[2], &offset)) {
+    if (!Ty_off_t_converter(args[2], &offset)) {
         goto exit;
     }
     _return_value = os_pwrite_impl(module, fd, &buffer, offset);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     /* Cleanup for buffer */
@@ -8596,7 +8596,7 @@ exit:
 
 #if (defined(HAVE_PWRITEV) || defined (HAVE_PWRITEV2))
 
-PyDoc_STRVAR(os_pwritev__doc__,
+TyDoc_STRVAR(os_pwritev__doc__,
 "pwritev($module, fd, buffers, offset, flags=0, /)\n"
 "--\n"
 "\n"
@@ -8620,44 +8620,44 @@ PyDoc_STRVAR(os_pwritev__doc__,
 #define OS_PWRITEV_METHODDEF    \
     {"pwritev", _PyCFunction_CAST(os_pwritev), METH_FASTCALL, os_pwritev__doc__},
 
-static Py_ssize_t
-os_pwritev_impl(PyObject *module, int fd, PyObject *buffers, Py_off_t offset,
+static Ty_ssize_t
+os_pwritev_impl(TyObject *module, int fd, TyObject *buffers, Ty_off_t offset,
                 int flags);
 
-static PyObject *
-os_pwritev(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_pwritev(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    PyObject *buffers;
-    Py_off_t offset;
+    TyObject *buffers;
+    Ty_off_t offset;
     int flags = 0;
-    Py_ssize_t _return_value;
+    Ty_ssize_t _return_value;
 
-    if (!_PyArg_CheckPositional("pwritev", nargs, 3, 4)) {
+    if (!_TyArg_CheckPositional("pwritev", nargs, 3, 4)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     buffers = args[1];
-    if (!Py_off_t_converter(args[2], &offset)) {
+    if (!Ty_off_t_converter(args[2], &offset)) {
         goto exit;
     }
     if (nargs < 4) {
         goto skip_optional;
     }
-    flags = PyLong_AsInt(args[3]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[3]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
     _return_value = os_pwritev_impl(module, fd, buffers, offset, flags);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
@@ -8667,7 +8667,7 @@ exit:
 
 #if defined(HAVE_COPY_FILE_RANGE)
 
-PyDoc_STRVAR(os_copy_file_range__doc__,
+TyDoc_STRVAR(os_copy_file_range__doc__,
 "copy_file_range($module, /, src, dst, count, offset_src=None,\n"
 "                offset_dst=None)\n"
 "--\n"
@@ -8691,70 +8691,70 @@ PyDoc_STRVAR(os_copy_file_range__doc__,
 #define OS_COPY_FILE_RANGE_METHODDEF    \
     {"copy_file_range", _PyCFunction_CAST(os_copy_file_range), METH_FASTCALL|METH_KEYWORDS, os_copy_file_range__doc__},
 
-static PyObject *
-os_copy_file_range_impl(PyObject *module, int src, int dst, Py_ssize_t count,
-                        PyObject *offset_src, PyObject *offset_dst);
+static TyObject *
+os_copy_file_range_impl(TyObject *module, int src, int dst, Ty_ssize_t count,
+                        TyObject *offset_src, TyObject *offset_dst);
 
-static PyObject *
-os_copy_file_range(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_copy_file_range(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(src), &_Py_ID(dst), &_Py_ID(count), &_Py_ID(offset_src), &_Py_ID(offset_dst), },
+        .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(count), &_Ty_ID(offset_src), &_Ty_ID(offset_dst), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"src", "dst", "count", "offset_src", "offset_dst", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "copy_file_range",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
     int src;
     int dst;
-    Py_ssize_t count;
-    PyObject *offset_src = Py_None;
-    PyObject *offset_dst = Py_None;
+    Ty_ssize_t count;
+    TyObject *offset_src = Ty_None;
+    TyObject *offset_dst = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 5, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    src = PyLong_AsInt(args[0]);
-    if (src == -1 && PyErr_Occurred()) {
+    src = TyLong_AsInt(args[0]);
+    if (src == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    dst = PyLong_AsInt(args[1]);
-    if (dst == -1 && PyErr_Occurred()) {
+    dst = TyLong_AsInt(args[1]);
+    if (dst == -1 && TyErr_Occurred()) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         count = ival;
@@ -8780,7 +8780,7 @@ exit:
 
 #if ((defined(HAVE_SPLICE) && !defined(_AIX)))
 
-PyDoc_STRVAR(os_splice__doc__,
+TyDoc_STRVAR(os_splice__doc__,
 "splice($module, /, src, dst, count, offset_src=None, offset_dst=None,\n"
 "       flags=0)\n"
 "--\n"
@@ -8807,72 +8807,72 @@ PyDoc_STRVAR(os_splice__doc__,
 #define OS_SPLICE_METHODDEF    \
     {"splice", _PyCFunction_CAST(os_splice), METH_FASTCALL|METH_KEYWORDS, os_splice__doc__},
 
-static PyObject *
-os_splice_impl(PyObject *module, int src, int dst, Py_ssize_t count,
-               PyObject *offset_src, PyObject *offset_dst,
+static TyObject *
+os_splice_impl(TyObject *module, int src, int dst, Ty_ssize_t count,
+               TyObject *offset_src, TyObject *offset_dst,
                unsigned int flags);
 
-static PyObject *
-os_splice(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_splice(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 6
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(src), &_Py_ID(dst), &_Py_ID(count), &_Py_ID(offset_src), &_Py_ID(offset_dst), &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(count), &_Ty_ID(offset_src), &_Ty_ID(offset_dst), &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"src", "dst", "count", "offset_src", "offset_dst", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "splice",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[6];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *argsbuf[6];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
     int src;
     int dst;
-    Py_ssize_t count;
-    PyObject *offset_src = Py_None;
-    PyObject *offset_dst = Py_None;
+    Ty_ssize_t count;
+    TyObject *offset_src = Ty_None;
+    TyObject *offset_dst = Ty_None;
     unsigned int flags = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 6, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    src = PyLong_AsInt(args[0]);
-    if (src == -1 && PyErr_Occurred()) {
+    src = TyLong_AsInt(args[0]);
+    if (src == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    dst = PyLong_AsInt(args[1]);
-    if (dst == -1 && PyErr_Occurred()) {
+    dst = TyLong_AsInt(args[1]);
+    if (dst == -1 && TyErr_Occurred()) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         count = ival;
@@ -8892,7 +8892,7 @@ os_splice(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *k
             goto skip_optional_pos;
         }
     }
-    if (!_PyLong_UnsignedInt_Converter(args[5], &flags)) {
+    if (!_TyLong_UnsignedInt_Converter(args[5], &flags)) {
         goto exit;
     }
 skip_optional_pos:
@@ -8906,7 +8906,7 @@ exit:
 
 #if defined(HAVE_MKFIFO)
 
-PyDoc_STRVAR(os_mkfifo__doc__,
+TyDoc_STRVAR(os_mkfifo__doc__,
 "mkfifo($module, /, path, mode=438, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -8920,47 +8920,47 @@ PyDoc_STRVAR(os_mkfifo__doc__,
 #define OS_MKFIFO_METHODDEF    \
     {"mkfifo", _PyCFunction_CAST(os_mkfifo), METH_FASTCALL|METH_KEYWORDS, os_mkfifo__doc__},
 
-static PyObject *
-os_mkfifo_impl(PyObject *module, path_t *path, int mode, int dir_fd);
+static TyObject *
+os_mkfifo_impl(TyObject *module, path_t *path, int mode, int dir_fd);
 
-static PyObject *
-os_mkfifo(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_mkfifo(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(mode), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "mode", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "mkfifo",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("mkfifo", "path", 0, 0, 0, 0);
     int mode = 438;
     int dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -8972,8 +8972,8 @@ os_mkfifo(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *k
         goto skip_optional_pos;
     }
     if (args[1]) {
-        mode = PyLong_AsInt(args[1]);
-        if (mode == -1 && PyErr_Occurred()) {
+        mode = TyLong_AsInt(args[1]);
+        if (mode == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -9001,7 +9001,7 @@ exit:
 
 #if (defined(HAVE_MKNOD) && defined(HAVE_MAKEDEV))
 
-PyDoc_STRVAR(os_mknod__doc__,
+TyDoc_STRVAR(os_mknod__doc__,
 "mknod($module, /, path, mode=384, device=0, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -9022,49 +9022,49 @@ PyDoc_STRVAR(os_mknod__doc__,
 #define OS_MKNOD_METHODDEF    \
     {"mknod", _PyCFunction_CAST(os_mknod), METH_FASTCALL|METH_KEYWORDS, os_mknod__doc__},
 
-static PyObject *
-os_mknod_impl(PyObject *module, path_t *path, int mode, dev_t device,
+static TyObject *
+os_mknod_impl(TyObject *module, path_t *path, int mode, dev_t device,
               int dir_fd);
 
-static PyObject *
-os_mknod(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_mknod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(mode), &_Py_ID(device), &_Py_ID(dir_fd), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(device), &_Ty_ID(dir_fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "mode", "device", "dir_fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "mknod",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t path = PATH_T_INITIALIZE_P("mknod", "path", 0, 0, 0, 0);
     int mode = 384;
     dev_t device = 0;
     int dir_fd = DEFAULT_DIR_FD;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -9076,8 +9076,8 @@ os_mknod(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
         goto skip_optional_pos;
     }
     if (args[1]) {
-        mode = PyLong_AsInt(args[1]);
-        if (mode == -1 && PyErr_Occurred()) {
+        mode = TyLong_AsInt(args[1]);
+        if (mode == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -9085,7 +9085,7 @@ os_mknod(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
         }
     }
     if (args[2]) {
-        if (!_Py_Dev_Converter(args[2], &device)) {
+        if (!_Ty_Dev_Converter(args[2], &device)) {
             goto exit;
         }
         if (!--noptargs) {
@@ -9113,7 +9113,7 @@ exit:
 
 #if defined(HAVE_DEVICE_MACROS)
 
-PyDoc_STRVAR(os_major__doc__,
+TyDoc_STRVAR(os_major__doc__,
 "major($module, device, /)\n"
 "--\n"
 "\n"
@@ -9122,16 +9122,16 @@ PyDoc_STRVAR(os_major__doc__,
 #define OS_MAJOR_METHODDEF    \
     {"major", (PyCFunction)os_major, METH_O, os_major__doc__},
 
-static PyObject *
-os_major_impl(PyObject *module, dev_t device);
+static TyObject *
+os_major_impl(TyObject *module, dev_t device);
 
-static PyObject *
-os_major(PyObject *module, PyObject *arg)
+static TyObject *
+os_major(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     dev_t device;
 
-    if (!_Py_Dev_Converter(arg, &device)) {
+    if (!_Ty_Dev_Converter(arg, &device)) {
         goto exit;
     }
     return_value = os_major_impl(module, device);
@@ -9144,7 +9144,7 @@ exit:
 
 #if defined(HAVE_DEVICE_MACROS)
 
-PyDoc_STRVAR(os_minor__doc__,
+TyDoc_STRVAR(os_minor__doc__,
 "minor($module, device, /)\n"
 "--\n"
 "\n"
@@ -9153,16 +9153,16 @@ PyDoc_STRVAR(os_minor__doc__,
 #define OS_MINOR_METHODDEF    \
     {"minor", (PyCFunction)os_minor, METH_O, os_minor__doc__},
 
-static PyObject *
-os_minor_impl(PyObject *module, dev_t device);
+static TyObject *
+os_minor_impl(TyObject *module, dev_t device);
 
-static PyObject *
-os_minor(PyObject *module, PyObject *arg)
+static TyObject *
+os_minor(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     dev_t device;
 
-    if (!_Py_Dev_Converter(arg, &device)) {
+    if (!_Ty_Dev_Converter(arg, &device)) {
         goto exit;
     }
     return_value = os_minor_impl(module, device);
@@ -9175,7 +9175,7 @@ exit:
 
 #if defined(HAVE_DEVICE_MACROS)
 
-PyDoc_STRVAR(os_makedev__doc__,
+TyDoc_STRVAR(os_makedev__doc__,
 "makedev($module, major, minor, /)\n"
 "--\n"
 "\n"
@@ -9185,30 +9185,30 @@ PyDoc_STRVAR(os_makedev__doc__,
     {"makedev", _PyCFunction_CAST(os_makedev), METH_FASTCALL, os_makedev__doc__},
 
 static dev_t
-os_makedev_impl(PyObject *module, dev_t major, dev_t minor);
+os_makedev_impl(TyObject *module, dev_t major, dev_t minor);
 
-static PyObject *
-os_makedev(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_makedev(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     dev_t major;
     dev_t minor;
     dev_t _return_value;
 
-    if (!_PyArg_CheckPositional("makedev", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("makedev", nargs, 2, 2)) {
         goto exit;
     }
-    if (!_Py_Dev_Converter(args[0], &major)) {
+    if (!_Ty_Dev_Converter(args[0], &major)) {
         goto exit;
     }
-    if (!_Py_Dev_Converter(args[1], &minor)) {
+    if (!_Ty_Dev_Converter(args[1], &minor)) {
         goto exit;
     }
     _return_value = os_makedev_impl(module, major, minor);
-    if ((_return_value == (dev_t)-1) && PyErr_Occurred()) {
+    if ((_return_value == (dev_t)-1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = _PyLong_FromDev(_return_value);
+    return_value = _TyLong_FromDev(_return_value);
 
 exit:
     return return_value;
@@ -9218,7 +9218,7 @@ exit:
 
 #if (defined HAVE_FTRUNCATE || defined MS_WINDOWS)
 
-PyDoc_STRVAR(os_ftruncate__doc__,
+TyDoc_STRVAR(os_ftruncate__doc__,
 "ftruncate($module, fd, length, /)\n"
 "--\n"
 "\n"
@@ -9227,24 +9227,24 @@ PyDoc_STRVAR(os_ftruncate__doc__,
 #define OS_FTRUNCATE_METHODDEF    \
     {"ftruncate", _PyCFunction_CAST(os_ftruncate), METH_FASTCALL, os_ftruncate__doc__},
 
-static PyObject *
-os_ftruncate_impl(PyObject *module, int fd, Py_off_t length);
+static TyObject *
+os_ftruncate_impl(TyObject *module, int fd, Ty_off_t length);
 
-static PyObject *
-os_ftruncate(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_ftruncate(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    Py_off_t length;
+    Ty_off_t length;
 
-    if (!_PyArg_CheckPositional("ftruncate", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("ftruncate", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[1], &length)) {
+    if (!Ty_off_t_converter(args[1], &length)) {
         goto exit;
     }
     return_value = os_ftruncate_impl(module, fd, length);
@@ -9257,7 +9257,7 @@ exit:
 
 #if (defined HAVE_TRUNCATE || defined MS_WINDOWS)
 
-PyDoc_STRVAR(os_truncate__doc__,
+TyDoc_STRVAR(os_truncate__doc__,
 "truncate($module, /, path, length)\n"
 "--\n"
 "\n"
@@ -9269,45 +9269,45 @@ PyDoc_STRVAR(os_truncate__doc__,
 #define OS_TRUNCATE_METHODDEF    \
     {"truncate", _PyCFunction_CAST(os_truncate), METH_FASTCALL|METH_KEYWORDS, os_truncate__doc__},
 
-static PyObject *
-os_truncate_impl(PyObject *module, path_t *path, Py_off_t length);
+static TyObject *
+os_truncate_impl(TyObject *module, path_t *path, Ty_off_t length);
 
-static PyObject *
-os_truncate(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_truncate(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(length), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(length), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "length", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "truncate",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     path_t path = PATH_T_INITIALIZE_P("truncate", "path", 0, 0, 0, PATH_HAVE_FTRUNCATE);
-    Py_off_t length;
+    Ty_off_t length;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -9315,7 +9315,7 @@ os_truncate(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject 
     if (!path_converter(args[0], &path)) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[1], &length)) {
+    if (!Ty_off_t_converter(args[1], &length)) {
         goto exit;
     }
     return_value = os_truncate_impl(module, &path, length);
@@ -9331,7 +9331,7 @@ exit:
 
 #if (defined(HAVE_POSIX_FALLOCATE) && !defined(POSIX_FADVISE_AIX_BUG) && !defined(__wasi__))
 
-PyDoc_STRVAR(os_posix_fallocate__doc__,
+TyDoc_STRVAR(os_posix_fallocate__doc__,
 "posix_fallocate($module, fd, offset, length, /)\n"
 "--\n"
 "\n"
@@ -9343,29 +9343,29 @@ PyDoc_STRVAR(os_posix_fallocate__doc__,
 #define OS_POSIX_FALLOCATE_METHODDEF    \
     {"posix_fallocate", _PyCFunction_CAST(os_posix_fallocate), METH_FASTCALL, os_posix_fallocate__doc__},
 
-static PyObject *
-os_posix_fallocate_impl(PyObject *module, int fd, Py_off_t offset,
-                        Py_off_t length);
+static TyObject *
+os_posix_fallocate_impl(TyObject *module, int fd, Ty_off_t offset,
+                        Ty_off_t length);
 
-static PyObject *
-os_posix_fallocate(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_posix_fallocate(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    Py_off_t offset;
-    Py_off_t length;
+    Ty_off_t offset;
+    Ty_off_t length;
 
-    if (!_PyArg_CheckPositional("posix_fallocate", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("posix_fallocate", nargs, 3, 3)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[1], &offset)) {
+    if (!Ty_off_t_converter(args[1], &offset)) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[2], &length)) {
+    if (!Ty_off_t_converter(args[2], &length)) {
         goto exit;
     }
     return_value = os_posix_fallocate_impl(module, fd, offset, length);
@@ -9378,7 +9378,7 @@ exit:
 
 #if (defined(HAVE_POSIX_FADVISE) && !defined(POSIX_FADVISE_AIX_BUG))
 
-PyDoc_STRVAR(os_posix_fadvise__doc__,
+TyDoc_STRVAR(os_posix_fadvise__doc__,
 "posix_fadvise($module, fd, offset, length, advice, /)\n"
 "--\n"
 "\n"
@@ -9395,34 +9395,34 @@ PyDoc_STRVAR(os_posix_fadvise__doc__,
 #define OS_POSIX_FADVISE_METHODDEF    \
     {"posix_fadvise", _PyCFunction_CAST(os_posix_fadvise), METH_FASTCALL, os_posix_fadvise__doc__},
 
-static PyObject *
-os_posix_fadvise_impl(PyObject *module, int fd, Py_off_t offset,
-                      Py_off_t length, int advice);
+static TyObject *
+os_posix_fadvise_impl(TyObject *module, int fd, Ty_off_t offset,
+                      Ty_off_t length, int advice);
 
-static PyObject *
-os_posix_fadvise(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_posix_fadvise(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
-    Py_off_t offset;
-    Py_off_t length;
+    Ty_off_t offset;
+    Ty_off_t length;
     int advice;
 
-    if (!_PyArg_CheckPositional("posix_fadvise", nargs, 4, 4)) {
+    if (!_TyArg_CheckPositional("posix_fadvise", nargs, 4, 4)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[1], &offset)) {
+    if (!Ty_off_t_converter(args[1], &offset)) {
         goto exit;
     }
-    if (!Py_off_t_converter(args[2], &length)) {
+    if (!Ty_off_t_converter(args[2], &length)) {
         goto exit;
     }
-    advice = PyLong_AsInt(args[3]);
-    if (advice == -1 && PyErr_Occurred()) {
+    advice = TyLong_AsInt(args[3]);
+    if (advice == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_posix_fadvise_impl(module, fd, offset, length, advice);
@@ -9435,7 +9435,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_putenv__doc__,
+TyDoc_STRVAR(os_putenv__doc__,
 "putenv($module, name, value, /)\n"
 "--\n"
 "\n"
@@ -9444,26 +9444,26 @@ PyDoc_STRVAR(os_putenv__doc__,
 #define OS_PUTENV_METHODDEF    \
     {"putenv", _PyCFunction_CAST(os_putenv), METH_FASTCALL, os_putenv__doc__},
 
-static PyObject *
-os_putenv_impl(PyObject *module, PyObject *name, PyObject *value);
+static TyObject *
+os_putenv_impl(TyObject *module, TyObject *name, TyObject *value);
 
-static PyObject *
-os_putenv(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_putenv(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *name;
-    PyObject *value;
+    TyObject *return_value = NULL;
+    TyObject *name;
+    TyObject *value;
 
-    if (!_PyArg_CheckPositional("putenv", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("putenv", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("putenv", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("putenv", "argument 1", "str", args[0]);
         goto exit;
     }
     name = args[0];
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("putenv", "argument 2", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("putenv", "argument 2", "str", args[1]);
         goto exit;
     }
     value = args[1];
@@ -9477,7 +9477,7 @@ exit:
 
 #if !defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_putenv__doc__,
+TyDoc_STRVAR(os_putenv__doc__,
 "putenv($module, name, value, /)\n"
 "--\n"
 "\n"
@@ -9486,32 +9486,32 @@ PyDoc_STRVAR(os_putenv__doc__,
 #define OS_PUTENV_METHODDEF    \
     {"putenv", _PyCFunction_CAST(os_putenv), METH_FASTCALL, os_putenv__doc__},
 
-static PyObject *
-os_putenv_impl(PyObject *module, PyObject *name, PyObject *value);
+static TyObject *
+os_putenv_impl(TyObject *module, TyObject *name, TyObject *value);
 
-static PyObject *
-os_putenv(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_putenv(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *name = NULL;
-    PyObject *value = NULL;
+    TyObject *return_value = NULL;
+    TyObject *name = NULL;
+    TyObject *value = NULL;
 
-    if (!_PyArg_CheckPositional("putenv", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("putenv", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyUnicode_FSConverter(args[0], &name)) {
+    if (!TyUnicode_FSConverter(args[0], &name)) {
         goto exit;
     }
-    if (!PyUnicode_FSConverter(args[1], &value)) {
+    if (!TyUnicode_FSConverter(args[1], &value)) {
         goto exit;
     }
     return_value = os_putenv_impl(module, name, value);
 
 exit:
     /* Cleanup for name */
-    Py_XDECREF(name);
+    Ty_XDECREF(name);
     /* Cleanup for value */
-    Py_XDECREF(value);
+    Ty_XDECREF(value);
 
     return return_value;
 }
@@ -9520,7 +9520,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_unsetenv__doc__,
+TyDoc_STRVAR(os_unsetenv__doc__,
 "unsetenv($module, name, /)\n"
 "--\n"
 "\n"
@@ -9529,17 +9529,17 @@ PyDoc_STRVAR(os_unsetenv__doc__,
 #define OS_UNSETENV_METHODDEF    \
     {"unsetenv", (PyCFunction)os_unsetenv, METH_O, os_unsetenv__doc__},
 
-static PyObject *
-os_unsetenv_impl(PyObject *module, PyObject *name);
+static TyObject *
+os_unsetenv_impl(TyObject *module, TyObject *name);
 
-static PyObject *
-os_unsetenv(PyObject *module, PyObject *arg)
+static TyObject *
+os_unsetenv(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *name;
+    TyObject *return_value = NULL;
+    TyObject *name;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("unsetenv", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("unsetenv", "argument", "str", arg);
         goto exit;
     }
     name = arg;
@@ -9553,7 +9553,7 @@ exit:
 
 #if !defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_unsetenv__doc__,
+TyDoc_STRVAR(os_unsetenv__doc__,
 "unsetenv($module, name, /)\n"
 "--\n"
 "\n"
@@ -9562,30 +9562,30 @@ PyDoc_STRVAR(os_unsetenv__doc__,
 #define OS_UNSETENV_METHODDEF    \
     {"unsetenv", (PyCFunction)os_unsetenv, METH_O, os_unsetenv__doc__},
 
-static PyObject *
-os_unsetenv_impl(PyObject *module, PyObject *name);
+static TyObject *
+os_unsetenv_impl(TyObject *module, TyObject *name);
 
-static PyObject *
-os_unsetenv(PyObject *module, PyObject *arg)
+static TyObject *
+os_unsetenv(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *name = NULL;
+    TyObject *return_value = NULL;
+    TyObject *name = NULL;
 
-    if (!PyUnicode_FSConverter(arg, &name)) {
+    if (!TyUnicode_FSConverter(arg, &name)) {
         goto exit;
     }
     return_value = os_unsetenv_impl(module, name);
 
 exit:
     /* Cleanup for name */
-    Py_XDECREF(name);
+    Ty_XDECREF(name);
 
     return return_value;
 }
 
 #endif /* !defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(os_strerror__doc__,
+TyDoc_STRVAR(os_strerror__doc__,
 "strerror($module, code, /)\n"
 "--\n"
 "\n"
@@ -9594,17 +9594,17 @@ PyDoc_STRVAR(os_strerror__doc__,
 #define OS_STRERROR_METHODDEF    \
     {"strerror", (PyCFunction)os_strerror, METH_O, os_strerror__doc__},
 
-static PyObject *
-os_strerror_impl(PyObject *module, int code);
+static TyObject *
+os_strerror_impl(TyObject *module, int code);
 
-static PyObject *
-os_strerror(PyObject *module, PyObject *arg)
+static TyObject *
+os_strerror(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int code;
 
-    code = PyLong_AsInt(arg);
-    if (code == -1 && PyErr_Occurred()) {
+    code = TyLong_AsInt(arg);
+    if (code == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_strerror_impl(module, code);
@@ -9615,7 +9615,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WCOREDUMP)
 
-PyDoc_STRVAR(os_WCOREDUMP__doc__,
+TyDoc_STRVAR(os_WCOREDUMP__doc__,
 "WCOREDUMP($module, status, /)\n"
 "--\n"
 "\n"
@@ -9625,24 +9625,24 @@ PyDoc_STRVAR(os_WCOREDUMP__doc__,
     {"WCOREDUMP", (PyCFunction)os_WCOREDUMP, METH_O, os_WCOREDUMP__doc__},
 
 static int
-os_WCOREDUMP_impl(PyObject *module, int status);
+os_WCOREDUMP_impl(TyObject *module, int status);
 
-static PyObject *
-os_WCOREDUMP(PyObject *module, PyObject *arg)
+static TyObject *
+os_WCOREDUMP(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int status;
     int _return_value;
 
-    status = PyLong_AsInt(arg);
-    if (status == -1 && PyErr_Occurred()) {
+    status = TyLong_AsInt(arg);
+    if (status == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_WCOREDUMP_impl(module, status);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -9652,7 +9652,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WIFCONTINUED)
 
-PyDoc_STRVAR(os_WIFCONTINUED__doc__,
+TyDoc_STRVAR(os_WIFCONTINUED__doc__,
 "WIFCONTINUED($module, /, status)\n"
 "--\n"
 "\n"
@@ -9665,57 +9665,57 @@ PyDoc_STRVAR(os_WIFCONTINUED__doc__,
     {"WIFCONTINUED", _PyCFunction_CAST(os_WIFCONTINUED), METH_FASTCALL|METH_KEYWORDS, os_WIFCONTINUED__doc__},
 
 static int
-os_WIFCONTINUED_impl(PyObject *module, int status);
+os_WIFCONTINUED_impl(TyObject *module, int status);
 
-static PyObject *
-os_WIFCONTINUED(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_WIFCONTINUED(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(status), },
+        .ob_item = { &_Ty_ID(status), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"status", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "WIFCONTINUED",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int status;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    status = PyLong_AsInt(args[0]);
-    if (status == -1 && PyErr_Occurred()) {
+    status = TyLong_AsInt(args[0]);
+    if (status == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_WIFCONTINUED_impl(module, status);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -9725,7 +9725,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WIFSTOPPED)
 
-PyDoc_STRVAR(os_WIFSTOPPED__doc__,
+TyDoc_STRVAR(os_WIFSTOPPED__doc__,
 "WIFSTOPPED($module, /, status)\n"
 "--\n"
 "\n"
@@ -9735,57 +9735,57 @@ PyDoc_STRVAR(os_WIFSTOPPED__doc__,
     {"WIFSTOPPED", _PyCFunction_CAST(os_WIFSTOPPED), METH_FASTCALL|METH_KEYWORDS, os_WIFSTOPPED__doc__},
 
 static int
-os_WIFSTOPPED_impl(PyObject *module, int status);
+os_WIFSTOPPED_impl(TyObject *module, int status);
 
-static PyObject *
-os_WIFSTOPPED(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_WIFSTOPPED(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(status), },
+        .ob_item = { &_Ty_ID(status), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"status", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "WIFSTOPPED",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int status;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    status = PyLong_AsInt(args[0]);
-    if (status == -1 && PyErr_Occurred()) {
+    status = TyLong_AsInt(args[0]);
+    if (status == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_WIFSTOPPED_impl(module, status);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -9795,7 +9795,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WIFSIGNALED)
 
-PyDoc_STRVAR(os_WIFSIGNALED__doc__,
+TyDoc_STRVAR(os_WIFSIGNALED__doc__,
 "WIFSIGNALED($module, /, status)\n"
 "--\n"
 "\n"
@@ -9805,57 +9805,57 @@ PyDoc_STRVAR(os_WIFSIGNALED__doc__,
     {"WIFSIGNALED", _PyCFunction_CAST(os_WIFSIGNALED), METH_FASTCALL|METH_KEYWORDS, os_WIFSIGNALED__doc__},
 
 static int
-os_WIFSIGNALED_impl(PyObject *module, int status);
+os_WIFSIGNALED_impl(TyObject *module, int status);
 
-static PyObject *
-os_WIFSIGNALED(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_WIFSIGNALED(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(status), },
+        .ob_item = { &_Ty_ID(status), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"status", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "WIFSIGNALED",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int status;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    status = PyLong_AsInt(args[0]);
-    if (status == -1 && PyErr_Occurred()) {
+    status = TyLong_AsInt(args[0]);
+    if (status == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_WIFSIGNALED_impl(module, status);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -9865,7 +9865,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WIFEXITED)
 
-PyDoc_STRVAR(os_WIFEXITED__doc__,
+TyDoc_STRVAR(os_WIFEXITED__doc__,
 "WIFEXITED($module, /, status)\n"
 "--\n"
 "\n"
@@ -9875,57 +9875,57 @@ PyDoc_STRVAR(os_WIFEXITED__doc__,
     {"WIFEXITED", _PyCFunction_CAST(os_WIFEXITED), METH_FASTCALL|METH_KEYWORDS, os_WIFEXITED__doc__},
 
 static int
-os_WIFEXITED_impl(PyObject *module, int status);
+os_WIFEXITED_impl(TyObject *module, int status);
 
-static PyObject *
-os_WIFEXITED(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_WIFEXITED(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(status), },
+        .ob_item = { &_Ty_ID(status), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"status", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "WIFEXITED",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int status;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    status = PyLong_AsInt(args[0]);
-    if (status == -1 && PyErr_Occurred()) {
+    status = TyLong_AsInt(args[0]);
+    if (status == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_WIFEXITED_impl(module, status);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -9935,7 +9935,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WEXITSTATUS)
 
-PyDoc_STRVAR(os_WEXITSTATUS__doc__,
+TyDoc_STRVAR(os_WEXITSTATUS__doc__,
 "WEXITSTATUS($module, /, status)\n"
 "--\n"
 "\n"
@@ -9945,57 +9945,57 @@ PyDoc_STRVAR(os_WEXITSTATUS__doc__,
     {"WEXITSTATUS", _PyCFunction_CAST(os_WEXITSTATUS), METH_FASTCALL|METH_KEYWORDS, os_WEXITSTATUS__doc__},
 
 static int
-os_WEXITSTATUS_impl(PyObject *module, int status);
+os_WEXITSTATUS_impl(TyObject *module, int status);
 
-static PyObject *
-os_WEXITSTATUS(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_WEXITSTATUS(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(status), },
+        .ob_item = { &_Ty_ID(status), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"status", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "WEXITSTATUS",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int status;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    status = PyLong_AsInt(args[0]);
-    if (status == -1 && PyErr_Occurred()) {
+    status = TyLong_AsInt(args[0]);
+    if (status == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_WEXITSTATUS_impl(module, status);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -10005,7 +10005,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WTERMSIG)
 
-PyDoc_STRVAR(os_WTERMSIG__doc__,
+TyDoc_STRVAR(os_WTERMSIG__doc__,
 "WTERMSIG($module, /, status)\n"
 "--\n"
 "\n"
@@ -10015,57 +10015,57 @@ PyDoc_STRVAR(os_WTERMSIG__doc__,
     {"WTERMSIG", _PyCFunction_CAST(os_WTERMSIG), METH_FASTCALL|METH_KEYWORDS, os_WTERMSIG__doc__},
 
 static int
-os_WTERMSIG_impl(PyObject *module, int status);
+os_WTERMSIG_impl(TyObject *module, int status);
 
-static PyObject *
-os_WTERMSIG(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_WTERMSIG(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(status), },
+        .ob_item = { &_Ty_ID(status), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"status", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "WTERMSIG",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int status;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    status = PyLong_AsInt(args[0]);
-    if (status == -1 && PyErr_Occurred()) {
+    status = TyLong_AsInt(args[0]);
+    if (status == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_WTERMSIG_impl(module, status);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -10075,7 +10075,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WSTOPSIG)
 
-PyDoc_STRVAR(os_WSTOPSIG__doc__,
+TyDoc_STRVAR(os_WSTOPSIG__doc__,
 "WSTOPSIG($module, /, status)\n"
 "--\n"
 "\n"
@@ -10085,57 +10085,57 @@ PyDoc_STRVAR(os_WSTOPSIG__doc__,
     {"WSTOPSIG", _PyCFunction_CAST(os_WSTOPSIG), METH_FASTCALL|METH_KEYWORDS, os_WSTOPSIG__doc__},
 
 static int
-os_WSTOPSIG_impl(PyObject *module, int status);
+os_WSTOPSIG_impl(TyObject *module, int status);
 
-static PyObject *
-os_WSTOPSIG(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_WSTOPSIG(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(status), },
+        .ob_item = { &_Ty_ID(status), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"status", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "WSTOPSIG",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int status;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    status = PyLong_AsInt(args[0]);
-    if (status == -1 && PyErr_Occurred()) {
+    status = TyLong_AsInt(args[0]);
+    if (status == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_WSTOPSIG_impl(module, status);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -10145,7 +10145,7 @@ exit:
 
 #if (defined(HAVE_FSTATVFS) && defined(HAVE_SYS_STATVFS_H))
 
-PyDoc_STRVAR(os_fstatvfs__doc__,
+TyDoc_STRVAR(os_fstatvfs__doc__,
 "fstatvfs($module, fd, /)\n"
 "--\n"
 "\n"
@@ -10156,17 +10156,17 @@ PyDoc_STRVAR(os_fstatvfs__doc__,
 #define OS_FSTATVFS_METHODDEF    \
     {"fstatvfs", (PyCFunction)os_fstatvfs, METH_O, os_fstatvfs__doc__},
 
-static PyObject *
-os_fstatvfs_impl(PyObject *module, int fd);
+static TyObject *
+os_fstatvfs_impl(TyObject *module, int fd);
 
-static PyObject *
-os_fstatvfs(PyObject *module, PyObject *arg)
+static TyObject *
+os_fstatvfs(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
 
-    fd = PyLong_AsInt(arg);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(arg);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_fstatvfs_impl(module, fd);
@@ -10179,7 +10179,7 @@ exit:
 
 #if (defined(HAVE_STATVFS) && defined(HAVE_SYS_STATVFS_H))
 
-PyDoc_STRVAR(os_statvfs__doc__,
+TyDoc_STRVAR(os_statvfs__doc__,
 "statvfs($module, /, path)\n"
 "--\n"
 "\n"
@@ -10192,44 +10192,44 @@ PyDoc_STRVAR(os_statvfs__doc__,
 #define OS_STATVFS_METHODDEF    \
     {"statvfs", _PyCFunction_CAST(os_statvfs), METH_FASTCALL|METH_KEYWORDS, os_statvfs__doc__},
 
-static PyObject *
-os_statvfs_impl(PyObject *module, path_t *path);
+static TyObject *
+os_statvfs_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os_statvfs(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_statvfs(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "statvfs",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("statvfs", "path", 0, 0, 0, PATH_HAVE_FSTATVFS);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -10250,7 +10250,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__getdiskusage__doc__,
+TyDoc_STRVAR(os__getdiskusage__doc__,
 "_getdiskusage($module, /, path)\n"
 "--\n"
 "\n"
@@ -10259,44 +10259,44 @@ PyDoc_STRVAR(os__getdiskusage__doc__,
 #define OS__GETDISKUSAGE_METHODDEF    \
     {"_getdiskusage", _PyCFunction_CAST(os__getdiskusage), METH_FASTCALL|METH_KEYWORDS, os__getdiskusage__doc__},
 
-static PyObject *
-os__getdiskusage_impl(PyObject *module, path_t *path);
+static TyObject *
+os__getdiskusage_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__getdiskusage(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__getdiskusage(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_getdiskusage",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_getdiskusage", "path", 0, 0, 0, 0);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -10317,7 +10317,7 @@ exit:
 
 #if defined(HAVE_FPATHCONF)
 
-PyDoc_STRVAR(os_fpathconf__doc__,
+TyDoc_STRVAR(os_fpathconf__doc__,
 "fpathconf($module, fd, name, /)\n"
 "--\n"
 "\n"
@@ -10329,17 +10329,17 @@ PyDoc_STRVAR(os_fpathconf__doc__,
     {"fpathconf", _PyCFunction_CAST(os_fpathconf), METH_FASTCALL, os_fpathconf__doc__},
 
 static long
-os_fpathconf_impl(PyObject *module, int fd, int name);
+os_fpathconf_impl(TyObject *module, int fd, int name);
 
-static PyObject *
-os_fpathconf(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_fpathconf(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int name;
     long _return_value;
 
-    if (!_PyArg_CheckPositional("fpathconf", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("fpathconf", nargs, 2, 2)) {
         goto exit;
     }
     fd = PyObject_AsFileDescriptor(args[0]);
@@ -10350,10 +10350,10 @@ os_fpathconf(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
         goto exit;
     }
     _return_value = os_fpathconf_impl(module, fd, name);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     return return_value;
@@ -10363,7 +10363,7 @@ exit:
 
 #if defined(HAVE_PATHCONF)
 
-PyDoc_STRVAR(os_pathconf__doc__,
+TyDoc_STRVAR(os_pathconf__doc__,
 "pathconf($module, /, path, name)\n"
 "--\n"
 "\n"
@@ -10377,45 +10377,45 @@ PyDoc_STRVAR(os_pathconf__doc__,
     {"pathconf", _PyCFunction_CAST(os_pathconf), METH_FASTCALL|METH_KEYWORDS, os_pathconf__doc__},
 
 static long
-os_pathconf_impl(PyObject *module, path_t *path, int name);
+os_pathconf_impl(TyObject *module, path_t *path, int name);
 
-static PyObject *
-os_pathconf(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_pathconf(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(name), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(name), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "name", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "pathconf",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     path_t path = PATH_T_INITIALIZE_P("pathconf", "path", 0, 0, 0, PATH_HAVE_FPATHCONF);
     int name;
     long _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -10427,10 +10427,10 @@ os_pathconf(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject 
         goto exit;
     }
     _return_value = os_pathconf_impl(module, &path, name);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     /* Cleanup for path */
@@ -10443,7 +10443,7 @@ exit:
 
 #if defined(HAVE_CONFSTR)
 
-PyDoc_STRVAR(os_confstr__doc__,
+TyDoc_STRVAR(os_confstr__doc__,
 "confstr($module, name, /)\n"
 "--\n"
 "\n"
@@ -10452,13 +10452,13 @@ PyDoc_STRVAR(os_confstr__doc__,
 #define OS_CONFSTR_METHODDEF    \
     {"confstr", (PyCFunction)os_confstr, METH_O, os_confstr__doc__},
 
-static PyObject *
-os_confstr_impl(PyObject *module, int name);
+static TyObject *
+os_confstr_impl(TyObject *module, int name);
 
-static PyObject *
-os_confstr(PyObject *module, PyObject *arg)
+static TyObject *
+os_confstr(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int name;
 
     if (!conv_confname(module, arg, &name, "confstr_names")) {
@@ -10474,7 +10474,7 @@ exit:
 
 #if defined(HAVE_SYSCONF)
 
-PyDoc_STRVAR(os_sysconf__doc__,
+TyDoc_STRVAR(os_sysconf__doc__,
 "sysconf($module, name, /)\n"
 "--\n"
 "\n"
@@ -10484,12 +10484,12 @@ PyDoc_STRVAR(os_sysconf__doc__,
     {"sysconf", (PyCFunction)os_sysconf, METH_O, os_sysconf__doc__},
 
 static long
-os_sysconf_impl(PyObject *module, int name);
+os_sysconf_impl(TyObject *module, int name);
 
-static PyObject *
-os_sysconf(PyObject *module, PyObject *arg)
+static TyObject *
+os_sysconf(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int name;
     long _return_value;
 
@@ -10497,10 +10497,10 @@ os_sysconf(PyObject *module, PyObject *arg)
         goto exit;
     }
     _return_value = os_sysconf_impl(module, name);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     return return_value;
@@ -10508,7 +10508,7 @@ exit:
 
 #endif /* defined(HAVE_SYSCONF) */
 
-PyDoc_STRVAR(os_abort__doc__,
+TyDoc_STRVAR(os_abort__doc__,
 "abort($module, /)\n"
 "--\n"
 "\n"
@@ -10520,18 +10520,18 @@ PyDoc_STRVAR(os_abort__doc__,
 #define OS_ABORT_METHODDEF    \
     {"abort", (PyCFunction)os_abort, METH_NOARGS, os_abort__doc__},
 
-static PyObject *
-os_abort_impl(PyObject *module);
+static TyObject *
+os_abort_impl(TyObject *module);
 
-static PyObject *
-os_abort(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_abort(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_abort_impl(module);
 }
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_startfile__doc__,
+TyDoc_STRVAR(os_startfile__doc__,
 "startfile($module, /, filepath, operation=<unrepresentable>,\n"
 "          arguments=<unrepresentable>, cwd=None, show_cmd=1)\n"
 "--\n"
@@ -10566,51 +10566,51 @@ PyDoc_STRVAR(os_startfile__doc__,
 #define OS_STARTFILE_METHODDEF    \
     {"startfile", _PyCFunction_CAST(os_startfile), METH_FASTCALL|METH_KEYWORDS, os_startfile__doc__},
 
-static PyObject *
-os_startfile_impl(PyObject *module, path_t *filepath,
+static TyObject *
+os_startfile_impl(TyObject *module, path_t *filepath,
                   const wchar_t *operation, const wchar_t *arguments,
                   path_t *cwd, int show_cmd);
 
-static PyObject *
-os_startfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_startfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(filepath), &_Py_ID(operation), &_Py_ID(arguments), &_Py_ID(cwd), &_Py_ID(show_cmd), },
+        .ob_item = { &_Ty_ID(filepath), &_Ty_ID(operation), &_Ty_ID(arguments), &_Ty_ID(cwd), &_Ty_ID(show_cmd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"filepath", "operation", "arguments", "cwd", "show_cmd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "startfile",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     path_t filepath = PATH_T_INITIALIZE_P("startfile", "filepath", 0, 0, 0, 0);
     const wchar_t *operation = NULL;
     const wchar_t *arguments = NULL;
     path_t cwd = PATH_T_INITIALIZE_P("startfile", "cwd", 1, 0, 0, 0);
     int show_cmd = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 5, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -10622,11 +10622,11 @@ os_startfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject
         goto skip_optional_pos;
     }
     if (args[1]) {
-        if (!PyUnicode_Check(args[1])) {
-            _PyArg_BadArgument("startfile", "argument 'operation'", "str", args[1]);
+        if (!TyUnicode_Check(args[1])) {
+            _TyArg_BadArgument("startfile", "argument 'operation'", "str", args[1]);
             goto exit;
         }
-        operation = PyUnicode_AsWideCharString(args[1], NULL);
+        operation = TyUnicode_AsWideCharString(args[1], NULL);
         if (operation == NULL) {
             goto exit;
         }
@@ -10635,11 +10635,11 @@ os_startfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject
         }
     }
     if (args[2]) {
-        if (!PyUnicode_Check(args[2])) {
-            _PyArg_BadArgument("startfile", "argument 'arguments'", "str", args[2]);
+        if (!TyUnicode_Check(args[2])) {
+            _TyArg_BadArgument("startfile", "argument 'arguments'", "str", args[2]);
             goto exit;
         }
-        arguments = PyUnicode_AsWideCharString(args[2], NULL);
+        arguments = TyUnicode_AsWideCharString(args[2], NULL);
         if (arguments == NULL) {
             goto exit;
         }
@@ -10655,8 +10655,8 @@ os_startfile(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject
             goto skip_optional_pos;
         }
     }
-    show_cmd = PyLong_AsInt(args[4]);
-    if (show_cmd == -1 && PyErr_Occurred()) {
+    show_cmd = TyLong_AsInt(args[4]);
+    if (show_cmd == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -10666,9 +10666,9 @@ exit:
     /* Cleanup for filepath */
     path_cleanup(&filepath);
     /* Cleanup for operation */
-    PyMem_Free((void *)operation);
+    TyMem_Free((void *)operation);
     /* Cleanup for arguments */
-    PyMem_Free((void *)arguments);
+    TyMem_Free((void *)arguments);
     /* Cleanup for cwd */
     path_cleanup(&cwd);
 
@@ -10679,7 +10679,7 @@ exit:
 
 #if defined(HAVE_GETLOADAVG)
 
-PyDoc_STRVAR(os_getloadavg__doc__,
+TyDoc_STRVAR(os_getloadavg__doc__,
 "getloadavg($module, /)\n"
 "--\n"
 "\n"
@@ -10692,18 +10692,18 @@ PyDoc_STRVAR(os_getloadavg__doc__,
 #define OS_GETLOADAVG_METHODDEF    \
     {"getloadavg", (PyCFunction)os_getloadavg, METH_NOARGS, os_getloadavg__doc__},
 
-static PyObject *
-os_getloadavg_impl(PyObject *module);
+static TyObject *
+os_getloadavg_impl(TyObject *module);
 
-static PyObject *
-os_getloadavg(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getloadavg(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getloadavg_impl(module);
 }
 
 #endif /* defined(HAVE_GETLOADAVG) */
 
-PyDoc_STRVAR(os_device_encoding__doc__,
+TyDoc_STRVAR(os_device_encoding__doc__,
 "device_encoding($module, /, fd)\n"
 "--\n"
 "\n"
@@ -10715,50 +10715,50 @@ PyDoc_STRVAR(os_device_encoding__doc__,
 #define OS_DEVICE_ENCODING_METHODDEF    \
     {"device_encoding", _PyCFunction_CAST(os_device_encoding), METH_FASTCALL|METH_KEYWORDS, os_device_encoding__doc__},
 
-static PyObject *
-os_device_encoding_impl(PyObject *module, int fd);
+static TyObject *
+os_device_encoding_impl(TyObject *module, int fd);
 
-static PyObject *
-os_device_encoding(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_device_encoding(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), },
+        .ob_item = { &_Ty_ID(fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "device_encoding",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int fd;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_device_encoding_impl(module, fd);
@@ -10769,7 +10769,7 @@ exit:
 
 #if defined(HAVE_SETRESUID)
 
-PyDoc_STRVAR(os_setresuid__doc__,
+TyDoc_STRVAR(os_setresuid__doc__,
 "setresuid($module, ruid, euid, suid, /)\n"
 "--\n"
 "\n"
@@ -10778,27 +10778,27 @@ PyDoc_STRVAR(os_setresuid__doc__,
 #define OS_SETRESUID_METHODDEF    \
     {"setresuid", _PyCFunction_CAST(os_setresuid), METH_FASTCALL, os_setresuid__doc__},
 
-static PyObject *
-os_setresuid_impl(PyObject *module, uid_t ruid, uid_t euid, uid_t suid);
+static TyObject *
+os_setresuid_impl(TyObject *module, uid_t ruid, uid_t euid, uid_t suid);
 
-static PyObject *
-os_setresuid(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_setresuid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     uid_t ruid;
     uid_t euid;
     uid_t suid;
 
-    if (!_PyArg_CheckPositional("setresuid", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("setresuid", nargs, 3, 3)) {
         goto exit;
     }
-    if (!_Py_Uid_Converter(args[0], &ruid)) {
+    if (!_Ty_Uid_Converter(args[0], &ruid)) {
         goto exit;
     }
-    if (!_Py_Uid_Converter(args[1], &euid)) {
+    if (!_Ty_Uid_Converter(args[1], &euid)) {
         goto exit;
     }
-    if (!_Py_Uid_Converter(args[2], &suid)) {
+    if (!_Ty_Uid_Converter(args[2], &suid)) {
         goto exit;
     }
     return_value = os_setresuid_impl(module, ruid, euid, suid);
@@ -10811,7 +10811,7 @@ exit:
 
 #if defined(HAVE_SETRESGID)
 
-PyDoc_STRVAR(os_setresgid__doc__,
+TyDoc_STRVAR(os_setresgid__doc__,
 "setresgid($module, rgid, egid, sgid, /)\n"
 "--\n"
 "\n"
@@ -10820,27 +10820,27 @@ PyDoc_STRVAR(os_setresgid__doc__,
 #define OS_SETRESGID_METHODDEF    \
     {"setresgid", _PyCFunction_CAST(os_setresgid), METH_FASTCALL, os_setresgid__doc__},
 
-static PyObject *
-os_setresgid_impl(PyObject *module, gid_t rgid, gid_t egid, gid_t sgid);
+static TyObject *
+os_setresgid_impl(TyObject *module, gid_t rgid, gid_t egid, gid_t sgid);
 
-static PyObject *
-os_setresgid(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_setresgid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     gid_t rgid;
     gid_t egid;
     gid_t sgid;
 
-    if (!_PyArg_CheckPositional("setresgid", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("setresgid", nargs, 3, 3)) {
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[0], &rgid)) {
+    if (!_Ty_Gid_Converter(args[0], &rgid)) {
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[1], &egid)) {
+    if (!_Ty_Gid_Converter(args[1], &egid)) {
         goto exit;
     }
-    if (!_Py_Gid_Converter(args[2], &sgid)) {
+    if (!_Ty_Gid_Converter(args[2], &sgid)) {
         goto exit;
     }
     return_value = os_setresgid_impl(module, rgid, egid, sgid);
@@ -10853,7 +10853,7 @@ exit:
 
 #if defined(HAVE_GETRESUID)
 
-PyDoc_STRVAR(os_getresuid__doc__,
+TyDoc_STRVAR(os_getresuid__doc__,
 "getresuid($module, /)\n"
 "--\n"
 "\n"
@@ -10862,11 +10862,11 @@ PyDoc_STRVAR(os_getresuid__doc__,
 #define OS_GETRESUID_METHODDEF    \
     {"getresuid", (PyCFunction)os_getresuid, METH_NOARGS, os_getresuid__doc__},
 
-static PyObject *
-os_getresuid_impl(PyObject *module);
+static TyObject *
+os_getresuid_impl(TyObject *module);
 
-static PyObject *
-os_getresuid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getresuid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getresuid_impl(module);
 }
@@ -10875,7 +10875,7 @@ os_getresuid(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETRESGID)
 
-PyDoc_STRVAR(os_getresgid__doc__,
+TyDoc_STRVAR(os_getresgid__doc__,
 "getresgid($module, /)\n"
 "--\n"
 "\n"
@@ -10884,11 +10884,11 @@ PyDoc_STRVAR(os_getresgid__doc__,
 #define OS_GETRESGID_METHODDEF    \
     {"getresgid", (PyCFunction)os_getresgid, METH_NOARGS, os_getresgid__doc__},
 
-static PyObject *
-os_getresgid_impl(PyObject *module);
+static TyObject *
+os_getresgid_impl(TyObject *module);
 
-static PyObject *
-os_getresgid(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_getresgid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getresgid_impl(module);
 }
@@ -10897,7 +10897,7 @@ os_getresgid(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #if defined(USE_XATTRS)
 
-PyDoc_STRVAR(os_getxattr__doc__,
+TyDoc_STRVAR(os_getxattr__doc__,
 "getxattr($module, /, path, attribute, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -10911,48 +10911,48 @@ PyDoc_STRVAR(os_getxattr__doc__,
 #define OS_GETXATTR_METHODDEF    \
     {"getxattr", _PyCFunction_CAST(os_getxattr), METH_FASTCALL|METH_KEYWORDS, os_getxattr__doc__},
 
-static PyObject *
-os_getxattr_impl(PyObject *module, path_t *path, path_t *attribute,
+static TyObject *
+os_getxattr_impl(TyObject *module, path_t *path, path_t *attribute,
                  int follow_symlinks);
 
-static PyObject *
-os_getxattr(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_getxattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(attribute), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(attribute), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "attribute", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "getxattr",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t path = PATH_T_INITIALIZE_P("getxattr", "path", 0, 0, 0, 1);
     path_t attribute = PATH_T_INITIALIZE_P("getxattr", "attribute", 0, 0, 0, 0);
     int follow_symlinks = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -10986,7 +10986,7 @@ exit:
 
 #if defined(USE_XATTRS)
 
-PyDoc_STRVAR(os_setxattr__doc__,
+TyDoc_STRVAR(os_setxattr__doc__,
 "setxattr($module, /, path, attribute, value, flags=0, *,\n"
 "         follow_symlinks=True)\n"
 "--\n"
@@ -11001,50 +11001,50 @@ PyDoc_STRVAR(os_setxattr__doc__,
 #define OS_SETXATTR_METHODDEF    \
     {"setxattr", _PyCFunction_CAST(os_setxattr), METH_FASTCALL|METH_KEYWORDS, os_setxattr__doc__},
 
-static PyObject *
-os_setxattr_impl(PyObject *module, path_t *path, path_t *attribute,
-                 Py_buffer *value, int flags, int follow_symlinks);
+static TyObject *
+os_setxattr_impl(TyObject *module, path_t *path, path_t *attribute,
+                 Ty_buffer *value, int flags, int follow_symlinks);
 
-static PyObject *
-os_setxattr(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_setxattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(attribute), &_Py_ID(value), &_Py_ID(flags), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(attribute), &_Ty_ID(value), &_Ty_ID(flags), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "attribute", "value", "flags", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "setxattr",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
     path_t path = PATH_T_INITIALIZE_P("setxattr", "path", 0, 0, 0, 1);
     path_t attribute = PATH_T_INITIALIZE_P("setxattr", "attribute", 0, 0, 0, 0);
-    Py_buffer value = {NULL, NULL};
+    Ty_buffer value = {NULL, NULL};
     int flags = 0;
     int follow_symlinks = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -11062,8 +11062,8 @@ os_setxattr(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject 
         goto skip_optional_pos;
     }
     if (args[3]) {
-        flags = PyLong_AsInt(args[3]);
-        if (flags == -1 && PyErr_Occurred()) {
+        flags = TyLong_AsInt(args[3]);
+        if (flags == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -11098,7 +11098,7 @@ exit:
 
 #if defined(USE_XATTRS)
 
-PyDoc_STRVAR(os_removexattr__doc__,
+TyDoc_STRVAR(os_removexattr__doc__,
 "removexattr($module, /, path, attribute, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -11112,48 +11112,48 @@ PyDoc_STRVAR(os_removexattr__doc__,
 #define OS_REMOVEXATTR_METHODDEF    \
     {"removexattr", _PyCFunction_CAST(os_removexattr), METH_FASTCALL|METH_KEYWORDS, os_removexattr__doc__},
 
-static PyObject *
-os_removexattr_impl(PyObject *module, path_t *path, path_t *attribute,
+static TyObject *
+os_removexattr_impl(TyObject *module, path_t *path, path_t *attribute,
                     int follow_symlinks);
 
-static PyObject *
-os_removexattr(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_removexattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(attribute), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(attribute), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "attribute", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "removexattr",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     path_t path = PATH_T_INITIALIZE_P("removexattr", "path", 0, 0, 0, 1);
     path_t attribute = PATH_T_INITIALIZE_P("removexattr", "attribute", 0, 0, 0, 0);
     int follow_symlinks = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -11187,7 +11187,7 @@ exit:
 
 #if defined(USE_XATTRS)
 
-PyDoc_STRVAR(os_listxattr__doc__,
+TyDoc_STRVAR(os_listxattr__doc__,
 "listxattr($module, /, path=None, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -11202,46 +11202,46 @@ PyDoc_STRVAR(os_listxattr__doc__,
 #define OS_LISTXATTR_METHODDEF    \
     {"listxattr", _PyCFunction_CAST(os_listxattr), METH_FASTCALL|METH_KEYWORDS, os_listxattr__doc__},
 
-static PyObject *
-os_listxattr_impl(PyObject *module, path_t *path, int follow_symlinks);
+static TyObject *
+os_listxattr_impl(TyObject *module, path_t *path, int follow_symlinks);
 
-static PyObject *
-os_listxattr(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_listxattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(path), &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", "follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "listxattr",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     path_t path = PATH_T_INITIALIZE_P("listxattr", "path", 1, 0, 0, 1);
     int follow_symlinks = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -11277,7 +11277,7 @@ exit:
 
 #endif /* defined(USE_XATTRS) */
 
-PyDoc_STRVAR(os_urandom__doc__,
+TyDoc_STRVAR(os_urandom__doc__,
 "urandom($module, size, /)\n"
 "--\n"
 "\n"
@@ -11286,23 +11286,23 @@ PyDoc_STRVAR(os_urandom__doc__,
 #define OS_URANDOM_METHODDEF    \
     {"urandom", (PyCFunction)os_urandom, METH_O, os_urandom__doc__},
 
-static PyObject *
-os_urandom_impl(PyObject *module, Py_ssize_t size);
+static TyObject *
+os_urandom_impl(TyObject *module, Ty_ssize_t size);
 
-static PyObject *
-os_urandom(PyObject *module, PyObject *arg)
+static TyObject *
+os_urandom(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t size;
+    TyObject *return_value = NULL;
+    Ty_ssize_t size;
 
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(arg);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(arg);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         size = ival;
@@ -11315,7 +11315,7 @@ exit:
 
 #if defined(HAVE_MEMFD_CREATE)
 
-PyDoc_STRVAR(os_memfd_create__doc__,
+TyDoc_STRVAR(os_memfd_create__doc__,
 "memfd_create($module, /, name, flags=MFD_CLOEXEC)\n"
 "--\n"
 "\n");
@@ -11323,58 +11323,58 @@ PyDoc_STRVAR(os_memfd_create__doc__,
 #define OS_MEMFD_CREATE_METHODDEF    \
     {"memfd_create", _PyCFunction_CAST(os_memfd_create), METH_FASTCALL|METH_KEYWORDS, os_memfd_create__doc__},
 
-static PyObject *
-os_memfd_create_impl(PyObject *module, PyObject *name, unsigned int flags);
+static TyObject *
+os_memfd_create_impl(TyObject *module, TyObject *name, unsigned int flags);
 
-static PyObject *
-os_memfd_create(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_memfd_create(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(name), &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(name), &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"name", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "memfd_create",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *name = NULL;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *name = NULL;
     unsigned int flags = MFD_CLOEXEC;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_FSConverter(args[0], &name)) {
+    if (!TyUnicode_FSConverter(args[0], &name)) {
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    flags = (unsigned int)PyLong_AsUnsignedLongMask(args[1]);
-    if (flags == (unsigned int)-1 && PyErr_Occurred()) {
+    flags = (unsigned int)TyLong_AsUnsignedLongMask(args[1]);
+    if (flags == (unsigned int)-1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -11382,7 +11382,7 @@ skip_optional_pos:
 
 exit:
     /* Cleanup for name */
-    Py_XDECREF(name);
+    Ty_XDECREF(name);
 
     return return_value;
 }
@@ -11391,7 +11391,7 @@ exit:
 
 #if (defined(HAVE_EVENTFD) && defined(EFD_CLOEXEC))
 
-PyDoc_STRVAR(os_eventfd__doc__,
+TyDoc_STRVAR(os_eventfd__doc__,
 "eventfd($module, /, initval, flags=EFD_CLOEXEC)\n"
 "--\n"
 "\n"
@@ -11400,58 +11400,58 @@ PyDoc_STRVAR(os_eventfd__doc__,
 #define OS_EVENTFD_METHODDEF    \
     {"eventfd", _PyCFunction_CAST(os_eventfd), METH_FASTCALL|METH_KEYWORDS, os_eventfd__doc__},
 
-static PyObject *
-os_eventfd_impl(PyObject *module, unsigned int initval, int flags);
+static TyObject *
+os_eventfd_impl(TyObject *module, unsigned int initval, int flags);
 
-static PyObject *
-os_eventfd(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_eventfd(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(initval), &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(initval), &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"initval", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "eventfd",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     unsigned int initval;
     int flags = EFD_CLOEXEC;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!_PyLong_UnsignedInt_Converter(args[0], &initval)) {
+    if (!_TyLong_UnsignedInt_Converter(args[0], &initval)) {
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    flags = PyLong_AsInt(args[1]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[1]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -11465,7 +11465,7 @@ exit:
 
 #if (defined(HAVE_EVENTFD) && defined(EFD_CLOEXEC))
 
-PyDoc_STRVAR(os_eventfd_read__doc__,
+TyDoc_STRVAR(os_eventfd_read__doc__,
 "eventfd_read($module, /, fd)\n"
 "--\n"
 "\n"
@@ -11474,44 +11474,44 @@ PyDoc_STRVAR(os_eventfd_read__doc__,
 #define OS_EVENTFD_READ_METHODDEF    \
     {"eventfd_read", _PyCFunction_CAST(os_eventfd_read), METH_FASTCALL|METH_KEYWORDS, os_eventfd_read__doc__},
 
-static PyObject *
-os_eventfd_read_impl(PyObject *module, int fd);
+static TyObject *
+os_eventfd_read_impl(TyObject *module, int fd);
 
-static PyObject *
-os_eventfd_read(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_eventfd_read(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), },
+        .ob_item = { &_Ty_ID(fd), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "eventfd_read",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int fd;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -11530,7 +11530,7 @@ exit:
 
 #if (defined(HAVE_EVENTFD) && defined(EFD_CLOEXEC))
 
-PyDoc_STRVAR(os_eventfd_write__doc__,
+TyDoc_STRVAR(os_eventfd_write__doc__,
 "eventfd_write($module, /, fd, value)\n"
 "--\n"
 "\n"
@@ -11539,45 +11539,45 @@ PyDoc_STRVAR(os_eventfd_write__doc__,
 #define OS_EVENTFD_WRITE_METHODDEF    \
     {"eventfd_write", _PyCFunction_CAST(os_eventfd_write), METH_FASTCALL|METH_KEYWORDS, os_eventfd_write__doc__},
 
-static PyObject *
-os_eventfd_write_impl(PyObject *module, int fd, unsigned long long value);
+static TyObject *
+os_eventfd_write_impl(TyObject *module, int fd, unsigned long long value);
 
-static PyObject *
-os_eventfd_write(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_eventfd_write(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(fd), &_Py_ID(value), },
+        .ob_item = { &_Ty_ID(fd), &_Ty_ID(value), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"fd", "value", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "eventfd_write",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     int fd;
     unsigned long long value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -11586,7 +11586,7 @@ os_eventfd_write(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyOb
     if (fd < 0) {
         goto exit;
     }
-    if (!_PyLong_UnsignedLongLong_Converter(args[1], &value)) {
+    if (!_TyLong_UnsignedLongLong_Converter(args[1], &value)) {
         goto exit;
     }
     return_value = os_eventfd_write_impl(module, fd, value);
@@ -11599,7 +11599,7 @@ exit:
 
 #if (defined(TERMSIZE_USE_CONIO) || defined(TERMSIZE_USE_IOCTL))
 
-PyDoc_STRVAR(os_get_terminal_size__doc__,
+TyDoc_STRVAR(os_get_terminal_size__doc__,
 "get_terminal_size($module, fd=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -11620,23 +11620,23 @@ PyDoc_STRVAR(os_get_terminal_size__doc__,
 #define OS_GET_TERMINAL_SIZE_METHODDEF    \
     {"get_terminal_size", _PyCFunction_CAST(os_get_terminal_size), METH_FASTCALL, os_get_terminal_size__doc__},
 
-static PyObject *
-os_get_terminal_size_impl(PyObject *module, int fd);
+static TyObject *
+os_get_terminal_size_impl(TyObject *module, int fd);
 
-static PyObject *
-os_get_terminal_size(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_get_terminal_size(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd = fileno(stdout);
 
-    if (!_PyArg_CheckPositional("get_terminal_size", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("get_terminal_size", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -11648,7 +11648,7 @@ exit:
 
 #endif /* (defined(TERMSIZE_USE_CONIO) || defined(TERMSIZE_USE_IOCTL)) */
 
-PyDoc_STRVAR(os_cpu_count__doc__,
+TyDoc_STRVAR(os_cpu_count__doc__,
 "cpu_count($module, /)\n"
 "--\n"
 "\n"
@@ -11659,16 +11659,16 @@ PyDoc_STRVAR(os_cpu_count__doc__,
 #define OS_CPU_COUNT_METHODDEF    \
     {"cpu_count", (PyCFunction)os_cpu_count, METH_NOARGS, os_cpu_count__doc__},
 
-static PyObject *
-os_cpu_count_impl(PyObject *module);
+static TyObject *
+os_cpu_count_impl(TyObject *module);
 
-static PyObject *
-os_cpu_count(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_cpu_count(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_cpu_count_impl(module);
 }
 
-PyDoc_STRVAR(os_get_inheritable__doc__,
+TyDoc_STRVAR(os_get_inheritable__doc__,
 "get_inheritable($module, fd, /)\n"
 "--\n"
 "\n"
@@ -11678,30 +11678,30 @@ PyDoc_STRVAR(os_get_inheritable__doc__,
     {"get_inheritable", (PyCFunction)os_get_inheritable, METH_O, os_get_inheritable__doc__},
 
 static int
-os_get_inheritable_impl(PyObject *module, int fd);
+os_get_inheritable_impl(TyObject *module, int fd);
 
-static PyObject *
-os_get_inheritable(PyObject *module, PyObject *arg)
+static TyObject *
+os_get_inheritable(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int _return_value;
 
-    fd = PyLong_AsInt(arg);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(arg);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_get_inheritable_impl(module, fd);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_set_inheritable__doc__,
+TyDoc_STRVAR(os_set_inheritable__doc__,
 "set_inheritable($module, fd, inheritable, /)\n"
 "--\n"
 "\n"
@@ -11710,25 +11710,25 @@ PyDoc_STRVAR(os_set_inheritable__doc__,
 #define OS_SET_INHERITABLE_METHODDEF    \
     {"set_inheritable", _PyCFunction_CAST(os_set_inheritable), METH_FASTCALL, os_set_inheritable__doc__},
 
-static PyObject *
-os_set_inheritable_impl(PyObject *module, int fd, int inheritable);
+static TyObject *
+os_set_inheritable_impl(TyObject *module, int fd, int inheritable);
 
-static PyObject *
-os_set_inheritable(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_set_inheritable(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int inheritable;
 
-    if (!_PyArg_CheckPositional("set_inheritable", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("set_inheritable", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    inheritable = PyLong_AsInt(args[1]);
-    if (inheritable == -1 && PyErr_Occurred()) {
+    inheritable = TyLong_AsInt(args[1]);
+    if (inheritable == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = os_set_inheritable_impl(module, fd, inheritable);
@@ -11739,7 +11739,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_get_handle_inheritable__doc__,
+TyDoc_STRVAR(os_get_handle_inheritable__doc__,
 "get_handle_inheritable($module, handle, /)\n"
 "--\n"
 "\n"
@@ -11749,24 +11749,24 @@ PyDoc_STRVAR(os_get_handle_inheritable__doc__,
     {"get_handle_inheritable", (PyCFunction)os_get_handle_inheritable, METH_O, os_get_handle_inheritable__doc__},
 
 static int
-os_get_handle_inheritable_impl(PyObject *module, intptr_t handle);
+os_get_handle_inheritable_impl(TyObject *module, intptr_t handle);
 
-static PyObject *
-os_get_handle_inheritable(PyObject *module, PyObject *arg)
+static TyObject *
+os_get_handle_inheritable(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     intptr_t handle;
     int _return_value;
 
-    handle = (intptr_t)PyLong_AsVoidPtr(arg);
-    if (!handle && PyErr_Occurred()) {
+    handle = (intptr_t)TyLong_AsVoidPtr(arg);
+    if (!handle && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_get_handle_inheritable_impl(module, handle);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -11776,7 +11776,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_set_handle_inheritable__doc__,
+TyDoc_STRVAR(os_set_handle_inheritable__doc__,
 "set_handle_inheritable($module, handle, inheritable, /)\n"
 "--\n"
 "\n"
@@ -11785,22 +11785,22 @@ PyDoc_STRVAR(os_set_handle_inheritable__doc__,
 #define OS_SET_HANDLE_INHERITABLE_METHODDEF    \
     {"set_handle_inheritable", _PyCFunction_CAST(os_set_handle_inheritable), METH_FASTCALL, os_set_handle_inheritable__doc__},
 
-static PyObject *
-os_set_handle_inheritable_impl(PyObject *module, intptr_t handle,
+static TyObject *
+os_set_handle_inheritable_impl(TyObject *module, intptr_t handle,
                                int inheritable);
 
-static PyObject *
-os_set_handle_inheritable(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_set_handle_inheritable(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     intptr_t handle;
     int inheritable;
 
-    if (!_PyArg_CheckPositional("set_handle_inheritable", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("set_handle_inheritable", nargs, 2, 2)) {
         goto exit;
     }
-    handle = (intptr_t)PyLong_AsVoidPtr(args[0]);
-    if (!handle && PyErr_Occurred()) {
+    handle = (intptr_t)TyLong_AsVoidPtr(args[0]);
+    if (!handle && TyErr_Occurred()) {
         goto exit;
     }
     inheritable = PyObject_IsTrue(args[1]);
@@ -11815,7 +11815,7 @@ exit:
 
 #endif /* defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(os_get_blocking__doc__,
+TyDoc_STRVAR(os_get_blocking__doc__,
 "get_blocking($module, fd, /)\n"
 "--\n"
 "\n"
@@ -11827,30 +11827,30 @@ PyDoc_STRVAR(os_get_blocking__doc__,
     {"get_blocking", (PyCFunction)os_get_blocking, METH_O, os_get_blocking__doc__},
 
 static int
-os_get_blocking_impl(PyObject *module, int fd);
+os_get_blocking_impl(TyObject *module, int fd);
 
-static PyObject *
-os_get_blocking(PyObject *module, PyObject *arg)
+static TyObject *
+os_get_blocking(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int _return_value;
 
-    fd = PyLong_AsInt(arg);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(arg);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = os_get_blocking_impl(module, fd);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_set_blocking__doc__,
+TyDoc_STRVAR(os_set_blocking__doc__,
 "set_blocking($module, fd, blocking, /)\n"
 "--\n"
 "\n"
@@ -11862,21 +11862,21 @@ PyDoc_STRVAR(os_set_blocking__doc__,
 #define OS_SET_BLOCKING_METHODDEF    \
     {"set_blocking", _PyCFunction_CAST(os_set_blocking), METH_FASTCALL, os_set_blocking__doc__},
 
-static PyObject *
-os_set_blocking_impl(PyObject *module, int fd, int blocking);
+static TyObject *
+os_set_blocking_impl(TyObject *module, int fd, int blocking);
 
-static PyObject *
-os_set_blocking(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+os_set_blocking(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int blocking;
 
-    if (!_PyArg_CheckPositional("set_blocking", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("set_blocking", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     blocking = PyObject_IsTrue(args[1]);
@@ -11889,7 +11889,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_is_symlink__doc__,
+TyDoc_STRVAR(os_DirEntry_is_symlink__doc__,
 "is_symlink($self, /)\n"
 "--\n"
 "\n"
@@ -11899,29 +11899,29 @@ PyDoc_STRVAR(os_DirEntry_is_symlink__doc__,
     {"is_symlink", _PyCFunction_CAST(os_DirEntry_is_symlink), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, os_DirEntry_is_symlink__doc__},
 
 static int
-os_DirEntry_is_symlink_impl(DirEntry *self, PyTypeObject *defining_class);
+os_DirEntry_is_symlink_impl(DirEntry *self, TyTypeObject *defining_class);
 
-static PyObject *
-os_DirEntry_is_symlink(PyObject *self, PyTypeObject *defining_class, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_DirEntry_is_symlink(TyObject *self, TyTypeObject *defining_class, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "is_symlink() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "is_symlink() takes no arguments");
         goto exit;
     }
     _return_value = os_DirEntry_is_symlink_impl((DirEntry *)self, defining_class);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_is_junction__doc__,
+TyDoc_STRVAR(os_DirEntry_is_junction__doc__,
 "is_junction($self, /)\n"
 "--\n"
 "\n"
@@ -11933,23 +11933,23 @@ PyDoc_STRVAR(os_DirEntry_is_junction__doc__,
 static int
 os_DirEntry_is_junction_impl(DirEntry *self);
 
-static PyObject *
-os_DirEntry_is_junction(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_DirEntry_is_junction(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = os_DirEntry_is_junction_impl((DirEntry *)self);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_stat__doc__,
+TyDoc_STRVAR(os_DirEntry_stat__doc__,
 "stat($self, /, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -11958,46 +11958,46 @@ PyDoc_STRVAR(os_DirEntry_stat__doc__,
 #define OS_DIRENTRY_STAT_METHODDEF    \
     {"stat", _PyCFunction_CAST(os_DirEntry_stat), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, os_DirEntry_stat__doc__},
 
-static PyObject *
-os_DirEntry_stat_impl(DirEntry *self, PyTypeObject *defining_class,
+static TyObject *
+os_DirEntry_stat_impl(DirEntry *self, TyTypeObject *defining_class,
                       int follow_symlinks);
 
-static PyObject *
-os_DirEntry_stat(PyObject *self, PyTypeObject *defining_class, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_DirEntry_stat(TyObject *self, TyTypeObject *defining_class, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "stat",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int follow_symlinks = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -12016,7 +12016,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_is_dir__doc__,
+TyDoc_STRVAR(os_DirEntry_is_dir__doc__,
 "is_dir($self, /, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -12026,46 +12026,46 @@ PyDoc_STRVAR(os_DirEntry_is_dir__doc__,
     {"is_dir", _PyCFunction_CAST(os_DirEntry_is_dir), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, os_DirEntry_is_dir__doc__},
 
 static int
-os_DirEntry_is_dir_impl(DirEntry *self, PyTypeObject *defining_class,
+os_DirEntry_is_dir_impl(DirEntry *self, TyTypeObject *defining_class,
                         int follow_symlinks);
 
-static PyObject *
-os_DirEntry_is_dir(PyObject *self, PyTypeObject *defining_class, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_DirEntry_is_dir(TyObject *self, TyTypeObject *defining_class, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "is_dir",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int follow_symlinks = 1;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -12079,16 +12079,16 @@ os_DirEntry_is_dir(PyObject *self, PyTypeObject *defining_class, PyObject *const
     }
 skip_optional_kwonly:
     _return_value = os_DirEntry_is_dir_impl((DirEntry *)self, defining_class, follow_symlinks);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_is_file__doc__,
+TyDoc_STRVAR(os_DirEntry_is_file__doc__,
 "is_file($self, /, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -12098,46 +12098,46 @@ PyDoc_STRVAR(os_DirEntry_is_file__doc__,
     {"is_file", _PyCFunction_CAST(os_DirEntry_is_file), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, os_DirEntry_is_file__doc__},
 
 static int
-os_DirEntry_is_file_impl(DirEntry *self, PyTypeObject *defining_class,
+os_DirEntry_is_file_impl(DirEntry *self, TyTypeObject *defining_class,
                          int follow_symlinks);
 
-static PyObject *
-os_DirEntry_is_file(PyObject *self, PyTypeObject *defining_class, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_DirEntry_is_file(TyObject *self, TyTypeObject *defining_class, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(follow_symlinks), },
+        .ob_item = { &_Ty_ID(follow_symlinks), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"follow_symlinks", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "is_file",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int follow_symlinks = 1;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -12151,16 +12151,16 @@ os_DirEntry_is_file(PyObject *self, PyTypeObject *defining_class, PyObject *cons
     }
 skip_optional_kwonly:
     _return_value = os_DirEntry_is_file_impl((DirEntry *)self, defining_class, follow_symlinks);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_inode__doc__,
+TyDoc_STRVAR(os_DirEntry_inode__doc__,
 "inode($self, /)\n"
 "--\n"
 "\n"
@@ -12169,16 +12169,16 @@ PyDoc_STRVAR(os_DirEntry_inode__doc__,
 #define OS_DIRENTRY_INODE_METHODDEF    \
     {"inode", (PyCFunction)os_DirEntry_inode, METH_NOARGS, os_DirEntry_inode__doc__},
 
-static PyObject *
+static TyObject *
 os_DirEntry_inode_impl(DirEntry *self);
 
-static PyObject *
-os_DirEntry_inode(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_DirEntry_inode(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return os_DirEntry_inode_impl((DirEntry *)self);
 }
 
-PyDoc_STRVAR(os_DirEntry___fspath____doc__,
+TyDoc_STRVAR(os_DirEntry___fspath____doc__,
 "__fspath__($self, /)\n"
 "--\n"
 "\n"
@@ -12187,16 +12187,16 @@ PyDoc_STRVAR(os_DirEntry___fspath____doc__,
 #define OS_DIRENTRY___FSPATH___METHODDEF    \
     {"__fspath__", (PyCFunction)os_DirEntry___fspath__, METH_NOARGS, os_DirEntry___fspath____doc__},
 
-static PyObject *
+static TyObject *
 os_DirEntry___fspath___impl(DirEntry *self);
 
-static PyObject *
-os_DirEntry___fspath__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os_DirEntry___fspath__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return os_DirEntry___fspath___impl((DirEntry *)self);
 }
 
-PyDoc_STRVAR(os_scandir__doc__,
+TyDoc_STRVAR(os_scandir__doc__,
 "scandir($module, /, path=None)\n"
 "--\n"
 "\n"
@@ -12211,45 +12211,45 @@ PyDoc_STRVAR(os_scandir__doc__,
 #define OS_SCANDIR_METHODDEF    \
     {"scandir", _PyCFunction_CAST(os_scandir), METH_FASTCALL|METH_KEYWORDS, os_scandir__doc__},
 
-static PyObject *
-os_scandir_impl(PyObject *module, path_t *path);
+static TyObject *
+os_scandir_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os_scandir(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_scandir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "scandir",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     path_t path = PATH_T_INITIALIZE_P("scandir", "path", 1, 0, 0, PATH_HAVE_FDOPENDIR);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -12270,7 +12270,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_fspath__doc__,
+TyDoc_STRVAR(os_fspath__doc__,
 "fspath($module, /, path)\n"
 "--\n"
 "\n"
@@ -12283,44 +12283,44 @@ PyDoc_STRVAR(os_fspath__doc__,
 #define OS_FSPATH_METHODDEF    \
     {"fspath", _PyCFunction_CAST(os_fspath), METH_FASTCALL|METH_KEYWORDS, os_fspath__doc__},
 
-static PyObject *
-os_fspath_impl(PyObject *module, PyObject *path);
+static TyObject *
+os_fspath_impl(TyObject *module, TyObject *path);
 
-static PyObject *
-os_fspath(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_fspath(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fspath",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *path;
+    TyObject *argsbuf[1];
+    TyObject *path;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -12334,7 +12334,7 @@ exit:
 
 #if defined(HAVE_GETRANDOM_SYSCALL)
 
-PyDoc_STRVAR(os_getrandom__doc__,
+TyDoc_STRVAR(os_getrandom__doc__,
 "getrandom($module, /, size, flags=0)\n"
 "--\n"
 "\n"
@@ -12343,58 +12343,58 @@ PyDoc_STRVAR(os_getrandom__doc__,
 #define OS_GETRANDOM_METHODDEF    \
     {"getrandom", _PyCFunction_CAST(os_getrandom), METH_FASTCALL|METH_KEYWORDS, os_getrandom__doc__},
 
-static PyObject *
-os_getrandom_impl(PyObject *module, Py_ssize_t size, int flags);
+static TyObject *
+os_getrandom_impl(TyObject *module, Ty_ssize_t size, int flags);
 
-static PyObject *
-os_getrandom(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_getrandom(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(size), &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(size), &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"size", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "getrandom",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_ssize_t size;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_ssize_t size;
     int flags = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         size = ival;
@@ -12402,8 +12402,8 @@ os_getrandom(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    flags = PyLong_AsInt(args[1]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[1]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -12417,7 +12417,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_APP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(os__add_dll_directory__doc__,
+TyDoc_STRVAR(os__add_dll_directory__doc__,
 "_add_dll_directory($module, /, path)\n"
 "--\n"
 "\n"
@@ -12433,44 +12433,44 @@ PyDoc_STRVAR(os__add_dll_directory__doc__,
 #define OS__ADD_DLL_DIRECTORY_METHODDEF    \
     {"_add_dll_directory", _PyCFunction_CAST(os__add_dll_directory), METH_FASTCALL|METH_KEYWORDS, os__add_dll_directory__doc__},
 
-static PyObject *
-os__add_dll_directory_impl(PyObject *module, path_t *path);
+static TyObject *
+os__add_dll_directory_impl(TyObject *module, path_t *path);
 
-static PyObject *
-os__add_dll_directory(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__add_dll_directory(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_add_dll_directory",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     path_t path = PATH_T_INITIALIZE_P("_add_dll_directory", "path", 0, 0, 0, 0);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -12491,7 +12491,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_APP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(os__remove_dll_directory__doc__,
+TyDoc_STRVAR(os__remove_dll_directory__doc__,
 "_remove_dll_directory($module, /, cookie)\n"
 "--\n"
 "\n"
@@ -12504,44 +12504,44 @@ PyDoc_STRVAR(os__remove_dll_directory__doc__,
 #define OS__REMOVE_DLL_DIRECTORY_METHODDEF    \
     {"_remove_dll_directory", _PyCFunction_CAST(os__remove_dll_directory), METH_FASTCALL|METH_KEYWORDS, os__remove_dll_directory__doc__},
 
-static PyObject *
-os__remove_dll_directory_impl(PyObject *module, PyObject *cookie);
+static TyObject *
+os__remove_dll_directory_impl(TyObject *module, TyObject *cookie);
 
-static PyObject *
-os__remove_dll_directory(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os__remove_dll_directory(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(cookie), },
+        .ob_item = { &_Ty_ID(cookie), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"cookie", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_remove_dll_directory",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *cookie;
+    TyObject *argsbuf[1];
+    TyObject *cookie;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -12557,7 +12557,7 @@ exit:
 
 #if (defined(WIFEXITED) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(os_waitstatus_to_exitcode__doc__,
+TyDoc_STRVAR(os_waitstatus_to_exitcode__doc__,
 "waitstatus_to_exitcode($module, /, status)\n"
 "--\n"
 "\n"
@@ -12578,44 +12578,44 @@ PyDoc_STRVAR(os_waitstatus_to_exitcode__doc__,
 #define OS_WAITSTATUS_TO_EXITCODE_METHODDEF    \
     {"waitstatus_to_exitcode", _PyCFunction_CAST(os_waitstatus_to_exitcode), METH_FASTCALL|METH_KEYWORDS, os_waitstatus_to_exitcode__doc__},
 
-static PyObject *
-os_waitstatus_to_exitcode_impl(PyObject *module, PyObject *status_obj);
+static TyObject *
+os_waitstatus_to_exitcode_impl(TyObject *module, TyObject *status_obj);
 
-static PyObject *
-os_waitstatus_to_exitcode(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+os_waitstatus_to_exitcode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(status), },
+        .ob_item = { &_Ty_ID(status), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"status", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "waitstatus_to_exitcode",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *status_obj;
+    TyObject *argsbuf[1];
+    TyObject *status_obj;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -12631,7 +12631,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__supports_virtual_terminal__doc__,
+TyDoc_STRVAR(os__supports_virtual_terminal__doc__,
 "_supports_virtual_terminal($module, /)\n"
 "--\n"
 "\n"
@@ -12640,54 +12640,54 @@ PyDoc_STRVAR(os__supports_virtual_terminal__doc__,
 #define OS__SUPPORTS_VIRTUAL_TERMINAL_METHODDEF    \
     {"_supports_virtual_terminal", (PyCFunction)os__supports_virtual_terminal, METH_NOARGS, os__supports_virtual_terminal__doc__},
 
-static PyObject *
-os__supports_virtual_terminal_impl(PyObject *module);
+static TyObject *
+os__supports_virtual_terminal_impl(TyObject *module);
 
-static PyObject *
-os__supports_virtual_terminal(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os__supports_virtual_terminal(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__supports_virtual_terminal_impl(module);
 }
 
 #endif /* defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(os__inputhook__doc__,
+TyDoc_STRVAR(os__inputhook__doc__,
 "_inputhook($module, /)\n"
 "--\n"
 "\n"
-"Calls PyOS_CallInputHook droppong the GIL first");
+"Calls TyOS_CallInputHook droppong the GIL first");
 
 #define OS__INPUTHOOK_METHODDEF    \
     {"_inputhook", (PyCFunction)os__inputhook, METH_NOARGS, os__inputhook__doc__},
 
-static PyObject *
-os__inputhook_impl(PyObject *module);
+static TyObject *
+os__inputhook_impl(TyObject *module);
 
-static PyObject *
-os__inputhook(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os__inputhook(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__inputhook_impl(module);
 }
 
-PyDoc_STRVAR(os__is_inputhook_installed__doc__,
+TyDoc_STRVAR(os__is_inputhook_installed__doc__,
 "_is_inputhook_installed($module, /)\n"
 "--\n"
 "\n"
-"Checks if PyOS_CallInputHook is set");
+"Checks if TyOS_CallInputHook is set");
 
 #define OS__IS_INPUTHOOK_INSTALLED_METHODDEF    \
     {"_is_inputhook_installed", (PyCFunction)os__is_inputhook_installed, METH_NOARGS, os__is_inputhook_installed__doc__},
 
-static PyObject *
-os__is_inputhook_installed_impl(PyObject *module);
+static TyObject *
+os__is_inputhook_installed_impl(TyObject *module);
 
-static PyObject *
-os__is_inputhook_installed(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os__is_inputhook_installed(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__is_inputhook_installed_impl(module);
 }
 
-PyDoc_STRVAR(os__create_environ__doc__,
+TyDoc_STRVAR(os__create_environ__doc__,
 "_create_environ($module, /)\n"
 "--\n"
 "\n"
@@ -12696,18 +12696,18 @@ PyDoc_STRVAR(os__create_environ__doc__,
 #define OS__CREATE_ENVIRON_METHODDEF    \
     {"_create_environ", (PyCFunction)os__create_environ, METH_NOARGS, os__create_environ__doc__},
 
-static PyObject *
-os__create_environ_impl(PyObject *module);
+static TyObject *
+os__create_environ_impl(TyObject *module);
 
-static PyObject *
-os__create_environ(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os__create_environ(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__create_environ_impl(module);
 }
 
 #if defined(__EMSCRIPTEN__)
 
-PyDoc_STRVAR(os__emscripten_debugger__doc__,
+TyDoc_STRVAR(os__emscripten_debugger__doc__,
 "_emscripten_debugger($module, /)\n"
 "--\n"
 "\n"
@@ -12716,11 +12716,11 @@ PyDoc_STRVAR(os__emscripten_debugger__doc__,
 #define OS__EMSCRIPTEN_DEBUGGER_METHODDEF    \
     {"_emscripten_debugger", (PyCFunction)os__emscripten_debugger, METH_NOARGS, os__emscripten_debugger__doc__},
 
-static PyObject *
-os__emscripten_debugger_impl(PyObject *module);
+static TyObject *
+os__emscripten_debugger_impl(TyObject *module);
 
-static PyObject *
-os__emscripten_debugger(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+os__emscripten_debugger(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__emscripten_debugger_impl(module);
 }

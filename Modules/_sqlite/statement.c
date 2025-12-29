@@ -31,12 +31,12 @@
 static const char *lstrip_sql(const char *sql);
 
 pysqlite_Statement *
-pysqlite_statement_create(pysqlite_Connection *connection, PyObject *sql)
+pysqlite_statement_create(pysqlite_Connection *connection, TyObject *sql)
 {
     pysqlite_state *state = connection->state;
-    assert(PyUnicode_Check(sql));
-    Py_ssize_t size;
-    const char *sql_cstr = PyUnicode_AsUTF8AndSize(sql, &size);
+    assert(TyUnicode_Check(sql));
+    Ty_ssize_t size;
+    const char *sql_cstr = TyUnicode_AsUTF8AndSize(sql, &size);
     if (sql_cstr == NULL) {
         return NULL;
     }
@@ -44,12 +44,12 @@ pysqlite_statement_create(pysqlite_Connection *connection, PyObject *sql)
     sqlite3 *db = connection->db;
     int max_length = sqlite3_limit(db, SQLITE_LIMIT_SQL_LENGTH, -1);
     if (size > max_length) {
-        PyErr_SetString(connection->DataError,
+        TyErr_SetString(connection->DataError,
                         "query string is too large");
         return NULL;
     }
     if (strlen(sql_cstr) != (size_t)size) {
-        PyErr_SetString(connection->ProgrammingError,
+        TyErr_SetString(connection->ProgrammingError,
                         "the query contains a null character");
         return NULL;
     }
@@ -57,9 +57,9 @@ pysqlite_statement_create(pysqlite_Connection *connection, PyObject *sql)
     sqlite3_stmt *stmt;
     const char *tail;
     int rc;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     rc = sqlite3_prepare_v2(db, sql_cstr, (int)size + 1, &stmt, &tail);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (rc != SQLITE_OK) {
         set_error_from_db(state, db);
@@ -67,7 +67,7 @@ pysqlite_statement_create(pysqlite_Connection *connection, PyObject *sql)
     }
 
     if (lstrip_sql(tail) != NULL) {
-        PyErr_SetString(connection->ProgrammingError,
+        TyErr_SetString(connection->ProgrammingError,
                         "You can only execute one statement at a time.");
         goto error;
     }
@@ -77,10 +77,10 @@ pysqlite_statement_create(pysqlite_Connection *connection, PyObject *sql)
     int is_dml = 0;
     const char *p = lstrip_sql(sql_cstr);
     if (p != NULL) {
-        is_dml = (PyOS_strnicmp(p, "insert", 6) == 0)
-                  || (PyOS_strnicmp(p, "update", 6) == 0)
-                  || (PyOS_strnicmp(p, "delete", 6) == 0)
-                  || (PyOS_strnicmp(p, "replace", 7) == 0);
+        is_dml = (TyOS_strnicmp(p, "insert", 6) == 0)
+                  || (TyOS_strnicmp(p, "update", 6) == 0)
+                  || (TyOS_strnicmp(p, "delete", 6) == 0)
+                  || (TyOS_strnicmp(p, "replace", 7) == 0);
     }
 
     pysqlite_Statement *self = PyObject_GC_New(pysqlite_Statement,
@@ -101,25 +101,25 @@ error:
 }
 
 static void
-stmt_dealloc(PyObject *op)
+stmt_dealloc(TyObject *op)
 {
     pysqlite_Statement *self = _pysqlite_Statement_CAST(op);
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     PyObject_GC_UnTrack(op);
     if (self->st) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         sqlite3_finalize(self->st);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         self->st = 0;
     }
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
 static int
-stmt_traverse(PyObject *self, visitproc visit, void *arg)
+stmt_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    Py_VISIT(Py_TYPE(self));
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
@@ -181,28 +181,28 @@ lstrip_sql(const char *sql)
     return NULL;
 }
 
-static PyType_Slot stmt_slots[] = {
-    {Py_tp_dealloc, stmt_dealloc},
-    {Py_tp_traverse, stmt_traverse},
+static TyType_Slot stmt_slots[] = {
+    {Ty_tp_dealloc, stmt_dealloc},
+    {Ty_tp_traverse, stmt_traverse},
     {0, NULL},
 };
 
-static PyType_Spec stmt_spec = {
+static TyType_Spec stmt_spec = {
     .name = MODULE_NAME ".Statement",
     .basicsize = sizeof(pysqlite_Statement),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-              Py_TPFLAGS_IMMUTABLETYPE | Py_TPFLAGS_DISALLOW_INSTANTIATION),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC |
+              Ty_TPFLAGS_IMMUTABLETYPE | Ty_TPFLAGS_DISALLOW_INSTANTIATION),
     .slots = stmt_slots,
 };
 
 int
-pysqlite_statement_setup_types(PyObject *module)
+pysqlite_statement_setup_types(TyObject *module)
 {
-    PyObject *type = PyType_FromModuleAndSpec(module, &stmt_spec, NULL);
+    TyObject *type = TyType_FromModuleAndSpec(module, &stmt_spec, NULL);
     if (type == NULL) {
         return -1;
     }
     pysqlite_state *state = pysqlite_get_state(module);
-    state->StatementType = (PyTypeObject *)type;
+    state->StatementType = (TyTypeObject *)type;
     return 0;
 }

@@ -4,52 +4,52 @@
    This is a mutable type: the list items can be changed, and items can be
    added or removed. Out-of-range indices or non-list objects are ignored.
 
-   WARNING: PyList_SetItem does not increment the new item's reference count,
+   WARNING: TyList_SetItem does not increment the new item's reference count,
    but does decrement the reference count of the item it replaces, if not nil.
    It does *decrement* the reference count if it is *not* inserted in the list.
-   Similarly, PyList_GetItem does not increment the returned item's reference
+   Similarly, TyList_GetItem does not increment the returned item's reference
    count.
 */
 
-#ifndef Py_LISTOBJECT_H
-#define Py_LISTOBJECT_H
+#ifndef Ty_LISTOBJECT_H
+#define Ty_LISTOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-PyAPI_DATA(PyTypeObject) PyList_Type;
-PyAPI_DATA(PyTypeObject) PyListIter_Type;
-PyAPI_DATA(PyTypeObject) PyListRevIter_Type;
+PyAPI_DATA(TyTypeObject) TyList_Type;
+PyAPI_DATA(TyTypeObject) PyListIter_Type;
+PyAPI_DATA(TyTypeObject) PyListRevIter_Type;
 
-#define PyList_Check(op) \
-    PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_LIST_SUBCLASS)
-#define PyList_CheckExact(op) Py_IS_TYPE((op), &PyList_Type)
+#define TyList_Check(op) \
+    TyType_FastSubclass(Ty_TYPE(op), Ty_TPFLAGS_LIST_SUBCLASS)
+#define TyList_CheckExact(op) Ty_IS_TYPE((op), &TyList_Type)
 
-PyAPI_FUNC(PyObject *) PyList_New(Py_ssize_t size);
-PyAPI_FUNC(Py_ssize_t) PyList_Size(PyObject *);
+PyAPI_FUNC(TyObject *) TyList_New(Ty_ssize_t size);
+PyAPI_FUNC(Ty_ssize_t) TyList_Size(TyObject *);
 
-PyAPI_FUNC(PyObject *) PyList_GetItem(PyObject *, Py_ssize_t);
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030d0000
-PyAPI_FUNC(PyObject *) PyList_GetItemRef(PyObject *, Py_ssize_t);
+PyAPI_FUNC(TyObject *) TyList_GetItem(TyObject *, Ty_ssize_t);
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030d0000
+PyAPI_FUNC(TyObject *) TyList_GetItemRef(TyObject *, Ty_ssize_t);
 #endif
-PyAPI_FUNC(int) PyList_SetItem(PyObject *, Py_ssize_t, PyObject *);
-PyAPI_FUNC(int) PyList_Insert(PyObject *, Py_ssize_t, PyObject *);
-PyAPI_FUNC(int) PyList_Append(PyObject *, PyObject *);
+PyAPI_FUNC(int) TyList_SetItem(TyObject *, Ty_ssize_t, TyObject *);
+PyAPI_FUNC(int) TyList_Insert(TyObject *, Ty_ssize_t, TyObject *);
+PyAPI_FUNC(int) TyList_Append(TyObject *, TyObject *);
 
-PyAPI_FUNC(PyObject *) PyList_GetSlice(PyObject *, Py_ssize_t, Py_ssize_t);
-PyAPI_FUNC(int) PyList_SetSlice(PyObject *, Py_ssize_t, Py_ssize_t, PyObject *);
+PyAPI_FUNC(TyObject *) TyList_GetSlice(TyObject *, Ty_ssize_t, Ty_ssize_t);
+PyAPI_FUNC(int) TyList_SetSlice(TyObject *, Ty_ssize_t, Ty_ssize_t, TyObject *);
 
-PyAPI_FUNC(int) PyList_Sort(PyObject *);
-PyAPI_FUNC(int) PyList_Reverse(PyObject *);
-PyAPI_FUNC(PyObject *) PyList_AsTuple(PyObject *);
+PyAPI_FUNC(int) TyList_Sort(TyObject *);
+PyAPI_FUNC(int) TyList_Reverse(TyObject *);
+PyAPI_FUNC(TyObject *) TyList_AsTuple(TyObject *);
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_LISTOBJECT_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_LISTOBJECT_H
 #  include "cpython/listobject.h"
-#  undef Py_CPYTHON_LISTOBJECT_H
+#  undef Ty_CPYTHON_LISTOBJECT_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_LISTOBJECT_H */
+#endif /* !Ty_LISTOBJECT_H */

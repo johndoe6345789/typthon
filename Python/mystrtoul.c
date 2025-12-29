@@ -2,11 +2,11 @@
 //
 // API:
 //
-// - PyOS_strtol(): convert string to C long integer.
-// - PyOS_strtoul(): convert string to C unsigned long integer.
+// - TyOS_strtol(): convert string to C long integer.
+// - TyOS_strtoul(): convert string to C unsigned long integer.
 
 #include "Python.h"
-#include "pycore_long.h"          // _PyLong_DigitValue
+#include "pycore_long.h"          // _TyLong_DigitValue
 
 #if defined(__sgi) && !defined(_SGI_MP_SOURCE)
 #  define _SGI_MP_SOURCE
@@ -98,14 +98,14 @@ static const int digitlimit[] = {
 **              exceptions - we don't check for them.
 */
 unsigned long
-PyOS_strtoul(const char *str, char **ptr, int base)
+TyOS_strtoul(const char *str, char **ptr, int base)
 {
     unsigned long result = 0; /* return value of the function */
     int c;             /* current input character */
     int ovlimit;       /* required digits to overflow */
 
     /* skip leading white space */
-    while (*str && Py_ISSPACE(*str))
+    while (*str && Ty_ISSPACE(*str))
         ++str;
 
     /* check for leading 0b, 0o or 0x for auto-base or base 16 */
@@ -115,7 +115,7 @@ PyOS_strtoul(const char *str, char **ptr, int base)
             ++str;
             if (*str == 'x' || *str == 'X') {
                 /* there must be at least one digit after 0x */
-                if (_PyLong_DigitValue[Py_CHARMASK(str[1])] >= 16) {
+                if (_TyLong_DigitValue[Ty_CHARMASK(str[1])] >= 16) {
                     if (ptr)
                         *ptr = (char *)str;
                     return 0;
@@ -124,7 +124,7 @@ PyOS_strtoul(const char *str, char **ptr, int base)
                 base = 16;
             } else if (*str == 'o' || *str == 'O') {
                 /* there must be at least one digit after 0o */
-                if (_PyLong_DigitValue[Py_CHARMASK(str[1])] >= 8) {
+                if (_TyLong_DigitValue[Ty_CHARMASK(str[1])] >= 8) {
                     if (ptr)
                         *ptr = (char *)str;
                     return 0;
@@ -133,7 +133,7 @@ PyOS_strtoul(const char *str, char **ptr, int base)
                 base = 8;
             } else if (*str == 'b' || *str == 'B') {
                 /* there must be at least one digit after 0b */
-                if (_PyLong_DigitValue[Py_CHARMASK(str[1])] >= 2) {
+                if (_TyLong_DigitValue[Ty_CHARMASK(str[1])] >= 2) {
                     if (ptr)
                         *ptr = (char *)str;
                     return 0;
@@ -144,7 +144,7 @@ PyOS_strtoul(const char *str, char **ptr, int base)
                 /* skip all zeroes... */
                 while (*str == '0')
                     ++str;
-                while (Py_ISSPACE(*str))
+                while (Ty_ISSPACE(*str))
                     ++str;
                 if (ptr)
                     *ptr = (char *)str;
@@ -161,7 +161,7 @@ PyOS_strtoul(const char *str, char **ptr, int base)
             ++str;
             if (*str == 'x' || *str == 'X') {
                 /* there must be at least one digit after 0x */
-                if (_PyLong_DigitValue[Py_CHARMASK(str[1])] >= 16) {
+                if (_TyLong_DigitValue[Ty_CHARMASK(str[1])] >= 16) {
                     if (ptr)
                         *ptr = (char *)str;
                     return 0;
@@ -175,7 +175,7 @@ PyOS_strtoul(const char *str, char **ptr, int base)
             ++str;
             if (*str == 'o' || *str == 'O') {
                 /* there must be at least one digit after 0o */
-                if (_PyLong_DigitValue[Py_CHARMASK(str[1])] >= 8) {
+                if (_TyLong_DigitValue[Ty_CHARMASK(str[1])] >= 8) {
                     if (ptr)
                         *ptr = (char *)str;
                     return 0;
@@ -189,7 +189,7 @@ PyOS_strtoul(const char *str, char **ptr, int base)
             ++str;
             if (*str == 'b' || *str == 'B') {
                 /* there must be at least one digit after 0b */
-                if (_PyLong_DigitValue[Py_CHARMASK(str[1])] >= 2) {
+                if (_TyLong_DigitValue[Ty_CHARMASK(str[1])] >= 2) {
                     if (ptr)
                         *ptr = (char *)str;
                     return 0;
@@ -215,7 +215,7 @@ PyOS_strtoul(const char *str, char **ptr, int base)
     ovlimit = digitlimit[base];
 
     /* do the conversion until non-digit character encountered */
-    while ((c = _PyLong_DigitValue[Py_CHARMASK(*str)]) < base) {
+    while ((c = _TyLong_DigitValue[Ty_CHARMASK(*str)]) < base) {
         if (ovlimit > 0) /* no overflow check required */
             result = result * base + c;
         else { /* requires overflow check */
@@ -252,7 +252,7 @@ PyOS_strtoul(const char *str, char **ptr, int base)
 overflowed:
     if (ptr) {
         /* spool through remaining digit characters */
-        while (_PyLong_DigitValue[Py_CHARMASK(*str)] < base)
+        while (_TyLong_DigitValue[Ty_CHARMASK(*str)] < base)
             ++str;
         *ptr = (char *)str;
     }
@@ -260,26 +260,26 @@ overflowed:
     return (unsigned long)-1;
 }
 
-/* Checking for overflow in PyOS_strtol is a PITA; see comments
+/* Checking for overflow in TyOS_strtol is a PITA; see comments
  * about PY_ABS_LONG_MIN in longobject.c.
  */
 #define PY_ABS_LONG_MIN         (0-(unsigned long)LONG_MIN)
 
 long
-PyOS_strtol(const char *str, char **ptr, int base)
+TyOS_strtol(const char *str, char **ptr, int base)
 {
     long result;
     unsigned long uresult;
     char sign;
 
-    while (*str && Py_ISSPACE(*str))
+    while (*str && Ty_ISSPACE(*str))
         str++;
 
     sign = *str;
     if (sign == '+' || sign == '-')
         str++;
 
-    uresult = PyOS_strtoul(str, ptr, base);
+    uresult = TyOS_strtoul(str, ptr, base);
 
     if (uresult <= (unsigned long)LONG_MAX) {
         result = (long)uresult;

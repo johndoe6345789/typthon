@@ -15,20 +15,20 @@
 
 #include "Python.h"
 
-static PyObject *ErrorObject;
+static TyObject *ErrorObject;
 
 typedef struct {
     PyObject_HEAD
-    PyObject            *x_attr;        /* Attributes dictionary */
+    TyObject            *x_attr;        /* Attributes dictionary */
 } XxoObject;
 
-static PyTypeObject Xxo_Type;
+static TyTypeObject Xxo_Type;
 
 #define XxoObject_CAST(op)  ((XxoObject *)(op))
-#define XxoObject_Check(v)  Py_IS_TYPE(v, &Xxo_Type)
+#define XxoObject_Check(v)  Ty_IS_TYPE(v, &Xxo_Type)
 
 static XxoObject *
-newXxoObject(PyObject *arg)
+newXxoObject(TyObject *arg)
 {
     XxoObject *self = PyObject_New(XxoObject, &Xxo_Type);
     if (self == NULL) {
@@ -41,37 +41,37 @@ newXxoObject(PyObject *arg)
 /* Xxo methods */
 
 static void
-Xxo_dealloc(PyObject *op)
+Xxo_dealloc(TyObject *op)
 {
     XxoObject *self = XxoObject_CAST(op);
-    Py_XDECREF(self->x_attr);
+    Ty_XDECREF(self->x_attr);
     PyObject_Free(self);
 }
 
-static PyObject *
-Xxo_demo(PyObject *Py_UNUSED(op), PyObject *args)
+static TyObject *
+Xxo_demo(TyObject *Py_UNUSED(op), TyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ":demo")) {
+    if (!TyArg_ParseTuple(args, ":demo")) {
         return NULL;
     }
-    return Py_NewRef(Py_None);
+    return Ty_NewRef(Ty_None);
 }
 
-static PyMethodDef Xxo_methods[] = {
-    {"demo", Xxo_demo,  METH_VARARGS, PyDoc_STR("demo() -> None")},
+static TyMethodDef Xxo_methods[] = {
+    {"demo", Xxo_demo,  METH_VARARGS, TyDoc_STR("demo() -> None")},
     {NULL, NULL}  /* sentinel */
 };
 
-static PyObject *
-Xxo_getattro(PyObject *op, PyObject *name)
+static TyObject *
+Xxo_getattro(TyObject *op, TyObject *name)
 {
     XxoObject *self = XxoObject_CAST(op);
     if (self->x_attr != NULL) {
-        PyObject *v = PyDict_GetItemWithError(self->x_attr, name);
+        TyObject *v = TyDict_GetItemWithError(self->x_attr, name);
         if (v != NULL) {
-            return Py_NewRef(v);
+            return Ty_NewRef(v);
         }
-        else if (PyErr_Occurred()) {
+        else if (TyErr_Occurred()) {
             return NULL;
         }
     }
@@ -79,30 +79,30 @@ Xxo_getattro(PyObject *op, PyObject *name)
 }
 
 static int
-Xxo_setattr(PyObject *op, const char *name, PyObject *v)
+Xxo_setattr(TyObject *op, const char *name, TyObject *v)
 {
     XxoObject *self = XxoObject_CAST(op);
     if (self->x_attr == NULL) {
-        self->x_attr = PyDict_New();
+        self->x_attr = TyDict_New();
         if (self->x_attr == NULL) {
             return -1;
         }
     }
     if (v == NULL) {
-        int rv = PyDict_DelItemString(self->x_attr, name);
-        if (rv < 0 && PyErr_ExceptionMatches(PyExc_KeyError)) {
-            PyErr_SetString(PyExc_AttributeError,
+        int rv = TyDict_DelItemString(self->x_attr, name);
+        if (rv < 0 && TyErr_ExceptionMatches(TyExc_KeyError)) {
+            TyErr_SetString(TyExc_AttributeError,
                             "delete non-existing Xxo attribute");
         }
         return rv;
     }
-    return PyDict_SetItemString(self->x_attr, name, v);
+    return TyDict_SetItemString(self->x_attr, name, v);
 }
 
-static PyTypeObject Xxo_Type = {
+static TyTypeObject Xxo_Type = {
     /* The ob_type field must be initialized in the module init function
      * to be portable to Windows without using C++. */
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "xxmodule.Xxo",             /*tp_name*/
     sizeof(XxoObject),          /*tp_basicsize*/
     0,                          /*tp_itemsize*/
@@ -122,7 +122,7 @@ static PyTypeObject Xxo_Type = {
     Xxo_getattro,               /*tp_getattro*/
     0,                          /*tp_setattro*/
     0,                          /*tp_as_buffer*/
-    Py_TPFLAGS_DEFAULT,         /*tp_flags*/
+    Ty_TPFLAGS_DEFAULT,         /*tp_flags*/
     0,                          /*tp_doc*/
     0,                          /*tp_traverse*/
     0,                          /*tp_clear*/
@@ -148,77 +148,77 @@ static PyTypeObject Xxo_Type = {
 
 /* Function of two integers returning integer */
 
-PyDoc_STRVAR(xx_foo_doc,
+TyDoc_STRVAR(xx_foo_doc,
 "foo(i,j)\n\
 \n\
 Return the sum of i and j.");
 
-static PyObject *
-xx_foo(PyObject *self, PyObject *args)
+static TyObject *
+xx_foo(TyObject *self, TyObject *args)
 {
     long i, j;
     long res;
-    if (!PyArg_ParseTuple(args, "ll:foo", &i, &j))
+    if (!TyArg_ParseTuple(args, "ll:foo", &i, &j))
         return NULL;
     res = i+j; /* XXX Do something here */
-    return PyLong_FromLong(res);
+    return TyLong_FromLong(res);
 }
 
 
 /* Function of no arguments returning new Xxo object */
 
-static PyObject *
-xx_new(PyObject *self, PyObject *args)
+static TyObject *
+xx_new(TyObject *self, TyObject *args)
 {
     XxoObject *rv;
 
-    if (!PyArg_ParseTuple(args, ":new"))
+    if (!TyArg_ParseTuple(args, ":new"))
         return NULL;
     rv = newXxoObject(args);
     if (rv == NULL)
         return NULL;
-    return (PyObject *)rv;
+    return (TyObject *)rv;
 }
 
 /* Example with subtle bug from extensions manual ("Thin Ice"). */
 
-static PyObject *
-xx_bug(PyObject *self, PyObject *args)
+static TyObject *
+xx_bug(TyObject *self, TyObject *args)
 {
-    PyObject *list, *item;
+    TyObject *list, *item;
 
-    if (!PyArg_ParseTuple(args, "O:bug", &list))
+    if (!TyArg_ParseTuple(args, "O:bug", &list))
         return NULL;
 
-    item = PyList_GetItem(list, 0);
-    /* Py_INCREF(item); */
-    PyList_SetItem(list, 1, PyLong_FromLong(0L));
+    item = TyList_GetItem(list, 0);
+    /* Ty_INCREF(item); */
+    TyList_SetItem(list, 1, TyLong_FromLong(0L));
     PyObject_Print(item, stdout, 0);
     printf("\n");
-    /* Py_DECREF(item); */
+    /* Ty_DECREF(item); */
 
-    return Py_NewRef(Py_None);
+    return Ty_NewRef(Ty_None);
 }
 
 /* Test bad format character */
 
-static PyObject *
-xx_roj(PyObject *self, PyObject *args)
+static TyObject *
+xx_roj(TyObject *self, TyObject *args)
 {
-    PyObject *a;
+    TyObject *a;
     long b;
-    if (!PyArg_ParseTuple(args, "O#:roj", &a, &b))
+    if (!TyArg_ParseTuple(args, "O#:roj", &a, &b))
         return NULL;
-    return Py_NewRef(Py_None);
+    return Ty_NewRef(Ty_None);
 }
 
 
 /* ---------- */
 
-static PyTypeObject Str_Type = {
+static TyTypeObject Str_Type = {
     /* The ob_type field must be initialized in the module init function
      * to be portable to Windows without using C++. */
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "xxmodule.Str",             /*tp_name*/
     0,                          /*tp_basicsize*/
     0,                          /*tp_itemsize*/
@@ -238,7 +238,7 @@ static PyTypeObject Str_Type = {
     0,                          /*tp_getattro*/
     0,                          /*tp_setattro*/
     0,                          /*tp_as_buffer*/
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /*tp_flags*/
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE, /*tp_flags*/
     0,                          /*tp_doc*/
     0,                          /*tp_traverse*/
     0,                          /*tp_clear*/
@@ -263,16 +263,16 @@ static PyTypeObject Str_Type = {
 
 /* ---------- */
 
-static PyObject *
-null_richcompare(PyObject *self, PyObject *other, int op)
+static TyObject *
+null_richcompare(TyObject *self, TyObject *other, int op)
 {
-    return Py_NewRef(Py_NotImplemented);
+    return Ty_NewRef(Ty_NotImplemented);
 }
 
-static PyTypeObject Null_Type = {
+static TyTypeObject Null_Type = {
     /* The ob_type field must be initialized in the module init function
      * to be portable to Windows without using C++. */
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "xxmodule.Null",            /*tp_name*/
     0,                          /*tp_basicsize*/
     0,                          /*tp_itemsize*/
@@ -292,7 +292,7 @@ static PyTypeObject Null_Type = {
     0,                          /*tp_getattro*/
     0,                          /*tp_setattro*/
     0,                          /*tp_as_buffer*/
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /*tp_flags*/
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE, /*tp_flags*/
     0,                          /*tp_doc*/
     0,                          /*tp_traverse*/
     0,                          /*tp_clear*/
@@ -310,7 +310,7 @@ static PyTypeObject Null_Type = {
     0,                          /*tp_dictoffset*/
     0,                          /*tp_init*/
     0,                          /*tp_alloc*/
-    PyType_GenericNew,          /*tp_new*/
+    TyType_GenericNew,          /*tp_new*/
     0,                          /*tp_free*/
     0,                          /*tp_is_gc*/
 };
@@ -321,28 +321,28 @@ static PyTypeObject Null_Type = {
 
 /* List of functions defined in the module */
 
-static PyMethodDef xx_methods[] = {
+static TyMethodDef xx_methods[] = {
     {"roj",             xx_roj,         METH_VARARGS,
-        PyDoc_STR("roj(a,b) -> None")},
+        TyDoc_STR("roj(a,b) -> None")},
     {"foo",             xx_foo,         METH_VARARGS,
         xx_foo_doc},
     {"new",             xx_new,         METH_VARARGS,
-        PyDoc_STR("new() -> new Xx object")},
+        TyDoc_STR("new() -> new Xx object")},
     {"bug",             xx_bug,         METH_VARARGS,
-        PyDoc_STR("bug(o) -> None")},
+        TyDoc_STR("bug(o) -> None")},
     {NULL,              NULL}           /* sentinel */
 };
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This is a template module just for instruction.");
 
 
 static int
-xx_exec(PyObject *m)
+xx_exec(TyObject *m)
 {
     /* Slot initialization is subject to the rules of initializing globals.
        C99 requires the initializers to be "address constants".  Function
-       designators like 'PyType_GenericNew', with implicit conversion to
+       designators like 'TyType_GenericNew', with implicit conversion to
        a pointer, are valid C99 address constants.
 
        However, the unary '&' operator applied to a non-static variable
@@ -353,32 +353,32 @@ xx_exec(PyObject *m)
        behavior.
     */
     Null_Type.tp_base = &PyBaseObject_Type;
-    Str_Type.tp_base = &PyUnicode_Type;
+    Str_Type.tp_base = &TyUnicode_Type;
 
     /* Finalize the type object including setting type of the new type
      * object; doing it here is required for portability, too. */
-    if (PyType_Ready(&Xxo_Type) < 0) {
+    if (TyType_Ready(&Xxo_Type) < 0) {
         return -1;
     }
 
     /* Add some symbolic constants to the module */
     if (ErrorObject == NULL) {
-        ErrorObject = PyErr_NewException("xx.error", NULL, NULL);
+        ErrorObject = TyErr_NewException("xx.error", NULL, NULL);
         if (ErrorObject == NULL) {
             return -1;
         }
     }
-    int rc = PyModule_AddType(m, (PyTypeObject *)ErrorObject);
-    Py_DECREF(ErrorObject);
+    int rc = TyModule_AddType(m, (TyTypeObject *)ErrorObject);
+    Ty_DECREF(ErrorObject);
     if (rc < 0) {
         return -1;
     }
 
     /* Add Str and Null types */
-    if (PyModule_AddType(m, &Str_Type) < 0) {
+    if (TyModule_AddType(m, &Str_Type) < 0) {
         return -1;
     }
-    if (PyModule_AddType(m, &Null_Type) < 0) {
+    if (TyModule_AddType(m, &Null_Type) < 0) {
         return -1;
     }
 
@@ -386,13 +386,13 @@ xx_exec(PyObject *m)
 }
 
 static struct PyModuleDef_Slot xx_slots[] = {
-    {Py_mod_exec, xx_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, xx_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static struct PyModuleDef xxmodule = {
+static struct TyModuleDef xxmodule = {
     PyModuleDef_HEAD_INIT,
     "xx",
     module_doc,

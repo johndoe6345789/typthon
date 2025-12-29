@@ -12,7 +12,7 @@
 struct tok_state *
 _PyTokenizer_tok_new(void)
 {
-    struct tok_state *tok = (struct tok_state *)PyMem_Calloc(
+    struct tok_state *tok = (struct tok_state *)TyMem_Calloc(
                                             1,
                                             sizeof(struct tok_state));
     if (tok == NULL)
@@ -56,8 +56,8 @@ _PyTokenizer_tok_new(void)
     tok->implicit_newline = 0;
     tok->tok_mode_stack[0] = (tokenizer_mode){.kind =TOK_REGULAR_MODE, .quote='\0', .quote_size = 0, .in_debug=0};
     tok->tok_mode_stack_index = 0;
-#ifdef Py_DEBUG
-    tok->debug = _Py_GetConfig()->parser_debug;
+#ifdef Ty_DEBUG
+    tok->debug = _Ty_GetConfig()->parser_debug;
 #endif
     return tok;
 }
@@ -71,7 +71,7 @@ free_fstring_expressions(struct tok_state *tok)
     for (index = tok->tok_mode_stack_index; index >= 0; --index) {
         mode = &(tok->tok_mode_stack[index]);
         if (mode->last_expr_buffer != NULL) {
-            PyMem_Free(mode->last_expr_buffer);
+            TyMem_Free(mode->last_expr_buffer);
             mode->last_expr_buffer = NULL;
             mode->last_expr_size = 0;
             mode->last_expr_end = -1;
@@ -85,28 +85,28 @@ void
 _PyTokenizer_Free(struct tok_state *tok)
 {
     if (tok->encoding != NULL) {
-        PyMem_Free(tok->encoding);
+        TyMem_Free(tok->encoding);
     }
-    Py_XDECREF(tok->decoding_readline);
-    Py_XDECREF(tok->decoding_buffer);
-    Py_XDECREF(tok->readline);
-    Py_XDECREF(tok->filename);
+    Ty_XDECREF(tok->decoding_readline);
+    Ty_XDECREF(tok->decoding_buffer);
+    Ty_XDECREF(tok->readline);
+    Ty_XDECREF(tok->filename);
     if ((tok->readline != NULL || tok->fp != NULL ) && tok->buf != NULL) {
-        PyMem_Free(tok->buf);
+        TyMem_Free(tok->buf);
     }
     if (tok->input) {
-        PyMem_Free(tok->input);
+        TyMem_Free(tok->input);
     }
     if (tok->interactive_src_start != NULL) {
-        PyMem_Free(tok->interactive_src_start);
+        TyMem_Free(tok->interactive_src_start);
     }
     free_fstring_expressions(tok);
-    PyMem_Free(tok);
+    TyMem_Free(tok);
 }
 
 void
 _PyToken_Free(struct token *token) {
-    Py_XDECREF(token->metadata);
+    Ty_XDECREF(token->metadata);
 }
 
 void

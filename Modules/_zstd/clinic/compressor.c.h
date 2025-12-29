@@ -2,13 +2,13 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_zstd_ZstdCompressor_new__doc__,
+TyDoc_STRVAR(_zstd_ZstdCompressor_new__doc__,
 "ZstdCompressor(level=None, options=None, zstd_dict=None)\n"
 "--\n"
 "\n"
@@ -24,50 +24,50 @@ PyDoc_STRVAR(_zstd_ZstdCompressor_new__doc__,
 "Thread-safe at method level. For one-shot compression, use the compress()\n"
 "function instead.");
 
-static PyObject *
-_zstd_ZstdCompressor_new_impl(PyTypeObject *type, PyObject *level,
-                              PyObject *options, PyObject *zstd_dict);
+static TyObject *
+_zstd_ZstdCompressor_new_impl(TyTypeObject *type, TyObject *level,
+                              TyObject *options, TyObject *zstd_dict);
 
-static PyObject *
-_zstd_ZstdCompressor_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+_zstd_ZstdCompressor_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(level), &_Py_ID(options), &_Py_ID(zstd_dict), },
+        .ob_item = { &_Ty_ID(level), &_Ty_ID(options), &_Ty_ID(zstd_dict), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"level", "options", "zstd_dict", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "ZstdCompressor",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 0;
-    PyObject *level = Py_None;
-    PyObject *options = Py_None;
-    PyObject *zstd_dict = Py_None;
+    TyObject *argsbuf[3];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 0;
+    TyObject *level = Ty_None;
+    TyObject *options = Ty_None;
+    TyObject *zstd_dict = Ty_None;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 0, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -95,7 +95,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_ZstdCompressor_compress__doc__,
+TyDoc_STRVAR(_zstd_ZstdCompressor_compress__doc__,
 "compress($self, /, data, mode=ZstdCompressor.CONTINUE)\n"
 "--\n"
 "\n"
@@ -112,47 +112,47 @@ PyDoc_STRVAR(_zstd_ZstdCompressor_compress__doc__,
 #define _ZSTD_ZSTDCOMPRESSOR_COMPRESS_METHODDEF    \
     {"compress", _PyCFunction_CAST(_zstd_ZstdCompressor_compress), METH_FASTCALL|METH_KEYWORDS, _zstd_ZstdCompressor_compress__doc__},
 
-static PyObject *
-_zstd_ZstdCompressor_compress_impl(ZstdCompressor *self, Py_buffer *data,
+static TyObject *
+_zstd_ZstdCompressor_compress_impl(ZstdCompressor *self, Ty_buffer *data,
                                    int mode);
 
-static PyObject *
-_zstd_ZstdCompressor_compress(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_zstd_ZstdCompressor_compress(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(mode), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(mode), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "mode", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "compress",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
     int mode = ZSTD_e_continue;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -163,8 +163,8 @@ _zstd_ZstdCompressor_compress(PyObject *self, PyObject *const *args, Py_ssize_t 
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    mode = PyLong_AsInt(args[1]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[1]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -179,7 +179,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_ZstdCompressor_flush__doc__,
+TyDoc_STRVAR(_zstd_ZstdCompressor_flush__doc__,
 "flush($self, /, mode=ZstdCompressor.FLUSH_FRAME)\n"
 "--\n"
 "\n"
@@ -196,45 +196,45 @@ PyDoc_STRVAR(_zstd_ZstdCompressor_flush__doc__,
 #define _ZSTD_ZSTDCOMPRESSOR_FLUSH_METHODDEF    \
     {"flush", _PyCFunction_CAST(_zstd_ZstdCompressor_flush), METH_FASTCALL|METH_KEYWORDS, _zstd_ZstdCompressor_flush__doc__},
 
-static PyObject *
+static TyObject *
 _zstd_ZstdCompressor_flush_impl(ZstdCompressor *self, int mode);
 
-static PyObject *
-_zstd_ZstdCompressor_flush(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_zstd_ZstdCompressor_flush(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(mode), },
+        .ob_item = { &_Ty_ID(mode), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"mode", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "flush",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int mode = ZSTD_e_end;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -242,8 +242,8 @@ _zstd_ZstdCompressor_flush(PyObject *self, PyObject *const *args, Py_ssize_t nar
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    mode = PyLong_AsInt(args[0]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[0]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -253,7 +253,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_ZstdCompressor_set_pledged_input_size__doc__,
+TyDoc_STRVAR(_zstd_ZstdCompressor_set_pledged_input_size__doc__,
 "set_pledged_input_size($self, size, /)\n"
 "--\n"
 "\n"
@@ -273,14 +273,14 @@ PyDoc_STRVAR(_zstd_ZstdCompressor_set_pledged_input_size__doc__,
 #define _ZSTD_ZSTDCOMPRESSOR_SET_PLEDGED_INPUT_SIZE_METHODDEF    \
     {"set_pledged_input_size", (PyCFunction)_zstd_ZstdCompressor_set_pledged_input_size, METH_O, _zstd_ZstdCompressor_set_pledged_input_size__doc__},
 
-static PyObject *
+static TyObject *
 _zstd_ZstdCompressor_set_pledged_input_size_impl(ZstdCompressor *self,
                                                  unsigned long long size);
 
-static PyObject *
-_zstd_ZstdCompressor_set_pledged_input_size(PyObject *self, PyObject *arg)
+static TyObject *
+_zstd_ZstdCompressor_set_pledged_input_size(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned long long size;
 
     if (!zstd_contentsize_converter(arg, &size)) {

@@ -62,10 +62,10 @@
           pass
    */
 
-// Need limited C API version 3.13 for Py_mod_gil
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for Ty_mod_gil
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "Python.h"
@@ -75,8 +75,8 @@
 
 // Module state
 typedef struct {
-    PyObject *Xxo_Type;    // Xxo class
-    PyObject *Error_Type;       // Error class
+    TyObject *Xxo_Type;    // Xxo class
+    TyObject *Error_Type;       // Error class
 } xx_state;
 
 
@@ -85,24 +85,24 @@ typedef struct {
 // Instance state
 typedef struct {
     PyObject_HEAD
-    PyObject            *x_attr;           /* Attributes dictionary */
-    char                x_buffer[BUFSIZE]; /* buffer for Py_buffer */
-    Py_ssize_t          x_exports;         /* how many buffer are exported */
+    TyObject            *x_attr;           /* Attributes dictionary */
+    char                x_buffer[BUFSIZE]; /* buffer for Ty_buffer */
+    Ty_ssize_t          x_exports;         /* how many buffer are exported */
 } XxoObject;
 
 #define XxoObject_CAST(op)  ((XxoObject *)(op))
 // XXX: no good way to do this yet
-// #define XxoObject_Check(v)      Py_IS_TYPE(v, Xxo_Type)
+// #define XxoObject_Check(v)      Ty_IS_TYPE(v, Xxo_Type)
 
 static XxoObject *
-newXxoObject(PyObject *module)
+newXxoObject(TyObject *module)
 {
-    xx_state *state = PyModule_GetState(module);
+    xx_state *state = TyModule_GetState(module);
     if (state == NULL) {
         return NULL;
     }
     XxoObject *self;
-    self = PyObject_GC_New(XxoObject, (PyTypeObject*)state->Xxo_Type);
+    self = PyObject_GC_New(XxoObject, (TyTypeObject*)state->Xxo_Type);
     if (self == NULL) {
         return NULL;
     }
@@ -115,56 +115,56 @@ newXxoObject(PyObject *module)
 /* Xxo finalization */
 
 static int
-Xxo_traverse(PyObject *op, visitproc visit, void *arg)
+Xxo_traverse(TyObject *op, visitproc visit, void *arg)
 {
     // Visit the type
-    Py_VISIT(Py_TYPE(op));
+    Ty_VISIT(Ty_TYPE(op));
 
     // Visit the attribute dict
     XxoObject *self = XxoObject_CAST(op);
-    Py_VISIT(self->x_attr);
+    Ty_VISIT(self->x_attr);
     return 0;
 }
 
 static int
-Xxo_clear(PyObject *op)
+Xxo_clear(TyObject *op)
 {
     XxoObject *self = XxoObject_CAST(op);
-    Py_CLEAR(self->x_attr);
+    Ty_CLEAR(self->x_attr);
     return 0;
 }
 
 static void
-Xxo_finalize(PyObject *op)
+Xxo_finalize(TyObject *op)
 {
     XxoObject *self = XxoObject_CAST(op);
-    Py_CLEAR(self->x_attr);
+    Ty_CLEAR(self->x_attr);
 }
 
 static void
-Xxo_dealloc(PyObject *self)
+Xxo_dealloc(TyObject *self)
 {
     PyObject_GC_UnTrack(self);
     Xxo_finalize(self);
-    PyTypeObject *tp = Py_TYPE(self);
-    freefunc free = PyType_GetSlot(tp, Py_tp_free);
+    TyTypeObject *tp = Ty_TYPE(self);
+    freefunc free = TyType_GetSlot(tp, Ty_tp_free);
     free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
 
 /* Xxo attribute handling */
 
-static PyObject *
-Xxo_getattro(PyObject *op, PyObject *name)
+static TyObject *
+Xxo_getattro(TyObject *op, TyObject *name)
 {
     XxoObject *self = XxoObject_CAST(op);
     if (self->x_attr != NULL) {
-        PyObject *v = PyDict_GetItemWithError(self->x_attr, name);
+        TyObject *v = TyDict_GetItemWithError(self->x_attr, name);
         if (v != NULL) {
-            return Py_NewRef(v);
+            return Ty_NewRef(v);
         }
-        else if (PyErr_Occurred()) {
+        else if (TyErr_Occurred()) {
             return NULL;
         }
     }
@@ -172,21 +172,21 @@ Xxo_getattro(PyObject *op, PyObject *name)
 }
 
 static int
-Xxo_setattro(PyObject *op, PyObject *name, PyObject *v)
+Xxo_setattro(TyObject *op, TyObject *name, TyObject *v)
 {
     XxoObject *self = XxoObject_CAST(op);
     if (self->x_attr == NULL) {
         // prepare the attribute dict
-        self->x_attr = PyDict_New();
+        self->x_attr = TyDict_New();
         if (self->x_attr == NULL) {
             return -1;
         }
     }
     if (v == NULL) {
         // delete an attribute
-        int rv = PyDict_DelItem(self->x_attr, name);
-        if (rv < 0 && PyErr_ExceptionMatches(PyExc_KeyError)) {
-            PyErr_SetString(PyExc_AttributeError,
+        int rv = TyDict_DelItem(self->x_attr, name);
+        if (rv < 0 && TyErr_ExceptionMatches(TyExc_KeyError)) {
+            TyErr_SetString(TyExc_AttributeError,
                 "delete non-existing Xxo attribute");
             return -1;
         }
@@ -194,50 +194,50 @@ Xxo_setattro(PyObject *op, PyObject *name, PyObject *v)
     }
     else {
         // set an attribute
-        return PyDict_SetItem(self->x_attr, name, v);
+        return TyDict_SetItem(self->x_attr, name, v);
     }
 }
 
 /* Xxo methods */
 
-static PyObject *
-Xxo_demo(PyObject *op, PyTypeObject *defining_class,
-         PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+Xxo_demo(TyObject *op, TyTypeObject *defining_class,
+         TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
     if (kwnames != NULL && PyObject_Length(kwnames)) {
-        PyErr_SetString(PyExc_TypeError, "demo() takes no keyword arguments");
+        TyErr_SetString(TyExc_TypeError, "demo() takes no keyword arguments");
         return NULL;
     }
     if (nargs != 1) {
-        PyErr_SetString(PyExc_TypeError, "demo() takes exactly 1 argument");
+        TyErr_SetString(TyExc_TypeError, "demo() takes exactly 1 argument");
         return NULL;
     }
 
-    PyObject *o = args[0];
+    TyObject *o = args[0];
 
     /* Test if the argument is "str" */
-    if (PyUnicode_Check(o)) {
-        return Py_NewRef(o);
+    if (TyUnicode_Check(o)) {
+        return Ty_NewRef(o);
     }
 
     /* test if the argument is of the Xxo class */
     if (PyObject_TypeCheck(o, defining_class)) {
-        return Py_NewRef(o);
+        return Ty_NewRef(o);
     }
 
-    return Py_NewRef(Py_None);
+    return Ty_NewRef(Ty_None);
 }
 
-static PyMethodDef Xxo_methods[] = {
+static TyMethodDef Xxo_methods[] = {
     {"demo",            _PyCFunction_CAST(Xxo_demo),
-     METH_METHOD | METH_FASTCALL | METH_KEYWORDS, PyDoc_STR("demo(o) -> o")},
+     METH_METHOD | METH_FASTCALL | METH_KEYWORDS, TyDoc_STR("demo(o) -> o")},
     {NULL,              NULL}           /* sentinel */
 };
 
 /* Xxo buffer interface */
 
 static int
-Xxo_getbuffer(PyObject *op, Py_buffer *view, int flags)
+Xxo_getbuffer(TyObject *op, Ty_buffer *view, int flags)
 {
     XxoObject *self = XxoObject_CAST(op);
     int res = PyBuffer_FillInfo(view, op,
@@ -250,135 +250,135 @@ Xxo_getbuffer(PyObject *op, Py_buffer *view, int flags)
 }
 
 static void
-Xxo_releasebuffer(PyObject *op, Py_buffer *Py_UNUSED(view))
+Xxo_releasebuffer(TyObject *op, Ty_buffer *Py_UNUSED(view))
 {
     XxoObject *self = XxoObject_CAST(op);
     self->x_exports--;
 }
 
-static PyObject *
-Xxo_get_x_exports(PyObject *op, void *Py_UNUSED(closure))
+static TyObject *
+Xxo_get_x_exports(TyObject *op, void *Py_UNUSED(closure))
 {
     XxoObject *self = XxoObject_CAST(op);
-    return PyLong_FromSsize_t(self->x_exports);
+    return TyLong_FromSsize_t(self->x_exports);
 }
 
 /* Xxo type definition */
 
-PyDoc_STRVAR(Xxo_doc,
+TyDoc_STRVAR(Xxo_doc,
              "A class that explicitly stores attributes in an internal dict");
 
-static PyGetSetDef Xxo_getsetlist[] = {
+static TyGetSetDef Xxo_getsetlist[] = {
     {"x_exports", Xxo_get_x_exports, NULL, NULL},
     {NULL},
 };
 
 
-static PyType_Slot Xxo_Type_slots[] = {
-    {Py_tp_doc, (char *)Xxo_doc},
-    {Py_tp_traverse, Xxo_traverse},
-    {Py_tp_clear, Xxo_clear},
-    {Py_tp_finalize, Xxo_finalize},
-    {Py_tp_dealloc, Xxo_dealloc},
-    {Py_tp_getattro, Xxo_getattro},
-    {Py_tp_setattro, Xxo_setattro},
-    {Py_tp_methods, Xxo_methods},
-    {Py_bf_getbuffer, Xxo_getbuffer},
-    {Py_bf_releasebuffer, Xxo_releasebuffer},
-    {Py_tp_getset, Xxo_getsetlist},
+static TyType_Slot Xxo_Type_slots[] = {
+    {Ty_tp_doc, (char *)Xxo_doc},
+    {Ty_tp_traverse, Xxo_traverse},
+    {Ty_tp_clear, Xxo_clear},
+    {Ty_tp_finalize, Xxo_finalize},
+    {Ty_tp_dealloc, Xxo_dealloc},
+    {Ty_tp_getattro, Xxo_getattro},
+    {Ty_tp_setattro, Xxo_setattro},
+    {Ty_tp_methods, Xxo_methods},
+    {Ty_bf_getbuffer, Xxo_getbuffer},
+    {Ty_bf_releasebuffer, Xxo_releasebuffer},
+    {Ty_tp_getset, Xxo_getsetlist},
     {0, 0},  /* sentinel */
 };
 
-static PyType_Spec Xxo_Type_spec = {
+static TyType_Spec Xxo_Type_spec = {
     .name = "xxlimited.Xxo",
     .basicsize = sizeof(XxoObject),
-    .flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+    .flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,
     .slots = Xxo_Type_slots,
 };
 
 
 /* Str type definition*/
 
-static PyType_Slot Str_Type_slots[] = {
+static TyType_Slot Str_Type_slots[] = {
     {0, 0},  /* sentinel */
 };
 
-static PyType_Spec Str_Type_spec = {
+static TyType_Spec Str_Type_spec = {
     .name = "xxlimited.Str",
     .basicsize = 0,
-    .flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+    .flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE,
     .slots = Str_Type_slots,
 };
 
 
 /* Function of two integers returning integer (with C "long int" arithmetic) */
 
-PyDoc_STRVAR(xx_foo_doc,
+TyDoc_STRVAR(xx_foo_doc,
 "foo(i,j)\n\
 \n\
 Return the sum of i and j.");
 
-static PyObject *
-xx_foo(PyObject *module, PyObject *args)
+static TyObject *
+xx_foo(TyObject *module, TyObject *args)
 {
     long i, j;
     long res;
-    if (!PyArg_ParseTuple(args, "ll:foo", &i, &j))
+    if (!TyArg_ParseTuple(args, "ll:foo", &i, &j))
         return NULL;
     res = i+j; /* XXX Do something here */
-    return PyLong_FromLong(res);
+    return TyLong_FromLong(res);
 }
 
 
 /* Function of no arguments returning new Xxo object */
 
-static PyObject *
-xx_new(PyObject *module, PyObject *Py_UNUSED(unused))
+static TyObject *
+xx_new(TyObject *module, TyObject *Py_UNUSED(unused))
 {
     XxoObject *rv;
 
     rv = newXxoObject(module);
     if (rv == NULL)
         return NULL;
-    return (PyObject *)rv;
+    return (TyObject *)rv;
 }
 
 
 
 /* List of functions defined in the module */
 
-static PyMethodDef xx_methods[] = {
+static TyMethodDef xx_methods[] = {
     {"foo",             xx_foo,         METH_VARARGS,
         xx_foo_doc},
     {"new",             xx_new,         METH_NOARGS,
-        PyDoc_STR("new() -> new Xx object")},
+        TyDoc_STR("new() -> new Xx object")},
     {NULL,              NULL}           /* sentinel */
 };
 
 
 /* The module itself */
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This is a template module just for instruction.");
 
 static int
-xx_modexec(PyObject *m)
+xx_modexec(TyObject *m)
 {
-    xx_state *state = PyModule_GetState(m);
+    xx_state *state = TyModule_GetState(m);
 
-    state->Error_Type = PyErr_NewException("xxlimited.Error", NULL, NULL);
+    state->Error_Type = TyErr_NewException("xxlimited.Error", NULL, NULL);
     if (state->Error_Type == NULL) {
         return -1;
     }
-    if (PyModule_AddType(m, (PyTypeObject*)state->Error_Type) < 0) {
+    if (TyModule_AddType(m, (TyTypeObject*)state->Error_Type) < 0) {
         return -1;
     }
 
-    state->Xxo_Type = PyType_FromModuleAndSpec(m, &Xxo_Type_spec, NULL);
+    state->Xxo_Type = TyType_FromModuleAndSpec(m, &Xxo_Type_spec, NULL);
     if (state->Xxo_Type == NULL) {
         return -1;
     }
-    if (PyModule_AddType(m, (PyTypeObject*)state->Xxo_Type) < 0) {
+    if (TyModule_AddType(m, (TyTypeObject*)state->Xxo_Type) < 0) {
         return -1;
     }
 
@@ -386,41 +386,41 @@ xx_modexec(PyObject *m)
     // added to the module dict.
     // It does not inherit from "object" (PyObject_Type), but from "str"
     // (PyUnincode_Type).
-    PyObject *Str_Type = PyType_FromModuleAndSpec(
-        m, &Str_Type_spec, (PyObject *)&PyUnicode_Type);
+    TyObject *Str_Type = TyType_FromModuleAndSpec(
+        m, &Str_Type_spec, (TyObject *)&TyUnicode_Type);
     if (Str_Type == NULL) {
         return -1;
     }
-    if (PyModule_AddType(m, (PyTypeObject*)Str_Type) < 0) {
+    if (TyModule_AddType(m, (TyTypeObject*)Str_Type) < 0) {
         return -1;
     }
-    Py_DECREF(Str_Type);
+    Ty_DECREF(Str_Type);
 
     return 0;
 }
 
 static PyModuleDef_Slot xx_slots[] = {
-    {Py_mod_exec, xx_modexec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, xx_modexec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
 static int
-xx_traverse(PyObject *module, visitproc visit, void *arg)
+xx_traverse(TyObject *module, visitproc visit, void *arg)
 {
-    xx_state *state = PyModule_GetState(module);
-    Py_VISIT(state->Xxo_Type);
-    Py_VISIT(state->Error_Type);
+    xx_state *state = TyModule_GetState(module);
+    Ty_VISIT(state->Xxo_Type);
+    Ty_VISIT(state->Error_Type);
     return 0;
 }
 
 static int
-xx_clear(PyObject *module)
+xx_clear(TyObject *module)
 {
-    xx_state *state = PyModule_GetState(module);
-    Py_CLEAR(state->Xxo_Type);
-    Py_CLEAR(state->Error_Type);
+    xx_state *state = TyModule_GetState(module);
+    Ty_CLEAR(state->Xxo_Type);
+    Ty_CLEAR(state->Error_Type);
     return 0;
 }
 
@@ -428,10 +428,10 @@ static void
 xx_free(void *module)
 {
     // allow xx_modexec to omit calling xx_clear on error
-    (void)xx_clear((PyObject *)module);
+    (void)xx_clear((TyObject *)module);
 }
 
-static struct PyModuleDef xxmodule = {
+static struct TyModuleDef xxmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "xxlimited",
     .m_doc = module_doc,

@@ -20,11 +20,11 @@ _testcapi.pyfile_newstdprinter
 
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_pyfile_newstdprinter_impl(PyObject *module, int fd)
+static TyObject *
+_testcapi_pyfile_newstdprinter_impl(TyObject *module, int fd)
 /*[clinic end generated code: output=8a2d1c57b6892db3 input=442f1824142262ea]*/
 {
-    return PyFile_NewStdPrinter(fd);
+    return TyFile_NewStdPrinter(fd);
 }
 
 
@@ -35,25 +35,25 @@ _testcapi.py_fopen
     mode: str(zeroes=True, accept={robuffer, str, NoneType})
     /
 
-Call Py_fopen(), fread(256) and Py_fclose(). Return read bytes.
+Call Ty_fopen(), fread(256) and Ty_fclose(). Return read bytes.
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_py_fopen_impl(PyObject *module, PyObject *path, const char *mode,
-                        Py_ssize_t mode_length)
+static TyObject *
+_testcapi_py_fopen_impl(TyObject *module, TyObject *path, const char *mode,
+                        Ty_ssize_t mode_length)
 /*[clinic end generated code: output=69840d0cfd8b7fbb input=f3a579dd7eb60926]*/
 {
     NULLABLE(path);
-    FILE *fp = Py_fopen(path, mode);
+    FILE *fp = Ty_fopen(path, mode);
     if (fp == NULL) {
         return NULL;
     }
 
     char buffer[256];
-    size_t size = fread(buffer, 1, Py_ARRAY_LENGTH(buffer), fp);
-    Py_fclose(fp);
+    size_t size = fread(buffer, 1, Ty_ARRAY_LENGTH(buffer), fp);
+    Ty_fclose(fp);
 
-    return PyBytes_FromStringAndSize(buffer, size);
+    return TyBytes_FromStringAndSize(buffer, size);
 }
 
 
@@ -64,40 +64,40 @@ _testcapi.py_universalnewlinefgets
     size: int
     /
 
-Read a line from a file using Py_UniversalNewlineFgets.
+Read a line from a file using Ty_UniversalNewlineFgets.
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_py_universalnewlinefgets_impl(PyObject *module, PyObject *file,
+static TyObject *
+_testcapi_py_universalnewlinefgets_impl(TyObject *module, TyObject *file,
                                         int size)
 /*[clinic end generated code: output=2ce1bc76c9dc871c input=02c236049d18569a]*/
 {
-    FILE *fp = Py_fopen(file, "rb");
+    FILE *fp = Ty_fopen(file, "rb");
     if (fp == NULL) {
         return NULL;
     }
 
-    char *buf = (char *)PyMem_Malloc(size);
+    char *buf = (char *)TyMem_Malloc(size);
     if (buf == NULL) {
-        Py_fclose(fp);
-        return PyErr_NoMemory();
+        Ty_fclose(fp);
+        return TyErr_NoMemory();
     }
 
-    char *result = Py_UniversalNewlineFgets(buf, size, fp, NULL);
+    char *result = Ty_UniversalNewlineFgets(buf, size, fp, NULL);
     if (result == NULL) {
-        PyMem_Free(buf);
-        Py_fclose(fp);
+        TyMem_Free(buf);
+        Ty_fclose(fp);
         Py_RETURN_NONE;
     }
 
-    PyObject *line = PyBytes_FromString(result);
-    PyMem_Free(buf);
-    Py_fclose(fp);
+    TyObject *line = TyBytes_FromString(result);
+    TyMem_Free(buf);
+    Ty_fclose(fp);
 
     return line;
 }
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     _TESTCAPI_PYFILE_NEWSTDPRINTER_METHODDEF
     _TESTCAPI_PY_FOPEN_METHODDEF
     _TESTCAPI_PY_UNIVERSALNEWLINEFGETS_METHODDEF
@@ -105,7 +105,7 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_File(PyObject *m)
+_PyTestCapi_Init_File(TyObject *m)
 {
-    return PyModule_AddFunctions(m, test_methods);
+    return TyModule_AddFunctions(m, test_methods);
 }

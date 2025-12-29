@@ -2,59 +2,59 @@
 #include "util.h"
 
 
-static PyObject *
-complex_fromccomplex(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+complex_fromccomplex(TyObject *Py_UNUSED(module), TyObject *obj)
 {
-    Py_complex complex;
+    Ty_complex complex;
 
-    if (!PyArg_Parse(obj, "D", &complex)) {
+    if (!TyArg_Parse(obj, "D", &complex)) {
         return NULL;
     }
 
-    return PyComplex_FromCComplex(complex);
+    return TyComplex_FromCComplex(complex);
 }
 
-static PyObject *
-complex_asccomplex(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+complex_asccomplex(TyObject *Py_UNUSED(module), TyObject *obj)
 {
-    Py_complex complex;
+    Ty_complex complex;
 
     NULLABLE(obj);
-    complex = PyComplex_AsCComplex(obj);
+    complex = TyComplex_AsCComplex(obj);
 
-    if (complex.real == -1. && PyErr_Occurred()) {
+    if (complex.real == -1. && TyErr_Occurred()) {
         return NULL;
     }
 
-    return PyComplex_FromCComplex(complex);
+    return TyComplex_FromCComplex(complex);
 }
 
-static PyObject*
-_py_c_neg(PyObject *Py_UNUSED(module), PyObject *num)
+static TyObject*
+_py_c_neg(TyObject *Py_UNUSED(module), TyObject *num)
 {
-    Py_complex complex;
+    Ty_complex complex;
 
-    complex = PyComplex_AsCComplex(num);
-    if (complex.real == -1. && PyErr_Occurred()) {
+    complex = TyComplex_AsCComplex(num);
+    if (complex.real == -1. && TyErr_Occurred()) {
         return NULL;
     }
 
-    return PyComplex_FromCComplex(_Py_c_neg(complex));
+    return TyComplex_FromCComplex(_Ty_c_neg(complex));
 }
 
 #define _PY_C_FUNC2(suffix)                                      \
-    static PyObject *                                            \
-    _py_c_##suffix(PyObject *Py_UNUSED(module), PyObject *args)  \
+    static TyObject *                                            \
+    _py_c_##suffix(TyObject *Py_UNUSED(module), TyObject *args)  \
     {                                                            \
-        Py_complex a, b, res;                                    \
+        Ty_complex a, b, res;                                    \
                                                                  \
-        if (!PyArg_ParseTuple(args, "DD", &a, &b)) {             \
+        if (!TyArg_ParseTuple(args, "DD", &a, &b)) {             \
             return NULL;                                         \
         }                                                        \
                                                                  \
         errno = 0;                                               \
-        res = _Py_c_##suffix(a, b);                              \
-        return Py_BuildValue("Di", &res, errno);                 \
+        res = _Ty_c_##suffix(a, b);                              \
+        return Ty_BuildValue("Di", &res, errno);                 \
     };
 
 _PY_C_FUNC2(sum)
@@ -63,26 +63,26 @@ _PY_C_FUNC2(prod)
 _PY_C_FUNC2(quot)
 _PY_C_FUNC2(pow)
 
-static PyObject*
-_py_c_abs(PyObject *Py_UNUSED(module), PyObject* obj)
+static TyObject*
+_py_c_abs(TyObject *Py_UNUSED(module), TyObject* obj)
 {
-    Py_complex complex;
+    Ty_complex complex;
     double res;
 
     NULLABLE(obj);
-    complex = PyComplex_AsCComplex(obj);
+    complex = TyComplex_AsCComplex(obj);
 
-    if (complex.real == -1. && PyErr_Occurred()) {
+    if (complex.real == -1. && TyErr_Occurred()) {
         return NULL;
     }
 
     errno = 0;
-    res = _Py_c_abs(complex);
-    return Py_BuildValue("di", res, errno);
+    res = _Ty_c_abs(complex);
+    return Ty_BuildValue("di", res, errno);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"complex_fromccomplex", complex_fromccomplex, METH_O},
     {"complex_asccomplex", complex_asccomplex, METH_O},
     {"_py_c_sum", _py_c_sum, METH_VARARGS},
@@ -96,9 +96,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Complex(PyObject *mod)
+_PyTestCapi_Init_Complex(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 

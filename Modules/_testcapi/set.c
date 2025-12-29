@@ -1,44 +1,44 @@
 #include "parts.h"
 #include "util.h"
 
-static PyObject *
-set_get_size(PyObject *self, PyObject *obj)
+static TyObject *
+set_get_size(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_SIZE(PySet_GET_SIZE(obj));
+    RETURN_SIZE(TySet_GET_SIZE(obj));
 }
 
 
-static PyObject*
-test_set_type_size(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject*
+test_set_type_size(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *obj = PyList_New(0);
+    TyObject *obj = TyList_New(0);
     if (obj == NULL) {
         return NULL;
     }
 
     // Ensure that following tests don't modify the object,
-    // to ensure that Py_DECREF() will not crash.
-    assert(Py_TYPE(obj) == &PyList_Type);
-    assert(Py_SIZE(obj) == 0);
+    // to ensure that Ty_DECREF() will not crash.
+    assert(Ty_TYPE(obj) == &TyList_Type);
+    assert(Ty_SIZE(obj) == 0);
 
-    // bpo-39573: Test Py_SET_TYPE() and Py_SET_SIZE() functions.
-    Py_SET_TYPE(obj, &PyList_Type);
-    Py_SET_SIZE(obj, 0);
+    // bpo-39573: Test Ty_SET_TYPE() and Ty_SET_SIZE() functions.
+    Ty_SET_TYPE(obj, &TyList_Type);
+    Ty_SET_SIZE(obj, 0);
 
-    Py_DECREF(obj);
+    Ty_DECREF(obj);
     Py_RETURN_NONE;
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"set_get_size", set_get_size, METH_O},
     {"test_set_type_size", test_set_type_size, METH_NOARGS},
     {NULL},
 };
 
 int
-_PyTestCapi_Init_Set(PyObject *m)
+_PyTestCapi_Init_Set(TyObject *m)
 {
-    return PyModule_AddFunctions(m, test_methods);
+    return TyModule_AddFunctions(m, test_methods);
 }

@@ -2,9 +2,9 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(float_is_integer__doc__,
+TyDoc_STRVAR(float_is_integer__doc__,
 "is_integer($self, /)\n"
 "--\n"
 "\n"
@@ -13,16 +13,16 @@ PyDoc_STRVAR(float_is_integer__doc__,
 #define FLOAT_IS_INTEGER_METHODDEF    \
     {"is_integer", (PyCFunction)float_is_integer, METH_NOARGS, float_is_integer__doc__},
 
-static PyObject *
-float_is_integer_impl(PyObject *self);
+static TyObject *
+float_is_integer_impl(TyObject *self);
 
-static PyObject *
-float_is_integer(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+float_is_integer(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float_is_integer_impl(self);
 }
 
-PyDoc_STRVAR(float___trunc____doc__,
+TyDoc_STRVAR(float___trunc____doc__,
 "__trunc__($self, /)\n"
 "--\n"
 "\n"
@@ -31,16 +31,16 @@ PyDoc_STRVAR(float___trunc____doc__,
 #define FLOAT___TRUNC___METHODDEF    \
     {"__trunc__", (PyCFunction)float___trunc__, METH_NOARGS, float___trunc____doc__},
 
-static PyObject *
-float___trunc___impl(PyObject *self);
+static TyObject *
+float___trunc___impl(TyObject *self);
 
-static PyObject *
-float___trunc__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+float___trunc__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float___trunc___impl(self);
 }
 
-PyDoc_STRVAR(float___floor____doc__,
+TyDoc_STRVAR(float___floor____doc__,
 "__floor__($self, /)\n"
 "--\n"
 "\n"
@@ -49,16 +49,16 @@ PyDoc_STRVAR(float___floor____doc__,
 #define FLOAT___FLOOR___METHODDEF    \
     {"__floor__", (PyCFunction)float___floor__, METH_NOARGS, float___floor____doc__},
 
-static PyObject *
-float___floor___impl(PyObject *self);
+static TyObject *
+float___floor___impl(TyObject *self);
 
-static PyObject *
-float___floor__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+float___floor__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float___floor___impl(self);
 }
 
-PyDoc_STRVAR(float___ceil____doc__,
+TyDoc_STRVAR(float___ceil____doc__,
 "__ceil__($self, /)\n"
 "--\n"
 "\n"
@@ -67,16 +67,16 @@ PyDoc_STRVAR(float___ceil____doc__,
 #define FLOAT___CEIL___METHODDEF    \
     {"__ceil__", (PyCFunction)float___ceil__, METH_NOARGS, float___ceil____doc__},
 
-static PyObject *
-float___ceil___impl(PyObject *self);
+static TyObject *
+float___ceil___impl(TyObject *self);
 
-static PyObject *
-float___ceil__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+float___ceil__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float___ceil___impl(self);
 }
 
-PyDoc_STRVAR(float___round____doc__,
+TyDoc_STRVAR(float___round____doc__,
 "__round__($self, ndigits=None, /)\n"
 "--\n"
 "\n"
@@ -87,16 +87,16 @@ PyDoc_STRVAR(float___round____doc__,
 #define FLOAT___ROUND___METHODDEF    \
     {"__round__", _PyCFunction_CAST(float___round__), METH_FASTCALL, float___round____doc__},
 
-static PyObject *
-float___round___impl(PyObject *self, PyObject *o_ndigits);
+static TyObject *
+float___round___impl(TyObject *self, TyObject *o_ndigits);
 
-static PyObject *
-float___round__(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+float___round__(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *o_ndigits = Py_None;
+    TyObject *return_value = NULL;
+    TyObject *o_ndigits = Ty_None;
 
-    if (!_PyArg_CheckPositional("__round__", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("__round__", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -110,7 +110,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(float_conjugate__doc__,
+TyDoc_STRVAR(float_conjugate__doc__,
 "conjugate($self, /)\n"
 "--\n"
 "\n"
@@ -119,16 +119,16 @@ PyDoc_STRVAR(float_conjugate__doc__,
 #define FLOAT_CONJUGATE_METHODDEF    \
     {"conjugate", (PyCFunction)float_conjugate, METH_NOARGS, float_conjugate__doc__},
 
-static PyObject *
-float_conjugate_impl(PyObject *self);
+static TyObject *
+float_conjugate_impl(TyObject *self);
 
-static PyObject *
-float_conjugate(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+float_conjugate(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float_conjugate_impl(self);
 }
 
-PyDoc_STRVAR(float_hex__doc__,
+TyDoc_STRVAR(float_hex__doc__,
 "hex($self, /)\n"
 "--\n"
 "\n"
@@ -142,16 +142,16 @@ PyDoc_STRVAR(float_hex__doc__,
 #define FLOAT_HEX_METHODDEF    \
     {"hex", (PyCFunction)float_hex, METH_NOARGS, float_hex__doc__},
 
-static PyObject *
-float_hex_impl(PyObject *self);
+static TyObject *
+float_hex_impl(TyObject *self);
 
-static PyObject *
-float_hex(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+float_hex(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float_hex_impl(self);
 }
 
-PyDoc_STRVAR(float_fromhex__doc__,
+TyDoc_STRVAR(float_fromhex__doc__,
 "fromhex($type, string, /)\n"
 "--\n"
 "\n"
@@ -165,20 +165,20 @@ PyDoc_STRVAR(float_fromhex__doc__,
 #define FLOAT_FROMHEX_METHODDEF    \
     {"fromhex", (PyCFunction)float_fromhex, METH_O|METH_CLASS, float_fromhex__doc__},
 
-static PyObject *
-float_fromhex_impl(PyTypeObject *type, PyObject *string);
+static TyObject *
+float_fromhex_impl(TyTypeObject *type, TyObject *string);
 
-static PyObject *
-float_fromhex(PyObject *type, PyObject *string)
+static TyObject *
+float_fromhex(TyObject *type, TyObject *string)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    return_value = float_fromhex_impl((PyTypeObject *)type, string);
+    return_value = float_fromhex_impl((TyTypeObject *)type, string);
 
     return return_value;
 }
 
-PyDoc_STRVAR(float_as_integer_ratio__doc__,
+TyDoc_STRVAR(float_as_integer_ratio__doc__,
 "as_integer_ratio($self, /)\n"
 "--\n"
 "\n"
@@ -197,42 +197,42 @@ PyDoc_STRVAR(float_as_integer_ratio__doc__,
 #define FLOAT_AS_INTEGER_RATIO_METHODDEF    \
     {"as_integer_ratio", (PyCFunction)float_as_integer_ratio, METH_NOARGS, float_as_integer_ratio__doc__},
 
-static PyObject *
-float_as_integer_ratio_impl(PyObject *self);
+static TyObject *
+float_as_integer_ratio_impl(TyObject *self);
 
-static PyObject *
-float_as_integer_ratio(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+float_as_integer_ratio(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float_as_integer_ratio_impl(self);
 }
 
-PyDoc_STRVAR(float_new__doc__,
+TyDoc_STRVAR(float_new__doc__,
 "float(x=0, /)\n"
 "--\n"
 "\n"
 "Convert a string or number to a floating-point number, if possible.");
 
-static PyObject *
-float_new_impl(PyTypeObject *type, PyObject *x);
+static TyObject *
+float_new_impl(TyTypeObject *type, TyObject *x);
 
-static PyObject *
-float_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+float_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = &PyFloat_Type;
-    PyObject *x = NULL;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = &TyFloat_Type;
+    TyObject *x = NULL;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("float", kwargs)) {
+        !_TyArg_NoKeywords("float", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("float", PyTuple_GET_SIZE(args), 0, 1)) {
+    if (!_TyArg_CheckPositional("float", TyTuple_GET_SIZE(args), 0, 1)) {
         goto exit;
     }
-    if (PyTuple_GET_SIZE(args) < 1) {
+    if (TyTuple_GET_SIZE(args) < 1) {
         goto skip_optional;
     }
-    x = PyTuple_GET_ITEM(args, 0);
+    x = TyTuple_GET_ITEM(args, 0);
 skip_optional:
     return_value = float_new_impl(type, x);
 
@@ -240,7 +240,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(float_from_number__doc__,
+TyDoc_STRVAR(float_from_number__doc__,
 "from_number($type, number, /)\n"
 "--\n"
 "\n"
@@ -249,20 +249,20 @@ PyDoc_STRVAR(float_from_number__doc__,
 #define FLOAT_FROM_NUMBER_METHODDEF    \
     {"from_number", (PyCFunction)float_from_number, METH_O|METH_CLASS, float_from_number__doc__},
 
-static PyObject *
-float_from_number_impl(PyTypeObject *type, PyObject *number);
+static TyObject *
+float_from_number_impl(TyTypeObject *type, TyObject *number);
 
-static PyObject *
-float_from_number(PyObject *type, PyObject *number)
+static TyObject *
+float_from_number(TyObject *type, TyObject *number)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    return_value = float_from_number_impl((PyTypeObject *)type, number);
+    return_value = float_from_number_impl((TyTypeObject *)type, number);
 
     return return_value;
 }
 
-PyDoc_STRVAR(float___getnewargs____doc__,
+TyDoc_STRVAR(float___getnewargs____doc__,
 "__getnewargs__($self, /)\n"
 "--\n"
 "\n");
@@ -270,16 +270,16 @@ PyDoc_STRVAR(float___getnewargs____doc__,
 #define FLOAT___GETNEWARGS___METHODDEF    \
     {"__getnewargs__", (PyCFunction)float___getnewargs__, METH_NOARGS, float___getnewargs____doc__},
 
-static PyObject *
-float___getnewargs___impl(PyObject *self);
+static TyObject *
+float___getnewargs___impl(TyObject *self);
 
-static PyObject *
-float___getnewargs__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+float___getnewargs__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float___getnewargs___impl(self);
 }
 
-PyDoc_STRVAR(float___getformat____doc__,
+TyDoc_STRVAR(float___getformat____doc__,
 "__getformat__($type, typestr, /)\n"
 "--\n"
 "\n"
@@ -297,35 +297,35 @@ PyDoc_STRVAR(float___getformat____doc__,
 #define FLOAT___GETFORMAT___METHODDEF    \
     {"__getformat__", (PyCFunction)float___getformat__, METH_O|METH_CLASS, float___getformat____doc__},
 
-static PyObject *
-float___getformat___impl(PyTypeObject *type, const char *typestr);
+static TyObject *
+float___getformat___impl(TyTypeObject *type, const char *typestr);
 
-static PyObject *
-float___getformat__(PyObject *type, PyObject *arg)
+static TyObject *
+float___getformat__(TyObject *type, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *typestr;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("__getformat__", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("__getformat__", "argument", "str", arg);
         goto exit;
     }
-    Py_ssize_t typestr_length;
-    typestr = PyUnicode_AsUTF8AndSize(arg, &typestr_length);
+    Ty_ssize_t typestr_length;
+    typestr = TyUnicode_AsUTF8AndSize(arg, &typestr_length);
     if (typestr == NULL) {
         goto exit;
     }
     if (strlen(typestr) != (size_t)typestr_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    return_value = float___getformat___impl((PyTypeObject *)type, typestr);
+    return_value = float___getformat___impl((TyTypeObject *)type, typestr);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(float___format____doc__,
+TyDoc_STRVAR(float___format____doc__,
 "__format__($self, format_spec, /)\n"
 "--\n"
 "\n"
@@ -334,17 +334,17 @@ PyDoc_STRVAR(float___format____doc__,
 #define FLOAT___FORMAT___METHODDEF    \
     {"__format__", (PyCFunction)float___format__, METH_O, float___format____doc__},
 
-static PyObject *
-float___format___impl(PyObject *self, PyObject *format_spec);
+static TyObject *
+float___format___impl(TyObject *self, TyObject *format_spec);
 
-static PyObject *
-float___format__(PyObject *self, PyObject *arg)
+static TyObject *
+float___format__(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *format_spec;
+    TyObject *return_value = NULL;
+    TyObject *format_spec;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("__format__", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("__format__", "argument", "str", arg);
         goto exit;
     }
     format_spec = arg;

@@ -3,14 +3,14 @@
 //   Python/bytecodes.c
 // Do not edit!
 
-#ifndef Py_CORE_OPCODE_METADATA_H
-#define Py_CORE_OPCODE_METADATA_H
+#ifndef Ty_CORE_OPCODE_METADATA_H
+#define Ty_CORE_OPCODE_METADATA_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include <stdbool.h>              // bool
@@ -32,9 +32,9 @@ extern "C" {
     0)
 
 #include "pycore_uop_ids.h"
-extern int _PyOpcode_num_popped(int opcode, int oparg);
+extern int _TyOpcode_num_popped(int opcode, int oparg);
 #ifdef NEED_OPCODE_METADATA
-int _PyOpcode_num_popped(int opcode, int oparg)  {
+int _TyOpcode_num_popped(int opcode, int oparg)  {
     switch(opcode) {
         case ANNOTATIONS_PLACEHOLDER:
             return 0;
@@ -519,9 +519,9 @@ int _PyOpcode_num_popped(int opcode, int oparg)  {
 
 #endif
 
-extern int _PyOpcode_num_pushed(int opcode, int oparg);
+extern int _TyOpcode_num_pushed(int opcode, int oparg);
 #ifdef NEED_OPCODE_METADATA
-int _PyOpcode_num_pushed(int opcode, int oparg)  {
+int _TyOpcode_num_pushed(int opcode, int oparg)  {
     switch(opcode) {
         case ANNOTATIONS_PLACEHOLDER:
             return 0;
@@ -1022,7 +1022,7 @@ enum InstructionFormat {
 
 #define IS_VALID_OPCODE(OP) \
     (((OP) >= 0) && ((OP) < 267) && \
-     (_PyOpcode_opcode_metadata[(OP)].valid_entry))
+     (_TyOpcode_opcode_metadata[(OP)].valid_entry))
 
 #define HAS_ARG_FLAG (1)
 #define HAS_CONST_FLAG (2)
@@ -1040,22 +1040,22 @@ enum InstructionFormat {
 #define HAS_OPARG_AND_1_FLAG (8192)
 #define HAS_ERROR_NO_POP_FLAG (16384)
 #define HAS_NO_SAVE_IP_FLAG (32768)
-#define OPCODE_HAS_ARG(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_ARG_FLAG))
-#define OPCODE_HAS_CONST(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_CONST_FLAG))
-#define OPCODE_HAS_NAME(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_NAME_FLAG))
-#define OPCODE_HAS_JUMP(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_JUMP_FLAG))
-#define OPCODE_HAS_FREE(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_FREE_FLAG))
-#define OPCODE_HAS_LOCAL(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_LOCAL_FLAG))
-#define OPCODE_HAS_EVAL_BREAK(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_EVAL_BREAK_FLAG))
-#define OPCODE_HAS_DEOPT(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_DEOPT_FLAG))
-#define OPCODE_HAS_ERROR(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_ERROR_FLAG))
-#define OPCODE_HAS_ESCAPES(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_ESCAPES_FLAG))
-#define OPCODE_HAS_EXIT(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_EXIT_FLAG))
-#define OPCODE_HAS_PURE(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_PURE_FLAG))
-#define OPCODE_HAS_PASSTHROUGH(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_PASSTHROUGH_FLAG))
-#define OPCODE_HAS_OPARG_AND_1(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_OPARG_AND_1_FLAG))
-#define OPCODE_HAS_ERROR_NO_POP(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_ERROR_NO_POP_FLAG))
-#define OPCODE_HAS_NO_SAVE_IP(OP) (_PyOpcode_opcode_metadata[OP].flags & (HAS_NO_SAVE_IP_FLAG))
+#define OPCODE_HAS_ARG(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_ARG_FLAG))
+#define OPCODE_HAS_CONST(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_CONST_FLAG))
+#define OPCODE_HAS_NAME(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_NAME_FLAG))
+#define OPCODE_HAS_JUMP(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_JUMP_FLAG))
+#define OPCODE_HAS_FREE(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_FREE_FLAG))
+#define OPCODE_HAS_LOCAL(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_LOCAL_FLAG))
+#define OPCODE_HAS_EVAL_BREAK(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_EVAL_BREAK_FLAG))
+#define OPCODE_HAS_DEOPT(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_DEOPT_FLAG))
+#define OPCODE_HAS_ERROR(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_ERROR_FLAG))
+#define OPCODE_HAS_ESCAPES(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_ESCAPES_FLAG))
+#define OPCODE_HAS_EXIT(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_EXIT_FLAG))
+#define OPCODE_HAS_PURE(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_PURE_FLAG))
+#define OPCODE_HAS_PASSTHROUGH(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_PASSTHROUGH_FLAG))
+#define OPCODE_HAS_OPARG_AND_1(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_OPARG_AND_1_FLAG))
+#define OPCODE_HAS_ERROR_NO_POP(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_ERROR_NO_POP_FLAG))
+#define OPCODE_HAS_NO_SAVE_IP(OP) (_TyOpcode_opcode_metadata[OP].flags & (HAS_NO_SAVE_IP_FLAG))
 
 #define OPARG_SIMPLE 0
 #define OPARG_CACHE_1 1
@@ -1075,9 +1075,9 @@ struct opcode_metadata {
     uint16_t flags;
 };
 
-extern const struct opcode_metadata _PyOpcode_opcode_metadata[267];
+extern const struct opcode_metadata _TyOpcode_opcode_metadata[267];
 #ifdef NEED_OPCODE_METADATA
-const struct opcode_metadata _PyOpcode_opcode_metadata[267] = {
+const struct opcode_metadata _TyOpcode_opcode_metadata[267] = {
     [BINARY_OP] = { true, INSTR_FMT_IBC0000, HAS_ARG_FLAG | HAS_ERROR_FLAG | HAS_ERROR_NO_POP_FLAG | HAS_ESCAPES_FLAG },
     [BINARY_OP_ADD_FLOAT] = { true, INSTR_FMT_IXC0000, HAS_EXIT_FLAG | HAS_ERROR_FLAG },
     [BINARY_OP_ADD_INT] = { true, INSTR_FMT_IXC0000, HAS_EXIT_FLAG | HAS_ERROR_FLAG | HAS_ESCAPES_FLAG },
@@ -1324,11 +1324,11 @@ struct opcode_macro_expansion {
     int nuops;
     struct { int16_t uop; int8_t size; int8_t offset; } uops[MAX_UOP_PER_EXPANSION];
 };
-extern const struct opcode_macro_expansion _PyOpcode_macro_expansion[256];
+extern const struct opcode_macro_expansion _TyOpcode_macro_expansion[256];
 
 #ifdef NEED_OPCODE_METADATA
 const struct opcode_macro_expansion
-_PyOpcode_macro_expansion[256] = {
+_TyOpcode_macro_expansion[256] = {
     [BINARY_OP] = { .nuops = 1, .uops = { { _BINARY_OP, OPARG_SIMPLE, 4 } } },
     [BINARY_OP_ADD_FLOAT] = { .nuops = 3, .uops = { { _GUARD_TOS_FLOAT, OPARG_SIMPLE, 0 }, { _GUARD_NOS_FLOAT, OPARG_SIMPLE, 0 }, { _BINARY_OP_ADD_FLOAT, OPARG_SIMPLE, 5 } } },
     [BINARY_OP_ADD_INT] = { .nuops = 3, .uops = { { _GUARD_TOS_INT, OPARG_SIMPLE, 0 }, { _GUARD_NOS_INT, OPARG_SIMPLE, 0 }, { _BINARY_OP_ADD_INT, OPARG_SIMPLE, 5 } } },
@@ -1515,9 +1515,9 @@ _PyOpcode_macro_expansion[256] = {
 };
 #endif // NEED_OPCODE_METADATA
 
-extern const char *_PyOpcode_OpName[267];
+extern const char *_TyOpcode_OpName[267];
 #ifdef NEED_OPCODE_METADATA
-const char *_PyOpcode_OpName[267] = {
+const char *_TyOpcode_OpName[267] = {
     [ANNOTATIONS_PLACEHOLDER] = "ANNOTATIONS_PLACEHOLDER",
     [BINARY_OP] = "BINARY_OP",
     [BINARY_OP_ADD_FLOAT] = "BINARY_OP_ADD_FLOAT",
@@ -1759,9 +1759,9 @@ const char *_PyOpcode_OpName[267] = {
 };
 #endif
 
-extern const uint8_t _PyOpcode_Caches[256];
+extern const uint8_t _TyOpcode_Caches[256];
 #ifdef NEED_OPCODE_METADATA
-const uint8_t _PyOpcode_Caches[256] = {
+const uint8_t _TyOpcode_Caches[256] = {
     [TO_BOOL] = 3,
     [STORE_SUBSCR] = 1,
     [SEND] = 1,
@@ -1784,9 +1784,9 @@ const uint8_t _PyOpcode_Caches[256] = {
 };
 #endif
 
-extern const uint8_t _PyOpcode_Deopt[256];
+extern const uint8_t _TyOpcode_Deopt[256];
 #ifdef NEED_OPCODE_METADATA
-const uint8_t _PyOpcode_Deopt[256] = {
+const uint8_t _TyOpcode_Deopt[256] = {
     [121] = 121,
     [122] = 122,
     [123] = 123,
@@ -2082,9 +2082,9 @@ struct pseudo_targets {
     uint8_t as_sequence;
     uint8_t targets[4];
 };
-extern const struct pseudo_targets _PyOpcode_PseudoTargets[11];
+extern const struct pseudo_targets _TyOpcode_PseudoTargets[11];
 #ifdef NEED_OPCODE_METADATA
-const struct pseudo_targets _PyOpcode_PseudoTargets[11] = {
+const struct pseudo_targets _TyOpcode_PseudoTargets[11] = {
     [LOAD_CLOSURE-256] = { 0, { LOAD_FAST, 0, 0, 0 } },
     [STORE_FAST_MAYBE_NULL-256] = { 0, { STORE_FAST, 0, 0, 0 } },
     [ANNOTATIONS_PLACEHOLDER-256] = { 0, { NOP, 0, 0, 0 } },
@@ -2104,8 +2104,8 @@ is_pseudo_target(int pseudo, int target) {
     if (pseudo < 256 || pseudo >= 267) {
         return false;
     }
-    for (int i = 0; _PyOpcode_PseudoTargets[pseudo-256].targets[i]; i++) {
-        if (_PyOpcode_PseudoTargets[pseudo-256].targets[i] == target) return true;
+    for (int i = 0; _TyOpcode_PseudoTargets[pseudo-256].targets[i]; i++) {
+        if (_TyOpcode_PseudoTargets[pseudo-256].targets[i] == target) return true;
     }
     return false;
 }
@@ -2114,4 +2114,4 @@ is_pseudo_target(int pseudo, int target) {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_CORE_OPCODE_METADATA_H */
+#endif /* !Ty_CORE_OPCODE_METADATA_H */

@@ -672,7 +672,7 @@ class SysModuleTest(unittest.TestCase):
         self.assertIsInstance(sys.hash_info.inf, int)
         self.assertIsInstance(sys.hash_info.nan, int)
         self.assertIsInstance(sys.hash_info.imag, int)
-        algo = sysconfig.get_config_var("Py_HASH_ALGORITHM")
+        algo = sysconfig.get_config_var("Ty_HASH_ALGORITHM")
         if sys.hash_info.algorithm in {"fnv", "siphash13", "siphash24"}:
             self.assertIn(sys.hash_info.hash_bits, {32, 64})
             self.assertIn(sys.hash_info.seed_bits, {32, 64, 128})
@@ -1154,14 +1154,14 @@ class SysModuleTest(unittest.TestCase):
         self.assertIn(c, range(b - 50, b + 50))
 
     def test_is_gil_enabled(self):
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             self.assertIs(type(sys._is_gil_enabled()), bool)
         else:
             self.assertTrue(sys._is_gil_enabled())
 
     def test_is_finalizing(self):
         self.assertIs(sys.is_finalizing(), False)
-        # Don't use the atexit module because _Py_Finalizing is only set
+        # Don't use the atexit module because _Ty_Finalizing is only set
         # after calling atexit callbacks
         code = """if 1:
             import sys
@@ -1323,7 +1323,7 @@ class SysModuleTest(unittest.TestCase):
         get_objects = sys.getobjects(3, MyType)
         self.assertEqual(len(get_objects), 3)
 
-    @unittest.skipUnless(hasattr(sys, '_stats_on'), 'need Py_STATS build')
+    @unittest.skipUnless(hasattr(sys, '_stats_on'), 'need Ty_STATS build')
     def test_pystats(self):
         # Call the functions, just check that they don't crash
         # Cannot save/restore state.
@@ -1335,7 +1335,7 @@ class SysModuleTest(unittest.TestCase):
     @test.support.cpython_only
     @unittest.skipUnless(hasattr(sys, 'abiflags'), 'need sys.abiflags')
     def test_disable_gil_abi(self):
-        self.assertEqual('t' in sys.abiflags, support.Py_GIL_DISABLED)
+        self.assertEqual('t' in sys.abiflags, support.Ty_GIL_DISABLED)
 
 
 @test.support.cpython_only
@@ -1661,7 +1661,7 @@ class SizeofTest(unittest.TestCase):
         def func():
             return sys._getframe()
         x = func()
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             INTERPRETER_FRAME = '9PihcP'
         else:
             INTERPRETER_FRAME = '9PhcP'
@@ -1710,7 +1710,7 @@ class SizeofTest(unittest.TestCase):
         check(int(PyLong_BASE**2-1), vsize('') + 2*self.longdigit)
         check(int(PyLong_BASE**2), vsize('') + 3*self.longdigit)
         # module
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             check(unittest, size('PPPPPP'))
         else:
             check(unittest, size('PPPPP'))
@@ -1771,7 +1771,7 @@ class SizeofTest(unittest.TestCase):
         fmt = 'P2nPI13Pl4Pn9Pn12PIPc'
         s = vsize(fmt)
         check(int, s)
-        typeid = 'n' if support.Py_GIL_DISABLED else ''
+        typeid = 'n' if support.Ty_GIL_DISABLED else ''
         # class
         s = vsize(fmt +                 # PyTypeObject
                   '4P'                  # PyAsyncMethods
@@ -1828,7 +1828,7 @@ class SizeofTest(unittest.TestCase):
         # TODO: add check that forces layout of unicodefields
         # weakref
         import weakref
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             expected = size('2Pn4P')
         else:
             expected = size('2Pn3P')

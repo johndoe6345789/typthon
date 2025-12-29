@@ -1,69 +1,69 @@
-#ifndef Py_TESTCAPI_PARTS_H
-#define Py_TESTCAPI_PARTS_H
+#ifndef Ty_TESTCAPI_PARTS_H
+#define Ty_TESTCAPI_PARTS_H
 
 // Always enable assertions
 #undef NDEBUG
 
 #ifdef PYTESTCAPI_NEED_INTERNAL_API
-#  ifndef Py_BUILD_CORE_BUILTIN
-#    define Py_BUILD_CORE_MODULE 1
+#  ifndef Ty_BUILD_CORE_BUILTIN
+#    define Ty_BUILD_CORE_MODULE 1
 #  endif
 #else
    // The _testcapi extension tests the public C API: header files in Include/
    // and Include/cpython/ directories. The internal C API must not be tested
    // by _testcapi: use _testinternalcapi for that.
    //
-   // _testcapi C files can built with the Py_BUILD_CORE_BUILTIN macro defined
+   // _testcapi C files can built with the Ty_BUILD_CORE_BUILTIN macro defined
    // if one of the Modules/Setup files asks to build _testcapi as "static"
    // (gh-109723).
    //
-   // The Visual Studio projects builds _testcapi with Py_BUILD_CORE_MODULE.
-#  undef Py_BUILD_CORE_MODULE
-#  undef Py_BUILD_CORE_BUILTIN
+   // The Visual Studio projects builds _testcapi with Ty_BUILD_CORE_MODULE.
+#  undef Ty_BUILD_CORE_MODULE
+#  undef Ty_BUILD_CORE_BUILTIN
 #endif
 
 #include "Python.h"
 
-#if defined(Py_BUILD_CORE) && !defined(PYTESTCAPI_NEED_INTERNAL_API)
+#if defined(Ty_BUILD_CORE) && !defined(PYTESTCAPI_NEED_INTERNAL_API)
 #  error "_testcapi must test the public Python C API, not the internal C API"
 #endif
 
-int _PyTestCapi_Init_Vectorcall(PyObject *module);
-int _PyTestCapi_Init_Heaptype(PyObject *module);
-int _PyTestCapi_Init_Abstract(PyObject *module);
-int _PyTestCapi_Init_Bytes(PyObject *module);
-int _PyTestCapi_Init_Unicode(PyObject *module);
-int _PyTestCapi_Init_GetArgs(PyObject *module);
-int _PyTestCapi_Init_DateTime(PyObject *module);
-int _PyTestCapi_Init_Docstring(PyObject *module);
-int _PyTestCapi_Init_Mem(PyObject *module);
-int _PyTestCapi_Init_Watchers(PyObject *module);
-int _PyTestCapi_Init_Long(PyObject *module);
-int _PyTestCapi_Init_Float(PyObject *module);
-int _PyTestCapi_Init_Complex(PyObject *module);
-int _PyTestCapi_Init_Numbers(PyObject *module);
-int _PyTestCapi_Init_Dict(PyObject *module);
-int _PyTestCapi_Init_Set(PyObject *module);
-int _PyTestCapi_Init_List(PyObject *module);
-int _PyTestCapi_Init_Tuple(PyObject *module);
-int _PyTestCapi_Init_Structmember(PyObject *module);
-int _PyTestCapi_Init_Exceptions(PyObject *module);
-int _PyTestCapi_Init_Code(PyObject *module);
-int _PyTestCapi_Init_Buffer(PyObject *module);
-int _PyTestCapi_Init_PyAtomic(PyObject *module);
-int _PyTestCapi_Init_Run(PyObject *module);
-int _PyTestCapi_Init_File(PyObject *module);
-int _PyTestCapi_Init_Codec(PyObject *module);
-int _PyTestCapi_Init_Immortal(PyObject *module);
-int _PyTestCapi_Init_GC(PyObject *module);
-int _PyTestCapi_Init_Hash(PyObject *module);
-int _PyTestCapi_Init_Time(PyObject *module);
-int _PyTestCapi_Init_Monitoring(PyObject *module);
-int _PyTestCapi_Init_Object(PyObject *module);
-int _PyTestCapi_Init_Config(PyObject *mod);
-int _PyTestCapi_Init_Import(PyObject *mod);
-int _PyTestCapi_Init_Frame(PyObject *mod);
-int _PyTestCapi_Init_Type(PyObject *mod);
-int _PyTestCapi_Init_Function(PyObject *mod);
+int _PyTestCapi_Init_Vectorcall(TyObject *module);
+int _PyTestCapi_Init_Heaptype(TyObject *module);
+int _PyTestCapi_Init_Abstract(TyObject *module);
+int _PyTestCapi_Init_Bytes(TyObject *module);
+int _PyTestCapi_Init_Unicode(TyObject *module);
+int _PyTestCapi_Init_GetArgs(TyObject *module);
+int _PyTestCapi_Init_DateTime(TyObject *module);
+int _PyTestCapi_Init_Docstring(TyObject *module);
+int _PyTestCapi_Init_Mem(TyObject *module);
+int _PyTestCapi_Init_Watchers(TyObject *module);
+int _PyTestCapi_Init_Long(TyObject *module);
+int _PyTestCapi_Init_Float(TyObject *module);
+int _PyTestCapi_Init_Complex(TyObject *module);
+int _PyTestCapi_Init_Numbers(TyObject *module);
+int _PyTestCapi_Init_Dict(TyObject *module);
+int _PyTestCapi_Init_Set(TyObject *module);
+int _PyTestCapi_Init_List(TyObject *module);
+int _PyTestCapi_Init_Tuple(TyObject *module);
+int _PyTestCapi_Init_Structmember(TyObject *module);
+int _PyTestCapi_Init_Exceptions(TyObject *module);
+int _PyTestCapi_Init_Code(TyObject *module);
+int _PyTestCapi_Init_Buffer(TyObject *module);
+int _PyTestCapi_Init_PyAtomic(TyObject *module);
+int _PyTestCapi_Init_Run(TyObject *module);
+int _PyTestCapi_Init_File(TyObject *module);
+int _PyTestCapi_Init_Codec(TyObject *module);
+int _PyTestCapi_Init_Immortal(TyObject *module);
+int _PyTestCapi_Init_GC(TyObject *module);
+int _PyTestCapi_Init_Hash(TyObject *module);
+int _PyTestCapi_Init_Time(TyObject *module);
+int _PyTestCapi_Init_Monitoring(TyObject *module);
+int _PyTestCapi_Init_Object(TyObject *module);
+int _PyTestCapi_Init_Config(TyObject *mod);
+int _PyTestCapi_Init_Import(TyObject *mod);
+int _PyTestCapi_Init_Frame(TyObject *mod);
+int _PyTestCapi_Init_Type(TyObject *mod);
+int _PyTestCapi_Init_Function(TyObject *mod);
 
-#endif // Py_TESTCAPI_PARTS_H
+#endif // Ty_TESTCAPI_PARTS_H

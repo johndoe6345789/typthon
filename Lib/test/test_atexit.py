@@ -48,7 +48,7 @@ class FunctionalTest(unittest.TestCase):
 
     @threading_helper.requires_working_threading()
     @support.requires_resource("cpu")
-    @unittest.skipUnless(support.Py_GIL_DISABLED, "only meaningful without the GIL")
+    @unittest.skipUnless(support.Ty_GIL_DISABLED, "only meaningful without the GIL")
     def test_atexit_thread_safety(self):
         # GH-126907: atexit was not thread safe on the free-threaded build
         source = """

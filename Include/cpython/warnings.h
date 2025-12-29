@@ -1,26 +1,26 @@
-#ifndef Py_CPYTHON_WARNINGS_H
+#ifndef Ty_CPYTHON_WARNINGS_H
 #  error "this header file must not be included directly"
 #endif
 
-PyAPI_FUNC(int) PyErr_WarnExplicitObject(
-    PyObject *category,
-    PyObject *message,
-    PyObject *filename,
+PyAPI_FUNC(int) TyErr_WarnExplicitObject(
+    TyObject *category,
+    TyObject *message,
+    TyObject *filename,
     int lineno,
-    PyObject *module,
-    PyObject *registry);
+    TyObject *module,
+    TyObject *registry);
 
-PyAPI_FUNC(int) PyErr_WarnExplicitFormat(
-    PyObject *category,
+PyAPI_FUNC(int) TyErr_WarnExplicitFormat(
+    TyObject *category,
     const char *filename, int lineno,
-    const char *module, PyObject *registry,
+    const char *module, TyObject *registry,
     const char *format, ...);
 
-// DEPRECATED: Use PyErr_WarnEx() instead.
-#define PyErr_Warn(category, msg) PyErr_WarnEx((category), (msg), 1)
+// DEPRECATED: Use TyErr_WarnEx() instead.
+#define TyErr_Warn(category, msg) TyErr_WarnEx((category), (msg), 1)
 
-int _PyErr_WarnExplicitObjectWithContext(
-    PyObject *category,
-    PyObject *message,
-    PyObject *filename,
+int _TyErr_WarnExplicitObjectWithContext(
+    TyObject *category,
+    TyObject *message,
+    TyObject *filename,
     int lineno);

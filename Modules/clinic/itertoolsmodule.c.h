@@ -2,14 +2,14 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(batched_new__doc__,
+TyDoc_STRVAR(batched_new__doc__,
 "batched(iterable, n, *, strict=False)\n"
 "--\n"
 "\n"
@@ -30,63 +30,63 @@ PyDoc_STRVAR(batched_new__doc__,
 "If \"strict\" is True, raises a ValueError if the final batch is shorter\n"
 "than n.");
 
-static PyObject *
-batched_new_impl(PyTypeObject *type, PyObject *iterable, Py_ssize_t n,
+static TyObject *
+batched_new_impl(TyTypeObject *type, TyObject *iterable, Ty_ssize_t n,
                  int strict);
 
-static PyObject *
-batched_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+batched_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(iterable), _Py_LATIN1_CHR('n'), &_Py_ID(strict), },
+        .ob_item = { &_Ty_ID(iterable), _Ty_LATIN1_CHR('n'), &_Ty_ID(strict), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"iterable", "n", "strict", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "batched",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 2;
-    PyObject *iterable;
-    Py_ssize_t n;
+    TyObject *argsbuf[3];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 2;
+    TyObject *iterable;
+    Ty_ssize_t n;
     int strict = 0;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
     }
     iterable = fastargs[0];
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(fastargs[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(fastargs[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         n = ival;
@@ -105,7 +105,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pairwise_new__doc__,
+TyDoc_STRVAR(pairwise_new__doc__,
 "pairwise(iterable, /)\n"
 "--\n"
 "\n"
@@ -113,31 +113,31 @@ PyDoc_STRVAR(pairwise_new__doc__,
 "\n"
 "    s -> (s0,s1), (s1,s2), (s2, s3), ...");
 
-static PyObject *
-pairwise_new_impl(PyTypeObject *type, PyObject *iterable);
+static TyObject *
+pairwise_new_impl(TyTypeObject *type, TyObject *iterable);
 
-static PyObject *
-pairwise_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+pairwise_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->pairwise_type;
-    PyObject *iterable;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->pairwise_type;
+    TyObject *iterable;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("pairwise", kwargs)) {
+        !_TyArg_NoKeywords("pairwise", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("pairwise", PyTuple_GET_SIZE(args), 1, 1)) {
+    if (!_TyArg_CheckPositional("pairwise", TyTuple_GET_SIZE(args), 1, 1)) {
         goto exit;
     }
-    iterable = PyTuple_GET_ITEM(args, 0);
+    iterable = TyTuple_GET_ITEM(args, 0);
     return_value = pairwise_new_impl(type, iterable);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_groupby__doc__,
+TyDoc_STRVAR(itertools_groupby__doc__,
 "groupby(iterable, key=None)\n"
 "--\n"
 "\n"
@@ -150,48 +150,48 @@ PyDoc_STRVAR(itertools_groupby__doc__,
 "    If the key function is not specified or is None, the element itself\n"
 "    is used for grouping.");
 
-static PyObject *
-itertools_groupby_impl(PyTypeObject *type, PyObject *it, PyObject *keyfunc);
+static TyObject *
+itertools_groupby_impl(TyTypeObject *type, TyObject *it, TyObject *keyfunc);
 
-static PyObject *
-itertools_groupby(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_groupby(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(iterable), &_Py_ID(key), },
+        .ob_item = { &_Ty_ID(iterable), &_Ty_ID(key), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"iterable", "key", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "groupby",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *it;
-    PyObject *keyfunc = Py_None;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *it;
+    TyObject *keyfunc = Ty_None;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -208,107 +208,107 @@ exit:
     return return_value;
 }
 
-static PyObject *
-itertools__grouper_impl(PyTypeObject *type, PyObject *parent,
-                        PyObject *tgtkey);
+static TyObject *
+itertools__grouper_impl(TyTypeObject *type, TyObject *parent,
+                        TyObject *tgtkey);
 
-static PyObject *
-itertools__grouper(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools__grouper(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->_grouper_type;
-    PyObject *parent;
-    PyObject *tgtkey;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->_grouper_type;
+    TyObject *parent;
+    TyObject *tgtkey;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("_grouper", kwargs)) {
+        !_TyArg_NoKeywords("_grouper", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("_grouper", PyTuple_GET_SIZE(args), 2, 2)) {
+    if (!_TyArg_CheckPositional("_grouper", TyTuple_GET_SIZE(args), 2, 2)) {
         goto exit;
     }
-    if (!PyObject_TypeCheck(PyTuple_GET_ITEM(args, 0), clinic_state_by_cls()->groupby_type)) {
-        _PyArg_BadArgument("_grouper", "argument 1", (clinic_state_by_cls()->groupby_type)->tp_name, PyTuple_GET_ITEM(args, 0));
+    if (!PyObject_TypeCheck(TyTuple_GET_ITEM(args, 0), clinic_state_by_cls()->groupby_type)) {
+        _TyArg_BadArgument("_grouper", "argument 1", (clinic_state_by_cls()->groupby_type)->tp_name, TyTuple_GET_ITEM(args, 0));
         goto exit;
     }
-    parent = PyTuple_GET_ITEM(args, 0);
-    tgtkey = PyTuple_GET_ITEM(args, 1);
+    parent = TyTuple_GET_ITEM(args, 0);
+    tgtkey = TyTuple_GET_ITEM(args, 1);
     return_value = itertools__grouper_impl(type, parent, tgtkey);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_teedataobject__doc__,
+TyDoc_STRVAR(itertools_teedataobject__doc__,
 "teedataobject(iterable, values, next, /)\n"
 "--\n"
 "\n"
 "Data container common to multiple tee objects.");
 
-static PyObject *
-itertools_teedataobject_impl(PyTypeObject *type, PyObject *it,
-                             PyObject *values, PyObject *next);
+static TyObject *
+itertools_teedataobject_impl(TyTypeObject *type, TyObject *it,
+                             TyObject *values, TyObject *next);
 
-static PyObject *
-itertools_teedataobject(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_teedataobject(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->teedataobject_type;
-    PyObject *it;
-    PyObject *values;
-    PyObject *next;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->teedataobject_type;
+    TyObject *it;
+    TyObject *values;
+    TyObject *next;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("teedataobject", kwargs)) {
+        !_TyArg_NoKeywords("teedataobject", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("teedataobject", PyTuple_GET_SIZE(args), 3, 3)) {
+    if (!_TyArg_CheckPositional("teedataobject", TyTuple_GET_SIZE(args), 3, 3)) {
         goto exit;
     }
-    it = PyTuple_GET_ITEM(args, 0);
-    if (!PyList_Check(PyTuple_GET_ITEM(args, 1))) {
-        _PyArg_BadArgument("teedataobject", "argument 2", "list", PyTuple_GET_ITEM(args, 1));
+    it = TyTuple_GET_ITEM(args, 0);
+    if (!TyList_Check(TyTuple_GET_ITEM(args, 1))) {
+        _TyArg_BadArgument("teedataobject", "argument 2", "list", TyTuple_GET_ITEM(args, 1));
         goto exit;
     }
-    values = PyTuple_GET_ITEM(args, 1);
-    next = PyTuple_GET_ITEM(args, 2);
+    values = TyTuple_GET_ITEM(args, 1);
+    next = TyTuple_GET_ITEM(args, 2);
     return_value = itertools_teedataobject_impl(type, it, values, next);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools__tee__doc__,
+TyDoc_STRVAR(itertools__tee__doc__,
 "_tee(iterable, /)\n"
 "--\n"
 "\n"
 "Iterator wrapped to make it copyable.");
 
-static PyObject *
-itertools__tee_impl(PyTypeObject *type, PyObject *iterable);
+static TyObject *
+itertools__tee_impl(TyTypeObject *type, TyObject *iterable);
 
-static PyObject *
-itertools__tee(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools__tee(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->tee_type;
-    PyObject *iterable;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->tee_type;
+    TyObject *iterable;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("_tee", kwargs)) {
+        !_TyArg_NoKeywords("_tee", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("_tee", PyTuple_GET_SIZE(args), 1, 1)) {
+    if (!_TyArg_CheckPositional("_tee", TyTuple_GET_SIZE(args), 1, 1)) {
         goto exit;
     }
-    iterable = PyTuple_GET_ITEM(args, 0);
+    iterable = TyTuple_GET_ITEM(args, 0);
     return_value = itertools__tee_impl(type, iterable);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_tee__doc__,
+TyDoc_STRVAR(itertools_tee__doc__,
 "tee($module, iterable, n=2, /)\n"
 "--\n"
 "\n"
@@ -317,17 +317,17 @@ PyDoc_STRVAR(itertools_tee__doc__,
 #define ITERTOOLS_TEE_METHODDEF    \
     {"tee", _PyCFunction_CAST(itertools_tee), METH_FASTCALL, itertools_tee__doc__},
 
-static PyObject *
-itertools_tee_impl(PyObject *module, PyObject *iterable, Py_ssize_t n);
+static TyObject *
+itertools_tee_impl(TyObject *module, TyObject *iterable, Ty_ssize_t n);
 
-static PyObject *
-itertools_tee(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+itertools_tee(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *iterable;
-    Py_ssize_t n = 2;
+    TyObject *return_value = NULL;
+    TyObject *iterable;
+    Ty_ssize_t n = 2;
 
-    if (!_PyArg_CheckPositional("tee", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("tee", nargs, 1, 2)) {
         goto exit;
     }
     iterable = args[0];
@@ -335,13 +335,13 @@ itertools_tee(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         n = ival;
@@ -353,37 +353,37 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_cycle__doc__,
+TyDoc_STRVAR(itertools_cycle__doc__,
 "cycle(iterable, /)\n"
 "--\n"
 "\n"
 "Return elements from the iterable until it is exhausted. Then repeat the sequence indefinitely.");
 
-static PyObject *
-itertools_cycle_impl(PyTypeObject *type, PyObject *iterable);
+static TyObject *
+itertools_cycle_impl(TyTypeObject *type, TyObject *iterable);
 
-static PyObject *
-itertools_cycle(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_cycle(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->cycle_type;
-    PyObject *iterable;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->cycle_type;
+    TyObject *iterable;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("cycle", kwargs)) {
+        !_TyArg_NoKeywords("cycle", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("cycle", PyTuple_GET_SIZE(args), 1, 1)) {
+    if (!_TyArg_CheckPositional("cycle", TyTuple_GET_SIZE(args), 1, 1)) {
         goto exit;
     }
-    iterable = PyTuple_GET_ITEM(args, 0);
+    iterable = TyTuple_GET_ITEM(args, 0);
     return_value = itertools_cycle_impl(type, iterable);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_dropwhile__doc__,
+TyDoc_STRVAR(itertools_dropwhile__doc__,
 "dropwhile(predicate, iterable, /)\n"
 "--\n"
 "\n"
@@ -391,97 +391,97 @@ PyDoc_STRVAR(itertools_dropwhile__doc__,
 "\n"
 "Afterwards, return every element until the iterable is exhausted.");
 
-static PyObject *
-itertools_dropwhile_impl(PyTypeObject *type, PyObject *func, PyObject *seq);
+static TyObject *
+itertools_dropwhile_impl(TyTypeObject *type, TyObject *func, TyObject *seq);
 
-static PyObject *
-itertools_dropwhile(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_dropwhile(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->dropwhile_type;
-    PyObject *func;
-    PyObject *seq;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->dropwhile_type;
+    TyObject *func;
+    TyObject *seq;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("dropwhile", kwargs)) {
+        !_TyArg_NoKeywords("dropwhile", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("dropwhile", PyTuple_GET_SIZE(args), 2, 2)) {
+    if (!_TyArg_CheckPositional("dropwhile", TyTuple_GET_SIZE(args), 2, 2)) {
         goto exit;
     }
-    func = PyTuple_GET_ITEM(args, 0);
-    seq = PyTuple_GET_ITEM(args, 1);
+    func = TyTuple_GET_ITEM(args, 0);
+    seq = TyTuple_GET_ITEM(args, 1);
     return_value = itertools_dropwhile_impl(type, func, seq);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_takewhile__doc__,
+TyDoc_STRVAR(itertools_takewhile__doc__,
 "takewhile(predicate, iterable, /)\n"
 "--\n"
 "\n"
 "Return successive entries from an iterable as long as the predicate evaluates to true for each entry.");
 
-static PyObject *
-itertools_takewhile_impl(PyTypeObject *type, PyObject *func, PyObject *seq);
+static TyObject *
+itertools_takewhile_impl(TyTypeObject *type, TyObject *func, TyObject *seq);
 
-static PyObject *
-itertools_takewhile(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_takewhile(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->takewhile_type;
-    PyObject *func;
-    PyObject *seq;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->takewhile_type;
+    TyObject *func;
+    TyObject *seq;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("takewhile", kwargs)) {
+        !_TyArg_NoKeywords("takewhile", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("takewhile", PyTuple_GET_SIZE(args), 2, 2)) {
+    if (!_TyArg_CheckPositional("takewhile", TyTuple_GET_SIZE(args), 2, 2)) {
         goto exit;
     }
-    func = PyTuple_GET_ITEM(args, 0);
-    seq = PyTuple_GET_ITEM(args, 1);
+    func = TyTuple_GET_ITEM(args, 0);
+    seq = TyTuple_GET_ITEM(args, 1);
     return_value = itertools_takewhile_impl(type, func, seq);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_starmap__doc__,
+TyDoc_STRVAR(itertools_starmap__doc__,
 "starmap(function, iterable, /)\n"
 "--\n"
 "\n"
 "Return an iterator whose values are returned from the function evaluated with an argument tuple taken from the given sequence.");
 
-static PyObject *
-itertools_starmap_impl(PyTypeObject *type, PyObject *func, PyObject *seq);
+static TyObject *
+itertools_starmap_impl(TyTypeObject *type, TyObject *func, TyObject *seq);
 
-static PyObject *
-itertools_starmap(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_starmap(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->starmap_type;
-    PyObject *func;
-    PyObject *seq;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->starmap_type;
+    TyObject *func;
+    TyObject *seq;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("starmap", kwargs)) {
+        !_TyArg_NoKeywords("starmap", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("starmap", PyTuple_GET_SIZE(args), 2, 2)) {
+    if (!_TyArg_CheckPositional("starmap", TyTuple_GET_SIZE(args), 2, 2)) {
         goto exit;
     }
-    func = PyTuple_GET_ITEM(args, 0);
-    seq = PyTuple_GET_ITEM(args, 1);
+    func = TyTuple_GET_ITEM(args, 0);
+    seq = TyTuple_GET_ITEM(args, 1);
     return_value = itertools_starmap_impl(type, func, seq);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_chain_from_iterable__doc__,
+TyDoc_STRVAR(itertools_chain_from_iterable__doc__,
 "from_iterable($type, iterable, /)\n"
 "--\n"
 "\n"
@@ -490,20 +490,20 @@ PyDoc_STRVAR(itertools_chain_from_iterable__doc__,
 #define ITERTOOLS_CHAIN_FROM_ITERABLE_METHODDEF    \
     {"from_iterable", (PyCFunction)itertools_chain_from_iterable, METH_O|METH_CLASS, itertools_chain_from_iterable__doc__},
 
-static PyObject *
-itertools_chain_from_iterable_impl(PyTypeObject *type, PyObject *arg);
+static TyObject *
+itertools_chain_from_iterable_impl(TyTypeObject *type, TyObject *arg);
 
-static PyObject *
-itertools_chain_from_iterable(PyObject *type, PyObject *arg)
+static TyObject *
+itertools_chain_from_iterable(TyObject *type, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    return_value = itertools_chain_from_iterable_impl((PyTypeObject *)type, arg);
+    return_value = itertools_chain_from_iterable_impl((TyTypeObject *)type, arg);
 
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_combinations__doc__,
+TyDoc_STRVAR(itertools_combinations__doc__,
 "combinations(iterable, r)\n"
 "--\n"
 "\n"
@@ -511,61 +511,61 @@ PyDoc_STRVAR(itertools_combinations__doc__,
 "\n"
 "combinations(range(4), 3) --> (0,1,2), (0,1,3), (0,2,3), (1,2,3)");
 
-static PyObject *
-itertools_combinations_impl(PyTypeObject *type, PyObject *iterable,
-                            Py_ssize_t r);
+static TyObject *
+itertools_combinations_impl(TyTypeObject *type, TyObject *iterable,
+                            Ty_ssize_t r);
 
-static PyObject *
-itertools_combinations(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_combinations(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(iterable), _Py_LATIN1_CHR('r'), },
+        .ob_item = { &_Ty_ID(iterable), _Ty_LATIN1_CHR('r'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"iterable", "r", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "combinations",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    PyObject *iterable;
-    Py_ssize_t r;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    TyObject *iterable;
+    Ty_ssize_t r;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
     }
     iterable = fastargs[0];
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(fastargs[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(fastargs[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         r = ival;
@@ -576,7 +576,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_combinations_with_replacement__doc__,
+TyDoc_STRVAR(itertools_combinations_with_replacement__doc__,
 "combinations_with_replacement(iterable, r)\n"
 "--\n"
 "\n"
@@ -584,62 +584,62 @@ PyDoc_STRVAR(itertools_combinations_with_replacement__doc__,
 "\n"
 "combinations_with_replacement(\'ABC\', 2) --> (\'A\',\'A\'), (\'A\',\'B\'), (\'A\',\'C\'), (\'B\',\'B\'), (\'B\',\'C\'), (\'C\',\'C\')");
 
-static PyObject *
-itertools_combinations_with_replacement_impl(PyTypeObject *type,
-                                             PyObject *iterable,
-                                             Py_ssize_t r);
+static TyObject *
+itertools_combinations_with_replacement_impl(TyTypeObject *type,
+                                             TyObject *iterable,
+                                             Ty_ssize_t r);
 
-static PyObject *
-itertools_combinations_with_replacement(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_combinations_with_replacement(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(iterable), _Py_LATIN1_CHR('r'), },
+        .ob_item = { &_Ty_ID(iterable), _Ty_LATIN1_CHR('r'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"iterable", "r", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "combinations_with_replacement",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    PyObject *iterable;
-    Py_ssize_t r;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    TyObject *iterable;
+    Ty_ssize_t r;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
     }
     iterable = fastargs[0];
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(fastargs[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(fastargs[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         r = ival;
@@ -650,7 +650,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_permutations__doc__,
+TyDoc_STRVAR(itertools_permutations__doc__,
 "permutations(iterable, r=None)\n"
 "--\n"
 "\n"
@@ -658,49 +658,49 @@ PyDoc_STRVAR(itertools_permutations__doc__,
 "\n"
 "permutations(range(3), 2) --> (0,1), (0,2), (1,0), (1,2), (2,0), (2,1)");
 
-static PyObject *
-itertools_permutations_impl(PyTypeObject *type, PyObject *iterable,
-                            PyObject *robj);
+static TyObject *
+itertools_permutations_impl(TyTypeObject *type, TyObject *iterable,
+                            TyObject *robj);
 
-static PyObject *
-itertools_permutations(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_permutations(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(iterable), _Py_LATIN1_CHR('r'), },
+        .ob_item = { &_Ty_ID(iterable), _Ty_LATIN1_CHR('r'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"iterable", "r", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "permutations",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *iterable;
-    PyObject *robj = Py_None;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *iterable;
+    TyObject *robj = Ty_None;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -717,56 +717,56 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_accumulate__doc__,
+TyDoc_STRVAR(itertools_accumulate__doc__,
 "accumulate(iterable, func=None, *, initial=None)\n"
 "--\n"
 "\n"
 "Return series of accumulated sums (or other binary function results).");
 
-static PyObject *
-itertools_accumulate_impl(PyTypeObject *type, PyObject *iterable,
-                          PyObject *binop, PyObject *initial);
+static TyObject *
+itertools_accumulate_impl(TyTypeObject *type, TyObject *iterable,
+                          TyObject *binop, TyObject *initial);
 
-static PyObject *
-itertools_accumulate(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_accumulate(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(iterable), &_Py_ID(func), &_Py_ID(initial), },
+        .ob_item = { &_Ty_ID(iterable), &_Ty_ID(func), &_Ty_ID(initial), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"iterable", "func", "initial", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "accumulate",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *iterable;
-    PyObject *binop = Py_None;
-    PyObject *initial = Py_None;
+    TyObject *argsbuf[3];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *iterable;
+    TyObject *binop = Ty_None;
+    TyObject *initial = Ty_None;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -793,7 +793,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_compress__doc__,
+TyDoc_STRVAR(itertools_compress__doc__,
 "compress(data, selectors)\n"
 "--\n"
 "\n"
@@ -802,47 +802,47 @@ PyDoc_STRVAR(itertools_compress__doc__,
 "Forms a shorter iterator from selected data elements using the selectors to\n"
 "choose the data elements.");
 
-static PyObject *
-itertools_compress_impl(PyTypeObject *type, PyObject *seq1, PyObject *seq2);
+static TyObject *
+itertools_compress_impl(TyTypeObject *type, TyObject *seq1, TyObject *seq2);
 
-static PyObject *
-itertools_compress(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_compress(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(selectors), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(selectors), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "selectors", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "compress",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    PyObject *seq1;
-    PyObject *seq2;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    TyObject *seq1;
+    TyObject *seq2;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -855,7 +855,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_filterfalse__doc__,
+TyDoc_STRVAR(itertools_filterfalse__doc__,
 "filterfalse(function, iterable, /)\n"
 "--\n"
 "\n"
@@ -863,33 +863,33 @@ PyDoc_STRVAR(itertools_filterfalse__doc__,
 "\n"
 "If function is None, return the items that are false.");
 
-static PyObject *
-itertools_filterfalse_impl(PyTypeObject *type, PyObject *func, PyObject *seq);
+static TyObject *
+itertools_filterfalse_impl(TyTypeObject *type, TyObject *func, TyObject *seq);
 
-static PyObject *
-itertools_filterfalse(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_filterfalse(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->filterfalse_type;
-    PyObject *func;
-    PyObject *seq;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->filterfalse_type;
+    TyObject *func;
+    TyObject *seq;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("filterfalse", kwargs)) {
+        !_TyArg_NoKeywords("filterfalse", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("filterfalse", PyTuple_GET_SIZE(args), 2, 2)) {
+    if (!_TyArg_CheckPositional("filterfalse", TyTuple_GET_SIZE(args), 2, 2)) {
         goto exit;
     }
-    func = PyTuple_GET_ITEM(args, 0);
-    seq = PyTuple_GET_ITEM(args, 1);
+    func = TyTuple_GET_ITEM(args, 0);
+    seq = TyTuple_GET_ITEM(args, 1);
     return_value = itertools_filterfalse_impl(type, func, seq);
 
 exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_count__doc__,
+TyDoc_STRVAR(itertools_count__doc__,
 "count(start=0, step=1)\n"
 "--\n"
 "\n"
@@ -902,49 +902,49 @@ PyDoc_STRVAR(itertools_count__doc__,
 "            yield x\n"
 "            x += step");
 
-static PyObject *
-itertools_count_impl(PyTypeObject *type, PyObject *long_cnt,
-                     PyObject *long_step);
+static TyObject *
+itertools_count_impl(TyTypeObject *type, TyObject *long_cnt,
+                     TyObject *long_step);
 
-static PyObject *
-itertools_count(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+itertools_count(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(start), &_Py_ID(step), },
+        .ob_item = { &_Ty_ID(start), &_Ty_ID(step), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"start", "step", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "count",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 0;
-    PyObject *long_cnt = NULL;
-    PyObject *long_step = NULL;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 0;
+    TyObject *long_cnt = NULL;
+    TyObject *long_step = NULL;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;

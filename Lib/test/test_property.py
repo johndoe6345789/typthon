@@ -185,7 +185,7 @@ class PropertyTests(unittest.TestCase):
 
     @support.refcount_test
     def test_gh_115618(self):
-        # Py_XDECREF() was improperly called for None argument
+        # Ty_XDECREF() was improperly called for None argument
         # in property methods.
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         prop = property()

@@ -1,5 +1,5 @@
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "parts.h"
@@ -18,133 +18,133 @@ _testcapi.call_long_compact_api
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_call_long_compact_api(PyObject *module, PyObject *arg)
+static TyObject *
+_testcapi_call_long_compact_api(TyObject *module, TyObject *arg)
 /*[clinic end generated code: output=7e3894f611b1b2b7 input=87b87396967af14c]*/
 
 {
-    assert(PyLong_Check(arg));
+    assert(TyLong_Check(arg));
     int is_compact = PyUnstable_Long_IsCompact((PyLongObject*)arg);
-    Py_ssize_t value = -1;
+    Ty_ssize_t value = -1;
     if (is_compact) {
         value = PyUnstable_Long_CompactValue((PyLongObject*)arg);
     }
-    return Py_BuildValue("in", is_compact, value);
+    return Ty_BuildValue("in", is_compact, value);
 }
 
 
-static PyObject *
-pylong_fromunicodeobject(PyObject *module, PyObject *args)
+static TyObject *
+pylong_fromunicodeobject(TyObject *module, TyObject *args)
 {
-    PyObject *unicode;
+    TyObject *unicode;
     int base;
-    if (!PyArg_ParseTuple(args, "Oi", &unicode, &base)) {
+    if (!TyArg_ParseTuple(args, "Oi", &unicode, &base)) {
         return NULL;
     }
 
     NULLABLE(unicode);
-    return PyLong_FromUnicodeObject(unicode, base);
+    return TyLong_FromUnicodeObject(unicode, base);
 }
 
 
-static PyObject *
-pylong_asnativebytes(PyObject *module, PyObject *args)
+static TyObject *
+pylong_asnativebytes(TyObject *module, TyObject *args)
 {
-    PyObject *v;
-    Py_buffer buffer;
-    Py_ssize_t n, flags;
-    if (!PyArg_ParseTuple(args, "Ow*nn", &v, &buffer, &n, &flags)) {
+    TyObject *v;
+    Ty_buffer buffer;
+    Ty_ssize_t n, flags;
+    if (!TyArg_ParseTuple(args, "Ow*nn", &v, &buffer, &n, &flags)) {
         return NULL;
     }
     if (buffer.readonly) {
-        PyErr_SetString(PyExc_TypeError, "buffer must be writable");
+        TyErr_SetString(TyExc_TypeError, "buffer must be writable");
         PyBuffer_Release(&buffer);
         return NULL;
     }
     if (buffer.len < n) {
-        PyErr_SetString(PyExc_ValueError, "buffer must be at least 'n' bytes");
+        TyErr_SetString(TyExc_ValueError, "buffer must be at least 'n' bytes");
         PyBuffer_Release(&buffer);
         return NULL;
     }
-    Py_ssize_t res = PyLong_AsNativeBytes(v, buffer.buf, n, (int)flags);
+    Ty_ssize_t res = TyLong_AsNativeBytes(v, buffer.buf, n, (int)flags);
     PyBuffer_Release(&buffer);
-    return res >= 0 ? PyLong_FromSsize_t(res) : NULL;
+    return res >= 0 ? TyLong_FromSsize_t(res) : NULL;
 }
 
 
-static PyObject *
-pylong_fromnativebytes(PyObject *module, PyObject *args)
+static TyObject *
+pylong_fromnativebytes(TyObject *module, TyObject *args)
 {
-    Py_buffer buffer;
-    Py_ssize_t n, flags, signed_;
-    if (!PyArg_ParseTuple(args, "y*nnn", &buffer, &n, &flags, &signed_)) {
+    Ty_buffer buffer;
+    Ty_ssize_t n, flags, signed_;
+    if (!TyArg_ParseTuple(args, "y*nnn", &buffer, &n, &flags, &signed_)) {
         return NULL;
     }
     if (buffer.len < n) {
-        PyErr_SetString(PyExc_ValueError, "buffer must be at least 'n' bytes");
+        TyErr_SetString(TyExc_ValueError, "buffer must be at least 'n' bytes");
         PyBuffer_Release(&buffer);
         return NULL;
     }
-    PyObject *res = signed_
-        ? PyLong_FromNativeBytes(buffer.buf, n, (int)flags)
-        : PyLong_FromUnsignedNativeBytes(buffer.buf, n, (int)flags);
+    TyObject *res = signed_
+        ? TyLong_FromNativeBytes(buffer.buf, n, (int)flags)
+        : TyLong_FromUnsignedNativeBytes(buffer.buf, n, (int)flags);
     PyBuffer_Release(&buffer);
     return res;
 }
 
 
-static PyObject *
-pylong_getsign(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_getsign(TyObject *module, TyObject *arg)
 {
     int sign;
     NULLABLE(arg);
-    if (PyLong_GetSign(arg, &sign) == -1) {
+    if (TyLong_GetSign(arg, &sign) == -1) {
         return NULL;
     }
-    return PyLong_FromLong(sign);
+    return TyLong_FromLong(sign);
 }
 
 
-static PyObject *
-pylong_ispositive(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_ispositive(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    RETURN_INT(PyLong_IsPositive(arg));
+    RETURN_INT(TyLong_IsPositive(arg));
 }
 
 
-static PyObject *
-pylong_isnegative(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_isnegative(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    RETURN_INT(PyLong_IsNegative(arg));
+    RETURN_INT(TyLong_IsNegative(arg));
 }
 
 
-static PyObject *
-pylong_iszero(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_iszero(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    RETURN_INT(PyLong_IsZero(arg));
+    RETURN_INT(TyLong_IsZero(arg));
 }
 
 
-static PyObject *
-pylong_aspid(PyObject *module, PyObject *arg)
+static TyObject *
+pylong_aspid(TyObject *module, TyObject *arg)
 {
     NULLABLE(arg);
-    pid_t value = PyLong_AsPid(arg);
-    if (value == -1 && PyErr_Occurred()) {
+    pid_t value = TyLong_AsPid(arg);
+    if (value == -1 && TyErr_Occurred()) {
         return NULL;
     }
-    return PyLong_FromPid(value);
+    return TyLong_FromPid(value);
 }
 
 
-static PyObject *
+static TyObject *
 layout_to_dict(const PyLongLayout *layout)
 {
-    return Py_BuildValue("{sisisisi}",
+    return Ty_BuildValue("{sisisisi}",
         "bits_per_digit", (int)layout->bits_per_digit,
         "digit_size", (int)layout->digit_size,
         "digits_order", (int)layout->digits_order,
@@ -152,11 +152,11 @@ layout_to_dict(const PyLongLayout *layout)
 }
 
 
-static PyObject *
-pylong_export(PyObject *module, PyObject *obj)
+static TyObject *
+pylong_export(TyObject *module, TyObject *obj)
 {
     PyLongExport export_long;
-    if (PyLong_Export(obj, &export_long) < 0) {
+    if (TyLong_Export(obj, &export_long) < 0) {
         return NULL;
     }
 
@@ -164,72 +164,72 @@ pylong_export(PyObject *module, PyObject *obj)
         assert(export_long.negative == 0);
         assert(export_long.ndigits == 0);
         assert(export_long.digits == NULL);
-        PyObject *res = PyLong_FromInt64(export_long.value);
-        PyLong_FreeExport(&export_long);
+        TyObject *res = TyLong_FromInt64(export_long.value);
+        TyLong_FreeExport(&export_long);
         return res;
     }
 
-    assert(PyLong_GetNativeLayout()->digit_size == sizeof(digit));
+    assert(TyLong_GetNativeLayout()->digit_size == sizeof(digit));
     const digit *export_long_digits = export_long.digits;
 
-    PyObject *digits = PyList_New(0);
+    TyObject *digits = TyList_New(0);
     if (digits == NULL) {
         goto error;
     }
-    for (Py_ssize_t i = 0; i < export_long.ndigits; i++) {
-        PyObject *item = PyLong_FromUnsignedLong(export_long_digits[i]);
+    for (Ty_ssize_t i = 0; i < export_long.ndigits; i++) {
+        TyObject *item = TyLong_FromUnsignedLong(export_long_digits[i]);
         if (item == NULL) {
             goto error;
         }
 
-        if (PyList_Append(digits, item) < 0) {
-            Py_DECREF(item);
+        if (TyList_Append(digits, item) < 0) {
+            Ty_DECREF(item);
             goto error;
         }
-        Py_DECREF(item);
+        Ty_DECREF(item);
     }
 
     assert(export_long.value == 0);
-    PyObject *res = Py_BuildValue("(iN)", export_long.negative, digits);
+    TyObject *res = Ty_BuildValue("(iN)", export_long.negative, digits);
 
-    PyLong_FreeExport(&export_long);
+    TyLong_FreeExport(&export_long);
     assert(export_long._reserved == 0);
 
     return res;
 
 error:
-    Py_XDECREF(digits);
-    PyLong_FreeExport(&export_long);
+    Ty_XDECREF(digits);
+    TyLong_FreeExport(&export_long);
     return NULL;
 }
 
 
-static PyObject *
-pylongwriter_create(PyObject *module, PyObject *args)
+static TyObject *
+pylongwriter_create(TyObject *module, TyObject *args)
 {
     int negative;
-    PyObject *list;
+    TyObject *list;
     // TODO(vstinner): write test for negative ndigits and digits==NULL
-    if (!PyArg_ParseTuple(args, "iO!", &negative, &PyList_Type, &list)) {
+    if (!TyArg_ParseTuple(args, "iO!", &negative, &TyList_Type, &list)) {
         return NULL;
     }
-    Py_ssize_t ndigits = PyList_GET_SIZE(list);
+    Ty_ssize_t ndigits = TyList_GET_SIZE(list);
 
-    digit *digits = PyMem_Malloc((size_t)ndigits * sizeof(digit));
+    digit *digits = TyMem_Malloc((size_t)ndigits * sizeof(digit));
     if (digits == NULL) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
 
-    for (Py_ssize_t i = 0; i < ndigits; i++) {
-        PyObject *item = PyList_GET_ITEM(list, i);
+    for (Ty_ssize_t i = 0; i < ndigits; i++) {
+        TyObject *item = TyList_GET_ITEM(list, i);
 
-        long num = PyLong_AsLong(item);
-        if (num == -1 && PyErr_Occurred()) {
+        long num = TyLong_AsLong(item);
+        if (num == -1 && TyErr_Occurred()) {
             goto error;
         }
 
-        if (num < 0 || num >= (long)PyLong_BASE) {
-            PyErr_SetString(PyExc_ValueError, "digit doesn't fit into digit");
+        if (num < 0 || num >= (long)TyLong_BASE) {
+            TyErr_SetString(TyExc_ValueError, "digit doesn't fit into digit");
             goto error;
         }
         digits[i] = (digit)num;
@@ -241,28 +241,28 @@ pylongwriter_create(PyObject *module, PyObject *args)
     if (writer == NULL) {
         goto error;
     }
-    assert(PyLong_GetNativeLayout()->digit_size == sizeof(digit));
+    assert(TyLong_GetNativeLayout()->digit_size == sizeof(digit));
     memcpy(writer_digits, digits, (size_t)ndigits * sizeof(digit));
-    PyObject *res = PyLongWriter_Finish(writer);
-    PyMem_Free(digits);
+    TyObject *res = PyLongWriter_Finish(writer);
+    TyMem_Free(digits);
 
     return res;
 
 error:
-    PyMem_Free(digits);
+    TyMem_Free(digits);
     return NULL;
 }
 
 
-static PyObject *
-get_pylong_layout(PyObject *module, PyObject *Py_UNUSED(args))
+static TyObject *
+get_pylong_layout(TyObject *module, TyObject *Py_UNUSED(args))
 {
-    const PyLongLayout *layout = PyLong_GetNativeLayout();
+    const PyLongLayout *layout = TyLong_GetNativeLayout();
     return layout_to_dict(layout);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     _TESTCAPI_CALL_LONG_COMPACT_API_METHODDEF
     {"pylong_fromunicodeobject",    pylong_fromunicodeobject,   METH_VARARGS},
     {"pylong_asnativebytes",        pylong_asnativebytes,       METH_VARARGS},
@@ -279,9 +279,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Long(PyObject *mod)
+_PyTestCapi_Init_Long(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
     return 0;

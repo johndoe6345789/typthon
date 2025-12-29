@@ -65,7 +65,7 @@ static struct {
 static struct {
     int start;
     int stop;
-    Py_ssize_t count;
+    Ty_ssize_t count;
 } FmData;
 
 static int
@@ -130,18 +130,18 @@ fm_setup_hooks(void)
     alloc.calloc = hook_fcalloc;
     alloc.realloc = hook_frealloc;
     alloc.free = hook_ffree;
-    PyMem_GetAllocator(PYMEM_DOMAIN_RAW, &FmHook.raw);
-    PyMem_GetAllocator(PYMEM_DOMAIN_MEM, &FmHook.mem);
-    PyMem_GetAllocator(PYMEM_DOMAIN_OBJ, &FmHook.obj);
+    TyMem_GetAllocator(PYMEM_DOMAIN_RAW, &FmHook.raw);
+    TyMem_GetAllocator(PYMEM_DOMAIN_MEM, &FmHook.mem);
+    TyMem_GetAllocator(PYMEM_DOMAIN_OBJ, &FmHook.obj);
 
     alloc.ctx = &FmHook.raw;
-    PyMem_SetAllocator(PYMEM_DOMAIN_RAW, &alloc);
+    TyMem_SetAllocator(PYMEM_DOMAIN_RAW, &alloc);
 
     alloc.ctx = &FmHook.mem;
-    PyMem_SetAllocator(PYMEM_DOMAIN_MEM, &alloc);
+    TyMem_SetAllocator(PYMEM_DOMAIN_MEM, &alloc);
 
     alloc.ctx = &FmHook.obj;
-    PyMem_SetAllocator(PYMEM_DOMAIN_OBJ, &alloc);
+    TyMem_SetAllocator(PYMEM_DOMAIN_OBJ, &alloc);
 }
 
 static void
@@ -149,38 +149,38 @@ fm_remove_hooks(void)
 {
     if (FmHook.installed) {
         FmHook.installed = 0;
-        PyMem_SetAllocator(PYMEM_DOMAIN_RAW, &FmHook.raw);
-        PyMem_SetAllocator(PYMEM_DOMAIN_MEM, &FmHook.mem);
-        PyMem_SetAllocator(PYMEM_DOMAIN_OBJ, &FmHook.obj);
+        TyMem_SetAllocator(PYMEM_DOMAIN_RAW, &FmHook.raw);
+        TyMem_SetAllocator(PYMEM_DOMAIN_MEM, &FmHook.mem);
+        TyMem_SetAllocator(PYMEM_DOMAIN_OBJ, &FmHook.obj);
     }
 }
 
-static PyObject *
-set_nomemory(PyObject *self, PyObject *args)
+static TyObject *
+set_nomemory(TyObject *self, TyObject *args)
 {
     /* Memory allocation fails after 'start' allocation requests, and until
      * 'stop' allocation requests except when 'stop' is negative or equal
      * to 0 (default) in which case allocation failures never stop. */
     FmData.count = 0;
     FmData.stop = 0;
-    if (!PyArg_ParseTuple(args, "i|i", &FmData.start, &FmData.stop)) {
+    if (!TyArg_ParseTuple(args, "i|i", &FmData.start, &FmData.stop)) {
         return NULL;
     }
     fm_setup_hooks();
     Py_RETURN_NONE;
 }
 
-static PyObject *
-remove_mem_hooks(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+remove_mem_hooks(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     fm_remove_hooks();
     Py_RETURN_NONE;
 }
 
-static PyObject *
+static TyObject *
 test_setallocators(PyMemAllocatorDomain domain)
 {
-    PyObject *res = NULL;
+    TyObject *res = NULL;
     const char *error_msg;
     alloc_hook_t hook;
 
@@ -192,8 +192,8 @@ test_setallocators(PyMemAllocatorDomain domain)
     alloc.calloc = &hook_calloc;
     alloc.realloc = &hook_realloc;
     alloc.free = &hook_free;
-    PyMem_GetAllocator(domain, &hook.alloc);
-    PyMem_SetAllocator(domain, &alloc);
+    TyMem_GetAllocator(domain, &hook.alloc);
+    TyMem_SetAllocator(domain, &alloc);
 
     /* malloc, realloc, free */
     size_t size = 42;
@@ -201,10 +201,10 @@ test_setallocators(PyMemAllocatorDomain domain)
     void *ptr;
     switch(domain) {
         case PYMEM_DOMAIN_RAW:
-            ptr = PyMem_RawMalloc(size);
+            ptr = TyMem_RawMalloc(size);
             break;
         case PYMEM_DOMAIN_MEM:
-            ptr = PyMem_Malloc(size);
+            ptr = TyMem_Malloc(size);
             break;
         case PYMEM_DOMAIN_OBJ:
             ptr = PyObject_Malloc(size);
@@ -235,10 +235,10 @@ test_setallocators(PyMemAllocatorDomain domain)
     void *ptr2;
     switch(domain) {
         case PYMEM_DOMAIN_RAW:
-            ptr2 = PyMem_RawRealloc(ptr, size2);
+            ptr2 = TyMem_RawRealloc(ptr, size2);
             break;
         case PYMEM_DOMAIN_MEM:
-            ptr2 = PyMem_Realloc(ptr, size2);
+            ptr2 = TyMem_Realloc(ptr, size2);
             break;
         case PYMEM_DOMAIN_OBJ:
             ptr2 = PyObject_Realloc(ptr, size2);
@@ -260,10 +260,10 @@ test_setallocators(PyMemAllocatorDomain domain)
 
     switch(domain) {
         case PYMEM_DOMAIN_RAW:
-            PyMem_RawFree(ptr2);
+            TyMem_RawFree(ptr2);
             break;
         case PYMEM_DOMAIN_MEM:
-            PyMem_Free(ptr2);
+            TyMem_Free(ptr2);
             break;
         case PYMEM_DOMAIN_OBJ:
             PyObject_Free(ptr2);
@@ -281,10 +281,10 @@ test_setallocators(PyMemAllocatorDomain domain)
     size_t elsize = 5;
     switch(domain) {
         case PYMEM_DOMAIN_RAW:
-            ptr = PyMem_RawCalloc(nelem, elsize);
+            ptr = TyMem_RawCalloc(nelem, elsize);
             break;
         case PYMEM_DOMAIN_MEM:
-            ptr = PyMem_Calloc(nelem, elsize);
+            ptr = TyMem_Calloc(nelem, elsize);
             break;
         case PYMEM_DOMAIN_OBJ:
             ptr = PyObject_Calloc(nelem, elsize);
@@ -307,10 +307,10 @@ test_setallocators(PyMemAllocatorDomain domain)
     hook.free_ptr = NULL;
     switch(domain) {
         case PYMEM_DOMAIN_RAW:
-            PyMem_RawFree(ptr);
+            TyMem_RawFree(ptr);
             break;
         case PYMEM_DOMAIN_MEM:
-            PyMem_Free(ptr);
+            TyMem_Free(ptr);
             break;
         case PYMEM_DOMAIN_OBJ:
             PyObject_Free(ptr);
@@ -323,107 +323,107 @@ test_setallocators(PyMemAllocatorDomain domain)
         goto fail;
     }
 
-    res = Py_NewRef(Py_None);
+    res = Ty_NewRef(Ty_None);
     goto finally;
 
 fail:
-    PyErr_SetString(PyExc_RuntimeError, error_msg);
+    TyErr_SetString(TyExc_RuntimeError, error_msg);
 
 finally:
-    PyMem_SetAllocator(domain, &hook.alloc);
+    TyMem_SetAllocator(domain, &hook.alloc);
     return res;
 
 #undef CHECK_CTX
 }
 
-static PyObject *
-test_pyobject_setallocators(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_pyobject_setallocators(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return test_setallocators(PYMEM_DOMAIN_OBJ);
 }
 
-static PyObject *
-test_pyobject_new(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_pyobject_new(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyObject *obj;
-    PyTypeObject *type = &PyBaseObject_Type;
-    PyTypeObject *var_type = &PyBytes_Type;
+    TyObject *obj;
+    TyTypeObject *type = &PyBaseObject_Type;
+    TyTypeObject *var_type = &TyBytes_Type;
 
     // PyObject_New()
-    obj = PyObject_New(PyObject, type);
+    obj = PyObject_New(TyObject, type);
     if (obj == NULL) {
         goto alloc_failed;
     }
-    Py_DECREF(obj);
+    Ty_DECREF(obj);
 
     // PyObject_NEW()
-    obj = PyObject_NEW(PyObject, type);
+    obj = PyObject_NEW(TyObject, type);
     if (obj == NULL) {
         goto alloc_failed;
     }
-    Py_DECREF(obj);
+    Ty_DECREF(obj);
 
     // PyObject_NewVar()
-    obj = PyObject_NewVar(PyObject, var_type, 3);
+    obj = PyObject_NewVar(TyObject, var_type, 3);
     if (obj == NULL) {
         goto alloc_failed;
     }
-    Py_DECREF(obj);
+    Ty_DECREF(obj);
 
     // PyObject_NEW_VAR()
-    obj = PyObject_NEW_VAR(PyObject, var_type, 3);
+    obj = PyObject_NEW_VAR(TyObject, var_type, 3);
     if (obj == NULL) {
         goto alloc_failed;
     }
-    Py_DECREF(obj);
+    Ty_DECREF(obj);
 
     Py_RETURN_NONE;
 
 alloc_failed:
-    PyErr_NoMemory();
+    TyErr_NoMemory();
     return NULL;
 }
 
-static PyObject *
-test_pymem_alloc0(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_pymem_alloc0(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     void *ptr;
 
-    ptr = PyMem_RawMalloc(0);
+    ptr = TyMem_RawMalloc(0);
     if (ptr == NULL) {
-        PyErr_SetString(PyExc_RuntimeError,
-                        "PyMem_RawMalloc(0) returns NULL");
+        TyErr_SetString(TyExc_RuntimeError,
+                        "TyMem_RawMalloc(0) returns NULL");
         return NULL;
     }
-    PyMem_RawFree(ptr);
+    TyMem_RawFree(ptr);
 
-    ptr = PyMem_RawCalloc(0, 0);
+    ptr = TyMem_RawCalloc(0, 0);
     if (ptr == NULL) {
-        PyErr_SetString(PyExc_RuntimeError,
-                        "PyMem_RawCalloc(0, 0) returns NULL");
+        TyErr_SetString(TyExc_RuntimeError,
+                        "TyMem_RawCalloc(0, 0) returns NULL");
         return NULL;
     }
-    PyMem_RawFree(ptr);
+    TyMem_RawFree(ptr);
 
-    ptr = PyMem_Malloc(0);
+    ptr = TyMem_Malloc(0);
     if (ptr == NULL) {
-        PyErr_SetString(PyExc_RuntimeError,
-                        "PyMem_Malloc(0) returns NULL");
+        TyErr_SetString(TyExc_RuntimeError,
+                        "TyMem_Malloc(0) returns NULL");
         return NULL;
     }
-    PyMem_Free(ptr);
+    TyMem_Free(ptr);
 
-    ptr = PyMem_Calloc(0, 0);
+    ptr = TyMem_Calloc(0, 0);
     if (ptr == NULL) {
-        PyErr_SetString(PyExc_RuntimeError,
-                        "PyMem_Calloc(0, 0) returns NULL");
+        TyErr_SetString(TyExc_RuntimeError,
+                        "TyMem_Calloc(0, 0) returns NULL");
         return NULL;
     }
-    PyMem_Free(ptr);
+    TyMem_Free(ptr);
 
     ptr = PyObject_Malloc(0);
     if (ptr == NULL) {
-        PyErr_SetString(PyExc_RuntimeError,
+        TyErr_SetString(TyExc_RuntimeError,
                         "PyObject_Malloc(0) returns NULL");
         return NULL;
     }
@@ -431,7 +431,7 @@ test_pymem_alloc0(PyObject *self, PyObject *Py_UNUSED(ignored))
 
     ptr = PyObject_Calloc(0, 0);
     if (ptr == NULL) {
-        PyErr_SetString(PyExc_RuntimeError,
+        TyErr_SetString(TyExc_RuntimeError,
                         "PyObject_Calloc(0, 0) returns NULL");
         return NULL;
     }
@@ -440,144 +440,144 @@ test_pymem_alloc0(PyObject *self, PyObject *Py_UNUSED(ignored))
     Py_RETURN_NONE;
 }
 
-static PyObject *
-test_pymem_setrawallocators(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_pymem_setrawallocators(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return test_setallocators(PYMEM_DOMAIN_RAW);
 }
 
-static PyObject *
-test_pymem_setallocators(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_pymem_setallocators(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return test_setallocators(PYMEM_DOMAIN_MEM);
 }
 
-static PyObject *
-pyobject_malloc_without_gil(PyObject *self, PyObject *args)
+static TyObject *
+pyobject_malloc_without_gil(TyObject *self, TyObject *args)
 {
     char *buffer;
 
     /* Deliberate bug to test debug hooks on Python memory allocators:
        call PyObject_Malloc() without holding the GIL */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     buffer = PyObject_Malloc(10);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     PyObject_Free(buffer);
 
     Py_RETURN_NONE;
 }
 
-static PyObject *
-pymem_buffer_overflow(PyObject *self, PyObject *args)
+static TyObject *
+pymem_buffer_overflow(TyObject *self, TyObject *args)
 {
     char *buffer;
 
-    /* Deliberate buffer overflow to check that PyMem_Free() detects
+    /* Deliberate buffer overflow to check that TyMem_Free() detects
        the overflow when debug hooks are installed. */
-    buffer = PyMem_Malloc(16);
+    buffer = TyMem_Malloc(16);
     if (buffer == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     buffer[16] = 'x';
-    PyMem_Free(buffer);
+    TyMem_Free(buffer);
 
     Py_RETURN_NONE;
 }
 
-static PyObject *
-pymem_api_misuse(PyObject *self, PyObject *args)
+static TyObject *
+pymem_api_misuse(TyObject *self, TyObject *args)
 {
     char *buffer;
 
     /* Deliberate misusage of Python allocators:
-       allococate with PyMem but release with PyMem_Raw. */
-    buffer = PyMem_Malloc(16);
-    PyMem_RawFree(buffer);
+       allococate with PyMem but release with TyMem_Raw. */
+    buffer = TyMem_Malloc(16);
+    TyMem_RawFree(buffer);
 
     Py_RETURN_NONE;
 }
 
-static PyObject *
-pymem_malloc_without_gil(PyObject *self, PyObject *args)
+static TyObject *
+pymem_malloc_without_gil(TyObject *self, TyObject *args)
 {
     char *buffer;
 
     /* Deliberate bug to test debug hooks on Python memory allocators:
-       call PyMem_Malloc() without holding the GIL */
-    Py_BEGIN_ALLOW_THREADS
-    buffer = PyMem_Malloc(10);
-    Py_END_ALLOW_THREADS
+       call TyMem_Malloc() without holding the GIL */
+    Ty_BEGIN_ALLOW_THREADS
+    buffer = TyMem_Malloc(10);
+    Ty_END_ALLOW_THREADS
 
-    PyMem_Free(buffer);
+    TyMem_Free(buffer);
 
     Py_RETURN_NONE;
 }
 
 
 // Tracemalloc tests
-static PyObject *
-tracemalloc_track(PyObject *self, PyObject *args)
+static TyObject *
+tracemalloc_track(TyObject *self, TyObject *args)
 {
     unsigned int domain;
-    PyObject *ptr_obj;
-    Py_ssize_t size;
+    TyObject *ptr_obj;
+    Ty_ssize_t size;
     int release_gil = 0;
 
-    if (!PyArg_ParseTuple(args, "IOn|i",
+    if (!TyArg_ParseTuple(args, "IOn|i",
                           &domain, &ptr_obj, &size, &release_gil))
     {
         return NULL;
     }
-    void *ptr = PyLong_AsVoidPtr(ptr_obj);
-    if (PyErr_Occurred()) {
+    void *ptr = TyLong_AsVoidPtr(ptr_obj);
+    if (TyErr_Occurred()) {
         return NULL;
     }
 
     int res;
     if (release_gil) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = PyTraceMalloc_Track(domain, (uintptr_t)ptr, size);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
     else {
         res = PyTraceMalloc_Track(domain, (uintptr_t)ptr, size);
     }
     if (res < 0) {
-        PyErr_SetString(PyExc_RuntimeError, "PyTraceMalloc_Track error");
+        TyErr_SetString(TyExc_RuntimeError, "PyTraceMalloc_Track error");
         return NULL;
     }
 
     Py_RETURN_NONE;
 }
 
-static PyObject *
-tracemalloc_untrack(PyObject *self, PyObject *args)
+static TyObject *
+tracemalloc_untrack(TyObject *self, TyObject *args)
 {
     unsigned int domain;
-    PyObject *ptr_obj;
+    TyObject *ptr_obj;
     int release_gil = 0;
 
-    if (!PyArg_ParseTuple(args, "IO|i", &domain, &ptr_obj, &release_gil)) {
+    if (!TyArg_ParseTuple(args, "IO|i", &domain, &ptr_obj, &release_gil)) {
         return NULL;
     }
-    void *ptr = PyLong_AsVoidPtr(ptr_obj);
-    if (PyErr_Occurred()) {
+    void *ptr = TyLong_AsVoidPtr(ptr_obj);
+    if (TyErr_Occurred()) {
         return NULL;
     }
 
     int res;
     if (release_gil) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = PyTraceMalloc_Untrack(domain, (uintptr_t)ptr);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
     else {
         res = PyTraceMalloc_Untrack(domain, (uintptr_t)ptr);
     }
     if (res < 0) {
-        PyErr_SetString(PyExc_RuntimeError, "PyTraceMalloc_Untrack error");
+        TyErr_SetString(TyExc_RuntimeError, "PyTraceMalloc_Untrack error");
         return NULL;
     }
 
@@ -591,92 +591,92 @@ tracemalloc_track_race_thread(void *data)
     PyTraceMalloc_Track(123, 10, 1);
     PyTraceMalloc_Untrack(123, 10);
 
-    PyThread_type_lock lock = (PyThread_type_lock)data;
-    PyThread_release_lock(lock);
+    TyThread_type_lock lock = (TyThread_type_lock)data;
+    TyThread_release_lock(lock);
 }
 
 // gh-128679: Test fix for tracemalloc.stop() race condition
-static PyObject *
-tracemalloc_track_race(PyObject *self, PyObject *args)
+static TyObject *
+tracemalloc_track_race(TyObject *self, TyObject *args)
 {
 #define NTHREAD 50
-    PyObject *tracemalloc = NULL;
-    PyObject *stop = NULL;
-    PyThread_type_lock locks[NTHREAD];
+    TyObject *tracemalloc = NULL;
+    TyObject *stop = NULL;
+    TyThread_type_lock locks[NTHREAD];
     memset(locks, 0, sizeof(locks));
 
     // Call tracemalloc.start()
-    tracemalloc = PyImport_ImportModule("tracemalloc");
+    tracemalloc = TyImport_ImportModule("tracemalloc");
     if (tracemalloc == NULL) {
         goto error;
     }
-    PyObject *start = PyObject_GetAttrString(tracemalloc, "start");
+    TyObject *start = PyObject_GetAttrString(tracemalloc, "start");
     if (start == NULL) {
         goto error;
     }
-    PyObject *res = PyObject_CallNoArgs(start);
-    Py_DECREF(start);
+    TyObject *res = PyObject_CallNoArgs(start);
+    Ty_DECREF(start);
     if (res == NULL) {
         goto error;
     }
-    Py_DECREF(res);
+    Ty_DECREF(res);
 
     stop = PyObject_GetAttrString(tracemalloc, "stop");
-    Py_CLEAR(tracemalloc);
+    Ty_CLEAR(tracemalloc);
     if (stop == NULL) {
         goto error;
     }
 
     // Start threads
     for (size_t i = 0; i < NTHREAD; i++) {
-        PyThread_type_lock lock = PyThread_allocate_lock();
+        TyThread_type_lock lock = TyThread_allocate_lock();
         if (!lock) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             goto error;
         }
         locks[i] = lock;
-        PyThread_acquire_lock(lock, 1);
+        TyThread_acquire_lock(lock, 1);
 
         unsigned long thread;
-        thread = PyThread_start_new_thread(tracemalloc_track_race_thread,
+        thread = TyThread_start_new_thread(tracemalloc_track_race_thread,
                                            (void*)lock);
         if (thread == (unsigned long)-1) {
-            PyErr_SetString(PyExc_RuntimeError, "can't start new thread");
+            TyErr_SetString(TyExc_RuntimeError, "can't start new thread");
             goto error;
         }
     }
 
     // Call tracemalloc.stop() while threads are running
     res = PyObject_CallNoArgs(stop);
-    Py_CLEAR(stop);
+    Ty_CLEAR(stop);
     if (res == NULL) {
         goto error;
     }
-    Py_DECREF(res);
+    Ty_DECREF(res);
 
     // Wait until threads complete with the GIL released
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     for (size_t i = 0; i < NTHREAD; i++) {
-        PyThread_type_lock lock = locks[i];
-        PyThread_acquire_lock(lock, 1);
-        PyThread_release_lock(lock);
+        TyThread_type_lock lock = locks[i];
+        TyThread_acquire_lock(lock, 1);
+        TyThread_release_lock(lock);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     // Free threads locks
     for (size_t i=0; i < NTHREAD; i++) {
-        PyThread_type_lock lock = locks[i];
-        PyThread_free_lock(lock);
+        TyThread_type_lock lock = locks[i];
+        TyThread_free_lock(lock);
     }
     Py_RETURN_NONE;
 
 error:
-    Py_CLEAR(tracemalloc);
-    Py_CLEAR(stop);
+    Ty_CLEAR(tracemalloc);
+    Ty_CLEAR(stop);
     for (size_t i=0; i < NTHREAD; i++) {
-        PyThread_type_lock lock = locks[i];
+        TyThread_type_lock lock = locks[i];
         if (lock) {
-            PyThread_free_lock(lock);
+            TyThread_free_lock(lock);
         }
     }
     return NULL;
@@ -684,15 +684,15 @@ error:
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"pymem_api_misuse",              pymem_api_misuse,              METH_NOARGS},
     {"pymem_buffer_overflow",         pymem_buffer_overflow,         METH_NOARGS},
     {"pymem_malloc_without_gil",      pymem_malloc_without_gil,      METH_NOARGS},
     {"pyobject_malloc_without_gil",   pyobject_malloc_without_gil,   METH_NOARGS},
     {"remove_mem_hooks",              remove_mem_hooks,              METH_NOARGS,
-        PyDoc_STR("Remove memory hooks.")},
+        TyDoc_STR("Remove memory hooks.")},
     {"set_nomemory",                  set_nomemory,                  METH_VARARGS,
-        PyDoc_STR("set_nomemory(start:int, stop:int = 0)")},
+        TyDoc_STR("set_nomemory(start:int, stop:int = 0)")},
     {"test_pymem_alloc0",             test_pymem_alloc0,             METH_NOARGS},
     {"test_pymem_setallocators",      test_pymem_setallocators,      METH_NOARGS},
     {"test_pymem_setrawallocators",   test_pymem_setrawallocators,   METH_NOARGS},
@@ -707,28 +707,28 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Mem(PyObject *mod)
+_PyTestCapi_Init_Mem(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 
-    PyObject *v;
+    TyObject *v;
 #ifdef WITH_PYMALLOC
-    v = Py_True;
+    v = Ty_True;
 #else
-    v = Py_False;
+    v = Ty_False;
 #endif
-    if (PyModule_AddObjectRef(mod, "WITH_PYMALLOC", v) < 0) {
+    if (TyModule_AddObjectRef(mod, "WITH_PYMALLOC", v) < 0) {
         return -1;
     }
 
 #ifdef WITH_MIMALLOC
-    v = Py_True;
+    v = Ty_True;
 #else
-    v = Py_False;
+    v = Ty_False;
 #endif
-    if (PyModule_AddObjectRef(mod, "WITH_MIMALLOC", v) < 0) {
+    if (TyModule_AddObjectRef(mod, "WITH_MIMALLOC", v) < 0) {
         return -1;
     }
 

@@ -1,14 +1,14 @@
 #ifndef MULTIPROCESSING_H
 #define MULTIPROCESSING_H
 
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
 #include "structmember.h"
 #include "pythread.h"
-#include "pycore_signal.h"        // _PyOS_IsMainThread()
+#include "pycore_signal.h"        // _TyOS_IsMainThread()
 
 #ifndef MS_WINDOWS
 #  include <unistd.h>             // sysconf()
@@ -25,7 +25,7 @@
 #  include <windows.h>
 #  include <winsock2.h>
 #  include <process.h>               /* getpid() */
-#  ifdef Py_DEBUG
+#  ifdef Ty_DEBUG
 #    include <crtdbg.h>
 #  endif
 #  define SEM_HANDLE HANDLE
@@ -92,13 +92,13 @@
 #define MP_SOCKET_ERROR (-1002)
 #define MP_EXCEPTION_HAS_BEEN_SET (-1003)
 
-PyObject *_PyMp_SetError(PyObject *Type, int num);
+TyObject *_PyMp_SetError(TyObject *Type, int num);
 
 /*
  * Externs - not all will really exist on all platforms
  */
 
-extern PyType_Spec _PyMp_SemLockType_spec;
-extern PyObject *_PyMp_sem_unlink(const char *name);
+extern TyType_Spec _PyMp_SemLockType_spec;
+extern TyObject *_PyMp_sem_unlink(const char *name);
 
 #endif /* MULTIPROCESSING_H */

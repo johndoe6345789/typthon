@@ -33,8 +33,8 @@
 
 typedef struct _callback_context
 {
-    PyObject *callable;
-    PyObject *module;
+    TyObject *callable;
+    TyObject *module;
     pysqlite_state *state;
 } callback_context;
 
@@ -67,25 +67,25 @@ typedef struct
     /* thread identification of the thread the connection was created in */
     unsigned long thread_ident;
 
-    PyObject *statement_cache;
+    TyObject *statement_cache;
 
     /* Lists of weak references to cursors and blobs used within this connection */
-    PyObject *cursors;
-    PyObject *blobs;
+    TyObject *cursors;
+    TyObject *blobs;
 
     /* Counters for how many cursors were created in the connection. May be
      * reset to 0 at certain intervals */
     int created_cursors;
 
-    PyObject* row_factory;
+    TyObject* row_factory;
 
     /* Determines how bytestrings from SQLite are converted to Python objects:
-     * - PyUnicode_Type:        Python Unicode objects are constructed from UTF-8 bytestrings
-     * - PyBytes_Type:          The bytestrings are returned as-is.
+     * - TyUnicode_Type:        Python Unicode objects are constructed from UTF-8 bytestrings
+     * - TyBytes_Type:          The bytestrings are returned as-is.
      * - Any custom callable:   Any object returned from the callable called with the bytestring
      *                          as single parameter.
      */
-    PyObject* text_factory;
+    TyObject* text_factory;
 
     // Remember contexts used by the trace, progress, and authoriser callbacks
     callback_context *trace_ctx;
@@ -93,21 +93,21 @@ typedef struct
     callback_context *authorizer_ctx;
 
     /* Exception objects: borrowed refs. */
-    PyObject* Warning;
-    PyObject* Error;
-    PyObject* InterfaceError;
-    PyObject* DatabaseError;
-    PyObject* DataError;
-    PyObject* OperationalError;
-    PyObject* IntegrityError;
-    PyObject* InternalError;
-    PyObject* ProgrammingError;
-    PyObject* NotSupportedError;
+    TyObject* Warning;
+    TyObject* Error;
+    TyObject* InterfaceError;
+    TyObject* DatabaseError;
+    TyObject* DataError;
+    TyObject* OperationalError;
+    TyObject* IntegrityError;
+    TyObject* InternalError;
+    TyObject* ProgrammingError;
+    TyObject* NotSupportedError;
 } pysqlite_Connection;
 
 int pysqlite_check_thread(pysqlite_Connection* self);
 int pysqlite_check_connection(pysqlite_Connection* con);
 
-int pysqlite_connection_setup_types(PyObject *module);
+int pysqlite_connection_setup_types(TyObject *module);
 
 #endif

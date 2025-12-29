@@ -36,7 +36,7 @@ typedef struct _block {
 } block;
 
 /* The arena manages two kinds of memory, blocks of raw memory
-   and a list of PyObject* pointers.  PyObjects are decrefed
+   and a list of TyObject* pointers.  PyObjects are decrefed
    when the arena is freed.
 */
 
@@ -54,13 +54,13 @@ struct _arena {
      */
     block *a_cur;
 
-    /* A Python list object containing references to all the PyObject
+    /* A Python list object containing references to all the TyObject
        pointers associated with this arena.  They will be DECREFed
        when the arena is freed.
     */
-    PyObject *a_objects;
+    TyObject *a_objects;
 
-#if defined(Py_DEBUG)
+#if defined(Ty_DEBUG)
     /* Debug output */
     size_t total_allocs;
     size_t total_size;
@@ -75,13 +75,13 @@ block_new(size_t size)
 {
     /* Allocate header and block as one unit.
        ab_mem points just past header. */
-    block *b = (block *)PyMem_Malloc(sizeof(block) + size);
+    block *b = (block *)TyMem_Malloc(sizeof(block) + size);
     if (!b)
         return NULL;
     b->ab_size = size;
     b->ab_mem = (void *)(b + 1);
     b->ab_next = NULL;
-    b->ab_offset = (char *)_Py_ALIGN_UP(b->ab_mem, ALIGNMENT) -
+    b->ab_offset = (char *)_Ty_ALIGN_UP(b->ab_mem, ALIGNMENT) -
             (char *)(b->ab_mem);
     return b;
 }
@@ -90,7 +90,7 @@ static void
 block_free(block *b) {
     while (b) {
         block *next = b->ab_next;
-        PyMem_Free(b);
+        TyMem_Free(b);
         b = next;
     }
 }
@@ -100,7 +100,7 @@ block_alloc(block *b, size_t size)
 {
     void *p;
     assert(b);
-    size = _Py_SIZE_ROUND_UP(size, ALIGNMENT);
+    size = _Ty_SIZE_ROUND_UP(size, ALIGNMENT);
     if (b->ab_offset + size > b->ab_size) {
         /* If we need to allocate more memory than will fit in
            the default block, allocate a one-off block that is
@@ -122,25 +122,25 @@ block_alloc(block *b, size_t size)
 }
 
 PyArena *
-_PyArena_New(void)
+_TyArena_New(void)
 {
-    PyArena* arena = (PyArena *)PyMem_Malloc(sizeof(PyArena));
+    PyArena* arena = (PyArena *)TyMem_Malloc(sizeof(PyArena));
     if (!arena)
-        return (PyArena*)PyErr_NoMemory();
+        return (PyArena*)TyErr_NoMemory();
 
     arena->a_head = block_new(DEFAULT_BLOCK_SIZE);
     arena->a_cur = arena->a_head;
     if (!arena->a_head) {
-        PyMem_Free((void *)arena);
-        return (PyArena*)PyErr_NoMemory();
+        TyMem_Free((void *)arena);
+        return (PyArena*)TyErr_NoMemory();
     }
-    arena->a_objects = PyList_New(0);
+    arena->a_objects = TyList_New(0);
     if (!arena->a_objects) {
         block_free(arena->a_head);
-        PyMem_Free((void *)arena);
-        return (PyArena*)PyErr_NoMemory();
+        TyMem_Free((void *)arena);
+        return (PyArena*)TyErr_NoMemory();
     }
-#if defined(Py_DEBUG)
+#if defined(Ty_DEBUG)
     arena->total_allocs = 0;
     arena->total_size = 0;
     arena->total_blocks = 1;
@@ -151,16 +151,16 @@ _PyArena_New(void)
 }
 
 void
-_PyArena_Free(PyArena *arena)
+_TyArena_Free(PyArena *arena)
 {
     assert(arena);
-#if defined(Py_DEBUG)
+#if defined(Ty_DEBUG)
     /*
     fprintf(stderr,
         "alloc=%zu size=%zu blocks=%zu block_size=%zu big=%zu objects=%zu\n",
         arena->total_allocs, arena->total_size, arena->total_blocks,
         arena->total_block_size, arena->total_big_blocks,
-        PyList_Size(arena->a_objects));
+        TyList_Size(arena->a_objects));
     */
 #endif
     block_free(arena->a_head);
@@ -169,24 +169,24 @@ _PyArena_Free(PyArena *arena)
     assert(arena->a_objects->ob_refcnt == 1);
     */
 
-    Py_DECREF(arena->a_objects);
-    PyMem_Free(arena);
+    Ty_DECREF(arena->a_objects);
+    TyMem_Free(arena);
 }
 
 void *
-_PyArena_Malloc(PyArena *arena, size_t size)
+_TyArena_Malloc(PyArena *arena, size_t size)
 {
     void *p = block_alloc(arena->a_cur, size);
     if (!p)
-        return PyErr_NoMemory();
-#if defined(Py_DEBUG)
+        return TyErr_NoMemory();
+#if defined(Ty_DEBUG)
     arena->total_allocs++;
     arena->total_size += size;
 #endif
     /* Reset cur if we allocated a new block. */
     if (arena->a_cur->ab_next) {
         arena->a_cur = arena->a_cur->ab_next;
-#if defined(Py_DEBUG)
+#if defined(Ty_DEBUG)
         arena->total_blocks++;
         arena->total_block_size += arena->a_cur->ab_size;
         if (arena->a_cur->ab_size > DEFAULT_BLOCK_SIZE)
@@ -197,11 +197,11 @@ _PyArena_Malloc(PyArena *arena, size_t size)
 }
 
 int
-_PyArena_AddPyObject(PyArena *arena, PyObject *obj)
+_TyArena_AddPyObject(PyArena *arena, TyObject *obj)
 {
-    int r = PyList_Append(arena->a_objects, obj);
+    int r = TyList_Append(arena->a_objects, obj);
     if (r >= 0) {
-        Py_DECREF(obj);
+        Ty_DECREF(obj);
     }
     return r;
 }

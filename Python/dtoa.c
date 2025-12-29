@@ -33,26 +33,26 @@
  *     treatment of the decimal point, and setting of the inexact flag have
  *     been removed.
  *
- *  1. We use PyMem_Malloc and PyMem_Free in place of malloc and free.
+ *  1. We use TyMem_Malloc and TyMem_Free in place of malloc and free.
  *
  *  2. The public functions strtod, dtoa and freedtoa all now have
- *     a _Py_dg_ prefix.
+ *     a _Ty_dg_ prefix.
  *
- *  3. Instead of assuming that PyMem_Malloc always succeeds, we thread
- *     PyMem_Malloc failures through the code.  The functions
+ *  3. Instead of assuming that TyMem_Malloc always succeeds, we thread
+ *     TyMem_Malloc failures through the code.  The functions
  *
  *       Balloc, multadd, s2b, i2b, mult, pow5mult, lshift, diff, d2b
  *
  *     of return type *Bigint all return NULL to indicate a malloc failure.
  *     Similarly, rv_alloc and nrv_alloc (return type char *) return NULL on
  *     failure.  bigcomp now has return type int (it used to be void) and
- *     returns -1 on failure and 0 otherwise.  _Py_dg_dtoa returns NULL
- *     on failure.  _Py_dg_strtod indicates failure due to malloc failure
+ *     returns -1 on failure and 0 otherwise.  _Ty_dg_dtoa returns NULL
+ *     on failure.  _Ty_dg_strtod indicates failure due to malloc failure
  *     by returning -1.0, setting errno=ENOMEM and *se to s00.
  *
  *  4. The static variable dtoa_result has been removed.  Callers of
- *     _Py_dg_dtoa are expected to call _Py_dg_freedtoa to free
- *     the memory allocated by _Py_dg_dtoa.
+ *     _Ty_dg_dtoa are expected to call _Ty_dg_freedtoa to free
+ *     the memory allocated by _Ty_dg_dtoa.
  *
  *  5. The code has been reformatted to better fit with Python's
  *     C style guide (PEP 7).
@@ -61,10 +61,10 @@
  *     that hasn't been MALLOC'ed, private_mem should only be used when k <=
  *     Kmax.
  *
- *  7. _Py_dg_strtod has been modified so that it doesn't accept strings with
+ *  7. _Ty_dg_strtod has been modified so that it doesn't accept strings with
  *     leading whitespace.
  *
- *  8. A corner case where _Py_dg_dtoa didn't strip trailing zeros has been
+ *  8. A corner case where _Ty_dg_dtoa didn't strip trailing zeros has been
  *     fixed. (bugs.python.org/issue40780)
  *
  ***************************************************************/
@@ -120,7 +120,7 @@
 #include "Python.h"
 #include "pycore_dtoa.h"          // _PY_SHORT_FLOAT_REPR
 #include "pycore_interp_structs.h"// struct Bigint
-#include "pycore_pystate.h"       // _PyInterpreterState_GET()
+#include "pycore_pystate.h"       // _TyInterpreterState_GET()
 #include <stdlib.h>               // exit()
 
 
@@ -130,8 +130,8 @@
 
 #include "float.h"
 
-#define MALLOC PyMem_Malloc
-#define FREE PyMem_Free
+#define MALLOC TyMem_Malloc
+#define FREE TyMem_Free
 
 /* This code should also work for ARM mixed-endian format on little-endian
    machines, where doubles have byte order 45670123 (in increasing address
@@ -164,7 +164,7 @@ typedef int32_t Long;
 typedef uint64_t ULLong;
 
 #undef DEBUG
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 #define DEBUG
 #endif
 
@@ -195,11 +195,11 @@ typedef union { double d; ULong L[2]; } U;
 #ifndef MAX_ABS_EXP
 #define MAX_ABS_EXP 1100000000U
 #endif
-/* Bound on length of pieces of input strings in _Py_dg_strtod; specifically,
+/* Bound on length of pieces of input strings in _Ty_dg_strtod; specifically,
    this is used to bound the total number of digits ignoring leading zeros and
    the number of digits that follow the decimal point.  Ideally, MAX_DIGITS
    should satisfy MAX_DIGITS + 400 < MAX_ABS_EXP; that ensures that the
-   exponent clipping in _Py_dg_strtod can't affect the value of the output. */
+   exponent clipping in _Ty_dg_strtod can't affect the value of the output. */
 #ifndef MAX_DIGITS
 #define MAX_DIGITS 1000000000U
 #endif
@@ -276,7 +276,7 @@ typedef union { double d; ULong L[2]; } U;
 #define POSINF_WORD0 0x7ff00000
 #define POSINF_WORD1 0
 
-/* struct BCinfo is used to pass information from _Py_dg_strtod to bigcomp */
+/* struct BCinfo is used to pass information from _Ty_dg_strtod to bigcomp */
 
 typedef struct BCinfo BCinfo;
 struct
@@ -311,7 +311,7 @@ BCinfo {
 // struct Bigint is defined in pycore_dtoa.h.
 typedef struct Bigint Bigint;
 
-#if !defined(Py_GIL_DISABLED) && !defined(Py_USING_MEMORY_DEBUGGER)
+#if !defined(Ty_GIL_DISABLED) && !defined(Ty_USING_MEMORY_DEBUGGER)
 
 /* Memory management: memory is allocated from, and returned to, Kmax+1 pools
    of memory, where pool k (0 <= k <= Kmax) is for Bigints b with b->maxwds ==
@@ -328,8 +328,8 @@ typedef struct Bigint Bigint;
    FREE.
 
    XXX: it would be easy to bypass this memory-management system and
-   translate each call to Balloc into a call to PyMem_Malloc, and each
-   Bfree to PyMem_Free.  Investigate whether this has any significant
+   translate each call to Balloc into a call to TyMem_Malloc, and each
+   Bfree to TyMem_Free.  Investigate whether this has any significant
    performance on impact. */
 
 #define freelist interp->dtoa.freelist
@@ -344,7 +344,7 @@ Balloc(int k)
     int x;
     Bigint *rv;
     unsigned int len;
-    PyInterpreterState *interp = _PyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     if (k <= Bigint_Kmax && (rv = freelist[k]))
         freelist[k] = rv->next;
@@ -353,7 +353,7 @@ Balloc(int k)
         len = (sizeof(Bigint) + (x-1)*sizeof(ULong) + sizeof(double) - 1)
             /sizeof(double);
         if (k <= Bigint_Kmax &&
-            pmem_next - private_mem + len <= (Py_ssize_t)Bigint_PREALLOC_SIZE
+            pmem_next - private_mem + len <= (Ty_ssize_t)Bigint_PREALLOC_SIZE
         ) {
             rv = (Bigint*)pmem_next;
             pmem_next += len;
@@ -379,7 +379,7 @@ Bfree(Bigint *v)
         if (v->k > Bigint_Kmax)
             FREE((void*)v);
         else {
-            PyInterpreterState *interp = _PyInterpreterState_GET();
+            TyInterpreterState *interp = _TyInterpreterState_GET();
             v->next = freelist[v->k];
             freelist[v->k] = v;
         }
@@ -392,8 +392,8 @@ Bfree(Bigint *v)
 
 #else
 
-/* Alternative versions of Balloc and Bfree that use PyMem_Malloc and
-   PyMem_Free directly in place of the custom memory allocation scheme above.
+/* Alternative versions of Balloc and Bfree that use TyMem_Malloc and
+   TyMem_Free directly in place of the custom memory allocation scheme above.
    These are provided for the benefit of memory debugging tools like
    Valgrind. */
 
@@ -430,7 +430,7 @@ Bfree(Bigint *v)
     }
 }
 
-#endif /* !defined(Py_GIL_DISABLED) && !defined(Py_USING_MEMORY_DEBUGGER) */
+#endif /* !defined(Ty_GIL_DISABLED) && !defined(Ty_USING_MEMORY_DEBUGGER) */
 
 #define Bcopy(x,y) memcpy((char *)&x->sign, (char *)&y->sign,   \
                           y->wds*sizeof(Long) + 2*sizeof(int))
@@ -476,7 +476,7 @@ multadd(Bigint *b, int m, int a)       /* multiply by m and add a */
 
 /* convert a string s containing nd decimal digits (possibly containing a
    decimal separator at position nd0, which is ignored) to a Bigint.  This
-   function carries on where the parsing code in _Py_dg_strtod leaves off: on
+   function carries on where the parsing code in _Ty_dg_strtod leaves off: on
    entry, y9 contains the result of converting the first 9 digits.  Returns
    NULL on failure. */
 
@@ -666,7 +666,7 @@ mult(Bigint *a, Bigint *b)
     return c;
 }
 
-#ifndef Py_USING_MEMORY_DEBUGGER
+#ifndef Ty_USING_MEMORY_DEBUGGER
 
 /* multiply the Bigint b by 5**k.  Returns a pointer to the result, or NULL on
    failure; if the returned pointer is distinct from b then the original
@@ -694,7 +694,7 @@ pow5mult(Bigint *b, int k)
 
     if (!(k >>= 2))
         return b;
-    PyInterpreterState *interp = _PyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     p5s = interp->dtoa.p5s;
     for(;;) {
         assert(p5s != interp->dtoa.p5s + Bigint_Pow5size);
@@ -763,7 +763,7 @@ pow5mult(Bigint *b, int k)
     return b;
 }
 
-#endif /* Py_USING_MEMORY_DEBUGGER */
+#endif /* Ty_USING_MEMORY_DEBUGGER */
 
 /* shift a Bigint b left by k bits.  Return a pointer to the shifted result,
    or NULL on failure.  If the returned pointer is distinct from b then the
@@ -956,7 +956,7 @@ b2d(Bigint *a, int *e)
 }
 
 /* Convert a scaled double to a Bigint plus an exponent.  Similar to d2b,
-   except that it accepts the scale parameter used in _Py_dg_strtod (which
+   except that it accepts the scale parameter used in _Ty_dg_strtod (which
    should be either 0 or 2*P), and the normalization for the return value is
    different (see below).  On input, d should be finite and nonnegative, and d
    / 2**scale should be exactly representable as an IEEE 754 double.
@@ -1228,9 +1228,9 @@ sulp(U *x, BCinfo *bc)
 /* The bigcomp function handles some hard cases for strtod, for inputs
    with more than STRTOD_DIGLIM digits.  It's called once an initial
    estimate for the double corresponding to the input string has
-   already been obtained by the code in _Py_dg_strtod.
+   already been obtained by the code in _Ty_dg_strtod.
 
-   The bigcomp function is only called after _Py_dg_strtod has found a
+   The bigcomp function is only called after _Ty_dg_strtod has found a
    double value rv such that either rv or rv + 1ulp represents the
    correctly rounded value corresponding to the original string.  It
    determines which of these two values is the correct one by
@@ -1245,12 +1245,12 @@ sulp(U *x, BCinfo *bc)
      s0 points to the first significant digit of the input string.
 
      rv is a (possibly scaled) estimate for the closest double value to the
-        value represented by the original input to _Py_dg_strtod.  If
+        value represented by the original input to _Ty_dg_strtod.  If
         bc->scale is nonzero, then rv/2^(bc->scale) is the approximation to
         the input value.
 
      bc is a struct containing information gathered during the parsing and
-        estimation steps of _Py_dg_strtod.  Description of fields follows:
+        estimation steps of _Ty_dg_strtod.  Description of fields follows:
 
         bc->e0 gives the exponent of the input value, such that dv = (integer
            given by the bd->nd digits of s0) * 10**e0
@@ -1383,7 +1383,7 @@ bigcomp(U *rv, const char *s0, BCinfo *bc)
 
 
 double
-_Py_dg_strtod(const char *s00, char **se)
+_Ty_dg_strtod(const char *s00, char **se)
 {
     int bb2, bb5, bbe, bd2, bd5, bs2, c, dsign, e, e1, error;
     int esign, i, j, k, lz, nd, nd0, odd, sign;
@@ -1407,7 +1407,7 @@ _Py_dg_strtod(const char *s00, char **se)
     switch (c) {
     case '-':
         sign = 1;
-        _Py_FALLTHROUGH;
+        _Ty_FALLTHROUGH;
     case '+':
         c = *++s;
     }
@@ -1476,7 +1476,7 @@ _Py_dg_strtod(const char *s00, char **se)
         switch (c) {
         case '-':
             esign = 1;
-            _Py_FALLTHROUGH;
+            _Ty_FALLTHROUGH;
         case '+':
             c = *++s;
         }
@@ -1741,7 +1741,7 @@ _Py_dg_strtod(const char *s00, char **se)
 
     for(;;) {
 
-        /* This is the main correction loop for _Py_dg_strtod.
+        /* This is the main correction loop for _Ty_dg_strtod.
 
            We've got a decimal value tdv, and a floating-point approximation
            srv=rv/2^bc.scale to tdv.  The aim is to determine whether srv is
@@ -2146,7 +2146,7 @@ nrv_alloc(const char *s, char **rve, int n)
  */
 
 void
-_Py_dg_freedtoa(char *s)
+_Ty_dg_freedtoa(char *s)
 {
     Bigint *b = (Bigint *)((int *)s - 1);
     b->maxwds = 1 << (b->k = *(int*)b);
@@ -2188,11 +2188,11 @@ _Py_dg_freedtoa(char *s)
  */
 
 /* Additional notes (METD): (1) returns NULL on failure.  (2) to avoid memory
-   leakage, a successful call to _Py_dg_dtoa should always be matched by a
-   call to _Py_dg_freedtoa. */
+   leakage, a successful call to _Ty_dg_dtoa should always be matched by a
+   call to _Ty_dg_freedtoa. */
 
 char *
-_Py_dg_dtoa(double dd, int mode, int ndigits,
+_Ty_dg_dtoa(double dd, int mode, int ndigits,
             int *decpt, int *sign, char **rve)
 {
     /*  Arguments ndigits, decpt, sign are similar to those
@@ -2364,7 +2364,7 @@ _Py_dg_dtoa(double dd, int mode, int ndigits,
         break;
     case 2:
         leftright = 0;
-        _Py_FALLTHROUGH;
+        _Ty_FALLTHROUGH;
     case 4:
         if (ndigits <= 0)
             ndigits = 1;
@@ -2372,7 +2372,7 @@ _Py_dg_dtoa(double dd, int mode, int ndigits,
         break;
     case 3:
         leftright = 0;
-        _Py_FALLTHROUGH;
+        _Ty_FALLTHROUGH;
     case 5:
         i = ndigits + k + 1;
         ilim = i;
@@ -2797,44 +2797,44 @@ _Py_dg_dtoa(double dd, int mode, int ndigits,
     if (b)
         Bfree(b);
     if (s0)
-        _Py_dg_freedtoa(s0);
+        _Ty_dg_freedtoa(s0);
     return NULL;
 }
 
 #endif  // _PY_SHORT_FLOAT_REPR == 1
 
-PyStatus
-_PyDtoa_Init(PyInterpreterState *interp)
+TyStatus
+_PyDtoa_Init(TyInterpreterState *interp)
 {
-#if _PY_SHORT_FLOAT_REPR == 1 && !defined(Py_USING_MEMORY_DEBUGGER)
+#if _PY_SHORT_FLOAT_REPR == 1 && !defined(Ty_USING_MEMORY_DEBUGGER)
     Bigint **p5s = interp->dtoa.p5s;
 
     // 5**4 = 625
     Bigint *p5 = i2b(625);
     if (p5 == NULL) {
-        return PyStatus_NoMemory();
+        return TyStatus_NoMemory();
     }
     p5s[0] = p5;
 
     // compute 5**8, 5**16, 5**32, ..., 5**512
-    for (Py_ssize_t i = 1; i < Bigint_Pow5size; i++) {
+    for (Ty_ssize_t i = 1; i < Bigint_Pow5size; i++) {
         p5 = mult(p5, p5);
         if (p5 == NULL) {
-            return PyStatus_NoMemory();
+            return TyStatus_NoMemory();
         }
         p5s[i] = p5;
     }
 
 #endif
-    return PyStatus_Ok();
+    return TyStatus_Ok();
 }
 
 void
-_PyDtoa_Fini(PyInterpreterState *interp)
+_PyDtoa_Fini(TyInterpreterState *interp)
 {
-#if _PY_SHORT_FLOAT_REPR == 1 && !defined(Py_USING_MEMORY_DEBUGGER)
+#if _PY_SHORT_FLOAT_REPR == 1 && !defined(Ty_USING_MEMORY_DEBUGGER)
     Bigint **p5s = interp->dtoa.p5s;
-    for (Py_ssize_t i = 0; i < Bigint_Pow5size; i++) {
+    for (Ty_ssize_t i = 0; i < Bigint_Pow5size; i++) {
         Bigint *p5 = p5s[i];
         p5s[i] = NULL;
         Bfree(p5);

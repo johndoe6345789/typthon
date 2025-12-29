@@ -2,13 +2,13 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_zstd_ZstdDict_new__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_new__doc__,
 "ZstdDict(dict_content, /, *, is_raw=False)\n"
 "--\n"
 "\n"
@@ -24,49 +24,49 @@ PyDoc_STRVAR(_zstd_ZstdDict_new__doc__,
 "The dictionary can be used for compression or decompression, and can be shared\n"
 "by multiple ZstdCompressor or ZstdDecompressor objects.");
 
-static PyObject *
-_zstd_ZstdDict_new_impl(PyTypeObject *type, Py_buffer *dict_content,
+static TyObject *
+_zstd_ZstdDict_new_impl(TyTypeObject *type, Ty_buffer *dict_content,
                         int is_raw);
 
-static PyObject *
-_zstd_ZstdDict_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+_zstd_ZstdDict_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(is_raw), },
+        .ob_item = { &_Ty_ID(is_raw), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "is_raw", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "ZstdDict",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    Py_buffer dict_content = {NULL, NULL};
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    Ty_buffer dict_content = {NULL, NULL};
     int is_raw = 0;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -93,7 +93,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_ZstdDict_dict_content__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_dict_content__doc__,
 "The content of a Zstandard dictionary, as a bytes object.");
 #if defined(_zstd_ZstdDict_dict_content_DOCSTR)
 #   undef _zstd_ZstdDict_dict_content_DOCSTR
@@ -110,16 +110,16 @@ PyDoc_STRVAR(_zstd_ZstdDict_dict_content__doc__,
 #  define _ZSTD_ZSTDDICT_DICT_CONTENT_GETSETDEF {"dict_content", (getter)_zstd_ZstdDict_dict_content_get, NULL, _zstd_ZstdDict_dict_content_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _zstd_ZstdDict_dict_content_get_impl(ZstdDict *self);
 
-static PyObject *
-_zstd_ZstdDict_dict_content_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_zstd_ZstdDict_dict_content_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _zstd_ZstdDict_dict_content_get_impl((ZstdDict *)self);
 }
 
-PyDoc_STRVAR(_zstd_ZstdDict_as_digested_dict__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_as_digested_dict__doc__,
 "Load as a digested dictionary to compressor.\n"
 "\n"
 "Pass this attribute as zstd_dict argument:\n"
@@ -146,16 +146,16 @@ PyDoc_STRVAR(_zstd_ZstdDict_as_digested_dict__doc__,
 #  define _ZSTD_ZSTDDICT_AS_DIGESTED_DICT_GETSETDEF {"as_digested_dict", (getter)_zstd_ZstdDict_as_digested_dict_get, NULL, _zstd_ZstdDict_as_digested_dict_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _zstd_ZstdDict_as_digested_dict_get_impl(ZstdDict *self);
 
-static PyObject *
-_zstd_ZstdDict_as_digested_dict_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_zstd_ZstdDict_as_digested_dict_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _zstd_ZstdDict_as_digested_dict_get_impl((ZstdDict *)self);
 }
 
-PyDoc_STRVAR(_zstd_ZstdDict_as_undigested_dict__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_as_undigested_dict__doc__,
 "Load as an undigested dictionary to compressor.\n"
 "\n"
 "Pass this attribute as zstd_dict argument:\n"
@@ -180,16 +180,16 @@ PyDoc_STRVAR(_zstd_ZstdDict_as_undigested_dict__doc__,
 #  define _ZSTD_ZSTDDICT_AS_UNDIGESTED_DICT_GETSETDEF {"as_undigested_dict", (getter)_zstd_ZstdDict_as_undigested_dict_get, NULL, _zstd_ZstdDict_as_undigested_dict_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _zstd_ZstdDict_as_undigested_dict_get_impl(ZstdDict *self);
 
-static PyObject *
-_zstd_ZstdDict_as_undigested_dict_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_zstd_ZstdDict_as_undigested_dict_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _zstd_ZstdDict_as_undigested_dict_get_impl((ZstdDict *)self);
 }
 
-PyDoc_STRVAR(_zstd_ZstdDict_as_prefix__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_as_prefix__doc__,
 "Load as a prefix to compressor/decompressor.\n"
 "\n"
 "Pass this attribute as zstd_dict argument:\n"
@@ -214,11 +214,11 @@ PyDoc_STRVAR(_zstd_ZstdDict_as_prefix__doc__,
 #  define _ZSTD_ZSTDDICT_AS_PREFIX_GETSETDEF {"as_prefix", (getter)_zstd_ZstdDict_as_prefix_get, NULL, _zstd_ZstdDict_as_prefix_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _zstd_ZstdDict_as_prefix_get_impl(ZstdDict *self);
 
-static PyObject *
-_zstd_ZstdDict_as_prefix_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_zstd_ZstdDict_as_prefix_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _zstd_ZstdDict_as_prefix_get_impl((ZstdDict *)self);
 }

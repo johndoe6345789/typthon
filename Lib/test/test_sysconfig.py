@@ -577,16 +577,16 @@ class TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertEndsWith(suffix, '-darwin.so')
 
     def test_always_set_py_debug(self):
-        self.assertIn('Py_DEBUG', sysconfig.get_config_vars())
-        Py_DEBUG = sysconfig.get_config_var('Py_DEBUG')
-        self.assertIn(Py_DEBUG, (0, 1))
-        self.assertEqual(Py_DEBUG, support.Py_DEBUG)
+        self.assertIn('Ty_DEBUG', sysconfig.get_config_vars())
+        Ty_DEBUG = sysconfig.get_config_var('Ty_DEBUG')
+        self.assertIn(Ty_DEBUG, (0, 1))
+        self.assertEqual(Ty_DEBUG, support.Ty_DEBUG)
 
     def test_always_set_py_gil_disabled(self):
-        self.assertIn('Py_GIL_DISABLED', sysconfig.get_config_vars())
-        Py_GIL_DISABLED = sysconfig.get_config_var('Py_GIL_DISABLED')
-        self.assertIn(Py_GIL_DISABLED, (0, 1))
-        self.assertEqual(Py_GIL_DISABLED, support.Py_GIL_DISABLED)
+        self.assertIn('Ty_GIL_DISABLED', sysconfig.get_config_vars())
+        Ty_GIL_DISABLED = sysconfig.get_config_var('Ty_GIL_DISABLED')
+        self.assertIn(Ty_GIL_DISABLED, (0, 1))
+        self.assertEqual(Ty_GIL_DISABLED, support.Ty_GIL_DISABLED)
 
     def test_abiflags(self):
         # If this test fails on some platforms, maintainers should update the
@@ -611,7 +611,7 @@ class TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def test_abi_debug(self):
         ABIFLAGS = sysconfig.get_config_var('ABIFLAGS')
-        if support.Py_DEBUG:
+        if support.Ty_DEBUG:
             self.assertIn('d', ABIFLAGS)
         else:
             self.assertNotIn('d', ABIFLAGS)
@@ -619,14 +619,14 @@ class TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         # The 'd' flag should always be the last one on Windows.
         # On Windows, the debug flag is used differently with a underscore prefix.
         # For example, `python{X}.{Y}td` on Unix and `python{X}.{Y}t_d.exe` on Windows.
-        if support.Py_DEBUG and sys.platform.startswith('win'):
+        if support.Ty_DEBUG and sys.platform.startswith('win'):
             self.assertEndsWith(ABIFLAGS, '_d')
 
     def test_abi_thread(self):
         abi_thread = sysconfig.get_config_var('abi_thread')
         ABIFLAGS = sysconfig.get_config_var('ABIFLAGS')
         self.assertIsInstance(abi_thread, str)
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             self.assertEqual(abi_thread, 't')
             self.assertIn('t', ABIFLAGS)
         else:
