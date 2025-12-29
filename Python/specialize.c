@@ -2184,7 +2184,7 @@ _Py_Specialize_Call(_PyStackRef callable_st, _Ty_CODEUNIT *instr, int nargs)
 
     assert(ENABLE_SPECIALIZATION_FT);
     assert(_TyOpcode_Caches[CALL] == INLINE_CACHE_ENTRIES_CALL);
-    assert(_Py_OPCODE(*instr) != INSTRUMENTED_CALL);
+    assert(_Ty_OPCODE(*instr) != INSTRUMENTED_CALL);
     int fail;
     if (PyCFunction_CheckExact(callable)) {
         fail = specialize_c_call(callable, instr, nargs);
@@ -2224,7 +2224,7 @@ _Py_Specialize_CallKw(_PyStackRef callable_st, _Ty_CODEUNIT *instr, int nargs)
 
     assert(ENABLE_SPECIALIZATION_FT);
     assert(_TyOpcode_Caches[CALL_KW] == INLINE_CACHE_ENTRIES_CALL_KW);
-    assert(_Py_OPCODE(*instr) != INSTRUMENTED_CALL_KW);
+    assert(_Ty_OPCODE(*instr) != INSTRUMENTED_CALL_KW);
     int fail;
     if (TyFunction_Check(callable)) {
         fail = specialize_py_call_kw((PyFunctionObject *)callable, instr, nargs, false);
