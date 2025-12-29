@@ -127,9 +127,28 @@ To get a fully-functional Typthon interpreter, the following would be needed:
 
 1. Generate actual frozen modules using `Tools/build/freeze_modules.py`
 2. ~~Re-enable and fix the faulthandler module compilation~~ **✅ COMPLETED**
-3. Implement proper path configuration in `_PyConfig_InitPathConfig()`
+3. Implement proper path configuration in `_TyConfig_InitPathConfig()`
 4. ~~Generate real build information with git metadata~~ **✅ COMPLETED**
-5. Add more built-in modules to the `_PyImport_Inittab` table
+5. Add more built-in modules to the `_TyImport_Inittab` table
+6. ~~Complete Py→Ty prefix renaming throughout the codebase~~ **✅ COMPLETED**
+
+## Recent Improvements (December 2025)
+
+### Prefix Renaming Complete ✅
+
+All Python/Py* prefixes have been systematically renamed to Typthon/Ty* prefixes throughout the core codebase. This was necessary to:
+- Fix build/link errors
+- Establish Typthon as a distinct project
+- Prepare for strict typing features
+
+**Files Updated:**
+- `Python/crossinterp.c` - Memory allocation, thread state, interpreter state, marshal functions
+- `Python/specialize.c` - All 14 specialization functions, opcode macros, cleanup code
+- `Modules/atexitmodule.c` - Critical section macros
+- `Modules/posixmodule.c` - File offset converter
+- `Include/internal/pycore_bitutils.h` - Byte swap function
+
+See `RENAMING_GUIDE.md` for complete details.
 
 ## Testing
 
@@ -138,6 +157,7 @@ The interpreter successfully:
 - ✅ Displays help: `typthon --help`
 - ✅ Links all core libraries without errors
 - ✅ Builds with Ninja in under 2 minutes on modern hardware
+- ✅ Passes all basic tests (version, help)
 
 ## Build Statistics
 
@@ -146,3 +166,4 @@ The interpreter successfully:
 - **Executable**: typthon
 - **Build tool**: Ninja (recommended) or Unix Makefiles
 - **Build time**: ~90 seconds with parallel compilation (`-j4`)
+- **Build status**: ✅ BUILDS SUCCESSFULLY
