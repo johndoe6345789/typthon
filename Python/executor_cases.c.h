@@ -810,7 +810,7 @@
             value = stack_pointer[-1];
             STAT_INC(TO_BOOL, hit);
             TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
-            if (value_o == &_Py_STR(empty)) {
+            if (value_o == &_Ty_STR(empty)) {
                 assert(_Py_IsImmortal(value_o));
                 res = PyStackRef_False;
             }
@@ -2629,7 +2629,7 @@
                 assert(WITHIN_STACK_BOUNDS());
                 JUMP_TO_ERROR();
             }
-            TyObject *str_o = _TyUnicode_JoinArray(&_Py_STR(empty), pieces_o, oparg);
+            TyObject *str_o = _TyUnicode_JoinArray(&_Ty_STR(empty), pieces_o, oparg);
             STACKREFS_TO_PYOBJECTS_CLEANUP(pieces_o);
             _TyFrame_SetStackPointer(frame, stack_pointer);
             _PyStackRef tmp;
@@ -2668,7 +2668,7 @@
                 format_o = PyStackRef_AsPyObjectBorrow(format[0]);
             }
             else {
-                format_o = &_Py_STR(empty);
+                format_o = &_Ty_STR(empty);
             }
             _TyFrame_SetStackPointer(frame, stack_pointer);
             TyObject *interpolation_o = _PyInterpolation_Build(value_o, str_o, conversion, format_o);

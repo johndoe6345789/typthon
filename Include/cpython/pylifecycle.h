@@ -9,13 +9,13 @@ PyAPI_FUNC(int) Ty_FrozenMain(int argc, char **argv);
 /* PEP 432 Multi-phase initialization API (Private while provisional!) */
 
 PyAPI_FUNC(TyStatus) Ty_PreInitialize(
-    const PyPreConfig *src_config);
+    const TyPreConfig *src_config);
 PyAPI_FUNC(TyStatus) Ty_PreInitializeFromBytesArgs(
-    const PyPreConfig *src_config,
+    const TyPreConfig *src_config,
     Ty_ssize_t argc,
     char **argv);
 PyAPI_FUNC(TyStatus) Ty_PreInitializeFromArgs(
-    const PyPreConfig *src_config,
+    const TyPreConfig *src_config,
     Ty_ssize_t argc,
     wchar_t **argv);
 

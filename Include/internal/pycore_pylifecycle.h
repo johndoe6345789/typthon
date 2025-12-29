@@ -67,7 +67,7 @@ extern void _TyGILState_Fini(TyInterpreterState *interp);
 extern void _TyGC_DumpShutdownStats(TyInterpreterState *interp);
 
 extern TyStatus _Ty_PreInitializeFromPyArgv(
-    const PyPreConfig *src_config,
+    const TyPreConfig *src_config,
     const struct _PyArgv *args);
 extern TyStatus _Ty_PreInitializeFromConfig(
     const PyConfig *config,

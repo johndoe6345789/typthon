@@ -5820,16 +5820,16 @@ sock_initobj_impl(PySocketSockObject *self, int family, int type, int proto,
 /* Type object for socket objects. */
 
 static TyType_Slot sock_slots[] = {
-    {Py_tp_dealloc, sock_dealloc},
+    {Ty_tp_dealloc, sock_dealloc},
     {Py_tp_traverse, sock_traverse},
-    {Py_tp_repr, sock_repr},
+    {Ty_tp_repr, sock_repr},
     {Py_tp_doc, (void *)sock_doc},
-    {Py_tp_methods, sock_methods},
-    {Py_tp_members, sock_memberlist},
+    {Ty_tp_methods, sock_methods},
+    {Ty_tp_members, sock_memberlist},
     {Py_tp_getset, sock_getsetlist},
     {Py_tp_init, sock_initobj},
     {Py_tp_new, sock_new},
-    {Py_tp_finalize, sock_finalize},
+    {Ty_tp_finalize, sock_finalize},
     {0, NULL},
 };
 
@@ -9239,9 +9239,9 @@ error:
 }
 
 static struct PyModuleDef_Slot socket_slots[] = {
-    {Py_mod_exec, socket_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, socket_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 

@@ -121,26 +121,26 @@ extern TyStatus _PyPreCmdline_SetConfig(
     const _PyPreCmdline *cmdline,
     PyConfig *config);
 extern TyStatus _PyPreCmdline_Read(_PyPreCmdline *cmdline,
-    const PyPreConfig *preconfig);
+    const TyPreConfig *preconfig);
 
 
-/* --- PyPreConfig ----------------------------------------------- */
+/* --- TyPreConfig ----------------------------------------------- */
 
 // Export for '_testembed' program
-PyAPI_FUNC(void) _TyPreConfig_InitCompatConfig(PyPreConfig *preconfig);
+PyAPI_FUNC(void) _TyPreConfig_InitCompatConfig(TyPreConfig *preconfig);
 
 extern void _TyPreConfig_InitFromConfig(
-    PyPreConfig *preconfig,
+    TyPreConfig *preconfig,
     const PyConfig *config);
 extern TyStatus _TyPreConfig_InitFromPreConfig(
-    PyPreConfig *preconfig,
-    const PyPreConfig *config2);
-extern TyObject* _TyPreConfig_AsDict(const PyPreConfig *preconfig);
-extern void _TyPreConfig_GetConfig(PyPreConfig *preconfig,
+    TyPreConfig *preconfig,
+    const TyPreConfig *config2);
+extern TyObject* _TyPreConfig_AsDict(const TyPreConfig *preconfig);
+extern void _TyPreConfig_GetConfig(TyPreConfig *preconfig,
     const PyConfig *config);
-extern TyStatus _TyPreConfig_Read(PyPreConfig *preconfig,
+extern TyStatus _TyPreConfig_Read(TyPreConfig *preconfig,
     const _PyArgv *args);
-extern TyStatus _TyPreConfig_Write(const PyPreConfig *preconfig);
+extern TyStatus _TyPreConfig_Write(const TyPreConfig *preconfig);
 
 
 /* --- PyConfig ---------------------------------------------- */

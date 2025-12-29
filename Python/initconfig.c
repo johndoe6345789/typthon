@@ -203,7 +203,7 @@ static const PyConfigSpec PYCONFIG_SPEC[] = {
 
 #undef SPEC
 #define SPEC(MEMBER, TYPE, VISIBILITY) \
-    {#MEMBER, offsetof(PyPreConfig, MEMBER), PyConfig_MEMBER_##TYPE, \
+    {#MEMBER, offsetof(TyPreConfig, MEMBER), PyConfig_MEMBER_##TYPE, \
      PyConfig_MEMBER_##VISIBILITY, NO_SYS}
 
 static const PyConfigSpec PYPRECONFIG_SPEC[] = {
@@ -1220,7 +1220,7 @@ config_get_spec_member(const PyConfig *config, const PyConfigSpec *spec)
 
 
 static inline void*
-preconfig_get_spec_member(const PyPreConfig *preconfig, const PyConfigSpec *spec)
+preconfig_get_spec_member(const TyPreConfig *preconfig, const PyConfigSpec *spec)
 {
     return (char *)preconfig + spec->offset;
 }
@@ -2375,7 +2375,7 @@ config_read_complex_options(PyConfig *config)
 
 
 static const wchar_t *
-config_get_stdio_errors(const PyPreConfig *preconfig)
+config_get_stdio_errors(const TyPreConfig *preconfig)
 {
     if (preconfig->utf8_mode) {
         /* UTF-8 Mode uses UTF-8/surrogateescape */
@@ -2408,7 +2408,7 @@ config_get_stdio_errors(const PyPreConfig *preconfig)
 
 // See also config_get_fs_encoding()
 static TyStatus
-config_get_locale_encoding(PyConfig *config, const PyPreConfig *preconfig,
+config_get_locale_encoding(PyConfig *config, const TyPreConfig *preconfig,
                            wchar_t **locale_encoding)
 {
     wchar_t *encoding;
@@ -2429,7 +2429,7 @@ config_get_locale_encoding(PyConfig *config, const PyPreConfig *preconfig,
 
 static TyStatus
 config_init_stdio_encoding(PyConfig *config,
-                           const PyPreConfig *preconfig)
+                           const TyPreConfig *preconfig)
 {
     TyStatus status;
 
@@ -2513,7 +2513,7 @@ config_init_stdio_encoding(PyConfig *config,
 
 // See also config_get_locale_encoding()
 static TyStatus
-config_get_fs_encoding(PyConfig *config, const PyPreConfig *preconfig,
+config_get_fs_encoding(PyConfig *config, const TyPreConfig *preconfig,
                        wchar_t **fs_encoding)
 {
 #ifdef _Ty_FORCE_UTF8_FS_ENCODING
@@ -2544,7 +2544,7 @@ config_get_fs_encoding(PyConfig *config, const PyPreConfig *preconfig,
 
 
 static TyStatus
-config_init_fs_encoding(PyConfig *config, const PyPreConfig *preconfig)
+config_init_fs_encoding(PyConfig *config, const TyPreConfig *preconfig)
 {
     TyStatus status;
 
@@ -2634,7 +2634,7 @@ static TyStatus
 config_read(PyConfig *config, int compute_path_config)
 {
     TyStatus status;
-    const PyPreConfig *preconfig = &_PyRuntime.preconfig;
+    const TyPreConfig *preconfig = &_PyRuntime.preconfig;
 
     if (config->use_environment) {
         status = config_read_env_vars(config);
@@ -2796,7 +2796,7 @@ _TyConfig_Write(const PyConfig *config, _PyRuntimeState *runtime)
     }
 
     /* Write the new pre-configuration into _PyRuntime */
-    PyPreConfig *preconfig = &runtime->preconfig;
+    TyPreConfig *preconfig = &runtime->preconfig;
     preconfig->isolated = config->isolated;
     preconfig->use_environment = config->use_environment;
     preconfig->dev_mode = config->dev_mode;
@@ -3281,7 +3281,7 @@ core_read_precmdline(PyConfig *config, _PyPreCmdline *precmdline)
         }
     }
 
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
 
     status = _TyPreConfig_InitFromPreConfig(&preconfig, &_PyRuntime.preconfig);
     if (_TyStatus_EXCEPTION(status)) {
@@ -3553,7 +3553,7 @@ _Ty_GetConfigsAsDict(void)
 
     /* pre config */
     TyInterpreterState *interp = _TyInterpreterState_GET();
-    const PyPreConfig *pre_config = &interp->runtime->preconfig;
+    const TyPreConfig *pre_config = &interp->runtime->preconfig;
     dict = _TyPreConfig_AsDict(pre_config);
     if (dict == NULL) {
         goto error;
@@ -3690,7 +3690,7 @@ _Ty_DumpPathConfig(TyThreadState *tstate)
 // --- PyInitConfig API ---------------------------------------------------
 
 struct PyInitConfig {
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
     PyConfig config;
     struct _inittab *inittab;
     Ty_ssize_t inittab_size;
@@ -4383,7 +4383,7 @@ config_get(const PyConfig *config, const PyConfigSpec *spec,
 
 
 static TyObject*
-preconfig_get(const PyPreConfig *preconfig, const PyConfigSpec *spec)
+preconfig_get(const TyPreConfig *preconfig, const PyConfigSpec *spec)
 {
     // The type of all PYPRECONFIG_SPEC members is INT or BOOL.
     assert(spec->type == PyConfig_MEMBER_INT
@@ -4419,7 +4419,7 @@ PyConfig_Get(const char *name)
 
     spec = preconfig_find_spec(name);
     if (spec != NULL) {
-        const PyPreConfig *preconfig = &_PyRuntime.preconfig;
+        const TyPreConfig *preconfig = &_PyRuntime.preconfig;
         return preconfig_get(preconfig, spec);
     }
 

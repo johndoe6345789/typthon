@@ -3405,7 +3405,7 @@ _TySys_SetFlagInt(Ty_ssize_t pos, int value)
 static int
 set_flags_from_config(TyInterpreterState *interp, TyObject *flags)
 {
-    const PyPreConfig *preconfig = &interp->runtime->preconfig;
+    const TyPreConfig *preconfig = &interp->runtime->preconfig;
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     // _TySys_UpdateConfig() modifies sys.flags in-place:

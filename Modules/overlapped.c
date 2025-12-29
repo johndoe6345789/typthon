@@ -1988,11 +1988,11 @@ static TyGetSetDef Overlapped_getsets[] = {
 };
 
 static TyType_Slot overlapped_type_slots[] = {
-    {Py_tp_dealloc, Overlapped_dealloc},
+    {Ty_tp_dealloc, Overlapped_dealloc},
     {Py_tp_doc, (char *)_overlapped_Overlapped__doc__},
     {Py_tp_traverse, Overlapped_traverse},
-    {Py_tp_methods, Overlapped_methods},
-    {Py_tp_members, Overlapped_members},
+    {Ty_tp_methods, Overlapped_methods},
+    {Ty_tp_members, Overlapped_members},
     {Py_tp_getset, Overlapped_getsets},
     {Py_tp_new, _overlapped_Overlapped},
     {0,0}
@@ -2073,9 +2073,9 @@ overlapped_exec(TyObject *module)
 }
 
 static PyModuleDef_Slot overlapped_slots[] = {
-    {Py_mod_exec, overlapped_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, overlapped_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 

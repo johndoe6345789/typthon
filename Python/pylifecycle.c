@@ -226,7 +226,7 @@ static const char *_C_LOCALE_WARNING =
 static void
 emit_stderr_warning_for_legacy_locale(_PyRuntimeState *runtime)
 {
-    const PyPreConfig *preconfig = &runtime->preconfig;
+    const TyPreConfig *preconfig = &runtime->preconfig;
     if (preconfig->coerce_c_locale_warn && _Ty_LegacyLocaleDetected(1)) {
         TySys_FormatStderr("%s", _C_LOCALE_WARNING);
     }
@@ -963,7 +963,7 @@ pyinit_config(_PyRuntimeState *runtime,
 
 
 TyStatus
-_Ty_PreInitializeFromPyArgv(const PyPreConfig *src_config, const _PyArgv *args)
+_Ty_PreInitializeFromPyArgv(const TyPreConfig *src_config, const _PyArgv *args)
 {
     TyStatus status;
 
@@ -986,7 +986,7 @@ _Ty_PreInitializeFromPyArgv(const PyPreConfig *src_config, const _PyArgv *args)
        at exit on success. */
     runtime->preinitializing = 1;
 
-    PyPreConfig config;
+    TyPreConfig config;
 
     status = _TyPreConfig_InitFromPreConfig(&config, src_config);
     if (_TyStatus_EXCEPTION(status)) {
@@ -1010,7 +1010,7 @@ _Ty_PreInitializeFromPyArgv(const PyPreConfig *src_config, const _PyArgv *args)
 
 
 TyStatus
-Ty_PreInitializeFromBytesArgs(const PyPreConfig *src_config, Ty_ssize_t argc, char **argv)
+Ty_PreInitializeFromBytesArgs(const TyPreConfig *src_config, Ty_ssize_t argc, char **argv)
 {
     _PyArgv args = {.use_bytes_argv = 1, .argc = argc, .bytes_argv = argv};
     return _Ty_PreInitializeFromPyArgv(src_config, &args);
@@ -1018,7 +1018,7 @@ Ty_PreInitializeFromBytesArgs(const PyPreConfig *src_config, Ty_ssize_t argc, ch
 
 
 TyStatus
-Ty_PreInitializeFromArgs(const PyPreConfig *src_config, Ty_ssize_t argc, wchar_t **argv)
+Ty_PreInitializeFromArgs(const TyPreConfig *src_config, Ty_ssize_t argc, wchar_t **argv)
 {
     _PyArgv args = {.use_bytes_argv = 0, .argc = argc, .wchar_argv = argv};
     return _Ty_PreInitializeFromPyArgv(src_config, &args);
@@ -1026,7 +1026,7 @@ Ty_PreInitializeFromArgs(const PyPreConfig *src_config, Ty_ssize_t argc, wchar_t
 
 
 TyStatus
-Ty_PreInitialize(const PyPreConfig *src_config)
+Ty_PreInitialize(const TyPreConfig *src_config)
 {
     return _Ty_PreInitializeFromPyArgv(src_config, NULL);
 }
@@ -1049,7 +1049,7 @@ _Ty_PreInitializeFromConfig(const PyConfig *config,
         return _TyStatus_OK();
     }
 
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
 
     _TyPreConfig_InitFromConfig(&preconfig, config);
 

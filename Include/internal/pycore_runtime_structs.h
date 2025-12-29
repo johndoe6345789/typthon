@@ -262,7 +262,7 @@ struct pyruntimestate {
     _PyRWMutex stoptheworld_mutex;
     struct _stoptheworld_state stoptheworld;
 
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
 
     // Audit values must be preserved when Ty_Initialize()/Ty_Finalize()
     // is called multiple times.

@@ -12,7 +12,7 @@
 
 /* Forward declarations */
 static void
-preconfig_copy(PyPreConfig *config, const PyPreConfig *config2);
+preconfig_copy(TyPreConfig *config, const TyPreConfig *config2);
 
 
 /* --- File system encoding/errors -------------------------------- */
@@ -129,7 +129,7 @@ _PyPreCmdline_SetArgv(_PyPreCmdline *cmdline, const _PyArgv *args)
 
 
 static void
-precmdline_get_preconfig(_PyPreCmdline *cmdline, const PyPreConfig *config)
+precmdline_get_preconfig(_PyPreCmdline *cmdline, const TyPreConfig *config)
 {
 #define COPY_ATTR(ATTR) \
     if (config->ATTR != -1) { \
@@ -145,7 +145,7 @@ precmdline_get_preconfig(_PyPreCmdline *cmdline, const PyPreConfig *config)
 
 
 static void
-precmdline_set_preconfig(const _PyPreCmdline *cmdline, PyPreConfig *config)
+precmdline_set_preconfig(const _PyPreCmdline *cmdline, TyPreConfig *config)
 {
 #define COPY_ATTR(ATTR) \
     config->ATTR = cmdline->ATTR
@@ -228,7 +228,7 @@ precmdline_parse_cmdline(_PyPreCmdline *cmdline)
 
 
 TyStatus
-_PyPreCmdline_Read(_PyPreCmdline *cmdline, const PyPreConfig *preconfig)
+_PyPreCmdline_Read(_PyPreCmdline *cmdline, const TyPreConfig *preconfig)
 {
     precmdline_get_preconfig(cmdline, preconfig);
 
@@ -277,11 +277,11 @@ _PyPreCmdline_Read(_PyPreCmdline *cmdline, const PyPreConfig *preconfig)
 }
 
 
-/* --- PyPreConfig ----------------------------------------------- */
+/* --- TyPreConfig ----------------------------------------------- */
 
 
 void
-_TyPreConfig_InitCompatConfig(PyPreConfig *config)
+_TyPreConfig_InitCompatConfig(TyPreConfig *config)
 {
     memset(config, 0, sizeof(*config));
 
@@ -309,7 +309,7 @@ _TyPreConfig_InitCompatConfig(PyPreConfig *config)
 
 
 void
-TyPreConfig_InitPythonConfig(PyPreConfig *config)
+TyPreConfig_InitPythonConfig(TyPreConfig *config)
 {
     _TyPreConfig_InitCompatConfig(config);
 
@@ -330,7 +330,7 @@ TyPreConfig_InitPythonConfig(PyPreConfig *config)
 
 
 void
-TyPreConfig_InitIsolatedConfig(PyPreConfig *config)
+TyPreConfig_InitIsolatedConfig(TyPreConfig *config)
 {
     _TyPreConfig_InitCompatConfig(config);
 
@@ -347,8 +347,8 @@ TyPreConfig_InitIsolatedConfig(PyPreConfig *config)
 
 
 TyStatus
-_TyPreConfig_InitFromPreConfig(PyPreConfig *config,
-                               const PyPreConfig *config2)
+_TyPreConfig_InitFromPreConfig(TyPreConfig *config,
+                               const TyPreConfig *config2)
 {
     TyPreConfig_InitPythonConfig(config);
     preconfig_copy(config, config2);
@@ -357,7 +357,7 @@ _TyPreConfig_InitFromPreConfig(PyPreConfig *config,
 
 
 void
-_TyPreConfig_InitFromConfig(PyPreConfig *preconfig, const PyConfig *config)
+_TyPreConfig_InitFromConfig(TyPreConfig *preconfig, const PyConfig *config)
 {
     _PyConfigInitEnum config_init = (_PyConfigInitEnum)config->_config_init;
     switch (config_init) {
@@ -377,7 +377,7 @@ _TyPreConfig_InitFromConfig(PyPreConfig *preconfig, const PyConfig *config)
 
 
 static void
-preconfig_copy(PyPreConfig *config, const PyPreConfig *config2)
+preconfig_copy(TyPreConfig *config, const TyPreConfig *config2)
 {
 #define COPY_ATTR(ATTR) config->ATTR = config2->ATTR
 
@@ -400,7 +400,7 @@ preconfig_copy(PyPreConfig *config, const PyPreConfig *config2)
 
 
 TyObject*
-_TyPreConfig_AsDict(const PyPreConfig *config)
+_TyPreConfig_AsDict(const TyPreConfig *config)
 {
     TyObject *dict;
 
@@ -446,7 +446,7 @@ fail:
 
 
 void
-_TyPreConfig_GetConfig(PyPreConfig *preconfig, const PyConfig *config)
+_TyPreConfig_GetConfig(TyPreConfig *preconfig, const PyConfig *config)
 {
 #define COPY_ATTR(ATTR) \
     if (config->ATTR != -1) { \
@@ -463,7 +463,7 @@ _TyPreConfig_GetConfig(PyPreConfig *preconfig, const PyConfig *config)
 
 
 static void
-preconfig_get_global_vars(PyPreConfig *config)
+preconfig_get_global_vars(TyPreConfig *config)
 {
     if (config->_config_init != _TyConfig_INIT_COMPAT) {
         /* Python and Isolated configuration ignore global variables */
@@ -497,7 +497,7 @@ _Ty_COMP_DIAG_POP
 
 
 static void
-preconfig_set_global_vars(const PyPreConfig *config)
+preconfig_set_global_vars(const TyPreConfig *config)
 {
 #define COPY_FLAG(ATTR, VAR) \
     if (config->ATTR >= 0) { \
@@ -600,7 +600,7 @@ _Ty_get_xoption(const PyWideStringList *xoptions, const wchar_t *name)
 
 
 static TyStatus
-preconfig_init_utf8_mode(PyPreConfig *config, const _PyPreCmdline *cmdline)
+preconfig_init_utf8_mode(TyPreConfig *config, const _PyPreCmdline *cmdline)
 {
 #ifdef MS_WINDOWS
     if (config->legacy_windows_fs_encoding) {
@@ -671,7 +671,7 @@ preconfig_init_utf8_mode(PyPreConfig *config, const _PyPreCmdline *cmdline)
 
 
 static void
-preconfig_init_coerce_c_locale(PyPreConfig *config)
+preconfig_init_coerce_c_locale(TyPreConfig *config)
 {
     if (!config->configure_locale) {
         config->coerce_c_locale = 0;
@@ -718,7 +718,7 @@ preconfig_init_coerce_c_locale(PyPreConfig *config)
 
 
 static TyStatus
-preconfig_init_allocator(PyPreConfig *config)
+preconfig_init_allocator(TyPreConfig *config)
 {
     if (config->allocator == PYMEM_ALLOCATOR_NOT_SET) {
         /* bpo-34247. The PYTHONMALLOC environment variable has the priority
@@ -743,7 +743,7 @@ preconfig_init_allocator(PyPreConfig *config)
 
 
 static TyStatus
-preconfig_read(PyPreConfig *config, _PyPreCmdline *cmdline)
+preconfig_read(TyPreConfig *config, _PyPreCmdline *cmdline)
 {
     TyStatus status;
 
@@ -795,7 +795,7 @@ preconfig_read(PyPreConfig *config, _PyPreCmdline *cmdline)
    - Ty_xxx global configuration variables
    - the LC_CTYPE locale */
 TyStatus
-_TyPreConfig_Read(PyPreConfig *config, const _PyArgv *args)
+_TyPreConfig_Read(TyPreConfig *config, const _PyArgv *args)
 {
     TyStatus status;
 
@@ -817,7 +817,7 @@ _TyPreConfig_Read(PyPreConfig *config, const _PyArgv *args)
     }
 
     /* Save the config to be able to restore it if encodings change */
-    PyPreConfig save_config;
+    TyPreConfig save_config;
 
     status = _TyPreConfig_InitFromPreConfig(&save_config, config);
     if (_TyStatus_EXCEPTION(status)) {
@@ -829,7 +829,7 @@ _TyPreConfig_Read(PyPreConfig *config, const _PyArgv *args)
         _Ty_SetLocaleFromEnv(LC_CTYPE);
     }
 
-    PyPreConfig save_runtime_config;
+    TyPreConfig save_runtime_config;
     preconfig_copy(&save_runtime_config, &_PyRuntime.preconfig);
 
     _PyPreCmdline cmdline = _PyPreCmdline_INIT;
@@ -935,9 +935,9 @@ done:
    Do nothing if called after Ty_Initialize(): ignore the new
    pre-configuration. */
 TyStatus
-_TyPreConfig_Write(const PyPreConfig *src_config)
+_TyPreConfig_Write(const TyPreConfig *src_config)
 {
-    PyPreConfig config;
+    TyPreConfig config;
 
     TyStatus status = _TyPreConfig_InitFromPreConfig(&config, src_config);
     if (_TyStatus_EXCEPTION(status)) {

@@ -42,9 +42,9 @@ PyAPI_FUNC(TyStatus) TyWideStringList_Insert(PyWideStringList *list,
     const wchar_t *item);
 
 
-/* --- PyPreConfig ----------------------------------------------- */
+/* --- TyPreConfig ----------------------------------------------- */
 
-typedef struct PyPreConfig {
+typedef struct TyPreConfig {
     int _config_init;     /* _PyConfigInitEnum value */
 
     /* Parse Ty_PreInitializeFromBytesArgs() arguments?
@@ -122,10 +122,10 @@ typedef struct PyPreConfig {
     /* Memory allocator: PYTHONMALLOC env var.
        See PyMemAllocatorName for valid values. */
     int allocator;
-} PyPreConfig;
+} TyPreConfig;
 
-PyAPI_FUNC(void) TyPreConfig_InitPythonConfig(PyPreConfig *config);
-PyAPI_FUNC(void) TyPreConfig_InitIsolatedConfig(PyPreConfig *config);
+PyAPI_FUNC(void) TyPreConfig_InitPythonConfig(TyPreConfig *config);
+PyAPI_FUNC(void) TyPreConfig_InitIsolatedConfig(TyPreConfig *config);
 
 
 /* --- PyConfig ---------------------------------------------- */

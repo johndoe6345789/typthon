@@ -686,7 +686,7 @@ reset_remotedebug_data(TyThreadState *tstate)
 {
     tstate->remote_debugger_support.debugger_pending_call = 0;
     memset(tstate->remote_debugger_support.debugger_script_path, 0,
-           Py_MAX_SCRIPT_PATH_SIZE);
+           Ty_MAX_SCRIPT_PATH_SIZE);
 }
 
 
@@ -8143,7 +8143,7 @@ os_fork_impl(TyObject *module)
                         "can't fork at interpreter shutdown");
         return NULL;
     }
-    if (!_TyInterpreterState_HasFeature(interp, Py_RTFLAGS_FORK)) {
+    if (!_TyInterpreterState_HasFeature(interp, Ty_RTFLAGS_FORK)) {
         TyErr_SetString(TyExc_RuntimeError,
                         "fork not supported for isolated subinterpreters");
         return NULL;
@@ -15618,7 +15618,7 @@ DirEntry_dealloc(TyObject *op)
     Ty_XDECREF(entry->path);
     Ty_XDECREF(entry->stat);
     Ty_XDECREF(entry->lstat);
-    freefunc free_func = TyType_GetSlot(tp, Py_tp_free);
+    freefunc free_func = TyType_GetSlot(tp, Ty_tp_free);
     free_func(entry);
     Ty_DECREF(tp);
 }
@@ -15961,9 +15961,9 @@ os_DirEntry___fspath___impl(DirEntry *self)
 }
 
 static TyMemberDef DirEntry_members[] = {
-    {"name", Py_T_OBJECT_EX, offsetof(DirEntry, name), Py_READONLY,
+    {"name", Ty_T_OBJECT_EX, offsetof(DirEntry, name), Py_READONLY,
      "the entry's base filename, relative to scandir() \"path\" argument"},
-    {"path", Py_T_OBJECT_EX, offsetof(DirEntry, path), Py_READONLY,
+    {"path", Ty_T_OBJECT_EX, offsetof(DirEntry, path), Py_READONLY,
      "the entry's full path name; equivalent to os.path.join(scandir_path, entry.name)"},
     {NULL}
 };
@@ -15984,10 +15984,10 @@ static TyMethodDef DirEntry_methods[] = {
 };
 
 static TyType_Slot DirEntryType_slots[] = {
-    {Py_tp_dealloc, DirEntry_dealloc},
-    {Py_tp_repr, DirEntry_repr},
-    {Py_tp_methods, DirEntry_methods},
-    {Py_tp_members, DirEntry_members},
+    {Ty_tp_dealloc, DirEntry_dealloc},
+    {Ty_tp_repr, DirEntry_repr},
+    {Ty_tp_methods, DirEntry_methods},
+    {Ty_tp_members, DirEntry_members},
     {0, 0},
 };
 
@@ -16412,7 +16412,7 @@ ScandirIterator_dealloc(TyObject *op)
     if (PyObject_CallFinalizerFromDealloc(op) < 0)
         return;
 
-    freefunc free_func = TyType_GetSlot(tp, Py_tp_free);
+    freefunc free_func = TyType_GetSlot(tp, Ty_tp_free);
     free_func(op);
     Ty_DECREF(tp);
 }
@@ -16425,11 +16425,11 @@ static TyMethodDef ScandirIterator_methods[] = {
 };
 
 static TyType_Slot ScandirIteratorType_slots[] = {
-    {Py_tp_dealloc, ScandirIterator_dealloc},
-    {Py_tp_finalize, ScandirIterator_finalize},
-    {Py_tp_iter, PyObject_SelfIter},
-    {Py_tp_iternext, ScandirIterator_iternext},
-    {Py_tp_methods, ScandirIterator_methods},
+    {Ty_tp_dealloc, ScandirIterator_dealloc},
+    {Ty_tp_finalize, ScandirIterator_finalize},
+    {Ty_tp_iter, PyObject_SelfIter},
+    {Ty_tp_iternext, ScandirIterator_iternext},
+    {Ty_tp_methods, ScandirIterator_methods},
     {0, 0},
 };
 
@@ -18204,9 +18204,9 @@ posixmodule_exec(TyObject *m)
 
 
 static PyModuleDef_Slot posixmodile_slots[] = {
-    {Py_mod_exec, posixmodule_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, posixmodule_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 

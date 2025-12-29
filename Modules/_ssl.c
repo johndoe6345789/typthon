@@ -3035,9 +3035,9 @@ static TyMethodDef PySSLMethods[] = {
 };
 
 static TyType_Slot PySSLSocket_slots[] = {
-    {Py_tp_methods, PySSLMethods},
+    {Ty_tp_methods, PySSLMethods},
     {Py_tp_getset, ssl_getsetlist},
-    {Py_tp_dealloc, PySSL_dealloc},
+    {Ty_tp_dealloc, PySSL_dealloc},
     {Py_tp_traverse, PySSL_traverse},
     {Py_tp_clear, PySSL_clear},
     {0, 0},
@@ -5265,10 +5265,10 @@ static struct TyMethodDef context_methods[] = {
 };
 
 static TyType_Slot PySSLContext_slots[] = {
-    {Py_tp_methods, context_methods},
+    {Ty_tp_methods, context_methods},
     {Py_tp_getset, context_getsetlist},
     {Py_tp_new, _ssl__SSLContext},
-    {Py_tp_dealloc, context_dealloc},
+    {Ty_tp_dealloc, context_dealloc},
     {Py_tp_traverse, context_traverse},
     {Py_tp_clear, context_clear},
     {0, 0},
@@ -5497,10 +5497,10 @@ static struct TyMethodDef memory_bio_methods[] = {
 };
 
 static TyType_Slot PySSLMemoryBIO_slots[] = {
-    {Py_tp_methods, memory_bio_methods},
+    {Ty_tp_methods, memory_bio_methods},
     {Py_tp_getset, memory_bio_getsetlist},
     {Py_tp_new, _ssl_MemoryBIO},
-    {Py_tp_dealloc, memory_bio_dealloc},
+    {Ty_tp_dealloc, memory_bio_dealloc},
     {Py_tp_traverse, memory_bio_traverse},
     {0, 0},
 };
@@ -5707,7 +5707,7 @@ static TyGetSetDef PySSLSession_getsetlist[] = {
 static TyType_Slot PySSLSession_slots[] = {
     {Py_tp_getset,PySSLSession_getsetlist},
     {Py_tp_richcompare, PySSLSession_richcompare},
-    {Py_tp_dealloc, PySSLSession_dealloc},
+    {Ty_tp_dealloc, PySSLSession_dealloc},
     {Py_tp_traverse, PySSLSession_traverse},
     {Py_tp_clear, PySSLSession_clear},
     {0, 0},
@@ -6826,16 +6826,16 @@ sslmodule_init_lock(TyObject *module)
 }
 
 static PyModuleDef_Slot sslmodule_slots[] = {
-    {Py_mod_exec, sslmodule_init_types},
-    {Py_mod_exec, sslmodule_init_exceptions},
-    {Py_mod_exec, sslmodule_init_socketapi},
-    {Py_mod_exec, sslmodule_init_errorcodes},
-    {Py_mod_exec, sslmodule_init_constants},
-    {Py_mod_exec, sslmodule_init_versioninfo},
-    {Py_mod_exec, sslmodule_init_strings},
-    {Py_mod_exec, sslmodule_init_lock},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, sslmodule_init_types},
+    {Ty_mod_exec, sslmodule_init_exceptions},
+    {Ty_mod_exec, sslmodule_init_socketapi},
+    {Ty_mod_exec, sslmodule_init_errorcodes},
+    {Ty_mod_exec, sslmodule_init_constants},
+    {Ty_mod_exec, sslmodule_init_versioninfo},
+    {Ty_mod_exec, sslmodule_init_strings},
+    {Ty_mod_exec, sslmodule_init_lock},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 

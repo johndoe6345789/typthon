@@ -70,7 +70,7 @@ _Ty_COMP_DIAG_PUSH
 #endif
 
 static PyModuleDef_Slot _testcext_slots[] = {
-    {Py_mod_exec, (void*)_testcext_exec},
+    {Ty_mod_exec, (void*)_testcext_exec},
     {0, NULL}
 };
 

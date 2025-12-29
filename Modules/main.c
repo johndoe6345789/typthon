@@ -2,13 +2,13 @@
 
 #include "Python.h"
 #include "pycore_call.h"          // _TyObject_CallNoArgs()
-#include "pycore_fileutils.h"     // struct _Py_stat_struct
+#include "pycore_fileutils.h"     // struct _Ty_stat_struct
 #include "pycore_import.h"        // _TyImport_Fini2()
 #include "pycore_initconfig.h"    // _PyArgv
 #include "pycore_interp.h"        // _PyInterpreterState.sysdict
 #include "pycore_long.h"          // _TyLong_GetOne()
 #include "pycore_pathconfig.h"    // _TyPathConfig_ComputeSysPath0()
-#include "pycore_pylifecycle.h"   // _Py_PreInitializeFromPyArgv()
+#include "pycore_pylifecycle.h"   // _Ty_PreInitializeFromPyArgv()
 #include "pycore_pystate.h"       // _TyInterpreterState_GET()
 #include "pycore_pythonrun.h"     // _PyRun_AnyFileObject()
 #include "pycore_unicodeobject.h" // _TyUnicode_Dedent()
@@ -42,10 +42,10 @@ pymain_init(const _PyArgv *args)
         return status;
     }
 
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
     TyPreConfig_InitPythonConfig(&preconfig);
 
-    status = _Py_PreInitializeFromPyArgv(&preconfig, args);
+    status = _Ty_PreInitializeFromPyArgv(&preconfig, args);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
@@ -391,8 +391,8 @@ pymain_run_file_obj(TyObject *program_name, TyObject *filename,
         }
     }
 
-    struct _Py_stat_struct sb;
-    if (_Py_fstat_noraise(fileno(fp), &sb) == 0 && S_ISDIR(sb.st_mode)) {
+    struct _Ty_stat_struct sb;
+    if (_Ty_fstat_noraise(fileno(fp), &sb) == 0 && S_ISDIR(sb.st_mode)) {
         TySys_FormatStderr("%S: %R is a directory, cannot continue\n",
                            program_name, filename);
         fclose(fp);
@@ -752,7 +752,7 @@ exit_sigint(void)
 }
 
 
-static void _Py_NO_RETURN
+static void _Ty_NO_RETURN
 pymain_exit_error(TyStatus status)
 {
     if (_TyStatus_IS_EXIT(status)) {

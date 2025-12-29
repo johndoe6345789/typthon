@@ -512,7 +512,7 @@ _Py_uop_sym_truthiness(JitOptContext *ctx, JitOptSymbol *sym)
         return !_TyLong_IsZero((PyLongObject *)value);
     }
     if (tp == &TyUnicode_Type) {
-        return value != &_Py_STR(empty);
+        return value != &_Ty_STR(empty);
     }
     if (tp == &TyBool_Type) {
         return value == Ty_True;

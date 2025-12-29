@@ -2762,9 +2762,9 @@ static TyGetSetDef PyCursesWindow_getsets[] = {
 };
 
 static TyType_Slot PyCursesWindow_Type_slots[] = {
-    {Py_tp_methods, PyCursesWindow_methods},
+    {Ty_tp_methods, PyCursesWindow_methods},
     {Py_tp_getset, PyCursesWindow_getsets},
-    {Py_tp_dealloc, PyCursesWindow_dealloc},
+    {Ty_tp_dealloc, PyCursesWindow_dealloc},
     {Py_tp_traverse, PyCursesWindow_traverse},
     {0, NULL}
 };
@@ -5329,9 +5329,9 @@ cursesmodule_exec(TyObject *module)
 /* Initialization function for the module */
 
 static PyModuleDef_Slot cursesmodule_slots[] = {
-    {Py_mod_exec, cursesmodule_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, cursesmodule_exec},
+    {Ty_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 

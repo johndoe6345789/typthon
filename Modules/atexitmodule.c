@@ -321,8 +321,8 @@ Two public functions, register and unregister, are defined.\n\
 ");
 
 static PyModuleDef_Slot atexitmodule_slots[] = {
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 

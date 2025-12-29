@@ -529,7 +529,7 @@ static int check_init_compat_config(int preinit)
     TyStatus status;
 
     if (preinit) {
-        PyPreConfig preconfig;
+        TyPreConfig preconfig;
         _TyPreConfig_InitCompatConfig(&preconfig);
 
         status = Ty_PreInitialize(&preconfig);
@@ -613,7 +613,7 @@ static int test_init_global_config(void)
 
 static int test_init_from_config(void)
 {
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
     _TyPreConfig_InitCompatConfig(&preconfig);
 
     putenv("PYTHONMALLOC=malloc_debug");
@@ -936,10 +936,10 @@ static int test_init_isolated_flag(void)
 }
 
 
-/* PyPreConfig.isolated=1, PyConfig.isolated=0 */
+/* TyPreConfig.isolated=1, PyConfig.isolated=0 */
 static int test_preinit_isolated1(void)
 {
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
     _TyPreConfig_InitCompatConfig(&preconfig);
 
     preconfig.isolated = 1;
@@ -962,10 +962,10 @@ static int test_preinit_isolated1(void)
 }
 
 
-/* PyPreConfig.isolated=0, PyConfig.isolated=1 */
+/* TyPreConfig.isolated=0, PyConfig.isolated=1 */
 static int test_preinit_isolated2(void)
 {
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
     _TyPreConfig_InitCompatConfig(&preconfig);
 
     preconfig.isolated = 0;
@@ -994,7 +994,7 @@ static int test_preinit_isolated2(void)
 
 static int test_preinit_dont_parse_argv(void)
 {
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
     TyPreConfig_InitIsolatedConfig(&preconfig);
 
     preconfig.isolated = 0;
@@ -1075,7 +1075,7 @@ static void set_all_global_config_variables(void)
 static int check_preinit_isolated_config(int preinit)
 {
     TyStatus status;
-    PyPreConfig *rt_preconfig;
+    TyPreConfig *rt_preconfig;
 
     /* environment variables must be ignored */
     set_all_env_vars();
@@ -1084,7 +1084,7 @@ static int check_preinit_isolated_config(int preinit)
     set_all_global_config_variables();
 
     if (preinit) {
-        PyPreConfig preconfig;
+        TyPreConfig preconfig;
         TyPreConfig_InitIsolatedConfig(&preconfig);
 
         status = Ty_PreInitialize(&preconfig);
@@ -1141,7 +1141,7 @@ static int check_init_python_config(int preinit)
 #endif
 
     if (preinit) {
-        PyPreConfig preconfig;
+        TyPreConfig preconfig;
         TyPreConfig_InitPythonConfig(&preconfig);
 
         TyStatus status = Ty_PreInitialize(&preconfig);
@@ -1176,7 +1176,7 @@ static int test_init_python_config(void)
 
 static int test_init_dont_configure_locale(void)
 {
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
     TyPreConfig_InitPythonConfig(&preconfig);
 
     preconfig.configure_locale = 0;
@@ -1638,7 +1638,7 @@ static int test_init_setpath(void)
 
 static int test_init_setpath_config(void)
 {
-    PyPreConfig preconfig;
+    TyPreConfig preconfig;
     TyPreConfig_InitPythonConfig(&preconfig);
 
     /* Explicitly preinitializes with Python preconfiguration to avoid
@@ -1881,7 +1881,7 @@ static int test_initconfig_get_api(void)
     assert(TyInitConfig_SetInt(config, "dev_mode", 1) == 0);
     assert(initconfig_getint(config, "dev_mode") == 1);
 
-    // test TyInitConfig_GetInt() on a PyPreConfig option
+    // test TyInitConfig_GetInt() on a TyPreConfig option
     assert(initconfig_getint(config, "utf8_mode") == 0);
     assert(TyInitConfig_SetInt(config, "utf8_mode", 1) == 0);
     assert(initconfig_getint(config, "utf8_mode") == 1);
