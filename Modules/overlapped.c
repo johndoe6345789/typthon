@@ -1056,9 +1056,9 @@ _overlapped_Overlapped_ReadFile_impl(OverlappedObject *self, HANDLE handle,
     }
 
 #if SIZEOF_SIZE_T <= SIZEOF_LONG
-    size = Py_MIN(size, (DWORD)PY_SSIZE_T_MAX);
+    size = Ty_MIN(size, (DWORD)PY_SSIZE_T_MAX);
 #endif
-    buf = TyBytes_FromStringAndSize(NULL, Py_MAX(size, 1));
+    buf = TyBytes_FromStringAndSize(NULL, Ty_MAX(size, 1));
     if (buf == NULL)
         return NULL;
 
@@ -1161,9 +1161,9 @@ _overlapped_Overlapped_WSARecv_impl(OverlappedObject *self, HANDLE handle,
     }
 
 #if SIZEOF_SIZE_T <= SIZEOF_LONG
-    size = Py_MIN(size, (DWORD)PY_SSIZE_T_MAX);
+    size = Ty_MIN(size, (DWORD)PY_SSIZE_T_MAX);
 #endif
-    buf = TyBytes_FromStringAndSize(NULL, Py_MAX(size, 1));
+    buf = TyBytes_FromStringAndSize(NULL, Ty_MAX(size, 1));
     if (buf == NULL)
         return NULL;
 
@@ -1671,23 +1671,23 @@ Overlapped_traverse(TyObject *op, visitproc visit, void *arg)
     switch (self->type) {
     case TYPE_READ:
     case TYPE_ACCEPT:
-        Py_VISIT(self->allocated_buffer);
+        Ty_VISIT(self->allocated_buffer);
         break;
     case TYPE_WRITE:
     case TYPE_WRITE_TO:
     case TYPE_READINTO:
         if (self->user_buffer.obj) {
-            Py_VISIT(&self->user_buffer.obj);
+            Ty_VISIT(&self->user_buffer.obj);
         }
         break;
     case TYPE_READ_FROM:
-        Py_VISIT(self->read_from.result);
-        Py_VISIT(self->read_from.allocated_buffer);
+        Ty_VISIT(self->read_from.result);
+        Ty_VISIT(self->read_from.allocated_buffer);
         break;
     case TYPE_READ_FROM_INTO:
-        Py_VISIT(self->read_from_into.result);
+        Ty_VISIT(self->read_from_into.result);
         if (self->read_from_into.user_buffer.obj) {
-            Py_VISIT(&self->read_from_into.user_buffer.obj);
+            Ty_VISIT(&self->read_from_into.user_buffer.obj);
         }
         break;
     }
@@ -1840,9 +1840,9 @@ _overlapped_Overlapped_WSARecvFrom_impl(OverlappedObject *self,
     }
 
 #if SIZEOF_SIZE_T <= SIZEOF_LONG
-    size = Py_MIN(size, (DWORD)PY_SSIZE_T_MAX);
+    size = Ty_MIN(size, (DWORD)PY_SSIZE_T_MAX);
 #endif
-    buf = TyBytes_FromStringAndSize(NULL, Py_MAX(size, 1));
+    buf = TyBytes_FromStringAndSize(NULL, Ty_MAX(size, 1));
     if (buf == NULL) {
         return NULL;
     }

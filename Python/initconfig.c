@@ -628,11 +628,11 @@ _TyErr_SetFromPyStatus(TyStatus status)
 }
 
 
-/* --- PyWideStringList ------------------------------------------------ */
+/* --- TyWideStringList ------------------------------------------------ */
 
 #ifndef NDEBUG
 int
-_TyWideStringList_CheckConsistency(const PyWideStringList *list)
+_TyWideStringList_CheckConsistency(const TyWideStringList *list)
 {
     assert(list->length >= 0);
     if (list->length != 0) {
@@ -647,7 +647,7 @@ _TyWideStringList_CheckConsistency(const PyWideStringList *list)
 
 
 static void
-_TyWideStringList_ClearEx(PyWideStringList *list,
+_TyWideStringList_ClearEx(TyWideStringList *list,
                           bool use_default_allocator)
 {
     assert(_TyWideStringList_CheckConsistency(list));
@@ -670,14 +670,14 @@ _TyWideStringList_ClearEx(PyWideStringList *list,
 }
 
 void
-_TyWideStringList_Clear(PyWideStringList *list)
+_TyWideStringList_Clear(TyWideStringList *list)
 {
     _TyWideStringList_ClearEx(list, false);
 }
 
 static int
-_TyWideStringList_CopyEx(PyWideStringList *list,
-                         const PyWideStringList *list2,
+_TyWideStringList_CopyEx(TyWideStringList *list,
+                         const TyWideStringList *list2,
                          bool use_default_allocator)
 {
     assert(_TyWideStringList_CheckConsistency(list));
@@ -688,7 +688,7 @@ _TyWideStringList_CopyEx(PyWideStringList *list,
         return 0;
     }
 
-    PyWideStringList copy = _TyWideStringList_INIT;
+    TyWideStringList copy = _TyWideStringList_INIT;
 
     size_t size = list2->length * sizeof(list2->items[0]);
     if (use_default_allocator) {
@@ -723,13 +723,13 @@ _TyWideStringList_CopyEx(PyWideStringList *list,
 }
 
 int
-_TyWideStringList_Copy(PyWideStringList *list, const PyWideStringList *list2)
+_TyWideStringList_Copy(TyWideStringList *list, const TyWideStringList *list2)
 {
     return _TyWideStringList_CopyEx(list, list2, false);
 }
 
 TyStatus
-PyWideStringList_Insert(PyWideStringList *list,
+PyWideStringList_Insert(TyWideStringList *list,
                         Ty_ssize_t index, const wchar_t *item)
 {
     Ty_ssize_t len = list->length;
@@ -770,14 +770,14 @@ PyWideStringList_Insert(PyWideStringList *list,
 
 
 TyStatus
-PyWideStringList_Append(PyWideStringList *list, const wchar_t *item)
+PyWideStringList_Append(TyWideStringList *list, const wchar_t *item)
 {
     return PyWideStringList_Insert(list, list->length, item);
 }
 
 
 TyStatus
-_TyWideStringList_Extend(PyWideStringList *list, const PyWideStringList *list2)
+_TyWideStringList_Extend(TyWideStringList *list, const TyWideStringList *list2)
 {
     for (Ty_ssize_t i = 0; i < list2->length; i++) {
         TyStatus status = PyWideStringList_Append(list, list2->items[i]);
@@ -790,7 +790,7 @@ _TyWideStringList_Extend(PyWideStringList *list, const PyWideStringList *list2)
 
 
 static int
-_TyWideStringList_Find(PyWideStringList *list, const wchar_t *item)
+_TyWideStringList_Find(TyWideStringList *list, const wchar_t *item)
 {
     for (Ty_ssize_t i = 0; i < list->length; i++) {
         if (wcscmp(list->items[i], item) == 0) {
@@ -802,7 +802,7 @@ _TyWideStringList_Find(PyWideStringList *list, const wchar_t *item)
 
 
 TyObject*
-_TyWideStringList_AsList(const PyWideStringList *list)
+_TyWideStringList_AsList(const TyWideStringList *list)
 {
     assert(_TyWideStringList_CheckConsistency(list));
 
@@ -824,7 +824,7 @@ _TyWideStringList_AsList(const PyWideStringList *list)
 
 
 static TyObject*
-_TyWideStringList_AsTuple(const PyWideStringList *list)
+_TyWideStringList_AsTuple(const TyWideStringList *list)
 {
     assert(_TyWideStringList_CheckConsistency(list));
 
@@ -857,7 +857,7 @@ _Ty_ClearArgcArgv(void)
 static int
 _Ty_SetArgcArgv(Ty_ssize_t argc, wchar_t * const *argv)
 {
-    const PyWideStringList argv_list = {.length = argc, .items = (wchar_t **)argv};
+    const TyWideStringList argv_list = {.length = argc, .items = (wchar_t **)argv};
 
     // XXX _PyRuntime.orig_argv only gets cleared by Ty_Main(),
     // so it currently leaks for embedders.
@@ -953,7 +953,7 @@ config_check_consistency(const TyConfig *config)
 
 /* Free memory allocated in config, but don't clear all attributes */
 void
-PyConfig_Clear(TyConfig *config)
+TyConfig_Clear(TyConfig *config)
 {
 #define CLEAR(ATTR) \
     do { \
@@ -1100,7 +1100,7 @@ config_init_defaults(TyConfig *config)
 
 
 void
-PyConfig_InitPythonConfig(TyConfig *config)
+TyConfig_InitTyphonConfig(TyConfig *config)
 {
     config_init_defaults(config);
 
@@ -1111,7 +1111,7 @@ PyConfig_InitPythonConfig(TyConfig *config)
 
 
 void
-PyConfig_InitIsolatedConfig(TyConfig *config)
+TyConfig_InitIsolatedConfig(TyConfig *config)
 {
     config_init_defaults(config);
 
@@ -1143,7 +1143,7 @@ PyConfig_InitIsolatedConfig(TyConfig *config)
 
 /* Copy str into *config_str (duplicate the string) */
 TyStatus
-PyConfig_SetString(TyConfig *config, wchar_t **config_str, const wchar_t *str)
+TyConfig_SetString(TyConfig *config, wchar_t **config_str, const wchar_t *str)
 {
     TyStatus status = _Ty_PreInitializeFromConfig(config, NULL);
     if (_TyStatus_EXCEPTION(status)) {
@@ -1205,7 +1205,7 @@ config_set_bytes_string(TyConfig *config, wchar_t **config_str,
    Pre-initialize Python if needed to ensure that encodings are properly
    configured. */
 TyStatus
-PyConfig_SetBytesString(TyConfig *config, wchar_t **config_str,
+TyConfig_SetBytesString(TyConfig *config, wchar_t **config_str,
                         const char *str)
 {
     return CONFIG_SET_BYTES_STR(config, config_str, str, "string");
@@ -1261,8 +1261,8 @@ _TyConfig_Copy(TyConfig *config, const TyConfig *config2)
         }
         case PyConfig_MEMBER_WSTR_LIST:
         {
-            if (_TyWideStringList_Copy((PyWideStringList*)member,
-                                       (const PyWideStringList*)member2) < 0) {
+            if (_TyWideStringList_Copy((TyWideStringList*)member,
+                                       (const TyWideStringList*)member2) < 0) {
                 return _TyStatus_NO_MEMORY();
             }
             break;
@@ -1395,7 +1395,7 @@ error:
 
 static int
 config_dict_get_wstrlist(TyObject *dict, const char *name, TyConfig *config,
-                         PyWideStringList *result)
+                         TyWideStringList *result)
 {
     TyObject *list = config_dict_get(dict, name);
     if (list == NULL) {
@@ -1409,7 +1409,7 @@ config_dict_get_wstrlist(TyObject *dict, const char *name, TyConfig *config,
         return -1;
     }
 
-    PyWideStringList wstrlist = _TyWideStringList_INIT;
+    TyWideStringList wstrlist = _TyWideStringList_INIT;
     Ty_ssize_t len = is_list ? TyList_GET_SIZE(list) : TyTuple_GET_SIZE(list);
     for (Ty_ssize_t i=0; i < len; i++) {
         TyObject *item = is_list ? TyList_GET_ITEM(list, i) : TyTuple_GET_ITEM(list, i);
@@ -1451,7 +1451,7 @@ error:
 
 static int
 config_dict_get_xoptions(TyObject *dict, const char *name, TyConfig *config,
-                         PyWideStringList *result)
+                         TyWideStringList *result)
 {
     TyObject *xoptions = config_dict_get(dict, name);
     if (xoptions == NULL) {
@@ -1466,7 +1466,7 @@ config_dict_get_xoptions(TyObject *dict, const char *name, TyConfig *config,
 
     Ty_ssize_t pos = 0;
     TyObject *key, *value;
-    PyWideStringList wstrlist = _TyWideStringList_INIT;
+    TyWideStringList wstrlist = _TyWideStringList_INIT;
     while (TyDict_Next(xoptions, &pos, &key, &value)) {
         TyObject *item;
 
@@ -1572,13 +1572,13 @@ _TyConfig_FromDict(TyConfig *config, TyObject *dict)
         {
             if (strcmp(spec->name, "xoptions") == 0) {
                 if (config_dict_get_xoptions(dict, spec->name, config,
-                                             (PyWideStringList*)member) < 0) {
+                                             (TyWideStringList*)member) < 0) {
                     return -1;
                 }
             }
             else {
                 if (config_dict_get_wstrlist(dict, spec->name, config,
-                                             (PyWideStringList*)member) < 0) {
+                                             (TyWideStringList*)member) < 0) {
                     return -1;
                 }
             }
@@ -2857,11 +2857,11 @@ config_complete_usage(const wchar_t* program)
 
 /* Parse the command line arguments */
 static TyStatus
-config_parse_cmdline(TyConfig *config, PyWideStringList *warnoptions,
+config_parse_cmdline(TyConfig *config, TyWideStringList *warnoptions,
                      Ty_ssize_t *opt_index)
 {
     TyStatus status;
-    const PyWideStringList *argv = &config->argv;
+    const TyWideStringList *argv = &config->argv;
     int print_version = 0;
     const wchar_t* program = config->program_name;
     if (!program && argv->length >= 1) {
@@ -3067,7 +3067,7 @@ config_parse_cmdline(TyConfig *config, PyWideStringList *warnoptions,
 
 /* Get warning options from PYTHONWARNINGS environment variable. */
 static TyStatus
-config_init_env_warnoptions(TyConfig *config, PyWideStringList *warnoptions)
+config_init_env_warnoptions(TyConfig *config, TyWideStringList *warnoptions)
 {
     TyStatus status;
     /* CONFIG_GET_ENV_DUP requires dest to be initialized to NULL */
@@ -3101,7 +3101,7 @@ config_init_env_warnoptions(TyConfig *config, PyWideStringList *warnoptions)
 
 
 static TyStatus
-warnoptions_append(TyConfig *config, PyWideStringList *options,
+warnoptions_append(TyConfig *config, TyWideStringList *options,
                    const wchar_t *option)
 {
     /* config_init_warnoptions() add existing config warnoptions at the end:
@@ -3121,8 +3121,8 @@ warnoptions_append(TyConfig *config, PyWideStringList *options,
 
 
 static TyStatus
-warnoptions_extend(TyConfig *config, PyWideStringList *options,
-                   const PyWideStringList *options2)
+warnoptions_extend(TyConfig *config, TyWideStringList *options,
+                   const TyWideStringList *options2)
 {
     const Ty_ssize_t len = options2->length;
     wchar_t *const *items = options2->items;
@@ -3139,12 +3139,12 @@ warnoptions_extend(TyConfig *config, PyWideStringList *options,
 
 static TyStatus
 config_init_warnoptions(TyConfig *config,
-                        const PyWideStringList *cmdline_warnoptions,
-                        const PyWideStringList *env_warnoptions,
-                        const PyWideStringList *sys_warnoptions)
+                        const TyWideStringList *cmdline_warnoptions,
+                        const TyWideStringList *env_warnoptions,
+                        const TyWideStringList *sys_warnoptions)
 {
     TyStatus status;
-    PyWideStringList options = _TyWideStringList_INIT;
+    TyWideStringList options = _TyWideStringList_INIT;
 
     /* Priority of warnings options, lowest to highest:
      *
@@ -3222,8 +3222,8 @@ error:
 static TyStatus
 config_update_argv(TyConfig *config, Ty_ssize_t opt_index)
 {
-    const PyWideStringList *cmdline_argv = &config->argv;
-    PyWideStringList config_argv = _TyWideStringList_INIT;
+    const TyWideStringList *cmdline_argv = &config->argv;
+    TyWideStringList config_argv = _TyWideStringList_INIT;
 
     /* Copy argv to be able to modify it (to force -c/-m) */
     if (cmdline_argv->length <= opt_index) {
@@ -3234,7 +3234,7 @@ config_update_argv(TyConfig *config, Ty_ssize_t opt_index)
         }
     }
     else {
-        PyWideStringList slice;
+        TyWideStringList slice;
         slice.length = cmdline_argv->length - opt_index;
         slice.items = &cmdline_argv->items[opt_index];
         if (_TyWideStringList_Copy(&config_argv, &slice) < 0) {
@@ -3338,9 +3338,9 @@ static TyStatus
 config_read_cmdline(TyConfig *config)
 {
     TyStatus status;
-    PyWideStringList cmdline_warnoptions = _TyWideStringList_INIT;
-    PyWideStringList env_warnoptions = _TyWideStringList_INIT;
-    PyWideStringList sys_warnoptions = _TyWideStringList_INIT;
+    TyWideStringList cmdline_warnoptions = _TyWideStringList_INIT;
+    TyWideStringList env_warnoptions = _TyWideStringList_INIT;
+    TyWideStringList sys_warnoptions = _TyWideStringList_INIT;
 
     if (config->parse_argv < 0) {
         config->parse_argv = 1;
@@ -3416,7 +3416,7 @@ _TyConfig_SetPyArgv(TyConfig *config, const _PyArgv *args)
 /* Set config.argv: decode argv using Ty_DecodeLocale(). Pre-initialize Python
    if needed to ensure that encodings are properly configured. */
 TyStatus
-PyConfig_SetBytesArgv(TyConfig *config, Ty_ssize_t argc, char * const *argv)
+TyConfig_SetBytesArgv(TyConfig *config, Ty_ssize_t argc, char * const *argv)
 {
     _PyArgv args = {
         .argc = argc,
@@ -3428,7 +3428,7 @@ PyConfig_SetBytesArgv(TyConfig *config, Ty_ssize_t argc, char * const *argv)
 
 
 TyStatus
-PyConfig_SetArgv(TyConfig *config, Ty_ssize_t argc, wchar_t * const *argv)
+TyConfig_SetArgv(TyConfig *config, Ty_ssize_t argc, wchar_t * const *argv)
 {
     _PyArgv args = {
         .argc = argc,
@@ -3440,7 +3440,7 @@ PyConfig_SetArgv(TyConfig *config, Ty_ssize_t argc, wchar_t * const *argv)
 
 
 TyStatus
-PyConfig_SetWideStringList(TyConfig *config, PyWideStringList *list,
+TyConfig_SetWideStringList(TyConfig *config, TyWideStringList *list,
                            Ty_ssize_t length, wchar_t **items)
 {
     TyStatus status = _Ty_PreInitializeFromConfig(config, NULL);
@@ -3448,7 +3448,7 @@ PyConfig_SetWideStringList(TyConfig *config, PyWideStringList *list,
         return status;
     }
 
-    PyWideStringList list2 = {.length = length, .items = items};
+    TyWideStringList list2 = {.length = length, .items = items};
     if (_TyWideStringList_Copy(list, &list2) < 0) {
         return _TyStatus_NO_MEMORY();
     }
@@ -3524,7 +3524,7 @@ done:
 
 
 TyStatus
-PyConfig_Read(TyConfig *config)
+TyConfig_Read(TyConfig *config)
 {
     return _TyConfig_Read(config, 0);
 }
@@ -3938,7 +3938,7 @@ PyInitConfig_GetStrList(PyInitConfig *config, const char *name, size_t *length, 
         return -1;
     }
 
-    PyWideStringList *list = raw_member;
+    TyWideStringList *list = raw_member;
     *length = list->length;
 
     *items = malloc(list->length * sizeof(char*));
@@ -4094,10 +4094,10 @@ PyInitConfig_SetStr(PyInitConfig *config, const char *name, const char* value)
 
 
 static int
-_TyWideStringList_FromUTF8(PyInitConfig *config, PyWideStringList *list,
+_TyWideStringList_FromUTF8(PyInitConfig *config, TyWideStringList *list,
                            Ty_ssize_t length, char * const *items)
 {
-    PyWideStringList wlist = _TyWideStringList_INIT;
+    TyWideStringList wlist = _TyWideStringList_INIT;
     size_t size = sizeof(wchar_t*) * length;
     wlist.items = (wchar_t **)TyMem_RawMalloc(size);
     if (wlist.items == NULL) {
@@ -4135,7 +4135,7 @@ PyInitConfig_SetStrList(PyInitConfig *config, const char *name,
         initconfig_set_error(config, "config option type is not strings list");
         return -1;
     }
-    PyWideStringList *list = raw_member;
+    TyWideStringList *list = raw_member;
     if (_TyWideStringList_FromUTF8(config, list, length, items) < 0) {
         return -1;
     }
@@ -4371,7 +4371,7 @@ config_get(const TyConfig *config, const PyConfigSpec *spec,
             return _TyConfig_CreateXOptionsDict(config);
         }
         else {
-            const PyWideStringList *list = (const PyWideStringList *)member;
+            const TyWideStringList *list = (const TyWideStringList *)member;
             return _TyWideStringList_AsTuple(list);
         }
     }
@@ -4409,7 +4409,7 @@ config_unknown_name_error(const char *name)
 
 
 TyObject*
-PyConfig_Get(const char *name)
+TyConfig_Get(const char *name)
 {
     const PyConfigSpec *spec = config_find_spec(name);
     if (spec != NULL) {
@@ -4429,7 +4429,7 @@ PyConfig_Get(const char *name)
 
 
 int
-PyConfig_GetInt(const char *name, int *value)
+TyConfig_GetInt(const char *name, int *value)
 {
     assert(!TyErr_Occurred());
 

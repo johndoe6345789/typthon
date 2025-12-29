@@ -343,7 +343,7 @@ Ty_GetProgramName(void)
    Raise an exception and return -1 on error.
    */
 int
-_TyPathConfig_ComputeSysPath0(const PyWideStringList *argv, TyObject **path0_p)
+_TyPathConfig_ComputeSysPath0(const TyWideStringList *argv, TyObject **path0_p)
 {
     assert(_TyWideStringList_CheckConsistency(argv));
 

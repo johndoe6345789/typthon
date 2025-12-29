@@ -2331,8 +2331,8 @@ static int
 PySSL_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PySSLSocket *self = PySSLSocket_CAST(op);
-    Py_VISIT(self->exc);
-    Py_VISIT(Ty_TYPE(self));
+    Ty_VISIT(self->exc);
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
@@ -3294,9 +3294,9 @@ static int
 context_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PySSLContext *self = PySSLContext_CAST(op);
-    Py_VISIT(self->set_sni_cb);
-    Py_VISIT(self->msg_cb);
-    Py_VISIT(Ty_TYPE(self));
+    Ty_VISIT(self->set_sni_cb);
+    Ty_VISIT(self->msg_cb);
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
@@ -3799,7 +3799,7 @@ _ssl__SSLContext_options_get_impl(PySSLContext *self)
 /*[clinic end generated code: output=3dfa6a74837f525b input=f5a2805c7cda6f25]*/
 {
     uint64_t options = SSL_CTX_get_options(self->ctx);
-    Py_BUILD_ASSERT(sizeof(unsigned long long) >= sizeof(options));
+    Ty_BUILD_ASSERT(sizeof(unsigned long long) >= sizeof(options));
     return TyLong_FromUnsignedLongLong(options);
 }
 
@@ -3823,7 +3823,7 @@ _ssl__SSLContext_options_set_impl(PySSLContext *self, TyObject *value)
     if (!TyArg_Parse(value, "O&", _TyLong_UnsignedLongLong_Converter, &new_opts_arg)) {
         return -1;
     }
-    Py_BUILD_ASSERT(sizeof(new_opts) >= sizeof(new_opts_arg));
+    Ty_BUILD_ASSERT(sizeof(new_opts) >= sizeof(new_opts_arg));
     new_opts = (uint64_t)new_opts_arg;
 
     opts = SSL_CTX_get_options(self->ctx);
@@ -5327,7 +5327,7 @@ _ssl_MemoryBIO_impl(TyTypeObject *type)
 static int
 memory_bio_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    Py_VISIT(Ty_TYPE(self));
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
@@ -5395,7 +5395,7 @@ _ssl_MemoryBIO_read_impl(PySSLMemoryBIO *self, int len)
     int avail, nbytes;
     TyObject *result;
 
-    avail = (int)Py_MIN(BIO_ctrl_pending(self->bio), INT_MAX);
+    avail = (int)Ty_MIN(BIO_ctrl_pending(self->bio), INT_MAX);
     if ((len < 0) || (len > avail))
         len = avail;
 
@@ -5594,8 +5594,8 @@ static int
 PySSLSession_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PySSLSession *self = PySSLSession_CAST(op);
-    Py_VISIT(self->ctx);
-    Py_VISIT(Ty_TYPE(self));
+    Ty_VISIT(self->ctx);
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
@@ -5747,7 +5747,7 @@ _ssl_RAND_add_impl(TyObject *module, Ty_buffer *view, double entropy)
     buf = (const char *)view->buf;
     len = view->len;
     do {
-        written = Py_MIN(len, INT_MAX);
+        written = Ty_MIN(len, INT_MAX);
         RAND_add(buf, (int)written, entropy);
         buf += written;
         len -= written;
@@ -6380,7 +6380,7 @@ sslmodule_init_socketapi(TyObject *module)
 static int
 sslmodule_add_option(TyObject *m, const char *name, uint64_t value)
 {
-    Py_BUILD_ASSERT(sizeof(unsigned long long) >= sizeof(value));
+    Ty_BUILD_ASSERT(sizeof(unsigned long long) >= sizeof(value));
     return TyModule_Add(m, name, TyLong_FromUnsignedLongLong(value));
 }
 
@@ -6844,21 +6844,21 @@ sslmodule_traverse(TyObject *m, visitproc visit, void *arg)
 {
     _sslmodulestate *state = get_ssl_state(m);
 
-    Py_VISIT(state->PySSLContext_Type);
-    Py_VISIT(state->PySSLSocket_Type);
-    Py_VISIT(state->PySSLMemoryBIO_Type);
-    Py_VISIT(state->PySSLSession_Type);
-    Py_VISIT(state->PySSLCertificate_Type);
-    Py_VISIT(state->PySSLErrorObject);
-    Py_VISIT(state->PySSLCertVerificationErrorObject);
-    Py_VISIT(state->PySSLZeroReturnErrorObject);
-    Py_VISIT(state->PySSLWantReadErrorObject);
-    Py_VISIT(state->PySSLWantWriteErrorObject);
-    Py_VISIT(state->PySSLSyscallErrorObject);
-    Py_VISIT(state->PySSLEOFErrorObject);
-    Py_VISIT(state->err_codes_to_names);
-    Py_VISIT(state->lib_codes_to_names);
-    Py_VISIT(state->Sock_Type);
+    Ty_VISIT(state->PySSLContext_Type);
+    Ty_VISIT(state->PySSLSocket_Type);
+    Ty_VISIT(state->PySSLMemoryBIO_Type);
+    Ty_VISIT(state->PySSLSession_Type);
+    Ty_VISIT(state->PySSLCertificate_Type);
+    Ty_VISIT(state->PySSLErrorObject);
+    Ty_VISIT(state->PySSLCertVerificationErrorObject);
+    Ty_VISIT(state->PySSLZeroReturnErrorObject);
+    Ty_VISIT(state->PySSLWantReadErrorObject);
+    Ty_VISIT(state->PySSLWantWriteErrorObject);
+    Ty_VISIT(state->PySSLSyscallErrorObject);
+    Ty_VISIT(state->PySSLEOFErrorObject);
+    Ty_VISIT(state->err_codes_to_names);
+    Ty_VISIT(state->lib_codes_to_names);
+    Ty_VISIT(state->Sock_Type);
 
     return 0;
 }

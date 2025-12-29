@@ -2541,7 +2541,7 @@ long_from_binary_base(const char *start, const char *end, Ty_ssize_t digits, int
         if (*p == '_') {
             continue;
         }
-        k = (int)_TyLong_DigitValue[Py_CHARMASK(*p)];
+        k = (int)_TyLong_DigitValue[Ty_CHARMASK(*p)];
         assert(k >= 0 && k < base);
         accum |= (twodigits)k << bits_in_accum;
         bits_in_accum += bits_per_char;
@@ -2790,14 +2790,14 @@ long_from_non_binary_base(const char *start, const char *end, Ty_ssize_t digits,
             continue;
         }
         /* grab up to convwidth digits from the input string */
-        c = (digit)_TyLong_DigitValue[Py_CHARMASK(*p++)];
+        c = (digit)_TyLong_DigitValue[Ty_CHARMASK(*p++)];
         for (i = 1; i < convwidth && p != end; ++p) {
             if (*p == '_') {
                 continue;
             }
             i++;
             c = (twodigits)(c *  base +
-                            (int)_TyLong_DigitValue[Py_CHARMASK(*p)]);
+                            (int)_TyLong_DigitValue[Ty_CHARMASK(*p)]);
             assert(c < TyLong_BASE);
         }
 
@@ -2891,7 +2891,7 @@ long_from_string_base(const char **str, int base, PyLongObject **res)
         return -1;
     }
     /* Verify all characters are digits and underscores. */
-    while (_TyLong_DigitValue[Py_CHARMASK(*p)] < base || *p == '_') {
+    while (_TyLong_DigitValue[Ty_CHARMASK(*p)] < base || *p == '_') {
         if (*p == '_') {
             /* Double underscore not allowed. */
             if (prev == '_') {
@@ -2915,7 +2915,7 @@ long_from_string_base(const char **str, int base, PyLongObject **res)
         return -1;
     }
     /* Allow only trailing whitespace after `end` */
-    while (*p && Py_ISSPACE(*p)) {
+    while (*p && Ty_ISSPACE(*p)) {
         p++;
     }
     *str = p;
@@ -2977,7 +2977,7 @@ TyLong_FromString(const char *str, char **pend, int base)
                         "int() arg 2 must be >= 2 and <= 36");
         return NULL;
     }
-    while (*str != '\0' && Py_ISSPACE(*str)) {
+    while (*str != '\0' && Ty_ISSPACE(*str)) {
         ++str;
     }
     if (*str == '+') {
@@ -3084,7 +3084,7 @@ _TyLong_FromBytes(const char *s, Ty_ssize_t len, int base)
     if (end == NULL || (result != NULL && end == s + len))
         return result;
     Ty_XDECREF(result);
-    strobj = TyBytes_FromStringAndSize(s, Py_MIN(len, 200));
+    strobj = TyBytes_FromStringAndSize(s, Ty_MIN(len, 200));
     if (strobj != NULL) {
         TyErr_Format(TyExc_ValueError,
                      "invalid literal for int() with base %d: %.200R",
@@ -3946,7 +3946,7 @@ kmul_split(PyLongObject *n,
     Ty_ssize_t size_lo, size_hi;
     const Ty_ssize_t size_n = _TyLong_DigitCount(n);
 
-    size_lo = Py_MIN(size_n, size);
+    size_lo = Ty_MIN(size_n, size);
     size_hi = size_n - size_lo;
 
     if ((hi = long_alloc(size_hi)) == NULL)
@@ -4214,7 +4214,7 @@ k_lopsided_mul(PyLongObject *a, PyLongObject *b)
     nbdone = 0;
     while (bsize > 0) {
         PyLongObject *product;
-        const Ty_ssize_t nbtouse = Py_MIN(bsize, asize);
+        const Ty_ssize_t nbtouse = Ty_MIN(bsize, asize);
 
         /* Multiply the next slice of b by a. */
         memcpy(bslice->long_value.ob_digit, b->long_value.ob_digit + nbdone,
@@ -4656,7 +4656,7 @@ long_true_divide(TyObject *v, TyObject *w)
         goto underflow_or_zero;
 
     /* Choose value for shift; see comments for step 1 above. */
-    shift = Py_MAX(diff, DBL_MIN_EXP) - DBL_MANT_DIG - 2;
+    shift = Ty_MAX(diff, DBL_MIN_EXP) - DBL_MANT_DIG - 2;
 
     inexact = 0;
 
@@ -4726,7 +4726,7 @@ long_true_divide(TyObject *v, TyObject *w)
     x_bits = (x_size-1)*TyLong_SHIFT+bit_length_digit(x->long_value.ob_digit[x_size-1]);
 
     /* The number of extra bits that have to be rounded away. */
-    extra_bits = Py_MAX(x_bits, DBL_MIN_EXP - shift) - DBL_MANT_DIG;
+    extra_bits = Ty_MAX(x_bits, DBL_MIN_EXP - shift) - DBL_MANT_DIG;
     assert(extra_bits == 2 || extra_bits == 3);
 
     /* Round by directly modifying the low digit of x. */
@@ -5827,8 +5827,8 @@ simple:
 #else
 # error "_TyLong_GCD"
 #endif
-    x = Py_ABS(x);
-    y = Py_ABS(y);
+    x = Ty_ABS(x);
+    y = Ty_ABS(y);
     Ty_DECREF(a);
     Ty_DECREF(b);
 
@@ -6180,9 +6180,9 @@ static Ty_ssize_t
 int___sizeof___impl(TyObject *self)
 /*[clinic end generated code: output=3303f008eaa6a0a5 input=9b51620c76fc4507]*/
 {
-    /* using Py_MAX(..., 1) because we always allocate space for at least
+    /* using Ty_MAX(..., 1) because we always allocate space for at least
        one digit, even though the integer zero has a digit count of 0 */
-    Ty_ssize_t ndigits = Py_MAX(_TyLong_DigitCount((PyLongObject *)self), 1);
+    Ty_ssize_t ndigits = Ty_MAX(_TyLong_DigitCount((PyLongObject *)self), 1);
     return Ty_TYPE(self)->tp_basicsize + Ty_TYPE(self)->tp_itemsize * ndigits;
 }
 
@@ -6783,7 +6783,7 @@ TyLong_Export(TyObject *obj, PyLongExport *export_long)
     // Windows has 32-bit long, so use 64-bit long long instead
     long long value = TyLong_AsLongLongAndOverflow(obj, &overflow);
 #endif
-    Py_BUILD_ASSERT(sizeof(value) == sizeof(int64_t));
+    Ty_BUILD_ASSERT(sizeof(value) == sizeof(int64_t));
     // the function cannot fail since obj is a PyLongObject
     assert(!(value == -1 && TyErr_Occurred()));
 

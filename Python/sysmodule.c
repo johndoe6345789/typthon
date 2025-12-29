@@ -2970,7 +2970,7 @@ _clear_preinit_entries(_Ty_PreInitEntry *optionlist)
 
 
 TyStatus
-_TySys_ReadPreinitWarnOptions(PyWideStringList *options)
+_TySys_ReadPreinitWarnOptions(TyWideStringList *options)
 {
     TyStatus status;
     _Ty_PreInitEntry entry;
@@ -4259,7 +4259,7 @@ TySys_SetArgvEx(int argc, wchar_t **argv, int updatepath)
     if (updatepath) {
         /* If argv[0] is not '-c' nor '-m', prepend argv[0] to sys.path.
            If argv[0] is a symlink, use the real path. */
-        const PyWideStringList argv_list = {.length = argc, .items = argv};
+        const TyWideStringList argv_list = {.length = argc, .items = argv};
         TyObject *path0 = NULL;
         if (_TyPathConfig_ComputeSysPath0(&argv_list, &path0)) {
             if (path0 == NULL) {

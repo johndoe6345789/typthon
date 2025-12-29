@@ -513,7 +513,7 @@ static void config_set_argv(TyConfig *config, Ty_ssize_t argc, wchar_t * const *
 
 
 static void
-config_set_wide_string_list(TyConfig *config, PyWideStringList *list,
+config_set_wide_string_list(TyConfig *config, TyWideStringList *list,
                             Ty_ssize_t length, wchar_t **items)
 {
     TyStatus status = TyConfig_SetWideStringList(config, list, length, items);

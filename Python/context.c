@@ -528,8 +528,8 @@ static int
 context_tp_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PyContext *self = _TyContext_CAST(op);
-    Py_VISIT(self->ctx_prev);
-    Py_VISIT(self->ctx_vars);
+    Ty_VISIT(self->ctx_prev);
+    Ty_VISIT(self->ctx_vars);
     return 0;
 }
 
@@ -945,8 +945,8 @@ static int
 contextvar_tp_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PyContextVar *self = _PyContextVar_CAST(op);
-    Py_VISIT(self->var_name);
-    Py_VISIT(self->var_default);
+    Ty_VISIT(self->var_name);
+    Ty_VISIT(self->var_default);
     return 0;
 }
 
@@ -1160,9 +1160,9 @@ static int
 token_tp_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PyContextToken *self = _PyContextToken_CAST(op);
-    Py_VISIT(self->tok_ctx);
-    Py_VISIT(self->tok_var);
-    Py_VISIT(self->tok_oldval);
+    Ty_VISIT(self->tok_ctx);
+    Ty_VISIT(self->tok_var);
+    Ty_VISIT(self->tok_oldval);
     return 0;
 }
 

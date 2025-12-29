@@ -26,18 +26,18 @@ PyAPI_FUNC(int) TyStatus_IsError(TyStatus err);
 PyAPI_FUNC(int) TyStatus_IsExit(TyStatus err);
 PyAPI_FUNC(int) TyStatus_Exception(TyStatus err);
 
-/* --- PyWideStringList ------------------------------------------------ */
+/* --- TyWideStringList ------------------------------------------------ */
 
 typedef struct {
     /* If length is greater than zero, items must be non-NULL
        and all items strings must be non-NULL */
     Ty_ssize_t length;
     wchar_t **items;
-} PyWideStringList;
+} TyWideStringList;
 
-PyAPI_FUNC(TyStatus) TyWideStringList_Append(PyWideStringList *list,
+PyAPI_FUNC(TyStatus) TyWideStringList_Append(TyWideStringList *list,
     const wchar_t *item);
-PyAPI_FUNC(TyStatus) TyWideStringList_Insert(PyWideStringList *list,
+PyAPI_FUNC(TyStatus) TyWideStringList_Insert(TyWideStringList *list,
     Ty_ssize_t index,
     const wchar_t *item);
 
@@ -154,10 +154,10 @@ typedef struct TyConfig {
     wchar_t *filesystem_errors;
     wchar_t *pycache_prefix;
     int parse_argv;
-    PyWideStringList orig_argv;
-    PyWideStringList argv;
-    PyWideStringList xoptions;
-    PyWideStringList warnoptions;
+    TyWideStringList orig_argv;
+    TyWideStringList argv;
+    TyWideStringList xoptions;
+    TyWideStringList warnoptions;
     int site_import;
     int bytes_warning;
     int warn_default_encoding;
@@ -201,7 +201,7 @@ typedef struct TyConfig {
 
     /* --- Path configuration outputs ----------- */
     int module_search_paths_set;
-    PyWideStringList module_search_paths;
+    TyWideStringList module_search_paths;
     wchar_t *stdlib_dir;
     wchar_t *executable;
     wchar_t *base_executable;
@@ -263,7 +263,7 @@ PyAPI_FUNC(TyStatus) TyConfig_SetArgv(TyConfig *config,
     Ty_ssize_t argc,
     wchar_t * const *argv);
 PyAPI_FUNC(TyStatus) TyConfig_SetWideStringList(TyConfig *config,
-    PyWideStringList *list,
+    TyWideStringList *list,
     Ty_ssize_t length, wchar_t **items);
 
 

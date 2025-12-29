@@ -849,9 +849,9 @@ PyCursesWindow_dealloc(TyObject *self)
 static int
 PyCursesWindow_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    Py_VISIT(Ty_TYPE(self));
+    Ty_VISIT(Ty_TYPE(self));
     PyCursesWindowObject *wo = (PyCursesWindowObject *)self;
-    Py_VISIT(wo->orig);
+    Ty_VISIT(wo->orig);
     return 0;
 }
 
@@ -1750,7 +1750,7 @@ PyCursesWindow_getstr(TyObject *op, TyObject *args)
         return NULL;
     }
 
-    n = Py_MIN(n, max_buf_size - 1);
+    n = Ty_MIN(n, max_buf_size - 1);
     res = TyBytes_FromStringAndSize(NULL, n + 1);
     if (res == NULL) {
         return NULL;
@@ -1935,7 +1935,7 @@ PyCursesWindow_instr(TyObject *op, TyObject *args)
         return NULL;
     }
 
-    n = Py_MIN(n, max_buf_size - 1);
+    n = Ty_MIN(n, max_buf_size - 1);
     res = TyBytes_FromStringAndSize(NULL, n + 1);
     if (res == NULL) {
         return NULL;
@@ -5027,7 +5027,7 @@ curses_capi_capsule_traverse(TyObject *op, visitproc visit, void *arg)
 {
     void **capi_ptr = PyCapsule_GetPointer(op, PyCurses_CAPSULE_NAME);
     assert(capi_ptr != NULL);
-    Py_VISIT(capi_ptr[0]);  // visit curses window type
+    Ty_VISIT(capi_ptr[0]);  // visit curses window type
     return 0;
 }
 
@@ -5064,8 +5064,8 @@ static int
 cursesmodule_traverse(TyObject *mod, visitproc visit, void *arg)
 {
     cursesmodule_state *state = get_cursesmodule_state(mod);
-    Py_VISIT(state->error);
-    Py_VISIT(state->window_type);
+    Ty_VISIT(state->error);
+    Ty_VISIT(state->window_type);
     return 0;
 }
 

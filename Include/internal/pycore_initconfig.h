@@ -48,19 +48,19 @@ extern "C" {
 PyAPI_FUNC(void) _TyErr_SetFromPyStatus(TyStatus status);
 
 
-/* --- PyWideStringList ------------------------------------------------ */
+/* --- TyWideStringList ------------------------------------------------ */
 
-#define _TyWideStringList_INIT (PyWideStringList){.length = 0, .items = NULL}
+#define _TyWideStringList_INIT (TyWideStringList){.length = 0, .items = NULL}
 
 #ifndef NDEBUG
-extern int _TyWideStringList_CheckConsistency(const PyWideStringList *list);
+extern int _TyWideStringList_CheckConsistency(const TyWideStringList *list);
 #endif
-extern void _TyWideStringList_Clear(PyWideStringList *list);
-extern int _TyWideStringList_Copy(PyWideStringList *list,
-    const PyWideStringList *list2);
-extern TyStatus _TyWideStringList_Extend(PyWideStringList *list,
-    const PyWideStringList *list2);
-extern TyObject* _TyWideStringList_AsList(const PyWideStringList *list);
+extern void _TyWideStringList_Clear(TyWideStringList *list);
+extern int _TyWideStringList_Copy(TyWideStringList *list,
+    const TyWideStringList *list2);
+extern TyStatus _TyWideStringList_Extend(TyWideStringList *list,
+    const TyWideStringList *list2);
+extern TyObject* _TyWideStringList_AsList(const TyWideStringList *list);
 
 
 /* --- _PyArgv ---------------------------------------------------- */
@@ -73,7 +73,7 @@ typedef struct _PyArgv {
 } _PyArgv;
 
 extern TyStatus _PyArgv_AsWstrList(const _PyArgv *args,
-    PyWideStringList *list);
+    TyWideStringList *list);
 
 
 /* --- Helper functions ------------------------------------------- */
@@ -82,7 +82,7 @@ extern int _Ty_str_to_int(
     const char *str,
     int *result);
 extern const wchar_t* _Ty_get_xoption(
-    const PyWideStringList *xoptions,
+    const TyWideStringList *xoptions,
     const wchar_t *name);
 extern const char* _Ty_GetEnv(
     int use_environment,
@@ -99,8 +99,8 @@ extern void _Ty_ClearArgcArgv(void);
 /* --- _PyPreCmdline ------------------------------------------------- */
 
 typedef struct {
-    PyWideStringList argv;
-    PyWideStringList xoptions;     /* "-X value" option */
+    TyWideStringList argv;
+    TyWideStringList xoptions;     /* "-X value" option */
     int isolated;             /* -I option */
     int use_environment;      /* -E option */
     int dev_mode;             /* -X dev and PYTHONDEVMODE */

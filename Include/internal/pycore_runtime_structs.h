@@ -229,7 +229,7 @@ struct pyruntimestate {
     /* Used instead of TyThreadState.trash when there is not current tstate. */
     Ty_tss_t trashTSSkey;
 
-    PyWideStringList orig_argv;
+    TyWideStringList orig_argv;
 
     struct _parser_runtime_state parser;
 

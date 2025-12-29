@@ -92,7 +92,7 @@ _Py_bswap64(uint64_t word)
 // use the x86 POPCNT instruction if the target architecture has SSE4a or
 // newer.
 static inline int
-_Py_popcount32(uint32_t x)
+_Ty_popcount32(uint32_t x)
 {
 #if (defined(__clang__) || defined(__GNUC__))
 
@@ -143,7 +143,7 @@ _Py_popcount32(uint32_t x)
 // Return the index of the most significant 1 bit in 'x'. This is the smallest
 // integer k such that x < 2**k. Equivalent to floor(log2(x)) + 1 for x != 0.
 static inline int
-_Py_bit_length(unsigned long x)
+_Ty_bit_length(unsigned long x)
 {
 #if (defined(__clang__) || defined(__GNUC__))
     if (x != 0) {

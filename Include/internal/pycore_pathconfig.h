@@ -16,7 +16,7 @@ extern TyStatus _TyPathConfig_UpdateGlobal(const TyConfig *config);
 extern const wchar_t * _TyPathConfig_GetGlobalModuleSearchPath(void);
 
 extern int _TyPathConfig_ComputeSysPath0(
-    const PyWideStringList *argv,
+    const TyWideStringList *argv,
     TyObject **path0);
 
 

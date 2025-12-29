@@ -274,7 +274,7 @@ vgetargs1_impl(TyObject *compat_args, TyObject *const *stack, Ty_ssize_t nargs, 
             break;
         default:
             if (level == 0) {
-                if (Py_ISALPHA(c))
+                if (Ty_ISALPHA(c))
                     if (c != 'e') /* skip encoded */
                         max++;
             }
@@ -359,7 +359,7 @@ vgetargs1_impl(TyObject *compat_args, TyObject *const *stack, Ty_ssize_t nargs, 
         }
     }
 
-    if (*format != '\0' && !Py_ISALPHA(*format) &&
+    if (*format != '\0' && !Ty_ISALPHA(*format) &&
         *format != '(' &&
         *format != '|' && *format != ':' && *format != ';') {
         TyErr_Format(TyExc_SystemError,
@@ -493,7 +493,7 @@ converttuple(TyObject *arg, const char **p_format, va_list *p_va, int flags,
         else if (c == ':' || c == ';' || c == '\0')
             break;
         else {
-            if (level == 0 && Py_ISALPHA(c)) {
+            if (level == 0 && Ty_ISALPHA(c)) {
                 n++;
             }
             if (c == 'e' && (*format == 's' || *format == 't')) {
@@ -1853,9 +1853,9 @@ vgetargskeywords(TyObject *args, TyObject *kwargs, const char *format,
                      " (%zd given)",
                      (fname == NULL) ? "function" : fname,
                      (fname == NULL) ? "" : "()",
-                     (Py_MIN(pos, min) < i) ? "at least" : "exactly",
-                     Py_MIN(pos, min),
-                     Py_MIN(pos, min) == 1 ? "" : "s",
+                     (Ty_MIN(pos, min) < i) ? "at least" : "exactly",
+                     Ty_MIN(pos, min),
+                     Ty_MIN(pos, min) == 1 ? "" : "s",
                      nargs);
         return cleanreturn(0, &freelist);
     }
@@ -2034,8 +2034,8 @@ parse_format(const char *format, int total, int npos,
             return -1;
         }
     }
-    min = Py_MIN(min, total);
-    max = Py_MIN(max, total);
+    min = Ty_MIN(min, total);
+    max = Ty_MIN(max, total);
 
     if (!IS_END_OF_FORMAT(*format) && (*format != '|') && (*format != '$')) {
         TyErr_Format(TyExc_SystemError,
@@ -2348,7 +2348,7 @@ vgetargskeywordsfast_impl(TyObject *const *args, Ty_ssize_t nargs,
         if (i < parser->min) {
             /* Less arguments than required */
             if (i < pos) {
-                Ty_ssize_t min = Py_MIN(pos, parser->min);
+                Ty_ssize_t min = Ty_MIN(pos, parser->min);
                 TyErr_Format(TyExc_TypeError,
                              "%.200s%s takes %s %d positional argument%s"
                              " (%zd given)",
@@ -2479,7 +2479,7 @@ _TyArg_UnpackKeywords(TyObject *const *args, Ty_ssize_t nargs,
 
     kwtuple = parser->kwtuple;
     posonly = parser->pos;
-    minposonly = Py_MIN(posonly, minpos);
+    minposonly = Ty_MIN(posonly, minpos);
     maxargs = posonly + (int)TyTuple_GET_SIZE(kwtuple);
 
     if (kwargs != NULL) {
@@ -2542,7 +2542,7 @@ _TyArg_UnpackKeywords(TyObject *const *args, Ty_ssize_t nargs,
     }
 
     if (varpos) {
-        nargs = Py_MIN(maxpos, nargs);
+        nargs = Ty_MIN(maxpos, nargs);
     }
     /* copy tuple args */
     for (i = 0; i < nargs; i++) {
@@ -2550,7 +2550,7 @@ _TyArg_UnpackKeywords(TyObject *const *args, Ty_ssize_t nargs,
     }
 
     /* copy keyword args using kwtuple to drive process */
-    for (i = Py_MAX((int)nargs, posonly); i < maxargs; i++) {
+    for (i = Ty_MAX((int)nargs, posonly); i < maxargs; i++) {
         TyObject *current_arg;
         if (nkwargs) {
             keyword = TyTuple_GET_ITEM(kwtuple, i - posonly);

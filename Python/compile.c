@@ -1529,7 +1529,7 @@ _PyCompile_CleanDoc(TyObject *doc)
         const char *s = p;
         while (*p == ' ') p++;
         if (p < pend && *p != '\n') {
-            margin = Py_MIN(margin, p - s);
+            margin = Ty_MIN(margin, p - s);
         }
         while (p < pend && *p++ != '\n') {
         }

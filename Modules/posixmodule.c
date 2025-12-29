@@ -2557,24 +2557,24 @@ static int
 _posix_traverse(TyObject *module, visitproc visit, void *arg)
 {
     _posixstate *state = get_posix_state(module);
-    Py_VISIT(state->billion);
-    Py_VISIT(state->DirEntryType);
-    Py_VISIT(state->ScandirIteratorType);
+    Ty_VISIT(state->billion);
+    Ty_VISIT(state->DirEntryType);
+    Ty_VISIT(state->ScandirIteratorType);
 #if defined(HAVE_SCHED_SETPARAM) || defined(HAVE_SCHED_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDPARAM)
-    Py_VISIT(state->SchedParamType);
+    Ty_VISIT(state->SchedParamType);
 #endif
-    Py_VISIT(state->StatResultType);
-    Py_VISIT(state->StatVFSResultType);
-    Py_VISIT(state->TerminalSizeType);
-    Py_VISIT(state->TimesResultType);
-    Py_VISIT(state->UnameResultType);
+    Ty_VISIT(state->StatResultType);
+    Ty_VISIT(state->StatVFSResultType);
+    Ty_VISIT(state->TerminalSizeType);
+    Ty_VISIT(state->TimesResultType);
+    Ty_VISIT(state->UnameResultType);
 #if defined(HAVE_WAITID)
-    Py_VISIT(state->WaitidResultType);
+    Ty_VISIT(state->WaitidResultType);
 #endif
 #if defined(HAVE_WAIT3) || defined(HAVE_WAIT4)
-    Py_VISIT(state->struct_rusage);
+    Ty_VISIT(state->struct_rusage);
 #endif
-    Py_VISIT(state->st_mode);
+    Ty_VISIT(state->st_mode);
     return 0;
 }
 
@@ -5183,7 +5183,7 @@ os__getvolumepathname_impl(TyObject *module, path_t *path)
     BOOL ret;
 
     /* Volume path should be shorter than entire path */
-    buflen = Py_MAX(path->length, MAX_PATH);
+    buflen = Ty_MAX(path->length, MAX_PATH);
 
     if (buflen > PY_DWORD_MAX) {
         TyErr_SetString(TyExc_OverflowError, "path too long");
@@ -11467,7 +11467,7 @@ os_read_impl(TyObject *module, int fd, Ty_ssize_t length)
         return posix_error();
     }
 
-    length = Py_MIN(length, _PY_READ_MAX);
+    length = Ty_MIN(length, _PY_READ_MAX);
 
     buffer = TyBytes_FromStringAndSize((char *)NULL, length);
     if (buffer == NULL)

@@ -76,9 +76,9 @@ _Ty_COMP_DIAG_POP
 
 /* Decode bytes_argv using Ty_DecodeLocale() */
 TyStatus
-_PyArgv_AsWstrList(const _PyArgv *args, PyWideStringList *list)
+_PyArgv_AsWstrList(const _PyArgv *args, TyWideStringList *list)
 {
-    PyWideStringList wargv = _TyWideStringList_INIT;
+    TyWideStringList wargv = _TyWideStringList_INIT;
     if (args->use_bytes_argv) {
         size_t size = sizeof(wchar_t*) * args->argc;
         wargv.items = (wchar_t **)TyMem_RawMalloc(size);
@@ -183,7 +183,7 @@ _PyPreCmdline_SetConfig(const _PyPreCmdline *cmdline, TyConfig *config)
 static TyStatus
 precmdline_parse_cmdline(_PyPreCmdline *cmdline)
 {
-    const PyWideStringList *argv = &cmdline->argv;
+    const TyWideStringList *argv = &cmdline->argv;
 
     _TyOS_ResetGetOpt();
     /* Don't log parsing errors into stderr here: TyConfig_Read()
@@ -579,7 +579,7 @@ _Ty_get_env_flag(int use_environment, int *flag, const char *name)
 
 
 const wchar_t*
-_Ty_get_xoption(const PyWideStringList *xoptions, const wchar_t *name)
+_Ty_get_xoption(const TyWideStringList *xoptions, const wchar_t *name)
 {
     for (Ty_ssize_t i=0; i < xoptions->length; i++) {
         const wchar_t *option = xoptions->items[i];

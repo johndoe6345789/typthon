@@ -3862,7 +3862,7 @@ sock_listen(TyObject *self, TyObject *args)
     PySocketSockObject *s = _PySocketSockObject_CAST(self);
     /* We try to choose a default backlog high enough to avoid connection drops
      * for common workloads, yet not too high to limit resource usage. */
-    int backlog = Py_MIN(SOMAXCONN, 128);
+    int backlog = Ty_MIN(SOMAXCONN, 128);
     int res;
 
     if (!TyArg_ParseTuple(args, "|i:listen", &backlog))
@@ -5519,7 +5519,7 @@ sock_finalize(TyObject *self)
 static int
 sock_traverse(TyObject *s, visitproc visit, void *arg)
 {
-    Py_VISIT(Ty_TYPE(s));
+    Ty_VISIT(Ty_TYPE(s));
     return 0;
 }
 
@@ -6782,7 +6782,7 @@ socket_inet_pton(TyObject *self, TyObject *args)
     const char* ip;
     int retval;
 #ifdef ENABLE_IPV6
-    char packed[Py_MAX(sizeof(struct in_addr), sizeof(struct in6_addr))];
+    char packed[Ty_MAX(sizeof(struct in_addr), sizeof(struct in6_addr))];
 #else
     char packed[sizeof(struct in_addr)];
 #endif
@@ -6832,7 +6832,7 @@ socket_inet_ntop(TyObject *self, TyObject *args)
     Ty_buffer packed_ip;
     const char* retval;
 #ifdef ENABLE_IPV6
-    char ip[Py_MAX(INET_ADDRSTRLEN, INET6_ADDRSTRLEN)];
+    char ip[Ty_MAX(INET_ADDRSTRLEN, INET6_ADDRSTRLEN)];
 #else
     char ip[INET_ADDRSTRLEN];
 #endif
@@ -7519,7 +7519,7 @@ sock_capi_traverse(TyObject *capsule, visitproc visit, void *arg)
 {
     PySocketModule_APIObject *capi = PyCapsule_GetPointer(capsule, PySocket_CAPSULE_NAME);
     assert(capi != NULL);
-    Py_VISIT(capi->Sock_Type);
+    Ty_VISIT(capi->Sock_Type);
     return 0;
 }
 
@@ -9249,9 +9249,9 @@ static int
 socket_traverse(TyObject *mod, visitproc visit, void *arg)
 {
     socket_state *state = get_module_state(mod);
-    Py_VISIT(state->sock_type);
-    Py_VISIT(state->socket_herror);
-    Py_VISIT(state->socket_gaierror);
+    Ty_VISIT(state->sock_type);
+    Ty_VISIT(state->socket_herror);
+    Ty_VISIT(state->socket_gaierror);
     return 0;
 }
 

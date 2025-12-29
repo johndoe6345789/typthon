@@ -32,7 +32,7 @@ extern TyObject * _PyBuiltin_Init(TyInterpreterState *interp);
 extern TyStatus _TySys_Create(
     TyThreadState *tstate,
     TyObject **sysmod_p);
-extern TyStatus _TySys_ReadPreinitWarnOptions(PyWideStringList *options);
+extern TyStatus _TySys_ReadPreinitWarnOptions(TyWideStringList *options);
 extern TyStatus _TySys_ReadPreinitXOptions(TyConfig *config);
 extern int _TySys_UpdateConfig(TyThreadState *tstate);
 extern void _TySys_FiniTypes(TyInterpreterState *interp);
