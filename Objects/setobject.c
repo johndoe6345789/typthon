@@ -2506,7 +2506,7 @@ static TyMethodDef set_methods[] = {
     {NULL,              NULL}   /* sentinel */
 };
 
-static PyNumberMethods set_as_number = {
+static TyNumberMethods set_as_number = {
     0,                                  /*nb_add*/
     set_sub,                            /*nb_subtract*/
     0,                                  /*nb_multiply*/
@@ -2610,7 +2610,7 @@ static TyMethodDef frozenset_methods[] = {
     {NULL,              NULL}   /* sentinel */
 };
 
-static PyNumberMethods frozenset_as_number = {
+static TyNumberMethods frozenset_as_number = {
     0,                                  /*nb_add*/
     set_sub,                            /*nb_subtract*/
     0,                                  /*nb_multiply*/

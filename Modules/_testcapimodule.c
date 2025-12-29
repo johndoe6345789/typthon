@@ -2666,7 +2666,7 @@ matmulType_dealloc(TyObject *self)
     Ty_TYPE(self)->tp_free(self);
 }
 
-static PyNumberMethods matmulType_as_number = {
+static TyNumberMethods matmulType_as_number = {
     0,                          /* nb_add */
     0,                          /* nb_subtract */
     0,                          /* nb_multiply */
@@ -2757,7 +2757,7 @@ ipowType_ipow(TyObject *self, TyObject *other, TyObject *mod)
     return TyTuple_Pack(2, other, mod);
 }
 
-static PyNumberMethods ipowType_as_number = {
+static TyNumberMethods ipowType_as_number = {
     .nb_inplace_power = ipowType_ipow
 };
 
@@ -2812,7 +2812,7 @@ awaitObject_await(TyObject *op)
     return Ty_NewRef(ao->ao_iterator);
 }
 
-static PyAsyncMethods awaitType_as_async = {
+static TyAsyncMethods awaitType_as_async = {
     awaitObject_await,                      /* am_await */
     0,                                      /* am_aiter */
     0,                                      /* am_anext */

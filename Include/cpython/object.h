@@ -103,7 +103,7 @@ typedef struct {
 
     binaryfunc nb_matrix_multiply;
     binaryfunc nb_inplace_matrix_multiply;
-} PyNumberMethods;
+} TyNumberMethods;
 
 typedef struct {
     lenfunc sq_length;
@@ -132,7 +132,7 @@ typedef struct {
     unaryfunc am_aiter;
     unaryfunc am_anext;
     sendfunc am_send;
-} PyAsyncMethods;
+} TyAsyncMethods;
 
 typedef struct {
      getbufferproc bf_getbuffer;
@@ -156,13 +156,13 @@ struct _typeobject {
     Ty_ssize_t tp_vectorcall_offset;
     getattrfunc tp_getattr;
     setattrfunc tp_setattr;
-    PyAsyncMethods *tp_as_async; /* formerly known as tp_compare (Python 2)
+    TyAsyncMethods *tp_as_async; /* formerly known as tp_compare (Python 2)
                                     or tp_reserved (Python 3) */
     reprfunc tp_repr;
 
     /* Method suites for standard classes */
 
-    PyNumberMethods *tp_as_number;
+    TyNumberMethods *tp_as_number;
     PySequenceMethods *tp_as_sequence;
     PyMappingMethods *tp_as_mapping;
 
@@ -267,8 +267,8 @@ typedef struct _heaptypeobject {
     /* Note: there's a dependency on the order of these members
        in slotptr() in typeobject.c . */
     TyTypeObject ht_type;
-    PyAsyncMethods as_async;
-    PyNumberMethods as_number;
+    TyAsyncMethods as_async;
+    TyNumberMethods as_number;
     PyMappingMethods as_mapping;
     PySequenceMethods as_sequence; /* as_sequence comes after as_mapping,
                                       so that the mapping wins when both

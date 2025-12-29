@@ -487,7 +487,7 @@ static TyMethodDef anextawaitable_methods[] = {
 };
 
 
-static PyAsyncMethods anextawaitable_as_async = {
+static TyAsyncMethods anextawaitable_as_async = {
     PyObject_SelfIter,                          /* am_await */
     0,                                          /* am_aiter */
     0,                                          /* am_anext */

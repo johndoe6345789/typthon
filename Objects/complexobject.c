@@ -1094,7 +1094,7 @@ static TyObject *
 actual_complex_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
     TyObject *res = NULL;
-    PyNumberMethods *nbr;
+    TyNumberMethods *nbr;
 
     if (TyTuple_GET_SIZE(args) > 1 || (kwargs != NULL && TyDict_GET_SIZE(kwargs))) {
         return complex_new(type, args, kwargs);
@@ -1170,7 +1170,7 @@ complex_new_impl(TyTypeObject *type, TyObject *r, TyObject *i)
 /*[clinic end generated code: output=b6c7dd577b537dc1 input=ff4268dc540958a4]*/
 {
     TyObject *tmp;
-    PyNumberMethods *nbr, *nbi = NULL;
+    TyNumberMethods *nbr, *nbi = NULL;
     Ty_complex cr, ci;
     int own_r = 0;
     int cr_is_complex = 0;
@@ -1342,7 +1342,7 @@ static TyMemberDef complex_members[] = {
     {0},
 };
 
-static PyNumberMethods complex_as_number = {
+static TyNumberMethods complex_as_number = {
     complex_add,                                /* nb_add */
     complex_sub,                                /* nb_subtract */
     complex_mul,                                /* nb_multiply */

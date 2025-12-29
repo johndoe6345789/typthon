@@ -878,7 +878,7 @@ framelocalsproxy_reversed(TyObject *self, TyObject *Py_UNUSED(ignored))
     return result;
 }
 
-static PyNumberMethods framelocalsproxy_as_number = {
+static TyNumberMethods framelocalsproxy_as_number = {
     .nb_or = framelocalsproxy_or,
     .nb_inplace_or = framelocalsproxy_inplace_or,
 };

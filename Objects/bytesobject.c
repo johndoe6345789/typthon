@@ -2728,7 +2728,7 @@ bytes_mod(TyObject *self, TyObject *arg)
                              arg, 0);
 }
 
-static PyNumberMethods bytes_as_number = {
+static TyNumberMethods bytes_as_number = {
     0,              /*nb_add*/
     0,              /*nb_subtract*/
     0,              /*nb_multiply*/

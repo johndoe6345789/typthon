@@ -252,7 +252,7 @@ float_dealloc(TyObject *op)
 double
 TyFloat_AsDouble(TyObject *op)
 {
-    PyNumberMethods *nb;
+    TyNumberMethods *nb;
     TyObject *res;
     double val;
 
@@ -1512,7 +1512,7 @@ float_as_integer_ratio_impl(TyObject *self)
     TyObject *numerator = NULL;
     TyObject *denominator = NULL;
     TyObject *result_pair = NULL;
-    PyNumberMethods *long_methods = TyLong_Type.tp_as_number;
+    TyNumberMethods *long_methods = TyLong_Type.tp_as_number;
 
     CONVERT_TO_DOUBLE(self, self_double);
 
@@ -1818,7 +1818,7 @@ static TyGetSetDef float_getset[] = {
 };
 
 
-static PyNumberMethods float_as_number = {
+static TyNumberMethods float_as_number = {
     float_add,          /* nb_add */
     float_sub,          /* nb_subtract */
     float_mul,          /* nb_multiply */

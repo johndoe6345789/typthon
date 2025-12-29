@@ -1080,7 +1080,7 @@ mappingproxy_ior(TyObject *self, TyObject *Py_UNUSED(other))
         "'|=' is not supported by %s; use '|' instead", Ty_TYPE(self)->tp_name);
 }
 
-static PyNumberMethods mappingproxy_as_number = {
+static TyNumberMethods mappingproxy_as_number = {
     .nb_or = mappingproxy_or,
     .nb_inplace_or = mappingproxy_ior,
 };

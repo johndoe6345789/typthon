@@ -791,7 +791,7 @@ static TyMethodDef proxy_methods[] = {
 };
 
 
-static PyNumberMethods proxy_as_number = {
+static TyNumberMethods proxy_as_number = {
     proxy_add,              /*nb_add*/
     proxy_sub,              /*nb_subtract*/
     proxy_mul,              /*nb_multiply*/

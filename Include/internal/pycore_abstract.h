@@ -12,7 +12,7 @@ extern "C" {
 static inline int
 _PyIndex_Check(TyObject *obj)
 {
-    PyNumberMethods *tp_as_number = Ty_TYPE(obj)->tp_as_number;
+    TyNumberMethods *tp_as_number = Ty_TYPE(obj)->tp_as_number;
     return (tp_as_number != NULL && tp_as_number->nb_index != NULL);
 }
 

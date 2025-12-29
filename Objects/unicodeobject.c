@@ -14529,7 +14529,7 @@ unicode_mod(TyObject *v, TyObject *w)
     return TyUnicode_Format(v, w);
 }
 
-static PyNumberMethods unicode_as_number = {
+static TyNumberMethods unicode_as_number = {
     0,              /*nb_add*/
     0,              /*nb_subtract*/
     0,              /*nb_multiply*/

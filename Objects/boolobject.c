@@ -119,7 +119,7 @@ The class bool is a subclass of the class int, and cannot be subclassed.");
 
 /* Arithmetic methods -- only so we can override &, |, ^. */
 
-static PyNumberMethods bool_as_number = {
+static TyNumberMethods bool_as_number = {
     0,                          /* nb_add */
     0,                          /* nb_subtract */
     0,                          /* nb_multiply */

@@ -3014,7 +3014,7 @@ to_bool_fail_kind(TyObject *value)
 static int
 check_type_always_true(TyTypeObject *ty)
 {
-    PyNumberMethods *nb = ty->tp_as_number;
+    TyNumberMethods *nb = ty->tp_as_number;
     if (nb && nb->nb_bool) {
         return SPEC_FAIL_TO_BOOL_NUMBER;
     }

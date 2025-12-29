@@ -2096,7 +2096,7 @@ static Ty_hash_t none_hash(TyObject *v)
     return 0xFCA86420;
 }
 
-static PyNumberMethods none_as_number = {
+static TyNumberMethods none_as_number = {
     0,                          /* nb_add */
     0,                          /* nb_subtract */
     0,                          /* nb_multiply */
@@ -2229,7 +2229,7 @@ notimplemented_bool(TyObject *v)
     return -1;
 }
 
-static PyNumberMethods notimplemented_as_number = {
+static TyNumberMethods notimplemented_as_number = {
     .nb_bool = notimplemented_bool,
 };
 

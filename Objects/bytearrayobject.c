@@ -2775,7 +2775,7 @@ bytearray_mod(TyObject *v, TyObject *w)
     return ret;
 }
 
-static PyNumberMethods bytearray_as_number = {
+static TyNumberMethods bytearray_as_number = {
     0,              /*nb_add*/
     0,              /*nb_subtract*/
     0,              /*nb_multiply*/

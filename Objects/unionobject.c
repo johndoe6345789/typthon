@@ -393,7 +393,7 @@ static TyGetSetDef union_properties[] = {
     {0}
 };
 
-static PyNumberMethods union_as_number = {
+static TyNumberMethods union_as_number = {
         .nb_or = _Ty_union_type_or, // Add __or__ function
 };
 

@@ -2143,7 +2143,7 @@ __type_params__ attribute.\n\
 See PEP 695 for more information.\n\
 ");
 
-static PyNumberMethods typealias_as_number = {
+static TyNumberMethods typealias_as_number = {
     .nb_or = _Ty_union_type_or,
 };
 

@@ -3035,7 +3035,7 @@ TyDoc_STR("Difference between two datetime values.\n\n"
           "All arguments are optional and default to 0.\n"
           "Arguments may be integers or floats, and may be positive or negative.");
 
-static PyNumberMethods delta_as_number = {
+static TyNumberMethods delta_as_number = {
     delta_add,                                  /* nb_add */
     delta_subtract,                             /* nb_subtract */
     delta_multiply,                             /* nb_multiply */
@@ -3958,7 +3958,7 @@ static TyMethodDef date_methods[] = {
 static const char date_doc[] =
 TyDoc_STR("date(year, month, day) --> date object");
 
-static PyNumberMethods date_as_number = {
+static TyNumberMethods date_as_number = {
     date_add,                                           /* nb_add */
     date_subtract,                                      /* nb_subtract */
     0,                                                  /* nb_multiply */
@@ -7083,7 +7083,7 @@ TyDoc_STR("datetime(year, month, day[, hour[, minute[, second[, microsecond[,tzi
 The year, month and day arguments are required. tzinfo may be None, or an\n\
 instance of a tzinfo subclass. The remaining arguments may be ints.\n");
 
-static PyNumberMethods datetime_as_number = {
+static TyNumberMethods datetime_as_number = {
     datetime_add,                               /* nb_add */
     datetime_subtract,                          /* nb_subtract */
     0,                                          /* nb_multiply */

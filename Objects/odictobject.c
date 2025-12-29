@@ -922,7 +922,7 @@ odict_inplace_or(TyObject *self, TyObject *other)
 
 /* tp_as_number */
 
-static PyNumberMethods odict_as_number = {
+static TyNumberMethods odict_as_number = {
     .nb_or = odict_or,
     .nb_inplace_or = odict_inplace_or,
 };

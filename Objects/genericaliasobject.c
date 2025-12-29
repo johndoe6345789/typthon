@@ -880,7 +880,7 @@ ga_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
     return (TyObject *)self;
 }
 
-static PyNumberMethods ga_as_number = {
+static TyNumberMethods ga_as_number = {
         .nb_or = _Ty_union_type_or, // Add __or__ function
 };
 

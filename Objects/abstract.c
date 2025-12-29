@@ -904,13 +904,13 @@ PyNumber_Check(TyObject *o)
 {
     if (o == NULL)
         return 0;
-    PyNumberMethods *nb = Ty_TYPE(o)->tp_as_number;
+    TyNumberMethods *nb = Ty_TYPE(o)->tp_as_number;
     return nb && (nb->nb_index || nb->nb_int || nb->nb_float || TyComplex_Check(o));
 }
 
 /* Binary operators */
 
-#define NB_SLOT(x) offsetof(PyNumberMethods, x)
+#define NB_SLOT(x) offsetof(TyNumberMethods, x)
 #define NB_BINOP(nb_methods, slot) \
         (*(binaryfunc*)(& ((char*)nb_methods)[slot]))
 #define NB_TERNOP(nb_methods, slot) \
@@ -1024,8 +1024,8 @@ ternary_op(TyObject *v,
            const char *op_name
            )
 {
-    PyNumberMethods *mv = Ty_TYPE(v)->tp_as_number;
-    PyNumberMethods *mw = Ty_TYPE(w)->tp_as_number;
+    TyNumberMethods *mv = Ty_TYPE(v)->tp_as_number;
+    TyNumberMethods *mw = Ty_TYPE(w)->tp_as_number;
 
     ternaryfunc slotv;
     if (mv != NULL) {
@@ -1072,7 +1072,7 @@ ternary_op(TyObject *v,
         Ty_DECREF(x); /* can't do it */
     }
 
-    PyNumberMethods *mz = Ty_TYPE(z)->tp_as_number;
+    TyNumberMethods *mz = Ty_TYPE(z)->tp_as_number;
     if (mz != NULL) {
         ternaryfunc slotz = NB_TERNOP(mz, op_slot);
         if (slotz == slotv || slotz == slotw) {
@@ -1221,7 +1221,7 @@ binary_iop1(TyObject *v, TyObject *w, const int iop_slot, const int op_slot
 #endif
             )
 {
-    PyNumberMethods *mv = Ty_TYPE(v)->tp_as_number;
+    TyNumberMethods *mv = Ty_TYPE(v)->tp_as_number;
     if (mv != NULL) {
         binaryfunc slot = NB_BINOP(mv, iop_slot);
         if (slot) {
@@ -1262,7 +1262,7 @@ static TyObject *
 ternary_iop(TyObject *v, TyObject *w, TyObject *z, const int iop_slot, const int op_slot,
                 const char *op_name)
 {
-    PyNumberMethods *mv = Ty_TYPE(v)->tp_as_number;
+    TyNumberMethods *mv = Ty_TYPE(v)->tp_as_number;
     if (mv != NULL) {
         ternaryfunc slot = NB_TERNOP(mv, iop_slot);
         if (slot) {
@@ -1368,7 +1368,7 @@ _PyNumber_InPlacePowerNoMod(TyObject *lhs, TyObject *rhs)
             return null_error();                                         \
         }                                                                \
                                                                          \
-        PyNumberMethods *m = Ty_TYPE(o)->tp_as_number;                   \
+        TyNumberMethods *m = Ty_TYPE(o)->tp_as_number;                   \
         if (m && m->op) {                                                \
             TyObject *res = (*m->op)(o);                                 \
             assert(_Ty_CheckSlotResult(o, #meth_name, res != NULL));     \
@@ -1509,7 +1509,7 @@ TyObject *
 PyNumber_Long(TyObject *o)
 {
     TyObject *result;
-    PyNumberMethods *m;
+    TyNumberMethods *m;
     Ty_buffer view;
 
     if (o == NULL) {
@@ -1599,7 +1599,7 @@ PyNumber_Float(TyObject *o)
         return Ty_NewRef(o);
     }
 
-    PyNumberMethods *m = Ty_TYPE(o)->tp_as_number;
+    TyNumberMethods *m = Ty_TYPE(o)->tp_as_number;
     if (m && m->nb_float) { /* This should include subclasses of float */
         TyObject *res = m->nb_float(o);
         assert(_Ty_CheckSlotResult(o, "__float__", res != NULL));

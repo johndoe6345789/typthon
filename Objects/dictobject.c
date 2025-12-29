@@ -4837,7 +4837,7 @@ static PySequenceMethods dict_as_sequence = {
     0,                          /* sq_inplace_repeat */
 };
 
-static PyNumberMethods dict_as_number = {
+static TyNumberMethods dict_as_number = {
     .nb_or = dict_or,
     .nb_inplace_or = dict_ior,
 };
@@ -6375,7 +6375,7 @@ dictviews_xor(TyObject* self, TyObject *other)
     return result;
 }
 
-static PyNumberMethods dictviews_as_number = {
+static TyNumberMethods dictviews_as_number = {
     0,                                  /*nb_add*/
     dictviews_sub,                      /*nb_subtract*/
     0,                                  /*nb_multiply*/

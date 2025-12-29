@@ -746,7 +746,7 @@ range_bool(TyObject *op)
     return PyObject_IsTrue(self->length);
 }
 
-static PyNumberMethods range_as_number = {
+static TyNumberMethods range_as_number = {
     .nb_bool = range_bool,
 };
 

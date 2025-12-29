@@ -3333,7 +3333,7 @@ x_divrem(PyLongObject *v1, PyLongObject *w1, PyLongObject **prem)
             z = (sdigit)vk[i] + zhi -
                 (stwodigits)q * (stwodigits)w0[i];
             vk[i] = (digit)z & TyLong_MASK;
-            zhi = (sdigit)Py_ARITHMETIC_RIGHT_SHIFT(stwodigits,
+            zhi = (sdigit)Ty_ARITHMETIC_RIGHT_SHIFT(stwodigits,
                                                     z, TyLong_SHIFT);
         }
 
@@ -6502,7 +6502,7 @@ Base 0 means to interpret the base from the string as an integer literal.\n\
 >>> int('0b100', base=0)\n\
 4");
 
-static PyNumberMethods long_as_number = {
+static TyNumberMethods long_as_number = {
     long_add_method,            /*nb_add*/
     long_sub_method,            /*nb_subtract*/
     long_mul_method,            /*nb_multiply*/
@@ -6803,7 +6803,7 @@ TyLong_Export(TyObject *obj, PyLongExport *export_long)
             export_long->ndigits = 1;
         }
         export_long->digits = self->long_value.ob_digit;
-        export_long->_reserved = (Py_uintptr_t)Ty_NewRef(obj);
+        export_long->_reserved = (Ty_uintptr_t)Ty_NewRef(obj);
     }
     return 0;
 }
