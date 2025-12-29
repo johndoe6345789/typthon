@@ -46,7 +46,7 @@ _Py_bswap16(uint16_t word)
 }
 
 static inline uint32_t
-_Py_bswap32(uint32_t word)
+_Ty_bswap32(uint32_t word)
 {
 #if defined(_PY_HAVE_BUILTIN_BSWAP) || _Ty__has_builtin(__builtin_bswap32)
     return __builtin_bswap32(word);

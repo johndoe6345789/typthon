@@ -1640,7 +1640,7 @@ idtype_t_converter(TyObject *arg, void *addr)
 #endif
 
 static int
-Py_off_t_converter(TyObject *arg, void *addr)
+Ty_off_t_converter(TyObject *arg, void *addr)
 {
 #ifdef HAVE_LARGEFILE_SUPPORT
     *((Ty_off_t *)addr) = TyLong_AsLongLong(arg);
@@ -3173,9 +3173,9 @@ class intptr_t_converter(CConverter):
             }}}}
             """, argname=argname)
 
-class Py_off_t_converter(CConverter):
+class Ty_off_t_converter(CConverter):
     type = 'Ty_off_t'
-    converter = 'Py_off_t_converter'
+    converter = 'Ty_off_t_converter'
 
 class Py_off_t_return_converter(long_return_converter):
     type = 'Ty_off_t'
@@ -11995,7 +11995,7 @@ done:
     }
 #endif
     off_t offset;
-    if (!Py_off_t_converter(offobj, &offset))
+    if (!Ty_off_t_converter(offobj, &offset))
         return NULL;
 
 #if defined(__sun) && defined(__SVR4)
@@ -12479,14 +12479,14 @@ os_copy_file_range_impl(TyObject *module, int src, int dst, Ty_ssize_t count,
     }
 
     if (offset_src != Ty_None) {
-        if (!Py_off_t_converter(offset_src, &offset_src_val)) {
+        if (!Ty_off_t_converter(offset_src, &offset_src_val)) {
             return NULL;
         }
         p_offset_src = &offset_src_val;
     }
 
     if (offset_dst != Ty_None) {
-        if (!Py_off_t_converter(offset_dst, &offset_dst_val)) {
+        if (!Ty_off_t_converter(offset_dst, &offset_dst_val)) {
             return NULL;
         }
         p_offset_dst = &offset_dst_val;
@@ -12548,14 +12548,14 @@ os_splice_impl(TyObject *module, int src, int dst, Ty_ssize_t count,
     }
 
     if (offset_src != Ty_None) {
-        if (!Py_off_t_converter(offset_src, &offset_src_val)) {
+        if (!Ty_off_t_converter(offset_src, &offset_src_val)) {
             return NULL;
         }
         p_offset_src = &offset_src_val;
     }
 
     if (offset_dst != Ty_None) {
-        if (!Py_off_t_converter(offset_dst, &offset_dst_val)) {
+        if (!Ty_off_t_converter(offset_dst, &offset_dst_val)) {
             return NULL;
         }
         p_offset_dst = &offset_dst_val;
