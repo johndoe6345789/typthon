@@ -57,25 +57,25 @@ config_sys_flag_not(int value)
 /* --- TyConfig spec ---------------------------------------------- */
 
 typedef enum {
-    PyConfig_MEMBER_INT = 0,
-    PyConfig_MEMBER_UINT = 1,
-    PyConfig_MEMBER_ULONG = 2,
-    PyConfig_MEMBER_BOOL = 3,
+    TyConfig_MEMBER_INT = 0,
+    TyConfig_MEMBER_UINT = 1,
+    TyConfig_MEMBER_ULONG = 2,
+    TyConfig_MEMBER_BOOL = 3,
 
-    PyConfig_MEMBER_WSTR = 10,
-    PyConfig_MEMBER_WSTR_OPT = 11,
-    PyConfig_MEMBER_WSTR_LIST = 12,
+    TyConfig_MEMBER_WSTR = 10,
+    TyConfig_MEMBER_WSTR_OPT = 11,
+    TyConfig_MEMBER_WSTR_LIST = 12,
 } PyConfigMemberType;
 
 typedef enum {
-    // Option which cannot be get or set by PyConfig_Get() and PyConfig_Set()
-    PyConfig_MEMBER_INIT_ONLY = 0,
+    // Option which cannot be get or set by TyConfig_Get() and TyConfig_Set()
+    TyConfig_MEMBER_INIT_ONLY = 0,
 
-    // Option which cannot be set by PyConfig_Set()
-    PyConfig_MEMBER_READ_ONLY = 1,
+    // Option which cannot be set by TyConfig_Set()
+    TyConfig_MEMBER_READ_ONLY = 1,
 
-    // Public option: can be get and set by PyConfig_Get() and PyConfig_Set()
-    PyConfig_MEMBER_PUBLIC = 2,
+    // Public option: can be get and set by TyConfig_Get() and TyConfig_Set()
+    TyConfig_MEMBER_PUBLIC = 2,
 } PyConfigMemberVisibility;
 
 typedef struct {
@@ -94,7 +94,7 @@ typedef struct {
 
 #define SPEC(MEMBER, TYPE, VISIBILITY, sys) \
     {#MEMBER, offsetof(TyConfig, MEMBER), \
-     PyConfig_MEMBER_##TYPE, PyConfig_MEMBER_##VISIBILITY, sys}
+     TyConfig_MEMBER_##TYPE, TyConfig_MEMBER_##VISIBILITY, sys}
 
 #define SYS_ATTR(name) {name, -1, NULL}
 #define SYS_FLAG_SETTER(index, setter) {NULL, index, setter}
@@ -203,8 +203,8 @@ static const PyConfigSpec PYCONFIG_SPEC[] = {
 
 #undef SPEC
 #define SPEC(MEMBER, TYPE, VISIBILITY) \
-    {#MEMBER, offsetof(TyPreConfig, MEMBER), PyConfig_MEMBER_##TYPE, \
-     PyConfig_MEMBER_##VISIBILITY, NO_SYS}
+    {#MEMBER, offsetof(TyPreConfig, MEMBER), TyConfig_MEMBER_##TYPE, \
+     TyConfig_MEMBER_##VISIBILITY, NO_SYS}
 
 static const PyConfigSpec PYPRECONFIG_SPEC[] = {
     // --- Read-only options -----------
@@ -588,13 +588,13 @@ TyStatus TyStatus_Exit(int exitcode)
 { return _TyStatus_EXIT(exitcode); }
 
 
-int PyStatus_IsError(TyStatus status)
+int TyStatus_IsError(TyStatus status)
 { return _TyStatus_IS_ERROR(status); }
 
-int PyStatus_IsExit(TyStatus status)
+int TyStatus_IsExit(TyStatus status)
 { return _TyStatus_IS_EXIT(status); }
 
-int PyStatus_Exception(TyStatus status)
+int TyStatus_Exception(TyStatus status)
 { return _TyStatus_EXCEPTION(status); }
 
 void
@@ -729,7 +729,7 @@ _TyWideStringList_Copy(TyWideStringList *list, const TyWideStringList *list2)
 }
 
 TyStatus
-PyWideStringList_Insert(TyWideStringList *list,
+TyWideStringList_Insert(TyWideStringList *list,
                         Ty_ssize_t index, const wchar_t *item)
 {
     Ty_ssize_t len = list->length;
@@ -738,7 +738,7 @@ PyWideStringList_Insert(TyWideStringList *list,
         return _TyStatus_NO_MEMORY();
     }
     if (index < 0) {
-        return _TyStatus_ERR("PyWideStringList_Insert index must be >= 0");
+        return _TyStatus_ERR("TyWideStringList_Insert index must be >= 0");
     }
     if (index > len) {
         index = len;
@@ -770,9 +770,9 @@ PyWideStringList_Insert(TyWideStringList *list,
 
 
 TyStatus
-PyWideStringList_Append(TyWideStringList *list, const wchar_t *item)
+TyWideStringList_Append(TyWideStringList *list, const wchar_t *item)
 {
-    return PyWideStringList_Insert(list, list->length, item);
+    return TyWideStringList_Insert(list, list->length, item);
 }
 
 
@@ -780,7 +780,7 @@ TyStatus
 _TyWideStringList_Extend(TyWideStringList *list, const TyWideStringList *list2)
 {
     for (Ty_ssize_t i = 0; i < list2->length; i++) {
-        TyStatus status = PyWideStringList_Append(list, list2->items[i]);
+        TyStatus status = TyWideStringList_Append(list, list2->items[i]);
         if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
@@ -1229,7 +1229,7 @@ preconfig_get_spec_member(const TyPreConfig *preconfig, const PyConfigSpec *spec
 TyStatus
 _TyConfig_Copy(TyConfig *config, const TyConfig *config2)
 {
-    PyConfig_Clear(config);
+    TyConfig_Clear(config);
 
     TyStatus status;
     const PyConfigSpec *spec = PYCONFIG_SPEC;
@@ -1237,29 +1237,29 @@ _TyConfig_Copy(TyConfig *config, const TyConfig *config2)
         void *member = config_get_spec_member(config, spec);
         const void *member2 = config_get_spec_member((TyConfig*)config2, spec);
         switch (spec->type) {
-        case PyConfig_MEMBER_INT:
-        case PyConfig_MEMBER_UINT:
-        case PyConfig_MEMBER_BOOL:
+        case TyConfig_MEMBER_INT:
+        case TyConfig_MEMBER_UINT:
+        case TyConfig_MEMBER_BOOL:
         {
             *(int*)member = *(int*)member2;
             break;
         }
-        case PyConfig_MEMBER_ULONG:
+        case TyConfig_MEMBER_ULONG:
         {
             *(unsigned long*)member = *(unsigned long*)member2;
             break;
         }
-        case PyConfig_MEMBER_WSTR:
-        case PyConfig_MEMBER_WSTR_OPT:
+        case TyConfig_MEMBER_WSTR:
+        case TyConfig_MEMBER_WSTR_OPT:
         {
             const wchar_t *str = *(const wchar_t**)member2;
-            status = PyConfig_SetString(config, (wchar_t**)member, str);
+            status = TyConfig_SetString(config, (wchar_t**)member, str);
             if (_TyStatus_EXCEPTION(status)) {
                 return status;
             }
             break;
         }
-        case PyConfig_MEMBER_WSTR_LIST:
+        case TyConfig_MEMBER_WSTR_LIST:
         {
             if (_TyWideStringList_Copy((TyWideStringList*)member,
                                        (const TyWideStringList*)member2) < 0) {
@@ -1366,7 +1366,7 @@ config_dict_get_wstr(TyObject *dict, const char *name, TyConfig *config,
 
     TyStatus status;
     if (item == Ty_None) {
-        status = PyConfig_SetString(config, result, NULL);
+        status = TyConfig_SetString(config, result, NULL);
     }
     else if (!TyUnicode_Check(item)) {
         config_dict_invalid_type(name);
@@ -1377,7 +1377,7 @@ config_dict_get_wstr(TyObject *dict, const char *name, TyConfig *config,
         if (wstr == NULL) {
             goto error;
         }
-        status = PyConfig_SetString(config, result, wstr);
+        status = TyConfig_SetString(config, result, wstr);
         TyMem_Free(wstr);
     }
     if (_TyStatus_EXCEPTION(status)) {
@@ -1426,7 +1426,7 @@ config_dict_get_wstrlist(TyObject *dict, const char *name, TyConfig *config,
         if (wstr == NULL) {
             goto error;
         }
-        TyStatus status = PyWideStringList_Append(&wstrlist, wstr);
+        TyStatus status = TyWideStringList_Append(&wstrlist, wstr);
         TyMem_Free(wstr);
         if (_TyStatus_EXCEPTION(status)) {
             TyErr_NoMemory();
@@ -1486,7 +1486,7 @@ config_dict_get_xoptions(TyObject *dict, const char *name, TyConfig *config,
             goto error;
         }
 
-        TyStatus status = PyWideStringList_Append(&wstrlist, wstr);
+        TyStatus status = TyWideStringList_Append(&wstrlist, wstr);
         TyMem_Free(wstr);
         if (_TyStatus_EXCEPTION(status)) {
             TyErr_NoMemory();
@@ -1521,16 +1521,16 @@ _TyConfig_FromDict(TyConfig *config, TyObject *dict)
     for (; spec->name != NULL; spec++) {
         char *member = (char *)config + spec->offset;
         switch (spec->type) {
-        case PyConfig_MEMBER_INT:
-        case PyConfig_MEMBER_UINT:
-        case PyConfig_MEMBER_BOOL:
+        case TyConfig_MEMBER_INT:
+        case TyConfig_MEMBER_UINT:
+        case TyConfig_MEMBER_BOOL:
         {
             int value;
             if (config_dict_get_int(dict, spec->name, &value) < 0) {
                 return -1;
             }
-            if (spec->type == PyConfig_MEMBER_BOOL
-                || spec->type == PyConfig_MEMBER_UINT)
+            if (spec->type == TyConfig_MEMBER_BOOL
+                || spec->type == TyConfig_MEMBER_UINT)
             {
                 if (value < 0) {
                     config_dict_invalid_value(spec->name);
@@ -1540,7 +1540,7 @@ _TyConfig_FromDict(TyConfig *config, TyObject *dict)
             *(int*)member = value;
             break;
         }
-        case PyConfig_MEMBER_ULONG:
+        case TyConfig_MEMBER_ULONG:
         {
             if (config_dict_get_ulong(dict, spec->name,
                                       (unsigned long*)member) < 0) {
@@ -1548,7 +1548,7 @@ _TyConfig_FromDict(TyConfig *config, TyObject *dict)
             }
             break;
         }
-        case PyConfig_MEMBER_WSTR:
+        case TyConfig_MEMBER_WSTR:
         {
             wchar_t **wstr = (wchar_t**)member;
             if (config_dict_get_wstr(dict, spec->name, config, wstr) < 0) {
@@ -1560,7 +1560,7 @@ _TyConfig_FromDict(TyConfig *config, TyObject *dict)
             }
             break;
         }
-        case PyConfig_MEMBER_WSTR_OPT:
+        case TyConfig_MEMBER_WSTR_OPT:
         {
             wchar_t **wstr = (wchar_t**)member;
             if (config_dict_get_wstr(dict, spec->name, config, wstr) < 0) {
@@ -1568,7 +1568,7 @@ _TyConfig_FromDict(TyConfig *config, TyObject *dict)
             }
             break;
         }
-        case PyConfig_MEMBER_WSTR_LIST:
+        case TyConfig_MEMBER_WSTR_LIST:
         {
             if (strcmp(spec->name, "xoptions") == 0) {
                 if (config_dict_get_xoptions(dict, spec->name, config,
@@ -1636,7 +1636,7 @@ config_get_env_dup(TyConfig *config,
         return _TyStatus_OK();
     }
 
-    return PyConfig_SetString(config, dest, var);
+    return TyConfig_SetString(config, dest, var);
 #else
     const char *var = getenv(name);
     if (!var || var[0] == '\0') {
@@ -2421,7 +2421,7 @@ config_get_locale_encoding(TyConfig *config, const TyPreConfig *preconfig,
     if (encoding == NULL) {
         return _TyStatus_NO_MEMORY();
     }
-    TyStatus status = PyConfig_SetString(config, locale_encoding, encoding);
+    TyStatus status = TyConfig_SetString(config, locale_encoding, encoding);
     TyMem_RawFree(encoding);
     return status;
 }
@@ -2501,7 +2501,7 @@ config_init_stdio_encoding(TyConfig *config,
         const wchar_t *errors = config_get_stdio_errors(preconfig);
         assert(errors != NULL);
 
-        status = PyConfig_SetString(config, &config->stdio_errors, errors);
+        status = TyConfig_SetString(config, &config->stdio_errors, errors);
         if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
@@ -2517,7 +2517,7 @@ config_get_fs_encoding(TyConfig *config, const TyPreConfig *preconfig,
                        wchar_t **fs_encoding)
 {
 #ifdef _Ty_FORCE_UTF8_FS_ENCODING
-    return PyConfig_SetString(config, fs_encoding, L"utf-8");
+    return TyConfig_SetString(config, fs_encoding, L"utf-8");
 #elif defined(MS_WINDOWS)
     const wchar_t *encoding;
     if (preconfig->legacy_windows_fs_encoding) {
@@ -2528,14 +2528,14 @@ config_get_fs_encoding(TyConfig *config, const TyPreConfig *preconfig,
         // Windows defaults to utf-8/surrogatepass (PEP 529)
         encoding = L"utf-8";
     }
-     return PyConfig_SetString(config, fs_encoding, encoding);
+     return TyConfig_SetString(config, fs_encoding, encoding);
 #else  // !MS_WINDOWS
     if (preconfig->utf8_mode) {
-        return PyConfig_SetString(config, fs_encoding, L"utf-8");
+        return TyConfig_SetString(config, fs_encoding, L"utf-8");
     }
 
     if (_Ty_GetForceASCII()) {
-        return PyConfig_SetString(config, fs_encoding, L"ascii");
+        return TyConfig_SetString(config, fs_encoding, L"ascii");
     }
 
     return config_get_locale_encoding(config, preconfig, fs_encoding);
@@ -2568,7 +2568,7 @@ config_init_fs_encoding(TyConfig *config, const TyPreConfig *preconfig)
 #else
         errors = L"surrogateescape";
 #endif
-        status = PyConfig_SetString(config, &config->filesystem_errors, errors);
+        status = TyConfig_SetString(config, &config->filesystem_errors, errors);
         if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
@@ -2718,14 +2718,14 @@ config_read(TyConfig *config, int compute_path_config)
 
     if (config->argv.length < 1) {
         /* Ensure at least one (empty) argument is seen */
-        status = PyWideStringList_Append(&config->argv, L"");
+        status = TyWideStringList_Append(&config->argv, L"");
         if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
     }
 
     if (config->check_hash_pycs_mode == NULL) {
-        status = PyConfig_SetString(config, &config->check_hash_pycs_mode,
+        status = TyConfig_SetString(config, &config->check_hash_pycs_mode,
                                     L"default");
         if (_TyStatus_EXCEPTION(status)) {
             return status;
@@ -2915,7 +2915,7 @@ config_parse_cmdline(TyConfig *config, TyWideStringList *warnoptions,
                 || wcscmp(_TyOS_optarg, L"never") == 0
                 || wcscmp(_TyOS_optarg, L"default") == 0)
             {
-                status = PyConfig_SetString(config, &config->check_hash_pycs_mode,
+                status = TyConfig_SetString(config, &config->check_hash_pycs_mode,
                                             _TyOS_optarg);
                 if (_TyStatus_EXCEPTION(status)) {
                     return status;
@@ -3008,7 +3008,7 @@ config_parse_cmdline(TyConfig *config, TyWideStringList *warnoptions,
             break;
 
         case 'W':
-            status = PyWideStringList_Append(warnoptions, _TyOS_optarg);
+            status = TyWideStringList_Append(warnoptions, _TyOS_optarg);
             if (_TyStatus_EXCEPTION(status)) {
                 return status;
             }
@@ -3089,7 +3089,7 @@ config_init_env_warnoptions(TyConfig *config, TyWideStringList *warnoptions)
          warning != NULL;
          warning = WCSTOK(NULL, L",", &context))
     {
-        status = PyWideStringList_Append(warnoptions, warning);
+        status = TyWideStringList_Append(warnoptions, warning);
         if (_TyStatus_EXCEPTION(status)) {
             TyMem_RawFree(env);
             return status;
@@ -3116,7 +3116,7 @@ warnoptions_append(TyConfig *config, TyWideStringList *options,
         /* Already present: do nothing */
         return _TyStatus_OK();
     }
-    return PyWideStringList_Append(options, option);
+    return TyWideStringList_Append(options, option);
 }
 
 
@@ -3228,7 +3228,7 @@ config_update_argv(TyConfig *config, Ty_ssize_t opt_index)
     /* Copy argv to be able to modify it (to force -c/-m) */
     if (cmdline_argv->length <= opt_index) {
         /* Ensure at least one (empty) argument is seen */
-        TyStatus status = PyWideStringList_Append(&config_argv, L"");
+        TyStatus status = TyWideStringList_Append(&config_argv, L"");
         if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
@@ -3712,8 +3712,8 @@ PyInitConfig_Create(void)
     if (config == NULL) {
         return NULL;
     }
-    PyPreConfig_InitIsolatedConfig(&config->preconfig);
-    PyConfig_InitIsolatedConfig(&config->config);
+    TyPreConfig_InitIsolatedConfig(&config->preconfig);
+    TyConfig_InitIsolatedConfig(&config->config);
     config->status = _TyStatus_OK();
     return config;
 }
@@ -3834,16 +3834,16 @@ PyInitConfig_GetInt(PyInitConfig *config, const char *name, int64_t *value)
     }
 
     switch (spec->type) {
-    case PyConfig_MEMBER_INT:
-    case PyConfig_MEMBER_UINT:
-    case PyConfig_MEMBER_BOOL:
+    case TyConfig_MEMBER_INT:
+    case TyConfig_MEMBER_UINT:
+    case TyConfig_MEMBER_BOOL:
     {
         int *member = raw_member;
         *value = *member;
         break;
     }
 
-    case PyConfig_MEMBER_ULONG:
+    case TyConfig_MEMBER_ULONG:
     {
         unsigned long *member = raw_member;
 #if SIZEOF_LONG >= 8
@@ -3903,8 +3903,8 @@ PyInitConfig_GetStr(PyInitConfig *config, const char *name, char **value)
         return -1;
     }
 
-    if (spec->type != PyConfig_MEMBER_WSTR
-        && spec->type != PyConfig_MEMBER_WSTR_OPT)
+    if (spec->type != TyConfig_MEMBER_WSTR
+        && spec->type != TyConfig_MEMBER_WSTR_OPT)
     {
         initconfig_set_error(config, "config option type is not string");
         return -1;
@@ -3933,7 +3933,7 @@ PyInitConfig_GetStrList(PyInitConfig *config, const char *name, size_t *length, 
         return -1;
     }
 
-    if (spec->type != PyConfig_MEMBER_WSTR_LIST) {
+    if (spec->type != TyConfig_MEMBER_WSTR_LIST) {
         initconfig_set_error(config, "config option type is not string list");
         return -1;
     }
@@ -3978,7 +3978,7 @@ PyInitConfig_SetInt(PyInitConfig *config, const char *name, int64_t value)
     }
 
     switch (spec->type) {
-    case PyConfig_MEMBER_INT:
+    case TyConfig_MEMBER_INT:
     {
         if (value < (int64_t)INT_MIN || (int64_t)INT_MAX < value) {
             initconfig_set_error(config,
@@ -3992,8 +3992,8 @@ PyInitConfig_SetInt(PyInitConfig *config, const char *name, int64_t value)
         break;
     }
 
-    case PyConfig_MEMBER_UINT:
-    case PyConfig_MEMBER_BOOL:
+    case TyConfig_MEMBER_UINT:
+    case TyConfig_MEMBER_BOOL:
     {
         if (value < 0 || (uint64_t)UINT_MAX < (uint64_t)value) {
             initconfig_set_error(config,
@@ -4007,7 +4007,7 @@ PyInitConfig_SetInt(PyInitConfig *config, const char *name, int64_t value)
         break;
     }
 
-    case PyConfig_MEMBER_ULONG:
+    case TyConfig_MEMBER_ULONG:
     {
         if (value < 0 || (uint64_t)ULONG_MAX < (uint64_t)value) {
             initconfig_set_error(config,
@@ -4073,13 +4073,13 @@ PyInitConfig_SetStr(PyInitConfig *config, const char *name, const char* value)
         return -1;
     }
 
-    if (spec->type != PyConfig_MEMBER_WSTR
-            && spec->type != PyConfig_MEMBER_WSTR_OPT) {
+    if (spec->type != TyConfig_MEMBER_WSTR
+            && spec->type != TyConfig_MEMBER_WSTR_OPT) {
         initconfig_set_error(config, "config option type is not string");
         return -1;
     }
 
-    if (value == NULL && spec->type != PyConfig_MEMBER_WSTR_OPT) {
+    if (value == NULL && spec->type != TyConfig_MEMBER_WSTR_OPT) {
         initconfig_set_error(config, "config option string cannot be NULL");
     }
 
@@ -4131,7 +4131,7 @@ PyInitConfig_SetStrList(PyInitConfig *config, const char *name,
         return -1;
     }
 
-    if (spec->type != PyConfig_MEMBER_WSTR_LIST) {
+    if (spec->type != TyConfig_MEMBER_WSTR_LIST) {
         initconfig_set_error(config, "config option type is not strings list");
         return -1;
     }
@@ -4202,13 +4202,13 @@ Ty_InitializeFromInitConfig(PyInitConfig *config)
 }
 
 
-// --- PyConfig_Get() -------------------------------------------------------
+// --- TyConfig_Get() -------------------------------------------------------
 
 static const PyConfigSpec*
 config_generic_find_spec(const PyConfigSpec *spec, const char *name)
 {
     for (; spec->name != NULL; spec++) {
-        if (spec->visibility == PyConfig_MEMBER_INIT_ONLY) {
+        if (spec->visibility == TyConfig_MEMBER_INIT_ONLY) {
             continue;
         }
         if (strcmp(name, spec->name) == 0) {
@@ -4334,27 +4334,27 @@ config_get(const TyConfig *config, const PyConfigSpec *spec,
 
     void *member = config_get_spec_member(config, spec);
     switch (spec->type) {
-    case PyConfig_MEMBER_INT:
-    case PyConfig_MEMBER_UINT:
+    case TyConfig_MEMBER_INT:
+    case TyConfig_MEMBER_UINT:
     {
         int value = *(int *)member;
         return TyLong_FromLong(value);
     }
 
-    case PyConfig_MEMBER_BOOL:
+    case TyConfig_MEMBER_BOOL:
     {
         int value = *(int *)member;
         return TyBool_FromLong(value != 0);
     }
 
-    case PyConfig_MEMBER_ULONG:
+    case TyConfig_MEMBER_ULONG:
     {
         unsigned long value = *(unsigned long *)member;
         return TyLong_FromUnsignedLong(value);
     }
 
-    case PyConfig_MEMBER_WSTR:
-    case PyConfig_MEMBER_WSTR_OPT:
+    case TyConfig_MEMBER_WSTR:
+    case TyConfig_MEMBER_WSTR_OPT:
     {
         wchar_t *wstr = *(wchar_t **)member;
         if (wstr != NULL) {
@@ -4365,7 +4365,7 @@ config_get(const TyConfig *config, const PyConfigSpec *spec,
         }
     }
 
-    case PyConfig_MEMBER_WSTR_LIST:
+    case TyConfig_MEMBER_WSTR_LIST:
     {
         if (strcmp(spec->name, "xoptions") == 0) {
             return _TyConfig_CreateXOptionsDict(config);
@@ -4386,13 +4386,13 @@ static TyObject*
 preconfig_get(const TyPreConfig *preconfig, const PyConfigSpec *spec)
 {
     // The type of all PYPRECONFIG_SPEC members is INT or BOOL.
-    assert(spec->type == PyConfig_MEMBER_INT
-           || spec->type == PyConfig_MEMBER_BOOL);
+    assert(spec->type == TyConfig_MEMBER_INT
+           || spec->type == TyConfig_MEMBER_BOOL);
 
     char *member = (char *)preconfig + spec->offset;
     int value = *(int *)member;
 
-    if (spec->type == PyConfig_MEMBER_BOOL) {
+    if (spec->type == TyConfig_MEMBER_BOOL) {
         return TyBool_FromLong(value != 0);
     }
     else {
@@ -4433,7 +4433,7 @@ TyConfig_GetInt(const char *name, int *value)
 {
     assert(!TyErr_Occurred());
 
-    TyObject *obj = PyConfig_Get(name);
+    TyObject *obj = TyConfig_Get(name);
     if (obj == NULL) {
         return -1;
     }
@@ -4461,7 +4461,7 @@ static int
 config_names_add(TyObject *names, const PyConfigSpec *spec)
 {
     for (; spec->name != NULL; spec++) {
-        if (spec->visibility == PyConfig_MEMBER_INIT_ONLY) {
+        if (spec->visibility == TyConfig_MEMBER_INIT_ONLY) {
             continue;
         }
         TyObject *name = TyUnicode_FromString(spec->name);
@@ -4479,7 +4479,7 @@ config_names_add(TyObject *names, const PyConfigSpec *spec)
 
 
 TyObject*
-PyConfig_Names(void)
+TyConfig_Names(void)
 {
     TyObject *names = TyList_New(0);
     if (names == NULL) {
@@ -4503,7 +4503,7 @@ error:
 }
 
 
-// --- PyConfig_Set() -------------------------------------------------------
+// --- TyConfig_Set() -------------------------------------------------------
 
 static int
 config_set_sys_flag(const PyConfigSpec *spec, int int_value)
@@ -4511,7 +4511,7 @@ config_set_sys_flag(const PyConfigSpec *spec, int int_value)
     TyInterpreterState *interp = _TyInterpreterState_GET();
     TyConfig *config = &interp->config;
 
-    if (spec->type == PyConfig_MEMBER_BOOL) {
+    if (spec->type == TyConfig_MEMBER_BOOL) {
         if (int_value != 0) {
             // convert values < 0 and values > 1 to 1
             int_value = 1;
@@ -4536,9 +4536,9 @@ config_set_sys_flag(const PyConfigSpec *spec, int int_value)
     }
 
     // Set TyConfig.ATTR
-    assert(spec->type == PyConfig_MEMBER_INT
-           || spec->type == PyConfig_MEMBER_UINT
-           || spec->type == PyConfig_MEMBER_BOOL);
+    assert(spec->type == TyConfig_MEMBER_INT
+           || spec->type == TyConfig_MEMBER_UINT
+           || spec->type == TyConfig_MEMBER_BOOL);
     int *member = config_get_spec_member(config, spec);
     *member = int_value;
 
@@ -4571,9 +4571,9 @@ config_set_int_attr(const PyConfigSpec *spec, int value)
 
 
 int
-PyConfig_Set(const char *name, TyObject *value)
+TyConfig_Set(const char *name, TyObject *value)
 {
-    if (TySys_Audit("cpython.PyConfig_Set", "sO", name, value) < 0) {
+    if (TySys_Audit("cpython.TyConfig_Set", "sO", name, value) < 0) {
         return -1;
     }
 
@@ -4584,10 +4584,10 @@ PyConfig_Set(const char *name, TyObject *value)
             config_unknown_name_error(name);
             return -1;
         }
-        assert(spec->visibility != PyConfig_MEMBER_PUBLIC);
+        assert(spec->visibility != TyConfig_MEMBER_PUBLIC);
     }
 
-    if (spec->visibility != PyConfig_MEMBER_PUBLIC) {
+    if (spec->visibility != TyConfig_MEMBER_PUBLIC) {
         TyErr_Format(TyExc_ValueError, "cannot set read-only option %s",
                      name);
         return -1;
@@ -4597,9 +4597,9 @@ PyConfig_Set(const char *name, TyObject *value)
     int has_int_value = 0;
 
     switch (spec->type) {
-    case PyConfig_MEMBER_INT:
-    case PyConfig_MEMBER_UINT:
-    case PyConfig_MEMBER_BOOL:
+    case TyConfig_MEMBER_INT:
+    case TyConfig_MEMBER_UINT:
+    case TyConfig_MEMBER_BOOL:
         if (!TyLong_Check(value)) {
             TyErr_Format(TyExc_TypeError, "expected int or bool, got %T", value);
             return -1;
@@ -4608,32 +4608,32 @@ PyConfig_Set(const char *name, TyObject *value)
         if (int_value == -1 && TyErr_Occurred()) {
             return -1;
         }
-        if (int_value < 0 && spec->type != PyConfig_MEMBER_INT) {
+        if (int_value < 0 && spec->type != TyConfig_MEMBER_INT) {
             TyErr_Format(TyExc_ValueError, "value must be >= 0");
             return -1;
         }
         has_int_value = 1;
         break;
 
-    case PyConfig_MEMBER_ULONG:
+    case TyConfig_MEMBER_ULONG:
         // not implemented: only hash_seed uses this type, and it's read-only
         goto cannot_set;
 
-    case PyConfig_MEMBER_WSTR:
+    case TyConfig_MEMBER_WSTR:
         if (!TyUnicode_CheckExact(value)) {
             TyErr_Format(TyExc_TypeError, "expected str, got %T", value);
             return -1;
         }
         break;
 
-    case PyConfig_MEMBER_WSTR_OPT:
+    case TyConfig_MEMBER_WSTR_OPT:
         if (value != Ty_None && !TyUnicode_CheckExact(value)) {
             TyErr_Format(TyExc_TypeError, "expected str or None, got %T", value);
             return -1;
         }
         break;
 
-    case PyConfig_MEMBER_WSTR_LIST:
+    case TyConfig_MEMBER_WSTR_LIST:
         if (strcmp(spec->name, "xoptions") != 0) {
             if (!TyList_Check(value)) {
                 TyErr_Format(TyExc_TypeError, "expected list[str], got %T",
