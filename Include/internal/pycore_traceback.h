@@ -33,7 +33,7 @@ PyAPI_FUNC(void) _TyTraceback_Add(const char *, const char *, int);
 
 extern void _Ty_DumpTraceback(
     int fd,
-    PyThreadState *tstate);
+    TyThreadState *tstate);
 
 /* Write the traceback of all threads into the file 'fd'. current_thread can be
    NULL.
@@ -61,7 +61,7 @@ extern void _Ty_DumpTraceback(
 extern const char* _Ty_DumpTracebackThreads(
     int fd,
     PyInterpreterState *interp,
-    PyThreadState *current_tstate);
+    TyThreadState *current_tstate);
 
 /* Write a Unicode object into the file descriptor fd. Encode the string to
    ASCII using the backslashreplace error handler.

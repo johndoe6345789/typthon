@@ -263,7 +263,7 @@ do_start_joinable_thread(void (*func)(void *), void *arg, pthread_t* out_id)
         return -1;
 #endif
 #if defined(THREAD_STACK_SIZE)
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     size_t stacksize = tstate ? tstate->interp->threads.stacksize : 0;
     tss = (stacksize != 0) ? stacksize : THREAD_STACK_SIZE;
     if (tss != 0) {

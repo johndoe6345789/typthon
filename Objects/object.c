@@ -83,7 +83,7 @@ get_legacy_reftotal(void)
     interp->object_state.reftotal
 
 static inline void
-reftotal_add(PyThreadState *tstate, Ty_ssize_t n)
+reftotal_add(TyThreadState *tstate, Ty_ssize_t n)
 {
 #ifdef Ty_GIL_DISABLED
     _PyThreadStateImpl *tstate_impl = (_PyThreadStateImpl *)tstate;
@@ -288,19 +288,19 @@ _Ty_DECREF_DecRefTotal(void)
 }
 
 void
-_Ty_IncRefTotal(PyThreadState *tstate)
+_Ty_IncRefTotal(TyThreadState *tstate)
 {
     reftotal_add(tstate, 1);
 }
 
 void
-_Ty_DecRefTotal(PyThreadState *tstate)
+_Ty_DecRefTotal(TyThreadState *tstate)
 {
     reftotal_add(tstate, -1);
 }
 
 void
-_Ty_AddRefTotal(PyThreadState *tstate, Ty_ssize_t n)
+_Ty_AddRefTotal(TyThreadState *tstate, Ty_ssize_t n)
 {
     reftotal_add(tstate, n);
 }
@@ -762,7 +762,7 @@ PyObject_Repr(TyObject *v)
         return TyUnicode_FromFormat("<%s object at %p>",
                                     Ty_TYPE(v)->tp_name, v);
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 #ifdef Ty_DEBUG
     /* PyObject_Repr() must not be called with an exception set,
        because it can clear it (directly or indirectly) and so the
@@ -806,7 +806,7 @@ PyObject_Str(TyObject *v)
     if (Ty_TYPE(v)->tp_str == NULL)
         return PyObject_Repr(v);
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 #ifdef Ty_DEBUG
     /* PyObject_Str() must not be called with an exception set,
        because it can clear it (directly or indirectly) and so the
@@ -922,7 +922,7 @@ free_object(void *obj)
 void
 _TyObject_ClearFreeLists(struct _Ty_freelists *freelists, int is_finalization)
 {
-    // In the free-threaded build, freelists are per-PyThreadState and cleared in TyThreadState_Clear()
+    // In the free-threaded build, freelists are per-TyThreadState and cleared in TyThreadState_Clear()
     // In the default build, freelists are per-interpreter and cleared in finalize_interp_types()
     clear_freelist(&freelists->floats, is_finalization, free_object);
     for (Ty_ssize_t i = 0; i < TyTuple_MAXSAVESIZE; i++) {
@@ -1040,7 +1040,7 @@ static const char * const opstrings[] = {"<", "<=", "==", "!=", ">", ">="};
 /* Perform a rich comparison, raising TypeError when the requested comparison
    operator is not supported. */
 static TyObject *
-do_richcompare(PyThreadState *tstate, TyObject *v, TyObject *w, int op)
+do_richcompare(TyThreadState *tstate, TyObject *v, TyObject *w, int op)
 {
     richcmpfunc f;
     TyObject *res;
@@ -1093,7 +1093,7 @@ do_richcompare(PyThreadState *tstate, TyObject *v, TyObject *w, int op)
 TyObject *
 PyObject_RichCompare(TyObject *v, TyObject *w, int op)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     assert(Py_LT <= op && op <= Py_GE);
     if (v == NULL || w == NULL) {
@@ -1695,7 +1695,7 @@ _TyObject_GenericGetAttrWithDict(TyObject *obj, TyObject *name,
 
     Ty_INCREF(name);
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyCStackRef cref;
     _TyThreadState_PushCStackRef(tstate, &cref);
 
@@ -1819,7 +1819,7 @@ _TyObject_GenericSetAttrWithDict(TyObject *obj, TyObject *name,
     Ty_INCREF(name);
     Ty_INCREF(tp);
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyCStackRef cref;
     _TyThreadState_PushCStackRef(tstate, &cref);
 
@@ -1977,7 +1977,7 @@ _dir_locals(void)
         locals = _TyEval_GetFrameLocals();
     }
     else {
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         locals = _TyEval_GetGlobalsFromRunningMain(tstate);
         if (locals == NULL) {
             if (!_TyErr_Occurred(tstate)) {
@@ -2282,7 +2282,7 @@ TyTypeObject _PyNotImplemented_Type = {
 TyObject _Ty_NotImplementedStruct = _TyObject_HEAD_INIT(&_PyNotImplemented_Type);
 
 
-PyStatus
+TyStatus
 _TyObject_InitState(PyInterpreterState *interp)
 {
 #ifdef Ty_TRACE_REFS
@@ -2439,7 +2439,7 @@ static TyTypeObject* static_types[] = {
 };
 
 
-PyStatus
+TyStatus
 _PyTypes_InitTypes(PyInterpreterState *interp)
 {
     // All other static types (unless initialized elsewhere)
@@ -2928,7 +2928,7 @@ finally:
  *  Ty_DECREF must already have been called on it.
  */
 void
-_PyTrash_thread_deposit_object(PyThreadState *tstate, TyObject *op)
+_PyTrash_thread_deposit_object(TyThreadState *tstate, TyObject *op)
 {
     _TyObject_ASSERT(op, Ty_REFCNT(op) == 0);
     TyTypeObject *tp = Ty_TYPE(op);
@@ -2952,7 +2952,7 @@ _PyTrash_thread_deposit_object(PyThreadState *tstate, TyObject *op)
 /* Deallocate all the objects in the gcstate->trash_delete_later list.
  * Called when the call-stack unwinds again. */
 void
-_PyTrash_thread_destroy_chain(PyThreadState *tstate)
+_PyTrash_thread_destroy_chain(TyThreadState *tstate)
 {
     while (tstate->delete_later) {
         TyObject *op = tstate->delete_later;
@@ -3045,7 +3045,7 @@ _Ty_Dealloc(TyObject *op)
     TyTypeObject *type = Ty_TYPE(op);
     unsigned long gc_flag = type->tp_flags & Ty_TPFLAGS_HAVE_GC;
     destructor dealloc = type->tp_dealloc;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     intptr_t margin = _Ty_RecursionLimit_GetMargin(tstate);
     if (margin < 2 && gc_flag) {
         _PyTrash_thread_deposit_object(tstate, (TyObject *)op);

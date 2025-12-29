@@ -81,7 +81,7 @@ static _PyExecutorObject *current_executor;
 
 static TyObject *
 dummy_func(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     _PyInterpreterFrame *frame,
     unsigned char opcode,
     unsigned int oparg,

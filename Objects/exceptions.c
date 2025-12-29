@@ -4006,7 +4006,7 @@ MemoryError_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 }
 
 TyObject *
-_TyErr_NoMemory(PyThreadState *tstate)
+_TyErr_NoMemory(TyThreadState *tstate)
 {
     if (Ty_IS_TYPE(TyExc_MemoryError, NULL)) {
         /* TyErr_NoMemory() has been called before TyExc_MemoryError has been
@@ -4373,7 +4373,7 @@ _PyExc_FiniTypes(PyInterpreterState *interp)
 }
 
 
-PyStatus
+TyStatus
 _PyExc_InitGlobalObjects(PyInterpreterState *interp)
 {
     if (preallocate_memerrors() < 0) {
@@ -4382,7 +4382,7 @@ _PyExc_InitGlobalObjects(PyInterpreterState *interp)
     return _TyStatus_OK();
 }
 
-PyStatus
+TyStatus
 _PyExc_InitState(PyInterpreterState *interp)
 {
     struct _Py_exc_state *state = &interp->exc_state;

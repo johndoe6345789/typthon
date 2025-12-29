@@ -18,23 +18,23 @@ extern "C" {
 // It's also made accessible for debuggers and profilers.
 PyAPI_DATA(_PyRuntimeState) _PyRuntime;
 
-extern PyStatus _PyRuntimeState_Init(_PyRuntimeState *runtime);
+extern TyStatus _PyRuntimeState_Init(_PyRuntimeState *runtime);
 extern void _PyRuntimeState_Fini(_PyRuntimeState *runtime);
 
 #ifdef HAVE_FORK
-extern PyStatus _PyRuntimeState_ReInitThreads(_PyRuntimeState *runtime);
+extern TyStatus _PyRuntimeState_ReInitThreads(_PyRuntimeState *runtime);
 #endif
 
 /* Initialize _PyRuntimeState.
    Return NULL on success, or return an error message on failure. */
-extern PyStatus _PyRuntime_Initialize(void);
+extern TyStatus _PyRuntime_Initialize(void);
 
 extern void _PyRuntime_Finalize(void);
 
 
-static inline PyThreadState*
+static inline TyThreadState*
 _PyRuntimeState_GetFinalizing(_PyRuntimeState *runtime) {
-    return (PyThreadState*)_Ty_atomic_load_ptr_relaxed(&runtime->_finalizing);
+    return (TyThreadState*)_Ty_atomic_load_ptr_relaxed(&runtime->_finalizing);
 }
 
 static inline unsigned long
@@ -43,7 +43,7 @@ _PyRuntimeState_GetFinalizingID(_PyRuntimeState *runtime) {
 }
 
 static inline void
-_PyRuntimeState_SetFinalizing(_PyRuntimeState *runtime, PyThreadState *tstate) {
+_PyRuntimeState_SetFinalizing(_PyRuntimeState *runtime, TyThreadState *tstate) {
     _Ty_atomic_store_ptr_relaxed(&runtime->_finalizing, tstate);
     if (tstate == NULL) {
         _Ty_atomic_store_ulong_relaxed(&runtime->_finalizing_id, 0);

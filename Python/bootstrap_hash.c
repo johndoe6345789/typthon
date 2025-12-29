@@ -549,7 +549,7 @@ _TyOS_URandomNonblock(void *buffer, Ty_ssize_t size)
 }
 
 
-PyStatus
+TyStatus
 _Ty_HashRandomization_Init(const PyConfig *config)
 {
     void *secret = &_Ty_HashSecret;

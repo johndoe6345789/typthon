@@ -50,7 +50,7 @@ runtime_init(void)
 
     config.site_import = 0;
 
-    PyStatus status;
+    TyStatus status;
     status = TyConfig_SetString(&config, &config.program_name,
                                 L"./_freeze_module");
     if (TyStatus_Exception(status)) {

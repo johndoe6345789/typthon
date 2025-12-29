@@ -183,7 +183,7 @@ _TyImport_ClearModules(PyInterpreterState *interp)
 }
 
 static inline TyObject *
-get_modules_dict(PyThreadState *tstate, bool fatal)
+get_modules_dict(TyThreadState *tstate, bool fatal)
 {
     /* Technically, it would make sense to incref the dict,
      * since sys.modules could be swapped out and decref'ed to 0
@@ -205,14 +205,14 @@ get_modules_dict(PyThreadState *tstate, bool fatal)
 TyObject *
 TyImport_GetModuleDict(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return get_modules_dict(tstate, true);
 }
 
 int
 _TyImport_SetModule(TyObject *name, TyObject *m)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *modules = get_modules_dict(tstate, true);
     return PyObject_SetItem(modules, name, m);
 }
@@ -220,13 +220,13 @@ _TyImport_SetModule(TyObject *name, TyObject *m)
 int
 _TyImport_SetModuleString(const char *name, TyObject *m)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *modules = get_modules_dict(tstate, true);
     return PyMapping_SetItemString(modules, name, m);
 }
 
 static TyObject *
-import_get_module(PyThreadState *tstate, TyObject *name)
+import_get_module(TyThreadState *tstate, TyObject *name)
 {
     TyObject *modules = get_modules_dict(tstate, false);
     if (modules == NULL) {
@@ -285,12 +285,12 @@ done:
     return 0;
 }
 
-static void remove_importlib_frames(PyThreadState *tstate);
+static void remove_importlib_frames(TyThreadState *tstate);
 
 TyObject *
 TyImport_GetModule(TyObject *name)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *mod;
 
     mod = import_get_module(tstate, name);
@@ -309,7 +309,7 @@ TyImport_GetModule(TyObject *name)
    if not, create a new one and insert it in the modules dictionary. */
 
 static TyObject *
-import_add_module(PyThreadState *tstate, TyObject *name)
+import_add_module(TyThreadState *tstate, TyObject *name)
 {
     TyObject *modules = get_modules_dict(tstate, false);
     if (modules == NULL) {
@@ -342,7 +342,7 @@ TyImport_AddModuleRef(const char *name)
     if (name_obj == NULL) {
         return NULL;
     }
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *module = import_add_module(tstate, name_obj);
     Ty_DECREF(name_obj);
     return module;
@@ -352,7 +352,7 @@ TyImport_AddModuleRef(const char *name)
 TyObject *
 TyImport_AddModuleObject(TyObject *name)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *mod = import_add_module(tstate, name);
     if (!mod) {
         return NULL;
@@ -405,7 +405,7 @@ TyImport_AddModule(const char *name)
  * exception, otherwise the old exception is preserved.
  */
 static void
-remove_module(PyThreadState *tstate, TyObject *name)
+remove_module(TyThreadState *tstate, TyObject *name)
 {
     TyObject *exc = _TyErr_GetRaisedException(tstate);
 
@@ -547,7 +547,7 @@ PyState_FindModule(TyModuleDef* module)
    playing it safe and keeping it around for any stable ABI extensions
    built against 3.2-3.5. */
 int
-_PyState_AddModule(PyThreadState *tstate, TyObject* module, TyModuleDef* def)
+_PyState_AddModule(TyThreadState *tstate, TyObject* module, TyModuleDef* def)
 {
     if (!def) {
         assert(_TyErr_Occurred(tstate));
@@ -572,7 +572,7 @@ PyState_AddModule(TyObject* module, TyModuleDef* def)
         return -1;
     }
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (def->m_slots) {
         _TyErr_SetString(tstate,
                          TyExc_SystemError,
@@ -597,7 +597,7 @@ PyState_AddModule(TyObject* module, TyModuleDef* def)
 int
 PyState_RemoveModule(TyModuleDef* def)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (def->m_slots) {
         _TyErr_SetString(tstate,
                          TyExc_SystemError,
@@ -1538,7 +1538,7 @@ _TyImport_CheckSubinterpIncompatibleExtensionAllowed(const char *name)
 int
 _TyImport_CheckGILForModule(TyObject* module, TyObject *module_name)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (module == NULL) {
         _TyEval_DisableGIL(tstate);
         return 0;
@@ -1575,19 +1575,19 @@ _TyImport_CheckGILForModule(TyObject* module, TyObject *module_name)
 }
 #endif
 
-static PyThreadState *
-switch_to_main_interpreter(PyThreadState *tstate)
+static TyThreadState *
+switch_to_main_interpreter(TyThreadState *tstate)
 {
     if (_Ty_IsMainInterpreter(tstate->interp)) {
         return tstate;
     }
-    PyThreadState *main_tstate = _TyThreadState_NewBound(
+    TyThreadState *main_tstate = _TyThreadState_NewBound(
             _TyInterpreterState_Main(), _TyThreadState_WHENCE_EXEC);
     if (main_tstate == NULL) {
         return NULL;
     }
 #ifndef NDEBUG
-    PyThreadState *old_tstate = TyThreadState_Swap(main_tstate);
+    TyThreadState *old_tstate = TyThreadState_Swap(main_tstate);
     assert(old_tstate == tstate);
 #else
     (void)TyThreadState_Swap(main_tstate);
@@ -1596,8 +1596,8 @@ switch_to_main_interpreter(PyThreadState *tstate)
 }
 
 static void
-switch_back_from_main_interpreter(PyThreadState *tstate,
-                                  PyThreadState *main_tstate,
+switch_back_from_main_interpreter(TyThreadState *tstate,
+                                  TyThreadState *main_tstate,
                                   TyObject *tempobj)
 {
     assert(main_tstate == TyThreadState_GET());
@@ -1727,7 +1727,7 @@ struct singlephase_global_update {
 };
 
 static struct extensions_cache_value *
-update_global_state_for_extension(PyThreadState *tstate,
+update_global_state_for_extension(TyThreadState *tstate,
                                   TyObject *path, TyObject *name,
                                   TyModuleDef *def,
                                   struct singlephase_global_update *singlephase)
@@ -1796,7 +1796,7 @@ update_global_state_for_extension(PyThreadState *tstate,
 /* For multi-phase init modules, the module is finished
  * by TyModule_FromDefAndSpec(). */
 static int
-finish_singlephase_extension(PyThreadState *tstate, TyObject *mod,
+finish_singlephase_extension(TyThreadState *tstate, TyObject *mod,
                              struct extensions_cache_value *cached,
                              TyObject *name, TyObject *modules)
 {
@@ -1819,7 +1819,7 @@ finish_singlephase_extension(PyThreadState *tstate, TyObject *mod,
 
 
 static TyObject *
-reload_singlephase_extension(PyThreadState *tstate,
+reload_singlephase_extension(TyThreadState *tstate,
                              struct extensions_cache_value *cached,
                              struct _Ty_ext_module_loader_info *info)
 {
@@ -1930,7 +1930,7 @@ reload_singlephase_extension(PyThreadState *tstate,
 }
 
 static TyObject *
-import_find_extension(PyThreadState *tstate,
+import_find_extension(TyThreadState *tstate,
                       struct _Ty_ext_module_loader_info *info,
                       struct extensions_cache_value **p_cached)
 {
@@ -1968,7 +1968,7 @@ import_find_extension(PyThreadState *tstate,
 }
 
 static TyObject *
-import_run_extension(PyThreadState *tstate, PyModInitFunction p0,
+import_run_extension(TyThreadState *tstate, PyModInitFunction p0,
                      struct _Ty_ext_module_loader_info *info,
                      TyObject *spec, TyObject *modules)
 {
@@ -2028,7 +2028,7 @@ import_run_extension(PyThreadState *tstate, PyModInitFunction p0,
      * such interpreters will be increasingly uncommon,
      * and the code is a bit simpler if we always switch
      * to the main interpreter. */
-    PyThreadState *main_tstate = switch_to_main_interpreter(tstate);
+    TyThreadState *main_tstate = switch_to_main_interpreter(tstate);
     if (main_tstate == NULL) {
         return NULL;
     }
@@ -2219,8 +2219,8 @@ clear_singlephase_extension(PyInterpreterState *interp,
 
     /* We must use the main interpreter to clean up the cache.
      * See the note in import_run_extension(). */
-    PyThreadState *tstate = TyThreadState_GET();
-    PyThreadState *main_tstate = switch_to_main_interpreter(tstate);
+    TyThreadState *tstate = TyThreadState_GET();
+    TyThreadState *main_tstate = switch_to_main_interpreter(tstate);
     if (main_tstate == NULL) {
         return -1;
     }
@@ -2241,7 +2241,7 @@ clear_singlephase_extension(PyInterpreterState *interp,
 /*******************/
 
 int
-_TyImport_FixupBuiltin(PyThreadState *tstate, TyObject *mod, const char *name,
+_TyImport_FixupBuiltin(TyThreadState *tstate, TyObject *mod, const char *name,
                        TyObject *modules)
 {
     int res = -1;
@@ -2323,7 +2323,7 @@ is_builtin(TyObject *name)
 }
 
 static TyObject*
-create_builtin(PyThreadState *tstate, TyObject *name, TyObject *spec)
+create_builtin(TyThreadState *tstate, TyObject *name, TyObject *spec)
 {
     struct _Ty_ext_module_loader_info info;
     if (_Ty_ext_module_loader_info_init_for_builtin(&info, name) < 0) {
@@ -2628,7 +2628,7 @@ error:
 }
 
 static TyObject *
-module_dict_for_exec(PyThreadState *tstate, TyObject *name)
+module_dict_for_exec(TyThreadState *tstate, TyObject *name)
 {
     TyObject *m, *d;
 
@@ -2654,7 +2654,7 @@ module_dict_for_exec(PyThreadState *tstate, TyObject *name)
 }
 
 static TyObject *
-exec_code_in_module(PyThreadState *tstate, TyObject *name,
+exec_code_in_module(TyThreadState *tstate, TyObject *name,
                     TyObject *module_dict, TyObject *code_object)
 {
     TyObject *v, *m;
@@ -2680,7 +2680,7 @@ TyObject*
 TyImport_ExecCodeModuleObject(TyObject *name, TyObject *co, TyObject *pathname,
                               TyObject *cpathname)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *d, *external, *res;
 
     d = module_dict_for_exec(tstate, name);
@@ -3048,7 +3048,7 @@ unmarshal_frozen_code(PyInterpreterState *interp, struct frozen_info *info)
 int
 TyImport_ImportFrozenModuleObject(TyObject *name)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *co, *m, *d = NULL;
     int err;
 
@@ -3144,7 +3144,7 @@ TyImport_ImportFrozenModule(const char *name)
    importlib requires the _imp module: this function fix the bootstrap issue.
  */
 static TyObject*
-bootstrap_imp(PyThreadState *tstate)
+bootstrap_imp(TyThreadState *tstate)
 {
     TyObject *name = TyUnicode_FromString("_imp");
     if (name == NULL) {
@@ -3198,7 +3198,7 @@ error:
 
 */
 static int
-init_importlib(PyThreadState *tstate, TyObject *sysmod)
+init_importlib(TyThreadState *tstate, TyObject *sysmod)
 {
     assert(!_TyErr_Occurred(tstate));
 
@@ -3314,7 +3314,7 @@ _TyImport_ImportlibModuleRepr(PyInterpreterState *interp, TyObject *m)
    path_importer_cache. */
 
 static TyObject *
-get_path_importer(PyThreadState *tstate, TyObject *path_importer_cache,
+get_path_importer(TyThreadState *tstate, TyObject *path_importer_cache,
                   TyObject *path_hooks, TyObject *p)
 {
     TyObject *importer;
@@ -3368,7 +3368,7 @@ get_path_importer(PyThreadState *tstate, TyObject *path_importer_cache,
 TyObject *
 TyImport_GetImporter(TyObject *path)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *path_importer_cache = _TySys_GetRequiredAttrString("path_importer_cache");
     if (path_importer_cache == NULL) {
         return NULL;
@@ -3451,7 +3451,7 @@ TyImport_ImportModuleNoBlock(const char *name)
 /* Remove importlib frames from the traceback,
  * except in Verbose mode. */
 static void
-remove_importlib_frames(PyThreadState *tstate)
+remove_importlib_frames(TyThreadState *tstate)
 {
     const char *importlib_filename = "<frozen importlib._bootstrap>";
     const char *external_filename = "<frozen importlib._bootstrap_external>";
@@ -3518,7 +3518,7 @@ done:
 
 
 static TyObject *
-resolve_name(PyThreadState *tstate, TyObject *name, TyObject *globals, int level)
+resolve_name(TyThreadState *tstate, TyObject *name, TyObject *globals, int level)
 {
     TyObject *abs_name;
     TyObject *package = NULL;
@@ -3669,7 +3669,7 @@ resolve_name(PyThreadState *tstate, TyObject *name, TyObject *globals, int level
 }
 
 static TyObject *
-import_find_and_load(PyThreadState *tstate, TyObject *abs_name)
+import_find_and_load(TyThreadState *tstate, TyObject *abs_name)
 {
     TyObject *mod = NULL;
     PyInterpreterState *interp = tstate->interp;
@@ -3754,7 +3754,7 @@ TyImport_ImportModuleLevelObject(TyObject *name, TyObject *globals,
                                  TyObject *locals, TyObject *fromlist,
                                  int level)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *abs_name = NULL;
     TyObject *final_mod = NULL;
     TyObject *mod = NULL;
@@ -3946,7 +3946,7 @@ TyImport_ReloadModule(TyObject *m)
 TyObject *
 TyImport_Import(TyObject *module_name)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *globals = NULL;
     TyObject *import = NULL;
     TyObject *builtins = NULL;
@@ -4022,14 +4022,14 @@ TyImport_Import(TyObject *module_name)
 /* runtime lifecycle */
 /*********************/
 
-PyStatus
+TyStatus
 _TyImport_Init(void)
 {
     if (INITTAB != NULL) {
         return _TyStatus_ERR("global import state already initialized");
     }
     if (init_builtin_modules_table() != 0) {
-        return PyStatus_NoMemory();
+        return TyStatus_NoMemory();
     }
     return _TyStatus_OK();
 }
@@ -4062,8 +4062,8 @@ _TyImport_Fini2(void)
 /* interpreter lifecycle */
 /*************************/
 
-PyStatus
-_TyImport_InitCore(PyThreadState *tstate, TyObject *sysmod, int importlib)
+TyStatus
+_TyImport_InitCore(TyThreadState *tstate, TyObject *sysmod, int importlib)
 {
     // XXX Initialize here: interp->modules and interp->import_func.
     // XXX Initialize here: sys.modules and sys.meta_path.
@@ -4128,7 +4128,7 @@ _TyImport_FiniCore(PyInterpreterState *interp)
 /* "external" imports */
 
 static int
-init_zipimport(PyThreadState *tstate, int verbose)
+init_zipimport(TyThreadState *tstate, int verbose)
 {
     TyObject *path_hooks = _TySys_GetRequiredAttrString("path_hooks");
     if (path_hooks == NULL) {
@@ -4163,8 +4163,8 @@ init_zipimport(PyThreadState *tstate, int verbose)
     return 0;
 }
 
-PyStatus
-_TyImport_InitExternal(PyThreadState *tstate)
+TyStatus
+_TyImport_InitExternal(TyThreadState *tstate)
 {
     int verbose = _TyInterpreterState_GetConfig(tstate->interp)->verbose;
 
@@ -4335,7 +4335,7 @@ static TyObject *
 _imp_create_builtin(TyObject *module, TyObject *spec)
 /*[clinic end generated code: output=ace7ff22271e6f39 input=37f966f890384e47]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     TyObject *name = PyObject_GetAttrString(spec, "name");
     if (name == NULL) {
@@ -4406,7 +4406,7 @@ static TyObject *
 _imp_init_frozen_impl(TyObject *module, TyObject *name)
 /*[clinic end generated code: output=fc0511ed869fd69c input=13019adfc04f3fb3]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     int ret;
 
     ret = TyImport_ImportFrozenModuleObject(name);
@@ -4677,7 +4677,7 @@ _imp_create_dynamic_impl(TyObject *module, TyObject *spec, TyObject *file)
 /*[clinic end generated code: output=83249b827a4fde77 input=c31b954f4cf4e09d]*/
 {
     TyObject *mod = NULL;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     struct _Ty_ext_module_loader_info info;
     if (_Ty_ext_module_loader_info_init_from_spec(&info, spec) < 0) {

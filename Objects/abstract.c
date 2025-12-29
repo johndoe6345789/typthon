@@ -30,7 +30,7 @@ type_error(const char *msg, TyObject *obj)
 static TyObject *
 null_error(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (!_TyErr_Occurred(tstate)) {
         _TyErr_SetString(tstate, TyExc_SystemError,
                          "null argument to internal routine");
@@ -99,7 +99,7 @@ PyObject_LengthHint(TyObject *o, Ty_ssize_t defaultvalue)
     if (_TyObject_HasLen(o)) {
         res = PyObject_Length(o);
         if (res < 0) {
-            PyThreadState *tstate = _TyThreadState_GET();
+            TyThreadState *tstate = _TyThreadState_GET();
             assert(_TyErr_Occurred(tstate));
             if (!_TyErr_ExceptionMatches(tstate, TyExc_TypeError)) {
                 return -1;
@@ -120,7 +120,7 @@ PyObject_LengthHint(TyObject *o, Ty_ssize_t defaultvalue)
     result = _TyObject_CallNoArgs(hint);
     Ty_DECREF(hint);
     if (result == NULL) {
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         if (_TyErr_ExceptionMatches(tstate, TyExc_TypeError)) {
             _TyErr_Clear(tstate);
             return defaultvalue;
@@ -872,7 +872,7 @@ PyObject_Format(TyObject *obj, TyObject *format_spec)
     /* Find the (unbound!) __format__ method */
     meth = _TyObject_LookupSpecial(obj, &_Ty_ID(__format__));
     if (meth == NULL) {
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         if (!_TyErr_Occurred(tstate)) {
             _TyErr_Format(tstate, TyExc_TypeError,
                           "Type %.100s doesn't define __format__",
@@ -1468,7 +1468,7 @@ PyNumber_AsSsize_t(TyObject *item, TyObject *err)
     if (result != -1)
         goto finish;
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     runerr = _TyErr_Occurred(tstate);
     if (!runerr) {
         goto finish;
@@ -2106,7 +2106,7 @@ PySequence_Fast(TyObject *v, const char *m)
 
     it = PyObject_GetIter(v);
     if (it == NULL) {
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         if (_TyErr_ExceptionMatches(tstate, TyExc_TypeError)) {
             _TyErr_SetString(tstate, TyExc_TypeError, m);
         }
@@ -2432,7 +2432,7 @@ method_output_as_list(TyObject *o, TyObject *meth)
     }
     it = PyObject_GetIter(meth_output);
     if (it == NULL) {
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         if (_TyErr_ExceptionMatches(tstate, TyExc_TypeError)) {
             _TyErr_Format(tstate, TyExc_TypeError,
                           "%.200s.%U() returned a non-iterable (type %.200s)",
@@ -2582,7 +2582,7 @@ check_class(TyObject *cls, const char *error)
     TyObject *bases = abstract_get_bases(cls);
     if (bases == NULL) {
         /* Do not mask errors. */
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         if (!_TyErr_Occurred(tstate)) {
             _TyErr_SetString(tstate, TyExc_TypeError, error);
         }
@@ -2629,7 +2629,7 @@ object_isinstance(TyObject *inst, TyObject *cls)
 }
 
 static int
-object_recursive_isinstance(PyThreadState *tstate, TyObject *inst, TyObject *cls)
+object_recursive_isinstance(TyThreadState *tstate, TyObject *inst, TyObject *cls)
 {
     /* Quick test for an exact match */
     if (Ty_IS_TYPE(inst, (TyTypeObject *)cls)) {
@@ -2696,7 +2696,7 @@ object_recursive_isinstance(PyThreadState *tstate, TyObject *inst, TyObject *cls
 int
 PyObject_IsInstance(TyObject *inst, TyObject *cls)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return object_recursive_isinstance(tstate, inst, cls);
 }
 
@@ -2722,7 +2722,7 @@ recursive_issubclass(TyObject *derived, TyObject *cls)
 }
 
 static int
-object_issubclass(PyThreadState *tstate, TyObject *derived, TyObject *cls)
+object_issubclass(TyThreadState *tstate, TyObject *derived, TyObject *cls)
 {
     TyObject *checker;
 
@@ -2784,7 +2784,7 @@ object_issubclass(PyThreadState *tstate, TyObject *derived, TyObject *cls)
 int
 PyObject_IsSubclass(TyObject *derived, TyObject *cls)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return object_issubclass(tstate, derived, cls);
 }
 
@@ -2871,7 +2871,7 @@ iternext(TyObject *iter, TyObject **item)
         return 1;
     }
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     /* When the iterator is exhausted it must return NULL;
      * a StopIteration exception may or may not be set. */
     if (!_TyErr_Occurred(tstate)) {

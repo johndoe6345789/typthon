@@ -122,9 +122,9 @@ PyAPI_FUNC(void) _Ty_NO_RETURN _Ty_FatalRefcountErrorFunc(
    built against the pre-3.12 stable ABI. */
 PyAPI_DATA(Ty_ssize_t) _Ty_RefTotal;
 
-extern void _Ty_AddRefTotal(PyThreadState *, Ty_ssize_t);
-extern PyAPI_FUNC(void) _Ty_IncRefTotal(PyThreadState *);
-extern PyAPI_FUNC(void) _Ty_DecRefTotal(PyThreadState *);
+extern void _Ty_AddRefTotal(TyThreadState *, Ty_ssize_t);
+extern PyAPI_FUNC(void) _Ty_IncRefTotal(TyThreadState *);
+extern PyAPI_FUNC(void) _Ty_DecRefTotal(TyThreadState *);
 
 #  define _Ty_DEC_REFTOTAL(interp) \
     interp->object_state.reftotal--
@@ -318,7 +318,7 @@ _TyType_HasFeature(TyTypeObject *type, unsigned long feature) {
 
 extern void _TyType_InitCache(PyInterpreterState *interp);
 
-extern PyStatus _TyObject_InitState(PyInterpreterState *interp);
+extern TyStatus _TyObject_InitState(PyInterpreterState *interp);
 extern void _TyObject_FiniState(PyInterpreterState *interp);
 extern bool _PyRefchain_IsTraced(PyInterpreterState *interp, TyObject *obj);
 

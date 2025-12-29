@@ -164,10 +164,10 @@ faulthandler_get_fileno(TyObject **file_ptr)
 
 /* Get the state of the current thread: only call this function if the current
    thread holds the GIL. Raise an exception on error. */
-static PyThreadState*
+static TyThreadState*
 get_thread_state(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate == NULL) {
         /* just in case but very unlikely... */
         TyErr_SetString(TyExc_RuntimeError,
@@ -196,7 +196,7 @@ faulthandler_dump_traceback(int fd, int all_threads,
        fault if the thread released the GIL, and so this function cannot be
        used. Read the thread specific storage (TSS) instead: call
        TyGILState_GetThisThreadState(). */
-    PyThreadState *tstate = TyGILState_GetThisThreadState();
+    TyThreadState *tstate = TyGILState_GetThisThreadState();
 
     if (all_threads == 1) {
         (void)_Ty_DumpTracebackThreads(fd, NULL, tstate);
@@ -238,7 +238,7 @@ faulthandler_dump_traceback_py(TyObject *self,
     static char *kwlist[] = {"file", "all_threads", NULL};
     TyObject *file = NULL;
     int all_threads = 1;
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     const char *errmsg;
     int fd;
 
@@ -332,7 +332,7 @@ deduce_all_threads(void)
         return 0;
     }
     // We can't use _TyThreadState_GET, so use the stored GILstate one
-    PyThreadState *tstate = TyGILState_GetThisThreadState();
+    TyThreadState *tstate = TyGILState_GetThisThreadState();
     if (tstate == NULL) {
         return 0;
     }
@@ -575,7 +575,7 @@ faulthandler_py_enable(TyObject *self, TyObject *args, TyObject *kwargs)
     int all_threads = 1;
     int fd;
     int c_stack = 1;
-    PyThreadState *tstate;
+    TyThreadState *tstate;
 
     if (!TyArg_ParseTupleAndKeywords(args, kwargs,
         "|Opp:enable", kwlist, &file, &all_threads, &c_stack))
@@ -743,7 +743,7 @@ faulthandler_dump_traceback_later(TyObject *self,
     TyObject *file = NULL;
     int fd;
     int exit = 0;
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     char *header;
     size_t header_len;
 
@@ -948,7 +948,7 @@ faulthandler_register_py(TyObject *self,
     int fd;
     user_signal_t *user;
     _Ty_sighandler_t previous;
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     int err;
 
     if (!TyArg_ParseTupleAndKeywords(args, kwargs,
@@ -1419,7 +1419,7 @@ faulthandler_init_enable(void)
     return 0;
 }
 
-PyStatus
+TyStatus
 _PyFaulthandler_Init(int enable)
 {
 #ifdef FAULTHANDLER_USE_ALT_STACK

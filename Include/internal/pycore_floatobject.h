@@ -13,7 +13,7 @@ extern "C" {
 /* runtime lifecycle */
 
 extern void _TyFloat_InitState(PyInterpreterState *);
-extern PyStatus _TyFloat_InitTypes(PyInterpreterState *);
+extern TyStatus _TyFloat_InitTypes(PyInterpreterState *);
 extern void _TyFloat_FiniType(PyInterpreterState *);
 
 

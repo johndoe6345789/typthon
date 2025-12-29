@@ -1148,7 +1148,7 @@ static int
 has_custom_mro(TyTypeObject *tp)
 {
     _PyCStackRef c_ref1, c_ref2;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyThreadState_PushCStackRef(tstate, &c_ref1);
     _TyThreadState_PushCStackRef(tstate, &c_ref2);
 
@@ -2264,7 +2264,7 @@ type_call(TyObject *self, TyObject *args, TyObject *kwds)
 {
     TyTypeObject *type = PyTypeObject_CAST(self);
     TyObject *obj;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
 #ifdef Ty_DEBUG
     /* type_call() must not be called with an exception set,
@@ -2875,7 +2875,7 @@ lookup_method(TyObject *self, TyObject *attr, _PyStackRef *out)
 
 
 static inline TyObject*
-vectorcall_unbound(PyThreadState *tstate, int unbound, TyObject *func,
+vectorcall_unbound(TyThreadState *tstate, int unbound, TyObject *func,
                    TyObject *const *args, Ty_ssize_t nargs)
 {
     size_t nargsf = nargs;
@@ -2905,7 +2905,7 @@ call_unbound_noarg(int unbound, TyObject *func, TyObject *self)
 static TyObject *
 call_method_noarg(TyObject *self, TyObject *attr)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyCStackRef cref;
     _TyThreadState_PushCStackRef(tstate, &cref);
     TyObject *res = NULL;
@@ -2921,7 +2921,7 @@ call_method_noarg(TyObject *self, TyObject *attr)
 static TyObject *
 call_method(TyObject *self, TyObject *attr, TyObject *args, TyObject *kwds)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyCStackRef cref;
     _TyThreadState_PushCStackRef(tstate, &cref);
     TyObject *res = NULL;
@@ -2949,7 +2949,7 @@ vectorcall_method(TyObject *name, TyObject *const *args, Ty_ssize_t nargs)
 {
     assert(nargs >= 1);
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *retval = NULL;
     TyObject *self = args[0];
     _PyCStackRef cref;
@@ -2966,7 +2966,7 @@ vectorcall_method(TyObject *name, TyObject *const *args, Ty_ssize_t nargs)
 /* Clone of vectorcall_method() that returns NotImplemented
  * when the lookup fails. */
 static TyObject *
-vectorcall_maybe(PyThreadState *tstate, TyObject *name,
+vectorcall_maybe(TyThreadState *tstate, TyObject *name,
                  TyObject *const *args, Ty_ssize_t nargs)
 {
     assert(nargs >= 1);
@@ -2995,7 +2995,7 @@ vectorcall_maybe(PyThreadState *tstate, TyObject *name,
 static TyObject *
 maybe_call_special_no_args(TyObject *self, TyObject *attr, int *attr_is_none)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyCStackRef cref;
     _TyThreadState_PushCStackRef(tstate, &cref);
 
@@ -3016,7 +3016,7 @@ static TyObject *
 maybe_call_special_one_arg(TyObject *self, TyObject *attr, TyObject *arg,
                            int *attr_is_none)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyCStackRef cref;
     _TyThreadState_PushCStackRef(tstate, &cref);
 
@@ -4746,7 +4746,7 @@ type_vectorcall(TyObject *metatype, TyObject *const *args,
     }
     /* In other (much less common) cases, fall back to
        more flexible calling conventions. */
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyObject_MakeTpCall(tstate, metatype, args, nargs, kwnames);
 }
 
@@ -9852,7 +9852,7 @@ static TyObject * \
 FUNCNAME(TyObject *self, TyObject *other) \
 { \
     TyObject* stack[2]; \
-    PyThreadState *tstate = _TyThreadState_GET(); \
+    TyThreadState *tstate = _TyThreadState_GET(); \
     int do_other = !Ty_IS_TYPE(self, Ty_TYPE(other)) && \
         Ty_TYPE(other)->tp_as_number != NULL && \
         Ty_TYPE(other)->tp_as_number->SLOTNAME == TESTFUNC; \
@@ -10032,7 +10032,7 @@ slot_nb_power(TyObject *self, TyObject *other, TyObject *modulus)
 
     /* The following code is a copy of SLOT1BINFULL, but for three arguments. */
     TyObject* stack[3];
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     int do_other = !Ty_IS_TYPE(self, Ty_TYPE(other)) &&
         Ty_TYPE(other)->tp_as_number != NULL &&
         Ty_TYPE(other)->tp_as_number->nb_power == slot_nb_power;
@@ -10358,7 +10358,7 @@ slot_tp_richcompare(TyObject *self, TyObject *other, int op)
 static int
 has_dunder_getitem(TyObject *self)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyCStackRef c_ref;
     _TyThreadState_PushCStackRef(tstate, &c_ref);
     lookup_maybe_method(self, &_Ty_ID(__getitem__), &c_ref.ref);
@@ -10459,7 +10459,7 @@ slot_tp_init(TyObject *self, TyObject *args, TyObject *kwds)
 static TyObject *
 slot_tp_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *func, *result;
 
     func = PyObject_GetAttr((TyObject *)type, &_Ty_ID(__new__));
@@ -10476,7 +10476,7 @@ static void
 slot_tp_finalize(TyObject *self)
 {
     /* Save the current exception, if any. */
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *exc = _TyErr_GetRaisedException(tstate);
 
     _PyCStackRef cref;
@@ -12049,7 +12049,7 @@ super_init_impl(TyObject *self, TyTypeObject *type, TyObject *obj) {
     if (type == NULL) {
         /* Call super(), without args -- fill in from __class__
            and first local variable on the stack. */
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         _PyInterpreterFrame *frame = _TyThreadState_GetFrame(tstate);
         if (frame == NULL) {
             TyErr_SetString(TyExc_RuntimeError,

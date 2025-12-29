@@ -1567,7 +1567,7 @@ surrogateescape_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 }
 
 
-PyStatus
+TyStatus
 _PyCodec_InitRegistry(PyInterpreterState *interp)
 {
     static struct {

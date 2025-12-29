@@ -27,7 +27,7 @@ int
 PyUnstable_AtExit(PyInterpreterState *interp,
                   atexit_datacallbackfunc func, void *data)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _Ty_EnsureTstateNotNULL(tstate);
     assert(tstate->interp == interp);
 
@@ -63,7 +63,7 @@ atexit_cleanup(struct atexit_state *state)
 }
 
 
-PyStatus
+TyStatus
 _PyAtExit_Init(PyInterpreterState *interp)
 {
     struct atexit_state *state = &interp->atexit;

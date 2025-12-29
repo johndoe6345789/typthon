@@ -13,7 +13,7 @@ extern "C" {
 /* Initialize codecs-related state for the given interpreter, including
    registering the first codec search function. Must be called before any other
    PyCodec-related functions, and while only one thread is active. */
-extern PyStatus _PyCodec_InitRegistry(PyInterpreterState *interp);
+extern TyStatus _PyCodec_InitRegistry(PyInterpreterState *interp);
 
 /* Finalize codecs-related state for the given interpreter. No PyCodec-related
    functions other than PyCodec_Unregister() may be called after this. */

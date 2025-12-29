@@ -27,33 +27,33 @@ extern "C" {
 // Export for 'math' shared extension, used via _TyObject_VectorcallTstate()
 // static inline function.
 PyAPI_FUNC(TyObject*) _Ty_CheckFunctionResult(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *callable,
     TyObject *result,
     const char *where);
 
 extern TyObject* _TyObject_Call_Prepend(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *callable,
     TyObject *obj,
     TyObject *args,
     TyObject *kwargs);
 
 extern TyObject* _TyObject_VectorcallDictTstate(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *callable,
     TyObject *const *args,
     size_t nargsf,
     TyObject *kwargs);
 
 extern TyObject* _TyObject_Call(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *callable,
     TyObject *args,
     TyObject *kwargs);
 
 extern TyObject * _TyObject_CallMethodFormat(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *callable,
     const char *format,
     ...);
@@ -106,7 +106,7 @@ _TyObject_CallMethodIdOneArg(TyObject *self, _Ty_Identifier *name, TyObject *arg
 // Export for 'math' shared extension, used via _TyObject_VectorcallTstate()
 // static inline function.
 PyAPI_FUNC(TyObject*) _TyObject_MakeTpCall(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *callable,
     TyObject *const *args, Ty_ssize_t nargs,
     TyObject *keywords);
@@ -151,7 +151,7 @@ _PyVectorcall_FunctionInline(TyObject *callable)
    Return the result on success. Raise an exception and return NULL on
    error. */
 static inline TyObject *
-_TyObject_VectorcallTstate(PyThreadState *tstate, TyObject *callable,
+_TyObject_VectorcallTstate(TyThreadState *tstate, TyObject *callable,
                            TyObject *const *args, size_t nargsf,
                            TyObject *kwnames)
 {
@@ -172,7 +172,7 @@ _TyObject_VectorcallTstate(PyThreadState *tstate, TyObject *callable,
 
 
 static inline TyObject *
-_TyObject_CallNoArgsTstate(PyThreadState *tstate, TyObject *func) {
+_TyObject_CallNoArgsTstate(TyThreadState *tstate, TyObject *func) {
     return _TyObject_VectorcallTstate(tstate, func, NULL, 0, NULL);
 }
 
@@ -181,13 +181,13 @@ _TyObject_CallNoArgsTstate(PyThreadState *tstate, TyObject *func) {
 static inline TyObject *
 _TyObject_CallNoArgs(TyObject *func) {
     EVAL_CALL_STAT_INC_IF_FUNCTION(EVAL_CALL_API, func);
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyObject_VectorcallTstate(tstate, func, NULL, 0, NULL);
 }
 
 
 extern TyObject *const *
-_PyStack_UnpackDict(PyThreadState *tstate,
+_PyStack_UnpackDict(TyThreadState *tstate,
     TyObject *const *args, Ty_ssize_t nargs,
     TyObject *kwargs, TyObject **p_kwnames);
 

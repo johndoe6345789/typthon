@@ -70,7 +70,7 @@ copy_eval_breaker_bits(uintptr_t *from, uintptr_t *to, uintptr_t mask)
 // When attaching a thread, set the global instrumentation version and
 // _PY_CALLS_TO_DO_BIT from the current state of the interpreter.
 static inline void
-update_eval_breaker_for_thread(PyInterpreterState *interp, PyThreadState *tstate)
+update_eval_breaker_for_thread(PyInterpreterState *interp, TyThreadState *tstate)
 {
 #ifdef Ty_GIL_DISABLED
     // Free-threaded builds eagerly update the eval_breaker on *all* threads as
@@ -200,7 +200,7 @@ static void recreate_gil(struct _gil_runtime_state *gil)
 #endif
 
 static inline void
-drop_gil_impl(PyThreadState *tstate, struct _gil_runtime_state *gil)
+drop_gil_impl(TyThreadState *tstate, struct _gil_runtime_state *gil)
 {
     MUTEX_LOCK(gil->mutex);
     _Ty_ANNOTATE_RWLOCK_RELEASED(&gil->locked, /*is_write=*/1);
@@ -213,7 +213,7 @@ drop_gil_impl(PyThreadState *tstate, struct _gil_runtime_state *gil)
 }
 
 static void
-drop_gil(PyInterpreterState *interp, PyThreadState *tstate, int final_release)
+drop_gil(PyInterpreterState *interp, TyThreadState *tstate, int final_release)
 {
     struct _ceval_state *ceval = &interp->ceval;
     /* If final_release is true, the caller is indicating that we're releasing
@@ -259,7 +259,7 @@ drop_gil(PyInterpreterState *interp, PyThreadState *tstate, int final_release)
         _Ty_eval_breaker_bit_is_set(tstate, _PY_GIL_DROP_REQUEST_BIT)) {
         MUTEX_LOCK(gil->switch_mutex);
         /* Not switched yet => wait */
-        if (((PyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder)) == tstate)
+        if (((TyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder)) == tstate)
         {
             assert(_TyThreadState_CheckConsistency(tstate));
             _Ty_unset_eval_breaker_bit(tstate, _PY_GIL_DROP_REQUEST_BIT);
@@ -282,7 +282,7 @@ drop_gil(PyInterpreterState *interp, PyThreadState *tstate, int final_release)
 
    tstate must be non-NULL. */
 static void
-take_gil(PyThreadState *tstate)
+take_gil(TyThreadState *tstate)
 {
     int err = errno;
 
@@ -337,8 +337,8 @@ take_gil(PyThreadState *tstate)
             _Ty_atomic_load_int_relaxed(&gil->locked) &&
             gil->switch_number == saved_switchnum)
         {
-            PyThreadState *holder_tstate =
-                (PyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder);
+            TyThreadState *holder_tstate =
+                (TyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder);
             if (_TyThreadState_MustExit(tstate)) {
                 MUTEX_UNLOCK(gil->mutex);
                 // gh-96387: If the loop requested a drop request in a previous
@@ -381,7 +381,7 @@ take_gil(PyThreadState *tstate)
     _Ty_atomic_store_int_relaxed(&gil->locked, 1);
     _Ty_ANNOTATE_RWLOCK_ACQUIRED(&gil->locked, /*is_write=*/1);
 
-    if (tstate != (PyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder)) {
+    if (tstate != (TyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder)) {
         _Ty_atomic_store_ptr_relaxed(&gil->last_holder, tstate);
         ++gil->switch_number;
     }
@@ -457,7 +457,7 @@ TyEval_ThreadsInitialized(void)
 
 #ifndef NDEBUG
 static inline int
-current_thread_holds_gil(struct _gil_runtime_state *gil, PyThreadState *tstate)
+current_thread_holds_gil(struct _gil_runtime_state *gil, TyThreadState *tstate)
 {
     int holds_gil = tstate->holds_gil;
 
@@ -465,7 +465,7 @@ current_thread_holds_gil(struct _gil_runtime_state *gil, PyThreadState *tstate)
     // are consistent with it.
     int locked = _Ty_atomic_load_int_relaxed(&gil->locked);
     int is_last_holder =
-        ((PyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder)) == tstate;
+        ((TyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder)) == tstate;
     assert(!holds_gil || locked);
     assert(!holds_gil || is_last_holder);
 
@@ -496,7 +496,7 @@ init_own_gil(PyInterpreterState *interp, struct _gil_runtime_state *gil)
 }
 
 void
-_TyEval_InitGIL(PyThreadState *tstate, int own_gil)
+_TyEval_InitGIL(TyThreadState *tstate, int own_gil)
 {
     assert(tstate->interp->ceval.gil == NULL);
     if (!own_gil) {
@@ -564,7 +564,7 @@ _TyEval_Fini(void)
 PyAPI_FUNC(void)
 TyEval_AcquireLock(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _Ty_EnsureTstateNotNULL(tstate);
 
     take_gil(tstate);
@@ -574,7 +574,7 @@ TyEval_AcquireLock(void)
 PyAPI_FUNC(void)
 TyEval_ReleaseLock(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     /* This function must succeed when the current thread state is NULL.
        We therefore avoid TyThreadState_Get() which dumps a fatal error
        in debug mode. */
@@ -582,7 +582,7 @@ TyEval_ReleaseLock(void)
 }
 
 void
-_TyEval_AcquireLock(PyThreadState *tstate)
+_TyEval_AcquireLock(TyThreadState *tstate)
 {
     _Ty_EnsureTstateNotNULL(tstate);
     take_gil(tstate);
@@ -590,7 +590,7 @@ _TyEval_AcquireLock(PyThreadState *tstate)
 
 void
 _TyEval_ReleaseLock(PyInterpreterState *interp,
-                    PyThreadState *tstate,
+                    TyThreadState *tstate,
                     int final_release)
 {
     assert(tstate != NULL);
@@ -599,14 +599,14 @@ _TyEval_ReleaseLock(PyInterpreterState *interp,
 }
 
 void
-TyEval_AcquireThread(PyThreadState *tstate)
+TyEval_AcquireThread(TyThreadState *tstate)
 {
     _Ty_EnsureTstateNotNULL(tstate);
     _TyThreadState_Attach(tstate);
 }
 
 void
-TyEval_ReleaseThread(PyThreadState *tstate)
+TyEval_ReleaseThread(TyThreadState *tstate)
 {
     assert(_TyThreadState_CheckConsistency(tstate));
     _TyThreadState_Detach(tstate);
@@ -615,8 +615,8 @@ TyEval_ReleaseThread(PyThreadState *tstate)
 #ifdef HAVE_FORK
 /* This function is called from TyOS_AfterFork_Child to re-initialize the
    GIL and pending calls lock. */
-PyStatus
-_TyEval_ReInitThreads(PyThreadState *tstate)
+TyStatus
+_TyEval_ReInitThreads(TyThreadState *tstate)
 {
     assert(tstate->interp == _TyInterpreterState_Main());
 
@@ -635,16 +635,16 @@ _TyEval_ReInitThreads(PyThreadState *tstate)
 }
 #endif
 
-PyThreadState *
+TyThreadState *
 TyEval_SaveThread(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyThreadState_Detach(tstate);
     return tstate;
 }
 
 void
-TyEval_RestoreThread(PyThreadState *tstate)
+TyEval_RestoreThread(TyThreadState *tstate)
 {
 #ifdef MS_WINDOWS
     int err = GetLastError();
@@ -677,7 +677,7 @@ signal_active_thread(PyInterpreterState *interp, uintptr_t bit)
     // interpreter will have its bit set as part of taking the GIL.
     MUTEX_LOCK(gil->mutex);
     if (_Ty_atomic_load_int_relaxed(&gil->locked)) {
-        PyThreadState *holder = (PyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder);
+        TyThreadState *holder = (TyThreadState*)_Ty_atomic_load_ptr_relaxed(&gil->last_holder);
         if (holder->interp == interp) {
             _Ty_set_eval_breaker_bit(holder, bit);
         }
@@ -821,7 +821,7 @@ Ty_AddPendingCall(_Ty_pending_call_func func, void *arg)
 }
 
 static int
-handle_signals(PyThreadState *tstate)
+handle_signals(TyThreadState *tstate)
 {
     assert(_TyThreadState_CheckConsistency(tstate));
     _Ty_unset_eval_breaker_bit(tstate, _PY_SIGNALS_PENDING_BIT);
@@ -885,7 +885,7 @@ finally:
 }
 
 static void
-signal_pending_calls(PyThreadState *tstate, PyInterpreterState *interp)
+signal_pending_calls(TyThreadState *tstate, PyInterpreterState *interp)
 {
 #ifdef Ty_GIL_DISABLED
     _Ty_set_eval_breaker_bit_all(interp, _PY_CALLS_TO_DO_BIT);
@@ -895,7 +895,7 @@ signal_pending_calls(PyThreadState *tstate, PyInterpreterState *interp)
 }
 
 static void
-unsignal_pending_calls(PyThreadState *tstate, PyInterpreterState *interp)
+unsignal_pending_calls(TyThreadState *tstate, PyInterpreterState *interp)
 {
 #ifdef Ty_GIL_DISABLED
     _Ty_unset_eval_breaker_bit_all(interp, _PY_CALLS_TO_DO_BIT);
@@ -917,7 +917,7 @@ clear_pending_handling_thread(struct _pending_calls *pending)
 }
 
 static int
-make_pending_calls(PyThreadState *tstate)
+make_pending_calls(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
     struct _pending_calls *pending = &interp->ceval.pending;
@@ -995,7 +995,7 @@ _Ty_unset_eval_breaker_bit_all(PyInterpreterState *interp, uintptr_t bit)
 }
 
 void
-_Ty_FinishPendingCalls(PyThreadState *tstate)
+_Ty_FinishPendingCalls(TyThreadState *tstate)
 {
     _Ty_AssertHoldsTstate();
     assert(_TyThreadState_CheckConsistency(tstate));
@@ -1031,7 +1031,7 @@ _Ty_FinishPendingCalls(PyThreadState *tstate)
 }
 
 int
-_TyEval_MakePendingCalls(PyThreadState *tstate)
+_TyEval_MakePendingCalls(TyThreadState *tstate)
 {
     int res;
 
@@ -1060,7 +1060,7 @@ Ty_MakePendingCalls(void)
 {
     _Ty_AssertHoldsTstate();
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     assert(_TyThreadState_CheckConsistency(tstate));
 
     /* Only execute pending calls on the main thread. */
@@ -1078,7 +1078,7 @@ _TyEval_InitState(PyInterpreterState *interp)
 
 #ifdef Ty_GIL_DISABLED
 int
-_TyEval_EnableGILTransient(PyThreadState *tstate)
+_TyEval_EnableGILTransient(TyThreadState *tstate)
 {
     const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->enable_gil != _TyConfig_GIL_DEFAULT) {
@@ -1130,7 +1130,7 @@ _TyEval_EnableGILTransient(PyThreadState *tstate)
 }
 
 int
-_TyEval_EnableGILPermanent(PyThreadState *tstate)
+_TyEval_EnableGILPermanent(TyThreadState *tstate)
 {
     const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->enable_gil != _TyConfig_GIL_DEFAULT) {
@@ -1150,7 +1150,7 @@ _TyEval_EnableGILPermanent(PyThreadState *tstate)
 }
 
 int
-_TyEval_DisableGIL(PyThreadState *tstate)
+_TyEval_DisableGIL(TyThreadState *tstate)
 {
     const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->enable_gil != _TyConfig_GIL_DEFAULT) {
@@ -1255,7 +1255,7 @@ static inline void run_remote_debugger_script(TyObject *path)
     }
 }
 
-int _PyRunRemoteDebugger(PyThreadState *tstate)
+int _PyRunRemoteDebugger(TyThreadState *tstate)
 {
     const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->remote_debug == 1
@@ -1306,7 +1306,7 @@ int _PyRunRemoteDebugger(PyThreadState *tstate)
 * of a code object sequentially.  However, the runtime supports a
 * number of out-of-band execution scenarios that may pause that
 * sequential execution long enough to do that out-of-band work
-* in the current thread using the current PyThreadState.
+* in the current thread using the current TyThreadState.
 *
 * The scenarios include:
 *
@@ -1354,7 +1354,7 @@ int _PyRunRemoteDebugger(PyThreadState *tstate)
 * until so desired.
 */
 int
-_Ty_HandlePending(PyThreadState *tstate)
+_Ty_HandlePending(TyThreadState *tstate)
 {
     uintptr_t breaker = _Ty_atomic_load_uintptr_relaxed(&tstate->eval_breaker);
 

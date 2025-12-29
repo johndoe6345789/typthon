@@ -11,8 +11,8 @@ extern "C" {
 
 /* runtime lifecycle */
 
-extern PyStatus _PyExc_InitState(PyInterpreterState *);
-extern PyStatus _PyExc_InitGlobalObjects(PyInterpreterState *);
+extern TyStatus _PyExc_InitState(PyInterpreterState *);
+extern TyStatus _PyExc_InitGlobalObjects(PyInterpreterState *);
 extern int _PyExc_InitTypes(PyInterpreterState *);
 extern void _PyExc_Fini(PyInterpreterState *);
 

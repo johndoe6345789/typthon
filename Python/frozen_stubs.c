@@ -70,7 +70,7 @@ _TyImport_GetDLOpenFlags(PyInterpreterState *interp)
 }
 
 /* Path config stub - minimal implementation */
-PyStatus
+TyStatus
 _TyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
 {
     return TyStatus_Ok();

@@ -25,7 +25,7 @@ extern void _TyImport_ReInitLock(PyInterpreterState *interp);
 
 // This is used exclusively for the sys and builtins modules:
 extern int _TyImport_FixupBuiltin(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *mod,
     const char *name,            /* UTF-8 encoded string */
     TyObject *modules
@@ -87,15 +87,15 @@ extern TyObject * _TyImport_ImportlibModuleRepr(
         TyObject *module);
 
 
-extern PyStatus _TyImport_Init(void);
+extern TyStatus _TyImport_Init(void);
 extern void _TyImport_Fini(void);
 extern void _TyImport_Fini2(void);
 
-extern PyStatus _TyImport_InitCore(
-        PyThreadState *tstate,
+extern TyStatus _TyImport_InitCore(
+        TyThreadState *tstate,
         TyObject *sysmod,
         int importlib);
-extern PyStatus _TyImport_InitExternal(PyThreadState *tstate);
+extern TyStatus _TyImport_InitExternal(TyThreadState *tstate);
 extern void _TyImport_FiniCore(PyInterpreterState *interp);
 extern void _TyImport_FiniExternal(PyInterpreterState *interp);
 

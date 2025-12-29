@@ -259,15 +259,15 @@ static PyThread_type_lock tcl_lock = 0;
 
 #ifdef TCL_THREADS
 static Tcl_ThreadDataKey state_key;
-typedef PyThreadState *ThreadSpecificData;
+typedef TyThreadState *ThreadSpecificData;
 #define tcl_tstate \
-    (*(PyThreadState**)Tcl_GetThreadData(&state_key, sizeof(PyThreadState*)))
+    (*(TyThreadState**)Tcl_GetThreadData(&state_key, sizeof(TyThreadState*)))
 #else
-static PyThreadState *tcl_tstate = NULL;
+static TyThreadState *tcl_tstate = NULL;
 #endif
 
 #define ENTER_TCL \
-    { PyThreadState *tstate = TyThreadState_Get(); \
+    { TyThreadState *tstate = TyThreadState_Get(); \
       Ty_BEGIN_ALLOW_THREADS \
       if(tcl_lock)PyThread_acquire_lock(tcl_lock, 1); \
       tcl_tstate = tstate;
@@ -284,13 +284,13 @@ static PyThreadState *tcl_tstate = NULL;
     tcl_tstate = NULL; if(tcl_lock)PyThread_release_lock(tcl_lock); }
 
 #define ENTER_PYTHON \
-    { PyThreadState *tstate = tcl_tstate; tcl_tstate = NULL; \
+    { TyThreadState *tstate = tcl_tstate; tcl_tstate = NULL; \
       if(tcl_lock) \
         PyThread_release_lock(tcl_lock); \
       TyEval_RestoreThread((tstate)); }
 
 #define LEAVE_PYTHON \
-    { PyThreadState *tstate = TyEval_SaveThread(); \
+    { TyThreadState *tstate = TyEval_SaveThread(); \
       if(tcl_lock)PyThread_acquire_lock(tcl_lock, 1); \
       tcl_tstate = tstate; }
 
@@ -2857,7 +2857,7 @@ static TyObject *
 _tkinter_tkapp_mainloop_impl(TkappObject *self, int threshold)
 /*[clinic end generated code: output=0ba8eabbe57841b0 input=036bcdcf03d5eca0]*/
 {
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
 
     CHECK_TCL_APPARTMENT(self);
     self->dispatching = 1;
@@ -3349,7 +3349,7 @@ MyFileProc(void *clientData, int mask)
 }
 #endif
 
-static PyThreadState *event_tstate = NULL;
+static TyThreadState *event_tstate = NULL;
 
 static int
 EventHook(void)

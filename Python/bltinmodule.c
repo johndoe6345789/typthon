@@ -201,7 +201,7 @@ builtin___build_class__(TyObject *self, TyObject *const *args, Ty_ssize_t nargs,
                      Ty_TYPE(ns)->tp_name);
         goto error;
     }
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     EVAL_CALL_STAT_INC(EVAL_CALL_BUILD_CLASS);
     cell = _TyEval_Vector(tstate, (PyFunctionObject *)func, ns, NULL, 0, NULL);
     if (cell != NULL) {
@@ -958,7 +958,7 @@ builtin_eval_impl(TyObject *module, TyObject *source, TyObject *globals,
                   TyObject *locals)
 /*[clinic end generated code: output=0a0824aa70093116 input=7c7bce5299a89062]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *result = NULL, *source_copy;
     const char *str;
 
@@ -1083,7 +1083,7 @@ builtin_exec_impl(TyObject *module, TyObject *source, TyObject *globals,
                   TyObject *locals, TyObject *closure)
 /*[clinic end generated code: output=7579eb4e7646743d input=25e989b6d87a3a21]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *v;
 
     int fromframe = 0;
@@ -1274,7 +1274,7 @@ builtin_globals_impl(TyObject *module)
         assert(globals != NULL);
         return Ty_NewRef(globals);
     }
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     globals = _TyEval_GetGlobalsFromRunningMain(tstate);
     if (globals == NULL) {
         if (_TyErr_Occurred(tstate)) {
@@ -1424,7 +1424,7 @@ map_vectorcall(TyObject *type, TyObject * const*args,
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (kwnames != NULL && TyTuple_GET_SIZE(kwnames) != 0) {
         // Fallback to map_new()
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         return _TyObject_MakeTpCall(tstate, type, args, nargs, kwnames);
     }
 
@@ -1487,7 +1487,7 @@ map_next(TyObject *self)
     TyObject *small_stack[_PY_FASTCALL_SMALL_STACK];
     TyObject **stack;
     TyObject *result = NULL;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     const Ty_ssize_t niters = TyTuple_GET_SIZE(lz->iters);
     if (niters <= (Ty_ssize_t)Ty_ARRAY_LENGTH(small_stack)) {
@@ -1932,7 +1932,7 @@ builtin_locals_impl(TyObject *module)
         assert(locals != NULL || TyErr_Occurred());
         return locals;
     }
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     locals = _TyEval_GetGlobalsFromRunningMain(tstate);
     if (locals == NULL) {
         if (_TyErr_Occurred(tstate)) {
@@ -2680,7 +2680,7 @@ builtin_vars(TyObject *self, TyObject *args)
             d = _TyEval_GetFrameLocals();
         }
         else {
-            PyThreadState *tstate = _TyThreadState_GET();
+            TyThreadState *tstate = _TyThreadState_GET();
             d = _TyEval_GetGlobalsFromRunningMain(tstate);
             if (d == NULL) {
                 if (!_TyErr_Occurred(tstate)) {

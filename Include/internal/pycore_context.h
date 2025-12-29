@@ -11,7 +11,7 @@ extern TyTypeObject _PyContextTokenMissing_Type;
 
 /* runtime lifecycle */
 
-PyStatus _TyContext_Init(PyInterpreterState *);
+TyStatus _TyContext_Init(PyInterpreterState *);
 
 
 /* other API */

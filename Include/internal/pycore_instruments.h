@@ -34,32 +34,32 @@ int _PyMonitoring_SetLocalEvents(PyCodeObject *code, int tool_id, _PyMonitoringE
 int _PyMonitoring_GetLocalEvents(PyCodeObject *code, int tool_id, _PyMonitoringEventSet *events);
 
 extern int
-_Ty_call_instrumentation(PyThreadState *tstate, int event,
+_Ty_call_instrumentation(TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr);
 
 extern int
-_Ty_call_instrumentation_line(PyThreadState *tstate, _PyInterpreterFrame* frame,
+_Ty_call_instrumentation_line(TyThreadState *tstate, _PyInterpreterFrame* frame,
                               _Ty_CODEUNIT *instr, _Ty_CODEUNIT *prev);
 
 extern int
 _Ty_call_instrumentation_instruction(
-    PyThreadState *tstate, _PyInterpreterFrame* frame, _Ty_CODEUNIT *instr);
+    TyThreadState *tstate, _PyInterpreterFrame* frame, _Ty_CODEUNIT *instr);
 
 _Ty_CODEUNIT *
 _Ty_call_instrumentation_jump(
-    _Ty_CODEUNIT *instr, PyThreadState *tstate, int event,
+    _Ty_CODEUNIT *instr, TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *src, _Ty_CODEUNIT *dest);
 
 extern int
-_Ty_call_instrumentation_arg(PyThreadState *tstate, int event,
+_Ty_call_instrumentation_arg(TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, TyObject *arg);
 
 extern int
-_Ty_call_instrumentation_2args(PyThreadState *tstate, int event,
+_Ty_call_instrumentation_2args(TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, TyObject *arg0, TyObject *arg1);
 
 extern void
-_Ty_call_instrumentation_exc2(PyThreadState *tstate, int event,
+_Ty_call_instrumentation_exc2(TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, TyObject *arg0, TyObject *arg1);
 
 extern int

@@ -1035,7 +1035,7 @@ _TyTime_TimeWithInfo(PyTime_t *t, _Ty_clock_info_t *info)
 
 
 #ifdef MS_WINDOWS
-static PyStatus
+static TyStatus
 py_win_perf_counter_frequency(_PyTimeFraction *base)
 {
     LARGE_INTEGER freq;
@@ -1091,7 +1091,7 @@ py_get_win_perf_counter(PyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
 
 
 #ifdef __APPLE__
-static PyStatus
+static TyStatus
 py_mach_timebase_info(_PyTimeFraction *base)
 {
     mach_timebase_info_data_t timebase;
@@ -1120,7 +1120,7 @@ py_mach_timebase_info(_PyTimeFraction *base)
 }
 #endif
 
-PyStatus
+TyStatus
 _TyTime_Init(struct _Ty_time_runtime_state *state)
 {
 #ifdef MS_WINDOWS

@@ -219,7 +219,7 @@ _Ty_ClearExecutorDeletionList(PyInterpreterState *interp)
 {
     _PyRuntimeState *runtime = &_PyRuntime;
     HEAD_LOCK(runtime);
-    PyThreadState* ts = TyInterpreterState_ThreadHead(interp);
+    TyThreadState* ts = TyInterpreterState_ThreadHead(interp);
     HEAD_UNLOCK(runtime);
     while (ts) {
         _PyExecutorObject *current = (_PyExecutorObject *)ts->current_executor;

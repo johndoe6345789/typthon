@@ -852,10 +852,10 @@ _Py_Get_Getpath_CodeObject(void)
    safe because already-configured values are not recalculated. To
    actually recalculate paths, you need a clean PyConfig.
 */
-PyStatus
+TyStatus
 _TyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
 {
-    PyStatus status = _TyPathConfig_ReadGlobal(config);
+    TyStatus status = _TyPathConfig_ReadGlobal(config);
 
     if (_TyStatus_EXCEPTION(status) || !compute_path_config) {
         return status;

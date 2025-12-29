@@ -84,7 +84,7 @@ static Ty_ssize_t
 gc_collect_impl(TyObject *module, int generation)
 /*[clinic end generated code: output=b697e633043233c7 input=40720128b682d879]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (generation < 0 || generation >= NUM_GENERATIONS) {
         _TyErr_SetString(tstate, TyExc_ValueError, "invalid generation");

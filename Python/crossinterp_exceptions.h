@@ -1,6 +1,6 @@
 
 static void
-_ensure_current_cause(PyThreadState *tstate, TyObject *cause)
+_ensure_current_cause(TyThreadState *tstate, TyObject *cause)
 {
     if (cause == NULL) {
         return;
@@ -62,7 +62,7 @@ _fini_notshareableerror(exceptions_t *state)
 }
 
 static TyObject *
-get_notshareableerror_type(PyThreadState *tstate)
+get_notshareableerror_type(TyThreadState *tstate)
 {
     _PyXI_state_t *local = _PyXI_GET_STATE(tstate->interp);
     if (local == NULL) {
@@ -73,7 +73,7 @@ get_notshareableerror_type(PyThreadState *tstate)
 }
 
 static void
-_ensure_notshareableerror(PyThreadState *tstate,
+_ensure_notshareableerror(TyThreadState *tstate,
                           TyObject *cause, int force, TyObject *msgobj)
 {
     TyObject *ctx = _TyErr_GetRaisedException(tstate);
@@ -95,7 +95,7 @@ _ensure_notshareableerror(PyThreadState *tstate,
 }
 
 static void
-set_notshareableerror(PyThreadState *tstate, TyObject *cause, int force, const char *msg)
+set_notshareableerror(TyThreadState *tstate, TyObject *cause, int force, const char *msg)
 {
     TyObject *msgobj = TyUnicode_FromString(msg);
     if (msgobj == NULL) {
@@ -108,7 +108,7 @@ set_notshareableerror(PyThreadState *tstate, TyObject *cause, int force, const c
 }
 
 static void
-format_notshareableerror_v(PyThreadState *tstate, TyObject *cause, int force,
+format_notshareableerror_v(TyThreadState *tstate, TyObject *cause, int force,
                            const char *format, va_list vargs)
 {
     TyObject *msgobj = TyUnicode_FromFormatV(format, vargs);
@@ -122,7 +122,7 @@ format_notshareableerror_v(PyThreadState *tstate, TyObject *cause, int force,
 }
 
 static void
-format_notshareableerror(PyThreadState *tstate, TyObject *cause, int force,
+format_notshareableerror(TyThreadState *tstate, TyObject *cause, int force,
                          const char *format, ...)
 {
     va_list vargs;

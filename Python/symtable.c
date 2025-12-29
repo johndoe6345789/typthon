@@ -415,7 +415,7 @@ _TySymtable_Build(mod_ty mod, TyObject *filename, _PyFutureFeatures *future)
     struct symtable *st = symtable_new();
     asdl_stmt_seq *seq;
     Ty_ssize_t i;
-    PyThreadState *tstate;
+    TyThreadState *tstate;
 
     if (st == NULL)
         return NULL;

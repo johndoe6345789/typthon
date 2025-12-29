@@ -7,7 +7,7 @@
 #include "jit.h"
 
 _Ty_CODEUNIT *
-_JIT_ENTRY(_PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState *tstate)
+_JIT_ENTRY(_PyInterpreterFrame *frame, _PyStackRef *stack_pointer, TyThreadState *tstate)
 {
     // Note that this is *not* a tail call:
     PATCH_VALUE(jit_func_preserve_none, call, _JIT_CONTINUE);

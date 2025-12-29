@@ -168,9 +168,9 @@ static void invalidate_icache(char* begin, char*end) {
  * are passed in the same order as the function requires. This results in
  * shorter, more efficient ASM code for trampoline.
  */
-typedef TyObject *(*py_evaluator)(PyThreadState *, _PyInterpreterFrame *,
+typedef TyObject *(*py_evaluator)(TyThreadState *, _PyInterpreterFrame *,
                                   int throwflag);
-typedef TyObject *(*py_trampoline)(PyThreadState *, _PyInterpreterFrame *, int,
+typedef TyObject *(*py_trampoline)(TyThreadState *, _PyInterpreterFrame *, int,
                                    py_evaluator);
 
 extern void *_Ty_trampoline_func_start;  // Start of the template of the
@@ -383,7 +383,7 @@ compile_trampoline(void)
 }
 
 static TyObject *
-py_trampoline_evaluator(PyThreadState *ts, _PyInterpreterFrame *frame,
+py_trampoline_evaluator(TyThreadState *ts, _PyInterpreterFrame *frame,
                         int throw)
 {
     if (perf_status == PERF_STATUS_FAILED ||
@@ -439,7 +439,7 @@ int
 _PyIsPerfTrampolineActive(void)
 {
 #ifdef PY_HAVE_PERF_TRAMPOLINE
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return tstate->interp->eval_frame == py_trampoline_evaluator;
 #endif
     return 0;
@@ -481,7 +481,7 @@ int
 _PyPerfTrampoline_Init(int activate)
 {
 #ifdef PY_HAVE_PERF_TRAMPOLINE
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate->interp->eval_frame &&
         tstate->interp->eval_frame != py_trampoline_evaluator) {
         TyErr_SetString(TyExc_RuntimeError,
@@ -518,7 +518,7 @@ _PyPerfTrampoline_Fini(void)
     if (perf_status != PERF_STATUS_OK) {
         return 0;
     }
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate->interp->eval_frame == py_trampoline_evaluator) {
         _TyInterpreterState_SetEvalFrameFunc(tstate->interp, NULL);
     }
@@ -548,7 +548,7 @@ PyUnstable_PerfTrampoline_SetPersistAfterFork(int enable){
     return 0;
 }
 
-PyStatus
+TyStatus
 _PyPerfTrampoline_AfterFork_Child(void)
 {
 #ifdef PY_HAVE_PERF_TRAMPOLINE

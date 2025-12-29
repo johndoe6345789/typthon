@@ -11,7 +11,7 @@
 
 
 static TyObject *
-null_error(PyThreadState *tstate)
+null_error(TyThreadState *tstate)
 {
     if (!_TyErr_Occurred(tstate)) {
         _TyErr_SetString(tstate, TyExc_SystemError,
@@ -22,7 +22,7 @@ null_error(PyThreadState *tstate)
 
 
 TyObject*
-_Ty_CheckFunctionResult(PyThreadState *tstate, TyObject *callable,
+_Ty_CheckFunctionResult(TyThreadState *tstate, TyObject *callable,
                         TyObject *result, const char *where)
 {
     assert((callable != NULL) ^ (where != NULL));
@@ -74,7 +74,7 @@ _Ty_CheckFunctionResult(PyThreadState *tstate, TyObject *callable,
 int
 _Ty_CheckSlotResult(TyObject *obj, const char *slot_name, int success)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (!success) {
         if (!_TyErr_Occurred(tstate)) {
             _Ty_FatalErrorFormat(__func__,
@@ -102,13 +102,13 @@ TyObject *
 PyObject_CallNoArgs(TyObject *func)
 {
     EVAL_CALL_STAT_INC_IF_FUNCTION(EVAL_CALL_API, func);
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyObject_VectorcallTstate(tstate, func, NULL, 0, NULL);
 }
 
 
 TyObject *
-_TyObject_VectorcallDictTstate(PyThreadState *tstate, TyObject *callable,
+_TyObject_VectorcallDictTstate(TyThreadState *tstate, TyObject *callable,
                                TyObject *const *args, size_t nargsf,
                                TyObject *kwargs)
 {
@@ -155,12 +155,12 @@ TyObject *
 PyObject_VectorcallDict(TyObject *callable, TyObject *const *args,
                        size_t nargsf, TyObject *kwargs)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyObject_VectorcallDictTstate(tstate, callable, args, nargsf, kwargs);
 }
 
 static void
-object_is_not_callable(PyThreadState *tstate, TyObject *callable)
+object_is_not_callable(TyThreadState *tstate, TyObject *callable)
 {
     if (Ty_IS_TYPE(callable, &TyModule_Type)) {
         // >>> import pprint
@@ -197,7 +197,7 @@ basic_type_error:
 
 
 TyObject *
-_TyObject_MakeTpCall(PyThreadState *tstate, TyObject *callable,
+_TyObject_MakeTpCall(TyThreadState *tstate, TyObject *callable,
                      TyObject *const *args, Ty_ssize_t nargs,
                      TyObject *keywords)
 {
@@ -261,7 +261,7 @@ PyVectorcall_Function(TyObject *callable)
 
 
 static TyObject *
-_PyVectorcall_Call(PyThreadState *tstate, vectorcallfunc func,
+_PyVectorcall_Call(TyThreadState *tstate, vectorcallfunc func,
                    TyObject *callable, TyObject *tuple, TyObject *kwargs)
 {
     assert(func != NULL);
@@ -293,7 +293,7 @@ _PyVectorcall_Call(PyThreadState *tstate, vectorcallfunc func,
 TyObject *
 PyVectorcall_Call(TyObject *callable, TyObject *tuple, TyObject *kwargs)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     /* get vectorcallfunc as in _PyVectorcall_Function, but without
      * the Ty_TPFLAGS_HAVE_VECTORCALL check */
@@ -323,14 +323,14 @@ TyObject *
 PyObject_Vectorcall(TyObject *callable, TyObject *const *args,
                      size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyObject_VectorcallTstate(tstate, callable,
                                       args, nargsf, kwnames);
 }
 
 
 TyObject *
-_TyObject_Call(PyThreadState *tstate, TyObject *callable,
+_TyObject_Call(TyThreadState *tstate, TyObject *callable,
                TyObject *args, TyObject *kwargs)
 {
     ternaryfunc call;
@@ -369,7 +369,7 @@ _TyObject_Call(PyThreadState *tstate, TyObject *callable,
 TyObject *
 PyObject_Call(TyObject *callable, TyObject *args, TyObject *kwargs)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyObject_Call(tstate, callable, args, kwargs);
 }
 
@@ -390,7 +390,7 @@ PyObject_CallOneArg(TyObject *func, TyObject *arg)
     TyObject *_args[2];
     TyObject **args = _args + 1;  // For PY_VECTORCALL_ARGUMENTS_OFFSET
     args[0] = arg;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     size_t nargsf = 1 | PY_VECTORCALL_ARGUMENTS_OFFSET;
     return _TyObject_VectorcallTstate(tstate, func, args, nargsf, NULL);
 }
@@ -406,7 +406,7 @@ _PyFunction_Vectorcall(TyObject *func, TyObject* const* stack,
     PyFunctionObject *f = (PyFunctionObject *)func;
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     assert(nargs >= 0);
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     assert(nargs == 0 || stack != NULL);
     EVAL_CALL_STAT_INC(EVAL_CALL_FUNCTION_VECTORCALL);
     if (((PyCodeObject *)f->func_code)->co_flags & CO_OPTIMIZED) {
@@ -426,7 +426,7 @@ PyAPI_FUNC(TyObject*)
 TyEval_CallObjectWithKeywords(TyObject *callable,
                               TyObject *args, TyObject *kwargs)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 #ifdef Ty_DEBUG
     /* TyEval_CallObjectWithKeywords() must not be called with an exception
        set. It raises a new exception if parameters are invalid or if
@@ -459,7 +459,7 @@ TyEval_CallObjectWithKeywords(TyObject *callable,
 TyObject *
 PyObject_CallObject(TyObject *callable, TyObject *args)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     assert(!_TyErr_Occurred(tstate));
     if (args == NULL) {
         return _TyObject_CallNoArgsTstate(tstate, callable);
@@ -475,7 +475,7 @@ PyObject_CallObject(TyObject *callable, TyObject *args)
 
 /* Call callable(obj, *args, **kwargs). */
 TyObject *
-_TyObject_Call_Prepend(PyThreadState *tstate, TyObject *callable,
+_TyObject_Call_Prepend(TyThreadState *tstate, TyObject *callable,
                        TyObject *obj, TyObject *args, TyObject *kwargs)
 {
     assert(TyTuple_Check(args));
@@ -514,7 +514,7 @@ _TyObject_Call_Prepend(PyThreadState *tstate, TyObject *callable,
 /* --- Call with a format string ---------------------------------- */
 
 static TyObject *
-_TyObject_CallFunctionVa(PyThreadState *tstate, TyObject *callable,
+_TyObject_CallFunctionVa(TyThreadState *tstate, TyObject *callable,
                          const char *format, va_list va)
 {
     TyObject* small_stack[_PY_FASTCALL_SMALL_STACK];
@@ -568,7 +568,7 @@ PyObject_CallFunction(TyObject *callable, const char *format, ...)
 {
     va_list va;
     TyObject *result;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     va_start(va, format);
     result = _TyObject_CallFunctionVa(tstate, callable, format, va);
@@ -585,7 +585,7 @@ TyEval_CallFunction(TyObject *callable, const char *format, ...)
 {
     va_list va;
     TyObject *result;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     va_start(va, format);
     result = _TyObject_CallFunctionVa(tstate, callable, format, va);
@@ -601,7 +601,7 @@ TyEval_CallFunction(TyObject *callable, const char *format, ...)
 PyAPI_FUNC(TyObject *)  /* abi_only */
 _TyObject_CallFunction_SizeT(TyObject *callable, const char *format, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     va_list va;
     va_start(va, format);
@@ -613,7 +613,7 @@ _TyObject_CallFunction_SizeT(TyObject *callable, const char *format, ...)
 
 
 static TyObject*
-callmethod(PyThreadState *tstate, TyObject* callable, const char *format, va_list va)
+callmethod(TyThreadState *tstate, TyObject* callable, const char *format, va_list va)
 {
     assert(callable != NULL);
     if (!PyCallable_Check(callable)) {
@@ -629,7 +629,7 @@ callmethod(PyThreadState *tstate, TyObject* callable, const char *format, va_lis
 TyObject *
 PyObject_CallMethod(TyObject *obj, const char *name, const char *format, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (obj == NULL || name == NULL) {
         return null_error(tstate);
@@ -655,7 +655,7 @@ PyObject_CallMethod(TyObject *obj, const char *name, const char *format, ...)
 PyAPI_FUNC(TyObject*)
 TyEval_CallMethod(TyObject *obj, const char *name, const char *format, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (obj == NULL || name == NULL) {
         return null_error(tstate);
     }
@@ -679,7 +679,7 @@ TyObject *
 _TyObject_CallMethod(TyObject *obj, TyObject *name,
                      const char *format, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (obj == NULL || name == NULL) {
         return null_error(tstate);
     }
@@ -703,7 +703,7 @@ TyObject *
 _TyObject_CallMethodId(TyObject *obj, _Ty_Identifier *name,
                        const char *format, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (obj == NULL || name == NULL) {
         return null_error(tstate);
     }
@@ -723,7 +723,7 @@ _TyObject_CallMethodId(TyObject *obj, _Ty_Identifier *name,
 }
 
 
-TyObject * _TyObject_CallMethodFormat(PyThreadState *tstate, TyObject *callable,
+TyObject * _TyObject_CallMethodFormat(TyThreadState *tstate, TyObject *callable,
                                       const char *format, ...)
 {
     va_list va;
@@ -740,7 +740,7 @@ PyAPI_FUNC(TyObject *)  /* abi_only */
 _TyObject_CallMethod_SizeT(TyObject *obj, const char *name,
                            const char *format, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (obj == NULL || name == NULL) {
         return null_error(tstate);
     }
@@ -763,7 +763,7 @@ _TyObject_CallMethod_SizeT(TyObject *obj, const char *name,
 /* --- Call with "..." arguments ---------------------------------- */
 
 static TyObject *
-object_vacall(PyThreadState *tstate, TyObject *base,
+object_vacall(TyThreadState *tstate, TyObject *base,
               TyObject *callable, va_list vargs)
 {
     TyObject *small_stack[_PY_FASTCALL_SMALL_STACK];
@@ -833,7 +833,7 @@ PyObject_VectorcallMethod(TyObject *name, TyObject *const *args,
     assert(args != NULL);
     assert(PyVectorcall_NARGS(nargsf) >= 1);
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *callable = NULL;
     /* Use args[0] as "self" argument */
     int unbound = _TyObject_GetMethod(args[0], name, &callable);
@@ -863,7 +863,7 @@ PyObject_VectorcallMethod(TyObject *name, TyObject *const *args,
 TyObject *
 PyObject_CallMethodObjArgs(TyObject *obj, TyObject *name, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (obj == NULL || name == NULL) {
         return null_error(tstate);
     }
@@ -888,7 +888,7 @@ PyObject_CallMethodObjArgs(TyObject *obj, TyObject *name, ...)
 TyObject *
 _TyObject_CallMethodIdObjArgs(TyObject *obj, _Ty_Identifier *name, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (obj == NULL || name == NULL) {
         return null_error(tstate);
     }
@@ -918,7 +918,7 @@ _TyObject_CallMethodIdObjArgs(TyObject *obj, _Ty_Identifier *name, ...)
 TyObject *
 PyObject_CallFunctionObjArgs(TyObject *callable, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     va_list vargs;
     TyObject *result;
 
@@ -957,7 +957,7 @@ _PyStack_AsDict(TyObject *const *values, TyObject *kwnames)
 
    When done, you must call _PyStack_UnpackDict_Free(stack, nargs, kwnames) */
 TyObject *const *
-_PyStack_UnpackDict(PyThreadState *tstate,
+_PyStack_UnpackDict(TyThreadState *tstate,
                     TyObject *const *args, Ty_ssize_t nargs,
                     TyObject *kwargs, TyObject **p_kwnames)
 {

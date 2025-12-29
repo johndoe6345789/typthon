@@ -375,7 +375,7 @@ clear_interned_dict(PyInterpreterState *interp)
     }
 }
 
-static PyStatus
+static TyStatus
 init_global_interned_strings(PyInterpreterState *interp)
 {
     assert(INTERNED_STRINGS == NULL);
@@ -15840,11 +15840,11 @@ _TyUnicode_InitState(PyInterpreterState *interp)
 }
 
 
-PyStatus
+TyStatus
 _TyUnicode_InitGlobalObjects(PyInterpreterState *interp)
 {
     if (_Ty_IsMainInterpreter(interp)) {
-        PyStatus status = init_global_interned_strings(interp);
+        TyStatus status = init_global_interned_strings(interp);
         if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
@@ -15860,7 +15860,7 @@ _TyUnicode_InitGlobalObjects(PyInterpreterState *interp)
 }
 
 
-PyStatus
+TyStatus
 _TyUnicode_InitTypes(PyInterpreterState *interp)
 {
     if (_PyStaticType_InitBuiltin(interp, &EncodingMapType) < 0) {
@@ -16483,7 +16483,7 @@ error:
 }
 
 
-static PyStatus
+static TyStatus
 init_stdio_encoding(PyInterpreterState *interp)
 {
     /* Update the stdio encoding to the normalized Python codec name. */
@@ -16553,8 +16553,8 @@ init_fs_codec(PyInterpreterState *interp)
 }
 
 
-static PyStatus
-init_fs_encoding(PyThreadState *tstate)
+static TyStatus
+init_fs_encoding(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
 
@@ -16575,10 +16575,10 @@ init_fs_encoding(PyThreadState *tstate)
 }
 
 
-PyStatus
-_TyUnicode_InitEncodings(PyThreadState *tstate)
+TyStatus
+_TyUnicode_InitEncodings(TyThreadState *tstate)
 {
-    PyStatus status = _PyCodec_InitRegistry(tstate->interp);
+    TyStatus status = _PyCodec_InitRegistry(tstate->interp);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }

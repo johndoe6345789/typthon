@@ -199,7 +199,7 @@ PyThread_start_joinable_thread(void (*func)(void *), void *arg,
         return -1;
     obj->func = func;
     obj->arg = arg;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     size_t stacksize = tstate ? tstate->interp->threads.stacksize : 0;
     hThread = (HANDLE)_beginthreadex(0,
                       Ty_SAFE_DOWNCAST(stacksize, Ty_ssize_t, unsigned int),

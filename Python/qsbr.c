@@ -190,7 +190,7 @@ _Ty_qsbr_reserve(PyInterpreterState *interp)
     struct _qsbr_thread_state *qsbr = qsbr_allocate(shared);
 
     // If there are no free entries, we pause all threads, grow the array,
-    // and update the pointers in PyThreadState to entries in the new array.
+    // and update the pointers in TyThreadState to entries in the new array.
     if (qsbr == NULL) {
         _TyEval_StopTheWorld(interp);
         if (grow_thread_array(shared) == 0) {
@@ -219,13 +219,13 @@ _Ty_qsbr_register(_PyThreadStateImpl *tstate, PyInterpreterState *interp,
     PyMutex_Lock(&shared->mutex);
     struct _qsbr_thread_state *qsbr = &interp->qsbr.array[index].qsbr;
     assert(qsbr->allocated && qsbr->tstate == NULL);
-    qsbr->tstate = (PyThreadState *)tstate;
+    qsbr->tstate = (TyThreadState *)tstate;
     tstate->qsbr = qsbr;
     PyMutex_Unlock(&shared->mutex);
 }
 
 void
-_Ty_qsbr_unregister(PyThreadState *tstate)
+_Ty_qsbr_unregister(TyThreadState *tstate)
 {
     struct _qsbr_shared *shared = &tstate->interp->qsbr;
     struct _PyThreadStateImpl *tstate_imp = (_PyThreadStateImpl*) tstate;

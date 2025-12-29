@@ -32,10 +32,10 @@
 
 /* --- pymain_init() ---------------------------------------------- */
 
-static PyStatus
+static TyStatus
 pymain_init(const _PyArgv *args)
 {
-    PyStatus status;
+    TyStatus status;
 
     status = _PyRuntime_Initialize();
     if (_TyStatus_EXCEPTION(status)) {
@@ -753,7 +753,7 @@ exit_sigint(void)
 
 
 static void _Py_NO_RETURN
-pymain_exit_error(PyStatus status)
+pymain_exit_error(TyStatus status)
 {
     if (_TyStatus_IS_EXIT(status)) {
         /* If it's an error rather than a regular exit, leave Python runtime
@@ -793,7 +793,7 @@ Ty_RunMain(void)
 static int
 pymain_main(_PyArgv *args)
 {
-    PyStatus status = pymain_init(args);
+    TyStatus status = pymain_init(args);
     if (_TyStatus_IS_EXIT(status)) {
         pymain_free();
         return status.exitcode;

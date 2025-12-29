@@ -326,7 +326,7 @@ extern PyTime_t _PyTimeFraction_Mul(
 extern double _PyTimeFraction_Resolution(
     const _PyTimeFraction *frac);
 
-extern PyStatus _TyTime_Init(struct _Ty_time_runtime_state *state);
+extern TyStatus _TyTime_Init(struct _Ty_time_runtime_state *state);
 
 #ifdef __cplusplus
 }

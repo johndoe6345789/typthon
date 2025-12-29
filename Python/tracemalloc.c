@@ -298,7 +298,7 @@ traceback_hash(traceback_t *traceback)
 static void
 traceback_get_frames(traceback_t *traceback)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     assert(tstate != NULL);
 
     _PyInterpreterFrame *pyframe = _TyThreadState_GetFrame(tstate);
@@ -726,7 +726,7 @@ tracemalloc_clear_traces_unlocked(void)
 }
 
 
-PyStatus
+TyStatus
 _PyTraceMalloc_Init(void)
 {
     assert(tracemalloc_config.initialized == TRACEMALLOC_NOT_INITIALIZED);

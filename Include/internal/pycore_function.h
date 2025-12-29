@@ -33,13 +33,13 @@ void _PyFunction_ClearCodeByVersion(uint32_t version);
 PyFunctionObject *_PyFunction_LookupByVersion(uint32_t version, TyObject **p_code);
 
 extern TyObject *_Ty_set_function_type_params(
-    PyThreadState* unused, TyObject *func, TyObject *type_params);
+    TyThreadState* unused, TyObject *func, TyObject *type_params);
 
 
 /* See pycore_code.h for explanation about what "stateless" means. */
 
 PyAPI_FUNC(int)
-_PyFunction_VerifyStateless(PyThreadState *, TyObject *);
+_PyFunction_VerifyStateless(TyThreadState *, TyObject *);
 
 static inline TyObject* _PyFunction_GET_BUILTINS(TyObject *func) {
     return _PyFunction_CAST(func)->func_builtins;

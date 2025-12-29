@@ -2803,7 +2803,7 @@ _Ty_dg_dtoa(double dd, int mode, int ndigits,
 
 #endif  // _PY_SHORT_FLOAT_REPR == 1
 
-PyStatus
+TyStatus
 _PyDtoa_Init(PyInterpreterState *interp)
 {
 #if _PY_SHORT_FLOAT_REPR == 1 && !defined(Ty_USING_MEMORY_DEBUGGER)

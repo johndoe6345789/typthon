@@ -160,7 +160,7 @@ TyTypeObject _PyInterpolation_Type = {
     .tp_traverse = interpolation_traverse,
 };
 
-PyStatus
+TyStatus
 _PyInterpolation_InitTypes(PyInterpreterState *interp)
 {
     TyObject *tuple = Ty_BuildValue("(ssss)", "value", "expression", "conversion", "format_spec");

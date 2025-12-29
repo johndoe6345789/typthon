@@ -19,14 +19,14 @@ typedef struct _Ty_AuditHookEntry {
 
 
 extern int _TySys_Audit(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     const char *event,
     const char *argFormat,
     ...);
 
 // _TySys_ClearAuditHooks() must not be exported: use extern rather than
 // PyAPI_FUNC(). We want minimal exposure of this function.
-extern void _TySys_ClearAuditHooks(PyThreadState *tstate);
+extern void _TySys_ClearAuditHooks(TyThreadState *tstate);
 
 
 #ifdef __cplusplus

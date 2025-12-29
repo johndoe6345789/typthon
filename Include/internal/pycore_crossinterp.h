@@ -141,34 +141,34 @@ typedef int xidata_fallback_t;
 // a bit unfortunate.  It's also nice to be able to clearly distinguish
 // between types that might call _TyObject_GetXIData() and those that won't.
 //
-typedef int (*xidatafunc)(PyThreadState *, TyObject *, _PyXIData_t *);
+typedef int (*xidatafunc)(TyThreadState *, TyObject *, _PyXIData_t *);
 typedef int (*xidatafbfunc)(
-        PyThreadState *, TyObject *, xidata_fallback_t, _PyXIData_t *);
+        TyThreadState *, TyObject *, xidata_fallback_t, _PyXIData_t *);
 typedef struct {
     xidatafunc basic;
     xidatafbfunc fallback;
 } _PyXIData_getdata_t;
 
-PyAPI_FUNC(TyObject *) _PyXIData_GetNotShareableErrorType(PyThreadState *);
-PyAPI_FUNC(void) _PyXIData_SetNotShareableError(PyThreadState *, const char *);
+PyAPI_FUNC(TyObject *) _PyXIData_GetNotShareableErrorType(TyThreadState *);
+PyAPI_FUNC(void) _PyXIData_SetNotShareableError(TyThreadState *, const char *);
 PyAPI_FUNC(void) _PyXIData_FormatNotShareableError(
-        PyThreadState *,
+        TyThreadState *,
         const char *,
         ...);
 
 PyAPI_FUNC(_PyXIData_getdata_t) _PyXIData_Lookup(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *);
 PyAPI_FUNC(int) _TyObject_CheckXIData(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *);
 
 PyAPI_FUNC(int) _TyObject_GetXIDataNoFallback(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         _PyXIData_t *);
 PyAPI_FUNC(int) _TyObject_GetXIData(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         xidata_fallback_t,
         _PyXIData_t *);
@@ -182,11 +182,11 @@ PyAPI_FUNC(int) _TyBytes_GetData(TyObject *, _TyBytes_data_t *);
 PyAPI_FUNC(TyObject *) _TyBytes_FromData(_TyBytes_data_t *);
 PyAPI_FUNC(TyObject *) _TyBytes_FromXIData(_PyXIData_t *);
 PyAPI_FUNC(int) _TyBytes_GetXIData(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         _PyXIData_t *);
 PyAPI_FUNC(_TyBytes_data_t *) _TyBytes_GetXIDataWrapped(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         size_t,
         xid_newobjfunc,
@@ -195,36 +195,36 @@ PyAPI_FUNC(_TyBytes_data_t *) _TyBytes_GetXIDataWrapped(
 // _TyObject_GetXIData() for pickle
 PyAPI_DATA(TyObject *) _PyPickle_LoadFromXIData(_PyXIData_t *);
 PyAPI_FUNC(int) _PyPickle_GetXIData(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         _PyXIData_t *);
 
 // _TyObject_GetXIData() for marshal
 PyAPI_FUNC(TyObject *) _TyMarshal_ReadObjectFromXIData(_PyXIData_t *);
 PyAPI_FUNC(int) _TyMarshal_GetXIData(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         _PyXIData_t *);
 
 // _TyObject_GetXIData() for code objects
 PyAPI_FUNC(TyObject *) _TyCode_FromXIData(_PyXIData_t *);
 PyAPI_FUNC(int) _TyCode_GetXIData(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         _PyXIData_t *);
 PyAPI_FUNC(int) _TyCode_GetScriptXIData(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         _PyXIData_t *);
 PyAPI_FUNC(int) _TyCode_GetPureScriptXIData(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         _PyXIData_t *);
 
 // _TyObject_GetXIData() for functions
 PyAPI_FUNC(TyObject *) _PyFunction_FromXIData(_PyXIData_t *);
 PyAPI_FUNC(int) _PyFunction_GetXIData(
-        PyThreadState *,
+        TyThreadState *,
         TyObject *,
         _PyXIData_t *);
 
@@ -271,9 +271,9 @@ typedef struct {
 #define _PyXI_GET_STATE(interp) (&(interp)->xi)
 
 #ifndef Ty_BUILD_CORE_MODULE
-extern PyStatus _PyXI_Init(PyInterpreterState *interp);
+extern TyStatus _PyXI_Init(PyInterpreterState *interp);
 extern void _PyXI_Fini(PyInterpreterState *interp);
-extern PyStatus _PyXI_InitTypes(PyInterpreterState *interp);
+extern TyStatus _PyXI_InitTypes(PyInterpreterState *interp);
 extern void _PyXI_FiniTypes(PyInterpreterState *interp);
 #endif  // Ty_BUILD_CORE_MODULE
 
@@ -334,7 +334,7 @@ PyAPI_FUNC(void) _PyXI_InitFailureUTF8(
     const char *);
 
 PyAPI_FUNC(int) _PyXI_UnwrapNotShareableError(
-    PyThreadState *,
+    TyThreadState *,
     _PyXI_failure *);
 
 
@@ -392,12 +392,12 @@ PyAPI_FUNC(TyObject *) _PyXI_GetPreserved(
 PyAPI_FUNC(PyInterpreterState *) _PyXI_NewInterpreter(
     PyInterpreterConfig *config,
     long *maybe_whence,
-    PyThreadState **p_tstate,
-    PyThreadState **p_save_tstate);
+    TyThreadState **p_tstate,
+    TyThreadState **p_save_tstate);
 PyAPI_FUNC(void) _PyXI_EndInterpreter(
     PyInterpreterState *interp,
-    PyThreadState *tstate,
-    PyThreadState **p_save_tstate);
+    TyThreadState *tstate,
+    TyThreadState **p_save_tstate);
 
 
 #ifdef __cplusplus

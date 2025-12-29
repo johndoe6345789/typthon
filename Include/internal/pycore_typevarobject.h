@@ -9,11 +9,11 @@ extern "C" {
 #endif
 
 extern TyObject *_Ty_make_typevar(TyObject *, TyObject *, TyObject *);
-extern TyObject *_Ty_make_paramspec(PyThreadState *, TyObject *);
-extern TyObject *_Ty_make_typevartuple(PyThreadState *, TyObject *);
-extern TyObject *_Ty_make_typealias(PyThreadState *, TyObject *);
-extern TyObject *_Ty_subscript_generic(PyThreadState *, TyObject *);
-extern TyObject *_Ty_set_typeparam_default(PyThreadState *, TyObject *, TyObject *);
+extern TyObject *_Ty_make_paramspec(TyThreadState *, TyObject *);
+extern TyObject *_Ty_make_typevartuple(TyThreadState *, TyObject *);
+extern TyObject *_Ty_make_typealias(TyThreadState *, TyObject *);
+extern TyObject *_Ty_subscript_generic(TyThreadState *, TyObject *);
+extern TyObject *_Ty_set_typeparam_default(TyThreadState *, TyObject *, TyObject *);
 extern int _Ty_initialize_generic(PyInterpreterState *);
 extern void _Ty_clear_generic_types(PyInterpreterState *);
 extern int _Ty_typing_type_repr(PyUnicodeWriter *, TyObject *);

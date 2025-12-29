@@ -456,10 +456,10 @@ do { \
 
 // Initialize warmup counters and optimize instructions. This cannot fail.
 void
-_TyCode_Quicken(_Py_CODEUNIT *instructions, Ty_ssize_t size, int enable_counters)
+_TyCode_Quicken(_Ty_CODEUNIT *instructions, Ty_ssize_t size, int enable_counters)
 {
     #if ENABLE_SPECIALIZATION_FT
-    _Py_BackoffCounter jump_counter, adaptive_counter;
+    _Ty_BackoffCounter jump_counter, adaptive_counter;
     if (enable_counters) {
         jump_counter = initial_jump_backoff_counter();
         adaptive_counter = adaptive_counter_warmup();
@@ -698,7 +698,7 @@ _TyCode_Quicken(_Py_CODEUNIT *instructions, Ty_ssize_t size, int enable_counters
 #define SPEC_FAIL_CONTAINS_OP_USER_CLASS 12
 
 static inline int
-set_opcode(_Py_CODEUNIT *instr, uint8_t opcode)
+set_opcode(_Ty_CODEUNIT *instr, uint8_t opcode)
 {
 #ifdef Ty_GIL_DISABLED
     uint8_t old_op = _Ty_atomic_load_uint8_relaxed(&instr->op.code);
@@ -719,23 +719,23 @@ set_opcode(_Py_CODEUNIT *instr, uint8_t opcode)
 }
 
 static inline void
-set_counter(_Py_BackoffCounter *counter, _Py_BackoffCounter value)
+set_counter(_Ty_BackoffCounter *counter, _Ty_BackoffCounter value)
 {
     FT_ATOMIC_STORE_UINT16_RELAXED(counter->value_and_backoff,
                                    value.value_and_backoff);
 }
 
-static inline _Py_BackoffCounter
-load_counter(_Py_BackoffCounter *counter)
+static inline _Ty_BackoffCounter
+load_counter(_Ty_BackoffCounter *counter)
 {
-    _Py_BackoffCounter result = {
+    _Ty_BackoffCounter result = {
         .value_and_backoff =
             FT_ATOMIC_LOAD_UINT16_RELAXED(counter->value_and_backoff)};
     return result;
 }
 
 static inline void
-specialize(_Py_CODEUNIT *instr, uint8_t specialized_opcode)
+specialize(_Ty_CODEUNIT *instr, uint8_t specialized_opcode)
 {
     assert(!TyErr_Occurred());
     if (!set_opcode(instr, specialized_opcode)) {
@@ -745,11 +745,11 @@ specialize(_Py_CODEUNIT *instr, uint8_t specialized_opcode)
         return;
     }
     STAT_INC(_PyOpcode_Deopt[specialized_opcode], success);
-    set_counter((_Py_BackoffCounter *)instr + 1, adaptive_counter_cooldown());
+    set_counter((_Ty_BackoffCounter *)instr + 1, adaptive_counter_cooldown());
 }
 
 static inline void
-unspecialize(_Py_CODEUNIT *instr)
+unspecialize(_Ty_CODEUNIT *instr)
 {
     assert(!TyErr_Occurred());
     uint8_t opcode = FT_ATOMIC_LOAD_UINT8_RELAXED(instr->op.code);
@@ -759,8 +759,8 @@ unspecialize(_Py_CODEUNIT *instr)
         SPECIALIZATION_FAIL(generic_opcode, SPEC_FAIL_OTHER);
         return;
     }
-    _Py_BackoffCounter *counter = (_Py_BackoffCounter *)instr + 1;
-    _Py_BackoffCounter cur = load_counter(counter);
+    _Ty_BackoffCounter *counter = (_Ty_BackoffCounter *)instr + 1;
+    _Ty_BackoffCounter cur = load_counter(counter);
     set_counter(counter, adaptive_counter_backoff(cur));
 }
 
@@ -769,7 +769,7 @@ static bool function_check_args(TyObject *o, int expected_argcount, int opcode);
 static uint32_t function_get_version(TyObject *o, int opcode);
 
 static int
-specialize_module_load_attr_lock_held(PyDictObject *dict, _Py_CODEUNIT *instr, TyObject *name)
+specialize_module_load_attr_lock_held(PyDictObject *dict, _Ty_CODEUNIT *instr, TyObject *name)
 {
     _PyAttrCache *cache = (_PyAttrCache *)(instr + 1);
     if (dict->ma_keys->dk_kind != DICT_KEYS_UNICODE) {
@@ -805,7 +805,7 @@ specialize_module_load_attr_lock_held(PyDictObject *dict, _Py_CODEUNIT *instr, T
 
 static int
 specialize_module_load_attr(
-    TyObject *owner, _Py_CODEUNIT *instr, TyObject *name)
+    TyObject *owner, _Ty_CODEUNIT *instr, TyObject *name)
 {
     PyModuleObject *m = (PyModuleObject *)owner;
     assert((Ty_TYPE(owner)->tp_flags & Ty_TPFLAGS_MANAGED_DICT) == 0);
@@ -824,7 +824,7 @@ specialize_module_load_attr(
 /* Attribute specialization */
 
 Ty_NO_INLINE void
-_Py_Specialize_LoadSuperAttr(_PyStackRef global_super_st, _PyStackRef cls_st, _Py_CODEUNIT *instr, int load_method) {
+_Py_Specialize_LoadSuperAttr(_PyStackRef global_super_st, _PyStackRef cls_st, _Ty_CODEUNIT *instr, int load_method) {
     TyObject *global_super = PyStackRef_AsPyObjectBorrow(global_super_st);
     TyObject *cls = PyStackRef_AsPyObjectBorrow(cls_st);
 
@@ -922,8 +922,8 @@ analyze_descriptor_load(TyTypeObject *type, TyObject *name, TyObject **descr, un
         /* Normal attribute lookup; */
         has_getattr = false;
     }
-    else if (getattro_slot == _Py_slot_tp_getattr_hook ||
-        getattro_slot == _Py_slot_tp_getattro) {
+    else if (getattro_slot == _Ty_slot_tp_getattr_hook ||
+        getattro_slot == _Ty_slot_tp_getattro) {
         /* One or both of __getattribute__ or __getattr__ may have been
          overridden See typeobject.c for why these functions are special. */
         TyObject *getattribute = _TyType_LookupRefAndVersion(type,
@@ -935,7 +935,7 @@ analyze_descriptor_load(TyTypeObject *type, TyObject *name, TyObject **descr, un
         TyObject *getattr = _TyType_Lookup(type, &_Ty_ID(__getattr__));
         has_getattr = getattr != NULL;
         if (has_custom_getattribute) {
-            if (getattro_slot == _Py_slot_tp_getattro &&
+            if (getattro_slot == _Ty_slot_tp_getattro &&
                 !has_getattr &&
                 Ty_IS_TYPE(getattribute, &TyFunction_Type)) {
                 *descr = getattribute;
@@ -990,7 +990,7 @@ analyze_descriptor_store(TyTypeObject *type, TyObject *name, TyObject **descr, u
 
 static int
 specialize_dict_access_inline(
-    TyObject *owner, _Py_CODEUNIT *instr, TyTypeObject *type,
+    TyObject *owner, _Ty_CODEUNIT *instr, TyTypeObject *type,
     TyObject *name, unsigned int tp_version,
     int base_op, int values_op)
 {
@@ -1020,7 +1020,7 @@ specialize_dict_access_inline(
 
 static int
 specialize_dict_access_hint(
-    PyDictObject *dict, _Py_CODEUNIT *instr, TyTypeObject *type,
+    PyDictObject *dict, _Ty_CODEUNIT *instr, TyTypeObject *type,
     TyObject *name, unsigned int tp_version,
     int base_op, int hint_op)
 {
@@ -1053,7 +1053,7 @@ specialize_dict_access_hint(
 
 static int
 specialize_dict_access(
-    TyObject *owner, _Py_CODEUNIT *instr, TyTypeObject *type,
+    TyObject *owner, _Ty_CODEUNIT *instr, TyTypeObject *type,
     DescriptorClassification kind, TyObject *name, unsigned int tp_version,
     int base_op, int values_op, int hint_op)
 {
@@ -1102,12 +1102,12 @@ specialize_dict_access(
 }
 
 static int
-specialize_attr_loadclassattr(TyObject *owner, _Py_CODEUNIT *instr,
+specialize_attr_loadclassattr(TyObject *owner, _Ty_CODEUNIT *instr,
                               TyObject *name, TyObject *descr,
                               unsigned int tp_version,
                               DescriptorClassification kind, bool is_method,
                               uint32_t shared_keys_version);
-static int specialize_class_load_attr(TyObject* owner, _Py_CODEUNIT* instr, TyObject* name);
+static int specialize_class_load_attr(TyObject* owner, _Ty_CODEUNIT* instr, TyObject* name);
 
 /* Returns true if instances of obj's class are
  * likely to have `name` in their __dict__.
@@ -1144,7 +1144,7 @@ instance_has_key(TyObject *obj, TyObject *name, uint32_t *shared_keys_version)
 }
 
 static int
-do_specialize_instance_load_attr(TyObject* owner, _Py_CODEUNIT* instr, TyObject* name,
+do_specialize_instance_load_attr(TyObject* owner, _Ty_CODEUNIT* instr, TyObject* name,
                                  bool shadow, uint32_t shared_keys_version,
                                  DescriptorClassification kind, TyObject *descr, unsigned int tp_version)
 {
@@ -1263,7 +1263,7 @@ do_specialize_instance_load_attr(TyObject* owner, _Py_CODEUNIT* instr, TyObject*
             // In free-threaded builds it's possible for tp_getattro to change
             // after the call to analyze_descriptor. That is fine: the version
             // guard will fail.
-            assert(type->tp_getattro == _Py_slot_tp_getattro);
+            assert(type->tp_getattro == _Ty_slot_tp_getattro);
             #endif
             assert(Ty_IS_TYPE(descr, &TyFunction_Type));
             _PyLoadMethodCache *lm_cache = (_PyLoadMethodCache *)(instr + 1);
@@ -1319,7 +1319,7 @@ do_specialize_instance_load_attr(TyObject* owner, _Py_CODEUNIT* instr, TyObject*
             if (shadow) {
                 goto try_instance;
             }
-            set_counter((_Py_BackoffCounter*)instr + 1, adaptive_counter_cooldown());
+            set_counter((_Ty_BackoffCounter*)instr + 1, adaptive_counter_cooldown());
             return 0;
     }
     Ty_UNREACHABLE();
@@ -1333,7 +1333,7 @@ try_instance:
 }
 
 static int
-specialize_instance_load_attr(TyObject* owner, _Py_CODEUNIT* instr, TyObject* name)
+specialize_instance_load_attr(TyObject* owner, _Ty_CODEUNIT* instr, TyObject* name)
 {
     // 0 is not a valid version
     uint32_t shared_keys_version = 0;
@@ -1348,7 +1348,7 @@ specialize_instance_load_attr(TyObject* owner, _Py_CODEUNIT* instr, TyObject* na
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_LoadAttr(_PyStackRef owner_st, _Py_CODEUNIT *instr, TyObject *name)
+_Py_Specialize_LoadAttr(_PyStackRef owner_st, _Ty_CODEUNIT *instr, TyObject *name)
 {
     TyObject *owner = PyStackRef_AsPyObjectBorrow(owner_st);
 
@@ -1379,7 +1379,7 @@ _Py_Specialize_LoadAttr(_PyStackRef owner_st, _Py_CODEUNIT *instr, TyObject *nam
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_StoreAttr(_PyStackRef owner_st, _Py_CODEUNIT *instr, TyObject *name)
+_Py_Specialize_StoreAttr(_PyStackRef owner_st, _Ty_CODEUNIT *instr, TyObject *name)
 {
     TyObject *owner = PyStackRef_AsPyObjectBorrow(owner_st);
 
@@ -1516,13 +1516,13 @@ load_attr_fail_kind(DescriptorClassification kind)
 #endif   // Ty_STATS
 
 static int
-specialize_class_load_attr(TyObject *owner, _Py_CODEUNIT *instr,
+specialize_class_load_attr(TyObject *owner, _Ty_CODEUNIT *instr,
                              TyObject *name)
 {
     assert(TyType_Check(owner));
     TyTypeObject *cls = (TyTypeObject *)owner;
     _PyLoadMethodCache *cache = (_PyLoadMethodCache *)(instr + 1);
-    if (Ty_TYPE(cls)->tp_getattro != _Py_type_getattro) {
+    if (Ty_TYPE(cls)->tp_getattro != _Ty_type_getattro) {
         SPECIALIZATION_FAIL(LOAD_ATTR, SPEC_FAIL_ATTR_METACLASS_OVERRIDDEN);
         return -1;
     }
@@ -1598,7 +1598,7 @@ specialize_class_load_attr(TyObject *owner, _Py_CODEUNIT *instr,
 // can cause a significant drop in cache hits. A possible test is
 // python.exe -m test_typing test_re test_dis test_zlib.
 static int
-specialize_attr_loadclassattr(TyObject *owner, _Py_CODEUNIT *instr,
+specialize_attr_loadclassattr(TyObject *owner, _Ty_CODEUNIT *instr,
                               TyObject *name, TyObject *descr,
                               unsigned int tp_version,
                               DescriptorClassification kind, bool is_method,
@@ -1688,7 +1688,7 @@ specialize_attr_loadclassattr(TyObject *owner, _Py_CODEUNIT *instr,
 static void
 specialize_load_global_lock_held(
     TyObject *globals, TyObject *builtins,
-    _Py_CODEUNIT *instr, TyObject *name)
+    _Ty_CODEUNIT *instr, TyObject *name)
 {
     assert(ENABLE_SPECIALIZATION_FT);
     assert(_PyOpcode_Caches[LOAD_GLOBAL] == INLINE_CACHE_ENTRIES_LOAD_GLOBAL);
@@ -1780,7 +1780,7 @@ fail:
 Ty_NO_INLINE void
 _Py_Specialize_LoadGlobal(
     TyObject *globals, TyObject *builtins,
-    _Py_CODEUNIT *instr, TyObject *name)
+    _Ty_CODEUNIT *instr, TyObject *name)
 {
     Ty_BEGIN_CRITICAL_SECTION2(globals, builtins);
     specialize_load_global_lock_held(globals, builtins, instr, name);
@@ -1898,7 +1898,7 @@ store_subscr_fail_kind(TyObject *container, TyObject *sub)
 #endif
 
 Ty_NO_INLINE void
-_Py_Specialize_StoreSubscr(_PyStackRef container_st, _PyStackRef sub_st, _Py_CODEUNIT *instr)
+_Py_Specialize_StoreSubscr(_PyStackRef container_st, _PyStackRef sub_st, _Ty_CODEUNIT *instr)
 {
     TyObject *container = PyStackRef_AsPyObjectBorrow(container_st);
     TyObject *sub = PyStackRef_AsPyObjectBorrow(sub_st);
@@ -1969,7 +1969,7 @@ get_init_for_simple_managed_python_class(TyTypeObject *tp, unsigned int *tp_vers
 }
 
 static int
-specialize_class_call(TyObject *callable, _Py_CODEUNIT *instr, int nargs)
+specialize_class_call(TyObject *callable, _Ty_CODEUNIT *instr, int nargs)
 {
     assert(TyType_Check(callable));
     TyTypeObject *tp = _TyType_CAST(callable);
@@ -2022,7 +2022,7 @@ generic:
 }
 
 static int
-specialize_method_descriptor(PyMethodDescrObject *descr, _Py_CODEUNIT *instr,
+specialize_method_descriptor(PyMethodDescrObject *descr, _Ty_CODEUNIT *instr,
                              int nargs)
 {
     switch (descr->d_method->ml_flags &
@@ -2043,7 +2043,7 @@ specialize_method_descriptor(PyMethodDescrObject *descr, _Py_CODEUNIT *instr,
             }
             PyInterpreterState *interp = _TyInterpreterState_GET();
             TyObject *list_append = interp->callable_cache.list_append;
-            _Py_CODEUNIT next = instr[INLINE_CACHE_ENTRIES_CALL + 1];
+            _Ty_CODEUNIT next = instr[INLINE_CACHE_ENTRIES_CALL + 1];
             bool pop = (next.op.code == POP_TOP);
             int oparg = instr->op.arg;
             if ((TyObject *)descr == list_append && oparg == 1 && pop) {
@@ -2067,7 +2067,7 @@ specialize_method_descriptor(PyMethodDescrObject *descr, _Py_CODEUNIT *instr,
 }
 
 static int
-specialize_py_call(PyFunctionObject *func, _Py_CODEUNIT *instr, int nargs,
+specialize_py_call(PyFunctionObject *func, _Ty_CODEUNIT *instr, int nargs,
                    bool bound_method)
 {
     _PyCallCache *cache = (_PyCallCache *)(instr + 1);
@@ -2106,7 +2106,7 @@ specialize_py_call(PyFunctionObject *func, _Py_CODEUNIT *instr, int nargs,
 
 
 static int
-specialize_py_call_kw(PyFunctionObject *func, _Py_CODEUNIT *instr, int nargs,
+specialize_py_call_kw(PyFunctionObject *func, _Ty_CODEUNIT *instr, int nargs,
                    bool bound_method)
 {
     _PyCallCache *cache = (_PyCallCache *)(instr + 1);
@@ -2132,7 +2132,7 @@ specialize_py_call_kw(PyFunctionObject *func, _Py_CODEUNIT *instr, int nargs,
 }
 
 static int
-specialize_c_call(TyObject *callable, _Py_CODEUNIT *instr, int nargs)
+specialize_c_call(TyObject *callable, _Ty_CODEUNIT *instr, int nargs)
 {
     if (PyCFunction_GET_FUNCTION(callable) == NULL) {
         SPECIALIZATION_FAIL(CALL, SPEC_FAIL_OTHER);
@@ -2178,7 +2178,7 @@ specialize_c_call(TyObject *callable, _Py_CODEUNIT *instr, int nargs)
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_Call(_PyStackRef callable_st, _Py_CODEUNIT *instr, int nargs)
+_Py_Specialize_Call(_PyStackRef callable_st, _Ty_CODEUNIT *instr, int nargs)
 {
     TyObject *callable = PyStackRef_AsPyObjectBorrow(callable_st);
 
@@ -2218,7 +2218,7 @@ _Py_Specialize_Call(_PyStackRef callable_st, _Py_CODEUNIT *instr, int nargs)
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_CallKw(_PyStackRef callable_st, _Py_CODEUNIT *instr, int nargs)
+_Py_Specialize_CallKw(_PyStackRef callable_st, _Ty_CODEUNIT *instr, int nargs)
 {
     TyObject *callable = PyStackRef_AsPyObjectBorrow(callable_st);
 
@@ -2573,7 +2573,7 @@ binary_op_extended_specialization(TyObject *lhs, TyObject *rhs, int oparg,
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_BinaryOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Py_CODEUNIT *instr,
+_Py_Specialize_BinaryOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Ty_CODEUNIT *instr,
                         int oparg, _PyStackRef *locals)
 {
     TyObject *lhs = PyStackRef_AsPyObjectBorrow(lhs_st);
@@ -2593,7 +2593,7 @@ _Py_Specialize_BinaryOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Py_CODEUNIT *in
                 break;
             }
             if (TyUnicode_CheckExact(lhs)) {
-                _Py_CODEUNIT next = instr[INLINE_CACHE_ENTRIES_BINARY_OP + 1];
+                _Ty_CODEUNIT next = instr[INLINE_CACHE_ENTRIES_BINARY_OP + 1];
                 bool to_store = (next.op.code == STORE_FAST);
                 if (to_store && PyStackRef_AsPyObjectBorrow(locals[next.op.arg]) == lhs) {
                     specialize(instr, BINARY_OP_INPLACE_ADD_UNICODE);
@@ -2735,7 +2735,7 @@ compare_op_fail_kind(TyObject *lhs, TyObject *rhs)
 #endif   // Ty_STATS
 
 Ty_NO_INLINE void
-_Py_Specialize_CompareOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Py_CODEUNIT *instr,
+_Py_Specialize_CompareOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Ty_CODEUNIT *instr,
                          int oparg)
 {
     TyObject *lhs = PyStackRef_AsPyObjectBorrow(lhs_st);
@@ -2798,7 +2798,7 @@ unpack_sequence_fail_kind(TyObject *seq)
 #endif   // Ty_STATS
 
 Ty_NO_INLINE void
-_Py_Specialize_UnpackSequence(_PyStackRef seq_st, _Py_CODEUNIT *instr, int oparg)
+_Py_Specialize_UnpackSequence(_PyStackRef seq_st, _Ty_CODEUNIT *instr, int oparg)
 {
     TyObject *seq = PyStackRef_AsPyObjectBorrow(seq_st);
 
@@ -2905,7 +2905,7 @@ int
 #endif   // Ty_STATS
 
 Ty_NO_INLINE void
-_Py_Specialize_ForIter(_PyStackRef iter, _Py_CODEUNIT *instr, int oparg)
+_Py_Specialize_ForIter(_PyStackRef iter, _Ty_CODEUNIT *instr, int oparg)
 {
     assert(ENABLE_SPECIALIZATION_FT);
     assert(_PyOpcode_Caches[FOR_ITER] == INLINE_CACHE_ENTRIES_FOR_ITER);
@@ -2960,7 +2960,7 @@ failure:
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_Send(_PyStackRef receiver_st, _Py_CODEUNIT *instr)
+_Py_Specialize_Send(_PyStackRef receiver_st, _Ty_CODEUNIT *instr)
 {
     TyObject *receiver = PyStackRef_AsPyObjectBorrow(receiver_st);
 
@@ -3030,7 +3030,7 @@ check_type_always_true(TyTypeObject *ty)
 }
 
 Ty_NO_INLINE void
-_Py_Specialize_ToBool(_PyStackRef value_o, _Py_CODEUNIT *instr)
+_Py_Specialize_ToBool(_PyStackRef value_o, _Ty_CODEUNIT *instr)
 {
     assert(ENABLE_SPECIALIZATION_FT);
     assert(_PyOpcode_Caches[TO_BOOL] == INLINE_CACHE_ENTRIES_TO_BOOL);
@@ -3104,7 +3104,7 @@ containsop_fail_kind(TyObject *value) {
 #endif
 
 Ty_NO_INLINE void
-_Py_Specialize_ContainsOp(_PyStackRef value_st, _Py_CODEUNIT *instr)
+_Py_Specialize_ContainsOp(_PyStackRef value_st, _Ty_CODEUNIT *instr)
 {
     TyObject *value = PyStackRef_AsPyObjectBorrow(value_st);
 
@@ -3206,12 +3206,12 @@ static _PyCodeArray init_cleanup_tlbc = {
 
 const struct _PyCode8 _Py_InitCleanup = {
     _PyVarObject_HEAD_INIT(&TyCode_Type, 3),
-    .co_consts = (TyObject *)&_Py_SINGLETON(tuple_empty),
-    .co_names = (TyObject *)&_Py_SINGLETON(tuple_empty),
-    .co_exceptiontable = (TyObject *)&_Py_SINGLETON(bytes_empty),
+    .co_consts = (TyObject *)&_Ty_SINGLETON(tuple_empty),
+    .co_names = (TyObject *)&_Ty_SINGLETON(tuple_empty),
+    .co_exceptiontable = (TyObject *)&_Ty_SINGLETON(bytes_empty),
     .co_flags = CO_OPTIMIZED | CO_NO_MONITORING_EVENTS,
-    .co_localsplusnames = (TyObject *)&_Py_SINGLETON(tuple_empty),
-    .co_localspluskinds = (TyObject *)&_Py_SINGLETON(bytes_empty),
+    .co_localsplusnames = (TyObject *)&_Ty_SINGLETON(tuple_empty),
+    .co_localspluskinds = (TyObject *)&_Ty_SINGLETON(bytes_empty),
     .co_filename = &_Ty_ID(__init__),
     .co_name = &_Ty_ID(__init__),
     .co_qualname = &_Ty_ID(__init__),

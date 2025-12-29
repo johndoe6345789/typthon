@@ -713,7 +713,7 @@ clear_context_watcher(TyObject *self, TyObject *watcher_id)
 static TyObject *
 clear_context_stack(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     if (tstate->context == NULL) {
         Py_RETURN_NONE;
     }

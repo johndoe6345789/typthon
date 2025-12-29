@@ -503,7 +503,7 @@ signal_signal_impl(TyObject *module, int signalnum, TyObject *handler)
     }
 #endif
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (!_Ty_ThreadCanHandleSignals(tstate->interp)) {
         _TyErr_SetString(tstate, TyExc_ValueError,
                          "signal only works in main thread "
@@ -747,7 +747,7 @@ signal_set_wakeup_fd_impl(TyObject *module, TyObject *fdobj,
     }
 #endif
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (!_Ty_ThreadCanHandleSignals(tstate->interp)) {
         _TyErr_SetString(tstate, TyExc_ValueError,
                          "set_wakeup_fd only works in main thread "
@@ -1660,7 +1660,7 @@ signal_module_exec(TyObject *m)
     }
 #endif
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (_Ty_IsMainInterpreter(tstate->interp)) {
         if (signal_get_set_handlers(state, d) < 0) {
             return -1;
@@ -1764,7 +1764,7 @@ _PySignal_Fini(void)
 int
 TyErr_CheckSignals(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     /* Opportunistically check if the GC is scheduled to run and run it
        if we have a request. This is done here because native code needs
@@ -1791,7 +1791,7 @@ TyErr_CheckSignals(void)
 
 /* Declared in cpython/pyerrors.h */
 int
-_TyErr_CheckSignalsTstate(PyThreadState *tstate)
+_TyErr_CheckSignalsTstate(TyThreadState *tstate)
 {
     _Ty_CHECK_EMSCRIPTEN_SIGNALS();
     if (!_Ty_atomic_load_int(&is_tripped)) {
@@ -1882,7 +1882,7 @@ _TyErr_CheckSignalsTstate(PyThreadState *tstate)
 int
 _TyErr_CheckSignals(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyErr_CheckSignalsTstate(tstate);
 }
 
@@ -2000,7 +2000,7 @@ _PySignal_Init(int install_signal_handlers)
 
 // The caller doesn't have to hold the GIL
 int
-_TyOS_InterruptOccurred(PyThreadState *tstate)
+_TyOS_InterruptOccurred(TyThreadState *tstate)
 {
     _Ty_EnsureTstateNotNULL(tstate);
     if (!_Ty_ThreadCanHandleSignals(tstate->interp)) {
@@ -2020,7 +2020,7 @@ _TyOS_InterruptOccurred(PyThreadState *tstate)
 int
 TyOS_InterruptOccurred(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyOS_InterruptOccurred(tstate);
 }
 

@@ -73,10 +73,10 @@ _TyPathConfig_ClearGlobal(void)
 #undef CLEAR
 }
 
-PyStatus
+TyStatus
 _TyPathConfig_ReadGlobal(PyConfig *config)
 {
-    PyStatus status = _TyStatus_OK();
+    TyStatus status = _TyStatus_OK();
 
 #define COPY(ATTR) \
     do { \
@@ -118,7 +118,7 @@ done:
     return status;
 }
 
-PyStatus
+TyStatus
 _TyPathConfig_UpdateGlobal(const PyConfig *config)
 {
 #define COPY(ATTR) \

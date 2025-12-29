@@ -335,7 +335,7 @@ void _TyTraceback_Add(const char *funcname, const char *filename, int lineno)
     TyObject *globals;
     PyCodeObject *code;
     PyFrameObject *frame;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     /* Save and clear the current exception. Python functions must not be
        called with an exception set. Calling Python functions happens when
@@ -398,7 +398,7 @@ _Ty_FindSourceFile(TyObject *filename, char* namebuf, size_t namelen, TyObject *
         tail++;
     taillen = strlen(tail);
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (_TySys_GetOptionalAttr(&_Ty_ID(path), &syspath) < 0) {
         TyErr_Clear();
         goto error;
@@ -1017,7 +1017,7 @@ dump_frame(int fd, _PyInterpreterFrame *frame)
 }
 
 static int
-tstate_is_freed(PyThreadState *tstate)
+tstate_is_freed(TyThreadState *tstate)
 {
     if (_TyMem_IsPtrFreed(tstate)) {
         return 1;
@@ -1037,7 +1037,7 @@ interp_is_freed(PyInterpreterState *interp)
 
 
 static void
-dump_traceback(int fd, PyThreadState *tstate, int write_header)
+dump_traceback(int fd, TyThreadState *tstate, int write_header)
 {
     if (write_header) {
         PUTS(fd, "Stack (most recent call first):\n");
@@ -1092,7 +1092,7 @@ dump_traceback(int fd, PyThreadState *tstate, int write_header)
    The caller is responsible to call TyErr_CheckSignals() to call Python signal
    handlers if signals were received. */
 void
-_Ty_DumpTraceback(int fd, PyThreadState *tstate)
+_Ty_DumpTraceback(int fd, TyThreadState *tstate)
 {
     dump_traceback(fd, tstate, 1);
 }
@@ -1114,7 +1114,7 @@ _Ty_DumpTraceback(int fd, PyThreadState *tstate)
    This function is signal safe. */
 
 static void
-write_thread_id(int fd, PyThreadState *tstate, int is_current)
+write_thread_id(int fd, TyThreadState *tstate, int is_current)
 {
     if (is_current)
         PUTS(fd, "Current thread 0x");
@@ -1155,7 +1155,7 @@ write_thread_id(int fd, PyThreadState *tstate, int is_current)
    handlers if signals were received. */
 const char*
 _Ty_DumpTracebackThreads(int fd, PyInterpreterState *interp,
-                         PyThreadState *current_tstate)
+                         TyThreadState *current_tstate)
 {
     if (current_tstate == NULL) {
         /* _Ty_DumpTracebackThreads() is called from signal handlers by
@@ -1195,7 +1195,7 @@ _Ty_DumpTracebackThreads(int fd, PyInterpreterState *interp,
     }
 
     /* Get the current interpreter from the current thread */
-    PyThreadState *tstate = TyInterpreterState_ThreadHead(interp);
+    TyThreadState *tstate = TyInterpreterState_ThreadHead(interp);
     if (tstate == NULL)
         return "unable to get the thread head state";
 

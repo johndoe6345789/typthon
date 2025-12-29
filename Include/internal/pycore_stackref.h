@@ -725,7 +725,7 @@ PyStackRef_FunctionCheck(_PyStackRef stackref)
 }
 
 static inline void
-_TyThreadState_PushCStackRef(PyThreadState *tstate, _PyCStackRef *ref)
+_TyThreadState_PushCStackRef(TyThreadState *tstate, _PyCStackRef *ref)
 {
 #ifdef Ty_GIL_DISABLED
     _PyThreadStateImpl *tstate_impl = (_PyThreadStateImpl *)tstate;
@@ -736,7 +736,7 @@ _TyThreadState_PushCStackRef(PyThreadState *tstate, _PyCStackRef *ref)
 }
 
 static inline void
-_TyThreadState_PopCStackRef(PyThreadState *tstate, _PyCStackRef *ref)
+_TyThreadState_PopCStackRef(TyThreadState *tstate, _PyCStackRef *ref)
 {
 #ifdef Ty_GIL_DISABLED
     _PyThreadStateImpl *tstate_impl = (_PyThreadStateImpl *)tstate;

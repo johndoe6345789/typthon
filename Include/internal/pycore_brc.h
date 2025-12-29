@@ -50,8 +50,8 @@ struct _brc_thread_state {
 };
 
 // Initialize/finalize the per-thread biased reference counting state
-void _Ty_brc_init_thread(PyThreadState *tstate);
-void _Ty_brc_remove_thread(PyThreadState *tstate);
+void _Ty_brc_init_thread(TyThreadState *tstate);
+void _Ty_brc_remove_thread(TyThreadState *tstate);
 
 // Initialize per-interpreter state
 void _Ty_brc_init_state(PyInterpreterState *interp);
@@ -63,7 +63,7 @@ void _Ty_brc_after_fork(PyInterpreterState *interp);
 void _Ty_brc_queue_object(TyObject *ob);
 
 // Merge the refcounts of queued objects for the current thread.
-void _Ty_brc_merge_refcounts(PyThreadState *tstate);
+void _Ty_brc_merge_refcounts(TyThreadState *tstate);
 
 #endif /* Ty_GIL_DISABLED */
 

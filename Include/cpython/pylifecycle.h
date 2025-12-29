@@ -8,13 +8,13 @@ PyAPI_FUNC(int) Ty_FrozenMain(int argc, char **argv);
 
 /* PEP 432 Multi-phase initialization API (Private while provisional!) */
 
-PyAPI_FUNC(PyStatus) Ty_PreInitialize(
+PyAPI_FUNC(TyStatus) Ty_PreInitialize(
     const PyPreConfig *src_config);
-PyAPI_FUNC(PyStatus) Ty_PreInitializeFromBytesArgs(
+PyAPI_FUNC(TyStatus) Ty_PreInitializeFromBytesArgs(
     const PyPreConfig *src_config,
     Ty_ssize_t argc,
     char **argv);
-PyAPI_FUNC(PyStatus) Ty_PreInitializeFromArgs(
+PyAPI_FUNC(TyStatus) Ty_PreInitializeFromArgs(
     const PyPreConfig *src_config,
     Ty_ssize_t argc,
     wchar_t **argv);
@@ -22,13 +22,13 @@ PyAPI_FUNC(PyStatus) Ty_PreInitializeFromArgs(
 
 /* Initialization and finalization */
 
-PyAPI_FUNC(PyStatus) Ty_InitializeFromConfig(
+PyAPI_FUNC(TyStatus) Ty_InitializeFromConfig(
     const PyConfig *config);
 
 PyAPI_FUNC(int) Ty_RunMain(void);
 
 
-PyAPI_FUNC(void) _Ty_NO_RETURN Ty_ExitStatusException(PyStatus err);
+PyAPI_FUNC(void) _Ty_NO_RETURN Ty_ExitStatusException(TyStatus err);
 
 PyAPI_FUNC(int) Ty_FdIsInteractive(FILE *, const char *);
 
@@ -80,8 +80,8 @@ typedef struct {
         .gil = PyInterpreterConfig_SHARED_GIL, \
     }
 
-PyAPI_FUNC(PyStatus) Ty_NewInterpreterFromConfig(
-    PyThreadState **tstate_p,
+PyAPI_FUNC(TyStatus) Ty_NewInterpreterFromConfig(
+    TyThreadState **tstate_p,
     const PyInterpreterConfig *config);
 
 typedef void (*atexit_datacallbackfunc)(void *);

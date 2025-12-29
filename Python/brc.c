@@ -114,7 +114,7 @@ merge_queued_objects(_PyObjectStack *to_merge)
 
 // Process this thread's queue of objects to merge.
 void
-_Ty_brc_merge_refcounts(PyThreadState *tstate)
+_Ty_brc_merge_refcounts(TyThreadState *tstate)
 {
     struct _brc_thread_state *brc = &((_PyThreadStateImpl *)tstate)->brc;
     struct _brc_bucket *bucket = get_bucket(tstate->interp, brc->tid);
@@ -141,7 +141,7 @@ _Ty_brc_init_state(PyInterpreterState *interp)
 }
 
 void
-_Ty_brc_init_thread(PyThreadState *tstate)
+_Ty_brc_init_thread(TyThreadState *tstate)
 {
     struct _brc_thread_state *brc = &((_PyThreadStateImpl *)tstate)->brc;
     uintptr_t tid = _Ty_ThreadId();
@@ -155,7 +155,7 @@ _Ty_brc_init_thread(PyThreadState *tstate)
 }
 
 void
-_Ty_brc_remove_thread(PyThreadState *tstate)
+_Ty_brc_remove_thread(TyThreadState *tstate)
 {
     struct _brc_thread_state *brc = &((_PyThreadStateImpl *)tstate)->brc;
     if (brc->tid == 0) {

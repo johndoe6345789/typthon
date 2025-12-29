@@ -11,8 +11,8 @@ extern "C" {
 // Export for '_testinternalcapi' shared extension
 PyAPI_FUNC(void) _TyPathConfig_ClearGlobal(void);
 
-extern PyStatus _TyPathConfig_ReadGlobal(PyConfig *config);
-extern PyStatus _TyPathConfig_UpdateGlobal(const PyConfig *config);
+extern TyStatus _TyPathConfig_ReadGlobal(PyConfig *config);
+extern TyStatus _TyPathConfig_UpdateGlobal(const PyConfig *config);
 extern const wchar_t * _TyPathConfig_GetGlobalModuleSearchPath(void);
 
 extern int _TyPathConfig_ComputeSysPath0(

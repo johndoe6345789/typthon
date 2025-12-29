@@ -10,7 +10,7 @@ extern "C" {
 
 #include "pycore_typedefs.h"      // _PyRuntimeState
 
-/* --- PyStatus ----------------------------------------------- */
+/* --- TyStatus ----------------------------------------------- */
 
 /* Almost all errors causing Python initialization to fail */
 #ifdef _MSC_VER
@@ -21,10 +21,10 @@ extern "C" {
 #endif
 
 #define _TyStatus_OK() \
-    (PyStatus){._type = _TyStatus_TYPE_OK}
+    (TyStatus){._type = _TyStatus_TYPE_OK}
     /* other fields are set to 0 */
 #define _TyStatus_ERR(ERR_MSG) \
-    (PyStatus){ \
+    (TyStatus){ \
         ._type = _TyStatus_TYPE_ERROR, \
         .func = _TyStatus_GET_FUNC(), \
         .err_msg = (ERR_MSG)}
@@ -32,7 +32,7 @@ extern "C" {
 #define _TyStatus_NO_MEMORY_ERRMSG "memory allocation failed"
 #define _TyStatus_NO_MEMORY() _TyStatus_ERR(_TyStatus_NO_MEMORY_ERRMSG)
 #define _TyStatus_EXIT(EXITCODE) \
-    (PyStatus){ \
+    (TyStatus){ \
         ._type = _TyStatus_TYPE_EXIT, \
         .exitcode = (EXITCODE)}
 #define _TyStatus_IS_ERROR(err) \
@@ -45,7 +45,7 @@ extern "C" {
     do { (err).func = _TyStatus_GET_FUNC(); } while (0)
 
 // Export for '_testinternalcapi' shared extension
-PyAPI_FUNC(void) _TyErr_SetFromPyStatus(PyStatus status);
+PyAPI_FUNC(void) _TyErr_SetFromPyStatus(TyStatus status);
 
 
 /* --- PyWideStringList ------------------------------------------------ */
@@ -58,7 +58,7 @@ extern int _TyWideStringList_CheckConsistency(const PyWideStringList *list);
 extern void _TyWideStringList_Clear(PyWideStringList *list);
 extern int _TyWideStringList_Copy(PyWideStringList *list,
     const PyWideStringList *list2);
-extern PyStatus _TyWideStringList_Extend(PyWideStringList *list,
+extern TyStatus _TyWideStringList_Extend(PyWideStringList *list,
     const PyWideStringList *list2);
 extern TyObject* _TyWideStringList_AsList(const PyWideStringList *list);
 
@@ -72,7 +72,7 @@ typedef struct _PyArgv {
     wchar_t * const *wchar_argv;
 } _PyArgv;
 
-extern PyStatus _PyArgv_AsWstrList(const _PyArgv *args,
+extern TyStatus _PyArgv_AsWstrList(const _PyArgv *args,
     PyWideStringList *list);
 
 
@@ -115,12 +115,12 @@ typedef struct {
 /* Note: _PyPreCmdline_INIT sets other fields to 0/NULL */
 
 extern void _PyPreCmdline_Clear(_PyPreCmdline *cmdline);
-extern PyStatus _PyPreCmdline_SetArgv(_PyPreCmdline *cmdline,
+extern TyStatus _PyPreCmdline_SetArgv(_PyPreCmdline *cmdline,
     const _PyArgv *args);
-extern PyStatus _PyPreCmdline_SetConfig(
+extern TyStatus _PyPreCmdline_SetConfig(
     const _PyPreCmdline *cmdline,
     PyConfig *config);
-extern PyStatus _PyPreCmdline_Read(_PyPreCmdline *cmdline,
+extern TyStatus _PyPreCmdline_Read(_PyPreCmdline *cmdline,
     const PyPreConfig *preconfig);
 
 
@@ -132,15 +132,15 @@ PyAPI_FUNC(void) _TyPreConfig_InitCompatConfig(PyPreConfig *preconfig);
 extern void _TyPreConfig_InitFromConfig(
     PyPreConfig *preconfig,
     const PyConfig *config);
-extern PyStatus _TyPreConfig_InitFromPreConfig(
+extern TyStatus _TyPreConfig_InitFromPreConfig(
     PyPreConfig *preconfig,
     const PyPreConfig *config2);
 extern TyObject* _TyPreConfig_AsDict(const PyPreConfig *preconfig);
 extern void _TyPreConfig_GetConfig(PyPreConfig *preconfig,
     const PyConfig *config);
-extern PyStatus _TyPreConfig_Read(PyPreConfig *preconfig,
+extern TyStatus _TyPreConfig_Read(PyPreConfig *preconfig,
     const _PyArgv *args);
-extern PyStatus _TyPreConfig_Write(const PyPreConfig *preconfig);
+extern TyStatus _TyPreConfig_Write(const PyPreConfig *preconfig);
 
 
 /* --- PyConfig ---------------------------------------------- */
@@ -167,22 +167,22 @@ typedef enum {
 // Export for '_testembed' program
 PyAPI_FUNC(void) _TyConfig_InitCompatConfig(PyConfig *config);
 
-extern PyStatus _TyConfig_Copy(
+extern TyStatus _TyConfig_Copy(
     PyConfig *config,
     const PyConfig *config2);
-extern PyStatus _TyConfig_InitPathConfig(
+extern TyStatus _TyConfig_InitPathConfig(
     PyConfig *config,
     int compute_path_config);
-extern PyStatus _TyConfig_InitImportConfig(PyConfig *config);
-extern PyStatus _TyConfig_Read(PyConfig *config, int compute_path_config);
-extern PyStatus _TyConfig_Write(const PyConfig *config,
+extern TyStatus _TyConfig_InitImportConfig(PyConfig *config);
+extern TyStatus _TyConfig_Read(PyConfig *config, int compute_path_config);
+extern TyStatus _TyConfig_Write(const PyConfig *config,
     _PyRuntimeState *runtime);
-extern PyStatus _TyConfig_SetPyArgv(
+extern TyStatus _TyConfig_SetPyArgv(
     PyConfig *config,
     const _PyArgv *args);
 extern TyObject* _TyConfig_CreateXOptionsDict(const PyConfig *config);
 
-extern void _Ty_DumpPathConfig(PyThreadState *tstate);
+extern void _Ty_DumpPathConfig(TyThreadState *tstate);
 
 
 /* --- Function used for testing ---------------------------------- */

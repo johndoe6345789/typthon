@@ -52,7 +52,7 @@ wmain(int argc, wchar_t **argv)
 main(int argc, char **argv)
 #endif
 {
-    PyStatus status;
+    TyStatus status;
 
     PyConfig config;
     TyConfig_InitIsolatedConfig(&config);

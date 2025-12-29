@@ -111,7 +111,7 @@ context_event_name(PyContextEvent event) {
 }
 
 static void
-notify_context_watchers(PyThreadState *ts, PyContextEvent event, TyObject *ctx)
+notify_context_watchers(TyThreadState *ts, PyContextEvent event, TyObject *ctx)
 {
     if (ctx == NULL) {
         // This will happen after exiting the last context in the stack, which
@@ -181,7 +181,7 @@ PyContext_ClearWatcher(int watcher_id)
 
 
 static inline void
-context_switched(PyThreadState *ts)
+context_switched(TyThreadState *ts)
 {
     ts->context_ver++;
     // ts->context is used instead of context_get() because context_get() might
@@ -191,7 +191,7 @@ context_switched(PyThreadState *ts)
 
 
 static int
-_TyContext_Enter(PyThreadState *ts, TyObject *octx)
+_TyContext_Enter(TyThreadState *ts, TyObject *octx)
 {
     ENSURE_Context(octx, -1)
     PyContext *ctx = (PyContext *)octx;
@@ -214,14 +214,14 @@ _TyContext_Enter(PyThreadState *ts, TyObject *octx)
 int
 PyContext_Enter(TyObject *octx)
 {
-    PyThreadState *ts = _TyThreadState_GET();
+    TyThreadState *ts = _TyThreadState_GET();
     assert(ts != NULL);
     return _TyContext_Enter(ts, octx);
 }
 
 
 static int
-_TyContext_Exit(PyThreadState *ts, TyObject *octx)
+_TyContext_Exit(TyThreadState *ts, TyObject *octx)
 {
     ENSURE_Context(octx, -1)
     PyContext *ctx = (PyContext *)octx;
@@ -251,7 +251,7 @@ _TyContext_Exit(PyThreadState *ts, TyObject *octx)
 int
 PyContext_Exit(TyObject *octx)
 {
-    PyThreadState *ts = _TyThreadState_GET();
+    TyThreadState *ts = _TyThreadState_GET();
     assert(ts != NULL);
     return _TyContext_Exit(ts, octx);
 }
@@ -276,7 +276,7 @@ PyContextVar_Get(TyObject *ovar, TyObject *def, TyObject **val)
     ENSURE_ContextVar(ovar, -1)
     PyContextVar *var = (PyContextVar *)ovar;
 
-    PyThreadState *ts = _TyThreadState_GET();
+    TyThreadState *ts = _TyThreadState_GET();
     assert(ts != NULL);
     if (ts->context == NULL) {
         goto not_found;
@@ -479,7 +479,7 @@ context_new_from_vars(PyHamtObject *vars)
 static inline PyContext *
 context_get(void)
 {
-    PyThreadState *ts = _TyThreadState_GET();
+    TyThreadState *ts = _TyThreadState_GET();
     assert(ts != NULL);
     PyContext *current_ctx = (PyContext *)ts->context;
     if (current_ctx == NULL) {
@@ -713,7 +713,7 @@ static TyObject *
 context_run(TyObject *self, TyObject *const *args,
             Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyThreadState *ts = _TyThreadState_GET();
+    TyThreadState *ts = _TyThreadState_GET();
 
     if (nargs < 1) {
         _TyErr_SetString(ts, TyExc_TypeError,
@@ -784,7 +784,7 @@ contextvar_set(PyContextVar *var, TyObject *val)
 {
 #ifndef Ty_GIL_DISABLED
     var->var_cached = NULL;
-    PyThreadState *ts = _TyThreadState_GET();
+    TyThreadState *ts = _TyThreadState_GET();
 #endif
 
     PyContext *ctx = context_get();
@@ -1354,7 +1354,7 @@ get_token_missing(void)
 ///////////////////////////
 
 
-PyStatus
+TyStatus
 _TyContext_Init(PyInterpreterState *interp)
 {
     if (!_Ty_IsMainInterpreter(interp)) {

@@ -228,7 +228,7 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
 int
 _PySemaphore_Wait(_PySemaphore *sema, PyTime_t timeout, int detach)
 {
-    PyThreadState *tstate = NULL;
+    TyThreadState *tstate = NULL;
     if (detach) {
         tstate = _TyThreadState_GET();
         if (tstate && _TyThreadState_IsAttached(tstate)) {

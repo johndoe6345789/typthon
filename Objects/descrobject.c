@@ -295,7 +295,7 @@ method_check_args(TyObject *func, TyObject *const *args, Ty_ssize_t nargs, TyObj
 typedef void (*funcptr)(void);
 
 static inline funcptr
-method_enter_call(PyThreadState *tstate, TyObject *func)
+method_enter_call(TyThreadState *tstate, TyObject *func)
 {
     if (_Ty_EnterRecursiveCallTstate(tstate, " while calling a Python object")) {
         return NULL;
@@ -308,7 +308,7 @@ static TyObject *
 method_vectorcall_VARARGS(
     TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, kwnames)) {
         return NULL;
@@ -333,7 +333,7 @@ static TyObject *
 method_vectorcall_VARARGS_KEYWORDS(
     TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, NULL)) {
         return NULL;
@@ -369,7 +369,7 @@ static TyObject *
 method_vectorcall_FASTCALL_KEYWORDS_METHOD(
     TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, NULL)) {
         return NULL;
@@ -389,7 +389,7 @@ static TyObject *
 method_vectorcall_FASTCALL(
     TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, kwnames)) {
         return NULL;
@@ -408,7 +408,7 @@ static TyObject *
 method_vectorcall_FASTCALL_KEYWORDS(
     TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, NULL)) {
         return NULL;
@@ -427,7 +427,7 @@ static TyObject *
 method_vectorcall_NOARGS(
     TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, kwnames)) {
         return NULL;
@@ -454,7 +454,7 @@ static TyObject *
 method_vectorcall_O(
     TyObject *func, TyObject *const *args, size_t nargsf, TyObject *kwnames)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (method_check_args(func, args, nargs, kwnames)) {
         return NULL;

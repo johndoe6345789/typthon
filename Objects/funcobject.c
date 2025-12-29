@@ -974,7 +974,7 @@ function___type_params___set_impl(PyFunctionObject *self, TyObject *value)
 }
 
 TyObject *
-_Ty_set_function_type_params(PyThreadState *Py_UNUSED(ignored), TyObject *func,
+_Ty_set_function_type_params(TyThreadState *Py_UNUSED(ignored), TyObject *func,
                              TyObject *type_params)
 {
     assert(TyFunction_Check(func));
@@ -1242,7 +1242,7 @@ TyTypeObject TyFunction_Type = {
 
 
 int
-_PyFunction_VerifyStateless(PyThreadState *tstate, TyObject *func)
+_PyFunction_VerifyStateless(TyThreadState *tstate, TyObject *func)
 {
     assert(!TyErr_Occurred());
     assert(TyFunction_Check(func));

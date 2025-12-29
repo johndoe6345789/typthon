@@ -429,10 +429,10 @@ PyAPI_FUNC(void) _Ty_NO_RETURN _TyObject_AssertFailed(
     const char *function);
 
 
-PyAPI_FUNC(void) _PyTrash_thread_deposit_object(PyThreadState *tstate, TyObject *op);
-PyAPI_FUNC(void) _PyTrash_thread_destroy_chain(PyThreadState *tstate);
+PyAPI_FUNC(void) _PyTrash_thread_deposit_object(TyThreadState *tstate, TyObject *op);
+PyAPI_FUNC(void) _PyTrash_thread_destroy_chain(TyThreadState *tstate);
 
-PyAPI_FUNC(int) _Ty_ReachedRecursionLimitWithMargin(PyThreadState *tstate, int margin_count);
+PyAPI_FUNC(int) _Ty_ReachedRecursionLimitWithMargin(TyThreadState *tstate, int margin_count);
 
 /* For backwards compatibility with the old trashcan mechanism */
 #define Ty_TRASHCAN_BEGIN(op, dealloc)

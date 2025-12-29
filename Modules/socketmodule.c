@@ -1845,7 +1845,7 @@ idna_converter(TyObject *obj, void *arg)
         TyErr_SetString(TyExc_TypeError, "host name must not contain null character");
         return 0;
     }
-    return Py_CLEANUP_SUPPORTED;
+    return Ty_CLEANUP_SUPPORTED;
 }
 
 /* Parse a socket address argument according to the socket object's
@@ -1862,7 +1862,7 @@ getsockaddrarg(PySocketSockObject *s, TyObject *args,
 #if defined(AF_UNIX)
     case AF_UNIX:
     {
-        Py_buffer path;
+        Ty_buffer path;
         int retval = 0;
 
         /* PEP 383.  Not using TyUnicode_FSConverter since we need to
@@ -2268,7 +2268,7 @@ getsockaddrarg(PySocketSockObject *s, TyObject *args,
         int protoNumber;
         int hatype = 0;
         int pkttype = PACKET_HOST;
-        Py_buffer haddr = {NULL, NULL};
+        Ty_buffer haddr = {NULL, NULL};
 
         if (!TyTuple_Check(args)) {
             TyErr_Format(
@@ -3341,7 +3341,7 @@ sock_setsockopt(TyObject *self, TyObject *args)
     int level;
     int optname;
     int res;
-    Py_buffer optval;
+    Ty_buffer optval;
     int flag;
     unsigned int optlen;
     TyObject *none;
@@ -4005,7 +4005,7 @@ sock_recv_into(TyObject *self, TyObject *args, TyObject *kwds)
     PySocketSockObject *s = _PySocketSockObject_CAST(self);
 
     int flags = 0;
-    Py_buffer pbuf;
+    Ty_buffer pbuf;
     char *buf;
     Ty_ssize_t buflen, readlen, recvlen = 0;
 
@@ -4196,7 +4196,7 @@ sock_recvfrom_into(TyObject *self, TyObject *args, TyObject* kwds)
     PySocketSockObject *s = _PySocketSockObject_CAST(self);
 
     int flags = 0;
-    Py_buffer pbuf;
+    Ty_buffer pbuf;
     char *buf;
     Ty_ssize_t readlen, buflen, recvlen = 0;
 
@@ -4496,7 +4496,7 @@ sock_recvmsg_into(TyObject *self, TyObject *args)
     int flags = 0;
     struct iovec *iovs = NULL;
     Ty_ssize_t i, nitems, nbufs = 0;
-    Py_buffer *bufs = NULL;
+    Ty_buffer *bufs = NULL;
     TyObject *buffers_arg, *fast, *retval = NULL;
 
     if (!TyArg_ParseTuple(args, "O|ni:recvmsg_into",
@@ -4513,10 +4513,10 @@ sock_recvmsg_into(TyObject *self, TyObject *args)
         goto finally;
     }
 
-    /* Fill in an iovec for each item, and save the Py_buffer
+    /* Fill in an iovec for each item, and save the Ty_buffer
        structs to release afterwards. */
     if (nitems > 0 && ((iovs = TyMem_New(struct iovec, nitems)) == NULL ||
-                       (bufs = TyMem_New(Py_buffer, nitems)) == NULL)) {
+                       (bufs = TyMem_New(Ty_buffer, nitems)) == NULL)) {
         TyErr_NoMemory();
         goto finally;
     }
@@ -4606,7 +4606,7 @@ sock_send(TyObject *self, TyObject *args)
     PySocketSockObject *s = _PySocketSockObject_CAST(self);
 
     int flags = 0;
-    Py_buffer pbuf;
+    Ty_buffer pbuf;
     struct sock_send ctx;
 
     if (!TyArg_ParseTuple(args, "y*|i:send", &pbuf, &flags))
@@ -4646,7 +4646,7 @@ sock_sendall(TyObject *self, TyObject *args)
     char *buf;
     Ty_ssize_t len, n;
     int flags = 0;
-    Py_buffer pbuf;
+    Ty_buffer pbuf;
     struct sock_send ctx;
     int has_timeout = (s->sock_timeout > 0);
     PyTime_t timeout = s->sock_timeout;
@@ -4750,7 +4750,7 @@ sock_sendto(TyObject *self, TyObject *args)
 {
     PySocketSockObject *s = _PySocketSockObject_CAST(self);
 
-    Py_buffer pbuf;
+    Ty_buffer pbuf;
     TyObject *addro;
     Ty_ssize_t arglen;
     sock_addr_t addrbuf;
@@ -4826,14 +4826,14 @@ struct sock_sendmsg {
 static int
 sock_sendmsg_iovec(PySocketSockObject *s, TyObject *data_arg,
                    struct msghdr *msg,
-                   Py_buffer **databufsout, Ty_ssize_t *ndatabufsout) {
+                   Ty_buffer **databufsout, Ty_ssize_t *ndatabufsout) {
     Ty_ssize_t ndataparts, ndatabufs = 0;
     int result = -1;
     struct iovec *iovs = NULL;
     TyObject *data_fast = NULL;
-    Py_buffer *databufs = NULL;
+    Ty_buffer *databufs = NULL;
 
-    /* Fill in an iovec for each message part, and save the Py_buffer
+    /* Fill in an iovec for each message part, and save the Ty_buffer
        structs to release afterwards. */
     data_fast = PySequence_Fast(data_arg,
                                 "sendmsg() argument 1 must be an "
@@ -4857,7 +4857,7 @@ sock_sendmsg_iovec(PySocketSockObject *s, TyObject *data_arg,
         }
         msg->msg_iov = iovs;
 
-        databufs = TyMem_New(Py_buffer, ndataparts);
+        databufs = TyMem_New(Ty_buffer, ndataparts);
         if (databufs == NULL) {
             TyErr_NoMemory();
             goto finally;
@@ -4897,13 +4897,13 @@ sock_sendmsg(TyObject *self, TyObject *args)
     PySocketSockObject *s = _PySocketSockObject_CAST(self);
 
     Ty_ssize_t i, ndatabufs = 0, ncmsgs, ncmsgbufs = 0;
-    Py_buffer *databufs = NULL;
+    Ty_buffer *databufs = NULL;
     sock_addr_t addrbuf;
     struct msghdr msg;
     struct cmsginfo {
         int level;
         int type;
-        Py_buffer data;
+        Ty_buffer data;
     } *cmsgs = NULL;
     void *controlbuf = NULL;
     size_t controllen, controllen_last;
@@ -4937,7 +4937,7 @@ sock_sendmsg(TyObject *self, TyObject *args)
         }
     }
 
-    /* Fill in an iovec for each message part, and save the Py_buffer
+    /* Fill in an iovec for each message part, and save the Ty_buffer
        structs to release afterwards. */
     if (sock_sendmsg_iovec(s, data_arg, &msg, &databufs, &ndatabufs) == -1) {
         goto finally;
@@ -4961,7 +4961,7 @@ sock_sendmsg(TyObject *self, TyObject *args)
         goto finally;
     }
 #endif
-    /* Save level, type and Py_buffer for each control message,
+    /* Save level, type and Ty_buffer for each control message,
        and calculate total size. */
     if (ncmsgs > 0 && (cmsgs = TyMem_New(struct cmsginfo, ncmsgs)) == NULL) {
         TyErr_NoMemory();
@@ -5105,10 +5105,10 @@ sock_sendmsg_afalg(TyObject *s, TyObject *args, TyObject *kwds)
     TyObject *retval = NULL;
 
     Ty_ssize_t i, ndatabufs = 0;
-    Py_buffer *databufs = NULL;
+    Ty_buffer *databufs = NULL;
     TyObject *data_arg = NULL;
 
-    Py_buffer iv = {NULL, NULL};
+    Ty_buffer iv = {NULL, NULL};
 
     TyObject *opobj = NULL;
     int op = -1;
@@ -5184,7 +5184,7 @@ sock_sendmsg_afalg(TyObject *s, TyObject *args, TyObject *kwds)
     msg.msg_controllen = controllen;
     msg.msg_control = controlbuf;
 
-    /* Fill in an iovec for each message part, and save the Py_buffer
+    /* Fill in an iovec for each message part, and save the Ty_buffer
        structs to release afterwards. */
     if (data_arg != NULL) {
         if (sock_sendmsg_iovec(self, data_arg, &msg, &databufs, &ndatabufs) == -1) {
@@ -5918,7 +5918,7 @@ static TyObject *
 socket_sethostname(TyObject *self, TyObject *args)
 {
     TyObject *hnobj;
-    Py_buffer buf;
+    Ty_buffer buf;
     int res, flag = 0;
 
 #if defined(_AIX) || (defined(__sun) && defined(__SVR4) && Py_SUNOS_VERSION <= 510)
@@ -6740,14 +6740,14 @@ _socket_inet_aton_impl(TyObject *module, const char *ip_addr)
 #ifdef HAVE_INET_NTOA
 /*[clinic input]
 _socket.inet_ntoa
-    packed_ip: Py_buffer
+    packed_ip: Ty_buffer
     /
 
 Convert an IP address from 32-bit packed binary format to string format.
 [clinic start generated code]*/
 
 static TyObject *
-_socket_inet_ntoa_impl(TyObject *module, Py_buffer *packed_ip)
+_socket_inet_ntoa_impl(TyObject *module, Ty_buffer *packed_ip)
 /*[clinic end generated code: output=3077324c50af0935 input=2850d4f57e4db345]*/
 {
     struct in_addr packed_addr;
@@ -6829,7 +6829,7 @@ static TyObject *
 socket_inet_ntop(TyObject *self, TyObject *args)
 {
     int af;
-    Py_buffer packed_ip;
+    Ty_buffer packed_ip;
     const char* retval;
 #ifdef ENABLE_IPV6
     char ip[Py_MAX(INET_ADDRSTRLEN, INET6_ADDRSTRLEN)];

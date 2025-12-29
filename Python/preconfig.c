@@ -75,7 +75,7 @@ _Ty_COMP_DIAG_POP
 /* --- _PyArgv ---------------------------------------------------- */
 
 /* Decode bytes_argv using Ty_DecodeLocale() */
-PyStatus
+TyStatus
 _PyArgv_AsWstrList(const _PyArgv *args, PyWideStringList *list)
 {
     PyWideStringList wargv = _TyWideStringList_INIT;
@@ -121,7 +121,7 @@ _PyPreCmdline_Clear(_PyPreCmdline *cmdline)
 }
 
 
-PyStatus
+TyStatus
 _PyPreCmdline_SetArgv(_PyPreCmdline *cmdline, const _PyArgv *args)
 {
     return _PyArgv_AsWstrList(args, &cmdline->argv);
@@ -158,13 +158,13 @@ precmdline_set_preconfig(const _PyPreCmdline *cmdline, PyPreConfig *config)
 }
 
 
-PyStatus
+TyStatus
 _PyPreCmdline_SetConfig(const _PyPreCmdline *cmdline, PyConfig *config)
 {
 #define COPY_ATTR(ATTR) \
     config->ATTR = cmdline->ATTR
 
-    PyStatus status = _TyWideStringList_Extend(&config->xoptions, &cmdline->xoptions);
+    TyStatus status = _TyWideStringList_Extend(&config->xoptions, &cmdline->xoptions);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
@@ -180,7 +180,7 @@ _PyPreCmdline_SetConfig(const _PyPreCmdline *cmdline, PyConfig *config)
 
 
 /* Parse the command line arguments */
-static PyStatus
+static TyStatus
 precmdline_parse_cmdline(_PyPreCmdline *cmdline)
 {
     const PyWideStringList *argv = &cmdline->argv;
@@ -208,7 +208,7 @@ precmdline_parse_cmdline(_PyPreCmdline *cmdline)
 
         case 'X':
         {
-            PyStatus status = TyWideStringList_Append(&cmdline->xoptions,
+            TyStatus status = TyWideStringList_Append(&cmdline->xoptions,
                                                       _TyOS_optarg);
             if (_TyStatus_EXCEPTION(status)) {
                 return status;
@@ -227,13 +227,13 @@ precmdline_parse_cmdline(_PyPreCmdline *cmdline)
 }
 
 
-PyStatus
+TyStatus
 _PyPreCmdline_Read(_PyPreCmdline *cmdline, const PyPreConfig *preconfig)
 {
     precmdline_get_preconfig(cmdline, preconfig);
 
     if (preconfig->parse_argv) {
-        PyStatus status = precmdline_parse_cmdline(cmdline);
+        TyStatus status = precmdline_parse_cmdline(cmdline);
         if (_TyStatus_EXCEPTION(status)) {
             return status;
         }
@@ -346,7 +346,7 @@ TyPreConfig_InitIsolatedConfig(PyPreConfig *config)
 }
 
 
-PyStatus
+TyStatus
 _TyPreConfig_InitFromPreConfig(PyPreConfig *config,
                                const PyPreConfig *config2)
 {
@@ -599,7 +599,7 @@ _Ty_get_xoption(const PyWideStringList *xoptions, const wchar_t *name)
 }
 
 
-static PyStatus
+static TyStatus
 preconfig_init_utf8_mode(PyPreConfig *config, const _PyPreCmdline *cmdline)
 {
 #ifdef MS_WINDOWS
@@ -717,7 +717,7 @@ preconfig_init_coerce_c_locale(PyPreConfig *config)
 }
 
 
-static PyStatus
+static TyStatus
 preconfig_init_allocator(PyPreConfig *config)
 {
     if (config->allocator == PYMEM_ALLOCATOR_NOT_SET) {
@@ -742,10 +742,10 @@ preconfig_init_allocator(PyPreConfig *config)
 }
 
 
-static PyStatus
+static TyStatus
 preconfig_read(PyPreConfig *config, _PyPreCmdline *cmdline)
 {
-    PyStatus status;
+    TyStatus status;
 
     status = _PyPreCmdline_Read(cmdline, config);
     if (_TyStatus_EXCEPTION(status)) {
@@ -794,10 +794,10 @@ preconfig_read(PyPreConfig *config, _PyPreCmdline *cmdline)
    - environment variables
    - Ty_xxx global configuration variables
    - the LC_CTYPE locale */
-PyStatus
+TyStatus
 _TyPreConfig_Read(PyPreConfig *config, const _PyArgv *args)
 {
-    PyStatus status;
+    TyStatus status;
 
     status = _PyRuntime_Initialize();
     if (_TyStatus_EXCEPTION(status)) {
@@ -934,12 +934,12 @@ done:
 
    Do nothing if called after Ty_Initialize(): ignore the new
    pre-configuration. */
-PyStatus
+TyStatus
 _TyPreConfig_Write(const PyPreConfig *src_config)
 {
     PyPreConfig config;
 
-    PyStatus status = _TyPreConfig_InitFromPreConfig(&config, src_config);
+    TyStatus status = _TyPreConfig_InitFromPreConfig(&config, src_config);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }

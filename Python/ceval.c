@@ -280,26 +280,26 @@ maybe_lltrace_resume_frame(_PyInterpreterFrame *frame, TyObject *globals)
 
 #endif
 
-static void monitor_reraise(PyThreadState *tstate,
+static void monitor_reraise(TyThreadState *tstate,
                  _PyInterpreterFrame *frame,
                  _Ty_CODEUNIT *instr);
-static int monitor_stop_iteration(PyThreadState *tstate,
+static int monitor_stop_iteration(TyThreadState *tstate,
                  _PyInterpreterFrame *frame,
                  _Ty_CODEUNIT *instr,
                  TyObject *value);
-static void monitor_unwind(PyThreadState *tstate,
+static void monitor_unwind(TyThreadState *tstate,
                  _PyInterpreterFrame *frame,
                  _Ty_CODEUNIT *instr);
-static int monitor_handled(PyThreadState *tstate,
+static int monitor_handled(TyThreadState *tstate,
                  _PyInterpreterFrame *frame,
                  _Ty_CODEUNIT *instr, TyObject *exc);
-static void monitor_throw(PyThreadState *tstate,
+static void monitor_throw(TyThreadState *tstate,
                  _PyInterpreterFrame *frame,
                  _Ty_CODEUNIT *instr);
 
 static int get_exception_handler(PyCodeObject *, int, int*, int*, int*);
 static  _PyInterpreterFrame *
-_PyEvalFramePushAndInit_Ex(PyThreadState *tstate, _PyStackRef func,
+_PyEvalFramePushAndInit_Ex(TyThreadState *tstate, _PyStackRef func,
     TyObject *locals, Ty_ssize_t nargs, TyObject *callargs, TyObject *kwargs, _PyInterpreterFrame *previous);
 
 #ifdef HAVE_ERRNO_H
@@ -329,7 +329,7 @@ Ty_SetRecursionLimit(int new_limit)
 }
 
 int
-_Ty_ReachedRecursionLimitWithMargin(PyThreadState *tstate, int margin_count)
+_Ty_ReachedRecursionLimitWithMargin(TyThreadState *tstate, int margin_count)
 {
     uintptr_t here_addr = _Ty_get_machine_stack_pointer();
     _PyThreadStateImpl *_tstate = (_PyThreadStateImpl *)tstate;
@@ -343,7 +343,7 @@ _Ty_ReachedRecursionLimitWithMargin(PyThreadState *tstate, int margin_count)
 }
 
 void
-_Ty_EnterRecursiveCallUnchecked(PyThreadState *tstate)
+_Ty_EnterRecursiveCallUnchecked(TyThreadState *tstate)
 {
     uintptr_t here_addr = _Ty_get_machine_stack_pointer();
     _PyThreadStateImpl *_tstate = (_PyThreadStateImpl *)tstate;
@@ -426,7 +426,7 @@ int pthread_attr_destroy(pthread_attr_t *a)
 
 
 void
-_Ty_InitializeRecursionLimits(PyThreadState *tstate)
+_Ty_InitializeRecursionLimits(TyThreadState *tstate)
 {
     _PyThreadStateImpl *_tstate = (_PyThreadStateImpl *)tstate;
 #ifdef WIN32
@@ -473,7 +473,7 @@ _Ty_InitializeRecursionLimits(PyThreadState *tstate)
 /* The function _Ty_EnterRecursiveCallTstate() only calls _Ty_CheckRecursiveCall()
    if the recursion_depth reaches recursion_limit. */
 int
-_Ty_CheckRecursiveCall(PyThreadState *tstate, const char *where)
+_Ty_CheckRecursiveCall(TyThreadState *tstate, const char *where)
 {
     _PyThreadStateImpl *_tstate = (_PyThreadStateImpl *)tstate;
     uintptr_t here_addr = _Ty_get_machine_stack_pointer();
@@ -603,7 +603,7 @@ const size_t _Ty_FunctionAttributeOffsets[] = {
 // Return a tuple of values corresponding to keys, with error checks for
 // duplicate/missing keys.
 TyObject *
-_TyEval_MatchKeys(PyThreadState *tstate, TyObject *map, TyObject *keys)
+_TyEval_MatchKeys(TyThreadState *tstate, TyObject *map, TyObject *keys)
 {
     assert(TyTuple_CheckExact(keys));
     Ty_ssize_t nkeys = TyTuple_GET_SIZE(keys);
@@ -685,7 +685,7 @@ fail:
 // raise TypeErrors for repeated lookups. On failure, return NULL (with no
 // error set). Use _TyErr_Occurred(tstate) to disambiguate.
 static TyObject *
-match_class_attr(PyThreadState *tstate, TyObject *subject, TyObject *type,
+match_class_attr(TyThreadState *tstate, TyObject *subject, TyObject *type,
                  TyObject *name, TyObject *seen)
 {
     assert(TyUnicode_CheckExact(name));
@@ -707,7 +707,7 @@ match_class_attr(PyThreadState *tstate, TyObject *subject, TyObject *type,
 // On success (match), return a tuple of extracted attributes. On failure (no
 // match), return NULL. Use _TyErr_Occurred(tstate) to disambiguate.
 TyObject*
-_TyEval_MatchClass(PyThreadState *tstate, TyObject *subject, TyObject *type,
+_TyEval_MatchClass(TyThreadState *tstate, TyObject *subject, TyObject *type,
                    Ty_ssize_t nargs, TyObject *kwargs)
 {
     if (!TyType_Check(type)) {
@@ -821,12 +821,12 @@ fail:
 }
 
 
-static int do_raise(PyThreadState *tstate, TyObject *exc, TyObject *cause);
+static int do_raise(TyThreadState *tstate, TyObject *exc, TyObject *cause);
 
 TyObject *
 TyEval_EvalCode(TyObject *co, TyObject *globals, TyObject *locals)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (locals == NULL) {
         locals = globals;
     }
@@ -862,21 +862,21 @@ TyObject *
 TyEval_EvalFrame(PyFrameObject *f)
 {
     /* Function kept for backward compatibility */
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyEval_EvalFrame(tstate, f->f_frame, 0);
 }
 
 TyObject *
 TyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyEval_EvalFrame(tstate, f->f_frame, throwflag);
 }
 
 #include "ceval_macros.h"
 
 int _Ty_CheckRecursiveCallPy(
-    PyThreadState *tstate)
+    TyThreadState *tstate)
 {
     if (tstate->recursion_headroom) {
         if (tstate->py_recursion_remaining < -50) {
@@ -993,7 +993,7 @@ typedef struct {
 } _PyEntryFrame;
 
 TyObject* _Ty_HOT_FUNCTION DONT_SLP_VECTORIZE
-_TyEval_EvalFrameDefault(PyThreadState *tstate, _PyInterpreterFrame *frame, int throwflag)
+_TyEval_EvalFrameDefault(TyThreadState *tstate, _PyInterpreterFrame *frame, int throwflag)
 {
     _Ty_EnsureTstateNotNULL(tstate);
     CALL_STAT_INC(pyeval_calls);
@@ -1234,7 +1234,7 @@ early_exit:
 #endif
 
 static void
-format_missing(PyThreadState *tstate, const char *kind,
+format_missing(TyThreadState *tstate, const char *kind,
                PyCodeObject *co, TyObject *names, TyObject *qualname)
 {
     int err;
@@ -1297,7 +1297,7 @@ format_missing(PyThreadState *tstate, const char *kind,
 }
 
 static void
-missing_arguments(PyThreadState *tstate, PyCodeObject *co,
+missing_arguments(TyThreadState *tstate, PyCodeObject *co,
                   Ty_ssize_t missing, Ty_ssize_t defcount,
                   _PyStackRef *localsplus, TyObject *qualname)
 {
@@ -1336,7 +1336,7 @@ missing_arguments(PyThreadState *tstate, PyCodeObject *co,
 }
 
 static void
-too_many_positional(PyThreadState *tstate, PyCodeObject *co,
+too_many_positional(TyThreadState *tstate, PyCodeObject *co,
                     Ty_ssize_t given, TyObject *defaults,
                     _PyStackRef *localsplus, TyObject *qualname)
 {
@@ -1394,7 +1394,7 @@ too_many_positional(PyThreadState *tstate, PyCodeObject *co,
 }
 
 static int
-positional_only_passed_as_keyword(PyThreadState *tstate, PyCodeObject *co,
+positional_only_passed_as_keyword(TyThreadState *tstate, PyCodeObject *co,
                                   Ty_ssize_t kwcount, TyObject* kwnames,
                                   TyObject *qualname)
 {
@@ -1526,7 +1526,7 @@ get_exception_handler(PyCodeObject *code, int index, int *level, int *handler, i
 }
 
 static int
-initialize_locals(PyThreadState *tstate, PyFunctionObject *func,
+initialize_locals(TyThreadState *tstate, PyFunctionObject *func,
     _PyStackRef *localsplus, _PyStackRef const *args,
     Ty_ssize_t argcount, TyObject *kwnames)
 {
@@ -1775,7 +1775,7 @@ fail_post_args:
 }
 
 static void
-clear_thread_frame(PyThreadState *tstate, _PyInterpreterFrame * frame)
+clear_thread_frame(TyThreadState *tstate, _PyInterpreterFrame * frame)
 {
     assert(frame->owner == FRAME_OWNED_BY_THREAD);
     // Make sure that this is, indeed, the top frame. We can't check this in
@@ -1789,7 +1789,7 @@ clear_thread_frame(PyThreadState *tstate, _PyInterpreterFrame * frame)
 }
 
 static void
-clear_gen_frame(PyThreadState *tstate, _PyInterpreterFrame * frame)
+clear_gen_frame(TyThreadState *tstate, _PyInterpreterFrame * frame)
 {
     assert(frame->owner == FRAME_OWNED_BY_GENERATOR);
     PyGenObject *gen = _TyGen_GetGeneratorFromFrame(frame);
@@ -1804,7 +1804,7 @@ clear_gen_frame(PyThreadState *tstate, _PyInterpreterFrame * frame)
 }
 
 void
-_TyEval_FrameClearAndPop(PyThreadState *tstate, _PyInterpreterFrame * frame)
+_TyEval_FrameClearAndPop(TyThreadState *tstate, _PyInterpreterFrame * frame)
 {
     if (frame->owner == FRAME_OWNED_BY_THREAD) {
         clear_thread_frame(tstate, frame);
@@ -1816,7 +1816,7 @@ _TyEval_FrameClearAndPop(PyThreadState *tstate, _PyInterpreterFrame * frame)
 
 /* Consumes references to func, locals and all the args */
 _PyInterpreterFrame *
-_PyEvalFramePushAndInit(PyThreadState *tstate, _PyStackRef func,
+_PyEvalFramePushAndInit(TyThreadState *tstate, _PyStackRef func,
                         TyObject *locals, _PyStackRef const* args,
                         size_t argcount, TyObject *kwnames, _PyInterpreterFrame *previous)
 {
@@ -1855,7 +1855,7 @@ fail:
    Steals references to func, callargs and kwargs.
 */
 static _PyInterpreterFrame *
-_PyEvalFramePushAndInit_Ex(PyThreadState *tstate, _PyStackRef func,
+_PyEvalFramePushAndInit_Ex(TyThreadState *tstate, _PyStackRef func,
     TyObject *locals, Ty_ssize_t nargs, TyObject *callargs, TyObject *kwargs, _PyInterpreterFrame *previous)
 {
     bool has_dict = (kwargs != NULL && TyDict_GET_SIZE(kwargs) > 0);
@@ -1916,7 +1916,7 @@ error:
 }
 
 TyObject *
-_TyEval_Vector(PyThreadState *tstate, PyFunctionObject *func,
+_TyEval_Vector(TyThreadState *tstate, PyFunctionObject *func,
                TyObject *locals,
                TyObject* const* args, size_t argcount,
                TyObject *kwnames)
@@ -1969,7 +1969,7 @@ TyEval_EvalCodeEx(TyObject *_co, TyObject *globals, TyObject *locals,
                   TyObject *const *defs, int defcount,
                   TyObject *kwdefs, TyObject *closure)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *res = NULL;
     TyObject *defaults = _TyTuple_FromArray(defs, defcount);
     if (defaults == NULL) {
@@ -2039,7 +2039,7 @@ fail:
 /* Logic for the raise statement (too complicated for inlining).
    This *consumes* a reference count to each of its arguments. */
 static int
-do_raise(PyThreadState *tstate, TyObject *exc, TyObject *cause)
+do_raise(TyThreadState *tstate, TyObject *exc, TyObject *cause)
 {
     TyObject *type = NULL, *value = NULL;
 
@@ -2231,7 +2231,7 @@ _TyEval_ExceptionGroupMatch(_PyInterpreterFrame *frame, TyObject* exc_value,
 */
 
 int
-_TyEval_UnpackIterableStackRef(PyThreadState *tstate, TyObject *v,
+_TyEval_UnpackIterableStackRef(TyThreadState *tstate, TyObject *v,
                        int argcnt, int argcntafter, _PyStackRef *sp)
 {
     int i = 0, j = 0;
@@ -2335,7 +2335,7 @@ Error:
 }
 
 static int
-do_monitor_exc(PyThreadState *tstate, _PyInterpreterFrame *frame,
+do_monitor_exc(TyThreadState *tstate, _PyInterpreterFrame *frame,
                _Ty_CODEUNIT *instr, int event)
 {
     assert(event < _PY_MONITORING_UNGROUPED_EVENTS);
@@ -2356,13 +2356,13 @@ do_monitor_exc(PyThreadState *tstate, _PyInterpreterFrame *frame,
 }
 
 static inline bool
-no_tools_for_global_event(PyThreadState *tstate, int event)
+no_tools_for_global_event(TyThreadState *tstate, int event)
 {
     return tstate->interp->monitors.tools[event] == 0;
 }
 
 static inline bool
-no_tools_for_local_event(PyThreadState *tstate, _PyInterpreterFrame *frame, int event)
+no_tools_for_local_event(TyThreadState *tstate, _PyInterpreterFrame *frame, int event)
 {
     assert(event < _PY_MONITORING_LOCAL_EVENTS);
     _PyCoMonitoringData *data = _TyFrame_GetCode(frame)->_co_monitoring;
@@ -2375,7 +2375,7 @@ no_tools_for_local_event(PyThreadState *tstate, _PyInterpreterFrame *frame, int 
 }
 
 void
-_TyEval_MonitorRaise(PyThreadState *tstate, _PyInterpreterFrame *frame,
+_TyEval_MonitorRaise(TyThreadState *tstate, _PyInterpreterFrame *frame,
               _Ty_CODEUNIT *instr)
 {
     if (no_tools_for_global_event(tstate, PY_MONITORING_EVENT_RAISE)) {
@@ -2385,7 +2385,7 @@ _TyEval_MonitorRaise(PyThreadState *tstate, _PyInterpreterFrame *frame,
 }
 
 static void
-monitor_reraise(PyThreadState *tstate, _PyInterpreterFrame *frame,
+monitor_reraise(TyThreadState *tstate, _PyInterpreterFrame *frame,
               _Ty_CODEUNIT *instr)
 {
     if (no_tools_for_global_event(tstate, PY_MONITORING_EVENT_RERAISE)) {
@@ -2395,7 +2395,7 @@ monitor_reraise(PyThreadState *tstate, _PyInterpreterFrame *frame,
 }
 
 static int
-monitor_stop_iteration(PyThreadState *tstate, _PyInterpreterFrame *frame,
+monitor_stop_iteration(TyThreadState *tstate, _PyInterpreterFrame *frame,
                        _Ty_CODEUNIT *instr, TyObject *value)
 {
     if (no_tools_for_local_event(tstate, frame, PY_MONITORING_EVENT_STOP_ITERATION)) {
@@ -2412,7 +2412,7 @@ monitor_stop_iteration(PyThreadState *tstate, _PyInterpreterFrame *frame,
 }
 
 static void
-monitor_unwind(PyThreadState *tstate,
+monitor_unwind(TyThreadState *tstate,
                _PyInterpreterFrame *frame,
                _Ty_CODEUNIT *instr)
 {
@@ -2424,7 +2424,7 @@ monitor_unwind(PyThreadState *tstate,
 
 
 static int
-monitor_handled(PyThreadState *tstate,
+monitor_handled(TyThreadState *tstate,
                 _PyInterpreterFrame *frame,
                 _Ty_CODEUNIT *instr, TyObject *exc)
 {
@@ -2435,7 +2435,7 @@ monitor_handled(PyThreadState *tstate,
 }
 
 static void
-monitor_throw(PyThreadState *tstate,
+monitor_throw(TyThreadState *tstate,
               _PyInterpreterFrame *frame,
               _Ty_CODEUNIT *instr)
 {
@@ -2446,14 +2446,14 @@ monitor_throw(PyThreadState *tstate,
 }
 
 void
-TyThreadState_EnterTracing(PyThreadState *tstate)
+TyThreadState_EnterTracing(TyThreadState *tstate)
 {
     assert(tstate->tracing >= 0);
     tstate->tracing++;
 }
 
 void
-TyThreadState_LeaveTracing(PyThreadState *tstate)
+TyThreadState_LeaveTracing(TyThreadState *tstate)
 {
     assert(tstate->tracing > 0);
     tstate->tracing--;
@@ -2464,7 +2464,7 @@ TyObject*
 _TyEval_CallTracing(TyObject *func, TyObject *args)
 {
     // Save and disable tracing
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     int save_tracing = tstate->tracing;
     tstate->tracing = 0;
 
@@ -2479,7 +2479,7 @@ _TyEval_CallTracing(TyObject *func, TyObject *args)
 void
 TyEval_SetProfile(Ty_tracefunc func, TyObject *arg)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (_TyEval_SetProfile(tstate, func, arg) < 0) {
         /* Log _TySys_Audit() error */
         TyErr_FormatUnraisable("Exception ignored in TyEval_SetProfile");
@@ -2489,12 +2489,12 @@ TyEval_SetProfile(Ty_tracefunc func, TyObject *arg)
 void
 TyEval_SetProfileAllThreads(Ty_tracefunc func, TyObject *arg)
 {
-    PyThreadState *this_tstate = _TyThreadState_GET();
+    TyThreadState *this_tstate = _TyThreadState_GET();
     PyInterpreterState* interp = this_tstate->interp;
 
     _PyRuntimeState *runtime = &_PyRuntime;
     HEAD_LOCK(runtime);
-    PyThreadState* ts = TyInterpreterState_ThreadHead(interp);
+    TyThreadState* ts = TyInterpreterState_ThreadHead(interp);
     HEAD_UNLOCK(runtime);
 
     while (ts) {
@@ -2510,7 +2510,7 @@ TyEval_SetProfileAllThreads(Ty_tracefunc func, TyObject *arg)
 void
 TyEval_SetTrace(Ty_tracefunc func, TyObject *arg)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (_TyEval_SetTrace(tstate, func, arg) < 0) {
         /* Log _TySys_Audit() error */
         TyErr_FormatUnraisable("Exception ignored in TyEval_SetTrace");
@@ -2520,12 +2520,12 @@ TyEval_SetTrace(Ty_tracefunc func, TyObject *arg)
 void
 TyEval_SetTraceAllThreads(Ty_tracefunc func, TyObject *arg)
 {
-    PyThreadState *this_tstate = _TyThreadState_GET();
+    TyThreadState *this_tstate = _TyThreadState_GET();
     PyInterpreterState* interp = this_tstate->interp;
 
     _PyRuntimeState *runtime = &_PyRuntime;
     HEAD_LOCK(runtime);
-    PyThreadState* ts = TyInterpreterState_ThreadHead(interp);
+    TyThreadState* ts = TyInterpreterState_ThreadHead(interp);
     HEAD_UNLOCK(runtime);
 
     while (ts) {
@@ -2541,7 +2541,7 @@ TyEval_SetTraceAllThreads(Ty_tracefunc func, TyObject *arg)
 int
 _TyEval_SetCoroutineOriginTrackingDepth(int depth)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (depth < 0) {
         _TyErr_SetString(tstate, TyExc_ValueError, "depth must be >= 0");
         return -1;
@@ -2554,14 +2554,14 @@ _TyEval_SetCoroutineOriginTrackingDepth(int depth)
 int
 _TyEval_GetCoroutineOriginTrackingDepth(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return tstate->coroutine_origin_tracking_depth;
 }
 
 int
 _TyEval_SetAsyncGenFirstiter(TyObject *firstiter)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (_TySys_Audit(tstate, "sys.set_asyncgen_hook_firstiter", NULL) < 0) {
         return -1;
@@ -2574,14 +2574,14 @@ _TyEval_SetAsyncGenFirstiter(TyObject *firstiter)
 TyObject *
 _TyEval_GetAsyncGenFirstiter(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return tstate->async_gen_firstiter;
 }
 
 int
 _TyEval_SetAsyncGenFinalizer(TyObject *finalizer)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (_TySys_Audit(tstate, "sys.set_asyncgen_hook_finalizer", NULL) < 0) {
         return -1;
@@ -2594,14 +2594,14 @@ _TyEval_SetAsyncGenFinalizer(TyObject *finalizer)
 TyObject *
 _TyEval_GetAsyncGenFinalizer(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return tstate->async_gen_finalizer;
 }
 
 _PyInterpreterFrame *
 _TyEval_GetFrame(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyThreadState_GetFrame(tstate);
 }
 
@@ -2620,7 +2620,7 @@ TyEval_GetFrame(void)
 }
 
 TyObject *
-_TyEval_GetBuiltins(PyThreadState *tstate)
+_TyEval_GetBuiltins(TyThreadState *tstate)
 {
     _PyInterpreterFrame *frame = _TyThreadState_GetFrame(tstate);
     if (frame != NULL) {
@@ -2632,7 +2632,7 @@ _TyEval_GetBuiltins(PyThreadState *tstate)
 TyObject *
 TyEval_GetBuiltins(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyEval_GetBuiltins(tstate);
 }
 
@@ -2657,7 +2657,7 @@ TyObject *
 TyEval_GetLocals(void)
 {
     // We need to return a borrowed reference here, so some tricks are needed
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
      _PyInterpreterFrame *current_frame = _TyThreadState_GetFrame(tstate);
     if (current_frame == NULL) {
         _TyErr_SetString(tstate, TyExc_SystemError, "frame does not exist");
@@ -2701,7 +2701,7 @@ TyEval_GetLocals(void)
 TyObject *
 _TyEval_GetFrameLocals(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
      _PyInterpreterFrame *current_frame = _TyThreadState_GetFrame(tstate);
     if (current_frame == NULL) {
         _TyErr_SetString(tstate, TyExc_SystemError, "frame does not exist");
@@ -2733,7 +2733,7 @@ _TyEval_GetFrameLocals(void)
 }
 
 static TyObject *
-_TyEval_GetGlobals(PyThreadState *tstate)
+_TyEval_GetGlobals(TyThreadState *tstate)
 {
     _PyInterpreterFrame *current_frame = _TyThreadState_GetFrame(tstate);
     if (current_frame == NULL) {
@@ -2745,12 +2745,12 @@ _TyEval_GetGlobals(PyThreadState *tstate)
 TyObject *
 TyEval_GetGlobals(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyEval_GetGlobals(tstate);
 }
 
 TyObject *
-_TyEval_GetGlobalsFromRunningMain(PyThreadState *tstate)
+_TyEval_GetGlobalsFromRunningMain(TyThreadState *tstate)
 {
     if (!_TyInterpreterState_IsRunningMain(tstate->interp)) {
         return NULL;
@@ -2801,7 +2801,7 @@ set_globals_builtins(TyObject *globals, TyObject *builtins)
 }
 
 int
-_TyEval_EnsureBuiltins(PyThreadState *tstate, TyObject *globals,
+_TyEval_EnsureBuiltins(TyThreadState *tstate, TyObject *globals,
                        TyObject **p_builtins)
 {
     TyObject *builtins = get_globals_builtins(globals);
@@ -2830,7 +2830,7 @@ _TyEval_EnsureBuiltins(PyThreadState *tstate, TyObject *globals,
 }
 
 int
-_TyEval_EnsureBuiltinsWithModule(PyThreadState *tstate, TyObject *globals,
+_TyEval_EnsureBuiltinsWithModule(TyThreadState *tstate, TyObject *globals,
                                  TyObject **p_builtins)
 {
     TyObject *builtins = get_globals_builtins(globals);
@@ -2864,7 +2864,7 @@ TyEval_GetFrameLocals(void)
 
 TyObject* TyEval_GetFrameGlobals(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyInterpreterFrame *current_frame = _TyThreadState_GetFrame(tstate);
     if (current_frame == NULL) {
         return NULL;
@@ -2874,14 +2874,14 @@ TyObject* TyEval_GetFrameGlobals(void)
 
 TyObject* TyEval_GetFrameBuiltins(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return Ty_XNewRef(_TyEval_GetBuiltins(tstate));
 }
 
 int
 TyEval_MergeCompilerFlags(PyCompilerFlags *cf)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyInterpreterFrame *current_frame = tstate->current_frame;
     int result = cf->cf_flags != 0;
 
@@ -2932,7 +2932,7 @@ TyEval_GetFuncDesc(TyObject *func)
 int
 _TyEval_SliceIndex(TyObject *v, Ty_ssize_t *pi)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (!Ty_IsNone(v)) {
         Ty_ssize_t x;
         if (_PyIndex_Check(v)) {
@@ -2954,7 +2954,7 @@ _TyEval_SliceIndex(TyObject *v, Ty_ssize_t *pi)
 int
 _TyEval_SliceIndexNotNone(TyObject *v, Ty_ssize_t *pi)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     Ty_ssize_t x;
     if (_PyIndex_Check(v)) {
         x = PyNumber_AsSsize_t(v, NULL);
@@ -2972,7 +2972,7 @@ _TyEval_SliceIndexNotNone(TyObject *v, Ty_ssize_t *pi)
 }
 
 TyObject *
-_TyEval_ImportName(PyThreadState *tstate, _PyInterpreterFrame *frame,
+_TyEval_ImportName(TyThreadState *tstate, _PyInterpreterFrame *frame,
             TyObject *name, TyObject *fromlist, TyObject *level)
 {
     TyObject *import_func;
@@ -3011,7 +3011,7 @@ _TyEval_ImportName(PyThreadState *tstate, _PyInterpreterFrame *frame,
 }
 
 TyObject *
-_TyEval_ImportFrom(PyThreadState *tstate, TyObject *v, TyObject *name)
+_TyEval_ImportFrom(TyThreadState *tstate, TyObject *v, TyObject *name)
 {
     TyObject *x;
     TyObject *fullmodname, *mod_name, *origin, *mod_name_or_unknown, *errmsg, *spec;
@@ -3185,7 +3185,7 @@ done:
                               "is not allowed. Use except instead."
 
 int
-_TyEval_CheckExceptTypeValid(PyThreadState *tstate, TyObject* right)
+_TyEval_CheckExceptTypeValid(TyThreadState *tstate, TyObject* right)
 {
     if (TyTuple_Check(right)) {
         Ty_ssize_t i, length;
@@ -3210,7 +3210,7 @@ _TyEval_CheckExceptTypeValid(PyThreadState *tstate, TyObject* right)
 }
 
 int
-_TyEval_CheckExceptStarTypeValid(PyThreadState *tstate, TyObject* right)
+_TyEval_CheckExceptStarTypeValid(TyThreadState *tstate, TyObject* right)
 {
     if (_TyEval_CheckExceptTypeValid(tstate, right) < 0) {
         return -1;
@@ -3247,7 +3247,7 @@ _TyEval_CheckExceptStarTypeValid(PyThreadState *tstate, TyObject* right)
 }
 
 int
-_Ty_Check_ArgsIterable(PyThreadState *tstate, TyObject *func, TyObject *args)
+_Ty_Check_ArgsIterable(TyThreadState *tstate, TyObject *func, TyObject *args)
 {
     if (Ty_TYPE(args)->tp_iter == NULL && !PySequence_Check(args)) {
         /* _Ty_Check_ArgsIterable() may be called with a live exception:
@@ -3267,7 +3267,7 @@ _Ty_Check_ArgsIterable(PyThreadState *tstate, TyObject *func, TyObject *args)
 }
 
 void
-_TyEval_FormatKwargsError(PyThreadState *tstate, TyObject *func, TyObject *kwargs)
+_TyEval_FormatKwargsError(TyThreadState *tstate, TyObject *func, TyObject *kwargs)
 {
     /* _TyDict_MergeEx raises attribute
      * error (percolated from an attempt
@@ -3310,7 +3310,7 @@ _TyEval_FormatKwargsError(PyThreadState *tstate, TyObject *func, TyObject *kwarg
 }
 
 void
-_TyEval_FormatExcCheckArg(PyThreadState *tstate, TyObject *exc,
+_TyEval_FormatExcCheckArg(TyThreadState *tstate, TyObject *exc,
                           const char *format_str, TyObject *obj)
 {
     const char *obj_str;
@@ -3339,7 +3339,7 @@ _TyEval_FormatExcCheckArg(PyThreadState *tstate, TyObject *exc,
 }
 
 void
-_TyEval_FormatExcUnbound(PyThreadState *tstate, PyCodeObject *co, int oparg)
+_TyEval_FormatExcUnbound(TyThreadState *tstate, PyCodeObject *co, int oparg)
 {
     TyObject *name;
     /* Don't stomp existing exception */
@@ -3356,7 +3356,7 @@ _TyEval_FormatExcUnbound(PyThreadState *tstate, PyCodeObject *co, int oparg)
 }
 
 void
-_TyEval_FormatAwaitableError(PyThreadState *tstate, TyTypeObject *type, int oparg)
+_TyEval_FormatAwaitableError(TyThreadState *tstate, TyTypeObject *type, int oparg)
 {
     if (type->tp_as_async == NULL || type->tp_as_async->am_await == NULL) {
         if (oparg == 1) {
@@ -3506,7 +3506,7 @@ _TyEval_GetAwaitable(TyObject *iterable, int oparg)
 }
 
 TyObject *
-_TyEval_LoadName(PyThreadState *tstate, _PyInterpreterFrame *frame, TyObject *name)
+_TyEval_LoadName(TyThreadState *tstate, _PyInterpreterFrame *frame, TyObject *name)
 {
 
     TyObject *value;

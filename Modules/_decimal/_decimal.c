@@ -211,7 +211,7 @@ typedef struct PyDecContextObject {
     TyObject *traps;
     TyObject *flags;
     int capitals;
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     decimal_state *modstate;
 } PyDecContextObject;
 
@@ -1696,7 +1696,7 @@ static TyGetSetDef context_getsets [] =
 static TyObject *
 current_context_from_dict(decimal_state *modstate)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 #ifdef Ty_DEBUG
     // The caller must hold the GIL
     _Ty_EnsureTstateNotNULL(tstate);
@@ -1748,7 +1748,7 @@ current_context_from_dict(decimal_state *modstate)
 static TyObject *
 current_context(decimal_state *modstate)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (modstate->cached_context && modstate->cached_context->tstate == tstate) {
         return (TyObject *)(modstate->cached_context);
     }

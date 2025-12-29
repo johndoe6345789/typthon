@@ -837,7 +837,7 @@ static int _call_function_pointer(ctypes_state *st,
                                   int argcount,
                                   int argtypecount)
 {
-    PyThreadState *_save = NULL; /* For Ty_BLOCK_THREADS and Ty_UNBLOCK_THREADS */
+    TyThreadState *_save = NULL; /* For Ty_BLOCK_THREADS and Ty_UNBLOCK_THREADS */
     TyObject *error_object = NULL;
     int *space;
     ffi_cif cif;

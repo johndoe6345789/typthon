@@ -10,7 +10,7 @@
 static int
 ensure_xid_class(TyTypeObject *cls, _PyXIData_getdata_t getdata)
 {
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     return _PyXIData_RegisterClass(tstate, cls, getdata);
 }
 
@@ -18,7 +18,7 @@ ensure_xid_class(TyTypeObject *cls, _PyXIData_getdata_t getdata)
 static int
 clear_xid_class(TyTypeObject *cls)
 {
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     return _PyXIData_UnregisterClass(tstate, cls);
 }
 #endif

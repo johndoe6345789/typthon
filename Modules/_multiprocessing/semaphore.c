@@ -242,7 +242,7 @@ _multiprocessing_SemLock_release_impl(SemLockObject *self)
 #  define sem_timedwait(sem,deadline) sem_timedwait_save(sem,deadline,_save)
 
 static int
-sem_timedwait_save(sem_t *sem, struct timespec *deadline, PyThreadState *_save)
+sem_timedwait_save(sem_t *sem, struct timespec *deadline, TyThreadState *_save)
 {
     int res;
     unsigned long delay, difference;

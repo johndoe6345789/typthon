@@ -284,14 +284,14 @@ PyDoc_STRVAR(_codecs_escape_decode__doc__,
     {"escape_decode", _PyCFunction_CAST(_codecs_escape_decode), METH_FASTCALL, _codecs_escape_decode__doc__},
 
 static TyObject *
-_codecs_escape_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_escape_decode_impl(TyObject *module, Ty_buffer *data,
                            const char *errors);
 
 static TyObject *
 _codecs_escape_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
 
     if (!_TyArg_CheckPositional("escape_decode", nargs, 1, 2)) {
@@ -409,14 +409,14 @@ PyDoc_STRVAR(_codecs_utf_7_decode__doc__,
     {"utf_7_decode", _PyCFunction_CAST(_codecs_utf_7_decode), METH_FASTCALL, _codecs_utf_7_decode__doc__},
 
 static TyObject *
-_codecs_utf_7_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_7_decode_impl(TyObject *module, Ty_buffer *data,
                           const char *errors, int final);
 
 static TyObject *
 _codecs_utf_7_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -475,14 +475,14 @@ PyDoc_STRVAR(_codecs_utf_8_decode__doc__,
     {"utf_8_decode", _PyCFunction_CAST(_codecs_utf_8_decode), METH_FASTCALL, _codecs_utf_8_decode__doc__},
 
 static TyObject *
-_codecs_utf_8_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_8_decode_impl(TyObject *module, Ty_buffer *data,
                           const char *errors, int final);
 
 static TyObject *
 _codecs_utf_8_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -541,14 +541,14 @@ PyDoc_STRVAR(_codecs_utf_16_decode__doc__,
     {"utf_16_decode", _PyCFunction_CAST(_codecs_utf_16_decode), METH_FASTCALL, _codecs_utf_16_decode__doc__},
 
 static TyObject *
-_codecs_utf_16_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_16_decode_impl(TyObject *module, Ty_buffer *data,
                            const char *errors, int final);
 
 static TyObject *
 _codecs_utf_16_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -607,14 +607,14 @@ PyDoc_STRVAR(_codecs_utf_16_le_decode__doc__,
     {"utf_16_le_decode", _PyCFunction_CAST(_codecs_utf_16_le_decode), METH_FASTCALL, _codecs_utf_16_le_decode__doc__},
 
 static TyObject *
-_codecs_utf_16_le_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_16_le_decode_impl(TyObject *module, Ty_buffer *data,
                               const char *errors, int final);
 
 static TyObject *
 _codecs_utf_16_le_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -673,14 +673,14 @@ PyDoc_STRVAR(_codecs_utf_16_be_decode__doc__,
     {"utf_16_be_decode", _PyCFunction_CAST(_codecs_utf_16_be_decode), METH_FASTCALL, _codecs_utf_16_be_decode__doc__},
 
 static TyObject *
-_codecs_utf_16_be_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_16_be_decode_impl(TyObject *module, Ty_buffer *data,
                               const char *errors, int final);
 
 static TyObject *
 _codecs_utf_16_be_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -740,14 +740,14 @@ PyDoc_STRVAR(_codecs_utf_16_ex_decode__doc__,
     {"utf_16_ex_decode", _PyCFunction_CAST(_codecs_utf_16_ex_decode), METH_FASTCALL, _codecs_utf_16_ex_decode__doc__},
 
 static TyObject *
-_codecs_utf_16_ex_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_16_ex_decode_impl(TyObject *module, Ty_buffer *data,
                               const char *errors, int byteorder, int final);
 
 static TyObject *
 _codecs_utf_16_ex_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int byteorder = 0;
     int final = 0;
@@ -814,14 +814,14 @@ PyDoc_STRVAR(_codecs_utf_32_decode__doc__,
     {"utf_32_decode", _PyCFunction_CAST(_codecs_utf_32_decode), METH_FASTCALL, _codecs_utf_32_decode__doc__},
 
 static TyObject *
-_codecs_utf_32_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_32_decode_impl(TyObject *module, Ty_buffer *data,
                            const char *errors, int final);
 
 static TyObject *
 _codecs_utf_32_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -880,14 +880,14 @@ PyDoc_STRVAR(_codecs_utf_32_le_decode__doc__,
     {"utf_32_le_decode", _PyCFunction_CAST(_codecs_utf_32_le_decode), METH_FASTCALL, _codecs_utf_32_le_decode__doc__},
 
 static TyObject *
-_codecs_utf_32_le_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_32_le_decode_impl(TyObject *module, Ty_buffer *data,
                               const char *errors, int final);
 
 static TyObject *
 _codecs_utf_32_le_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -946,14 +946,14 @@ PyDoc_STRVAR(_codecs_utf_32_be_decode__doc__,
     {"utf_32_be_decode", _PyCFunction_CAST(_codecs_utf_32_be_decode), METH_FASTCALL, _codecs_utf_32_be_decode__doc__},
 
 static TyObject *
-_codecs_utf_32_be_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_32_be_decode_impl(TyObject *module, Ty_buffer *data,
                               const char *errors, int final);
 
 static TyObject *
 _codecs_utf_32_be_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -1013,14 +1013,14 @@ PyDoc_STRVAR(_codecs_utf_32_ex_decode__doc__,
     {"utf_32_ex_decode", _PyCFunction_CAST(_codecs_utf_32_ex_decode), METH_FASTCALL, _codecs_utf_32_ex_decode__doc__},
 
 static TyObject *
-_codecs_utf_32_ex_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_utf_32_ex_decode_impl(TyObject *module, Ty_buffer *data,
                               const char *errors, int byteorder, int final);
 
 static TyObject *
 _codecs_utf_32_ex_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int byteorder = 0;
     int final = 0;
@@ -1087,14 +1087,14 @@ PyDoc_STRVAR(_codecs_unicode_escape_decode__doc__,
     {"unicode_escape_decode", _PyCFunction_CAST(_codecs_unicode_escape_decode), METH_FASTCALL, _codecs_unicode_escape_decode__doc__},
 
 static TyObject *
-_codecs_unicode_escape_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_unicode_escape_decode_impl(TyObject *module, Ty_buffer *data,
                                    const char *errors, int final);
 
 static TyObject *
 _codecs_unicode_escape_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 1;
 
@@ -1165,14 +1165,14 @@ PyDoc_STRVAR(_codecs_raw_unicode_escape_decode__doc__,
     {"raw_unicode_escape_decode", _PyCFunction_CAST(_codecs_raw_unicode_escape_decode), METH_FASTCALL, _codecs_raw_unicode_escape_decode__doc__},
 
 static TyObject *
-_codecs_raw_unicode_escape_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_raw_unicode_escape_decode_impl(TyObject *module, Ty_buffer *data,
                                        const char *errors, int final);
 
 static TyObject *
 _codecs_raw_unicode_escape_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 1;
 
@@ -1243,14 +1243,14 @@ PyDoc_STRVAR(_codecs_latin_1_decode__doc__,
     {"latin_1_decode", _PyCFunction_CAST(_codecs_latin_1_decode), METH_FASTCALL, _codecs_latin_1_decode__doc__},
 
 static TyObject *
-_codecs_latin_1_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_latin_1_decode_impl(TyObject *module, Ty_buffer *data,
                             const char *errors);
 
 static TyObject *
 _codecs_latin_1_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
 
     if (!_TyArg_CheckPositional("latin_1_decode", nargs, 1, 2)) {
@@ -1301,14 +1301,14 @@ PyDoc_STRVAR(_codecs_ascii_decode__doc__,
     {"ascii_decode", _PyCFunction_CAST(_codecs_ascii_decode), METH_FASTCALL, _codecs_ascii_decode__doc__},
 
 static TyObject *
-_codecs_ascii_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_ascii_decode_impl(TyObject *module, Ty_buffer *data,
                           const char *errors);
 
 static TyObject *
 _codecs_ascii_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
 
     if (!_TyArg_CheckPositional("ascii_decode", nargs, 1, 2)) {
@@ -1359,14 +1359,14 @@ PyDoc_STRVAR(_codecs_charmap_decode__doc__,
     {"charmap_decode", _PyCFunction_CAST(_codecs_charmap_decode), METH_FASTCALL, _codecs_charmap_decode__doc__},
 
 static TyObject *
-_codecs_charmap_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_charmap_decode_impl(TyObject *module, Ty_buffer *data,
                             const char *errors, TyObject *mapping);
 
 static TyObject *
 _codecs_charmap_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     TyObject *mapping = Ty_None;
 
@@ -1424,14 +1424,14 @@ PyDoc_STRVAR(_codecs_mbcs_decode__doc__,
     {"mbcs_decode", _PyCFunction_CAST(_codecs_mbcs_decode), METH_FASTCALL, _codecs_mbcs_decode__doc__},
 
 static TyObject *
-_codecs_mbcs_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_mbcs_decode_impl(TyObject *module, Ty_buffer *data,
                          const char *errors, int final);
 
 static TyObject *
 _codecs_mbcs_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -1494,14 +1494,14 @@ PyDoc_STRVAR(_codecs_oem_decode__doc__,
     {"oem_decode", _PyCFunction_CAST(_codecs_oem_decode), METH_FASTCALL, _codecs_oem_decode__doc__},
 
 static TyObject *
-_codecs_oem_decode_impl(TyObject *module, Py_buffer *data,
+_codecs_oem_decode_impl(TyObject *module, Ty_buffer *data,
                         const char *errors, int final);
 
 static TyObject *
 _codecs_oem_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -1565,14 +1565,14 @@ PyDoc_STRVAR(_codecs_code_page_decode__doc__,
 
 static TyObject *
 _codecs_code_page_decode_impl(TyObject *module, int codepage,
-                              Py_buffer *data, const char *errors, int final);
+                              Ty_buffer *data, const char *errors, int final);
 
 static TyObject *
 _codecs_code_page_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
     int codepage;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
     int final = 0;
 
@@ -1637,14 +1637,14 @@ PyDoc_STRVAR(_codecs_readbuffer_encode__doc__,
     {"readbuffer_encode", _PyCFunction_CAST(_codecs_readbuffer_encode), METH_FASTCALL, _codecs_readbuffer_encode__doc__},
 
 static TyObject *
-_codecs_readbuffer_encode_impl(TyObject *module, Py_buffer *data,
+_codecs_readbuffer_encode_impl(TyObject *module, Ty_buffer *data,
                                const char *errors);
 
 static TyObject *
 _codecs_readbuffer_encode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
     TyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    Ty_buffer data = {NULL, NULL};
     const char *errors = NULL;
 
     if (!_TyArg_CheckPositional("readbuffer_encode", nargs, 1, 2)) {

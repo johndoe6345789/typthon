@@ -37,7 +37,7 @@ typedef struct _PyLegacyEventHandler {
 static TyObject *
 call_profile_func(_PyLegacyEventHandler *self, TyObject *arg)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate->c_profilefunc == NULL) {
         Py_RETURN_NONE;
     }
@@ -164,7 +164,7 @@ _TyEval_SetOpcodeTrace(
 static TyObject *
 call_trace_func(_PyLegacyEventHandler *self, TyObject *arg)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate->c_tracefunc == NULL) {
         Py_RETURN_NONE;
     }
@@ -288,7 +288,7 @@ sys_trace_instruction_func(
                         "Missing frame when calling trace function.");
         return NULL;
     }
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (!tstate->c_tracefunc || !frame->f_trace_opcodes) {
         if (_TyEval_SetOpcodeTrace(frame, false) != 0) {
             return NULL;
@@ -307,7 +307,7 @@ sys_trace_instruction_func(
 
 static TyObject *
 trace_line(
-    PyThreadState *tstate, _PyLegacyEventHandler *self,
+    TyThreadState *tstate, _PyLegacyEventHandler *self,
     PyFrameObject *frame, int line
 ) {
     if (!frame->f_trace_lines) {
@@ -334,7 +334,7 @@ sys_trace_line_func(
 ) {
     _PyLegacyEventHandler *self = _PyLegacyEventHandler_CAST(callable);
     assert(kwnames == NULL);
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate->c_tracefunc == NULL) {
         Py_RETURN_NONE;
     }
@@ -361,7 +361,7 @@ sys_trace_jump_func(
 ) {
     _PyLegacyEventHandler *self = _PyLegacyEventHandler_CAST(callable);
     assert(kwnames == NULL);
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate->c_tracefunc == NULL) {
         Py_RETURN_NONE;
     }
@@ -430,7 +430,7 @@ set_callbacks(int tool, vectorcallfunc vectorcall, int legacy_event, int event1,
    when a thread continues to run after Python finalization, especially
    daemon threads. */
 static int
-is_tstate_valid(PyThreadState *tstate)
+is_tstate_valid(TyThreadState *tstate)
 {
     assert(!_TyMem_IsPtrFreed(tstate));
     assert(!_TyMem_IsPtrFreed(tstate->interp));
@@ -439,7 +439,7 @@ is_tstate_valid(PyThreadState *tstate)
 #endif
 
 static Ty_ssize_t
-setup_profile(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg, TyObject **old_profileobj)
+setup_profile(TyThreadState *tstate, Ty_tracefunc func, TyObject *arg, TyObject **old_profileobj)
 {
     *old_profileobj = NULL;
     /* Setup PEP 669 monitoring callbacks and events. */
@@ -494,7 +494,7 @@ setup_profile(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg, TyObject 
 }
 
 int
-_TyEval_SetProfile(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg)
+_TyEval_SetProfile(TyThreadState *tstate, Ty_tracefunc func, TyObject *arg)
 {
     assert(is_tstate_valid(tstate));
     /* The caller must hold a thread state */
@@ -502,7 +502,7 @@ _TyEval_SetProfile(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg)
 
     /* Call _TySys_Audit() in the context of the current thread state,
        even if tstate is not the current thread state. */
-    PyThreadState *current_tstate = _TyThreadState_GET();
+    TyThreadState *current_tstate = _TyThreadState_GET();
     if (_TySys_Audit(current_tstate, "sys.setprofile", NULL) < 0) {
         return -1;
     }
@@ -526,7 +526,7 @@ _TyEval_SetProfile(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg)
 }
 
 static Ty_ssize_t
-setup_tracing(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg, TyObject **old_traceobj)
+setup_tracing(TyThreadState *tstate, Ty_tracefunc func, TyObject *arg, TyObject **old_traceobj)
 {
     *old_traceobj = NULL;
     /* Setup PEP 669 monitoring callbacks and events. */
@@ -591,7 +591,7 @@ setup_tracing(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg, TyObject 
 }
 
 int
-_TyEval_SetTrace(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg)
+_TyEval_SetTrace(TyThreadState *tstate, Ty_tracefunc func, TyObject *arg)
 {
     assert(is_tstate_valid(tstate));
     /* The caller must hold a thread state */
@@ -599,7 +599,7 @@ _TyEval_SetTrace(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg)
 
     /* Call _TySys_Audit() in the context of the current thread state,
        even if tstate is not the current thread state. */
-    PyThreadState *current_tstate = _TyThreadState_GET();
+    TyThreadState *current_tstate = _TyThreadState_GET();
     if (_TySys_Audit(current_tstate, "sys.settrace", NULL) < 0) {
         return -1;
     }

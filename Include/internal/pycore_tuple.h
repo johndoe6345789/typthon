@@ -16,7 +16,7 @@ extern void _TyTuple_DebugMallocStats(FILE *out);
 
 /* runtime lifecycle */
 
-extern PyStatus _TyTuple_InitGlobalObjects(PyInterpreterState *);
+extern TyStatus _TyTuple_InitGlobalObjects(PyInterpreterState *);
 
 
 /* other API */

@@ -27,8 +27,8 @@
 
 
 // Export the symbol since it's used by the readline shared extension
-PyAPI_DATA(PyThreadState*) _TyOS_ReadlineTState;
-PyThreadState *_TyOS_ReadlineTState = NULL;
+PyAPI_DATA(TyThreadState*) _TyOS_ReadlineTState;
+TyThreadState *_TyOS_ReadlineTState = NULL;
 
 static PyMutex _TyOS_ReadlineLock;
 
@@ -38,7 +38,7 @@ int (*TyOS_InputHook)(void) = NULL;
    except if _TyOS_InterruptOccurred() returns true. */
 
 static int
-my_fgets(PyThreadState* tstate, char *buf, int len, FILE *fp)
+my_fgets(TyThreadState* tstate, char *buf, int len, FILE *fp)
 {
 #ifdef MS_WINDOWS
     HANDLE handle;
@@ -127,7 +127,7 @@ my_fgets(PyThreadState* tstate, char *buf, int len, FILE *fp)
 extern char _get_console_type(HANDLE handle);
 
 char *
-_TyOS_WindowsConsoleReadline(PyThreadState *tstate, HANDLE hStdIn)
+_TyOS_WindowsConsoleReadline(TyThreadState *tstate, HANDLE hStdIn)
 {
     static wchar_t wbuf_local[1024 * 16];
     const DWORD chunk_size = 1024;
@@ -259,7 +259,7 @@ TyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 {
     size_t n;
     char *p, *pr;
-    PyThreadState *tstate = _TyOS_ReadlineTState;
+    TyThreadState *tstate = _TyOS_ReadlineTState;
     assert(tstate != NULL);
 
 #ifdef HAVE_WINDOWS_CONSOLE_IO
@@ -374,7 +374,7 @@ TyOS_Readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
     char *rv, *res;
     size_t len;
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (_Ty_atomic_load_ptr_relaxed(&_TyOS_ReadlineTState) == tstate) {
         TyErr_SetString(TyExc_RuntimeError,
                         "can't re-enter readline");

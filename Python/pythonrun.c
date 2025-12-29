@@ -315,7 +315,7 @@ TyRun_InteractiveOneObjectEx(FILE *fp, TyObject *filename,
     _TyArena_Free(arena);
     Ty_DECREF(main_module);
     if (res == NULL) {
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         TyObject *exc = _TyErr_GetRaisedException(tstate);
         if (TyType_IsSubtype(Ty_TYPE(exc),
                              (TyTypeObject *) TyExc_SyntaxError))
@@ -691,7 +691,7 @@ handle_system_exit(void)
 
 
 static void
-_TyErr_PrintEx(PyThreadState *tstate, int set_sys_last_vars)
+_TyErr_PrintEx(TyThreadState *tstate, int set_sys_last_vars)
 {
     TyObject *typ = NULL, *tb = NULL, *hook = NULL;
     handle_system_exit();
@@ -765,7 +765,7 @@ done:
 }
 
 void
-_TyErr_Print(PyThreadState *tstate)
+_TyErr_Print(TyThreadState *tstate)
 {
     _TyErr_PrintEx(tstate, 1);
 }
@@ -773,7 +773,7 @@ _TyErr_Print(PyThreadState *tstate)
 void
 TyErr_PrintEx(int set_sys_last_vars)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_PrintEx(tstate, set_sys_last_vars);
 }
 
@@ -1318,7 +1318,7 @@ TyRun_FileExFlags(FILE *fp, const char *filename, int start, TyObject *globals,
 }
 
 static void
-flush_io_stream(PyThreadState *tstate, TyObject *name)
+flush_io_stream(TyThreadState *tstate, TyObject *name)
 {
     TyObject *f;
     if (_TySys_GetOptionalAttr(name, &f) < 0) {
@@ -1335,7 +1335,7 @@ flush_io_stream(PyThreadState *tstate, TyObject *name)
 static void
 flush_io(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *exc = _TyErr_GetRaisedException(tstate);
     flush_io_stream(tstate, &_Ty_ID(stderr));
     flush_io_stream(tstate, &_Ty_ID(stdout));
@@ -1343,7 +1343,7 @@ flush_io(void)
 }
 
 static TyObject *
-run_eval_code_obj(PyThreadState *tstate, PyCodeObject *co, TyObject *globals, TyObject *locals)
+run_eval_code_obj(TyThreadState *tstate, PyCodeObject *co, TyObject *globals, TyObject *locals)
 {
     /* Set globals['__builtins__'] if it doesn't exist */
     if (!globals || !TyDict_Check(globals)) {
@@ -1370,7 +1370,7 @@ run_mod(mod_ty mod, TyObject *filename, TyObject *globals, TyObject *locals,
             PyCompilerFlags *flags, PyArena *arena, TyObject* interactive_src,
             int generate_new_source)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject* interactive_filename = filename;
     if (interactive_src) {
         PyInterpreterState *interp = tstate->interp;
@@ -1442,7 +1442,7 @@ static TyObject *
 run_pyc_file(FILE *fp, TyObject *globals, TyObject *locals,
              PyCompilerFlags *flags)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     PyCodeObject *co;
     TyObject *v;
     long magic;
@@ -1603,7 +1603,7 @@ _Ty_SourceAsString(TyObject *cmd, const char *funcname, const char *what, PyComp
 int
 TyOS_CheckStack(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _Ty_ReachedRecursionLimit(tstate);
 }
 

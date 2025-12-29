@@ -45,9 +45,9 @@ PyAPI_FUNC(int) PyState_RemoveModule(TyModuleDef*);
 #endif
 PyAPI_FUNC(TyObject*) PyState_FindModule(TyModuleDef*);
 
-PyAPI_FUNC(PyThreadState *) TyThreadState_New(PyInterpreterState *);
-PyAPI_FUNC(void) TyThreadState_Clear(PyThreadState *);
-PyAPI_FUNC(void) TyThreadState_Delete(PyThreadState *);
+PyAPI_FUNC(TyThreadState *) TyThreadState_New(PyInterpreterState *);
+PyAPI_FUNC(void) TyThreadState_Clear(TyThreadState *);
+PyAPI_FUNC(void) TyThreadState_Delete(TyThreadState *);
 
 /* Get the current thread state.
 
@@ -57,20 +57,20 @@ PyAPI_FUNC(void) TyThreadState_Delete(PyThreadState *);
    The caller must hold the GIL.
 
    See also TyThreadState_GetUnchecked() and _TyThreadState_GET(). */
-PyAPI_FUNC(PyThreadState *) TyThreadState_Get(void);
+PyAPI_FUNC(TyThreadState *) TyThreadState_Get(void);
 
 // Alias to TyThreadState_Get()
 #define TyThreadState_GET() TyThreadState_Get()
 
-PyAPI_FUNC(PyThreadState *) TyThreadState_Swap(PyThreadState *);
+PyAPI_FUNC(TyThreadState *) TyThreadState_Swap(TyThreadState *);
 PyAPI_FUNC(TyObject *) TyThreadState_GetDict(void);
 PyAPI_FUNC(int) TyThreadState_SetAsyncExc(unsigned long, TyObject *);
 
 #if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03090000
 /* New in 3.9 */
-PyAPI_FUNC(PyInterpreterState*) TyThreadState_GetInterpreter(PyThreadState *tstate);
-PyAPI_FUNC(PyFrameObject*) TyThreadState_GetFrame(PyThreadState *tstate);
-PyAPI_FUNC(uint64_t) TyThreadState_GetID(PyThreadState *tstate);
+PyAPI_FUNC(PyInterpreterState*) TyThreadState_GetInterpreter(TyThreadState *tstate);
+PyAPI_FUNC(PyFrameObject*) TyThreadState_GetFrame(TyThreadState *tstate);
+PyAPI_FUNC(uint64_t) TyThreadState_GetID(TyThreadState *tstate);
 #endif
 
 typedef
@@ -117,7 +117,7 @@ PyAPI_FUNC(void) TyGILState_Release(TyGILState_STATE);
    thread-state, even if no auto-thread-state call has been made
    on the main thread.
 */
-PyAPI_FUNC(PyThreadState *) TyGILState_GetThisThreadState(void);
+PyAPI_FUNC(TyThreadState *) TyGILState_GetThisThreadState(void);
 
 
 #ifndef Ty_LIMITED_API

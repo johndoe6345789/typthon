@@ -6427,7 +6427,7 @@ long_vectorcall(TyObject *type, TyObject * const*args,
 {
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
     if (kwnames != NULL) {
-        PyThreadState *tstate = TyThreadState_GET();
+        TyThreadState *tstate = TyThreadState_GET();
         return _TyObject_MakeTpCall(tstate, type, args, nargs, kwnames);
     }
     switch (nargs) {
@@ -6641,7 +6641,7 @@ TyLong_GetInfo(void)
 
 /* runtime lifecycle */
 
-PyStatus
+TyStatus
 _TyLong_InitTypes(PyInterpreterState *interp)
 {
     /* initialize int_info */

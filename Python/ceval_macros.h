@@ -71,10 +71,10 @@
 #endif
 
 #ifdef Ty_STATS
-#   define TAIL_CALL_PARAMS _PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState *tstate, _Ty_CODEUNIT *next_instr, int oparg, int lastopcode
+#   define TAIL_CALL_PARAMS _PyInterpreterFrame *frame, _PyStackRef *stack_pointer, TyThreadState *tstate, _Ty_CODEUNIT *next_instr, int oparg, int lastopcode
 #   define TAIL_CALL_ARGS frame, stack_pointer, tstate, next_instr, oparg, lastopcode
 #else
-#   define TAIL_CALL_PARAMS _PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState *tstate, _Ty_CODEUNIT *next_instr, int oparg
+#   define TAIL_CALL_PARAMS _PyInterpreterFrame *frame, _PyStackRef *stack_pointer, TyThreadState *tstate, _Ty_CODEUNIT *next_instr, int oparg
 #   define TAIL_CALL_ARGS frame, stack_pointer, tstate, next_instr, oparg
 #endif
 
@@ -326,12 +326,12 @@ do { \
 } while (0);
 
 
-static inline int _Ty_EnterRecursivePy(PyThreadState *tstate) {
+static inline int _Ty_EnterRecursivePy(TyThreadState *tstate) {
     return (tstate->py_recursion_remaining-- <= 0) &&
         _Ty_CheckRecursiveCallPy(tstate);
 }
 
-static inline void _Ty_LeaveRecursiveCallPy(PyThreadState *tstate)  {
+static inline void _Ty_LeaveRecursiveCallPy(TyThreadState *tstate)  {
     tstate->py_recursion_remaining++;
 }
 

@@ -21,12 +21,12 @@ struct _gc_thread_state {
 };
 #endif
 
-// Every PyThreadState is actually allocated as a _PyThreadStateImpl. The
-// PyThreadState fields are exposed as part of the C API, although most fields
+// Every TyThreadState is actually allocated as a _PyThreadStateImpl. The
+// TyThreadState fields are exposed as part of the C API, although most fields
 // are intended to be private. The _PyThreadStateImpl fields not exposed.
 typedef struct _PyThreadStateImpl {
-    // semi-public fields are in PyThreadState.
-    PyThreadState base;
+    // semi-public fields are in TyThreadState.
+    TyThreadState base;
 
     // The reference count field is used to synchronize deallocation of the
     // thread state during runtime finalization.

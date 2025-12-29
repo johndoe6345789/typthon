@@ -86,17 +86,17 @@
 
 
 /* Forward declarations */
-static PyStatus add_main_module(PyInterpreterState *interp);
-static PyStatus init_import_site(void);
-static PyStatus init_set_builtins_open(void);
-static PyStatus init_sys_streams(PyThreadState *tstate);
+static TyStatus add_main_module(PyInterpreterState *interp);
+static TyStatus init_import_site(void);
+static TyStatus init_set_builtins_open(void);
+static TyStatus init_sys_streams(TyThreadState *tstate);
 #ifdef __ANDROID__
-static PyStatus init_android_streams(PyThreadState *tstate);
+static TyStatus init_android_streams(TyThreadState *tstate);
 #endif
 #if defined(__APPLE__) && HAS_APPLE_SYSTEM_LOG
-static PyStatus init_apple_streams(PyThreadState *tstate);
+static TyStatus init_apple_streams(TyThreadState *tstate);
 #endif
-static void wait_for_thread_shutdown(PyThreadState *tstate);
+static void wait_for_thread_shutdown(TyThreadState *tstate);
 static void finalize_subinterpreters(void);
 static void call_ll_exitfuncs(_PyRuntimeState *runtime);
 
@@ -117,7 +117,7 @@ _Ty_COMP_DIAG_POP
 
 static int runtime_initialized = 0;
 
-PyStatus
+TyStatus
 _PyRuntime_Initialize(void)
 {
     /* XXX We only initialize once in the process, which aligns with
@@ -397,12 +397,12 @@ _Ty_SetLocaleFromEnv(int category)
 
 
 static int
-interpreter_update_config(PyThreadState *tstate, int only_update_path_config)
+interpreter_update_config(TyThreadState *tstate, int only_update_path_config)
 {
     const PyConfig *config = &tstate->interp->config;
 
     if (!only_update_path_config) {
-        PyStatus status = _TyConfig_Write(config, tstate->interp->runtime);
+        TyStatus status = _TyConfig_Write(config, tstate->interp->runtime);
         if (_TyStatus_EXCEPTION(status)) {
             _TyErr_SetFromPyStatus(status);
             return -1;
@@ -410,7 +410,7 @@ interpreter_update_config(PyThreadState *tstate, int only_update_path_config)
     }
 
     if (_Ty_IsMainInterpreter(tstate->interp)) {
-        PyStatus status = _TyPathConfig_UpdateGlobal(config);
+        TyStatus status = _TyPathConfig_UpdateGlobal(config);
         if (_TyStatus_EXCEPTION(status)) {
             _TyErr_SetFromPyStatus(status);
             return -1;
@@ -439,13 +439,13 @@ interpreter_update_config(PyThreadState *tstate, int only_update_path_config)
 
 */
 
-static PyStatus
+static TyStatus
 pyinit_core_reconfigure(_PyRuntimeState *runtime,
-                        PyThreadState **tstate_p,
+                        TyThreadState **tstate_p,
                         const PyConfig *config)
 {
-    PyStatus status;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyStatus status;
+    TyThreadState *tstate = _TyThreadState_GET();
     if (!tstate) {
         return _TyStatus_ERR("failed to read thread state");
     }
@@ -478,7 +478,7 @@ pyinit_core_reconfigure(_PyRuntimeState *runtime,
 }
 
 
-static PyStatus
+static TyStatus
 pycore_init_runtime(_PyRuntimeState *runtime,
                     const PyConfig *config)
 {
@@ -486,7 +486,7 @@ pycore_init_runtime(_PyRuntimeState *runtime,
         return _TyStatus_ERR("main interpreter already initialized");
     }
 
-    PyStatus status = _TyConfig_Write(config, runtime);
+    TyStatus status = _TyConfig_Write(config, runtime);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
@@ -522,7 +522,7 @@ pycore_init_runtime(_PyRuntimeState *runtime,
 }
 
 
-static PyStatus
+static TyStatus
 init_interp_settings(PyInterpreterState *interp,
                      const PyInterpreterConfig *config)
 {
@@ -579,7 +579,7 @@ init_interp_settings(PyInterpreterState *interp,
 
 
 static void
-init_interp_create_gil(PyThreadState *tstate, int gil)
+init_interp_create_gil(TyThreadState *tstate, int gil)
 {
     /* finalize_interp_delete() comment explains why _TyEval_FiniGIL() is
        only called here. */
@@ -608,12 +608,12 @@ builtins_dict_watcher(TyDict_WatchEvent event, TyObject *dict, TyObject *key, Ty
     return 0;
 }
 
-static PyStatus
+static TyStatus
 pycore_create_interpreter(_PyRuntimeState *runtime,
                           const PyConfig *src_config,
-                          PyThreadState **tstate_p)
+                          TyThreadState **tstate_p)
 {
-    PyStatus status;
+    TyStatus status;
     PyInterpreterState *interp;
     status = _TyInterpreterState_New(NULL, &interp);
     if (_TyStatus_EXCEPTION(status)) {
@@ -664,7 +664,7 @@ pycore_create_interpreter(_PyRuntimeState *runtime,
         return status;
     }
 
-    PyThreadState *tstate = _TyThreadState_New(interp,
+    TyThreadState *tstate = _TyThreadState_New(interp,
                                                _TyThreadState_WHENCE_INIT);
     if (tstate == NULL) {
         return _TyStatus_ERR("can't make first thread");
@@ -679,10 +679,10 @@ pycore_create_interpreter(_PyRuntimeState *runtime,
 }
 
 
-static PyStatus
+static TyStatus
 pycore_init_global_objects(PyInterpreterState *interp)
 {
-    PyStatus status;
+    TyStatus status;
 
     _TyFloat_InitState(interp);
 
@@ -701,10 +701,10 @@ pycore_init_global_objects(PyInterpreterState *interp)
 }
 
 
-static PyStatus
+static TyStatus
 pycore_init_types(PyInterpreterState *interp)
 {
-    PyStatus status;
+    TyStatus status;
 
     status = _PyTypes_InitTypes(interp);
     if (_TyStatus_EXCEPTION(status)) {
@@ -768,8 +768,8 @@ pycore_init_types(PyInterpreterState *interp)
     return _TyStatus_OK();
 }
 
-static PyStatus
-pycore_init_builtins(PyThreadState *tstate)
+static TyStatus
+pycore_init_builtins(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
 
@@ -856,15 +856,15 @@ error:
 }
 
 
-static PyStatus
-pycore_interp_init(PyThreadState *tstate)
+static TyStatus
+pycore_interp_init(TyThreadState *tstate)
 {
     _PyThreadStateImpl *_tstate = (_PyThreadStateImpl *)tstate;
     if (_tstate->c_stack_hard_limit == 0) {
         _Ty_InitializeRecursionLimits(tstate);
     }
     PyInterpreterState *interp = tstate->interp;
-    PyStatus status;
+    TyStatus status;
     TyObject *sysmod = NULL;
 
     // Create singletons before the first TyType_Ready() call, since
@@ -934,17 +934,17 @@ done:
 }
 
 
-static PyStatus
+static TyStatus
 pyinit_config(_PyRuntimeState *runtime,
-              PyThreadState **tstate_p,
+              TyThreadState **tstate_p,
               const PyConfig *config)
 {
-    PyStatus status = pycore_init_runtime(runtime, config);
+    TyStatus status = pycore_init_runtime(runtime, config);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
 
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     status = pycore_create_interpreter(runtime, config, &tstate);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
@@ -962,10 +962,10 @@ pyinit_config(_PyRuntimeState *runtime,
 }
 
 
-PyStatus
+TyStatus
 _Ty_PreInitializeFromPyArgv(const PyPreConfig *src_config, const _PyArgv *args)
 {
-    PyStatus status;
+    TyStatus status;
 
     if (src_config == NULL) {
         return _TyStatus_ERR("preinitialization config is NULL");
@@ -1009,7 +1009,7 @@ _Ty_PreInitializeFromPyArgv(const PyPreConfig *src_config, const _PyArgv *args)
 }
 
 
-PyStatus
+TyStatus
 Ty_PreInitializeFromBytesArgs(const PyPreConfig *src_config, Ty_ssize_t argc, char **argv)
 {
     _PyArgv args = {.use_bytes_argv = 1, .argc = argc, .bytes_argv = argv};
@@ -1017,7 +1017,7 @@ Ty_PreInitializeFromBytesArgs(const PyPreConfig *src_config, Ty_ssize_t argc, ch
 }
 
 
-PyStatus
+TyStatus
 Ty_PreInitializeFromArgs(const PyPreConfig *src_config, Ty_ssize_t argc, wchar_t **argv)
 {
     _PyArgv args = {.use_bytes_argv = 0, .argc = argc, .wchar_argv = argv};
@@ -1025,20 +1025,20 @@ Ty_PreInitializeFromArgs(const PyPreConfig *src_config, Ty_ssize_t argc, wchar_t
 }
 
 
-PyStatus
+TyStatus
 Ty_PreInitialize(const PyPreConfig *src_config)
 {
     return _Ty_PreInitializeFromPyArgv(src_config, NULL);
 }
 
 
-PyStatus
+TyStatus
 _Ty_PreInitializeFromConfig(const PyConfig *config,
                             const _PyArgv *args)
 {
     assert(config != NULL);
 
-    PyStatus status = _PyRuntime_Initialize();
+    TyStatus status = _PyRuntime_Initialize();
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
@@ -1086,12 +1086,12 @@ _Ty_PreInitializeFromConfig(const PyConfig *config,
  * to the Python C API (unless the API is explicitly listed as being
  * safe to call without calling Ty_Initialize first)
  */
-static PyStatus
+static TyStatus
 pyinit_core(_PyRuntimeState *runtime,
             const PyConfig *src_config,
-            PyThreadState **tstate_p)
+            TyThreadState **tstate_p)
 {
-    PyStatus status;
+    TyStatus status;
 
     status = _Ty_PreInitializeFromConfig(src_config, NULL);
     if (_TyStatus_EXCEPTION(status)) {
@@ -1132,8 +1132,8 @@ done:
 /* Ty_Initialize() has already been called: update the main interpreter
    configuration. Example of bpo-34008: Ty_Main() called after
    Ty_Initialize(). */
-static PyStatus
-pyinit_main_reconfigure(PyThreadState *tstate)
+static TyStatus
+pyinit_main_reconfigure(TyThreadState *tstate)
 {
     if (interpreter_update_config(tstate, 0) < 0) {
         return _TyStatus_ERR("fail to reconfigure Python");
@@ -1144,7 +1144,7 @@ pyinit_main_reconfigure(PyThreadState *tstate)
 
 #ifdef Ty_DEBUG
 static void
-run_presite(PyThreadState *tstate)
+run_presite(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
@@ -1173,12 +1173,12 @@ run_presite(PyThreadState *tstate)
 #endif
 
 
-static PyStatus
-init_interp_main(PyThreadState *tstate)
+static TyStatus
+init_interp_main(TyThreadState *tstate)
 {
     assert(!_TyErr_Occurred(tstate));
 
-    PyStatus status;
+    TyStatus status;
     int is_main_interp = _Ty_IsMainInterpreter(tstate->interp);
     PyInterpreterState *interp = tstate->interp;
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
@@ -1398,8 +1398,8 @@ init_interp_main(PyThreadState *tstate)
  * Other errors should be reported as normal Python exceptions with a
  * non-zero return code.
  */
-static PyStatus
-pyinit_main(PyThreadState *tstate)
+static TyStatus
+pyinit_main(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
     if (!interp->runtime->core_initialized) {
@@ -1410,7 +1410,7 @@ pyinit_main(PyThreadState *tstate)
         return pyinit_main_reconfigure(tstate);
     }
 
-    PyStatus status = init_interp_main(tstate);
+    TyStatus status = init_interp_main(tstate);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
@@ -1418,14 +1418,14 @@ pyinit_main(PyThreadState *tstate)
 }
 
 
-PyStatus
+TyStatus
 Ty_InitializeFromConfig(const PyConfig *config)
 {
     if (config == NULL) {
         return _TyStatus_ERR("initialization config is NULL");
     }
 
-    PyStatus status;
+    TyStatus status;
 
     status = _PyRuntime_Initialize();
     if (_TyStatus_EXCEPTION(status)) {
@@ -1433,7 +1433,7 @@ Ty_InitializeFromConfig(const PyConfig *config)
     }
     _PyRuntimeState *runtime = &_PyRuntime;
 
-    PyThreadState *tstate = NULL;
+    TyThreadState *tstate = NULL;
     status = pyinit_core(runtime, config, &tstate);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
@@ -1454,7 +1454,7 @@ Ty_InitializeFromConfig(const PyConfig *config)
 void
 Ty_InitializeEx(int install_sigs)
 {
-    PyStatus status;
+    TyStatus status;
 
     status = _PyRuntime_Initialize();
     if (_TyStatus_EXCEPTION(status)) {
@@ -1487,7 +1487,7 @@ Ty_Initialize(void)
 
 
 static void
-finalize_modules_delete_special(PyThreadState *tstate, int verbose)
+finalize_modules_delete_special(TyThreadState *tstate, int verbose)
 {
     // List of names to clear in sys
     static const char * const sys_deletes[] = {
@@ -1634,7 +1634,7 @@ finalize_clear_modules_dict(TyObject *modules)
 
 
 static void
-finalize_restore_builtins(PyThreadState *tstate)
+finalize_restore_builtins(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
     TyObject *dict = TyDict_Copy(interp->builtins);
@@ -1696,7 +1696,7 @@ finalize_clear_sys_builtins_dict(PyInterpreterState *interp, int verbose)
 /* Clear modules, as good as we can */
 // XXX Move most of this to import.c.
 static void
-finalize_modules(PyThreadState *tstate)
+finalize_modules(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
 
@@ -1899,7 +1899,7 @@ finalize_interp_types(PyInterpreterState *interp)
 
 
 static void
-finalize_interp_clear(PyThreadState *tstate)
+finalize_interp_clear(TyThreadState *tstate)
 {
     int is_main_interp = _Ty_IsMainInterpreter(tstate->interp);
 
@@ -1963,16 +1963,16 @@ finalize_interp_delete(PyInterpreterState *interp)
    there may be users relying on the unconstrained behavior.  Thus,
    we do our best here to accommodate that possibility. */
 
-static PyThreadState *
+static TyThreadState *
 resolve_final_tstate(_PyRuntimeState *runtime)
 {
-    PyThreadState *main_tstate = runtime->main_tstate;
+    TyThreadState *main_tstate = runtime->main_tstate;
     assert(main_tstate != NULL);
     assert(main_tstate->thread_id == runtime->main_thread);
     PyInterpreterState *main_interp = _TyInterpreterState_Main();
     assert(main_tstate->interp == main_interp);
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (_Ty_IsMainThread()) {
         if (tstate != main_tstate) {
             /* This implies that Ty_Finalize() was called while
@@ -2021,7 +2021,7 @@ _Ty_Finalize(_PyRuntimeState *runtime)
     }
 
     /* Get final thread state pointer. */
-    PyThreadState *tstate = resolve_final_tstate(runtime);
+    TyThreadState *tstate = resolve_final_tstate(runtime);
 
     // Block some operations.
     tstate->interp->finalizing = 1;
@@ -2076,8 +2076,8 @@ _Ty_Finalize(_PyRuntimeState *runtime)
        except if wait_for_thread_shutdown() has been cancelled by CTRL+C.
        We start the world once we are the only thread state left,
        before we call destructors. */
-    PyThreadState *list = _TyThreadState_RemoveExcept(tstate);
-    for (PyThreadState *p = list; p != NULL; p = p->next) {
+    TyThreadState *list = _TyThreadState_RemoveExcept(tstate);
+    for (TyThreadState *p = list; p != NULL; p = p->next) {
         _TyThreadState_SetShuttingDown(p);
     }
     _TyEval_StartTheWorldAll(runtime);
@@ -2278,11 +2278,11 @@ Ty_Finalize(void)
 
 */
 
-static PyStatus
-new_interpreter(PyThreadState **tstate_p,
+static TyStatus
+new_interpreter(TyThreadState **tstate_p,
                 const PyInterpreterConfig *config, long whence)
 {
-    PyStatus status;
+    TyStatus status;
 
     status = _PyRuntime_Initialize();
     if (_TyStatus_EXCEPTION(status)) {
@@ -2307,8 +2307,8 @@ new_interpreter(PyThreadState **tstate_p,
     interp->_ready = 1;
 
     // XXX Might new_interpreter() have been called without the GIL held?
-    PyThreadState *save_tstate = _TyThreadState_GET();
-    PyThreadState *tstate = NULL;
+    TyThreadState *save_tstate = _TyThreadState_GET();
+    TyThreadState *tstate = NULL;
 
     /* From this point until the init_interp_create_gil() call,
        we must not do anything that requires that the GIL be held
@@ -2394,21 +2394,21 @@ error:
     return status;
 }
 
-PyStatus
-Ty_NewInterpreterFromConfig(PyThreadState **tstate_p,
+TyStatus
+Ty_NewInterpreterFromConfig(TyThreadState **tstate_p,
                             const PyInterpreterConfig *config)
 {
     long whence = _TyInterpreterState_WHENCE_CAPI;
     return new_interpreter(tstate_p, config, whence);
 }
 
-PyThreadState *
+TyThreadState *
 Ty_NewInterpreter(void)
 {
-    PyThreadState *tstate = NULL;
+    TyThreadState *tstate = NULL;
     long whence = _TyInterpreterState_WHENCE_LEGACY_CAPI;
     const PyInterpreterConfig config = _PyInterpreterConfig_LEGACY_INIT;
-    PyStatus status = new_interpreter(&tstate, &config, whence);
+    TyStatus status = new_interpreter(&tstate, &config, whence);
     if (_TyStatus_EXCEPTION(status)) {
         Ty_ExitStatusException(status);
     }
@@ -2428,7 +2428,7 @@ Ty_NewInterpreter(void)
 */
 
 void
-Ty_EndInterpreter(PyThreadState *tstate)
+Ty_EndInterpreter(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
 
@@ -2471,7 +2471,7 @@ _Ty_IsInterpreterFinalizing(PyInterpreterState *interp)
 {
     /* We check the runtime first since, in a daemon thread,
        interp might be dangling pointer. */
-    PyThreadState *finalizing = _PyRuntimeState_GetFinalizing(&_PyRuntime);
+    TyThreadState *finalizing = _PyRuntimeState_GetFinalizing(&_PyRuntime);
     if (finalizing == NULL) {
         finalizing = _TyInterpreterState_GetFinalizing(interp);
     }
@@ -2481,7 +2481,7 @@ _Ty_IsInterpreterFinalizing(PyInterpreterState *interp)
 static void
 finalize_subinterpreters(void)
 {
-    PyThreadState *final_tstate = _TyThreadState_GET();
+    TyThreadState *final_tstate = _TyThreadState_GET();
     PyInterpreterState *main_interp = _TyInterpreterState_Main();
     assert(final_tstate->interp == main_interp);
     _PyRuntimeState *runtime = main_interp->runtime;
@@ -2517,7 +2517,7 @@ finalize_subinterpreters(void)
 
         /* Find the tstate to use for fini.  We assume the interpreter
            will have at most one tstate at this point. */
-        PyThreadState *tstate = interp->threads.head;
+        TyThreadState *tstate = interp->threads.head;
         if (tstate != NULL) {
             /* Ideally we would be able to use tstate as-is, and rely
                on it being in a ready state: no exception set, not
@@ -2553,7 +2553,7 @@ finalize_subinterpreters(void)
 
 /* Add the __main__ module */
 
-static PyStatus
+static TyStatus
 add_main_module(PyInterpreterState *interp)
 {
     TyObject *m, *d;
@@ -2605,7 +2605,7 @@ add_main_module(PyInterpreterState *interp)
 
 /* Import the site module (not into __main__ though) */
 
-static PyStatus
+static TyStatus
 init_import_site(void)
 {
     TyObject *m;
@@ -2759,12 +2759,12 @@ error:
 }
 
 /* Set builtins.open to io.open */
-static PyStatus
+static TyStatus
 init_set_builtins_open(void)
 {
     TyObject *wrapper;
     TyObject *bimod = NULL;
-    PyStatus res = _TyStatus_OK();
+    TyStatus res = _TyStatus_OK();
 
     if (!(bimod = TyImport_ImportModule("builtins"))) {
         goto error;
@@ -2792,14 +2792,14 @@ done:
 
 
 /* Create sys.stdin, sys.stdout and sys.stderr */
-static PyStatus
-init_sys_streams(PyThreadState *tstate)
+static TyStatus
+init_sys_streams(TyThreadState *tstate)
 {
     TyObject *iomod = NULL;
     TyObject *std = NULL;
     int fd;
     TyObject * encoding_attr;
-    PyStatus res = _TyStatus_OK();
+    TyStatus res = _TyStatus_OK();
     const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
 
     /* Check that stdin is not a directory
@@ -2914,10 +2914,10 @@ static TyMethodDef android_log_write_method = {
 };
 
 
-static PyStatus
-init_android_streams(PyThreadState *tstate)
+static TyStatus
+init_android_streams(TyThreadState *tstate)
 {
-    PyStatus status = _TyStatus_OK();
+    TyStatus status = _TyStatus_OK();
     TyObject *_android_support = NULL;
     TyObject *android_log_write = NULL;
     TyObject *result = NULL;
@@ -2978,10 +2978,10 @@ static TyMethodDef apple_log_write_method = {
 };
 
 
-static PyStatus
-init_apple_streams(PyThreadState *tstate)
+static TyStatus
+init_apple_streams(TyThreadState *tstate)
 {
-    PyStatus status = _TyStatus_OK();
+    TyStatus status = _TyStatus_OK();
     TyObject *_apple_support = NULL;
     TyObject *apple_log_write = NULL;
     TyObject *result = NULL;
@@ -3021,7 +3021,7 @@ done:
 
 static void
 _Ty_FatalError_DumpTracebacks(int fd, PyInterpreterState *interp,
-                              PyThreadState *tstate)
+                              TyThreadState *tstate)
 {
     PUTS(fd, "\n");
 
@@ -3042,7 +3042,7 @@ _Ty_FatalError_DumpTracebacks(int fd, PyInterpreterState *interp,
    Return 1 if the traceback was displayed, 0 otherwise. */
 
 static int
-_Ty_FatalError_PrintExc(PyThreadState *tstate)
+_Ty_FatalError_PrintExc(TyThreadState *tstate)
 {
     TyObject *exc = _TyErr_GetRaisedException(tstate);
     if (exc == NULL) {
@@ -3120,7 +3120,7 @@ static void
 fatal_error_dump_runtime(int fd, _PyRuntimeState *runtime)
 {
     PUTS(fd, "Typthon runtime state: ");
-    PyThreadState *finalizing = _PyRuntimeState_GetFinalizing(runtime);
+    TyThreadState *finalizing = _PyRuntimeState_GetFinalizing(runtime);
     if (finalizing) {
         PUTS(fd, "finalizing (tstate=0x");
         _Ty_DumpHexadecimal(fd, (uintptr_t)finalizing, sizeof(finalizing) * 2);
@@ -3328,9 +3328,9 @@ fatal_error(int fd, int header, const char *prefix, const char *msg,
 
        tss_tstate != tstate if the current Python thread does not hold the GIL.
        */
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     PyInterpreterState *interp = NULL;
-    PyThreadState *tss_tstate = TyGILState_GetThisThreadState();
+    TyThreadState *tss_tstate = TyGILState_GetThisThreadState();
     if (tstate != NULL) {
         interp = tstate->interp;
     }
@@ -3429,7 +3429,7 @@ _Ty_FatalRefcountErrorFunc(const char *func, const char *msg)
 
 
 void _Ty_NO_RETURN
-Ty_ExitStatusException(PyStatus status)
+Ty_ExitStatusException(TyStatus status)
 {
     if (_TyStatus_IS_EXIT(status)) {
         exit(status.exitcode);
@@ -3448,7 +3448,7 @@ Ty_ExitStatusException(PyStatus status)
    The shutdown routine will wait until all non-daemon
    "threading" threads have completed. */
 static void
-wait_for_thread_shutdown(PyThreadState *tstate)
+wait_for_thread_shutdown(TyThreadState *tstate)
 {
     TyObject *result;
     TyObject *threading = TyImport_GetModule(&_Ty_ID(threading));
@@ -3508,7 +3508,7 @@ call_ll_exitfuncs(_PyRuntimeState *runtime)
 void _Ty_NO_RETURN
 Ty_Exit(int sts)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate != NULL && _TyThreadState_IsRunningMain(tstate)) {
         _TyInterpreterState_SetNotRunningMain(tstate->interp);
     }

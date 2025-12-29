@@ -18,14 +18,14 @@
 /******** Unary functions ********/
 
 static TyObject *
-no_intrinsic1(PyThreadState* tstate, TyObject *unused)
+no_intrinsic1(TyThreadState* tstate, TyObject *unused)
 {
     _TyErr_SetString(tstate, TyExc_SystemError, "invalid intrinsic function");
     return NULL;
 }
 
 static TyObject *
-print_expr(PyThreadState* Py_UNUSED(ignored), TyObject *value)
+print_expr(TyThreadState* Py_UNUSED(ignored), TyObject *value)
 {
     TyObject *hook = _TySys_GetRequiredAttr(&_Ty_ID(displayhook));
     if (hook == NULL) {
@@ -37,7 +37,7 @@ print_expr(PyThreadState* Py_UNUSED(ignored), TyObject *value)
 }
 
 static int
-import_all_from(PyThreadState *tstate, TyObject *locals, TyObject *v)
+import_all_from(TyThreadState *tstate, TyObject *locals, TyObject *v)
 {
     TyObject *all, *dict, *name, *value;
     int skip_leading_underscores = 0;
@@ -121,7 +121,7 @@ import_all_from(PyThreadState *tstate, TyObject *locals, TyObject *v)
 }
 
 static TyObject *
-import_star(PyThreadState* tstate, TyObject *from)
+import_star(TyThreadState* tstate, TyObject *from)
 {
     _PyInterpreterFrame *frame = tstate->current_frame;
 
@@ -140,7 +140,7 @@ import_star(PyThreadState* tstate, TyObject *from)
 }
 
 static TyObject *
-stopiteration_error(PyThreadState* tstate, TyObject *exc)
+stopiteration_error(TyThreadState* tstate, TyObject *exc)
 {
     _PyInterpreterFrame *frame = tstate->current_frame;
     assert(frame->owner == FRAME_OWNED_BY_GENERATOR);
@@ -184,20 +184,20 @@ stopiteration_error(PyThreadState* tstate, TyObject *exc)
 }
 
 static TyObject *
-unary_pos(PyThreadState* unused, TyObject *value)
+unary_pos(TyThreadState* unused, TyObject *value)
 {
     return PyNumber_Positive(value);
 }
 
 static TyObject *
-list_to_tuple(PyThreadState* unused, TyObject *v)
+list_to_tuple(TyThreadState* unused, TyObject *v)
 {
     assert(TyList_Check(v));
     return _TyTuple_FromArray(((PyListObject *)v)->ob_item, Ty_SIZE(v));
 }
 
 static TyObject *
-make_typevar(PyThreadState* Py_UNUSED(ignored), TyObject *v)
+make_typevar(TyThreadState* Py_UNUSED(ignored), TyObject *v)
 {
     assert(TyUnicode_Check(v));
     return _Ty_make_typevar(v, NULL, NULL);
@@ -227,21 +227,21 @@ _PyIntrinsics_UnaryFunctions[] = {
 /******** Binary functions ********/
 
 static TyObject *
-no_intrinsic2(PyThreadState* tstate, TyObject *unused1, TyObject *unused2)
+no_intrinsic2(TyThreadState* tstate, TyObject *unused1, TyObject *unused2)
 {
     _TyErr_SetString(tstate, TyExc_SystemError, "invalid intrinsic function");
     return NULL;
 }
 
 static TyObject *
-prep_reraise_star(PyThreadState* unused, TyObject *orig, TyObject *excs)
+prep_reraise_star(TyThreadState* unused, TyObject *orig, TyObject *excs)
 {
     assert(TyList_Check(excs));
     return _PyExc_PrepReraiseStar(orig, excs);
 }
 
 static TyObject *
-make_typevar_with_bound(PyThreadState* Py_UNUSED(ignored), TyObject *name,
+make_typevar_with_bound(TyThreadState* Py_UNUSED(ignored), TyObject *name,
                         TyObject *evaluate_bound)
 {
     assert(TyUnicode_Check(name));
@@ -249,7 +249,7 @@ make_typevar_with_bound(PyThreadState* Py_UNUSED(ignored), TyObject *name,
 }
 
 static TyObject *
-make_typevar_with_constraints(PyThreadState* Py_UNUSED(ignored), TyObject *name,
+make_typevar_with_constraints(TyThreadState* Py_UNUSED(ignored), TyObject *name,
                               TyObject *evaluate_constraints)
 {
     assert(TyUnicode_Check(name));

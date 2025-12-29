@@ -13,13 +13,13 @@ extern "C" {
 #include "pycore_tstate.h"
 
 
-// Values for PyThreadState.state. A thread must be in the "attached" state
+// Values for TyThreadState.state. A thread must be in the "attached" state
 // before calling most Python APIs. If the GIL is enabled, then "attached"
 // implies that the thread holds the GIL and "detached" implies that the
 // thread does not hold the GIL (or is in the process of releasing it). In
 // `--disable-gil` builds, multiple threads may be "attached" to the same
 // interpreter at the same time. Only the "bound" thread may perform the
-// transitions between "attached" and "detached" on its own PyThreadState.
+// transitions between "attached" and "detached" on its own TyThreadState.
 //
 // The "suspended" state is used to implement stop-the-world pauses, such as
 // for cyclic garbage collection. It is only used in `--disable-gil` builds.
@@ -73,8 +73,8 @@ PyAPI_FUNC(void) _TyInterpreterState_SetNotRunningMain(PyInterpreterState *);
 PyAPI_FUNC(int) _TyInterpreterState_IsRunningMain(PyInterpreterState *);
 PyAPI_FUNC(void) _TyErr_SetInterpreterAlreadyRunning(void);
 
-extern int _TyThreadState_IsRunningMain(PyThreadState *);
-extern void _TyInterpreterState_ReinitRunningMain(PyThreadState *);
+extern int _TyThreadState_IsRunningMain(TyThreadState *);
+extern void _TyInterpreterState_ReinitRunningMain(TyThreadState *);
 extern const PyConfig* _Ty_GetMainConfig(void);
 
 
@@ -90,19 +90,19 @@ _Ty_ThreadCanHandleSignals(PyInterpreterState *interp)
    and interpreter state */
 
 #if defined(HAVE_THREAD_LOCAL) && !defined(Ty_BUILD_CORE_MODULE)
-extern _Ty_thread_local PyThreadState *_Ty_tss_tstate;
+extern _Ty_thread_local TyThreadState *_Ty_tss_tstate;
 #endif
 
 #ifndef NDEBUG
-extern int _TyThreadState_CheckConsistency(PyThreadState *tstate);
+extern int _TyThreadState_CheckConsistency(TyThreadState *tstate);
 #endif
 
-extern int _TyThreadState_MustExit(PyThreadState *tstate);
-extern void _TyThreadState_HangThread(PyThreadState *tstate);
+extern int _TyThreadState_MustExit(TyThreadState *tstate);
+extern void _TyThreadState_HangThread(TyThreadState *tstate);
 
 // Export for most shared extensions, used via _TyThreadState_GET() static
 // inline function.
-PyAPI_FUNC(PyThreadState *) _TyThreadState_GetCurrent(void);
+PyAPI_FUNC(TyThreadState *) _TyThreadState_GetCurrent(void);
 
 /* Get the current Python thread state.
 
@@ -111,7 +111,7 @@ PyAPI_FUNC(PyThreadState *) _TyThreadState_GetCurrent(void);
    The caller must hold the GIL.
 
    See also TyThreadState_Get() and TyThreadState_GetUnchecked(). */
-static inline PyThreadState*
+static inline TyThreadState*
 _TyThreadState_GET(void)
 {
 #if defined(HAVE_THREAD_LOCAL) && !defined(Ty_BUILD_CORE_MODULE)
@@ -122,7 +122,7 @@ _TyThreadState_GET(void)
 }
 
 static inline int
-_TyThreadState_IsAttached(PyThreadState *tstate)
+_TyThreadState_IsAttached(TyThreadState *tstate)
 {
     return (_Ty_atomic_load_int_relaxed(&tstate->state) == _Ty_THREAD_ATTACHED);
 }
@@ -134,25 +134,25 @@ _TyThreadState_IsAttached(PyThreadState *tstate)
 //
 // High-level code should generally call TyEval_RestoreThread() instead, which
 // calls this function.
-extern void _TyThreadState_Attach(PyThreadState *tstate);
+extern void _TyThreadState_Attach(TyThreadState *tstate);
 
 // Detaches the current thread from the interpreter.
 //
 // High-level code should generally call TyEval_SaveThread() instead, which
 // calls this function.
-extern void _TyThreadState_Detach(PyThreadState *tstate);
+extern void _TyThreadState_Detach(TyThreadState *tstate);
 
 // Detaches the current thread to the "suspended" state if a stop-the-world
 // pause is in progress.
 //
 // If there is no stop-the-world pause in progress, then the thread switches
 // to the "detached" state.
-extern void _TyThreadState_Suspend(PyThreadState *tstate);
+extern void _TyThreadState_Suspend(TyThreadState *tstate);
 
 // Mark the thread state as "shutting down". This is used during interpreter
 // and runtime finalization. The thread may no longer attach to the
 // interpreter and will instead block via _TyThreadState_HangThread().
-extern void _TyThreadState_SetShuttingDown(PyThreadState *tstate);
+extern void _TyThreadState_SetShuttingDown(TyThreadState *tstate);
 
 // Perform a stop-the-world pause for all threads in the all interpreters.
 //
@@ -172,7 +172,7 @@ extern PyAPI_FUNC(void) _TyEval_StartTheWorld(PyInterpreterState *interp);
 
 
 static inline void
-_Ty_EnsureFuncTstateNotNULL(const char *func, PyThreadState *tstate)
+_Ty_EnsureFuncTstateNotNULL(const char *func, TyThreadState *tstate)
 {
     if (tstate == NULL) {
 #ifndef Ty_GIL_DISABLED
@@ -204,7 +204,7 @@ _Ty_EnsureFuncTstateNotNULL(const char *func, PyThreadState *tstate)
    See also TyInterpreterState_Get()
    and _TyGILState_GetInterpreterStateUnsafe(). */
 static inline PyInterpreterState* _TyInterpreterState_GET(void) {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 #ifdef Ty_DEBUG
     _Ty_EnsureTstateNotNULL(tstate);
 #endif
@@ -212,22 +212,22 @@ static inline PyInterpreterState* _TyInterpreterState_GET(void) {
 }
 
 
-// PyThreadState functions
+// TyThreadState functions
 
 // Export for _testinternalcapi
-PyAPI_FUNC(PyThreadState *) _TyThreadState_New(
+PyAPI_FUNC(TyThreadState *) _TyThreadState_New(
     PyInterpreterState *interp,
     int whence);
-extern void _TyThreadState_Bind(PyThreadState *tstate);
-PyAPI_FUNC(PyThreadState *) _TyThreadState_NewBound(
+extern void _TyThreadState_Bind(TyThreadState *tstate);
+PyAPI_FUNC(TyThreadState *) _TyThreadState_NewBound(
     PyInterpreterState *interp,
     int whence);
-extern PyThreadState * _TyThreadState_RemoveExcept(PyThreadState *tstate);
-extern void _TyThreadState_DeleteList(PyThreadState *list, int is_after_fork);
-extern void _TyThreadState_ClearMimallocHeaps(PyThreadState *tstate);
+extern TyThreadState * _TyThreadState_RemoveExcept(TyThreadState *tstate);
+extern void _TyThreadState_DeleteList(TyThreadState *list, int is_after_fork);
+extern void _TyThreadState_ClearMimallocHeaps(TyThreadState *tstate);
 
 // Export for '_testinternalcapi' shared extension
-PyAPI_FUNC(TyObject*) _TyThreadState_GetDict(PyThreadState *tstate);
+PyAPI_FUNC(TyObject*) _TyThreadState_GetDict(TyThreadState *tstate);
 
 /* The implementation of sys._current_exceptions()  Returns a dict mapping
    thread id to that thread's current exception.
@@ -237,25 +237,25 @@ extern TyObject* _PyThread_CurrentExceptions(void);
 
 /* Other */
 
-extern PyThreadState * _TyThreadState_Swap(
+extern TyThreadState * _TyThreadState_Swap(
     _PyRuntimeState *runtime,
-    PyThreadState *newts);
+    TyThreadState *newts);
 
-extern PyStatus _TyInterpreterState_Enable(_PyRuntimeState *runtime);
+extern TyStatus _TyInterpreterState_Enable(_PyRuntimeState *runtime);
 
 #ifdef HAVE_FORK
-extern PyStatus _TyInterpreterState_DeleteExceptMain(_PyRuntimeState *runtime);
+extern TyStatus _TyInterpreterState_DeleteExceptMain(_PyRuntimeState *runtime);
 extern void _PySignal_AfterFork(void);
 #endif
 
 // Export for the stable ABI
 PyAPI_FUNC(int) _PyState_AddModule(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject* module,
     TyModuleDef* def);
 
 
-extern int _TyOS_InterruptOccurred(PyThreadState *tstate);
+extern int _TyOS_InterruptOccurred(TyThreadState *tstate);
 
 #define HEAD_LOCK(runtime) \
     PyMutex_LockFlags(&(runtime)->interpreters.mutex, _Ty_LOCK_DONT_DETACH)
@@ -263,7 +263,7 @@ extern int _TyOS_InterruptOccurred(PyThreadState *tstate);
     PyMutex_Unlock(&(runtime)->interpreters.mutex)
 
 #define _Ty_FOR_EACH_TSTATE_UNLOCKED(interp, t) \
-    for (PyThreadState *t = interp->threads.head; t; t = t->next)
+    for (TyThreadState *t = interp->threads.head; t; t = t->next)
 #define _Ty_FOR_EACH_TSTATE_BEGIN(interp, t) \
     HEAD_LOCK(interp->runtime); \
     _Ty_FOR_EACH_TSTATE_UNLOCKED(interp, t)
@@ -285,7 +285,7 @@ PyAPI_FUNC(const PyConfig*) _Ty_GetConfig(void);
 // See also TyInterpreterState_Get() and _TyInterpreterState_GET().
 extern PyInterpreterState* _TyGILState_GetInterpreterStateUnsafe(void);
 
-extern TyObject * _Ty_GetMainModule(PyThreadState *);
+extern TyObject * _Ty_GetMainModule(TyThreadState *);
 extern int _Ty_CheckMainModule(TyObject *module);
 
 #ifndef NDEBUG
@@ -293,7 +293,7 @@ extern int _Ty_CheckMainModule(TyObject *module);
 static inline void
 _Ty_AssertHoldsTstateFunc(const char *func)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _Ty_EnsureFuncTstateNotNULL(func, tstate);
 }
 #define _Ty_AssertHoldsTstate() _Ty_AssertHoldsTstateFunc(__func__)
@@ -321,7 +321,7 @@ _Ty_get_machine_stack_pointer(void) {
 }
 
 static inline intptr_t
-_Ty_RecursionLimit_GetMargin(PyThreadState *tstate)
+_Ty_RecursionLimit_GetMargin(TyThreadState *tstate)
 {
     _PyThreadStateImpl *_tstate = (_PyThreadStateImpl *)tstate;
     assert(_tstate->c_stack_hard_limit != 0);

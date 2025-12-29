@@ -98,7 +98,7 @@ typedef struct {
         /* Buffer allocated by us: TYPE_READ and TYPE_ACCEPT */
         TyObject *allocated_buffer;
         /* Buffer passed by the user: TYPE_WRITE, TYPE_WRITE_TO, and TYPE_READINTO */
-        Py_buffer user_buffer;
+        Ty_buffer user_buffer;
 
         /* Data used for reading from a connectionless socket:
            TYPE_READ_FROM */
@@ -117,7 +117,7 @@ typedef struct {
             // A (number of bytes read, (host, port)) tuple
             TyObject* result;
             /* Buffer passed by the user */
-            Py_buffer user_buffer;
+            Ty_buffer user_buffer;
             struct sockaddr_in6 address;
             int address_length;
         } read_from_into;
@@ -128,10 +128,10 @@ typedef struct {
 
 
 static inline void
-steal_buffer(Py_buffer * dst, Py_buffer * src)
+steal_buffer(Ty_buffer * dst, Ty_buffer * src)
 {
-    memcpy(dst, src, sizeof(Py_buffer));
-    memset(src, 0, sizeof(Py_buffer));
+    memcpy(dst, src, sizeof(Ty_buffer));
+    memset(src, 0, sizeof(Ty_buffer));
 }
 
 /*
@@ -660,7 +660,7 @@ _overlapped_Overlapped_impl(TyTypeObject *type, HANDLE event)
     self->type = TYPE_NONE;
     self->allocated_buffer = NULL;
     memset(&self->overlapped, 0, sizeof(OVERLAPPED));
-    memset(&self->user_buffer, 0, sizeof(Py_buffer));
+    memset(&self->user_buffer, 0, sizeof(Ty_buffer));
     if (event)
         self->overlapped.hEvent = event;
     return (TyObject *)self;
@@ -1073,7 +1073,7 @@ _overlapped_Overlapped_ReadFile_impl(OverlappedObject *self, HANDLE handle,
 _overlapped.Overlapped.ReadFileInto
 
     handle: HANDLE
-    buf as bufobj: Py_buffer
+    buf as bufobj: Ty_buffer
     /
 
 Start overlapped receive.
@@ -1081,7 +1081,7 @@ Start overlapped receive.
 
 static TyObject *
 _overlapped_Overlapped_ReadFileInto_impl(OverlappedObject *self,
-                                         HANDLE handle, Py_buffer *bufobj)
+                                         HANDLE handle, Ty_buffer *bufobj)
 /*[clinic end generated code: output=8754744506023071 input=4f037ba09939e32d]*/
 {
     if (self->type != TYPE_NONE) {
@@ -1178,7 +1178,7 @@ _overlapped_Overlapped_WSARecv_impl(OverlappedObject *self, HANDLE handle,
 _overlapped.Overlapped.WSARecvInto
 
     handle: HANDLE
-    buf as bufobj: Py_buffer
+    buf as bufobj: Ty_buffer
     flags: DWORD
     /
 
@@ -1187,7 +1187,7 @@ Start overlapped receive.
 
 static TyObject *
 _overlapped_Overlapped_WSARecvInto_impl(OverlappedObject *self,
-                                        HANDLE handle, Py_buffer *bufobj,
+                                        HANDLE handle, Ty_buffer *bufobj,
                                         DWORD flags)
 /*[clinic end generated code: output=59ae7688786cf86b input=73e7fa00db633edd]*/
 {
@@ -1215,7 +1215,7 @@ _overlapped_Overlapped_WSARecvInto_impl(OverlappedObject *self,
 _overlapped.Overlapped.WriteFile
 
     handle: HANDLE
-    buf as bufobj: Py_buffer
+    buf as bufobj: Ty_buffer
     /
 
 Start overlapped write.
@@ -1223,7 +1223,7 @@ Start overlapped write.
 
 static TyObject *
 _overlapped_Overlapped_WriteFile_impl(OverlappedObject *self, HANDLE handle,
-                                      Py_buffer *bufobj)
+                                      Ty_buffer *bufobj)
 /*[clinic end generated code: output=fa5d5880a1bf04b1 input=ac54424c362abfc1]*/
 {
     DWORD written;
@@ -1267,7 +1267,7 @@ _overlapped_Overlapped_WriteFile_impl(OverlappedObject *self, HANDLE handle,
 _overlapped.Overlapped.WSASend
 
     handle: HANDLE
-    buf as bufobj: Py_buffer
+    buf as bufobj: Ty_buffer
     flags: DWORD
     /
 
@@ -1276,7 +1276,7 @@ Start overlapped send.
 
 static TyObject *
 _overlapped_Overlapped_WSASend_impl(OverlappedObject *self, HANDLE handle,
-                                    Py_buffer *bufobj, DWORD flags)
+                                    Ty_buffer *bufobj, DWORD flags)
 /*[clinic end generated code: output=3baaa6e1f7fe229e input=c4167420ba2f93d8]*/
 {
     DWORD written;
@@ -1746,7 +1746,7 @@ _overlapped_WSAConnect_impl(TyObject *module, HANDLE ConnectSocket,
 _overlapped.Overlapped.WSASendTo
 
     handle: HANDLE
-    buf as bufobj: Py_buffer
+    buf as bufobj: Ty_buffer
     flags: DWORD
     address_as_bytes as AddressObj: object(subclass_of='&TyTuple_Type')
     /
@@ -1756,7 +1756,7 @@ Start overlapped sendto over a connectionless (UDP) socket.
 
 static TyObject *
 _overlapped_Overlapped_WSASendTo_impl(OverlappedObject *self, HANDLE handle,
-                                      Py_buffer *bufobj, DWORD flags,
+                                      Ty_buffer *bufobj, DWORD flags,
                                       TyObject *AddressObj)
 /*[clinic end generated code: output=3cdedc4cfaeb70cd input=31f44cd4ab92fc33]*/
 {
@@ -1883,7 +1883,7 @@ _overlapped_Overlapped_WSARecvFrom_impl(OverlappedObject *self,
 _overlapped.Overlapped.WSARecvFromInto
 
     handle: HANDLE
-    buf as bufobj: Py_buffer
+    buf as bufobj: Ty_buffer
     size: DWORD
     flags: DWORD = 0
     /
@@ -1893,7 +1893,7 @@ Start overlapped receive.
 
 static TyObject *
 _overlapped_Overlapped_WSARecvFromInto_impl(OverlappedObject *self,
-                                            HANDLE handle, Py_buffer *bufobj,
+                                            HANDLE handle, Ty_buffer *bufobj,
                                             DWORD size, DWORD flags)
 /*[clinic end generated code: output=30c7ea171a691757 input=4be4b08d03531e76]*/
 {

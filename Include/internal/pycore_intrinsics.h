@@ -32,8 +32,8 @@
 
 #define MAX_INTRINSIC_2                          5
 
-typedef TyObject *(*intrinsic_func1)(PyThreadState* tstate, TyObject *value);
-typedef TyObject *(*intrinsic_func2)(PyThreadState* tstate, TyObject *value1, TyObject *value2);
+typedef TyObject *(*intrinsic_func1)(TyThreadState* tstate, TyObject *value);
+typedef TyObject *(*intrinsic_func2)(TyThreadState* tstate, TyObject *value1, TyObject *value2);
 
 typedef struct {
     intrinsic_func1 func;

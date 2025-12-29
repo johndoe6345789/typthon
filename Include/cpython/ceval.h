@@ -12,7 +12,7 @@ PyAPI_FUNC(void) TyEval_SetTraceAllThreads(Ty_tracefunc, TyObject *);
    flag was set, else return 0. */
 PyAPI_FUNC(int) TyEval_MergeCompilerFlags(PyCompilerFlags *cf);
 
-PyAPI_FUNC(TyObject *) _TyEval_EvalFrameDefault(PyThreadState *tstate, struct _PyInterpreterFrame *f, int exc);
+PyAPI_FUNC(TyObject *) _TyEval_EvalFrameDefault(TyThreadState *tstate, struct _PyInterpreterFrame *f, int exc);
 
 PyAPI_FUNC(Ty_ssize_t) PyUnstable_Eval_RequestCodeExtraIndex(freefunc);
 // Old name -- remove when this API changes:

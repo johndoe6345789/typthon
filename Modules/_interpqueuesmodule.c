@@ -1121,7 +1121,7 @@ static int
 queue_put(_queues *queues, int64_t qid, TyObject *obj, unboundop_t unboundop,
           xidata_fallback_t fallback)
 {
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
 
     // Look up the queue.
     _queue *queue = NULL;
@@ -1266,7 +1266,7 @@ queue_get_count(_queues *queues, int64_t qid, Ty_ssize_t *p_count)
 
 /* external Queue objects ***************************************************/
 
-static int _queueobj_shared(PyThreadState *, TyObject *, _PyXIData_t *);
+static int _queueobj_shared(TyThreadState *, TyObject *, _PyXIData_t *);
 
 static int
 set_external_queue_type(module_state *state, TyTypeObject *queue_type)
@@ -1374,7 +1374,7 @@ _queueobj_from_xid(_PyXIData_t *data)
 }
 
 static int
-_queueobj_shared(PyThreadState *tstate, TyObject *queueobj, _PyXIData_t *data)
+_queueobj_shared(TyThreadState *tstate, TyObject *queueobj, _PyXIData_t *data)
 {
     TyObject *qidobj = PyObject_GetAttrString(queueobj, "_id");
     if (qidobj == NULL) {

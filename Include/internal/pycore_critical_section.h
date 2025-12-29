@@ -85,7 +85,7 @@ extern "C" {
 
 // Resumes the top-most critical section.
 PyAPI_FUNC(void)
-_PyCriticalSection_Resume(PyThreadState *tstate);
+_PyCriticalSection_Resume(TyThreadState *tstate);
 
 // (private) slow path for locking the mutex
 PyAPI_FUNC(void)
@@ -96,7 +96,7 @@ _PyCriticalSection2_BeginSlow(PyCriticalSection2 *c, PyMutex *m1, PyMutex *m2,
                              int is_m1_locked);
 
 PyAPI_FUNC(void)
-_PyCriticalSection_SuspendAll(PyThreadState *tstate);
+_PyCriticalSection_SuspendAll(TyThreadState *tstate);
 
 #ifdef Ty_GIL_DISABLED
 
@@ -110,7 +110,7 @@ static inline void
 _PyCriticalSection_BeginMutex(PyCriticalSection *c, PyMutex *m)
 {
     if (PyMutex_LockFast(m)) {
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         c->_cs_mutex = m;
         c->_cs_prev = tstate->critical_section;
         tstate->critical_section = (uintptr_t)c;
@@ -133,7 +133,7 @@ _PyCriticalSection_Begin(PyCriticalSection *c, TyObject *op)
 static inline void
 _PyCriticalSection_Pop(PyCriticalSection *c)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     uintptr_t prev = c->_cs_prev;
     tstate->critical_section = prev;
 
@@ -178,7 +178,7 @@ _PyCriticalSection2_BeginMutex(PyCriticalSection2 *c, PyMutex *m1, PyMutex *m2)
 
     if (PyMutex_LockFast(m1)) {
         if (PyMutex_LockFast(m2)) {
-            PyThreadState *tstate = _TyThreadState_GET();
+            TyThreadState *tstate = _TyThreadState_GET();
             c->_cs_base._cs_mutex = m1;
             c->_cs_mutex2 = m2;
             c->_cs_base._cs_prev = tstate->critical_section;
@@ -225,7 +225,7 @@ static inline void
 _PyCriticalSection_AssertHeld(PyMutex *mutex)
 {
 #ifdef Ty_DEBUG
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     uintptr_t prev = tstate->critical_section;
     if (prev & _Ty_CRITICAL_SECTION_TWO_MUTEXES) {
         PyCriticalSection2 *cs = (PyCriticalSection2 *)(prev & ~_Ty_CRITICAL_SECTION_MASK);

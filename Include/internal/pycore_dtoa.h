@@ -30,7 +30,7 @@ extern char* _Ty_dg_dtoa(double d, int mode, int ndigits,
 extern void _Ty_dg_freedtoa(char *s);
 
 
-extern PyStatus _PyDtoa_Init(PyInterpreterState *interp);
+extern TyStatus _PyDtoa_Init(PyInterpreterState *interp);
 extern void _PyDtoa_Fini(PyInterpreterState *interp);
 
 

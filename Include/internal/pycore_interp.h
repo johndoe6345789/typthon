@@ -25,11 +25,11 @@ extern "C" {
 
 /* other API */
 
-extern void _TyInterpreterState_Clear(PyThreadState *tstate);
+extern void _TyInterpreterState_Clear(TyThreadState *tstate);
 
-static inline PyThreadState*
+static inline TyThreadState*
 _TyInterpreterState_GetFinalizing(PyInterpreterState *interp) {
-    return (PyThreadState*)_Ty_atomic_load_ptr_relaxed(&interp->_finalizing);
+    return (TyThreadState*)_Ty_atomic_load_ptr_relaxed(&interp->_finalizing);
 }
 
 static inline unsigned long
@@ -38,7 +38,7 @@ _TyInterpreterState_GetFinalizingID(PyInterpreterState *interp) {
 }
 
 static inline void
-_TyInterpreterState_SetFinalizing(PyInterpreterState *interp, PyThreadState *tstate) {
+_TyInterpreterState_SetFinalizing(PyInterpreterState *interp, TyThreadState *tstate) {
     _Ty_atomic_store_ptr_relaxed(&interp->_finalizing, tstate);
     if (tstate == NULL) {
         _Ty_atomic_store_ulong_relaxed(&interp->_finalizing_id, 0);
@@ -96,8 +96,8 @@ might not be allowed in the current interpreter (i.e. os.fork() would fail).
 extern int _TyInterpreterState_HasFeature(PyInterpreterState *interp,
                                           unsigned long feature);
 
-PyAPI_FUNC(PyStatus) _TyInterpreterState_New(
-    PyThreadState *tstate,
+PyAPI_FUNC(TyStatus) _TyInterpreterState_New(
+    TyThreadState *tstate,
     PyInterpreterState **pinterp);
 
 extern const PyConfig* _TyInterpreterState_GetConfig(

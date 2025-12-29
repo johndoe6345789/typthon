@@ -57,7 +57,7 @@ static const char *converttuple(TyObject *, const char **, va_list *, int,
 static const char *convertsimple(TyObject *, const char **, va_list *, int,
                                  char *, size_t, freelist_t *);
 static Ty_ssize_t convertbuffer(TyObject *, const void **p, const char **);
-static int getbuffer(TyObject *, Py_buffer *, const char**);
+static int getbuffer(TyObject *, Ty_buffer *, const char**);
 
 static int vgetargskeywords(TyObject *, TyObject *,
                             const char *, const char * const *, va_list *, int);
@@ -172,7 +172,7 @@ cleanup_ptr(TyObject *self, void *ptr)
 static int
 cleanup_buffer(TyObject *self, void *ptr)
 {
-    Py_buffer *buf = (Py_buffer *)ptr;
+    Ty_buffer *buf = (Ty_buffer *)ptr;
     if (buf) {
         PyBuffer_Release(buf);
     }
@@ -978,7 +978,7 @@ convertsimple(TyObject *arg, const char **p_format, va_list *p_va, int flags,
         if (*format == '*') {
             format++;
             HANDLE_NULLABLE;
-            if (getbuffer(arg, (Py_buffer*)p, &buf) < 0)
+            if (getbuffer(arg, (Ty_buffer*)p, &buf) < 0)
                 return converterr(nullable, buf, arg, msgbuf, bufsize);
             if (addcleanup(p, freelist, cleanup_buffer)) {
                 return converterr(
@@ -1014,7 +1014,7 @@ convertsimple(TyObject *arg, const char **p_format, va_list *p_va, int flags,
     {
         if (*format == '*') {
             /* "s*" or "z*" */
-            Py_buffer *p = (Py_buffer *)va_arg(*p_va, Py_buffer *);
+            Ty_buffer *p = (Ty_buffer *)va_arg(*p_va, Ty_buffer *);
 
             format++;
             HANDLE_NULLABLE;
@@ -1314,7 +1314,7 @@ convertsimple(TyObject *arg, const char **p_format, va_list *p_va, int flags,
             if (! (res = (*convert)(arg, addr)))
                 return converterr(nullable, "(unspecified)",
                                   arg, msgbuf, bufsize);
-            if (res == Py_CLEANUP_SUPPORTED &&
+            if (res == Ty_CLEANUP_SUPPORTED &&
                 addcleanup(addr, freelist, convert) == -1)
                 return converterr(nullable, "(cleanup problem)",
                                 arg, msgbuf, bufsize);
@@ -1338,15 +1338,15 @@ convertsimple(TyObject *arg, const char **p_format, va_list *p_va, int flags,
         format++;
         HANDLE_NULLABLE;
 
-        /* Caller is interested in Py_buffer, and the object supports it
+        /* Caller is interested in Ty_buffer, and the object supports it
            directly. The request implicitly asks for PyBUF_SIMPLE, so the
            result is C-contiguous with format 'B'. */
-        if (PyObject_GetBuffer(arg, (Py_buffer*)p, PyBUF_WRITABLE) < 0) {
+        if (PyObject_GetBuffer(arg, (Ty_buffer*)p, PyBUF_WRITABLE) < 0) {
             TyErr_Clear();
             return converterr(nullable, "read-write bytes-like object",
                               arg, msgbuf, bufsize);
         }
-        assert(PyBuffer_IsContiguous((Py_buffer *)p, 'C'));
+        assert(PyBuffer_IsContiguous((Ty_buffer *)p, 'C'));
         if (addcleanup(p, freelist, cleanup_buffer)) {
             return converterr(
                 nullable, "(cleanup problem)",
@@ -1371,7 +1371,7 @@ convertbuffer(TyObject *arg, const void **p, const char **errmsg)
 {
     PyBufferProcs *pb = Ty_TYPE(arg)->tp_as_buffer;
     Ty_ssize_t count;
-    Py_buffer view;
+    Ty_buffer view;
 
     *errmsg = NULL;
     *p = NULL;
@@ -1389,7 +1389,7 @@ convertbuffer(TyObject *arg, const void **p, const char **errmsg)
 }
 
 static int
-getbuffer(TyObject *arg, Py_buffer *view, const char **errmsg)
+getbuffer(TyObject *arg, Ty_buffer *view, const char **errmsg)
 {
     /* PyBUF_SIMPLE implies C-contiguous */
     if (PyObject_GetBuffer(arg, view, PyBUF_SIMPLE) != 0) {
@@ -2109,8 +2109,8 @@ _parser_init(void *arg)
     if (kwtuple == NULL) {
         /* We may temporarily switch to the main interpreter to avoid
          * creating a tuple that could outlive its owning interpreter. */
-        PyThreadState *save_tstate = NULL;
-        PyThreadState *temp_tstate = NULL;
+        TyThreadState *save_tstate = NULL;
+        TyThreadState *temp_tstate = NULL;
         if (!_Ty_IsMainInterpreter(TyInterpreterState_Get())) {
             temp_tstate = TyThreadState_New(_TyInterpreterState_Main());
             if (temp_tstate == NULL) {

@@ -715,7 +715,7 @@ _TyPegen_number_token(Parser *p)
 
     if (c == NULL) {
         p->error_indicator = 1;
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         // The only way a ValueError should happen in _this_ code is via
         // TyLong_FromString hitting a length limit.
         if (tstate->current_exception != NULL &&

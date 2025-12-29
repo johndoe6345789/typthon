@@ -181,7 +181,7 @@ struct pyruntimestate {
 
        Use _PyRuntimeState_GetFinalizing() and _PyRuntimeState_SetFinalizing()
        to access it, don't access it directly. */
-    PyThreadState *_finalizing;
+    TyThreadState *_finalizing;
     /* The ID of the OS thread in which we are finalizing. */
     unsigned long _finalizing_id;
 
@@ -204,10 +204,10 @@ struct pyruntimestate {
         int64_t next_id;
     } interpreters;
 
-    /* Platform-specific identifier and PyThreadState, respectively, for the
+    /* Platform-specific identifier and TyThreadState, respectively, for the
        main thread in the main interpreter. */
     unsigned long main_thread;
-    PyThreadState *main_tstate;
+    TyThreadState *main_tstate;
 
     /* ---------- IMPORTANT ---------------------------
      The fields above this line are declared as early as
@@ -226,7 +226,7 @@ struct pyruntimestate {
     /* Used for the thread state bound to the current thread. */
     Ty_tss_t autoTSSkey;
 
-    /* Used instead of PyThreadState.trash when there is not current tstate. */
+    /* Used instead of TyThreadState.trash when there is not current tstate. */
     Ty_tss_t trashTSSkey;
 
     PyWideStringList orig_argv;

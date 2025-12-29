@@ -1814,21 +1814,21 @@ _Ty_make_typevar(TyObject *name, TyObject *evaluate_bound, TyObject *evaluate_co
 }
 
 TyObject *
-_Ty_make_paramspec(PyThreadState *Py_UNUSED(ignored), TyObject *v)
+_Ty_make_paramspec(TyThreadState *Py_UNUSED(ignored), TyObject *v)
 {
     assert(TyUnicode_Check(v));
     return (TyObject *)paramspec_alloc(v, NULL, NULL, false, false, true, NULL);
 }
 
 TyObject *
-_Ty_make_typevartuple(PyThreadState *Py_UNUSED(ignored), TyObject *v)
+_Ty_make_typevartuple(TyThreadState *Py_UNUSED(ignored), TyObject *v)
 {
     assert(TyUnicode_Check(v));
     return (TyObject *)typevartuple_alloc(v, NULL, NULL);
 }
 
 static TyObject *
-get_type_param_default(PyThreadState *ts, TyObject *typeparam) {
+get_type_param_default(TyThreadState *ts, TyObject *typeparam) {
     // Does not modify refcount of existing objects.
     if (Ty_IS_TYPE(typeparam, ts->interp->cached_objects.typevar_type)) {
         return typevar_default(typeparam, NULL);
@@ -1969,7 +1969,7 @@ typealias_check_type_params(TyObject *type_params, int *err) {
         return NULL;
     }
 
-    PyThreadState *ts = _TyThreadState_GET();
+    TyThreadState *ts = _TyThreadState_GET();
     int default_seen = 0;
     for (Ty_ssize_t index = 0; index < length; index++) {
         TyObject *type_param = TyTuple_GET_ITEM(type_params, index);
@@ -2173,7 +2173,7 @@ TyTypeObject _PyTypeAlias_Type = {
 };
 
 TyObject *
-_Ty_make_typealias(PyThreadState* unused, TyObject *args)
+_Ty_make_typealias(TyThreadState* unused, TyObject *args)
 {
     assert(TyTuple_Check(args));
     assert(TyTuple_GET_SIZE(args) == 3);
@@ -2270,7 +2270,7 @@ generic_class_getitem(TyObject *cls, TyObject *args, TyObject *kwargs)
 }
 
 TyObject *
-_Ty_subscript_generic(PyThreadState* unused, TyObject *params)
+_Ty_subscript_generic(TyThreadState* unused, TyObject *params)
 {
     params = unpack_typevartuples(params);
 
@@ -2362,7 +2362,7 @@ void _Ty_clear_generic_types(PyInterpreterState *interp)
 }
 
 TyObject *
-_Ty_set_typeparam_default(PyThreadState *ts, TyObject *typeparam, TyObject *evaluate_default)
+_Ty_set_typeparam_default(TyThreadState *ts, TyObject *typeparam, TyObject *evaluate_default)
 {
     if (Ty_IS_TYPE(typeparam, ts->interp->cached_objects.typevar_type)) {
         Ty_XSETREF(((typevarobject *)typeparam)->evaluate_default, Ty_NewRef(evaluate_default));

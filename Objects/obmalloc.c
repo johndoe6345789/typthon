@@ -1285,7 +1285,7 @@ free_delayed(uintptr_t ptr, size_t size)
         // Normally the processing of delayed items is done from the eval
         // breaker.  Processing here is a safety measure to ensure too much
         // work does not accumulate.
-        _TyMem_ProcessDelayed((PyThreadState *)tstate);
+        _TyMem_ProcessDelayed((TyThreadState *)tstate);
     }
 #endif
 }
@@ -1379,7 +1379,7 @@ maybe_process_interp_queue(struct _Ty_mem_interp_free_queue *queue,
 }
 
 void
-_TyMem_ProcessDelayed(PyThreadState *tstate)
+_TyMem_ProcessDelayed(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
     _PyThreadStateImpl *tstate_impl = (_PyThreadStateImpl *)tstate;
@@ -1394,7 +1394,7 @@ _TyMem_ProcessDelayed(PyThreadState *tstate)
 }
 
 void
-_TyMem_ProcessDelayedNoDealloc(PyThreadState *tstate, delayed_dealloc_cb cb, void *state)
+_TyMem_ProcessDelayedNoDealloc(TyThreadState *tstate, delayed_dealloc_cb cb, void *state)
 {
     PyInterpreterState *interp = tstate->interp;
     _PyThreadStateImpl *tstate_impl = (_PyThreadStateImpl *)tstate;
@@ -1407,7 +1407,7 @@ _TyMem_ProcessDelayedNoDealloc(PyThreadState *tstate, delayed_dealloc_cb cb, voi
 }
 
 void
-_TyMem_AbandonDelayed(PyThreadState *tstate)
+_TyMem_AbandonDelayed(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
     struct llist_node *queue = &((_PyThreadStateImpl *)tstate)->mem_free_queue;
@@ -3048,7 +3048,7 @@ _TyMem_DebugRawRealloc(void *ctx, void *p, size_t nbytes)
 static inline void
 _TyMem_DebugCheckGIL(const char *func)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate == NULL) {
 #ifndef Ty_GIL_DISABLED
         _Ty_FatalErrorFunc(func,

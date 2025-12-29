@@ -7308,7 +7308,7 @@ clear_state(datetime_state *st)
 }
 
 
-PyStatus
+TyStatus
 _PyDateTime_InitTypes(PyInterpreterState *interp)
 {
     /* Bases classes must be initialized before subclasses,

@@ -39,7 +39,7 @@ struct _pending_call {
 #define PENDINGCALLSARRAYSIZE 300
 
 struct _pending_calls {
-    PyThreadState *handling_thread;
+    TyThreadState *handling_thread;
     PyMutex mutex;
     /* Request for running pending calls. */
     int32_t npending;
@@ -103,7 +103,7 @@ struct _ceval_runtime_state {
 
 struct _ceval_state {
     /* This variable holds the global instrumentation version. When a thread is
-       running, this value is overlaid onto PyThreadState.eval_breaker so that
+       running, this value is overlaid onto TyThreadState.eval_breaker so that
        changes in the instrumentation version will trigger the eval breaker. */
     uintptr_t instrumentation_version;
     int recursion_limit;
@@ -374,7 +374,7 @@ struct _stoptheworld_state {
     PyEvent stop_event;  // Set when thread_countdown reaches zero.
     Ty_ssize_t thread_countdown;  // Number of threads that must pause.
 
-    PyThreadState *requester; // Thread that requested the pause (may be NULL).
+    TyThreadState *requester; // Thread that requested the pause (may be NULL).
 };
 
 /* Tracks some rare events per-interpreter, used by the optimizer to turn on/off
@@ -795,10 +795,10 @@ struct _is {
     struct pythreads {
         uint64_t next_unique_id;
         /* The linked list of threads, newest first. */
-        PyThreadState *head;
+        TyThreadState *head;
         _PyThreadStateImpl *preallocated;
         /* The thread currently executing in the __main__ module, if any. */
-        PyThreadState *main;
+        TyThreadState *main;
         /* Used in Modules/_threadmodule.c. */
         Ty_ssize_t count;
         /* Support for runtime thread stack size tuning.
@@ -818,7 +818,7 @@ struct _is {
        Use _TyInterpreterState_GetFinalizing()
        and _TyInterpreterState_SetFinalizing()
        to access it, don't access it directly. */
-    PyThreadState* _finalizing;
+    TyThreadState* _finalizing;
     /* The ID of the OS thread in which we are finalizing. */
     unsigned long _finalizing_id;
 

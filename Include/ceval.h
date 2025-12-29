@@ -108,16 +108,16 @@ PyAPI_FUNC(TyObject *) TyEval_EvalFrameEx(PyFrameObject *f, int exc);
    mechanism!
 */
 
-PyAPI_FUNC(PyThreadState *) TyEval_SaveThread(void);
-PyAPI_FUNC(void) TyEval_RestoreThread(PyThreadState *);
+PyAPI_FUNC(TyThreadState *) TyEval_SaveThread(void);
+PyAPI_FUNC(void) TyEval_RestoreThread(TyThreadState *);
 
 Ty_DEPRECATED(3.9) PyAPI_FUNC(void) TyEval_InitThreads(void);
 
-PyAPI_FUNC(void) TyEval_AcquireThread(PyThreadState *tstate);
-PyAPI_FUNC(void) TyEval_ReleaseThread(PyThreadState *tstate);
+PyAPI_FUNC(void) TyEval_AcquireThread(TyThreadState *tstate);
+PyAPI_FUNC(void) TyEval_ReleaseThread(TyThreadState *tstate);
 
 #define Ty_BEGIN_ALLOW_THREADS { \
-                        PyThreadState *_save; \
+                        TyThreadState *_save; \
                         _save = TyEval_SaveThread();
 #define Ty_BLOCK_THREADS        TyEval_RestoreThread(_save);
 #define Ty_UNBLOCK_THREADS      _save = TyEval_SaveThread();

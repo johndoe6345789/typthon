@@ -20,7 +20,7 @@ void
 _PyCriticalSection_BeginSlow(PyCriticalSection *c, PyMutex *m)
 {
 #ifdef Ty_GIL_DISABLED
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     // As an optimisation for locking the same object recursively, skip
     // locking if the mutex is currently locked by the top-most critical
     // section.
@@ -44,7 +44,7 @@ _PyCriticalSection2_BeginSlow(PyCriticalSection2 *c, PyMutex *m1, PyMutex *m2,
                               int is_m1_locked)
 {
 #ifdef Ty_GIL_DISABLED
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     c->_cs_base._cs_mutex = NULL;
     c->_cs_mutex2 = NULL;
     c->_cs_base._cs_prev = tstate->critical_section;
@@ -63,7 +63,7 @@ _PyCriticalSection2_BeginSlow(PyCriticalSection2 *c, PyMutex *m1, PyMutex *m2,
 // Release all locks held by critical sections. This is called by
 // _TyThreadState_Detach.
 void
-_PyCriticalSection_SuspendAll(PyThreadState *tstate)
+_PyCriticalSection_SuspendAll(TyThreadState *tstate)
 {
 #ifdef Ty_GIL_DISABLED
     uintptr_t *tagptr = &tstate->critical_section;
@@ -87,7 +87,7 @@ _PyCriticalSection_SuspendAll(PyThreadState *tstate)
 }
 
 void
-_PyCriticalSection_Resume(PyThreadState *tstate)
+_PyCriticalSection_Resume(TyThreadState *tstate)
 {
 #ifdef Ty_GIL_DISABLED
     uintptr_t p = tstate->critical_section;

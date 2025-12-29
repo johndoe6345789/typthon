@@ -18,8 +18,8 @@ PyAPI_FUNC(int) Ty_FinalizeEx(void);
 PyAPI_FUNC(int) Ty_IsInitialized(void);
 
 /* Subinterpreter support */
-PyAPI_FUNC(PyThreadState *) Ty_NewInterpreter(void);
-PyAPI_FUNC(void) Ty_EndInterpreter(PyThreadState *);
+PyAPI_FUNC(TyThreadState *) Ty_NewInterpreter(void);
+PyAPI_FUNC(void) Ty_EndInterpreter(TyThreadState *);
 
 
 /* Ty_PyAtExit is for the atexit module, Ty_AtExit is for low-level

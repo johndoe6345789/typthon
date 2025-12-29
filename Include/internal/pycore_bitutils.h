@@ -33,7 +33,7 @@ extern "C" {
 static inline uint16_t
 _Py_bswap16(uint16_t word)
 {
-#if defined(_PY_HAVE_BUILTIN_BSWAP) || _Py__has_builtin(__builtin_bswap16)
+#if defined(_PY_HAVE_BUILTIN_BSWAP) || _Ty__has_builtin(__builtin_bswap16)
     return __builtin_bswap16(word);
 #elif defined(_MSC_VER)
     Ty_BUILD_ASSERT(sizeof(word) == sizeof(unsigned short));
@@ -48,7 +48,7 @@ _Py_bswap16(uint16_t word)
 static inline uint32_t
 _Py_bswap32(uint32_t word)
 {
-#if defined(_PY_HAVE_BUILTIN_BSWAP) || _Py__has_builtin(__builtin_bswap32)
+#if defined(_PY_HAVE_BUILTIN_BSWAP) || _Ty__has_builtin(__builtin_bswap32)
     return __builtin_bswap32(word);
 #elif defined(_MSC_VER)
     Ty_BUILD_ASSERT(sizeof(word) == sizeof(unsigned long));
@@ -65,7 +65,7 @@ _Py_bswap32(uint32_t word)
 static inline uint64_t
 _Py_bswap64(uint64_t word)
 {
-#if defined(_PY_HAVE_BUILTIN_BSWAP) || _Py__has_builtin(__builtin_bswap64)
+#if defined(_PY_HAVE_BUILTIN_BSWAP) || _Ty__has_builtin(__builtin_bswap64)
     return __builtin_bswap64(word);
 #elif defined(_MSC_VER)
     return _byteswap_uint64(word);

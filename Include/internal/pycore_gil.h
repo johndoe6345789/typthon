@@ -39,9 +39,9 @@ struct _gil_runtime_state {
 #endif
     /* microseconds (the Python API uses seconds, though) */
     unsigned long interval;
-    /* Last PyThreadState holding / having held the GIL. This helps us
+    /* Last TyThreadState holding / having held the GIL. This helps us
        know whether anyone else was scheduled after we dropped the GIL. */
-    PyThreadState* last_holder;
+    TyThreadState* last_holder;
     /* Whether the GIL is already taken (-1 if uninitialized). This is
        atomic because it can be read without any lock taken in ceval.c. */
     int locked;

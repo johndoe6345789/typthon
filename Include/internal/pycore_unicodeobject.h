@@ -274,8 +274,8 @@ PyAPI_FUNC(Ty_ssize_t) _TyUnicode_ScanIdentifier(TyObject *);
 /* --- Runtime lifecycle -------------------------------------------------- */
 
 extern void _TyUnicode_InitState(PyInterpreterState *);
-extern PyStatus _TyUnicode_InitGlobalObjects(PyInterpreterState *);
-extern PyStatus _TyUnicode_InitTypes(PyInterpreterState *);
+extern TyStatus _TyUnicode_InitGlobalObjects(PyInterpreterState *);
+extern TyStatus _TyUnicode_InitTypes(PyInterpreterState *);
 extern void _TyUnicode_Fini(PyInterpreterState *);
 extern void _TyUnicode_FiniTypes(PyInterpreterState *);
 

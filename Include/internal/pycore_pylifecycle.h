@@ -17,7 +17,7 @@ extern int _Ty_SetFileSystemEncoding(
     const char *encoding,
     const char *errors);
 extern void _Ty_ClearFileSystemEncoding(void);
-extern PyStatus _TyUnicode_InitEncodings(PyThreadState *tstate);
+extern TyStatus _TyUnicode_InitEncodings(TyThreadState *tstate);
 #ifdef MS_WINDOWS
 extern int _TyUnicode_EnableLegacyWindowsFSEncoding(void);
 #endif
@@ -27,21 +27,21 @@ extern int _Ty_IsLocaleCoercionTarget(const char *ctype_loc);
 /* Various one-time initializers */
 
 extern void _Ty_InitVersion(void);
-extern PyStatus _PyFaulthandler_Init(int enable);
+extern TyStatus _PyFaulthandler_Init(int enable);
 extern TyObject * _PyBuiltin_Init(PyInterpreterState *interp);
-extern PyStatus _TySys_Create(
-    PyThreadState *tstate,
+extern TyStatus _TySys_Create(
+    TyThreadState *tstate,
     TyObject **sysmod_p);
-extern PyStatus _TySys_ReadPreinitWarnOptions(PyWideStringList *options);
-extern PyStatus _TySys_ReadPreinitXOptions(PyConfig *config);
-extern int _TySys_UpdateConfig(PyThreadState *tstate);
+extern TyStatus _TySys_ReadPreinitWarnOptions(PyWideStringList *options);
+extern TyStatus _TySys_ReadPreinitXOptions(PyConfig *config);
+extern int _TySys_UpdateConfig(TyThreadState *tstate);
 extern void _TySys_FiniTypes(PyInterpreterState *interp);
 extern int _PyBuiltins_AddExceptions(TyObject * bltinmod);
-extern PyStatus _Ty_HashRandomization_Init(const PyConfig *);
+extern TyStatus _Ty_HashRandomization_Init(const PyConfig *);
 
-extern PyStatus _TyGC_Init(PyInterpreterState *interp);
-extern PyStatus _PyAtExit_Init(PyInterpreterState *interp);
-extern PyStatus _PyDateTime_InitTypes(PyInterpreterState *interp);
+extern TyStatus _TyGC_Init(PyInterpreterState *interp);
+extern TyStatus _PyAtExit_Init(PyInterpreterState *interp);
+extern TyStatus _PyDateTime_InitTypes(PyInterpreterState *interp);
 
 /* Various internal finalizers */
 
@@ -60,16 +60,16 @@ extern void _PyThread_FiniType(PyInterpreterState *interp);
 extern void _TyArg_Fini(void);
 extern void _Ty_FinalizeAllocatedBlocks(_PyRuntimeState *);
 
-extern PyStatus _TyGILState_Init(PyInterpreterState *interp);
-extern void _TyGILState_SetTstate(PyThreadState *tstate);
+extern TyStatus _TyGILState_Init(PyInterpreterState *interp);
+extern void _TyGILState_SetTstate(TyThreadState *tstate);
 extern void _TyGILState_Fini(PyInterpreterState *interp);
 
 extern void _TyGC_DumpShutdownStats(PyInterpreterState *interp);
 
-extern PyStatus _Ty_PreInitializeFromPyArgv(
+extern TyStatus _Ty_PreInitializeFromPyArgv(
     const PyPreConfig *src_config,
     const struct _PyArgv *args);
-extern PyStatus _Ty_PreInitializeFromConfig(
+extern TyStatus _Ty_PreInitializeFromConfig(
     const PyConfig *config,
     const struct _PyArgv *args);
 
@@ -79,12 +79,12 @@ extern int _Ty_HandleSystemExitAndKeyboardInterrupt(int *exitcode_p);
 
 extern TyObject* _TyErr_WriteUnraisableDefaultHook(TyObject *unraisable);
 
-extern void _TyErr_Print(PyThreadState *tstate);
+extern void _TyErr_Print(TyThreadState *tstate);
 extern void _TyErr_Display(TyObject *file, TyObject *exception,
                                 TyObject *value, TyObject *tb);
 extern void _TyErr_DisplayException(TyObject *file, TyObject *exc);
 
-extern void _TyThreadState_DeleteCurrent(PyThreadState *tstate);
+extern void _TyThreadState_DeleteCurrent(TyThreadState *tstate);
 
 extern void _PyAtExit_Call(PyInterpreterState *interp);
 

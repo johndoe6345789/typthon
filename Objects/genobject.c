@@ -192,7 +192,7 @@ static PySendResult
 gen_send_ex2(PyGenObject *gen, TyObject *arg, TyObject **presult,
              int exc, int closing)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyInterpreterFrame *frame = &gen->gi_iframe;
 
     *presult = NULL;
@@ -486,7 +486,7 @@ _gen_throw(PyGenObject *gen, int close_on_genexit,
                 return gen_send_ex(gen, Ty_None, 1, 0);
             goto throw_here;
         }
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         assert(tstate != NULL);
         if (TyGen_CheckExact(yf) || TyCoro_CheckExact(yf)) {
             /* `yf` is a generator or a coroutine. */
@@ -960,7 +960,7 @@ _Ty_MakeCoro(PyFunctionObject *func)
     if (!coro) {
         return NULL;
     }
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     int origin_depth = tstate->coroutine_origin_tracking_depth;
 
     if (origin_depth == 0) {
@@ -1402,7 +1402,7 @@ TyCoro_New(PyFrameObject *f, TyObject *name, TyObject *qualname)
         return NULL;
     }
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     int origin_depth = tstate->coroutine_origin_tracking_depth;
 
     if (origin_depth == 0) {
@@ -1491,7 +1491,7 @@ async_gen_repr(TyObject *self)
 static int
 async_gen_init_hooks(PyAsyncGenObject *o)
 {
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     TyObject *finalizer;
     TyObject *firstiter;
 
@@ -2043,7 +2043,7 @@ TyTypeObject _PyAsyncGenWrappedValue_Type = {
 
 
 TyObject *
-_PyAsyncGenValueWrapperNew(PyThreadState *tstate, TyObject *val)
+_PyAsyncGenValueWrapperNew(TyThreadState *tstate, TyObject *val)
 {
     assert(val);
 

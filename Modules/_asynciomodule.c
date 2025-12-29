@@ -2230,7 +2230,7 @@ unregister_task(TaskObj *task)
     else {
         // we are in a different thread
         // stop the world then check and remove the task
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         _TyEval_StopTheWorld(tstate->interp);
         unregister_task_safe(task);
         _TyEval_StartTheWorld(tstate->interp);

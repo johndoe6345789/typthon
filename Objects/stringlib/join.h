@@ -20,7 +20,7 @@ STRINGLIB(bytes_join)(TyObject *sep, TyObject *iterable)
     Ty_buffer static_buffers[NB_STATIC_BUFFERS];
 #define GIL_THRESHOLD 1048576
     int drop_gil = 1;
-    PyThreadState *save = NULL;
+    TyThreadState *save = NULL;
 
     seq = PySequence_Fast(iterable, "can only join an iterable");
     if (seq == NULL) {

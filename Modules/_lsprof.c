@@ -961,7 +961,7 @@ profiler_dealloc(TyObject *op)
     ProfilerObject *self = ProfilerObject_CAST(op);
     PyObject_GC_UnTrack(self);
     if (self->flags & POF_ENABLED) {
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         if (_TyEval_SetProfile(tstate, NULL, NULL) < 0) {
             TyErr_FormatUnraisable("Exception ignored while "
                                    "destroying _lsprof profiler");

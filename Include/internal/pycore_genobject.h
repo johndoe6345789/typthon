@@ -31,7 +31,7 @@ PyAPI_FUNC(int) _TyGen_SetStopIterationValue(TyObject *);
 PyAPI_FUNC(int) _TyGen_FetchStopIterationValue(TyObject **);
 
 PyAPI_FUNC(TyObject *)_PyCoro_GetAwaitableIter(TyObject *o);
-extern TyObject *_PyAsyncGenValueWrapperNew(PyThreadState *state, TyObject *);
+extern TyObject *_PyAsyncGenValueWrapperNew(TyThreadState *state, TyObject *);
 
 extern TyTypeObject _PyCoroWrapper_Type;
 extern TyTypeObject _PyAsyncGenWrappedValue_Type;

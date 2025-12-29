@@ -682,7 +682,7 @@ TyOS_AfterFork_Parent(void)
 }
 
 static void
-reset_remotedebug_data(PyThreadState *tstate)
+reset_remotedebug_data(TyThreadState *tstate)
 {
     tstate->remote_debugger_support.debugger_pending_call = 0;
     memset(tstate->remote_debugger_support.debugger_script_path, 0,
@@ -693,7 +693,7 @@ reset_remotedebug_data(PyThreadState *tstate)
 void
 TyOS_AfterFork_Child(void)
 {
-    PyStatus status;
+    TyStatus status;
     _PyRuntimeState *runtime = &_PyRuntime;
 
     // re-creates runtime->interpreters.mutex (HEAD_UNLOCK)
@@ -702,7 +702,7 @@ TyOS_AfterFork_Child(void)
         goto fatal_error;
     }
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _Ty_EnsureTstateNotNULL(tstate);
 
     assert(tstate->thread_id == PyThread_get_thread_ident());
@@ -729,7 +729,7 @@ TyOS_AfterFork_Child(void)
     // thread state left to undo the stop the world call in `TyOS_BeforeFork`.
     // That needs to happen before `_TyThreadState_DeleteList`, because that
     // may call destructors.
-    PyThreadState *list = _TyThreadState_RemoveExcept(tstate);
+    TyThreadState *list = _TyThreadState_RemoveExcept(tstate);
     _TyEval_StartTheWorldAll(&_PyRuntime);
     _TyThreadState_DeleteList(list, /*is_after_fork=*/1);
 
@@ -1342,7 +1342,7 @@ path_converter(TyObject *o, void *p)
         path->function_name ? ": "                : "", \
         path->argument_name ? path->argument_name : "path")
 
-    /* Py_CLEANUP_SUPPORTED support */
+    /* Ty_CLEANUP_SUPPORTED support */
     if (o == NULL) {
         path_cleanup(path);
         return 1;
@@ -1505,7 +1505,7 @@ path_converter(TyObject *o, void *p)
     path->value_error = 0;
     path->length = length;
     path->object = o;
-    return Py_CLEANUP_SUPPORTED;
+    return Ty_CLEANUP_SUPPORTED;
 
  error_exit:
     Ty_XDECREF(o);
@@ -1523,7 +1523,7 @@ path_converter(TyObject *o, void *p)
     path->value_error = 1;
     path->length = 0;
     path->object = NULL;
-    return Py_CLEANUP_SUPPORTED;
+    return Ty_CLEANUP_SUPPORTED;
 }
 
 static void
@@ -11488,7 +11488,7 @@ os_read_impl(TyObject *module, int fd, Ty_ssize_t length)
 /*[clinic input]
 os.readinto -> Ty_ssize_t
     fd: int
-    buffer: Py_buffer(accept={rwbuffer})
+    buffer: Ty_buffer(accept={rwbuffer})
     /
 
 Read into a buffer object from a file descriptor.
@@ -11505,7 +11505,7 @@ negative.
 [clinic start generated code]*/
 
 static Ty_ssize_t
-os_readinto_impl(TyObject *module, int fd, Py_buffer *buffer)
+os_readinto_impl(TyObject *module, int fd, Ty_buffer *buffer)
 /*[clinic end generated code: output=8091a3513c683a80 input=d40074d0a68de575]*/
 {
     assert(buffer->len >= 0);
@@ -11522,7 +11522,7 @@ os_readinto_impl(TyObject *module, int fd, Py_buffer *buffer)
     || defined(HAVE_READV) || defined(HAVE_PREADV) || defined (HAVE_PREADV2) \
     || defined(HAVE_WRITEV) || defined(HAVE_PWRITEV) || defined (HAVE_PWRITEV2)
 static int
-iov_setup(struct iovec **iov, Py_buffer **buf, TyObject *seq, Ty_ssize_t cnt, int type)
+iov_setup(struct iovec **iov, Ty_buffer **buf, TyObject *seq, Ty_ssize_t cnt, int type)
 {
     Ty_ssize_t i, j;
 
@@ -11532,7 +11532,7 @@ iov_setup(struct iovec **iov, Py_buffer **buf, TyObject *seq, Ty_ssize_t cnt, in
         return -1;
     }
 
-    *buf = TyMem_New(Py_buffer, cnt);
+    *buf = TyMem_New(Ty_buffer, cnt);
     if (*buf == NULL) {
         TyMem_Free(*iov);
         TyErr_NoMemory();
@@ -11563,7 +11563,7 @@ fail:
 }
 
 static void
-iov_cleanup(struct iovec *iov, Py_buffer *buf, int cnt)
+iov_cleanup(struct iovec *iov, Ty_buffer *buf, int cnt)
 {
     int i;
     TyMem_Free(iov);
@@ -11601,7 +11601,7 @@ os_readv_impl(TyObject *module, int fd, TyObject *buffers)
     Ty_ssize_t cnt, n;
     int async_err = 0;
     struct iovec *iov;
-    Py_buffer *buf;
+    Ty_buffer *buf;
 
     if (!PySequence_Check(buffers)) {
         TyErr_SetString(TyExc_TypeError,
@@ -11724,7 +11724,7 @@ os_preadv_impl(TyObject *module, int fd, TyObject *buffers, Ty_off_t offset,
     Ty_ssize_t cnt, n;
     int async_err = 0;
     struct iovec *iov;
-    Py_buffer *buf;
+    Ty_buffer *buf;
 
     if (!PySequence_Check(buffers)) {
         TyErr_SetString(TyExc_TypeError,
@@ -11797,14 +11797,14 @@ os_preadv_impl(TyObject *module, int fd, TyObject *buffers, Ty_off_t offset,
 os.write -> Ty_ssize_t
 
     fd: int
-    data: Py_buffer
+    data: Ty_buffer
     /
 
 Write a bytes object to a file descriptor.
 [clinic start generated code]*/
 
 static Ty_ssize_t
-os_write_impl(TyObject *module, int fd, Py_buffer *data)
+os_write_impl(TyObject *module, int fd, Ty_buffer *data)
 /*[clinic end generated code: output=e4ef5bc904b58ef9 input=3207e28963234f3c]*/
 {
     return _Ty_write(fd, data->buf, data->len);
@@ -11876,7 +11876,7 @@ os_sendfile_impl(TyObject *module, int out_fd, int in_fd, TyObject *offobj,
 #ifndef __APPLE__
     off_t sbytes;
 #endif
-    Py_buffer *hbuf, *tbuf;
+    Ty_buffer *hbuf, *tbuf;
     struct sf_hdtr sf;
 
     sf.headers = NULL;
@@ -12266,7 +12266,7 @@ os_writev_impl(TyObject *module, int fd, TyObject *buffers)
     Ty_ssize_t result;
     int async_err = 0;
     struct iovec *iov;
-    Py_buffer *buf;
+    Ty_buffer *buf;
 
     if (!PySequence_Check(buffers)) {
         TyErr_SetString(TyExc_TypeError,
@@ -12301,7 +12301,7 @@ os_writev_impl(TyObject *module, int fd, TyObject *buffers)
 os.pwrite -> Ty_ssize_t
 
     fd: int
-    buffer: Py_buffer
+    buffer: Ty_buffer
     offset: Ty_off_t
     /
 
@@ -12313,7 +12313,7 @@ current file offset.
 [clinic start generated code]*/
 
 static Ty_ssize_t
-os_pwrite_impl(TyObject *module, int fd, Py_buffer *buffer, Ty_off_t offset)
+os_pwrite_impl(TyObject *module, int fd, Ty_buffer *buffer, Ty_off_t offset)
 /*[clinic end generated code: output=c74da630758ee925 input=614acbc7e5a0339a]*/
 {
     Ty_ssize_t size;
@@ -12370,7 +12370,7 @@ os_pwritev_impl(TyObject *module, int fd, TyObject *buffers, Ty_off_t offset,
     Ty_ssize_t result;
     int async_err = 0;
     struct iovec *iov;
-    Py_buffer *buf;
+    Ty_buffer *buf;
 
     if (!PySequence_Check(buffers)) {
         TyErr_SetString(TyExc_TypeError,
@@ -14946,7 +14946,7 @@ os.setxattr
 
     path: path_t(allow_fd=True)
     attribute: path_t
-    value: Py_buffer
+    value: Ty_buffer
     flags: int = 0
     *
     follow_symlinks: bool = True
@@ -14962,7 +14962,7 @@ If follow_symlinks is False, and the last element of the path is a symbolic
 
 static TyObject *
 os_setxattr_impl(TyObject *module, path_t *path, path_t *attribute,
-                 Py_buffer *value, int flags, int follow_symlinks)
+                 Ty_buffer *value, int flags, int follow_symlinks)
 /*[clinic end generated code: output=98b83f63fdde26bb input=c17c0103009042f0]*/
 {
     ssize_t result;

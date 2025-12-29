@@ -75,7 +75,7 @@ frame_new(TyObject *self, TyObject *args)
         TyErr_SetString(TyExc_TypeError, "argument must be a code object");
         return NULL;
     }
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
 
     return (TyObject *)TyFrame_New(tstate, (PyCodeObject *)code, globals, locals);
 }

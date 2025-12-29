@@ -20,7 +20,7 @@ extern int PyInitFrozenExtensions(void);
 int
 Ty_FrozenMain(int argc, char **argv)
 {
-    PyStatus status = _PyRuntime_Initialize();
+    TyStatus status = _PyRuntime_Initialize();
     if (TyStatus_Exception(status)) {
         Ty_ExitStatusException(status);
     }

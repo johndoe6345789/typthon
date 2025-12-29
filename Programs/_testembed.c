@@ -55,7 +55,7 @@ static void error(const char *msg)
 
 static void config_set_string(PyConfig *config, wchar_t **config_str, const wchar_t *str)
 {
-    PyStatus status = TyConfig_SetString(config, config_str, str);
+    TyStatus status = TyConfig_SetString(config, config_str, str);
     if (TyStatus_Exception(status)) {
         TyConfig_Clear(config);
         Ty_ExitStatusException(status);
@@ -72,7 +72,7 @@ static void config_set_program_name(PyConfig *config)
 
 static void init_from_config_clear(PyConfig *config)
 {
-    PyStatus status = Ty_InitializeFromConfig(config);
+    TyStatus status = Ty_InitializeFromConfig(config);
     TyConfig_Clear(config);
     if (TyStatus_Exception(status)) {
         Ty_ExitStatusException(status);
@@ -111,7 +111,7 @@ static void print_subinterp(void)
 {
     /* Output information about the interpreter in the format
        expected in Lib/test/test_capi.py (test_subinterps). */
-    PyThreadState *ts = TyThreadState_Get();
+    TyThreadState *ts = TyThreadState_Get();
     PyInterpreterState *interp = ts->interp;
     int64_t id = TyInterpreterState_GetID(interp);
     printf("interp %" PRId64 " <0x%" PRIXPTR ">, thread state <0x%" PRIXPTR ">: ",
@@ -126,7 +126,7 @@ static void print_subinterp(void)
 
 static int test_repeated_init_and_subinterpreters(void)
 {
-    PyThreadState *mainstate, *substate;
+    TyThreadState *mainstate, *substate;
     TyGILState_STATE gilstate;
 
     for (int i=1; i <= INIT_LOOPS; i++) {
@@ -504,7 +504,7 @@ static int test_init_initialize_config(void)
 
 static void config_set_argv(PyConfig *config, Ty_ssize_t argc, wchar_t * const *argv)
 {
-    PyStatus status = TyConfig_SetArgv(config, argc, argv);
+    TyStatus status = TyConfig_SetArgv(config, argc, argv);
     if (TyStatus_Exception(status)) {
         TyConfig_Clear(config);
         Ty_ExitStatusException(status);
@@ -516,7 +516,7 @@ static void
 config_set_wide_string_list(PyConfig *config, PyWideStringList *list,
                             Ty_ssize_t length, wchar_t **items)
 {
-    PyStatus status = TyConfig_SetWideStringList(config, list, length, items);
+    TyStatus status = TyConfig_SetWideStringList(config, list, length, items);
     if (TyStatus_Exception(status)) {
         TyConfig_Clear(config);
         Ty_ExitStatusException(status);
@@ -526,7 +526,7 @@ config_set_wide_string_list(PyConfig *config, PyWideStringList *list,
 
 static int check_init_compat_config(int preinit)
 {
-    PyStatus status;
+    TyStatus status;
 
     if (preinit) {
         PyPreConfig preconfig;
@@ -627,7 +627,7 @@ static int test_init_from_config(void)
     Ty_UTF8Mode = 0;
     preconfig.utf8_mode = 1;
 
-    PyStatus status = Ty_PreInitialize(&preconfig);
+    TyStatus status = Ty_PreInitialize(&preconfig);
     if (TyStatus_Exception(status)) {
         Ty_ExitStatusException(status);
     }
@@ -944,7 +944,7 @@ static int test_preinit_isolated1(void)
 
     preconfig.isolated = 1;
 
-    PyStatus status = Ty_PreInitialize(&preconfig);
+    TyStatus status = Ty_PreInitialize(&preconfig);
     if (TyStatus_Exception(status)) {
         Ty_ExitStatusException(status);
     }
@@ -970,7 +970,7 @@ static int test_preinit_isolated2(void)
 
     preconfig.isolated = 0;
 
-    PyStatus status = Ty_PreInitialize(&preconfig);
+    TyStatus status = Ty_PreInitialize(&preconfig);
     if (TyStatus_Exception(status)) {
         Ty_ExitStatusException(status);
     }
@@ -1007,7 +1007,7 @@ static int test_preinit_dont_parse_argv(void)
                        L"-X", L"dev",
                        L"-X", L"utf8",
                        L"script.py"};
-    PyStatus status = Ty_PreInitializeFromArgs(&preconfig,
+    TyStatus status = Ty_PreInitializeFromArgs(&preconfig,
                                                Ty_ARRAY_LENGTH(argv), argv);
     if (TyStatus_Exception(status)) {
         Ty_ExitStatusException(status);
@@ -1074,7 +1074,7 @@ static void set_all_global_config_variables(void)
 
 static int check_preinit_isolated_config(int preinit)
 {
-    PyStatus status;
+    TyStatus status;
     PyPreConfig *rt_preconfig;
 
     /* environment variables must be ignored */
@@ -1144,7 +1144,7 @@ static int check_init_python_config(int preinit)
         PyPreConfig preconfig;
         TyPreConfig_InitPythonConfig(&preconfig);
 
-        PyStatus status = Ty_PreInitialize(&preconfig);
+        TyStatus status = Ty_PreInitialize(&preconfig);
         if (TyStatus_Exception(status)) {
             Ty_ExitStatusException(status);
         }
@@ -1183,7 +1183,7 @@ static int test_init_dont_configure_locale(void)
     preconfig.coerce_c_locale = 1;
     preconfig.coerce_c_locale_warn = 1;
 
-    PyStatus status = Ty_PreInitialize(&preconfig);
+    TyStatus status = Ty_PreInitialize(&preconfig);
     if (TyStatus_Exception(status)) {
         Ty_ExitStatusException(status);
     }
@@ -1500,7 +1500,7 @@ static int run_audit_run_test(int argc, wchar_t **argv, void *test)
 
     TySys_AddAuditHook(_audit_hook_run, test);
 
-    PyStatus status = Ty_InitializeFromConfig(&config);
+    TyStatus status = Ty_InitializeFromConfig(&config);
     if (TyStatus_Exception(status)) {
         Ty_ExitStatusException(status);
     }
@@ -1531,7 +1531,7 @@ static int test_audit_run_stdin(void)
 
 static int test_init_read_set(void)
 {
-    PyStatus status;
+    TyStatus status;
     PyConfig config;
     TyConfig_InitPythonConfig(&config);
 
@@ -1587,7 +1587,7 @@ static int test_init_sys_add(void)
     config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
     config.parse_argv = 1;
 
-    PyStatus status;
+    TyStatus status;
     status = TyWideStringList_Append(&config.xoptions,
                                      L"config_xoption");
     if (TyStatus_Exception(status)) {
@@ -1643,7 +1643,7 @@ static int test_init_setpath_config(void)
 
     /* Explicitly preinitializes with Python preconfiguration to avoid
       Ty_SetPath() implicit preinitialization with compat preconfiguration. */
-    PyStatus status = Ty_PreInitialize(&preconfig);
+    TyStatus status = Ty_PreInitialize(&preconfig);
     if (TyStatus_Exception(status)) {
         Ty_ExitStatusException(status);
     }
@@ -1753,7 +1753,7 @@ static int test_init_warnoptions(void)
 
     config_set_program_name(&config);
 
-    PyStatus status;
+    TyStatus status;
     status = TyWideStringList_Append(&config.warnoptions,
                                      L"ignore:::TyConfig_BeforeRead");
     if (TyStatus_Exception(status)) {
@@ -2082,7 +2082,7 @@ static int test_get_argc_argv(void)
 
     // Calling TyConfig_Read() twice must not change Ty_GetArgcArgv() result.
     // The second call is done by Ty_InitializeFromConfig().
-    PyStatus status = TyConfig_Read(&config);
+    TyStatus status = TyConfig_Read(&config);
     if (TyStatus_Exception(status)) {
         TyConfig_Clear(&config);
         Ty_ExitStatusException(status);

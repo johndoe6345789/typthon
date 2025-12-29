@@ -28,11 +28,11 @@ typedef struct {
 } _PyXIData_registry_t;
 
 PyAPI_FUNC(int) _PyXIData_RegisterClass(
-    PyThreadState *,
+    TyThreadState *,
     TyTypeObject *,
     _PyXIData_getdata_t);
 PyAPI_FUNC(int) _PyXIData_UnregisterClass(
-    PyThreadState *,
+    TyThreadState *,
     TyTypeObject *);
 
 struct _xid_lookup_state {

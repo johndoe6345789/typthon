@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-/* --- PyStatus ----------------------------------------------- */
+/* --- TyStatus ----------------------------------------------- */
 
 typedef struct {
     enum {
@@ -16,15 +16,15 @@ typedef struct {
     const char *func;
     const char *err_msg;
     int exitcode;
-} PyStatus;
+} TyStatus;
 
-PyAPI_FUNC(PyStatus) TyStatus_Ok(void);
-PyAPI_FUNC(PyStatus) TyStatus_Error(const char *err_msg);
-PyAPI_FUNC(PyStatus) TyStatus_NoMemory(void);
-PyAPI_FUNC(PyStatus) TyStatus_Exit(int exitcode);
-PyAPI_FUNC(int) TyStatus_IsError(PyStatus err);
-PyAPI_FUNC(int) TyStatus_IsExit(PyStatus err);
-PyAPI_FUNC(int) TyStatus_Exception(PyStatus err);
+PyAPI_FUNC(TyStatus) TyStatus_Ok(void);
+PyAPI_FUNC(TyStatus) TyStatus_Error(const char *err_msg);
+PyAPI_FUNC(TyStatus) TyStatus_NoMemory(void);
+PyAPI_FUNC(TyStatus) TyStatus_Exit(int exitcode);
+PyAPI_FUNC(int) TyStatus_IsError(TyStatus err);
+PyAPI_FUNC(int) TyStatus_IsExit(TyStatus err);
+PyAPI_FUNC(int) TyStatus_Exception(TyStatus err);
 
 /* --- PyWideStringList ------------------------------------------------ */
 
@@ -35,9 +35,9 @@ typedef struct {
     wchar_t **items;
 } PyWideStringList;
 
-PyAPI_FUNC(PyStatus) TyWideStringList_Append(PyWideStringList *list,
+PyAPI_FUNC(TyStatus) TyWideStringList_Append(PyWideStringList *list,
     const wchar_t *item);
-PyAPI_FUNC(PyStatus) TyWideStringList_Insert(PyWideStringList *list,
+PyAPI_FUNC(TyStatus) TyWideStringList_Insert(PyWideStringList *list,
     Ty_ssize_t index,
     const wchar_t *item);
 
@@ -246,23 +246,23 @@ typedef struct PyConfig {
 PyAPI_FUNC(void) TyConfig_InitPythonConfig(PyConfig *config);
 PyAPI_FUNC(void) TyConfig_InitIsolatedConfig(PyConfig *config);
 PyAPI_FUNC(void) TyConfig_Clear(PyConfig *);
-PyAPI_FUNC(PyStatus) TyConfig_SetString(
+PyAPI_FUNC(TyStatus) TyConfig_SetString(
     PyConfig *config,
     wchar_t **config_str,
     const wchar_t *str);
-PyAPI_FUNC(PyStatus) TyConfig_SetBytesString(
+PyAPI_FUNC(TyStatus) TyConfig_SetBytesString(
     PyConfig *config,
     wchar_t **config_str,
     const char *str);
-PyAPI_FUNC(PyStatus) TyConfig_Read(PyConfig *config);
-PyAPI_FUNC(PyStatus) TyConfig_SetBytesArgv(
+PyAPI_FUNC(TyStatus) TyConfig_Read(PyConfig *config);
+PyAPI_FUNC(TyStatus) TyConfig_SetBytesArgv(
     PyConfig *config,
     Ty_ssize_t argc,
     char * const *argv);
-PyAPI_FUNC(PyStatus) TyConfig_SetArgv(PyConfig *config,
+PyAPI_FUNC(TyStatus) TyConfig_SetArgv(PyConfig *config,
     Ty_ssize_t argc,
     wchar_t * const *argv);
-PyAPI_FUNC(PyStatus) TyConfig_SetWideStringList(PyConfig *config,
+PyAPI_FUNC(TyStatus) TyConfig_SetWideStringList(PyConfig *config,
     PyWideStringList *list,
     Ty_ssize_t length, wchar_t **items);
 

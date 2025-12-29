@@ -49,7 +49,7 @@ _py_set_opcode(_Ty_CODEUNIT *word, uint8_t opcode)
     (CODE->_co_instrumentation_version > 0)
 
 
-extern PyStatus _TyCode_Init(PyInterpreterState *interp);
+extern TyStatus _TyCode_Init(PyInterpreterState *interp);
 extern void _TyCode_Fini(PyInterpreterState *interp);
 
 
@@ -533,7 +533,7 @@ _TyCode_GetTLBCArray(PyCodeObject *co)
 // Return a pointer to the thread-local bytecode for the current thread, if it
 // exists.
 static inline _Ty_CODEUNIT *
-_TyCode_GetTLBCFast(PyThreadState *tstate, PyCodeObject *co)
+_TyCode_GetTLBCFast(TyThreadState *tstate, PyCodeObject *co)
 {
     _PyCodeArray *code = _TyCode_GetTLBCArray(co);
     int32_t idx = ((_PyThreadStateImpl*) tstate)->tlbc_index;
@@ -606,7 +606,7 @@ PyAPI_FUNC(void) _TyCode_GetVarCounts(
         PyCodeObject *,
         _TyCode_var_counts_t *);
 PyAPI_FUNC(int) _TyCode_SetUnboundVarCounts(
-        PyThreadState *,
+        TyThreadState *,
         PyCodeObject *,
         _TyCode_var_counts_t *,
         TyObject *globalnames,
@@ -648,7 +648,7 @@ PyAPI_FUNC(int) _TyCode_CheckNoExternalState(
         _TyCode_var_counts_t *,
         const char **);
 PyAPI_FUNC(int) _TyCode_VerifyStateless(
-        PyThreadState *,
+        TyThreadState *,
         PyCodeObject *,
         TyObject *globalnames,
         TyObject *globalsns,

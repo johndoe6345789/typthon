@@ -101,7 +101,7 @@ static inline void _TyFrame_Copy(_PyInterpreterFrame *src, _PyInterpreterFrame *
 
 #ifdef Ty_GIL_DISABLED
 static inline void
-_TyFrame_InitializeTLBC(PyThreadState *tstate, _PyInterpreterFrame *frame,
+_TyFrame_InitializeTLBC(TyThreadState *tstate, _PyInterpreterFrame *frame,
                         PyCodeObject *code)
 {
     _Ty_CODEUNIT *tlbc = _TyCode_GetTLBCFast(tstate, code);
@@ -125,7 +125,7 @@ _TyFrame_InitializeTLBC(PyThreadState *tstate, _PyInterpreterFrame *frame,
  */
 static inline void
 _TyFrame_Initialize(
-    PyThreadState *tstate, _PyInterpreterFrame *frame, _PyStackRef func,
+    TyThreadState *tstate, _PyInterpreterFrame *frame, _PyStackRef func,
     TyObject *locals, PyCodeObject *code, int null_locals_from, _PyInterpreterFrame *previous)
 {
     frame->previous = previous;
@@ -217,7 +217,7 @@ _TyFrame_GetFirstComplete(_PyInterpreterFrame *frame)
 }
 
 static inline _PyInterpreterFrame *
-_TyThreadState_GetFrame(PyThreadState *tstate)
+_TyThreadState_GetFrame(TyThreadState *tstate)
 {
     return _TyFrame_GetFirstComplete(tstate->current_frame);
 }
@@ -267,7 +267,7 @@ TyObject *
 _TyFrame_GetLocals(_PyInterpreterFrame *frame);
 
 static inline bool
-_TyThreadState_HasStackSpace(PyThreadState *tstate, int size)
+_TyThreadState_HasStackSpace(TyThreadState *tstate, int size)
 {
     assert(
         (tstate->datastack_top == NULL && tstate->datastack_limit == NULL)
@@ -279,15 +279,15 @@ _TyThreadState_HasStackSpace(PyThreadState *tstate, int size)
 }
 
 extern _PyInterpreterFrame *
-_TyThreadState_PushFrame(PyThreadState *tstate, size_t size);
+_TyThreadState_PushFrame(TyThreadState *tstate, size_t size);
 
-PyAPI_FUNC(void) _TyThreadState_PopFrame(PyThreadState *tstate, _PyInterpreterFrame *frame);
+PyAPI_FUNC(void) _TyThreadState_PopFrame(TyThreadState *tstate, _PyInterpreterFrame *frame);
 
 /* Pushes a frame without checking for space.
  * Must be guarded by _TyThreadState_HasStackSpace()
  * Consumes reference to func. */
 static inline _PyInterpreterFrame *
-_TyFrame_PushUnchecked(PyThreadState *tstate, _PyStackRef func, int null_locals_from, _PyInterpreterFrame * previous)
+_TyFrame_PushUnchecked(TyThreadState *tstate, _PyStackRef func, int null_locals_from, _PyInterpreterFrame * previous)
 {
     CALL_STAT_INC(frames_pushed);
     PyFunctionObject *func_obj = (PyFunctionObject *)PyStackRef_AsPyObjectBorrow(func);
@@ -303,7 +303,7 @@ _TyFrame_PushUnchecked(PyThreadState *tstate, _PyStackRef func, int null_locals_
 /* Pushes a trampoline frame without checking for space.
  * Must be guarded by _TyThreadState_HasStackSpace() */
 static inline _PyInterpreterFrame *
-_TyFrame_PushTrampolineUnchecked(PyThreadState *tstate, PyCodeObject *code, int stackdepth, _PyInterpreterFrame * previous)
+_TyFrame_PushTrampolineUnchecked(TyThreadState *tstate, PyCodeObject *code, int stackdepth, _PyInterpreterFrame * previous)
 {
     CALL_STAT_INC(frames_pushed);
     _PyInterpreterFrame *frame = (_PyInterpreterFrame *)tstate->datastack_top;
@@ -335,7 +335,7 @@ _TyFrame_PushTrampolineUnchecked(PyThreadState *tstate, PyCodeObject *code, int 
 }
 
 PyAPI_FUNC(_PyInterpreterFrame *)
-_PyEvalFramePushAndInit(PyThreadState *tstate, _PyStackRef func,
+_PyEvalFramePushAndInit(TyThreadState *tstate, _PyStackRef func,
                         TyObject *locals, _PyStackRef const *args,
                         size_t argcount, TyObject *kwnames,
                         _PyInterpreterFrame *previous);

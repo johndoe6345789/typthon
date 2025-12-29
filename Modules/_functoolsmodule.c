@@ -371,7 +371,7 @@ partial_descr_get(TyObject *self, TyObject *obj, TyObject *type)
  * if we would need to do that, we stop using vectorcall and fall back
  * to using partial_call() instead. */
 Ty_NO_INLINE static TyObject *
-partial_vectorcall_fallback(PyThreadState *tstate, partialobject *pto,
+partial_vectorcall_fallback(TyThreadState *tstate, partialobject *pto,
                             TyObject *const *args, size_t nargsf,
                             TyObject *kwnames)
 {
@@ -385,7 +385,7 @@ partial_vectorcall(TyObject *self, TyObject *const *args,
                    size_t nargsf, TyObject *kwnames)
 {
     partialobject *pto = partialobject_CAST(self);;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
 
     /* pto->kw is mutable, so need to check every time */

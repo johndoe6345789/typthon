@@ -1391,12 +1391,12 @@
                 JUMP_TO_JUMP_TARGET();
             }
             Ty_UCS4 c = TyUnicode_READ_CHAR(str, index);
-            if (Ty_ARRAY_LENGTH(_Py_SINGLETON(strings).ascii) <= c) {
+            if (Ty_ARRAY_LENGTH(_Ty_SINGLETON(strings).ascii) <= c) {
                 UOP_STAT_INC(uopcode, miss);
                 JUMP_TO_JUMP_TARGET();
             }
             STAT_INC(BINARY_OP, hit);
-            TyObject *res_o = (TyObject*)&_Py_SINGLETON(strings).ascii[c];
+            TyObject *res_o = (TyObject*)&_Ty_SINGLETON(strings).ascii[c];
             PyStackRef_CLOSE_SPECIALIZED(sub_st, _TyLong_ExactDealloc);
             stack_pointer += -2;
             assert(WITHIN_STACK_BOUNDS());
@@ -6923,7 +6923,7 @@
 
         case _SET_IP: {
             TyObject *instr_ptr = (TyObject *)CURRENT_OPERAND0();
-            frame->instr_ptr = (_Py_CODEUNIT *)instr_ptr;
+            frame->instr_ptr = (_Ty_CODEUNIT *)instr_ptr;
             break;
         }
 
@@ -6956,7 +6956,7 @@
             TyObject *exit_p = (TyObject *)CURRENT_OPERAND0();
             _PyExitData *exit = (_PyExitData *)exit_p;
             PyCodeObject *code = _TyFrame_GetCode(frame);
-            _Py_CODEUNIT *target = _TyFrame_GetBytecode(frame) + exit->target;
+            _Ty_CODEUNIT *target = _TyFrame_GetBytecode(frame) + exit->target;
             #if defined(Ty_DEBUG) && !defined(_Py_JIT)
             OPT_HIST(trace_uop_execution_counter, trace_run_length_hist);
             if (frame->lltrace >= 2) {
@@ -6977,7 +6977,7 @@
                 stack_pointer = _TyFrame_GetStackPointer(frame);
             }
             if (exit->executor == NULL) {
-                _Py_BackoffCounter temperature = exit->temperature;
+                _Ty_BackoffCounter temperature = exit->temperature;
                 if (!backoff_counter_triggers(temperature)) {
                     exit->temperature = advance_backoff_counter(temperature);
                     GOTO_TIER_ONE(target);

@@ -109,7 +109,7 @@ get_configs(TyObject *self, TyObject *Py_UNUSED(args))
 static TyObject*
 get_recursion_depth(TyObject *self, TyObject *Py_UNUSED(args))
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     return TyLong_FromLong(tstate->py_recursion_limit - tstate->py_recursion_remaining);
 }
@@ -118,7 +118,7 @@ get_recursion_depth(TyObject *self, TyObject *Py_UNUSED(args))
 static TyObject*
 get_c_recursion_remaining(TyObject *self, TyObject *Py_UNUSED(args))
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     uintptr_t here_addr = _Ty_get_machine_stack_pointer();
     _PyThreadStateImpl *_tstate = (_PyThreadStateImpl *)tstate;
     int remaining = (int)((here_addr - _tstate->c_stack_soft_limit) / _TyOS_STACK_MARGIN_BYTES * 50);
@@ -650,7 +650,7 @@ set_eval_frame_default(TyObject *self, TyObject *Py_UNUSED(args))
 }
 
 static TyObject *
-record_eval(PyThreadState *tstate, struct _PyInterpreterFrame *f, int exc)
+record_eval(TyThreadState *tstate, struct _PyInterpreterFrame *f, int exc)
 {
     if (PyStackRef_FunctionCheck(f->f_funcobj)) {
         PyFunctionObject *func = _TyFrame_GetFunction(f);
@@ -828,7 +828,7 @@ get_interp_settings(TyObject *self, TyObject *args)
 
     PyInterpreterState *interp = NULL;
     if (interpid < 0) {
-        PyThreadState *tstate = _TyThreadState_GET();
+        TyThreadState *tstate = _TyThreadState_GET();
         interp = tstate ? tstate->interp : _TyInterpreterState_Main();
     }
     else if (interpid == 0) {
@@ -1003,7 +1003,7 @@ get_co_localskinds(TyObject *self, TyObject *arg)
 static TyObject *
 get_code_var_counts(TyObject *self, TyObject *_args, TyObject *_kwargs)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *codearg;
     TyObject *globalnames = NULL;
     TyObject *attrnames = NULL;
@@ -1172,7 +1172,7 @@ error:
 static TyObject *
 verify_stateless_code(TyObject *self, TyObject *args, TyObject *kwargs)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *codearg;
     TyObject *globalnames = NULL;
     TyObject *globalsns = NULL;
@@ -1269,7 +1269,7 @@ pending_threadfunc(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_INCREF(callable);
     }
 
-    PyThreadState *save_tstate = NULL;
+    TyThreadState *save_tstate = NULL;
     if (!blocking) {
         save_tstate = TyEval_SaveThread();
     }
@@ -1313,7 +1313,7 @@ _pending_identify_callback(void *arg)
 {
     PyThread_type_lock mutex = (PyThread_type_lock)arg;
     assert(pending_identify_result.interpid == -1);
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     pending_identify_result.interpid = TyInterpreterState_GetID(tstate->interp);
     PyThread_release_lock(mutex);
     return 0;
@@ -1385,12 +1385,12 @@ tracemalloc_get_traceback(TyObject *self, TyObject *args)
 }
 
 
-// Test PyThreadState C API
+// Test TyThreadState C API
 static TyObject *
 test_tstate_capi(TyObject *self, TyObject *Py_UNUSED(args))
 {
     // TyThreadState_Get()
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     assert(tstate != NULL);
 
     // test _TyThreadState_GetDict()
@@ -1596,15 +1596,15 @@ _new_interpreter(PyInterpreterConfig *config, long whence)
     else if (whence == _TyInterpreterState_WHENCE_CAPI
              || whence == _TyInterpreterState_WHENCE_LEGACY_CAPI)
     {
-        PyThreadState *tstate = NULL;
-        PyThreadState *save_tstate = TyThreadState_Swap(NULL);
+        TyThreadState *tstate = NULL;
+        TyThreadState *save_tstate = TyThreadState_Swap(NULL);
         if (whence == _TyInterpreterState_WHENCE_LEGACY_CAPI) {
             assert(config == NULL);
             tstate = Ty_NewInterpreter();
             TyThreadState_Swap(save_tstate);
         }
         else {
-            PyStatus status = Ty_NewInterpreterFromConfig(&tstate, config);
+            TyStatus status = Ty_NewInterpreterFromConfig(&tstate, config);
             TyThreadState_Swap(save_tstate);
             if (TyStatus_Exception(status)) {
                 assert(tstate == NULL);
@@ -1712,8 +1712,8 @@ destroy_interpreter(TyObject *self, TyObject *args, TyObject *kwargs)
     if (basic)
     {
         // Test the basic Ty_EndInterpreter with weird out of order thread states
-        PyThreadState *t1, *t2;
-        PyThreadState *prev;
+        TyThreadState *t1, *t2;
+        TyThreadState *prev;
         t1 = interp->threads.head;
         if (t1 == NULL) {
             t1 = TyThreadState_New(interp);
@@ -1755,10 +1755,10 @@ exec_interpreter(TyObject *self, TyObject *args, TyObject *kwargs)
     }
 
     TyObject *res = NULL;
-    PyThreadState *tstate =
+    TyThreadState *tstate =
         _TyThreadState_NewBound(interp, _TyThreadState_WHENCE_EXEC);
 
-    PyThreadState *save_tstate = TyThreadState_Swap(tstate);
+    TyThreadState *save_tstate = TyThreadState_Swap(tstate);
 
     if (runningmain) {
        if (_TyInterpreterState_SetRunningMain(interp) < 0) {
@@ -1817,8 +1817,8 @@ run_in_subinterp_with_config(TyObject *self, TyObject *args, TyObject *kwargs)
 
     int r;
     if (xi) {
-        PyThreadState *save_tstate;
-        PyThreadState *tstate;
+        TyThreadState *save_tstate;
+        TyThreadState *tstate;
 
         /* Create an interpreter, staying switched to it. */
         PyInterpreterState *interp = \
@@ -1834,11 +1834,11 @@ run_in_subinterp_with_config(TyObject *self, TyObject *args, TyObject *kwargs)
         _PyXI_EndInterpreter(interp, tstate, &save_tstate);
     }
     else {
-        PyThreadState *substate;
-        PyThreadState *mainstate = TyThreadState_Swap(NULL);
+        TyThreadState *substate;
+        TyThreadState *mainstate = TyThreadState_Swap(NULL);
 
         /* Create an interpreter, staying switched to it. */
-        PyStatus status = Ty_NewInterpreterFromConfig(&substate, &config);
+        TyStatus status = Ty_NewInterpreterFromConfig(&substate, &config);
         if (TyStatus_Exception(status)) {
             /* Since no new thread state was created, there is no exception to
                propagate; raise a fresh one after swapping in the old thread
@@ -1989,7 +1989,7 @@ get_crossinterp_data(TyObject *self, TyObject *args, TyObject *kwargs)
         }
     }
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyXIData_t *xidata = _PyXIData_New();
     if (xidata == NULL) {
         return NULL;

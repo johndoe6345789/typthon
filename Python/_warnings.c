@@ -44,10 +44,10 @@ get_current_interp(void)
     return check_interp(interp) ? interp : NULL;
 }
 
-static inline PyThreadState *
+static inline TyThreadState *
 get_current_tstate(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate == NULL) {
         (void)check_interp(NULL);
         return NULL;
@@ -664,7 +664,7 @@ update_registry(PyInterpreterState *interp, TyObject *registry, TyObject *text,
 }
 
 static void
-show_warning(PyThreadState *tstate, TyObject *filename, int lineno,
+show_warning(TyThreadState *tstate, TyObject *filename, int lineno,
              TyObject *text, TyObject *category, TyObject *sourceline)
 {
     TyObject *f_stderr = NULL;
@@ -734,7 +734,7 @@ error:
 }
 
 static int
-call_show_warning(PyThreadState *tstate, TyObject *category,
+call_show_warning(TyThreadState *tstate, TyObject *category,
                   TyObject *text, TyObject *message,
                   TyObject *filename, int lineno, TyObject *lineno_obj,
                   TyObject *sourceline, TyObject *source)
@@ -790,7 +790,7 @@ error:
 }
 
 static TyObject *
-warn_explicit(PyThreadState *tstate, TyObject *category, TyObject *message,
+warn_explicit(TyThreadState *tstate, TyObject *category, TyObject *message,
               TyObject *filename, int lineno,
               TyObject *module, TyObject *registry, TyObject *sourceline,
               TyObject *source)
@@ -1030,7 +1030,7 @@ setup_context(Ty_ssize_t stack_level,
     TyObject *globals;
 
     /* Setup globals, filename and lineno. */
-    PyThreadState *tstate = get_current_tstate();
+    TyThreadState *tstate = get_current_tstate();
     if (tstate == NULL) {
         return 0;
     }
@@ -1158,7 +1158,7 @@ do_warn(TyObject *message, TyObject *category, Ty_ssize_t stack_level,
     TyObject *filename, *module, *registry, *res;
     int lineno;
 
-    PyThreadState *tstate = get_current_tstate();
+    TyThreadState *tstate = get_current_tstate();
     if (tstate == NULL) {
         return NULL;
     }
@@ -1300,7 +1300,7 @@ warnings_warn_explicit_impl(TyObject *module, TyObject *message,
     TyObject *source_line = NULL;
     TyObject *returned;
 
-    PyThreadState *tstate = get_current_tstate();
+    TyThreadState *tstate = get_current_tstate();
     if (tstate == NULL) {
         return NULL;
     }
@@ -1464,7 +1464,7 @@ TyErr_WarnExplicitObject(TyObject *category, TyObject *message,
     TyObject *res;
     if (category == NULL)
         category = TyExc_RuntimeWarning;
-    PyThreadState *tstate = get_current_tstate();
+    TyThreadState *tstate = get_current_tstate();
     if (tstate == NULL) {
         return -1;
     }
@@ -1557,7 +1557,7 @@ TyErr_WarnExplicitFormat(TyObject *category,
     message = TyUnicode_FromFormatV(format, vargs);
     if (message != NULL) {
         TyObject *res;
-        PyThreadState *tstate = get_current_tstate();
+        TyThreadState *tstate = get_current_tstate();
         if (tstate != NULL) {
             warnings_lock(tstate->interp);
             res = warn_explicit(tstate, category, message, filename, lineno,

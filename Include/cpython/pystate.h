@@ -66,8 +66,8 @@ typedef struct _stack_chunk {
 struct _ts {
     /* See Python/ceval.c for comments explaining most fields */
 
-    PyThreadState *prev;
-    PyThreadState *next;
+    TyThreadState *prev;
+    TyThreadState *next;
     PyInterpreterState *interp;
 
     /* The global instrumentation version in high bits, plus flags indicating
@@ -183,7 +183,7 @@ struct _ts {
     /* XXX signal handlers should also be here */
 
     /* The following fields are here to avoid allocation during init.
-       The data is exposed through PyThreadState pointer fields.
+       The data is exposed through TyThreadState pointer fields.
        These fields should not be accessed directly outside of init.
        This is indicated by an underscore prefix on the field names.
 
@@ -214,21 +214,21 @@ struct _ts {
 
 /* Similar to TyThreadState_Get(), but don't issue a fatal error
  * if it is NULL. */
-PyAPI_FUNC(PyThreadState *) TyThreadState_GetUnchecked(void);
+PyAPI_FUNC(TyThreadState *) TyThreadState_GetUnchecked(void);
 
 // Deprecated alias kept for backward compatibility
-Ty_DEPRECATED(3.14) static inline PyThreadState*
+Ty_DEPRECATED(3.14) static inline TyThreadState*
 _TyThreadState_UncheckedGet(void)
 {
     return TyThreadState_GetUnchecked();
 }
 
 // Disable tracing and profiling.
-PyAPI_FUNC(void) TyThreadState_EnterTracing(PyThreadState *tstate);
+PyAPI_FUNC(void) TyThreadState_EnterTracing(TyThreadState *tstate);
 
 // Reset tracing and profiling: enable them if a trace function or a profile
 // function is set, otherwise disable them.
-PyAPI_FUNC(void) TyThreadState_LeaveTracing(PyThreadState *tstate);
+PyAPI_FUNC(void) TyThreadState_LeaveTracing(TyThreadState *tstate);
 
 /* PyGILState */
 
@@ -248,13 +248,13 @@ PyAPI_FUNC(TyObject*) _PyThread_CurrentFrames(void);
 PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Main(void);
 PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Head(void);
 PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Next(PyInterpreterState *);
-PyAPI_FUNC(PyThreadState *) TyInterpreterState_ThreadHead(PyInterpreterState *);
-PyAPI_FUNC(PyThreadState *) TyThreadState_Next(PyThreadState *);
+PyAPI_FUNC(TyThreadState *) TyInterpreterState_ThreadHead(PyInterpreterState *);
+PyAPI_FUNC(TyThreadState *) TyThreadState_Next(TyThreadState *);
 PyAPI_FUNC(void) TyThreadState_DeleteCurrent(void);
 
 /* Frame evaluation API */
 
-typedef TyObject* (*_PyFrameEvalFunction)(PyThreadState *tstate, struct _PyInterpreterFrame *, int);
+typedef TyObject* (*_PyFrameEvalFunction)(TyThreadState *tstate, struct _PyInterpreterFrame *, int);
 
 PyAPI_FUNC(_PyFrameEvalFunction) _TyInterpreterState_GetEvalFrameFunc(
     PyInterpreterState *interp);

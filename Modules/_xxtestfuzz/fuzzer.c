@@ -588,7 +588,7 @@ int LLVMFuzzerInitialize(int *argc, char ***argv) {
     /* Raise the limit above the default allows exercising larger things
      * now that we fall back to the _pylong module for large values. */
     config.int_max_str_digits = 8086;
-    PyStatus status;
+    TyStatus status;
     status = TyConfig_SetBytesString(&config, &config.program_name, *argv[0]);
     if (TyStatus_Exception(status)) {
         goto fail;

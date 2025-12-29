@@ -101,17 +101,17 @@ static inline void _TyObject_XDecRefDelayed(TyObject *obj)
 #endif
 
 // Periodically process delayed free requests.
-extern void _TyMem_ProcessDelayed(PyThreadState *tstate);
+extern void _TyMem_ProcessDelayed(TyThreadState *tstate);
 
 // Periodically process delayed free requests when the world is stopped.
 // Notify of any objects whic should be freeed.
 typedef void (*delayed_dealloc_cb)(TyObject *, void *);
-extern void _TyMem_ProcessDelayedNoDealloc(PyThreadState *tstate,
+extern void _TyMem_ProcessDelayedNoDealloc(TyThreadState *tstate,
                                            delayed_dealloc_cb cb, void *state);
 
 // Abandon all thread-local delayed free requests and push them to the
 // interpreter's queue.
-extern void _TyMem_AbandonDelayed(PyThreadState *tstate);
+extern void _TyMem_AbandonDelayed(TyThreadState *tstate);
 
 // On interpreter shutdown, frees all delayed free requests.
 extern void _TyMem_FiniDelayed(PyInterpreterState *interp);

@@ -89,7 +89,7 @@ do {                                                                     \
 #define TIER_TWO 2
 
 __attribute__((preserve_none)) _Ty_CODEUNIT *
-_JIT_ENTRY(_PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState *tstate)
+_JIT_ENTRY(_PyInterpreterFrame *frame, _PyStackRef *stack_pointer, TyThreadState *tstate)
 {
     // Locals that the instruction implementations expect to exist:
     PATCH_VALUE(_PyExecutorObject *, current_executor, _JIT_EXECUTOR)

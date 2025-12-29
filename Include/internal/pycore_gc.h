@@ -328,8 +328,8 @@ static inline void _TyObject_GC_UNTRACK(
 
 extern void _TyGC_InitState(struct _gc_runtime_state *);
 
-extern Ty_ssize_t _TyGC_Collect(PyThreadState *tstate, int generation, _TyGC_Reason reason);
-extern void _TyGC_CollectNoFail(PyThreadState *tstate);
+extern Ty_ssize_t _TyGC_Collect(TyThreadState *tstate, int generation, _TyGC_Reason reason);
+extern void _TyGC_CollectNoFail(TyThreadState *tstate);
 
 /* Freeze objects tracked by the GC and ignore them in future collections. */
 extern void _TyGC_Freeze(PyInterpreterState *interp);
@@ -343,8 +343,8 @@ extern TyObject *_TyGC_GetReferrers(PyInterpreterState *interp, TyObject *objs);
 
 // Functions to clear types free lists
 extern void _TyGC_ClearAllFreeLists(PyInterpreterState *interp);
-extern void _Ty_ScheduleGC(PyThreadState *tstate);
-extern void _Ty_RunGC(PyThreadState *tstate);
+extern void _Ty_ScheduleGC(TyThreadState *tstate);
+extern void _Ty_RunGC(TyThreadState *tstate);
 
 union _PyStackRef;
 

@@ -1712,7 +1712,7 @@ GETITEM(TyObject *v, Ty_ssize_t i)
 #endif
 
 static int
-identify_unbound_names(PyThreadState *tstate, PyCodeObject *co,
+identify_unbound_names(TyThreadState *tstate, PyCodeObject *co,
                        TyObject *globalnames, TyObject *attrnames,
                        TyObject *globalsns, TyObject *builtinsns,
                        struct co_unbound_counts *counts, int *p_numdupes)
@@ -1912,7 +1912,7 @@ _TyCode_GetVarCounts(PyCodeObject *co, _TyCode_var_counts_t *counts)
 }
 
 int
-_TyCode_SetUnboundVarCounts(PyThreadState *tstate,
+_TyCode_SetUnboundVarCounts(TyThreadState *tstate,
                             PyCodeObject *co, _TyCode_var_counts_t *counts,
                             TyObject *globalnames, TyObject *attrnames,
                             TyObject *globalsns, TyObject *builtinsns)
@@ -2024,7 +2024,7 @@ _TyCode_CheckNoExternalState(PyCodeObject *co, _TyCode_var_counts_t *counts,
 }
 
 int
-_TyCode_VerifyStateless(PyThreadState *tstate,
+_TyCode_VerifyStateless(TyThreadState *tstate,
                         PyCodeObject *co, TyObject *globalnames,
                         TyObject *globalsns, TyObject *builtinsns)
 {
@@ -2384,7 +2384,7 @@ free_monitoring_data(_PyCoMonitoringData *data)
 static void
 code_dealloc(TyObject *self)
 {
-    PyThreadState *tstate = TyThreadState_GET();
+    TyThreadState *tstate = TyThreadState_GET();
     _Ty_atomic_add_uint64(&tstate->interp->_code_object_generation, 1);
     PyCodeObject *co = _PyCodeObject_CAST(self);
     _TyObject_ResurrectStart(self);
@@ -3247,7 +3247,7 @@ destroy_key(void *key)
 }
 #endif
 
-PyStatus
+TyStatus
 _TyCode_Init(PyInterpreterState *interp)
 {
 #ifdef Ty_GIL_DISABLED
@@ -3311,7 +3311,7 @@ _Ty_ReserveTLBCIndex(PyInterpreterState *interp)
 void
 _Ty_ClearTLBCIndex(_PyThreadStateImpl *tstate)
 {
-    PyInterpreterState *interp = ((PyThreadState *)tstate)->interp;
+    PyInterpreterState *interp = ((TyThreadState *)tstate)->interp;
     if (interp->config.tlbc_enabled) {
         _PyIndexPool_FreeIndex(&interp->tlbc_indices, tstate->tlbc_index);
     }

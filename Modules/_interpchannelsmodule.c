@@ -1774,7 +1774,7 @@ static int
 channel_send(_channels *channels, int64_t cid, TyObject *obj,
              _waiting_t *waiting, unboundop_t unboundop, xidata_fallback_t fallback)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     PyInterpreterState *interp = tstate->interp;
     int64_t interpid = TyInterpreterState_GetID(interp);
 
@@ -2629,7 +2629,7 @@ done:
 }
 
 static int
-_channelid_shared(PyThreadState *tstate, TyObject *obj, _PyXIData_t *data)
+_channelid_shared(TyThreadState *tstate, TyObject *obj, _PyXIData_t *data)
 {
     if (_PyXIData_InitWithSize(
             data, tstate->interp, sizeof(struct _channelid_xid), obj,
@@ -2790,7 +2790,7 @@ _channelend_from_xid(_PyXIData_t *data)
 }
 
 static int
-_channelend_shared(PyThreadState *tstate, TyObject *obj, _PyXIData_t *data)
+_channelend_shared(TyThreadState *tstate, TyObject *obj, _PyXIData_t *data)
 {
     TyObject *cidobj = PyObject_GetAttrString(obj, "_id");
     if (cidobj == NULL) {

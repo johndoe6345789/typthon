@@ -970,7 +970,7 @@ remove_per_instruction_tools(PyCodeObject * code, int offset, int tools)
 /* Return 1 if DISABLE returned, -1 if error, 0 otherwise */
 static int
 call_one_instrument(
-    PyInterpreterState *interp, PyThreadState *tstate, TyObject **args,
+    PyInterpreterState *interp, TyThreadState *tstate, TyObject **args,
     size_t nargsf, int8_t tool, int event)
 {
     assert(0 <= tool && tool < 8);
@@ -1016,7 +1016,7 @@ global_version(PyInterpreterState *interp)
     uint32_t version = (uint32_t)_Ty_atomic_load_uintptr_relaxed(
         &interp->ceval.instrumentation_version);
 #ifdef Ty_DEBUG
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     uint32_t thread_version =
         (uint32_t)(_Ty_atomic_load_uintptr_relaxed(&tstate->eval_breaker) &
                    ~_PY_EVAL_EVENTS_MASK);
@@ -1038,7 +1038,7 @@ set_version_raw(uintptr_t *ptr, uint32_t version)
 }
 
 static void
-set_global_version(PyThreadState *tstate, uint32_t version)
+set_global_version(TyThreadState *tstate, uint32_t version)
 {
     assert((version & _PY_EVAL_EVENTS_MASK) == 0);
     PyInterpreterState *interp = tstate->interp;
@@ -1138,7 +1138,7 @@ static const char *const event_names [] = {
 
 static int
 call_instrumentation_vector(
-    _Ty_CODEUNIT *instr, PyThreadState *tstate, int event,
+    _Ty_CODEUNIT *instr, TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *arg2, Ty_ssize_t nargs, TyObject *args[])
 {
     if (tstate->tracing) {
@@ -1202,7 +1202,7 @@ call_instrumentation_vector(
 
 Ty_NO_INLINE int
 _Ty_call_instrumentation(
-    PyThreadState *tstate, int event,
+    TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr)
 {
     TyObject *args[3] = { NULL, NULL, NULL };
@@ -1211,7 +1211,7 @@ _Ty_call_instrumentation(
 
 Ty_NO_INLINE int
 _Ty_call_instrumentation_arg(
-    PyThreadState *tstate, int event,
+    TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, TyObject *arg)
 {
     TyObject *args[4] = { NULL, NULL, NULL, arg };
@@ -1220,7 +1220,7 @@ _Ty_call_instrumentation_arg(
 
 Ty_NO_INLINE int
 _Ty_call_instrumentation_2args(
-    PyThreadState *tstate, int event,
+    TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, TyObject *arg0, TyObject *arg1)
 {
     TyObject *args[5] = { NULL, NULL, NULL, arg0, arg1 };
@@ -1229,7 +1229,7 @@ _Ty_call_instrumentation_2args(
 
 Ty_NO_INLINE _Ty_CODEUNIT *
 _Ty_call_instrumentation_jump(
-    _Ty_CODEUNIT *instr, PyThreadState *tstate, int event,
+    _Ty_CODEUNIT *instr, TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *src, _Ty_CODEUNIT *dest)
 {
     assert(event == PY_MONITORING_EVENT_JUMP ||
@@ -1256,7 +1256,7 @@ _Ty_call_instrumentation_jump(
 
 static void
 call_instrumentation_vector_protected(
-    PyThreadState *tstate, int event,
+    TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, Ty_ssize_t nargs, TyObject *args[])
 {
     assert(_TyErr_Occurred(tstate));
@@ -1273,7 +1273,7 @@ call_instrumentation_vector_protected(
 
 Ty_NO_INLINE void
 _Ty_call_instrumentation_exc2(
-    PyThreadState *tstate, int event,
+    TyThreadState *tstate, int event,
     _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, TyObject *arg0, TyObject *arg1)
 {
     assert(_TyErr_Occurred(tstate));
@@ -1295,7 +1295,7 @@ _Ty_Instrumentation_GetLine(PyCodeObject *code, int index)
 }
 
 Ty_NO_INLINE int
-_Ty_call_instrumentation_line(PyThreadState *tstate, _PyInterpreterFrame* frame, _Ty_CODEUNIT *instr, _Ty_CODEUNIT *prev)
+_Ty_call_instrumentation_line(TyThreadState *tstate, _PyInterpreterFrame* frame, _Ty_CODEUNIT *instr, _Ty_CODEUNIT *prev)
 {
     PyCodeObject *code = _TyFrame_GetCode(frame);
     assert(tstate->tracing == 0);
@@ -1397,7 +1397,7 @@ done:
 }
 
 Ty_NO_INLINE int
-_Ty_call_instrumentation_instruction(PyThreadState *tstate, _PyInterpreterFrame* frame, _Ty_CODEUNIT *instr)
+_Ty_call_instrumentation_instruction(TyThreadState *tstate, _PyInterpreterFrame* frame, _Ty_CODEUNIT *instr)
 {
     PyCodeObject *code = _TyFrame_GetCode(frame);
     int offset = (int)(instr - _TyFrame_GetBytecode(frame));
@@ -1941,7 +1941,7 @@ instrument_all_executing_code_objects(PyInterpreterState *interp) {
 
     _PyRuntimeState *runtime = &_PyRuntime;
     HEAD_LOCK(runtime);
-    PyThreadState* ts = TyInterpreterState_ThreadHead(interp);
+    TyThreadState* ts = TyInterpreterState_ThreadHead(interp);
     HEAD_UNLOCK(runtime);
     while (ts) {
         _PyInterpreterFrame *frame = ts->current_frame;
@@ -2004,7 +2004,7 @@ int
 _PyMonitoring_SetEvents(int tool_id, _PyMonitoringEventSet events)
 {
     assert(0 <= tool_id && tool_id < PY_MONITORING_TOOL_IDS);
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     PyInterpreterState *interp = tstate->interp;
     assert(events < (1 << _PY_MONITORING_UNGROUPED_EVENTS));
     if (check_tool(interp, tool_id)) {
@@ -2443,7 +2443,7 @@ monitoring_restart_events_impl(TyObject *module)
      * last restart version > instrumented version for all code objects
      * last restart version < current version
      */
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     PyInterpreterState *interp = tstate->interp;
 
     _TyEval_StopTheWorld(interp);
@@ -2588,7 +2588,7 @@ static int
 capi_call_instrumentation(PyMonitoringState *state, TyObject *codelike, int32_t offset,
                           TyObject **args, Ty_ssize_t nargs, int event)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     PyInterpreterState *interp = tstate->interp;
 
     uint8_t tools = state->active;

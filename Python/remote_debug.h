@@ -86,7 +86,7 @@ extern "C" {
 #define _set_debug_exception_cause(exception, format, ...) \
     do { \
         if (!TyErr_ExceptionMatches(TyExc_PermissionError)) { \
-            PyThreadState *tstate = _TyThreadState_GET(); \
+            TyThreadState *tstate = _TyThreadState_GET(); \
             if (!_TyErr_Occurred(tstate)) { \
                 _TyErr_Format(tstate, exception, format, ##__VA_ARGS__); \
             } else { \

@@ -36,7 +36,7 @@
 // the same way as the interaction between multiple locks.
 //
 // Each thread's critical sections and their corresponding locks are tracked in
-// a stack in `PyThreadState.critical_section`. When a thread calls
+// a stack in `TyThreadState.critical_section`. When a thread calls
 // `_TyThreadState_Detach()`, such as before a blocking I/O operation or when
 // waiting to acquire a lock, the thread suspends all of its active critical
 // sections, temporarily releasing the associated locks. When the thread calls

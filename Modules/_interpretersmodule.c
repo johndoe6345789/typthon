@@ -73,14 +73,14 @@ is_running_main(PyInterpreterState *interp)
 
 
 static inline int
-is_notshareable_raised(PyThreadState *tstate)
+is_notshareable_raised(TyThreadState *tstate)
 {
     TyObject *exctype = _PyXIData_GetNotShareableErrorType(tstate);
     return _TyErr_ExceptionMatches(tstate, exctype);
 }
 
 static void
-unwrap_not_shareable(PyThreadState *tstate, _PyXI_failure *failure)
+unwrap_not_shareable(TyThreadState *tstate, _PyXI_failure *failure)
 {
     if (_PyXI_UnwrapNotShareableError(tstate, failure) < 0) {
         _TyErr_Clear(tstate);
@@ -266,7 +266,7 @@ _pybuffer_shared_free(void* data)
 }
 
 static int
-_pybuffer_shared(PyThreadState *tstate, TyObject *obj, _PyXIData_t *data)
+_pybuffer_shared(TyThreadState *tstate, TyObject *obj, _PyXIData_t *data)
 {
     struct xibuffer *view = TyMem_RawMalloc(sizeof(struct xibuffer));
     if (view == NULL) {
@@ -465,7 +465,7 @@ _interp_call_clear(struct interp_call *call)
 }
 
 static int
-_interp_call_pack(PyThreadState *tstate, struct interp_call *call,
+_interp_call_pack(TyThreadState *tstate, struct interp_call *call,
                   TyObject *func, TyObject *args, TyObject *kwargs)
 {
     xidata_fallback_t fallback = _PyXIDATA_FULL_FALLBACK;
@@ -523,7 +523,7 @@ _interp_call_pack(PyThreadState *tstate, struct interp_call *call,
 }
 
 static void
-wrap_notshareable(PyThreadState *tstate, const char *label)
+wrap_notshareable(TyThreadState *tstate, const char *label)
 {
     if (!is_notshareable_raised(tstate)) {
         return;
@@ -540,7 +540,7 @@ static int
 _interp_call_unpack(struct interp_call *call,
                     TyObject **p_func, TyObject **p_args, TyObject **p_kwargs)
 {
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
 
     // Unpack the func.
     TyObject *func = _PyXIData_NewObject(call->func);
@@ -589,7 +589,7 @@ _make_call(struct interp_call *call,
            TyObject **p_result, _PyXI_failure *failure)
 {
     assert(call != NULL && call->func != NULL);
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     // Get the func and args.
     TyObject *func = NULL, *args = NULL, *kwargs = NULL;
@@ -647,7 +647,7 @@ _run_result_clear(struct run_result *runres)
 }
 
 static int
-_run_in_interpreter(PyThreadState *tstate, PyInterpreterState *interp,
+_run_in_interpreter(TyThreadState *tstate, PyInterpreterState *interp,
                      _PyXIData_t *script, struct interp_call *call,
                      TyObject *shareables, struct run_result *runres)
 {
@@ -1113,7 +1113,7 @@ static TyObject *
 interp_exec(TyObject *self, TyObject *args, TyObject *kwds)
 {
 #define FUNCNAME MODULE_NAME_STR ".exec"
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     static char *kwlist[] = {"id", "code", "shared", "restrict", NULL};
     TyObject *id, *code;
     TyObject *shared = NULL;
@@ -1174,7 +1174,7 @@ static TyObject *
 interp_run_string(TyObject *self, TyObject *args, TyObject *kwds)
 {
 #define FUNCNAME MODULE_NAME_STR ".run_string"
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     static char *kwlist[] = {"id", "script", "shared", "restrict", NULL};
     TyObject *id, *script;
     TyObject *shared = NULL;
@@ -1228,7 +1228,7 @@ static TyObject *
 interp_run_func(TyObject *self, TyObject *args, TyObject *kwds)
 {
 #define FUNCNAME MODULE_NAME_STR ".run_func"
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     static char *kwlist[] = {"id", "func", "shared", "restrict", NULL};
     TyObject *id, *func;
     TyObject *shared = NULL;
@@ -1293,7 +1293,7 @@ static TyObject *
 interp_call(TyObject *self, TyObject *args, TyObject *kwds)
 {
 #define FUNCNAME MODULE_NAME_STR ".call"
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     static char *kwlist[] = {"id", "callable", "args", "kwargs",
                              "preserve_exc", "restrict", NULL};
     TyObject *id, *callable;
@@ -1361,7 +1361,7 @@ object_is_shareable(TyObject *self, TyObject *args, TyObject *kwds)
         return NULL;
     }
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (_TyObject_CheckXIData(tstate, obj) == 0) {
         Py_RETURN_TRUE;
     }
@@ -1655,7 +1655,7 @@ The 'interpreters' module provides a more convenient interface.");
 static int
 module_exec(TyObject *mod)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     module_state *state = get_module_state(mod);
 
 #define ADD_WHENCE(NAME) \

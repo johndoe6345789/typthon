@@ -6,7 +6,7 @@
 
 /* Standard object interface */
 
-PyAPI_FUNC(PyFrameObject *) TyFrame_New(PyThreadState *, PyCodeObject *,
+PyAPI_FUNC(PyFrameObject *) TyFrame_New(TyThreadState *, PyCodeObject *,
                                         TyObject *, TyObject *);
 
 /* The rest of the interface is specific for frame objects */

@@ -93,7 +93,7 @@ typedef enum {
 // complete immediately.
 //
 // This must be separately reference counted because it may be destroyed
-// in `thread_run()` after the PyThreadState has been destroyed.
+// in `thread_run()` after the TyThreadState has been destroyed.
 typedef struct {
     struct llist_node node;  // linked list node (see _pythread_runtime_state)
 
@@ -235,8 +235,8 @@ detach_thread(ThreadHandle *self)
     return 0;
 }
 
-// NB: This may be called after the PyThreadState in `thread_run` has been
-// deleted; it cannot call anything that relies on a valid PyThreadState
+// NB: This may be called after the TyThreadState in `thread_run` has been
+// deleted; it cannot call anything that relies on a valid TyThreadState
 // existing.
 static void
 ThreadHandle_decref(ThreadHandle *self)
@@ -303,7 +303,7 @@ _PyThread_AfterFork(struct _pythread_runtime_state *state)
 // `thread_run()`, which can only take a single argument due to platform
 // limitations, are contained in bootstate.
 struct bootstate {
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     TyObject *func;
     TyObject *args;
     TyObject *kwargs;
@@ -327,7 +327,7 @@ static void
 thread_run(void *boot_raw)
 {
     struct bootstate *boot = (struct bootstate *) boot_raw;
-    PyThreadState *tstate = boot->tstate;
+    TyThreadState *tstate = boot->tstate;
 
     // Wait until the handle is marked as running
     PyEvent_Wait(&boot->handle_ready);
@@ -1416,7 +1416,7 @@ create_sentinel_wr(localobject *self)
         "clear_locals", clear_locals, METH_O
     };
 
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
 
     /* We use a weak reference to self in the callback closure
        in order to avoid spurious reference cycles */
@@ -1547,7 +1547,7 @@ local_dealloc(TyObject *op)
 static int
 create_localdummies(thread_module_state *state)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (tstate->threading_local_key != NULL) {
         return 0;
@@ -1575,7 +1575,7 @@ static int
 create_localsdict(localobject *self, thread_module_state *state,
                   TyObject **localsdict, TyObject **sentinel_wr)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *ldict = NULL;
     TyObject *wr = NULL;
 
@@ -1642,7 +1642,7 @@ _ldict(localobject *self, thread_module_state *state)
 
     /* Check if a localsdict already exists */
     TyObject *ldict;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (TyDict_GetItemRef(self->localdicts, tstate->threading_local_key,
                           &ldict) < 0) {
         return NULL;

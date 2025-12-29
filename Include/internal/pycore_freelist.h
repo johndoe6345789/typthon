@@ -17,7 +17,7 @@ extern "C" {
 static inline struct _Ty_freelists *
 _Ty_freelists_GET(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 #ifdef Ty_DEBUG
     _Ty_EnsureTstateNotNULL(tstate);
 #endif

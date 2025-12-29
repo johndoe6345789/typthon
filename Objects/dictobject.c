@@ -2238,7 +2238,7 @@ dict_getitem(TyObject *op, TyObject *key, const char *warnmsg)
         return NULL;
     }
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 #ifdef Ty_DEBUG
     // bpo-40839: Before Python 3.10, it was possible to call TyDict_GetItem()
     // with the GIL released.

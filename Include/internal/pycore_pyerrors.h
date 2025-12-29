@@ -11,10 +11,10 @@ extern "C" {
 
 /* Error handling definitions */
 
-extern _TyErr_StackItem* _TyErr_GetTopmostException(PyThreadState *tstate);
-extern TyObject* _TyErr_GetHandledException(PyThreadState *);
-extern void _TyErr_SetHandledException(PyThreadState *, TyObject *);
-extern void _TyErr_GetExcInfo(PyThreadState *, TyObject **, TyObject **, TyObject **);
+extern _TyErr_StackItem* _TyErr_GetTopmostException(TyThreadState *tstate);
+extern TyObject* _TyErr_GetHandledException(TyThreadState *);
+extern void _TyErr_SetHandledException(TyThreadState *, TyObject *);
+extern void _TyErr_GetExcInfo(TyThreadState *, TyObject **, TyObject **, TyObject **);
 
 // Export for '_testinternalcapi' shared extension
 PyAPI_FUNC(void) _TyErr_SetKeyError(TyObject *);
@@ -65,13 +65,13 @@ extern int _TyErr_SetModuleNotFoundError(TyObject *name);
 
 /* runtime lifecycle */
 
-extern PyStatus _TyErr_InitTypes(PyInterpreterState *);
+extern TyStatus _TyErr_InitTypes(PyInterpreterState *);
 extern void _TyErr_FiniTypes(PyInterpreterState *);
 
 
 /* other API */
 
-static inline TyObject* _TyErr_Occurred(PyThreadState *tstate)
+static inline TyObject* _TyErr_Occurred(TyThreadState *tstate)
 {
     assert(tstate != NULL);
     if (tstate->current_exception == NULL) {
@@ -89,38 +89,38 @@ extern TyObject* _TyErr_StackItemToExcInfoTuple(
     _TyErr_StackItem *err_info);
 
 extern void _TyErr_Fetch(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject **type,
     TyObject **value,
     TyObject **traceback);
 
-PyAPI_FUNC(TyObject*) _TyErr_GetRaisedException(PyThreadState *tstate);
+PyAPI_FUNC(TyObject*) _TyErr_GetRaisedException(TyThreadState *tstate);
 
 PyAPI_FUNC(int) _TyErr_ExceptionMatches(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *exc);
 
-PyAPI_FUNC(void) _TyErr_SetRaisedException(PyThreadState *tstate, TyObject *exc);
+PyAPI_FUNC(void) _TyErr_SetRaisedException(TyThreadState *tstate, TyObject *exc);
 
 extern void _TyErr_Restore(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *type,
     TyObject *value,
     TyObject *traceback);
 
 extern void _TyErr_SetObject(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *type,
     TyObject *value);
 
 extern void _TyErr_ChainStackItem(void);
-extern void _TyErr_ChainExceptions1Tstate(PyThreadState *, TyObject *);
+extern void _TyErr_ChainExceptions1Tstate(TyThreadState *, TyObject *);
 
-PyAPI_FUNC(void) _TyErr_Clear(PyThreadState *tstate);
+PyAPI_FUNC(void) _TyErr_Clear(TyThreadState *tstate);
 
-extern void _TyErr_SetNone(PyThreadState *tstate, TyObject *exception);
+extern void _TyErr_SetNone(TyThreadState *tstate, TyObject *exception);
 
-extern TyObject* _TyErr_NoMemory(PyThreadState *tstate);
+extern TyObject* _TyErr_NoMemory(TyThreadState *tstate);
 
 extern int _TyErr_EmitSyntaxWarning(TyObject *msg, TyObject *filename, int lineno, int col_offset,
                                     int end_lineno, int end_col_offset);
@@ -128,7 +128,7 @@ extern void _TyErr_RaiseSyntaxError(TyObject *msg, TyObject *filename, int linen
                                     int end_lineno, int end_col_offset);
 
 PyAPI_FUNC(void) _TyErr_SetString(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *exception,
     const char *string);
 
@@ -145,25 +145,25 @@ PyAPI_FUNC(void) _TyErr_SetLocaleString(
     const char *string);
 
 PyAPI_FUNC(TyObject*) _TyErr_Format(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *exception,
     const char *format,
     ...);
 
 PyAPI_FUNC(TyObject*) _TyErr_FormatV(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *exception,
     const char *format,
     va_list vargs);
 
 extern void _TyErr_NormalizeException(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject **exc,
     TyObject **val,
     TyObject **tb);
 
 extern TyObject* _TyErr_FormatFromCauseTstate(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     TyObject *exception,
     const char *format,
     ...);
@@ -176,7 +176,7 @@ extern TyObject* _PyExc_PrepReraiseStar(
     TyObject *orig,
     TyObject *excs);
 
-extern int _TyErr_CheckSignalsTstate(PyThreadState *tstate);
+extern int _TyErr_CheckSignalsTstate(TyThreadState *tstate);
 
 extern void _Ty_DumpExtensionModules(int fd, PyInterpreterState *interp);
 extern TyObject* _Ty_CalculateSuggestions(TyObject *dir, TyObject *name);

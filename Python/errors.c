@@ -22,7 +22,7 @@
 
 
 void
-_TyErr_SetRaisedException(PyThreadState *tstate, TyObject *exc)
+_TyErr_SetRaisedException(TyThreadState *tstate, TyObject *exc)
 {
     TyObject *old_exc = tstate->current_exception;
     tstate->current_exception = exc;
@@ -56,7 +56,7 @@ _TyErr_CreateException(TyObject *exception_type, TyObject *value)
 }
 
 void
-_TyErr_Restore(PyThreadState *tstate, TyObject *type, TyObject *value,
+_TyErr_Restore(TyThreadState *tstate, TyObject *type, TyObject *value,
                TyObject *traceback)
 {
     if (type == NULL) {
@@ -101,19 +101,19 @@ _TyErr_Restore(PyThreadState *tstate, TyObject *type, TyObject *value,
 void
 TyErr_Restore(TyObject *type, TyObject *value, TyObject *traceback)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_Restore(tstate, type, value, traceback);
 }
 
 void
 TyErr_SetRaisedException(TyObject *exc)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_SetRaisedException(tstate, exc);
 }
 
 _TyErr_StackItem *
-_TyErr_GetTopmostException(PyThreadState *tstate)
+_TyErr_GetTopmostException(TyThreadState *tstate)
 {
     _TyErr_StackItem *exc_info = tstate->exc_info;
     assert(exc_info);
@@ -127,7 +127,7 @@ _TyErr_GetTopmostException(PyThreadState *tstate)
 }
 
 static TyObject *
-get_normalization_failure_note(PyThreadState *tstate, TyObject *exception, TyObject *value)
+get_normalization_failure_note(TyThreadState *tstate, TyObject *exception, TyObject *value)
 {
     TyObject *args = PyObject_Repr(value);
     if (args == NULL) {
@@ -149,7 +149,7 @@ get_normalization_failure_note(PyThreadState *tstate, TyObject *exception, TyObj
 }
 
 void
-_TyErr_SetObject(PyThreadState *tstate, TyObject *exception, TyObject *value)
+_TyErr_SetObject(TyThreadState *tstate, TyObject *exception, TyObject *value)
 {
     TyObject *exc_value;
     TyObject *tb = NULL;
@@ -243,7 +243,7 @@ _TyErr_SetObject(PyThreadState *tstate, TyObject *exception, TyObject *value)
 void
 TyErr_SetObject(TyObject *exception, TyObject *value)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_SetObject(tstate, exception, value);
 }
 
@@ -253,7 +253,7 @@ TyErr_SetObject(TyObject *exception, TyObject *value)
 void
 _TyErr_SetKeyError(TyObject *arg)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *exc = PyObject_CallOneArg(TyExc_KeyError, arg);
     if (!exc) {
         /* caller will expect error to be set anyway */
@@ -265,7 +265,7 @@ _TyErr_SetKeyError(TyObject *arg)
 }
 
 void
-_TyErr_SetNone(PyThreadState *tstate, TyObject *exception)
+_TyErr_SetNone(TyThreadState *tstate, TyObject *exception)
 {
     _TyErr_SetObject(tstate, exception, (TyObject *)NULL);
 }
@@ -274,13 +274,13 @@ _TyErr_SetNone(PyThreadState *tstate, TyObject *exception)
 void
 TyErr_SetNone(TyObject *exception)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_SetNone(tstate, exception);
 }
 
 
 void
-_TyErr_SetString(PyThreadState *tstate, TyObject *exception,
+_TyErr_SetString(TyThreadState *tstate, TyObject *exception,
                  const char *string)
 {
     TyObject *value = TyUnicode_FromString(string);
@@ -293,7 +293,7 @@ _TyErr_SetString(PyThreadState *tstate, TyObject *exception,
 void
 TyErr_SetString(TyObject *exception, const char *string)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_SetString(tstate, exception, string);
 }
 
@@ -313,7 +313,7 @@ TyErr_Occurred(void)
     /* The caller must hold a thread state. */
     _Ty_AssertHoldsTstate();
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyErr_Occurred(tstate);
 }
 
@@ -351,7 +351,7 @@ TyErr_GivenExceptionMatches(TyObject *err, TyObject *exc)
 
 
 int
-_TyErr_ExceptionMatches(PyThreadState *tstate, TyObject *exc)
+_TyErr_ExceptionMatches(TyThreadState *tstate, TyObject *exc)
 {
     return TyErr_GivenExceptionMatches(_TyErr_Occurred(tstate), exc);
 }
@@ -360,7 +360,7 @@ _TyErr_ExceptionMatches(PyThreadState *tstate, TyObject *exc)
 int
 TyErr_ExceptionMatches(TyObject *exc)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyErr_ExceptionMatches(tstate, exc);
 }
 
@@ -376,7 +376,7 @@ TyErr_ExceptionMatches(TyObject *exc)
             PyException_SetTraceback() with the resulting value and tb?
 */
 void
-_TyErr_NormalizeException(PyThreadState *tstate, TyObject **exc,
+_TyErr_NormalizeException(TyThreadState *tstate, TyObject **exc,
                           TyObject **val, TyObject **tb)
 {
     int recursion_depth = 0;
@@ -481,13 +481,13 @@ _TyErr_NormalizeException(PyThreadState *tstate, TyObject **exc,
 void
 TyErr_NormalizeException(TyObject **exc, TyObject **val, TyObject **tb)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_NormalizeException(tstate, exc, val, tb);
 }
 
 
 TyObject *
-_TyErr_GetRaisedException(PyThreadState *tstate) {
+_TyErr_GetRaisedException(TyThreadState *tstate) {
     TyObject *exc = tstate->current_exception;
     tstate->current_exception = NULL;
     return exc;
@@ -496,12 +496,12 @@ _TyErr_GetRaisedException(PyThreadState *tstate) {
 TyObject *
 TyErr_GetRaisedException(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyErr_GetRaisedException(tstate);
 }
 
 void
-_TyErr_Fetch(PyThreadState *tstate, TyObject **p_type, TyObject **p_value,
+_TyErr_Fetch(TyThreadState *tstate, TyObject **p_type, TyObject **p_value,
              TyObject **p_traceback)
 {
     TyObject *exc = _TyErr_GetRaisedException(tstate);
@@ -520,13 +520,13 @@ _TyErr_Fetch(PyThreadState *tstate, TyObject **p_type, TyObject **p_value,
 void
 TyErr_Fetch(TyObject **p_type, TyObject **p_value, TyObject **p_traceback)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_Fetch(tstate, p_type, p_value, p_traceback);
 }
 
 
 void
-_TyErr_Clear(PyThreadState *tstate)
+_TyErr_Clear(TyThreadState *tstate)
 {
     _TyErr_Restore(tstate, NULL, NULL, NULL);
 }
@@ -535,7 +535,7 @@ _TyErr_Clear(PyThreadState *tstate)
 void
 TyErr_Clear(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_Clear(tstate);
 }
 
@@ -567,7 +567,7 @@ get_exc_traceback(TyObject *exc_value)  /* returns a strong ref */
 }
 
 void
-_TyErr_GetExcInfo(PyThreadState *tstate,
+_TyErr_GetExcInfo(TyThreadState *tstate,
                   TyObject **p_type, TyObject **p_value, TyObject **p_traceback)
 {
     _TyErr_StackItem *exc_info = _TyErr_GetTopmostException(tstate);
@@ -578,7 +578,7 @@ _TyErr_GetExcInfo(PyThreadState *tstate,
 }
 
 TyObject*
-_TyErr_GetHandledException(PyThreadState *tstate)
+_TyErr_GetHandledException(TyThreadState *tstate)
 {
     _TyErr_StackItem *exc_info = _TyErr_GetTopmostException(tstate);
     TyObject *exc = exc_info->exc_value;
@@ -591,12 +591,12 @@ _TyErr_GetHandledException(PyThreadState *tstate)
 TyObject*
 TyErr_GetHandledException(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyErr_GetHandledException(tstate);
 }
 
 void
-_TyErr_SetHandledException(PyThreadState *tstate, TyObject *exc)
+_TyErr_SetHandledException(TyThreadState *tstate, TyObject *exc)
 {
     Ty_XSETREF(tstate->exc_info->exc_value, Ty_XNewRef(exc == Ty_None ? NULL : exc));
 }
@@ -604,14 +604,14 @@ _TyErr_SetHandledException(PyThreadState *tstate, TyObject *exc)
 void
 TyErr_SetHandledException(TyObject *exc)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_SetHandledException(tstate, exc);
 }
 
 void
 TyErr_GetExcInfo(TyObject **p_type, TyObject **p_value, TyObject **p_traceback)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_GetExcInfo(tstate, p_type, p_value, p_traceback);
 }
 
@@ -662,7 +662,7 @@ _TyErr_ChainExceptions(TyObject *typ, TyObject *val, TyObject *tb)
     if (typ == NULL)
         return;
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (!PyExceptionClass_Check(typ)) {
         _TyErr_Format(tstate, TyExc_SystemError,
@@ -694,7 +694,7 @@ _TyErr_ChainExceptions(TyObject *typ, TyObject *val, TyObject *tb)
    The caller is responsible for ensuring that this call won't create
    any cycles in the exception context chain. */
 void
-_TyErr_ChainExceptions1Tstate(PyThreadState *tstate, TyObject *exc)
+_TyErr_ChainExceptions1Tstate(TyThreadState *tstate, TyObject *exc)
 {
     if (exc == NULL) {
         return;
@@ -712,7 +712,7 @@ _TyErr_ChainExceptions1Tstate(PyThreadState *tstate, TyObject *exc)
 void
 _TyErr_ChainExceptions1(TyObject *exc)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_ChainExceptions1Tstate(tstate, exc);
 }
 
@@ -725,7 +725,7 @@ _TyErr_ChainExceptions1(TyObject *exc)
 void
 _TyErr_ChainStackItem(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     assert(_TyErr_Occurred(tstate));
 
     _TyErr_StackItem *exc_info = tstate->exc_info;
@@ -735,13 +735,13 @@ _TyErr_ChainStackItem(void)
 
     TyObject *exc = _TyErr_GetRaisedException(tstate);
 
-    /* _TyErr_SetObject sets the context from PyThreadState. */
+    /* _TyErr_SetObject sets the context from TyThreadState. */
     _TyErr_SetObject(tstate, (TyObject *) Ty_TYPE(exc), exc);
     Ty_DECREF(exc);  // since _TyErr_Occurred was true
 }
 
 static TyObject *
-_TyErr_FormatVFromCause(PyThreadState *tstate, TyObject *exception,
+_TyErr_FormatVFromCause(TyThreadState *tstate, TyObject *exception,
                         const char *format, va_list vargs)
 {
     assert(_TyErr_Occurred(tstate));
@@ -757,7 +757,7 @@ _TyErr_FormatVFromCause(PyThreadState *tstate, TyObject *exception,
 }
 
 TyObject *
-_TyErr_FormatFromCauseTstate(PyThreadState *tstate, TyObject *exception,
+_TyErr_FormatFromCauseTstate(TyThreadState *tstate, TyObject *exception,
                              const char *format, ...)
 {
     va_list vargs;
@@ -770,7 +770,7 @@ _TyErr_FormatFromCauseTstate(PyThreadState *tstate, TyObject *exception,
 TyObject *
 _TyErr_FormatFromCause(TyObject *exception, const char *format, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     va_list vargs;
     va_start(vargs, format);
     _TyErr_FormatVFromCause(tstate, exception, format, vargs);
@@ -783,7 +783,7 @@ _TyErr_FormatFromCause(TyObject *exception, const char *format, ...)
 int
 TyErr_BadArgument(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_SetString(tstate, TyExc_TypeError,
                      "bad argument type for built-in operation");
     return 0;
@@ -792,7 +792,7 @@ TyErr_BadArgument(void)
 TyObject *
 TyErr_NoMemory(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyErr_NoMemory(tstate);
 }
 
@@ -805,7 +805,7 @@ TyErr_SetFromErrnoWithFilenameObject(TyObject *exc, TyObject *filenameObject)
 TyObject *
 TyErr_SetFromErrnoWithFilenameObjects(TyObject *exc, TyObject *filenameObject, TyObject *filenameObject2)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *message;
     TyObject *v, *args;
     int i = errno;
@@ -941,7 +941,7 @@ TyObject *TyErr_SetExcFromWindowsErrWithFilenameObjects(
     TyObject *filenameObject,
     TyObject *filenameObject2)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     int len;
     WCHAR *s_buf = NULL; /* Free via LocalFree */
     TyObject *message;
@@ -1063,7 +1063,7 @@ TyObject *TyErr_SetFromWindowsErrWithFilename(
 
 static TyObject *
 new_importerror(
-    PyThreadState *tstate, TyObject *exctype, TyObject *msg,
+    TyThreadState *tstate, TyObject *exctype, TyObject *msg,
     TyObject *name, TyObject *path, TyObject* from_name)
 {
     TyObject *exc = NULL;
@@ -1120,7 +1120,7 @@ _TyErr_SetImportErrorSubclassWithNameFrom(
     TyObject *exception, TyObject *msg,
     TyObject *name, TyObject *path, TyObject* from_name)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *error = new_importerror(
                         tstate, exception, msg, name, path, from_name);
     if (error != NULL) {
@@ -1153,7 +1153,7 @@ TyErr_SetImportError(TyObject *msg, TyObject *name, TyObject *path)
 int
 _TyErr_SetModuleNotFoundError(TyObject *name)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (name == NULL) {
         _TyErr_SetString(tstate, TyExc_TypeError, "expected a name argument");
         return -1;
@@ -1176,7 +1176,7 @@ _TyErr_SetModuleNotFoundError(TyObject *name)
 void
 _TyErr_BadInternalCall(const char *filename, int lineno)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_Format(tstate, TyExc_SystemError,
                   "%s:%d: bad argument to internal function",
                   filename, lineno);
@@ -1189,7 +1189,7 @@ void
 TyErr_BadInternalCall(void)
 {
     assert(0 && "bad argument to internal function");
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _TyErr_SetString(tstate, TyExc_SystemError,
                      "bad argument to internal function");
 }
@@ -1197,7 +1197,7 @@ TyErr_BadInternalCall(void)
 
 
 TyObject *
-_TyErr_FormatV(PyThreadState *tstate, TyObject *exception,
+_TyErr_FormatV(TyThreadState *tstate, TyObject *exception,
                const char *format, va_list vargs)
 {
     TyObject* string;
@@ -1218,13 +1218,13 @@ _TyErr_FormatV(PyThreadState *tstate, TyObject *exception,
 TyObject *
 TyErr_FormatV(TyObject *exception, const char *format, va_list vargs)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _TyErr_FormatV(tstate, exception, format, vargs);
 }
 
 
 TyObject *
-_TyErr_Format(PyThreadState *tstate, TyObject *exception,
+_TyErr_Format(TyThreadState *tstate, TyObject *exception,
               const char *format, ...)
 {
     va_list vargs;
@@ -1238,7 +1238,7 @@ _TyErr_Format(PyThreadState *tstate, TyObject *exception,
 TyObject *
 TyErr_Format(TyObject *exception, const char *format, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     va_list vargs;
     va_start(vargs, format);
     _TyErr_FormatV(tstate, exception, format, vargs);
@@ -1277,7 +1277,7 @@ error:
 TyObject *
 TyErr_NewException(const char *name, TyObject *base, TyObject *dict)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *modulename = NULL;
     TyObject *mydict = NULL;
     TyObject *bases = NULL;
@@ -1386,7 +1386,7 @@ static PyStructSequence_Desc UnraisableHookArgs_desc = {
 };
 
 
-PyStatus
+TyStatus
 _TyErr_InitTypes(PyInterpreterState *interp)
 {
     if (_PyStructSequence_InitBuiltin(interp, &UnraisableHookArgsType,
@@ -1406,7 +1406,7 @@ _TyErr_FiniTypes(PyInterpreterState *interp)
 
 
 static TyObject *
-make_unraisable_hook_args(PyThreadState *tstate, TyObject *exc_type,
+make_unraisable_hook_args(TyThreadState *tstate, TyObject *exc_type,
                           TyObject *exc_value, TyObject *exc_tb,
                           TyObject *err_msg, TyObject *obj)
 {
@@ -1447,7 +1447,7 @@ make_unraisable_hook_args(PyThreadState *tstate, TyObject *exc_type,
 
    Do nothing if sys.stderr attribute doesn't exist or is set to None. */
 static int
-write_unraisable_exc_file(PyThreadState *tstate, TyObject *exc_type,
+write_unraisable_exc_file(TyThreadState *tstate, TyObject *exc_type,
                           TyObject *exc_value, TyObject *exc_tb,
                           TyObject *err_msg, TyObject *obj, TyObject *file)
 {
@@ -1565,7 +1565,7 @@ write_unraisable_exc_file(PyThreadState *tstate, TyObject *exc_type,
 
 
 static int
-write_unraisable_exc(PyThreadState *tstate, TyObject *exc_type,
+write_unraisable_exc(TyThreadState *tstate, TyObject *exc_type,
                      TyObject *exc_value, TyObject *exc_tb, TyObject *err_msg,
                      TyObject *obj)
 {
@@ -1589,7 +1589,7 @@ write_unraisable_exc(PyThreadState *tstate, TyObject *exc_type,
 TyObject*
 _TyErr_WriteUnraisableDefaultHook(TyObject *args)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (!Ty_IS_TYPE(args, &UnraisableHookArgsType)) {
         _TyErr_SetString(tstate, TyExc_TypeError,
@@ -1628,7 +1628,7 @@ static void
 format_unraisable_v(const char *format, va_list va, TyObject *obj)
 {
     const char *err_msg_str;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _Ty_EnsureTstateNotNULL(tstate);
 
     TyObject *err_msg = NULL;
@@ -1778,7 +1778,7 @@ static void
 TyErr_SyntaxLocationObjectEx(TyObject *filename, int lineno, int col_offset,
                              int end_lineno, int end_col_offset)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     /* add attributes for the line number and filename for the error */
     TyObject *exc = _TyErr_GetRaisedException(tstate);
@@ -1892,7 +1892,7 @@ TyErr_RangedSyntaxLocationObject(TyObject *filename, int lineno, int col_offset,
 void
 TyErr_SyntaxLocationEx(const char *filename, int lineno, int col_offset)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *fileobj;
     if (filename != NULL) {
         fileobj = TyUnicode_DecodeFSDefault(filename);

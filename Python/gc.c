@@ -172,7 +172,7 @@ _TyGC_InitState(GCState *gcstate)
 }
 
 
-PyStatus
+TyStatus
 _TyGC_Init(PyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
@@ -1052,7 +1052,7 @@ debug_cycle(const char *msg, TyObject *op)
  * merged into the old list regardless.
  */
 static void
-handle_legacy_finalizers(PyThreadState *tstate,
+handle_legacy_finalizers(TyThreadState *tstate,
                          GCState *gcstate,
                          TyGC_Head *finalizers, TyGC_Head *old)
 {
@@ -1079,7 +1079,7 @@ handle_legacy_finalizers(PyThreadState *tstate,
  * list, due to refcounts falling to 0.
  */
 static void
-finalize_garbage(PyThreadState *tstate, TyGC_Head *collectable)
+finalize_garbage(TyThreadState *tstate, TyGC_Head *collectable)
 {
     destructor finalize;
     TyGC_Head seen;
@@ -1116,7 +1116,7 @@ finalize_garbage(PyThreadState *tstate, TyGC_Head *collectable)
  * objects may be freed.  It is possible I screwed something up here.
  */
 static void
-delete_garbage(PyThreadState *tstate, GCState *gcstate,
+delete_garbage(TyThreadState *tstate, GCState *gcstate,
                TyGC_Head *collectable, TyGC_Head *old)
 {
     assert(!_TyErr_Occurred(tstate));
@@ -1266,7 +1266,7 @@ handle_resurrected_objects(TyGC_Head *unreachable, TyGC_Head* still_unreachable,
 }
 
 static void
-gc_collect_region(PyThreadState *tstate,
+gc_collect_region(TyThreadState *tstate,
                   TyGC_Head *from,
                   TyGC_Head *to,
                   struct gc_collection_stats *stats);
@@ -1311,7 +1311,7 @@ add_stats(GCState *gcstate, int gen, struct gc_collection_stats *stats)
 }
 
 static void
-gc_collect_young(PyThreadState *tstate,
+gc_collect_young(TyThreadState *tstate,
                  struct gc_collection_stats *stats)
 {
     GCState *gcstate = &tstate->interp->gc;
@@ -1483,7 +1483,7 @@ mark_stacks(PyInterpreterState *interp, TyGC_Head *visited, int visited_space, b
     // Move all objects on stacks to reachable
     _PyRuntimeState *runtime = &_PyRuntime;
     HEAD_LOCK(runtime);
-    PyThreadState* ts = TyInterpreterState_ThreadHead(interp);
+    TyThreadState* ts = TyInterpreterState_ThreadHead(interp);
     HEAD_UNLOCK(runtime);
     while (ts) {
         _PyInterpreterFrame *frame = ts->current_frame;
@@ -1557,7 +1557,7 @@ mark_global_roots(PyInterpreterState *interp, TyGC_Head *visited, int visited_sp
 }
 
 static intptr_t
-mark_at_start(PyThreadState *tstate)
+mark_at_start(TyThreadState *tstate)
 {
     // TO DO -- Make this incremental
     GCState *gcstate = &tstate->interp->gc;
@@ -1600,7 +1600,7 @@ assess_work_to_do(GCState *gcstate)
 }
 
 static void
-gc_collect_increment(PyThreadState *tstate, struct gc_collection_stats *stats)
+gc_collect_increment(TyThreadState *tstate, struct gc_collection_stats *stats)
 {
     GC_STAT_ADD(1, collections, 1);
     GCState *gcstate = &tstate->interp->gc;
@@ -1658,7 +1658,7 @@ gc_collect_increment(PyThreadState *tstate, struct gc_collection_stats *stats)
 }
 
 static void
-gc_collect_full(PyThreadState *tstate,
+gc_collect_full(TyThreadState *tstate,
                 struct gc_collection_stats *stats)
 {
     GC_STAT_ADD(2, collections, 1);
@@ -1691,7 +1691,7 @@ gc_collect_full(PyThreadState *tstate,
 /* This is the main function. Read this to understand how the
  * collection process works. */
 static void
-gc_collect_region(PyThreadState *tstate,
+gc_collect_region(TyThreadState *tstate,
                   TyGC_Head *from,
                   TyGC_Head *to,
                   struct gc_collection_stats *stats)
@@ -2007,7 +2007,7 @@ show_stats_each_generations(GCState *gcstate)
 }
 
 Ty_ssize_t
-_TyGC_Collect(PyThreadState *tstate, int generation, _TyGC_Reason reason)
+_TyGC_Collect(TyThreadState *tstate, int generation, _TyGC_Reason reason)
 {
     GCState *gcstate = &tstate->interp->gc;
     assert(tstate->current_frame == NULL || tstate->current_frame->stackpointer != NULL);
@@ -2071,7 +2071,7 @@ TyGC_Collect(void)
 }
 
 void
-_TyGC_CollectNoFail(PyThreadState *tstate)
+_TyGC_CollectNoFail(TyThreadState *tstate)
 {
     /* Ideally, this function is only called on interpreter shutdown,
        and therefore not recursively.  Unfortunately, when there are daemon
@@ -2222,7 +2222,7 @@ PyObject_IS_GC(TyObject *obj)
 }
 
 void
-_Ty_ScheduleGC(PyThreadState *tstate)
+_Ty_ScheduleGC(TyThreadState *tstate)
 {
     if (!_Ty_eval_breaker_bit_is_set(tstate, _PY_GC_SCHEDULED_BIT))
     {
@@ -2237,7 +2237,7 @@ _TyObject_GC_Link(TyObject *op)
     // gc must be correctly aligned
     _TyObject_ASSERT(op, ((uintptr_t)gc & (sizeof(uintptr_t)-1)) == 0);
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     GCState *gcstate = &tstate->interp->gc;
     gc->_gc_next = 0;
     gc->_gc_prev = 0;
@@ -2254,7 +2254,7 @@ _TyObject_GC_Link(TyObject *op)
 }
 
 void
-_Ty_RunGC(PyThreadState *tstate)
+_Ty_RunGC(TyThreadState *tstate)
 {
     if (tstate->interp->gc.enabled) {
         _TyGC_Collect(tstate, 1, _Ty_GC_REASON_HEAP);
@@ -2264,7 +2264,7 @@ _Ty_RunGC(PyThreadState *tstate)
 static TyObject *
 gc_alloc(TyTypeObject *tp, size_t basicsize, size_t presize)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (basicsize > PY_SSIZE_T_MAX - presize) {
         return _TyErr_NoMemory(tstate);
     }

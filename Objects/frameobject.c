@@ -1818,7 +1818,7 @@ frame_lineno_set_impl(PyFrameObject *self, TyObject *value)
             /* Pop exception stack as well as the evaluation stack */
             TyObject *exc = PyStackRef_AsPyObjectBorrow(popped);
             assert(PyExceptionInstance_Check(exc) || exc == Ty_None);
-            PyThreadState *tstate = _TyThreadState_GET();
+            TyThreadState *tstate = _TyThreadState_GET();
             Ty_XSETREF(tstate->exc_info->exc_value, exc == Ty_None ? NULL : exc);
         }
         else {
@@ -2092,7 +2092,7 @@ TyTypeObject TyFrame_Type = {
 };
 
 static void
-init_frame(PyThreadState *tstate, _PyInterpreterFrame *frame,
+init_frame(TyThreadState *tstate, _PyInterpreterFrame *frame,
            PyFunctionObject *func, TyObject *locals)
 {
     PyCodeObject *code = (PyCodeObject *)func->func_code;
@@ -2122,7 +2122,7 @@ _TyFrame_New_NoTrack(PyCodeObject *code)
 
 /* Legacy API */
 PyFrameObject*
-TyFrame_New(PyThreadState *tstate, PyCodeObject *code,
+TyFrame_New(TyThreadState *tstate, PyCodeObject *code,
             TyObject *globals, TyObject *locals)
 {
     TyObject *builtins = _TyDict_LoadBuiltinsFromGlobals(globals);

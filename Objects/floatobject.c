@@ -1959,7 +1959,7 @@ _TyFloat_InitState(PyInterpreterState *interp)
     _init_global_state();
 }
 
-PyStatus
+TyStatus
 _TyFloat_InitTypes(PyInterpreterState *interp)
 {
     /* Init float info */

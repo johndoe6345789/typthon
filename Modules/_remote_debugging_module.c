@@ -52,7 +52,7 @@
 #define SIZEOF_PYOBJECT sizeof(TyObject)
 #define SIZEOF_SET_OBJ sizeof(PySetObject)
 #define SIZEOF_TASK_OBJ 4096
-#define SIZEOF_THREAD_STATE sizeof(PyThreadState)
+#define SIZEOF_THREAD_STATE sizeof(TyThreadState)
 #define SIZEOF_TYPE_OBJ sizeof(TyTypeObject)
 #define SIZEOF_UNICODE_OBJ sizeof(PyUnicodeObject)
 #define SIZEOF_LONG_OBJ sizeof(PyLongObject)
@@ -67,11 +67,11 @@
 #define INTERP_STATE_MIN_SIZE MAX(MAX(MAX(offsetof(PyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
                                           offsetof(PyInterpreterState, tlbc_indices.tlbc_generation) + sizeof(uint32_t)), \
                                       offsetof(PyInterpreterState, threads.head) + sizeof(void*)), \
-                                  offsetof(PyInterpreterState, _gil.last_holder) + sizeof(PyThreadState*))
+                                  offsetof(PyInterpreterState, _gil.last_holder) + sizeof(TyThreadState*))
 #else
 #define INTERP_STATE_MIN_SIZE MAX(MAX(offsetof(PyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
                                       offsetof(PyInterpreterState, threads.head) + sizeof(void*)), \
-                                  offsetof(PyInterpreterState, _gil.last_holder) + sizeof(PyThreadState*))
+                                  offsetof(PyInterpreterState, _gil.last_holder) + sizeof(TyThreadState*))
 #endif
 #define INTERP_STATE_BUFFER_SIZE MAX(INTERP_STATE_MIN_SIZE, 256)
 
@@ -2683,7 +2683,7 @@ _remote_debugging_RemoteUnwinder_get_stack_trace_impl(RemoteUnwinderObject *self
     }
 
     // If only_active_thread is true, we need to determine which thread holds the GIL
-    PyThreadState* gil_holder = NULL;
+    TyThreadState* gil_holder = NULL;
     if (self->only_active_thread) {
         // The GIL state is already in interp_state_buffer, just read from there
         // Check if GIL is locked
@@ -2692,7 +2692,7 @@ _remote_debugging_RemoteUnwinder_get_stack_trace_impl(RemoteUnwinderObject *self
 
         if (gil_locked) {
             // Get the last holder (current holder when GIL is locked)
-            gil_holder = GET_MEMBER(PyThreadState*, interp_state_buffer,
+            gil_holder = GET_MEMBER(TyThreadState*, interp_state_buffer,
                 self->debug_offsets.interpreter_state.gil_runtime_state_holder);
         } else {
             // GIL is not locked, return empty list

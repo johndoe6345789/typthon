@@ -21,9 +21,9 @@ extern "C" {
 struct _ceval_runtime_state;
 
 // Export for '_lsprof' shared extension
-PyAPI_FUNC(int) _TyEval_SetProfile(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg);
+PyAPI_FUNC(int) _TyEval_SetProfile(TyThreadState *tstate, Ty_tracefunc func, TyObject *arg);
 
-extern int _TyEval_SetTrace(PyThreadState *tstate, Ty_tracefunc func, TyObject *arg);
+extern int _TyEval_SetTrace(TyThreadState *tstate, Ty_tracefunc func, TyObject *arg);
 
 extern int _TyEval_SetOpcodeTrace(PyFrameObject *f, bool enable);
 
@@ -37,13 +37,13 @@ extern void _TyEval_SetSwitchInterval(unsigned long microseconds);
 extern unsigned long _TyEval_GetSwitchInterval(void);
 
 // Export for '_queue' shared extension
-PyAPI_FUNC(int) _TyEval_MakePendingCalls(PyThreadState *);
+PyAPI_FUNC(int) _TyEval_MakePendingCalls(TyThreadState *);
 
 #ifndef Ty_DEFAULT_RECURSION_LIMIT
 #  define Ty_DEFAULT_RECURSION_LIMIT 1000
 #endif
 
-extern void _Ty_FinishPendingCalls(PyThreadState *tstate);
+extern void _Ty_FinishPendingCalls(TyThreadState *tstate);
 extern void _TyEval_InitState(PyInterpreterState *);
 extern void _TyEval_SignalReceived(void);
 
@@ -63,7 +63,7 @@ PyAPI_FUNC(_Ty_add_pending_call_result) _TyEval_AddPendingCall(
     int flags);
 
 #ifdef HAVE_FORK
-extern PyStatus _TyEval_ReInitThreads(PyThreadState *tstate);
+extern TyStatus _TyEval_ReInitThreads(TyThreadState *tstate);
 #endif
 
 // Used by sys.call_tracing()
@@ -85,7 +85,7 @@ extern int _TyEval_SetCoroutineOriginTrackingDepth(int depth);
 extern void _TyEval_Fini(void);
 
 
-extern TyObject* _TyEval_GetBuiltins(PyThreadState *tstate);
+extern TyObject* _TyEval_GetBuiltins(TyThreadState *tstate);
 
 // Trampoline API
 
@@ -105,14 +105,14 @@ extern int _PyPerfTrampoline_Init(int activate);
 extern int _PyPerfTrampoline_Fini(void);
 extern void _PyPerfTrampoline_FreeArenas(void);
 extern int _PyIsPerfTrampolineActive(void);
-extern PyStatus _PyPerfTrampoline_AfterFork_Child(void);
+extern TyStatus _PyPerfTrampoline_AfterFork_Child(void);
 #ifdef PY_HAVE_PERF_TRAMPOLINE
 extern _PyPerf_Callbacks _Ty_perfmap_callbacks;
 extern _PyPerf_Callbacks _Ty_perfmap_jit_callbacks;
 #endif
 
 static inline TyObject*
-_TyEval_EvalFrame(PyThreadState *tstate, _PyInterpreterFrame *frame, int throwflag)
+_TyEval_EvalFrame(TyThreadState *tstate, _PyInterpreterFrame *frame, int throwflag)
 {
     EVAL_CALL_STAT_INC(EVAL_CALL_TOTAL);
     if (tstate->interp->eval_frame == NULL) {
@@ -122,18 +122,18 @@ _TyEval_EvalFrame(PyThreadState *tstate, _PyInterpreterFrame *frame, int throwfl
 }
 
 extern TyObject*
-_TyEval_Vector(PyThreadState *tstate,
+_TyEval_Vector(TyThreadState *tstate,
             PyFunctionObject *func, TyObject *locals,
             TyObject* const* args, size_t argcount,
             TyObject *kwnames);
 
 extern int _TyEval_ThreadsInitialized(void);
-extern void _TyEval_InitGIL(PyThreadState *tstate, int own_gil);
+extern void _TyEval_InitGIL(TyThreadState *tstate, int own_gil);
 extern void _TyEval_FiniGIL(PyInterpreterState *interp);
 
-extern void _TyEval_AcquireLock(PyThreadState *tstate);
+extern void _TyEval_AcquireLock(TyThreadState *tstate);
 
-extern void _TyEval_ReleaseLock(PyInterpreterState *, PyThreadState *,
+extern void _TyEval_ReleaseLock(PyInterpreterState *, TyThreadState *,
                                 int final_release);
 
 #ifdef Ty_GIL_DISABLED
@@ -143,7 +143,7 @@ extern void _TyEval_ReleaseLock(PyInterpreterState *, PyThreadState *,
 // The enabled state of the GIL will not change while one or more threads are
 // attached.
 static inline int
-_TyEval_IsGILEnabled(PyThreadState *tstate)
+_TyEval_IsGILEnabled(TyThreadState *tstate)
 {
     struct _gil_runtime_state *gil = tstate->interp->ceval.gil;
     return _Ty_atomic_load_int_relaxed(&gil->enabled) != 0;
@@ -174,13 +174,13 @@ _TyEval_IsGILEnabled(PyThreadState *tstate)
 //
 // All three functions must be called by an attached thread (this implies that
 // if the GIL is enabled, the current thread must hold it).
-extern int _TyEval_EnableGILTransient(PyThreadState *tstate);
-extern int _TyEval_EnableGILPermanent(PyThreadState *tstate);
-extern int _TyEval_DisableGIL(PyThreadState *state);
+extern int _TyEval_EnableGILTransient(TyThreadState *tstate);
+extern int _TyEval_EnableGILPermanent(TyThreadState *tstate);
+extern int _TyEval_DisableGIL(TyThreadState *state);
 
 
 static inline _Ty_CODEUNIT *
-_TyEval_GetExecutableCode(PyThreadState *tstate, PyCodeObject *co)
+_TyEval_GetExecutableCode(TyThreadState *tstate, PyCodeObject *co)
 {
     _Ty_CODEUNIT *bc = _TyCode_GetTLBCFast(tstate, co);
     if (bc != NULL) {
@@ -196,7 +196,7 @@ extern void _TyEval_DeactivateOpCache(void);
 
 /* --- _Ty_EnterRecursiveCall() ----------------------------------------- */
 
-static inline int _Ty_MakeRecCheck(PyThreadState *tstate)  {
+static inline int _Ty_MakeRecCheck(TyThreadState *tstate)  {
     uintptr_t here_addr = _Ty_get_machine_stack_pointer();
     _PyThreadStateImpl *_tstate = (_PyThreadStateImpl *)tstate;
     return here_addr < _tstate->c_stack_soft_limit;
@@ -205,29 +205,29 @@ static inline int _Ty_MakeRecCheck(PyThreadState *tstate)  {
 // Export for '_json' shared extension, used via _Ty_EnterRecursiveCall()
 // static inline function.
 PyAPI_FUNC(int) _Ty_CheckRecursiveCall(
-    PyThreadState *tstate,
+    TyThreadState *tstate,
     const char *where);
 
 int _Ty_CheckRecursiveCallPy(
-    PyThreadState *tstate);
+    TyThreadState *tstate);
 
-static inline int _Ty_EnterRecursiveCallTstate(PyThreadState *tstate,
+static inline int _Ty_EnterRecursiveCallTstate(TyThreadState *tstate,
                                                const char *where) {
     return (_Ty_MakeRecCheck(tstate) && _Ty_CheckRecursiveCall(tstate, where));
 }
 
 static inline int _Ty_EnterRecursiveCall(const char *where) {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     return _Ty_EnterRecursiveCallTstate(tstate, where);
 }
 
-static inline void _Ty_LeaveRecursiveCallTstate(PyThreadState *tstate) {
+static inline void _Ty_LeaveRecursiveCallTstate(TyThreadState *tstate) {
     (void)tstate;
 }
 
-PyAPI_FUNC(void) _Ty_InitializeRecursionLimits(PyThreadState *tstate);
+PyAPI_FUNC(void) _Ty_InitializeRecursionLimits(TyThreadState *tstate);
 
-static inline int _Ty_ReachedRecursionLimit(PyThreadState *tstate)  {
+static inline int _Ty_ReachedRecursionLimit(TyThreadState *tstate)  {
     uintptr_t here_addr = _Ty_get_machine_stack_pointer();
     _PyThreadStateImpl *_tstate = (_PyThreadStateImpl *)tstate;
     assert(_tstate->c_stack_hard_limit != 0);
@@ -239,13 +239,13 @@ static inline void _Ty_LeaveRecursiveCall(void)  {
 
 extern _PyInterpreterFrame* _TyEval_GetFrame(void);
 
-extern TyObject * _TyEval_GetGlobalsFromRunningMain(PyThreadState *);
+extern TyObject * _TyEval_GetGlobalsFromRunningMain(TyThreadState *);
 extern int _TyEval_EnsureBuiltins(
-    PyThreadState *,
+    TyThreadState *,
     TyObject *,
     TyObject **p_builtins);
 extern int _TyEval_EnsureBuiltinsWithModule(
-    PyThreadState *,
+    TyThreadState *,
     TyObject *,
     TyObject **p_builtins);
 
@@ -253,7 +253,7 @@ PyAPI_FUNC(TyObject *)_Ty_MakeCoro(PyFunctionObject *func);
 
 /* Handle signals, pending calls, GIL drop request
    and asynchronous exception */
-PyAPI_FUNC(int) _Ty_HandlePending(PyThreadState *tstate);
+PyAPI_FUNC(int) _Ty_HandlePending(TyThreadState *tstate);
 
 extern TyObject * _TyEval_GetFrameLocals(void);
 
@@ -271,20 +271,20 @@ typedef struct _special_method {
 PyAPI_DATA(const _Ty_SpecialMethod) _Ty_SpecialMethods[];
 PyAPI_DATA(const size_t) _Ty_FunctionAttributeOffsets[];
 
-PyAPI_FUNC(int) _TyEval_CheckExceptStarTypeValid(PyThreadState *tstate, TyObject* right);
-PyAPI_FUNC(int) _TyEval_CheckExceptTypeValid(PyThreadState *tstate, TyObject* right);
+PyAPI_FUNC(int) _TyEval_CheckExceptStarTypeValid(TyThreadState *tstate, TyObject* right);
+PyAPI_FUNC(int) _TyEval_CheckExceptTypeValid(TyThreadState *tstate, TyObject* right);
 PyAPI_FUNC(int) _TyEval_ExceptionGroupMatch(_PyInterpreterFrame *, TyObject* exc_value, TyObject *match_type, TyObject **match, TyObject **rest);
-PyAPI_FUNC(void) _TyEval_FormatAwaitableError(PyThreadState *tstate, TyTypeObject *type, int oparg);
-PyAPI_FUNC(void) _TyEval_FormatExcCheckArg(PyThreadState *tstate, TyObject *exc, const char *format_str, TyObject *obj);
-PyAPI_FUNC(void) _TyEval_FormatExcUnbound(PyThreadState *tstate, PyCodeObject *co, int oparg);
-PyAPI_FUNC(void) _TyEval_FormatKwargsError(PyThreadState *tstate, TyObject *func, TyObject *kwargs);
-PyAPI_FUNC(TyObject *) _TyEval_ImportFrom(PyThreadState *, TyObject *, TyObject *);
-PyAPI_FUNC(TyObject *) _TyEval_ImportName(PyThreadState *, _PyInterpreterFrame *, TyObject *, TyObject *, TyObject *);
-PyAPI_FUNC(TyObject *)_TyEval_MatchClass(PyThreadState *tstate, TyObject *subject, TyObject *type, Ty_ssize_t nargs, TyObject *kwargs);
-PyAPI_FUNC(TyObject *)_TyEval_MatchKeys(PyThreadState *tstate, TyObject *map, TyObject *keys);
-PyAPI_FUNC(void) _TyEval_MonitorRaise(PyThreadState *tstate, _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr);
-PyAPI_FUNC(int) _TyEval_UnpackIterableStackRef(PyThreadState *tstate, TyObject *v, int argcnt, int argcntafter, _PyStackRef *sp);
-PyAPI_FUNC(void) _TyEval_FrameClearAndPop(PyThreadState *tstate, _PyInterpreterFrame *frame);
+PyAPI_FUNC(void) _TyEval_FormatAwaitableError(TyThreadState *tstate, TyTypeObject *type, int oparg);
+PyAPI_FUNC(void) _TyEval_FormatExcCheckArg(TyThreadState *tstate, TyObject *exc, const char *format_str, TyObject *obj);
+PyAPI_FUNC(void) _TyEval_FormatExcUnbound(TyThreadState *tstate, PyCodeObject *co, int oparg);
+PyAPI_FUNC(void) _TyEval_FormatKwargsError(TyThreadState *tstate, TyObject *func, TyObject *kwargs);
+PyAPI_FUNC(TyObject *) _TyEval_ImportFrom(TyThreadState *, TyObject *, TyObject *);
+PyAPI_FUNC(TyObject *) _TyEval_ImportName(TyThreadState *, _PyInterpreterFrame *, TyObject *, TyObject *, TyObject *);
+PyAPI_FUNC(TyObject *)_TyEval_MatchClass(TyThreadState *tstate, TyObject *subject, TyObject *type, Ty_ssize_t nargs, TyObject *kwargs);
+PyAPI_FUNC(TyObject *)_TyEval_MatchKeys(TyThreadState *tstate, TyObject *map, TyObject *keys);
+PyAPI_FUNC(void) _TyEval_MonitorRaise(TyThreadState *tstate, _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr);
+PyAPI_FUNC(int) _TyEval_UnpackIterableStackRef(TyThreadState *tstate, TyObject *v, int argcnt, int argcntafter, _PyStackRef *sp);
+PyAPI_FUNC(void) _TyEval_FrameClearAndPop(TyThreadState *tstate, _PyInterpreterFrame *frame);
 PyAPI_FUNC(TyObject **) _PyObjectArray_FromStackRefArray(_PyStackRef *input, Ty_ssize_t nargs, TyObject **scratch);
 
 PyAPI_FUNC(void) _PyObjectArray_Free(TyObject **array, TyObject **scratch);
@@ -292,9 +292,9 @@ PyAPI_FUNC(void) _PyObjectArray_Free(TyObject **array, TyObject **scratch);
 PyAPI_FUNC(TyObject *) _TyEval_GetANext(TyObject *aiter);
 PyAPI_FUNC(void) _TyEval_LoadGlobalStackRef(TyObject *globals, TyObject *builtins, TyObject *name, _PyStackRef *writeto);
 PyAPI_FUNC(TyObject *) _TyEval_GetAwaitable(TyObject *iterable, int oparg);
-PyAPI_FUNC(TyObject *) _TyEval_LoadName(PyThreadState *tstate, _PyInterpreterFrame *frame, TyObject *name);
+PyAPI_FUNC(TyObject *) _TyEval_LoadName(TyThreadState *tstate, _PyInterpreterFrame *frame, TyObject *name);
 PyAPI_FUNC(int)
-_Ty_Check_ArgsIterable(PyThreadState *tstate, TyObject *func, TyObject *args);
+_Ty_Check_ArgsIterable(TyThreadState *tstate, TyObject *func, TyObject *args);
 
 /*
  * Indicate whether a special method of given 'oparg' can use the (improved)
@@ -306,7 +306,7 @@ _Ty_Check_ArgsIterable(PyThreadState *tstate, TyObject *func, TyObject *args);
 PyAPI_FUNC(int)
 _TyEval_SpecialMethodCanSuggest(TyObject *self, int oparg);
 
-/* Bits that can be set in PyThreadState.eval_breaker */
+/* Bits that can be set in TyThreadState.eval_breaker */
 #define _PY_GIL_DROP_REQUEST_BIT (1U << 0)
 #define _PY_SIGNALS_PENDING_BIT (1U << 1)
 #define _PY_CALLS_TO_DO_BIT (1U << 2)
@@ -321,19 +321,19 @@ _TyEval_SpecialMethodCanSuggest(TyObject *self, int oparg);
 #define _PY_EVAL_EVENTS_MASK ((1 << _PY_EVAL_EVENTS_BITS)-1)
 
 static inline void
-_Ty_set_eval_breaker_bit(PyThreadState *tstate, uintptr_t bit)
+_Ty_set_eval_breaker_bit(TyThreadState *tstate, uintptr_t bit)
 {
     _Ty_atomic_or_uintptr(&tstate->eval_breaker, bit);
 }
 
 static inline void
-_Ty_unset_eval_breaker_bit(PyThreadState *tstate, uintptr_t bit)
+_Ty_unset_eval_breaker_bit(TyThreadState *tstate, uintptr_t bit)
 {
     _Ty_atomic_and_uintptr(&tstate->eval_breaker, ~bit);
 }
 
 static inline int
-_Ty_eval_breaker_bit_is_set(PyThreadState *tstate, uintptr_t bit)
+_Ty_eval_breaker_bit_is_set(TyThreadState *tstate, uintptr_t bit)
 {
     uintptr_t b = _Ty_atomic_load_uintptr_relaxed(&tstate->eval_breaker);
     return (b & bit) != 0;
@@ -360,7 +360,7 @@ PyAPI_FUNC(_PyStackRef) _TyFloat_FromDouble_ConsumeInputs(_PyStackRef left, _PyS
 #endif
 
 #if defined(Ty_REMOTE_DEBUG) && defined(Ty_SUPPORTS_REMOTE_DEBUG)
-extern int _PyRunRemoteDebugger(PyThreadState *tstate);
+extern int _PyRunRemoteDebugger(TyThreadState *tstate);
 #endif
 
 /* Special methods used by LOAD_SPECIAL */

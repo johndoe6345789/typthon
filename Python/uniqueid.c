@@ -162,7 +162,7 @@ _TyObject_ThreadIncrefSlow(TyObject *obj, size_t idx)
     assert(idx < (size_t)tstate->refcounts.size);
     tstate->refcounts.values[idx]++;
 #ifdef Ty_REF_DEBUG
-    _Ty_IncRefTotal((PyThreadState *)tstate);
+    _Ty_IncRefTotal((TyThreadState *)tstate);
 #endif
     _Ty_INCREF_STAT_INC();
 }

@@ -84,7 +84,7 @@ _TySys_GetRequiredAttr(TyObject *name)
                      Ty_TYPE(name)->tp_name);
         return NULL;
     }
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *sysdict = tstate->interp->sysdict;
     if (sysdict == NULL) {
         TyErr_SetString(TyExc_RuntimeError, "no sys module");
@@ -100,7 +100,7 @@ _TySys_GetRequiredAttr(TyObject *name)
 TyObject *
 _TySys_GetRequiredAttrString(const char *name)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *sysdict = tstate->interp->sysdict;
     if (sysdict == NULL) {
         TyErr_SetString(TyExc_RuntimeError, "no sys module");
@@ -123,7 +123,7 @@ _TySys_GetOptionalAttr(TyObject *name, TyObject **value)
         *value = NULL;
         return -1;
     }
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *sysdict = tstate->interp->sysdict;
     if (sysdict == NULL) {
         *value = NULL;
@@ -135,7 +135,7 @@ _TySys_GetOptionalAttr(TyObject *name, TyObject **value)
 int
 _TySys_GetOptionalAttrString(const char *name, TyObject **value)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *sysdict = tstate->interp->sysdict;
     if (sysdict == NULL) {
         *value = NULL;
@@ -147,7 +147,7 @@ _TySys_GetOptionalAttrString(const char *name, TyObject **value)
 TyObject *
 TySys_GetObject(const char *name)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *sysdict = tstate->interp->sysdict;
     if (sysdict == NULL) {
         return NULL;
@@ -241,7 +241,7 @@ should_audit(PyInterpreterState *interp)
 
 
 static int
-sys_audit_tstate(PyThreadState *ts, const char *event,
+sys_audit_tstate(TyThreadState *ts, const char *event,
                  const char *argFormat, va_list vargs)
 {
     assert(event != NULL);
@@ -368,7 +368,7 @@ exit:
 }
 
 int
-_TySys_Audit(PyThreadState *tstate, const char *event,
+_TySys_Audit(TyThreadState *tstate, const char *event,
              const char *argFormat, ...)
 {
     va_list vargs;
@@ -381,7 +381,7 @@ _TySys_Audit(PyThreadState *tstate, const char *event,
 int
 TySys_Audit(const char *event, const char *argFormat, ...)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     va_list vargs;
     va_start(vargs, argFormat);
     int res = sys_audit_tstate(tstate, event, argFormat, vargs);
@@ -410,7 +410,7 @@ TySys_AuditTuple(const char *event, TyObject *args)
  *
  * Must be finalizing to clear hooks */
 void
-_TySys_ClearAuditHooks(PyThreadState *ts)
+_TySys_ClearAuditHooks(TyThreadState *ts)
 {
     assert(ts != NULL);
     if (!ts) {
@@ -419,7 +419,7 @@ _TySys_ClearAuditHooks(PyThreadState *ts)
 
     _PyRuntimeState *runtime = ts->interp->runtime;
     /* The hooks are global so we have to check for runtime finalization. */
-    PyThreadState *finalizing = _PyRuntimeState_GetFinalizing(runtime);
+    TyThreadState *finalizing = _PyRuntimeState_GetFinalizing(runtime);
     assert(finalizing == ts);
     if (finalizing != ts) {
         return;
@@ -470,7 +470,7 @@ TySys_AddAuditHook(Ty_AuditHookFunction hook, void *userData)
     /* tstate can be NULL, so access directly _PyRuntime:
        TySys_AddAuditHook() can be called before Python is initialized. */
     _PyRuntimeState *runtime = &_PyRuntime;
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     if (runtime->initialized) {
         tstate = _TyThreadState_GET();
     }
@@ -522,7 +522,7 @@ static TyObject *
 sys_addaudithook_impl(TyObject *module, TyObject *hook)
 /*[clinic end generated code: output=4f9c17aaeb02f44e input=0f3e191217a45e34]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     /* Invoke existing audit hooks to allow them an opportunity to abort. */
     if (_TySys_Audit(tstate, "sys.addaudithook", NULL) < 0) {
@@ -565,7 +565,7 @@ static TyObject *
 sys_audit_impl(TyObject *module, const char *event, TyObject *args)
 /*[clinic end generated code: output=1d0fc82da768f49d input=ec3b688527945109]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _Ty_EnsureTstateNotNULL(tstate);
 
     if (!should_audit(tstate->interp)) {
@@ -584,7 +584,7 @@ sys_audit_impl(TyObject *module, const char *event, TyObject *args)
 static TyObject *
 sys_breakpointhook(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *keywords)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     assert(!_TyErr_Occurred(tstate));
     char *envar = Ty_GETENV("PYTHONBREAKPOINT");
 
@@ -753,7 +753,7 @@ sys_displayhook(TyObject *module, TyObject *o)
 {
     TyObject *outf;
     TyObject *builtins;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     builtins = TyImport_GetModule(&_Ty_ID(builtins));
     if (builtins == NULL) {
@@ -1069,7 +1069,7 @@ static TyObject *whatstrings[8] = {
 
 
 static TyObject *
-call_trampoline(PyThreadState *tstate, TyObject* callback,
+call_trampoline(TyThreadState *tstate, TyObject* callback,
                 PyFrameObject *frame, int what, TyObject *arg)
 {
     /* call the Python-level function */
@@ -1086,7 +1086,7 @@ static int
 profile_trampoline(TyObject *self, PyFrameObject *frame,
                    int what, TyObject *arg)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *result = call_trampoline(tstate, self, frame, what, arg);
     if (result == NULL) {
         _TyEval_SetProfile(tstate, NULL, NULL);
@@ -1112,7 +1112,7 @@ trace_trampoline(TyObject *self, PyFrameObject *frame,
         return 0;
     }
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *result = call_trampoline(tstate, callback, frame, what, arg);
     if (result == NULL) {
         _TyEval_SetTrace(tstate, NULL, NULL);
@@ -1145,7 +1145,7 @@ static TyObject *
 sys_settrace(TyObject *module, TyObject *function)
 /*[clinic end generated code: output=999d12e9d6ec4678 input=8107feb01c5f1c4e]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (function == Ty_None) {
         if (_TyEval_SetTrace(tstate, NULL, NULL) < 0) {
             return NULL;
@@ -1201,7 +1201,7 @@ static TyObject *
 sys_gettrace_impl(TyObject *module)
 /*[clinic end generated code: output=e97e3a4d8c971b6e input=373b51bb2147f4d8]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *temp = tstate->c_traceobj;
 
     if (temp == NULL)
@@ -1225,7 +1225,7 @@ static TyObject *
 sys_setprofile(TyObject *module, TyObject *function)
 /*[clinic end generated code: output=1c3503105939db9c input=055d0d7961413a62]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (function == Ty_None) {
         if (_TyEval_SetProfile(tstate, NULL, NULL) < 0) {
             return NULL;
@@ -1280,7 +1280,7 @@ static TyObject *
 sys_getprofile_impl(TyObject *module)
 /*[clinic end generated code: output=579b96b373448188 input=1b3209d89a32965d]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *temp = tstate->c_profileobj;
 
     if (temp == NULL)
@@ -1349,7 +1349,7 @@ static TyObject *
 sys_setrecursionlimit_impl(TyObject *module, int new_limit)
 /*[clinic end generated code: output=35e1c64754800ace input=b0f7a23393924af3]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (new_limit < 1) {
         _TyErr_SetString(tstate, TyExc_ValueError,
@@ -1560,7 +1560,7 @@ static PyStructSequence_Desc hash_info_desc = {
 };
 
 static TyObject *
-get_hash_info(PyThreadState *tstate)
+get_hash_info(TyThreadState *tstate)
 {
     TyObject *hash_info;
     int field = 0;
@@ -1924,7 +1924,7 @@ _TySys_GetSizeOf(TyObject *o)
     TyObject *res = NULL;
     TyObject *method;
     Ty_ssize_t size;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     /* Make sure the type is initialized. float gets initialized late */
     if (TyType_Ready(Ty_TYPE(o)) < 0) {
@@ -1975,7 +1975,7 @@ sys_getsizeof(TyObject *self, TyObject *args, TyObject *kwds)
     static char *kwlist[] = {"object", "default", 0};
     size_t size;
     TyObject *o, *dflt = NULL;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (!TyArg_ParseTupleAndKeywords(args, kwds, "O|O:getsizeof",
                                      kwlist, &o, &dflt)) {
@@ -2095,7 +2095,7 @@ static TyObject *
 sys__getframe_impl(TyObject *module, int depth)
 /*[clinic end generated code: output=d438776c04d59804 input=c1be8a6464b11ee5]*/
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _PyInterpreterFrame *frame = tstate->current_frame;
 
     if (frame != NULL) {
@@ -2969,10 +2969,10 @@ _clear_preinit_entries(_Ty_PreInitEntry *optionlist)
 }
 
 
-PyStatus
+TyStatus
 _TySys_ReadPreinitWarnOptions(PyWideStringList *options)
 {
-    PyStatus status;
+    TyStatus status;
     _Ty_PreInitEntry entry;
 
     for (entry = _preinit_warnoptions; entry != NULL; entry = entry->next) {
@@ -2987,10 +2987,10 @@ _TySys_ReadPreinitWarnOptions(PyWideStringList *options)
 }
 
 
-PyStatus
+TyStatus
 _TySys_ReadPreinitXOptions(PyConfig *config)
 {
-    PyStatus status;
+    TyStatus status;
     _Ty_PreInitEntry entry;
 
     for (entry = _preinit_xoptions; entry != NULL; entry = entry->next) {
@@ -3006,7 +3006,7 @@ _TySys_ReadPreinitXOptions(PyConfig *config)
 
 
 static TyObject *
-get_warnoptions(PyThreadState *tstate)
+get_warnoptions(TyThreadState *tstate)
 {
     TyObject *warnoptions;
     if (_TySys_GetOptionalAttr(&_Ty_ID(warnoptions), &warnoptions) < 0) {
@@ -3039,7 +3039,7 @@ get_warnoptions(PyThreadState *tstate)
 void
 TySys_ResetWarnOptions(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate == NULL) {
         _clear_preinit_entries(&_preinit_warnoptions);
         return;
@@ -3057,7 +3057,7 @@ TySys_ResetWarnOptions(void)
 }
 
 static int
-_TySys_AddWarnOptionWithError(PyThreadState *tstate, TyObject *option)
+_TySys_AddWarnOptionWithError(TyThreadState *tstate, TyObject *option)
 {
     assert(tstate != NULL);
     TyObject *warnoptions = get_warnoptions(tstate);
@@ -3076,7 +3076,7 @@ _TySys_AddWarnOptionWithError(PyThreadState *tstate, TyObject *option)
 PyAPI_FUNC(void)
 TySys_AddWarnOptionUnicode(TyObject *option)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     _Ty_EnsureTstateNotNULL(tstate);
     assert(!_TyErr_Occurred(tstate));
     if (_TySys_AddWarnOptionWithError(tstate, option) < 0) {
@@ -3089,7 +3089,7 @@ TySys_AddWarnOptionUnicode(TyObject *option)
 PyAPI_FUNC(void)
 TySys_AddWarnOption(const wchar_t *s)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate == NULL) {
         _append_preinit_entry(&_preinit_warnoptions, s);
         return;
@@ -3121,7 +3121,7 @@ TySys_HasWarnOptions(void)
 }
 
 static TyObject *
-get_xoptions(PyThreadState *tstate)
+get_xoptions(TyThreadState *tstate)
 {
     TyObject *xoptions;
     if (_TySys_GetOptionalAttr(&_Ty_ID(_xoptions), &xoptions) < 0) {
@@ -3156,7 +3156,7 @@ _TySys_AddXOptionWithError(const wchar_t *s)
 {
     TyObject *name = NULL, *value = NULL;
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *opts = get_xoptions(tstate);
     if (opts == NULL) {
         goto error;
@@ -3199,7 +3199,7 @@ error:
 PyAPI_FUNC(void)
 TySys_AddXOption(const wchar_t *s)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     if (tstate == NULL) {
         _append_preinit_entry(&_preinit_xoptions, s);
         return;
@@ -3213,7 +3213,7 @@ TySys_AddXOption(const wchar_t *s)
 TyObject *
 TySys_GetXOptions(void)
 {
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *opts = get_xoptions(tstate);
     Ty_XDECREF(opts);
     return opts;
@@ -3499,7 +3499,7 @@ static PyStructSequence_Desc version_info_desc = {
 };
 
 static TyObject *
-make_version_info(PyThreadState *tstate)
+make_version_info(TyThreadState *tstate)
 {
     TyObject *version_info;
     char *s;
@@ -3762,8 +3762,8 @@ static struct TyModuleDef sysmodule = {
 #define SET_SYS_FROM_STRING(key, value) \
         SET_SYS(key, TyUnicode_FromString(value))
 
-static PyStatus
-_TySys_InitCore(PyThreadState *tstate, TyObject *sysdict)
+static TyStatus
+_TySys_InitCore(TyThreadState *tstate, TyObject *sysdict)
 {
     TyObject *version_info;
     int res;
@@ -3892,7 +3892,7 @@ err_occurred:
 // Update sys attributes for a new PyConfig configuration.
 // This function also adds attributes that _TySys_InitCore() didn't add.
 int
-_TySys_UpdateConfig(PyThreadState *tstate)
+_TySys_UpdateConfig(TyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
     TyObject *sysdict = interp->sysdict;
@@ -3981,7 +3981,7 @@ err_occurred:
    infrastructure for the io module in place.
 
    Use UTF-8/backslashreplace and ignore EAGAIN errors. */
-static PyStatus
+static TyStatus
 _TySys_SetPreliminaryStderr(TyObject *sysdict)
 {
     TyObject *pstderr = TyFile_NewStdPrinter(fileno(stderr));
@@ -4071,8 +4071,8 @@ static struct TyModuleDef _jit_module = {
 
 /* Create sys module without all attributes.
    _TySys_UpdateConfig() should be called later to add remaining attributes. */
-PyStatus
-_TySys_Create(PyThreadState *tstate, TyObject **sysmod_p)
+TyStatus
+_TySys_Create(TyThreadState *tstate, TyObject **sysmod_p)
 {
     assert(!_TyErr_Occurred(tstate));
 
@@ -4106,7 +4106,7 @@ _TySys_Create(PyThreadState *tstate, TyObject **sysmod_p)
         goto error;
     }
 
-    PyStatus status = _TySys_SetPreliminaryStderr(sysdict);
+    TyStatus status = _TySys_SetPreliminaryStderr(sysdict);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
     }
@@ -4238,7 +4238,7 @@ void
 TySys_SetArgvEx(int argc, wchar_t **argv, int updatepath)
 {
     wchar_t* empty_argv[1] = {L""};
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     if (argc < 1 || argv == NULL) {
         /* Ensure at least one (empty) argument is seen */
@@ -4359,7 +4359,7 @@ sys_write(TyObject *key, FILE *fp, const char *format, va_list va)
     TyObject *file;
     char buffer[1001];
     int written;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     TyObject *exc = _TyErr_GetRaisedException(tstate);
     written = TyOS_vsnprintf(buffer, sizeof(buffer), format, va);
@@ -4402,7 +4402,7 @@ sys_format(TyObject *key, FILE *fp, const char *format, va_list va)
 {
     TyObject *file, *message;
     const char *utf8;
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
 
     TyObject *exc = _TyErr_GetRaisedException(tstate);
     message = TyUnicode_FromFormatV(format, va);

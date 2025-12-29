@@ -48,7 +48,7 @@
 #define PySSL_END_ALLOW_THREADS_S(save) \
     do { TyEval_RestoreThread(save); _PySSL_FIX_ERRNO; } while(0)
 #define PySSL_BEGIN_ALLOW_THREADS { \
-            PyThreadState *_save = NULL;  \
+            TyThreadState *_save = NULL;  \
             PySSL_BEGIN_ALLOW_THREADS_S(_save);
 #define PySSL_END_ALLOW_THREADS PySSL_END_ALLOW_THREADS_S(_save); }
 
@@ -2445,7 +2445,7 @@ PySSL_select(PySocketSockObject *s, int writing, PyTime_t timeout)
 /*[clinic input]
 @critical_section
 _ssl._SSLSocket.write
-    b: Py_buffer
+    b: Ty_buffer
     /
 
 Writes the bytes-like object b into the SSL object.
@@ -2454,7 +2454,7 @@ Returns the number of bytes written.
 [clinic start generated code]*/
 
 static TyObject *
-_ssl__SSLSocket_write_impl(PySSLSocket *self, Py_buffer *b)
+_ssl__SSLSocket_write_impl(PySSLSocket *self, Ty_buffer *b)
 /*[clinic end generated code: output=aa7a6be5527358d8 input=967b5feeae641a26]*/
 {
     size_t count = 0;
@@ -2583,7 +2583,7 @@ _ssl__SSLSocket_pending_impl(PySSLSocket *self)
 _ssl._SSLSocket.read
     size as len: Ty_ssize_t
     [
-    buffer: Py_buffer(accept={rwbuffer})
+    buffer: Ty_buffer(accept={rwbuffer})
     ]
     /
 
@@ -2592,7 +2592,7 @@ Read up to size bytes from the SSL socket.
 
 static TyObject *
 _ssl__SSLSocket_read_impl(PySSLSocket *self, Ty_ssize_t len,
-                          int group_right_1, Py_buffer *buffer)
+                          int group_right_1, Ty_buffer *buffer)
 /*[clinic end generated code: output=49b16e6406023734 input=80ed30436df01a71]*/
 {
     TyObject *dest = NULL;
@@ -3442,13 +3442,13 @@ _selectALPN_cb(SSL *s,
 /*[clinic input]
 @critical_section
 _ssl._SSLContext._set_alpn_protocols
-    protos: Py_buffer
+    protos: Ty_buffer
     /
 [clinic start generated code]*/
 
 static TyObject *
 _ssl__SSLContext__set_alpn_protocols_impl(PySSLContext *self,
-                                          Py_buffer *protos)
+                                          Ty_buffer *protos)
 /*[clinic end generated code: output=87599a7f76651a9b input=b5096b186e49287d]*/
 {
     if ((size_t)protos->len > UINT_MAX) {
@@ -3970,7 +3970,7 @@ _ssl__SSLContext_protocol_get_impl(PySSLContext *self)
 }
 
 typedef struct {
-    PyThreadState *thread_state;
+    TyThreadState *thread_state;
     TyObject *callable;
     char *password;
     int size;
@@ -4351,7 +4351,7 @@ _ssl__SSLContext_load_verify_locations_impl(PySSLContext *self,
             }
         }
         else if (PyObject_CheckBuffer(cadata)) {
-            Py_buffer buf;
+            Ty_buffer buf;
             if (PyObject_GetBuffer(cadata, &buf, PyBUF_SIMPLE)) {
                 goto error;
             }
@@ -5422,7 +5422,7 @@ _ssl_MemoryBIO_read_impl(PySSLMemoryBIO *self, int len)
 /*[clinic input]
 @critical_section
 _ssl.MemoryBIO.write
-    b: Py_buffer
+    b: Ty_buffer
     /
 
 Writes the bytes b into the memory BIO.
@@ -5431,7 +5431,7 @@ Returns the number of bytes written.
 [clinic start generated code]*/
 
 static TyObject *
-_ssl_MemoryBIO_write_impl(PySSLMemoryBIO *self, Py_buffer *b)
+_ssl_MemoryBIO_write_impl(PySSLMemoryBIO *self, Ty_buffer *b)
 /*[clinic end generated code: output=156ec59110d75935 input=107da3f5fba26b37]*/
 {
     int nbytes;
@@ -5727,7 +5727,7 @@ static TyType_Spec PySSLSession_spec = {
 /*[clinic input]
 @critical_section
 _ssl.RAND_add
-    string as view: Py_buffer(accept={str, buffer})
+    string as view: Ty_buffer(accept={str, buffer})
     entropy: double
     /
 
@@ -5738,7 +5738,7 @@ string.  See RFC 4086.
 [clinic start generated code]*/
 
 static TyObject *
-_ssl_RAND_add_impl(TyObject *module, Py_buffer *view, double entropy)
+_ssl_RAND_add_impl(TyObject *module, Ty_buffer *view, double entropy)
 /*[clinic end generated code: output=e6dd48df9c9024e9 input=313cb73b34db31d5]*/
 {
     const char *buf;

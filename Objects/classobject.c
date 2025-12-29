@@ -48,7 +48,7 @@ method_vectorcall(TyObject *method, TyObject *const *args,
 {
     assert(Ty_IS_TYPE(method, &TyMethod_Type));
 
-    PyThreadState *tstate = _TyThreadState_GET();
+    TyThreadState *tstate = _TyThreadState_GET();
     TyObject *self = TyMethod_GET_SELF(method);
     TyObject *func = TyMethod_GET_FUNCTION(method);
     Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);

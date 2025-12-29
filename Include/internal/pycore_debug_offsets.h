@@ -264,15 +264,15 @@ typedef struct _Ty_DebugOffsets {
         .tlbc_generation = _Ty_Debug_interpreter_state_tlbc_generation, \
     }, \
     .thread_state = { \
-        .size = sizeof(PyThreadState), \
-        .prev = offsetof(PyThreadState, prev), \
-        .next = offsetof(PyThreadState, next), \
-        .interp = offsetof(PyThreadState, interp), \
-        .current_frame = offsetof(PyThreadState, current_frame), \
-        .thread_id = offsetof(PyThreadState, thread_id), \
-        .native_thread_id = offsetof(PyThreadState, native_thread_id), \
-        .datastack_chunk = offsetof(PyThreadState, datastack_chunk), \
-        .status = offsetof(PyThreadState, _status), \
+        .size = sizeof(TyThreadState), \
+        .prev = offsetof(TyThreadState, prev), \
+        .next = offsetof(TyThreadState, next), \
+        .interp = offsetof(TyThreadState, interp), \
+        .current_frame = offsetof(TyThreadState, current_frame), \
+        .thread_id = offsetof(TyThreadState, thread_id), \
+        .native_thread_id = offsetof(TyThreadState, native_thread_id), \
+        .datastack_chunk = offsetof(TyThreadState, datastack_chunk), \
+        .status = offsetof(TyThreadState, _status), \
     }, \
     .interpreter_frame = { \
         .size = sizeof(_PyInterpreterFrame), \
@@ -363,8 +363,8 @@ typedef struct _Ty_DebugOffsets {
         .prev = offsetof(struct llist_node, prev), \
     }, \
     .debugger_support = { \
-        .eval_breaker = offsetof(PyThreadState, eval_breaker), \
-        .remote_debugger_support = offsetof(PyThreadState, remote_debugger_support),  \
+        .eval_breaker = offsetof(TyThreadState, eval_breaker), \
+        .remote_debugger_support = offsetof(TyThreadState, remote_debugger_support),  \
         .remote_debugging_enabled = offsetof(PyInterpreterState, config.remote_debug),  \
         .debugger_pending_call = offsetof(_PyRemoteDebuggerSupport, debugger_pending_call),  \
         .debugger_script_path = offsetof(_PyRemoteDebuggerSupport, debugger_script_path),  \

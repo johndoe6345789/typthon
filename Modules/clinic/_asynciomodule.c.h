@@ -165,7 +165,7 @@ _asyncio_Future_set_result(TyObject *self, TyTypeObject *cls, TyObject *const *a
 {
     TyObject *return_value = NULL;
     #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
-    #  define KWTUPLE (TyObject *)&_Py_SINGLETON(tuple_empty)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
@@ -215,7 +215,7 @@ _asyncio_Future_set_exception(TyObject *self, TyTypeObject *cls, TyObject *const
 {
     TyObject *return_value = NULL;
     #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
-    #  define KWTUPLE (TyObject *)&_Py_SINGLETON(tuple_empty)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
@@ -336,7 +336,7 @@ _asyncio_Future_remove_done_callback(TyObject *self, TyTypeObject *cls, TyObject
 {
     TyObject *return_value = NULL;
     #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
-    #  define KWTUPLE (TyObject *)&_Py_SINGLETON(tuple_empty)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif

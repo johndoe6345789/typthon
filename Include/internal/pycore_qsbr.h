@@ -46,7 +46,7 @@ struct _qsbr_thread_state {
     struct _qsbr_shared *shared;
 
     // Thread state (or NULL)
-    PyThreadState *tstate;
+    TyThreadState *tstate;
 
     // Number of held items added by this thread since the last write sequence
     // advance
@@ -151,14 +151,14 @@ _Ty_qsbr_detach(struct _qsbr_thread_state *qsbr);
 extern Ty_ssize_t
 _Ty_qsbr_reserve(PyInterpreterState *interp);
 
-// Associates a PyThreadState with the QSBR state at the given index
+// Associates a TyThreadState with the QSBR state at the given index
 extern void
 _Ty_qsbr_register(struct _PyThreadStateImpl *tstate,
                   PyInterpreterState *interp, Ty_ssize_t index);
 
-// Disassociates a PyThreadState from the QSBR state and frees the QSBR state.
+// Disassociates a TyThreadState from the QSBR state and frees the QSBR state.
 extern void
-_Ty_qsbr_unregister(PyThreadState *tstate);
+_Ty_qsbr_unregister(TyThreadState *tstate);
 
 extern void
 _Ty_qsbr_fini(PyInterpreterState *interp);

@@ -637,7 +637,7 @@ pending_threadfunc(TyObject *self, TyObject *arg, TyObject *kwargs)
         Ty_INCREF(callable);
     }
 
-    PyThreadState *save_tstate = NULL;
+    TyThreadState *save_tstate = NULL;
     if (!blocking) {
         save_tstate = TyEval_SaveThread();
     }
@@ -1162,7 +1162,7 @@ crash_no_current_thread(TyObject *self, TyObject *Py_UNUSED(ignored))
 static TyObject *
 test_current_tstate_matches(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyThreadState *orig_tstate = TyThreadState_Get();
+    TyThreadState *orig_tstate = TyThreadState_Get();
 
     if (orig_tstate != TyGILState_GetThisThreadState()) {
         TyErr_SetString(TyExc_RuntimeError,
@@ -1172,7 +1172,7 @@ test_current_tstate_matches(TyObject *self, TyObject *Py_UNUSED(ignored))
 
     const char *err = NULL;
     TyThreadState_Swap(NULL);
-    PyThreadState *substate = Ty_NewInterpreter();
+    TyThreadState *substate = Ty_NewInterpreter();
 
     if (substate != TyThreadState_Get()) {
         err = "subinterpreter thread state not current";
@@ -1200,7 +1200,7 @@ run_in_subinterp(TyObject *self, TyObject *args)
 {
     const char *code;
     int r;
-    PyThreadState *substate, *mainstate;
+    TyThreadState *substate, *mainstate;
     /* only initialise 'cflags.cf_flags' to test backwards compatibility */
     PyCompilerFlags cflags = {0};
 
@@ -1856,20 +1856,20 @@ get_basic_static_type(TyObject *self, TyObject *args)
 }
 
 
-// Test PyThreadState C API
+// Test TyThreadState C API
 static TyObject *
 test_tstate_capi(TyObject *self, TyObject *Py_UNUSED(args))
 {
     // TyThreadState_Get()
-    PyThreadState *tstate = TyThreadState_Get();
+    TyThreadState *tstate = TyThreadState_Get();
     assert(tstate != NULL);
 
     // TyThreadState_GET()
-    PyThreadState *tstate2 = TyThreadState_Get();
+    TyThreadState *tstate2 = TyThreadState_Get();
     assert(tstate2 == tstate);
 
     // TyThreadState_GetUnchecked()
-    PyThreadState *tstate3 = TyThreadState_GetUnchecked();
+    TyThreadState *tstate3 = TyThreadState_GetUnchecked();
     assert(tstate3 == tstate);
 
     // TyThreadState_EnterTracing(), TyThreadState_LeaveTracing()
@@ -2454,7 +2454,7 @@ finalize_thread_hang(TyObject *self, TyObject *callback)
 
 struct atexit_data {
     int called;
-    PyThreadState *tstate;
+    TyThreadState *tstate;
     PyInterpreterState *interp;
 };
 
@@ -2471,8 +2471,8 @@ atexit_callback(void *data)
 static TyObject *
 test_atexit(TyObject *self, TyObject *Py_UNUSED(args))
 {
-    PyThreadState *oldts = TyThreadState_Swap(NULL);
-    PyThreadState *tstate = Ty_NewInterpreter();
+    TyThreadState *oldts = TyThreadState_Swap(NULL);
+    TyThreadState *tstate = Ty_NewInterpreter();
 
     struct atexit_data data = {0};
     data.tstate = TyThreadState_Get();
