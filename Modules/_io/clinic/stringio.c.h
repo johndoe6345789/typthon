@@ -23,7 +23,7 @@ static TyObject *
 _io_StringIO_getvalue_impl(stringio *self);
 
 static TyObject *
-_io_StringIO_getvalue(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_StringIO_getvalue(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -47,7 +47,7 @@ static TyObject *
 _io_StringIO_tell_impl(stringio *self);
 
 static TyObject *
-_io_StringIO_tell(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_StringIO_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -276,7 +276,7 @@ static TyObject *
 _io_StringIO_close_impl(stringio *self);
 
 static TyObject *
-_io_StringIO_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_StringIO_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -373,7 +373,7 @@ static TyObject *
 _io_StringIO_readable_impl(stringio *self);
 
 static TyObject *
-_io_StringIO_readable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_StringIO_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -397,7 +397,7 @@ static TyObject *
 _io_StringIO_writable_impl(stringio *self);
 
 static TyObject *
-_io_StringIO_writable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_StringIO_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -421,7 +421,7 @@ static TyObject *
 _io_StringIO_seekable_impl(stringio *self);
 
 static TyObject *
-_io_StringIO_seekable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_StringIO_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -444,7 +444,7 @@ static TyObject *
 _io_StringIO___getstate___impl(stringio *self);
 
 static TyObject *
-_io_StringIO___getstate__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_StringIO___getstate__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -492,7 +492,7 @@ static TyObject *
 _io_StringIO_closed_get_impl(stringio *self);
 
 static TyObject *
-_io_StringIO_closed_get(TyObject *self, void *Ty_UNUSED(context))
+_io_StringIO_closed_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -517,7 +517,7 @@ static TyObject *
 _io_StringIO_line_buffering_get_impl(stringio *self);
 
 static TyObject *
-_io_StringIO_line_buffering_get(TyObject *self, void *Ty_UNUSED(context))
+_io_StringIO_line_buffering_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -542,7 +542,7 @@ static TyObject *
 _io_StringIO_newlines_get_impl(stringio *self);
 
 static TyObject *
-_io_StringIO_newlines_get(TyObject *self, void *Ty_UNUSED(context))
+_io_StringIO_newlines_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 

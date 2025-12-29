@@ -552,7 +552,7 @@ func_get_annotation_dict(PyFunctionObject *op)
 {
     if (op->func_annotations == NULL) {
         if (op->func_annotate == NULL || !PyCallable_Check(op->func_annotate)) {
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         TyObject *one = _TyLong_GetOne();
         TyObject *ann_dict = _TyObject_CallOneArg(op->func_annotate, one);
@@ -631,11 +631,11 @@ TyFunction_SetAnnotations(TyObject *op, TyObject *annotations)
 #define OFF(x) offsetof(PyFunctionObject, x)
 
 static TyMemberDef func_memberlist[] = {
-    {"__closure__",   _Ty_T_OBJECT,     OFF(func_closure), Ty_READONLY},
+    {"__closure__",   _Ty_T_OBJECT,     OFF(func_closure), Py_READONLY},
     {"__doc__",       _Ty_T_OBJECT,     OFF(func_doc), 0},
-    {"__globals__",   _Ty_T_OBJECT,     OFF(func_globals), Ty_READONLY},
+    {"__globals__",   _Ty_T_OBJECT,     OFF(func_globals), Py_READONLY},
     {"__module__",    _Ty_T_OBJECT,     OFF(func_module), 0},
-    {"__builtins__",  _Ty_T_OBJECT,     OFF(func_builtins), Ty_READONLY},
+    {"__builtins__",  _Ty_T_OBJECT,     OFF(func_builtins), Py_READONLY},
     {NULL}  /* Sentinel */
 };
 
@@ -647,7 +647,7 @@ class function "PyFunctionObject *" "&TyFunction_Type"
 #include "clinic/funcobject.c.h"
 
 static TyObject *
-func_get_code(TyObject *self, void *Ty_UNUSED(ignored))
+func_get_code(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyFunctionObject *op = _PyFunction_CAST(self);
     if (TySys_Audit("object.__getattr__", "Os", op, "__code__") < 0) {
@@ -658,7 +658,7 @@ func_get_code(TyObject *self, void *Ty_UNUSED(ignored))
 }
 
 static int
-func_set_code(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
+func_set_code(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     PyFunctionObject *op = _PyFunction_CAST(self);
 
@@ -707,14 +707,14 @@ func_set_code(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-func_get_name(TyObject *self, void *Ty_UNUSED(ignored))
+func_get_name(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyFunctionObject *op = _PyFunction_CAST(self);
     return Ty_NewRef(op->func_name);
 }
 
 static int
-func_set_name(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
+func_set_name(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     PyFunctionObject *op = _PyFunction_CAST(self);
     /* Not legal to del f.func_name or to set it to anything
@@ -729,14 +729,14 @@ func_set_name(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-func_get_qualname(TyObject *self, void *Ty_UNUSED(ignored))
+func_get_qualname(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyFunctionObject *op = _PyFunction_CAST(self);
     return Ty_NewRef(op->func_qualname);
 }
 
 static int
-func_set_qualname(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
+func_set_qualname(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     PyFunctionObject *op = _PyFunction_CAST(self);
     /* Not legal to del f.__qualname__ or to set it to anything
@@ -751,20 +751,20 @@ func_set_qualname(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-func_get_defaults(TyObject *self, void *Ty_UNUSED(ignored))
+func_get_defaults(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyFunctionObject *op = _PyFunction_CAST(self);
     if (TySys_Audit("object.__getattr__", "Os", op, "__defaults__") < 0) {
         return NULL;
     }
     if (op->func_defaults == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(op->func_defaults);
 }
 
 static int
-func_set_defaults(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
+func_set_defaults(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     /* Legal to del f.func_defaults.
      * Can only set func_defaults to NULL or a tuple. */
@@ -793,7 +793,7 @@ func_set_defaults(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-func_get_kwdefaults(TyObject *self, void *Ty_UNUSED(ignored))
+func_get_kwdefaults(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyFunctionObject *op = _PyFunction_CAST(self);
     if (TySys_Audit("object.__getattr__", "Os",
@@ -801,13 +801,13 @@ func_get_kwdefaults(TyObject *self, void *Ty_UNUSED(ignored))
         return NULL;
     }
     if (op->func_kwdefaults == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(op->func_kwdefaults);
 }
 
 static int
-func_set_kwdefaults(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
+func_set_kwdefaults(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     PyFunctionObject *op = _PyFunction_CAST(self);
     if (value == Ty_None)
@@ -848,7 +848,7 @@ function___annotate___get_impl(PyFunctionObject *self)
 /*[clinic end generated code: output=5ec7219ff2bda9e6 input=7f3db11e3c3329f3]*/
 {
     if (self->func_annotate == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->func_annotate);
 }
@@ -974,7 +974,7 @@ function___type_params___set_impl(PyFunctionObject *self, TyObject *value)
 }
 
 TyObject *
-_Ty_set_function_type_params(PyThreadState *Ty_UNUSED(ignored), TyObject *func,
+_Ty_set_function_type_params(PyThreadState *Py_UNUSED(ignored), TyObject *func,
                              TyObject *type_params)
 {
     assert(TyFunction_Check(func));
@@ -1424,7 +1424,7 @@ typedef struct {
 
 #define _PyClassMethod_CAST(cm) \
     (assert(PyObject_TypeCheck((cm), &TyClassMethod_Type)), \
-     _Ty_CAST(classmethod*, cm))
+     _Py_CAST(classmethod*, cm))
 
 static void
 cm_dealloc(TyObject *self)
@@ -1489,8 +1489,8 @@ cm_init(TyObject *self, TyObject *args, TyObject *kwds)
 }
 
 static TyMemberDef cm_memberlist[] = {
-    {"__func__", _Ty_T_OBJECT, offsetof(classmethod, cm_callable), Ty_READONLY},
-    {"__wrapped__", _Ty_T_OBJECT, offsetof(classmethod, cm_callable), Ty_READONLY},
+    {"__func__", _Ty_T_OBJECT, offsetof(classmethod, cm_callable), Py_READONLY},
+    {"__wrapped__", _Ty_T_OBJECT, offsetof(classmethod, cm_callable), Py_READONLY},
     {NULL}  /* Sentinel */
 };
 
@@ -1503,9 +1503,9 @@ cm_get___isabstractmethod__(TyObject *self, void *closure)
         return NULL;
     }
     else if (res) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
@@ -1658,7 +1658,7 @@ typedef struct {
 
 #define _PyStaticMethod_CAST(cm) \
     (assert(PyObject_TypeCheck((cm), &TyStaticMethod_Type)), \
-     _Ty_CAST(staticmethod*, cm))
+     _Py_CAST(staticmethod*, cm))
 
 static void
 sm_dealloc(TyObject *self)
@@ -1727,8 +1727,8 @@ sm_call(TyObject *callable, TyObject *args, TyObject *kwargs)
 }
 
 static TyMemberDef sm_memberlist[] = {
-    {"__func__", _Ty_T_OBJECT, offsetof(staticmethod, sm_callable), Ty_READONLY},
-    {"__wrapped__", _Ty_T_OBJECT, offsetof(staticmethod, sm_callable), Ty_READONLY},
+    {"__func__", _Ty_T_OBJECT, offsetof(staticmethod, sm_callable), Py_READONLY},
+    {"__wrapped__", _Ty_T_OBJECT, offsetof(staticmethod, sm_callable), Py_READONLY},
     {NULL}  /* Sentinel */
 };
 
@@ -1741,9 +1741,9 @@ sm_get___isabstractmethod__(TyObject *self, void *closure)
         return NULL;
     }
     else if (res) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *

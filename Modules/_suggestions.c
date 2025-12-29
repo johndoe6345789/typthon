@@ -38,7 +38,7 @@ _suggestions__generate_suggestions_impl(TyObject *module,
 
     TyObject* result =  _Ty_CalculateSuggestions(candidates, item);
     if (!result && !TyErr_Occurred()) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return result;
 }

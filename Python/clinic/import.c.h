@@ -23,7 +23,7 @@ static TyObject *
 _imp_lock_held_impl(TyObject *module);
 
 static TyObject *
-_imp_lock_held(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_imp_lock_held(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _imp_lock_held_impl(module);
 }
@@ -44,7 +44,7 @@ static TyObject *
 _imp_acquire_lock_impl(TyObject *module);
 
 static TyObject *
-_imp_acquire_lock(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_imp_acquire_lock(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _imp_acquire_lock_impl(module);
 }
@@ -64,7 +64,7 @@ static TyObject *
 _imp_release_lock_impl(TyObject *module);
 
 static TyObject *
-_imp_release_lock(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_imp_release_lock(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _imp_release_lock_impl(module);
 }
@@ -135,7 +135,7 @@ static TyObject *
 _imp_extension_suffixes_impl(TyObject *module);
 
 static TyObject *
-_imp_extension_suffixes(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_imp_extension_suffixes(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _imp_extension_suffixes_impl(module);
 }
@@ -388,7 +388,7 @@ static TyObject *
 _imp__frozen_module_names_impl(TyObject *module);
 
 static TyObject *
-_imp__frozen_module_names(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_imp__frozen_module_names(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _imp__frozen_module_names_impl(module);
 }

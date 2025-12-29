@@ -618,7 +618,7 @@ calculate_qualname(PyDescrObject *descr)
 }
 
 static TyObject *
-descr_get_qualname(TyObject *self, void *Ty_UNUSED(ignored))
+descr_get_qualname(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyDescrObject *descr = (PyDescrObject *)self;
     if (descr->d_qualname == NULL)
@@ -627,7 +627,7 @@ descr_get_qualname(TyObject *self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-descr_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+descr_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     PyDescrObject *descr = (PyDescrObject *)self;
     return Ty_BuildValue("N(OO)", _TyEval_GetBuiltin(&_Ty_ID(getattr)),
@@ -640,8 +640,8 @@ static TyMethodDef descr_methods[] = {
 };
 
 static TyMemberDef descr_members[] = {
-    {"__objclass__", _Ty_T_OBJECT, offsetof(PyDescrObject, d_type), Ty_READONLY},
-    {"__name__", _Ty_T_OBJECT, offsetof(PyDescrObject, d_name), Ty_READONLY},
+    {"__objclass__", _Ty_T_OBJECT, offsetof(PyDescrObject, d_type), Py_READONLY},
+    {"__name__", _Ty_T_OBJECT, offsetof(PyDescrObject, d_name), Py_READONLY},
     {0}
 };
 
@@ -657,7 +657,7 @@ member_get_doc(TyObject *_descr, void *closure)
 {
     PyMemberDescrObject *descr = (PyMemberDescrObject *)_descr;
     if (descr->d_member->doc == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyUnicode_FromString(descr->d_member->doc);
 }
@@ -673,7 +673,7 @@ getset_get_doc(TyObject *self, void *closure)
 {
     PyGetSetDescrObject *descr = (PyGetSetDescrObject *)self;
     if (descr->d_getset->doc == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyUnicode_FromString(descr->d_getset->doc);
 }
@@ -1074,7 +1074,7 @@ mappingproxy_or(TyObject *left, TyObject *right)
 }
 
 static TyObject *
-mappingproxy_ior(TyObject *self, TyObject *Ty_UNUSED(other))
+mappingproxy_ior(TyObject *self, TyObject *Py_UNUSED(other))
 {
     return TyErr_Format(TyExc_TypeError,
         "'|=' is not supported by %s; use '|' instead", Ty_TYPE(self)->tp_name);
@@ -1128,35 +1128,35 @@ mappingproxy_get(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 }
 
 static TyObject *
-mappingproxy_keys(TyObject *self, TyObject *Ty_UNUSED(ignored))
+mappingproxy_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(keys));
 }
 
 static TyObject *
-mappingproxy_values(TyObject *self, TyObject *Ty_UNUSED(ignored))
+mappingproxy_values(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(values));
 }
 
 static TyObject *
-mappingproxy_items(TyObject *self, TyObject *Ty_UNUSED(ignored))
+mappingproxy_items(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(items));
 }
 
 static TyObject *
-mappingproxy_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+mappingproxy_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(copy));
 }
 
 static TyObject *
-mappingproxy_reversed(TyObject *self, TyObject *Ty_UNUSED(ignored))
+mappingproxy_reversed(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mappingproxyobject *pp = (mappingproxyobject *)self;
     return PyObject_CallMethodNoArgs(pp->mapping, &_Ty_ID(__reversed__));
@@ -1325,20 +1325,20 @@ wrapper_richcompare(TyObject *a, TyObject *b, int op)
     assert(a != NULL && b != NULL);
 
     /* both arguments should be wrapperobjects */
-    if ((op != Ty_EQ && op != Ty_NE)
+    if ((op != Py_EQ && op != Py_NE)
         || !Wrapper_Check(a) || !Wrapper_Check(b))
     {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     wa = (wrapperobject *)a;
     wb = (wrapperobject *)b;
     eq = (wa->descr == wb->descr && wa->self == wb->self);
-    if (eq == (op == Ty_EQ)) {
-        Ty_RETURN_TRUE;
+    if (eq == (op == Py_EQ)) {
+        Py_RETURN_TRUE;
     }
     else {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 }
 
@@ -1366,7 +1366,7 @@ wrapper_repr(TyObject *self)
 }
 
 static TyObject *
-wrapper_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+wrapper_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     wrapperobject *wp = (wrapperobject *)self;
     return Ty_BuildValue("N(OO)", _TyEval_GetBuiltin(&_Ty_ID(getattr)),
@@ -1379,12 +1379,12 @@ static TyMethodDef wrapper_methods[] = {
 };
 
 static TyMemberDef wrapper_members[] = {
-    {"__self__", _Ty_T_OBJECT, offsetof(wrapperobject, self), Ty_READONLY},
+    {"__self__", _Ty_T_OBJECT, offsetof(wrapperobject, self), Py_READONLY},
     {0}
 };
 
 static TyObject *
-wrapper_objclass(TyObject *wp, void *Ty_UNUSED(ignored))
+wrapper_objclass(TyObject *wp, void *Py_UNUSED(ignored))
 {
     TyObject *c = (TyObject *)PyDescr_TYPE(((wrapperobject *)wp)->descr);
 
@@ -1392,7 +1392,7 @@ wrapper_objclass(TyObject *wp, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-wrapper_name(TyObject *wp, void *Ty_UNUSED(ignored))
+wrapper_name(TyObject *wp, void *Py_UNUSED(ignored))
 {
     const char *s = ((wrapperobject *)wp)->descr->d_base->name;
 
@@ -1400,14 +1400,14 @@ wrapper_name(TyObject *wp, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-wrapper_doc(TyObject *self, void *Ty_UNUSED(ignored))
+wrapper_doc(TyObject *self, void *Py_UNUSED(ignored))
 {
     wrapperobject *wp = (wrapperobject *)self;
     return _TyType_GetDocFromInternalDoc(wp->descr->d_base->name, wp->descr->d_base->doc);
 }
 
 static TyObject *
-wrapper_text_signature(TyObject *self, void *Ty_UNUSED(ignored))
+wrapper_text_signature(TyObject *self, void *Py_UNUSED(ignored))
 {
     wrapperobject *wp = (wrapperobject *)self;
     return _TyType_GetTextSignatureFromInternalDoc(wp->descr->d_base->name,
@@ -1415,7 +1415,7 @@ wrapper_text_signature(TyObject *self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-wrapper_qualname(TyObject *self, void *Ty_UNUSED(ignored))
+wrapper_qualname(TyObject *self, void *Py_UNUSED(ignored))
 {
     wrapperobject *wp = (wrapperobject *)self;
     return descr_get_qualname((TyObject *)wp->descr, NULL);
@@ -1558,9 +1558,9 @@ static TyObject * property_copy(TyObject *, TyObject *, TyObject *,
                                   TyObject *);
 
 static TyMemberDef property_members[] = {
-    {"fget", _Ty_T_OBJECT, offsetof(propertyobject, prop_get), Ty_READONLY},
-    {"fset", _Ty_T_OBJECT, offsetof(propertyobject, prop_set), Ty_READONLY},
-    {"fdel", _Ty_T_OBJECT, offsetof(propertyobject, prop_del), Ty_READONLY},
+    {"fget", _Ty_T_OBJECT, offsetof(propertyobject, prop_get), Py_READONLY},
+    {"fset", _Ty_T_OBJECT, offsetof(propertyobject, prop_set), Py_READONLY},
+    {"fdel", _Ty_T_OBJECT, offsetof(propertyobject, prop_del), Py_READONLY},
     {"__doc__",  _Ty_T_OBJECT, offsetof(propertyobject, prop_doc), 0},
     {0}
 };
@@ -1617,7 +1617,7 @@ property_set_name(TyObject *self, TyObject *args) {
 
     Ty_XSETREF(prop->prop_name, Ty_XNewRef(name));
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef property_methods[] = {
@@ -1912,7 +1912,7 @@ property_init_impl(propertyobject *self, TyObject *fget, TyObject *fset,
 }
 
 static TyObject *
-property_get__name__(TyObject *op, void *Ty_UNUSED(ignored))
+property_get__name__(TyObject *op, void *Py_UNUSED(ignored))
 {
     propertyobject *prop = _propertyobject_CAST(op);
     TyObject *name;
@@ -1927,7 +1927,7 @@ property_get__name__(TyObject *op, void *Ty_UNUSED(ignored))
 }
 
 static int
-property_set__name__(TyObject *op, TyObject *value, void *Ty_UNUSED(ignored))
+property_set__name__(TyObject *op, TyObject *value, void *Py_UNUSED(ignored))
 {
     propertyobject *prop = _propertyobject_CAST(op);
     Ty_XSETREF(prop->prop_name, Ty_XNewRef(value));
@@ -1943,7 +1943,7 @@ property_get___isabstractmethod__(TyObject *op, void *closure)
         return NULL;
     }
     else if (res) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
 
     res = _TyObject_IsAbstract(prop->prop_set);
@@ -1951,7 +1951,7 @@ property_get___isabstractmethod__(TyObject *op, void *closure)
         return NULL;
     }
     else if (res) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
 
     res = _TyObject_IsAbstract(prop->prop_del);
@@ -1959,9 +1959,9 @@ property_get___isabstractmethod__(TyObject *op, void *closure)
         return NULL;
     }
     else if (res) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyGetSetDef property_getsetlist[] = {

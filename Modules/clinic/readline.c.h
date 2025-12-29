@@ -226,7 +226,7 @@ static TyObject *
 readline_get_history_length_impl(TyObject *module);
 
 static TyObject *
-readline_get_history_length(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_get_history_length(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return readline_get_history_length_impl(module);
 }
@@ -362,7 +362,7 @@ static TyObject *
 readline_get_completion_type_impl(TyObject *module);
 
 static TyObject *
-readline_get_completion_type(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_get_completion_type(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return readline_get_completion_type_impl(module);
 }
@@ -380,7 +380,7 @@ static TyObject *
 readline_get_begidx_impl(TyObject *module);
 
 static TyObject *
-readline_get_begidx(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_get_begidx(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return readline_get_begidx_impl(module);
 }
@@ -398,7 +398,7 @@ static TyObject *
 readline_get_endidx_impl(TyObject *module);
 
 static TyObject *
-readline_get_endidx(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_get_endidx(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return readline_get_endidx_impl(module);
 }
@@ -565,7 +565,7 @@ static TyObject *
 readline_get_completer_delims_impl(TyObject *module);
 
 static TyObject *
-readline_get_completer_delims(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_get_completer_delims(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -627,7 +627,7 @@ static TyObject *
 readline_get_completer_impl(TyObject *module);
 
 static TyObject *
-readline_get_completer(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_get_completer(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return readline_get_completer_impl(module);
 }
@@ -675,7 +675,7 @@ static TyObject *
 readline_get_current_history_length_impl(TyObject *module);
 
 static TyObject *
-readline_get_current_history_length(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_get_current_history_length(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -699,7 +699,7 @@ static TyObject *
 readline_get_line_buffer_impl(TyObject *module);
 
 static TyObject *
-readline_get_line_buffer(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_get_line_buffer(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -725,7 +725,7 @@ static TyObject *
 readline_clear_history_impl(TyObject *module);
 
 static TyObject *
-readline_clear_history(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_clear_history(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -775,7 +775,7 @@ static TyObject *
 readline_redisplay_impl(TyObject *module);
 
 static TyObject *
-readline_redisplay(TyObject *module, TyObject *Ty_UNUSED(ignored))
+readline_redisplay(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

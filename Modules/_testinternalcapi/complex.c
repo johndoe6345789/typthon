@@ -7,7 +7,7 @@
 
 #define _PY_CR_FUNC2(suffix)                                     \
     static TyObject *                                            \
-    _py_cr_##suffix(TyObject *Ty_UNUSED(module), TyObject *args) \
+    _py_cr_##suffix(TyObject *Py_UNUSED(module), TyObject *args) \
     {                                                            \
         Ty_complex a, res;                                       \
         double b;                                                \
@@ -23,7 +23,7 @@
 
 #define _PY_RC_FUNC2(suffix)                                     \
     static TyObject *                                            \
-    _py_rc_##suffix(TyObject *Ty_UNUSED(module), TyObject *args) \
+    _py_rc_##suffix(TyObject *Py_UNUSED(module), TyObject *args) \
     {                                                            \
         Ty_complex b, res;                                       \
         double a;                                                \

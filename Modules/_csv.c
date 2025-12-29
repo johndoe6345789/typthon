@@ -173,42 +173,42 @@ static TyObject *
 get_char_or_None(Ty_UCS4 c)
 {
     if (c == NOT_SET) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     else
         return TyUnicode_FromOrdinal(c);
 }
 
 static TyObject *
-Dialect_get_lineterminator(TyObject *op, void *Ty_UNUSED(ignored))
+Dialect_get_lineterminator(TyObject *op, void *Py_UNUSED(ignored))
 {
     DialectObj *self = _DialectObj_CAST(op);
     return Ty_XNewRef(self->lineterminator);
 }
 
 static TyObject *
-Dialect_get_delimiter(TyObject *op, void *Ty_UNUSED(ignored))
+Dialect_get_delimiter(TyObject *op, void *Py_UNUSED(ignored))
 {
     DialectObj *self = _DialectObj_CAST(op);
     return get_char_or_None(self->delimiter);
 }
 
 static TyObject *
-Dialect_get_escapechar(TyObject *op, void *Ty_UNUSED(ignored))
+Dialect_get_escapechar(TyObject *op, void *Py_UNUSED(ignored))
 {
     DialectObj *self = _DialectObj_CAST(op);
     return get_char_or_None(self->escapechar);
 }
 
 static TyObject *
-Dialect_get_quotechar(TyObject *op, void *Ty_UNUSED(ignored))
+Dialect_get_quotechar(TyObject *op, void *Py_UNUSED(ignored))
 {
     DialectObj *self = _DialectObj_CAST(op);
     return get_char_or_None(self->quotechar);
 }
 
 static TyObject *
-Dialect_get_quoting(TyObject *op, void *Ty_UNUSED(ignored))
+Dialect_get_quoting(TyObject *op, void *Py_UNUSED(ignored))
 {
     DialectObj *self = _DialectObj_CAST(op);
     return TyLong_FromLong(self->quoting);
@@ -371,9 +371,9 @@ dialect_check_chars(const char *name1, const char *name2, Ty_UCS4 c1, Ty_UCS4 c2
 #define D_OFF(x) offsetof(DialectObj, x)
 
 static struct TyMemberDef Dialect_memberlist[] = {
-    { "skipinitialspace",   Ty_T_BOOL, D_OFF(skipinitialspace), Ty_READONLY },
-    { "doublequote",        Ty_T_BOOL, D_OFF(doublequote), Ty_READONLY },
-    { "strict",             Ty_T_BOOL, D_OFF(strict), Ty_READONLY },
+    { "skipinitialspace",   Ty_T_BOOL, D_OFF(skipinitialspace), Py_READONLY },
+    { "doublequote",        Ty_T_BOOL, D_OFF(doublequote), Py_READONLY },
+    { "strict",             Ty_T_BOOL, D_OFF(strict), Py_READONLY },
     { NULL }
 };
 
@@ -1034,8 +1034,8 @@ static struct TyMethodDef Reader_methods[] = {
 #define R_OFF(x) offsetof(ReaderObj, x)
 
 static struct TyMemberDef Reader_memberlist[] = {
-    { "dialect", _Ty_T_OBJECT, R_OFF(dialect), Ty_READONLY },
-    { "line_num", Ty_T_ULONG, R_OFF(line_num), Ty_READONLY },
+    { "dialect", _Ty_T_OBJECT, R_OFF(dialect), Py_READONLY },
+    { "line_num", Ty_T_ULONG, R_OFF(line_num), Py_READONLY },
     { NULL }
 };
 
@@ -1441,7 +1441,7 @@ csv_writerows(TyObject *self, TyObject *seqseq)
     Ty_DECREF(row_iter);
     if (TyErr_Occurred())
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static struct TyMethodDef Writer_methods[] = {
@@ -1453,7 +1453,7 @@ static struct TyMethodDef Writer_methods[] = {
 #define W_OFF(x) offsetof(WriterObj, x)
 
 static struct TyMemberDef Writer_memberlist[] = {
-    { "dialect", _Ty_T_OBJECT, W_OFF(dialect), Ty_READONLY },
+    { "dialect", _Ty_T_OBJECT, W_OFF(dialect), Py_READONLY },
     { NULL }
 };
 
@@ -1607,7 +1607,7 @@ csv_register_dialect(TyObject *module, TyObject *args, TyObject *kwargs)
         return NULL;
     }
     Ty_DECREF(dialect);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1634,7 +1634,7 @@ _csv_unregister_dialect_impl(TyObject *module, TyObject *name)
         TyErr_Format(module_state->error_obj, "unknown dialect");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

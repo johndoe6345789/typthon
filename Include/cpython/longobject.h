@@ -3,7 +3,7 @@
 #endif
 
 #define _TyLong_CAST(op) \
-    (assert(TyLong_Check(op)), _Ty_CAST(PyLongObject*, (op)))
+    (assert(TyLong_Check(op)), _Py_CAST(PyLongObject*, (op)))
 
 PyAPI_FUNC(TyObject*) TyLong_FromUnicodeObject(TyObject *u, int base);
 

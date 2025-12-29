@@ -26,7 +26,7 @@ static TyObject *
 _pickle_Pickler_clear_memo_impl(PicklerObject *self);
 
 static TyObject *
-_pickle_Pickler_clear_memo(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_pickle_Pickler_clear_memo(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _pickle_Pickler_clear_memo_impl((PicklerObject *)self);
 }
@@ -89,7 +89,7 @@ static size_t
 _pickle_Pickler___sizeof___impl(PicklerObject *self);
 
 static TyObject *
-_pickle_Pickler___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_pickle_Pickler___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     size_t _return_value;
@@ -229,7 +229,7 @@ static TyObject *
 _pickle_PicklerMemoProxy_clear_impl(PicklerMemoProxyObject *self);
 
 static TyObject *
-_pickle_PicklerMemoProxy_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_pickle_PicklerMemoProxy_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _pickle_PicklerMemoProxy_clear_impl((PicklerMemoProxyObject *)self);
 }
@@ -247,7 +247,7 @@ static TyObject *
 _pickle_PicklerMemoProxy_copy_impl(PicklerMemoProxyObject *self);
 
 static TyObject *
-_pickle_PicklerMemoProxy_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_pickle_PicklerMemoProxy_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _pickle_PicklerMemoProxy_copy_impl((PicklerMemoProxyObject *)self);
 }
@@ -265,7 +265,7 @@ static TyObject *
 _pickle_PicklerMemoProxy___reduce___impl(PicklerMemoProxyObject *self);
 
 static TyObject *
-_pickle_PicklerMemoProxy___reduce__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_pickle_PicklerMemoProxy___reduce__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _pickle_PicklerMemoProxy___reduce___impl((PicklerMemoProxyObject *)self);
 }
@@ -408,7 +408,7 @@ static size_t
 _pickle_Unpickler___sizeof___impl(UnpicklerObject *self);
 
 static TyObject *
-_pickle_Unpickler___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_pickle_Unpickler___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     size_t _return_value;
@@ -570,7 +570,7 @@ static TyObject *
 _pickle_UnpicklerMemoProxy_clear_impl(UnpicklerMemoProxyObject *self);
 
 static TyObject *
-_pickle_UnpicklerMemoProxy_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_pickle_UnpicklerMemoProxy_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _pickle_UnpicklerMemoProxy_clear_impl((UnpicklerMemoProxyObject *)self);
 }
@@ -588,7 +588,7 @@ static TyObject *
 _pickle_UnpicklerMemoProxy_copy_impl(UnpicklerMemoProxyObject *self);
 
 static TyObject *
-_pickle_UnpicklerMemoProxy_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_pickle_UnpicklerMemoProxy_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _pickle_UnpicklerMemoProxy_copy_impl((UnpicklerMemoProxyObject *)self);
 }
@@ -606,7 +606,7 @@ static TyObject *
 _pickle_UnpicklerMemoProxy___reduce___impl(UnpicklerMemoProxyObject *self);
 
 static TyObject *
-_pickle_UnpicklerMemoProxy___reduce__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_pickle_UnpicklerMemoProxy___reduce__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _pickle_UnpicklerMemoProxy___reduce___impl((UnpicklerMemoProxyObject *)self);
 }

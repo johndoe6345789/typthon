@@ -66,7 +66,7 @@ placeholder_repr(TyObject *op)
 }
 
 static TyObject *
-placeholder_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+placeholder_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     return TyUnicode_FromString("Placeholder");
 }
@@ -584,18 +584,18 @@ and keywords.");
 
 #define OFF(x) offsetof(partialobject, x)
 static TyMemberDef partial_memberlist[] = {
-    {"func",            _Ty_T_OBJECT,       OFF(fn),        Ty_READONLY,
+    {"func",            _Ty_T_OBJECT,       OFF(fn),        Py_READONLY,
      "function object to use in future partial calls"},
-    {"args",            _Ty_T_OBJECT,       OFF(args),      Ty_READONLY,
+    {"args",            _Ty_T_OBJECT,       OFF(args),      Py_READONLY,
      "tuple of arguments to future partial calls"},
-    {"keywords",        _Ty_T_OBJECT,       OFF(kw),        Ty_READONLY,
+    {"keywords",        _Ty_T_OBJECT,       OFF(kw),        Py_READONLY,
      "dictionary of keyword arguments to future partial calls"},
     {"__weaklistoffset__", Ty_T_PYSSIZET,
-     offsetof(partialobject, weakreflist), Ty_READONLY},
+     offsetof(partialobject, weakreflist), Py_READONLY},
     {"__dictoffset__", Ty_T_PYSSIZET,
-     offsetof(partialobject, dict), Ty_READONLY},
+     offsetof(partialobject, dict), Py_READONLY},
     {"__vectorcalloffset__", Ty_T_PYSSIZET,
-     offsetof(partialobject, vectorcall), Ty_READONLY},
+     offsetof(partialobject, vectorcall), Py_READONLY},
     {NULL}  /* Sentinel */
 };
 
@@ -678,7 +678,7 @@ partial_repr(TyObject *self)
  */
 
 static TyObject *
-partial_reduce(TyObject *self, TyObject *Ty_UNUSED(args))
+partial_reduce(TyObject *self, TyObject *Py_UNUSED(args))
 {
     partialobject *pto = partialobject_CAST(self);
     return Ty_BuildValue("O(O)(OOOO)", Ty_TYPE(pto), pto->fn, pto->fn,
@@ -747,7 +747,7 @@ partial_setstate(TyObject *self, TyObject *state)
     pto->phcount = phcount;
     Ty_XSETREF(pto->dict, dict);
     partial_setvectorcall(pto);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef partial_methods[] = {
@@ -833,7 +833,7 @@ static TyMemberDef keyobject_members[] = {
 };
 
 static TyObject *
-keyobject_text_signature(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(ignored))
+keyobject_text_signature(TyObject *Py_UNUSED(self), void *Py_UNUSED(ignored))
 {
     return TyUnicode_FromString("(obj)");
 }
@@ -1694,23 +1694,23 @@ _functools__lru_cache_wrapper_cache_clear_impl(TyObject *self)
         TyDict_Clear(_self->cache);
     }
     lru_cache_clear_list(list);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-lru_cache_reduce(TyObject *self, TyObject *Ty_UNUSED(dummy))
+lru_cache_reduce(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return PyObject_GetAttrString(self, "__qualname__");
 }
 
 static TyObject *
-lru_cache_copy(TyObject *self, TyObject *Ty_UNUSED(args))
+lru_cache_copy(TyObject *self, TyObject *Py_UNUSED(args))
 {
     return Ty_NewRef(self);
 }
 
 static TyObject *
-lru_cache_deepcopy(TyObject *self, TyObject *Ty_UNUSED(args))
+lru_cache_deepcopy(TyObject *self, TyObject *Py_UNUSED(args))
 {
     return Ty_NewRef(self);
 }
@@ -1770,9 +1770,9 @@ static TyGetSetDef lru_cache_getsetlist[] = {
 
 static TyMemberDef lru_cache_memberlist[] = {
     {"__dictoffset__", Ty_T_PYSSIZET,
-     offsetof(lru_cache_object, dict), Ty_READONLY},
+     offsetof(lru_cache_object, dict), Py_READONLY},
     {"__weaklistoffset__", Ty_T_PYSSIZET,
-     offsetof(lru_cache_object, weakreflist), Ty_READONLY},
+     offsetof(lru_cache_object, weakreflist), Py_READONLY},
     {NULL}  /* Sentinel */
 };
 

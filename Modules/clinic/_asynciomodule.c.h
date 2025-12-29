@@ -99,7 +99,7 @@ static TyObject *
 _asyncio_Future_result_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future_result(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Future_result(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -448,7 +448,7 @@ static TyObject *
 _asyncio_Future_cancelled_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future_cancelled(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Future_cancelled(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -475,7 +475,7 @@ static TyObject *
 _asyncio_Future_done_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future_done(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Future_done(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -529,7 +529,7 @@ static TyObject *
 _asyncio_Future__asyncio_awaited_by_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__asyncio_awaited_by_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__asyncio_awaited_by_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -554,7 +554,7 @@ static TyObject *
 _asyncio_Future__asyncio_future_blocking_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__asyncio_future_blocking_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__asyncio_future_blocking_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -580,7 +580,7 @@ _asyncio_Future__asyncio_future_blocking_set_impl(FutureObj *self,
                                                   TyObject *value);
 
 static int
-_asyncio_Future__asyncio_future_blocking_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_asyncio_Future__asyncio_future_blocking_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -605,7 +605,7 @@ static TyObject *
 _asyncio_Future__log_traceback_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__log_traceback_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__log_traceback_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -630,7 +630,7 @@ static int
 _asyncio_Future__log_traceback_set_impl(FutureObj *self, TyObject *value);
 
 static int
-_asyncio_Future__log_traceback_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_asyncio_Future__log_traceback_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -655,7 +655,7 @@ static TyObject *
 _asyncio_Future__loop_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__loop_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__loop_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -680,7 +680,7 @@ static TyObject *
 _asyncio_Future__callbacks_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__callbacks_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__callbacks_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -705,7 +705,7 @@ static TyObject *
 _asyncio_Future__result_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__result_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__result_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -730,7 +730,7 @@ static TyObject *
 _asyncio_Future__exception_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__exception_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__exception_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -755,7 +755,7 @@ static TyObject *
 _asyncio_Future__source_traceback_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__source_traceback_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__source_traceback_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -780,7 +780,7 @@ static TyObject *
 _asyncio_Future__cancel_message_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__cancel_message_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__cancel_message_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -805,7 +805,7 @@ static int
 _asyncio_Future__cancel_message_set_impl(FutureObj *self, TyObject *value);
 
 static int
-_asyncio_Future__cancel_message_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_asyncio_Future__cancel_message_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -830,7 +830,7 @@ static TyObject *
 _asyncio_Future__state_get_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__state_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Future__state_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -857,7 +857,7 @@ static TyObject *
 _asyncio_Future__make_cancelled_error_impl(FutureObj *self);
 
 static TyObject *
-_asyncio_Future__make_cancelled_error(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Future__make_cancelled_error(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -972,7 +972,7 @@ static TyObject *
 _asyncio_Task__log_destroy_pending_get_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task__log_destroy_pending_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Task__log_destroy_pending_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -997,7 +997,7 @@ static int
 _asyncio_Task__log_destroy_pending_set_impl(TaskObj *self, TyObject *value);
 
 static int
-_asyncio_Task__log_destroy_pending_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_asyncio_Task__log_destroy_pending_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -1022,7 +1022,7 @@ static TyObject *
 _asyncio_Task__must_cancel_get_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task__must_cancel_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Task__must_cancel_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1047,7 +1047,7 @@ static TyObject *
 _asyncio_Task__coro_get_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task__coro_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Task__coro_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1072,7 +1072,7 @@ static TyObject *
 _asyncio_Task__fut_waiter_get_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task__fut_waiter_get(TyObject *self, void *Ty_UNUSED(context))
+_asyncio_Task__fut_waiter_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1099,7 +1099,7 @@ static TyObject *
 _asyncio_Task__make_cancelled_error_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task__make_cancelled_error(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Task__make_cancelled_error(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1210,7 +1210,7 @@ static TyObject *
 _asyncio_Task_cancelling_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task_cancelling(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Task_cancelling(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1239,7 +1239,7 @@ static TyObject *
 _asyncio_Task_uncancel_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task_uncancel(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Task_uncancel(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1463,7 +1463,7 @@ static TyObject *
 _asyncio_Task_get_coro_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task_get_coro(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Task_get_coro(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1486,7 +1486,7 @@ static TyObject *
 _asyncio_Task_get_context_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task_get_context(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Task_get_context(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _asyncio_Task_get_context_impl((TaskObj *)self);
 }
@@ -1503,7 +1503,7 @@ static TyObject *
 _asyncio_Task_get_name_impl(TaskObj *self);
 
 static TyObject *
-_asyncio_Task_get_name(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_asyncio_Task_get_name(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1553,7 +1553,7 @@ static TyObject *
 _asyncio__get_running_loop_impl(TyObject *module);
 
 static TyObject *
-_asyncio__get_running_loop(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_asyncio__get_running_loop(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _asyncio__get_running_loop_impl(module);
 }
@@ -1590,7 +1590,7 @@ static TyObject *
 _asyncio_get_event_loop_impl(TyObject *module);
 
 static TyObject *
-_asyncio_get_event_loop(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_asyncio_get_event_loop(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _asyncio_get_event_loop_impl(module);
 }
@@ -1610,7 +1610,7 @@ static TyObject *
 _asyncio_get_running_loop_impl(TyObject *module);
 
 static TyObject *
-_asyncio_get_running_loop(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_asyncio_get_running_loop(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _asyncio_get_running_loop_impl(module);
 }

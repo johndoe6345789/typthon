@@ -157,7 +157,7 @@ call_error_callback(TyObject *errors, TyObject *exc)
 }
 
 static TyObject *
-codecctx_errors_get(TyObject *op, void *Ty_UNUSED(closure))
+codecctx_errors_get(TyObject *op, void *Py_UNUSED(closure))
 {
     const char *errors;
     MultibyteStatefulCodecContext *self = _MultibyteStatefulCodecContext_CAST(op);
@@ -176,7 +176,7 @@ codecctx_errors_get(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static int
-codecctx_errors_set(TyObject *op, TyObject *value, void *Ty_UNUSED(closure))
+codecctx_errors_set(TyObject *op, TyObject *value, void *Py_UNUSED(closure))
 {
     TyObject *cb;
     const char *str;
@@ -1042,7 +1042,7 @@ _multibytecodec_MultibyteIncrementalEncoder_setstate_impl(MultibyteIncrementalEn
     memcpy(self->state.c, statebytes+1+statebytes[0],
            sizeof(self->state.c));
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 errorexit:
     Ty_XDECREF(pending);
@@ -1068,7 +1068,7 @@ _multibytecodec_MultibyteIncrementalEncoder_reset_impl(MultibyteIncrementalEncod
             return NULL;
     }
     Ty_CLEAR(self->pending);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static struct TyMethodDef mbiencoder_methods[] = {
@@ -1335,7 +1335,7 @@ _multibytecodec_MultibyteIncrementalDecoder_setstate_impl(MultibyteIncrementalDe
     memcpy(self->pending, bufferstr, self->pendingsize);
     memcpy(self->state.c, statebytes, sizeof(statebytes));
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1351,7 +1351,7 @@ _multibytecodec_MultibyteIncrementalDecoder_reset_impl(MultibyteIncrementalDecod
         return NULL;
     self->pendingsize = 0;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static struct TyMethodDef mbidecoder_methods[] = {
@@ -1660,7 +1660,7 @@ _multibytecodec_MultibyteStreamReader_reset_impl(MultibyteStreamReaderObject *se
         return NULL;
     self->pendingsize = 0;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static struct TyMethodDef mbstreamreader_methods[] = {
@@ -1674,7 +1674,7 @@ static struct TyMethodDef mbstreamreader_methods[] = {
 static TyMemberDef mbstreamreader_members[] = {
     {"stream",          _Ty_T_OBJECT,
                     offsetof(MultibyteStreamReaderObject, stream),
-                    Ty_READONLY, NULL},
+                    Py_READONLY, NULL},
     {NULL,}
 };
 
@@ -1808,7 +1808,7 @@ _multibytecodec_MultibyteStreamWriter_write_impl(MultibyteStreamWriterObject *se
     if (mbstreamwriter_iwrite(self, strobj, state->str_write)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1851,7 +1851,7 @@ _multibytecodec_MultibyteStreamWriter_writelines_impl(MultibyteStreamWriterObjec
     if (TyErr_Occurred())
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1870,7 +1870,7 @@ _multibytecodec_MultibyteStreamWriter_reset_impl(MultibyteStreamWriterObject *se
     TyObject *pwrt;
 
     if (!self->pending)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 
     pwrt = multibytecodec_encode(self->codec, &self->state,
                     self->pending, NULL, self->errors,
@@ -1899,7 +1899,7 @@ _multibytecodec_MultibyteStreamWriter_reset_impl(MultibyteStreamWriterObject *se
     }
     Ty_DECREF(pwrt);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1984,7 +1984,7 @@ static struct TyMethodDef mbstreamwriter_methods[] = {
 static TyMemberDef mbstreamwriter_members[] = {
     {"stream",          _Ty_T_OBJECT,
                     offsetof(MultibyteStreamWriterObject, stream),
-                    Ty_READONLY, NULL},
+                    Py_READONLY, NULL},
     {NULL,}
 };
 

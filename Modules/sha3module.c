@@ -320,7 +320,7 @@ _sha3_sha3_224_update_impl(SHA3object *self, TyObject *data)
     }
 
     PyBuffer_Release(&buf);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -334,7 +334,7 @@ static TyMethodDef SHA3_methods[] = {
 
 
 static TyObject *
-SHA3_get_block_size(TyObject *op, void *Ty_UNUSED(closure))
+SHA3_get_block_size(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA3object *self = _SHA3object_CAST(op);
     uint32_t rate = Hacl_Hash_SHA3_block_len(self->hash_state);
@@ -343,7 +343,7 @@ SHA3_get_block_size(TyObject *op, void *Ty_UNUSED(closure))
 
 
 static TyObject *
-SHA3_get_name(TyObject *self, void *Ty_UNUSED(closure))
+SHA3_get_name(TyObject *self, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = Ty_TYPE(self);
 
@@ -370,7 +370,7 @@ SHA3_get_name(TyObject *self, void *Ty_UNUSED(closure))
 
 
 static TyObject *
-SHA3_get_digest_size(TyObject *op, void *Ty_UNUSED(closure))
+SHA3_get_digest_size(TyObject *op, void *Py_UNUSED(closure))
 {
     // Preserving previous behavior: variable-length algorithms return 0
     SHA3object *self = _SHA3object_CAST(op);
@@ -382,7 +382,7 @@ SHA3_get_digest_size(TyObject *op, void *Ty_UNUSED(closure))
 
 
 static TyObject *
-SHA3_get_capacity_bits(TyObject *op, void *Ty_UNUSED(closure))
+SHA3_get_capacity_bits(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA3object *self = _SHA3object_CAST(op);
     uint32_t rate = Hacl_Hash_SHA3_block_len(self->hash_state) * 8;
@@ -393,7 +393,7 @@ SHA3_get_capacity_bits(TyObject *op, void *Ty_UNUSED(closure))
 
 
 static TyObject *
-SHA3_get_rate_bits(TyObject *op, void *Ty_UNUSED(closure))
+SHA3_get_rate_bits(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA3object *self = _SHA3object_CAST(op);
     uint32_t rate = Hacl_Hash_SHA3_block_len(self->hash_state) * 8;
@@ -401,7 +401,7 @@ SHA3_get_rate_bits(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-SHA3_get_suffix(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+SHA3_get_suffix(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     unsigned char suffix[2] = {0x06, 0};
     return TyBytes_FromStringAndSize((const char *)suffix, 1);
@@ -538,13 +538,13 @@ _sha3_shake_128_hexdigest_impl(SHA3object *self, unsigned long length)
 }
 
 static TyObject *
-SHAKE_get_digest_size(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+SHAKE_get_digest_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(0);
 }
 
 static TyObject *
-SHAKE_get_suffix(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+SHAKE_get_suffix(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     unsigned char suffix[2] = {0x1f, 0};
     return TyBytes_FromStringAndSize((const char *)suffix, 1);

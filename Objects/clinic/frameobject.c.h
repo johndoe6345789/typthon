@@ -25,7 +25,7 @@ static TyObject *
 frame_locals_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_locals_get(TyObject *self, void *Ty_UNUSED(context))
+frame_locals_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -57,7 +57,7 @@ static TyObject *
 frame_lineno_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_lineno_get(TyObject *self, void *Ty_UNUSED(context))
+frame_lineno_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -89,7 +89,7 @@ static TyObject *
 frame_lasti_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_lasti_get(TyObject *self, void *Ty_UNUSED(context))
+frame_lasti_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -121,7 +121,7 @@ static TyObject *
 frame_globals_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_globals_get(TyObject *self, void *Ty_UNUSED(context))
+frame_globals_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -153,7 +153,7 @@ static TyObject *
 frame_builtins_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_builtins_get(TyObject *self, void *Ty_UNUSED(context))
+frame_builtins_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -185,7 +185,7 @@ static TyObject *
 frame_code_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_code_get(TyObject *self, void *Ty_UNUSED(context))
+frame_code_get(TyObject *self, void *Py_UNUSED(context))
 {
     return frame_code_get_impl((PyFrameObject *)self);
 }
@@ -204,7 +204,7 @@ static TyObject *
 frame_back_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_back_get(TyObject *self, void *Ty_UNUSED(context))
+frame_back_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -236,7 +236,7 @@ static TyObject *
 frame_trace_opcodes_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_trace_opcodes_get(TyObject *self, void *Ty_UNUSED(context))
+frame_trace_opcodes_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -261,7 +261,7 @@ static int
 frame_trace_opcodes_set_impl(PyFrameObject *self, TyObject *value);
 
 static int
-frame_trace_opcodes_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+frame_trace_opcodes_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -286,7 +286,7 @@ static int
 frame_lineno_set_impl(PyFrameObject *self, TyObject *value);
 
 static int
-frame_lineno_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+frame_lineno_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -318,7 +318,7 @@ static TyObject *
 frame_trace_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_trace_get(TyObject *self, void *Ty_UNUSED(context))
+frame_trace_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -343,7 +343,7 @@ static int
 frame_trace_set_impl(PyFrameObject *self, TyObject *value);
 
 static int
-frame_trace_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+frame_trace_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -375,7 +375,7 @@ static TyObject *
 frame_generator_get_impl(PyFrameObject *self);
 
 static TyObject *
-frame_generator_get(TyObject *self, void *Ty_UNUSED(context))
+frame_generator_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -399,7 +399,7 @@ static TyObject *
 frame_clear_impl(PyFrameObject *self);
 
 static TyObject *
-frame_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+frame_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -423,7 +423,7 @@ static TyObject *
 frame___sizeof___impl(PyFrameObject *self);
 
 static TyObject *
-frame___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+frame___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

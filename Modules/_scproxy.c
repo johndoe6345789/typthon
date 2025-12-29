@@ -58,7 +58,7 @@ cfstring_to_pystring(CFStringRef ref)
 
 
 static TyObject*
-get_proxy_settings(TyObject* Ty_UNUSED(mod), TyObject *Ty_UNUSED(ignored))
+get_proxy_settings(TyObject* Py_UNUSED(mod), TyObject *Py_UNUSED(ignored))
 {
     CFDictionaryRef proxyDict = NULL;
     CFNumberRef aNum = NULL;
@@ -72,7 +72,7 @@ get_proxy_settings(TyObject* Ty_UNUSED(mod), TyObject *Ty_UNUSED(ignored))
     Ty_END_ALLOW_THREADS
 
     if (!proxyDict) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     result = TyDict_New();
@@ -170,7 +170,7 @@ set_proxy(TyObject* proxies, const char* proto, CFDictionaryRef proxyDict,
 
 
 static TyObject*
-get_proxies(TyObject* Ty_UNUSED(mod), TyObject *Ty_UNUSED(ignored))
+get_proxies(TyObject* Py_UNUSED(mod), TyObject *Py_UNUSED(ignored))
 {
     TyObject* result = NULL;
     int r;

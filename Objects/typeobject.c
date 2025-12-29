@@ -808,7 +808,7 @@ _TyType_GetDocFromInternalDoc(const char *name, const char *internal_doc)
     const char *doc = _TyType_DocWithoutSignature(name, internal_doc);
 
     if (!doc || *doc == '\0') {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     return TyUnicode_FromString(doc);
@@ -850,7 +850,7 @@ _TyType_GetTextSignatureFromInternalDoc(const char *name, const char *internal_d
         if (start) {
             return TyUnicode_FromString(start);
         }
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     /* back "end" up until it points just past the final ')' */
@@ -1332,16 +1332,16 @@ int PyUnstable_Type_AssignVersionTag(TyTypeObject *type)
 
 
 static TyMemberDef type_members[] = {
-    {"__basicsize__", Ty_T_PYSSIZET, offsetof(TyTypeObject,tp_basicsize),Ty_READONLY},
-    {"__itemsize__", Ty_T_PYSSIZET, offsetof(TyTypeObject, tp_itemsize), Ty_READONLY},
-    {"__flags__", Ty_T_ULONG, offsetof(TyTypeObject, tp_flags), Ty_READONLY},
+    {"__basicsize__", Ty_T_PYSSIZET, offsetof(TyTypeObject,tp_basicsize),Py_READONLY},
+    {"__itemsize__", Ty_T_PYSSIZET, offsetof(TyTypeObject, tp_itemsize), Py_READONLY},
+    {"__flags__", Ty_T_ULONG, offsetof(TyTypeObject, tp_flags), Py_READONLY},
     /* Note that this value is misleading for static builtin types,
        since the memory at this offset will always be NULL. */
     {"__weakrefoffset__", Ty_T_PYSSIZET,
-     offsetof(TyTypeObject, tp_weaklistoffset), Ty_READONLY},
-    {"__base__", _Ty_T_OBJECT, offsetof(TyTypeObject, tp_base), Ty_READONLY},
+     offsetof(TyTypeObject, tp_weaklistoffset), Py_READONLY},
+    {"__base__", _Ty_T_OBJECT, offsetof(TyTypeObject, tp_base), Py_READONLY},
     {"__dictoffset__", Ty_T_PYSSIZET,
-     offsetof(TyTypeObject, tp_dictoffset), Ty_READONLY},
+     offsetof(TyTypeObject, tp_dictoffset), Py_READONLY},
     {0}
 };
 
@@ -1384,7 +1384,7 @@ _TyType_Name(TyTypeObject *type)
 }
 
 static TyObject *
-type_name(TyObject *tp, void *Ty_UNUSED(closure))
+type_name(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (type->tp_flags & Ty_TPFLAGS_HEAPTYPE) {
@@ -1397,7 +1397,7 @@ type_name(TyObject *tp, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-type_qualname(TyObject *tp, void *Ty_UNUSED(closure))
+type_qualname(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (type->tp_flags & Ty_TPFLAGS_HEAPTYPE) {
@@ -1410,7 +1410,7 @@ type_qualname(TyObject *tp, void *Ty_UNUSED(closure))
 }
 
 static int
-type_set_name(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
+type_set_name(TyObject *tp, TyObject *value, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     const char *tp_name;
@@ -1488,14 +1488,14 @@ type_module(TyTypeObject *type)
 }
 
 static inline TyObject *
-type_get_module(TyObject *tp, void *Ty_UNUSED(closure))
+type_get_module(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     return type_module(type);
 }
 
 static int
-type_set_module(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
+type_set_module(TyObject *tp, TyObject *value, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (!check_set_special_type_attr(type, value, "__module__"))
@@ -1551,7 +1551,7 @@ TyType_GetFullyQualifiedName(TyTypeObject *type)
 }
 
 static TyObject *
-type_abstractmethods(TyObject *tp, void *Ty_UNUSED(closure))
+type_abstractmethods(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     TyObject *res = NULL;
@@ -1570,7 +1570,7 @@ type_abstractmethods(TyObject *tp, void *Ty_UNUSED(closure))
 }
 
 static int
-type_set_abstractmethods(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
+type_set_abstractmethods(TyObject *tp, TyObject *value, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     /* __abstractmethods__ should only be set once on a type, in
@@ -1609,18 +1609,18 @@ type_set_abstractmethods(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure)
 }
 
 static TyObject *
-type_get_bases(TyObject *tp, void *Ty_UNUSED(closure))
+type_get_bases(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     TyObject *bases = _TyType_GetBases(type);
     if (bases == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return bases;
 }
 
 static TyObject *
-type_get_mro(TyObject *tp, void *Ty_UNUSED(closure))
+type_get_mro(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     TyObject *mro;
@@ -1858,7 +1858,7 @@ type_set_bases_unlocked(TyTypeObject *type, TyObject *new_bases)
 }
 
 static int
-type_set_bases(TyObject *tp, TyObject *new_bases, void *Ty_UNUSED(closure))
+type_set_bases(TyObject *tp, TyObject *new_bases, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     int res;
@@ -1869,18 +1869,18 @@ type_set_bases(TyObject *tp, TyObject *new_bases, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-type_dict(TyObject *tp, void *Ty_UNUSED(closure))
+type_dict(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     TyObject *dict = lookup_tp_dict(type);
     if (dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return PyDictProxy_New(dict);
 }
 
 static TyObject *
-type_get_doc(TyObject *tp, void *Ty_UNUSED(closure))
+type_get_doc(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     TyObject *result;
@@ -1901,14 +1901,14 @@ type_get_doc(TyObject *tp, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-type_get_text_signature(TyObject *tp, void *Ty_UNUSED(closure))
+type_get_text_signature(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     return _TyType_GetTextSignatureFromInternalDoc(type->tp_name, type->tp_doc, 0);
 }
 
 static int
-type_set_doc(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
+type_set_doc(TyObject *tp, TyObject *value, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (!check_set_special_type_attr(type, value, "__doc__"))
@@ -1919,7 +1919,7 @@ type_set_doc(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-type_get_annotate(TyObject *tp, void *Ty_UNUSED(closure))
+type_get_annotate(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (!(type->tp_flags & Ty_TPFLAGS_HEAPTYPE)) {
@@ -1959,7 +1959,7 @@ type_get_annotate(TyObject *tp, void *Ty_UNUSED(closure))
 }
 
 static int
-type_set_annotate(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
+type_set_annotate(TyObject *tp, TyObject *value, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (value == NULL) {
@@ -1998,7 +1998,7 @@ type_set_annotate(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-type_get_annotations(TyObject *tp, void *Ty_UNUSED(closure))
+type_get_annotations(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (!(type->tp_flags & Ty_TPFLAGS_HEAPTYPE)) {
@@ -2068,7 +2068,7 @@ type_get_annotations(TyObject *tp, void *Ty_UNUSED(closure))
 }
 
 static int
-type_set_annotations(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
+type_set_annotations(TyObject *tp, TyObject *value, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (_TyType_HasFeature(type, Ty_TPFLAGS_IMMUTABLETYPE)) {
@@ -2140,7 +2140,7 @@ type_set_annotations(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-type_get_type_params(TyObject *tp, void *Ty_UNUSED(closure))
+type_get_type_params(TyObject *tp, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (type == &TyType_Type) {
@@ -2155,7 +2155,7 @@ type_get_type_params(TyObject *tp, void *Ty_UNUSED(closure))
 }
 
 static int
-type_set_type_params(TyObject *tp, TyObject *value, void *Ty_UNUSED(closure))
+type_set_type_params(TyObject *tp, TyObject *value, void *Py_UNUSED(closure))
 {
     TyTypeObject *type = PyTypeObject_CAST(tp);
     if (!check_set_special_type_attr(type, value, "__type_params__")) {
@@ -2497,7 +2497,7 @@ clear_slots(TyTypeObject *type, TyObject *self)
     n = Ty_SIZE(type);
     mp = _PyHeapType_GET_MEMBERS((PyHeapTypeObject *)type);
     for (i = 0; i < n; i++, mp++) {
-        if (mp->type == Ty_T_OBJECT_EX && !(mp->flags & Ty_READONLY)) {
+        if (mp->type == Ty_T_OBJECT_EX && !(mp->flags & Py_READONLY)) {
             char *addr = (char *)self + mp->offset;
             TyObject *obj = *(TyObject **)addr;
             if (obj != NULL) {
@@ -2979,7 +2979,7 @@ vectorcall_maybe(PyThreadState *tstate, TyObject *name,
     if (func == NULL) {
         _TyThreadState_PopCStackRef(tstate, &cref);
         if (!TyErr_Occurred()) {
-            Ty_RETURN_NOTIMPLEMENTED;
+            Py_RETURN_NOTIMPLEMENTED;
         }
         return NULL;
     }
@@ -4897,17 +4897,17 @@ special_offset_from_member(
             memb->name);
         return -1;
     }
-    if (memb->flags == Ty_READONLY) {
+    if (memb->flags == Py_READONLY) {
         *dest = memb->offset;
         return 0;
     }
-    else if (memb->flags == (Ty_READONLY | Ty_RELATIVE_OFFSET)) {
+    else if (memb->flags == (Py_READONLY | Ty_RELATIVE_OFFSET)) {
         *dest = memb->offset + type_data_offset;
         return 0;
     }
     TyErr_Format(
         TyExc_SystemError,
-        "flags for %s must be Ty_READONLY or (Ty_READONLY | Ty_RELATIVE_OFFSET)",
+        "flags for %s must be Py_READONLY or (Py_READONLY | Ty_RELATIVE_OFFSET)",
         memb->name);
     return -1;
 }
@@ -6860,21 +6860,21 @@ object_richcompare(TyObject *self, TyObject *other, int op)
 
     switch (op) {
 
-    case Ty_EQ:
+    case Py_EQ:
         /* Return NotImplemented instead of False, so if two
            objects are compared, both get a chance at the
            comparison.  See issue #1393. */
         res = Ty_NewRef((self == other) ? Ty_True : Ty_NotImplemented);
         break;
 
-    case Ty_NE:
+    case Py_NE:
         /* By default, __ne__() delegates to __eq__() and inverts the result,
            unless the latter returns NotImplemented. */
         if (Ty_TYPE(self)->tp_richcompare == NULL) {
             res = Ty_NewRef(Ty_NotImplemented);
             break;
         }
-        res = (*Ty_TYPE(self)->tp_richcompare)(self, other, Ty_EQ);
+        res = (*Ty_TYPE(self)->tp_richcompare)(self, other, Py_EQ);
         if (res != NULL && res != Ty_NotImplemented) {
             int ok = PyObject_IsTrue(res);
             Ty_DECREF(res);
@@ -6946,7 +6946,7 @@ same_slots_added(TyTypeObject *a, TyTypeObject *b)
     slots_a = ((PyHeapTypeObject *)a)->ht_slots;
     slots_b = ((PyHeapTypeObject *)b)->ht_slots;
     if (slots_a && slots_b) {
-        if (PyObject_RichCompareBool(slots_a, slots_b, Ty_EQ) != 1)
+        if (PyObject_RichCompareBool(slots_a, slots_b, Py_EQ) != 1)
             return 0;
         size += sizeof(TyObject *) * TyTuple_GET_SIZE(slots_a);
     }
@@ -7718,7 +7718,7 @@ object___reduce_ex___impl(TyObject *self, int protocol)
 static TyObject *
 object_subclasshook(TyObject *cls, TyObject *args)
 {
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 PyDoc_STRVAR(object_subclasshook_doc,
@@ -7732,7 +7732,7 @@ PyDoc_STRVAR(object_subclasshook_doc,
 static TyObject *
 object_init_subclass(TyObject *cls, TyObject *arg)
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(object_init_subclass_doc,
@@ -9329,7 +9329,7 @@ wrap_sq_setitem(TyObject *self, TyObject *args, void *wrapped)
     res = (*func)(self, i, value);
     if (res == -1 && TyErr_Occurred())
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -9349,7 +9349,7 @@ wrap_sq_delitem(TyObject *self, TyObject *args, void *wrapped)
     res = (*func)(self, i, NULL);
     if (res == -1 && TyErr_Occurred())
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* XXX objobjproc is a misnomer; should be objargpred */
@@ -9382,7 +9382,7 @@ wrap_objobjargproc(TyObject *self, TyObject *args, void *wrapped)
     res = (*func)(self, key, value);
     if (res == -1 && TyErr_Occurred())
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -9398,7 +9398,7 @@ wrap_delitem(TyObject *self, TyObject *args, void *wrapped)
     res = (*func)(self, key, NULL);
     if (res == -1 && TyErr_Occurred())
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Helper to check for object.__setattr__ or __delattr__ applied to a type.
@@ -9481,7 +9481,7 @@ wrap_setattr(TyObject *self, TyObject *args, void *wrapped)
     res = (*func)(self, name, value);
     if (res < 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -9499,7 +9499,7 @@ wrap_delattr(TyObject *self, TyObject *args, void *wrapped)
     res = (*func)(self, name, NULL);
     if (res < 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -9533,7 +9533,7 @@ wrap_del(TyObject *self, TyObject *args, void *wrapped)
         return NULL;
 
     (*func)(self);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -9556,12 +9556,12 @@ richcmp_##NAME(TyObject *self, TyObject *args, void *wrapped) \
     return wrap_richcmpfunc(self, args, wrapped, OP); \
 }
 
-RICHCMP_WRAPPER(lt, Ty_LT)
-RICHCMP_WRAPPER(le, Ty_LE)
-RICHCMP_WRAPPER(eq, Ty_EQ)
-RICHCMP_WRAPPER(ne, Ty_NE)
-RICHCMP_WRAPPER(gt, Ty_GT)
-RICHCMP_WRAPPER(ge, Ty_GE)
+RICHCMP_WRAPPER(lt, Py_LT)
+RICHCMP_WRAPPER(le, Py_LE)
+RICHCMP_WRAPPER(eq, Py_EQ)
+RICHCMP_WRAPPER(ne, Py_NE)
+RICHCMP_WRAPPER(gt, Py_GT)
+RICHCMP_WRAPPER(ge, Py_GE)
 
 static TyObject *
 wrap_next(TyObject *self, TyObject *args, void *wrapped)
@@ -9610,7 +9610,7 @@ wrap_descr_set(TyObject *self, TyObject *args, void *wrapped)
     ret = (*func)(self, obj, value);
     if (ret < 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -9626,7 +9626,7 @@ wrap_descr_delete(TyObject *self, TyObject *args, void *wrapped)
     ret = (*func)(self, obj, NULL);
     if (ret < 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -9666,7 +9666,7 @@ wrap_releasebuffer(TyObject *self, TyObject *args, void *wrapped)
     PyMemoryViewObject *mview = (PyMemoryViewObject *)arg;
     if (mview->view.obj == NULL) {
         // Already released, ignore
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (mview->view.obj != self) {
         TyErr_SetString(TyExc_ValueError,
@@ -9683,7 +9683,7 @@ wrap_releasebuffer(TyObject *self, TyObject *args, void *wrapped)
         return NULL;
     }
     Ty_DECREF(res);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -9693,7 +9693,7 @@ wrap_init(TyObject *self, TyObject *args, void *wrapped, TyObject *kwds)
 
     if (func(self, args, kwds) < 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -9840,7 +9840,7 @@ method_is_overloaded(TyObject *left, TyObject *right, TyObject *name)
         return 1;
     }
 
-    ok = PyObject_RichCompareBool(a, b, Ty_NE);
+    ok = PyObject_RichCompareBool(a, b, Py_NE);
     Ty_DECREF(a);
     Ty_DECREF(b);
     return ok;
@@ -9887,7 +9887,7 @@ FUNCNAME(TyObject *self, TyObject *other) \
         stack[1] = self; \
         return vectorcall_maybe(tstate, &_Ty_ID(RDUNDER), stack, 2); \
     } \
-    Ty_RETURN_NOTIMPLEMENTED; \
+    Py_RETURN_NOTIMPLEMENTED; \
 }
 
 #define SLOT1BIN(FUNCNAME, SLOTNAME, DUNDER, RDUNDER) \
@@ -10070,7 +10070,7 @@ slot_nb_power(TyObject *self, TyObject *other, TyObject *modulus)
         stack[2] = modulus;
         return vectorcall_maybe(tstate, &_Ty_ID(__rpow__), stack, 3);
     }
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 SLOT0(slot_nb_negative, __neg__)
@@ -10350,7 +10350,7 @@ slot_tp_richcompare(TyObject *self, TyObject *other, int op)
         if (TyErr_Occurred()) {
             return NULL;
         }
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     return res;
 }
@@ -11673,11 +11673,11 @@ typedef struct {
 #define superobject_CAST(op)    ((superobject *)(op))
 
 static TyMemberDef super_members[] = {
-    {"__thisclass__", _Ty_T_OBJECT, offsetof(superobject, type), Ty_READONLY,
+    {"__thisclass__", _Ty_T_OBJECT, offsetof(superobject, type), Py_READONLY,
      "the class invoking super()"},
-    {"__self__",  _Ty_T_OBJECT, offsetof(superobject, obj), Ty_READONLY,
+    {"__self__",  _Ty_T_OBJECT, offsetof(superobject, obj), Py_READONLY,
      "the instance invoking super(); may be None"},
-    {"__self_class__", _Ty_T_OBJECT, offsetof(superobject, obj_type), Ty_READONLY,
+    {"__self_class__", _Ty_T_OBJECT, offsetof(superobject, obj_type), Py_READONLY,
      "the type of the instance invoking super(); may be None"},
     {0}
 };

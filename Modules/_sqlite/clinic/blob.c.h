@@ -17,7 +17,7 @@ static TyObject *
 blob_close_impl(pysqlite_Blob *self);
 
 static TyObject *
-blob_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+blob_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return blob_close_impl((pysqlite_Blob *)self);
 }
@@ -156,7 +156,7 @@ static TyObject *
 blob_tell_impl(pysqlite_Blob *self);
 
 static TyObject *
-blob_tell(TyObject *self, TyObject *Ty_UNUSED(ignored))
+blob_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return blob_tell_impl((pysqlite_Blob *)self);
 }
@@ -174,7 +174,7 @@ static TyObject *
 blob_enter_impl(pysqlite_Blob *self);
 
 static TyObject *
-blob_enter(TyObject *self, TyObject *Ty_UNUSED(ignored))
+blob_enter(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return blob_enter_impl((pysqlite_Blob *)self);
 }

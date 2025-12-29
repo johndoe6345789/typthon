@@ -129,7 +129,7 @@ PyDoc_STRVAR(_io__BufferedIOBase_read__doc__,
 
 static TyObject *
 _io__BufferedIOBase_read_impl(TyObject *self, TyTypeObject *cls,
-                              int Ty_UNUSED(size));
+                              int Py_UNUSED(size));
 
 static TyObject *
 _io__BufferedIOBase_read(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
@@ -184,7 +184,7 @@ PyDoc_STRVAR(_io__BufferedIOBase_read1__doc__,
 
 static TyObject *
 _io__BufferedIOBase_read1_impl(TyObject *self, TyTypeObject *cls,
-                               int Ty_UNUSED(size));
+                               int Py_UNUSED(size));
 
 static TyObject *
 _io__BufferedIOBase_read1(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
@@ -242,7 +242,7 @@ PyDoc_STRVAR(_io__BufferedIOBase_write__doc__,
 
 static TyObject *
 _io__BufferedIOBase_write_impl(TyObject *self, TyTypeObject *cls,
-                               TyObject *Ty_UNUSED(b));
+                               TyObject *Py_UNUSED(b));
 
 static TyObject *
 _io__BufferedIOBase_write(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
@@ -288,7 +288,7 @@ static TyObject *
 _io__Buffered___sizeof___impl(buffered *self);
 
 static TyObject *
-_io__Buffered___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -332,7 +332,7 @@ static TyObject *
 _io__Buffered_simple_flush_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_simple_flush(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_simple_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -357,7 +357,7 @@ static TyObject *
 _io__Buffered_closed_get_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_closed_get(TyObject *self, void *Ty_UNUSED(context))
+_io__Buffered_closed_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -380,7 +380,7 @@ static TyObject *
 _io__Buffered_close_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -403,7 +403,7 @@ static TyObject *
 _io__Buffered_detach_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_detach(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_detach(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -426,7 +426,7 @@ static TyObject *
 _io__Buffered_seekable_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_seekable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -449,7 +449,7 @@ static TyObject *
 _io__Buffered_readable_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_readable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -472,7 +472,7 @@ static TyObject *
 _io__Buffered_writable_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_writable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -497,7 +497,7 @@ static TyObject *
 _io__Buffered_name_get_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_name_get(TyObject *self, void *Ty_UNUSED(context))
+_io__Buffered_name_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -522,7 +522,7 @@ static TyObject *
 _io__Buffered_mode_get_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_mode_get(TyObject *self, void *Ty_UNUSED(context))
+_io__Buffered_mode_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -545,7 +545,7 @@ static TyObject *
 _io__Buffered_fileno_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_fileno(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -568,7 +568,7 @@ static TyObject *
 _io__Buffered_isatty_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_isatty(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -591,7 +591,7 @@ static TyObject *
 _io__Buffered_flush_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_flush(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -840,7 +840,7 @@ static TyObject *
 _io__Buffered_tell_impl(buffered *self);
 
 static TyObject *
-_io__Buffered_tell(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__Buffered_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

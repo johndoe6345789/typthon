@@ -50,7 +50,7 @@ static TyObject *
 pyexpat_xmlparser_GetReparseDeferralEnabled_impl(xmlparseobject *self);
 
 static TyObject *
-pyexpat_xmlparser_GetReparseDeferralEnabled(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pyexpat_xmlparser_GetReparseDeferralEnabled(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pyexpat_xmlparser_GetReparseDeferralEnabled_impl((xmlparseobject *)self);
 }
@@ -206,7 +206,7 @@ static TyObject *
 pyexpat_xmlparser_GetBase_impl(xmlparseobject *self);
 
 static TyObject *
-pyexpat_xmlparser_GetBase(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pyexpat_xmlparser_GetBase(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pyexpat_xmlparser_GetBase_impl((xmlparseobject *)self);
 }
@@ -227,7 +227,7 @@ static TyObject *
 pyexpat_xmlparser_GetInputContext_impl(xmlparseobject *self);
 
 static TyObject *
-pyexpat_xmlparser_GetInputContext(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pyexpat_xmlparser_GetInputContext(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pyexpat_xmlparser_GetInputContext_impl((xmlparseobject *)self);
 }

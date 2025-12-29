@@ -85,7 +85,7 @@ static TyObject *
 _ssl_Certificate_get_info_impl(PySSLCertificate *self);
 
 static TyObject *
-_ssl_Certificate_get_info(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl_Certificate_get_info(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _ssl_Certificate_get_info_impl((PySSLCertificate *)self);
 }

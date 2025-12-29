@@ -19,7 +19,7 @@ static TyObject *
 _random_Random_random_impl(RandomObject *self);
 
 static TyObject *
-_random_Random_random(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_random_Random_random(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -80,7 +80,7 @@ static TyObject *
 _random_Random_getstate_impl(RandomObject *self);
 
 static TyObject *
-_random_Random_getstate(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_random_Random_getstate(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

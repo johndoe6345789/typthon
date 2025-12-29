@@ -39,7 +39,7 @@ call_profile_func(_PyLegacyEventHandler *self, TyObject *arg)
 {
     PyThreadState *tstate = _TyThreadState_GET();
     if (tstate->c_profilefunc == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     PyFrameObject *frame = TyEval_GetFrame();
     if (frame == NULL) {
@@ -53,7 +53,7 @@ call_profile_func(_PyLegacyEventHandler *self, TyObject *arg)
     if (err) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -119,7 +119,7 @@ sys_profile_call_or_return(
 
         /* If no arg, skip */
         if (self_arg == &_PyInstrumentation_MISSING) {
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         TyObject *meth = Ty_TYPE(callable)->tp_descr_get(
             callable, self_arg, (TyObject*)Ty_TYPE(self_arg));
@@ -130,7 +130,7 @@ sys_profile_call_or_return(
         Ty_DECREF(meth);
         return res;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 int
@@ -166,7 +166,7 @@ call_trace_func(_PyLegacyEventHandler *self, TyObject *arg)
 {
     PyThreadState *tstate = _TyThreadState_GET();
     if (tstate->c_tracefunc == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     PyFrameObject *frame = TyEval_GetFrame();
     if (frame == NULL) {
@@ -187,7 +187,7 @@ call_trace_func(_PyLegacyEventHandler *self, TyObject *arg)
     if (err) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -293,7 +293,7 @@ sys_trace_instruction_func(
         if (_TyEval_SetOpcodeTrace(frame, false) != 0) {
             return NULL;
         }
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     Ty_INCREF(frame);
     int err = tstate->c_tracefunc(tstate->c_traceobj, frame, self->event, Ty_None);
@@ -302,7 +302,7 @@ sys_trace_instruction_func(
     if (err) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -311,10 +311,10 @@ trace_line(
     PyFrameObject *frame, int line
 ) {
     if (!frame->f_trace_lines) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (line < 0) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     Ty_INCREF(frame);
     frame->f_lineno = line;
@@ -324,7 +324,7 @@ trace_line(
     if (err) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -336,7 +336,7 @@ sys_trace_line_func(
     assert(kwnames == NULL);
     PyThreadState *tstate = _TyThreadState_GET();
     if (tstate->c_tracefunc == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     assert(PyVectorcall_NARGS(nargsf) == 2);
     int line = TyLong_AsInt(args[1]);
@@ -363,7 +363,7 @@ sys_trace_jump_func(
     assert(kwnames == NULL);
     PyThreadState *tstate = _TyThreadState_GET();
     if (tstate->c_tracefunc == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     assert(PyVectorcall_NARGS(nargsf) == 3);
     int from = TyLong_AsInt(args[1])/sizeof(_Ty_CODEUNIT);
@@ -391,7 +391,7 @@ sys_trace_jump_func(
         return NULL;
     }
     if (!frame->f_trace_lines) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return trace_line(tstate, self, frame, to_line);
 }

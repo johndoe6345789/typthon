@@ -52,7 +52,7 @@ static TyType_Spec MinimalType_spec = {
 
 
 static TyObject *
-test_from_spec_metatype_inheritance(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_from_spec_metatype_inheritance(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *metaclass = NULL;
     TyObject *class = NULL;
@@ -108,7 +108,7 @@ finally:
 
 
 static TyObject *
-test_from_spec_invalid_metatype_inheritance(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_from_spec_invalid_metatype_inheritance(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *metaclass_a = NULL;
     TyObject *metaclass_b = NULL;
@@ -202,7 +202,7 @@ simple_str(TyObject *self) {
 
 
 static TyObject *
-test_type_from_ephemeral_spec(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_type_from_ephemeral_spec(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     // Test that a heap type can be created from a spec that's later deleted
     // (along with all its contents).
@@ -902,7 +902,7 @@ static TyGetSetDef heapctypewithdict_getsetlist[] = {
 
 static struct TyMemberDef heapctypewithdict_members[] = {
     {"dictobj", _Ty_T_OBJECT, offsetof(HeapCTypeWithDictObject, dict)},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(HeapCTypeWithDictObject, dict), Ty_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(HeapCTypeWithDictObject, dict), Py_READONLY},
     {NULL} /* Sentinel */
 };
 
@@ -998,7 +998,7 @@ static TyType_Spec  HeapCTypeWithManagedWeakref_spec = {
 
 static struct TyMemberDef heapctypewithnegativedict_members[] = {
     {"dictobj", _Ty_T_OBJECT, offsetof(HeapCTypeWithDictObject, dict)},
-    {"__dictoffset__", Ty_T_PYSSIZET, -(Ty_ssize_t)sizeof(void*), Ty_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, -(Ty_ssize_t)sizeof(void*), Py_READONLY},
     {NULL} /* Sentinel */
 };
 
@@ -1025,7 +1025,7 @@ typedef struct {
 static struct TyMemberDef heapctypewithweakref_members[] = {
     {"weakreflist", _Ty_T_OBJECT, offsetof(HeapCTypeWithWeakrefObject, weakreflist)},
     {"__weaklistoffset__", Ty_T_PYSSIZET,
-      offsetof(HeapCTypeWithWeakrefObject, weakreflist), Ty_READONLY},
+      offsetof(HeapCTypeWithWeakrefObject, weakreflist), Py_READONLY},
     {NULL} /* Sentinel */
 };
 
@@ -1100,7 +1100,7 @@ heapctypesetattr_setattro(TyObject *op, TyObject *attr, TyObject *value)
     TyObject *svalue = TyUnicode_FromString("value");
     if (svalue == NULL)
         return -1;
-    int eq = PyObject_RichCompareBool(svalue, attr, Ty_EQ);
+    int eq = PyObject_RichCompareBool(svalue, attr, Py_EQ);
     Ty_DECREF(svalue);
     if (eq < 0)
         return -1;

@@ -274,7 +274,7 @@ get_warnings_context(PyInterpreterState *interp)
         return NULL;
     }
     if (ctx == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return ctx;
 }
@@ -287,7 +287,7 @@ get_warnings_context_filters(PyInterpreterState *interp)
         return NULL;
     }
     if (ctx == Ty_None) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     TyObject *context_filters = PyObject_GetAttr(ctx, &_Ty_ID(_filters));
     Ty_DECREF(ctx);
@@ -340,7 +340,7 @@ warnings_acquire_lock_impl(TyObject *module)
         return NULL;
     }
     warnings_lock(interp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -360,7 +360,7 @@ warnings_release_lock_impl(TyObject *module)
         TyErr_SetString(TyExc_RuntimeError, "cannot release un-acquired lock");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -806,7 +806,7 @@ warn_explicit(PyThreadState *tstate, TyObject *category, TyObject *message,
        are no more available to choose as action. It is safer to ignore the
        warning and do nothing. */
     if (module == Ty_None)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 
     if (registry && !TyDict_Check(registry) && (registry != Ty_None)) {
         TyErr_SetString(TyExc_TypeError, "'registry' must be a dict or None");
@@ -1352,7 +1352,7 @@ warnings_filters_mutated_lock_held_impl(TyObject *module)
 
     st->filters_version++;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Function to issue a warning message; may raise an exception. */

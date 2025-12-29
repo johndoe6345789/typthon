@@ -982,7 +982,7 @@ _TyObject_FunctionStr(TyObject *x)
     TyObject *result = NULL;
     ret = PyObject_GetOptionalAttr(x, &_Ty_ID(__module__), &module);
     if (module != NULL && module != Ty_None) {
-        ret = PyObject_RichCompareBool(module, &_Ty_ID(builtins), Ty_NE);
+        ret = PyObject_RichCompareBool(module, &_Ty_ID(builtins), Py_NE);
         if (ret < 0) {
             // error
             goto done;
@@ -1033,7 +1033,7 @@ done:
 */
 
 /* Map rich comparison operators to their swapped version, e.g. LT <--> GT */
-int _Ty_SwappedOp[] = {Ty_GT, Ty_GE, Ty_EQ, Ty_NE, Ty_LT, Ty_LE};
+int _Ty_SwappedOp[] = {Py_GT, Py_GE, Py_EQ, Py_NE, Py_LT, Py_LE};
 
 static const char * const opstrings[] = {"<", "<=", "==", "!=", ">", ">="};
 
@@ -1070,10 +1070,10 @@ do_richcompare(PyThreadState *tstate, TyObject *v, TyObject *w, int op)
     /* If neither object implements it, provide a sensible default
        for == and !=, but raise an exception for ordering. */
     switch (op) {
-    case Ty_EQ:
+    case Py_EQ:
         res = (v == w) ? Ty_True : Ty_False;
         break;
-    case Ty_NE:
+    case Py_NE:
         res = (v != w) ? Ty_True : Ty_False;
         break;
     default:
@@ -1095,7 +1095,7 @@ PyObject_RichCompare(TyObject *v, TyObject *w, int op)
 {
     PyThreadState *tstate = _TyThreadState_GET();
 
-    assert(Ty_LT <= op && op <= Ty_GE);
+    assert(Py_LT <= op && op <= Py_GE);
     if (v == NULL || w == NULL) {
         if (!_TyErr_Occurred(tstate)) {
             TyErr_BadInternalCall();
@@ -1121,9 +1121,9 @@ PyObject_RichCompareBool(TyObject *v, TyObject *w, int op)
     /* Quick result when objects are the same.
        Guarantees that identity implies equality. */
     if (v == w) {
-        if (op == Ty_EQ)
+        if (op == Py_EQ)
             return 1;
-        else if (op == Ty_NE)
+        else if (op == Py_NE)
             return 0;
     }
 
@@ -2082,7 +2082,7 @@ none_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         TyErr_SetString(TyExc_TypeError, "NoneType takes no arguments");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -2191,7 +2191,7 @@ NotImplemented_repr(TyObject *op)
 }
 
 static TyObject *
-NotImplemented_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+NotImplemented_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     return TyUnicode_FromString("NotImplemented");
 }
@@ -2208,7 +2208,7 @@ notimplemented_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         TyErr_SetString(TyExc_TypeError, "NotImplementedType takes no arguments");
         return NULL;
     }
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static void

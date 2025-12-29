@@ -78,7 +78,7 @@ static inline int _TyObject_GC_IS_TRACKED(TyObject *op) {
     return (gc->_gc_next != 0);
 #endif
 }
-#define _TyObject_GC_IS_TRACKED(op) _TyObject_GC_IS_TRACKED(_Ty_CAST(TyObject*, op))
+#define _TyObject_GC_IS_TRACKED(op) _TyObject_GC_IS_TRACKED(_Py_CAST(TyObject*, op))
 
 /* True if the object may be tracked by the GC in the future, or already is.
    This can be useful to implement some optimizations. */
@@ -103,12 +103,12 @@ static inline int _TyObject_GC_MAY_BE_TRACKED(TyObject *obj) {
 static inline int _TyObject_GC_IS_SHARED(TyObject *op) {
     return _TyObject_HAS_GC_BITS(op, _TyGC_BITS_SHARED);
 }
-#define _TyObject_GC_IS_SHARED(op) _TyObject_GC_IS_SHARED(_Ty_CAST(TyObject*, op))
+#define _TyObject_GC_IS_SHARED(op) _TyObject_GC_IS_SHARED(_Py_CAST(TyObject*, op))
 
 static inline void _TyObject_GC_SET_SHARED(TyObject *op) {
     _TyObject_SET_GC_BITS(op, _TyGC_BITS_SHARED);
 }
-#define _TyObject_GC_SET_SHARED(op) _TyObject_GC_SET_SHARED(_Ty_CAST(TyObject*, op))
+#define _TyObject_GC_SET_SHARED(op) _TyObject_GC_SET_SHARED(_Py_CAST(TyObject*, op))
 
 #endif
 

@@ -25,7 +25,7 @@ no_intrinsic1(PyThreadState* tstate, TyObject *unused)
 }
 
 static TyObject *
-print_expr(PyThreadState* Ty_UNUSED(ignored), TyObject *value)
+print_expr(PyThreadState* Py_UNUSED(ignored), TyObject *value)
 {
     TyObject *hook = _TySys_GetRequiredAttr(&_Ty_ID(displayhook));
     if (hook == NULL) {
@@ -136,7 +136,7 @@ import_star(PyThreadState* tstate, TyObject *from)
     if (err < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -197,7 +197,7 @@ list_to_tuple(PyThreadState* unused, TyObject *v)
 }
 
 static TyObject *
-make_typevar(PyThreadState* Ty_UNUSED(ignored), TyObject *v)
+make_typevar(PyThreadState* Py_UNUSED(ignored), TyObject *v)
 {
     assert(TyUnicode_Check(v));
     return _Ty_make_typevar(v, NULL, NULL);
@@ -241,7 +241,7 @@ prep_reraise_star(PyThreadState* unused, TyObject *orig, TyObject *excs)
 }
 
 static TyObject *
-make_typevar_with_bound(PyThreadState* Ty_UNUSED(ignored), TyObject *name,
+make_typevar_with_bound(PyThreadState* Py_UNUSED(ignored), TyObject *name,
                         TyObject *evaluate_bound)
 {
     assert(TyUnicode_Check(name));
@@ -249,7 +249,7 @@ make_typevar_with_bound(PyThreadState* Ty_UNUSED(ignored), TyObject *name,
 }
 
 static TyObject *
-make_typevar_with_constraints(PyThreadState* Ty_UNUSED(ignored), TyObject *name,
+make_typevar_with_constraints(PyThreadState* Py_UNUSED(ignored), TyObject *name,
                               TyObject *evaluate_constraints)
 {
     assert(TyUnicode_Check(name));

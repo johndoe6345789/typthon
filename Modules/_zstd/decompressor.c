@@ -668,9 +668,9 @@ PyDoc_STRVAR(ZstdDecompressor_needs_input_doc,
 
 static TyMemberDef ZstdDecompressor_members[] = {
     {"eof", Ty_T_BOOL, offsetof(ZstdDecompressor, eof),
-    Ty_READONLY, ZstdDecompressor_eof_doc},
+    Py_READONLY, ZstdDecompressor_eof_doc},
     {"needs_input", Ty_T_BOOL, offsetof(ZstdDecompressor, needs_input),
-    Ty_READONLY, ZstdDecompressor_needs_input_doc},
+    Py_READONLY, ZstdDecompressor_needs_input_doc},
     {NULL}
 };
 

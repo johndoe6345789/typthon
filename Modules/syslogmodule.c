@@ -193,7 +193,7 @@ syslog_openlog_impl(TyObject *module, TyObject *ident, long logopt,
     S_log_open = 1;
     Ty_XSETREF(S_ident_o, ident);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -249,7 +249,7 @@ syslog_syslog_impl(TyObject *module, int group_left_1, int priority,
     Ty_END_ALLOW_THREADS;
 #endif
     Ty_XDECREF(ident);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -279,7 +279,7 @@ syslog_closelog_impl(TyObject *module)
         Ty_CLEAR(S_ident_o);
         S_log_open = 0;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

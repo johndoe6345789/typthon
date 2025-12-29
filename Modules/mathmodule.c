@@ -1798,7 +1798,7 @@ math_isqrt(TyObject *module, TyObject *n)
     if (b == NULL) {
         goto error;
     }
-    a_too_large = PyObject_RichCompareBool(n, b, Ty_LT);
+    a_too_large = PyObject_RichCompareBool(n, b, Py_LT);
     Ty_DECREF(b);
     if (a_too_large == -1) {
         goto error;
@@ -3768,7 +3768,7 @@ math_perm_impl(TyObject *module, TyObject *n, TyObject *k)
         goto error;
     }
 
-    cmp = PyObject_RichCompareBool(n, k, Ty_LT);
+    cmp = PyObject_RichCompareBool(n, k, Py_LT);
     if (cmp != 0) {
         if (cmp > 0) {
             result = TyLong_FromLong(0);
@@ -3892,7 +3892,7 @@ math_comb_impl(TyObject *module, TyObject *n, TyObject *k)
             result = TyLong_FromLong(0);
             goto done;
         }
-        cmp = PyObject_RichCompareBool(temp, k, Ty_LT);
+        cmp = PyObject_RichCompareBool(temp, k, Py_LT);
         if (cmp > 0) {
             Ty_SETREF(k, temp);
         }

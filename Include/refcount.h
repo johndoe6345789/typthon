@@ -126,7 +126,7 @@ static inline Ty_ALWAYS_INLINE int _Ty_IsImmortal(TyObject *op)
     return (_Ty_atomic_load_uint32_relaxed(&op->ob_ref_local) ==
             _Ty_IMMORTAL_REFCNT_LOCAL);
 #elif SIZEOF_VOID_P > 4
-    return _Ty_CAST(PY_INT32_T, op->ob_refcnt) < 0;
+    return _Py_CAST(PY_INT32_T, op->ob_refcnt) < 0;
 #else
     return op->ob_refcnt >= _Ty_IMMORTAL_MINIMUM_REFCNT;
 #endif
@@ -477,17 +477,17 @@ static inline Ty_ALWAYS_INLINE void Ty_DECREF(TyObject *op)
         _Ty_TYPEOF(op)* _tmp_op_ptr = &(op); \
         _Ty_TYPEOF(op) _tmp_old_op = (*_tmp_op_ptr); \
         if (_tmp_old_op != NULL) { \
-            *_tmp_op_ptr = _Ty_NULL; \
+            *_tmp_op_ptr = _Py_NULL; \
             Ty_DECREF(_tmp_old_op); \
         } \
     } while (0)
 #else
 #define Ty_CLEAR(op) \
     do { \
-        TyObject **_tmp_op_ptr = _Ty_CAST(TyObject**, &(op)); \
+        TyObject **_tmp_op_ptr = _Py_CAST(TyObject**, &(op)); \
         TyObject *_tmp_old_op = (*_tmp_op_ptr); \
         if (_tmp_old_op != NULL) { \
-            TyObject *_null_ptr = _Ty_NULL; \
+            TyObject *_null_ptr = _Py_NULL; \
             memcpy(_tmp_op_ptr, &_null_ptr, sizeof(TyObject*)); \
             Ty_DECREF(_tmp_old_op); \
         } \
@@ -498,7 +498,7 @@ static inline Ty_ALWAYS_INLINE void Ty_DECREF(TyObject *op)
 /* Function to use in case the object pointer can be NULL: */
 static inline void Ty_XINCREF(TyObject *op)
 {
-    if (op != _Ty_NULL) {
+    if (op != _Py_NULL) {
         Ty_INCREF(op);
     }
 }
@@ -508,7 +508,7 @@ static inline void Ty_XINCREF(TyObject *op)
 
 static inline void Ty_XDECREF(TyObject *op)
 {
-    if (op != _Ty_NULL) {
+    if (op != _Py_NULL) {
         Ty_DECREF(op);
     }
 }

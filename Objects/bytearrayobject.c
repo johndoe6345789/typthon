@@ -1189,34 +1189,34 @@ bytearray_richcompare(TyObject *self, TyObject *other, int op)
 
     if (!PyObject_CheckBuffer(self) || !PyObject_CheckBuffer(other)) {
         if (TyUnicode_Check(self) || TyUnicode_Check(other)) {
-            if (_Ty_GetConfig()->bytes_warning && (op == Ty_EQ || op == Ty_NE)) {
+            if (_Ty_GetConfig()->bytes_warning && (op == Py_EQ || op == Py_NE)) {
                 if (TyErr_WarnEx(TyExc_BytesWarning,
                                 "Comparison between bytearray and string", 1))
                     return NULL;
             }
         }
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     /* Bytearrays can be compared to anything that supports the buffer API. */
     if (PyObject_GetBuffer(self, &self_bytes, PyBUF_SIMPLE) != 0) {
         TyErr_Clear();
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     self_size = self_bytes.len;
 
     if (PyObject_GetBuffer(other, &other_bytes, PyBUF_SIMPLE) != 0) {
         TyErr_Clear();
         PyBuffer_Release(&self_bytes);
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     other_size = other_bytes.len;
 
-    if (self_size != other_size && (op == Ty_EQ || op == Ty_NE)) {
+    if (self_size != other_size && (op == Py_EQ || op == Py_NE)) {
         /* Shortcut: if the lengths differ, the objects differ */
         PyBuffer_Release(&self_bytes);
         PyBuffer_Release(&other_bytes);
-        return TyBool_FromLong((op == Ty_NE));
+        return TyBool_FromLong((op == Py_NE));
     }
     else {
         cmp = memcmp(self_bytes.buf, other_bytes.buf,
@@ -1227,10 +1227,10 @@ bytearray_richcompare(TyObject *self, TyObject *other, int op)
         PyBuffer_Release(&other_bytes);
 
         if (cmp != 0) {
-            Ty_RETURN_RICHCOMPARE(cmp, 0, op);
+            Py_RETURN_RICHCOMPARE(cmp, 0, op);
         }
 
-        Ty_RETURN_RICHCOMPARE(self_size, other_size, op);
+        Py_RETURN_RICHCOMPARE(self_size, other_size, op);
     }
 
 }
@@ -1332,7 +1332,7 @@ bytearray_clear_impl(PyByteArrayObject *self)
 {
     if (TyByteArray_Resize((TyObject *)self, 0) < 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1555,7 +1555,7 @@ bytearray_resize_impl(PyByteArrayObject *self, Ty_ssize_t size)
     if (size > start_size) {
         memset(TyByteArray_AS_STRING(self) + start_size, 0, size - start_size);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1896,7 +1896,7 @@ bytearray_reverse_impl(PyByteArrayObject *self)
         *tail-- = swap;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1947,11 +1947,11 @@ bytearray_insert_impl(PyByteArrayObject *self, Ty_ssize_t index, int item)
     memmove(buf + index + 1, buf + index, n - index);
     buf[index] = item;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-bytearray_isalnum(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_isalnum(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -1961,7 +1961,7 @@ bytearray_isalnum(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_isalpha(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_isalpha(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -1971,7 +1971,7 @@ bytearray_isalpha(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_isascii(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_isascii(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -1981,7 +1981,7 @@ bytearray_isascii(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_isdigit(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_isdigit(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -1991,7 +1991,7 @@ bytearray_isdigit(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_islower(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_islower(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -2001,7 +2001,7 @@ bytearray_islower(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_isspace(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_isspace(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -2011,7 +2011,7 @@ bytearray_isspace(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_istitle(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_istitle(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -2021,7 +2021,7 @@ bytearray_istitle(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_isupper(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_isupper(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -2057,11 +2057,11 @@ bytearray_append_impl(PyByteArrayObject *self, int item)
 
     TyByteArray_AS_STRING(self)[n] = item;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-bytearray_capitalize(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_capitalize(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -2115,7 +2115,7 @@ bytearray_extend_impl(PyByteArrayObject *self, TyObject *iterable_of_ints)
         if (bytearray_setslice(self, Ty_SIZE(self), Ty_SIZE(self), iterable_of_ints) == -1)
             return NULL;
 
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     it = PyObject_GetIter(iterable_of_ints);
@@ -2198,7 +2198,7 @@ bytearray_extend_impl(PyByteArrayObject *self, TyObject *iterable_of_ints)
     Ty_DECREF(bytearray_obj);
 
     assert(!TyErr_Occurred());
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2276,7 +2276,7 @@ bytearray_remove_impl(PyByteArrayObject *self, int value)
     if (bytearray_resize_lock_held((TyObject *)self, n - 1) < 0)
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #define LEFTSTRIP 0
@@ -2341,7 +2341,7 @@ bytearray_strip_impl(PyByteArrayObject *self, TyObject *bytes)
 }
 
 static TyObject *
-bytearray_swapcase(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_swapcase(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -2351,7 +2351,7 @@ bytearray_swapcase(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_title(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_title(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -2361,7 +2361,7 @@ bytearray_title(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_upper(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_upper(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -2371,7 +2371,7 @@ bytearray_upper(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-bytearray_lower(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_lower(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *ret;
     Ty_BEGIN_CRITICAL_SECTION(self);
@@ -2460,7 +2460,7 @@ PyDoc_STRVAR(alloc_doc,
 Return the number of bytes actually allocated.");
 
 static TyObject *
-bytearray_alloc(TyObject *op, TyObject *Ty_UNUSED(ignored))
+bytearray_alloc(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyByteArrayObject *self = _PyByteArray_CAST(op);
     return TyLong_FromSsize_t(FT_ATOMIC_LOAD_SSIZE_RELAXED(self->ob_alloc));
@@ -2754,7 +2754,7 @@ bytearray_mod_lock_held(TyObject *v, TyObject *w)
 {
     _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(v);
     if (!TyByteArray_Check(v))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     return _TyBytes_FormatEx(TyByteArray_AS_STRING(v), TyByteArray_GET_SIZE(v), w, 1);
 }
 
@@ -2905,7 +2905,7 @@ bytearrayiter_next(TyObject *self)
 }
 
 static TyObject *
-bytearrayiter_length_hint(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearrayiter_length_hint(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     bytesiterobject *it = _bytesiterobject_CAST(self);
     Ty_ssize_t len = 0;
@@ -2923,7 +2923,7 @@ PyDoc_STRVAR(length_hint_doc,
     "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-bytearrayiter_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearrayiter_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
 
@@ -2959,7 +2959,7 @@ bytearrayiter_setstate(TyObject *self, TyObject *state)
         }
         FT_ATOMIC_STORE_SSIZE_RELAXED(it->it_index, index);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");

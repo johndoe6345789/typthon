@@ -49,7 +49,7 @@ Xxo_dealloc(TyObject *op)
 }
 
 static TyObject *
-Xxo_demo(TyObject *Ty_UNUSED(op), TyObject *args)
+Xxo_demo(TyObject *Py_UNUSED(op), TyObject *args)
 {
     if (!TyArg_ParseTuple(args, ":demo")) {
         return NULL;

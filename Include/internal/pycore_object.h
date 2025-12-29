@@ -994,7 +994,7 @@ PyAPI_FUNC(TyObject*) _TyObject_GetState(TyObject *);
 PyAPI_DATA(TyTypeObject) _PyNone_Type;
 PyAPI_DATA(TyTypeObject) _PyNotImplemented_Type;
 
-// Maps Ty_LT to Ty_GT, ..., Ty_GE to Ty_LE.
+// Maps Py_LT to Py_GT, ..., Py_GE to Py_LE.
 // Export for the stable ABI.
 PyAPI_DATA(int) _Ty_SwappedOp[];
 

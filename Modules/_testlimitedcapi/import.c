@@ -10,7 +10,7 @@
 
 /* Test TyImport_GetMagicNumber() */
 static TyObject *
-pyimport_getmagicnumber(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
+pyimport_getmagicnumber(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(args))
 {
     long magic = TyImport_GetMagicNumber();
     return TyLong_FromLong(magic);
@@ -19,7 +19,7 @@ pyimport_getmagicnumber(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
 
 /* Test TyImport_GetMagicTag() */
 static TyObject *
-pyimport_getmagictag(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
+pyimport_getmagictag(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(args))
 {
     const char *tag = TyImport_GetMagicTag();
     return TyUnicode_FromString(tag);
@@ -28,7 +28,7 @@ pyimport_getmagictag(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
 
 /* Test TyImport_GetModuleDict() */
 static TyObject *
-pyimport_getmoduledict(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
+pyimport_getmoduledict(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(args))
 {
     return Ty_XNewRef(TyImport_GetModuleDict());
 }
@@ -36,7 +36,7 @@ pyimport_getmoduledict(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
 
 /* Test TyImport_GetModule() */
 static TyObject *
-pyimport_getmodule(TyObject *Ty_UNUSED(module), TyObject *name)
+pyimport_getmodule(TyObject *Py_UNUSED(module), TyObject *name)
 {
     assert(!TyErr_Occurred());
     NULLABLE(name);
@@ -50,7 +50,7 @@ pyimport_getmodule(TyObject *Ty_UNUSED(module), TyObject *name)
 
 /* Test TyImport_AddModuleObject() */
 static TyObject *
-pyimport_addmoduleobject(TyObject *Ty_UNUSED(module), TyObject *name)
+pyimport_addmoduleobject(TyObject *Py_UNUSED(module), TyObject *name)
 {
     NULLABLE(name);
     return Ty_XNewRef(TyImport_AddModuleObject(name));
@@ -59,7 +59,7 @@ pyimport_addmoduleobject(TyObject *Ty_UNUSED(module), TyObject *name)
 
 /* Test TyImport_AddModule() */
 static TyObject *
-pyimport_addmodule(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_addmodule(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -73,7 +73,7 @@ pyimport_addmodule(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_AddModuleRef() */
 static TyObject *
-pyimport_addmoduleref(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_addmoduleref(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -87,7 +87,7 @@ pyimport_addmoduleref(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_Import() */
 static TyObject *
-pyimport_import(TyObject *Ty_UNUSED(module), TyObject *name)
+pyimport_import(TyObject *Py_UNUSED(module), TyObject *name)
 {
     NULLABLE(name);
     return TyImport_Import(name);
@@ -96,7 +96,7 @@ pyimport_import(TyObject *Ty_UNUSED(module), TyObject *name)
 
 /* Test TyImport_ImportModule() */
 static TyObject *
-pyimport_importmodule(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_importmodule(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -110,7 +110,7 @@ pyimport_importmodule(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_ImportModuleNoBlock() */
 static TyObject *
-pyimport_importmodulenoblock(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_importmodulenoblock(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -127,7 +127,7 @@ pyimport_importmodulenoblock(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_ImportModuleEx() */
 static TyObject *
-pyimport_importmoduleex(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_importmoduleex(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -146,7 +146,7 @@ pyimport_importmoduleex(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_ImportModuleLevel() */
 static TyObject *
-pyimport_importmodulelevel(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_importmodulelevel(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -166,7 +166,7 @@ pyimport_importmodulelevel(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_ImportModuleLevelObject() */
 static TyObject *
-pyimport_importmodulelevelobject(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_importmodulelevelobject(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *name, *globals, *locals, *fromlist;
     int level;
@@ -185,7 +185,7 @@ pyimport_importmodulelevelobject(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_ImportFrozenModule() */
 static TyObject *
-pyimport_importfrozenmodule(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_importfrozenmodule(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -199,7 +199,7 @@ pyimport_importfrozenmodule(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_ImportFrozenModuleObject() */
 static TyObject *
-pyimport_importfrozenmoduleobject(TyObject *Ty_UNUSED(module), TyObject *name)
+pyimport_importfrozenmoduleobject(TyObject *Py_UNUSED(module), TyObject *name)
 {
     NULLABLE(name);
     RETURN_INT(TyImport_ImportFrozenModuleObject(name));
@@ -208,7 +208,7 @@ pyimport_importfrozenmoduleobject(TyObject *Ty_UNUSED(module), TyObject *name)
 
 /* Test TyImport_ExecCodeModule() */
 static TyObject *
-pyimport_executecodemodule(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_executecodemodule(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -224,7 +224,7 @@ pyimport_executecodemodule(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_ExecCodeModuleEx() */
 static TyObject *
-pyimport_executecodemoduleex(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_executecodemoduleex(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -241,7 +241,7 @@ pyimport_executecodemoduleex(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyImport_ExecCodeModuleWithPathnames() */
 static TyObject *
-pyimport_executecodemodulewithpathnames(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_executecodemodulewithpathnames(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -260,7 +260,7 @@ pyimport_executecodemodulewithpathnames(TyObject *Ty_UNUSED(module), TyObject *a
 
 /* Test TyImport_ExecCodeModuleObject() */
 static TyObject *
-pyimport_executecodemoduleobject(TyObject *Ty_UNUSED(module), TyObject *args)
+pyimport_executecodemoduleobject(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *name, *code, *pathname, *cpathname;
     if (!TyArg_ParseTuple(args, "OOOO", &name, &code, &pathname, &cpathname)) {

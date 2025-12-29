@@ -47,7 +47,7 @@ typedef struct {
 } interpolationobject;
 
 #define interpolationobject_CAST(op) \
-    (assert(_PyInterpolation_CheckExact(op)), _Ty_CAST(interpolationobject*, (op)))
+    (assert(_PyInterpolation_CheckExact(op)), _Py_CAST(interpolationobject*, (op)))
 
 /*[clinic input]
 @classmethod
@@ -118,15 +118,15 @@ interpolation_repr(TyObject *op)
 }
 
 static TyMemberDef interpolation_members[] = {
-    {"value", Ty_T_OBJECT_EX, offsetof(interpolationobject, value), Ty_READONLY, "Value"},
-    {"expression", Ty_T_OBJECT_EX, offsetof(interpolationobject, expression), Ty_READONLY, "Expression"},
-    {"conversion", Ty_T_OBJECT_EX, offsetof(interpolationobject, conversion), Ty_READONLY, "Conversion"},
-    {"format_spec", Ty_T_OBJECT_EX, offsetof(interpolationobject, format_spec), Ty_READONLY, "Format specifier"},
+    {"value", Ty_T_OBJECT_EX, offsetof(interpolationobject, value), Py_READONLY, "Value"},
+    {"expression", Ty_T_OBJECT_EX, offsetof(interpolationobject, expression), Py_READONLY, "Expression"},
+    {"conversion", Ty_T_OBJECT_EX, offsetof(interpolationobject, conversion), Py_READONLY, "Conversion"},
+    {"format_spec", Ty_T_OBJECT_EX, offsetof(interpolationobject, format_spec), Py_READONLY, "Format specifier"},
     {NULL}
 };
 
 static TyObject*
-interpolation_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+interpolation_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     interpolationobject *self = interpolationobject_CAST(op);
     return Ty_BuildValue("(O(OOOO))", (TyObject *)Ty_TYPE(op),

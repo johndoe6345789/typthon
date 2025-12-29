@@ -45,7 +45,7 @@ siftdown(PyListObject *heap, Ty_ssize_t startpos, Ty_ssize_t pos)
         parent = arr[parentpos];
         Ty_INCREF(newitem);
         Ty_INCREF(parent);
-        cmp = PyObject_RichCompareBool(newitem, parent, Ty_LT);
+        cmp = PyObject_RichCompareBool(newitem, parent, Py_LT);
         Ty_DECREF(parent);
         Ty_DECREF(newitem);
         if (cmp < 0)
@@ -93,7 +93,7 @@ siftup(PyListObject *heap, Ty_ssize_t pos)
             TyObject* b = arr[childpos + 1];
             Ty_INCREF(a);
             Ty_INCREF(b);
-            cmp = PyObject_RichCompareBool(a, b, Ty_LT);
+            cmp = PyObject_RichCompareBool(a, b, Py_LT);
             Ty_DECREF(a);
             Ty_DECREF(b);
             if (cmp < 0)
@@ -146,7 +146,7 @@ _heapq_heappush_impl(TyObject *module, TyObject *heap, TyObject *item)
     if (siftdown((PyListObject *)heap, 0, TyList_GET_SIZE(heap)-1)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -273,7 +273,7 @@ _heapq_heappushpop_impl(TyObject *module, TyObject *heap, TyObject *item)
 
     TyObject* top = TyList_GET_ITEM(heap, 0);
     Ty_INCREF(top);
-    cmp = PyObject_RichCompareBool(top, item, Ty_LT);
+    cmp = PyObject_RichCompareBool(top, item, Py_LT);
     Ty_DECREF(top);
     if (cmp < 0)
         return NULL;
@@ -358,7 +358,7 @@ cache_friendly_heapify(TyObject *heap, int siftup_func(PyListObject *, Ty_ssize_
             j >>= 1;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -384,7 +384,7 @@ heapify_internal(TyObject *heap, int siftup_func(PyListObject *, Ty_ssize_t))
     for (i = (n >> 1) - 1 ; i >= 0 ; i--)
         if (siftup_func((PyListObject *)heap, i))
             return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -426,7 +426,7 @@ siftdown_max(PyListObject *heap, Ty_ssize_t startpos, Ty_ssize_t pos)
         parentpos = (pos - 1) >> 1;
         parent = Ty_NewRef(arr[parentpos]);
         Ty_INCREF(newitem);
-        cmp = PyObject_RichCompareBool(parent, newitem, Ty_LT);
+        cmp = PyObject_RichCompareBool(parent, newitem, Py_LT);
         Ty_DECREF(parent);
         Ty_DECREF(newitem);
         if (cmp < 0)
@@ -474,7 +474,7 @@ siftup_max(PyListObject *heap, Ty_ssize_t pos)
             TyObject* b = arr[childpos];
             Ty_INCREF(a);
             Ty_INCREF(b);
-            cmp = PyObject_RichCompareBool(a, b, Ty_LT);
+            cmp = PyObject_RichCompareBool(a, b, Py_LT);
             Ty_DECREF(a);
             Ty_DECREF(b);
             if (cmp < 0)
@@ -528,7 +528,7 @@ _heapq_heappush_max_impl(TyObject *module, TyObject *heap, TyObject *item)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -610,7 +610,7 @@ _heapq_heappushpop_max_impl(TyObject *module, TyObject *heap, TyObject *item)
 
     TyObject *top = TyList_GET_ITEM(heap, 0);
     Ty_INCREF(top);
-    cmp = PyObject_RichCompareBool(item, top, Ty_LT);
+    cmp = PyObject_RichCompareBool(item, top, Py_LT);
     Ty_DECREF(top);
     if (cmp < 0) {
         return NULL;

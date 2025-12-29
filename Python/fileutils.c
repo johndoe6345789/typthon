@@ -87,7 +87,7 @@ _Ty_device_encoding(int fd)
     _Ty_END_SUPPRESS_IPH
     Ty_END_ALLOW_THREADS
     if (!valid)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 
 #ifdef MS_WINDOWS
 #ifdef HAVE_WINDOWS_CONSOLE_IO
@@ -101,12 +101,12 @@ _Ty_device_encoding(int fd)
     /* GetConsoleCP() and GetConsoleOutputCP() return 0 if the application
        has no console */
     if (cp == 0) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     return TyUnicode_FromFormat("cp%u", (unsigned int)cp);
 #else
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #endif /* HAVE_WINDOWS_CONSOLE_IO */
 #else
     if (_PyRuntime.preconfig.utf8_mode) {

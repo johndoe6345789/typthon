@@ -134,7 +134,7 @@ ZstdDict_repr(TyObject *ob)
 }
 
 static TyMemberDef ZstdDict_members[] = {
-    {"dict_id", Ty_T_UINT, offsetof(ZstdDict, dict_id), Ty_READONLY, ZstdDict_dictid_doc},
+    {"dict_id", Ty_T_UINT, offsetof(ZstdDict, dict_id), Py_READONLY, ZstdDict_dictid_doc},
     {NULL}
 };
 

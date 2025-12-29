@@ -529,7 +529,7 @@ sys_addaudithook_impl(TyObject *module, TyObject *hook)
         if (_TyErr_ExceptionMatches(tstate, TyExc_Exception)) {
             /* We do not report errors derived from Exception */
             _TyErr_Clear(tstate);
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         return NULL;
     }
@@ -548,7 +548,7 @@ sys_addaudithook_impl(TyObject *module, TyObject *hook)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -569,7 +569,7 @@ sys_audit_impl(TyObject *module, const char *event, TyObject *args)
     _Ty_EnsureTstateNotNULL(tstate);
 
     if (!should_audit(tstate->interp)) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     int res = _TySys_Audit(tstate, event, "O", args);
@@ -577,7 +577,7 @@ sys_audit_impl(TyObject *module, const char *event, TyObject *args)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -593,7 +593,7 @@ sys_breakpointhook(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyOb
     }
     else if (!strcmp(envar, "0")) {
         /* The breakpoint is explicitly no-op'd. */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     /* According to POSIX the string returned by getenv() might be invalidated
      * or the string content might be overwritten by a subsequent call to
@@ -664,7 +664,7 @@ sys_breakpointhook(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyOb
         return NULL;
     }
     /* The warning was (probably) issued. */
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(breakpointhook_doc,
@@ -769,7 +769,7 @@ sys_displayhook(TyObject *module, TyObject *o)
     /* After printing, also assign to '_' */
     /* Before, set '_' to None to avoid recursion */
     if (o == Ty_None) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (PyObject_SetAttr(builtins, _Ty_LATIN1_CHR('_'), Ty_None) != 0)
         return NULL;
@@ -807,7 +807,7 @@ sys_displayhook(TyObject *module, TyObject *o)
     if (PyObject_SetAttr(builtins, _Ty_LATIN1_CHR('_'), o) != 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -828,7 +828,7 @@ sys_excepthook_impl(TyObject *module, TyObject *exctype, TyObject *value,
 /*[clinic end generated code: output=18d99fdda21b6b5e input=ecf606fa826f19d9]*/
 {
     TyErr_Display(NULL, value, traceback);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -850,7 +850,7 @@ sys_exception_impl(TyObject *module)
     if (err_info->exc_value != NULL) {
         return Ty_NewRef(err_info->exc_value);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1156,7 +1156,7 @@ sys_settrace(TyObject *module, TyObject *function)
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1186,7 +1186,7 @@ sys__settraceallthreads(TyObject *module, TyObject *arg)
 
     TyEval_SetTraceAllThreads(func, argument);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1236,7 +1236,7 @@ sys_setprofile(TyObject *module, TyObject *function)
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1265,7 +1265,7 @@ sys__setprofileallthreads(TyObject *module, TyObject *arg)
 
     TyEval_SetProfileAllThreads(func, argument);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1315,7 +1315,7 @@ sys_setswitchinterval_impl(TyObject *module, double interval)
         return NULL;
     }
     _TyEval_SetSwitchInterval((unsigned long) (1e6 * interval));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1369,7 +1369,7 @@ sys_setrecursionlimit_impl(TyObject *module, int new_limit)
     }
 
     Ty_SetRecursionLimit(new_limit);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1392,7 +1392,7 @@ sys_set_coroutine_origin_tracking_depth_impl(TyObject *module, int depth)
     if (_TyEval_SetCoroutineOriginTrackingDepth(depth) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1480,7 +1480,7 @@ sys_set_asyncgen_hooks(TyObject *self, TyObject *args, TyObject *kw)
         goto error;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 error:
     _TyEval_SetAsyncGenFinalizer(cur_finalizer);
@@ -1810,7 +1810,7 @@ sys__enablelegacywindowsfsencoding_impl(TyObject *module)
     if (_TyUnicode_EnableLegacyWindowsFSEncoding() < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif /* MS_WINDOWS */
@@ -1840,7 +1840,7 @@ sys_setdlopenflags_impl(TyObject *module, int new_val)
 {
     PyInterpreterState *interp = _TyInterpreterState_GET();
     _TyImport_SetDLOpenFlags(interp, new_val);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1880,7 +1880,7 @@ sys_mdebug_impl(TyObject *module, int flag)
 {
     int flag;
     mallopt(M_DEBUG, flag);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif /* USE_MALLOPT */
 
@@ -1915,7 +1915,7 @@ sys_set_int_max_str_digits_impl(TyObject *module, int maxdigits)
     if (_TySys_SetIntMaxStrDigits(maxdigits) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 size_t
@@ -2192,7 +2192,7 @@ sys__debugmallocstats_impl(TyObject *module)
 #endif
     _TyObject_DebugTypeStats(stderr);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef Ty_TRACE_REFS
@@ -2220,7 +2220,7 @@ sys__clear_type_cache_impl(TyObject *module)
         return NULL;
     }
     TyType_ClearCache();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2243,7 +2243,7 @@ sys__clear_internal_caches_impl(TyObject *module)
     }
 #endif
     TyType_ClearCache();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Note that, for now, we do not have a per-interpreter equivalent
@@ -2275,7 +2275,7 @@ sys__stats_on_impl(TyObject *module)
 /*[clinic end generated code: output=aca53eafcbb4d9fe input=43b5bfe145299e55]*/
 {
     _Ty_StatsOn();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2289,7 +2289,7 @@ sys__stats_off_impl(TyObject *module)
 /*[clinic end generated code: output=1534c1ee63812214 input=d1a84c60c56cbce2]*/
 {
     _Ty_StatsOff();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2303,7 +2303,7 @@ sys__stats_clear_impl(TyObject *module)
 /*[clinic end generated code: output=fb65a2525ee50604 input=3e03f2654f44da96]*/
 {
     _Ty_StatsClear();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2388,7 +2388,7 @@ sys_activate_stack_trampoline_impl(TyObject *module, const char *backend)
     if (_PyPerfTrampoline_Init(1) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #else
     TyErr_SetString(TyExc_ValueError, "perf trampoline not available");
     return NULL;
@@ -2411,7 +2411,7 @@ sys_deactivate_stack_trampoline_impl(TyObject *module)
     if  (_PyPerfTrampoline_Init(0) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2426,10 +2426,10 @@ sys_is_stack_trampoline_active_impl(TyObject *module)
 {
 #ifdef PY_HAVE_PERF_TRAMPOLINE
     if (_PyIsPerfTrampolineActive()) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
 #endif
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 
@@ -2444,7 +2444,7 @@ sys_is_remote_debug_enabled_impl(TyObject *module)
 /*[clinic end generated code: output=7ca3d38bdd5935eb input=7335c4a2fe8cf4f3]*/
 {
 #if !defined(Ty_REMOTE_DEBUG) || !defined(Ty_SUPPORTS_REMOTE_DEBUG)
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 #else
     const PyConfig *config = _Ty_GetConfig();
     return TyBool_FromLong(config->remote_debug);
@@ -2540,7 +2540,7 @@ sys_remote_exec_impl(TyObject *module, int pid, TyObject *script)
     }
 
     Ty_DECREF(path);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 error:
     Ty_DECREF(path);
@@ -2570,7 +2570,7 @@ sys__dump_tracelets_impl(TyObject *module, TyObject *outpath)
     if (err) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2600,7 +2600,7 @@ sys__getframemodulename_impl(TyObject *module, int depth)
         f = f->previous;
     }
     if (f == NULL || PyStackRef_IsNull(f->f_funcobj)) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     TyObject *func = PyStackRef_AsPyObjectBorrow(f->f_funcobj);
     TyObject *r = TyFunction_GetModule(func);
@@ -2637,7 +2637,7 @@ sys__baserepl_impl(TyObject *module)
 {
     PyCompilerFlags cf = _PyCompilerFlags_INIT;
     TyRun_AnyFileExFlags(stdin, "<stdin>", 0, &cf);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

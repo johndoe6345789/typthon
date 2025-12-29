@@ -70,7 +70,7 @@ union_hash(TyObject *self)
 static int
 unions_equal(unionobject *a, unionobject *b)
 {
-    int result = PyObject_RichCompareBool(a->hashable_args, b->hashable_args, Ty_EQ);
+    int result = PyObject_RichCompareBool(a->hashable_args, b->hashable_args, Py_EQ);
     if (result == -1) {
         return -1;
     }
@@ -112,15 +112,15 @@ unions_equal(unionobject *a, unionobject *b)
 static TyObject *
 union_richcompare(TyObject *a, TyObject *b, int op)
 {
-    if (!_PyUnion_Check(b) || (op != Ty_EQ && op != Ty_NE)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+    if (!_PyUnion_Check(b) || (op != Py_EQ && op != Py_NE)) {
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     int equal = unions_equal((unionobject*)a, (unionobject*)b);
     if (equal == -1) {
         return NULL;
     }
-    if (op == Ty_EQ) {
+    if (op == Py_EQ) {
         return TyBool_FromLong(equal);
     }
     else {
@@ -257,7 +257,7 @@ TyObject *
 _Ty_union_type_or(TyObject* self, TyObject* other)
 {
     if (!is_unionable(self) || !is_unionable(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     unionbuilder ub;
@@ -317,7 +317,7 @@ error:
 }
 
 static TyMemberDef union_members[] = {
-        {"__args__", _Ty_T_OBJECT, offsetof(unionobject, args), Ty_READONLY},
+        {"__args__", _Ty_T_OBJECT, offsetof(unionobject, args), Py_READONLY},
         {0}
 };
 
@@ -360,7 +360,7 @@ static PyMappingMethods union_as_mapping = {
 };
 
 static TyObject *
-union_parameters(TyObject *self, void *Ty_UNUSED(unused))
+union_parameters(TyObject *self, void *Py_UNUSED(unused))
 {
     unionobject *alias = (unionobject *)self;
     if (union_init_parameters(alias) < 0) {
@@ -370,13 +370,13 @@ union_parameters(TyObject *self, void *Ty_UNUSED(unused))
 }
 
 static TyObject *
-union_name(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(ignored))
+union_name(TyObject *Py_UNUSED(self), void *Py_UNUSED(ignored))
 {
     return TyUnicode_FromString("Union");
 }
 
 static TyObject *
-union_origin(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(ignored))
+union_origin(TyObject *Py_UNUSED(self), void *Py_UNUSED(ignored))
 {
     return Ty_NewRef(&_PyUnion_Type);
 }

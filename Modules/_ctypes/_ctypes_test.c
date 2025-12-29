@@ -735,7 +735,7 @@ TyObject *py_func_si(TyObject *self, TyObject *args)
     int i;
     if (!TyArg_ParseTuple(args, "si", &name, &i))
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 EXPORT(void) _py_func_si(char *s, int i)
@@ -744,7 +744,7 @@ EXPORT(void) _py_func_si(char *s, int i)
 
 TyObject *py_func(TyObject *self, TyObject *args)
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 EXPORT(void) _py_func(void)

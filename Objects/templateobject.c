@@ -13,7 +13,7 @@ typedef struct {
 } templateiterobject;
 
 #define templateiterobject_CAST(op) \
-    (assert(_PyTemplateIter_CheckExact(op)), _Ty_CAST(templateiterobject*, (op)))
+    (assert(_PyTemplateIter_CheckExact(op)), _Py_CAST(templateiterobject*, (op)))
 
 static TyObject *
 templateiter_next(TyObject *op)
@@ -87,7 +87,7 @@ typedef struct {
 } templateobject;
 
 #define templateobject_CAST(op) \
-    (assert(_PyTemplate_CheckExact(op)), _Ty_CAST(templateobject*, (op)))
+    (assert(_PyTemplate_CheckExact(op)), _Py_CAST(templateobject*, (op)))
 
 static TyObject *
 template_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
@@ -311,7 +311,7 @@ _PyTemplate_Concat(TyObject *self, TyObject *other)
 }
 
 static TyObject *
-template_values_get(TyObject *op, void *Ty_UNUSED(data))
+template_values_get(TyObject *op, void *Py_UNUSED(data))
 {
     templateobject *self = templateobject_CAST(op);
 
@@ -330,8 +330,8 @@ template_values_get(TyObject *op, void *Ty_UNUSED(data))
 }
 
 static TyMemberDef template_members[] = {
-    {"strings", Ty_T_OBJECT_EX, offsetof(templateobject, strings), Ty_READONLY, "Strings"},
-    {"interpolations", Ty_T_OBJECT_EX, offsetof(templateobject, interpolations), Ty_READONLY, "Interpolations"},
+    {"strings", Ty_T_OBJECT_EX, offsetof(templateobject, strings), Py_READONLY, "Strings"},
+    {"interpolations", Ty_T_OBJECT_EX, offsetof(templateobject, interpolations), Py_READONLY, "Interpolations"},
     {NULL},
 };
 
@@ -346,7 +346,7 @@ static PySequenceMethods template_as_sequence = {
 };
 
 static TyObject*
-template_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+template_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     TyObject *mod = TyImport_ImportModule("string.templatelib");
     if (mod == NULL) {

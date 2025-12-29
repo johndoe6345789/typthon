@@ -156,7 +156,7 @@ ASSERT_DICT_LOCKED(TyObject *op)
 {
     _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(op);
 }
-#define ASSERT_DICT_LOCKED(op) ASSERT_DICT_LOCKED(_Ty_CAST(TyObject*, op))
+#define ASSERT_DICT_LOCKED(op) ASSERT_DICT_LOCKED(_Py_CAST(TyObject*, op))
 #define ASSERT_WORLD_STOPPED_OR_DICT_LOCKED(op)                         \
     if (!_TyInterpreterState_GET()->stoptheworld.world_stopped) {       \
         ASSERT_DICT_LOCKED(op);                                         \
@@ -1054,7 +1054,7 @@ compare_unicode_generic(PyDictObject *mp, PyDictKeysObject *dk,
     if (unicode_get_hash(ep->me_key) == hash) {
         TyObject *startkey = ep->me_key;
         Ty_INCREF(startkey);
-        int cmp = PyObject_RichCompareBool(startkey, key, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(startkey, key, Py_EQ);
         Ty_DECREF(startkey);
         if (cmp < 0) {
             return DKIX_ERROR;
@@ -1110,7 +1110,7 @@ compare_generic(PyDictObject *mp, PyDictKeysObject *dk,
     if (ep->me_hash == hash) {
         TyObject *startkey = ep->me_key;
         Ty_INCREF(startkey);
-        int cmp = PyObject_RichCompareBool(startkey, key, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(startkey, key, Py_EQ);
         Ty_DECREF(startkey);
         if (cmp < 0) {
             return DKIX_ERROR;
@@ -1385,7 +1385,7 @@ compare_unicode_generic_threadsafe(PyDictObject *mp, PyDictKeysObject *dk,
         }
 
         if (unicode_get_hash(startkey) == hash) {
-            int cmp = PyObject_RichCompareBool(startkey, key, Ty_EQ);
+            int cmp = PyObject_RichCompareBool(startkey, key, Py_EQ);
             Ty_DECREF(startkey);
             if (cmp < 0) {
                 return DKIX_ERROR;
@@ -1463,7 +1463,7 @@ compare_generic_threadsafe(PyDictObject *mp, PyDictKeysObject *dk,
         if (startkey == NULL || !_Ty_TryIncrefCompare(&ep->me_key, startkey)) {
             return DKIX_KEY_CHANGED;
         }
-        int cmp = PyObject_RichCompareBool(startkey, key, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(startkey, key, Py_EQ);
         Ty_DECREF(startkey);
         if (cmp < 0) {
             return DKIX_ERROR;
@@ -3691,7 +3691,7 @@ static TyObject *
 dict_update(TyObject *self, TyObject *args, TyObject *kwds)
 {
     if (dict_update_common(self, args, kwds, "update") != -1)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     return NULL;
 }
 
@@ -4167,7 +4167,7 @@ TyDict_Size(TyObject *mp)
 
 /* Return 1 if dicts equal, 0 if not, -1 if error.
  * Gets out as soon as any difference is detected.
- * Uses only Ty_EQ comparison.
+ * Uses only Py_EQ comparison.
  */
 static int
 dict_equal_lock_held(PyDictObject *a, PyDictObject *b)
@@ -4220,7 +4220,7 @@ dict_equal_lock_held(PyDictObject *a, PyDictObject *b)
                 return 0;
             }
             Ty_INCREF(bval);
-            cmp = PyObject_RichCompareBool(aval, bval, Ty_EQ);
+            cmp = PyObject_RichCompareBool(aval, bval, Py_EQ);
             Ty_DECREF(key);
             Ty_DECREF(aval);
             Ty_DECREF(bval);
@@ -4251,11 +4251,11 @@ dict_richcompare(TyObject *v, TyObject *w, int op)
     if (!TyDict_Check(v) || !TyDict_Check(w)) {
         res = Ty_NotImplemented;
     }
-    else if (op == Ty_EQ || op == Ty_NE) {
+    else if (op == Py_EQ || op == Py_NE) {
         cmp = dict_equal((PyDictObject *)v, (PyDictObject *)w);
         if (cmp < 0)
             return NULL;
-        res = (cmp == (op == Ty_EQ)) ? Ty_True : Ty_False;
+        res = (cmp == (op == Py_EQ)) ? Ty_True : Ty_False;
     }
     else
         res = Ty_NotImplemented;
@@ -4282,9 +4282,9 @@ dict___contains___impl(PyDictObject *self, TyObject *key)
         return NULL;
     }
     if (contains) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /*[clinic input]
@@ -4493,7 +4493,7 @@ dict_clear_impl(PyDictObject *self)
 /*[clinic end generated code: output=5139a830df00830a input=0bf729baba97a4c2]*/
 {
     TyDict_Clear((TyObject *)self);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -4709,7 +4709,7 @@ static TyObject *
 dict_or(TyObject *self, TyObject *other)
 {
     if (!TyDict_Check(self) || !TyDict_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     TyObject *new = TyDict_Copy(self);
     if (new == NULL) {
@@ -5123,7 +5123,7 @@ dictiter_traverse(TyObject *self, visitproc visit, void *arg)
 }
 
 static TyObject *
-dictiter_len(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dictiter_len(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     dictiterobject *di = (dictiterobject *)self;
     Ty_ssize_t len = 0;
@@ -5136,7 +5136,7 @@ PyDoc_STRVAR(length_hint_doc,
              "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-dictiter_reduce(TyObject *di, TyObject *Ty_UNUSED(ignored));
+dictiter_reduce(TyObject *di, TyObject *Py_UNUSED(ignored));
 
 PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
@@ -5854,7 +5854,7 @@ dict___reversed___impl(PyDictObject *self)
 }
 
 static TyObject *
-dictiter_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dictiter_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     dictiterobject *di = (dictiterobject *)self;
     /* copy the iterator state */
@@ -5950,7 +5950,7 @@ _PyDictView_New(TyObject *dict, TyTypeObject *type)
 }
 
 static TyObject *
-dictview_mapping(TyObject *view, void *Ty_UNUSED(ignored)) {
+dictview_mapping(TyObject *view, void *Py_UNUSED(ignored)) {
     assert(view != NULL);
     assert(PyDictKeys_Check(view)
            || PyDictValues_Check(view)
@@ -6011,7 +6011,7 @@ dictview_richcompare(TyObject *self, TyObject *other, int op)
     assert(other != NULL);
 
     if (!PyAnySet_Check(other) && !PyDictViewSet_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     len_self = PyObject_Size(self);
     if (len_self < 0)
@@ -6023,30 +6023,30 @@ dictview_richcompare(TyObject *self, TyObject *other, int op)
     ok = 0;
     switch(op) {
 
-    case Ty_NE:
-    case Ty_EQ:
+    case Py_NE:
+    case Py_EQ:
         if (len_self == len_other)
             ok = all_contained_in(self, other);
-        if (op == Ty_NE && ok >= 0)
+        if (op == Py_NE && ok >= 0)
             ok = !ok;
         break;
 
-    case Ty_LT:
+    case Py_LT:
         if (len_self < len_other)
             ok = all_contained_in(self, other);
         break;
 
-      case Ty_LE:
+      case Py_LE:
           if (len_self <= len_other)
               ok = all_contained_in(self, other);
           break;
 
-    case Ty_GT:
+    case Py_GT:
         if (len_self > len_other)
             ok = all_contained_in(other, self);
         break;
 
-    case Ty_GE:
+    case Py_GE:
         if (len_self >= len_other)
             ok = all_contained_in(other, self);
         break;
@@ -6089,7 +6089,7 @@ dictkeys_iter(TyObject *self)
 {
     _PyDictViewObject *dv = (_PyDictViewObject *)self;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return dictiter_new(dv->dv_dict, &PyDictIterKey_Type);
 }
@@ -6287,7 +6287,7 @@ dictitems_xor_lock_held(TyObject *d1, TyObject *d2)
         }
         else {
             Ty_INCREF(val1);
-            to_delete = PyObject_RichCompareBool(val1, val2, Ty_EQ);
+            to_delete = PyObject_RichCompareBool(val1, val2, Py_EQ);
             if (to_delete < 0) {
                 goto error;
             }
@@ -6402,9 +6402,9 @@ dictviews_isdisjoint(TyObject *self, TyObject *other)
 
     if (self == other) {
         if (dictview_len(self) == 0)
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
         else
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
 
     /* Iterate over the shorter object (only if other is a set,
@@ -6436,19 +6436,19 @@ dictviews_isdisjoint(TyObject *self, TyObject *other)
 
         if (contains) {
             Ty_DECREF(it);
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         }
     }
     Ty_DECREF(it);
     if (TyErr_Occurred())
         return NULL; /* TyIter_Next raised an exception. */
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 PyDoc_STRVAR(isdisjoint_doc,
 "Return True if the view and the given iterable have a null intersection.");
 
-static TyObject* dictkeys_reversed(TyObject *dv, TyObject *Ty_UNUSED(ignored));
+static TyObject* dictkeys_reversed(TyObject *dv, TyObject *Py_UNUSED(ignored));
 
 PyDoc_STRVAR(reversed_keys_doc,
 "Return a reverse iterator over the dict keys.");
@@ -6508,11 +6508,11 @@ dict_keys_impl(PyDictObject *self)
 }
 
 static TyObject *
-dictkeys_reversed(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dictkeys_reversed(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     _PyDictViewObject *dv = (_PyDictViewObject *)self;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return dictiter_new(dv->dv_dict, &PyDictRevIterKey_Type);
 }
@@ -6524,7 +6524,7 @@ dictitems_iter(TyObject *self)
 {
     _PyDictViewObject *dv = (_PyDictViewObject *)self;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return dictiter_new(dv->dv_dict, &PyDictIterItem_Type);
 }
@@ -6543,7 +6543,7 @@ dictitems_contains(TyObject *self, TyObject *obj)
     value = TyTuple_GET_ITEM(obj, 1);
     result = TyDict_GetItemRef((TyObject *)dv->dv_dict, key, &found);
     if (result == 1) {
-        result = PyObject_RichCompareBool(found, value, Ty_EQ);
+        result = PyObject_RichCompareBool(found, value, Py_EQ);
         Ty_DECREF(found);
     }
     return result;
@@ -6560,7 +6560,7 @@ static PySequenceMethods dictitems_as_sequence = {
     dictitems_contains,                 /* sq_contains */
 };
 
-static TyObject* dictitems_reversed(TyObject *dv, TyObject *Ty_UNUSED(ignored));
+static TyObject* dictitems_reversed(TyObject *dv, TyObject *Py_UNUSED(ignored));
 
 PyDoc_STRVAR(reversed_items_doc,
 "Return a reverse iterator over the dict items.");
@@ -6620,11 +6620,11 @@ dict_items_impl(PyDictObject *self)
 }
 
 static TyObject *
-dictitems_reversed(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dictitems_reversed(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     _PyDictViewObject *dv = (_PyDictViewObject *)self;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return dictiter_new(dv->dv_dict, &PyDictRevIterItem_Type);
 }
@@ -6636,7 +6636,7 @@ dictvalues_iter(TyObject *self)
 {
     _PyDictViewObject *dv = (_PyDictViewObject *)self;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return dictiter_new(dv->dv_dict, &PyDictIterValue_Type);
 }
@@ -6652,7 +6652,7 @@ static PySequenceMethods dictvalues_as_sequence = {
     0,                                  /* sq_contains */
 };
 
-static TyObject* dictvalues_reversed(TyObject *dv, TyObject *Ty_UNUSED(ignored));
+static TyObject* dictvalues_reversed(TyObject *dv, TyObject *Py_UNUSED(ignored));
 
 PyDoc_STRVAR(reversed_values_doc,
 "Return a reverse iterator over the dict values.");
@@ -6710,11 +6710,11 @@ dict_values_impl(PyDictObject *self)
 }
 
 static TyObject *
-dictvalues_reversed(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dictvalues_reversed(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     _PyDictViewObject *dv = (_PyDictViewObject *)self;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return dictiter_new(dv->dv_dict, &PyDictRevIterValue_Type);
 }

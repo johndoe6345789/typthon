@@ -71,7 +71,7 @@ static TyObject *
 _locale_localeconv_impl(TyObject *module);
 
 static TyObject *
-_locale_localeconv(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_locale_localeconv(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _locale_localeconv_impl(module);
 }
@@ -165,7 +165,7 @@ static TyObject *
 _locale__getdefaultlocale_impl(TyObject *module);
 
 static TyObject *
-_locale__getdefaultlocale(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_locale__getdefaultlocale(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _locale__getdefaultlocale_impl(module);
 }
@@ -551,7 +551,7 @@ static TyObject *
 _locale_getencoding_impl(TyObject *module);
 
 static TyObject *
-_locale_getencoding(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_locale_getencoding(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _locale_getencoding_impl(module);
 }

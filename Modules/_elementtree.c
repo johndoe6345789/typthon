@@ -721,7 +721,7 @@ _elementtree_Element_append_impl(ElementObject *self, TyTypeObject *cls,
     if (element_add_subelement(st, self, subelement) < 0)
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -738,7 +738,7 @@ _elementtree_Element_clear_impl(ElementObject *self)
     _set_joined_ptr(&self->text, Ty_NewRef(Ty_None));
     _set_joined_ptr(&self->tail, Ty_NewRef(Ty_None));
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1056,7 +1056,7 @@ element_setstate_from_attributes(elementtreestate *st,
 
     /* Handle ATTRIB and CHILDREN. */
     if (!children && !attrib) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     /* Compute 'nchildren'. */
@@ -1111,7 +1111,7 @@ element_setstate_from_attributes(elementtreestate *st,
     Ty_XSETREF(self->extra->attrib, Ty_XNewRef(attrib));
     dealloc_extra(oldextra);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* __setstate__ for Element instance from the Python implementation.
@@ -1260,7 +1260,7 @@ _elementtree_Element_extend_impl(ElementObject *self, TyTypeObject *cls,
 
     Ty_DECREF(seq);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1291,7 +1291,7 @@ _elementtree_Element_find_impl(ElementObject *self, TyTypeObject *cls,
         assert(Element_Check(st, item));
         Ty_INCREF(item);
         TyObject *tag = Ty_NewRef(((ElementObject *)item)->tag);
-        int rc = PyObject_RichCompareBool(tag, path, Ty_EQ);
+        int rc = PyObject_RichCompareBool(tag, path, Py_EQ);
         Ty_DECREF(tag);
         if (rc > 0) {
             return item;
@@ -1302,7 +1302,7 @@ _elementtree_Element_find_impl(ElementObject *self, TyTypeObject *cls,
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1335,7 +1335,7 @@ _elementtree_Element_findtext_impl(ElementObject *self, TyTypeObject *cls,
         assert(Element_Check(st, item));
         Ty_INCREF(item);
         TyObject *tag = Ty_NewRef(((ElementObject *)item)->tag);
-        int rc = PyObject_RichCompareBool(tag, path, Ty_EQ);
+        int rc = PyObject_RichCompareBool(tag, path, Py_EQ);
         Ty_DECREF(tag);
         if (rc > 0) {
             TyObject *text = element_get_text((ElementObject *)item);
@@ -1388,7 +1388,7 @@ _elementtree_Element_findall_impl(ElementObject *self, TyTypeObject *cls,
         assert(Element_Check(st, item));
         Ty_INCREF(item);
         TyObject *tag = Ty_NewRef(((ElementObject *)item)->tag);
-        int rc = PyObject_RichCompareBool(tag, path, Ty_EQ);
+        int rc = PyObject_RichCompareBool(tag, path, Py_EQ);
         Ty_DECREF(tag);
         if (rc != 0 && (rc < 0 || TyList_Append(out, item) < 0)) {
             Ty_DECREF(item);
@@ -1570,7 +1570,7 @@ _elementtree_Element_insert_impl(ElementObject *self, Ty_ssize_t index,
 
     self->extra->length++;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1668,7 +1668,7 @@ _elementtree_Element_remove_impl(ElementObject *self, TyObject *subelement)
             break;
         }
         TyObject *child = Ty_NewRef(self->extra->children[i]);
-        rc = PyObject_RichCompareBool(child, subelement, Ty_EQ);
+        rc = PyObject_RichCompareBool(child, subelement, Py_EQ);
         Ty_DECREF(child);
         if (rc < 0) {
             return NULL;
@@ -1688,7 +1688,7 @@ _elementtree_Element_remove_impl(ElementObject *self, TyObject *subelement)
     // step and removes or clears the 'extra' list (the condition on the
     // length would not be satisfied any more).
     if (self->extra == NULL || i >= self->extra->length) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     TyObject *found = self->extra->children[i];
@@ -1699,7 +1699,7 @@ _elementtree_Element_remove_impl(ElementObject *self, TyObject *subelement)
     }
 
     Ty_DECREF(found);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject*
@@ -1752,7 +1752,7 @@ _elementtree_Element_set_impl(ElementObject *self, TyObject *key,
     if (TyDict_SetItem(attrib, key, value) < 0)
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -2279,7 +2279,7 @@ elementiter_next(TyObject *op)
         if (it->sought_tag == Ty_None)
             return (TyObject *)elem;
 
-        rc = PyObject_RichCompareBool(elem->tag, it->sought_tag, Ty_EQ);
+        rc = PyObject_RichCompareBool(elem->tag, it->sought_tag, Py_EQ);
         if (rc > 0)
             return (TyObject *)elem;
 
@@ -2788,7 +2788,7 @@ treebuilder_handle_data(TreeBuilderObject* self, TyObject* data)
     if (!self->data) {
         if (self->last == Ty_None) {
             /* ignore calls to data before the first call to start */
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         /* store the first item as is */
         self->data = Ty_NewRef(data);
@@ -2816,7 +2816,7 @@ treebuilder_handle_data(TreeBuilderObject* self, TyObject* data)
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 LOCAL(TyObject*)
@@ -2948,7 +2948,7 @@ treebuilder_handle_start_ns(TreeBuilderObject* self, TyObject* prefix, TyObject*
         Ty_DECREF(parcel);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 LOCAL(TyObject*)
@@ -2960,7 +2960,7 @@ treebuilder_handle_end_ns(TreeBuilderObject* self, TyObject* prefix)
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* -------------------------------------------------------------------- */
@@ -3901,7 +3901,7 @@ expat_parse(elementtreestate *st, XMLParserObject *self, const char *data,
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -3954,7 +3954,7 @@ _elementtree_XMLParser_flush_impl(XMLParserObject *self)
     elementtreestate *st = self->state;
 
     if (EXPAT(st, SetReparseDeferralEnabled) == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     // NOTE: The Expat parser in the C implementation of ElementTree is not
@@ -4161,7 +4161,7 @@ _elementtree_XMLParser__setevents_impl(XMLParserObject *self,
     if (events_to_report == Ty_None) {
         /* default is "end" only */
         target->end_event_obj = TyUnicode_FromString("end");
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     if (!(events_seq = PySequence_Fast(events_to_report,
@@ -4221,12 +4221,12 @@ _elementtree_XMLParser__setevents_impl(XMLParserObject *self,
     }
 
     Ty_DECREF(events_seq);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMemberDef xmlparser_members[] = {
-    {"entity", _Ty_T_OBJECT, offsetof(XMLParserObject, entity), Ty_READONLY, NULL},
-    {"target", _Ty_T_OBJECT, offsetof(XMLParserObject, target), Ty_READONLY, NULL},
+    {"entity", _Ty_T_OBJECT, offsetof(XMLParserObject, entity), Py_READONLY, NULL},
+    {"target", _Ty_T_OBJECT, offsetof(XMLParserObject, target), Py_READONLY, NULL},
     {NULL}
 };
 
@@ -4282,7 +4282,7 @@ static TyMethodDef element_methods[] = {
 };
 
 static struct TyMemberDef element_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(ElementObject, weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(ElementObject, weakreflist), Py_READONLY},
     {NULL},
 };
 

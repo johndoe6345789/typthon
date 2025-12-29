@@ -459,7 +459,7 @@ struct _py_func_state {
 };
 
 #include "pycore_dict_state.h"    // struct _Ty_dict_state
-#include "pycore_exceptions.h"    // struct _Ty_exc_state
+#include "pycore_exceptions.h"    // struct _Py_exc_state
 
 
 /****** type state *********/
@@ -930,7 +930,7 @@ struct _is {
     struct _py_code_state code_state;
 
     struct _Ty_dict_state dict_state;
-    struct _Ty_exc_state exc_state;
+    struct _Py_exc_state exc_state;
     struct _Ty_mem_interp_free_queue mem_free_queue;
 
     struct ast_state ast;

@@ -157,7 +157,7 @@ leave:
 }
 
 static TyMemberDef LimitedVectorCallClass_members[] = {
-    {"__vectorcalloffset__", Ty_T_PYSSIZET, sizeof(TyObject), Ty_READONLY},
+    {"__vectorcalloffset__", Ty_T_PYSSIZET, sizeof(TyObject), Py_READONLY},
     {NULL}
 };
 
@@ -205,7 +205,7 @@ static TyType_Spec LimitedRelativeVectorCallClass_spec = {
         {Ty_tp_members, (TyMemberDef[]){
             {"__vectorcalloffset__", Ty_T_PYSSIZET,
              offsetof(LimitedRelativeVectorCallStruct, vfunc),
-             Ty_READONLY | Ty_RELATIVE_OFFSET},
+             Py_READONLY | Ty_RELATIVE_OFFSET},
             {NULL}
         }},
         {0}

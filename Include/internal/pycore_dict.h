@@ -232,7 +232,7 @@ struct _dictvalues {
     TyObject *values[1];
 };
 
-#define DK_LOG_SIZE(dk)  _Ty_RVALUE((dk)->dk_log2_size)
+#define DK_LOG_SIZE(dk)  _Py_RVALUE((dk)->dk_log2_size)
 #if SIZEOF_VOID_P > 4
 #define DK_SIZE(dk)      (((int64_t)1)<<DK_LOG_SIZE(dk))
 #else

@@ -3668,7 +3668,7 @@
             left = stack_pointer[-2];
             TyObject *left_o = PyStackRef_AsPyObjectBorrow(left);
             TyObject *right_o = PyStackRef_AsPyObjectBorrow(right);
-            assert((oparg >> 5) <= Ty_GE);
+            assert((oparg >> 5) <= Py_GE);
             _TyFrame_SetStackPointer(frame, stack_pointer);
             TyObject *res_o = PyObject_RichCompare(left_o, right_o, oparg >> 5);
             _PyStackRef tmp = right;
@@ -3769,7 +3769,7 @@
             TyObject *right_o = PyStackRef_AsPyObjectBorrow(right);
             STAT_INC(COMPARE_OP, hit);
             int eq = _TyUnicode_Equal(left_o, right_o);
-            assert((oparg >> 5) == Ty_EQ || (oparg >> 5) == Ty_NE);
+            assert((oparg >> 5) == Py_EQ || (oparg >> 5) == Py_NE);
             PyStackRef_CLOSE_SPECIALIZED(left, _TyUnicode_ExactDealloc);
             PyStackRef_CLOSE_SPECIALIZED(right, _TyUnicode_ExactDealloc);
             assert(eq == 0 || eq == 1);

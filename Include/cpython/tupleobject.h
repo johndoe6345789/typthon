@@ -16,7 +16,7 @@ PyAPI_FUNC(int) _TyTuple_Resize(TyObject **, Ty_ssize_t);
 
 /* Cast argument to PyTupleObject* type. */
 #define _TyTuple_CAST(op) \
-    (assert(TyTuple_Check(op)), _Ty_CAST(PyTupleObject*, (op)))
+    (assert(TyTuple_Check(op)), _Py_CAST(PyTupleObject*, (op)))
 
 // Macros and static inline functions, trading safety for speed
 

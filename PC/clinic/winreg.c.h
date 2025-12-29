@@ -26,7 +26,7 @@ static TyObject *
 winreg_HKEYType_Close_impl(PyHKEYObject *self);
 
 static TyObject *
-winreg_HKEYType_Close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+winreg_HKEYType_Close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return winreg_HKEYType_Close_impl((PyHKEYObject *)self);
 }
@@ -56,7 +56,7 @@ static TyObject *
 winreg_HKEYType_Detach_impl(PyHKEYObject *self);
 
 static TyObject *
-winreg_HKEYType_Detach(TyObject *self, TyObject *Ty_UNUSED(ignored))
+winreg_HKEYType_Detach(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return winreg_HKEYType_Detach_impl((PyHKEYObject *)self);
 }
@@ -77,7 +77,7 @@ static PyHKEYObject *
 winreg_HKEYType___enter___impl(PyHKEYObject *self);
 
 static TyObject *
-winreg_HKEYType___enter__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+winreg_HKEYType___enter__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     PyHKEYObject *_return_value;

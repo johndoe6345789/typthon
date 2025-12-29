@@ -527,29 +527,29 @@ float_richcompare(TyObject *v, TyObject *w, int op)
 
  Compare:
     switch (op) {
-    case Ty_EQ:
+    case Py_EQ:
         r = i == j;
         break;
-    case Ty_NE:
+    case Py_NE:
         r = i != j;
         break;
-    case Ty_LE:
+    case Py_LE:
         r = i <= j;
         break;
-    case Ty_GE:
+    case Py_GE:
         r = i >= j;
         break;
-    case Ty_LT:
+    case Py_LT:
         r = i < j;
         break;
-    case Ty_GT:
+    case Py_GT:
         r = i > j;
         break;
     }
     return TyBool_FromLong(r);
 
  Unimplemented:
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static Ty_hash_t
@@ -862,7 +862,7 @@ float_is_integer_impl(TyObject *self)
     if (x == -1.0 && TyErr_Occurred())
         return NULL;
     if (!isfinite(x))
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     errno = 0;
     o = (floor(x) == x) ? Ty_True : Ty_False;
     if (errno != 0) {
@@ -1749,13 +1749,13 @@ float___getformat___impl(TyTypeObject *type, const char *typestr)
 
 
 static TyObject *
-float_getreal(TyObject *v, void *Ty_UNUSED(closure))
+float_getreal(TyObject *v, void *Py_UNUSED(closure))
 {
     return float_float(v);
 }
 
 static TyObject *
-float_getimag(TyObject *Ty_UNUSED(v), void *Ty_UNUSED(closure))
+float_getimag(TyObject *Py_UNUSED(v), void *Py_UNUSED(closure))
 {
     return TyFloat_FromDouble(0.0);
 }

@@ -578,9 +578,9 @@ static TyObject *
 _new_bool_object(_PyXIData_t *xidata)
 {
     if (xidata->data){
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static int

@@ -156,7 +156,7 @@ static TyObject *
 syslog_closelog_impl(TyObject *module);
 
 static TyObject *
-syslog_closelog(TyObject *module, TyObject *Ty_UNUSED(ignored))
+syslog_closelog(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

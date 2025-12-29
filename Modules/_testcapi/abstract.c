@@ -134,7 +134,7 @@ pyiter_next(TyObject *self, TyObject *iter)
 {
     TyObject *item = TyIter_Next(iter);
     if (item == NULL && !TyErr_Occurred()) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return item;
 }
@@ -151,7 +151,7 @@ pyiter_nextitem(TyObject *self, TyObject *iter)
     }
     assert(!TyErr_Occurred());
     if (item == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return item;
 }

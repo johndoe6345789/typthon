@@ -45,7 +45,7 @@ typedef PyCFunctionFastWithKeywords _PyCFunctionFastWithKeywords;
 // "void func(void)" type to prevent compiler warnings.
 //
 // If a function is declared with the METH_NOARGS calling convention, it must
-// have 2 parameters. Since the second parameter is unused, Ty_UNUSED() can be
+// have 2 parameters. Since the second parameter is unused, Py_UNUSED() can be
 // used to prevent a compiler warning. If the function has a single parameter,
 // it triggers an undefined behavior when Python calls it with 2 parameters
 // (bpo-33012).

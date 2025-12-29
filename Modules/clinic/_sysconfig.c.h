@@ -15,7 +15,7 @@ static TyObject *
 _sysconfig_config_vars_impl(TyObject *module);
 
 static TyObject *
-_sysconfig_config_vars(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_sysconfig_config_vars(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _sysconfig_config_vars_impl(module);
 }

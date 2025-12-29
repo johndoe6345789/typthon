@@ -17,7 +17,7 @@ static TyObject *
 _tracemalloc_is_tracing_impl(TyObject *module);
 
 static TyObject *
-_tracemalloc_is_tracing(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_tracemalloc_is_tracing(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _tracemalloc_is_tracing_impl(module);
 }
@@ -35,7 +35,7 @@ static TyObject *
 _tracemalloc_clear_traces_impl(TyObject *module);
 
 static TyObject *
-_tracemalloc_clear_traces(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_tracemalloc_clear_traces(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _tracemalloc_clear_traces_impl(module);
 }
@@ -58,7 +58,7 @@ static TyObject *
 _tracemalloc__get_traces_impl(TyObject *module);
 
 static TyObject *
-_tracemalloc__get_traces(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_tracemalloc__get_traces(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _tracemalloc__get_traces_impl(module);
 }
@@ -129,7 +129,7 @@ static TyObject *
 _tracemalloc_stop_impl(TyObject *module);
 
 static TyObject *
-_tracemalloc_stop(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_tracemalloc_stop(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _tracemalloc_stop_impl(module);
 }
@@ -150,7 +150,7 @@ static TyObject *
 _tracemalloc_get_traceback_limit_impl(TyObject *module);
 
 static TyObject *
-_tracemalloc_get_traceback_limit(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_tracemalloc_get_traceback_limit(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _tracemalloc_get_traceback_limit_impl(module);
 }
@@ -170,7 +170,7 @@ static TyObject *
 _tracemalloc_get_tracemalloc_memory_impl(TyObject *module);
 
 static TyObject *
-_tracemalloc_get_tracemalloc_memory(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_tracemalloc_get_tracemalloc_memory(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _tracemalloc_get_tracemalloc_memory_impl(module);
 }
@@ -190,7 +190,7 @@ static TyObject *
 _tracemalloc_get_traced_memory_impl(TyObject *module);
 
 static TyObject *
-_tracemalloc_get_traced_memory(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_tracemalloc_get_traced_memory(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _tracemalloc_get_traced_memory_impl(module);
 }
@@ -210,7 +210,7 @@ static TyObject *
 _tracemalloc_reset_peak_impl(TyObject *module);
 
 static TyObject *
-_tracemalloc_reset_peak(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_tracemalloc_reset_peak(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _tracemalloc_reset_peak_impl(module);
 }

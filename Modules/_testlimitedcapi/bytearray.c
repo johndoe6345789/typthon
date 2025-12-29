@@ -4,7 +4,7 @@
 
 /* Test TyByteArray_Check() */
 static TyObject *
-bytearray_check(TyObject *Ty_UNUSED(module), TyObject *obj)
+bytearray_check(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyByteArray_Check(obj));
@@ -12,7 +12,7 @@ bytearray_check(TyObject *Ty_UNUSED(module), TyObject *obj)
 
 /* Test TyByteArray_CheckExact() */
 static TyObject *
-bytearray_checkexact(TyObject *Ty_UNUSED(module), TyObject *obj)
+bytearray_checkexact(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyByteArray_CheckExact(obj));
@@ -20,7 +20,7 @@ bytearray_checkexact(TyObject *Ty_UNUSED(module), TyObject *obj)
 
 /* Test TyByteArray_FromStringAndSize() */
 static TyObject *
-bytearray_fromstringandsize(TyObject *Ty_UNUSED(module), TyObject *args)
+bytearray_fromstringandsize(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *s;
     Ty_ssize_t bsize;
@@ -38,7 +38,7 @@ bytearray_fromstringandsize(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyByteArray_FromObject() */
 static TyObject *
-bytearray_fromobject(TyObject *Ty_UNUSED(module), TyObject *arg)
+bytearray_fromobject(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
     return TyByteArray_FromObject(arg);
@@ -46,7 +46,7 @@ bytearray_fromobject(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test TyByteArray_Size() */
 static TyObject *
-bytearray_size(TyObject *Ty_UNUSED(module), TyObject *arg)
+bytearray_size(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
     RETURN_SIZE(TyByteArray_Size(arg));
@@ -54,7 +54,7 @@ bytearray_size(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test TyUnicode_AsString() */
 static TyObject *
-bytearray_asstring(TyObject *Ty_UNUSED(module), TyObject *args)
+bytearray_asstring(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t buflen;
@@ -73,7 +73,7 @@ bytearray_asstring(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyByteArray_Concat() */
 static TyObject *
-bytearray_concat(TyObject *Ty_UNUSED(module), TyObject *args)
+bytearray_concat(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *left, *right;
 
@@ -87,7 +87,7 @@ bytearray_concat(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyByteArray_Resize() */
 static TyObject *
-bytearray_resize(TyObject *Ty_UNUSED(module), TyObject *args)
+bytearray_resize(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t size;

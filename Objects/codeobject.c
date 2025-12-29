@@ -1367,7 +1367,7 @@ static TyObject *
 _source_offset_converter(void *arg) {
     int *value = (int*)arg;
     if (*value == -1) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyLong_FromLong(*value);
 }
@@ -1530,7 +1530,7 @@ TyTypeObject _PyPositionsIterator = {
 };
 
 static TyObject*
-code_positionsiterator(TyObject *self, TyObject* Ty_UNUSED(args))
+code_positionsiterator(TyObject *self, TyObject* Py_UNUSED(args))
 {
     PyCodeObject *code = (PyCodeObject*)self;
     positionsiterator* pi = (positionsiterator*)TyType_GenericAlloc(&_PyPositionsIterator, 0);
@@ -2491,16 +2491,16 @@ code_richcompare(TyObject *self, TyObject *other, int op)
     TyObject *consts1, *consts2;
     TyObject *res;
 
-    if ((op != Ty_EQ && op != Ty_NE) ||
+    if ((op != Py_EQ && op != Py_NE) ||
         !TyCode_Check(self) ||
         !TyCode_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     co = (PyCodeObject *)self;
     cp = (PyCodeObject *)other;
 
-    eq = PyObject_RichCompareBool(co->co_name, cp->co_name, Ty_EQ);
+    eq = PyObject_RichCompareBool(co->co_name, cp->co_name, Py_EQ);
     if (!eq) goto unequal;
     eq = co->co_argcount == cp->co_argcount;
     if (!eq) goto unequal;
@@ -2534,27 +2534,27 @@ code_richcompare(TyObject *self, TyObject *other, int op)
         Ty_DECREF(consts1);
         return NULL;
     }
-    eq = PyObject_RichCompareBool(consts1, consts2, Ty_EQ);
+    eq = PyObject_RichCompareBool(consts1, consts2, Py_EQ);
     Ty_DECREF(consts1);
     Ty_DECREF(consts2);
     if (eq <= 0) goto unequal;
 
-    eq = PyObject_RichCompareBool(co->co_names, cp->co_names, Ty_EQ);
+    eq = PyObject_RichCompareBool(co->co_names, cp->co_names, Py_EQ);
     if (eq <= 0) goto unequal;
     eq = PyObject_RichCompareBool(co->co_localsplusnames,
-                                  cp->co_localsplusnames, Ty_EQ);
+                                  cp->co_localsplusnames, Py_EQ);
     if (eq <= 0) goto unequal;
-    eq = PyObject_RichCompareBool(co->co_linetable, cp->co_linetable, Ty_EQ);
+    eq = PyObject_RichCompareBool(co->co_linetable, cp->co_linetable, Py_EQ);
     if (eq <= 0) {
         goto unequal;
     }
     eq = PyObject_RichCompareBool(co->co_exceptiontable,
-                                  cp->co_exceptiontable, Ty_EQ);
+                                  cp->co_exceptiontable, Py_EQ);
     if (eq <= 0) {
         goto unequal;
     }
 
-    if (op == Ty_EQ)
+    if (op == Py_EQ)
         res = Ty_True;
     else
         res = Ty_False;
@@ -2563,7 +2563,7 @@ code_richcompare(TyObject *self, TyObject *other, int op)
   unequal:
     if (eq < 0)
         return NULL;
-    if (op == Ty_NE)
+    if (op == Py_NE)
         res = Ty_True;
     else
         res = Ty_False;
@@ -2617,20 +2617,20 @@ code_hash(TyObject *self)
 #define OFF(x) offsetof(PyCodeObject, x)
 
 static TyMemberDef code_memberlist[] = {
-    {"co_argcount",        Ty_T_INT,     OFF(co_argcount),        Ty_READONLY},
-    {"co_posonlyargcount", Ty_T_INT,     OFF(co_posonlyargcount), Ty_READONLY},
-    {"co_kwonlyargcount",  Ty_T_INT,     OFF(co_kwonlyargcount),  Ty_READONLY},
-    {"co_stacksize",       Ty_T_INT,     OFF(co_stacksize),       Ty_READONLY},
-    {"co_flags",           Ty_T_INT,     OFF(co_flags),           Ty_READONLY},
-    {"co_nlocals",         Ty_T_INT,     OFF(co_nlocals),         Ty_READONLY},
-    {"co_consts",          _Ty_T_OBJECT, OFF(co_consts),          Ty_READONLY},
-    {"co_names",           _Ty_T_OBJECT, OFF(co_names),           Ty_READONLY},
-    {"co_filename",        _Ty_T_OBJECT, OFF(co_filename),        Ty_READONLY},
-    {"co_name",            _Ty_T_OBJECT, OFF(co_name),            Ty_READONLY},
-    {"co_qualname",        _Ty_T_OBJECT, OFF(co_qualname),        Ty_READONLY},
-    {"co_firstlineno",     Ty_T_INT,     OFF(co_firstlineno),     Ty_READONLY},
-    {"co_linetable",       _Ty_T_OBJECT, OFF(co_linetable),       Ty_READONLY},
-    {"co_exceptiontable",  _Ty_T_OBJECT, OFF(co_exceptiontable),  Ty_READONLY},
+    {"co_argcount",        Ty_T_INT,     OFF(co_argcount),        Py_READONLY},
+    {"co_posonlyargcount", Ty_T_INT,     OFF(co_posonlyargcount), Py_READONLY},
+    {"co_kwonlyargcount",  Ty_T_INT,     OFF(co_kwonlyargcount),  Py_READONLY},
+    {"co_stacksize",       Ty_T_INT,     OFF(co_stacksize),       Py_READONLY},
+    {"co_flags",           Ty_T_INT,     OFF(co_flags),           Py_READONLY},
+    {"co_nlocals",         Ty_T_INT,     OFF(co_nlocals),         Py_READONLY},
+    {"co_consts",          _Ty_T_OBJECT, OFF(co_consts),          Py_READONLY},
+    {"co_names",           _Ty_T_OBJECT, OFF(co_names),           Py_READONLY},
+    {"co_filename",        _Ty_T_OBJECT, OFF(co_filename),        Py_READONLY},
+    {"co_name",            _Ty_T_OBJECT, OFF(co_name),            Py_READONLY},
+    {"co_qualname",        _Ty_T_OBJECT, OFF(co_qualname),        Py_READONLY},
+    {"co_firstlineno",     Ty_T_INT,     OFF(co_firstlineno),     Py_READONLY},
+    {"co_linetable",       _Ty_T_OBJECT, OFF(co_linetable),       Py_READONLY},
+    {"co_exceptiontable",  _Ty_T_OBJECT, OFF(co_exceptiontable),  Py_READONLY},
     {NULL}      /* Sentinel */
 };
 
@@ -2696,7 +2696,7 @@ static TyGetSetDef code_getsetlist[] = {
 
 
 static TyObject *
-code_sizeof(TyObject *self, TyObject *Ty_UNUSED(args))
+code_sizeof(TyObject *self, TyObject *Py_UNUSED(args))
 {
     PyCodeObject *co = _PyCodeObject_CAST(self);
     size_t res = _TyObject_VAR_SIZE(Ty_TYPE(co), Ty_SIZE(co));
@@ -2709,14 +2709,14 @@ code_sizeof(TyObject *self, TyObject *Ty_UNUSED(args))
 }
 
 static TyObject *
-code_linesiterator(TyObject *self, TyObject *Ty_UNUSED(args))
+code_linesiterator(TyObject *self, TyObject *Py_UNUSED(args))
 {
     PyCodeObject *code = _PyCodeObject_CAST(self);
     return (TyObject *)new_linesiterator(code);
 }
 
 static TyObject *
-code_branchesiterator(TyObject *self, TyObject *Ty_UNUSED(args))
+code_branchesiterator(TyObject *self, TyObject *Py_UNUSED(args))
 {
     PyCodeObject *code = _PyCodeObject_CAST(self);
     return _PyInstrumentation_BranchesIterator(code);
@@ -3171,7 +3171,7 @@ compare_constants(const void *key1, const void *key2)
                 s1->step  == s2->step);
     }
     else if (TyBytes_CheckExact(op1) || TyLong_CheckExact(op1)) {
-        return PyObject_RichCompareBool(op1, op2, Ty_EQ);
+        return PyObject_RichCompareBool(op1, op2, Py_EQ);
     }
     else if (TyFloat_CheckExact(op1)) {
         // Ensure that, for example, +0.0 and -0.0 are distinct

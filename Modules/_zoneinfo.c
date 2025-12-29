@@ -544,7 +544,7 @@ zoneinfo_ZoneInfo_clear_cache_impl(TyTypeObject *type, TyTypeObject *cls,
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -774,7 +774,7 @@ zoneinfo_str(TyObject *op)
  * Objects constructed from ZoneInfo.from_file cannot be pickled.
  */
 static TyObject *
-zoneinfo_reduce(TyObject *obj_self, TyObject *Ty_UNUSED(dummy))
+zoneinfo_reduce(TyObject *obj_self, TyObject *Py_UNUSED(dummy))
 {
     PyZoneInfo_ZoneInfo *self = PyZoneInfo_ZoneInfo_CAST(obj_self);
     if (self->source == SOURCE_FILE) {
@@ -912,17 +912,17 @@ static int
 ttinfo_eq(const _ttinfo *const tti0, const _ttinfo *const tti1)
 {
     int rv;
-    if ((rv = PyObject_RichCompareBool(tti0->utcoff, tti1->utcoff, Ty_EQ)) <
+    if ((rv = PyObject_RichCompareBool(tti0->utcoff, tti1->utcoff, Py_EQ)) <
         1) {
         goto end;
     }
 
-    if ((rv = PyObject_RichCompareBool(tti0->dstoff, tti1->dstoff, Ty_EQ)) <
+    if ((rv = PyObject_RichCompareBool(tti0->dstoff, tti1->dstoff, Py_EQ)) <
         1) {
         goto end;
     }
 
-    if ((rv = PyObject_RichCompareBool(tti0->tzname, tti1->tzname, Ty_EQ)) <
+    if ((rv = PyObject_RichCompareBool(tti0->tzname, tti1->tzname, Py_EQ)) <
         1) {
         goto end;
     }
@@ -2397,7 +2397,7 @@ find_in_strong_cache(const StrongCacheNode *const root, TyObject *const key)
 {
     const StrongCacheNode *node = root;
     while (node != NULL) {
-        int rv = PyObject_RichCompareBool(key, node->key, Ty_EQ);
+        int rv = PyObject_RichCompareBool(key, node->key, Py_EQ);
         if (rv < 0) {
             return NULL;
         }
@@ -2592,7 +2592,7 @@ zoneinfo_init_subclass(TyObject *cls, TyObject *args, TyObject *kwargs)
         return NULL;
     }
     Ty_DECREF(weak_cache);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /////
@@ -2620,12 +2620,12 @@ static TyMemberDef zoneinfo_members[] = {
     {.name = "key",
      .offset = offsetof(PyZoneInfo_ZoneInfo, key),
      .type = Ty_T_OBJECT_EX,
-     .flags = Ty_READONLY,
+     .flags = Py_READONLY,
      .doc = NULL},
     {.name = "__weaklistoffset__",
      .offset = offsetof(PyZoneInfo_ZoneInfo, weakreflist),
      .type = Ty_T_PYSSIZET,
-     .flags = Ty_READONLY},
+     .flags = Py_READONLY},
     {NULL}, /* Sentinel */
 };
 

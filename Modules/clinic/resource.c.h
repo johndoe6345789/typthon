@@ -156,7 +156,7 @@ static int
 resource_getpagesize_impl(TyObject *module);
 
 static TyObject *
-resource_getpagesize(TyObject *module, TyObject *Ty_UNUSED(ignored))
+resource_getpagesize(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;

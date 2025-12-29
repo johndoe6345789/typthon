@@ -321,7 +321,7 @@ _queue_SimpleQueue_put_impl(simplequeueobject *self, TyObject *item,
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -540,7 +540,7 @@ static TyMethodDef simplequeue_methods[] = {
 };
 
 static struct TyMemberDef simplequeue_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(simplequeueobject, weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(simplequeueobject, weakreflist), Py_READONLY},
     {NULL},
 };
 

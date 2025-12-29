@@ -556,7 +556,7 @@ _zstd_set_parameter_types_impl(TyObject *module, TyObject *c_parameter_type,
     Ty_INCREF(d_parameter_type);
     Ty_XSETREF(mod_state->DParameter_type, (TyTypeObject*)d_parameter_type);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef _zstd_methods[] = {

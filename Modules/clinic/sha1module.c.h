@@ -43,7 +43,7 @@ static TyObject *
 SHA1Type_digest_impl(SHA1object *self);
 
 static TyObject *
-SHA1Type_digest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+SHA1Type_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return SHA1Type_digest_impl((SHA1object *)self);
 }
@@ -61,7 +61,7 @@ static TyObject *
 SHA1Type_hexdigest_impl(SHA1object *self);
 
 static TyObject *
-SHA1Type_hexdigest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+SHA1Type_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return SHA1Type_hexdigest_impl((SHA1object *)self);
 }

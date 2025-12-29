@@ -103,7 +103,7 @@ set_lookkey(PySetObject *so, TyObject *key, Ty_hash_t hash)
                     return entry;
                 table = so->table;
                 Ty_INCREF(startkey);
-                cmp = PyObject_RichCompareBool(startkey, key, Ty_EQ);
+                cmp = PyObject_RichCompareBool(startkey, key, Py_EQ);
                 Ty_DECREF(startkey);
                 if (cmp < 0)
                     return NULL;
@@ -158,7 +158,7 @@ set_add_entry_takeref(PySetObject *so, TyObject *key, Ty_hash_t hash)
                     goto found_active;
                 table = so->table;
                 Ty_INCREF(startkey);
-                cmp = PyObject_RichCompareBool(startkey, key, Ty_EQ);
+                cmp = PyObject_RichCompareBool(startkey, key, Py_EQ);
                 Ty_DECREF(startkey);
                 if (cmp > 0)
                     goto found_active;
@@ -849,7 +849,7 @@ setiter_traverse(TyObject *self, visitproc visit, void *arg)
 }
 
 static TyObject *
-setiter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
+setiter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     setiterobject *si = (setiterobject*)op;
     Ty_ssize_t len = 0;
@@ -861,7 +861,7 @@ setiter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
 PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-setiter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+setiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     setiterobject *si = (setiterobject*)op;
 
@@ -1116,7 +1116,7 @@ set_update_impl(PySetObject *so, TyObject * const *others,
         if (set_update_internal(so, other))
             return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* XXX Todo:
@@ -1325,7 +1325,7 @@ set_clear_impl(PySetObject *so)
 /*[clinic end generated code: output=4e71d5a83904161a input=c6f831b366111950]*/
 {
     set_clear_internal((TyObject*)so);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1367,7 +1367,7 @@ set_or(TyObject *self, TyObject *other)
     PySetObject *result;
 
     if (!PyAnySet_Check(self) || !PyAnySet_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     result = (PySetObject *)set_copy(self, NULL);
     if (result == NULL) {
@@ -1387,7 +1387,7 @@ static TyObject *
 set_ior(TyObject *self, TyObject *other)
 {
     if (!PyAnySet_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     PySetObject *so = _TySet_CAST(self);
 
     if (set_update_internal(so, other)) {
@@ -1524,7 +1524,7 @@ set_intersection_update(PySetObject *so, TyObject *other)
         return NULL;
     set_swap_bodies(so, (PySetObject *)tmp);
     Ty_DECREF(tmp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1549,14 +1549,14 @@ set_intersection_update_multi_impl(PySetObject *so, TyObject * const *others,
     set_swap_bodies(so, (PySetObject *)tmp);
     Ty_END_CRITICAL_SECTION();
     Ty_DECREF(tmp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
 set_and(TyObject *self, TyObject *other)
 {
     if (!PyAnySet_Check(self) || !PyAnySet_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     PySetObject *so = _TySet_CAST(self);
 
     TyObject *rv;
@@ -1573,7 +1573,7 @@ set_iand(TyObject *self, TyObject *other)
     TyObject *result;
 
     if (!PyAnySet_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     PySetObject *so = _TySet_CAST(self);
 
     Ty_BEGIN_CRITICAL_SECTION2(so, other);
@@ -1605,9 +1605,9 @@ set_isdisjoint_impl(PySetObject *so, TyObject *other)
 
     if ((TyObject *)so == other) {
         if (TySet_GET_SIZE(so) == 0)
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
         else
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
 
     if (PyAnySet_CheckExact(other)) {
@@ -1628,10 +1628,10 @@ set_isdisjoint_impl(PySetObject *so, TyObject *other)
                 return NULL;
             }
             if (rv) {
-                Ty_RETURN_FALSE;
+                Py_RETURN_FALSE;
             }
         }
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
 
     it = PyObject_GetIter(other);
@@ -1647,13 +1647,13 @@ set_isdisjoint_impl(PySetObject *so, TyObject *other)
         }
         if (rv) {
             Ty_DECREF(it);
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         }
     }
     Ty_DECREF(it);
     if (TyErr_Occurred())
         return NULL;
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 static int
@@ -1742,7 +1742,7 @@ set_difference_update_impl(PySetObject *so, TyObject * const *others,
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1880,7 +1880,7 @@ static TyObject *
 set_sub(TyObject *self, TyObject *other)
 {
     if (!PyAnySet_Check(self) || !PyAnySet_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     PySetObject *so = _TySet_CAST(self);
 
     TyObject *rv;
@@ -1894,7 +1894,7 @@ static TyObject *
 set_isub(TyObject *self, TyObject *other)
 {
     if (!PyAnySet_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     PySetObject *so = _TySet_CAST(self);
 
     int rv;
@@ -2004,7 +2004,7 @@ set_symmetric_difference_update_impl(PySetObject *so, TyObject *other)
     if (rv < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2040,7 +2040,7 @@ static TyObject *
 set_xor(TyObject *self, TyObject *other)
 {
     if (!PyAnySet_Check(self) || !PyAnySet_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     PySetObject *so = _TySet_CAST(self);
     return set_symmetric_difference((TyObject*)so, other);
 }
@@ -2051,7 +2051,7 @@ set_ixor(TyObject *self, TyObject *other)
     TyObject *result;
 
     if (!PyAnySet_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     PySetObject *so = _TySet_CAST(self);
 
     result = set_symmetric_difference_update((TyObject*)so, other);
@@ -2089,7 +2089,7 @@ set_issubset_impl(PySetObject *so, TyObject *other)
         return TyBool_FromLong(result);
     }
     if (TySet_GET_SIZE(so) > TySet_GET_SIZE(other))
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     while (set_next(so, &pos, &entry)) {
         TyObject *key = entry->key;
@@ -2100,10 +2100,10 @@ set_issubset_impl(PySetObject *so, TyObject *other)
             return NULL;
         }
         if (!rv) {
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         }
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -2137,14 +2137,14 @@ set_issuperset_impl(PySetObject *so, TyObject *other)
         }
         if (!rv) {
             Ty_DECREF(it);
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         }
     }
     Ty_DECREF(it);
     if (TyErr_Occurred()) {
         return NULL;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 static TyObject *
@@ -2155,19 +2155,19 @@ set_richcompare(TyObject *self, TyObject *w, int op)
     int r2;
 
     if(!PyAnySet_Check(w))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     switch (op) {
-    case Ty_EQ:
+    case Py_EQ:
         if (TySet_GET_SIZE(v) != TySet_GET_SIZE(w))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         Ty_hash_t v_hash = FT_ATOMIC_LOAD_SSIZE_RELAXED(v->hash);
         Ty_hash_t w_hash = FT_ATOMIC_LOAD_SSIZE_RELAXED(((PySetObject *)w)->hash);
         if (v_hash != -1 && w_hash != -1 && v_hash != w_hash)
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         return set_issubset((TyObject*)v, w);
-    case Ty_NE:
-        r1 = set_richcompare((TyObject*)v, w, Ty_EQ);
+    case Py_NE:
+        r1 = set_richcompare((TyObject*)v, w, Py_EQ);
         if (r1 == NULL)
             return NULL;
         r2 = PyObject_IsTrue(r1);
@@ -2175,20 +2175,20 @@ set_richcompare(TyObject *self, TyObject *w, int op)
         if (r2 < 0)
             return NULL;
         return TyBool_FromLong(!r2);
-    case Ty_LE:
+    case Py_LE:
         return set_issubset((TyObject*)v, w);
-    case Ty_GE:
+    case Py_GE:
         return set_issuperset((TyObject*)v, w);
-    case Ty_LT:
+    case Py_LT:
         if (TySet_GET_SIZE(v) >= TySet_GET_SIZE(w))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         return set_issubset((TyObject*)v, w);
-    case Ty_GT:
+    case Py_GT:
         if (TySet_GET_SIZE(v) <= TySet_GET_SIZE(w))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         return set_issuperset((TyObject*)v, w);
     }
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 /*[clinic input]
@@ -2209,7 +2209,7 @@ set_add_impl(PySetObject *so, TyObject *key)
 {
     if (set_add_key(so, key))
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -2329,7 +2329,7 @@ set_remove_impl(PySetObject *so, TyObject *key)
         _TyErr_SetKeyError(key);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2364,7 +2364,7 @@ set_discard_impl(PySetObject *so, TyObject *key)
         if (rv < 0)
             return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

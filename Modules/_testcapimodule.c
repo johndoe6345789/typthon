@@ -84,7 +84,7 @@ sizeof_error(TyObject *self, const char* fatname, const char* typname,
 }
 
 static TyObject*
-test_config(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_config(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
 #define CHECK_SIZEOF(FATNAME, TYPE) \
     do { \
@@ -102,11 +102,11 @@ test_config(TyObject *self, TyObject *Ty_UNUSED(ignored))
 
 #undef CHECK_SIZEOF
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject*
-test_sizeof_c_types(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_sizeof_c_types(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
 #if defined(__GNUC__) && ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ > 5)))
 #pragma GCC diagnostic push
@@ -159,7 +159,7 @@ test_sizeof_c_types(TyObject *self, TyObject *Ty_UNUSED(ignored))
     CHECK_SIZEOF(intptr_t, sizeof(void *));
     CHECK_SIGNNESS(intptr_t, 1);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 #undef IS_SIGNED
 #undef CHECK_SIGNESS
@@ -227,7 +227,7 @@ pycompilestring(TyObject* self, TyObject *obj) {
 }
 
 static TyObject*
-test_lazy_hash_inheritance(TyObject* self, TyObject *Ty_UNUSED(ignored))
+test_lazy_hash_inheritance(TyObject* self, TyObject *Py_UNUSED(ignored))
 {
     TyTypeObject *type;
     TyObject *obj;
@@ -238,7 +238,7 @@ test_lazy_hash_inheritance(TyObject* self, TyObject *Ty_UNUSED(ignored))
     if (type->tp_dict != NULL)
         /* The type has already been initialized. This probably means
            -R is being used. */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 
 
     obj = PyObject_New(TyObject, type);
@@ -286,13 +286,13 @@ test_lazy_hash_inheritance(TyObject* self, TyObject *Ty_UNUSED(ignored))
 
     Ty_DECREF(obj);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
 return_none(void *unused)
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -379,7 +379,7 @@ test_buildvalue_N_error(TyObject *self, const char *fmt)
 }
 
 static TyObject *
-test_buildvalue_N(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_buildvalue_N(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *arg, *res;
 
@@ -414,11 +414,11 @@ test_buildvalue_N(TyObject *self, TyObject *Ty_UNUSED(ignored))
     if (test_buildvalue_N_error(self, "{()O&(())N}") < 0)
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-test_buildvalue_p(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_buildvalue_p(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *res = Ty_BuildValue("p", 3);
     if (res == NULL) {
@@ -440,23 +440,23 @@ test_buildvalue_p(TyObject *self, TyObject *Ty_UNUSED(ignored))
     }
     Ty_DECREF(res);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-pyobject_repr_from_null(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pyobject_repr_from_null(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return PyObject_Repr(NULL);
 }
 
 static TyObject *
-pyobject_str_from_null(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pyobject_str_from_null(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return PyObject_Str(NULL);
 }
 
 static TyObject *
-pyobject_bytes_from_null(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pyobject_bytes_from_null(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return PyObject_Bytes(NULL);
 }
@@ -470,7 +470,7 @@ set_errno(TyObject *self, TyObject *args)
         return NULL;
 
     errno = new_errno;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* test_thread_state spawns a thread of its own, and that thread releases
@@ -551,15 +551,15 @@ test_thread_state(TyObject *self, TyObject *args)
     PyThread_free_lock(thread_done);
     if (!success)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-gilstate_ensure_release(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gilstate_ensure_release(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyGILState_STATE state = TyGILState_Ensure();
     TyGILState_Release(state);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifndef MS_WINDOWS
@@ -576,7 +576,7 @@ static void wait_for_lock(void *unused) {
 // thread that the threading module doesn't know about.
 
 static TyObject *
-spawn_pthread_waiter(TyObject *self, TyObject *Ty_UNUSED(ignored))
+spawn_pthread_waiter(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     if (wait_done) {
         TyErr_SetString(TyExc_RuntimeError, "thread already running");
@@ -587,18 +587,18 @@ spawn_pthread_waiter(TyObject *self, TyObject *Ty_UNUSED(ignored))
         return TyErr_NoMemory();
     PyThread_acquire_lock(wait_done, 1);
     PyThread_start_new_thread(wait_for_lock, NULL);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-end_spawned_pthread(TyObject *self, TyObject *Ty_UNUSED(ignored))
+end_spawned_pthread(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     if (!wait_done) {
         TyErr_SetString(TyExc_RuntimeError, "call _spawn_pthread_waiter 1st");
         return NULL;
     }
     PyThread_release_lock(wait_done);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif  // not MS_WINDOWS
 
@@ -698,7 +698,7 @@ typedef struct {
 } known_capsule;
 
 static TyObject *
-test_capsule(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_capsule(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *object;
     const char *error = NULL;
@@ -821,7 +821,7 @@ test_capsule(TyObject *self, TyObject *Ty_UNUSED(ignored))
     if (error) {
         return raiseTestError(self, "test_capsule", error);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #undef FAIL
 }
 
@@ -944,7 +944,7 @@ profile_int(TyObject *self, TyObject* args)
     Ty_DECREF(op1);
     print_delta(7, &start, &stop);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 
@@ -975,7 +975,7 @@ argparsing(TyObject *o, TyObject *args)
         TyErr_Clear();
         return res;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* To test that the result of TyCode_NewEmpty has the right members. */
@@ -994,7 +994,7 @@ code_newempty(TyObject *self, TyObject *args)
 }
 
 static TyObject *
-make_memoryview_from_NULL_pointer(TyObject *self, TyObject *Ty_UNUSED(ignored))
+make_memoryview_from_NULL_pointer(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     Ty_buffer info;
     if (PyBuffer_FillInfo(&info, NULL, NULL, 1, 1, PyBUF_FULL_RO) < 0)
@@ -1023,7 +1023,7 @@ buffer_fill_info(TyObject *self, TyObject *args)
 }
 
 static TyObject *
-test_from_contiguous(TyObject* self, TyObject *Ty_UNUSED(ignored))
+test_from_contiguous(TyObject* self, TyObject *Py_UNUSED(ignored))
 {
     int data[9] = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
     int init[5] = {0, 1, 2, 3, 4};
@@ -1069,13 +1069,13 @@ test_from_contiguous(TyObject* self, TyObject *Ty_UNUSED(ignored))
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #if (defined(__linux__) || defined(__FreeBSD__)) && defined(__GNUC__)
 
 static TyObject *
-test_pep3118_obsolete_write_locks(TyObject* self, TyObject *Ty_UNUSED(ignored))
+test_pep3118_obsolete_write_locks(TyObject* self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *b;
     char *dummy[1];
@@ -1108,7 +1108,7 @@ test_pep3118_obsolete_write_locks(TyObject* self, TyObject *Ty_UNUSED(ignored))
     if (ret != -1 || match == 0)
         goto error;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 error:
     TyErr_SetString(get_testerror(self),
@@ -1126,7 +1126,7 @@ getbuffer_with_null_view(TyObject* self, TyObject *obj)
     if (PyObject_GetBuffer(obj, NULL, PyBUF_SIMPLE) < 0)
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* PyBuffer_SizeFromFormat() */
@@ -1146,7 +1146,7 @@ test_PyBuffer_SizeFromFormat(TyObject *self, TyObject *args)
 /* Test that the fatal error from not having a current thread doesn't
    cause an infinite loop.  Run via Lib/test/test_capi.py */
 static TyObject *
-crash_no_current_thread(TyObject *self, TyObject *Ty_UNUSED(ignored))
+crash_no_current_thread(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     Ty_BEGIN_ALLOW_THREADS
     /* Using TyThreadState_Get() directly allows the test to pass in
@@ -1160,7 +1160,7 @@ crash_no_current_thread(TyObject *self, TyObject *Ty_UNUSED(ignored))
 
 /* Test that the GILState thread and the "current" thread match. */
 static TyObject *
-test_current_tstate_matches(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_current_tstate_matches(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     PyThreadState *orig_tstate = TyThreadState_Get();
 
@@ -1191,7 +1191,7 @@ finally:
         TyErr_SetString(TyExc_RuntimeError, err);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* To run some code in a sub-interpreter. */
@@ -1245,8 +1245,8 @@ static TyMethodDef ml = {
 };
 
 static TyObject *
-test_structseq_newtype_doesnt_leak(TyObject *Ty_UNUSED(self),
-                              TyObject *Ty_UNUSED(args))
+test_structseq_newtype_doesnt_leak(TyObject *Py_UNUSED(self),
+                              TyObject *Py_UNUSED(args))
 {
     PyStructSequence_Desc descr;
     PyStructSequence_Field descr_fields[3];
@@ -1268,12 +1268,12 @@ test_structseq_newtype_doesnt_leak(TyObject *Ty_UNUSED(self),
     assert(TyType_FastSubclass(structseq_type, Ty_TPFLAGS_TUPLE_SUBCLASS));
     Ty_DECREF(structseq_type);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-test_structseq_newtype_null_descr_doc(TyObject *Ty_UNUSED(self),
-                              TyObject *Ty_UNUSED(args))
+test_structseq_newtype_null_descr_doc(TyObject *Py_UNUSED(self),
+                              TyObject *Py_UNUSED(args))
 {
     PyStructSequence_Field descr_fields[1] = {
         (PyStructSequence_Field){NULL, NULL}
@@ -1287,7 +1287,7 @@ test_structseq_newtype_null_descr_doc(TyObject *Ty_UNUSED(self),
     assert(TyType_FastSubclass(structseq_type, Ty_TPFLAGS_TUPLE_SUBCLASS));
     Ty_DECREF(structseq_type);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 typedef struct {
@@ -1363,7 +1363,7 @@ call_in_temporary_c_thread(TyObject *self, TyObject *args)
     PyThread_release_lock(test_c_thread.start_event);
 
     if (!wait) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     Ty_BEGIN_ALLOW_THREADS
@@ -1387,7 +1387,7 @@ exit:
 }
 
 static TyObject *
-join_temporary_c_thread(TyObject *self, TyObject *Ty_UNUSED(ignored))
+join_temporary_c_thread(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     Ty_BEGIN_ALLOW_THREADS
         PyThread_acquire_lock(test_c_thread.exit_event, 1);
@@ -1398,7 +1398,7 @@ join_temporary_c_thread(TyObject *self, TyObject *Ty_UNUSED(ignored))
     test_c_thread.start_event = NULL;
     PyThread_free_lock(test_c_thread.exit_event);
     test_c_thread.exit_event = NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* marshal */
@@ -1425,7 +1425,7 @@ pymarshal_write_long_to_file(TyObject* self, TyObject *args)
     assert(!TyErr_Occurred());
 
     fclose(fp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject*
@@ -1450,7 +1450,7 @@ pymarshal_write_object_to_file(TyObject* self, TyObject *args)
     assert(!TyErr_Occurred());
 
     fclose(fp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject*
@@ -1565,7 +1565,7 @@ return_result_with_error(TyObject *self, TyObject *args)
     /* invalid call: return a result with an error set,
      * _Ty_CheckFunctionResult() must detect such bug at runtime. */
     TyErr_SetNone(TyExc_ValueError);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1681,7 +1681,7 @@ test_pythread_tss_key_state(TyObject *self, TyObject *args)
     }
     PyThread_tss_free(ptr_key);
     ptr_key = NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1719,7 +1719,7 @@ static TyObject*
 _null_to_none(TyObject* obj)
 {
     if (obj == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(obj);
 }
@@ -1743,7 +1743,7 @@ meth_o(TyObject* self, TyObject* obj)
 }
 
 static TyObject*
-meth_noargs(TyObject* self, TyObject *Ty_UNUSED(dummy))
+meth_noargs(TyObject* self, TyObject *Py_UNUSED(dummy))
 {
     return _null_to_none(self);
 }
@@ -1858,7 +1858,7 @@ get_basic_static_type(TyObject *self, TyObject *args)
 
 // Test PyThreadState C API
 static TyObject *
-test_tstate_capi(TyObject *self, TyObject *Ty_UNUSED(args))
+test_tstate_capi(TyObject *self, TyObject *Py_UNUSED(args))
 {
     // TyThreadState_Get()
     PyThreadState *tstate = TyThreadState_Get();
@@ -1898,7 +1898,7 @@ test_tstate_capi(TyObject *self, TyObject *Ty_UNUSED(args))
     uint64_t id = TyThreadState_GetID(tstate);
     assert(id >= 1);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -2003,7 +2003,7 @@ exit:
 }
 
 static TyObject *
-get_feature_macros(TyObject *self, TyObject *Ty_UNUSED(args))
+get_feature_macros(TyObject *self, TyObject *Py_UNUSED(args))
 {
     TyObject *result = TyDict_New();
     if (!result) {
@@ -2015,7 +2015,7 @@ get_feature_macros(TyObject *self, TyObject *Ty_UNUSED(args))
 }
 
 static TyObject *
-test_code_api(TyObject *self, TyObject *Ty_UNUSED(args))
+test_code_api(TyObject *self, TyObject *Py_UNUSED(args))
 {
     PyCodeObject *co = TyCode_NewEmpty("_testcapi", "dummy", 1);
     if (co == NULL) {
@@ -2090,7 +2090,7 @@ test_code_api(TyObject *self, TyObject *Ty_UNUSED(args))
         Ty_DECREF(co_freevars);
     }
     Ty_DECREF(co);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 fail:
     Ty_DECREF(co);
     return NULL;
@@ -2138,7 +2138,7 @@ settrace_to_record(TyObject *self, TyObject *list)
         return NULL;
     }
     TyEval_SetTrace(record_func, list);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -2165,11 +2165,11 @@ settrace_to_error(TyObject *self, TyObject *list)
         return NULL;
     }
     TyEval_SetTrace(error_func, list);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-test_macros(TyObject *self, TyObject *Ty_UNUSED(args))
+test_macros(TyObject *self, TyObject *Py_UNUSED(args))
 {
     struct MyStruct {
         int x;
@@ -2201,11 +2201,11 @@ test_macros(TyObject *self, TyObject *Ty_UNUSED(args))
     assert(_Ty_IS_TYPE_SIGNED(int));
     assert(!_Ty_IS_TYPE_SIGNED(unsigned int));
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-test_weakref_capi(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
+test_weakref_capi(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(args))
 {
     // Ignore PyWeakref_GetObject() deprecation, we test it on purpose
     _Ty_COMP_DIAG_PUSH
@@ -2312,7 +2312,7 @@ test_weakref_capi(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
 
     Ty_DECREF(weakref);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
     _Ty_COMP_DIAG_POP
 }
@@ -2336,7 +2336,7 @@ static int _simpletracer(TyObject *obj, PyRefTracerEvent event, void* data) {
 }
 
 static TyObject *
-test_reftracer(TyObject *ob, TyObject *Ty_UNUSED(ignored))
+test_reftracer(TyObject *ob, TyObject *Py_UNUSED(ignored))
 {
     // Save the current tracer and data to restore it later
     void* current_data;
@@ -2395,23 +2395,23 @@ test_reftracer(TyObject *ob, TyObject *Ty_UNUSED(ignored))
         goto failed;
     }
     PyRefTracer_SetTracer(current_tracer, current_data);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 failed:
     PyRefTracer_SetTracer(current_tracer, current_data);
     return NULL;
 }
 
 static TyObject *
-function_set_warning(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
+function_set_warning(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(args))
 {
     if (TyErr_WarnEx(TyExc_RuntimeWarning, "Testing TyErr_WarnEx", 2)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-test_critical_sections(TyObject *module, TyObject *Ty_UNUSED(args))
+test_critical_sections(TyObject *module, TyObject *Py_UNUSED(args))
 {
     Ty_BEGIN_CRITICAL_SECTION(module);
     Ty_END_CRITICAL_SECTION();
@@ -2419,13 +2419,13 @@ test_critical_sections(TyObject *module, TyObject *Ty_UNUSED(args))
     Ty_BEGIN_CRITICAL_SECTION2(module, module);
     Ty_END_CRITICAL_SECTION2();
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 // Used by `finalize_thread_hang`.
 #if defined(_POSIX_THREADS) && !defined(__wasi__)
-static void finalize_thread_hang_cleanup_callback(void *Ty_UNUSED(arg)) {
+static void finalize_thread_hang_cleanup_callback(void *Py_UNUSED(arg)) {
     // Should not reach here.
     Ty_FatalError("pthread thread termination was triggered unexpectedly");
 }
@@ -2448,7 +2448,7 @@ finalize_thread_hang(TyObject *self, TyObject *callback)
 #if defined(_POSIX_THREADS) && !defined(__wasi__)
     pthread_cleanup_pop(0);
 #endif
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2469,7 +2469,7 @@ atexit_callback(void *data)
 }
 
 static TyObject *
-test_atexit(TyObject *self, TyObject *Ty_UNUSED(args))
+test_atexit(TyObject *self, TyObject *Py_UNUSED(args))
 {
     PyThreadState *oldts = TyThreadState_Swap(NULL);
     PyThreadState *tstate = Ty_NewInterpreter();
@@ -2497,7 +2497,7 @@ test_atexit(TyObject *self, TyObject *Ty_UNUSED(args))
         TyErr_SetString(TyExc_RuntimeError, "atexit callback not called");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject*
@@ -2543,7 +2543,7 @@ toggle_reftrace_printer(TyObject *ob, TyObject *arg)
     else {
         PyRefTracer_SetTracer(NULL, NULL);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef TestMethods[] = {
@@ -2949,7 +2949,7 @@ generic_alias_dealloc(TyObject *op)
 }
 
 static TyObject *
-generic_alias_mro_entries(TyObject *op, TyObject *Ty_UNUSED(bases))
+generic_alias_mro_entries(TyObject *op, TyObject *Py_UNUSED(bases))
 {
     PyGenericAliasObject *self = (PyGenericAliasObject*)op;
     return TyTuple_Pack(1, self->item);
@@ -3104,7 +3104,7 @@ ContainerNoGC_dealloc(TyObject *op)
 }
 
 static TyMemberDef ContainerNoGC_members[] = {
-    {"value", _Ty_T_OBJECT, offsetof(ContainerNoGCobject, value), Ty_READONLY,
+    {"value", _Ty_T_OBJECT, offsetof(ContainerNoGCobject, value), Py_READONLY,
      PyDoc_STR("a container value for test purposes")},
     {0}
 };

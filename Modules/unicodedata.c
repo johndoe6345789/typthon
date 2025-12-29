@@ -84,7 +84,7 @@ typedef struct previous_version {
 #define get_old_record(self, v)    (PreviousDBVersion_CAST(self)->getrecord(v))
 
 static TyMemberDef DB_members[] = {
-        {"unidata_version", Ty_T_STRING, offsetof(PreviousDBVersion, name), Ty_READONLY},
+        {"unidata_version", Ty_T_STRING, offsetof(PreviousDBVersion, name), Py_READONLY},
         {NULL}
 };
 
@@ -866,7 +866,7 @@ unicodedata_UCD_is_normalized_impl(TyObject *self, TyObject *form,
 {
     if (TyUnicode_GET_LENGTH(input) == 0) {
         /* special case empty input strings. */
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
 
     TyObject *result;

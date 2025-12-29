@@ -114,7 +114,7 @@ static TyObject *
 _zstd_ZstdDict_dict_content_get_impl(ZstdDict *self);
 
 static TyObject *
-_zstd_ZstdDict_dict_content_get(TyObject *self, void *Ty_UNUSED(context))
+_zstd_ZstdDict_dict_content_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _zstd_ZstdDict_dict_content_get_impl((ZstdDict *)self);
 }
@@ -150,7 +150,7 @@ static TyObject *
 _zstd_ZstdDict_as_digested_dict_get_impl(ZstdDict *self);
 
 static TyObject *
-_zstd_ZstdDict_as_digested_dict_get(TyObject *self, void *Ty_UNUSED(context))
+_zstd_ZstdDict_as_digested_dict_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _zstd_ZstdDict_as_digested_dict_get_impl((ZstdDict *)self);
 }
@@ -184,7 +184,7 @@ static TyObject *
 _zstd_ZstdDict_as_undigested_dict_get_impl(ZstdDict *self);
 
 static TyObject *
-_zstd_ZstdDict_as_undigested_dict_get(TyObject *self, void *Ty_UNUSED(context))
+_zstd_ZstdDict_as_undigested_dict_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _zstd_ZstdDict_as_undigested_dict_get_impl((ZstdDict *)self);
 }
@@ -218,7 +218,7 @@ static TyObject *
 _zstd_ZstdDict_as_prefix_get_impl(ZstdDict *self);
 
 static TyObject *
-_zstd_ZstdDict_as_prefix_get(TyObject *self, void *Ty_UNUSED(context))
+_zstd_ZstdDict_as_prefix_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _zstd_ZstdDict_as_prefix_get_impl((ZstdDict *)self);
 }

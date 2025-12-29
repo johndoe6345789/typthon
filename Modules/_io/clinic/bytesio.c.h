@@ -22,7 +22,7 @@ static TyObject *
 _io_BytesIO_readable_impl(bytesio *self);
 
 static TyObject *
-_io_BytesIO_readable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_BytesIO_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_BytesIO_readable_impl((bytesio *)self);
 }
@@ -40,7 +40,7 @@ static TyObject *
 _io_BytesIO_writable_impl(bytesio *self);
 
 static TyObject *
-_io_BytesIO_writable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_BytesIO_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_BytesIO_writable_impl((bytesio *)self);
 }
@@ -58,7 +58,7 @@ static TyObject *
 _io_BytesIO_seekable_impl(bytesio *self);
 
 static TyObject *
-_io_BytesIO_seekable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_BytesIO_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_BytesIO_seekable_impl((bytesio *)self);
 }
@@ -76,7 +76,7 @@ static TyObject *
 _io_BytesIO_flush_impl(bytesio *self);
 
 static TyObject *
-_io_BytesIO_flush(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_BytesIO_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_BytesIO_flush_impl((bytesio *)self);
 }
@@ -116,7 +116,7 @@ static TyObject *
 _io_BytesIO_getvalue_impl(bytesio *self);
 
 static TyObject *
-_io_BytesIO_getvalue(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_BytesIO_getvalue(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_BytesIO_getvalue_impl((bytesio *)self);
 }
@@ -136,7 +136,7 @@ static TyObject *
 _io_BytesIO_isatty_impl(bytesio *self);
 
 static TyObject *
-_io_BytesIO_isatty(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_BytesIO_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_BytesIO_isatty_impl((bytesio *)self);
 }
@@ -154,7 +154,7 @@ static TyObject *
 _io_BytesIO_tell_impl(bytesio *self);
 
 static TyObject *
-_io_BytesIO_tell(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_BytesIO_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_BytesIO_tell_impl((bytesio *)self);
 }
@@ -497,7 +497,7 @@ static TyObject *
 _io_BytesIO_close_impl(bytesio *self);
 
 static TyObject *
-_io_BytesIO_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_BytesIO_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_BytesIO_close_impl((bytesio *)self);
 }

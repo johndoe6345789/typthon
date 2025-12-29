@@ -399,7 +399,7 @@ _random_Random_seed_impl(RandomObject *self, TyObject *n)
     if (random_seed(self, n) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -489,7 +489,7 @@ _random_Random_setstate_impl(RandomObject *self, TyObject *state)
     for (i = 0; i < N; i++)
         self->state[i] = new_state[i];
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

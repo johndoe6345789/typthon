@@ -32,7 +32,7 @@ codec_incrementaldecoder(TyObject *self, TyObject *args)
 }
 
 static TyObject *
-test_unicode_compare_with_ascii(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_unicode_compare_with_ascii(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *py_s = TyUnicode_FromStringAndSize("str\0", 4);
     int result;
@@ -45,11 +45,11 @@ test_unicode_compare_with_ascii(TyObject *self, TyObject *Ty_UNUSED(ignored))
                         "should not compare equal to c string.");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-test_widechar(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_widechar(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
 #if defined(SIZEOF_WCHAR_T) && (SIZEOF_WCHAR_T == 4)
     const wchar_t wtext[2] = {(wchar_t)0x10ABCDu};
@@ -106,7 +106,7 @@ test_widechar(TyObject *self, TyObject *Ty_UNUSED(ignored))
         return NULL;
     }
 #endif
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -529,7 +529,7 @@ unicode_asutf8andsize_null(TyObject *self, TyObject *args)
 
 /* Test TyUnicode_GetDefaultEncoding() */
 static TyObject *
-unicode_getdefaultencoding(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_getdefaultencoding(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     const char *s = TyUnicode_GetDefaultEncoding();
     if (s == NULL)
@@ -1413,7 +1413,7 @@ check_raised_systemerror(TyObject *result, char* msg)
 }
 
 static TyObject *
-test_string_from_format(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_string_from_format(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *result;
     TyObject *unicode = TyUnicode_FromString("None");
@@ -1825,7 +1825,7 @@ test_string_from_format(TyObject *self, TyObject *Ty_UNUSED(ignored))
     CHECK_FORMAT_2("%1.5lV", "None",    NULL,   L"None");
 
     Ty_XDECREF(unicode);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
  Fail:
     Ty_XDECREF(result);

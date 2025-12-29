@@ -449,7 +449,7 @@ static TyObject *
 select_devpoll_close_impl(devpollObject *self);
 
 static TyObject *
-select_devpoll_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+select_devpoll_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -477,7 +477,7 @@ static TyObject *
 select_devpoll_fileno_impl(devpollObject *self);
 
 static TyObject *
-select_devpoll_fileno(TyObject *self, TyObject *Ty_UNUSED(ignored))
+select_devpoll_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -508,7 +508,7 @@ static TyObject *
 select_poll_impl(TyObject *module);
 
 static TyObject *
-select_poll(TyObject *module, TyObject *Ty_UNUSED(ignored))
+select_poll(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return select_poll_impl(module);
 }
@@ -533,7 +533,7 @@ static TyObject *
 select_devpoll_impl(TyObject *module);
 
 static TyObject *
-select_devpoll(TyObject *module, TyObject *Ty_UNUSED(ignored))
+select_devpoll(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return select_devpoll_impl(module);
 }
@@ -645,7 +645,7 @@ static TyObject *
 select_epoll_close_impl(pyEpoll_Object *self);
 
 static TyObject *
-select_epoll_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+select_epoll_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -673,7 +673,7 @@ static TyObject *
 select_epoll_fileno_impl(pyEpoll_Object *self);
 
 static TyObject *
-select_epoll_fileno(TyObject *self, TyObject *Ty_UNUSED(ignored))
+select_epoll_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return select_epoll_fileno_impl((pyEpoll_Object *)self);
 }
@@ -1041,7 +1041,7 @@ static TyObject *
 select_epoll___enter___impl(pyEpoll_Object *self);
 
 static TyObject *
-select_epoll___enter__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+select_epoll___enter__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return select_epoll___enter___impl((pyEpoll_Object *)self);
 }
@@ -1156,7 +1156,7 @@ static TyObject *
 select_kqueue_close_impl(kqueue_queue_Object *self);
 
 static TyObject *
-select_kqueue_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+select_kqueue_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1184,7 +1184,7 @@ static TyObject *
 select_kqueue_fileno_impl(kqueue_queue_Object *self);
 
 static TyObject *
-select_kqueue_fileno(TyObject *self, TyObject *Ty_UNUSED(ignored))
+select_kqueue_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return select_kqueue_fileno_impl((kqueue_queue_Object *)self);
 }

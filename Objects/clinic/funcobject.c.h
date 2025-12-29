@@ -30,7 +30,7 @@ static TyObject *
 function___annotate___get_impl(PyFunctionObject *self);
 
 static TyObject *
-function___annotate___get(TyObject *self, void *Ty_UNUSED(context))
+function___annotate___get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -55,7 +55,7 @@ static int
 function___annotate___set_impl(PyFunctionObject *self, TyObject *value);
 
 static int
-function___annotate___set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+function___annotate___set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -87,7 +87,7 @@ static TyObject *
 function___annotations___get_impl(PyFunctionObject *self);
 
 static TyObject *
-function___annotations___get(TyObject *self, void *Ty_UNUSED(context))
+function___annotations___get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -112,7 +112,7 @@ static int
 function___annotations___set_impl(PyFunctionObject *self, TyObject *value);
 
 static int
-function___annotations___set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+function___annotations___set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -144,7 +144,7 @@ static TyObject *
 function___type_params___get_impl(PyFunctionObject *self);
 
 static TyObject *
-function___type_params___get(TyObject *self, void *Ty_UNUSED(context))
+function___type_params___get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -169,7 +169,7 @@ static int
 function___type_params___set_impl(PyFunctionObject *self, TyObject *value);
 
 static int
-function___type_params___set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+function___type_params___set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 

@@ -5728,7 +5728,7 @@ cleanup:
 }
 
 static TyMemberDef ast_type_members[] = {
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(AST_object, dict), Ty_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(AST_object, dict), Py_READONLY},
     {NULL}  /* Sentinel */
 };
 
@@ -6063,7 +6063,7 @@ static TyObject* ast2obj_list(struct ast_state *state, asdl_seq *seq,
     return result;
 }
 
-static TyObject* ast2obj_object(struct ast_state *Ty_UNUSED(state), void *o)
+static TyObject* ast2obj_object(struct ast_state *Py_UNUSED(state), void *o)
 {
     TyObject *op = (TyObject*)o;
     if (!op) {
@@ -6075,14 +6075,14 @@ static TyObject* ast2obj_object(struct ast_state *Ty_UNUSED(state), void *o)
 #define ast2obj_identifier ast2obj_object
 #define ast2obj_string ast2obj_object
 
-static TyObject* ast2obj_int(struct ast_state *Ty_UNUSED(state), long b)
+static TyObject* ast2obj_int(struct ast_state *Py_UNUSED(state), long b)
 {
     return TyLong_FromLong(b);
 }
 
 /* Conversion Python -> AST */
 
-static int obj2ast_object(struct ast_state *Ty_UNUSED(state), TyObject* obj, TyObject** out, PyArena* arena)
+static int obj2ast_object(struct ast_state *Py_UNUSED(state), TyObject* obj, TyObject** out, PyArena* arena)
 {
     if (obj == Ty_None)
         obj = NULL;
@@ -6099,7 +6099,7 @@ static int obj2ast_object(struct ast_state *Ty_UNUSED(state), TyObject* obj, TyO
     return 0;
 }
 
-static int obj2ast_constant(struct ast_state *Ty_UNUSED(state), TyObject* obj, TyObject** out, PyArena* arena)
+static int obj2ast_constant(struct ast_state *Py_UNUSED(state), TyObject* obj, TyObject** out, PyArena* arena)
 {
     if (_TyArena_AddPyObject(arena, obj) < 0) {
         *out = NULL;
@@ -6127,7 +6127,7 @@ static int obj2ast_string(struct ast_state *state, TyObject* obj, TyObject** out
     return obj2ast_object(state, obj, out, arena);
 }
 
-static int obj2ast_int(struct ast_state* Ty_UNUSED(state), TyObject* obj, int* out, PyArena* arena)
+static int obj2ast_int(struct ast_state* Py_UNUSED(state), TyObject* obj, int* out, PyArena* arena)
 {
     int i;
     if (!TyLong_Check(obj)) {
@@ -8891,7 +8891,7 @@ ast2obj_mod(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -8967,7 +8967,7 @@ ast2obj_stmt(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -9571,7 +9571,7 @@ ast2obj_expr(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10183,7 +10183,7 @@ ast2obj_comprehension(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10227,7 +10227,7 @@ ast2obj_excepthandler(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10291,7 +10291,7 @@ ast2obj_arguments(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10350,7 +10350,7 @@ ast2obj_arg(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10409,7 +10409,7 @@ ast2obj_keyword(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10463,7 +10463,7 @@ ast2obj_alias(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10517,7 +10517,7 @@ ast2obj_withitem(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10551,7 +10551,7 @@ ast2obj_match_case(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10590,7 +10590,7 @@ ast2obj_pattern(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10750,7 +10750,7 @@ ast2obj_type_ignore(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;
@@ -10788,7 +10788,7 @@ ast2obj_type_param(struct ast_state *state, void* _o)
     TyObject *result = NULL, *value = NULL;
     TyTypeObject *tp;
     if (!o) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (Ty_EnterRecursiveCall("during  ast construction")) {
         return NULL;

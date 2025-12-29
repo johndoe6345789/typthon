@@ -69,7 +69,7 @@ static TyObject *
 _elementtree_Element_clear_impl(ElementObject *self);
 
 static TyObject *
-_elementtree_Element_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_elementtree_Element_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _elementtree_Element_clear_impl((ElementObject *)self);
 }
@@ -135,7 +135,7 @@ static size_t
 _elementtree_Element___sizeof___impl(ElementObject *self);
 
 static TyObject *
-_elementtree_Element___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_elementtree_Element___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     size_t _return_value;
@@ -162,7 +162,7 @@ static TyObject *
 _elementtree_Element___getstate___impl(ElementObject *self);
 
 static TyObject *
-_elementtree_Element___getstate__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_elementtree_Element___getstate__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _elementtree_Element___getstate___impl((ElementObject *)self);
 }
@@ -729,7 +729,7 @@ static TyObject *
 _elementtree_Element_items_impl(ElementObject *self);
 
 static TyObject *
-_elementtree_Element_items(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_elementtree_Element_items(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _elementtree_Element_items_impl((ElementObject *)self);
 }
@@ -746,7 +746,7 @@ static TyObject *
 _elementtree_Element_keys_impl(ElementObject *self);
 
 static TyObject *
-_elementtree_Element_keys(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_elementtree_Element_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _elementtree_Element_keys_impl((ElementObject *)self);
 }
@@ -1100,7 +1100,7 @@ static TyObject *
 _elementtree_TreeBuilder_close_impl(TreeBuilderObject *self);
 
 static TyObject *
-_elementtree_TreeBuilder_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_elementtree_TreeBuilder_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _elementtree_TreeBuilder_close_impl((TreeBuilderObject *)self);
 }
@@ -1232,7 +1232,7 @@ static TyObject *
 _elementtree_XMLParser_close_impl(XMLParserObject *self);
 
 static TyObject *
-_elementtree_XMLParser_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_elementtree_XMLParser_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _elementtree_XMLParser_close_impl((XMLParserObject *)self);
 }
@@ -1249,7 +1249,7 @@ static TyObject *
 _elementtree_XMLParser_flush_impl(XMLParserObject *self);
 
 static TyObject *
-_elementtree_XMLParser_flush(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_elementtree_XMLParser_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _elementtree_XMLParser_flush_impl((XMLParserObject *)self);
 }

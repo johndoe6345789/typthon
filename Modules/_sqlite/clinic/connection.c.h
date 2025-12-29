@@ -378,7 +378,7 @@ static TyObject *
 pysqlite_connection_close_impl(pysqlite_Connection *self);
 
 static TyObject *
-pysqlite_connection_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pysqlite_connection_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pysqlite_connection_close_impl((pysqlite_Connection *)self);
 }
@@ -398,7 +398,7 @@ static TyObject *
 pysqlite_connection_commit_impl(pysqlite_Connection *self);
 
 static TyObject *
-pysqlite_connection_commit(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pysqlite_connection_commit(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pysqlite_connection_commit_impl((pysqlite_Connection *)self);
 }
@@ -418,7 +418,7 @@ static TyObject *
 pysqlite_connection_rollback_impl(pysqlite_Connection *self);
 
 static TyObject *
-pysqlite_connection_rollback(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pysqlite_connection_rollback(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pysqlite_connection_rollback_impl((pysqlite_Connection *)self);
 }
@@ -1240,7 +1240,7 @@ static TyObject *
 pysqlite_connection_interrupt_impl(pysqlite_Connection *self);
 
 static TyObject *
-pysqlite_connection_interrupt(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pysqlite_connection_interrupt(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pysqlite_connection_interrupt_impl((pysqlite_Connection *)self);
 }
@@ -1706,7 +1706,7 @@ static TyObject *
 pysqlite_connection_enter_impl(pysqlite_Connection *self);
 
 static TyObject *
-pysqlite_connection_enter(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pysqlite_connection_enter(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pysqlite_connection_enter_impl((pysqlite_Connection *)self);
 }

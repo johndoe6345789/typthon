@@ -84,7 +84,7 @@ current_fast_get(void)
 }
 
 static inline void
-current_fast_set(_PyRuntimeState *Ty_UNUSED(runtime), PyThreadState *tstate)
+current_fast_set(_PyRuntimeState *Py_UNUSED(runtime), PyThreadState *tstate)
 {
     assert(tstate != NULL);
 #ifdef HAVE_THREAD_LOCAL
@@ -96,7 +96,7 @@ current_fast_set(_PyRuntimeState *Ty_UNUSED(runtime), PyThreadState *tstate)
 }
 
 static inline void
-current_fast_clear(_PyRuntimeState *Ty_UNUSED(runtime))
+current_fast_clear(_PyRuntimeState *Py_UNUSED(runtime))
 {
 #ifdef HAVE_THREAD_LOCAL
     _Ty_tss_tstate = NULL;
@@ -1232,7 +1232,7 @@ _Ty_GetMainModule(PyThreadState *tstate)
     (void)PyMapping_GetOptionalItem(modules, &_Ty_ID(__main__), &module);
     Ty_DECREF(modules);
     if (module == NULL && !TyErr_Occurred()) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return module;
 }

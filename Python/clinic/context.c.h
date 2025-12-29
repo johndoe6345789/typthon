@@ -57,7 +57,7 @@ static TyObject *
 _contextvars_Context_items_impl(PyContext *self);
 
 static TyObject *
-_contextvars_Context_items(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_contextvars_Context_items(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _contextvars_Context_items_impl((PyContext *)self);
 }
@@ -75,7 +75,7 @@ static TyObject *
 _contextvars_Context_keys_impl(PyContext *self);
 
 static TyObject *
-_contextvars_Context_keys(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_contextvars_Context_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _contextvars_Context_keys_impl((PyContext *)self);
 }
@@ -93,7 +93,7 @@ static TyObject *
 _contextvars_Context_values_impl(PyContext *self);
 
 static TyObject *
-_contextvars_Context_values(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_contextvars_Context_values(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _contextvars_Context_values_impl((PyContext *)self);
 }
@@ -111,7 +111,7 @@ static TyObject *
 _contextvars_Context_copy_impl(PyContext *self);
 
 static TyObject *
-_contextvars_Context_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_contextvars_Context_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _contextvars_Context_copy_impl((PyContext *)self);
 }
@@ -219,7 +219,7 @@ static TyObject *
 token_enter_impl(PyContextToken *self);
 
 static TyObject *
-token_enter(TyObject *self, TyObject *Ty_UNUSED(ignored))
+token_enter(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return token_enter_impl((PyContextToken *)self);
 }

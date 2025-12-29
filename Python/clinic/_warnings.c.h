@@ -21,7 +21,7 @@ static TyObject *
 warnings_acquire_lock_impl(TyObject *module);
 
 static TyObject *
-warnings_acquire_lock(TyObject *module, TyObject *Ty_UNUSED(ignored))
+warnings_acquire_lock(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return warnings_acquire_lock_impl(module);
 }
@@ -38,7 +38,7 @@ static TyObject *
 warnings_release_lock_impl(TyObject *module);
 
 static TyObject *
-warnings_release_lock(TyObject *module, TyObject *Ty_UNUSED(ignored))
+warnings_release_lock(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return warnings_release_lock_impl(module);
 }
@@ -280,7 +280,7 @@ static TyObject *
 warnings_filters_mutated_lock_held_impl(TyObject *module);
 
 static TyObject *
-warnings_filters_mutated_lock_held(TyObject *module, TyObject *Ty_UNUSED(ignored))
+warnings_filters_mutated_lock_held(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return warnings_filters_mutated_lock_held_impl(module);
 }

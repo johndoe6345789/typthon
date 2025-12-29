@@ -229,7 +229,7 @@ readline_parse_and_bind_impl(TyObject *module, TyObject *string)
     Ty_DECREF(encoded);
     rl_parse_and_bind(copy);
     TyMem_Free(copy); /* Free the copy */
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Exported function to parse a readline init file */
@@ -272,7 +272,7 @@ readline_read_init_file_impl(TyObject *module, TyObject *filename_obj)
     if (errno)
         return TyErr_SetFromErrno(TyExc_OSError);
     disable_bracketed_paste();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Exported function to load a readline history file */
@@ -312,7 +312,7 @@ readline_read_history_file_impl(TyObject *module, TyObject *filename_obj)
     }
     if (errno)
         return TyErr_SetFromErrno(TyExc_OSError);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int _history_length = -1; /* do not truncate history by default */
@@ -362,7 +362,7 @@ readline_write_history_file_impl(TyObject *module, TyObject *filename_obj)
     errno = err;
     if (errno)
         return TyErr_SetFromErrno(TyExc_OSError);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef HAVE_RL_APPEND_HISTORY
@@ -420,7 +420,7 @@ readline_append_history_file_impl(TyObject *module, int nelements,
     errno = err;
     if (errno)
         return TyErr_SetFromErrno(TyExc_OSError);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 
@@ -443,7 +443,7 @@ readline_set_history_length_impl(TyObject *module, int length)
 /*[clinic end generated code: output=e161a53e45987dc7 input=b8901bf16488b760]*/
 {
     FT_ATOMIC_STORE_INT_RELAXED(_history_length, length);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Get history length */
@@ -479,7 +479,7 @@ set_hook(const char *funcname, TyObject **hook_var, TyObject *function)
                      funcname);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -655,7 +655,7 @@ readline_set_completer_delims_impl(TyObject *module, TyObject *string)
         }
 #endif
         rl_completer_word_break_characters = break_chars;
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     else
         return TyErr_NoMemory();
@@ -723,7 +723,7 @@ readline_remove_history_item_impl(TyObject *module, int entry_number)
     }
     /* free memory allocated for the history entry */
     _py_free_history_entry_lock_held(entry);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -768,7 +768,7 @@ readline_replace_history_item_impl(TyObject *module, int entry_number,
     }
     /* free memory allocated for the old history entry */
     _py_free_history_entry_lock_held(old_entry);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Add a line to the history buffer */
@@ -793,7 +793,7 @@ readline_add_history_impl(TyObject *module, TyObject *string)
     }
     add_history(TyBytes_AS_STRING(encoded));
     Ty_DECREF(encoded);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int should_auto_add_history = 1;
@@ -815,7 +815,7 @@ readline_set_auto_history_impl(TyObject *module,
 /*[clinic end generated code: output=619c6968246fd82b input=3d413073a1a03355]*/
 {
     should_auto_add_history = _should_auto_add_history;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -871,7 +871,7 @@ readline_get_completer_impl(TyObject *module)
 {
     readlinestate *state = get_readline_state(module);
     if (state->completer == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(state->completer);
 }
@@ -929,13 +929,13 @@ readline_get_history_item_impl(TyObject *module, int idx)
          */
         if (idx < (0 + libedit_history_start)
                 || idx >= (length + libedit_history_start)) {
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
     }
     if ((hist_ent = history_get(idx)))
         return decode(hist_ent->line);
     else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -987,7 +987,7 @@ readline_clear_history_impl(TyObject *module)
 /*[clinic end generated code: output=1f2dbb0dfa5d5ebb input=b2c6b11551593053]*/
 {
     clear_history();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 
@@ -1014,7 +1014,7 @@ readline_insert_text_impl(TyObject *module, TyObject *string)
     }
     rl_insert_text(TyBytes_AS_STRING(encoded));
     Ty_DECREF(encoded);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Redisplay the line buffer */
@@ -1031,7 +1031,7 @@ readline_redisplay_impl(TyObject *module)
 /*[clinic end generated code: output=a8b9725827c3c34b input=5895fd014615ff58]*/
 {
     rl_redisplay();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #include "clinic/readline.c.h"
@@ -1110,7 +1110,7 @@ static int
 #if defined(_RL_FUNCTION_TYPEDEF) || !defined(Ty_RL_STARTUP_HOOK_TAKES_ARGS)
 on_startup_hook(void)
 #else
-on_startup_hook(const char *Ty_UNUSED(text), int Ty_UNUSED(state))
+on_startup_hook(const char *Py_UNUSED(text), int Py_UNUSED(state))
 #endif
 {
     int r;
@@ -1130,7 +1130,7 @@ static int
 #if defined(_RL_FUNCTION_TYPEDEF) || !defined(Ty_RL_STARTUP_HOOK_TAKES_ARGS)
 on_pre_input_hook(void)
 #else
-on_pre_input_hook(const char *Ty_UNUSED(text), int Ty_UNUSED(state))
+on_pre_input_hook(const char *Py_UNUSED(text), int Py_UNUSED(state))
 #endif
 {
     int r;

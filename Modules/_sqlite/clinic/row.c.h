@@ -52,7 +52,7 @@ static TyObject *
 pysqlite_row_keys_impl(pysqlite_Row *self);
 
 static TyObject *
-pysqlite_row_keys(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pysqlite_row_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pysqlite_row_keys_impl((pysqlite_Row *)self);
 }

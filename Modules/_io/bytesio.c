@@ -244,14 +244,14 @@ write_bytes(bytesio *self, TyObject *b)
 }
 
 static TyObject *
-bytesio_get_closed(TyObject *op, void *Ty_UNUSED(closure))
+bytesio_get_closed(TyObject *op, void *Py_UNUSED(closure))
 {
     bytesio *self = bytesio_CAST(op);
     if (self->buf == NULL) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
     else {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 }
 
@@ -266,7 +266,7 @@ _io_BytesIO_readable_impl(bytesio *self)
 /*[clinic end generated code: output=4e93822ad5b62263 input=96c5d0cccfb29f5c]*/
 {
     CHECK_CLOSED(self);
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -280,7 +280,7 @@ _io_BytesIO_writable_impl(bytesio *self)
 /*[clinic end generated code: output=64ff6a254b1150b8 input=700eed808277560a]*/
 {
     CHECK_CLOSED(self);
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -294,7 +294,7 @@ _io_BytesIO_seekable_impl(bytesio *self)
 /*[clinic end generated code: output=6b417f46dcc09b56 input=9421f65627a344dd]*/
 {
     CHECK_CLOSED(self);
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -308,7 +308,7 @@ _io_BytesIO_flush_impl(bytesio *self)
 /*[clinic end generated code: output=187e3d781ca134a0 input=561ea490be4581a7]*/
 {
     CHECK_CLOSED(self);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -381,7 +381,7 @@ _io_BytesIO_isatty_impl(bytesio *self)
 /*[clinic end generated code: output=df67712e669f6c8f input=6f97f0985d13f827]*/
 {
     CHECK_CLOSED(self);
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /*[clinic input]
@@ -756,7 +756,7 @@ _io_BytesIO_writelines_impl(bytesio *self, TyObject *lines)
     if (TyErr_Occurred())
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -771,7 +771,7 @@ _io_BytesIO_close_impl(bytesio *self)
 {
     CHECK_EXPORTS(self);
     Ty_CLEAR(self->buf);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Pickling support.
@@ -790,7 +790,7 @@ _io_BytesIO_close_impl(bytesio *self)
  */
 
 static TyObject *
-bytesio_getstate(TyObject *op, TyObject *Ty_UNUSED(dummy))
+bytesio_getstate(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     bytesio *self = bytesio_CAST(op);
     TyObject *initvalue = _io_BytesIO_getvalue_impl(self);
@@ -888,7 +888,7 @@ bytesio_setstate(TyObject *op, TyObject *state)
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static void
@@ -970,7 +970,7 @@ _io_BytesIO___init___impl(bytesio *self, TyObject *initvalue)
 }
 
 static TyObject *
-bytesio_sizeof(TyObject *op, TyObject *Ty_UNUSED(dummy))
+bytesio_sizeof(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     bytesio *self = bytesio_CAST(op);
     size_t res = _TyObject_SIZE(Ty_TYPE(self));
@@ -1042,8 +1042,8 @@ static struct TyMethodDef bytesio_methods[] = {
 };
 
 static TyMemberDef bytesio_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(bytesio, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(bytesio, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(bytesio, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(bytesio, dict), Py_READONLY},
     {NULL}
 };
 
@@ -1101,7 +1101,7 @@ bytesiobuf_getbuffer(TyObject *op, Ty_buffer *view, int flags)
 }
 
 static void
-bytesiobuf_releasebuffer(TyObject *op, Ty_buffer *Ty_UNUSED(view))
+bytesiobuf_releasebuffer(TyObject *op, Ty_buffer *Py_UNUSED(view))
 {
     bytesiobuf *obj = bytesiobuf_CAST(op);
     bytesio *b = bytesio_CAST(obj->source);

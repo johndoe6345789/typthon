@@ -73,7 +73,7 @@ static TyObject *
 type_mro_impl(TyTypeObject *self);
 
 static TyObject *
-type_mro(TyObject *self, TyObject *Ty_UNUSED(ignored))
+type_mro(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return type_mro_impl((TyTypeObject *)self);
 }
@@ -91,7 +91,7 @@ static TyObject *
 type___subclasses___impl(TyTypeObject *self);
 
 static TyObject *
-type___subclasses__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+type___subclasses__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return type___subclasses___impl((TyTypeObject *)self);
 }
@@ -109,7 +109,7 @@ static TyObject *
 type___dir___impl(TyTypeObject *self);
 
 static TyObject *
-type___dir__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+type___dir__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return type___dir___impl((TyTypeObject *)self);
 }
@@ -127,7 +127,7 @@ static TyObject *
 type___sizeof___impl(TyTypeObject *self);
 
 static TyObject *
-type___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+type___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return type___sizeof___impl((TyTypeObject *)self);
 }
@@ -145,7 +145,7 @@ static TyObject *
 object___getstate___impl(TyObject *self);
 
 static TyObject *
-object___getstate__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+object___getstate__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return object___getstate___impl(self);
 }
@@ -163,7 +163,7 @@ static TyObject *
 object___reduce___impl(TyObject *self);
 
 static TyObject *
-object___reduce__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+object___reduce__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return object___reduce___impl(self);
 }
@@ -240,7 +240,7 @@ static TyObject *
 object___sizeof___impl(TyObject *self);
 
 static TyObject *
-object___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+object___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return object___sizeof___impl(self);
 }
@@ -258,7 +258,7 @@ static TyObject *
 object___dir___impl(TyObject *self);
 
 static TyObject *
-object___dir__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+object___dir__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return object___dir___impl(self);
 }

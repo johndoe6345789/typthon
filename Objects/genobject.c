@@ -29,12 +29,12 @@ static TyObject* async_gen_athrow_new(PyAsyncGenObject *, TyObject *);
 
 
 #define _TyGen_CAST(op) \
-    _Ty_CAST(PyGenObject*, (op))
+    _Py_CAST(PyGenObject*, (op))
 #define _PyCoroObject_CAST(op) \
     (assert(TyCoro_CheckExact(op)), \
-     _Ty_CAST(PyCoroObject*, (op)))
+     _Py_CAST(PyCoroObject*, (op)))
 #define _PyAsyncGenObject_CAST(op) \
-    _Ty_CAST(PyAsyncGenObject*, (op))
+    _Py_CAST(PyAsyncGenObject*, (op))
 
 
 static const char *NON_INIT_CORO_MSG = "can't send non-None value to a "
@@ -390,10 +390,10 @@ gen_close(TyObject *self, TyObject *args)
 
     if (gen->gi_frame_state == FRAME_CREATED) {
         gen->gi_frame_state = FRAME_COMPLETED;
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (FRAME_STATE_FINISHED(gen->gi_frame_state)) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     TyObject *yf = _TyGen_yf(gen);
@@ -416,7 +416,7 @@ gen_close(TyObject *self, TyObject *args)
             assert((oparg & RESUME_OPARG_LOCATION_MASK) != RESUME_AT_FUNC_START);
             gen->gi_frame_state = FRAME_COMPLETED;
             gen_clear_frame(gen);
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
     }
     if (err == 0) {
@@ -439,7 +439,7 @@ gen_close(TyObject *self, TyObject *args)
 
     if (TyErr_ExceptionMatches(TyExc_GeneratorExit)) {
         TyErr_Clear();          /* ignore this error */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     /* if the generator returned a value while closing, StopIteration was
@@ -701,14 +701,14 @@ gen_repr(TyObject *self)
 }
 
 static TyObject *
-gen_get_name(TyObject *self, void *Ty_UNUSED(ignored))
+gen_get_name(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyGenObject *op = _TyGen_CAST(self);
     return Ty_NewRef(op->gi_name);
 }
 
 static int
-gen_set_name(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
+gen_set_name(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     PyGenObject *op = _TyGen_CAST(self);
     /* Not legal to del gen.gi_name or to set it to anything
@@ -723,14 +723,14 @@ gen_set_name(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-gen_get_qualname(TyObject *self, void *Ty_UNUSED(ignored))
+gen_get_qualname(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyGenObject *op = _TyGen_CAST(self);
     return Ty_NewRef(op->gi_qualname);
 }
 
 static int
-gen_set_qualname(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
+gen_set_qualname(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     PyGenObject *op = _TyGen_CAST(self);
     /* Not legal to del gen.__qualname__ or to set it to anything
@@ -745,28 +745,28 @@ gen_set_qualname(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-gen_getyieldfrom(TyObject *gen, void *Ty_UNUSED(ignored))
+gen_getyieldfrom(TyObject *gen, void *Py_UNUSED(ignored))
 {
     TyObject *yf = _TyGen_yf(_TyGen_CAST(gen));
     if (yf == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return yf;
 }
 
 
 static TyObject *
-gen_getrunning(TyObject *self, void *Ty_UNUSED(ignored))
+gen_getrunning(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyGenObject *gen = _TyGen_CAST(self);
     if (gen->gi_frame_state == FRAME_EXECUTING) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
-gen_getsuspended(TyObject *self, void *Ty_UNUSED(ignored))
+gen_getsuspended(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyGenObject *gen = _TyGen_CAST(self);
     return TyBool_FromLong(FRAME_STATE_SUSPENDED(gen->gi_frame_state));
@@ -779,13 +779,13 @@ _gen_getframe(PyGenObject *gen, const char *const name)
         return NULL;
     }
     if (FRAME_STATE_FINISHED(gen->gi_frame_state)) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return _Ty_XNewRef((TyObject *)_TyFrame_GetFrameObject(&gen->gi_iframe));
 }
 
 static TyObject *
-gen_getframe(TyObject *self, void *Ty_UNUSED(ignored))
+gen_getframe(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyGenObject *gen = _TyGen_CAST(self);
     return _gen_getframe(gen, "gi_frame");
@@ -801,7 +801,7 @@ _gen_getcode(PyGenObject *gen, const char *const name)
 }
 
 static TyObject *
-gen_getcode(TyObject *self, void *Ty_UNUSED(ignored))
+gen_getcode(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyGenObject *gen = _TyGen_CAST(self);
     return _gen_getcode(gen, "gi_code");
@@ -826,7 +826,7 @@ static TyMemberDef gen_memberlist[] = {
 };
 
 static TyObject *
-gen_sizeof(TyObject *op, TyObject *Ty_UNUSED(ignored))
+gen_sizeof(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyGenObject *gen = _TyGen_CAST(op);
     Ty_ssize_t res;
@@ -1038,7 +1038,7 @@ typedef struct {
 
 #define _PyCoroWrapper_CAST(op) \
     (assert(Ty_IS_TYPE((op), &_PyCoroWrapper_Type)), \
-     _Ty_CAST(PyCoroWrapper*, (op)))
+     _Py_CAST(PyCoroWrapper*, (op)))
 
 
 static int
@@ -1123,42 +1123,42 @@ coro_await(TyObject *coro)
 }
 
 static TyObject *
-coro_get_cr_await(TyObject *coro, void *Ty_UNUSED(ignored))
+coro_get_cr_await(TyObject *coro, void *Py_UNUSED(ignored))
 {
     TyObject *yf = _TyGen_yf((PyGenObject *) coro);
     if (yf == NULL)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     return yf;
 }
 
 static TyObject *
-cr_getsuspended(TyObject *self, void *Ty_UNUSED(ignored))
+cr_getsuspended(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyCoroObject *coro = _PyCoroObject_CAST(self);
     if (FRAME_STATE_SUSPENDED(coro->cr_frame_state)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
-cr_getrunning(TyObject *self, void *Ty_UNUSED(ignored))
+cr_getrunning(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyCoroObject *coro = _PyCoroObject_CAST(self);
     if (coro->cr_frame_state == FRAME_EXECUTING) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
-cr_getframe(TyObject *coro, void *Ty_UNUSED(ignored))
+cr_getframe(TyObject *coro, void *Py_UNUSED(ignored))
 {
     return _gen_getframe(_TyGen_CAST(coro), "cr_frame");
 }
 
 static TyObject *
-cr_getcode(TyObject *coro, void *Ty_UNUSED(ignored))
+cr_getcode(TyObject *coro, void *Py_UNUSED(ignored))
 {
     return _gen_getcode(_TyGen_CAST(coro), "cr_code");
 }
@@ -1178,7 +1178,7 @@ static TyGetSetDef coro_getsetlist[] = {
 };
 
 static TyMemberDef coro_memberlist[] = {
-    {"cr_origin",    _Ty_T_OBJECT, offsetof(PyCoroObject, cr_origin_or_finalizer),   Ty_READONLY},
+    {"cr_origin",    _Ty_T_OBJECT, offsetof(PyCoroObject, cr_origin_or_finalizer),   Py_READONLY},
     {NULL}      /* Sentinel */
 };
 
@@ -1442,7 +1442,7 @@ typedef struct PyAsyncGenASend {
 } PyAsyncGenASend;
 
 #define _PyAsyncGenASend_CAST(op) \
-    _Ty_CAST(PyAsyncGenASend*, (op))
+    _Py_CAST(PyAsyncGenASend*, (op))
 
 
 typedef struct PyAsyncGenAThrow {
@@ -1467,7 +1467,7 @@ typedef struct _PyAsyncGenWrappedValue {
                     Ty_IS_TYPE(o, &_PyAsyncGenWrappedValue_Type)
 #define _PyAsyncGenWrappedValue_CAST(op) \
     (assert(_PyAsyncGenWrappedValue_CheckExact(op)), \
-     _Ty_CAST(_PyAsyncGenWrappedValue*, (op)))
+     _Py_CAST(_PyAsyncGenWrappedValue*, (op)))
 
 
 static int
@@ -1576,25 +1576,25 @@ async_gen_athrow(TyObject *op, TyObject *args)
 }
 
 static TyObject *
-ag_getframe(TyObject *ag, void *Ty_UNUSED(ignored))
+ag_getframe(TyObject *ag, void *Py_UNUSED(ignored))
 {
     return _gen_getframe((PyGenObject *)ag, "ag_frame");
 }
 
 static TyObject *
-ag_getcode(TyObject *gen, void *Ty_UNUSED(ignored))
+ag_getcode(TyObject *gen, void *Py_UNUSED(ignored))
 {
     return _gen_getcode((PyGenObject*)gen, "ag_code");
 }
 
 static TyObject *
-ag_getsuspended(TyObject *self, void *Ty_UNUSED(ignored))
+ag_getsuspended(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyAsyncGenObject *ag = _PyAsyncGenObject_CAST(self);
     if (FRAME_STATE_SUSPENDED(ag->ag_frame_state)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyGetSetDef async_gen_getsetlist[] = {
@@ -1612,7 +1612,7 @@ static TyGetSetDef async_gen_getsetlist[] = {
 
 static TyMemberDef async_gen_memberlist[] = {
     {"ag_running", Ty_T_BOOL,   offsetof(PyAsyncGenObject, ag_running_async),
-        Ty_READONLY},
+        Py_READONLY},
     {NULL}      /* Sentinel */
 };
 
@@ -1868,7 +1868,7 @@ async_gen_asend_close(TyObject *self, TyObject *args)
 {
     PyAsyncGenASend *o = _PyAsyncGenASend_CAST(self);
     if (o->ags_state == AWAITABLE_STATE_CLOSED) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     TyObject *result = async_gen_asend_throw(self, &TyExc_GeneratorExit, 1);
@@ -1878,7 +1878,7 @@ async_gen_asend_close(TyObject *self, TyObject *args)
             TyErr_ExceptionMatches(TyExc_GeneratorExit))
         {
             TyErr_Clear();
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         return result;
     }
@@ -2066,7 +2066,7 @@ _PyAsyncGenValueWrapperNew(PyThreadState *tstate, TyObject *val)
 
 #define _PyAsyncGenAThrow_CAST(op) \
     (assert(Ty_IS_TYPE((op), &_PyAsyncGenAThrow_Type)), \
-     _Ty_CAST(PyAsyncGenAThrow*, (op)))
+     _Py_CAST(PyAsyncGenAThrow*, (op)))
 
 static void
 async_gen_athrow_dealloc(TyObject *self)
@@ -2308,7 +2308,7 @@ async_gen_athrow_close(TyObject *self, TyObject *args)
 {
     PyAsyncGenAThrow *agt = _PyAsyncGenAThrow_CAST(self);
     if (agt->agt_state == AWAITABLE_STATE_CLOSED) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     TyObject *result = async_gen_athrow_throw((TyObject*)agt,
                                               &TyExc_GeneratorExit, 1);
@@ -2318,7 +2318,7 @@ async_gen_athrow_close(TyObject *self, TyObject *args)
             TyErr_ExceptionMatches(TyExc_GeneratorExit))
         {
             TyErr_Clear();
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         return result;
     } else {

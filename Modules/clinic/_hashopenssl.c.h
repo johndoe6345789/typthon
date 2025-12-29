@@ -23,7 +23,7 @@ static TyObject *
 EVP_copy_impl(EVPobject *self);
 
 static TyObject *
-EVP_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+EVP_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return EVP_copy_impl((EVPobject *)self);
 }
@@ -41,7 +41,7 @@ static TyObject *
 EVP_digest_impl(EVPobject *self);
 
 static TyObject *
-EVP_digest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+EVP_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return EVP_digest_impl((EVPobject *)self);
 }
@@ -59,7 +59,7 @@ static TyObject *
 EVP_hexdigest_impl(EVPobject *self);
 
 static TyObject *
-EVP_hexdigest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+EVP_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return EVP_hexdigest_impl((EVPobject *)self);
 }
@@ -1772,7 +1772,7 @@ static TyObject *
 _hashlib_HMAC_copy_impl(HMACobject *self);
 
 static TyObject *
-_hashlib_HMAC_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_hashlib_HMAC_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _hashlib_HMAC_copy_impl((HMACobject *)self);
 }
@@ -1848,7 +1848,7 @@ static TyObject *
 _hashlib_HMAC_digest_impl(HMACobject *self);
 
 static TyObject *
-_hashlib_HMAC_digest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_hashlib_HMAC_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _hashlib_HMAC_digest_impl((HMACobject *)self);
 }
@@ -1869,7 +1869,7 @@ static TyObject *
 _hashlib_HMAC_hexdigest_impl(HMACobject *self);
 
 static TyObject *
-_hashlib_HMAC_hexdigest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_hashlib_HMAC_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _hashlib_HMAC_hexdigest_impl((HMACobject *)self);
 }
@@ -1894,7 +1894,7 @@ static int
 _hashlib_get_fips_mode_impl(TyObject *module);
 
 static TyObject *
-_hashlib_get_fips_mode(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_hashlib_get_fips_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;

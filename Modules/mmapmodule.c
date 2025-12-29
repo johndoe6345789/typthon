@@ -171,7 +171,7 @@ mmap_object_dealloc(TyObject *op)
 }
 
 static TyObject *
-mmap_close_method(TyObject *op, TyObject *Ty_UNUSED(ignored))
+mmap_close_method(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     mmap_object *self = mmap_object_CAST(op);
     if (self->exports > 0) {
@@ -220,7 +220,7 @@ mmap_close_method(TyObject *op, TyObject *Ty_UNUSED(ignored))
     Ty_END_ALLOW_THREADS
 #endif
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef MS_WINDOWS
@@ -462,7 +462,7 @@ _safe_PyBytes_FromStringAndSize(char *start, size_t num_bytes) {
 }
 
 static TyObject *
-mmap_read_byte_method(TyObject *op, TyObject *Ty_UNUSED(ignored))
+mmap_read_byte_method(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     mmap_object *self = mmap_object_CAST(op);
     CHECK_VALID(NULL);
@@ -479,7 +479,7 @@ mmap_read_byte_method(TyObject *op, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-mmap_read_line_method(TyObject *op, TyObject *Ty_UNUSED(ignored))
+mmap_read_line_method(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     Ty_ssize_t remaining;
     char *start, *eol;
@@ -700,11 +700,11 @@ mmap_write_byte_method(TyObject *op, TyObject *args)
         return NULL;
     }
     self->pos++;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-mmap_size_method(TyObject *op, TyObject *Ty_UNUSED(ignored))
+mmap_size_method(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     mmap_object *self = mmap_object_CAST(op);
     CHECK_VALID(NULL);
@@ -863,7 +863,7 @@ mmap_resize_method(TyObject *op, TyObject *args)
             TyErr_SetFromWindowsErr(file_resize_error);
             return NULL;
         }
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 #endif /* MS_WINDOWS */
 
 #ifdef UNIX
@@ -895,14 +895,14 @@ mmap_resize_method(TyObject *op, TyObject *args)
         }
         self->data = newmap;
         self->size = new_size;
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 #endif /* HAVE_MREMAP */
 #endif /* UNIX */
     }
 }
 
 static TyObject *
-mmap_tell_method(TyObject *op, TyObject *Ty_UNUSED(ignored))
+mmap_tell_method(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     mmap_object *self = mmap_object_CAST(op);
     CHECK_VALID(NULL);
@@ -924,21 +924,21 @@ mmap_flush_method(TyObject *op, TyObject *args)
     }
 
     if (self->access == ACCESS_READ || self->access == ACCESS_COPY)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 
 #if defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_APP) || defined(MS_WINDOWS_SYSTEM)
     if (!FlushViewOfFile(self->data+offset, size)) {
         TyErr_SetFromWindowsErr(GetLastError());
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #elif defined(UNIX)
     /* XXX flags for msync? */
     if (-1 == msync(self->data + offset, size, MS_SYNC)) {
         TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #else
     TyErr_SetString(TyExc_ValueError, "flush not supported on this system");
     return NULL;
@@ -986,9 +986,9 @@ mmap_seek_method(TyObject *op, TyObject *args)
 }
 
 static TyObject *
-mmap_seekable_method(TyObject *op, TyObject *Ty_UNUSED(ignored))
+mmap_seekable_method(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 static TyObject *
@@ -1011,7 +1011,7 @@ mmap_move_method(TyObject *op, TyObject *args)
         if (safe_memmove(self->data + dest, self->data + src, cnt) < 0) {
             return NULL;
         };
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 
       bounds:
         TyErr_SetString(TyExc_ValueError,
@@ -1021,7 +1021,7 @@ mmap_move_method(TyObject *op, TyObject *args)
 }
 
 static TyObject *
-mmap_closed_get(TyObject *op, void *Ty_UNUSED(closure))
+mmap_closed_get(TyObject *op, void *Py_UNUSED(closure))
 {
     mmap_object *self = mmap_object_CAST(op);
 #ifdef MS_WINDOWS
@@ -1032,7 +1032,7 @@ mmap_closed_get(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-mmap__enter__method(TyObject *op, TyObject *Ty_UNUSED(ignored))
+mmap__enter__method(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     mmap_object *self = mmap_object_CAST(op);
     CHECK_VALID(NULL);
@@ -1041,7 +1041,7 @@ mmap__enter__method(TyObject *op, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-mmap__exit__method(TyObject *op, TyObject *Ty_UNUSED(args))
+mmap__exit__method(TyObject *op, TyObject *Py_UNUSED(args))
 {
     return mmap_close_method(op, NULL);
 }
@@ -1093,7 +1093,7 @@ mmap__repr__method(TyObject *op)
 
 #ifdef MS_WINDOWS
 static TyObject *
-mmap__sizeof__method(TyObject *op, TyObject *Ty_UNUSED(dummy))
+mmap__sizeof__method(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     mmap_object *self = mmap_object_CAST(op);
     size_t res = _TyObject_SIZE(Ty_TYPE(self));
@@ -1124,7 +1124,7 @@ mmap_protect_method(TyObject *op, TyObject *args) {
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 
@@ -1166,12 +1166,12 @@ mmap_madvise_method(TyObject *op, TyObject *args)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif // HAVE_MADVISE
 
 static struct TyMemberDef mmap_object_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(mmap_object, weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(mmap_object, weakreflist), Py_READONLY},
     {NULL},
 };
 
@@ -1226,7 +1226,7 @@ mmap_buffer_getbuf(TyObject *op, Ty_buffer *view, int flags)
 }
 
 static void
-mmap_buffer_releasebuf(TyObject *op, Ty_buffer *Ty_UNUSED(view))
+mmap_buffer_releasebuf(TyObject *op, Ty_buffer *Py_UNUSED(view))
 {
     mmap_object *self = mmap_object_CAST(op);
     self->exports--;

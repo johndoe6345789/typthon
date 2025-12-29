@@ -3,14 +3,14 @@
 
 
 static TyObject *
-tuple_get_size(TyObject *Ty_UNUSED(module), TyObject *obj)
+tuple_get_size(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_SIZE(TyTuple_GET_SIZE(obj));
 }
 
 static TyObject *
-tuple_get_item(TyObject *Ty_UNUSED(module), TyObject *args)
+tuple_get_item(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t i;
@@ -36,7 +36,7 @@ tuple_copy(TyObject *tuple)
 }
 
 static TyObject *
-tuple_set_item(TyObject *Ty_UNUSED(module), TyObject *args)
+tuple_set_item(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj, *value, *newtuple;
     Ty_ssize_t i;
@@ -66,7 +66,7 @@ tuple_set_item(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-_tuple_resize(TyObject *Ty_UNUSED(module), TyObject *args)
+_tuple_resize(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *tup;
     Ty_ssize_t newsize;
@@ -93,7 +93,7 @@ _tuple_resize(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-_check_tuple_item_is_NULL(TyObject *Ty_UNUSED(module), TyObject *args)
+_check_tuple_item_is_NULL(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t i;

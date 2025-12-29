@@ -724,7 +724,7 @@ make_bottom(JitOptContext *ctx)
 }
 
 TyObject *
-_Py_uop_symbols_test(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(ignored))
+_Py_uop_symbols_test(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(ignored))
 {
     JitOptContext context;
     JitOptContext *ctx = &context;
@@ -860,7 +860,7 @@ _Py_uop_symbols_test(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(ignored))
     Ty_DECREF(val_42);
     Ty_DECREF(val_43);
     Ty_DECREF(tuple);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 fail:
     _Py_uop_abstractcontext_fini(ctx);

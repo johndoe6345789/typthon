@@ -163,7 +163,7 @@ static TyObject *
 _remote_debugging_RemoteUnwinder_get_stack_trace_impl(RemoteUnwinderObject *self);
 
 static TyObject *
-_remote_debugging_RemoteUnwinder_get_stack_trace(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_remote_debugging_RemoteUnwinder_get_stack_trace(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -220,7 +220,7 @@ static TyObject *
 _remote_debugging_RemoteUnwinder_get_all_awaited_by_impl(RemoteUnwinderObject *self);
 
 static TyObject *
-_remote_debugging_RemoteUnwinder_get_all_awaited_by(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_remote_debugging_RemoteUnwinder_get_all_awaited_by(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -278,7 +278,7 @@ static TyObject *
 _remote_debugging_RemoteUnwinder_get_async_stack_trace_impl(RemoteUnwinderObject *self);
 
 static TyObject *
-_remote_debugging_RemoteUnwinder_get_async_stack_trace(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_remote_debugging_RemoteUnwinder_get_async_stack_trace(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

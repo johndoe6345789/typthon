@@ -2,7 +2,7 @@
 
 
 static TyObject *
-test_PyOS_mystrnicmp(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_PyOS_mystrnicmp(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     assert(TyOS_mystrnicmp("", "", 0) == 0);
     assert(TyOS_mystrnicmp("", "", 1) == 0);
@@ -23,11 +23,11 @@ test_PyOS_mystrnicmp(TyObject *self, TyObject *Ty_UNUSED(ignored))
     // GH-21845
     assert(TyOS_mystrnicmp("insert\0a", "insert\0b", 8) == 0);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-test_PyOS_mystricmp(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_PyOS_mystricmp(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     assert(TyOS_mystricmp("", "") == 0);
     assert(TyOS_mystricmp("insert", "insert") == 0);
@@ -40,7 +40,7 @@ test_PyOS_mystricmp(TyObject *self, TyObject *Ty_UNUSED(ignored))
     assert(TyOS_mystricmp("insert", "ins\0rt") == 'e');
     assert(TyOS_mystricmp("invert", "insert") == ('v' - 's'));
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef test_methods[] = {

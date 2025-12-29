@@ -982,14 +982,14 @@ PyAPI_FUNC(int) TyUnicode_Equal(TyObject *str1, TyObject *str2);
 
    Possible values for op:
 
-     Ty_GT, Ty_GE, Ty_EQ, Ty_NE, Ty_LT, Ty_LE
+     Py_GT, Py_GE, Py_EQ, Py_NE, Py_LT, Py_LE
 
 */
 
 PyAPI_FUNC(TyObject *) TyUnicode_RichCompare(
     TyObject *left,             /* Left string */
     TyObject *right,            /* Right string */
-    int op                      /* Operation: Ty_EQ, Ty_NE, Ty_GT, etc. */
+    int op                      /* Operation: Py_EQ, Py_NE, Py_GT, etc. */
     );
 
 /* Apply an argument tuple or dictionary to a format string and return

@@ -87,7 +87,7 @@ _testcapi_py_universalnewlinefgets_impl(TyObject *module, TyObject *file,
     if (result == NULL) {
         TyMem_Free(buf);
         Ty_fclose(fp);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     TyObject *line = TyBytes_FromString(result);

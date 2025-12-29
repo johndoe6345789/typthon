@@ -276,7 +276,7 @@ winreg_HKEYType_Close_impl(PyHKEYObject *self)
     if (!PyHKEY_Close(st, (TyObject *)self)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -338,7 +338,7 @@ winreg_HKEYType___exit___impl(PyHKEYObject *self, TyObject *exc_type,
     if (!PyHKEY_Close(st, (TyObject *)self)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -355,7 +355,7 @@ static struct TyMethodDef PyHKEY_methods[] = {
 
 #define OFF(e) offsetof(PyHKEYObject, e)
 static TyMemberDef PyHKEY_memberlist[] = {
-    {"handle",      Ty_T_INT,      OFF(hkey), Ty_READONLY},
+    {"handle",      Ty_T_INT,      OFF(hkey), Py_READONLY},
     {NULL}    /* Sentinel */
 };
 
@@ -857,7 +857,7 @@ winreg_CloseKey(TyObject *module, TyObject *hkey)
     if (!PyHKEY_Close(_TyModule_GetState(module), hkey)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #if defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM)
@@ -1032,7 +1032,7 @@ winreg_DeleteKey_impl(TyObject *module, HKEY key, const wchar_t *sub_key)
     Ty_END_ALLOW_THREADS
     if (rc != ERROR_SUCCESS)
         return TyErr_SetFromWindowsErrWithFunction(rc, "RegDeleteKey");
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1078,7 +1078,7 @@ winreg_DeleteKeyEx_impl(TyObject *module, HKEY key, const wchar_t *sub_key,
     Ty_END_ALLOW_THREADS
     if (rc != ERROR_SUCCESS)
         return TyErr_SetFromWindowsErrWithFunction(rc, "RegDeleteKeyEx");
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1108,7 +1108,7 @@ winreg_DeleteValue_impl(TyObject *module, HKEY key, const wchar_t *value)
     if (rc !=ERROR_SUCCESS)
         return TyErr_SetFromWindowsErrWithFunction(rc,
                                                    "RegDeleteValue");
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1342,7 +1342,7 @@ winreg_FlushKey_impl(TyObject *module, HKEY key)
     Ty_END_ALLOW_THREADS
     if (rc != ERROR_SUCCESS)
         return TyErr_SetFromWindowsErrWithFunction(rc, "RegFlushKey");
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif /* MS_WINDOWS_DESKTOP || MS_WINDOWS_SYSTEM */
@@ -1394,7 +1394,7 @@ winreg_LoadKey_impl(TyObject *module, HKEY key, const wchar_t *sub_key,
     Ty_END_ALLOW_THREADS
     if (rc != ERROR_SUCCESS)
         return TyErr_SetFromWindowsErrWithFunction(rc, "RegLoadKey");
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif /* MS_WINDOWS_DESKTOP || MS_WINDOWS_SYSTEM */
@@ -1732,7 +1732,7 @@ winreg_SaveKey_impl(TyObject *module, HKEY key, const wchar_t *file_name)
     Ty_END_ALLOW_THREADS
     if (rc != ERROR_SUCCESS)
         return TyErr_SetFromWindowsErrWithFunction(rc, "RegSaveKey");
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif /* MS_WINDOWS_DESKTOP || MS_WINDOWS_SYSTEM */
@@ -1969,7 +1969,7 @@ winreg_DisableReflectionKey_impl(TyObject *module, HKEY key)
     if (rc != ERROR_SUCCESS)
         return TyErr_SetFromWindowsErrWithFunction(rc,
                                                    "RegDisableReflectionKey");
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2018,7 +2018,7 @@ winreg_EnableReflectionKey_impl(TyObject *module, HKEY key)
     if (rc != ERROR_SUCCESS)
         return TyErr_SetFromWindowsErrWithFunction(rc,
                                                    "RegEnableReflectionKey");
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

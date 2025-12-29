@@ -365,7 +365,7 @@ static TyObject *
 os_ctermid_impl(TyObject *module);
 
 static TyObject *
-os_ctermid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_ctermid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_ctermid_impl(module);
 }
@@ -1087,7 +1087,7 @@ static TyObject *
 os_sync_impl(TyObject *module);
 
 static TyObject *
-os_sync(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_sync(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_sync_impl(module);
 }
@@ -1444,7 +1444,7 @@ static TyObject *
 os_getcwd_impl(TyObject *module);
 
 static TyObject *
-os_getcwd(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getcwd(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getcwd_impl(module);
 }
@@ -1462,7 +1462,7 @@ static TyObject *
 os_getcwdb_impl(TyObject *module);
 
 static TyObject *
-os_getcwdb(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getcwdb(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getcwdb_impl(module);
 }
@@ -1676,7 +1676,7 @@ static TyObject *
 os_listdrives_impl(TyObject *module);
 
 static TyObject *
-os_listdrives(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_listdrives(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_listdrives_impl(module);
 }
@@ -1700,7 +1700,7 @@ static TyObject *
 os_listvolumes_impl(TyObject *module);
 
 static TyObject *
-os_listvolumes(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_listvolumes(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_listvolumes_impl(module);
 }
@@ -3527,7 +3527,7 @@ static TyObject *
 os_uname_impl(TyObject *module);
 
 static TyObject *
-os_uname(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_uname(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_uname_impl(module);
 }
@@ -4365,7 +4365,7 @@ static TyObject *
 os_fork1_impl(TyObject *module);
 
 static TyObject *
-os_fork1(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_fork1(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_fork1_impl(module);
 }
@@ -4389,7 +4389,7 @@ static TyObject *
 os_fork_impl(TyObject *module);
 
 static TyObject *
-os_fork(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_fork(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_fork_impl(module);
 }
@@ -4799,7 +4799,7 @@ static TyObject *
 os_sched_yield_impl(TyObject *module);
 
 static TyObject *
-os_sched_yield(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_sched_yield(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_sched_yield_impl(module);
 }
@@ -5050,7 +5050,7 @@ static TyObject *
 os_openpty_impl(TyObject *module);
 
 static TyObject *
-os_openpty(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_openpty(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_openpty_impl(module);
 }
@@ -5113,7 +5113,7 @@ static TyObject *
 os_forkpty_impl(TyObject *module);
 
 static TyObject *
-os_forkpty(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_forkpty(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_forkpty_impl(module);
 }
@@ -5135,7 +5135,7 @@ static TyObject *
 os_getegid_impl(TyObject *module);
 
 static TyObject *
-os_getegid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getegid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getegid_impl(module);
 }
@@ -5157,7 +5157,7 @@ static TyObject *
 os_geteuid_impl(TyObject *module);
 
 static TyObject *
-os_geteuid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_geteuid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_geteuid_impl(module);
 }
@@ -5179,7 +5179,7 @@ static TyObject *
 os_getgid_impl(TyObject *module);
 
 static TyObject *
-os_getgid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getgid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getgid_impl(module);
 }
@@ -5201,7 +5201,7 @@ static TyObject *
 os_getpid_impl(TyObject *module);
 
 static TyObject *
-os_getpid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getpid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getpid_impl(module);
 }
@@ -5330,7 +5330,7 @@ static TyObject *
 os_getgroups_impl(TyObject *module);
 
 static TyObject *
-os_getgroups(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getgroups(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getgroups_impl(module);
 }
@@ -5508,7 +5508,7 @@ static TyObject *
 os_getpgrp_impl(TyObject *module);
 
 static TyObject *
-os_getpgrp(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getpgrp(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getpgrp_impl(module);
 }
@@ -5530,7 +5530,7 @@ static TyObject *
 os_setpgrp_impl(TyObject *module);
 
 static TyObject *
-os_setpgrp(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_setpgrp(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_setpgrp_impl(module);
 }
@@ -5555,7 +5555,7 @@ static TyObject *
 os_getppid_impl(TyObject *module);
 
 static TyObject *
-os_getppid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getppid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getppid_impl(module);
 }
@@ -5577,7 +5577,7 @@ static TyObject *
 os_getlogin_impl(TyObject *module);
 
 static TyObject *
-os_getlogin(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getlogin(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getlogin_impl(module);
 }
@@ -5599,7 +5599,7 @@ static TyObject *
 os_getuid_impl(TyObject *module);
 
 static TyObject *
-os_getuid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getuid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getuid_impl(module);
 }
@@ -6243,7 +6243,7 @@ static TyObject *
 os_wait_impl(TyObject *module);
 
 static TyObject *
-os_wait(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_wait(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_wait_impl(module);
 }
@@ -6681,7 +6681,7 @@ static TyObject *
 os_times_impl(TyObject *module);
 
 static TyObject *
-os_times(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_times(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_times_impl(module);
 }
@@ -7116,7 +7116,7 @@ static TyObject *
 os_setsid_impl(TyObject *module);
 
 static TyObject *
-os_setsid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_setsid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_setsid_impl(module);
 }
@@ -8447,7 +8447,7 @@ static TyObject *
 os_pipe_impl(TyObject *module);
 
 static TyObject *
-os_pipe(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_pipe(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_pipe_impl(module);
 }
@@ -10524,7 +10524,7 @@ static TyObject *
 os_abort_impl(TyObject *module);
 
 static TyObject *
-os_abort(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_abort(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_abort_impl(module);
 }
@@ -10696,7 +10696,7 @@ static TyObject *
 os_getloadavg_impl(TyObject *module);
 
 static TyObject *
-os_getloadavg(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getloadavg(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getloadavg_impl(module);
 }
@@ -10866,7 +10866,7 @@ static TyObject *
 os_getresuid_impl(TyObject *module);
 
 static TyObject *
-os_getresuid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getresuid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getresuid_impl(module);
 }
@@ -10888,7 +10888,7 @@ static TyObject *
 os_getresgid_impl(TyObject *module);
 
 static TyObject *
-os_getresgid(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_getresgid(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_getresgid_impl(module);
 }
@@ -11663,7 +11663,7 @@ static TyObject *
 os_cpu_count_impl(TyObject *module);
 
 static TyObject *
-os_cpu_count(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os_cpu_count(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os_cpu_count_impl(module);
 }
@@ -11934,7 +11934,7 @@ static int
 os_DirEntry_is_junction_impl(DirEntry *self);
 
 static TyObject *
-os_DirEntry_is_junction(TyObject *self, TyObject *Ty_UNUSED(ignored))
+os_DirEntry_is_junction(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -12173,7 +12173,7 @@ static TyObject *
 os_DirEntry_inode_impl(DirEntry *self);
 
 static TyObject *
-os_DirEntry_inode(TyObject *self, TyObject *Ty_UNUSED(ignored))
+os_DirEntry_inode(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return os_DirEntry_inode_impl((DirEntry *)self);
 }
@@ -12191,7 +12191,7 @@ static TyObject *
 os_DirEntry___fspath___impl(DirEntry *self);
 
 static TyObject *
-os_DirEntry___fspath__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+os_DirEntry___fspath__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return os_DirEntry___fspath___impl((DirEntry *)self);
 }
@@ -12644,7 +12644,7 @@ static TyObject *
 os__supports_virtual_terminal_impl(TyObject *module);
 
 static TyObject *
-os__supports_virtual_terminal(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os__supports_virtual_terminal(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__supports_virtual_terminal_impl(module);
 }
@@ -12664,7 +12664,7 @@ static TyObject *
 os__inputhook_impl(TyObject *module);
 
 static TyObject *
-os__inputhook(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os__inputhook(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__inputhook_impl(module);
 }
@@ -12682,7 +12682,7 @@ static TyObject *
 os__is_inputhook_installed_impl(TyObject *module);
 
 static TyObject *
-os__is_inputhook_installed(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os__is_inputhook_installed(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__is_inputhook_installed_impl(module);
 }
@@ -12700,7 +12700,7 @@ static TyObject *
 os__create_environ_impl(TyObject *module);
 
 static TyObject *
-os__create_environ(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os__create_environ(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__create_environ_impl(module);
 }
@@ -12720,7 +12720,7 @@ static TyObject *
 os__emscripten_debugger_impl(TyObject *module);
 
 static TyObject *
-os__emscripten_debugger(TyObject *module, TyObject *Ty_UNUSED(ignored))
+os__emscripten_debugger(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return os__emscripten_debugger_impl(module);
 }

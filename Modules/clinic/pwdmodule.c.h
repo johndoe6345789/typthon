@@ -61,7 +61,7 @@ static TyObject *
 pwd_getpwall_impl(TyObject *module);
 
 static TyObject *
-pwd_getpwall(TyObject *module, TyObject *Ty_UNUSED(ignored))
+pwd_getpwall(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return pwd_getpwall_impl(module);
 }

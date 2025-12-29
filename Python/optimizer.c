@@ -182,19 +182,19 @@ _Ty_GetExecutor(PyCodeObject *code, int offset)
 }
 
 static TyObject *
-is_valid(TyObject *self, TyObject *Ty_UNUSED(ignored))
+is_valid(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return TyBool_FromLong(((_PyExecutorObject *)self)->vm_data.valid);
 }
 
 static TyObject *
-get_opcode(TyObject *self, TyObject *Ty_UNUSED(ignored))
+get_opcode(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return TyLong_FromUnsignedLong(((_PyExecutorObject *)self)->vm_data.opcode);
 }
 
 static TyObject *
-get_oparg(TyObject *self, TyObject *Ty_UNUSED(ignored))
+get_oparg(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return TyLong_FromUnsignedLong(((_PyExecutorObject *)self)->vm_data.oparg);
 }
@@ -382,7 +382,7 @@ executor_traverse(TyObject *o, visitproc visit, void *arg)
 }
 
 static TyObject *
-get_jit_code(TyObject *self, TyObject *Ty_UNUSED(ignored))
+get_jit_code(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
 #ifndef _Ty_JIT
     TyErr_SetString(TyExc_RuntimeError, "JIT support not enabled.");
@@ -390,7 +390,7 @@ get_jit_code(TyObject *self, TyObject *Ty_UNUSED(ignored))
 #else
     _PyExecutorObject *executor = _PyExecutorObject_CAST(self);
     if (executor->jit_code == NULL || executor->jit_size == 0) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyBytes_FromStringAndSize(executor->jit_code, executor->jit_size);
 #endif

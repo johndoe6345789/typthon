@@ -40,7 +40,7 @@ test_lock_basic(TyObject *self, TyObject *obj)
     PyMutex_Unlock(&m);
     assert(m._bits == 0);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 struct test_lock2_data {
@@ -97,7 +97,7 @@ test_lock_two_threads(TyObject *self, TyObject *obj)
     PyEvent_Wait(&test_data.done);
     assert(test_data.m._bits == 0);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #define COUNTER_THREADS 5
@@ -147,7 +147,7 @@ test_lock_counter(TyObject *self, TyObject *obj)
     }
 
     assert(test_data.counter == COUNTER_THREADS * COUNTER_ITERS);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #define SLOW_COUNTER_ITERS 100
@@ -190,7 +190,7 @@ test_lock_counter_slow(TyObject *self, TyObject *obj)
     }
 
     assert(test_data.counter == COUNTER_THREADS * SLOW_COUNTER_ITERS);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 struct bench_data_locks {
@@ -348,7 +348,7 @@ test_lock_benchmark(TyObject *module, TyObject *obj)
         return NULL;
     }
     Ty_DECREF(res);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -379,7 +379,7 @@ test_lock_once(TyObject *self, TyObject *obj)
             assert(counter == 5);
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 struct test_rwlock_data {
@@ -477,7 +477,7 @@ test_lock_rwlock(TyObject *self, TyObject *obj)
     assert(test_data.rw.bits == 0);
 
     PyEvent_Wait(&test_data.done);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -500,7 +500,7 @@ test_lock_recursive(TyObject *self, TyObject *obj)
     assert(!PyMutex_IsLocked(&m.mutex));
     assert(m.level == 0);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef test_methods[] = {

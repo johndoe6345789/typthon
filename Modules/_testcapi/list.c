@@ -3,7 +3,7 @@
 
 
 static TyObject *
-list_get_size(TyObject *Ty_UNUSED(module), TyObject *obj)
+list_get_size(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_SIZE(TyList_GET_SIZE(obj));
@@ -11,7 +11,7 @@ list_get_size(TyObject *Ty_UNUSED(module), TyObject *obj)
 
 
 static TyObject *
-list_get_item(TyObject *Ty_UNUSED(module), TyObject *args)
+list_get_item(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t i;
@@ -24,7 +24,7 @@ list_get_item(TyObject *Ty_UNUSED(module), TyObject *args)
 
 
 static TyObject *
-list_set_item(TyObject *Ty_UNUSED(module), TyObject *args)
+list_set_item(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj, *value;
     Ty_ssize_t i;
@@ -34,13 +34,13 @@ list_set_item(TyObject *Ty_UNUSED(module), TyObject *args)
     NULLABLE(obj);
     NULLABLE(value);
     TyList_SET_ITEM(obj, i, Ty_XNewRef(value));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 }
 
 
 static TyObject *
-list_clear(TyObject* Ty_UNUSED(module), TyObject *obj)
+list_clear(TyObject* Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_INT(TyList_Clear(obj));
@@ -48,7 +48,7 @@ list_clear(TyObject* Ty_UNUSED(module), TyObject *obj)
 
 
 static TyObject *
-list_extend(TyObject* Ty_UNUSED(module), TyObject *args)
+list_extend(TyObject* Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj, *arg;
     if (!TyArg_ParseTuple(args, "OO", &obj, &arg)) {
@@ -61,7 +61,7 @@ list_extend(TyObject* Ty_UNUSED(module), TyObject *args)
 
 
 static TyObject*
-test_list_api(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_list_api(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject* list;
     int i;
@@ -99,7 +99,7 @@ test_list_api(TyObject *self, TyObject *Ty_UNUSED(ignored))
     Ty_DECREF(list);
 #undef NLIST
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

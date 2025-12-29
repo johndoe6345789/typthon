@@ -22,7 +22,7 @@ static TyObject *
 EncodingMap_size_impl(struct encoding_map *self);
 
 static TyObject *
-EncodingMap_size(TyObject *self, TyObject *Ty_UNUSED(ignored))
+EncodingMap_size(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return EncodingMap_size_impl((struct encoding_map *)self);
 }
@@ -43,7 +43,7 @@ static TyObject *
 unicode_title_impl(TyObject *self);
 
 static TyObject *
-unicode_title(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_title(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_title_impl(self);
 }
@@ -64,7 +64,7 @@ static TyObject *
 unicode_capitalize_impl(TyObject *self);
 
 static TyObject *
-unicode_capitalize(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_capitalize(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_capitalize_impl(self);
 }
@@ -82,7 +82,7 @@ static TyObject *
 unicode_casefold_impl(TyObject *self);
 
 static TyObject *
-unicode_casefold(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_casefold(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_casefold_impl(self);
 }
@@ -490,7 +490,7 @@ static TyObject *
 unicode_isascii_impl(TyObject *self);
 
 static TyObject *
-unicode_isascii(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isascii(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isascii_impl(self);
 }
@@ -511,7 +511,7 @@ static TyObject *
 unicode_islower_impl(TyObject *self);
 
 static TyObject *
-unicode_islower(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_islower(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_islower_impl(self);
 }
@@ -532,7 +532,7 @@ static TyObject *
 unicode_isupper_impl(TyObject *self);
 
 static TyObject *
-unicode_isupper(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isupper(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isupper_impl(self);
 }
@@ -553,7 +553,7 @@ static TyObject *
 unicode_istitle_impl(TyObject *self);
 
 static TyObject *
-unicode_istitle(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_istitle(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_istitle_impl(self);
 }
@@ -574,7 +574,7 @@ static TyObject *
 unicode_isspace_impl(TyObject *self);
 
 static TyObject *
-unicode_isspace(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isspace(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isspace_impl(self);
 }
@@ -595,7 +595,7 @@ static TyObject *
 unicode_isalpha_impl(TyObject *self);
 
 static TyObject *
-unicode_isalpha(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isalpha(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isalpha_impl(self);
 }
@@ -616,7 +616,7 @@ static TyObject *
 unicode_isalnum_impl(TyObject *self);
 
 static TyObject *
-unicode_isalnum(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isalnum(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isalnum_impl(self);
 }
@@ -637,7 +637,7 @@ static TyObject *
 unicode_isdecimal_impl(TyObject *self);
 
 static TyObject *
-unicode_isdecimal(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isdecimal(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isdecimal_impl(self);
 }
@@ -658,7 +658,7 @@ static TyObject *
 unicode_isdigit_impl(TyObject *self);
 
 static TyObject *
-unicode_isdigit(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isdigit(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isdigit_impl(self);
 }
@@ -679,7 +679,7 @@ static TyObject *
 unicode_isnumeric_impl(TyObject *self);
 
 static TyObject *
-unicode_isnumeric(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isnumeric(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isnumeric_impl(self);
 }
@@ -700,7 +700,7 @@ static TyObject *
 unicode_isidentifier_impl(TyObject *self);
 
 static TyObject *
-unicode_isidentifier(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isidentifier(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isidentifier_impl(self);
 }
@@ -720,7 +720,7 @@ static TyObject *
 unicode_isprintable_impl(TyObject *self);
 
 static TyObject *
-unicode_isprintable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_isprintable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_isprintable_impl(self);
 }
@@ -801,7 +801,7 @@ static TyObject *
 unicode_lower_impl(TyObject *self);
 
 static TyObject *
-unicode_lower(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_lower(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_lower_impl(self);
 }
@@ -1532,7 +1532,7 @@ static TyObject *
 unicode_swapcase_impl(TyObject *self);
 
 static TyObject *
-unicode_swapcase(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_swapcase(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_swapcase_impl(self);
 }
@@ -1622,7 +1622,7 @@ static TyObject *
 unicode_upper_impl(TyObject *self);
 
 static TyObject *
-unicode_upper(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_upper(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_upper_impl(self);
 }
@@ -1809,7 +1809,7 @@ static TyObject *
 unicode_sizeof_impl(TyObject *self);
 
 static TyObject *
-unicode_sizeof(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unicode_sizeof(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return unicode_sizeof_impl(self);
 }

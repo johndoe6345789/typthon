@@ -142,7 +142,7 @@ winsound_PlaySound_impl(TyObject *module, TyObject *sound, int flags)
         TyErr_SetString(TyExc_RuntimeError, "Failed to play sound");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -177,7 +177,7 @@ winsound_Beep_impl(TyObject *module, int frequency, int duration)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -205,7 +205,7 @@ winsound_MessageBeep_impl(TyObject *module, int type)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static struct TyMethodDef sound_methods[] =

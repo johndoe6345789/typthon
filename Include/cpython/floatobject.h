@@ -8,7 +8,7 @@ typedef struct {
 } PyFloatObject;
 
 #define _TyFloat_CAST(op) \
-    (assert(TyFloat_Check(op)), _Ty_CAST(PyFloatObject*, op))
+    (assert(TyFloat_Check(op)), _Py_CAST(PyFloatObject*, op))
 
 // Static inline version of TyFloat_AsDouble() trading safety for speed.
 // It doesn't check if op is a double object.

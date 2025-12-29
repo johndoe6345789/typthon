@@ -21,7 +21,7 @@ static TyObject *
 array_array_clear_impl(arrayobject *self);
 
 static TyObject *
-array_array_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+array_array_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return array_array_clear_impl((arrayobject *)self);
 }
@@ -39,7 +39,7 @@ static TyObject *
 array_array___copy___impl(arrayobject *self);
 
 static TyObject *
-array_array___copy__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+array_array___copy__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return array_array___copy___impl((arrayobject *)self);
 }
@@ -302,7 +302,7 @@ static TyObject *
 array_array_buffer_info_impl(arrayobject *self);
 
 static TyObject *
-array_array_buffer_info(TyObject *self, TyObject *Ty_UNUSED(ignored))
+array_array_buffer_info(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return array_array_buffer_info_impl((arrayobject *)self);
 }
@@ -345,7 +345,7 @@ static TyObject *
 array_array_byteswap_impl(arrayobject *self);
 
 static TyObject *
-array_array_byteswap(TyObject *self, TyObject *Ty_UNUSED(ignored))
+array_array_byteswap(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return array_array_byteswap_impl((arrayobject *)self);
 }
@@ -363,7 +363,7 @@ static TyObject *
 array_array_reverse_impl(arrayobject *self);
 
 static TyObject *
-array_array_reverse(TyObject *self, TyObject *Ty_UNUSED(ignored))
+array_array_reverse(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return array_array_reverse_impl((arrayobject *)self);
 }
@@ -505,7 +505,7 @@ static TyObject *
 array_array_tolist_impl(arrayobject *self);
 
 static TyObject *
-array_array_tolist(TyObject *self, TyObject *Ty_UNUSED(ignored))
+array_array_tolist(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return array_array_tolist_impl((arrayobject *)self);
 }
@@ -555,7 +555,7 @@ static TyObject *
 array_array_tobytes_impl(arrayobject *self);
 
 static TyObject *
-array_array_tobytes(TyObject *self, TyObject *Ty_UNUSED(ignored))
+array_array_tobytes(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return array_array_tobytes_impl((arrayobject *)self);
 }
@@ -610,7 +610,7 @@ static TyObject *
 array_array_tounicode_impl(arrayobject *self);
 
 static TyObject *
-array_array_tounicode(TyObject *self, TyObject *Ty_UNUSED(ignored))
+array_array_tounicode(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return array_array_tounicode_impl((arrayobject *)self);
 }
@@ -628,7 +628,7 @@ static TyObject *
 array_array___sizeof___impl(arrayobject *self);
 
 static TyObject *
-array_array___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+array_array___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return array_array___sizeof___impl((arrayobject *)self);
 }

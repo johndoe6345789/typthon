@@ -181,7 +181,7 @@ weakref_vectorcall(TyObject *self, TyObject *const *args,
     }
     TyObject *obj = _TyWeakref_GET_REF(self);
     if (obj == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return obj;
 }
@@ -244,10 +244,10 @@ weakref_repr(TyObject *self)
 static TyObject *
 weakref_richcompare(TyObject* self, TyObject* other, int op)
 {
-    if ((op != Ty_EQ && op != Ty_NE) ||
+    if ((op != Py_EQ && op != Py_NE) ||
         !PyWeakref_Check(self) ||
         !PyWeakref_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     TyObject* obj = _TyWeakref_GET_REF(self);
     TyObject* other_obj = _TyWeakref_GET_REF(other);
@@ -255,12 +255,12 @@ weakref_richcompare(TyObject* self, TyObject* other, int op)
         Ty_XDECREF(obj);
         Ty_XDECREF(other_obj);
         int res = (self == other);
-        if (op == Ty_NE)
+        if (op == Py_NE)
             res = !res;
         if (res)
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
         else
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
     TyObject* res = PyObject_RichCompare(obj, other_obj, op);
     Ty_DECREF(obj);
@@ -485,7 +485,7 @@ weakref___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 
 
 static TyMemberDef weakref_members[] = {
-    {"__callback__", _Ty_T_OBJECT, offsetof(PyWeakReference, wr_callback), Ty_READONLY},
+    {"__callback__", _Ty_T_OBJECT, offsetof(PyWeakReference, wr_callback), Py_READONLY},
     {NULL} /* Sentinel */
 };
 
@@ -586,7 +586,7 @@ proxy_check_ref(TyObject *obj)
 
 #define WRAP_METHOD(method, SPECIAL) \
     static TyObject * \
-    method(TyObject *proxy, TyObject *Ty_UNUSED(ignored)) { \
+    method(TyObject *proxy, TyObject *Py_UNUSED(ignored)) { \
             UNWRAP(proxy); \
             TyObject* res = PyObject_CallMethodNoArgs(proxy, &_Ty_ID(SPECIAL)); \
             Ty_DECREF(proxy); \

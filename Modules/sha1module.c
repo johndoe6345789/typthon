@@ -215,7 +215,7 @@ SHA1Type_update_impl(SHA1object *self, TyObject *obj)
     }
 
     PyBuffer_Release(&buf);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef SHA1_methods[] = {
@@ -227,19 +227,19 @@ static TyMethodDef SHA1_methods[] = {
 };
 
 static TyObject *
-SHA1_get_block_size(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+SHA1_get_block_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(SHA1_BLOCKSIZE);
 }
 
 static TyObject *
-SHA1_get_name(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+SHA1_get_name(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyUnicode_FromStringAndSize("sha1", 4);
 }
 
 static TyObject *
-sha1_get_digest_size(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+sha1_get_digest_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(SHA1_DIGESTSIZE);
 }

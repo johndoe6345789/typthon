@@ -39,7 +39,7 @@ _Ty_freelists_GET(void)
 
 // Pops a TyObject from the freelist, returns NULL if the freelist is empty.
 #define _Ty_FREELIST_POP(TYPE, NAME) \
-    _Ty_CAST(TYPE*, _PyFreeList_Pop(&_Ty_freelists_GET()->NAME))
+    _Py_CAST(TYPE*, _PyFreeList_Pop(&_Ty_freelists_GET()->NAME))
 
 // Pops a non-TyObject data structure from the freelist, returns NULL if the
 // freelist is empty.

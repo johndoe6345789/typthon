@@ -67,7 +67,7 @@ _codecs_register(TyObject *module, TyObject *search_function)
     if (PyCodec_Register(search_function))
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -88,7 +88,7 @@ _codecs_unregister(TyObject *module, TyObject *search_function)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -977,7 +977,7 @@ _codecs_register_error_impl(TyObject *module, const char *errors,
 {
     if (PyCodec_RegisterError(errors, handler))
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

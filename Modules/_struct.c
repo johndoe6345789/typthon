@@ -1973,7 +1973,7 @@ unpackiter_traverse(TyObject *op, visitproc visit, void *arg)
 }
 
 static TyObject *
-unpackiter_len(TyObject *op, TyObject *Ty_UNUSED(dummy))
+unpackiter_len(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     Ty_ssize_t len;
     unpackiterobject *self = unpackiterobject_CAST(op);
@@ -2321,11 +2321,11 @@ s_pack_into(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
     }
 
     PyBuffer_Release(&buffer);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-s_get_format(TyObject *op, void *Ty_UNUSED(closure))
+s_get_format(TyObject *op, void *Py_UNUSED(closure))
 {
     PyStructObject *self = PyStructObject_CAST(op);
     return TyUnicode_FromStringAndSize(TyBytes_AS_STRING(self->s_format),
@@ -2333,7 +2333,7 @@ s_get_format(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-s_get_size(TyObject *op, void *Ty_UNUSED(closure))
+s_get_size(TyObject *op, void *Py_UNUSED(closure))
 {
     PyStructObject *self = PyStructObject_CAST(op);
     return TyLong_FromSsize_t(self->s_size);
@@ -2343,7 +2343,7 @@ PyDoc_STRVAR(s_sizeof__doc__,
 "S.__sizeof__() -> size of S in memory, in bytes");
 
 static TyObject *
-s_sizeof(TyObject *op, TyObject *Ty_UNUSED(dummy))
+s_sizeof(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyStructObject *self = PyStructObject_CAST(op);
     size_t size = _TyObject_SIZE(Ty_TYPE(self)) + sizeof(formatcode);
@@ -2380,7 +2380,7 @@ static struct TyMethodDef s_methods[] = {
 };
 
 static TyMemberDef s_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(PyStructObject, weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(PyStructObject, weakreflist), Py_READONLY},
     {NULL}  /* sentinel */
 };
 
@@ -2470,7 +2470,7 @@ _clearcache_impl(TyObject *module)
 /*[clinic end generated code: output=ce4fb8a7bf7cb523 input=463eaae04bab3211]*/
 {
     TyDict_Clear(get_struct_state(module)->cache);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

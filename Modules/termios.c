@@ -277,7 +277,7 @@ termios_tcsetattr_impl(TyObject *module, int fd, int when, TyObject *term)
     if (r == -1)
         return TyErr_SetFromErrno(state->TermiosError);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -308,7 +308,7 @@ termios_tcsendbreak_impl(TyObject *module, int fd, int duration)
         return TyErr_SetFromErrno(state->TermiosError);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -335,7 +335,7 @@ termios_tcdrain_impl(TyObject *module, int fd)
         return TyErr_SetFromErrno(state->TermiosError);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -367,7 +367,7 @@ termios_tcflush_impl(TyObject *module, int fd, int queue)
         return TyErr_SetFromErrno(state->TermiosError);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -399,7 +399,7 @@ termios_tcflow_impl(TyObject *module, int fd, int action)
         return TyErr_SetFromErrno(state->TermiosError);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -540,7 +540,7 @@ termios_tcsetwinsize_impl(TyObject *module, int fd, TyObject *winsz)
         return TyErr_SetFromErrno(state->TermiosError);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #elif defined(TIOCGSIZE) && defined(TIOCSSIZE)
     struct ttysize s;
     int r;
@@ -569,7 +569,7 @@ termios_tcsetwinsize_impl(TyObject *module, int fd, TyObject *winsz)
         return TyErr_SetFromErrno(state->TermiosError);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #else
     TyErr_SetString(TyExc_NotImplementedError,
                     "requires termios.TIOCGWINSZ, termios.TIOCSWINSZ and/or termios.TIOCGSIZE, termios.TIOCSSIZE");

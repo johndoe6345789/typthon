@@ -1512,56 +1512,56 @@ PyCodec_SurrogateEscapeErrors(TyObject *exc)
 // --- Codecs registry handlers -----------------------------------------------
 
 static inline TyObject *
-strict_errors(TyObject *Ty_UNUSED(self), TyObject *exc)
+strict_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 {
     return PyCodec_StrictErrors(exc);
 }
 
 
 static inline TyObject *
-ignore_errors(TyObject *Ty_UNUSED(self), TyObject *exc)
+ignore_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 {
     return PyCodec_IgnoreErrors(exc);
 }
 
 
 static inline TyObject *
-replace_errors(TyObject *Ty_UNUSED(self), TyObject *exc)
+replace_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 {
     return PyCodec_ReplaceErrors(exc);
 }
 
 
 static inline TyObject *
-xmlcharrefreplace_errors(TyObject *Ty_UNUSED(self), TyObject *exc)
+xmlcharrefreplace_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 {
     return PyCodec_XMLCharRefReplaceErrors(exc);
 }
 
 
 static inline TyObject *
-backslashreplace_errors(TyObject *Ty_UNUSED(self), TyObject *exc)
+backslashreplace_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 {
     return PyCodec_BackslashReplaceErrors(exc);
 }
 
 
 static inline TyObject *
-namereplace_errors(TyObject *Ty_UNUSED(self), TyObject *exc)
+namereplace_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 {
     return PyCodec_NameReplaceErrors(exc);
 }
 
 
 static inline TyObject *
-surrogatepass_errors(TyObject *Ty_UNUSED(self), TyObject *exc)
+surrogatepass_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 {
     return PyCodec_SurrogatePassErrors(exc);
 }
 
 
 static inline TyObject *
-surrogateescape_errors(TyObject *Ty_UNUSED(self), TyObject *exc)
+surrogateescape_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 {
     return PyCodec_SurrogateEscapeErrors(exc);
 }

@@ -158,7 +158,7 @@ static TyObject *
 _functools__lru_cache_wrapper_cache_info_impl(TyObject *self);
 
 static TyObject *
-_functools__lru_cache_wrapper_cache_info(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_functools__lru_cache_wrapper_cache_info(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -182,7 +182,7 @@ static TyObject *
 _functools__lru_cache_wrapper_cache_clear_impl(TyObject *self);
 
 static TyObject *
-_functools__lru_cache_wrapper_cache_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_functools__lru_cache_wrapper_cache_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

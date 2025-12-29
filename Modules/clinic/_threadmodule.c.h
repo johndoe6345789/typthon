@@ -23,7 +23,7 @@ static TyObject *
 _thread__get_name_impl(TyObject *module);
 
 static TyObject *
-_thread__get_name(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_thread__get_name(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _thread__get_name_impl(module);
 }

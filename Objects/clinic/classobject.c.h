@@ -16,7 +16,7 @@ static TyObject *
 method___reduce___impl(PyMethodObject *self);
 
 static TyObject *
-method___reduce__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+method___reduce__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return method___reduce___impl((PyMethodObject *)self);
 }

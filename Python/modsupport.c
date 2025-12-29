@@ -523,7 +523,7 @@ va_build_value(const char *format, va_list va)
     if (n < 0)
         return NULL;
     if (n == 0) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     va_copy(lva, va);
     if (n == 1) {

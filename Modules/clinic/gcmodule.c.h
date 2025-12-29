@@ -23,7 +23,7 @@ static TyObject *
 gc_enable_impl(TyObject *module);
 
 static TyObject *
-gc_enable(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_enable(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_enable_impl(module);
 }
@@ -41,7 +41,7 @@ static TyObject *
 gc_disable_impl(TyObject *module);
 
 static TyObject *
-gc_disable(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_disable(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_disable_impl(module);
 }
@@ -59,7 +59,7 @@ static int
 gc_isenabled_impl(TyObject *module);
 
 static TyObject *
-gc_isenabled(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_isenabled(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -203,7 +203,7 @@ static int
 gc_get_debug_impl(TyObject *module);
 
 static TyObject *
-gc_get_debug(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_get_debug(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -283,7 +283,7 @@ static TyObject *
 gc_get_threshold_impl(TyObject *module);
 
 static TyObject *
-gc_get_threshold(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_get_threshold(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_get_threshold_impl(module);
 }
@@ -301,7 +301,7 @@ static TyObject *
 gc_get_count_impl(TyObject *module);
 
 static TyObject *
-gc_get_count(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_get_count(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_get_count_impl(module);
 }
@@ -452,7 +452,7 @@ static TyObject *
 gc_get_stats_impl(TyObject *module);
 
 static TyObject *
-gc_get_stats(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_get_stats(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_get_stats_impl(module);
 }
@@ -532,7 +532,7 @@ static TyObject *
 gc_freeze_impl(TyObject *module);
 
 static TyObject *
-gc_freeze(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_freeze(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_freeze_impl(module);
 }
@@ -552,7 +552,7 @@ static TyObject *
 gc_unfreeze_impl(TyObject *module);
 
 static TyObject *
-gc_unfreeze(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_unfreeze(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return gc_unfreeze_impl(module);
 }
@@ -570,7 +570,7 @@ static Ty_ssize_t
 gc_get_freeze_count_impl(TyObject *module);
 
 static TyObject *
-gc_get_freeze_count(TyObject *module, TyObject *Ty_UNUSED(ignored))
+gc_get_freeze_count(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     Ty_ssize_t _return_value;

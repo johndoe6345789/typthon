@@ -5,7 +5,7 @@
 #include "pycore_modsupport.h"    // _TyArg_NoKeywords()
 #include "pycore_object.h"
 
-#define _PyCell_CAST(op) _Ty_CAST(PyCellObject*, (op))
+#define _PyCell_CAST(op) _Py_CAST(PyCellObject*, (op))
 
 TyObject *
 TyCell_New(TyObject *obj)
@@ -89,7 +89,7 @@ cell_compare_impl(TyObject *a, TyObject *b, int op)
         return PyObject_RichCompare(a, b, op);
     }
     else {
-        Ty_RETURN_RICHCOMPARE(b == NULL, a == NULL, op);
+        Py_RETURN_RICHCOMPARE(b == NULL, a == NULL, op);
     }
 }
 
@@ -101,7 +101,7 @@ cell_richcompare(TyObject *a, TyObject *b, int op)
 
     /* both arguments should be instances of PyCellObject */
     if (!TyCell_Check(a) || !TyCell_Check(b)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     TyObject *a_ref = TyCell_GetRef((PyCellObject *)a);
     TyObject *b_ref = TyCell_GetRef((PyCellObject *)b);
@@ -156,7 +156,7 @@ cell_get_contents(TyObject *self, void *closure)
 }
 
 static int
-cell_set_contents(TyObject *self, TyObject *obj, void *Ty_UNUSED(ignored))
+cell_set_contents(TyObject *self, TyObject *obj, void *Py_UNUSED(ignored))
 {
     PyCellObject *cell = _PyCell_CAST(self);
     Ty_XINCREF(obj);

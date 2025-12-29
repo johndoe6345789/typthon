@@ -113,7 +113,7 @@ fileio_dealloc_warn(TyObject *op, TyObject *source)
         }
         TyErr_SetRaisedException(exc);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Returns 0 on success, -1 with exception set on failure. */
@@ -694,7 +694,7 @@ _io_FileIO_readinto_impl(fileio *self, TyTypeObject *cls, Ty_buffer *buffer)
     if (n == -1) {
         if (err == EAGAIN) {
             TyErr_Clear();
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         return NULL;
     }
@@ -827,7 +827,7 @@ _io_FileIO_readall_impl(fileio *self)
                 if (bytes_read > 0)
                     break;
                 Ty_DECREF(result);
-                Ty_RETURN_NONE;
+                Py_RETURN_NONE;
             }
             Ty_DECREF(result);
             return NULL;
@@ -894,7 +894,7 @@ _io_FileIO_read_impl(fileio *self, TyTypeObject *cls, Ty_ssize_t size)
         Ty_DECREF(bytes);
         if (err == EAGAIN) {
             TyErr_Clear();
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         return NULL;
     }
@@ -943,7 +943,7 @@ _io_FileIO_write_impl(fileio *self, TyTypeObject *cls, Ty_buffer *b)
     if (n < 0) {
         if (err == EAGAIN) {
             TyErr_Clear();
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         return NULL;
     }
@@ -1234,11 +1234,11 @@ _io_FileIO_isatty_impl(fileio *self)
    context TOCTOU issues (the fd could be arbitrarily modified by
    surrounding code). */
 static TyObject *
-_io_FileIO_isatty_open_only(TyObject *op, TyObject *Ty_UNUSED(dummy))
+_io_FileIO_isatty_open_only(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     fileio *self = PyFileIO_CAST(op);
     if (self->stat_atopen != NULL && !S_ISCHR(self->stat_atopen->st_mode)) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     return _io_FileIO_isatty_impl(self);
 }
@@ -1311,8 +1311,8 @@ static TyGetSetDef fileio_getsetlist[] = {
 
 static TyMemberDef fileio_members[] = {
     {"_finalizing", Ty_T_BOOL, offsetof(fileio, finalizing), 0},
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(fileio, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(fileio, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(fileio, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(fileio, dict), Py_READONLY},
     {NULL}
 };
 

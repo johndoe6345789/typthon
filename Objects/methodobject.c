@@ -189,7 +189,7 @@ meth_dealloc(TyObject *self)
 }
 
 static TyObject *
-meth_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+meth_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     PyCFunctionObject *m = _PyCFunctionObject_CAST(self);
     if (m->m_self == NULL || TyModule_Check(m->m_self))
@@ -321,18 +321,18 @@ meth_richcompare(TyObject *self, TyObject *other, int op)
     TyObject *res;
     int eq;
 
-    if ((op != Ty_EQ && op != Ty_NE) ||
+    if ((op != Py_EQ && op != Py_NE) ||
         !PyCFunction_Check(self) ||
         !PyCFunction_Check(other))
     {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     a = (PyCFunctionObject *)self;
     b = (PyCFunctionObject *)other;
     eq = a->m_self == b->m_self;
     if (eq)
         eq = a->m_ml->ml_meth == b->m_ml->ml_meth;
-    if (op == Ty_EQ)
+    if (op == Py_EQ)
         res = eq ? Ty_True : Ty_False;
     else
         res = eq ? Ty_False : Ty_True;

@@ -97,7 +97,7 @@ blob_close_impl(pysqlite_Blob *self)
         return NULL;
     }
     close_blob(self);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 };
 
 void
@@ -256,7 +256,7 @@ blob_write_impl(pysqlite_Blob *self, Ty_buffer *data)
         return NULL;
     }
     self->offset += (int)data->len;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -311,7 +311,7 @@ blob_seek_impl(pysqlite_Blob *self, int offset, int origin)
     }
 
     self->offset = offset;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 overflow:
     TyErr_SetString(TyExc_OverflowError, "seek offset results in overflow");
@@ -373,7 +373,7 @@ blob_exit_impl(pysqlite_Blob *self, TyObject *type, TyObject *val,
         return NULL;
     }
     close_blob(self);
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static Ty_ssize_t
@@ -583,7 +583,7 @@ static TyMethodDef blob_methods[] = {
 };
 
 static struct TyMemberDef blob_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(pysqlite_Blob, in_weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(pysqlite_Blob, in_weakreflist), Py_READONLY},
     {NULL},
 };
 

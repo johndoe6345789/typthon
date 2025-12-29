@@ -52,7 +52,7 @@ static TyObject *
 dict_copy_impl(PyDictObject *self);
 
 static TyObject *
-dict_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dict_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return dict_copy_impl((PyDictObject *)self);
 }
@@ -165,7 +165,7 @@ static TyObject *
 dict_clear_impl(PyDictObject *self);
 
 static TyObject *
-dict_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dict_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return dict_clear_impl((PyDictObject *)self);
 }
@@ -223,7 +223,7 @@ static TyObject *
 dict_popitem_impl(PyDictObject *self);
 
 static TyObject *
-dict_popitem(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dict_popitem(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -247,7 +247,7 @@ static TyObject *
 dict___sizeof___impl(PyDictObject *self);
 
 static TyObject *
-dict___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dict___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return dict___sizeof___impl((PyDictObject *)self);
 }
@@ -265,7 +265,7 @@ static TyObject *
 dict___reversed___impl(PyDictObject *self);
 
 static TyObject *
-dict___reversed__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dict___reversed__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return dict___reversed___impl((PyDictObject *)self);
 }
@@ -283,7 +283,7 @@ static TyObject *
 dict_keys_impl(PyDictObject *self);
 
 static TyObject *
-dict_keys(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dict_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return dict_keys_impl((PyDictObject *)self);
 }
@@ -301,7 +301,7 @@ static TyObject *
 dict_items_impl(PyDictObject *self);
 
 static TyObject *
-dict_items(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dict_items(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return dict_items_impl((PyDictObject *)self);
 }
@@ -319,7 +319,7 @@ static TyObject *
 dict_values_impl(PyDictObject *self);
 
 static TyObject *
-dict_values(TyObject *self, TyObject *Ty_UNUSED(ignored))
+dict_values(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return dict_values_impl((PyDictObject *)self);
 }

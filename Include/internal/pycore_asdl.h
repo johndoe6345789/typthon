@@ -78,9 +78,9 @@ asdl_ ## NAME ## _seq *_Ty_asdl_ ## NAME ## _seq_new(Ty_ssize_t size, PyArena *a
     return seq; \
 }
 
-#define asdl_seq_GET_UNTYPED(S, I) _Ty_RVALUE((S)->elements[(I)])
-#define asdl_seq_GET(S, I) _Ty_RVALUE((S)->typed_elements[(I)])
-#define asdl_seq_LEN(S) _Ty_RVALUE(((S) == NULL ? 0 : (S)->size))
+#define asdl_seq_GET_UNTYPED(S, I) _Py_RVALUE((S)->elements[(I)])
+#define asdl_seq_GET(S, I) _Py_RVALUE((S)->typed_elements[(I)])
+#define asdl_seq_LEN(S) _Py_RVALUE(((S) == NULL ? 0 : (S)->size))
 
 #ifdef Ty_DEBUG
 #  define asdl_seq_SET(S, I, V) \
@@ -91,7 +91,7 @@ asdl_ ## NAME ## _seq *_Ty_asdl_ ## NAME ## _seq_new(Ty_ssize_t size, PyArena *a
         (S)->typed_elements[_asdl_i] = (V); \
     } while (0)
 #else
-#  define asdl_seq_SET(S, I, V) _Ty_RVALUE((S)->typed_elements[(I)] = (V))
+#  define asdl_seq_SET(S, I, V) _Py_RVALUE((S)->typed_elements[(I)] = (V))
 #endif
 
 #ifdef Ty_DEBUG
@@ -103,7 +103,7 @@ asdl_ ## NAME ## _seq *_Ty_asdl_ ## NAME ## _seq_new(Ty_ssize_t size, PyArena *a
         (S)->elements[_asdl_i] = (V); \
     } while (0)
 #else
-#  define asdl_seq_SET_UNTYPED(S, I, V) _Ty_RVALUE((S)->elements[(I)] = (V))
+#  define asdl_seq_SET_UNTYPED(S, I, V) _Py_RVALUE((S)->elements[(I)] = (V))
 #endif
 
 #ifdef __cplusplus

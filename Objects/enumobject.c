@@ -286,7 +286,7 @@ enum_next(TyObject *op)
 }
 
 static TyObject *
-enum_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+enum_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     enumobject *en = _enumobject_CAST(op);
     TyObject *result;
@@ -475,7 +475,7 @@ reversed_next(TyObject *op)
 }
 
 static TyObject *
-reversed_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
+reversed_len(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     reversedobject *ro = _reversedobject_CAST(op);
     Ty_ssize_t position, seqsize;
@@ -494,7 +494,7 @@ reversed_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
 PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-reversed_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+reversed_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     reversedobject *ro = _reversedobject_CAST(op);
     Ty_ssize_t index = FT_ATOMIC_LOAD_SSIZE_RELAXED(ro->index);
@@ -527,7 +527,7 @@ reversed_setstate(TyObject *op, TyObject *state)
             index = n-1;
         FT_ATOMIC_STORE_SSIZE_RELAXED(ro->index, index);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");

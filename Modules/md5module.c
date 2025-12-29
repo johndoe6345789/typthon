@@ -219,7 +219,7 @@ MD5Type_update_impl(MD5object *self, TyObject *obj)
     }
 
     PyBuffer_Release(&buf);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef MD5_methods[] = {
@@ -231,19 +231,19 @@ static TyMethodDef MD5_methods[] = {
 };
 
 static TyObject *
-MD5_get_block_size(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+MD5_get_block_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(MD5_BLOCKSIZE);
 }
 
 static TyObject *
-MD5_get_name(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+MD5_get_name(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyUnicode_FromStringAndSize("md5", 3);
 }
 
 static TyObject *
-md5_get_digest_size(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+md5_get_digest_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(MD5_DIGESTSIZE);
 }

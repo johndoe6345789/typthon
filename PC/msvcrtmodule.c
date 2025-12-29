@@ -100,7 +100,7 @@ msvcrt_heapmin_impl(TyObject *module)
     if (_heapmin() != 0)
         return TyErr_SetFromErrno(TyExc_OSError);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 /*[clinic input]
 msvcrt.locking
@@ -138,7 +138,7 @@ msvcrt_locking_impl(TyObject *module, int fd, int mode, long nbytes)
     if (err != 0)
         return TyErr_SetFromErrno(TyExc_OSError);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -332,7 +332,7 @@ msvcrt_putch_impl(TyObject *module, char char_value)
     _Ty_BEGIN_SUPPRESS_IPH
     _putch(char_value);
     _Ty_END_SUPPRESS_IPH
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef MS_WINDOWS_DESKTOP
@@ -353,7 +353,7 @@ msvcrt_putwch_impl(TyObject *module, int unicode_char)
     _Ty_BEGIN_SUPPRESS_IPH
     _putwch(unicode_char);
     _Ty_END_SUPPRESS_IPH
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 }
 
@@ -384,7 +384,7 @@ msvcrt_ungetch_impl(TyObject *module, char char_value)
 
     if (res == EOF)
         return TyErr_SetFromErrno(TyExc_OSError);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef MS_WINDOWS_DESKTOP
@@ -410,7 +410,7 @@ msvcrt_ungetwch_impl(TyObject *module, int unicode_char)
 
     if (res == WEOF)
         return TyErr_SetFromErrno(TyExc_OSError);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif /* MS_WINDOWS_DESKTOP */

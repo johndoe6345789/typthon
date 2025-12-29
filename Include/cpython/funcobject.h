@@ -83,7 +83,7 @@ PyAPI_FUNC(TyObject *) TyFunction_GetAnnotations(TyObject *);
 PyAPI_FUNC(int) TyFunction_SetAnnotations(TyObject *, TyObject *);
 
 #define _PyFunction_CAST(func) \
-    (assert(TyFunction_Check(func)), _Ty_CAST(PyFunctionObject*, func))
+    (assert(TyFunction_Check(func)), _Py_CAST(PyFunctionObject*, func))
 
 /* Static inline functions for direct access to these values.
    Type checks are *not* done, so use with care. */

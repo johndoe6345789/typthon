@@ -153,7 +153,7 @@ static TyObject *
 _io_FileIO_fileno_impl(fileio *self);
 
 static TyObject *
-_io_FileIO_fileno(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_FileIO_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_FileIO_fileno_impl((fileio *)self);
 }
@@ -171,7 +171,7 @@ static TyObject *
 _io_FileIO_readable_impl(fileio *self);
 
 static TyObject *
-_io_FileIO_readable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_FileIO_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_FileIO_readable_impl((fileio *)self);
 }
@@ -189,7 +189,7 @@ static TyObject *
 _io_FileIO_writable_impl(fileio *self);
 
 static TyObject *
-_io_FileIO_writable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_FileIO_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_FileIO_writable_impl((fileio *)self);
 }
@@ -207,7 +207,7 @@ static TyObject *
 _io_FileIO_seekable_impl(fileio *self);
 
 static TyObject *
-_io_FileIO_seekable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_FileIO_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_FileIO_seekable_impl((fileio *)self);
 }
@@ -283,7 +283,7 @@ static TyObject *
 _io_FileIO_readall_impl(fileio *self);
 
 static TyObject *
-_io_FileIO_readall(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_FileIO_readall(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_FileIO_readall_impl((fileio *)self);
 }
@@ -462,7 +462,7 @@ static TyObject *
 _io_FileIO_tell_impl(fileio *self);
 
 static TyObject *
-_io_FileIO_tell(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_FileIO_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_FileIO_tell_impl((fileio *)self);
 }
@@ -535,7 +535,7 @@ static TyObject *
 _io_FileIO_isatty_impl(fileio *self);
 
 static TyObject *
-_io_FileIO_isatty(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_FileIO_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_FileIO_isatty_impl((fileio *)self);
 }

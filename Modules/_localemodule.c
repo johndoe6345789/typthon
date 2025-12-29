@@ -879,7 +879,7 @@ _locale_bind_textdomain_codeset_impl(TyObject *module, const char *domain,
     if (codeset) {
         return TyUnicode_DecodeLocale(codeset, NULL);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif  // HAVE_BIND_TEXTDOMAIN_CODESET
 

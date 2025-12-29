@@ -20,7 +20,7 @@ _Ty_DECLARE_STR(anon_unknown, "<unknown>");
 static void* raw_malloc(size_t size);
 static void raw_free(void *ptr);
 static int _PyTraceMalloc_TraceRef(TyObject *op, PyRefTracerEvent event,
-                                   void* Ty_UNUSED(ignore));
+                                   void* Py_UNUSED(ignore));
 
 #ifdef Ty_DEBUG
 #  define TRACE_DEBUG
@@ -1250,7 +1250,7 @@ _PyTraceMalloc_Fini(void)
    or if the object memory block is not already traced. */
 static int
 _PyTraceMalloc_TraceRef(TyObject *op, PyRefTracerEvent event,
-                        void* Ty_UNUSED(ignore))
+                        void* Py_UNUSED(ignore))
 {
     if (event != PyRefTracer_CREATE) {
         return 0;

@@ -25,8 +25,8 @@
 #ifndef MS_WINDOWS
 
 static TyObject *
-py_uuid_generate_time_safe(TyObject *Ty_UNUSED(context),
-                           TyObject *Ty_UNUSED(ignored))
+py_uuid_generate_time_safe(TyObject *Py_UNUSED(context),
+                           TyObject *Py_UNUSED(ignored))
 {
     uuid_t uuid;
 #ifdef HAVE_UUID_GENERATE_TIME_SAFE
@@ -53,8 +53,8 @@ py_uuid_generate_time_safe(TyObject *Ty_UNUSED(context),
 #else /* MS_WINDOWS */
 
 static TyObject *
-py_UuidCreate(TyObject *Ty_UNUSED(context),
-              TyObject *Ty_UNUSED(ignored))
+py_UuidCreate(TyObject *Py_UNUSED(context),
+              TyObject *Py_UNUSED(ignored))
 {
     UUID uuid;
     RPC_STATUS res;

@@ -14,7 +14,7 @@ static TyObject *
 _contextvars_copy_context_impl(TyObject *module);
 
 static TyObject *
-_contextvars_copy_context(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_contextvars_copy_context(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _contextvars_copy_context_impl(module);
 }

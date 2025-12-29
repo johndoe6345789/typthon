@@ -192,7 +192,7 @@ _DictRemover_call(TyObject *myself, TyObject *args, TyObject *kw)
         Ty_CLEAR(self->key);
         Ty_CLEAR(self->dict);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(dictremover_doc, "deletes a key from a dictionary");
@@ -577,7 +577,7 @@ _ctypes_CType_Type___sizeof___impl(TyObject *self, TyTypeObject *cls)
 }
 
 static TyObject *
-ctype_get_pointer_type(TyObject *self, void *Ty_UNUSED(ignored))
+ctype_get_pointer_type(TyObject *self, void *Py_UNUSED(ignored))
 {
     ctypes_state *st = get_module_state_by_def(Ty_TYPE(self));
     StgInfo *info;
@@ -600,7 +600,7 @@ ctype_get_pointer_type(TyObject *self, void *Ty_UNUSED(ignored))
 }
 
 static int
-ctype_set_pointer_type(TyObject *self, TyObject *tp, void *Ty_UNUSED(ignored))
+ctype_set_pointer_type(TyObject *self, TyObject *tp, void *Py_UNUSED(ignored))
 {
     ctypes_state *st = get_module_state_by_def(Ty_TYPE(self));
     StgInfo *info;
@@ -1373,7 +1373,7 @@ PyCPointerType_set_type_impl(TyTypeObject *self, TyTypeObject *cls,
     if (PyObject_SetAttr((TyObject *)self, &_Ty_ID(_type_), type) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *_byref(ctypes_state *, TyObject *);
@@ -1617,7 +1617,7 @@ WCharArray_get_value_lock_held(TyObject *op)
 }
 
 static TyObject *
-WCharArray_get_value(TyObject *op, void *Ty_UNUSED(ignored))
+WCharArray_get_value(TyObject *op, void *Py_UNUSED(ignored))
 {
     TyObject *res;
     Ty_BEGIN_CRITICAL_SECTION(op);
@@ -1662,7 +1662,7 @@ WCharArray_set_value_lock_held(TyObject *op, TyObject *value)
 }
 
 static int
-WCharArray_set_value(TyObject *op, TyObject *value, void *Ty_UNUSED(ignored))
+WCharArray_set_value(TyObject *op, TyObject *value, void *Py_UNUSED(ignored))
 {
     int rc;
     Ty_BEGIN_CRITICAL_SECTION(op);
@@ -1904,7 +1904,7 @@ c_wchar_p_from_param_impl(TyObject *type, TyTypeObject *cls, TyObject *value)
     TyObject *as_parameter;
     int res;
     if (value == Ty_None) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     ctypes_state *st = get_module_state_by_class(cls->tp_base);
     if (TyUnicode_Check(value)) {
@@ -1993,7 +1993,7 @@ c_char_p_from_param_impl(TyObject *type, TyTypeObject *cls, TyObject *value)
     TyObject *as_parameter;
     int res;
     if (value == Ty_None) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     ctypes_state *st = get_module_state_by_class(cls->tp_base);
     if (TyBytes_Check(value)) {
@@ -2084,7 +2084,7 @@ c_void_p_from_param_impl(TyObject *type, TyTypeObject *cls, TyObject *value)
 
 /* None */
     if (value == Ty_None) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     ctypes_state *st = get_module_state_by_class(cls->tp_base);
 
@@ -3039,13 +3039,13 @@ PyCData_dealloc(TyObject *self)
 
 static TyMemberDef PyCData_members[] = {
     { "_b_base_", _Py_T_OBJECT,
-      offsetof(CDataObject, b_base), Ty_READONLY,
+      offsetof(CDataObject, b_base), Py_READONLY,
       "the base object" },
     { "_b_needsfree_", Ty_T_INT,
-      offsetof(CDataObject, b_needsfree), Ty_READONLY,
+      offsetof(CDataObject, b_needsfree), Py_READONLY,
       "whether the object owns the memory or not" },
     { "_objects", _Py_T_OBJECT,
-      offsetof(CDataObject, b_objects), Ty_READONLY,
+      offsetof(CDataObject, b_objects), Py_READONLY,
       "internal objects tree (NEVER CHANGE THIS OBJECT!)"},
     { NULL },
 };
@@ -3195,7 +3195,7 @@ _ctypes_PyCData___setstate___impl(TyObject *myself, TyObject *dict,
     Ty_DECREF(mydict);
     if (res == -1)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -3442,7 +3442,7 @@ _PyCData_set(ctypes_state *st,
             return result;
         } else if (value == Ty_None && PyCPointerTypeObject_Check(st, type)) {
             *(void **)ptr = NULL;
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         } else {
             TyErr_Format(TyExc_TypeError,
                          "expected %s instance, got %s",
@@ -3665,7 +3665,7 @@ _ctypes_CFuncPtr_errcheck_get_impl(PyCFuncPtrObject *self)
     if (self->errcheck) {
         return Ty_NewRef(self->errcheck);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -3727,7 +3727,7 @@ _ctypes_CFuncPtr_restype_get_impl(PyCFuncPtrObject *self)
     if (info->restype) {
         return Ty_NewRef(info->restype);
     } else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -3782,7 +3782,7 @@ _ctypes_CFuncPtr_argtypes_get_impl(PyCFuncPtrObject *self)
     if (info->argtypes) {
         return Ty_NewRef(info->argtypes);
     } else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 

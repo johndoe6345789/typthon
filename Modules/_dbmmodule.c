@@ -266,7 +266,7 @@ _dbm_dbm_close_impl(dbmobject *self)
         dbm_close(self->di_dbm);
     }
     self->di_dbm = NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -455,17 +455,17 @@ _dbm_dbm_clear_impl(dbmobject *self, TyTypeObject *cls)
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-dbm__enter__(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dbm__enter__(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return Ty_NewRef(self);
 }
 
 static TyObject *
-dbm__exit__(TyObject *self, TyObject *Ty_UNUSED(args))
+dbm__exit__(TyObject *self, TyObject *Py_UNUSED(args))
 {
     dbmobject *dp = dbmobject_CAST(self);
     return _dbm_dbm_close_impl(dp);

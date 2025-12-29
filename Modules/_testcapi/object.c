@@ -28,7 +28,7 @@ call_pyobject_print(TyObject *self, TyObject * args)
 
     fclose(fp);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -50,7 +50,7 @@ pyobject_print_null(TyObject *self, TyObject *args)
 
     fclose(fp);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -114,14 +114,14 @@ pyobject_print_os_error(TyObject *self, TyObject *args)
     fclose(fp);
     Ty_DECREF(test_string);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
 pyobject_clear_weakrefs_no_callbacks(TyObject *self, TyObject *obj)
 {
     PyUnstable_Object_ClearWeakRefsNoCallbacks(obj);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -189,7 +189,7 @@ test_py_try_inc_ref(TyObject *self, TyObject *unused)
     Ty_DECREF(op);  // undo try-incref
     Ty_DECREF(op);  // dealloc
     assert(MyObject_dealloc_called == 1);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -200,59 +200,59 @@ _test_incref(TyObject *ob)
 }
 
 static TyObject *
-test_xincref_doesnt_leak(TyObject *ob, TyObject *Ty_UNUSED(ignored))
+test_xincref_doesnt_leak(TyObject *ob, TyObject *Py_UNUSED(ignored))
 {
     TyObject *obj = TyLong_FromLong(0);
     Ty_XINCREF(_test_incref(obj));
     Ty_DECREF(obj);
     Ty_DECREF(obj);
     Ty_DECREF(obj);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 static TyObject *
-test_incref_doesnt_leak(TyObject *ob, TyObject *Ty_UNUSED(ignored))
+test_incref_doesnt_leak(TyObject *ob, TyObject *Py_UNUSED(ignored))
 {
     TyObject *obj = TyLong_FromLong(0);
     Ty_INCREF(_test_incref(obj));
     Ty_DECREF(obj);
     Ty_DECREF(obj);
     Ty_DECREF(obj);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 static TyObject *
-test_xdecref_doesnt_leak(TyObject *ob, TyObject *Ty_UNUSED(ignored))
+test_xdecref_doesnt_leak(TyObject *ob, TyObject *Py_UNUSED(ignored))
 {
     Ty_XDECREF(TyLong_FromLong(0));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 static TyObject *
-test_decref_doesnt_leak(TyObject *ob, TyObject *Ty_UNUSED(ignored))
+test_decref_doesnt_leak(TyObject *ob, TyObject *Py_UNUSED(ignored))
 {
     Ty_DECREF(TyLong_FromLong(0));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 static TyObject *
-test_incref_decref_API(TyObject *ob, TyObject *Ty_UNUSED(ignored))
+test_incref_decref_API(TyObject *ob, TyObject *Py_UNUSED(ignored))
 {
     TyObject *obj = TyLong_FromLong(0);
     Ty_IncRef(obj);
     Ty_DecRef(obj);
     Ty_DecRef(obj);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 #ifdef Ty_REF_DEBUG
 static TyObject *
-negative_refcount(TyObject *self, TyObject *Ty_UNUSED(args))
+negative_refcount(TyObject *self, TyObject *Py_UNUSED(args))
 {
     TyObject *obj = TyUnicode_FromString("negative_refcount");
     if (obj == NULL) {
@@ -264,12 +264,12 @@ negative_refcount(TyObject *self, TyObject *Ty_UNUSED(args))
     /* Ty_DECREF() must call _Ty_NegativeRefcount() and abort Python */
     Ty_DECREF(obj);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 static TyObject *
-decref_freed_object(TyObject *self, TyObject *Ty_UNUSED(args))
+decref_freed_object(TyObject *self, TyObject *Py_UNUSED(args))
 {
     TyObject *obj = TyUnicode_FromString("decref_freed_object");
     if (obj == NULL) {
@@ -285,14 +285,14 @@ decref_freed_object(TyObject *self, TyObject *Ty_UNUSED(args))
     // _Ty_NegativeRefcount() and abort Python.
     Ty_DECREF(obj);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 
 
 // Test Ty_CLEAR() macro
 static TyObject*
-test_py_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_py_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     // simple case with a variable
     TyObject *obj = TyList_New(0);
@@ -314,13 +314,13 @@ test_py_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
     assert(array[0] == NULL);
     assert(p == array + 1);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 // Test Ty_SETREF() and Ty_XSETREF() macros, similar to test_py_clear()
 static TyObject*
-test_py_setref(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_py_setref(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     // Ty_SETREF() simple case with a variable
     TyObject *obj = TyList_New(0);
@@ -371,7 +371,7 @@ test_py_setref(TyObject *self, TyObject *Ty_UNUSED(ignored))
     assert(array2[0] == NULL);
     assert(p2 == array2 + 1);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -398,13 +398,13 @@ test_py_setref(TyObject *self, TyObject *Ty_UNUSED(ignored))
         assert(Ty_XNewRef(NULL) == NULL); \
         \
         Ty_DECREF(obj); \
-        Ty_RETURN_NONE; \
+        Py_RETURN_NONE; \
     } while (0)
 
 
 // Test Ty_NewRef() and Ty_XNewRef() macros
 static TyObject*
-test_refcount_macros(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_refcount_macros(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TEST_REFCOUNT();
 }
@@ -414,7 +414,7 @@ test_refcount_macros(TyObject *self, TyObject *Ty_UNUSED(ignored))
 
 // Test Ty_NewRef() and Ty_XNewRef() functions, after undefining macros.
 static TyObject*
-test_refcount_funcs(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_refcount_funcs(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TEST_REFCOUNT();
 }
@@ -450,12 +450,12 @@ test_refcount_funcs(TyObject *self, TyObject *Ty_UNUSED(ignored))
         assert(!Ty_Is(obj, o_false)); \
         \
         Ty_DECREF(obj); \
-        Ty_RETURN_NONE; \
+        Py_RETURN_NONE; \
     } while (0)
 
 // Test Ty_Is() macro
 static TyObject*
-test_py_is_macros(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_py_is_macros(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TEST_PY_IS();
 }
@@ -464,7 +464,7 @@ test_py_is_macros(TyObject *self, TyObject *Ty_UNUSED(ignored))
 
 // Test Ty_Is() function, after undefining its macro.
 static TyObject*
-test_py_is_funcs(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_py_is_funcs(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TEST_PY_IS();
 }
@@ -474,7 +474,7 @@ static TyObject *
 clear_managed_dict(TyObject *self, TyObject *obj)
 {
     PyObject_ClearManagedDict(obj);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

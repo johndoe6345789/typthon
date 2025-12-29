@@ -3356,7 +3356,7 @@ get_path_importer(PyThreadState *tstate, TyObject *path_importer_cache,
         _TyErr_Clear(tstate);
     }
     if (importer == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (TyDict_SetItem(path_importer_cache, p, importer) < 0) {
         Ty_DECREF(importer);
@@ -3559,7 +3559,7 @@ resolve_name(PyThreadState *tstate, TyObject *name, TyObject *globals, int level
                 goto error;
             }
 
-            equal = PyObject_RichCompareBool(package, parent, Ty_EQ);
+            equal = PyObject_RichCompareBool(package, parent, Py_EQ);
             Ty_DECREF(parent);
             if (equal < 0) {
                 goto error;
@@ -4271,7 +4271,7 @@ _imp_acquire_lock_impl(TyObject *module)
 {
     PyInterpreterState *interp = _TyInterpreterState_GET();
     _TyImport_AcquireLock(interp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -4293,7 +4293,7 @@ _imp_release_lock_impl(TyObject *module)
         return NULL;
     }
     _TyImport_ReleaseLock(interp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -4318,7 +4318,7 @@ _imp__fix_co_filename_impl(TyObject *module, PyCodeObject *code,
 {
     update_compiled_module(code, path);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -4413,7 +4413,7 @@ _imp_init_frozen_impl(TyObject *module, TyObject *name)
     if (ret < 0)
         return NULL;
     if (ret == 0) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return import_add_module(tstate, name);
 }
@@ -4444,10 +4444,10 @@ _imp_find_frozen_impl(TyObject *module, TyObject *name, int withdata)
     struct frozen_info info;
     frozen_status status = find_frozen(name, &info);
     if (status == FROZEN_NOT_FOUND || status == FROZEN_DISABLED) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     else if (status == FROZEN_BAD_NAME) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     else if (status != FROZEN_OKAY) {
         set_frozen_error(status, name);
@@ -4586,9 +4586,9 @@ _imp_is_frozen_impl(TyObject *module, TyObject *name)
     struct frozen_info info;
     frozen_status status = find_frozen(name, &info);
     if (status != FROZEN_OKAY) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -4622,7 +4622,7 @@ _imp__override_frozen_modules_for_tests_impl(TyObject *module, int override)
 {
     PyInterpreterState *interp = _TyInterpreterState_GET();
     OVERRIDE_FROZEN_MODULES(interp) = override;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

@@ -12,11 +12,11 @@ typedef struct {
     TyObject *ns_dict;
 } _PyNamespaceObject;
 
-#define _PyNamespace_CAST(op) _Ty_CAST(_PyNamespaceObject*, (op))
+#define _PyNamespace_CAST(op) _Py_CAST(_PyNamespaceObject*, (op))
 
 
 static TyMemberDef namespace_members[] = {
-    {"__dict__", _Ty_T_OBJECT, offsetof(_PyNamespaceObject, ns_dict), Ty_READONLY},
+    {"__dict__", _Ty_T_OBJECT, offsetof(_PyNamespaceObject, ns_dict), Py_READONLY},
     {NULL}
 };
 
@@ -198,14 +198,14 @@ namespace_richcompare(TyObject *self, TyObject *other, int op)
         PyObject_TypeCheck(other, &_PyNamespace_Type))
         return PyObject_RichCompare(((_PyNamespaceObject *)self)->ns_dict,
                                    ((_PyNamespaceObject *)other)->ns_dict, op);
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 
 PyDoc_STRVAR(namespace_reduce__doc__, "Return state information for pickling");
 
 static TyObject *
-namespace_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+namespace_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     _PyNamespaceObject *ns = (_PyNamespaceObject*)op;
     TyObject *result, *args = TyTuple_New(0);

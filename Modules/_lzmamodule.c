@@ -1352,13 +1352,13 @@ PyDoc_STRVAR(Decompressor_unused_data_doc,
 "Data found after the end of the compressed stream.");
 
 static TyMemberDef Decompressor_members[] = {
-    {"check", Ty_T_INT, offsetof(Decompressor, check), Ty_READONLY,
+    {"check", Ty_T_INT, offsetof(Decompressor, check), Py_READONLY,
      Decompressor_check_doc},
-    {"eof", Ty_T_BOOL, offsetof(Decompressor, eof), Ty_READONLY,
+    {"eof", Ty_T_BOOL, offsetof(Decompressor, eof), Py_READONLY,
      Decompressor_eof_doc},
-    {"needs_input", Ty_T_BOOL, offsetof(Decompressor, needs_input), Ty_READONLY,
+    {"needs_input", Ty_T_BOOL, offsetof(Decompressor, needs_input), Py_READONLY,
      Decompressor_needs_input_doc},
-    {"unused_data", Ty_T_OBJECT_EX, offsetof(Decompressor, unused_data), Ty_READONLY,
+    {"unused_data", Ty_T_OBJECT_EX, offsetof(Decompressor, unused_data), Py_READONLY,
      Decompressor_unused_data_doc},
     {NULL}
 };

@@ -2171,7 +2171,7 @@ monitoring_use_tool_id_impl(TyObject *module, int tool_id, TyObject *name)
         return NULL;
     }
     interp->monitoring_tool_names[tool_id] = Ty_NewRef(name);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2198,7 +2198,7 @@ monitoring_clear_tool_id_impl(TyObject *module, int tool_id)
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2225,7 +2225,7 @@ monitoring_free_tool_id_impl(TyObject *module, int tool_id)
     }
 
     Ty_CLEAR(interp->monitoring_tool_names[tool_id]);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2248,7 +2248,7 @@ monitoring_get_tool_impl(TyObject *module, int tool_id)
     PyInterpreterState *interp = _TyInterpreterState_GET();
     TyObject *name = interp->monitoring_tool_names[tool_id];
     if (name == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(name);
 }
@@ -2289,7 +2289,7 @@ monitoring_register_callback_impl(TyObject *module, int tool_id, int event,
     }
     func = _PyMonitoring_RegisterCallback(tool_id, event_id, func);
     if (func == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return func;
 }
@@ -2346,7 +2346,7 @@ monitoring_set_events_impl(TyObject *module, int tool_id, int event_set)
     if (_PyMonitoring_SetEvents(tool_id, event_set)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2427,7 +2427,7 @@ monitoring_set_local_events_impl(TyObject *module, int tool_id,
     if (_PyMonitoring_SetLocalEvents((PyCodeObject*)code, tool_id, event_set)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2462,7 +2462,7 @@ monitoring_restart_events_impl(TyObject *module)
     if (res) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int

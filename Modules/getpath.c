@@ -61,7 +61,7 @@
 /* HELPER FUNCTIONS for getpath.py */
 
 static TyObject *
-getpath_abspath(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_abspath(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *r = NULL;
     TyObject *pathobj;
@@ -86,7 +86,7 @@ getpath_abspath(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_basename(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_basename(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *path;
     if (!TyArg_ParseTuple(args, "U", &path)) {
@@ -102,7 +102,7 @@ getpath_basename(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_dirname(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_dirname(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *path;
     if (!TyArg_ParseTuple(args, "U", &path)) {
@@ -118,7 +118,7 @@ getpath_dirname(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_isabs(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_isabs(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *r = NULL;
     TyObject *pathobj;
@@ -136,7 +136,7 @@ getpath_isabs(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_hassuffix(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_hassuffix(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *r = NULL;
     TyObject *pathobj;
@@ -171,7 +171,7 @@ getpath_hassuffix(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_isdir(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_isdir(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *r = NULL;
     TyObject *pathobj;
@@ -196,7 +196,7 @@ getpath_isdir(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_isfile(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_isfile(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *r = NULL;
     TyObject *pathobj;
@@ -221,7 +221,7 @@ getpath_isfile(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_isxfile(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_isxfile(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *r = NULL;
     TyObject *pathobj;
@@ -253,7 +253,7 @@ getpath_isxfile(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_joinpath(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_joinpath(TyObject *Py_UNUSED(self), TyObject *args)
 {
     if (!TyTuple_Check(args)) {
         TyErr_SetString(TyExc_TypeError, "requires tuple of arguments");
@@ -338,7 +338,7 @@ getpath_joinpath(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_readlines(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_readlines(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *r = NULL;
     TyObject *pathobj;
@@ -422,7 +422,7 @@ getpath_readlines(TyObject *Ty_UNUSED(self), TyObject *args)
 
 
 static TyObject *
-getpath_realpath(TyObject *Ty_UNUSED(self) , TyObject *args)
+getpath_realpath(TyObject *Py_UNUSED(self) , TyObject *args)
 {
     TyObject *pathobj;
     if (!TyArg_ParseTuple(args, "U", &pathobj)) {
@@ -583,21 +583,21 @@ static TyMethodDef getpath_methods[] = {
    are enabled or not. */
 
 static TyObject *
-getpath_warn(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_warn(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *msgobj;
     if (!TyArg_ParseTuple(args, "U", &msgobj)) {
         return NULL;
     }
     fprintf(stderr, "%s\n", TyUnicode_AsUTF8(msgobj));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 static TyObject *
-getpath_nowarn(TyObject *Ty_UNUSED(self), TyObject *args)
+getpath_nowarn(TyObject *Py_UNUSED(self), TyObject *args)
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

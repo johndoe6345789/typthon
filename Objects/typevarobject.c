@@ -75,7 +75,7 @@ NoDefault_repr(TyObject *op)
 }
 
 static TyObject *
-NoDefault_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+NoDefault_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     return TyUnicode_FromString("NoDefault");
 }
@@ -386,15 +386,15 @@ caller(void)
 {
     _PyInterpreterFrame *f = _TyThreadState_GET()->current_frame;
     if (f == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (f == NULL || PyStackRef_IsNull(f->f_funcobj)) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     TyObject *r = TyFunction_GetModule(PyStackRef_AsPyObjectBorrow(f->f_funcobj));
     if (!r) {
         TyErr_Clear();
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(r);
 }
@@ -529,22 +529,22 @@ typevar_repr(TyObject *self)
 }
 
 static TyMemberDef typevar_members[] = {
-    {"__name__", _Ty_T_OBJECT, offsetof(typevarobject, name), Ty_READONLY},
-    {"__covariant__", Ty_T_BOOL, offsetof(typevarobject, covariant), Ty_READONLY},
-    {"__contravariant__", Ty_T_BOOL, offsetof(typevarobject, contravariant), Ty_READONLY},
-    {"__infer_variance__", Ty_T_BOOL, offsetof(typevarobject, infer_variance), Ty_READONLY},
+    {"__name__", _Ty_T_OBJECT, offsetof(typevarobject, name), Py_READONLY},
+    {"__covariant__", Ty_T_BOOL, offsetof(typevarobject, covariant), Py_READONLY},
+    {"__contravariant__", Ty_T_BOOL, offsetof(typevarobject, contravariant), Py_READONLY},
+    {"__infer_variance__", Ty_T_BOOL, offsetof(typevarobject, infer_variance), Py_READONLY},
     {0}
 };
 
 static TyObject *
-typevar_bound(TyObject *op, void *Ty_UNUSED(closure))
+typevar_bound(TyObject *op, void *Py_UNUSED(closure))
 {
     typevarobject *self = typevarobject_CAST(op);
     if (self->bound != NULL) {
         return Ty_NewRef(self->bound);
     }
     if (self->evaluate_bound == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     TyObject *bound = PyObject_CallNoArgs(self->evaluate_bound);
     self->bound = Ty_XNewRef(bound);
@@ -552,7 +552,7 @@ typevar_bound(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-typevar_default(TyObject *op, void *Ty_UNUSED(closure))
+typevar_default(TyObject *op, void *Py_UNUSED(closure))
 {
     typevarobject *self = typevarobject_CAST(op);
     if (self->default_value != NULL) {
@@ -567,7 +567,7 @@ typevar_default(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-typevar_constraints(TyObject *op, void *Ty_UNUSED(closure))
+typevar_constraints(TyObject *op, void *Py_UNUSED(closure))
 {
     typevarobject *self = typevarobject_CAST(op);
     if (self->constraints != NULL) {
@@ -582,7 +582,7 @@ typevar_constraints(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-typevar_evaluate_bound(TyObject *op, void *Ty_UNUSED(closure))
+typevar_evaluate_bound(TyObject *op, void *Py_UNUSED(closure))
 {
     typevarobject *self = typevarobject_CAST(op);
     if (self->evaluate_bound != NULL) {
@@ -591,11 +591,11 @@ typevar_evaluate_bound(TyObject *op, void *Ty_UNUSED(closure))
     if (self->bound != NULL) {
         return constevaluator_alloc(self->bound);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-typevar_evaluate_constraints(TyObject *op, void *Ty_UNUSED(closure))
+typevar_evaluate_constraints(TyObject *op, void *Py_UNUSED(closure))
 {
     typevarobject *self = typevarobject_CAST(op);
     if (self->evaluate_constraints != NULL) {
@@ -604,11 +604,11 @@ typevar_evaluate_constraints(TyObject *op, void *Ty_UNUSED(closure))
     if (self->constraints != NULL) {
         return constevaluator_alloc(self->constraints);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-typevar_evaluate_default(TyObject *op, void *Ty_UNUSED(closure))
+typevar_evaluate_default(TyObject *op, void *Py_UNUSED(closure))
 {
     typevarobject *self = typevarobject_CAST(op);
     if (self->evaluate_default != NULL) {
@@ -617,7 +617,7 @@ typevar_evaluate_default(TyObject *op, void *Ty_UNUSED(closure))
     if (self->default_value != NULL) {
         return constevaluator_alloc(self->default_value);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyGetSetDef typevar_getset[] = {
@@ -843,9 +843,9 @@ typevar_has_default_impl(typevarobject *self)
 {
     if (self->evaluate_default != NULL ||
         (self->default_value != &_Ty_NoDefaultStruct && self->default_value != NULL)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
@@ -976,10 +976,10 @@ static TyObject *
 paramspecattr_richcompare(TyObject *a, TyObject *b, int op)
 {
     if (!Ty_IS_TYPE(a, Ty_TYPE(b))) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
-    if (op != Ty_EQ && op != Ty_NE) {
-        Ty_RETURN_NOTIMPLEMENTED;
+    if (op != Py_EQ && op != Py_NE) {
+        Py_RETURN_NOTIMPLEMENTED;
     }
     paramspecattrobject *lhs = paramspecattrobject_CAST(a); // may be unsafe
     paramspecattrobject *rhs = (paramspecattrobject *)b;    // safe fast cast
@@ -987,7 +987,7 @@ paramspecattr_richcompare(TyObject *a, TyObject *b, int op)
 }
 
 static TyMemberDef paramspecattr_members[] = {
-    {"__origin__", _Ty_T_OBJECT, offsetof(paramspecattrobject, __origin__), Ty_READONLY},
+    {"__origin__", _Ty_T_OBJECT, offsetof(paramspecattrobject, __origin__), Py_READONLY},
     {0}
 };
 
@@ -1219,30 +1219,30 @@ paramspec_repr(TyObject *self)
 }
 
 static TyMemberDef paramspec_members[] = {
-    {"__name__", _Ty_T_OBJECT, offsetof(paramspecobject, name), Ty_READONLY},
-    {"__bound__", _Ty_T_OBJECT, offsetof(paramspecobject, bound), Ty_READONLY},
-    {"__covariant__", Ty_T_BOOL, offsetof(paramspecobject, covariant), Ty_READONLY},
-    {"__contravariant__", Ty_T_BOOL, offsetof(paramspecobject, contravariant), Ty_READONLY},
-    {"__infer_variance__", Ty_T_BOOL, offsetof(paramspecobject, infer_variance), Ty_READONLY},
+    {"__name__", _Ty_T_OBJECT, offsetof(paramspecobject, name), Py_READONLY},
+    {"__bound__", _Ty_T_OBJECT, offsetof(paramspecobject, bound), Py_READONLY},
+    {"__covariant__", Ty_T_BOOL, offsetof(paramspecobject, covariant), Py_READONLY},
+    {"__contravariant__", Ty_T_BOOL, offsetof(paramspecobject, contravariant), Py_READONLY},
+    {"__infer_variance__", Ty_T_BOOL, offsetof(paramspecobject, infer_variance), Py_READONLY},
     {0}
 };
 
 static TyObject *
-paramspec_args(TyObject *self, void *Ty_UNUSED(closure))
+paramspec_args(TyObject *self, void *Py_UNUSED(closure))
 {
     TyTypeObject *tp = _TyInterpreterState_GET()->cached_objects.paramspecargs_type;
     return (TyObject *)paramspecattr_new(tp, self);
 }
 
 static TyObject *
-paramspec_kwargs(TyObject *self, void *Ty_UNUSED(closure))
+paramspec_kwargs(TyObject *self, void *Py_UNUSED(closure))
 {
     TyTypeObject *tp = _TyInterpreterState_GET()->cached_objects.paramspeckwargs_type;
     return (TyObject *)paramspecattr_new(tp, self);
 }
 
 static TyObject *
-paramspec_default(TyObject *op, void *Ty_UNUSED(closure))
+paramspec_default(TyObject *op, void *Py_UNUSED(closure))
 {
     paramspecobject *self = paramspecobject_CAST(op);
     if (self->default_value != NULL) {
@@ -1257,7 +1257,7 @@ paramspec_default(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-paramspec_evaluate_default(TyObject *op, void *Ty_UNUSED(closure))
+paramspec_evaluate_default(TyObject *op, void *Py_UNUSED(closure))
 {
     paramspecobject *self = paramspecobject_CAST(op);
     if (self->evaluate_default != NULL) {
@@ -1266,7 +1266,7 @@ paramspec_evaluate_default(TyObject *op, void *Ty_UNUSED(closure))
     if (self->default_value != NULL) {
         return constevaluator_alloc(self->default_value);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyGetSetDef paramspec_getset[] = {
@@ -1411,9 +1411,9 @@ paramspec_has_default_impl(paramspecobject *self)
 {
     if (self->evaluate_default != NULL ||
         (self->default_value != &_Ty_NoDefaultStruct && self->default_value != NULL)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
@@ -1555,7 +1555,7 @@ typevartuple_repr(TyObject *self)
 }
 
 static TyMemberDef typevartuple_members[] = {
-    {"__name__", _Ty_T_OBJECT, offsetof(typevartupleobject, name), Ty_READONLY},
+    {"__name__", _Ty_T_OBJECT, offsetof(typevartupleobject, name), Py_READONLY},
     {0}
 };
 
@@ -1665,9 +1665,9 @@ typevartuple_has_default_impl(typevartupleobject *self)
 {
     if (self->evaluate_default != NULL ||
         (self->default_value != &_Ty_NoDefaultStruct && self->default_value != NULL)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
@@ -1700,7 +1700,7 @@ typevartuple_clear(TyObject *self)
 }
 
 static TyObject *
-typevartuple_default(TyObject *op, void *Ty_UNUSED(closure))
+typevartuple_default(TyObject *op, void *Py_UNUSED(closure))
 {
     typevartupleobject *self = typevartupleobject_CAST(op);
     if (self->default_value != NULL) {
@@ -1715,7 +1715,7 @@ typevartuple_default(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-typevartuple_evaluate_default(TyObject *op, void *Ty_UNUSED(closure))
+typevartuple_evaluate_default(TyObject *op, void *Py_UNUSED(closure))
 {
     typevartupleobject *self = typevartupleobject_CAST(op);
     if (self->evaluate_default != NULL) {
@@ -1724,7 +1724,7 @@ typevartuple_evaluate_default(TyObject *op, void *Ty_UNUSED(closure))
     if (self->default_value != NULL) {
         return constevaluator_alloc(self->default_value);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyGetSetDef typevartuple_getset[] = {
@@ -1814,14 +1814,14 @@ _Ty_make_typevar(TyObject *name, TyObject *evaluate_bound, TyObject *evaluate_co
 }
 
 TyObject *
-_Ty_make_paramspec(PyThreadState *Ty_UNUSED(ignored), TyObject *v)
+_Ty_make_paramspec(PyThreadState *Py_UNUSED(ignored), TyObject *v)
 {
     assert(TyUnicode_Check(v));
     return (TyObject *)paramspec_alloc(v, NULL, NULL, false, false, true, NULL);
 }
 
 TyObject *
-_Ty_make_typevartuple(PyThreadState *Ty_UNUSED(ignored), TyObject *v)
+_Ty_make_typevartuple(PyThreadState *Py_UNUSED(ignored), TyObject *v)
 {
     assert(TyUnicode_Check(v));
     return (TyObject *)typevartuple_alloc(v, NULL, NULL);
@@ -1882,19 +1882,19 @@ typealias_repr(TyObject *self)
 }
 
 static TyMemberDef typealias_members[] = {
-    {"__name__", _Ty_T_OBJECT, offsetof(typealiasobject, name), Ty_READONLY},
+    {"__name__", _Ty_T_OBJECT, offsetof(typealiasobject, name), Py_READONLY},
     {0}
 };
 
 static TyObject *
-typealias_value(TyObject *self, void *Ty_UNUSED(closure))
+typealias_value(TyObject *self, void *Py_UNUSED(closure))
 {
     typealiasobject *ta = typealiasobject_CAST(self);
     return typealias_get_value(ta);
 }
 
 static TyObject *
-typealias_evaluate_value(TyObject *self, void *Ty_UNUSED(closure))
+typealias_evaluate_value(TyObject *self, void *Py_UNUSED(closure))
 {
     typealiasobject *ta = typealiasobject_CAST(self);
     if (ta->compute_value != NULL) {
@@ -1905,7 +1905,7 @@ typealias_evaluate_value(TyObject *self, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-typealias_parameters(TyObject *self, void *Ty_UNUSED(closure))
+typealias_parameters(TyObject *self, void *Py_UNUSED(closure))
 {
     typealiasobject *ta = typealiasobject_CAST(self);
     if (ta->type_params == NULL) {
@@ -1915,7 +1915,7 @@ typealias_parameters(TyObject *self, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-typealias_type_params(TyObject *self, void *Ty_UNUSED(closure))
+typealias_type_params(TyObject *self, void *Py_UNUSED(closure))
 {
     typealiasobject *ta = typealiasobject_CAST(self);
     if (ta->type_params == NULL) {
@@ -1925,7 +1925,7 @@ typealias_type_params(TyObject *self, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-typealias_module(TyObject *self, void *Ty_UNUSED(closure))
+typealias_module(TyObject *self, void *Py_UNUSED(closure))
 {
     typealiasobject *ta = typealiasobject_CAST(self);
     if (ta->module != NULL) {
@@ -1940,7 +1940,7 @@ typealias_module(TyObject *self, void *Ty_UNUSED(closure))
             return Ty_NewRef(mod);
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyGetSetDef typealias_getset[] = {

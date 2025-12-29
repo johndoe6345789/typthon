@@ -339,7 +339,7 @@ builtin_all(TyObject *module, TyObject *iterable)
         }
         if (cmp == 0) {
             Ty_DECREF(it);
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         }
     }
     Ty_DECREF(it);
@@ -349,7 +349,7 @@ builtin_all(TyObject *module, TyObject *iterable)
         else
             return NULL;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -388,7 +388,7 @@ builtin_any(TyObject *module, TyObject *iterable)
         }
         if (cmp > 0) {
             Ty_DECREF(it);
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
         }
     }
     Ty_DECREF(it);
@@ -398,7 +398,7 @@ builtin_any(TyObject *module, TyObject *iterable)
         else
             return NULL;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /*[clinic input]
@@ -617,7 +617,7 @@ filter_next(TyObject *self)
 }
 
 static TyObject *
-filter_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+filter_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     filterobject *lz = _filterobject_CAST(self);
     return Ty_BuildValue("O(OO)", Ty_TYPE(lz), lz->func, lz->it);
@@ -1215,7 +1215,7 @@ builtin_exec_impl(TyObject *module, TyObject *source, TyObject *globals,
     Ty_DECREF(globals);
     Ty_DECREF(locals);
     Ty_DECREF(v);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
   error:
     Ty_XDECREF(globals);
@@ -1280,7 +1280,7 @@ builtin_globals_impl(TyObject *module)
         if (_TyErr_Occurred(tstate)) {
             return NULL;
         }
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(globals);
 }
@@ -1308,10 +1308,10 @@ builtin_hasattr_impl(TyObject *module, TyObject *obj, TyObject *name)
         return NULL;
     }
     if (v == NULL) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     Ty_DECREF(v);
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 
@@ -1565,7 +1565,7 @@ check:
 }
 
 static TyObject *
-map_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+map_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     mapobject *lz = _mapobject_CAST(self);
     Ty_ssize_t numargs = TyTuple_GET_SIZE(lz->iters);
@@ -1596,7 +1596,7 @@ map_setstate(TyObject *self, TyObject *state)
     }
     mapobject *lz = _mapobject_CAST(self);
     lz->strict = strict;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef map_methods[] = {
@@ -1725,7 +1725,7 @@ builtin_setattr_impl(TyObject *module, TyObject *obj, TyObject *name,
 {
     if (PyObject_SetAttr(obj, name, value) != 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1748,7 +1748,7 @@ builtin_delattr_impl(TyObject *module, TyObject *obj, TyObject *name)
     if (PyObject_DelAttr(obj, name) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1938,7 +1938,7 @@ builtin_locals_impl(TyObject *module)
         if (_TyErr_Occurred(tstate)) {
             return NULL;
         }
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(locals);
 }
@@ -1952,8 +1952,8 @@ min_max(TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames, int op)
     static const char * const keywords[] = {"key", "default", NULL};
     static _TyArg_Parser _parser_min = {"|$OO:min", keywords, 0};
     static _TyArg_Parser _parser_max = {"|$OO:max", keywords, 0};
-    const char *name = (op == Ty_LT) ? "min" : "max";
-    _TyArg_Parser *_parser = (op == Ty_LT) ? &_parser_min : &_parser_max;
+    const char *name = (op == Py_LT) ? "min" : "max";
+    _TyArg_Parser *_parser = (op == Py_LT) ? &_parser_min : &_parser_max;
 
     if (nargs == 0) {
         TyErr_Format(TyExc_TypeError, "%s expected at least 1 argument, got 0", name);
@@ -2066,7 +2066,7 @@ Fail_it:
 static TyObject *
 builtin_min(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    return min_max(args, nargs, kwnames, Ty_LT);
+    return min_max(args, nargs, kwnames, Py_LT);
 }
 
 PyDoc_STRVAR(min_doc,
@@ -2083,7 +2083,7 @@ With two or more positional arguments, return the smallest argument.");
 static TyObject *
 builtin_max(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    return min_max(args, nargs, kwnames, Ty_GT);
+    return min_max(args, nargs, kwnames, Py_GT);
 }
 
 PyDoc_STRVAR(max_doc,
@@ -2224,7 +2224,7 @@ builtin_print_impl(TyObject *module, TyObject * const *args,
         /* sys.stdout may be None when FILE* stdout isn't connected */
         if (file == Ty_None) {
             Ty_DECREF(file);
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
     }
     else {
@@ -2291,7 +2291,7 @@ builtin_print_impl(TyObject *module, TyObject * const *args,
     }
     Ty_DECREF(file);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -3246,7 +3246,7 @@ check:
 }
 
 static TyObject *
-zip_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+zip_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     zipobject *lz = _zipobject_CAST(self);
     /* Just recreate the zip with the internal iterator tuple */
@@ -3265,7 +3265,7 @@ zip_setstate(TyObject *self, TyObject *state)
     }
     zipobject *lz = _zipobject_CAST(self);
     lz->strict = strict;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef zip_methods[] = {

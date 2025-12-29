@@ -511,7 +511,7 @@ select_poll_register_impl(pollObject *self, int fd, unsigned short eventmask)
 
     self->ufd_uptodate = 0;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -564,7 +564,7 @@ select_poll_modify_impl(pollObject *self, int fd, unsigned short eventmask)
 
     self->ufd_uptodate = 0;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -599,7 +599,7 @@ select_poll_unregister_impl(pollObject *self, int fd)
     Ty_DECREF(key);
     self->ufd_uptodate = 0;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -862,7 +862,7 @@ internal_devpoll_register(devpollObject *self, int fd,
             return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -934,7 +934,7 @@ select_devpoll_unregister_impl(devpollObject *self, int fd)
             return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1089,17 +1089,17 @@ select_devpoll_close_impl(devpollObject *self)
         TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-devpoll_get_closed(TyObject *op, void *Ty_UNUSED(closure))
+devpoll_get_closed(TyObject *op, void *Py_UNUSED(closure))
 {
     devpollObject *self = devpollObject_CAST(op);
     if (self->fd_devpoll < 0) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /*[clinic input]
@@ -1415,18 +1415,18 @@ select_epoll_close_impl(pyEpoll_Object *self)
         TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 static TyObject *
-pyepoll_get_closed(TyObject *op, void *Ty_UNUSED(closure))
+pyepoll_get_closed(TyObject *op, void *Py_UNUSED(closure))
 {
     pyEpoll_Object *self = pyEpoll_Object_CAST(op);
     if (self->epfd < 0) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /*[clinic input]
@@ -1499,7 +1499,7 @@ pyepoll_internal_ctl(int epfd, int op, int fd, unsigned int events)
         TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1955,7 +1955,7 @@ kqueue_event_richcompare(TyObject *lhs, TyObject *rhs, int op)
     _selectstate *state = _selectstate_by_type(Ty_TYPE(s));
 
     if (!kqueue_event_Check(rhs, state)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     kqueue_event_Object *o = (kqueue_event_Object *)rhs;  // fast cast
 
@@ -1969,7 +1969,7 @@ kqueue_event_richcompare(TyObject *lhs, TyObject *rhs, int op)
            : 0;
 #undef CMP
 
-    Ty_RETURN_RICHCOMPARE(result, 0, op);
+    Py_RETURN_RICHCOMPARE(result, 0, op);
 }
 
 static TyType_Slot kqueue_event_Type_slots[] = {
@@ -1998,7 +1998,7 @@ kqueue_queue_err_closed(void)
 }
 
 static TyObject *
-kqueue_tracking_after_fork(TyObject *module, TyObject *Ty_UNUSED(dummy)) {
+kqueue_tracking_after_fork(TyObject *module, TyObject *Py_UNUSED(dummy)) {
     _selectstate *state = get_select_state(module);
     _kqueue_list_item *item = state->kqueue_open_list;
     state->kqueue_open_list = NULL;
@@ -2012,7 +2012,7 @@ kqueue_tracking_after_fork(TyObject *module, TyObject *Ty_UNUSED(dummy)) {
         TyMem_Free(item);
         item = next;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef kqueue_tracking_after_fork_def = {
@@ -2231,17 +2231,17 @@ select_kqueue_close_impl(kqueue_queue_Object *self)
         TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-kqueue_queue_get_closed(TyObject *op, void *Ty_UNUSED(closure))
+kqueue_queue_get_closed(TyObject *op, void *Py_UNUSED(closure))
 {
     kqueue_queue_Object *self = kqueue_queue_Object_CAST(op);
     if (self->kqfd < 0) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /*[clinic input]

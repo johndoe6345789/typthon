@@ -149,7 +149,7 @@ static PyBufferProcs picklebuf_as_buffer = {
 /* Methods */
 
 static TyObject *
-picklebuf_raw(TyObject *op, TyObject *Ty_UNUSED(ignored))
+picklebuf_raw(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyPickleBufferObject *self = (PyPickleBufferObject*)op;
     if (self->view.obj == NULL) {
@@ -190,11 +190,11 @@ Return a memoryview of the raw memory underlying this buffer.\n\
 Will raise BufferError is the buffer isn't contiguous.");
 
 static TyObject *
-picklebuf_release(TyObject *op, TyObject *Ty_UNUSED(ignored))
+picklebuf_release(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyPickleBufferObject *self = (PyPickleBufferObject*)op;
     PyBuffer_Release(&self->view);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(picklebuf_release_doc,

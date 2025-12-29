@@ -110,7 +110,7 @@ static TyObject *
 _curses_panel_panel_above_impl(PyCursesPanelObject *self);
 
 static TyObject *
-_curses_panel_panel_above(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_curses_panel_panel_above(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _curses_panel_panel_above_impl((PyCursesPanelObject *)self);
 }
@@ -128,7 +128,7 @@ static TyObject *
 _curses_panel_panel_below_impl(PyCursesPanelObject *self);
 
 static TyObject *
-_curses_panel_panel_below(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_curses_panel_panel_below(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _curses_panel_panel_below_impl((PyCursesPanelObject *)self);
 }
@@ -146,7 +146,7 @@ static TyObject *
 _curses_panel_panel_hidden_impl(PyCursesPanelObject *self);
 
 static TyObject *
-_curses_panel_panel_hidden(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_curses_panel_panel_hidden(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _curses_panel_panel_hidden_impl((PyCursesPanelObject *)self);
 }
@@ -217,7 +217,7 @@ static TyObject *
 _curses_panel_panel_window_impl(PyCursesPanelObject *self);
 
 static TyObject *
-_curses_panel_panel_window(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_curses_panel_panel_window(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _curses_panel_panel_window_impl((PyCursesPanelObject *)self);
 }
@@ -353,7 +353,7 @@ static TyObject *
 _curses_panel_bottom_panel_impl(TyObject *module);
 
 static TyObject *
-_curses_panel_bottom_panel(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_panel_bottom_panel(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_panel_bottom_panel_impl(module);
 }
@@ -400,7 +400,7 @@ static TyObject *
 _curses_panel_top_panel_impl(TyObject *module);
 
 static TyObject *
-_curses_panel_top_panel(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_panel_top_panel(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_panel_top_panel_impl(module);
 }
@@ -420,7 +420,7 @@ static TyObject *
 _curses_panel_update_panels_impl(TyObject *module);
 
 static TyObject *
-_curses_panel_update_panels(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_panel_update_panels(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_panel_update_panels_impl(module);
 }

@@ -97,7 +97,7 @@ static TyObject *
 traceback_tb_next_get_impl(PyTracebackObject *self);
 
 static TyObject *
-traceback_tb_next_get(TyObject *self, void *Ty_UNUSED(context))
+traceback_tb_next_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -122,7 +122,7 @@ static int
 traceback_tb_next_set_impl(PyTracebackObject *self, TyObject *value);
 
 static int
-traceback_tb_next_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+traceback_tb_next_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 

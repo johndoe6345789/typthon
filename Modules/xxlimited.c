@@ -250,14 +250,14 @@ Xxo_getbuffer(TyObject *op, Ty_buffer *view, int flags)
 }
 
 static void
-Xxo_releasebuffer(TyObject *op, Ty_buffer *Ty_UNUSED(view))
+Xxo_releasebuffer(TyObject *op, Ty_buffer *Py_UNUSED(view))
 {
     XxoObject *self = XxoObject_CAST(op);
     self->x_exports--;
 }
 
 static TyObject *
-Xxo_get_x_exports(TyObject *op, void *Ty_UNUSED(closure))
+Xxo_get_x_exports(TyObject *op, void *Py_UNUSED(closure))
 {
     XxoObject *self = XxoObject_CAST(op);
     return TyLong_FromSsize_t(self->x_exports);
@@ -333,7 +333,7 @@ xx_foo(TyObject *module, TyObject *args)
 /* Function of no arguments returning new Xxo object */
 
 static TyObject *
-xx_new(TyObject *module, TyObject *Ty_UNUSED(unused))
+xx_new(TyObject *module, TyObject *Py_UNUSED(unused))
 {
     XxoObject *rv;
 

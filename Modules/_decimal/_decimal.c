@@ -399,7 +399,7 @@ runtime_error_ptr(const char *mesg)
     return runtime_error_ptr("internal error in " funcname)
 
 static void
-dec_traphandler(mpd_context_t *Ty_UNUSED(ctx)) /* GCOV_NOT_REACHED */
+dec_traphandler(mpd_context_t *Py_UNUSED(ctx)) /* GCOV_NOT_REACHED */
 { /* GCOV_NOT_REACHED */
     return; /* GCOV_NOT_REACHED */
 }
@@ -662,7 +662,7 @@ static const char *INVALID_SIGNALDICT_ERROR_MSG = "invalid signal dict";
 
 static int
 signaldict_init(TyObject *self,
-                TyObject *Ty_UNUSED(args), TyObject *Ty_UNUSED(kwds))
+                TyObject *Py_UNUSED(args), TyObject *Py_UNUSED(kwds))
 {
     SdFlagAddr(self) = NULL;
     return 0;
@@ -795,9 +795,9 @@ signaldict_richcompare(TyObject *v, TyObject *w, int op)
         return value_error_ptr(INVALID_SIGNALDICT_ERROR_MSG);
     }
 
-    if (op == Ty_EQ || op == Ty_NE) {
+    if (op == Py_EQ || op == Py_NE) {
         if (PyDecSignalDict_Check(state, w)) {
-            res = (SdFlags(v)==SdFlags(w)) ^ (op==Ty_NE) ? Ty_True : Ty_False;
+            res = (SdFlags(v)==SdFlags(w)) ^ (op==Py_NE) ? Ty_True : Ty_False;
         }
         else if (TyDict_Check(w)) {
             uint32_t flags = dict_as_flags(state, w);
@@ -811,7 +811,7 @@ signaldict_richcompare(TyObject *v, TyObject *w, int op)
                 }
             }
             else {
-                res = (SdFlags(v)==flags) ^ (op==Ty_NE) ? Ty_True : Ty_False;
+                res = (SdFlags(v)==flags) ^ (op==Py_NE) ? Ty_True : Ty_False;
             }
         }
     }
@@ -820,7 +820,7 @@ signaldict_richcompare(TyObject *v, TyObject *w, int op)
 }
 
 static TyObject *
-signaldict_copy(TyObject *self, TyObject *Ty_UNUSED(dummy))
+signaldict_copy(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     if (SdFlagAddr(self) == NULL) {
         return value_error_ptr(INVALID_SIGNALDICT_ERROR_MSG);
@@ -869,14 +869,14 @@ static TyType_Spec signaldict_spec = {
 
 #define Dec_CONTEXT_GET_SSIZE(mem)                          \
 static TyObject *                                           \
-context_get##mem(TyObject *self, void *Ty_UNUSED(closure))  \
+context_get##mem(TyObject *self, void *Py_UNUSED(closure))  \
 {                                                           \
     return TyLong_FromSsize_t(mpd_get##mem(CTX(self)));     \
 }
 
 #define Dec_CONTEXT_GET_ULONG(mem)                              \
 static TyObject *                                               \
-context_get##mem(TyObject *self, void *Ty_UNUSED(closure))      \
+context_get##mem(TyObject *self, void *Py_UNUSED(closure))      \
 {                                                               \
     return TyLong_FromUnsignedLong(mpd_get##mem(CTX(self)));    \
 }
@@ -892,7 +892,7 @@ Dec_CONTEXT_GET_ULONG(status)
 #endif
 
 static TyObject *
-context_getround(TyObject *self, void *Ty_UNUSED(closure))
+context_getround(TyObject *self, void *Py_UNUSED(closure))
 {
     int i = mpd_getround(CTX(self));
     decimal_state *state = get_module_state_from_ctx(self);
@@ -901,33 +901,33 @@ context_getround(TyObject *self, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-context_getcapitals(TyObject *self, void *Ty_UNUSED(closure))
+context_getcapitals(TyObject *self, void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(CtxCaps(self));
 }
 
 #ifdef EXTRA_FUNCTIONALITY
 static TyObject *
-context_getallcr(TyObject *self, void *Ty_UNUSED(closure))
+context_getallcr(TyObject *self, void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(mpd_getcr(CTX(self)));
 }
 #endif
 
 static TyObject *
-context_getetiny(TyObject *self, TyObject *Ty_UNUSED(dummy))
+context_getetiny(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return TyLong_FromSsize_t(mpd_etiny(CTX(self)));
 }
 
 static TyObject *
-context_getetop(TyObject *self, TyObject *Ty_UNUSED(dummy))
+context_getetop(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return TyLong_FromSsize_t(mpd_etop(CTX(self)));
 }
 
 static int
-context_setprec(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
+context_setprec(TyObject *self, TyObject *value, void *Py_UNUSED(closure))
 {
     mpd_context_t *ctx;
     mpd_ssize_t x;
@@ -947,7 +947,7 @@ context_setprec(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
 }
 
 static int
-context_setemin(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
+context_setemin(TyObject *self, TyObject *value, void *Py_UNUSED(closure))
 {
     mpd_context_t *ctx;
     mpd_ssize_t x;
@@ -967,7 +967,7 @@ context_setemin(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
 }
 
 static int
-context_setemax(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
+context_setemax(TyObject *self, TyObject *value, void *Py_UNUSED(closure))
 {
     mpd_context_t *ctx;
     mpd_ssize_t x;
@@ -1004,7 +1004,7 @@ context_unsafe_setprec(TyObject *self, TyObject *value)
     }
 
     ctx->prec = x;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1024,7 +1024,7 @@ context_unsafe_setemin(TyObject *self, TyObject *value)
     }
 
     ctx->emin = x;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1044,12 +1044,12 @@ context_unsafe_setemax(TyObject *self, TyObject *value)
     }
 
     ctx->emax = x;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 
 static int
-context_setround(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
+context_setround(TyObject *self, TyObject *value, void *Py_UNUSED(closure))
 {
     mpd_context_t *ctx;
     int x;
@@ -1069,7 +1069,7 @@ context_setround(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
 }
 
 static int
-context_setcapitals(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
+context_setcapitals(TyObject *self, TyObject *value, void *Py_UNUSED(closure))
 {
     mpd_ssize_t x;
 
@@ -1089,7 +1089,7 @@ context_setcapitals(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
 
 #ifdef EXTRA_FUNCTIONALITY
 static int
-context_settraps(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
+context_settraps(TyObject *self, TyObject *value, void *Py_UNUSED(closure))
 {
     mpd_context_t *ctx;
     uint32_t flags;
@@ -1154,7 +1154,7 @@ context_settraps_dict(TyObject *self, TyObject *value)
 
 #ifdef EXTRA_FUNCTIONALITY
 static int
-context_setstatus(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
+context_setstatus(TyObject *self, TyObject *value, void *Py_UNUSED(closure))
 {
     mpd_context_t *ctx;
     uint32_t flags;
@@ -1219,7 +1219,7 @@ context_setstatus_dict(TyObject *self, TyObject *value)
 }
 
 static int
-context_setclamp(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
+context_setclamp(TyObject *self, TyObject *value, void *Py_UNUSED(closure))
 {
     mpd_context_t *ctx;
     mpd_ssize_t x;
@@ -1240,7 +1240,7 @@ context_setclamp(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
 
 #ifdef EXTRA_FUNCTIONALITY
 static int
-context_setallcr(TyObject *self, TyObject *value, void *Ty_UNUSED(closure))
+context_setallcr(TyObject *self, TyObject *value, void *Py_UNUSED(closure))
 {
     mpd_context_t *ctx;
     mpd_ssize_t x;
@@ -1362,17 +1362,17 @@ context_setattrs(TyObject *self, TyObject *prec, TyObject *rounding,
 }
 
 static TyObject *
-context_clear_traps(TyObject *self, TyObject *Ty_UNUSED(dummy))
+context_clear_traps(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     CTX(self)->traps = 0;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-context_clear_flags(TyObject *self, TyObject *Ty_UNUSED(dummy))
+context_clear_flags(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     CTX(self)->status = 0;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #define DEC_DFLT_EMAX 999999
@@ -1386,7 +1386,7 @@ static mpd_context_t dflt_ctx = {
 
 static TyObject *
 context_new(TyTypeObject *type,
-            TyObject *Ty_UNUSED(args), TyObject *Ty_UNUSED(kwds))
+            TyObject *Py_UNUSED(args), TyObject *Py_UNUSED(kwds))
 {
     PyDecContextObject *self = NULL;
     mpd_context_t *ctx;
@@ -1594,7 +1594,7 @@ error:
 }
 
 static TyObject *
-context_copy(TyObject *self, TyObject *Ty_UNUSED(dummy))
+context_copy(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *copy;
 
@@ -1612,7 +1612,7 @@ context_copy(TyObject *self, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-context_reduce(TyObject *self, TyObject *Ty_UNUSED(dummy))
+context_reduce(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *flags;
     TyObject *traps;
@@ -1767,7 +1767,7 @@ current_context(decimal_state *modstate)
 
 /* Return a new reference to the current context */
 static TyObject *
-PyDec_GetCurrentContext(TyObject *self, TyObject *Ty_UNUSED(dummy))
+PyDec_GetCurrentContext(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *context;
     decimal_state *state = get_module_state(self);
@@ -1814,7 +1814,7 @@ PyDec_SetCurrentContext(TyObject *self, TyObject *v)
     }
 
     Ty_DECREF(v);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #else
 static TyObject *
@@ -1863,7 +1863,7 @@ current_context(decimal_state *state)
 
 /* Return a new reference to the current context */
 static TyObject *
-PyDec_GetCurrentContext(TyObject *self, TyObject *Ty_UNUSED(dummy))
+PyDec_GetCurrentContext(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     decimal_state *state = get_module_state(self);
     return current_context(state);
@@ -1898,7 +1898,7 @@ PyDec_SetCurrentContext(TyObject *self, TyObject *v)
     }
     Ty_DECREF(tok);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 
@@ -2001,7 +2001,7 @@ ctxmanager_dealloc(TyObject *self)
 }
 
 static TyObject *
-ctxmanager_set_local(TyObject *op, TyObject *Ty_UNUSED(dummy))
+ctxmanager_set_local(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     TyObject *ret;
     PyDecContextManagerObject *self = _PyDecContextManagerObject_CAST(op);
@@ -2015,7 +2015,7 @@ ctxmanager_set_local(TyObject *op, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-ctxmanager_restore_global(TyObject *op, TyObject *Ty_UNUSED(args))
+ctxmanager_restore_global(TyObject *op, TyObject *Py_UNUSED(args))
 {
     TyObject *ret;
     PyDecContextManagerObject *self = _PyDecContextManagerObject_CAST(op);
@@ -2025,7 +2025,7 @@ ctxmanager_restore_global(TyObject *op, TyObject *Ty_UNUSED(args))
     }
     Ty_DECREF(ret);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -3280,7 +3280,7 @@ convert_op_cmp(TyObject **vcmp, TyObject **wcmp, TyObject *v, TyObject *w,
         *wcmp = PyDec_FromLongExact(state, w, context);
     }
     else if (TyFloat_Check(w)) {
-        if (op != Ty_EQ && op != Ty_NE &&
+        if (op != Py_EQ && op != Py_NE &&
             dec_addstatus(context, MPD_Float_operation)) {
             *wcmp = NULL;
         }
@@ -3289,7 +3289,7 @@ convert_op_cmp(TyObject **vcmp, TyObject **wcmp, TyObject *v, TyObject *w,
             *wcmp = PyDec_FromFloatExact(state, w, context);
         }
     }
-    else if (TyComplex_Check(w) && (op == Ty_EQ || op == Ty_NE)) {
+    else if (TyComplex_Check(w) && (op == Py_EQ || op == Py_NE)) {
         Ty_complex c = TyComplex_AsCComplex(w);
         if (c.real == -1.0 && TyErr_Occurred()) {
             *wcmp = NULL;
@@ -3752,7 +3752,7 @@ dec_as_long(TyObject *dec, TyObject *context, int round)
 
 /* Convert a Decimal to its exact integer ratio representation. */
 static TyObject *
-dec_as_integer_ratio(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_as_integer_ratio(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *numerator = NULL;
     TyObject *denominator = NULL;
@@ -4020,7 +4020,7 @@ PyDec_Round(TyObject *dec, TyObject *args)
 
 /* Return the DecimalTuple representation of a PyDecObject. */
 static TyObject *
-PyDec_AsTuple(TyObject *dec, TyObject *Ty_UNUSED(dummy))
+PyDec_AsTuple(TyObject *dec, TyObject *Py_UNUSED(dummy))
 {
     TyObject *result = NULL;
     TyObject *sign = NULL;
@@ -4176,7 +4176,7 @@ nm_##MPDFUNC(TyObject *self, TyObject *other)                    \
 /* Boolean function without a context arg. */
 #define Dec_BoolFunc(MPDFUNC) \
 static TyObject *                                           \
-dec_##MPDFUNC(TyObject *self, TyObject *Ty_UNUSED(dummy))   \
+dec_##MPDFUNC(TyObject *self, TyObject *Py_UNUSED(dummy))   \
 {                                                           \
     return MPDFUNC(MPD(self)) ? incr_true() : incr_false(); \
 }
@@ -4505,7 +4505,7 @@ Dec_BoolFuncVA(mpd_issubnormal)
 
 /* Unary functions, no context arg */
 static TyObject *
-dec_mpd_adjexp(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_mpd_adjexp(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     mpd_ssize_t retval;
 
@@ -4520,13 +4520,13 @@ dec_mpd_adjexp(TyObject *self, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-dec_canonical(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_canonical(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return Ty_NewRef(self);
 }
 
 static TyObject *
-dec_conjugate(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_conjugate(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return Ty_NewRef(self);
 }
@@ -4546,14 +4546,14 @@ _dec_mpd_radix(decimal_state *state)
 }
 
 static TyObject *
-dec_mpd_radix(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_mpd_radix(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     decimal_state *state = get_module_state_by_def(Ty_TYPE(self));
     return _dec_mpd_radix(state);
 }
 
 static TyObject *
-dec_mpd_qcopy_abs(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_mpd_qcopy_abs(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *result;
     uint32_t status = 0;
@@ -4574,7 +4574,7 @@ dec_mpd_qcopy_abs(TyObject *self, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-dec_mpd_qcopy_negate(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_mpd_qcopy_negate(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *result;
     uint32_t status = 0;
@@ -4792,33 +4792,33 @@ dec_richcompare(TyObject *v, TyObject *w, int op)
     Ty_DECREF(b);
     if (r == INT_MAX) {
         /* sNaNs or op={le,ge,lt,gt} always signal. */
-        if (a_issnan || b_issnan || (op != Ty_EQ && op != Ty_NE)) {
+        if (a_issnan || b_issnan || (op != Py_EQ && op != Py_NE)) {
             if (dec_addstatus(context, status)) {
                 return NULL;
             }
         }
         /* qNaN comparison with op={eq,ne} or comparison
          * with InvalidOperation disabled. */
-        return (op == Ty_NE) ? incr_true() : incr_false();
+        return (op == Py_NE) ? incr_true() : incr_false();
     }
 
     switch (op) {
-    case Ty_EQ:
+    case Py_EQ:
         r = (r == 0);
         break;
-    case Ty_NE:
+    case Py_NE:
         r = (r != 0);
         break;
-    case Ty_LE:
+    case Py_LE:
         r = (r <= 0);
         break;
-    case Ty_GE:
+    case Py_GE:
         r = (r >= 0);
         break;
-    case Ty_LT:
+    case Py_LT:
         r = (r == -1);
         break;
-    case Ty_GT:
+    case Py_GT:
         r = (r == 1);
         break;
     }
@@ -4828,7 +4828,7 @@ dec_richcompare(TyObject *v, TyObject *w, int op)
 
 /* __ceil__ */
 static TyObject *
-dec_ceil(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_ceil(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *context;
 
@@ -4839,7 +4839,7 @@ dec_ceil(TyObject *self, TyObject *Ty_UNUSED(dummy))
 
 /* __complex__ */
 static TyObject *
-dec_complex(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_complex(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *f;
     double x;
@@ -4860,14 +4860,14 @@ dec_complex(TyObject *self, TyObject *Ty_UNUSED(dummy))
 
 /* __copy__ (METH_NOARGS) and __deepcopy__ (METH_O) */
 static TyObject *
-dec_copy(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_copy(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return Ty_NewRef(self);
 }
 
 /* __floor__ */
 static TyObject *
-dec_floor(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_floor(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *context;
 
@@ -5005,7 +5005,7 @@ dec_hash(TyObject *op)
 
 /* __reduce__ */
 static TyObject *
-dec_reduce(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_reduce(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *result, *str;
 
@@ -5022,7 +5022,7 @@ dec_reduce(TyObject *self, TyObject *Ty_UNUSED(dummy))
 
 /* __sizeof__ */
 static TyObject *
-dec_sizeof(TyObject *v, TyObject *Ty_UNUSED(dummy))
+dec_sizeof(TyObject *v, TyObject *Py_UNUSED(dummy))
 {
     size_t res = _TyObject_SIZE(Ty_TYPE(v));
     if (mpd_isdynamic_data(MPD(v))) {
@@ -5033,7 +5033,7 @@ dec_sizeof(TyObject *v, TyObject *Ty_UNUSED(dummy))
 
 /* __trunc__ */
 static TyObject *
-dec_trunc(TyObject *self, TyObject *Ty_UNUSED(dummy))
+dec_trunc(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *context;
 
@@ -5044,13 +5044,13 @@ dec_trunc(TyObject *self, TyObject *Ty_UNUSED(dummy))
 
 /* real and imag */
 static TyObject *
-dec_real(TyObject *self, void *Ty_UNUSED(closure))
+dec_real(TyObject *self, void *Py_UNUSED(closure))
 {
     return Ty_NewRef(self);
 }
 
 static TyObject *
-dec_imag(TyObject *self, void *Ty_UNUSED(closure))
+dec_imag(TyObject *self, void *Py_UNUSED(closure))
 {
     TyObject *result;
 

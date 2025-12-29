@@ -36,7 +36,7 @@ gc_enable_impl(TyObject *module)
 /*[clinic end generated code: output=45a427e9dce9155c input=81ac4940ca579707]*/
 {
     TyGC_Enable();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -50,7 +50,7 @@ gc_disable_impl(TyObject *module)
 /*[clinic end generated code: output=97d1030f7aa9d279 input=8c2e5a14e800d83b]*/
 {
     TyGC_Disable();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -118,7 +118,7 @@ gc_set_debug_impl(TyObject *module, int flags)
 {
     GCState *gcstate = get_gc_state();
     gcstate->debug = flags;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -166,7 +166,7 @@ gc_set_threshold_impl(TyObject *module, int threshold0, int group_right_1,
     if (group_right_2) {
         gcstate->old[1].threshold = threshold2;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -429,7 +429,7 @@ gc_freeze_impl(TyObject *module)
 {
     PyInterpreterState *interp = _TyInterpreterState_GET();
     _TyGC_Freeze(interp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -446,7 +446,7 @@ gc_unfreeze_impl(TyObject *module)
 {
     PyInterpreterState *interp = _TyInterpreterState_GET();
     _TyGC_Unfreeze(interp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

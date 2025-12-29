@@ -59,7 +59,7 @@ typedef struct {
 } PySetObject;
 
 #define _TySet_CAST(so) \
-    (assert(PyAnySet_Check(so)), _Ty_CAST(PySetObject*, so))
+    (assert(PyAnySet_Check(so)), _Py_CAST(PySetObject*, so))
 
 static inline Ty_ssize_t TySet_GET_SIZE(TyObject *so) {
 #ifdef Ty_GIL_DISABLED

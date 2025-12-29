@@ -123,7 +123,7 @@ static TyObject *
 tuple___getnewargs___impl(PyTupleObject *self);
 
 static TyObject *
-tuple___getnewargs__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+tuple___getnewargs__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return tuple___getnewargs___impl((PyTupleObject *)self);
 }

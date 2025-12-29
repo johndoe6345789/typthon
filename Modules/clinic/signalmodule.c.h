@@ -96,7 +96,7 @@ static TyObject *
 signal_pause_impl(TyObject *module);
 
 static TyObject *
-signal_pause(TyObject *module, TyObject *Ty_UNUSED(ignored))
+signal_pause(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return signal_pause_impl(module);
 }
@@ -492,7 +492,7 @@ static TyObject *
 signal_sigpending_impl(TyObject *module);
 
 static TyObject *
-signal_sigpending(TyObject *module, TyObject *Ty_UNUSED(ignored))
+signal_sigpending(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return signal_sigpending_impl(module);
 }
@@ -552,7 +552,7 @@ static TyObject *
 signal_valid_signals_impl(TyObject *module);
 
 static TyObject *
-signal_valid_signals(TyObject *module, TyObject *Ty_UNUSED(ignored))
+signal_valid_signals(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return signal_valid_signals_impl(module);
 }

@@ -276,7 +276,7 @@ _testlimitedcapi_test_long_and_overflow_impl(TyObject *module)
         return raiseTestError("test_long_and_overflow",
             "overflow was not cleared");
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -443,7 +443,7 @@ _testlimitedcapi_test_long_long_and_overflow_impl(TyObject *module)
         return raiseTestError("test_long_long_and_overflow",
             "overflow was not cleared");
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -509,7 +509,7 @@ _testlimitedcapi_test_long_as_unsigned_long_long_mask_impl(TyObject *module)
                               "something other than SystemError");
     }
     TyErr_Clear();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -741,7 +741,7 @@ pylong_asvoidptr(TyObject *module, TyObject *arg)
         if (TyErr_Occurred()) {
             return NULL;
         }
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef((TyObject *)value);
 }

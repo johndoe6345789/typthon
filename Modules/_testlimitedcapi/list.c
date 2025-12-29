@@ -8,34 +8,34 @@
 #include "util.h"
 
 static TyObject *
-list_check(TyObject* Ty_UNUSED(module), TyObject *obj)
+list_check(TyObject* Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyList_Check(obj));
 }
 
 static TyObject *
-list_check_exact(TyObject* Ty_UNUSED(module), TyObject *obj)
+list_check_exact(TyObject* Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyList_CheckExact(obj));
 }
 
 static TyObject *
-list_new(TyObject* Ty_UNUSED(module), TyObject *obj)
+list_new(TyObject* Py_UNUSED(module), TyObject *obj)
 {
     return TyList_New(TyLong_AsSsize_t(obj));
 }
 
 static TyObject *
-list_size(TyObject *Ty_UNUSED(module), TyObject *obj)
+list_size(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_SIZE(TyList_Size(obj));
 }
 
 static TyObject *
-list_getitem(TyObject *Ty_UNUSED(module), TyObject *args)
+list_getitem(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t i;
@@ -47,7 +47,7 @@ list_getitem(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-list_get_item_ref(TyObject *Ty_UNUSED(module), TyObject *args)
+list_get_item_ref(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t i;
@@ -59,7 +59,7 @@ list_get_item_ref(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-list_setitem(TyObject *Ty_UNUSED(module), TyObject *args)
+list_setitem(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj, *value;
     Ty_ssize_t i;
@@ -73,7 +73,7 @@ list_setitem(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-list_insert(TyObject *Ty_UNUSED(module), TyObject *args)
+list_insert(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj, *value;
     Ty_ssize_t where;
@@ -87,7 +87,7 @@ list_insert(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-list_append(TyObject *Ty_UNUSED(module), TyObject *args)
+list_append(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj, *value;
     if (!TyArg_ParseTuple(args, "OO", &obj, &value)) {
@@ -99,7 +99,7 @@ list_append(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-list_getslice(TyObject *Ty_UNUSED(module), TyObject *args)
+list_getslice(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t ilow, ihigh;
@@ -112,7 +112,7 @@ list_getslice(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-list_setslice(TyObject *Ty_UNUSED(module), TyObject *args)
+list_setslice(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj, *value;
     Ty_ssize_t ilow, ihigh;
@@ -125,21 +125,21 @@ list_setslice(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-list_sort(TyObject* Ty_UNUSED(module), TyObject *obj)
+list_sort(TyObject* Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_INT(TyList_Sort(obj));
 }
 
 static TyObject *
-list_reverse(TyObject* Ty_UNUSED(module), TyObject *obj)
+list_reverse(TyObject* Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_INT(TyList_Reverse(obj));
 }
 
 static TyObject *
-list_astuple(TyObject* Ty_UNUSED(module), TyObject *obj)
+list_astuple(TyObject* Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyList_AsTuple(obj);

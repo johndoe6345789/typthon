@@ -380,7 +380,7 @@ deque_append_impl(dequeobject *deque, TyObject *item)
 {
     if (deque_append_lock_held(deque, Ty_NewRef(item), deque->maxlen) < 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static inline int
@@ -427,7 +427,7 @@ deque_appendleft_impl(dequeobject *deque, TyObject *item)
 {
     if (deque_appendleft_lock_held(deque, Ty_NewRef(item), deque->maxlen) < 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject*
@@ -442,7 +442,7 @@ finalize_iterator(TyObject *it)
         }
     }
     Ty_DECREF(it);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Run an iterator to exhaustion.  Shortcut for
@@ -801,7 +801,7 @@ deque_clearmethod_impl(dequeobject *deque)
 /*[clinic end generated code: output=79b2513e097615c1 input=3a22e9605d20c5e9]*/
 {
     (void)deque_clear((TyObject *)deque);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1076,7 +1076,7 @@ deque_rotate_impl(dequeobject *deque, Ty_ssize_t n)
 /*[clinic end generated code: output=96c2402a371eb15d input=5bf834296246e002]*/
 {
     if (!_deque_rotate(deque, n))
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     return NULL;
 }
 
@@ -1125,7 +1125,7 @@ deque_reverse_impl(dequeobject *deque)
             rightindex = BLOCKLEN - 1;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1154,7 +1154,7 @@ deque_count_impl(dequeobject *deque, TyObject *v)
     while (--n >= 0) {
         CHECK_NOT_END(b);
         item = Ty_NewRef(b->data[index]);
-        cmp = PyObject_RichCompareBool(item, v, Ty_EQ);
+        cmp = PyObject_RichCompareBool(item, v, Py_EQ);
         Ty_DECREF(item);
         if (cmp < 0)
             return NULL;
@@ -1189,7 +1189,7 @@ deque_contains_lock_held(dequeobject *deque, TyObject *v)
     while (--n >= 0) {
         CHECK_NOT_END(b);
         item = Ty_NewRef(b->data[index]);
-        cmp = PyObject_RichCompareBool(item, v, Ty_EQ);
+        cmp = PyObject_RichCompareBool(item, v, Py_EQ);
         Ty_DECREF(item);
         if (cmp) {
             return cmp;
@@ -1285,7 +1285,7 @@ deque_index_impl(dequeobject *deque, TyObject *v, Ty_ssize_t start,
     while (--n >= 0) {
         CHECK_NOT_END(b);
         item = Ty_NewRef(b->data[index]);
-        cmp = PyObject_RichCompareBool(item, v, Ty_EQ);
+        cmp = PyObject_RichCompareBool(item, v, Py_EQ);
         Ty_DECREF(item);
         if (cmp > 0)
             return TyLong_FromSsize_t(stop - n - 1);
@@ -1352,7 +1352,7 @@ deque_insert_impl(dequeobject *deque, Ty_ssize_t index, TyObject *value)
     Ty_DECREF(rv);
     if (_deque_rotate(deque, index))
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -1452,7 +1452,7 @@ deque_remove_impl(dequeobject *deque, TyObject *value)
 
     for (i = 0 ; i < n; i++) {
         item = Ty_NewRef(b->data[index]);
-        cmp = PyObject_RichCompareBool(item, value, Ty_EQ);
+        cmp = PyObject_RichCompareBool(item, value, Py_EQ);
         Ty_DECREF(item);
         if (cmp < 0) {
             return NULL;
@@ -1479,7 +1479,7 @@ deque_remove_impl(dequeobject *deque, TyObject *value)
     if (rv == -1) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -1653,23 +1653,23 @@ deque_richcompare(TyObject *v, TyObject *w, int op)
     collections_state *state = find_module_state_by_def(Ty_TYPE(v));
     if (!PyObject_TypeCheck(v, state->deque_type) ||
         !PyObject_TypeCheck(w, state->deque_type)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     /* Shortcuts */
     vs = Ty_SIZE(v);
     ws = Ty_SIZE(w);
-    if (op == Ty_EQ) {
+    if (op == Py_EQ) {
         if (v == w)
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
         if (vs != ws)
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    if (op == Ty_NE) {
+    if (op == Py_NE) {
         if (v == w)
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         if (vs != ws)
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
     }
 
     /* Search for the first index where items are different */
@@ -1686,7 +1686,7 @@ deque_richcompare(TyObject *v, TyObject *w, int op)
         y = TyIter_Next(it2);
         if (x == NULL || y == NULL)
             break;
-        b = PyObject_RichCompareBool(x, y, Ty_EQ);
+        b = PyObject_RichCompareBool(x, y, Py_EQ);
         if (b == 0) {
             cmp = PyObject_RichCompareBool(x, y, op);
             Ty_DECREF(x);
@@ -1704,21 +1704,21 @@ deque_richcompare(TyObject *v, TyObject *w, int op)
     if (TyErr_Occurred())
         goto done;
     switch (op) {
-    case Ty_LT: cmp = y != NULL; break;  /* if w was longer */
-    case Ty_LE: cmp = x == NULL; break;  /* if v was not longer */
-    case Ty_EQ: cmp = x == y;    break;  /* if we reached the end of both */
-    case Ty_NE: cmp = x != y;    break;  /* if one deque continues */
-    case Ty_GT: cmp = x != NULL; break;  /* if v was longer */
-    case Ty_GE: cmp = y == NULL; break;  /* if w was not longer */
+    case Py_LT: cmp = y != NULL; break;  /* if w was longer */
+    case Py_LE: cmp = x == NULL; break;  /* if v was not longer */
+    case Py_EQ: cmp = x == y;    break;  /* if we reached the end of both */
+    case Py_NE: cmp = x != y;    break;  /* if one deque continues */
+    case Py_GT: cmp = x != NULL; break;  /* if v was longer */
+    case Py_GE: cmp = y == NULL; break;  /* if w was not longer */
     }
 
 done:
     Ty_XDECREF(it1);
     Ty_XDECREF(it2);
     if (cmp == 1)
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     if (cmp == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     return NULL;
 }
 
@@ -1783,11 +1783,11 @@ deque___sizeof___impl(dequeobject *deque)
 }
 
 static TyObject *
-deque_get_maxlen(TyObject *self, void *Ty_UNUSED(closure))
+deque_get_maxlen(TyObject *self, void *Py_UNUSED(closure))
 {
     dequeobject *deque = dequeobject_CAST(self);
     if (deque->maxlen < 0)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     return TyLong_FromSsize_t(deque->maxlen);
 }
 
@@ -1843,7 +1843,7 @@ static TyMethodDef deque_methods[] = {
 };
 
 static TyMemberDef deque_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(dequeobject, weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(dequeobject, weakreflist), Py_READONLY},
     {NULL},
 };
 
@@ -2026,7 +2026,7 @@ dequeiter_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 }
 
 static TyObject *
-dequeiter_len(TyObject *op, TyObject *Ty_UNUSED(dummy))
+dequeiter_len(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     dequeiterobject *it = dequeiterobject_CAST(op);
     Ty_ssize_t len = FT_ATOMIC_LOAD_SSIZE(it->counter);
@@ -2036,7 +2036,7 @@ dequeiter_len(TyObject *op, TyObject *Ty_UNUSED(dummy))
 PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-dequeiter_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+dequeiter_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     dequeiterobject *it = dequeiterobject_CAST(op);
     TyTypeObject *ty = Ty_TYPE(it);
@@ -2249,7 +2249,7 @@ new_defdict(TyObject *op, TyObject *arg)
 PyDoc_STRVAR(defdict_copy_doc, "D.copy() -> a shallow copy of D.");
 
 static TyObject *
-defdict_copy(TyObject *op, TyObject *Ty_UNUSED(dummy))
+defdict_copy(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     /* This calls the object's class.  That only works for subclasses
        whose class constructor has the same signature.  Subclasses that
@@ -2259,7 +2259,7 @@ defdict_copy(TyObject *op, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-defdict_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+defdict_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     /* __reduce__ must return a 5-tuple as follows:
 
@@ -2404,7 +2404,7 @@ defdict_or(TyObject* left, TyObject* right)
         other = left;
     }
     if (!TyDict_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     // Like copy(), this calls the object's class.
     // Override __or__/__ror__ for subclasses with different constructors.
@@ -2624,7 +2624,7 @@ done:
     Ty_XDECREF(bound_get);
     if (TyErr_Occurred())
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Helper function for namedtuple() ************************************/
@@ -2729,7 +2729,7 @@ tuplegetter_dealloc(TyObject *self)
 }
 
 static TyObject*
-tuplegetter_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+tuplegetter_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     _tuplegetterobject *self = tuplegetterobject_CAST(op);
     return Ty_BuildValue("(O(nO))", (TyObject *)Ty_TYPE(self),

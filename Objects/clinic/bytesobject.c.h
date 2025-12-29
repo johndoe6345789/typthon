@@ -22,7 +22,7 @@ static TyObject *
 bytes___bytes___impl(PyBytesObject *self);
 
 static TyObject *
-bytes___bytes__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytes___bytes__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return bytes___bytes___impl((PyBytesObject *)self);
 }

@@ -1178,7 +1178,7 @@ _io__WindowsConsoleIO_isatty_impl(winconsoleio *self)
     if (self->fd == -1)
         return err_closed();
 
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 #define clinic_state() (find_io_state_by_def(Ty_TYPE(self)))
@@ -1202,21 +1202,21 @@ static TyMethodDef winconsoleio_methods[] = {
 /* 'closed' and 'mode' are attributes for compatibility with FileIO. */
 
 static TyObject *
-get_closed(TyObject *op, void *Ty_UNUSED(closure))
+get_closed(TyObject *op, void *Py_UNUSED(closure))
 {
     winconsoleio *self = winconsoleio_CAST(op);
     return TyBool_FromLong((long)(self->fd == -1));
 }
 
 static TyObject *
-get_closefd(TyObject *op, void *Ty_UNUSED(closure))
+get_closefd(TyObject *op, void *Py_UNUSED(closure))
 {
     winconsoleio *self = winconsoleio_CAST(op);
     return TyBool_FromLong((long)(self->closefd));
 }
 
 static TyObject *
-get_mode(TyObject *op, void *Ty_UNUSED(closure))
+get_mode(TyObject *op, void *Py_UNUSED(closure))
 {
     winconsoleio *self = winconsoleio_CAST(op);
     return TyUnicode_FromString(self->readable ? "rb" : "wb");
@@ -1233,8 +1233,8 @@ static TyGetSetDef winconsoleio_getsetlist[] = {
 static TyMemberDef winconsoleio_members[] = {
     {"_blksize", Ty_T_UINT, offsetof(winconsoleio, blksize), 0},
     {"_finalizing", Ty_T_BOOL, offsetof(winconsoleio, finalizing), 0},
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(winconsoleio, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(winconsoleio, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(winconsoleio, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(winconsoleio, dict), Py_READONLY},
     {NULL}
 };
 

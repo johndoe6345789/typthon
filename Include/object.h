@@ -164,7 +164,7 @@ struct _object {
 #endif
 
 /* Cast argument to TyObject* type. */
-#define _TyObject_CAST(op) _Ty_CAST(TyObject*, (op))
+#define _TyObject_CAST(op) _Py_CAST(TyObject*, (op))
 
 typedef struct {
     TyObject ob_base;
@@ -172,7 +172,7 @@ typedef struct {
 } TyVarObject;
 
 /* Cast argument to TyVarObject* type. */
-#define _PyVarObject_CAST(op) _Ty_CAST(TyVarObject*, (op))
+#define _PyVarObject_CAST(op) _Py_CAST(TyVarObject*, (op))
 
 
 // Test if the 'x' object is the 'y' object, the same as "x is y" in Python.
@@ -657,9 +657,9 @@ PyAPI_FUNC(int) Ty_IsNone(TyObject *x);
 /* Macro for returning Ty_None from a function.
  * Only treat Ty_None as immortal in the limited C API 3.12 and newer. */
 #if defined(Ty_LIMITED_API) && Ty_LIMITED_API+0 < 0x030c0000
-#  define Ty_RETURN_NONE return Ty_NewRef(Ty_None)
+#  define Py_RETURN_NONE return Ty_NewRef(Ty_None)
 #else
-#  define Ty_RETURN_NONE return Ty_None
+#  define Py_RETURN_NONE return Ty_None
 #endif
 
 /*
@@ -675,15 +675,15 @@ PyAPI_DATA(TyObject) _Ty_NotImplementedStruct; /* Don't use this directly */
 #endif
 
 /* Macro for returning Ty_NotImplemented from a function */
-#define Ty_RETURN_NOTIMPLEMENTED return Ty_NotImplemented
+#define Py_RETURN_NOTIMPLEMENTED return Ty_NotImplemented
 
 /* Rich comparison opcodes */
-#define Ty_LT 0
-#define Ty_LE 1
-#define Ty_EQ 2
-#define Ty_NE 3
-#define Ty_GT 4
-#define Ty_GE 5
+#define Py_LT 0
+#define Py_LE 1
+#define Py_EQ 2
+#define Py_NE 3
+#define Py_GT 4
+#define Py_GE 5
 
 #if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030A0000
 /* Result of calling TyIter_Send */
@@ -699,15 +699,15 @@ typedef enum {
  *
  * Needs to be a macro because any C-comparable type can be used.
  */
-#define Ty_RETURN_RICHCOMPARE(val1, val2, op)                               \
+#define Py_RETURN_RICHCOMPARE(val1, val2, op)                               \
     do {                                                                    \
         switch (op) {                                                       \
-        case Ty_EQ: if ((val1) == (val2)) Ty_RETURN_TRUE; Ty_RETURN_FALSE;  \
-        case Ty_NE: if ((val1) != (val2)) Ty_RETURN_TRUE; Ty_RETURN_FALSE;  \
-        case Ty_LT: if ((val1) < (val2)) Ty_RETURN_TRUE; Ty_RETURN_FALSE;   \
-        case Ty_GT: if ((val1) > (val2)) Ty_RETURN_TRUE; Ty_RETURN_FALSE;   \
-        case Ty_LE: if ((val1) <= (val2)) Ty_RETURN_TRUE; Ty_RETURN_FALSE;  \
-        case Ty_GE: if ((val1) >= (val2)) Ty_RETURN_TRUE; Ty_RETURN_FALSE;  \
+        case Py_EQ: if ((val1) == (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;  \
+        case Py_NE: if ((val1) != (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;  \
+        case Py_LT: if ((val1) < (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;   \
+        case Py_GT: if ((val1) > (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;   \
+        case Py_LE: if ((val1) <= (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;  \
+        case Py_GE: if ((val1) >= (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;  \
         default:                                                            \
             Ty_UNREACHABLE();                                               \
         }                                                                   \
@@ -800,7 +800,7 @@ static inline int TyType_Check(TyObject *op) {
 #endif
 
 #define _TyType_CAST(op) \
-    (assert(TyType_Check(op)), _Ty_CAST(TyTypeObject*, (op)))
+    (assert(TyType_Check(op)), _Py_CAST(TyTypeObject*, (op)))
 
 static inline int TyType_CheckExact(TyObject *op) {
     return Ty_IS_TYPE(op, &TyType_Type);

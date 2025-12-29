@@ -34,7 +34,7 @@
 #  define _Ty_STATIC_CAST(type, expr) ((type)(expr))
 #endif
 // Macro to use the more powerful/dangerous C-style cast even in C++.
-#define _Ty_CAST(type, expr) ((type)(expr))
+#define _Py_CAST(type, expr) ((type)(expr))
 
 // Cast a function to another function type T.
 //
@@ -44,16 +44,16 @@
 // Note that using this cast only prevents the compiler from emitting
 // warnings, but does not prevent an undefined behavior at runtime if
 // the original function signature is not respected.
-#define _Ty_FUNC_CAST(T, func) _Ty_CAST(T, _Ty_CAST(void(*)(void), (func)))
+#define _Ty_FUNC_CAST(T, func) _Py_CAST(T, _Py_CAST(void(*)(void), (func)))
 
-// Static inline functions should use _Ty_NULL rather than using directly NULL
+// Static inline functions should use _Py_NULL rather than using directly NULL
 // to prevent C++ compiler warnings. On C23 and newer and on C++11 and newer,
-// _Ty_NULL is defined as nullptr.
+// _Py_NULL is defined as nullptr.
 #if (defined (__STDC_VERSION__) && __STDC_VERSION__ > 201710L) \
         || (defined(__cplusplus) && __cplusplus >= 201103)
-#  define _Ty_NULL nullptr
+#  define _Py_NULL nullptr
 #else
-#  define _Ty_NULL NULL
+#  define _Py_NULL NULL
 #endif
 
 
@@ -462,8 +462,8 @@ extern "C" {
 #define Ty_LL(x) x##LL
 #endif
 
-#ifndef Ty_ULL
-#define Ty_ULL(x) Ty_LL(x##U)
+#ifndef Py_ULL
+#define Py_ULL(x) Ty_LL(x##U)
 #endif
 
 #define Ty_VA_COPY va_copy

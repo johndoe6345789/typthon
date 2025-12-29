@@ -33,7 +33,7 @@ typedef enum {
      * passed to the watch callback is the now-current contextvars.Context
      * object, or None if no context is current.
      */
-    Ty_CONTEXT_SWITCHED = 1,
+    Py_CONTEXT_SWITCHED = 1,
 } PyContextEvent;
 
 /*

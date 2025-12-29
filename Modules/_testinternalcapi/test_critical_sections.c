@@ -19,7 +19,7 @@
 
 
 static TyObject *
-test_critical_sections(TyObject *self, TyObject *Ty_UNUSED(args))
+test_critical_sections(TyObject *self, TyObject *Py_UNUSED(args))
 {
     TyObject *d1 = TyDict_New();
     assert(d1 != NULL);
@@ -54,7 +54,7 @@ test_critical_sections(TyObject *self, TyObject *Ty_UNUSED(args))
 
     Ty_DECREF(d2);
     Ty_DECREF(d1);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static void
@@ -81,7 +81,7 @@ lock_unlock_two_objects(TyObject *a, TyObject *b, int recurse_depth)
 // Test that nested critical sections do not deadlock if they attempt to lock
 // the same object.
 static TyObject *
-test_critical_sections_nest(TyObject *self, TyObject *Ty_UNUSED(args))
+test_critical_sections_nest(TyObject *self, TyObject *Py_UNUSED(args))
 {
     TyObject *a = TyDict_New();
     assert(a != NULL);
@@ -106,13 +106,13 @@ test_critical_sections_nest(TyObject *self, TyObject *Ty_UNUSED(args))
 
     Ty_DECREF(b);
     Ty_DECREF(a);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 // Test that a critical section is suspended by a Ty_BEGIN_ALLOW_THREADS and
 // resumed by a Ty_END_ALLOW_THREADS.
 static TyObject *
-test_critical_sections_suspend(TyObject *self, TyObject *Ty_UNUSED(args))
+test_critical_sections_suspend(TyObject *self, TyObject *Py_UNUSED(args))
 {
     TyObject *a = TyDict_New();
     assert(a != NULL);
@@ -130,7 +130,7 @@ test_critical_sections_suspend(TyObject *self, TyObject *Ty_UNUSED(args))
     Ty_END_CRITICAL_SECTION();
 
     Ty_DECREF(a);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef Ty_CAN_START_THREADS
@@ -175,7 +175,7 @@ thread_critical_sections(void *arg)
 }
 
 static TyObject *
-test_critical_sections_threads(TyObject *self, TyObject *Ty_UNUSED(args))
+test_critical_sections_threads(TyObject *self, TyObject *Py_UNUSED(args))
 {
     const Ty_ssize_t NUM_THREADS = 4;
     struct test_data test_data = {
@@ -196,7 +196,7 @@ test_critical_sections_threads(TyObject *self, TyObject *Ty_UNUSED(args))
     Ty_DECREF(test_data.obj3);
     Ty_DECREF(test_data.obj2);
     Ty_DECREF(test_data.obj1);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static void
@@ -263,7 +263,7 @@ thread_gc(void *arg)
 }
 
 static TyObject *
-test_critical_sections_gc(TyObject *self, TyObject *Ty_UNUSED(args))
+test_critical_sections_gc(TyObject *self, TyObject *Py_UNUSED(args))
 {
     // gh-118332: Contended critical sections should not deadlock with GC
     const Ty_ssize_t NUM_THREADS = 3;
@@ -279,7 +279,7 @@ test_critical_sections_gc(TyObject *self, TyObject *Ty_UNUSED(args))
     }
     PyEvent_Wait(&test_data.done_event);
     Ty_DECREF(test_data.obj);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif

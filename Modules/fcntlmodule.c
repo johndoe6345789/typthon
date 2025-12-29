@@ -345,7 +345,7 @@ fcntl_flock_impl(TyObject *module, int fd, int code)
     if (ret < 0) {
         return !async_err ? TyErr_SetFromErrno(TyExc_OSError) : NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -448,7 +448,7 @@ fcntl_lockf_impl(TyObject *module, int fd, int code, TyObject *lenobj,
     if (ret < 0) {
         return !async_err ? TyErr_SetFromErrno(TyExc_OSError) : NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* List of functions */

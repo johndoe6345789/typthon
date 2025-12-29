@@ -2498,8 +2498,8 @@ static TyObject *
 channelid_richcompare(TyObject *self, TyObject *other, int op)
 {
     TyObject *res = NULL;
-    if (op != Ty_EQ && op != Ty_NE) {
-        Ty_RETURN_NOTIMPLEMENTED;
+    if (op != Py_EQ && op != Py_NE) {
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     TyObject *mod = get_module_from_type(Ty_TYPE(self));
@@ -2545,7 +2545,7 @@ channelid_richcompare(TyObject *self, TyObject *other, int op)
         goto done;
     }
 
-    if ((op == Ty_EQ && equal) || (op == Ty_NE && !equal)) {
+    if ((op == Py_EQ && equal) || (op == Py_NE && !equal)) {
         res = Ty_NewRef(Ty_True);
     }
     else {
@@ -2979,7 +2979,7 @@ channelsmod_destroy(TyObject *self, TyObject *args, TyObject *kwds)
     if (handle_channel_error(err, self, cid)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(channelsmod_destroy_doc,
@@ -2989,7 +2989,7 @@ Close and finalize the channel.  Afterward attempts to use the channel\n\
 will behave as though it never existed.");
 
 static TyObject *
-channelsmod_list_all(TyObject *self, TyObject *Ty_UNUSED(ignored))
+channelsmod_list_all(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     int64_t count = 0;
     struct channel_id_and_info *cids =
@@ -3166,7 +3166,7 @@ channelsmod_send(TyObject *self, TyObject *args, TyObject *kwds)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(channelsmod_send_doc,
@@ -3237,7 +3237,7 @@ channelsmod_send_buffer(TyObject *self, TyObject *args, TyObject *kwds)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(channelsmod_send_buffer_doc,
@@ -3313,7 +3313,7 @@ channelsmod_close(TyObject *self, TyObject *args, TyObject *kwds)
     if (handle_channel_error(err, self, cid)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(channelsmod_close_doc,
@@ -3374,7 +3374,7 @@ channelsmod_release(TyObject *self, TyObject *args, TyObject *kwds)
     if (handle_channel_error(err, self, cid)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(channelsmod_release_doc,
@@ -3510,7 +3510,7 @@ channelsmod__register_end_types(TyObject *self, TyObject *args, TyObject *kwds)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef module_functions[] = {

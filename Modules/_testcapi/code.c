@@ -44,7 +44,7 @@ finally:
 }
 
 static TyObject *
-test_code_extra(TyObject* self, TyObject *Ty_UNUSED(callable))
+test_code_extra(TyObject* self, TyObject *Py_UNUSED(callable))
 {
     TyObject *result = NULL;
     TyObject *test_func = NULL;

@@ -25,7 +25,7 @@ extern TyObject* _TyList_GetItemRef(PyListObject *, Ty_ssize_t i);
 extern int _TyList_GetItemRefNoLock(PyListObject *, Ty_ssize_t, _PyStackRef *);
 #endif
 
-#define _TyList_ITEMS(op) _Ty_RVALUE(_TyList_CAST(op)->ob_item)
+#define _TyList_ITEMS(op) _Py_RVALUE(_TyList_CAST(op)->ob_item)
 
 PyAPI_FUNC(int)
 _TyList_AppendTakeRefListResize(PyListObject *self, TyObject *newitem);

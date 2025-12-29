@@ -671,37 +671,37 @@ static TyObject *
 ga_richcompare(TyObject *a, TyObject *b, int op)
 {
     if (!_PyGenericAlias_Check(b) ||
-        (op != Ty_EQ && op != Ty_NE))
+        (op != Py_EQ && op != Py_NE))
     {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
-    if (op == Ty_NE) {
-        TyObject *eq = ga_richcompare(a, b, Ty_EQ);
+    if (op == Py_NE) {
+        TyObject *eq = ga_richcompare(a, b, Py_EQ);
         if (eq == NULL)
             return NULL;
         Ty_DECREF(eq);
         if (eq == Ty_True) {
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         }
         else {
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
         }
     }
 
     gaobject *aa = (gaobject *)a;
     gaobject *bb = (gaobject *)b;
     if (aa->starred != bb->starred) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
-    int eq = PyObject_RichCompareBool(aa->origin, bb->origin, Ty_EQ);
+    int eq = PyObject_RichCompareBool(aa->origin, bb->origin, Py_EQ);
     if (eq < 0) {
         return NULL;
     }
     if (!eq) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
-    return PyObject_RichCompare(aa->args, bb->args, Ty_EQ);
+    return PyObject_RichCompare(aa->args, bb->args, Py_EQ);
 }
 
 static TyObject *
@@ -712,7 +712,7 @@ ga_mro_entries(TyObject *self, TyObject *args)
 }
 
 static TyObject *
-ga_instancecheck(TyObject *self, TyObject *Ty_UNUSED(ignored))
+ga_instancecheck(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyErr_SetString(TyExc_TypeError,
                     "isinstance() argument 2 cannot be a parameterized generic");
@@ -720,7 +720,7 @@ ga_instancecheck(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-ga_subclasscheck(TyObject *self, TyObject *Ty_UNUSED(ignored))
+ga_subclasscheck(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyErr_SetString(TyExc_TypeError,
                     "issubclass() argument 2 cannot be a parameterized generic");
@@ -728,7 +728,7 @@ ga_subclasscheck(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-ga_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+ga_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     gaobject *alias = (gaobject *)self;
     if (alias->starred) {
@@ -746,7 +746,7 @@ ga_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-ga_dir(TyObject *self, TyObject *Ty_UNUSED(ignored))
+ga_dir(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     gaobject *alias = (gaobject *)self;
     TyObject *dir = PyObject_Dir(alias->origin);
@@ -793,9 +793,9 @@ static TyMethodDef ga_methods[] = {
 };
 
 static TyMemberDef ga_members[] = {
-    {"__origin__", _Ty_T_OBJECT, offsetof(gaobject, origin), Ty_READONLY},
-    {"__args__", _Ty_T_OBJECT, offsetof(gaobject, args), Ty_READONLY},
-    {"__unpacked__", Ty_T_BOOL, offsetof(gaobject, starred), Ty_READONLY},
+    {"__origin__", _Ty_T_OBJECT, offsetof(gaobject, origin), Py_READONLY},
+    {"__args__", _Ty_T_OBJECT, offsetof(gaobject, args), Py_READONLY},
+    {"__unpacked__", Ty_T_BOOL, offsetof(gaobject, starred), Py_READONLY},
     {0}
 };
 
@@ -819,7 +819,7 @@ ga_unpacked_tuple_args(TyObject *self, void *unused)
     if (alias->starred && alias->origin == (TyObject *)&TyTuple_Type) {
         return Ty_NewRef(alias->args);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyGetSetDef ga_properties[] = {
@@ -928,7 +928,7 @@ ga_iter_clear(TyObject *self)
 }
 
 static TyObject *
-ga_iter_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+ga_iter_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
     gaiterobject *gi = (gaiterobject *)self;

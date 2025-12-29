@@ -318,7 +318,7 @@ static TyObject *
 _lsprof_Profiler_disable_impl(ProfilerObject *self);
 
 static TyObject *
-_lsprof_Profiler_disable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_lsprof_Profiler_disable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _lsprof_Profiler_disable_impl((ProfilerObject *)self);
 }
@@ -336,7 +336,7 @@ static TyObject *
 _lsprof_Profiler_clear_impl(ProfilerObject *self);
 
 static TyObject *
-_lsprof_Profiler_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_lsprof_Profiler_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _lsprof_Profiler_clear_impl((ProfilerObject *)self);
 }

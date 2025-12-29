@@ -815,7 +815,7 @@ PyDoc_STRVAR(PyTclObject_string__doc__,
 "the string representation of this object, either as str or bytes");
 
 static TyObject *
-PyTclObject_string(TyObject *_self, void *Ty_UNUSED(closure))
+PyTclObject_string(TyObject *_self, void *Py_UNUSED(closure))
 {
     PyTclObject *self = PyTclObject_CAST(_self);
     if (!self->string) {
@@ -863,7 +863,7 @@ PyTclObject_richcompare(TyObject *self, TyObject *other, int op)
 
     /* both arguments should be instances of PyTclObject */
     if (!PyTclObject_Check(self) || !PyTclObject_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     if (self == other) {
@@ -876,13 +876,13 @@ PyTclObject_richcompare(TyObject *self, TyObject *other, int op)
         result = strcmp(Tcl_GetString(((PyTclObject *)self)->value),
                         Tcl_GetString(((PyTclObject *)other)->value));
     }
-    Ty_RETURN_RICHCOMPARE(result, 0, op);
+    Py_RETURN_RICHCOMPARE(result, 0, op);
 }
 
 PyDoc_STRVAR(get_typename__doc__, "name of the Tcl type");
 
 static TyObject*
-get_typename(TyObject *self, void *Ty_UNUSED(closure))
+get_typename(TyObject *self, void *Py_UNUSED(closure))
 {
     PyTclObject *obj = PyTclObject_CAST(self);
     return unicodeFromTclString(obj->value->typePtr->name);
@@ -1662,7 +1662,7 @@ _tkinter_tkapp_adderrorinfo_impl(TkappObject *self, const char *msg)
     Tcl_AddErrorInfo(Tkapp_Interp(self), msg);
     LEAVE_TCL
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2505,7 +2505,7 @@ _tkinter_tkapp_createcommand_impl(TkappObject *self, const char *name,
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2558,7 +2558,7 @@ _tkinter_tkapp_deletecommand_impl(TkappObject *self, const char *name)
         TyErr_SetString(Tkinter_TclError, "can't delete Tcl command");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2665,7 +2665,7 @@ _tkinter_tkapp_createfilehandler_impl(TkappObject *self, TyObject *file,
     ENTER_TCL
     Tcl_CreateFileHandler(tfile, mask, FileHandler, (ClientData) data);
     LEAVE_TCL
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2696,7 +2696,7 @@ _tkinter_tkapp_deletefilehandler_impl(TkappObject *self, TyObject *file)
     ENTER_TCL
     Tcl_DeleteFileHandler(tfile);
     LEAVE_TCL
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif /* HAVE_CREATEFILEHANDLER */
 
@@ -2737,7 +2737,7 @@ _tkinter_tktimertoken_deletetimerhandler_impl(TkttObject *self)
         Ty_DECREF(func);
         Ty_DECREF(v); /* See Tktt_New() */
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TkttObject *
@@ -2903,7 +2903,7 @@ _tkinter_tkapp_mainloop_impl(TkappObject *self, int threshold)
         excInCmd = NULL;
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2935,7 +2935,7 @@ _tkinter_tkapp_quit_impl(TkappObject *self)
 /*[clinic end generated code: output=7f21eeff481f754f input=e03020dc38aff23c]*/
 {
     quitMainLoop = 1;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2983,7 +2983,7 @@ _tkinter_tkapp_loadtk_impl(TkappObject *self)
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -2998,7 +2998,7 @@ Tkapp_WantObjects(TyObject *op, TyObject *args)
         return TyLong_FromLong(self->wantobjects);
     }
     self->wantobjects = wantobjects;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -3021,7 +3021,7 @@ _tkinter_tkapp_settrace_impl(TkappObject *self, TyObject *func)
         Ty_INCREF(func);
     }
     Ty_XSETREF(self->trace, func);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -3053,7 +3053,7 @@ _tkinter_tkapp_willdispatch_impl(TkappObject *self)
 {
     self->dispatching = 1;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -3233,7 +3233,7 @@ _tkinter_setbusywaitinterval_impl(TyObject *module, int new_val)
         return NULL;
     }
     Tkinter_busywaitinterval = new_val;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -3424,7 +3424,7 @@ DisableEventHook(void)
 }
 
 static int
-module_clear(TyObject *Ty_UNUSED(mod))
+module_clear(TyObject *Py_UNUSED(mod))
 {
     Ty_CLEAR(Tkinter_TclError);
     Ty_CLEAR(Tkapp_Type);
@@ -3434,7 +3434,7 @@ module_clear(TyObject *Ty_UNUSED(mod))
 }
 
 static int
-module_traverse(TyObject *Ty_UNUSED(module), visitproc visit, void *arg)
+module_traverse(TyObject *Py_UNUSED(module), visitproc visit, void *arg)
 {
     Ty_VISIT(Tkinter_TclError);
     Ty_VISIT(Tkapp_Type);

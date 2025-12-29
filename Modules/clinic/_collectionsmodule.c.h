@@ -23,7 +23,7 @@ static TyObject *
 deque_pop_impl(dequeobject *deque);
 
 static TyObject *
-deque_pop(TyObject *deque, TyObject *Ty_UNUSED(ignored))
+deque_pop(TyObject *deque, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -47,7 +47,7 @@ static TyObject *
 deque_popleft_impl(dequeobject *deque);
 
 static TyObject *
-deque_popleft(TyObject *deque, TyObject *Ty_UNUSED(ignored))
+deque_popleft(TyObject *deque, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -167,7 +167,7 @@ static TyObject *
 deque_copy_impl(dequeobject *deque);
 
 static TyObject *
-deque_copy(TyObject *deque, TyObject *Ty_UNUSED(ignored))
+deque_copy(TyObject *deque, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -191,7 +191,7 @@ static TyObject *
 deque___copy___impl(dequeobject *deque);
 
 static TyObject *
-deque___copy__(TyObject *deque, TyObject *Ty_UNUSED(ignored))
+deque___copy__(TyObject *deque, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -215,7 +215,7 @@ static TyObject *
 deque_clearmethod_impl(dequeobject *deque);
 
 static TyObject *
-deque_clearmethod(TyObject *deque, TyObject *Ty_UNUSED(ignored))
+deque_clearmethod(TyObject *deque, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -284,7 +284,7 @@ static TyObject *
 deque_reverse_impl(dequeobject *deque);
 
 static TyObject *
-deque_reverse(TyObject *deque, TyObject *Ty_UNUSED(ignored))
+deque_reverse(TyObject *deque, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -447,7 +447,7 @@ static TyObject *
 deque___reduce___impl(dequeobject *deque);
 
 static TyObject *
-deque___reduce__(TyObject *deque, TyObject *Ty_UNUSED(ignored))
+deque___reduce__(TyObject *deque, TyObject *Py_UNUSED(ignored))
 {
     return deque___reduce___impl((dequeobject *)deque);
 }
@@ -536,7 +536,7 @@ static TyObject *
 deque___sizeof___impl(dequeobject *deque);
 
 static TyObject *
-deque___sizeof__(TyObject *deque, TyObject *Ty_UNUSED(ignored))
+deque___sizeof__(TyObject *deque, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -560,7 +560,7 @@ static TyObject *
 deque___reversed___impl(dequeobject *deque);
 
 static TyObject *
-deque___reversed__(TyObject *deque, TyObject *Ty_UNUSED(ignored))
+deque___reversed__(TyObject *deque, TyObject *Py_UNUSED(ignored))
 {
     return deque___reversed___impl((dequeobject *)deque);
 }

@@ -1,7 +1,7 @@
 #include "parts.h"
 
 static TyObject*
-test_gc_control(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_gc_control(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     int orig_enabled = TyGC_IsEnabled();
     const char* msg = "ok";
@@ -49,7 +49,7 @@ test_gc_control(TyObject *self, TyObject *Ty_UNUSED(ignored))
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 failed:
     /* Try to clean up if we can. */
@@ -63,7 +63,7 @@ failed:
 }
 
 static TyObject *
-without_gc(TyObject *Ty_UNUSED(self), TyObject *obj)
+without_gc(TyObject *Py_UNUSED(self), TyObject *obj)
 {
     TyTypeObject *tp = (TyTypeObject*)obj;
     if (!TyType_Check(obj) || !TyType_HasFeature(tp, Ty_TPFLAGS_HEAPTYPE)) {
@@ -171,8 +171,8 @@ gc_visit_callback_basic(TyObject *obj, void *arg)
 }
 
 static TyObject *
-test_gc_visit_objects_basic(TyObject *Ty_UNUSED(self),
-                            TyObject *Ty_UNUSED(ignored))
+test_gc_visit_objects_basic(TyObject *Py_UNUSED(self),
+                            TyObject *Py_UNUSED(ignored))
 {
     TyObject *obj;
     struct gc_visit_state_basic state;
@@ -192,7 +192,7 @@ test_gc_visit_objects_basic(TyObject *Ty_UNUSED(self),
              "test_gc_visit_objects_basic: Didn't find live list");
          return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -207,8 +207,8 @@ gc_visit_callback_exit_early(TyObject *obj, void *arg)
 }
 
 static TyObject *
-test_gc_visit_objects_exit_early(TyObject *Ty_UNUSED(self),
-                                 TyObject *Ty_UNUSED(ignored))
+test_gc_visit_objects_exit_early(TyObject *Py_UNUSED(self),
+                                 TyObject *Py_UNUSED(ignored))
 {
     int visited_i = 0;
     PyUnstable_GC_VisitObjects(gc_visit_callback_exit_early, &visited_i);
@@ -217,7 +217,7 @@ test_gc_visit_objects_exit_early(TyObject *Ty_UNUSED(self),
             TyExc_AssertionError,
             "test_gc_visit_objects_exit_early: did not exit when expected");
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 typedef struct {
@@ -243,18 +243,18 @@ obj_extra_data_get_extra_storage(TyObject *self)
 }
 
 static TyObject *
-obj_extra_data_get(TyObject *self, void *Ty_UNUSED(ignored))
+obj_extra_data_get(TyObject *self, void *Py_UNUSED(ignored))
 {
     TyObject **extra_storage = obj_extra_data_get_extra_storage(self);
     TyObject *value = *extra_storage;
     if (!value) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(value);
 }
 
 static int
-obj_extra_data_set(TyObject *self, TyObject *newval, void *Ty_UNUSED(ignored))
+obj_extra_data_set(TyObject *self, TyObject *newval, void *Py_UNUSED(ignored))
 {
     TyObject **extra_storage = obj_extra_data_get_extra_storage(self);
     Ty_CLEAR(*extra_storage);

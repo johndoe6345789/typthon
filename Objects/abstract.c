@@ -976,7 +976,7 @@ binary_op1(TyObject *v, TyObject *w, const int op_slot
         }
         Ty_DECREF(x); /* can't do it */
     }
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 #ifdef NDEBUG
@@ -2163,7 +2163,7 @@ _PySequence_IterSearch(TyObject *seq, TyObject *obj, int operation)
             break;
         }
 
-        cmp = PyObject_RichCompareBool(item, obj, Ty_EQ);
+        cmp = PyObject_RichCompareBool(item, obj, Py_EQ);
         Ty_DECREF(item);
         if (cmp < 0)
             goto Fail;

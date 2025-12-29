@@ -4044,7 +4044,7 @@ PyDoc_STRVAR(test_preprocessor_guarded_condition_a__doc__,
     {"test_preprocessor_guarded_condition_a", (PyCFunction)test_preprocessor_guarded_condition_a, METH_NOARGS, test_preprocessor_guarded_condition_a__doc__},
 
 static TyObject *
-test_preprocessor_guarded_condition_a(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_preprocessor_guarded_condition_a(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return test_preprocessor_guarded_condition_a_impl(module);
 }
@@ -4062,7 +4062,7 @@ PyDoc_STRVAR(test_preprocessor_guarded_elif_condition_b__doc__,
     {"test_preprocessor_guarded_elif_condition_b", (PyCFunction)test_preprocessor_guarded_elif_condition_b, METH_NOARGS, test_preprocessor_guarded_elif_condition_b__doc__},
 
 static TyObject *
-test_preprocessor_guarded_elif_condition_b(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_preprocessor_guarded_elif_condition_b(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return test_preprocessor_guarded_elif_condition_b_impl(module);
 }
@@ -4080,7 +4080,7 @@ PyDoc_STRVAR(test_preprocessor_guarded_else__doc__,
     {"test_preprocessor_guarded_else", (PyCFunction)test_preprocessor_guarded_else, METH_NOARGS, test_preprocessor_guarded_else__doc__},
 
 static TyObject *
-test_preprocessor_guarded_else(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_preprocessor_guarded_else(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return test_preprocessor_guarded_else_impl(module);
 }
@@ -4098,7 +4098,7 @@ PyDoc_STRVAR(test_preprocessor_guarded_ifndef_condition_c__doc__,
     {"test_preprocessor_guarded_ifndef_condition_c", (PyCFunction)test_preprocessor_guarded_ifndef_condition_c, METH_NOARGS, test_preprocessor_guarded_ifndef_condition_c__doc__},
 
 static TyObject *
-test_preprocessor_guarded_ifndef_condition_c(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_preprocessor_guarded_ifndef_condition_c(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return test_preprocessor_guarded_ifndef_condition_c_impl(module);
 }
@@ -4116,7 +4116,7 @@ PyDoc_STRVAR(test_preprocessor_guarded_ifndef_not_condition_c__doc__,
     {"test_preprocessor_guarded_ifndef_not_condition_c", (PyCFunction)test_preprocessor_guarded_ifndef_not_condition_c, METH_NOARGS, test_preprocessor_guarded_ifndef_not_condition_c__doc__},
 
 static TyObject *
-test_preprocessor_guarded_ifndef_not_condition_c(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_preprocessor_guarded_ifndef_not_condition_c(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return test_preprocessor_guarded_ifndef_not_condition_c_impl(module);
 }
@@ -4134,7 +4134,7 @@ PyDoc_STRVAR(test_preprocessor_guarded_if_with_continuation__doc__,
     {"test_preprocessor_guarded_if_with_continuation", (PyCFunction)test_preprocessor_guarded_if_with_continuation, METH_NOARGS, test_preprocessor_guarded_if_with_continuation__doc__},
 
 static TyObject *
-test_preprocessor_guarded_if_with_continuation(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_preprocessor_guarded_if_with_continuation(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return test_preprocessor_guarded_if_with_continuation_impl(module);
 }
@@ -4153,7 +4153,7 @@ PyDoc_STRVAR(test_preprocessor_guarded_if_e_or_f__doc__,
     {"test_preprocessor_guarded_if_e_or_f", (PyCFunction)test_preprocessor_guarded_if_e_or_f, METH_NOARGS, test_preprocessor_guarded_if_e_or_f__doc__},
 
 static TyObject *
-test_preprocessor_guarded_if_e_or_f(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_preprocessor_guarded_if_e_or_f(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return test_preprocessor_guarded_if_e_or_f_impl(module);
 }
@@ -5189,7 +5189,7 @@ static TyObject *
 Test_class_method_impl(TyTypeObject *type);
 
 static TyObject *
-Test_class_method(TyObject *type, TyObject *Ty_UNUSED(ignored))
+Test_class_method(TyObject *type, TyObject *Py_UNUSED(ignored))
 {
     return Test_class_method_impl((TyTypeObject *)type);
 }
@@ -5216,7 +5216,7 @@ static TyObject *
 Test_static_method_impl();
 
 static TyObject *
-Test_static_method(TyObject *null, TyObject *Ty_UNUSED(ignored))
+Test_static_method(TyObject *null, TyObject *Py_UNUSED(ignored))
 {
     return Test_static_method_impl();
 }
@@ -5243,7 +5243,7 @@ static TyObject *
 Test_meth_coexist_impl(TestObj *self);
 
 static TyObject *
-Test_meth_coexist(TyObject *self, TyObject *Ty_UNUSED(ignored))
+Test_meth_coexist(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return Test_meth_coexist_impl((TestObj *)self);
 }
@@ -5271,7 +5271,7 @@ static TyObject *
 Test_property_get_impl(TestObj *self);
 
 static TyObject *
-Test_property_get(TyObject *self, void *Ty_UNUSED(context))
+Test_property_get(TyObject *self, void *Py_UNUSED(context))
 {
     return Test_property_get_impl((TestObj *)self);
 }
@@ -5299,7 +5299,7 @@ static int
 Test_property_set_impl(TestObj *self, TyObject *value);
 
 static int
-Test_property_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+Test_property_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -5331,7 +5331,7 @@ static int
 Test_setter_first_with_docstr_set_impl(TestObj *self, TyObject *value);
 
 static int
-Test_setter_first_with_docstr_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+Test_setter_first_with_docstr_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -5372,7 +5372,7 @@ static TyObject *
 Test_setter_first_with_docstr_get_impl(TestObj *self);
 
 static TyObject *
-Test_setter_first_with_docstr_get(TyObject *self, void *Ty_UNUSED(context))
+Test_setter_first_with_docstr_get(TyObject *self, void *Py_UNUSED(context))
 {
     return Test_setter_first_with_docstr_get_impl((TestObj *)self);
 }
@@ -5525,7 +5525,7 @@ static int
 bool_return_impl(TyObject *module);
 
 static TyObject *
-bool_return(TyObject *module, TyObject *Ty_UNUSED(ignored))
+bool_return(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -5561,7 +5561,7 @@ static double
 double_return_impl(TyObject *module);
 
 static TyObject *
-double_return(TyObject *module, TyObject *Ty_UNUSED(ignored))
+double_return(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     double _return_value;
@@ -5878,7 +5878,7 @@ static TyObject *
 test_critical_section_impl(TyObject *module);
 
 static TyObject *
-test_critical_section(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_critical_section(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

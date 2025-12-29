@@ -502,7 +502,7 @@ struct _odictobject {
     TyObject *od_weakreflist;    /* holds weakrefs to the odict */
 };
 
-#define _PyODictObject_CAST(op) _Ty_CAST(PyODictObject*, (op))
+#define _PyODictObject_CAST(op) _Py_CAST(PyODictObject*, (op))
 
 
 /* ----------------------------------------------
@@ -829,7 +829,7 @@ _odict_keys_equal(PyODictObject *a, PyODictObject *b)
         else {
             TyObject *key_a = Ty_NewRef(_odictnode_KEY(node_a));
             TyObject *key_b = Ty_NewRef(_odictnode_KEY(node_b));
-            int res = PyObject_RichCompareBool(key_a, key_b, Ty_EQ);
+            int res = PyObject_RichCompareBool(key_a, key_b, Py_EQ);
             Ty_DECREF(key_a);
             Ty_DECREF(key_b);
             if (res < 0) {
@@ -898,7 +898,7 @@ odict_or(TyObject *left, TyObject *right)
         other = left;
     }
     if (!TyDict_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     TyObject *new = PyObject_CallOneArg((TyObject*)type, left);
     if (!new) {
@@ -957,7 +957,7 @@ OrderedDict_fromkeys_impl(TyTypeObject *type, TyObject *seq, TyObject *value)
 PyDoc_STRVAR(odict_sizeof__doc__, "");
 
 static TyObject *
-odict_sizeof(TyObject *op, TyObject *Ty_UNUSED(ignored))
+odict_sizeof(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyODictObject *od = _PyODictObject_CAST(op);
     Ty_ssize_t res = _TyDict_SizeOf((PyDictObject *)od);
@@ -973,7 +973,7 @@ odict_sizeof(TyObject *op, TyObject *Ty_UNUSED(ignored))
 PyDoc_STRVAR(odict_reduce__doc__, "Return state information for pickling");
 
 static TyObject *
-odict_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+odict_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     register PyODictObject *od = _PyODictObject_CAST(op);
     TyObject *state, *result = NULL;
@@ -1166,21 +1166,21 @@ OrderedDict_popitem_impl(PyODictObject *self, int last)
 /* MutableMapping.keys() does not have a docstring. */
 PyDoc_STRVAR(odict_keys__doc__, "");
 
-static TyObject * odictkeys_new(TyObject *od, TyObject *Ty_UNUSED(ignored));  /* forward */
+static TyObject * odictkeys_new(TyObject *od, TyObject *Py_UNUSED(ignored));  /* forward */
 
 /* values() */
 
 /* MutableMapping.values() does not have a docstring. */
 PyDoc_STRVAR(odict_values__doc__, "");
 
-static TyObject * odictvalues_new(TyObject *od, TyObject *Ty_UNUSED(ignored));  /* forward */
+static TyObject * odictvalues_new(TyObject *od, TyObject *Py_UNUSED(ignored));  /* forward */
 
 /* items() */
 
 /* MutableMapping.items() does not have a docstring. */
 PyDoc_STRVAR(odict_items__doc__, "");
 
-static TyObject * odictitems_new(TyObject *od, TyObject *Ty_UNUSED(ignored));  /* forward */
+static TyObject * odictitems_new(TyObject *od, TyObject *Py_UNUSED(ignored));  /* forward */
 
 /* update() */
 
@@ -1198,12 +1198,12 @@ PyDoc_STRVAR(odict_clear__doc__,
              "od.clear() -> None.  Remove all items from od.");
 
 static TyObject *
-odict_clear(TyObject *op, TyObject *Ty_UNUSED(ignored))
+odict_clear(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     register PyODictObject *od = _PyODictObject_CAST(op);
     TyDict_Clear(op);
     _odict_clear_nodes(od);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* copy() */
@@ -1215,7 +1215,7 @@ static int _PyODict_SetItem_KnownHash(TyObject *, TyObject *, TyObject *,
 PyDoc_STRVAR(odict_copy__doc__, "od.copy() -> a shallow copy of od");
 
 static TyObject *
-odict_copy(TyObject *op, TyObject *Ty_UNUSED(ignored))
+odict_copy(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     register PyODictObject *od = _PyODictObject_CAST(op);
     _ODictNode *node;
@@ -1276,7 +1276,7 @@ PyDoc_STRVAR(odict_reversed__doc__, "od.__reversed__() <==> reversed(od)");
 static TyObject * odictiter_new(PyODictObject *, int);
 
 static TyObject *
-odict_reversed(TyObject *op, TyObject *Ty_UNUSED(ignored))
+odict_reversed(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyODictObject *od = _PyODictObject_CAST(op);
     return odictiter_new(od, _odict_ITER_KEYS|_odict_ITER_REVERSED);
@@ -1329,7 +1329,7 @@ OrderedDict_move_to_end_impl(PyODictObject *self, TyObject *key, int last)
             }
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1468,10 +1468,10 @@ static TyObject *
 odict_richcompare(TyObject *v, TyObject *w, int op)
 {
     if (!PyODict_Check(v) || !TyDict_Check(w)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
-    if (op == Ty_EQ || op == Ty_NE) {
+    if (op == Py_EQ || op == Py_NE) {
         TyObject *res, *cmp;
         int eq;
 
@@ -1480,9 +1480,9 @@ odict_richcompare(TyObject *v, TyObject *w, int op)
             return NULL;
         if (!PyODict_Check(w))
             return cmp;
-        if (op == Ty_EQ && cmp == Ty_False)
+        if (op == Py_EQ && cmp == Ty_False)
             return cmp;
-        if (op == Ty_NE && cmp == Ty_True)
+        if (op == Py_NE && cmp == Ty_True)
             return cmp;
         Ty_DECREF(cmp);
 
@@ -1491,10 +1491,10 @@ odict_richcompare(TyObject *v, TyObject *w, int op)
         if (eq < 0)
             return NULL;
 
-        res = (eq == (op == Ty_EQ)) ? Ty_True : Ty_False;
+        res = (eq == (op == Py_EQ)) ? Ty_True : Ty_False;
         return Ty_NewRef(res);
     } else {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 }
 
@@ -1786,7 +1786,7 @@ done:
 PyDoc_STRVAR(reduce_doc, "Return state information for pickling");
 
 static TyObject *
-odictiter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+odictiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     odictiterobject *di = (odictiterobject*)op;
 
@@ -1883,18 +1883,18 @@ odictkeys_iter(TyObject *op)
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_KEYS);
 }
 
 static TyObject *
-odictkeys_reversed(TyObject *op, TyObject *Ty_UNUSED(ignored))
+odictkeys_reversed(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_KEYS|_odict_ITER_REVERSED);
@@ -1940,7 +1940,7 @@ TyTypeObject PyODictKeys_Type = {
 };
 
 static TyObject *
-odictkeys_new(TyObject *od, TyObject *Ty_UNUSED(ignored))
+odictkeys_new(TyObject *od, TyObject *Py_UNUSED(ignored))
 {
     return _PyDictView_New(od, &PyODictKeys_Type);
 }
@@ -1952,18 +1952,18 @@ odictitems_iter(TyObject *op)
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_KEYS|_odict_ITER_VALUES);
 }
 
 static TyObject *
-odictitems_reversed(TyObject *op, TyObject *Ty_UNUSED(ignored))
+odictitems_reversed(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_KEYS|_odict_ITER_VALUES|_odict_ITER_REVERSED);
@@ -2009,7 +2009,7 @@ TyTypeObject PyODictItems_Type = {
 };
 
 static TyObject *
-odictitems_new(TyObject *od, TyObject *Ty_UNUSED(ignored))
+odictitems_new(TyObject *od, TyObject *Py_UNUSED(ignored))
 {
     return _PyDictView_New(od, &PyODictItems_Type);
 }
@@ -2021,18 +2021,18 @@ odictvalues_iter(TyObject *op)
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_VALUES);
 }
 
 static TyObject *
-odictvalues_reversed(TyObject *op, TyObject *Ty_UNUSED(ignored))
+odictvalues_reversed(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_VALUES|_odict_ITER_REVERSED);
@@ -2078,7 +2078,7 @@ TyTypeObject PyODictValues_Type = {
 };
 
 static TyObject *
-odictvalues_new(TyObject *od, TyObject *Ty_UNUSED(ignored))
+odictvalues_new(TyObject *od, TyObject *Py_UNUSED(ignored))
 {
     return _PyDictView_New(od, &PyODictValues_Type);
 }
@@ -2288,5 +2288,5 @@ mutablemapping_update(TyObject *self, TyObject *args, TyObject *kwargs)
             return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }

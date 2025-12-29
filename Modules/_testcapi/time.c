@@ -22,7 +22,7 @@ pytime_from_nanoseconds(PyTime_t *tp, TyObject *obj)
 
 
 static TyObject *
-test_pytime_assecondsdouble(TyObject *Ty_UNUSED(self), TyObject *args)
+test_pytime_assecondsdouble(TyObject *Py_UNUSED(self), TyObject *args)
 {
     TyObject *obj;
     if (!TyArg_ParseTuple(args, "O", &obj)) {
@@ -46,7 +46,7 @@ pytime_as_float(PyTime_t t)
 
 
 static TyObject*
-test_pytime_monotonic(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
+test_pytime_monotonic(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
     PyTime_t t;
     int res = PyTime_Monotonic(&t);
@@ -60,7 +60,7 @@ test_pytime_monotonic(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
 
 
 static TyObject*
-test_pytime_monotonic_raw(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
+test_pytime_monotonic_raw(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
     PyTime_t t;
     int res;
@@ -78,7 +78,7 @@ test_pytime_monotonic_raw(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
 
 
 static TyObject*
-test_pytime_perf_counter(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
+test_pytime_perf_counter(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
     PyTime_t t;
     int res = PyTime_PerfCounter(&t);
@@ -92,7 +92,7 @@ test_pytime_perf_counter(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
 
 
 static TyObject*
-test_pytime_perf_counter_raw(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
+test_pytime_perf_counter_raw(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
     PyTime_t t;
     int res;
@@ -110,7 +110,7 @@ test_pytime_perf_counter_raw(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args
 
 
 static TyObject*
-test_pytime_time(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
+test_pytime_time(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
     PyTime_t t;
     int res = PyTime_Time(&t);
@@ -124,7 +124,7 @@ test_pytime_time(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
 
 
 static TyObject*
-test_pytime_time_raw(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
+test_pytime_time_raw(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
     PyTime_t t;
     int res;

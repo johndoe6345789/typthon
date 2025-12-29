@@ -187,7 +187,7 @@ static TyObject *
 typevar_reduce_impl(typevarobject *self);
 
 static TyObject *
-typevar_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+typevar_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return typevar_reduce_impl((typevarobject *)self);
 }
@@ -204,7 +204,7 @@ static TyObject *
 typevar_has_default_impl(typevarobject *self);
 
 static TyObject *
-typevar_has_default(TyObject *self, TyObject *Ty_UNUSED(ignored))
+typevar_has_default(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return typevar_has_default_impl((typevarobject *)self);
 }
@@ -494,7 +494,7 @@ static TyObject *
 paramspec_reduce_impl(paramspecobject *self);
 
 static TyObject *
-paramspec_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+paramspec_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return paramspec_reduce_impl((paramspecobject *)self);
 }
@@ -511,7 +511,7 @@ static TyObject *
 paramspec_has_default_impl(paramspecobject *self);
 
 static TyObject *
-paramspec_has_default(TyObject *self, TyObject *Ty_UNUSED(ignored))
+paramspec_has_default(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return paramspec_has_default_impl((paramspecobject *)self);
 }
@@ -648,7 +648,7 @@ static TyObject *
 typevartuple_reduce_impl(typevartupleobject *self);
 
 static TyObject *
-typevartuple_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+typevartuple_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return typevartuple_reduce_impl((typevartupleobject *)self);
 }
@@ -665,7 +665,7 @@ static TyObject *
 typevartuple_has_default_impl(typevartupleobject *self);
 
 static TyObject *
-typevartuple_has_default(TyObject *self, TyObject *Ty_UNUSED(ignored))
+typevartuple_has_default(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return typevartuple_has_default_impl((typevartupleobject *)self);
 }
@@ -682,7 +682,7 @@ static TyObject *
 typealias_reduce_impl(typealiasobject *self);
 
 static TyObject *
-typealias_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+typealias_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return typealias_reduce_impl((typealiasobject *)self);
 }

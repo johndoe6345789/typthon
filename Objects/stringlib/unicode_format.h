@@ -64,7 +64,7 @@ Ty_LOCAL_INLINE(TyObject *)
 SubString_new_object(SubString *str)
 {
     if (str->str == NULL)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     return TyUnicode_Substring(str->str, str->start, str->end);
 }
 
@@ -1100,7 +1100,7 @@ static TyTypeObject PyFormatterIter_Type = {
    describing the parsed elements.  It's a wrapper around
    stringlib/string_format.h's MarkupIterator */
 static TyObject *
-formatter_parser(TyObject *Ty_UNUSED(module), TyObject *self)
+formatter_parser(TyObject *Py_UNUSED(module), TyObject *self)
 {
     formatteriterobject *it;
 
@@ -1236,7 +1236,7 @@ static TyTypeObject PyFieldNameIter_Type = {
    field_name_split.  The iterator it returns is a
    FieldNameIterator */
 static TyObject *
-formatter_field_name_split(TyObject *Ty_UNUSED(module), TyObject *self)
+formatter_field_name_split(TyObject *Py_UNUSED(module), TyObject *self)
 {
     SubString first;
     Ty_ssize_t first_idx;

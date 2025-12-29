@@ -255,7 +255,7 @@ compute_range_length(TyObject *start, TyObject *stop, TyObject *step)
     }
     assert(len == -2);
 
-    cmp_result = PyObject_RichCompareBool(step, zero, Ty_GT);
+    cmp_result = PyObject_RichCompareBool(step, zero, Py_GT);
     if (cmp_result == -1)
         return NULL;
 
@@ -272,7 +272,7 @@ compute_range_length(TyObject *start, TyObject *stop, TyObject *step)
     }
 
     /* if (lo >= hi), return length of 0. */
-    cmp_result = PyObject_RichCompareBool(lo, hi, Ty_GE);
+    cmp_result = PyObject_RichCompareBool(lo, hi, Py_GE);
     if (cmp_result != 0) {
         Ty_DECREF(step);
         if (cmp_result < 0)
@@ -349,7 +349,7 @@ compute_range_item(rangeobject *r, TyObject *arg)
      *     i = arg
      *   }
      */
-    cmp_result = PyObject_RichCompareBool(arg, zero, Ty_LT);
+    cmp_result = PyObject_RichCompareBool(arg, zero, Py_LT);
     if (cmp_result == -1) {
         return NULL;
     }
@@ -367,9 +367,9 @@ compute_range_item(rangeobject *r, TyObject *arg)
      *     <report index out of bounds>
      *   }
      */
-    cmp_result = PyObject_RichCompareBool(i, zero, Ty_LT);
+    cmp_result = PyObject_RichCompareBool(i, zero, Py_LT);
     if (cmp_result == 0) {
-        cmp_result = PyObject_RichCompareBool(i, r->length, Ty_GE);
+        cmp_result = PyObject_RichCompareBool(i, r->length, Py_GE);
     }
     if (cmp_result == -1) {
        Ty_DECREF(i);
@@ -451,16 +451,16 @@ range_contains_long(rangeobject *r, TyObject *ob)
 
     /* Check if the value can possibly be in the range. */
 
-    cmp1 = PyObject_RichCompareBool(r->step, zero, Ty_GT);
+    cmp1 = PyObject_RichCompareBool(r->step, zero, Py_GT);
     if (cmp1 == -1)
         goto end;
     if (cmp1 == 1) { /* positive steps: start <= ob < stop */
-        cmp2 = PyObject_RichCompareBool(r->start, ob, Ty_LE);
-        cmp3 = PyObject_RichCompareBool(ob, r->stop, Ty_LT);
+        cmp2 = PyObject_RichCompareBool(r->start, ob, Py_LE);
+        cmp3 = PyObject_RichCompareBool(ob, r->stop, Py_LT);
     }
     else { /* negative steps: stop < ob <= start */
-        cmp2 = PyObject_RichCompareBool(ob, r->start, Ty_LE);
-        cmp3 = PyObject_RichCompareBool(r->stop, ob, Ty_LT);
+        cmp2 = PyObject_RichCompareBool(ob, r->start, Py_LE);
+        cmp3 = PyObject_RichCompareBool(r->stop, ob, Py_LT);
     }
 
     if (cmp2 == -1 || cmp3 == -1) /* TypeError */
@@ -478,7 +478,7 @@ range_contains_long(rangeobject *r, TyObject *ob)
     if (tmp2 == NULL)
         goto end;
     /* result = ((int(ob) - start) % step) == 0 */
-    result = PyObject_RichCompareBool(tmp2, zero, Ty_EQ);
+    result = PyObject_RichCompareBool(tmp2, zero, Py_EQ);
   end:
     Ty_XDECREF(tmp1);
     Ty_XDECREF(tmp2);
@@ -518,7 +518,7 @@ range_equals(rangeobject *r0, rangeobject *r1)
 
     if (r0 == r1)
         return 1;
-    cmp_result = PyObject_RichCompareBool(r0->length, r1->length, Ty_EQ);
+    cmp_result = PyObject_RichCompareBool(r0->length, r1->length, Py_EQ);
     /* Return False or error to the caller. */
     if (cmp_result != 1)
         return cmp_result;
@@ -526,15 +526,15 @@ range_equals(rangeobject *r0, rangeobject *r1)
     /* Return True or error to the caller. */
     if (cmp_result != 0)
         return cmp_result;
-    cmp_result = PyObject_RichCompareBool(r0->start, r1->start, Ty_EQ);
+    cmp_result = PyObject_RichCompareBool(r0->start, r1->start, Py_EQ);
     /* Return False or error to the caller. */
     if (cmp_result != 1)
         return cmp_result;
-    cmp_result = PyObject_RichCompareBool(r0->length, _TyLong_GetOne(), Ty_EQ);
+    cmp_result = PyObject_RichCompareBool(r0->length, _TyLong_GetOne(), Py_EQ);
     /* Return True or error to the caller. */
     if (cmp_result != 0)
         return cmp_result;
-    return PyObject_RichCompareBool(r0->step, r1->step, Ty_EQ);
+    return PyObject_RichCompareBool(r0->step, r1->step, Py_EQ);
 }
 
 static TyObject *
@@ -543,24 +543,24 @@ range_richcompare(TyObject *self, TyObject *other, int op)
     int result;
 
     if (!TyRange_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     switch (op) {
-    case Ty_NE:
-    case Ty_EQ:
+    case Py_NE:
+    case Py_EQ:
         result = range_equals((rangeobject*)self, (rangeobject*)other);
         if (result == -1)
             return NULL;
-        if (op == Ty_NE)
+        if (op == Py_NE)
             result = !result;
         if (result)
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
         else
-            Ty_RETURN_FALSE;
-    case Ty_LE:
-    case Ty_GE:
-    case Ty_LT:
-    case Ty_GT:
-        Ty_RETURN_NOTIMPLEMENTED;
+            Py_RETURN_FALSE;
+    case Py_LE:
+    case Py_GE:
+    case Py_LT:
+    case Py_GT:
+        Py_RETURN_NOTIMPLEMENTED;
     default:
         TyErr_BadArgument();
         return NULL;
@@ -596,7 +596,7 @@ range_hash(TyObject *op)
     }
     else {
         TyTuple_SET_ITEM(t, 1, Ty_NewRef(r->start));
-        cmp_result = PyObject_RichCompareBool(r->length, _TyLong_GetOne(), Ty_EQ);
+        cmp_result = PyObject_RichCompareBool(r->length, _TyLong_GetOne(), Py_EQ);
         if (cmp_result == -1)
             goto end;
         if (cmp_result == 1) {
@@ -751,7 +751,7 @@ static PyNumberMethods range_as_number = {
 };
 
 static TyObject * range_iter(TyObject *seq);
-static TyObject * range_reverse(TyObject *seq, TyObject *Ty_UNUSED(ignored));
+static TyObject * range_reverse(TyObject *seq, TyObject *Py_UNUSED(ignored));
 
 PyDoc_STRVAR(reverse_doc,
 "Return a reverse iterator.");
@@ -772,9 +772,9 @@ static TyMethodDef range_methods[] = {
 };
 
 static TyMemberDef range_members[] = {
-    {"start",   Ty_T_OBJECT_EX,    offsetof(rangeobject, start),   Ty_READONLY},
-    {"stop",    Ty_T_OBJECT_EX,    offsetof(rangeobject, stop),    Ty_READONLY},
-    {"step",    Ty_T_OBJECT_EX,    offsetof(rangeobject, step),    Ty_READONLY},
+    {"start",   Ty_T_OBJECT_EX,    offsetof(rangeobject, start),   Py_READONLY},
+    {"stop",    Ty_T_OBJECT_EX,    offsetof(rangeobject, stop),    Py_READONLY},
+    {"step",    Ty_T_OBJECT_EX,    offsetof(rangeobject, step),    Py_READONLY},
     {0}
 };
 
@@ -841,7 +841,7 @@ rangeiter_next(TyObject *op)
 }
 
 static TyObject *
-rangeiter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
+rangeiter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     _PyRangeIterObject *r = (_PyRangeIterObject*)op;
     return TyLong_FromLong(r->len);
@@ -851,7 +851,7 @@ PyDoc_STRVAR(length_hint_doc,
              "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-rangeiter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+rangeiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     _PyRangeIterObject *r = (_PyRangeIterObject*)op;
     TyObject *start=NULL, *stop=NULL, *step=NULL;
@@ -895,7 +895,7 @@ rangeiter_setstate(TyObject *op, TyObject *state)
         index = r->len; /* exhausted iterator */
     r->start += index * r->step;
     r->len -= index;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static void
@@ -1003,7 +1003,7 @@ typedef struct {
 } longrangeiterobject;
 
 static TyObject *
-longrangeiter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
+longrangeiter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     longrangeiterobject *r = (longrangeiterobject*)op;
     Ty_INCREF(r->len);
@@ -1011,7 +1011,7 @@ longrangeiter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-longrangeiter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+longrangeiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     longrangeiterobject *r = (longrangeiterobject*)op;
     TyObject *product, *stop=NULL;
@@ -1047,14 +1047,14 @@ longrangeiter_setstate(TyObject *op, TyObject *state)
     int cmp;
 
     /* clip the value */
-    cmp = PyObject_RichCompareBool(state, zero, Ty_LT);
+    cmp = PyObject_RichCompareBool(state, zero, Py_LT);
     if (cmp < 0)
         return NULL;
     if (cmp > 0) {
         state = zero;
     }
     else {
-        cmp = PyObject_RichCompareBool(r->len, state, Ty_LT);
+        cmp = PyObject_RichCompareBool(r->len, state, Py_LT);
         if (cmp < 0)
             return NULL;
         if (cmp > 0)
@@ -1076,7 +1076,7 @@ longrangeiter_setstate(TyObject *op, TyObject *state)
     r->start = new_start;
     Ty_SETREF(r->len, new_len);
     Ty_DECREF(tmp);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef longrangeiter_methods[] = {
@@ -1100,7 +1100,7 @@ static TyObject *
 longrangeiter_next(TyObject *op)
 {
     longrangeiterobject *r = (longrangeiterobject*)op;
-    if (PyObject_RichCompareBool(r->len, _TyLong_GetZero(), Ty_GT) != 1)
+    if (PyObject_RichCompareBool(r->len, _TyLong_GetZero(), Py_GT) != 1)
         return NULL;
 
     TyObject *new_start = PyNumber_Add(r->start, r->step);
@@ -1207,7 +1207,7 @@ range_iter(TyObject *seq)
 }
 
 static TyObject *
-range_reverse(TyObject *seq, TyObject *Ty_UNUSED(ignored))
+range_reverse(TyObject *seq, TyObject *Py_UNUSED(ignored))
 {
     rangeobject *range = (rangeobject*) seq;
     longrangeiterobject *it;

@@ -310,7 +310,7 @@ static TyObject *
 monitoring_restart_events_impl(TyObject *module);
 
 static TyObject *
-monitoring_restart_events(TyObject *module, TyObject *Ty_UNUSED(ignored))
+monitoring_restart_events(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return monitoring_restart_events_impl(module);
 }
@@ -327,7 +327,7 @@ static TyObject *
 monitoring__all_events_impl(TyObject *module);
 
 static TyObject *
-monitoring__all_events(TyObject *module, TyObject *Ty_UNUSED(ignored))
+monitoring__all_events(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return monitoring__all_events_impl(module);
 }

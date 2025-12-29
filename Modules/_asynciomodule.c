@@ -653,7 +653,7 @@ future_set_result(asyncio_state *state, FutureObj *fut, TyObject *res)
     if (future_schedule_callbacks(state, fut) == -1) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -721,7 +721,7 @@ future_set_exception(asyncio_state *state, FutureObj *fut, TyObject *exc)
     }
 
     fut->fut_log_tb = 1;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -866,7 +866,7 @@ future_add_done_callback(asyncio_state *state, FutureObj *fut, TyObject *arg,
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -877,7 +877,7 @@ future_cancel(asyncio_state *state, FutureObj *fut, TyObject *msg)
     fut->fut_log_tb = 0;
 
     if (fut->fut_state != STATE_PENDING) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     fut->fut_state = STATE_CANCELLED;
 
@@ -888,7 +888,7 @@ future_cancel(asyncio_state *state, FutureObj *fut, TyObject *msg)
         return NULL;
     }
 
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -1044,7 +1044,7 @@ _asyncio_Future_exception_impl(FutureObj *self, TyTypeObject *cls)
         return Ty_NewRef(self->fut_exception);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1160,7 +1160,7 @@ _asyncio_Future_remove_done_callback_impl(FutureObj *self, TyTypeObject *cls,
         // before a recursive call is made with that same arg. For details, see
         // https://github.com/python/cpython/pull/125967#discussion_r1816593340.
         TyObject *fut_callback0 = Ty_NewRef(self->fut_callback0);
-        int cmp = PyObject_RichCompareBool(fut_callback0, fn, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(fut_callback0, fn, Py_EQ);
         Ty_DECREF(fut_callback0);
         if (cmp == -1) {
             return NULL;
@@ -1187,7 +1187,7 @@ _asyncio_Future_remove_done_callback_impl(FutureObj *self, TyTypeObject *cls,
         TyObject *cb_tup = TyList_GET_ITEM(self->fut_callbacks, 0);
         Ty_INCREF(cb_tup);
         int cmp = PyObject_RichCompareBool(
-            TyTuple_GET_ITEM(cb_tup, 0), fn, Ty_EQ);
+            TyTuple_GET_ITEM(cb_tup, 0), fn, Py_EQ);
         Ty_DECREF(cb_tup);
         if (cmp == -1) {
             return NULL;
@@ -1214,7 +1214,7 @@ _asyncio_Future_remove_done_callback_impl(FutureObj *self, TyTypeObject *cls,
         int ret;
         TyObject *item = TyList_GET_ITEM(self->fut_callbacks, i);
         Ty_INCREF(item);
-        ret = PyObject_RichCompareBool(TyTuple_GET_ITEM(item, 0), fn, Ty_EQ);
+        ret = PyObject_RichCompareBool(TyTuple_GET_ITEM(item, 0), fn, Py_EQ);
         if (ret == 0) {
             if (j < len) {
                 TyList_SET_ITEM(newlist, j, item);
@@ -1291,10 +1291,10 @@ _asyncio_Future_cancelled_impl(FutureObj *self)
 /*[clinic end generated code: output=145197ced586357d input=9b8644819a675416]*/
 {
     if (future_is_alive(self) && self->fut_state == STATE_CANCELLED) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
     else {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 }
 
@@ -1313,10 +1313,10 @@ _asyncio_Future_done_impl(FutureObj *self)
 /*[clinic end generated code: output=244c5ac351145096 input=7204d3cc63bef7f3]*/
 {
     if (!future_is_alive(self) || self->fut_state == STATE_PENDING) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     else {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
 }
 
@@ -1351,7 +1351,7 @@ _asyncio_Future__asyncio_awaited_by_get_impl(FutureObj *self)
 {
     /* Implementation of a Python getter. */
     if (self->fut_awaited_by == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (self->fut_awaited_by_is_set) {
         /* Already a set, just wrap it into a frozen set and return. */
@@ -1382,10 +1382,10 @@ _asyncio_Future__asyncio_future_blocking_get_impl(FutureObj *self)
 /*[clinic end generated code: output=a558a2c51e38823b input=58da92efc03b617d]*/
 {
     if (future_is_alive(self) && self->fut_blocking) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
     else {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 }
 
@@ -1430,10 +1430,10 @@ _asyncio_Future__log_traceback_get_impl(FutureObj *self)
     asyncio_state *state = get_asyncio_state_by_def((TyObject *)self);
     ENSURE_FUTURE_ALIVE(state, self)
     if (self->fut_log_tb) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
     else {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 }
 
@@ -1474,7 +1474,7 @@ _asyncio_Future__loop_get_impl(FutureObj *self)
 /*[clinic end generated code: output=5ba31563eecfeedf input=0337130bc5781670]*/
 {
     if (!future_is_alive(self)) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->fut_loop);
 }
@@ -1501,7 +1501,7 @@ _asyncio_Future__callbacks_get_impl(FutureObj *self)
     }
 
     if (len == 0) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     TyObject *callbacks = TyList_New(len);
@@ -1549,7 +1549,7 @@ _asyncio_Future__result_get_impl(FutureObj *self)
     asyncio_state *state = get_asyncio_state_by_def((TyObject *)self);
     ENSURE_FUTURE_ALIVE(state, self)
     if (self->fut_result == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->fut_result);
 }
@@ -1567,7 +1567,7 @@ _asyncio_Future__exception_get_impl(FutureObj *self)
     asyncio_state *state = get_asyncio_state_by_def((TyObject *)self);
     ENSURE_FUTURE_ALIVE(state, self)
     if (self->fut_exception == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->fut_exception);
 }
@@ -1583,7 +1583,7 @@ _asyncio_Future__source_traceback_get_impl(FutureObj *self)
 /*[clinic end generated code: output=d4f12b09af22f61b input=3c831fbde5da90d0]*/
 {
     if (!future_is_alive(self) || self->fut_source_tb == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->fut_source_tb);
 }
@@ -1599,7 +1599,7 @@ _asyncio_Future__cancel_message_get_impl(FutureObj *self)
 /*[clinic end generated code: output=52ef6444f92cedac input=54c12c67082e4eea]*/
 {
     if (self->fut_cancel_msg == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->fut_cancel_msg);
 }
@@ -1876,7 +1876,7 @@ FutureIter_am_send_lock_held(futureiterobject *it, TyObject **result)
 
 static PySendResult
 FutureIter_am_send(TyObject *op,
-                   TyObject *Ty_UNUSED(arg),
+                   TyObject *Py_UNUSED(arg),
                    TyObject **result)
 {
     futureiterobject *it = (futureiterobject*)op;
@@ -2003,7 +2003,7 @@ static TyObject *
 FutureIter_close(TyObject *self, TyObject *arg)
 {
     (void)FutureIter_clear(self);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -2134,13 +2134,13 @@ TaskStepMethWrapper_traverse(TyObject *op,
 }
 
 static TyObject *
-TaskStepMethWrapper_get___self__(TyObject *op, void *Ty_UNUSED(closure))
+TaskStepMethWrapper_get___self__(TyObject *op, void *Py_UNUSED(closure))
 {
     TaskStepMethWrapper *o = (TaskStepMethWrapper*)op;
     if (o->sw_task) {
         return Ty_NewRef(o->sw_task);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyGetSetDef TaskStepMethWrapper_getsetlist[] = {
@@ -2303,7 +2303,7 @@ swap_current_task(TyObject *loop, TyObject *task)
         ts->asyncio_running_task = NULL;
     }
     if (prev_task == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return prev_task;
 }
@@ -2460,10 +2460,10 @@ _asyncio_Task__log_destroy_pending_get_impl(TaskObj *self)
 /*[clinic end generated code: output=e6c2a47d029ac93b input=17127298cd4c720b]*/
 {
     if (self->task_log_destroy_pending) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
     else {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 }
 
@@ -2501,10 +2501,10 @@ _asyncio_Task__must_cancel_get_impl(TaskObj *self)
 /*[clinic end generated code: output=70e79b900996c363 input=2d04529fb23feedf]*/
 {
     if (self->task_must_cancel) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
     else {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 }
 
@@ -2522,7 +2522,7 @@ _asyncio_Task__coro_get_impl(TaskObj *self)
         return Ty_NewRef(self->task_coro);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2540,7 +2540,7 @@ _asyncio_Task__fut_waiter_get_impl(TaskObj *self)
         return Ty_NewRef(self->task_fut_waiter);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -2605,7 +2605,7 @@ _asyncio_Task_cancel_impl(TaskObj *self, TyObject *msg)
     self->task_log_tb = 0;
 
     if (self->task_state != STATE_PENDING) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 
     self->task_num_cancels_requested += 1;
@@ -2614,7 +2614,7 @@ _asyncio_Task_cancel_impl(TaskObj *self, TyObject *msg)
     // https://github.com/python/cpython/pull/31394#issuecomment-1053545331
     // and corresponding code in tasks.py.
     // if (self->task_num_cancels_requested > 1) {
-    //     Ty_RETURN_FALSE;
+    //     Py_RETURN_FALSE;
     // }
 
     if (self->task_fut_waiter) {
@@ -2634,14 +2634,14 @@ _asyncio_Task_cancel_impl(TaskObj *self, TyObject *msg)
         }
 
         if (is_true) {
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
         }
     }
 
     self->task_must_cancel = 1;
     Ty_XINCREF(msg);
     Ty_XSETREF(self->task_cancel_msg, msg);
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -2802,7 +2802,7 @@ _asyncio_Task_get_coro_impl(TaskObj *self)
         return Ty_NewRef(self->task_coro);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2836,7 +2836,7 @@ _asyncio_Task_get_name_impl(TaskObj *self)
         return Ty_NewRef(self->task_name);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2861,7 +2861,7 @@ _asyncio_Task_set_name_impl(TaskObj *self, TyObject *value)
     }
 
     Ty_XSETREF(self->task_name, value);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static void
@@ -3055,7 +3055,7 @@ task_set_error_soon(asyncio_state *state, TaskObj *task, TyObject *et,
     }
 
     Ty_DECREF(e);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static inline int
@@ -3153,7 +3153,7 @@ task_step_impl(asyncio_state *state, TaskObj *task, TyObject *exc)
                 return NULL;
             }
             Ty_DECREF(tmp);
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
 
         if (TyErr_ExceptionMatches(state->asyncio_CancelledError)) {
@@ -3192,7 +3192,7 @@ task_step_impl(asyncio_state *state, TaskObj *task, TyObject *exc)
 
         Ty_DECREF(exc);
 
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     TyObject *ret = task_step_handle_result_impl(state, task, result);
@@ -3285,7 +3285,7 @@ task_step_handle_result_impl(asyncio_state *state, TaskObj *task, TyObject *resu
             }
         }
 
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     /* Check if `result` is None */
@@ -3397,7 +3397,7 @@ task_step_handle_result_impl(asyncio_state *state, TaskObj *task, TyObject *resu
             }
         }
 
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     Ty_XDECREF(o);
@@ -3625,7 +3625,7 @@ _asyncio__get_running_loop_impl(TyObject *module)
     TyObject *loop = Ty_XNewRef(ts->asyncio_running_loop);
     if (loop == NULL) {
         /* There's no currently running event loop */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return loop;
 }
@@ -3650,7 +3650,7 @@ _asyncio__set_running_loop(TyObject *module, TyObject *loop)
         loop = NULL;
     }
     Ty_XSETREF(ts->asyncio_running_loop, Ty_XNewRef(loop));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -3717,7 +3717,7 @@ _asyncio__register_task_impl(TyObject *module, TyObject *task)
         // task is an asyncio.Task instance or subclass, use efficient
         // linked-list implementation.
         register_task((TaskObj *)task);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     // As task does not inherit from asyncio.Task, fallback to less efficient
     // weakset implementation.
@@ -3727,7 +3727,7 @@ _asyncio__register_task_impl(TyObject *module, TyObject *task)
         return NULL;
     }
     Ty_DECREF(res);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -3750,14 +3750,14 @@ _asyncio__register_eager_task_impl(TyObject *module, TyObject *task)
         // task is an asyncio.Task instance or subclass, use efficient
         // linked-list implementation.
         register_task((TaskObj *)task);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     if (TySet_Add(state->non_asyncio_eager_tasks, task) < 0) {
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -3778,7 +3778,7 @@ _asyncio__unregister_task_impl(TyObject *module, TyObject *task)
     asyncio_state *state = get_asyncio_state(module);
     if (Task_Check(state, task)) {
         unregister_task((TaskObj *)task);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     TyObject *res = PyObject_CallMethodOneArg(state->non_asyncio_tasks,
                                               &_Ty_ID(discard), task);
@@ -3786,7 +3786,7 @@ _asyncio__unregister_task_impl(TyObject *module, TyObject *task)
         return NULL;
     }
     Ty_DECREF(res);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -3808,14 +3808,14 @@ _asyncio__unregister_eager_task_impl(TyObject *module, TyObject *task)
         // task is an asyncio.Task instance or subclass, use efficient
         // linked-list implementation.
         unregister_task((TaskObj *)task);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     if (TySet_Discard(state->non_asyncio_eager_tasks, task) < 0) {
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -3839,7 +3839,7 @@ _asyncio__enter_task_impl(TyObject *module, TyObject *loop, TyObject *task)
     if (enter_task(loop, task) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -3863,7 +3863,7 @@ _asyncio__leave_task_impl(TyObject *module, TyObject *loop, TyObject *task)
     if (leave_task(loop, task) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -3919,7 +3919,7 @@ _asyncio_current_task_impl(TyObject *module, TyObject *loop)
             return Ty_NewRef(ts->asyncio_running_task);
         }
         Ty_DECREF(loop);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     TyObject *ret = Ty_None;
@@ -4154,7 +4154,7 @@ _asyncio_future_add_to_awaited_by_impl(TyObject *module, TyObject *fut,
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -4181,7 +4181,7 @@ _asyncio_future_discard_from_awaited_by_impl(TyObject *module, TyObject *fut,
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int

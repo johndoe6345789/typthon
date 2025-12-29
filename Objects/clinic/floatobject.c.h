@@ -17,7 +17,7 @@ static TyObject *
 float_is_integer_impl(TyObject *self);
 
 static TyObject *
-float_is_integer(TyObject *self, TyObject *Ty_UNUSED(ignored))
+float_is_integer(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float_is_integer_impl(self);
 }
@@ -35,7 +35,7 @@ static TyObject *
 float___trunc___impl(TyObject *self);
 
 static TyObject *
-float___trunc__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+float___trunc__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float___trunc___impl(self);
 }
@@ -53,7 +53,7 @@ static TyObject *
 float___floor___impl(TyObject *self);
 
 static TyObject *
-float___floor__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+float___floor__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float___floor___impl(self);
 }
@@ -71,7 +71,7 @@ static TyObject *
 float___ceil___impl(TyObject *self);
 
 static TyObject *
-float___ceil__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+float___ceil__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float___ceil___impl(self);
 }
@@ -123,7 +123,7 @@ static TyObject *
 float_conjugate_impl(TyObject *self);
 
 static TyObject *
-float_conjugate(TyObject *self, TyObject *Ty_UNUSED(ignored))
+float_conjugate(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float_conjugate_impl(self);
 }
@@ -146,7 +146,7 @@ static TyObject *
 float_hex_impl(TyObject *self);
 
 static TyObject *
-float_hex(TyObject *self, TyObject *Ty_UNUSED(ignored))
+float_hex(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float_hex_impl(self);
 }
@@ -201,7 +201,7 @@ static TyObject *
 float_as_integer_ratio_impl(TyObject *self);
 
 static TyObject *
-float_as_integer_ratio(TyObject *self, TyObject *Ty_UNUSED(ignored))
+float_as_integer_ratio(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float_as_integer_ratio_impl(self);
 }
@@ -274,7 +274,7 @@ static TyObject *
 float___getnewargs___impl(TyObject *self);
 
 static TyObject *
-float___getnewargs__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+float___getnewargs__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return float___getnewargs___impl(self);
 }

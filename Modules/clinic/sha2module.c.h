@@ -65,7 +65,7 @@ static TyObject *
 SHA256Type_digest_impl(SHA256object *self);
 
 static TyObject *
-SHA256Type_digest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+SHA256Type_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return SHA256Type_digest_impl((SHA256object *)self);
 }
@@ -83,7 +83,7 @@ static TyObject *
 SHA512Type_digest_impl(SHA512object *self);
 
 static TyObject *
-SHA512Type_digest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+SHA512Type_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return SHA512Type_digest_impl((SHA512object *)self);
 }
@@ -101,7 +101,7 @@ static TyObject *
 SHA256Type_hexdigest_impl(SHA256object *self);
 
 static TyObject *
-SHA256Type_hexdigest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+SHA256Type_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return SHA256Type_hexdigest_impl((SHA256object *)self);
 }
@@ -119,7 +119,7 @@ static TyObject *
 SHA512Type_hexdigest_impl(SHA512object *self);
 
 static TyObject *
-SHA512Type_hexdigest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+SHA512Type_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return SHA512Type_hexdigest_impl((SHA512object *)self);
 }

@@ -84,7 +84,7 @@ If size is negative or omitted, read until EOF.
 
 static TyObject *
 _io__TextIOBase_read_impl(TyObject *self, TyTypeObject *cls,
-                          int Ty_UNUSED(size))
+                          int Py_UNUSED(size))
 /*[clinic end generated code: output=51a5178a309ce647 input=f5e37720f9fc563f]*/
 {
     _PyIO_State *state = get_io_state_by_cls(cls);
@@ -105,7 +105,7 @@ If size is specified, at most size characters will be read.
 
 static TyObject *
 _io__TextIOBase_readline_impl(TyObject *self, TyTypeObject *cls,
-                              int Ty_UNUSED(size))
+                              int Py_UNUSED(size))
 /*[clinic end generated code: output=3f47d7966d6d074e input=42eafec94107fa27]*/
 {
     _PyIO_State *state = get_io_state_by_cls(cls);
@@ -126,7 +126,7 @@ Return the number of characters written
 
 static TyObject *
 _io__TextIOBase_write_impl(TyObject *self, TyTypeObject *cls,
-                           const char *Ty_UNUSED(s))
+                           const char *Py_UNUSED(s))
 /*[clinic end generated code: output=18b28231460275de input=e9cabaa5f6732b07]*/
 {
     _PyIO_State *state = get_io_state_by_cls(cls);
@@ -146,7 +146,7 @@ static TyObject *
 _io__TextIOBase_encoding_get_impl(TyObject *self)
 /*[clinic end generated code: output=e0f5d8f548b92432 input=4736d7621dd38f43]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -164,7 +164,7 @@ static TyObject *
 _io__TextIOBase_newlines_get_impl(TyObject *self)
 /*[clinic end generated code: output=46ec147fb9f00c2a input=a5b196d076af1164]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -180,7 +180,7 @@ static TyObject *
 _io__TextIOBase_errors_get_impl(TyObject *self)
 /*[clinic end generated code: output=c6623d6addcd087d input=974aa52d1db93a82]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -608,7 +608,7 @@ _io_IncrementalNewlineDecoder_setstate_impl(nldecoder_object *self,
                                     "((OK))", buffer, flag);
     }
     else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -627,11 +627,11 @@ _io_IncrementalNewlineDecoder_reset_impl(nldecoder_object *self)
     if (self->decoder != Ty_None)
         return PyObject_CallMethodNoArgs(self->decoder, &_Ty_ID(reset));
     else
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 }
 
 static TyObject *
-incrementalnewlinedecoder_newlines_get(TyObject *op, void *Ty_UNUSED(context))
+incrementalnewlinedecoder_newlines_get(TyObject *op, void *Py_UNUSED(context))
 {
     nldecoder_object *self = nldecoder_object_CAST(op);
     CHECK_INITIALIZED_DECODER(self);
@@ -652,7 +652,7 @@ incrementalnewlinedecoder_newlines_get(TyObject *op, void *Ty_UNUSED(context))
     case SEEN_CR | SEEN_LF | SEEN_CRLF:
         return Ty_BuildValue("sss", "\r", "\n", "\r\n");
     default:
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
    }
 
 }
@@ -1001,7 +1001,7 @@ _textiowrapper_fix_encoder_state(textio *self)
         return -1;
     }
 
-    int cmp = PyObject_RichCompareBool(cookieObj, _TyLong_GetZero(), Ty_EQ);
+    int cmp = PyObject_RichCompareBool(cookieObj, _TyLong_GetZero(), Py_EQ);
     Ty_DECREF(cookieObj);
     if (cmp < 0) {
         return -1;
@@ -1437,7 +1437,7 @@ _io_TextIOWrapper_reconfigure_impl(textio *self, TyObject *encoding,
 
     self->line_buffering = line_buffering;
     self->write_through = write_through;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -2553,7 +2553,7 @@ _io_TextIOWrapper_seek_impl(textio *self, TyObject *cookieObj, int whence)
     switch (whence) {
     case SEEK_CUR:
         /* seek relative to current position */
-        cmp = PyObject_RichCompareBool(cookieObj, zero, Ty_EQ);
+        cmp = PyObject_RichCompareBool(cookieObj, zero, Py_EQ);
         if (cmp < 0)
             goto fail;
 
@@ -2573,7 +2573,7 @@ _io_TextIOWrapper_seek_impl(textio *self, TyObject *cookieObj, int whence)
 
     case SEEK_END:
         /* seek relative to end of file */
-        cmp = PyObject_RichCompareBool(cookieObj, zero, Ty_EQ);
+        cmp = PyObject_RichCompareBool(cookieObj, zero, Py_EQ);
         if (cmp < 0)
             goto fail;
 
@@ -2601,7 +2601,7 @@ _io_TextIOWrapper_seek_impl(textio *self, TyObject *cookieObj, int whence)
             goto fail;
         if (self->encoder) {
             /* If seek() == 0, we are at the start of stream, otherwise not */
-            cmp = PyObject_RichCompareBool(res, zero, Ty_EQ);
+            cmp = PyObject_RichCompareBool(res, zero, Py_EQ);
             if (cmp < 0 || _textiowrapper_encoder_reset(self, cmp)) {
                 Ty_DECREF(res);
                 goto fail;
@@ -2619,7 +2619,7 @@ _io_TextIOWrapper_seek_impl(textio *self, TyObject *cookieObj, int whence)
         goto fail;
     }
 
-    cmp = PyObject_RichCompareBool(cookieObj, zero, Ty_LT);
+    cmp = PyObject_RichCompareBool(cookieObj, zero, Py_LT);
     if (cmp < 0)
         goto fail;
 
@@ -3147,7 +3147,7 @@ _io_TextIOWrapper_close_impl(textio *self)
         return NULL;
 
     if (r > 0) {
-        Ty_RETURN_NONE; /* stream already closed */
+        Py_RETURN_NONE; /* stream already closed */
     }
     else {
         TyObject *exc = NULL;
@@ -3266,7 +3266,7 @@ _io_TextIOWrapper_newlines_get_impl(textio *self)
     if (self->decoder == NULL ||
         PyObject_GetOptionalAttr(self->decoder, &_Ty_ID(newlines), &res) == 0)
     {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return res;
 }
@@ -3384,13 +3384,13 @@ static TyMethodDef textiowrapper_methods[] = {
 };
 
 static TyMemberDef textiowrapper_members[] = {
-    {"encoding", _Ty_T_OBJECT, offsetof(textio, encoding), Ty_READONLY},
-    {"buffer", _Ty_T_OBJECT, offsetof(textio, buffer), Ty_READONLY},
-    {"line_buffering", Ty_T_BOOL, offsetof(textio, line_buffering), Ty_READONLY},
-    {"write_through", Ty_T_BOOL, offsetof(textio, write_through), Ty_READONLY},
+    {"encoding", _Ty_T_OBJECT, offsetof(textio, encoding), Py_READONLY},
+    {"buffer", _Ty_T_OBJECT, offsetof(textio, buffer), Py_READONLY},
+    {"line_buffering", Ty_T_BOOL, offsetof(textio, line_buffering), Py_READONLY},
+    {"write_through", Ty_T_BOOL, offsetof(textio, write_through), Py_READONLY},
     {"_finalizing", Ty_T_BOOL, offsetof(textio, finalizing), 0},
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(textio, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(textio, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(textio, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(textio, dict), Py_READONLY},
     {NULL}
 };
 

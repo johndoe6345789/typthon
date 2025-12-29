@@ -25,7 +25,7 @@ static inline TyObject* TyCell_GET(TyObject *op) {
     TyObject *res;
     PyCellObject *cell;
     assert(TyCell_Check(op));
-    cell = _Ty_CAST(PyCellObject*, op);
+    cell = _Py_CAST(PyCellObject*, op);
     Ty_BEGIN_CRITICAL_SECTION(cell);
     res = cell->ob_ref;
     Ty_END_CRITICAL_SECTION();
@@ -36,7 +36,7 @@ static inline TyObject* TyCell_GET(TyObject *op) {
 static inline void TyCell_SET(TyObject *op, TyObject *value) {
     PyCellObject *cell;
     assert(TyCell_Check(op));
-    cell = _Ty_CAST(PyCellObject*, op);
+    cell = _Py_CAST(PyCellObject*, op);
     Ty_BEGIN_CRITICAL_SECTION(cell);
     cell->ob_ref = value;
     Ty_END_CRITICAL_SECTION();

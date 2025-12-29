@@ -725,10 +725,10 @@ PyDoc_STRVAR(BZ2Decompressor_needs_input_doc,
 
 static TyMemberDef BZ2Decompressor_members[] = {
     {"eof", Ty_T_BOOL, offsetof(BZ2Decompressor, eof),
-     Ty_READONLY, BZ2Decompressor_eof__doc__},
+     Py_READONLY, BZ2Decompressor_eof__doc__},
     {"unused_data", Ty_T_OBJECT_EX, offsetof(BZ2Decompressor, unused_data),
-     Ty_READONLY, BZ2Decompressor_unused_data__doc__},
-    {"needs_input", Ty_T_BOOL, offsetof(BZ2Decompressor, needs_input), Ty_READONLY,
+     Py_READONLY, BZ2Decompressor_unused_data__doc__},
+    {"needs_input", Ty_T_BOOL, offsetof(BZ2Decompressor, needs_input), Py_READONLY,
      BZ2Decompressor_needs_input_doc},
     {NULL}
 };

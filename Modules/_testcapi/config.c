@@ -30,7 +30,7 @@ _testcapi_config_getint(TyObject *module, TyObject *name_obj)
 
 
 static TyObject *
-_testcapi_config_names(TyObject *module, TyObject* Ty_UNUSED(args))
+_testcapi_config_names(TyObject *module, TyObject* Py_UNUSED(args))
 {
     return TyConfig_Names();
 }
@@ -49,7 +49,7 @@ _testcapi_config_set(TyObject *module, TyObject *args)
     if (res < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

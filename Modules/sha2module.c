@@ -426,7 +426,7 @@ SHA256Type_update_impl(SHA256object *self, TyObject *obj)
     }
 
     PyBuffer_Release(&buf);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -460,7 +460,7 @@ SHA512Type_update_impl(SHA512object *self, TyObject *obj)
     }
 
     PyBuffer_Release(&buf);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef SHA256_methods[] = {
@@ -480,33 +480,33 @@ static TyMethodDef SHA512_methods[] = {
 };
 
 static TyObject *
-SHA256_get_block_size(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+SHA256_get_block_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(SHA256_BLOCKSIZE);
 }
 
 static TyObject *
-SHA512_get_block_size(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+SHA512_get_block_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(SHA512_BLOCKSIZE);
 }
 
 static TyObject *
-SHA256_get_digest_size(TyObject *op, void *Ty_UNUSED(closure))
+SHA256_get_digest_size(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA256object *self = _SHA256object_CAST(op);
     return TyLong_FromLong(self->digestsize);
 }
 
 static TyObject *
-SHA512_get_digest_size(TyObject *op, void *Ty_UNUSED(closure))
+SHA512_get_digest_size(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA512object *self = _SHA512object_CAST(op);
     return TyLong_FromLong(self->digestsize);
 }
 
 static TyObject *
-SHA256_get_name(TyObject *op, void *Ty_UNUSED(closure))
+SHA256_get_name(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA256object *self = _SHA256object_CAST(op);
     if (self->digestsize == 28) {
@@ -516,7 +516,7 @@ SHA256_get_name(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-SHA512_get_name(TyObject *op, void *Ty_UNUSED(closure))
+SHA512_get_name(TyObject *op, void *Py_UNUSED(closure))
 {
     SHA512object *self = _SHA512object_CAST(op);
     if (self->digestsize == 64) {

@@ -174,7 +174,7 @@ static TyObject *
 sys_exception_impl(TyObject *module);
 
 static TyObject *
-sys_exception(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_exception(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_exception_impl(module);
 }
@@ -195,7 +195,7 @@ static TyObject *
 sys_exc_info_impl(TyObject *module);
 
 static TyObject *
-sys_exc_info(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_exc_info(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_exc_info_impl(module);
 }
@@ -267,7 +267,7 @@ static TyObject *
 sys_getdefaultencoding_impl(TyObject *module);
 
 static TyObject *
-sys_getdefaultencoding(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getdefaultencoding(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_getdefaultencoding_impl(module);
 }
@@ -285,7 +285,7 @@ static TyObject *
 sys_getfilesystemencoding_impl(TyObject *module);
 
 static TyObject *
-sys_getfilesystemencoding(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getfilesystemencoding(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_getfilesystemencoding_impl(module);
 }
@@ -303,7 +303,7 @@ static TyObject *
 sys_getfilesystemencodeerrors_impl(TyObject *module);
 
 static TyObject *
-sys_getfilesystemencodeerrors(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getfilesystemencodeerrors(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_getfilesystemencodeerrors_impl(module);
 }
@@ -444,7 +444,7 @@ static TyObject *
 sys_gettrace_impl(TyObject *module);
 
 static TyObject *
-sys_gettrace(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_gettrace(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_gettrace_impl(module);
 }
@@ -488,7 +488,7 @@ static TyObject *
 sys_getprofile_impl(TyObject *module);
 
 static TyObject *
-sys_getprofile(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getprofile(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_getprofile_impl(module);
 }
@@ -547,7 +547,7 @@ static double
 sys_getswitchinterval_impl(TyObject *module);
 
 static TyObject *
-sys_getswitchinterval(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getswitchinterval(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     double _return_value;
@@ -673,7 +673,7 @@ static int
 sys_get_coroutine_origin_tracking_depth_impl(TyObject *module);
 
 static TyObject *
-sys_get_coroutine_origin_tracking_depth(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_get_coroutine_origin_tracking_depth(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -703,7 +703,7 @@ static TyObject *
 sys_get_asyncgen_hooks_impl(TyObject *module);
 
 static TyObject *
-sys_get_asyncgen_hooks(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_get_asyncgen_hooks(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_get_asyncgen_hooks_impl(module);
 }
@@ -725,7 +725,7 @@ static TyObject *
 sys_getrecursionlimit_impl(TyObject *module);
 
 static TyObject *
-sys_getrecursionlimit(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getrecursionlimit(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_getrecursionlimit_impl(module);
 }
@@ -755,7 +755,7 @@ static TyObject *
 sys_getwindowsversion_impl(TyObject *module);
 
 static TyObject *
-sys_getwindowsversion(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getwindowsversion(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_getwindowsversion_impl(module);
 }
@@ -783,7 +783,7 @@ static TyObject *
 sys__enablelegacywindowsfsencoding_impl(TyObject *module);
 
 static TyObject *
-sys__enablelegacywindowsfsencoding(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__enablelegacywindowsfsencoding(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__enablelegacywindowsfsencoding_impl(module);
 }
@@ -847,7 +847,7 @@ static TyObject *
 sys_getdlopenflags_impl(TyObject *module);
 
 static TyObject *
-sys_getdlopenflags(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getdlopenflags(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_getdlopenflags_impl(module);
 }
@@ -898,7 +898,7 @@ static TyObject *
 sys_get_int_max_str_digits_impl(TyObject *module);
 
 static TyObject *
-sys_get_int_max_str_digits(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_get_int_max_str_digits(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_get_int_max_str_digits_impl(module);
 }
@@ -1010,7 +1010,7 @@ static Ty_ssize_t
 sys_gettotalrefcount_impl(TyObject *module);
 
 static TyObject *
-sys_gettotalrefcount(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_gettotalrefcount(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     Ty_ssize_t _return_value;
@@ -1040,7 +1040,7 @@ static Ty_ssize_t
 sys_getallocatedblocks_impl(TyObject *module);
 
 static TyObject *
-sys_getallocatedblocks(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getallocatedblocks(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     Ty_ssize_t _return_value;
@@ -1184,7 +1184,7 @@ static TyObject *
 sys__current_frames_impl(TyObject *module);
 
 static TyObject *
-sys__current_frames(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__current_frames(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__current_frames_impl(module);
 }
@@ -1204,7 +1204,7 @@ static TyObject *
 sys__current_exceptions_impl(TyObject *module);
 
 static TyObject *
-sys__current_exceptions(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__current_exceptions(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__current_exceptions_impl(module);
 }
@@ -1263,7 +1263,7 @@ static TyObject *
 sys__debugmallocstats_impl(TyObject *module);
 
 static TyObject *
-sys__debugmallocstats(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__debugmallocstats(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__debugmallocstats_impl(module);
 }
@@ -1281,7 +1281,7 @@ static TyObject *
 sys__clear_type_cache_impl(TyObject *module);
 
 static TyObject *
-sys__clear_type_cache(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__clear_type_cache(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__clear_type_cache_impl(module);
 }
@@ -1299,7 +1299,7 @@ static TyObject *
 sys__clear_internal_caches_impl(TyObject *module);
 
 static TyObject *
-sys__clear_internal_caches(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__clear_internal_caches(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__clear_internal_caches_impl(module);
 }
@@ -1317,7 +1317,7 @@ static TyObject *
 sys_is_finalizing_impl(TyObject *module);
 
 static TyObject *
-sys_is_finalizing(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_is_finalizing(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_is_finalizing_impl(module);
 }
@@ -1337,7 +1337,7 @@ static TyObject *
 sys__stats_on_impl(TyObject *module);
 
 static TyObject *
-sys__stats_on(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__stats_on(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__stats_on_impl(module);
 }
@@ -1359,7 +1359,7 @@ static TyObject *
 sys__stats_off_impl(TyObject *module);
 
 static TyObject *
-sys__stats_off(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__stats_off(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__stats_off_impl(module);
 }
@@ -1381,7 +1381,7 @@ static TyObject *
 sys__stats_clear_impl(TyObject *module);
 
 static TyObject *
-sys__stats_clear(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__stats_clear(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__stats_clear_impl(module);
 }
@@ -1405,7 +1405,7 @@ static int
 sys__stats_dump_impl(TyObject *module);
 
 static TyObject *
-sys__stats_dump(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__stats_dump(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -1437,7 +1437,7 @@ static TyObject *
 sys_getandroidapilevel_impl(TyObject *module);
 
 static TyObject *
-sys_getandroidapilevel(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_getandroidapilevel(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_getandroidapilevel_impl(module);
 }
@@ -1496,7 +1496,7 @@ static TyObject *
 sys_deactivate_stack_trampoline_impl(TyObject *module);
 
 static TyObject *
-sys_deactivate_stack_trampoline(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_deactivate_stack_trampoline(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_deactivate_stack_trampoline_impl(module);
 }
@@ -1514,7 +1514,7 @@ static TyObject *
 sys_is_stack_trampoline_active_impl(TyObject *module);
 
 static TyObject *
-sys_is_stack_trampoline_active(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_is_stack_trampoline_active(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_is_stack_trampoline_active_impl(module);
 }
@@ -1532,7 +1532,7 @@ static TyObject *
 sys_is_remote_debug_enabled_impl(TyObject *module);
 
 static TyObject *
-sys_is_remote_debug_enabled(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys_is_remote_debug_enabled(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys_is_remote_debug_enabled_impl(module);
 }
@@ -1760,7 +1760,7 @@ static int
 sys__get_cpu_count_config_impl(TyObject *module);
 
 static TyObject *
-sys__get_cpu_count_config(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__get_cpu_count_config(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -1788,7 +1788,7 @@ static TyObject *
 sys__baserepl_impl(TyObject *module);
 
 static TyObject *
-sys__baserepl(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__baserepl(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return sys__baserepl_impl(module);
 }
@@ -1806,7 +1806,7 @@ static int
 sys__is_gil_enabled_impl(TyObject *module);
 
 static TyObject *
-sys__is_gil_enabled(TyObject *module, TyObject *Ty_UNUSED(ignored))
+sys__is_gil_enabled(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -1834,7 +1834,7 @@ static int
 _jit_is_available_impl(TyObject *module);
 
 static TyObject *
-_jit_is_available(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_jit_is_available(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -1862,7 +1862,7 @@ static int
 _jit_is_enabled_impl(TyObject *module);
 
 static TyObject *
-_jit_is_enabled(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_jit_is_enabled(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -1890,7 +1890,7 @@ static int
 _jit_is_active_impl(TyObject *module);
 
 static TyObject *
-_jit_is_active(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_jit_is_active(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;

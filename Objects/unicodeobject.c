@@ -8854,13 +8854,13 @@ charmapencode_lookup(Ty_UCS4 c, TyObject *mapping, unsigned char *replace)
     Ty_DECREF(w);
     if (rc == 0) {
         /* No mapping found means: mapping is undefined. */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (x == NULL) {
         if (TyErr_ExceptionMatches(TyExc_LookupError)) {
             /* No mapping found means: mapping is undefined. */
             TyErr_Clear();
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         } else
             return NULL;
     }
@@ -11537,32 +11537,32 @@ TyUnicode_RichCompare(TyObject *left, TyObject *right, int op)
     int result;
 
     if (!TyUnicode_Check(left) || !TyUnicode_Check(right))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     if (left == right) {
         switch (op) {
-        case Ty_EQ:
-        case Ty_LE:
-        case Ty_GE:
+        case Py_EQ:
+        case Py_LE:
+        case Py_GE:
             /* a string is equal to itself */
-            Ty_RETURN_TRUE;
-        case Ty_NE:
-        case Ty_LT:
-        case Ty_GT:
-            Ty_RETURN_FALSE;
+            Py_RETURN_TRUE;
+        case Py_NE:
+        case Py_LT:
+        case Py_GT:
+            Py_RETURN_FALSE;
         default:
             TyErr_BadArgument();
             return NULL;
         }
     }
-    else if (op == Ty_EQ || op == Ty_NE) {
+    else if (op == Py_EQ || op == Py_NE) {
         result = unicode_eq(left, right);
-        result ^= (op == Ty_NE);
+        result ^= (op == Py_NE);
         return TyBool_FromLong(result);
     }
     else {
         result = unicode_compare(left, right);
-        Ty_RETURN_RICHCOMPARE(result, 0, op);
+        Py_RETURN_RICHCOMPARE(result, 0, op);
     }
 }
 
@@ -12083,14 +12083,14 @@ unicode_islower_impl(TyObject *self)
 
     /* Special case for empty strings */
     if (length == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     cased = 0;
     for (i = 0; i < length; i++) {
         const Ty_UCS4 ch = TyUnicode_READ(kind, data, i);
 
         if (Ty_UNICODE_ISUPPER(ch) || Ty_UNICODE_ISTITLE(ch))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         else if (!cased && Ty_UNICODE_ISLOWER(ch))
             cased = 1;
     }
@@ -12126,14 +12126,14 @@ unicode_isupper_impl(TyObject *self)
 
     /* Special case for empty strings */
     if (length == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     cased = 0;
     for (i = 0; i < length; i++) {
         const Ty_UCS4 ch = TyUnicode_READ(kind, data, i);
 
         if (Ty_UNICODE_ISLOWER(ch) || Ty_UNICODE_ISTITLE(ch))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         else if (!cased && Ty_UNICODE_ISUPPER(ch))
             cased = 1;
     }
@@ -12171,7 +12171,7 @@ unicode_istitle_impl(TyObject *self)
 
     /* Special case for empty strings */
     if (length == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     cased = 0;
     previous_is_cased = 0;
@@ -12180,13 +12180,13 @@ unicode_istitle_impl(TyObject *self)
 
         if (Ty_UNICODE_ISUPPER(ch) || Ty_UNICODE_ISTITLE(ch)) {
             if (previous_is_cased)
-                Ty_RETURN_FALSE;
+                Py_RETURN_FALSE;
             previous_is_cased = 1;
             cased = 1;
         }
         else if (Ty_UNICODE_ISLOWER(ch)) {
             if (!previous_is_cased)
-                Ty_RETURN_FALSE;
+                Py_RETURN_FALSE;
             previous_is_cased = 1;
             cased = 1;
         }
@@ -12224,14 +12224,14 @@ unicode_isspace_impl(TyObject *self)
 
     /* Special case for empty strings */
     if (length == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     for (i = 0; i < length; i++) {
         const Ty_UCS4 ch = TyUnicode_READ(kind, data, i);
         if (!Ty_UNICODE_ISSPACE(ch))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -12262,13 +12262,13 @@ unicode_isalpha_impl(TyObject *self)
 
     /* Special case for empty strings */
     if (length == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     for (i = 0; i < length; i++) {
         if (!Ty_UNICODE_ISALPHA(TyUnicode_READ(kind, data, i)))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -12300,14 +12300,14 @@ unicode_isalnum_impl(TyObject *self)
 
     /* Special case for empty strings */
     if (len == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     for (i = 0; i < len; i++) {
         const Ty_UCS4 ch = TyUnicode_READ(kind, data, i);
         if (!Ty_UNICODE_ISALNUM(ch))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -12338,13 +12338,13 @@ unicode_isdecimal_impl(TyObject *self)
 
     /* Special case for empty strings */
     if (length == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     for (i = 0; i < length; i++) {
         if (!Ty_UNICODE_ISDECIMAL(TyUnicode_READ(kind, data, i)))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -12376,13 +12376,13 @@ unicode_isdigit_impl(TyObject *self)
 
     /* Special case for empty strings */
     if (length == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     for (i = 0; i < length; i++) {
         if (!Ty_UNICODE_ISDIGIT(TyUnicode_READ(kind, data, i)))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -12413,13 +12413,13 @@ unicode_isnumeric_impl(TyObject *self)
 
     /* Special case for empty strings */
     if (length == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     for (i = 0; i < length; i++) {
         if (!Ty_UNICODE_ISNUMERIC(TyUnicode_READ(kind, data, i)))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 Ty_ssize_t
@@ -12508,10 +12508,10 @@ unicode_isprintable_impl(TyObject *self)
 
     for (i = 0; i < length; i++) {
         if (!Ty_UNICODE_ISPRINTABLE(TyUnicode_READ(kind, data, i))) {
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         }
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -13620,11 +13620,11 @@ unicode_startswith_impl(TyObject *self, TyObject *subobj, Ty_ssize_t start,
                 return NULL;
             }
             if (result) {
-                Ty_RETURN_TRUE;
+                Py_RETURN_TRUE;
             }
         }
         /* nothing matched */
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     if (!TyUnicode_Check(subobj)) {
         TyErr_Format(TyExc_TypeError,
@@ -13676,10 +13676,10 @@ unicode_endswith_impl(TyObject *self, TyObject *subobj, Ty_ssize_t start,
                 return NULL;
             }
             if (result) {
-                Ty_RETURN_TRUE;
+                Py_RETURN_TRUE;
             }
         }
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     if (!TyUnicode_Check(subobj)) {
         TyErr_Format(TyExc_TypeError,
@@ -14302,7 +14302,7 @@ unicode_sizeof_impl(TyObject *self)
 }
 
 static TyObject *
-unicode_getnewargs(TyObject *v, TyObject *Ty_UNUSED(ignored))
+unicode_getnewargs(TyObject *v, TyObject *Py_UNUSED(ignored))
 {
     TyObject *copy = _TyUnicode_Copy(v);
     if (!copy)
@@ -14525,7 +14525,7 @@ static TyObject *
 unicode_mod(TyObject *v, TyObject *w)
 {
     if (!TyUnicode_Check(v))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     return TyUnicode_Format(v, w);
 }
 
@@ -16289,7 +16289,7 @@ unicode_ascii_iter_next(TyObject *op)
 }
 
 static TyObject *
-unicodeiter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
+unicodeiter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     unicodeiterobject *it = (unicodeiterobject *)op;
     Ty_ssize_t len = 0;
@@ -16301,7 +16301,7 @@ unicodeiter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
 PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-unicodeiter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+unicodeiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     unicodeiterobject *it = (unicodeiterobject *)op;
     TyObject *iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
@@ -16338,7 +16338,7 @@ unicodeiter_setstate(TyObject *op, TyObject *state)
             index = TyUnicode_GET_LENGTH(it->it_seq); /* iterator truncated */
         it->it_index = index;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");

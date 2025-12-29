@@ -3,7 +3,7 @@
 
 
 static TyObject *
-sys_getobject(TyObject *Ty_UNUSED(module), TyObject *arg)
+sys_getobject(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     const char *name;
     Ty_ssize_t size;
@@ -18,7 +18,7 @@ sys_getobject(TyObject *Ty_UNUSED(module), TyObject *arg)
 }
 
 static TyObject *
-sys_setobject(TyObject *Ty_UNUSED(module), TyObject *args)
+sys_setobject(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *name;
     Ty_ssize_t size;
@@ -31,7 +31,7 @@ sys_setobject(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-sys_getxoptions(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(ignored))
+sys_getxoptions(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(ignored))
 {
     TyObject *result = TySys_GetXOptions();
     return Ty_XNewRef(result);

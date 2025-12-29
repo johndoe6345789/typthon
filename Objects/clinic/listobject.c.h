@@ -66,7 +66,7 @@ static TyObject *
 py_list_clear_impl(PyListObject *self);
 
 static TyObject *
-py_list_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+py_list_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -90,7 +90,7 @@ static TyObject *
 list_copy_impl(PyListObject *self);
 
 static TyObject *
-list_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+list_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -290,7 +290,7 @@ static TyObject *
 list_reverse_impl(PyListObject *self);
 
 static TyObject *
-list_reverse(TyObject *self, TyObject *Ty_UNUSED(ignored))
+list_reverse(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -446,7 +446,7 @@ static TyObject *
 list___sizeof___impl(PyListObject *self);
 
 static TyObject *
-list___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+list___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return list___sizeof___impl((PyListObject *)self);
 }
@@ -464,7 +464,7 @@ static TyObject *
 list___reversed___impl(PyListObject *self);
 
 static TyObject *
-list___reversed__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+list___reversed__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return list___reversed___impl((PyListObject *)self);
 }

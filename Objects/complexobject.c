@@ -697,7 +697,7 @@ real_to_complex(TyObject **pobj, Ty_complex *pc)
             }                                               \
         }                                                   \
         else if (!TyComplex_Check(v)) {                     \
-            Ty_RETURN_NOTIMPLEMENTED;                       \
+            Py_RETURN_NOTIMPLEMENTED;                       \
         }                                                   \
         else {                                              \
             a = ((PyComplexObject *)v)->cval;               \
@@ -803,7 +803,7 @@ complex_richcompare(TyObject *v, TyObject *w, int op)
     Ty_complex i;
     int equal;
 
-    if (op != Ty_EQ && op != Ty_NE) {
+    if (op != Py_EQ && op != Py_NE) {
         goto Unimplemented;
     }
 
@@ -841,7 +841,7 @@ complex_richcompare(TyObject *v, TyObject *w, int op)
         goto Unimplemented;
     }
 
-    if (equal == (op == Ty_EQ))
+    if (equal == (op == Py_EQ))
          res = Ty_True;
     else
          res = Ty_False;
@@ -849,7 +849,7 @@ complex_richcompare(TyObject *v, TyObject *w, int op)
     return Ty_NewRef(res);
 
 Unimplemented:
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 /*[clinic input]
@@ -1335,9 +1335,9 @@ static TyMethodDef complex_methods[] = {
 };
 
 static TyMemberDef complex_members[] = {
-    {"real", Ty_T_DOUBLE, offsetof(PyComplexObject, cval.real), Ty_READONLY,
+    {"real", Ty_T_DOUBLE, offsetof(PyComplexObject, cval.real), Py_READONLY,
      "the real part of a complex number"},
-    {"imag", Ty_T_DOUBLE, offsetof(PyComplexObject, cval.imag), Ty_READONLY,
+    {"imag", Ty_T_DOUBLE, offsetof(PyComplexObject, cval.imag), Py_READONLY,
      "the imaginary part of a complex number"},
     {0},
 };

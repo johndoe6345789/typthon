@@ -3,21 +3,21 @@
 
 
 static TyObject *
-complex_check(TyObject *Ty_UNUSED(module), TyObject *obj)
+complex_check(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyComplex_Check(obj));
 }
 
 static TyObject *
-complex_checkexact(TyObject *Ty_UNUSED(module), TyObject *obj)
+complex_checkexact(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyComplex_CheckExact(obj));
 }
 
 static TyObject *
-complex_fromdoubles(TyObject *Ty_UNUSED(module), TyObject *args)
+complex_fromdoubles(TyObject *Py_UNUSED(module), TyObject *args)
 {
     double real, imag;
 
@@ -29,7 +29,7 @@ complex_fromdoubles(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-complex_realasdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
+complex_realasdouble(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     double real;
 
@@ -44,7 +44,7 @@ complex_realasdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
 }
 
 static TyObject *
-complex_imagasdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
+complex_imagasdouble(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     double imag;
 

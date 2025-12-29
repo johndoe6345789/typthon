@@ -324,7 +324,7 @@ static TyObject *
 _testcapi_raise_memoryerror_impl(TyObject *module);
 
 static TyObject *
-_testcapi_raise_memoryerror(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_testcapi_raise_memoryerror(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _testcapi_raise_memoryerror_impl(module);
 }

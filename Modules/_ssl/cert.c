@@ -202,17 +202,17 @@ certificate_richcompare(TyObject *lhs, TyObject *rhs, int op)
     _sslmodulestate *state = get_state_cert(self);
 
     if (Ty_TYPE(rhs) != state->PySSLCertificate_Type) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     /* only support == and != */
-    if ((op != Ty_EQ) && (op != Ty_NE)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+    if ((op != Py_EQ) && (op != Py_NE)) {
+        Py_RETURN_NOTIMPLEMENTED;
     }
     cmp = X509_cmp(self->cert, ((PySSLCertificate*)rhs)->cert);
-    if (((op == Ty_EQ) && (cmp == 0)) || ((op == Ty_NE) && (cmp != 0))) {
-        Ty_RETURN_TRUE;
+    if (((op == Py_EQ) && (cmp == 0)) || ((op == Py_NE) && (cmp != 0))) {
+        Py_RETURN_TRUE;
     } else {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 }
 

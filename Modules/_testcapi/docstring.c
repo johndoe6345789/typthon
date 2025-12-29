@@ -59,9 +59,9 @@ PyDoc_STRVAR(docstring_with_signature_with_defaults,
 
 /* This is here to provide a docstring for test_descr. */
 static TyObject *
-test_with_docstring(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_with_docstring(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef test_methods[] = {

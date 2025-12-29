@@ -76,7 +76,7 @@ static TyObject *
 PyCursesCheckERR(_curses_panel_state *state, int code, const char *fname)
 {
     if (code != ERR) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     else {
         if (fname == NULL) {
@@ -318,7 +318,7 @@ _curses_panel_panel_above_impl(PyCursesPanelObject *self)
 
     if (pan == NULL) {          /* valid output, it means the calling panel
                                    is on top of the stack */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     po = find_po(pan);
     if (po == NULL) {
@@ -348,7 +348,7 @@ _curses_panel_panel_below_impl(PyCursesPanelObject *self)
 
     if (pan == NULL) {          /* valid output, it means the calling panel
                                    is on the bottom of the stack */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     po = find_po(pan);
     if (po == NULL) {
@@ -370,9 +370,9 @@ _curses_panel_panel_hidden_impl(PyCursesPanelObject *self)
 /*[clinic end generated code: output=66eebd1ab4501a71 input=453d4b4fce25e21a]*/
 {
     if (panel_hidden(self->pan))
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     else
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 }
 
 /*[clinic input]
@@ -439,7 +439,7 @@ _curses_panel_panel_replace_impl(PyCursesPanelObject *self,
         return NULL;
     }
     Ty_SETREF(po->wo, (PyCursesWindowObject*)Ty_NewRef(win));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -555,7 +555,7 @@ _curses_panel_bottom_panel_impl(TyObject *module)
 
     if (pan == NULL) {          /* valid output, it means
                                    there's no panel at all */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     po = find_po(pan);
     if (po == NULL) {
@@ -613,7 +613,7 @@ _curses_panel_top_panel_impl(TyObject *module)
 
     if (pan == NULL) {          /* valid output, it means
                                    there's no panel at all */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     po = find_po(pan);
     if (po == NULL) {
@@ -638,7 +638,7 @@ _curses_panel_update_panels_impl(TyObject *module)
 {
     PyCursesInitialised;
     update_panels();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* List of functions defined in the module */

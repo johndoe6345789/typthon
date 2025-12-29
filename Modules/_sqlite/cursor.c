@@ -1150,7 +1150,7 @@ pysqlite_cursor_fetchone_impl(pysqlite_Cursor *self)
 
     row = pysqlite_cursor_iternext((TyObject *)self);
     if (!row && !TyErr_Occurred()) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     return row;
@@ -1245,7 +1245,7 @@ static TyObject *
 pysqlite_cursor_setinputsizes_impl(pysqlite_Cursor *self, TyObject *sizes)
 /*[clinic end generated code: output=a06c12790bd05f2e input=de7950a3aec79bdf]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1263,7 +1263,7 @@ pysqlite_cursor_setoutputsize_impl(pysqlite_Cursor *self, TyObject *size,
                                    TyObject *column)
 /*[clinic end generated code: output=018d7e9129d45efe input=607a6bece8bbb273]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1298,7 +1298,7 @@ pysqlite_cursor_close_impl(pysqlite_Cursor *self)
 
     self->closed = 1;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef cursor_methods[] = {
@@ -1316,13 +1316,13 @@ static TyMethodDef cursor_methods[] = {
 
 static struct TyMemberDef cursor_members[] =
 {
-    {"connection", _Ty_T_OBJECT, offsetof(pysqlite_Cursor, connection), Ty_READONLY},
-    {"description", _Ty_T_OBJECT, offsetof(pysqlite_Cursor, description), Ty_READONLY},
+    {"connection", _Ty_T_OBJECT, offsetof(pysqlite_Cursor, connection), Py_READONLY},
+    {"description", _Ty_T_OBJECT, offsetof(pysqlite_Cursor, description), Py_READONLY},
     {"arraysize", Ty_T_INT, offsetof(pysqlite_Cursor, arraysize), 0},
-    {"lastrowid", _Ty_T_OBJECT, offsetof(pysqlite_Cursor, lastrowid), Ty_READONLY},
-    {"rowcount", Ty_T_LONG, offsetof(pysqlite_Cursor, rowcount), Ty_READONLY},
+    {"lastrowid", _Ty_T_OBJECT, offsetof(pysqlite_Cursor, lastrowid), Py_READONLY},
+    {"rowcount", Ty_T_LONG, offsetof(pysqlite_Cursor, rowcount), Py_READONLY},
     {"row_factory", _Ty_T_OBJECT, offsetof(pysqlite_Cursor, row_factory), 0},
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(pysqlite_Cursor, in_weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(pysqlite_Cursor, in_weakreflist), Py_READONLY},
     {NULL}
 };
 

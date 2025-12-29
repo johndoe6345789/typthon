@@ -116,7 +116,7 @@ function_setvectorcall(TyObject *self, TyObject *func)
         return NULL;
     }
     TyFunction_SetVectorcall((PyFunctionObject *)func, (vectorcallfunc)override_vectorcall);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -190,7 +190,7 @@ _testcapi_VectorCallClass_set_vectorcall_impl(TyObject *self,
     }
     *(vectorcallfunc*)((char*)self + type->tp_vectorcall_offset) = (
         VectorCallClass_vectorcall);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 TyMethodDef VectorCallClass_methods[] = {
@@ -199,7 +199,7 @@ TyMethodDef VectorCallClass_methods[] = {
 };
 
 TyMemberDef VectorCallClass_members[] = {
-    {"__vectorcalloffset__", Ty_T_PYSSIZET, 0/* set later */, Ty_READONLY},
+    {"__vectorcalloffset__", Ty_T_PYSSIZET, 0/* set later */, Py_READONLY},
     {NULL}
 };
 

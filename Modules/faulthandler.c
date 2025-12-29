@@ -278,7 +278,7 @@ faulthandler_dump_traceback_py(TyObject *self,
     if (TyErr_CheckSignals())
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -306,7 +306,7 @@ faulthandler_dump_c_stack_py(TyObject *self,
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static void
@@ -601,7 +601,7 @@ faulthandler_py_enable(TyObject *self, TyObject *args, TyObject *kwargs)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static void
@@ -625,17 +625,17 @@ faulthandler_disable(void)
 }
 
 static TyObject*
-faulthandler_disable_py(TyObject *self, TyObject *Ty_UNUSED(ignored))
+faulthandler_disable_py(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     if (!fatal_error.enabled) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     faulthandler_disable();
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 static TyObject*
-faulthandler_is_enabled(TyObject *self, TyObject *Ty_UNUSED(ignored))
+faulthandler_is_enabled(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return TyBool_FromLong(fatal_error.enabled);
 }
@@ -831,15 +831,15 @@ faulthandler_dump_traceback_later(TyObject *self,
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject*
 faulthandler_cancel_dump_traceback_later_py(TyObject *self,
-                                            TyObject *Ty_UNUSED(ignored))
+                                            TyObject *Py_UNUSED(ignored))
 {
     cancel_dump_traceback_later();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1001,7 +1001,7 @@ faulthandler_register_py(TyObject *self,
     user->interp = TyThreadState_GetInterpreter(tstate);
     user->enabled = 1;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -1034,7 +1034,7 @@ faulthandler_unregister_py(TyObject *self, TyObject *args)
         return NULL;
 
     if (user_signals == NULL)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     user = &user_signals[signum];
     change = faulthandler_unregister(user, signum);
@@ -1121,7 +1121,7 @@ faulthandler_sigsegv(TyObject *self, TyObject *args)
     } else {
         faulthandler_raise_sigsegv();
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static void _Ty_NO_RETURN
@@ -1157,11 +1157,11 @@ faulthandler_fatal_error_c_thread(TyObject *self, TyObject *args)
     PyThread_release_lock(lock);
     PyThread_free_lock(lock);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject* _Ty_NO_SANITIZE_UNDEFINED
-faulthandler_sigfpe(TyObject *self, TyObject *Ty_UNUSED(dummy))
+faulthandler_sigfpe(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     faulthandler_suppress_crash_report();
 
@@ -1184,7 +1184,7 @@ faulthandler_sigabrt(TyObject *self, TyObject *args)
 {
     faulthandler_suppress_crash_report();
     abort();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #if defined(FAULTHANDLER_USE_ALT_STACK)
@@ -1208,7 +1208,7 @@ stack_overflow(uintptr_t min_sp, uintptr_t max_sp, size_t *depth)
 }
 
 static TyObject *
-faulthandler_stack_overflow(TyObject *self, TyObject *Ty_UNUSED(ignored))
+faulthandler_stack_overflow(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     size_t depth, size;
     uintptr_t sp = (uintptr_t)&depth;
@@ -1268,7 +1268,7 @@ faulthandler_raise_exception(TyObject *self, TyObject *args)
         return NULL;
     faulthandler_suppress_crash_report();
     RaiseException(code, flags, 0, NULL);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 

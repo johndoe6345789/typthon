@@ -35,7 +35,7 @@ typedef struct {
     Ty_ssize_t ob_array[1];       /* shape, strides, suboffsets */
 } PyMemoryViewObject;
 
-#define _PyMemoryView_CAST(op) _Ty_CAST(PyMemoryViewObject*, op)
+#define _PyMemoryView_CAST(op) _Py_CAST(PyMemoryViewObject*, op)
 
 /* Get a pointer to the memoryview's private copy of the exporter's buffer. */
 static inline Ty_buffer* TyMemoryView_GET_BUFFER(TyObject *op) {

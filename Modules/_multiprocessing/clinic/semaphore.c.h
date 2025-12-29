@@ -104,7 +104,7 @@ static TyObject *
 _multiprocessing_SemLock_release_impl(SemLockObject *self);
 
 static TyObject *
-_multiprocessing_SemLock_release(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multiprocessing_SemLock_release(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -212,7 +212,7 @@ static TyObject *
 _multiprocessing_SemLock_release_impl(SemLockObject *self);
 
 static TyObject *
-_multiprocessing_SemLock_release(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multiprocessing_SemLock_release(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -364,7 +364,7 @@ static TyObject *
 _multiprocessing_SemLock__count_impl(SemLockObject *self);
 
 static TyObject *
-_multiprocessing_SemLock__count(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multiprocessing_SemLock__count(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -392,7 +392,7 @@ static TyObject *
 _multiprocessing_SemLock__is_mine_impl(SemLockObject *self);
 
 static TyObject *
-_multiprocessing_SemLock__is_mine(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multiprocessing_SemLock__is_mine(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _multiprocessing_SemLock__is_mine_impl((SemLockObject *)self);
 }
@@ -414,7 +414,7 @@ static TyObject *
 _multiprocessing_SemLock__get_value_impl(SemLockObject *self);
 
 static TyObject *
-_multiprocessing_SemLock__get_value(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multiprocessing_SemLock__get_value(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _multiprocessing_SemLock__get_value_impl((SemLockObject *)self);
 }
@@ -436,7 +436,7 @@ static TyObject *
 _multiprocessing_SemLock__is_zero_impl(SemLockObject *self);
 
 static TyObject *
-_multiprocessing_SemLock__is_zero(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multiprocessing_SemLock__is_zero(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _multiprocessing_SemLock__is_zero_impl((SemLockObject *)self);
 }
@@ -458,7 +458,7 @@ static TyObject *
 _multiprocessing_SemLock__after_fork_impl(SemLockObject *self);
 
 static TyObject *
-_multiprocessing_SemLock__after_fork(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multiprocessing_SemLock__after_fork(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _multiprocessing_SemLock__after_fork_impl((SemLockObject *)self);
 }
@@ -480,7 +480,7 @@ static TyObject *
 _multiprocessing_SemLock___enter___impl(SemLockObject *self);
 
 static TyObject *
-_multiprocessing_SemLock___enter__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multiprocessing_SemLock___enter__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

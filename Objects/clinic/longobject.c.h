@@ -84,7 +84,7 @@ static TyObject *
 int___getnewargs___impl(TyObject *self);
 
 static TyObject *
-int___getnewargs__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+int___getnewargs__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return int___getnewargs___impl(self);
 }
@@ -165,7 +165,7 @@ static Ty_ssize_t
 int___sizeof___impl(TyObject *self);
 
 static TyObject *
-int___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+int___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     Ty_ssize_t _return_value;
@@ -198,7 +198,7 @@ static TyObject *
 int_bit_length_impl(TyObject *self);
 
 static TyObject *
-int_bit_length(TyObject *self, TyObject *Ty_UNUSED(ignored))
+int_bit_length(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return int_bit_length_impl(self);
 }
@@ -223,7 +223,7 @@ static TyObject *
 int_bit_count_impl(TyObject *self);
 
 static TyObject *
-int_bit_count(TyObject *self, TyObject *Ty_UNUSED(ignored))
+int_bit_count(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return int_bit_count_impl(self);
 }
@@ -250,7 +250,7 @@ static TyObject *
 int_as_integer_ratio_impl(TyObject *self);
 
 static TyObject *
-int_as_integer_ratio(TyObject *self, TyObject *Ty_UNUSED(ignored))
+int_as_integer_ratio(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return int_as_integer_ratio_impl(self);
 }
@@ -481,7 +481,7 @@ static TyObject *
 int_is_integer_impl(TyObject *self);
 
 static TyObject *
-int_is_integer(TyObject *self, TyObject *Ty_UNUSED(ignored))
+int_is_integer(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return int_is_integer_impl(self);
 }

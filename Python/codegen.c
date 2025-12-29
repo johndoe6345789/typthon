@@ -96,12 +96,12 @@ typedef _PyCompile_FBlockInfo fblockinfo;
     RETURN_IF_ERROR(_PyInstructionSequence_UseLabel(INSTR_SEQUENCE(C), (LBL).id))
 
 static const int compare_masks[] = {
-    [Ty_LT] = COMPARISON_LESS_THAN,
-    [Ty_LE] = COMPARISON_LESS_THAN | COMPARISON_EQUALS,
-    [Ty_EQ] = COMPARISON_EQUALS,
-    [Ty_NE] = COMPARISON_NOT_EQUALS,
-    [Ty_GT] = COMPARISON_GREATER_THAN,
-    [Ty_GE] = COMPARISON_GREATER_THAN | COMPARISON_EQUALS,
+    [Py_LT] = COMPARISON_LESS_THAN,
+    [Py_LE] = COMPARISON_LESS_THAN | COMPARISON_EQUALS,
+    [Py_EQ] = COMPARISON_EQUALS,
+    [Py_NE] = COMPARISON_NOT_EQUALS,
+    [Py_GT] = COMPARISON_GREATER_THAN,
+    [Py_GE] = COMPARISON_GREATER_THAN | COMPARISON_EQUALS,
 };
 
 
@@ -678,7 +678,7 @@ codegen_setup_annotations_scope(compiler *c, location loc,
     _Ty_DECLARE_STR(format, ".format");
     ADDOP_I(c, loc, LOAD_FAST, 0);
     ADDOP_LOAD_CONST(c, loc, value_with_fake_globals);
-    ADDOP_I(c, loc, COMPARE_OP, (Ty_GT << 5) | compare_masks[Ty_GT]);
+    ADDOP_I(c, loc, COMPARE_OP, (Py_GT << 5) | compare_masks[Py_GT]);
     NEW_JUMP_TARGET_LABEL(c, body);
     ADDOP_JUMP(c, loc, POP_JUMP_IF_FALSE, body);
     ADDOP_I(c, loc, LOAD_COMMON_CONSTANT, CONSTANT_NOTIMPLEMENTEDERROR);
@@ -1840,22 +1840,22 @@ codegen_addcompare(compiler *c, location loc, cmpop_ty op)
     int cmp;
     switch (op) {
     case Eq:
-        cmp = Ty_EQ;
+        cmp = Py_EQ;
         break;
     case NotEq:
-        cmp = Ty_NE;
+        cmp = Py_NE;
         break;
     case Lt:
-        cmp = Ty_LT;
+        cmp = Py_LT;
         break;
     case LtE:
-        cmp = Ty_LE;
+        cmp = Py_LE;
         break;
     case Gt:
-        cmp = Ty_GT;
+        cmp = Py_GT;
         break;
     case GtE:
-        cmp = Ty_GE;
+        cmp = Py_GE;
         break;
     case Is:
         ADDOP_I(c, loc, IS_OP, 0);

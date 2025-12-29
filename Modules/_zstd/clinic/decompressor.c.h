@@ -111,7 +111,7 @@ static TyObject *
 _zstd_ZstdDecompressor_unused_data_get_impl(ZstdDecompressor *self);
 
 static TyObject *
-_zstd_ZstdDecompressor_unused_data_get(TyObject *self, void *Ty_UNUSED(context))
+_zstd_ZstdDecompressor_unused_data_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _zstd_ZstdDecompressor_unused_data_get_impl((ZstdDecompressor *)self);
 }

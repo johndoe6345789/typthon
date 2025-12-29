@@ -4,7 +4,7 @@
 
 /* Test TyBytes_Check() */
 static TyObject *
-bytes_check(TyObject *Ty_UNUSED(module), TyObject *obj)
+bytes_check(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyBytes_Check(obj));
@@ -12,7 +12,7 @@ bytes_check(TyObject *Ty_UNUSED(module), TyObject *obj)
 
 /* Test TyBytes_CheckExact() */
 static TyObject *
-bytes_checkexact(TyObject *Ty_UNUSED(module), TyObject *obj)
+bytes_checkexact(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyBytes_CheckExact(obj));
@@ -20,7 +20,7 @@ bytes_checkexact(TyObject *Ty_UNUSED(module), TyObject *obj)
 
 /* Test TyBytes_FromStringAndSize() */
 static TyObject *
-bytes_fromstringandsize(TyObject *Ty_UNUSED(module), TyObject *args)
+bytes_fromstringandsize(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *s;
     Ty_ssize_t bsize;
@@ -38,7 +38,7 @@ bytes_fromstringandsize(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyBytes_FromString() */
 static TyObject *
-bytes_fromstring(TyObject *Ty_UNUSED(module), TyObject *arg)
+bytes_fromstring(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     const char *s;
     Ty_ssize_t size;
@@ -51,7 +51,7 @@ bytes_fromstring(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test TyBytes_FromObject() */
 static TyObject *
-bytes_fromobject(TyObject *Ty_UNUSED(module), TyObject *arg)
+bytes_fromobject(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
     return TyBytes_FromObject(arg);
@@ -59,7 +59,7 @@ bytes_fromobject(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test TyBytes_Size() */
 static TyObject *
-bytes_size(TyObject *Ty_UNUSED(module), TyObject *arg)
+bytes_size(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
     RETURN_SIZE(TyBytes_Size(arg));
@@ -67,7 +67,7 @@ bytes_size(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test TyUnicode_AsString() */
 static TyObject *
-bytes_asstring(TyObject *Ty_UNUSED(module), TyObject *args)
+bytes_asstring(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t buflen;
@@ -86,7 +86,7 @@ bytes_asstring(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyBytes_AsStringAndSize() */
 static TyObject *
-bytes_asstringandsize(TyObject *Ty_UNUSED(module), TyObject *args)
+bytes_asstringandsize(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t buflen;
@@ -110,7 +110,7 @@ bytes_asstringandsize(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-bytes_asstringandsize_null(TyObject *Ty_UNUSED(module), TyObject *args)
+bytes_asstringandsize_null(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t buflen;
@@ -125,7 +125,7 @@ bytes_asstringandsize_null(TyObject *Ty_UNUSED(module), TyObject *args)
     }
 
     if (s == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     else {
         return TyBytes_FromStringAndSize(s, buflen);
@@ -134,7 +134,7 @@ bytes_asstringandsize_null(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyBytes_Repr() */
 static TyObject *
-bytes_repr(TyObject *Ty_UNUSED(module), TyObject *args)
+bytes_repr(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     int smartquotes;
@@ -147,7 +147,7 @@ bytes_repr(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test TyBytes_Concat() */
 static TyObject *
-bytes_concat(TyObject *Ty_UNUSED(module), TyObject *args)
+bytes_concat(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *left, *right;
     int new = 0;
@@ -171,14 +171,14 @@ bytes_concat(TyObject *Ty_UNUSED(module), TyObject *args)
     }
     TyBytes_Concat(&left, right);
     if (left == NULL && !TyErr_Occurred()) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return left;
 }
 
 /* Test TyBytes_ConcatAndDel() */
 static TyObject *
-bytes_concatanddel(TyObject *Ty_UNUSED(module), TyObject *args)
+bytes_concatanddel(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *left, *right;
     int new = 0;
@@ -203,14 +203,14 @@ bytes_concatanddel(TyObject *Ty_UNUSED(module), TyObject *args)
     Ty_XINCREF(right);
     TyBytes_ConcatAndDel(&left, right);
     if (left == NULL && !TyErr_Occurred()) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return left;
 }
 
 /* Test TyBytes_DecodeEscape() */
 static TyObject *
-bytes_decodeescape(TyObject *Ty_UNUSED(module), TyObject *args)
+bytes_decodeescape(TyObject *Py_UNUSED(module), TyObject *args)
 {
     const char *s;
     Ty_ssize_t bsize;

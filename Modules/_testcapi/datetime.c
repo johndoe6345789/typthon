@@ -11,7 +11,7 @@ test_datetime_capi(TyObject *self, TyObject *args)
     if (PyDateTimeAPI) {
         if (test_run_counter) {
             /* Probably regrtest.py -R */
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         else {
             TyErr_SetString(TyExc_AssertionError,
@@ -32,7 +32,7 @@ test_datetime_capi(TyObject *self, TyObject *args)
     assert(!TyType_HasFeature(PyDateTimeAPI->DateTimeType, Ty_TPFLAGS_HEAPTYPE));
     assert(!TyType_HasFeature(PyDateTimeAPI->DeltaType, Ty_TPFLAGS_HEAPTYPE));
     assert(!TyType_HasFeature(PyDateTimeAPI->TZInfoType, Ty_TPFLAGS_HEAPTYPE));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Functions exposing the C API type checking for testing */
@@ -45,9 +45,9 @@ do {                                                            \
     }                                                           \
     int rv = exact?exact_method(obj):check_method(obj);         \
     if (rv) {                                                   \
-        Ty_RETURN_TRUE;                                         \
+        Py_RETURN_TRUE;                                         \
     }                                                           \
-    Ty_RETURN_FALSE;                                            \
+    Py_RETURN_FALSE;                                            \
 } while (0)                                                     \
 
 static TyObject *

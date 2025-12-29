@@ -23,7 +23,7 @@ static TyObject *
 _csv_list_dialects_impl(TyObject *module);
 
 static TyObject *
-_csv_list_dialects(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_csv_list_dialects(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _csv_list_dialects_impl(module);
 }

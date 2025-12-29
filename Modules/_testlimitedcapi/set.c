@@ -121,7 +121,7 @@ set_clear(TyObject *self, TyObject *obj)
 }
 
 static TyObject *
-test_frozenset_add_in_capi(TyObject *self, TyObject *Ty_UNUSED(obj))
+test_frozenset_add_in_capi(TyObject *self, TyObject *Py_UNUSED(obj))
 {
     // Test that `frozenset` can be used with `TySet_Add`,
     // when frozenset is just created in CAPI.
@@ -145,7 +145,7 @@ test_frozenset_add_in_capi(TyObject *self, TyObject *Ty_UNUSED(obj))
     }
     Ty_DECREF(fs);
     Ty_DECREF(num);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 unexpected:
     TyErr_SetString(TyExc_ValueError, "set does not contain expected value");

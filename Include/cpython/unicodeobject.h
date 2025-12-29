@@ -186,13 +186,13 @@ typedef struct {
 
 #define _PyASCIIObject_CAST(op) \
     (assert(TyUnicode_Check(op)), \
-     _Ty_CAST(PyASCIIObject*, (op)))
+     _Py_CAST(PyASCIIObject*, (op)))
 #define _PyCompactUnicodeObject_CAST(op) \
     (assert(TyUnicode_Check(op)), \
-     _Ty_CAST(PyCompactUnicodeObject*, (op)))
+     _Py_CAST(PyCompactUnicodeObject*, (op)))
 #define _PyUnicodeObject_CAST(op) \
     (assert(TyUnicode_Check(op)), \
-     _Ty_CAST(PyUnicodeObject*, (op)))
+     _Py_CAST(PyUnicodeObject*, (op)))
 
 
 /* --- Flexible String Representation Helper Macros (PEP 393) -------------- */
@@ -216,7 +216,7 @@ static inline unsigned int TyUnicode_CHECK_INTERNED(TyObject *op) {
 #define TyUnicode_CHECK_INTERNED(op) TyUnicode_CHECK_INTERNED(_TyObject_CAST(op))
 
 /* For backward compatibility. Soft-deprecated. */
-static inline unsigned int TyUnicode_IS_READY(TyObject* Ty_UNUSED(op)) {
+static inline unsigned int TyUnicode_IS_READY(TyObject* Py_UNUSED(op)) {
     return 1;
 }
 #define TyUnicode_IS_READY(op) TyUnicode_IS_READY(_TyObject_CAST(op))
@@ -257,7 +257,7 @@ PyAPI_FUNC(int) TyUnicode_KIND(TyObject *op);
 // new compiler warnings on "kind < TyUnicode_KIND(str)" (compare signed and
 // unsigned numbers) where kind type is an int or on
 // "unsigned int kind = TyUnicode_KIND(str)" (cast signed to unsigned).
-#define TyUnicode_KIND(op) _Ty_RVALUE(_PyASCIIObject_CAST(op)->state.kind)
+#define TyUnicode_KIND(op) _Py_RVALUE(_PyASCIIObject_CAST(op)->state.kind)
 
 /* Return a void pointer to the raw unicode buffer. */
 static inline void* _TyUnicode_COMPACT_DATA(TyObject *op) {
@@ -324,7 +324,7 @@ static inline void TyUnicode_WRITE(int kind, void *data,
     }
 }
 #define TyUnicode_WRITE(kind, data, index, value) \
-    TyUnicode_WRITE(_Ty_STATIC_CAST(int, kind), _Ty_CAST(void*, data), \
+    TyUnicode_WRITE(_Ty_STATIC_CAST(int, kind), _Py_CAST(void*, data), \
                     (index), _Ty_STATIC_CAST(Ty_UCS4, value))
 
 /* Read a code point from the string's canonical representation.  No checks
@@ -408,7 +408,7 @@ PyAPI_FUNC(TyObject*) TyUnicode_New(
     );
 
 /* For backward compatibility. Soft-deprecated. */
-static inline int TyUnicode_READY(TyObject* Ty_UNUSED(op))
+static inline int TyUnicode_READY(TyObject* Py_UNUSED(op))
 {
     return 0;
 }

@@ -3,28 +3,28 @@
 
 
 static TyObject *
-float_check(TyObject *Ty_UNUSED(module), TyObject *obj)
+float_check(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyFloat_Check(obj));
 }
 
 static TyObject *
-float_checkexact(TyObject *Ty_UNUSED(module), TyObject *obj)
+float_checkexact(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyFloat_CheckExact(obj));
 }
 
 static TyObject *
-float_fromstring(TyObject *Ty_UNUSED(module), TyObject *obj)
+float_fromstring(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyFloat_FromString(obj);
 }
 
 static TyObject *
-float_fromdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
+float_fromdouble(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     double d;
 
@@ -36,7 +36,7 @@ float_fromdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
 }
 
 static TyObject *
-float_asdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
+float_asdouble(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     double d;
 
@@ -50,19 +50,19 @@ float_asdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
 }
 
 static TyObject *
-float_getinfo(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(arg))
+float_getinfo(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(arg))
 {
     return TyFloat_GetInfo();
 }
 
 static TyObject *
-float_getmax(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(arg))
+float_getmax(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(arg))
 {
     return TyFloat_FromDouble(TyFloat_GetMax());
 }
 
 static TyObject *
-float_getmin(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(arg))
+float_getmin(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(arg))
 {
     return TyFloat_FromDouble(TyFloat_GetMin());
 }

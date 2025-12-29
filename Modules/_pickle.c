@@ -4573,7 +4573,7 @@ save(PickleState *st, PicklerObject *self, TyObject *obj, int pers_save)
 static TyObject *
 persistent_id(TyObject *self, TyObject *obj)
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -4656,7 +4656,7 @@ _pickle_Pickler_clear_memo_impl(PicklerObject *self)
     if (self->memo)
         PyMemoTable_Clear(self->memo);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -4695,7 +4695,7 @@ _pickle_Pickler_dump_impl(PicklerObject *self, TyTypeObject *cls,
     if (_Pickler_FlushToFile(self) < 0)
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -4902,7 +4902,7 @@ _pickle_PicklerMemoProxy_clear_impl(PicklerMemoProxyObject *self)
 {
     if (self->pickler->memo)
         PyMemoTable_Clear(self->pickler->memo);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -5050,14 +5050,14 @@ PicklerMemoProxy_New(PicklerObject *pickler)
 /*****************************************************************************/
 
 static TyObject *
-Pickler_get_memo(TyObject *op, void *Ty_UNUSED(closure))
+Pickler_get_memo(TyObject *op, void *Py_UNUSED(closure))
 {
     PicklerObject *self = PicklerObject_CAST(op);
     return PicklerMemoProxy_New(self);
 }
 
 static int
-Pickler_set_memo(TyObject *op, TyObject *obj, void *Ty_UNUSED(closure))
+Pickler_set_memo(TyObject *op, TyObject *obj, void *Py_UNUSED(closure))
 {
     PyMemoTable *new_memo = NULL;
     PicklerObject *self = PicklerObject_CAST(op);
@@ -7401,7 +7401,7 @@ _pickle_UnpicklerMemoProxy_clear_impl(UnpicklerMemoProxyObject *self)
     self->unpickler->memo = _Unpickler_NewMemo(self->unpickler->memo_size);
     if (self->unpickler->memo == NULL)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -7545,14 +7545,14 @@ UnpicklerMemoProxy_New(UnpicklerObject *unpickler)
 
 
 static TyObject *
-Unpickler_get_memo(TyObject *op, void *Ty_UNUSED(closure))
+Unpickler_get_memo(TyObject *op, void *Py_UNUSED(closure))
 {
     UnpicklerObject *self = UnpicklerObject_CAST(op);
     return UnpicklerMemoProxy_New(self);
 }
 
 static int
-Unpickler_set_memo(TyObject *op, TyObject *obj, void *Ty_UNUSED(closure))
+Unpickler_set_memo(TyObject *op, TyObject *obj, void *Py_UNUSED(closure))
 {
     TyObject **new_memo;
     UnpicklerObject *self = UnpicklerObject_CAST(op);
@@ -7755,7 +7755,7 @@ _pickle_dump_impl(TyObject *module, TyObject *obj, TyObject *file,
         goto error;
 
     Ty_DECREF(pickler);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
   error:
     Ty_XDECREF(pickler);

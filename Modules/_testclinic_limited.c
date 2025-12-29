@@ -34,7 +34,7 @@ static TyObject *
 test_empty_function_impl(TyObject *module)
 /*[clinic end generated code: output=0f8aeb3ddced55cb input=0dd7048651ad4ae4]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

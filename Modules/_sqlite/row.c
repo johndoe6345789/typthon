@@ -109,7 +109,7 @@ pysqlite_row_item(TyObject *op, Ty_ssize_t idx)
 static int
 equal_ignore_case(TyObject *left, TyObject *right)
 {
-    int eq = PyObject_RichCompareBool(left, right, Ty_EQ);
+    int eq = PyObject_RichCompareBool(left, right, Py_EQ);
     if (eq) { /* equal or error */
         return eq;
     }
@@ -238,23 +238,23 @@ pysqlite_row_hash(TyObject *op)
 static TyObject *
 pysqlite_row_richcompare(TyObject *op, TyObject *opother, int opid)
 {
-    if (opid != Ty_EQ && opid != Ty_NE)
-        Ty_RETURN_NOTIMPLEMENTED;
+    if (opid != Py_EQ && opid != Py_NE)
+        Py_RETURN_NOTIMPLEMENTED;
 
     pysqlite_Row *self = _pysqlite_Row_CAST(op);
     pysqlite_state *state = pysqlite_get_state_by_type(Ty_TYPE(self));
     if (PyObject_TypeCheck(opother, state->RowType)) {
         pysqlite_Row *other = (pysqlite_Row *)opother;
-        int eq = PyObject_RichCompareBool(self->description, other->description, Ty_EQ);
+        int eq = PyObject_RichCompareBool(self->description, other->description, Py_EQ);
         if (eq < 0) {
             return NULL;
         }
         if (eq) {
             return PyObject_RichCompare(self->data, other->data, opid);
         }
-        return TyBool_FromLong(opid != Ty_EQ);
+        return TyBool_FromLong(opid != Py_EQ);
     }
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static TyMethodDef row_methods[] = {

@@ -62,7 +62,7 @@ static inline TyObject *
 PyObject_CallMethodNoArgs(TyObject *self, TyObject *name)
 {
     size_t nargsf = 1 | PY_VECTORCALL_ARGUMENTS_OFFSET;
-    return PyObject_VectorcallMethod(name, &self, nargsf, _Ty_NULL);
+    return PyObject_VectorcallMethod(name, &self, nargsf, _Py_NULL);
 }
 
 static inline TyObject *
@@ -71,7 +71,7 @@ PyObject_CallMethodOneArg(TyObject *self, TyObject *name, TyObject *arg)
     TyObject *args[2] = {self, arg};
     size_t nargsf = 2 | PY_VECTORCALL_ARGUMENTS_OFFSET;
     assert(arg != NULL);
-    return PyObject_VectorcallMethod(name, args, nargsf, _Ty_NULL);
+    return PyObject_VectorcallMethod(name, args, nargsf, _Py_NULL);
 }
 
 /* Guess the size of object 'o' using len(o) or o.__length_hint__().

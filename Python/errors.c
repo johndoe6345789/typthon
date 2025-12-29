@@ -1608,7 +1608,7 @@ _TyErr_WriteUnraisableDefaultHook(TyObject *args)
     if (write_unraisable_exc(tstate, exc_type, exc_value, exc_tb, err_msg, obj) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

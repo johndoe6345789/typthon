@@ -208,7 +208,7 @@ static TyType_Spec Str_Type_spec = {
 static TyObject *
 null_richcompare(TyObject *self, TyObject *other, int op)
 {
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static TyType_Slot Null_Type_slots[] = {

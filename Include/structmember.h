@@ -43,7 +43,7 @@ extern "C" {
 #define T_NONE      _Ty_T_NONE
 
 /* Flags */
-#define READONLY            Ty_READONLY
+#define READONLY            Py_READONLY
 #define PY_AUDIT_READ        Ty_AUDIT_READ
 #define READ_RESTRICTED     Ty_AUDIT_READ
 #define PY_WRITE_RESTRICTED _Ty_WRITE_RESTRICTED

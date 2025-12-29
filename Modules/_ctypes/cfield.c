@@ -301,14 +301,14 @@ PyCField_get(TyObject *op, TyObject *inst, TyObject *type)
 }
 
 static TyObject *
-PyCField_get_legacy_size(TyObject *self, void *Ty_UNUSED(closure))
+PyCField_get_legacy_size(TyObject *self, void *Py_UNUSED(closure))
 {
     CFieldObject *field = _CFieldObject_CAST(self);
     return TyLong_FromSsize_t(_pack_legacy_size(field));
 }
 
 static TyObject *
-PyCField_get_bit_size(TyObject *self, void *Ty_UNUSED(closure))
+PyCField_get_bit_size(TyObject *self, void *Py_UNUSED(closure))
 {
     CFieldObject *field = _CFieldObject_CAST(self);
     if (field->bitfield_size) {
@@ -340,13 +340,13 @@ finally:
 }
 
 static TyObject *
-PyCField_is_bitfield(TyObject *self, void *Ty_UNUSED(closure))
+PyCField_is_bitfield(TyObject *self, void *Py_UNUSED(closure))
 {
     return TyBool_FromLong(_CFieldObject_CAST(self)->bitfield_size);
 }
 
 static TyObject *
-PyCField_is_anonymous(TyObject *self, void *Ty_UNUSED(closure))
+PyCField_is_anonymous(TyObject *self, void *Py_UNUSED(closure))
 {
     return TyBool_FromLong(_CFieldObject_CAST(self)->anonymous);
 }
@@ -369,34 +369,34 @@ static TyMemberDef PyCField_members[] = {
     { "name",
         .type = Ty_T_OBJECT_EX,
         .offset = offsetof(CFieldObject, name),
-        .flags = Ty_READONLY,
+        .flags = Py_READONLY,
         .doc = PyDoc_STR("name of this field") },
     { "type",
         .type = Ty_T_OBJECT_EX,
         .offset = offsetof(CFieldObject, proto),
-        .flags = Ty_READONLY,
+        .flags = Py_READONLY,
         .doc = PyDoc_STR("type of this field") },
     { "offset",
         .type = Ty_T_PYSSIZET,
         .offset = offsetof(CFieldObject, byte_offset),
-        .flags = Ty_READONLY,
+        .flags = Py_READONLY,
         .doc = PyDoc_STR(
             "offset in bytes of this field (same as byte_offset)") },
     { "byte_offset",
         .type = Ty_T_PYSSIZET,
         .offset = offsetof(CFieldObject, byte_offset),
-        .flags = Ty_READONLY,
+        .flags = Py_READONLY,
         .doc = PyDoc_STR("offset in bytes of this field. "
                          "For bitfields: excludes bit_offset.") },
     { "byte_size",
         .type = Ty_T_PYSSIZET,
         .offset = offsetof(CFieldObject, byte_size),
-        .flags = Ty_READONLY,
+        .flags = Py_READONLY,
         .doc = PyDoc_STR("size of this field in bytes") },
     { "bit_offset",
         .type = Ty_T_UBYTE,
         .offset = offsetof(CFieldObject, bit_offset),
-        .flags = Ty_READONLY,
+        .flags = Py_READONLY,
         .doc = PyDoc_STR("additional offset in bits (relative to byte_offset);"
                          " zero for non-bitfields") },
     { NULL },
@@ -527,7 +527,7 @@ Ty_ssize_t NUM_BITS(Ty_ssize_t bitsize) {
 #ifdef _CTYPES_DEBUG_KEEP
 #define _RET(x) Ty_INCREF(x); return x
 #else
-#define _RET(X) Ty_RETURN_NONE
+#define _RET(X) Py_RETURN_NONE
 #endif
 
 /*****************************************************************
@@ -1202,7 +1202,7 @@ z_get(void *ptr, Ty_ssize_t size)
         return TyBytes_FromStringAndSize(*(char **)ptr,
                                          strlen(*(char **)ptr));
     } else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -1224,7 +1224,7 @@ Z_set(void *ptr, TyObject *value, Ty_ssize_t size)
 #else
         *(wchar_t **)ptr = (wchar_t *)TyLong_AsUnsignedLongMask(value);
 #endif
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (!TyUnicode_Check(value)) {
         TyErr_Format(TyExc_TypeError,
@@ -1255,7 +1255,7 @@ Z_get(void *ptr, Ty_ssize_t size)
     if (p) {
         return TyUnicode_FromWideChar(p, wcslen(p));
     } else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -1317,7 +1317,7 @@ X_get(void *ptr, Ty_ssize_t size)
         /* Hm, it seems NULL pointer and zero length string are the
            same in BSTR, see Don Box, p 81
         */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 #endif
@@ -1360,7 +1360,7 @@ P_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(void *)));
     if (*(void **)ptr == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyLong_FromVoidPtr(*(void **)ptr);
 }

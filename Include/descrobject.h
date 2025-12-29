@@ -80,7 +80,7 @@ struct TyMemberDef {
 #define _Ty_T_NONE     20 // Deprecated. Value is always None.
 
 /* Flags */
-#define Ty_READONLY            1
+#define Py_READONLY            1
 #define Ty_AUDIT_READ          2 // Added in 3.10, harmless no-op before that
 #define _Ty_WRITE_RESTRICTED   4 // Deprecated, no-op. Do not reuse the value.
 #define Ty_RELATIVE_OFFSET     8

@@ -48,7 +48,7 @@ static TyObject *
 _winapi_Overlapped_getbuffer_impl(OverlappedObject *self);
 
 static TyObject *
-_winapi_Overlapped_getbuffer(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_winapi_Overlapped_getbuffer(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _winapi_Overlapped_getbuffer_impl((OverlappedObject *)self);
 }
@@ -65,7 +65,7 @@ static TyObject *
 _winapi_Overlapped_cancel_impl(OverlappedObject *self);
 
 static TyObject *
-_winapi_Overlapped_cancel(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_winapi_Overlapped_cancel(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _winapi_Overlapped_cancel_impl((OverlappedObject *)self);
 }
@@ -214,7 +214,7 @@ _winapi_CreateEventW(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -264,7 +264,7 @@ _winapi_CreateFile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -311,7 +311,7 @@ _winapi_CreateFileMapping(TyObject *module, TyObject *const *args, Ty_ssize_t na
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -429,7 +429,7 @@ _winapi_CreateMutexW(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -480,7 +480,7 @@ _winapi_CreateNamedPipe(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -626,7 +626,7 @@ _winapi_DuplicateHandle(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -673,7 +673,7 @@ static HANDLE
 _winapi_GetCurrentProcess_impl(TyObject *module);
 
 static TyObject *
-_winapi_GetCurrentProcess(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_winapi_GetCurrentProcess(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     HANDLE _return_value;
@@ -683,7 +683,7 @@ _winapi_GetCurrentProcess(TyObject *module, TyObject *Ty_UNUSED(ignored))
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -735,7 +735,7 @@ static DWORD
 _winapi_GetLastError_impl(TyObject *module);
 
 static TyObject *
-_winapi_GetLastError(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_winapi_GetLastError(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     DWORD _return_value;
@@ -962,7 +962,7 @@ _winapi_GetStdHandle(TyObject *module, TyObject *arg)
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -983,7 +983,7 @@ static long
 _winapi_GetVersion_impl(TyObject *module);
 
 static TyObject *
-_winapi_GetVersion(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_winapi_GetVersion(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     long _return_value;
@@ -1120,7 +1120,7 @@ _winapi_OpenEventW(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -1188,7 +1188,7 @@ _winapi_OpenMutexW(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -1229,7 +1229,7 @@ _winapi_OpenFileMapping(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -1270,7 +1270,7 @@ _winapi_OpenProcess(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
         goto exit;
     }
     if (_return_value == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return_value = HANDLE_TO_PYNUM(_return_value);
 
@@ -1924,7 +1924,7 @@ static TyObject *
 _winapi_GetACP_impl(TyObject *module);
 
 static TyObject *
-_winapi_GetACP(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_winapi_GetACP(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _winapi_GetACP_impl(module);
 }

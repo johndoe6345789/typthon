@@ -47,7 +47,7 @@ function_get_defaults(TyObject *self, TyObject *func)
     } else if (TyErr_Occurred()) {
         return NULL;
     } else {
-        Ty_RETURN_NONE;  // This can happen when `defaults` are set to `None`
+        Py_RETURN_NONE;  // This can happen when `defaults` are set to `None`
     }
 }
 
@@ -62,7 +62,7 @@ function_set_defaults(TyObject *self, TyObject *args)
     int result = TyFunction_SetDefaults(func, defaults);
     if (result == -1)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -75,7 +75,7 @@ function_get_kw_defaults(TyObject *self, TyObject *func)
     } else if (TyErr_Occurred()) {
         return NULL;
     } else {
-        Ty_RETURN_NONE;  // This can happen when `kwdefaults` are set to `None`
+        Py_RETURN_NONE;  // This can happen when `kwdefaults` are set to `None`
     }
 }
 
@@ -90,7 +90,7 @@ function_set_kw_defaults(TyObject *self, TyObject *args)
     int result = TyFunction_SetKwDefaults(func, defaults);
     if (result == -1)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -103,7 +103,7 @@ function_get_closure(TyObject *self, TyObject *func)
     } else if (TyErr_Occurred()) {
         return NULL;
     } else {
-        Ty_RETURN_NONE;  // This can happen when `closure` is set to `None`
+        Py_RETURN_NONE;  // This can happen when `closure` is set to `None`
     }
 }
 
@@ -119,7 +119,7 @@ function_set_closure(TyObject *self, TyObject *args)
     if (result == -1) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

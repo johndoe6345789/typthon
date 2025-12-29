@@ -78,7 +78,7 @@ _testcapi_exception_print_impl(TyObject *module, TyObject *exc, int legacy)
     else {
         TyErr_DisplayException(exc);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -235,7 +235,7 @@ _testcapi_fatal_error_impl(TyObject *module, const char *message,
         Ty_FatalError(message);
     }
     // Ty_FatalError() does not return, but exits the process.
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -301,11 +301,11 @@ _testcapi_traceback_print_impl(TyObject *module, TyObject *traceback,
     if (PyTraceBack_Print(traceback, file) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-err_writeunraisable(TyObject *Ty_UNUSED(module), TyObject *args)
+err_writeunraisable(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *exc, *obj;
     if (!TyArg_ParseTuple(args, "OO", &exc, &obj)) {
@@ -317,11 +317,11 @@ err_writeunraisable(TyObject *Ty_UNUSED(module), TyObject *args)
         TyErr_SetRaisedException(Ty_NewRef(exc));
     }
     TyErr_WriteUnraisable(obj);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-err_formatunraisable(TyObject *Ty_UNUSED(module), TyObject *args)
+err_formatunraisable(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *exc;
     const char *fmt;
@@ -341,7 +341,7 @@ err_formatunraisable(TyObject *Ty_UNUSED(module), TyObject *args)
     TyErr_FormatUnraisable(fmt,
             objs[0], objs[1], objs[2], objs[3], objs[4],
             objs[5], objs[6], objs[7], objs[8], objs[9]);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -362,7 +362,7 @@ _testcapi_unstable_exc_prep_reraise_star_impl(TyObject *module,
 
 /* Test PyUnicodeEncodeError_GetStart */
 static TyObject *
-unicode_encode_get_start(TyObject *Ty_UNUSED(module), TyObject *arg)
+unicode_encode_get_start(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     Ty_ssize_t start;
     if (PyUnicodeEncodeError_GetStart(arg, &start) < 0) {
@@ -373,7 +373,7 @@ unicode_encode_get_start(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test PyUnicodeDecodeError_GetStart */
 static TyObject *
-unicode_decode_get_start(TyObject *Ty_UNUSED(module), TyObject *arg)
+unicode_decode_get_start(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     Ty_ssize_t start;
     if (PyUnicodeDecodeError_GetStart(arg, &start) < 0) {
@@ -384,7 +384,7 @@ unicode_decode_get_start(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test PyUnicodeTranslateError_GetStart */
 static TyObject *
-unicode_translate_get_start(TyObject *Ty_UNUSED(module), TyObject *arg)
+unicode_translate_get_start(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     Ty_ssize_t start;
     if (PyUnicodeTranslateError_GetStart(arg, &start) < 0) {
@@ -395,7 +395,7 @@ unicode_translate_get_start(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test PyUnicodeEncodeError_SetStart */
 static TyObject *
-unicode_encode_set_start(TyObject *Ty_UNUSED(module), TyObject *args)
+unicode_encode_set_start(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *exc;
     Ty_ssize_t start;
@@ -405,12 +405,12 @@ unicode_encode_set_start(TyObject *Ty_UNUSED(module), TyObject *args)
     if (PyUnicodeEncodeError_SetStart(exc, start) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Test PyUnicodeDecodeError_SetStart */
 static TyObject *
-unicode_decode_set_start(TyObject *Ty_UNUSED(module), TyObject *args)
+unicode_decode_set_start(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *exc;
     Ty_ssize_t start;
@@ -420,12 +420,12 @@ unicode_decode_set_start(TyObject *Ty_UNUSED(module), TyObject *args)
     if (PyUnicodeDecodeError_SetStart(exc, start) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Test PyUnicodeTranslateError_SetStart */
 static TyObject *
-unicode_translate_set_start(TyObject *Ty_UNUSED(module), TyObject *args)
+unicode_translate_set_start(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *exc;
     Ty_ssize_t start;
@@ -435,12 +435,12 @@ unicode_translate_set_start(TyObject *Ty_UNUSED(module), TyObject *args)
     if (PyUnicodeTranslateError_SetStart(exc, start) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Test PyUnicodeEncodeError_GetEnd */
 static TyObject *
-unicode_encode_get_end(TyObject *Ty_UNUSED(module), TyObject *arg)
+unicode_encode_get_end(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     Ty_ssize_t end;
     if (PyUnicodeEncodeError_GetEnd(arg, &end) < 0) {
@@ -451,7 +451,7 @@ unicode_encode_get_end(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test PyUnicodeDecodeError_GetEnd */
 static TyObject *
-unicode_decode_get_end(TyObject *Ty_UNUSED(module), TyObject *arg)
+unicode_decode_get_end(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     Ty_ssize_t end;
     if (PyUnicodeDecodeError_GetEnd(arg, &end) < 0) {
@@ -462,7 +462,7 @@ unicode_decode_get_end(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test PyUnicodeTranslateError_GetEnd */
 static TyObject *
-unicode_translate_get_end(TyObject *Ty_UNUSED(module), TyObject *arg)
+unicode_translate_get_end(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     Ty_ssize_t end;
     if (PyUnicodeTranslateError_GetEnd(arg, &end) < 0) {
@@ -473,7 +473,7 @@ unicode_translate_get_end(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 /* Test PyUnicodeEncodeError_SetEnd */
 static TyObject *
-unicode_encode_set_end(TyObject *Ty_UNUSED(module), TyObject *args)
+unicode_encode_set_end(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *exc;
     Ty_ssize_t end;
@@ -483,12 +483,12 @@ unicode_encode_set_end(TyObject *Ty_UNUSED(module), TyObject *args)
     if (PyUnicodeEncodeError_SetEnd(exc, end) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Test PyUnicodeDecodeError_SetEnd */
 static TyObject *
-unicode_decode_set_end(TyObject *Ty_UNUSED(module), TyObject *args)
+unicode_decode_set_end(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *exc;
     Ty_ssize_t end;
@@ -498,12 +498,12 @@ unicode_decode_set_end(TyObject *Ty_UNUSED(module), TyObject *args)
     if (PyUnicodeDecodeError_SetEnd(exc, end) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Test PyUnicodeTranslateError_SetEnd */
 static TyObject *
-unicode_translate_set_end(TyObject *Ty_UNUSED(module), TyObject *args)
+unicode_translate_set_end(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *exc;
     Ty_ssize_t end;
@@ -513,7 +513,7 @@ unicode_translate_set_end(TyObject *Ty_UNUSED(module), TyObject *args)
     if (PyUnicodeTranslateError_SetEnd(exc, end) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*

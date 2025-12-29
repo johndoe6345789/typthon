@@ -14,7 +14,7 @@ static TyType_Spec HeapTypeNameType_Spec = {
 };
 
 static TyObject *
-get_heaptype_for_name(TyObject *self, TyObject *Ty_UNUSED(ignored))
+get_heaptype_for_name(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return TyType_FromSpec(&HeapTypeNameType_Spec);
 }
@@ -53,7 +53,7 @@ get_type_module_name(TyObject *self, TyObject *type)
 
 
 static TyObject *
-test_get_type_dict(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_get_type_dict(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     /* Test for TyType_GetDict */
 
@@ -73,12 +73,12 @@ test_get_type_dict(TyObject *self, TyObject *Ty_UNUSED(ignored))
     assert(TyDict_GetItemString(type_dict, "new_attr")); // borrowed ref
     Ty_DECREF(HeapTypeNameType);
     Ty_DECREF(type_dict);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 static TyObject *
-test_get_statictype_slots(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_get_statictype_slots(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     newfunc tp_new = TyType_GetSlot(&TyLong_Type, Ty_tp_new);
     if (TyLong_Type.tp_new != tp_new) {
@@ -129,7 +129,7 @@ test_get_statictype_slots(TyObject *self, TyObject *Ty_UNUSED(ignored))
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -160,7 +160,7 @@ type_modified(TyObject *self, TyObject *arg)
     TyTypeObject *type = (TyTypeObject*)arg;
 
     TyType_Modified(type);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -189,7 +189,7 @@ type_get_tp_bases(TyObject *self, TyObject *arg)
 
     TyObject *bases = type->tp_bases;
     if (bases == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(bases);
 }
@@ -205,7 +205,7 @@ type_get_tp_mro(TyObject *self, TyObject *arg)
 
     TyObject *mro = ((TyTypeObject *)type)->tp_mro;
     if (mro == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(mro);
 }
@@ -223,7 +223,7 @@ type_freeze(TyObject *module, TyObject *arg)
     if (TyType_Freeze(type) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

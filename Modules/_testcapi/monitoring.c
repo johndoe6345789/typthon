@@ -480,14 +480,14 @@ enter_scope(TyObject *self, TyObject *args)
                             events,
                             num_events);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
 exit_scope(TyObject *self, TyObject *args)
 {
     PyMonitoring_ExitScope();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef TestMethods[] = {

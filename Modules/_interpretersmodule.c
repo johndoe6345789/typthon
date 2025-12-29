@@ -943,7 +943,7 @@ interp_destroy(TyObject *self, TyObject *args, TyObject *kwds)
     // Destroy the interpreter.
     _PyXI_EndInterpreter(interp, NULL, NULL);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(destroy_doc,
@@ -1002,7 +1002,7 @@ Return a list containing the ID of every existing interpreter.");
 
 
 static TyObject *
-interp_get_current(TyObject *self, TyObject *Ty_UNUSED(ignored))
+interp_get_current(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     PyInterpreterState *interp =_get_current_interp();
     if (interp == NULL) {
@@ -1019,7 +1019,7 @@ Return the ID of current interpreter.");
 
 
 static TyObject *
-interp_get_main(TyObject *self, TyObject *Ty_UNUSED(ignored))
+interp_get_main(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     PyInterpreterState *interp = _TyInterpreterState_Main();
     assert(_TyInterpreterState_IsReady(interp));
@@ -1088,7 +1088,7 @@ interp_set___main___attrs(TyObject *self, TyObject *args, TyObject *kwargs)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(set___main___attrs_doc,
@@ -1149,7 +1149,7 @@ interp_exec(TyObject *self, TyObject *args, TyObject *kwds)
         return _handle_script_error(&runres);
     }
     assert(runres.result == NULL);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #undef FUNCNAME
 }
 
@@ -1213,7 +1213,7 @@ interp_run_string(TyObject *self, TyObject *args, TyObject *kwds)
         return _handle_script_error(&runres);
     }
     assert(runres.result == NULL);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #undef FUNCNAME
 }
 
@@ -1276,7 +1276,7 @@ interp_run_func(TyObject *self, TyObject *args, TyObject *kwds)
         return _handle_script_error(&runres);
     }
     assert(runres.result == NULL);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #undef FUNCNAME
 }
 
@@ -1363,10 +1363,10 @@ object_is_shareable(TyObject *self, TyObject *args, TyObject *kwds)
 
     PyThreadState *tstate = _TyThreadState_GET();
     if (_TyObject_CheckXIData(tstate, obj) == 0) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
     TyErr_Clear();
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 PyDoc_STRVAR(is_shareable_doc,
@@ -1397,9 +1397,9 @@ interp_is_running(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     if (is_running_main(interp)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 PyDoc_STRVAR(is_running_doc,
@@ -1501,7 +1501,7 @@ interp_incref(TyObject *self, TyObject *args, TyObject *kwds)
     }
     _TyInterpreterState_IDIncref(interp);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1526,7 +1526,7 @@ interp_decref(TyObject *self, TyObject *args, TyObject *kwds)
 
     _TyInterpreterState_IDDecref(interp);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1546,7 +1546,7 @@ capture_exception(TyObject *self, TyObject *args, TyObject *kwds)
     if (exc == NULL) {
         exc = TyErr_GetRaisedException();
         if (exc == NULL) {
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
     }
     else if (!PyExceptionInstance_Check(exc)) {

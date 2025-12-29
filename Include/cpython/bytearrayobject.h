@@ -15,7 +15,7 @@ PyAPI_DATA(char) _PyByteArray_empty_string[];
 
 /* Macros and static inline functions, trading safety for speed */
 #define _PyByteArray_CAST(op) \
-    (assert(TyByteArray_Check(op)), _Ty_CAST(PyByteArrayObject*, op))
+    (assert(TyByteArray_Check(op)), _Py_CAST(PyByteArrayObject*, op))
 
 static inline char* TyByteArray_AS_STRING(TyObject *op)
 {

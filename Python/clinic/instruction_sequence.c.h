@@ -201,7 +201,7 @@ static int
 InstructionSequenceType_new_label_impl(_PyInstructionSequence *self);
 
 static TyObject *
-InstructionSequenceType_new_label(TyObject *self, TyObject *Ty_UNUSED(ignored))
+InstructionSequenceType_new_label(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -288,7 +288,7 @@ static TyObject *
 InstructionSequenceType_get_nested_impl(_PyInstructionSequence *self);
 
 static TyObject *
-InstructionSequenceType_get_nested(TyObject *self, TyObject *Ty_UNUSED(ignored))
+InstructionSequenceType_get_nested(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return InstructionSequenceType_get_nested_impl((_PyInstructionSequence *)self);
 }
@@ -306,7 +306,7 @@ static TyObject *
 InstructionSequenceType_get_instructions_impl(_PyInstructionSequence *self);
 
 static TyObject *
-InstructionSequenceType_get_instructions(TyObject *self, TyObject *Ty_UNUSED(ignored))
+InstructionSequenceType_get_instructions(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return InstructionSequenceType_get_instructions_impl((_PyInstructionSequence *)self);
 }

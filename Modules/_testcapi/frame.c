@@ -58,7 +58,7 @@ frame_getlasti(TyObject *self, TyObject *frame)
     int lasti = TyFrame_GetLasti((PyFrameObject *)frame);
     if (lasti < 0) {
         assert(lasti == -1);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyLong_FromLong(lasti);
 }

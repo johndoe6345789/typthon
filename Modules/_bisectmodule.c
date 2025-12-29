@@ -101,7 +101,7 @@ internal_bisect_right(TyObject *list, TyObject *item, Ty_ssize_t lo, Ty_ssize_t 
          */
         if (compare != NULL && Ty_IS_TYPE(litem, tp)) {
             // A fast path for comparing objects of the same type
-            TyObject *res_obj = compare(item, litem, Ty_LT);
+            TyObject *res_obj = compare(item, litem, Py_LT);
             if (res_obj == Ty_True) {
                 Ty_DECREF(res_obj);
                 Ty_DECREF(litem);
@@ -120,7 +120,7 @@ internal_bisect_right(TyObject *list, TyObject *item, Ty_ssize_t lo, Ty_ssize_t 
             if (res_obj == Ty_NotImplemented) {
                 Ty_DECREF(res_obj);
                 compare = NULL;
-                res = PyObject_RichCompareBool(item, litem, Ty_LT);
+                res = PyObject_RichCompareBool(item, litem, Py_LT);
             }
             else {
                 res = PyObject_IsTrue(res_obj);
@@ -129,7 +129,7 @@ internal_bisect_right(TyObject *list, TyObject *item, Ty_ssize_t lo, Ty_ssize_t 
         }
         else {
             // A default path for comparing arbitrary objects
-            res = PyObject_RichCompareBool(item, litem, Ty_LT);
+            res = PyObject_RichCompareBool(item, litem, Py_LT);
         }
         if (res < 0) {
             goto error;
@@ -230,7 +230,7 @@ _bisect_insort_right_impl(TyObject *module, TyObject *a, TyObject *x,
         Ty_DECREF(result);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static inline Ty_ssize_t
@@ -285,7 +285,7 @@ internal_bisect_left(TyObject *list, TyObject *item, Ty_ssize_t lo, Ty_ssize_t h
          */
         if (compare != NULL && Ty_IS_TYPE(litem, tp)) {
             // A fast path for comparing objects of the same type
-            TyObject *res_obj = compare(litem, item, Ty_LT);
+            TyObject *res_obj = compare(litem, item, Py_LT);
             if (res_obj == Ty_True) {
                 Ty_DECREF(res_obj);
                 Ty_DECREF(litem);
@@ -304,7 +304,7 @@ internal_bisect_left(TyObject *list, TyObject *item, Ty_ssize_t lo, Ty_ssize_t h
             if (res_obj == Ty_NotImplemented) {
                 Ty_DECREF(res_obj);
                 compare = NULL;
-                res = PyObject_RichCompareBool(litem, item, Ty_LT);
+                res = PyObject_RichCompareBool(litem, item, Py_LT);
             }
             else {
                 res = PyObject_IsTrue(res_obj);
@@ -313,7 +313,7 @@ internal_bisect_left(TyObject *list, TyObject *item, Ty_ssize_t lo, Ty_ssize_t h
         }
         else {
             // A default path for comparing arbitrary objects
-            res = PyObject_RichCompareBool(litem, item, Ty_LT);
+            res = PyObject_RichCompareBool(litem, item, Py_LT);
         }
         if (res < 0) {
             goto error;
@@ -415,7 +415,7 @@ _bisect_insort_left_impl(TyObject *module, TyObject *a, TyObject *x,
         Ty_DECREF(result);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef bisect_methods[] = {

@@ -312,7 +312,7 @@ static int
 _queue_SimpleQueue_empty_impl(simplequeueobject *self);
 
 static TyObject *
-_queue_SimpleQueue_empty(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_queue_SimpleQueue_empty(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -342,7 +342,7 @@ static Ty_ssize_t
 _queue_SimpleQueue_qsize_impl(simplequeueobject *self);
 
 static TyObject *
-_queue_SimpleQueue_qsize(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_queue_SimpleQueue_qsize(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     Ty_ssize_t _return_value;

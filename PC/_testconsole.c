@@ -118,7 +118,7 @@ _testconsole_write_input_impl(TyObject *module, TyObject *file, Ty_buffer *s)
 
     TyMem_Free((void*)rec);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 error:
     if (rec)
         TyMem_Free((void*)rec);
@@ -136,7 +136,7 @@ static TyObject *
 _testconsole_read_output_impl(TyObject *module, TyObject *file)
 /*[clinic end generated code: output=876310d81a73e6d2 input=b3521f64b1b558e3]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

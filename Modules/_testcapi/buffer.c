@@ -68,7 +68,7 @@ testbuf_getbuf(TyObject *op, Ty_buffer *view, int flags)
 }
 
 static void
-testbuf_releasebuf(TyObject *op, Ty_buffer *Ty_UNUSED(view))
+testbuf_releasebuf(TyObject *op, Ty_buffer *Py_UNUSED(view))
 {
     testBufObject *self = testBufObject_CAST(op);
     self->references--;
@@ -81,7 +81,7 @@ static PyBufferProcs testbuf_as_buffer = {
 };
 
 static struct TyMemberDef testbuf_members[] = {
-    {"references", Ty_T_PYSSIZET, offsetof(testBufObject, references), Ty_READONLY},
+    {"references", Ty_T_PYSSIZET, offsetof(testBufObject, references), Py_READONLY},
     {NULL},
 };
 

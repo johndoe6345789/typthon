@@ -239,7 +239,7 @@ class HANDLE_return_converter(CReturnConverter):
         self.declare(data)
         self.err_occurred_if("_return_value == INVALID_HANDLE_VALUE", data)
         data.return_conversion.append(
-            'if (_return_value == NULL) {\n    Ty_RETURN_NONE;\n}\n')
+            'if (_return_value == NULL) {\n    Py_RETURN_NONE;\n}\n')
         data.return_conversion.append(
             'return_value = HANDLE_TO_PYNUM(_return_value);\n')
 
@@ -347,7 +347,7 @@ _winapi_Overlapped_cancel_impl(OverlappedObject *self)
     if (!res && GetLastError() != ERROR_NOT_FOUND)
         return TyErr_SetExcFromWindowsErr(TyExc_OSError, 0);
     self->pending = 0;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef overlapped_methods[] = {
@@ -360,7 +360,7 @@ static TyMethodDef overlapped_methods[] = {
 static TyMemberDef overlapped_members[] = {
     {"event", T_HANDLE,
      offsetof(OverlappedObject, overlapped) + offsetof(OVERLAPPED, hEvent),
-     Ty_READONLY, "overlapped event handle"},
+     Py_READONLY, "overlapped event handle"},
     {NULL}
 };
 
@@ -427,7 +427,7 @@ _winapi_CloseHandle_impl(TyObject *module, HANDLE handle)
     if (!success)
         return TyErr_SetFromWindowsErr(0);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -473,7 +473,7 @@ _winapi_ConnectNamedPipe_impl(TyObject *module, HANDLE handle,
     if (!success)
         return TyErr_SetFromWindowsErr(0);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -742,7 +742,7 @@ cleanup:
     if (ret != 0)
         return TyErr_SetFromWindowsErr(ret);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1774,7 +1774,7 @@ _winapi_UnmapViewOfFile_impl(TyObject *module, LPCVOID address)
         return TyErr_SetFromWindowsErr(0);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2088,7 +2088,7 @@ _winapi_ReleaseMutex_impl(TyObject *module, HANDLE mutex)
     if (err) {
         return TyErr_SetFromWindowsErr(err);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2111,7 +2111,7 @@ _winapi_ResetEvent_impl(TyObject *module, HANDLE event)
     if (err) {
         return TyErr_SetFromWindowsErr(err);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2134,7 +2134,7 @@ _winapi_SetEvent_impl(TyObject *module, HANDLE event)
     if (err) {
         return TyErr_SetFromWindowsErr(err);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2175,7 +2175,7 @@ _winapi_SetNamedPipeHandleState_impl(TyObject *module, HANDLE named_pipe,
     if (!b)
         return TyErr_SetFromWindowsErr(0);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2206,7 +2206,7 @@ _winapi_TerminateProcess_impl(TyObject *module, HANDLE handle,
     if (! result)
         return TyErr_SetFromWindowsErr(GetLastError());
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2256,7 +2256,7 @@ _winapi_WaitNamedPipe_impl(TyObject *module, LPCWSTR name, DWORD timeout)
     if (!success)
         return TyErr_SetFromWindowsErr(0);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2866,7 +2866,7 @@ _winapi__mimetypes_read_windows_registry_impl(TyObject *module,
         Ty_DECREF(r);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #undef CCH_EXT
 #undef CB_TYPE
 }
@@ -2949,7 +2949,7 @@ _winapi_CopyFile2_impl(TyObject *module, LPCWSTR existing_file_name,
         }
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

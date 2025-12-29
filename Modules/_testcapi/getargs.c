@@ -254,7 +254,7 @@ test_w_code_invalid(TyObject *self, TyObject *arg)
 
     Ty_DECREF(args);
     Ty_DECREF(kwargs);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -591,7 +591,7 @@ getargs_z(TyObject *self, TyObject *args)
     if (str != NULL) {
         return TyBytes_FromString(str);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -623,7 +623,7 @@ getargs_z_hash(TyObject *self, TyObject *args)
     if (str != NULL) {
         return TyBytes_FromStringAndSize(str, size);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -762,7 +762,7 @@ gh_99240_clear_args(TyObject *self, TyObject *args)
     }
     TyMem_Free(a);
     TyMem_Free(b);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef test_methods[] = {

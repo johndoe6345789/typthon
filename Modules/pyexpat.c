@@ -181,7 +181,7 @@ conv_string_to_unicode(const XML_Char *str)
        and hence in UTF-8.  */
     /* UTF-8 from Expat, Unicode desired */
     if (str == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyUnicode_DecodeUTF8(str, strlen(str), "strict");
 }
@@ -199,7 +199,7 @@ conv_string_len_to_unicode(const XML_Char *str, int len)
        and hence in UTF-8.  */
     /* UTF-8 from Expat, Unicode desired */
     if (str == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyUnicode_DecodeUTF8((const char *)str, len, "strict");
 }
@@ -761,7 +761,7 @@ pyexpat_xmlparser_SetReparseDeferralEnabled_impl(xmlparseobject *self,
     XML_SetReparseDeferralEnabled(self->itself, enabled ? XML_TRUE : XML_FALSE);
     self->reparse_deferral_enabled = (bool)enabled;
 #endif
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -949,7 +949,7 @@ pyexpat_xmlparser_SetBase_impl(xmlparseobject *self, const char *base)
     if (!XML_SetBase(self->itself, base)) {
         return TyErr_NoMemory();
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -987,10 +987,10 @@ pyexpat_xmlparser_GetInputContext_impl(xmlparseobject *self)
             return TyBytes_FromStringAndSize(buffer + offset,
                                               size - offset);
         else
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
     }
     else
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1121,7 +1121,7 @@ pyexpat_xmlparser_UseForeignDTD_impl(xmlparseobject *self, TyTypeObject *cls,
     if (rc != XML_ERROR_NONE) {
         return set_error(state, self, rc);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 
@@ -1380,7 +1380,7 @@ xmlparse_handler_setter(TyObject *op, TyObject *v, void *closure)
 
 #define INT_GETTER(name)                                                \
     static TyObject *                                                   \
-    xmlparse_##name##_getter(TyObject *op, void *Ty_UNUSED(closure))    \
+    xmlparse_##name##_getter(TyObject *op, void *Py_UNUSED(closure))    \
     {                                                                   \
         xmlparseobject *self = xmlparseobject_CAST(op);                 \
         return TyLong_FromLong((long)XML_Get##name(self->itself));      \
@@ -1396,14 +1396,14 @@ INT_GETTER(CurrentByteIndex)
 #undef INT_GETTER
 
 static TyObject *
-xmlparse_buffer_text_getter(TyObject *op, void *Ty_UNUSED(closure))
+xmlparse_buffer_text_getter(TyObject *op, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     return TyBool_FromLong(self->buffer != NULL);
 }
 
 static int
-xmlparse_buffer_text_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(closure))
+xmlparse_buffer_text_setter(TyObject *op, TyObject *v, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     if (v == NULL) {
@@ -1435,14 +1435,14 @@ xmlparse_buffer_text_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-xmlparse_buffer_size_getter(TyObject *op, void *Ty_UNUSED(closure))
+xmlparse_buffer_size_getter(TyObject *op, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     return TyLong_FromLong(self->buffer_size);
 }
 
 static int
-xmlparse_buffer_size_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(closure))
+xmlparse_buffer_size_setter(TyObject *op, TyObject *v, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     if (v == NULL) {
@@ -1494,21 +1494,21 @@ xmlparse_buffer_size_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-xmlparse_buffer_used_getter(TyObject *op, void *Ty_UNUSED(closure))
+xmlparse_buffer_used_getter(TyObject *op, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     return TyLong_FromLong(self->buffer_used);
 }
 
 static TyObject *
-xmlparse_namespace_prefixes_getter(TyObject *op, void *Ty_UNUSED(closure))
+xmlparse_namespace_prefixes_getter(TyObject *op, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     return TyBool_FromLong(self->ns_prefixes);
 }
 
 static int
-xmlparse_namespace_prefixes_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(closure))
+xmlparse_namespace_prefixes_setter(TyObject *op, TyObject *v, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     if (v == NULL) {
@@ -1525,14 +1525,14 @@ xmlparse_namespace_prefixes_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(cl
 }
 
 static TyObject *
-xmlparse_ordered_attributes_getter(TyObject *op, void *Ty_UNUSED(closure))
+xmlparse_ordered_attributes_getter(TyObject *op, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     return TyBool_FromLong(self->ordered_attributes);
 }
 
 static int
-xmlparse_ordered_attributes_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(closure))
+xmlparse_ordered_attributes_setter(TyObject *op, TyObject *v, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     if (v == NULL) {
@@ -1548,14 +1548,14 @@ xmlparse_ordered_attributes_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(cl
 }
 
 static TyObject *
-xmlparse_specified_attributes_getter(TyObject *op, void *Ty_UNUSED(closure))
+xmlparse_specified_attributes_getter(TyObject *op, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     return TyBool_FromLong(self->specified_attributes);
 }
 
 static int
-xmlparse_specified_attributes_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(closure))
+xmlparse_specified_attributes_setter(TyObject *op, TyObject *v, void *Py_UNUSED(closure))
 {
     xmlparseobject *self = xmlparseobject_CAST(op);
     if (v == NULL) {
@@ -1571,7 +1571,7 @@ xmlparse_specified_attributes_setter(TyObject *op, TyObject *v, void *Ty_UNUSED(
 }
 
 static TyMemberDef xmlparse_members[] = {
-    {"intern", _Ty_T_OBJECT, offsetof(xmlparseobject, intern), Ty_READONLY, NULL},
+    {"intern", _Ty_T_OBJECT, offsetof(xmlparseobject, intern), Py_READONLY, NULL},
     {NULL}
 };
 

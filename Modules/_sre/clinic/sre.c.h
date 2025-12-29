@@ -21,7 +21,7 @@ static int
 _sre_getcodesize_impl(TyObject *module);
 
 static TyObject *
-_sre_getcodesize(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_sre_getcodesize(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;
@@ -990,7 +990,7 @@ static TyObject *
 _sre_SRE_Pattern___copy___impl(PatternObject *self);
 
 static TyObject *
-_sre_SRE_Pattern___copy__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_sre_SRE_Pattern___copy__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _sre_SRE_Pattern___copy___impl((PatternObject *)self);
 }
@@ -1497,7 +1497,7 @@ static TyObject *
 _sre_SRE_Match___copy___impl(MatchObject *self);
 
 static TyObject *
-_sre_SRE_Match___copy__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_sre_SRE_Match___copy__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _sre_SRE_Match___copy___impl((MatchObject *)self);
 }

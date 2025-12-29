@@ -205,14 +205,14 @@ _destroy(TyObject *setweakref, TyObject *objweakref)
 {
     TyObject *set = _TyWeakref_GET_REF(setweakref);
     if (set == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (TySet_Discard(set, objweakref) < 0) {
         Ty_DECREF(set);
         return NULL;
     }
     Ty_DECREF(set);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef _destroy_def = {
@@ -284,7 +284,7 @@ _abc__reset_registry(TyObject *module, TyObject *self)
         return NULL;
     }
     Ty_DECREF(impl);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -321,7 +321,7 @@ _abc__reset_caches(TyObject *module, TyObject *self)
         return NULL;
     }
     Ty_DECREF(impl);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -525,7 +525,7 @@ _abc__abc_init(TyObject *module, TyObject *self)
         }
         if (flags == NULL || !TyLong_CheckExact(flags)) {
             Ty_XDECREF(flags);
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
 
         long val = TyLong_AsLong(flags);
@@ -539,7 +539,7 @@ _abc__abc_init(TyObject *module, TyObject *self)
         }
         _TyType_SetFlags((TyTypeObject *)self, 0, val & COLLECTION_FLAGS);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

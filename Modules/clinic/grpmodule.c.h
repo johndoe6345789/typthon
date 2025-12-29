@@ -148,7 +148,7 @@ static TyObject *
 grp_getgrall_impl(TyObject *module);
 
 static TyObject *
-grp_getgrall(TyObject *module, TyObject *Ty_UNUSED(ignored))
+grp_getgrall(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return grp_getgrall_impl(module);
 }

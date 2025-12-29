@@ -20,7 +20,7 @@ static TyObject *
 msvcrt_heapmin_impl(TyObject *module);
 
 static TyObject *
-msvcrt_heapmin(TyObject *module, TyObject *Ty_UNUSED(ignored))
+msvcrt_heapmin(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return msvcrt_heapmin_impl(module);
 }
@@ -212,7 +212,7 @@ static long
 msvcrt_kbhit_impl(TyObject *module);
 
 static TyObject *
-msvcrt_kbhit(TyObject *module, TyObject *Ty_UNUSED(ignored))
+msvcrt_kbhit(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     long _return_value;
@@ -246,7 +246,7 @@ static int
 msvcrt_getch_impl(TyObject *module);
 
 static TyObject *
-msvcrt_getch(TyObject *module, TyObject *Ty_UNUSED(ignored))
+msvcrt_getch(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     char s[1];
@@ -272,7 +272,7 @@ static wchar_t
 msvcrt_getwch_impl(TyObject *module);
 
 static TyObject *
-msvcrt_getwch(TyObject *module, TyObject *Ty_UNUSED(ignored))
+msvcrt_getwch(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     wchar_t _return_value;
@@ -298,7 +298,7 @@ static int
 msvcrt_getche_impl(TyObject *module);
 
 static TyObject *
-msvcrt_getche(TyObject *module, TyObject *Ty_UNUSED(ignored))
+msvcrt_getche(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     char s[1];
@@ -324,7 +324,7 @@ static wchar_t
 msvcrt_getwche_impl(TyObject *module);
 
 static TyObject *
-msvcrt_getwche(TyObject *module, TyObject *Ty_UNUSED(ignored))
+msvcrt_getwche(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     wchar_t _return_value;
@@ -665,7 +665,7 @@ static TyObject *
 msvcrt_GetErrorMode_impl(TyObject *module);
 
 static TyObject *
-msvcrt_GetErrorMode(TyObject *module, TyObject *Ty_UNUSED(ignored))
+msvcrt_GetErrorMode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return msvcrt_GetErrorMode_impl(module);
 }

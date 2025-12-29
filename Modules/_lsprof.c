@@ -628,7 +628,7 @@ _lsprof_Profiler__pystart_callback_impl(ProfilerObject *self, TyObject *code,
 {
     ptrace_enter_call((TyObject*)self, (void *)code, code);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -649,7 +649,7 @@ _lsprof_Profiler__pythrow_callback_impl(ProfilerObject *self, TyObject *code,
 {
     ptrace_enter_call((TyObject*)self, (void *)code, code);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -671,7 +671,7 @@ _lsprof_Profiler__pyreturn_callback_impl(ProfilerObject *self,
 {
     ptrace_leave_call((TyObject*)self, (void *)code);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 TyObject* get_cfunc_from_callable(TyObject* callable, TyObject* self_arg, TyObject* missing)
@@ -729,7 +729,7 @@ _lsprof_Profiler__ccall_callback_impl(ProfilerObject *self, TyObject *code,
             Ty_DECREF(cfunc);
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -759,7 +759,7 @@ _lsprof_Profiler__creturn_callback_impl(ProfilerObject *self, TyObject *code,
             Ty_DECREF(cfunc);
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static const struct {
@@ -844,7 +844,7 @@ _lsprof_Profiler_enable_impl(ProfilerObject *self, int subcalls,
     Ty_DECREF(monitoring);
 
     self->flags |= POF_ENABLED;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 error:
     Ty_DECREF(monitoring);
@@ -924,7 +924,7 @@ _lsprof_Profiler_disable_impl(ProfilerObject *self)
     if (pending_exception(self)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -943,7 +943,7 @@ _lsprof_Profiler_clear_impl(ProfilerObject *self)
         return NULL;
     }
     clearEntries(self);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int

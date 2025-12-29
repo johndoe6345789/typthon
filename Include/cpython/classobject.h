@@ -27,7 +27,7 @@ PyAPI_FUNC(TyObject *) TyMethod_Function(TyObject *);
 PyAPI_FUNC(TyObject *) TyMethod_Self(TyObject *);
 
 #define _PyMethod_CAST(meth) \
-    (assert(TyMethod_Check(meth)), _Ty_CAST(PyMethodObject*, meth))
+    (assert(TyMethod_Check(meth)), _Py_CAST(PyMethodObject*, meth))
 
 /* Static inline functions for direct access to these values.
    Type checks are *not* done, so use with care. */
@@ -55,7 +55,7 @@ PyAPI_FUNC(TyObject *) PyInstanceMethod_Function(TyObject *);
 
 #define _PyInstanceMethod_CAST(meth) \
     (assert(PyInstanceMethod_Check(meth)), \
-     _Ty_CAST(PyInstanceMethodObject*, meth))
+     _Py_CAST(PyInstanceMethodObject*, meth))
 
 /* Static inline function for direct access to these values.
    Type checks are *not* done, so use with care. */

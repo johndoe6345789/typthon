@@ -197,14 +197,14 @@ ste_dealloc(TyObject *op)
 #define OFF(x) offsetof(PySTEntryObject, x)
 
 static TyMemberDef ste_memberlist[] = {
-    {"id",       _Ty_T_OBJECT, OFF(ste_id), Ty_READONLY},
-    {"name",     _Ty_T_OBJECT, OFF(ste_name), Ty_READONLY},
-    {"symbols",  _Ty_T_OBJECT, OFF(ste_symbols), Ty_READONLY},
-    {"varnames", _Ty_T_OBJECT, OFF(ste_varnames), Ty_READONLY},
-    {"children", _Ty_T_OBJECT, OFF(ste_children), Ty_READONLY},
-    {"nested",   Ty_T_INT,    OFF(ste_nested), Ty_READONLY},
-    {"type",     Ty_T_INT,    OFF(ste_type), Ty_READONLY},
-    {"lineno",   Ty_T_INT,    OFF(ste_loc.lineno), Ty_READONLY},
+    {"id",       _Ty_T_OBJECT, OFF(ste_id), Py_READONLY},
+    {"name",     _Ty_T_OBJECT, OFF(ste_name), Py_READONLY},
+    {"symbols",  _Ty_T_OBJECT, OFF(ste_symbols), Py_READONLY},
+    {"varnames", _Ty_T_OBJECT, OFF(ste_varnames), Py_READONLY},
+    {"children", _Ty_T_OBJECT, OFF(ste_children), Py_READONLY},
+    {"nested",   Ty_T_INT,    OFF(ste_nested), Py_READONLY},
+    {"type",     Ty_T_INT,    OFF(ste_type), Py_READONLY},
+    {"lineno",   Ty_T_INT,    OFF(ste_loc.lineno), Py_READONLY},
     {NULL}
 };
 

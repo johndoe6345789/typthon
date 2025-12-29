@@ -1196,8 +1196,8 @@ TyObject *_TyBytes_DecodeEscape2(const char *s,
 TyObject *TyBytes_DecodeEscape(const char *s,
                                 Ty_ssize_t len,
                                 const char *errors,
-                                Ty_ssize_t Ty_UNUSED(unicode),
-                                const char *Ty_UNUSED(recode_encoding))
+                                Ty_ssize_t Py_UNUSED(unicode),
+                                const char *Py_UNUSED(recode_encoding))
 {
     int first_invalid_escape_char;
     const char *first_invalid_escape_ptr;
@@ -1558,7 +1558,7 @@ bytes_richcompare(TyObject *aa, TyObject *bb, int op)
 {
     /* Make sure both arguments are strings. */
     if (!(TyBytes_Check(aa) && TyBytes_Check(bb))) {
-        if (_Ty_GetConfig()->bytes_warning && (op == Ty_EQ || op == Ty_NE)) {
+        if (_Ty_GetConfig()->bytes_warning && (op == Py_EQ || op == Py_NE)) {
             if (TyUnicode_Check(aa) || TyUnicode_Check(bb)) {
                 if (TyErr_WarnEx(TyExc_BytesWarning,
                                  "Comparison between bytes and string", 1))
@@ -1570,30 +1570,30 @@ bytes_richcompare(TyObject *aa, TyObject *bb, int op)
                     return NULL;
             }
         }
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     PyBytesObject *a = _TyBytes_CAST(aa);
     PyBytesObject *b = _TyBytes_CAST(bb);
     if (a == b) {
         switch (op) {
-        case Ty_EQ:
-        case Ty_LE:
-        case Ty_GE:
+        case Py_EQ:
+        case Py_LE:
+        case Py_GE:
             /* a byte string is equal to itself */
-            Ty_RETURN_TRUE;
-        case Ty_NE:
-        case Ty_LT:
-        case Ty_GT:
-            Ty_RETURN_FALSE;
+            Py_RETURN_TRUE;
+        case Py_NE:
+        case Py_LT:
+        case Py_GT:
+            Py_RETURN_FALSE;
         default:
             TyErr_BadArgument();
             return NULL;
         }
     }
-    else if (op == Ty_EQ || op == Ty_NE) {
+    else if (op == Py_EQ || op == Py_NE) {
         int eq = bytes_compare_eq(a, b);
-        eq ^= (op == Ty_NE);
+        eq ^= (op == Py_NE);
         return TyBool_FromLong(eq);
     }
     else {
@@ -1610,9 +1610,9 @@ bytes_richcompare(TyObject *aa, TyObject *bb, int op)
             c = 0;
         }
         if (c != 0) {
-            Ty_RETURN_RICHCOMPARE(c, 0, op);
+            Py_RETURN_RICHCOMPARE(c, 0, op);
         }
-        Ty_RETURN_RICHCOMPARE(len_a, len_b, op);
+        Py_RETURN_RICHCOMPARE(len_a, len_b, op);
     }
 }
 
@@ -2652,7 +2652,7 @@ bytes_hex_impl(PyBytesObject *self, TyObject *sep, int bytes_per_sep)
 }
 
 static TyObject *
-bytes_getnewargs(TyObject *op, TyObject *Ty_UNUSED(dummy))
+bytes_getnewargs(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyBytesObject *v = _TyBytes_CAST(op);
     return Ty_BuildValue("(y#)", v->ob_sval, Ty_SIZE(v));
@@ -2722,7 +2722,7 @@ static TyObject *
 bytes_mod(TyObject *self, TyObject *arg)
 {
     if (!TyBytes_Check(self)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     return _TyBytes_FormatEx(TyBytes_AS_STRING(self), TyBytes_GET_SIZE(self),
                              arg, 0);
@@ -3319,7 +3319,7 @@ striter_next(TyObject *op)
 }
 
 static TyObject *
-striter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
+striter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     striterobject *it = _striterobject_CAST(op);
     Ty_ssize_t len = 0;
@@ -3332,7 +3332,7 @@ PyDoc_STRVAR(length_hint_doc,
              "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-striter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+striter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     TyObject *iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
 
@@ -3363,7 +3363,7 @@ striter_setstate(TyObject *op, TyObject *state)
             index = TyBytes_GET_SIZE(it->it_seq); /* iterator exhausted */
         it->it_index = index;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");

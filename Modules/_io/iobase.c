@@ -115,7 +115,7 @@ Return the new absolute position.
 
 static TyObject *
 _io__IOBase_seek_impl(TyObject *self, TyTypeObject *cls,
-                      int Ty_UNUSED(offset), int Ty_UNUSED(whence))
+                      int Py_UNUSED(offset), int Py_UNUSED(whence))
 /*[clinic end generated code: output=8bd74ea6538ded53 input=74211232b363363e]*/
 {
     _PyIO_State *state = get_io_state_by_cls(cls);
@@ -149,7 +149,7 @@ as reported by tell(). Return the new size.
 
 static TyObject *
 _io__IOBase_truncate_impl(TyObject *self, TyTypeObject *cls,
-                          TyObject *Ty_UNUSED(size))
+                          TyObject *Py_UNUSED(size))
 /*[clinic end generated code: output=2013179bff1fe8ef input=660ac20936612c27]*/
 {
     _PyIO_State *state = get_io_state_by_cls(cls);
@@ -174,7 +174,7 @@ _io__IOBase_flush_impl(TyObject *self)
     int closed = iobase_is_closed(self);
 
     if (!closed) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (closed > 0) {
         TyErr_SetString(TyExc_ValueError, "I/O operation on closed file.");
@@ -220,7 +220,7 @@ _PyIOBase_check_closed(TyObject *self, TyObject *args)
     if (args == Ty_True) {
         return Ty_None;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -274,7 +274,7 @@ _io__IOBase_close_impl(TyObject *self)
         return NULL;
     }
     if (closed) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     rc1 = _PyFile_Flush(self);
@@ -285,7 +285,7 @@ _io__IOBase_close_impl(TyObject *self)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Finalization and garbage collection support */
@@ -405,7 +405,7 @@ static TyObject *
 _io__IOBase_seekable_impl(TyObject *self)
 /*[clinic end generated code: output=4c24c67f5f32a43d input=b976622f7fdf3063]*/
 {
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 TyObject *
@@ -437,7 +437,7 @@ static TyObject *
 _io__IOBase_readable_impl(TyObject *self)
 /*[clinic end generated code: output=e48089250686388b input=285b3b866a0ec35f]*/
 {
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /* May be called with any object */
@@ -470,7 +470,7 @@ static TyObject *
 _io__IOBase_writable_impl(TyObject *self)
 /*[clinic end generated code: output=406001d0985be14f input=9dcac18a013a05b5]*/
 {
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /* May be called with any object */
@@ -544,7 +544,7 @@ _io__IOBase_isatty_impl(TyObject *self)
 {
     if (iobase_check_closed(self))
         return NULL;
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /* Readline(s) and writelines */
@@ -821,7 +821,7 @@ _io__IOBase_writelines(TyObject *self, TyObject *lines)
         Ty_DECREF(res);
     }
     Ty_DECREF(iter);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #define clinic_state() (find_io_state_by_def(Ty_TYPE(self)))
@@ -864,8 +864,8 @@ static TyGetSetDef iobase_getset[] = {
 };
 
 static struct TyMemberDef iobase_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(iobase, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(iobase, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(iobase, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(iobase, dict), Py_READONLY},
     {NULL},
 };
 

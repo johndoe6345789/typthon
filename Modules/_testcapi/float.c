@@ -102,7 +102,7 @@ _testcapi_float_unpack_impl(TyObject *module, const char *data,
 
 /* Test TyOS_string_to_double. */
 static TyObject *
-test_string_to_double(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_string_to_double(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     double result;
     const char *msg;
@@ -148,7 +148,7 @@ test_string_to_double(TyObject *self, TyObject *Ty_UNUSED(ignored))
     CHECK_INVALID("3\n");
     CHECK_INVALID("123abc");
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
   fail:
     TyErr_Format(TyExc_AssertionError, "test_string_to_double: %s", msg);
     return NULL;

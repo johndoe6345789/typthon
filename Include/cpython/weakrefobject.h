@@ -43,7 +43,7 @@ struct _PyWeakReference {
 PyAPI_FUNC(void) _TyWeakref_ClearRef(PyWeakReference *self);
 
 #define _TyWeakref_CAST(op) \
-    (assert(PyWeakref_Check(op)), _Ty_CAST(PyWeakReference*, (op)))
+    (assert(PyWeakref_Check(op)), _Py_CAST(PyWeakReference*, (op)))
 
 // Test if a weak reference is dead.
 PyAPI_FUNC(int) PyWeakref_IsDead(TyObject *ref);

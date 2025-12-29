@@ -20,7 +20,7 @@ static TyObject *
 _dbm_dbm_close_impl(dbmobject *self);
 
 static TyObject *
-_dbm_dbm_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_dbm_dbm_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _dbm_dbm_close_impl((dbmobject *)self);
 }

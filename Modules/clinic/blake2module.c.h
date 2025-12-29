@@ -440,7 +440,7 @@ static TyObject *
 _blake2_blake2b_copy_impl(Blake2Object *self);
 
 static TyObject *
-_blake2_blake2b_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_blake2_blake2b_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _blake2_blake2b_copy_impl((Blake2Object *)self);
 }
@@ -480,7 +480,7 @@ static TyObject *
 _blake2_blake2b_digest_impl(Blake2Object *self);
 
 static TyObject *
-_blake2_blake2b_digest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_blake2_blake2b_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _blake2_blake2b_digest_impl((Blake2Object *)self);
 }
@@ -498,7 +498,7 @@ static TyObject *
 _blake2_blake2b_hexdigest_impl(Blake2Object *self);
 
 static TyObject *
-_blake2_blake2b_hexdigest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_blake2_blake2b_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _blake2_blake2b_hexdigest_impl((Blake2Object *)self);
 }

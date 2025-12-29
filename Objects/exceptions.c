@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include "pycore_abstract.h"      // _TyObject_RealIsSubclass()
 #include "pycore_ceval.h"         // _Ty_EnterRecursiveCall
-#include "pycore_exceptions.h"    // struct _Ty_exc_state
+#include "pycore_exceptions.h"    // struct _Py_exc_state
 #include "pycore_initconfig.h"
 #include "pycore_modsupport.h"    // _TyArg_NoKeywords()
 #include "pycore_object.h"
@@ -34,7 +34,7 @@ TyObject *TyExc_WindowsError = NULL;  // borrowed ref
 #endif
 
 
-static struct _Ty_exc_state*
+static struct _Py_exc_state*
 get_exc_state(void)
 {
     PyInterpreterState *interp = _TyInterpreterState_GET();
@@ -262,7 +262,7 @@ BaseException___setstate___impl(PyBaseExceptionObject *self, TyObject *state)
             }
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -322,7 +322,7 @@ BaseException_add_note_impl(PyBaseExceptionObject *self, TyObject *note)
         return NULL;
     }
     Ty_DECREF(notes);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef BaseException_methods[] = {
@@ -344,7 +344,7 @@ BaseException_args_get_impl(PyBaseExceptionObject *self)
 /*[clinic end generated code: output=e02e34e35cf4d677 input=64282386e4d7822d]*/
 {
     if (self->args == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->args);
 }
@@ -382,7 +382,7 @@ BaseException___traceback___get_impl(PyBaseExceptionObject *self)
 /*[clinic end generated code: output=17cf874a52339398 input=a2277f0de62170cf]*/
 {
     if (self->traceback == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->traceback);
 }
@@ -428,7 +428,7 @@ BaseException___context___get_impl(PyBaseExceptionObject *self)
 /*[clinic end generated code: output=6ec5d296ce8d1c93 input=b2d22687937e66ab]*/
 {
     if (self->context == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->context);
 }
@@ -471,7 +471,7 @@ BaseException___cause___get_impl(PyBaseExceptionObject *self)
 /*[clinic end generated code: output=987f6c4d8a0bdbab input=40e0eac427b6e602]*/
 {
     if (self->cause == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(self->cause);
 }
@@ -885,7 +885,7 @@ PyBaseExceptionGroupObject_CAST(TyObject *exc)
 static TyObject *
 BaseExceptionGroup_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 {
-    struct _Ty_exc_state *state = get_exc_state();
+    struct _Py_exc_state *state = get_exc_state();
     TyTypeObject *TyExc_ExceptionGroup =
         (TyTypeObject*)state->TyExc_ExceptionGroup;
 
@@ -1679,9 +1679,9 @@ PyUnstable_Exc_PrepReraiseStar(TyObject *orig, TyObject *excs)
 }
 
 static TyMemberDef BaseExceptionGroup_members[] = {
-    {"message", _Ty_T_OBJECT, offsetof(PyBaseExceptionGroupObject, msg), Ty_READONLY,
+    {"message", _Ty_T_OBJECT, offsetof(PyBaseExceptionGroupObject, msg), Py_READONLY,
         PyDoc_STR("exception message")},
-    {"exceptions", _Ty_T_OBJECT, offsetof(PyBaseExceptionGroupObject, excs), Ty_READONLY,
+    {"exceptions", _Ty_T_OBJECT, offsetof(PyBaseExceptionGroupObject, excs), Py_READONLY,
         PyDoc_STR("nested exceptions")},
     {NULL}  /* Sentinel */
 };
@@ -1706,7 +1706,7 @@ ComplexExtendsException(TyExc_BaseException, BaseExceptionGroup,
  */
 static TyObject*
 create_exception_group_class(void) {
-    struct _Ty_exc_state *state = get_exc_state();
+    struct _Py_exc_state *state = get_exc_state();
 
     TyObject *bases = TyTuple_Pack(
         2, TyExc_BaseExceptionGroup, TyExc_Exception);
@@ -1843,13 +1843,13 @@ ImportError_getstate(TyObject *op)
         return Ty_NewRef(dict);
     }
     else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
 /* Pickling support */
 static TyObject *
-ImportError_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+ImportError_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *res;
     TyObject *state = ImportError_getstate(self);
@@ -2088,7 +2088,7 @@ OSError_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
             ))
             goto error;
 
-        struct _Ty_exc_state *state = get_exc_state();
+        struct _Py_exc_state *state = get_exc_state();
         if (myerrno && TyLong_Check(myerrno) &&
             state->errnomap && (TyObject *) type == TyExc_OSError) {
             TyObject *newtype;
@@ -2254,7 +2254,7 @@ OSError_str(TyObject *op)
 }
 
 static TyObject *
-OSError_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+OSError_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyOSErrorObject *self = PyOSErrorObject_CAST(op);
     TyObject *args = self->args;
@@ -2574,7 +2574,7 @@ AttributeError_traverse(TyObject *op, visitproc visit, void *arg)
 
 /* Pickling support */
 static TyObject *
-AttributeError_getstate(TyObject *op, TyObject *Ty_UNUSED(ignored))
+AttributeError_getstate(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyAttributeErrorObject *self = PyAttributeErrorObject_CAST(op);
     TyObject *dict = self->dict;
@@ -2599,11 +2599,11 @@ AttributeError_getstate(TyObject *op, TyObject *Ty_UNUSED(ignored))
     else if (dict) {
         return Ty_NewRef(dict);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-AttributeError_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+AttributeError_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     TyObject *state = AttributeError_getstate(op, NULL);
     if (state == NULL) {
@@ -3967,7 +3967,7 @@ static TyObject *
 get_memory_error(int allow_allocation, TyObject *args, TyObject *kwds)
 {
     PyBaseExceptionObject *self = NULL;
-    struct _Ty_exc_state *state = get_exc_state();
+    struct _Py_exc_state *state = get_exc_state();
 
     MEMERRORS_LOCK(state);
     if (state->memerrors_freelist != NULL) {
@@ -4036,7 +4036,7 @@ MemoryError_dealloc(TyObject *op)
         return;
     }
 
-    struct _Ty_exc_state *state = get_exc_state();
+    struct _Py_exc_state *state = get_exc_state();
     MEMERRORS_LOCK(state);
     if (state->memerrors_numfree < MEMERRORS_SAVE) {
         self->dict = (TyObject *) state->memerrors_freelist;
@@ -4072,7 +4072,7 @@ preallocate_memerrors(void)
 }
 
 static void
-free_preallocated_memerrors(struct _Ty_exc_state *state)
+free_preallocated_memerrors(struct _Py_exc_state *state)
 {
     while (state->memerrors_freelist != NULL) {
         TyObject *self = (TyObject *) state->memerrors_freelist;
@@ -4385,7 +4385,7 @@ _PyExc_InitGlobalObjects(PyInterpreterState *interp)
 PyStatus
 _PyExc_InitState(PyInterpreterState *interp)
 {
-    struct _Ty_exc_state *state = &interp->exc_state;
+    struct _Py_exc_state *state = &interp->exc_state;
 
 #define ADD_ERRNO(TYPE, CODE) \
     do { \
@@ -4488,14 +4488,14 @@ _PyBuiltins_AddExceptions(TyObject *bltinmod)
 void
 _PyExc_ClearExceptionGroupType(PyInterpreterState *interp)
 {
-    struct _Ty_exc_state *state = &interp->exc_state;
+    struct _Py_exc_state *state = &interp->exc_state;
     Ty_CLEAR(state->TyExc_ExceptionGroup);
 }
 
 void
 _PyExc_Fini(PyInterpreterState *interp)
 {
-    struct _Ty_exc_state *state = &interp->exc_state;
+    struct _Py_exc_state *state = &interp->exc_state;
     free_preallocated_memerrors(state);
     Ty_CLEAR(state->errnomap);
 

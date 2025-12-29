@@ -23,7 +23,7 @@ static TyObject *
 test_empty_function_impl(TyObject *module);
 
 static TyObject *
-test_empty_function(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_empty_function(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return test_empty_function_impl(module);
 }

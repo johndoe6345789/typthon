@@ -336,7 +336,7 @@ error:
 
 
 static TyObject *
-structseq_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+structseq_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyStructSequence *self = (PyStructSequence*)op;
     TyObject* tup = NULL;
@@ -554,7 +554,7 @@ initialize_members(PyStructSequence_Desc *desc,
         members[k].type = _Ty_T_OBJECT;
         members[k].offset = offsetof(PyStructSequence, ob_item)
           + i * sizeof(TyObject*);
-        members[k].flags = Ty_READONLY;
+        members[k].flags = Py_READONLY;
         members[k].doc = desc->fields[i].doc;
         k++;
     }

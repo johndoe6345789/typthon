@@ -590,7 +590,7 @@ _io_StringIO_close_impl(stringio *self)
     Ty_CLEAR(self->readnl);
     Ty_CLEAR(self->writenl);
     Ty_CLEAR(self->decoder);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -793,7 +793,7 @@ _io_StringIO_readable_impl(stringio *self)
 {
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -809,7 +809,7 @@ _io_StringIO_writable_impl(stringio *self)
 {
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /*[clinic input]
@@ -825,7 +825,7 @@ _io_StringIO_seekable_impl(stringio *self)
 {
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 /* Pickling support.
@@ -982,7 +982,7 @@ _io_StringIO___setstate___impl(stringio *self, TyObject *state)
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1011,7 +1011,7 @@ _io_StringIO_line_buffering_get_impl(stringio *self)
 {
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /*[clinic input]
@@ -1027,7 +1027,7 @@ _io_StringIO_newlines_get_impl(stringio *self)
     CHECK_INITIALIZED(self);
     CHECK_CLOSED(self);
     if (self->decoder == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return PyObject_GetAttr(self->decoder, &_Ty_ID(newlines));
 }
@@ -1065,8 +1065,8 @@ static TyGetSetDef stringio_getset[] = {
 };
 
 static struct TyMemberDef stringio_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(stringio, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(stringio, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(stringio, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(stringio, dict), Py_READONLY},
     {NULL},
 };
 

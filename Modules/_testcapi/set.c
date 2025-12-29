@@ -10,7 +10,7 @@ set_get_size(TyObject *self, TyObject *obj)
 
 
 static TyObject*
-test_set_type_size(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_set_type_size(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *obj = TyList_New(0);
     if (obj == NULL) {
@@ -27,7 +27,7 @@ test_set_type_size(TyObject *self, TyObject *Ty_UNUSED(ignored))
     Ty_SET_SIZE(obj, 0);
 
     Ty_DECREF(obj);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

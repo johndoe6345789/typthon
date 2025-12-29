@@ -156,7 +156,7 @@ PyMember_SetOne(char *addr, TyMemberDef *l, TyObject *v)
 #endif
     addr += l->offset;
 
-    if ((l->flags & Ty_READONLY))
+    if ((l->flags & Py_READONLY))
     {
         TyErr_SetString(TyExc_AttributeError, "readonly attribute");
         return -1;

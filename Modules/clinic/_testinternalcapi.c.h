@@ -83,7 +83,7 @@ static TyObject *
 _testinternalcapi_new_instruction_sequence_impl(TyObject *module);
 
 static TyObject *
-_testinternalcapi_new_instruction_sequence(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_testinternalcapi_new_instruction_sequence(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _testinternalcapi_new_instruction_sequence_impl(module);
 }
@@ -308,7 +308,7 @@ static TyObject *
 _testinternalcapi_test_long_numbits_impl(TyObject *module);
 
 static TyObject *
-_testinternalcapi_test_long_numbits(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_testinternalcapi_test_long_numbits(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _testinternalcapi_test_long_numbits_impl(module);
 }
@@ -388,7 +388,7 @@ static TyObject *
 get_next_dict_keys_version_impl(TyObject *module);
 
 static TyObject *
-get_next_dict_keys_version(TyObject *module, TyObject *Ty_UNUSED(ignored))
+get_next_dict_keys_version(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return get_next_dict_keys_version_impl(module);
 }

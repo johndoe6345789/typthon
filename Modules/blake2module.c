@@ -835,7 +835,7 @@ _blake2_blake2b_update_impl(Blake2Object *self, TyObject *data)
 
     PyBuffer_Release(&buf);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -925,7 +925,7 @@ static TyMethodDef py_blake2b_methods[] = {
 
 
 static TyObject *
-py_blake2b_get_name(TyObject *op, void *Ty_UNUSED(closure))
+py_blake2b_get_name(TyObject *op, void *Py_UNUSED(closure))
 {
     Blake2Object *self = _Blake2Object_CAST(op);
     return TyUnicode_FromString(is_blake2b(self->impl) ? "blake2b" : "blake2s");
@@ -934,7 +934,7 @@ py_blake2b_get_name(TyObject *op, void *Ty_UNUSED(closure))
 
 
 static TyObject *
-py_blake2b_get_block_size(TyObject *op, void *Ty_UNUSED(closure))
+py_blake2b_get_block_size(TyObject *op, void *Py_UNUSED(closure))
 {
     Blake2Object *self = _Blake2Object_CAST(op);
     return TyLong_FromLong(is_blake2b(self->impl) ? HACL_HASH_BLAKE2B_BLOCK_BYTES : HACL_HASH_BLAKE2S_BLOCK_BYTES);
@@ -943,7 +943,7 @@ py_blake2b_get_block_size(TyObject *op, void *Ty_UNUSED(closure))
 
 
 static TyObject *
-py_blake2b_get_digest_size(TyObject *op, void *Ty_UNUSED(closure))
+py_blake2b_get_digest_size(TyObject *op, void *Py_UNUSED(closure))
 {
     Blake2Object *self = _Blake2Object_CAST(op);
     switch (self->impl) {

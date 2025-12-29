@@ -450,7 +450,7 @@ assert_is_static_hmac_hash_kind(HMAC_Hash_Kind kind)
 }
 #else
 static inline void
-assert_is_static_hmac_hash_kind(HMAC_Hash_Kind Ty_UNUSED(kind)) {}
+assert_is_static_hmac_hash_kind(HMAC_Hash_Kind Py_UNUSED(kind)) {}
 #endif
 
 /*

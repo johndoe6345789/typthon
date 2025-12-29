@@ -85,19 +85,19 @@ _PySSL_msg_callback(int write_p, int version, int content_type,
 
 
 static TyObject *
-_PySSLContext_get_msg_callback(TyObject *op, void *Ty_UNUSED(closure))
+_PySSLContext_get_msg_callback(TyObject *op, void *Py_UNUSED(closure))
 {
     PySSLContext *self = PySSLContext_CAST(op);
     if (self->msg_cb != NULL) {
         return Ty_NewRef(self->msg_cb);
     } else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
 static int
 _PySSLContext_set_msg_callback(TyObject *op, TyObject *arg,
-                               void *Ty_UNUSED(closure))
+                               void *Py_UNUSED(closure))
 {
     PySSLContext *self = PySSLContext_CAST(op);
     Ty_CLEAR(self->msg_cb);
@@ -158,19 +158,19 @@ _PySSL_keylog_callback(const SSL *ssl, const char *line)
 }
 
 static TyObject *
-_PySSLContext_get_keylog_filename(TyObject *op, void *Ty_UNUSED(closure))
+_PySSLContext_get_keylog_filename(TyObject *op, void *Py_UNUSED(closure))
 {
     PySSLContext *self = PySSLContext_CAST(op);
     if (self->keylog_filename != NULL) {
         return Ty_NewRef(self->keylog_filename);
     } else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
 static int
 _PySSLContext_set_keylog_filename(TyObject *op, TyObject *arg,
-                                  void *Ty_UNUSED(closure))
+                                  void *Py_UNUSED(closure))
 {
     PySSLContext *self = PySSLContext_CAST(op);
     FILE *fp;

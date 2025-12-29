@@ -89,7 +89,7 @@ static TyObject *
 _gdbm_gdbm_close_impl(gdbmobject *self);
 
 static TyObject *
-_gdbm_gdbm_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_gdbm_gdbm_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _gdbm_gdbm_close_impl((gdbmobject *)self);
 }

@@ -176,7 +176,7 @@ static TyObject *
 _hmac_HMAC_digest_impl(HMACObject *self);
 
 static TyObject *
-_hmac_HMAC_digest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_hmac_HMAC_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _hmac_HMAC_digest_impl((HMACObject *)self);
 }
@@ -199,7 +199,7 @@ static TyObject *
 _hmac_HMAC_hexdigest_impl(HMACObject *self);
 
 static TyObject *
-_hmac_HMAC_hexdigest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_hmac_HMAC_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _hmac_HMAC_hexdigest_impl((HMACObject *)self);
 }
@@ -218,7 +218,7 @@ static TyObject *
 _hmac_HMAC_name_get_impl(HMACObject *self);
 
 static TyObject *
-_hmac_HMAC_name_get(TyObject *self, void *Ty_UNUSED(context))
+_hmac_HMAC_name_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _hmac_HMAC_name_get_impl((HMACObject *)self);
 }
@@ -237,7 +237,7 @@ static TyObject *
 _hmac_HMAC_block_size_get_impl(HMACObject *self);
 
 static TyObject *
-_hmac_HMAC_block_size_get(TyObject *self, void *Ty_UNUSED(context))
+_hmac_HMAC_block_size_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _hmac_HMAC_block_size_get_impl((HMACObject *)self);
 }
@@ -256,7 +256,7 @@ static TyObject *
 _hmac_HMAC_digest_size_get_impl(HMACObject *self);
 
 static TyObject *
-_hmac_HMAC_digest_size_get(TyObject *self, void *Ty_UNUSED(context))
+_hmac_HMAC_digest_size_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _hmac_HMAC_digest_size_get_impl((HMACObject *)self);
 }

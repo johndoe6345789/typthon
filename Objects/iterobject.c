@@ -83,7 +83,7 @@ iter_iternext(TyObject *iterator)
 }
 
 static TyObject *
-iter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
+iter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     seqiterobject *it = (seqiterobject*)op;
     Ty_ssize_t seqsize, len;
@@ -95,7 +95,7 @@ iter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
                 return NULL;
         }
         else {
-            Ty_RETURN_NOTIMPLEMENTED;
+            Py_RETURN_NOTIMPLEMENTED;
         }
         len = seqsize - it->it_index;
         if (len >= 0)
@@ -107,7 +107,7 @@ iter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
 PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-iter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+iter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     seqiterobject *it = (seqiterobject*)op;
     TyObject *iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
@@ -136,7 +136,7 @@ iter_setstate(TyObject *op, TyObject *state)
             index = 0;
         it->it_index = index;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
@@ -234,7 +234,7 @@ calliter_iternext(TyObject *op)
     if (result != NULL && it->it_sentinel != NULL){
         int ok;
 
-        ok = PyObject_RichCompareBool(it->it_sentinel, result, Ty_EQ);
+        ok = PyObject_RichCompareBool(it->it_sentinel, result, Py_EQ);
         if (ok == 0) {
             return result; /* Common case, fast path */
         }
@@ -254,7 +254,7 @@ calliter_iternext(TyObject *op)
 }
 
 static TyObject *
-calliter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+calliter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     calliterobject *it = (calliterobject*)op;
     TyObject *iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
@@ -453,7 +453,7 @@ anextawaitable_throw(TyObject *op, TyObject *args)
 
 
 static TyObject *
-anextawaitable_close(TyObject *op, TyObject *Ty_UNUSED(dummy))
+anextawaitable_close(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     anextawaitableobject *obj = anextawaitableobject_CAST(op);
     return anextawaitable_proxy(obj, "close", NULL);

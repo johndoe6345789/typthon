@@ -12,7 +12,7 @@
 
 #include "clinic/classobject.c.h"
 
-#define _PyMethodObject_CAST(op) _Ty_CAST(PyMethodObject*, (op))
+#define _PyMethodObject_CAST(op) _Py_CAST(PyMethodObject*, (op))
 #define TP_DESCR_GET(t) ((t)->tp_descr_get)
 
 /*[clinic input]
@@ -159,9 +159,9 @@ static TyMethodDef method_methods[] = {
 #define MO_OFF(x) offsetof(PyMethodObject, x)
 
 static TyMemberDef method_memberlist[] = {
-    {"__func__", _Ty_T_OBJECT, MO_OFF(im_func), Ty_READONLY,
+    {"__func__", _Ty_T_OBJECT, MO_OFF(im_func), Py_READONLY,
      "the function (or other callable) implementing a method"},
-    {"__self__", _Ty_T_OBJECT, MO_OFF(im_self), Ty_READONLY,
+    {"__self__", _Ty_T_OBJECT, MO_OFF(im_self), Py_READONLY,
      "the instance to which a method is bound"},
     {NULL}      /* Sentinel */
 };
@@ -260,21 +260,21 @@ method_richcompare(TyObject *self, TyObject *other, int op)
     TyObject *res;
     int eq;
 
-    if ((op != Ty_EQ && op != Ty_NE) ||
+    if ((op != Py_EQ && op != Py_NE) ||
         !TyMethod_Check(self) ||
         !TyMethod_Check(other))
     {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     a = (PyMethodObject *)self;
     b = (PyMethodObject *)other;
-    eq = PyObject_RichCompareBool(a->im_func, b->im_func, Ty_EQ);
+    eq = PyObject_RichCompareBool(a->im_func, b->im_func, Py_EQ);
     if (eq == 1) {
         eq = (a->im_self == b->im_self);
     }
     else if (eq < 0)
         return NULL;
-    if (op == Ty_EQ)
+    if (op == Py_EQ)
         res = eq ? Ty_True : Ty_False;
     else
         res = eq ? Ty_False : Ty_True;
@@ -399,7 +399,7 @@ PyInstanceMethod_Function(TyObject *im)
 #define IMO_OFF(x) offsetof(PyInstanceMethodObject, x)
 
 static TyMemberDef instancemethod_memberlist[] = {
-    {"__func__", _Ty_T_OBJECT, IMO_OFF(func), Ty_READONLY,
+    {"__func__", _Ty_T_OBJECT, IMO_OFF(func), Py_READONLY,
      "the function (or other callable) implementing a method"},
     {NULL}      /* Sentinel */
 };
@@ -479,18 +479,18 @@ instancemethod_richcompare(TyObject *self, TyObject *other, int op)
     TyObject *res;
     int eq;
 
-    if ((op != Ty_EQ && op != Ty_NE) ||
+    if ((op != Py_EQ && op != Py_NE) ||
         !PyInstanceMethod_Check(self) ||
         !PyInstanceMethod_Check(other))
     {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     a = (PyInstanceMethodObject *)self;
     b = (PyInstanceMethodObject *)other;
-    eq = PyObject_RichCompareBool(a->func, b->func, Ty_EQ);
+    eq = PyObject_RichCompareBool(a->func, b->func, Py_EQ);
     if (eq < 0)
         return NULL;
-    if (op == Ty_EQ)
+    if (op == Py_EQ)
         res = eq ? Ty_True : Ty_False;
     else
         res = eq ? Ty_False : Ty_True;

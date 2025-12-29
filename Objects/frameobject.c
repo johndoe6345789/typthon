@@ -156,7 +156,7 @@ framelocalsproxy_getkeyindex(PyFrameObject *frame, TyObject *key, bool read, TyO
         if (name_hash != key_hash) {
             continue;
         }
-        int same = PyObject_RichCompareBool(name, key, Ty_EQ);
+        int same = PyObject_RichCompareBool(name, key, Py_EQ);
         if (same < 0) {
             return -2;
         }
@@ -367,7 +367,7 @@ framelocalsproxy_merge(TyObject* self, TyObject* other)
 }
 
 static TyObject *
-framelocalsproxy_keys(TyObject *self, TyObject *Ty_UNUSED(ignored))
+framelocalsproxy_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     PyFrameObject *frame = PyFrameLocalsProxyObject_CAST(self)->frame;
     PyCodeObject *co = _TyFrame_GetCode(frame->f_frame);
@@ -484,9 +484,9 @@ framelocalsproxy_richcompare(TyObject *lhs, TyObject *rhs, int op)
     if (PyFrameLocalsProxy_Check(rhs)) {
         PyFrameLocalsProxyObject *other = (PyFrameLocalsProxyObject *)rhs;
         bool result = self->frame == other->frame;
-        if (op == Ty_EQ) {
+        if (op == Py_EQ) {
             return TyBool_FromLong(result);
-        } else if (op == Ty_NE) {
+        } else if (op == Py_NE) {
             return TyBool_FromLong(!result);
         }
     } else if (TyDict_Check(rhs)) {
@@ -505,7 +505,7 @@ framelocalsproxy_richcompare(TyObject *lhs, TyObject *rhs, int op)
         return result;
     }
 
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static TyObject *
@@ -540,7 +540,7 @@ static TyObject*
 framelocalsproxy_or(TyObject *self, TyObject *other)
 {
     if (!TyDict_Check(other) && !PyFrameLocalsProxy_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     TyObject *result = TyDict_New();
@@ -565,18 +565,18 @@ static TyObject*
 framelocalsproxy_inplace_or(TyObject *self, TyObject *other)
 {
     if (!TyDict_Check(other) && !PyFrameLocalsProxy_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     if (framelocalsproxy_merge(self, other) < 0) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     return Ty_NewRef(self);
 }
 
 static TyObject *
-framelocalsproxy_values(TyObject *self, TyObject *Ty_UNUSED(ignored))
+framelocalsproxy_values(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     PyFrameObject *frame = PyFrameLocalsProxyObject_CAST(self)->frame;
     PyCodeObject *co = _TyFrame_GetCode(frame->f_frame);
@@ -614,7 +614,7 @@ framelocalsproxy_values(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-framelocalsproxy_items(TyObject *self, TyObject *Ty_UNUSED(ignored))
+framelocalsproxy_items(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     PyFrameObject *frame = PyFrameLocalsProxyObject_CAST(self)->frame;
     PyCodeObject *co = _TyFrame_GetCode(frame->f_frame);
@@ -730,7 +730,7 @@ framelocalsproxy_update(TyObject *self, TyObject *other)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject*
@@ -846,7 +846,7 @@ framelocalsproxy_pop(TyObject* self, TyObject *const *args, Ty_ssize_t nargs)
 }
 
 static TyObject*
-framelocalsproxy_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+framelocalsproxy_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject* result = TyDict_New();
 
@@ -863,7 +863,7 @@ framelocalsproxy_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject*
-framelocalsproxy_reversed(TyObject *self, TyObject *Ty_UNUSED(ignored))
+framelocalsproxy_reversed(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *result = framelocalsproxy_keys(self, NULL);
 
@@ -1019,7 +1019,7 @@ frame_lineno_get_impl(PyFrameObject *self)
 {
     int lineno = TyFrame_GetLineNumber(self);
     if (lineno < 0) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyLong_FromLong(lineno);
 }
@@ -1110,7 +1110,7 @@ frame_back_get_impl(PyFrameObject *self)
 {
     TyObject *res = (TyObject *)TyFrame_GetBack(self);
     if (res == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return res;
 }
@@ -1889,7 +1889,7 @@ frame_generator_get_impl(PyFrameObject *self)
         TyObject *gen = (TyObject *)_TyGen_GetGeneratorFromFrame(self->f_frame);
         return Ty_NewRef(gen);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2009,7 +2009,7 @@ frame_clear_impl(PyFrameObject *self)
         assert(self->f_frame->owner == FRAME_OWNED_BY_FRAME_OBJECT);
         (void)frame_tp_clear((TyObject *)self);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 running:
     TyErr_SetString(TyExc_RuntimeError,
                     "cannot clear an executing frame");

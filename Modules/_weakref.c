@@ -59,7 +59,7 @@ _weakref__remove_dead_weakref_impl(TyObject *module, TyObject *dct,
     if (_TyDict_DelItemIf(dct, key, is_dead_weakref, NULL) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

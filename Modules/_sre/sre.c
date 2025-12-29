@@ -661,7 +661,7 @@ state_getslice(SRE_STATE* state, Ty_ssize_t index, TyObject* string, int empty)
             /* want empty string */
             i = j = 0;
         else {
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
     } else {
         i = STATE_OFFSET(state, state->mark[index]);
@@ -1506,7 +1506,7 @@ _sre_SRE_Pattern__fail_after_impl(PatternObject *self, int count,
     self->fail_after_count = count;
     Ty_INCREF(exception);
     Ty_XSETREF(self->fail_after_exc, exception);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif /* Ty_DEBUG */
 
@@ -1595,7 +1595,7 @@ PyDoc_STRVAR(pattern_doc, "Compiled regular expression object.");
 
 /* PatternObject's 'groupindex' method. */
 static TyObject *
-pattern_groupindex(TyObject *op, void *Ty_UNUSED(ignored))
+pattern_groupindex(TyObject *op, void *Py_UNUSED(ignored))
 {
     PatternObject *self = _PatternObject_CAST(op);
     if (self->groupindex == NULL)
@@ -2674,16 +2674,16 @@ PyDoc_STRVAR(match_group_doc,
     For 0 returns the entire match.");
 
 static TyObject *
-match_lastindex_get(TyObject *op, void *Ty_UNUSED(ignored))
+match_lastindex_get(TyObject *op, void *Py_UNUSED(ignored))
 {
     MatchObject *self = _MatchObject_CAST(op);
     if (self->lastindex >= 0)
         return TyLong_FromSsize_t(self->lastindex);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-match_lastgroup_get(TyObject *op, void *Ty_UNUSED(ignored))
+match_lastgroup_get(TyObject *op, void *Py_UNUSED(ignored))
 {
     MatchObject *self = _MatchObject_CAST(op);
     if (self->pattern->indexgroup &&
@@ -2694,11 +2694,11 @@ match_lastgroup_get(TyObject *op, void *Ty_UNUSED(ignored))
                                             self->lastindex);
         return Ty_NewRef(result);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-match_regs_get(TyObject *op, void *Ty_UNUSED(ignored))
+match_regs_get(TyObject *op, void *Py_UNUSED(ignored))
 {
     MatchObject *self = _MatchObject_CAST(op);
     if (self->regs) {
@@ -2790,7 +2790,7 @@ pattern_new_match(_sremodulestate* module_state,
     } else if (status == 0) {
 
         /* no match */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 
     }
 
@@ -2873,7 +2873,7 @@ _sre_SRE_Scanner_match_impl(ScannerObject *self, TyTypeObject *cls)
     }
     if (state->start == NULL) {
         scanner_end(self);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     state_reset(state);
@@ -2923,7 +2923,7 @@ _sre_SRE_Scanner_search_impl(ScannerObject *self, TyTypeObject *cls)
     }
     if (state->start == NULL) {
         scanner_end(self);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     state_reset(state);
@@ -3115,18 +3115,18 @@ pattern_richcompare(TyObject *lefto, TyObject *righto, int op)
     PatternObject *left, *right;
     int cmp;
 
-    if (op != Ty_EQ && op != Ty_NE) {
-        Ty_RETURN_NOTIMPLEMENTED;
+    if (op != Py_EQ && op != Py_NE) {
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     if (!Ty_IS_TYPE(righto, module_state->Pattern_Type))
     {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     if (lefto == righto) {
         /* a pattern is equal to itself */
-        return TyBool_FromLong(op == Ty_EQ);
+        return TyBool_FromLong(op == Py_EQ);
     }
 
     left = (PatternObject *)lefto;
@@ -3145,12 +3145,12 @@ pattern_richcompare(TyObject *lefto, TyObject *righto, int op)
     }
     if (cmp) {
         cmp = PyObject_RichCompareBool(left->pattern, right->pattern,
-                                       Ty_EQ);
+                                       Py_EQ);
         if (cmp < 0) {
             return NULL;
         }
     }
-    if (op == Ty_NE) {
+    if (op == Py_NE) {
         cmp = !cmp;
     }
     return TyBool_FromLong(cmp);
@@ -3184,13 +3184,13 @@ static TyGetSetDef pattern_getset[] = {
 
 #define PAT_OFF(x) offsetof(PatternObject, x)
 static TyMemberDef pattern_members[] = {
-    {"pattern",    _Ty_T_OBJECT,    PAT_OFF(pattern),       Ty_READONLY,
+    {"pattern",    _Ty_T_OBJECT,    PAT_OFF(pattern),       Py_READONLY,
      "The pattern string from which the RE object was compiled."},
-    {"flags",      Ty_T_INT,       PAT_OFF(flags),         Ty_READONLY,
+    {"flags",      Ty_T_INT,       PAT_OFF(flags),         Py_READONLY,
      "The regex matching flags."},
-    {"groups",     Ty_T_PYSSIZET,  PAT_OFF(groups),        Ty_READONLY,
+    {"groups",     Ty_T_PYSSIZET,  PAT_OFF(groups),        Py_READONLY,
      "The number of capturing groups in the pattern."},
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(PatternObject, weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(PatternObject, weakreflist), Py_READONLY},
     {NULL}  /* Sentinel */
 };
 
@@ -3243,13 +3243,13 @@ static TyGetSetDef match_getset[] = {
 
 #define MATCH_OFF(x) offsetof(MatchObject, x)
 static TyMemberDef match_members[] = {
-    {"string",  _Ty_T_OBJECT,   MATCH_OFF(string),  Ty_READONLY,
+    {"string",  _Ty_T_OBJECT,   MATCH_OFF(string),  Py_READONLY,
      "The string passed to match() or search()."},
-    {"re",      _Ty_T_OBJECT,   MATCH_OFF(pattern), Ty_READONLY,
+    {"re",      _Ty_T_OBJECT,   MATCH_OFF(pattern), Py_READONLY,
      "The regular expression object."},
-    {"pos",     Ty_T_PYSSIZET, MATCH_OFF(pos),     Ty_READONLY,
+    {"pos",     Ty_T_PYSSIZET, MATCH_OFF(pos),     Py_READONLY,
      "The index into the string at which the RE engine started looking for a match."},
-    {"endpos",  Ty_T_PYSSIZET, MATCH_OFF(endpos),  Ty_READONLY,
+    {"endpos",  Ty_T_PYSSIZET, MATCH_OFF(endpos),  Py_READONLY,
      "The index into the string beyond which the RE engine will not go."},
     {NULL}
 };
@@ -3293,7 +3293,7 @@ static TyMethodDef scanner_methods[] = {
 
 #define SCAN_OFF(x) offsetof(ScannerObject, x)
 static TyMemberDef scanner_members[] = {
-    {"pattern", _Ty_T_OBJECT, SCAN_OFF(pattern), Ty_READONLY},
+    {"pattern", _Ty_T_OBJECT, SCAN_OFF(pattern), Py_READONLY},
     {NULL}  /* Sentinel */
 };
 

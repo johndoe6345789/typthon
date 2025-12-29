@@ -141,7 +141,7 @@ static TyObject *
 memoryview_release_impl(PyMemoryViewObject *self);
 
 static TyObject *
-memoryview_release(TyObject *self, TyObject *Ty_UNUSED(ignored))
+memoryview_release(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return memoryview_release_impl((PyMemoryViewObject *)self);
 }
@@ -229,7 +229,7 @@ static TyObject *
 memoryview_toreadonly_impl(PyMemoryViewObject *self);
 
 static TyObject *
-memoryview_toreadonly(TyObject *self, TyObject *Ty_UNUSED(ignored))
+memoryview_toreadonly(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return memoryview_toreadonly_impl((PyMemoryViewObject *)self);
 }
@@ -247,7 +247,7 @@ static TyObject *
 memoryview_tolist_impl(PyMemoryViewObject *self);
 
 static TyObject *
-memoryview_tolist(TyObject *self, TyObject *Ty_UNUSED(ignored))
+memoryview_tolist(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return memoryview_tolist_impl((PyMemoryViewObject *)self);
 }

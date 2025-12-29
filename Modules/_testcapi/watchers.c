@@ -127,7 +127,7 @@ clear_dict_watcher(TyObject *self, TyObject *watcher_id)
         assert(g_dict_watch_events);
         Ty_CLEAR(g_dict_watch_events);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -144,7 +144,7 @@ _testcapi_watch_dict_impl(TyObject *module, int watcher_id, TyObject *dict)
     if (TyDict_Watch(watcher_id, dict)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -158,11 +158,11 @@ _testcapi_unwatch_dict_impl(TyObject *module, int watcher_id, TyObject *dict)
     if (TyDict_Unwatch(watcher_id, dict)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-get_dict_watcher_events(TyObject *self, TyObject *Ty_UNUSED(args))
+get_dict_watcher_events(TyObject *self, TyObject *Py_UNUSED(args))
 {
     if (!g_dict_watch_events) {
         TyErr_SetString(TyExc_RuntimeError, "no watchers active");
@@ -251,11 +251,11 @@ clear_type_watcher(TyObject *self, TyObject *watcher_id)
         assert(g_type_modified_events);
         Ty_CLEAR(g_type_modified_events);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-get_type_modified_events(TyObject *self, TyObject *Ty_UNUSED(args))
+get_type_modified_events(TyObject *self, TyObject *Py_UNUSED(args))
 {
     if (!g_type_modified_events) {
         TyErr_SetString(TyExc_RuntimeError, "no watchers active");
@@ -278,7 +278,7 @@ _testcapi_watch_type_impl(TyObject *module, int watcher_id, TyObject *type)
     if (TyType_Watch(watcher_id, type)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -292,7 +292,7 @@ _testcapi_unwatch_type_impl(TyObject *module, int watcher_id, TyObject *type)
     if (TyType_Unwatch(watcher_id, type)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -391,7 +391,7 @@ clear_code_watcher(TyObject *self, TyObject *watcher_id)
             }
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -413,7 +413,7 @@ get_code_watcher_num_destroyed_events(TyObject *self, TyObject *watcher_id)
 }
 
 static TyObject *
-allocate_too_many_code_watchers(TyObject *self, TyObject *Ty_UNUSED(args))
+allocate_too_many_code_watchers(TyObject *self, TyObject *Py_UNUSED(args))
 {
     int watcher_ids[CODE_MAX_WATCHERS + 1];
     int num_watchers = 0;
@@ -440,7 +440,7 @@ allocate_too_many_code_watchers(TyObject *self, TyObject *Ty_UNUSED(args))
     else if (TyErr_Occurred()) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 // Test function watchers
@@ -584,7 +584,7 @@ clear_func_watcher(TyObject *self, TyObject *watcher_id_obj)
     assert(idx != -1);
     Ty_CLEAR(pyfunc_watchers[idx]);
     func_watcher_ids[idx] = -1;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -622,7 +622,7 @@ allocate_too_many_func_watchers(TyObject *self, TyObject *args)
     else if (TyErr_Occurred()) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 // Test contexct object watchers
@@ -632,7 +632,7 @@ static TyObject *context_switches[NUM_CONTEXT_WATCHERS];
 
 static int
 handle_context_watcher_event(int which_watcher, PyContextEvent event, TyObject *ctx) {
-    if (event == Ty_CONTEXT_SWITCHED) {
+    if (event == Py_CONTEXT_SWITCHED) {
         TyList_Append(context_switches[which_watcher], ctx);
     }
     else {
@@ -707,15 +707,15 @@ clear_context_watcher(TyObject *self, TyObject *watcher_id)
             }
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-clear_context_stack(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
+clear_context_stack(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
     PyThreadState *tstate = TyThreadState_Get();
     if (tstate->context == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (((PyContext *)tstate->context)->ctx_prev != NULL) {
         TyErr_SetString(TyExc_RuntimeError,
@@ -723,11 +723,11 @@ clear_context_stack(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(args))
         return NULL;
     }
     Ty_CLEAR(tstate->context);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-get_context_switches(TyObject *Ty_UNUSED(self), TyObject *watcher_id)
+get_context_switches(TyObject *Py_UNUSED(self), TyObject *watcher_id)
 {
     assert(TyLong_Check(watcher_id));
     long watcher_id_l = TyLong_AsLong(watcher_id);
@@ -742,7 +742,7 @@ get_context_switches(TyObject *Ty_UNUSED(self), TyObject *watcher_id)
 }
 
 static TyObject *
-allocate_too_many_context_watchers(TyObject *self, TyObject *Ty_UNUSED(args))
+allocate_too_many_context_watchers(TyObject *self, TyObject *Py_UNUSED(args))
 {
     int watcher_ids[CONTEXT_MAX_WATCHERS + 1];
     int num_watchers = 0;
@@ -769,7 +769,7 @@ allocate_too_many_context_watchers(TyObject *self, TyObject *Ty_UNUSED(args))
     else if (TyErr_Occurred()) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -787,7 +787,7 @@ _testcapi_set_func_defaults_via_capi_impl(TyObject *module, TyObject *func,
     if (TyFunction_SetDefaults(func, defaults) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -802,7 +802,7 @@ _testcapi_set_func_kwdefaults_via_capi_impl(TyObject *module, TyObject *func,
     if (TyFunction_SetKwDefaults(func, defaults) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef test_methods[] = {

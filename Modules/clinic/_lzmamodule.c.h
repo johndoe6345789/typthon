@@ -63,7 +63,7 @@ static TyObject *
 _lzma_LZMACompressor_flush_impl(Compressor *self);
 
 static TyObject *
-_lzma_LZMACompressor_flush(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_lzma_LZMACompressor_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _lzma_LZMACompressor_flush_impl((Compressor *)self);
 }

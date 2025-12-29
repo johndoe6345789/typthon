@@ -173,21 +173,21 @@
 /* Use this for unused arguments in a function definition to silence compiler
  * warnings. Example:
  *
- * int func(int a, int Ty_UNUSED(b)) { return a; }
+ * int func(int a, int Py_UNUSED(b)) { return a; }
  */
 #if defined(__GNUC__) || defined(__clang__)
-#  define Ty_UNUSED(name) _unused_ ## name __attribute__((unused))
+#  define Py_UNUSED(name) _unused_ ## name __attribute__((unused))
 #elif defined(_MSC_VER)
    // Disable warning C4100: unreferenced formal parameter,
    // declare the parameter,
    // restore old compiler warnings.
-#  define Ty_UNUSED(name) \
+#  define Py_UNUSED(name) \
         __pragma(warning(push)) \
         __pragma(warning(suppress: 4100)) \
         _unused_ ## name \
         __pragma(warning(pop))
 #else
-#  define Ty_UNUSED(name) _unused_ ## name
+#  define Py_UNUSED(name) _unused_ ## name
 #endif
 
 #if defined(RANDALL_WAS_HERE)
@@ -223,8 +223,8 @@
     (type*)((char*)ptr - offsetof(type, member))
 
 // Prevent using an expression as a l-value.
-// For example, "int x; _Ty_RVALUE(x) = 1;" fails with a compiler error.
-#define _Ty_RVALUE(EXPR) ((void)0, (EXPR))
+// For example, "int x; _Py_RVALUE(x) = 1;" fails with a compiler error.
+#define _Py_RVALUE(EXPR) ((void)0, (EXPR))
 
 // Return non-zero if the type is signed, return zero if it's unsigned.
 // Use "<= 0" rather than "< 0" to prevent the compiler warning:

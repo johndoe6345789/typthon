@@ -20,7 +20,7 @@ static TyObject* _fuzz_run(TyObject* self, TyObject* args) {
             TyExc_RuntimeError, "Nonzero return code from fuzzer: %d", rv);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef module_methods[] = {

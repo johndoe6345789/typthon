@@ -18,7 +18,7 @@ PyAPI_FUNC(int) _TyBytes_Resize(TyObject **, Ty_ssize_t);
 
 /* Macros and static inline functions, trading safety for speed */
 #define _TyBytes_CAST(op) \
-    (assert(TyBytes_Check(op)), _Ty_CAST(PyBytesObject*, op))
+    (assert(TyBytes_Check(op)), _Py_CAST(PyBytesObject*, op))
 
 static inline char* TyBytes_AS_STRING(TyObject *op)
 {

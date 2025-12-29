@@ -2631,7 +2631,7 @@ create_stdio(const PyConfig *config, TyObject* io,
     const int buffered_stdio = config->buffered_stdio;
 
     if (!_Ty_IsValidFD(fd)) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     /* stdin is always opened in buffered mode, first because it shouldn't
@@ -2753,7 +2753,7 @@ error:
            _Ty_IsValidFD() check was called. Ignore the OSError and set the
            stream to None. */
         TyErr_Clear();
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return NULL;
 }
@@ -2905,7 +2905,7 @@ android_log_write_impl(TyObject *self, TyObject *args)
     // Despite its name, this function is part of the public API
     // (https://developer.android.com/ndk/reference/group/logging).
     __android_log_write(prio, tag, text);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2969,7 +2969,7 @@ apple_log_write_impl(TyObject *self, TyObject *args)
     // Pass the user-provided text through explicit %s formatting
     // to avoid % literals being interpreted as a formatting directive.
     os_log_with_type(OS_LOG_DEFAULT, logtype, "%s", text);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

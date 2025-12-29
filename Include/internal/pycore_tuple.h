@@ -21,7 +21,7 @@ extern PyStatus _TyTuple_InitGlobalObjects(PyInterpreterState *);
 
 /* other API */
 
-#define _TyTuple_ITEMS(op) _Ty_RVALUE(_TyTuple_CAST(op)->ob_item)
+#define _TyTuple_ITEMS(op) _Py_RVALUE(_TyTuple_CAST(op)->ob_item)
 
 PyAPI_FUNC(TyObject *)_TyTuple_FromArray(TyObject *const *, Ty_ssize_t);
 PyAPI_FUNC(TyObject *)_TyTuple_FromStackRefStealOnSuccess(const union _PyStackRef *, Ty_ssize_t);

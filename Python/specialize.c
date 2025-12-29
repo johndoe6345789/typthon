@@ -1424,7 +1424,7 @@ _Py_Specialize_StoreAttr(_PyStackRef owner_st, _Py_CODEUNIT *instr, TyObject *na
                 SPECIALIZATION_FAIL(STORE_ATTR, SPEC_FAIL_EXPECTED_ERROR);
                 goto fail;
             }
-            if (dmem->flags & Ty_READONLY) {
+            if (dmem->flags & Py_READONLY) {
                 SPECIALIZATION_FAIL(STORE_ATTR, SPEC_FAIL_ATTR_READ_ONLY);
                 goto fail;
             }
@@ -2766,7 +2766,7 @@ _Py_Specialize_CompareOp(_PyStackRef lhs_st, _PyStackRef rhs_st, _Py_CODEUNIT *i
     }
     if (TyUnicode_CheckExact(lhs)) {
         int cmp = oparg >> 5;
-        if (cmp != Ty_EQ && cmp != Ty_NE) {
+        if (cmp != Py_EQ && cmp != Py_NE) {
             SPECIALIZATION_FAIL(COMPARE_OP, SPEC_FAIL_COMPARE_OP_STRING);
             goto failure;
         }

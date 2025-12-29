@@ -95,7 +95,7 @@ spamlist_init(TyObject *op, TyObject *args, TyObject *kwds)
 }
 
 static TyObject *
-spamlist_state_get(TyObject *op, void *Ty_UNUSED(closure))
+spamlist_state_get(TyObject *op, void *Py_UNUSED(closure))
 {
     spamlistobject *self = _spamlistobject_CAST(op);
     return TyLong_FromLong(self->state);
@@ -200,7 +200,7 @@ spamdict_init(TyObject *op, TyObject *args, TyObject *kwds)
 }
 
 static TyMemberDef spamdict_members[] = {
-    {"state", Ty_T_INT, offsetof(spamdictobject, state), Ty_READONLY,
+    {"state", Ty_T_INT, offsetof(spamdictobject, state), Py_READONLY,
      PyDoc_STR("an int variable for demonstration purposes")},
     {0}
 };

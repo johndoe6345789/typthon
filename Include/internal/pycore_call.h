@@ -76,7 +76,7 @@ _TyObject_VectorcallMethodId(
 {
     TyObject *oname = _TyUnicode_FromId(name); /* borrowed */
     if (!oname) {
-        return _Ty_NULL;
+        return _Py_NULL;
     }
     return PyObject_VectorcallMethod(oname, args, nargsf, kwnames);
 }
@@ -85,7 +85,7 @@ static inline TyObject *
 _TyObject_CallMethodIdNoArgs(TyObject *self, _Ty_Identifier *name)
 {
     size_t nargsf = 1 | PY_VECTORCALL_ARGUMENTS_OFFSET;
-    return _TyObject_VectorcallMethodId(name, &self, nargsf, _Ty_NULL);
+    return _TyObject_VectorcallMethodId(name, &self, nargsf, _Py_NULL);
 }
 
 static inline TyObject *
@@ -94,7 +94,7 @@ _TyObject_CallMethodIdOneArg(TyObject *self, _Ty_Identifier *name, TyObject *arg
     TyObject *args[2] = {self, arg};
     size_t nargsf = 2 | PY_VECTORCALL_ARGUMENTS_OFFSET;
     assert(arg != NULL);
-    return _TyObject_VectorcallMethodId(name, args, nargsf, _Ty_NULL);
+    return _TyObject_VectorcallMethodId(name, args, nargsf, _Py_NULL);
 }
 
 

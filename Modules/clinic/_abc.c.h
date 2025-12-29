@@ -157,7 +157,7 @@ static TyObject *
 _abc_get_cache_token_impl(TyObject *module);
 
 static TyObject *
-_abc_get_cache_token(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_abc_get_cache_token(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _abc_get_cache_token_impl(module);
 }

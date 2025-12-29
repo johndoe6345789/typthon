@@ -106,27 +106,27 @@ error:
 }
 
 static TyObject *
-clear_memo_stats(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(ignored))
+clear_memo_stats(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(ignored))
 {
 #if defined(Ty_DEBUG)
     _TyPegen_clear_memo_statistics();
 #endif
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-get_memo_stats(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(ignored))
+get_memo_stats(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(ignored))
 {
 #if defined(Ty_DEBUG)
     return _TyPegen_get_memo_statistics();
 #else
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #endif
 }
 
 // TODO: Write to Python's sys.stdout instead of C's stdout.
 static TyObject *
-dump_memo_stats(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(ignored))
+dump_memo_stats(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(ignored))
 {
 #if defined(Ty_DEBUG)
     TyObject *list = _TyPegen_get_memo_statistics();
@@ -146,7 +146,7 @@ dump_memo_stats(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(ignored))
     }
     Ty_DECREF(list);
 #endif
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef ParseMethods[] = {

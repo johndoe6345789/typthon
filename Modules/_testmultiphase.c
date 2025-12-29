@@ -64,7 +64,7 @@ Example_demo(TyObject *op, TyObject *args)
     if (o != NULL && TyUnicode_Check(o)) {
         return Ty_NewRef(o);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #include "clinic/_testmultiphase.c.h"
@@ -205,7 +205,7 @@ _testmultiphase_StateAccessType_increment_count_clinic_impl(StateAccessTypeObjec
     }
     m_state->counter += n;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(_StateAccessType_decrement_count__doc__,
@@ -251,7 +251,7 @@ _StateAccessType_increment_count_noclinic(TyObject *self,
     meth_state *m_state = TyType_GetModuleState(defining_class);
     m_state->counter += n;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -338,7 +338,7 @@ call_state_registration_func(TyObject *mod, TyObject *args)
         case 0:
             mod = PyState_FindModule(def);
             if (mod == NULL) {
-                Ty_RETURN_NONE;
+                Py_RETURN_NONE;
             }
             return mod;
         case 1:
@@ -354,7 +354,7 @@ call_state_registration_func(TyObject *mod, TyObject *args)
             }
             break;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

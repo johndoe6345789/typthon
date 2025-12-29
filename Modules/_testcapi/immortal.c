@@ -15,18 +15,18 @@ int verify_immortality(TyObject *object)
 }
 
 static TyObject *
-test_immortal_builtins(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_immortal_builtins(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *objects[] = {Ty_True, Ty_False, Ty_None, Ty_Ellipsis};
     Ty_ssize_t n = Ty_ARRAY_LENGTH(objects);
     for (Ty_ssize_t i = 0; i < n; i++) {
         assert(verify_immortality(objects[i]));
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-test_immortal_small_ints(TyObject *self, TyObject *Ty_UNUSED(ignored))
+test_immortal_small_ints(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     for (int i = -5; i <= 256; i++) {
         TyObject *obj = TyLong_FromLong(i);
@@ -41,7 +41,7 @@ test_immortal_small_ints(TyObject *self, TyObject *Ty_UNUSED(ignored))
         assert(!has_int_immortal_bit);
         Ty_DECREF(obj);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *

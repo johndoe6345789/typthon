@@ -164,7 +164,7 @@ mode and no data is available at the moment.
 
 static TyObject *
 _io__BufferedIOBase_read_impl(TyObject *self, TyTypeObject *cls,
-                              int Ty_UNUSED(size))
+                              int Py_UNUSED(size))
 /*[clinic end generated code: output=aceb2765587b0a29 input=824f6f910465e61a]*/
 {
     _PyIO_State *state = get_io_state_by_cls(cls);
@@ -186,7 +186,7 @@ A short result does not imply that EOF is imminent.
 
 static TyObject *
 _io__BufferedIOBase_read1_impl(TyObject *self, TyTypeObject *cls,
-                               int Ty_UNUSED(size))
+                               int Py_UNUSED(size))
 /*[clinic end generated code: output=2e7fc62972487eaa input=af76380e020fd9e6]*/
 {
     _PyIO_State *state = get_io_state_by_cls(cls);
@@ -211,7 +211,7 @@ underlying raw stream cannot accept more data at the moment.
 
 static TyObject *
 _io__BufferedIOBase_write_impl(TyObject *self, TyTypeObject *cls,
-                               TyObject *Ty_UNUSED(b))
+                               TyObject *Py_UNUSED(b))
 /*[clinic end generated code: output=712c635246bf2306 input=9793f5c8f71029ad]*/
 {
     _PyIO_State *state = get_io_state_by_cls(cls);
@@ -485,7 +485,7 @@ _io__Buffered__dealloc_warn_impl(buffered *self, TyObject *source)
         else
             TyErr_Clear();
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*
@@ -914,7 +914,7 @@ buffered_flush_and_rewind_unlocked(buffered *self)
         if (n == -1)
             return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1777,7 +1777,7 @@ _bufferedreader_read_fast(buffered *self, Ty_ssize_t n)
             self->pos += n;
         return res;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Generic read function: read from the stream until enough bytes are read,
@@ -1831,7 +1831,7 @@ _bufferedreader_read_generic(buffered *self, Ty_ssize_t n)
                 return res;
             }
             Ty_DECREF(res);
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         remaining -= r;
         written += r;
@@ -1855,7 +1855,7 @@ _bufferedreader_read_generic(buffered *self, Ty_ssize_t n)
                 return res;
             }
             Ty_DECREF(res);
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         if (remaining > r) {
             memcpy(out + written, self->buffer + self->pos, r);
@@ -2060,7 +2060,7 @@ end:
 
        Issue: https://bugs.python.org/issue32228 */
     _bufferedwriter_reset_buf(self);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 error:
     return NULL;
@@ -2382,28 +2382,28 @@ bufferedrwpair_write(TyObject *op, TyObject *args)
 }
 
 static TyObject *
-bufferedrwpair_flush(TyObject *op, TyObject *Ty_UNUSED(dummy))
+bufferedrwpair_flush(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     rwpair *self = rwpair_CAST(op);
     return _forward_call(self->writer, &_Ty_ID(flush), NULL);
 }
 
 static TyObject *
-bufferedrwpair_readable(TyObject *op, TyObject *Ty_UNUSED(dummy))
+bufferedrwpair_readable(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     rwpair *self = rwpair_CAST(op);
     return _forward_call(self->reader, &_Ty_ID(readable), NULL);
 }
 
 static TyObject *
-bufferedrwpair_writable(TyObject *op, TyObject *Ty_UNUSED(dummy))
+bufferedrwpair_writable(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     rwpair *self = rwpair_CAST(op);
     return _forward_call(self->writer, &_Ty_ID(writable), NULL);
 }
 
 static TyObject *
-bufferedrwpair_close(TyObject *op, TyObject *Ty_UNUSED(dummy))
+bufferedrwpair_close(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     rwpair *self = rwpair_CAST(op);
     TyObject *exc = NULL;
@@ -2423,7 +2423,7 @@ bufferedrwpair_close(TyObject *op, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-bufferedrwpair_isatty(TyObject *op, TyObject *Ty_UNUSED(dummy))
+bufferedrwpair_isatty(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     rwpair *self = rwpair_CAST(op);
     TyObject *ret = _forward_call(self->writer, &_Ty_ID(isatty), NULL);
@@ -2438,7 +2438,7 @@ bufferedrwpair_isatty(TyObject *op, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-bufferedrwpair_closed_get(TyObject *op, void *Ty_UNUSED(dummy))
+bufferedrwpair_closed_get(TyObject *op, void *Py_UNUSED(dummy))
 {
     rwpair *self = rwpair_CAST(op);
     if (self->writer == NULL) {
@@ -2559,10 +2559,10 @@ static TyMethodDef bufferedreader_methods[] = {
 };
 
 static TyMemberDef bufferedreader_members[] = {
-    {"raw", _Ty_T_OBJECT, offsetof(buffered, raw), Ty_READONLY},
+    {"raw", _Ty_T_OBJECT, offsetof(buffered, raw), Py_READONLY},
     {"_finalizing", Ty_T_BOOL, offsetof(buffered, finalizing), 0},
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(buffered, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(buffered, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(buffered, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(buffered, dict), Py_READONLY},
     {NULL}
 };
 
@@ -2618,10 +2618,10 @@ static TyMethodDef bufferedwriter_methods[] = {
 };
 
 static TyMemberDef bufferedwriter_members[] = {
-    {"raw", _Ty_T_OBJECT, offsetof(buffered, raw), Ty_READONLY},
+    {"raw", _Ty_T_OBJECT, offsetof(buffered, raw), Py_READONLY},
     {"_finalizing", Ty_T_BOOL, offsetof(buffered, finalizing), 0},
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(buffered, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(buffered, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(buffered, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(buffered, dict), Py_READONLY},
     {NULL}
 };
 
@@ -2674,8 +2674,8 @@ static TyMethodDef bufferedrwpair_methods[] = {
 };
 
 static TyMemberDef bufferedrwpair_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(rwpair, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(rwpair, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(rwpair, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(rwpair, dict), Py_READONLY},
     {NULL}
 };
 
@@ -2735,10 +2735,10 @@ static TyMethodDef bufferedrandom_methods[] = {
 };
 
 static TyMemberDef bufferedrandom_members[] = {
-    {"raw", _Ty_T_OBJECT, offsetof(buffered, raw), Ty_READONLY},
+    {"raw", _Ty_T_OBJECT, offsetof(buffered, raw), Py_READONLY},
     {"_finalizing", Ty_T_BOOL, offsetof(buffered, finalizing), 0},
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(buffered, weakreflist), Ty_READONLY},
-    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(buffered, dict), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(buffered, weakreflist), Py_READONLY},
+    {"__dictoffset__", Ty_T_PYSSIZET, offsetof(buffered, dict), Py_READONLY},
     {NULL}
 };
 

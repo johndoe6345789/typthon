@@ -21,7 +21,7 @@ this type and there is exactly one in existence.
 #include "pycore_object.h"        // _TyObject_GC_TRACK()
 
 
-#define _PySlice_CAST(op) _Ty_CAST(PySliceObject*, (op))
+#define _PySlice_CAST(op) _Py_CAST(PySliceObject*, (op))
 
 
 static TyObject *
@@ -51,7 +51,7 @@ ellipsis_repr(TyObject *op)
 }
 
 static TyObject *
-ellipsis_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+ellipsis_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     return TyUnicode_FromString("Ellipsis");
 }
@@ -363,9 +363,9 @@ slice_repr(TyObject *op)
 }
 
 static TyMemberDef slice_members[] = {
-    {"start", _Ty_T_OBJECT, offsetof(PySliceObject, start), Ty_READONLY},
-    {"stop", _Ty_T_OBJECT, offsetof(PySliceObject, stop), Ty_READONLY},
-    {"step", _Ty_T_OBJECT, offsetof(PySliceObject, step), Ty_READONLY},
+    {"start", _Ty_T_OBJECT, offsetof(PySliceObject, start), Py_READONLY},
+    {"stop", _Ty_T_OBJECT, offsetof(PySliceObject, stop), Py_READONLY},
+    {"step", _Ty_T_OBJECT, offsetof(PySliceObject, step), Py_READONLY},
     {0}
 };
 
@@ -452,7 +452,7 @@ _PySlice_GetLongIndices(PySliceObject *self, TyObject *length,
             if (start == NULL)
                 goto error;
 
-            cmp_result = PyObject_RichCompareBool(start, lower, Ty_LT);
+            cmp_result = PyObject_RichCompareBool(start, lower, Py_LT);
             if (cmp_result < 0)
                 goto error;
             if (cmp_result) {
@@ -460,7 +460,7 @@ _PySlice_GetLongIndices(PySliceObject *self, TyObject *length,
             }
         }
         else {
-            cmp_result = PyObject_RichCompareBool(start, upper, Ty_GT);
+            cmp_result = PyObject_RichCompareBool(start, upper, Py_GT);
             if (cmp_result < 0)
                 goto error;
             if (cmp_result) {
@@ -485,7 +485,7 @@ _PySlice_GetLongIndices(PySliceObject *self, TyObject *length,
             if (stop == NULL)
                 goto error;
 
-            cmp_result = PyObject_RichCompareBool(stop, lower, Ty_LT);
+            cmp_result = PyObject_RichCompareBool(stop, lower, Py_LT);
             if (cmp_result < 0)
                 goto error;
             if (cmp_result) {
@@ -493,7 +493,7 @@ _PySlice_GetLongIndices(PySliceObject *self, TyObject *length,
             }
         }
         else {
-            cmp_result = PyObject_RichCompareBool(stop, upper, Ty_GT);
+            cmp_result = PyObject_RichCompareBool(stop, upper, Py_GT);
             if (cmp_result < 0)
                 goto error;
             if (cmp_result) {
@@ -558,7 +558,7 @@ S. Out of bounds indices are clipped in a manner consistent with the\n\
 handling of normal slices.");
 
 static TyObject *
-slice_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
+slice_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PySliceObject *self = _PySlice_CAST(op);
     return Ty_BuildValue("O(OOO)", Ty_TYPE(self), self->start, self->stop, self->step);
@@ -576,16 +576,16 @@ static TyObject *
 slice_richcompare(TyObject *v, TyObject *w, int op)
 {
     if (!TySlice_Check(v) || !TySlice_Check(w))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     if (v == w) {
         TyObject *res;
         /* XXX Do we really need this shortcut?
            There's a unit test for it, but is that fair? */
         switch (op) {
-        case Ty_EQ:
-        case Ty_LE:
-        case Ty_GE:
+        case Py_EQ:
+        case Py_LE:
+        case Py_GE:
             res = Ty_True;
             break;
         default:

@@ -14,49 +14,49 @@ eval_get_func_desc(TyObject *self, TyObject *func)
 }
 
 static TyObject *
-eval_getlocals(TyObject *module, TyObject *Ty_UNUSED(args))
+eval_getlocals(TyObject *module, TyObject *Py_UNUSED(args))
 {
     return Ty_XNewRef(TyEval_GetLocals());
 }
 
 static TyObject *
-eval_getglobals(TyObject *module, TyObject *Ty_UNUSED(args))
+eval_getglobals(TyObject *module, TyObject *Py_UNUSED(args))
 {
     return Ty_XNewRef(TyEval_GetGlobals());
 }
 
 static TyObject *
-eval_getbuiltins(TyObject *module, TyObject *Ty_UNUSED(args))
+eval_getbuiltins(TyObject *module, TyObject *Py_UNUSED(args))
 {
     return Ty_XNewRef(TyEval_GetBuiltins());
 }
 
 static TyObject *
-eval_getframe(TyObject *module, TyObject *Ty_UNUSED(args))
+eval_getframe(TyObject *module, TyObject *Py_UNUSED(args))
 {
     return Ty_XNewRef(TyEval_GetFrame());
 }
 
 static TyObject *
-eval_getframe_builtins(TyObject *module, TyObject *Ty_UNUSED(args))
+eval_getframe_builtins(TyObject *module, TyObject *Py_UNUSED(args))
 {
     return TyEval_GetFrameBuiltins();
 }
 
 static TyObject *
-eval_getframe_globals(TyObject *module, TyObject *Ty_UNUSED(args))
+eval_getframe_globals(TyObject *module, TyObject *Py_UNUSED(args))
 {
     return TyEval_GetFrameGlobals();
 }
 
 static TyObject *
-eval_getframe_locals(TyObject *module, TyObject *Ty_UNUSED(args))
+eval_getframe_locals(TyObject *module, TyObject *Py_UNUSED(args))
 {
     return TyEval_GetFrameLocals();
 }
 
 static TyObject *
-eval_get_recursion_limit(TyObject *module, TyObject *Ty_UNUSED(args))
+eval_get_recursion_limit(TyObject *module, TyObject *Py_UNUSED(args))
 {
     int limit = Ty_GetRecursionLimit();
     return TyLong_FromLong(limit);
@@ -70,7 +70,7 @@ eval_set_recursion_limit(TyObject *module, TyObject *args)
         return NULL;
     }
     Ty_SetRecursionLimit(limit);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef test_methods[] = {

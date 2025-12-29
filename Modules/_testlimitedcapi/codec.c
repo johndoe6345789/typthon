@@ -8,7 +8,7 @@
 #include "parts.h"
 
 static TyObject *
-codec_namereplace_errors(TyObject *Ty_UNUSED(module), TyObject *exc)
+codec_namereplace_errors(TyObject *Py_UNUSED(module), TyObject *exc)
 {
     assert(exc != NULL);
     return PyCodec_NameReplaceErrors(exc);

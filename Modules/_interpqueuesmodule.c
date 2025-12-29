@@ -1548,7 +1548,7 @@ queuesmod_destroy(TyObject *self, TyObject *args, TyObject *kwds)
     if (handle_queue_error(err, self, qid)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(queuesmod_destroy_doc,
@@ -1558,7 +1558,7 @@ Clear and destroy the queue.  Afterward attempts to use the queue\n\
 will behave as though it never existed.");
 
 static TyObject *
-queuesmod_list_all(TyObject *self, TyObject *Ty_UNUSED(ignored))
+queuesmod_list_all(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     int64_t count = 0;
     struct queue_id_and_info *qids = _queues_list_all(&_globals.queues, &count);
@@ -1633,7 +1633,7 @@ queuesmod_put(TyObject *self, TyObject *args, TyObject *kwds)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(queuesmod_put_doc,
@@ -1696,7 +1696,7 @@ queuesmod_bind(TyObject *self, TyObject *args, TyObject *kwds)
 
     // XXX Update module state.
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(queuesmod_bind_doc,
@@ -1726,7 +1726,7 @@ queuesmod_release(TyObject *self, TyObject *args, TyObject *kwds)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(queuesmod_release_doc,
@@ -1805,9 +1805,9 @@ queuesmod_is_full(TyObject *self, TyObject *args, TyObject *kwds)
         return NULL;
     }
     if (is_full) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 PyDoc_STRVAR(queuesmod_is_full_doc,
@@ -1878,7 +1878,7 @@ queuesmod__register_heap_types(TyObject *self, TyObject *args, TyObject *kwds)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef module_functions[] = {

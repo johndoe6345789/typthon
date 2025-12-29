@@ -38,11 +38,11 @@ PyAPI_FUNC(int) Ty_IsFalse(TyObject *x);
  * Only treat Ty_True and Ty_False as immortal in the limited C API 3.12
  * and newer. */
 #if defined(Ty_LIMITED_API) && Ty_LIMITED_API+0 < 0x030c0000
-#  define Ty_RETURN_TRUE return Ty_NewRef(Ty_True)
-#  define Ty_RETURN_FALSE return Ty_NewRef(Ty_False)
+#  define Py_RETURN_TRUE return Ty_NewRef(Ty_True)
+#  define Py_RETURN_FALSE return Ty_NewRef(Ty_False)
 #else
-#  define Ty_RETURN_TRUE return Ty_True
-#  define Ty_RETURN_FALSE return Ty_False
+#  define Py_RETURN_TRUE return Ty_True
+#  define Py_RETURN_FALSE return Ty_False
 #endif
 
 /* Function to return a bool from a C long */

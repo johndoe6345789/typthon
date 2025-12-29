@@ -239,7 +239,7 @@ static TyObject *
 _clearcache_impl(TyObject *module);
 
 static TyObject *
-_clearcache(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_clearcache(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _clearcache_impl(module);
 }

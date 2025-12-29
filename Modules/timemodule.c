@@ -289,7 +289,7 @@ time_clock_settime(TyObject *self, TyObject *args)
         TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(clock_settime_doc,
@@ -322,7 +322,7 @@ time_clock_settime_ns(TyObject *self, TyObject *args)
         TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(clock_settime_ns_doc,
@@ -408,7 +408,7 @@ time_sleep(TyObject *self, TyObject *timeout_obj)
     if (pysleep(timeout) != 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(sleep_doc,
@@ -1176,7 +1176,7 @@ time_tzset(TyObject *self, TyObject *unused)
     if (TyErr_Occurred())
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(tzset_doc,

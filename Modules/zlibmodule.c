@@ -1811,9 +1811,9 @@ static TyMethodDef ZlibDecompressor_methods[] = {
 
 #define COMP_OFF(x) offsetof(compobject, x)
 static TyMemberDef Decomp_members[] = {
-    {"unused_data",     _Ty_T_OBJECT, COMP_OFF(unused_data), Ty_READONLY},
-    {"unconsumed_tail", _Ty_T_OBJECT, COMP_OFF(unconsumed_tail), Ty_READONLY},
-    {"eof",             Ty_T_BOOL,   COMP_OFF(eof), Ty_READONLY},
+    {"unused_data",     _Ty_T_OBJECT, COMP_OFF(unused_data), Py_READONLY},
+    {"unconsumed_tail", _Ty_T_OBJECT, COMP_OFF(unconsumed_tail), Py_READONLY},
+    {"eof",             Ty_T_BOOL,   COMP_OFF(eof), Py_READONLY},
     {NULL},
 };
 
@@ -1828,10 +1828,10 @@ PyDoc_STRVAR(ZlibDecompressor_needs_input_doc,
 
 static TyMemberDef ZlibDecompressor_members[] = {
     {"eof", Ty_T_BOOL, offsetof(ZlibDecompressor, eof),
-     Ty_READONLY, ZlibDecompressor_eof__doc__},
+     Py_READONLY, ZlibDecompressor_eof__doc__},
     {"unused_data", Ty_T_OBJECT_EX, offsetof(ZlibDecompressor, unused_data),
-     Ty_READONLY, ZlibDecompressor_unused_data__doc__},
-    {"needs_input", Ty_T_BOOL, offsetof(ZlibDecompressor, needs_input), Ty_READONLY,
+     Py_READONLY, ZlibDecompressor_unused_data__doc__},
+    {"needs_input", Ty_T_BOOL, offsetof(ZlibDecompressor, needs_input), Py_READONLY,
      ZlibDecompressor_needs_input_doc},
     {NULL},
 };

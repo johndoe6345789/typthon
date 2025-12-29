@@ -21,7 +21,7 @@ static TyObject *
 complex_conjugate_impl(PyComplexObject *self);
 
 static TyObject *
-complex_conjugate(TyObject *self, TyObject *Ty_UNUSED(ignored))
+complex_conjugate(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return complex_conjugate_impl((PyComplexObject *)self);
 }
@@ -38,7 +38,7 @@ static TyObject *
 complex___getnewargs___impl(PyComplexObject *self);
 
 static TyObject *
-complex___getnewargs__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+complex___getnewargs__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return complex___getnewargs___impl((PyComplexObject *)self);
 }
@@ -85,7 +85,7 @@ static TyObject *
 complex___complex___impl(PyComplexObject *self);
 
 static TyObject *
-complex___complex__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+complex___complex__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return complex___complex___impl((PyComplexObject *)self);
 }

@@ -10,7 +10,7 @@
 
 /* Test Ty_GetConstant() */
 static TyObject *
-get_constant(TyObject *Ty_UNUSED(module), TyObject *args)
+get_constant(TyObject *Py_UNUSED(module), TyObject *args)
 {
     int constant_id;
     if (!TyArg_ParseTuple(args, "i", &constant_id)) {
@@ -28,7 +28,7 @@ get_constant(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test Ty_GetConstantBorrowed() */
 static TyObject *
-get_constant_borrowed(TyObject *Ty_UNUSED(module), TyObject *args)
+get_constant_borrowed(TyObject *Py_UNUSED(module), TyObject *args)
 {
     int constant_id;
     if (!TyArg_ParseTuple(args, "i", &constant_id)) {
@@ -46,7 +46,7 @@ get_constant_borrowed(TyObject *Ty_UNUSED(module), TyObject *args)
 
 /* Test constants */
 static TyObject *
-test_constants(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
+test_constants(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(args))
 {
     // Test that implementation of constants in the limited C API:
     // check that the C code compiles.
@@ -59,7 +59,7 @@ test_constants(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
     assert(Ty_Ellipsis == Ty_GetConstant(Ty_CONSTANT_ELLIPSIS));
     assert(Ty_NotImplemented == Ty_GetConstant(Ty_CONSTANT_NOT_IMPLEMENTED));
     // Other constants are tested in test_capi.test_object
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef test_methods[] = {

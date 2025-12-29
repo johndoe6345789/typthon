@@ -676,7 +676,7 @@ pysqlite_connection_close_impl(pysqlite_Connection *self)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*
@@ -733,7 +733,7 @@ pysqlite_connection_commit_impl(pysqlite_Connection *self)
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -767,7 +767,7 @@ pysqlite_connection_rollback_impl(pysqlite_Connection *self)
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -1204,7 +1204,7 @@ pysqlite_connection_create_function_impl(pysqlite_Connection *self,
         TyErr_SetString(self->OperationalError, "Error creating function");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef HAVE_WINDOW_FUNCTIONS
@@ -1358,7 +1358,7 @@ create_window_function_impl(pysqlite_Connection *self, TyTypeObject *cls,
         set_error_from_code(self->state, rc);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 
@@ -1405,7 +1405,7 @@ pysqlite_connection_create_aggregate_impl(pysqlite_Connection *self,
         TyErr_SetString(self->OperationalError, "Error creating aggregate");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -1565,7 +1565,7 @@ pysqlite_connection_set_authorizer_impl(pysqlite_Connection *self,
         set_callback_context(&self->authorizer_ctx, NULL);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1609,7 +1609,7 @@ pysqlite_connection_set_progress_handler_impl(pysqlite_Connection *self,
         sqlite3_progress_handler(self->db, n, progress_callback, ctx);
         set_callback_context(&self->progress_ctx, ctx);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1652,7 +1652,7 @@ pysqlite_connection_set_trace_callback_impl(pysqlite_Connection *self,
         set_callback_context(&self->trace_ctx, ctx);
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef PY_SQLITE_ENABLE_LOAD_EXTENSION
@@ -1688,7 +1688,7 @@ pysqlite_connection_enable_load_extension_impl(pysqlite_Connection *self,
                         "Error enabling load extension");
         return NULL;
     } else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -1725,7 +1725,7 @@ pysqlite_connection_load_extension_impl(pysqlite_Connection *self,
         TyErr_SetString(self->OperationalError, errmsg);
         return NULL;
     } else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 #endif
@@ -1746,7 +1746,7 @@ int pysqlite_check_thread(pysqlite_Connection* self)
 }
 
 static TyObject *
-pysqlite_connection_get_isolation_level(TyObject *op, void *Ty_UNUSED(closure))
+pysqlite_connection_get_isolation_level(TyObject *op, void *Py_UNUSED(closure))
 {
     pysqlite_Connection *self = _pysqlite_Connection_CAST(op);
     if (!pysqlite_check_connection(self)) {
@@ -1755,11 +1755,11 @@ pysqlite_connection_get_isolation_level(TyObject *op, void *Ty_UNUSED(closure))
     if (self->isolation_level != NULL) {
         return TyUnicode_FromString(self->isolation_level);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-pysqlite_connection_get_total_changes(TyObject *op, void *Ty_UNUSED(closure))
+pysqlite_connection_get_total_changes(TyObject *op, void *Py_UNUSED(closure))
 {
     pysqlite_Connection *self = _pysqlite_Connection_CAST(op);
     if (!pysqlite_check_connection(self)) {
@@ -1769,22 +1769,22 @@ pysqlite_connection_get_total_changes(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-pysqlite_connection_get_in_transaction(TyObject *op, void *Ty_UNUSED(closure))
+pysqlite_connection_get_in_transaction(TyObject *op, void *Py_UNUSED(closure))
 {
     pysqlite_Connection *self = _pysqlite_Connection_CAST(op);
     if (!pysqlite_check_connection(self)) {
         return NULL;
     }
     if (!sqlite3_get_autocommit(self->db)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static int
 pysqlite_connection_set_isolation_level(TyObject *op,
                                         TyObject *isolation_level,
-                                        void *Ty_UNUSED(ignored))
+                                        void *Py_UNUSED(ignored))
 {
     pysqlite_Connection *self = _pysqlite_Connection_CAST(op);
     if (isolation_level == NULL) {
@@ -2155,7 +2155,7 @@ pysqlite_connection_backup_impl(pysqlite_Connection *self,
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2213,7 +2213,7 @@ pysqlite_connection_create_collation_impl(pysqlite_Connection *self,
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef PY_SQLITE_HAVE_SERIALIZE
@@ -2330,7 +2330,7 @@ deserialize_impl(pysqlite_Connection *self, Ty_buffer *data,
         set_error_from_db(self->state, self->db);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif  // PY_SQLITE_HAVE_SERIALIZE
 
@@ -2400,7 +2400,7 @@ pysqlite_connection_exit_impl(pysqlite_Connection *self, TyObject *exc_type,
     }
     Ty_DECREF(result);
 
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 /*[clinic input]
@@ -2529,7 +2529,7 @@ setconfig_impl(pysqlite_Connection *self, int op, int enable)
         TyErr_SetString(self->state->OperationalError, "Unable to set config");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2564,23 +2564,23 @@ getconfig_impl(pysqlite_Connection *self, int op)
 }
 
 static TyObject *
-get_autocommit(TyObject *op, void *Ty_UNUSED(closure))
+get_autocommit(TyObject *op, void *Py_UNUSED(closure))
 {
     pysqlite_Connection *self = _pysqlite_Connection_CAST(op);
     if (!pysqlite_check_thread(self) || !pysqlite_check_connection(self)) {
         return NULL;
     }
     if (self->autocommit == AUTOCOMMIT_ENABLED) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
     if (self->autocommit == AUTOCOMMIT_DISABLED) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     return TyLong_FromLong(LEGACY_TRANSACTION_CONTROL);
 }
 
 static int
-set_autocommit(TyObject *op, TyObject *val, void *Ty_UNUSED(closure))
+set_autocommit(TyObject *op, TyObject *val, void *Py_UNUSED(closure))
 {
     pysqlite_Connection *self = _pysqlite_Connection_CAST(op);
     if (!pysqlite_check_thread(self) || !pysqlite_check_connection(self)) {
@@ -2607,7 +2607,7 @@ set_autocommit(TyObject *op, TyObject *val, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-get_sig(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+get_sig(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyUnicode_FromString("(sql, /)");
 }
@@ -2660,16 +2660,16 @@ static TyMethodDef connection_methods[] = {
 
 static struct TyMemberDef connection_members[] =
 {
-    {"Warning", _Ty_T_OBJECT, offsetof(pysqlite_Connection, Warning), Ty_READONLY},
-    {"Error", _Ty_T_OBJECT, offsetof(pysqlite_Connection, Error), Ty_READONLY},
-    {"InterfaceError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, InterfaceError), Ty_READONLY},
-    {"DatabaseError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, DatabaseError), Ty_READONLY},
-    {"DataError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, DataError), Ty_READONLY},
-    {"OperationalError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, OperationalError), Ty_READONLY},
-    {"IntegrityError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, IntegrityError), Ty_READONLY},
-    {"InternalError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, InternalError), Ty_READONLY},
-    {"ProgrammingError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, ProgrammingError), Ty_READONLY},
-    {"NotSupportedError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, NotSupportedError), Ty_READONLY},
+    {"Warning", _Ty_T_OBJECT, offsetof(pysqlite_Connection, Warning), Py_READONLY},
+    {"Error", _Ty_T_OBJECT, offsetof(pysqlite_Connection, Error), Py_READONLY},
+    {"InterfaceError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, InterfaceError), Py_READONLY},
+    {"DatabaseError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, DatabaseError), Py_READONLY},
+    {"DataError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, DataError), Py_READONLY},
+    {"OperationalError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, OperationalError), Py_READONLY},
+    {"IntegrityError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, IntegrityError), Py_READONLY},
+    {"InternalError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, InternalError), Py_READONLY},
+    {"ProgrammingError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, ProgrammingError), Py_READONLY},
+    {"NotSupportedError", _Ty_T_OBJECT, offsetof(pysqlite_Connection, NotSupportedError), Py_READONLY},
     {"row_factory", _Ty_T_OBJECT, offsetof(pysqlite_Connection, row_factory)},
     {"text_factory", _Ty_T_OBJECT, offsetof(pysqlite_Connection, text_factory)},
     {NULL}

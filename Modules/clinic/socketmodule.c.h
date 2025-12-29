@@ -24,7 +24,7 @@ static TyObject *
 _socket_socket_close_impl(PySocketSockObject *s);
 
 static TyObject *
-_socket_socket_close(TyObject *s, TyObject *Ty_UNUSED(ignored))
+_socket_socket_close(TyObject *s, TyObject *Py_UNUSED(ignored))
 {
     return _socket_socket_close_impl((PySocketSockObject *)s);
 }

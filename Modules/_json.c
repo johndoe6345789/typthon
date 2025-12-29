@@ -31,12 +31,12 @@ typedef struct _PyScannerObject {
 #define PyScannerObject_CAST(op)    ((PyScannerObject *)(op))
 
 static TyMemberDef scanner_members[] = {
-    {"strict", Ty_T_BOOL, offsetof(PyScannerObject, strict), Ty_READONLY, "strict"},
-    {"object_hook", _Ty_T_OBJECT, offsetof(PyScannerObject, object_hook), Ty_READONLY, "object_hook"},
-    {"object_pairs_hook", _Ty_T_OBJECT, offsetof(PyScannerObject, object_pairs_hook), Ty_READONLY},
-    {"parse_float", _Ty_T_OBJECT, offsetof(PyScannerObject, parse_float), Ty_READONLY, "parse_float"},
-    {"parse_int", _Ty_T_OBJECT, offsetof(PyScannerObject, parse_int), Ty_READONLY, "parse_int"},
-    {"parse_constant", _Ty_T_OBJECT, offsetof(PyScannerObject, parse_constant), Ty_READONLY, "parse_constant"},
+    {"strict", Ty_T_BOOL, offsetof(PyScannerObject, strict), Py_READONLY, "strict"},
+    {"object_hook", _Ty_T_OBJECT, offsetof(PyScannerObject, object_hook), Py_READONLY, "object_hook"},
+    {"object_pairs_hook", _Ty_T_OBJECT, offsetof(PyScannerObject, object_pairs_hook), Py_READONLY},
+    {"parse_float", _Ty_T_OBJECT, offsetof(PyScannerObject, parse_float), Py_READONLY, "parse_float"},
+    {"parse_int", _Ty_T_OBJECT, offsetof(PyScannerObject, parse_int), Py_READONLY, "parse_int"},
+    {"parse_constant", _Ty_T_OBJECT, offsetof(PyScannerObject, parse_constant), Py_READONLY, "parse_constant"},
     {NULL}
 };
 
@@ -57,14 +57,14 @@ typedef struct _PyEncoderObject {
 #define PyEncoderObject_CAST(op)    ((PyEncoderObject *)(op))
 
 static TyMemberDef encoder_members[] = {
-    {"markers", _Ty_T_OBJECT, offsetof(PyEncoderObject, markers), Ty_READONLY, "markers"},
-    {"default", _Ty_T_OBJECT, offsetof(PyEncoderObject, defaultfn), Ty_READONLY, "default"},
-    {"encoder", _Ty_T_OBJECT, offsetof(PyEncoderObject, encoder), Ty_READONLY, "encoder"},
-    {"indent", _Ty_T_OBJECT, offsetof(PyEncoderObject, indent), Ty_READONLY, "indent"},
-    {"key_separator", _Ty_T_OBJECT, offsetof(PyEncoderObject, key_separator), Ty_READONLY, "key_separator"},
-    {"item_separator", _Ty_T_OBJECT, offsetof(PyEncoderObject, item_separator), Ty_READONLY, "item_separator"},
-    {"sort_keys", Ty_T_BOOL, offsetof(PyEncoderObject, sort_keys), Ty_READONLY, "sort_keys"},
-    {"skipkeys", Ty_T_BOOL, offsetof(PyEncoderObject, skipkeys), Ty_READONLY, "skipkeys"},
+    {"markers", _Ty_T_OBJECT, offsetof(PyEncoderObject, markers), Py_READONLY, "markers"},
+    {"default", _Ty_T_OBJECT, offsetof(PyEncoderObject, defaultfn), Py_READONLY, "default"},
+    {"encoder", _Ty_T_OBJECT, offsetof(PyEncoderObject, encoder), Py_READONLY, "encoder"},
+    {"indent", _Ty_T_OBJECT, offsetof(PyEncoderObject, indent), Py_READONLY, "indent"},
+    {"key_separator", _Ty_T_OBJECT, offsetof(PyEncoderObject, key_separator), Py_READONLY, "key_separator"},
+    {"item_separator", _Ty_T_OBJECT, offsetof(PyEncoderObject, item_separator), Py_READONLY, "item_separator"},
+    {"sort_keys", Ty_T_BOOL, offsetof(PyEncoderObject, sort_keys), Py_READONLY, "sort_keys"},
+    {"skipkeys", Ty_T_BOOL, offsetof(PyEncoderObject, skipkeys), Py_READONLY, "skipkeys"},
     {NULL}
 };
 
@@ -73,7 +73,7 @@ static TyMemberDef encoder_members[] = {
 static TyObject *
 ascii_escape_unicode(TyObject *pystr);
 static TyObject *
-py_encode_basestring_ascii(TyObject* Ty_UNUSED(self), TyObject *pystr);
+py_encode_basestring_ascii(TyObject* Py_UNUSED(self), TyObject *pystr);
 
 static TyObject *
 scan_once_unicode(PyScannerObject *s, TyObject *memo, TyObject *pystr, Ty_ssize_t idx, Ty_ssize_t *next_idx_ptr);
@@ -556,7 +556,7 @@ PyDoc_STRVAR(pydoc_scanstring,
 );
 
 static TyObject *
-py_scanstring(TyObject* Ty_UNUSED(self), TyObject *args)
+py_scanstring(TyObject* Py_UNUSED(self), TyObject *args)
 {
     TyObject *pystr;
     TyObject *rval;
@@ -585,7 +585,7 @@ PyDoc_STRVAR(pydoc_encode_basestring_ascii,
 );
 
 static TyObject *
-py_encode_basestring_ascii(TyObject* Ty_UNUSED(self), TyObject *pystr)
+py_encode_basestring_ascii(TyObject* Py_UNUSED(self), TyObject *pystr)
 {
     TyObject *rval;
     /* Return an ASCII-only JSON representation of a Python string */
@@ -610,7 +610,7 @@ PyDoc_STRVAR(pydoc_encode_basestring,
 );
 
 static TyObject *
-py_encode_basestring(TyObject* Ty_UNUSED(self), TyObject *pystr)
+py_encode_basestring(TyObject* Py_UNUSED(self), TyObject *pystr)
 {
     TyObject *rval;
     /* Return a JSON representation of a Python string */
@@ -1066,14 +1066,14 @@ scan_once_unicode(PyScannerObject *s, TyObject *memo, TyObject *pystr, Ty_ssize_
             /* null */
             if ((idx + 3 < length) && TyUnicode_READ(kind, str, idx + 1) == 'u' && TyUnicode_READ(kind, str, idx + 2) == 'l' && TyUnicode_READ(kind, str, idx + 3) == 'l') {
                 *next_idx_ptr = idx + 4;
-                Ty_RETURN_NONE;
+                Py_RETURN_NONE;
             }
             break;
         case 't':
             /* true */
             if ((idx + 3 < length) && TyUnicode_READ(kind, str, idx + 1) == 'r' && TyUnicode_READ(kind, str, idx + 2) == 'u' && TyUnicode_READ(kind, str, idx + 3) == 'e') {
                 *next_idx_ptr = idx + 4;
-                Ty_RETURN_TRUE;
+                Py_RETURN_TRUE;
             }
             break;
         case 'f':
@@ -1083,7 +1083,7 @@ scan_once_unicode(PyScannerObject *s, TyObject *memo, TyObject *pystr, Ty_ssize_
                 TyUnicode_READ(kind, str, idx + 3) == 's' &&
                 TyUnicode_READ(kind, str, idx + 4) == 'e') {
                 *next_idx_ptr = idx + 5;
-                Ty_RETURN_FALSE;
+                Py_RETURN_FALSE;
             }
             break;
         case 'N':

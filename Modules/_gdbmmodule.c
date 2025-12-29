@@ -376,7 +376,7 @@ _gdbm_gdbm_close_impl(gdbmobject *self)
         gdbm_close(self->di_dbm);
     }
     self->di_dbm = NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* XXX Should return a set or a set view */
@@ -492,7 +492,7 @@ _gdbm_gdbm_firstkey_impl(gdbmobject *self, TyTypeObject *cls)
         return v;
     }
     else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -534,7 +534,7 @@ _gdbm_gdbm_nextkey_impl(gdbmobject *self, TyTypeObject *cls, const char *key,
         return v;
     }
     else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -569,7 +569,7 @@ _gdbm_gdbm_reorganize_impl(gdbmobject *self, TyTypeObject *cls)
         }
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -591,7 +591,7 @@ _gdbm_gdbm_sync_impl(gdbmobject *self, TyTypeObject *cls)
     assert(state != NULL);
     check_gdbmobject_open(self, state->gdbm_error);
     gdbm_sync(self->di_dbm);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -622,7 +622,7 @@ _gdbm_gdbm_clear_impl(gdbmobject *self, TyTypeObject *cls)
             return NULL;
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *

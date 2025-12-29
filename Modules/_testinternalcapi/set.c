@@ -42,7 +42,7 @@ set_next_entry(TyObject *self, TyObject *args)
         return NULL;
     }
     assert(rc == 0);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

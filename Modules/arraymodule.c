@@ -748,14 +748,14 @@ array_richcompare(TyObject *v, TyObject *w, int op)
     TyObject *res;
 
     if (!array_Check(v, state) || !array_Check(w, state))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     va = (arrayobject *)v;
     wa = (arrayobject *)w;
 
-    if (Ty_SIZE(va) != Ty_SIZE(wa) && (op == Ty_EQ || op == Ty_NE)) {
+    if (Ty_SIZE(va) != Ty_SIZE(wa) && (op == Py_EQ || op == Py_NE)) {
         /* Shortcut: if the lengths differ, the arrays differ */
-        if (op == Ty_EQ)
+        if (op == Py_EQ)
             res = Ty_False;
         else
             res = Ty_True;
@@ -773,12 +773,12 @@ array_richcompare(TyObject *v, TyObject *w, int op)
 
         int cmp;
         switch (op) {
-        case Ty_LT: cmp = result < 0; break;
-        case Ty_LE: cmp = result <= 0; break;
-        case Ty_EQ: cmp = result == 0; break;
-        case Ty_NE: cmp = result != 0; break;
-        case Ty_GT: cmp = result > 0; break;
-        case Ty_GE: cmp = result >= 0; break;
+        case Py_LT: cmp = result < 0; break;
+        case Py_LE: cmp = result <= 0; break;
+        case Py_EQ: cmp = result == 0; break;
+        case Py_NE: cmp = result != 0; break;
+        case Py_GT: cmp = result > 0; break;
+        case Py_GE: cmp = result >= 0; break;
         default: return NULL; /* cannot happen */
         }
         TyObject *res = cmp ? Ty_True : Ty_False;
@@ -798,7 +798,7 @@ array_richcompare(TyObject *v, TyObject *w, int op)
             Ty_DECREF(vi);
             return NULL;
         }
-        k = PyObject_RichCompareBool(vi, wi, Ty_EQ);
+        k = PyObject_RichCompareBool(vi, wi, Py_EQ);
         if (k == 0)
             break; /* Keeping vi and wi alive! */
         Ty_DECREF(vi);
@@ -814,14 +814,14 @@ array_richcompare(TyObject *v, TyObject *w, int op)
         Ty_ssize_t ws = Ty_SIZE(wa);
         int cmp;
         switch (op) {
-        case Ty_LT: cmp = vs <  ws; break;
-        case Ty_LE: cmp = vs <= ws; break;
+        case Py_LT: cmp = vs <  ws; break;
+        case Py_LE: cmp = vs <= ws; break;
         /* If the lengths were not equal,
            the earlier fast-path check would have caught that. */
-        case Ty_EQ: assert(vs == ws); cmp = 1; break;
-        case Ty_NE: assert(vs == ws); cmp = 0; break;
-        case Ty_GT: cmp = vs >  ws; break;
-        case Ty_GE: cmp = vs >= ws; break;
+        case Py_EQ: assert(vs == ws); cmp = 1; break;
+        case Py_NE: assert(vs == ws); cmp = 0; break;
+        case Py_GT: cmp = vs >  ws; break;
+        case Py_GE: cmp = vs >= ws; break;
         default: return NULL; /* cannot happen */
         }
         if (cmp)
@@ -832,10 +832,10 @@ array_richcompare(TyObject *v, TyObject *w, int op)
     }
 
     /* We have an item that differs.  First, shortcuts for EQ/NE */
-    if (op == Ty_EQ) {
+    if (op == Py_EQ) {
         res = Ty_NewRef(Ty_False);
     }
-    else if (op == Ty_NE) {
+    else if (op == Py_NE) {
         res = Ty_NewRef(Ty_True);
     }
     else {
@@ -902,7 +902,7 @@ array_array_clear_impl(arrayobject *self)
     if (array_resize(self, 0) == -1) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1160,7 +1160,7 @@ ins(arrayobject *self, Ty_ssize_t where, TyObject *v)
 {
     if (ins1(self, where, v) != 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1186,7 +1186,7 @@ array_array_count_impl(arrayobject *self, TyObject *v)
         selfi = getarrayitem((TyObject *)self, i);
         if (selfi == NULL)
             return NULL;
-        cmp = PyObject_RichCompareBool(selfi, v, Ty_EQ);
+        cmp = PyObject_RichCompareBool(selfi, v, Py_EQ);
         Ty_DECREF(selfi);
         if (cmp > 0)
             count++;
@@ -1233,7 +1233,7 @@ array_array_index_impl(arrayobject *self, TyObject *v, Ty_ssize_t start,
         selfi = getarrayitem((TyObject *)self, i);
         if (selfi == NULL)
             return NULL;
-        cmp = PyObject_RichCompareBool(selfi, v, Ty_EQ);
+        cmp = PyObject_RichCompareBool(selfi, v, Py_EQ);
         Ty_DECREF(selfi);
         if (cmp > 0) {
             return TyLong_FromSsize_t(i);
@@ -1255,7 +1255,7 @@ array_contains(TyObject *self, TyObject *v)
         TyObject *selfi = getarrayitem(self, i);
         if (selfi == NULL)
             return -1;
-        cmp = PyObject_RichCompareBool(selfi, v, Ty_EQ);
+        cmp = PyObject_RichCompareBool(selfi, v, Py_EQ);
         Ty_DECREF(selfi);
     }
     return cmp;
@@ -1283,12 +1283,12 @@ array_array_remove_impl(arrayobject *self, TyObject *v)
         selfi = getarrayitem((TyObject *)self,i);
         if (selfi == NULL)
             return NULL;
-        cmp = PyObject_RichCompareBool(selfi, v, Ty_EQ);
+        cmp = PyObject_RichCompareBool(selfi, v, Py_EQ);
         Ty_DECREF(selfi);
         if (cmp > 0) {
             if (array_del_slice(self, i, i+1) != 0)
                 return NULL;
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         else if (cmp < 0)
             return NULL;
@@ -1353,7 +1353,7 @@ array_array_extend_impl(arrayobject *self, TyTypeObject *cls, TyObject *bb)
 
     if (array_do_extend(state, self, bb) == -1)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1482,7 +1482,7 @@ array_array_byteswap_impl(arrayobject *self)
                    "don't know how to byteswap this array type");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1515,7 +1515,7 @@ array_array_reverse_impl(arrayobject *self)
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1628,7 +1628,7 @@ array_array_tofile_impl(arrayobject *self, TyTypeObject *cls, TyObject *f)
     }
 
   done:
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1671,7 +1671,7 @@ array_array_fromlist_impl(arrayobject *self, TyObject *list)
             }
         }
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1735,7 +1735,7 @@ frombytes(arrayobject *self, Ty_buffer *buffer)
             buffer->buf, n * itemsize);
     }
     PyBuffer_Release(buffer);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1831,7 +1831,7 @@ array_array_fromunicode_impl(arrayobject *self, TyObject *ustr)
         (void)u; // Suppress unused_variable warning.
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2359,7 +2359,7 @@ array_array___reduce_ex___impl(arrayobject *self, TyTypeObject *cls,
 }
 
 static TyObject *
-array_get_typecode(TyObject *op, void *Ty_UNUSED(closure))
+array_get_typecode(TyObject *op, void *Py_UNUSED(closure))
 {
     arrayobject *a = arrayobject_CAST(op);
     char typecode = a->ob_descr->typecode;
@@ -2367,7 +2367,7 @@ array_get_typecode(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-array_get_itemsize(TyObject *op, void *Ty_UNUSED(closure))
+array_get_itemsize(TyObject *op, void *Py_UNUSED(closure))
 {
     arrayobject *a = arrayobject_CAST(op);
     return TyLong_FromLong((long)a->ob_descr->itemsize);
@@ -2705,7 +2705,7 @@ array_buffer_getbuf(TyObject *op, Ty_buffer *view, int flags)
 }
 
 static void
-array_buffer_relbuf(TyObject *op, Ty_buffer *Ty_UNUSED(view))
+array_buffer_relbuf(TyObject *op, Ty_buffer *Py_UNUSED(view))
 {
     arrayobject *self = arrayobject_CAST(op);
     self->ob_exports--;
@@ -2945,7 +2945,7 @@ itemsize -- the length in bytes of one array item\n\
 static TyObject *array_iter(TyObject *op);
 
 static struct TyMemberDef array_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(arrayobject, weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(arrayobject, weakreflist), Py_READONLY},
     {NULL},
 };
 
@@ -3117,7 +3117,7 @@ array_arrayiterator___setstate___impl(arrayiterobject *self, TyObject *state)
         }
         self->index = index;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef arrayiter_methods[] = {

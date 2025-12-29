@@ -17,7 +17,7 @@ static TyObject *
 BaseException___reduce___impl(PyBaseExceptionObject *self);
 
 static TyObject *
-BaseException___reduce__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+BaseException___reduce__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -120,7 +120,7 @@ static TyObject *
 BaseException_args_get_impl(PyBaseExceptionObject *self);
 
 static TyObject *
-BaseException_args_get(TyObject *self, void *Ty_UNUSED(context))
+BaseException_args_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -145,7 +145,7 @@ static int
 BaseException_args_set_impl(PyBaseExceptionObject *self, TyObject *value);
 
 static int
-BaseException_args_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+BaseException_args_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -170,7 +170,7 @@ static TyObject *
 BaseException___traceback___get_impl(PyBaseExceptionObject *self);
 
 static TyObject *
-BaseException___traceback___get(TyObject *self, void *Ty_UNUSED(context))
+BaseException___traceback___get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -196,7 +196,7 @@ BaseException___traceback___set_impl(PyBaseExceptionObject *self,
                                      TyObject *value);
 
 static int
-BaseException___traceback___set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+BaseException___traceback___set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -221,7 +221,7 @@ static TyObject *
 BaseException___context___get_impl(PyBaseExceptionObject *self);
 
 static TyObject *
-BaseException___context___get(TyObject *self, void *Ty_UNUSED(context))
+BaseException___context___get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -247,7 +247,7 @@ BaseException___context___set_impl(PyBaseExceptionObject *self,
                                    TyObject *value);
 
 static int
-BaseException___context___set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+BaseException___context___set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -272,7 +272,7 @@ static TyObject *
 BaseException___cause___get_impl(PyBaseExceptionObject *self);
 
 static TyObject *
-BaseException___cause___get(TyObject *self, void *Ty_UNUSED(context))
+BaseException___cause___get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -298,7 +298,7 @@ BaseException___cause___set_impl(PyBaseExceptionObject *self,
                                  TyObject *value);
 
 static int
-BaseException___cause___set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+BaseException___cause___set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 

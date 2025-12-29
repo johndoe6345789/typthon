@@ -244,7 +244,7 @@ error:
 
 
 static TyObject*
-test_dict_iteration(TyObject* self, TyObject *Ty_UNUSED(ignored))
+test_dict_iteration(TyObject* self, TyObject *Py_UNUSED(ignored))
 {
     int i;
 
@@ -254,7 +254,7 @@ test_dict_iteration(TyObject* self, TyObject *Ty_UNUSED(ignored))
         }
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

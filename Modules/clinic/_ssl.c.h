@@ -21,7 +21,7 @@ static TyObject *
 _ssl__SSLSocket_do_handshake_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_do_handshake(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_do_handshake(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -115,7 +115,7 @@ static TyObject *
 _ssl__SSLSocket_get_verified_chain_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_get_verified_chain(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_get_verified_chain(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -138,7 +138,7 @@ static TyObject *
 _ssl__SSLSocket_get_unverified_chain_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_get_unverified_chain(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_get_unverified_chain(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -161,7 +161,7 @@ static TyObject *
 _ssl__SSLSocket_shared_ciphers_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_shared_ciphers(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_shared_ciphers(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -184,7 +184,7 @@ static TyObject *
 _ssl__SSLSocket_cipher_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_cipher(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_cipher(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -207,7 +207,7 @@ static TyObject *
 _ssl__SSLSocket_version_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_version(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_version(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -230,7 +230,7 @@ static TyObject *
 _ssl__SSLSocket_selected_alpn_protocol_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_selected_alpn_protocol(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_selected_alpn_protocol(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -253,7 +253,7 @@ static TyObject *
 _ssl__SSLSocket_compression_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_compression(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_compression(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _ssl__SSLSocket_compression_impl((PySSLSocket *)self);
 }
@@ -283,7 +283,7 @@ static TyObject *
 _ssl__SSLSocket_context_get_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_context_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLSocket_context_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -308,7 +308,7 @@ static int
 _ssl__SSLSocket_context_set_impl(PySSLSocket *self, TyObject *value);
 
 static int
-_ssl__SSLSocket_context_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLSocket_context_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -340,7 +340,7 @@ static TyObject *
 _ssl__SSLSocket_server_side_get_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_server_side_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLSocket_server_side_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -372,7 +372,7 @@ static TyObject *
 _ssl__SSLSocket_server_hostname_get_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_server_hostname_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLSocket_server_hostname_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -406,7 +406,7 @@ static TyObject *
 _ssl__SSLSocket_owner_get_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_owner_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLSocket_owner_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -431,7 +431,7 @@ static int
 _ssl__SSLSocket_owner_set_impl(PySSLSocket *self, TyObject *value);
 
 static int
-_ssl__SSLSocket_owner_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLSocket_owner_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -491,7 +491,7 @@ static TyObject *
 _ssl__SSLSocket_pending_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_pending(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_pending(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -563,7 +563,7 @@ static TyObject *
 _ssl__SSLSocket_shutdown_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_shutdown(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_shutdown(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -669,7 +669,7 @@ static TyObject *
 _ssl__SSLSocket_verify_client_post_handshake_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_verify_client_post_handshake(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLSocket_verify_client_post_handshake(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -701,7 +701,7 @@ static TyObject *
 _ssl__SSLSocket_session_get_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_session_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLSocket_session_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -726,7 +726,7 @@ static int
 _ssl__SSLSocket_session_set_impl(PySSLSocket *self, TyObject *value);
 
 static int
-_ssl__SSLSocket_session_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLSocket_session_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -758,7 +758,7 @@ static TyObject *
 _ssl__SSLSocket_session_reused_get_impl(PySSLSocket *self);
 
 static TyObject *
-_ssl__SSLSocket_session_reused_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLSocket_session_reused_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -848,7 +848,7 @@ static TyObject *
 _ssl__SSLContext_get_ciphers_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_get_ciphers(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLContext_get_ciphers(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -907,7 +907,7 @@ static TyObject *
 _ssl__SSLContext_verify_mode_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_verify_mode_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_verify_mode_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -932,7 +932,7 @@ static int
 _ssl__SSLContext_verify_mode_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_verify_mode_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLContext_verify_mode_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -957,7 +957,7 @@ static TyObject *
 _ssl__SSLContext_verify_flags_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_verify_flags_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_verify_flags_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -982,7 +982,7 @@ static int
 _ssl__SSLContext_verify_flags_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_verify_flags_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLContext_verify_flags_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -1007,7 +1007,7 @@ static TyObject *
 _ssl__SSLContext_minimum_version_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_minimum_version_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_minimum_version_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1033,7 +1033,7 @@ _ssl__SSLContext_minimum_version_set_impl(PySSLContext *self,
                                           TyObject *value);
 
 static int
-_ssl__SSLContext_minimum_version_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLContext_minimum_version_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -1058,7 +1058,7 @@ static TyObject *
 _ssl__SSLContext_maximum_version_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_maximum_version_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_maximum_version_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1084,7 +1084,7 @@ _ssl__SSLContext_maximum_version_set_impl(PySSLContext *self,
                                           TyObject *value);
 
 static int
-_ssl__SSLContext_maximum_version_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLContext_maximum_version_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -1116,7 +1116,7 @@ static TyObject *
 _ssl__SSLContext_num_tickets_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_num_tickets_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_num_tickets_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1141,7 +1141,7 @@ static int
 _ssl__SSLContext_num_tickets_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_num_tickets_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLContext_num_tickets_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -1173,7 +1173,7 @@ static TyObject *
 _ssl__SSLContext_security_level_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_security_level_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_security_level_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1198,7 +1198,7 @@ static TyObject *
 _ssl__SSLContext_options_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_options_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_options_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1223,7 +1223,7 @@ static int
 _ssl__SSLContext_options_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_options_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLContext_options_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -1248,7 +1248,7 @@ static TyObject *
 _ssl__SSLContext__host_flags_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext__host_flags_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext__host_flags_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1273,7 +1273,7 @@ static int
 _ssl__SSLContext__host_flags_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext__host_flags_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLContext__host_flags_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -1298,7 +1298,7 @@ static TyObject *
 _ssl__SSLContext_check_hostname_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_check_hostname_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_check_hostname_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1323,7 +1323,7 @@ static int
 _ssl__SSLContext_check_hostname_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_check_hostname_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLContext_check_hostname_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -1348,7 +1348,7 @@ static TyObject *
 _ssl__SSLContext_protocol_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_protocol_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_protocol_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1748,7 +1748,7 @@ static TyObject *
 _ssl__SSLContext_session_stats_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_session_stats(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLContext_session_stats(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1771,7 +1771,7 @@ static TyObject *
 _ssl__SSLContext_set_default_verify_paths_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_set_default_verify_paths(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLContext_set_default_verify_paths(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1831,7 +1831,7 @@ static TyObject *
 _ssl__SSLContext_sni_callback_get_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_sni_callback_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl__SSLContext_sni_callback_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1856,7 +1856,7 @@ static int
 _ssl__SSLContext_sni_callback_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_sni_callback_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ssl__SSLContext_sni_callback_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -1886,7 +1886,7 @@ static TyObject *
 _ssl__SSLContext_cert_store_stats_impl(PySSLContext *self);
 
 static TyObject *
-_ssl__SSLContext_cert_store_stats(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl__SSLContext_cert_store_stats(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -2162,7 +2162,7 @@ static TyObject *
 _ssl_MemoryBIO_pending_get_impl(PySSLMemoryBIO *self);
 
 static TyObject *
-_ssl_MemoryBIO_pending_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl_MemoryBIO_pending_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -2194,7 +2194,7 @@ static TyObject *
 _ssl_MemoryBIO_eof_get_impl(PySSLMemoryBIO *self);
 
 static TyObject *
-_ssl_MemoryBIO_eof_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl_MemoryBIO_eof_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -2298,7 +2298,7 @@ static TyObject *
 _ssl_MemoryBIO_write_eof_impl(PySSLMemoryBIO *self);
 
 static TyObject *
-_ssl_MemoryBIO_write_eof(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ssl_MemoryBIO_write_eof(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -2330,7 +2330,7 @@ static TyObject *
 _ssl_SSLSession_time_get_impl(PySSLSession *self);
 
 static TyObject *
-_ssl_SSLSession_time_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl_SSLSession_time_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -2362,7 +2362,7 @@ static TyObject *
 _ssl_SSLSession_timeout_get_impl(PySSLSession *self);
 
 static TyObject *
-_ssl_SSLSession_timeout_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl_SSLSession_timeout_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -2394,7 +2394,7 @@ static TyObject *
 _ssl_SSLSession_ticket_lifetime_hint_get_impl(PySSLSession *self);
 
 static TyObject *
-_ssl_SSLSession_ticket_lifetime_hint_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl_SSLSession_ticket_lifetime_hint_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -2426,7 +2426,7 @@ static TyObject *
 _ssl_SSLSession_id_get_impl(PySSLSession *self);
 
 static TyObject *
-_ssl_SSLSession_id_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl_SSLSession_id_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -2458,7 +2458,7 @@ static TyObject *
 _ssl_SSLSession_has_ticket_get_impl(PySSLSession *self);
 
 static TyObject *
-_ssl_SSLSession_has_ticket_get(TyObject *self, void *Ty_UNUSED(context))
+_ssl_SSLSession_has_ticket_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -2578,7 +2578,7 @@ static TyObject *
 _ssl_RAND_status_impl(TyObject *module);
 
 static TyObject *
-_ssl_RAND_status(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_ssl_RAND_status(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -2604,7 +2604,7 @@ static TyObject *
 _ssl_get_default_verify_paths_impl(TyObject *module);
 
 static TyObject *
-_ssl_get_default_verify_paths(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_ssl_get_default_verify_paths(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

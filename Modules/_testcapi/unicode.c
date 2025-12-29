@@ -307,7 +307,7 @@ writer_write_char(TyObject *self_raw, TyObject *args)
     if (PyUnicodeWriter_WriteChar(self->writer, ch) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -328,7 +328,7 @@ writer_write_utf8(TyObject *self_raw, TyObject *args)
     if (PyUnicodeWriter_WriteUTF8(self->writer, str, size) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -349,7 +349,7 @@ writer_write_ascii(TyObject *self_raw, TyObject *args)
     if (PyUnicodeWriter_WriteASCII(self->writer, str, size) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -377,7 +377,7 @@ writer_write_widechar(TyObject *self_raw, TyObject *args)
     if (res < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -407,7 +407,7 @@ writer_write_ucs4(TyObject *self_raw, TyObject *args)
     if (res < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -427,7 +427,7 @@ writer_write_str(TyObject *self_raw, TyObject *args)
     if (PyUnicodeWriter_WriteStr(self->writer, obj) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -447,7 +447,7 @@ writer_write_repr(TyObject *self_raw, TyObject *args)
     if (PyUnicodeWriter_WriteRepr(self->writer, obj) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -468,7 +468,7 @@ writer_write_substring(TyObject *self_raw, TyObject *args)
     if (PyUnicodeWriter_WriteSubstring(self->writer, str, start, end) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -501,7 +501,7 @@ writer_decodeutf8stateful(TyObject *self_raw, TyObject *args)
     if (use_consumed) {
         return TyLong_FromSsize_t(consumed);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -518,7 +518,7 @@ writer_get_pointer(TyObject *self_raw, TyObject *args)
 
 
 static TyObject*
-writer_finish(TyObject *self_raw, TyObject *Ty_UNUSED(args))
+writer_finish(TyObject *self_raw, TyObject *Py_UNUSED(args))
 {
     WriterObject *self = (WriterObject *)self_raw;
     if (writer_check(self) < 0) {

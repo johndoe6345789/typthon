@@ -518,7 +518,7 @@ static TyObject *
 _overlapped_Overlapped_cancel_impl(OverlappedObject *self);
 
 static TyObject *
-_overlapped_Overlapped_cancel(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_overlapped_Overlapped_cancel(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _overlapped_Overlapped_cancel_impl((OverlappedObject *)self);
 }

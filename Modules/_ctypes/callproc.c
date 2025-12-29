@@ -587,7 +587,7 @@ PyCArg_repr(TyObject *op)
 
 static TyMemberDef PyCArgType_members[] = {
     { "_obj", _Py_T_OBJECT,
-      offsetof(PyCArgObject, obj), Ty_READONLY,
+      offsetof(PyCArgObject, obj), Py_READONLY,
       "the wrapped object" },
     { NULL },
 };
@@ -1005,7 +1005,7 @@ static TyObject *GetResult(ctypes_state *st,
         return TyLong_FromLong(*(int *)result);
 
     if (restype == Ty_None) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     StgInfo *info;
@@ -1468,7 +1468,7 @@ static TyObject *free_library(TyObject *self, TyObject *args)
     if (!result) {
         return TyErr_SetFromWindowsErr(err);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(copy_com_pointer_doc,
@@ -1547,7 +1547,7 @@ static TyObject *py_dyld_shared_cache_contains_path(TyObject *self, TyObject *ar
              return NULL;
 
          if (name == Ty_None)
-             Ty_RETURN_FALSE;
+             Py_RETURN_FALSE;
 
          if (TyUnicode_FSConverter(name, &name2) == 0)
              return NULL;
@@ -1557,9 +1557,9 @@ static TyObject *py_dyld_shared_cache_contains_path(TyObject *self, TyObject *ar
          Ty_DECREF(name2);
 
          if (r) {
-             Ty_RETURN_TRUE;
+             Py_RETURN_TRUE;
          } else {
-             Ty_RETURN_FALSE;
+             Py_RETURN_FALSE;
          }
 
      } else {
@@ -1624,7 +1624,7 @@ static TyObject *py_dl_close(TyObject *self, TyObject *args)
         TyErr_SetString(TyExc_OSError, "dlclose() error");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *py_dl_sym(TyObject *self, TyObject *args)
@@ -1934,7 +1934,7 @@ _ctypes_resize_impl(TyObject *module, CDataObject *obj, Ty_ssize_t size)
         obj->b_size = size;
     }
   done:
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *

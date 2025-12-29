@@ -3,7 +3,7 @@
 
 
 static TyObject *
-complex_fromccomplex(TyObject *Ty_UNUSED(module), TyObject *obj)
+complex_fromccomplex(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     Ty_complex complex;
 
@@ -15,7 +15,7 @@ complex_fromccomplex(TyObject *Ty_UNUSED(module), TyObject *obj)
 }
 
 static TyObject *
-complex_asccomplex(TyObject *Ty_UNUSED(module), TyObject *obj)
+complex_asccomplex(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     Ty_complex complex;
 
@@ -30,7 +30,7 @@ complex_asccomplex(TyObject *Ty_UNUSED(module), TyObject *obj)
 }
 
 static TyObject*
-_py_c_neg(TyObject *Ty_UNUSED(module), TyObject *num)
+_py_c_neg(TyObject *Py_UNUSED(module), TyObject *num)
 {
     Ty_complex complex;
 
@@ -44,7 +44,7 @@ _py_c_neg(TyObject *Ty_UNUSED(module), TyObject *num)
 
 #define _PY_C_FUNC2(suffix)                                      \
     static TyObject *                                            \
-    _py_c_##suffix(TyObject *Ty_UNUSED(module), TyObject *args)  \
+    _py_c_##suffix(TyObject *Py_UNUSED(module), TyObject *args)  \
     {                                                            \
         Ty_complex a, b, res;                                    \
                                                                  \
@@ -64,7 +64,7 @@ _PY_C_FUNC2(quot)
 _PY_C_FUNC2(pow)
 
 static TyObject*
-_py_c_abs(TyObject *Ty_UNUSED(module), TyObject* obj)
+_py_c_abs(TyObject *Py_UNUSED(module), TyObject* obj)
 {
     Ty_complex complex;
     double res;

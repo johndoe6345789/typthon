@@ -93,7 +93,7 @@ _multiprocessing_closesocket_impl(TyObject *module, HANDLE handle)
 
     if (ret)
         return TyErr_SetExcFromWindowsErr(TyExc_OSError, WSAGetLastError());
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

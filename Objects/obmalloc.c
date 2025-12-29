@@ -52,7 +52,7 @@ static void set_allocator_unlocked(PyMemAllocatorDomain, PyMemAllocatorEx *);
 /* the default raw allocator (wraps malloc) */
 
 void *
-_TyMem_RawMalloc(void *Ty_UNUSED(ctx), size_t size)
+_TyMem_RawMalloc(void *Py_UNUSED(ctx), size_t size)
 {
     /* TyMem_RawMalloc(0) means malloc(1). Some systems would return NULL
        for malloc(0), which would be treated as an error. Some platforms would
@@ -64,7 +64,7 @@ _TyMem_RawMalloc(void *Ty_UNUSED(ctx), size_t size)
 }
 
 void *
-_TyMem_RawCalloc(void *Ty_UNUSED(ctx), size_t nelem, size_t elsize)
+_TyMem_RawCalloc(void *Py_UNUSED(ctx), size_t nelem, size_t elsize)
 {
     /* TyMem_RawCalloc(0, 0) means calloc(1, 1). Some systems would return NULL
        for calloc(0, 0), which would be treated as an error. Some platforms
@@ -78,7 +78,7 @@ _TyMem_RawCalloc(void *Ty_UNUSED(ctx), size_t nelem, size_t elsize)
 }
 
 void *
-_TyMem_RawRealloc(void *Ty_UNUSED(ctx), void *ptr, size_t size)
+_TyMem_RawRealloc(void *Py_UNUSED(ctx), void *ptr, size_t size)
 {
     if (size == 0)
         size = 1;
@@ -86,7 +86,7 @@ _TyMem_RawRealloc(void *Ty_UNUSED(ctx), void *ptr, size_t size)
 }
 
 void
-_TyMem_RawFree(void *Ty_UNUSED(ctx), void *ptr)
+_TyMem_RawFree(void *Py_UNUSED(ctx), void *ptr)
 {
     free(ptr);
 }
@@ -455,7 +455,7 @@ _TyMem_DefaultRawWcsdup(const wchar_t *str)
 #endif
 
 void *
-_TyMem_ArenaAlloc(void *Ty_UNUSED(ctx), size_t size)
+_TyMem_ArenaAlloc(void *Py_UNUSED(ctx), size_t size)
 {
 #ifdef MS_WINDOWS
     return VirtualAlloc(NULL, size,
@@ -474,11 +474,11 @@ _TyMem_ArenaAlloc(void *Ty_UNUSED(ctx), size_t size)
 }
 
 void
-_TyMem_ArenaFree(void *Ty_UNUSED(ctx), void *ptr,
+_TyMem_ArenaFree(void *Py_UNUSED(ctx), void *ptr,
 #if defined(ARENAS_USE_MMAP)
     size_t size
 #else
-    size_t Ty_UNUSED(size)
+    size_t Py_UNUSED(size)
 #endif
 )
 {
@@ -1998,7 +1998,7 @@ new_arena(OMState *state)
    pymalloc.  When the radix tree is used, 'poolp' is unused.
  */
 static bool
-address_in_range(OMState *state, void *p, poolp Ty_UNUSED(pool))
+address_in_range(OMState *state, void *p, poolp Py_UNUSED(pool))
 {
     return arena_map_is_used(state, p);
 }
@@ -2259,7 +2259,7 @@ allocate_from_new_pool(OMState *state, uint size)
    or when the max memory limit has been reached.
 */
 static inline void*
-pymalloc_alloc(OMState *state, void *Ty_UNUSED(ctx), size_t nbytes)
+pymalloc_alloc(OMState *state, void *Py_UNUSED(ctx), size_t nbytes)
 {
 #ifdef WITH_VALGRIND
     if (UNLIKELY(running_on_valgrind == -1)) {
@@ -2531,7 +2531,7 @@ insert_to_freepool(OMState *state, poolp pool)
    Return 1 if it was freed.
    Return 0 if the block was not allocated by pymalloc_alloc(). */
 static inline int
-pymalloc_free(OMState *state, void *Ty_UNUSED(ctx), void *p)
+pymalloc_free(OMState *state, void *Py_UNUSED(ctx), void *p)
 {
     assert(p != NULL);
 
@@ -2700,7 +2700,7 @@ _TyObject_Realloc(void *ctx, void *ptr, size_t nbytes)
  * only be used by extensions that are compiled with pymalloc enabled. */
 
 Ty_ssize_t
-_TyInterpreterState_GetAllocatedBlocks(PyInterpreterState *Ty_UNUSED(interp))
+_TyInterpreterState_GetAllocatedBlocks(PyInterpreterState *Py_UNUSED(interp))
 {
     return 0;
 }
@@ -2712,13 +2712,13 @@ _Ty_GetGlobalAllocatedBlocks(void)
 }
 
 void
-_TyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *Ty_UNUSED(interp))
+_TyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *Py_UNUSED(interp))
 {
     return;
 }
 
 void
-_Ty_FinalizeAllocatedBlocks(_PyRuntimeState *Ty_UNUSED(runtime))
+_Ty_FinalizeAllocatedBlocks(_PyRuntimeState *Py_UNUSED(runtime))
 {
     return;
 }

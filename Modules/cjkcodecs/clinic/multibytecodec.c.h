@@ -274,7 +274,7 @@ static TyObject *
 _multibytecodec_MultibyteIncrementalEncoder_getstate_impl(MultibyteIncrementalEncoderObject *self);
 
 static TyObject *
-_multibytecodec_MultibyteIncrementalEncoder_getstate(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multibytecodec_MultibyteIncrementalEncoder_getstate(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _multibytecodec_MultibyteIncrementalEncoder_getstate_impl((MultibyteIncrementalEncoderObject *)self);
 }
@@ -320,7 +320,7 @@ static TyObject *
 _multibytecodec_MultibyteIncrementalEncoder_reset_impl(MultibyteIncrementalEncoderObject *self);
 
 static TyObject *
-_multibytecodec_MultibyteIncrementalEncoder_reset(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multibytecodec_MultibyteIncrementalEncoder_reset(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _multibytecodec_MultibyteIncrementalEncoder_reset_impl((MultibyteIncrementalEncoderObject *)self);
 }
@@ -413,7 +413,7 @@ static TyObject *
 _multibytecodec_MultibyteIncrementalDecoder_getstate_impl(MultibyteIncrementalDecoderObject *self);
 
 static TyObject *
-_multibytecodec_MultibyteIncrementalDecoder_getstate(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multibytecodec_MultibyteIncrementalDecoder_getstate(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _multibytecodec_MultibyteIncrementalDecoder_getstate_impl((MultibyteIncrementalDecoderObject *)self);
 }
@@ -459,7 +459,7 @@ static TyObject *
 _multibytecodec_MultibyteIncrementalDecoder_reset_impl(MultibyteIncrementalDecoderObject *self);
 
 static TyObject *
-_multibytecodec_MultibyteIncrementalDecoder_reset(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multibytecodec_MultibyteIncrementalDecoder_reset(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _multibytecodec_MultibyteIncrementalDecoder_reset_impl((MultibyteIncrementalDecoderObject *)self);
 }
@@ -572,7 +572,7 @@ static TyObject *
 _multibytecodec_MultibyteStreamReader_reset_impl(MultibyteStreamReaderObject *self);
 
 static TyObject *
-_multibytecodec_MultibyteStreamReader_reset(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_multibytecodec_MultibyteStreamReader_reset(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _multibytecodec_MultibyteStreamReader_reset_impl((MultibyteStreamReaderObject *)self);
 }

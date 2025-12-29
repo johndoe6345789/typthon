@@ -100,14 +100,14 @@ module _testinternalcapi
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=7bb583d8c9eb9a78]*/
 static TyObject *
-get_configs(TyObject *self, TyObject *Ty_UNUSED(args))
+get_configs(TyObject *self, TyObject *Py_UNUSED(args))
 {
     return _Ty_GetConfigsAsDict();
 }
 
 
 static TyObject*
-get_recursion_depth(TyObject *self, TyObject *Ty_UNUSED(args))
+get_recursion_depth(TyObject *self, TyObject *Py_UNUSED(args))
 {
     PyThreadState *tstate = _TyThreadState_GET();
 
@@ -116,7 +116,7 @@ get_recursion_depth(TyObject *self, TyObject *Ty_UNUSED(args))
 
 
 static TyObject*
-get_c_recursion_remaining(TyObject *self, TyObject *Ty_UNUSED(args))
+get_c_recursion_remaining(TyObject *self, TyObject *Py_UNUSED(args))
 {
     PyThreadState *tstate = _TyThreadState_GET();
     uintptr_t here_addr = _Ty_get_machine_stack_pointer();
@@ -127,7 +127,7 @@ get_c_recursion_remaining(TyObject *self, TyObject *Ty_UNUSED(args))
 
 
 static TyObject*
-test_bswap(TyObject *self, TyObject *Ty_UNUSED(args))
+test_bswap(TyObject *self, TyObject *Py_UNUSED(args))
 {
     uint16_t u16 = _Ty_bswap16(UINT16_C(0x3412));
     if (u16 != UINT16_C(0x1234)) {
@@ -150,7 +150,7 @@ test_bswap(TyObject *self, TyObject *Ty_UNUSED(args))
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -171,7 +171,7 @@ check_popcount(uint32_t x, int expected)
 
 
 static TyObject*
-test_popcount(TyObject *self, TyObject *Ty_UNUSED(args))
+test_popcount(TyObject *self, TyObject *Py_UNUSED(args))
 {
 #define CHECK(X, RESULT) \
     do { \
@@ -188,7 +188,7 @@ test_popcount(TyObject *self, TyObject *Ty_UNUSED(args))
     CHECK(0x10204080, 4);
     CHECK(0xDEADCAFE, 22);
     CHECK(0xFFFFFFFF, 32);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 #undef CHECK
 }
@@ -211,7 +211,7 @@ check_bit_length(unsigned long x, int expected)
 
 
 static TyObject*
-test_bit_length(TyObject *self, TyObject *Ty_UNUSED(args))
+test_bit_length(TyObject *self, TyObject *Py_UNUSED(args))
 {
 #define CHECK(X, RESULT) \
     do { \
@@ -227,7 +227,7 @@ test_bit_length(TyObject *self, TyObject *Ty_UNUSED(args))
     CHECK(0x54321, 19);
     CHECK(0x7FFFFFFF, 31);
     CHECK(0xFFFFFFFF, 32);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 
 #undef CHECK
 }
@@ -260,7 +260,7 @@ hashtable_cb(_Ty_hashtable_t *table,
 
 
 static TyObject*
-test_hashtable(TyObject *self, TyObject *Ty_UNUSED(args))
+test_hashtable(TyObject *self, TyObject *Py_UNUSED(args))
 {
     _Ty_hashtable_t *table = _Ty_hashtable_new(hash_char,
                                                _Ty_hashtable_compare_direct);
@@ -319,15 +319,15 @@ test_hashtable(TyObject *self, TyObject *Ty_UNUSED(args))
     assert(_Ty_hashtable_get(table, TO_PTR('x')) == NULL);
 
     _Ty_hashtable_destroy(table);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
 static TyObject *
-test_reset_path_config(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(arg))
+test_reset_path_config(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(arg))
 {
     _TyPathConfig_ClearGlobal();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -383,7 +383,7 @@ exit:
 }
 
 static TyObject *
-test_edit_cost(TyObject *self, TyObject *Ty_UNUSED(args))
+test_edit_cost(TyObject *self, TyObject *Py_UNUSED(args))
 {
     #define CHECK(a, b, n) do {              \
         if (check_edit_cost(a, b, n) < 0) {  \
@@ -412,7 +412,7 @@ test_edit_cost(TyObject *self, TyObject *Ty_UNUSED(args))
     CHECK("AttributeError", "AttributeErrorTests", 10);
 
     #undef CHECK
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -478,7 +478,7 @@ check_bytes_find_large(Ty_ssize_t len_haystack, Ty_ssize_t len_needle,
 }
 
 static TyObject *
-test_bytes_find(TyObject *self, TyObject *Ty_UNUSED(args))
+test_bytes_find(TyObject *self, TyObject *Py_UNUSED(args))
 {
     #define CHECK(H, N, O, E) do {               \
         if (check_bytes_find(H, N, O, E) < 0) {  \
@@ -524,7 +524,7 @@ test_bytes_find(TyObject *self, TyObject *Ty_UNUSED(args))
     if (check_bytes_find_large(32768, 2, "ab") < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -544,7 +544,7 @@ normalize_path(TyObject *self, TyObject *filename)
 }
 
 static TyObject *
-get_getpath_codeobject(TyObject *self, TyObject *Ty_UNUSED(args)) {
+get_getpath_codeobject(TyObject *self, TyObject *Py_UNUSED(args)) {
     return _Ty_Get_Getpath_CodeObject();
 }
 
@@ -641,12 +641,12 @@ decode_locale_ex(TyObject *self, TyObject *args)
 }
 
 static TyObject *
-set_eval_frame_default(TyObject *self, TyObject *Ty_UNUSED(args))
+set_eval_frame_default(TyObject *self, TyObject *Py_UNUSED(args))
 {
     module_state *state = get_module_state(self);
     _TyInterpreterState_SetEvalFrameFunc(_TyInterpreterState_GET(), _TyEval_EvalFrameDefault);
     Ty_CLEAR(state->record_list);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -677,7 +677,7 @@ set_eval_frame_record(TyObject *self, TyObject *list)
     }
     Ty_XSETREF(state->record_list, Ty_NewRef(list));
     _TyInterpreterState_SetEvalFrameFunc(_TyInterpreterState_GET(), record_eval);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -880,7 +880,7 @@ clear_extension(TyObject *self, TyObject *args)
     if (_TyImport_ClearExtension(name, filename) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -907,10 +907,10 @@ write_perf_map_entry(TyObject *self, TyObject *args)
 }
 
 static TyObject *
-perf_map_state_teardown(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(ignored))
+perf_map_state_teardown(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(ignored))
 {
     PyUnstable_PerfMapState_Fini();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1207,7 +1207,7 @@ verify_stateless_code(TyObject *self, TyObject *args, TyObject *kwargs)
     {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef _Ty_TIER2
@@ -1221,7 +1221,7 @@ add_executor_dependency(TyObject *self, TyObject *args)
         return NULL;
     }
     _Ty_Executor_DependsOn((_PyExecutorObject *)exec, obj);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1229,7 +1229,7 @@ invalidate_executors(TyObject *self, TyObject *obj)
 {
     PyInterpreterState *interp = TyInterpreterState_Get();
     _Ty_Executors_InvalidateDependency(interp, obj, 1);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif
@@ -1387,7 +1387,7 @@ tracemalloc_get_traceback(TyObject *self, TyObject *args)
 
 // Test PyThreadState C API
 static TyObject *
-test_tstate_capi(TyObject *self, TyObject *Ty_UNUSED(args))
+test_tstate_capi(TyObject *self, TyObject *Py_UNUSED(args))
 {
     // TyThreadState_Get()
     PyThreadState *tstate = TyThreadState_Get();
@@ -1402,7 +1402,7 @@ test_tstate_capi(TyObject *self, TyObject *Ty_UNUSED(args))
     assert(dict2 == dict);
     // dict2 is a borrowed reference
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1424,11 +1424,11 @@ test_pyobject_is_freed(const char *test_name, TyObject *op)
                         "object is not seen as freed");
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-check_pyobject_null_is_freed(TyObject *self, TyObject *Ty_UNUSED(args))
+check_pyobject_null_is_freed(TyObject *self, TyObject *Py_UNUSED(args))
 {
     TyObject *op = NULL;
     return test_pyobject_is_freed("check_pyobject_null_is_freed", op);
@@ -1437,7 +1437,7 @@ check_pyobject_null_is_freed(TyObject *self, TyObject *Ty_UNUSED(args))
 
 static TyObject *
 check_pyobject_uninitialized_is_freed(TyObject *self,
-                                      TyObject *Ty_UNUSED(args))
+                                      TyObject *Py_UNUSED(args))
 {
     TyObject *op = (TyObject *)PyObject_Malloc(sizeof(TyObject));
     if (op == NULL) {
@@ -1452,7 +1452,7 @@ check_pyobject_uninitialized_is_freed(TyObject *self,
 
 static TyObject *
 check_pyobject_forbidden_bytes_is_freed(TyObject *self,
-                                        TyObject *Ty_UNUSED(args))
+                                        TyObject *Py_UNUSED(args))
 {
     /* Allocate an incomplete TyObject structure: truncate 'ob_type' field */
     TyObject *op = (TyObject *)PyObject_Malloc(offsetof(TyObject, ob_type));
@@ -1468,11 +1468,11 @@ check_pyobject_forbidden_bytes_is_freed(TyObject *self,
 
 
 static TyObject *
-check_pyobject_freed_is_freed(TyObject *self, TyObject *Ty_UNUSED(args))
+check_pyobject_freed_is_freed(TyObject *self, TyObject *Py_UNUSED(args))
 {
     /* ASan or TSan would report an use-after-free error */
 #if defined(_Ty_ADDRESS_SANITIZER) || defined(_Ty_THREAD_SANITIZER)
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #else
     TyObject *op = PyObject_CallNoArgs((TyObject *)&PyBaseObject_Type);
     if (op == NULL) {
@@ -1503,11 +1503,11 @@ get_object_dict_values(TyObject *self, TyObject *obj)
 {
     TyTypeObject *type = Ty_TYPE(obj);
     if (!_TyType_HasFeature(type, Ty_TPFLAGS_INLINE_VALUES)) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     PyDictValues *values = _TyObject_InlineValues(obj);
     if (!values->valid) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     PyDictKeysObject *keys = ((PyHeapTypeObject *)type)->ht_cached_keys;
     assert(keys != NULL);
@@ -1730,7 +1730,7 @@ destroy_interpreter(TyObject *self, TyObject *args, TyObject *kwargs)
         // use the cross interpreter _PyXI_EndInterpreter normally
         _PyXI_EndInterpreter(interp, NULL, NULL);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 // This exists mostly for testing the _interpreters module, as an
@@ -1875,14 +1875,14 @@ normalize_interp_id(TyObject *self, TyObject *idobj)
 }
 
 static TyObject *
-next_interpreter_id(TyObject *self, TyObject *Ty_UNUSED(ignored))
+next_interpreter_id(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     int64_t interpid = _PyRuntime.interpreters.next_id;
     return TyLong_FromLongLong(interpid);
 }
 
 static TyObject *
-unused_interpreter_id(TyObject *self, TyObject *Ty_UNUSED(ignored))
+unused_interpreter_id(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     int64_t interpid = INT64_MAX;
     assert(interpid > _PyRuntime.interpreters.next_id);
@@ -1896,12 +1896,12 @@ interpreter_exists(TyObject *self, TyObject *idobj)
     if (interp == NULL) {
         if (TyErr_ExceptionMatches(TyExc_InterpreterNotFoundError)) {
             TyErr_Clear();
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         }
         assert(TyErr_Occurred());
         return NULL;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 static TyObject *
@@ -1923,7 +1923,7 @@ link_interpreter_refcount(TyObject *self, TyObject *idobj)
         return NULL;
     }
     _TyInterpreterState_RequireIDRef(interp, 1);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1935,7 +1935,7 @@ unlink_interpreter_refcount(TyObject *self, TyObject *idobj)
         return NULL;
     }
     _TyInterpreterState_RequireIDRef(interp, 0);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -1946,9 +1946,9 @@ interpreter_refcount_linked(TyObject *self, TyObject *idobj)
         return NULL;
     }
     if (_TyInterpreterState_RequiresIDRef(interp)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 
@@ -2124,7 +2124,7 @@ _testinternalcapi_test_long_numbits_impl(TyObject *module)
             return raiseTestError("test_long_numbits",
                             "wrong result for TyLong_GetSign()");
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -2174,7 +2174,7 @@ get_rare_event_counters(TyObject *self, TyObject *type)
 }
 
 static TyObject *
-reset_rare_event_counters(TyObject *self, TyObject *Ty_UNUSED(type))
+reset_rare_event_counters(TyObject *self, TyObject *Py_UNUSED(type))
 {
     PyInterpreterState *interp = TyInterpreterState_Get();
 
@@ -2190,7 +2190,7 @@ reset_rare_event_counters(TyObject *self, TyObject *Ty_UNUSED(type))
 
 #ifdef Ty_GIL_DISABLED
 static TyObject *
-get_py_thread_id(TyObject *self, TyObject *Ty_UNUSED(ignored))
+get_py_thread_id(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     uintptr_t tid = _Ty_ThreadId();
     Ty_BUILD_ASSERT(sizeof(unsigned long long) >= sizeof(tid));
@@ -2212,7 +2212,7 @@ get_code(TyObject *obj)
 }
 
 static TyObject *
-get_tlbc(TyObject *Ty_UNUSED(module), TyObject *obj)
+get_tlbc(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     PyCodeObject *code = get_code(obj);
     if (code == NULL) {
@@ -2220,13 +2220,13 @@ get_tlbc(TyObject *Ty_UNUSED(module), TyObject *obj)
     }
     _Ty_CODEUNIT *bc = _TyCode_GetTLBCFast(TyThreadState_GET(), code);
     if (bc == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyBytes_FromStringAndSize((const char *)bc, _TyCode_NBYTES(code));
 }
 
 static TyObject *
-get_tlbc_id(TyObject *Ty_UNUSED(module), TyObject *obj)
+get_tlbc_id(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     PyCodeObject *code = get_code(obj);
     if (code == NULL) {
@@ -2234,7 +2234,7 @@ get_tlbc_id(TyObject *Ty_UNUSED(module), TyObject *obj)
     }
     _Ty_CODEUNIT *bc = _TyCode_GetTLBCFast(TyThreadState_GET(), code);
     if (bc == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return TyLong_FromVoidPtr(bc);
 }
@@ -2245,18 +2245,18 @@ has_inline_values(TyObject *self, TyObject *obj)
 {
     if ((Ty_TYPE(obj)->tp_flags & Ty_TPFLAGS_INLINE_VALUES) &&
         _TyObject_InlineValues(obj)->valid) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
 has_split_table(TyObject *self, TyObject *obj)
 {
     if (TyDict_Check(obj) && _TyDict_HasSplitTable((PyDictObject *)obj)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 // Circumvents standard version assignment machinery - use with caution and only on
@@ -2271,7 +2271,7 @@ type_assign_specific_version_unsafe(TyObject *self, TyObject *args)
     }
     assert(!TyType_HasFeature(type, Ty_TPFLAGS_IMMUTABLETYPE));
     _TyType_SetVersion(type, version);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -2305,14 +2305,14 @@ get_next_dict_keys_version_impl(TyObject *module)
 }
 
 static TyObject *
-get_static_builtin_types(TyObject *self, TyObject *Ty_UNUSED(ignored))
+get_static_builtin_types(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _PyStaticType_GetBuiltins();
 }
 
 
 static TyObject *
-identify_type_slot_wrappers(TyObject *self, TyObject *Ty_UNUSED(ignored))
+identify_type_slot_wrappers(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _TyType_GetSlotWrapperNames();
 }
@@ -2325,7 +2325,7 @@ has_deferred_refcount(TyObject *self, TyObject *op)
 }
 
 static TyObject *
-get_tracked_heap_size(TyObject *self, TyObject *Ty_UNUSED(ignored))
+get_tracked_heap_size(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return TyLong_FromInt64(TyInterpreterState_Get()->gc.heap_size);
 }
@@ -2334,16 +2334,16 @@ static TyObject *
 is_static_immortal(TyObject *self, TyObject *op)
 {
     if (_Ty_IsStaticImmortal(op)) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
 incref_decref_delayed(TyObject *self, TyObject *op)
 {
     _TyObject_XDecRefDelayed(Ty_NewRef(op));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef module_functions[] = {

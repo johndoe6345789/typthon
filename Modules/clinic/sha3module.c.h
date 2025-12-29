@@ -106,7 +106,7 @@ static TyObject *
 _sha3_sha3_224_copy_impl(SHA3object *self);
 
 static TyObject *
-_sha3_sha3_224_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_sha3_sha3_224_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _sha3_sha3_224_copy_impl((SHA3object *)self);
 }
@@ -124,7 +124,7 @@ static TyObject *
 _sha3_sha3_224_digest_impl(SHA3object *self);
 
 static TyObject *
-_sha3_sha3_224_digest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_sha3_sha3_224_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _sha3_sha3_224_digest_impl((SHA3object *)self);
 }
@@ -142,7 +142,7 @@ static TyObject *
 _sha3_sha3_224_hexdigest_impl(SHA3object *self);
 
 static TyObject *
-_sha3_sha3_224_hexdigest(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_sha3_sha3_224_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _sha3_sha3_224_hexdigest_impl((SHA3object *)self);
 }

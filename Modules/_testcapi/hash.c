@@ -2,7 +2,7 @@
 #include "util.h"
 
 static TyObject *
-hash_getfuncdef(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
+hash_getfuncdef(TyObject *Py_UNUSED(module), TyObject *Py_UNUSED(args))
 {
     // bind PyHash_GetFuncDef()
     PyHash_FuncDef *def = PyHash_GetFuncDef();
@@ -54,7 +54,7 @@ long_from_hash(Ty_hash_t hash)
 
 
 static TyObject *
-hash_pointer(TyObject *Ty_UNUSED(module), TyObject *arg)
+hash_pointer(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     void *ptr = TyLong_AsVoidPtr(arg);
     if (ptr == NULL && TyErr_Occurred()) {
@@ -67,7 +67,7 @@ hash_pointer(TyObject *Ty_UNUSED(module), TyObject *arg)
 
 
 static TyObject *
-hash_buffer(TyObject *Ty_UNUSED(module), TyObject *args)
+hash_buffer(TyObject *Py_UNUSED(module), TyObject *args)
 {
     char *ptr;
     Ty_ssize_t len;
@@ -81,7 +81,7 @@ hash_buffer(TyObject *Ty_UNUSED(module), TyObject *args)
 
 
 static TyObject *
-object_generichash(TyObject *Ty_UNUSED(module), TyObject *arg)
+object_generichash(TyObject *Py_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
     Ty_hash_t hash = PyObject_GenericHash(arg);

@@ -421,7 +421,7 @@ static int
 _ctypes_PyCArrayType_Type_raw_set_impl(CDataObject *self, TyObject *value);
 
 static int
-_ctypes_PyCArrayType_Type_raw_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ctypes_PyCArrayType_Type_raw_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -446,7 +446,7 @@ static TyObject *
 _ctypes_PyCArrayType_Type_raw_get_impl(CDataObject *self);
 
 static TyObject *
-_ctypes_PyCArrayType_Type_raw_get(TyObject *self, void *Ty_UNUSED(context))
+_ctypes_PyCArrayType_Type_raw_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -471,7 +471,7 @@ static TyObject *
 _ctypes_PyCArrayType_Type_value_get_impl(CDataObject *self);
 
 static TyObject *
-_ctypes_PyCArrayType_Type_value_get(TyObject *self, void *Ty_UNUSED(context))
+_ctypes_PyCArrayType_Type_value_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -496,7 +496,7 @@ static int
 _ctypes_PyCArrayType_Type_value_set_impl(CDataObject *self, TyObject *value);
 
 static int
-_ctypes_PyCArrayType_Type_value_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ctypes_PyCArrayType_Type_value_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -754,7 +754,7 @@ static TyObject *
 _ctypes_PyCData___ctypes_from_outparam___impl(TyObject *self);
 
 static TyObject *
-_ctypes_PyCData___ctypes_from_outparam__(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_ctypes_PyCData___ctypes_from_outparam__(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _ctypes_PyCData___ctypes_from_outparam___impl(self);
 }
@@ -773,7 +773,7 @@ static int
 _ctypes_CFuncPtr_errcheck_set_impl(PyCFuncPtrObject *self, TyObject *value);
 
 static int
-_ctypes_CFuncPtr_errcheck_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ctypes_CFuncPtr_errcheck_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -805,7 +805,7 @@ static TyObject *
 _ctypes_CFuncPtr_errcheck_get_impl(PyCFuncPtrObject *self);
 
 static TyObject *
-_ctypes_CFuncPtr_errcheck_get(TyObject *self, void *Ty_UNUSED(context))
+_ctypes_CFuncPtr_errcheck_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -830,7 +830,7 @@ static int
 _ctypes_CFuncPtr_restype_set_impl(PyCFuncPtrObject *self, TyObject *value);
 
 static int
-_ctypes_CFuncPtr_restype_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ctypes_CFuncPtr_restype_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -862,7 +862,7 @@ static TyObject *
 _ctypes_CFuncPtr_restype_get_impl(PyCFuncPtrObject *self);
 
 static TyObject *
-_ctypes_CFuncPtr_restype_get(TyObject *self, void *Ty_UNUSED(context))
+_ctypes_CFuncPtr_restype_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -887,7 +887,7 @@ static int
 _ctypes_CFuncPtr_argtypes_set_impl(PyCFuncPtrObject *self, TyObject *value);
 
 static int
-_ctypes_CFuncPtr_argtypes_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ctypes_CFuncPtr_argtypes_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -919,7 +919,7 @@ static TyObject *
 _ctypes_CFuncPtr_argtypes_get_impl(PyCFuncPtrObject *self);
 
 static TyObject *
-_ctypes_CFuncPtr_argtypes_get(TyObject *self, void *Ty_UNUSED(context))
+_ctypes_CFuncPtr_argtypes_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -944,7 +944,7 @@ static int
 _ctypes_Simple_value_set_impl(CDataObject *self, TyObject *value);
 
 static int
-_ctypes_Simple_value_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_ctypes_Simple_value_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 
@@ -969,7 +969,7 @@ static TyObject *
 _ctypes_Simple_value_get_impl(CDataObject *self);
 
 static TyObject *
-_ctypes_Simple_value_get(TyObject *self, void *Ty_UNUSED(context))
+_ctypes_Simple_value_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 

@@ -23,7 +23,7 @@ typedef struct {
 
 /* Cast argument to PyListObject* type. */
 #define _TyList_CAST(op) \
-    (assert(TyList_Check(op)), _Ty_CAST(PyListObject*, (op)))
+    (assert(TyList_Check(op)), _Py_CAST(PyListObject*, (op)))
 
 // Macros and static inline functions, trading safety for speed
 

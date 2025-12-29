@@ -217,7 +217,7 @@ _opcode_get_specialization_stats_impl(TyObject *module)
 #ifdef Ty_STATS
     return _Ty_GetSpecializationStats();
 #else
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 #endif
 }
 

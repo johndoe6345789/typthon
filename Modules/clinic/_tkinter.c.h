@@ -530,7 +530,7 @@ static TyObject *
 _tkinter_tktimertoken_deletetimerhandler_impl(TkttObject *self);
 
 static TyObject *
-_tkinter_tktimertoken_deletetimerhandler(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_tkinter_tktimertoken_deletetimerhandler(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _tkinter_tktimertoken_deletetimerhandler_impl((TkttObject *)self);
 }
@@ -648,7 +648,7 @@ static TyObject *
 _tkinter_tkapp_quit_impl(TkappObject *self);
 
 static TyObject *
-_tkinter_tkapp_quit(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_tkinter_tkapp_quit(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _tkinter_tkapp_quit_impl((TkappObject *)self);
 }
@@ -665,7 +665,7 @@ static TyObject *
 _tkinter_tkapp_interpaddr_impl(TkappObject *self);
 
 static TyObject *
-_tkinter_tkapp_interpaddr(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_tkinter_tkapp_interpaddr(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _tkinter_tkapp_interpaddr_impl((TkappObject *)self);
 }
@@ -682,7 +682,7 @@ static TyObject *
 _tkinter_tkapp_loadtk_impl(TkappObject *self);
 
 static TyObject *
-_tkinter_tkapp_loadtk(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_tkinter_tkapp_loadtk(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _tkinter_tkapp_loadtk_impl((TkappObject *)self);
 }
@@ -722,7 +722,7 @@ static TyObject *
 _tkinter_tkapp_gettrace_impl(TkappObject *self);
 
 static TyObject *
-_tkinter_tkapp_gettrace(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_tkinter_tkapp_gettrace(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _tkinter_tkapp_gettrace_impl((TkappObject *)self);
 }
@@ -739,7 +739,7 @@ static TyObject *
 _tkinter_tkapp_willdispatch_impl(TkappObject *self);
 
 static TyObject *
-_tkinter_tkapp_willdispatch(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_tkinter_tkapp_willdispatch(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _tkinter_tkapp_willdispatch_impl((TkappObject *)self);
 }
@@ -944,7 +944,7 @@ static int
 _tkinter_getbusywaitinterval_impl(TyObject *module);
 
 static TyObject *
-_tkinter_getbusywaitinterval(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_tkinter_getbusywaitinterval(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     int _return_value;

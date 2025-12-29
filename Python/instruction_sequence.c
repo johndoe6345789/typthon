@@ -262,7 +262,7 @@ InstructionSequenceType_use_label_impl(_PyInstructionSequence *self,
     if (_PyInstructionSequence_UseLabel(self, label) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -288,7 +288,7 @@ InstructionSequenceType_addop_impl(_PyInstructionSequence *self, int opcode,
     if (_PyInstructionSequence_Addop(self, opcode, oparg, loc) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -327,7 +327,7 @@ InstructionSequenceType_add_nested_impl(_PyInstructionSequence *self,
     if (_PyInstructionSequence_AddNested(self, (_PyInstructionSequence*)nested) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

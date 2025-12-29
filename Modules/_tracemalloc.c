@@ -35,7 +35,7 @@ _tracemalloc_clear_traces_impl(TyObject *module)
 /*[clinic end generated code: output=a86080ee41b84197 input=0dab5b6c785183a5]*/
 {
     _PyTraceMalloc_ClearTraces();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -99,7 +99,7 @@ _tracemalloc_start_impl(TyObject *module, int nframe)
     if (_PyTraceMalloc_Start(nframe) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -116,7 +116,7 @@ _tracemalloc_stop_impl(TyObject *module)
 /*[clinic end generated code: output=c3c42ae03e3955cd input=7478f075e51dae18]*/
 {
     _PyTraceMalloc_Stop();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -181,7 +181,7 @@ _tracemalloc_reset_peak_impl(TyObject *module)
 /*[clinic end generated code: output=140c2870f691dbb2 input=18afd0635066e9ce]*/
 {
     _PyTraceMalloc_ResetPeak();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

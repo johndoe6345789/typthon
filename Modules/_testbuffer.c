@@ -1380,7 +1380,7 @@ ndarray_push(TyObject *self, TyObject *args, TyObject *kwds)
     if (ndarray_push_base(nd, items, shape, strides,
                           offset, format, flags) < 0)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Pop a base from the linked list (if possible). */
@@ -1406,7 +1406,7 @@ ndarray_pop(TyObject *self, TyObject *dummy)
     }
 
     ndbuf_pop(nd);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /**************************************************************************/
@@ -2025,7 +2025,7 @@ ndarray_get_obj(TyObject *op, void *closure)
     Ty_buffer *base = &self->head->base;
 
     if (base->obj == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(base->obj);
 }
@@ -2234,7 +2234,7 @@ ndarray_add_suboffsets(TyObject *self, TyObject *dummy)
 
     nd->head->flags &= ~(ND_C|ND_FORTRAN);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* Test TyMemoryView_FromBuffer(): return a memoryview from a static buffer.
@@ -2365,7 +2365,7 @@ out:
 }
 
 static TyObject *
-get_sizeof_void_p(TyObject *self, TyObject *Ty_UNUSED(ignored))
+get_sizeof_void_p(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return TyLong_FromSize_t(sizeof(void *));
 }

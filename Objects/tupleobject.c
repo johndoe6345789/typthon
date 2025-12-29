@@ -349,7 +349,7 @@ tuple_contains(TyObject *self, TyObject *el)
     PyTupleObject *a = _TyTuple_CAST(self);
     int cmp = 0;
     for (Ty_ssize_t i = 0; cmp == 0 && i < Ty_SIZE(a); ++i) {
-        cmp = PyObject_RichCompareBool(TyTuple_GET_ITEM(a, i), el, Ty_EQ);
+        cmp = PyObject_RichCompareBool(TyTuple_GET_ITEM(a, i), el, Py_EQ);
     }
     return cmp;
 }
@@ -579,7 +579,7 @@ tuple_index_impl(PyTupleObject *self, TyObject *value, Ty_ssize_t start,
         stop = Ty_SIZE(self);
     }
     for (i = start; i < stop; i++) {
-        int cmp = PyObject_RichCompareBool(self->ob_item[i], value, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(self->ob_item[i], value, Py_EQ);
         if (cmp > 0)
             return TyLong_FromSsize_t(i);
         else if (cmp < 0)
@@ -606,7 +606,7 @@ tuple_count_impl(PyTupleObject *self, TyObject *value)
     Ty_ssize_t i;
 
     for (i = 0; i < Ty_SIZE(self); i++) {
-        int cmp = PyObject_RichCompareBool(self->ob_item[i], value, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(self->ob_item[i], value, Py_EQ);
         if (cmp > 0)
             count++;
         else if (cmp < 0)
@@ -633,7 +633,7 @@ tuple_richcompare(TyObject *v, TyObject *w, int op)
     Ty_ssize_t vlen, wlen;
 
     if (!TyTuple_Check(v) || !TyTuple_Check(w))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     vt = (PyTupleObject *)v;
     wt = (PyTupleObject *)w;
@@ -654,7 +654,7 @@ tuple_richcompare(TyObject *v, TyObject *w, int op)
      */
     for (i = 0; i < vlen && i < wlen; i++) {
         int k = PyObject_RichCompareBool(vt->ob_item[i],
-                                         wt->ob_item[i], Ty_EQ);
+                                         wt->ob_item[i], Py_EQ);
         if (k < 0)
             return NULL;
         if (!k)
@@ -663,15 +663,15 @@ tuple_richcompare(TyObject *v, TyObject *w, int op)
 
     if (i >= vlen || i >= wlen) {
         /* No more items to compare -- compare sizes */
-        Ty_RETURN_RICHCOMPARE(vlen, wlen, op);
+        Py_RETURN_RICHCOMPARE(vlen, wlen, op);
     }
 
     /* We have an item that differs -- shortcuts for EQ/NE */
-    if (op == Ty_EQ) {
-        Ty_RETURN_FALSE;
+    if (op == Py_EQ) {
+        Py_RETURN_FALSE;
     }
-    if (op == Ty_NE) {
-        Ty_RETURN_TRUE;
+    if (op == Py_NE) {
+        Py_RETURN_TRUE;
     }
 
     /* Compare the final item again using the proper operator */
@@ -1032,7 +1032,7 @@ tupleiter_next(TyObject *self)
 }
 
 static TyObject *
-tupleiter_len(TyObject *self, TyObject *Ty_UNUSED(ignored))
+tupleiter_len(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     _PyTupleIterObject *it = _PyTupleIterObject_CAST(self);
     Ty_ssize_t len = 0;
@@ -1051,7 +1051,7 @@ tupleiter_len(TyObject *self, TyObject *Ty_UNUSED(ignored))
 PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
-tupleiter_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+tupleiter_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
 
@@ -1085,7 +1085,7 @@ tupleiter_setstate(TyObject *self, TyObject *state)
             index = TyTuple_GET_SIZE(it->it_seq); /* exhausted iterator */
         FT_ATOMIC_STORE_SSIZE_RELAXED(it->it_index, index);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");

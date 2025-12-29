@@ -88,7 +88,7 @@ var_heaptype_set_data_to_3s(
         return NULL;
     }
     memset(data_ptr, 3, data_size);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -207,7 +207,7 @@ heaptype_with_member_extract_and_check_memb(TyObject *self)
 }
 
 static TyObject *
-heaptype_with_member_get_memb(TyObject *self, TyObject *Ty_UNUSED(ignored))
+heaptype_with_member_get_memb(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyMemberDef *def = heaptype_with_member_extract_and_check_memb(self);
     return PyMember_GetOne((const char *)self, def);
@@ -221,18 +221,18 @@ heaptype_with_member_set_memb(TyObject *self, TyObject *value)
     if (r < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-get_memb_offset(TyObject *self, TyObject *Ty_UNUSED(ignored))
+get_memb_offset(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyMemberDef *def = heaptype_with_member_extract_and_check_memb(self);
     return TyLong_FromSsize_t(def->offset);
 }
 
 static TyObject *
-heaptype_with_member_get_memb_relative(TyObject *self, TyObject *Ty_UNUSED(ignored))
+heaptype_with_member_get_memb_relative(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyMemberDef def = {"memb", Ty_T_BYTE, sizeof(TyObject), Ty_RELATIVE_OFFSET};
     return PyMember_GetOne((const char *)self, &def);
@@ -246,7 +246,7 @@ heaptype_with_member_set_memb_relative(TyObject *self, TyObject *value)
     if (r < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 typedef struct {
@@ -280,7 +280,7 @@ static TyType_Spec HeapCTypeWithRelativeDict_spec = {
              Ty_RELATIVE_OFFSET},
             {"__dictoffset__", Ty_T_PYSSIZET,
              offsetof(HeapCTypeWithDictStruct, dict),
-             Ty_READONLY | Ty_RELATIVE_OFFSET},
+             Py_READONLY | Ty_RELATIVE_OFFSET},
             {NULL} /* Sentinel */
         }},
         {0, 0},
@@ -317,7 +317,7 @@ static TyType_Spec HeapCTypeWithRelativeWeakref_spec = {
              Ty_RELATIVE_OFFSET},
             {"__weaklistoffset__", Ty_T_PYSSIZET,
              offsetof(HeapCTypeWithWeakrefStruct, weakreflist),
-             Ty_READONLY | Ty_RELATIVE_OFFSET},
+             Py_READONLY | Ty_RELATIVE_OFFSET},
             {NULL} /* Sentinel */
         }},
         {0, 0},
@@ -395,7 +395,7 @@ make_heaptype_with_member_impl(TyObject *module, int extra_base_size,
 
 
 static TyObject *
-test_alignof_max_align_t(TyObject *module, TyObject *Ty_UNUSED(ignored))
+test_alignof_max_align_t(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     // We define ALIGNOF_MAX_ALIGN_T even if the compiler doesn't support
     // max_align_t. Double-check that it's correct.
@@ -408,7 +408,7 @@ test_alignof_max_align_t(TyObject *module, TyObject *Ty_UNUSED(ignored))
     // Ensure it's a power of two
     assert((ALIGNOF_MAX_ALIGN_T & (ALIGNOF_MAX_ALIGN_T - 1)) == 0);
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef TestMethods[] = {
@@ -464,7 +464,7 @@ _PyTestLimitedCAPI_Init_HeaptypeRelative(TyObject *m)
     if (TyModule_AddIntMacro(m, Ty_T_PYSSIZET) < 0) {
         return -1;
     }
-    if (TyModule_AddIntMacro(m, Ty_READONLY) < 0) {
+    if (TyModule_AddIntMacro(m, Py_READONLY) < 0) {
         return -1;
     }
 

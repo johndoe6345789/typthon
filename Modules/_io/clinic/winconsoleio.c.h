@@ -156,7 +156,7 @@ static TyObject *
 _io__WindowsConsoleIO_fileno_impl(winconsoleio *self);
 
 static TyObject *
-_io__WindowsConsoleIO_fileno(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__WindowsConsoleIO_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__WindowsConsoleIO_fileno_impl((winconsoleio *)self);
 }
@@ -178,7 +178,7 @@ static TyObject *
 _io__WindowsConsoleIO_readable_impl(winconsoleio *self);
 
 static TyObject *
-_io__WindowsConsoleIO_readable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__WindowsConsoleIO_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__WindowsConsoleIO_readable_impl((winconsoleio *)self);
 }
@@ -200,7 +200,7 @@ static TyObject *
 _io__WindowsConsoleIO_writable_impl(winconsoleio *self);
 
 static TyObject *
-_io__WindowsConsoleIO_writable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__WindowsConsoleIO_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__WindowsConsoleIO_writable_impl((winconsoleio *)self);
 }
@@ -281,7 +281,7 @@ static TyObject *
 _io__WindowsConsoleIO_readall_impl(winconsoleio *self);
 
 static TyObject *
-_io__WindowsConsoleIO_readall(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__WindowsConsoleIO_readall(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__WindowsConsoleIO_readall_impl((winconsoleio *)self);
 }
@@ -421,7 +421,7 @@ static TyObject *
 _io__WindowsConsoleIO_isatty_impl(winconsoleio *self);
 
 static TyObject *
-_io__WindowsConsoleIO_isatty(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io__WindowsConsoleIO_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io__WindowsConsoleIO_isatty_impl((winconsoleio *)self);
 }

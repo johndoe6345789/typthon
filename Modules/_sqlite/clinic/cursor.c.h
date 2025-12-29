@@ -163,7 +163,7 @@ static TyObject *
 pysqlite_cursor_fetchone_impl(pysqlite_Cursor *self);
 
 static TyObject *
-pysqlite_cursor_fetchone(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pysqlite_cursor_fetchone(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pysqlite_cursor_fetchone_impl((pysqlite_Cursor *)self);
 }
@@ -250,7 +250,7 @@ static TyObject *
 pysqlite_cursor_fetchall_impl(pysqlite_Cursor *self);
 
 static TyObject *
-pysqlite_cursor_fetchall(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pysqlite_cursor_fetchall(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pysqlite_cursor_fetchall_impl((pysqlite_Cursor *)self);
 }
@@ -325,7 +325,7 @@ static TyObject *
 pysqlite_cursor_close_impl(pysqlite_Cursor *self);
 
 static TyObject *
-pysqlite_cursor_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+pysqlite_cursor_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return pysqlite_cursor_close_impl((pysqlite_Cursor *)self);
 }

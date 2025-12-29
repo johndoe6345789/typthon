@@ -63,7 +63,7 @@ static TyObject *
 _bz2_BZ2Compressor_flush_impl(BZ2Compressor *self);
 
 static TyObject *
-_bz2_BZ2Compressor_flush(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_bz2_BZ2Compressor_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _bz2_BZ2Compressor_flush_impl((BZ2Compressor *)self);
 }

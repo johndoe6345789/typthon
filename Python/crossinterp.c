@@ -1362,7 +1362,7 @@ _PyXI_excinfo_format(_PyXI_excinfo *info)
         return TyUnicode_FromString(info->msg);
     }
     else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 

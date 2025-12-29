@@ -3,27 +3,27 @@
 
 
 static TyObject *
-tuple_check(TyObject* Ty_UNUSED(module), TyObject *obj)
+tuple_check(TyObject* Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyTuple_Check(obj));
 }
 
 static TyObject *
-tuple_checkexact(TyObject* Ty_UNUSED(module), TyObject *obj)
+tuple_checkexact(TyObject* Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     return TyLong_FromLong(TyTuple_CheckExact(obj));
 }
 
 static TyObject *
-tuple_new(TyObject* Ty_UNUSED(module), TyObject *len)
+tuple_new(TyObject* Py_UNUSED(module), TyObject *len)
 {
     return TyTuple_New(TyLong_AsSsize_t(len));
 }
 
 static TyObject *
-tuple_pack(TyObject *Ty_UNUSED(module), TyObject *args)
+tuple_pack(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *arg1 = NULL, *arg2 = NULL;
     Ty_ssize_t size;
@@ -43,14 +43,14 @@ tuple_pack(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-tuple_size(TyObject *Ty_UNUSED(module), TyObject *obj)
+tuple_size(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_SIZE(TyTuple_Size(obj));
 }
 
 static TyObject *
-tuple_getitem(TyObject *Ty_UNUSED(module), TyObject *args)
+tuple_getitem(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t i;
@@ -62,7 +62,7 @@ tuple_getitem(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-tuple_getslice(TyObject *Ty_UNUSED(module), TyObject *args)
+tuple_getslice(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj;
     Ty_ssize_t ilow, ihigh;
@@ -74,7 +74,7 @@ tuple_getslice(TyObject *Ty_UNUSED(module), TyObject *args)
 }
 
 static TyObject *
-tuple_setitem(TyObject *Ty_UNUSED(module), TyObject *args)
+tuple_setitem(TyObject *Py_UNUSED(module), TyObject *args)
 {
     TyObject *obj, *value, *newtuple = NULL;
     Ty_ssize_t i;

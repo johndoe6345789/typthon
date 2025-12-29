@@ -322,7 +322,7 @@ stdprinter_write(TyObject *op, TyObject *args)
          * I can't raise an exception here. It may lead to an
          * unlimited recursion in the case stderr is invalid.
          */
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     if (!TyArg_ParseTuple(args, "U", &unicode)) {
@@ -349,7 +349,7 @@ stdprinter_write(TyObject *op, TyObject *args)
     if (n == -1) {
         if (err == EAGAIN) {
             TyErr_Clear();
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
         return NULL;
     }
@@ -358,7 +358,7 @@ stdprinter_write(TyObject *op, TyObject *args)
 }
 
 static TyObject *
-stdprinter_fileno(TyObject *op, TyObject *Ty_UNUSED(ignored))
+stdprinter_fileno(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyStdPrinter_Object *self = (PyStdPrinter_Object*)op;
     return TyLong_FromLong((long) self->fd);
@@ -373,18 +373,18 @@ stdprinter_repr(TyObject *op)
 }
 
 static TyObject *
-stdprinter_noop(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stdprinter_noop(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
-stdprinter_isatty(TyObject *op, TyObject *Ty_UNUSED(ignored))
+stdprinter_isatty(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     PyStdPrinter_Object *self = (PyStdPrinter_Object*)op;
     long res;
     if (self->fd < 0) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 
     Ty_BEGIN_ALLOW_THREADS
@@ -404,21 +404,21 @@ static TyMethodDef stdprinter_methods[] = {
 };
 
 static TyObject *
-get_closed(TyObject *self, void *Ty_UNUSED(closure))
+get_closed(TyObject *self, void *Py_UNUSED(closure))
 {
-    Ty_RETURN_FALSE;
+    Py_RETURN_FALSE;
 }
 
 static TyObject *
-get_mode(TyObject *self, void *Ty_UNUSED(closure))
+get_mode(TyObject *self, void *Py_UNUSED(closure))
 {
     return TyUnicode_FromString("w");
 }
 
 static TyObject *
-get_encoding(TyObject *self, void *Ty_UNUSED(closure))
+get_encoding(TyObject *self, void *Py_UNUSED(closure))
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyGetSetDef stdprinter_getsetlist[] = {

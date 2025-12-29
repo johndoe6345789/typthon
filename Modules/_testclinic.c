@@ -119,7 +119,7 @@ static TyObject *
 test_empty_function_impl(TyObject *module)
 /*[clinic end generated code: output=0f8aeb3ddced55cb input=0dd7048651ad4ae4]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1251,7 +1251,7 @@ gh_32092_oob_impl(TyObject *module, TyObject *pos1, TyObject *pos2,
                   TyObject *varargs, TyObject *kw1, TyObject *kw2)
 /*[clinic end generated code: output=ee259c130054653f input=63aeeca881979b91]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1271,7 +1271,7 @@ gh_32092_kw_pass_impl(TyObject *module, TyObject *pos, TyObject *args,
                       TyObject *kw)
 /*[clinic end generated code: output=4a2bbe4f7c8604e9 input=258987971f3ee97a]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1288,7 +1288,7 @@ static TyObject *
 gh_99233_refcount_impl(TyObject *module, TyObject *args)
 /*[clinic end generated code: output=585855abfbca9a7f input=f5204359fd852613]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1307,7 +1307,7 @@ static TyObject *
 gh_99240_double_free_impl(TyObject *module, char *a, char *b)
 /*[clinic end generated code: output=586dc714992fe2ed input=23db44aa91870fc7]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1340,7 +1340,7 @@ static TyObject *
 clone_f1_impl(TyObject *module, const char *path)
 /*[clinic end generated code: output=8c30b5620ba86715 input=9c614b7f025ebf70]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1352,7 +1352,7 @@ static TyObject *
 clone_f2_impl(TyObject *module, const char *path)
 /*[clinic end generated code: output=6aa1c39bec3f5d9b input=1aaaf47d6ed2324a]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1754,7 +1754,7 @@ static TyObject *
 depr_star_new_clone_impl(TyObject *type, TyObject *a)
 /*[clinic end generated code: output=3b17bf885fa736bc input=ea659285d5dbec6c]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static struct TyMethodDef depr_star_new_methods[] = {
@@ -1795,7 +1795,7 @@ static TyObject *
 depr_star_init_clone_impl(TyObject *self, TyObject *a)
 /*[clinic end generated code: output=ddfe8a1b5531e7cc input=561e103fe7f8e94f]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static struct TyMethodDef depr_star_init_methods[] = {
@@ -1934,7 +1934,7 @@ static TyObject *
 depr_star_pos0_len1_impl(TyObject *module, TyObject *a)
 /*[clinic end generated code: output=e1c6c2b423129499 input=089b9aee25381b69]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1949,7 +1949,7 @@ static TyObject *
 depr_star_pos0_len2_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=96df9be39859c7e4 input=65c83a32e01495c6]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1968,7 +1968,7 @@ depr_star_pos0_len3_with_kwd_impl(TyObject *module, TyObject *a, TyObject *b,
                                   TyObject *c, TyObject *d)
 /*[clinic end generated code: output=7f2531eda837052f input=b33f620f57d9270f]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1983,7 +1983,7 @@ static TyObject *
 depr_star_pos1_len1_opt_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=b5b4e326ee3b216f input=4a4b8ff72eae9ff7]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -1998,7 +1998,7 @@ static TyObject *
 depr_star_pos1_len1_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=eab92e37d5b0a480 input=1e7787a9fe5f62a0]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2017,7 +2017,7 @@ depr_star_pos1_len2_with_kwd_impl(TyObject *module, TyObject *a, TyObject *b,
                                   TyObject *c, TyObject *d)
 /*[clinic end generated code: output=3bccab672b7cfbb8 input=6bc7bd742fa8be15]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2034,7 +2034,7 @@ depr_star_pos2_len1_impl(TyObject *module, TyObject *a, TyObject *b,
                          TyObject *c)
 /*[clinic end generated code: output=20f5b230e9beeb70 input=5fc3e1790dec00d5]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2052,7 +2052,7 @@ depr_star_pos2_len2_impl(TyObject *module, TyObject *a, TyObject *b,
                          TyObject *c, TyObject *d)
 /*[clinic end generated code: output=9f90ed8fbce27d7a input=9cc8003b89d38779]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2072,7 +2072,7 @@ depr_star_pos2_len2_with_kwd_impl(TyObject *module, TyObject *a, TyObject *b,
                                   TyObject *c, TyObject *d, TyObject *e)
 /*[clinic end generated code: output=05432c4f20527215 input=831832d90534da91]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2092,7 +2092,7 @@ depr_star_noinline_impl(TyObject *module, TyObject *a, TyObject *b,
                         TyObject *c, const char *d, Ty_ssize_t d_length)
 /*[clinic end generated code: output=cc27dacf5c2754af input=d36cc862a2daef98]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2118,7 +2118,7 @@ depr_star_multi_impl(TyObject *module, TyObject *a, TyObject *b, TyObject *c,
                      TyObject *h)
 /*[clinic end generated code: output=77681653f4202068 input=3ebd05d888a957ea]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2134,7 +2134,7 @@ static TyObject *
 depr_kwd_required_1_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=1d8ab19ea78418af input=53f2c398b828462d]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2152,7 +2152,7 @@ depr_kwd_required_2_impl(TyObject *module, TyObject *a, TyObject *b,
                          TyObject *c)
 /*[clinic end generated code: output=44a89cb82509ddde input=a2b0ef37de8a01a7]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2168,7 +2168,7 @@ static TyObject *
 depr_kwd_optional_1_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=a8a3d67efcc7b058 input=e416981eb78c3053]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2186,7 +2186,7 @@ depr_kwd_optional_2_impl(TyObject *module, TyObject *a, TyObject *b,
                          TyObject *c)
 /*[clinic end generated code: output=aa2d967f26fdb9f6 input=cae3afb783bfc855]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2203,7 +2203,7 @@ depr_kwd_optional_3_impl(TyObject *module, TyObject *a, TyObject *b,
                          TyObject *c)
 /*[clinic end generated code: output=a26025bf6118fd07 input=c9183b2f9ccaf992]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2221,7 +2221,7 @@ depr_kwd_required_optional_impl(TyObject *module, TyObject *a, TyObject *b,
                                 TyObject *c)
 /*[clinic end generated code: output=e53a8b7a250d8ffc input=23237a046f8388f5]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2241,7 +2241,7 @@ depr_kwd_noinline_impl(TyObject *module, TyObject *a, TyObject *b,
                        TyObject *c, const char *d, Ty_ssize_t d_length)
 /*[clinic end generated code: output=f59da8113f2bad7c input=1d6db65bebb069d7]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2267,7 +2267,7 @@ depr_kwd_multi_impl(TyObject *module, TyObject *a, TyObject *b, TyObject *c,
                     TyObject *h)
 /*[clinic end generated code: output=ddfbde80fe1942e1 input=7a074e621c79efd7]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 
@@ -2293,7 +2293,7 @@ depr_multi_impl(TyObject *module, TyObject *a, TyObject *b, TyObject *c,
                 TyObject *d, TyObject *e, TyObject *f, TyObject *g)
 /*[clinic end generated code: output=f81c92852ca2d4ee input=5b847c5e44bedd02]*/
 {
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 

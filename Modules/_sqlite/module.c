@@ -140,7 +140,7 @@ pysqlite_register_adapter_impl(TyObject *module, TyTypeObject *type,
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -194,7 +194,7 @@ pysqlite_enable_callback_trace_impl(TyObject *module, int enable)
     pysqlite_state *state = pysqlite_get_state(module);
     state->enable_callback_tracebacks = enable;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]

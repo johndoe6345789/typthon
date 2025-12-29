@@ -656,7 +656,7 @@ list_contains(TyObject *aa, TyObject *el)
             // out-of-bounds
             return 0;
         }
-        int cmp = PyObject_RichCompareBool(item, el, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(item, el, Py_EQ);
         Ty_DECREF(item);
         if (cmp != 0) {
             return cmp;
@@ -1129,7 +1129,7 @@ list_insert_impl(PyListObject *self, Ty_ssize_t index, TyObject *object)
 /*[clinic end generated code: output=7f35e32f60c8cb78 input=b1987ca998a4ae2d]*/
 {
     if (ins1(self, index, object) == 0) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return NULL;
 }
@@ -1146,7 +1146,7 @@ py_list_clear_impl(PyListObject *self)
 /*[clinic end generated code: output=83726743807e3518 input=e285b7f09051a9ba]*/
 {
     list_clear(self);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -1180,7 +1180,7 @@ list_append_impl(PyListObject *self, TyObject *object)
     if (_TyList_AppendTakeRef(self, Ty_NewRef(object)) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -1471,7 +1471,7 @@ list_extend_impl(PyListObject *self, TyObject *iterable)
     if (_list_extend(self, iterable) < 0) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 TyObject *
@@ -2724,7 +2724,7 @@ static int
 safe_object_compare(TyObject *v, TyObject *w, MergeState *ms)
 {
     /* No assumptions necessary! */
-    return PyObject_RichCompareBool(v, w, Ty_LT);
+    return PyObject_RichCompareBool(v, w, Py_LT);
 }
 
 /* Homogeneous compare: safe for any two comparable objects of the same type.
@@ -2738,14 +2738,14 @@ unsafe_object_compare(TyObject *v, TyObject *w, MergeState *ms)
 
     /* No assumptions, because we check first: */
     if (Ty_TYPE(v)->tp_richcompare != ms->key_richcompare)
-        return PyObject_RichCompareBool(v, w, Ty_LT);
+        return PyObject_RichCompareBool(v, w, Py_LT);
 
     assert(ms->key_richcompare != NULL);
-    res_obj = (*(ms->key_richcompare))(v, w, Ty_LT);
+    res_obj = (*(ms->key_richcompare))(v, w, Py_LT);
 
     if (res_obj == Ty_NotImplemented) {
         Ty_DECREF(res_obj);
-        return PyObject_RichCompareBool(v, w, Ty_LT);
+        return PyObject_RichCompareBool(v, w, Py_LT);
     }
     if (res_obj == NULL)
         return -1;
@@ -2759,7 +2759,7 @@ unsafe_object_compare(TyObject *v, TyObject *w, MergeState *ms)
     Ty_DECREF(res_obj);
 
     /* Note that we can't assert
-     *     res == PyObject_RichCompareBool(v, w, Ty_LT);
+     *     res == PyObject_RichCompareBool(v, w, Py_LT);
      * because of evil compare functions like this:
      *     lambda a, b:  int(random.random() * 3) - 1)
      * (which is actually in test_sort.py) */
@@ -2786,7 +2786,7 @@ unsafe_latin_compare(TyObject *v, TyObject *w, MergeState *ms)
            res < 0 :
            TyUnicode_GET_LENGTH(v) < TyUnicode_GET_LENGTH(w));
 
-    assert(res == PyObject_RichCompareBool(v, w, Ty_LT));;
+    assert(res == PyObject_RichCompareBool(v, w, Py_LT));;
     return res;
 }
 
@@ -2811,7 +2811,7 @@ unsafe_long_compare(TyObject *v, TyObject *w, MergeState *ms)
     w0 = _TyLong_CompactValue(wl);
 
     res = v0 < w0;
-    assert(res == PyObject_RichCompareBool(v, w, Ty_LT));
+    assert(res == PyObject_RichCompareBool(v, w, Py_LT));
     return res;
 }
 
@@ -2826,7 +2826,7 @@ unsafe_float_compare(TyObject *v, TyObject *w, MergeState *ms)
     assert(Ty_IS_TYPE(w, &TyFloat_Type));
 
     res = TyFloat_AS_DOUBLE(v) < TyFloat_AS_DOUBLE(w);
-    assert(res == PyObject_RichCompareBool(v, w, Ty_LT));
+    assert(res == PyObject_RichCompareBool(v, w, Py_LT));
     return res;
 }
 
@@ -2856,7 +2856,7 @@ unsafe_tuple_compare(TyObject *v, TyObject *w, MergeState *ms)
     wlen = Ty_SIZE(wt);
 
     for (i = 0; i < vlen && i < wlen; i++) {
-        k = PyObject_RichCompareBool(vt->ob_item[i], wt->ob_item[i], Ty_EQ);
+        k = PyObject_RichCompareBool(vt->ob_item[i], wt->ob_item[i], Py_EQ);
         if (k < 0)
             return -1;
         if (!k)
@@ -2869,7 +2869,7 @@ unsafe_tuple_compare(TyObject *v, TyObject *w, MergeState *ms)
     if (i == 0)
         return ms->tuple_elem_compare(vt->ob_item[i], wt->ob_item[i], ms);
     else
-        return PyObject_RichCompareBool(vt->ob_item[i], wt->ob_item[i], Ty_LT);
+        return PyObject_RichCompareBool(vt->ob_item[i], wt->ob_item[i], Py_LT);
 }
 
 /* An adaptive, stable, natural mergesort.  See listsort.txt.
@@ -3192,7 +3192,7 @@ list_reverse_impl(PyListObject *self)
 {
     if (Ty_SIZE(self) > 1)
         reverse_slice(self->ob_item, self->ob_item + Ty_SIZE(self));
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 int
@@ -3300,7 +3300,7 @@ list_index_impl(PyListObject *self, TyObject *value, Ty_ssize_t start,
             // out-of-bounds
             break;
         }
-        int cmp = PyObject_RichCompareBool(obj, value, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(obj, value, Py_EQ);
         Ty_DECREF(obj);
         if (cmp > 0)
             return TyLong_FromSsize_t(i);
@@ -3336,7 +3336,7 @@ list_count_impl(PyListObject *self, TyObject *value)
            Ty_DECREF(obj);
            continue;
         }
-        int cmp = PyObject_RichCompareBool(obj, value, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(obj, value, Py_EQ);
         Ty_DECREF(obj);
         if (cmp > 0)
             count++;
@@ -3367,11 +3367,11 @@ list_remove_impl(PyListObject *self, TyObject *value)
     for (i = 0; i < Ty_SIZE(self); i++) {
         TyObject *obj = self->ob_item[i];
         Ty_INCREF(obj);
-        int cmp = PyObject_RichCompareBool(obj, value, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(obj, value, Py_EQ);
         Ty_DECREF(obj);
         if (cmp > 0) {
             if (list_ass_slice_lock_held(self, i, i+1, NULL) == 0)
-                Ty_RETURN_NONE;
+                Py_RETURN_NONE;
             return NULL;
         }
         else if (cmp < 0)
@@ -3399,17 +3399,17 @@ list_richcompare_impl(TyObject *v, TyObject *w, int op)
     Ty_ssize_t i;
 
     if (!TyList_Check(v) || !TyList_Check(w))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     vl = (PyListObject *)v;
     wl = (PyListObject *)w;
 
-    if (Ty_SIZE(vl) != Ty_SIZE(wl) && (op == Ty_EQ || op == Ty_NE)) {
+    if (Ty_SIZE(vl) != Ty_SIZE(wl) && (op == Py_EQ || op == Py_NE)) {
         /* Shortcut: if the lengths differ, the lists differ */
-        if (op == Ty_EQ)
-            Ty_RETURN_FALSE;
+        if (op == Py_EQ)
+            Py_RETURN_FALSE;
         else
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
     }
 
     /* Search for the first index where items are different */
@@ -3422,7 +3422,7 @@ list_richcompare_impl(TyObject *v, TyObject *w, int op)
 
         Ty_INCREF(vitem);
         Ty_INCREF(witem);
-        int k = PyObject_RichCompareBool(vitem, witem, Ty_EQ);
+        int k = PyObject_RichCompareBool(vitem, witem, Py_EQ);
         Ty_DECREF(vitem);
         Ty_DECREF(witem);
         if (k < 0)
@@ -3433,15 +3433,15 @@ list_richcompare_impl(TyObject *v, TyObject *w, int op)
 
     if (i >= Ty_SIZE(vl) || i >= Ty_SIZE(wl)) {
         /* No more items to compare -- compare sizes */
-        Ty_RETURN_RICHCOMPARE(Ty_SIZE(vl), Ty_SIZE(wl), op);
+        Py_RETURN_RICHCOMPARE(Ty_SIZE(vl), Ty_SIZE(wl), op);
     }
 
     /* We have an item that differs -- shortcuts for EQ/NE */
-    if (op == Ty_EQ) {
-        Ty_RETURN_FALSE;
+    if (op == Py_EQ) {
+        Py_RETURN_FALSE;
     }
-    if (op == Ty_NE) {
-        Ty_RETURN_TRUE;
+    if (op == Py_NE) {
+        Py_RETURN_TRUE;
     }
 
     /* Compare the final item again using the proper operator */
@@ -4033,7 +4033,7 @@ listiter_next(TyObject *self)
 }
 
 static TyObject *
-listiter_len(TyObject *self, TyObject *Ty_UNUSED(ignored))
+listiter_len(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     assert(self != NULL);
     _PyListIterObject *it = (_PyListIterObject *)self;
@@ -4047,7 +4047,7 @@ listiter_len(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-listiter_reduce(TyObject *it, TyObject *Ty_UNUSED(ignored))
+listiter_reduce(TyObject *it, TyObject *Py_UNUSED(ignored))
 {
     return listiter_reduce_general(it, 1);
 }
@@ -4066,7 +4066,7 @@ listiter_setstate(TyObject *self, TyObject *state)
             index = TyList_GET_SIZE(it->it_seq); /* iterator exhausted */
         FT_ATOMIC_STORE_SSIZE_RELAXED(it->it_index, index);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*********************** List Reverse Iterator **************************/
@@ -4188,7 +4188,7 @@ listreviter_next(TyObject *self)
 }
 
 static TyObject *
-listreviter_len(TyObject *self, TyObject *Ty_UNUSED(ignored))
+listreviter_len(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     listreviterobject *it = (listreviterobject *)self;
     Ty_ssize_t index = FT_ATOMIC_LOAD_SSIZE_RELAXED(it->it_index);
@@ -4199,7 +4199,7 @@ listreviter_len(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-listreviter_reduce(TyObject *it, TyObject *Ty_UNUSED(ignored))
+listreviter_reduce(TyObject *it, TyObject *Py_UNUSED(ignored))
 {
     return listiter_reduce_general(it, 0);
 }
@@ -4218,7 +4218,7 @@ listreviter_setstate(TyObject *self, TyObject *state)
             index = TyList_GET_SIZE(it->it_seq) - 1;
         FT_ATOMIC_STORE_SSIZE_RELAXED(it->it_index, index);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /* common pickling support */

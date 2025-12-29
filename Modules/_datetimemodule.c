@@ -1509,7 +1509,7 @@ call_tzinfo_method(TyObject *tzinfo, const char *name, TyObject *tzinfoarg)
     assert(tzinfoarg != NULL);
 
     if (tzinfo == Ty_None)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     offset = PyObject_CallMethod(tzinfo, name, "O", tzinfoarg);
     if (offset == Ty_None || offset == NULL)
         return offset;
@@ -1580,7 +1580,7 @@ call_tzname(TyObject *tzinfo, TyObject *tzinfoarg)
     assert(tzinfoarg != NULL);
 
     if (tzinfo == Ty_None)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 
     result = PyObject_CallMethodOneArg(tzinfo, &_Ty_ID(tzname), tzinfoarg);
 
@@ -2078,7 +2078,7 @@ build_struct_time(int y, int m, int d, int hh, int mm, int ss, int dstflag)
 static TyObject *
 diff_to_bool(int diff, int op)
 {
-    Ty_RETURN_RICHCOMPARE(diff, 0, op);
+    Py_RETURN_RICHCOMPARE(diff, 0, op);
 }
 
 /* ---------------------------------------------------------------------------
@@ -2507,7 +2507,7 @@ delta_richcompare(TyObject *self, TyObject *other, int op)
         return diff_to_bool(diff, op);
     }
     else {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 }
 
@@ -2607,7 +2607,7 @@ delta_remainder(TyObject *left, TyObject *right)
     TyObject *remainder;
 
     if (!PyDelta_Check(left) || !PyDelta_Check(right))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     pyus_left = delta_to_microseconds((PyDateTime_Delta *)left);
     if (pyus_left == NULL)
@@ -2643,7 +2643,7 @@ delta_divmod(TyObject *left, TyObject *right)
     TyObject *result;
 
     if (!PyDelta_Check(left) || !PyDelta_Check(right))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     pyus_left = delta_to_microseconds((PyDateTime_Delta *)left);
     if (pyus_left == NULL)
@@ -2977,7 +2977,7 @@ delta_getstate(PyDateTime_Delta *self)
 }
 
 static TyObject *
-delta_total_seconds(TyObject *op, TyObject *Ty_UNUSED(dummy))
+delta_total_seconds(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     TyObject *total_seconds;
     TyObject *total_microseconds;
@@ -2997,7 +2997,7 @@ delta_total_seconds(TyObject *op, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-delta_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+delta_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_Delta *self = PyDelta_CAST(op);
     return Ty_BuildValue("ON", Ty_TYPE(self), delta_getstate(self));
@@ -3007,13 +3007,13 @@ delta_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
 
 static TyMemberDef delta_members[] = {
 
-    {"days",         Ty_T_INT, OFFSET(days),         Ty_READONLY,
+    {"days",         Ty_T_INT, OFFSET(days),         Py_READONLY,
      PyDoc_STR("Number of days.")},
 
-    {"seconds",      Ty_T_INT, OFFSET(seconds),      Ty_READONLY,
+    {"seconds",      Ty_T_INT, OFFSET(seconds),      Py_READONLY,
      PyDoc_STR("Number of seconds (>= 0 and less than 1 day).")},
 
-    {"microseconds", Ty_T_INT, OFFSET(microseconds), Ty_READONLY,
+    {"microseconds", Ty_T_INT, OFFSET(microseconds), Py_READONLY,
      PyDoc_STR("Number of microseconds (>= 0 and less than 1 second).")},
     {NULL}
 };
@@ -3139,21 +3139,21 @@ look_up_delta(int days, int seconds, int microseconds, TyTypeObject *type)
 /* Accessor properties. */
 
 static TyObject *
-date_year(TyObject *op, void *Ty_UNUSED(closure))
+date_year(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_Date *self = PyDate_CAST(op);
     return TyLong_FromLong(GET_YEAR(self));
 }
 
 static TyObject *
-date_month(TyObject *op, void *Ty_UNUSED(closure))
+date_month(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_Date *self = PyDate_CAST(op);
     return TyLong_FromLong(GET_MONTH(self));
 }
 
 static TyObject *
-date_day(TyObject *op, void *Ty_UNUSED(closure))
+date_day(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_Date *self = PyDate_CAST(op);
     return TyLong_FromLong(GET_DAY(self));
@@ -3255,7 +3255,7 @@ date_fromtimestamp(TyObject *cls, TyObject *obj)
  * generally the same as calling C's time.
  */
 static TyObject *
-date_today(TyObject *cls, TyObject *Ty_UNUSED(dummy))
+date_today(TyObject *cls, TyObject *Py_UNUSED(dummy))
 {
     TyObject *time;
     TyObject *result;
@@ -3468,7 +3468,7 @@ static TyObject *
 date_add(TyObject *left, TyObject *right)
 {
     if (PyDateTime_Check(left) || PyDateTime_Check(right))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     if (PyDate_Check(left)) {
         /* date + ??? */
@@ -3488,14 +3488,14 @@ date_add(TyObject *left, TyObject *right)
                                       (PyDateTime_Delta *) left,
                                       0);
     }
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static TyObject *
 date_subtract(TyObject *left, TyObject *right)
 {
     if (PyDateTime_Check(left) || PyDateTime_Check(right))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     if (PyDate_Check(left)) {
         if (PyDate_Check(right)) {
@@ -3515,7 +3515,7 @@ date_subtract(TyObject *left, TyObject *right)
                                       1);
         }
     }
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 
@@ -3531,7 +3531,7 @@ date_repr(TyObject *op)
 }
 
 static TyObject *
-date_isoformat(TyObject *op, TyObject *Ty_UNUSED(dummy))
+date_isoformat(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_Date *self = PyDate_CAST(op);
     return TyUnicode_FromFormat("%04d-%02d-%02d",
@@ -3547,7 +3547,7 @@ date_str(TyObject *self)
 
 
 static TyObject *
-date_ctime(TyObject *self, TyObject *Ty_UNUSED(dummy))
+date_ctime(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return format_ctime(self, 0, 0, 0);
 }
@@ -3593,7 +3593,7 @@ date_format(TyObject *self, TyObject *args)
 /* ISO methods. */
 
 static TyObject *
-date_isoweekday(TyObject *self, TyObject *Ty_UNUSED(dummy))
+date_isoweekday(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     int dow = weekday(GET_YEAR(self), GET_MONTH(self), GET_DAY(self));
 
@@ -3631,7 +3631,7 @@ iso_calendar_date_repr(TyObject *self)
 }
 
 static TyObject *
-iso_calendar_date_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+iso_calendar_date_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     // Construct the tuple that this reduces to
     TyObject *reduce_tuple = Ty_BuildValue(
@@ -3645,7 +3645,7 @@ iso_calendar_date_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-iso_calendar_date_year(TyObject *self, void *Ty_UNUSED(closure))
+iso_calendar_date_year(TyObject *self, void *Py_UNUSED(closure))
 {
     TyObject *year = TyTuple_GetItem(self, 0);
     if (year == NULL) {
@@ -3655,7 +3655,7 @@ iso_calendar_date_year(TyObject *self, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-iso_calendar_date_week(TyObject *self, void *Ty_UNUSED(closure))
+iso_calendar_date_week(TyObject *self, void *Py_UNUSED(closure))
 {
     TyObject *week = TyTuple_GetItem(self, 1);
     if (week == NULL) {
@@ -3665,7 +3665,7 @@ iso_calendar_date_week(TyObject *self, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-iso_calendar_date_weekday(TyObject *self, void *Ty_UNUSED(closure))
+iso_calendar_date_weekday(TyObject *self, void *Py_UNUSED(closure))
 {
     TyObject *weekday = TyTuple_GetItem(self, 2);
     if (weekday == NULL) {
@@ -3750,7 +3750,7 @@ iso_calendar_date_new_impl(TyTypeObject *type, int year, int week,
 }
 
 static TyObject *
-date_isocalendar(TyObject *self, TyObject *Ty_UNUSED(dummy))
+date_isocalendar(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     int  year         = GET_YEAR(self);
     int  week1_monday = iso_week1_monday(year);
@@ -3801,11 +3801,11 @@ date_richcompare(TyObject *self, TyObject *other, int op)
         return diff_to_bool(diff, op);
     }
     else
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 }
 
 static TyObject *
-date_timetuple(TyObject *self, TyObject *Ty_UNUSED(dummy))
+date_timetuple(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return build_struct_time(GET_YEAR(self),
                              GET_MONTH(self),
@@ -3853,14 +3853,14 @@ date_hash(TyObject *op)
 }
 
 static TyObject *
-date_toordinal(TyObject *self, TyObject *Ty_UNUSED(dummy))
+date_toordinal(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     return TyLong_FromLong(ymd_to_ord(GET_YEAR(self), GET_MONTH(self),
                                       GET_DAY(self)));
 }
 
 static TyObject *
-date_weekday(TyObject *self, TyObject *Ty_UNUSED(dummy))
+date_weekday(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     int dow = weekday(GET_YEAR(self), GET_MONTH(self), GET_DAY(self));
     return TyLong_FromLong(dow);
@@ -3879,7 +3879,7 @@ date_getstate(PyDateTime_Date *self)
 }
 
 static TyObject *
-date_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+date_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_Date *self = PyDate_CAST(op);
     return Ty_BuildValue("(ON)", Ty_TYPE(self), date_getstate(self));
@@ -4042,19 +4042,19 @@ tzinfo_nogo(const char* methodname)
 /* Methods.  A subclass must implement these. */
 
 static TyObject *
-tzinfo_tzname(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(dt))
+tzinfo_tzname(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(dt))
 {
     return tzinfo_nogo("tzname");
 }
 
 static TyObject *
-tzinfo_utcoffset(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(dt))
+tzinfo_utcoffset(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(dt))
 {
     return tzinfo_nogo("utcoffset");
 }
 
 static TyObject *
-tzinfo_dst(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(dt))
+tzinfo_dst(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(dt))
 {
     return tzinfo_nogo("dst");
 }
@@ -4145,7 +4145,7 @@ Fail:
  */
 
 static TyObject *
-tzinfo_reduce(TyObject *self, TyObject *Ty_UNUSED(dummy))
+tzinfo_reduce(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
     TyObject *args, *state;
     TyObject *getinitargs;
@@ -4265,10 +4265,10 @@ timezone_dealloc(TyObject *op)
 static TyObject *
 timezone_richcompare(TyObject *self, TyObject *other, int op)
 {
-    if (op != Ty_EQ && op != Ty_NE)
-        Ty_RETURN_NOTIMPLEMENTED;
+    if (op != Py_EQ && op != Py_NE)
+        Py_RETURN_NOTIMPLEMENTED;
     if (!PyTimezone_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
     PyDateTime_TimeZone *lhs = PyTimeZone_CAST(self);
     PyDateTime_TimeZone *rhs = PyTimeZone_CAST(other);
@@ -4387,7 +4387,7 @@ timezone_dst(TyObject *op, TyObject *dt)
     if (_timezone_check_argument(dt, "dst") == -1)
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -4410,7 +4410,7 @@ timezone_fromutc(TyObject *op, TyObject *arg)
 }
 
 static TyObject *
-timezone_getinitargs(TyObject *op, TyObject *Ty_UNUSED(dummy))
+timezone_getinitargs(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_TimeZone *self = PyTimeZone_CAST(op);
     if (self->name == NULL)
@@ -4507,14 +4507,14 @@ look_up_timezone(TyObject *offset, TyObject *name)
  */
 
 static TyObject *
-time_hour(TyObject *op, void *Ty_UNUSED(closure))
+time_hour(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_Time *self = PyTime_CAST(op);
     return TyLong_FromLong(TIME_GET_HOUR(self));
 }
 
 static TyObject *
-time_minute(TyObject *op, void *Ty_UNUSED(closure))
+time_minute(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_Time *self = PyTime_CAST(op);
     return TyLong_FromLong(TIME_GET_MINUTE(self));
@@ -4522,21 +4522,21 @@ time_minute(TyObject *op, void *Ty_UNUSED(closure))
 
 /* The name time_second conflicted with some platform header file. */
 static TyObject *
-py_time_second(TyObject *op, void *Ty_UNUSED(closure))
+py_time_second(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_Time *self = PyTime_CAST(op);
     return TyLong_FromLong(TIME_GET_SECOND(self));
 }
 
 static TyObject *
-time_microsecond(TyObject *op, void *Ty_UNUSED(closure))
+time_microsecond(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_Time *self = PyTime_CAST(op);
     return TyLong_FromLong(TIME_GET_MICROSECOND(self));
 }
 
 static TyObject *
-time_tzinfo(TyObject *op, void *Ty_UNUSED(closure))
+time_tzinfo(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_Time *self = PyTime_CAST(op);
     TyObject *result = HASTZINFO(self) ? self->tzinfo : Ty_None;
@@ -4544,7 +4544,7 @@ time_tzinfo(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-time_fold(TyObject *op, void *Ty_UNUSED(closure))
+time_fold(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_Time *self = PyTime_CAST(op);
     return TyLong_FromLong(TIME_GET_FOLD(self));
@@ -4696,19 +4696,19 @@ time_dealloc(TyObject *op)
 
 /* These are all METH_NOARGS, so don't need to check the arglist. */
 static TyObject *
-time_utcoffset(TyObject *op, TyObject *Ty_UNUSED(dummy)) {
+time_utcoffset(TyObject *op, TyObject *Py_UNUSED(dummy)) {
     PyDateTime_Time *self = PyTime_CAST(op);
     return call_utcoffset(GET_TIME_TZINFO(self), Ty_None);
 }
 
 static TyObject *
-time_dst(TyObject *op, TyObject *Ty_UNUSED(dummy)) {
+time_dst(TyObject *op, TyObject *Py_UNUSED(dummy)) {
     PyDateTime_Time *self = PyTime_CAST(op);
     return call_dst(GET_TIME_TZINFO(self), Ty_None);
 }
 
 static TyObject *
-time_tzname(TyObject *op, TyObject *Ty_UNUSED(dummy)) {
+time_tzname(TyObject *op, TyObject *Py_UNUSED(dummy)) {
     PyDateTime_Time *self = PyTime_CAST(op);
     return call_tzname(GET_TIME_TZINFO(self), Ty_None);
 }
@@ -4861,7 +4861,7 @@ time_richcompare(TyObject *self, TyObject *other, int op)
     int diff;
 
     if (! PyTime_Check(other))
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
 
     if (GET_TIME_TZINFO(self) == GET_TIME_TZINFO(other)) {
         diff = memcmp(((PyDateTime_Time *)self)->data,
@@ -4907,10 +4907,10 @@ time_richcompare(TyObject *self, TyObject *other, int op)
                    TIME_GET_MICROSECOND(other);
         result = diff_to_bool(diff, op);
     }
-    else if (op == Ty_EQ) {
+    else if (op == Py_EQ) {
         result = Ty_NewRef(Ty_False);
     }
-    else if (op == Ty_NE) {
+    else if (op == Py_NE) {
         result = Ty_NewRef(Ty_True);
     }
     else {
@@ -5114,7 +5114,7 @@ time_reduce_ex(TyObject *op, TyObject *args)
 }
 
 static TyObject *
-time_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+time_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_Time *self = PyTime_CAST(op);
     return Ty_BuildValue("(ON)", Ty_TYPE(self), time_getstate(self, 2));
@@ -5228,35 +5228,35 @@ static TyTypeObject PyDateTime_TimeType = {
  */
 
 static TyObject *
-datetime_hour(TyObject *op, void *Ty_UNUSED(closure))
+datetime_hour(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return TyLong_FromLong(DATE_GET_HOUR(self));
 }
 
 static TyObject *
-datetime_minute(TyObject *op, void *Ty_UNUSED(closure))
+datetime_minute(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return TyLong_FromLong(DATE_GET_MINUTE(self));
 }
 
 static TyObject *
-datetime_second(TyObject *op, void *Ty_UNUSED(closure))
+datetime_second(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return TyLong_FromLong(DATE_GET_SECOND(self));
 }
 
 static TyObject *
-datetime_microsecond(TyObject *op, void *Ty_UNUSED(closure))
+datetime_microsecond(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return TyLong_FromLong(DATE_GET_MICROSECOND(self));
 }
 
 static TyObject *
-datetime_tzinfo(TyObject *op, void *Ty_UNUSED(closure))
+datetime_tzinfo(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     TyObject *result = HASTZINFO(self) ? self->tzinfo : Ty_None;
@@ -5264,7 +5264,7 @@ datetime_tzinfo(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-datetime_fold(TyObject *op, void *Ty_UNUSED(closure))
+datetime_fold(TyObject *op, void *Py_UNUSED(closure))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return TyLong_FromLong(DATE_GET_FOLD(self));
@@ -5995,19 +5995,19 @@ datetime_dealloc(TyObject *op)
 
 /* These are all METH_NOARGS, so don't need to check the arglist. */
 static TyObject *
-datetime_utcoffset(TyObject *op, TyObject *Ty_UNUSED(dummy)) {
+datetime_utcoffset(TyObject *op, TyObject *Py_UNUSED(dummy)) {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return call_utcoffset(GET_DT_TZINFO(self), op);
 }
 
 static TyObject *
-datetime_dst(TyObject *op, TyObject *Ty_UNUSED(dummy)) {
+datetime_dst(TyObject *op, TyObject *Py_UNUSED(dummy)) {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return call_dst(GET_DT_TZINFO(self), op);
 }
 
 static TyObject *
-datetime_tzname(TyObject *op, TyObject *Ty_UNUSED(dummy)) {
+datetime_tzname(TyObject *op, TyObject *Py_UNUSED(dummy)) {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return call_tzname(GET_DT_TZINFO(self), op);
 }
@@ -6065,7 +6065,7 @@ datetime_add(TyObject *left, TyObject *right)
                                       (PyDateTime_Delta *) left,
                                       1);
     }
-    Ty_RETURN_NOTIMPLEMENTED;
+    Py_RETURN_NOTIMPLEMENTED;
 }
 
 static TyObject *
@@ -6275,7 +6275,7 @@ datetime_isoformat(TyObject *op, TyObject *args, TyObject *kw)
 }
 
 static TyObject *
-datetime_ctime(TyObject *op, TyObject *Ty_UNUSED(dummy))
+datetime_ctime(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return format_ctime(op,
@@ -6358,7 +6358,7 @@ datetime_richcompare(TyObject *self, TyObject *other, int op)
     int diff;
 
     if (!PyDateTime_Check(other)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     if (GET_DT_TZINFO(self) == GET_DT_TZINFO(other)) {
@@ -6383,7 +6383,7 @@ datetime_richcompare(TyObject *self, TyObject *other, int op)
         diff = memcmp(((PyDateTime_DateTime *)self)->data,
                       ((PyDateTime_DateTime *)other)->data,
                       _PyDateTime_DATETIME_DATASIZE);
-        if ((op == Ty_EQ || op == Ty_NE) && diff == 0) {
+        if ((op == Py_EQ || op == Py_NE) && diff == 0) {
             int ex = pep495_eq_exception(self, other, offset1, offset2);
             if (ex == -1)
                 goto done;
@@ -6405,7 +6405,7 @@ datetime_richcompare(TyObject *self, TyObject *other, int op)
             diff = GET_TD_SECONDS(delta) |
                    GET_TD_MICROSECONDS(delta);
         Ty_DECREF(delta);
-        if ((op == Ty_EQ || op == Ty_NE) && diff == 0) {
+        if ((op == Py_EQ || op == Py_NE) && diff == 0) {
             int ex = pep495_eq_exception(self, other, offset1, offset2);
             if (ex == -1)
                 goto done;
@@ -6414,10 +6414,10 @@ datetime_richcompare(TyObject *self, TyObject *other, int op)
         }
         result = diff_to_bool(diff, op);
     }
-    else if (op == Ty_EQ) {
+    else if (op == Py_EQ) {
         result = Ty_NewRef(Ty_False);
     }
-    else if (op == Ty_NE) {
+    else if (op == Py_NE) {
         result = Ty_NewRef(Ty_True);
     }
     else {
@@ -6756,7 +6756,7 @@ datetime_astimezone(TyObject *op, TyObject *args, TyObject *kw)
 }
 
 static TyObject *
-datetime_timetuple(TyObject *op, TyObject *Ty_UNUSED(dummy))
+datetime_timetuple(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     int dstflag = -1;
@@ -6832,7 +6832,7 @@ local_to_seconds(int year, int month, int day,
 #define EPOCH_SECONDS (719163LL * 24 * 60 * 60)
 
 static TyObject *
-datetime_timestamp(TyObject *op, TyObject *Ty_UNUSED(dummy))
+datetime_timestamp(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     TyObject *result;
@@ -6867,7 +6867,7 @@ datetime_timestamp(TyObject *op, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-datetime_getdate(TyObject *op, TyObject *Ty_UNUSED(dummy))
+datetime_getdate(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return new_date(GET_YEAR(self),
@@ -6876,7 +6876,7 @@ datetime_getdate(TyObject *op, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-datetime_gettime(TyObject *op, TyObject *Ty_UNUSED(dummy))
+datetime_gettime(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return new_time(DATE_GET_HOUR(self),
@@ -6888,7 +6888,7 @@ datetime_gettime(TyObject *op, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-datetime_gettimetz(TyObject *op, TyObject *Ty_UNUSED(dummy))
+datetime_gettimetz(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return new_time(DATE_GET_HOUR(self),
@@ -6900,7 +6900,7 @@ datetime_gettimetz(TyObject *op, TyObject *Ty_UNUSED(dummy))
 }
 
 static TyObject *
-datetime_utctimetuple(TyObject *op, TyObject *Ty_UNUSED(dummy))
+datetime_utctimetuple(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     int y, m, d, hh, mm, ss;
     TyObject *tzinfo;
@@ -6980,7 +6980,7 @@ datetime_reduce_ex(TyObject *op, TyObject *args)
 }
 
 static TyObject *
-datetime_reduce(TyObject *op, TyObject *Ty_UNUSED(arg))
+datetime_reduce(TyObject *op, TyObject *Py_UNUSED(arg))
 {
     PyDateTime_DateTime *self = PyDateTime_CAST(op);
     return Ty_BuildValue("(ON)", Ty_TYPE(self),

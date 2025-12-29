@@ -349,7 +349,7 @@ PyAPI_FUNC(TyObject *) _TyObject_FunctionStr(TyObject *);
 #else
 #define Ty_SETREF(dst, src) \
     do { \
-        TyObject **_tmp_dst_ptr = _Ty_CAST(TyObject**, &(dst)); \
+        TyObject **_tmp_dst_ptr = _Py_CAST(TyObject**, &(dst)); \
         TyObject *_tmp_old_dst = (*_tmp_dst_ptr); \
         TyObject *_tmp_src = _TyObject_CAST(src); \
         memcpy(_tmp_dst_ptr, &_tmp_src, sizeof(TyObject*)); \
@@ -371,7 +371,7 @@ PyAPI_FUNC(TyObject *) _TyObject_FunctionStr(TyObject *);
 #else
 #define Ty_XSETREF(dst, src) \
     do { \
-        TyObject **_tmp_dst_ptr = _Ty_CAST(TyObject**, &(dst)); \
+        TyObject **_tmp_dst_ptr = _Py_CAST(TyObject**, &(dst)); \
         TyObject *_tmp_old_dst = (*_tmp_dst_ptr); \
         TyObject *_tmp_src = _TyObject_CAST(src); \
         memcpy(_tmp_dst_ptr, &_tmp_src, sizeof(TyObject*)); \

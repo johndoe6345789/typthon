@@ -1132,7 +1132,7 @@ memoryview_release_impl(PyMemoryViewObject *self)
     Ty_ssize_t exports = get_exports(self);
     if (exports == 0) {
         _memory_release(self);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 
     if (exports > 0) {
@@ -2801,7 +2801,7 @@ memoryview_count_impl(PyMemoryViewObject *self, TyObject *value)
             count++;  // no overflow since count <= len(mv) <= PY_SSIZE_T_MAX
             continue;
         }
-        int contained = PyObject_RichCompareBool(item, value, Ty_EQ);
+        int contained = PyObject_RichCompareBool(item, value, Py_EQ);
         Ty_DECREF(item);
         if (contained > 0) { // more likely than 'contained < 0'
             count++;  // no overflow since count <= len(mv) <= PY_SSIZE_T_MAX
@@ -2881,7 +2881,7 @@ memoryview_index_impl(PyMemoryViewObject *self, TyObject *value,
                 Ty_DECREF(item);
                 return TyLong_FromSsize_t(index);
             }
-            int contained = PyObject_RichCompareBool(item, value, Ty_EQ);
+            int contained = PyObject_RichCompareBool(item, value, Py_EQ);
             Ty_DECREF(item);
             if (contained > 0) {  // more likely than 'contained < 0'
                 return TyLong_FromSsize_t(index);
@@ -2945,7 +2945,7 @@ struct_unpack_cmp(const char *p, const char *q,
     }
 
     /* MV_COMPARE_EX == -1: exceptions are preserved */
-    ret = PyObject_RichCompareBool(v, w, Ty_EQ);
+    ret = PyObject_RichCompareBool(v, w, Py_EQ);
     Ty_DECREF(v);
     Ty_DECREF(w);
 
@@ -3103,7 +3103,7 @@ memory_richcompare(TyObject *v, TyObject *w, int op)
     char vfmt, wfmt;
     int equal = MV_COMPARE_NOT_IMPL;
 
-    if (op != Ty_EQ && op != Ty_NE)
+    if (op != Py_EQ && op != Py_NE)
         goto result; /* Ty_NotImplemented */
 
     assert(TyMemoryView_Check(v));
@@ -3181,7 +3181,7 @@ result:
         else /* exception */
             res = NULL;
     }
-    else if ((equal && op == Ty_EQ) || (!equal && op == Ty_NE))
+    else if ((equal && op == Py_EQ) || (!equal && op == Py_NE))
         res = Ty_True;
     else
         res = Ty_False;
@@ -3279,20 +3279,20 @@ _IntTupleFromSsizet(int len, Ty_ssize_t *vals)
 }
 
 static TyObject *
-memory_obj_get(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_obj_get(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     Ty_buffer *view = &self->view;
 
     CHECK_RELEASED(self);
     if (view->obj == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return Ty_NewRef(view->obj);
 }
 
 static TyObject *
-memory_nbytes_get(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_nbytes_get(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3300,7 +3300,7 @@ memory_nbytes_get(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_format_get(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_format_get(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3308,7 +3308,7 @@ memory_format_get(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_itemsize_get(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_itemsize_get(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3316,7 +3316,7 @@ memory_itemsize_get(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_shape_get(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_shape_get(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3324,7 +3324,7 @@ memory_shape_get(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_strides_get(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_strides_get(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3332,7 +3332,7 @@ memory_strides_get(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_suboffsets_get(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_suboffsets_get(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3340,7 +3340,7 @@ memory_suboffsets_get(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_readonly_get(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_readonly_get(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3348,7 +3348,7 @@ memory_readonly_get(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_ndim_get(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_ndim_get(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3356,7 +3356,7 @@ memory_ndim_get(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_c_contiguous(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_c_contiguous(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3364,7 +3364,7 @@ memory_c_contiguous(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_f_contiguous(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_f_contiguous(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);
@@ -3372,7 +3372,7 @@ memory_f_contiguous(TyObject *_self, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-memory_contiguous(TyObject *_self, void *Ty_UNUSED(ignored))
+memory_contiguous(TyObject *_self, void *Py_UNUSED(ignored))
 {
     PyMemoryViewObject *self = (PyMemoryViewObject *)_self;
     CHECK_RELEASED(self);

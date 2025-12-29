@@ -72,7 +72,7 @@ static inline int _is_dead(TyObject *obj)
 static inline TyObject* _TyWeakref_GET_REF(TyObject *ref_obj)
 {
     assert(PyWeakref_Check(ref_obj));
-    PyWeakReference *ref = _Ty_CAST(PyWeakReference*, ref_obj);
+    PyWeakReference *ref = _Py_CAST(PyWeakReference*, ref_obj);
 
     TyObject *obj = FT_ATOMIC_LOAD_PTR(ref->wr_object);
     if (obj == Ty_None) {
@@ -100,7 +100,7 @@ static inline int _TyWeakref_IS_DEAD(TyObject *ref_obj)
 {
     assert(PyWeakref_Check(ref_obj));
     int ret = 0;
-    PyWeakReference *ref = _Ty_CAST(PyWeakReference*, ref_obj);
+    PyWeakReference *ref = _Py_CAST(PyWeakReference*, ref_obj);
     TyObject *obj = FT_ATOMIC_LOAD_PTR(ref->wr_object);
     if (obj == Ty_None) {
         // clear_weakref() was called

@@ -3,7 +3,7 @@ preserve
 [clinic start generated code]*/
 
 #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
+#  include "pycore_gc.h"          // TyGC_Head
 #  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
@@ -44,7 +44,7 @@ builtin___import__(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
@@ -270,7 +270,7 @@ builtin_compile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
 
     #define NUM_KEYWORDS 7
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
@@ -427,7 +427,7 @@ builtin_eval(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
@@ -508,7 +508,7 @@ builtin_exec(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
@@ -587,7 +587,7 @@ static TyObject *
 builtin_globals_impl(TyObject *module);
 
 static TyObject *
-builtin_globals(TyObject *module, TyObject *Ty_UNUSED(ignored))
+builtin_globals(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return builtin_globals_impl(module);
 }
@@ -813,7 +813,7 @@ static TyObject *
 builtin_locals_impl(TyObject *module);
 
 static TyObject *
-builtin_locals(TyObject *module, TyObject *Ty_UNUSED(ignored))
+builtin_locals(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return builtin_locals_impl(module);
 }
@@ -863,7 +863,7 @@ builtin_pow(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
@@ -941,7 +941,7 @@ builtin_print(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
@@ -1085,7 +1085,7 @@ builtin_round(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
@@ -1154,7 +1154,7 @@ builtin_sum(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];

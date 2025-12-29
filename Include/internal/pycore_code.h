@@ -13,7 +13,7 @@ extern "C" {
 #include "pycore_tstate.h"      // _PyThreadStateImpl
 
 
-#define _TyCode_CODE(CO) _Ty_RVALUE((_Ty_CODEUNIT *)(CO)->co_code_adaptive)
+#define _TyCode_CODE(CO) _Py_RVALUE((_Ty_CODEUNIT *)(CO)->co_code_adaptive)
 #define _TyCode_NBYTES(CO) (Ty_SIZE(CO) * (Ty_ssize_t)sizeof(_Ty_CODEUNIT))
 
 

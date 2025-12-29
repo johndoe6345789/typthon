@@ -160,7 +160,7 @@ compare_handler(TyObject *func, TyObject *dfl_ign_handler)
         return 0;
     }
     // Assume that comparison of two PyLong objects will never fail.
-    return PyObject_RichCompareBool(func, dfl_ign_handler, Ty_EQ) == 1;
+    return PyObject_RichCompareBool(func, dfl_ign_handler, Py_EQ) == 1;
 }
 
 #ifdef HAVE_SETITIMER
@@ -421,7 +421,7 @@ signal_pause_impl(TyObject *module)
     if (TyErr_CheckSignals())
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif
@@ -456,7 +456,7 @@ signal_raise_signal_impl(TyObject *module, int signalnum)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -544,7 +544,7 @@ signal_signal_impl(TyObject *module, int signalnum, TyObject *handler)
         return old_handler;
     }
     else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -579,7 +579,7 @@ signal_getsignal_impl(TyObject *module, int signalnum)
         return Ty_NewRef(old_handler);
     }
     else {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
 }
 
@@ -649,14 +649,14 @@ signal_strsignal_impl(TyObject *module, int signalnum)
             res = "Terminated";
             break;
         default:
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
     }
 #else
     errno = 0;
     res = strsignal(signalnum);
 
     if (errno || res == NULL || strstr(res, "Unknown signal") != NULL)
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
 #endif
 
     return TyUnicode_FromString(res);
@@ -702,7 +702,7 @@ signal_siginterrupt_impl(TyObject *module, int signalnum, int flag)
         TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif
@@ -1238,7 +1238,7 @@ signal_sigtimedwait_impl(TyObject *module, sigset_t sigset,
 
         if (errno != EINTR) {
             if (errno == EAGAIN)
-                Ty_RETURN_NONE;
+                Py_RETURN_NONE;
             else
                 return TyErr_SetFromErrno(TyExc_OSError);
         }
@@ -1295,7 +1295,7 @@ signal_pthread_kill_impl(TyObject *module, unsigned long thread_id,
     if (TyErr_CheckSignals())
         return NULL;
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #endif   /* #if defined(HAVE_PTHREAD_KILL) */
@@ -1330,7 +1330,7 @@ signal_pidfd_send_signal_impl(TyObject *module, int pidfd, int signalnum,
         TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif
 

@@ -48,7 +48,7 @@ PyDoc_STRVAR(_io__TextIOBase_read__doc__,
 
 static TyObject *
 _io__TextIOBase_read_impl(TyObject *self, TyTypeObject *cls,
-                          int Ty_UNUSED(size));
+                          int Py_UNUSED(size));
 
 static TyObject *
 _io__TextIOBase_read(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
@@ -103,7 +103,7 @@ PyDoc_STRVAR(_io__TextIOBase_readline__doc__,
 
 static TyObject *
 _io__TextIOBase_readline_impl(TyObject *self, TyTypeObject *cls,
-                              int Ty_UNUSED(size));
+                              int Py_UNUSED(size));
 
 static TyObject *
 _io__TextIOBase_readline(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
@@ -158,7 +158,7 @@ PyDoc_STRVAR(_io__TextIOBase_write__doc__,
 
 static TyObject *
 _io__TextIOBase_write_impl(TyObject *self, TyTypeObject *cls,
-                           const char *Ty_UNUSED(s));
+                           const char *Py_UNUSED(s));
 
 static TyObject *
 _io__TextIOBase_write(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
@@ -227,7 +227,7 @@ static TyObject *
 _io__TextIOBase_encoding_get_impl(TyObject *self);
 
 static TyObject *
-_io__TextIOBase_encoding_get(TyObject *self, void *Ty_UNUSED(context))
+_io__TextIOBase_encoding_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _io__TextIOBase_encoding_get_impl(self);
 }
@@ -257,7 +257,7 @@ static TyObject *
 _io__TextIOBase_newlines_get_impl(TyObject *self);
 
 static TyObject *
-_io__TextIOBase_newlines_get(TyObject *self, void *Ty_UNUSED(context))
+_io__TextIOBase_newlines_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _io__TextIOBase_newlines_get_impl(self);
 }
@@ -285,7 +285,7 @@ static TyObject *
 _io__TextIOBase_errors_get_impl(TyObject *self);
 
 static TyObject *
-_io__TextIOBase_errors_get(TyObject *self, void *Ty_UNUSED(context))
+_io__TextIOBase_errors_get(TyObject *self, void *Py_UNUSED(context))
 {
     return _io__TextIOBase_errors_get_impl(self);
 }
@@ -448,7 +448,7 @@ static TyObject *
 _io_IncrementalNewlineDecoder_getstate_impl(nldecoder_object *self);
 
 static TyObject *
-_io_IncrementalNewlineDecoder_getstate(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_IncrementalNewlineDecoder_getstate(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_IncrementalNewlineDecoder_getstate_impl((nldecoder_object *)self);
 }
@@ -487,7 +487,7 @@ static TyObject *
 _io_IncrementalNewlineDecoder_reset_impl(nldecoder_object *self);
 
 static TyObject *
-_io_IncrementalNewlineDecoder_reset(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_IncrementalNewlineDecoder_reset(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _io_IncrementalNewlineDecoder_reset_impl((nldecoder_object *)self);
 }
@@ -766,7 +766,7 @@ static TyObject *
 _io_TextIOWrapper_detach_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_detach(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_TextIOWrapper_detach(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -958,7 +958,7 @@ static TyObject *
 _io_TextIOWrapper_tell_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_tell(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_TextIOWrapper_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1014,7 +1014,7 @@ static TyObject *
 _io_TextIOWrapper_fileno_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_fileno(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_TextIOWrapper_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1037,7 +1037,7 @@ static TyObject *
 _io_TextIOWrapper_seekable_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_seekable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_TextIOWrapper_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1060,7 +1060,7 @@ static TyObject *
 _io_TextIOWrapper_readable_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_readable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_TextIOWrapper_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1083,7 +1083,7 @@ static TyObject *
 _io_TextIOWrapper_writable_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_writable(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_TextIOWrapper_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1106,7 +1106,7 @@ static TyObject *
 _io_TextIOWrapper_isatty_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_isatty(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_TextIOWrapper_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1129,7 +1129,7 @@ static TyObject *
 _io_TextIOWrapper_flush_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_flush(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_TextIOWrapper_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1152,7 +1152,7 @@ static TyObject *
 _io_TextIOWrapper_close_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_io_TextIOWrapper_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1177,7 +1177,7 @@ static TyObject *
 _io_TextIOWrapper_name_get_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_name_get(TyObject *self, void *Ty_UNUSED(context))
+_io_TextIOWrapper_name_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1202,7 +1202,7 @@ static TyObject *
 _io_TextIOWrapper_closed_get_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_closed_get(TyObject *self, void *Ty_UNUSED(context))
+_io_TextIOWrapper_closed_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1227,7 +1227,7 @@ static TyObject *
 _io_TextIOWrapper_newlines_get_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_newlines_get(TyObject *self, void *Ty_UNUSED(context))
+_io_TextIOWrapper_newlines_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1252,7 +1252,7 @@ static TyObject *
 _io_TextIOWrapper_errors_get_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper_errors_get(TyObject *self, void *Ty_UNUSED(context))
+_io_TextIOWrapper_errors_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1277,7 +1277,7 @@ static TyObject *
 _io_TextIOWrapper__CHUNK_SIZE_get_impl(textio *self);
 
 static TyObject *
-_io_TextIOWrapper__CHUNK_SIZE_get(TyObject *self, void *Ty_UNUSED(context))
+_io_TextIOWrapper__CHUNK_SIZE_get(TyObject *self, void *Py_UNUSED(context))
 {
     TyObject *return_value = NULL;
 
@@ -1302,7 +1302,7 @@ static int
 _io_TextIOWrapper__CHUNK_SIZE_set_impl(textio *self, TyObject *value);
 
 static int
-_io_TextIOWrapper__CHUNK_SIZE_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
+_io_TextIOWrapper__CHUNK_SIZE_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
 {
     int return_value;
 

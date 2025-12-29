@@ -49,7 +49,7 @@ test_atomic_add_##suffix(TyObject *self, TyObject *obj) { \
     assert(x == (dtype)-3); \
     assert(_Ty_atomic_add_##suffix(&x, 2) == (dtype)-3); \
     assert(x == (dtype)-1); \
-    Ty_RETURN_NONE; \
+    Py_RETURN_NONE; \
 }
 FOR_ARITHMETIC_TYPES(IMPL_TEST_ADD)
 
@@ -68,7 +68,7 @@ test_atomic_compare_exchange_##suffix(TyObject *self, TyObject *obj) { \
     assert(_Ty_atomic_compare_exchange_##suffix(&x, &y, z) == 0); \
     assert(x == z); \
     assert(y == z); \
-    Ty_RETURN_NONE; \
+    Py_RETURN_NONE; \
 }
 FOR_ALL_TYPES(IMPL_TEST_COMPARE_EXCHANGE)
 
@@ -84,7 +84,7 @@ test_atomic_exchange_##suffix(TyObject *self, TyObject *obj) { \
     assert(x == (dtype)2); \
     assert(_Ty_atomic_exchange_##suffix(&x, y) == (dtype)2); \
     assert(x == (dtype)1); \
-    Ty_RETURN_NONE; \
+    Py_RETURN_NONE; \
 }
 FOR_ALL_TYPES(IMPL_TEST_EXCHANGE)
 
@@ -102,7 +102,7 @@ test_atomic_load_store_##suffix(TyObject *self, TyObject *obj) { \
     _Ty_atomic_store_##suffix##_relaxed(&x, z); \
     assert(_Ty_atomic_load_##suffix##_relaxed(&x) == (dtype)2); \
     assert(x == (dtype)2); \
-    Ty_RETURN_NONE; \
+    Py_RETURN_NONE; \
 }
 FOR_ALL_TYPES(IMPL_TEST_LOAD_STORE)
 
@@ -116,7 +116,7 @@ test_atomic_and_or_##suffix(TyObject *self, TyObject *obj) { \
     assert(x == (dtype)3); \
     assert(_Ty_atomic_and_##suffix(&x, y) == (dtype)3); \
     assert(x == (dtype)1); \
-    Ty_RETURN_NONE; \
+    Py_RETURN_NONE; \
 }
 FOR_BITWISE_TYPES(IMPL_TEST_AND_OR)
 
@@ -127,7 +127,7 @@ test_atomic_fences(TyObject *self, TyObject *obj) {
     _Ty_atomic_fence_seq_cst();
     _Ty_atomic_fence_acquire();
     _Ty_atomic_fence_release();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -138,7 +138,7 @@ test_atomic_release_acquire(TyObject *self, TyObject *obj) {
     _Ty_atomic_store_ptr_release(&x, y);
     assert(x == y);
     assert(_Ty_atomic_load_ptr_acquire(&x) == y);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyObject *
@@ -153,7 +153,7 @@ test_atomic_load_store_int_release_acquire(TyObject *self, TyObject *obj) { \
     _Ty_atomic_store_int_release(&x, z);
     assert(x == z);
     assert(_Ty_atomic_load_int_acquire(&x) == z);
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 // NOTE: all tests should start with "test_atomic_" to be included

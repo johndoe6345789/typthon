@@ -222,7 +222,7 @@ static TyObject *
 bytearray_clear_impl(PyByteArrayObject *self);
 
 static TyObject *
-bytearray_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return bytearray_clear_impl((PyByteArrayObject *)self);
 }
@@ -240,7 +240,7 @@ static TyObject *
 bytearray_copy_impl(PyByteArrayObject *self);
 
 static TyObject *
-bytearray_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1085,7 +1085,7 @@ static TyObject *
 bytearray_reverse_impl(PyByteArrayObject *self);
 
 static TyObject *
-bytearray_reverse(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_reverse(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1731,7 +1731,7 @@ static TyObject *
 bytearray_reduce_impl(PyByteArrayObject *self);
 
 static TyObject *
-bytearray_reduce(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -1792,7 +1792,7 @@ static TyObject *
 bytearray_sizeof_impl(PyByteArrayObject *self);
 
 static TyObject *
-bytearray_sizeof(TyObject *self, TyObject *Ty_UNUSED(ignored))
+bytearray_sizeof(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return bytearray_sizeof_impl((PyByteArrayObject *)self);
 }

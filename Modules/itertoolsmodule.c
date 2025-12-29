@@ -546,7 +546,7 @@ groupby_next(TyObject *op)
         else {
             int rcmp;
 
-            rcmp = PyObject_RichCompareBool(gbo->tgtkey, gbo->currkey, Ty_EQ);
+            rcmp = PyObject_RichCompareBool(gbo->tgtkey, gbo->currkey, Py_EQ);
             if (rcmp == -1)
                 return NULL;
             else if (rcmp == 0)
@@ -668,7 +668,7 @@ _grouper_next(TyObject *op)
     }
 
     assert(gbo->currkey != NULL);
-    rcmp = PyObject_RichCompareBool(igo->tgtkey, gbo->currkey, Ty_EQ);
+    rcmp = PyObject_RichCompareBool(igo->tgtkey, gbo->currkey, Py_EQ);
     if (rcmp <= 0)
         /* got any error or current group is end */
         return NULL;
@@ -956,7 +956,7 @@ tee_copy_impl(teeobject *to)
 }
 
 static inline TyObject *
-tee_copy(TyObject *op, TyObject *Ty_UNUSED(ignored))
+tee_copy(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     teeobject *to = teeobject_CAST(op);
     return (TyObject *)tee_copy_impl(to);
@@ -1040,7 +1040,7 @@ static TyMethodDef tee_methods[] = {
 };
 
 static TyMemberDef tee_members[] = {
-    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(teeobject, weakreflist), Ty_READONLY},
+    {"__weaklistoffset__", Ty_T_PYSSIZET, offsetof(teeobject, weakreflist), Py_READONLY},
     {NULL},
 };
 
@@ -2060,7 +2060,7 @@ product_dealloc(TyObject *op)
 }
 
 static TyObject *
-product_sizeof(TyObject *op, TyObject *Ty_UNUSED(ignored))
+product_sizeof(TyObject *op, TyObject *Py_UNUSED(ignored))
 {
     productobject *lz = productobject_CAST(op);
     size_t res = _TyObject_SIZE(Ty_TYPE(lz));
@@ -2295,7 +2295,7 @@ combinations_dealloc(TyObject *op)
 }
 
 static TyObject *
-combinations_sizeof(TyObject *op, TyObject *Ty_UNUSED(args))
+combinations_sizeof(TyObject *op, TyObject *Py_UNUSED(args))
 {
     combinationsobject *co = combinationsobject_CAST(op);
     size_t res = _TyObject_SIZE(Ty_TYPE(co));
@@ -2539,7 +2539,7 @@ cwr_dealloc(TyObject *op)
 }
 
 static TyObject *
-cwr_sizeof(TyObject *op, TyObject *Ty_UNUSED(args))
+cwr_sizeof(TyObject *op, TyObject *Py_UNUSED(args))
 {
     cwrobject *co = cwrobject_CAST(op);
     size_t res = _TyObject_SIZE(Ty_TYPE(co));
@@ -2797,7 +2797,7 @@ permutations_dealloc(TyObject *op)
 }
 
 static TyObject *
-permutations_sizeof(TyObject *op, TyObject *Ty_UNUSED(args))
+permutations_sizeof(TyObject *op, TyObject *Py_UNUSED(args))
 {
     permutationsobject *po = permutationsobject_CAST(op);
     size_t res = _TyObject_SIZE(Ty_TYPE(po));
@@ -3653,7 +3653,7 @@ repeat_repr(TyObject *op)
 }
 
 static TyObject *
-repeat_len(TyObject *op, TyObject *Ty_UNUSED(args))
+repeat_len(TyObject *op, TyObject *Py_UNUSED(args))
 {
     repeatobject *ro = repeatobject_CAST(op);
     if (ro->cnt == -1) {

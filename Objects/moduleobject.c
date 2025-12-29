@@ -20,11 +20,11 @@
 
 
 #define _TyModule_CAST(op) \
-    (assert(TyModule_Check(op)), _Ty_CAST(PyModuleObject*, (op)))
+    (assert(TyModule_Check(op)), _Py_CAST(PyModuleObject*, (op)))
 
 
 static TyMemberDef module_members[] = {
-    {"__dict__", _Ty_T_OBJECT, offsetof(PyModuleObject, md_dict), Ty_READONLY},
+    {"__dict__", _Ty_T_OBJECT, offsetof(PyModuleObject, md_dict), Py_READONLY},
     {0}
 };
 
@@ -618,7 +618,7 @@ _TyModule_GetFilenameObject(TyObject *mod)
     TyObject *dict = ((PyModuleObject *)mod)->md_dict;  // borrowed reference
     if (dict == NULL) {
         // The module has been tampered with.
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     TyObject *fileobj;
     int res = TyDict_GetItemRef(dict, &_Ty_ID(__file__), &fileobj);
@@ -632,11 +632,11 @@ _TyModule_GetFilenameObject(TyObject *mod)
         // it's a namespace package or other module with a loader that
         // isn't disk-based.  It could also be that a user created
         // a module manually but without manually setting __file__.
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     if (!TyUnicode_Check(fileobj)) {
         Ty_DECREF(fileobj);
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     return fileobj;
 }
@@ -1230,7 +1230,7 @@ module_get_dict(PyModuleObject *m)
 }
 
 static TyObject *
-module_get_annotate(TyObject *self, void *Ty_UNUSED(ignored))
+module_get_annotate(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyModuleObject *m = _TyModule_CAST(self);
 
@@ -1251,7 +1251,7 @@ module_get_annotate(TyObject *self, void *Ty_UNUSED(ignored))
 }
 
 static int
-module_set_annotate(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
+module_set_annotate(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     PyModuleObject *m = _TyModule_CAST(self);
     if (value == NULL) {
@@ -1285,7 +1285,7 @@ module_set_annotate(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
 }
 
 static TyObject *
-module_get_annotations(TyObject *self, void *Ty_UNUSED(ignored))
+module_get_annotations(TyObject *self, void *Py_UNUSED(ignored))
 {
     PyModuleObject *m = _TyModule_CAST(self);
 
@@ -1356,7 +1356,7 @@ module_get_annotations(TyObject *self, void *Ty_UNUSED(ignored))
 }
 
 static int
-module_set_annotations(TyObject *self, TyObject *value, void *Ty_UNUSED(ignored))
+module_set_annotations(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     PyModuleObject *m = _TyModule_CAST(self);
 

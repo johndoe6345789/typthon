@@ -737,7 +737,7 @@ _zstd_ZstdCompressor_set_pledged_input_size_impl(ZstdCompressor *self,
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef ZstdCompressor_methods[] = {
@@ -755,7 +755,7 @@ PyDoc_STRVAR(ZstdCompressor_last_mode_doc,
 
 static TyMemberDef ZstdCompressor_members[] = {
     {"last_mode", Ty_T_INT, offsetof(ZstdCompressor, last_mode),
-     Ty_READONLY, ZstdCompressor_last_mode_doc},
+     Py_READONLY, ZstdCompressor_last_mode_doc},
     {NULL}
 };
 

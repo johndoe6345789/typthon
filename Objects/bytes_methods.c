@@ -17,18 +17,18 @@ _Ty_bytes_isspace(const char *cptr, Ty_ssize_t len)
 
     /* Shortcut for single character strings */
     if (len == 1 && Ty_ISSPACE(*p))
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
 
     /* Special case for empty strings */
     if (len == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     e = p + len;
     for (; p < e; p++) {
         if (!Ty_ISSPACE(*p))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 
@@ -47,18 +47,18 @@ _Ty_bytes_isalpha(const char *cptr, Ty_ssize_t len)
 
     /* Shortcut for single character strings */
     if (len == 1 && Ty_ISALPHA(*p))
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
 
     /* Special case for empty strings */
     if (len == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     e = p + len;
     for (; p < e; p++) {
         if (!Ty_ISALPHA(*p))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 
@@ -77,18 +77,18 @@ _Ty_bytes_isalnum(const char *cptr, Ty_ssize_t len)
 
     /* Shortcut for single character strings */
     if (len == 1 && Ty_ISALNUM(*p))
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
 
     /* Special case for empty strings */
     if (len == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     e = p + len;
     for (; p < e; p++) {
         if (!Ty_ISALNUM(*p))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 
@@ -107,18 +107,18 @@ _Ty_bytes_isdigit(const char *cptr, Ty_ssize_t len)
 
     /* Shortcut for single character strings */
     if (len == 1 && Ty_ISDIGIT(*p))
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
 
     /* Special case for empty strings */
     if (len == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     e = p + len;
     for (; p < e; p++) {
         if (!Ty_ISDIGIT(*p))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }
 
 
@@ -142,13 +142,13 @@ _Ty_bytes_islower(const char *cptr, Ty_ssize_t len)
 
     /* Special case for empty strings */
     if (len == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     e = p + len;
     cased = 0;
     for (; p < e; p++) {
         if (Ty_ISUPPER(*p))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         else if (!cased && Ty_ISLOWER(*p))
             cased = 1;
     }
@@ -176,13 +176,13 @@ _Ty_bytes_isupper(const char *cptr, Ty_ssize_t len)
 
     /* Special case for empty strings */
     if (len == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     e = p + len;
     cased = 0;
     for (; p < e; p++) {
         if (Ty_ISLOWER(*p))
-            Ty_RETURN_FALSE;
+            Py_RETURN_FALSE;
         else if (!cased && Ty_ISUPPER(*p))
             cased = 1;
     }
@@ -208,14 +208,14 @@ _Ty_bytes_istitle(const char *cptr, Ty_ssize_t len)
 
     if (len == 1) {
         if (Ty_ISUPPER(*p)) {
-            Ty_RETURN_TRUE;
+            Py_RETURN_TRUE;
         }
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 
     /* Special case for empty strings */
     if (len == 0)
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
 
     e = p + len;
     cased = 0;
@@ -225,13 +225,13 @@ _Ty_bytes_istitle(const char *cptr, Ty_ssize_t len)
 
         if (Ty_ISUPPER(ch)) {
             if (previous_is_cased)
-                Ty_RETURN_FALSE;
+                Py_RETURN_FALSE;
             previous_is_cased = 1;
             cased = 1;
         }
         else if (Ty_ISLOWER(ch)) {
             if (!previous_is_cased)
-                Ty_RETURN_FALSE;
+                Py_RETURN_FALSE;
             previous_is_cased = 1;
             cased = 1;
         }
@@ -689,10 +689,10 @@ _Ty_bytes_tailmatch(const char *str, Ty_ssize_t len,
                 return NULL;
             }
             else if (result) {
-                Ty_RETURN_TRUE;
+                Py_RETURN_TRUE;
             }
         }
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     int result = tailmatch(str, len, subobj, start, end, direction);
     if (result == -1) {
@@ -734,7 +734,7 @@ _Ty_bytes_isascii(const char *cptr, Ty_ssize_t len)
     const char *end = p + len;
     Ty_ssize_t max_char = stringlib_find_max_char(cptr, end);
     if (max_char > 127) {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
-    Ty_RETURN_TRUE;
+    Py_RETURN_TRUE;
 }

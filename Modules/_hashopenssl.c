@@ -696,7 +696,7 @@ EVP_update_impl(EVPobject *self, TyObject *obj)
 
     if (result == -1)
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static TyMethodDef EVP_methods[] = {
@@ -708,7 +708,7 @@ static TyMethodDef EVP_methods[] = {
 };
 
 static TyObject *
-EVP_get_block_size(TyObject *op, void *Ty_UNUSED(closure))
+EVP_get_block_size(TyObject *op, void *Py_UNUSED(closure))
 {
     EVPobject *self = EVPobject_CAST(op);
     long block_size = EVP_MD_CTX_block_size(self->ctx);
@@ -716,7 +716,7 @@ EVP_get_block_size(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-EVP_get_digest_size(TyObject *op, void *Ty_UNUSED(closure))
+EVP_get_digest_size(TyObject *op, void *Py_UNUSED(closure))
 {
     EVPobject *self = EVPobject_CAST(op);
     long size = EVP_MD_CTX_size(self->ctx);
@@ -724,7 +724,7 @@ EVP_get_digest_size(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-EVP_get_name(TyObject *op, void *Ty_UNUSED(closure))
+EVP_get_name(TyObject *op, void *Py_UNUSED(closure))
 {
     EVPobject *self = EVPobject_CAST(op);
     const EVP_MD *md = EVP_MD_CTX_md(self->ctx);
@@ -897,7 +897,7 @@ static TyMethodDef EVPXOF_methods[] = {
 
 
 static TyObject *
-EVPXOF_get_digest_size(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+EVPXOF_get_digest_size(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyLong_FromLong(0);
 }
@@ -1783,7 +1783,7 @@ _hashlib_HMAC_update_impl(HMACobject *self, TyObject *msg)
     if (!_hmac_update(self, msg)) {
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 static int
@@ -1855,7 +1855,7 @@ _hashlib_HMAC_hexdigest_impl(HMACobject *self)
 }
 
 static TyObject *
-_hashlib_hmac_get_digest_size(TyObject *op, void *Ty_UNUSED(closure))
+_hashlib_hmac_get_digest_size(TyObject *op, void *Py_UNUSED(closure))
 {
     HMACobject *self = HMACobject_CAST(op);
     unsigned int digest_size = _hashlib_hmac_digest_size(self);
@@ -1863,7 +1863,7 @@ _hashlib_hmac_get_digest_size(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-_hashlib_hmac_get_block_size(TyObject *op, void *Ty_UNUSED(closure))
+_hashlib_hmac_get_block_size(TyObject *op, void *Py_UNUSED(closure))
 {
     HMACobject *self = HMACobject_CAST(op);
     const EVP_MD *md = _hashlib_hmac_get_md(self);
@@ -1871,7 +1871,7 @@ _hashlib_hmac_get_block_size(TyObject *op, void *Ty_UNUSED(closure))
 }
 
 static TyObject *
-_hashlib_hmac_get_name(TyObject *op, void *Ty_UNUSED(closure))
+_hashlib_hmac_get_name(TyObject *op, void *Py_UNUSED(closure))
 {
     HMACobject *self = HMACobject_CAST(op);
     const EVP_MD *md = _hashlib_hmac_get_md(self);

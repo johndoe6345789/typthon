@@ -53,7 +53,7 @@ PyAPI_FUNC(int) TyDict_SetDefaultRef(TyObject *mp, TyObject *key, TyObject *defa
 static inline Ty_ssize_t TyDict_GET_SIZE(TyObject *op) {
     PyDictObject *mp;
     assert(TyDict_Check(op));
-    mp = _Ty_CAST(PyDictObject*, op);
+    mp = _Py_CAST(PyDictObject*, op);
 #ifdef Ty_GIL_DISABLED
     return _Ty_atomic_load_ssize_relaxed(&mp->ma_used);
 #else

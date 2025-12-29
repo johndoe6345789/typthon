@@ -272,7 +272,7 @@ resource_setrlimit_impl(TyObject *module, int resource, TyObject *limits)
             TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #ifdef HAVE_PRLIMIT

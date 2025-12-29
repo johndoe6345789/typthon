@@ -635,7 +635,7 @@ static TyObject *
 _opcode_get_specialization_stats_impl(TyObject *module);
 
 static TyObject *
-_opcode_get_specialization_stats(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_opcode_get_specialization_stats(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _opcode_get_specialization_stats_impl(module);
 }
@@ -655,7 +655,7 @@ static TyObject *
 _opcode_get_nb_ops_impl(TyObject *module);
 
 static TyObject *
-_opcode_get_nb_ops(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_opcode_get_nb_ops(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _opcode_get_nb_ops_impl(module);
 }
@@ -673,7 +673,7 @@ static TyObject *
 _opcode_get_intrinsic1_descs_impl(TyObject *module);
 
 static TyObject *
-_opcode_get_intrinsic1_descs(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_opcode_get_intrinsic1_descs(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _opcode_get_intrinsic1_descs_impl(module);
 }
@@ -691,7 +691,7 @@ static TyObject *
 _opcode_get_intrinsic2_descs_impl(TyObject *module);
 
 static TyObject *
-_opcode_get_intrinsic2_descs(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_opcode_get_intrinsic2_descs(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _opcode_get_intrinsic2_descs_impl(module);
 }
@@ -709,7 +709,7 @@ static TyObject *
 _opcode_get_special_method_names_impl(TyObject *module);
 
 static TyObject *
-_opcode_get_special_method_names(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_opcode_get_special_method_names(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _opcode_get_special_method_names_impl(module);
 }

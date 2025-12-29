@@ -114,7 +114,7 @@ _posixshmem_shm_unlink_impl(TyObject *module, TyObject *path)
         return NULL;
     }
 
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 #endif /* HAVE_SHM_UNLINK */
 

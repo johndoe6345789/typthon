@@ -737,7 +737,7 @@ static long
 _curses_window_getbkgd_impl(PyCursesWindowObject *self);
 
 static TyObject *
-_curses_window_getbkgd(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_curses_window_getbkgd(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
     long _return_value;
@@ -1340,7 +1340,7 @@ static TyObject *
 _curses_window_noutrefresh_impl(PyCursesWindowObject *self);
 
 static TyObject *
-_curses_window_noutrefresh(TyObject *self, TyObject *Ty_UNUSED(ignored))
+_curses_window_noutrefresh(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _curses_window_noutrefresh_impl((PyCursesWindowObject *)self);
 }
@@ -1855,7 +1855,7 @@ static TyObject *
 _curses_filter_impl(TyObject *module);
 
 static TyObject *
-_curses_filter(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_filter(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_filter_impl(module);
 }
@@ -1875,7 +1875,7 @@ static TyObject *
 _curses_baudrate_impl(TyObject *module);
 
 static TyObject *
-_curses_baudrate(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_baudrate(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_baudrate_impl(module);
 }
@@ -1893,7 +1893,7 @@ static TyObject *
 _curses_beep_impl(TyObject *module);
 
 static TyObject *
-_curses_beep(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_beep(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_beep_impl(module);
 }
@@ -1911,7 +1911,7 @@ static TyObject *
 _curses_can_change_color_impl(TyObject *module);
 
 static TyObject *
-_curses_can_change_color(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_can_change_color(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_can_change_color_impl(module);
 }
@@ -2080,7 +2080,7 @@ static TyObject *
 _curses_def_prog_mode_impl(TyObject *module);
 
 static TyObject *
-_curses_def_prog_mode(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_def_prog_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_def_prog_mode_impl(module);
 }
@@ -2102,7 +2102,7 @@ static TyObject *
 _curses_def_shell_mode_impl(TyObject *module);
 
 static TyObject *
-_curses_def_shell_mode(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_def_shell_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_def_shell_mode_impl(module);
 }
@@ -2151,7 +2151,7 @@ static TyObject *
 _curses_doupdate_impl(TyObject *module);
 
 static TyObject *
-_curses_doupdate(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_doupdate(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_doupdate_impl(module);
 }
@@ -2209,7 +2209,7 @@ static TyObject *
 _curses_endwin_impl(TyObject *module);
 
 static TyObject *
-_curses_endwin(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_endwin(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_endwin_impl(module);
 }
@@ -2227,7 +2227,7 @@ static TyObject *
 _curses_erasechar_impl(TyObject *module);
 
 static TyObject *
-_curses_erasechar(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_erasechar(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_erasechar_impl(module);
 }
@@ -2247,7 +2247,7 @@ static TyObject *
 _curses_flash_impl(TyObject *module);
 
 static TyObject *
-_curses_flash(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_flash(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_flash_impl(module);
 }
@@ -2268,7 +2268,7 @@ static TyObject *
 _curses_flushinp_impl(TyObject *module);
 
 static TyObject *
-_curses_flushinp(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_flushinp(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_flushinp_impl(module);
 }
@@ -2290,7 +2290,7 @@ static TyObject *
 _curses_getsyx_impl(TyObject *module);
 
 static TyObject *
-_curses_getsyx(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_getsyx(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_getsyx_impl(module);
 }
@@ -2315,7 +2315,7 @@ static TyObject *
 _curses_getmouse_impl(TyObject *module);
 
 static TyObject *
-_curses_getmouse(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_getmouse(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_getmouse_impl(module);
 }
@@ -2469,7 +2469,7 @@ static TyObject *
 _curses_has_colors_impl(TyObject *module);
 
 static TyObject *
-_curses_has_colors(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_has_colors(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_has_colors_impl(module);
 }
@@ -2487,7 +2487,7 @@ static TyObject *
 _curses_has_ic_impl(TyObject *module);
 
 static TyObject *
-_curses_has_ic(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_has_ic(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_has_ic_impl(module);
 }
@@ -2505,7 +2505,7 @@ static TyObject *
 _curses_has_il_impl(TyObject *module);
 
 static TyObject *
-_curses_has_il(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_has_il(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_has_il_impl(module);
 }
@@ -2664,7 +2664,7 @@ static TyObject *
 _curses_initscr_impl(TyObject *module);
 
 static TyObject *
-_curses_initscr(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_initscr(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_initscr_impl(module);
 }
@@ -2785,7 +2785,7 @@ static TyObject *
 _curses_get_escdelay_impl(TyObject *module);
 
 static TyObject *
-_curses_get_escdelay(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_get_escdelay(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_get_escdelay_impl(module);
 }
@@ -2849,7 +2849,7 @@ static TyObject *
 _curses_get_tabsize_impl(TyObject *module);
 
 static TyObject *
-_curses_get_tabsize(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_get_tabsize(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_get_tabsize_impl(module);
 }
@@ -2934,7 +2934,7 @@ static TyObject *
 _curses_isendwin_impl(TyObject *module);
 
 static TyObject *
-_curses_isendwin(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_isendwin(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_isendwin_impl(module);
 }
@@ -3028,7 +3028,7 @@ static TyObject *
 _curses_killchar_impl(TyObject *module);
 
 static TyObject *
-_curses_killchar(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_killchar(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_killchar_impl(module);
 }
@@ -3049,7 +3049,7 @@ static TyObject *
 _curses_longname_impl(TyObject *module);
 
 static TyObject *
-_curses_longname(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_longname(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_longname_impl(module);
 }
@@ -3350,7 +3350,7 @@ static TyObject *
 _curses_nocbreak_impl(TyObject *module);
 
 static TyObject *
-_curses_nocbreak(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_nocbreak(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_nocbreak_impl(module);
 }
@@ -3370,7 +3370,7 @@ static TyObject *
 _curses_noecho_impl(TyObject *module);
 
 static TyObject *
-_curses_noecho(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_noecho(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_noecho_impl(module);
 }
@@ -3391,7 +3391,7 @@ static TyObject *
 _curses_nonl_impl(TyObject *module);
 
 static TyObject *
-_curses_nonl(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_nonl(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_nonl_impl(module);
 }
@@ -3412,7 +3412,7 @@ static TyObject *
 _curses_noqiflush_impl(TyObject *module);
 
 static TyObject *
-_curses_noqiflush(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_noqiflush(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_noqiflush_impl(module);
 }
@@ -3432,7 +3432,7 @@ static TyObject *
 _curses_noraw_impl(TyObject *module);
 
 static TyObject *
-_curses_noraw(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_noraw(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_noraw_impl(module);
 }
@@ -3581,7 +3581,7 @@ static TyObject *
 _curses_update_lines_cols_impl(TyObject *module);
 
 static TyObject *
-_curses_update_lines_cols(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_update_lines_cols(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_update_lines_cols_impl(module);
 }
@@ -3643,7 +3643,7 @@ static TyObject *
 _curses_reset_prog_mode_impl(TyObject *module);
 
 static TyObject *
-_curses_reset_prog_mode(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_reset_prog_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_reset_prog_mode_impl(module);
 }
@@ -3661,7 +3661,7 @@ static TyObject *
 _curses_reset_shell_mode_impl(TyObject *module);
 
 static TyObject *
-_curses_reset_shell_mode(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_reset_shell_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_reset_shell_mode_impl(module);
 }
@@ -3679,7 +3679,7 @@ static TyObject *
 _curses_resetty_impl(TyObject *module);
 
 static TyObject *
-_curses_resetty(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_resetty(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_resetty_impl(module);
 }
@@ -3856,7 +3856,7 @@ static TyObject *
 _curses_savetty_impl(TyObject *module);
 
 static TyObject *
-_curses_savetty(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_savetty(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_savetty_impl(module);
 }
@@ -3928,7 +3928,7 @@ static TyObject *
 _curses_start_color_impl(TyObject *module);
 
 static TyObject *
-_curses_start_color(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_start_color(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_start_color_impl(module);
 }
@@ -3946,7 +3946,7 @@ static TyObject *
 _curses_termattrs_impl(TyObject *module);
 
 static TyObject *
-_curses_termattrs(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_termattrs(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_termattrs_impl(module);
 }
@@ -3964,7 +3964,7 @@ static TyObject *
 _curses_termname_impl(TyObject *module);
 
 static TyObject *
-_curses_termname(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_termname(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_termname_impl(module);
 }
@@ -4267,7 +4267,7 @@ static TyObject *
 _curses_use_default_colors_impl(TyObject *module);
 
 static TyObject *
-_curses_use_default_colors(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_use_default_colors(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_use_default_colors_impl(module);
 }
@@ -4335,7 +4335,7 @@ static TyObject *
 _curses_has_extended_color_support_impl(TyObject *module);
 
 static TyObject *
-_curses_has_extended_color_support(TyObject *module, TyObject *Ty_UNUSED(ignored))
+_curses_has_extended_color_support(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
     return _curses_has_extended_color_support_impl(module);
 }

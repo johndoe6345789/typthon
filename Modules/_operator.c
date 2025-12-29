@@ -559,7 +559,7 @@ _operator_setitem_impl(TyObject *module, TyObject *a, TyObject *b,
 {
     if (-1 == PyObject_SetItem(a, b, c))
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -574,7 +574,7 @@ _operator_delitem_impl(TyObject *module, TyObject *a, TyObject *b)
 {
     if (-1 == PyObject_DelItem(a, b))
         return NULL;
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -591,7 +591,7 @@ static TyObject *
 _operator_eq_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=8d7d46ed4135677c input=586fca687a95a83f]*/
 {
-    return PyObject_RichCompare(a, b, Ty_EQ);
+    return PyObject_RichCompare(a, b, Py_EQ);
 }
 
 /*[clinic input]
@@ -604,7 +604,7 @@ static TyObject *
 _operator_ne_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=c99bd0c3a4c01297 input=5d88f23d35e9abac]*/
 {
-    return PyObject_RichCompare(a, b, Ty_NE);
+    return PyObject_RichCompare(a, b, Py_NE);
 }
 
 /*[clinic input]
@@ -617,7 +617,7 @@ static TyObject *
 _operator_lt_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=082d7c45c440e535 input=34a59ad6d39d3a2b]*/
 {
-    return PyObject_RichCompare(a, b, Ty_LT);
+    return PyObject_RichCompare(a, b, Py_LT);
 }
 
 /*[clinic input]
@@ -630,7 +630,7 @@ static TyObject *
 _operator_le_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=00970a2923d0ae17 input=b812a7860a0bef44]*/
 {
-    return PyObject_RichCompare(a, b, Ty_LE);
+    return PyObject_RichCompare(a, b, Py_LE);
 }
 
 /*[clinic input]
@@ -643,7 +643,7 @@ static TyObject *
 _operator_gt_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=8d373349ecf25641 input=9bdb45b995ada35b]*/
 {
-    return PyObject_RichCompare(a, b, Ty_GT);
+    return PyObject_RichCompare(a, b, Py_GT);
 }
 
 /*[clinic input]
@@ -656,7 +656,7 @@ static TyObject *
 _operator_ge_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=7ce3882256d4b137 input=cf1dc4a5ca9c35f5]*/
 {
-    return PyObject_RichCompare(a, b, Ty_GE);
+    return PyObject_RichCompare(a, b, Py_GE);
 }
 
 /*[clinic input]
@@ -1001,7 +1001,7 @@ static struct TyMethodDef operator_methods[] = {
 
 
 static TyObject *
-text_signature(TyObject *Ty_UNUSED(self), void *Ty_UNUSED(closure))
+text_signature(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 {
     return TyUnicode_FromString("(obj, /)");
 }
@@ -1189,7 +1189,7 @@ itemgetter_repr(TyObject *op)
 }
 
 static TyObject *
-itemgetter_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+itemgetter_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     itemgetterobject *ig = itemgetterobject_CAST(op);
     if (ig->nitems == 1)
@@ -1206,7 +1206,7 @@ static TyMethodDef itemgetter_methods[] = {
 };
 
 static TyMemberDef itemgetter_members[] = {
-    {"__vectorcalloffset__", Ty_T_PYSSIZET, offsetof(itemgetterobject, vectorcall), Ty_READONLY},
+    {"__vectorcalloffset__", Ty_T_PYSSIZET, offsetof(itemgetterobject, vectorcall), Py_READONLY},
     {NULL} /* Sentinel */
 };
 
@@ -1555,7 +1555,7 @@ attrgetter_repr(TyObject *op)
 }
 
 static TyObject *
-attrgetter_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+attrgetter_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     attrgetterobject *ag = attrgetterobject_CAST(op);
     TyObject *attrstrings = attrgetter_args(ag);
@@ -1571,7 +1571,7 @@ static TyMethodDef attrgetter_methods[] = {
 };
 
 static TyMemberDef attrgetter_members[] = {
-    {"__vectorcalloffset__", Ty_T_PYSSIZET, offsetof(attrgetterobject, vectorcall), Ty_READONLY},
+    {"__vectorcalloffset__", Ty_T_PYSSIZET, offsetof(attrgetterobject, vectorcall), Py_READONLY},
     {NULL} /* Sentinel*/
 };
 
@@ -1872,7 +1872,7 @@ done:
 }
 
 static TyObject *
-methodcaller_reduce(TyObject *op, TyObject *Ty_UNUSED(dummy))
+methodcaller_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 {
     methodcallerobject *mc = methodcallerobject_CAST(op);
     if (!mc->kwds || TyDict_GET_SIZE(mc->kwds) == 0) {
@@ -1913,7 +1913,7 @@ static TyMethodDef methodcaller_methods[] = {
 };
 
 static TyMemberDef methodcaller_members[] = {
-    {"__vectorcalloffset__", Ty_T_PYSSIZET, offsetof(methodcallerobject, vectorcall), Ty_READONLY},
+    {"__vectorcalloffset__", Ty_T_PYSSIZET, offsetof(methodcallerobject, vectorcall), Py_READONLY},
     {NULL}
 };
 

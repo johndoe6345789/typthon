@@ -121,7 +121,7 @@ tb_new_impl(TyTypeObject *type, TyObject *tb_next, PyFrameObject *tb_frame,
 }
 
 static TyObject *
-tb_dir(TyObject *Ty_UNUSED(self), TyObject *Ty_UNUSED(ignored))
+tb_dir(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(ignored))
 {
     return Ty_BuildValue("[ssss]", "tb_frame", "tb_next",
                                    "tb_lasti", "tb_lineno");
@@ -154,14 +154,14 @@ tb_get_lineno(TyObject *op)
 }
 
 static TyObject *
-tb_lineno_get(TyObject *op, void *Ty_UNUSED(_))
+tb_lineno_get(TyObject *op, void *Py_UNUSED(_))
 {
     PyTracebackObject *self = _PyTracebackObject_CAST(op);
     int lineno = self->tb_lineno;
     if (lineno == -1) {
         lineno = tb_get_lineno(op);
         if (lineno < 0) {
-            Ty_RETURN_NONE;
+            Py_RETURN_NONE;
         }
     }
     return TyLong_FromLong(lineno);
@@ -220,8 +220,8 @@ static TyMethodDef tb_methods[] = {
 };
 
 static TyMemberDef tb_memberlist[] = {
-    {"tb_frame",        _Ty_T_OBJECT,       OFF(tb_frame),  Ty_READONLY|Ty_AUDIT_READ},
-    {"tb_lasti",        Ty_T_INT,          OFF(tb_lasti),  Ty_READONLY},
+    {"tb_frame",        _Ty_T_OBJECT,       OFF(tb_frame),  Py_READONLY|Ty_AUDIT_READ},
+    {"tb_lasti",        Ty_T_INT,          OFF(tb_lasti),  Py_READONLY},
     {NULL}      /* Sentinel */
 };
 

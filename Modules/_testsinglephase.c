@@ -351,11 +351,11 @@ PyDoc_STRVAR(common_state_initialized_doc,
 Return the seconds-since-epoch when the module state was initialized.");
 
 static TyObject *
-common_state_initialized(TyObject *self, TyObject *Ty_UNUSED(ignored))
+common_state_initialized(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     module_state *state = get_module_state(self);
     if (state == NULL) {
-        Ty_RETURN_NONE;
+        Py_RETURN_NONE;
     }
     double d = PyTime_AsSecondsDouble(state->initialized);
     return TyFloat_FromDouble(d);
@@ -372,7 +372,7 @@ PyDoc_STRVAR(common_look_up_self_doc,
 Return the module associated with this module's def.m_base.m_index.");
 
 static TyObject *
-common_look_up_self(TyObject *self, TyObject *Ty_UNUSED(ignored))
+common_look_up_self(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyModuleDef *def = TyModule_GetDef(self);
     if (def == NULL) {
@@ -414,7 +414,7 @@ PyDoc_STRVAR(basic_initialized_count_doc,
 Return how many times the module has been initialized.");
 
 static TyObject *
-basic_initialized_count(TyObject *self, TyObject *Ty_UNUSED(ignored))
+basic_initialized_count(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     assert(TyModule_GetDef(self)->m_size == -1);
     return TyLong_FromLong(global_state.initialized_count);
@@ -431,11 +431,11 @@ PyDoc_STRVAR(basic__clear_globals_doc,
 Free all global state and set it to uninitialized.");
 
 static TyObject *
-basic__clear_globals(TyObject *self, TyObject *Ty_UNUSED(ignored))
+basic__clear_globals(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     assert(TyModule_GetDef(self)->m_size == -1);
     clear_global_state();
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #define _CLEAR_GLOBALS_METHODDEF \
@@ -448,13 +448,13 @@ PyDoc_STRVAR(basic__clear_module_state_doc, "_clear_module_state()\n\
 Free the module state and set it to uninitialized.");
 
 static TyObject *
-basic__clear_module_state(TyObject *self, TyObject *Ty_UNUSED(ignored))
+basic__clear_module_state(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     module_state *state = get_module_state(self);
     if (state != NULL) {
         clear_state(state);
     }
-    Ty_RETURN_NONE;
+    Py_RETURN_NONE;
 }
 
 #define _CLEAR_MODULE_STATE_METHODDEF \

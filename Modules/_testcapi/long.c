@@ -255,7 +255,7 @@ error:
 
 
 static TyObject *
-get_pylong_layout(TyObject *module, TyObject *Ty_UNUSED(args))
+get_pylong_layout(TyObject *module, TyObject *Py_UNUSED(args))
 {
     const PyLongLayout *layout = TyLong_GetNativeLayout();
     return layout_to_dict(layout);

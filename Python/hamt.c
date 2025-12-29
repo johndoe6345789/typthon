@@ -711,7 +711,7 @@ hamt_node_bitmap_assoc(PyHamtNode_Bitmap *self,
         /* key is not NULL.  This means that we have only one other
            key in this collection that matches our hash for this shift. */
 
-        int comp_err = PyObject_RichCompareBool(key, key_or_null, Ty_EQ);
+        int comp_err = PyObject_RichCompareBool(key, key_or_null, Py_EQ);
         if (comp_err < 0) {  /* exception in __eq__ */
             return NULL;
         }
@@ -1015,7 +1015,7 @@ hamt_node_bitmap_without(PyHamtNode_Bitmap *self,
     else {
         /* We have a regular key/value pair */
 
-        int cmp = PyObject_RichCompareBool(key_or_null, key, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(key_or_null, key, Py_EQ);
         if (cmp < 0) {
             return W_ERROR;
         }
@@ -1076,7 +1076,7 @@ hamt_node_bitmap_find(PyHamtNode_Bitmap *self,
     /* We have only one key -- a potential match.  Let's compare if the
        key we are looking at is equal to the key we are looking for. */
     assert(key != NULL);
-    comp_err = PyObject_RichCompareBool(key, key_or_null, Ty_EQ);
+    comp_err = PyObject_RichCompareBool(key, key_or_null, Py_EQ);
     if (comp_err < 0) {  /* exception in __eq__ */
         return F_ERROR;
     }
@@ -1252,7 +1252,7 @@ hamt_node_collision_find_index(PyHamtNode_Collision *self, TyObject *key,
         el = self->c_array[i];
 
         assert(el != NULL);
-        int cmp = PyObject_RichCompareBool(key, el, Ty_EQ);
+        int cmp = PyObject_RichCompareBool(key, el, Py_EQ);
         if (cmp < 0) {
             return F_ERROR;
         }
@@ -2349,7 +2349,7 @@ _TyHamt_Eq(PyHamtObject *v, PyHamtObject *w)
                     return 0;
 
                 case F_FOUND: {
-                    int cmp = PyObject_RichCompareBool(v_val, w_val, Ty_EQ);
+                    int cmp = PyObject_RichCompareBool(v_val, w_val, Py_EQ);
                     if (cmp < 0) {
                         return -1;
                     }
@@ -2641,8 +2641,8 @@ hamt_tp_dealloc(TyObject *self)
 static TyObject *
 hamt_tp_richcompare(TyObject *v, TyObject *w, int op)
 {
-    if (!PyHamt_Check(v) || !PyHamt_Check(w) || (op != Ty_EQ && op != Ty_NE)) {
-        Ty_RETURN_NOTIMPLEMENTED;
+    if (!PyHamt_Check(v) || !PyHamt_Check(w) || (op != Py_EQ && op != Py_NE)) {
+        Py_RETURN_NOTIMPLEMENTED;
     }
 
     int res = _TyHamt_Eq((PyHamtObject *)v, (PyHamtObject *)w);
@@ -2650,15 +2650,15 @@ hamt_tp_richcompare(TyObject *v, TyObject *w, int op)
         return NULL;
     }
 
-    if (op == Ty_NE) {
+    if (op == Py_NE) {
         res = !res;
     }
 
     if (res) {
-        Ty_RETURN_TRUE;
+        Py_RETURN_TRUE;
     }
     else {
-        Ty_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
 }
 
@@ -2737,7 +2737,7 @@ hamt_py_get(TyObject *op, TyObject *args)
             return Ty_NewRef(val);
         case F_NOT_FOUND:
             if (def == NULL) {
-                Ty_RETURN_NONE;
+                Py_RETURN_NONE;
             }
             return Ty_NewRef(def);
         default:
@@ -2767,7 +2767,7 @@ hamt_py_values(TyObject *op, TyObject *args)
 }
 
 static TyObject *
-hamt_py_keys(TyObject *op, TyObject *Ty_UNUSED(args))
+hamt_py_keys(TyObject *op, TyObject *Py_UNUSED(args))
 {
     PyHamtObject *self = _PyHamtObject_CAST(op);
     return _TyHamt_NewIterKeys(self);
@@ -2775,7 +2775,7 @@ hamt_py_keys(TyObject *op, TyObject *Ty_UNUSED(args))
 
 #ifdef Ty_DEBUG
 static TyObject *
-hamt_py_dump(TyObject *op, TyObject *Ty_UNUSED(args))
+hamt_py_dump(TyObject *op, TyObject *Py_UNUSED(args))
 {
     PyHamtObject *self = _PyHamtObject_CAST(op);
     return hamt_dump(self);

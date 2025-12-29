@@ -5,49 +5,49 @@
 #include "pycore_bytes_methods.h"
 
 static TyObject*
-stringlib_isspace(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_isspace(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _Ty_bytes_isspace(STRINGLIB_STR(self), STRINGLIB_LEN(self));
 }
 
 static TyObject*
-stringlib_isalpha(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_isalpha(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _Ty_bytes_isalpha(STRINGLIB_STR(self), STRINGLIB_LEN(self));
 }
 
 static TyObject*
-stringlib_isalnum(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_isalnum(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _Ty_bytes_isalnum(STRINGLIB_STR(self), STRINGLIB_LEN(self));
 }
 
 static TyObject*
-stringlib_isascii(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_isascii(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _Ty_bytes_isascii(STRINGLIB_STR(self), STRINGLIB_LEN(self));
 }
 
 static TyObject*
-stringlib_isdigit(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_isdigit(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _Ty_bytes_isdigit(STRINGLIB_STR(self), STRINGLIB_LEN(self));
 }
 
 static TyObject*
-stringlib_islower(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_islower(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _Ty_bytes_islower(STRINGLIB_STR(self), STRINGLIB_LEN(self));
 }
 
 static TyObject*
-stringlib_isupper(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_isupper(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _Ty_bytes_isupper(STRINGLIB_STR(self), STRINGLIB_LEN(self));
 }
 
 static TyObject*
-stringlib_istitle(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_istitle(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     return _Ty_bytes_istitle(STRINGLIB_STR(self), STRINGLIB_LEN(self));
 }
@@ -56,7 +56,7 @@ stringlib_istitle(TyObject *self, TyObject *Ty_UNUSED(ignored))
 /* functions that return a new object partially translated by ctype funcs: */
 
 static TyObject*
-stringlib_lower(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_lower(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject* newobj;
     newobj = STRINGLIB_NEW(NULL, STRINGLIB_LEN(self));
@@ -68,7 +68,7 @@ stringlib_lower(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject*
-stringlib_upper(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_upper(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject* newobj;
     newobj = STRINGLIB_NEW(NULL, STRINGLIB_LEN(self));
@@ -80,7 +80,7 @@ stringlib_upper(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject*
-stringlib_title(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_title(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject* newobj;
     newobj = STRINGLIB_NEW(NULL, STRINGLIB_LEN(self));
@@ -92,7 +92,7 @@ stringlib_title(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject*
-stringlib_capitalize(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_capitalize(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject* newobj;
     newobj = STRINGLIB_NEW(NULL, STRINGLIB_LEN(self));
@@ -104,7 +104,7 @@ stringlib_capitalize(TyObject *self, TyObject *Ty_UNUSED(ignored))
 }
 
 static TyObject*
-stringlib_swapcase(TyObject *self, TyObject *Ty_UNUSED(ignored))
+stringlib_swapcase(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     TyObject* newobj;
     newobj = STRINGLIB_NEW(NULL, STRINGLIB_LEN(self));

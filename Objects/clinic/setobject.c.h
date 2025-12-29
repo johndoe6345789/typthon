@@ -19,7 +19,7 @@ static TyObject *
 set_pop_impl(PySetObject *so);
 
 static TyObject *
-set_pop(TyObject *so, TyObject *Ty_UNUSED(ignored))
+set_pop(TyObject *so, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -70,7 +70,7 @@ static TyObject *
 set_copy_impl(PySetObject *so);
 
 static TyObject *
-set_copy(TyObject *so, TyObject *Ty_UNUSED(ignored))
+set_copy(TyObject *so, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -94,7 +94,7 @@ static TyObject *
 frozenset_copy_impl(PySetObject *so);
 
 static TyObject *
-frozenset_copy(TyObject *so, TyObject *Ty_UNUSED(ignored))
+frozenset_copy(TyObject *so, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -118,7 +118,7 @@ static TyObject *
 set_clear_impl(PySetObject *so);
 
 static TyObject *
-set_clear(TyObject *so, TyObject *Ty_UNUSED(ignored))
+set_clear(TyObject *so, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -520,7 +520,7 @@ static TyObject *
 set___reduce___impl(PySetObject *so);
 
 static TyObject *
-set___reduce__(TyObject *so, TyObject *Ty_UNUSED(ignored))
+set___reduce__(TyObject *so, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 
@@ -544,7 +544,7 @@ static TyObject *
 set___sizeof___impl(PySetObject *so);
 
 static TyObject *
-set___sizeof__(TyObject *so, TyObject *Ty_UNUSED(ignored))
+set___sizeof__(TyObject *so, TyObject *Py_UNUSED(ignored))
 {
     TyObject *return_value = NULL;
 

@@ -178,9 +178,9 @@ PyAPI_FUNC(void) PyObject_GC_UnTrack(void *);
 PyAPI_FUNC(void) PyObject_GC_Del(void *);
 
 #define PyObject_GC_New(type, typeobj) \
-    _Ty_CAST(type*, _TyObject_GC_New(typeobj))
+    _Py_CAST(type*, _TyObject_GC_New(typeobj))
 #define PyObject_GC_NewVar(type, typeobj, n) \
-    _Ty_CAST(type*, _TyObject_GC_NewVar((typeobj), (n)))
+    _Py_CAST(type*, _TyObject_GC_NewVar((typeobj), (n)))
 
 PyAPI_FUNC(int) PyObject_GC_IsTracked(TyObject *);
 PyAPI_FUNC(int) PyObject_GC_IsFinalized(TyObject *);
