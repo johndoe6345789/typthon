@@ -1776,7 +1776,7 @@ PyCursesWindow_getstr(TyObject *op, TyObject *args)
 
     if (rtn == ERR) {
         Ty_DECREF(res);
-        return Ty_GetConstant(Py_CONSTANT_EMPTY_BYTES);
+        return Ty_GetConstant(Ty_CONSTANT_EMPTY_BYTES);
     }
     _TyBytes_Resize(&res, strlen(buf));  // 'res' is set to NULL on failure
     return res;
@@ -1951,7 +1951,7 @@ PyCursesWindow_instr(TyObject *op, TyObject *args)
 
     if (rtn == ERR) {
         Ty_DECREF(res);
-        return Ty_GetConstant(Py_CONSTANT_EMPTY_BYTES);
+        return Ty_GetConstant(Ty_CONSTANT_EMPTY_BYTES);
     }
     _TyBytes_Resize(&res, strlen(buf));  // 'res' is set to NULL on failure
     return res;

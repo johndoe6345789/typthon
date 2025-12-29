@@ -38040,13 +38040,13 @@ _TyPegen_parse(Parser *p)
 
     // Run parser
     void *result = NULL;
-    if (p->start_rule == Py_file_input) {
+    if (p->start_rule == Ty_file_input) {
         result = file_rule(p);
-    } else if (p->start_rule == Py_single_input) {
+    } else if (p->start_rule == Ty_single_input) {
         result = interactive_rule(p);
-    } else if (p->start_rule == Py_eval_input) {
+    } else if (p->start_rule == Ty_eval_input) {
         result = eval_rule(p);
-    } else if (p->start_rule == Py_func_type_input) {
+    } else if (p->start_rule == Ty_func_type_input) {
         result = func_type_rule(p);
     }
 

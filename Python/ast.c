@@ -127,7 +127,7 @@ expr_context_name(expr_context_ty ctx)
         return "Del";
     // No default case so compiler emits warning for unhandled cases
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
 
 static int

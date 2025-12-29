@@ -151,7 +151,7 @@ _TyPegen_seq_count_dots(asdl_seq *seq)
                 number_of_dots += 1;
                 break;
             default:
-                Py_UNREACHABLE();
+                Ty_UNREACHABLE();
         }
     }
 
@@ -1604,7 +1604,7 @@ _build_concatenated_bytes(Parser *p, asdl_expr_seq *strings, int lineno,
     Ty_ssize_t len = asdl_seq_LEN(strings);
     assert(len > 0);
 
-    TyObject* res = Ty_GetConstant(Py_CONSTANT_EMPTY_BYTES);
+    TyObject* res = Ty_GetConstant(Ty_CONSTANT_EMPTY_BYTES);
 
     /* Bytes literals never get a kind, but just for consistency
         since they are represented as Constant nodes, we'll mirror

@@ -2281,7 +2281,7 @@ long_format_binary(TyObject *aa, int base, int alternate,
         bits = 1;
         break;
     default:
-        Py_UNREACHABLE();
+        Ty_UNREACHABLE();
     }
 
     /* Compute exact length 'sz' of output string. */
@@ -5550,7 +5550,7 @@ long_bitwise(PyLongObject *a,
         size_z = negb ? size_b : size_a;
         break;
     default:
-        Py_UNREACHABLE();
+        Ty_UNREACHABLE();
     }
 
     /* We allow an extra digit if z is negative, to make sure that
@@ -5577,7 +5577,7 @@ long_bitwise(PyLongObject *a,
             z->long_value.ob_digit[i] = a->long_value.ob_digit[i] ^ b->long_value.ob_digit[i];
         break;
     default:
-        Py_UNREACHABLE();
+        Ty_UNREACHABLE();
     }
 
     /* Copy any remaining digits of a, inverting if necessary. */

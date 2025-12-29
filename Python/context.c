@@ -107,7 +107,7 @@ context_event_name(PyContextEvent event) {
         default:
             return "?";
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
 
 static void
