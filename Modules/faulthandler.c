@@ -71,8 +71,10 @@ static fault_handler_t faulthandler_handlers[] = {
        handler fails in faulthandler_fatal_error() */
     {SIGSEGV, 0, "Segmentation fault", }
 };
+/* Calculate array length using sizeof instead of Py_ARRAY_LENGTH to avoid 
+   non-constant initializer error */
 static const size_t faulthandler_nsignals = \
-    Py_ARRAY_LENGTH(faulthandler_handlers);
+    sizeof(faulthandler_handlers) / sizeof(faulthandler_handlers[0]);
 
 #ifdef FAULTHANDLER_USE_ALT_STACK
 #  define stack _PyRuntime.faulthandler.stack

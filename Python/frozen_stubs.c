@@ -34,22 +34,32 @@ struct _inittab _PyImport_Inittab[] = {
 };
 
 /* Build info stubs */
+
+/* Use CMake-generated git information if available */
+#ifndef GIT_COMMIT_HASH
+#define GIT_COMMIT_HASH "unknown"
+#endif
+
+#ifndef GIT_BRANCH
+#define GIT_BRANCH "default"
+#endif
+
 const char *
 Py_GetBuildInfo(void)
 {
-    return "Typthon 3.14.0 (default, " __DATE__ " " __TIME__ ")";
+    return "Typthon 3.14.0 (" GIT_BRANCH ":" GIT_COMMIT_HASH ", " __DATE__ " " __TIME__ ")";
 }
 
 const char *
 _Py_gitidentifier(void)
 {
-    return "default";
+    return GIT_BRANCH;
 }
 
 const char *
 _Py_gitversion(void)
 {
-    return "Typthon 3.14.0";
+    return "Typthon 3.14.0:" GIT_COMMIT_HASH;
 }
 
 /* DL open flags stub */
@@ -64,19 +74,6 @@ PyStatus
 _PyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
 {
     return PyStatus_Ok();
-}
-
-/* Faulthandler stubs - module excluded from build */
-int
-_PyFaulthandler_Init(int enable)
-{
-    return 0;
-}
-
-void
-_PyFaulthandler_Fini(void)
-{
-    /* No-op */
 }
 
 /* plock stub - not available on all systems */
