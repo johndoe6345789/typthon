@@ -10,11 +10,11 @@ PyDoc_STRVAR(_contextvars_copy_context__doc__,
 #define _CONTEXTVARS_COPY_CONTEXT_METHODDEF    \
     {"copy_context", (PyCFunction)_contextvars_copy_context, METH_NOARGS, _contextvars_copy_context__doc__},
 
-static PyObject *
-_contextvars_copy_context_impl(PyObject *module);
+static TyObject *
+_contextvars_copy_context_impl(TyObject *module);
 
-static PyObject *
-_contextvars_copy_context(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_contextvars_copy_context(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return _contextvars_copy_context_impl(module);
 }

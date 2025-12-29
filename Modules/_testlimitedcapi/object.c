@@ -1,68 +1,68 @@
-// Need limited C API version 3.13 for Py_GetConstant()
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#if !defined(Py_GIL_DISABLED) && !defined(Py_LIMITED_API)
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for Ty_GetConstant()
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#if !defined(Ty_GIL_DISABLED) && !defined(Ty_LIMITED_API)
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "parts.h"
 #include "util.h"
 
 
-/* Test Py_GetConstant() */
-static PyObject *
-get_constant(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test Ty_GetConstant() */
+static TyObject *
+get_constant(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     int constant_id;
-    if (!PyArg_ParseTuple(args, "i", &constant_id)) {
+    if (!TyArg_ParseTuple(args, "i", &constant_id)) {
         return NULL;
     }
 
-    PyObject *obj = Py_GetConstant(constant_id);
+    TyObject *obj = Ty_GetConstant(constant_id);
     if (obj == NULL) {
-        assert(PyErr_Occurred());
+        assert(TyErr_Occurred());
         return NULL;
     }
     return obj;
 }
 
 
-/* Test Py_GetConstantBorrowed() */
-static PyObject *
-get_constant_borrowed(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test Ty_GetConstantBorrowed() */
+static TyObject *
+get_constant_borrowed(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     int constant_id;
-    if (!PyArg_ParseTuple(args, "i", &constant_id)) {
+    if (!TyArg_ParseTuple(args, "i", &constant_id)) {
         return NULL;
     }
 
-    PyObject *obj = Py_GetConstantBorrowed(constant_id);
+    TyObject *obj = Ty_GetConstantBorrowed(constant_id);
     if (obj == NULL) {
-        assert(PyErr_Occurred());
+        assert(TyErr_Occurred());
         return NULL;
     }
-    return Py_NewRef(obj);
+    return Ty_NewRef(obj);
 }
 
 
 /* Test constants */
-static PyObject *
-test_constants(PyObject *Py_UNUSED(module), PyObject *Py_UNUSED(args))
+static TyObject *
+test_constants(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
 {
     // Test that implementation of constants in the limited C API:
     // check that the C code compiles.
     //
-    // Test also that constants and Py_GetConstant() return the same
+    // Test also that constants and Ty_GetConstant() return the same
     // objects.
-    assert(Py_None == Py_GetConstant(Py_CONSTANT_NONE));
-    assert(Py_False == Py_GetConstant(Py_CONSTANT_FALSE));
-    assert(Py_True == Py_GetConstant(Py_CONSTANT_TRUE));
-    assert(Py_Ellipsis == Py_GetConstant(Py_CONSTANT_ELLIPSIS));
-    assert(Py_NotImplemented == Py_GetConstant(Py_CONSTANT_NOT_IMPLEMENTED));
+    assert(Ty_None == Ty_GetConstant(Ty_CONSTANT_NONE));
+    assert(Ty_False == Ty_GetConstant(Ty_CONSTANT_FALSE));
+    assert(Ty_True == Ty_GetConstant(Ty_CONSTANT_TRUE));
+    assert(Ty_Ellipsis == Ty_GetConstant(Ty_CONSTANT_ELLIPSIS));
+    assert(Ty_NotImplemented == Ty_GetConstant(Ty_CONSTANT_NOT_IMPLEMENTED));
     // Other constants are tested in test_capi.test_object
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"get_constant", get_constant, METH_VARARGS},
     {"get_constant_borrowed", get_constant_borrowed, METH_VARARGS},
     {"test_constants", test_constants, METH_NOARGS},
@@ -70,9 +70,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Object(PyObject *m)
+_PyTestLimitedCAPI_Init_Object(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

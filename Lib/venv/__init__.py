@@ -344,7 +344,7 @@ class EnvBuilder:
             else:
                 scripts = os.path.join(os.path.dirname(__file__),
                                        'scripts', 'nt')
-            if not sysconfig.get_config_var("Py_GIL_DISABLED"):
+            if not sysconfig.get_config_var("Ty_GIL_DISABLED"):
                 python_exe = os.path.join(dirname, f'python{exe_d}.exe')
                 pythonw_exe = os.path.join(dirname, f'pythonw{exe_d}.exe')
                 link_sources = {

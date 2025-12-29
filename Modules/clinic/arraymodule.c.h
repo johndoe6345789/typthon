@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_runtime.h"     // _Py_SINGLETON()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_runtime.h"     // _Ty_SINGLETON()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(array_array_clear__doc__,
 "clear($self, /)\n"
@@ -17,11 +17,11 @@ PyDoc_STRVAR(array_array_clear__doc__,
 #define ARRAY_ARRAY_CLEAR_METHODDEF    \
     {"clear", (PyCFunction)array_array_clear, METH_NOARGS, array_array_clear__doc__},
 
-static PyObject *
+static TyObject *
 array_array_clear_impl(arrayobject *self);
 
-static PyObject *
-array_array_clear(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+array_array_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return array_array_clear_impl((arrayobject *)self);
 }
@@ -35,11 +35,11 @@ PyDoc_STRVAR(array_array___copy____doc__,
 #define ARRAY_ARRAY___COPY___METHODDEF    \
     {"__copy__", (PyCFunction)array_array___copy__, METH_NOARGS, array_array___copy____doc__},
 
-static PyObject *
+static TyObject *
 array_array___copy___impl(arrayobject *self);
 
-static PyObject *
-array_array___copy__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+array_array___copy__(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return array_array___copy___impl((arrayobject *)self);
 }
@@ -53,13 +53,13 @@ PyDoc_STRVAR(array_array___deepcopy____doc__,
 #define ARRAY_ARRAY___DEEPCOPY___METHODDEF    \
     {"__deepcopy__", (PyCFunction)array_array___deepcopy__, METH_O, array_array___deepcopy____doc__},
 
-static PyObject *
-array_array___deepcopy___impl(arrayobject *self, PyObject *unused);
+static TyObject *
+array_array___deepcopy___impl(arrayobject *self, TyObject *unused);
 
-static PyObject *
-array_array___deepcopy__(PyObject *self, PyObject *unused)
+static TyObject *
+array_array___deepcopy__(TyObject *self, TyObject *unused)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = array_array___deepcopy___impl((arrayobject *)self, unused);
 
@@ -75,13 +75,13 @@ PyDoc_STRVAR(array_array_count__doc__,
 #define ARRAY_ARRAY_COUNT_METHODDEF    \
     {"count", (PyCFunction)array_array_count, METH_O, array_array_count__doc__},
 
-static PyObject *
-array_array_count_impl(arrayobject *self, PyObject *v);
+static TyObject *
+array_array_count_impl(arrayobject *self, TyObject *v);
 
-static PyObject *
-array_array_count(PyObject *self, PyObject *v)
+static TyObject *
+array_array_count(TyObject *self, TyObject *v)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = array_array_count_impl((arrayobject *)self, v);
 
@@ -99,32 +99,32 @@ PyDoc_STRVAR(array_array_index__doc__,
 #define ARRAY_ARRAY_INDEX_METHODDEF    \
     {"index", _PyCFunction_CAST(array_array_index), METH_FASTCALL, array_array_index__doc__},
 
-static PyObject *
-array_array_index_impl(arrayobject *self, PyObject *v, Py_ssize_t start,
-                       Py_ssize_t stop);
+static TyObject *
+array_array_index_impl(arrayobject *self, TyObject *v, Ty_ssize_t start,
+                       Ty_ssize_t stop);
 
-static PyObject *
-array_array_index(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+array_array_index(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *v;
-    Py_ssize_t start = 0;
-    Py_ssize_t stop = PY_SSIZE_T_MAX;
+    TyObject *return_value = NULL;
+    TyObject *v;
+    Ty_ssize_t start = 0;
+    Ty_ssize_t stop = PY_SSIZE_T_MAX;
 
-    if (!_PyArg_CheckPositional("index", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("index", nargs, 1, 3)) {
         goto exit;
     }
     v = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndexNotNone(args[1], &start)) {
+    if (!_TyEval_SliceIndexNotNone(args[1], &start)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndexNotNone(args[2], &stop)) {
+    if (!_TyEval_SliceIndexNotNone(args[2], &stop)) {
         goto exit;
     }
 skip_optional:
@@ -143,13 +143,13 @@ PyDoc_STRVAR(array_array_remove__doc__,
 #define ARRAY_ARRAY_REMOVE_METHODDEF    \
     {"remove", (PyCFunction)array_array_remove, METH_O, array_array_remove__doc__},
 
-static PyObject *
-array_array_remove_impl(arrayobject *self, PyObject *v);
+static TyObject *
+array_array_remove_impl(arrayobject *self, TyObject *v);
 
-static PyObject *
-array_array_remove(PyObject *self, PyObject *v)
+static TyObject *
+array_array_remove(TyObject *self, TyObject *v)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = array_array_remove_impl((arrayobject *)self, v);
 
@@ -167,29 +167,29 @@ PyDoc_STRVAR(array_array_pop__doc__,
 #define ARRAY_ARRAY_POP_METHODDEF    \
     {"pop", _PyCFunction_CAST(array_array_pop), METH_FASTCALL, array_array_pop__doc__},
 
-static PyObject *
-array_array_pop_impl(arrayobject *self, Py_ssize_t i);
+static TyObject *
+array_array_pop_impl(arrayobject *self, Ty_ssize_t i);
 
-static PyObject *
-array_array_pop(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+array_array_pop(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t i = -1;
+    TyObject *return_value = NULL;
+    Ty_ssize_t i = -1;
 
-    if (!_PyArg_CheckPositional("pop", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("pop", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         i = ival;
@@ -210,30 +210,30 @@ PyDoc_STRVAR(array_array_extend__doc__,
 #define ARRAY_ARRAY_EXTEND_METHODDEF    \
     {"extend", _PyCFunction_CAST(array_array_extend), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, array_array_extend__doc__},
 
-static PyObject *
-array_array_extend_impl(arrayobject *self, PyTypeObject *cls, PyObject *bb);
+static TyObject *
+array_array_extend_impl(arrayobject *self, TyTypeObject *cls, TyObject *bb);
 
-static PyObject *
-array_array_extend(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+array_array_extend(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "extend",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *bb;
+    TyObject *argsbuf[1];
+    TyObject *bb;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -254,27 +254,27 @@ PyDoc_STRVAR(array_array_insert__doc__,
 #define ARRAY_ARRAY_INSERT_METHODDEF    \
     {"insert", _PyCFunction_CAST(array_array_insert), METH_FASTCALL, array_array_insert__doc__},
 
-static PyObject *
-array_array_insert_impl(arrayobject *self, Py_ssize_t i, PyObject *v);
+static TyObject *
+array_array_insert_impl(arrayobject *self, Ty_ssize_t i, TyObject *v);
 
-static PyObject *
-array_array_insert(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+array_array_insert(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t i;
-    PyObject *v;
+    TyObject *return_value = NULL;
+    Ty_ssize_t i;
+    TyObject *v;
 
-    if (!_PyArg_CheckPositional("insert", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("insert", nargs, 2, 2)) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         i = ival;
@@ -298,11 +298,11 @@ PyDoc_STRVAR(array_array_buffer_info__doc__,
 #define ARRAY_ARRAY_BUFFER_INFO_METHODDEF    \
     {"buffer_info", (PyCFunction)array_array_buffer_info, METH_NOARGS, array_array_buffer_info__doc__},
 
-static PyObject *
+static TyObject *
 array_array_buffer_info_impl(arrayobject *self);
 
-static PyObject *
-array_array_buffer_info(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+array_array_buffer_info(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return array_array_buffer_info_impl((arrayobject *)self);
 }
@@ -316,13 +316,13 @@ PyDoc_STRVAR(array_array_append__doc__,
 #define ARRAY_ARRAY_APPEND_METHODDEF    \
     {"append", (PyCFunction)array_array_append, METH_O, array_array_append__doc__},
 
-static PyObject *
-array_array_append_impl(arrayobject *self, PyObject *v);
+static TyObject *
+array_array_append_impl(arrayobject *self, TyObject *v);
 
-static PyObject *
-array_array_append(PyObject *self, PyObject *v)
+static TyObject *
+array_array_append(TyObject *self, TyObject *v)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = array_array_append_impl((arrayobject *)self, v);
 
@@ -341,11 +341,11 @@ PyDoc_STRVAR(array_array_byteswap__doc__,
 #define ARRAY_ARRAY_BYTESWAP_METHODDEF    \
     {"byteswap", (PyCFunction)array_array_byteswap, METH_NOARGS, array_array_byteswap__doc__},
 
-static PyObject *
+static TyObject *
 array_array_byteswap_impl(arrayobject *self);
 
-static PyObject *
-array_array_byteswap(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+array_array_byteswap(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return array_array_byteswap_impl((arrayobject *)self);
 }
@@ -359,11 +359,11 @@ PyDoc_STRVAR(array_array_reverse__doc__,
 #define ARRAY_ARRAY_REVERSE_METHODDEF    \
     {"reverse", (PyCFunction)array_array_reverse, METH_NOARGS, array_array_reverse__doc__},
 
-static PyObject *
+static TyObject *
 array_array_reverse_impl(arrayobject *self);
 
-static PyObject *
-array_array_reverse(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+array_array_reverse(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return array_array_reverse_impl((arrayobject *)self);
 }
@@ -377,45 +377,45 @@ PyDoc_STRVAR(array_array_fromfile__doc__,
 #define ARRAY_ARRAY_FROMFILE_METHODDEF    \
     {"fromfile", _PyCFunction_CAST(array_array_fromfile), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, array_array_fromfile__doc__},
 
-static PyObject *
-array_array_fromfile_impl(arrayobject *self, PyTypeObject *cls, PyObject *f,
-                          Py_ssize_t n);
+static TyObject *
+array_array_fromfile_impl(arrayobject *self, TyTypeObject *cls, TyObject *f,
+                          Ty_ssize_t n);
 
-static PyObject *
-array_array_fromfile(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+array_array_fromfile(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", "", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fromfile",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *f;
-    Py_ssize_t n;
+    TyObject *argsbuf[2];
+    TyObject *f;
+    Ty_ssize_t n;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     f = args[0];
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         n = ival;
@@ -435,30 +435,30 @@ PyDoc_STRVAR(array_array_tofile__doc__,
 #define ARRAY_ARRAY_TOFILE_METHODDEF    \
     {"tofile", _PyCFunction_CAST(array_array_tofile), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, array_array_tofile__doc__},
 
-static PyObject *
-array_array_tofile_impl(arrayobject *self, PyTypeObject *cls, PyObject *f);
+static TyObject *
+array_array_tofile_impl(arrayobject *self, TyTypeObject *cls, TyObject *f);
 
-static PyObject *
-array_array_tofile(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+array_array_tofile(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "tofile",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *f;
+    TyObject *argsbuf[1];
+    TyObject *f;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -479,13 +479,13 @@ PyDoc_STRVAR(array_array_fromlist__doc__,
 #define ARRAY_ARRAY_FROMLIST_METHODDEF    \
     {"fromlist", (PyCFunction)array_array_fromlist, METH_O, array_array_fromlist__doc__},
 
-static PyObject *
-array_array_fromlist_impl(arrayobject *self, PyObject *list);
+static TyObject *
+array_array_fromlist_impl(arrayobject *self, TyObject *list);
 
-static PyObject *
-array_array_fromlist(PyObject *self, PyObject *list)
+static TyObject *
+array_array_fromlist(TyObject *self, TyObject *list)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = array_array_fromlist_impl((arrayobject *)self, list);
 
@@ -501,11 +501,11 @@ PyDoc_STRVAR(array_array_tolist__doc__,
 #define ARRAY_ARRAY_TOLIST_METHODDEF    \
     {"tolist", (PyCFunction)array_array_tolist, METH_NOARGS, array_array_tolist__doc__},
 
-static PyObject *
+static TyObject *
 array_array_tolist_impl(arrayobject *self);
 
-static PyObject *
-array_array_tolist(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+array_array_tolist(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return array_array_tolist_impl((arrayobject *)self);
 }
@@ -519,14 +519,14 @@ PyDoc_STRVAR(array_array_frombytes__doc__,
 #define ARRAY_ARRAY_FROMBYTES_METHODDEF    \
     {"frombytes", (PyCFunction)array_array_frombytes, METH_O, array_array_frombytes__doc__},
 
-static PyObject *
-array_array_frombytes_impl(arrayobject *self, Py_buffer *buffer);
+static TyObject *
+array_array_frombytes_impl(arrayobject *self, Ty_buffer *buffer);
 
-static PyObject *
-array_array_frombytes(PyObject *self, PyObject *arg)
+static TyObject *
+array_array_frombytes(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer buffer = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer buffer = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &buffer, PyBUF_SIMPLE) != 0) {
         goto exit;
@@ -551,11 +551,11 @@ PyDoc_STRVAR(array_array_tobytes__doc__,
 #define ARRAY_ARRAY_TOBYTES_METHODDEF    \
     {"tobytes", (PyCFunction)array_array_tobytes, METH_NOARGS, array_array_tobytes__doc__},
 
-static PyObject *
+static TyObject *
 array_array_tobytes_impl(arrayobject *self);
 
-static PyObject *
-array_array_tobytes(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+array_array_tobytes(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return array_array_tobytes_impl((arrayobject *)self);
 }
@@ -573,17 +573,17 @@ PyDoc_STRVAR(array_array_fromunicode__doc__,
 #define ARRAY_ARRAY_FROMUNICODE_METHODDEF    \
     {"fromunicode", (PyCFunction)array_array_fromunicode, METH_O, array_array_fromunicode__doc__},
 
-static PyObject *
-array_array_fromunicode_impl(arrayobject *self, PyObject *ustr);
+static TyObject *
+array_array_fromunicode_impl(arrayobject *self, TyObject *ustr);
 
-static PyObject *
-array_array_fromunicode(PyObject *self, PyObject *arg)
+static TyObject *
+array_array_fromunicode(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *ustr;
+    TyObject *return_value = NULL;
+    TyObject *ustr;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("fromunicode", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("fromunicode", "argument", "str", arg);
         goto exit;
     }
     ustr = arg;
@@ -606,11 +606,11 @@ PyDoc_STRVAR(array_array_tounicode__doc__,
 #define ARRAY_ARRAY_TOUNICODE_METHODDEF    \
     {"tounicode", (PyCFunction)array_array_tounicode, METH_NOARGS, array_array_tounicode__doc__},
 
-static PyObject *
+static TyObject *
 array_array_tounicode_impl(arrayobject *self);
 
-static PyObject *
-array_array_tounicode(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+array_array_tounicode(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return array_array_tounicode_impl((arrayobject *)self);
 }
@@ -624,11 +624,11 @@ PyDoc_STRVAR(array_array___sizeof____doc__,
 #define ARRAY_ARRAY___SIZEOF___METHODDEF    \
     {"__sizeof__", (PyCFunction)array_array___sizeof__, METH_NOARGS, array_array___sizeof____doc__},
 
-static PyObject *
+static TyObject *
 array_array___sizeof___impl(arrayobject *self);
 
-static PyObject *
-array_array___sizeof__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+array_array___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return array_array___sizeof___impl((arrayobject *)self);
 }
@@ -643,39 +643,39 @@ PyDoc_STRVAR(array__array_reconstructor__doc__,
 #define ARRAY__ARRAY_RECONSTRUCTOR_METHODDEF    \
     {"_array_reconstructor", _PyCFunction_CAST(array__array_reconstructor), METH_FASTCALL, array__array_reconstructor__doc__},
 
-static PyObject *
-array__array_reconstructor_impl(PyObject *module, PyTypeObject *arraytype,
+static TyObject *
+array__array_reconstructor_impl(TyObject *module, TyTypeObject *arraytype,
                                 int typecode,
                                 enum machine_format_code mformat_code,
-                                PyObject *items);
+                                TyObject *items);
 
-static PyObject *
-array__array_reconstructor(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+array__array_reconstructor(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *arraytype;
+    TyObject *return_value = NULL;
+    TyTypeObject *arraytype;
     int typecode;
     enum machine_format_code mformat_code;
-    PyObject *items;
+    TyObject *items;
 
-    if (!_PyArg_CheckPositional("_array_reconstructor", nargs, 4, 4)) {
+    if (!_TyArg_CheckPositional("_array_reconstructor", nargs, 4, 4)) {
         goto exit;
     }
-    arraytype = (PyTypeObject *)args[0];
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("_array_reconstructor", "argument 2", "a unicode character", args[1]);
+    arraytype = (TyTypeObject *)args[0];
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("_array_reconstructor", "argument 2", "a unicode character", args[1]);
         goto exit;
     }
-    if (PyUnicode_GET_LENGTH(args[1]) != 1) {
-        PyErr_Format(PyExc_TypeError,
+    if (TyUnicode_GET_LENGTH(args[1]) != 1) {
+        TyErr_Format(TyExc_TypeError,
             "_array_reconstructor(): argument 2 must be a unicode character, "
             "not a string of length %zd",
-            PyUnicode_GET_LENGTH(args[1]));
+            TyUnicode_GET_LENGTH(args[1]));
         goto exit;
     }
-    typecode = PyUnicode_READ_CHAR(args[1], 0);
-    mformat_code = PyLong_AsInt(args[2]);
-    if (mformat_code == -1 && PyErr_Occurred()) {
+    typecode = TyUnicode_READ_CHAR(args[1], 0);
+    mformat_code = TyLong_AsInt(args[2]);
+    if (mformat_code == -1 && TyErr_Occurred()) {
         goto exit;
     }
     items = args[3];
@@ -694,31 +694,31 @@ PyDoc_STRVAR(array_array___reduce_ex____doc__,
 #define ARRAY_ARRAY___REDUCE_EX___METHODDEF    \
     {"__reduce_ex__", _PyCFunction_CAST(array_array___reduce_ex__), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, array_array___reduce_ex____doc__},
 
-static PyObject *
-array_array___reduce_ex___impl(arrayobject *self, PyTypeObject *cls,
-                               PyObject *value);
+static TyObject *
+array_array___reduce_ex___impl(arrayobject *self, TyTypeObject *cls,
+                               TyObject *value);
 
-static PyObject *
-array_array___reduce_ex__(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+array_array___reduce_ex__(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "__reduce_ex__",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *value;
+    TyObject *argsbuf[1];
+    TyObject *value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -739,14 +739,14 @@ PyDoc_STRVAR(array_arrayiterator___reduce____doc__,
 #define ARRAY_ARRAYITERATOR___REDUCE___METHODDEF    \
     {"__reduce__", _PyCFunction_CAST(array_arrayiterator___reduce__), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, array_arrayiterator___reduce____doc__},
 
-static PyObject *
-array_arrayiterator___reduce___impl(arrayiterobject *self, PyTypeObject *cls);
+static TyObject *
+array_arrayiterator___reduce___impl(arrayiterobject *self, TyTypeObject *cls);
 
-static PyObject *
-array_arrayiterator___reduce__(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+array_arrayiterator___reduce__(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "__reduce__() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "__reduce__() takes no arguments");
         return NULL;
     }
     return array_arrayiterator___reduce___impl((arrayiterobject *)self, cls);
@@ -761,13 +761,13 @@ PyDoc_STRVAR(array_arrayiterator___setstate____doc__,
 #define ARRAY_ARRAYITERATOR___SETSTATE___METHODDEF    \
     {"__setstate__", (PyCFunction)array_arrayiterator___setstate__, METH_O, array_arrayiterator___setstate____doc__},
 
-static PyObject *
-array_arrayiterator___setstate___impl(arrayiterobject *self, PyObject *state);
+static TyObject *
+array_arrayiterator___setstate___impl(arrayiterobject *self, TyObject *state);
 
-static PyObject *
-array_arrayiterator___setstate__(PyObject *self, PyObject *state)
+static TyObject *
+array_arrayiterator___setstate__(TyObject *self, TyObject *state)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = array_arrayiterator___setstate___impl((arrayiterobject *)self, state);
 

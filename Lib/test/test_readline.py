@@ -414,7 +414,7 @@ readline.write_history_file(history_file)
         # See TestHistoryManipulation for the full test.
 
 
-@unittest.skipUnless(support.Py_GIL_DISABLED, 'these tests can only possibly fail with GIL disabled')
+@unittest.skipUnless(support.Ty_GIL_DISABLED, 'these tests can only possibly fail with GIL disabled')
 class FreeThreadingTest(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()

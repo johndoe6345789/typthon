@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_SYMTABLE_H
-#define Py_INTERNAL_SYMTABLE_H
+#ifndef Ty_INTERNAL_SYMTABLE_H
+#define Ty_INTERNAL_SYMTABLE_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 struct _mod;   // Type defined in pycore_ast.h
@@ -33,14 +33,14 @@ typedef enum _block_type {
     // i.e., a TypeVar, a TypeVarTuple or a ParamSpec object (the latter two
     // do not support a bound or a constraint tuple).
     TypeVariableBlock,
-} _Py_block_ty;
+} _Ty_block_ty;
 
 typedef enum _comprehension_type {
     NoComprehension = 0,
     ListComprehension = 1,
     DictComprehension = 2,
     SetComprehension = 3,
-    GeneratorExpression = 4 } _Py_comprehension_ty;
+    GeneratorExpression = 4 } _Ty_comprehension_ty;
 
 /* source location information */
 typedef struct {
@@ -48,54 +48,54 @@ typedef struct {
     int end_lineno;
     int col_offset;
     int end_col_offset;
-} _Py_SourceLocation;
+} _Ty_SourceLocation;
 
 #define SRC_LOCATION_FROM_AST(n) \
-    (_Py_SourceLocation){ \
+    (_Ty_SourceLocation){ \
                .lineno = (n)->lineno, \
                .end_lineno = (n)->end_lineno, \
                .col_offset = (n)->col_offset, \
                .end_col_offset = (n)->end_col_offset }
 
-static const _Py_SourceLocation NO_LOCATION = {-1, -1, -1, -1};
-static const _Py_SourceLocation NEXT_LOCATION = {-2, -2, -2, -2};
+static const _Ty_SourceLocation NO_LOCATION = {-1, -1, -1, -1};
+static const _Ty_SourceLocation NEXT_LOCATION = {-2, -2, -2, -2};
 
 /* __future__ information */
 typedef struct {
     int ff_features;                    /* flags set by future statements */
-    _Py_SourceLocation ff_location;     /* location of last future statement */
+    _Ty_SourceLocation ff_location;     /* location of last future statement */
 } _PyFutureFeatures;
 
 struct _symtable_entry;
 
 struct symtable {
-    PyObject *st_filename;          /* name of file being compiled,
+    TyObject *st_filename;          /* name of file being compiled,
                                        decoded from the filesystem encoding */
     struct _symtable_entry *st_cur; /* current symbol table entry */
     struct _symtable_entry *st_top; /* symbol table entry for module */
-    PyObject *st_blocks;            /* dict: map AST node addresses
+    TyObject *st_blocks;            /* dict: map AST node addresses
                                      *       to symbol table entries */
-    PyObject *st_stack;             /* list: stack of namespace info */
-    PyObject *st_global;            /* borrowed ref to st_top->ste_symbols */
+    TyObject *st_stack;             /* list: stack of namespace info */
+    TyObject *st_global;            /* borrowed ref to st_top->ste_symbols */
     int st_nblocks;                 /* number of blocks used. kept for
                                        consistency with the corresponding
                                        compiler structure */
-    PyObject *st_private;           /* name of current class or NULL */
+    TyObject *st_private;           /* name of current class or NULL */
     _PyFutureFeatures *st_future;   /* module's future features that affect
                                        the symbol table */
 };
 
 typedef struct _symtable_entry {
     PyObject_HEAD
-    PyObject *ste_id;        /* int: key in ste_table->st_blocks */
-    PyObject *ste_symbols;   /* dict: variable names to flags */
-    PyObject *ste_name;      /* string: name of current block */
-    PyObject *ste_varnames;  /* list of function parameters */
-    PyObject *ste_children;  /* list of child blocks */
-    PyObject *ste_directives;/* locations of global and nonlocal statements */
-    PyObject *ste_mangled_names; /* set of names for which mangling should be applied */
+    TyObject *ste_id;        /* int: key in ste_table->st_blocks */
+    TyObject *ste_symbols;   /* dict: variable names to flags */
+    TyObject *ste_name;      /* string: name of current block */
+    TyObject *ste_varnames;  /* list of function parameters */
+    TyObject *ste_children;  /* list of child blocks */
+    TyObject *ste_directives;/* locations of global and nonlocal statements */
+    TyObject *ste_mangled_names; /* set of names for which mangling should be applied */
 
-    _Py_block_ty ste_type;
+    _Ty_block_ty ste_type;
     // Optional string set by symtable.c and used when reporting errors.
     // The content of that string is a description of the current "context".
     //
@@ -108,7 +108,7 @@ typedef struct _symtable_entry {
     unsigned ste_generator : 1;   /* true if namespace is a generator */
     unsigned ste_coroutine : 1;   /* true if namespace is a coroutine */
     unsigned ste_annotations_used : 1;  /* true if there are any annotations in this scope */
-    _Py_comprehension_ty ste_comprehension;  /* Kind of comprehension (if any) */
+    _Ty_comprehension_ty ste_comprehension;  /* Kind of comprehension (if any) */
     unsigned ste_varargs : 1;     /* true if block has varargs */
     unsigned ste_varkeywords : 1; /* true if block has varkeywords */
     unsigned ste_returns_value : 1;  /* true if namespace uses return with
@@ -128,30 +128,30 @@ typedef struct _symtable_entry {
     unsigned ste_in_conditional_block : 1; /* set while we are inside a conditionally executed block */
     unsigned ste_in_unevaluated_annotation : 1; /* set while we are processing an annotation that will not be evaluated */
     int ste_comp_iter_expr; /* non-zero if visiting a comprehension range expression */
-    _Py_SourceLocation ste_loc; /* source location of block */
+    _Ty_SourceLocation ste_loc; /* source location of block */
     struct _symtable_entry *ste_annotation_block; /* symbol table entry for this entry's annotations */
     struct symtable *ste_table;
 } PySTEntryObject;
 
-extern PyTypeObject PySTEntry_Type;
+extern TyTypeObject PySTEntry_Type;
 
-#define PySTEntry_Check(op) Py_IS_TYPE((op), &PySTEntry_Type)
+#define PySTEntry_Check(op) Ty_IS_TYPE((op), &PySTEntry_Type)
 
-extern long _PyST_GetSymbol(PySTEntryObject *, PyObject *);
-extern int _PyST_GetScope(PySTEntryObject *, PyObject *);
+extern long _PyST_GetSymbol(PySTEntryObject *, TyObject *);
+extern int _PyST_GetScope(PySTEntryObject *, TyObject *);
 extern int _PyST_IsFunctionLike(PySTEntryObject *);
 
-extern struct symtable* _PySymtable_Build(
+extern struct symtable* _TySymtable_Build(
     struct _mod *mod,
-    PyObject *filename,
+    TyObject *filename,
     _PyFutureFeatures *future);
-extern PySTEntryObject* _PySymtable_Lookup(struct symtable *, void *);
-extern int _PySymtable_LookupOptional(struct symtable *, void *, PySTEntryObject **);
+extern PySTEntryObject* _TySymtable_Lookup(struct symtable *, void *);
+extern int _TySymtable_LookupOptional(struct symtable *, void *, PySTEntryObject **);
 
-extern void _PySymtable_Free(struct symtable *);
+extern void _TySymtable_Free(struct symtable *);
 
-extern PyObject *_Py_MaybeMangle(PyObject *privateobj, PySTEntryObject *ste, PyObject *name);
-extern PyObject* _Py_Mangle(PyObject *p, PyObject *name);
+extern TyObject *_Ty_MaybeMangle(TyObject *privateobj, PySTEntryObject *ste, TyObject *name);
+extern TyObject* _Ty_Mangle(TyObject *p, TyObject *name);
 
 /* Flags for def-use information */
 
@@ -184,18 +184,18 @@ extern PyObject* _Py_Mangle(PyObject *p, PyObject *name);
 #define CELL 5
 
 // Used by symtablemodule.c
-extern struct symtable* _Py_SymtableStringObjectFlags(
+extern struct symtable* _Ty_SymtableStringObjectFlags(
     const char *str,
-    PyObject *filename,
+    TyObject *filename,
     int start,
     PyCompilerFlags *flags);
 
 int _PyFuture_FromAST(
     struct _mod * mod,
-    PyObject *filename,
+    TyObject *filename,
     _PyFutureFeatures* futures);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_SYMTABLE_H */
+#endif /* !Ty_INTERNAL_SYMTABLE_H */

@@ -21,7 +21,7 @@ class Index:
         return self.value
 
 # There are two classes: one using <structmember.h> and another using
-# `Py_`-prefixed API. They should behave the same in Python
+# `Ty_`-prefixed API. They should behave the same in Python
 
 def _make_test_object(cls):
     return cls(False,  # T_BOOL

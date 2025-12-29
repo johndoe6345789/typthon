@@ -11,12 +11,12 @@ extern void _PyObjectStackChunk_Free(_PyObjectStackChunk *);
 _PyObjectStackChunk *
 _PyObjectStackChunk_New(void)
 {
-    _PyObjectStackChunk *buf = _Py_FREELIST_POP_MEM(object_stack_chunks);
+    _PyObjectStackChunk *buf = _Ty_FREELIST_POP_MEM(object_stack_chunks);
     if (buf == NULL) {
-        // NOTE: we use PyMem_RawMalloc() here because this is used by the GC
+        // NOTE: we use TyMem_RawMalloc() here because this is used by the GC
         // during mimalloc heap traversal. In that context, it is not safe to
-        // allocate mimalloc memory, such as via PyMem_Malloc().
-        buf = PyMem_RawMalloc(sizeof(_PyObjectStackChunk));
+        // allocate mimalloc memory, such as via TyMem_Malloc().
+        buf = TyMem_RawMalloc(sizeof(_PyObjectStackChunk));
         if (buf == NULL) {
             return NULL;
         }
@@ -30,7 +30,7 @@ void
 _PyObjectStackChunk_Free(_PyObjectStackChunk *buf)
 {
     assert(buf->n == 0);
-    _Py_FREELIST_FREE(object_stack_chunks, buf, PyMem_RawFree);
+    _Ty_FREELIST_FREE(object_stack_chunks, buf, TyMem_RawFree);
 }
 
 void

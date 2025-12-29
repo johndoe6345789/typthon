@@ -2,8 +2,8 @@
  * Generated for Unix-like systems (Linux, macOS)
  */
 
-#ifndef Py_PYCONFIG_H
-#define Py_PYCONFIG_H
+#ifndef Ty_PYCONFIG_H
+#define Ty_PYCONFIG_H
 
 /* Platform detection */
 #if defined(_WIN32) || defined(_WIN64)
@@ -21,8 +21,8 @@
 #define SOABI "cpython-314"
 
 /* Build-time configuration */
-#define Py_BUILD_CORE 1
-#define Py_BUILD_CORE_BUILTIN 1
+#define Ty_BUILD_CORE 1
+#define Ty_BUILD_CORE_BUILTIN 1
 
 /* Basic type sizes */
 #define SIZEOF_INT 4
@@ -203,4 +203,4 @@
 #define HAVE_COMPUTED_GOTOS 1
 #define USE_COMPUTED_GOTOS 1
 
-#endif /* Py_PYCONFIG_H */
+#endif /* Ty_PYCONFIG_H */

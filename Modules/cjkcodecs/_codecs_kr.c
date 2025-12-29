@@ -34,7 +34,7 @@ static const unsigned char u2cgk_jongseong[28] = {
 ENCODER(euc_kr)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
 
         if (c < 0x80) {
@@ -108,7 +108,7 @@ DECODER(euc_kr)
 {
     while (inleft > 0) {
         unsigned char c = INBYTE1;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c < 0x80) {
             OUTCHAR(c);
@@ -172,7 +172,7 @@ DECODER(euc_kr)
 ENCODER(cp949)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
 
         if (c < 0x80) {
@@ -205,7 +205,7 @@ DECODER(cp949)
 {
     while (inleft > 0) {
         unsigned char c = INBYTE1;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c < 0x80) {
             OUTCHAR(c);
@@ -262,7 +262,7 @@ static const DBCHAR u2johabjamo[] = {
 ENCODER(johab)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
 
         if (c < 0x80) {
@@ -362,7 +362,7 @@ DECODER(johab)
 {
     while (inleft > 0) {
         unsigned char c = INBYTE1, c2;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c < 0x80) {
             OUTCHAR(c);

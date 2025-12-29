@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(bytes___bytes____doc__,
 "__bytes__($self, /)\n"
@@ -18,11 +18,11 @@ PyDoc_STRVAR(bytes___bytes____doc__,
 #define BYTES___BYTES___METHODDEF    \
     {"__bytes__", (PyCFunction)bytes___bytes__, METH_NOARGS, bytes___bytes____doc__},
 
-static PyObject *
+static TyObject *
 bytes___bytes___impl(PyBytesObject *self);
 
-static PyObject *
-bytes___bytes__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+bytes___bytes__(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return bytes___bytes___impl((PyBytesObject *)self);
 }
@@ -44,46 +44,46 @@ PyDoc_STRVAR(bytes_split__doc__,
 #define BYTES_SPLIT_METHODDEF    \
     {"split", _PyCFunction_CAST(bytes_split), METH_FASTCALL|METH_KEYWORDS, bytes_split__doc__},
 
-static PyObject *
-bytes_split_impl(PyBytesObject *self, PyObject *sep, Py_ssize_t maxsplit);
+static TyObject *
+bytes_split_impl(PyBytesObject *self, TyObject *sep, Ty_ssize_t maxsplit);
 
-static PyObject *
-bytes_split(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+bytes_split(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(sep), &_Py_ID(maxsplit), },
+        .ob_item = { &_Ty_ID(sep), &_Ty_ID(maxsplit), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"sep", "maxsplit", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "split",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *sep = Py_None;
-    Py_ssize_t maxsplit = -1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *sep = Ty_None;
+    Ty_ssize_t maxsplit = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -98,13 +98,13 @@ bytes_split(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *k
         }
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         maxsplit = ival;
@@ -132,14 +132,14 @@ PyDoc_STRVAR(bytes_partition__doc__,
 #define BYTES_PARTITION_METHODDEF    \
     {"partition", (PyCFunction)bytes_partition, METH_O, bytes_partition__doc__},
 
-static PyObject *
-bytes_partition_impl(PyBytesObject *self, Py_buffer *sep);
+static TyObject *
+bytes_partition_impl(PyBytesObject *self, Ty_buffer *sep);
 
-static PyObject *
-bytes_partition(PyObject *self, PyObject *arg)
+static TyObject *
+bytes_partition(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer sep = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer sep = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &sep, PyBUF_SIMPLE) != 0) {
         goto exit;
@@ -171,14 +171,14 @@ PyDoc_STRVAR(bytes_rpartition__doc__,
 #define BYTES_RPARTITION_METHODDEF    \
     {"rpartition", (PyCFunction)bytes_rpartition, METH_O, bytes_rpartition__doc__},
 
-static PyObject *
-bytes_rpartition_impl(PyBytesObject *self, Py_buffer *sep);
+static TyObject *
+bytes_rpartition_impl(PyBytesObject *self, Ty_buffer *sep);
 
-static PyObject *
-bytes_rpartition(PyObject *self, PyObject *arg)
+static TyObject *
+bytes_rpartition(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer sep = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer sep = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &sep, PyBUF_SIMPLE) != 0) {
         goto exit;
@@ -213,46 +213,46 @@ PyDoc_STRVAR(bytes_rsplit__doc__,
 #define BYTES_RSPLIT_METHODDEF    \
     {"rsplit", _PyCFunction_CAST(bytes_rsplit), METH_FASTCALL|METH_KEYWORDS, bytes_rsplit__doc__},
 
-static PyObject *
-bytes_rsplit_impl(PyBytesObject *self, PyObject *sep, Py_ssize_t maxsplit);
+static TyObject *
+bytes_rsplit_impl(PyBytesObject *self, TyObject *sep, Ty_ssize_t maxsplit);
 
-static PyObject *
-bytes_rsplit(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+bytes_rsplit(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(sep), &_Py_ID(maxsplit), },
+        .ob_item = { &_Ty_ID(sep), &_Ty_ID(maxsplit), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"sep", "maxsplit", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "rsplit",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *sep = Py_None;
-    Py_ssize_t maxsplit = -1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *sep = Ty_None;
+    Ty_ssize_t maxsplit = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -267,13 +267,13 @@ bytes_rsplit(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *
         }
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         maxsplit = ival;
@@ -300,13 +300,13 @@ PyDoc_STRVAR(bytes_join__doc__,
 #define BYTES_JOIN_METHODDEF    \
     {"join", (PyCFunction)bytes_join, METH_O, bytes_join__doc__},
 
-static PyObject *
-bytes_join_impl(PyBytesObject *self, PyObject *iterable_of_bytes);
+static TyObject *
+bytes_join_impl(PyBytesObject *self, TyObject *iterable_of_bytes);
 
-static PyObject *
-bytes_join(PyObject *self, PyObject *iterable_of_bytes)
+static TyObject *
+bytes_join(TyObject *self, TyObject *iterable_of_bytes)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = bytes_join_impl((PyBytesObject *)self, iterable_of_bytes);
 
@@ -329,32 +329,32 @@ PyDoc_STRVAR(bytes_find__doc__,
 #define BYTES_FIND_METHODDEF    \
     {"find", _PyCFunction_CAST(bytes_find), METH_FASTCALL, bytes_find__doc__},
 
-static PyObject *
-bytes_find_impl(PyBytesObject *self, PyObject *sub, Py_ssize_t start,
-                Py_ssize_t end);
+static TyObject *
+bytes_find_impl(PyBytesObject *self, TyObject *sub, Ty_ssize_t start,
+                Ty_ssize_t end);
 
-static PyObject *
-bytes_find(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_find(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *sub;
-    Py_ssize_t start = 0;
-    Py_ssize_t end = PY_SSIZE_T_MAX;
+    TyObject *return_value = NULL;
+    TyObject *sub;
+    Ty_ssize_t start = 0;
+    Ty_ssize_t end = PY_SSIZE_T_MAX;
 
-    if (!_PyArg_CheckPositional("find", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("find", nargs, 1, 3)) {
         goto exit;
     }
     sub = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[1], &start)) {
+    if (!_TyEval_SliceIndex(args[1], &start)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[2], &end)) {
+    if (!_TyEval_SliceIndex(args[2], &end)) {
         goto exit;
     }
 skip_optional:
@@ -380,32 +380,32 @@ PyDoc_STRVAR(bytes_index__doc__,
 #define BYTES_INDEX_METHODDEF    \
     {"index", _PyCFunction_CAST(bytes_index), METH_FASTCALL, bytes_index__doc__},
 
-static PyObject *
-bytes_index_impl(PyBytesObject *self, PyObject *sub, Py_ssize_t start,
-                 Py_ssize_t end);
+static TyObject *
+bytes_index_impl(PyBytesObject *self, TyObject *sub, Ty_ssize_t start,
+                 Ty_ssize_t end);
 
-static PyObject *
-bytes_index(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_index(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *sub;
-    Py_ssize_t start = 0;
-    Py_ssize_t end = PY_SSIZE_T_MAX;
+    TyObject *return_value = NULL;
+    TyObject *sub;
+    Ty_ssize_t start = 0;
+    Ty_ssize_t end = PY_SSIZE_T_MAX;
 
-    if (!_PyArg_CheckPositional("index", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("index", nargs, 1, 3)) {
         goto exit;
     }
     sub = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[1], &start)) {
+    if (!_TyEval_SliceIndex(args[1], &start)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[2], &end)) {
+    if (!_TyEval_SliceIndex(args[2], &end)) {
         goto exit;
     }
 skip_optional:
@@ -431,32 +431,32 @@ PyDoc_STRVAR(bytes_rfind__doc__,
 #define BYTES_RFIND_METHODDEF    \
     {"rfind", _PyCFunction_CAST(bytes_rfind), METH_FASTCALL, bytes_rfind__doc__},
 
-static PyObject *
-bytes_rfind_impl(PyBytesObject *self, PyObject *sub, Py_ssize_t start,
-                 Py_ssize_t end);
+static TyObject *
+bytes_rfind_impl(PyBytesObject *self, TyObject *sub, Ty_ssize_t start,
+                 Ty_ssize_t end);
 
-static PyObject *
-bytes_rfind(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_rfind(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *sub;
-    Py_ssize_t start = 0;
-    Py_ssize_t end = PY_SSIZE_T_MAX;
+    TyObject *return_value = NULL;
+    TyObject *sub;
+    Ty_ssize_t start = 0;
+    Ty_ssize_t end = PY_SSIZE_T_MAX;
 
-    if (!_PyArg_CheckPositional("rfind", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("rfind", nargs, 1, 3)) {
         goto exit;
     }
     sub = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[1], &start)) {
+    if (!_TyEval_SliceIndex(args[1], &start)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[2], &end)) {
+    if (!_TyEval_SliceIndex(args[2], &end)) {
         goto exit;
     }
 skip_optional:
@@ -482,32 +482,32 @@ PyDoc_STRVAR(bytes_rindex__doc__,
 #define BYTES_RINDEX_METHODDEF    \
     {"rindex", _PyCFunction_CAST(bytes_rindex), METH_FASTCALL, bytes_rindex__doc__},
 
-static PyObject *
-bytes_rindex_impl(PyBytesObject *self, PyObject *sub, Py_ssize_t start,
-                  Py_ssize_t end);
+static TyObject *
+bytes_rindex_impl(PyBytesObject *self, TyObject *sub, Ty_ssize_t start,
+                  Ty_ssize_t end);
 
-static PyObject *
-bytes_rindex(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_rindex(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *sub;
-    Py_ssize_t start = 0;
-    Py_ssize_t end = PY_SSIZE_T_MAX;
+    TyObject *return_value = NULL;
+    TyObject *sub;
+    Ty_ssize_t start = 0;
+    Ty_ssize_t end = PY_SSIZE_T_MAX;
 
-    if (!_PyArg_CheckPositional("rindex", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("rindex", nargs, 1, 3)) {
         goto exit;
     }
     sub = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[1], &start)) {
+    if (!_TyEval_SliceIndex(args[1], &start)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[2], &end)) {
+    if (!_TyEval_SliceIndex(args[2], &end)) {
         goto exit;
     }
 skip_optional:
@@ -528,16 +528,16 @@ PyDoc_STRVAR(bytes_strip__doc__,
 #define BYTES_STRIP_METHODDEF    \
     {"strip", _PyCFunction_CAST(bytes_strip), METH_FASTCALL, bytes_strip__doc__},
 
-static PyObject *
-bytes_strip_impl(PyBytesObject *self, PyObject *bytes);
+static TyObject *
+bytes_strip_impl(PyBytesObject *self, TyObject *bytes);
 
-static PyObject *
-bytes_strip(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_strip(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *bytes = Py_None;
+    TyObject *return_value = NULL;
+    TyObject *bytes = Ty_None;
 
-    if (!_PyArg_CheckPositional("strip", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("strip", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -562,16 +562,16 @@ PyDoc_STRVAR(bytes_lstrip__doc__,
 #define BYTES_LSTRIP_METHODDEF    \
     {"lstrip", _PyCFunction_CAST(bytes_lstrip), METH_FASTCALL, bytes_lstrip__doc__},
 
-static PyObject *
-bytes_lstrip_impl(PyBytesObject *self, PyObject *bytes);
+static TyObject *
+bytes_lstrip_impl(PyBytesObject *self, TyObject *bytes);
 
-static PyObject *
-bytes_lstrip(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_lstrip(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *bytes = Py_None;
+    TyObject *return_value = NULL;
+    TyObject *bytes = Ty_None;
 
-    if (!_PyArg_CheckPositional("lstrip", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("lstrip", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -596,16 +596,16 @@ PyDoc_STRVAR(bytes_rstrip__doc__,
 #define BYTES_RSTRIP_METHODDEF    \
     {"rstrip", _PyCFunction_CAST(bytes_rstrip), METH_FASTCALL, bytes_rstrip__doc__},
 
-static PyObject *
-bytes_rstrip_impl(PyBytesObject *self, PyObject *bytes);
+static TyObject *
+bytes_rstrip_impl(PyBytesObject *self, TyObject *bytes);
 
-static PyObject *
-bytes_rstrip(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_rstrip(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *bytes = Py_None;
+    TyObject *return_value = NULL;
+    TyObject *bytes = Ty_None;
 
-    if (!_PyArg_CheckPositional("rstrip", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("rstrip", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -633,32 +633,32 @@ PyDoc_STRVAR(bytes_count__doc__,
 #define BYTES_COUNT_METHODDEF    \
     {"count", _PyCFunction_CAST(bytes_count), METH_FASTCALL, bytes_count__doc__},
 
-static PyObject *
-bytes_count_impl(PyBytesObject *self, PyObject *sub, Py_ssize_t start,
-                 Py_ssize_t end);
+static TyObject *
+bytes_count_impl(PyBytesObject *self, TyObject *sub, Ty_ssize_t start,
+                 Ty_ssize_t end);
 
-static PyObject *
-bytes_count(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_count(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *sub;
-    Py_ssize_t start = 0;
-    Py_ssize_t end = PY_SSIZE_T_MAX;
+    TyObject *return_value = NULL;
+    TyObject *sub;
+    Ty_ssize_t start = 0;
+    Ty_ssize_t end = PY_SSIZE_T_MAX;
 
-    if (!_PyArg_CheckPositional("count", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("count", nargs, 1, 3)) {
         goto exit;
     }
     sub = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[1], &start)) {
+    if (!_TyEval_SliceIndex(args[1], &start)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[2], &end)) {
+    if (!_TyEval_SliceIndex(args[2], &end)) {
         goto exit;
     }
 skip_optional:
@@ -683,47 +683,47 @@ PyDoc_STRVAR(bytes_translate__doc__,
 #define BYTES_TRANSLATE_METHODDEF    \
     {"translate", _PyCFunction_CAST(bytes_translate), METH_FASTCALL|METH_KEYWORDS, bytes_translate__doc__},
 
-static PyObject *
-bytes_translate_impl(PyBytesObject *self, PyObject *table,
-                     PyObject *deletechars);
+static TyObject *
+bytes_translate_impl(PyBytesObject *self, TyObject *table,
+                     TyObject *deletechars);
 
-static PyObject *
-bytes_translate(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+bytes_translate(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(delete), },
+        .ob_item = { &_Ty_ID(delete), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "delete", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "translate",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *table;
-    PyObject *deletechars = NULL;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *table;
+    TyObject *deletechars = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -754,17 +754,17 @@ PyDoc_STRVAR(bytes_maketrans__doc__,
 #define BYTES_MAKETRANS_METHODDEF    \
     {"maketrans", _PyCFunction_CAST(bytes_maketrans), METH_FASTCALL|METH_STATIC, bytes_maketrans__doc__},
 
-static PyObject *
-bytes_maketrans_impl(Py_buffer *frm, Py_buffer *to);
+static TyObject *
+bytes_maketrans_impl(Ty_buffer *frm, Ty_buffer *to);
 
-static PyObject *
-bytes_maketrans(PyObject *null, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_maketrans(TyObject *null, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_buffer frm = {NULL, NULL};
-    Py_buffer to = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer frm = {NULL, NULL};
+    Ty_buffer to = {NULL, NULL};
 
-    if (!_PyArg_CheckPositional("maketrans", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("maketrans", nargs, 2, 2)) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[0], &frm, PyBUF_SIMPLE) != 0) {
@@ -804,19 +804,19 @@ PyDoc_STRVAR(bytes_replace__doc__,
 #define BYTES_REPLACE_METHODDEF    \
     {"replace", _PyCFunction_CAST(bytes_replace), METH_FASTCALL, bytes_replace__doc__},
 
-static PyObject *
-bytes_replace_impl(PyBytesObject *self, Py_buffer *old, Py_buffer *new,
-                   Py_ssize_t count);
+static TyObject *
+bytes_replace_impl(PyBytesObject *self, Ty_buffer *old, Ty_buffer *new,
+                   Ty_ssize_t count);
 
-static PyObject *
-bytes_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_replace(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_buffer old = {NULL, NULL};
-    Py_buffer new = {NULL, NULL};
-    Py_ssize_t count = -1;
+    TyObject *return_value = NULL;
+    Ty_buffer old = {NULL, NULL};
+    Ty_buffer new = {NULL, NULL};
+    Ty_ssize_t count = -1;
 
-    if (!_PyArg_CheckPositional("replace", nargs, 2, 3)) {
+    if (!_TyArg_CheckPositional("replace", nargs, 2, 3)) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[0], &old, PyBUF_SIMPLE) != 0) {
@@ -829,13 +829,13 @@ bytes_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         count = ival;
@@ -868,14 +868,14 @@ PyDoc_STRVAR(bytes_removeprefix__doc__,
 #define BYTES_REMOVEPREFIX_METHODDEF    \
     {"removeprefix", (PyCFunction)bytes_removeprefix, METH_O, bytes_removeprefix__doc__},
 
-static PyObject *
-bytes_removeprefix_impl(PyBytesObject *self, Py_buffer *prefix);
+static TyObject *
+bytes_removeprefix_impl(PyBytesObject *self, Ty_buffer *prefix);
 
-static PyObject *
-bytes_removeprefix(PyObject *self, PyObject *arg)
+static TyObject *
+bytes_removeprefix(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer prefix = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer prefix = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &prefix, PyBUF_SIMPLE) != 0) {
         goto exit;
@@ -904,14 +904,14 @@ PyDoc_STRVAR(bytes_removesuffix__doc__,
 #define BYTES_REMOVESUFFIX_METHODDEF    \
     {"removesuffix", (PyCFunction)bytes_removesuffix, METH_O, bytes_removesuffix__doc__},
 
-static PyObject *
-bytes_removesuffix_impl(PyBytesObject *self, Py_buffer *suffix);
+static TyObject *
+bytes_removesuffix_impl(PyBytesObject *self, Ty_buffer *suffix);
 
-static PyObject *
-bytes_removesuffix(PyObject *self, PyObject *arg)
+static TyObject *
+bytes_removesuffix(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer suffix = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer suffix = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &suffix, PyBUF_SIMPLE) != 0) {
         goto exit;
@@ -943,32 +943,32 @@ PyDoc_STRVAR(bytes_startswith__doc__,
 #define BYTES_STARTSWITH_METHODDEF    \
     {"startswith", _PyCFunction_CAST(bytes_startswith), METH_FASTCALL, bytes_startswith__doc__},
 
-static PyObject *
-bytes_startswith_impl(PyBytesObject *self, PyObject *subobj,
-                      Py_ssize_t start, Py_ssize_t end);
+static TyObject *
+bytes_startswith_impl(PyBytesObject *self, TyObject *subobj,
+                      Ty_ssize_t start, Ty_ssize_t end);
 
-static PyObject *
-bytes_startswith(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_startswith(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *subobj;
-    Py_ssize_t start = 0;
-    Py_ssize_t end = PY_SSIZE_T_MAX;
+    TyObject *return_value = NULL;
+    TyObject *subobj;
+    Ty_ssize_t start = 0;
+    Ty_ssize_t end = PY_SSIZE_T_MAX;
 
-    if (!_PyArg_CheckPositional("startswith", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("startswith", nargs, 1, 3)) {
         goto exit;
     }
     subobj = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[1], &start)) {
+    if (!_TyEval_SliceIndex(args[1], &start)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[2], &end)) {
+    if (!_TyEval_SliceIndex(args[2], &end)) {
         goto exit;
     }
 skip_optional:
@@ -994,32 +994,32 @@ PyDoc_STRVAR(bytes_endswith__doc__,
 #define BYTES_ENDSWITH_METHODDEF    \
     {"endswith", _PyCFunction_CAST(bytes_endswith), METH_FASTCALL, bytes_endswith__doc__},
 
-static PyObject *
-bytes_endswith_impl(PyBytesObject *self, PyObject *subobj, Py_ssize_t start,
-                    Py_ssize_t end);
+static TyObject *
+bytes_endswith_impl(PyBytesObject *self, TyObject *subobj, Ty_ssize_t start,
+                    Ty_ssize_t end);
 
-static PyObject *
-bytes_endswith(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+bytes_endswith(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *subobj;
-    Py_ssize_t start = 0;
-    Py_ssize_t end = PY_SSIZE_T_MAX;
+    TyObject *return_value = NULL;
+    TyObject *subobj;
+    Ty_ssize_t start = 0;
+    Ty_ssize_t end = PY_SSIZE_T_MAX;
 
-    if (!_PyArg_CheckPositional("endswith", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("endswith", nargs, 1, 3)) {
         goto exit;
     }
     subobj = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[1], &start)) {
+    if (!_TyEval_SliceIndex(args[1], &start)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[2], &end)) {
+    if (!_TyEval_SliceIndex(args[2], &end)) {
         goto exit;
     }
 skip_optional:
@@ -1047,47 +1047,47 @@ PyDoc_STRVAR(bytes_decode__doc__,
 #define BYTES_DECODE_METHODDEF    \
     {"decode", _PyCFunction_CAST(bytes_decode), METH_FASTCALL|METH_KEYWORDS, bytes_decode__doc__},
 
-static PyObject *
+static TyObject *
 bytes_decode_impl(PyBytesObject *self, const char *encoding,
                   const char *errors);
 
-static PyObject *
-bytes_decode(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+bytes_decode(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(encoding), &_Py_ID(errors), },
+        .ob_item = { &_Ty_ID(encoding), &_Ty_ID(errors), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"encoding", "errors", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "decode",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     const char *encoding = NULL;
     const char *errors = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1096,34 +1096,34 @@ bytes_decode(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *
         goto skip_optional_pos;
     }
     if (args[0]) {
-        if (!PyUnicode_Check(args[0])) {
-            _PyArg_BadArgument("decode", "argument 'encoding'", "str", args[0]);
+        if (!TyUnicode_Check(args[0])) {
+            _TyArg_BadArgument("decode", "argument 'encoding'", "str", args[0]);
             goto exit;
         }
-        Py_ssize_t encoding_length;
-        encoding = PyUnicode_AsUTF8AndSize(args[0], &encoding_length);
+        Ty_ssize_t encoding_length;
+        encoding = TyUnicode_AsUTF8AndSize(args[0], &encoding_length);
         if (encoding == NULL) {
             goto exit;
         }
         if (strlen(encoding) != (size_t)encoding_length) {
-            PyErr_SetString(PyExc_ValueError, "embedded null character");
+            TyErr_SetString(TyExc_ValueError, "embedded null character");
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("decode", "argument 'errors'", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("decode", "argument 'errors'", "str", args[1]);
         goto exit;
     }
-    Py_ssize_t errors_length;
-    errors = PyUnicode_AsUTF8AndSize(args[1], &errors_length);
+    Ty_ssize_t errors_length;
+    errors = TyUnicode_AsUTF8AndSize(args[1], &errors_length);
     if (errors == NULL) {
         goto exit;
     }
     if (strlen(errors) != (size_t)errors_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
 skip_optional_pos:
@@ -1145,45 +1145,45 @@ PyDoc_STRVAR(bytes_splitlines__doc__,
 #define BYTES_SPLITLINES_METHODDEF    \
     {"splitlines", _PyCFunction_CAST(bytes_splitlines), METH_FASTCALL|METH_KEYWORDS, bytes_splitlines__doc__},
 
-static PyObject *
+static TyObject *
 bytes_splitlines_impl(PyBytesObject *self, int keepends);
 
-static PyObject *
-bytes_splitlines(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+bytes_splitlines(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(keepends), },
+        .ob_item = { &_Ty_ID(keepends), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"keepends", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "splitlines",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int keepends = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1214,15 +1214,15 @@ PyDoc_STRVAR(bytes_fromhex__doc__,
 #define BYTES_FROMHEX_METHODDEF    \
     {"fromhex", (PyCFunction)bytes_fromhex, METH_O|METH_CLASS, bytes_fromhex__doc__},
 
-static PyObject *
-bytes_fromhex_impl(PyTypeObject *type, PyObject *string);
+static TyObject *
+bytes_fromhex_impl(TyTypeObject *type, TyObject *string);
 
-static PyObject *
-bytes_fromhex(PyObject *type, PyObject *string)
+static TyObject *
+bytes_fromhex(TyObject *type, TyObject *string)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    return_value = bytes_fromhex_impl((PyTypeObject *)type, string);
+    return_value = bytes_fromhex_impl((TyTypeObject *)type, string);
 
     return return_value;
 }
@@ -1253,46 +1253,46 @@ PyDoc_STRVAR(bytes_hex__doc__,
 #define BYTES_HEX_METHODDEF    \
     {"hex", _PyCFunction_CAST(bytes_hex), METH_FASTCALL|METH_KEYWORDS, bytes_hex__doc__},
 
-static PyObject *
-bytes_hex_impl(PyBytesObject *self, PyObject *sep, int bytes_per_sep);
+static TyObject *
+bytes_hex_impl(PyBytesObject *self, TyObject *sep, int bytes_per_sep);
 
-static PyObject *
-bytes_hex(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+bytes_hex(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(sep), &_Py_ID(bytes_per_sep), },
+        .ob_item = { &_Ty_ID(sep), &_Ty_ID(bytes_per_sep), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"sep", "bytes_per_sep", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "hex",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *sep = NULL;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *sep = NULL;
     int bytes_per_sep = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1306,8 +1306,8 @@ bytes_hex(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwn
             goto skip_optional_pos;
         }
     }
-    bytes_per_sep = PyLong_AsInt(args[1]);
-    if (bytes_per_sep == -1 && PyErr_Occurred()) {
+    bytes_per_sep = TyLong_AsInt(args[1]);
+    if (bytes_per_sep == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -1317,50 +1317,50 @@ exit:
     return return_value;
 }
 
-static PyObject *
-bytes_new_impl(PyTypeObject *type, PyObject *x, const char *encoding,
+static TyObject *
+bytes_new_impl(TyTypeObject *type, TyObject *x, const char *encoding,
                const char *errors);
 
-static PyObject *
-bytes_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+bytes_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(source), &_Py_ID(encoding), &_Py_ID(errors), },
+        .ob_item = { &_Ty_ID(source), &_Ty_ID(encoding), &_Ty_ID(errors), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"source", "encoding", "errors", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "bytes",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 0;
-    PyObject *x = NULL;
+    TyObject *argsbuf[3];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 0;
+    TyObject *x = NULL;
     const char *encoding = NULL;
     const char *errors = NULL;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 0, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -1375,34 +1375,34 @@ bytes_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
         }
     }
     if (fastargs[1]) {
-        if (!PyUnicode_Check(fastargs[1])) {
-            _PyArg_BadArgument("bytes", "argument 'encoding'", "str", fastargs[1]);
+        if (!TyUnicode_Check(fastargs[1])) {
+            _TyArg_BadArgument("bytes", "argument 'encoding'", "str", fastargs[1]);
             goto exit;
         }
-        Py_ssize_t encoding_length;
-        encoding = PyUnicode_AsUTF8AndSize(fastargs[1], &encoding_length);
+        Ty_ssize_t encoding_length;
+        encoding = TyUnicode_AsUTF8AndSize(fastargs[1], &encoding_length);
         if (encoding == NULL) {
             goto exit;
         }
         if (strlen(encoding) != (size_t)encoding_length) {
-            PyErr_SetString(PyExc_ValueError, "embedded null character");
+            TyErr_SetString(TyExc_ValueError, "embedded null character");
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    if (!PyUnicode_Check(fastargs[2])) {
-        _PyArg_BadArgument("bytes", "argument 'errors'", "str", fastargs[2]);
+    if (!TyUnicode_Check(fastargs[2])) {
+        _TyArg_BadArgument("bytes", "argument 'errors'", "str", fastargs[2]);
         goto exit;
     }
-    Py_ssize_t errors_length;
-    errors = PyUnicode_AsUTF8AndSize(fastargs[2], &errors_length);
+    Ty_ssize_t errors_length;
+    errors = TyUnicode_AsUTF8AndSize(fastargs[2], &errors_length);
     if (errors == NULL) {
         goto exit;
     }
     if (strlen(errors) != (size_t)errors_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
 skip_optional_pos:

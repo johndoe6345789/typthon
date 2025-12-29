@@ -1278,7 +1278,7 @@ class StressTest(unittest.TestCase):
             # Choose a random delay so as to improve chances of
             # triggering a race condition.  Ideally the signal is received
             # when inside critical signal-handling routines such as
-            # Py_MakePendingCalls().
+            # Ty_MakePendingCalls().
             signal.setitimer(signal.ITIMER_REAL, 1e-6 + random.random() * 1e-5)
 
         def second_handler(signum=None, frame=None):

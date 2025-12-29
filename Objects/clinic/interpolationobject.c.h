@@ -2,58 +2,58 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-static PyObject *
-interpolation_new_impl(PyTypeObject *type, PyObject *value,
-                       PyObject *expression, PyObject *conversion,
-                       PyObject *format_spec);
+static TyObject *
+interpolation_new_impl(TyTypeObject *type, TyObject *value,
+                       TyObject *expression, TyObject *conversion,
+                       TyObject *format_spec);
 
-static PyObject *
-interpolation_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+interpolation_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(value), &_Py_ID(expression), &_Py_ID(conversion), &_Py_ID(format_spec), },
+        .ob_item = { &_Ty_ID(value), &_Ty_ID(expression), &_Ty_ID(conversion), &_Ty_ID(format_spec), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"value", "expression", "conversion", "format_spec", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "Interpolation",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *value;
-    PyObject *expression = &_Py_STR(empty);
-    PyObject *conversion = Py_None;
-    PyObject *format_spec = &_Py_STR(empty);
+    TyObject *argsbuf[4];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *value;
+    TyObject *expression = &_Ty_STR(empty);
+    TyObject *conversion = Ty_None;
+    TyObject *format_spec = &_Ty_STR(empty);
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -63,8 +63,8 @@ interpolation_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
         goto skip_optional_pos;
     }
     if (fastargs[1]) {
-        if (!PyUnicode_Check(fastargs[1])) {
-            _PyArg_BadArgument("Interpolation", "argument 'expression'", "str", fastargs[1]);
+        if (!TyUnicode_Check(fastargs[1])) {
+            _TyArg_BadArgument("Interpolation", "argument 'expression'", "str", fastargs[1]);
             goto exit;
         }
         expression = fastargs[1];
@@ -80,8 +80,8 @@ interpolation_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
             goto skip_optional_pos;
         }
     }
-    if (!PyUnicode_Check(fastargs[3])) {
-        _PyArg_BadArgument("Interpolation", "argument 'format_spec'", "str", fastargs[3]);
+    if (!TyUnicode_Check(fastargs[3])) {
+        _TyArg_BadArgument("Interpolation", "argument 'format_spec'", "str", fastargs[3]);
         goto exit;
     }
     format_spec = fastargs[3];

@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(_functools_cmp_to_key__doc__,
 "cmp_to_key($module, /, mycmp)\n"
@@ -21,44 +21,44 @@ PyDoc_STRVAR(_functools_cmp_to_key__doc__,
 #define _FUNCTOOLS_CMP_TO_KEY_METHODDEF    \
     {"cmp_to_key", _PyCFunction_CAST(_functools_cmp_to_key), METH_FASTCALL|METH_KEYWORDS, _functools_cmp_to_key__doc__},
 
-static PyObject *
-_functools_cmp_to_key_impl(PyObject *module, PyObject *mycmp);
+static TyObject *
+_functools_cmp_to_key_impl(TyObject *module, TyObject *mycmp);
 
-static PyObject *
-_functools_cmp_to_key(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_functools_cmp_to_key(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(mycmp), },
+        .ob_item = { &_Ty_ID(mycmp), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"mycmp", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "cmp_to_key",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *mycmp;
+    TyObject *argsbuf[1];
+    TyObject *mycmp;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -86,48 +86,48 @@ PyDoc_STRVAR(_functools_reduce__doc__,
 #define _FUNCTOOLS_REDUCE_METHODDEF    \
     {"reduce", _PyCFunction_CAST(_functools_reduce), METH_FASTCALL|METH_KEYWORDS, _functools_reduce__doc__},
 
-static PyObject *
-_functools_reduce_impl(PyObject *module, PyObject *func, PyObject *seq,
-                       PyObject *result);
+static TyObject *
+_functools_reduce_impl(TyObject *module, TyObject *func, TyObject *seq,
+                       TyObject *result);
 
-static PyObject *
-_functools_reduce(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_functools_reduce(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(initial), },
+        .ob_item = { &_Ty_ID(initial), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "", "initial", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "reduce",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *func;
-    PyObject *seq;
-    PyObject *result = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *func;
+    TyObject *seq;
+    TyObject *result = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -154,17 +154,17 @@ PyDoc_STRVAR(_functools__lru_cache_wrapper_cache_info__doc__,
 #define _FUNCTOOLS__LRU_CACHE_WRAPPER_CACHE_INFO_METHODDEF    \
     {"cache_info", (PyCFunction)_functools__lru_cache_wrapper_cache_info, METH_NOARGS, _functools__lru_cache_wrapper_cache_info__doc__},
 
-static PyObject *
-_functools__lru_cache_wrapper_cache_info_impl(PyObject *self);
+static TyObject *
+_functools__lru_cache_wrapper_cache_info_impl(TyObject *self);
 
-static PyObject *
-_functools__lru_cache_wrapper_cache_info(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_functools__lru_cache_wrapper_cache_info(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _functools__lru_cache_wrapper_cache_info_impl(self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -178,17 +178,17 @@ PyDoc_STRVAR(_functools__lru_cache_wrapper_cache_clear__doc__,
 #define _FUNCTOOLS__LRU_CACHE_WRAPPER_CACHE_CLEAR_METHODDEF    \
     {"cache_clear", (PyCFunction)_functools__lru_cache_wrapper_cache_clear, METH_NOARGS, _functools__lru_cache_wrapper_cache_clear__doc__},
 
-static PyObject *
-_functools__lru_cache_wrapper_cache_clear_impl(PyObject *self);
+static TyObject *
+_functools__lru_cache_wrapper_cache_clear_impl(TyObject *self);
 
-static PyObject *
-_functools__lru_cache_wrapper_cache_clear(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_functools__lru_cache_wrapper_cache_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _functools__lru_cache_wrapper_cache_clear_impl(self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }

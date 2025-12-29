@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_abstract.h"      // _Py_convert_optional_to_ssize_t()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_abstract.h"      // _Ty_convert_optional_to_ssize_t()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(_io_FileIO_close__doc__,
 "close($self, /)\n"
@@ -21,14 +21,14 @@ PyDoc_STRVAR(_io_FileIO_close__doc__,
 #define _IO_FILEIO_CLOSE_METHODDEF    \
     {"close", _PyCFunction_CAST(_io_FileIO_close), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io_FileIO_close__doc__},
 
-static PyObject *
-_io_FileIO_close_impl(fileio *self, PyTypeObject *cls);
+static TyObject *
+_io_FileIO_close_impl(fileio *self, TyTypeObject *cls);
 
-static PyObject *
-_io_FileIO_close(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io_FileIO_close(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "close() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "close() takes no arguments");
         return NULL;
     }
     return _io_FileIO_close_impl((fileio *)self, cls);
@@ -53,50 +53,50 @@ PyDoc_STRVAR(_io_FileIO___init____doc__,
 "results in functionality similar to passing None).");
 
 static int
-_io_FileIO___init___impl(fileio *self, PyObject *nameobj, const char *mode,
-                         int closefd, PyObject *opener);
+_io_FileIO___init___impl(fileio *self, TyObject *nameobj, const char *mode,
+                         int closefd, TyObject *opener);
 
 static int
-_io_FileIO___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+_io_FileIO___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(file), &_Py_ID(mode), &_Py_ID(closefd), &_Py_ID(opener), },
+        .ob_item = { &_Ty_ID(file), &_Ty_ID(mode), &_Ty_ID(closefd), &_Ty_ID(opener), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"file", "mode", "closefd", "opener", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "FileIO",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *nameobj;
+    TyObject *argsbuf[4];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *nameobj;
     const char *mode = "r";
     int closefd = 1;
-    PyObject *opener = Py_None;
+    TyObject *opener = Ty_None;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -106,17 +106,17 @@ _io_FileIO___init__(PyObject *self, PyObject *args, PyObject *kwargs)
         goto skip_optional_pos;
     }
     if (fastargs[1]) {
-        if (!PyUnicode_Check(fastargs[1])) {
-            _PyArg_BadArgument("FileIO", "argument 'mode'", "str", fastargs[1]);
+        if (!TyUnicode_Check(fastargs[1])) {
+            _TyArg_BadArgument("FileIO", "argument 'mode'", "str", fastargs[1]);
             goto exit;
         }
-        Py_ssize_t mode_length;
-        mode = PyUnicode_AsUTF8AndSize(fastargs[1], &mode_length);
+        Ty_ssize_t mode_length;
+        mode = TyUnicode_AsUTF8AndSize(fastargs[1], &mode_length);
         if (mode == NULL) {
             goto exit;
         }
         if (strlen(mode) != (size_t)mode_length) {
-            PyErr_SetString(PyExc_ValueError, "embedded null character");
+            TyErr_SetString(TyExc_ValueError, "embedded null character");
             goto exit;
         }
         if (!--noptargs) {
@@ -149,11 +149,11 @@ PyDoc_STRVAR(_io_FileIO_fileno__doc__,
 #define _IO_FILEIO_FILENO_METHODDEF    \
     {"fileno", (PyCFunction)_io_FileIO_fileno, METH_NOARGS, _io_FileIO_fileno__doc__},
 
-static PyObject *
+static TyObject *
 _io_FileIO_fileno_impl(fileio *self);
 
-static PyObject *
-_io_FileIO_fileno(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io_FileIO_fileno(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _io_FileIO_fileno_impl((fileio *)self);
 }
@@ -167,11 +167,11 @@ PyDoc_STRVAR(_io_FileIO_readable__doc__,
 #define _IO_FILEIO_READABLE_METHODDEF    \
     {"readable", (PyCFunction)_io_FileIO_readable, METH_NOARGS, _io_FileIO_readable__doc__},
 
-static PyObject *
+static TyObject *
 _io_FileIO_readable_impl(fileio *self);
 
-static PyObject *
-_io_FileIO_readable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io_FileIO_readable(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _io_FileIO_readable_impl((fileio *)self);
 }
@@ -185,11 +185,11 @@ PyDoc_STRVAR(_io_FileIO_writable__doc__,
 #define _IO_FILEIO_WRITABLE_METHODDEF    \
     {"writable", (PyCFunction)_io_FileIO_writable, METH_NOARGS, _io_FileIO_writable__doc__},
 
-static PyObject *
+static TyObject *
 _io_FileIO_writable_impl(fileio *self);
 
-static PyObject *
-_io_FileIO_writable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io_FileIO_writable(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _io_FileIO_writable_impl((fileio *)self);
 }
@@ -203,11 +203,11 @@ PyDoc_STRVAR(_io_FileIO_seekable__doc__,
 #define _IO_FILEIO_SEEKABLE_METHODDEF    \
     {"seekable", (PyCFunction)_io_FileIO_seekable, METH_NOARGS, _io_FileIO_seekable__doc__},
 
-static PyObject *
+static TyObject *
 _io_FileIO_seekable_impl(fileio *self);
 
-static PyObject *
-_io_FileIO_seekable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io_FileIO_seekable(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _io_FileIO_seekable_impl((fileio *)self);
 }
@@ -221,36 +221,36 @@ PyDoc_STRVAR(_io_FileIO_readinto__doc__,
 #define _IO_FILEIO_READINTO_METHODDEF    \
     {"readinto", _PyCFunction_CAST(_io_FileIO_readinto), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io_FileIO_readinto__doc__},
 
-static PyObject *
-_io_FileIO_readinto_impl(fileio *self, PyTypeObject *cls, Py_buffer *buffer);
+static TyObject *
+_io_FileIO_readinto_impl(fileio *self, TyTypeObject *cls, Ty_buffer *buffer);
 
-static PyObject *
-_io_FileIO_readinto(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io_FileIO_readinto(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "readinto",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_buffer buffer = {NULL, NULL};
+    TyObject *argsbuf[1];
+    Ty_buffer buffer = {NULL, NULL};
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[0], &buffer, PyBUF_WRITABLE) < 0) {
-        _PyArg_BadArgument("readinto", "argument 1", "read-write bytes-like object", args[0]);
+        _TyArg_BadArgument("readinto", "argument 1", "read-write bytes-like object", args[0]);
         goto exit;
     }
     return_value = _io_FileIO_readinto_impl((fileio *)self, cls, &buffer);
@@ -279,11 +279,11 @@ PyDoc_STRVAR(_io_FileIO_readall__doc__,
 #define _IO_FILEIO_READALL_METHODDEF    \
     {"readall", (PyCFunction)_io_FileIO_readall, METH_NOARGS, _io_FileIO_readall__doc__},
 
-static PyObject *
+static TyObject *
 _io_FileIO_readall_impl(fileio *self);
 
-static PyObject *
-_io_FileIO_readall(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io_FileIO_readall(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _io_FileIO_readall_impl((fileio *)self);
 }
@@ -306,30 +306,30 @@ PyDoc_STRVAR(_io_FileIO_read__doc__,
 #define _IO_FILEIO_READ_METHODDEF    \
     {"read", _PyCFunction_CAST(_io_FileIO_read), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io_FileIO_read__doc__},
 
-static PyObject *
-_io_FileIO_read_impl(fileio *self, PyTypeObject *cls, Py_ssize_t size);
+static TyObject *
+_io_FileIO_read_impl(fileio *self, TyTypeObject *cls, Ty_ssize_t size);
 
-static PyObject *
-_io_FileIO_read(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io_FileIO_read(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "read",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t size = -1;
+    TyObject *argsbuf[1];
+    Ty_ssize_t size = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -337,7 +337,7 @@ _io_FileIO_read(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssi
     if (nargs < 1) {
         goto skip_optional_posonly;
     }
-    if (!_Py_convert_optional_to_ssize_t(args[0], &size)) {
+    if (!_Ty_convert_optional_to_ssize_t(args[0], &size)) {
         goto exit;
     }
 skip_optional_posonly:
@@ -360,30 +360,30 @@ PyDoc_STRVAR(_io_FileIO_write__doc__,
 #define _IO_FILEIO_WRITE_METHODDEF    \
     {"write", _PyCFunction_CAST(_io_FileIO_write), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io_FileIO_write__doc__},
 
-static PyObject *
-_io_FileIO_write_impl(fileio *self, PyTypeObject *cls, Py_buffer *b);
+static TyObject *
+_io_FileIO_write_impl(fileio *self, TyTypeObject *cls, Ty_buffer *b);
 
-static PyObject *
-_io_FileIO_write(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io_FileIO_write(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "write",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_buffer b = {NULL, NULL};
+    TyObject *argsbuf[1];
+    Ty_buffer b = {NULL, NULL};
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -419,25 +419,25 @@ PyDoc_STRVAR(_io_FileIO_seek__doc__,
 #define _IO_FILEIO_SEEK_METHODDEF    \
     {"seek", _PyCFunction_CAST(_io_FileIO_seek), METH_FASTCALL, _io_FileIO_seek__doc__},
 
-static PyObject *
-_io_FileIO_seek_impl(fileio *self, PyObject *pos, int whence);
+static TyObject *
+_io_FileIO_seek_impl(fileio *self, TyObject *pos, int whence);
 
-static PyObject *
-_io_FileIO_seek(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io_FileIO_seek(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *pos;
+    TyObject *return_value = NULL;
+    TyObject *pos;
     int whence = 0;
 
-    if (!_PyArg_CheckPositional("seek", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("seek", nargs, 1, 2)) {
         goto exit;
     }
     pos = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    whence = PyLong_AsInt(args[1]);
-    if (whence == -1 && PyErr_Occurred()) {
+    whence = TyLong_AsInt(args[1]);
+    if (whence == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -458,11 +458,11 @@ PyDoc_STRVAR(_io_FileIO_tell__doc__,
 #define _IO_FILEIO_TELL_METHODDEF    \
     {"tell", (PyCFunction)_io_FileIO_tell, METH_NOARGS, _io_FileIO_tell__doc__},
 
-static PyObject *
+static TyObject *
 _io_FileIO_tell_impl(fileio *self);
 
-static PyObject *
-_io_FileIO_tell(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io_FileIO_tell(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _io_FileIO_tell_impl((fileio *)self);
 }
@@ -481,30 +481,30 @@ PyDoc_STRVAR(_io_FileIO_truncate__doc__,
 #define _IO_FILEIO_TRUNCATE_METHODDEF    \
     {"truncate", _PyCFunction_CAST(_io_FileIO_truncate), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io_FileIO_truncate__doc__},
 
-static PyObject *
-_io_FileIO_truncate_impl(fileio *self, PyTypeObject *cls, PyObject *posobj);
+static TyObject *
+_io_FileIO_truncate_impl(fileio *self, TyTypeObject *cls, TyObject *posobj);
 
-static PyObject *
-_io_FileIO_truncate(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io_FileIO_truncate(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "truncate",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *posobj = Py_None;
+    TyObject *argsbuf[1];
+    TyObject *posobj = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -531,11 +531,11 @@ PyDoc_STRVAR(_io_FileIO_isatty__doc__,
 #define _IO_FILEIO_ISATTY_METHODDEF    \
     {"isatty", (PyCFunction)_io_FileIO_isatty, METH_NOARGS, _io_FileIO_isatty__doc__},
 
-static PyObject *
+static TyObject *
 _io_FileIO_isatty_impl(fileio *self);
 
-static PyObject *
-_io_FileIO_isatty(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io_FileIO_isatty(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _io_FileIO_isatty_impl((fileio *)self);
 }

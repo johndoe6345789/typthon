@@ -40,10 +40,10 @@ class PythonValuesTestCase(unittest.TestCase):
     """This test only works when python itself is a dll/shared library"""
 
     def test_optimizeflag(self):
-        # This test accesses the Py_OptimizeFlag integer, which is
+        # This test accesses the Ty_OptimizeFlag integer, which is
         # exported by the Python dll and should match the sys.flags value
 
-        opt = c_int.in_dll(pythonapi, "Py_OptimizeFlag").value
+        opt = c_int.in_dll(pythonapi, "Ty_OptimizeFlag").value
         self.assertEqual(opt, sys.flags.optimize)
 
     @thread_unsafe('overrides frozen modules')

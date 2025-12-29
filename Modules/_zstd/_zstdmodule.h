@@ -8,20 +8,20 @@
 #include "zstddict.h"
 
 /* Type specs */
-extern PyType_Spec zstd_dict_type_spec;
-extern PyType_Spec zstd_compressor_type_spec;
-extern PyType_Spec zstd_decompressor_type_spec;
+extern TyType_Spec zstd_dict_type_spec;
+extern TyType_Spec zstd_compressor_type_spec;
+extern TyType_Spec zstd_decompressor_type_spec;
 
 typedef struct {
     /* Module heap types. */
-    PyTypeObject *ZstdDict_type;
-    PyTypeObject *ZstdCompressor_type;
-    PyTypeObject *ZstdDecompressor_type;
-    PyObject *ZstdError;
+    TyTypeObject *ZstdDict_type;
+    TyTypeObject *ZstdCompressor_type;
+    TyTypeObject *ZstdDecompressor_type;
+    TyObject *ZstdError;
 
     /* enum types set by set_parameter_types. */
-    PyTypeObject *CParameter_type;
-    PyTypeObject *DParameter_type;
+    TyTypeObject *CParameter_type;
+    TyTypeObject *DParameter_type;
 } _zstd_state;
 
 typedef enum {
@@ -47,8 +47,8 @@ typedef enum {
 } dictionary_type;
 
 extern ZstdDict *
-_Py_parse_zstd_dict(const _zstd_state *state,
-                    PyObject *dict, int *type);
+_Ty_parse_zstd_dict(const _zstd_state *state,
+                    TyObject *dict, int *type);
 
 /* Format error message and set ZstdError. */
 extern void

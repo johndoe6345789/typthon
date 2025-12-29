@@ -19005,7 +19005,7 @@ static const unsigned int name_aliases[] = {
 
 typedef struct NamedSequence {
     int seqlen;
-    Py_UCS2 seq[4];
+    Ty_UCS2 seq[4];
 } named_sequence;
 
 static const unsigned int named_sequences_start = 0xf0200;

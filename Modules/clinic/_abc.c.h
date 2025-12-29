@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(_abc__reset_registry__doc__,
 "_reset_registry($module, self, /)\n"
@@ -57,17 +57,17 @@ PyDoc_STRVAR(_abc__abc_register__doc__,
 #define _ABC__ABC_REGISTER_METHODDEF    \
     {"_abc_register", _PyCFunction_CAST(_abc__abc_register), METH_FASTCALL, _abc__abc_register__doc__},
 
-static PyObject *
-_abc__abc_register_impl(PyObject *module, PyObject *self, PyObject *subclass);
+static TyObject *
+_abc__abc_register_impl(TyObject *module, TyObject *self, TyObject *subclass);
 
-static PyObject *
-_abc__abc_register(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_abc__abc_register(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *self;
-    PyObject *subclass;
+    TyObject *return_value = NULL;
+    TyObject *self;
+    TyObject *subclass;
 
-    if (!_PyArg_CheckPositional("_abc_register", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("_abc_register", nargs, 2, 2)) {
         goto exit;
     }
     self = args[0];
@@ -87,18 +87,18 @@ PyDoc_STRVAR(_abc__abc_instancecheck__doc__,
 #define _ABC__ABC_INSTANCECHECK_METHODDEF    \
     {"_abc_instancecheck", _PyCFunction_CAST(_abc__abc_instancecheck), METH_FASTCALL, _abc__abc_instancecheck__doc__},
 
-static PyObject *
-_abc__abc_instancecheck_impl(PyObject *module, PyObject *self,
-                             PyObject *instance);
+static TyObject *
+_abc__abc_instancecheck_impl(TyObject *module, TyObject *self,
+                             TyObject *instance);
 
-static PyObject *
-_abc__abc_instancecheck(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_abc__abc_instancecheck(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *self;
-    PyObject *instance;
+    TyObject *return_value = NULL;
+    TyObject *self;
+    TyObject *instance;
 
-    if (!_PyArg_CheckPositional("_abc_instancecheck", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("_abc_instancecheck", nargs, 2, 2)) {
         goto exit;
     }
     self = args[0];
@@ -118,18 +118,18 @@ PyDoc_STRVAR(_abc__abc_subclasscheck__doc__,
 #define _ABC__ABC_SUBCLASSCHECK_METHODDEF    \
     {"_abc_subclasscheck", _PyCFunction_CAST(_abc__abc_subclasscheck), METH_FASTCALL, _abc__abc_subclasscheck__doc__},
 
-static PyObject *
-_abc__abc_subclasscheck_impl(PyObject *module, PyObject *self,
-                             PyObject *subclass);
+static TyObject *
+_abc__abc_subclasscheck_impl(TyObject *module, TyObject *self,
+                             TyObject *subclass);
 
-static PyObject *
-_abc__abc_subclasscheck(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_abc__abc_subclasscheck(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *self;
-    PyObject *subclass;
+    TyObject *return_value = NULL;
+    TyObject *self;
+    TyObject *subclass;
 
-    if (!_PyArg_CheckPositional("_abc_subclasscheck", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("_abc_subclasscheck", nargs, 2, 2)) {
         goto exit;
     }
     self = args[0];
@@ -153,11 +153,11 @@ PyDoc_STRVAR(_abc_get_cache_token__doc__,
 #define _ABC_GET_CACHE_TOKEN_METHODDEF    \
     {"get_cache_token", (PyCFunction)_abc_get_cache_token, METH_NOARGS, _abc_get_cache_token__doc__},
 
-static PyObject *
-_abc_get_cache_token_impl(PyObject *module);
+static TyObject *
+_abc_get_cache_token_impl(TyObject *module);
 
-static PyObject *
-_abc_get_cache_token(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_abc_get_cache_token(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return _abc_get_cache_token_impl(module);
 }

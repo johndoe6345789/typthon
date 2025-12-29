@@ -1,4 +1,4 @@
-#ifndef Py_CPYTHON_CRITICAL_SECTION_H
+#ifndef Ty_CPYTHON_CRITICAL_SECTION_H
 #  error "this header file must not be included directly"
 #endif
 
@@ -37,16 +37,16 @@
 //
 // Each thread's critical sections and their corresponding locks are tracked in
 // a stack in `PyThreadState.critical_section`. When a thread calls
-// `_PyThreadState_Detach()`, such as before a blocking I/O operation or when
+// `_TyThreadState_Detach()`, such as before a blocking I/O operation or when
 // waiting to acquire a lock, the thread suspends all of its active critical
 // sections, temporarily releasing the associated locks. When the thread calls
-// `_PyThreadState_Attach()`, it resumes the top-most (i.e., most recent)
+// `_TyThreadState_Attach()`, it resumes the top-most (i.e., most recent)
 // critical section by reacquiring the associated lock or locks.  See
 // `_PyCriticalSection_Resume()`.
 //
 // NOTE: Only the top-most critical section is guaranteed to be active.
 // Operations that need to lock two objects at once must use
-// `Py_BEGIN_CRITICAL_SECTION2()`. You *CANNOT* use nested critical sections
+// `Ty_BEGIN_CRITICAL_SECTION2()`. You *CANNOT* use nested critical sections
 // to lock more than one object at once, because the inner critical section
 // may  suspend the outer critical sections. This API does not provide a way
 // to lock more than two objects at once (though it could be added later
@@ -58,40 +58,40 @@
 // purposefully designed reentrant locks.
 //
 // Example usage:
-//  Py_BEGIN_CRITICAL_SECTION(op);
+//  Ty_BEGIN_CRITICAL_SECTION(op);
 //  ...
-//  Py_END_CRITICAL_SECTION();
+//  Ty_END_CRITICAL_SECTION();
 //
 // To lock two objects at once:
-//  Py_BEGIN_CRITICAL_SECTION2(op1, op2);
+//  Ty_BEGIN_CRITICAL_SECTION2(op1, op2);
 //  ...
-//  Py_END_CRITICAL_SECTION2();
+//  Ty_END_CRITICAL_SECTION2();
 
 typedef struct PyCriticalSection PyCriticalSection;
 typedef struct PyCriticalSection2 PyCriticalSection2;
 
 PyAPI_FUNC(void)
-PyCriticalSection_Begin(PyCriticalSection *c, PyObject *op);
+PyCriticalSection_Begin(PyCriticalSection *c, TyObject *op);
 
 PyAPI_FUNC(void)
 PyCriticalSection_End(PyCriticalSection *c);
 
 PyAPI_FUNC(void)
-PyCriticalSection2_Begin(PyCriticalSection2 *c, PyObject *a, PyObject *b);
+PyCriticalSection2_Begin(PyCriticalSection2 *c, TyObject *a, TyObject *b);
 
 PyAPI_FUNC(void)
 PyCriticalSection2_End(PyCriticalSection2 *c);
 
-#ifndef Py_GIL_DISABLED
-# define Py_BEGIN_CRITICAL_SECTION(op)      \
+#ifndef Ty_GIL_DISABLED
+# define Ty_BEGIN_CRITICAL_SECTION(op)      \
     {
-# define Py_END_CRITICAL_SECTION()          \
+# define Ty_END_CRITICAL_SECTION()          \
     }
-# define Py_BEGIN_CRITICAL_SECTION2(a, b)   \
+# define Ty_BEGIN_CRITICAL_SECTION2(a, b)   \
     {
-# define Py_END_CRITICAL_SECTION2()         \
+# define Ty_END_CRITICAL_SECTION2()         \
     }
-#else /* !Py_GIL_DISABLED */
+#else /* !Ty_GIL_DISABLED */
 
 // NOTE: the contents of this struct are private and may change betweeen
 // Python releases without a deprecation period.
@@ -104,7 +104,7 @@ struct PyCriticalSection {
 };
 
 // A critical section protected by two mutexes. Use
-// Py_BEGIN_CRITICAL_SECTION2 and Py_END_CRITICAL_SECTION2.
+// Ty_BEGIN_CRITICAL_SECTION2 and Ty_END_CRITICAL_SECTION2.
 // NOTE: the contents of this struct are private and may change betweeen
 // Python releases without a deprecation period.
 struct PyCriticalSection2 {
@@ -113,21 +113,21 @@ struct PyCriticalSection2 {
     PyMutex *_cs_mutex2;
 };
 
-# define Py_BEGIN_CRITICAL_SECTION(op)                                  \
+# define Ty_BEGIN_CRITICAL_SECTION(op)                                  \
     {                                                                   \
         PyCriticalSection _py_cs;                                       \
-        PyCriticalSection_Begin(&_py_cs, _PyObject_CAST(op))
+        PyCriticalSection_Begin(&_py_cs, _TyObject_CAST(op))
 
-# define Py_END_CRITICAL_SECTION()                                      \
+# define Ty_END_CRITICAL_SECTION()                                      \
         PyCriticalSection_End(&_py_cs);                                 \
     }
 
-# define Py_BEGIN_CRITICAL_SECTION2(a, b)                               \
+# define Ty_BEGIN_CRITICAL_SECTION2(a, b)                               \
     {                                                                   \
         PyCriticalSection2 _py_cs2;                                     \
-        PyCriticalSection2_Begin(&_py_cs2, _PyObject_CAST(a), _PyObject_CAST(b))
+        PyCriticalSection2_Begin(&_py_cs2, _TyObject_CAST(a), _TyObject_CAST(b))
 
-# define Py_END_CRITICAL_SECTION2()                                     \
+# define Ty_END_CRITICAL_SECTION2()                                     \
         PyCriticalSection2_End(&_py_cs2);                               \
     }
 

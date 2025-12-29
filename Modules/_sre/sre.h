@@ -15,7 +15,7 @@
 
 /* size of a code word (must be unsigned short or larger, and
    large enough to hold a UCS4 character) */
-#define SRE_CODE Py_UCS4
+#define SRE_CODE Ty_UCS4
 #if SIZEOF_SIZE_T > 4
 # define SRE_MAXREPEAT (~(SRE_CODE)0)
 # define SRE_MAXGROUPS ((SRE_CODE)INT32_MAX / 2)
@@ -26,21 +26,21 @@
 
 typedef struct {
     PyObject_VAR_HEAD
-    Py_ssize_t groups; /* must be first! */
-    PyObject* groupindex; /* dict */
-    PyObject* indexgroup; /* tuple */
+    Ty_ssize_t groups; /* must be first! */
+    TyObject* groupindex; /* dict */
+    TyObject* indexgroup; /* tuple */
     /* compatibility */
-    PyObject* pattern; /* pattern source (or None) */
+    TyObject* pattern; /* pattern source (or None) */
     int flags; /* flags used when compiling pattern source */
-    PyObject *weakreflist; /* List of weak references */
+    TyObject *weakreflist; /* List of weak references */
     int isbytes; /* pattern type (1 - bytes, 0 - string, -1 - None) */
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     /* for simulation of user interruption */
     int fail_after_count;
-    PyObject *fail_after_exc;
+    TyObject *fail_after_exc;
 #endif
     /* pattern code */
-    Py_ssize_t codesize;
+    Ty_ssize_t codesize;
     SRE_CODE code[1];
 } PatternObject;
 
@@ -48,28 +48,28 @@ typedef struct {
 
 typedef struct {
     PyObject_VAR_HEAD
-    PyObject* string; /* link to the target string (must be first) */
-    PyObject* regs; /* cached list of matching spans */
+    TyObject* string; /* link to the target string (must be first) */
+    TyObject* regs; /* cached list of matching spans */
     PatternObject* pattern; /* link to the regex (pattern) object */
-    Py_ssize_t pos, endpos; /* current target slice */
-    Py_ssize_t lastindex; /* last index marker seen by the engine (-1 if none) */
-    Py_ssize_t groups; /* number of groups (start/end marks) */
-    Py_ssize_t mark[1];
+    Ty_ssize_t pos, endpos; /* current target slice */
+    Ty_ssize_t lastindex; /* last index marker seen by the engine (-1 if none) */
+    Ty_ssize_t groups; /* number of groups (start/end marks) */
+    Ty_ssize_t mark[1];
 } MatchObject;
 
 typedef struct {
     PyObject_VAR_HEAD
-    Py_ssize_t chunks;  /* the number of group references and non-NULL literals
-                         * self->chunks <= 2*Py_SIZE(self) + 1 */
-    PyObject *literal;
+    Ty_ssize_t chunks;  /* the number of group references and non-NULL literals
+                         * self->chunks <= 2*Ty_SIZE(self) + 1 */
+    TyObject *literal;
     struct {
-        Py_ssize_t index;
-        PyObject *literal;  /* NULL if empty */
+        Ty_ssize_t index;
+        TyObject *literal;  /* NULL if empty */
     } items[0];
 } TemplateObject;
 
 typedef struct SRE_REPEAT_T {
-    Py_ssize_t count;
+    Ty_ssize_t count;
     const SRE_CODE* pattern; /* points to REPEAT operator arguments */
     const void* last_ptr; /* helper to check for infinite loops */
     struct SRE_REPEAT_T *prev; /* points to previous repeat context */
@@ -85,9 +85,9 @@ typedef struct {
     const void* start; /* start of current slice */
     const void* end; /* end of original string */
     /* attributes for the match object */
-    PyObject* string;
-    Py_buffer buffer;
-    Py_ssize_t pos, endpos;
+    TyObject* string;
+    Ty_buffer buffer;
+    Ty_ssize_t pos, endpos;
     int isbytes;
     int charsize; /* character size */
     int match_all;
@@ -107,9 +107,9 @@ typedef struct {
     SRE_REPEAT *repeat_pool_used;
     SRE_REPEAT *repeat_pool_unused;
     unsigned int sigcount;
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     int fail_after_count;
-    PyObject *fail_after_exc;
+    TyObject *fail_after_exc;
 #endif
 } SRE_STATE;
 

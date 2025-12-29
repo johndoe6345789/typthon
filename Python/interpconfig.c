@@ -1,7 +1,7 @@
 /* PyInterpreterConfig API */
 
 #include "Python.h"
-#include "pycore_interp.h" // Py_RTFLAGS
+#include "pycore_interp.h" // Ty_RTFLAGS
 #include "pycore_pylifecycle.h"
 
 #include <stdbool.h>
@@ -20,7 +20,7 @@ gil_flag_to_str(int flag)
     case PyInterpreterConfig_OWN_GIL:
         return "own";
     default:
-        PyErr_SetString(PyExc_SystemError,
+        TyErr_SetString(TyExc_SystemError,
                         "invalid interpreter config 'gil' value");
         return NULL;
     }
@@ -43,7 +43,7 @@ gil_flag_from_str(const char *str, int *p_flag)
         flag = PyInterpreterConfig_OWN_GIL;
     }
     else {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "unsupported interpreter config .gil value '%s'", str);
         return -1;
     }
@@ -51,30 +51,30 @@ gil_flag_from_str(const char *str, int *p_flag)
     return 0;
 }
 
-PyObject *
+TyObject *
 _PyInterpreterConfig_AsDict(PyInterpreterConfig *config)
 {
-    PyObject *dict = PyDict_New();
+    TyObject *dict = TyDict_New();
     if (dict == NULL) {
         return NULL;
     }
 
 #define ADD(NAME, OBJ)                                              \
         do {                                                        \
-            int res = PyDict_SetItemString(dict, NAME, (OBJ));      \
-            Py_DECREF(OBJ);                                         \
+            int res = TyDict_SetItemString(dict, NAME, (OBJ));      \
+            Ty_DECREF(OBJ);                                         \
             if (res < 0) {                                          \
                 goto error;                                         \
             }                                                       \
         } while (0)
 #define ADD_BOOL(FIELD) \
-        ADD(#FIELD, Py_NewRef(config->FIELD ? Py_True : Py_False))
+        ADD(#FIELD, Ty_NewRef(config->FIELD ? Ty_True : Ty_False))
 #define ADD_STR(FIELD, STR)                                         \
         do {                                                        \
             if (STR == NULL) {                                      \
                 goto error;                                         \
             }                                                       \
-            PyObject *obj = PyUnicode_FromString(STR);              \
+            TyObject *obj = TyUnicode_FromString(STR);              \
             if (obj == NULL) {                                      \
                 goto error;                                         \
             }                                                       \
@@ -97,69 +97,69 @@ _PyInterpreterConfig_AsDict(PyInterpreterConfig *config)
     return dict;
 
 error:
-    Py_DECREF(dict);
+    Ty_DECREF(dict);
     return NULL;
 }
 
 static int
-_config_dict_get_bool(PyObject *dict, const char *name, int *p_flag)
+_config_dict_get_bool(TyObject *dict, const char *name, int *p_flag)
 {
-    PyObject *item;
+    TyObject *item;
     if (_config_dict_get(dict, name, &item) < 0) {
         return -1;
     }
     // For now we keep things strict, rather than using PyObject_IsTrue().
-    int flag = item == Py_True;
-    if (!flag && item != Py_False) {
-        Py_DECREF(item);
+    int flag = item == Ty_True;
+    if (!flag && item != Ty_False) {
+        Ty_DECREF(item);
         config_dict_invalid_type(name);
         return -1;
     }
-    Py_DECREF(item);
+    Ty_DECREF(item);
     *p_flag = flag;
     return 0;
 }
 
 static int
-_config_dict_copy_str(PyObject *dict, const char *name,
+_config_dict_copy_str(TyObject *dict, const char *name,
                       char *buf, size_t bufsize)
 {
-    PyObject *item;
+    TyObject *item;
     if (_config_dict_get(dict, name, &item) < 0) {
         return -1;
     }
-    if (!PyUnicode_Check(item)) {
-        Py_DECREF(item);
+    if (!TyUnicode_Check(item)) {
+        Ty_DECREF(item);
         config_dict_invalid_type(name);
         return -1;
     }
-    strncpy(buf, PyUnicode_AsUTF8(item), bufsize-1);
+    strncpy(buf, TyUnicode_AsUTF8(item), bufsize-1);
     buf[bufsize-1] = '\0';
-    Py_DECREF(item);
+    Ty_DECREF(item);
     return 0;
 }
 
 static int
-interp_config_from_dict(PyObject *origdict, PyInterpreterConfig *config,
+interp_config_from_dict(TyObject *origdict, PyInterpreterConfig *config,
                         bool missing_allowed)
 {
-    PyObject *dict = PyDict_New();
+    TyObject *dict = TyDict_New();
     if (dict == NULL) {
         return -1;
     }
-    if (PyDict_Update(dict, origdict) < 0) {
+    if (TyDict_Update(dict, origdict) < 0) {
         goto error;
     }
 
 #define CHECK(NAME)                                                 \
     do {                                                            \
-        if (PyErr_Occurred()) {                                     \
+        if (TyErr_Occurred()) {                                     \
             goto error;                                             \
         }                                                           \
         else {                                                      \
             if (!missing_allowed) {                                 \
                 (void)config_dict_get(dict, NAME);                  \
-                assert(PyErr_Occurred());                           \
+                assert(TyErr_Occurred());                           \
                 goto error;                                         \
             }                                                       \
         }                                                           \
@@ -172,7 +172,7 @@ interp_config_from_dict(PyObject *origdict, PyInterpreterConfig *config,
         }                                                           \
         else {                                                      \
             config->FIELD = flag;                                   \
-            (void)PyDict_PopString(dict, #FIELD, NULL);             \
+            (void)TyDict_PopString(dict, #FIELD, NULL);             \
         }                                                           \
     } while (0)
 
@@ -194,37 +194,37 @@ interp_config_from_dict(PyObject *origdict, PyInterpreterConfig *config,
             goto error;
         }
         config->gil = flag;
-        (void)PyDict_PopString(dict, "gil", NULL);
+        (void)TyDict_PopString(dict, "gil", NULL);
     }
 
 #undef COPY_BOOL
 #undef CHECK
 
-    Py_ssize_t unused = PyDict_GET_SIZE(dict);
+    Ty_ssize_t unused = TyDict_GET_SIZE(dict);
     if (unused == 1) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "config dict has 1 extra item (%R)", dict);
         goto error;
     }
     else if (unused > 0) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "config dict has %d extra items (%R)", unused, dict);
         goto error;
     }
 
-    Py_DECREF(dict);
+    Ty_DECREF(dict);
     return 0;
 
 error:
-    Py_DECREF(dict);
+    Ty_DECREF(dict);
     return -1;
 }
 
 int
-_PyInterpreterConfig_InitFromDict(PyInterpreterConfig *config, PyObject *dict)
+_PyInterpreterConfig_InitFromDict(PyInterpreterConfig *config, TyObject *dict)
 {
-    if (!PyDict_Check(dict)) {
-        PyErr_SetString(PyExc_TypeError, "dict expected");
+    if (!TyDict_Check(dict)) {
+        TyErr_SetString(TyExc_TypeError, "dict expected");
         return -1;
     }
     if (interp_config_from_dict(dict, config, false) < 0) {
@@ -234,10 +234,10 @@ _PyInterpreterConfig_InitFromDict(PyInterpreterConfig *config, PyObject *dict)
 }
 
 int
-_PyInterpreterConfig_UpdateFromDict(PyInterpreterConfig *config, PyObject *dict)
+_PyInterpreterConfig_UpdateFromDict(PyInterpreterConfig *config, TyObject *dict)
 {
-    if (!PyDict_Check(dict)) {
-        PyErr_SetString(PyExc_TypeError, "dict expected");
+    if (!TyDict_Check(dict)) {
+        TyErr_SetString(TyExc_TypeError, "dict expected");
         return -1;
     }
     if (interp_config_from_dict(dict, config, true) < 0) {
@@ -253,7 +253,7 @@ _PyInterpreterConfig_InitFromState(PyInterpreterConfig *config,
     // Populate the config by re-constructing the values from the interpreter.
     *config = (PyInterpreterConfig){
 #define FLAG(flag) \
-        (interp->feature_flags & Py_RTFLAGS_ ## flag)
+        (interp->feature_flags & Ty_RTFLAGS_ ## flag)
         .use_main_obmalloc = FLAG(USE_MAIN_OBMALLOC),
         .allow_fork = FLAG(FORK),
         .allow_exec = FLAG(EXEC),

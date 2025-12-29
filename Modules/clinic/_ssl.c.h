@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(_ssl__SSLSocket_do_handshake__doc__,
 "do_handshake($self, /)\n"
@@ -17,17 +17,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_do_handshake__doc__,
 #define _SSL__SSLSOCKET_DO_HANDSHAKE_METHODDEF    \
     {"do_handshake", (PyCFunction)_ssl__SSLSocket_do_handshake, METH_NOARGS, _ssl__SSLSocket_do_handshake__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_do_handshake_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_do_handshake(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_do_handshake(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_do_handshake_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -40,16 +40,16 @@ PyDoc_STRVAR(_ssl__test_decode_cert__doc__,
 #define _SSL__TEST_DECODE_CERT_METHODDEF    \
     {"_test_decode_cert", (PyCFunction)_ssl__test_decode_cert, METH_O, _ssl__test_decode_cert__doc__},
 
-static PyObject *
-_ssl__test_decode_cert_impl(PyObject *module, PyObject *path);
+static TyObject *
+_ssl__test_decode_cert_impl(TyObject *module, TyObject *path);
 
-static PyObject *
-_ssl__test_decode_cert(PyObject *module, PyObject *arg)
+static TyObject *
+_ssl__test_decode_cert(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *path;
+    TyObject *return_value = NULL;
+    TyObject *path;
 
-    if (!PyUnicode_FSConverter(arg, &path)) {
+    if (!TyUnicode_FSConverter(arg, &path)) {
         goto exit;
     }
     return_value = _ssl__test_decode_cert_impl(module, path);
@@ -75,16 +75,16 @@ PyDoc_STRVAR(_ssl__SSLSocket_getpeercert__doc__,
 #define _SSL__SSLSOCKET_GETPEERCERT_METHODDEF    \
     {"getpeercert", _PyCFunction_CAST(_ssl__SSLSocket_getpeercert), METH_FASTCALL, _ssl__SSLSocket_getpeercert__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_getpeercert_impl(PySSLSocket *self, int binary_mode);
 
-static PyObject *
-_ssl__SSLSocket_getpeercert(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_ssl__SSLSocket_getpeercert(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int binary_mode = 0;
 
-    if (!_PyArg_CheckPositional("getpeercert", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("getpeercert", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -95,9 +95,9 @@ _ssl__SSLSocket_getpeercert(PyObject *self, PyObject *const *args, Py_ssize_t na
         goto exit;
     }
 skip_optional:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_getpeercert_impl((PySSLSocket *)self, binary_mode);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -111,17 +111,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_get_verified_chain__doc__,
 #define _SSL__SSLSOCKET_GET_VERIFIED_CHAIN_METHODDEF    \
     {"get_verified_chain", (PyCFunction)_ssl__SSLSocket_get_verified_chain, METH_NOARGS, _ssl__SSLSocket_get_verified_chain__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_get_verified_chain_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_get_verified_chain(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_get_verified_chain(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_get_verified_chain_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -134,17 +134,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_get_unverified_chain__doc__,
 #define _SSL__SSLSOCKET_GET_UNVERIFIED_CHAIN_METHODDEF    \
     {"get_unverified_chain", (PyCFunction)_ssl__SSLSocket_get_unverified_chain, METH_NOARGS, _ssl__SSLSocket_get_unverified_chain__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_get_unverified_chain_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_get_unverified_chain(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_get_unverified_chain(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_get_unverified_chain_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -157,17 +157,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_shared_ciphers__doc__,
 #define _SSL__SSLSOCKET_SHARED_CIPHERS_METHODDEF    \
     {"shared_ciphers", (PyCFunction)_ssl__SSLSocket_shared_ciphers, METH_NOARGS, _ssl__SSLSocket_shared_ciphers__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_shared_ciphers_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_shared_ciphers(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_shared_ciphers(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_shared_ciphers_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -180,17 +180,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_cipher__doc__,
 #define _SSL__SSLSOCKET_CIPHER_METHODDEF    \
     {"cipher", (PyCFunction)_ssl__SSLSocket_cipher, METH_NOARGS, _ssl__SSLSocket_cipher__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_cipher_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_cipher(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_cipher(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_cipher_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -203,17 +203,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_version__doc__,
 #define _SSL__SSLSOCKET_VERSION_METHODDEF    \
     {"version", (PyCFunction)_ssl__SSLSocket_version, METH_NOARGS, _ssl__SSLSocket_version__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_version_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_version(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_version(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_version_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -226,17 +226,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_selected_alpn_protocol__doc__,
 #define _SSL__SSLSOCKET_SELECTED_ALPN_PROTOCOL_METHODDEF    \
     {"selected_alpn_protocol", (PyCFunction)_ssl__SSLSocket_selected_alpn_protocol, METH_NOARGS, _ssl__SSLSocket_selected_alpn_protocol__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_selected_alpn_protocol_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_selected_alpn_protocol(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_selected_alpn_protocol(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_selected_alpn_protocol_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -249,11 +249,11 @@ PyDoc_STRVAR(_ssl__SSLSocket_compression__doc__,
 #define _SSL__SSLSOCKET_COMPRESSION_METHODDEF    \
     {"compression", (PyCFunction)_ssl__SSLSocket_compression, METH_NOARGS, _ssl__SSLSocket_compression__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_compression_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_compression(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_compression(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _ssl__SSLSocket_compression_impl((PySSLSocket *)self);
 }
@@ -279,17 +279,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_context__doc__,
 #  define _SSL__SSLSOCKET_CONTEXT_GETSETDEF {"context", (getter)_ssl__SSLSocket_context_get, NULL, _ssl__SSLSocket_context_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_context_get_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_context_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLSocket_context_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_context_get_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -305,16 +305,16 @@ _ssl__SSLSocket_context_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLSocket_context_set_impl(PySSLSocket *self, PyObject *value);
+_ssl__SSLSocket_context_set_impl(PySSLSocket *self, TyObject *value);
 
 static int
-_ssl__SSLSocket_context_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLSocket_context_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_context_set_impl((PySSLSocket *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -336,17 +336,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_server_side__doc__,
 #  define _SSL__SSLSOCKET_SERVER_SIDE_GETSETDEF {"server_side", (getter)_ssl__SSLSocket_server_side_get, NULL, _ssl__SSLSocket_server_side_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_server_side_get_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_server_side_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLSocket_server_side_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_server_side_get_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -368,17 +368,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_server_hostname__doc__,
 #  define _SSL__SSLSOCKET_SERVER_HOSTNAME_GETSETDEF {"server_hostname", (getter)_ssl__SSLSocket_server_hostname_get, NULL, _ssl__SSLSocket_server_hostname_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_server_hostname_get_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_server_hostname_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLSocket_server_hostname_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_server_hostname_get_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -402,17 +402,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_owner__doc__,
 #  define _SSL__SSLSOCKET_OWNER_GETSETDEF {"owner", (getter)_ssl__SSLSocket_owner_get, NULL, _ssl__SSLSocket_owner_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_owner_get_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_owner_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLSocket_owner_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_owner_get_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -428,16 +428,16 @@ _ssl__SSLSocket_owner_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLSocket_owner_set_impl(PySSLSocket *self, PyObject *value);
+_ssl__SSLSocket_owner_set_impl(PySSLSocket *self, TyObject *value);
 
 static int
-_ssl__SSLSocket_owner_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLSocket_owner_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_owner_set_impl((PySSLSocket *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -453,21 +453,21 @@ PyDoc_STRVAR(_ssl__SSLSocket_write__doc__,
 #define _SSL__SSLSOCKET_WRITE_METHODDEF    \
     {"write", (PyCFunction)_ssl__SSLSocket_write, METH_O, _ssl__SSLSocket_write__doc__},
 
-static PyObject *
-_ssl__SSLSocket_write_impl(PySSLSocket *self, Py_buffer *b);
+static TyObject *
+_ssl__SSLSocket_write_impl(PySSLSocket *self, Ty_buffer *b);
 
-static PyObject *
-_ssl__SSLSocket_write(PyObject *self, PyObject *arg)
+static TyObject *
+_ssl__SSLSocket_write(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer b = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer b = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &b, PyBUF_SIMPLE) != 0) {
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_write_impl((PySSLSocket *)self, &b);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for b */
@@ -487,17 +487,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_pending__doc__,
 #define _SSL__SSLSOCKET_PENDING_METHODDEF    \
     {"pending", (PyCFunction)_ssl__SSLSocket_pending, METH_NOARGS, _ssl__SSLSocket_pending__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_pending_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_pending(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_pending(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_pending_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -509,37 +509,37 @@ PyDoc_STRVAR(_ssl__SSLSocket_read__doc__,
 #define _SSL__SSLSOCKET_READ_METHODDEF    \
     {"read", (PyCFunction)_ssl__SSLSocket_read, METH_VARARGS, _ssl__SSLSocket_read__doc__},
 
-static PyObject *
-_ssl__SSLSocket_read_impl(PySSLSocket *self, Py_ssize_t len,
-                          int group_right_1, Py_buffer *buffer);
+static TyObject *
+_ssl__SSLSocket_read_impl(PySSLSocket *self, Ty_ssize_t len,
+                          int group_right_1, Ty_buffer *buffer);
 
-static PyObject *
-_ssl__SSLSocket_read(PyObject *self, PyObject *args)
+static TyObject *
+_ssl__SSLSocket_read(TyObject *self, TyObject *args)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t len;
+    TyObject *return_value = NULL;
+    Ty_ssize_t len;
     int group_right_1 = 0;
-    Py_buffer buffer = {NULL, NULL};
+    Ty_buffer buffer = {NULL, NULL};
 
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 1:
-            if (!PyArg_ParseTuple(args, "n:read", &len)) {
+            if (!TyArg_ParseTuple(args, "n:read", &len)) {
                 goto exit;
             }
             break;
         case 2:
-            if (!PyArg_ParseTuple(args, "nw*:read", &len, &buffer)) {
+            if (!TyArg_ParseTuple(args, "nw*:read", &len, &buffer)) {
                 goto exit;
             }
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "_ssl._SSLSocket.read requires 1 to 2 arguments");
+            TyErr_SetString(TyExc_TypeError, "_ssl._SSLSocket.read requires 1 to 2 arguments");
             goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_read_impl((PySSLSocket *)self, len, group_right_1, &buffer);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for buffer */
@@ -559,17 +559,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_shutdown__doc__,
 #define _SSL__SSLSOCKET_SHUTDOWN_METHODDEF    \
     {"shutdown", (PyCFunction)_ssl__SSLSocket_shutdown, METH_NOARGS, _ssl__SSLSocket_shutdown__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_shutdown_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_shutdown(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_shutdown(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_shutdown_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -587,46 +587,46 @@ PyDoc_STRVAR(_ssl__SSLSocket_get_channel_binding__doc__,
 #define _SSL__SSLSOCKET_GET_CHANNEL_BINDING_METHODDEF    \
     {"get_channel_binding", _PyCFunction_CAST(_ssl__SSLSocket_get_channel_binding), METH_FASTCALL|METH_KEYWORDS, _ssl__SSLSocket_get_channel_binding__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_get_channel_binding_impl(PySSLSocket *self,
                                          const char *cb_type);
 
-static PyObject *
-_ssl__SSLSocket_get_channel_binding(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl__SSLSocket_get_channel_binding(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(cb_type), },
+        .ob_item = { &_Ty_ID(cb_type), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"cb_type", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "get_channel_binding",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     const char *cb_type = "tls-unique";
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -634,23 +634,23 @@ _ssl__SSLSocket_get_channel_binding(PyObject *self, PyObject *const *args, Py_ss
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("get_channel_binding", "argument 'cb_type'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("get_channel_binding", "argument 'cb_type'", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t cb_type_length;
-    cb_type = PyUnicode_AsUTF8AndSize(args[0], &cb_type_length);
+    Ty_ssize_t cb_type_length;
+    cb_type = TyUnicode_AsUTF8AndSize(args[0], &cb_type_length);
     if (cb_type == NULL) {
         goto exit;
     }
     if (strlen(cb_type) != (size_t)cb_type_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
 skip_optional_pos:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_get_channel_binding_impl((PySSLSocket *)self, cb_type);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -665,17 +665,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_verify_client_post_handshake__doc__,
 #define _SSL__SSLSOCKET_VERIFY_CLIENT_POST_HANDSHAKE_METHODDEF    \
     {"verify_client_post_handshake", (PyCFunction)_ssl__SSLSocket_verify_client_post_handshake, METH_NOARGS, _ssl__SSLSocket_verify_client_post_handshake__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_verify_client_post_handshake_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_verify_client_post_handshake(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLSocket_verify_client_post_handshake(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_verify_client_post_handshake_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -697,17 +697,17 @@ PyDoc_STRVAR(_ssl__SSLSocket_session__doc__,
 #  define _SSL__SSLSOCKET_SESSION_GETSETDEF {"session", (getter)_ssl__SSLSocket_session_get, NULL, _ssl__SSLSocket_session_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_session_get_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_session_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLSocket_session_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_session_get_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -723,16 +723,16 @@ _ssl__SSLSocket_session_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLSocket_session_set_impl(PySSLSocket *self, PyObject *value);
+_ssl__SSLSocket_session_set_impl(PySSLSocket *self, TyObject *value);
 
 static int
-_ssl__SSLSocket_session_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLSocket_session_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_session_set_impl((PySSLSocket *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -754,45 +754,45 @@ PyDoc_STRVAR(_ssl__SSLSocket_session_reused__doc__,
 #  define _SSL__SSLSOCKET_SESSION_REUSED_GETSETDEF {"session_reused", (getter)_ssl__SSLSocket_session_reused_get, NULL, _ssl__SSLSocket_session_reused_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLSocket_session_reused_get_impl(PySSLSocket *self);
 
-static PyObject *
-_ssl__SSLSocket_session_reused_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLSocket_session_reused_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLSocket_session_reused_get_impl((PySSLSocket *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-static PyObject *
-_ssl__SSLContext_impl(PyTypeObject *type, int proto_version);
+static TyObject *
+_ssl__SSLContext_impl(TyTypeObject *type, int proto_version);
 
-static PyObject *
-_ssl__SSLContext(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+_ssl__SSLContext(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = get_state_type(type)->PySSLContext_Type;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = get_state_type(type)->PySSLContext_Type;
     int proto_version;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("_SSLContext", kwargs)) {
+        !_TyArg_NoKeywords("_SSLContext", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("_SSLContext", PyTuple_GET_SIZE(args), 1, 1)) {
+    if (!_TyArg_CheckPositional("_SSLContext", TyTuple_GET_SIZE(args), 1, 1)) {
         goto exit;
     }
-    proto_version = PyLong_AsInt(PyTuple_GET_ITEM(args, 0));
-    if (proto_version == -1 && PyErr_Occurred()) {
+    proto_version = TyLong_AsInt(TyTuple_GET_ITEM(args, 0));
+    if (proto_version == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(type);
+    Ty_BEGIN_CRITICAL_SECTION(type);
     return_value = _ssl__SSLContext_impl(type, proto_version);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -806,31 +806,31 @@ PyDoc_STRVAR(_ssl__SSLContext_set_ciphers__doc__,
 #define _SSL__SSLCONTEXT_SET_CIPHERS_METHODDEF    \
     {"set_ciphers", (PyCFunction)_ssl__SSLContext_set_ciphers, METH_O, _ssl__SSLContext_set_ciphers__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_set_ciphers_impl(PySSLContext *self, const char *cipherlist);
 
-static PyObject *
-_ssl__SSLContext_set_ciphers(PyObject *self, PyObject *arg)
+static TyObject *
+_ssl__SSLContext_set_ciphers(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *cipherlist;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("set_ciphers", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("set_ciphers", "argument", "str", arg);
         goto exit;
     }
-    Py_ssize_t cipherlist_length;
-    cipherlist = PyUnicode_AsUTF8AndSize(arg, &cipherlist_length);
+    Ty_ssize_t cipherlist_length;
+    cipherlist = TyUnicode_AsUTF8AndSize(arg, &cipherlist_length);
     if (cipherlist == NULL) {
         goto exit;
     }
     if (strlen(cipherlist) != (size_t)cipherlist_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_set_ciphers_impl((PySSLContext *)self, cipherlist);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -844,17 +844,17 @@ PyDoc_STRVAR(_ssl__SSLContext_get_ciphers__doc__,
 #define _SSL__SSLCONTEXT_GET_CIPHERS_METHODDEF    \
     {"get_ciphers", (PyCFunction)_ssl__SSLContext_get_ciphers, METH_NOARGS, _ssl__SSLContext_get_ciphers__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_get_ciphers_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_get_ciphers(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLContext_get_ciphers(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_get_ciphers_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -867,22 +867,22 @@ PyDoc_STRVAR(_ssl__SSLContext__set_alpn_protocols__doc__,
 #define _SSL__SSLCONTEXT__SET_ALPN_PROTOCOLS_METHODDEF    \
     {"_set_alpn_protocols", (PyCFunction)_ssl__SSLContext__set_alpn_protocols, METH_O, _ssl__SSLContext__set_alpn_protocols__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext__set_alpn_protocols_impl(PySSLContext *self,
-                                          Py_buffer *protos);
+                                          Ty_buffer *protos);
 
-static PyObject *
-_ssl__SSLContext__set_alpn_protocols(PyObject *self, PyObject *arg)
+static TyObject *
+_ssl__SSLContext__set_alpn_protocols(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer protos = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer protos = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &protos, PyBUF_SIMPLE) != 0) {
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext__set_alpn_protocols_impl((PySSLContext *)self, &protos);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for protos */
@@ -903,17 +903,17 @@ exit:
 #  define _SSL__SSLCONTEXT_VERIFY_MODE_GETSETDEF {"verify_mode", (getter)_ssl__SSLContext_verify_mode_get, NULL, _ssl__SSLContext_verify_mode_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_verify_mode_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_verify_mode_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_verify_mode_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_verify_mode_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -929,16 +929,16 @@ _ssl__SSLContext_verify_mode_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLContext_verify_mode_set_impl(PySSLContext *self, PyObject *value);
+_ssl__SSLContext_verify_mode_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_verify_mode_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLContext_verify_mode_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_verify_mode_set_impl((PySSLContext *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -953,17 +953,17 @@ _ssl__SSLContext_verify_mode_set(PyObject *self, PyObject *value, void *Py_UNUSE
 #  define _SSL__SSLCONTEXT_VERIFY_FLAGS_GETSETDEF {"verify_flags", (getter)_ssl__SSLContext_verify_flags_get, NULL, _ssl__SSLContext_verify_flags_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_verify_flags_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_verify_flags_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_verify_flags_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_verify_flags_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -979,16 +979,16 @@ _ssl__SSLContext_verify_flags_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLContext_verify_flags_set_impl(PySSLContext *self, PyObject *value);
+_ssl__SSLContext_verify_flags_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_verify_flags_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLContext_verify_flags_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_verify_flags_set_impl((PySSLContext *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1003,17 +1003,17 @@ _ssl__SSLContext_verify_flags_set(PyObject *self, PyObject *value, void *Py_UNUS
 #  define _SSL__SSLCONTEXT_MINIMUM_VERSION_GETSETDEF {"minimum_version", (getter)_ssl__SSLContext_minimum_version_get, NULL, _ssl__SSLContext_minimum_version_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_minimum_version_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_minimum_version_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_minimum_version_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_minimum_version_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1030,16 +1030,16 @@ _ssl__SSLContext_minimum_version_get(PyObject *self, void *Py_UNUSED(context))
 
 static int
 _ssl__SSLContext_minimum_version_set_impl(PySSLContext *self,
-                                          PyObject *value);
+                                          TyObject *value);
 
 static int
-_ssl__SSLContext_minimum_version_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLContext_minimum_version_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_minimum_version_set_impl((PySSLContext *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1054,17 +1054,17 @@ _ssl__SSLContext_minimum_version_set(PyObject *self, PyObject *value, void *Py_U
 #  define _SSL__SSLCONTEXT_MAXIMUM_VERSION_GETSETDEF {"maximum_version", (getter)_ssl__SSLContext_maximum_version_get, NULL, _ssl__SSLContext_maximum_version_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_maximum_version_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_maximum_version_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_maximum_version_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_maximum_version_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1081,16 +1081,16 @@ _ssl__SSLContext_maximum_version_get(PyObject *self, void *Py_UNUSED(context))
 
 static int
 _ssl__SSLContext_maximum_version_set_impl(PySSLContext *self,
-                                          PyObject *value);
+                                          TyObject *value);
 
 static int
-_ssl__SSLContext_maximum_version_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLContext_maximum_version_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_maximum_version_set_impl((PySSLContext *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1112,17 +1112,17 @@ PyDoc_STRVAR(_ssl__SSLContext_num_tickets__doc__,
 #  define _SSL__SSLCONTEXT_NUM_TICKETS_GETSETDEF {"num_tickets", (getter)_ssl__SSLContext_num_tickets_get, NULL, _ssl__SSLContext_num_tickets_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_num_tickets_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_num_tickets_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_num_tickets_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_num_tickets_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1138,16 +1138,16 @@ _ssl__SSLContext_num_tickets_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLContext_num_tickets_set_impl(PySSLContext *self, PyObject *value);
+_ssl__SSLContext_num_tickets_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_num_tickets_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLContext_num_tickets_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_num_tickets_set_impl((PySSLContext *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1169,17 +1169,17 @@ PyDoc_STRVAR(_ssl__SSLContext_security_level__doc__,
 #  define _SSL__SSLCONTEXT_SECURITY_LEVEL_GETSETDEF {"security_level", (getter)_ssl__SSLContext_security_level_get, NULL, _ssl__SSLContext_security_level_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_security_level_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_security_level_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_security_level_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_security_level_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1194,17 +1194,17 @@ _ssl__SSLContext_security_level_get(PyObject *self, void *Py_UNUSED(context))
 #  define _SSL__SSLCONTEXT_OPTIONS_GETSETDEF {"options", (getter)_ssl__SSLContext_options_get, NULL, _ssl__SSLContext_options_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_options_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_options_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_options_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_options_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1220,16 +1220,16 @@ _ssl__SSLContext_options_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLContext_options_set_impl(PySSLContext *self, PyObject *value);
+_ssl__SSLContext_options_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_options_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLContext_options_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_options_set_impl((PySSLContext *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1244,17 +1244,17 @@ _ssl__SSLContext_options_set(PyObject *self, PyObject *value, void *Py_UNUSED(co
 #  define _SSL__SSLCONTEXT__HOST_FLAGS_GETSETDEF {"_host_flags", (getter)_ssl__SSLContext__host_flags_get, NULL, _ssl__SSLContext__host_flags_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext__host_flags_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext__host_flags_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext__host_flags_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext__host_flags_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1270,16 +1270,16 @@ _ssl__SSLContext__host_flags_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLContext__host_flags_set_impl(PySSLContext *self, PyObject *value);
+_ssl__SSLContext__host_flags_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext__host_flags_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLContext__host_flags_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext__host_flags_set_impl((PySSLContext *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1294,17 +1294,17 @@ _ssl__SSLContext__host_flags_set(PyObject *self, PyObject *value, void *Py_UNUSE
 #  define _SSL__SSLCONTEXT_CHECK_HOSTNAME_GETSETDEF {"check_hostname", (getter)_ssl__SSLContext_check_hostname_get, NULL, _ssl__SSLContext_check_hostname_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_check_hostname_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_check_hostname_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_check_hostname_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_check_hostname_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1320,16 +1320,16 @@ _ssl__SSLContext_check_hostname_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLContext_check_hostname_set_impl(PySSLContext *self, PyObject *value);
+_ssl__SSLContext_check_hostname_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_check_hostname_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLContext_check_hostname_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_check_hostname_set_impl((PySSLContext *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1344,17 +1344,17 @@ _ssl__SSLContext_check_hostname_set(PyObject *self, PyObject *value, void *Py_UN
 #  define _SSL__SSLCONTEXT_PROTOCOL_GETSETDEF {"protocol", (getter)_ssl__SSLContext_protocol_get, NULL, _ssl__SSLContext_protocol_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_protocol_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_protocol_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_protocol_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_protocol_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1367,48 +1367,48 @@ PyDoc_STRVAR(_ssl__SSLContext_load_cert_chain__doc__,
 #define _SSL__SSLCONTEXT_LOAD_CERT_CHAIN_METHODDEF    \
     {"load_cert_chain", _PyCFunction_CAST(_ssl__SSLContext_load_cert_chain), METH_FASTCALL|METH_KEYWORDS, _ssl__SSLContext_load_cert_chain__doc__},
 
-static PyObject *
-_ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, PyObject *certfile,
-                                      PyObject *keyfile, PyObject *password);
+static TyObject *
+_ssl__SSLContext_load_cert_chain_impl(PySSLContext *self, TyObject *certfile,
+                                      TyObject *keyfile, TyObject *password);
 
-static PyObject *
-_ssl__SSLContext_load_cert_chain(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl__SSLContext_load_cert_chain(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(certfile), &_Py_ID(keyfile), &_Py_ID(password), },
+        .ob_item = { &_Ty_ID(certfile), &_Ty_ID(keyfile), &_Ty_ID(password), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"certfile", "keyfile", "password", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "load_cert_chain",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *certfile;
-    PyObject *keyfile = Py_None;
-    PyObject *password = Py_None;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *certfile;
+    TyObject *keyfile = Ty_None;
+    TyObject *password = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1425,9 +1425,9 @@ _ssl__SSLContext_load_cert_chain(PyObject *self, PyObject *const *args, Py_ssize
     }
     password = args[2];
 skip_optional_pos:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_load_cert_chain_impl((PySSLContext *)self, certfile, keyfile, password);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -1441,50 +1441,50 @@ PyDoc_STRVAR(_ssl__SSLContext_load_verify_locations__doc__,
 #define _SSL__SSLCONTEXT_LOAD_VERIFY_LOCATIONS_METHODDEF    \
     {"load_verify_locations", _PyCFunction_CAST(_ssl__SSLContext_load_verify_locations), METH_FASTCALL|METH_KEYWORDS, _ssl__SSLContext_load_verify_locations__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_load_verify_locations_impl(PySSLContext *self,
-                                            PyObject *cafile,
-                                            PyObject *capath,
-                                            PyObject *cadata);
+                                            TyObject *cafile,
+                                            TyObject *capath,
+                                            TyObject *cadata);
 
-static PyObject *
-_ssl__SSLContext_load_verify_locations(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl__SSLContext_load_verify_locations(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(cafile), &_Py_ID(capath), &_Py_ID(cadata), },
+        .ob_item = { &_Ty_ID(cafile), &_Ty_ID(capath), &_Ty_ID(cadata), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"cafile", "capath", "cadata", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "load_verify_locations",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *cafile = Py_None;
-    PyObject *capath = Py_None;
-    PyObject *cadata = Py_None;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *cafile = Ty_None;
+    TyObject *capath = Ty_None;
+    TyObject *cadata = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1506,9 +1506,9 @@ _ssl__SSLContext_load_verify_locations(PyObject *self, PyObject *const *args, Py
     }
     cadata = args[2];
 skip_optional_pos:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_load_verify_locations_impl((PySSLContext *)self, cafile, capath, cadata);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -1522,17 +1522,17 @@ PyDoc_STRVAR(_ssl__SSLContext_load_dh_params__doc__,
 #define _SSL__SSLCONTEXT_LOAD_DH_PARAMS_METHODDEF    \
     {"load_dh_params", (PyCFunction)_ssl__SSLContext_load_dh_params, METH_O, _ssl__SSLContext_load_dh_params__doc__},
 
-static PyObject *
-_ssl__SSLContext_load_dh_params_impl(PySSLContext *self, PyObject *filepath);
+static TyObject *
+_ssl__SSLContext_load_dh_params_impl(PySSLContext *self, TyObject *filepath);
 
-static PyObject *
-_ssl__SSLContext_load_dh_params(PyObject *self, PyObject *filepath)
+static TyObject *
+_ssl__SSLContext_load_dh_params(TyObject *self, TyObject *filepath)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_load_dh_params_impl((PySSLContext *)self, filepath);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1546,57 +1546,57 @@ PyDoc_STRVAR(_ssl__SSLContext__wrap_socket__doc__,
 #define _SSL__SSLCONTEXT__WRAP_SOCKET_METHODDEF    \
     {"_wrap_socket", _PyCFunction_CAST(_ssl__SSLContext__wrap_socket), METH_FASTCALL|METH_KEYWORDS, _ssl__SSLContext__wrap_socket__doc__},
 
-static PyObject *
-_ssl__SSLContext__wrap_socket_impl(PySSLContext *self, PyObject *sock,
-                                   int server_side, PyObject *hostname_obj,
-                                   PyObject *owner, PyObject *session);
+static TyObject *
+_ssl__SSLContext__wrap_socket_impl(PySSLContext *self, TyObject *sock,
+                                   int server_side, TyObject *hostname_obj,
+                                   TyObject *owner, TyObject *session);
 
-static PyObject *
-_ssl__SSLContext__wrap_socket(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl__SSLContext__wrap_socket(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(sock), &_Py_ID(server_side), &_Py_ID(server_hostname), &_Py_ID(owner), &_Py_ID(session), },
+        .ob_item = { &_Ty_ID(sock), &_Ty_ID(server_side), &_Ty_ID(server_hostname), &_Ty_ID(owner), &_Ty_ID(session), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"sock", "server_side", "server_hostname", "owner", "session", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_wrap_socket",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *sock;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *sock;
     int server_side;
-    PyObject *hostname_obj = Py_None;
-    PyObject *owner = Py_None;
-    PyObject *session = Py_None;
+    TyObject *hostname_obj = Ty_None;
+    TyObject *owner = Ty_None;
+    TyObject *session = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     if (!PyObject_TypeCheck(args[0], get_state_ctx(self)->Sock_Type)) {
-        _PyArg_BadArgument("_wrap_socket", "argument 'sock'", (get_state_ctx(self)->Sock_Type)->tp_name, args[0]);
+        _TyArg_BadArgument("_wrap_socket", "argument 'sock'", (get_state_ctx(self)->Sock_Type)->tp_name, args[0]);
         goto exit;
     }
     sock = args[0];
@@ -1625,9 +1625,9 @@ skip_optional_pos:
     }
     session = args[4];
 skip_optional_kwonly:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext__wrap_socket_impl((PySSLContext *)self, sock, server_side, hostname_obj, owner, session);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -1642,64 +1642,64 @@ PyDoc_STRVAR(_ssl__SSLContext__wrap_bio__doc__,
 #define _SSL__SSLCONTEXT__WRAP_BIO_METHODDEF    \
     {"_wrap_bio", _PyCFunction_CAST(_ssl__SSLContext__wrap_bio), METH_FASTCALL|METH_KEYWORDS, _ssl__SSLContext__wrap_bio__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext__wrap_bio_impl(PySSLContext *self, PySSLMemoryBIO *incoming,
                                 PySSLMemoryBIO *outgoing, int server_side,
-                                PyObject *hostname_obj, PyObject *owner,
-                                PyObject *session);
+                                TyObject *hostname_obj, TyObject *owner,
+                                TyObject *session);
 
-static PyObject *
-_ssl__SSLContext__wrap_bio(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl__SSLContext__wrap_bio(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 6
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(incoming), &_Py_ID(outgoing), &_Py_ID(server_side), &_Py_ID(server_hostname), &_Py_ID(owner), &_Py_ID(session), },
+        .ob_item = { &_Ty_ID(incoming), &_Ty_ID(outgoing), &_Ty_ID(server_side), &_Ty_ID(server_hostname), &_Ty_ID(owner), &_Ty_ID(session), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"incoming", "outgoing", "server_side", "server_hostname", "owner", "session", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_wrap_bio",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[6];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *argsbuf[6];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
     PySSLMemoryBIO *incoming;
     PySSLMemoryBIO *outgoing;
     int server_side;
-    PyObject *hostname_obj = Py_None;
-    PyObject *owner = Py_None;
-    PyObject *session = Py_None;
+    TyObject *hostname_obj = Ty_None;
+    TyObject *owner = Ty_None;
+    TyObject *session = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     if (!PyObject_TypeCheck(args[0], get_state_ctx(self)->PySSLMemoryBIO_Type)) {
-        _PyArg_BadArgument("_wrap_bio", "argument 'incoming'", (get_state_ctx(self)->PySSLMemoryBIO_Type)->tp_name, args[0]);
+        _TyArg_BadArgument("_wrap_bio", "argument 'incoming'", (get_state_ctx(self)->PySSLMemoryBIO_Type)->tp_name, args[0]);
         goto exit;
     }
     incoming = (PySSLMemoryBIO *)args[0];
     if (!PyObject_TypeCheck(args[1], get_state_ctx(self)->PySSLMemoryBIO_Type)) {
-        _PyArg_BadArgument("_wrap_bio", "argument 'outgoing'", (get_state_ctx(self)->PySSLMemoryBIO_Type)->tp_name, args[1]);
+        _TyArg_BadArgument("_wrap_bio", "argument 'outgoing'", (get_state_ctx(self)->PySSLMemoryBIO_Type)->tp_name, args[1]);
         goto exit;
     }
     outgoing = (PySSLMemoryBIO *)args[1];
@@ -1728,9 +1728,9 @@ skip_optional_pos:
     }
     session = args[5];
 skip_optional_kwonly:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext__wrap_bio_impl((PySSLContext *)self, incoming, outgoing, server_side, hostname_obj, owner, session);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -1744,17 +1744,17 @@ PyDoc_STRVAR(_ssl__SSLContext_session_stats__doc__,
 #define _SSL__SSLCONTEXT_SESSION_STATS_METHODDEF    \
     {"session_stats", (PyCFunction)_ssl__SSLContext_session_stats, METH_NOARGS, _ssl__SSLContext_session_stats__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_session_stats_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_session_stats(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLContext_session_stats(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_session_stats_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1767,17 +1767,17 @@ PyDoc_STRVAR(_ssl__SSLContext_set_default_verify_paths__doc__,
 #define _SSL__SSLCONTEXT_SET_DEFAULT_VERIFY_PATHS_METHODDEF    \
     {"set_default_verify_paths", (PyCFunction)_ssl__SSLContext_set_default_verify_paths, METH_NOARGS, _ssl__SSLContext_set_default_verify_paths__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_set_default_verify_paths_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_set_default_verify_paths(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLContext_set_default_verify_paths(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_set_default_verify_paths_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1790,17 +1790,17 @@ PyDoc_STRVAR(_ssl__SSLContext_set_ecdh_curve__doc__,
 #define _SSL__SSLCONTEXT_SET_ECDH_CURVE_METHODDEF    \
     {"set_ecdh_curve", (PyCFunction)_ssl__SSLContext_set_ecdh_curve, METH_O, _ssl__SSLContext_set_ecdh_curve__doc__},
 
-static PyObject *
-_ssl__SSLContext_set_ecdh_curve_impl(PySSLContext *self, PyObject *name);
+static TyObject *
+_ssl__SSLContext_set_ecdh_curve_impl(PySSLContext *self, TyObject *name);
 
-static PyObject *
-_ssl__SSLContext_set_ecdh_curve(PyObject *self, PyObject *name)
+static TyObject *
+_ssl__SSLContext_set_ecdh_curve(TyObject *self, TyObject *name)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_set_ecdh_curve_impl((PySSLContext *)self, name);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1827,17 +1827,17 @@ PyDoc_STRVAR(_ssl__SSLContext_sni_callback__doc__,
 #  define _SSL__SSLCONTEXT_SNI_CALLBACK_GETSETDEF {"sni_callback", (getter)_ssl__SSLContext_sni_callback_get, NULL, _ssl__SSLContext_sni_callback_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_sni_callback_get_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_sni_callback_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl__SSLContext_sni_callback_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_sni_callback_get_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1853,16 +1853,16 @@ _ssl__SSLContext_sni_callback_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_ssl__SSLContext_sni_callback_set_impl(PySSLContext *self, PyObject *value);
+_ssl__SSLContext_sni_callback_set_impl(PySSLContext *self, TyObject *value);
 
 static int
-_ssl__SSLContext_sni_callback_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_ssl__SSLContext_sni_callback_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_sni_callback_set_impl((PySSLContext *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1882,17 +1882,17 @@ PyDoc_STRVAR(_ssl__SSLContext_cert_store_stats__doc__,
 #define _SSL__SSLCONTEXT_CERT_STORE_STATS_METHODDEF    \
     {"cert_store_stats", (PyCFunction)_ssl__SSLContext_cert_store_stats, METH_NOARGS, _ssl__SSLContext_cert_store_stats__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_cert_store_stats_impl(PySSLContext *self);
 
-static PyObject *
-_ssl__SSLContext_cert_store_stats(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl__SSLContext_cert_store_stats(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_cert_store_stats_impl((PySSLContext *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1912,45 +1912,45 @@ PyDoc_STRVAR(_ssl__SSLContext_get_ca_certs__doc__,
 #define _SSL__SSLCONTEXT_GET_CA_CERTS_METHODDEF    \
     {"get_ca_certs", _PyCFunction_CAST(_ssl__SSLContext_get_ca_certs), METH_FASTCALL|METH_KEYWORDS, _ssl__SSLContext_get_ca_certs__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_get_ca_certs_impl(PySSLContext *self, int binary_form);
 
-static PyObject *
-_ssl__SSLContext_get_ca_certs(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl__SSLContext_get_ca_certs(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(binary_form), },
+        .ob_item = { &_Ty_ID(binary_form), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"binary_form", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "get_ca_certs",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int binary_form = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1963,9 +1963,9 @@ _ssl__SSLContext_get_ca_certs(PyObject *self, PyObject *const *args, Py_ssize_t 
         goto exit;
     }
 skip_optional_pos:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_get_ca_certs_impl((PySSLContext *)self, binary_form);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -1979,53 +1979,53 @@ PyDoc_STRVAR(_ssl__SSLContext_set_psk_client_callback__doc__,
 #define _SSL__SSLCONTEXT_SET_PSK_CLIENT_CALLBACK_METHODDEF    \
     {"set_psk_client_callback", _PyCFunction_CAST(_ssl__SSLContext_set_psk_client_callback), METH_FASTCALL|METH_KEYWORDS, _ssl__SSLContext_set_psk_client_callback__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_set_psk_client_callback_impl(PySSLContext *self,
-                                              PyObject *callback);
+                                              TyObject *callback);
 
-static PyObject *
-_ssl__SSLContext_set_psk_client_callback(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl__SSLContext_set_psk_client_callback(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(callback), },
+        .ob_item = { &_Ty_ID(callback), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"callback", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "set_psk_client_callback",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *callback;
+    TyObject *argsbuf[1];
+    TyObject *callback;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     callback = args[0];
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_set_psk_client_callback_impl((PySSLContext *)self, callback);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -2039,48 +2039,48 @@ PyDoc_STRVAR(_ssl__SSLContext_set_psk_server_callback__doc__,
 #define _SSL__SSLCONTEXT_SET_PSK_SERVER_CALLBACK_METHODDEF    \
     {"set_psk_server_callback", _PyCFunction_CAST(_ssl__SSLContext_set_psk_server_callback), METH_FASTCALL|METH_KEYWORDS, _ssl__SSLContext_set_psk_server_callback__doc__},
 
-static PyObject *
+static TyObject *
 _ssl__SSLContext_set_psk_server_callback_impl(PySSLContext *self,
-                                              PyObject *callback,
+                                              TyObject *callback,
                                               const char *identity_hint);
 
-static PyObject *
-_ssl__SSLContext_set_psk_server_callback(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl__SSLContext_set_psk_server_callback(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(callback), &_Py_ID(identity_hint), },
+        .ob_item = { &_Ty_ID(callback), &_Ty_ID(identity_hint), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"callback", "identity_hint", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "set_psk_server_callback",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *callback;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *callback;
     const char *identity_hint = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2089,53 +2089,53 @@ _ssl__SSLContext_set_psk_server_callback(PyObject *self, PyObject *const *args, 
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         identity_hint = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        Py_ssize_t identity_hint_length;
-        identity_hint = PyUnicode_AsUTF8AndSize(args[1], &identity_hint_length);
+    else if (TyUnicode_Check(args[1])) {
+        Ty_ssize_t identity_hint_length;
+        identity_hint = TyUnicode_AsUTF8AndSize(args[1], &identity_hint_length);
         if (identity_hint == NULL) {
             goto exit;
         }
         if (strlen(identity_hint) != (size_t)identity_hint_length) {
-            PyErr_SetString(PyExc_ValueError, "embedded null character");
+            TyErr_SetString(TyExc_ValueError, "embedded null character");
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("set_psk_server_callback", "argument 'identity_hint'", "str or None", args[1]);
+        _TyArg_BadArgument("set_psk_server_callback", "argument 'identity_hint'", "str or None", args[1]);
         goto exit;
     }
 skip_optional_pos:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl__SSLContext_set_psk_server_callback_impl((PySSLContext *)self, callback, identity_hint);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
 }
 
-static PyObject *
-_ssl_MemoryBIO_impl(PyTypeObject *type);
+static TyObject *
+_ssl_MemoryBIO_impl(TyTypeObject *type);
 
-static PyObject *
-_ssl_MemoryBIO(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+_ssl_MemoryBIO(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = get_state_type(type)->PySSLMemoryBIO_Type;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = get_state_type(type)->PySSLMemoryBIO_Type;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoPositional("MemoryBIO", args)) {
+        !_TyArg_NoPositional("MemoryBIO", args)) {
         goto exit;
     }
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("MemoryBIO", kwargs)) {
+        !_TyArg_NoKeywords("MemoryBIO", kwargs)) {
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(type);
+    Ty_BEGIN_CRITICAL_SECTION(type);
     return_value = _ssl_MemoryBIO_impl(type);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -2158,17 +2158,17 @@ PyDoc_STRVAR(_ssl_MemoryBIO_pending__doc__,
 #  define _SSL_MEMORYBIO_PENDING_GETSETDEF {"pending", (getter)_ssl_MemoryBIO_pending_get, NULL, _ssl_MemoryBIO_pending_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl_MemoryBIO_pending_get_impl(PySSLMemoryBIO *self);
 
-static PyObject *
-_ssl_MemoryBIO_pending_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl_MemoryBIO_pending_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_MemoryBIO_pending_get_impl((PySSLMemoryBIO *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2190,17 +2190,17 @@ PyDoc_STRVAR(_ssl_MemoryBIO_eof__doc__,
 #  define _SSL_MEMORYBIO_EOF_GETSETDEF {"eof", (getter)_ssl_MemoryBIO_eof_get, NULL, _ssl_MemoryBIO_eof_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl_MemoryBIO_eof_get_impl(PySSLMemoryBIO *self);
 
-static PyObject *
-_ssl_MemoryBIO_eof_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl_MemoryBIO_eof_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_MemoryBIO_eof_get_impl((PySSLMemoryBIO *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2219,29 +2219,29 @@ PyDoc_STRVAR(_ssl_MemoryBIO_read__doc__,
 #define _SSL_MEMORYBIO_READ_METHODDEF    \
     {"read", _PyCFunction_CAST(_ssl_MemoryBIO_read), METH_FASTCALL, _ssl_MemoryBIO_read__doc__},
 
-static PyObject *
+static TyObject *
 _ssl_MemoryBIO_read_impl(PySSLMemoryBIO *self, int len);
 
-static PyObject *
-_ssl_MemoryBIO_read(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_ssl_MemoryBIO_read(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int len = -1;
 
-    if (!_PyArg_CheckPositional("read", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("read", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    len = PyLong_AsInt(args[0]);
-    if (len == -1 && PyErr_Occurred()) {
+    len = TyLong_AsInt(args[0]);
+    if (len == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_MemoryBIO_read_impl((PySSLMemoryBIO *)self, len);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -2258,21 +2258,21 @@ PyDoc_STRVAR(_ssl_MemoryBIO_write__doc__,
 #define _SSL_MEMORYBIO_WRITE_METHODDEF    \
     {"write", (PyCFunction)_ssl_MemoryBIO_write, METH_O, _ssl_MemoryBIO_write__doc__},
 
-static PyObject *
-_ssl_MemoryBIO_write_impl(PySSLMemoryBIO *self, Py_buffer *b);
+static TyObject *
+_ssl_MemoryBIO_write_impl(PySSLMemoryBIO *self, Ty_buffer *b);
 
-static PyObject *
-_ssl_MemoryBIO_write(PyObject *self, PyObject *arg)
+static TyObject *
+_ssl_MemoryBIO_write(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer b = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer b = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &b, PyBUF_SIMPLE) != 0) {
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_MemoryBIO_write_impl((PySSLMemoryBIO *)self, &b);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for b */
@@ -2294,17 +2294,17 @@ PyDoc_STRVAR(_ssl_MemoryBIO_write_eof__doc__,
 #define _SSL_MEMORYBIO_WRITE_EOF_METHODDEF    \
     {"write_eof", (PyCFunction)_ssl_MemoryBIO_write_eof, METH_NOARGS, _ssl_MemoryBIO_write_eof__doc__},
 
-static PyObject *
+static TyObject *
 _ssl_MemoryBIO_write_eof_impl(PySSLMemoryBIO *self);
 
-static PyObject *
-_ssl_MemoryBIO_write_eof(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl_MemoryBIO_write_eof(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_MemoryBIO_write_eof_impl((PySSLMemoryBIO *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2326,17 +2326,17 @@ PyDoc_STRVAR(_ssl_SSLSession_time__doc__,
 #  define _SSL_SSLSESSION_TIME_GETSETDEF {"time", (getter)_ssl_SSLSession_time_get, NULL, _ssl_SSLSession_time_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_time_get_impl(PySSLSession *self);
 
-static PyObject *
-_ssl_SSLSession_time_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl_SSLSession_time_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_SSLSession_time_get_impl((PySSLSession *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2358,17 +2358,17 @@ PyDoc_STRVAR(_ssl_SSLSession_timeout__doc__,
 #  define _SSL_SSLSESSION_TIMEOUT_GETSETDEF {"timeout", (getter)_ssl_SSLSession_timeout_get, NULL, _ssl_SSLSession_timeout_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_timeout_get_impl(PySSLSession *self);
 
-static PyObject *
-_ssl_SSLSession_timeout_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl_SSLSession_timeout_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_SSLSession_timeout_get_impl((PySSLSession *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2390,17 +2390,17 @@ PyDoc_STRVAR(_ssl_SSLSession_ticket_lifetime_hint__doc__,
 #  define _SSL_SSLSESSION_TICKET_LIFETIME_HINT_GETSETDEF {"ticket_lifetime_hint", (getter)_ssl_SSLSession_ticket_lifetime_hint_get, NULL, _ssl_SSLSession_ticket_lifetime_hint_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_ticket_lifetime_hint_get_impl(PySSLSession *self);
 
-static PyObject *
-_ssl_SSLSession_ticket_lifetime_hint_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl_SSLSession_ticket_lifetime_hint_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_SSLSession_ticket_lifetime_hint_get_impl((PySSLSession *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2422,17 +2422,17 @@ PyDoc_STRVAR(_ssl_SSLSession_id__doc__,
 #  define _SSL_SSLSESSION_ID_GETSETDEF {"id", (getter)_ssl_SSLSession_id_get, NULL, _ssl_SSLSession_id_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_id_get_impl(PySSLSession *self);
 
-static PyObject *
-_ssl_SSLSession_id_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl_SSLSession_id_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_SSLSession_id_get_impl((PySSLSession *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2454,17 +2454,17 @@ PyDoc_STRVAR(_ssl_SSLSession_has_ticket__doc__,
 #  define _SSL_SSLSESSION_HAS_TICKET_GETSETDEF {"has_ticket", (getter)_ssl_SSLSession_has_ticket_get, NULL, _ssl_SSLSession_has_ticket_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _ssl_SSLSession_has_ticket_get_impl(PySSLSession *self);
 
-static PyObject *
-_ssl_SSLSession_has_ticket_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_ssl_SSLSession_has_ticket_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _ssl_SSLSession_has_ticket_get_impl((PySSLSession *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2481,22 +2481,22 @@ PyDoc_STRVAR(_ssl_RAND_add__doc__,
 #define _SSL_RAND_ADD_METHODDEF    \
     {"RAND_add", _PyCFunction_CAST(_ssl_RAND_add), METH_FASTCALL, _ssl_RAND_add__doc__},
 
-static PyObject *
-_ssl_RAND_add_impl(PyObject *module, Py_buffer *view, double entropy);
+static TyObject *
+_ssl_RAND_add_impl(TyObject *module, Ty_buffer *view, double entropy);
 
-static PyObject *
-_ssl_RAND_add(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_ssl_RAND_add(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_buffer view = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer view = {NULL, NULL};
     double entropy;
 
-    if (!_PyArg_CheckPositional("RAND_add", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("RAND_add", nargs, 2, 2)) {
         goto exit;
     }
-    if (PyUnicode_Check(args[0])) {
-        Py_ssize_t len;
-        const char *ptr = PyUnicode_AsUTF8AndSize(args[0], &len);
+    if (TyUnicode_Check(args[0])) {
+        Ty_ssize_t len;
+        const char *ptr = TyUnicode_AsUTF8AndSize(args[0], &len);
         if (ptr == NULL) {
             goto exit;
         }
@@ -2509,19 +2509,19 @@ _ssl_RAND_add(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
             goto exit;
         }
     }
-    if (PyFloat_CheckExact(args[1])) {
-        entropy = PyFloat_AS_DOUBLE(args[1]);
+    if (TyFloat_CheckExact(args[1])) {
+        entropy = TyFloat_AS_DOUBLE(args[1]);
     }
     else
     {
-        entropy = PyFloat_AsDouble(args[1]);
-        if (entropy == -1.0 && PyErr_Occurred()) {
+        entropy = TyFloat_AsDouble(args[1]);
+        if (entropy == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = _ssl_RAND_add_impl(module, &view, entropy);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for view */
@@ -2541,22 +2541,22 @@ PyDoc_STRVAR(_ssl_RAND_bytes__doc__,
 #define _SSL_RAND_BYTES_METHODDEF    \
     {"RAND_bytes", (PyCFunction)_ssl_RAND_bytes, METH_O, _ssl_RAND_bytes__doc__},
 
-static PyObject *
-_ssl_RAND_bytes_impl(PyObject *module, int n);
+static TyObject *
+_ssl_RAND_bytes_impl(TyObject *module, int n);
 
-static PyObject *
-_ssl_RAND_bytes(PyObject *module, PyObject *arg)
+static TyObject *
+_ssl_RAND_bytes(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int n;
 
-    n = PyLong_AsInt(arg);
-    if (n == -1 && PyErr_Occurred()) {
+    n = TyLong_AsInt(arg);
+    if (n == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = _ssl_RAND_bytes_impl(module, n);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -2574,17 +2574,17 @@ PyDoc_STRVAR(_ssl_RAND_status__doc__,
 #define _SSL_RAND_STATUS_METHODDEF    \
     {"RAND_status", (PyCFunction)_ssl_RAND_status, METH_NOARGS, _ssl_RAND_status__doc__},
 
-static PyObject *
-_ssl_RAND_status_impl(PyObject *module);
+static TyObject *
+_ssl_RAND_status_impl(TyObject *module);
 
-static PyObject *
-_ssl_RAND_status(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl_RAND_status(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = _ssl_RAND_status_impl(module);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2600,17 +2600,17 @@ PyDoc_STRVAR(_ssl_get_default_verify_paths__doc__,
 #define _SSL_GET_DEFAULT_VERIFY_PATHS_METHODDEF    \
     {"get_default_verify_paths", (PyCFunction)_ssl_get_default_verify_paths, METH_NOARGS, _ssl_get_default_verify_paths__doc__},
 
-static PyObject *
-_ssl_get_default_verify_paths_impl(PyObject *module);
+static TyObject *
+_ssl_get_default_verify_paths_impl(TyObject *module);
 
-static PyObject *
-_ssl_get_default_verify_paths(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_ssl_get_default_verify_paths(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = _ssl_get_default_verify_paths_impl(module);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -2627,61 +2627,61 @@ PyDoc_STRVAR(_ssl_txt2obj__doc__,
 #define _SSL_TXT2OBJ_METHODDEF    \
     {"txt2obj", _PyCFunction_CAST(_ssl_txt2obj), METH_FASTCALL|METH_KEYWORDS, _ssl_txt2obj__doc__},
 
-static PyObject *
-_ssl_txt2obj_impl(PyObject *module, const char *txt, int name);
+static TyObject *
+_ssl_txt2obj_impl(TyObject *module, const char *txt, int name);
 
-static PyObject *
-_ssl_txt2obj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl_txt2obj(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(txt), &_Py_ID(name), },
+        .ob_item = { &_Ty_ID(txt), &_Ty_ID(name), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"txt", "name", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "txt2obj",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     const char *txt;
     int name = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("txt2obj", "argument 'txt'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("txt2obj", "argument 'txt'", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t txt_length;
-    txt = PyUnicode_AsUTF8AndSize(args[0], &txt_length);
+    Ty_ssize_t txt_length;
+    txt = TyUnicode_AsUTF8AndSize(args[0], &txt_length);
     if (txt == NULL) {
         goto exit;
     }
     if (strlen(txt) != (size_t)txt_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     if (!noptargs) {
@@ -2692,9 +2692,9 @@ _ssl_txt2obj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject
         goto exit;
     }
 skip_optional_pos:
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = _ssl_txt2obj_impl(module, txt, name);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -2709,22 +2709,22 @@ PyDoc_STRVAR(_ssl_nid2obj__doc__,
 #define _SSL_NID2OBJ_METHODDEF    \
     {"nid2obj", (PyCFunction)_ssl_nid2obj, METH_O, _ssl_nid2obj__doc__},
 
-static PyObject *
-_ssl_nid2obj_impl(PyObject *module, int nid);
+static TyObject *
+_ssl_nid2obj_impl(TyObject *module, int nid);
 
-static PyObject *
-_ssl_nid2obj(PyObject *module, PyObject *arg)
+static TyObject *
+_ssl_nid2obj(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int nid;
 
-    nid = PyLong_AsInt(arg);
-    if (nid == -1 && PyErr_Occurred()) {
+    nid = TyLong_AsInt(arg);
+    if (nid == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = _ssl_nid2obj_impl(module, nid);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -2747,64 +2747,64 @@ PyDoc_STRVAR(_ssl_enum_certificates__doc__,
 #define _SSL_ENUM_CERTIFICATES_METHODDEF    \
     {"enum_certificates", _PyCFunction_CAST(_ssl_enum_certificates), METH_FASTCALL|METH_KEYWORDS, _ssl_enum_certificates__doc__},
 
-static PyObject *
-_ssl_enum_certificates_impl(PyObject *module, const char *store_name);
+static TyObject *
+_ssl_enum_certificates_impl(TyObject *module, const char *store_name);
 
-static PyObject *
-_ssl_enum_certificates(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl_enum_certificates(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(store_name), },
+        .ob_item = { &_Ty_ID(store_name), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"store_name", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "enum_certificates",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     const char *store_name;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("enum_certificates", "argument 'store_name'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("enum_certificates", "argument 'store_name'", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t store_name_length;
-    store_name = PyUnicode_AsUTF8AndSize(args[0], &store_name_length);
+    Ty_ssize_t store_name_length;
+    store_name = TyUnicode_AsUTF8AndSize(args[0], &store_name_length);
     if (store_name == NULL) {
         goto exit;
     }
     if (strlen(store_name) != (size_t)store_name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = _ssl_enum_certificates_impl(module, store_name);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -2828,64 +2828,64 @@ PyDoc_STRVAR(_ssl_enum_crls__doc__,
 #define _SSL_ENUM_CRLS_METHODDEF    \
     {"enum_crls", _PyCFunction_CAST(_ssl_enum_crls), METH_FASTCALL|METH_KEYWORDS, _ssl_enum_crls__doc__},
 
-static PyObject *
-_ssl_enum_crls_impl(PyObject *module, const char *store_name);
+static TyObject *
+_ssl_enum_crls_impl(TyObject *module, const char *store_name);
 
-static PyObject *
-_ssl_enum_crls(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_ssl_enum_crls(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(store_name), },
+        .ob_item = { &_Ty_ID(store_name), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"store_name", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "enum_crls",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     const char *store_name;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("enum_crls", "argument 'store_name'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("enum_crls", "argument 'store_name'", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t store_name_length;
-    store_name = PyUnicode_AsUTF8AndSize(args[0], &store_name_length);
+    Ty_ssize_t store_name_length;
+    store_name = TyUnicode_AsUTF8AndSize(args[0], &store_name_length);
     if (store_name == NULL) {
         goto exit;
     }
     if (strlen(store_name) != (size_t)store_name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = _ssl_enum_crls_impl(module, store_name);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;

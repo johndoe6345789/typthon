@@ -18,39 +18,39 @@ _testcapi.err_set_raised
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_err_set_raised(PyObject *module, PyObject *exc)
+static TyObject *
+_testcapi_err_set_raised(TyObject *module, TyObject *exc)
 /*[clinic end generated code: output=0a0c7743961fcae5 input=c5f7331864a94df9]*/
 {
-    Py_INCREF(exc);
-    PyErr_SetRaisedException(exc);
-    assert(PyErr_Occurred());
+    Ty_INCREF(exc);
+    TyErr_SetRaisedException(exc);
+    assert(TyErr_Occurred());
     return NULL;
 }
 
-static PyObject *
-err_restore(PyObject *self, PyObject *args) {
-    PyObject *type = NULL, *value = NULL, *traceback = NULL;
-    switch(PyTuple_Size(args)) {
+static TyObject *
+err_restore(TyObject *self, TyObject *args) {
+    TyObject *type = NULL, *value = NULL, *traceback = NULL;
+    switch(TyTuple_Size(args)) {
         case 3:
-            traceback = PyTuple_GetItem(args, 2);
-            Py_INCREF(traceback);
-            _Py_FALLTHROUGH;
+            traceback = TyTuple_GetItem(args, 2);
+            Ty_INCREF(traceback);
+            _Ty_FALLTHROUGH;
         case 2:
-            value = PyTuple_GetItem(args, 1);
-            Py_INCREF(value);
-            _Py_FALLTHROUGH;
+            value = TyTuple_GetItem(args, 1);
+            Ty_INCREF(value);
+            _Ty_FALLTHROUGH;
         case 1:
-            type = PyTuple_GetItem(args, 0);
-            Py_INCREF(type);
+            type = TyTuple_GetItem(args, 0);
+            Ty_INCREF(type);
             break;
         default:
-            PyErr_SetString(PyExc_TypeError,
+            TyErr_SetString(TyExc_TypeError,
                         "wrong number of arguments");
             return NULL;
     }
-    PyErr_Restore(type, value, traceback);
-    assert(PyErr_Occurred());
+    TyErr_Restore(type, value, traceback);
+    assert(TyErr_Occurred());
     return NULL;
 }
 
@@ -63,22 +63,22 @@ _testcapi.exception_print
 To test the format of exceptions as printed out.
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_exception_print_impl(PyObject *module, PyObject *exc, int legacy)
+static TyObject *
+_testcapi_exception_print_impl(TyObject *module, TyObject *exc, int legacy)
 /*[clinic end generated code: output=3f04fe0c18412ae0 input=c76f42cb94136dbf]*/
 {
     if (legacy) {
-        PyObject *tb = NULL;
+        TyObject *tb = NULL;
         if (PyExceptionInstance_Check(exc)) {
             tb = PyException_GetTraceback(exc);
         }
-        PyErr_Display((PyObject *) Py_TYPE(exc), exc, tb);
-        Py_XDECREF(tb);
+        TyErr_Display((TyObject *) Ty_TYPE(exc), exc, tb);
+        Ty_XDECREF(tb);
     }
     else {
-        PyErr_DisplayException(exc);
+        TyErr_DisplayException(exc);
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -88,16 +88,16 @@ _testcapi.make_exception_with_doc
     base: object = NULL
     dict: object = NULL
 
-Test PyErr_NewExceptionWithDoc (also exercise PyErr_NewException). Run via Lib/test/test_exceptions.py
+Test TyErr_NewExceptionWithDoc (also exercise TyErr_NewException). Run via Lib/test/test_exceptions.py
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_make_exception_with_doc_impl(PyObject *module, const char *name,
-                                       const char *doc, PyObject *base,
-                                       PyObject *dict)
+static TyObject *
+_testcapi_make_exception_with_doc_impl(TyObject *module, const char *name,
+                                       const char *doc, TyObject *base,
+                                       TyObject *dict)
 /*[clinic end generated code: output=439f0d963c1ce2c4 input=23a73013f8a8795a]*/
 {
-    return PyErr_NewExceptionWithDoc(name, doc, base, dict);
+    return TyErr_NewExceptionWithDoc(name, doc, base, dict);
 }
 
 /*[clinic input]
@@ -107,11 +107,11 @@ _testcapi.exc_set_object
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_exc_set_object_impl(PyObject *module, PyObject *exc, PyObject *obj)
+static TyObject *
+_testcapi_exc_set_object_impl(TyObject *module, TyObject *exc, TyObject *obj)
 /*[clinic end generated code: output=34c8c7c83e5c8463 input=fc530aafb1b0a360]*/
 {
-    PyErr_SetObject(exc, obj);
+    TyErr_SetObject(exc, obj);
     return NULL;
 }
 
@@ -119,22 +119,22 @@ _testcapi_exc_set_object_impl(PyObject *module, PyObject *exc, PyObject *obj)
 _testcapi.exc_set_object_fetch = _testcapi.exc_set_object
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_exc_set_object_fetch_impl(PyObject *module, PyObject *exc,
-                                    PyObject *obj)
+static TyObject *
+_testcapi_exc_set_object_fetch_impl(TyObject *module, TyObject *exc,
+                                    TyObject *obj)
 /*[clinic end generated code: output=7a5ff5f6d3cf687f input=77ec686f1f95fa38]*/
 {
-    PyObject *type = UNINITIALIZED_PTR;
-    PyObject *value = UNINITIALIZED_PTR;
-    PyObject *tb = UNINITIALIZED_PTR;
+    TyObject *type = UNINITIALIZED_PTR;
+    TyObject *value = UNINITIALIZED_PTR;
+    TyObject *tb = UNINITIALIZED_PTR;
 
-    PyErr_SetObject(exc, obj);
-    PyErr_Fetch(&type, &value, &tb);
+    TyErr_SetObject(exc, obj);
+    TyErr_Fetch(&type, &value, &tb);
     assert(type != UNINITIALIZED_PTR);
     assert(value != UNINITIALIZED_PTR);
     assert(tb != UNINITIALIZED_PTR);
-    Py_XDECREF(type);
-    Py_XDECREF(tb);
+    Ty_XDECREF(type);
+    Ty_XDECREF(tb);
     return value;
 }
 
@@ -145,13 +145,13 @@ _testcapi.err_setstring
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_err_setstring_impl(PyObject *module, PyObject *exc,
-                             const char *value, Py_ssize_t value_length)
+static TyObject *
+_testcapi_err_setstring_impl(TyObject *module, TyObject *exc,
+                             const char *value, Ty_ssize_t value_length)
 /*[clinic end generated code: output=fba8705e5703dd3f input=e8a95fad66d9004b]*/
 {
     NULLABLE(exc);
-    PyErr_SetString(exc, value);
+    TyErr_SetString(exc, value);
     return NULL;
 }
 
@@ -163,15 +163,15 @@ _testcapi.err_setfromerrnowithfilename
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_err_setfromerrnowithfilename_impl(PyObject *module, int error,
-                                            PyObject *exc, const char *value,
-                                            Py_ssize_t value_length)
+static TyObject *
+_testcapi_err_setfromerrnowithfilename_impl(TyObject *module, int error,
+                                            TyObject *exc, const char *value,
+                                            Ty_ssize_t value_length)
 /*[clinic end generated code: output=d02df5749a01850e input=ff7c384234bf097f]*/
 {
     NULLABLE(exc);
     errno = error;
-    PyErr_SetFromErrnoWithFilename(exc, value);
+    TyErr_SetFromErrnoWithFilename(exc, value);
     return NULL;
 }
 
@@ -182,24 +182,24 @@ _testcapi.raise_exception
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_raise_exception_impl(PyObject *module, PyObject *exc, int num_args)
+static TyObject *
+_testcapi_raise_exception_impl(TyObject *module, TyObject *exc, int num_args)
 /*[clinic end generated code: output=eb0a9c5d69e0542d input=83d6262c3829d088]*/
 {
-    PyObject *exc_args = PyTuple_New(num_args);
+    TyObject *exc_args = TyTuple_New(num_args);
     if (exc_args == NULL) {
         return NULL;
     }
     for (int i = 0; i < num_args; ++i) {
-        PyObject *v = PyLong_FromLong(i);
+        TyObject *v = TyLong_FromLong(i);
         if (v == NULL) {
-            Py_DECREF(exc_args);
+            Ty_DECREF(exc_args);
             return NULL;
         }
-        PyTuple_SET_ITEM(exc_args, i, v);
+        TyTuple_SET_ITEM(exc_args, i, v);
     }
-    PyErr_SetObject(exc, exc_args);
-    Py_DECREF(exc_args);
+    TyErr_SetObject(exc, exc_args);
+    Ty_DECREF(exc_args);
     return NULL;
 }
 
@@ -207,11 +207,11 @@ _testcapi_raise_exception_impl(PyObject *module, PyObject *exc, int num_args)
 _testcapi.raise_memoryerror
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_raise_memoryerror_impl(PyObject *module)
+static TyObject *
+_testcapi_raise_memoryerror_impl(TyObject *module)
 /*[clinic end generated code: output=dd057803fb0131e6 input=6ca521bd07fb73cb]*/
 {
-    return PyErr_NoMemory();
+    return TyErr_NoMemory();
 }
 
 /*[clinic input]
@@ -221,21 +221,21 @@ _testcapi.fatal_error
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_fatal_error_impl(PyObject *module, const char *message,
+static TyObject *
+_testcapi_fatal_error_impl(TyObject *module, const char *message,
                            int release_gil)
 /*[clinic end generated code: output=9c3237116e6a03e8 input=1be357a2ccb04c8c]*/
 {
     if (release_gil) {
-        Py_BEGIN_ALLOW_THREADS
-        Py_FatalError(message);
-        Py_END_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
+        Ty_FatalError(message);
+        Ty_END_ALLOW_THREADS
     }
     else {
-        Py_FatalError(message);
+        Ty_FatalError(message);
     }
-    // Py_FatalError() does not return, but exits the process.
-    Py_RETURN_NONE;
+    // Ty_FatalError() does not return, but exits the process.
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -246,26 +246,26 @@ _testcapi.set_exc_info
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_set_exc_info_impl(PyObject *module, PyObject *new_type,
-                            PyObject *new_value, PyObject *new_tb)
+static TyObject *
+_testcapi_set_exc_info_impl(TyObject *module, TyObject *new_type,
+                            TyObject *new_value, TyObject *new_tb)
 /*[clinic end generated code: output=b55fa35dec31300e input=ea9f19e0f55fe5b3]*/
 {
-    PyObject *type = UNINITIALIZED_PTR, *value = UNINITIALIZED_PTR, *tb = UNINITIALIZED_PTR;
-    PyErr_GetExcInfo(&type, &value, &tb);
+    TyObject *type = UNINITIALIZED_PTR, *value = UNINITIALIZED_PTR, *tb = UNINITIALIZED_PTR;
+    TyErr_GetExcInfo(&type, &value, &tb);
 
-    Py_INCREF(new_type);
-    Py_INCREF(new_value);
-    Py_INCREF(new_tb);
-    PyErr_SetExcInfo(new_type, new_value, new_tb);
+    Ty_INCREF(new_type);
+    Ty_INCREF(new_value);
+    Ty_INCREF(new_tb);
+    TyErr_SetExcInfo(new_type, new_value, new_tb);
 
-    PyObject *orig_exc = PyTuple_Pack(3,
-            type  ? type  : Py_None,
-            value ? value : Py_None,
-            tb    ? tb    : Py_None);
-    Py_XDECREF(type);
-    Py_XDECREF(value);
-    Py_XDECREF(tb);
+    TyObject *orig_exc = TyTuple_Pack(3,
+            type  ? type  : Ty_None,
+            value ? value : Ty_None,
+            tb    ? tb    : Ty_None);
+    Ty_XDECREF(type);
+    Ty_XDECREF(value);
+    Ty_XDECREF(tb);
     return orig_exc;
 }
 
@@ -275,13 +275,13 @@ _testcapi.set_exception
     /
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_set_exception(PyObject *module, PyObject *new_exc)
+static TyObject *
+_testcapi_set_exception(TyObject *module, TyObject *new_exc)
 /*[clinic end generated code: output=8b969b35d029e96d input=c89d4ca966c69738]*/
 {
-    PyObject *exc = PyErr_GetHandledException();
+    TyObject *exc = TyErr_GetHandledException();
     assert(PyExceptionInstance_Check(exc) || exc == NULL);
-    PyErr_SetHandledException(new_exc);
+    TyErr_SetHandledException(new_exc);
     return exc;
 }
 
@@ -293,42 +293,42 @@ _testcapi.traceback_print
 To test the format of tracebacks as printed out.
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_traceback_print_impl(PyObject *module, PyObject *traceback,
-                               PyObject *file)
+static TyObject *
+_testcapi_traceback_print_impl(TyObject *module, TyObject *traceback,
+                               TyObject *file)
 /*[clinic end generated code: output=17074ecf9d95cf30 input=9423f2857b008ca8]*/
 {
     if (PyTraceBack_Print(traceback, file) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
-static PyObject *
-err_writeunraisable(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+err_writeunraisable(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *exc, *obj;
-    if (!PyArg_ParseTuple(args, "OO", &exc, &obj)) {
+    TyObject *exc, *obj;
+    if (!TyArg_ParseTuple(args, "OO", &exc, &obj)) {
         return NULL;
     }
     NULLABLE(exc);
     NULLABLE(obj);
     if (exc) {
-        PyErr_SetRaisedException(Py_NewRef(exc));
+        TyErr_SetRaisedException(Ty_NewRef(exc));
     }
-    PyErr_WriteUnraisable(obj);
-    Py_RETURN_NONE;
+    TyErr_WriteUnraisable(obj);
+    Ty_RETURN_NONE;
 }
 
-static PyObject *
-err_formatunraisable(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+err_formatunraisable(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *exc;
+    TyObject *exc;
     const char *fmt;
-    Py_ssize_t fmtlen;
-    PyObject *objs[10] = {NULL};
+    Ty_ssize_t fmtlen;
+    TyObject *objs[10] = {NULL};
 
-    if (!PyArg_ParseTuple(args, "Oz#|OOOOOOOOOO", &exc, &fmt, &fmtlen,
+    if (!TyArg_ParseTuple(args, "Oz#|OOOOOOOOOO", &exc, &fmt, &fmtlen,
             &objs[0], &objs[1], &objs[2], &objs[3], &objs[4],
             &objs[5], &objs[6], &objs[7], &objs[8], &objs[9]))
     {
@@ -336,12 +336,12 @@ err_formatunraisable(PyObject *Py_UNUSED(module), PyObject *args)
     }
     NULLABLE(exc);
     if (exc) {
-        PyErr_SetRaisedException(Py_NewRef(exc));
+        TyErr_SetRaisedException(Ty_NewRef(exc));
     }
-    PyErr_FormatUnraisable(fmt,
+    TyErr_FormatUnraisable(fmt,
             objs[0], objs[1], objs[2], objs[3], objs[4],
             objs[5], objs[6], objs[7], objs[8], objs[9]);
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -352,19 +352,19 @@ _testcapi.unstable_exc_prep_reraise_star
 To test PyUnstable_Exc_PrepReraiseStar.
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_unstable_exc_prep_reraise_star_impl(PyObject *module,
-                                              PyObject *orig, PyObject *excs)
+static TyObject *
+_testcapi_unstable_exc_prep_reraise_star_impl(TyObject *module,
+                                              TyObject *orig, TyObject *excs)
 /*[clinic end generated code: output=850cf008e0563c77 input=27fbcda2203eb301]*/
 {
     return PyUnstable_Exc_PrepReraiseStar(orig, excs);
 }
 
 /* Test PyUnicodeEncodeError_GetStart */
-static PyObject *
-unicode_encode_get_start(PyObject *Py_UNUSED(module), PyObject *arg)
+static TyObject *
+unicode_encode_get_start(TyObject *Ty_UNUSED(module), TyObject *arg)
 {
-    Py_ssize_t start;
+    Ty_ssize_t start;
     if (PyUnicodeEncodeError_GetStart(arg, &start) < 0) {
         return NULL;
     }
@@ -372,10 +372,10 @@ unicode_encode_get_start(PyObject *Py_UNUSED(module), PyObject *arg)
 }
 
 /* Test PyUnicodeDecodeError_GetStart */
-static PyObject *
-unicode_decode_get_start(PyObject *Py_UNUSED(module), PyObject *arg)
+static TyObject *
+unicode_decode_get_start(TyObject *Ty_UNUSED(module), TyObject *arg)
 {
-    Py_ssize_t start;
+    Ty_ssize_t start;
     if (PyUnicodeDecodeError_GetStart(arg, &start) < 0) {
         return NULL;
     }
@@ -383,10 +383,10 @@ unicode_decode_get_start(PyObject *Py_UNUSED(module), PyObject *arg)
 }
 
 /* Test PyUnicodeTranslateError_GetStart */
-static PyObject *
-unicode_translate_get_start(PyObject *Py_UNUSED(module), PyObject *arg)
+static TyObject *
+unicode_translate_get_start(TyObject *Ty_UNUSED(module), TyObject *arg)
 {
-    Py_ssize_t start;
+    Ty_ssize_t start;
     if (PyUnicodeTranslateError_GetStart(arg, &start) < 0) {
         return NULL;
     }
@@ -394,55 +394,55 @@ unicode_translate_get_start(PyObject *Py_UNUSED(module), PyObject *arg)
 }
 
 /* Test PyUnicodeEncodeError_SetStart */
-static PyObject *
-unicode_encode_set_start(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+unicode_encode_set_start(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *exc;
-    Py_ssize_t start;
-    if (PyArg_ParseTuple(args, "On", &exc, &start) < 0) {
+    TyObject *exc;
+    Ty_ssize_t start;
+    if (TyArg_ParseTuple(args, "On", &exc, &start) < 0) {
         return NULL;
     }
     if (PyUnicodeEncodeError_SetStart(exc, start) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /* Test PyUnicodeDecodeError_SetStart */
-static PyObject *
-unicode_decode_set_start(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+unicode_decode_set_start(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *exc;
-    Py_ssize_t start;
-    if (PyArg_ParseTuple(args, "On", &exc, &start) < 0) {
+    TyObject *exc;
+    Ty_ssize_t start;
+    if (TyArg_ParseTuple(args, "On", &exc, &start) < 0) {
         return NULL;
     }
     if (PyUnicodeDecodeError_SetStart(exc, start) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /* Test PyUnicodeTranslateError_SetStart */
-static PyObject *
-unicode_translate_set_start(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+unicode_translate_set_start(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *exc;
-    Py_ssize_t start;
-    if (PyArg_ParseTuple(args, "On", &exc, &start) < 0) {
+    TyObject *exc;
+    Ty_ssize_t start;
+    if (TyArg_ParseTuple(args, "On", &exc, &start) < 0) {
         return NULL;
     }
     if (PyUnicodeTranslateError_SetStart(exc, start) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /* Test PyUnicodeEncodeError_GetEnd */
-static PyObject *
-unicode_encode_get_end(PyObject *Py_UNUSED(module), PyObject *arg)
+static TyObject *
+unicode_encode_get_end(TyObject *Ty_UNUSED(module), TyObject *arg)
 {
-    Py_ssize_t end;
+    Ty_ssize_t end;
     if (PyUnicodeEncodeError_GetEnd(arg, &end) < 0) {
         return NULL;
     }
@@ -450,10 +450,10 @@ unicode_encode_get_end(PyObject *Py_UNUSED(module), PyObject *arg)
 }
 
 /* Test PyUnicodeDecodeError_GetEnd */
-static PyObject *
-unicode_decode_get_end(PyObject *Py_UNUSED(module), PyObject *arg)
+static TyObject *
+unicode_decode_get_end(TyObject *Ty_UNUSED(module), TyObject *arg)
 {
-    Py_ssize_t end;
+    Ty_ssize_t end;
     if (PyUnicodeDecodeError_GetEnd(arg, &end) < 0) {
         return NULL;
     }
@@ -461,10 +461,10 @@ unicode_decode_get_end(PyObject *Py_UNUSED(module), PyObject *arg)
 }
 
 /* Test PyUnicodeTranslateError_GetEnd */
-static PyObject *
-unicode_translate_get_end(PyObject *Py_UNUSED(module), PyObject *arg)
+static TyObject *
+unicode_translate_get_end(TyObject *Ty_UNUSED(module), TyObject *arg)
 {
-    Py_ssize_t end;
+    Ty_ssize_t end;
     if (PyUnicodeTranslateError_GetEnd(arg, &end) < 0) {
         return NULL;
     }
@@ -472,76 +472,76 @@ unicode_translate_get_end(PyObject *Py_UNUSED(module), PyObject *arg)
 }
 
 /* Test PyUnicodeEncodeError_SetEnd */
-static PyObject *
-unicode_encode_set_end(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+unicode_encode_set_end(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *exc;
-    Py_ssize_t end;
-    if (PyArg_ParseTuple(args, "On", &exc, &end) < 0) {
+    TyObject *exc;
+    Ty_ssize_t end;
+    if (TyArg_ParseTuple(args, "On", &exc, &end) < 0) {
         return NULL;
     }
     if (PyUnicodeEncodeError_SetEnd(exc, end) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /* Test PyUnicodeDecodeError_SetEnd */
-static PyObject *
-unicode_decode_set_end(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+unicode_decode_set_end(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *exc;
-    Py_ssize_t end;
-    if (PyArg_ParseTuple(args, "On", &exc, &end) < 0) {
+    TyObject *exc;
+    Ty_ssize_t end;
+    if (TyArg_ParseTuple(args, "On", &exc, &end) < 0) {
         return NULL;
     }
     if (PyUnicodeDecodeError_SetEnd(exc, end) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /* Test PyUnicodeTranslateError_SetEnd */
-static PyObject *
-unicode_translate_set_end(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+unicode_translate_set_end(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *exc;
-    Py_ssize_t end;
-    if (PyArg_ParseTuple(args, "On", &exc, &end) < 0) {
+    TyObject *exc;
+    Ty_ssize_t end;
+    if (TyArg_ParseTuple(args, "On", &exc, &end) < 0) {
         return NULL;
     }
     if (PyUnicodeTranslateError_SetEnd(exc, end) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*
  * Define the PyRecurdingInfinitelyError_Type
  */
 
-static PyTypeObject PyRecursingInfinitelyError_Type;
+static TyTypeObject PyRecursingInfinitelyError_Type;
 
 static int
-recurse_infinitely_error_init(PyObject *self, PyObject *args, PyObject *kwds)
+recurse_infinitely_error_init(TyObject *self, TyObject *args, TyObject *kwds)
 {
-    PyObject *type = (PyObject *)&PyRecursingInfinitelyError_Type;
+    TyObject *type = (TyObject *)&PyRecursingInfinitelyError_Type;
 
     /* Instantiating this exception starts infinite recursion. */
-    Py_INCREF(type);
-    PyErr_SetObject(type, NULL);
+    Ty_INCREF(type);
+    TyErr_SetObject(type, NULL);
     return -1;
 }
 
-static PyTypeObject PyRecursingInfinitelyError_Type = {
+static TyTypeObject PyRecursingInfinitelyError_Type = {
     .tp_name = "RecursingInfinitelyError",
     .tp_basicsize = sizeof(PyBaseExceptionObject),
-    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+    .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE,
     .tp_doc = PyDoc_STR("Instantiating this exception starts infinite recursion."),
     .tp_init = recurse_infinitely_error_init,
 };
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"err_restore",             err_restore,                     METH_VARARGS},
     {"err_writeunraisable",     err_writeunraisable,             METH_VARARGS},
     {"err_formatunraisable",    err_formatunraisable,            METH_VARARGS},
@@ -575,19 +575,19 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Exceptions(PyObject *mod)
+_PyTestCapi_Init_Exceptions(TyObject *mod)
 {
-    PyRecursingInfinitelyError_Type.tp_base = (PyTypeObject *)PyExc_Exception;
-    if (PyType_Ready(&PyRecursingInfinitelyError_Type) < 0) {
+    PyRecursingInfinitelyError_Type.tp_base = (TyTypeObject *)TyExc_Exception;
+    if (TyType_Ready(&PyRecursingInfinitelyError_Type) < 0) {
         return -1;
     }
-    if (PyModule_AddObjectRef(mod, "RecursingInfinitelyError",
-                              (PyObject *)&PyRecursingInfinitelyError_Type) < 0)
+    if (TyModule_AddObjectRef(mod, "RecursingInfinitelyError",
+                              (TyObject *)&PyRecursingInfinitelyError_Type) < 0)
     {
         return -1;
     }
 
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 

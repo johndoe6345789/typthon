@@ -2276,7 +2276,7 @@ class BytesSubclassTest(SubclassTest, unittest.TestCase):
 
 
 class FreeThreadingTest(unittest.TestCase):
-    @unittest.skipUnless(support.Py_GIL_DISABLED, 'this test can only possibly fail with GIL disabled')
+    @unittest.skipUnless(support.Ty_GIL_DISABLED, 'this test can only possibly fail with GIL disabled')
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_free_threading_bytearray(self):
@@ -2614,7 +2614,7 @@ class FreeThreadingTest(unittest.TestCase):
         check([clear] + [upper] * 10, bytearray(b'a' * 0x400000))
         check([clear] + [zfill] * 10, bytearray(b'1' * 0x200000))
 
-    @unittest.skipUnless(support.Py_GIL_DISABLED, 'this test can only possibly fail with GIL disabled')
+    @unittest.skipUnless(support.Ty_GIL_DISABLED, 'this test can only possibly fail with GIL disabled')
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_free_threading_bytearrayiter(self):

@@ -6,18 +6,18 @@
    shared code in bytes_methods.c to cut down on duplicate code bloat.  */
 
 /*[clinic input]
-class B "PyObject *" "&PyType_Type"
+class B "TyObject *" "&TyType_Type"
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=2935558188d97c76]*/
 
 #include "clinic/transmogrify.h.h"
 
-static inline PyObject *
-return_self(PyObject *self)
+static inline TyObject *
+return_self(TyObject *self)
 {
 #if !STRINGLIB_MUTABLE
     if (STRINGLIB_CHECK_EXACT(self)) {
-        return Py_NewRef(self);
+        return Ty_NewRef(self);
     }
 #endif
     return STRINGLIB_NEW(STRINGLIB_STR(self), STRINGLIB_LEN(self));
@@ -33,14 +33,14 @@ Return a copy where all tab characters are expanded using spaces.
 If tabsize is not given, a tab size of 8 characters is assumed.
 [clinic start generated code]*/
 
-static PyObject *
-stringlib_expandtabs_impl(PyObject *self, int tabsize)
+static TyObject *
+stringlib_expandtabs_impl(TyObject *self, int tabsize)
 /*[clinic end generated code: output=069cb7fae72e4c2b input=3c6d3b12aa3ccbea]*/
 {
     const char *e, *p;
     char *q;
-    Py_ssize_t i, j;
-    PyObject *u;
+    Ty_ssize_t i, j;
+    TyObject *u;
 
     /* First pass: determine size of output string */
     i = j = 0;
@@ -48,7 +48,7 @@ stringlib_expandtabs_impl(PyObject *self, int tabsize)
     for (p = STRINGLIB_STR(self); p < e; p++) {
         if (*p == '\t') {
             if (tabsize > 0) {
-                Py_ssize_t incr = tabsize - (j % tabsize);
+                Ty_ssize_t incr = tabsize - (j % tabsize);
                 if (j > PY_SSIZE_T_MAX - incr)
                     goto overflow;
                 j += incr;
@@ -97,14 +97,14 @@ stringlib_expandtabs_impl(PyObject *self, int tabsize)
 
     return u;
   overflow:
-    PyErr_SetString(PyExc_OverflowError, "result too long");
+    TyErr_SetString(TyExc_OverflowError, "result too long");
     return NULL;
 }
 
-static inline PyObject *
-pad(PyObject *self, Py_ssize_t left, Py_ssize_t right, char fill)
+static inline TyObject *
+pad(TyObject *self, Ty_ssize_t left, Ty_ssize_t right, char fill)
 {
-    PyObject *u;
+    TyObject *u;
 
     if (left < 0)
         left = 0;
@@ -133,7 +133,7 @@ pad(PyObject *self, Py_ssize_t left, Py_ssize_t right, char fill)
 /*[clinic input]
 B.ljust as stringlib_ljust
 
-    width: Py_ssize_t
+    width: Ty_ssize_t
     fillchar: char = b' '
     /
 
@@ -142,8 +142,8 @@ Return a left-justified string of length width.
 Padding is done using the specified fill character.
 [clinic start generated code]*/
 
-static PyObject *
-stringlib_ljust_impl(PyObject *self, Py_ssize_t width, char fillchar)
+static TyObject *
+stringlib_ljust_impl(TyObject *self, Ty_ssize_t width, char fillchar)
 /*[clinic end generated code: output=c79ca173c5ff8337 input=eff2d014bc7d80df]*/
 {
     if (STRINGLIB_LEN(self) >= width) {
@@ -157,7 +157,7 @@ stringlib_ljust_impl(PyObject *self, Py_ssize_t width, char fillchar)
 /*[clinic input]
 B.rjust as stringlib_rjust
 
-    width: Py_ssize_t
+    width: Ty_ssize_t
     fillchar: char = b' '
     /
 
@@ -166,8 +166,8 @@ Return a right-justified string of length width.
 Padding is done using the specified fill character.
 [clinic start generated code]*/
 
-static PyObject *
-stringlib_rjust_impl(PyObject *self, Py_ssize_t width, char fillchar)
+static TyObject *
+stringlib_rjust_impl(TyObject *self, Ty_ssize_t width, char fillchar)
 /*[clinic end generated code: output=7df5d728a5439570 input=218b0bd31308955d]*/
 {
     if (STRINGLIB_LEN(self) >= width) {
@@ -181,7 +181,7 @@ stringlib_rjust_impl(PyObject *self, Py_ssize_t width, char fillchar)
 /*[clinic input]
 B.center as stringlib_center
 
-    width: Py_ssize_t
+    width: Ty_ssize_t
     fillchar: char = b' '
     /
 
@@ -190,11 +190,11 @@ Return a centered string of length width.
 Padding is done using the specified fill character.
 [clinic start generated code]*/
 
-static PyObject *
-stringlib_center_impl(PyObject *self, Py_ssize_t width, char fillchar)
+static TyObject *
+stringlib_center_impl(TyObject *self, Ty_ssize_t width, char fillchar)
 /*[clinic end generated code: output=d8da2e055288b4c2 input=3776fd278765d89b]*/
 {
-    Py_ssize_t marg, left;
+    Ty_ssize_t marg, left;
 
     if (STRINGLIB_LEN(self) >= width) {
         return return_self(self);
@@ -209,7 +209,7 @@ stringlib_center_impl(PyObject *self, Py_ssize_t width, char fillchar)
 /*[clinic input]
 B.zfill as stringlib_zfill
 
-    width: Py_ssize_t
+    width: Ty_ssize_t
     /
 
 Pad a numeric string with zeros on the left, to fill a field of the given width.
@@ -217,12 +217,12 @@ Pad a numeric string with zeros on the left, to fill a field of the given width.
 The original string is never truncated.
 [clinic start generated code]*/
 
-static PyObject *
-stringlib_zfill_impl(PyObject *self, Py_ssize_t width)
+static TyObject *
+stringlib_zfill_impl(TyObject *self, Ty_ssize_t width)
 /*[clinic end generated code: output=0b3c684a7f1b2319 input=2da6d7b8e9bcb19a]*/
 {
-    Py_ssize_t fill;
-    PyObject *s;
+    Ty_ssize_t fill;
+    TyObject *s;
     char *p;
 
     if (STRINGLIB_LEN(self) >= width) {
@@ -253,11 +253,11 @@ stringlib_zfill_impl(PyObject *self, Py_ssize_t width)
   ((char *)memchr((const void *)(target), c, target_len))
 
 
-static Py_ssize_t
-countchar(const char *target, Py_ssize_t target_len, char c,
-          Py_ssize_t maxcount)
+static Ty_ssize_t
+countchar(const char *target, Ty_ssize_t target_len, char c,
+          Ty_ssize_t maxcount)
 {
-    Py_ssize_t count = 0;
+    Ty_ssize_t count = 0;
     const char *start = target;
     const char *end = target + target_len;
 
@@ -274,16 +274,16 @@ countchar(const char *target, Py_ssize_t target_len, char c,
 /* Algorithms for different cases of string replacement */
 
 /* len(self)>=1, from="", len(to)>=1, maxcount>=1 */
-static PyObject *
-stringlib_replace_interleave(PyObject *self,
-                             const char *to_s, Py_ssize_t to_len,
-                             Py_ssize_t maxcount)
+static TyObject *
+stringlib_replace_interleave(TyObject *self,
+                             const char *to_s, Ty_ssize_t to_len,
+                             Ty_ssize_t maxcount)
 {
     const char *self_s;
     char *result_s;
-    Py_ssize_t self_len, result_len;
-    Py_ssize_t count, i;
-    PyObject *result;
+    Ty_ssize_t self_len, result_len;
+    Ty_ssize_t count, i;
+    TyObject *result;
 
     self_len = STRINGLIB_LEN(self);
 
@@ -301,7 +301,7 @@ stringlib_replace_interleave(PyObject *self,
     /*   result_len = count * to_len + self_len; */
     assert(count > 0);
     if (to_len > (PY_SSIZE_T_MAX - self_len) / count) {
-        PyErr_SetString(PyExc_OverflowError,
+        TyErr_SetString(TyExc_OverflowError,
                         "replace bytes is too long");
         return NULL;
     }
@@ -345,15 +345,15 @@ stringlib_replace_interleave(PyObject *self,
 
 /* Special case for deleting a single character */
 /* len(self)>=1, len(from)==1, to="", maxcount>=1 */
-static PyObject *
-stringlib_replace_delete_single_character(PyObject *self,
-                                          char from_c, Py_ssize_t maxcount)
+static TyObject *
+stringlib_replace_delete_single_character(TyObject *self,
+                                          char from_c, Ty_ssize_t maxcount)
 {
     const char *self_s, *start, *next, *end;
     char *result_s;
-    Py_ssize_t self_len, result_len;
-    Py_ssize_t count;
-    PyObject *result;
+    Ty_ssize_t self_len, result_len;
+    Ty_ssize_t count;
+    TyObject *result;
 
     self_len = STRINGLIB_LEN(self);
     self_s = STRINGLIB_STR(self);
@@ -389,16 +389,16 @@ stringlib_replace_delete_single_character(PyObject *self,
 
 /* len(self)>=1, len(from)>=2, to="", maxcount>=1 */
 
-static PyObject *
-stringlib_replace_delete_substring(PyObject *self,
-                                   const char *from_s, Py_ssize_t from_len,
-                                   Py_ssize_t maxcount)
+static TyObject *
+stringlib_replace_delete_substring(TyObject *self,
+                                   const char *from_s, Ty_ssize_t from_len,
+                                   Ty_ssize_t maxcount)
 {
     const char *self_s, *start, *next, *end;
     char *result_s;
-    Py_ssize_t self_len, result_len;
-    Py_ssize_t count, offset;
-    PyObject *result;
+    Ty_ssize_t self_len, result_len;
+    Ty_ssize_t count, offset;
+    TyObject *result;
 
     self_len = STRINGLIB_LEN(self);
     self_s = STRINGLIB_STR(self);
@@ -441,15 +441,15 @@ stringlib_replace_delete_substring(PyObject *self,
 }
 
 /* len(self)>=1, len(from)==len(to)==1, maxcount>=1 */
-static PyObject *
-stringlib_replace_single_character_in_place(PyObject *self,
+static TyObject *
+stringlib_replace_single_character_in_place(TyObject *self,
                                             char from_c, char to_c,
-                                            Py_ssize_t maxcount)
+                                            Ty_ssize_t maxcount)
 {
     const char *self_s, *end;
     char *result_s, *start, *next;
-    Py_ssize_t self_len;
-    PyObject *result;
+    Ty_ssize_t self_len;
+    TyObject *result;
 
     /* The result string will be the same size */
     self_s = STRINGLIB_STR(self);
@@ -488,16 +488,16 @@ stringlib_replace_single_character_in_place(PyObject *self,
 }
 
 /* len(self)>=1, len(from)==len(to)>=2, maxcount>=1 */
-static PyObject *
-stringlib_replace_substring_in_place(PyObject *self,
-                                     const char *from_s, Py_ssize_t from_len,
-                                     const char *to_s, Py_ssize_t to_len,
-                                     Py_ssize_t maxcount)
+static TyObject *
+stringlib_replace_substring_in_place(TyObject *self,
+                                     const char *from_s, Ty_ssize_t from_len,
+                                     const char *to_s, Ty_ssize_t to_len,
+                                     Ty_ssize_t maxcount)
 {
     const char *self_s, *end;
     char *result_s, *start;
-    Py_ssize_t self_len, offset;
-    PyObject *result;
+    Ty_ssize_t self_len, offset;
+    TyObject *result;
 
     /* The result bytes will be the same size */
 
@@ -540,17 +540,17 @@ stringlib_replace_substring_in_place(PyObject *self,
 }
 
 /* len(self)>=1, len(from)==1, len(to)>=2, maxcount>=1 */
-static PyObject *
-stringlib_replace_single_character(PyObject *self,
+static TyObject *
+stringlib_replace_single_character(TyObject *self,
                                    char from_c,
-                                   const char *to_s, Py_ssize_t to_len,
-                                   Py_ssize_t maxcount)
+                                   const char *to_s, Ty_ssize_t to_len,
+                                   Ty_ssize_t maxcount)
 {
     const char *self_s, *start, *next, *end;
     char *result_s;
-    Py_ssize_t self_len, result_len;
-    Py_ssize_t count;
-    PyObject *result;
+    Ty_ssize_t self_len, result_len;
+    Ty_ssize_t count;
+    TyObject *result;
 
     self_s = STRINGLIB_STR(self);
     self_len = STRINGLIB_LEN(self);
@@ -565,7 +565,7 @@ stringlib_replace_single_character(PyObject *self,
     /*   result_len = self_len + count * (to_len-1)  */
     assert(count > 0);
     if (to_len - 1 > (PY_SSIZE_T_MAX - self_len) / count) {
-        PyErr_SetString(PyExc_OverflowError, "replace bytes is too long");
+        TyErr_SetString(TyExc_OverflowError, "replace bytes is too long");
         return NULL;
     }
     result_len = self_len + count * (to_len - 1);
@@ -604,17 +604,17 @@ stringlib_replace_single_character(PyObject *self,
 }
 
 /* len(self)>=1, len(from)>=2, len(to)>=2, maxcount>=1 */
-static PyObject *
-stringlib_replace_substring(PyObject *self,
-                            const char *from_s, Py_ssize_t from_len,
-                            const char *to_s, Py_ssize_t to_len,
-                            Py_ssize_t maxcount)
+static TyObject *
+stringlib_replace_substring(TyObject *self,
+                            const char *from_s, Ty_ssize_t from_len,
+                            const char *to_s, Ty_ssize_t to_len,
+                            Ty_ssize_t maxcount)
 {
     const char *self_s, *start, *next, *end;
     char *result_s;
-    Py_ssize_t self_len, result_len;
-    Py_ssize_t count, offset;
-    PyObject *result;
+    Ty_ssize_t self_len, result_len;
+    Ty_ssize_t count, offset;
+    TyObject *result;
 
     self_s = STRINGLIB_STR(self);
     self_len = STRINGLIB_LEN(self);
@@ -632,7 +632,7 @@ stringlib_replace_substring(PyObject *self,
     /*    result_len = self_len + count * (to_len-from_len) */
     assert(count > 0);
     if (to_len - from_len > (PY_SSIZE_T_MAX - self_len) / count) {
-        PyErr_SetString(PyExc_OverflowError, "replace bytes is too long");
+        TyErr_SetString(TyExc_OverflowError, "replace bytes is too long");
         return NULL;
     }
     result_len = self_len + count * (to_len - from_len);
@@ -673,11 +673,11 @@ stringlib_replace_substring(PyObject *self,
 }
 
 
-static PyObject *
-stringlib_replace(PyObject *self,
-                  const char *from_s, Py_ssize_t from_len,
-                  const char *to_s, Py_ssize_t to_len,
-                  Py_ssize_t maxcount)
+static TyObject *
+stringlib_replace(TyObject *self,
+                  const char *from_s, Ty_ssize_t from_len,
+                  const char *to_s, Ty_ssize_t to_len,
+                  Ty_ssize_t maxcount)
 {
     if (STRINGLIB_LEN(self) < from_len) {
         /* nothing to do; return the original bytes */

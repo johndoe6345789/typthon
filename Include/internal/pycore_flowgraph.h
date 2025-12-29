@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_CFG_H
-#define Py_INTERNAL_CFG_H
+#ifndef Ty_INTERNAL_CFG_H
+#define Ty_INTERNAL_CFG_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_compile.h"
@@ -15,13 +15,13 @@ extern "C" {
 struct _PyCfgBuilder;
 
 int _PyCfgBuilder_UseLabel(struct _PyCfgBuilder *g, _PyJumpTargetLabel lbl);
-int _PyCfgBuilder_Addop(struct _PyCfgBuilder *g, int opcode, int oparg, _Py_SourceLocation loc);
+int _PyCfgBuilder_Addop(struct _PyCfgBuilder *g, int opcode, int oparg, _Ty_SourceLocation loc);
 
 struct _PyCfgBuilder* _PyCfgBuilder_New(void);
 void _PyCfgBuilder_Free(struct _PyCfgBuilder *g);
 int _PyCfgBuilder_CheckSize(struct _PyCfgBuilder* g);
 
-int _PyCfg_OptimizeCodeUnit(struct _PyCfgBuilder *g, PyObject *consts, PyObject *const_cache,
+int _PyCfg_OptimizeCodeUnit(struct _PyCfgBuilder *g, TyObject *consts, TyObject *const_cache,
                             int nlocals, int nparams, int firstlineno);
 
 struct _PyCfgBuilder* _PyCfg_FromInstructionSequence(_PyInstructionSequence *seq);
@@ -31,17 +31,17 @@ int _PyCfg_OptimizedCfgToInstructionSequence(struct _PyCfgBuilder *g, _PyCompile
                                              _PyInstructionSequence *seq);
 
 PyCodeObject *
-_PyAssemble_MakeCodeObject(_PyCompile_CodeUnitMetadata *u, PyObject *const_cache,
-                           PyObject *consts, int maxdepth, _PyInstructionSequence *instrs,
-                           int nlocalsplus, int code_flags, PyObject *filename);
+_PyAssemble_MakeCodeObject(_PyCompile_CodeUnitMetadata *u, TyObject *const_cache,
+                           TyObject *consts, int maxdepth, _PyInstructionSequence *instrs,
+                           int nlocalsplus, int code_flags, TyObject *filename);
 
 // Export for '_testinternalcapi' shared extension
-PyAPI_FUNC(PyObject*) _PyCompile_OptimizeCfg(
-        PyObject *instructions,
-        PyObject *consts,
+PyAPI_FUNC(TyObject*) _PyCompile_OptimizeCfg(
+        TyObject *instructions,
+        TyObject *consts,
         int nlocals);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_CFG_H */
+#endif /* !Ty_INTERNAL_CFG_H */

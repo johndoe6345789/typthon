@@ -251,7 +251,7 @@ class FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
     def symbol(self):
         # This matches what we do in Programs/_freeze_module.c:
         name = self.frozenid.replace('.', '_')
-        return '_Py_M__' + name
+        return '_Ty_M__' + name
 
     @property
     def ispkg(self):

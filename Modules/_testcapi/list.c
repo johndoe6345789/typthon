@@ -2,108 +2,108 @@
 #include "util.h"
 
 
-static PyObject *
-list_get_size(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+list_get_size(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_SIZE(PyList_GET_SIZE(obj));
+    RETURN_SIZE(TyList_GET_SIZE(obj));
 }
 
 
-static PyObject *
-list_get_item(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+list_get_item(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "On", &obj, &i)) {
+    TyObject *obj;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "On", &obj, &i)) {
         return NULL;
     }
     NULLABLE(obj);
-    return Py_XNewRef(PyList_GET_ITEM(obj, i));
+    return Ty_XNewRef(TyList_GET_ITEM(obj, i));
 }
 
 
-static PyObject *
-list_set_item(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+list_set_item(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj, *value;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "OnO", &obj, &i, &value)) {
+    TyObject *obj, *value;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "OnO", &obj, &i, &value)) {
         return NULL;
     }
     NULLABLE(obj);
     NULLABLE(value);
-    PyList_SET_ITEM(obj, i, Py_XNewRef(value));
-    Py_RETURN_NONE;
+    TyList_SET_ITEM(obj, i, Ty_XNewRef(value));
+    Ty_RETURN_NONE;
 
 }
 
 
-static PyObject *
-list_clear(PyObject* Py_UNUSED(module), PyObject *obj)
+static TyObject *
+list_clear(TyObject* Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_INT(PyList_Clear(obj));
+    RETURN_INT(TyList_Clear(obj));
 }
 
 
-static PyObject *
-list_extend(PyObject* Py_UNUSED(module), PyObject *args)
+static TyObject *
+list_extend(TyObject* Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj, *arg;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &arg)) {
+    TyObject *obj, *arg;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &arg)) {
         return NULL;
     }
     NULLABLE(obj);
     NULLABLE(arg);
-    RETURN_INT(PyList_Extend(obj, arg));
+    RETURN_INT(TyList_Extend(obj, arg));
 }
 
 
-static PyObject*
-test_list_api(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject*
+test_list_api(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject* list;
+    TyObject* list;
     int i;
 
-    /* SF bug 132008:  PyList_Reverse segfaults */
+    /* SF bug 132008:  TyList_Reverse segfaults */
 #define NLIST 30
-    list = PyList_New(NLIST);
-    if (list == (PyObject*)NULL)
-        return (PyObject*)NULL;
+    list = TyList_New(NLIST);
+    if (list == (TyObject*)NULL)
+        return (TyObject*)NULL;
     /* list = range(NLIST) */
     for (i = 0; i < NLIST; ++i) {
-        PyObject* anint = PyLong_FromLong(i);
-        if (anint == (PyObject*)NULL) {
-            Py_DECREF(list);
-            return (PyObject*)NULL;
+        TyObject* anint = TyLong_FromLong(i);
+        if (anint == (TyObject*)NULL) {
+            Ty_DECREF(list);
+            return (TyObject*)NULL;
         }
-        PyList_SET_ITEM(list, i, anint);
+        TyList_SET_ITEM(list, i, anint);
     }
-    /* list.reverse(), via PyList_Reverse() */
-    i = PyList_Reverse(list);   /* should not blow up! */
+    /* list.reverse(), via TyList_Reverse() */
+    i = TyList_Reverse(list);   /* should not blow up! */
     if (i != 0) {
-        Py_DECREF(list);
-        return (PyObject*)NULL;
+        Ty_DECREF(list);
+        return (TyObject*)NULL;
     }
     /* Check that list == range(29, -1, -1) now */
     for (i = 0; i < NLIST; ++i) {
-        PyObject* anint = PyList_GET_ITEM(list, i);
-        if (PyLong_AS_LONG(anint) != NLIST-1-i) {
-            PyErr_SetString(PyExc_AssertionError,
+        TyObject* anint = TyList_GET_ITEM(list, i);
+        if (TyLong_AS_LONG(anint) != NLIST-1-i) {
+            TyErr_SetString(TyExc_AssertionError,
                             "test_list_api: reverse screwed up");
-            Py_DECREF(list);
-            return (PyObject*)NULL;
+            Ty_DECREF(list);
+            return (TyObject*)NULL;
         }
     }
-    Py_DECREF(list);
+    Ty_DECREF(list);
 #undef NLIST
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"list_get_size", list_get_size, METH_O},
     {"list_get_item", list_get_item, METH_VARARGS},
     {"list_set_item", list_set_item, METH_VARARGS},
@@ -114,7 +114,7 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_List(PyObject *m)
+_PyTestCapi_Init_List(TyObject *m)
 {
-    return PyModule_AddFunctions(m, test_methods);
+    return TyModule_AddFunctions(m, test_methods);
 }

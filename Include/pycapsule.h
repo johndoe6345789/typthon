@@ -12,41 +12,41 @@
    documentation.
 */
 
-#ifndef Py_CAPSULE_H
-#define Py_CAPSULE_H
+#ifndef Ty_CAPSULE_H
+#define Ty_CAPSULE_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-PyAPI_DATA(PyTypeObject) PyCapsule_Type;
+PyAPI_DATA(TyTypeObject) PyCapsule_Type;
 
-typedef void (*PyCapsule_Destructor)(PyObject *);
+typedef void (*PyCapsule_Destructor)(TyObject *);
 
-#define PyCapsule_CheckExact(op) Py_IS_TYPE((op), &PyCapsule_Type)
+#define PyCapsule_CheckExact(op) Ty_IS_TYPE((op), &PyCapsule_Type)
 
 
-PyAPI_FUNC(PyObject *) PyCapsule_New(
+PyAPI_FUNC(TyObject *) PyCapsule_New(
     void *pointer,
     const char *name,
     PyCapsule_Destructor destructor);
 
-PyAPI_FUNC(void *) PyCapsule_GetPointer(PyObject *capsule, const char *name);
+PyAPI_FUNC(void *) PyCapsule_GetPointer(TyObject *capsule, const char *name);
 
-PyAPI_FUNC(PyCapsule_Destructor) PyCapsule_GetDestructor(PyObject *capsule);
+PyAPI_FUNC(PyCapsule_Destructor) PyCapsule_GetDestructor(TyObject *capsule);
 
-PyAPI_FUNC(const char *) PyCapsule_GetName(PyObject *capsule);
+PyAPI_FUNC(const char *) PyCapsule_GetName(TyObject *capsule);
 
-PyAPI_FUNC(void *) PyCapsule_GetContext(PyObject *capsule);
+PyAPI_FUNC(void *) PyCapsule_GetContext(TyObject *capsule);
 
-PyAPI_FUNC(int) PyCapsule_IsValid(PyObject *capsule, const char *name);
+PyAPI_FUNC(int) PyCapsule_IsValid(TyObject *capsule, const char *name);
 
-PyAPI_FUNC(int) PyCapsule_SetPointer(PyObject *capsule, void *pointer);
+PyAPI_FUNC(int) PyCapsule_SetPointer(TyObject *capsule, void *pointer);
 
-PyAPI_FUNC(int) PyCapsule_SetDestructor(PyObject *capsule, PyCapsule_Destructor destructor);
+PyAPI_FUNC(int) PyCapsule_SetDestructor(TyObject *capsule, PyCapsule_Destructor destructor);
 
-PyAPI_FUNC(int) PyCapsule_SetName(PyObject *capsule, const char *name);
+PyAPI_FUNC(int) PyCapsule_SetName(TyObject *capsule, const char *name);
 
-PyAPI_FUNC(int) PyCapsule_SetContext(PyObject *capsule, void *context);
+PyAPI_FUNC(int) PyCapsule_SetContext(TyObject *capsule, void *context);
 
 PyAPI_FUNC(void *) PyCapsule_Import(
     const char *name,           /* UTF-8 encoded string */
@@ -55,4 +55,4 @@ PyAPI_FUNC(void *) PyCapsule_Import(
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_CAPSULE_H */
+#endif /* !Ty_CAPSULE_H */

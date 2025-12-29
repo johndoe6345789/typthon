@@ -31,14 +31,14 @@ from pegen.parser_generator import ParserGenerator
 EXTENSION_PREFIX = """\
 #include "pegen.h"
 
-#if defined(Py_DEBUG) && defined(Py_BUILD_CORE)
+#if defined(Ty_DEBUG) && defined(Ty_BUILD_CORE)
 #  define D(x) if (p->debug) { x; }
 #else
 #  define D(x)
 #endif
 
 #ifdef __wasi__
-#  ifdef Py_DEBUG
+#  ifdef Ty_DEBUG
 #    define MAXSTACK 1000
 #  else
 #    define MAXSTACK 4000
@@ -394,7 +394,7 @@ class CParserGenerator(ParserGenerator, GrammarVisitor):
         self.cleanup_statements: List[str] = []
 
     def add_level(self) -> None:
-        self.print("if (p->level++ == MAXSTACK || _Py_ReachedRecursionLimitWithMargin(PyThreadState_Get(), 1)) {")
+        self.print("if (p->level++ == MAXSTACK || _Ty_ReachedRecursionLimitWithMargin(PyThreadState_Get(), 1)) {")
         with self.indent():
             self.print("_Pypegen_stack_overflow(p);")
         self.print("}")
@@ -644,8 +644,8 @@ class CParserGenerator(ParserGenerator, GrammarVisitor):
                 self.print("int _start_mark = p->mark;")
             self.print("void **_children = PyMem_Malloc(sizeof(void *));")
             self.out_of_memory_return(f"!_children")
-            self.print("Py_ssize_t _children_capacity = 1;")
-            self.print("Py_ssize_t _n = 0;")
+            self.print("Ty_ssize_t _children_capacity = 1;")
+            self.print("Ty_ssize_t _n = 0;")
             if any(alt.action and "EXTRA" in alt.action for alt in rhs.alts):
                 self._set_up_token_start_metadata_extraction()
             self.visit(
@@ -660,9 +660,9 @@ class CParserGenerator(ParserGenerator, GrammarVisitor):
                     self.print("PyMem_Free(_children);")
                     self.add_return("NULL")
                 self.print("}")
-            self.print("asdl_seq *_seq = (asdl_seq*)_Py_asdl_generic_seq_new(_n, p->arena);")
+            self.print("asdl_seq *_seq = (asdl_seq*)_Ty_asdl_generic_seq_new(_n, p->arena);")
             self.out_of_memory_return(f"!_seq", cleanup_code="PyMem_Free(_children);")
-            self.print("for (Py_ssize_t i = 0; i < _n; i++) asdl_seq_SET_UNTYPED(_seq, i, _children[i]);")
+            self.print("for (Ty_ssize_t i = 0; i < _n; i++) asdl_seq_SET_UNTYPED(_seq, i, _children[i]);")
             self.print("PyMem_Free(_children);")
             if memoize and node.name:
                 self.print(f"_PyPegen_insert_memo(p, _start_mark, {node.name}_type, _seq);")

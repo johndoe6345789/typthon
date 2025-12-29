@@ -1,24 +1,24 @@
 /* Cell object implementation */
 
 #include "Python.h"
-#include "pycore_cell.h"          // PyCell_GetRef()
-#include "pycore_modsupport.h"    // _PyArg_NoKeywords()
+#include "pycore_cell.h"          // TyCell_GetRef()
+#include "pycore_modsupport.h"    // _TyArg_NoKeywords()
 #include "pycore_object.h"
 
-#define _PyCell_CAST(op) _Py_CAST(PyCellObject*, (op))
+#define _PyCell_CAST(op) _Ty_CAST(PyCellObject*, (op))
 
-PyObject *
-PyCell_New(PyObject *obj)
+TyObject *
+TyCell_New(TyObject *obj)
 {
     PyCellObject *op;
 
-    op = (PyCellObject *)PyObject_GC_New(PyCellObject, &PyCell_Type);
+    op = (PyCellObject *)PyObject_GC_New(PyCellObject, &TyCell_Type);
     if (op == NULL)
         return NULL;
-    op->ob_ref = Py_XNewRef(obj);
+    op->ob_ref = Ty_XNewRef(obj);
 
-    _PyObject_GC_TRACK(op);
-    return (PyObject *)op;
+    _TyObject_GC_TRACK(op);
+    return (TyObject *)op;
 }
 
 PyDoc_STRVAR(cell_new_doc,
@@ -33,144 +33,144 @@ PyDoc_STRVAR(cell_new_doc,
 "    raise a ValueError.");
 
 
-static PyObject *
-cell_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+cell_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *obj = NULL;
+    TyObject *return_value = NULL;
+    TyObject *obj = NULL;
 
-    if (!_PyArg_NoKeywords("cell", kwargs)) {
+    if (!_TyArg_NoKeywords("cell", kwargs)) {
         goto exit;
     }
     /* min = 0: we allow the cell to be empty */
-    if (!PyArg_UnpackTuple(args, "cell", 0, 1, &obj)) {
+    if (!TyArg_UnpackTuple(args, "cell", 0, 1, &obj)) {
         goto exit;
     }
-    return_value = PyCell_New(obj);
+    return_value = TyCell_New(obj);
 
 exit:
     return return_value;
 }
 
-PyObject *
-PyCell_Get(PyObject *op)
+TyObject *
+TyCell_Get(TyObject *op)
 {
-    if (!PyCell_Check(op)) {
-        PyErr_BadInternalCall();
+    if (!TyCell_Check(op)) {
+        TyErr_BadInternalCall();
         return NULL;
     }
-    return PyCell_GetRef((PyCellObject *)op);
+    return TyCell_GetRef((PyCellObject *)op);
 }
 
 int
-PyCell_Set(PyObject *op, PyObject *value)
+TyCell_Set(TyObject *op, TyObject *value)
 {
-    if (!PyCell_Check(op)) {
-        PyErr_BadInternalCall();
+    if (!TyCell_Check(op)) {
+        TyErr_BadInternalCall();
         return -1;
     }
-    PyCell_SetTakeRef((PyCellObject *)op, Py_XNewRef(value));
+    TyCell_SetTakeRef((PyCellObject *)op, Ty_XNewRef(value));
     return 0;
 }
 
 static void
-cell_dealloc(PyObject *self)
+cell_dealloc(TyObject *self)
 {
     PyCellObject *op = _PyCell_CAST(self);
-    _PyObject_GC_UNTRACK(op);
-    Py_XDECREF(op->ob_ref);
+    _TyObject_GC_UNTRACK(op);
+    Ty_XDECREF(op->ob_ref);
     PyObject_GC_Del(op);
 }
 
-static PyObject *
-cell_compare_impl(PyObject *a, PyObject *b, int op)
+static TyObject *
+cell_compare_impl(TyObject *a, TyObject *b, int op)
 {
     if (a != NULL && b != NULL) {
         return PyObject_RichCompare(a, b, op);
     }
     else {
-        Py_RETURN_RICHCOMPARE(b == NULL, a == NULL, op);
+        Ty_RETURN_RICHCOMPARE(b == NULL, a == NULL, op);
     }
 }
 
-static PyObject *
-cell_richcompare(PyObject *a, PyObject *b, int op)
+static TyObject *
+cell_richcompare(TyObject *a, TyObject *b, int op)
 {
     /* neither argument should be NULL, unless something's gone wrong */
     assert(a != NULL && b != NULL);
 
     /* both arguments should be instances of PyCellObject */
-    if (!PyCell_Check(a) || !PyCell_Check(b)) {
-        Py_RETURN_NOTIMPLEMENTED;
+    if (!TyCell_Check(a) || !TyCell_Check(b)) {
+        Ty_RETURN_NOTIMPLEMENTED;
     }
-    PyObject *a_ref = PyCell_GetRef((PyCellObject *)a);
-    PyObject *b_ref = PyCell_GetRef((PyCellObject *)b);
+    TyObject *a_ref = TyCell_GetRef((PyCellObject *)a);
+    TyObject *b_ref = TyCell_GetRef((PyCellObject *)b);
 
     /* compare cells by contents; empty cells come before anything else */
-    PyObject *res = cell_compare_impl(a_ref, b_ref, op);
+    TyObject *res = cell_compare_impl(a_ref, b_ref, op);
 
-    Py_XDECREF(a_ref);
-    Py_XDECREF(b_ref);
+    Ty_XDECREF(a_ref);
+    Ty_XDECREF(b_ref);
     return res;
 }
 
-static PyObject *
-cell_repr(PyObject *self)
+static TyObject *
+cell_repr(TyObject *self)
 {
-    PyObject *ref = PyCell_GetRef((PyCellObject *)self);
+    TyObject *ref = TyCell_GetRef((PyCellObject *)self);
     if (ref == NULL) {
-        return PyUnicode_FromFormat("<cell at %p: empty>", self);
+        return TyUnicode_FromFormat("<cell at %p: empty>", self);
     }
-    PyObject *res = PyUnicode_FromFormat("<cell at %p: %.80s object at %p>",
-                                         self, Py_TYPE(ref)->tp_name, ref);
-    Py_DECREF(ref);
+    TyObject *res = TyUnicode_FromFormat("<cell at %p: %.80s object at %p>",
+                                         self, Ty_TYPE(ref)->tp_name, ref);
+    Ty_DECREF(ref);
     return res;
 }
 
 static int
-cell_traverse(PyObject *self, visitproc visit, void *arg)
+cell_traverse(TyObject *self, visitproc visit, void *arg)
 {
     PyCellObject *op = _PyCell_CAST(self);
-    Py_VISIT(op->ob_ref);
+    Ty_VISIT(op->ob_ref);
     return 0;
 }
 
 static int
-cell_clear(PyObject *self)
+cell_clear(TyObject *self)
 {
     PyCellObject *op = _PyCell_CAST(self);
-    Py_CLEAR(op->ob_ref);
+    Ty_CLEAR(op->ob_ref);
     return 0;
 }
 
-static PyObject *
-cell_get_contents(PyObject *self, void *closure)
+static TyObject *
+cell_get_contents(TyObject *self, void *closure)
 {
     PyCellObject *op = _PyCell_CAST(self);
-    PyObject *res = PyCell_GetRef(op);
+    TyObject *res = TyCell_GetRef(op);
     if (res == NULL) {
-        PyErr_SetString(PyExc_ValueError, "Cell is empty");
+        TyErr_SetString(TyExc_ValueError, "Cell is empty");
         return NULL;
     }
     return res;
 }
 
 static int
-cell_set_contents(PyObject *self, PyObject *obj, void *Py_UNUSED(ignored))
+cell_set_contents(TyObject *self, TyObject *obj, void *Ty_UNUSED(ignored))
 {
     PyCellObject *cell = _PyCell_CAST(self);
-    Py_XINCREF(obj);
-    PyCell_SetTakeRef((PyCellObject *)cell, obj);
+    Ty_XINCREF(obj);
+    TyCell_SetTakeRef((PyCellObject *)cell, obj);
     return 0;
 }
 
-static PyGetSetDef cell_getsetlist[] = {
+static TyGetSetDef cell_getsetlist[] = {
     {"cell_contents", cell_get_contents, cell_set_contents, NULL},
     {NULL} /* sentinel */
 };
 
-PyTypeObject PyCell_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject TyCell_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "cell",
     sizeof(PyCellObject),
     0,
@@ -189,7 +189,7 @@ PyTypeObject PyCell_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,    /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,    /* tp_flags */
     cell_new_doc,                               /* tp_doc */
     cell_traverse,                              /* tp_traverse */
     cell_clear,                                 /* tp_clear */

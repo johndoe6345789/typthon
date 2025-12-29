@@ -5,93 +5,93 @@
 
 #include "Python.h"
 
-extern PyObject* PyInit__abc(void);
-extern PyObject* PyInit_array(void);
-extern PyObject* PyInit_binascii(void);
-extern PyObject* PyInit_cmath(void);
-extern PyObject* PyInit_errno(void);
-extern PyObject* PyInit_faulthandler(void);
-extern PyObject* PyInit__tracemalloc(void);
-extern PyObject* PyInit_gc(void);
-extern PyObject* PyInit_math(void);
-extern PyObject* PyInit_nt(void);
-extern PyObject* PyInit__operator(void);
-extern PyObject* PyInit__signal(void);
-extern PyObject* PyInit__statistics(void);
-extern PyObject* PyInit__sysconfig(void);
-extern PyObject* PyInit__types(void);
-extern PyObject* PyInit__typing(void);
-extern PyObject* PyInit_time(void);
-extern PyObject* PyInit__thread(void);
+extern TyObject* PyInit__abc(void);
+extern TyObject* PyInit_array(void);
+extern TyObject* PyInit_binascii(void);
+extern TyObject* PyInit_cmath(void);
+extern TyObject* PyInit_errno(void);
+extern TyObject* PyInit_faulthandler(void);
+extern TyObject* PyInit__tracemalloc(void);
+extern TyObject* PyInit_gc(void);
+extern TyObject* PyInit_math(void);
+extern TyObject* PyInit_nt(void);
+extern TyObject* PyInit__operator(void);
+extern TyObject* PyInit__signal(void);
+extern TyObject* PyInit__statistics(void);
+extern TyObject* PyInit__sysconfig(void);
+extern TyObject* PyInit__types(void);
+extern TyObject* PyInit__typing(void);
+extern TyObject* PyInit_time(void);
+extern TyObject* PyInit__thread(void);
 
 /* cryptographic hash functions */
-extern PyObject* PyInit__blake2(void);
-extern PyObject* PyInit__md5(void);
-extern PyObject* PyInit__sha1(void);
-extern PyObject* PyInit__sha2(void);
-extern PyObject* PyInit__sha3(void);
+extern TyObject* PyInit__blake2(void);
+extern TyObject* PyInit__md5(void);
+extern TyObject* PyInit__sha1(void);
+extern TyObject* PyInit__sha2(void);
+extern TyObject* PyInit__sha3(void);
 /* other cryptographic primitives */
-extern PyObject* PyInit__hmac(void);
+extern TyObject* PyInit__hmac(void);
 
 #ifdef WIN32
-extern PyObject* PyInit_msvcrt(void);
-extern PyObject* PyInit__locale(void);
+extern TyObject* PyInit_msvcrt(void);
+extern TyObject* PyInit__locale(void);
 #endif
-extern PyObject* PyInit__codecs(void);
-extern PyObject* PyInit__weakref(void);
+extern TyObject* PyInit__codecs(void);
+extern TyObject* PyInit__weakref(void);
 /* XXX: These two should really be extracted to standalone extensions. */
-extern PyObject* PyInit_xxsubtype(void);
-extern PyObject* PyInit__interpreters(void);
-extern PyObject* PyInit__interpchannels(void);
-extern PyObject* PyInit__interpqueues(void);
-extern PyObject* PyInit__random(void);
-extern PyObject* PyInit_itertools(void);
-extern PyObject* PyInit__collections(void);
-extern PyObject* PyInit__heapq(void);
-extern PyObject* PyInit__bisect(void);
-extern PyObject* PyInit__symtable(void);
-extern PyObject* PyInit_mmap(void);
-extern PyObject* PyInit__csv(void);
-extern PyObject* PyInit__sre(void);
+extern TyObject* PyInit_xxsubtype(void);
+extern TyObject* PyInit__interpreters(void);
+extern TyObject* PyInit__interpchannels(void);
+extern TyObject* PyInit__interpqueues(void);
+extern TyObject* PyInit__random(void);
+extern TyObject* PyInit_itertools(void);
+extern TyObject* PyInit__collections(void);
+extern TyObject* PyInit__heapq(void);
+extern TyObject* PyInit__bisect(void);
+extern TyObject* PyInit__symtable(void);
+extern TyObject* PyInit_mmap(void);
+extern TyObject* PyInit__csv(void);
+extern TyObject* PyInit__sre(void);
 #if defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES)
-extern PyObject* PyInit_winreg(void);
+extern TyObject* PyInit_winreg(void);
 #endif
-extern PyObject* PyInit__struct(void);
-extern PyObject* PyInit__datetime(void);
-extern PyObject* PyInit__functools(void);
-extern PyObject* PyInit__json(void);
-#ifdef _Py_HAVE_ZLIB
-extern PyObject* PyInit_zlib(void);
+extern TyObject* PyInit__struct(void);
+extern TyObject* PyInit__datetime(void);
+extern TyObject* PyInit__functools(void);
+extern TyObject* PyInit__json(void);
+#ifdef _Ty_HAVE_ZLIB
+extern TyObject* PyInit_zlib(void);
 #endif
 
-extern PyObject* PyInit__multibytecodec(void);
-extern PyObject* PyInit__codecs_cn(void);
-extern PyObject* PyInit__codecs_hk(void);
-extern PyObject* PyInit__codecs_iso2022(void);
-extern PyObject* PyInit__codecs_jp(void);
-extern PyObject* PyInit__codecs_kr(void);
-extern PyObject* PyInit__codecs_tw(void);
-extern PyObject* PyInit__winapi(void);
-extern PyObject* PyInit__lsprof(void);
-extern PyObject* PyInit__ast(void);
-extern PyObject* PyInit__io(void);
-extern PyObject* PyInit__pickle(void);
-extern PyObject* PyInit_atexit(void);
-extern PyObject* _PyWarnings_Init(void);
-extern PyObject* PyInit__string(void);
-extern PyObject* PyInit__stat(void);
-extern PyObject* PyInit__opcode(void);
-extern PyObject* PyInit__contextvars(void);
-extern PyObject* PyInit__tokenize(void);
-extern PyObject* PyInit__suggestions(void);
+extern TyObject* PyInit__multibytecodec(void);
+extern TyObject* PyInit__codecs_cn(void);
+extern TyObject* PyInit__codecs_hk(void);
+extern TyObject* PyInit__codecs_iso2022(void);
+extern TyObject* PyInit__codecs_jp(void);
+extern TyObject* PyInit__codecs_kr(void);
+extern TyObject* PyInit__codecs_tw(void);
+extern TyObject* PyInit__winapi(void);
+extern TyObject* PyInit__lsprof(void);
+extern TyObject* PyInit__ast(void);
+extern TyObject* PyInit__io(void);
+extern TyObject* PyInit__pickle(void);
+extern TyObject* PyInit_atexit(void);
+extern TyObject* _TyWarnings_Init(void);
+extern TyObject* PyInit__string(void);
+extern TyObject* PyInit__stat(void);
+extern TyObject* PyInit__opcode(void);
+extern TyObject* PyInit__contextvars(void);
+extern TyObject* PyInit__tokenize(void);
+extern TyObject* PyInit__suggestions(void);
 
 /* tools/freeze/makeconfig.py marker for additional "extern" */
 /* -- ADDMODULE MARKER 1 -- */
 
-extern PyObject* PyMarshal_Init(void);
-extern PyObject* PyInit__imp(void);
+extern TyObject* TyMarshal_Init(void);
+extern TyObject* PyInit__imp(void);
 
-struct _inittab _PyImport_Inittab[] = {
+struct _inittab _TyImport_Inittab[] = {
     {"_abc", PyInit__abc},
     {"array", PyInit_array},
     {"_ast", PyInit__ast},
@@ -156,7 +156,7 @@ struct _inittab _PyImport_Inittab[] = {
     {"_interpreters", PyInit__interpreters},
     {"_interpchannels", PyInit__interpchannels},
     {"_interpqueues", PyInit__interpqueues},
-#ifdef _Py_HAVE_ZLIB
+#ifdef _Ty_HAVE_ZLIB
     {"zlib", PyInit_zlib},
 #endif
 
@@ -173,7 +173,7 @@ struct _inittab _PyImport_Inittab[] = {
 /* -- ADDMODULE MARKER 2 -- */
 
     /* This module "lives in" with marshal.c */
-    {"marshal", PyMarshal_Init},
+    {"marshal", TyMarshal_Init},
 
     /* This lives it with import.c */
     {"_imp", PyInit__imp},
@@ -181,7 +181,7 @@ struct _inittab _PyImport_Inittab[] = {
     /* These entries are here for sys.builtin_module_names */
     {"builtins", NULL},
     {"sys", NULL},
-    {"_warnings", _PyWarnings_Init},
+    {"_warnings", _TyWarnings_Init},
     {"_string", PyInit__string},
 
     {"_io", PyInit__io},

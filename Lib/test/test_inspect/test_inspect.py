@@ -6182,7 +6182,7 @@ class TestRepl(unittest.TestCase):
         # line option '-i' and the process name set to '<stdin>'.
         # The directory of argv[0] must match the directory of the Python
         # executable for the Popen() call to python to succeed as the directory
-        # path may be used by Py_GetPath() to build the default module search
+        # path may be used by Ty_GetPath() to build the default module search
         # path.
         stdin_fname = os.path.join(os.path.dirname(sys.executable), "<stdin>")
         cmd_line = [stdin_fname, '-E', '-i']

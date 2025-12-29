@@ -14,27 +14,27 @@ PyDoc_STRVAR(_posixshmem_shm_open__doc__,
     {"shm_open", (PyCFunction)(void(*)(void))_posixshmem_shm_open, METH_VARARGS|METH_KEYWORDS, _posixshmem_shm_open__doc__},
 
 static int
-_posixshmem_shm_open_impl(PyObject *module, PyObject *path, int flags,
+_posixshmem_shm_open_impl(TyObject *module, TyObject *path, int flags,
                           int mode);
 
-static PyObject *
-_posixshmem_shm_open(PyObject *module, PyObject *args, PyObject *kwargs)
+static TyObject *
+_posixshmem_shm_open(TyObject *module, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     static char *_keywords[] = {"path", "flags", "mode", NULL};
-    PyObject *path;
+    TyObject *path;
     int flags;
     int mode = 511;
     int _return_value;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "Ui|i:shm_open", _keywords,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs, "Ui|i:shm_open", _keywords,
         &path, &flags, &mode))
         goto exit;
     _return_value = _posixshmem_shm_open_impl(module, path, flags, mode);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -57,17 +57,17 @@ PyDoc_STRVAR(_posixshmem_shm_unlink__doc__,
 #define _POSIXSHMEM_SHM_UNLINK_METHODDEF    \
     {"shm_unlink", (PyCFunction)_posixshmem_shm_unlink, METH_O, _posixshmem_shm_unlink__doc__},
 
-static PyObject *
-_posixshmem_shm_unlink_impl(PyObject *module, PyObject *path);
+static TyObject *
+_posixshmem_shm_unlink_impl(TyObject *module, TyObject *path);
 
-static PyObject *
-_posixshmem_shm_unlink(PyObject *module, PyObject *arg)
+static TyObject *
+_posixshmem_shm_unlink(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *path;
+    TyObject *return_value = NULL;
+    TyObject *path;
 
-    if (!PyUnicode_Check(arg)) {
-        PyErr_Format(PyExc_TypeError, "shm_unlink() argument must be str, not %T", arg);
+    if (!TyUnicode_Check(arg)) {
+        TyErr_Format(TyExc_TypeError, "shm_unlink() argument must be str, not %T", arg);
         goto exit;
     }
     path = arg;

@@ -1,17 +1,17 @@
-/* Public Py_buffer API */
+/* Public Ty_buffer API */
 
-#ifndef Py_BUFFER_H
-#define Py_BUFFER_H
+#ifndef Ty_BUFFER_H
+#define Ty_BUFFER_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030b0000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030b0000
 
 /* === New Buffer API ============================================
  * Limited API and stable ABI since Python 3.11
  *
- * Py_buffer struct layout and size is now part of the stable abi3. The
+ * Ty_buffer struct layout and size is now part of the stable abi3. The
  * struct layout and size must not be changed in any way, as it would
  * break the ABI.
  *
@@ -19,47 +19,47 @@ extern "C" {
 
 typedef struct {
     void *buf;
-    PyObject *obj;        /* owned reference */
-    Py_ssize_t len;
-    Py_ssize_t itemsize;  /* This is Py_ssize_t so it can be
+    TyObject *obj;        /* owned reference */
+    Ty_ssize_t len;
+    Ty_ssize_t itemsize;  /* This is Ty_ssize_t so it can be
                              pointed to by strides in simple case.*/
     int readonly;
     int ndim;
     char *format;
-    Py_ssize_t *shape;
-    Py_ssize_t *strides;
-    Py_ssize_t *suboffsets;
+    Ty_ssize_t *shape;
+    Ty_ssize_t *strides;
+    Ty_ssize_t *suboffsets;
     void *internal;
-} Py_buffer;
+} Ty_buffer;
 
-typedef int (*getbufferproc)(PyObject *, Py_buffer *, int);
-typedef void (*releasebufferproc)(PyObject *, Py_buffer *);
+typedef int (*getbufferproc)(TyObject *, Ty_buffer *, int);
+typedef void (*releasebufferproc)(TyObject *, Ty_buffer *);
 
 /* Return 1 if the getbuffer function is available, otherwise return 0. */
-PyAPI_FUNC(int) PyObject_CheckBuffer(PyObject *obj);
+PyAPI_FUNC(int) PyObject_CheckBuffer(TyObject *obj);
 
 /* This is a C-API version of the getbuffer function call.  It checks
    to make sure object has the required function pointer and issues the
    call.
 
    Returns -1 and raises an error on failure and returns 0 on success. */
-PyAPI_FUNC(int) PyObject_GetBuffer(PyObject *obj, Py_buffer *view,
+PyAPI_FUNC(int) PyObject_GetBuffer(TyObject *obj, Ty_buffer *view,
                                    int flags);
 
 /* Get the memory area pointed to by the indices for the buffer given.
    Note that view->ndim is the assumed size of indices. */
-PyAPI_FUNC(void *) PyBuffer_GetPointer(const Py_buffer *view, const Py_ssize_t *indices);
+PyAPI_FUNC(void *) PyBuffer_GetPointer(const Ty_buffer *view, const Ty_ssize_t *indices);
 
 /* Return the implied itemsize of the data-format area from a
    struct-style description. */
-PyAPI_FUNC(Py_ssize_t) PyBuffer_SizeFromFormat(const char *format);
+PyAPI_FUNC(Ty_ssize_t) PyBuffer_SizeFromFormat(const char *format);
 
 /* Implementation in memoryobject.c */
-PyAPI_FUNC(int) PyBuffer_ToContiguous(void *buf, const Py_buffer *view,
-                                      Py_ssize_t len, char order);
+PyAPI_FUNC(int) PyBuffer_ToContiguous(void *buf, const Ty_buffer *view,
+                                      Ty_ssize_t len, char order);
 
-PyAPI_FUNC(int) PyBuffer_FromContiguous(const Py_buffer *view, const void *buf,
-                                        Py_ssize_t len, char order);
+PyAPI_FUNC(int) PyBuffer_FromContiguous(const Ty_buffer *view, const void *buf,
+                                        Ty_ssize_t len, char order);
 
 /* Copy len bytes of data from the contiguous chunk of memory
    pointed to by buf into the buffer exported by obj.  Return
@@ -74,18 +74,18 @@ PyAPI_FUNC(int) PyBuffer_FromContiguous(const Py_buffer *view, const void *buf,
    in C-style (last dimension varies the fastest).  If fort
    is 'A', then it does not matter and the copy will be made
    in whatever way is more efficient. */
-PyAPI_FUNC(int) PyObject_CopyData(PyObject *dest, PyObject *src);
+PyAPI_FUNC(int) PyObject_CopyData(TyObject *dest, TyObject *src);
 
 /* Copy the data from the src buffer to the buffer of destination. */
-PyAPI_FUNC(int) PyBuffer_IsContiguous(const Py_buffer *view, char fort);
+PyAPI_FUNC(int) PyBuffer_IsContiguous(const Ty_buffer *view, char fort);
 
 /*Fill the strides array with byte-strides of a contiguous
   (Fortran-style if fort is 'F' or C-style otherwise)
   array of the given shape with the given number of bytes
   per element. */
 PyAPI_FUNC(void) PyBuffer_FillContiguousStrides(int ndims,
-                                               Py_ssize_t *shape,
-                                               Py_ssize_t *strides,
+                                               Ty_ssize_t *shape,
+                                               Ty_ssize_t *strides,
                                                int itemsize,
                                                char fort);
 
@@ -94,12 +94,12 @@ PyAPI_FUNC(void) PyBuffer_FillContiguousStrides(int ndims,
    "unsigned bytes" of the given length.
 
    Returns 0 on success and -1 (with raising an error) on error. */
-PyAPI_FUNC(int) PyBuffer_FillInfo(Py_buffer *view, PyObject *o, void *buf,
-                                  Py_ssize_t len, int readonly,
+PyAPI_FUNC(int) PyBuffer_FillInfo(Ty_buffer *view, TyObject *o, void *buf,
+                                  Ty_ssize_t len, int readonly,
                                   int flags);
 
-/* Releases a Py_buffer obtained from getbuffer ParseTuple's "s*". */
-PyAPI_FUNC(void) PyBuffer_Release(Py_buffer *view);
+/* Releases a Ty_buffer obtained from getbuffer ParseTuple's "s*". */
+PyAPI_FUNC(void) PyBuffer_Release(Ty_buffer *view);
 
 /* Maximum number of dimensions */
 #define PyBUF_MAX_NDIM 64
@@ -108,7 +108,7 @@ PyAPI_FUNC(void) PyBuffer_Release(Py_buffer *view);
 #define PyBUF_SIMPLE 0
 #define PyBUF_WRITABLE 0x0001
 
-#ifndef Py_LIMITED_API
+#ifndef Ty_LIMITED_API
 /*  we used to include an E, backwards compatible alias */
 #define PyBUF_WRITEABLE PyBUF_WRITABLE
 #endif
@@ -137,9 +137,9 @@ PyAPI_FUNC(void) PyBuffer_Release(Py_buffer *view);
 #define PyBUF_READ  0x100
 #define PyBUF_WRITE 0x200
 
-#endif /* !Py_LIMITED_API || Py_LIMITED_API >= 3.11 */
+#endif /* !Ty_LIMITED_API || Ty_LIMITED_API >= 3.11 */
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* Py_BUFFER_H */
+#endif /* Ty_BUFFER_H */

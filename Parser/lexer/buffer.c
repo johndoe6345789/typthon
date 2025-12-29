@@ -47,18 +47,18 @@ _PyLexer_restore_fstring_buffers(struct tok_state *tok)
        reached): see tok_nextc and its calls to tok_reserve_buf.
 */
 int
-_PyLexer_tok_reserve_buf(struct tok_state *tok, Py_ssize_t size)
+_PyLexer_tok_reserve_buf(struct tok_state *tok, Ty_ssize_t size)
 {
-    Py_ssize_t cur = tok->cur - tok->buf;
-    Py_ssize_t oldsize = tok->inp - tok->buf;
-    Py_ssize_t newsize = oldsize + Py_MAX(size, oldsize >> 1);
+    Ty_ssize_t cur = tok->cur - tok->buf;
+    Ty_ssize_t oldsize = tok->inp - tok->buf;
+    Ty_ssize_t newsize = oldsize + Ty_MAX(size, oldsize >> 1);
     if (newsize > tok->end - tok->buf) {
         char *newbuf = tok->buf;
-        Py_ssize_t start = tok->start == NULL ? -1 : tok->start - tok->buf;
-        Py_ssize_t line_start = tok->start == NULL ? -1 : tok->line_start - tok->buf;
-        Py_ssize_t multi_line_start = tok->multi_line_start - tok->buf;
+        Ty_ssize_t start = tok->start == NULL ? -1 : tok->start - tok->buf;
+        Ty_ssize_t line_start = tok->start == NULL ? -1 : tok->line_start - tok->buf;
+        Ty_ssize_t multi_line_start = tok->multi_line_start - tok->buf;
         _PyLexer_remember_fstring_buffers(tok);
-        newbuf = (char *)PyMem_Realloc(newbuf, newsize);
+        newbuf = (char *)TyMem_Realloc(newbuf, newsize);
         if (newbuf == NULL) {
             tok->done = E_NOMEM;
             return 0;

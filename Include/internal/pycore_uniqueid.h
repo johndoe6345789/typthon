@@ -1,14 +1,14 @@
-#ifndef Py_INTERNAL_UNIQUEID_H
-#define Py_INTERNAL_UNIQUEID_H
+#ifndef Ty_INTERNAL_UNIQUEID_H
+#define Ty_INTERNAL_UNIQUEID_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 
 // This contains code for allocating unique ids to objects for per-thread
 // reference counting.
@@ -23,35 +23,35 @@ extern "C" {
 //
 // Each entry implicitly represents a unique id based on its offset in the
 // table. Non-allocated entries form a free-list via the 'next' pointer.
-// Allocated entries store the corresponding PyObject.
+// Allocated entries store the corresponding TyObject.
 
-#define _Py_INVALID_UNIQUE_ID 0
+#define _Ty_INVALID_UNIQUE_ID 0
 
 // Assigns the next id from the pool of ids.
-extern Py_ssize_t _PyObject_AssignUniqueId(PyObject *obj);
+extern Ty_ssize_t _TyObject_AssignUniqueId(TyObject *obj);
 
 // Releases the allocated id back to the pool.
-extern void _PyObject_ReleaseUniqueId(Py_ssize_t unique_id);
+extern void _TyObject_ReleaseUniqueId(Ty_ssize_t unique_id);
 
 // Releases the allocated id back to the pool.
-extern void _PyObject_DisablePerThreadRefcounting(PyObject *obj);
+extern void _TyObject_DisablePerThreadRefcounting(TyObject *obj);
 
 // Merges the per-thread reference counts into the corresponding objects.
-extern void _PyObject_MergePerThreadRefcounts(_PyThreadStateImpl *tstate);
+extern void _TyObject_MergePerThreadRefcounts(_PyThreadStateImpl *tstate);
 
-// Like _PyObject_MergePerThreadRefcounts, but also frees the per-thread
+// Like _TyObject_MergePerThreadRefcounts, but also frees the per-thread
 // array of refcounts.
-extern void _PyObject_FinalizePerThreadRefcounts(_PyThreadStateImpl *tstate);
+extern void _TyObject_FinalizePerThreadRefcounts(_PyThreadStateImpl *tstate);
 
 // Frees the interpreter's pool of type ids.
-extern void _PyObject_FinalizeUniqueIdPool(PyInterpreterState *interp);
+extern void _TyObject_FinalizeUniqueIdPool(PyInterpreterState *interp);
 
 // Increfs the object, resizing the thread-local refcount array if necessary.
-PyAPI_FUNC(void) _PyObject_ThreadIncrefSlow(PyObject *obj, size_t idx);
+PyAPI_FUNC(void) _TyObject_ThreadIncrefSlow(TyObject *obj, size_t idx);
 
-#endif   /* Py_GIL_DISABLED */
+#endif   /* Ty_GIL_DISABLED */
 
 #ifdef __cplusplus
 }
 #endif
-#endif   /* !Py_INTERNAL_UNIQUEID_H */
+#endif   /* !Ty_INTERNAL_UNIQUEID_H */

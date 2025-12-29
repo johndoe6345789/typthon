@@ -1,7 +1,7 @@
 // namespace object implementation
 
 #include "Python.h"
-#include "pycore_modsupport.h"    // _PyArg_NoPositional()
+#include "pycore_modsupport.h"    // _TyArg_NoPositional()
 #include "pycore_namespace.h"     // _PyNamespace_Type
 
 #include <stddef.h>               // offsetof()
@@ -9,32 +9,32 @@
 
 typedef struct {
     PyObject_HEAD
-    PyObject *ns_dict;
+    TyObject *ns_dict;
 } _PyNamespaceObject;
 
-#define _PyNamespace_CAST(op) _Py_CAST(_PyNamespaceObject*, (op))
+#define _PyNamespace_CAST(op) _Ty_CAST(_PyNamespaceObject*, (op))
 
 
-static PyMemberDef namespace_members[] = {
-    {"__dict__", _Py_T_OBJECT, offsetof(_PyNamespaceObject, ns_dict), Py_READONLY},
+static TyMemberDef namespace_members[] = {
+    {"__dict__", _Ty_T_OBJECT, offsetof(_PyNamespaceObject, ns_dict), Ty_READONLY},
     {NULL}
 };
 
 
 // Methods
 
-static PyObject *
-namespace_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+static TyObject *
+namespace_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 {
-    PyObject *self;
+    TyObject *self;
 
     assert(type != NULL && type->tp_alloc != NULL);
     self = type->tp_alloc(type, 0);
     if (self != NULL) {
         _PyNamespaceObject *ns = (_PyNamespaceObject *)self;
-        ns->ns_dict = PyDict_New();
+        ns->ns_dict = TyDict_New();
         if (ns->ns_dict == NULL) {
-            Py_DECREF(ns);
+            Ty_DECREF(ns);
             return NULL;
         }
     }
@@ -43,27 +43,27 @@ namespace_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
 
 static int
-namespace_init(PyObject *op, PyObject *args, PyObject *kwds)
+namespace_init(TyObject *op, TyObject *args, TyObject *kwds)
 {
     _PyNamespaceObject *ns = _PyNamespace_CAST(op);
-    PyObject *arg = NULL;
-    if (!PyArg_UnpackTuple(args, _PyType_Name(Py_TYPE(ns)), 0, 1, &arg)) {
+    TyObject *arg = NULL;
+    if (!TyArg_UnpackTuple(args, _TyType_Name(Ty_TYPE(ns)), 0, 1, &arg)) {
         return -1;
     }
     if (arg != NULL) {
-        PyObject *dict;
-        if (PyDict_CheckExact(arg)) {
-            dict = Py_NewRef(arg);
+        TyObject *dict;
+        if (TyDict_CheckExact(arg)) {
+            dict = Ty_NewRef(arg);
         }
         else {
-            dict = PyObject_CallOneArg((PyObject *)&PyDict_Type, arg);
+            dict = PyObject_CallOneArg((TyObject *)&TyDict_Type, arg);
             if (dict == NULL) {
                 return -1;
             }
         }
-        int err = (!PyArg_ValidateKeywordArguments(dict) ||
-                   PyDict_Update(ns->ns_dict, dict) < 0);
-        Py_DECREF(dict);
+        int err = (!TyArg_ValidateKeywordArguments(dict) ||
+                   TyDict_Update(ns->ns_dict, dict) < 0);
+        Ty_DECREF(dict);
         if (err) {
             return -1;
         }
@@ -71,48 +71,48 @@ namespace_init(PyObject *op, PyObject *args, PyObject *kwds)
     if (kwds == NULL) {
         return 0;
     }
-    if (!PyArg_ValidateKeywordArguments(kwds)) {
+    if (!TyArg_ValidateKeywordArguments(kwds)) {
         return -1;
     }
-    return PyDict_Update(ns->ns_dict, kwds);
+    return TyDict_Update(ns->ns_dict, kwds);
 }
 
 
 static void
-namespace_dealloc(PyObject *op)
+namespace_dealloc(TyObject *op)
 {
     _PyNamespaceObject *ns = _PyNamespace_CAST(op);
     PyObject_GC_UnTrack(ns);
-    Py_CLEAR(ns->ns_dict);
-    Py_TYPE(ns)->tp_free((PyObject *)ns);
+    Ty_CLEAR(ns->ns_dict);
+    Ty_TYPE(ns)->tp_free((TyObject *)ns);
 }
 
 
-static PyObject *
-namespace_repr(PyObject *ns)
+static TyObject *
+namespace_repr(TyObject *ns)
 {
     int i, loop_error = 0;
-    PyObject *pairs = NULL, *d = NULL, *keys = NULL, *keys_iter = NULL;
-    PyObject *key;
-    PyObject *separator, *pairsrepr, *repr = NULL;
+    TyObject *pairs = NULL, *d = NULL, *keys = NULL, *keys_iter = NULL;
+    TyObject *key;
+    TyObject *separator, *pairsrepr, *repr = NULL;
     const char * name;
 
-    name = Py_IS_TYPE(ns, &_PyNamespace_Type) ? "namespace"
-                                               : Py_TYPE(ns)->tp_name;
+    name = Ty_IS_TYPE(ns, &_PyNamespace_Type) ? "namespace"
+                                               : Ty_TYPE(ns)->tp_name;
 
-    i = Py_ReprEnter(ns);
+    i = Ty_ReprEnter(ns);
     if (i != 0) {
-        return i > 0 ? PyUnicode_FromFormat("%s(...)", name) : NULL;
+        return i > 0 ? TyUnicode_FromFormat("%s(...)", name) : NULL;
     }
 
-    pairs = PyList_New(0);
+    pairs = TyList_New(0);
     if (pairs == NULL)
         goto error;
 
     assert(((_PyNamespaceObject *)ns)->ns_dict != NULL);
-    d = Py_NewRef(((_PyNamespaceObject *)ns)->ns_dict);
+    d = Ty_NewRef(((_PyNamespaceObject *)ns)->ns_dict);
 
-    keys = PyDict_Keys(d);
+    keys = TyDict_Keys(d);
     if (keys == NULL)
         goto error;
 
@@ -120,20 +120,20 @@ namespace_repr(PyObject *ns)
     if (keys_iter == NULL)
         goto error;
 
-    while ((key = PyIter_Next(keys_iter)) != NULL) {
-        if (PyUnicode_Check(key) && PyUnicode_GET_LENGTH(key) > 0) {
-            PyObject *value, *item;
+    while ((key = TyIter_Next(keys_iter)) != NULL) {
+        if (TyUnicode_Check(key) && TyUnicode_GET_LENGTH(key) > 0) {
+            TyObject *value, *item;
 
-            int has_key = PyDict_GetItemRef(d, key, &value);
+            int has_key = TyDict_GetItemRef(d, key, &value);
             if (has_key == 1) {
-                item = PyUnicode_FromFormat("%U=%R", key, value);
-                Py_DECREF(value);
+                item = TyUnicode_FromFormat("%U=%R", key, value);
+                Ty_DECREF(value);
                 if (item == NULL) {
                     loop_error = 1;
                 }
                 else {
-                    loop_error = PyList_Append(pairs, item);
-                    Py_DECREF(item);
+                    loop_error = TyList_Append(pairs, item);
+                    Ty_DECREF(item);
                 }
             }
             else if (has_key < 0) {
@@ -141,104 +141,104 @@ namespace_repr(PyObject *ns)
             }
         }
 
-        Py_DECREF(key);
+        Ty_DECREF(key);
         if (loop_error)
             goto error;
     }
 
-    if (PyErr_Occurred()) {
+    if (TyErr_Occurred()) {
         goto error;
     }
 
-    separator = PyUnicode_FromString(", ");
+    separator = TyUnicode_FromString(", ");
     if (separator == NULL)
         goto error;
 
-    pairsrepr = PyUnicode_Join(separator, pairs);
-    Py_DECREF(separator);
+    pairsrepr = TyUnicode_Join(separator, pairs);
+    Ty_DECREF(separator);
     if (pairsrepr == NULL)
         goto error;
 
-    repr = PyUnicode_FromFormat("%s(%S)", name, pairsrepr);
-    Py_DECREF(pairsrepr);
+    repr = TyUnicode_FromFormat("%s(%S)", name, pairsrepr);
+    Ty_DECREF(pairsrepr);
 
 error:
-    Py_XDECREF(pairs);
-    Py_XDECREF(d);
-    Py_XDECREF(keys);
-    Py_XDECREF(keys_iter);
-    Py_ReprLeave(ns);
+    Ty_XDECREF(pairs);
+    Ty_XDECREF(d);
+    Ty_XDECREF(keys);
+    Ty_XDECREF(keys_iter);
+    Ty_ReprLeave(ns);
 
     return repr;
 }
 
 
 static int
-namespace_traverse(PyObject *op, visitproc visit, void *arg)
+namespace_traverse(TyObject *op, visitproc visit, void *arg)
 {
     _PyNamespaceObject *ns = _PyNamespace_CAST(op);
-    Py_VISIT(ns->ns_dict);
+    Ty_VISIT(ns->ns_dict);
     return 0;
 }
 
 
 static int
-namespace_clear(PyObject *op)
+namespace_clear(TyObject *op)
 {
     _PyNamespaceObject *ns = _PyNamespace_CAST(op);
-    Py_CLEAR(ns->ns_dict);
+    Ty_CLEAR(ns->ns_dict);
     return 0;
 }
 
 
-static PyObject *
-namespace_richcompare(PyObject *self, PyObject *other, int op)
+static TyObject *
+namespace_richcompare(TyObject *self, TyObject *other, int op)
 {
     if (PyObject_TypeCheck(self, &_PyNamespace_Type) &&
         PyObject_TypeCheck(other, &_PyNamespace_Type))
         return PyObject_RichCompare(((_PyNamespaceObject *)self)->ns_dict,
                                    ((_PyNamespaceObject *)other)->ns_dict, op);
-    Py_RETURN_NOTIMPLEMENTED;
+    Ty_RETURN_NOTIMPLEMENTED;
 }
 
 
 PyDoc_STRVAR(namespace_reduce__doc__, "Return state information for pickling");
 
-static PyObject *
-namespace_reduce(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+namespace_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     _PyNamespaceObject *ns = (_PyNamespaceObject*)op;
-    PyObject *result, *args = PyTuple_New(0);
+    TyObject *result, *args = TyTuple_New(0);
 
     if (!args)
         return NULL;
 
-    result = PyTuple_Pack(3, (PyObject *)Py_TYPE(ns), args, ns->ns_dict);
-    Py_DECREF(args);
+    result = TyTuple_Pack(3, (TyObject *)Ty_TYPE(ns), args, ns->ns_dict);
+    Ty_DECREF(args);
     return result;
 }
 
 
-static PyObject *
-namespace_replace(PyObject *self, PyObject *args, PyObject *kwargs)
+static TyObject *
+namespace_replace(TyObject *self, TyObject *args, TyObject *kwargs)
 {
-    if (!_PyArg_NoPositional("__replace__", args)) {
+    if (!_TyArg_NoPositional("__replace__", args)) {
         return NULL;
     }
 
-    PyObject *result = PyObject_CallNoArgs((PyObject *)Py_TYPE(self));
+    TyObject *result = PyObject_CallNoArgs((TyObject *)Ty_TYPE(self));
     if (!result) {
         return NULL;
     }
-    if (PyDict_Update(((_PyNamespaceObject*)result)->ns_dict,
+    if (TyDict_Update(((_PyNamespaceObject*)result)->ns_dict,
                       ((_PyNamespaceObject*)self)->ns_dict) < 0)
     {
-        Py_DECREF(result);
+        Ty_DECREF(result);
         return NULL;
     }
     if (kwargs) {
-        if (PyDict_Update(((_PyNamespaceObject*)result)->ns_dict, kwargs) < 0) {
-            Py_DECREF(result);
+        if (TyDict_Update(((_PyNamespaceObject*)result)->ns_dict, kwargs) < 0) {
+            Ty_DECREF(result);
             return NULL;
         }
     }
@@ -246,7 +246,7 @@ namespace_replace(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 
-static PyMethodDef namespace_methods[] = {
+static TyMethodDef namespace_methods[] = {
     {"__reduce__", namespace_reduce, METH_NOARGS,
      namespace_reduce__doc__},
     {"__replace__", _PyCFunction_CAST(namespace_replace), METH_VARARGS|METH_KEYWORDS,
@@ -261,8 +261,8 @@ PyDoc_STRVAR(namespace_doc,
 --\n\n\
 A simple attribute-based namespace.");
 
-PyTypeObject _PyNamespace_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject _PyNamespace_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "types.SimpleNamespace",                    /* tp_name */
     sizeof(_PyNamespaceObject),                 /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -281,8 +281,8 @@ PyTypeObject _PyNamespace_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     PyObject_GenericSetAttr,                    /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-        Py_TPFLAGS_BASETYPE,                    /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC |
+        Ty_TPFLAGS_BASETYPE,                    /* tp_flags */
     namespace_doc,                              /* tp_doc */
     namespace_traverse,                         /* tp_traverse */
     namespace_clear,                            /* tp_clear */
@@ -299,25 +299,25 @@ PyTypeObject _PyNamespace_Type = {
     0,                                          /* tp_descr_set */
     offsetof(_PyNamespaceObject, ns_dict),      /* tp_dictoffset */
     namespace_init,                             /* tp_init */
-    PyType_GenericAlloc,                        /* tp_alloc */
+    TyType_GenericAlloc,                        /* tp_alloc */
     namespace_new,                              /* tp_new */
     PyObject_GC_Del,                            /* tp_free */
 };
 
 
-PyObject *
-_PyNamespace_New(PyObject *kwds)
+TyObject *
+_PyNamespace_New(TyObject *kwds)
 {
-    PyObject *ns = namespace_new(&_PyNamespace_Type, NULL, NULL);
+    TyObject *ns = namespace_new(&_PyNamespace_Type, NULL, NULL);
     if (ns == NULL)
         return NULL;
 
     if (kwds == NULL)
         return ns;
-    if (PyDict_Update(((_PyNamespaceObject *)ns)->ns_dict, kwds) != 0) {
-        Py_DECREF(ns);
+    if (TyDict_Update(((_PyNamespaceObject *)ns)->ns_dict, kwds) != 0) {
+        Ty_DECREF(ns);
         return NULL;
     }
 
-    return (PyObject *)ns;
+    return (TyObject *)ns;
 }

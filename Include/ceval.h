@@ -1,33 +1,33 @@
 /* Interface to random parts in ceval.c */
 
-#ifndef Py_CEVAL_H
-#define Py_CEVAL_H
+#ifndef Ty_CEVAL_H
+#define Ty_CEVAL_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 
-PyAPI_FUNC(PyObject *) PyEval_EvalCode(PyObject *, PyObject *, PyObject *);
+PyAPI_FUNC(TyObject *) TyEval_EvalCode(TyObject *, TyObject *, TyObject *);
 
-PyAPI_FUNC(PyObject *) PyEval_EvalCodeEx(PyObject *co,
-                                         PyObject *globals,
-                                         PyObject *locals,
-                                         PyObject *const *args, int argc,
-                                         PyObject *const *kwds, int kwdc,
-                                         PyObject *const *defs, int defc,
-                                         PyObject *kwdefs, PyObject *closure);
+PyAPI_FUNC(TyObject *) TyEval_EvalCodeEx(TyObject *co,
+                                         TyObject *globals,
+                                         TyObject *locals,
+                                         TyObject *const *args, int argc,
+                                         TyObject *const *kwds, int kwdc,
+                                         TyObject *const *defs, int defc,
+                                         TyObject *kwdefs, TyObject *closure);
 
-PyAPI_FUNC(PyObject *) PyEval_GetBuiltins(void);
-PyAPI_FUNC(PyObject *) PyEval_GetGlobals(void);
-PyAPI_FUNC(PyObject *) PyEval_GetLocals(void);
-PyAPI_FUNC(PyFrameObject *) PyEval_GetFrame(void);
+PyAPI_FUNC(TyObject *) TyEval_GetBuiltins(void);
+PyAPI_FUNC(TyObject *) TyEval_GetGlobals(void);
+PyAPI_FUNC(TyObject *) TyEval_GetLocals(void);
+PyAPI_FUNC(PyFrameObject *) TyEval_GetFrame(void);
 
-PyAPI_FUNC(PyObject *) PyEval_GetFrameBuiltins(void);
-PyAPI_FUNC(PyObject *) PyEval_GetFrameGlobals(void);
-PyAPI_FUNC(PyObject *) PyEval_GetFrameLocals(void);
+PyAPI_FUNC(TyObject *) TyEval_GetFrameBuiltins(void);
+PyAPI_FUNC(TyObject *) TyEval_GetFrameGlobals(void);
+PyAPI_FUNC(TyObject *) TyEval_GetFrameLocals(void);
 
-PyAPI_FUNC(int) Py_AddPendingCall(int (*func)(void *), void *arg);
-PyAPI_FUNC(int) Py_MakePendingCalls(void);
+PyAPI_FUNC(int) Ty_AddPendingCall(int (*func)(void *), void *arg);
+PyAPI_FUNC(int) Ty_MakePendingCalls(void);
 
 /* Protection against deeply nested recursive calls
 
@@ -54,17 +54,17 @@ PyAPI_FUNC(int) Py_MakePendingCalls(void);
    http://mail.python.org/pipermail/python-dev/2008-August/082106.html
    for some observations.
 */
-PyAPI_FUNC(void) Py_SetRecursionLimit(int);
-PyAPI_FUNC(int) Py_GetRecursionLimit(void);
+PyAPI_FUNC(void) Ty_SetRecursionLimit(int);
+PyAPI_FUNC(int) Ty_GetRecursionLimit(void);
 
-PyAPI_FUNC(int) Py_EnterRecursiveCall(const char *where);
-PyAPI_FUNC(void) Py_LeaveRecursiveCall(void);
+PyAPI_FUNC(int) Ty_EnterRecursiveCall(const char *where);
+PyAPI_FUNC(void) Ty_LeaveRecursiveCall(void);
 
-PyAPI_FUNC(const char *) PyEval_GetFuncName(PyObject *);
-PyAPI_FUNC(const char *) PyEval_GetFuncDesc(PyObject *);
+PyAPI_FUNC(const char *) TyEval_GetFuncName(TyObject *);
+PyAPI_FUNC(const char *) TyEval_GetFuncDesc(TyObject *);
 
-PyAPI_FUNC(PyObject *) PyEval_EvalFrame(PyFrameObject *);
-PyAPI_FUNC(PyObject *) PyEval_EvalFrameEx(PyFrameObject *f, int exc);
+PyAPI_FUNC(TyObject *) TyEval_EvalFrame(PyFrameObject *);
+PyAPI_FUNC(TyObject *) TyEval_EvalFrameEx(PyFrameObject *f, int exc);
 
 /* Interface for threads.
 
@@ -73,55 +73,55 @@ PyAPI_FUNC(PyObject *) PyEval_EvalFrameEx(PyFrameObject *f, int exc);
    threads to run as follows:
 
     ...preparations here...
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     ...blocking system call here...
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     ...interpret result here...
 
-   The Py_BEGIN_ALLOW_THREADS/Py_END_ALLOW_THREADS pair expands to a
+   The Ty_BEGIN_ALLOW_THREADS/Ty_END_ALLOW_THREADS pair expands to a
    {}-surrounded block.
    To leave the block in the middle (e.g., with return), you must insert
-   a line containing Py_BLOCK_THREADS before the return, e.g.
+   a line containing Ty_BLOCK_THREADS before the return, e.g.
 
     if (...premature_exit...) {
-        Py_BLOCK_THREADS
-        PyErr_SetFromErrno(PyExc_OSError);
+        Ty_BLOCK_THREADS
+        TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
 
    An alternative is:
 
-    Py_BLOCK_THREADS
+    Ty_BLOCK_THREADS
     if (...premature_exit...) {
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Py_UNBLOCK_THREADS
+    Ty_UNBLOCK_THREADS
 
    For convenience, that the value of 'errno' is restored across
-   Py_END_ALLOW_THREADS and Py_BLOCK_THREADS.
+   Ty_END_ALLOW_THREADS and Ty_BLOCK_THREADS.
 
-   WARNING: NEVER NEST CALLS TO Py_BEGIN_ALLOW_THREADS AND
-   Py_END_ALLOW_THREADS!!!
+   WARNING: NEVER NEST CALLS TO Ty_BEGIN_ALLOW_THREADS AND
+   Ty_END_ALLOW_THREADS!!!
 
    Note that not yet all candidates have been converted to use this
    mechanism!
 */
 
-PyAPI_FUNC(PyThreadState *) PyEval_SaveThread(void);
-PyAPI_FUNC(void) PyEval_RestoreThread(PyThreadState *);
+PyAPI_FUNC(PyThreadState *) TyEval_SaveThread(void);
+PyAPI_FUNC(void) TyEval_RestoreThread(PyThreadState *);
 
-Py_DEPRECATED(3.9) PyAPI_FUNC(void) PyEval_InitThreads(void);
+Ty_DEPRECATED(3.9) PyAPI_FUNC(void) TyEval_InitThreads(void);
 
-PyAPI_FUNC(void) PyEval_AcquireThread(PyThreadState *tstate);
-PyAPI_FUNC(void) PyEval_ReleaseThread(PyThreadState *tstate);
+PyAPI_FUNC(void) TyEval_AcquireThread(PyThreadState *tstate);
+PyAPI_FUNC(void) TyEval_ReleaseThread(PyThreadState *tstate);
 
-#define Py_BEGIN_ALLOW_THREADS { \
+#define Ty_BEGIN_ALLOW_THREADS { \
                         PyThreadState *_save; \
-                        _save = PyEval_SaveThread();
-#define Py_BLOCK_THREADS        PyEval_RestoreThread(_save);
-#define Py_UNBLOCK_THREADS      _save = PyEval_SaveThread();
-#define Py_END_ALLOW_THREADS    PyEval_RestoreThread(_save); \
+                        _save = TyEval_SaveThread();
+#define Ty_BLOCK_THREADS        TyEval_RestoreThread(_save);
+#define Ty_UNBLOCK_THREADS      _save = TyEval_SaveThread();
+#define Ty_END_ALLOW_THREADS    TyEval_RestoreThread(_save); \
                  }
 
 /* Masks and values used by FORMAT_VALUE opcode. */
@@ -133,13 +133,13 @@ PyAPI_FUNC(void) PyEval_ReleaseThread(PyThreadState *tstate);
 #define FVS_MASK      0x4
 #define FVS_HAVE_SPEC 0x4
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_CEVAL_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_CEVAL_H
 #  include "cpython/ceval.h"
-#  undef Py_CPYTHON_CEVAL_H
+#  undef Ty_CPYTHON_CEVAL_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_CEVAL_H */
+#endif /* !Ty_CEVAL_H */

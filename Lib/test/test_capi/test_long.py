@@ -359,7 +359,7 @@ class LongTests(unittest.TestCase):
             SIZE_MAX,
         )
 
-        # Abbreviate sizeof(Py_ssize_t) to SZ because we use it a lot
+        # Abbreviate sizeof(Ty_ssize_t) to SZ because we use it a lot
         SZ = int(math.ceil(math.log(SIZE_MAX + 1) / math.log(2)) / 8)
         MAX_SSIZE = 2 ** (SZ * 8 - 1) - 1
         MAX_USIZE = 2 ** (SZ * 8) - 1
@@ -396,7 +396,7 @@ class LongTests(unittest.TestCase):
                 self.assertEqual(buffer, b"\x5a",
                     "buffer overwritten when it should not have been")
                 # Also check via the __index__ path.
-                # We pass Py_ASNATIVEBYTES_NATIVE_ENDIAN | ALLOW_INDEX
+                # We pass Ty_ASNATIVEBYTES_NATIVE_ENDIAN | ALLOW_INDEX
                 self.assertEqual(expect, asnativebytes(Index(v), buffer, 0, 3 | 16),
                     "PyLong_AsNativeBytes(Index(v), <unknown>, 0, -1)")
                 self.assertEqual(buffer, b"\x5a",
@@ -481,7 +481,7 @@ class LongTests(unittest.TestCase):
                 self.assertEqual(expect_le, buffer[:n], "<little>")
 
         # Test cases that do not request size for a sign bit when we pass the
-        # Py_ASNATIVEBYTES_UNSIGNED_BUFFER flag
+        # Ty_ASNATIVEBYTES_UNSIGNED_BUFFER flag
         for v, expect_be, expect_n in [
             (255,       b'\xff',                1),
             # We pass a 2 byte buffer so it just uses the whole thing
@@ -503,11 +503,11 @@ class LongTests(unittest.TestCase):
                 self.assertEqual(expect_n, asnativebytes(v, buffer, n, 5),
                     f"PyLong_AsNativeBytes(v, buffer, {n}, <little|unsigned>)")
 
-        # Ensure Py_ASNATIVEBYTES_REJECT_NEGATIVE raises on negative value
+        # Ensure Ty_ASNATIVEBYTES_REJECT_NEGATIVE raises on negative value
         with self.assertRaises(ValueError):
             asnativebytes(-1, buffer, 0, 8)
 
-        # Ensure omitting Py_ASNATIVEBYTES_ALLOW_INDEX raises on __index__ value
+        # Ensure omitting Ty_ASNATIVEBYTES_ALLOW_INDEX raises on __index__ value
         with self.assertRaises(TypeError):
             asnativebytes(Index(1), buffer, 0, -1)
         with self.assertRaises(TypeError):
@@ -527,7 +527,7 @@ class LongTests(unittest.TestCase):
             SIZE_MAX,
         )
 
-        # Abbreviate sizeof(Py_ssize_t) to SZ because we use it a lot
+        # Abbreviate sizeof(Ty_ssize_t) to SZ because we use it a lot
         SZ = int(math.ceil(math.log(SIZE_MAX + 1) / math.log(2)) / 8)
 
         rng = Random()
@@ -549,7 +549,7 @@ class LongTests(unittest.TestCase):
                 # All values are positive, so if MSB is set, expect extra bit
                 # when we request the size or have a large enough buffer
                 expect_1 = (SZ, n + 1)
-                # When passing Py_ASNATIVEBYTES_UNSIGNED_BUFFER, we expect the
+                # When passing Ty_ASNATIVEBYTES_UNSIGNED_BUFFER, we expect the
                 # return to be exactly the right size.
                 expect_2 = (n,)
 
@@ -589,7 +589,7 @@ class LongTests(unittest.TestCase):
             SIZE_MAX,
         )
 
-        # Abbreviate sizeof(Py_ssize_t) to SZ because we use it a lot
+        # Abbreviate sizeof(Ty_ssize_t) to SZ because we use it a lot
         SZ = int(math.ceil(math.log(SIZE_MAX + 1) / math.log(2)) / 8)
         MAX_SSIZE = 2 ** (SZ * 8 - 1) - 1
         MAX_USIZE = 2 ** (SZ * 8) - 1
@@ -623,7 +623,7 @@ class LongTests(unittest.TestCase):
                         f"PyLong_FromUnsignedNativeBytes(buffer, {n}, <native>)")
 
                 # Swap the unsigned request for tests and use the
-                # Py_ASNATIVEBYTES_UNSIGNED_BUFFER flag instead
+                # Ty_ASNATIVEBYTES_UNSIGNED_BUFFER flag instead
                 self.assertEqual(expect_u, fromnativebytes(v_be, n, 4, 1),
                     f"PyLong_FromNativeBytes(buffer, {n}, <big|unsigned>)")
 

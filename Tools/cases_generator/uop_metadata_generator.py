@@ -70,7 +70,7 @@ def generate_uop_metadata(
 ) -> None:
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, False)
-    with out.header_guard("Py_CORE_UOP_METADATA_H"):
+    with out.header_guard("Ty_CORE_UOP_METADATA_H"):
         out.emit("#include <stdint.h>\n")
         out.emit('#include "pycore_uop_ids.h"\n')
         generate_names_and_flags(analysis, out)

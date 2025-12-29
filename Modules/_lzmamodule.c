@@ -5,8 +5,8 @@
 
 */
 
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
@@ -17,7 +17,7 @@
 
 #include <lzma.h>
 
-#include "pycore_long.h"          // _PyLong_UInt32_Converter()
+#include "pycore_long.h"          // _TyLong_UInt32_Converter()
 // Blocks output buffer wrappers
 #include "pycore_blocks_output_buffer.h"
 
@@ -27,11 +27,11 @@
 
 /* On success, return value >= 0
    On failure, return -1 */
-static inline Py_ssize_t
-OutputBuffer_InitAndGrow(_BlocksOutputBuffer *buffer, Py_ssize_t max_length,
+static inline Ty_ssize_t
+OutputBuffer_InitAndGrow(_BlocksOutputBuffer *buffer, Ty_ssize_t max_length,
                          uint8_t **next_out, size_t *avail_out)
 {
-    Py_ssize_t allocated;
+    Ty_ssize_t allocated;
 
     allocated = _BlocksOutputBuffer_InitAndGrow(
                     buffer, max_length, (void**) next_out);
@@ -41,28 +41,28 @@ OutputBuffer_InitAndGrow(_BlocksOutputBuffer *buffer, Py_ssize_t max_length,
 
 /* On success, return value >= 0
    On failure, return -1 */
-static inline Py_ssize_t
+static inline Ty_ssize_t
 OutputBuffer_Grow(_BlocksOutputBuffer *buffer,
                   uint8_t **next_out, size_t *avail_out)
 {
-    Py_ssize_t allocated;
+    Ty_ssize_t allocated;
 
     allocated = _BlocksOutputBuffer_Grow(
-                    buffer, (void**) next_out, (Py_ssize_t) *avail_out);
+                    buffer, (void**) next_out, (Ty_ssize_t) *avail_out);
     *avail_out = (size_t) allocated;
     return allocated;
 }
 
-static inline Py_ssize_t
+static inline Ty_ssize_t
 OutputBuffer_GetDataSize(_BlocksOutputBuffer *buffer, size_t avail_out)
 {
-    return _BlocksOutputBuffer_GetDataSize(buffer, (Py_ssize_t) avail_out);
+    return _BlocksOutputBuffer_GetDataSize(buffer, (Ty_ssize_t) avail_out);
 }
 
-static inline PyObject *
+static inline TyObject *
 OutputBuffer_Finish(_BlocksOutputBuffer *buffer, size_t avail_out)
 {
-    return _BlocksOutputBuffer_Finish(buffer, (Py_ssize_t) avail_out);
+    return _BlocksOutputBuffer_Finish(buffer, (Ty_ssize_t) avail_out);
 }
 
 static inline void
@@ -74,23 +74,23 @@ OutputBuffer_OnError(_BlocksOutputBuffer *buffer)
 
 #define ACQUIRE_LOCK(obj) do { \
     if (!PyThread_acquire_lock((obj)->lock, 0)) { \
-        Py_BEGIN_ALLOW_THREADS \
+        Ty_BEGIN_ALLOW_THREADS \
         PyThread_acquire_lock((obj)->lock, 1); \
-        Py_END_ALLOW_THREADS \
+        Ty_END_ALLOW_THREADS \
     } } while (0)
 #define RELEASE_LOCK(obj) PyThread_release_lock((obj)->lock)
 
 typedef struct {
-    PyTypeObject *lzma_compressor_type;
-    PyTypeObject *lzma_decompressor_type;
-    PyObject *error;
-    PyObject *empty_tuple;
+    TyTypeObject *lzma_compressor_type;
+    TyTypeObject *lzma_decompressor_type;
+    TyObject *error;
+    TyObject *empty_tuple;
 } _lzma_state;
 
 static inline _lzma_state*
-get_lzma_state(PyObject *module)
+get_lzma_state(TyObject *module)
 {
-    void *state = PyModule_GetState(module);
+    void *state = TyModule_GetState(module);
     assert(state != NULL);
     return (_lzma_state *)state;
 }
@@ -120,7 +120,7 @@ typedef struct {
     lzma_stream lzs;
     int check;
     char eof;
-    PyObject *unused_data;
+    TyObject *unused_data;
     char needs_input;
     uint8_t *input_buffer;
     size_t input_buffer_size;
@@ -142,31 +142,31 @@ catch_lzma_error(_lzma_state *state, lzma_ret lzret)
         case LZMA_STREAM_END:
             return 0;
         case LZMA_UNSUPPORTED_CHECK:
-            PyErr_SetString(state->error, "Unsupported integrity check");
+            TyErr_SetString(state->error, "Unsupported integrity check");
             return 1;
         case LZMA_MEM_ERROR:
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return 1;
         case LZMA_MEMLIMIT_ERROR:
-            PyErr_SetString(state->error, "Memory usage limit exceeded");
+            TyErr_SetString(state->error, "Memory usage limit exceeded");
             return 1;
         case LZMA_FORMAT_ERROR:
-            PyErr_SetString(state->error, "Input format not supported by decoder");
+            TyErr_SetString(state->error, "Input format not supported by decoder");
             return 1;
         case LZMA_OPTIONS_ERROR:
-            PyErr_SetString(state->error, "Invalid or unsupported options");
+            TyErr_SetString(state->error, "Invalid or unsupported options");
             return 1;
         case LZMA_DATA_ERROR:
-            PyErr_SetString(state->error, "Corrupt input data");
+            TyErr_SetString(state->error, "Corrupt input data");
             return 1;
         case LZMA_BUF_ERROR:
-            PyErr_SetString(state->error, "Insufficient buffer space");
+            TyErr_SetString(state->error, "Insufficient buffer space");
             return 1;
         case LZMA_PROG_ERROR:
-            PyErr_SetString(state->error, "Internal error");
+            TyErr_SetString(state->error, "Internal error");
             return 1;
         default:
-            PyErr_Format(state->error, "Unrecognized error from liblzma: %d", lzret);
+            TyErr_Format(state->error, "Unrecognized error from liblzma: %d", lzret);
             return 1;
     }
 }
@@ -177,19 +177,19 @@ PyLzma_Malloc(void *opaque, size_t items, size_t size)
     if (size != 0 && items > (size_t)PY_SSIZE_T_MAX / size) {
         return NULL;
     }
-    /* PyMem_Malloc() cannot be used:
+    /* TyMem_Malloc() cannot be used:
        the GIL is not held when lzma_code() is called */
-    return PyMem_RawMalloc(items * size);
+    return TyMem_RawMalloc(items * size);
 }
 
 static void
 PyLzma_Free(void *opaque, void *ptr)
 {
-    PyMem_RawFree(ptr);
+    TyMem_RawFree(ptr);
 }
 
 
-/* Some custom type conversions for PyArg_ParseTupleAndKeywords(),
+/* Some custom type conversions for TyArg_ParseTupleAndKeywords(),
    since the predefined conversion specifiers do not suit our needs:
 
       uint32_t - the "I" (unsigned int) specifier is the right size, but
@@ -206,18 +206,18 @@ PyLzma_Free(void *opaque, void *ptr)
 
 #define INT_TYPE_CONVERTER_FUNC(TYPE, FUNCNAME)                     \
 static int                                                          \
-FUNCNAME(PyObject *obj, void *ptr)                                  \
+FUNCNAME(TyObject *obj, void *ptr)                                  \
 {                                                                   \
-    Py_ssize_t bytes = PyLong_AsNativeBytes(obj, ptr, sizeof(TYPE), \
-            Py_ASNATIVEBYTES_NATIVE_ENDIAN |                        \
-            Py_ASNATIVEBYTES_ALLOW_INDEX |                          \
-            Py_ASNATIVEBYTES_REJECT_NEGATIVE |                      \
-            Py_ASNATIVEBYTES_UNSIGNED_BUFFER);                      \
+    Ty_ssize_t bytes = TyLong_AsNativeBytes(obj, ptr, sizeof(TYPE), \
+            Ty_ASNATIVEBYTES_NATIVE_ENDIAN |                        \
+            Ty_ASNATIVEBYTES_ALLOW_INDEX |                          \
+            Ty_ASNATIVEBYTES_REJECT_NEGATIVE |                      \
+            Ty_ASNATIVEBYTES_UNSIGNED_BUFFER);                      \
     if (bytes < 0) {                                                \
         return 0;                                                   \
     }                                                               \
     if ((size_t)bytes > sizeof(TYPE)) {                             \
-        PyErr_SetString(PyExc_OverflowError,                        \
+        TyErr_SetString(TyExc_OverflowError,                        \
                         "Python int too large for C "#TYPE);        \
         return 0;                                                   \
     }                                                               \
@@ -237,12 +237,12 @@ INT_TYPE_CONVERTER_FUNC(lzma_match_finder, lzma_mf_converter)
    the C lzma_filter structs expected by liblzma. */
 
 static void *
-parse_filter_spec_lzma(_lzma_state *state, PyObject *spec)
+parse_filter_spec_lzma(_lzma_state *state, TyObject *spec)
 {
     static char *optnames[] = {"id", "preset", "dict_size", "lc", "lp",
                                "pb", "mode", "nice_len", "mf", "depth", NULL};
-    PyObject *id;
-    PyObject *preset_obj;
+    TyObject *id;
+    TyObject *preset_obj;
     uint32_t preset = LZMA_PRESET_DEFAULT;
     lzma_options_lzma *options;
 
@@ -253,38 +253,38 @@ parse_filter_spec_lzma(_lzma_state *state, PyObject *spec)
         return NULL;
     }
     if (preset_obj != NULL) {
-        int ok = _PyLong_UInt32_Converter(preset_obj, &preset);
-        Py_DECREF(preset_obj);
+        int ok = _TyLong_UInt32_Converter(preset_obj, &preset);
+        Ty_DECREF(preset_obj);
         if (!ok) {
             return NULL;
         }
     }
 
-    options = (lzma_options_lzma *)PyMem_Calloc(1, sizeof *options);
+    options = (lzma_options_lzma *)TyMem_Calloc(1, sizeof *options);
     if (options == NULL) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
 
     if (lzma_lzma_preset(options, preset)) {
-        PyMem_Free(options);
-        PyErr_Format(state->error, "Invalid compression preset: %u", preset);
+        TyMem_Free(options);
+        TyErr_Format(state->error, "Invalid compression preset: %u", preset);
         return NULL;
     }
 
-    if (!PyArg_ParseTupleAndKeywords(state->empty_tuple, spec,
+    if (!TyArg_ParseTupleAndKeywords(state->empty_tuple, spec,
                                      "|OOO&O&O&O&O&O&O&O&", optnames,
                                      &id, &preset_obj,
-                                     _PyLong_UInt32_Converter, &options->dict_size,
-                                     _PyLong_UInt32_Converter, &options->lc,
-                                     _PyLong_UInt32_Converter, &options->lp,
-                                     _PyLong_UInt32_Converter, &options->pb,
+                                     _TyLong_UInt32_Converter, &options->dict_size,
+                                     _TyLong_UInt32_Converter, &options->lc,
+                                     _TyLong_UInt32_Converter, &options->lp,
+                                     _TyLong_UInt32_Converter, &options->pb,
                                      lzma_mode_converter, &options->mode,
-                                     _PyLong_UInt32_Converter, &options->nice_len,
+                                     _TyLong_UInt32_Converter, &options->nice_len,
                                      lzma_mf_converter, &options->mf,
-                                     _PyLong_UInt32_Converter, &options->depth)) {
-        PyErr_SetString(PyExc_ValueError,
+                                     _TyLong_UInt32_Converter, &options->depth)) {
+        TyErr_SetString(TyExc_ValueError,
                         "Invalid filter specifier for LZMA filter");
-        PyMem_Free(options);
+        TyMem_Free(options);
         return NULL;
     }
 
@@ -292,23 +292,23 @@ parse_filter_spec_lzma(_lzma_state *state, PyObject *spec)
 }
 
 static void *
-parse_filter_spec_delta(_lzma_state *state, PyObject *spec)
+parse_filter_spec_delta(_lzma_state *state, TyObject *spec)
 {
     static char *optnames[] = {"id", "dist", NULL};
-    PyObject *id;
+    TyObject *id;
     uint32_t dist = 1;
     lzma_options_delta *options;
 
-    if (!PyArg_ParseTupleAndKeywords(state->empty_tuple, spec, "|OO&", optnames,
-                                     &id, _PyLong_UInt32_Converter, &dist)) {
-        PyErr_SetString(PyExc_ValueError,
+    if (!TyArg_ParseTupleAndKeywords(state->empty_tuple, spec, "|OO&", optnames,
+                                     &id, _TyLong_UInt32_Converter, &dist)) {
+        TyErr_SetString(TyExc_ValueError,
                         "Invalid filter specifier for delta filter");
         return NULL;
     }
 
-    options = (lzma_options_delta *)PyMem_Calloc(1, sizeof *options);
+    options = (lzma_options_delta *)TyMem_Calloc(1, sizeof *options);
     if (options == NULL) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     options->type = LZMA_DELTA_TYPE_BYTE;
     options->dist = dist;
@@ -316,36 +316,36 @@ parse_filter_spec_delta(_lzma_state *state, PyObject *spec)
 }
 
 static void *
-parse_filter_spec_bcj(_lzma_state *state, PyObject *spec)
+parse_filter_spec_bcj(_lzma_state *state, TyObject *spec)
 {
     static char *optnames[] = {"id", "start_offset", NULL};
-    PyObject *id;
+    TyObject *id;
     uint32_t start_offset = 0;
     lzma_options_bcj *options;
 
-    if (!PyArg_ParseTupleAndKeywords(state->empty_tuple, spec, "|OO&", optnames,
-                                     &id, _PyLong_UInt32_Converter, &start_offset)) {
-        PyErr_SetString(PyExc_ValueError,
+    if (!TyArg_ParseTupleAndKeywords(state->empty_tuple, spec, "|OO&", optnames,
+                                     &id, _TyLong_UInt32_Converter, &start_offset)) {
+        TyErr_SetString(TyExc_ValueError,
                         "Invalid filter specifier for BCJ filter");
         return NULL;
     }
 
-    options = (lzma_options_bcj *)PyMem_Calloc(1, sizeof *options);
+    options = (lzma_options_bcj *)TyMem_Calloc(1, sizeof *options);
     if (options == NULL) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     options->start_offset = start_offset;
     return options;
 }
 
 static int
-lzma_filter_converter(_lzma_state *state, PyObject *spec, void *ptr)
+lzma_filter_converter(_lzma_state *state, TyObject *spec, void *ptr)
 {
     lzma_filter *f = (lzma_filter *)ptr;
-    PyObject *id_obj;
+    TyObject *id_obj;
 
     if (!PyMapping_Check(spec)) {
-        PyErr_SetString(PyExc_TypeError,
+        TyErr_SetString(TyExc_TypeError,
                         "Filter specifier must be a dict or dict-like object");
         return 0;
     }
@@ -353,16 +353,16 @@ lzma_filter_converter(_lzma_state *state, PyObject *spec, void *ptr)
         return 0;
     }
     if (id_obj == NULL) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Filter specifier must have an \"id\" entry");
         return 0;
     }
     lzma_vli id;
     if (!lzma_vli_converter(id_obj, &id)) {
-        Py_DECREF(id_obj);
+        Ty_DECREF(id_obj);
         return 0;
     }
-    Py_DECREF(id_obj);
+    Ty_DECREF(id_obj);
     f->id = id;
 
     switch (f->id) {
@@ -382,7 +382,7 @@ lzma_filter_converter(_lzma_state *state, PyObject *spec, void *ptr)
             f->options = parse_filter_spec_bcj(state, spec);
             return f->options != NULL;
         default:
-            PyErr_Format(PyExc_ValueError, "Invalid filter ID: %llu", f->id);
+            TyErr_Format(TyExc_ValueError, "Invalid filter ID: %llu", f->id);
             return 0;
     }
 }
@@ -391,21 +391,21 @@ static void
 free_filter_chain(lzma_filter filters[])
 {
     for (int i = 0; filters[i].id != LZMA_VLI_UNKNOWN; i++) {
-        PyMem_Free(filters[i].options);
+        TyMem_Free(filters[i].options);
     }
 }
 
 static int
-parse_filter_chain_spec(_lzma_state *state, lzma_filter filters[], PyObject *filterspecs)
+parse_filter_chain_spec(_lzma_state *state, lzma_filter filters[], TyObject *filterspecs)
 {
-    Py_ssize_t i, num_filters;
+    Ty_ssize_t i, num_filters;
 
     num_filters = PySequence_Length(filterspecs);
     if (num_filters == -1) {
         return -1;
     }
     if (num_filters > LZMA_FILTERS_MAX) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "Too many filters - liblzma supports a maximum of %d",
                      LZMA_FILTERS_MAX);
         return -1;
@@ -413,11 +413,11 @@ parse_filter_chain_spec(_lzma_state *state, lzma_filter filters[], PyObject *fil
 
     for (i = 0; i < num_filters; i++) {
         int ok = 1;
-        PyObject *spec = PySequence_GetItem(filterspecs, i);
+        TyObject *spec = PySequence_GetItem(filterspecs, i);
         if (spec == NULL || !lzma_filter_converter(state, spec, &filters[i])) {
             ok = 0;
         }
-        Py_XDECREF(spec);
+        Ty_XDECREF(spec);
         if (!ok) {
             filters[i].id = LZMA_VLI_UNKNOWN;
             free_filter_chain(filters);
@@ -435,29 +435,29 @@ parse_filter_chain_spec(_lzma_state *state, lzma_filter filters[], PyObject *fil
    Python-level filter specifiers (represented as dicts). */
 
 static int
-spec_add_field(PyObject *spec, const char *key, unsigned long long value)
+spec_add_field(TyObject *spec, const char *key, unsigned long long value)
 {
-    PyObject *value_object = PyLong_FromUnsignedLongLong(value);
+    TyObject *value_object = TyLong_FromUnsignedLongLong(value);
     if (value_object == NULL) {
         return -1;
     }
-    PyObject *key_object = PyUnicode_InternFromString(key);
+    TyObject *key_object = TyUnicode_InternFromString(key);
     if (key_object == NULL) {
-        Py_DECREF(value_object);
+        Ty_DECREF(value_object);
         return -1;
     }
-    int status = PyDict_SetItem(spec, key_object, value_object);
-    Py_DECREF(key_object);
-    Py_DECREF(value_object);
+    int status = TyDict_SetItem(spec, key_object, value_object);
+    Ty_DECREF(key_object);
+    Ty_DECREF(value_object);
     return status;
 }
 
-static PyObject *
+static TyObject *
 build_filter_spec(const lzma_filter *f)
 {
-    PyObject *spec;
+    TyObject *spec;
 
-    spec = PyDict_New();
+    spec = TyDict_New();
     if (spec == NULL) {
         return NULL;
     }
@@ -505,7 +505,7 @@ build_filter_spec(const lzma_filter *f)
             break;
         }
         default:
-            PyErr_Format(PyExc_ValueError, "Invalid filter ID: %llu", f->id);
+            TyErr_Format(TyExc_ValueError, "Invalid filter ID: %llu", f->id);
             goto error;
     }
 
@@ -514,7 +514,7 @@ build_filter_spec(const lzma_filter *f)
     return spec;
 
 error:
-    Py_DECREF(spec);
+    Ty_DECREF(spec);
     return NULL;
 }
 
@@ -542,7 +542,7 @@ class lzma_filter_converter(CConverter):
     def cleanup(self):
         name = ensure_legal_c_identifier(self.name)
         return ('if (%(name)s.id != LZMA_VLI_UNKNOWN)\n'
-                '   PyMem_Free(%(name)s.options);\n') % {'name': name}
+                '   TyMem_Free(%(name)s.options);\n') % {'name': name}
 
 [python start generated code]*/
 /*[python end generated code: output=da39a3ee5e6b4b0d input=74fe7631ce377a94]*/
@@ -550,12 +550,12 @@ class lzma_filter_converter(CConverter):
 
 /* LZMACompressor class. */
 
-static PyObject *
+static TyObject *
 compress(Compressor *c, uint8_t *data, size_t len, lzma_action action)
 {
-    PyObject *result;
+    TyObject *result;
     _BlocksOutputBuffer buffer = {.list = NULL};
-    _lzma_state *state = PyType_GetModuleState(Py_TYPE(c));
+    _lzma_state *state = TyType_GetModuleState(Ty_TYPE(c));
     assert(state != NULL);
 
     if (OutputBuffer_InitAndGrow(&buffer, -1, &c->lzs.next_out, &c->lzs.avail_out) < 0) {
@@ -567,9 +567,9 @@ compress(Compressor *c, uint8_t *data, size_t len, lzma_action action)
     for (;;) {
         lzma_ret lzret;
 
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         lzret = lzma_code(&c->lzs, action);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (lzret == LZMA_BUF_ERROR && len == 0 && c->lzs.avail_out > 0) {
             lzret = LZMA_OK; /* That wasn't a real error */
@@ -600,7 +600,7 @@ error:
 /*[clinic input]
 _lzma.LZMACompressor.compress
 
-    data: Py_buffer
+    data: Ty_buffer
     /
 
 Provide data to the compressor object.
@@ -611,15 +611,15 @@ When you have finished providing data to the compressor, call the
 flush() method to finish the compression process.
 [clinic start generated code]*/
 
-static PyObject *
-_lzma_LZMACompressor_compress_impl(Compressor *self, Py_buffer *data)
+static TyObject *
+_lzma_LZMACompressor_compress_impl(Compressor *self, Ty_buffer *data)
 /*[clinic end generated code: output=31f615136963e00f input=64019eac7f2cc8d0]*/
 {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
 
     ACQUIRE_LOCK(self);
     if (self->flushed) {
-        PyErr_SetString(PyExc_ValueError, "Compressor has been flushed");
+        TyErr_SetString(TyExc_ValueError, "Compressor has been flushed");
     }
     else {
         result = compress(self, data->buf, data->len, LZMA_RUN);
@@ -638,15 +638,15 @@ Returns the compressed data left in internal buffers.
 The compressor object may not be used after this method is called.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 _lzma_LZMACompressor_flush_impl(Compressor *self)
 /*[clinic end generated code: output=fec21f3e22504f50 input=6b369303f67ad0a8]*/
 {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
 
     ACQUIRE_LOCK(self);
     if (self->flushed) {
-        PyErr_SetString(PyExc_ValueError, "Repeated call to flush()");
+        TyErr_SetString(TyExc_ValueError, "Repeated call to flush()");
     } else {
         self->flushed = 1;
         result = compress(self, NULL, 0, LZMA_FINISH);
@@ -657,11 +657,11 @@ _lzma_LZMACompressor_flush_impl(Compressor *self)
 
 static int
 Compressor_init_xz(_lzma_state *state, lzma_stream *lzs,
-                   int check, uint32_t preset, PyObject *filterspecs)
+                   int check, uint32_t preset, TyObject *filterspecs)
 {
     lzma_ret lzret;
 
-    if (filterspecs == Py_None) {
+    if (filterspecs == Ty_None) {
         lzret = lzma_easy_encoder(lzs, preset, check);
     } else {
         lzma_filter filters[LZMA_FILTERS_MAX + 1];
@@ -680,15 +680,15 @@ Compressor_init_xz(_lzma_state *state, lzma_stream *lzs,
 }
 
 static int
-Compressor_init_alone(_lzma_state *state, lzma_stream *lzs, uint32_t preset, PyObject *filterspecs)
+Compressor_init_alone(_lzma_state *state, lzma_stream *lzs, uint32_t preset, TyObject *filterspecs)
 {
     lzma_ret lzret;
 
-    if (filterspecs == Py_None) {
+    if (filterspecs == Ty_None) {
         lzma_options_lzma options;
 
         if (lzma_lzma_preset(&options, preset)) {
-            PyErr_Format(state->error, "Invalid compression preset: %u", preset);
+            TyErr_Format(state->error, "Invalid compression preset: %u", preset);
             return -1;
         }
         lzret = lzma_alone_encoder(lzs, &options);
@@ -701,14 +701,14 @@ Compressor_init_alone(_lzma_state *state, lzma_stream *lzs, uint32_t preset, PyO
             filters[1].id == LZMA_VLI_UNKNOWN) {
             lzret = lzma_alone_encoder(lzs, filters[0].options);
         } else {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "Invalid filter chain for FORMAT_ALONE - "
                             "must be a single LZMA1 filter");
             lzret = LZMA_PROG_ERROR;
         }
         free_filter_chain(filters);
     }
-    if (PyErr_Occurred() || catch_lzma_error(state, lzret)) {
+    if (TyErr_Occurred() || catch_lzma_error(state, lzret)) {
         return -1;
     }
     else {
@@ -717,13 +717,13 @@ Compressor_init_alone(_lzma_state *state, lzma_stream *lzs, uint32_t preset, PyO
 }
 
 static int
-Compressor_init_raw(_lzma_state *state, lzma_stream *lzs, PyObject *filterspecs)
+Compressor_init_raw(_lzma_state *state, lzma_stream *lzs, TyObject *filterspecs)
 {
     lzma_filter filters[LZMA_FILTERS_MAX + 1];
     lzma_ret lzret;
 
-    if (filterspecs == Py_None) {
-        PyErr_SetString(PyExc_ValueError,
+    if (filterspecs == Ty_None) {
+        TyErr_SetString(TyExc_ValueError,
                         "Must specify filters for FORMAT_RAW");
         return -1;
     }
@@ -773,20 +773,20 @@ the raw compressor does not support preset compression levels.
 
 For one-shot compression, use the compress() function instead.
 [-clinic start generated code]*/
-static PyObject *
-Compressor_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+Compressor_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
     static char *arg_names[] = {"format", "check", "preset", "filters", NULL};
     int format = FORMAT_XZ;
     int check = -1;
     uint32_t preset = LZMA_PRESET_DEFAULT;
-    PyObject *preset_obj = Py_None;
-    PyObject *filterspecs = Py_None;
+    TyObject *preset_obj = Ty_None;
+    TyObject *filterspecs = Ty_None;
     Compressor *self;
 
-    _lzma_state *state = PyType_GetModuleState(type);
+    _lzma_state *state = TyType_GetModuleState(type);
     assert(state != NULL);
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs,
                                      "|iiOO:LZMACompressor", arg_names,
                                      &format, &check, &preset_obj,
                                      &filterspecs)) {
@@ -794,18 +794,18 @@ Compressor_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
     }
 
     if (format != FORMAT_XZ && check != -1 && check != LZMA_CHECK_NONE) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "Integrity checks are only supported by FORMAT_XZ");
         return NULL;
     }
 
-    if (preset_obj != Py_None && filterspecs != Py_None) {
-        PyErr_SetString(PyExc_ValueError,
+    if (preset_obj != Ty_None && filterspecs != Ty_None) {
+        TyErr_SetString(TyExc_ValueError,
                         "Cannot specify both preset and filter chain");
         return NULL;
     }
 
-    if (preset_obj != Py_None && !_PyLong_UInt32_Converter(preset_obj, &preset)) {
+    if (preset_obj != Ty_None && !_TyLong_UInt32_Converter(preset_obj, &preset)) {
         return NULL;
     }
 
@@ -822,8 +822,8 @@ Compressor_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
 
     self->lock = PyThread_allocate_lock();
     if (self->lock == NULL) {
-        Py_DECREF(self);
-        PyErr_SetString(PyExc_MemoryError, "Unable to allocate lock");
+        Ty_DECREF(self);
+        TyErr_SetString(TyExc_MemoryError, "Unable to allocate lock");
         return NULL;
     }
 
@@ -851,41 +851,41 @@ Compressor_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
             break;
 
         default:
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                          "Invalid container format: %d", format);
             goto error;
     }
 
-    return (PyObject *)self;
+    return (TyObject *)self;
 
 error:
-    Py_DECREF(self);
+    Ty_DECREF(self);
     return NULL;
 }
 
 static void
-Compressor_dealloc(PyObject *op)
+Compressor_dealloc(TyObject *op)
 {
     Compressor *self = Compressor_CAST(op);
     lzma_end(&self->lzs);
     if (self->lock != NULL) {
         PyThread_free_lock(self->lock);
     }
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
-static PyMethodDef Compressor_methods[] = {
+static TyMethodDef Compressor_methods[] = {
     _LZMA_LZMACOMPRESSOR_COMPRESS_METHODDEF
     _LZMA_LZMACOMPRESSOR_FLUSH_METHODDEF
     {NULL}
 };
 
 static int
-Compressor_traverse(PyObject *self, visitproc visit, void *arg)
+Compressor_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    Py_VISIT(Py_TYPE(self));
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
@@ -917,23 +917,23 @@ PyDoc_STRVAR(Compressor_doc,
 "\n"
 "For one-shot compression, use the compress() function instead.\n");
 
-static PyType_Slot lzma_compressor_type_slots[] = {
-    {Py_tp_dealloc, Compressor_dealloc},
-    {Py_tp_methods, Compressor_methods},
-    {Py_tp_new, Compressor_new},
-    {Py_tp_doc, (char *)Compressor_doc},
-    {Py_tp_traverse, Compressor_traverse},
+static TyType_Slot lzma_compressor_type_slots[] = {
+    {Ty_tp_dealloc, Compressor_dealloc},
+    {Ty_tp_methods, Compressor_methods},
+    {Ty_tp_new, Compressor_new},
+    {Ty_tp_doc, (char *)Compressor_doc},
+    {Ty_tp_traverse, Compressor_traverse},
     {0, 0}
 };
 
-static PyType_Spec lzma_compressor_type_spec = {
+static TyType_Spec lzma_compressor_type_spec = {
     .name = "_lzma.LZMACompressor",
     .basicsize = sizeof(Compressor),
-    // Calling PyType_GetModuleState() on a subclass is not safe.
-    // lzma_compressor_type_spec does not have Py_TPFLAGS_BASETYPE flag
+    // Calling TyType_GetModuleState() on a subclass is not safe.
+    // lzma_compressor_type_spec does not have Ty_TPFLAGS_BASETYPE flag
     // which prevents to create a subclass.
-    // So calling PyType_GetModuleState() in this file is always safe.
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_IMMUTABLETYPE),
+    // So calling TyType_GetModuleState() in this file is always safe.
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = lzma_compressor_type_slots,
 };
 
@@ -943,13 +943,13 @@ static PyType_Spec lzma_compressor_type_spec = {
    buffer is allocated dynamically and returned.  At most max_length bytes are
    returned, so some of the input may not be consumed. d->lzs.next_in and
    d->lzs.avail_in are updated to reflect the consumed input. */
-static PyObject*
-decompress_buf(Decompressor *d, Py_ssize_t max_length)
+static TyObject*
+decompress_buf(Decompressor *d, Ty_ssize_t max_length)
 {
-    PyObject *result;
+    TyObject *result;
     lzma_stream *lzs = &d->lzs;
     _BlocksOutputBuffer buffer = {.list = NULL};
-    _lzma_state *state = PyType_GetModuleState(Py_TYPE(d));
+    _lzma_state *state = TyType_GetModuleState(Ty_TYPE(d));
     assert(state != NULL);
 
     if (OutputBuffer_InitAndGrow(&buffer, max_length, &lzs->next_out, &lzs->avail_out) < 0) {
@@ -959,9 +959,9 @@ decompress_buf(Decompressor *d, Py_ssize_t max_length)
     for (;;) {
         lzma_ret lzret;
 
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         lzret = lzma_code(lzs, LZMA_RUN);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (lzret == LZMA_BUF_ERROR && lzs->avail_in == 0 && lzs->avail_out > 0) {
             lzret = LZMA_OK; /* That wasn't a real error */
@@ -1001,11 +1001,11 @@ error:
     return NULL;
 }
 
-static PyObject *
-decompress(Decompressor *d, uint8_t *data, size_t len, Py_ssize_t max_length)
+static TyObject *
+decompress(Decompressor *d, uint8_t *data, size_t len, Ty_ssize_t max_length)
 {
     char input_buffer_in_use;
-    PyObject *result;
+    TyObject *result;
     lzma_stream *lzs = &d->lzs;
 
     /* Prepend unconsumed input if necessary */
@@ -1028,9 +1028,9 @@ decompress(Decompressor *d, uint8_t *data, size_t len, Py_ssize_t max_length)
 
             /* Assign to temporary variable first, so we don't
                lose address of allocated buffer if realloc fails */
-            tmp = PyMem_Realloc(d->input_buffer, new_size);
+            tmp = TyMem_Realloc(d->input_buffer, new_size);
             if (tmp == NULL) {
-                PyErr_SetNone(PyExc_MemoryError);
+                TyErr_SetNone(TyExc_MemoryError);
                 return NULL;
             }
             d->input_buffer = tmp;
@@ -1062,8 +1062,8 @@ decompress(Decompressor *d, uint8_t *data, size_t len, Py_ssize_t max_length)
     if (d->eof) {
         d->needs_input = 0;
         if (lzs->avail_in > 0) {
-            Py_XSETREF(d->unused_data,
-                      PyBytes_FromStringAndSize((char *)lzs->next_in, lzs->avail_in));
+            Ty_XSETREF(d->unused_data,
+                      TyBytes_FromStringAndSize((char *)lzs->next_in, lzs->avail_in));
             if (d->unused_data == NULL) {
                 goto error;
             }
@@ -1097,15 +1097,15 @@ decompress(Decompressor *d, uint8_t *data, size_t len, Py_ssize_t max_length)
                (resizing it may needlessly copy the current contents) */
             if (d->input_buffer != NULL &&
                 d->input_buffer_size < lzs->avail_in) {
-                PyMem_Free(d->input_buffer);
+                TyMem_Free(d->input_buffer);
                 d->input_buffer = NULL;
             }
 
             /* Allocate if necessary */
             if (d->input_buffer == NULL) {
-                d->input_buffer = PyMem_Malloc(lzs->avail_in);
+                d->input_buffer = TyMem_Malloc(lzs->avail_in);
                 if (d->input_buffer == NULL) {
-                    PyErr_SetNone(PyExc_MemoryError);
+                    TyErr_SetNone(TyExc_MemoryError);
                     goto error;
                 }
                 d->input_buffer_size = lzs->avail_in;
@@ -1120,15 +1120,15 @@ decompress(Decompressor *d, uint8_t *data, size_t len, Py_ssize_t max_length)
     return result;
 
 error:
-    Py_XDECREF(result);
+    Ty_XDECREF(result);
     return NULL;
 }
 
 /*[clinic input]
 _lzma.LZMADecompressor.decompress
 
-    data: Py_buffer
-    max_length: Py_ssize_t=-1
+    data: Ty_buffer
+    max_length: Ty_ssize_t=-1
 
 Decompress *data*, returning uncompressed data as bytes.
 
@@ -1146,16 +1146,16 @@ EOFError.  Any data found after the end of the stream is ignored and saved in
 the unused_data attribute.
 [clinic start generated code]*/
 
-static PyObject *
-_lzma_LZMADecompressor_decompress_impl(Decompressor *self, Py_buffer *data,
-                                       Py_ssize_t max_length)
+static TyObject *
+_lzma_LZMADecompressor_decompress_impl(Decompressor *self, Ty_buffer *data,
+                                       Ty_ssize_t max_length)
 /*[clinic end generated code: output=ef4e20ec7122241d input=60c1f135820e309d]*/
 {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
 
     ACQUIRE_LOCK(self);
     if (self->eof)
-        PyErr_SetString(PyExc_EOFError, "Already at end of stream");
+        TyErr_SetString(TyExc_EOFError, "Already at end of stream");
     else
         result = decompress(self, data->buf, data->len, max_length);
     RELEASE_LOCK(self);
@@ -1163,7 +1163,7 @@ _lzma_LZMADecompressor_decompress_impl(Decompressor *self, Py_buffer *data,
 }
 
 static int
-Decompressor_init_raw(_lzma_state *state, lzma_stream *lzs, PyObject *filterspecs)
+Decompressor_init_raw(_lzma_state *state, lzma_stream *lzs, TyObject *filterspecs)
 {
     lzma_filter filters[LZMA_FILTERS_MAX + 1];
     lzma_ret lzret;
@@ -1207,35 +1207,35 @@ Create a decompressor object for decompressing data incrementally.
 For one-shot decompression, use the decompress() function instead.
 [clinic start generated code]*/
 
-static PyObject *
-_lzma_LZMADecompressor_impl(PyTypeObject *type, int format,
-                            PyObject *memlimit, PyObject *filters)
+static TyObject *
+_lzma_LZMADecompressor_impl(TyTypeObject *type, int format,
+                            TyObject *memlimit, TyObject *filters)
 /*[clinic end generated code: output=2d46d5e70f10bc7f input=ca40cd1cb1202b0d]*/
 {
     Decompressor *self;
     const uint32_t decoder_flags = LZMA_TELL_ANY_CHECK | LZMA_TELL_NO_CHECK;
     uint64_t memlimit_ = UINT64_MAX;
     lzma_ret lzret;
-    _lzma_state *state = PyType_GetModuleState(type);
+    _lzma_state *state = TyType_GetModuleState(type);
     assert(state != NULL);
 
-    if (memlimit != Py_None) {
+    if (memlimit != Ty_None) {
         if (format == FORMAT_RAW) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "Cannot specify memory limit with FORMAT_RAW");
             return NULL;
         }
-        if (!_PyLong_UInt64_Converter(memlimit, &memlimit_)) {
+        if (!_TyLong_UInt64_Converter(memlimit, &memlimit_)) {
             return NULL;
         }
     }
 
-    if (format == FORMAT_RAW && filters == Py_None) {
-        PyErr_SetString(PyExc_ValueError,
+    if (format == FORMAT_RAW && filters == Ty_None) {
+        TyErr_SetString(TyExc_ValueError,
                         "Must specify filters for FORMAT_RAW");
         return NULL;
-    } else if (format != FORMAT_RAW && filters != Py_None) {
-        PyErr_SetString(PyExc_ValueError,
+    } else if (format != FORMAT_RAW && filters != Ty_None) {
+        TyErr_SetString(TyExc_ValueError,
                         "Cannot specify filters except with FORMAT_RAW");
         return NULL;
     }
@@ -1253,8 +1253,8 @@ _lzma_LZMADecompressor_impl(PyTypeObject *type, int format,
 
     self->lock = PyThread_allocate_lock();
     if (self->lock == NULL) {
-        Py_DECREF(self);
-        PyErr_SetString(PyExc_MemoryError, "Unable to allocate lock");
+        Ty_DECREF(self);
+        TyErr_SetString(TyExc_MemoryError, "Unable to allocate lock");
         return NULL;
     }
 
@@ -1262,7 +1262,7 @@ _lzma_LZMADecompressor_impl(PyTypeObject *type, int format,
     self->needs_input = 1;
     self->input_buffer = NULL;
     self->input_buffer_size = 0;
-    Py_XSETREF(self->unused_data, PyBytes_FromStringAndSize(NULL, 0));
+    Ty_XSETREF(self->unused_data, TyBytes_FromStringAndSize(NULL, 0));
     if (self->unused_data == NULL) {
         goto error;
     }
@@ -1298,43 +1298,43 @@ _lzma_LZMADecompressor_impl(PyTypeObject *type, int format,
             break;
 
         default:
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                          "Invalid container format: %d", format);
             goto error;
     }
 
-    return (PyObject *)self;
+    return (TyObject *)self;
 
 error:
-    Py_DECREF(self);
+    Ty_DECREF(self);
     return NULL;
 }
 
 static void
-Decompressor_dealloc(PyObject *op)
+Decompressor_dealloc(TyObject *op)
 {
     Decompressor *self = Decompressor_CAST(op);
     if(self->input_buffer != NULL)
-        PyMem_Free(self->input_buffer);
+        TyMem_Free(self->input_buffer);
 
     lzma_end(&self->lzs);
-    Py_CLEAR(self->unused_data);
+    Ty_CLEAR(self->unused_data);
     if (self->lock != NULL) {
         PyThread_free_lock(self->lock);
     }
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
 static int
-Decompressor_traverse(PyObject *self, visitproc visit, void *arg)
+Decompressor_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    Py_VISIT(Py_TYPE(self));
+    Ty_VISIT(Ty_TYPE(self));
     return 0;
 }
 
-static PyMethodDef Decompressor_methods[] = {
+static TyMethodDef Decompressor_methods[] = {
     _LZMA_LZMADECOMPRESSOR_DECOMPRESS_METHODDEF
     {NULL}
 };
@@ -1351,36 +1351,36 @@ PyDoc_STRVAR(Decompressor_needs_input_doc,
 PyDoc_STRVAR(Decompressor_unused_data_doc,
 "Data found after the end of the compressed stream.");
 
-static PyMemberDef Decompressor_members[] = {
-    {"check", Py_T_INT, offsetof(Decompressor, check), Py_READONLY,
+static TyMemberDef Decompressor_members[] = {
+    {"check", Ty_T_INT, offsetof(Decompressor, check), Ty_READONLY,
      Decompressor_check_doc},
-    {"eof", Py_T_BOOL, offsetof(Decompressor, eof), Py_READONLY,
+    {"eof", Ty_T_BOOL, offsetof(Decompressor, eof), Ty_READONLY,
      Decompressor_eof_doc},
-    {"needs_input", Py_T_BOOL, offsetof(Decompressor, needs_input), Py_READONLY,
+    {"needs_input", Ty_T_BOOL, offsetof(Decompressor, needs_input), Ty_READONLY,
      Decompressor_needs_input_doc},
-    {"unused_data", Py_T_OBJECT_EX, offsetof(Decompressor, unused_data), Py_READONLY,
+    {"unused_data", Ty_T_OBJECT_EX, offsetof(Decompressor, unused_data), Ty_READONLY,
      Decompressor_unused_data_doc},
     {NULL}
 };
 
-static PyType_Slot lzma_decompressor_type_slots[] = {
-    {Py_tp_dealloc, Decompressor_dealloc},
-    {Py_tp_methods, Decompressor_methods},
-    {Py_tp_new, _lzma_LZMADecompressor},
-    {Py_tp_doc, (char *)_lzma_LZMADecompressor__doc__},
-    {Py_tp_traverse, Decompressor_traverse},
-    {Py_tp_members, Decompressor_members},
+static TyType_Slot lzma_decompressor_type_slots[] = {
+    {Ty_tp_dealloc, Decompressor_dealloc},
+    {Ty_tp_methods, Decompressor_methods},
+    {Ty_tp_new, _lzma_LZMADecompressor},
+    {Ty_tp_doc, (char *)_lzma_LZMADecompressor__doc__},
+    {Ty_tp_traverse, Decompressor_traverse},
+    {Ty_tp_members, Decompressor_members},
     {0, 0}
 };
 
-static PyType_Spec lzma_decompressor_type_spec = {
+static TyType_Spec lzma_decompressor_type_spec = {
     .name = "_lzma.LZMADecompressor",
     .basicsize = sizeof(Decompressor),
-    // Calling PyType_GetModuleState() on a subclass is not safe.
-    // lzma_decompressor_type_spec does not have Py_TPFLAGS_BASETYPE flag
+    // Calling TyType_GetModuleState() on a subclass is not safe.
+    // lzma_decompressor_type_spec does not have Ty_TPFLAGS_BASETYPE flag
     // which prevents to create a subclass.
-    // So calling PyType_GetModuleState() in this file is always safe.
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_IMMUTABLETYPE),
+    // So calling TyType_GetModuleState() in this file is always safe.
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = lzma_decompressor_type_slots,
 };
 
@@ -1397,11 +1397,11 @@ Test whether the given integrity check is supported.
 Always returns True for CHECK_NONE and CHECK_CRC32.
 [clinic start generated code]*/
 
-static PyObject *
-_lzma_is_check_supported_impl(PyObject *module, int check_id)
+static TyObject *
+_lzma_is_check_supported_impl(TyObject *module, int check_id)
 /*[clinic end generated code: output=e4f14ba3ce2ad0a5 input=5518297b97b2318f]*/
 {
-    return PyBool_FromLong(lzma_check_is_supported(check_id));
+    return TyBool_FromLong(lzma_check_is_supported(check_id));
 }
 
 PyDoc_STRVAR(_lzma__encode_filter_properties__doc__,
@@ -1415,13 +1415,13 @@ PyDoc_STRVAR(_lzma__encode_filter_properties__doc__,
 #define _LZMA__ENCODE_FILTER_PROPERTIES_METHODDEF    \
     {"_encode_filter_properties", _lzma__encode_filter_properties, METH_O, _lzma__encode_filter_properties__doc__},
 
-static PyObject *
-_lzma__encode_filter_properties_impl(PyObject *module, lzma_filter filter);
+static TyObject *
+_lzma__encode_filter_properties_impl(TyObject *module, lzma_filter filter);
 
-static PyObject *
-_lzma__encode_filter_properties(PyObject *module, PyObject *arg)
+static TyObject *
+_lzma__encode_filter_properties(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     lzma_filter filter = {LZMA_VLI_UNKNOWN, NULL};
     _lzma_state *state = get_lzma_state(module);
     assert(state != NULL);
@@ -1433,18 +1433,18 @@ _lzma__encode_filter_properties(PyObject *module, PyObject *arg)
 exit:
     /* Cleanup for filter */
     if (filter.id != LZMA_VLI_UNKNOWN) {
-       PyMem_Free(filter.options);
+       TyMem_Free(filter.options);
     }
 
     return return_value;
 }
 
-static PyObject *
-_lzma__encode_filter_properties_impl(PyObject *module, lzma_filter filter)
+static TyObject *
+_lzma__encode_filter_properties_impl(TyObject *module, lzma_filter filter)
 {
     lzma_ret lzret;
     uint32_t encoded_size;
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     _lzma_state *state = get_lzma_state(module);
     assert(state != NULL);
 
@@ -1452,12 +1452,12 @@ _lzma__encode_filter_properties_impl(PyObject *module, lzma_filter filter)
     if (catch_lzma_error(state, lzret))
         goto error;
 
-    result = PyBytes_FromStringAndSize(NULL, encoded_size);
+    result = TyBytes_FromStringAndSize(NULL, encoded_size);
     if (result == NULL)
         goto error;
 
     lzret = lzma_properties_encode(
-            &filter, (uint8_t *)PyBytes_AS_STRING(result));
+            &filter, (uint8_t *)TyBytes_AS_STRING(result));
     if (catch_lzma_error(state, lzret)) {
         goto error;
     }
@@ -1465,7 +1465,7 @@ _lzma__encode_filter_properties_impl(PyObject *module, lzma_filter filter)
     return result;
 
 error:
-    Py_XDECREF(result);
+    Ty_XDECREF(result);
     return NULL;
 }
 
@@ -1473,7 +1473,7 @@ error:
 /*[clinic input]
 _lzma._decode_filter_properties
     filter_id: lzma_vli
-    encoded_props: Py_buffer
+    encoded_props: Ty_buffer
     /
 
 Return a bytes object encoding the options (properties) of the filter specified by *filter* (a dict).
@@ -1481,14 +1481,14 @@ Return a bytes object encoding the options (properties) of the filter specified 
 The result does not include the filter ID itself, only the options.
 [clinic start generated code]*/
 
-static PyObject *
-_lzma__decode_filter_properties_impl(PyObject *module, lzma_vli filter_id,
-                                     Py_buffer *encoded_props)
+static TyObject *
+_lzma__decode_filter_properties_impl(TyObject *module, lzma_vli filter_id,
+                                     Ty_buffer *encoded_props)
 /*[clinic end generated code: output=714fd2ef565d5c60 input=246410800782160c]*/
 {
     lzma_filter filter;
     lzma_ret lzret;
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     filter.id = filter_id;
     _lzma_state *state = get_lzma_state(module);
     assert(state != NULL);
@@ -1501,22 +1501,22 @@ _lzma__decode_filter_properties_impl(PyObject *module, lzma_vli filter_id,
 
     result = build_filter_spec(&filter);
 
-    /* We use vanilla free() here instead of PyMem_Free() - filter.options was
+    /* We use vanilla free() here instead of TyMem_Free() - filter.options was
        allocated by lzma_properties_decode() using the default allocator. */
     free(filter.options);
     return result;
 }
 
-/* Some of our constants are more than 32 bits wide, so PyModule_AddIntConstant
+/* Some of our constants are more than 32 bits wide, so TyModule_AddIntConstant
    would not work correctly on platforms with 32-bit longs. */
 static int
-module_add_int_constant(PyObject *m, const char *name, long long value)
+module_add_int_constant(TyObject *m, const char *name, long long value)
 {
-    return PyModule_Add(m, name, PyLong_FromLongLong(value));
+    return TyModule_Add(m, name, TyLong_FromLongLong(value));
 }
 
 static int
-lzma_exec(PyObject *module)
+lzma_exec(TyObject *module)
 {
 #define ADD_INT_PREFIX_MACRO(module, macro)                                 \
     do {                                                                    \
@@ -1527,7 +1527,7 @@ lzma_exec(PyObject *module)
 
 #define ADD_INT_MACRO(module, macro)                                        \
     do {                                                                    \
-        if (PyModule_AddIntMacro(module, macro) < 0) {                      \
+        if (TyModule_AddIntMacro(module, macro) < 0) {                      \
             return -1;                                                      \
         }                                                                   \
     } while (0)
@@ -1535,7 +1535,7 @@ lzma_exec(PyObject *module)
 
     _lzma_state *state = get_lzma_state(module);
 
-    state->empty_tuple = PyTuple_New(0);
+    state->empty_tuple = TyTuple_New(0);
     if (state->empty_tuple == NULL) {
         return -1;
     }
@@ -1569,40 +1569,40 @@ lzma_exec(PyObject *module)
     ADD_INT_PREFIX_MACRO(module, PRESET_DEFAULT);
     ADD_INT_PREFIX_MACRO(module, PRESET_EXTREME);
 
-    state->error = PyErr_NewExceptionWithDoc("_lzma.LZMAError", "Call to liblzma failed.", NULL, NULL);
+    state->error = TyErr_NewExceptionWithDoc("_lzma.LZMAError", "Call to liblzma failed.", NULL, NULL);
     if (state->error == NULL) {
         return -1;
     }
 
-    if (PyModule_AddType(module, (PyTypeObject *)state->error) < 0) {
+    if (TyModule_AddType(module, (TyTypeObject *)state->error) < 0) {
         return -1;
     }
 
 
-    state->lzma_compressor_type = (PyTypeObject *)PyType_FromModuleAndSpec(module,
+    state->lzma_compressor_type = (TyTypeObject *)TyType_FromModuleAndSpec(module,
                                                             &lzma_compressor_type_spec, NULL);
     if (state->lzma_compressor_type == NULL) {
         return -1;
     }
 
-    if (PyModule_AddType(module, state->lzma_compressor_type) < 0) {
+    if (TyModule_AddType(module, state->lzma_compressor_type) < 0) {
         return -1;
     }
 
-    state->lzma_decompressor_type = (PyTypeObject *)PyType_FromModuleAndSpec(module,
+    state->lzma_decompressor_type = (TyTypeObject *)TyType_FromModuleAndSpec(module,
                                                          &lzma_decompressor_type_spec, NULL);
     if (state->lzma_decompressor_type == NULL) {
         return -1;
     }
 
-    if (PyModule_AddType(module, state->lzma_decompressor_type) < 0) {
+    if (TyModule_AddType(module, state->lzma_decompressor_type) < 0) {
         return -1;
     }
 
     return 0;
 }
 
-static PyMethodDef lzma_methods[] = {
+static TyMethodDef lzma_methods[] = {
     _LZMA_IS_CHECK_SUPPORTED_METHODDEF
     _LZMA__ENCODE_FILTER_PROPERTIES_METHODDEF
     _LZMA__DECODE_FILTER_PROPERTIES_METHODDEF
@@ -1610,41 +1610,41 @@ static PyMethodDef lzma_methods[] = {
 };
 
 static PyModuleDef_Slot lzma_slots[] = {
-    {Py_mod_exec, lzma_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, lzma_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
 static int
-lzma_traverse(PyObject *module, visitproc visit, void *arg)
+lzma_traverse(TyObject *module, visitproc visit, void *arg)
 {
     _lzma_state *state = get_lzma_state(module);
-    Py_VISIT(state->lzma_compressor_type);
-    Py_VISIT(state->lzma_decompressor_type);
-    Py_VISIT(state->error);
-    Py_VISIT(state->empty_tuple);
+    Ty_VISIT(state->lzma_compressor_type);
+    Ty_VISIT(state->lzma_decompressor_type);
+    Ty_VISIT(state->error);
+    Ty_VISIT(state->empty_tuple);
     return 0;
 }
 
 static int
-lzma_clear(PyObject *module)
+lzma_clear(TyObject *module)
 {
     _lzma_state *state = get_lzma_state(module);
-    Py_CLEAR(state->lzma_compressor_type);
-    Py_CLEAR(state->lzma_decompressor_type);
-    Py_CLEAR(state->error);
-    Py_CLEAR(state->empty_tuple);
+    Ty_CLEAR(state->lzma_compressor_type);
+    Ty_CLEAR(state->lzma_decompressor_type);
+    Ty_CLEAR(state->error);
+    Ty_CLEAR(state->empty_tuple);
     return 0;
 }
 
 static void
 lzma_free(void *module)
 {
-    (void)lzma_clear((PyObject *)module);
+    (void)lzma_clear((TyObject *)module);
 }
 
-static PyModuleDef _lzmamodule = {
+static TyModuleDef _lzmamodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_lzma",
     .m_size = sizeof(_lzma_state),

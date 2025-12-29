@@ -818,7 +818,7 @@ class ProcessTestCase(BaseTestCase):
     # Python
     @unittest.skipIf(sys.platform == 'win32',
                      'cannot test an empty env on Windows')
-    @unittest.skipIf(sysconfig.get_config_var('Py_ENABLE_SHARED') == 1,
+    @unittest.skipIf(sysconfig.get_config_var('Ty_ENABLE_SHARED') == 1,
                      'The Python shared library cannot be loaded '
                      'with an empty environment.')
     @unittest.skipIf(check_sanitizer(address=True),
@@ -845,7 +845,7 @@ class ProcessTestCase(BaseTestCase):
                                if not is_env_var_to_ignore(k)]
             self.assertEqual(child_env_names, [])
 
-    @unittest.skipIf(sysconfig.get_config_var('Py_ENABLE_SHARED') == 1,
+    @unittest.skipIf(sysconfig.get_config_var('Ty_ENABLE_SHARED') == 1,
                      'The Python shared library cannot be loaded '
                      'without some system environments.')
     @unittest.skipIf(check_sanitizer(address=True),

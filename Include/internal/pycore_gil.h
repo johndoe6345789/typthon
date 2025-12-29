@@ -1,16 +1,16 @@
-#ifndef Py_INTERNAL_GIL_H
-#define Py_INTERNAL_GIL_H
+#ifndef Ty_INTERNAL_GIL_H
+#define Ty_INTERNAL_GIL_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_condvar.h"       // PyCOND_T
 
-#ifndef Py_HAVE_CONDVAR
+#ifndef Ty_HAVE_CONDVAR
 #  error You need either a POSIX-compatible or a Windows system!
 #endif
 
@@ -20,7 +20,7 @@ extern "C" {
 #define FORCE_SWITCHING
 
 struct _gil_runtime_state {
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     /* If this GIL is disabled, enabled == 0.
 
        If this GIL is enabled transiently (most likely to initialize a module
@@ -29,8 +29,8 @@ struct _gil_runtime_state {
 
        If this GIL is enabled permanently, enabled == INT_MAX.
 
-       It must not be modified directly; use _PyEval_EnableGILTransiently(),
-       _PyEval_EnableGILPermanently(), and _PyEval_DisableGIL()
+       It must not be modified directly; use _TyEval_EnableGILTransiently(),
+       _TyEval_EnableGILPermanently(), and _TyEval_DisableGIL()
 
        It is always read and written atomically, but a thread can assume its
        value will be stable as long as that thread is attached or knows that no
@@ -63,4 +63,4 @@ struct _gil_runtime_state {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_GIL_H */
+#endif /* !Ty_INTERNAL_GIL_H */

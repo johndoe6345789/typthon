@@ -2,259 +2,259 @@
 #include "util.h"
 
 
-static PyObject *
-dict_check(PyObject *self, PyObject *obj)
+static TyObject *
+dict_check(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyDict_Check(obj));
+    return TyLong_FromLong(TyDict_Check(obj));
 }
 
-static PyObject *
-dict_checkexact(PyObject *self, PyObject *obj)
+static TyObject *
+dict_checkexact(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyDict_CheckExact(obj));
+    return TyLong_FromLong(TyDict_CheckExact(obj));
 }
 
-static PyObject *
-dict_new(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+dict_new(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    return PyDict_New();
+    return TyDict_New();
 }
 
-static PyObject *
-dictproxy_new(PyObject *self, PyObject *obj)
+static TyObject *
+dictproxy_new(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     return PyDictProxy_New(obj);
 }
 
-static PyObject *
-dict_clear(PyObject *self, PyObject *obj)
+static TyObject *
+dict_clear(TyObject *self, TyObject *obj)
 {
-    PyDict_Clear(obj);
+    TyDict_Clear(obj);
     Py_RETURN_NONE;
 }
 
-static PyObject *
-dict_copy(PyObject *self, PyObject *obj)
+static TyObject *
+dict_copy(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyDict_Copy(obj);
+    return TyDict_Copy(obj);
 }
 
-static PyObject *
-dict_contains(PyObject *self, PyObject *args)
+static TyObject *
+dict_contains(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *key;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &key)) {
+    TyObject *obj, *key;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &key)) {
         return NULL;
     }
     NULLABLE(obj);
     NULLABLE(key);
-    RETURN_INT(PyDict_Contains(obj, key));
+    RETURN_INT(TyDict_Contains(obj, key));
 }
 
-static PyObject *
-dict_size(PyObject *self, PyObject *obj)
+static TyObject *
+dict_size(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_SIZE(PyDict_Size(obj));
+    RETURN_SIZE(TyDict_Size(obj));
 }
 
-static PyObject *
-dict_getitem(PyObject *self, PyObject *args)
+static TyObject *
+dict_getitem(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key;
-    if (!PyArg_ParseTuple(args, "OO", &mapping, &key)) {
+    TyObject *mapping, *key;
+    if (!TyArg_ParseTuple(args, "OO", &mapping, &key)) {
         return NULL;
     }
     NULLABLE(mapping);
     NULLABLE(key);
-    PyObject *value = PyDict_GetItem(mapping, key);
+    TyObject *value = TyDict_GetItem(mapping, key);
     if (value == NULL) {
-        if (PyErr_Occurred()) {
+        if (TyErr_Occurred()) {
             return NULL;
         }
-        return Py_NewRef(PyExc_KeyError);
+        return Ty_NewRef(TyExc_KeyError);
     }
-    return Py_NewRef(value);
+    return Ty_NewRef(value);
 }
 
-static PyObject *
-dict_getitemstring(PyObject *self, PyObject *args)
+static TyObject *
+dict_getitemstring(TyObject *self, TyObject *args)
 {
-    PyObject *mapping;
+    TyObject *mapping;
     const char *key;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
         return NULL;
     }
     NULLABLE(mapping);
-    PyObject *value = PyDict_GetItemString(mapping, key);
+    TyObject *value = TyDict_GetItemString(mapping, key);
     if (value == NULL) {
-        if (PyErr_Occurred()) {
+        if (TyErr_Occurred()) {
             return NULL;
         }
-        return Py_NewRef(PyExc_KeyError);
+        return Ty_NewRef(TyExc_KeyError);
     }
-    return Py_NewRef(value);
+    return Ty_NewRef(value);
 }
 
-static PyObject *
-dict_getitemwitherror(PyObject *self, PyObject *args)
+static TyObject *
+dict_getitemwitherror(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key;
-    if (!PyArg_ParseTuple(args, "OO", &mapping, &key)) {
+    TyObject *mapping, *key;
+    if (!TyArg_ParseTuple(args, "OO", &mapping, &key)) {
         return NULL;
     }
     NULLABLE(mapping);
     NULLABLE(key);
-    PyObject *value = PyDict_GetItemWithError(mapping, key);
+    TyObject *value = TyDict_GetItemWithError(mapping, key);
     if (value == NULL) {
-        if (PyErr_Occurred()) {
+        if (TyErr_Occurred()) {
             return NULL;
         }
-        return Py_NewRef(PyExc_KeyError);
+        return Ty_NewRef(TyExc_KeyError);
     }
-    return Py_NewRef(value);
+    return Ty_NewRef(value);
 }
 
 
-static PyObject *
-dict_setitem(PyObject *self, PyObject *args)
+static TyObject *
+dict_setitem(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key, *value;
-    if (!PyArg_ParseTuple(args, "OOO", &mapping, &key, &value)) {
+    TyObject *mapping, *key, *value;
+    if (!TyArg_ParseTuple(args, "OOO", &mapping, &key, &value)) {
         return NULL;
     }
     NULLABLE(mapping);
     NULLABLE(key);
     NULLABLE(value);
-    RETURN_INT(PyDict_SetItem(mapping, key, value));
+    RETURN_INT(TyDict_SetItem(mapping, key, value));
 }
 
-static PyObject *
-dict_setitemstring(PyObject *self, PyObject *args)
+static TyObject *
+dict_setitemstring(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *value;
+    TyObject *mapping, *value;
     const char *key;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#O", &mapping, &key, &size, &value)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#O", &mapping, &key, &size, &value)) {
         return NULL;
     }
     NULLABLE(mapping);
     NULLABLE(value);
-    RETURN_INT(PyDict_SetItemString(mapping, key, value));
+    RETURN_INT(TyDict_SetItemString(mapping, key, value));
 }
 
-static PyObject *
-dict_delitem(PyObject *self, PyObject *args)
+static TyObject *
+dict_delitem(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key;
-    if (!PyArg_ParseTuple(args, "OO", &mapping, &key)) {
+    TyObject *mapping, *key;
+    if (!TyArg_ParseTuple(args, "OO", &mapping, &key)) {
         return NULL;
     }
     NULLABLE(mapping);
     NULLABLE(key);
-    RETURN_INT(PyDict_DelItem(mapping, key));
+    RETURN_INT(TyDict_DelItem(mapping, key));
 }
 
-static PyObject *
-dict_delitemstring(PyObject *self, PyObject *args)
+static TyObject *
+dict_delitemstring(TyObject *self, TyObject *args)
 {
-    PyObject *mapping;
+    TyObject *mapping;
     const char *key;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &mapping, &key, &size)) {
         return NULL;
     }
     NULLABLE(mapping);
-    RETURN_INT(PyDict_DelItemString(mapping, key));
+    RETURN_INT(TyDict_DelItemString(mapping, key));
 }
 
-static PyObject *
-dict_keys(PyObject *self, PyObject *obj)
+static TyObject *
+dict_keys(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyDict_Keys(obj);
+    return TyDict_Keys(obj);
 }
 
-static PyObject *
-dict_values(PyObject *self, PyObject *obj)
+static TyObject *
+dict_values(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyDict_Values(obj);
+    return TyDict_Values(obj);
 }
 
-static PyObject *
-dict_items(PyObject *self, PyObject *obj)
+static TyObject *
+dict_items(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyDict_Items(obj);
+    return TyDict_Items(obj);
 }
 
-static PyObject *
-dict_next(PyObject *self, PyObject *args)
+static TyObject *
+dict_next(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *key = UNINITIALIZED_PTR, *value = UNINITIALIZED_PTR;
-    Py_ssize_t pos;
-    if (!PyArg_ParseTuple(args, "On", &mapping, &pos)) {
+    TyObject *mapping, *key = UNINITIALIZED_PTR, *value = UNINITIALIZED_PTR;
+    Ty_ssize_t pos;
+    if (!TyArg_ParseTuple(args, "On", &mapping, &pos)) {
         return NULL;
     }
     NULLABLE(mapping);
-    int rc = PyDict_Next(mapping, &pos, &key, &value);
+    int rc = TyDict_Next(mapping, &pos, &key, &value);
     if (rc != 0) {
-        return Py_BuildValue("inOO", rc, pos, key, value);
+        return Ty_BuildValue("inOO", rc, pos, key, value);
     }
     assert(key == UNINITIALIZED_PTR);
     assert(value == UNINITIALIZED_PTR);
-    if (PyErr_Occurred()) {
+    if (TyErr_Occurred()) {
         return NULL;
     }
     Py_RETURN_NONE;
 }
 
-static PyObject *
-dict_merge(PyObject *self, PyObject *args)
+static TyObject *
+dict_merge(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *mapping2;
+    TyObject *mapping, *mapping2;
     int override;
-    if (!PyArg_ParseTuple(args, "OOi", &mapping, &mapping2, &override)) {
+    if (!TyArg_ParseTuple(args, "OOi", &mapping, &mapping2, &override)) {
         return NULL;
     }
     NULLABLE(mapping);
     NULLABLE(mapping2);
-    RETURN_INT(PyDict_Merge(mapping, mapping2, override));
+    RETURN_INT(TyDict_Merge(mapping, mapping2, override));
 }
 
-static PyObject *
-dict_update(PyObject *self, PyObject *args)
+static TyObject *
+dict_update(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *mapping2;
-    if (!PyArg_ParseTuple(args, "OO", &mapping, &mapping2)) {
+    TyObject *mapping, *mapping2;
+    if (!TyArg_ParseTuple(args, "OO", &mapping, &mapping2)) {
         return NULL;
     }
     NULLABLE(mapping);
     NULLABLE(mapping2);
-    RETURN_INT(PyDict_Update(mapping, mapping2));
+    RETURN_INT(TyDict_Update(mapping, mapping2));
 }
 
-static PyObject *
-dict_mergefromseq2(PyObject *self, PyObject *args)
+static TyObject *
+dict_mergefromseq2(TyObject *self, TyObject *args)
 {
-    PyObject *mapping, *seq;
+    TyObject *mapping, *seq;
     int override;
-    if (!PyArg_ParseTuple(args, "OOi", &mapping, &seq, &override)) {
+    if (!TyArg_ParseTuple(args, "OOi", &mapping, &seq, &override)) {
         return NULL;
     }
     NULLABLE(mapping);
     NULLABLE(seq);
-    RETURN_INT(PyDict_MergeFromSeq2(mapping, seq, override));
+    RETURN_INT(TyDict_MergeFromSeq2(mapping, seq, override));
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"dict_check", dict_check, METH_O},
     {"dict_checkexact", dict_checkexact, METH_O},
     {"dict_new", dict_new, METH_NOARGS},
@@ -281,9 +281,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Dict(PyObject *m)
+_PyTestLimitedCAPI_Init_Dict(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

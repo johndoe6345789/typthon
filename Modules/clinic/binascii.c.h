@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(binascii_a2b_uu__doc__,
 "a2b_uu($module, data, /)\n"
@@ -17,14 +17,14 @@ PyDoc_STRVAR(binascii_a2b_uu__doc__,
 #define BINASCII_A2B_UU_METHODDEF    \
     {"a2b_uu", (PyCFunction)binascii_a2b_uu, METH_O, binascii_a2b_uu__doc__},
 
-static PyObject *
-binascii_a2b_uu_impl(PyObject *module, Py_buffer *data);
+static TyObject *
+binascii_a2b_uu_impl(TyObject *module, Ty_buffer *data);
 
-static PyObject *
-binascii_a2b_uu(PyObject *module, PyObject *arg)
+static TyObject *
+binascii_a2b_uu(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer data = {NULL, NULL};
 
     if (!ascii_buffer_converter(arg, &data)) {
         goto exit;
@@ -48,46 +48,46 @@ PyDoc_STRVAR(binascii_b2a_uu__doc__,
 #define BINASCII_B2A_UU_METHODDEF    \
     {"b2a_uu", _PyCFunction_CAST(binascii_b2a_uu), METH_FASTCALL|METH_KEYWORDS, binascii_b2a_uu__doc__},
 
-static PyObject *
-binascii_b2a_uu_impl(PyObject *module, Py_buffer *data, int backtick);
+static TyObject *
+binascii_b2a_uu_impl(TyObject *module, Ty_buffer *data, int backtick);
 
-static PyObject *
-binascii_b2a_uu(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+binascii_b2a_uu(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(backtick), },
+        .ob_item = { &_Ty_ID(backtick), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "backtick", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "b2a_uu",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
     int backtick = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -127,46 +127,46 @@ PyDoc_STRVAR(binascii_a2b_base64__doc__,
 #define BINASCII_A2B_BASE64_METHODDEF    \
     {"a2b_base64", _PyCFunction_CAST(binascii_a2b_base64), METH_FASTCALL|METH_KEYWORDS, binascii_a2b_base64__doc__},
 
-static PyObject *
-binascii_a2b_base64_impl(PyObject *module, Py_buffer *data, int strict_mode);
+static TyObject *
+binascii_a2b_base64_impl(TyObject *module, Ty_buffer *data, int strict_mode);
 
-static PyObject *
-binascii_a2b_base64(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+binascii_a2b_base64(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(strict_mode), },
+        .ob_item = { &_Ty_ID(strict_mode), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "strict_mode", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "a2b_base64",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
     int strict_mode = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -201,46 +201,46 @@ PyDoc_STRVAR(binascii_b2a_base64__doc__,
 #define BINASCII_B2A_BASE64_METHODDEF    \
     {"b2a_base64", _PyCFunction_CAST(binascii_b2a_base64), METH_FASTCALL|METH_KEYWORDS, binascii_b2a_base64__doc__},
 
-static PyObject *
-binascii_b2a_base64_impl(PyObject *module, Py_buffer *data, int newline);
+static TyObject *
+binascii_b2a_base64_impl(TyObject *module, Ty_buffer *data, int newline);
 
-static PyObject *
-binascii_b2a_base64(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+binascii_b2a_base64(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(newline), },
+        .ob_item = { &_Ty_ID(newline), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "newline", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "b2a_base64",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
     int newline = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -276,24 +276,24 @@ PyDoc_STRVAR(binascii_crc_hqx__doc__,
 #define BINASCII_CRC_HQX_METHODDEF    \
     {"crc_hqx", _PyCFunction_CAST(binascii_crc_hqx), METH_FASTCALL, binascii_crc_hqx__doc__},
 
-static PyObject *
-binascii_crc_hqx_impl(PyObject *module, Py_buffer *data, unsigned int crc);
+static TyObject *
+binascii_crc_hqx_impl(TyObject *module, Ty_buffer *data, unsigned int crc);
 
-static PyObject *
-binascii_crc_hqx(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+binascii_crc_hqx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer data = {NULL, NULL};
     unsigned int crc;
 
-    if (!_PyArg_CheckPositional("crc_hqx", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("crc_hqx", nargs, 2, 2)) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[0], &data, PyBUF_SIMPLE) != 0) {
         goto exit;
     }
-    crc = (unsigned int)PyLong_AsUnsignedLongMask(args[1]);
-    if (crc == (unsigned int)-1 && PyErr_Occurred()) {
+    crc = (unsigned int)TyLong_AsUnsignedLongMask(args[1]);
+    if (crc == (unsigned int)-1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = binascii_crc_hqx_impl(module, &data, crc);
@@ -317,17 +317,17 @@ PyDoc_STRVAR(binascii_crc32__doc__,
     {"crc32", _PyCFunction_CAST(binascii_crc32), METH_FASTCALL, binascii_crc32__doc__},
 
 static unsigned int
-binascii_crc32_impl(PyObject *module, Py_buffer *data, unsigned int crc);
+binascii_crc32_impl(TyObject *module, Ty_buffer *data, unsigned int crc);
 
-static PyObject *
-binascii_crc32(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+binascii_crc32(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer data = {NULL, NULL};
     unsigned int crc = 0;
     unsigned int _return_value;
 
-    if (!_PyArg_CheckPositional("crc32", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("crc32", nargs, 1, 2)) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[0], &data, PyBUF_SIMPLE) != 0) {
@@ -336,16 +336,16 @@ binascii_crc32(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     if (nargs < 2) {
         goto skip_optional;
     }
-    crc = (unsigned int)PyLong_AsUnsignedLongMask(args[1]);
-    if (crc == (unsigned int)-1 && PyErr_Occurred()) {
+    crc = (unsigned int)TyLong_AsUnsignedLongMask(args[1]);
+    if (crc == (unsigned int)-1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
     _return_value = binascii_crc32_impl(module, &data, crc);
-    if ((_return_value == (unsigned int)-1) && PyErr_Occurred()) {
+    if ((_return_value == (unsigned int)-1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromUnsignedLong((unsigned long)_return_value);
+    return_value = TyLong_FromUnsignedLong((unsigned long)_return_value);
 
 exit:
     /* Cleanup for data */
@@ -382,48 +382,48 @@ PyDoc_STRVAR(binascii_b2a_hex__doc__,
 #define BINASCII_B2A_HEX_METHODDEF    \
     {"b2a_hex", _PyCFunction_CAST(binascii_b2a_hex), METH_FASTCALL|METH_KEYWORDS, binascii_b2a_hex__doc__},
 
-static PyObject *
-binascii_b2a_hex_impl(PyObject *module, Py_buffer *data, PyObject *sep,
+static TyObject *
+binascii_b2a_hex_impl(TyObject *module, Ty_buffer *data, TyObject *sep,
                       int bytes_per_sep);
 
-static PyObject *
-binascii_b2a_hex(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+binascii_b2a_hex(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(sep), &_Py_ID(bytes_per_sep), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(sep), &_Ty_ID(bytes_per_sep), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "sep", "bytes_per_sep", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "b2a_hex",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
-    PyObject *sep = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
+    TyObject *sep = NULL;
     int bytes_per_sep = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -440,8 +440,8 @@ binascii_b2a_hex(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyOb
             goto skip_optional_pos;
         }
     }
-    bytes_per_sep = PyLong_AsInt(args[2]);
-    if (bytes_per_sep == -1 && PyErr_Occurred()) {
+    bytes_per_sep = TyLong_AsInt(args[2]);
+    if (bytes_per_sep == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -474,48 +474,48 @@ PyDoc_STRVAR(binascii_hexlify__doc__,
 #define BINASCII_HEXLIFY_METHODDEF    \
     {"hexlify", _PyCFunction_CAST(binascii_hexlify), METH_FASTCALL|METH_KEYWORDS, binascii_hexlify__doc__},
 
-static PyObject *
-binascii_hexlify_impl(PyObject *module, Py_buffer *data, PyObject *sep,
+static TyObject *
+binascii_hexlify_impl(TyObject *module, Ty_buffer *data, TyObject *sep,
                       int bytes_per_sep);
 
-static PyObject *
-binascii_hexlify(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+binascii_hexlify(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(sep), &_Py_ID(bytes_per_sep), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(sep), &_Ty_ID(bytes_per_sep), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "sep", "bytes_per_sep", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "hexlify",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
-    PyObject *sep = NULL;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
+    TyObject *sep = NULL;
     int bytes_per_sep = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -532,8 +532,8 @@ binascii_hexlify(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyOb
             goto skip_optional_pos;
         }
     }
-    bytes_per_sep = PyLong_AsInt(args[2]);
-    if (bytes_per_sep == -1 && PyErr_Occurred()) {
+    bytes_per_sep = TyLong_AsInt(args[2]);
+    if (bytes_per_sep == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -560,14 +560,14 @@ PyDoc_STRVAR(binascii_a2b_hex__doc__,
 #define BINASCII_A2B_HEX_METHODDEF    \
     {"a2b_hex", (PyCFunction)binascii_a2b_hex, METH_O, binascii_a2b_hex__doc__},
 
-static PyObject *
-binascii_a2b_hex_impl(PyObject *module, Py_buffer *hexstr);
+static TyObject *
+binascii_a2b_hex_impl(TyObject *module, Ty_buffer *hexstr);
 
-static PyObject *
-binascii_a2b_hex(PyObject *module, PyObject *arg)
+static TyObject *
+binascii_a2b_hex(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer hexstr = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer hexstr = {NULL, NULL};
 
     if (!ascii_buffer_converter(arg, &hexstr)) {
         goto exit;
@@ -593,14 +593,14 @@ PyDoc_STRVAR(binascii_unhexlify__doc__,
 #define BINASCII_UNHEXLIFY_METHODDEF    \
     {"unhexlify", (PyCFunction)binascii_unhexlify, METH_O, binascii_unhexlify__doc__},
 
-static PyObject *
-binascii_unhexlify_impl(PyObject *module, Py_buffer *hexstr);
+static TyObject *
+binascii_unhexlify_impl(TyObject *module, Ty_buffer *hexstr);
 
-static PyObject *
-binascii_unhexlify(PyObject *module, PyObject *arg)
+static TyObject *
+binascii_unhexlify(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer hexstr = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer hexstr = {NULL, NULL};
 
     if (!ascii_buffer_converter(arg, &hexstr)) {
         goto exit;
@@ -624,46 +624,46 @@ PyDoc_STRVAR(binascii_a2b_qp__doc__,
 #define BINASCII_A2B_QP_METHODDEF    \
     {"a2b_qp", _PyCFunction_CAST(binascii_a2b_qp), METH_FASTCALL|METH_KEYWORDS, binascii_a2b_qp__doc__},
 
-static PyObject *
-binascii_a2b_qp_impl(PyObject *module, Py_buffer *data, int header);
+static TyObject *
+binascii_a2b_qp_impl(TyObject *module, Ty_buffer *data, int header);
 
-static PyObject *
-binascii_a2b_qp(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+binascii_a2b_qp(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(header), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(header), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "header", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "a2b_qp",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
     int header = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -702,49 +702,49 @@ PyDoc_STRVAR(binascii_b2a_qp__doc__,
 #define BINASCII_B2A_QP_METHODDEF    \
     {"b2a_qp", _PyCFunction_CAST(binascii_b2a_qp), METH_FASTCALL|METH_KEYWORDS, binascii_b2a_qp__doc__},
 
-static PyObject *
-binascii_b2a_qp_impl(PyObject *module, Py_buffer *data, int quotetabs,
+static TyObject *
+binascii_b2a_qp_impl(TyObject *module, Ty_buffer *data, int quotetabs,
                      int istext, int header);
 
-static PyObject *
-binascii_b2a_qp(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+binascii_b2a_qp(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(quotetabs), &_Py_ID(istext), &_Py_ID(header), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(quotetabs), &_Ty_ID(istext), &_Ty_ID(header), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "quotetabs", "istext", "header", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "b2a_qp",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
     int quotetabs = 0;
     int istext = 1;
     int header = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;

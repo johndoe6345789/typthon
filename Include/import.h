@@ -1,103 +1,103 @@
 /* Module definition and import interface */
 
-#ifndef Py_IMPORT_H
-#define Py_IMPORT_H
+#ifndef Ty_IMPORT_H
+#define Ty_IMPORT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-PyAPI_FUNC(long) PyImport_GetMagicNumber(void);
-PyAPI_FUNC(const char *) PyImport_GetMagicTag(void);
-PyAPI_FUNC(PyObject *) PyImport_ExecCodeModule(
+PyAPI_FUNC(long) TyImport_GetMagicNumber(void);
+PyAPI_FUNC(const char *) TyImport_GetMagicTag(void);
+PyAPI_FUNC(TyObject *) TyImport_ExecCodeModule(
     const char *name,           /* UTF-8 encoded string */
-    PyObject *co
+    TyObject *co
     );
-PyAPI_FUNC(PyObject *) PyImport_ExecCodeModuleEx(
+PyAPI_FUNC(TyObject *) TyImport_ExecCodeModuleEx(
     const char *name,           /* UTF-8 encoded string */
-    PyObject *co,
+    TyObject *co,
     const char *pathname        /* decoded from the filesystem encoding */
     );
-PyAPI_FUNC(PyObject *) PyImport_ExecCodeModuleWithPathnames(
+PyAPI_FUNC(TyObject *) TyImport_ExecCodeModuleWithPathnames(
     const char *name,           /* UTF-8 encoded string */
-    PyObject *co,
+    TyObject *co,
     const char *pathname,       /* decoded from the filesystem encoding */
     const char *cpathname       /* decoded from the filesystem encoding */
     );
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
-PyAPI_FUNC(PyObject *) PyImport_ExecCodeModuleObject(
-    PyObject *name,
-    PyObject *co,
-    PyObject *pathname,
-    PyObject *cpathname
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03030000
+PyAPI_FUNC(TyObject *) TyImport_ExecCodeModuleObject(
+    TyObject *name,
+    TyObject *co,
+    TyObject *pathname,
+    TyObject *cpathname
     );
 #endif
-PyAPI_FUNC(PyObject *) PyImport_GetModuleDict(void);
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03070000
-PyAPI_FUNC(PyObject *) PyImport_GetModule(PyObject *name);
+PyAPI_FUNC(TyObject *) TyImport_GetModuleDict(void);
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03070000
+PyAPI_FUNC(TyObject *) TyImport_GetModule(TyObject *name);
 #endif
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
-PyAPI_FUNC(PyObject *) PyImport_AddModuleObject(
-    PyObject *name
-    );
-#endif
-PyAPI_FUNC(PyObject *) PyImport_AddModule(
-    const char *name            /* UTF-8 encoded string */
-    );
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030d0000
-PyAPI_FUNC(PyObject *) PyImport_AddModuleRef(
-    const char *name            /* UTF-8 encoded string */
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03030000
+PyAPI_FUNC(TyObject *) TyImport_AddModuleObject(
+    TyObject *name
     );
 #endif
-PyAPI_FUNC(PyObject *) PyImport_ImportModule(
+PyAPI_FUNC(TyObject *) TyImport_AddModule(
     const char *name            /* UTF-8 encoded string */
     );
-Py_DEPRECATED(3.13) PyAPI_FUNC(PyObject *) PyImport_ImportModuleNoBlock(
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030d0000
+PyAPI_FUNC(TyObject *) TyImport_AddModuleRef(
     const char *name            /* UTF-8 encoded string */
     );
-PyAPI_FUNC(PyObject *) PyImport_ImportModuleLevel(
+#endif
+PyAPI_FUNC(TyObject *) TyImport_ImportModule(
+    const char *name            /* UTF-8 encoded string */
+    );
+Ty_DEPRECATED(3.13) PyAPI_FUNC(TyObject *) TyImport_ImportModuleNoBlock(
+    const char *name            /* UTF-8 encoded string */
+    );
+PyAPI_FUNC(TyObject *) TyImport_ImportModuleLevel(
     const char *name,           /* UTF-8 encoded string */
-    PyObject *globals,
-    PyObject *locals,
-    PyObject *fromlist,
+    TyObject *globals,
+    TyObject *locals,
+    TyObject *fromlist,
     int level
     );
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03050000
-PyAPI_FUNC(PyObject *) PyImport_ImportModuleLevelObject(
-    PyObject *name,
-    PyObject *globals,
-    PyObject *locals,
-    PyObject *fromlist,
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03050000
+PyAPI_FUNC(TyObject *) TyImport_ImportModuleLevelObject(
+    TyObject *name,
+    TyObject *globals,
+    TyObject *locals,
+    TyObject *fromlist,
     int level
     );
 #endif
 
-#define PyImport_ImportModuleEx(n, g, l, f) \
-    PyImport_ImportModuleLevel((n), (g), (l), (f), 0)
+#define TyImport_ImportModuleEx(n, g, l, f) \
+    TyImport_ImportModuleLevel((n), (g), (l), (f), 0)
 
-PyAPI_FUNC(PyObject *) PyImport_GetImporter(PyObject *path);
-PyAPI_FUNC(PyObject *) PyImport_Import(PyObject *name);
-PyAPI_FUNC(PyObject *) PyImport_ReloadModule(PyObject *m);
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
-PyAPI_FUNC(int) PyImport_ImportFrozenModuleObject(
-    PyObject *name
+PyAPI_FUNC(TyObject *) TyImport_GetImporter(TyObject *path);
+PyAPI_FUNC(TyObject *) TyImport_Import(TyObject *name);
+PyAPI_FUNC(TyObject *) TyImport_ReloadModule(TyObject *m);
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03030000
+PyAPI_FUNC(int) TyImport_ImportFrozenModuleObject(
+    TyObject *name
     );
 #endif
-PyAPI_FUNC(int) PyImport_ImportFrozenModule(
+PyAPI_FUNC(int) TyImport_ImportFrozenModule(
     const char *name            /* UTF-8 encoded string */
     );
 
-PyAPI_FUNC(int) PyImport_AppendInittab(
+PyAPI_FUNC(int) TyImport_AppendInittab(
     const char *name,           /* ASCII encoded string */
-    PyObject* (*initfunc)(void)
+    TyObject* (*initfunc)(void)
     );
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_IMPORT_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_IMPORT_H
 #  include "cpython/import.h"
-#  undef Py_CPYTHON_IMPORT_H
+#  undef Ty_CPYTHON_IMPORT_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_IMPORT_H */
+#endif /* !Ty_IMPORT_H */

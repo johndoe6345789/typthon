@@ -136,7 +136,7 @@ class FaultHandlerTests(unittest.TestCase):
         if all_threads_disabled and not py_fatal_error:
             regex.append("<Cannot show all threads while the GIL is disabled>")
         regex.append(fr'{header}')
-        if support.Py_GIL_DISABLED and py_fatal_error and not know_current_thread:
+        if support.Ty_GIL_DISABLED and py_fatal_error and not know_current_thread:
             regex.append("  <tstate is freed>")
         else:
             if garbage_collecting and not all_threads_disabled:
@@ -301,7 +301,7 @@ class FaultHandlerTests(unittest.TestCase):
 
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
     def check_fatal_error_func(self, release_gil):
-        # Test that Py_FatalError() dumps a traceback
+        # Test that Ty_FatalError() dumps a traceback
         with support.SuppressCrashReport():
             self.check_fatal_error(f"""
                 import _testcapi
@@ -932,7 +932,7 @@ class FaultHandlerTests(unittest.TestCase):
         self.assertEqual(exitcode, 0)
 
     @threading_helper.requires_working_threading()
-    @unittest.skipUnless(support.Py_GIL_DISABLED, "only meaningful if the GIL is disabled")
+    @unittest.skipUnless(support.Ty_GIL_DISABLED, "only meaningful if the GIL is disabled")
     def test_free_threaded_dump_traceback(self):
         # gh-128400: Other threads need to be paused to invoke faulthandler
         code = dedent("""

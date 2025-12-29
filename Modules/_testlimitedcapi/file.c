@@ -1,7 +1,7 @@
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-   // Need limited C API 3.13 for PyLong_AsInt()
-#  define Py_LIMITED_API 0x030d0000
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+   // Need limited C API 3.13 for TyLong_AsInt()
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "parts.h"
@@ -15,19 +15,19 @@ module _testcapi
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=6361033e795369fc]*/
 
 
-static PyObject *
-pyfile_fromfd(PyObject *module, PyObject *args)
+static TyObject *
+pyfile_fromfd(TyObject *module, TyObject *args)
 {
     int fd;
     const char *name;
-    Py_ssize_t size;
+    Ty_ssize_t size;
     const char *mode;
     int buffering;
     const char *encoding;
     const char *errors;
     const char *newline;
     int closefd;
-    if (!PyArg_ParseTuple(args,
+    if (!TyArg_ParseTuple(args,
                           "iz#z#"
                           "iz#z#"
                           "z#i",
@@ -37,7 +37,7 @@ pyfile_fromfd(PyObject *module, PyObject *args)
         return NULL;
     }
 
-    return PyFile_FromFd(fd, name, mode, buffering,
+    return TyFile_FromFd(fd, name, mode, buffering,
                          encoding, errors, newline, closefd);
 }
 
@@ -51,11 +51,11 @@ _testcapi.pyfile_getline
 
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_pyfile_getline_impl(PyObject *module, PyObject *file, int n)
+static TyObject *
+_testcapi_pyfile_getline_impl(TyObject *module, TyObject *file, int n)
 /*[clinic end generated code: output=137fde2774563266 input=df26686148b3657e]*/
 {
-    return PyFile_GetLine(file, n);
+    return TyFile_GetLine(file, n);
 }
 
 
@@ -69,29 +69,29 @@ _testcapi.pyfile_writeobject
 
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_pyfile_writeobject_impl(PyObject *module, PyObject *obj,
-                                  PyObject *file, int flags)
+static TyObject *
+_testcapi_pyfile_writeobject_impl(TyObject *module, TyObject *obj,
+                                  TyObject *file, int flags)
 /*[clinic end generated code: output=ebb4d802e3db489c input=64a34a3e75b9935a]*/
 {
     NULLABLE(obj);
     NULLABLE(file);
-    RETURN_INT(PyFile_WriteObject(obj, file, flags));
+    RETURN_INT(TyFile_WriteObject(obj, file, flags));
 }
 
 
-static PyObject *
-pyfile_writestring(PyObject *module, PyObject *args)
+static TyObject *
+pyfile_writestring(TyObject *module, TyObject *args)
 {
     const char *str;
-    Py_ssize_t size;
-    PyObject *file;
-    if (!PyArg_ParseTuple(args, "z#O", &str, &size, &file)) {
+    Ty_ssize_t size;
+    TyObject *file;
+    if (!TyArg_ParseTuple(args, "z#O", &str, &size, &file)) {
         return NULL;
     }
     NULLABLE(file);
 
-    RETURN_INT(PyFile_WriteString(str, file));
+    RETURN_INT(TyFile_WriteString(str, file));
 }
 
 
@@ -103,8 +103,8 @@ _testcapi.pyobject_asfiledescriptor
 
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_pyobject_asfiledescriptor(PyObject *module, PyObject *obj)
+static TyObject *
+_testcapi_pyobject_asfiledescriptor(TyObject *module, TyObject *obj)
 /*[clinic end generated code: output=2d640c6a1970c721 input=45fa1171d62b18d7]*/
 {
     NULLABLE(obj);
@@ -112,7 +112,7 @@ _testcapi_pyobject_asfiledescriptor(PyObject *module, PyObject *obj)
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"pyfile_fromfd", pyfile_fromfd, METH_VARARGS},
     _TESTCAPI_PYFILE_GETLINE_METHODDEF
     _TESTCAPI_PYFILE_WRITEOBJECT_METHODDEF
@@ -122,7 +122,7 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_File(PyObject *m)
+_PyTestLimitedCAPI_Init_File(TyObject *m)
 {
-    return PyModule_AddFunctions(m, test_methods);
+    return TyModule_AddFunctions(m, test_methods);
 }

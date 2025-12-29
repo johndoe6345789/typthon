@@ -1,7 +1,7 @@
 #include "Python.h"
-#include "pycore_call.h"          // _PyObject_CallNoArgs()
-#include "pycore_fileutils.h"     // _Py_UniversalNewlineFgetsWithSize()
-#include "pycore_runtime.h"       // _Py_ID()
+#include "pycore_call.h"          // _TyObject_CallNoArgs()
+#include "pycore_fileutils.h"     // _Ty_UniversalNewlineFgetsWithSize()
+#include "pycore_runtime.h"       // _Ty_ID()
 
 #include "errcode.h"              // E_NOMEM
 
@@ -23,18 +23,18 @@ tok_concatenate_interactive_new_line(struct tok_state *tok, const char *line) {
         return 0;
     }
 
-    Py_ssize_t current_size = tok->interactive_src_end - tok->interactive_src_start;
-    Py_ssize_t line_size = strlen(line);
+    Ty_ssize_t current_size = tok->interactive_src_end - tok->interactive_src_start;
+    Ty_ssize_t line_size = strlen(line);
     char last_char = line[line_size > 0 ? line_size - 1 : line_size];
     if (last_char != '\n') {
         line_size += 1;
     }
     char* new_str = tok->interactive_src_start;
 
-    new_str = PyMem_Realloc(new_str, current_size + line_size + 1);
+    new_str = TyMem_Realloc(new_str, current_size + line_size + 1);
     if (!new_str) {
         if (tok->interactive_src_start) {
-            PyMem_Free(tok->interactive_src_start);
+            TyMem_Free(tok->interactive_src_start);
         }
         tok->interactive_src_start = NULL;
         tok->interactive_src_end = NULL;
@@ -63,7 +63,7 @@ tok_readline_raw(struct tok_state *tok)
         }
         int n_chars = (int)(tok->end - tok->inp);
         size_t line_size = 0;
-        char *line = _Py_UniversalNewlineFgetsWithSize(tok->inp, n_chars, tok->fp, NULL, &line_size);
+        char *line = _Ty_UniversalNewlineFgetsWithSize(tok->inp, n_chars, tok->fp, NULL, &line_size);
         if (line == NULL) {
             return 1;
         }
@@ -81,9 +81,9 @@ tok_readline_raw(struct tok_state *tok)
 
 static int
 tok_readline_recode(struct tok_state *tok) {
-    PyObject *line;
+    TyObject *line;
     const  char *buf;
-    Py_ssize_t buflen;
+    Ty_ssize_t buflen;
     line = tok->decoding_buffer;
     if (line == NULL) {
         line = PyObject_CallNoArgs(tok->decoding_readline);
@@ -95,7 +95,7 @@ tok_readline_recode(struct tok_state *tok) {
     else {
         tok->decoding_buffer = NULL;
     }
-    buf = PyUnicode_AsUTF8AndSize(line, &buflen);
+    buf = TyUnicode_AsUTF8AndSize(line, &buflen);
     if (buf == NULL) {
         _PyTokenizer_error_ret(tok);
         goto error;
@@ -114,10 +114,10 @@ tok_readline_recode(struct tok_state *tok) {
         tok_concatenate_interactive_new_line(tok, buf) == -1) {
         goto error;
     }
-    Py_DECREF(line);
+    Ty_DECREF(line);
     return 1;
 error:
-    Py_XDECREF(line);
+    Ty_XDECREF(line);
     return 0;
 }
 
@@ -143,7 +143,7 @@ static void fp_ungetc(int c, struct tok_state *tok) {
 static int
 fp_setreadl(struct tok_state *tok, const char* enc)
 {
-    PyObject *readline, *open, *stream;
+    TyObject *readline, *open, *stream;
     int fd;
     long pos;
 
@@ -156,34 +156,34 @@ fp_setreadl(struct tok_state *tok, const char* enc)
     pos = ftell(tok->fp);
     if (pos == -1 ||
         lseek(fd, (off_t)(pos > 0 ? pos - 1 : pos), SEEK_SET) == (off_t)-1) {
-        PyErr_SetFromErrnoWithFilename(PyExc_OSError, NULL);
+        TyErr_SetFromErrnoWithFilename(TyExc_OSError, NULL);
         return 0;
     }
 
-    open = PyImport_ImportModuleAttrString("io", "open");
+    open = TyImport_ImportModuleAttrString("io", "open");
     if (open == NULL) {
         return 0;
     }
     stream = PyObject_CallFunction(open, "isisOOO",
-                    fd, "r", -1, enc, Py_None, Py_None, Py_False);
-    Py_DECREF(open);
+                    fd, "r", -1, enc, Ty_None, Ty_None, Ty_False);
+    Ty_DECREF(open);
     if (stream == NULL) {
         return 0;
     }
 
-    readline = PyObject_GetAttr(stream, &_Py_ID(readline));
-    Py_DECREF(stream);
+    readline = PyObject_GetAttr(stream, &_Ty_ID(readline));
+    Ty_DECREF(stream);
     if (readline == NULL) {
         return 0;
     }
-    Py_XSETREF(tok->decoding_readline, readline);
+    Ty_XSETREF(tok->decoding_readline, readline);
 
     if (pos > 0) {
-        PyObject *bufobj = _PyObject_CallNoArgs(readline);
+        TyObject *bufobj = _TyObject_CallNoArgs(readline);
         if (bufobj == NULL) {
             return 0;
         }
-        Py_DECREF(bufobj);
+        Ty_DECREF(bufobj);
     }
 
     return 1;
@@ -195,10 +195,10 @@ tok_underflow_interactive(struct tok_state *tok) {
         tok->done = E_INTERACT_STOP;
         return 1;
     }
-    char *newtok = PyOS_Readline(tok->fp ? tok->fp : stdin, stdout, tok->prompt);
+    char *newtok = TyOS_Readline(tok->fp ? tok->fp : stdin, stdout, tok->prompt);
     if (newtok != NULL) {
         char *translated = _PyTokenizer_translate_newlines(newtok, 0, 0, tok);
-        PyMem_Free(newtok);
+        TyMem_Free(newtok);
         if (translated == NULL) {
             return 0;
         }
@@ -206,28 +206,28 @@ tok_underflow_interactive(struct tok_state *tok) {
     }
     if (tok->encoding && newtok && *newtok) {
         /* Recode to UTF-8 */
-        Py_ssize_t buflen;
+        Ty_ssize_t buflen;
         const char* buf;
-        PyObject *u = _PyTokenizer_translate_into_utf8(newtok, tok->encoding);
-        PyMem_Free(newtok);
+        TyObject *u = _PyTokenizer_translate_into_utf8(newtok, tok->encoding);
+        TyMem_Free(newtok);
         if (u == NULL) {
             tok->done = E_DECODE;
             return 0;
         }
-        buflen = PyBytes_GET_SIZE(u);
-        buf = PyBytes_AS_STRING(u);
-        newtok = PyMem_Malloc(buflen+1);
+        buflen = TyBytes_GET_SIZE(u);
+        buf = TyBytes_AS_STRING(u);
+        newtok = TyMem_Malloc(buflen+1);
         if (newtok == NULL) {
-            Py_DECREF(u);
+            Ty_DECREF(u);
             tok->done = E_NOMEM;
             return 0;
         }
         strcpy(newtok, buf);
-        Py_DECREF(u);
+        Ty_DECREF(u);
     }
     if (tok->fp_interactive &&
         tok_concatenate_interactive_new_line(tok, newtok) == -1) {
-        PyMem_Free(newtok);
+        TyMem_Free(newtok);
         return 0;
     }
     if (tok->nextprompt != NULL) {
@@ -237,22 +237,22 @@ tok_underflow_interactive(struct tok_state *tok) {
         tok->done = E_INTR;
     }
     else if (*newtok == '\0') {
-        PyMem_Free(newtok);
+        TyMem_Free(newtok);
         tok->done = E_EOF;
     }
     else if (tok->start != NULL) {
-        Py_ssize_t cur_multi_line_start = tok->multi_line_start - tok->buf;
+        Ty_ssize_t cur_multi_line_start = tok->multi_line_start - tok->buf;
         _PyLexer_remember_fstring_buffers(tok);
         size_t size = strlen(newtok);
         ADVANCE_LINENO();
         if (!_PyLexer_tok_reserve_buf(tok, size + 1)) {
-            PyMem_Free(tok->buf);
+            TyMem_Free(tok->buf);
             tok->buf = NULL;
-            PyMem_Free(newtok);
+            TyMem_Free(newtok);
             return 0;
         }
         memcpy(tok->cur, newtok, size + 1);
-        PyMem_Free(newtok);
+        TyMem_Free(newtok);
         tok->inp += size;
         tok->multi_line_start = tok->buf + cur_multi_line_start;
         _PyLexer_restore_fstring_buffers(tok);
@@ -260,7 +260,7 @@ tok_underflow_interactive(struct tok_state *tok) {
     else {
         _PyLexer_remember_fstring_buffers(tok);
         ADVANCE_LINENO();
-        PyMem_Free(tok->buf);
+        TyMem_Free(tok->buf);
         tok->buf = newtok;
         tok->cur = tok->buf;
         tok->line_start = tok->buf;
@@ -270,7 +270,7 @@ tok_underflow_interactive(struct tok_state *tok) {
     }
     if (tok->done != E_OK) {
         if (tok->prompt != NULL) {
-            PySys_WriteStderr("\n");
+            TySys_WriteStderr("\n");
         }
         return 0;
     }
@@ -355,7 +355,7 @@ _PyTokenizer_FromFile(FILE *fp, const char* enc,
     struct tok_state *tok = _PyTokenizer_tok_new();
     if (tok == NULL)
         return NULL;
-    if ((tok->buf = (char *)PyMem_Malloc(BUFSIZ)) == NULL) {
+    if ((tok->buf = (char *)TyMem_Malloc(BUFSIZ)) == NULL) {
         _PyTokenizer_Free(tok);
         return NULL;
     }
@@ -407,7 +407,7 @@ fdopen_borrow(int fd) {
 #else
 static FILE *
 fdopen_borrow(int fd) {
-    fd = _Py_dup(fd);
+    fd = _Ty_dup(fd);
     if (fd < 0) {
         return NULL;
     }
@@ -422,10 +422,10 @@ fdopen_borrow(int fd) {
    encoding in the first or second line of the file (in which case the encoding
    should be assumed to be UTF-8).
 
-   The char* returned is malloc'ed via PyMem_Malloc() and thus must be freed
+   The char* returned is malloc'ed via TyMem_Malloc() and thus must be freed
    by the caller. */
 char *
-_PyTokenizer_FindEncodingFilename(int fd, PyObject *filename)
+_PyTokenizer_FindEncodingFilename(int fd, TyObject *filename)
 {
     struct tok_state *tok;
     FILE *fp;
@@ -441,10 +441,10 @@ _PyTokenizer_FindEncodingFilename(int fd, PyObject *filename)
         return NULL;
     }
     if (filename != NULL) {
-        tok->filename = Py_NewRef(filename);
+        tok->filename = Ty_NewRef(filename);
     }
     else {
-        tok->filename = PyUnicode_FromString("<string>");
+        tok->filename = TyUnicode_FromString("<string>");
         if (tok->filename == NULL) {
             fclose(fp);
             _PyTokenizer_Free(tok);
@@ -462,7 +462,7 @@ _PyTokenizer_FindEncodingFilename(int fd, PyObject *filename)
     }
     fclose(fp);
     if (tok->encoding) {
-        encoding = (char *)PyMem_Malloc(strlen(tok->encoding) + 1);
+        encoding = (char *)TyMem_Malloc(strlen(tok->encoding) + 1);
         if (encoding) {
             strcpy(encoding, tok->encoding);
         }

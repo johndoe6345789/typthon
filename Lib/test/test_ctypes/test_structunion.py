@@ -8,8 +8,8 @@ from ctypes import (Structure, Union, POINTER, sizeof, alignment,
                     c_long, c_ulong, c_longlong, c_ulonglong, c_float, c_double,
                     c_int8, c_int16, c_int32)
 from ._support import (_CData, PyCStructType, UnionType,
-                       Py_TPFLAGS_DISALLOW_INSTANTIATION,
-                       Py_TPFLAGS_IMMUTABLETYPE)
+                       Ty_TPFLAGS_DISALLOW_INSTANTIATION,
+                       Ty_TPFLAGS_IMMUTABLETYPE)
 from struct import calcsize
 import contextlib
 from test.support import MS_WINDOWS
@@ -80,8 +80,8 @@ class StructUnionTestBase:
     def test_type_flags(self):
         for cls in self.cls, self.metacls:
             with self.subTest(cls=cls):
-                self.assertTrue(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertTrue(cls.__flags__ & Ty_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalse(cls.__flags__ & Ty_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Abstract classes (whose metaclass __init__ was not called) can't be

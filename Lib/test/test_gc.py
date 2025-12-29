@@ -4,7 +4,7 @@ from test import support
 from test.support import (verbose, refcount_test,
                           cpython_only, requires_subprocess,
                           requires_gil_enabled,
-                          Py_GIL_DISABLED)
+                          Ty_GIL_DISABLED)
 from test.support.import_helper import import_module
 from test.support.os_helper import temp_dir, TESTFN, unlink
 from test.support.script_helper import assert_python_ok, make_script, run_test_script
@@ -1281,14 +1281,14 @@ class GCCallbackTests(unittest.TestCase):
             b = [a, a]
             a.append(b)
 
-            # Avoid coredump when Py_FatalError() calls abort()
+            # Avoid coredump when Ty_FatalError() calls abort()
             SuppressCrashReport().__enter__()
 
             # Simulate the refcount of "a" being too low (compared to the
             # references held on it by live data), but keeping it above zero
             # (to avoid deallocating it):
             import ctypes
-            ctypes.pythonapi.Py_DecRef(ctypes.py_object(a))
+            ctypes.pythonapi.Ty_DecRef(ctypes.py_object(a))
             del a
             del b
 
@@ -1386,7 +1386,7 @@ class GCTogglingTests(unittest.TestCase):
         junk = []
         i = 0
         detector = GC_Detector()
-        if Py_GIL_DISABLED:
+        if Ty_GIL_DISABLED:
             # The free-threaded build doesn't have multiple generations, so
             # just trigger a GC manually.
             gc.collect()
@@ -1458,7 +1458,7 @@ class GCTogglingTests(unittest.TestCase):
         detector = GC_Detector()
         junk = []
         i = 0
-        if Py_GIL_DISABLED:
+        if Ty_GIL_DISABLED:
             # The free-threaded build doesn't have multiple generations, so
             # just trigger a GC manually.
             gc.collect()

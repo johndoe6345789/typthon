@@ -290,7 +290,7 @@ class BugsTestCase(unittest.TestCase):
         # The max stack depth should match the value in Python/marshal.c.
         # BUG: https://bugs.python.org/issue33720
         # Windows always limits the maximum depth on release and debug builds
-        #if os.name == 'nt' and support.Py_DEBUG:
+        #if os.name == 'nt' and support.Ty_DEBUG:
         if os.name == 'nt':
             MAX_MARSHAL_STACK_DEPTH = 1000
         elif sys.platform == 'wasi' or is_emscripten or is_apple_mobile:
@@ -396,7 +396,7 @@ class BugsTestCase(unittest.TestCase):
                     # orders under hash seeds 0 and 1. If this check fails, we
                     # need to update this test with different elements. Skip
                     # this part if we are configured to use any other hash
-                    # algorithm (for example, using Py_HASH_EXTERNAL):
+                    # algorithm (for example, using Ty_HASH_EXTERNAL):
                     if sys.hash_info.algorithm in {"fnv", "siphash24"}:
                         args = ["-c", f"print({s})"]
                         _, repr_0, _ = assert_python_ok(*args, PYTHONHASHSEED="0")

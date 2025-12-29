@@ -1770,7 +1770,7 @@ class Popen:
             """Execute program using os.posix_spawn()."""
             kwargs = {}
             if restore_signals:
-                # See _Py_RestoreSignals() in Python/pylifecycle.c
+                # See _Ty_RestoreSignals() in Python/pylifecycle.c
                 sigset = []
                 for signame in ('SIGPIPE', 'SIGXFZ', 'SIGXFSZ'):
                     signum = getattr(signal, signame, None)

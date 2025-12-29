@@ -2,12 +2,12 @@
 
 #include "Python.h"
 #include "pycore_fileutils.h"     // _Py_abspath()
-#include "pycore_initconfig.h"    // _PyStatus_EXCEPTION()
-#include "pycore_pathconfig.h"    // _PyPathConfig_ReadGlobal()
-#include "pycore_pymem.h"         // _PyMem_RawWcsdup()
-#include "pycore_pystate.h"       // _PyThreadState_GET()
+#include "pycore_initconfig.h"    // _TyStatus_EXCEPTION()
+#include "pycore_pathconfig.h"    // _TyPathConfig_ReadGlobal()
+#include "pycore_pymem.h"         // _TyMem_RawWcsdup()
+#include "pycore_pystate.h"       // _TyThreadState_GET()
 
-#include "marshal.h"              // PyMarshal_ReadObjectFromString
+#include "marshal.h"              // TyMarshal_ReadObjectFromString
 #include "osdefs.h"               // DELIM
 #include <wchar.h>
 
@@ -60,96 +60,96 @@
 
 /* HELPER FUNCTIONS for getpath.py */
 
-static PyObject *
-getpath_abspath(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_abspath(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *r = NULL;
-    PyObject *pathobj;
+    TyObject *r = NULL;
+    TyObject *pathobj;
     wchar_t *path;
-    if (!PyArg_ParseTuple(args, "U", &pathobj)) {
+    if (!TyArg_ParseTuple(args, "U", &pathobj)) {
         return NULL;
     }
-    Py_ssize_t len;
-    path = PyUnicode_AsWideCharString(pathobj, &len);
+    Ty_ssize_t len;
+    path = TyUnicode_AsWideCharString(pathobj, &len);
     if (path) {
         wchar_t *abs;
         if (_Py_abspath((const wchar_t *)_Py_normpath(path, -1), &abs) == 0 && abs) {
-            r = PyUnicode_FromWideChar(abs, -1);
-            PyMem_RawFree((void *)abs);
+            r = TyUnicode_FromWideChar(abs, -1);
+            TyMem_RawFree((void *)abs);
         } else {
-            PyErr_SetString(PyExc_OSError, "failed to make path absolute");
+            TyErr_SetString(TyExc_OSError, "failed to make path absolute");
         }
-        PyMem_Free((void *)path);
+        TyMem_Free((void *)path);
     }
     return r;
 }
 
 
-static PyObject *
-getpath_basename(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_basename(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *path;
-    if (!PyArg_ParseTuple(args, "U", &path)) {
+    TyObject *path;
+    if (!TyArg_ParseTuple(args, "U", &path)) {
         return NULL;
     }
-    Py_ssize_t end = PyUnicode_GET_LENGTH(path);
-    Py_ssize_t pos = PyUnicode_FindChar(path, SEP, 0, end, -1);
+    Ty_ssize_t end = TyUnicode_GET_LENGTH(path);
+    Ty_ssize_t pos = TyUnicode_FindChar(path, SEP, 0, end, -1);
     if (pos < 0) {
-        return Py_NewRef(path);
+        return Ty_NewRef(path);
     }
-    return PyUnicode_Substring(path, pos + 1, end);
+    return TyUnicode_Substring(path, pos + 1, end);
 }
 
 
-static PyObject *
-getpath_dirname(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_dirname(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *path;
-    if (!PyArg_ParseTuple(args, "U", &path)) {
+    TyObject *path;
+    if (!TyArg_ParseTuple(args, "U", &path)) {
         return NULL;
     }
-    Py_ssize_t end = PyUnicode_GET_LENGTH(path);
-    Py_ssize_t pos = PyUnicode_FindChar(path, SEP, 0, end, -1);
+    Ty_ssize_t end = TyUnicode_GET_LENGTH(path);
+    Ty_ssize_t pos = TyUnicode_FindChar(path, SEP, 0, end, -1);
     if (pos < 0) {
-        return Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+        return Ty_GetConstant(Ty_CONSTANT_EMPTY_STR);
     }
-    return PyUnicode_Substring(path, 0, pos);
+    return TyUnicode_Substring(path, 0, pos);
 }
 
 
-static PyObject *
-getpath_isabs(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_isabs(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *r = NULL;
-    PyObject *pathobj;
+    TyObject *r = NULL;
+    TyObject *pathobj;
     const wchar_t *path;
-    if (!PyArg_ParseTuple(args, "U", &pathobj)) {
+    if (!TyArg_ParseTuple(args, "U", &pathobj)) {
         return NULL;
     }
-    path = PyUnicode_AsWideCharString(pathobj, NULL);
+    path = TyUnicode_AsWideCharString(pathobj, NULL);
     if (path) {
-        r = _Py_isabs(path) ? Py_True : Py_False;
-        PyMem_Free((void *)path);
+        r = _Py_isabs(path) ? Ty_True : Ty_False;
+        TyMem_Free((void *)path);
     }
-    return Py_XNewRef(r);
+    return Ty_XNewRef(r);
 }
 
 
-static PyObject *
-getpath_hassuffix(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_hassuffix(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *r = NULL;
-    PyObject *pathobj;
-    PyObject *suffixobj;
+    TyObject *r = NULL;
+    TyObject *pathobj;
+    TyObject *suffixobj;
     const wchar_t *path;
     const wchar_t *suffix;
-    if (!PyArg_ParseTuple(args, "UU", &pathobj, &suffixobj)) {
+    if (!TyArg_ParseTuple(args, "UU", &pathobj, &suffixobj)) {
         return NULL;
     }
-    Py_ssize_t len, suffixLen;
-    path = PyUnicode_AsWideCharString(pathobj, &len);
+    Ty_ssize_t len, suffixLen;
+    path = TyUnicode_AsWideCharString(pathobj, &len);
     if (path) {
-        suffix = PyUnicode_AsWideCharString(suffixobj, &suffixLen);
+        suffix = TyUnicode_AsWideCharString(suffixobj, &suffixLen);
         if (suffix) {
             if (suffixLen > len ||
 #ifdef MS_WINDOWS
@@ -158,79 +158,79 @@ getpath_hassuffix(PyObject *Py_UNUSED(self), PyObject *args)
                 wcscmp(&path[len - suffixLen], suffix) != 0
 #endif
             ) {
-                r = Py_NewRef(Py_False);
+                r = Ty_NewRef(Ty_False);
             } else {
-                r = Py_NewRef(Py_True);
+                r = Ty_NewRef(Ty_True);
             }
-            PyMem_Free((void *)suffix);
+            TyMem_Free((void *)suffix);
         }
-        PyMem_Free((void *)path);
+        TyMem_Free((void *)path);
     }
     return r;
 }
 
 
-static PyObject *
-getpath_isdir(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_isdir(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *r = NULL;
-    PyObject *pathobj;
+    TyObject *r = NULL;
+    TyObject *pathobj;
     const wchar_t *path;
-    if (!PyArg_ParseTuple(args, "U", &pathobj)) {
+    if (!TyArg_ParseTuple(args, "U", &pathobj)) {
         return NULL;
     }
-    path = PyUnicode_AsWideCharString(pathobj, NULL);
+    path = TyUnicode_AsWideCharString(pathobj, NULL);
     if (path) {
 #ifdef MS_WINDOWS
         DWORD attr = GetFileAttributesW(path);
         r = (attr != INVALID_FILE_ATTRIBUTES) &&
-            (attr & FILE_ATTRIBUTE_DIRECTORY) ? Py_True : Py_False;
+            (attr & FILE_ATTRIBUTE_DIRECTORY) ? Ty_True : Ty_False;
 #else
         struct stat st;
-        r = (_Py_wstat(path, &st) == 0) && S_ISDIR(st.st_mode) ? Py_True : Py_False;
+        r = (_Py_wstat(path, &st) == 0) && S_ISDIR(st.st_mode) ? Ty_True : Ty_False;
 #endif
-        PyMem_Free((void *)path);
+        TyMem_Free((void *)path);
     }
-    return Py_XNewRef(r);
+    return Ty_XNewRef(r);
 }
 
 
-static PyObject *
-getpath_isfile(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_isfile(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *r = NULL;
-    PyObject *pathobj;
+    TyObject *r = NULL;
+    TyObject *pathobj;
     const wchar_t *path;
-    if (!PyArg_ParseTuple(args, "U", &pathobj)) {
+    if (!TyArg_ParseTuple(args, "U", &pathobj)) {
         return NULL;
     }
-    path = PyUnicode_AsWideCharString(pathobj, NULL);
+    path = TyUnicode_AsWideCharString(pathobj, NULL);
     if (path) {
 #ifdef MS_WINDOWS
         DWORD attr = GetFileAttributesW(path);
         r = (attr != INVALID_FILE_ATTRIBUTES) &&
-            !(attr & FILE_ATTRIBUTE_DIRECTORY) ? Py_True : Py_False;
+            !(attr & FILE_ATTRIBUTE_DIRECTORY) ? Ty_True : Ty_False;
 #else
         struct stat st;
-        r = (_Py_wstat(path, &st) == 0) && S_ISREG(st.st_mode) ? Py_True : Py_False;
+        r = (_Py_wstat(path, &st) == 0) && S_ISREG(st.st_mode) ? Ty_True : Ty_False;
 #endif
-        PyMem_Free((void *)path);
+        TyMem_Free((void *)path);
     }
-    return Py_XNewRef(r);
+    return Ty_XNewRef(r);
 }
 
 
-static PyObject *
-getpath_isxfile(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_isxfile(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *r = NULL;
-    PyObject *pathobj;
+    TyObject *r = NULL;
+    TyObject *pathobj;
     const wchar_t *path;
-    Py_ssize_t cchPath;
-    if (!PyArg_ParseTuple(args, "U", &pathobj)) {
+    Ty_ssize_t cchPath;
+    if (!TyArg_ParseTuple(args, "U", &pathobj)) {
         return NULL;
     }
-    path = PyUnicode_AsWideCharString(pathobj, &cchPath);
+    path = TyUnicode_AsWideCharString(pathobj, &cchPath);
     if (path) {
 #ifdef MS_WINDOWS
         DWORD attr = GetFileAttributesW(path);
@@ -238,48 +238,48 @@ getpath_isxfile(PyObject *Py_UNUSED(self), PyObject *args)
             !(attr & FILE_ATTRIBUTE_DIRECTORY) &&
             (cchPath >= 4) &&
             (CompareStringOrdinal(path + cchPath - 4, -1, L".exe", -1, 1 /* ignore case */) == CSTR_EQUAL)
-            ? Py_True : Py_False;
+            ? Ty_True : Ty_False;
 #else
         struct stat st;
         r = (_Py_wstat(path, &st) == 0) &&
             S_ISREG(st.st_mode) &&
             (st.st_mode & 0111)
-            ? Py_True : Py_False;
+            ? Ty_True : Ty_False;
 #endif
-        PyMem_Free((void *)path);
+        TyMem_Free((void *)path);
     }
-    return Py_XNewRef(r);
+    return Ty_XNewRef(r);
 }
 
 
-static PyObject *
-getpath_joinpath(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_joinpath(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    if (!PyTuple_Check(args)) {
-        PyErr_SetString(PyExc_TypeError, "requires tuple of arguments");
+    if (!TyTuple_Check(args)) {
+        TyErr_SetString(TyExc_TypeError, "requires tuple of arguments");
         return NULL;
     }
-    Py_ssize_t n = PyTuple_GET_SIZE(args);
+    Ty_ssize_t n = TyTuple_GET_SIZE(args);
     if (n == 0) {
-        return Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+        return Ty_GetConstant(Ty_CONSTANT_EMPTY_STR);
     }
     /* Convert all parts to wchar and accumulate max final length */
-    wchar_t **parts = (wchar_t **)PyMem_Malloc(n * sizeof(wchar_t *));
+    wchar_t **parts = (wchar_t **)TyMem_Malloc(n * sizeof(wchar_t *));
     if (parts == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     memset(parts, 0, n * sizeof(wchar_t *));
-    Py_ssize_t cchFinal = 0;
-    Py_ssize_t first = 0;
+    Ty_ssize_t cchFinal = 0;
+    Ty_ssize_t first = 0;
 
-    for (Py_ssize_t i = 0; i < n; ++i) {
-        PyObject *s = PyTuple_GET_ITEM(args, i);
-        Py_ssize_t cch;
-        if (s == Py_None) {
+    for (Ty_ssize_t i = 0; i < n; ++i) {
+        TyObject *s = TyTuple_GET_ITEM(args, i);
+        Ty_ssize_t cch;
+        if (s == Ty_None) {
             cch = 0;
-        } else if (PyUnicode_Check(s)) {
-            parts[i] = PyUnicode_AsWideCharString(s, &cch);
+        } else if (TyUnicode_Check(s)) {
+            parts[i] = TyUnicode_AsWideCharString(s, &cch);
             if (!parts[i]) {
                 cchFinal = -1;
                 break;
@@ -288,29 +288,29 @@ getpath_joinpath(PyObject *Py_UNUSED(self), PyObject *args)
                 first = i;
             }
         } else {
-            PyErr_SetString(PyExc_TypeError, "all arguments to joinpath() must be str or None");
+            TyErr_SetString(TyExc_TypeError, "all arguments to joinpath() must be str or None");
             cchFinal = -1;
             break;
         }
         cchFinal += cch + 1;
     }
 
-    wchar_t *final = cchFinal > 0 ? (wchar_t *)PyMem_Malloc(cchFinal * sizeof(wchar_t)) : NULL;
+    wchar_t *final = cchFinal > 0 ? (wchar_t *)TyMem_Malloc(cchFinal * sizeof(wchar_t)) : NULL;
     if (!final) {
-        for (Py_ssize_t i = 0; i < n; ++i) {
-            PyMem_Free(parts[i]);
+        for (Ty_ssize_t i = 0; i < n; ++i) {
+            TyMem_Free(parts[i]);
         }
-        PyMem_Free(parts);
+        TyMem_Free(parts);
         if (cchFinal) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return NULL;
         }
-        return Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+        return Ty_GetConstant(Ty_CONSTANT_EMPTY_STR);
     }
 
     final[0] = '\0';
     /* Now join all the paths. The final result should be shorter than the buffer */
-    for (Py_ssize_t i = 0; i < n; ++i) {
+    for (Ty_ssize_t i = 0; i < n; ++i) {
         if (!parts[i]) {
             continue;
         }
@@ -320,53 +320,53 @@ getpath_joinpath(PyObject *Py_UNUSED(self), PyObject *args)
                 wcscpy(final, parts[i]);
             } else if (_Py_add_relfile(final, parts[i], cchFinal) < 0) {
                 /* if we fail, keep iterating to free memory, but stop adding parts */
-                PyMem_Free(final);
+                TyMem_Free(final);
                 final = NULL;
             }
         }
-        PyMem_Free(parts[i]);
+        TyMem_Free(parts[i]);
     }
-    PyMem_Free(parts);
+    TyMem_Free(parts);
     if (!final) {
-        PyErr_SetString(PyExc_SystemError, "failed to join paths");
+        TyErr_SetString(TyExc_SystemError, "failed to join paths");
         return NULL;
     }
-    PyObject *r = PyUnicode_FromWideChar(_Py_normpath(final, -1), -1);
-    PyMem_Free(final);
+    TyObject *r = TyUnicode_FromWideChar(_Py_normpath(final, -1), -1);
+    TyMem_Free(final);
     return r;
 }
 
 
-static PyObject *
-getpath_readlines(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_readlines(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *r = NULL;
-    PyObject *pathobj;
+    TyObject *r = NULL;
+    TyObject *pathobj;
     const wchar_t *path;
-    if (!PyArg_ParseTuple(args, "U", &pathobj)) {
+    if (!TyArg_ParseTuple(args, "U", &pathobj)) {
         return NULL;
     }
-    path = PyUnicode_AsWideCharString(pathobj, NULL);
+    path = TyUnicode_AsWideCharString(pathobj, NULL);
     if (!path) {
         return NULL;
     }
     FILE *fp = _Py_wfopen(path, L"rb");
     if (!fp) {
-        PyErr_SetFromErrno(PyExc_OSError);
-        PyMem_Free((void *)path);
+        TyErr_SetFromErrno(TyExc_OSError);
+        TyMem_Free((void *)path);
         return NULL;
     }
-    PyMem_Free((void *)path);
+    TyMem_Free((void *)path);
 
-    r = PyList_New(0);
+    r = TyList_New(0);
     if (!r) {
         fclose(fp);
         return NULL;
     }
     const size_t MAX_FILE = 32 * 1024;
-    char *buffer = (char *)PyMem_Malloc(MAX_FILE);
+    char *buffer = (char *)TyMem_Malloc(MAX_FILE);
     if (!buffer) {
-        Py_DECREF(r);
+        Ty_DECREF(r);
         fclose(fp);
         return NULL;
     }
@@ -377,8 +377,8 @@ getpath_readlines(PyObject *Py_UNUSED(self), PyObject *args)
         return r;
     }
     if (cb >= MAX_FILE) {
-        Py_DECREF(r);
-        PyErr_SetString(PyExc_MemoryError,
+        Ty_DECREF(r);
+        TyErr_SetString(TyExc_MemoryError,
             "cannot read file larger than 32KB during initialization");
         return NULL;
     }
@@ -386,46 +386,46 @@ getpath_readlines(PyObject *Py_UNUSED(self), PyObject *args)
 
     size_t len;
     wchar_t *wbuffer = _Py_DecodeUTF8_surrogateescape(buffer, cb, &len);
-    PyMem_Free((void *)buffer);
+    TyMem_Free((void *)buffer);
     if (!wbuffer) {
-        Py_DECREF(r);
-        PyErr_NoMemory();
+        Ty_DECREF(r);
+        TyErr_NoMemory();
         return NULL;
     }
 
     wchar_t *p1 = wbuffer;
     wchar_t *p2 = p1;
     while ((p2 = wcschr(p1, L'\n')) != NULL) {
-        Py_ssize_t cb = p2 - p1;
+        Ty_ssize_t cb = p2 - p1;
         while (cb >= 0 && (p1[cb] == L'\n' || p1[cb] == L'\r')) {
             --cb;
         }
-        PyObject *u = PyUnicode_FromWideChar(p1, cb >= 0 ? cb + 1 : 0);
-        if (!u || PyList_Append(r, u) < 0) {
-            Py_XDECREF(u);
-            Py_CLEAR(r);
+        TyObject *u = TyUnicode_FromWideChar(p1, cb >= 0 ? cb + 1 : 0);
+        if (!u || TyList_Append(r, u) < 0) {
+            Ty_XDECREF(u);
+            Ty_CLEAR(r);
             break;
         }
-        Py_DECREF(u);
+        Ty_DECREF(u);
         p1 = p2 + 1;
     }
     if (r && p1 && *p1) {
-        PyObject *u = PyUnicode_FromWideChar(p1, -1);
-        if (!u || PyList_Append(r, u) < 0) {
-            Py_CLEAR(r);
+        TyObject *u = TyUnicode_FromWideChar(p1, -1);
+        if (!u || TyList_Append(r, u) < 0) {
+            Ty_CLEAR(r);
         }
-        Py_XDECREF(u);
+        Ty_XDECREF(u);
     }
-    PyMem_RawFree(wbuffer);
+    TyMem_RawFree(wbuffer);
     return r;
 }
 
 
-static PyObject *
-getpath_realpath(PyObject *Py_UNUSED(self) , PyObject *args)
+static TyObject *
+getpath_realpath(TyObject *Ty_UNUSED(self) , TyObject *args)
 {
-    PyObject *pathobj;
-    if (!PyArg_ParseTuple(args, "U", &pathobj)) {
+    TyObject *pathobj;
+    if (!TyArg_ParseTuple(args, "U", &pathobj)) {
         return NULL;
     }
 #if defined(HAVE_READLINK)
@@ -433,25 +433,25 @@ getpath_realpath(PyObject *Py_UNUSED(self) , PyObject *args)
        does not resolve any path segments. This is consistent with
        prior releases, however, the realpath implementation below is
        potentially correct in more cases. */
-    PyObject *r = NULL;
+    TyObject *r = NULL;
     int nlink = 0;
-    wchar_t *path = PyUnicode_AsWideCharString(pathobj, NULL);
+    wchar_t *path = TyUnicode_AsWideCharString(pathobj, NULL);
     if (!path) {
         goto done;
     }
-    wchar_t *path2 = _PyMem_RawWcsdup(path);
-    PyMem_Free((void *)path);
+    wchar_t *path2 = _TyMem_RawWcsdup(path);
+    TyMem_Free((void *)path);
     path = path2;
     while (path) {
         wchar_t resolved[MAXPATHLEN + 1];
-        int linklen = _Py_wreadlink(path, resolved, Py_ARRAY_LENGTH(resolved));
+        int linklen = _Py_wreadlink(path, resolved, Ty_ARRAY_LENGTH(resolved));
         if (linklen == -1) {
-            r = PyUnicode_FromWideChar(path, -1);
+            r = TyUnicode_FromWideChar(path, -1);
             break;
         }
         if (_Py_isabs(resolved)) {
-            PyMem_RawFree((void *)path);
-            path = _PyMem_RawWcsdup(resolved);
+            TyMem_RawFree((void *)path);
+            path = _TyMem_RawWcsdup(resolved);
         } else {
             wchar_t *s = wcsrchr(path, SEP);
             if (s) {
@@ -461,71 +461,71 @@ getpath_realpath(PyObject *Py_UNUSED(self) , PyObject *args)
             if (path2) {
                 path2 = _Py_normpath(path2, -1);
             }
-            PyMem_RawFree((void *)path);
+            TyMem_RawFree((void *)path);
             path = path2;
         }
         nlink++;
         /* 40 is the Linux kernel 4.2 limit */
         if (nlink >= 40) {
-            PyErr_SetString(PyExc_OSError, "maximum number of symbolic links reached");
+            TyErr_SetString(TyExc_OSError, "maximum number of symbolic links reached");
             break;
         }
     }
     if (!path) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
     }
 done:
-    PyMem_RawFree((void *)path);
+    TyMem_RawFree((void *)path);
     return r;
 
 #elif defined(HAVE_REALPATH)
-    PyObject *r = NULL;
+    TyObject *r = NULL;
     struct stat st;
     const char *narrow = NULL;
-    wchar_t *path = PyUnicode_AsWideCharString(pathobj, NULL);
+    wchar_t *path = TyUnicode_AsWideCharString(pathobj, NULL);
     if (!path) {
         goto done;
     }
-    narrow = Py_EncodeLocale(path, NULL);
+    narrow = Ty_EncodeLocale(path, NULL);
     if (!narrow) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         goto done;
     }
     if (lstat(narrow, &st)) {
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
         goto done;
     }
     if (!S_ISLNK(st.st_mode)) {
-        r = Py_NewRef(pathobj);
+        r = Ty_NewRef(pathobj);
         goto done;
     }
     wchar_t resolved[MAXPATHLEN+1];
     if (_Py_wrealpath(path, resolved, MAXPATHLEN) == NULL) {
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
     } else {
-        r = PyUnicode_FromWideChar(resolved, -1);
+        r = TyUnicode_FromWideChar(resolved, -1);
     }
 done:
-    PyMem_Free((void *)path);
-    PyMem_Free((void *)narrow);
+    TyMem_Free((void *)path);
+    TyMem_Free((void *)narrow);
     return r;
 #elif defined(MS_WINDOWS)
     HANDLE hFile;
     wchar_t resolved[MAXPATHLEN+1];
     int len = 0, err;
-    Py_ssize_t pathlen;
-    PyObject *result;
+    Ty_ssize_t pathlen;
+    TyObject *result;
 
-    wchar_t *path = PyUnicode_AsWideCharString(pathobj, &pathlen);
+    wchar_t *path = TyUnicode_AsWideCharString(pathobj, &pathlen);
     if (!path) {
         return NULL;
     }
     if (wcslen(path) != pathlen) {
-        PyErr_SetString(PyExc_ValueError, "path contains embedded nulls");
+        TyErr_SetString(TyExc_ValueError, "path contains embedded nulls");
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     hFile = CreateFileW(path, 0, 0, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
     if (hFile != INVALID_HANDLE_VALUE) {
         len = GetFinalPathNameByHandleW(hFile, resolved, MAXPATHLEN, VOLUME_NAME_DOS);
@@ -534,10 +534,10 @@ done:
     } else {
         err = GetLastError();
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (err) {
-        PyErr_SetFromWindowsErr(err);
+        TyErr_SetFromWindowsErr(err);
         result = NULL;
     } else if (len <= MAXPATHLEN) {
         const wchar_t *p = resolved;
@@ -548,22 +548,22 @@ done:
             }
         }
         if (CompareStringOrdinal(path, (int)pathlen, p, len, TRUE) == CSTR_EQUAL) {
-            result = Py_NewRef(pathobj);
+            result = Ty_NewRef(pathobj);
         } else {
-            result = PyUnicode_FromWideChar(p, len);
+            result = TyUnicode_FromWideChar(p, len);
         }
     } else {
-        result = Py_NewRef(pathobj);
+        result = Ty_NewRef(pathobj);
     }
-    PyMem_Free(path);
+    TyMem_Free(path);
     return result;
 #endif
 
-    return Py_NewRef(pathobj);
+    return Ty_NewRef(pathobj);
 }
 
 
-static PyMethodDef getpath_methods[] = {
+static TyMethodDef getpath_methods[] = {
     {"abspath", getpath_abspath, METH_VARARGS, NULL},
     {"basename", getpath_basename, METH_VARARGS, NULL},
     {"dirname", getpath_dirname, METH_VARARGS, NULL},
@@ -582,106 +582,106 @@ static PyMethodDef getpath_methods[] = {
 /* Two implementations of warn() to use depending on whether warnings
    are enabled or not. */
 
-static PyObject *
-getpath_warn(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_warn(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    PyObject *msgobj;
-    if (!PyArg_ParseTuple(args, "U", &msgobj)) {
+    TyObject *msgobj;
+    if (!TyArg_ParseTuple(args, "U", &msgobj)) {
         return NULL;
     }
-    fprintf(stderr, "%s\n", PyUnicode_AsUTF8(msgobj));
-    Py_RETURN_NONE;
+    fprintf(stderr, "%s\n", TyUnicode_AsUTF8(msgobj));
+    Ty_RETURN_NONE;
 }
 
 
-static PyObject *
-getpath_nowarn(PyObject *Py_UNUSED(self), PyObject *args)
+static TyObject *
+getpath_nowarn(TyObject *Ty_UNUSED(self), TyObject *args)
 {
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 
-static PyMethodDef getpath_warn_method = {"warn", getpath_warn, METH_VARARGS, NULL};
-static PyMethodDef getpath_nowarn_method = {"warn", getpath_nowarn, METH_VARARGS, NULL};
+static TyMethodDef getpath_warn_method = {"warn", getpath_warn, METH_VARARGS, NULL};
+static TyMethodDef getpath_nowarn_method = {"warn", getpath_nowarn, METH_VARARGS, NULL};
 
 /* Add the helper functions to the dict */
 static int
-funcs_to_dict(PyObject *dict, int warnings)
+funcs_to_dict(TyObject *dict, int warnings)
 {
-    for (PyMethodDef *m = getpath_methods; m->ml_name; ++m) {
-        PyObject *f = PyCFunction_NewEx(m, NULL, NULL);
+    for (TyMethodDef *m = getpath_methods; m->ml_name; ++m) {
+        TyObject *f = PyCFunction_NewEx(m, NULL, NULL);
         if (!f) {
             return 0;
         }
-        if (PyDict_SetItemString(dict, m->ml_name, f) < 0) {
-            Py_DECREF(f);
+        if (TyDict_SetItemString(dict, m->ml_name, f) < 0) {
+            Ty_DECREF(f);
             return 0;
         }
-        Py_DECREF(f);
+        Ty_DECREF(f);
     }
-    PyMethodDef *m2 = warnings ? &getpath_warn_method : &getpath_nowarn_method;
-    PyObject *f = PyCFunction_NewEx(m2, NULL, NULL);
+    TyMethodDef *m2 = warnings ? &getpath_warn_method : &getpath_nowarn_method;
+    TyObject *f = PyCFunction_NewEx(m2, NULL, NULL);
     if (!f) {
         return 0;
     }
-    if (PyDict_SetItemString(dict, m2->ml_name, f) < 0) {
-        Py_DECREF(f);
+    if (TyDict_SetItemString(dict, m2->ml_name, f) < 0) {
+        Ty_DECREF(f);
         return 0;
     }
-    Py_DECREF(f);
+    Ty_DECREF(f);
     return 1;
 }
 
 
 /* Add a wide-character string constant to the dict */
 static int
-wchar_to_dict(PyObject *dict, const char *key, const wchar_t *s)
+wchar_to_dict(TyObject *dict, const char *key, const wchar_t *s)
 {
-    PyObject *u;
+    TyObject *u;
     int r;
     if (s && s[0]) {
-        u = PyUnicode_FromWideChar(s, -1);
+        u = TyUnicode_FromWideChar(s, -1);
         if (!u) {
             return 0;
         }
     } else {
-        u = Py_NewRef(Py_None);
+        u = Ty_NewRef(Ty_None);
     }
-    r = PyDict_SetItemString(dict, key, u) == 0;
-    Py_DECREF(u);
+    r = TyDict_SetItemString(dict, key, u) == 0;
+    Ty_DECREF(u);
     return r;
 }
 
 
 /* Add a narrow string constant to the dict, using default locale decoding */
 static int
-decode_to_dict(PyObject *dict, const char *key, const char *s)
+decode_to_dict(TyObject *dict, const char *key, const char *s)
 {
-    PyObject *u = NULL;
+    TyObject *u = NULL;
     int r;
     if (s && s[0]) {
         size_t len;
-        const wchar_t *w = Py_DecodeLocale(s, &len);
+        const wchar_t *w = Ty_DecodeLocale(s, &len);
         if (w) {
-            u = PyUnicode_FromWideChar(w, len);
-            PyMem_RawFree((void *)w);
+            u = TyUnicode_FromWideChar(w, len);
+            TyMem_RawFree((void *)w);
         }
         if (!u) {
             return 0;
         }
     } else {
-        u = Py_NewRef(Py_None);
+        u = Ty_NewRef(Ty_None);
     }
-    r = PyDict_SetItemString(dict, key, u) == 0;
-    Py_DECREF(u);
+    r = TyDict_SetItemString(dict, key, u) == 0;
+    Ty_DECREF(u);
     return r;
 }
 
 /* Add an environment variable to the dict, optionally clearing it afterwards */
 static int
-env_to_dict(PyObject *dict, const char *key, int and_clear)
+env_to_dict(TyObject *dict, const char *key, int and_clear)
 {
-    PyObject *u = NULL;
+    TyObject *u = NULL;
     int r = 0;
     assert(strncmp(key, "ENV_", 4) == 0);
     assert(strlen(key) < 64);
@@ -696,30 +696,30 @@ env_to_dict(PyObject *dict, const char *key, int and_clear)
     *wp = L'\0';
     const wchar_t *v = _wgetenv(wkey);
     if (v) {
-        u = PyUnicode_FromWideChar(v, -1);
+        u = TyUnicode_FromWideChar(v, -1);
         if (!u) {
-            PyErr_Clear();
+            TyErr_Clear();
         }
     }
 #else
     const char *v = getenv(&key[4]);
     if (v) {
         size_t len;
-        const wchar_t *w = Py_DecodeLocale(v, &len);
+        const wchar_t *w = Ty_DecodeLocale(v, &len);
         if (w) {
-            u = PyUnicode_FromWideChar(w, len);
+            u = TyUnicode_FromWideChar(w, len);
             if (!u) {
-                PyErr_Clear();
+                TyErr_Clear();
             }
-            PyMem_RawFree((void *)w);
+            TyMem_RawFree((void *)w);
         }
     }
 #endif
     if (u) {
-        r = PyDict_SetItemString(dict, key, u) == 0;
-        Py_DECREF(u);
+        r = TyDict_SetItemString(dict, key, u) == 0;
+        Ty_DECREF(u);
     } else {
-        r = PyDict_SetItemString(dict, key, Py_None) == 0;
+        r = TyDict_SetItemString(dict, key, Ty_None) == 0;
     }
     if (r && and_clear) {
 #ifdef MS_WINDOWS
@@ -734,36 +734,36 @@ env_to_dict(PyObject *dict, const char *key, int and_clear)
 
 /* Add an integer constant to the dict */
 static int
-int_to_dict(PyObject *dict, const char *key, int v)
+int_to_dict(TyObject *dict, const char *key, int v)
 {
-    PyObject *o;
+    TyObject *o;
     int r;
-    o = PyLong_FromLong(v);
+    o = TyLong_FromLong(v);
     if (!o) {
         return 0;
     }
-    r = PyDict_SetItemString(dict, key, o) == 0;
-    Py_DECREF(o);
+    r = TyDict_SetItemString(dict, key, o) == 0;
+    Ty_DECREF(o);
     return r;
 }
 
 
 #ifdef MS_WINDOWS
 static int
-winmodule_to_dict(PyObject *dict, const char *key, HMODULE mod)
+winmodule_to_dict(TyObject *dict, const char *key, HMODULE mod)
 {
     wchar_t *buffer = NULL;
     for (DWORD cch = 256; buffer == NULL && cch < (1024 * 1024); cch *= 2) {
-        buffer = (wchar_t*)PyMem_RawMalloc(cch * sizeof(wchar_t));
+        buffer = (wchar_t*)TyMem_RawMalloc(cch * sizeof(wchar_t));
         if (buffer) {
             if (GetModuleFileNameW(mod, buffer, cch) == cch) {
-                PyMem_RawFree(buffer);
+                TyMem_RawFree(buffer);
                 buffer = NULL;
             }
         }
     }
     int r = wchar_to_dict(dict, key, buffer);
-    PyMem_RawFree(buffer);
+    TyMem_RawFree(buffer);
     return r;
 }
 #endif
@@ -771,7 +771,7 @@ winmodule_to_dict(PyObject *dict, const char *key, HMODULE mod)
 
 /* Add the current executable's path to the dict */
 static int
-progname_to_dict(PyObject *dict, const char *key)
+progname_to_dict(TyObject *dict, const char *key)
 {
 #ifdef MS_WINDOWS
     return winmodule_to_dict(dict, key, NULL);
@@ -779,36 +779,36 @@ progname_to_dict(PyObject *dict, const char *key)
     char *path;
     uint32_t pathLen = 256;
     while (pathLen) {
-        path = PyMem_RawMalloc((pathLen + 1) * sizeof(char));
+        path = TyMem_RawMalloc((pathLen + 1) * sizeof(char));
         if (!path) {
             return 0;
         }
         if (_NSGetExecutablePath(path, &pathLen) != 0) {
-            PyMem_RawFree(path);
+            TyMem_RawFree(path);
             continue;
         }
         // Only keep if the path is absolute
         if (path[0] == SEP) {
             int r = decode_to_dict(dict, key, path);
-            PyMem_RawFree(path);
+            TyMem_RawFree(path);
             return r;
         }
         // Fall back and store None
-        PyMem_RawFree(path);
+        TyMem_RawFree(path);
         break;
     }
 #endif
-    return PyDict_SetItemString(dict, key, Py_None) == 0;
+    return TyDict_SetItemString(dict, key, Ty_None) == 0;
 }
 
 
 /* Add the runtime library's path to the dict */
 static int
-library_to_dict(PyObject *dict, const char *key)
+library_to_dict(TyObject *dict, const char *key)
 {
 /* macOS framework builds do not link against a libpython dynamic library, but
    instead link against a macOS Framework. */
-#if defined(Py_ENABLE_SHARED) || defined(WITH_NEXT_FRAMEWORK)
+#if defined(Ty_ENABLE_SHARED) || defined(WITH_NEXT_FRAMEWORK)
 
 #ifdef MS_WINDOWS
     extern HMODULE PyWin_DLLhModule;
@@ -819,20 +819,20 @@ library_to_dict(PyObject *dict, const char *key)
 
 #if HAVE_DLADDR
     Dl_info libpython_info;
-    if (dladdr(&Py_Initialize, &libpython_info) && libpython_info.dli_fname) {
+    if (dladdr(&Ty_Initialize, &libpython_info) && libpython_info.dli_fname) {
         return decode_to_dict(dict, key, libpython_info.dli_fname);
     }
 #endif
 #endif
 
-    return PyDict_SetItemString(dict, key, Py_None) == 0;
+    return TyDict_SetItemString(dict, key, Ty_None) == 0;
 }
 
 
-PyObject *
+TyObject *
 _Py_Get_Getpath_CodeObject(void)
 {
-    return PyMarshal_ReadObjectFromString(
+    return TyMarshal_ReadObjectFromString(
         (const char*)_Py_M__getpath, sizeof(_Py_M__getpath));
 }
 
@@ -840,8 +840,8 @@ _Py_Get_Getpath_CodeObject(void)
 /* Perform the actual path calculation.
 
    When compute_path_config is 0, this only reads any initialised path
-   config values into the PyConfig struct. For example, Py_SetHome() or
-   Py_SetPath(). The only error should be due to failed memory allocation.
+   config values into the PyConfig struct. For example, Ty_SetHome() or
+   Ty_SetPath(). The only error should be due to failed memory allocation.
 
    When compute_path_config is 1, full path calculation is performed.
    The GIL must be held, and there may be filesystem access, side
@@ -853,61 +853,61 @@ _Py_Get_Getpath_CodeObject(void)
    actually recalculate paths, you need a clean PyConfig.
 */
 PyStatus
-_PyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
+_TyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
 {
-    PyStatus status = _PyPathConfig_ReadGlobal(config);
+    PyStatus status = _TyPathConfig_ReadGlobal(config);
 
-    if (_PyStatus_EXCEPTION(status) || !compute_path_config) {
+    if (_TyStatus_EXCEPTION(status) || !compute_path_config) {
         return status;
     }
 
-    if (!_PyThreadState_GET()) {
-        return PyStatus_Error("cannot calculate path configuration without GIL");
+    if (!_TyThreadState_GET()) {
+        return TyStatus_Error("cannot calculate path configuration without GIL");
     }
 
-    PyObject *configDict = _PyConfig_AsDict(config);
+    TyObject *configDict = _TyConfig_AsDict(config);
     if (!configDict) {
-        PyErr_Clear();
-        return PyStatus_NoMemory();
+        TyErr_Clear();
+        return TyStatus_NoMemory();
     }
 
-    PyObject *dict = PyDict_New();
+    TyObject *dict = TyDict_New();
     if (!dict) {
-        PyErr_Clear();
-        Py_DECREF(configDict);
-        return PyStatus_NoMemory();
+        TyErr_Clear();
+        Ty_DECREF(configDict);
+        return TyStatus_NoMemory();
     }
 
-    if (PyDict_SetItemString(dict, "config", configDict) < 0) {
-        PyErr_Clear();
-        Py_DECREF(configDict);
-        Py_DECREF(dict);
-        return PyStatus_NoMemory();
+    if (TyDict_SetItemString(dict, "config", configDict) < 0) {
+        TyErr_Clear();
+        Ty_DECREF(configDict);
+        Ty_DECREF(dict);
+        return TyStatus_NoMemory();
     }
     /* reference now held by dict */
-    Py_DECREF(configDict);
+    Ty_DECREF(configDict);
 
-    PyObject *co = _Py_Get_Getpath_CodeObject();
-    if (!co || !PyCode_Check(co)) {
-        PyErr_Clear();
-        Py_XDECREF(co);
-        Py_DECREF(dict);
-        return PyStatus_Error("error reading frozen getpath.py");
+    TyObject *co = _Py_Get_Getpath_CodeObject();
+    if (!co || !TyCode_Check(co)) {
+        TyErr_Clear();
+        Ty_XDECREF(co);
+        Ty_DECREF(dict);
+        return TyStatus_Error("error reading frozen getpath.py");
     }
 
 #ifdef MS_WINDOWS
-    PyObject *winreg = PyImport_ImportModule("winreg");
-    if (!winreg || PyDict_SetItemString(dict, "winreg", winreg) < 0) {
-        PyErr_Clear();
-        Py_XDECREF(winreg);
-        if (PyDict_SetItemString(dict, "winreg", Py_None) < 0) {
-            PyErr_Clear();
-            Py_DECREF(co);
-            Py_DECREF(dict);
-            return PyStatus_Error("error importing winreg module");
+    TyObject *winreg = TyImport_ImportModule("winreg");
+    if (!winreg || TyDict_SetItemString(dict, "winreg", winreg) < 0) {
+        TyErr_Clear();
+        Ty_XDECREF(winreg);
+        if (TyDict_SetItemString(dict, "winreg", Ty_None) < 0) {
+            TyErr_Clear();
+            Ty_DECREF(co);
+            Ty_DECREF(dict);
+            return TyStatus_Error("error importing winreg module");
         }
     } else {
-        Py_DECREF(winreg);
+        Ty_DECREF(winreg);
     }
 #endif
 
@@ -941,41 +941,41 @@ _PyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
         !progname_to_dict(dict, "real_executable") ||
         !library_to_dict(dict, "library") ||
         !wchar_to_dict(dict, "executable_dir", NULL) ||
-        !wchar_to_dict(dict, "py_setpath", _PyPathConfig_GetGlobalModuleSearchPath()) ||
+        !wchar_to_dict(dict, "py_setpath", _TyPathConfig_GetGlobalModuleSearchPath()) ||
         !funcs_to_dict(dict, config->pathconfig_warnings) ||
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
         !decode_to_dict(dict, "ABI_THREAD", "t") ||
 #else
         !decode_to_dict(dict, "ABI_THREAD", "") ||
 #endif
 #ifndef MS_WINDOWS
-        PyDict_SetItemString(dict, "winreg", Py_None) < 0 ||
+        TyDict_SetItemString(dict, "winreg", Ty_None) < 0 ||
 #endif
-        PyDict_SetItemString(dict, "__builtins__", PyEval_GetBuiltins()) < 0
+        TyDict_SetItemString(dict, "__builtins__", TyEval_GetBuiltins()) < 0
     ) {
-        Py_DECREF(co);
-        Py_DECREF(dict);
-        PyErr_FormatUnraisable("Exception ignored while preparing getpath");
-        return PyStatus_Error("error evaluating initial values");
+        Ty_DECREF(co);
+        Ty_DECREF(dict);
+        TyErr_FormatUnraisable("Exception ignored while preparing getpath");
+        return TyStatus_Error("error evaluating initial values");
     }
 
-    PyObject *r = PyEval_EvalCode(co, dict, dict);
-    Py_DECREF(co);
+    TyObject *r = TyEval_EvalCode(co, dict, dict);
+    Ty_DECREF(co);
 
     if (!r) {
-        Py_DECREF(dict);
-        PyErr_FormatUnraisable("Exception ignored while running getpath");
-        return PyStatus_Error("error evaluating path");
+        Ty_DECREF(dict);
+        TyErr_FormatUnraisable("Exception ignored while running getpath");
+        return TyStatus_Error("error evaluating path");
     }
-    Py_DECREF(r);
+    Ty_DECREF(r);
 
-    if (_PyConfig_FromDict(config, configDict) < 0) {
-        PyErr_FormatUnraisable("Exception ignored while reading getpath results");
-        Py_DECREF(dict);
-        return PyStatus_Error("error getting getpath results");
+    if (_TyConfig_FromDict(config, configDict) < 0) {
+        TyErr_FormatUnraisable("Exception ignored while reading getpath results");
+        Ty_DECREF(dict);
+        return TyStatus_Error("error getting getpath results");
     }
 
-    Py_DECREF(dict);
+    Ty_DECREF(dict);
 
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }

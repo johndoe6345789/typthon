@@ -102,15 +102,15 @@ class CAPIFileTest(unittest.TestCase):
 
     def test_pyfile_writeobject(self):
         # Test PyFile_WriteObject(obj, file, flags):
-        # - Call file.write(str(obj)) if flags equals Py_PRINT_RAW.
+        # - Call file.write(str(obj)) if flags equals Ty_PRINT_RAW.
         # - Call file.write(repr(obj)) otherwise.
         writeobject = _testlimitedcapi.pyfile_writeobject
-        Py_PRINT_RAW = 1
+        Ty_PRINT_RAW = 1
 
         with io.StringIO() as fp:
-            # Test flags=Py_PRINT_RAW
-            self.assertEqual(writeobject("raw", fp, Py_PRINT_RAW), 0)
-            writeobject(NULL, fp, Py_PRINT_RAW)
+            # Test flags=Ty_PRINT_RAW
+            self.assertEqual(writeobject("raw", fp, Ty_PRINT_RAW), 0)
+            writeobject(NULL, fp, Ty_PRINT_RAW)
 
             # Test flags=0
             self.assertEqual(writeobject("repr", fp, 0), 0)
@@ -123,7 +123,7 @@ class CAPIFileTest(unittest.TestCase):
         for invalid_file in (123, "abc", object()):
             with self.subTest(file=invalid_file):
                 with self.assertRaises(AttributeError):
-                    writeobject("abc", invalid_file, Py_PRINT_RAW)
+                    writeobject("abc", invalid_file, Ty_PRINT_RAW)
 
         with self.assertRaises(TypeError):
             writeobject("abc", NULL, 0)
@@ -224,7 +224,7 @@ class CAPIFileTest(unittest.TestCase):
             self.assertEqual(fp.read(), "text[\\udc80]")
 
     def test_py_fopen(self):
-        # Test Py_fopen() and Py_fclose()
+        # Test Ty_fopen() and Ty_fclose()
         py_fopen = _testcapi.py_fopen
 
         with open(__file__, "rb") as fp:

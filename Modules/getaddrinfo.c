@@ -227,7 +227,7 @@ str_isnumber(const char *p)
 {
     unsigned char *q = (unsigned char *)p;
     while (*q) {
-        if (!Py_ISDIGIT(*q)) {
+        if (!Ty_ISDIGIT(*q)) {
             return NO;
         }
         q++;

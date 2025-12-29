@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(_bisect_bisect_right__doc__,
 "bisect_right($module, /, a, x, lo=0, hi=None, *, key=None)\n"
@@ -27,51 +27,51 @@ PyDoc_STRVAR(_bisect_bisect_right__doc__,
 #define _BISECT_BISECT_RIGHT_METHODDEF    \
     {"bisect_right", _PyCFunction_CAST(_bisect_bisect_right), METH_FASTCALL|METH_KEYWORDS, _bisect_bisect_right__doc__},
 
-static Py_ssize_t
-_bisect_bisect_right_impl(PyObject *module, PyObject *a, PyObject *x,
-                          Py_ssize_t lo, Py_ssize_t hi, PyObject *key);
+static Ty_ssize_t
+_bisect_bisect_right_impl(TyObject *module, TyObject *a, TyObject *x,
+                          Ty_ssize_t lo, Ty_ssize_t hi, TyObject *key);
 
-static PyObject *
-_bisect_bisect_right(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_bisect_bisect_right(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('x'), &_Py_ID(lo), &_Py_ID(hi), &_Py_ID(key), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('x'), &_Ty_ID(lo), &_Ty_ID(hi), &_Ty_ID(key), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "x", "lo", "hi", "key", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "bisect_right",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *a;
-    PyObject *x;
-    Py_ssize_t lo = 0;
-    Py_ssize_t hi = -1;
-    PyObject *key = Py_None;
-    Py_ssize_t _return_value;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *a;
+    TyObject *x;
+    Ty_ssize_t lo = 0;
+    Ty_ssize_t hi = -1;
+    TyObject *key = Ty_None;
+    Ty_ssize_t _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -83,13 +83,13 @@ _bisect_bisect_right(PyObject *module, PyObject *const *args, Py_ssize_t nargs, 
     }
     if (args[2]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[2]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[2]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             lo = ival;
@@ -99,7 +99,7 @@ _bisect_bisect_right(PyObject *module, PyObject *const *args, Py_ssize_t nargs, 
         }
     }
     if (args[3]) {
-        if (!_Py_convert_optional_to_ssize_t(args[3], &hi)) {
+        if (!_Ty_convert_optional_to_ssize_t(args[3], &hi)) {
             goto exit;
         }
         if (!--noptargs) {
@@ -113,10 +113,10 @@ skip_optional_pos:
     key = args[4];
 skip_optional_kwonly:
     _return_value = _bisect_bisect_right_impl(module, a, x, lo, hi, key);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
@@ -138,50 +138,50 @@ PyDoc_STRVAR(_bisect_insort_right__doc__,
 #define _BISECT_INSORT_RIGHT_METHODDEF    \
     {"insort_right", _PyCFunction_CAST(_bisect_insort_right), METH_FASTCALL|METH_KEYWORDS, _bisect_insort_right__doc__},
 
-static PyObject *
-_bisect_insort_right_impl(PyObject *module, PyObject *a, PyObject *x,
-                          Py_ssize_t lo, Py_ssize_t hi, PyObject *key);
+static TyObject *
+_bisect_insort_right_impl(TyObject *module, TyObject *a, TyObject *x,
+                          Ty_ssize_t lo, Ty_ssize_t hi, TyObject *key);
 
-static PyObject *
-_bisect_insort_right(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_bisect_insort_right(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('x'), &_Py_ID(lo), &_Py_ID(hi), &_Py_ID(key), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('x'), &_Ty_ID(lo), &_Ty_ID(hi), &_Ty_ID(key), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "x", "lo", "hi", "key", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "insort_right",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *a;
-    PyObject *x;
-    Py_ssize_t lo = 0;
-    Py_ssize_t hi = -1;
-    PyObject *key = Py_None;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *a;
+    TyObject *x;
+    Ty_ssize_t lo = 0;
+    Ty_ssize_t hi = -1;
+    TyObject *key = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -193,13 +193,13 @@ _bisect_insort_right(PyObject *module, PyObject *const *args, Py_ssize_t nargs, 
     }
     if (args[2]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[2]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[2]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             lo = ival;
@@ -209,7 +209,7 @@ _bisect_insort_right(PyObject *module, PyObject *const *args, Py_ssize_t nargs, 
         }
     }
     if (args[3]) {
-        if (!_Py_convert_optional_to_ssize_t(args[3], &hi)) {
+        if (!_Ty_convert_optional_to_ssize_t(args[3], &hi)) {
             goto exit;
         }
         if (!--noptargs) {
@@ -246,51 +246,51 @@ PyDoc_STRVAR(_bisect_bisect_left__doc__,
 #define _BISECT_BISECT_LEFT_METHODDEF    \
     {"bisect_left", _PyCFunction_CAST(_bisect_bisect_left), METH_FASTCALL|METH_KEYWORDS, _bisect_bisect_left__doc__},
 
-static Py_ssize_t
-_bisect_bisect_left_impl(PyObject *module, PyObject *a, PyObject *x,
-                         Py_ssize_t lo, Py_ssize_t hi, PyObject *key);
+static Ty_ssize_t
+_bisect_bisect_left_impl(TyObject *module, TyObject *a, TyObject *x,
+                         Ty_ssize_t lo, Ty_ssize_t hi, TyObject *key);
 
-static PyObject *
-_bisect_bisect_left(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_bisect_bisect_left(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('x'), &_Py_ID(lo), &_Py_ID(hi), &_Py_ID(key), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('x'), &_Ty_ID(lo), &_Ty_ID(hi), &_Ty_ID(key), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "x", "lo", "hi", "key", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "bisect_left",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *a;
-    PyObject *x;
-    Py_ssize_t lo = 0;
-    Py_ssize_t hi = -1;
-    PyObject *key = Py_None;
-    Py_ssize_t _return_value;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *a;
+    TyObject *x;
+    Ty_ssize_t lo = 0;
+    Ty_ssize_t hi = -1;
+    TyObject *key = Ty_None;
+    Ty_ssize_t _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -302,13 +302,13 @@ _bisect_bisect_left(PyObject *module, PyObject *const *args, Py_ssize_t nargs, P
     }
     if (args[2]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[2]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[2]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             lo = ival;
@@ -318,7 +318,7 @@ _bisect_bisect_left(PyObject *module, PyObject *const *args, Py_ssize_t nargs, P
         }
     }
     if (args[3]) {
-        if (!_Py_convert_optional_to_ssize_t(args[3], &hi)) {
+        if (!_Ty_convert_optional_to_ssize_t(args[3], &hi)) {
             goto exit;
         }
         if (!--noptargs) {
@@ -332,10 +332,10 @@ skip_optional_pos:
     key = args[4];
 skip_optional_kwonly:
     _return_value = _bisect_bisect_left_impl(module, a, x, lo, hi, key);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
@@ -357,50 +357,50 @@ PyDoc_STRVAR(_bisect_insort_left__doc__,
 #define _BISECT_INSORT_LEFT_METHODDEF    \
     {"insort_left", _PyCFunction_CAST(_bisect_insort_left), METH_FASTCALL|METH_KEYWORDS, _bisect_insort_left__doc__},
 
-static PyObject *
-_bisect_insort_left_impl(PyObject *module, PyObject *a, PyObject *x,
-                         Py_ssize_t lo, Py_ssize_t hi, PyObject *key);
+static TyObject *
+_bisect_insort_left_impl(TyObject *module, TyObject *a, TyObject *x,
+                         Ty_ssize_t lo, Ty_ssize_t hi, TyObject *key);
 
-static PyObject *
-_bisect_insort_left(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_bisect_insort_left(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('x'), &_Py_ID(lo), &_Py_ID(hi), &_Py_ID(key), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('x'), &_Ty_ID(lo), &_Ty_ID(hi), &_Ty_ID(key), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "x", "lo", "hi", "key", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "insort_left",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *a;
-    PyObject *x;
-    Py_ssize_t lo = 0;
-    Py_ssize_t hi = -1;
-    PyObject *key = Py_None;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *a;
+    TyObject *x;
+    Ty_ssize_t lo = 0;
+    Ty_ssize_t hi = -1;
+    TyObject *key = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -412,13 +412,13 @@ _bisect_insort_left(PyObject *module, PyObject *const *args, Py_ssize_t nargs, P
     }
     if (args[2]) {
         {
-            Py_ssize_t ival = -1;
-            PyObject *iobj = _PyNumber_Index(args[2]);
+            Ty_ssize_t ival = -1;
+            TyObject *iobj = _PyNumber_Index(args[2]);
             if (iobj != NULL) {
-                ival = PyLong_AsSsize_t(iobj);
-                Py_DECREF(iobj);
+                ival = TyLong_AsSsize_t(iobj);
+                Ty_DECREF(iobj);
             }
-            if (ival == -1 && PyErr_Occurred()) {
+            if (ival == -1 && TyErr_Occurred()) {
                 goto exit;
             }
             lo = ival;
@@ -428,7 +428,7 @@ _bisect_insort_left(PyObject *module, PyObject *const *args, Py_ssize_t nargs, P
         }
     }
     if (args[3]) {
-        if (!_Py_convert_optional_to_ssize_t(args[3], &hi)) {
+        if (!_Ty_convert_optional_to_ssize_t(args[3], &hi)) {
             goto exit;
         }
         if (!--noptargs) {

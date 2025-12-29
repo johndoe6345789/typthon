@@ -2,20 +2,20 @@
 #include "util.h"
 
 
-static PyObject *
-number_check(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+number_check(TyObject *Py_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyNumber_Check(obj));
+    return TyLong_FromLong(PyNumber_Check(obj));
 }
 
 #define BINARYFUNC(funcsuffix, methsuffix)                           \
-    static PyObject *                                                \
-    number_##methsuffix(PyObject *Py_UNUSED(module), PyObject *args) \
+    static TyObject *                                                \
+    number_##methsuffix(TyObject *Py_UNUSED(module), TyObject *args) \
     {                                                                \
-        PyObject *o1, *o2;                                           \
+        TyObject *o1, *o2;                                           \
                                                                      \
-        if (!PyArg_ParseTuple(args, "OO", &o1, &o2)) {               \
+        if (!TyArg_ParseTuple(args, "OO", &o1, &o2)) {               \
             return NULL;                                             \
         }                                                            \
                                                                      \
@@ -34,12 +34,12 @@ BINARYFUNC(Remainder, remainder)
 BINARYFUNC(Divmod, divmod)
 
 #define TERNARYFUNC(funcsuffix, methsuffix)                          \
-    static PyObject *                                                \
-    number_##methsuffix(PyObject *Py_UNUSED(module), PyObject *args) \
+    static TyObject *                                                \
+    number_##methsuffix(TyObject *Py_UNUSED(module), TyObject *args) \
     {                                                                \
-        PyObject *o1, *o2, *o3 = Py_None;                            \
+        TyObject *o1, *o2, *o3 = Ty_None;                            \
                                                                      \
-        if (!PyArg_ParseTuple(args, "OO|O", &o1, &o2, &o3)) {        \
+        if (!TyArg_ParseTuple(args, "OO|O", &o1, &o2, &o3)) {        \
             return NULL;                                             \
         }                                                            \
                                                                      \
@@ -51,8 +51,8 @@ BINARYFUNC(Divmod, divmod)
 TERNARYFUNC(Power, power)
 
 #define UNARYFUNC(funcsuffix, methsuffix)                            \
-    static PyObject *                                                \
-    number_##methsuffix(PyObject *Py_UNUSED(module), PyObject *obj)  \
+    static TyObject *                                                \
+    number_##methsuffix(TyObject *Py_UNUSED(module), TyObject *obj)  \
     {                                                                \
         NULLABLE(obj);                                               \
         return PyNumber_##funcsuffix(obj);                           \
@@ -89,13 +89,13 @@ UNARYFUNC(Long, long)
 UNARYFUNC(Float, float)
 UNARYFUNC(Index, index)
 
-static PyObject *
-number_tobase(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+number_tobase(TyObject *Py_UNUSED(module), TyObject *args)
 {
-    PyObject *n;
+    TyObject *n;
     int base;
 
-    if (!PyArg_ParseTuple(args, "Oi", &n, &base)) {
+    if (!TyArg_ParseTuple(args, "Oi", &n, &base)) {
         return NULL;
     }
 
@@ -103,13 +103,13 @@ number_tobase(PyObject *Py_UNUSED(module), PyObject *args)
     return PyNumber_ToBase(n, base);
 }
 
-static PyObject *
-number_asssizet(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+number_asssizet(TyObject *Py_UNUSED(module), TyObject *args)
 {
-    PyObject *o, *exc;
-    Py_ssize_t ret;
+    TyObject *o, *exc;
+    Ty_ssize_t ret;
 
-    if (!PyArg_ParseTuple(args, "OO", &o, &exc)) {
+    if (!TyArg_ParseTuple(args, "OO", &o, &exc)) {
         return NULL;
     }
 
@@ -117,15 +117,15 @@ number_asssizet(PyObject *Py_UNUSED(module), PyObject *args)
     NULLABLE(exc);
     ret = PyNumber_AsSsize_t(o, exc);
 
-    if (ret == (Py_ssize_t)(-1) && PyErr_Occurred()) {
+    if (ret == (Ty_ssize_t)(-1) && TyErr_Occurred()) {
         return NULL;
     }
 
-    return PyLong_FromSsize_t(ret);
+    return TyLong_FromSsize_t(ret);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"number_check", number_check, METH_O},
     {"number_add", number_add, METH_VARARGS},
     {"number_subtract", number_subtract, METH_VARARGS},
@@ -167,9 +167,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Numbers(PyObject *mod)
+_PyTestCapi_Init_Numbers(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 

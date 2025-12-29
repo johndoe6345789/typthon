@@ -3,8 +3,8 @@
 //   Python/bytecodes.c
 // Do not edit!
 
-#ifndef Py_CORE_UOP_IDS_H
-#define Py_CORE_UOP_IDS_H
+#ifndef Ty_CORE_UOP_IDS_H
+#define Ty_CORE_UOP_IDS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -332,4 +332,4 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_CORE_UOP_IDS_H */
+#endif /* !Ty_CORE_UOP_IDS_H */

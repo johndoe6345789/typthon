@@ -1,138 +1,138 @@
-// Need limited C API version 3.13 for PyImport_AddModuleRef()
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#if !defined(Py_GIL_DISABLED) && !defined(Py_LIMITED_API)
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for TyImport_AddModuleRef()
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#if !defined(Ty_GIL_DISABLED) && !defined(Ty_LIMITED_API)
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "parts.h"
 #include "util.h"
 
 
-/* Test PyImport_GetMagicNumber() */
-static PyObject *
-pyimport_getmagicnumber(PyObject *Py_UNUSED(module), PyObject *Py_UNUSED(args))
+/* Test TyImport_GetMagicNumber() */
+static TyObject *
+pyimport_getmagicnumber(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
 {
-    long magic = PyImport_GetMagicNumber();
-    return PyLong_FromLong(magic);
+    long magic = TyImport_GetMagicNumber();
+    return TyLong_FromLong(magic);
 }
 
 
-/* Test PyImport_GetMagicTag() */
-static PyObject *
-pyimport_getmagictag(PyObject *Py_UNUSED(module), PyObject *Py_UNUSED(args))
+/* Test TyImport_GetMagicTag() */
+static TyObject *
+pyimport_getmagictag(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
 {
-    const char *tag = PyImport_GetMagicTag();
-    return PyUnicode_FromString(tag);
+    const char *tag = TyImport_GetMagicTag();
+    return TyUnicode_FromString(tag);
 }
 
 
-/* Test PyImport_GetModuleDict() */
-static PyObject *
-pyimport_getmoduledict(PyObject *Py_UNUSED(module), PyObject *Py_UNUSED(args))
+/* Test TyImport_GetModuleDict() */
+static TyObject *
+pyimport_getmoduledict(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(args))
 {
-    return Py_XNewRef(PyImport_GetModuleDict());
+    return Ty_XNewRef(TyImport_GetModuleDict());
 }
 
 
-/* Test PyImport_GetModule() */
-static PyObject *
-pyimport_getmodule(PyObject *Py_UNUSED(module), PyObject *name)
+/* Test TyImport_GetModule() */
+static TyObject *
+pyimport_getmodule(TyObject *Ty_UNUSED(module), TyObject *name)
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     NULLABLE(name);
-    PyObject *module = PyImport_GetModule(name);
-    if (module == NULL && !PyErr_Occurred()) {
-        return Py_NewRef(PyExc_KeyError);
+    TyObject *module = TyImport_GetModule(name);
+    if (module == NULL && !TyErr_Occurred()) {
+        return Ty_NewRef(TyExc_KeyError);
     }
     return module;
 }
 
 
-/* Test PyImport_AddModuleObject() */
-static PyObject *
-pyimport_addmoduleobject(PyObject *Py_UNUSED(module), PyObject *name)
+/* Test TyImport_AddModuleObject() */
+static TyObject *
+pyimport_addmoduleobject(TyObject *Ty_UNUSED(module), TyObject *name)
 {
     NULLABLE(name);
-    return Py_XNewRef(PyImport_AddModuleObject(name));
+    return Ty_XNewRef(TyImport_AddModuleObject(name));
 }
 
 
-/* Test PyImport_AddModule() */
-static PyObject *
-pyimport_addmodule(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_AddModule() */
+static TyObject *
+pyimport_addmodule(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "z#", &name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "z#", &name, &size)) {
         return NULL;
     }
 
-    return Py_XNewRef(PyImport_AddModule(name));
+    return Ty_XNewRef(TyImport_AddModule(name));
 }
 
 
-/* Test PyImport_AddModuleRef() */
-static PyObject *
-pyimport_addmoduleref(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_AddModuleRef() */
+static TyObject *
+pyimport_addmoduleref(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "z#", &name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "z#", &name, &size)) {
         return NULL;
     }
 
-    return PyImport_AddModuleRef(name);
+    return TyImport_AddModuleRef(name);
 }
 
 
-/* Test PyImport_Import() */
-static PyObject *
-pyimport_import(PyObject *Py_UNUSED(module), PyObject *name)
+/* Test TyImport_Import() */
+static TyObject *
+pyimport_import(TyObject *Ty_UNUSED(module), TyObject *name)
 {
     NULLABLE(name);
-    return PyImport_Import(name);
+    return TyImport_Import(name);
 }
 
 
-/* Test PyImport_ImportModule() */
-static PyObject *
-pyimport_importmodule(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ImportModule() */
+static TyObject *
+pyimport_importmodule(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "z#", &name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "z#", &name, &size)) {
         return NULL;
     }
 
-    return PyImport_ImportModule(name);
+    return TyImport_ImportModule(name);
 }
 
 
-/* Test PyImport_ImportModuleNoBlock() */
-static PyObject *
-pyimport_importmodulenoblock(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ImportModuleNoBlock() */
+static TyObject *
+pyimport_importmodulenoblock(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "z#", &name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "z#", &name, &size)) {
         return NULL;
     }
 
-    _Py_COMP_DIAG_PUSH
-    _Py_COMP_DIAG_IGNORE_DEPR_DECLS
-    return PyImport_ImportModuleNoBlock(name);
-    _Py_COMP_DIAG_POP
+    _Ty_COMP_DIAG_PUSH
+    _Ty_COMP_DIAG_IGNORE_DEPR_DECLS
+    return TyImport_ImportModuleNoBlock(name);
+    _Ty_COMP_DIAG_POP
 }
 
 
-/* Test PyImport_ImportModuleEx() */
-static PyObject *
-pyimport_importmoduleex(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ImportModuleEx() */
+static TyObject *
+pyimport_importmoduleex(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    PyObject *globals, *locals, *fromlist;
-    if (!PyArg_ParseTuple(args, "z#OOO",
+    Ty_ssize_t size;
+    TyObject *globals, *locals, *fromlist;
+    if (!TyArg_ParseTuple(args, "z#OOO",
                           &name, &size, &globals, &locals, &fromlist)) {
         return NULL;
     }
@@ -140,19 +140,19 @@ pyimport_importmoduleex(PyObject *Py_UNUSED(module), PyObject *args)
     NULLABLE(locals);
     NULLABLE(fromlist);
 
-    return PyImport_ImportModuleEx(name, globals, locals, fromlist);
+    return TyImport_ImportModuleEx(name, globals, locals, fromlist);
 }
 
 
-/* Test PyImport_ImportModuleLevel() */
-static PyObject *
-pyimport_importmodulelevel(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ImportModuleLevel() */
+static TyObject *
+pyimport_importmodulelevel(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    PyObject *globals, *locals, *fromlist;
+    Ty_ssize_t size;
+    TyObject *globals, *locals, *fromlist;
     int level;
-    if (!PyArg_ParseTuple(args, "z#OOOi",
+    if (!TyArg_ParseTuple(args, "z#OOOi",
                           &name, &size, &globals, &locals, &fromlist, &level)) {
         return NULL;
     }
@@ -160,17 +160,17 @@ pyimport_importmodulelevel(PyObject *Py_UNUSED(module), PyObject *args)
     NULLABLE(locals);
     NULLABLE(fromlist);
 
-    return PyImport_ImportModuleLevel(name, globals, locals, fromlist, level);
+    return TyImport_ImportModuleLevel(name, globals, locals, fromlist, level);
 }
 
 
-/* Test PyImport_ImportModuleLevelObject() */
-static PyObject *
-pyimport_importmodulelevelobject(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ImportModuleLevelObject() */
+static TyObject *
+pyimport_importmodulelevelobject(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *name, *globals, *locals, *fromlist;
+    TyObject *name, *globals, *locals, *fromlist;
     int level;
-    if (!PyArg_ParseTuple(args, "OOOOi",
+    if (!TyArg_ParseTuple(args, "OOOOi",
                           &name, &globals, &locals, &fromlist, &level)) {
         return NULL;
     }
@@ -179,91 +179,91 @@ pyimport_importmodulelevelobject(PyObject *Py_UNUSED(module), PyObject *args)
     NULLABLE(locals);
     NULLABLE(fromlist);
 
-    return PyImport_ImportModuleLevelObject(name, globals, locals, fromlist, level);
+    return TyImport_ImportModuleLevelObject(name, globals, locals, fromlist, level);
 }
 
 
-/* Test PyImport_ImportFrozenModule() */
-static PyObject *
-pyimport_importfrozenmodule(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ImportFrozenModule() */
+static TyObject *
+pyimport_importfrozenmodule(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "z#", &name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "z#", &name, &size)) {
         return NULL;
     }
 
-    RETURN_INT(PyImport_ImportFrozenModule(name));
+    RETURN_INT(TyImport_ImportFrozenModule(name));
 }
 
 
-/* Test PyImport_ImportFrozenModuleObject() */
-static PyObject *
-pyimport_importfrozenmoduleobject(PyObject *Py_UNUSED(module), PyObject *name)
+/* Test TyImport_ImportFrozenModuleObject() */
+static TyObject *
+pyimport_importfrozenmoduleobject(TyObject *Ty_UNUSED(module), TyObject *name)
 {
     NULLABLE(name);
-    RETURN_INT(PyImport_ImportFrozenModuleObject(name));
+    RETURN_INT(TyImport_ImportFrozenModuleObject(name));
 }
 
 
-/* Test PyImport_ExecCodeModule() */
-static PyObject *
-pyimport_executecodemodule(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ExecCodeModule() */
+static TyObject *
+pyimport_executecodemodule(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    PyObject *code;
-    if (!PyArg_ParseTuple(args, "z#O", &name, &size, &code)) {
+    Ty_ssize_t size;
+    TyObject *code;
+    if (!TyArg_ParseTuple(args, "z#O", &name, &size, &code)) {
         return NULL;
     }
     NULLABLE(code);
 
-    return PyImport_ExecCodeModule(name, code);
+    return TyImport_ExecCodeModule(name, code);
 }
 
 
-/* Test PyImport_ExecCodeModuleEx() */
-static PyObject *
-pyimport_executecodemoduleex(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ExecCodeModuleEx() */
+static TyObject *
+pyimport_executecodemoduleex(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    PyObject *code;
+    Ty_ssize_t size;
+    TyObject *code;
     const char *pathname;
-    if (!PyArg_ParseTuple(args, "z#Oz#", &name, &size, &code, &pathname, &size)) {
+    if (!TyArg_ParseTuple(args, "z#Oz#", &name, &size, &code, &pathname, &size)) {
         return NULL;
     }
     NULLABLE(code);
 
-    return PyImport_ExecCodeModuleEx(name, code, pathname);
+    return TyImport_ExecCodeModuleEx(name, code, pathname);
 }
 
 
-/* Test PyImport_ExecCodeModuleWithPathnames() */
-static PyObject *
-pyimport_executecodemodulewithpathnames(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ExecCodeModuleWithPathnames() */
+static TyObject *
+pyimport_executecodemodulewithpathnames(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *name;
-    Py_ssize_t size;
-    PyObject *code;
+    Ty_ssize_t size;
+    TyObject *code;
     const char *pathname;
     const char *cpathname;
-    if (!PyArg_ParseTuple(args, "z#Oz#z#", &name, &size, &code, &pathname, &size, &cpathname, &size)) {
+    if (!TyArg_ParseTuple(args, "z#Oz#z#", &name, &size, &code, &pathname, &size, &cpathname, &size)) {
         return NULL;
     }
     NULLABLE(code);
 
-    return PyImport_ExecCodeModuleWithPathnames(name, code,
+    return TyImport_ExecCodeModuleWithPathnames(name, code,
                                                 pathname, cpathname);
 }
 
 
-/* Test PyImport_ExecCodeModuleObject() */
-static PyObject *
-pyimport_executecodemoduleobject(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyImport_ExecCodeModuleObject() */
+static TyObject *
+pyimport_executecodemoduleobject(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *name, *code, *pathname, *cpathname;
-    if (!PyArg_ParseTuple(args, "OOOO", &name, &code, &pathname, &cpathname)) {
+    TyObject *name, *code, *pathname, *cpathname;
+    if (!TyArg_ParseTuple(args, "OOOO", &name, &code, &pathname, &cpathname)) {
         return NULL;
     }
     NULLABLE(name);
@@ -271,36 +271,36 @@ pyimport_executecodemoduleobject(PyObject *Py_UNUSED(module), PyObject *args)
     NULLABLE(pathname);
     NULLABLE(cpathname);
 
-    return PyImport_ExecCodeModuleObject(name, code, pathname, cpathname);
+    return TyImport_ExecCodeModuleObject(name, code, pathname, cpathname);
 }
 
 
-static PyMethodDef test_methods[] = {
-    {"PyImport_GetMagicNumber", pyimport_getmagicnumber, METH_NOARGS},
-    {"PyImport_GetMagicTag", pyimport_getmagictag, METH_NOARGS},
-    {"PyImport_GetModuleDict", pyimport_getmoduledict, METH_NOARGS},
-    {"PyImport_GetModule", pyimport_getmodule, METH_O},
-    {"PyImport_AddModuleObject", pyimport_addmoduleobject, METH_O},
-    {"PyImport_AddModule", pyimport_addmodule, METH_VARARGS},
-    {"PyImport_AddModuleRef", pyimport_addmoduleref, METH_VARARGS},
-    {"PyImport_Import", pyimport_import, METH_O},
-    {"PyImport_ImportModule", pyimport_importmodule, METH_VARARGS},
-    {"PyImport_ImportModuleNoBlock", pyimport_importmodulenoblock, METH_VARARGS},
-    {"PyImport_ImportModuleEx", pyimport_importmoduleex, METH_VARARGS},
-    {"PyImport_ImportModuleLevel", pyimport_importmodulelevel, METH_VARARGS},
-    {"PyImport_ImportModuleLevelObject", pyimport_importmodulelevelobject, METH_VARARGS},
-    {"PyImport_ImportFrozenModule", pyimport_importfrozenmodule, METH_VARARGS},
-    {"PyImport_ImportFrozenModuleObject", pyimport_importfrozenmoduleobject, METH_O},
-    {"PyImport_ExecCodeModule", pyimport_executecodemodule, METH_VARARGS},
-    {"PyImport_ExecCodeModuleEx", pyimport_executecodemoduleex, METH_VARARGS},
-    {"PyImport_ExecCodeModuleWithPathnames", pyimport_executecodemodulewithpathnames, METH_VARARGS},
-    {"PyImport_ExecCodeModuleObject", pyimport_executecodemoduleobject, METH_VARARGS},
+static TyMethodDef test_methods[] = {
+    {"TyImport_GetMagicNumber", pyimport_getmagicnumber, METH_NOARGS},
+    {"TyImport_GetMagicTag", pyimport_getmagictag, METH_NOARGS},
+    {"TyImport_GetModuleDict", pyimport_getmoduledict, METH_NOARGS},
+    {"TyImport_GetModule", pyimport_getmodule, METH_O},
+    {"TyImport_AddModuleObject", pyimport_addmoduleobject, METH_O},
+    {"TyImport_AddModule", pyimport_addmodule, METH_VARARGS},
+    {"TyImport_AddModuleRef", pyimport_addmoduleref, METH_VARARGS},
+    {"TyImport_Import", pyimport_import, METH_O},
+    {"TyImport_ImportModule", pyimport_importmodule, METH_VARARGS},
+    {"TyImport_ImportModuleNoBlock", pyimport_importmodulenoblock, METH_VARARGS},
+    {"TyImport_ImportModuleEx", pyimport_importmoduleex, METH_VARARGS},
+    {"TyImport_ImportModuleLevel", pyimport_importmodulelevel, METH_VARARGS},
+    {"TyImport_ImportModuleLevelObject", pyimport_importmodulelevelobject, METH_VARARGS},
+    {"TyImport_ImportFrozenModule", pyimport_importfrozenmodule, METH_VARARGS},
+    {"TyImport_ImportFrozenModuleObject", pyimport_importfrozenmoduleobject, METH_O},
+    {"TyImport_ExecCodeModule", pyimport_executecodemodule, METH_VARARGS},
+    {"TyImport_ExecCodeModuleEx", pyimport_executecodemoduleex, METH_VARARGS},
+    {"TyImport_ExecCodeModuleWithPathnames", pyimport_executecodemodulewithpathnames, METH_VARARGS},
+    {"TyImport_ExecCodeModuleObject", pyimport_executecodemoduleobject, METH_VARARGS},
     {NULL},
 };
 
 
 int
-_PyTestLimitedCAPI_Init_Import(PyObject *module)
+_PyTestLimitedCAPI_Init_Import(TyObject *module)
 {
-    return PyModule_AddFunctions(module, test_methods);
+    return TyModule_AddFunctions(module, test_methods);
 }

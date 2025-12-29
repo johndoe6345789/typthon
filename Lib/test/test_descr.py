@@ -4283,7 +4283,7 @@ class ClassPropertiesAndMethods(unittest.TestCase):
         self.assertEqual((C.__module__, C.__name__), (mod, 'D.E'))
 
     def test_evil_type_name(self):
-        # A badly placed Py_DECREF in type_set_name led to arbitrary code
+        # A badly placed Ty_DECREF in type_set_name led to arbitrary code
         # execution while the type structure was not in a sane state, and a
         # possible segmentation fault as a result.  See bug #16447.
         class Nasty(str):

@@ -1,10 +1,10 @@
 #include "Python.h"
 #include "opcode.h"
-#include "pycore_c_array.h"       // _Py_CArray_EnsureCapacity
+#include "pycore_c_array.h"       // _Ty_CArray_EnsureCapacity
 #include "pycore_flowgraph.h"
 #include "pycore_compile.h"
 #include "pycore_intrinsics.h"
-#include "pycore_pymem.h"         // _PyMem_IsPtrFreed()
+#include "pycore_pymem.h"         // _TyMem_IsPtrFreed()
 #include "pycore_long.h"          // _PY_IS_SMALL_INT()
 
 #include "pycore_opcode_utils.h"
@@ -25,13 +25,13 @@
 
 #define DEFAULT_BLOCK_SIZE 16
 
-typedef _Py_SourceLocation location;
+typedef _Ty_SourceLocation location;
 typedef _PyJumpTargetLabel jump_target_label;
 
 typedef struct _PyCfgInstruction {
     int i_opcode;
     int i_oparg;
-    _Py_SourceLocation i_loc;
+    _Ty_SourceLocation i_loc;
     struct _PyCfgBasicblock *i_target; /* target block (if jump instruction) */
     struct _PyCfgBasicblock *i_except; /* target block when exception is raised */
 } cfg_instr;
@@ -93,7 +93,7 @@ typedef struct _PyCfgBuilder cfg_builder;
 #define IS_LABEL(L) (!SAME_LABEL((L), (NO_LABEL)))
 
 #define LOCATION(LNO, END_LNO, COL, END_COL) \
-    ((const _Py_SourceLocation){(LNO), (END_LNO), (COL), (END_COL)})
+    ((const _Ty_SourceLocation){(LNO), (END_LNO), (COL), (END_COL)})
 
 static inline int
 is_block_push(cfg_instr *i)
@@ -142,14 +142,14 @@ static int
 basicblock_next_instr(basicblock *b)
 {
     assert(b != NULL);
-    _Py_c_array_t array = {
+    _Ty_c_array_t array = {
         .array = (void*)b->b_instr,
         .allocated_entries = b->b_ialloc,
         .item_size = sizeof(cfg_instr),
         .initial_num_entries = DEFAULT_BLOCK_SIZE,
     };
 
-    RETURN_IF_ERROR(_Py_CArray_EnsureCapacity(&array, b->b_iused + 1));
+    RETURN_IF_ERROR(_Ty_CArray_EnsureCapacity(&array, b->b_iused + 1));
     b->b_instr = array.array;
     b->b_ialloc = array.allocated_entries;
     return b->b_iused++;
@@ -172,9 +172,9 @@ basicblock_last_instr(const basicblock *b) {
 static basicblock *
 cfg_builder_new_block(cfg_builder *g)
 {
-    basicblock *b = (basicblock *)PyMem_Calloc(1, sizeof(basicblock));
+    basicblock *b = (basicblock *)TyMem_Calloc(1, sizeof(basicblock));
     if (b == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     /* Extend the singly linked list of blocks with new block. */
@@ -393,7 +393,7 @@ cfg_builder_check(cfg_builder *g)
 {
     assert(g->g_entryblock->b_iused > 0);
     for (basicblock *block = g->g_block_list; block != NULL; block = block->b_list) {
-        assert(!_PyMem_IsPtrFreed(block));
+        assert(!_TyMem_IsPtrFreed(block));
         if (block->b_instr != NULL) {
             assert(block->b_ialloc > 0);
             assert(block->b_iused >= 0);
@@ -424,14 +424,14 @@ init_cfg_builder(cfg_builder *g)
 cfg_builder *
 _PyCfgBuilder_New(void)
 {
-    cfg_builder *g = PyMem_Malloc(sizeof(cfg_builder));
+    cfg_builder *g = TyMem_Malloc(sizeof(cfg_builder));
     if (g == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     memset(g, 0, sizeof(cfg_builder));
     if (init_cfg_builder(g) < 0) {
-        PyMem_Free(g);
+        TyMem_Free(g);
         return NULL;
     }
     return g;
@@ -447,13 +447,13 @@ _PyCfgBuilder_Free(cfg_builder *g)
     basicblock *b = g->g_block_list;
     while (b != NULL) {
         if (b->b_instr) {
-            PyMem_Free((void *)b->b_instr);
+            TyMem_Free((void *)b->b_instr);
         }
         basicblock *next = b->b_list;
-        PyMem_Free((void *)b);
+        TyMem_Free((void *)b);
         b = next;
     }
-    PyMem_Free(g);
+    TyMem_Free(g);
 }
 
 int
@@ -464,7 +464,7 @@ _PyCfgBuilder_CheckSize(cfg_builder *g)
         nblocks++;
     }
     if ((size_t)nblocks > SIZE_MAX / sizeof(basicblock *)) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return ERROR;
     }
     return SUCCESS;
@@ -608,7 +608,7 @@ check_cfg(cfg_builder *g) {
             assert(!IS_ASSEMBLER_OPCODE(opcode));
             if (IS_TERMINATOR_OPCODE(opcode)) {
                 if (i != b->b_iused - 1) {
-                    PyErr_SetString(PyExc_SystemError, "malformed control flow graph.");
+                    TyErr_SetString(TyExc_SystemError, "malformed control flow graph.");
                     return ERROR;
                 }
             }
@@ -635,9 +635,9 @@ translate_jump_labels_to_targets(basicblock *entryblock)
 {
     int max_label = get_max_label(entryblock);
     size_t mapsize = sizeof(basicblock *) * (max_label + 1);
-    basicblock **label2block = (basicblock **)PyMem_Malloc(mapsize);
+    basicblock **label2block = (basicblock **)TyMem_Malloc(mapsize);
     if (!label2block) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return ERROR;
     }
     memset(label2block, 0, mapsize);
@@ -659,7 +659,7 @@ translate_jump_labels_to_targets(basicblock *entryblock)
             }
         }
     }
-    PyMem_Free(label2block);
+    TyMem_Free(label2block);
     return SUCCESS;
 }
 
@@ -714,9 +714,9 @@ except_stack_top(struct _PyCfgExceptStack *stack) {
 
 static struct _PyCfgExceptStack *
 make_except_stack(void) {
-    struct _PyCfgExceptStack *new = PyMem_Malloc(sizeof(struct _PyCfgExceptStack));
+    struct _PyCfgExceptStack *new = TyMem_Malloc(sizeof(struct _PyCfgExceptStack));
     if (new == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     new->depth = 0;
@@ -726,9 +726,9 @@ make_except_stack(void) {
 
 static struct _PyCfgExceptStack *
 copy_except_stack(struct _PyCfgExceptStack *stack) {
-    struct _PyCfgExceptStack *copy = PyMem_Malloc(sizeof(struct _PyCfgExceptStack));
+    struct _PyCfgExceptStack *copy = TyMem_Malloc(sizeof(struct _PyCfgExceptStack));
     if (copy == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     memcpy(copy, stack, sizeof(struct _PyCfgExceptStack));
@@ -742,9 +742,9 @@ make_cfg_traversal_stack(basicblock *entryblock) {
         b->b_visited = 0;
         nblocks++;
     }
-    basicblock **stack = (basicblock **)PyMem_Malloc(sizeof(basicblock *) * nblocks);
+    basicblock **stack = (basicblock **)TyMem_Malloc(sizeof(basicblock *) * nblocks);
     if (!stack) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
     }
     return stack;
 }
@@ -763,7 +763,7 @@ typedef struct {
     int net;
 } stack_effects;
 
-Py_LOCAL(int)
+Ty_LOCAL(int)
 get_stack_effects(int opcode, int oparg, int jump, stack_effects *effects)
 {
     if (opcode < 0) {
@@ -786,11 +786,11 @@ get_stack_effects(int opcode, int oparg, int jump, stack_effects *effects)
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 stackdepth_push(basicblock ***sp, basicblock *b, int depth)
 {
     if (!(b->b_startdepth < 0 || b->b_startdepth == depth)) {
-        PyErr_Format(PyExc_ValueError, "Invalid CFG, inconsistent stackdepth");
+        TyErr_Format(TyExc_ValueError, "Invalid CFG, inconsistent stackdepth");
         return ERROR;
     }
     if (b->b_startdepth < depth && b->b_startdepth < 100) {
@@ -832,28 +832,28 @@ calculate_stackdepth(cfg_builder *g)
             cfg_instr *instr = &b->b_instr[i];
             stack_effects effects;
             if (get_stack_effects(instr->i_opcode, instr->i_oparg, 0, &effects) < 0) {
-                PyErr_Format(PyExc_SystemError,
+                TyErr_Format(TyExc_SystemError,
                              "Invalid stack effect for opcode=%d, arg=%i",
                              instr->i_opcode, instr->i_oparg);
                 goto error;
             }
             int new_depth = depth + effects.net;
             if (new_depth < 0) {
-                PyErr_Format(PyExc_ValueError,
+                TyErr_Format(TyExc_ValueError,
                              "Invalid CFG, stack underflow");
                 goto error;
             }
-            maxdepth = Py_MAX(maxdepth, depth);
+            maxdepth = Ty_MAX(maxdepth, depth);
             if (HAS_TARGET(instr->i_opcode) && instr->i_opcode != END_ASYNC_FOR) {
                 if (get_stack_effects(instr->i_opcode, instr->i_oparg, 1, &effects) < 0) {
-                    PyErr_Format(PyExc_SystemError,
+                    TyErr_Format(TyExc_SystemError,
                                  "Invalid stack effect for opcode=%d, arg=%i",
                                  instr->i_opcode, instr->i_oparg);
                     goto error;
                 }
                 int target_depth = depth + effects.net;
                 assert(target_depth >= 0); /* invalid code or bug in stackdepth() */
-                maxdepth = Py_MAX(maxdepth, depth);
+                maxdepth = Ty_MAX(maxdepth, depth);
                 if (stackdepth_push(&sp, instr->i_target, target_depth) < 0) {
                     goto error;
                 }
@@ -877,7 +877,7 @@ calculate_stackdepth(cfg_builder *g)
     }
     stackdepth = maxdepth;
 error:
-    PyMem_Free(stack);
+    TyMem_Free(stack);
     return stackdepth;
 }
 
@@ -889,8 +889,8 @@ label_exception_targets(basicblock *entryblock) {
     }
     struct _PyCfgExceptStack *except_stack = make_except_stack();
     if (except_stack == NULL) {
-        PyMem_Free(todo_stack);
-        PyErr_NoMemory();
+        TyMem_Free(todo_stack);
+        TyErr_NoMemory();
         return ERROR;
     }
     except_stack->depth = 0;
@@ -973,19 +973,19 @@ label_exception_targets(basicblock *entryblock) {
             todo++;
         }
         else if (except_stack != NULL) {
-           PyMem_Free(except_stack);
+           TyMem_Free(except_stack);
         }
     }
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     for (basicblock *b = entryblock; b != NULL; b = b->b_next) {
         assert(b->b_exceptstack == NULL);
     }
 #endif
-    PyMem_Free(todo_stack);
+    TyMem_Free(todo_stack);
     return SUCCESS;
 error:
-    PyMem_Free(todo_stack);
-    PyMem_Free(except_stack);
+    TyMem_Free(todo_stack);
+    TyMem_Free(except_stack);
     return ERROR;
 }
 
@@ -1027,7 +1027,7 @@ remove_unreachable(basicblock *entryblock) {
             }
         }
     }
-    PyMem_Free(stack);
+    TyMem_Free(stack);
 
     /* Delete unreachable instructions */
     for (basicblock *b = entryblock; b != NULL; b = b->b_next) {
@@ -1174,7 +1174,7 @@ remove_redundant_jumps(cfg_builder *g) {
         if (IS_UNCONDITIONAL_JUMP_OPCODE(last->i_opcode)) {
             basicblock* jump_target = next_nonempty_block(last->i_target);
             if (jump_target == NULL) {
-                PyErr_SetString(PyExc_SystemError, "jump with NULL target");
+                TyErr_SetString(TyExc_SystemError, "jump with NULL target");
                 return ERROR;
             }
             basicblock *next = next_nonempty_block(b->b_next);
@@ -1289,53 +1289,53 @@ loads_const(int opcode)
 }
 
 /* Returns new reference */
-static PyObject*
-get_const_value(int opcode, int oparg, PyObject *co_consts)
+static TyObject*
+get_const_value(int opcode, int oparg, TyObject *co_consts)
 {
-    PyObject *constant = NULL;
+    TyObject *constant = NULL;
     assert(loads_const(opcode));
     if (opcode == LOAD_CONST) {
-        constant = PyList_GET_ITEM(co_consts, oparg);
+        constant = TyList_GET_ITEM(co_consts, oparg);
     }
     if (opcode == LOAD_SMALL_INT) {
-        return PyLong_FromLong(oparg);
+        return TyLong_FromLong(oparg);
     }
 
     if (constant == NULL) {
-        PyErr_SetString(PyExc_SystemError,
+        TyErr_SetString(TyExc_SystemError,
                         "Internal error: failed to get value of a constant");
         return NULL;
     }
-    return Py_NewRef(constant);
+    return Ty_NewRef(constant);
 }
 
 // Steals a reference to newconst.
 static int
-add_const(PyObject *newconst, PyObject *consts, PyObject *const_cache)
+add_const(TyObject *newconst, TyObject *consts, TyObject *const_cache)
 {
     if (_PyCompile_ConstCacheMergeOne(const_cache, &newconst) < 0) {
-        Py_DECREF(newconst);
+        Ty_DECREF(newconst);
         return -1;
     }
 
-    Py_ssize_t index;
-    for (index = 0; index < PyList_GET_SIZE(consts); index++) {
-        if (PyList_GET_ITEM(consts, index) == newconst) {
+    Ty_ssize_t index;
+    for (index = 0; index < TyList_GET_SIZE(consts); index++) {
+        if (TyList_GET_ITEM(consts, index) == newconst) {
             break;
         }
     }
-    if (index == PyList_GET_SIZE(consts)) {
+    if (index == TyList_GET_SIZE(consts)) {
         if ((size_t)index >= (size_t)INT_MAX - 1) {
-            PyErr_SetString(PyExc_OverflowError, "too many constants");
-            Py_DECREF(newconst);
+            TyErr_SetString(TyExc_OverflowError, "too many constants");
+            Ty_DECREF(newconst);
             return -1;
         }
-        if (PyList_Append(consts, newconst)) {
-            Py_DECREF(newconst);
+        if (TyList_Append(consts, newconst)) {
+            Ty_DECREF(newconst);
             return -1;
         }
     }
-    Py_DECREF(newconst);
+    Ty_DECREF(newconst);
     return (int)index;
 }
 
@@ -1388,17 +1388,17 @@ nop_out(cfg_instr **instrs, int size)
    Return -1 on error.
 */
 static int
-maybe_instr_make_load_smallint(cfg_instr *instr, PyObject *newconst,
-                               PyObject *consts, PyObject *const_cache)
+maybe_instr_make_load_smallint(cfg_instr *instr, TyObject *newconst,
+                               TyObject *consts, TyObject *const_cache)
 {
-    if (PyLong_CheckExact(newconst)) {
+    if (TyLong_CheckExact(newconst)) {
         int overflow;
-        long val = PyLong_AsLongAndOverflow(newconst, &overflow);
-        if (val == -1 && PyErr_Occurred()) {
+        long val = TyLong_AsLongAndOverflow(newconst, &overflow);
+        if (val == -1 && TyErr_Occurred()) {
             return -1;
         }
         if (!overflow && _PY_IS_SMALL_INT(val)) {
-            assert(_Py_IsImmortal(newconst));
+            assert(_Ty_IsImmortal(newconst));
             INSTR_SET_OP1(instr, LOAD_SMALL_INT, (int)val);
             return 1;
         }
@@ -1409,12 +1409,12 @@ maybe_instr_make_load_smallint(cfg_instr *instr, PyObject *newconst,
 
 /* Steals reference to "newconst" */
 static int
-instr_make_load_const(cfg_instr *instr, PyObject *newconst,
-                      PyObject *consts, PyObject *const_cache)
+instr_make_load_const(cfg_instr *instr, TyObject *newconst,
+                      TyObject *consts, TyObject *const_cache)
 {
     int res = maybe_instr_make_load_smallint(instr, newconst, consts, const_cache);
     if (res < 0) {
-        Py_DECREF(newconst);
+        Ty_DECREF(newconst);
         return ERROR;
     }
     if (res > 0) {
@@ -1433,11 +1433,11 @@ instr_make_load_const(cfg_instr *instr, PyObject *newconst,
    Called with codestr pointing to the first LOAD_CONST.
 */
 static int
-fold_tuple_of_constants(basicblock *bb, int i, PyObject *consts, PyObject *const_cache)
+fold_tuple_of_constants(basicblock *bb, int i, TyObject *consts, TyObject *const_cache)
 {
     /* Pre-conditions */
-    assert(PyDict_CheckExact(const_cache));
-    assert(PyList_CheckExact(consts));
+    assert(TyDict_CheckExact(const_cache));
+    assert(TyList_CheckExact(consts));
 
     cfg_instr *instr = &bb->b_instr[i];
     assert(instr->i_opcode == BUILD_TUPLE);
@@ -1453,7 +1453,7 @@ fold_tuple_of_constants(basicblock *bb, int i, PyObject *consts, PyObject *const
         return SUCCESS;
     }
 
-    PyObject *const_tuple = PyTuple_New((Py_ssize_t)seq_size);
+    TyObject *const_tuple = TyTuple_New((Ty_ssize_t)seq_size);
     if (const_tuple == NULL) {
         return ERROR;
     }
@@ -1461,12 +1461,12 @@ fold_tuple_of_constants(basicblock *bb, int i, PyObject *consts, PyObject *const
     for (int i = 0; i < seq_size; i++) {
         cfg_instr *inst = const_instrs[i];
         assert(loads_const(inst->i_opcode));
-        PyObject *element = get_const_value(inst->i_opcode, inst->i_oparg, consts);
+        TyObject *element = get_const_value(inst->i_opcode, inst->i_oparg, consts);
         if (element == NULL) {
-            Py_DECREF(const_tuple);
+            Ty_DECREF(const_tuple);
             return ERROR;
         }
-        PyTuple_SET_ITEM(const_tuple, i, element);
+        TyTuple_SET_ITEM(const_tuple, i, element);
     }
 
     nop_out(const_instrs, seq_size);
@@ -1488,10 +1488,10 @@ fold_tuple_of_constants(basicblock *bb, int i, PyObject *consts, PyObject *const
 */
 static int
 fold_constant_intrinsic_list_to_tuple(basicblock *bb, int i,
-                                      PyObject *consts, PyObject *const_cache)
+                                      TyObject *consts, TyObject *const_cache)
 {
-    assert(PyDict_CheckExact(const_cache));
-    assert(PyList_CheckExact(consts));
+    assert(TyDict_CheckExact(const_cache));
+    assert(TyList_CheckExact(consts));
     assert(i >= 0);
     assert(i < bb->b_iused);
 
@@ -1518,7 +1518,7 @@ fold_constant_intrinsic_list_to_tuple(basicblock *bb, int i,
             }
 
             /* Sequence start, we are done. */
-            PyObject *newconst = PyTuple_New((Py_ssize_t)consts_found);
+            TyObject *newconst = TyTuple_New((Ty_ssize_t)consts_found);
             if (newconst == NULL) {
                 return ERROR;
             }
@@ -1529,13 +1529,13 @@ fold_constant_intrinsic_list_to_tuple(basicblock *bb, int i,
                     continue;
                 }
                 if (loads_const(instr->i_opcode)) {
-                    PyObject *constant = get_const_value(instr->i_opcode, instr->i_oparg, consts);
+                    TyObject *constant = get_const_value(instr->i_opcode, instr->i_oparg, consts);
                     if (constant == NULL) {
-                        Py_DECREF(newconst);
+                        Ty_DECREF(newconst);
                         return ERROR;
                     }
                     assert(consts_found > 0);
-                    PyTuple_SET_ITEM(newconst, --consts_found, constant);
+                    TyTuple_SET_ITEM(newconst, --consts_found, constant);
                 }
                 nop_out(&instr, 1);
             }
@@ -1576,10 +1576,10 @@ Optimize lists and sets for:
 */
 static int
 optimize_lists_and_sets(basicblock *bb, int i, int nextop,
-                        PyObject *consts, PyObject *const_cache)
+                        TyObject *consts, TyObject *const_cache)
 {
-    assert(PyDict_CheckExact(const_cache));
-    assert(PyList_CheckExact(consts));
+    assert(TyDict_CheckExact(const_cache));
+    assert(TyList_CheckExact(consts));
 
     cfg_instr *instr = &bb->b_instr[i];
     assert(instr->i_opcode == BUILD_LIST || instr->i_opcode == BUILD_SET);
@@ -1601,7 +1601,7 @@ optimize_lists_and_sets(basicblock *bb, int i, int nextop,
         return SUCCESS;
     }
 
-    PyObject *const_result = PyTuple_New((Py_ssize_t)seq_size);
+    TyObject *const_result = TyTuple_New((Ty_ssize_t)seq_size);
     if (const_result == NULL) {
         return ERROR;
     }
@@ -1609,21 +1609,21 @@ optimize_lists_and_sets(basicblock *bb, int i, int nextop,
     for (int i = 0; i < seq_size; i++) {
         cfg_instr *inst = const_instrs[i];
         assert(loads_const(inst->i_opcode));
-        PyObject *element = get_const_value(inst->i_opcode, inst->i_oparg, consts);
+        TyObject *element = get_const_value(inst->i_opcode, inst->i_oparg, consts);
         if (element == NULL) {
-            Py_DECREF(const_result);
+            Ty_DECREF(const_result);
             return ERROR;
         }
-        PyTuple_SET_ITEM(const_result, i, element);
+        TyTuple_SET_ITEM(const_result, i, element);
     }
 
     if (instr->i_opcode == BUILD_SET) {
-        PyObject *frozenset = PyFrozenSet_New(const_result);
+        TyObject *frozenset = TyFrozenSet_New(const_result);
         if (frozenset == NULL) {
-            Py_DECREF(const_result);
+            Ty_DECREF(const_result);
             return ERROR;
         }
-        Py_SETREF(const_result, frozenset);
+        Ty_SETREF(const_result, frozenset);
     }
 
     int index = add_const(const_result, consts, const_cache);
@@ -1650,14 +1650,14 @@ optimize_lists_and_sets(basicblock *bb, int i, int nextop,
  * limit. Return a negative number if it does, and a non-negative number otherwise.
  * Used to avoid creating constants which are slow to hash.
  */
-static Py_ssize_t
-const_folding_check_complexity(PyObject *obj, Py_ssize_t limit)
+static Ty_ssize_t
+const_folding_check_complexity(TyObject *obj, Ty_ssize_t limit)
 {
-    if (PyTuple_Check(obj)) {
-        Py_ssize_t i;
-        limit -= PyTuple_GET_SIZE(obj);
-        for (i = 0; limit >= 0 && i < PyTuple_GET_SIZE(obj); i++) {
-            limit = const_folding_check_complexity(PyTuple_GET_ITEM(obj, i), limit);
+    if (TyTuple_Check(obj)) {
+        Ty_ssize_t i;
+        limit -= TyTuple_GET_SIZE(obj);
+        for (i = 0; limit >= 0 && i < TyTuple_GET_SIZE(obj); i++) {
+            limit = const_folding_check_complexity(TyTuple_GET_ITEM(obj, i), limit);
             if (limit < 0) {
                 return limit;
             }
@@ -1671,24 +1671,24 @@ const_folding_check_complexity(PyObject *obj, Py_ssize_t limit)
 #define MAX_STR_SIZE          4096  /* characters */
 #define MAX_TOTAL_ITEMS       1024  /* including nested collections */
 
-static PyObject *
-const_folding_safe_multiply(PyObject *v, PyObject *w)
+static TyObject *
+const_folding_safe_multiply(TyObject *v, TyObject *w)
 {
-    if (PyLong_Check(v) && PyLong_Check(w) &&
-        !_PyLong_IsZero((PyLongObject *)v) && !_PyLong_IsZero((PyLongObject *)w)
+    if (TyLong_Check(v) && TyLong_Check(w) &&
+        !_TyLong_IsZero((PyLongObject *)v) && !_TyLong_IsZero((PyLongObject *)w)
     ) {
-        int64_t vbits = _PyLong_NumBits(v);
-        int64_t wbits = _PyLong_NumBits(w);
+        int64_t vbits = _TyLong_NumBits(v);
+        int64_t wbits = _TyLong_NumBits(w);
         assert(vbits >= 0);
         assert(wbits >= 0);
         if (vbits + wbits > MAX_INT_SIZE) {
             return NULL;
         }
     }
-    else if (PyLong_Check(v) && PyTuple_Check(w)) {
-        Py_ssize_t size = PyTuple_GET_SIZE(w);
+    else if (TyLong_Check(v) && TyTuple_Check(w)) {
+        Ty_ssize_t size = TyTuple_GET_SIZE(w);
         if (size) {
-            long n = PyLong_AsLong(v);
+            long n = TyLong_AsLong(v);
             if (n < 0 || n > MAX_COLLECTION_SIZE / size) {
                 return NULL;
             }
@@ -1697,18 +1697,18 @@ const_folding_safe_multiply(PyObject *v, PyObject *w)
             }
         }
     }
-    else if (PyLong_Check(v) && (PyUnicode_Check(w) || PyBytes_Check(w))) {
-        Py_ssize_t size = PyUnicode_Check(w) ? PyUnicode_GET_LENGTH(w) :
-                                               PyBytes_GET_SIZE(w);
+    else if (TyLong_Check(v) && (TyUnicode_Check(w) || TyBytes_Check(w))) {
+        Ty_ssize_t size = TyUnicode_Check(w) ? TyUnicode_GET_LENGTH(w) :
+                                               TyBytes_GET_SIZE(w);
         if (size) {
-            long n = PyLong_AsLong(v);
+            long n = TyLong_AsLong(v);
             if (n < 0 || n > MAX_STR_SIZE / size) {
                 return NULL;
             }
         }
     }
-    else if (PyLong_Check(w) &&
-             (PyTuple_Check(v) || PyUnicode_Check(v) || PyBytes_Check(v)))
+    else if (TyLong_Check(w) &&
+             (TyTuple_Check(v) || TyUnicode_Check(v) || TyBytes_Check(v)))
     {
         return const_folding_safe_multiply(w, v);
     }
@@ -1716,14 +1716,14 @@ const_folding_safe_multiply(PyObject *v, PyObject *w)
     return PyNumber_Multiply(v, w);
 }
 
-static PyObject *
-const_folding_safe_power(PyObject *v, PyObject *w)
+static TyObject *
+const_folding_safe_power(TyObject *v, TyObject *w)
 {
-    if (PyLong_Check(v) && PyLong_Check(w) &&
-        !_PyLong_IsZero((PyLongObject *)v) && _PyLong_IsPositive((PyLongObject *)w)
+    if (TyLong_Check(v) && TyLong_Check(w) &&
+        !_TyLong_IsZero((PyLongObject *)v) && _TyLong_IsPositive((PyLongObject *)w)
     ) {
-        int64_t vbits = _PyLong_NumBits(v);
-        size_t wbits = PyLong_AsSize_t(w);
+        int64_t vbits = _TyLong_NumBits(v);
+        size_t wbits = TyLong_AsSize_t(w);
         assert(vbits >= 0);
         if (wbits == (size_t)-1) {
             return NULL;
@@ -1733,17 +1733,17 @@ const_folding_safe_power(PyObject *v, PyObject *w)
         }
     }
 
-    return PyNumber_Power(v, w, Py_None);
+    return PyNumber_Power(v, w, Ty_None);
 }
 
-static PyObject *
-const_folding_safe_lshift(PyObject *v, PyObject *w)
+static TyObject *
+const_folding_safe_lshift(TyObject *v, TyObject *w)
 {
-    if (PyLong_Check(v) && PyLong_Check(w) &&
-        !_PyLong_IsZero((PyLongObject *)v) && !_PyLong_IsZero((PyLongObject *)w)
+    if (TyLong_Check(v) && TyLong_Check(w) &&
+        !_TyLong_IsZero((PyLongObject *)v) && !_TyLong_IsZero((PyLongObject *)w)
     ) {
-        int64_t vbits = _PyLong_NumBits(v);
-        size_t wbits = PyLong_AsSize_t(w);
+        int64_t vbits = _TyLong_NumBits(v);
+        size_t wbits = TyLong_AsSize_t(w);
         assert(vbits >= 0);
         if (wbits == (size_t)-1) {
             return NULL;
@@ -1756,23 +1756,23 @@ const_folding_safe_lshift(PyObject *v, PyObject *w)
     return PyNumber_Lshift(v, w);
 }
 
-static PyObject *
-const_folding_safe_mod(PyObject *v, PyObject *w)
+static TyObject *
+const_folding_safe_mod(TyObject *v, TyObject *w)
 {
-    if (PyUnicode_Check(v) || PyBytes_Check(v)) {
+    if (TyUnicode_Check(v) || TyBytes_Check(v)) {
         return NULL;
     }
 
     return PyNumber_Remainder(v, w);
 }
 
-static PyObject *
-eval_const_binop(PyObject *left, int op, PyObject *right)
+static TyObject *
+eval_const_binop(TyObject *left, int op, TyObject *right)
 {
     assert(left != NULL && right != NULL);
     assert(op >= 0 && op <= NB_OPARG_LAST);
 
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     switch (op) {
         case NB_ADD:
             result = PyNumber_Add(left, right);
@@ -1817,17 +1817,17 @@ eval_const_binop(PyObject *left, int op, PyObject *right)
             // No builtin constants implement matrix multiplication
             break;
         default:
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
     }
     return result;
 }
 
 static int
-fold_const_binop(basicblock *bb, int i, PyObject *consts, PyObject *const_cache)
+fold_const_binop(basicblock *bb, int i, TyObject *consts, TyObject *const_cache)
 {
     #define BINOP_OPERAND_COUNT 2
-    assert(PyDict_CheckExact(const_cache));
-    assert(PyList_CheckExact(consts));
+    assert(TyDict_CheckExact(const_cache));
+    assert(TyList_CheckExact(consts));
 
     cfg_instr *binop = &bb->b_instr[i];
     assert(binop->i_opcode == BINARY_OP);
@@ -1840,27 +1840,27 @@ fold_const_binop(basicblock *bb, int i, PyObject *consts, PyObject *const_cache)
 
     cfg_instr *lhs_instr = operands_instrs[0];
     assert(loads_const(lhs_instr->i_opcode));
-    PyObject *lhs = get_const_value(lhs_instr->i_opcode, lhs_instr->i_oparg, consts);
+    TyObject *lhs = get_const_value(lhs_instr->i_opcode, lhs_instr->i_oparg, consts);
     if (lhs == NULL) {
         return ERROR;
     }
 
     cfg_instr *rhs_instr = operands_instrs[1];
     assert(loads_const(rhs_instr->i_opcode));
-    PyObject *rhs = get_const_value(rhs_instr->i_opcode, rhs_instr->i_oparg, consts);
+    TyObject *rhs = get_const_value(rhs_instr->i_opcode, rhs_instr->i_oparg, consts);
     if (rhs == NULL) {
-        Py_DECREF(lhs);
+        Ty_DECREF(lhs);
         return ERROR;
     }
 
-    PyObject *newconst = eval_const_binop(lhs, binop->i_oparg, rhs);
-    Py_DECREF(lhs);
-    Py_DECREF(rhs);
+    TyObject *newconst = eval_const_binop(lhs, binop->i_oparg, rhs);
+    Ty_DECREF(lhs);
+    Ty_DECREF(rhs);
     if (newconst == NULL) {
-        if (PyErr_ExceptionMatches(PyExc_KeyboardInterrupt)) {
+        if (TyErr_ExceptionMatches(TyExc_KeyboardInterrupt)) {
             return ERROR;
         }
-        PyErr_Clear();
+        TyErr_Clear();
         return SUCCESS;
     }
 
@@ -1868,8 +1868,8 @@ fold_const_binop(basicblock *bb, int i, PyObject *consts, PyObject *const_cache)
     return instr_make_load_const(binop, newconst, consts, const_cache);
 }
 
-static PyObject *
-eval_const_unaryop(PyObject *operand, int opcode, int oparg)
+static TyObject *
+eval_const_unaryop(TyObject *operand, int opcode, int oparg)
 {
     assert(operand != NULL);
     assert(
@@ -1878,14 +1878,14 @@ eval_const_unaryop(PyObject *operand, int opcode, int oparg)
         opcode == UNARY_NOT ||
         (opcode == CALL_INTRINSIC_1 && oparg == INTRINSIC_UNARY_POSITIVE)
     );
-    PyObject *result;
+    TyObject *result;
     switch (opcode) {
         case UNARY_NEGATIVE:
             result = PyNumber_Negative(operand);
             break;
         case UNARY_INVERT:
             // XXX: This should be removed once the ~bool depreciation expires.
-            if (PyBool_Check(operand)) {
+            if (TyBool_Check(operand)) {
                 return NULL;
             }
             result = PyNumber_Invert(operand);
@@ -1895,27 +1895,27 @@ eval_const_unaryop(PyObject *operand, int opcode, int oparg)
             if (r < 0) {
                 return NULL;
             }
-            result = PyBool_FromLong(!r);
+            result = TyBool_FromLong(!r);
             break;
         }
         case CALL_INTRINSIC_1:
             if (oparg != INTRINSIC_UNARY_POSITIVE) {
-                Py_UNREACHABLE();
+                Ty_UNREACHABLE();
             }
             result = PyNumber_Positive(operand);
             break;
         default:
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
     }
     return result;
 }
 
 static int
-fold_const_unaryop(basicblock *bb, int i, PyObject *consts, PyObject *const_cache)
+fold_const_unaryop(basicblock *bb, int i, TyObject *consts, TyObject *const_cache)
 {
     #define UNARYOP_OPERAND_COUNT 1
-    assert(PyDict_CheckExact(const_cache));
-    assert(PyList_CheckExact(consts));
+    assert(TyDict_CheckExact(const_cache));
+    assert(TyList_CheckExact(consts));
     cfg_instr *unaryop = &bb->b_instr[i];
 
     cfg_instr *operand_instr;
@@ -1925,7 +1925,7 @@ fold_const_unaryop(basicblock *bb, int i, PyObject *consts, PyObject *const_cach
     }
 
     assert(loads_const(operand_instr->i_opcode));
-    PyObject *operand = get_const_value(
+    TyObject *operand = get_const_value(
         operand_instr->i_opcode,
         operand_instr->i_oparg,
         consts
@@ -1934,18 +1934,18 @@ fold_const_unaryop(basicblock *bb, int i, PyObject *consts, PyObject *const_cach
         return ERROR;
     }
 
-    PyObject *newconst = eval_const_unaryop(operand, unaryop->i_opcode, unaryop->i_oparg);
-    Py_DECREF(operand);
+    TyObject *newconst = eval_const_unaryop(operand, unaryop->i_opcode, unaryop->i_oparg);
+    Ty_DECREF(operand);
     if (newconst == NULL) {
-        if (PyErr_ExceptionMatches(PyExc_KeyboardInterrupt)) {
+        if (TyErr_ExceptionMatches(TyExc_KeyboardInterrupt)) {
             return ERROR;
         }
-        PyErr_Clear();
+        TyErr_Clear();
         return SUCCESS;
     }
 
     if (unaryop->i_opcode == UNARY_NOT) {
-        assert(PyBool_Check(newconst));
+        assert(TyBool_Check(newconst));
     }
     nop_out(&operand_instr, UNARYOP_OPERAND_COUNT);
     return instr_make_load_const(unaryop, newconst, consts, const_cache);
@@ -1972,7 +1972,7 @@ swaptimize(basicblock *block, int *ix)
     while (++len < limit) {
         int opcode = instructions[len].i_opcode;
         if (opcode == SWAP) {
-            depth = Py_MAX(depth, instructions[len].i_oparg);
+            depth = Ty_MAX(depth, instructions[len].i_oparg);
             more = true;
         }
         else if (opcode != NOP) {
@@ -1984,9 +1984,9 @@ swaptimize(basicblock *block, int *ix)
         return SUCCESS;
     }
     // Create an array with elements {0, 1, 2, ..., depth - 1}:
-    int *stack = PyMem_Malloc(depth * sizeof(int));
+    int *stack = TyMem_Malloc(depth * sizeof(int));
     if (stack == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return ERROR;
     }
     for (int i = 0; i < depth; i++) {
@@ -2046,7 +2046,7 @@ swaptimize(basicblock *block, int *ix)
     while (0 <= current) {
         INSTR_SET_OP0(&instructions[current--], NOP);
     }
-    PyMem_Free(stack);
+    TyMem_Free(stack);
     *ix += len - 1;
     return SUCCESS;
 }
@@ -2143,18 +2143,18 @@ apply_static_swaps(basicblock *block, int i)
 }
 
 static int
-basicblock_optimize_load_const(PyObject *const_cache, basicblock *bb, PyObject *consts)
+basicblock_optimize_load_const(TyObject *const_cache, basicblock *bb, TyObject *consts)
 {
-    assert(PyDict_CheckExact(const_cache));
-    assert(PyList_CheckExact(consts));
+    assert(TyDict_CheckExact(const_cache));
+    assert(TyList_CheckExact(consts));
     int opcode = 0;
     int oparg = 0;
     for (int i = 0; i < bb->b_iused; i++) {
         cfg_instr *inst = &bb->b_instr[i];
         if (inst->i_opcode == LOAD_CONST) {
-            PyObject *constant = get_const_value(inst->i_opcode, inst->i_oparg, consts);
+            TyObject *constant = get_const_value(inst->i_opcode, inst->i_oparg, consts);
             int res = maybe_instr_make_load_smallint(inst, constant, consts, const_cache);
-            Py_DECREF(constant);
+            Ty_DECREF(constant);
             if (res < 0) {
                 return ERROR;
             }
@@ -2178,12 +2178,12 @@ basicblock_optimize_load_const(PyObject *const_cache, basicblock *bb, PyObject *
             case JUMP_IF_TRUE:
             {
                 /* Remove LOAD_CONST const; conditional jump */
-                PyObject* cnt = get_const_value(opcode, oparg, consts);
+                TyObject* cnt = get_const_value(opcode, oparg, consts);
                 if (cnt == NULL) {
                     return ERROR;
                 }
                 int is_true = PyObject_IsTrue(cnt);
-                Py_DECREF(cnt);
+                Ty_DECREF(cnt);
                 if (is_true == -1) {
                     return ERROR;
                 }
@@ -2212,12 +2212,12 @@ basicblock_optimize_load_const(PyObject *const_cache, basicblock *bb, PyObject *
                 // - LOAD_CONST(None) IS_OP(1) POP_JUMP_IF_TRUE
                 // - LOAD_CONST(None) IS_OP(0) TO_BOOL POP_JUMP_IF_FALSE
                 // - LOAD_CONST(None) IS_OP(1) TO_BOOL POP_JUMP_IF_TRUE
-                PyObject *cnt = get_const_value(opcode, oparg, consts);
+                TyObject *cnt = get_const_value(opcode, oparg, consts);
                 if (cnt == NULL) {
                     return ERROR;
                 }
-                if (!Py_IsNone(cnt)) {
-                    Py_DECREF(cnt);
+                if (!Ty_IsNone(cnt)) {
+                    Ty_DECREF(cnt);
                     break;
                 }
                 if (bb->b_iused <= i + 2) {
@@ -2248,16 +2248,16 @@ basicblock_optimize_load_const(PyObject *const_cache, basicblock *bb, PyObject *
             }
             case TO_BOOL:
             {
-                PyObject *cnt = get_const_value(opcode, oparg, consts);
+                TyObject *cnt = get_const_value(opcode, oparg, consts);
                 if (cnt == NULL) {
                     return ERROR;
                 }
                 int is_true = PyObject_IsTrue(cnt);
-                Py_DECREF(cnt);
+                Ty_DECREF(cnt);
                 if (is_true == -1) {
                     return ERROR;
                 }
-                cnt = PyBool_FromLong(is_true);
+                cnt = TyBool_FromLong(is_true);
                 int index = add_const(cnt, consts, const_cache);
                 if (index < 0) {
                     return ERROR;
@@ -2272,7 +2272,7 @@ basicblock_optimize_load_const(PyObject *const_cache, basicblock *bb, PyObject *
 }
 
 static int
-optimize_load_const(PyObject *const_cache, cfg_builder *g, PyObject *consts) {
+optimize_load_const(TyObject *const_cache, cfg_builder *g, TyObject *consts) {
     for (basicblock *b = g->g_entryblock; b != NULL; b = b->b_next) {
         RETURN_IF_ERROR(basicblock_optimize_load_const(const_cache, b, consts));
     }
@@ -2280,10 +2280,10 @@ optimize_load_const(PyObject *const_cache, cfg_builder *g, PyObject *consts) {
 }
 
 static int
-optimize_basic_block(PyObject *const_cache, basicblock *bb, PyObject *consts)
+optimize_basic_block(TyObject *const_cache, basicblock *bb, TyObject *consts)
 {
-    assert(PyDict_CheckExact(const_cache));
-    assert(PyList_CheckExact(consts));
+    assert(TyDict_CheckExact(const_cache));
+    assert(TyList_CheckExact(consts));
     cfg_instr nop;
     INSTR_SET_OP0(&nop, NOP);
     for (int i = 0; i < bb->b_iused; i++) {
@@ -2456,7 +2456,7 @@ optimize_basic_block(PyObject *const_cache, basicblock *bb, PyObject *consts)
                     INSTR_SET_OP0(&bb->b_instr[i + 1], NOP);
                     continue;
                 }
-                _Py_FALLTHROUGH;
+                _Ty_FALLTHROUGH;
             case UNARY_INVERT:
             case UNARY_NEGATIVE:
                 RETURN_IF_ERROR(fold_const_unaryop(bb, i, consts, const_cache));
@@ -2520,9 +2520,9 @@ remove_redundant_nops_and_jumps(cfg_builder *g)
    NOPs.  Later those NOPs are removed.
 */
 static int
-optimize_cfg(cfg_builder *g, PyObject *consts, PyObject *const_cache, int firstlineno)
+optimize_cfg(cfg_builder *g, TyObject *consts, TyObject *const_cache, int firstlineno)
 {
-    assert(PyDict_CheckExact(const_cache));
+    assert(TyDict_CheckExact(const_cache));
     RETURN_IF_ERROR(check_cfg(g));
     RETURN_IF_ERROR(inline_small_or_no_lineno_blocks(g->g_entryblock));
     RETURN_IF_ERROR(remove_unreachable(g->g_entryblock));
@@ -2599,18 +2599,18 @@ typedef struct {
 
 typedef struct {
     ref *refs;
-    Py_ssize_t size;
-    Py_ssize_t capacity;
+    Ty_ssize_t size;
+    Ty_ssize_t capacity;
 } ref_stack;
 
 static int
 ref_stack_push(ref_stack *stack, ref r)
 {
     if (stack->size == stack->capacity) {
-        Py_ssize_t new_cap = Py_MAX(32, stack->capacity * 2);
-        ref *refs = PyMem_Realloc(stack->refs, sizeof(*stack->refs) * new_cap);
+        Ty_ssize_t new_cap = Ty_MAX(32, stack->capacity * 2);
+        ref *refs = TyMem_Realloc(stack->refs, sizeof(*stack->refs) * new_cap);
         if (refs == NULL) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return -1;
         }
         stack->refs = refs;
@@ -2631,9 +2631,9 @@ ref_stack_pop(ref_stack *stack)
 }
 
 static void
-ref_stack_swap_top(ref_stack *stack, Py_ssize_t off)
+ref_stack_swap_top(ref_stack *stack, Ty_ssize_t off)
 {
-    Py_ssize_t idx = stack->size - off;
+    Ty_ssize_t idx = stack->size - off;
     assert(idx >= 0 && idx < stack->size);
     ref tmp = stack->refs[idx];
     stack->refs[idx] = stack->refs[stack->size - 1];
@@ -2641,7 +2641,7 @@ ref_stack_swap_top(ref_stack *stack, Py_ssize_t off)
 }
 
 static ref
-ref_stack_at(ref_stack *stack, Py_ssize_t idx)
+ref_stack_at(ref_stack *stack, Ty_ssize_t idx)
 {
     assert(idx >= 0 && idx < stack->size);
     return stack->refs[idx];
@@ -2657,7 +2657,7 @@ static void
 ref_stack_fini(ref_stack *stack)
 {
     if (stack->refs != NULL) {
-        PyMem_Free(stack->refs);
+        TyMem_Free(stack->refs);
     }
     stack->refs = NULL;
     stack->capacity = 0;
@@ -2676,7 +2676,7 @@ typedef enum {
 static void
 kill_local(uint8_t *instr_flags, ref_stack *refs, int local)
 {
-    for (Py_ssize_t i = 0; i < refs->size; i++) {
+    for (Ty_ssize_t i = 0; i < refs->size; i++) {
         ref r = ref_stack_at(refs, i);
         if (r.local == local) {
             assert(r.instr >= 0);
@@ -2696,7 +2696,7 @@ store_local(uint8_t *instr_flags, ref_stack *refs, int local, ref r)
 
 static void
 load_fast_push_block(basicblock ***sp, basicblock *target,
-                     Py_ssize_t start_depth)
+                     Ty_ssize_t start_depth)
 {
     assert(target->b_startdepth >= 0 && target->b_startdepth == start_depth);
     if (!target->b_visited) {
@@ -2750,12 +2750,12 @@ optimize_load_fast(cfg_builder *g)
     int max_instrs = 0;
     basicblock *entryblock = g->g_entryblock;
     for (basicblock *b = entryblock; b != NULL; b = b->b_next) {
-        max_instrs = Py_MAX(max_instrs, b->b_iused);
+        max_instrs = Ty_MAX(max_instrs, b->b_iused);
     }
     size_t instr_flags_size = max_instrs * sizeof(uint8_t);
-    uint8_t *instr_flags = PyMem_Malloc(instr_flags_size);
+    uint8_t *instr_flags = TyMem_Malloc(instr_flags_size);
     if (instr_flags == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return ERROR;
     }
     basicblock **blocks = make_cfg_traversal_stack(entryblock);
@@ -2849,7 +2849,7 @@ optimize_load_fast(cfg_builder *g)
                 // Opcodes that shuffle values on the stack
                 case COPY: {
                     assert(oparg > 0);
-                    Py_ssize_t idx = refs.size - oparg;
+                    Ty_ssize_t idx = refs.size - oparg;
                     ref r = ref_stack_at(&refs, idx);
                     PUSH_REF(r.instr, r.local);
                     break;
@@ -2991,7 +2991,7 @@ optimize_load_fast(cfg_builder *g)
 
         // Mark instructions that produce values that are on the stack at the
         // end of the basic block
-        for (Py_ssize_t i = 0; i < refs.size; i++) {
+        for (Ty_ssize_t i = 0; i < refs.size; i++) {
             ref r = ref_stack_at(&refs, i);
             if (r.instr != -1) {
                 instr_flags[r.instr] |= REF_UNCONSUMED;
@@ -3022,8 +3022,8 @@ optimize_load_fast(cfg_builder *g)
 
 done:
     ref_stack_fini(&refs);
-    PyMem_Free(instr_flags);
-    PyMem_Free(blocks);
+    TyMem_Free(instr_flags);
+    TyMem_Free(blocks);
     return status;
 }
 
@@ -3097,12 +3097,12 @@ static int
 fast_scan_many_locals(basicblock *entryblock, int nlocals)
 {
     assert(nlocals > 64);
-    Py_ssize_t *states = PyMem_Calloc(nlocals - 64, sizeof(Py_ssize_t));
+    Ty_ssize_t *states = TyMem_Calloc(nlocals - 64, sizeof(Ty_ssize_t));
     if (states == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return ERROR;
     }
-    Py_ssize_t blocknum = 0;
+    Ty_ssize_t blocknum = 0;
     // state[i - 64] == blocknum if local i is guaranteed to
     // be initialized, i.e., if it has had a previous LOAD_FAST or
     // STORE_FAST within that basicblock (not followed by
@@ -3132,32 +3132,32 @@ fast_scan_many_locals(basicblock *entryblock, int nlocals)
                     }
                     states[arg - 64] = blocknum;
                     break;
-                    Py_UNREACHABLE();
+                    Ty_UNREACHABLE();
             }
         }
     }
-    PyMem_Free(states);
+    TyMem_Free(states);
     return SUCCESS;
 }
 
 static int
-remove_unused_consts(basicblock *entryblock, PyObject *consts)
+remove_unused_consts(basicblock *entryblock, TyObject *consts)
 {
-    assert(PyList_CheckExact(consts));
-    Py_ssize_t nconsts = PyList_GET_SIZE(consts);
+    assert(TyList_CheckExact(consts));
+    Ty_ssize_t nconsts = TyList_GET_SIZE(consts);
     if (nconsts == 0) {
         return SUCCESS;  /* nothing to do */
     }
 
-    Py_ssize_t *index_map = NULL;
-    Py_ssize_t *reverse_index_map = NULL;
+    Ty_ssize_t *index_map = NULL;
+    Ty_ssize_t *reverse_index_map = NULL;
     int err = ERROR;
 
-    index_map = PyMem_Malloc(nconsts * sizeof(Py_ssize_t));
+    index_map = TyMem_Malloc(nconsts * sizeof(Ty_ssize_t));
     if (index_map == NULL) {
         goto end;
     }
-    for (Py_ssize_t i = 1; i < nconsts; i++) {
+    for (Ty_ssize_t i = 1; i < nconsts; i++) {
         index_map[i] = -1;
     }
     // The first constant may be docstring; keep it always.
@@ -3175,8 +3175,8 @@ remove_unused_consts(basicblock *entryblock, PyObject *consts)
     }
     /* now index_map[i] == i if consts[i] is used, -1 otherwise */
     /* condense consts */
-    Py_ssize_t n_used_consts = 0;
-    for (Py_ssize_t i = 0; i < nconsts; i++) {
+    Ty_ssize_t n_used_consts = 0;
+    for (Ty_ssize_t i = 0; i < nconsts; i++) {
         if (index_map[i] != -1) {
             assert(index_map[i] == i);
             index_map[n_used_consts++] = index_map[i];
@@ -3190,29 +3190,29 @@ remove_unused_consts(basicblock *entryblock, PyObject *consts)
 
     /* move all used consts to the beginning of the consts list */
     assert(n_used_consts < nconsts);
-    for (Py_ssize_t i = 0; i < n_used_consts; i++) {
-        Py_ssize_t old_index = index_map[i];
+    for (Ty_ssize_t i = 0; i < n_used_consts; i++) {
+        Ty_ssize_t old_index = index_map[i];
         assert(i <= old_index && old_index < nconsts);
         if (i != old_index) {
-            PyObject *value = PyList_GET_ITEM(consts, index_map[i]);
+            TyObject *value = TyList_GET_ITEM(consts, index_map[i]);
             assert(value != NULL);
-            PyList_SetItem(consts, i, Py_NewRef(value));
+            TyList_SetItem(consts, i, Ty_NewRef(value));
         }
     }
 
     /* truncate the consts list at its new size */
-    if (PyList_SetSlice(consts, n_used_consts, nconsts, NULL) < 0) {
+    if (TyList_SetSlice(consts, n_used_consts, nconsts, NULL) < 0) {
         goto end;
     }
     /* adjust const indices in the bytecode */
-    reverse_index_map = PyMem_Malloc(nconsts * sizeof(Py_ssize_t));
+    reverse_index_map = TyMem_Malloc(nconsts * sizeof(Ty_ssize_t));
     if (reverse_index_map == NULL) {
         goto end;
     }
-    for (Py_ssize_t i = 0; i < nconsts; i++) {
+    for (Ty_ssize_t i = 0; i < nconsts; i++) {
         reverse_index_map[i] = -1;
     }
-    for (Py_ssize_t i = 0; i < n_used_consts; i++) {
+    for (Ty_ssize_t i = 0; i < n_used_consts; i++) {
         assert(index_map[i] != -1);
         assert(reverse_index_map[index_map[i]] == -1);
         reverse_index_map[index_map[i]] = i;
@@ -3232,8 +3232,8 @@ remove_unused_consts(basicblock *entryblock, PyObject *consts)
 
     err = SUCCESS;
 end:
-    PyMem_Free(index_map);
-    PyMem_Free(reverse_index_map);
+    TyMem_Free(index_map);
+    TyMem_Free(reverse_index_map);
     return err;
 }
 
@@ -3284,7 +3284,7 @@ add_checks_for_loads_of_uninitialized_variables(basicblock *entryblock,
         b->b_visited = 0;
         scan_block_for_locals(b, &sp);
     }
-    PyMem_Free(stack);
+    TyMem_Free(stack);
     return SUCCESS;
 }
 
@@ -3316,7 +3316,7 @@ mark_warm(basicblock *entryblock) {
             }
         }
     }
-    PyMem_Free(stack);
+    TyMem_Free(stack);
     return SUCCESS;
 }
 
@@ -3365,7 +3365,7 @@ mark_cold(basicblock *entryblock) {
             }
         }
     }
-    PyMem_Free(stack);
+    TyMem_Free(stack);
     return SUCCESS;
 }
 
@@ -3623,7 +3623,7 @@ resolve_line_numbers(cfg_builder *g, int firstlineno)
 }
 
 int
-_PyCfg_OptimizeCodeUnit(cfg_builder *g, PyObject *consts, PyObject *const_cache,
+_PyCfg_OptimizeCodeUnit(cfg_builder *g, TyObject *consts, TyObject *const_cache,
                         int nlocals, int nparams, int firstlineno)
 {
     assert(cfg_builder_check(g));
@@ -3651,39 +3651,39 @@ _PyCfg_OptimizeCodeUnit(cfg_builder *g, PyObject *consts, PyObject *const_cache,
 static int *
 build_cellfixedoffsets(_PyCompile_CodeUnitMetadata *umd)
 {
-    int nlocals = (int)PyDict_GET_SIZE(umd->u_varnames);
-    int ncellvars = (int)PyDict_GET_SIZE(umd->u_cellvars);
-    int nfreevars = (int)PyDict_GET_SIZE(umd->u_freevars);
+    int nlocals = (int)TyDict_GET_SIZE(umd->u_varnames);
+    int ncellvars = (int)TyDict_GET_SIZE(umd->u_cellvars);
+    int nfreevars = (int)TyDict_GET_SIZE(umd->u_freevars);
 
     int noffsets = ncellvars + nfreevars;
-    int *fixed = PyMem_New(int, noffsets);
+    int *fixed = TyMem_New(int, noffsets);
     if (fixed == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     for (int i = 0; i < noffsets; i++) {
         fixed[i] = nlocals + i;
     }
 
-    PyObject *varname, *cellindex;
-    Py_ssize_t pos = 0;
-    while (PyDict_Next(umd->u_cellvars, &pos, &varname, &cellindex)) {
-        PyObject *varindex;
-        if (PyDict_GetItemRef(umd->u_varnames, varname, &varindex) < 0) {
+    TyObject *varname, *cellindex;
+    Ty_ssize_t pos = 0;
+    while (TyDict_Next(umd->u_cellvars, &pos, &varname, &cellindex)) {
+        TyObject *varindex;
+        if (TyDict_GetItemRef(umd->u_varnames, varname, &varindex) < 0) {
             goto error;
         }
         if (varindex == NULL) {
             continue;
         }
 
-        int argoffset = PyLong_AsInt(varindex);
-        Py_DECREF(varindex);
-        if (argoffset == -1 && PyErr_Occurred()) {
+        int argoffset = TyLong_AsInt(varindex);
+        Ty_DECREF(varindex);
+        if (argoffset == -1 && TyErr_Occurred()) {
             goto error;
         }
 
-        int oldindex = PyLong_AsInt(cellindex);
-        if (oldindex == -1 && PyErr_Occurred()) {
+        int oldindex = TyLong_AsInt(cellindex);
+        if (oldindex == -1 && TyErr_Occurred()) {
             goto error;
         }
         fixed[oldindex] = argoffset;
@@ -3691,7 +3691,7 @@ build_cellfixedoffsets(_PyCompile_CodeUnitMetadata *umd)
     return fixed;
 
 error:
-    PyMem_Free(fixed);
+    TyMem_Free(fixed);
     return NULL;
 }
 
@@ -3708,7 +3708,7 @@ insert_prefix_instructions(_PyCompile_CodeUnitMetadata *umd, basicblock *entrybl
     if (IS_GENERATOR(code_flags)) {
         /* Note that RETURN_GENERATOR + POP_TOP have a net stack effect
          * of 0. This is because RETURN_GENERATOR pushes an element
-         * with _PyFrame_StackPush before switching stacks.
+         * with _TyFrame_StackPush before switching stacks.
          */
 
         location loc = LOCATION(umd->u_firstlineno, umd->u_firstlineno, -1, -1);
@@ -3729,15 +3729,15 @@ insert_prefix_instructions(_PyCompile_CodeUnitMetadata *umd, basicblock *entrybl
     }
 
     /* Set up cells for any variable that escapes, to be put in a closure. */
-    const int ncellvars = (int)PyDict_GET_SIZE(umd->u_cellvars);
+    const int ncellvars = (int)TyDict_GET_SIZE(umd->u_cellvars);
     if (ncellvars) {
         // umd->u_cellvars has the cells out of order so we sort them
         // before adding the MAKE_CELL instructions.  Note that we
         // adjust for arg cells, which come first.
-        const int nvars = ncellvars + (int)PyDict_GET_SIZE(umd->u_varnames);
-        int *sorted = PyMem_RawCalloc(nvars, sizeof(int));
+        const int nvars = ncellvars + (int)TyDict_GET_SIZE(umd->u_varnames);
+        int *sorted = TyMem_RawCalloc(nvars, sizeof(int));
         if (sorted == NULL) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return ERROR;
         }
         for (int i = 0; i < ncellvars; i++) {
@@ -3756,12 +3756,12 @@ insert_prefix_instructions(_PyCompile_CodeUnitMetadata *umd, basicblock *entrybl
                 .i_target = NULL,
             };
             if (basicblock_insert_instruction(entryblock, ncellsused, &make_cell) < 0) {
-                PyMem_RawFree(sorted);
+                TyMem_RawFree(sorted);
                 return ERROR;
             }
             ncellsused += 1;
         }
-        PyMem_RawFree(sorted);
+        TyMem_RawFree(sorted);
     }
 
     if (nfreevars) {
@@ -3780,9 +3780,9 @@ insert_prefix_instructions(_PyCompile_CodeUnitMetadata *umd, basicblock *entrybl
 static int
 fix_cell_offsets(_PyCompile_CodeUnitMetadata *umd, basicblock *entryblock, int *fixedmap)
 {
-    int nlocals = (int)PyDict_GET_SIZE(umd->u_varnames);
-    int ncellvars = (int)PyDict_GET_SIZE(umd->u_cellvars);
-    int nfreevars = (int)PyDict_GET_SIZE(umd->u_freevars);
+    int nlocals = (int)TyDict_GET_SIZE(umd->u_varnames);
+    int ncellvars = (int)TyDict_GET_SIZE(umd->u_cellvars);
+    int nfreevars = (int)TyDict_GET_SIZE(umd->u_freevars);
     int noffsets = ncellvars + nfreevars;
 
     // First deal with duplicates (arg cells).
@@ -3825,12 +3825,12 @@ fix_cell_offsets(_PyCompile_CodeUnitMetadata *umd, basicblock *entryblock, int *
 static int
 prepare_localsplus(_PyCompile_CodeUnitMetadata *umd, cfg_builder *g, int code_flags)
 {
-    assert(PyDict_GET_SIZE(umd->u_varnames) < INT_MAX);
-    assert(PyDict_GET_SIZE(umd->u_cellvars) < INT_MAX);
-    assert(PyDict_GET_SIZE(umd->u_freevars) < INT_MAX);
-    int nlocals = (int)PyDict_GET_SIZE(umd->u_varnames);
-    int ncellvars = (int)PyDict_GET_SIZE(umd->u_cellvars);
-    int nfreevars = (int)PyDict_GET_SIZE(umd->u_freevars);
+    assert(TyDict_GET_SIZE(umd->u_varnames) < INT_MAX);
+    assert(TyDict_GET_SIZE(umd->u_cellvars) < INT_MAX);
+    assert(TyDict_GET_SIZE(umd->u_freevars) < INT_MAX);
+    int nlocals = (int)TyDict_GET_SIZE(umd->u_varnames);
+    int ncellvars = (int)TyDict_GET_SIZE(umd->u_cellvars);
+    int nfreevars = (int)TyDict_GET_SIZE(umd->u_freevars);
     assert(INT_MAX - nlocals - ncellvars > 0);
     assert(INT_MAX - nlocals - ncellvars - nfreevars > 0);
     int nlocalsplus = nlocals + ncellvars + nfreevars;
@@ -3841,12 +3841,12 @@ prepare_localsplus(_PyCompile_CodeUnitMetadata *umd, cfg_builder *g, int code_fl
 
     // This must be called before fix_cell_offsets().
     if (insert_prefix_instructions(umd, g->g_entryblock, cellfixedoffsets, nfreevars, code_flags)) {
-        PyMem_Free(cellfixedoffsets);
+        TyMem_Free(cellfixedoffsets);
         return ERROR;
     }
 
     int numdropped = fix_cell_offsets(umd, g->g_entryblock, cellfixedoffsets);
-    PyMem_Free(cellfixedoffsets);  // At this point we're done with it.
+    TyMem_Free(cellfixedoffsets);  // At this point we're done with it.
     cellfixedoffsets = NULL;
     if (numdropped < 0) {
         return ERROR;
@@ -4045,7 +4045,7 @@ PyCompile_OpcodeStackEffect(int opcode, int oparg)
  * a CFG, optimizes it and converts back to an instruction list.
  */
 
-static PyObject *
+static TyObject *
 cfg_to_instruction_sequence(cfg_builder *g)
 {
     _PyInstructionSequence *seq = (_PyInstructionSequence *)_PyInstructionSequence_New();
@@ -4056,22 +4056,22 @@ cfg_to_instruction_sequence(cfg_builder *g)
         PyInstructionSequence_Fini(seq);
         return NULL;
     }
-    return (PyObject*)seq;
+    return (TyObject*)seq;
 }
 
-PyObject *
-_PyCompile_OptimizeCfg(PyObject *seq, PyObject *consts, int nlocals)
+TyObject *
+_PyCompile_OptimizeCfg(TyObject *seq, TyObject *consts, int nlocals)
 {
     if (!_PyInstructionSequence_Check(seq)) {
-        PyErr_SetString(PyExc_ValueError, "expected an instruction sequence");
+        TyErr_SetString(TyExc_ValueError, "expected an instruction sequence");
         return NULL;
     }
-    PyObject *const_cache = PyDict_New();
+    TyObject *const_cache = TyDict_New();
     if (const_cache == NULL) {
         return NULL;
     }
 
-    PyObject *res = NULL;
+    TyObject *res = NULL;
     cfg_builder *g = _PyCfg_FromInstructionSequence((_PyInstructionSequence*)seq);
     if (g == NULL) {
         goto error;
@@ -4092,7 +4092,7 @@ _PyCompile_OptimizeCfg(PyObject *seq, PyObject *consts, int nlocals)
 
     res = cfg_to_instruction_sequence(g);
 error:
-    Py_DECREF(const_cache);
+    Ty_DECREF(const_cache);
     _PyCfgBuilder_Free(g);
     return res;
 }

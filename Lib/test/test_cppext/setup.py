@@ -77,7 +77,7 @@ def main():
         # CC env var overrides sysconfig CC variable in setuptools
         os.environ['CC'] = cmd
 
-    # Define Py_LIMITED_API macro
+    # Define Ty_LIMITED_API macro
     if limited:
         version = sys.hexversion
         cppflags.append(f'-DPy_LIMITED_API={version:#x}')

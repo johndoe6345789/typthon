@@ -14,7 +14,7 @@
 ENCODER(big5)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
 
         if (c < 0x80) {
@@ -46,7 +46,7 @@ DECODER(big5)
 {
     while (inleft > 0) {
         unsigned char c = INBYTE1;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c < 0x80) {
             OUTCHAR(c);
@@ -73,7 +73,7 @@ DECODER(big5)
 ENCODER(cp950)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
 
         if (c < 0x80) {
@@ -105,7 +105,7 @@ DECODER(cp950)
 {
     while (inleft > 0) {
         unsigned char c = INBYTE1;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c < 0x80) {
             OUTCHAR(c);

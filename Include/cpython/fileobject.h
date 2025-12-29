@@ -1,16 +1,16 @@
-#ifndef Py_CPYTHON_FILEOBJECT_H
+#ifndef Ty_CPYTHON_FILEOBJECT_H
 #  error "this header file must not be included directly"
 #endif
 
-PyAPI_FUNC(char *) Py_UniversalNewlineFgets(char *, int, FILE*, PyObject *);
+PyAPI_FUNC(char *) Ty_UniversalNewlineFgets(char *, int, FILE*, TyObject *);
 
 /* The std printer acts as a preliminary sys.stderr until the new io
    infrastructure is in place. */
-PyAPI_FUNC(PyObject *) PyFile_NewStdPrinter(int);
-PyAPI_DATA(PyTypeObject) PyStdPrinter_Type;
+PyAPI_FUNC(TyObject *) TyFile_NewStdPrinter(int);
+PyAPI_DATA(TyTypeObject) PyStdPrinter_Type;
 
-typedef PyObject * (*Py_OpenCodeHookFunction)(PyObject *, void *);
+typedef TyObject * (*Ty_OpenCodeHookFunction)(TyObject *, void *);
 
-PyAPI_FUNC(PyObject *) PyFile_OpenCode(const char *utf8path);
-PyAPI_FUNC(PyObject *) PyFile_OpenCodeObject(PyObject *path);
-PyAPI_FUNC(int) PyFile_SetOpenCodeHook(Py_OpenCodeHookFunction hook, void *userData);
+PyAPI_FUNC(TyObject *) TyFile_OpenCode(const char *utf8path);
+PyAPI_FUNC(TyObject *) TyFile_OpenCodeObject(TyObject *path);
+PyAPI_FUNC(int) TyFile_SetOpenCodeHook(Ty_OpenCodeHookFunction hook, void *userData);

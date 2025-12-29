@@ -25,7 +25,7 @@ TMP_PREFIX = 'test_python_'
 WORK_DIR_PREFIX = TMP_PREFIX
 WORKER_WORK_DIR_PREFIX = WORK_DIR_PREFIX + 'worker_'
 
-# bpo-38203: Maximum delay in seconds to exit Python (call Py_Finalize()).
+# bpo-38203: Maximum delay in seconds to exit Python (call Ty_Finalize()).
 # Used to protect against threading._shutdown() hang.
 # Must be smaller than buildbot "1200 seconds without output" limit.
 EXIT_TIMEOUT = 120.0
@@ -307,7 +307,7 @@ def get_build_info():
     build = []
 
     # --disable-gil
-    if sysconfig.get_config_var('Py_GIL_DISABLED'):
+    if sysconfig.get_config_var('Ty_GIL_DISABLED'):
         if not sys.flags.ignore_environment:
             PYTHON_GIL = os.environ.get('PYTHON_GIL', None)
             if PYTHON_GIL:
@@ -470,7 +470,7 @@ def exit_timeout():
     try:
         yield
     except SystemExit as exc:
-        # bpo-38203: Python can hang at exit in Py_Finalize(), especially
+        # bpo-38203: Python can hang at exit in Ty_Finalize(), especially
         # on threading._shutdown() call: put a timeout
         if threading_helper.can_start_thread:
             faulthandler.dump_traceback_later(EXIT_TIMEOUT, exit=True)

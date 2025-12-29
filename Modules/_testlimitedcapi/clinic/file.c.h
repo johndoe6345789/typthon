@@ -10,23 +10,23 @@ PyDoc_STRVAR(_testcapi_pyfile_getline__doc__,
 #define _TESTCAPI_PYFILE_GETLINE_METHODDEF    \
     {"pyfile_getline", (PyCFunction)(void(*)(void))_testcapi_pyfile_getline, METH_FASTCALL, _testcapi_pyfile_getline__doc__},
 
-static PyObject *
-_testcapi_pyfile_getline_impl(PyObject *module, PyObject *file, int n);
+static TyObject *
+_testcapi_pyfile_getline_impl(TyObject *module, TyObject *file, int n);
 
-static PyObject *
-_testcapi_pyfile_getline(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_pyfile_getline(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *file;
+    TyObject *return_value = NULL;
+    TyObject *file;
     int n;
 
     if (nargs != 2) {
-        PyErr_Format(PyExc_TypeError, "pyfile_getline expected 2 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "pyfile_getline expected 2 arguments, got %zd", nargs);
         goto exit;
     }
     file = args[0];
-    n = PyLong_AsInt(args[1]);
-    if (n == -1 && PyErr_Occurred()) {
+    n = TyLong_AsInt(args[1]);
+    if (n == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _testcapi_pyfile_getline_impl(module, file, n);
@@ -43,26 +43,26 @@ PyDoc_STRVAR(_testcapi_pyfile_writeobject__doc__,
 #define _TESTCAPI_PYFILE_WRITEOBJECT_METHODDEF    \
     {"pyfile_writeobject", (PyCFunction)(void(*)(void))_testcapi_pyfile_writeobject, METH_FASTCALL, _testcapi_pyfile_writeobject__doc__},
 
-static PyObject *
-_testcapi_pyfile_writeobject_impl(PyObject *module, PyObject *obj,
-                                  PyObject *file, int flags);
+static TyObject *
+_testcapi_pyfile_writeobject_impl(TyObject *module, TyObject *obj,
+                                  TyObject *file, int flags);
 
-static PyObject *
-_testcapi_pyfile_writeobject(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_pyfile_writeobject(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *obj;
-    PyObject *file;
+    TyObject *return_value = NULL;
+    TyObject *obj;
+    TyObject *file;
     int flags;
 
     if (nargs != 3) {
-        PyErr_Format(PyExc_TypeError, "pyfile_writeobject expected 3 arguments, got %zd", nargs);
+        TyErr_Format(TyExc_TypeError, "pyfile_writeobject expected 3 arguments, got %zd", nargs);
         goto exit;
     }
     obj = args[0];
     file = args[1];
-    flags = PyLong_AsInt(args[2]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[2]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _testcapi_pyfile_writeobject_impl(module, obj, file, flags);

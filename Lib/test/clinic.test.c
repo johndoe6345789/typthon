@@ -14,9 +14,9 @@ class Test "TestObj *" "TestType"
 test_object_converter
 
     a: object
-    b: object(converter="PyUnicode_FSConverter")
-    c: object(subclass_of="&PyUnicode_Type")
-    d: object(type="PyUnicode_Object *")
+    b: object(converter="TyUnicode_FSConverter")
+    c: object(subclass_of="&TyUnicode_Type")
+    d: object(type="TyUnicode_Object *")
     /
 
 [clinic start generated code]*/
@@ -29,41 +29,41 @@ PyDoc_STRVAR(test_object_converter__doc__,
 #define TEST_OBJECT_CONVERTER_METHODDEF    \
     {"test_object_converter", _PyCFunction_CAST(test_object_converter), METH_FASTCALL, test_object_converter__doc__},
 
-static PyObject *
-test_object_converter_impl(PyObject *module, PyObject *a, PyObject *b,
-                           PyObject *c, PyUnicode_Object *d);
+static TyObject *
+test_object_converter_impl(TyObject *module, TyObject *a, TyObject *b,
+                           TyObject *c, TyUnicode_Object *d);
 
-static PyObject *
-test_object_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_object_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
-    PyObject *b;
-    PyObject *c;
-    PyUnicode_Object *d;
+    TyObject *return_value = NULL;
+    TyObject *a;
+    TyObject *b;
+    TyObject *c;
+    TyUnicode_Object *d;
 
-    if (!_PyArg_CheckPositional("test_object_converter", nargs, 4, 4)) {
+    if (!_TyArg_CheckPositional("test_object_converter", nargs, 4, 4)) {
         goto exit;
     }
     a = args[0];
-    if (!PyUnicode_FSConverter(args[1], &b)) {
+    if (!TyUnicode_FSConverter(args[1], &b)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[2])) {
-        _PyArg_BadArgument("test_object_converter", "argument 3", "str", args[2]);
+    if (!TyUnicode_Check(args[2])) {
+        _TyArg_BadArgument("test_object_converter", "argument 3", "str", args[2]);
         goto exit;
     }
     c = args[2];
-    d = (PyUnicode_Object *)args[3];
+    d = (TyUnicode_Object *)args[3];
     return_value = test_object_converter_impl(module, a, b, c, d);
 
 exit:
     return return_value;
 }
 
-static PyObject *
-test_object_converter_impl(PyObject *module, PyObject *a, PyObject *b,
-                           PyObject *c, PyUnicode_Object *d)
+static TyObject *
+test_object_converter_impl(TyObject *module, TyObject *a, TyObject *b,
+                           TyObject *c, TyUnicode_Object *d)
 /*[clinic end generated code: output=886f4f9b598726b6 input=005e6a8a711a869b]*/
 
 
@@ -81,41 +81,41 @@ PyDoc_STRVAR(cloned__doc__,
 #define CLONED_METHODDEF    \
     {"cloned", _PyCFunction_CAST(cloned), METH_FASTCALL, cloned__doc__},
 
-static PyObject *
-cloned_impl(PyObject *module, PyObject *a, PyObject *b, PyObject *c,
-            PyUnicode_Object *d);
+static TyObject *
+cloned_impl(TyObject *module, TyObject *a, TyObject *b, TyObject *c,
+            TyUnicode_Object *d);
 
-static PyObject *
-cloned(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+cloned(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
-    PyObject *b;
-    PyObject *c;
-    PyUnicode_Object *d;
+    TyObject *return_value = NULL;
+    TyObject *a;
+    TyObject *b;
+    TyObject *c;
+    TyUnicode_Object *d;
 
-    if (!_PyArg_CheckPositional("cloned", nargs, 4, 4)) {
+    if (!_TyArg_CheckPositional("cloned", nargs, 4, 4)) {
         goto exit;
     }
     a = args[0];
-    if (!PyUnicode_FSConverter(args[1], &b)) {
+    if (!TyUnicode_FSConverter(args[1], &b)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[2])) {
-        _PyArg_BadArgument("cloned", "argument 3", "str", args[2]);
+    if (!TyUnicode_Check(args[2])) {
+        _TyArg_BadArgument("cloned", "argument 3", "str", args[2]);
         goto exit;
     }
     c = args[2];
-    d = (PyUnicode_Object *)args[3];
+    d = (TyUnicode_Object *)args[3];
     return_value = cloned_impl(module, a, b, c, d);
 
 exit:
     return return_value;
 }
 
-static PyObject *
-cloned_impl(PyObject *module, PyObject *a, PyObject *b, PyObject *c,
-            PyUnicode_Object *d)
+static TyObject *
+cloned_impl(TyObject *module, TyObject *a, TyObject *b, TyObject *c,
+            TyUnicode_Object *d)
 /*[clinic end generated code: output=026b483e27c38065 input=0543614019d6fcc7]*/
 
 
@@ -135,8 +135,8 @@ PyDoc_STRVAR(test_object_converter_one_arg__doc__,
 #define TEST_OBJECT_CONVERTER_ONE_ARG_METHODDEF    \
     {"test_object_converter_one_arg", (PyCFunction)test_object_converter_one_arg, METH_O, test_object_converter_one_arg__doc__},
 
-static PyObject *
-test_object_converter_one_arg(PyObject *module, PyObject *a)
+static TyObject *
+test_object_converter_one_arg(TyObject *module, TyObject *a)
 /*[clinic end generated code: output=6da755f8502139df input=d635d92a421f1ca3]*/
 
 
@@ -157,17 +157,17 @@ PyDoc_STRVAR(test_objects_converter__doc__,
 #define TEST_OBJECTS_CONVERTER_METHODDEF    \
     {"test_objects_converter", _PyCFunction_CAST(test_objects_converter), METH_FASTCALL, test_objects_converter__doc__},
 
-static PyObject *
-test_objects_converter_impl(PyObject *module, PyObject *a, PyObject *b);
+static TyObject *
+test_objects_converter_impl(TyObject *module, TyObject *a, TyObject *b);
 
-static PyObject *
-test_objects_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_objects_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
-    PyObject *b = NULL;
+    TyObject *return_value = NULL;
+    TyObject *a;
+    TyObject *b = NULL;
 
-    if (!_PyArg_CheckPositional("test_objects_converter", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("test_objects_converter", nargs, 1, 2)) {
         goto exit;
     }
     a = args[0];
@@ -182,23 +182,23 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_objects_converter_impl(PyObject *module, PyObject *a, PyObject *b)
+static TyObject *
+test_objects_converter_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=fc26328b79d46bb7 input=4cbb3d9edd2a36f3]*/
 
 
 /*[clinic input]
 test_object_converter_subclass_of
 
-    a: object(subclass_of="&PyLong_Type")
-    b: object(subclass_of="&PyTuple_Type")
-    c: object(subclass_of="&PyList_Type")
-    d: object(subclass_of="&PySet_Type")
-    e: object(subclass_of="&PyFrozenSet_Type")
-    f: object(subclass_of="&PyDict_Type")
-    g: object(subclass_of="&PyUnicode_Type")
-    h: object(subclass_of="&PyBytes_Type")
-    i: object(subclass_of="&PyByteArray_Type")
+    a: object(subclass_of="&TyLong_Type")
+    b: object(subclass_of="&TyTuple_Type")
+    c: object(subclass_of="&TyList_Type")
+    d: object(subclass_of="&TySet_Type")
+    e: object(subclass_of="&TyFrozenSet_Type")
+    f: object(subclass_of="&TyDict_Type")
+    g: object(subclass_of="&TyUnicode_Type")
+    h: object(subclass_of="&TyBytes_Type")
+    i: object(subclass_of="&TyByteArray_Type")
     j: object(subclass_of="&MyType")
     /
 
@@ -213,77 +213,77 @@ PyDoc_STRVAR(test_object_converter_subclass_of__doc__,
 #define TEST_OBJECT_CONVERTER_SUBCLASS_OF_METHODDEF    \
     {"test_object_converter_subclass_of", _PyCFunction_CAST(test_object_converter_subclass_of), METH_FASTCALL, test_object_converter_subclass_of__doc__},
 
-static PyObject *
-test_object_converter_subclass_of_impl(PyObject *module, PyObject *a,
-                                       PyObject *b, PyObject *c, PyObject *d,
-                                       PyObject *e, PyObject *f, PyObject *g,
-                                       PyObject *h, PyObject *i, PyObject *j);
+static TyObject *
+test_object_converter_subclass_of_impl(TyObject *module, TyObject *a,
+                                       TyObject *b, TyObject *c, TyObject *d,
+                                       TyObject *e, TyObject *f, TyObject *g,
+                                       TyObject *h, TyObject *i, TyObject *j);
 
-static PyObject *
-test_object_converter_subclass_of(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_object_converter_subclass_of(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
-    PyObject *b;
-    PyObject *c;
-    PyObject *d;
-    PyObject *e;
-    PyObject *f;
-    PyObject *g;
-    PyObject *h;
-    PyObject *i;
-    PyObject *j;
+    TyObject *return_value = NULL;
+    TyObject *a;
+    TyObject *b;
+    TyObject *c;
+    TyObject *d;
+    TyObject *e;
+    TyObject *f;
+    TyObject *g;
+    TyObject *h;
+    TyObject *i;
+    TyObject *j;
 
-    if (!_PyArg_CheckPositional("test_object_converter_subclass_of", nargs, 10, 10)) {
+    if (!_TyArg_CheckPositional("test_object_converter_subclass_of", nargs, 10, 10)) {
         goto exit;
     }
-    if (!PyLong_Check(args[0])) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 1", "int", args[0]);
+    if (!TyLong_Check(args[0])) {
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 1", "int", args[0]);
         goto exit;
     }
     a = args[0];
-    if (!PyTuple_Check(args[1])) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 2", "tuple", args[1]);
+    if (!TyTuple_Check(args[1])) {
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 2", "tuple", args[1]);
         goto exit;
     }
     b = args[1];
-    if (!PyList_Check(args[2])) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 3", "list", args[2]);
+    if (!TyList_Check(args[2])) {
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 3", "list", args[2]);
         goto exit;
     }
     c = args[2];
-    if (!PySet_Check(args[3])) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 4", "set", args[3]);
+    if (!TySet_Check(args[3])) {
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 4", "set", args[3]);
         goto exit;
     }
     d = args[3];
-    if (!PyFrozenSet_Check(args[4])) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 5", "frozenset", args[4]);
+    if (!TyFrozenSet_Check(args[4])) {
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 5", "frozenset", args[4]);
         goto exit;
     }
     e = args[4];
-    if (!PyDict_Check(args[5])) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 6", "dict", args[5]);
+    if (!TyDict_Check(args[5])) {
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 6", "dict", args[5]);
         goto exit;
     }
     f = args[5];
-    if (!PyUnicode_Check(args[6])) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 7", "str", args[6]);
+    if (!TyUnicode_Check(args[6])) {
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 7", "str", args[6]);
         goto exit;
     }
     g = args[6];
-    if (!PyBytes_Check(args[7])) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 8", "bytes", args[7]);
+    if (!TyBytes_Check(args[7])) {
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 8", "bytes", args[7]);
         goto exit;
     }
     h = args[7];
-    if (!PyByteArray_Check(args[8])) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 9", "bytearray", args[8]);
+    if (!TyByteArray_Check(args[8])) {
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 9", "bytearray", args[8]);
         goto exit;
     }
     i = args[8];
     if (!PyObject_TypeCheck(args[9], &MyType)) {
-        _PyArg_BadArgument("test_object_converter_subclass_of", "argument 10", (&MyType)->tp_name, args[9]);
+        _TyArg_BadArgument("test_object_converter_subclass_of", "argument 10", (&MyType)->tp_name, args[9]);
         goto exit;
     }
     j = args[9];
@@ -293,11 +293,11 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_object_converter_subclass_of_impl(PyObject *module, PyObject *a,
-                                       PyObject *b, PyObject *c, PyObject *d,
-                                       PyObject *e, PyObject *f, PyObject *g,
-                                       PyObject *h, PyObject *i, PyObject *j)
+static TyObject *
+test_object_converter_subclass_of_impl(TyObject *module, TyObject *a,
+                                       TyObject *b, TyObject *c, TyObject *d,
+                                       TyObject *e, TyObject *f, TyObject *g,
+                                       TyObject *h, TyObject *i, TyObject *j)
 /*[clinic end generated code: output=e4b07c9a54479a40 input=31b06b772d5f983e]*/
 
 
@@ -317,17 +317,17 @@ PyDoc_STRVAR(test_PyBytesObject_converter__doc__,
 #define TEST_PYBYTESOBJECT_CONVERTER_METHODDEF    \
     {"test_PyBytesObject_converter", (PyCFunction)test_PyBytesObject_converter, METH_O, test_PyBytesObject_converter__doc__},
 
-static PyObject *
-test_PyBytesObject_converter_impl(PyObject *module, PyBytesObject *a);
+static TyObject *
+test_PyBytesObject_converter_impl(TyObject *module, PyBytesObject *a);
 
-static PyObject *
-test_PyBytesObject_converter(PyObject *module, PyObject *arg)
+static TyObject *
+test_PyBytesObject_converter(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     PyBytesObject *a;
 
-    if (!PyBytes_Check(arg)) {
-        _PyArg_BadArgument("test_PyBytesObject_converter", "argument", "bytes", arg);
+    if (!TyBytes_Check(arg)) {
+        _TyArg_BadArgument("test_PyBytesObject_converter", "argument", "bytes", arg);
         goto exit;
     }
     a = (PyBytesObject *)arg;
@@ -337,8 +337,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_PyBytesObject_converter_impl(PyObject *module, PyBytesObject *a)
+static TyObject *
+test_PyBytesObject_converter_impl(TyObject *module, PyBytesObject *a)
 /*[clinic end generated code: output=7539d628e6fceace input=12b10c7cb5750400]*/
 
 
@@ -358,17 +358,17 @@ PyDoc_STRVAR(test_PyByteArrayObject_converter__doc__,
 #define TEST_PYBYTEARRAYOBJECT_CONVERTER_METHODDEF    \
     {"test_PyByteArrayObject_converter", (PyCFunction)test_PyByteArrayObject_converter, METH_O, test_PyByteArrayObject_converter__doc__},
 
-static PyObject *
-test_PyByteArrayObject_converter_impl(PyObject *module, PyByteArrayObject *a);
+static TyObject *
+test_PyByteArrayObject_converter_impl(TyObject *module, PyByteArrayObject *a);
 
-static PyObject *
-test_PyByteArrayObject_converter(PyObject *module, PyObject *arg)
+static TyObject *
+test_PyByteArrayObject_converter(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     PyByteArrayObject *a;
 
-    if (!PyByteArray_Check(arg)) {
-        _PyArg_BadArgument("test_PyByteArrayObject_converter", "argument", "bytearray", arg);
+    if (!TyByteArray_Check(arg)) {
+        _TyArg_BadArgument("test_PyByteArrayObject_converter", "argument", "bytearray", arg);
         goto exit;
     }
     a = (PyByteArrayObject *)arg;
@@ -378,8 +378,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_PyByteArrayObject_converter_impl(PyObject *module, PyByteArrayObject *a)
+static TyObject *
+test_PyByteArrayObject_converter_impl(TyObject *module, PyByteArrayObject *a)
 /*[clinic end generated code: output=1245af9f5b3e355e input=5a657da535d194ae]*/
 
 
@@ -399,17 +399,17 @@ PyDoc_STRVAR(test_unicode_converter__doc__,
 #define TEST_UNICODE_CONVERTER_METHODDEF    \
     {"test_unicode_converter", (PyCFunction)test_unicode_converter, METH_O, test_unicode_converter__doc__},
 
-static PyObject *
-test_unicode_converter_impl(PyObject *module, PyObject *a);
+static TyObject *
+test_unicode_converter_impl(TyObject *module, TyObject *a);
 
-static PyObject *
-test_unicode_converter(PyObject *module, PyObject *arg)
+static TyObject *
+test_unicode_converter(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
+    TyObject *return_value = NULL;
+    TyObject *a;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("test_unicode_converter", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("test_unicode_converter", "argument", "str", arg);
         goto exit;
     }
     a = arg;
@@ -419,8 +419,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_unicode_converter_impl(PyObject *module, PyObject *a)
+static TyObject *
+test_unicode_converter_impl(TyObject *module, TyObject *a)
 /*[clinic end generated code: output=8c1625cc272c1f3d input=aa33612df92aa9c5]*/
 
 
@@ -442,18 +442,18 @@ PyDoc_STRVAR(test_bool_converter__doc__,
 #define TEST_BOOL_CONVERTER_METHODDEF    \
     {"test_bool_converter", _PyCFunction_CAST(test_bool_converter), METH_FASTCALL, test_bool_converter__doc__},
 
-static PyObject *
-test_bool_converter_impl(PyObject *module, int a, int b, int c);
+static TyObject *
+test_bool_converter_impl(TyObject *module, int a, int b, int c);
 
-static PyObject *
-test_bool_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_bool_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int a = 1;
     int b = 1;
     int c = 1;
 
-    if (!_PyArg_CheckPositional("test_bool_converter", nargs, 0, 3)) {
+    if (!_TyArg_CheckPositional("test_bool_converter", nargs, 0, 3)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -473,8 +473,8 @@ test_bool_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     if (nargs < 3) {
         goto skip_optional;
     }
-    c = PyLong_AsInt(args[2]);
-    if (c == -1 && PyErr_Occurred()) {
+    c = TyLong_AsInt(args[2]);
+    if (c == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -484,8 +484,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_bool_converter_impl(PyObject *module, int a, int b, int c)
+static TyObject *
+test_bool_converter_impl(TyObject *module, int a, int b, int c)
 /*[clinic end generated code: output=3190e46490de0644 input=939854fa9f248c60]*/
 
 
@@ -520,15 +520,15 @@ PyDoc_STRVAR(test_char_converter__doc__,
 #define TEST_CHAR_CONVERTER_METHODDEF    \
     {"test_char_converter", _PyCFunction_CAST(test_char_converter), METH_FASTCALL, test_char_converter__doc__},
 
-static PyObject *
-test_char_converter_impl(PyObject *module, char a, char b, char c, char d,
+static TyObject *
+test_char_converter_impl(TyObject *module, char a, char b, char c, char d,
                          char e, char f, char g, char h, char i, char j,
                          char k, char l, char m, char n);
 
-static PyObject *
-test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_char_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     char a = 'A';
     char b = '\x07';
     char c = '\x08';
@@ -544,385 +544,385 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     char m = '\x00';
     char n = '\xff';
 
-    if (!_PyArg_CheckPositional("test_char_converter", nargs, 0, 14)) {
+    if (!_TyArg_CheckPositional("test_char_converter", nargs, 0, 14)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[0])) {
-        if (PyBytes_GET_SIZE(args[0]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[0])) {
+        if (TyBytes_GET_SIZE(args[0]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 1 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[0]));
+                TyBytes_GET_SIZE(args[0]));
             goto exit;
         }
-        a = PyBytes_AS_STRING(args[0])[0];
+        a = TyBytes_AS_STRING(args[0])[0];
     }
-    else if (PyByteArray_Check(args[0])) {
-        if (PyByteArray_GET_SIZE(args[0]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[0])) {
+        if (TyByteArray_GET_SIZE(args[0]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 1 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[0]));
+                TyByteArray_GET_SIZE(args[0]));
             goto exit;
         }
-        a = PyByteArray_AS_STRING(args[0])[0];
+        a = TyByteArray_AS_STRING(args[0])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 1", "a byte string of length 1", args[0]);
+        _TyArg_BadArgument("test_char_converter", "argument 1", "a byte string of length 1", args[0]);
         goto exit;
     }
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[1])) {
-        if (PyBytes_GET_SIZE(args[1]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[1])) {
+        if (TyBytes_GET_SIZE(args[1]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 2 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[1]));
+                TyBytes_GET_SIZE(args[1]));
             goto exit;
         }
-        b = PyBytes_AS_STRING(args[1])[0];
+        b = TyBytes_AS_STRING(args[1])[0];
     }
-    else if (PyByteArray_Check(args[1])) {
-        if (PyByteArray_GET_SIZE(args[1]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[1])) {
+        if (TyByteArray_GET_SIZE(args[1]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 2 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[1]));
+                TyByteArray_GET_SIZE(args[1]));
             goto exit;
         }
-        b = PyByteArray_AS_STRING(args[1])[0];
+        b = TyByteArray_AS_STRING(args[1])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 2", "a byte string of length 1", args[1]);
+        _TyArg_BadArgument("test_char_converter", "argument 2", "a byte string of length 1", args[1]);
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[2])) {
-        if (PyBytes_GET_SIZE(args[2]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[2])) {
+        if (TyBytes_GET_SIZE(args[2]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 3 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[2]));
+                TyBytes_GET_SIZE(args[2]));
             goto exit;
         }
-        c = PyBytes_AS_STRING(args[2])[0];
+        c = TyBytes_AS_STRING(args[2])[0];
     }
-    else if (PyByteArray_Check(args[2])) {
-        if (PyByteArray_GET_SIZE(args[2]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[2])) {
+        if (TyByteArray_GET_SIZE(args[2]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 3 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[2]));
+                TyByteArray_GET_SIZE(args[2]));
             goto exit;
         }
-        c = PyByteArray_AS_STRING(args[2])[0];
+        c = TyByteArray_AS_STRING(args[2])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 3", "a byte string of length 1", args[2]);
+        _TyArg_BadArgument("test_char_converter", "argument 3", "a byte string of length 1", args[2]);
         goto exit;
     }
     if (nargs < 4) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[3])) {
-        if (PyBytes_GET_SIZE(args[3]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[3])) {
+        if (TyBytes_GET_SIZE(args[3]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 4 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[3]));
+                TyBytes_GET_SIZE(args[3]));
             goto exit;
         }
-        d = PyBytes_AS_STRING(args[3])[0];
+        d = TyBytes_AS_STRING(args[3])[0];
     }
-    else if (PyByteArray_Check(args[3])) {
-        if (PyByteArray_GET_SIZE(args[3]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[3])) {
+        if (TyByteArray_GET_SIZE(args[3]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 4 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[3]));
+                TyByteArray_GET_SIZE(args[3]));
             goto exit;
         }
-        d = PyByteArray_AS_STRING(args[3])[0];
+        d = TyByteArray_AS_STRING(args[3])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 4", "a byte string of length 1", args[3]);
+        _TyArg_BadArgument("test_char_converter", "argument 4", "a byte string of length 1", args[3]);
         goto exit;
     }
     if (nargs < 5) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[4])) {
-        if (PyBytes_GET_SIZE(args[4]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[4])) {
+        if (TyBytes_GET_SIZE(args[4]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 5 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[4]));
+                TyBytes_GET_SIZE(args[4]));
             goto exit;
         }
-        e = PyBytes_AS_STRING(args[4])[0];
+        e = TyBytes_AS_STRING(args[4])[0];
     }
-    else if (PyByteArray_Check(args[4])) {
-        if (PyByteArray_GET_SIZE(args[4]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[4])) {
+        if (TyByteArray_GET_SIZE(args[4]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 5 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[4]));
+                TyByteArray_GET_SIZE(args[4]));
             goto exit;
         }
-        e = PyByteArray_AS_STRING(args[4])[0];
+        e = TyByteArray_AS_STRING(args[4])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 5", "a byte string of length 1", args[4]);
+        _TyArg_BadArgument("test_char_converter", "argument 5", "a byte string of length 1", args[4]);
         goto exit;
     }
     if (nargs < 6) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[5])) {
-        if (PyBytes_GET_SIZE(args[5]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[5])) {
+        if (TyBytes_GET_SIZE(args[5]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 6 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[5]));
+                TyBytes_GET_SIZE(args[5]));
             goto exit;
         }
-        f = PyBytes_AS_STRING(args[5])[0];
+        f = TyBytes_AS_STRING(args[5])[0];
     }
-    else if (PyByteArray_Check(args[5])) {
-        if (PyByteArray_GET_SIZE(args[5]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[5])) {
+        if (TyByteArray_GET_SIZE(args[5]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 6 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[5]));
+                TyByteArray_GET_SIZE(args[5]));
             goto exit;
         }
-        f = PyByteArray_AS_STRING(args[5])[0];
+        f = TyByteArray_AS_STRING(args[5])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 6", "a byte string of length 1", args[5]);
+        _TyArg_BadArgument("test_char_converter", "argument 6", "a byte string of length 1", args[5]);
         goto exit;
     }
     if (nargs < 7) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[6])) {
-        if (PyBytes_GET_SIZE(args[6]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[6])) {
+        if (TyBytes_GET_SIZE(args[6]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 7 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[6]));
+                TyBytes_GET_SIZE(args[6]));
             goto exit;
         }
-        g = PyBytes_AS_STRING(args[6])[0];
+        g = TyBytes_AS_STRING(args[6])[0];
     }
-    else if (PyByteArray_Check(args[6])) {
-        if (PyByteArray_GET_SIZE(args[6]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[6])) {
+        if (TyByteArray_GET_SIZE(args[6]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 7 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[6]));
+                TyByteArray_GET_SIZE(args[6]));
             goto exit;
         }
-        g = PyByteArray_AS_STRING(args[6])[0];
+        g = TyByteArray_AS_STRING(args[6])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 7", "a byte string of length 1", args[6]);
+        _TyArg_BadArgument("test_char_converter", "argument 7", "a byte string of length 1", args[6]);
         goto exit;
     }
     if (nargs < 8) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[7])) {
-        if (PyBytes_GET_SIZE(args[7]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[7])) {
+        if (TyBytes_GET_SIZE(args[7]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 8 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[7]));
+                TyBytes_GET_SIZE(args[7]));
             goto exit;
         }
-        h = PyBytes_AS_STRING(args[7])[0];
+        h = TyBytes_AS_STRING(args[7])[0];
     }
-    else if (PyByteArray_Check(args[7])) {
-        if (PyByteArray_GET_SIZE(args[7]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[7])) {
+        if (TyByteArray_GET_SIZE(args[7]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 8 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[7]));
+                TyByteArray_GET_SIZE(args[7]));
             goto exit;
         }
-        h = PyByteArray_AS_STRING(args[7])[0];
+        h = TyByteArray_AS_STRING(args[7])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 8", "a byte string of length 1", args[7]);
+        _TyArg_BadArgument("test_char_converter", "argument 8", "a byte string of length 1", args[7]);
         goto exit;
     }
     if (nargs < 9) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[8])) {
-        if (PyBytes_GET_SIZE(args[8]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[8])) {
+        if (TyBytes_GET_SIZE(args[8]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 9 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[8]));
+                TyBytes_GET_SIZE(args[8]));
             goto exit;
         }
-        i = PyBytes_AS_STRING(args[8])[0];
+        i = TyBytes_AS_STRING(args[8])[0];
     }
-    else if (PyByteArray_Check(args[8])) {
-        if (PyByteArray_GET_SIZE(args[8]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[8])) {
+        if (TyByteArray_GET_SIZE(args[8]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 9 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[8]));
+                TyByteArray_GET_SIZE(args[8]));
             goto exit;
         }
-        i = PyByteArray_AS_STRING(args[8])[0];
+        i = TyByteArray_AS_STRING(args[8])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 9", "a byte string of length 1", args[8]);
+        _TyArg_BadArgument("test_char_converter", "argument 9", "a byte string of length 1", args[8]);
         goto exit;
     }
     if (nargs < 10) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[9])) {
-        if (PyBytes_GET_SIZE(args[9]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[9])) {
+        if (TyBytes_GET_SIZE(args[9]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 10 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[9]));
+                TyBytes_GET_SIZE(args[9]));
             goto exit;
         }
-        j = PyBytes_AS_STRING(args[9])[0];
+        j = TyBytes_AS_STRING(args[9])[0];
     }
-    else if (PyByteArray_Check(args[9])) {
-        if (PyByteArray_GET_SIZE(args[9]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[9])) {
+        if (TyByteArray_GET_SIZE(args[9]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 10 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[9]));
+                TyByteArray_GET_SIZE(args[9]));
             goto exit;
         }
-        j = PyByteArray_AS_STRING(args[9])[0];
+        j = TyByteArray_AS_STRING(args[9])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 10", "a byte string of length 1", args[9]);
+        _TyArg_BadArgument("test_char_converter", "argument 10", "a byte string of length 1", args[9]);
         goto exit;
     }
     if (nargs < 11) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[10])) {
-        if (PyBytes_GET_SIZE(args[10]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[10])) {
+        if (TyBytes_GET_SIZE(args[10]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 11 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[10]));
+                TyBytes_GET_SIZE(args[10]));
             goto exit;
         }
-        k = PyBytes_AS_STRING(args[10])[0];
+        k = TyBytes_AS_STRING(args[10])[0];
     }
-    else if (PyByteArray_Check(args[10])) {
-        if (PyByteArray_GET_SIZE(args[10]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[10])) {
+        if (TyByteArray_GET_SIZE(args[10]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 11 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[10]));
+                TyByteArray_GET_SIZE(args[10]));
             goto exit;
         }
-        k = PyByteArray_AS_STRING(args[10])[0];
+        k = TyByteArray_AS_STRING(args[10])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 11", "a byte string of length 1", args[10]);
+        _TyArg_BadArgument("test_char_converter", "argument 11", "a byte string of length 1", args[10]);
         goto exit;
     }
     if (nargs < 12) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[11])) {
-        if (PyBytes_GET_SIZE(args[11]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[11])) {
+        if (TyBytes_GET_SIZE(args[11]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 12 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[11]));
+                TyBytes_GET_SIZE(args[11]));
             goto exit;
         }
-        l = PyBytes_AS_STRING(args[11])[0];
+        l = TyBytes_AS_STRING(args[11])[0];
     }
-    else if (PyByteArray_Check(args[11])) {
-        if (PyByteArray_GET_SIZE(args[11]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[11])) {
+        if (TyByteArray_GET_SIZE(args[11]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 12 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[11]));
+                TyByteArray_GET_SIZE(args[11]));
             goto exit;
         }
-        l = PyByteArray_AS_STRING(args[11])[0];
+        l = TyByteArray_AS_STRING(args[11])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 12", "a byte string of length 1", args[11]);
+        _TyArg_BadArgument("test_char_converter", "argument 12", "a byte string of length 1", args[11]);
         goto exit;
     }
     if (nargs < 13) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[12])) {
-        if (PyBytes_GET_SIZE(args[12]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[12])) {
+        if (TyBytes_GET_SIZE(args[12]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 13 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[12]));
+                TyBytes_GET_SIZE(args[12]));
             goto exit;
         }
-        m = PyBytes_AS_STRING(args[12])[0];
+        m = TyBytes_AS_STRING(args[12])[0];
     }
-    else if (PyByteArray_Check(args[12])) {
-        if (PyByteArray_GET_SIZE(args[12]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[12])) {
+        if (TyByteArray_GET_SIZE(args[12]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 13 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[12]));
+                TyByteArray_GET_SIZE(args[12]));
             goto exit;
         }
-        m = PyByteArray_AS_STRING(args[12])[0];
+        m = TyByteArray_AS_STRING(args[12])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 13", "a byte string of length 1", args[12]);
+        _TyArg_BadArgument("test_char_converter", "argument 13", "a byte string of length 1", args[12]);
         goto exit;
     }
     if (nargs < 14) {
         goto skip_optional;
     }
-    if (PyBytes_Check(args[13])) {
-        if (PyBytes_GET_SIZE(args[13]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(args[13])) {
+        if (TyBytes_GET_SIZE(args[13]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 14 must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(args[13]));
+                TyBytes_GET_SIZE(args[13]));
             goto exit;
         }
-        n = PyBytes_AS_STRING(args[13])[0];
+        n = TyBytes_AS_STRING(args[13])[0];
     }
-    else if (PyByteArray_Check(args[13])) {
-        if (PyByteArray_GET_SIZE(args[13]) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(args[13])) {
+        if (TyByteArray_GET_SIZE(args[13]) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "test_char_converter(): argument 14 must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(args[13]));
+                TyByteArray_GET_SIZE(args[13]));
             goto exit;
         }
-        n = PyByteArray_AS_STRING(args[13])[0];
+        n = TyByteArray_AS_STRING(args[13])[0];
     }
     else {
-        _PyArg_BadArgument("test_char_converter", "argument 14", "a byte string of length 1", args[13]);
+        _TyArg_BadArgument("test_char_converter", "argument 14", "a byte string of length 1", args[13]);
         goto exit;
     }
 skip_optional:
@@ -932,8 +932,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_char_converter_impl(PyObject *module, char a, char b, char c, char d,
+static TyObject *
+test_char_converter_impl(TyObject *module, char a, char b, char c, char d,
                          char e, char f, char g, char h, char i, char j,
                          char k, char l, char m, char n)
 /*[clinic end generated code: output=ff11e203248582df input=e42330417a44feac]*/
@@ -957,36 +957,36 @@ PyDoc_STRVAR(test_unsigned_char_converter__doc__,
 #define TEST_UNSIGNED_CHAR_CONVERTER_METHODDEF    \
     {"test_unsigned_char_converter", _PyCFunction_CAST(test_unsigned_char_converter), METH_FASTCALL, test_unsigned_char_converter__doc__},
 
-static PyObject *
-test_unsigned_char_converter_impl(PyObject *module, unsigned char a,
+static TyObject *
+test_unsigned_char_converter_impl(TyObject *module, unsigned char a,
                                   unsigned char b, unsigned char c);
 
-static PyObject *
-test_unsigned_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_unsigned_char_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned char a = 12;
     unsigned char b = 34;
     unsigned char c = 56;
 
-    if (!_PyArg_CheckPositional("test_unsigned_char_converter", nargs, 0, 3)) {
+    if (!_TyArg_CheckPositional("test_unsigned_char_converter", nargs, 0, 3)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
     {
-        long ival = PyLong_AsLong(args[0]);
-        if (ival == -1 && PyErr_Occurred()) {
+        long ival = TyLong_AsLong(args[0]);
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         else if (ival < 0) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "unsigned byte integer is less than minimum");
             goto exit;
         }
         else if (ival > UCHAR_MAX) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "unsigned byte integer is greater than maximum");
             goto exit;
         }
@@ -998,17 +998,17 @@ test_unsigned_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t
         goto skip_optional;
     }
     {
-        long ival = PyLong_AsLong(args[1]);
-        if (ival == -1 && PyErr_Occurred()) {
+        long ival = TyLong_AsLong(args[1]);
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         else if (ival < 0) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "unsigned byte integer is less than minimum");
             goto exit;
         }
         else if (ival > UCHAR_MAX) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "unsigned byte integer is greater than maximum");
             goto exit;
         }
@@ -1020,8 +1020,8 @@ test_unsigned_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t
         goto skip_optional;
     }
     {
-        unsigned long ival = PyLong_AsUnsignedLongMask(args[2]);
-        if (ival == (unsigned long)-1 && PyErr_Occurred()) {
+        unsigned long ival = TyLong_AsUnsignedLongMask(args[2]);
+        if (ival == (unsigned long)-1 && TyErr_Occurred()) {
             goto exit;
         }
         else {
@@ -1035,8 +1035,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_unsigned_char_converter_impl(PyObject *module, unsigned char a,
+static TyObject *
+test_unsigned_char_converter_impl(TyObject *module, unsigned char a,
                                   unsigned char b, unsigned char c)
 /*[clinic end generated code: output=45920dbedc22eb55 input=021414060993e289]*/
 
@@ -1057,33 +1057,33 @@ PyDoc_STRVAR(test_short_converter__doc__,
 #define TEST_SHORT_CONVERTER_METHODDEF    \
     {"test_short_converter", _PyCFunction_CAST(test_short_converter), METH_FASTCALL, test_short_converter__doc__},
 
-static PyObject *
-test_short_converter_impl(PyObject *module, short a);
+static TyObject *
+test_short_converter_impl(TyObject *module, short a);
 
-static PyObject *
-test_short_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_short_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     short a = 12;
 
-    if (!_PyArg_CheckPositional("test_short_converter", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("test_short_converter", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
     {
-        long ival = PyLong_AsLong(args[0]);
-        if (ival == -1 && PyErr_Occurred()) {
+        long ival = TyLong_AsLong(args[0]);
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         else if (ival < SHRT_MIN) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is less than minimum");
             goto exit;
         }
         else if (ival > SHRT_MAX) {
-            PyErr_SetString(PyExc_OverflowError,
+            TyErr_SetString(TyExc_OverflowError,
                             "signed short integer is greater than maximum");
             goto exit;
         }
@@ -1098,8 +1098,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_short_converter_impl(PyObject *module, short a)
+static TyObject *
+test_short_converter_impl(TyObject *module, short a)
 /*[clinic end generated code: output=a580945bd6963d45 input=6a8a7a509a498ff4]*/
 
 
@@ -1121,38 +1121,38 @@ PyDoc_STRVAR(test_unsigned_short_converter__doc__,
 #define TEST_UNSIGNED_SHORT_CONVERTER_METHODDEF    \
     {"test_unsigned_short_converter", _PyCFunction_CAST(test_unsigned_short_converter), METH_FASTCALL, test_unsigned_short_converter__doc__},
 
-static PyObject *
-test_unsigned_short_converter_impl(PyObject *module, unsigned short a,
+static TyObject *
+test_unsigned_short_converter_impl(TyObject *module, unsigned short a,
                                    unsigned short b, unsigned short c);
 
-static PyObject *
-test_unsigned_short_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_unsigned_short_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned short a = 12;
     unsigned short b = 34;
     unsigned short c = 56;
 
-    if (!_PyArg_CheckPositional("test_unsigned_short_converter", nargs, 0, 3)) {
+    if (!_TyArg_CheckPositional("test_unsigned_short_converter", nargs, 0, 3)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_PyLong_UnsignedShort_Converter(args[0], &a)) {
+    if (!_TyLong_UnsignedShort_Converter(args[0], &a)) {
         goto exit;
     }
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyLong_UnsignedShort_Converter(args[1], &b)) {
+    if (!_TyLong_UnsignedShort_Converter(args[1], &b)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    c = (unsigned short)PyLong_AsUnsignedLongMask(args[2]);
-    if (c == (unsigned short)-1 && PyErr_Occurred()) {
+    c = (unsigned short)TyLong_AsUnsignedLongMask(args[2]);
+    if (c == (unsigned short)-1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -1162,8 +1162,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_unsigned_short_converter_impl(PyObject *module, unsigned short a,
+static TyObject *
+test_unsigned_short_converter_impl(TyObject *module, unsigned short a,
                                    unsigned short b, unsigned short c)
 /*[clinic end generated code: output=e6e990df729114fc input=cdfd8eff3d9176b4]*/
 
@@ -1187,55 +1187,55 @@ PyDoc_STRVAR(test_int_converter__doc__,
 #define TEST_INT_CONVERTER_METHODDEF    \
     {"test_int_converter", _PyCFunction_CAST(test_int_converter), METH_FASTCALL, test_int_converter__doc__},
 
-static PyObject *
-test_int_converter_impl(PyObject *module, int a, int b, int c, myenum d);
+static TyObject *
+test_int_converter_impl(TyObject *module, int a, int b, int c, myenum d);
 
-static PyObject *
-test_int_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_int_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int a = 12;
     int b = 34;
     int c = 45;
     myenum d = 67;
 
-    if (!_PyArg_CheckPositional("test_int_converter", nargs, 0, 4)) {
+    if (!_TyArg_CheckPositional("test_int_converter", nargs, 0, 4)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    a = PyLong_AsInt(args[0]);
-    if (a == -1 && PyErr_Occurred()) {
+    a = TyLong_AsInt(args[0]);
+    if (a == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (nargs < 2) {
         goto skip_optional;
     }
-    b = PyLong_AsInt(args[1]);
-    if (b == -1 && PyErr_Occurred()) {
+    b = TyLong_AsInt(args[1]);
+    if (b == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!PyUnicode_Check(args[2])) {
-        _PyArg_BadArgument("test_int_converter", "argument 3", "a unicode character", args[2]);
+    if (!TyUnicode_Check(args[2])) {
+        _TyArg_BadArgument("test_int_converter", "argument 3", "a unicode character", args[2]);
         goto exit;
     }
-    if (PyUnicode_GET_LENGTH(args[2]) != 1) {
-        PyErr_Format(PyExc_TypeError,
+    if (TyUnicode_GET_LENGTH(args[2]) != 1) {
+        TyErr_Format(TyExc_TypeError,
             "test_int_converter(): argument 3 must be a unicode character, "
             "not a string of length %zd",
-            PyUnicode_GET_LENGTH(args[2]));
+            TyUnicode_GET_LENGTH(args[2]));
         goto exit;
     }
-    c = PyUnicode_READ_CHAR(args[2], 0);
+    c = TyUnicode_READ_CHAR(args[2], 0);
     if (nargs < 4) {
         goto skip_optional;
     }
-    d = PyLong_AsInt(args[3]);
-    if (d == -1 && PyErr_Occurred()) {
+    d = TyLong_AsInt(args[3]);
+    if (d == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -1245,8 +1245,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_int_converter_impl(PyObject *module, int a, int b, int c, myenum d)
+static TyObject *
+test_int_converter_impl(TyObject *module, int a, int b, int c, myenum d)
 /*[clinic end generated code: output=fbcfb7554688663d input=d20541fc1ca0553e]*/
 
 
@@ -1268,38 +1268,38 @@ PyDoc_STRVAR(test_unsigned_int_converter__doc__,
 #define TEST_UNSIGNED_INT_CONVERTER_METHODDEF    \
     {"test_unsigned_int_converter", _PyCFunction_CAST(test_unsigned_int_converter), METH_FASTCALL, test_unsigned_int_converter__doc__},
 
-static PyObject *
-test_unsigned_int_converter_impl(PyObject *module, unsigned int a,
+static TyObject *
+test_unsigned_int_converter_impl(TyObject *module, unsigned int a,
                                  unsigned int b, unsigned int c);
 
-static PyObject *
-test_unsigned_int_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_unsigned_int_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned int a = 12;
     unsigned int b = 34;
     unsigned int c = 56;
 
-    if (!_PyArg_CheckPositional("test_unsigned_int_converter", nargs, 0, 3)) {
+    if (!_TyArg_CheckPositional("test_unsigned_int_converter", nargs, 0, 3)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_PyLong_UnsignedInt_Converter(args[0], &a)) {
+    if (!_TyLong_UnsignedInt_Converter(args[0], &a)) {
         goto exit;
     }
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyLong_UnsignedInt_Converter(args[1], &b)) {
+    if (!_TyLong_UnsignedInt_Converter(args[1], &b)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    c = (unsigned int)PyLong_AsUnsignedLongMask(args[2]);
-    if (c == (unsigned int)-1 && PyErr_Occurred()) {
+    c = (unsigned int)TyLong_AsUnsignedLongMask(args[2]);
+    if (c == (unsigned int)-1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -1309,8 +1309,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_unsigned_int_converter_impl(PyObject *module, unsigned int a,
+static TyObject *
+test_unsigned_int_converter_impl(TyObject *module, unsigned int a,
                                  unsigned int b, unsigned int c)
 /*[clinic end generated code: output=f9cdbe410ccc98a3 input=5533534828b62fc0]*/
 
@@ -1331,23 +1331,23 @@ PyDoc_STRVAR(test_long_converter__doc__,
 #define TEST_LONG_CONVERTER_METHODDEF    \
     {"test_long_converter", _PyCFunction_CAST(test_long_converter), METH_FASTCALL, test_long_converter__doc__},
 
-static PyObject *
-test_long_converter_impl(PyObject *module, long a);
+static TyObject *
+test_long_converter_impl(TyObject *module, long a);
 
-static PyObject *
-test_long_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_long_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     long a = 12;
 
-    if (!_PyArg_CheckPositional("test_long_converter", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("test_long_converter", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    a = PyLong_AsLong(args[0]);
-    if (a == -1 && PyErr_Occurred()) {
+    a = TyLong_AsLong(args[0]);
+    if (a == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -1357,8 +1357,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_long_converter_impl(PyObject *module, long a)
+static TyObject *
+test_long_converter_impl(TyObject *module, long a)
 /*[clinic end generated code: output=02b3a83495c1d236 input=d2179e3c9cdcde89]*/
 
 
@@ -1380,41 +1380,41 @@ PyDoc_STRVAR(test_unsigned_long_converter__doc__,
 #define TEST_UNSIGNED_LONG_CONVERTER_METHODDEF    \
     {"test_unsigned_long_converter", _PyCFunction_CAST(test_unsigned_long_converter), METH_FASTCALL, test_unsigned_long_converter__doc__},
 
-static PyObject *
-test_unsigned_long_converter_impl(PyObject *module, unsigned long a,
+static TyObject *
+test_unsigned_long_converter_impl(TyObject *module, unsigned long a,
                                   unsigned long b, unsigned long c);
 
-static PyObject *
-test_unsigned_long_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_unsigned_long_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned long a = 12;
     unsigned long b = 34;
     unsigned long c = 56;
 
-    if (!_PyArg_CheckPositional("test_unsigned_long_converter", nargs, 0, 3)) {
+    if (!_TyArg_CheckPositional("test_unsigned_long_converter", nargs, 0, 3)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_PyLong_UnsignedLong_Converter(args[0], &a)) {
+    if (!_TyLong_UnsignedLong_Converter(args[0], &a)) {
         goto exit;
     }
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyLong_UnsignedLong_Converter(args[1], &b)) {
+    if (!_TyLong_UnsignedLong_Converter(args[1], &b)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
     if (!PyIndex_Check(args[2])) {
-        _PyArg_BadArgument("test_unsigned_long_converter", "argument 3", "int", args[2]);
+        _TyArg_BadArgument("test_unsigned_long_converter", "argument 3", "int", args[2]);
         goto exit;
     }
-    c = PyLong_AsUnsignedLongMask(args[2]);
+    c = TyLong_AsUnsignedLongMask(args[2]);
 skip_optional:
     return_value = test_unsigned_long_converter_impl(module, a, b, c);
 
@@ -1422,8 +1422,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_unsigned_long_converter_impl(PyObject *module, unsigned long a,
+static TyObject *
+test_unsigned_long_converter_impl(TyObject *module, unsigned long a,
                                   unsigned long b, unsigned long c)
 /*[clinic end generated code: output=d74eed227d77a31b input=f450d94cae1ef73b]*/
 
@@ -1444,23 +1444,23 @@ PyDoc_STRVAR(test_long_long_converter__doc__,
 #define TEST_LONG_LONG_CONVERTER_METHODDEF    \
     {"test_long_long_converter", _PyCFunction_CAST(test_long_long_converter), METH_FASTCALL, test_long_long_converter__doc__},
 
-static PyObject *
-test_long_long_converter_impl(PyObject *module, long long a);
+static TyObject *
+test_long_long_converter_impl(TyObject *module, long long a);
 
-static PyObject *
-test_long_long_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_long_long_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     long long a = 12;
 
-    if (!_PyArg_CheckPositional("test_long_long_converter", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("test_long_long_converter", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    a = PyLong_AsLongLong(args[0]);
-    if (a == -1 && PyErr_Occurred()) {
+    a = TyLong_AsLongLong(args[0]);
+    if (a == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -1470,8 +1470,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_long_long_converter_impl(PyObject *module, long long a)
+static TyObject *
+test_long_long_converter_impl(TyObject *module, long long a)
 /*[clinic end generated code: output=f9d4ed79ad2db857 input=d5fc81577ff4dd02]*/
 
 
@@ -1493,43 +1493,43 @@ PyDoc_STRVAR(test_unsigned_long_long_converter__doc__,
 #define TEST_UNSIGNED_LONG_LONG_CONVERTER_METHODDEF    \
     {"test_unsigned_long_long_converter", _PyCFunction_CAST(test_unsigned_long_long_converter), METH_FASTCALL, test_unsigned_long_long_converter__doc__},
 
-static PyObject *
-test_unsigned_long_long_converter_impl(PyObject *module,
+static TyObject *
+test_unsigned_long_long_converter_impl(TyObject *module,
                                        unsigned long long a,
                                        unsigned long long b,
                                        unsigned long long c);
 
-static PyObject *
-test_unsigned_long_long_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_unsigned_long_long_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned long long a = 12;
     unsigned long long b = 34;
     unsigned long long c = 56;
 
-    if (!_PyArg_CheckPositional("test_unsigned_long_long_converter", nargs, 0, 3)) {
+    if (!_TyArg_CheckPositional("test_unsigned_long_long_converter", nargs, 0, 3)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_PyLong_UnsignedLongLong_Converter(args[0], &a)) {
+    if (!_TyLong_UnsignedLongLong_Converter(args[0], &a)) {
         goto exit;
     }
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyLong_UnsignedLongLong_Converter(args[1], &b)) {
+    if (!_TyLong_UnsignedLongLong_Converter(args[1], &b)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
     if (!PyIndex_Check(args[2])) {
-        _PyArg_BadArgument("test_unsigned_long_long_converter", "argument 3", "int", args[2]);
+        _TyArg_BadArgument("test_unsigned_long_long_converter", "argument 3", "int", args[2]);
         goto exit;
     }
-    c = PyLong_AsUnsignedLongLongMask(args[2]);
+    c = TyLong_AsUnsignedLongLongMask(args[2]);
 skip_optional:
     return_value = test_unsigned_long_long_converter_impl(module, a, b, c);
 
@@ -1537,8 +1537,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_unsigned_long_long_converter_impl(PyObject *module,
+static TyObject *
+test_unsigned_long_long_converter_impl(TyObject *module,
                                        unsigned long long a,
                                        unsigned long long b,
                                        unsigned long long c)
@@ -1548,9 +1548,9 @@ test_unsigned_long_long_converter_impl(PyObject *module,
 /*[clinic input]
 test_Py_ssize_t_converter
 
-    a: Py_ssize_t = 12
-    b: Py_ssize_t(accept={int}) = 34
-    c: Py_ssize_t(accept={int, NoneType}) = 56
+    a: Ty_ssize_t = 12
+    b: Ty_ssize_t(accept={int}) = 34
+    c: Ty_ssize_t(accept={int, NoneType}) = 56
     /
 
 [clinic start generated code]*/
@@ -1563,32 +1563,32 @@ PyDoc_STRVAR(test_Py_ssize_t_converter__doc__,
 #define TEST_PY_SSIZE_T_CONVERTER_METHODDEF    \
     {"test_Py_ssize_t_converter", _PyCFunction_CAST(test_Py_ssize_t_converter), METH_FASTCALL, test_Py_ssize_t_converter__doc__},
 
-static PyObject *
-test_Py_ssize_t_converter_impl(PyObject *module, Py_ssize_t a, Py_ssize_t b,
-                               Py_ssize_t c);
+static TyObject *
+test_Py_ssize_t_converter_impl(TyObject *module, Ty_ssize_t a, Ty_ssize_t b,
+                               Ty_ssize_t c);
 
-static PyObject *
-test_Py_ssize_t_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_Py_ssize_t_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t a = 12;
-    Py_ssize_t b = 34;
-    Py_ssize_t c = 56;
+    TyObject *return_value = NULL;
+    Ty_ssize_t a = 12;
+    Ty_ssize_t b = 34;
+    Ty_ssize_t c = 56;
 
-    if (!_PyArg_CheckPositional("test_Py_ssize_t_converter", nargs, 0, 3)) {
+    if (!_TyArg_CheckPositional("test_Py_ssize_t_converter", nargs, 0, 3)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         a = ival;
@@ -1597,13 +1597,13 @@ test_Py_ssize_t_converter(PyObject *module, PyObject *const *args, Py_ssize_t na
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         b = ival;
@@ -1611,7 +1611,7 @@ test_Py_ssize_t_converter(PyObject *module, PyObject *const *args, Py_ssize_t na
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_Py_convert_optional_to_ssize_t(args[2], &c)) {
+    if (!_Ty_convert_optional_to_ssize_t(args[2], &c)) {
         goto exit;
     }
 skip_optional:
@@ -1621,9 +1621,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_Py_ssize_t_converter_impl(PyObject *module, Py_ssize_t a, Py_ssize_t b,
-                               Py_ssize_t c)
+static TyObject *
+test_Py_ssize_t_converter_impl(TyObject *module, Ty_ssize_t a, Ty_ssize_t b,
+                               Ty_ssize_t c)
 /*[clinic end generated code: output=48214bc3d01f4dd7 input=3855f184bb3f299d]*/
 
 
@@ -1645,37 +1645,37 @@ PyDoc_STRVAR(test_slice_index_converter__doc__,
 #define TEST_SLICE_INDEX_CONVERTER_METHODDEF    \
     {"test_slice_index_converter", _PyCFunction_CAST(test_slice_index_converter), METH_FASTCALL, test_slice_index_converter__doc__},
 
-static PyObject *
-test_slice_index_converter_impl(PyObject *module, Py_ssize_t a, Py_ssize_t b,
-                                Py_ssize_t c);
+static TyObject *
+test_slice_index_converter_impl(TyObject *module, Ty_ssize_t a, Ty_ssize_t b,
+                                Ty_ssize_t c);
 
-static PyObject *
-test_slice_index_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_slice_index_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t a = 12;
-    Py_ssize_t b = 34;
-    Py_ssize_t c = 56;
+    TyObject *return_value = NULL;
+    Ty_ssize_t a = 12;
+    Ty_ssize_t b = 34;
+    Ty_ssize_t c = 56;
 
-    if (!_PyArg_CheckPositional("test_slice_index_converter", nargs, 0, 3)) {
+    if (!_TyArg_CheckPositional("test_slice_index_converter", nargs, 0, 3)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[0], &a)) {
+    if (!_TyEval_SliceIndex(args[0], &a)) {
         goto exit;
     }
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndexNotNone(args[1], &b)) {
+    if (!_TyEval_SliceIndexNotNone(args[1], &b)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndex(args[2], &c)) {
+    if (!_TyEval_SliceIndex(args[2], &c)) {
         goto exit;
     }
 skip_optional:
@@ -1685,9 +1685,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_slice_index_converter_impl(PyObject *module, Py_ssize_t a, Py_ssize_t b,
-                                Py_ssize_t c)
+static TyObject *
+test_slice_index_converter_impl(TyObject *module, Ty_ssize_t a, Ty_ssize_t b,
+                                Ty_ssize_t c)
 /*[clinic end generated code: output=67506ed999361212 input=edeadb0ee126f531]*/
 
 
@@ -1707,22 +1707,22 @@ PyDoc_STRVAR(test_size_t_converter__doc__,
 #define TEST_SIZE_T_CONVERTER_METHODDEF    \
     {"test_size_t_converter", _PyCFunction_CAST(test_size_t_converter), METH_FASTCALL, test_size_t_converter__doc__},
 
-static PyObject *
-test_size_t_converter_impl(PyObject *module, size_t a);
+static TyObject *
+test_size_t_converter_impl(TyObject *module, size_t a);
 
-static PyObject *
-test_size_t_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_size_t_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     size_t a = 12;
 
-    if (!_PyArg_CheckPositional("test_size_t_converter", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("test_size_t_converter", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_PyLong_Size_t_Converter(args[0], &a)) {
+    if (!_TyLong_Size_t_Converter(args[0], &a)) {
         goto exit;
     }
 skip_optional:
@@ -1732,8 +1732,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_size_t_converter_impl(PyObject *module, size_t a)
+static TyObject *
+test_size_t_converter_impl(TyObject *module, size_t a)
 /*[clinic end generated code: output=1653ecb5cbf775aa input=52e93a0fed0f1fb3]*/
 
 
@@ -1753,28 +1753,28 @@ PyDoc_STRVAR(test_float_converter__doc__,
 #define TEST_FLOAT_CONVERTER_METHODDEF    \
     {"test_float_converter", _PyCFunction_CAST(test_float_converter), METH_FASTCALL, test_float_converter__doc__},
 
-static PyObject *
-test_float_converter_impl(PyObject *module, float a);
+static TyObject *
+test_float_converter_impl(TyObject *module, float a);
 
-static PyObject *
-test_float_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_float_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     float a = 12.5;
 
-    if (!_PyArg_CheckPositional("test_float_converter", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("test_float_converter", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (PyFloat_CheckExact(args[0])) {
-        a = (float) (PyFloat_AS_DOUBLE(args[0]));
+    if (TyFloat_CheckExact(args[0])) {
+        a = (float) (TyFloat_AS_DOUBLE(args[0]));
     }
     else
     {
-        a = (float) PyFloat_AsDouble(args[0]);
-        if (a == -1.0 && PyErr_Occurred()) {
+        a = (float) TyFloat_AsDouble(args[0]);
+        if (a == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -1785,8 +1785,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_float_converter_impl(PyObject *module, float a)
+static TyObject *
+test_float_converter_impl(TyObject *module, float a)
 /*[clinic end generated code: output=36ad006990a8a91e input=259c0d98eca35034]*/
 
 
@@ -1806,28 +1806,28 @@ PyDoc_STRVAR(test_double_converter__doc__,
 #define TEST_DOUBLE_CONVERTER_METHODDEF    \
     {"test_double_converter", _PyCFunction_CAST(test_double_converter), METH_FASTCALL, test_double_converter__doc__},
 
-static PyObject *
-test_double_converter_impl(PyObject *module, double a);
+static TyObject *
+test_double_converter_impl(TyObject *module, double a);
 
-static PyObject *
-test_double_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_double_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double a = 12.5;
 
-    if (!_PyArg_CheckPositional("test_double_converter", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("test_double_converter", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (PyFloat_CheckExact(args[0])) {
-        a = PyFloat_AS_DOUBLE(args[0]);
+    if (TyFloat_CheckExact(args[0])) {
+        a = TyFloat_AS_DOUBLE(args[0]);
     }
     else
     {
-        a = PyFloat_AsDouble(args[0]);
-        if (a == -1.0 && PyErr_Occurred()) {
+        a = TyFloat_AsDouble(args[0]);
+        if (a == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -1838,15 +1838,15 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_double_converter_impl(PyObject *module, double a)
+static TyObject *
+test_double_converter_impl(TyObject *module, double a)
 /*[clinic end generated code: output=7435925592bac795 input=c6a9945706a41c27]*/
 
 
 /*[clinic input]
 test_Py_complex_converter
 
-    a: Py_complex
+    a: Ty_complex
     /
 
 [clinic start generated code]*/
@@ -1859,17 +1859,17 @@ PyDoc_STRVAR(test_Py_complex_converter__doc__,
 #define TEST_PY_COMPLEX_CONVERTER_METHODDEF    \
     {"test_Py_complex_converter", (PyCFunction)test_Py_complex_converter, METH_O, test_Py_complex_converter__doc__},
 
-static PyObject *
-test_Py_complex_converter_impl(PyObject *module, Py_complex a);
+static TyObject *
+test_Py_complex_converter_impl(TyObject *module, Ty_complex a);
 
-static PyObject *
-test_Py_complex_converter(PyObject *module, PyObject *arg)
+static TyObject *
+test_Py_complex_converter(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_complex a;
+    TyObject *return_value = NULL;
+    Ty_complex a;
 
-    a = PyComplex_AsCComplex(arg);
-    if (PyErr_Occurred()) {
+    a = TyComplex_AsCComplex(arg);
+    if (TyErr_Occurred()) {
         goto exit;
     }
     return_value = test_Py_complex_converter_impl(module, a);
@@ -1878,8 +1878,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_Py_complex_converter_impl(PyObject *module, Py_complex a)
+static TyObject *
+test_Py_complex_converter_impl(TyObject *module, Ty_complex a)
 /*[clinic end generated code: output=c2ecbec2144ca540 input=070f216a515beb79]*/
 
 
@@ -1907,30 +1907,30 @@ PyDoc_STRVAR(test_str_converter__doc__,
 #define TEST_STR_CONVERTER_METHODDEF    \
     {"test_str_converter", _PyCFunction_CAST(test_str_converter), METH_FASTCALL, test_str_converter__doc__},
 
-static PyObject *
-test_str_converter_impl(PyObject *module, const char *a, const char *b,
+static TyObject *
+test_str_converter_impl(TyObject *module, const char *a, const char *b,
                         const char *c, const char *d, const char *e,
-                        const char *f, Py_ssize_t f_length, const char *g,
-                        Py_ssize_t g_length, const char *h,
-                        Py_ssize_t h_length);
+                        const char *f, Ty_ssize_t f_length, const char *g,
+                        Ty_ssize_t g_length, const char *h,
+                        Ty_ssize_t h_length);
 
-static PyObject *
-test_str_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_str_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *a = NULL;
     const char *b = "ab";
     const char *c = "cd";
     const char *d = "cef";
     const char *e = "gh";
     const char *f = "ij";
-    Py_ssize_t f_length;
+    Ty_ssize_t f_length;
     const char *g = "kl";
-    Py_ssize_t g_length;
+    Ty_ssize_t g_length;
     const char *h = "mn";
-    Py_ssize_t h_length;
+    Ty_ssize_t h_length;
 
-    if (!_PyArg_ParseStack(args, nargs, "|sssyzy#s#z#:test_str_converter",
+    if (!_TyArg_ParseStack(args, nargs, "|sssyzy#s#z#:test_str_converter",
         &a, &b, &c, &d, &e, &f, &f_length, &g, &g_length, &h, &h_length)) {
         goto exit;
     }
@@ -1940,12 +1940,12 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_str_converter_impl(PyObject *module, const char *a, const char *b,
+static TyObject *
+test_str_converter_impl(TyObject *module, const char *a, const char *b,
                         const char *c, const char *d, const char *e,
-                        const char *f, Py_ssize_t f_length, const char *g,
-                        Py_ssize_t g_length, const char *h,
-                        Py_ssize_t h_length)
+                        const char *f, Ty_ssize_t f_length, const char *g,
+                        Ty_ssize_t g_length, const char *h,
+                        Ty_ssize_t h_length)
 /*[clinic end generated code: output=82cb06d5237ef062 input=8afe9da8185cd38c]*/
 
 
@@ -1969,58 +1969,58 @@ PyDoc_STRVAR(test_str_converter_encoding__doc__,
 #define TEST_STR_CONVERTER_ENCODING_METHODDEF    \
     {"test_str_converter_encoding", _PyCFunction_CAST(test_str_converter_encoding), METH_FASTCALL, test_str_converter_encoding__doc__},
 
-static PyObject *
-test_str_converter_encoding_impl(PyObject *module, char *a, char *b, char *c,
-                                 char *d, Py_ssize_t d_length, char *e,
-                                 Py_ssize_t e_length);
+static TyObject *
+test_str_converter_encoding_impl(TyObject *module, char *a, char *b, char *c,
+                                 char *d, Ty_ssize_t d_length, char *e,
+                                 Ty_ssize_t e_length);
 
-static PyObject *
-test_str_converter_encoding(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_str_converter_encoding(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     char *a = NULL;
     char *b = NULL;
     char *c = NULL;
     char *d = NULL;
-    Py_ssize_t d_length;
+    Ty_ssize_t d_length;
     char *e = NULL;
-    Py_ssize_t e_length;
+    Ty_ssize_t e_length;
 
-    if (!_PyArg_ParseStack(args, nargs, "esesetes#et#:test_str_converter_encoding",
+    if (!_TyArg_ParseStack(args, nargs, "esesetes#et#:test_str_converter_encoding",
         "idna", &a, "idna", &b, "idna", &c, "idna", &d, &d_length, "idna", &e, &e_length)) {
         goto exit;
     }
     return_value = test_str_converter_encoding_impl(module, a, b, c, d, d_length, e, e_length);
     /* Post parse cleanup for a */
-    PyMem_FREE(a);
+    TyMem_FREE(a);
     /* Post parse cleanup for b */
-    PyMem_FREE(b);
+    TyMem_FREE(b);
     /* Post parse cleanup for c */
-    PyMem_FREE(c);
+    TyMem_FREE(c);
     /* Post parse cleanup for d */
-    PyMem_FREE(d);
+    TyMem_FREE(d);
     /* Post parse cleanup for e */
-    PyMem_FREE(e);
+    TyMem_FREE(e);
 
 exit:
     return return_value;
 }
 
-static PyObject *
-test_str_converter_encoding_impl(PyObject *module, char *a, char *b, char *c,
-                                 char *d, Py_ssize_t d_length, char *e,
-                                 Py_ssize_t e_length)
+static TyObject *
+test_str_converter_encoding_impl(TyObject *module, char *a, char *b, char *c,
+                                 char *d, Ty_ssize_t d_length, char *e,
+                                 Ty_ssize_t e_length)
 /*[clinic end generated code: output=999c1deecfa15b0a input=eb4c38e1f898f402]*/
 
 
 /*[clinic input]
 test_Py_UNICODE_converter
 
-    a: Py_UNICODE
-    b: Py_UNICODE(accept={str})
-    c: Py_UNICODE(accept={str, NoneType})
-    d: Py_UNICODE(zeroes=True)
-    e: Py_UNICODE(accept={str, NoneType}, zeroes=True)
+    a: Ty_UNICODE
+    b: Ty_UNICODE(accept={str})
+    c: Ty_UNICODE(accept={str, NoneType})
+    d: Ty_UNICODE(zeroes=True)
+    e: Ty_UNICODE(accept={str, NoneType}, zeroes=True)
     /
 
 [clinic start generated code]*/
@@ -2033,57 +2033,57 @@ PyDoc_STRVAR(test_Py_UNICODE_converter__doc__,
 #define TEST_PY_UNICODE_CONVERTER_METHODDEF    \
     {"test_Py_UNICODE_converter", _PyCFunction_CAST(test_Py_UNICODE_converter), METH_FASTCALL, test_Py_UNICODE_converter__doc__},
 
-static PyObject *
-test_Py_UNICODE_converter_impl(PyObject *module, const wchar_t *a,
+static TyObject *
+test_Py_UNICODE_converter_impl(TyObject *module, const wchar_t *a,
                                const wchar_t *b, const wchar_t *c,
-                               const wchar_t *d, Py_ssize_t d_length,
-                               const wchar_t *e, Py_ssize_t e_length);
+                               const wchar_t *d, Ty_ssize_t d_length,
+                               const wchar_t *e, Ty_ssize_t e_length);
 
-static PyObject *
-test_Py_UNICODE_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_Py_UNICODE_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const wchar_t *a = NULL;
     const wchar_t *b = NULL;
     const wchar_t *c = NULL;
     const wchar_t *d = NULL;
-    Py_ssize_t d_length;
+    Ty_ssize_t d_length;
     const wchar_t *e = NULL;
-    Py_ssize_t e_length;
+    Ty_ssize_t e_length;
 
-    if (!_PyArg_ParseStack(args, nargs, "O&O&O&u#Z#:test_Py_UNICODE_converter",
-        _PyUnicode_WideCharString_Converter, &a, _PyUnicode_WideCharString_Converter, &b, _PyUnicode_WideCharString_Opt_Converter, &c, &d, &d_length, &e, &e_length)) {
+    if (!_TyArg_ParseStack(args, nargs, "O&O&O&u#Z#:test_Py_UNICODE_converter",
+        _TyUnicode_WideCharString_Converter, &a, _TyUnicode_WideCharString_Converter, &b, _TyUnicode_WideCharString_Opt_Converter, &c, &d, &d_length, &e, &e_length)) {
         goto exit;
     }
     return_value = test_Py_UNICODE_converter_impl(module, a, b, c, d, d_length, e, e_length);
 
 exit:
     /* Cleanup for a */
-    PyMem_Free((void *)a);
+    TyMem_Free((void *)a);
     /* Cleanup for b */
-    PyMem_Free((void *)b);
+    TyMem_Free((void *)b);
     /* Cleanup for c */
-    PyMem_Free((void *)c);
+    TyMem_Free((void *)c);
 
     return return_value;
 }
 
-static PyObject *
-test_Py_UNICODE_converter_impl(PyObject *module, const wchar_t *a,
+static TyObject *
+test_Py_UNICODE_converter_impl(TyObject *module, const wchar_t *a,
                                const wchar_t *b, const wchar_t *c,
-                               const wchar_t *d, Py_ssize_t d_length,
-                               const wchar_t *e, Py_ssize_t e_length)
+                               const wchar_t *d, Ty_ssize_t d_length,
+                               const wchar_t *e, Ty_ssize_t e_length)
 /*[clinic end generated code: output=529af9cda2a20349 input=064a3b68ad7f04b0]*/
 
 
 /*[clinic input]
 test_Py_buffer_converter
 
-    a: Py_buffer
-    b: Py_buffer(accept={buffer})
-    c: Py_buffer(accept={str, buffer})
-    d: Py_buffer(accept={str, buffer, NoneType})
-    e: Py_buffer(accept={rwbuffer})
+    a: Ty_buffer
+    b: Ty_buffer(accept={buffer})
+    c: Ty_buffer(accept={str, buffer})
+    d: Ty_buffer(accept={str, buffer, NoneType})
+    e: Ty_buffer(accept={rwbuffer})
     /
 
 [clinic start generated code]*/
@@ -2096,21 +2096,21 @@ PyDoc_STRVAR(test_Py_buffer_converter__doc__,
 #define TEST_PY_BUFFER_CONVERTER_METHODDEF    \
     {"test_Py_buffer_converter", _PyCFunction_CAST(test_Py_buffer_converter), METH_FASTCALL, test_Py_buffer_converter__doc__},
 
-static PyObject *
-test_Py_buffer_converter_impl(PyObject *module, Py_buffer *a, Py_buffer *b,
-                              Py_buffer *c, Py_buffer *d, Py_buffer *e);
+static TyObject *
+test_Py_buffer_converter_impl(TyObject *module, Ty_buffer *a, Ty_buffer *b,
+                              Ty_buffer *c, Ty_buffer *d, Ty_buffer *e);
 
-static PyObject *
-test_Py_buffer_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_Py_buffer_converter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_buffer a = {NULL, NULL};
-    Py_buffer b = {NULL, NULL};
-    Py_buffer c = {NULL, NULL};
-    Py_buffer d = {NULL, NULL};
-    Py_buffer e = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer a = {NULL, NULL};
+    Ty_buffer b = {NULL, NULL};
+    Ty_buffer c = {NULL, NULL};
+    Ty_buffer d = {NULL, NULL};
+    Ty_buffer e = {NULL, NULL};
 
-    if (!_PyArg_ParseStack(args, nargs, "y*y*s*z*w*:test_Py_buffer_converter",
+    if (!_TyArg_ParseStack(args, nargs, "y*y*s*z*w*:test_Py_buffer_converter",
         &a, &b, &c, &d, &e)) {
         goto exit;
     }
@@ -2141,9 +2141,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_Py_buffer_converter_impl(PyObject *module, Py_buffer *a, Py_buffer *b,
-                              Py_buffer *c, Py_buffer *d, Py_buffer *e)
+static TyObject *
+test_Py_buffer_converter_impl(TyObject *module, Ty_buffer *a, Ty_buffer *b,
+                              Ty_buffer *c, Ty_buffer *d, Ty_buffer *e)
 /*[clinic end generated code: output=a153b71b4f45f952 input=6a9da0f56f9525fd]*/
 
 
@@ -2163,45 +2163,45 @@ PyDoc_STRVAR(test_keywords__doc__,
 #define TEST_KEYWORDS_METHODDEF    \
     {"test_keywords", _PyCFunction_CAST(test_keywords), METH_FASTCALL|METH_KEYWORDS, test_keywords__doc__},
 
-static PyObject *
-test_keywords_impl(PyObject *module, PyObject *a, PyObject *b);
+static TyObject *
+test_keywords_impl(TyObject *module, TyObject *a, TyObject *b);
 
-static PyObject *
-test_keywords(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_keywords(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('b'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "b", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_keywords",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *a;
-    PyObject *b;
+    TyObject *argsbuf[2];
+    TyObject *a;
+    TyObject *b;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2214,8 +2214,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_keywords_impl(PyObject *module, PyObject *a, PyObject *b)
+static TyObject *
+test_keywords_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=591462ba3858e446 input=0d3484844749c05b]*/
 
 
@@ -2236,45 +2236,45 @@ PyDoc_STRVAR(test_keywords_kwonly__doc__,
 #define TEST_KEYWORDS_KWONLY_METHODDEF    \
     {"test_keywords_kwonly", _PyCFunction_CAST(test_keywords_kwonly), METH_FASTCALL|METH_KEYWORDS, test_keywords_kwonly__doc__},
 
-static PyObject *
-test_keywords_kwonly_impl(PyObject *module, PyObject *a, PyObject *b);
+static TyObject *
+test_keywords_kwonly_impl(TyObject *module, TyObject *a, TyObject *b);
 
-static PyObject *
-test_keywords_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_keywords_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('b'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "b", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_keywords_kwonly",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *a;
-    PyObject *b;
+    TyObject *argsbuf[2];
+    TyObject *a;
+    TyObject *b;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 1, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2287,8 +2287,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_keywords_kwonly_impl(PyObject *module, PyObject *a, PyObject *b)
+static TyObject *
+test_keywords_kwonly_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=620bb64efa62d69b input=384adc78bfa0bff7]*/
 
 
@@ -2309,48 +2309,48 @@ PyDoc_STRVAR(test_keywords_opt__doc__,
 #define TEST_KEYWORDS_OPT_METHODDEF    \
     {"test_keywords_opt", _PyCFunction_CAST(test_keywords_opt), METH_FASTCALL|METH_KEYWORDS, test_keywords_opt__doc__},
 
-static PyObject *
-test_keywords_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                       PyObject *c);
+static TyObject *
+test_keywords_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                       TyObject *c);
 
-static PyObject *
-test_keywords_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_keywords_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "b", "c", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_keywords_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *b = Py_None;
-    PyObject *c = Py_None;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *b = Ty_None;
+    TyObject *c = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2373,9 +2373,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_keywords_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                       PyObject *c)
+static TyObject *
+test_keywords_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                       TyObject *c)
 /*[clinic end generated code: output=3ea21673d129218c input=eda7964f784f4607]*/
 
 
@@ -2398,49 +2398,49 @@ PyDoc_STRVAR(test_keywords_opt_kwonly__doc__,
 #define TEST_KEYWORDS_OPT_KWONLY_METHODDEF    \
     {"test_keywords_opt_kwonly", _PyCFunction_CAST(test_keywords_opt_kwonly), METH_FASTCALL|METH_KEYWORDS, test_keywords_opt_kwonly__doc__},
 
-static PyObject *
-test_keywords_opt_kwonly_impl(PyObject *module, PyObject *a, PyObject *b,
-                              PyObject *c, PyObject *d);
+static TyObject *
+test_keywords_opt_kwonly_impl(TyObject *module, TyObject *a, TyObject *b,
+                              TyObject *c, TyObject *d);
 
-static PyObject *
-test_keywords_opt_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_keywords_opt_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "b", "c", "d", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_keywords_opt_kwonly",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *b = Py_None;
-    PyObject *c = Py_None;
-    PyObject *d = Py_None;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *b = Ty_None;
+    TyObject *c = Ty_None;
+    TyObject *d = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2473,9 +2473,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_keywords_opt_kwonly_impl(PyObject *module, PyObject *a, PyObject *b,
-                              PyObject *c, PyObject *d)
+static TyObject *
+test_keywords_opt_kwonly_impl(TyObject *module, TyObject *a, TyObject *b,
+                              TyObject *c, TyObject *d)
 /*[clinic end generated code: output=1e5fbe4eebfd40a5 input=209387a4815e5082]*/
 
 
@@ -2497,48 +2497,48 @@ PyDoc_STRVAR(test_keywords_kwonly_opt__doc__,
 #define TEST_KEYWORDS_KWONLY_OPT_METHODDEF    \
     {"test_keywords_kwonly_opt", _PyCFunction_CAST(test_keywords_kwonly_opt), METH_FASTCALL|METH_KEYWORDS, test_keywords_kwonly_opt__doc__},
 
-static PyObject *
-test_keywords_kwonly_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                              PyObject *c);
+static TyObject *
+test_keywords_kwonly_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                              TyObject *c);
 
-static PyObject *
-test_keywords_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_keywords_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "b", "c", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_keywords_kwonly_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *b = Py_None;
-    PyObject *c = Py_None;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *b = Ty_None;
+    TyObject *c = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2561,9 +2561,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_keywords_kwonly_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                              PyObject *c)
+static TyObject *
+test_keywords_kwonly_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                              TyObject *c)
 /*[clinic end generated code: output=bac8882cbcd50151 input=18393cc64fa000f4]*/
 
 
@@ -2584,45 +2584,45 @@ PyDoc_STRVAR(test_posonly_keywords__doc__,
 #define TEST_POSONLY_KEYWORDS_METHODDEF    \
     {"test_posonly_keywords", _PyCFunction_CAST(test_posonly_keywords), METH_FASTCALL|METH_KEYWORDS, test_posonly_keywords__doc__},
 
-static PyObject *
-test_posonly_keywords_impl(PyObject *module, PyObject *a, PyObject *b);
+static TyObject *
+test_posonly_keywords_impl(TyObject *module, TyObject *a, TyObject *b);
 
-static PyObject *
-test_posonly_keywords(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_keywords(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_keywords",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *a;
-    PyObject *b;
+    TyObject *argsbuf[2];
+    TyObject *a;
+    TyObject *b;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2635,8 +2635,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_keywords_impl(PyObject *module, PyObject *a, PyObject *b)
+static TyObject *
+test_posonly_keywords_impl(TyObject *module, TyObject *a, TyObject *b)
 /*[clinic end generated code: output=7ddf55a744ba53dc input=1767b0ebdf06060e]*/
 
 
@@ -2658,45 +2658,45 @@ PyDoc_STRVAR(test_posonly_kwonly__doc__,
 #define TEST_POSONLY_KWONLY_METHODDEF    \
     {"test_posonly_kwonly", _PyCFunction_CAST(test_posonly_kwonly), METH_FASTCALL|METH_KEYWORDS, test_posonly_kwonly__doc__},
 
-static PyObject *
-test_posonly_kwonly_impl(PyObject *module, PyObject *a, PyObject *c);
+static TyObject *
+test_posonly_kwonly_impl(TyObject *module, TyObject *a, TyObject *c);
 
-static PyObject *
-test_posonly_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('c'), },
+        .ob_item = { _Ty_LATIN1_CHR('c'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "c", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_kwonly",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *a;
-    PyObject *c;
+    TyObject *argsbuf[2];
+    TyObject *a;
+    TyObject *c;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 1, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2709,8 +2709,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_kwonly_impl(PyObject *module, PyObject *a, PyObject *c)
+static TyObject *
+test_posonly_kwonly_impl(TyObject *module, TyObject *a, TyObject *c)
 /*[clinic end generated code: output=095a4e17e22609bc input=9042f2818f664839]*/
 
 
@@ -2733,47 +2733,47 @@ PyDoc_STRVAR(test_posonly_keywords_kwonly__doc__,
 #define TEST_POSONLY_KEYWORDS_KWONLY_METHODDEF    \
     {"test_posonly_keywords_kwonly", _PyCFunction_CAST(test_posonly_keywords_kwonly), METH_FASTCALL|METH_KEYWORDS, test_posonly_keywords_kwonly__doc__},
 
-static PyObject *
-test_posonly_keywords_kwonly_impl(PyObject *module, PyObject *a, PyObject *b,
-                                  PyObject *c);
+static TyObject *
+test_posonly_keywords_kwonly_impl(TyObject *module, TyObject *a, TyObject *b,
+                                  TyObject *c);
 
-static PyObject *
-test_posonly_keywords_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_keywords_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", "c", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_keywords_kwonly",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject *a;
-    PyObject *b;
-    PyObject *c;
+    TyObject *argsbuf[3];
+    TyObject *a;
+    TyObject *b;
+    TyObject *c;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 1, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2787,9 +2787,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_keywords_kwonly_impl(PyObject *module, PyObject *a, PyObject *b,
-                                  PyObject *c)
+static TyObject *
+test_posonly_keywords_kwonly_impl(TyObject *module, TyObject *a, TyObject *b,
+                                  TyObject *c)
 /*[clinic end generated code: output=2f03aff955026341 input=29546ebdca492fea]*/
 
 
@@ -2812,49 +2812,49 @@ PyDoc_STRVAR(test_posonly_keywords_opt__doc__,
 #define TEST_POSONLY_KEYWORDS_OPT_METHODDEF    \
     {"test_posonly_keywords_opt", _PyCFunction_CAST(test_posonly_keywords_opt), METH_FASTCALL|METH_KEYWORDS, test_posonly_keywords_opt__doc__},
 
-static PyObject *
-test_posonly_keywords_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                               PyObject *c, PyObject *d);
+static TyObject *
+test_posonly_keywords_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                               TyObject *c, TyObject *d);
 
-static PyObject *
-test_posonly_keywords_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_keywords_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", "c", "d", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_keywords_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *a;
-    PyObject *b;
-    PyObject *c = Py_None;
-    PyObject *d = Py_None;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *a;
+    TyObject *b;
+    TyObject *c = Ty_None;
+    TyObject *d = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2878,9 +2878,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_keywords_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                               PyObject *c, PyObject *d)
+static TyObject *
+test_posonly_keywords_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                               TyObject *c, TyObject *d)
 /*[clinic end generated code: output=2c8b2ca42f821c66 input=cdf5a9625e554e9b]*/
 
 
@@ -2902,48 +2902,48 @@ PyDoc_STRVAR(test_posonly_keywords_opt2__doc__,
 #define TEST_POSONLY_KEYWORDS_OPT2_METHODDEF    \
     {"test_posonly_keywords_opt2", _PyCFunction_CAST(test_posonly_keywords_opt2), METH_FASTCALL|METH_KEYWORDS, test_posonly_keywords_opt2__doc__},
 
-static PyObject *
-test_posonly_keywords_opt2_impl(PyObject *module, PyObject *a, PyObject *b,
-                                PyObject *c);
+static TyObject *
+test_posonly_keywords_opt2_impl(TyObject *module, TyObject *a, TyObject *b,
+                                TyObject *c);
 
-static PyObject *
-test_posonly_keywords_opt2(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_keywords_opt2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", "c", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_keywords_opt2",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *b = Py_None;
-    PyObject *c = Py_None;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *b = Ty_None;
+    TyObject *c = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2966,9 +2966,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_keywords_opt2_impl(PyObject *module, PyObject *a, PyObject *b,
-                                PyObject *c)
+static TyObject *
+test_posonly_keywords_opt2_impl(TyObject *module, TyObject *a, TyObject *b,
+                                TyObject *c)
 /*[clinic end generated code: output=969a3b2b020310f1 input=1581299d21d16f14]*/
 
 
@@ -2991,49 +2991,49 @@ PyDoc_STRVAR(test_posonly_opt_keywords_opt__doc__,
 #define TEST_POSONLY_OPT_KEYWORDS_OPT_METHODDEF    \
     {"test_posonly_opt_keywords_opt", _PyCFunction_CAST(test_posonly_opt_keywords_opt), METH_FASTCALL|METH_KEYWORDS, test_posonly_opt_keywords_opt__doc__},
 
-static PyObject *
-test_posonly_opt_keywords_opt_impl(PyObject *module, PyObject *a,
-                                   PyObject *b, PyObject *c, PyObject *d);
+static TyObject *
+test_posonly_opt_keywords_opt_impl(TyObject *module, TyObject *a,
+                                   TyObject *b, TyObject *c, TyObject *d);
 
-static PyObject *
-test_posonly_opt_keywords_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_opt_keywords_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), },
+        .ob_item = { _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "", "c", "d", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_opt_keywords_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *b = Py_None;
-    PyObject *c = Py_None;
-    PyObject *d = Py_None;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *b = Ty_None;
+    TyObject *c = Ty_None;
+    TyObject *d = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3062,9 +3062,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_opt_keywords_opt_impl(PyObject *module, PyObject *a,
-                                   PyObject *b, PyObject *c, PyObject *d)
+static TyObject *
+test_posonly_opt_keywords_opt_impl(TyObject *module, TyObject *a,
+                                   TyObject *b, TyObject *c, TyObject *d)
 /*[clinic end generated code: output=02bf5e64403946fc input=408798ec3d42949f]*/
 
 
@@ -3088,49 +3088,49 @@ PyDoc_STRVAR(test_posonly_kwonly_opt__doc__,
 #define TEST_POSONLY_KWONLY_OPT_METHODDEF    \
     {"test_posonly_kwonly_opt", _PyCFunction_CAST(test_posonly_kwonly_opt), METH_FASTCALL|METH_KEYWORDS, test_posonly_kwonly_opt__doc__},
 
-static PyObject *
-test_posonly_kwonly_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                             PyObject *c, PyObject *d);
+static TyObject *
+test_posonly_kwonly_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                             TyObject *c, TyObject *d);
 
-static PyObject *
-test_posonly_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", "c", "d", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_kwonly_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *a;
-    PyObject *b;
-    PyObject *c = Py_None;
-    PyObject *d = Py_None;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *a;
+    TyObject *b;
+    TyObject *c = Ty_None;
+    TyObject *d = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 1, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3154,9 +3154,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_kwonly_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                             PyObject *c, PyObject *d)
+static TyObject *
+test_posonly_kwonly_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                             TyObject *c, TyObject *d)
 /*[clinic end generated code: output=26510e61948015e8 input=8d8e5643bbbc2309]*/
 
 
@@ -3179,48 +3179,48 @@ PyDoc_STRVAR(test_posonly_kwonly_opt2__doc__,
 #define TEST_POSONLY_KWONLY_OPT2_METHODDEF    \
     {"test_posonly_kwonly_opt2", _PyCFunction_CAST(test_posonly_kwonly_opt2), METH_FASTCALL|METH_KEYWORDS, test_posonly_kwonly_opt2__doc__},
 
-static PyObject *
-test_posonly_kwonly_opt2_impl(PyObject *module, PyObject *a, PyObject *b,
-                              PyObject *c);
+static TyObject *
+test_posonly_kwonly_opt2_impl(TyObject *module, TyObject *a, TyObject *b,
+                              TyObject *c);
 
-static PyObject *
-test_posonly_kwonly_opt2(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_kwonly_opt2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", "c", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_kwonly_opt2",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *b = Py_None;
-    PyObject *c = Py_None;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *b = Ty_None;
+    TyObject *c = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3243,9 +3243,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_kwonly_opt2_impl(PyObject *module, PyObject *a, PyObject *b,
-                              PyObject *c)
+static TyObject *
+test_posonly_kwonly_opt2_impl(TyObject *module, TyObject *a, TyObject *b,
+                              TyObject *c)
 /*[clinic end generated code: output=b31416e16c908756 input=f7e5eed94f75fff0]*/
 
 
@@ -3269,49 +3269,49 @@ PyDoc_STRVAR(test_posonly_opt_kwonly_opt__doc__,
 #define TEST_POSONLY_OPT_KWONLY_OPT_METHODDEF    \
     {"test_posonly_opt_kwonly_opt", _PyCFunction_CAST(test_posonly_opt_kwonly_opt), METH_FASTCALL|METH_KEYWORDS, test_posonly_opt_kwonly_opt__doc__},
 
-static PyObject *
-test_posonly_opt_kwonly_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                                 PyObject *c, PyObject *d);
+static TyObject *
+test_posonly_opt_kwonly_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                                 TyObject *c, TyObject *d);
 
-static PyObject *
-test_posonly_opt_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_opt_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), },
+        .ob_item = { _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "", "c", "d", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_opt_kwonly_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *b = Py_None;
-    PyObject *c = Py_None;
-    PyObject *d = Py_None;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *b = Ty_None;
+    TyObject *c = Ty_None;
+    TyObject *d = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3340,9 +3340,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_opt_kwonly_opt_impl(PyObject *module, PyObject *a, PyObject *b,
-                                 PyObject *c, PyObject *d)
+static TyObject *
+test_posonly_opt_kwonly_opt_impl(TyObject *module, TyObject *a, TyObject *b,
+                                 TyObject *c, TyObject *d)
 /*[clinic end generated code: output=dc2337647059cb51 input=1e557dc979d120fd]*/
 
 
@@ -3367,51 +3367,51 @@ PyDoc_STRVAR(test_posonly_keywords_kwonly_opt__doc__,
 #define TEST_POSONLY_KEYWORDS_KWONLY_OPT_METHODDEF    \
     {"test_posonly_keywords_kwonly_opt", _PyCFunction_CAST(test_posonly_keywords_kwonly_opt), METH_FASTCALL|METH_KEYWORDS, test_posonly_keywords_kwonly_opt__doc__},
 
-static PyObject *
-test_posonly_keywords_kwonly_opt_impl(PyObject *module, PyObject *a,
-                                      PyObject *b, PyObject *c, PyObject *d,
-                                      PyObject *e);
+static TyObject *
+test_posonly_keywords_kwonly_opt_impl(TyObject *module, TyObject *a,
+                                      TyObject *b, TyObject *c, TyObject *d,
+                                      TyObject *e);
 
-static PyObject *
-test_posonly_keywords_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_keywords_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), _Py_LATIN1_CHR('e'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", "c", "d", "e", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_keywords_kwonly_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
-    PyObject *a;
-    PyObject *b;
-    PyObject *c;
-    PyObject *d = Py_None;
-    PyObject *e = Py_None;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *a;
+    TyObject *b;
+    TyObject *c;
+    TyObject *d = Ty_None;
+    TyObject *e = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 1, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3436,10 +3436,10 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_keywords_kwonly_opt_impl(PyObject *module, PyObject *a,
-                                      PyObject *b, PyObject *c, PyObject *d,
-                                      PyObject *e)
+static TyObject *
+test_posonly_keywords_kwonly_opt_impl(TyObject *module, TyObject *a,
+                                      TyObject *b, TyObject *c, TyObject *d,
+                                      TyObject *e)
 /*[clinic end generated code: output=b7adeae40c9833a4 input=c3884a4f956fdc89]*/
 
 
@@ -3463,49 +3463,49 @@ PyDoc_STRVAR(test_posonly_keywords_kwonly_opt2__doc__,
 #define TEST_POSONLY_KEYWORDS_KWONLY_OPT2_METHODDEF    \
     {"test_posonly_keywords_kwonly_opt2", _PyCFunction_CAST(test_posonly_keywords_kwonly_opt2), METH_FASTCALL|METH_KEYWORDS, test_posonly_keywords_kwonly_opt2__doc__},
 
-static PyObject *
-test_posonly_keywords_kwonly_opt2_impl(PyObject *module, PyObject *a,
-                                       PyObject *b, PyObject *c, PyObject *d);
+static TyObject *
+test_posonly_keywords_kwonly_opt2_impl(TyObject *module, TyObject *a,
+                                       TyObject *b, TyObject *c, TyObject *d);
 
-static PyObject *
-test_posonly_keywords_kwonly_opt2(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_keywords_kwonly_opt2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", "c", "d", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_keywords_kwonly_opt2",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *a;
-    PyObject *b;
-    PyObject *c = Py_None;
-    PyObject *d = Py_None;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *a;
+    TyObject *b;
+    TyObject *c = Ty_None;
+    TyObject *d = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3529,9 +3529,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_keywords_kwonly_opt2_impl(PyObject *module, PyObject *a,
-                                       PyObject *b, PyObject *c, PyObject *d)
+static TyObject *
+test_posonly_keywords_kwonly_opt2_impl(TyObject *module, TyObject *a,
+                                       TyObject *b, TyObject *c, TyObject *d)
 /*[clinic end generated code: output=827a349e36e89c82 input=68d01d7c0f6dafb0]*/
 
 
@@ -3557,51 +3557,51 @@ PyDoc_STRVAR(test_posonly_keywords_opt_kwonly_opt__doc__,
 #define TEST_POSONLY_KEYWORDS_OPT_KWONLY_OPT_METHODDEF    \
     {"test_posonly_keywords_opt_kwonly_opt", _PyCFunction_CAST(test_posonly_keywords_opt_kwonly_opt), METH_FASTCALL|METH_KEYWORDS, test_posonly_keywords_opt_kwonly_opt__doc__},
 
-static PyObject *
-test_posonly_keywords_opt_kwonly_opt_impl(PyObject *module, PyObject *a,
-                                          PyObject *b, PyObject *c,
-                                          PyObject *d, PyObject *e);
+static TyObject *
+test_posonly_keywords_opt_kwonly_opt_impl(TyObject *module, TyObject *a,
+                                          TyObject *b, TyObject *c,
+                                          TyObject *d, TyObject *e);
 
-static PyObject *
-test_posonly_keywords_opt_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_keywords_opt_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), _Py_LATIN1_CHR('e'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", "c", "d", "e", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_keywords_opt_kwonly_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
-    PyObject *a;
-    PyObject *b;
-    PyObject *c = Py_None;
-    PyObject *d = Py_None;
-    PyObject *e = Py_None;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *a;
+    TyObject *b;
+    TyObject *c = Ty_None;
+    TyObject *d = Ty_None;
+    TyObject *e = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3635,10 +3635,10 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_keywords_opt_kwonly_opt_impl(PyObject *module, PyObject *a,
-                                          PyObject *b, PyObject *c,
-                                          PyObject *d, PyObject *e)
+static TyObject *
+test_posonly_keywords_opt_kwonly_opt_impl(TyObject *module, TyObject *a,
+                                          TyObject *b, TyObject *c,
+                                          TyObject *d, TyObject *e)
 /*[clinic end generated code: output=bcb0088555123966 input=d0883d45876f186c]*/
 
 
@@ -3664,51 +3664,51 @@ PyDoc_STRVAR(test_posonly_keywords_opt2_kwonly_opt__doc__,
 #define TEST_POSONLY_KEYWORDS_OPT2_KWONLY_OPT_METHODDEF    \
     {"test_posonly_keywords_opt2_kwonly_opt", _PyCFunction_CAST(test_posonly_keywords_opt2_kwonly_opt), METH_FASTCALL|METH_KEYWORDS, test_posonly_keywords_opt2_kwonly_opt__doc__},
 
-static PyObject *
-test_posonly_keywords_opt2_kwonly_opt_impl(PyObject *module, PyObject *a,
-                                           PyObject *b, PyObject *c,
-                                           PyObject *d, PyObject *e);
+static TyObject *
+test_posonly_keywords_opt2_kwonly_opt_impl(TyObject *module, TyObject *a,
+                                           TyObject *b, TyObject *c,
+                                           TyObject *d, TyObject *e);
 
-static PyObject *
-test_posonly_keywords_opt2_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_keywords_opt2_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), _Py_LATIN1_CHR('e'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "b", "c", "d", "e", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_keywords_opt2_kwonly_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *b = Py_None;
-    PyObject *c = Py_None;
-    PyObject *d = Py_None;
-    PyObject *e = Py_None;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *b = Ty_None;
+    TyObject *c = Ty_None;
+    TyObject *d = Ty_None;
+    TyObject *e = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3747,10 +3747,10 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_keywords_opt2_kwonly_opt_impl(PyObject *module, PyObject *a,
-                                           PyObject *b, PyObject *c,
-                                           PyObject *d, PyObject *e)
+static TyObject *
+test_posonly_keywords_opt2_kwonly_opt_impl(TyObject *module, TyObject *a,
+                                           TyObject *b, TyObject *c,
+                                           TyObject *d, TyObject *e)
 /*[clinic end generated code: output=a22d1276d4c2c9c7 input=c95e2e1ec93035ad]*/
 
 
@@ -3777,53 +3777,53 @@ PyDoc_STRVAR(test_posonly_opt_keywords_opt_kwonly_opt__doc__,
 #define TEST_POSONLY_OPT_KEYWORDS_OPT_KWONLY_OPT_METHODDEF    \
     {"test_posonly_opt_keywords_opt_kwonly_opt", _PyCFunction_CAST(test_posonly_opt_keywords_opt_kwonly_opt), METH_FASTCALL|METH_KEYWORDS, test_posonly_opt_keywords_opt_kwonly_opt__doc__},
 
-static PyObject *
-test_posonly_opt_keywords_opt_kwonly_opt_impl(PyObject *module, PyObject *a,
-                                              PyObject *b, PyObject *c,
-                                              PyObject *d, PyObject *e,
-                                              PyObject *f);
+static TyObject *
+test_posonly_opt_keywords_opt_kwonly_opt_impl(TyObject *module, TyObject *a,
+                                              TyObject *b, TyObject *c,
+                                              TyObject *d, TyObject *e,
+                                              TyObject *f);
 
-static PyObject *
-test_posonly_opt_keywords_opt_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_posonly_opt_keywords_opt_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('c'), _Py_LATIN1_CHR('d'), _Py_LATIN1_CHR('e'), _Py_LATIN1_CHR('f'), },
+        .ob_item = { _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), _Ty_LATIN1_CHR('f'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "", "c", "d", "e", "f", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_posonly_opt_keywords_opt_kwonly_opt",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[6];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *b = Py_None;
-    PyObject *c = Py_None;
-    PyObject *d = Py_None;
-    PyObject *e = Py_None;
-    PyObject *f = Py_None;
+    TyObject *argsbuf[6];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *b = Ty_None;
+    TyObject *c = Ty_None;
+    TyObject *d = Ty_None;
+    TyObject *e = Ty_None;
+    TyObject *f = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3868,11 +3868,11 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_posonly_opt_keywords_opt_kwonly_opt_impl(PyObject *module, PyObject *a,
-                                              PyObject *b, PyObject *c,
-                                              PyObject *d, PyObject *e,
-                                              PyObject *f)
+static TyObject *
+test_posonly_opt_keywords_opt_kwonly_opt_impl(TyObject *module, TyObject *a,
+                                              TyObject *b, TyObject *c,
+                                              TyObject *d, TyObject *e,
+                                              TyObject *f)
 /*[clinic end generated code: output=ebdbe695ee85a2ea input=9914857713c5bbf8]*/
 
 /*[clinic input]
@@ -3892,45 +3892,45 @@ PyDoc_STRVAR(test_keyword_only_parameter__doc__,
 #define TEST_KEYWORD_ONLY_PARAMETER_METHODDEF    \
     {"test_keyword_only_parameter", _PyCFunction_CAST(test_keyword_only_parameter), METH_FASTCALL|METH_KEYWORDS, test_keyword_only_parameter__doc__},
 
-static PyObject *
-test_keyword_only_parameter_impl(PyObject *module, PyBytesObject *co_lnotab);
+static TyObject *
+test_keyword_only_parameter_impl(TyObject *module, PyBytesObject *co_lnotab);
 
-static PyObject *
-test_keyword_only_parameter(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_keyword_only_parameter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(co_lnotab), },
+        .ob_item = { &_Ty_ID(co_lnotab), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"co_lnotab", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_keyword_only_parameter",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     PyBytesObject *co_lnotab = (PyBytesObject *)self->co_lnotab;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -3938,8 +3938,8 @@ test_keyword_only_parameter(PyObject *module, PyObject *const *args, Py_ssize_t 
     if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    if (!PyBytes_Check(args[0])) {
-        _PyArg_BadArgument("test_keyword_only_parameter", "argument 'co_lnotab'", "bytes", args[0]);
+    if (!TyBytes_Check(args[0])) {
+        _TyArg_BadArgument("test_keyword_only_parameter", "argument 'co_lnotab'", "bytes", args[0]);
         goto exit;
     }
     co_lnotab = (PyBytesObject *)args[0];
@@ -3950,8 +3950,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_keyword_only_parameter_impl(PyObject *module, PyBytesObject *co_lnotab)
+static TyObject *
+test_keyword_only_parameter_impl(TyObject *module, PyBytesObject *co_lnotab)
 /*[clinic end generated code: output=bcad654ee66b0972 input=303df5046c7e37a3]*/
 
 
@@ -3966,24 +3966,24 @@ output preset buffer
 test_preprocessor_guarded_condition_a
 [clinic start generated code]*/
 
-static PyObject *
-test_preprocessor_guarded_condition_a_impl(PyObject *module)
+static TyObject *
+test_preprocessor_guarded_condition_a_impl(TyObject *module)
 /*[clinic end generated code: output=ad012af18085add6 input=8edb8706a98cda7e]*/
 #elif CONDITION_B
 /*[clinic input]
 test_preprocessor_guarded_elif_condition_b
 [clinic start generated code]*/
 
-static PyObject *
-test_preprocessor_guarded_elif_condition_b_impl(PyObject *module)
+static TyObject *
+test_preprocessor_guarded_elif_condition_b_impl(TyObject *module)
 /*[clinic end generated code: output=615f2dee82b138d1 input=53777cebbf7fee32]*/
 #else
 /*[clinic input]
 test_preprocessor_guarded_else
 [clinic start generated code]*/
 
-static PyObject *
-test_preprocessor_guarded_else_impl(PyObject *module)
+static TyObject *
+test_preprocessor_guarded_else_impl(TyObject *module)
 /*[clinic end generated code: output=13af7670aac51b12 input=6657ab31d74c29fc]*/
 #endif
 
@@ -3992,16 +3992,16 @@ test_preprocessor_guarded_else_impl(PyObject *module)
 test_preprocessor_guarded_ifndef_condition_c
 [clinic start generated code]*/
 
-static PyObject *
-test_preprocessor_guarded_ifndef_condition_c_impl(PyObject *module)
+static TyObject *
+test_preprocessor_guarded_ifndef_condition_c_impl(TyObject *module)
 /*[clinic end generated code: output=ed422e8c895bb0a5 input=e9b50491cea2b668]*/
 #else
 /*[clinic input]
 test_preprocessor_guarded_ifndef_not_condition_c
 [clinic start generated code]*/
 
-static PyObject *
-test_preprocessor_guarded_ifndef_not_condition_c_impl(PyObject *module)
+static TyObject *
+test_preprocessor_guarded_ifndef_not_condition_c_impl(TyObject *module)
 /*[clinic end generated code: output=de6f4c6a67f8c536 input=da74e30e01c6f2c5]*/
 #endif
 
@@ -4011,8 +4011,8 @@ CONDITION_D
 test_preprocessor_guarded_if_with_continuation
 [clinic start generated code]*/
 
-static PyObject *
-test_preprocessor_guarded_if_with_continuation_impl(PyObject *module)
+static TyObject *
+test_preprocessor_guarded_if_with_continuation_impl(TyObject *module)
 /*[clinic end generated code: output=3d0712ca9e2d15b9 input=4a956fd91be30284]*/
 #endif
 
@@ -4023,8 +4023,8 @@ test_preprocessor_guarded_if_e_or_f
 Makes sure cpp.Monitor handles other directives than preprocessor conditionals.
 [clinic start generated code]*/
 
-static PyObject *
-test_preprocessor_guarded_if_e_or_f_impl(PyObject *module)
+static TyObject *
+test_preprocessor_guarded_if_e_or_f_impl(TyObject *module)
 /*[clinic end generated code: output=e49d24ff64ad88bc input=57b9c37f938bc4f1]*/
 #endif
 
@@ -4043,8 +4043,8 @@ PyDoc_STRVAR(test_preprocessor_guarded_condition_a__doc__,
 #define TEST_PREPROCESSOR_GUARDED_CONDITION_A_METHODDEF    \
     {"test_preprocessor_guarded_condition_a", (PyCFunction)test_preprocessor_guarded_condition_a, METH_NOARGS, test_preprocessor_guarded_condition_a__doc__},
 
-static PyObject *
-test_preprocessor_guarded_condition_a(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_preprocessor_guarded_condition_a(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return test_preprocessor_guarded_condition_a_impl(module);
 }
@@ -4061,8 +4061,8 @@ PyDoc_STRVAR(test_preprocessor_guarded_elif_condition_b__doc__,
 #define TEST_PREPROCESSOR_GUARDED_ELIF_CONDITION_B_METHODDEF    \
     {"test_preprocessor_guarded_elif_condition_b", (PyCFunction)test_preprocessor_guarded_elif_condition_b, METH_NOARGS, test_preprocessor_guarded_elif_condition_b__doc__},
 
-static PyObject *
-test_preprocessor_guarded_elif_condition_b(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_preprocessor_guarded_elif_condition_b(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return test_preprocessor_guarded_elif_condition_b_impl(module);
 }
@@ -4079,8 +4079,8 @@ PyDoc_STRVAR(test_preprocessor_guarded_else__doc__,
 #define TEST_PREPROCESSOR_GUARDED_ELSE_METHODDEF    \
     {"test_preprocessor_guarded_else", (PyCFunction)test_preprocessor_guarded_else, METH_NOARGS, test_preprocessor_guarded_else__doc__},
 
-static PyObject *
-test_preprocessor_guarded_else(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_preprocessor_guarded_else(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return test_preprocessor_guarded_else_impl(module);
 }
@@ -4097,8 +4097,8 @@ PyDoc_STRVAR(test_preprocessor_guarded_ifndef_condition_c__doc__,
 #define TEST_PREPROCESSOR_GUARDED_IFNDEF_CONDITION_C_METHODDEF    \
     {"test_preprocessor_guarded_ifndef_condition_c", (PyCFunction)test_preprocessor_guarded_ifndef_condition_c, METH_NOARGS, test_preprocessor_guarded_ifndef_condition_c__doc__},
 
-static PyObject *
-test_preprocessor_guarded_ifndef_condition_c(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_preprocessor_guarded_ifndef_condition_c(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return test_preprocessor_guarded_ifndef_condition_c_impl(module);
 }
@@ -4115,8 +4115,8 @@ PyDoc_STRVAR(test_preprocessor_guarded_ifndef_not_condition_c__doc__,
 #define TEST_PREPROCESSOR_GUARDED_IFNDEF_NOT_CONDITION_C_METHODDEF    \
     {"test_preprocessor_guarded_ifndef_not_condition_c", (PyCFunction)test_preprocessor_guarded_ifndef_not_condition_c, METH_NOARGS, test_preprocessor_guarded_ifndef_not_condition_c__doc__},
 
-static PyObject *
-test_preprocessor_guarded_ifndef_not_condition_c(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_preprocessor_guarded_ifndef_not_condition_c(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return test_preprocessor_guarded_ifndef_not_condition_c_impl(module);
 }
@@ -4133,8 +4133,8 @@ PyDoc_STRVAR(test_preprocessor_guarded_if_with_continuation__doc__,
 #define TEST_PREPROCESSOR_GUARDED_IF_WITH_CONTINUATION_METHODDEF    \
     {"test_preprocessor_guarded_if_with_continuation", (PyCFunction)test_preprocessor_guarded_if_with_continuation, METH_NOARGS, test_preprocessor_guarded_if_with_continuation__doc__},
 
-static PyObject *
-test_preprocessor_guarded_if_with_continuation(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_preprocessor_guarded_if_with_continuation(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return test_preprocessor_guarded_if_with_continuation_impl(module);
 }
@@ -4152,8 +4152,8 @@ PyDoc_STRVAR(test_preprocessor_guarded_if_e_or_f__doc__,
 #define TEST_PREPROCESSOR_GUARDED_IF_E_OR_F_METHODDEF    \
     {"test_preprocessor_guarded_if_e_or_f", (PyCFunction)test_preprocessor_guarded_if_e_or_f, METH_NOARGS, test_preprocessor_guarded_if_e_or_f__doc__},
 
-static PyObject *
-test_preprocessor_guarded_if_e_or_f(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_preprocessor_guarded_if_e_or_f(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return test_preprocessor_guarded_if_e_or_f_impl(module);
 }
@@ -4207,21 +4207,21 @@ PyDoc_STRVAR(test_vararg_and_posonly__doc__,
 #define TEST_VARARG_AND_POSONLY_METHODDEF    \
     {"test_vararg_and_posonly", _PyCFunction_CAST(test_vararg_and_posonly), METH_FASTCALL, test_vararg_and_posonly__doc__},
 
-static PyObject *
-test_vararg_and_posonly_impl(PyObject *module, PyObject *a, PyObject *args);
+static TyObject *
+test_vararg_and_posonly_impl(TyObject *module, TyObject *a, TyObject *args);
 
-static PyObject *
-test_vararg_and_posonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_vararg_and_posonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
-    PyObject *__clinic_args = NULL;
+    TyObject *return_value = NULL;
+    TyObject *a;
+    TyObject *__clinic_args = NULL;
 
-    if (!_PyArg_CheckPositional("test_vararg_and_posonly", nargs, 1, PY_SSIZE_T_MAX)) {
+    if (!_TyArg_CheckPositional("test_vararg_and_posonly", nargs, 1, PY_SSIZE_T_MAX)) {
         goto exit;
     }
     a = args[0];
-    __clinic_args = _PyTuple_FromArray(args + 1, nargs - 1);
+    __clinic_args = _TyTuple_FromArray(args + 1, nargs - 1);
     if (__clinic_args == NULL) {
         goto exit;
     }
@@ -4229,13 +4229,13 @@ test_vararg_and_posonly(PyObject *module, PyObject *const *args, Py_ssize_t narg
 
 exit:
     /* Cleanup for args */
-    Py_XDECREF(__clinic_args);
+    Ty_XDECREF(__clinic_args);
 
     return return_value;
 }
 
-static PyObject *
-test_vararg_and_posonly_impl(PyObject *module, PyObject *a, PyObject *args)
+static TyObject *
+test_vararg_and_posonly_impl(TyObject *module, TyObject *a, TyObject *args)
 /*[clinic end generated code: output=0c11c475e240869e input=2c49a482f68545c0]*/
 
 /*[clinic input]
@@ -4255,54 +4255,54 @@ PyDoc_STRVAR(test_vararg__doc__,
 #define TEST_VARARG_METHODDEF    \
     {"test_vararg", _PyCFunction_CAST(test_vararg), METH_FASTCALL|METH_KEYWORDS, test_vararg__doc__},
 
-static PyObject *
-test_vararg_impl(PyObject *module, PyObject *a, PyObject *args);
+static TyObject *
+test_vararg_impl(TyObject *module, TyObject *a, TyObject *args);
 
-static PyObject *
-test_vararg(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_vararg(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_vararg",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject * const *fastargs;
-    PyObject *a;
-    PyObject *__clinic_args = NULL;
+    TyObject *argsbuf[1];
+    TyObject * const *fastargs;
+    TyObject *a;
+    TyObject *__clinic_args = NULL;
 
-    fastargs = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    fastargs = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 1, argsbuf);
     if (!fastargs) {
         goto exit;
     }
     a = fastargs[0];
     __clinic_args = nargs > 1
-        ? _PyTuple_FromArray(args + 1, nargs - 1)
-        : PyTuple_New(0);
+        ? _TyTuple_FromArray(args + 1, nargs - 1)
+        : TyTuple_New(0);
     if (__clinic_args == NULL) {
         goto exit;
     }
@@ -4310,13 +4310,13 @@ test_vararg(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject 
 
 exit:
     /* Cleanup for args */
-    Py_XDECREF(__clinic_args);
+    Ty_XDECREF(__clinic_args);
 
     return return_value;
 }
 
-static PyObject *
-test_vararg_impl(PyObject *module, PyObject *a, PyObject *args)
+static TyObject *
+test_vararg_impl(TyObject *module, TyObject *a, TyObject *args)
 /*[clinic end generated code: output=17ba625cdd0369c1 input=7448995636d9186a]*/
 
 /*[clinic input]
@@ -4337,49 +4337,49 @@ PyDoc_STRVAR(test_vararg_with_default__doc__,
 #define TEST_VARARG_WITH_DEFAULT_METHODDEF    \
     {"test_vararg_with_default", _PyCFunction_CAST(test_vararg_with_default), METH_FASTCALL|METH_KEYWORDS, test_vararg_with_default__doc__},
 
-static PyObject *
-test_vararg_with_default_impl(PyObject *module, PyObject *a, PyObject *args,
+static TyObject *
+test_vararg_with_default_impl(TyObject *module, TyObject *a, TyObject *args,
                               int b);
 
-static PyObject *
-test_vararg_with_default(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_vararg_with_default(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('b'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "b", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_vararg_with_default",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t noptargs = Py_MIN(nargs, 1) + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *a;
-    PyObject *__clinic_args = NULL;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t noptargs = Ty_MIN(nargs, 1) + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *a;
+    TyObject *__clinic_args = NULL;
     int b = 0;
 
-    fastargs = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    fastargs = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 1, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -4394,8 +4394,8 @@ test_vararg_with_default(PyObject *module, PyObject *const *args, Py_ssize_t nar
     }
 skip_optional_kwonly:
     __clinic_args = nargs > 1
-        ? _PyTuple_FromArray(args + 1, nargs - 1)
-        : PyTuple_New(0);
+        ? _TyTuple_FromArray(args + 1, nargs - 1)
+        : TyTuple_New(0);
     if (__clinic_args == NULL) {
         goto exit;
     }
@@ -4403,13 +4403,13 @@ skip_optional_kwonly:
 
 exit:
     /* Cleanup for args */
-    Py_XDECREF(__clinic_args);
+    Ty_XDECREF(__clinic_args);
 
     return return_value;
 }
 
-static PyObject *
-test_vararg_with_default_impl(PyObject *module, PyObject *a, PyObject *args,
+static TyObject *
+test_vararg_with_default_impl(TyObject *module, TyObject *a, TyObject *args,
                               int b)
 /*[clinic end generated code: output=3f2b06ab08d5d0be input=3a0f9f557ce1f712]*/
 
@@ -4431,49 +4431,49 @@ PyDoc_STRVAR(test_vararg_with_only_defaults__doc__,
 #define TEST_VARARG_WITH_ONLY_DEFAULTS_METHODDEF    \
     {"test_vararg_with_only_defaults", _PyCFunction_CAST(test_vararg_with_only_defaults), METH_FASTCALL|METH_KEYWORDS, test_vararg_with_only_defaults__doc__},
 
-static PyObject *
-test_vararg_with_only_defaults_impl(PyObject *module, PyObject *args, int b,
-                                    PyObject *c);
+static TyObject *
+test_vararg_with_only_defaults_impl(TyObject *module, TyObject *args, int b,
+                                    TyObject *c);
 
-static PyObject *
-test_vararg_with_only_defaults(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_vararg_with_only_defaults(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('b'), _Py_LATIN1_CHR('c'), },
+        .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"b", "c", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_vararg_with_only_defaults",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t noptargs = 0 + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *__clinic_args = NULL;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t noptargs = 0 + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *__clinic_args = NULL;
     int b = 0;
-    PyObject *c = " ";
+    TyObject *c = " ";
 
-    fastargs = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    fastargs = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 1, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -4492,7 +4492,7 @@ test_vararg_with_only_defaults(PyObject *module, PyObject *const *args, Py_ssize
     }
     c = fastargs[1];
 skip_optional_kwonly:
-    __clinic_args = _PyTuple_FromArray(args, nargs);
+    __clinic_args = _TyTuple_FromArray(args, nargs);
     if (__clinic_args == NULL) {
         goto exit;
     }
@@ -4500,14 +4500,14 @@ skip_optional_kwonly:
 
 exit:
     /* Cleanup for args */
-    Py_XDECREF(__clinic_args);
+    Ty_XDECREF(__clinic_args);
 
     return return_value;
 }
 
-static PyObject *
-test_vararg_with_only_defaults_impl(PyObject *module, PyObject *args, int b,
-                                    PyObject *c)
+static TyObject *
+test_vararg_with_only_defaults_impl(TyObject *module, TyObject *args, int b,
+                                    TyObject *c)
 /*[clinic end generated code: output=f46666f0b1bf86b9 input=6983e66817f82924]*/
 
 /*[clinic input]
@@ -4524,44 +4524,44 @@ PyDoc_STRVAR(test_paramname_module__doc__,
 #define TEST_PARAMNAME_MODULE_METHODDEF    \
     {"test_paramname_module", _PyCFunction_CAST(test_paramname_module), METH_FASTCALL|METH_KEYWORDS, test_paramname_module__doc__},
 
-static PyObject *
-test_paramname_module_impl(PyObject *module, PyObject *mod);
+static TyObject *
+test_paramname_module_impl(TyObject *module, TyObject *mod);
 
-static PyObject *
-test_paramname_module(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+test_paramname_module(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(module), },
+        .ob_item = { &_Ty_ID(module), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"module", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "test_paramname_module",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *mod;
+    TyObject *argsbuf[1];
+    TyObject *mod;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -4573,8 +4573,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-test_paramname_module_impl(PyObject *module, PyObject *mod)
+static TyObject *
+test_paramname_module_impl(TyObject *module, TyObject *mod)
 /*[clinic end generated code: output=b979bb1c03b16911 input=afefe259667f13ba]*/
 
 /*[clinic input]
@@ -4601,55 +4601,55 @@ PyDoc_STRVAR(mangle1__doc__,
 #define MANGLE1_METHODDEF    \
     {"mangle1", _PyCFunction_CAST(mangle1), METH_FASTCALL|METH_KEYWORDS, mangle1__doc__},
 
-static PyObject *
-mangle1_impl(PyObject *module, PyObject *args, PyObject *kwnames,
-             PyObject *return_value, PyObject *_keywords, PyObject *_parser,
-             PyObject *argsbuf, PyObject *fastargs, PyObject *nargs,
-             PyObject *noptargs);
+static TyObject *
+mangle1_impl(TyObject *module, TyObject *args, TyObject *kwnames,
+             TyObject *return_value, TyObject *_keywords, TyObject *_parser,
+             TyObject *argsbuf, TyObject *fastargs, TyObject *nargs,
+             TyObject *noptargs);
 
-static PyObject *
-mangle1(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+mangle1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 9
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(args), &_Py_ID(kwnames), &_Py_ID(return_value), &_Py_ID(_keywords), &_Py_ID(_parser), &_Py_ID(argsbuf), &_Py_ID(fastargs), &_Py_ID(nargs), &_Py_ID(noptargs), },
+        .ob_item = { &_Ty_ID(args), &_Ty_ID(kwnames), &_Ty_ID(return_value), &_Ty_ID(_keywords), &_Ty_ID(_parser), &_Ty_ID(argsbuf), &_Ty_ID(fastargs), &_Ty_ID(nargs), &_Ty_ID(noptargs), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"args", "kwnames", "return_value", "_keywords", "_parser", "argsbuf", "fastargs", "nargs", "noptargs", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "mangle1",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[9];
-    PyObject *__clinic_args;
-    PyObject *__clinic_kwnames;
-    PyObject *__clinic_return_value;
-    PyObject *__clinic__keywords;
-    PyObject *__clinic__parser;
-    PyObject *__clinic_argsbuf;
-    PyObject *__clinic_fastargs;
-    PyObject *__clinic_nargs;
-    PyObject *__clinic_noptargs;
+    TyObject *argsbuf[9];
+    TyObject *__clinic_args;
+    TyObject *__clinic_kwnames;
+    TyObject *__clinic_return_value;
+    TyObject *__clinic__keywords;
+    TyObject *__clinic__parser;
+    TyObject *__clinic_argsbuf;
+    TyObject *__clinic_fastargs;
+    TyObject *__clinic_nargs;
+    TyObject *__clinic_noptargs;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 9, /*maxpos*/ 9, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -4669,11 +4669,11 @@ exit:
     return return_value;
 }
 
-static PyObject *
-mangle1_impl(PyObject *module, PyObject *args, PyObject *kwnames,
-             PyObject *return_value, PyObject *_keywords, PyObject *_parser,
-             PyObject *argsbuf, PyObject *fastargs, PyObject *nargs,
-             PyObject *noptargs)
+static TyObject *
+mangle1_impl(TyObject *module, TyObject *args, TyObject *kwnames,
+             TyObject *return_value, TyObject *_keywords, TyObject *_parser,
+             TyObject *argsbuf, TyObject *fastargs, TyObject *nargs,
+             TyObject *noptargs)
 /*[clinic end generated code: output=8993a3111845dfc3 input=a3ed51bdedf8a3c7]*/
 
 /*[clinic input]
@@ -4693,47 +4693,47 @@ PyDoc_STRVAR(mangle2__doc__,
 #define MANGLE2_METHODDEF    \
     {"mangle2", _PyCFunction_CAST(mangle2), METH_FASTCALL|METH_KEYWORDS, mangle2__doc__},
 
-static PyObject *
-mangle2_impl(PyObject *module, PyObject *args, PyObject *kwargs,
-             PyObject *return_value);
+static TyObject *
+mangle2_impl(TyObject *module, TyObject *args, TyObject *kwargs,
+             TyObject *return_value);
 
-static PyObject *
-mangle2(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+mangle2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(args), &_Py_ID(kwargs), &_Py_ID(return_value), },
+        .ob_item = { &_Ty_ID(args), &_Ty_ID(kwargs), &_Ty_ID(return_value), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"args", "kwargs", "return_value", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "mangle2",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject *__clinic_args;
-    PyObject *__clinic_kwargs;
-    PyObject *__clinic_return_value;
+    TyObject *argsbuf[3];
+    TyObject *__clinic_args;
+    TyObject *__clinic_kwargs;
+    TyObject *__clinic_return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -4747,9 +4747,9 @@ exit:
     return return_value;
 }
 
-static PyObject *
-mangle2_impl(PyObject *module, PyObject *args, PyObject *kwargs,
-             PyObject *return_value)
+static TyObject *
+mangle2_impl(TyObject *module, TyObject *args, TyObject *kwargs,
+             TyObject *return_value)
 /*[clinic end generated code: output=bbbe696e52e0267f input=391766fee51bad7a]*/
 
 
@@ -4768,50 +4768,50 @@ PyDoc_STRVAR(Test_cls_with_param__doc__,
 #define TEST_CLS_WITH_PARAM_METHODDEF    \
     {"cls_with_param", _PyCFunction_CAST(Test_cls_with_param), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, Test_cls_with_param__doc__},
 
-static PyObject *
-Test_cls_with_param_impl(TestObj *self, PyTypeObject *cls, int a);
+static TyObject *
+Test_cls_with_param_impl(TestObj *self, TyTypeObject *cls, int a);
 
-static PyObject *
-Test_cls_with_param(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+Test_cls_with_param(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "cls_with_param",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int a;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    a = PyLong_AsInt(args[0]);
-    if (a == -1 && PyErr_Occurred()) {
+    a = TyLong_AsInt(args[0]);
+    if (a == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = Test_cls_with_param_impl((TestObj *)self, cls, a);
@@ -4820,8 +4820,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-Test_cls_with_param_impl(TestObj *self, PyTypeObject *cls, int a)
+static TyObject *
+Test_cls_with_param_impl(TestObj *self, TyTypeObject *cls, int a)
 /*[clinic end generated code: output=bd3883003f57d02b input=af158077bd237ef9]*/
 
 
@@ -4840,19 +4840,19 @@ static int
 Test___init___impl(TestObj *self);
 
 static int
-Test___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+Test___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    PyTypeObject *base_tp = TestType;
+    TyTypeObject *base_tp = TestType;
 
-    if ((Py_IS_TYPE(self, base_tp) ||
-         Py_TYPE(self)->tp_new == base_tp->tp_new) &&
-        !_PyArg_NoPositional("Test", args)) {
+    if ((Ty_IS_TYPE(self, base_tp) ||
+         Ty_TYPE(self)->tp_new == base_tp->tp_new) &&
+        !_TyArg_NoPositional("Test", args)) {
         goto exit;
     }
-    if ((Py_IS_TYPE(self, base_tp) ||
-         Py_TYPE(self)->tp_new == base_tp->tp_new) &&
-        !_PyArg_NoKeywords("Test", kwargs)) {
+    if ((Ty_IS_TYPE(self, base_tp) ||
+         Ty_TYPE(self)->tp_new == base_tp->tp_new) &&
+        !_TyArg_NoKeywords("Test", kwargs)) {
         goto exit;
     }
     return_value = Test___init___impl((TestObj *)self);
@@ -4878,21 +4878,21 @@ PyDoc_STRVAR(Test__doc__,
 "\n"
 "Empty new method.");
 
-static PyObject *
-Test_impl(PyTypeObject *type);
+static TyObject *
+Test_impl(TyTypeObject *type);
 
-static PyObject *
-Test(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+Test(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = TestType;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = TestType;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoPositional("Test", args)) {
+        !_TyArg_NoPositional("Test", args)) {
         goto exit;
     }
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("Test", kwargs)) {
+        !_TyArg_NoKeywords("Test", kwargs)) {
         goto exit;
     }
     return_value = Test_impl(type);
@@ -4901,8 +4901,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-Test_impl(PyTypeObject *type)
+static TyObject *
+Test_impl(TyTypeObject *type)
 /*[clinic end generated code: output=68a117adc057940f input=6fe98a19f097907f]*/
 
 
@@ -4920,21 +4920,21 @@ PyDoc_STRVAR(Test_cls_no_params__doc__,
 #define TEST_CLS_NO_PARAMS_METHODDEF    \
     {"cls_no_params", _PyCFunction_CAST(Test_cls_no_params), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, Test_cls_no_params__doc__},
 
-static PyObject *
-Test_cls_no_params_impl(TestObj *self, PyTypeObject *cls);
+static TyObject *
+Test_cls_no_params_impl(TestObj *self, TyTypeObject *cls);
 
-static PyObject *
-Test_cls_no_params(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+Test_cls_no_params(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "cls_no_params() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "cls_no_params() takes no arguments");
         return NULL;
     }
     return Test_cls_no_params_impl((TestObj *)self, cls);
 }
 
-static PyObject *
-Test_cls_no_params_impl(TestObj *self, PyTypeObject *cls)
+static TyObject *
+Test_cls_no_params_impl(TestObj *self, TyTypeObject *cls)
 /*[clinic end generated code: output=8845de054449f40a input=e7e2e4e344e96a11]*/
 
 
@@ -4953,26 +4953,26 @@ PyDoc_STRVAR(Test_metho_not_default_return_converter__doc__,
     {"metho_not_default_return_converter", (PyCFunction)Test_metho_not_default_return_converter, METH_O, Test_metho_not_default_return_converter__doc__},
 
 static int
-Test_metho_not_default_return_converter_impl(TestObj *self, PyObject *a);
+Test_metho_not_default_return_converter_impl(TestObj *self, TyObject *a);
 
-static PyObject *
-Test_metho_not_default_return_converter(PyObject *self, PyObject *a)
+static TyObject *
+Test_metho_not_default_return_converter(TyObject *self, TyObject *a)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = Test_metho_not_default_return_converter_impl((TestObj *)self, a);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong((long)_return_value);
+    return_value = TyLong_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
 static int
-Test_metho_not_default_return_converter_impl(TestObj *self, PyObject *a)
+Test_metho_not_default_return_converter_impl(TestObj *self, TyObject *a)
 /*[clinic end generated code: output=8b03f5213c312138 input=428657129b521177]*/
 
 
@@ -4995,17 +4995,17 @@ PyDoc_STRVAR(Test_an_metho_arg_named_arg__doc__,
 #define TEST_AN_METHO_ARG_NAMED_ARG_METHODDEF    \
     {"an_metho_arg_named_arg", (PyCFunction)Test_an_metho_arg_named_arg, METH_O, Test_an_metho_arg_named_arg__doc__},
 
-static PyObject *
+static TyObject *
 Test_an_metho_arg_named_arg_impl(TestObj *self, int arg);
 
-static PyObject *
-Test_an_metho_arg_named_arg(PyObject *self, PyObject *arg_)
+static TyObject *
+Test_an_metho_arg_named_arg(TyObject *self, TyObject *arg_)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int arg;
 
-    arg = PyLong_AsInt(arg_);
-    if (arg == -1 && PyErr_Occurred()) {
+    arg = TyLong_AsInt(arg_);
+    if (arg == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = Test_an_metho_arg_named_arg_impl((TestObj *)self, arg);
@@ -5014,7 +5014,7 @@ exit:
     return return_value;
 }
 
-static PyObject *
+static TyObject *
 Test_an_metho_arg_named_arg_impl(TestObj *self, int arg)
 /*[clinic end generated code: output=38554f09950d07e7 input=2a53a57cf5624f95]*/
 
@@ -5023,42 +5023,42 @@ Test_an_metho_arg_named_arg_impl(TestObj *self, int arg)
 Test.__init__
     *args: tuple
 
-Varargs init method. For example, nargs is translated to PyTuple_GET_SIZE.
+Varargs init method. For example, nargs is translated to TyTuple_GET_SIZE.
 [clinic start generated code]*/
 
 PyDoc_STRVAR(Test___init____doc__,
 "Test(*args)\n"
 "--\n"
 "\n"
-"Varargs init method. For example, nargs is translated to PyTuple_GET_SIZE.");
+"Varargs init method. For example, nargs is translated to TyTuple_GET_SIZE.");
 
 static int
-Test___init___impl(TestObj *self, PyObject *args);
+Test___init___impl(TestObj *self, TyObject *args);
 
 static int
-Test___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+Test___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    PyTypeObject *base_tp = TestType;
-    PyObject *__clinic_args = NULL;
+    TyTypeObject *base_tp = TestType;
+    TyObject *__clinic_args = NULL;
 
-    if ((Py_IS_TYPE(self, base_tp) ||
-         Py_TYPE(self)->tp_new == base_tp->tp_new) &&
-        !_PyArg_NoKeywords("Test", kwargs)) {
+    if ((Ty_IS_TYPE(self, base_tp) ||
+         Ty_TYPE(self)->tp_new == base_tp->tp_new) &&
+        !_TyArg_NoKeywords("Test", kwargs)) {
         goto exit;
     }
-    __clinic_args = Py_NewRef(args);
+    __clinic_args = Ty_NewRef(args);
     return_value = Test___init___impl((TestObj *)self, __clinic_args);
 
 exit:
     /* Cleanup for args */
-    Py_XDECREF(__clinic_args);
+    Ty_XDECREF(__clinic_args);
 
     return return_value;
 }
 
 static int
-Test___init___impl(TestObj *self, PyObject *args)
+Test___init___impl(TestObj *self, TyObject *args)
 /*[clinic end generated code: output=f172425cec373cd6 input=4b8388c4e6baab6f]*/
 
 /*[clinic input]
@@ -5066,41 +5066,41 @@ Test___init___impl(TestObj *self, PyObject *args)
 Test.__new__
     *args: tuple
 
-Varargs new method. For example, nargs is translated to PyTuple_GET_SIZE.
+Varargs new method. For example, nargs is translated to TyTuple_GET_SIZE.
 [clinic start generated code]*/
 
 PyDoc_STRVAR(Test__doc__,
 "Test(*args)\n"
 "--\n"
 "\n"
-"Varargs new method. For example, nargs is translated to PyTuple_GET_SIZE.");
+"Varargs new method. For example, nargs is translated to TyTuple_GET_SIZE.");
 
-static PyObject *
-Test_impl(PyTypeObject *type, PyObject *args);
+static TyObject *
+Test_impl(TyTypeObject *type, TyObject *args);
 
-static PyObject *
-Test(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+Test(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = TestType;
-    PyObject *__clinic_args = NULL;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = TestType;
+    TyObject *__clinic_args = NULL;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("Test", kwargs)) {
+        !_TyArg_NoKeywords("Test", kwargs)) {
         goto exit;
     }
-    __clinic_args = Py_NewRef(args);
+    __clinic_args = Ty_NewRef(args);
     return_value = Test_impl(type, __clinic_args);
 
 exit:
     /* Cleanup for args */
-    Py_XDECREF(__clinic_args);
+    Ty_XDECREF(__clinic_args);
 
     return return_value;
 }
 
-static PyObject *
-Test_impl(PyTypeObject *type, PyObject *args)
+static TyObject *
+Test_impl(TyTypeObject *type, TyObject *args)
 /*[clinic end generated code: output=ee1e8892a67abd4a input=a8259521129cad20]*/
 
 
@@ -5117,45 +5117,45 @@ PyDoc_STRVAR(Test___init____doc__,
 "Init method with positional or keyword arguments.");
 
 static int
-Test___init___impl(TestObj *self, PyObject *a);
+Test___init___impl(TestObj *self, TyObject *a);
 
 static int
-Test___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+Test___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "Test",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    PyObject *a;
+    TyObject *argsbuf[1];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    TyObject *a;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -5168,7 +5168,7 @@ exit:
 }
 
 static int
-Test___init___impl(TestObj *self, PyObject *a)
+Test___init___impl(TestObj *self, TyObject *a)
 /*[clinic end generated code: output=5c1e743f6a2a0b8b input=a8f9222a6ab35c59]*/
 
 
@@ -5185,17 +5185,17 @@ PyDoc_STRVAR(Test_class_method__doc__,
 #define TEST_CLASS_METHOD_METHODDEF    \
     {"class_method", (PyCFunction)Test_class_method, METH_NOARGS|METH_CLASS, Test_class_method__doc__},
 
-static PyObject *
-Test_class_method_impl(PyTypeObject *type);
+static TyObject *
+Test_class_method_impl(TyTypeObject *type);
 
-static PyObject *
-Test_class_method(PyObject *type, PyObject *Py_UNUSED(ignored))
+static TyObject *
+Test_class_method(TyObject *type, TyObject *Ty_UNUSED(ignored))
 {
-    return Test_class_method_impl((PyTypeObject *)type);
+    return Test_class_method_impl((TyTypeObject *)type);
 }
 
-static PyObject *
-Test_class_method_impl(PyTypeObject *type)
+static TyObject *
+Test_class_method_impl(TyTypeObject *type)
 /*[clinic end generated code: output=64f93e6252bde409 input=43bc4a0494547b80]*/
 
 
@@ -5212,16 +5212,16 @@ PyDoc_STRVAR(Test_static_method__doc__,
 #define TEST_STATIC_METHOD_METHODDEF    \
     {"static_method", (PyCFunction)Test_static_method, METH_NOARGS|METH_STATIC, Test_static_method__doc__},
 
-static PyObject *
+static TyObject *
 Test_static_method_impl();
 
-static PyObject *
-Test_static_method(PyObject *null, PyObject *Py_UNUSED(ignored))
+static TyObject *
+Test_static_method(TyObject *null, TyObject *Ty_UNUSED(ignored))
 {
     return Test_static_method_impl();
 }
 
-static PyObject *
+static TyObject *
 Test_static_method_impl()
 /*[clinic end generated code: output=9e401fb6ed56a4f3 input=dae892fac55ae72b]*/
 
@@ -5239,16 +5239,16 @@ PyDoc_STRVAR(Test_meth_coexist__doc__,
 #define TEST_METH_COEXIST_METHODDEF    \
     {"meth_coexist", (PyCFunction)Test_meth_coexist, METH_NOARGS|METH_COEXIST, Test_meth_coexist__doc__},
 
-static PyObject *
+static TyObject *
 Test_meth_coexist_impl(TestObj *self);
 
-static PyObject *
-Test_meth_coexist(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+Test_meth_coexist(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return Test_meth_coexist_impl((TestObj *)self);
 }
 
-static PyObject *
+static TyObject *
 Test_meth_coexist_impl(TestObj *self)
 /*[clinic end generated code: output=7edf4e95b29f06fa input=2a1d75b5e6fec6dd]*/
 
@@ -5267,16 +5267,16 @@ Test.property
 #  define TEST_PROPERTY_GETSETDEF {"property", (getter)Test_property_get, NULL, Test_property_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 Test_property_get_impl(TestObj *self);
 
-static PyObject *
-Test_property_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+Test_property_get(TyObject *self, void *Ty_UNUSED(context))
 {
     return Test_property_get_impl((TestObj *)self);
 }
 
-static PyObject *
+static TyObject *
 Test_property_get_impl(TestObj *self)
 /*[clinic end generated code: output=b38d68abd3466a6e input=2d92b3449fbc7d2b]*/
 
@@ -5296,10 +5296,10 @@ Test.property
 #endif
 
 static int
-Test_property_set_impl(TestObj *self, PyObject *value);
+Test_property_set_impl(TestObj *self, TyObject *value);
 
 static int
-Test_property_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+Test_property_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
@@ -5309,7 +5309,7 @@ Test_property_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
 }
 
 static int
-Test_property_set_impl(TestObj *self, PyObject *value)
+Test_property_set_impl(TestObj *self, TyObject *value)
 /*[clinic end generated code: output=49f925ab2a33b637 input=3bc3f46a23c83a88]*/
 
 /*[clinic input]
@@ -5328,10 +5328,10 @@ Test.setter_first_with_docstr
 #endif
 
 static int
-Test_setter_first_with_docstr_set_impl(TestObj *self, PyObject *value);
+Test_setter_first_with_docstr_set_impl(TestObj *self, TyObject *value);
 
 static int
-Test_setter_first_with_docstr_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+Test_setter_first_with_docstr_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
@@ -5341,7 +5341,7 @@ Test_setter_first_with_docstr_set(PyObject *self, PyObject *value, void *Py_UNUS
 }
 
 static int
-Test_setter_first_with_docstr_set_impl(TestObj *self, PyObject *value)
+Test_setter_first_with_docstr_set_impl(TestObj *self, TyObject *value)
 /*[clinic end generated code: output=5aaf44373c0af545 input=31a045ce11bbe961]*/
 
 /*[clinic input]
@@ -5368,16 +5368,16 @@ PyDoc_STRVAR(Test_setter_first_with_docstr__doc__,
 #  define TEST_SETTER_FIRST_WITH_DOCSTR_GETSETDEF {"setter_first_with_docstr", (getter)Test_setter_first_with_docstr_get, NULL, Test_setter_first_with_docstr_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 Test_setter_first_with_docstr_get_impl(TestObj *self);
 
-static PyObject *
-Test_setter_first_with_docstr_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+Test_setter_first_with_docstr_get(TyObject *self, void *Ty_UNUSED(context))
 {
     return Test_setter_first_with_docstr_get_impl((TestObj *)self);
 }
 
-static PyObject *
+static TyObject *
 Test_setter_first_with_docstr_get_impl(TestObj *self)
 /*[clinic end generated code: output=fe6e3aa844a24920 input=10af4e43b3cb34dc]*/
 
@@ -5398,8 +5398,8 @@ the 'block' destination, so we should expect everything but
 'impl_definition' to be cleared.
 [clinic start generated code]*/
 
-static PyObject *
-buffer_clear_impl(PyObject *module, int a)
+static TyObject *
+buffer_clear_impl(TyObject *module, int a)
 /*[clinic end generated code: output=f14bba74677e1846 input=a4c308a6fdab043c]*/
 
 /*[clinic input]
@@ -5452,50 +5452,50 @@ PyDoc_STRVAR(mangled_c_keyword_identifier__doc__,
 #define MANGLED_C_KEYWORD_IDENTIFIER_METHODDEF    \
     {"mangled_c_keyword_identifier", _PyCFunction_CAST(mangled_c_keyword_identifier), METH_FASTCALL|METH_KEYWORDS, mangled_c_keyword_identifier__doc__},
 
-static PyObject *
-mangled_c_keyword_identifier_impl(PyObject *module, int int_value);
+static TyObject *
+mangled_c_keyword_identifier_impl(TyObject *module, int int_value);
 
-static PyObject *
-mangled_c_keyword_identifier(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+mangled_c_keyword_identifier(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('i'), },
+        .ob_item = { _Ty_LATIN1_CHR('i'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"i", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "mangled_c_keyword_identifier",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int int_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    int_value = PyLong_AsInt(args[0]);
-    if (int_value == -1 && PyErr_Occurred()) {
+    int_value = TyLong_AsInt(args[0]);
+    if (int_value == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = mangled_c_keyword_identifier_impl(module, int_value);
@@ -5504,8 +5504,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-mangled_c_keyword_identifier_impl(PyObject *module, int int_value)
+static TyObject *
+mangled_c_keyword_identifier_impl(TyObject *module, int int_value)
 /*[clinic end generated code: output=49365b3b96b23980 input=060876448ab567a2]*/
 
 
@@ -5522,26 +5522,26 @@ PyDoc_STRVAR(bool_return__doc__,
     {"bool_return", (PyCFunction)bool_return, METH_NOARGS, bool_return__doc__},
 
 static int
-bool_return_impl(PyObject *module);
+bool_return_impl(TyObject *module);
 
-static PyObject *
-bool_return(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+bool_return(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int _return_value;
 
     _return_value = bool_return_impl(module);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
 }
 
 static int
-bool_return_impl(PyObject *module)
+bool_return_impl(TyObject *module)
 /*[clinic end generated code: output=3a65f07830e48e98 input=93ba95d39ee98f39]*/
 
 
@@ -5558,26 +5558,26 @@ PyDoc_STRVAR(double_return__doc__,
     {"double_return", (PyCFunction)double_return, METH_NOARGS, double_return__doc__},
 
 static double
-double_return_impl(PyObject *module);
+double_return_impl(TyObject *module);
 
-static PyObject *
-double_return(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+double_return(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double _return_value;
 
     _return_value = double_return_impl(module);
-    if ((_return_value == -1.0) && PyErr_Occurred()) {
+    if ((_return_value == -1.0) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyFloat_FromDouble(_return_value);
+    return_value = TyFloat_FromDouble(_return_value);
 
 exit:
     return return_value;
 }
 
 static double
-double_return_impl(PyObject *module)
+double_return_impl(TyObject *module)
 /*[clinic end generated code: output=076dc72595d3f66d input=da11b6255e4cbfd7]*/
 
 
@@ -5596,24 +5596,24 @@ PyDoc_STRVAR(Test___init____doc__,
 "Should generate two PyArg_ParseTuple calls.");
 
 static int
-Test___init___impl(TestObj *self, PyObject *a, int group_right_1,
-                   PyObject *b);
+Test___init___impl(TestObj *self, TyObject *a, int group_right_1,
+                   TyObject *b);
 
 static int
-Test___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+Test___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    PyTypeObject *base_tp = TestType;
-    PyObject *a;
+    TyTypeObject *base_tp = TestType;
+    TyObject *a;
     int group_right_1 = 0;
-    PyObject *b = NULL;
+    TyObject *b = NULL;
 
-    if ((Py_IS_TYPE(self, base_tp) ||
-         Py_TYPE(self)->tp_new == base_tp->tp_new) &&
-        !_PyArg_NoKeywords("Test", kwargs)) {
+    if ((Ty_IS_TYPE(self, base_tp) ||
+         Ty_TYPE(self)->tp_new == base_tp->tp_new) &&
+        !_TyArg_NoKeywords("Test", kwargs)) {
         goto exit;
     }
-    switch (PyTuple_GET_SIZE(args)) {
+    switch (TyTuple_GET_SIZE(args)) {
         case 1:
             if (!PyArg_ParseTuple(args, "O:__init__", &a)) {
                 goto exit;
@@ -5626,7 +5626,7 @@ Test___init__(PyObject *self, PyObject *args, PyObject *kwargs)
             group_right_1 = 1;
             break;
         default:
-            PyErr_SetString(PyExc_TypeError, "Test.__init__ requires 1 to 2 arguments");
+            TyErr_SetString(TyExc_TypeError, "Test.__init__ requires 1 to 2 arguments");
             goto exit;
     }
     return_value = Test___init___impl((TestObj *)self, a, group_right_1, b);
@@ -5636,8 +5636,8 @@ exit:
 }
 
 static int
-Test___init___impl(TestObj *self, PyObject *a, int group_right_1,
-                   PyObject *b)
+Test___init___impl(TestObj *self, TyObject *a, int group_right_1,
+                   TyObject *b)
 /*[clinic end generated code: output=2bbb8ea60e8f57a6 input=10f5d0f1e8e466ef]*/
 
 
@@ -5646,44 +5646,44 @@ Test._pyarg_parsestackandkeywords
     cls: defining_class
     key: str(accept={str, robuffer}, zeroes=True)
     /
-Check that _PyArg_ParseStackAndKeywords() is generated.
+Check that _TyArg_ParseStackAndKeywords() is generated.
 [clinic start generated code]*/
 
 PyDoc_STRVAR(Test__pyarg_parsestackandkeywords__doc__,
 "_pyarg_parsestackandkeywords($self, key, /)\n"
 "--\n"
 "\n"
-"Check that _PyArg_ParseStackAndKeywords() is generated.");
+"Check that _TyArg_ParseStackAndKeywords() is generated.");
 
 #define TEST__PYARG_PARSESTACKANDKEYWORDS_METHODDEF    \
     {"_pyarg_parsestackandkeywords", _PyCFunction_CAST(Test__pyarg_parsestackandkeywords), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, Test__pyarg_parsestackandkeywords__doc__},
 
-static PyObject *
-Test__pyarg_parsestackandkeywords_impl(TestObj *self, PyTypeObject *cls,
+static TyObject *
+Test__pyarg_parsestackandkeywords_impl(TestObj *self, TyTypeObject *cls,
                                        const char *key,
-                                       Py_ssize_t key_length);
+                                       Ty_ssize_t key_length);
 
-static PyObject *
-Test__pyarg_parsestackandkeywords(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+Test__pyarg_parsestackandkeywords(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .format = "s#:_pyarg_parsestackandkeywords",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
     const char *key;
-    Py_ssize_t key_length;
+    Ty_ssize_t key_length;
 
-    if (!_PyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
+    if (!_TyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
         &key, &key_length)) {
         goto exit;
     }
@@ -5693,10 +5693,10 @@ exit:
     return return_value;
 }
 
-static PyObject *
-Test__pyarg_parsestackandkeywords_impl(TestObj *self, PyTypeObject *cls,
+static TyObject *
+Test__pyarg_parsestackandkeywords_impl(TestObj *self, TyTypeObject *cls,
                                        const char *key,
-                                       Py_ssize_t key_length)
+                                       Ty_ssize_t key_length)
 /*[clinic end generated code: output=7060c213d7b8200e input=fc72ef4b4cfafabc]*/
 
 
@@ -5713,45 +5713,45 @@ PyDoc_STRVAR(fn_with_default_binop_expr__doc__,
 #define FN_WITH_DEFAULT_BINOP_EXPR_METHODDEF    \
     {"fn_with_default_binop_expr", _PyCFunction_CAST(fn_with_default_binop_expr), METH_FASTCALL|METH_KEYWORDS, fn_with_default_binop_expr__doc__},
 
-static PyObject *
-fn_with_default_binop_expr_impl(PyObject *module, PyObject *arg);
+static TyObject *
+fn_with_default_binop_expr_impl(TyObject *module, TyObject *arg);
 
-static PyObject *
-fn_with_default_binop_expr(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+fn_with_default_binop_expr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(arg), },
+        .ob_item = { &_Ty_ID(arg), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"arg", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "fn_with_default_binop_expr",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *arg = CONST_A + CONST_B;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *arg = CONST_A + CONST_B;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -5767,8 +5767,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-fn_with_default_binop_expr_impl(PyObject *module, PyObject *arg)
+static TyObject *
+fn_with_default_binop_expr_impl(TyObject *module, TyObject *arg)
 /*[clinic end generated code: output=6613a7a96537bcf2 input=1b55c8ae68d89453]*/
 
 
@@ -5805,44 +5805,44 @@ PyDoc_STRVAR(docstr_fallback_to_converter_default__doc__,
 #define DOCSTR_FALLBACK_TO_CONVERTER_DEFAULT_METHODDEF    \
     {"docstr_fallback_to_converter_default", _PyCFunction_CAST(docstr_fallback_to_converter_default), METH_FASTCALL|METH_KEYWORDS, docstr_fallback_to_converter_default__doc__},
 
-static PyObject *
-docstr_fallback_to_converter_default_impl(PyObject *module, str a);
+static TyObject *
+docstr_fallback_to_converter_default_impl(TyObject *module, str a);
 
-static PyObject *
-docstr_fallback_to_converter_default(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+docstr_fallback_to_converter_default(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "docstr_fallback_to_converter_default",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     str a;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -5856,8 +5856,8 @@ exit:
     return return_value;
 }
 
-static PyObject *
-docstr_fallback_to_converter_default_impl(PyObject *module, str a)
+static TyObject *
+docstr_fallback_to_converter_default_impl(TyObject *module, str a)
 /*[clinic end generated code: output=4405b7050a5f6fb9 input=0cbe6a4d24bc2274]*/
 
 
@@ -5874,30 +5874,30 @@ PyDoc_STRVAR(test_critical_section__doc__,
 #define TEST_CRITICAL_SECTION_METHODDEF    \
     {"test_critical_section", (PyCFunction)test_critical_section, METH_NOARGS, test_critical_section__doc__},
 
-static PyObject *
-test_critical_section_impl(PyObject *module);
+static TyObject *
+test_critical_section_impl(TyObject *module);
 
-static PyObject *
-test_critical_section(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_critical_section(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = test_critical_section_impl(module);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
 
-static PyObject *
-test_critical_section_impl(PyObject *module)
+static TyObject *
+test_critical_section_impl(TyObject *module)
 /*[clinic end generated code: output=9d5a87bb28aa3f0c input=8c58956d6ff00f80]*/
 
 
 /*[clinic input]
 @critical_section
 test_critical_section_meth_o
-    a: object(subclass_of="&PyUnicode_Type")
+    a: object(subclass_of="&TyUnicode_Type")
     /
 [clinic start generated code]*/
 
@@ -5909,36 +5909,36 @@ PyDoc_STRVAR(test_critical_section_meth_o__doc__,
 #define TEST_CRITICAL_SECTION_METH_O_METHODDEF    \
     {"test_critical_section_meth_o", (PyCFunction)test_critical_section_meth_o, METH_O, test_critical_section_meth_o__doc__},
 
-static PyObject *
-test_critical_section_meth_o_impl(PyObject *module, PyObject *a);
+static TyObject *
+test_critical_section_meth_o_impl(TyObject *module, TyObject *a);
 
-static PyObject *
-test_critical_section_meth_o(PyObject *module, PyObject *arg)
+static TyObject *
+test_critical_section_meth_o(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
+    TyObject *return_value = NULL;
+    TyObject *a;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("test_critical_section_meth_o", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("test_critical_section_meth_o", "argument", "str", arg);
         goto exit;
     }
     a = arg;
-    Py_BEGIN_CRITICAL_SECTION(module);
+    Ty_BEGIN_CRITICAL_SECTION(module);
     return_value = test_critical_section_meth_o_impl(module, a);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
 }
 
-static PyObject *
-test_critical_section_meth_o_impl(PyObject *module, PyObject *a)
+static TyObject *
+test_critical_section_meth_o_impl(TyObject *module, TyObject *a)
 /*[clinic end generated code: output=7a9d7420802d1202 input=376533f51eceb6c3]*/
 
 /*[clinic input]
 @critical_section a
 test_critical_section_object
-    a: object(subclass_of="&PyUnicode_Type")
+    a: object(subclass_of="&TyUnicode_Type")
     /
 test_critical_section_object
 [clinic start generated code]*/
@@ -5952,37 +5952,37 @@ PyDoc_STRVAR(test_critical_section_object__doc__,
 #define TEST_CRITICAL_SECTION_OBJECT_METHODDEF    \
     {"test_critical_section_object", (PyCFunction)test_critical_section_object, METH_O, test_critical_section_object__doc__},
 
-static PyObject *
-test_critical_section_object_impl(PyObject *module, PyObject *a);
+static TyObject *
+test_critical_section_object_impl(TyObject *module, TyObject *a);
 
-static PyObject *
-test_critical_section_object(PyObject *module, PyObject *arg)
+static TyObject *
+test_critical_section_object(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
+    TyObject *return_value = NULL;
+    TyObject *a;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("test_critical_section_object", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("test_critical_section_object", "argument", "str", arg);
         goto exit;
     }
     a = arg;
-    Py_BEGIN_CRITICAL_SECTION(a);
+    Ty_BEGIN_CRITICAL_SECTION(a);
     return_value = test_critical_section_object_impl(module, a);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
 }
 
-static PyObject *
-test_critical_section_object_impl(PyObject *module, PyObject *a)
+static TyObject *
+test_critical_section_object_impl(TyObject *module, TyObject *a)
 /*[clinic end generated code: output=ec06df92232b0fb5 input=6f67f91b523c875f]*/
 
 /*[clinic input]
 @critical_section a b
 test_critical_section_object2
-    a: object(subclass_of="&PyUnicode_Type")
-    b: object(subclass_of="&PyUnicode_Type")
+    a: object(subclass_of="&TyUnicode_Type")
+    b: object(subclass_of="&TyUnicode_Type")
     /
 test_critical_section_object2
 [clinic start generated code]*/
@@ -5996,39 +5996,39 @@ PyDoc_STRVAR(test_critical_section_object2__doc__,
 #define TEST_CRITICAL_SECTION_OBJECT2_METHODDEF    \
     {"test_critical_section_object2", _PyCFunction_CAST(test_critical_section_object2), METH_FASTCALL, test_critical_section_object2__doc__},
 
-static PyObject *
-test_critical_section_object2_impl(PyObject *module, PyObject *a,
-                                   PyObject *b);
+static TyObject *
+test_critical_section_object2_impl(TyObject *module, TyObject *a,
+                                   TyObject *b);
 
-static PyObject *
-test_critical_section_object2(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+test_critical_section_object2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *a;
-    PyObject *b;
+    TyObject *return_value = NULL;
+    TyObject *a;
+    TyObject *b;
 
-    if (!_PyArg_CheckPositional("test_critical_section_object2", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("test_critical_section_object2", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("test_critical_section_object2", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("test_critical_section_object2", "argument 1", "str", args[0]);
         goto exit;
     }
     a = args[0];
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("test_critical_section_object2", "argument 2", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("test_critical_section_object2", "argument 2", "str", args[1]);
         goto exit;
     }
     b = args[1];
-    Py_BEGIN_CRITICAL_SECTION2(a, b);
+    Ty_BEGIN_CRITICAL_SECTION2(a, b);
     return_value = test_critical_section_object2_impl(module, a, b);
-    Py_END_CRITICAL_SECTION2();
+    Ty_END_CRITICAL_SECTION2();
 
 exit:
     return return_value;
 }
 
-static PyObject *
-test_critical_section_object2_impl(PyObject *module, PyObject *a,
-                                   PyObject *b)
+static TyObject *
+test_critical_section_object2_impl(TyObject *module, TyObject *a,
+                                   TyObject *b)
 /*[clinic end generated code: output=d73a1657c18df17a input=638824e41419a466]*/

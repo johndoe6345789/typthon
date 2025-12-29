@@ -33,66 +33,66 @@
 /* pysqlite_microprotocols_init - initialize the adapters dictionary */
 
 int
-pysqlite_microprotocols_init(PyObject *module)
+pysqlite_microprotocols_init(TyObject *module)
 {
     /* create adapters dictionary and put it in module namespace */
     pysqlite_state *state = pysqlite_get_state(module);
-    state->psyco_adapters = PyDict_New();
+    state->psyco_adapters = TyDict_New();
     if (state->psyco_adapters == NULL) {
         return -1;
     }
 
-    return PyModule_AddObjectRef(module, "adapters", state->psyco_adapters);
+    return TyModule_AddObjectRef(module, "adapters", state->psyco_adapters);
 }
 
 
 /* pysqlite_microprotocols_add - add a reverse type-caster to the dictionary */
 
 int
-pysqlite_microprotocols_add(pysqlite_state *state, PyTypeObject *type,
-                            PyObject *proto, PyObject *cast)
+pysqlite_microprotocols_add(pysqlite_state *state, TyTypeObject *type,
+                            TyObject *proto, TyObject *cast)
 {
-    PyObject* key;
+    TyObject* key;
     int rc;
 
     assert(type != NULL);
     assert(proto != NULL);
-    key = PyTuple_Pack(2, (PyObject *)type, proto);
+    key = TyTuple_Pack(2, (TyObject *)type, proto);
     if (!key) {
         return -1;
     }
 
-    rc = PyDict_SetItem(state->psyco_adapters, key, cast);
-    Py_DECREF(key);
+    rc = TyDict_SetItem(state->psyco_adapters, key, cast);
+    Ty_DECREF(key);
 
     return rc;
 }
 
 /* pysqlite_microprotocols_adapt - adapt an object to the built-in protocol */
 
-PyObject *
-pysqlite_microprotocols_adapt(pysqlite_state *state, PyObject *obj,
-                              PyObject *proto, PyObject *alt)
+TyObject *
+pysqlite_microprotocols_adapt(pysqlite_state *state, TyObject *obj,
+                              TyObject *proto, TyObject *alt)
 {
-    PyObject *adapter, *key, *adapted;
+    TyObject *adapter, *key, *adapted;
 
     /* we don't check for exact type conformance as specified in PEP 246
        because the PrepareProtocolType type is abstract and there is no
        way to get a quotable object to be its instance */
 
     /* look for an adapter in the registry */
-    key = PyTuple_Pack(2, (PyObject *)Py_TYPE(obj), proto);
+    key = TyTuple_Pack(2, (TyObject *)Ty_TYPE(obj), proto);
     if (!key) {
         return NULL;
     }
-    if (PyDict_GetItemRef(state->psyco_adapters, key, &adapter) < 0) {
-        Py_DECREF(key);
+    if (TyDict_GetItemRef(state->psyco_adapters, key, &adapter) < 0) {
+        Ty_DECREF(key);
         return NULL;
     }
-    Py_DECREF(key);
+    Ty_DECREF(key);
     if (adapter) {
         adapted = PyObject_CallOneArg(adapter, obj);
-        Py_DECREF(adapter);
+        Ty_DECREF(adapter);
         return adapted;
     }
 
@@ -102,16 +102,16 @@ pysqlite_microprotocols_adapt(pysqlite_state *state, PyObject *obj,
     }
     if (adapter) {
         adapted = PyObject_CallOneArg(adapter, obj);
-        Py_DECREF(adapter);
+        Ty_DECREF(adapter);
 
-        if (adapted == Py_None) {
-            Py_DECREF(adapted);
+        if (adapted == Ty_None) {
+            Ty_DECREF(adapted);
         }
-        else if (adapted || !PyErr_ExceptionMatches(PyExc_TypeError)) {
+        else if (adapted || !TyErr_ExceptionMatches(TyExc_TypeError)) {
             return adapted;
         }
         else {
-            PyErr_Clear();
+            TyErr_Clear();
         }
     }
 
@@ -121,23 +121,23 @@ pysqlite_microprotocols_adapt(pysqlite_state *state, PyObject *obj,
     }
     if (adapter) {
         adapted = PyObject_CallOneArg(adapter, proto);
-        Py_DECREF(adapter);
+        Ty_DECREF(adapter);
 
-        if (adapted == Py_None) {
-            Py_DECREF(adapted);
+        if (adapted == Ty_None) {
+            Ty_DECREF(adapted);
         }
-        else if (adapted || !PyErr_ExceptionMatches(PyExc_TypeError)) {
+        else if (adapted || !TyErr_ExceptionMatches(TyExc_TypeError)) {
             return adapted;
         }
         else {
-            PyErr_Clear();
+            TyErr_Clear();
         }
     }
 
     if (alt) {
-        return Py_NewRef(alt);
+        return Ty_NewRef(alt);
     }
     /* else set the right exception and return NULL */
-    PyErr_SetString(state->ProgrammingError, "can't adapt");
+    TyErr_SetString(state->ProgrammingError, "can't adapt");
     return NULL;
 }

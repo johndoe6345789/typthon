@@ -3,10 +3,10 @@
 #include "pycore_llist.h"
 #include "pycore_lock.h"          // _PyRawMutex
 #include "pycore_parking_lot.h"
-#include "pycore_pyerrors.h"      // _Py_FatalErrorFormat
-#include "pycore_pystate.h"       // _PyThreadState_GET
+#include "pycore_pyerrors.h"      // _Ty_FatalErrorFormat
+#include "pycore_pystate.h"       // _TyThreadState_GET
 #include "pycore_semaphore.h"     // _PySemaphore
-#include "pycore_time.h"          // _PyTime_Add()
+#include "pycore_time.h"          // _TyTime_Add()
 
 #include <stdbool.h>
 
@@ -61,18 +61,18 @@ _PySemaphore_Init(_PySemaphore *sema)
         NULL    //  unnamed
     );
     if (!sema->platform_sem) {
-        Py_FatalError("parking_lot: CreateSemaphore failed");
+        Ty_FatalError("parking_lot: CreateSemaphore failed");
     }
-#elif defined(_Py_USE_SEMAPHORES)
+#elif defined(_Ty_USE_SEMAPHORES)
     if (sem_init(&sema->platform_sem, /*pshared=*/0, /*value=*/0) < 0) {
-        Py_FatalError("parking_lot: sem_init failed");
+        Ty_FatalError("parking_lot: sem_init failed");
     }
 #else
     if (pthread_mutex_init(&sema->mutex, NULL) != 0) {
-        Py_FatalError("parking_lot: pthread_mutex_init failed");
+        Ty_FatalError("parking_lot: pthread_mutex_init failed");
     }
     if (pthread_cond_init(&sema->cond, NULL)) {
-        Py_FatalError("parking_lot: pthread_cond_init failed");
+        Ty_FatalError("parking_lot: pthread_cond_init failed");
     }
     sema->counter = 0;
 #endif
@@ -83,7 +83,7 @@ _PySemaphore_Destroy(_PySemaphore *sema)
 {
 #if defined(MS_WINDOWS)
     CloseHandle(sema->platform_sem);
-#elif defined(_Py_USE_SEMAPHORES)
+#elif defined(_Ty_USE_SEMAPHORES)
     sem_destroy(&sema->platform_sem);
 #else
     pthread_mutex_destroy(&sema->mutex);
@@ -102,7 +102,7 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
         millis = INFINITE;
     }
     else {
-        PyTime_t div = _PyTime_AsMilliseconds(timeout, _PyTime_ROUND_TIMEOUT);
+        PyTime_t div = _TyTime_AsMilliseconds(timeout, _TyTime_ROUND_TIMEOUT);
         // Prevent overflow with clamping the result
         if ((PyTime_t)PY_DWORD_MAX < div) {
             millis = PY_DWORD_MAX;
@@ -115,13 +115,13 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
     HANDLE handles[2] = { sema->platform_sem, NULL };
     HANDLE sigint_event = NULL;
     DWORD count = 1;
-    if (_Py_IsMainThread()) {
+    if (_Ty_IsMainThread()) {
         // gh-135099: Wait on the SIGINT event only in the main thread. Other
         // threads would ignore the result anyways, and accessing
-        // `_PyOS_SigintEvent()` from non-main threads may race with
+        // `_TyOS_SigintEvent()` from non-main threads may race with
         // interpreter shutdown, which closes the event handle. Note that
         // non-main interpreters will ignore the result.
-        sigint_event = _PyOS_SigintEvent();
+        sigint_event = _TyOS_SigintEvent();
         if (sigint_event != NULL) {
             handles[1] = sigint_event;
             count = 2;
@@ -129,41 +129,41 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
     }
     wait = WaitForMultipleObjects(count, handles, FALSE, millis);
     if (wait == WAIT_OBJECT_0) {
-        res = Py_PARK_OK;
+        res = Ty_PARK_OK;
     }
     else if (wait == WAIT_OBJECT_0 + 1) {
         assert(sigint_event != NULL);
         ResetEvent(sigint_event);
-        res = Py_PARK_INTR;
+        res = Ty_PARK_INTR;
     }
     else if (wait == WAIT_TIMEOUT) {
-        res = Py_PARK_TIMEOUT;
+        res = Ty_PARK_TIMEOUT;
     }
     else {
-        _Py_FatalErrorFormat(__func__,
+        _Ty_FatalErrorFormat(__func__,
             "unexpected error from semaphore: %u (error: %u)",
             wait, GetLastError());
     }
-#elif defined(_Py_USE_SEMAPHORES)
+#elif defined(_Ty_USE_SEMAPHORES)
     int err;
     if (timeout >= 0) {
         struct timespec ts;
 
-#if defined(CLOCK_MONOTONIC) && defined(HAVE_SEM_CLOCKWAIT) && !defined(_Py_THREAD_SANITIZER)
+#if defined(CLOCK_MONOTONIC) && defined(HAVE_SEM_CLOCKWAIT) && !defined(_Ty_THREAD_SANITIZER)
         PyTime_t now;
         // silently ignore error: cannot report error to the caller
         (void)PyTime_MonotonicRaw(&now);
-        PyTime_t deadline = _PyTime_Add(now, timeout);
-        _PyTime_AsTimespec_clamp(deadline, &ts);
+        PyTime_t deadline = _TyTime_Add(now, timeout);
+        _TyTime_AsTimespec_clamp(deadline, &ts);
 
         err = sem_clockwait(&sema->platform_sem, CLOCK_MONOTONIC, &ts);
 #else
         PyTime_t now;
         // silently ignore error: cannot report error to the caller
         (void)PyTime_TimeRaw(&now);
-        PyTime_t deadline = _PyTime_Add(now, timeout);
+        PyTime_t deadline = _TyTime_Add(now, timeout);
 
-        _PyTime_AsTimespec_clamp(deadline, &ts);
+        _TyTime_AsTimespec_clamp(deadline, &ts);
 
         err = sem_timedwait(&sema->platform_sem, &ts);
 #endif
@@ -174,19 +174,19 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
     if (err == -1) {
         err = errno;
         if (err == EINTR) {
-            res = Py_PARK_INTR;
+            res = Ty_PARK_INTR;
         }
         else if (err == ETIMEDOUT) {
-            res = Py_PARK_TIMEOUT;
+            res = Ty_PARK_TIMEOUT;
         }
         else {
-            _Py_FatalErrorFormat(__func__,
+            _Ty_FatalErrorFormat(__func__,
                 "unexpected error from semaphore: %d",
                 err);
         }
     }
     else {
-        res = Py_PARK_OK;
+        res = Ty_PARK_OK;
     }
 #else
     pthread_mutex_lock(&sema->mutex);
@@ -195,13 +195,13 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
         if (timeout >= 0) {
             struct timespec ts;
 #if defined(HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP)
-            _PyTime_AsTimespec_clamp(timeout, &ts);
+            _TyTime_AsTimespec_clamp(timeout, &ts);
             err = pthread_cond_timedwait_relative_np(&sema->cond, &sema->mutex, &ts);
 #else
             PyTime_t now;
             (void)PyTime_TimeRaw(&now);
-            PyTime_t deadline = _PyTime_Add(now, timeout);
-            _PyTime_AsTimespec_clamp(deadline, &ts);
+            PyTime_t deadline = _TyTime_Add(now, timeout);
+            _TyTime_AsTimespec_clamp(deadline, &ts);
 
             err = pthread_cond_timedwait(&sema->cond, &sema->mutex, &ts);
 #endif // HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP
@@ -212,13 +212,13 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
     }
     if (sema->counter > 0) {
         sema->counter--;
-        res = Py_PARK_OK;
+        res = Ty_PARK_OK;
     }
     else if (err) {
-        res = Py_PARK_TIMEOUT;
+        res = Ty_PARK_TIMEOUT;
     }
     else {
-        res = Py_PARK_INTR;
+        res = Ty_PARK_INTR;
     }
     pthread_mutex_unlock(&sema->mutex);
 #endif
@@ -230,10 +230,10 @@ _PySemaphore_Wait(_PySemaphore *sema, PyTime_t timeout, int detach)
 {
     PyThreadState *tstate = NULL;
     if (detach) {
-        tstate = _PyThreadState_GET();
-        if (tstate && _PyThreadState_IsAttached(tstate)) {
+        tstate = _TyThreadState_GET();
+        if (tstate && _TyThreadState_IsAttached(tstate)) {
             // Only detach if we are attached
-            PyEval_ReleaseThread(tstate);
+            TyEval_ReleaseThread(tstate);
         }
         else {
             tstate = NULL;
@@ -241,7 +241,7 @@ _PySemaphore_Wait(_PySemaphore *sema, PyTime_t timeout, int detach)
     }
     int res = _PySemaphore_PlatformWait(sema, timeout);
     if (tstate) {
-        PyEval_AcquireThread(tstate);
+        TyEval_AcquireThread(tstate);
     }
     return res;
 }
@@ -251,12 +251,12 @@ _PySemaphore_Wakeup(_PySemaphore *sema)
 {
 #if defined(MS_WINDOWS)
     if (!ReleaseSemaphore(sema->platform_sem, 1, NULL)) {
-        Py_FatalError("parking_lot: ReleaseSemaphore failed");
+        Ty_FatalError("parking_lot: ReleaseSemaphore failed");
     }
-#elif defined(_Py_USE_SEMAPHORES)
+#elif defined(_Ty_USE_SEMAPHORES)
     int err = sem_post(&sema->platform_sem);
     if (err != 0) {
-        Py_FatalError("parking_lot: sem_post failed");
+        Ty_FatalError("parking_lot: sem_post failed");
     }
 #else
     pthread_mutex_lock(&sema->mutex);
@@ -313,11 +313,11 @@ static int
 atomic_memcmp(const void *addr, const void *expected, size_t addr_size)
 {
     switch (addr_size) {
-    case 1: return _Py_atomic_load_uint8(addr) == *(const uint8_t *)expected;
-    case 2: return _Py_atomic_load_uint16(addr) == *(const uint16_t *)expected;
-    case 4: return _Py_atomic_load_uint32(addr) == *(const uint32_t *)expected;
-    case 8: return _Py_atomic_load_uint64(addr) == *(const uint64_t *)expected;
-    default: Py_UNREACHABLE();
+    case 1: return _Ty_atomic_load_uint8(addr) == *(const uint8_t *)expected;
+    case 2: return _Ty_atomic_load_uint16(addr) == *(const uint16_t *)expected;
+    case 4: return _Ty_atomic_load_uint32(addr) == *(const uint32_t *)expected;
+    case 8: return _Ty_atomic_load_uint64(addr) == *(const uint64_t *)expected;
+    default: Ty_UNREACHABLE();
     }
 }
 
@@ -336,14 +336,14 @@ _PyParkingLot_Park(const void *addr, const void *expected, size_t size,
     _PyRawMutex_Lock(&bucket->mutex);
     if (!atomic_memcmp(addr, expected, size)) {
         _PyRawMutex_Unlock(&bucket->mutex);
-        return Py_PARK_AGAIN;
+        return Ty_PARK_AGAIN;
     }
     _PySemaphore_Init(&wait.sema);
     enqueue(bucket, addr, &wait);
     _PyRawMutex_Unlock(&bucket->mutex);
 
     int res = _PySemaphore_Wait(&wait.sema, timeout_ns, detach);
-    if (res == Py_PARK_OK) {
+    if (res == Ty_PARK_OK) {
         goto done;
     }
 
@@ -355,7 +355,7 @@ _PyParkingLot_Park(const void *addr, const void *expected, size_t size,
         // wakeup signal.
         do {
             res = _PySemaphore_Wait(&wait.sema, -1, detach);
-        } while (res != Py_PARK_OK);
+        } while (res != Ty_PARK_OK);
         goto done;
     }
     else {
@@ -371,7 +371,7 @@ done:
 }
 
 void
-_PyParkingLot_Unpark(const void *addr, _Py_unpark_fn_t *fn, void *arg)
+_PyParkingLot_Unpark(const void *addr, _Ty_unpark_fn_t *fn, void *arg)
 {
     Bucket *bucket = &buckets[((uintptr_t)addr) % NUM_BUCKETS];
 
@@ -417,7 +417,7 @@ _PyParkingLot_AfterFork(void)
     // After a fork only one thread remains. That thread cannot be blocked
     // so all entries in the parking lot are for dead threads.
     memset(buckets, 0, sizeof(buckets));
-    for (Py_ssize_t i = 0; i < NUM_BUCKETS; i++) {
+    for (Ty_ssize_t i = 0; i < NUM_BUCKETS; i++) {
         llist_init(&buckets[i].root);
     }
 }

@@ -1,5 +1,5 @@
-#ifndef Py_INTERNAL_CELL_H
-#define Py_INTERNAL_CELL_H
+#ifndef Ty_INTERNAL_CELL_H
+#define Ty_INTERNAL_CELL_H
 
 #include "pycore_critical_section.h"
 #include "pycore_object.h"
@@ -9,60 +9,60 @@
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 // Sets the cell contents to `value` and return previous contents. Steals a
 // reference to `value`.
-static inline PyObject *
-PyCell_SwapTakeRef(PyCellObject *cell, PyObject *value)
+static inline TyObject *
+TyCell_SwapTakeRef(PyCellObject *cell, TyObject *value)
 {
-    PyObject *old_value;
-    Py_BEGIN_CRITICAL_SECTION(cell);
+    TyObject *old_value;
+    Ty_BEGIN_CRITICAL_SECTION(cell);
     old_value = cell->ob_ref;
     FT_ATOMIC_STORE_PTR_RELEASE(cell->ob_ref, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
     return old_value;
 }
 
 static inline void
-PyCell_SetTakeRef(PyCellObject *cell, PyObject *value)
+TyCell_SetTakeRef(PyCellObject *cell, TyObject *value)
 {
-    PyObject *old_value = PyCell_SwapTakeRef(cell, value);
-    Py_XDECREF(old_value);
+    TyObject *old_value = TyCell_SwapTakeRef(cell, value);
+    Ty_XDECREF(old_value);
 }
 
 // Gets the cell contents. Returns a new reference.
-static inline PyObject *
-PyCell_GetRef(PyCellObject *cell)
+static inline TyObject *
+TyCell_GetRef(PyCellObject *cell)
 {
-    PyObject *res;
-    Py_BEGIN_CRITICAL_SECTION(cell);
-#ifdef Py_GIL_DISABLED
-    res = _Py_XNewRefWithLock(cell->ob_ref);
+    TyObject *res;
+    Ty_BEGIN_CRITICAL_SECTION(cell);
+#ifdef Ty_GIL_DISABLED
+    res = _Ty_XNewRefWithLock(cell->ob_ref);
 #else
-    res = Py_XNewRef(cell->ob_ref);
+    res = Ty_XNewRef(cell->ob_ref);
 #endif
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
     return res;
 }
 
 static inline _PyStackRef
 _PyCell_GetStackRef(PyCellObject *cell)
 {
-    PyObject *value;
-#ifdef Py_GIL_DISABLED
-    value = _Py_atomic_load_ptr(&cell->ob_ref);
+    TyObject *value;
+#ifdef Ty_GIL_DISABLED
+    value = _Ty_atomic_load_ptr(&cell->ob_ref);
     if (value == NULL) {
         return PyStackRef_NULL;
     }
     _PyStackRef ref;
-    if (_Py_TryIncrefCompareStackRef(&cell->ob_ref, value, &ref)) {
+    if (_Ty_TryIncrefCompareStackRef(&cell->ob_ref, value, &ref)) {
         return ref;
     }
 #endif
-    value = PyCell_GetRef(cell);
+    value = TyCell_GetRef(cell);
     if (value == NULL) {
         return PyStackRef_NULL;
     }
@@ -72,4 +72,4 @@ _PyCell_GetStackRef(PyCellObject *cell)
 #ifdef __cplusplus
 }
 #endif
-#endif   /* !Py_INTERNAL_CELL_H */
+#endif   /* !Ty_INTERNAL_CELL_H */

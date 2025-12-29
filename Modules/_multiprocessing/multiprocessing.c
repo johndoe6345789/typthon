@@ -16,8 +16,8 @@ class HANDLE_converter(CConverter):
 
     def parse_arg(self, argname, displayname, *, limited_capi):
         return self.format_code("""
-            {paramname} = PyLong_AsVoidPtr({argname});
-            if (!{paramname} && PyErr_Occurred()) {{{{
+            {paramname} = TyLong_AsVoidPtr({argname});
+            if (!{paramname} && TyErr_Occurred()) {{{{
                 goto exit;
             }}}}
             """,
@@ -37,36 +37,36 @@ module _multiprocessing
  * Function which raises exceptions based on error codes
  */
 
-PyObject *
-_PyMp_SetError(PyObject *Type, int num)
+TyObject *
+_PyMp_SetError(TyObject *Type, int num)
 {
     switch (num) {
 #ifdef MS_WINDOWS
     case MP_STANDARD_ERROR:
         if (Type == NULL)
-            Type = PyExc_OSError;
-        PyErr_SetExcFromWindowsErr(Type, 0);
+            Type = TyExc_OSError;
+        TyErr_SetExcFromWindowsErr(Type, 0);
         break;
     case MP_SOCKET_ERROR:
         if (Type == NULL)
-            Type = PyExc_OSError;
-        PyErr_SetExcFromWindowsErr(Type, WSAGetLastError());
+            Type = TyExc_OSError;
+        TyErr_SetExcFromWindowsErr(Type, WSAGetLastError());
         break;
 #else /* !MS_WINDOWS */
     case MP_STANDARD_ERROR:
     case MP_SOCKET_ERROR:
         if (Type == NULL)
-            Type = PyExc_OSError;
-        PyErr_SetFromErrno(Type);
+            Type = TyExc_OSError;
+        TyErr_SetFromErrno(Type);
         break;
 #endif /* !MS_WINDOWS */
     case MP_MEMORY_ERROR:
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         break;
     case MP_EXCEPTION_HAS_BEEN_SET:
         break;
     default:
-        PyErr_Format(PyExc_RuntimeError,
+        TyErr_Format(TyExc_RuntimeError,
                      "unknown error number %d", num);
     }
     return NULL;
@@ -81,19 +81,19 @@ _multiprocessing.closesocket
 
 [clinic start generated code]*/
 
-static PyObject *
-_multiprocessing_closesocket_impl(PyObject *module, HANDLE handle)
+static TyObject *
+_multiprocessing_closesocket_impl(TyObject *module, HANDLE handle)
 /*[clinic end generated code: output=214f359f900966f4 input=8a20706dd386c6cc]*/
 {
     int ret;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     ret = closesocket((SOCKET) handle);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (ret)
-        return PyErr_SetExcFromWindowsErr(PyExc_OSError, WSAGetLastError());
-    Py_RETURN_NONE;
+        return TyErr_SetExcFromWindowsErr(TyExc_OSError, WSAGetLastError());
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -105,26 +105,26 @@ _multiprocessing.recv
 
 [clinic start generated code]*/
 
-static PyObject *
-_multiprocessing_recv_impl(PyObject *module, HANDLE handle, int size)
+static TyObject *
+_multiprocessing_recv_impl(TyObject *module, HANDLE handle, int size)
 /*[clinic end generated code: output=92322781ba9ff598 input=6a5b0834372cee5b]*/
 {
     int nread;
-    PyObject *buf;
+    TyObject *buf;
 
-    buf = PyBytes_FromStringAndSize(NULL, size);
+    buf = TyBytes_FromStringAndSize(NULL, size);
     if (!buf)
         return NULL;
 
-    Py_BEGIN_ALLOW_THREADS
-    nread = recv((SOCKET) handle, PyBytes_AS_STRING(buf), size, 0);
-    Py_END_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
+    nread = recv((SOCKET) handle, TyBytes_AS_STRING(buf), size, 0);
+    Ty_END_ALLOW_THREADS
 
     if (nread < 0) {
-        Py_DECREF(buf);
-        return PyErr_SetExcFromWindowsErr(PyExc_OSError, WSAGetLastError());
+        Ty_DECREF(buf);
+        return TyErr_SetExcFromWindowsErr(TyExc_OSError, WSAGetLastError());
     }
-    _PyBytes_Resize(&buf, nread);
+    _TyBytes_Resize(&buf, nread);
     return buf;
 }
 
@@ -132,26 +132,26 @@ _multiprocessing_recv_impl(PyObject *module, HANDLE handle, int size)
 _multiprocessing.send
 
     handle: HANDLE
-    buf: Py_buffer
+    buf: Ty_buffer
     /
 
 [clinic start generated code]*/
 
-static PyObject *
-_multiprocessing_send_impl(PyObject *module, HANDLE handle, Py_buffer *buf)
+static TyObject *
+_multiprocessing_send_impl(TyObject *module, HANDLE handle, Ty_buffer *buf)
 /*[clinic end generated code: output=52d7df0519c596cb input=41dce742f98d2210]*/
 {
     int ret, length;
 
-    length = (int)Py_MIN(buf->len, INT_MAX);
+    length = (int)Ty_MIN(buf->len, INT_MAX);
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     ret = send((SOCKET) handle, buf->buf, length, 0);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (ret < 0)
-        return PyErr_SetExcFromWindowsErr(PyExc_OSError, WSAGetLastError());
-    return PyLong_FromLong(ret);
+        return TyErr_SetExcFromWindowsErr(TyExc_OSError, WSAGetLastError());
+    return TyLong_FromLong(ret);
 }
 
 #endif
@@ -164,8 +164,8 @@ _multiprocessing.sem_unlink
 
 [clinic start generated code]*/
 
-static PyObject *
-_multiprocessing_sem_unlink_impl(PyObject *module, const char *name)
+static TyObject *
+_multiprocessing_sem_unlink_impl(TyObject *module, const char *name)
 /*[clinic end generated code: output=fcbfeb1ed255e647 input=bf939aff9564f1d5]*/
 {
     return _PyMp_sem_unlink(name);
@@ -175,7 +175,7 @@ _multiprocessing_sem_unlink_impl(PyObject *module, const char *name)
  * Function table
  */
 
-static PyMethodDef module_methods[] = {
+static TyMethodDef module_methods[] = {
 #ifdef MS_WINDOWS
     _MULTIPROCESSING_CLOSESOCKET_METHODDEF
     _MULTIPROCESSING_RECV_METHODDEF
@@ -193,65 +193,65 @@ static PyMethodDef module_methods[] = {
  */
 
 static int
-multiprocessing_exec(PyObject *module)
+multiprocessing_exec(TyObject *module)
 {
 #ifdef HAVE_MP_SEMAPHORE
 
-    PyTypeObject *semlock_type = (PyTypeObject *)PyType_FromModuleAndSpec(
+    TyTypeObject *semlock_type = (TyTypeObject *)TyType_FromModuleAndSpec(
                 module, &_PyMp_SemLockType_spec, NULL);
 
     if (semlock_type == NULL) {
         return -1;
     }
-    int rc = PyModule_AddType(module, semlock_type);
-    Py_DECREF(semlock_type);
+    int rc = TyModule_AddType(module, semlock_type);
+    Ty_DECREF(semlock_type);
     if (rc < 0) {
         return -1;
     }
 
-    PyObject *py_sem_value_max;
+    TyObject *py_sem_value_max;
     /* Some systems define SEM_VALUE_MAX as an unsigned value that
      * causes it to be negative when used as an int (NetBSD).
      *
      * Issue #28152: Use (0) instead of 0 to fix a warning on dead code
      * when using clang -Wunreachable-code. */
     if ((int)(SEM_VALUE_MAX) < (0)) {
-        py_sem_value_max = PyLong_FromLong(INT_MAX);
+        py_sem_value_max = TyLong_FromLong(INT_MAX);
     }
     else {
-        py_sem_value_max = PyLong_FromLong(SEM_VALUE_MAX);
+        py_sem_value_max = TyLong_FromLong(SEM_VALUE_MAX);
     }
     if (py_sem_value_max == NULL) {
         return -1;
     }
-    if (PyDict_SetItemString(semlock_type->tp_dict, "SEM_VALUE_MAX",
+    if (TyDict_SetItemString(semlock_type->tp_dict, "SEM_VALUE_MAX",
                          py_sem_value_max) < 0) {
-        Py_DECREF(py_sem_value_max);
+        Ty_DECREF(py_sem_value_max);
         return -1;
     }
-    Py_DECREF(py_sem_value_max);
+    Ty_DECREF(py_sem_value_max);
 
 #endif
 
     /* Add configuration macros */
-    PyObject *flags = PyDict_New();
+    TyObject *flags = TyDict_New();
     if (!flags) {
         return -1;
     }
 
 #define ADD_FLAG(name)                                          \
     do {                                                        \
-        PyObject *value = PyLong_FromLong(name);                \
+        TyObject *value = TyLong_FromLong(name);                \
         if (value == NULL) {                                    \
-            Py_DECREF(flags);                                   \
+            Ty_DECREF(flags);                                   \
             return -1;                                          \
         }                                                       \
-        if (PyDict_SetItemString(flags, #name, value) < 0) {    \
-            Py_DECREF(flags);                                   \
-            Py_DECREF(value);                                   \
+        if (TyDict_SetItemString(flags, #name, value) < 0) {    \
+            Ty_DECREF(flags);                                   \
+            Ty_DECREF(value);                                   \
             return -1;                                          \
         }                                                       \
-        Py_DECREF(value);                                       \
+        Ty_DECREF(value);                                       \
     } while (0)
 
 #if defined(HAVE_SEM_OPEN) && !defined(POSIX_SEMAPHORES_NOT_ENABLED)
@@ -267,7 +267,7 @@ multiprocessing_exec(PyObject *module)
     ADD_FLAG(HAVE_BROKEN_SEM_UNLINK);
 #endif
 
-    if (PyModule_Add(module, "flags", flags) < 0) {
+    if (TyModule_Add(module, "flags", flags) < 0) {
         return -1;
     }
 
@@ -275,13 +275,13 @@ multiprocessing_exec(PyObject *module)
 }
 
 static PyModuleDef_Slot multiprocessing_slots[] = {
-    {Py_mod_exec, multiprocessing_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, multiprocessing_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef multiprocessing_module = {
+static struct TyModuleDef multiprocessing_module = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_multiprocessing",
     .m_size = 0,

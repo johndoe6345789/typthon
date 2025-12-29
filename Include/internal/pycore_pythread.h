@@ -1,14 +1,14 @@
-#ifndef Py_INTERNAL_PYTHREAD_H
-#define Py_INTERNAL_PYTHREAD_H
+#ifndef Ty_INTERNAL_PYTHREAD_H
+#define Ty_INTERNAL_PYTHREAD_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-#include "dynamic_annotations.h"     // _Py_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX
+#include "dynamic_annotations.h"     // _Ty_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX
 #include "pycore_llist.h"            // struct llist_node
 
 // Get _POSIX_THREADS and _POSIX_SEMAPHORES macros if available
@@ -101,7 +101,7 @@ extern void _PyThread_AfterFork(struct _pythread_runtime_state *state);
 
 // Exported for the _interpchannels module.
 PyAPI_FUNC(int) PyThread_ParseTimeoutArg(
-    PyObject *arg,
+    TyObject *arg,
     int blocking,
     PY_TIMEOUT_T *timeout);
 
@@ -117,10 +117,10 @@ PyAPI_FUNC(PyLockStatus) PyThread_acquire_lock_timed_with_retries(
     PY_TIMEOUT_T microseconds);
 
 typedef unsigned long long PyThread_ident_t;
-typedef Py_uintptr_t PyThread_handle_t;
+typedef Ty_uintptr_t PyThread_handle_t;
 
 #define PY_FORMAT_THREAD_IDENT_T "llu"
-#define Py_PARSE_THREAD_IDENT_T "K"
+#define Ty_PARSE_THREAD_IDENT_T "K"
 
 PyAPI_FUNC(PyThread_ident_t) PyThread_get_thread_ident_ex(void);
 
@@ -164,9 +164,9 @@ PyAPI_FUNC(int) PyThread_detach_thread(PyThread_handle_t);
  * when they're done with the interpreter, but our C API design does not allow
  * for safely exiting threads attempting to re-enter Python post finalization.
  */
-void _Py_NO_RETURN PyThread_hang_thread(void);
+void _Ty_NO_RETURN PyThread_hang_thread(void);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_PYTHREAD_H */
+#endif /* !Ty_INTERNAL_PYTHREAD_H */

@@ -58,13 +58,13 @@ PyDoc_STRVAR(docstring_with_signature_with_defaults,
 );
 
 /* This is here to provide a docstring for test_descr. */
-static PyObject *
-test_with_docstring(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_with_docstring(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"docstring_empty",
         test_with_docstring, METH_VARARGS,
         docstring_empty},
@@ -110,7 +110,7 @@ static PyMethodDef test_methods[] = {
     {NULL},
 };
 
-static PyMethodDef DocStringNoSignatureTest_methods[] = {
+static TyMethodDef DocStringNoSignatureTest_methods[] = {
     {"meth_noargs",
         test_with_docstring, METH_NOARGS,
         docstring_no_signature},
@@ -138,16 +138,16 @@ static PyMethodDef DocStringNoSignatureTest_methods[] = {
     {NULL},
 };
 
-static PyTypeObject DocStringNoSignatureTest = {
+static TyTypeObject DocStringNoSignatureTest = {
     PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testcapi.DocStringNoSignatureTest",
-    .tp_basicsize = sizeof(PyObject),
-    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_basicsize = sizeof(TyObject),
+    .tp_flags = Ty_TPFLAGS_DEFAULT,
     .tp_methods = DocStringNoSignatureTest_methods,
-    .tp_new = PyType_GenericNew,
+    .tp_new = TyType_GenericNew,
 };
 
-static PyMethodDef DocStringUnrepresentableSignatureTest_methods[] = {
+static TyMethodDef DocStringUnrepresentableSignatureTest_methods[] = {
     {"meth",
         test_with_docstring, METH_VARARGS,
         PyDoc_STR(
@@ -179,28 +179,28 @@ static PyMethodDef DocStringUnrepresentableSignatureTest_methods[] = {
     {NULL},
 };
 
-static PyTypeObject DocStringUnrepresentableSignatureTest = {
+static TyTypeObject DocStringUnrepresentableSignatureTest = {
     PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testcapi.DocStringUnrepresentableSignatureTest",
-    .tp_basicsize = sizeof(PyObject),
-    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_basicsize = sizeof(TyObject),
+    .tp_flags = Ty_TPFLAGS_DEFAULT,
     .tp_methods = DocStringUnrepresentableSignatureTest_methods,
-    .tp_new = PyType_GenericNew,
+    .tp_new = TyType_GenericNew,
 };
 
 int
-_PyTestCapi_Init_Docstring(PyObject *mod)
+_PyTestCapi_Init_Docstring(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
-    if (PyModule_AddType(mod, &DocStringNoSignatureTest) < 0) {
+    if (TyModule_AddType(mod, &DocStringNoSignatureTest) < 0) {
         return -1;
     }
-    if (PyModule_AddType(mod, &DocStringUnrepresentableSignatureTest) < 0) {
+    if (TyModule_AddType(mod, &DocStringUnrepresentableSignatureTest) < 0) {
         return -1;
     }
-    if (PyModule_AddObject(mod, "ONE", PyLong_FromLong(1)) < 0) {
+    if (TyModule_AddObject(mod, "ONE", TyLong_FromLong(1)) < 0) {
         return -1;
     }
     return 0;

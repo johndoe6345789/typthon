@@ -883,7 +883,7 @@ class ThreadTests(BaseTestCase):
                          ["GC: True True True"] * 2)
 
     def test_finalization_shutdown(self):
-        # bpo-36402: Py_Finalize() calls threading._shutdown() which must wait
+        # bpo-36402: Ty_Finalize() calls threading._shutdown() which must wait
         # until Python thread states of all non-daemon threads get deleted.
         #
         # Test similar to SubinterpThreadingTests.test_threads_join_2(), but
@@ -906,7 +906,7 @@ class ThreadTests(BaseTestCase):
 
             def f():
                 # Sleep a bit so that the thread is still running when
-                # Py_Finalize() is called.
+                # Ty_Finalize() is called.
                 random_sleep()
                 tls.x = Sleeper()
                 random_sleep()
@@ -1177,7 +1177,7 @@ class ThreadTests(BaseTestCase):
         self.assertIn(b"can't create new thread at interpreter shutdown", err)
 
     def test_join_daemon_thread_in_finalization(self):
-        # gh-123940: Py_Finalize() prevents other threads from running Python
+        # gh-123940: Ty_Finalize() prevents other threads from running Python
         # code, so join() can not succeed unless the thread is already done.
         # (Non-Python threads, that is `threading._DummyThread`, can't be
         # joined at all.)
@@ -1612,7 +1612,7 @@ class SubinterpThreadingTests(BaseTestCase):
 
             def f():
                 # Sleep a bit so that the thread is still running when
-                # Py_EndInterpreter is called.
+                # Ty_EndInterpreter is called.
                 random_sleep()
                 os.write(%d, b"x")
 
@@ -1648,7 +1648,7 @@ class SubinterpThreadingTests(BaseTestCase):
 
             def f():
                 # Sleep a bit so that the thread is still running when
-                # Py_EndInterpreter is called.
+                # Ty_EndInterpreter is called.
                 random_sleep()
                 tls.x = Sleeper()
                 os.write(%d, b"x")
@@ -1709,7 +1709,7 @@ class SubinterpThreadingTests(BaseTestCase):
 
             def f():
                 # Make sure the daemon thread is still running when
-                # Py_EndInterpreter is called.
+                # Ty_EndInterpreter is called.
                 time.sleep({test.support.SHORT_TIMEOUT})
             threading.Thread(target=f, daemon=True).start()
             """
@@ -1720,7 +1720,7 @@ class SubinterpThreadingTests(BaseTestCase):
             """ % (subinterp_code,)
         with test.support.SuppressCrashReport():
             rc, out, err = assert_python_failure("-c", script)
-        self.assertIn("Fatal Python error: Py_EndInterpreter: "
+        self.assertIn("Fatal Python error: Ty_EndInterpreter: "
                       "not the last thread", err.decode())
 
     def _check_allowed(self, before_start='', *,
@@ -1738,7 +1738,7 @@ class SubinterpThreadingTests(BaseTestCase):
             {before_start}
             t.start()
             """)
-        check_multi_interp_extensions = bool(support.Py_GIL_DISABLED)
+        check_multi_interp_extensions = bool(support.Ty_GIL_DISABLED)
         script = textwrap.dedent(f"""
             import test.support
             test.support.run_in_subinterp_with_config(

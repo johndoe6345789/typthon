@@ -1,26 +1,26 @@
 #define PYTESTCAPI_NEED_INTERNAL_API
 #include "parts.h"
 #include "util.h"
-#include "pycore_fileutils.h"     // _Py_IsValidFD()
+#include "pycore_fileutils.h"     // _Ty_IsValidFD()
 
 #include <stdio.h>
 #include <errno.h>
 
 
-static PyObject *
-run_stringflags(PyObject *mod, PyObject *pos_args)
+static TyObject *
+run_stringflags(TyObject *mod, TyObject *pos_args)
 {
     const char *str;
-    Py_ssize_t size;
+    Ty_ssize_t size;
     int start;
-    PyObject *globals = NULL;
-    PyObject *locals = NULL;
+    TyObject *globals = NULL;
+    TyObject *locals = NULL;
     PyCompilerFlags flags = _PyCompilerFlags_INIT;
     PyCompilerFlags *pflags = NULL;
     int cf_flags = 0;
     int cf_feature_version = 0;
 
-    if (!PyArg_ParseTuple(pos_args, "z#iO|Oii",
+    if (!TyArg_ParseTuple(pos_args, "z#iO|Oii",
                           &str, &size, &start, &globals, &locals,
                           &cf_flags, &cf_feature_version)) {
         return NULL;
@@ -34,18 +34,18 @@ run_stringflags(PyObject *mod, PyObject *pos_args)
         pflags = &flags;
     }
 
-    return PyRun_StringFlags(str, start, globals, locals, pflags);
+    return TyRun_StringFlags(str, start, globals, locals, pflags);
 }
 
-static PyObject *
-run_fileexflags(PyObject *mod, PyObject *pos_args)
+static TyObject *
+run_fileexflags(TyObject *mod, TyObject *pos_args)
 {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     const char *filename = NULL;
-    Py_ssize_t filename_size;
+    Ty_ssize_t filename_size;
     int start;
-    PyObject *globals = NULL;
-    PyObject *locals = NULL;
+    TyObject *globals = NULL;
+    TyObject *locals = NULL;
     int closeit = 0;
     PyCompilerFlags flags = _PyCompilerFlags_INIT;
     PyCompilerFlags *pflags = NULL;
@@ -54,7 +54,7 @@ run_fileexflags(PyObject *mod, PyObject *pos_args)
 
     FILE *fp = NULL;
 
-    if (!PyArg_ParseTuple(pos_args, "z#iO|Oiii",
+    if (!TyArg_ParseTuple(pos_args, "z#iO|Oiii",
                           &filename, &filename_size, &start, &globals, &locals,
                           &closeit, &cf_flags, &cf_feature_version)) {
         return NULL;
@@ -70,23 +70,23 @@ run_fileexflags(PyObject *mod, PyObject *pos_args)
 
     fp = fopen(filename, "r");
     if (fp == NULL) {
-        PyErr_SetFromErrnoWithFilename(PyExc_OSError, filename);
+        TyErr_SetFromErrnoWithFilename(TyExc_OSError, filename);
         return NULL;
     }
     int fd = fileno(fp);
 
-    result = PyRun_FileExFlags(fp, filename, start, globals, locals, closeit, pflags);
+    result = TyRun_FileExFlags(fp, filename, start, globals, locals, closeit, pflags);
 
-    if (closeit && result && _Py_IsValidFD(fd)) {
-        PyErr_SetString(PyExc_AssertionError, "File was not closed after execution");
-        Py_DECREF(result);
+    if (closeit && result && _Ty_IsValidFD(fd)) {
+        TyErr_SetString(TyExc_AssertionError, "File was not closed after execution");
+        Ty_DECREF(result);
         fclose(fp);
         return NULL;
     }
 
-    if (!closeit && !_Py_IsValidFD(fd)) {
-        PyErr_SetString(PyExc_AssertionError, "Bad file descriptor after execution");
-        Py_XDECREF(result);
+    if (!closeit && !_Ty_IsValidFD(fd)) {
+        TyErr_SetString(TyExc_AssertionError, "Bad file descriptor after execution");
+        Ty_XDECREF(result);
         return NULL;
     }
 
@@ -97,16 +97,16 @@ run_fileexflags(PyObject *mod, PyObject *pos_args)
     return result;
 }
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"run_stringflags", run_stringflags, METH_VARARGS},
     {"run_fileexflags", run_fileexflags, METH_VARARGS},
     {NULL},
 };
 
 int
-_PyTestCapi_Init_Run(PyObject *mod)
+_PyTestCapi_Init_Run(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
     return 0;

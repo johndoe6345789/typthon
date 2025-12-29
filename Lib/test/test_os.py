@@ -319,7 +319,7 @@ class FileTests(unittest.TestCase):
 
     @support.cpython_only
     # Skip the test on 32-bit platforms: the number of bytes must fit in a
-    # Py_ssize_t type
+    # Ty_ssize_t type
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX,
                          "needs INT_MAX < PY_SSIZE_T_MAX")
     @support.bigmemtest(size=INT_MAX + 10, memuse=1, dry_run=False)
@@ -339,7 +339,7 @@ class FileTests(unittest.TestCase):
 
     @support.cpython_only
     # Skip the test on 32-bit platforms: the number of bytes must fit in a
-    # Py_ssize_t type
+    # Ty_ssize_t type
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX,
                          "needs INT_MAX < PY_SSIZE_T_MAX")
     @support.bigmemtest(size=INT_MAX + 10, memuse=1, dry_run=False)
@@ -5535,7 +5535,7 @@ class ForkTests(unittest.TestCase):
                 support.wait_process(pid, exitcode=0)
         """
         assert_python_ok("-c", code)
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             assert_python_ok("-c", code, PYTHONMALLOC="mimalloc_debug")
         else:
             assert_python_ok("-c", code, PYTHONMALLOC="malloc_debug")

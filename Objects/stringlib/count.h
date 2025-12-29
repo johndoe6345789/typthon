@@ -9,12 +9,12 @@
 // UCS1 strings: it's the same than asciilib_count().
 #if !STRINGLIB_IS_UNICODE || STRINGLIB_MAX_CHAR > 0x7Fu
 
-Py_LOCAL_INLINE(Py_ssize_t)
-STRINGLIB(count)(const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                const STRINGLIB_CHAR* sub, Py_ssize_t sub_len,
-                Py_ssize_t maxcount)
+Ty_LOCAL_INLINE(Ty_ssize_t)
+STRINGLIB(count)(const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                const STRINGLIB_CHAR* sub, Ty_ssize_t sub_len,
+                Ty_ssize_t maxcount)
 {
-    Py_ssize_t count;
+    Ty_ssize_t count;
 
     if (str_len < 0)
         return 0; /* start > len(str) */

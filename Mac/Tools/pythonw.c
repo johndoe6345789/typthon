@@ -34,7 +34,7 @@ extern char** environ;
 
 /*
  * Locate the python framework by looking for the
- * library that contains Py_Initialize.
+ * library that contains Ty_Initialize.
  *
  * In a regular framework the structure is:
  *
@@ -61,7 +61,7 @@ static char* get_python_path(void)
     char* end;
     char* g_path;
 
-    if (dladdr(Py_Initialize, &info) == 0) {
+    if (dladdr(Ty_Initialize, &info) == 0) {
         return NULL;
     }
 

@@ -1,5 +1,5 @@
 #include "pycore_interp.h"        // _PyInterpreterState.threads.stacksize
-#include "pycore_time.h"          // _PyTime_AsMicroseconds()
+#include "pycore_time.h"          // _TyTime_AsMicroseconds()
 
 /* This code implemented by Dag.Gruneau@elsa.preseco.comm.se */
 /* Fast NonRecursiveMutex support by Yakov Markovitch, markovitch@iso.ru */
@@ -36,7 +36,7 @@ typedef NRMUTEX *PNRMUTEX;
 static PNRMUTEX
 AllocNonRecursiveMutex(void)
 {
-    PNRMUTEX m = (PNRMUTEX)PyMem_RawMalloc(sizeof(NRMUTEX));
+    PNRMUTEX m = (PNRMUTEX)TyMem_RawMalloc(sizeof(NRMUTEX));
     if (!m)
         return NULL;
     if (PyCOND_INIT(&m->cv))
@@ -48,7 +48,7 @@ AllocNonRecursiveMutex(void)
     m->locked = 0;
     return m;
 fail:
-    PyMem_RawFree(m);
+    TyMem_RawFree(m);
     return NULL;
 }
 
@@ -58,7 +58,7 @@ FreeNonRecursiveMutex(PNRMUTEX mutex)
     if (mutex) {
         PyCOND_FINI(&mutex->cv);
         PyMUTEX_FINI(&mutex->cs);
-        PyMem_RawFree(mutex);
+        TyMem_RawFree(mutex);
     }
 }
 
@@ -80,8 +80,8 @@ EnterNonRecursiveMutex(PNRMUTEX mutex, DWORD milliseconds)
         PyTime_t timeout = (PyTime_t)milliseconds * (1000 * 1000);
         PyTime_t deadline = _PyDeadline_Init(timeout);
         while (mutex->locked) {
-            PyTime_t microseconds = _PyTime_AsMicroseconds(timeout,
-                                                           _PyTime_ROUND_TIMEOUT);
+            PyTime_t microseconds = _TyTime_AsMicroseconds(timeout,
+                                                           _TyTime_ROUND_TIMEOUT);
             if (PyCOND_TIMEDWAIT(&mutex->cv, &mutex->cs, microseconds) < 0) {
                 result = WAIT_FAILED;
                 break;
@@ -199,10 +199,10 @@ PyThread_start_joinable_thread(void (*func)(void *), void *arg,
         return -1;
     obj->func = func;
     obj->arg = arg;
-    PyThreadState *tstate = _PyThreadState_GET();
+    PyThreadState *tstate = _TyThreadState_GET();
     size_t stacksize = tstate ? tstate->interp->threads.stacksize : 0;
     hThread = (HANDLE)_beginthreadex(0,
-                      Py_SAFE_DOWNCAST(stacksize, Py_ssize_t, unsigned int),
+                      Ty_SAFE_DOWNCAST(stacksize, Ty_ssize_t, unsigned int),
                       bootstrap, obj,
                       0, &threadID);
     if (hThread == 0) {
@@ -283,16 +283,16 @@ PyThread_get_thread_native_id(void)
 }
 #endif
 
-void _Py_NO_RETURN
+void _Ty_NO_RETURN
 PyThread_exit_thread(void)
 {
     if (!initialized)
         exit(0);
     _endthreadex(0);
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
 
-void _Py_NO_RETURN
+void _Ty_NO_RETURN
 PyThread_hang_thread(void)
 {
     while (1) {
@@ -405,13 +405,13 @@ _pythread_nt_set_stacksize(size_t size)
 {
     /* set to default */
     if (size == 0) {
-        _PyInterpreterState_GET()->threads.stacksize = 0;
+        _TyInterpreterState_GET()->threads.stacksize = 0;
         return 0;
     }
 
     /* valid range? */
     if (size >= THREAD_MIN_STACKSIZE && size < THREAD_MAX_STACKSIZE) {
-        _PyInterpreterState_GET()->threads.stacksize = size;
+        _TyInterpreterState_GET()->threads.stacksize = size;
         return 0;
     }
 
@@ -479,7 +479,7 @@ PyThread_ReInitTLS(void)
 */
 
 int
-PyThread_tss_create(Py_tss_t *key)
+PyThread_tss_create(Ty_tss_t *key)
 {
     assert(key != NULL);
     /* If the key has been created, function is silently skipped. */
@@ -498,7 +498,7 @@ PyThread_tss_create(Py_tss_t *key)
 }
 
 void
-PyThread_tss_delete(Py_tss_t *key)
+PyThread_tss_delete(Ty_tss_t *key)
 {
     assert(key != NULL);
     /* If the key has not been created, function is silently skipped. */
@@ -512,7 +512,7 @@ PyThread_tss_delete(Py_tss_t *key)
 }
 
 int
-PyThread_tss_set(Py_tss_t *key, void *value)
+PyThread_tss_set(Ty_tss_t *key, void *value)
 {
     assert(key != NULL);
     BOOL ok = TlsSetValue(key->_key, value);
@@ -520,7 +520,7 @@ PyThread_tss_set(Py_tss_t *key, void *value)
 }
 
 void *
-PyThread_tss_get(Py_tss_t *key)
+PyThread_tss_get(Ty_tss_t *key)
 {
     assert(key != NULL);
     int err = GetLastError();

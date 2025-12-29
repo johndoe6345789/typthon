@@ -8,18 +8,18 @@
 #define STRINGLIB_OBJECT         PyUnicodeObject
 #define STRINGLIB_SIZEOF_CHAR    1
 #define STRINGLIB_MAX_CHAR       0xFFu
-#define STRINGLIB_CHAR           Py_UCS1
+#define STRINGLIB_CHAR           Ty_UCS1
 #define STRINGLIB_TYPE_NAME      "unicode"
 #define STRINGLIB_PARSE_CODE     "U"
-#define STRINGLIB_ISSPACE        Py_UNICODE_ISSPACE
+#define STRINGLIB_ISSPACE        Ty_UNICODE_ISSPACE
 #define STRINGLIB_ISLINEBREAK    BLOOM_LINEBREAK
-#define STRINGLIB_ISDECIMAL      Py_UNICODE_ISDECIMAL
-#define STRINGLIB_TODECIMAL      Py_UNICODE_TODECIMAL
-#define STRINGLIB_STR            PyUnicode_1BYTE_DATA
-#define STRINGLIB_LEN            PyUnicode_GET_LENGTH
-#define STRINGLIB_NEW            _PyUnicode_FromUCS1
-#define STRINGLIB_CHECK          PyUnicode_Check
-#define STRINGLIB_CHECK_EXACT    PyUnicode_CheckExact
+#define STRINGLIB_ISDECIMAL      Ty_UNICODE_ISDECIMAL
+#define STRINGLIB_TODECIMAL      Ty_UNICODE_TODECIMAL
+#define STRINGLIB_STR            TyUnicode_1BYTE_DATA
+#define STRINGLIB_LEN            TyUnicode_GET_LENGTH
+#define STRINGLIB_NEW            _TyUnicode_FromUCS1
+#define STRINGLIB_CHECK          TyUnicode_Check
+#define STRINGLIB_CHECK_EXACT    TyUnicode_CheckExact
 #define STRINGLIB_FAST_MEMCHR    memchr
 #define STRINGLIB_MUTABLE 0
 

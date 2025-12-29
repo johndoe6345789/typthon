@@ -4047,7 +4047,7 @@ class ConfigDictTest(BaseTest):
 
     @skip_if_tsan_fork
     @support.requires_subprocess()
-    @unittest.skipUnless(support.Py_DEBUG, "requires a debug build for testing"
+    @unittest.skipUnless(support.Ty_DEBUG, "requires a debug build for testing"
                                            " assertions in multiprocessing")
     def test_config_reject_simple_queue_handler_multiprocessing_context(self):
         # multiprocessing.SimpleQueue does not implement 'put_nowait'
@@ -4069,7 +4069,7 @@ class ConfigDictTest(BaseTest):
 
     @skip_if_tsan_fork
     @support.requires_subprocess()
-    @unittest.skipUnless(support.Py_DEBUG, "requires a debug build for testing"
+    @unittest.skipUnless(support.Ty_DEBUG, "requires a debug build for testing"
                                            " assertions in multiprocessing")
     def test_config_queue_handler_multiprocessing_context(self):
         # regression test for gh-121723

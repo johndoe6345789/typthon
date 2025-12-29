@@ -644,7 +644,7 @@ class TestContextObjectWatchers(unittest.TestCase):
         try:
             ctx_outer.run(_in_outer)
             self.assertEqual([x.err_msg for x in unraisables],
-                             ["Exception ignored in Py_CONTEXT_SWITCHED "
+                             ["Exception ignored in Ty_CONTEXT_SWITCHED "
                               f"watcher callback for {ctx!r}"
                               for ctx in [ctx_inner, ctx_outer]])
             self.assertEqual([str(x.exc_value) for x in unraisables],

@@ -84,12 +84,12 @@ class Tests(unittest.TestCase):
                          sys._getframe().f_locals)
 
     def test_eval_get_recursion_limit(self):
-        # Test Py_GetRecursionLimit()
+        # Test Ty_GetRecursionLimit()
         self.assertEqual(_testlimitedcapi.eval_get_recursion_limit(),
                          sys.getrecursionlimit())
 
     def test_eval_set_recursion_limit(self):
-        # Test Py_SetRecursionLimit()
+        # Test Ty_SetRecursionLimit()
         old_limit = sys.getrecursionlimit()
         try:
             limit = old_limit + 123

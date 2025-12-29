@@ -17,7 +17,7 @@ SRE(at)(SRE_STATE* state, const SRE_CHAR* ptr, SRE_CODE at)
 {
     /* check if pointer is at given position */
 
-    Py_ssize_t thisp, thatp;
+    Ty_ssize_t thisp, thatp;
 
     switch (at) {
 
@@ -151,7 +151,7 @@ SRE(charset)(SRE_STATE* state, const SRE_CODE* set, SRE_CODE ch)
         case SRE_OP_BIGCHARSET:
             /* <BIGCHARSET> <blockcount> <256 blockindices> <blocks> */
         {
-            Py_ssize_t count, block;
+            Ty_ssize_t count, block;
             count = *(set++);
 
             if (ch < 0x10000u)
@@ -187,16 +187,16 @@ SRE(charset_loc_ignore)(SRE_STATE* state, const SRE_CODE* set, SRE_CODE ch)
     return up != lo && SRE(charset)(state, set, up);
 }
 
-LOCAL(Py_ssize_t) SRE(match)(SRE_STATE* state, const SRE_CODE* pattern, int toplevel);
+LOCAL(Ty_ssize_t) SRE(match)(SRE_STATE* state, const SRE_CODE* pattern, int toplevel);
 
-LOCAL(Py_ssize_t)
-SRE(count)(SRE_STATE* state, const SRE_CODE* pattern, Py_ssize_t maxcount)
+LOCAL(Ty_ssize_t)
+SRE(count)(SRE_STATE* state, const SRE_CODE* pattern, Ty_ssize_t maxcount)
 {
     SRE_CODE chr;
     SRE_CHAR c;
     const SRE_CHAR* ptr = (const SRE_CHAR *)state->ptr;
     const SRE_CHAR* end = (const SRE_CHAR *)state->end;
-    Py_ssize_t i;
+    Ty_ssize_t i;
     INIT_TRACE(state);
 
     /* adjust end */
@@ -389,7 +389,7 @@ SRE(count)(SRE_STATE* state, const SRE_CODE* pattern, Py_ssize_t maxcount)
 do { \
     alloc_pos = state->data_stack_base; \
     TRACE(("allocating %s in %zd (%zd)\n", \
-           Py_STRINGIFY(type), alloc_pos, sizeof(type))); \
+           Ty_STRINGIFY(type), alloc_pos, sizeof(type))); \
     if (sizeof(type) > state->data_stack_size - alloc_pos) { \
         int j = data_stack_grow(state, sizeof(type)); \
         if (j < 0) return j; \
@@ -402,7 +402,7 @@ do { \
 
 #define DATA_STACK_LOOKUP_AT(state, type, ptr, pos) \
 do { \
-    TRACE(("looking up %s at %zd\n", Py_STRINGIFY(type), pos)); \
+    TRACE(("looking up %s at %zd\n", Ty_STRINGIFY(type), pos)); \
     ptr = (type*)(state->data_stack+pos); \
 } while (0)
 
@@ -534,7 +534,7 @@ do { \
     DO_JUMPX(jumpvalue, jumplabel, nextpattern, 0)
 
 typedef struct {
-    Py_ssize_t count;
+    Ty_ssize_t count;
     union {
         SRE_CODE chr;
         SRE_REPEAT* rep;
@@ -545,30 +545,30 @@ typedef struct {
     const SRE_CHAR* ptr;
     int toplevel;
     int jump;
-    Py_ssize_t last_ctx_pos;
+    Ty_ssize_t last_ctx_pos;
 } SRE(match_context);
 
 #define _MAYBE_CHECK_SIGNALS                                       \
     do {                                                           \
-        if ((0 == (++sigcount & 0xfff)) && PyErr_CheckSignals()) { \
+        if ((0 == (++sigcount & 0xfff)) && TyErr_CheckSignals()) { \
             RETURN_ERROR(SRE_ERROR_INTERRUPTED);                   \
         }                                                          \
     } while (0)
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 # define MAYBE_CHECK_SIGNALS                                       \
     do {                                                           \
         _MAYBE_CHECK_SIGNALS;                                      \
         if (state->fail_after_count >= 0) {                        \
             if (state->fail_after_count-- == 0) {                  \
-                PyErr_SetNone(state->fail_after_exc);              \
+                TyErr_SetNone(state->fail_after_exc);              \
                 RETURN_ERROR(SRE_ERROR_INTERRUPTED);               \
             }                                                      \
         }                                                          \
     } while (0)
 #else
 # define MAYBE_CHECK_SIGNALS _MAYBE_CHECK_SIGNALS
-#endif /* Py_DEBUG */
+#endif /* Ty_DEBUG */
 
 #ifdef HAVE_COMPUTED_GOTOS
     #ifndef USE_COMPUTED_GOTOS
@@ -595,12 +595,12 @@ typedef struct {
 
 /* check if string matches the given pattern.  returns <0 for
    error, 0 for failure, and 1 for success */
-LOCAL(Py_ssize_t)
+LOCAL(Ty_ssize_t)
 SRE(match)(SRE_STATE* state, const SRE_CODE* pattern, int toplevel)
 {
     const SRE_CHAR* end = (const SRE_CHAR *)state->end;
-    Py_ssize_t alloc_pos, ctx_pos = -1;
-    Py_ssize_t ret = 0;
+    Ty_ssize_t alloc_pos, ctx_pos = -1;
+    Ty_ssize_t ret = 0;
     int jump;
     unsigned int sigcount = state->sigcount;
 
@@ -896,7 +896,7 @@ dispatch:
             TRACE(("|%p|%p|REPEAT_ONE %d %d\n", pattern, ptr,
                    pattern[1], pattern[2]));
 
-            if ((Py_ssize_t) pattern[1] > end - ptr)
+            if ((Ty_ssize_t) pattern[1] > end - ptr)
                 RETURN_FAILURE; /* cannot match */
 
             state->ptr = ptr;
@@ -912,7 +912,7 @@ dispatch:
                string.  check if the rest of the pattern matches,
                and backtrack if not. */
 
-            if (ctx->count < (Py_ssize_t) pattern[1])
+            if (ctx->count < (Ty_ssize_t) pattern[1])
                 RETURN_FAILURE;
 
             if (pattern[pattern[0]] == SRE_OP_SUCCESS &&
@@ -933,12 +933,12 @@ dispatch:
                    the rest of the pattern cannot possibly match */
                 ctx->u.chr = pattern[pattern[0]+1];
                 for (;;) {
-                    while (ctx->count >= (Py_ssize_t) pattern[1] &&
+                    while (ctx->count >= (Ty_ssize_t) pattern[1] &&
                            (ptr >= end || *ptr != ctx->u.chr)) {
                         ptr--;
                         ctx->count--;
                     }
-                    if (ctx->count < (Py_ssize_t) pattern[1])
+                    if (ctx->count < (Ty_ssize_t) pattern[1])
                         break;
                     state->ptr = ptr;
                     DO_JUMP(JUMP_REPEAT_ONE_1, jump_repeat_one_1,
@@ -960,7 +960,7 @@ dispatch:
                     MARK_POP_DISCARD(ctx->lastmark);
             } else {
                 /* general case */
-                while (ctx->count >= (Py_ssize_t) pattern[1]) {
+                while (ctx->count >= (Ty_ssize_t) pattern[1]) {
                     state->ptr = ptr;
                     DO_JUMP(JUMP_REPEAT_ONE_2, jump_repeat_one_2,
                             pattern+pattern[0]);
@@ -995,7 +995,7 @@ dispatch:
             TRACE(("|%p|%p|MIN_REPEAT_ONE %d %d\n", pattern, ptr,
                    pattern[1], pattern[2]));
 
-            if ((Py_ssize_t) pattern[1] > end - ptr)
+            if ((Ty_ssize_t) pattern[1] > end - ptr)
                 RETURN_FAILURE; /* cannot match */
 
             state->ptr = ptr;
@@ -1007,7 +1007,7 @@ dispatch:
                 ret = SRE(count)(state, pattern+3, pattern[1]);
                 RETURN_ON_ERROR(ret);
                 DATA_LOOKUP_AT(SRE(match_context), ctx, ctx_pos);
-                if (ret < (Py_ssize_t) pattern[1])
+                if (ret < (Ty_ssize_t) pattern[1])
                     /* didn't match minimum number of times */
                     RETURN_FAILURE;
                 /* advance past minimum matches of repeat */
@@ -1030,8 +1030,8 @@ dispatch:
                 if (state->repeat)
                     MARK_PUSH(ctx->lastmark);
 
-                while ((Py_ssize_t)pattern[2] == SRE_MAXREPEAT
-                       || ctx->count <= (Py_ssize_t)pattern[2]) {
+                while ((Ty_ssize_t)pattern[2] == SRE_MAXREPEAT
+                       || ctx->count <= (Ty_ssize_t)pattern[2]) {
                     state->ptr = ptr;
                     DO_JUMP(JUMP_MIN_REPEAT_ONE,jump_min_repeat_one,
                             pattern+pattern[0]);
@@ -1093,7 +1093,7 @@ dispatch:
                and fail if not. */
 
             /* Test for not enough repetitions in match */
-            if (ctx->count < (Py_ssize_t) pattern[1]) {
+            if (ctx->count < (Ty_ssize_t) pattern[1]) {
                 RETURN_FAILURE;
             }
 
@@ -1162,7 +1162,7 @@ dispatch:
             TRACE(("|%p|%p|MAX_UNTIL %zd\n", pattern,
                    ptr, ctx->count));
 
-            if (ctx->count < (Py_ssize_t) ctx->u.rep->pattern[1]) {
+            if (ctx->count < (Ty_ssize_t) ctx->u.rep->pattern[1]) {
                 /* not enough matches */
                 ctx->u.rep->count = ctx->count;
                 DO_JUMP(JUMP_MAX_UNTIL_1, jump_max_until_1,
@@ -1176,7 +1176,7 @@ dispatch:
                 RETURN_FAILURE;
             }
 
-            if ((ctx->count < (Py_ssize_t) ctx->u.rep->pattern[2] ||
+            if ((ctx->count < (Ty_ssize_t) ctx->u.rep->pattern[2] ||
                 ctx->u.rep->pattern[2] == SRE_MAXREPEAT) &&
                 state->ptr != ctx->u.rep->last_ptr) {
                 /* we may have enough matches, but if we can
@@ -1226,7 +1226,7 @@ dispatch:
             TRACE(("|%p|%p|MIN_UNTIL %zd %p\n", pattern,
                    ptr, ctx->count, ctx->u.rep->pattern));
 
-            if (ctx->count < (Py_ssize_t) ctx->u.rep->pattern[1]) {
+            if (ctx->count < (Ty_ssize_t) ctx->u.rep->pattern[1]) {
                 /* not enough matches */
                 ctx->u.rep->count = ctx->count;
                 DO_JUMP(JUMP_MIN_UNTIL_1, jump_min_until_1,
@@ -1263,7 +1263,7 @@ dispatch:
 
             state->ptr = ptr;
 
-            if ((ctx->count >= (Py_ssize_t) ctx->u.rep->pattern[2]
+            if ((ctx->count >= (Ty_ssize_t) ctx->u.rep->pattern[2]
                 && ctx->u.rep->pattern[2] != SRE_MAXREPEAT) ||
                 state->ptr == ctx->u.rep->last_ptr)
                 RETURN_FAILURE;
@@ -1309,7 +1309,7 @@ dispatch:
             ctx->count = 0;
 
             /* Check for minimum required matches. */
-            while (ctx->count < (Py_ssize_t)pattern[1]) {
+            while (ctx->count < (Ty_ssize_t)pattern[1]) {
                 /* not enough matches */
                 DO_JUMP0(JUMP_POSS_REPEAT_1, jump_poss_repeat_1,
                          &pattern[3]);
@@ -1333,8 +1333,8 @@ dispatch:
 
             /* Keep trying to parse the <pattern> sub-pattern until the
                end is reached, creating a new context each time. */
-            while ((ctx->count < (Py_ssize_t)pattern[2] ||
-                    (Py_ssize_t)pattern[2] == SRE_MAXREPEAT) &&
+            while ((ctx->count < (Ty_ssize_t)pattern[2] ||
+                    (Ty_ssize_t)pattern[2] == SRE_MAXREPEAT) &&
                    state->ptr != ptr) {
                 /* Save the Capture Group Marker state into the current
                    Context and back up the current highest number
@@ -1688,14 +1688,14 @@ exit:
 #define RESET_CAPTURE_GROUP() \
     do { state->lastmark = state->lastindex = -1; } while (0)
 
-LOCAL(Py_ssize_t)
+LOCAL(Ty_ssize_t)
 SRE(search)(SRE_STATE* state, SRE_CODE* pattern)
 {
     SRE_CHAR* ptr = (SRE_CHAR *)state->start;
     SRE_CHAR* end = (SRE_CHAR *)state->end;
-    Py_ssize_t status = 0;
-    Py_ssize_t prefix_len = 0;
-    Py_ssize_t prefix_skip = 0;
+    Ty_ssize_t status = 0;
+    Ty_ssize_t prefix_len = 0;
+    Ty_ssize_t prefix_skip = 0;
     SRE_CODE* prefix = NULL;
     SRE_CODE* charset = NULL;
     SRE_CODE* overlap = NULL;
@@ -1774,7 +1774,7 @@ SRE(search)(SRE_STATE* state, SRE_CODE* pattern)
     if (prefix_len > 1) {
         /* pattern starts with a known prefix.  use the overlap
            table to skip forward as fast as we possibly can */
-        Py_ssize_t i = 0;
+        Ty_ssize_t i = 0;
 
         end = (SRE_CHAR *)state->end;
         if (prefix_len > end - ptr)

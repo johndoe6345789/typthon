@@ -1,9 +1,9 @@
 /* Errno module */
 
-// Need limited C API version 3.13 for Py_mod_gil
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for Ty_mod_gil
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "Python.h"
@@ -49,55 +49,55 @@
  * Pull in the system error definitions
  */
 
-static PyMethodDef errno_methods[] = {
+static TyMethodDef errno_methods[] = {
     {NULL,              NULL}
 };
 
 /* Helper function doing the dictionary inserting */
 
 static int
-_add_errcode(PyObject *module_dict, PyObject *error_dict, const char *name_str, int code_int)
+_add_errcode(TyObject *module_dict, TyObject *error_dict, const char *name_str, int code_int)
 {
-    PyObject *name = PyUnicode_FromString(name_str);
+    TyObject *name = TyUnicode_FromString(name_str);
     if (!name) {
         return -1;
     }
 
-    PyObject *code = PyLong_FromLong(code_int);
+    TyObject *code = TyLong_FromLong(code_int);
     if (!code) {
-        Py_DECREF(name);
+        Ty_DECREF(name);
         return -1;
     }
 
     int ret = -1;
     /* insert in modules dict */
-    if (PyDict_SetItem(module_dict, name, code) < 0) {
+    if (TyDict_SetItem(module_dict, name, code) < 0) {
         goto end;
     }
     /* insert in errorcode dict */
-    if (PyDict_SetItem(error_dict, code, name) < 0) {
+    if (TyDict_SetItem(error_dict, code, name) < 0) {
         goto end;
     }
     ret = 0;
 end:
-    Py_DECREF(name);
-    Py_DECREF(code);
+    Ty_DECREF(name);
+    Ty_DECREF(code);
     return ret;
 }
 
 static int
-errno_exec(PyObject *module)
+errno_exec(TyObject *module)
 {
-    PyObject *module_dict = PyModule_GetDict(module);  // Borrowed ref.
+    TyObject *module_dict = TyModule_GetDict(module);  // Borrowed ref.
     if (module_dict == NULL) {
         return -1;
     }
-    PyObject *error_dict = PyDict_New();
+    TyObject *error_dict = TyDict_New();
     if (error_dict == NULL) {
         return -1;
     }
-    if (PyDict_SetItemString(module_dict, "errorcode", error_dict) < 0) {
-        Py_DECREF(error_dict);
+    if (TyDict_SetItemString(module_dict, "errorcode", error_dict) < 0) {
+        Ty_DECREF(error_dict);
         return -1;
     }
 
@@ -105,7 +105,7 @@ errno_exec(PyObject *module)
 #define add_errcode(name, code, comment)                               \
     do {                                                               \
         if (_add_errcode(module_dict, error_dict, name, code) < 0) {   \
-            Py_DECREF(error_dict);                                     \
+            Ty_DECREF(error_dict);                                     \
             return -1;                                                 \
         }                                                              \
     } while (0);
@@ -947,14 +947,14 @@ errno_exec(PyObject *module)
     add_errcode("ENOTCAPABLE", ENOTCAPABLE, "Capabilities insufficient");
 #endif
 
-    Py_DECREF(error_dict);
+    Ty_DECREF(error_dict);
     return 0;
 }
 
 static PyModuleDef_Slot errno_slots[] = {
-    {Py_mod_exec, errno_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, errno_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
@@ -972,7 +972,7 @@ Symbols that are not relevant to the underlying system are not defined.\n\
 To map error codes to error messages, use the function os.strerror(),\n\
 e.g. os.strerror(2) could return 'No such file or directory'.");
 
-static struct PyModuleDef errnomodule = {
+static struct TyModuleDef errnomodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "errno",
     .m_doc = errno__doc__,

@@ -1,5 +1,5 @@
 #include "Python.h"
-#include "pycore_pythonrun.h"     // _Py_SourceAsString()
+#include "pycore_pythonrun.h"     // _Ty_SourceAsString()
 #include "pycore_symtable.h"      // struct symtable
 
 #include "clinic/symtablemodule.c.h"
@@ -13,111 +13,111 @@ module _symtable
 _symtable.symtable
 
     source:    object
-    filename:  object(converter='PyUnicode_FSDecoder')
+    filename:  object(converter='TyUnicode_FSDecoder')
     startstr:  str
     /
 
 Return symbol and scope dictionaries used internally by compiler.
 [clinic start generated code]*/
 
-static PyObject *
-_symtable_symtable_impl(PyObject *module, PyObject *source,
-                        PyObject *filename, const char *startstr)
+static TyObject *
+_symtable_symtable_impl(TyObject *module, TyObject *source,
+                        TyObject *filename, const char *startstr)
 /*[clinic end generated code: output=59eb0d5fc7285ac4 input=9dd8a50c0c36a4d7]*/
 {
     struct symtable *st;
-    PyObject *t;
+    TyObject *t;
     int start;
     PyCompilerFlags cf = _PyCompilerFlags_INIT;
-    PyObject *source_copy = NULL;
+    TyObject *source_copy = NULL;
 
     cf.cf_flags = PyCF_SOURCE_IS_UTF8;
 
-    const char *str = _Py_SourceAsString(source, "symtable", "string or bytes", &cf, &source_copy);
+    const char *str = _Ty_SourceAsString(source, "symtable", "string or bytes", &cf, &source_copy);
     if (str == NULL) {
         return NULL;
     }
 
     if (strcmp(startstr, "exec") == 0)
-        start = Py_file_input;
+        start = Ty_file_input;
     else if (strcmp(startstr, "eval") == 0)
-        start = Py_eval_input;
+        start = Ty_eval_input;
     else if (strcmp(startstr, "single") == 0)
-        start = Py_single_input;
+        start = Ty_single_input;
     else {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
            "symtable() arg 3 must be 'exec' or 'eval' or 'single'");
-        Py_DECREF(filename);
-        Py_XDECREF(source_copy);
+        Ty_DECREF(filename);
+        Ty_XDECREF(source_copy);
         return NULL;
     }
-    st = _Py_SymtableStringObjectFlags(str, filename, start, &cf);
-    Py_DECREF(filename);
-    Py_XDECREF(source_copy);
+    st = _Ty_SymtableStringObjectFlags(str, filename, start, &cf);
+    Ty_DECREF(filename);
+    Ty_XDECREF(source_copy);
     if (st == NULL) {
         return NULL;
     }
-    t = Py_NewRef(st->st_top);
-    _PySymtable_Free(st);
+    t = Ty_NewRef(st->st_top);
+    _TySymtable_Free(st);
     return t;
 }
 
-static PyMethodDef symtable_methods[] = {
+static TyMethodDef symtable_methods[] = {
     _SYMTABLE_SYMTABLE_METHODDEF
     {NULL,              NULL}           /* sentinel */
 };
 
 static int
-symtable_init_constants(PyObject *m)
+symtable_init_constants(TyObject *m)
 {
-    if (PyModule_AddIntMacro(m, USE) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_GLOBAL) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_NONLOCAL) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_LOCAL) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_PARAM) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_TYPE_PARAM) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_FREE_CLASS) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_IMPORT) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_BOUND) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_ANNOT) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_COMP_ITER) < 0) return -1;
-    if (PyModule_AddIntMacro(m, DEF_COMP_CELL) < 0) return -1;
+    if (TyModule_AddIntMacro(m, USE) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_GLOBAL) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_NONLOCAL) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_LOCAL) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_PARAM) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_TYPE_PARAM) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_FREE_CLASS) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_IMPORT) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_BOUND) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_ANNOT) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_COMP_ITER) < 0) return -1;
+    if (TyModule_AddIntMacro(m, DEF_COMP_CELL) < 0) return -1;
 
-    if (PyModule_AddIntConstant(m, "TYPE_FUNCTION", FunctionBlock) < 0)
+    if (TyModule_AddIntConstant(m, "TYPE_FUNCTION", FunctionBlock) < 0)
         return -1;
-    if (PyModule_AddIntConstant(m, "TYPE_CLASS", ClassBlock) < 0)
+    if (TyModule_AddIntConstant(m, "TYPE_CLASS", ClassBlock) < 0)
         return -1;
-    if (PyModule_AddIntConstant(m, "TYPE_MODULE", ModuleBlock) < 0)
+    if (TyModule_AddIntConstant(m, "TYPE_MODULE", ModuleBlock) < 0)
         return -1;
-    if (PyModule_AddIntConstant(m, "TYPE_ANNOTATION", AnnotationBlock) < 0)
+    if (TyModule_AddIntConstant(m, "TYPE_ANNOTATION", AnnotationBlock) < 0)
         return -1;
-    if (PyModule_AddIntConstant(m, "TYPE_TYPE_ALIAS", TypeAliasBlock) < 0)
+    if (TyModule_AddIntConstant(m, "TYPE_TYPE_ALIAS", TypeAliasBlock) < 0)
         return -1;
-    if (PyModule_AddIntConstant(m, "TYPE_TYPE_PARAMETERS", TypeParametersBlock) < 0)
+    if (TyModule_AddIntConstant(m, "TYPE_TYPE_PARAMETERS", TypeParametersBlock) < 0)
         return -1;
-    if (PyModule_AddIntConstant(m, "TYPE_TYPE_VARIABLE", TypeVariableBlock) < 0)
+    if (TyModule_AddIntConstant(m, "TYPE_TYPE_VARIABLE", TypeVariableBlock) < 0)
         return -1;
 
-    if (PyModule_AddIntMacro(m, LOCAL) < 0) return -1;
-    if (PyModule_AddIntMacro(m, GLOBAL_EXPLICIT) < 0) return -1;
-    if (PyModule_AddIntMacro(m, GLOBAL_IMPLICIT) < 0) return -1;
-    if (PyModule_AddIntMacro(m, FREE) < 0) return -1;
-    if (PyModule_AddIntMacro(m, CELL) < 0) return -1;
+    if (TyModule_AddIntMacro(m, LOCAL) < 0) return -1;
+    if (TyModule_AddIntMacro(m, GLOBAL_EXPLICIT) < 0) return -1;
+    if (TyModule_AddIntMacro(m, GLOBAL_IMPLICIT) < 0) return -1;
+    if (TyModule_AddIntMacro(m, FREE) < 0) return -1;
+    if (TyModule_AddIntMacro(m, CELL) < 0) return -1;
 
-    if (PyModule_AddIntConstant(m, "SCOPE_OFF", SCOPE_OFFSET) < 0) return -1;
-    if (PyModule_AddIntMacro(m, SCOPE_MASK) < 0) return -1;
+    if (TyModule_AddIntConstant(m, "SCOPE_OFF", SCOPE_OFFSET) < 0) return -1;
+    if (TyModule_AddIntMacro(m, SCOPE_MASK) < 0) return -1;
 
     return 0;
 }
 
 static PyModuleDef_Slot symtable_slots[] = {
-    {Py_mod_exec, symtable_init_constants},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, symtable_init_constants},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef symtablemodule = {
+static struct TyModuleDef symtablemodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_symtable",
     .m_size = 0,

@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_long.h"          // _PyLong_UnsignedLong_Converter()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_long.h"          // _TyLong_UnsignedLong_Converter()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(py_blake2b_new__doc__,
 "blake2b(data=b\'\', *, digest_size=_blake2.blake2b.MAX_DIGEST_SIZE,\n"
@@ -18,54 +18,54 @@ PyDoc_STRVAR(py_blake2b_new__doc__,
 "\n"
 "Return a new BLAKE2b hash object.");
 
-static PyObject *
-py_blake2b_new_impl(PyTypeObject *type, PyObject *data_obj, int digest_size,
-                    Py_buffer *key, Py_buffer *salt, Py_buffer *person,
+static TyObject *
+py_blake2b_new_impl(TyTypeObject *type, TyObject *data_obj, int digest_size,
+                    Ty_buffer *key, Ty_buffer *salt, Ty_buffer *person,
                     int fanout, int depth, unsigned long leaf_size,
                     unsigned long long node_offset, int node_depth,
                     int inner_size, int last_node, int usedforsecurity,
-                    PyObject *string);
+                    TyObject *string);
 
-static PyObject *
-py_blake2b_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+py_blake2b_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 14
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(digest_size), &_Py_ID(key), &_Py_ID(salt), &_Py_ID(person), &_Py_ID(fanout), &_Py_ID(depth), &_Py_ID(leaf_size), &_Py_ID(node_offset), &_Py_ID(node_depth), &_Py_ID(inner_size), &_Py_ID(last_node), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(digest_size), &_Ty_ID(key), &_Ty_ID(salt), &_Ty_ID(person), &_Ty_ID(fanout), &_Ty_ID(depth), &_Ty_ID(leaf_size), &_Ty_ID(node_offset), &_Ty_ID(node_depth), &_Ty_ID(inner_size), &_Ty_ID(last_node), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "digest_size", "key", "salt", "person", "fanout", "depth", "leaf_size", "node_offset", "node_depth", "inner_size", "last_node", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "blake2b",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[14];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 0;
-    PyObject *data_obj = NULL;
+    TyObject *argsbuf[14];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 0;
+    TyObject *data_obj = NULL;
     int digest_size = HACL_HASH_BLAKE2B_OUT_BYTES;
-    Py_buffer key = {NULL, NULL};
-    Py_buffer salt = {NULL, NULL};
-    Py_buffer person = {NULL, NULL};
+    Ty_buffer key = {NULL, NULL};
+    Ty_buffer salt = {NULL, NULL};
+    Ty_buffer person = {NULL, NULL};
     int fanout = 1;
     int depth = 1;
     unsigned long leaf_size = 0;
@@ -74,9 +74,9 @@ py_blake2b_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
     int inner_size = 0;
     int last_node = 0;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -95,8 +95,8 @@ skip_optional_pos:
         goto skip_optional_kwonly;
     }
     if (fastargs[1]) {
-        digest_size = PyLong_AsInt(fastargs[1]);
-        if (digest_size == -1 && PyErr_Occurred()) {
+        digest_size = TyLong_AsInt(fastargs[1]);
+        if (digest_size == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -128,8 +128,8 @@ skip_optional_pos:
         }
     }
     if (fastargs[5]) {
-        fanout = PyLong_AsInt(fastargs[5]);
-        if (fanout == -1 && PyErr_Occurred()) {
+        fanout = TyLong_AsInt(fastargs[5]);
+        if (fanout == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -137,8 +137,8 @@ skip_optional_pos:
         }
     }
     if (fastargs[6]) {
-        depth = PyLong_AsInt(fastargs[6]);
-        if (depth == -1 && PyErr_Occurred()) {
+        depth = TyLong_AsInt(fastargs[6]);
+        if (depth == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -146,7 +146,7 @@ skip_optional_pos:
         }
     }
     if (fastargs[7]) {
-        if (!_PyLong_UnsignedLong_Converter(fastargs[7], &leaf_size)) {
+        if (!_TyLong_UnsignedLong_Converter(fastargs[7], &leaf_size)) {
             goto exit;
         }
         if (!--noptargs) {
@@ -154,7 +154,7 @@ skip_optional_pos:
         }
     }
     if (fastargs[8]) {
-        if (!_PyLong_UnsignedLongLong_Converter(fastargs[8], &node_offset)) {
+        if (!_TyLong_UnsignedLongLong_Converter(fastargs[8], &node_offset)) {
             goto exit;
         }
         if (!--noptargs) {
@@ -162,8 +162,8 @@ skip_optional_pos:
         }
     }
     if (fastargs[9]) {
-        node_depth = PyLong_AsInt(fastargs[9]);
-        if (node_depth == -1 && PyErr_Occurred()) {
+        node_depth = TyLong_AsInt(fastargs[9]);
+        if (node_depth == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -171,8 +171,8 @@ skip_optional_pos:
         }
     }
     if (fastargs[10]) {
-        inner_size = PyLong_AsInt(fastargs[10]);
-        if (inner_size == -1 && PyErr_Occurred()) {
+        inner_size = TyLong_AsInt(fastargs[10]);
+        if (inner_size == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -227,54 +227,54 @@ PyDoc_STRVAR(py_blake2s_new__doc__,
 "\n"
 "Return a new BLAKE2s hash object.");
 
-static PyObject *
-py_blake2s_new_impl(PyTypeObject *type, PyObject *data_obj, int digest_size,
-                    Py_buffer *key, Py_buffer *salt, Py_buffer *person,
+static TyObject *
+py_blake2s_new_impl(TyTypeObject *type, TyObject *data_obj, int digest_size,
+                    Ty_buffer *key, Ty_buffer *salt, Ty_buffer *person,
                     int fanout, int depth, unsigned long leaf_size,
                     unsigned long long node_offset, int node_depth,
                     int inner_size, int last_node, int usedforsecurity,
-                    PyObject *string);
+                    TyObject *string);
 
-static PyObject *
-py_blake2s_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+py_blake2s_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 14
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(digest_size), &_Py_ID(key), &_Py_ID(salt), &_Py_ID(person), &_Py_ID(fanout), &_Py_ID(depth), &_Py_ID(leaf_size), &_Py_ID(node_offset), &_Py_ID(node_depth), &_Py_ID(inner_size), &_Py_ID(last_node), &_Py_ID(usedforsecurity), &_Py_ID(string), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(digest_size), &_Ty_ID(key), &_Ty_ID(salt), &_Ty_ID(person), &_Ty_ID(fanout), &_Ty_ID(depth), &_Ty_ID(leaf_size), &_Ty_ID(node_offset), &_Ty_ID(node_depth), &_Ty_ID(inner_size), &_Ty_ID(last_node), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "digest_size", "key", "salt", "person", "fanout", "depth", "leaf_size", "node_offset", "node_depth", "inner_size", "last_node", "usedforsecurity", "string", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "blake2s",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[14];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 0;
-    PyObject *data_obj = NULL;
+    TyObject *argsbuf[14];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 0;
+    TyObject *data_obj = NULL;
     int digest_size = HACL_HASH_BLAKE2S_OUT_BYTES;
-    Py_buffer key = {NULL, NULL};
-    Py_buffer salt = {NULL, NULL};
-    Py_buffer person = {NULL, NULL};
+    Ty_buffer key = {NULL, NULL};
+    Ty_buffer salt = {NULL, NULL};
+    Ty_buffer person = {NULL, NULL};
     int fanout = 1;
     int depth = 1;
     unsigned long leaf_size = 0;
@@ -283,9 +283,9 @@ py_blake2s_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
     int inner_size = 0;
     int last_node = 0;
     int usedforsecurity = 1;
-    PyObject *string = NULL;
+    TyObject *string = NULL;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -304,8 +304,8 @@ skip_optional_pos:
         goto skip_optional_kwonly;
     }
     if (fastargs[1]) {
-        digest_size = PyLong_AsInt(fastargs[1]);
-        if (digest_size == -1 && PyErr_Occurred()) {
+        digest_size = TyLong_AsInt(fastargs[1]);
+        if (digest_size == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -337,8 +337,8 @@ skip_optional_pos:
         }
     }
     if (fastargs[5]) {
-        fanout = PyLong_AsInt(fastargs[5]);
-        if (fanout == -1 && PyErr_Occurred()) {
+        fanout = TyLong_AsInt(fastargs[5]);
+        if (fanout == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -346,8 +346,8 @@ skip_optional_pos:
         }
     }
     if (fastargs[6]) {
-        depth = PyLong_AsInt(fastargs[6]);
-        if (depth == -1 && PyErr_Occurred()) {
+        depth = TyLong_AsInt(fastargs[6]);
+        if (depth == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -355,7 +355,7 @@ skip_optional_pos:
         }
     }
     if (fastargs[7]) {
-        if (!_PyLong_UnsignedLong_Converter(fastargs[7], &leaf_size)) {
+        if (!_TyLong_UnsignedLong_Converter(fastargs[7], &leaf_size)) {
             goto exit;
         }
         if (!--noptargs) {
@@ -363,7 +363,7 @@ skip_optional_pos:
         }
     }
     if (fastargs[8]) {
-        if (!_PyLong_UnsignedLongLong_Converter(fastargs[8], &node_offset)) {
+        if (!_TyLong_UnsignedLongLong_Converter(fastargs[8], &node_offset)) {
             goto exit;
         }
         if (!--noptargs) {
@@ -371,8 +371,8 @@ skip_optional_pos:
         }
     }
     if (fastargs[9]) {
-        node_depth = PyLong_AsInt(fastargs[9]);
-        if (node_depth == -1 && PyErr_Occurred()) {
+        node_depth = TyLong_AsInt(fastargs[9]);
+        if (node_depth == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -380,8 +380,8 @@ skip_optional_pos:
         }
     }
     if (fastargs[10]) {
-        inner_size = PyLong_AsInt(fastargs[10]);
-        if (inner_size == -1 && PyErr_Occurred()) {
+        inner_size = TyLong_AsInt(fastargs[10]);
+        if (inner_size == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -436,11 +436,11 @@ PyDoc_STRVAR(_blake2_blake2b_copy__doc__,
 #define _BLAKE2_BLAKE2B_COPY_METHODDEF    \
     {"copy", (PyCFunction)_blake2_blake2b_copy, METH_NOARGS, _blake2_blake2b_copy__doc__},
 
-static PyObject *
+static TyObject *
 _blake2_blake2b_copy_impl(Blake2Object *self);
 
-static PyObject *
-_blake2_blake2b_copy(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_blake2_blake2b_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _blake2_blake2b_copy_impl((Blake2Object *)self);
 }
@@ -454,13 +454,13 @@ PyDoc_STRVAR(_blake2_blake2b_update__doc__,
 #define _BLAKE2_BLAKE2B_UPDATE_METHODDEF    \
     {"update", (PyCFunction)_blake2_blake2b_update, METH_O, _blake2_blake2b_update__doc__},
 
-static PyObject *
-_blake2_blake2b_update_impl(Blake2Object *self, PyObject *data);
+static TyObject *
+_blake2_blake2b_update_impl(Blake2Object *self, TyObject *data);
 
-static PyObject *
-_blake2_blake2b_update(PyObject *self, PyObject *data)
+static TyObject *
+_blake2_blake2b_update(TyObject *self, TyObject *data)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = _blake2_blake2b_update_impl((Blake2Object *)self, data);
 
@@ -476,11 +476,11 @@ PyDoc_STRVAR(_blake2_blake2b_digest__doc__,
 #define _BLAKE2_BLAKE2B_DIGEST_METHODDEF    \
     {"digest", (PyCFunction)_blake2_blake2b_digest, METH_NOARGS, _blake2_blake2b_digest__doc__},
 
-static PyObject *
+static TyObject *
 _blake2_blake2b_digest_impl(Blake2Object *self);
 
-static PyObject *
-_blake2_blake2b_digest(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_blake2_blake2b_digest(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _blake2_blake2b_digest_impl((Blake2Object *)self);
 }
@@ -494,11 +494,11 @@ PyDoc_STRVAR(_blake2_blake2b_hexdigest__doc__,
 #define _BLAKE2_BLAKE2B_HEXDIGEST_METHODDEF    \
     {"hexdigest", (PyCFunction)_blake2_blake2b_hexdigest, METH_NOARGS, _blake2_blake2b_hexdigest__doc__},
 
-static PyObject *
+static TyObject *
 _blake2_blake2b_hexdigest_impl(Blake2Object *self);
 
-static PyObject *
-_blake2_blake2b_hexdigest(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_blake2_blake2b_hexdigest(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _blake2_blake2b_hexdigest_impl((Blake2Object *)self);
 }

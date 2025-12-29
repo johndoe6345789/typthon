@@ -1,4 +1,4 @@
-#ifndef Py_CPYTHON_COMPILE_H
+#ifndef Ty_CPYTHON_COMPILE_H
 #  error "this header file must not be included directly"
 #endif
 

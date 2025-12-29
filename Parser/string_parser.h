@@ -5,7 +5,7 @@
 #include <pycore_ast.h>
 #include "pegen.h"
 
-PyObject *_PyPegen_parse_string(Parser *, Token *);
-PyObject *_PyPegen_decode_string(Parser *, int, const char *, size_t, Token *);
+TyObject *_TyPegen_parse_string(Parser *, Token *);
+TyObject *_TyPegen_decode_string(Parser *, int, const char *, size_t, Token *);
 
 #endif

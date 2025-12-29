@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_long.h"          // _PyLong_UnsignedLong_Converter()
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_long.h"          // _TyLong_UnsignedLong_Converter()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
@@ -22,11 +22,11 @@ PyDoc_STRVAR(winreg_HKEYType_Close__doc__,
 #define WINREG_HKEYTYPE_CLOSE_METHODDEF    \
     {"Close", (PyCFunction)winreg_HKEYType_Close, METH_NOARGS, winreg_HKEYType_Close__doc__},
 
-static PyObject *
+static TyObject *
 winreg_HKEYType_Close_impl(PyHKEYObject *self);
 
-static PyObject *
-winreg_HKEYType_Close(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+winreg_HKEYType_Close(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return winreg_HKEYType_Close_impl((PyHKEYObject *)self);
 }
@@ -52,11 +52,11 @@ PyDoc_STRVAR(winreg_HKEYType_Detach__doc__,
 #define WINREG_HKEYTYPE_DETACH_METHODDEF    \
     {"Detach", (PyCFunction)winreg_HKEYType_Detach, METH_NOARGS, winreg_HKEYType_Detach__doc__},
 
-static PyObject *
+static TyObject *
 winreg_HKEYType_Detach_impl(PyHKEYObject *self);
 
-static PyObject *
-winreg_HKEYType_Detach(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+winreg_HKEYType_Detach(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return winreg_HKEYType_Detach_impl((PyHKEYObject *)self);
 }
@@ -76,14 +76,14 @@ PyDoc_STRVAR(winreg_HKEYType___enter____doc__,
 static PyHKEYObject *
 winreg_HKEYType___enter___impl(PyHKEYObject *self);
 
-static PyObject *
-winreg_HKEYType___enter__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+winreg_HKEYType___enter__(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     PyHKEYObject *_return_value;
 
     _return_value = winreg_HKEYType___enter___impl((PyHKEYObject *)self);
-    return_value = (PyObject *)_return_value;
+    return_value = (TyObject *)_return_value;
 
     return return_value;
 }
@@ -100,19 +100,19 @@ PyDoc_STRVAR(winreg_HKEYType___exit____doc__,
 #define WINREG_HKEYTYPE___EXIT___METHODDEF    \
     {"__exit__", _PyCFunction_CAST(winreg_HKEYType___exit__), METH_FASTCALL, winreg_HKEYType___exit____doc__},
 
-static PyObject *
-winreg_HKEYType___exit___impl(PyHKEYObject *self, PyObject *exc_type,
-                              PyObject *exc_value, PyObject *traceback);
+static TyObject *
+winreg_HKEYType___exit___impl(PyHKEYObject *self, TyObject *exc_type,
+                              TyObject *exc_value, TyObject *traceback);
 
-static PyObject *
-winreg_HKEYType___exit__(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_HKEYType___exit__(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *exc_type;
-    PyObject *exc_value;
-    PyObject *traceback;
+    TyObject *return_value = NULL;
+    TyObject *exc_type;
+    TyObject *exc_value;
+    TyObject *traceback;
 
-    if (!_PyArg_CheckPositional("__exit__", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("__exit__", nargs, 3, 3)) {
         goto exit;
     }
     exc_type = args[0];
@@ -166,45 +166,45 @@ PyDoc_STRVAR(winreg_ConnectRegistry__doc__,
     {"ConnectRegistry", _PyCFunction_CAST(winreg_ConnectRegistry), METH_FASTCALL, winreg_ConnectRegistry__doc__},
 
 static HKEY
-winreg_ConnectRegistry_impl(PyObject *module, const wchar_t *computer_name,
+winreg_ConnectRegistry_impl(TyObject *module, const wchar_t *computer_name,
                             HKEY key);
 
-static PyObject *
-winreg_ConnectRegistry(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_ConnectRegistry(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const wchar_t *computer_name = NULL;
     HKEY key;
     HKEY _return_value;
 
-    if (!_PyArg_CheckPositional("ConnectRegistry", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("ConnectRegistry", nargs, 2, 2)) {
         goto exit;
     }
-    if (args[0] == Py_None) {
+    if (args[0] == Ty_None) {
         computer_name = NULL;
     }
-    else if (PyUnicode_Check(args[0])) {
-        computer_name = PyUnicode_AsWideCharString(args[0], NULL);
+    else if (TyUnicode_Check(args[0])) {
+        computer_name = TyUnicode_AsWideCharString(args[0], NULL);
         if (computer_name == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("ConnectRegistry", "argument 1", "str or None", args[0]);
+        _TyArg_BadArgument("ConnectRegistry", "argument 1", "str or None", args[0]);
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[1], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[1], &key)) {
         goto exit;
     }
     _return_value = winreg_ConnectRegistry_impl(module, computer_name, key);
     if (_return_value == NULL) {
         goto exit;
     }
-    return_value = PyHKEY_FromHKEY(_PyModule_GetState(module), _return_value);
+    return_value = PyHKEY_FromHKEY(_TyModule_GetState(module), _return_value);
 
 exit:
     /* Cleanup for computer_name */
-    PyMem_Free((void *)computer_name);
+    TyMem_Free((void *)computer_name);
 
     return return_value;
 }
@@ -236,44 +236,44 @@ PyDoc_STRVAR(winreg_CreateKey__doc__,
     {"CreateKey", _PyCFunction_CAST(winreg_CreateKey), METH_FASTCALL, winreg_CreateKey__doc__},
 
 static HKEY
-winreg_CreateKey_impl(PyObject *module, HKEY key, const wchar_t *sub_key);
+winreg_CreateKey_impl(TyObject *module, HKEY key, const wchar_t *sub_key);
 
-static PyObject *
-winreg_CreateKey(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_CreateKey(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     const wchar_t *sub_key = NULL;
     HKEY _return_value;
 
-    if (!_PyArg_CheckPositional("CreateKey", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("CreateKey", nargs, 2, 2)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         sub_key = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        sub_key = PyUnicode_AsWideCharString(args[1], NULL);
+    else if (TyUnicode_Check(args[1])) {
+        sub_key = TyUnicode_AsWideCharString(args[1], NULL);
         if (sub_key == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("CreateKey", "argument 2", "str or None", args[1]);
+        _TyArg_BadArgument("CreateKey", "argument 2", "str or None", args[1]);
         goto exit;
     }
     _return_value = winreg_CreateKey_impl(module, key, sub_key);
     if (_return_value == NULL) {
         goto exit;
     }
-    return_value = PyHKEY_FromHKEY(_PyModule_GetState(module), _return_value);
+    return_value = PyHKEY_FromHKEY(_TyModule_GetState(module), _return_value);
 
 exit:
     /* Cleanup for sub_key */
-    PyMem_Free((void *)sub_key);
+    TyMem_Free((void *)sub_key);
 
     return return_value;
 }
@@ -311,83 +311,83 @@ PyDoc_STRVAR(winreg_CreateKeyEx__doc__,
     {"CreateKeyEx", _PyCFunction_CAST(winreg_CreateKeyEx), METH_FASTCALL|METH_KEYWORDS, winreg_CreateKeyEx__doc__},
 
 static HKEY
-winreg_CreateKeyEx_impl(PyObject *module, HKEY key, const wchar_t *sub_key,
+winreg_CreateKeyEx_impl(TyObject *module, HKEY key, const wchar_t *sub_key,
                         int reserved, REGSAM access);
 
-static PyObject *
-winreg_CreateKeyEx(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+winreg_CreateKeyEx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(key), &_Py_ID(sub_key), &_Py_ID(reserved), &_Py_ID(access), },
+        .ob_item = { &_Ty_ID(key), &_Ty_ID(sub_key), &_Ty_ID(reserved), &_Ty_ID(access), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"key", "sub_key", "reserved", "access", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "CreateKeyEx",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     HKEY key;
     const wchar_t *sub_key = NULL;
     int reserved = 0;
     REGSAM access = KEY_WRITE;
     HKEY _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         sub_key = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        sub_key = PyUnicode_AsWideCharString(args[1], NULL);
+    else if (TyUnicode_Check(args[1])) {
+        sub_key = TyUnicode_AsWideCharString(args[1], NULL);
         if (sub_key == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("CreateKeyEx", "argument 'sub_key'", "str or None", args[1]);
+        _TyArg_BadArgument("CreateKeyEx", "argument 'sub_key'", "str or None", args[1]);
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_pos;
     }
     if (args[2]) {
-        reserved = PyLong_AsInt(args[2]);
-        if (reserved == -1 && PyErr_Occurred()) {
+        reserved = TyLong_AsInt(args[2]);
+        if (reserved == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    access = PyLong_AsInt(args[3]);
-    if (access == -1 && PyErr_Occurred()) {
+    access = TyLong_AsInt(args[3]);
+    if (access == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -395,11 +395,11 @@ skip_optional_pos:
     if (_return_value == NULL) {
         goto exit;
     }
-    return_value = PyHKEY_FromHKEY(_PyModule_GetState(module), _return_value);
+    return_value = PyHKEY_FromHKEY(_TyModule_GetState(module), _return_value);
 
 exit:
     /* Cleanup for sub_key */
-    PyMem_Free((void *)sub_key);
+    TyMem_Free((void *)sub_key);
 
     return return_value;
 }
@@ -429,27 +429,27 @@ PyDoc_STRVAR(winreg_DeleteKey__doc__,
 #define WINREG_DELETEKEY_METHODDEF    \
     {"DeleteKey", _PyCFunction_CAST(winreg_DeleteKey), METH_FASTCALL, winreg_DeleteKey__doc__},
 
-static PyObject *
-winreg_DeleteKey_impl(PyObject *module, HKEY key, const wchar_t *sub_key);
+static TyObject *
+winreg_DeleteKey_impl(TyObject *module, HKEY key, const wchar_t *sub_key);
 
-static PyObject *
-winreg_DeleteKey(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_DeleteKey(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     const wchar_t *sub_key = NULL;
 
-    if (!_PyArg_CheckPositional("DeleteKey", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("DeleteKey", nargs, 2, 2)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("DeleteKey", "argument 2", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("DeleteKey", "argument 2", "str", args[1]);
         goto exit;
     }
-    sub_key = PyUnicode_AsWideCharString(args[1], NULL);
+    sub_key = TyUnicode_AsWideCharString(args[1], NULL);
     if (sub_key == NULL) {
         goto exit;
     }
@@ -457,7 +457,7 @@ winreg_DeleteKey(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 
 exit:
     /* Cleanup for sub_key */
-    PyMem_Free((void *)sub_key);
+    TyMem_Free((void *)sub_key);
 
     return return_value;
 }
@@ -497,61 +497,61 @@ PyDoc_STRVAR(winreg_DeleteKeyEx__doc__,
 #define WINREG_DELETEKEYEX_METHODDEF    \
     {"DeleteKeyEx", _PyCFunction_CAST(winreg_DeleteKeyEx), METH_FASTCALL|METH_KEYWORDS, winreg_DeleteKeyEx__doc__},
 
-static PyObject *
-winreg_DeleteKeyEx_impl(PyObject *module, HKEY key, const wchar_t *sub_key,
+static TyObject *
+winreg_DeleteKeyEx_impl(TyObject *module, HKEY key, const wchar_t *sub_key,
                         REGSAM access, int reserved);
 
-static PyObject *
-winreg_DeleteKeyEx(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+winreg_DeleteKeyEx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(key), &_Py_ID(sub_key), &_Py_ID(access), &_Py_ID(reserved), },
+        .ob_item = { &_Ty_ID(key), &_Ty_ID(sub_key), &_Ty_ID(access), &_Ty_ID(reserved), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"key", "sub_key", "access", "reserved", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "DeleteKeyEx",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     HKEY key;
     const wchar_t *sub_key = NULL;
     REGSAM access = KEY_WOW64_64KEY;
     int reserved = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("DeleteKeyEx", "argument 'sub_key'", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("DeleteKeyEx", "argument 'sub_key'", "str", args[1]);
         goto exit;
     }
-    sub_key = PyUnicode_AsWideCharString(args[1], NULL);
+    sub_key = TyUnicode_AsWideCharString(args[1], NULL);
     if (sub_key == NULL) {
         goto exit;
     }
@@ -559,16 +559,16 @@ winreg_DeleteKeyEx(PyObject *module, PyObject *const *args, Py_ssize_t nargs, Py
         goto skip_optional_pos;
     }
     if (args[2]) {
-        access = PyLong_AsInt(args[2]);
-        if (access == -1 && PyErr_Occurred()) {
+        access = TyLong_AsInt(args[2]);
+        if (access == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    reserved = PyLong_AsInt(args[3]);
-    if (reserved == -1 && PyErr_Occurred()) {
+    reserved = TyLong_AsInt(args[3]);
+    if (reserved == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -576,7 +576,7 @@ skip_optional_pos:
 
 exit:
     /* Cleanup for sub_key */
-    PyMem_Free((void *)sub_key);
+    TyMem_Free((void *)sub_key);
 
     return return_value;
 }
@@ -599,40 +599,40 @@ PyDoc_STRVAR(winreg_DeleteValue__doc__,
 #define WINREG_DELETEVALUE_METHODDEF    \
     {"DeleteValue", _PyCFunction_CAST(winreg_DeleteValue), METH_FASTCALL, winreg_DeleteValue__doc__},
 
-static PyObject *
-winreg_DeleteValue_impl(PyObject *module, HKEY key, const wchar_t *value);
+static TyObject *
+winreg_DeleteValue_impl(TyObject *module, HKEY key, const wchar_t *value);
 
-static PyObject *
-winreg_DeleteValue(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_DeleteValue(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     const wchar_t *value = NULL;
 
-    if (!_PyArg_CheckPositional("DeleteValue", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("DeleteValue", nargs, 2, 2)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         value = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        value = PyUnicode_AsWideCharString(args[1], NULL);
+    else if (TyUnicode_Check(args[1])) {
+        value = TyUnicode_AsWideCharString(args[1], NULL);
         if (value == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("DeleteValue", "argument 2", "str or None", args[1]);
+        _TyArg_BadArgument("DeleteValue", "argument 2", "str or None", args[1]);
         goto exit;
     }
     return_value = winreg_DeleteValue_impl(module, key, value);
 
 exit:
     /* Cleanup for value */
-    PyMem_Free((void *)value);
+    TyMem_Free((void *)value);
 
     return return_value;
 }
@@ -659,24 +659,24 @@ PyDoc_STRVAR(winreg_EnumKey__doc__,
 #define WINREG_ENUMKEY_METHODDEF    \
     {"EnumKey", _PyCFunction_CAST(winreg_EnumKey), METH_FASTCALL, winreg_EnumKey__doc__},
 
-static PyObject *
-winreg_EnumKey_impl(PyObject *module, HKEY key, int index);
+static TyObject *
+winreg_EnumKey_impl(TyObject *module, HKEY key, int index);
 
-static PyObject *
-winreg_EnumKey(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_EnumKey(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     int index;
 
-    if (!_PyArg_CheckPositional("EnumKey", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("EnumKey", nargs, 2, 2)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    index = PyLong_AsInt(args[1]);
-    if (index == -1 && PyErr_Occurred()) {
+    index = TyLong_AsInt(args[1]);
+    if (index == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = winreg_EnumKey_impl(module, key, index);
@@ -716,24 +716,24 @@ PyDoc_STRVAR(winreg_EnumValue__doc__,
 #define WINREG_ENUMVALUE_METHODDEF    \
     {"EnumValue", _PyCFunction_CAST(winreg_EnumValue), METH_FASTCALL, winreg_EnumValue__doc__},
 
-static PyObject *
-winreg_EnumValue_impl(PyObject *module, HKEY key, int index);
+static TyObject *
+winreg_EnumValue_impl(TyObject *module, HKEY key, int index);
 
-static PyObject *
-winreg_EnumValue(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_EnumValue(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     int index;
 
-    if (!_PyArg_CheckPositional("EnumValue", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("EnumValue", nargs, 2, 2)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    index = PyLong_AsInt(args[1]);
-    if (index == -1 && PyErr_Occurred()) {
+    index = TyLong_AsInt(args[1]);
+    if (index == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = winreg_EnumValue_impl(module, key, index);
@@ -755,20 +755,20 @@ PyDoc_STRVAR(winreg_ExpandEnvironmentStrings__doc__,
 #define WINREG_EXPANDENVIRONMENTSTRINGS_METHODDEF    \
     {"ExpandEnvironmentStrings", (PyCFunction)winreg_ExpandEnvironmentStrings, METH_O, winreg_ExpandEnvironmentStrings__doc__},
 
-static PyObject *
-winreg_ExpandEnvironmentStrings_impl(PyObject *module, const wchar_t *string);
+static TyObject *
+winreg_ExpandEnvironmentStrings_impl(TyObject *module, const wchar_t *string);
 
-static PyObject *
-winreg_ExpandEnvironmentStrings(PyObject *module, PyObject *arg)
+static TyObject *
+winreg_ExpandEnvironmentStrings(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const wchar_t *string = NULL;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("ExpandEnvironmentStrings", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("ExpandEnvironmentStrings", "argument", "str", arg);
         goto exit;
     }
-    string = PyUnicode_AsWideCharString(arg, NULL);
+    string = TyUnicode_AsWideCharString(arg, NULL);
     if (string == NULL) {
         goto exit;
     }
@@ -776,7 +776,7 @@ winreg_ExpandEnvironmentStrings(PyObject *module, PyObject *arg)
 
 exit:
     /* Cleanup for string */
-    PyMem_Free((void *)string);
+    TyMem_Free((void *)string);
 
     return return_value;
 }
@@ -807,16 +807,16 @@ PyDoc_STRVAR(winreg_FlushKey__doc__,
 #define WINREG_FLUSHKEY_METHODDEF    \
     {"FlushKey", (PyCFunction)winreg_FlushKey, METH_O, winreg_FlushKey__doc__},
 
-static PyObject *
-winreg_FlushKey_impl(PyObject *module, HKEY key);
+static TyObject *
+winreg_FlushKey_impl(TyObject *module, HKEY key);
 
-static PyObject *
-winreg_FlushKey(PyObject *module, PyObject *arg)
+static TyObject *
+winreg_FlushKey(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
 
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), arg, &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), arg, &key)) {
         goto exit;
     }
     return_value = winreg_FlushKey_impl(module, key);
@@ -860,37 +860,37 @@ PyDoc_STRVAR(winreg_LoadKey__doc__,
 #define WINREG_LOADKEY_METHODDEF    \
     {"LoadKey", _PyCFunction_CAST(winreg_LoadKey), METH_FASTCALL, winreg_LoadKey__doc__},
 
-static PyObject *
-winreg_LoadKey_impl(PyObject *module, HKEY key, const wchar_t *sub_key,
+static TyObject *
+winreg_LoadKey_impl(TyObject *module, HKEY key, const wchar_t *sub_key,
                     const wchar_t *file_name);
 
-static PyObject *
-winreg_LoadKey(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_LoadKey(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     const wchar_t *sub_key = NULL;
     const wchar_t *file_name = NULL;
 
-    if (!_PyArg_CheckPositional("LoadKey", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("LoadKey", nargs, 3, 3)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("LoadKey", "argument 2", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("LoadKey", "argument 2", "str", args[1]);
         goto exit;
     }
-    sub_key = PyUnicode_AsWideCharString(args[1], NULL);
+    sub_key = TyUnicode_AsWideCharString(args[1], NULL);
     if (sub_key == NULL) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[2])) {
-        _PyArg_BadArgument("LoadKey", "argument 3", "str", args[2]);
+    if (!TyUnicode_Check(args[2])) {
+        _TyArg_BadArgument("LoadKey", "argument 3", "str", args[2]);
         goto exit;
     }
-    file_name = PyUnicode_AsWideCharString(args[2], NULL);
+    file_name = TyUnicode_AsWideCharString(args[2], NULL);
     if (file_name == NULL) {
         goto exit;
     }
@@ -898,9 +898,9 @@ winreg_LoadKey(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 
 exit:
     /* Cleanup for sub_key */
-    PyMem_Free((void *)sub_key);
+    TyMem_Free((void *)sub_key);
     /* Cleanup for file_name */
-    PyMem_Free((void *)file_name);
+    TyMem_Free((void *)file_name);
 
     return return_value;
 }
@@ -932,83 +932,83 @@ PyDoc_STRVAR(winreg_OpenKey__doc__,
     {"OpenKey", _PyCFunction_CAST(winreg_OpenKey), METH_FASTCALL|METH_KEYWORDS, winreg_OpenKey__doc__},
 
 static HKEY
-winreg_OpenKey_impl(PyObject *module, HKEY key, const wchar_t *sub_key,
+winreg_OpenKey_impl(TyObject *module, HKEY key, const wchar_t *sub_key,
                     int reserved, REGSAM access);
 
-static PyObject *
-winreg_OpenKey(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+winreg_OpenKey(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(key), &_Py_ID(sub_key), &_Py_ID(reserved), &_Py_ID(access), },
+        .ob_item = { &_Ty_ID(key), &_Ty_ID(sub_key), &_Ty_ID(reserved), &_Ty_ID(access), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"key", "sub_key", "reserved", "access", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "OpenKey",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     HKEY key;
     const wchar_t *sub_key = NULL;
     int reserved = 0;
     REGSAM access = KEY_READ;
     HKEY _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         sub_key = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        sub_key = PyUnicode_AsWideCharString(args[1], NULL);
+    else if (TyUnicode_Check(args[1])) {
+        sub_key = TyUnicode_AsWideCharString(args[1], NULL);
         if (sub_key == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("OpenKey", "argument 'sub_key'", "str or None", args[1]);
+        _TyArg_BadArgument("OpenKey", "argument 'sub_key'", "str or None", args[1]);
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_pos;
     }
     if (args[2]) {
-        reserved = PyLong_AsInt(args[2]);
-        if (reserved == -1 && PyErr_Occurred()) {
+        reserved = TyLong_AsInt(args[2]);
+        if (reserved == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    access = PyLong_AsInt(args[3]);
-    if (access == -1 && PyErr_Occurred()) {
+    access = TyLong_AsInt(args[3]);
+    if (access == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -1016,11 +1016,11 @@ skip_optional_pos:
     if (_return_value == NULL) {
         goto exit;
     }
-    return_value = PyHKEY_FromHKEY(_PyModule_GetState(module), _return_value);
+    return_value = PyHKEY_FromHKEY(_TyModule_GetState(module), _return_value);
 
 exit:
     /* Cleanup for sub_key */
-    PyMem_Free((void *)sub_key);
+    TyMem_Free((void *)sub_key);
 
     return return_value;
 }
@@ -1052,83 +1052,83 @@ PyDoc_STRVAR(winreg_OpenKeyEx__doc__,
     {"OpenKeyEx", _PyCFunction_CAST(winreg_OpenKeyEx), METH_FASTCALL|METH_KEYWORDS, winreg_OpenKeyEx__doc__},
 
 static HKEY
-winreg_OpenKeyEx_impl(PyObject *module, HKEY key, const wchar_t *sub_key,
+winreg_OpenKeyEx_impl(TyObject *module, HKEY key, const wchar_t *sub_key,
                       int reserved, REGSAM access);
 
-static PyObject *
-winreg_OpenKeyEx(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+winreg_OpenKeyEx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(key), &_Py_ID(sub_key), &_Py_ID(reserved), &_Py_ID(access), },
+        .ob_item = { &_Ty_ID(key), &_Ty_ID(sub_key), &_Ty_ID(reserved), &_Ty_ID(access), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"key", "sub_key", "reserved", "access", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "OpenKeyEx",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     HKEY key;
     const wchar_t *sub_key = NULL;
     int reserved = 0;
     REGSAM access = KEY_READ;
     HKEY _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         sub_key = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        sub_key = PyUnicode_AsWideCharString(args[1], NULL);
+    else if (TyUnicode_Check(args[1])) {
+        sub_key = TyUnicode_AsWideCharString(args[1], NULL);
         if (sub_key == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("OpenKeyEx", "argument 'sub_key'", "str or None", args[1]);
+        _TyArg_BadArgument("OpenKeyEx", "argument 'sub_key'", "str or None", args[1]);
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_pos;
     }
     if (args[2]) {
-        reserved = PyLong_AsInt(args[2]);
-        if (reserved == -1 && PyErr_Occurred()) {
+        reserved = TyLong_AsInt(args[2]);
+        if (reserved == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    access = PyLong_AsInt(args[3]);
-    if (access == -1 && PyErr_Occurred()) {
+    access = TyLong_AsInt(args[3]);
+    if (access == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -1136,11 +1136,11 @@ skip_optional_pos:
     if (_return_value == NULL) {
         goto exit;
     }
-    return_value = PyHKEY_FromHKEY(_PyModule_GetState(module), _return_value);
+    return_value = PyHKEY_FromHKEY(_TyModule_GetState(module), _return_value);
 
 exit:
     /* Cleanup for sub_key */
-    PyMem_Free((void *)sub_key);
+    TyMem_Free((void *)sub_key);
 
     return return_value;
 }
@@ -1167,16 +1167,16 @@ PyDoc_STRVAR(winreg_QueryInfoKey__doc__,
 #define WINREG_QUERYINFOKEY_METHODDEF    \
     {"QueryInfoKey", (PyCFunction)winreg_QueryInfoKey, METH_O, winreg_QueryInfoKey__doc__},
 
-static PyObject *
-winreg_QueryInfoKey_impl(PyObject *module, HKEY key);
+static TyObject *
+winreg_QueryInfoKey_impl(TyObject *module, HKEY key);
 
-static PyObject *
-winreg_QueryInfoKey(PyObject *module, PyObject *arg)
+static TyObject *
+winreg_QueryInfoKey(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
 
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), arg, &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), arg, &key)) {
         goto exit;
     }
     return_value = winreg_QueryInfoKey_impl(module, key);
@@ -1212,40 +1212,40 @@ PyDoc_STRVAR(winreg_QueryValue__doc__,
 #define WINREG_QUERYVALUE_METHODDEF    \
     {"QueryValue", _PyCFunction_CAST(winreg_QueryValue), METH_FASTCALL, winreg_QueryValue__doc__},
 
-static PyObject *
-winreg_QueryValue_impl(PyObject *module, HKEY key, const wchar_t *sub_key);
+static TyObject *
+winreg_QueryValue_impl(TyObject *module, HKEY key, const wchar_t *sub_key);
 
-static PyObject *
-winreg_QueryValue(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_QueryValue(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     const wchar_t *sub_key = NULL;
 
-    if (!_PyArg_CheckPositional("QueryValue", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("QueryValue", nargs, 2, 2)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         sub_key = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        sub_key = PyUnicode_AsWideCharString(args[1], NULL);
+    else if (TyUnicode_Check(args[1])) {
+        sub_key = TyUnicode_AsWideCharString(args[1], NULL);
         if (sub_key == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("QueryValue", "argument 2", "str or None", args[1]);
+        _TyArg_BadArgument("QueryValue", "argument 2", "str or None", args[1]);
         goto exit;
     }
     return_value = winreg_QueryValue_impl(module, key, sub_key);
 
 exit:
     /* Cleanup for sub_key */
-    PyMem_Free((void *)sub_key);
+    TyMem_Free((void *)sub_key);
 
     return return_value;
 }
@@ -1273,40 +1273,40 @@ PyDoc_STRVAR(winreg_QueryValueEx__doc__,
 #define WINREG_QUERYVALUEEX_METHODDEF    \
     {"QueryValueEx", _PyCFunction_CAST(winreg_QueryValueEx), METH_FASTCALL, winreg_QueryValueEx__doc__},
 
-static PyObject *
-winreg_QueryValueEx_impl(PyObject *module, HKEY key, const wchar_t *name);
+static TyObject *
+winreg_QueryValueEx_impl(TyObject *module, HKEY key, const wchar_t *name);
 
-static PyObject *
-winreg_QueryValueEx(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_QueryValueEx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     const wchar_t *name = NULL;
 
-    if (!_PyArg_CheckPositional("QueryValueEx", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("QueryValueEx", nargs, 2, 2)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         name = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        name = PyUnicode_AsWideCharString(args[1], NULL);
+    else if (TyUnicode_Check(args[1])) {
+        name = TyUnicode_AsWideCharString(args[1], NULL);
         if (name == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("QueryValueEx", "argument 2", "str or None", args[1]);
+        _TyArg_BadArgument("QueryValueEx", "argument 2", "str or None", args[1]);
         goto exit;
     }
     return_value = winreg_QueryValueEx_impl(module, key, name);
 
 exit:
     /* Cleanup for name */
-    PyMem_Free((void *)name);
+    TyMem_Free((void *)name);
 
     return return_value;
 }
@@ -1339,27 +1339,27 @@ PyDoc_STRVAR(winreg_SaveKey__doc__,
 #define WINREG_SAVEKEY_METHODDEF    \
     {"SaveKey", _PyCFunction_CAST(winreg_SaveKey), METH_FASTCALL, winreg_SaveKey__doc__},
 
-static PyObject *
-winreg_SaveKey_impl(PyObject *module, HKEY key, const wchar_t *file_name);
+static TyObject *
+winreg_SaveKey_impl(TyObject *module, HKEY key, const wchar_t *file_name);
 
-static PyObject *
-winreg_SaveKey(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_SaveKey(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     const wchar_t *file_name = NULL;
 
-    if (!_PyArg_CheckPositional("SaveKey", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("SaveKey", nargs, 2, 2)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("SaveKey", "argument 2", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("SaveKey", "argument 2", "str", args[1]);
         goto exit;
     }
-    file_name = PyUnicode_AsWideCharString(args[1], NULL);
+    file_name = TyUnicode_AsWideCharString(args[1], NULL);
     if (file_name == NULL) {
         goto exit;
     }
@@ -1367,7 +1367,7 @@ winreg_SaveKey(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 
 exit:
     /* Cleanup for file_name */
-    PyMem_Free((void *)file_name);
+    TyMem_Free((void *)file_name);
 
     return return_value;
 }
@@ -1405,43 +1405,43 @@ PyDoc_STRVAR(winreg_SetValue__doc__,
 #define WINREG_SETVALUE_METHODDEF    \
     {"SetValue", _PyCFunction_CAST(winreg_SetValue), METH_FASTCALL, winreg_SetValue__doc__},
 
-static PyObject *
-winreg_SetValue_impl(PyObject *module, HKEY key, const wchar_t *sub_key,
-                     DWORD type, PyObject *value_obj);
+static TyObject *
+winreg_SetValue_impl(TyObject *module, HKEY key, const wchar_t *sub_key,
+                     DWORD type, TyObject *value_obj);
 
-static PyObject *
-winreg_SetValue(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_SetValue(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     const wchar_t *sub_key = NULL;
     DWORD type;
-    PyObject *value_obj;
+    TyObject *value_obj;
 
-    if (!_PyArg_CheckPositional("SetValue", nargs, 4, 4)) {
+    if (!_TyArg_CheckPositional("SetValue", nargs, 4, 4)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         sub_key = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        sub_key = PyUnicode_AsWideCharString(args[1], NULL);
+    else if (TyUnicode_Check(args[1])) {
+        sub_key = TyUnicode_AsWideCharString(args[1], NULL);
         if (sub_key == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("SetValue", "argument 2", "str or None", args[1]);
+        _TyArg_BadArgument("SetValue", "argument 2", "str or None", args[1]);
         goto exit;
     }
-    if (!_PyLong_UnsignedLong_Converter(args[2], &type)) {
+    if (!_TyLong_UnsignedLong_Converter(args[2], &type)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[3])) {
-        _PyArg_BadArgument("SetValue", "argument 4", "str", args[3]);
+    if (!TyUnicode_Check(args[3])) {
+        _TyArg_BadArgument("SetValue", "argument 4", "str", args[3]);
         goto exit;
     }
     value_obj = args[3];
@@ -1449,7 +1449,7 @@ winreg_SetValue(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 
 exit:
     /* Cleanup for sub_key */
-    PyMem_Free((void *)sub_key);
+    TyMem_Free((void *)sub_key);
 
     return return_value;
 }
@@ -1504,41 +1504,41 @@ PyDoc_STRVAR(winreg_SetValueEx__doc__,
 #define WINREG_SETVALUEEX_METHODDEF    \
     {"SetValueEx", _PyCFunction_CAST(winreg_SetValueEx), METH_FASTCALL, winreg_SetValueEx__doc__},
 
-static PyObject *
-winreg_SetValueEx_impl(PyObject *module, HKEY key, const wchar_t *value_name,
-                       PyObject *reserved, DWORD type, PyObject *value);
+static TyObject *
+winreg_SetValueEx_impl(TyObject *module, HKEY key, const wchar_t *value_name,
+                       TyObject *reserved, DWORD type, TyObject *value);
 
-static PyObject *
-winreg_SetValueEx(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+winreg_SetValueEx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
     const wchar_t *value_name = NULL;
-    PyObject *reserved;
+    TyObject *reserved;
     DWORD type;
-    PyObject *value;
+    TyObject *value;
 
-    if (!_PyArg_CheckPositional("SetValueEx", nargs, 5, 5)) {
+    if (!_TyArg_CheckPositional("SetValueEx", nargs, 5, 5)) {
         goto exit;
     }
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), args[0], &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), args[0], &key)) {
         goto exit;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         value_name = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        value_name = PyUnicode_AsWideCharString(args[1], NULL);
+    else if (TyUnicode_Check(args[1])) {
+        value_name = TyUnicode_AsWideCharString(args[1], NULL);
         if (value_name == NULL) {
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("SetValueEx", "argument 2", "str or None", args[1]);
+        _TyArg_BadArgument("SetValueEx", "argument 2", "str or None", args[1]);
         goto exit;
     }
     reserved = args[2];
-    if (!_PyLong_UnsignedLong_Converter(args[3], &type)) {
+    if (!_TyLong_UnsignedLong_Converter(args[3], &type)) {
         goto exit;
     }
     value = args[4];
@@ -1546,7 +1546,7 @@ winreg_SetValueEx(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 
 exit:
     /* Cleanup for value_name */
-    PyMem_Free((void *)value_name);
+    TyMem_Free((void *)value_name);
 
     return return_value;
 }
@@ -1573,16 +1573,16 @@ PyDoc_STRVAR(winreg_DisableReflectionKey__doc__,
 #define WINREG_DISABLEREFLECTIONKEY_METHODDEF    \
     {"DisableReflectionKey", (PyCFunction)winreg_DisableReflectionKey, METH_O, winreg_DisableReflectionKey__doc__},
 
-static PyObject *
-winreg_DisableReflectionKey_impl(PyObject *module, HKEY key);
+static TyObject *
+winreg_DisableReflectionKey_impl(TyObject *module, HKEY key);
 
-static PyObject *
-winreg_DisableReflectionKey(PyObject *module, PyObject *arg)
+static TyObject *
+winreg_DisableReflectionKey(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
 
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), arg, &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), arg, &key)) {
         goto exit;
     }
     return_value = winreg_DisableReflectionKey_impl(module, key);
@@ -1611,16 +1611,16 @@ PyDoc_STRVAR(winreg_EnableReflectionKey__doc__,
 #define WINREG_ENABLEREFLECTIONKEY_METHODDEF    \
     {"EnableReflectionKey", (PyCFunction)winreg_EnableReflectionKey, METH_O, winreg_EnableReflectionKey__doc__},
 
-static PyObject *
-winreg_EnableReflectionKey_impl(PyObject *module, HKEY key);
+static TyObject *
+winreg_EnableReflectionKey_impl(TyObject *module, HKEY key);
 
-static PyObject *
-winreg_EnableReflectionKey(PyObject *module, PyObject *arg)
+static TyObject *
+winreg_EnableReflectionKey(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
 
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), arg, &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), arg, &key)) {
         goto exit;
     }
     return_value = winreg_EnableReflectionKey_impl(module, key);
@@ -1647,16 +1647,16 @@ PyDoc_STRVAR(winreg_QueryReflectionKey__doc__,
 #define WINREG_QUERYREFLECTIONKEY_METHODDEF    \
     {"QueryReflectionKey", (PyCFunction)winreg_QueryReflectionKey, METH_O, winreg_QueryReflectionKey__doc__},
 
-static PyObject *
-winreg_QueryReflectionKey_impl(PyObject *module, HKEY key);
+static TyObject *
+winreg_QueryReflectionKey_impl(TyObject *module, HKEY key);
 
-static PyObject *
-winreg_QueryReflectionKey(PyObject *module, PyObject *arg)
+static TyObject *
+winreg_QueryReflectionKey(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     HKEY key;
 
-    if (!clinic_HKEY_converter(_PyModule_GetState(module), arg, &key)) {
+    if (!clinic_HKEY_converter(_TyModule_GetState(module), arg, &key)) {
         goto exit;
     }
     return_value = winreg_QueryReflectionKey_impl(module, key);

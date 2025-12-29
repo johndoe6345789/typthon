@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(zlib_compress__doc__,
 "compress($module, data, /, level=Z_DEFAULT_COMPRESSION, wbits=MAX_WBITS)\n"
@@ -25,47 +25,47 @@ PyDoc_STRVAR(zlib_compress__doc__,
 #define ZLIB_COMPRESS_METHODDEF    \
     {"compress", _PyCFunction_CAST(zlib_compress), METH_FASTCALL|METH_KEYWORDS, zlib_compress__doc__},
 
-static PyObject *
-zlib_compress_impl(PyObject *module, Py_buffer *data, int level, int wbits);
+static TyObject *
+zlib_compress_impl(TyObject *module, Ty_buffer *data, int level, int wbits);
 
-static PyObject *
-zlib_compress(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_compress(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(level), &_Py_ID(wbits), },
+        .ob_item = { &_Ty_ID(level), &_Ty_ID(wbits), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "level", "wbits", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "compress",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
     int level = Z_DEFAULT_COMPRESSION;
     int wbits = MAX_WBITS;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -77,16 +77,16 @@ zlib_compress(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObjec
         goto skip_optional_pos;
     }
     if (args[1]) {
-        level = PyLong_AsInt(args[1]);
-        if (level == -1 && PyErr_Occurred()) {
+        level = TyLong_AsInt(args[1]);
+        if (level == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    wbits = PyLong_AsInt(args[2]);
-    if (wbits == -1 && PyErr_Occurred()) {
+    wbits = TyLong_AsInt(args[2]);
+    if (wbits == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -117,48 +117,48 @@ PyDoc_STRVAR(zlib_decompress__doc__,
 #define ZLIB_DECOMPRESS_METHODDEF    \
     {"decompress", _PyCFunction_CAST(zlib_decompress), METH_FASTCALL|METH_KEYWORDS, zlib_decompress__doc__},
 
-static PyObject *
-zlib_decompress_impl(PyObject *module, Py_buffer *data, int wbits,
-                     Py_ssize_t bufsize);
+static TyObject *
+zlib_decompress_impl(TyObject *module, Ty_buffer *data, int wbits,
+                     Ty_ssize_t bufsize);
 
-static PyObject *
-zlib_decompress(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_decompress(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(wbits), &_Py_ID(bufsize), },
+        .ob_item = { &_Ty_ID(wbits), &_Ty_ID(bufsize), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "wbits", "bufsize", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "decompress",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
     int wbits = MAX_WBITS;
-    Py_ssize_t bufsize = DEF_BUF_SIZE;
+    Ty_ssize_t bufsize = DEF_BUF_SIZE;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -170,8 +170,8 @@ zlib_decompress(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObj
         goto skip_optional_pos;
     }
     if (args[1]) {
-        wbits = PyLong_AsInt(args[1]);
-        if (wbits == -1 && PyErr_Occurred()) {
+        wbits = TyLong_AsInt(args[1]);
+        if (wbits == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -179,13 +179,13 @@ zlib_decompress(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObj
         }
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[2]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[2]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         bufsize = ival;
@@ -235,51 +235,51 @@ PyDoc_STRVAR(zlib_compressobj__doc__,
 #define ZLIB_COMPRESSOBJ_METHODDEF    \
     {"compressobj", _PyCFunction_CAST(zlib_compressobj), METH_FASTCALL|METH_KEYWORDS, zlib_compressobj__doc__},
 
-static PyObject *
-zlib_compressobj_impl(PyObject *module, int level, int method, int wbits,
-                      int memLevel, int strategy, Py_buffer *zdict);
+static TyObject *
+zlib_compressobj_impl(TyObject *module, int level, int method, int wbits,
+                      int memLevel, int strategy, Ty_buffer *zdict);
 
-static PyObject *
-zlib_compressobj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_compressobj(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 6
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(level), &_Py_ID(method), &_Py_ID(wbits), &_Py_ID(memLevel), &_Py_ID(strategy), &_Py_ID(zdict), },
+        .ob_item = { &_Ty_ID(level), &_Ty_ID(method), &_Ty_ID(wbits), &_Ty_ID(memLevel), &_Ty_ID(strategy), &_Ty_ID(zdict), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"level", "method", "wbits", "memLevel", "strategy", "zdict", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "compressobj",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[6];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[6];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int level = Z_DEFAULT_COMPRESSION;
     int method = DEFLATED;
     int wbits = MAX_WBITS;
     int memLevel = DEF_MEM_LEVEL;
     int strategy = Z_DEFAULT_STRATEGY;
-    Py_buffer zdict = {NULL, NULL};
+    Ty_buffer zdict = {NULL, NULL};
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 6, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -288,8 +288,8 @@ zlib_compressobj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyOb
         goto skip_optional_pos;
     }
     if (args[0]) {
-        level = PyLong_AsInt(args[0]);
-        if (level == -1 && PyErr_Occurred()) {
+        level = TyLong_AsInt(args[0]);
+        if (level == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -297,8 +297,8 @@ zlib_compressobj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyOb
         }
     }
     if (args[1]) {
-        method = PyLong_AsInt(args[1]);
-        if (method == -1 && PyErr_Occurred()) {
+        method = TyLong_AsInt(args[1]);
+        if (method == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -306,8 +306,8 @@ zlib_compressobj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyOb
         }
     }
     if (args[2]) {
-        wbits = PyLong_AsInt(args[2]);
-        if (wbits == -1 && PyErr_Occurred()) {
+        wbits = TyLong_AsInt(args[2]);
+        if (wbits == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -315,8 +315,8 @@ zlib_compressobj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyOb
         }
     }
     if (args[3]) {
-        memLevel = PyLong_AsInt(args[3]);
-        if (memLevel == -1 && PyErr_Occurred()) {
+        memLevel = TyLong_AsInt(args[3]);
+        if (memLevel == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -324,8 +324,8 @@ zlib_compressobj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyOb
         }
     }
     if (args[4]) {
-        strategy = PyLong_AsInt(args[4]);
-        if (strategy == -1 && PyErr_Occurred()) {
+        strategy = TyLong_AsInt(args[4]);
+        if (strategy == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -362,46 +362,46 @@ PyDoc_STRVAR(zlib_decompressobj__doc__,
 #define ZLIB_DECOMPRESSOBJ_METHODDEF    \
     {"decompressobj", _PyCFunction_CAST(zlib_decompressobj), METH_FASTCALL|METH_KEYWORDS, zlib_decompressobj__doc__},
 
-static PyObject *
-zlib_decompressobj_impl(PyObject *module, int wbits, PyObject *zdict);
+static TyObject *
+zlib_decompressobj_impl(TyObject *module, int wbits, TyObject *zdict);
 
-static PyObject *
-zlib_decompressobj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_decompressobj(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(wbits), &_Py_ID(zdict), },
+        .ob_item = { &_Ty_ID(wbits), &_Ty_ID(zdict), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"wbits", "zdict", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "decompressobj",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int wbits = MAX_WBITS;
-    PyObject *zdict = NULL;
+    TyObject *zdict = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -410,8 +410,8 @@ zlib_decompressobj(PyObject *module, PyObject *const *args, Py_ssize_t nargs, Py
         goto skip_optional_pos;
     }
     if (args[0]) {
-        wbits = PyLong_AsInt(args[0]);
-        if (wbits == -1 && PyErr_Occurred()) {
+        wbits = TyLong_AsInt(args[0]);
+        if (wbits == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -442,31 +442,31 @@ PyDoc_STRVAR(zlib_Compress_compress__doc__,
 #define ZLIB_COMPRESS_COMPRESS_METHODDEF    \
     {"compress", _PyCFunction_CAST(zlib_Compress_compress), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Compress_compress__doc__},
 
-static PyObject *
-zlib_Compress_compress_impl(compobject *self, PyTypeObject *cls,
-                            Py_buffer *data);
+static TyObject *
+zlib_Compress_compress_impl(compobject *self, TyTypeObject *cls,
+                            Ty_buffer *data);
 
-static PyObject *
-zlib_Compress_compress(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Compress_compress(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "compress",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[1];
+    Ty_buffer data = {NULL, NULL};
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -505,47 +505,47 @@ PyDoc_STRVAR(zlib_Decompress_decompress__doc__,
 #define ZLIB_DECOMPRESS_DECOMPRESS_METHODDEF    \
     {"decompress", _PyCFunction_CAST(zlib_Decompress_decompress), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Decompress_decompress__doc__},
 
-static PyObject *
-zlib_Decompress_decompress_impl(compobject *self, PyTypeObject *cls,
-                                Py_buffer *data, Py_ssize_t max_length);
+static TyObject *
+zlib_Decompress_decompress_impl(compobject *self, TyTypeObject *cls,
+                                Ty_buffer *data, Ty_ssize_t max_length);
 
-static PyObject *
-zlib_Decompress_decompress(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Decompress_decompress(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(max_length), },
+        .ob_item = { &_Ty_ID(max_length), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "max_length", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "decompress",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
-    Py_ssize_t max_length = 0;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
+    Ty_ssize_t max_length = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -557,13 +557,13 @@ zlib_Decompress_decompress(PyObject *self, PyTypeObject *cls, PyObject *const *a
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         max_length = ival;
@@ -595,30 +595,30 @@ PyDoc_STRVAR(zlib_Compress_flush__doc__,
 #define ZLIB_COMPRESS_FLUSH_METHODDEF    \
     {"flush", _PyCFunction_CAST(zlib_Compress_flush), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Compress_flush__doc__},
 
-static PyObject *
-zlib_Compress_flush_impl(compobject *self, PyTypeObject *cls, int mode);
+static TyObject *
+zlib_Compress_flush_impl(compobject *self, TyTypeObject *cls, int mode);
 
-static PyObject *
-zlib_Compress_flush(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Compress_flush(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "flush",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int mode = Z_FINISH;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -626,8 +626,8 @@ zlib_Compress_flush(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py
     if (nargs < 1) {
         goto skip_optional_posonly;
     }
-    mode = PyLong_AsInt(args[0]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[0]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_posonly:
@@ -648,14 +648,14 @@ PyDoc_STRVAR(zlib_Compress_copy__doc__,
 #define ZLIB_COMPRESS_COPY_METHODDEF    \
     {"copy", _PyCFunction_CAST(zlib_Compress_copy), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Compress_copy__doc__},
 
-static PyObject *
-zlib_Compress_copy_impl(compobject *self, PyTypeObject *cls);
+static TyObject *
+zlib_Compress_copy_impl(compobject *self, TyTypeObject *cls);
 
-static PyObject *
-zlib_Compress_copy(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Compress_copy(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "copy() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "copy() takes no arguments");
         return NULL;
     }
     return zlib_Compress_copy_impl((compobject *)self, cls);
@@ -673,14 +673,14 @@ PyDoc_STRVAR(zlib_Compress___copy____doc__,
 #define ZLIB_COMPRESS___COPY___METHODDEF    \
     {"__copy__", _PyCFunction_CAST(zlib_Compress___copy__), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Compress___copy____doc__},
 
-static PyObject *
-zlib_Compress___copy___impl(compobject *self, PyTypeObject *cls);
+static TyObject *
+zlib_Compress___copy___impl(compobject *self, TyTypeObject *cls);
 
-static PyObject *
-zlib_Compress___copy__(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Compress___copy__(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "__copy__() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "__copy__() takes no arguments");
         return NULL;
     }
     return zlib_Compress___copy___impl((compobject *)self, cls);
@@ -698,31 +698,31 @@ PyDoc_STRVAR(zlib_Compress___deepcopy____doc__,
 #define ZLIB_COMPRESS___DEEPCOPY___METHODDEF    \
     {"__deepcopy__", _PyCFunction_CAST(zlib_Compress___deepcopy__), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Compress___deepcopy____doc__},
 
-static PyObject *
-zlib_Compress___deepcopy___impl(compobject *self, PyTypeObject *cls,
-                                PyObject *memo);
+static TyObject *
+zlib_Compress___deepcopy___impl(compobject *self, TyTypeObject *cls,
+                                TyObject *memo);
 
-static PyObject *
-zlib_Compress___deepcopy__(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Compress___deepcopy__(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "__deepcopy__",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *memo;
+    TyObject *argsbuf[1];
+    TyObject *memo;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -747,14 +747,14 @@ PyDoc_STRVAR(zlib_Decompress_copy__doc__,
 #define ZLIB_DECOMPRESS_COPY_METHODDEF    \
     {"copy", _PyCFunction_CAST(zlib_Decompress_copy), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Decompress_copy__doc__},
 
-static PyObject *
-zlib_Decompress_copy_impl(compobject *self, PyTypeObject *cls);
+static TyObject *
+zlib_Decompress_copy_impl(compobject *self, TyTypeObject *cls);
 
-static PyObject *
-zlib_Decompress_copy(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Decompress_copy(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "copy() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "copy() takes no arguments");
         return NULL;
     }
     return zlib_Decompress_copy_impl((compobject *)self, cls);
@@ -772,14 +772,14 @@ PyDoc_STRVAR(zlib_Decompress___copy____doc__,
 #define ZLIB_DECOMPRESS___COPY___METHODDEF    \
     {"__copy__", _PyCFunction_CAST(zlib_Decompress___copy__), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Decompress___copy____doc__},
 
-static PyObject *
-zlib_Decompress___copy___impl(compobject *self, PyTypeObject *cls);
+static TyObject *
+zlib_Decompress___copy___impl(compobject *self, TyTypeObject *cls);
 
-static PyObject *
-zlib_Decompress___copy__(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Decompress___copy__(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "__copy__() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "__copy__() takes no arguments");
         return NULL;
     }
     return zlib_Decompress___copy___impl((compobject *)self, cls);
@@ -797,31 +797,31 @@ PyDoc_STRVAR(zlib_Decompress___deepcopy____doc__,
 #define ZLIB_DECOMPRESS___DEEPCOPY___METHODDEF    \
     {"__deepcopy__", _PyCFunction_CAST(zlib_Decompress___deepcopy__), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Decompress___deepcopy____doc__},
 
-static PyObject *
-zlib_Decompress___deepcopy___impl(compobject *self, PyTypeObject *cls,
-                                  PyObject *memo);
+static TyObject *
+zlib_Decompress___deepcopy___impl(compobject *self, TyTypeObject *cls,
+                                  TyObject *memo);
 
-static PyObject *
-zlib_Decompress___deepcopy__(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Decompress___deepcopy__(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "__deepcopy__",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *memo;
+    TyObject *argsbuf[1];
+    TyObject *memo;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -847,31 +847,31 @@ PyDoc_STRVAR(zlib_Decompress_flush__doc__,
 #define ZLIB_DECOMPRESS_FLUSH_METHODDEF    \
     {"flush", _PyCFunction_CAST(zlib_Decompress_flush), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, zlib_Decompress_flush__doc__},
 
-static PyObject *
-zlib_Decompress_flush_impl(compobject *self, PyTypeObject *cls,
-                           Py_ssize_t length);
+static TyObject *
+zlib_Decompress_flush_impl(compobject *self, TyTypeObject *cls,
+                           Ty_ssize_t length);
 
-static PyObject *
-zlib_Decompress_flush(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_Decompress_flush(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "flush",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t length = DEF_BUF_SIZE;
+    TyObject *argsbuf[1];
+    Ty_ssize_t length = DEF_BUF_SIZE;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -880,13 +880,13 @@ zlib_Decompress_flush(PyObject *self, PyTypeObject *cls, PyObject *const *args, 
         goto skip_optional_posonly;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         length = ival;
@@ -920,47 +920,47 @@ PyDoc_STRVAR(zlib_ZlibDecompressor_decompress__doc__,
 #define ZLIB_ZLIBDECOMPRESSOR_DECOMPRESS_METHODDEF    \
     {"decompress", _PyCFunction_CAST(zlib_ZlibDecompressor_decompress), METH_FASTCALL|METH_KEYWORDS, zlib_ZlibDecompressor_decompress__doc__},
 
-static PyObject *
+static TyObject *
 zlib_ZlibDecompressor_decompress_impl(ZlibDecompressor *self,
-                                      Py_buffer *data, Py_ssize_t max_length);
+                                      Ty_buffer *data, Ty_ssize_t max_length);
 
-static PyObject *
-zlib_ZlibDecompressor_decompress(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+zlib_ZlibDecompressor_decompress(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(data), &_Py_ID(max_length), },
+        .ob_item = { &_Ty_ID(data), &_Ty_ID(max_length), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"data", "max_length", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "decompress",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
-    Py_ssize_t max_length = -1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
+    Ty_ssize_t max_length = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -972,13 +972,13 @@ zlib_ZlibDecompressor_decompress(PyObject *self, PyObject *const *args, Py_ssize
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         max_length = ival;
@@ -1009,17 +1009,17 @@ PyDoc_STRVAR(zlib_adler32__doc__,
 #define ZLIB_ADLER32_METHODDEF    \
     {"adler32", _PyCFunction_CAST(zlib_adler32), METH_FASTCALL, zlib_adler32__doc__},
 
-static PyObject *
-zlib_adler32_impl(PyObject *module, Py_buffer *data, unsigned int value);
+static TyObject *
+zlib_adler32_impl(TyObject *module, Ty_buffer *data, unsigned int value);
 
-static PyObject *
-zlib_adler32(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+zlib_adler32(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer data = {NULL, NULL};
     unsigned int value = 1;
 
-    if (!_PyArg_CheckPositional("adler32", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("adler32", nargs, 1, 2)) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[0], &data, PyBUF_SIMPLE) != 0) {
@@ -1028,8 +1028,8 @@ zlib_adler32(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     if (nargs < 2) {
         goto skip_optional;
     }
-    value = (unsigned int)PyLong_AsUnsignedLongMask(args[1]);
-    if (value == (unsigned int)-1 && PyErr_Occurred()) {
+    value = (unsigned int)TyLong_AsUnsignedLongMask(args[1]);
+    if (value == (unsigned int)-1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -1059,17 +1059,17 @@ PyDoc_STRVAR(zlib_crc32__doc__,
     {"crc32", _PyCFunction_CAST(zlib_crc32), METH_FASTCALL, zlib_crc32__doc__},
 
 static unsigned int
-zlib_crc32_impl(PyObject *module, Py_buffer *data, unsigned int value);
+zlib_crc32_impl(TyObject *module, Ty_buffer *data, unsigned int value);
 
-static PyObject *
-zlib_crc32(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+zlib_crc32(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_buffer data = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer data = {NULL, NULL};
     unsigned int value = 0;
     unsigned int _return_value;
 
-    if (!_PyArg_CheckPositional("crc32", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("crc32", nargs, 1, 2)) {
         goto exit;
     }
     if (PyObject_GetBuffer(args[0], &data, PyBUF_SIMPLE) != 0) {
@@ -1078,16 +1078,16 @@ zlib_crc32(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     if (nargs < 2) {
         goto skip_optional;
     }
-    value = (unsigned int)PyLong_AsUnsignedLongMask(args[1]);
-    if (value == (unsigned int)-1 && PyErr_Occurred()) {
+    value = (unsigned int)TyLong_AsUnsignedLongMask(args[1]);
+    if (value == (unsigned int)-1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
     _return_value = zlib_crc32_impl(module, &data, value);
-    if ((_return_value == (unsigned int)-1) && PyErr_Occurred()) {
+    if ((_return_value == (unsigned int)-1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromUnsignedLong((unsigned long)_return_value);
+    return_value = TyLong_FromUnsignedLong((unsigned long)_return_value);
 
 exit:
     /* Cleanup for data */

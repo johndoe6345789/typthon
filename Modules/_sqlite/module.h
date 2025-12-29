@@ -31,62 +31,62 @@
 #define MODULE_NAME "sqlite3"
 
 typedef struct {
-    PyObject *DataError;
-    PyObject *DatabaseError;
-    PyObject *Error;
-    PyObject *IntegrityError;
-    PyObject *InterfaceError;
-    PyObject *InternalError;
-    PyObject *NotSupportedError;
-    PyObject *OperationalError;
-    PyObject *ProgrammingError;
-    PyObject *Warning;
+    TyObject *DataError;
+    TyObject *DatabaseError;
+    TyObject *Error;
+    TyObject *IntegrityError;
+    TyObject *InterfaceError;
+    TyObject *InternalError;
+    TyObject *NotSupportedError;
+    TyObject *OperationalError;
+    TyObject *ProgrammingError;
+    TyObject *Warning;
 
 
     /* A dictionary, mapping column types (INTEGER, VARCHAR, etc.) to converter
      * functions, that convert the SQL value to the appropriate Python value.
      * The key is uppercase.
      */
-    PyObject *converters;
+    TyObject *converters;
 
-    PyObject *lru_cache;
-    PyObject *psyco_adapters;  // The adapters registry
+    TyObject *lru_cache;
+    TyObject *psyco_adapters;  // The adapters registry
     int BaseTypeAdapted;
     int enable_callback_tracebacks;
 
-    PyTypeObject *BlobType;
-    PyTypeObject *ConnectionType;
-    PyTypeObject *CursorType;
-    PyTypeObject *PrepareProtocolType;
-    PyTypeObject *RowType;
-    PyTypeObject *StatementType;
+    TyTypeObject *BlobType;
+    TyTypeObject *ConnectionType;
+    TyTypeObject *CursorType;
+    TyTypeObject *PrepareProtocolType;
+    TyTypeObject *RowType;
+    TyTypeObject *StatementType;
 
     /* Pointers to interned strings */
-    PyObject *str___adapt__;
-    PyObject *str___conform__;
-    PyObject *str_executescript;
-    PyObject *str_finalize;
-    PyObject *str_inverse;
-    PyObject *str_step;
-    PyObject *str_upper;
-    PyObject *str_value;
+    TyObject *str___adapt__;
+    TyObject *str___conform__;
+    TyObject *str_executescript;
+    TyObject *str_finalize;
+    TyObject *str_inverse;
+    TyObject *str_step;
+    TyObject *str_upper;
+    TyObject *str_value;
 } pysqlite_state;
 
 extern pysqlite_state pysqlite_global_state;
 
 static inline pysqlite_state *
-pysqlite_get_state(PyObject *module)
+pysqlite_get_state(TyObject *module)
 {
-    pysqlite_state *state = (pysqlite_state *)PyModule_GetState(module);
+    pysqlite_state *state = (pysqlite_state *)TyModule_GetState(module);
     assert(state != NULL);
     return state;
 }
 
-extern struct PyModuleDef _sqlite3module;
+extern struct TyModuleDef _sqlite3module;
 static inline pysqlite_state *
-pysqlite_get_state_by_type(PyTypeObject *tp)
+pysqlite_get_state_by_type(TyTypeObject *tp)
 {
-    PyObject *module = PyType_GetModuleByDef(tp, &_sqlite3module);
+    TyObject *module = TyType_GetModuleByDef(tp, &_sqlite3module);
     assert(module != NULL);
     return pysqlite_get_state(module);
 }

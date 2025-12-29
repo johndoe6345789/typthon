@@ -299,8 +299,8 @@ class BasicTest(BaseTest):
             ('is_python_build()', str(sysconfig.is_python_build())),
             ('get_makefile_filename()', sysconfig.get_makefile_filename()),
             ('get_config_h_filename()', sysconfig.get_config_h_filename()),
-            ('get_config_var("Py_GIL_DISABLED")',
-             str(sysconfig.get_config_var("Py_GIL_DISABLED")))):
+            ('get_config_var("Ty_GIL_DISABLED")',
+             str(sysconfig.get_config_var("Ty_GIL_DISABLED")))):
             with self.subTest(call):
                 cmd[2] = 'import sysconfig; print(sysconfig.%s)' % call
                 out, err = check_output(cmd, encoding='utf-8')
@@ -333,8 +333,8 @@ class BasicTest(BaseTest):
             ('is_python_build()', str(sysconfig.is_python_build())),
             ('get_makefile_filename()', sysconfig.get_makefile_filename()),
             ('get_config_h_filename()', sysconfig.get_config_h_filename()),
-            ('get_config_var("Py_GIL_DISABLED")',
-             str(sysconfig.get_config_var("Py_GIL_DISABLED")))):
+            ('get_config_var("Ty_GIL_DISABLED")',
+             str(sysconfig.get_config_var("Ty_GIL_DISABLED")))):
             with self.subTest(call):
                 cmd[2] = 'import sysconfig; print(sysconfig.%s)' % call
                 out, err = check_output(cmd, encoding='utf-8')
@@ -691,7 +691,7 @@ class BasicTest(BaseTest):
         libdir = os.path.join(non_installed_dir, platlibdir, self.lib[1])
         os.makedirs(libdir)
         landmark = os.path.join(libdir, "os.py")
-        abi_thread = "t" if sysconfig.get_config_var("Py_GIL_DISABLED") else ""
+        abi_thread = "t" if sysconfig.get_config_var("Ty_GIL_DISABLED") else ""
         stdlib_zip = f"python{sys.version_info.major}{sys.version_info.minor}{abi_thread}"
         zip_landmark = os.path.join(non_installed_dir,
                                     platlibdir,

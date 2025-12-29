@@ -1,10 +1,10 @@
 // The _PySemaphore API a simplified cross-platform semaphore used to implement
 // wakeup/sleep.
-#ifndef Py_INTERNAL_SEMAPHORE_H
-#define Py_INTERNAL_SEMAPHORE_H
+#ifndef Ty_INTERNAL_SEMAPHORE_H
+#define Ty_INTERNAL_SEMAPHORE_H
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_pythread.h"      // _POSIX_SEMAPHORES
@@ -24,7 +24,7 @@
 
 #if (defined(_POSIX_SEMAPHORES) && (_POSIX_SEMAPHORES+0) != -1 && \
         defined(HAVE_SEM_TIMEDWAIT))
-#   define _Py_USE_SEMAPHORES
+#   define _Ty_USE_SEMAPHORES
 #   include <semaphore.h>
 #endif
 
@@ -36,7 +36,7 @@ extern "C" {
 typedef struct _PySemaphore {
 #if defined(MS_WINDOWS)
     HANDLE platform_sem;
-#elif defined(_Py_USE_SEMAPHORES)
+#elif defined(_Ty_USE_SEMAPHORES)
     sem_t platform_sem;
 #else
     pthread_mutex_t mutex;
@@ -64,4 +64,4 @@ PyAPI_FUNC(void) _PySemaphore_Destroy(_PySemaphore *sema);
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_SEMAPHORE_H */
+#endif /* !Ty_INTERNAL_SEMAPHORE_H */

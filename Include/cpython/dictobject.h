@@ -1,4 +1,4 @@
-#ifndef Py_CPYTHON_DICTOBJECT_H
+#ifndef Ty_CPYTHON_DICTOBJECT_H
 #  error "this header file must not be included directly"
 #endif
 
@@ -6,13 +6,13 @@ typedef struct _dictkeysobject PyDictKeysObject;
 typedef struct _dictvalues PyDictValues;
 
 /* The ma_values pointer is NULL for a combined table
- * or points to an array of PyObject* for a split table
+ * or points to an array of TyObject* for a split table
  */
 typedef struct {
     PyObject_HEAD
 
     /* Number of items in the dictionary */
-    Py_ssize_t ma_used;
+    Ty_ssize_t ma_used;
 
     /* This is a private field for CPython's internal use.
      * Bits 0-7 are for dict watchers.
@@ -32,12 +32,12 @@ typedef struct {
     PyDictValues *ma_values;
 } PyDictObject;
 
-PyAPI_FUNC(PyObject *) _PyDict_GetItem_KnownHash(PyObject *mp, PyObject *key,
-                                                 Py_hash_t hash);
-// PyDict_GetItemStringRef() can be used instead
-Py_DEPRECATED(3.14) PyAPI_FUNC(PyObject *) _PyDict_GetItemStringWithError(PyObject *, const char *);
-PyAPI_FUNC(PyObject *) PyDict_SetDefault(
-    PyObject *mp, PyObject *key, PyObject *defaultobj);
+PyAPI_FUNC(TyObject *) _TyDict_GetItem_KnownHash(TyObject *mp, TyObject *key,
+                                                 Ty_hash_t hash);
+// TyDict_GetItemStringRef() can be used instead
+Ty_DEPRECATED(3.14) PyAPI_FUNC(TyObject *) _TyDict_GetItemStringWithError(TyObject *, const char *);
+PyAPI_FUNC(TyObject *) TyDict_SetDefault(
+    TyObject *mp, TyObject *key, TyObject *defaultobj);
 
 // Inserts `key` with a value `default_value`, if `key` is not already present
 // in the dictionary.  If `result` is not NULL, then the value associated
@@ -47,33 +47,33 @@ PyAPI_FUNC(PyObject *) PyDict_SetDefault(
 //   -1 on error
 //    0 if `key` was not present and `default_value` was inserted
 //    1 if `key` was present and `default_value` was not inserted
-PyAPI_FUNC(int) PyDict_SetDefaultRef(PyObject *mp, PyObject *key, PyObject *default_value, PyObject **result);
+PyAPI_FUNC(int) TyDict_SetDefaultRef(TyObject *mp, TyObject *key, TyObject *default_value, TyObject **result);
 
 /* Get the number of items of a dictionary. */
-static inline Py_ssize_t PyDict_GET_SIZE(PyObject *op) {
+static inline Ty_ssize_t TyDict_GET_SIZE(TyObject *op) {
     PyDictObject *mp;
-    assert(PyDict_Check(op));
-    mp = _Py_CAST(PyDictObject*, op);
-#ifdef Py_GIL_DISABLED
-    return _Py_atomic_load_ssize_relaxed(&mp->ma_used);
+    assert(TyDict_Check(op));
+    mp = _Ty_CAST(PyDictObject*, op);
+#ifdef Ty_GIL_DISABLED
+    return _Ty_atomic_load_ssize_relaxed(&mp->ma_used);
 #else
     return mp->ma_used;
 #endif
 }
-#define PyDict_GET_SIZE(op) PyDict_GET_SIZE(_PyObject_CAST(op))
+#define TyDict_GET_SIZE(op) TyDict_GET_SIZE(_TyObject_CAST(op))
 
-PyAPI_FUNC(int) PyDict_ContainsString(PyObject *mp, const char *key);
+PyAPI_FUNC(int) TyDict_ContainsString(TyObject *mp, const char *key);
 
-PyAPI_FUNC(PyObject *) _PyDict_NewPresized(Py_ssize_t minused);
+PyAPI_FUNC(TyObject *) _TyDict_NewPresized(Ty_ssize_t minused);
 
-PyAPI_FUNC(int) PyDict_Pop(PyObject *dict, PyObject *key, PyObject **result);
-PyAPI_FUNC(int) PyDict_PopString(PyObject *dict, const char *key, PyObject **result);
+PyAPI_FUNC(int) TyDict_Pop(TyObject *dict, TyObject *key, TyObject **result);
+PyAPI_FUNC(int) TyDict_PopString(TyObject *dict, const char *key, TyObject **result);
 
-// Use PyDict_Pop() instead
-Py_DEPRECATED(3.14) PyAPI_FUNC(PyObject *) _PyDict_Pop(
-    PyObject *dict,
-    PyObject *key,
-    PyObject *default_value);
+// Use TyDict_Pop() instead
+Ty_DEPRECATED(3.14) PyAPI_FUNC(TyObject *) _TyDict_Pop(
+    TyObject *dict,
+    TyObject *key,
+    TyObject *default_value);
 
 /* Dictionary watchers */
 
@@ -86,20 +86,20 @@ Py_DEPRECATED(3.14) PyAPI_FUNC(PyObject *) _PyDict_Pop(
     V(DEALLOCATED)
 
 typedef enum {
-    #define PY_DEF_EVENT(EVENT) PyDict_EVENT_##EVENT,
+    #define PY_DEF_EVENT(EVENT) TyDict_EVENT_##EVENT,
     PY_FOREACH_DICT_EVENT(PY_DEF_EVENT)
     #undef PY_DEF_EVENT
-} PyDict_WatchEvent;
+} TyDict_WatchEvent;
 
 // Callback to be invoked when a watched dict is cleared, dealloced, or modified.
 // In clear/dealloc case, key and new_value will be NULL. Otherwise, new_value will be the
 // new value for key, NULL if key is being deleted.
-typedef int(*PyDict_WatchCallback)(PyDict_WatchEvent event, PyObject* dict, PyObject* key, PyObject* new_value);
+typedef int(*TyDict_WatchCallback)(TyDict_WatchEvent event, TyObject* dict, TyObject* key, TyObject* new_value);
 
 // Register/unregister a dict-watcher callback
-PyAPI_FUNC(int) PyDict_AddWatcher(PyDict_WatchCallback callback);
-PyAPI_FUNC(int) PyDict_ClearWatcher(int watcher_id);
+PyAPI_FUNC(int) TyDict_AddWatcher(TyDict_WatchCallback callback);
+PyAPI_FUNC(int) TyDict_ClearWatcher(int watcher_id);
 
 // Mark given dictionary as "watched" (callback will be called if it is modified)
-PyAPI_FUNC(int) PyDict_Watch(int watcher_id, PyObject* dict);
-PyAPI_FUNC(int) PyDict_Unwatch(int watcher_id, PyObject* dict);
+PyAPI_FUNC(int) TyDict_Watch(int watcher_id, TyObject* dict);
+PyAPI_FUNC(int) TyDict_Unwatch(int watcher_id, TyObject* dict);

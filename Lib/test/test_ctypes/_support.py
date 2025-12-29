@@ -18,8 +18,8 @@ PyCSimpleType = type(_SimpleCData)
 PyCFuncPtrType = type(CFuncPtr)
 
 # type flags
-Py_TPFLAGS_DISALLOW_INSTANTIATION = 1 << 7
-Py_TPFLAGS_IMMUTABLETYPE = 1 << 8
+Ty_TPFLAGS_DISALLOW_INSTANTIATION = 1 << 7
+Ty_TPFLAGS_IMMUTABLETYPE = 1 << 8
 
 
 def is_underaligned(ctype):

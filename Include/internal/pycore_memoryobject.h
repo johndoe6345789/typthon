@@ -1,20 +1,20 @@
-#ifndef Py_INTERNAL_MEMORYOBJECT_H
-#define Py_INTERNAL_MEMORYOBJECT_H
+#ifndef Ty_INTERNAL_MEMORYOBJECT_H
+#define Ty_INTERNAL_MEMORYOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-extern PyTypeObject _PyManagedBuffer_Type;
+extern TyTypeObject _PyManagedBuffer_Type;
 
-PyObject *
-_PyMemoryView_FromBufferProc(PyObject *v, int flags,
+TyObject *
+_PyMemoryView_FromBufferProc(TyObject *v, int flags,
                              getbufferproc bufferproc);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_MEMORYOBJECT_H */
+#endif /* !Ty_INTERNAL_MEMORYOBJECT_H */

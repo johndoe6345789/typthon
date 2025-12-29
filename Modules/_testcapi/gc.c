@@ -1,166 +1,166 @@
 #include "parts.h"
 
-static PyObject*
-test_gc_control(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject*
+test_gc_control(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    int orig_enabled = PyGC_IsEnabled();
+    int orig_enabled = TyGC_IsEnabled();
     const char* msg = "ok";
     int old_state;
 
-    old_state = PyGC_Enable();
+    old_state = TyGC_Enable();
     msg = "Enable(1)";
     if (old_state != orig_enabled) {
         goto failed;
     }
     msg = "IsEnabled(1)";
-    if (!PyGC_IsEnabled()) {
+    if (!TyGC_IsEnabled()) {
         goto failed;
     }
 
-    old_state = PyGC_Disable();
+    old_state = TyGC_Disable();
     msg = "disable(2)";
     if (!old_state) {
         goto failed;
     }
     msg = "IsEnabled(2)";
-    if (PyGC_IsEnabled()) {
+    if (TyGC_IsEnabled()) {
         goto failed;
     }
 
-    old_state = PyGC_Enable();
+    old_state = TyGC_Enable();
     msg = "enable(3)";
     if (old_state) {
         goto failed;
     }
     msg = "IsEnabled(3)";
-    if (!PyGC_IsEnabled()) {
+    if (!TyGC_IsEnabled()) {
         goto failed;
     }
 
     if (!orig_enabled) {
-        old_state = PyGC_Disable();
+        old_state = TyGC_Disable();
         msg = "disable(4)";
         if (old_state) {
             goto failed;
         }
         msg = "IsEnabled(4)";
-        if (PyGC_IsEnabled()) {
+        if (TyGC_IsEnabled()) {
             goto failed;
         }
     }
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 
 failed:
     /* Try to clean up if we can. */
     if (orig_enabled) {
-        PyGC_Enable();
+        TyGC_Enable();
     } else {
-        PyGC_Disable();
+        TyGC_Disable();
     }
-    PyErr_Format(PyExc_ValueError, "GC control failed in %s", msg);
+    TyErr_Format(TyExc_ValueError, "GC control failed in %s", msg);
     return NULL;
 }
 
-static PyObject *
-without_gc(PyObject *Py_UNUSED(self), PyObject *obj)
+static TyObject *
+without_gc(TyObject *Ty_UNUSED(self), TyObject *obj)
 {
-    PyTypeObject *tp = (PyTypeObject*)obj;
-    if (!PyType_Check(obj) || !PyType_HasFeature(tp, Py_TPFLAGS_HEAPTYPE)) {
-        return PyErr_Format(PyExc_TypeError, "heap type expected, got %R", obj);
+    TyTypeObject *tp = (TyTypeObject*)obj;
+    if (!TyType_Check(obj) || !TyType_HasFeature(tp, Ty_TPFLAGS_HEAPTYPE)) {
+        return TyErr_Format(TyExc_TypeError, "heap type expected, got %R", obj);
     }
-    if (PyType_IS_GC(tp)) {
+    if (TyType_IS_GC(tp)) {
         // Don't try this at home, kids:
-        tp->tp_flags -= Py_TPFLAGS_HAVE_GC;
+        tp->tp_flags -= Ty_TPFLAGS_HAVE_GC;
         tp->tp_free = PyObject_Free;
         tp->tp_traverse = NULL;
         tp->tp_clear = NULL;
     }
-    assert(!PyType_IS_GC(tp));
-    return Py_NewRef(obj);
+    assert(!TyType_IS_GC(tp));
+    return Ty_NewRef(obj);
 }
 
 static void
-slot_tp_del(PyObject *self)
+slot_tp_del(TyObject *self)
 {
-    PyObject *del, *res;
+    TyObject *del, *res;
 
     /* Temporarily resurrect the object. */
-    assert(Py_REFCNT(self) == 0);
-    Py_SET_REFCNT(self, 1);
+    assert(Ty_REFCNT(self) == 0);
+    Ty_SET_REFCNT(self, 1);
 
     /* Save the current exception, if any. */
-    PyObject *exc = PyErr_GetRaisedException();
+    TyObject *exc = TyErr_GetRaisedException();
 
-    PyObject *tp_del = PyUnicode_InternFromString("__tp_del__");
+    TyObject *tp_del = TyUnicode_InternFromString("__tp_del__");
     if (tp_del == NULL) {
-        PyErr_FormatUnraisable("Exception ignored while deallocating");
-        PyErr_SetRaisedException(exc);
+        TyErr_FormatUnraisable("Exception ignored while deallocating");
+        TyErr_SetRaisedException(exc);
         return;
     }
     /* Execute __del__ method, if any. */
-    del = _PyType_LookupRef(Py_TYPE(self), tp_del);
-    Py_DECREF(tp_del);
+    del = _TyType_LookupRef(Ty_TYPE(self), tp_del);
+    Ty_DECREF(tp_del);
     if (del != NULL) {
         res = PyObject_CallOneArg(del, self);
-        Py_DECREF(del);
+        Ty_DECREF(del);
         if (res == NULL) {
-            PyErr_FormatUnraisable("Exception ignored while calling "
+            TyErr_FormatUnraisable("Exception ignored while calling "
                                    "deallocator %R", del);
         }
         else {
-            Py_DECREF(res);
+            Ty_DECREF(res);
         }
     }
 
     /* Restore the saved exception. */
-    PyErr_SetRaisedException(exc);
+    TyErr_SetRaisedException(exc);
 
     /* Undo the temporary resurrection; can't use DECREF here, it would
      * cause a recursive call.
      */
-    assert(Py_REFCNT(self) > 0);
-    Py_SET_REFCNT(self, Py_REFCNT(self) - 1);
-    if (Py_REFCNT(self) == 0) {
+    assert(Ty_REFCNT(self) > 0);
+    Ty_SET_REFCNT(self, Ty_REFCNT(self) - 1);
+    if (Ty_REFCNT(self) == 0) {
         /* this is the normal path out */
         return;
     }
 
-    /* __del__ resurrected it!  Make it look like the original Py_DECREF
+    /* __del__ resurrected it!  Make it look like the original Ty_DECREF
      * never happened.
      */
     {
-        _Py_ResurrectReference(self);
+        _Ty_ResurrectReference(self);
     }
-    assert(!PyType_IS_GC(Py_TYPE(self)) || PyObject_GC_IsTracked(self));
+    assert(!TyType_IS_GC(Ty_TYPE(self)) || PyObject_GC_IsTracked(self));
 }
 
-static PyObject *
-with_tp_del(PyObject *self, PyObject *args)
+static TyObject *
+with_tp_del(TyObject *self, TyObject *args)
 {
-    PyObject *obj;
-    PyTypeObject *tp;
+    TyObject *obj;
+    TyTypeObject *tp;
 
-    if (!PyArg_ParseTuple(args, "O:with_tp_del", &obj))
+    if (!TyArg_ParseTuple(args, "O:with_tp_del", &obj))
         return NULL;
-    tp = (PyTypeObject *) obj;
-    if (!PyType_Check(obj) || !PyType_HasFeature(tp, Py_TPFLAGS_HEAPTYPE)) {
-        PyErr_Format(PyExc_TypeError,
+    tp = (TyTypeObject *) obj;
+    if (!TyType_Check(obj) || !TyType_HasFeature(tp, Ty_TPFLAGS_HEAPTYPE)) {
+        TyErr_Format(TyExc_TypeError,
                      "heap type expected, got %R", obj);
         return NULL;
     }
     tp->tp_del = slot_tp_del;
-    return Py_NewRef(obj);
+    return Ty_NewRef(obj);
 }
 
 
 struct gc_visit_state_basic {
-    PyObject *target;
+    TyObject *target;
     int found;
 };
 
 static int
-gc_visit_callback_basic(PyObject *obj, void *arg)
+gc_visit_callback_basic(TyObject *obj, void *arg)
 {
     struct gc_visit_state_basic *state = (struct gc_visit_state_basic *)arg;
     if (obj == state->target) {
@@ -170,14 +170,14 @@ gc_visit_callback_basic(PyObject *obj, void *arg)
     return 1;
 }
 
-static PyObject *
-test_gc_visit_objects_basic(PyObject *Py_UNUSED(self),
-                            PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_gc_visit_objects_basic(TyObject *Ty_UNUSED(self),
+                            TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *obj;
+    TyObject *obj;
     struct gc_visit_state_basic state;
 
-    obj = PyList_New(0);
+    obj = TyList_New(0);
     if (obj == NULL) {
         return NULL;
     }
@@ -185,18 +185,18 @@ test_gc_visit_objects_basic(PyObject *Py_UNUSED(self),
     state.found = 0;
 
     PyUnstable_GC_VisitObjects(gc_visit_callback_basic, &state);
-    Py_DECREF(obj);
+    Ty_DECREF(obj);
     if (!state.found) {
-        PyErr_SetString(
-             PyExc_AssertionError,
+        TyErr_SetString(
+             TyExc_AssertionError,
              "test_gc_visit_objects_basic: Didn't find live list");
          return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 static int
-gc_visit_callback_exit_early(PyObject *obj, void *arg)
+gc_visit_callback_exit_early(TyObject *obj, void *arg)
  {
     int *visited_i = (int *)arg;
     (*visited_i)++;
@@ -206,114 +206,114 @@ gc_visit_callback_exit_early(PyObject *obj, void *arg)
     return 1;
 }
 
-static PyObject *
-test_gc_visit_objects_exit_early(PyObject *Py_UNUSED(self),
-                                 PyObject *Py_UNUSED(ignored))
+static TyObject *
+test_gc_visit_objects_exit_early(TyObject *Ty_UNUSED(self),
+                                 TyObject *Ty_UNUSED(ignored))
 {
     int visited_i = 0;
     PyUnstable_GC_VisitObjects(gc_visit_callback_exit_early, &visited_i);
     if (visited_i != 2) {
-        PyErr_SetString(
-            PyExc_AssertionError,
+        TyErr_SetString(
+            TyExc_AssertionError,
             "test_gc_visit_objects_exit_early: did not exit when expected");
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 typedef struct {
     PyObject_HEAD
 } ObjExtraData;
 
-static PyObject *
-obj_extra_data_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+static TyObject *
+obj_extra_data_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
 {
-    size_t extra_size = sizeof(PyObject *);
-    PyObject *obj = PyUnstable_Object_GC_NewWithExtraData(type, extra_size);
+    size_t extra_size = sizeof(TyObject *);
+    TyObject *obj = PyUnstable_Object_GC_NewWithExtraData(type, extra_size);
     if (obj == NULL) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     PyObject_GC_Track(obj);
     return obj;
 }
 
-static PyObject **
-obj_extra_data_get_extra_storage(PyObject *self)
+static TyObject **
+obj_extra_data_get_extra_storage(TyObject *self)
 {
-    return (PyObject **)((char *)self + Py_TYPE(self)->tp_basicsize);
+    return (TyObject **)((char *)self + Ty_TYPE(self)->tp_basicsize);
 }
 
-static PyObject *
-obj_extra_data_get(PyObject *self, void *Py_UNUSED(ignored))
+static TyObject *
+obj_extra_data_get(TyObject *self, void *Ty_UNUSED(ignored))
 {
-    PyObject **extra_storage = obj_extra_data_get_extra_storage(self);
-    PyObject *value = *extra_storage;
+    TyObject **extra_storage = obj_extra_data_get_extra_storage(self);
+    TyObject *value = *extra_storage;
     if (!value) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
-    return Py_NewRef(value);
+    return Ty_NewRef(value);
 }
 
 static int
-obj_extra_data_set(PyObject *self, PyObject *newval, void *Py_UNUSED(ignored))
+obj_extra_data_set(TyObject *self, TyObject *newval, void *Ty_UNUSED(ignored))
 {
-    PyObject **extra_storage = obj_extra_data_get_extra_storage(self);
-    Py_CLEAR(*extra_storage);
+    TyObject **extra_storage = obj_extra_data_get_extra_storage(self);
+    Ty_CLEAR(*extra_storage);
     if (newval) {
-        *extra_storage = Py_NewRef(newval);
+        *extra_storage = Ty_NewRef(newval);
     }
     return 0;
 }
 
-static PyGetSetDef obj_extra_data_getset[] = {
+static TyGetSetDef obj_extra_data_getset[] = {
     {"extra", obj_extra_data_get, obj_extra_data_set, NULL},
     {NULL}
 };
 
 static int
-obj_extra_data_traverse(PyObject *self, visitproc visit, void *arg)
+obj_extra_data_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    PyObject **extra_storage = obj_extra_data_get_extra_storage(self);
-    PyObject *value = *extra_storage;
-    Py_VISIT(value);
+    TyObject **extra_storage = obj_extra_data_get_extra_storage(self);
+    TyObject *value = *extra_storage;
+    Ty_VISIT(value);
     return 0;
 }
 
 static int
-obj_extra_data_clear(PyObject *self)
+obj_extra_data_clear(TyObject *self)
 {
-    PyObject **extra_storage = obj_extra_data_get_extra_storage(self);
-    Py_CLEAR(*extra_storage);
+    TyObject **extra_storage = obj_extra_data_get_extra_storage(self);
+    Ty_CLEAR(*extra_storage);
     return 0;
 }
 
 static void
-obj_extra_data_dealloc(PyObject *self)
+obj_extra_data_dealloc(TyObject *self)
 {
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     PyObject_GC_UnTrack(self);
     obj_extra_data_clear(self);
     tp->tp_free(self);
-    Py_DECREF(tp);
+    Ty_DECREF(tp);
 }
 
-static PyType_Slot ObjExtraData_Slots[] = {
-    {Py_tp_getset, obj_extra_data_getset},
-    {Py_tp_dealloc, obj_extra_data_dealloc},
-    {Py_tp_traverse, obj_extra_data_traverse},
-    {Py_tp_clear, obj_extra_data_clear},
-    {Py_tp_new, obj_extra_data_new},
-    {Py_tp_free, PyObject_GC_Del},
+static TyType_Slot ObjExtraData_Slots[] = {
+    {Ty_tp_getset, obj_extra_data_getset},
+    {Ty_tp_dealloc, obj_extra_data_dealloc},
+    {Ty_tp_traverse, obj_extra_data_traverse},
+    {Ty_tp_clear, obj_extra_data_clear},
+    {Ty_tp_new, obj_extra_data_new},
+    {Ty_tp_free, PyObject_GC_Del},
     {0, NULL},
 };
 
-static PyType_Spec ObjExtraData_TypeSpec = {
+static TyType_Spec ObjExtraData_TypeSpec = {
     .name = "_testcapi.ObjExtraData",
     .basicsize = sizeof(ObjExtraData),
-    .flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
+    .flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     .slots = ObjExtraData_Slots,
 };
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"test_gc_control", test_gc_control, METH_NOARGS},
     {"test_gc_visit_objects_basic", test_gc_visit_objects_basic, METH_NOARGS, NULL},
     {"test_gc_visit_objects_exit_early", test_gc_visit_objects_exit_early, METH_NOARGS, NULL},
@@ -322,22 +322,22 @@ static PyMethodDef test_methods[] = {
     {NULL}
 };
 
-int _PyTestCapi_Init_GC(PyObject *mod)
+int _PyTestCapi_Init_GC(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 
-    PyObject *ObjExtraData_Type = PyType_FromModuleAndSpec(
+    TyObject *ObjExtraData_Type = TyType_FromModuleAndSpec(
         mod, &ObjExtraData_TypeSpec, NULL);
     if (ObjExtraData_Type == 0) {
         return -1;
     }
-    int ret = PyModule_AddType(mod, (PyTypeObject*)ObjExtraData_Type);
-    Py_DECREF(ObjExtraData_Type);
+    int ret = TyModule_AddType(mod, (TyTypeObject*)ObjExtraData_Type);
+    Ty_DECREF(ObjExtraData_Type);
     if (ret < 0) {
         return ret;
     }

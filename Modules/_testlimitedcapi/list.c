@@ -1,152 +1,152 @@
-// Need limited C API version 3.13 for PyList_GetItemRef()
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#if !defined(Py_GIL_DISABLED) && !defined(Py_LIMITED_API)
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for TyList_GetItemRef()
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#if !defined(Ty_GIL_DISABLED) && !defined(Ty_LIMITED_API)
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "parts.h"
 #include "util.h"
 
-static PyObject *
-list_check(PyObject* Py_UNUSED(module), PyObject *obj)
+static TyObject *
+list_check(TyObject* Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyList_Check(obj));
+    return TyLong_FromLong(TyList_Check(obj));
 }
 
-static PyObject *
-list_check_exact(PyObject* Py_UNUSED(module), PyObject *obj)
+static TyObject *
+list_check_exact(TyObject* Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyList_CheckExact(obj));
+    return TyLong_FromLong(TyList_CheckExact(obj));
 }
 
-static PyObject *
-list_new(PyObject* Py_UNUSED(module), PyObject *obj)
+static TyObject *
+list_new(TyObject* Ty_UNUSED(module), TyObject *obj)
 {
-    return PyList_New(PyLong_AsSsize_t(obj));
+    return TyList_New(TyLong_AsSsize_t(obj));
 }
 
-static PyObject *
-list_size(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+list_size(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_SIZE(PyList_Size(obj));
+    RETURN_SIZE(TyList_Size(obj));
 }
 
-static PyObject *
-list_getitem(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+list_getitem(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "On", &obj, &i)) {
+    TyObject *obj;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "On", &obj, &i)) {
         return NULL;
     }
     NULLABLE(obj);
-    return Py_XNewRef(PyList_GetItem(obj, i));
+    return Ty_XNewRef(TyList_GetItem(obj, i));
 }
 
-static PyObject *
-list_get_item_ref(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+list_get_item_ref(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "On", &obj, &i)) {
+    TyObject *obj;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "On", &obj, &i)) {
         return NULL;
     }
     NULLABLE(obj);
-    return PyList_GetItemRef(obj, i);
+    return TyList_GetItemRef(obj, i);
 }
 
-static PyObject *
-list_setitem(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+list_setitem(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj, *value;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "OnO", &obj, &i, &value)) {
-        return NULL;
-    }
-    NULLABLE(obj);
-    NULLABLE(value);
-    RETURN_INT(PyList_SetItem(obj, i, Py_XNewRef(value)));
-
-}
-
-static PyObject *
-list_insert(PyObject *Py_UNUSED(module), PyObject *args)
-{
-    PyObject *obj, *value;
-    Py_ssize_t where;
-    if (!PyArg_ParseTuple(args, "OnO", &obj, &where, &value)) {
+    TyObject *obj, *value;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "OnO", &obj, &i, &value)) {
         return NULL;
     }
     NULLABLE(obj);
     NULLABLE(value);
-    RETURN_INT(PyList_Insert(obj, where, Py_XNewRef(value)));
+    RETURN_INT(TyList_SetItem(obj, i, Ty_XNewRef(value)));
 
 }
 
-static PyObject *
-list_append(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+list_insert(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj, *value;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &value)) {
+    TyObject *obj, *value;
+    Ty_ssize_t where;
+    if (!TyArg_ParseTuple(args, "OnO", &obj, &where, &value)) {
         return NULL;
     }
     NULLABLE(obj);
     NULLABLE(value);
-    RETURN_INT(PyList_Append(obj, value));
-}
-
-static PyObject *
-list_getslice(PyObject *Py_UNUSED(module), PyObject *args)
-{
-    PyObject *obj;
-    Py_ssize_t ilow, ihigh;
-    if (!PyArg_ParseTuple(args, "Onn", &obj, &ilow, &ihigh)) {
-        return NULL;
-    }
-    NULLABLE(obj);
-    return PyList_GetSlice(obj, ilow, ihigh);
+    RETURN_INT(TyList_Insert(obj, where, Ty_XNewRef(value)));
 
 }
 
-static PyObject *
-list_setslice(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+list_append(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj, *value;
-    Py_ssize_t ilow, ihigh;
-    if (!PyArg_ParseTuple(args, "OnnO", &obj, &ilow, &ihigh, &value)) {
+    TyObject *obj, *value;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &value)) {
         return NULL;
     }
     NULLABLE(obj);
     NULLABLE(value);
-    RETURN_INT(PyList_SetSlice(obj, ilow, ihigh, value));
+    RETURN_INT(TyList_Append(obj, value));
 }
 
-static PyObject *
-list_sort(PyObject* Py_UNUSED(module), PyObject *obj)
+static TyObject *
+list_getslice(TyObject *Ty_UNUSED(module), TyObject *args)
+{
+    TyObject *obj;
+    Ty_ssize_t ilow, ihigh;
+    if (!TyArg_ParseTuple(args, "Onn", &obj, &ilow, &ihigh)) {
+        return NULL;
+    }
+    NULLABLE(obj);
+    return TyList_GetSlice(obj, ilow, ihigh);
+
+}
+
+static TyObject *
+list_setslice(TyObject *Ty_UNUSED(module), TyObject *args)
+{
+    TyObject *obj, *value;
+    Ty_ssize_t ilow, ihigh;
+    if (!TyArg_ParseTuple(args, "OnnO", &obj, &ilow, &ihigh, &value)) {
+        return NULL;
+    }
+    NULLABLE(obj);
+    NULLABLE(value);
+    RETURN_INT(TyList_SetSlice(obj, ilow, ihigh, value));
+}
+
+static TyObject *
+list_sort(TyObject* Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_INT(PyList_Sort(obj));
+    RETURN_INT(TyList_Sort(obj));
 }
 
-static PyObject *
-list_reverse(PyObject* Py_UNUSED(module), PyObject *obj)
+static TyObject *
+list_reverse(TyObject* Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_INT(PyList_Reverse(obj));
+    RETURN_INT(TyList_Reverse(obj));
 }
 
-static PyObject *
-list_astuple(PyObject* Py_UNUSED(module), PyObject *obj)
+static TyObject *
+list_astuple(TyObject* Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyList_AsTuple(obj);
+    return TyList_AsTuple(obj);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"list_check", list_check, METH_O},
     {"list_check_exact", list_check_exact, METH_O},
     {"list_new", list_new, METH_O},
@@ -165,9 +165,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_List(PyObject *m)
+_PyTestLimitedCAPI_Init_List(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

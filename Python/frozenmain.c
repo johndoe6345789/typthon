@@ -1,7 +1,7 @@
 /* Python interpreter main program for frozen scripts */
 
 #include "Python.h"
-#include "pycore_pystate.h"       // _Py_GetConfig()
+#include "pycore_pystate.h"       // _Ty_GetConfig()
 #include "pycore_runtime.h"       // _PyRuntime_Initialize()
 
 #ifdef HAVE_UNISTD_H
@@ -18,29 +18,29 @@ extern int PyInitFrozenExtensions(void);
 /* Main program */
 
 int
-Py_FrozenMain(int argc, char **argv)
+Ty_FrozenMain(int argc, char **argv)
 {
     PyStatus status = _PyRuntime_Initialize();
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
     PyConfig config;
-    PyConfig_InitPythonConfig(&config);
+    TyConfig_InitPythonConfig(&config);
     // Suppress errors from getpath.c
     config.pathconfig_warnings = 0;
     // Don't parse command line options like -E
     config.parse_argv = 0;
 
-    status = PyConfig_SetBytesArgv(&config, argc, argv);
-    if (PyStatus_Exception(status)) {
-        PyConfig_Clear(&config);
-        Py_ExitStatusException(status);
+    status = TyConfig_SetBytesArgv(&config, argc, argv);
+    if (TyStatus_Exception(status)) {
+        TyConfig_Clear(&config);
+        Ty_ExitStatusException(status);
     }
 
     const char *p;
     int inspect = 0;
-    if ((p = Py_GETENV("PYTHONINSPECT")) && *p != '\0') {
+    if ((p = Ty_GETENV("PYTHONINSPECT")) && *p != '\0') {
         inspect = 1;
     }
 
@@ -48,15 +48,15 @@ Py_FrozenMain(int argc, char **argv)
     PyInitFrozenExtensions();
 #endif /* MS_WINDOWS */
 
-    status = Py_InitializeFromConfig(&config);
-    PyConfig_Clear(&config);
-    if (PyStatus_Exception(status)) {
-        Py_ExitStatusException(status);
+    status = Ty_InitializeFromConfig(&config);
+    TyConfig_Clear(&config);
+    if (TyStatus_Exception(status)) {
+        Ty_ExitStatusException(status);
     }
 
-    PyInterpreterState *interp = PyInterpreterState_Get();
-    if (_PyInterpreterState_SetRunningMain(interp) < 0) {
-        PyErr_Print();
+    PyInterpreterState *interp = TyInterpreterState_Get();
+    if (_TyInterpreterState_SetRunningMain(interp) < 0) {
+        TyErr_Print();
         exit(1);
     }
 
@@ -64,18 +64,18 @@ Py_FrozenMain(int argc, char **argv)
     PyWinFreeze_ExeInit();
 #endif
 
-    if (_Py_GetConfig()->verbose) {
+    if (_Ty_GetConfig()->verbose) {
         fprintf(stderr, "Typthon %s\n%s\n",
-                Py_GetVersion(), Py_GetCopyright());
+                Ty_GetVersion(), Ty_GetCopyright());
     }
 
     int sts = 1;
-    int n = PyImport_ImportFrozenModule("__main__");
+    int n = TyImport_ImportFrozenModule("__main__");
     if (n == 0) {
-        Py_FatalError("the __main__ module is not frozen");
+        Ty_FatalError("the __main__ module is not frozen");
     }
     if (n < 0) {
-        PyErr_Print();
+        TyErr_Print();
         sts = 1;
     }
     else {
@@ -83,16 +83,16 @@ Py_FrozenMain(int argc, char **argv)
     }
 
     if (inspect && isatty((int)fileno(stdin))) {
-        sts = PyRun_AnyFile(stdin, "<stdin>") != 0;
+        sts = TyRun_AnyFile(stdin, "<stdin>") != 0;
     }
 
 #ifdef MS_WINDOWS
     PyWinFreeze_ExeTerm();
 #endif
 
-    _PyInterpreterState_SetNotRunningMain(interp);
+    _TyInterpreterState_SetNotRunningMain(interp);
 
-    if (Py_FinalizeEx() < 0) {
+    if (Ty_FinalizeEx() < 0) {
         sts = 120;
     }
     return sts;

@@ -2,15 +2,15 @@
 #define TEST_PATTERN 2926941915
         // Append VALUE to the result.
         #define APPEND(ITEM) {                          \
-            PyObject *item = ITEM;                      \
+            TyObject *item = ITEM;                      \
             if (!item) {                                \
-                Py_DECREF(result);                      \
+                Ty_DECREF(result);                      \
                 return NULL;                            \
             }                                           \
-            int rv = PyList_Append(result, item);       \
-            Py_DECREF(item);                            \
+            int rv = TyList_Append(result, item);       \
+            Ty_DECREF(item);                            \
             if (rv < 0) {                               \
-                Py_DECREF(result);                      \
+                Ty_DECREF(result);                      \
                 return NULL;                            \
             }                                           \
         }
@@ -20,7 +20,7 @@
         #define SET_AND_APPEND(TYPE, TARGET, VAL) {     \
             TYPE v = VAL;                               \
             TARGET = v;                                 \
-            APPEND(PyBytes_FromStringAndSize(           \
+            APPEND(TyBytes_FromStringAndSize(           \
                 (char*)&value, sizeof(value)));         \
         }
 
@@ -39,61 +39,61 @@
         #define GCC_ATTR(X) /* */
         #endif
 
-        static PyObject *
-        get_generated_test_data(PyObject *self, PyObject *name)
+        static TyObject *
+        get_generated_test_data(TyObject *self, TyObject *name)
         {
-            if (!PyUnicode_Check(name)) {
-                PyErr_SetString(PyExc_TypeError, "need a string");
+            if (!TyUnicode_Check(name)) {
+                TyErr_SetString(TyExc_TypeError, "need a string");
                 return NULL;
             }
-            PyObject *result = PyList_New(0);
+            TyObject *result = TyList_New(0);
             if (!result) {
                 return NULL;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "SingleInt") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "SingleInt") == 0) {
 
                 struct SingleInt {
                     int a;
                 };
                 struct SingleInt value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("SingleInt"));
-                APPEND(PyLong_FromLong(sizeof(struct SingleInt)));
-                APPEND(PyLong_FromLong(_Alignof(struct SingleInt)));
+                APPEND(TyUnicode_FromString("SingleInt"));
+                APPEND(TyLong_FromLong(sizeof(struct SingleInt)));
+                APPEND(TyLong_FromLong(_Alignof(struct SingleInt)));
                 TEST_FIELD(int, value.a);
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "SingleInt_Union") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "SingleInt_Union") == 0) {
 
                 union SingleInt_Union {
                     int a;
                 };
                 union SingleInt_Union value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("SingleInt_Union"));
-                APPEND(PyLong_FromLong(sizeof(union SingleInt_Union)));
-                APPEND(PyLong_FromLong(_Alignof(union SingleInt_Union)));
+                APPEND(TyUnicode_FromString("SingleInt_Union"));
+                APPEND(TyLong_FromLong(sizeof(union SingleInt_Union)));
+                APPEND(TyLong_FromLong(_Alignof(union SingleInt_Union)));
                 TEST_FIELD(int, value.a);
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "SingleU32") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "SingleU32") == 0) {
 
                 struct SingleU32 {
                     uint32_t a;
                 };
                 struct SingleU32 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("SingleU32"));
-                APPEND(PyLong_FromLong(sizeof(struct SingleU32)));
-                APPEND(PyLong_FromLong(_Alignof(struct SingleU32)));
+                APPEND(TyUnicode_FromString("SingleU32"));
+                APPEND(TyLong_FromLong(sizeof(struct SingleU32)));
+                APPEND(TyLong_FromLong(_Alignof(struct SingleU32)));
                 TEST_FIELD(uint32_t, value.a);
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "SimpleStruct") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "SimpleStruct") == 0) {
 
                 struct SimpleStruct {
                     int32_t x;
@@ -102,16 +102,16 @@
                 };
                 struct SimpleStruct value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("SimpleStruct"));
-                APPEND(PyLong_FromLong(sizeof(struct SimpleStruct)));
-                APPEND(PyLong_FromLong(_Alignof(struct SimpleStruct)));
+                APPEND(TyUnicode_FromString("SimpleStruct"));
+                APPEND(TyLong_FromLong(sizeof(struct SimpleStruct)));
+                APPEND(TyLong_FromLong(_Alignof(struct SimpleStruct)));
                 TEST_FIELD(int32_t, value.x);
                 TEST_FIELD(int8_t, value.y);
                 TEST_FIELD(uint16_t, value.z);
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "SimpleUnion") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "SimpleUnion") == 0) {
 
                 union SimpleUnion {
                     int32_t x;
@@ -120,16 +120,16 @@
                 };
                 union SimpleUnion value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("SimpleUnion"));
-                APPEND(PyLong_FromLong(sizeof(union SimpleUnion)));
-                APPEND(PyLong_FromLong(_Alignof(union SimpleUnion)));
+                APPEND(TyUnicode_FromString("SimpleUnion"));
+                APPEND(TyLong_FromLong(sizeof(union SimpleUnion)));
+                APPEND(TyLong_FromLong(_Alignof(union SimpleUnion)));
                 TEST_FIELD(int32_t, value.x);
                 TEST_FIELD(int8_t, value.y);
                 TEST_FIELD(uint16_t, value.z);
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "ManyTypes") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "ManyTypes") == 0) {
 
                 struct ManyTypes {
                     int8_t i8;
@@ -143,9 +143,9 @@
                 };
                 struct ManyTypes value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("ManyTypes"));
-                APPEND(PyLong_FromLong(sizeof(struct ManyTypes)));
-                APPEND(PyLong_FromLong(_Alignof(struct ManyTypes)));
+                APPEND(TyUnicode_FromString("ManyTypes"));
+                APPEND(TyLong_FromLong(sizeof(struct ManyTypes)));
+                APPEND(TyLong_FromLong(_Alignof(struct ManyTypes)));
                 TEST_FIELD(int8_t, value.i8);
                 TEST_FIELD(uint8_t, value.u8);
                 TEST_FIELD(int16_t, value.i16);
@@ -157,7 +157,7 @@
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "ManyTypesU") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "ManyTypesU") == 0) {
 
                 union ManyTypesU {
                     int8_t i8;
@@ -171,9 +171,9 @@
                 };
                 union ManyTypesU value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("ManyTypesU"));
-                APPEND(PyLong_FromLong(sizeof(union ManyTypesU)));
-                APPEND(PyLong_FromLong(_Alignof(union ManyTypesU)));
+                APPEND(TyUnicode_FromString("ManyTypesU"));
+                APPEND(TyLong_FromLong(sizeof(union ManyTypesU)));
+                APPEND(TyLong_FromLong(_Alignof(union ManyTypesU)));
                 TEST_FIELD(int8_t, value.i8);
                 TEST_FIELD(uint8_t, value.u8);
                 TEST_FIELD(int16_t, value.i16);
@@ -185,7 +185,7 @@
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Nested") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Nested") == 0) {
 
                 struct Nested {
                     struct {
@@ -206,9 +206,9 @@
                 };
                 struct Nested value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Nested"));
-                APPEND(PyLong_FromLong(sizeof(struct Nested)));
-                APPEND(PyLong_FromLong(_Alignof(struct Nested)));
+                APPEND(TyUnicode_FromString("Nested"));
+                APPEND(TyLong_FromLong(sizeof(struct Nested)));
+                APPEND(TyLong_FromLong(_Alignof(struct Nested)));
                 TEST_FIELD(int32_t, value.a.x);
                 TEST_FIELD(int8_t, value.a.y);
                 TEST_FIELD(uint16_t, value.a.z);
@@ -221,7 +221,7 @@
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Packed1") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Packed1") == 0) {
 
             #if (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -233,20 +233,20 @@
                 #pragma pack(pop)
                 struct Packed1 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Packed1"));
-                APPEND(PyLong_FromLong(sizeof(struct Packed1)));
-                APPEND(PyLong_FromLong(_Alignof(struct Packed1)));
+                APPEND(TyUnicode_FromString("Packed1"));
+                APPEND(TyLong_FromLong(sizeof(struct Packed1)));
+                APPEND(TyLong_FromLong(_Alignof(struct Packed1)));
                 TEST_FIELD(int8_t, value.a);
                 TEST_FIELD(int64_t, value.b);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Packed2") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Packed2") == 0) {
 
             #if (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -258,20 +258,20 @@
                 #pragma pack(pop)
                 struct Packed2 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Packed2"));
-                APPEND(PyLong_FromLong(sizeof(struct Packed2)));
-                APPEND(PyLong_FromLong(_Alignof(struct Packed2)));
+                APPEND(TyUnicode_FromString("Packed2"));
+                APPEND(TyLong_FromLong(sizeof(struct Packed2)));
+                APPEND(TyLong_FromLong(_Alignof(struct Packed2)));
                 TEST_FIELD(int8_t, value.a);
                 TEST_FIELD(int64_t, value.b);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Packed3") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Packed3") == 0) {
 
             #if (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -283,20 +283,20 @@
                 #pragma pack(pop)
                 struct Packed3 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Packed3"));
-                APPEND(PyLong_FromLong(sizeof(struct Packed3)));
-                APPEND(PyLong_FromLong(_Alignof(struct Packed3)));
+                APPEND(TyUnicode_FromString("Packed3"));
+                APPEND(TyLong_FromLong(sizeof(struct Packed3)));
+                APPEND(TyLong_FromLong(_Alignof(struct Packed3)));
                 TEST_FIELD(int8_t, value.a);
                 TEST_FIELD(int64_t, value.b);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Packed4") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Packed4") == 0) {
 
             #if (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -308,20 +308,20 @@
                 #pragma pack(pop)
                 struct Packed4 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Packed4"));
-                APPEND(PyLong_FromLong(sizeof(struct Packed4)));
-                APPEND(PyLong_FromLong(_Alignof(struct Packed4)));
+                APPEND(TyUnicode_FromString("Packed4"));
+                APPEND(TyLong_FromLong(sizeof(struct Packed4)));
+                APPEND(TyLong_FromLong(_Alignof(struct Packed4)));
                 TEST_FIELD(int8_t, value.a);
                 TEST_FIELD(int64_t, value.b);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "X86_32EdgeCase") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "X86_32EdgeCase") == 0) {
 
                 struct X86_32EdgeCase {
                     int32_t a;
@@ -330,16 +330,16 @@
                 };
                 struct X86_32EdgeCase value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("X86_32EdgeCase"));
-                APPEND(PyLong_FromLong(sizeof(struct X86_32EdgeCase)));
-                APPEND(PyLong_FromLong(_Alignof(struct X86_32EdgeCase)));
+                APPEND(TyUnicode_FromString("X86_32EdgeCase"));
+                APPEND(TyLong_FromLong(sizeof(struct X86_32EdgeCase)));
+                APPEND(TyLong_FromLong(_Alignof(struct X86_32EdgeCase)));
                 TEST_FIELD(int32_t, value.a);
                 TEST_FIELD(int64_t, value.b);
                 TEST_FIELD(int32_t, value.c);
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "MSBitFieldExample") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "MSBitFieldExample") == 0) {
 
                 struct MSBitFieldExample {
                     unsigned int a :4;
@@ -348,16 +348,16 @@
                 };
                 struct MSBitFieldExample value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("MSBitFieldExample"));
-                APPEND(PyLong_FromLong(sizeof(struct MSBitFieldExample)));
-                APPEND(PyLong_FromLong(_Alignof(struct MSBitFieldExample)));
+                APPEND(TyUnicode_FromString("MSBitFieldExample"));
+                APPEND(TyLong_FromLong(sizeof(struct MSBitFieldExample)));
+                APPEND(TyLong_FromLong(_Alignof(struct MSBitFieldExample)));
                 TEST_FIELD(unsigned int, value.a);
                 TEST_FIELD(unsigned int, value.b);
                 TEST_FIELD(unsigned int, value.c);
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "MSStraddlingExample") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "MSStraddlingExample") == 0) {
 
                 struct MSStraddlingExample {
                     unsigned int first :9;
@@ -367,9 +367,9 @@
                 };
                 struct MSStraddlingExample value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("MSStraddlingExample"));
-                APPEND(PyLong_FromLong(sizeof(struct MSStraddlingExample)));
-                APPEND(PyLong_FromLong(_Alignof(struct MSStraddlingExample)));
+                APPEND(TyUnicode_FromString("MSStraddlingExample"));
+                APPEND(TyLong_FromLong(sizeof(struct MSStraddlingExample)));
+                APPEND(TyLong_FromLong(_Alignof(struct MSStraddlingExample)));
                 TEST_FIELD(unsigned int, value.first);
                 TEST_FIELD(unsigned int, value.second);
                 TEST_FIELD(unsigned int, value.may_straddle);
@@ -377,7 +377,7 @@
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "IntBits") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "IntBits") == 0) {
 
                 struct IntBits {
                     int A :1;
@@ -392,9 +392,9 @@
                 };
                 struct IntBits value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("IntBits"));
-                APPEND(PyLong_FromLong(sizeof(struct IntBits)));
-                APPEND(PyLong_FromLong(_Alignof(struct IntBits)));
+                APPEND(TyUnicode_FromString("IntBits"));
+                APPEND(TyLong_FromLong(sizeof(struct IntBits)));
+                APPEND(TyLong_FromLong(_Alignof(struct IntBits)));
                 TEST_FIELD(int, value.A);
                 TEST_FIELD(int, value.B);
                 TEST_FIELD(int, value.C);
@@ -407,7 +407,7 @@
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Bits") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Bits") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -431,9 +431,9 @@
                 };
                 struct Bits value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Bits"));
-                APPEND(PyLong_FromLong(sizeof(struct Bits)));
-                APPEND(PyLong_FromLong(_Alignof(struct Bits)));
+                APPEND(TyUnicode_FromString("Bits"));
+                APPEND(TyLong_FromLong(sizeof(struct Bits)));
+                APPEND(TyLong_FromLong(_Alignof(struct Bits)));
                 TEST_FIELD(int, value.A);
                 TEST_FIELD(int, value.B);
                 TEST_FIELD(int, value.C);
@@ -451,14 +451,14 @@
                 TEST_FIELD(short, value.R);
                 TEST_FIELD(short, value.S);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "IntBits_MSVC") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "IntBits_MSVC") == 0) {
 
             #if (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -475,9 +475,9 @@
                 };
                 struct IntBits_MSVC value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("IntBits_MSVC"));
-                APPEND(PyLong_FromLong(sizeof(struct IntBits_MSVC)));
-                APPEND(PyLong_FromLong(_Alignof(struct IntBits_MSVC)));
+                APPEND(TyUnicode_FromString("IntBits_MSVC"));
+                APPEND(TyLong_FromLong(sizeof(struct IntBits_MSVC)));
+                APPEND(TyLong_FromLong(_Alignof(struct IntBits_MSVC)));
                 TEST_FIELD(int, value.A);
                 TEST_FIELD(int, value.B);
                 TEST_FIELD(int, value.C);
@@ -488,14 +488,14 @@
                 TEST_FIELD(int, value.H);
                 TEST_FIELD(int, value.I);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Bits_MSVC") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Bits_MSVC") == 0) {
 
             #if (!defined(__xlc__)) && (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -519,9 +519,9 @@
                 };
                 struct Bits_MSVC value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Bits_MSVC"));
-                APPEND(PyLong_FromLong(sizeof(struct Bits_MSVC)));
-                APPEND(PyLong_FromLong(_Alignof(struct Bits_MSVC)));
+                APPEND(TyUnicode_FromString("Bits_MSVC"));
+                APPEND(TyLong_FromLong(sizeof(struct Bits_MSVC)));
+                APPEND(TyLong_FromLong(_Alignof(struct Bits_MSVC)));
                 TEST_FIELD(int, value.A);
                 TEST_FIELD(int, value.B);
                 TEST_FIELD(int, value.C);
@@ -539,14 +539,14 @@
                 TEST_FIELD(short, value.R);
                 TEST_FIELD(short, value.S);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "I64Bits") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "I64Bits") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -557,21 +557,21 @@
                 };
                 struct I64Bits value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("I64Bits"));
-                APPEND(PyLong_FromLong(sizeof(struct I64Bits)));
-                APPEND(PyLong_FromLong(_Alignof(struct I64Bits)));
+                APPEND(TyUnicode_FromString("I64Bits"));
+                APPEND(TyLong_FromLong(sizeof(struct I64Bits)));
+                APPEND(TyLong_FromLong(_Alignof(struct I64Bits)));
                 TEST_FIELD(int64_t, value.a);
                 TEST_FIELD(int64_t, value.b);
                 TEST_FIELD(int64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "U64Bits") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "U64Bits") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -582,21 +582,21 @@
                 };
                 struct U64Bits value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("U64Bits"));
-                APPEND(PyLong_FromLong(sizeof(struct U64Bits)));
-                APPEND(PyLong_FromLong(_Alignof(struct U64Bits)));
+                APPEND(TyUnicode_FromString("U64Bits"));
+                APPEND(TyLong_FromLong(sizeof(struct U64Bits)));
+                APPEND(TyLong_FromLong(_Alignof(struct U64Bits)));
                 TEST_FIELD(uint64_t, value.a);
                 TEST_FIELD(uint64_t, value.b);
                 TEST_FIELD(uint64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct331_8") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct331_8") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -607,21 +607,21 @@
                 };
                 struct Struct331_8 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct331_8"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct331_8)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct331_8)));
+                APPEND(TyUnicode_FromString("Struct331_8"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct331_8)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct331_8)));
                 TEST_FIELD(int8_t, value.a);
                 TEST_FIELD(int8_t, value.b);
                 TEST_FIELD(int8_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1x1_8") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1x1_8") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -632,21 +632,21 @@
                 };
                 struct Struct1x1_8 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1x1_8"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1x1_8)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1x1_8)));
+                APPEND(TyUnicode_FromString("Struct1x1_8"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1x1_8)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1x1_8)));
                 TEST_FIELD(int8_t, value.a);
                 TEST_FIELD(int8_t, value.b);
                 TEST_FIELD(int8_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1nx1_8") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1nx1_8") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -658,22 +658,22 @@
                 };
                 struct Struct1nx1_8 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1nx1_8"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1nx1_8)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1nx1_8)));
+                APPEND(TyUnicode_FromString("Struct1nx1_8"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1nx1_8)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1nx1_8)));
                 TEST_FIELD(int8_t, value.a);
                 TEST_FIELD(int8_t, value.full);
                 TEST_FIELD(int8_t, value.b);
                 TEST_FIELD(int8_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct3xx_8") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct3xx_8") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -684,21 +684,21 @@
                 };
                 struct Struct3xx_8 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct3xx_8"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct3xx_8)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct3xx_8)));
+                APPEND(TyUnicode_FromString("Struct3xx_8"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct3xx_8)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct3xx_8)));
                 TEST_FIELD(int8_t, value.a);
                 TEST_FIELD(int8_t, value.b);
                 TEST_FIELD(int8_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct331_u8") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct331_u8") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -709,21 +709,21 @@
                 };
                 struct Struct331_u8 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct331_u8"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct331_u8)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct331_u8)));
+                APPEND(TyUnicode_FromString("Struct331_u8"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct331_u8)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct331_u8)));
                 TEST_FIELD(uint8_t, value.a);
                 TEST_FIELD(uint8_t, value.b);
                 TEST_FIELD(uint8_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1x1_u8") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1x1_u8") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -734,21 +734,21 @@
                 };
                 struct Struct1x1_u8 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1x1_u8"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1x1_u8)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1x1_u8)));
+                APPEND(TyUnicode_FromString("Struct1x1_u8"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1x1_u8)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1x1_u8)));
                 TEST_FIELD(uint8_t, value.a);
                 TEST_FIELD(uint8_t, value.b);
                 TEST_FIELD(uint8_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1nx1_u8") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1nx1_u8") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -760,22 +760,22 @@
                 };
                 struct Struct1nx1_u8 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1nx1_u8"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1nx1_u8)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1nx1_u8)));
+                APPEND(TyUnicode_FromString("Struct1nx1_u8"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1nx1_u8)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1nx1_u8)));
                 TEST_FIELD(uint8_t, value.a);
                 TEST_FIELD(uint8_t, value.full);
                 TEST_FIELD(uint8_t, value.b);
                 TEST_FIELD(uint8_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct3xx_u8") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct3xx_u8") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -786,21 +786,21 @@
                 };
                 struct Struct3xx_u8 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct3xx_u8"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct3xx_u8)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct3xx_u8)));
+                APPEND(TyUnicode_FromString("Struct3xx_u8"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct3xx_u8)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct3xx_u8)));
                 TEST_FIELD(uint8_t, value.a);
                 TEST_FIELD(uint8_t, value.b);
                 TEST_FIELD(uint8_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct331_16") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct331_16") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -811,21 +811,21 @@
                 };
                 struct Struct331_16 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct331_16"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct331_16)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct331_16)));
+                APPEND(TyUnicode_FromString("Struct331_16"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct331_16)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct331_16)));
                 TEST_FIELD(int16_t, value.a);
                 TEST_FIELD(int16_t, value.b);
                 TEST_FIELD(int16_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1x1_16") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1x1_16") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -836,21 +836,21 @@
                 };
                 struct Struct1x1_16 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1x1_16"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1x1_16)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1x1_16)));
+                APPEND(TyUnicode_FromString("Struct1x1_16"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1x1_16)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1x1_16)));
                 TEST_FIELD(int16_t, value.a);
                 TEST_FIELD(int16_t, value.b);
                 TEST_FIELD(int16_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1nx1_16") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1nx1_16") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -862,22 +862,22 @@
                 };
                 struct Struct1nx1_16 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1nx1_16"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1nx1_16)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1nx1_16)));
+                APPEND(TyUnicode_FromString("Struct1nx1_16"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1nx1_16)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1nx1_16)));
                 TEST_FIELD(int16_t, value.a);
                 TEST_FIELD(int16_t, value.full);
                 TEST_FIELD(int16_t, value.b);
                 TEST_FIELD(int16_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct3xx_16") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct3xx_16") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -888,21 +888,21 @@
                 };
                 struct Struct3xx_16 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct3xx_16"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct3xx_16)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct3xx_16)));
+                APPEND(TyUnicode_FromString("Struct3xx_16"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct3xx_16)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct3xx_16)));
                 TEST_FIELD(int16_t, value.a);
                 TEST_FIELD(int16_t, value.b);
                 TEST_FIELD(int16_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct331_u16") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct331_u16") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -913,21 +913,21 @@
                 };
                 struct Struct331_u16 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct331_u16"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct331_u16)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct331_u16)));
+                APPEND(TyUnicode_FromString("Struct331_u16"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct331_u16)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct331_u16)));
                 TEST_FIELD(uint16_t, value.a);
                 TEST_FIELD(uint16_t, value.b);
                 TEST_FIELD(uint16_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1x1_u16") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1x1_u16") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -938,21 +938,21 @@
                 };
                 struct Struct1x1_u16 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1x1_u16"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1x1_u16)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1x1_u16)));
+                APPEND(TyUnicode_FromString("Struct1x1_u16"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1x1_u16)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1x1_u16)));
                 TEST_FIELD(uint16_t, value.a);
                 TEST_FIELD(uint16_t, value.b);
                 TEST_FIELD(uint16_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1nx1_u16") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1nx1_u16") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -964,22 +964,22 @@
                 };
                 struct Struct1nx1_u16 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1nx1_u16"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1nx1_u16)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1nx1_u16)));
+                APPEND(TyUnicode_FromString("Struct1nx1_u16"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1nx1_u16)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1nx1_u16)));
                 TEST_FIELD(uint16_t, value.a);
                 TEST_FIELD(uint16_t, value.full);
                 TEST_FIELD(uint16_t, value.b);
                 TEST_FIELD(uint16_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct3xx_u16") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct3xx_u16") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -990,21 +990,21 @@
                 };
                 struct Struct3xx_u16 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct3xx_u16"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct3xx_u16)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct3xx_u16)));
+                APPEND(TyUnicode_FromString("Struct3xx_u16"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct3xx_u16)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct3xx_u16)));
                 TEST_FIELD(uint16_t, value.a);
                 TEST_FIELD(uint16_t, value.b);
                 TEST_FIELD(uint16_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct331_32") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct331_32") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1015,21 +1015,21 @@
                 };
                 struct Struct331_32 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct331_32"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct331_32)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct331_32)));
+                APPEND(TyUnicode_FromString("Struct331_32"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct331_32)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct331_32)));
                 TEST_FIELD(int32_t, value.a);
                 TEST_FIELD(int32_t, value.b);
                 TEST_FIELD(int32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1x1_32") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1x1_32") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1040,21 +1040,21 @@
                 };
                 struct Struct1x1_32 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1x1_32"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1x1_32)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1x1_32)));
+                APPEND(TyUnicode_FromString("Struct1x1_32"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1x1_32)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1x1_32)));
                 TEST_FIELD(int32_t, value.a);
                 TEST_FIELD(int32_t, value.b);
                 TEST_FIELD(int32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1nx1_32") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1nx1_32") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1066,22 +1066,22 @@
                 };
                 struct Struct1nx1_32 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1nx1_32"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1nx1_32)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1nx1_32)));
+                APPEND(TyUnicode_FromString("Struct1nx1_32"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1nx1_32)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1nx1_32)));
                 TEST_FIELD(int32_t, value.a);
                 TEST_FIELD(int32_t, value.full);
                 TEST_FIELD(int32_t, value.b);
                 TEST_FIELD(int32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct3xx_32") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct3xx_32") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1092,21 +1092,21 @@
                 };
                 struct Struct3xx_32 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct3xx_32"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct3xx_32)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct3xx_32)));
+                APPEND(TyUnicode_FromString("Struct3xx_32"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct3xx_32)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct3xx_32)));
                 TEST_FIELD(int32_t, value.a);
                 TEST_FIELD(int32_t, value.b);
                 TEST_FIELD(int32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct331_u32") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct331_u32") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1117,21 +1117,21 @@
                 };
                 struct Struct331_u32 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct331_u32"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct331_u32)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct331_u32)));
+                APPEND(TyUnicode_FromString("Struct331_u32"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct331_u32)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct331_u32)));
                 TEST_FIELD(uint32_t, value.a);
                 TEST_FIELD(uint32_t, value.b);
                 TEST_FIELD(uint32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1x1_u32") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1x1_u32") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1142,21 +1142,21 @@
                 };
                 struct Struct1x1_u32 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1x1_u32"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1x1_u32)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1x1_u32)));
+                APPEND(TyUnicode_FromString("Struct1x1_u32"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1x1_u32)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1x1_u32)));
                 TEST_FIELD(uint32_t, value.a);
                 TEST_FIELD(uint32_t, value.b);
                 TEST_FIELD(uint32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1nx1_u32") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1nx1_u32") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1168,22 +1168,22 @@
                 };
                 struct Struct1nx1_u32 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1nx1_u32"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1nx1_u32)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1nx1_u32)));
+                APPEND(TyUnicode_FromString("Struct1nx1_u32"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1nx1_u32)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1nx1_u32)));
                 TEST_FIELD(uint32_t, value.a);
                 TEST_FIELD(uint32_t, value.full);
                 TEST_FIELD(uint32_t, value.b);
                 TEST_FIELD(uint32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct3xx_u32") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct3xx_u32") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1194,21 +1194,21 @@
                 };
                 struct Struct3xx_u32 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct3xx_u32"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct3xx_u32)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct3xx_u32)));
+                APPEND(TyUnicode_FromString("Struct3xx_u32"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct3xx_u32)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct3xx_u32)));
                 TEST_FIELD(uint32_t, value.a);
                 TEST_FIELD(uint32_t, value.b);
                 TEST_FIELD(uint32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct331_64") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct331_64") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1219,21 +1219,21 @@
                 };
                 struct Struct331_64 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct331_64"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct331_64)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct331_64)));
+                APPEND(TyUnicode_FromString("Struct331_64"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct331_64)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct331_64)));
                 TEST_FIELD(int64_t, value.a);
                 TEST_FIELD(int64_t, value.b);
                 TEST_FIELD(int64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1x1_64") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1x1_64") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1244,21 +1244,21 @@
                 };
                 struct Struct1x1_64 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1x1_64"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1x1_64)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1x1_64)));
+                APPEND(TyUnicode_FromString("Struct1x1_64"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1x1_64)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1x1_64)));
                 TEST_FIELD(int64_t, value.a);
                 TEST_FIELD(int64_t, value.b);
                 TEST_FIELD(int64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1nx1_64") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1nx1_64") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1270,22 +1270,22 @@
                 };
                 struct Struct1nx1_64 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1nx1_64"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1nx1_64)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1nx1_64)));
+                APPEND(TyUnicode_FromString("Struct1nx1_64"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1nx1_64)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1nx1_64)));
                 TEST_FIELD(int64_t, value.a);
                 TEST_FIELD(int64_t, value.full);
                 TEST_FIELD(int64_t, value.b);
                 TEST_FIELD(int64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct3xx_64") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct3xx_64") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1296,21 +1296,21 @@
                 };
                 struct Struct3xx_64 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct3xx_64"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct3xx_64)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct3xx_64)));
+                APPEND(TyUnicode_FromString("Struct3xx_64"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct3xx_64)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct3xx_64)));
                 TEST_FIELD(int64_t, value.a);
                 TEST_FIELD(int64_t, value.b);
                 TEST_FIELD(int64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct331_u64") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct331_u64") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1321,21 +1321,21 @@
                 };
                 struct Struct331_u64 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct331_u64"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct331_u64)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct331_u64)));
+                APPEND(TyUnicode_FromString("Struct331_u64"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct331_u64)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct331_u64)));
                 TEST_FIELD(uint64_t, value.a);
                 TEST_FIELD(uint64_t, value.b);
                 TEST_FIELD(uint64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1x1_u64") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1x1_u64") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1346,21 +1346,21 @@
                 };
                 struct Struct1x1_u64 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1x1_u64"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1x1_u64)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1x1_u64)));
+                APPEND(TyUnicode_FromString("Struct1x1_u64"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1x1_u64)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1x1_u64)));
                 TEST_FIELD(uint64_t, value.a);
                 TEST_FIELD(uint64_t, value.b);
                 TEST_FIELD(uint64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct1nx1_u64") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct1nx1_u64") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1372,22 +1372,22 @@
                 };
                 struct Struct1nx1_u64 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct1nx1_u64"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct1nx1_u64)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct1nx1_u64)));
+                APPEND(TyUnicode_FromString("Struct1nx1_u64"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct1nx1_u64)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct1nx1_u64)));
                 TEST_FIELD(uint64_t, value.a);
                 TEST_FIELD(uint64_t, value.full);
                 TEST_FIELD(uint64_t, value.b);
                 TEST_FIELD(uint64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Struct3xx_u64") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Struct3xx_u64") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1398,21 +1398,21 @@
                 };
                 struct Struct3xx_u64 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Struct3xx_u64"));
-                APPEND(PyLong_FromLong(sizeof(struct Struct3xx_u64)));
-                APPEND(PyLong_FromLong(_Alignof(struct Struct3xx_u64)));
+                APPEND(TyUnicode_FromString("Struct3xx_u64"));
+                APPEND(TyLong_FromLong(sizeof(struct Struct3xx_u64)));
+                APPEND(TyLong_FromLong(_Alignof(struct Struct3xx_u64)));
                 TEST_FIELD(uint64_t, value.a);
                 TEST_FIELD(uint64_t, value.b);
                 TEST_FIELD(uint64_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed1") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed1") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1422,20 +1422,20 @@
                 };
                 struct Mixed1 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed1"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed1)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed1)));
+                APPEND(TyUnicode_FromString("Mixed1"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed1)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed1)));
                 TEST_FIELD(signed char, value.a);
                 TEST_FIELD(int, value.b);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed2") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed2") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1445,20 +1445,20 @@
                 };
                 struct Mixed2 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed2"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed2)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed2)));
+                APPEND(TyUnicode_FromString("Mixed2"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed2)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed2)));
                 TEST_FIELD(signed char, value.a);
                 TEST_FIELD(int32_t, value.b);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed3") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed3") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1468,20 +1468,20 @@
                 };
                 struct Mixed3 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed3"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed3)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed3)));
+                APPEND(TyUnicode_FromString("Mixed3"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed3)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed3)));
                 TEST_FIELD(signed char, value.a);
                 TEST_FIELD(unsigned char, value.b);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed4") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed4") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1495,9 +1495,9 @@
                 };
                 struct Mixed4 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed4"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed4)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed4)));
+                APPEND(TyUnicode_FromString("Mixed4"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed4)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed4)));
                 TEST_FIELD(short, value.a);
                 TEST_FIELD(short, value.b);
                 TEST_FIELD(int, value.c);
@@ -1505,14 +1505,14 @@
                 TEST_FIELD(short, value.e);
                 TEST_FIELD(int, value.f);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed5") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed5") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1522,20 +1522,20 @@
                 };
                 struct Mixed5 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed5"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed5)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed5)));
+                APPEND(TyUnicode_FromString("Mixed5"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed5)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed5)));
                 TEST_FIELD(unsigned int, value.A);
                 TEST_FIELD(unsigned short, value.B);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed6") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed6") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1545,20 +1545,20 @@
                 };
                 struct Mixed6 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed6"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed6)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed6)));
+                APPEND(TyUnicode_FromString("Mixed6"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed6)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed6)));
                 TEST_FIELD(unsigned long long, value.A);
                 TEST_FIELD(unsigned int, value.B);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed7") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed7") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1569,21 +1569,21 @@
                 };
                 struct Mixed7 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed7"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed7)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed7)));
+                APPEND(TyUnicode_FromString("Mixed7"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed7)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed7)));
                 TEST_FIELD(uint32_t, value.A);
                 TEST_FIELD(uint32_t, value.B);
                 TEST_FIELD(uint64_t, value.C);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed8_a") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed8_a") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1594,21 +1594,21 @@
                 };
                 struct Mixed8_a value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed8_a"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed8_a)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed8_a)));
+                APPEND(TyUnicode_FromString("Mixed8_a"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed8_a)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed8_a)));
                 TEST_FIELD(uint32_t, value.A);
                 TEST_FIELD(uint32_t, value.B);
                 TEST_FIELD(unsigned long long, value.C);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed8_b") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed8_b") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1619,21 +1619,21 @@
                 };
                 struct Mixed8_b value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed8_b"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed8_b)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed8_b)));
+                APPEND(TyUnicode_FromString("Mixed8_b"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed8_b)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed8_b)));
                 TEST_FIELD(uint32_t, value.A);
                 TEST_FIELD(uint32_t, value.B);
                 TEST_FIELD(unsigned long long, value.C);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed9") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed9") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1643,20 +1643,20 @@
                 };
                 struct Mixed9 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed9"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed9)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed9)));
+                APPEND(TyUnicode_FromString("Mixed9"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed9)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed9)));
                 TEST_FIELD(uint8_t, value.A);
                 TEST_FIELD(uint32_t, value.B);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Mixed10") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Mixed10") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1666,20 +1666,20 @@
                 };
                 struct Mixed10 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Mixed10"));
-                APPEND(PyLong_FromLong(sizeof(struct Mixed10)));
-                APPEND(PyLong_FromLong(_Alignof(struct Mixed10)));
+                APPEND(TyUnicode_FromString("Mixed10"));
+                APPEND(TyLong_FromLong(sizeof(struct Mixed10)));
+                APPEND(TyLong_FromLong(_Alignof(struct Mixed10)));
                 TEST_FIELD(uint32_t, value.A);
                 TEST_FIELD(uint64_t, value.B);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Example_gh_95496") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Example_gh_95496") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1689,20 +1689,20 @@
                 };
                 struct Example_gh_95496 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Example_gh_95496"));
-                APPEND(PyLong_FromLong(sizeof(struct Example_gh_95496)));
-                APPEND(PyLong_FromLong(_Alignof(struct Example_gh_95496)));
+                APPEND(TyUnicode_FromString("Example_gh_95496"));
+                APPEND(TyLong_FromLong(sizeof(struct Example_gh_95496)));
+                APPEND(TyLong_FromLong(_Alignof(struct Example_gh_95496)));
                 TEST_FIELD(uint32_t, value.A);
                 TEST_FIELD(uint64_t, value.B);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Example_gh_84039_bad") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Example_gh_84039_bad") == 0) {
 
             #if (!defined(__xlc__)) && (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -1722,9 +1722,9 @@
                 #pragma pack(pop)
                 struct Example_gh_84039_bad value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Example_gh_84039_bad"));
-                APPEND(PyLong_FromLong(sizeof(struct Example_gh_84039_bad)));
-                APPEND(PyLong_FromLong(_Alignof(struct Example_gh_84039_bad)));
+                APPEND(TyUnicode_FromString("Example_gh_84039_bad"));
+                APPEND(TyLong_FromLong(sizeof(struct Example_gh_84039_bad)));
+                APPEND(TyLong_FromLong(_Alignof(struct Example_gh_84039_bad)));
                 TEST_FIELD(uint8_t, value.a0);
                 TEST_FIELD(uint8_t, value.a1);
                 TEST_FIELD(uint8_t, value.a2);
@@ -1736,14 +1736,14 @@
                 TEST_FIELD(uint16_t, value.b0);
                 TEST_FIELD(uint16_t, value.b1);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Example_gh_84039_good_a") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Example_gh_84039_good_a") == 0) {
 
             #if (!defined(__xlc__)) && (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -1761,9 +1761,9 @@
                 #pragma pack(pop)
                 struct Example_gh_84039_good_a value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Example_gh_84039_good_a"));
-                APPEND(PyLong_FromLong(sizeof(struct Example_gh_84039_good_a)));
-                APPEND(PyLong_FromLong(_Alignof(struct Example_gh_84039_good_a)));
+                APPEND(TyUnicode_FromString("Example_gh_84039_good_a"));
+                APPEND(TyLong_FromLong(sizeof(struct Example_gh_84039_good_a)));
+                APPEND(TyLong_FromLong(_Alignof(struct Example_gh_84039_good_a)));
                 TEST_FIELD(uint8_t, value.a0);
                 TEST_FIELD(uint8_t, value.a1);
                 TEST_FIELD(uint8_t, value.a2);
@@ -1773,14 +1773,14 @@
                 TEST_FIELD(uint8_t, value.a6);
                 TEST_FIELD(uint8_t, value.a7);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Example_gh_84039_good") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Example_gh_84039_good") == 0) {
 
             #if (!defined(__xlc__)) && (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -1804,9 +1804,9 @@
                 #pragma pack(pop)
                 struct Example_gh_84039_good value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Example_gh_84039_good"));
-                APPEND(PyLong_FromLong(sizeof(struct Example_gh_84039_good)));
-                APPEND(PyLong_FromLong(_Alignof(struct Example_gh_84039_good)));
+                APPEND(TyUnicode_FromString("Example_gh_84039_good"));
+                APPEND(TyLong_FromLong(sizeof(struct Example_gh_84039_good)));
+                APPEND(TyLong_FromLong(_Alignof(struct Example_gh_84039_good)));
                 TEST_FIELD(uint8_t, value.a.a0);
                 TEST_FIELD(uint8_t, value.a.a1);
                 TEST_FIELD(uint8_t, value.a.a2);
@@ -1818,14 +1818,14 @@
                 TEST_FIELD(uint16_t, value.b0);
                 TEST_FIELD(uint16_t, value.b1);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Example_gh_73939") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Example_gh_73939") == 0) {
 
             #if (!defined(__xlc__)) && (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -1845,9 +1845,9 @@
                 #pragma pack(pop)
                 struct Example_gh_73939 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Example_gh_73939"));
-                APPEND(PyLong_FromLong(sizeof(struct Example_gh_73939)));
-                APPEND(PyLong_FromLong(_Alignof(struct Example_gh_73939)));
+                APPEND(TyUnicode_FromString("Example_gh_73939"));
+                APPEND(TyLong_FromLong(sizeof(struct Example_gh_73939)));
+                APPEND(TyLong_FromLong(_Alignof(struct Example_gh_73939)));
                 TEST_FIELD(uint16_t, value.P);
                 TEST_FIELD(uint16_t, value.L);
                 TEST_FIELD(uint16_t, value.Pro);
@@ -1859,14 +1859,14 @@
                 TEST_FIELD(uint32_t, value.C);
                 TEST_FIELD(uint32_t, value.R2);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Example_gh_86098") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Example_gh_86098") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1877,21 +1877,21 @@
                 };
                 struct Example_gh_86098 value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Example_gh_86098"));
-                APPEND(PyLong_FromLong(sizeof(struct Example_gh_86098)));
-                APPEND(PyLong_FromLong(_Alignof(struct Example_gh_86098)));
+                APPEND(TyUnicode_FromString("Example_gh_86098"));
+                APPEND(TyLong_FromLong(sizeof(struct Example_gh_86098)));
+                APPEND(TyLong_FromLong(_Alignof(struct Example_gh_86098)));
                 TEST_FIELD(uint8_t, value.a);
                 TEST_FIELD(uint8_t, value.b);
                 TEST_FIELD(uint32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "Example_gh_86098_pack") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "Example_gh_86098_pack") == 0) {
 
             #if (!defined(__xlc__)) && (defined(MS_WIN32) || ((defined(__x86_64__) || defined(__i386__) || defined(__ppc64__)) && (defined(__GNUC__) || defined(__clang__))))
 
@@ -1904,21 +1904,21 @@
                 #pragma pack(pop)
                 struct Example_gh_86098_pack value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("Example_gh_86098_pack"));
-                APPEND(PyLong_FromLong(sizeof(struct Example_gh_86098_pack)));
-                APPEND(PyLong_FromLong(_Alignof(struct Example_gh_86098_pack)));
+                APPEND(TyUnicode_FromString("Example_gh_86098_pack"));
+                APPEND(TyLong_FromLong(sizeof(struct Example_gh_86098_pack)));
+                APPEND(TyLong_FromLong(_Alignof(struct Example_gh_86098_pack)));
                 TEST_FIELD(uint8_t, value.a);
                 TEST_FIELD(uint8_t, value.b);
                 TEST_FIELD(uint32_t, value.c);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            if (PyUnicode_CompareWithASCIIString(name, "AnonBitfields") == 0) {
+            if (TyUnicode_CompareWithASCIIString(name, "AnonBitfields") == 0) {
 
             #if (!defined(__xlc__))
 
@@ -1931,22 +1931,22 @@
                 };
                 struct AnonBitfields value;
                 memset(&value, 0, sizeof(value));
-                APPEND(PyUnicode_FromString("AnonBitfields"));
-                APPEND(PyLong_FromLong(sizeof(struct AnonBitfields)));
-                APPEND(PyLong_FromLong(_Alignof(struct AnonBitfields)));
+                APPEND(TyUnicode_FromString("AnonBitfields"));
+                APPEND(TyLong_FromLong(sizeof(struct AnonBitfields)));
+                APPEND(TyLong_FromLong(_Alignof(struct AnonBitfields)));
                 TEST_FIELD(signed char, value.a);
                 TEST_FIELD(unsigned char, value.b);
                 TEST_FIELD(signed char, value.y);
             #else
-                APPEND(Py_NewRef(Py_None));
-                APPEND(PyUnicode_FromString("skipped on this compiler"));
+                APPEND(Ty_NewRef(Ty_None));
+                APPEND(TyUnicode_FromString("skipped on this compiler"));
             #endif
 
                 return result;
             }
 
-            Py_DECREF(result);
-            PyErr_Format(PyExc_ValueError, "unknown testcase %R", name);
+            Ty_DECREF(result);
+            TyErr_Format(TyExc_ValueError, "unknown testcase %R", name);
             return NULL;
         }
 

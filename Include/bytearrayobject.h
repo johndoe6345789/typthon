@@ -1,7 +1,7 @@
 /* ByteArray object interface */
 
-#ifndef Py_BYTEARRAYOBJECT_H
-#define Py_BYTEARRAYOBJECT_H
+#ifndef Ty_BYTEARRAYOBJECT_H
+#define Ty_BYTEARRAYOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -17,28 +17,28 @@ extern "C" {
  */
 
 /* Type object */
-PyAPI_DATA(PyTypeObject) PyByteArray_Type;
-PyAPI_DATA(PyTypeObject) PyByteArrayIter_Type;
+PyAPI_DATA(TyTypeObject) TyByteArray_Type;
+PyAPI_DATA(TyTypeObject) PyByteArrayIter_Type;
 
 /* Type check macros */
-#define PyByteArray_Check(self) PyObject_TypeCheck((self), &PyByteArray_Type)
-#define PyByteArray_CheckExact(self) Py_IS_TYPE((self), &PyByteArray_Type)
+#define TyByteArray_Check(self) PyObject_TypeCheck((self), &TyByteArray_Type)
+#define TyByteArray_CheckExact(self) Ty_IS_TYPE((self), &TyByteArray_Type)
 
 /* Direct API functions */
-PyAPI_FUNC(PyObject *) PyByteArray_FromObject(PyObject *);
-PyAPI_FUNC(PyObject *) PyByteArray_Concat(PyObject *, PyObject *);
-PyAPI_FUNC(PyObject *) PyByteArray_FromStringAndSize(const char *, Py_ssize_t);
-PyAPI_FUNC(Py_ssize_t) PyByteArray_Size(PyObject *);
-PyAPI_FUNC(char *) PyByteArray_AsString(PyObject *);
-PyAPI_FUNC(int) PyByteArray_Resize(PyObject *, Py_ssize_t);
+PyAPI_FUNC(TyObject *) TyByteArray_FromObject(TyObject *);
+PyAPI_FUNC(TyObject *) TyByteArray_Concat(TyObject *, TyObject *);
+PyAPI_FUNC(TyObject *) TyByteArray_FromStringAndSize(const char *, Ty_ssize_t);
+PyAPI_FUNC(Ty_ssize_t) TyByteArray_Size(TyObject *);
+PyAPI_FUNC(char *) TyByteArray_AsString(TyObject *);
+PyAPI_FUNC(int) TyByteArray_Resize(TyObject *, Ty_ssize_t);
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_BYTEARRAYOBJECT_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_BYTEARRAYOBJECT_H
 #  include "cpython/bytearrayobject.h"
-#  undef Py_CPYTHON_BYTEARRAYOBJECT_H
+#  undef Ty_CPYTHON_BYTEARRAYOBJECT_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_BYTEARRAYOBJECT_H */
+#endif /* !Ty_BYTEARRAYOBJECT_H */

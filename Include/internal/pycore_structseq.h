@@ -1,30 +1,30 @@
-#ifndef Py_INTERNAL_STRUCTSEQ_H
-#define Py_INTERNAL_STRUCTSEQ_H
+#ifndef Ty_INTERNAL_STRUCTSEQ_H
+#define Ty_INTERNAL_STRUCTSEQ_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 
 /* other API */
 
 // Export for '_curses' shared extension
-PyAPI_FUNC(PyTypeObject*) _PyStructSequence_NewType(
+PyAPI_FUNC(TyTypeObject*) _PyStructSequence_NewType(
     PyStructSequence_Desc *desc,
     unsigned long tp_flags);
 
 extern int _PyStructSequence_InitBuiltinWithFlags(
     PyInterpreterState *interp,
-    PyTypeObject *type,
+    TyTypeObject *type,
     PyStructSequence_Desc *desc,
     unsigned long tp_flags);
 
 static inline int
 _PyStructSequence_InitBuiltin(PyInterpreterState *interp,
-                              PyTypeObject *type,
+                              TyTypeObject *type,
                               PyStructSequence_Desc *desc)
 {
     return _PyStructSequence_InitBuiltinWithFlags(interp, type, desc, 0);
@@ -32,9 +32,9 @@ _PyStructSequence_InitBuiltin(PyInterpreterState *interp,
 
 extern void _PyStructSequence_FiniBuiltin(
     PyInterpreterState *interp,
-    PyTypeObject *type);
+    TyTypeObject *type);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_STRUCTSEQ_H */
+#endif /* !Ty_INTERNAL_STRUCTSEQ_H */

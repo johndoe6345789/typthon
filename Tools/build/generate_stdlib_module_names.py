@@ -132,7 +132,7 @@ def write_modules(fp, names):
           file=fp)
     print("// List used to create sys.stdlib_module_names.", file=fp)
     print(file=fp)
-    print("static const char* _Py_stdlib_module_names[] = {", file=fp)
+    print("static const char* _Ty_stdlib_module_names[] = {", file=fp)
     for name in sorted(names):
         print(f'"{name}",', file=fp)
     print("};", file=fp)

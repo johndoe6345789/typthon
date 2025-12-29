@@ -7,14 +7,14 @@
    - _Py_bswap64(uint64_t)
 */
 
-#ifndef Py_INTERNAL_BITUTILS_H
-#define Py_INTERNAL_BITUTILS_H
+#ifndef Ty_INTERNAL_BITUTILS_H
+#define Ty_INTERNAL_BITUTILS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #if defined(__GNUC__) \
@@ -36,7 +36,7 @@ _Py_bswap16(uint16_t word)
 #if defined(_PY_HAVE_BUILTIN_BSWAP) || _Py__has_builtin(__builtin_bswap16)
     return __builtin_bswap16(word);
 #elif defined(_MSC_VER)
-    Py_BUILD_ASSERT(sizeof(word) == sizeof(unsigned short));
+    Ty_BUILD_ASSERT(sizeof(word) == sizeof(unsigned short));
     return _byteswap_ushort(word);
 #else
     // Portable implementation which doesn't rely on circular bit shift
@@ -51,7 +51,7 @@ _Py_bswap32(uint32_t word)
 #if defined(_PY_HAVE_BUILTIN_BSWAP) || _Py__has_builtin(__builtin_bswap32)
     return __builtin_bswap32(word);
 #elif defined(_MSC_VER)
-    Py_BUILD_ASSERT(sizeof(word) == sizeof(unsigned long));
+    Ty_BUILD_ASSERT(sizeof(word) == sizeof(unsigned long));
     return _byteswap_ulong(word);
 #else
     // Portable implementation which doesn't rely on circular bit shift
@@ -97,12 +97,12 @@ _Py_popcount32(uint32_t x)
 #if (defined(__clang__) || defined(__GNUC__))
 
 #if SIZEOF_INT >= 4
-    Py_BUILD_ASSERT(sizeof(x) <= sizeof(unsigned int));
+    Ty_BUILD_ASSERT(sizeof(x) <= sizeof(unsigned int));
     return __builtin_popcount(x);
 #else
     // The C standard guarantees that unsigned long will always be big enough
     // to hold a uint32_t value without losing information.
-    Py_BUILD_ASSERT(sizeof(x) <= sizeof(unsigned long));
+    Ty_BUILD_ASSERT(sizeof(x) <= sizeof(unsigned long));
     return __builtin_popcountl(x);
 #endif
 
@@ -156,7 +156,7 @@ _Py_bit_length(unsigned long x)
     }
 #elif defined(_MSC_VER)
     // _BitScanReverse() is documented to search 32 bits.
-    Py_BUILD_ASSERT(sizeof(unsigned long) <= 4);
+    Ty_BUILD_ASSERT(sizeof(unsigned long) <= 4);
     unsigned long msb;
     if (_BitScanReverse(&msb, x)) {
         return (int)msb + 1;
@@ -183,4 +183,4 @@ _Py_bit_length(unsigned long x)
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_BITUTILS_H */
+#endif /* !Ty_INTERNAL_BITUTILS_H */

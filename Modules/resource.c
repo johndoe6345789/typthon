@@ -1,7 +1,7 @@
-// Need limited C API version 3.13 for PySys_Audit()
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for TySys_Audit()
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "Python.h"
@@ -27,12 +27,12 @@ module resource
 /*[python input]
 class pid_t_converter(CConverter):
     type = 'pid_t'
-    format_unit = '" _Py_PARSE_PID "'
+    format_unit = '" _Ty_PARSE_PID "'
 
     def parse_arg(self, argname, displayname, *, limited_capi):
         return self.format_code("""
-            {paramname} = PyLong_AsPid({argname});
-            if ({paramname} == -1 && PyErr_Occurred()) {{{{
+            {paramname} = TyLong_AsPid({argname});
+            if ({paramname} == -1 && TyErr_Occurred()) {{{{
                 goto exit;
             }}}}
             """,
@@ -77,19 +77,19 @@ static PyStructSequence_Desc struct_rusage_desc = {
 };
 
 typedef struct {
-  PyTypeObject *StructRUsageType;
+  TyTypeObject *StructRUsageType;
 } resourcemodulestate;
 
 
 static inline resourcemodulestate*
-get_resource_state(PyObject *module)
+get_resource_state(TyObject *module)
 {
-    void *state = PyModule_GetState(module);
+    void *state = TyModule_GetState(module);
     assert(state != NULL);
     return (resourcemodulestate *)state;
 }
 
-static struct PyModuleDef resourcemodule;
+static struct TyModuleDef resourcemodule;
 
 #ifdef HAVE_GETRUSAGE
 /*[clinic input]
@@ -100,20 +100,20 @@ resource.getrusage
 
 [clinic start generated code]*/
 
-static PyObject *
-resource_getrusage_impl(PyObject *module, int who)
+static TyObject *
+resource_getrusage_impl(TyObject *module, int who)
 /*[clinic end generated code: output=8fad2880ba6a9843 input=5c857bcc5b9ccb1b]*/
 {
     struct rusage ru;
-    PyObject *result;
+    TyObject *result;
 
     if (getrusage(who, &ru) == -1) {
         if (errno == EINVAL) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "invalid who parameter");
             return NULL;
         }
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
 
@@ -123,26 +123,26 @@ resource_getrusage_impl(PyObject *module, int who)
         return NULL;
 
     PyStructSequence_SetItem(result, 0,
-                    PyFloat_FromDouble(doubletime(ru.ru_utime)));
+                    TyFloat_FromDouble(doubletime(ru.ru_utime)));
     PyStructSequence_SetItem(result, 1,
-                    PyFloat_FromDouble(doubletime(ru.ru_stime)));
-    PyStructSequence_SetItem(result, 2, PyLong_FromLong(ru.ru_maxrss));
-    PyStructSequence_SetItem(result, 3, PyLong_FromLong(ru.ru_ixrss));
-    PyStructSequence_SetItem(result, 4, PyLong_FromLong(ru.ru_idrss));
-    PyStructSequence_SetItem(result, 5, PyLong_FromLong(ru.ru_isrss));
-    PyStructSequence_SetItem(result, 6, PyLong_FromLong(ru.ru_minflt));
-    PyStructSequence_SetItem(result, 7, PyLong_FromLong(ru.ru_majflt));
-    PyStructSequence_SetItem(result, 8, PyLong_FromLong(ru.ru_nswap));
-    PyStructSequence_SetItem(result, 9, PyLong_FromLong(ru.ru_inblock));
-    PyStructSequence_SetItem(result, 10, PyLong_FromLong(ru.ru_oublock));
-    PyStructSequence_SetItem(result, 11, PyLong_FromLong(ru.ru_msgsnd));
-    PyStructSequence_SetItem(result, 12, PyLong_FromLong(ru.ru_msgrcv));
-    PyStructSequence_SetItem(result, 13, PyLong_FromLong(ru.ru_nsignals));
-    PyStructSequence_SetItem(result, 14, PyLong_FromLong(ru.ru_nvcsw));
-    PyStructSequence_SetItem(result, 15, PyLong_FromLong(ru.ru_nivcsw));
+                    TyFloat_FromDouble(doubletime(ru.ru_stime)));
+    PyStructSequence_SetItem(result, 2, TyLong_FromLong(ru.ru_maxrss));
+    PyStructSequence_SetItem(result, 3, TyLong_FromLong(ru.ru_ixrss));
+    PyStructSequence_SetItem(result, 4, TyLong_FromLong(ru.ru_idrss));
+    PyStructSequence_SetItem(result, 5, TyLong_FromLong(ru.ru_isrss));
+    PyStructSequence_SetItem(result, 6, TyLong_FromLong(ru.ru_minflt));
+    PyStructSequence_SetItem(result, 7, TyLong_FromLong(ru.ru_majflt));
+    PyStructSequence_SetItem(result, 8, TyLong_FromLong(ru.ru_nswap));
+    PyStructSequence_SetItem(result, 9, TyLong_FromLong(ru.ru_inblock));
+    PyStructSequence_SetItem(result, 10, TyLong_FromLong(ru.ru_oublock));
+    PyStructSequence_SetItem(result, 11, TyLong_FromLong(ru.ru_msgsnd));
+    PyStructSequence_SetItem(result, 12, TyLong_FromLong(ru.ru_msgrcv));
+    PyStructSequence_SetItem(result, 13, TyLong_FromLong(ru.ru_nsignals));
+    PyStructSequence_SetItem(result, 14, TyLong_FromLong(ru.ru_nvcsw));
+    PyStructSequence_SetItem(result, 15, TyLong_FromLong(ru.ru_nivcsw));
 
-    if (PyErr_Occurred()) {
-        Py_DECREF(result);
+    if (TyErr_Occurred()) {
+        Ty_DECREF(result);
         return NULL;
     }
 
@@ -151,57 +151,57 @@ resource_getrusage_impl(PyObject *module, int who)
 #endif
 
 static int
-py2rlimit(PyObject *limits, struct rlimit *rl_out)
+py2rlimit(TyObject *limits, struct rlimit *rl_out)
 {
-    PyObject *curobj, *maxobj;
+    TyObject *curobj, *maxobj;
     limits = PySequence_Tuple(limits);
     if (!limits)
         /* Here limits is a borrowed reference */
         return -1;
 
-    if (PyTuple_Size(limits) != 2) {
-        PyErr_SetString(PyExc_ValueError,
+    if (TyTuple_Size(limits) != 2) {
+        TyErr_SetString(TyExc_ValueError,
                         "expected a tuple of 2 integers");
         goto error;
     }
-    curobj = PyTuple_GetItem(limits, 0);  // borrowed
-    maxobj = PyTuple_GetItem(limits, 1);  // borrowed
+    curobj = TyTuple_GetItem(limits, 0);  // borrowed
+    maxobj = TyTuple_GetItem(limits, 1);  // borrowed
 #if !defined(HAVE_LARGEFILE_SUPPORT)
-    rl_out->rlim_cur = PyLong_AsLong(curobj);
-    if (rl_out->rlim_cur == (rlim_t)-1 && PyErr_Occurred())
+    rl_out->rlim_cur = TyLong_AsLong(curobj);
+    if (rl_out->rlim_cur == (rlim_t)-1 && TyErr_Occurred())
         goto error;
-    rl_out->rlim_max = PyLong_AsLong(maxobj);
-    if (rl_out->rlim_max == (rlim_t)-1 && PyErr_Occurred())
+    rl_out->rlim_max = TyLong_AsLong(maxobj);
+    if (rl_out->rlim_max == (rlim_t)-1 && TyErr_Occurred())
         goto error;
 #else
     /* The limits are probably bigger than a long */
-    rl_out->rlim_cur = PyLong_AsLongLong(curobj);
-    if (rl_out->rlim_cur == (rlim_t)-1 && PyErr_Occurred())
+    rl_out->rlim_cur = TyLong_AsLongLong(curobj);
+    if (rl_out->rlim_cur == (rlim_t)-1 && TyErr_Occurred())
         goto error;
-    rl_out->rlim_max = PyLong_AsLongLong(maxobj);
-    if (rl_out->rlim_max == (rlim_t)-1 && PyErr_Occurred())
+    rl_out->rlim_max = TyLong_AsLongLong(maxobj);
+    if (rl_out->rlim_max == (rlim_t)-1 && TyErr_Occurred())
         goto error;
 #endif
 
-    Py_DECREF(limits);
+    Ty_DECREF(limits);
     rl_out->rlim_cur = rl_out->rlim_cur & RLIM_INFINITY;
     rl_out->rlim_max = rl_out->rlim_max & RLIM_INFINITY;
     return 0;
 
 error:
-    Py_DECREF(limits);
+    Ty_DECREF(limits);
     return -1;
 }
 
-static PyObject*
+static TyObject*
 rlimit2py(struct rlimit rl)
 {
     if (sizeof(rl.rlim_cur) > sizeof(long)) {
-        return Py_BuildValue("LL",
+        return Ty_BuildValue("LL",
                              (long long) rl.rlim_cur,
                              (long long) rl.rlim_max);
     }
-    return Py_BuildValue("ll", (long) rl.rlim_cur, (long) rl.rlim_max);
+    return Ty_BuildValue("ll", (long) rl.rlim_cur, (long) rl.rlim_max);
 }
 
 /*[clinic input]
@@ -212,20 +212,20 @@ resource.getrlimit
 
 [clinic start generated code]*/
 
-static PyObject *
-resource_getrlimit_impl(PyObject *module, int resource)
+static TyObject *
+resource_getrlimit_impl(TyObject *module, int resource)
 /*[clinic end generated code: output=98327b25061ffe39 input=a697cb0004cb3c36]*/
 {
     struct rlimit rl;
 
     if (resource < 0 || resource >= RLIM_NLIMITS) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "invalid resource specified");
         return NULL;
     }
 
     if (getrlimit(resource, &rl) == -1) {
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
     return rlimit2py(rl);
@@ -240,20 +240,20 @@ resource.setrlimit
 
 [clinic start generated code]*/
 
-static PyObject *
-resource_setrlimit_impl(PyObject *module, int resource, PyObject *limits)
+static TyObject *
+resource_setrlimit_impl(TyObject *module, int resource, TyObject *limits)
 /*[clinic end generated code: output=4e82ec3f34d013d1 input=6235a6ce23b4ca75]*/
 {
     struct rlimit rl;
 
     if (resource < 0 || resource >= RLIM_NLIMITS) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "invalid resource specified");
         return NULL;
     }
 
-    if (PySys_Audit("resource.setrlimit", "iO", resource,
-                    limits ? limits : Py_None) < 0) {
+    if (TySys_Audit("resource.setrlimit", "iO", resource,
+                    limits ? limits : Ty_None) < 0) {
         return NULL;
     }
 
@@ -263,16 +263,16 @@ resource_setrlimit_impl(PyObject *module, int resource, PyObject *limits)
 
     if (setrlimit(resource, &rl) == -1) {
         if (errno == EINVAL)
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "current limit exceeds maximum limit");
         else if (errno == EPERM)
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "not allowed to raise maximum limit");
         else
-            PyErr_SetFromErrno(PyExc_OSError);
+            TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 #ifdef HAVE_PRLIMIT
@@ -286,26 +286,26 @@ resource.prlimit
 
 [clinic start generated code]*/
 
-static PyObject *
-resource_prlimit_impl(PyObject *module, pid_t pid, int resource,
-                      PyObject *limits)
+static TyObject *
+resource_prlimit_impl(TyObject *module, pid_t pid, int resource,
+                      TyObject *limits)
 /*[clinic end generated code: output=6ebc49ff8c3a816e input=54bb69c9585e33bf]*/
 {
     struct rlimit old_limit, new_limit;
     int retval;
 
     if (resource < 0 || resource >= RLIM_NLIMITS) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "invalid resource specified");
         return NULL;
     }
 
-    if (PySys_Audit("resource.prlimit", "iiO", pid, resource,
-                    limits ? limits : Py_None) < 0) {
+    if (TySys_Audit("resource.prlimit", "iiO", pid, resource,
+                    limits ? limits : Ty_None) < 0) {
         return NULL;
     }
 
-    if (limits != Py_None) {
+    if (limits != Ty_None) {
         if (py2rlimit(limits, &new_limit) < 0) {
             return NULL;
         }
@@ -317,10 +317,10 @@ resource_prlimit_impl(PyObject *module, pid_t pid, int resource,
 
     if (retval == -1) {
         if (errno == EINVAL) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "current limit exceeds maximum limit");
         } else {
-            PyErr_SetFromErrno(PyExc_OSError);
+            TyErr_SetFromErrno(TyExc_OSError);
         }
         return NULL;
     }
@@ -333,7 +333,7 @@ resource.getpagesize -> int
 [clinic start generated code]*/
 
 static int
-resource_getpagesize_impl(PyObject *module)
+resource_getpagesize_impl(TyObject *module)
 /*[clinic end generated code: output=9ba93eb0f3d6c3a9 input=546545e8c1f42085]*/
 {
     long pagesize = 0;
@@ -349,7 +349,7 @@ resource_getpagesize_impl(PyObject *module)
 
 /* List of functions */
 
-static struct PyMethodDef
+static struct TyMethodDef
 resource_methods[] = {
     RESOURCE_GETRUSAGE_METHODDEF
     RESOURCE_GETRLIMIT_METHODDEF
@@ -363,18 +363,18 @@ resource_methods[] = {
 /* Module initialization */
 
 static int
-resource_exec(PyObject *module)
+resource_exec(TyObject *module)
 {
     resourcemodulestate *state = get_resource_state(module);
 #define ADD_INT(module, value)                                    \
     do {                                                          \
-        if (PyModule_AddIntConstant(module, #value, value) < 0) { \
+        if (TyModule_AddIntConstant(module, #value, value) < 0) { \
             return -1;                                            \
         }                                                         \
     } while (0)
 
     /* Add some symbolic constants to the module */
-    if (PyModule_AddObjectRef(module, "error", PyExc_OSError) < 0) {
+    if (TyModule_AddObjectRef(module, "error", TyExc_OSError) < 0) {
         return -1;
     }
 
@@ -382,7 +382,7 @@ resource_exec(PyObject *module)
     if (state->StructRUsageType == NULL) {
         return -1;
     }
-    if (PyModule_AddType(module, state->StructRUsageType) < 0) {
+    if (TyModule_AddType(module, state->StructRUsageType) < 0) {
         return -1;
     }
 
@@ -495,14 +495,14 @@ resource_exec(PyObject *module)
     ADD_INT(module, RLIMIT_KQUEUES);
 #endif
 
-    PyObject *v;
+    TyObject *v;
     if (sizeof(RLIM_INFINITY) > sizeof(long)) {
-        v = PyLong_FromLongLong((long long) RLIM_INFINITY);
+        v = TyLong_FromLongLong((long long) RLIM_INFINITY);
     } else
     {
-        v = PyLong_FromLong((long) RLIM_INFINITY);
+        v = TyLong_FromLong((long) RLIM_INFINITY);
     }
-    if (PyModule_Add(module, "RLIM_INFINITY", v) < 0) {
+    if (TyModule_Add(module, "RLIM_INFINITY", v) < 0) {
         return -1;
     }
     return 0;
@@ -511,30 +511,30 @@ resource_exec(PyObject *module)
 }
 
 static struct PyModuleDef_Slot resource_slots[] = {
-    {Py_mod_exec, resource_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, resource_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
 static int
-resourcemodule_traverse(PyObject *m, visitproc visit, void *arg) {
-    Py_VISIT(get_resource_state(m)->StructRUsageType);
+resourcemodule_traverse(TyObject *m, visitproc visit, void *arg) {
+    Ty_VISIT(get_resource_state(m)->StructRUsageType);
     return 0;
 }
 
 static int
-resourcemodule_clear(PyObject *m) {
-    Py_CLEAR(get_resource_state(m)->StructRUsageType);
+resourcemodule_clear(TyObject *m) {
+    Ty_CLEAR(get_resource_state(m)->StructRUsageType);
     return 0;
 }
 
 static void
 resourcemodule_free(void *m) {
-    resourcemodule_clear((PyObject *)m);
+    resourcemodule_clear((TyObject *)m);
 }
 
-static struct PyModuleDef resourcemodule = {
+static struct TyModuleDef resourcemodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "resource",
     .m_size = sizeof(resourcemodulestate),

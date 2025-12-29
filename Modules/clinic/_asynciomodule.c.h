@@ -2,12 +2,12 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(_asyncio_Future___init____doc__,
 "Future(*, loop=None)\n"
@@ -27,46 +27,46 @@ PyDoc_STRVAR(_asyncio_Future___init____doc__,
 "      methods in the concurrent.futures package.");
 
 static int
-_asyncio_Future___init___impl(FutureObj *self, PyObject *loop);
+_asyncio_Future___init___impl(FutureObj *self, TyObject *loop);
 
 static int
-_asyncio_Future___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+_asyncio_Future___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(loop), },
+        .ob_item = { &_Ty_ID(loop), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"loop", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "Future",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 0;
-    PyObject *loop = Py_None;
+    TyObject *argsbuf[1];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 0;
+    TyObject *loop = Ty_None;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -95,17 +95,17 @@ PyDoc_STRVAR(_asyncio_Future_result__doc__,
 #define _ASYNCIO_FUTURE_RESULT_METHODDEF    \
     {"result", (PyCFunction)_asyncio_Future_result, METH_NOARGS, _asyncio_Future_result__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Future_result_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future_result(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Future_result(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_result_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -124,21 +124,21 @@ PyDoc_STRVAR(_asyncio_Future_exception__doc__,
 #define _ASYNCIO_FUTURE_EXCEPTION_METHODDEF    \
     {"exception", _PyCFunction_CAST(_asyncio_Future_exception), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _asyncio_Future_exception__doc__},
 
-static PyObject *
-_asyncio_Future_exception_impl(FutureObj *self, PyTypeObject *cls);
+static TyObject *
+_asyncio_Future_exception_impl(FutureObj *self, TyTypeObject *cls);
 
-static PyObject *
-_asyncio_Future_exception(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Future_exception(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "exception() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "exception() takes no arguments");
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_exception_impl((FutureObj *)self, cls);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -156,39 +156,39 @@ PyDoc_STRVAR(_asyncio_Future_set_result__doc__,
 #define _ASYNCIO_FUTURE_SET_RESULT_METHODDEF    \
     {"set_result", _PyCFunction_CAST(_asyncio_Future_set_result), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _asyncio_Future_set_result__doc__},
 
-static PyObject *
-_asyncio_Future_set_result_impl(FutureObj *self, PyTypeObject *cls,
-                                PyObject *result);
+static TyObject *
+_asyncio_Future_set_result_impl(FutureObj *self, TyTypeObject *cls,
+                                TyObject *result);
 
-static PyObject *
-_asyncio_Future_set_result(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Future_set_result(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Py_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "set_result",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *result;
+    TyObject *argsbuf[1];
+    TyObject *result;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     result = args[0];
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_set_result_impl((FutureObj *)self, cls, result);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -206,39 +206,39 @@ PyDoc_STRVAR(_asyncio_Future_set_exception__doc__,
 #define _ASYNCIO_FUTURE_SET_EXCEPTION_METHODDEF    \
     {"set_exception", _PyCFunction_CAST(_asyncio_Future_set_exception), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _asyncio_Future_set_exception__doc__},
 
-static PyObject *
-_asyncio_Future_set_exception_impl(FutureObj *self, PyTypeObject *cls,
-                                   PyObject *exception);
+static TyObject *
+_asyncio_Future_set_exception_impl(FutureObj *self, TyTypeObject *cls,
+                                   TyObject *exception);
 
-static PyObject *
-_asyncio_Future_set_exception(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Future_set_exception(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Py_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "set_exception",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *exception;
+    TyObject *argsbuf[1];
+    TyObject *exception;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     exception = args[0];
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_set_exception_impl((FutureObj *)self, cls, exception);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -257,47 +257,47 @@ PyDoc_STRVAR(_asyncio_Future_add_done_callback__doc__,
 #define _ASYNCIO_FUTURE_ADD_DONE_CALLBACK_METHODDEF    \
     {"add_done_callback", _PyCFunction_CAST(_asyncio_Future_add_done_callback), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _asyncio_Future_add_done_callback__doc__},
 
-static PyObject *
-_asyncio_Future_add_done_callback_impl(FutureObj *self, PyTypeObject *cls,
-                                       PyObject *fn, PyObject *context);
+static TyObject *
+_asyncio_Future_add_done_callback_impl(FutureObj *self, TyTypeObject *cls,
+                                       TyObject *fn, TyObject *context);
 
-static PyObject *
-_asyncio_Future_add_done_callback(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Future_add_done_callback(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(context), },
+        .ob_item = { &_Ty_ID(context), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "context", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "add_done_callback",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *fn;
-    PyObject *context = NULL;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *fn;
+    TyObject *context = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -308,9 +308,9 @@ _asyncio_Future_add_done_callback(PyObject *self, PyTypeObject *cls, PyObject *c
     }
     context = args[1];
 skip_optional_kwonly:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_add_done_callback_impl((FutureObj *)self, cls, fn, context);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -327,39 +327,39 @@ PyDoc_STRVAR(_asyncio_Future_remove_done_callback__doc__,
 #define _ASYNCIO_FUTURE_REMOVE_DONE_CALLBACK_METHODDEF    \
     {"remove_done_callback", _PyCFunction_CAST(_asyncio_Future_remove_done_callback), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _asyncio_Future_remove_done_callback__doc__},
 
-static PyObject *
-_asyncio_Future_remove_done_callback_impl(FutureObj *self, PyTypeObject *cls,
-                                          PyObject *fn);
+static TyObject *
+_asyncio_Future_remove_done_callback_impl(FutureObj *self, TyTypeObject *cls,
+                                          TyObject *fn);
 
-static PyObject *
-_asyncio_Future_remove_done_callback(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Future_remove_done_callback(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Py_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "remove_done_callback",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *fn;
+    TyObject *argsbuf[1];
+    TyObject *fn;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     fn = args[0];
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_remove_done_callback_impl((FutureObj *)self, cls, fn);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -378,46 +378,46 @@ PyDoc_STRVAR(_asyncio_Future_cancel__doc__,
 #define _ASYNCIO_FUTURE_CANCEL_METHODDEF    \
     {"cancel", _PyCFunction_CAST(_asyncio_Future_cancel), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _asyncio_Future_cancel__doc__},
 
-static PyObject *
-_asyncio_Future_cancel_impl(FutureObj *self, PyTypeObject *cls,
-                            PyObject *msg);
+static TyObject *
+_asyncio_Future_cancel_impl(FutureObj *self, TyTypeObject *cls,
+                            TyObject *msg);
 
-static PyObject *
-_asyncio_Future_cancel(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Future_cancel(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(msg), },
+        .ob_item = { &_Ty_ID(msg), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"msg", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "cancel",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *msg = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *msg = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -427,9 +427,9 @@ _asyncio_Future_cancel(PyObject *self, PyTypeObject *cls, PyObject *const *args,
     }
     msg = args[0];
 skip_optional_pos:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_cancel_impl((FutureObj *)self, cls, msg);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -444,17 +444,17 @@ PyDoc_STRVAR(_asyncio_Future_cancelled__doc__,
 #define _ASYNCIO_FUTURE_CANCELLED_METHODDEF    \
     {"cancelled", (PyCFunction)_asyncio_Future_cancelled, METH_NOARGS, _asyncio_Future_cancelled__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Future_cancelled_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future_cancelled(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Future_cancelled(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_cancelled_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -471,17 +471,17 @@ PyDoc_STRVAR(_asyncio_Future_done__doc__,
 #define _ASYNCIO_FUTURE_DONE_METHODDEF    \
     {"done", (PyCFunction)_asyncio_Future_done, METH_NOARGS, _asyncio_Future_done__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Future_done_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future_done(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Future_done(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_done_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -495,21 +495,21 @@ PyDoc_STRVAR(_asyncio_Future_get_loop__doc__,
 #define _ASYNCIO_FUTURE_GET_LOOP_METHODDEF    \
     {"get_loop", _PyCFunction_CAST(_asyncio_Future_get_loop), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _asyncio_Future_get_loop__doc__},
 
-static PyObject *
-_asyncio_Future_get_loop_impl(FutureObj *self, PyTypeObject *cls);
+static TyObject *
+_asyncio_Future_get_loop_impl(FutureObj *self, TyTypeObject *cls);
 
-static PyObject *
-_asyncio_Future_get_loop(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Future_get_loop(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "get_loop() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "get_loop() takes no arguments");
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future_get_loop_impl((FutureObj *)self, cls);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -525,17 +525,17 @@ exit:
 #  define _ASYNCIO_FUTURE__ASYNCIO_AWAITED_BY_GETSETDEF {"_asyncio_awaited_by", (getter)_asyncio_Future__asyncio_awaited_by_get, NULL, _asyncio_Future__asyncio_awaited_by_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__asyncio_awaited_by_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__asyncio_awaited_by_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__asyncio_awaited_by_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__asyncio_awaited_by_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -550,17 +550,17 @@ _asyncio_Future__asyncio_awaited_by_get(PyObject *self, void *Py_UNUSED(context)
 #  define _ASYNCIO_FUTURE__ASYNCIO_FUTURE_BLOCKING_GETSETDEF {"_asyncio_future_blocking", (getter)_asyncio_Future__asyncio_future_blocking_get, NULL, _asyncio_Future__asyncio_future_blocking_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__asyncio_future_blocking_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__asyncio_future_blocking_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__asyncio_future_blocking_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__asyncio_future_blocking_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -577,16 +577,16 @@ _asyncio_Future__asyncio_future_blocking_get(PyObject *self, void *Py_UNUSED(con
 
 static int
 _asyncio_Future__asyncio_future_blocking_set_impl(FutureObj *self,
-                                                  PyObject *value);
+                                                  TyObject *value);
 
 static int
-_asyncio_Future__asyncio_future_blocking_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_asyncio_Future__asyncio_future_blocking_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__asyncio_future_blocking_set_impl((FutureObj *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -601,17 +601,17 @@ _asyncio_Future__asyncio_future_blocking_set(PyObject *self, PyObject *value, vo
 #  define _ASYNCIO_FUTURE__LOG_TRACEBACK_GETSETDEF {"_log_traceback", (getter)_asyncio_Future__log_traceback_get, NULL, _asyncio_Future__log_traceback_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__log_traceback_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__log_traceback_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__log_traceback_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__log_traceback_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -627,16 +627,16 @@ _asyncio_Future__log_traceback_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_asyncio_Future__log_traceback_set_impl(FutureObj *self, PyObject *value);
+_asyncio_Future__log_traceback_set_impl(FutureObj *self, TyObject *value);
 
 static int
-_asyncio_Future__log_traceback_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_asyncio_Future__log_traceback_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__log_traceback_set_impl((FutureObj *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -651,17 +651,17 @@ _asyncio_Future__log_traceback_set(PyObject *self, PyObject *value, void *Py_UNU
 #  define _ASYNCIO_FUTURE__LOOP_GETSETDEF {"_loop", (getter)_asyncio_Future__loop_get, NULL, _asyncio_Future__loop_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__loop_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__loop_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__loop_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__loop_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -676,17 +676,17 @@ _asyncio_Future__loop_get(PyObject *self, void *Py_UNUSED(context))
 #  define _ASYNCIO_FUTURE__CALLBACKS_GETSETDEF {"_callbacks", (getter)_asyncio_Future__callbacks_get, NULL, _asyncio_Future__callbacks_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__callbacks_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__callbacks_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__callbacks_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__callbacks_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -701,17 +701,17 @@ _asyncio_Future__callbacks_get(PyObject *self, void *Py_UNUSED(context))
 #  define _ASYNCIO_FUTURE__RESULT_GETSETDEF {"_result", (getter)_asyncio_Future__result_get, NULL, _asyncio_Future__result_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__result_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__result_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__result_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__result_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -726,17 +726,17 @@ _asyncio_Future__result_get(PyObject *self, void *Py_UNUSED(context))
 #  define _ASYNCIO_FUTURE__EXCEPTION_GETSETDEF {"_exception", (getter)_asyncio_Future__exception_get, NULL, _asyncio_Future__exception_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__exception_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__exception_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__exception_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__exception_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -751,17 +751,17 @@ _asyncio_Future__exception_get(PyObject *self, void *Py_UNUSED(context))
 #  define _ASYNCIO_FUTURE__SOURCE_TRACEBACK_GETSETDEF {"_source_traceback", (getter)_asyncio_Future__source_traceback_get, NULL, _asyncio_Future__source_traceback_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__source_traceback_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__source_traceback_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__source_traceback_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__source_traceback_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -776,17 +776,17 @@ _asyncio_Future__source_traceback_get(PyObject *self, void *Py_UNUSED(context))
 #  define _ASYNCIO_FUTURE__CANCEL_MESSAGE_GETSETDEF {"_cancel_message", (getter)_asyncio_Future__cancel_message_get, NULL, _asyncio_Future__cancel_message_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__cancel_message_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__cancel_message_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__cancel_message_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__cancel_message_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -802,16 +802,16 @@ _asyncio_Future__cancel_message_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_asyncio_Future__cancel_message_set_impl(FutureObj *self, PyObject *value);
+_asyncio_Future__cancel_message_set_impl(FutureObj *self, TyObject *value);
 
 static int
-_asyncio_Future__cancel_message_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_asyncio_Future__cancel_message_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__cancel_message_set_impl((FutureObj *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -826,17 +826,17 @@ _asyncio_Future__cancel_message_set(PyObject *self, PyObject *value, void *Py_UN
 #  define _ASYNCIO_FUTURE__STATE_GETSETDEF {"_state", (getter)_asyncio_Future__state_get, NULL, _asyncio_Future__state_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Future__state_get_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__state_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Future__state_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__state_get_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -853,17 +853,17 @@ PyDoc_STRVAR(_asyncio_Future__make_cancelled_error__doc__,
 #define _ASYNCIO_FUTURE__MAKE_CANCELLED_ERROR_METHODDEF    \
     {"_make_cancelled_error", (PyCFunction)_asyncio_Future__make_cancelled_error, METH_NOARGS, _asyncio_Future__make_cancelled_error__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Future__make_cancelled_error_impl(FutureObj *self);
 
-static PyObject *
-_asyncio_Future__make_cancelled_error(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Future__make_cancelled_error(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Future__make_cancelled_error_impl((FutureObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -875,52 +875,52 @@ PyDoc_STRVAR(_asyncio_Task___init____doc__,
 "A coroutine wrapped in a Future.");
 
 static int
-_asyncio_Task___init___impl(TaskObj *self, PyObject *coro, PyObject *loop,
-                            PyObject *name, PyObject *context,
+_asyncio_Task___init___impl(TaskObj *self, TyObject *coro, TyObject *loop,
+                            TyObject *name, TyObject *context,
                             int eager_start);
 
 static int
-_asyncio_Task___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+_asyncio_Task___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(coro), &_Py_ID(loop), &_Py_ID(name), &_Py_ID(context), &_Py_ID(eager_start), },
+        .ob_item = { &_Ty_ID(coro), &_Ty_ID(loop), &_Ty_ID(name), &_Ty_ID(context), &_Ty_ID(eager_start), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"coro", "loop", "name", "context", "eager_start", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "Task",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *coro;
-    PyObject *loop = Py_None;
-    PyObject *name = Py_None;
-    PyObject *context = Py_None;
+    TyObject *argsbuf[5];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *coro;
+    TyObject *loop = Ty_None;
+    TyObject *name = Ty_None;
+    TyObject *context = Ty_None;
     int eager_start = 0;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -968,17 +968,17 @@ exit:
 #  define _ASYNCIO_TASK__LOG_DESTROY_PENDING_GETSETDEF {"_log_destroy_pending", (getter)_asyncio_Task__log_destroy_pending_get, NULL, _asyncio_Task__log_destroy_pending_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Task__log_destroy_pending_get_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task__log_destroy_pending_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Task__log_destroy_pending_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task__log_destroy_pending_get_impl((TaskObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -994,16 +994,16 @@ _asyncio_Task__log_destroy_pending_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-_asyncio_Task__log_destroy_pending_set_impl(TaskObj *self, PyObject *value);
+_asyncio_Task__log_destroy_pending_set_impl(TaskObj *self, TyObject *value);
 
 static int
-_asyncio_Task__log_destroy_pending_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+_asyncio_Task__log_destroy_pending_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task__log_destroy_pending_set_impl((TaskObj *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1018,17 +1018,17 @@ _asyncio_Task__log_destroy_pending_set(PyObject *self, PyObject *value, void *Py
 #  define _ASYNCIO_TASK__MUST_CANCEL_GETSETDEF {"_must_cancel", (getter)_asyncio_Task__must_cancel_get, NULL, _asyncio_Task__must_cancel_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Task__must_cancel_get_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task__must_cancel_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Task__must_cancel_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task__must_cancel_get_impl((TaskObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1043,17 +1043,17 @@ _asyncio_Task__must_cancel_get(PyObject *self, void *Py_UNUSED(context))
 #  define _ASYNCIO_TASK__CORO_GETSETDEF {"_coro", (getter)_asyncio_Task__coro_get, NULL, _asyncio_Task__coro_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Task__coro_get_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task__coro_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Task__coro_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task__coro_get_impl((TaskObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1068,17 +1068,17 @@ _asyncio_Task__coro_get(PyObject *self, void *Py_UNUSED(context))
 #  define _ASYNCIO_TASK__FUT_WAITER_GETSETDEF {"_fut_waiter", (getter)_asyncio_Task__fut_waiter_get, NULL, _asyncio_Task__fut_waiter_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _asyncio_Task__fut_waiter_get_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task__fut_waiter_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_asyncio_Task__fut_waiter_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task__fut_waiter_get_impl((TaskObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1095,17 +1095,17 @@ PyDoc_STRVAR(_asyncio_Task__make_cancelled_error__doc__,
 #define _ASYNCIO_TASK__MAKE_CANCELLED_ERROR_METHODDEF    \
     {"_make_cancelled_error", (PyCFunction)_asyncio_Task__make_cancelled_error, METH_NOARGS, _asyncio_Task__make_cancelled_error__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Task__make_cancelled_error_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task__make_cancelled_error(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Task__make_cancelled_error(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task__make_cancelled_error_impl((TaskObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1138,45 +1138,45 @@ PyDoc_STRVAR(_asyncio_Task_cancel__doc__,
 #define _ASYNCIO_TASK_CANCEL_METHODDEF    \
     {"cancel", _PyCFunction_CAST(_asyncio_Task_cancel), METH_FASTCALL|METH_KEYWORDS, _asyncio_Task_cancel__doc__},
 
-static PyObject *
-_asyncio_Task_cancel_impl(TaskObj *self, PyObject *msg);
+static TyObject *
+_asyncio_Task_cancel_impl(TaskObj *self, TyObject *msg);
 
-static PyObject *
-_asyncio_Task_cancel(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Task_cancel(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(msg), },
+        .ob_item = { &_Ty_ID(msg), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"msg", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "cancel",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *msg = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *msg = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1186,9 +1186,9 @@ _asyncio_Task_cancel(PyObject *self, PyObject *const *args, Py_ssize_t nargs, Py
     }
     msg = args[0];
 skip_optional_pos:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task_cancel_impl((TaskObj *)self, msg);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -1206,17 +1206,17 @@ PyDoc_STRVAR(_asyncio_Task_cancelling__doc__,
 #define _ASYNCIO_TASK_CANCELLING_METHODDEF    \
     {"cancelling", (PyCFunction)_asyncio_Task_cancelling, METH_NOARGS, _asyncio_Task_cancelling__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Task_cancelling_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task_cancelling(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Task_cancelling(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task_cancelling_impl((TaskObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1235,17 +1235,17 @@ PyDoc_STRVAR(_asyncio_Task_uncancel__doc__,
 #define _ASYNCIO_TASK_UNCANCEL_METHODDEF    \
     {"uncancel", (PyCFunction)_asyncio_Task_uncancel, METH_NOARGS, _asyncio_Task_uncancel__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Task_uncancel_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task_uncancel(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Task_uncancel(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task_uncancel_impl((TaskObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1277,46 +1277,46 @@ PyDoc_STRVAR(_asyncio_Task_get_stack__doc__,
 #define _ASYNCIO_TASK_GET_STACK_METHODDEF    \
     {"get_stack", _PyCFunction_CAST(_asyncio_Task_get_stack), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _asyncio_Task_get_stack__doc__},
 
-static PyObject *
-_asyncio_Task_get_stack_impl(TaskObj *self, PyTypeObject *cls,
-                             PyObject *limit);
+static TyObject *
+_asyncio_Task_get_stack_impl(TaskObj *self, TyTypeObject *cls,
+                             TyObject *limit);
 
-static PyObject *
-_asyncio_Task_get_stack(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Task_get_stack(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(limit), },
+        .ob_item = { &_Ty_ID(limit), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"limit", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "get_stack",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *limit = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *limit = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1347,47 +1347,47 @@ PyDoc_STRVAR(_asyncio_Task_print_stack__doc__,
 #define _ASYNCIO_TASK_PRINT_STACK_METHODDEF    \
     {"print_stack", _PyCFunction_CAST(_asyncio_Task_print_stack), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _asyncio_Task_print_stack__doc__},
 
-static PyObject *
-_asyncio_Task_print_stack_impl(TaskObj *self, PyTypeObject *cls,
-                               PyObject *limit, PyObject *file);
+static TyObject *
+_asyncio_Task_print_stack_impl(TaskObj *self, TyTypeObject *cls,
+                               TyObject *limit, TyObject *file);
 
-static PyObject *
-_asyncio_Task_print_stack(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_Task_print_stack(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(limit), &_Py_ID(file), },
+        .ob_item = { &_Ty_ID(limit), &_Ty_ID(file), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"limit", "file", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "print_stack",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *limit = Py_None;
-    PyObject *file = Py_None;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *limit = Ty_None;
+    TyObject *file = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1417,13 +1417,13 @@ PyDoc_STRVAR(_asyncio_Task_set_result__doc__,
 #define _ASYNCIO_TASK_SET_RESULT_METHODDEF    \
     {"set_result", (PyCFunction)_asyncio_Task_set_result, METH_O, _asyncio_Task_set_result__doc__},
 
-static PyObject *
-_asyncio_Task_set_result_impl(TaskObj *self, PyObject *result);
+static TyObject *
+_asyncio_Task_set_result_impl(TaskObj *self, TyObject *result);
 
-static PyObject *
-_asyncio_Task_set_result(PyObject *self, PyObject *result)
+static TyObject *
+_asyncio_Task_set_result(TyObject *self, TyObject *result)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = _asyncio_Task_set_result_impl((TaskObj *)self, result);
 
@@ -1438,13 +1438,13 @@ PyDoc_STRVAR(_asyncio_Task_set_exception__doc__,
 #define _ASYNCIO_TASK_SET_EXCEPTION_METHODDEF    \
     {"set_exception", (PyCFunction)_asyncio_Task_set_exception, METH_O, _asyncio_Task_set_exception__doc__},
 
-static PyObject *
-_asyncio_Task_set_exception_impl(TaskObj *self, PyObject *exception);
+static TyObject *
+_asyncio_Task_set_exception_impl(TaskObj *self, TyObject *exception);
 
-static PyObject *
-_asyncio_Task_set_exception(PyObject *self, PyObject *exception)
+static TyObject *
+_asyncio_Task_set_exception(TyObject *self, TyObject *exception)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = _asyncio_Task_set_exception_impl((TaskObj *)self, exception);
 
@@ -1459,17 +1459,17 @@ PyDoc_STRVAR(_asyncio_Task_get_coro__doc__,
 #define _ASYNCIO_TASK_GET_CORO_METHODDEF    \
     {"get_coro", (PyCFunction)_asyncio_Task_get_coro, METH_NOARGS, _asyncio_Task_get_coro__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Task_get_coro_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task_get_coro(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Task_get_coro(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task_get_coro_impl((TaskObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1482,11 +1482,11 @@ PyDoc_STRVAR(_asyncio_Task_get_context__doc__,
 #define _ASYNCIO_TASK_GET_CONTEXT_METHODDEF    \
     {"get_context", (PyCFunction)_asyncio_Task_get_context, METH_NOARGS, _asyncio_Task_get_context__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Task_get_context_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task_get_context(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Task_get_context(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _asyncio_Task_get_context_impl((TaskObj *)self);
 }
@@ -1499,17 +1499,17 @@ PyDoc_STRVAR(_asyncio_Task_get_name__doc__,
 #define _ASYNCIO_TASK_GET_NAME_METHODDEF    \
     {"get_name", (PyCFunction)_asyncio_Task_get_name, METH_NOARGS, _asyncio_Task_get_name__doc__},
 
-static PyObject *
+static TyObject *
 _asyncio_Task_get_name_impl(TaskObj *self);
 
-static PyObject *
-_asyncio_Task_get_name(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_Task_get_name(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task_get_name_impl((TaskObj *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1522,17 +1522,17 @@ PyDoc_STRVAR(_asyncio_Task_set_name__doc__,
 #define _ASYNCIO_TASK_SET_NAME_METHODDEF    \
     {"set_name", (PyCFunction)_asyncio_Task_set_name, METH_O, _asyncio_Task_set_name__doc__},
 
-static PyObject *
-_asyncio_Task_set_name_impl(TaskObj *self, PyObject *value);
+static TyObject *
+_asyncio_Task_set_name_impl(TaskObj *self, TyObject *value);
 
-static PyObject *
-_asyncio_Task_set_name(PyObject *self, PyObject *value)
+static TyObject *
+_asyncio_Task_set_name(TyObject *self, TyObject *value)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _asyncio_Task_set_name_impl((TaskObj *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -1549,11 +1549,11 @@ PyDoc_STRVAR(_asyncio__get_running_loop__doc__,
 #define _ASYNCIO__GET_RUNNING_LOOP_METHODDEF    \
     {"_get_running_loop", (PyCFunction)_asyncio__get_running_loop, METH_NOARGS, _asyncio__get_running_loop__doc__},
 
-static PyObject *
-_asyncio__get_running_loop_impl(PyObject *module);
+static TyObject *
+_asyncio__get_running_loop_impl(TyObject *module);
 
-static PyObject *
-_asyncio__get_running_loop(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio__get_running_loop(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return _asyncio__get_running_loop_impl(module);
 }
@@ -1586,11 +1586,11 @@ PyDoc_STRVAR(_asyncio_get_event_loop__doc__,
 #define _ASYNCIO_GET_EVENT_LOOP_METHODDEF    \
     {"get_event_loop", (PyCFunction)_asyncio_get_event_loop, METH_NOARGS, _asyncio_get_event_loop__doc__},
 
-static PyObject *
-_asyncio_get_event_loop_impl(PyObject *module);
+static TyObject *
+_asyncio_get_event_loop_impl(TyObject *module);
 
-static PyObject *
-_asyncio_get_event_loop(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_get_event_loop(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return _asyncio_get_event_loop_impl(module);
 }
@@ -1606,11 +1606,11 @@ PyDoc_STRVAR(_asyncio_get_running_loop__doc__,
 #define _ASYNCIO_GET_RUNNING_LOOP_METHODDEF    \
     {"get_running_loop", (PyCFunction)_asyncio_get_running_loop, METH_NOARGS, _asyncio_get_running_loop__doc__},
 
-static PyObject *
-_asyncio_get_running_loop_impl(PyObject *module);
+static TyObject *
+_asyncio_get_running_loop_impl(TyObject *module);
 
-static PyObject *
-_asyncio_get_running_loop(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_asyncio_get_running_loop(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return _asyncio_get_running_loop_impl(module);
 }
@@ -1626,44 +1626,44 @@ PyDoc_STRVAR(_asyncio__register_task__doc__,
 #define _ASYNCIO__REGISTER_TASK_METHODDEF    \
     {"_register_task", _PyCFunction_CAST(_asyncio__register_task), METH_FASTCALL|METH_KEYWORDS, _asyncio__register_task__doc__},
 
-static PyObject *
-_asyncio__register_task_impl(PyObject *module, PyObject *task);
+static TyObject *
+_asyncio__register_task_impl(TyObject *module, TyObject *task);
 
-static PyObject *
-_asyncio__register_task(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio__register_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(task), },
+        .ob_item = { &_Ty_ID(task), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"task", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_register_task",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *task;
+    TyObject *argsbuf[1];
+    TyObject *task;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1686,44 +1686,44 @@ PyDoc_STRVAR(_asyncio__register_eager_task__doc__,
 #define _ASYNCIO__REGISTER_EAGER_TASK_METHODDEF    \
     {"_register_eager_task", _PyCFunction_CAST(_asyncio__register_eager_task), METH_FASTCALL|METH_KEYWORDS, _asyncio__register_eager_task__doc__},
 
-static PyObject *
-_asyncio__register_eager_task_impl(PyObject *module, PyObject *task);
+static TyObject *
+_asyncio__register_eager_task_impl(TyObject *module, TyObject *task);
 
-static PyObject *
-_asyncio__register_eager_task(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio__register_eager_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(task), },
+        .ob_item = { &_Ty_ID(task), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"task", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_register_eager_task",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *task;
+    TyObject *argsbuf[1];
+    TyObject *task;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1746,44 +1746,44 @@ PyDoc_STRVAR(_asyncio__unregister_task__doc__,
 #define _ASYNCIO__UNREGISTER_TASK_METHODDEF    \
     {"_unregister_task", _PyCFunction_CAST(_asyncio__unregister_task), METH_FASTCALL|METH_KEYWORDS, _asyncio__unregister_task__doc__},
 
-static PyObject *
-_asyncio__unregister_task_impl(PyObject *module, PyObject *task);
+static TyObject *
+_asyncio__unregister_task_impl(TyObject *module, TyObject *task);
 
-static PyObject *
-_asyncio__unregister_task(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio__unregister_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(task), },
+        .ob_item = { &_Ty_ID(task), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"task", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_unregister_task",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *task;
+    TyObject *argsbuf[1];
+    TyObject *task;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1806,44 +1806,44 @@ PyDoc_STRVAR(_asyncio__unregister_eager_task__doc__,
 #define _ASYNCIO__UNREGISTER_EAGER_TASK_METHODDEF    \
     {"_unregister_eager_task", _PyCFunction_CAST(_asyncio__unregister_eager_task), METH_FASTCALL|METH_KEYWORDS, _asyncio__unregister_eager_task__doc__},
 
-static PyObject *
-_asyncio__unregister_eager_task_impl(PyObject *module, PyObject *task);
+static TyObject *
+_asyncio__unregister_eager_task_impl(TyObject *module, TyObject *task);
 
-static PyObject *
-_asyncio__unregister_eager_task(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio__unregister_eager_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(task), },
+        .ob_item = { &_Ty_ID(task), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"task", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_unregister_eager_task",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *task;
+    TyObject *argsbuf[1];
+    TyObject *task;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1868,45 +1868,45 @@ PyDoc_STRVAR(_asyncio__enter_task__doc__,
 #define _ASYNCIO__ENTER_TASK_METHODDEF    \
     {"_enter_task", _PyCFunction_CAST(_asyncio__enter_task), METH_FASTCALL|METH_KEYWORDS, _asyncio__enter_task__doc__},
 
-static PyObject *
-_asyncio__enter_task_impl(PyObject *module, PyObject *loop, PyObject *task);
+static TyObject *
+_asyncio__enter_task_impl(TyObject *module, TyObject *loop, TyObject *task);
 
-static PyObject *
-_asyncio__enter_task(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio__enter_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(loop), &_Py_ID(task), },
+        .ob_item = { &_Ty_ID(loop), &_Ty_ID(task), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"loop", "task", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_enter_task",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *loop;
-    PyObject *task;
+    TyObject *argsbuf[2];
+    TyObject *loop;
+    TyObject *task;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1932,45 +1932,45 @@ PyDoc_STRVAR(_asyncio__leave_task__doc__,
 #define _ASYNCIO__LEAVE_TASK_METHODDEF    \
     {"_leave_task", _PyCFunction_CAST(_asyncio__leave_task), METH_FASTCALL|METH_KEYWORDS, _asyncio__leave_task__doc__},
 
-static PyObject *
-_asyncio__leave_task_impl(PyObject *module, PyObject *loop, PyObject *task);
+static TyObject *
+_asyncio__leave_task_impl(TyObject *module, TyObject *loop, TyObject *task);
 
-static PyObject *
-_asyncio__leave_task(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio__leave_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(loop), &_Py_ID(task), },
+        .ob_item = { &_Ty_ID(loop), &_Ty_ID(task), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"loop", "task", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_leave_task",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *loop;
-    PyObject *task;
+    TyObject *argsbuf[2];
+    TyObject *loop;
+    TyObject *task;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1994,46 +1994,46 @@ PyDoc_STRVAR(_asyncio__swap_current_task__doc__,
 #define _ASYNCIO__SWAP_CURRENT_TASK_METHODDEF    \
     {"_swap_current_task", _PyCFunction_CAST(_asyncio__swap_current_task), METH_FASTCALL|METH_KEYWORDS, _asyncio__swap_current_task__doc__},
 
-static PyObject *
-_asyncio__swap_current_task_impl(PyObject *module, PyObject *loop,
-                                 PyObject *task);
+static TyObject *
+_asyncio__swap_current_task_impl(TyObject *module, TyObject *loop,
+                                 TyObject *task);
 
-static PyObject *
-_asyncio__swap_current_task(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio__swap_current_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(loop), &_Py_ID(task), },
+        .ob_item = { &_Ty_ID(loop), &_Ty_ID(task), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"loop", "task", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_swap_current_task",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *loop;
-    PyObject *task;
+    TyObject *argsbuf[2];
+    TyObject *loop;
+    TyObject *task;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2055,45 +2055,45 @@ PyDoc_STRVAR(_asyncio_current_task__doc__,
 #define _ASYNCIO_CURRENT_TASK_METHODDEF    \
     {"current_task", _PyCFunction_CAST(_asyncio_current_task), METH_FASTCALL|METH_KEYWORDS, _asyncio_current_task__doc__},
 
-static PyObject *
-_asyncio_current_task_impl(PyObject *module, PyObject *loop);
+static TyObject *
+_asyncio_current_task_impl(TyObject *module, TyObject *loop);
 
-static PyObject *
-_asyncio_current_task(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_current_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(loop), },
+        .ob_item = { &_Ty_ID(loop), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"loop", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "current_task",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *loop = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *loop = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2118,45 +2118,45 @@ PyDoc_STRVAR(_asyncio_all_tasks__doc__,
 #define _ASYNCIO_ALL_TASKS_METHODDEF    \
     {"all_tasks", _PyCFunction_CAST(_asyncio_all_tasks), METH_FASTCALL|METH_KEYWORDS, _asyncio_all_tasks__doc__},
 
-static PyObject *
-_asyncio_all_tasks_impl(PyObject *module, PyObject *loop);
+static TyObject *
+_asyncio_all_tasks_impl(TyObject *module, TyObject *loop);
 
-static PyObject *
-_asyncio_all_tasks(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_asyncio_all_tasks(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(loop), },
+        .ob_item = { &_Ty_ID(loop), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"loop", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "all_tasks",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *loop = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *loop = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -2181,18 +2181,18 @@ PyDoc_STRVAR(_asyncio_future_add_to_awaited_by__doc__,
 #define _ASYNCIO_FUTURE_ADD_TO_AWAITED_BY_METHODDEF    \
     {"future_add_to_awaited_by", _PyCFunction_CAST(_asyncio_future_add_to_awaited_by), METH_FASTCALL, _asyncio_future_add_to_awaited_by__doc__},
 
-static PyObject *
-_asyncio_future_add_to_awaited_by_impl(PyObject *module, PyObject *fut,
-                                       PyObject *waiter);
+static TyObject *
+_asyncio_future_add_to_awaited_by_impl(TyObject *module, TyObject *fut,
+                                       TyObject *waiter);
 
-static PyObject *
-_asyncio_future_add_to_awaited_by(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_asyncio_future_add_to_awaited_by(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *fut;
-    PyObject *waiter;
+    TyObject *return_value = NULL;
+    TyObject *fut;
+    TyObject *waiter;
 
-    if (!_PyArg_CheckPositional("future_add_to_awaited_by", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("future_add_to_awaited_by", nargs, 2, 2)) {
         goto exit;
     }
     fut = args[0];
@@ -2211,18 +2211,18 @@ PyDoc_STRVAR(_asyncio_future_discard_from_awaited_by__doc__,
 #define _ASYNCIO_FUTURE_DISCARD_FROM_AWAITED_BY_METHODDEF    \
     {"future_discard_from_awaited_by", _PyCFunction_CAST(_asyncio_future_discard_from_awaited_by), METH_FASTCALL, _asyncio_future_discard_from_awaited_by__doc__},
 
-static PyObject *
-_asyncio_future_discard_from_awaited_by_impl(PyObject *module, PyObject *fut,
-                                             PyObject *waiter);
+static TyObject *
+_asyncio_future_discard_from_awaited_by_impl(TyObject *module, TyObject *fut,
+                                             TyObject *waiter);
 
-static PyObject *
-_asyncio_future_discard_from_awaited_by(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_asyncio_future_discard_from_awaited_by(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *fut;
-    PyObject *waiter;
+    TyObject *return_value = NULL;
+    TyObject *fut;
+    TyObject *waiter;
 
-    if (!_PyArg_CheckPositional("future_discard_from_awaited_by", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("future_discard_from_awaited_by", nargs, 2, 2)) {
         goto exit;
     }
     fut = args[0];

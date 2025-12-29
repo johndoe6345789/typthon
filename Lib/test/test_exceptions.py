@@ -1572,9 +1572,9 @@ class ExceptionTests(unittest.TestCase):
 
 
     @cpython_only
-    # Python built with Py_TRACE_REFS fail with a fatal error in
+    # Python built with Ty_TRACE_REFS fail with a fatal error in
     # _PyRefchain_Trace() on memory allocation error.
-    @unittest.skipIf(support.Py_TRACE_REFS, 'cannot test Py_TRACE_REFS build')
+    @unittest.skipIf(support.Ty_TRACE_REFS, 'cannot test Ty_TRACE_REFS build')
     @unittest.skipIf(_testcapi is None, "requires _testcapi")
     def test_recursion_normalizing_with_no_memory(self):
         # Issue #30697. Test that in the abort that occurs when there is no
@@ -1749,9 +1749,9 @@ class ExceptionTests(unittest.TestCase):
                 self.assertEndsWith(report, "\n")
 
     @cpython_only
-    # Python built with Py_TRACE_REFS fail with a fatal error in
+    # Python built with Ty_TRACE_REFS fail with a fatal error in
     # _PyRefchain_Trace() on memory allocation error.
-    @unittest.skipIf(support.Py_TRACE_REFS, 'cannot test Py_TRACE_REFS build')
+    @unittest.skipIf(support.Ty_TRACE_REFS, 'cannot test Ty_TRACE_REFS build')
     @unittest.skipIf(_testcapi is None, "requires _testcapi")
     def test_memory_error_in_PyErr_PrintEx(self):
         code = """if 1:

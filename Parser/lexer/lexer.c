@@ -22,7 +22,7 @@
                || c == '_'\
                || (c >= 128))
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 static inline tokenizer_mode* TOK_GET_MODE(struct tok_state* tok) {
     assert(tok->tok_mode_stack_index >= 0);
     assert(tok->tok_mode_stack_index < MAXFSTRINGLEVEL);
@@ -67,13 +67,13 @@ tok_nextc(struct tok_state *tok)
                 return EOF;
             }
             tok->col_offset++;
-            return Py_CHARMASK(*tok->cur++); /* Fast path */
+            return Ty_CHARMASK(*tok->cur++); /* Fast path */
         }
         if (tok->done != E_OK) {
             return EOF;
         }
         rc = tok->underflow(tok);
-#if defined(Py_DEBUG)
+#if defined(Ty_DEBUG)
         if (tok->debug) {
             fprintf(stderr, "line[%d] = ", tok->lineno);
             _PyTokenizer_print_escape(stderr, tok->cur, tok->inp - tok->cur);
@@ -92,7 +92,7 @@ tok_nextc(struct tok_state *tok)
             return EOF;
         }
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
 
 /* Back-up one character */
@@ -101,10 +101,10 @@ tok_backup(struct tok_state *tok, int c)
 {
     if (c != EOF) {
         if (--tok->cur < tok->buf) {
-            Py_FatalError("tokenizer beginning of buffer");
+            Ty_FatalError("tokenizer beginning of buffer");
         }
-        if ((int)(unsigned char)*tok->cur != Py_CHARMASK(c)) {
-            Py_FatalError("tok_backup: wrong character");
+        if ((int)(unsigned char)*tok->cur != Ty_CHARMASK(c)) {
+            Ty_FatalError("tok_backup: wrong character");
         }
         tok->col_offset--;
     }
@@ -119,14 +119,14 @@ set_ftstring_expr(struct tok_state* tok, struct token *token, char c) {
     if (!(tok_mode->in_debug || tok_mode->string_kind == TSTRING) || token->metadata) {
         return 0;
     }
-    PyObject *res = NULL;
+    TyObject *res = NULL;
 
     // Look for a # character outside of string literals
     int hash_detected = 0;
     int in_string = 0;
     char quote_char = 0;
 
-    for (Py_ssize_t i = 0; i < tok_mode->last_expr_size - tok_mode->last_expr_end; i++) {
+    for (Ty_ssize_t i = 0; i < tok_mode->last_expr_size - tok_mode->last_expr_end; i++) {
         char ch = tok_mode->last_expr_buffer[i];
 
         // Skip escaped characters
@@ -163,13 +163,13 @@ set_ftstring_expr(struct tok_state* tok, struct token *token, char c) {
     // If we found a # character in the expression, we need to handle comments
     if (hash_detected) {
         // Allocate buffer for processed result
-        char *result = (char *)PyMem_Malloc((tok_mode->last_expr_size - tok_mode->last_expr_end + 1) * sizeof(char));
+        char *result = (char *)TyMem_Malloc((tok_mode->last_expr_size - tok_mode->last_expr_end + 1) * sizeof(char));
         if (!result) {
             return -1;
         }
 
-        Py_ssize_t i = 0;  // Input position
-        Py_ssize_t j = 0;  // Output position
+        Ty_ssize_t i = 0;  // Input position
+        Ty_ssize_t j = 0;  // Output position
         in_string = 0;     // Whether we're in a string
         quote_char = 0;    // Current string quote char
 
@@ -206,10 +206,10 @@ set_ftstring_expr(struct tok_state* tok, struct token *token, char c) {
         }
 
         result[j] = '\0';  // Null-terminate the result string
-        res = PyUnicode_DecodeUTF8(result, j, NULL);
-        PyMem_Free(result);
+        res = TyUnicode_DecodeUTF8(result, j, NULL);
+        TyMem_Free(result);
     } else {
-        res = PyUnicode_DecodeUTF8(
+        res = TyUnicode_DecodeUTF8(
             tok_mode->last_expr_buffer,
             tok_mode->last_expr_size - tok_mode->last_expr_end,
             NULL
@@ -228,7 +228,7 @@ _PyLexer_update_ftstring_expr(struct tok_state *tok, char cur)
 {
     assert(tok->cur != NULL);
 
-    Py_ssize_t size = strlen(tok->cur);
+    Ty_ssize_t size = strlen(tok->cur);
     tokenizer_mode *tok_mode = TOK_GET_MODE(tok);
 
     switch (cur) {
@@ -236,12 +236,12 @@ _PyLexer_update_ftstring_expr(struct tok_state *tok, char cur)
             if (!tok_mode->last_expr_buffer || tok_mode->last_expr_end >= 0) {
                 return 1;
             }
-            char *new_buffer = PyMem_Realloc(
+            char *new_buffer = TyMem_Realloc(
                 tok_mode->last_expr_buffer,
                 tok_mode->last_expr_size + size
             );
             if (new_buffer == NULL) {
-                PyMem_Free(tok_mode->last_expr_buffer);
+                TyMem_Free(tok_mode->last_expr_buffer);
                 goto error;
             }
             tok_mode->last_expr_buffer = new_buffer;
@@ -250,9 +250,9 @@ _PyLexer_update_ftstring_expr(struct tok_state *tok, char cur)
             break;
         case '{':
             if (tok_mode->last_expr_buffer != NULL) {
-                PyMem_Free(tok_mode->last_expr_buffer);
+                TyMem_Free(tok_mode->last_expr_buffer);
             }
-            tok_mode->last_expr_buffer = PyMem_Malloc(size);
+            tok_mode->last_expr_buffer = TyMem_Malloc(size);
             if (tok_mode->last_expr_buffer == NULL) {
                 goto error;
             }
@@ -270,7 +270,7 @@ _PyLexer_update_ftstring_expr(struct tok_state *tok, char cur)
             }
             break;
         default:
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
     }
     return 1;
 error:
@@ -343,7 +343,7 @@ verify_end_of_number(struct tok_state *tok, int c, const char *kind) {
     }
     if (r) {
         tok_backup(tok, c);
-        if (_PyTokenizer_parser_warn(tok, PyExc_SyntaxWarning,
+        if (_PyTokenizer_parser_warn(tok, TyExc_SyntaxWarning,
                 "invalid %s literal", kind))
         {
             return 0;
@@ -366,12 +366,12 @@ verify_identifier(struct tok_state *tok)
     if (tok->tok_extra_tokens) {
         return 1;
     }
-    PyObject *s;
+    TyObject *s;
     if (tok->decoding_erred)
         return 0;
-    s = PyUnicode_DecodeUTF8(tok->start, tok->cur - tok->start, NULL);
+    s = TyUnicode_DecodeUTF8(tok->start, tok->cur - tok->start, NULL);
     if (s == NULL) {
-        if (PyErr_ExceptionMatches(PyExc_UnicodeDecodeError)) {
+        if (TyErr_ExceptionMatches(TyExc_UnicodeDecodeError)) {
             tok->done = E_DECODE;
         }
         else {
@@ -379,25 +379,25 @@ verify_identifier(struct tok_state *tok)
         }
         return 0;
     }
-    Py_ssize_t invalid = _PyUnicode_ScanIdentifier(s);
+    Ty_ssize_t invalid = _TyUnicode_ScanIdentifier(s);
     assert(invalid >= 0);
-    assert(PyUnicode_GET_LENGTH(s) > 0);
-    if (invalid < PyUnicode_GET_LENGTH(s)) {
-        Py_UCS4 ch = PyUnicode_READ_CHAR(s, invalid);
-        if (invalid + 1 < PyUnicode_GET_LENGTH(s)) {
+    assert(TyUnicode_GET_LENGTH(s) > 0);
+    if (invalid < TyUnicode_GET_LENGTH(s)) {
+        Ty_UCS4 ch = TyUnicode_READ_CHAR(s, invalid);
+        if (invalid + 1 < TyUnicode_GET_LENGTH(s)) {
             /* Determine the offset in UTF-8 encoded input */
-            Py_SETREF(s, PyUnicode_Substring(s, 0, invalid + 1));
+            Ty_SETREF(s, TyUnicode_Substring(s, 0, invalid + 1));
             if (s != NULL) {
-                Py_SETREF(s, PyUnicode_AsUTF8String(s));
+                Ty_SETREF(s, TyUnicode_AsUTF8String(s));
             }
             if (s == NULL) {
                 tok->done = E_ERROR;
                 return 0;
             }
-            tok->cur = (char *)tok->start + PyBytes_GET_SIZE(s);
+            tok->cur = (char *)tok->start + TyBytes_GET_SIZE(s);
         }
-        Py_DECREF(s);
-        if (Py_UNICODE_ISPRINTABLE(ch)) {
+        Ty_DECREF(s);
+        if (Ty_UNICODE_ISPRINTABLE(ch)) {
             _PyTokenizer_syntaxerror(tok, "invalid character '%c' (U+%04X)", ch, ch);
         }
         else {
@@ -405,7 +405,7 @@ verify_identifier(struct tok_state *tok)
         }
         return 0;
     }
-    Py_DECREF(s);
+    Ty_DECREF(s);
     return 1;
 }
 
@@ -417,12 +417,12 @@ tok_decimal_tail(struct tok_state *tok)
     while (1) {
         do {
             c = tok_nextc(tok);
-        } while (Py_ISDIGIT(c));
+        } while (Ty_ISDIGIT(c));
         if (c != '_') {
             break;
         }
         c = tok_nextc(tok);
-        if (!Py_ISDIGIT(c)) {
+        if (!Ty_ISDIGIT(c)) {
             tok_backup(tok, c);
             _PyTokenizer_syntaxerror(tok, "invalid decimal literal");
             return 0;
@@ -695,7 +695,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                 is_type_ignore = (
                     tok->cur >= ignore_end && memcmp(p, "ignore", 6) == 0
                     && !(tok->cur > ignore_end
-                         && ((unsigned char)ignore_end[0] >= 128 || Py_ISALNUM(ignore_end[0]))));
+                         && ((unsigned char)ignore_end[0] >= 128 || Ty_ISALNUM(ignore_end[0]))));
 
                 if (is_type_ignore) {
                     p_start = ignore_end;
@@ -828,7 +828,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
     /* Period or number starting with period? */
     if (c == '.') {
         c = tok_nextc(tok);
-        if (Py_ISDIGIT(c)) {
+        if (Ty_ISDIGIT(c)) {
             goto fraction;
         } else if (c == '.') {
             c = tok_nextc(tok);
@@ -851,7 +851,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
     }
 
     /* Number */
-    if (Py_ISDIGIT(c)) {
+    if (Ty_ISDIGIT(c)) {
         if (c == '0') {
             /* Hex, octal or binary -- maybe. */
             c = tok_nextc(tok);
@@ -862,13 +862,13 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                     if (c == '_') {
                         c = tok_nextc(tok);
                     }
-                    if (!Py_ISXDIGIT(c)) {
+                    if (!Ty_ISXDIGIT(c)) {
                         tok_backup(tok, c);
                         return MAKE_TOKEN(_PyTokenizer_syntaxerror(tok, "invalid hexadecimal literal"));
                     }
                     do {
                         c = tok_nextc(tok);
-                    } while (Py_ISXDIGIT(c));
+                    } while (Ty_ISXDIGIT(c));
                 } while (c == '_');
                 if (!verify_end_of_number(tok, c, "hexadecimal")) {
                     return MAKE_TOKEN(ERRORTOKEN);
@@ -882,7 +882,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                         c = tok_nextc(tok);
                     }
                     if (c < '0' || c >= '8') {
-                        if (Py_ISDIGIT(c)) {
+                        if (Ty_ISDIGIT(c)) {
                             return MAKE_TOKEN(_PyTokenizer_syntaxerror(tok,
                                     "invalid digit '%c' in octal literal", c));
                         }
@@ -895,7 +895,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                         c = tok_nextc(tok);
                     } while ('0' <= c && c < '8');
                 } while (c == '_');
-                if (Py_ISDIGIT(c)) {
+                if (Ty_ISDIGIT(c)) {
                     return MAKE_TOKEN(_PyTokenizer_syntaxerror(tok,
                             "invalid digit '%c' in octal literal", c));
                 }
@@ -911,7 +911,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                         c = tok_nextc(tok);
                     }
                     if (c != '0' && c != '1') {
-                        if (Py_ISDIGIT(c)) {
+                        if (Ty_ISDIGIT(c)) {
                             return MAKE_TOKEN(_PyTokenizer_syntaxerror(tok, "invalid digit '%c' in binary literal", c));
                         }
                         else {
@@ -923,7 +923,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                         c = tok_nextc(tok);
                     } while (c == '0' || c == '1');
                 } while (c == '_');
-                if (Py_ISDIGIT(c)) {
+                if (Ty_ISDIGIT(c)) {
                     return MAKE_TOKEN(_PyTokenizer_syntaxerror(tok, "invalid digit '%c' in binary literal", c));
                 }
                 if (!verify_end_of_number(tok, c, "binary")) {
@@ -937,7 +937,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                 while (1) {
                     if (c == '_') {
                         c = tok_nextc(tok);
-                        if (!Py_ISDIGIT(c)) {
+                        if (!Ty_ISDIGIT(c)) {
                             tok_backup(tok, c);
                             return MAKE_TOKEN(_PyTokenizer_syntaxerror(tok, "invalid decimal literal"));
                         }
@@ -948,7 +948,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                     c = tok_nextc(tok);
                 }
                 char* zeros_end = tok->cur;
-                if (Py_ISDIGIT(c)) {
+                if (Ty_ISDIGIT(c)) {
                     nonzero = 1;
                     c = tok_decimal_tail(tok);
                     if (c == 0) {
@@ -992,7 +992,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                     c = tok_nextc(tok);
         fraction:
                     /* Fraction */
-                    if (Py_ISDIGIT(c)) {
+                    if (Ty_ISDIGIT(c)) {
                         c = tok_decimal_tail(tok);
                         if (c == 0) {
                             return MAKE_TOKEN(ERRORTOKEN);
@@ -1007,11 +1007,11 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
                     c = tok_nextc(tok);
                     if (c == '+' || c == '-') {
                         c = tok_nextc(tok);
-                        if (!Py_ISDIGIT(c)) {
+                        if (!Ty_ISDIGIT(c)) {
                             tok_backup(tok, c);
                             return MAKE_TOKEN(_PyTokenizer_syntaxerror(tok, "invalid decimal literal"));
                         }
-                    } else if (!Py_ISDIGIT(c)) {
+                    } else if (!Ty_ISDIGIT(c)) {
                         tok_backup(tok, c);
                         if (!verify_end_of_number(tok, e, "decimal")) {
                             return MAKE_TOKEN(ERRORTOKEN);
@@ -1046,7 +1046,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
     }
 
   f_string_quote:
-    if (((Py_TOLOWER(*tok->start) == 'f' || Py_TOLOWER(*tok->start) == 'r' || Py_TOLOWER(*tok->start) == 't')
+    if (((Ty_TOLOWER(*tok->start) == 'f' || Ty_TOLOWER(*tok->start) == 'r' || Ty_TOLOWER(*tok->start) == 't')
         && (c == '\'' || c == '"'))) {
 
         int quote = c;
@@ -1101,22 +1101,22 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
         switch (*tok->start) {
             case 'T':
             case 't':
-                the_current_tok->raw = Py_TOLOWER(*(tok->start + 1)) == 'r';
+                the_current_tok->raw = Ty_TOLOWER(*(tok->start + 1)) == 'r';
                 string_kind = TSTRING;
                 break;
             case 'F':
             case 'f':
-                the_current_tok->raw = Py_TOLOWER(*(tok->start + 1)) == 'r';
+                the_current_tok->raw = Ty_TOLOWER(*(tok->start + 1)) == 'r';
                 break;
             case 'R':
             case 'r':
                 the_current_tok->raw = 1;
-                if (Py_TOLOWER(*(tok->start + 1)) == 't') {
+                if (Ty_TOLOWER(*(tok->start + 1)) == 't') {
                     string_kind = TSTRING;
                 }
                 break;
             default:
-                Py_UNREACHABLE();
+                Ty_UNREACHABLE();
         }
 
         the_current_tok->string_kind = string_kind;
@@ -1372,7 +1372,7 @@ tok_get_normal_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct t
         break;
     }
 
-    if (!Py_UNICODE_ISPRINTABLE(c)) {
+    if (!Ty_UNICODE_ISPRINTABLE(c)) {
         return MAKE_TOKEN(_PyTokenizer_syntaxerror(tok, "invalid non-printable character U+%04X", c));
     }
 
@@ -1429,7 +1429,7 @@ tok_get_fstring_mode(struct tok_state *tok, tokenizer_mode* current_tok, struct 
     }
 
     if (current_tok->last_expr_buffer != NULL) {
-        PyMem_Free(current_tok->last_expr_buffer);
+        TyMem_Free(current_tok->last_expr_buffer);
         current_tok->last_expr_buffer = NULL;
         current_tok->last_expr_size = 0;
         current_tok->last_expr_end = -1;

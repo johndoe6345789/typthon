@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(datetime_date_fromtimestamp__doc__,
 "fromtimestamp($type, timestamp, /)\n"
@@ -20,76 +20,76 @@ PyDoc_STRVAR(datetime_date_fromtimestamp__doc__,
 #define DATETIME_DATE_FROMTIMESTAMP_METHODDEF    \
     {"fromtimestamp", (PyCFunction)datetime_date_fromtimestamp, METH_O|METH_CLASS, datetime_date_fromtimestamp__doc__},
 
-static PyObject *
-datetime_date_fromtimestamp_impl(PyTypeObject *type, PyObject *timestamp);
+static TyObject *
+datetime_date_fromtimestamp_impl(TyTypeObject *type, TyObject *timestamp);
 
-static PyObject *
-datetime_date_fromtimestamp(PyObject *type, PyObject *timestamp)
+static TyObject *
+datetime_date_fromtimestamp(TyObject *type, TyObject *timestamp)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    return_value = datetime_date_fromtimestamp_impl((PyTypeObject *)type, timestamp);
+    return_value = datetime_date_fromtimestamp_impl((TyTypeObject *)type, timestamp);
 
     return return_value;
 }
 
-static PyObject *
-iso_calendar_date_new_impl(PyTypeObject *type, int year, int week,
+static TyObject *
+iso_calendar_date_new_impl(TyTypeObject *type, int year, int week,
                            int weekday);
 
-static PyObject *
-iso_calendar_date_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+iso_calendar_date_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(year), &_Py_ID(week), &_Py_ID(weekday), },
+        .ob_item = { &_Ty_ID(year), &_Ty_ID(week), &_Ty_ID(weekday), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"year", "week", "weekday", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "IsoCalendarDate",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
+    TyObject *argsbuf[3];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
     int year;
     int week;
     int weekday;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
     }
-    year = PyLong_AsInt(fastargs[0]);
-    if (year == -1 && PyErr_Occurred()) {
+    year = TyLong_AsInt(fastargs[0]);
+    if (year == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    week = PyLong_AsInt(fastargs[1]);
-    if (week == -1 && PyErr_Occurred()) {
+    week = TyLong_AsInt(fastargs[1]);
+    if (week == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    weekday = PyLong_AsInt(fastargs[2]);
-    if (weekday == -1 && PyErr_Occurred()) {
+    weekday = TyLong_AsInt(fastargs[2]);
+    if (weekday == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = iso_calendar_date_new_impl(type, year, week, weekday);
@@ -107,48 +107,48 @@ PyDoc_STRVAR(datetime_date_replace__doc__,
 #define DATETIME_DATE_REPLACE_METHODDEF    \
     {"replace", _PyCFunction_CAST(datetime_date_replace), METH_FASTCALL|METH_KEYWORDS, datetime_date_replace__doc__},
 
-static PyObject *
+static TyObject *
 datetime_date_replace_impl(PyDateTime_Date *self, int year, int month,
                            int day);
 
-static PyObject *
-datetime_date_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+datetime_date_replace(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(year), &_Py_ID(month), &_Py_ID(day), },
+        .ob_item = { &_Ty_ID(year), &_Ty_ID(month), &_Ty_ID(day), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"year", "month", "day", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "replace",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int year = GET_YEAR(self);
     int month = GET_MONTH(self);
     int day = GET_DAY(self);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -157,8 +157,8 @@ datetime_date_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs, P
         goto skip_optional_pos;
     }
     if (args[0]) {
-        year = PyLong_AsInt(args[0]);
-        if (year == -1 && PyErr_Occurred()) {
+        year = TyLong_AsInt(args[0]);
+        if (year == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -166,16 +166,16 @@ datetime_date_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs, P
         }
     }
     if (args[1]) {
-        month = PyLong_AsInt(args[1]);
-        if (month == -1 && PyErr_Occurred()) {
+        month = TyLong_AsInt(args[1]);
+        if (month == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    day = PyLong_AsInt(args[2]);
-    if (day == -1 && PyErr_Occurred()) {
+    day = TyLong_AsInt(args[2]);
+    if (day == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -195,52 +195,52 @@ PyDoc_STRVAR(datetime_time_replace__doc__,
 #define DATETIME_TIME_REPLACE_METHODDEF    \
     {"replace", _PyCFunction_CAST(datetime_time_replace), METH_FASTCALL|METH_KEYWORDS, datetime_time_replace__doc__},
 
-static PyObject *
+static TyObject *
 datetime_time_replace_impl(PyDateTime_Time *self, int hour, int minute,
-                           int second, int microsecond, PyObject *tzinfo,
+                           int second, int microsecond, TyObject *tzinfo,
                            int fold);
 
-static PyObject *
-datetime_time_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+datetime_time_replace(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 6
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(hour), &_Py_ID(minute), &_Py_ID(second), &_Py_ID(microsecond), &_Py_ID(tzinfo), &_Py_ID(fold), },
+        .ob_item = { &_Ty_ID(hour), &_Ty_ID(minute), &_Ty_ID(second), &_Ty_ID(microsecond), &_Ty_ID(tzinfo), &_Ty_ID(fold), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"hour", "minute", "second", "microsecond", "tzinfo", "fold", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "replace",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[6];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[6];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int hour = TIME_GET_HOUR(self);
     int minute = TIME_GET_MINUTE(self);
     int second = TIME_GET_SECOND(self);
     int microsecond = TIME_GET_MICROSECOND(self);
-    PyObject *tzinfo = HASTZINFO(self) ? ((PyDateTime_Time *)self)->tzinfo : Py_None;
+    TyObject *tzinfo = HASTZINFO(self) ? ((PyDateTime_Time *)self)->tzinfo : Ty_None;
     int fold = TIME_GET_FOLD(self);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 5, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -249,8 +249,8 @@ datetime_time_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs, P
         goto skip_optional_pos;
     }
     if (args[0]) {
-        hour = PyLong_AsInt(args[0]);
-        if (hour == -1 && PyErr_Occurred()) {
+        hour = TyLong_AsInt(args[0]);
+        if (hour == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -258,8 +258,8 @@ datetime_time_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs, P
         }
     }
     if (args[1]) {
-        minute = PyLong_AsInt(args[1]);
-        if (minute == -1 && PyErr_Occurred()) {
+        minute = TyLong_AsInt(args[1]);
+        if (minute == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -267,8 +267,8 @@ datetime_time_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs, P
         }
     }
     if (args[2]) {
-        second = PyLong_AsInt(args[2]);
-        if (second == -1 && PyErr_Occurred()) {
+        second = TyLong_AsInt(args[2]);
+        if (second == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -276,8 +276,8 @@ datetime_time_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs, P
         }
     }
     if (args[3]) {
-        microsecond = PyLong_AsInt(args[3]);
-        if (microsecond == -1 && PyErr_Occurred()) {
+        microsecond = TyLong_AsInt(args[3]);
+        if (microsecond == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -294,8 +294,8 @@ skip_optional_pos:
     if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    fold = PyLong_AsInt(args[5]);
-    if (fold == -1 && PyErr_Occurred()) {
+    fold = TyLong_AsInt(args[5]);
+    if (fold == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_kwonly:
@@ -319,45 +319,45 @@ PyDoc_STRVAR(datetime_datetime_now__doc__,
 #define DATETIME_DATETIME_NOW_METHODDEF    \
     {"now", _PyCFunction_CAST(datetime_datetime_now), METH_FASTCALL|METH_KEYWORDS|METH_CLASS, datetime_datetime_now__doc__},
 
-static PyObject *
-datetime_datetime_now_impl(PyTypeObject *type, PyObject *tz);
+static TyObject *
+datetime_datetime_now_impl(TyTypeObject *type, TyObject *tz);
 
-static PyObject *
-datetime_datetime_now(PyObject *type, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+datetime_datetime_now(TyObject *type, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(tz), },
+        .ob_item = { &_Ty_ID(tz), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"tz", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "now",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *tz = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *tz = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -367,7 +367,7 @@ datetime_datetime_now(PyObject *type, PyObject *const *args, Py_ssize_t nargs, P
     }
     tz = args[0];
 skip_optional_pos:
-    return_value = datetime_datetime_now_impl((PyTypeObject *)type, tz);
+    return_value = datetime_datetime_now_impl((TyTypeObject *)type, tz);
 
 exit:
     return return_value;
@@ -384,45 +384,45 @@ PyDoc_STRVAR(datetime_datetime_replace__doc__,
 #define DATETIME_DATETIME_REPLACE_METHODDEF    \
     {"replace", _PyCFunction_CAST(datetime_datetime_replace), METH_FASTCALL|METH_KEYWORDS, datetime_datetime_replace__doc__},
 
-static PyObject *
+static TyObject *
 datetime_datetime_replace_impl(PyDateTime_DateTime *self, int year,
                                int month, int day, int hour, int minute,
-                               int second, int microsecond, PyObject *tzinfo,
+                               int second, int microsecond, TyObject *tzinfo,
                                int fold);
 
-static PyObject *
-datetime_datetime_replace(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+datetime_datetime_replace(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 9
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(year), &_Py_ID(month), &_Py_ID(day), &_Py_ID(hour), &_Py_ID(minute), &_Py_ID(second), &_Py_ID(microsecond), &_Py_ID(tzinfo), &_Py_ID(fold), },
+        .ob_item = { &_Ty_ID(year), &_Ty_ID(month), &_Ty_ID(day), &_Ty_ID(hour), &_Ty_ID(minute), &_Ty_ID(second), &_Ty_ID(microsecond), &_Ty_ID(tzinfo), &_Ty_ID(fold), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"year", "month", "day", "hour", "minute", "second", "microsecond", "tzinfo", "fold", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "replace",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[9];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[9];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     int year = GET_YEAR(self);
     int month = GET_MONTH(self);
     int day = GET_DAY(self);
@@ -430,10 +430,10 @@ datetime_datetime_replace(PyObject *self, PyObject *const *args, Py_ssize_t narg
     int minute = DATE_GET_MINUTE(self);
     int second = DATE_GET_SECOND(self);
     int microsecond = DATE_GET_MICROSECOND(self);
-    PyObject *tzinfo = HASTZINFO(self) ? ((PyDateTime_DateTime *)self)->tzinfo : Py_None;
+    TyObject *tzinfo = HASTZINFO(self) ? ((PyDateTime_DateTime *)self)->tzinfo : Ty_None;
     int fold = DATE_GET_FOLD(self);
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 8, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -442,8 +442,8 @@ datetime_datetime_replace(PyObject *self, PyObject *const *args, Py_ssize_t narg
         goto skip_optional_pos;
     }
     if (args[0]) {
-        year = PyLong_AsInt(args[0]);
-        if (year == -1 && PyErr_Occurred()) {
+        year = TyLong_AsInt(args[0]);
+        if (year == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -451,8 +451,8 @@ datetime_datetime_replace(PyObject *self, PyObject *const *args, Py_ssize_t narg
         }
     }
     if (args[1]) {
-        month = PyLong_AsInt(args[1]);
-        if (month == -1 && PyErr_Occurred()) {
+        month = TyLong_AsInt(args[1]);
+        if (month == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -460,8 +460,8 @@ datetime_datetime_replace(PyObject *self, PyObject *const *args, Py_ssize_t narg
         }
     }
     if (args[2]) {
-        day = PyLong_AsInt(args[2]);
-        if (day == -1 && PyErr_Occurred()) {
+        day = TyLong_AsInt(args[2]);
+        if (day == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -469,8 +469,8 @@ datetime_datetime_replace(PyObject *self, PyObject *const *args, Py_ssize_t narg
         }
     }
     if (args[3]) {
-        hour = PyLong_AsInt(args[3]);
-        if (hour == -1 && PyErr_Occurred()) {
+        hour = TyLong_AsInt(args[3]);
+        if (hour == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -478,8 +478,8 @@ datetime_datetime_replace(PyObject *self, PyObject *const *args, Py_ssize_t narg
         }
     }
     if (args[4]) {
-        minute = PyLong_AsInt(args[4]);
-        if (minute == -1 && PyErr_Occurred()) {
+        minute = TyLong_AsInt(args[4]);
+        if (minute == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -487,8 +487,8 @@ datetime_datetime_replace(PyObject *self, PyObject *const *args, Py_ssize_t narg
         }
     }
     if (args[5]) {
-        second = PyLong_AsInt(args[5]);
-        if (second == -1 && PyErr_Occurred()) {
+        second = TyLong_AsInt(args[5]);
+        if (second == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -496,8 +496,8 @@ datetime_datetime_replace(PyObject *self, PyObject *const *args, Py_ssize_t narg
         }
     }
     if (args[6]) {
-        microsecond = PyLong_AsInt(args[6]);
-        if (microsecond == -1 && PyErr_Occurred()) {
+        microsecond = TyLong_AsInt(args[6]);
+        if (microsecond == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -514,8 +514,8 @@ skip_optional_pos:
     if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    fold = PyLong_AsInt(args[8]);
-    if (fold == -1 && PyErr_Occurred()) {
+    fold = TyLong_AsInt(args[8]);
+    if (fold == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_kwonly:

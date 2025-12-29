@@ -133,7 +133,7 @@ static uint64_t GetElfMachineArchitecture(void) {
 #elif defined(__riscv)
     return EM_RISCV;
 #else
-    Py_UNREACHABLE();  // Unsupported architecture - should never reach here
+    Ty_UNREACHABLE();  // Unsupported architecture - should never reach here
     return 0;
 #endif
 }
@@ -262,7 +262,7 @@ static const intptr_t nanoseconds_per_second = 1000000000;
 static int64_t get_current_monotonic_ticks(void) {
     struct timespec ts;
     if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
-        Py_UNREACHABLE();  // Should never fail on supported systems
+        Ty_UNREACHABLE();  // Should never fail on supported systems
         return 0;
     }
 
@@ -285,7 +285,7 @@ static int64_t get_current_monotonic_ticks(void) {
 static int64_t get_current_time_microseconds(void) {
     struct timeval tv;
     if (gettimeofday(&tv, NULL) < 0) {
-        Py_UNREACHABLE();  // Should never fail on supported systems
+        Ty_UNREACHABLE();  // Should never fail on supported systems
         return 0;
     }
     return ((int64_t)(tv.tv_sec) * 1000000) + tv.tv_usec;
@@ -347,7 +347,7 @@ static void perf_map_jit_write_fully(const void* buffer, size_t size) {
     while (size > 0) {
         const size_t written = fwrite(ptr, 1, size, out_file);
         if (written == 0) {
-            Py_UNREACHABLE();  // Write failure - should be very rare
+            Ty_UNREACHABLE();  // Write failure - should be very rare
             break;
         }
         size -= written;
@@ -663,10 +663,10 @@ static void elf_init_ehframe(ELFObjectContext* ctx);
  */
 static size_t calculate_eh_frame_size(void) {
     /* Calculate the EH frame size for the trampoline function */
-    extern void *_Py_trampoline_func_start;
-    extern void *_Py_trampoline_func_end;
+    extern void *_Ty_trampoline_func_start;
+    extern void *_Ty_trampoline_func_end;
 
-    size_t code_size = (char*)&_Py_trampoline_func_end - (char*)&_Py_trampoline_func_start;
+    size_t code_size = (char*)&_Ty_trampoline_func_end - (char*)&_Ty_trampoline_func_start;
 
     ELFObjectContext ctx;
     char buffer[1024];  // Buffer for DWARF data (1KB should be sufficient)
@@ -697,8 +697,8 @@ static void elf_init_ehframe(ELFObjectContext* ctx) {
     * 1. Create a trampoline source file (e.g., `trampoline.c`):
     *
     *      #include <Python.h>
-    *      typedef PyObject* (*py_evaluator)(void*, void*, int);
-    *      PyObject* trampoline(void *ts, void *f, int throwflag, py_evaluator evaluator) {
+    *      typedef TyObject* (*py_evaluator)(void*, void*, int);
+    *      TyObject* trampoline(void *ts, void *f, int throwflag, py_evaluator evaluator) {
     *          return evaluator(ts, f, throwflag);
     *      }
     *
@@ -1150,12 +1150,12 @@ static void perf_map_jit_write_entry(void *state, const void *code_addr,
      */
     const char *entry = "";
     if (co->co_qualname != NULL) {
-        entry = PyUnicode_AsUTF8(co->co_qualname);
+        entry = TyUnicode_AsUTF8(co->co_qualname);
     }
 
     const char *filename = "";
     if (co->co_filename != NULL) {
-        filename = PyUnicode_AsUTF8(co->co_filename);
+        filename = TyUnicode_AsUTF8(co->co_filename);
     }
 
     /*
@@ -1352,7 +1352,7 @@ static int perf_map_jit_fini(void* state) {
  *
  * Used by: Python's _PyPerf_Callbacks system in pycore_ceval.h
  */
-_PyPerf_Callbacks _Py_perfmap_jit_callbacks = {
+_PyPerf_Callbacks _Ty_perfmap_jit_callbacks = {
     &perf_map_jit_init,        // Initialization function
     &perf_map_jit_write_entry, // Event writing function
     &perf_map_jit_fini,        // Cleanup function

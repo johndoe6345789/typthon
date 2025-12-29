@@ -1,68 +1,68 @@
 /* Iterator objects */
 
 #include "Python.h"
-#include "pycore_abstract.h"      // _PyObject_HasLen()
-#include "pycore_call.h"          // _PyObject_CallNoArgs()
-#include "pycore_ceval.h"         // _PyEval_GetBuiltin()
+#include "pycore_abstract.h"      // _TyObject_HasLen()
+#include "pycore_call.h"          // _TyObject_CallNoArgs()
+#include "pycore_ceval.h"         // _TyEval_GetBuiltin()
 #include "pycore_genobject.h"     // _PyCoro_GetAwaitableIter()
-#include "pycore_object.h"        // _PyObject_GC_TRACK()
+#include "pycore_object.h"        // _TyObject_GC_TRACK()
 
 
 typedef struct {
     PyObject_HEAD
-    Py_ssize_t it_index;
-    PyObject *it_seq; /* Set to NULL when iterator is exhausted */
+    Ty_ssize_t it_index;
+    TyObject *it_seq; /* Set to NULL when iterator is exhausted */
 } seqiterobject;
 
-PyObject *
-PySeqIter_New(PyObject *seq)
+TyObject *
+TySeqIter_New(TyObject *seq)
 {
     seqiterobject *it;
 
     if (!PySequence_Check(seq)) {
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         return NULL;
     }
-    it = PyObject_GC_New(seqiterobject, &PySeqIter_Type);
+    it = PyObject_GC_New(seqiterobject, &TySeqIter_Type);
     if (it == NULL)
         return NULL;
     it->it_index = 0;
-    it->it_seq = Py_NewRef(seq);
-    _PyObject_GC_TRACK(it);
-    return (PyObject *)it;
+    it->it_seq = Ty_NewRef(seq);
+    _TyObject_GC_TRACK(it);
+    return (TyObject *)it;
 }
 
 static void
-iter_dealloc(PyObject *op)
+iter_dealloc(TyObject *op)
 {
     seqiterobject *it = (seqiterobject*)op;
-    _PyObject_GC_UNTRACK(it);
-    Py_XDECREF(it->it_seq);
+    _TyObject_GC_UNTRACK(it);
+    Ty_XDECREF(it->it_seq);
     PyObject_GC_Del(it);
 }
 
 static int
-iter_traverse(PyObject *op, visitproc visit, void *arg)
+iter_traverse(TyObject *op, visitproc visit, void *arg)
 {
     seqiterobject *it = (seqiterobject*)op;
-    Py_VISIT(it->it_seq);
+    Ty_VISIT(it->it_seq);
     return 0;
 }
 
-static PyObject *
-iter_iternext(PyObject *iterator)
+static TyObject *
+iter_iternext(TyObject *iterator)
 {
     seqiterobject *it;
-    PyObject *seq;
-    PyObject *result;
+    TyObject *seq;
+    TyObject *result;
 
-    assert(PySeqIter_Check(iterator));
+    assert(TySeqIter_Check(iterator));
     it = (seqiterobject *)iterator;
     seq = it->it_seq;
     if (seq == NULL)
         return NULL;
     if (it->it_index == PY_SSIZE_T_MAX) {
-        PyErr_SetString(PyExc_OverflowError,
+        TyErr_SetString(TyExc_OverflowError,
                         "iter index too large");
         return NULL;
     }
@@ -72,84 +72,84 @@ iter_iternext(PyObject *iterator)
         it->it_index++;
         return result;
     }
-    if (PyErr_ExceptionMatches(PyExc_IndexError) ||
-        PyErr_ExceptionMatches(PyExc_StopIteration))
+    if (TyErr_ExceptionMatches(TyExc_IndexError) ||
+        TyErr_ExceptionMatches(TyExc_StopIteration))
     {
-        PyErr_Clear();
+        TyErr_Clear();
         it->it_seq = NULL;
-        Py_DECREF(seq);
+        Ty_DECREF(seq);
     }
     return NULL;
 }
 
-static PyObject *
-iter_len(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+iter_len(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     seqiterobject *it = (seqiterobject*)op;
-    Py_ssize_t seqsize, len;
+    Ty_ssize_t seqsize, len;
 
     if (it->it_seq) {
-        if (_PyObject_HasLen(it->it_seq)) {
+        if (_TyObject_HasLen(it->it_seq)) {
             seqsize = PySequence_Size(it->it_seq);
             if (seqsize == -1)
                 return NULL;
         }
         else {
-            Py_RETURN_NOTIMPLEMENTED;
+            Ty_RETURN_NOTIMPLEMENTED;
         }
         len = seqsize - it->it_index;
         if (len >= 0)
-            return PyLong_FromSsize_t(len);
+            return TyLong_FromSsize_t(len);
     }
-    return PyLong_FromLong(0);
+    return TyLong_FromLong(0);
 }
 
 PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
-static PyObject *
-iter_reduce(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+iter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     seqiterobject *it = (seqiterobject*)op;
-    PyObject *iter = _PyEval_GetBuiltin(&_Py_ID(iter));
+    TyObject *iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
 
-    /* _PyEval_GetBuiltin can invoke arbitrary code,
+    /* _TyEval_GetBuiltin can invoke arbitrary code,
      * call must be before access of iterator pointers.
      * see issue #101765 */
 
     if (it->it_seq != NULL)
-        return Py_BuildValue("N(O)n", iter, it->it_seq, it->it_index);
+        return Ty_BuildValue("N(O)n", iter, it->it_seq, it->it_index);
     else
-        return Py_BuildValue("N(())", iter);
+        return Ty_BuildValue("N(())", iter);
 }
 
 PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
-static PyObject *
-iter_setstate(PyObject *op, PyObject *state)
+static TyObject *
+iter_setstate(TyObject *op, TyObject *state)
 {
     seqiterobject *it = (seqiterobject*)op;
-    Py_ssize_t index = PyLong_AsSsize_t(state);
-    if (index == -1 && PyErr_Occurred())
+    Ty_ssize_t index = TyLong_AsSsize_t(state);
+    if (index == -1 && TyErr_Occurred())
         return NULL;
     if (it->it_seq != NULL) {
         if (index < 0)
             index = 0;
         it->it_index = index;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
-static PyMethodDef seqiter_methods[] = {
+static TyMethodDef seqiter_methods[] = {
     {"__length_hint__", iter_len, METH_NOARGS, length_hint_doc},
     {"__reduce__", iter_reduce, METH_NOARGS, reduce_doc},
     {"__setstate__", iter_setstate, METH_O, setstate_doc},
     {NULL,              NULL}           /* sentinel */
 };
 
-PyTypeObject PySeqIter_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject TySeqIter_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "iterator",                                 /* tp_name */
     sizeof(seqiterobject),                      /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -169,7 +169,7 @@ PyTypeObject PySeqIter_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,    /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,    /* tp_flags */
     0,                                          /* tp_doc */
     iter_traverse,                              /* tp_traverse */
     0,                                          /* tp_clear */
@@ -185,97 +185,97 @@ PyTypeObject PySeqIter_Type = {
 
 typedef struct {
     PyObject_HEAD
-    PyObject *it_callable; /* Set to NULL when iterator is exhausted */
-    PyObject *it_sentinel; /* Set to NULL when iterator is exhausted */
+    TyObject *it_callable; /* Set to NULL when iterator is exhausted */
+    TyObject *it_sentinel; /* Set to NULL when iterator is exhausted */
 } calliterobject;
 
-PyObject *
-PyCallIter_New(PyObject *callable, PyObject *sentinel)
+TyObject *
+TyCallIter_New(TyObject *callable, TyObject *sentinel)
 {
     calliterobject *it;
-    it = PyObject_GC_New(calliterobject, &PyCallIter_Type);
+    it = PyObject_GC_New(calliterobject, &TyCallIter_Type);
     if (it == NULL)
         return NULL;
-    it->it_callable = Py_NewRef(callable);
-    it->it_sentinel = Py_NewRef(sentinel);
-    _PyObject_GC_TRACK(it);
-    return (PyObject *)it;
+    it->it_callable = Ty_NewRef(callable);
+    it->it_sentinel = Ty_NewRef(sentinel);
+    _TyObject_GC_TRACK(it);
+    return (TyObject *)it;
 }
 static void
-calliter_dealloc(PyObject *op)
+calliter_dealloc(TyObject *op)
 {
     calliterobject *it = (calliterobject*)op;
-    _PyObject_GC_UNTRACK(it);
-    Py_XDECREF(it->it_callable);
-    Py_XDECREF(it->it_sentinel);
+    _TyObject_GC_UNTRACK(it);
+    Ty_XDECREF(it->it_callable);
+    Ty_XDECREF(it->it_sentinel);
     PyObject_GC_Del(it);
 }
 
 static int
-calliter_traverse(PyObject *op, visitproc visit, void *arg)
+calliter_traverse(TyObject *op, visitproc visit, void *arg)
 {
     calliterobject *it = (calliterobject*)op;
-    Py_VISIT(it->it_callable);
-    Py_VISIT(it->it_sentinel);
+    Ty_VISIT(it->it_callable);
+    Ty_VISIT(it->it_sentinel);
     return 0;
 }
 
-static PyObject *
-calliter_iternext(PyObject *op)
+static TyObject *
+calliter_iternext(TyObject *op)
 {
     calliterobject *it = (calliterobject*)op;
-    PyObject *result;
+    TyObject *result;
 
     if (it->it_callable == NULL) {
         return NULL;
     }
 
-    result = _PyObject_CallNoArgs(it->it_callable);
+    result = _TyObject_CallNoArgs(it->it_callable);
     if (result != NULL && it->it_sentinel != NULL){
         int ok;
 
-        ok = PyObject_RichCompareBool(it->it_sentinel, result, Py_EQ);
+        ok = PyObject_RichCompareBool(it->it_sentinel, result, Ty_EQ);
         if (ok == 0) {
             return result; /* Common case, fast path */
         }
 
         if (ok > 0) {
-            Py_CLEAR(it->it_callable);
-            Py_CLEAR(it->it_sentinel);
+            Ty_CLEAR(it->it_callable);
+            Ty_CLEAR(it->it_sentinel);
         }
     }
-    else if (PyErr_ExceptionMatches(PyExc_StopIteration)) {
-        PyErr_Clear();
-        Py_CLEAR(it->it_callable);
-        Py_CLEAR(it->it_sentinel);
+    else if (TyErr_ExceptionMatches(TyExc_StopIteration)) {
+        TyErr_Clear();
+        Ty_CLEAR(it->it_callable);
+        Ty_CLEAR(it->it_sentinel);
     }
-    Py_XDECREF(result);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-static PyObject *
-calliter_reduce(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+calliter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     calliterobject *it = (calliterobject*)op;
-    PyObject *iter = _PyEval_GetBuiltin(&_Py_ID(iter));
+    TyObject *iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
 
-    /* _PyEval_GetBuiltin can invoke arbitrary code,
+    /* _TyEval_GetBuiltin can invoke arbitrary code,
      * call must be before access of iterator pointers.
      * see issue #101765 */
 
     if (it->it_callable != NULL && it->it_sentinel != NULL)
-        return Py_BuildValue("N(OO)", iter, it->it_callable, it->it_sentinel);
+        return Ty_BuildValue("N(OO)", iter, it->it_callable, it->it_sentinel);
     else
-        return Py_BuildValue("N(())", iter);
+        return Ty_BuildValue("N(())", iter);
 }
 
-static PyMethodDef calliter_methods[] = {
+static TyMethodDef calliter_methods[] = {
     {"__reduce__", calliter_reduce, METH_NOARGS, reduce_doc},
     {NULL,              NULL}           /* sentinel */
 };
 
-PyTypeObject PyCallIter_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject TyCallIter_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "callable_iterator",                        /* tp_name */
     sizeof(calliterobject),                     /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -295,7 +295,7 @@ PyTypeObject PyCallIter_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,    /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,    /* tp_flags */
     0,                                          /* tp_doc */
     calliter_traverse,                          /* tp_traverse */
     0,                                          /* tp_clear */
@@ -311,63 +311,63 @@ PyTypeObject PyCallIter_Type = {
 
 typedef struct {
     PyObject_HEAD
-    PyObject *wrapped;
-    PyObject *default_value;
+    TyObject *wrapped;
+    TyObject *default_value;
 } anextawaitableobject;
 
 #define anextawaitableobject_CAST(op)   ((anextawaitableobject *)(op))
 
 static void
-anextawaitable_dealloc(PyObject *op)
+anextawaitable_dealloc(TyObject *op)
 {
     anextawaitableobject *obj = anextawaitableobject_CAST(op);
-    _PyObject_GC_UNTRACK(obj);
-    Py_XDECREF(obj->wrapped);
-    Py_XDECREF(obj->default_value);
+    _TyObject_GC_UNTRACK(obj);
+    Ty_XDECREF(obj->wrapped);
+    Ty_XDECREF(obj->default_value);
     PyObject_GC_Del(obj);
 }
 
 static int
-anextawaitable_traverse(PyObject *op, visitproc visit, void *arg)
+anextawaitable_traverse(TyObject *op, visitproc visit, void *arg)
 {
     anextawaitableobject *obj = anextawaitableobject_CAST(op);
-    Py_VISIT(obj->wrapped);
-    Py_VISIT(obj->default_value);
+    Ty_VISIT(obj->wrapped);
+    Ty_VISIT(obj->default_value);
     return 0;
 }
 
-static PyObject *
+static TyObject *
 anextawaitable_getiter(anextawaitableobject *obj)
 {
     assert(obj->wrapped != NULL);
-    PyObject *awaitable = _PyCoro_GetAwaitableIter(obj->wrapped);
+    TyObject *awaitable = _PyCoro_GetAwaitableIter(obj->wrapped);
     if (awaitable == NULL) {
         return NULL;
     }
-    if (Py_TYPE(awaitable)->tp_iternext == NULL) {
+    if (Ty_TYPE(awaitable)->tp_iternext == NULL) {
         /* _PyCoro_GetAwaitableIter returns a Coroutine, a Generator,
          * or an iterator. Of these, only coroutines lack tp_iternext.
          */
-        assert(PyCoro_CheckExact(awaitable));
-        unaryfunc getter = Py_TYPE(awaitable)->tp_as_async->am_await;
-        PyObject *new_awaitable = getter(awaitable);
+        assert(TyCoro_CheckExact(awaitable));
+        unaryfunc getter = Ty_TYPE(awaitable)->tp_as_async->am_await;
+        TyObject *new_awaitable = getter(awaitable);
         if (new_awaitable == NULL) {
-            Py_DECREF(awaitable);
+            Ty_DECREF(awaitable);
             return NULL;
         }
-        Py_SETREF(awaitable, new_awaitable);
-        if (!PyIter_Check(awaitable)) {
-            PyErr_SetString(PyExc_TypeError,
+        Ty_SETREF(awaitable, new_awaitable);
+        if (!TyIter_Check(awaitable)) {
+            TyErr_SetString(TyExc_TypeError,
                             "__await__ returned a non-iterable");
-            Py_DECREF(awaitable);
+            Ty_DECREF(awaitable);
             return NULL;
         }
     }
     return awaitable;
 }
 
-static PyObject *
-anextawaitable_iternext(PyObject *op)
+static TyObject *
+anextawaitable_iternext(TyObject *op)
 {
     /* Consider the following class:
      *
@@ -390,70 +390,70 @@ anextawaitable_iternext(PyObject *op)
      * gen.__anext__().__next__()
      */
     anextawaitableobject *obj = anextawaitableobject_CAST(op);
-    PyObject *awaitable = anextawaitable_getiter(obj);
+    TyObject *awaitable = anextawaitable_getiter(obj);
     if (awaitable == NULL) {
         return NULL;
     }
-    PyObject *result = (*Py_TYPE(awaitable)->tp_iternext)(awaitable);
-    Py_DECREF(awaitable);
+    TyObject *result = (*Ty_TYPE(awaitable)->tp_iternext)(awaitable);
+    Ty_DECREF(awaitable);
     if (result != NULL) {
         return result;
     }
-    if (PyErr_ExceptionMatches(PyExc_StopAsyncIteration)) {
-        PyErr_Clear();
-        _PyGen_SetStopIterationValue(obj->default_value);
+    if (TyErr_ExceptionMatches(TyExc_StopAsyncIteration)) {
+        TyErr_Clear();
+        _TyGen_SetStopIterationValue(obj->default_value);
     }
     return NULL;
 }
 
 
-static PyObject *
-anextawaitable_proxy(anextawaitableobject *obj, char *meth, PyObject *arg)
+static TyObject *
+anextawaitable_proxy(anextawaitableobject *obj, char *meth, TyObject *arg)
 {
-    PyObject *awaitable = anextawaitable_getiter(obj);
+    TyObject *awaitable = anextawaitable_getiter(obj);
     if (awaitable == NULL) {
         return NULL;
     }
     // When specified, 'arg' may be a tuple (if coming from a METH_VARARGS
     // method) or a single object (if coming from a METH_O method).
-    PyObject *ret = arg == NULL
+    TyObject *ret = arg == NULL
         ? PyObject_CallMethod(awaitable, meth, NULL)
         : PyObject_CallMethod(awaitable, meth, "O", arg);
-    Py_DECREF(awaitable);
+    Ty_DECREF(awaitable);
     if (ret != NULL) {
         return ret;
     }
-    if (PyErr_ExceptionMatches(PyExc_StopAsyncIteration)) {
+    if (TyErr_ExceptionMatches(TyExc_StopAsyncIteration)) {
         /* `anextawaitableobject` is only used by `anext()` when
          * a default value is provided. So when we have a StopAsyncIteration
          * exception we replace it with a `StopIteration(default)`, as if
          * it was the return value of `__anext__()` coroutine.
          */
-        PyErr_Clear();
-        _PyGen_SetStopIterationValue(obj->default_value);
+        TyErr_Clear();
+        _TyGen_SetStopIterationValue(obj->default_value);
     }
     return NULL;
 }
 
 
-static PyObject *
-anextawaitable_send(PyObject *op, PyObject *arg)
+static TyObject *
+anextawaitable_send(TyObject *op, TyObject *arg)
 {
     anextawaitableobject *obj = anextawaitableobject_CAST(op);
     return anextawaitable_proxy(obj, "send", arg);
 }
 
 
-static PyObject *
-anextawaitable_throw(PyObject *op, PyObject *args)
+static TyObject *
+anextawaitable_throw(TyObject *op, TyObject *args)
 {
     anextawaitableobject *obj = anextawaitableobject_CAST(op);
     return anextawaitable_proxy(obj, "throw", args);
 }
 
 
-static PyObject *
-anextawaitable_close(PyObject *op, PyObject *Py_UNUSED(dummy))
+static TyObject *
+anextawaitable_close(TyObject *op, TyObject *Ty_UNUSED(dummy))
 {
     anextawaitableobject *obj = anextawaitableobject_CAST(op);
     return anextawaitable_proxy(obj, "close", NULL);
@@ -479,7 +479,7 @@ PyDoc_STRVAR(close_doc,
 "close() -> raise GeneratorExit inside generator.");
 
 
-static PyMethodDef anextawaitable_methods[] = {
+static TyMethodDef anextawaitable_methods[] = {
     {"send", anextawaitable_send, METH_O, send_doc},
     {"throw", anextawaitable_throw, METH_VARARGS, throw_doc},
     {"close", anextawaitable_close, METH_NOARGS, close_doc},
@@ -494,8 +494,8 @@ static PyAsyncMethods anextawaitable_as_async = {
     0,                                          /* am_send  */
 };
 
-PyTypeObject _PyAnextAwaitable_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject _PyAnextAwaitable_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "anext_awaitable",                          /* tp_name */
     sizeof(anextawaitableobject),               /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -515,7 +515,7 @@ PyTypeObject _PyAnextAwaitable_Type = {
     PyObject_GenericGetAttr,                    /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,    /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,    /* tp_flags */
     0,                                          /* tp_doc */
     anextawaitable_traverse,                    /* tp_traverse */
     0,                                          /* tp_clear */
@@ -526,16 +526,16 @@ PyTypeObject _PyAnextAwaitable_Type = {
     anextawaitable_methods,                     /* tp_methods */
 };
 
-PyObject *
-PyAnextAwaitable_New(PyObject *awaitable, PyObject *default_value)
+TyObject *
+PyAnextAwaitable_New(TyObject *awaitable, TyObject *default_value)
 {
     anextawaitableobject *anext = PyObject_GC_New(
             anextawaitableobject, &_PyAnextAwaitable_Type);
     if (anext == NULL) {
         return NULL;
     }
-    anext->wrapped = Py_NewRef(awaitable);
-    anext->default_value = Py_NewRef(default_value);
-    _PyObject_GC_TRACK(anext);
-    return (PyObject *)anext;
+    anext->wrapped = Ty_NewRef(awaitable);
+    anext->default_value = Ty_NewRef(default_value);
+    _TyObject_GC_TRACK(anext);
+    return (TyObject *)anext;
 }

@@ -2,47 +2,47 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(_testcapi_float_pack__doc__,
 "float_pack($module, size, d, le, /)\n"
 "--\n"
 "\n"
-"Test PyFloat_Pack2(), PyFloat_Pack4() and PyFloat_Pack8()");
+"Test TyFloat_Pack2(), TyFloat_Pack4() and TyFloat_Pack8()");
 
 #define _TESTCAPI_FLOAT_PACK_METHODDEF    \
     {"float_pack", _PyCFunction_CAST(_testcapi_float_pack), METH_FASTCALL, _testcapi_float_pack__doc__},
 
-static PyObject *
-_testcapi_float_pack_impl(PyObject *module, int size, double d, int le);
+static TyObject *
+_testcapi_float_pack_impl(TyObject *module, int size, double d, int le);
 
-static PyObject *
-_testcapi_float_pack(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_float_pack(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int size;
     double d;
     int le;
 
-    if (!_PyArg_CheckPositional("float_pack", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("float_pack", nargs, 3, 3)) {
         goto exit;
     }
-    size = PyLong_AsInt(args[0]);
-    if (size == -1 && PyErr_Occurred()) {
+    size = TyLong_AsInt(args[0]);
+    if (size == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (PyFloat_CheckExact(args[1])) {
-        d = PyFloat_AS_DOUBLE(args[1]);
+    if (TyFloat_CheckExact(args[1])) {
+        d = TyFloat_AS_DOUBLE(args[1]);
     }
     else
     {
-        d = PyFloat_AsDouble(args[1]);
-        if (d == -1.0 && PyErr_Occurred()) {
+        d = TyFloat_AsDouble(args[1]);
+        if (d == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
-    le = PyLong_AsInt(args[2]);
-    if (le == -1 && PyErr_Occurred()) {
+    le = TyLong_AsInt(args[2]);
+    if (le == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _testcapi_float_pack_impl(module, size, d, le);
@@ -55,24 +55,24 @@ PyDoc_STRVAR(_testcapi_float_unpack__doc__,
 "float_unpack($module, data, le, /)\n"
 "--\n"
 "\n"
-"Test PyFloat_Unpack2(), PyFloat_Unpack4() and PyFloat_Unpack8()");
+"Test TyFloat_Unpack2(), TyFloat_Unpack4() and TyFloat_Unpack8()");
 
 #define _TESTCAPI_FLOAT_UNPACK_METHODDEF    \
     {"float_unpack", _PyCFunction_CAST(_testcapi_float_unpack), METH_FASTCALL, _testcapi_float_unpack__doc__},
 
-static PyObject *
-_testcapi_float_unpack_impl(PyObject *module, const char *data,
-                            Py_ssize_t data_length, int le);
+static TyObject *
+_testcapi_float_unpack_impl(TyObject *module, const char *data,
+                            Ty_ssize_t data_length, int le);
 
-static PyObject *
-_testcapi_float_unpack(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testcapi_float_unpack(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     const char *data;
-    Py_ssize_t data_length;
+    Ty_ssize_t data_length;
     int le;
 
-    if (!_PyArg_ParseStack(args, nargs, "y#i:float_unpack",
+    if (!_TyArg_ParseStack(args, nargs, "y#i:float_unpack",
         &data, &data_length, &le)) {
         goto exit;
     }

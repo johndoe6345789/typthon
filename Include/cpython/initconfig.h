@@ -1,6 +1,6 @@
-#ifndef Py_PYCORECONFIG_H
-#define Py_PYCORECONFIG_H
-#ifndef Py_LIMITED_API
+#ifndef Ty_PYCORECONFIG_H
+#define Ty_PYCORECONFIG_H
+#ifndef Ty_LIMITED_API
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -9,36 +9,36 @@ extern "C" {
 
 typedef struct {
     enum {
-        _PyStatus_TYPE_OK=0,
-        _PyStatus_TYPE_ERROR=1,
-        _PyStatus_TYPE_EXIT=2
+        _TyStatus_TYPE_OK=0,
+        _TyStatus_TYPE_ERROR=1,
+        _TyStatus_TYPE_EXIT=2
     } _type;
     const char *func;
     const char *err_msg;
     int exitcode;
 } PyStatus;
 
-PyAPI_FUNC(PyStatus) PyStatus_Ok(void);
-PyAPI_FUNC(PyStatus) PyStatus_Error(const char *err_msg);
-PyAPI_FUNC(PyStatus) PyStatus_NoMemory(void);
-PyAPI_FUNC(PyStatus) PyStatus_Exit(int exitcode);
-PyAPI_FUNC(int) PyStatus_IsError(PyStatus err);
-PyAPI_FUNC(int) PyStatus_IsExit(PyStatus err);
-PyAPI_FUNC(int) PyStatus_Exception(PyStatus err);
+PyAPI_FUNC(PyStatus) TyStatus_Ok(void);
+PyAPI_FUNC(PyStatus) TyStatus_Error(const char *err_msg);
+PyAPI_FUNC(PyStatus) TyStatus_NoMemory(void);
+PyAPI_FUNC(PyStatus) TyStatus_Exit(int exitcode);
+PyAPI_FUNC(int) TyStatus_IsError(PyStatus err);
+PyAPI_FUNC(int) TyStatus_IsExit(PyStatus err);
+PyAPI_FUNC(int) TyStatus_Exception(PyStatus err);
 
 /* --- PyWideStringList ------------------------------------------------ */
 
 typedef struct {
     /* If length is greater than zero, items must be non-NULL
        and all items strings must be non-NULL */
-    Py_ssize_t length;
+    Ty_ssize_t length;
     wchar_t **items;
 } PyWideStringList;
 
-PyAPI_FUNC(PyStatus) PyWideStringList_Append(PyWideStringList *list,
+PyAPI_FUNC(PyStatus) TyWideStringList_Append(PyWideStringList *list,
     const wchar_t *item);
-PyAPI_FUNC(PyStatus) PyWideStringList_Insert(PyWideStringList *list,
-    Py_ssize_t index,
+PyAPI_FUNC(PyStatus) TyWideStringList_Insert(PyWideStringList *list,
+    Ty_ssize_t index,
     const wchar_t *item);
 
 
@@ -47,7 +47,7 @@ PyAPI_FUNC(PyStatus) PyWideStringList_Insert(PyWideStringList *list,
 typedef struct PyPreConfig {
     int _config_init;     /* _PyConfigInitEnum value */
 
-    /* Parse Py_PreInitializeFromBytesArgs() arguments?
+    /* Parse Ty_PreInitializeFromBytesArgs() arguments?
        See PyConfig.parse_argv */
     int parse_argv;
 
@@ -55,12 +55,12 @@ typedef struct PyPreConfig {
        neither the script's directory nor the user's site-packages directory.
 
        Set to 1 by the -I command line option. If set to -1 (default), inherit
-       Py_IsolatedFlag value. */
+       Ty_IsolatedFlag value. */
     int isolated;
 
     /* If greater than 0: use environment variables.
        Set to 0 by -E command line option. If set to -1 (default), it is
-       set to !Py_IgnoreEnvironmentFlag. */
+       set to !Ty_IgnoreEnvironmentFlag. */
     int use_environment;
 
     /* Set the LC_CTYPE locale to the user preferred locale? If equals to 0,
@@ -94,7 +94,7 @@ typedef struct PyPreConfig {
 
        Set to 1 if the PYTHONLEGACYWINDOWSFSENCODING environment variable is
        set to a non-empty string. If set to -1 (default), inherit
-       Py_LegacyWindowsFSEncodingFlag value.
+       Ty_LegacyWindowsFSEncodingFlag value.
 
        See PEP 529 for more details. */
     int legacy_windows_fs_encoding;
@@ -110,7 +110,7 @@ typedef struct PyPreConfig {
        Set to 0 by "-X utf8=0" and PYTHONUTF8=0.
 
        If equals to -1, it is set to 1 if the LC_CTYPE locale is "C" or
-       "POSIX", otherwise it is set to 0. Inherit Py_UTF8Mode value value. */
+       "POSIX", otherwise it is set to 0. Inherit Ty_UTF8Mode value value. */
     int utf8_mode;
 
     /* If non-zero, enable the Python Development Mode.
@@ -124,8 +124,8 @@ typedef struct PyPreConfig {
     int allocator;
 } PyPreConfig;
 
-PyAPI_FUNC(void) PyPreConfig_InitPythonConfig(PyPreConfig *config);
-PyAPI_FUNC(void) PyPreConfig_InitIsolatedConfig(PyPreConfig *config);
+PyAPI_FUNC(void) TyPreConfig_InitPythonConfig(PyPreConfig *config);
+PyAPI_FUNC(void) TyPreConfig_InitIsolatedConfig(PyPreConfig *config);
 
 
 /* --- PyConfig ---------------------------------------------- */
@@ -187,7 +187,7 @@ typedef struct PyConfig {
 #endif
 
     int cpu_count;
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     int enable_gil;
     int tlbc_enabled;
 #endif
@@ -210,13 +210,13 @@ typedef struct PyConfig {
     wchar_t *exec_prefix;
     wchar_t *base_exec_prefix;
 
-    /* --- Parameter only used by Py_Main() ---------- */
+    /* --- Parameter only used by Ty_Main() ---------- */
     int skip_source_first_line;
     wchar_t *run_command;
     wchar_t *run_module;
     wchar_t *run_filename;
 
-    /* --- Set by Py_Main() -------------------------- */
+    /* --- Set by Ty_Main() -------------------------- */
     wchar_t *sys_path_0;
 
     /* --- Private fields ---------------------------- */
@@ -231,48 +231,48 @@ typedef struct PyConfig {
     // If non-zero, we believe we're running from a source tree.
     int _is_python_build;
 
-#ifdef Py_STATS
+#ifdef Ty_STATS
     // If non-zero, turns on statistics gathering.
     int _pystats;
 #endif
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     // If not empty, import a non-__main__ module before site.py is executed.
     // PYTHON_PRESITE=package.module or -X presite=package.module
     wchar_t *run_presite;
 #endif
 } PyConfig;
 
-PyAPI_FUNC(void) PyConfig_InitPythonConfig(PyConfig *config);
-PyAPI_FUNC(void) PyConfig_InitIsolatedConfig(PyConfig *config);
-PyAPI_FUNC(void) PyConfig_Clear(PyConfig *);
-PyAPI_FUNC(PyStatus) PyConfig_SetString(
+PyAPI_FUNC(void) TyConfig_InitPythonConfig(PyConfig *config);
+PyAPI_FUNC(void) TyConfig_InitIsolatedConfig(PyConfig *config);
+PyAPI_FUNC(void) TyConfig_Clear(PyConfig *);
+PyAPI_FUNC(PyStatus) TyConfig_SetString(
     PyConfig *config,
     wchar_t **config_str,
     const wchar_t *str);
-PyAPI_FUNC(PyStatus) PyConfig_SetBytesString(
+PyAPI_FUNC(PyStatus) TyConfig_SetBytesString(
     PyConfig *config,
     wchar_t **config_str,
     const char *str);
-PyAPI_FUNC(PyStatus) PyConfig_Read(PyConfig *config);
-PyAPI_FUNC(PyStatus) PyConfig_SetBytesArgv(
+PyAPI_FUNC(PyStatus) TyConfig_Read(PyConfig *config);
+PyAPI_FUNC(PyStatus) TyConfig_SetBytesArgv(
     PyConfig *config,
-    Py_ssize_t argc,
+    Ty_ssize_t argc,
     char * const *argv);
-PyAPI_FUNC(PyStatus) PyConfig_SetArgv(PyConfig *config,
-    Py_ssize_t argc,
+PyAPI_FUNC(PyStatus) TyConfig_SetArgv(PyConfig *config,
+    Ty_ssize_t argc,
     wchar_t * const *argv);
-PyAPI_FUNC(PyStatus) PyConfig_SetWideStringList(PyConfig *config,
+PyAPI_FUNC(PyStatus) TyConfig_SetWideStringList(PyConfig *config,
     PyWideStringList *list,
-    Py_ssize_t length, wchar_t **items);
+    Ty_ssize_t length, wchar_t **items);
 
 
-/* --- PyConfig_Get() ----------------------------------------- */
+/* --- TyConfig_Get() ----------------------------------------- */
 
-PyAPI_FUNC(PyObject*) PyConfig_Get(const char *name);
-PyAPI_FUNC(int) PyConfig_GetInt(const char *name, int *value);
-PyAPI_FUNC(PyObject*) PyConfig_Names(void);
-PyAPI_FUNC(int) PyConfig_Set(const char *name, PyObject *value);
+PyAPI_FUNC(TyObject*) TyConfig_Get(const char *name);
+PyAPI_FUNC(int) TyConfig_GetInt(const char *name, int *value);
+PyAPI_FUNC(TyObject*) TyConfig_Names(void);
+PyAPI_FUNC(int) TyConfig_Set(const char *name, TyObject *value);
 
 
 /* --- Helper functions --------------------------------------- */
@@ -280,55 +280,55 @@ PyAPI_FUNC(int) PyConfig_Set(const char *name, PyObject *value);
 /* Get the original command line arguments, before Python modified them.
 
    See also PyConfig.orig_argv. */
-PyAPI_FUNC(void) Py_GetArgcArgv(int *argc, wchar_t ***argv);
+PyAPI_FUNC(void) Ty_GetArgcArgv(int *argc, wchar_t ***argv);
 
 
 // --- PyInitConfig ---------------------------------------------------------
 
 typedef struct PyInitConfig PyInitConfig;
 
-PyAPI_FUNC(PyInitConfig*) PyInitConfig_Create(void);
-PyAPI_FUNC(void) PyInitConfig_Free(PyInitConfig *config);
+PyAPI_FUNC(PyInitConfig*) TyInitConfig_Create(void);
+PyAPI_FUNC(void) TyInitConfig_Free(PyInitConfig *config);
 
-PyAPI_FUNC(int) PyInitConfig_GetError(PyInitConfig* config,
+PyAPI_FUNC(int) TyInitConfig_GetError(PyInitConfig* config,
     const char **err_msg);
-PyAPI_FUNC(int) PyInitConfig_GetExitCode(PyInitConfig* config,
+PyAPI_FUNC(int) TyInitConfig_GetExitCode(PyInitConfig* config,
     int *exitcode);
 
-PyAPI_FUNC(int) PyInitConfig_HasOption(PyInitConfig *config,
+PyAPI_FUNC(int) TyInitConfig_HasOption(PyInitConfig *config,
     const char *name);
-PyAPI_FUNC(int) PyInitConfig_GetInt(PyInitConfig *config,
+PyAPI_FUNC(int) TyInitConfig_GetInt(PyInitConfig *config,
     const char *name,
     int64_t *value);
-PyAPI_FUNC(int) PyInitConfig_GetStr(PyInitConfig *config,
+PyAPI_FUNC(int) TyInitConfig_GetStr(PyInitConfig *config,
     const char *name,
     char **value);
-PyAPI_FUNC(int) PyInitConfig_GetStrList(PyInitConfig *config,
+PyAPI_FUNC(int) TyInitConfig_GetStrList(PyInitConfig *config,
     const char *name,
     size_t *length,
     char ***items);
-PyAPI_FUNC(void) PyInitConfig_FreeStrList(size_t length, char **items);
+PyAPI_FUNC(void) TyInitConfig_FreeStrList(size_t length, char **items);
 
-PyAPI_FUNC(int) PyInitConfig_SetInt(PyInitConfig *config,
+PyAPI_FUNC(int) TyInitConfig_SetInt(PyInitConfig *config,
     const char *name,
     int64_t value);
-PyAPI_FUNC(int) PyInitConfig_SetStr(PyInitConfig *config,
+PyAPI_FUNC(int) TyInitConfig_SetStr(PyInitConfig *config,
     const char *name,
     const char *value);
-PyAPI_FUNC(int) PyInitConfig_SetStrList(PyInitConfig *config,
+PyAPI_FUNC(int) TyInitConfig_SetStrList(PyInitConfig *config,
     const char *name,
     size_t length,
     char * const *items);
 
-PyAPI_FUNC(int) PyInitConfig_AddModule(PyInitConfig *config,
+PyAPI_FUNC(int) TyInitConfig_AddModule(PyInitConfig *config,
     const char *name,
-    PyObject* (*initfunc)(void));
+    TyObject* (*initfunc)(void));
 
-PyAPI_FUNC(int) Py_InitializeFromInitConfig(PyInitConfig *config);
+PyAPI_FUNC(int) Ty_InitializeFromInitConfig(PyInitConfig *config);
 
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_LIMITED_API */
-#endif /* !Py_PYCORECONFIG_H */
+#endif /* !Ty_LIMITED_API */
+#endif /* !Ty_PYCORECONFIG_H */

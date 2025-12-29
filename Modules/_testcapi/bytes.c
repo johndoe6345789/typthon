@@ -2,32 +2,32 @@
 #include "util.h"
 
 
-/* Test _PyBytes_Resize() */
-static PyObject *
-bytes_resize(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test _TyBytes_Resize() */
+static TyObject *
+bytes_resize(TyObject *Py_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t newsize;
+    TyObject *obj;
+    Ty_ssize_t newsize;
     int new;
 
-    if (!PyArg_ParseTuple(args, "Onp", &obj, &newsize, &new))
+    if (!TyArg_ParseTuple(args, "Onp", &obj, &newsize, &new))
         return NULL;
 
     NULLABLE(obj);
     if (new) {
         assert(obj != NULL);
-        assert(PyBytes_CheckExact(obj));
-        PyObject *newobj = PyBytes_FromStringAndSize(NULL, PyBytes_Size(obj));
+        assert(TyBytes_CheckExact(obj));
+        TyObject *newobj = TyBytes_FromStringAndSize(NULL, TyBytes_Size(obj));
         if (newobj == NULL) {
             return NULL;
         }
-        memcpy(PyBytes_AsString(newobj), PyBytes_AsString(obj), PyBytes_Size(obj));
+        memcpy(TyBytes_AsString(newobj), TyBytes_AsString(obj), TyBytes_Size(obj));
         obj = newobj;
     }
     else {
-        Py_XINCREF(obj);
+        Ty_XINCREF(obj);
     }
-    if (_PyBytes_Resize(&obj, newsize) < 0) {
+    if (_TyBytes_Resize(&obj, newsize) < 0) {
         assert(obj == NULL);
     }
     else {
@@ -37,30 +37,30 @@ bytes_resize(PyObject *Py_UNUSED(module), PyObject *args)
 }
 
 
-/* Test PyBytes_Join() */
-static PyObject *
-bytes_join(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyBytes_Join() */
+static TyObject *
+bytes_join(TyObject *Py_UNUSED(module), TyObject *args)
 {
-    PyObject *sep, *iterable;
-    if (!PyArg_ParseTuple(args, "OO", &sep, &iterable)) {
+    TyObject *sep, *iterable;
+    if (!TyArg_ParseTuple(args, "OO", &sep, &iterable)) {
         return NULL;
     }
     NULLABLE(sep);
     NULLABLE(iterable);
-    return PyBytes_Join(sep, iterable);
+    return TyBytes_Join(sep, iterable);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"bytes_resize", bytes_resize, METH_VARARGS},
     {"bytes_join", bytes_join, METH_VARARGS},
     {NULL},
 };
 
 int
-_PyTestCapi_Init_Bytes(PyObject *m)
+_PyTestCapi_Init_Bytes(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

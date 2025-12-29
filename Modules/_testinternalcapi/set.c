@@ -5,48 +5,48 @@
 #include "pycore_setobject.h"
 
 
-static PyObject *
-set_update(PyObject *self, PyObject *args)
+static TyObject *
+set_update(TyObject *self, TyObject *args)
 {
-    PyObject *set, *iterable;
-    if (!PyArg_ParseTuple(args, "OO", &set, &iterable)) {
+    TyObject *set, *iterable;
+    if (!TyArg_ParseTuple(args, "OO", &set, &iterable)) {
         return NULL;
     }
     NULLABLE(set);
     NULLABLE(iterable);
-    RETURN_INT(_PySet_Update(set, iterable));
+    RETURN_INT(_TySet_Update(set, iterable));
 }
 
-static PyObject *
-set_next_entry(PyObject *self, PyObject *args)
+static TyObject *
+set_next_entry(TyObject *self, TyObject *args)
 {
     int rc;
-    Py_ssize_t pos;
-    Py_hash_t hash = (Py_hash_t)UNINITIALIZED_SIZE;
-    PyObject *set, *item = UNINITIALIZED_PTR;
-    if (!PyArg_ParseTuple(args, "On", &set, &pos)) {
+    Ty_ssize_t pos;
+    Ty_hash_t hash = (Ty_hash_t)UNINITIALIZED_SIZE;
+    TyObject *set, *item = UNINITIALIZED_PTR;
+    if (!TyArg_ParseTuple(args, "On", &set, &pos)) {
         return NULL;
     }
     NULLABLE(set);
-    Py_BEGIN_CRITICAL_SECTION(set);
-    rc = _PySet_NextEntryRef(set, &pos, &item, &hash);
-    Py_END_CRITICAL_SECTION();
+    Ty_BEGIN_CRITICAL_SECTION(set);
+    rc = _TySet_NextEntryRef(set, &pos, &item, &hash);
+    Ty_END_CRITICAL_SECTION();
     if (rc == 1) {
-        PyObject *ret = Py_BuildValue("innO", rc, pos, hash, item);
-        Py_DECREF(item);
+        TyObject *ret = Ty_BuildValue("innO", rc, pos, hash, item);
+        Ty_DECREF(item);
         return ret;
     }
     assert(item == UNINITIALIZED_PTR);
-    assert(hash == (Py_hash_t)UNINITIALIZED_SIZE);
+    assert(hash == (Ty_hash_t)UNINITIALIZED_SIZE);
     if (rc == -1) {
         return NULL;
     }
     assert(rc == 0);
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 
-static PyMethodDef TestMethods[] = {
+static TyMethodDef TestMethods[] = {
     {"set_update", set_update, METH_VARARGS},
     {"set_next_entry", set_next_entry, METH_VARARGS},
 
@@ -54,9 +54,9 @@ static PyMethodDef TestMethods[] = {
 };
 
 int
-_PyTestInternalCapi_Init_Set(PyObject *m)
+_PyTestInternalCapi_Init_Set(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, TestMethods) < 0) {
+    if (TyModule_AddFunctions(m, TestMethods) < 0) {
         return -1;
     }
     return 0;

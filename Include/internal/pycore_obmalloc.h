@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_OBMALLOC_H
-#define Py_INTERNAL_OBMALLOC_H
+#ifndef Ty_INTERNAL_OBMALLOC_H
+#define Ty_INTERNAL_OBMALLOC_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 
@@ -33,7 +33,7 @@ typedef unsigned int pymem_uint;  /* assuming >= 16 bits */
    [   Python's object allocator   ]      |                           |
 +2 | ####### Object memory ####### | <------ Internal buffers ------> |
     ______________________________________________________________    |
-   [          Python's raw memory allocator (PyMem_ API)          ]   |
+   [          Python's raw memory allocator (TyMem_ API)          ]   |
 +1 | <----- Python memory (under PyMem manager's control) ------> |   |
     __________________________________________________________________
    [    Underlying general-purpose allocator (ex: C library malloc)   ]
@@ -306,12 +306,12 @@ struct arena_object {
     struct arena_object* prevarena;
 };
 
-#define POOL_OVERHEAD   _Py_SIZE_ROUND_UP(sizeof(struct pool_header), ALIGNMENT)
+#define POOL_OVERHEAD   _Ty_SIZE_ROUND_UP(sizeof(struct pool_header), ALIGNMENT)
 
 #define DUMMY_SIZE_IDX          0xffff  /* size class of newly cached pools */
 
 /* Round pointer P down to the closest pool-aligned address <= P, as a poolp */
-#define POOL_ADDR(P) ((poolp)_Py_ALIGN_DOWN((P), POOL_SIZE))
+#define POOL_ADDR(P) ((poolp)_Ty_ALIGN_DOWN((P), POOL_SIZE))
 
 /* Return total number of blocks in pool of size index I, as a uint. */
 #define NUMBLOCKS(I) ((pymem_uint)(POOL_SIZE - POOL_OVERHEAD) / INDEX2SIZE(I))
@@ -501,7 +501,7 @@ struct _obmalloc_mgmt {
     /* High water mark (max value ever seen) for narenas_currently_allocated. */
     size_t narenas_highwater;
 
-    Py_ssize_t raw_allocated_blocks;
+    Ty_ssize_t raw_allocated_blocks;
 };
 
 
@@ -659,7 +659,7 @@ struct _obmalloc_usage {
 
 struct _obmalloc_global_state {
     int dump_debug_stats;
-    Py_ssize_t interpreter_leaks;
+    Ty_ssize_t interpreter_leaks;
 };
 
 struct _obmalloc_state {
@@ -676,27 +676,27 @@ struct _obmalloc_state {
 
 /* Allocate memory directly from the O/S virtual memory system,
  * where supported. Otherwise fallback on malloc */
-void *_PyObject_VirtualAlloc(size_t size);
-void _PyObject_VirtualFree(void *, size_t size);
+void *_TyObject_VirtualAlloc(size_t size);
+void _TyObject_VirtualFree(void *, size_t size);
 
 
 /* This function returns the number of allocated memory blocks, regardless of size */
-extern Py_ssize_t _Py_GetGlobalAllocatedBlocks(void);
-#define _Py_GetAllocatedBlocks() \
-    _Py_GetGlobalAllocatedBlocks()
-extern Py_ssize_t _PyInterpreterState_GetAllocatedBlocks(PyInterpreterState *);
-extern void _PyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *);
-extern int _PyMem_init_obmalloc(PyInterpreterState *interp);
-extern bool _PyMem_obmalloc_state_on_heap(PyInterpreterState *interp);
+extern Ty_ssize_t _Ty_GetGlobalAllocatedBlocks(void);
+#define _Ty_GetAllocatedBlocks() \
+    _Ty_GetGlobalAllocatedBlocks()
+extern Ty_ssize_t _TyInterpreterState_GetAllocatedBlocks(PyInterpreterState *);
+extern void _TyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *);
+extern int _TyMem_init_obmalloc(PyInterpreterState *interp);
+extern bool _TyMem_obmalloc_state_on_heap(PyInterpreterState *interp);
 
 
 #ifdef WITH_PYMALLOC
 // Export the symbol for the 3rd party 'guppy3' project
-PyAPI_FUNC(int) _PyObject_DebugMallocStats(FILE *out);
+PyAPI_FUNC(int) _TyObject_DebugMallocStats(FILE *out);
 #endif
 
 
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_INTERNAL_OBMALLOC_H
+#endif  // !Ty_INTERNAL_OBMALLOC_H

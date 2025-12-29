@@ -1,9 +1,9 @@
-/* _PyUnicode_InsertThousandsGrouping() helper functions */
+/* _TyUnicode_InsertThousandsGrouping() helper functions */
 
 typedef struct {
     const char *grouping;
     char previous;
-    Py_ssize_t i; /* Where we're currently pointing in grouping. */
+    Ty_ssize_t i; /* Where we're currently pointing in grouping. */
 } GroupGenerator;
 
 
@@ -17,7 +17,7 @@ GroupGenerator_init(GroupGenerator *self, const char *grouping)
 
 
 /* Returns the next grouping, or 0 to signify end. */
-static Py_ssize_t
+static Ty_ssize_t
 GroupGenerator_next(GroupGenerator *self)
 {
     /* Note that we don't really do much error checking here. If a
@@ -34,7 +34,7 @@ GroupGenerator_next(GroupGenerator *self)
         char ch = self->grouping[self->i];
         self->previous = ch;
         self->i++;
-        return (Py_ssize_t)ch;
+        return (Ty_ssize_t)ch;
     }
     }
 }
@@ -43,17 +43,17 @@ GroupGenerator_next(GroupGenerator *self)
 /* Fill in some digits, leading zeros, and thousands separator. All
    are optional, depending on when we're called. */
 static void
-InsertThousandsGrouping_fill(_PyUnicodeWriter *writer, Py_ssize_t *buffer_pos,
-                             PyObject *digits, Py_ssize_t *digits_pos,
-                             Py_ssize_t n_chars, Py_ssize_t n_zeros,
-                             PyObject *thousands_sep, Py_ssize_t thousands_sep_len,
-                             Py_UCS4 *maxchar, int forward)
+InsertThousandsGrouping_fill(_PyUnicodeWriter *writer, Ty_ssize_t *buffer_pos,
+                             TyObject *digits, Ty_ssize_t *digits_pos,
+                             Ty_ssize_t n_chars, Ty_ssize_t n_zeros,
+                             TyObject *thousands_sep, Ty_ssize_t thousands_sep_len,
+                             Ty_UCS4 *maxchar, int forward)
 {
     if (!writer) {
         /* if maxchar > 127, maxchar is already set */
         if (*maxchar == 127 && thousands_sep) {
-            Py_UCS4 maxchar2 = PyUnicode_MAX_CHAR_VALUE(thousands_sep);
-            *maxchar = Py_MAX(*maxchar, maxchar2);
+            Ty_UCS4 maxchar2 = TyUnicode_MAX_CHAR_VALUE(thousands_sep);
+            *maxchar = Ty_MAX(*maxchar, maxchar2);
         }
         return;
     }
@@ -63,7 +63,7 @@ InsertThousandsGrouping_fill(_PyUnicodeWriter *writer, Py_ssize_t *buffer_pos,
             *buffer_pos -= thousands_sep_len;
         }
         /* Copy the thousands_sep chars into the buffer. */
-        _PyUnicode_FastCopyCharacters(writer->buffer, *buffer_pos,
+        _TyUnicode_FastCopyCharacters(writer->buffer, *buffer_pos,
                                       thousands_sep, 0,
                                       thousands_sep_len);
         if (forward) {
@@ -75,7 +75,7 @@ InsertThousandsGrouping_fill(_PyUnicodeWriter *writer, Py_ssize_t *buffer_pos,
         *buffer_pos -= n_chars;
         *digits_pos -= n_chars;
     }
-    _PyUnicode_FastCopyCharacters(writer->buffer, *buffer_pos,
+    _TyUnicode_FastCopyCharacters(writer->buffer, *buffer_pos,
                                   digits, *digits_pos,
                                   n_chars);
     if (forward) {
@@ -87,8 +87,8 @@ InsertThousandsGrouping_fill(_PyUnicodeWriter *writer, Py_ssize_t *buffer_pos,
         if (!forward) {
             *buffer_pos -= n_zeros;
         }
-        int kind = PyUnicode_KIND(writer->buffer);
-        void *data = PyUnicode_DATA(writer->buffer);
+        int kind = TyUnicode_KIND(writer->buffer);
+        void *data = TyUnicode_DATA(writer->buffer);
         unicode_fill(kind, data, '0', *buffer_pos, n_zeros);
         if (forward) {
             *buffer_pos += n_zeros;

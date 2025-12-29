@@ -26,7 +26,7 @@
  * ---
  * Author: Kostya Serebryany
  * Copied to CPython by Jeffrey Yasskin, with all macros renamed to
- * start with _Py_ to avoid colliding with users embedding Python, and
+ * start with _Ty_ to avoid colliding with users embedding Python, and
  * with deprecated macros removed.
  */
 
@@ -39,7 +39,7 @@
    instruction and/or to a particular object (address) in the program.
 
    The annotations that should be used by users are macros in all upper-case
-   (e.g., _Py_ANNOTATE_NEW_MEMORY).
+   (e.g., _Ty_ANNOTATE_NEW_MEMORY).
 
    Actual implementation of these macros may differ depending on the
    dynamic analysis tool being used.
@@ -67,8 +67,8 @@
      using conditional critical sections (Await/LockWhen) and when constructing
      user-defined synchronization mechanisms.
 
-     The annotations _Py_ANNOTATE_HAPPENS_BEFORE() and
-     _Py_ANNOTATE_HAPPENS_AFTER() can be used to define happens-before arcs in
+     The annotations _Ty_ANNOTATE_HAPPENS_BEFORE() and
+     _Ty_ANNOTATE_HAPPENS_AFTER() can be used to define happens-before arcs in
      user-defined synchronization mechanisms: the race detector will infer an
      arc from the former to the latter when they share the same argument
      pointer.
@@ -76,9 +76,9 @@
      Example 1 (reference counting):
 
      void Unref() {
-       _Py_ANNOTATE_HAPPENS_BEFORE(&refcount_);
+       _Ty_ANNOTATE_HAPPENS_BEFORE(&refcount_);
        if (AtomicDecrementByOne(&refcount_) == 0) {
-         _Py_ANNOTATE_HAPPENS_AFTER(&refcount_);
+         _Ty_ANNOTATE_HAPPENS_AFTER(&refcount_);
          delete this;
        }
      }
@@ -87,14 +87,14 @@
 
      void MyQueue::Put(Type *e) {
        MutexLock lock(&mu_);
-       _Py_ANNOTATE_HAPPENS_BEFORE(e);
+       _Ty_ANNOTATE_HAPPENS_BEFORE(e);
        PutElementIntoMyQueue(e);
      }
 
      Type *MyQueue::Get() {
        MutexLock lock(&mu_);
        Type *e = GetElementFromMyQueue();
-       _Py_ANNOTATE_HAPPENS_AFTER(e);
+       _Ty_ANNOTATE_HAPPENS_AFTER(e);
        return e;
      }
 
@@ -103,35 +103,35 @@
 
   /* Report that wait on the condition variable at address "cv" has succeeded
      and the lock at address "lock" is held. */
-#define _Py_ANNOTATE_CONDVAR_LOCK_WAIT(cv, lock) \
+#define _Ty_ANNOTATE_CONDVAR_LOCK_WAIT(cv, lock) \
     AnnotateCondVarWait(__FILE__, __LINE__, cv, lock)
 
   /* Report that wait on the condition variable at "cv" has succeeded.  Variant
      w/o lock. */
-#define _Py_ANNOTATE_CONDVAR_WAIT(cv) \
+#define _Ty_ANNOTATE_CONDVAR_WAIT(cv) \
     AnnotateCondVarWait(__FILE__, __LINE__, cv, NULL)
 
   /* Report that we are about to signal on the condition variable at address
      "cv". */
-#define _Py_ANNOTATE_CONDVAR_SIGNAL(cv) \
+#define _Ty_ANNOTATE_CONDVAR_SIGNAL(cv) \
     AnnotateCondVarSignal(__FILE__, __LINE__, cv)
 
   /* Report that we are about to signal_all on the condition variable at "cv". */
-#define _Py_ANNOTATE_CONDVAR_SIGNAL_ALL(cv) \
+#define _Ty_ANNOTATE_CONDVAR_SIGNAL_ALL(cv) \
     AnnotateCondVarSignalAll(__FILE__, __LINE__, cv)
 
   /* Annotations for user-defined synchronization mechanisms. */
-#define _Py_ANNOTATE_HAPPENS_BEFORE(obj) _Py_ANNOTATE_CONDVAR_SIGNAL(obj)
-#define _Py_ANNOTATE_HAPPENS_AFTER(obj)  _Py_ANNOTATE_CONDVAR_WAIT(obj)
+#define _Ty_ANNOTATE_HAPPENS_BEFORE(obj) _Ty_ANNOTATE_CONDVAR_SIGNAL(obj)
+#define _Ty_ANNOTATE_HAPPENS_AFTER(obj)  _Ty_ANNOTATE_CONDVAR_WAIT(obj)
 
   /* Report that the bytes in the range [pointer, pointer+size) are about
      to be published safely. The race checker will create a happens-before
-     arc from the call _Py_ANNOTATE_PUBLISH_MEMORY_RANGE(pointer, size) to
+     arc from the call _Ty_ANNOTATE_PUBLISH_MEMORY_RANGE(pointer, size) to
      subsequent accesses to this memory.
      Note: this annotation may not work properly if the race detector uses
      sampling, i.e. does not observe all memory accesses.
      */
-#define _Py_ANNOTATE_PUBLISH_MEMORY_RANGE(pointer, size) \
+#define _Ty_ANNOTATE_PUBLISH_MEMORY_RANGE(pointer, size) \
     AnnotatePublishMemoryRange(__FILE__, __LINE__, pointer, size)
 
   /* Instruct the tool to create a happens-before arc between mu->Unlock() and
@@ -141,7 +141,7 @@
      This annotation makes sense only for hybrid race detectors. For pure
      happens-before detectors this is a no-op. For more details see
      https://code.google.com/p/data-race-test/wiki/PureHappensBeforeVsHybrid . */
-#define _Py_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX(mu) \
+#define _Ty_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX(mu) \
     AnnotateMutexIsUsedAsCondVar(__FILE__, __LINE__, mu)
 
   /* -------------------------------------------------------------
@@ -152,7 +152,7 @@
      This might be used when the memory has been retrieved from a free list and
      is about to be reused, or when the locking discipline for a variable
      changes. */
-#define _Py_ANNOTATE_NEW_MEMORY(address, size) \
+#define _Ty_ANNOTATE_NEW_MEMORY(address, size) \
     AnnotateNewMemory(__FILE__, __LINE__, address, size)
 
   /* -------------------------------------------------------------
@@ -160,24 +160,24 @@
      threads. */
 
   /* Report that the producer-consumer queue (such as ProducerConsumerQueue) at
-     address "pcq" has been created.  The _Py_ANNOTATE_PCQ_* annotations should
+     address "pcq" has been created.  The _Ty_ANNOTATE_PCQ_* annotations should
      be used only for FIFO queues.  For non-FIFO queues use
-     _Py_ANNOTATE_HAPPENS_BEFORE (for put) and _Py_ANNOTATE_HAPPENS_AFTER (for
+     _Ty_ANNOTATE_HAPPENS_BEFORE (for put) and _Ty_ANNOTATE_HAPPENS_AFTER (for
      get). */
-#define _Py_ANNOTATE_PCQ_CREATE(pcq) \
+#define _Ty_ANNOTATE_PCQ_CREATE(pcq) \
     AnnotatePCQCreate(__FILE__, __LINE__, pcq)
 
   /* Report that the queue at address "pcq" is about to be destroyed. */
-#define _Py_ANNOTATE_PCQ_DESTROY(pcq) \
+#define _Ty_ANNOTATE_PCQ_DESTROY(pcq) \
     AnnotatePCQDestroy(__FILE__, __LINE__, pcq)
 
   /* Report that we are about to put an element into a FIFO queue at address
      "pcq". */
-#define _Py_ANNOTATE_PCQ_PUT(pcq) \
+#define _Ty_ANNOTATE_PCQ_PUT(pcq) \
     AnnotatePCQPut(__FILE__, __LINE__, pcq)
 
   /* Report that we've just got an element from a FIFO queue at address "pcq". */
-#define _Py_ANNOTATE_PCQ_GET(pcq) \
+#define _Ty_ANNOTATE_PCQ_GET(pcq) \
     AnnotatePCQGet(__FILE__, __LINE__, pcq)
 
   /* -------------------------------------------------------------
@@ -188,75 +188,75 @@
   /* Report that we may have a benign race at "pointer", with size
      "sizeof(*(pointer))". "pointer" must be a non-void* pointer.  Insert at the
      point where "pointer" has been allocated, preferably close to the point
-     where the race happens.  See also _Py_ANNOTATE_BENIGN_RACE_STATIC. */
-#define _Py_ANNOTATE_BENIGN_RACE(pointer, description) \
+     where the race happens.  See also _Ty_ANNOTATE_BENIGN_RACE_STATIC. */
+#define _Ty_ANNOTATE_BENIGN_RACE(pointer, description) \
     AnnotateBenignRaceSized(__FILE__, __LINE__, pointer, \
                             sizeof(*(pointer)), description)
 
-  /* Same as _Py_ANNOTATE_BENIGN_RACE(address, description), but applies to
+  /* Same as _Ty_ANNOTATE_BENIGN_RACE(address, description), but applies to
      the memory range [address, address+size). */
-#define _Py_ANNOTATE_BENIGN_RACE_SIZED(address, size, description) \
+#define _Ty_ANNOTATE_BENIGN_RACE_SIZED(address, size, description) \
     AnnotateBenignRaceSized(__FILE__, __LINE__, address, size, description)
 
   /* Request the analysis tool to ignore all reads in the current thread
-     until _Py_ANNOTATE_IGNORE_READS_END is called.
+     until _Ty_ANNOTATE_IGNORE_READS_END is called.
      Useful to ignore intentional racey reads, while still checking
      other reads and all writes.
-     See also _Py_ANNOTATE_UNPROTECTED_READ. */
-#define _Py_ANNOTATE_IGNORE_READS_BEGIN() \
+     See also _Ty_ANNOTATE_UNPROTECTED_READ. */
+#define _Ty_ANNOTATE_IGNORE_READS_BEGIN() \
     AnnotateIgnoreReadsBegin(__FILE__, __LINE__)
 
   /* Stop ignoring reads. */
-#define _Py_ANNOTATE_IGNORE_READS_END() \
+#define _Ty_ANNOTATE_IGNORE_READS_END() \
     AnnotateIgnoreReadsEnd(__FILE__, __LINE__)
 
-  /* Similar to _Py_ANNOTATE_IGNORE_READS_BEGIN, but ignore writes. */
-#define _Py_ANNOTATE_IGNORE_WRITES_BEGIN() \
+  /* Similar to _Ty_ANNOTATE_IGNORE_READS_BEGIN, but ignore writes. */
+#define _Ty_ANNOTATE_IGNORE_WRITES_BEGIN() \
     AnnotateIgnoreWritesBegin(__FILE__, __LINE__)
 
   /* Stop ignoring writes. */
-#define _Py_ANNOTATE_IGNORE_WRITES_END() \
+#define _Ty_ANNOTATE_IGNORE_WRITES_END() \
     AnnotateIgnoreWritesEnd(__FILE__, __LINE__)
 
   /* Start ignoring all memory accesses (reads and writes). */
-#define _Py_ANNOTATE_IGNORE_READS_AND_WRITES_BEGIN() \
+#define _Ty_ANNOTATE_IGNORE_READS_AND_WRITES_BEGIN() \
     do {\
-      _Py_ANNOTATE_IGNORE_READS_BEGIN();\
-      _Py_ANNOTATE_IGNORE_WRITES_BEGIN();\
+      _Ty_ANNOTATE_IGNORE_READS_BEGIN();\
+      _Ty_ANNOTATE_IGNORE_WRITES_BEGIN();\
     }while(0)\
 
   /* Stop ignoring all memory accesses. */
-#define _Py_ANNOTATE_IGNORE_READS_AND_WRITES_END() \
+#define _Ty_ANNOTATE_IGNORE_READS_AND_WRITES_END() \
     do {\
-      _Py_ANNOTATE_IGNORE_WRITES_END();\
-      _Py_ANNOTATE_IGNORE_READS_END();\
+      _Ty_ANNOTATE_IGNORE_WRITES_END();\
+      _Ty_ANNOTATE_IGNORE_READS_END();\
     }while(0)\
 
-  /* Similar to _Py_ANNOTATE_IGNORE_READS_BEGIN, but ignore synchronization events:
+  /* Similar to _Ty_ANNOTATE_IGNORE_READS_BEGIN, but ignore synchronization events:
      RWLOCK* and CONDVAR*. */
-#define _Py_ANNOTATE_IGNORE_SYNC_BEGIN() \
+#define _Ty_ANNOTATE_IGNORE_SYNC_BEGIN() \
     AnnotateIgnoreSyncBegin(__FILE__, __LINE__)
 
   /* Stop ignoring sync events. */
-#define _Py_ANNOTATE_IGNORE_SYNC_END() \
+#define _Ty_ANNOTATE_IGNORE_SYNC_END() \
     AnnotateIgnoreSyncEnd(__FILE__, __LINE__)
 
 
   /* Enable (enable!=0) or disable (enable==0) race detection for all threads.
      This annotation could be useful if you want to skip expensive race analysis
      during some period of program execution, e.g. during initialization. */
-#define _Py_ANNOTATE_ENABLE_RACE_DETECTION(enable) \
+#define _Ty_ANNOTATE_ENABLE_RACE_DETECTION(enable) \
     AnnotateEnableRaceDetection(__FILE__, __LINE__, enable)
 
   /* -------------------------------------------------------------
      Annotations useful for debugging. */
 
   /* Request to trace every access to "address". */
-#define _Py_ANNOTATE_TRACE_MEMORY(address) \
+#define _Ty_ANNOTATE_TRACE_MEMORY(address) \
     AnnotateTraceMemory(__FILE__, __LINE__, address)
 
   /* Report the current thread name to a race detector. */
-#define _Py_ANNOTATE_THREAD_NAME(name) \
+#define _Ty_ANNOTATE_THREAD_NAME(name) \
     AnnotateThreadName(__FILE__, __LINE__, name)
 
   /* -------------------------------------------------------------
@@ -265,20 +265,20 @@
      The "lock" argument is a pointer to the lock object. */
 
   /* Report that a lock has been created at address "lock". */
-#define _Py_ANNOTATE_RWLOCK_CREATE(lock) \
+#define _Ty_ANNOTATE_RWLOCK_CREATE(lock) \
     AnnotateRWLockCreate(__FILE__, __LINE__, lock)
 
   /* Report that the lock at address "lock" is about to be destroyed. */
-#define _Py_ANNOTATE_RWLOCK_DESTROY(lock) \
+#define _Ty_ANNOTATE_RWLOCK_DESTROY(lock) \
     AnnotateRWLockDestroy(__FILE__, __LINE__, lock)
 
   /* Report that the lock at address "lock" has been acquired.
      is_w=1 for writer lock, is_w=0 for reader lock. */
-#define _Py_ANNOTATE_RWLOCK_ACQUIRED(lock, is_w) \
+#define _Ty_ANNOTATE_RWLOCK_ACQUIRED(lock, is_w) \
     AnnotateRWLockAcquired(__FILE__, __LINE__, lock, is_w)
 
   /* Report that the lock at address "lock" is about to be released. */
-#define _Py_ANNOTATE_RWLOCK_RELEASED(lock, is_w) \
+#define _Ty_ANNOTATE_RWLOCK_RELEASED(lock, is_w) \
     AnnotateRWLockReleased(__FILE__, __LINE__, lock, is_w)
 
   /* -------------------------------------------------------------
@@ -289,20 +289,20 @@
   /* Report that the "barrier" has been initialized with initial "count".
    If 'reinitialization_allowed' is true, initialization is allowed to happen
    multiple times w/o calling barrier_destroy() */
-#define _Py_ANNOTATE_BARRIER_INIT(barrier, count, reinitialization_allowed) \
+#define _Ty_ANNOTATE_BARRIER_INIT(barrier, count, reinitialization_allowed) \
     AnnotateBarrierInit(__FILE__, __LINE__, barrier, count, \
                         reinitialization_allowed)
 
   /* Report that we are about to enter barrier_wait("barrier"). */
-#define _Py_ANNOTATE_BARRIER_WAIT_BEFORE(barrier) \
+#define _Ty_ANNOTATE_BARRIER_WAIT_BEFORE(barrier) \
     AnnotateBarrierWaitBefore(__FILE__, __LINE__, barrier)
 
   /* Report that we just exited barrier_wait("barrier"). */
-#define _Py_ANNOTATE_BARRIER_WAIT_AFTER(barrier) \
+#define _Ty_ANNOTATE_BARRIER_WAIT_AFTER(barrier) \
     AnnotateBarrierWaitAfter(__FILE__, __LINE__, barrier)
 
   /* Report that the "barrier" has been destroyed. */
-#define _Py_ANNOTATE_BARRIER_DESTROY(barrier) \
+#define _Ty_ANNOTATE_BARRIER_DESTROY(barrier) \
     AnnotateBarrierDestroy(__FILE__, __LINE__, barrier)
 
   /* -------------------------------------------------------------
@@ -310,61 +310,61 @@
 
   /* Report that we expect a race on the variable at "address".
      Use only in unit tests for a race detector. */
-#define _Py_ANNOTATE_EXPECT_RACE(address, description) \
+#define _Ty_ANNOTATE_EXPECT_RACE(address, description) \
     AnnotateExpectRace(__FILE__, __LINE__, address, description)
 
   /* A no-op. Insert where you like to test the interceptors. */
-#define _Py_ANNOTATE_NO_OP(arg) \
+#define _Ty_ANNOTATE_NO_OP(arg) \
     AnnotateNoOp(__FILE__, __LINE__, arg)
 
   /* Force the race detector to flush its state. The actual effect depends on
    * the implementation of the detector. */
-#define _Py_ANNOTATE_FLUSH_STATE() \
+#define _Ty_ANNOTATE_FLUSH_STATE() \
     AnnotateFlushState(__FILE__, __LINE__)
 
 
 #else  /* DYNAMIC_ANNOTATIONS_ENABLED == 0 */
 
-#define _Py_ANNOTATE_RWLOCK_CREATE(lock) /* empty */
-#define _Py_ANNOTATE_RWLOCK_DESTROY(lock) /* empty */
-#define _Py_ANNOTATE_RWLOCK_ACQUIRED(lock, is_w) /* empty */
-#define _Py_ANNOTATE_RWLOCK_RELEASED(lock, is_w) /* empty */
-#define _Py_ANNOTATE_BARRIER_INIT(barrier, count, reinitialization_allowed) /* */
-#define _Py_ANNOTATE_BARRIER_WAIT_BEFORE(barrier) /* empty */
-#define _Py_ANNOTATE_BARRIER_WAIT_AFTER(barrier) /* empty */
-#define _Py_ANNOTATE_BARRIER_DESTROY(barrier) /* empty */
-#define _Py_ANNOTATE_CONDVAR_LOCK_WAIT(cv, lock) /* empty */
-#define _Py_ANNOTATE_CONDVAR_WAIT(cv) /* empty */
-#define _Py_ANNOTATE_CONDVAR_SIGNAL(cv) /* empty */
-#define _Py_ANNOTATE_CONDVAR_SIGNAL_ALL(cv) /* empty */
-#define _Py_ANNOTATE_HAPPENS_BEFORE(obj) /* empty */
-#define _Py_ANNOTATE_HAPPENS_AFTER(obj) /* empty */
-#define _Py_ANNOTATE_PUBLISH_MEMORY_RANGE(address, size) /* empty */
-#define _Py_ANNOTATE_UNPUBLISH_MEMORY_RANGE(address, size)  /* empty */
-#define _Py_ANNOTATE_SWAP_MEMORY_RANGE(address, size)  /* empty */
-#define _Py_ANNOTATE_PCQ_CREATE(pcq) /* empty */
-#define _Py_ANNOTATE_PCQ_DESTROY(pcq) /* empty */
-#define _Py_ANNOTATE_PCQ_PUT(pcq) /* empty */
-#define _Py_ANNOTATE_PCQ_GET(pcq) /* empty */
-#define _Py_ANNOTATE_NEW_MEMORY(address, size) /* empty */
-#define _Py_ANNOTATE_EXPECT_RACE(address, description) /* empty */
-#define _Py_ANNOTATE_BENIGN_RACE(address, description) /* empty */
-#define _Py_ANNOTATE_BENIGN_RACE_SIZED(address, size, description) /* empty */
-#define _Py_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX(mu) /* empty */
-#define _Py_ANNOTATE_MUTEX_IS_USED_AS_CONDVAR(mu) /* empty */
-#define _Py_ANNOTATE_TRACE_MEMORY(arg) /* empty */
-#define _Py_ANNOTATE_THREAD_NAME(name) /* empty */
-#define _Py_ANNOTATE_IGNORE_READS_BEGIN() /* empty */
-#define _Py_ANNOTATE_IGNORE_READS_END() /* empty */
-#define _Py_ANNOTATE_IGNORE_WRITES_BEGIN() /* empty */
-#define _Py_ANNOTATE_IGNORE_WRITES_END() /* empty */
-#define _Py_ANNOTATE_IGNORE_READS_AND_WRITES_BEGIN() /* empty */
-#define _Py_ANNOTATE_IGNORE_READS_AND_WRITES_END() /* empty */
-#define _Py_ANNOTATE_IGNORE_SYNC_BEGIN() /* empty */
-#define _Py_ANNOTATE_IGNORE_SYNC_END() /* empty */
-#define _Py_ANNOTATE_ENABLE_RACE_DETECTION(enable) /* empty */
-#define _Py_ANNOTATE_NO_OP(arg) /* empty */
-#define _Py_ANNOTATE_FLUSH_STATE() /* empty */
+#define _Ty_ANNOTATE_RWLOCK_CREATE(lock) /* empty */
+#define _Ty_ANNOTATE_RWLOCK_DESTROY(lock) /* empty */
+#define _Ty_ANNOTATE_RWLOCK_ACQUIRED(lock, is_w) /* empty */
+#define _Ty_ANNOTATE_RWLOCK_RELEASED(lock, is_w) /* empty */
+#define _Ty_ANNOTATE_BARRIER_INIT(barrier, count, reinitialization_allowed) /* */
+#define _Ty_ANNOTATE_BARRIER_WAIT_BEFORE(barrier) /* empty */
+#define _Ty_ANNOTATE_BARRIER_WAIT_AFTER(barrier) /* empty */
+#define _Ty_ANNOTATE_BARRIER_DESTROY(barrier) /* empty */
+#define _Ty_ANNOTATE_CONDVAR_LOCK_WAIT(cv, lock) /* empty */
+#define _Ty_ANNOTATE_CONDVAR_WAIT(cv) /* empty */
+#define _Ty_ANNOTATE_CONDVAR_SIGNAL(cv) /* empty */
+#define _Ty_ANNOTATE_CONDVAR_SIGNAL_ALL(cv) /* empty */
+#define _Ty_ANNOTATE_HAPPENS_BEFORE(obj) /* empty */
+#define _Ty_ANNOTATE_HAPPENS_AFTER(obj) /* empty */
+#define _Ty_ANNOTATE_PUBLISH_MEMORY_RANGE(address, size) /* empty */
+#define _Ty_ANNOTATE_UNPUBLISH_MEMORY_RANGE(address, size)  /* empty */
+#define _Ty_ANNOTATE_SWAP_MEMORY_RANGE(address, size)  /* empty */
+#define _Ty_ANNOTATE_PCQ_CREATE(pcq) /* empty */
+#define _Ty_ANNOTATE_PCQ_DESTROY(pcq) /* empty */
+#define _Ty_ANNOTATE_PCQ_PUT(pcq) /* empty */
+#define _Ty_ANNOTATE_PCQ_GET(pcq) /* empty */
+#define _Ty_ANNOTATE_NEW_MEMORY(address, size) /* empty */
+#define _Ty_ANNOTATE_EXPECT_RACE(address, description) /* empty */
+#define _Ty_ANNOTATE_BENIGN_RACE(address, description) /* empty */
+#define _Ty_ANNOTATE_BENIGN_RACE_SIZED(address, size, description) /* empty */
+#define _Ty_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX(mu) /* empty */
+#define _Ty_ANNOTATE_MUTEX_IS_USED_AS_CONDVAR(mu) /* empty */
+#define _Ty_ANNOTATE_TRACE_MEMORY(arg) /* empty */
+#define _Ty_ANNOTATE_THREAD_NAME(name) /* empty */
+#define _Ty_ANNOTATE_IGNORE_READS_BEGIN() /* empty */
+#define _Ty_ANNOTATE_IGNORE_READS_END() /* empty */
+#define _Ty_ANNOTATE_IGNORE_WRITES_BEGIN() /* empty */
+#define _Ty_ANNOTATE_IGNORE_WRITES_END() /* empty */
+#define _Ty_ANNOTATE_IGNORE_READS_AND_WRITES_BEGIN() /* empty */
+#define _Ty_ANNOTATE_IGNORE_READS_AND_WRITES_END() /* empty */
+#define _Ty_ANNOTATE_IGNORE_SYNC_BEGIN() /* empty */
+#define _Ty_ANNOTATE_IGNORE_SYNC_END() /* empty */
+#define _Ty_ANNOTATE_ENABLE_RACE_DETECTION(enable) /* empty */
+#define _Ty_ANNOTATE_NO_OP(arg) /* empty */
+#define _Ty_ANNOTATE_FLUSH_STATE() /* empty */
 
 #endif  /* DYNAMIC_ANNOTATIONS_ENABLED */
 
@@ -461,28 +461,28 @@ int RunningOnValgrind(void);
 
 #if DYNAMIC_ANNOTATIONS_ENABLED != 0 && defined(__cplusplus)
 
-  /* _Py_ANNOTATE_UNPROTECTED_READ is the preferred way to annotate racey reads.
+  /* _Ty_ANNOTATE_UNPROTECTED_READ is the preferred way to annotate racey reads.
 
      Instead of doing
-        _Py_ANNOTATE_IGNORE_READS_BEGIN();
+        _Ty_ANNOTATE_IGNORE_READS_BEGIN();
         ... = x;
-        _Py_ANNOTATE_IGNORE_READS_END();
+        _Ty_ANNOTATE_IGNORE_READS_END();
      one can use
-        ... = _Py_ANNOTATE_UNPROTECTED_READ(x); */
+        ... = _Ty_ANNOTATE_UNPROTECTED_READ(x); */
   template <class T>
-  inline T _Py_ANNOTATE_UNPROTECTED_READ(const volatile T &x) {
-    _Py_ANNOTATE_IGNORE_READS_BEGIN();
+  inline T _Ty_ANNOTATE_UNPROTECTED_READ(const volatile T &x) {
+    _Ty_ANNOTATE_IGNORE_READS_BEGIN();
     T res = x;
-    _Py_ANNOTATE_IGNORE_READS_END();
+    _Ty_ANNOTATE_IGNORE_READS_END();
     return res;
   }
-  /* Apply _Py_ANNOTATE_BENIGN_RACE_SIZED to a static variable. */
-#define _Py_ANNOTATE_BENIGN_RACE_STATIC(static_var, description)        \
+  /* Apply _Ty_ANNOTATE_BENIGN_RACE_SIZED to a static variable. */
+#define _Ty_ANNOTATE_BENIGN_RACE_STATIC(static_var, description)        \
     namespace {                                                       \
       class static_var ## _annotator {                                \
        public:                                                        \
         static_var ## _annotator() {                                  \
-          _Py_ANNOTATE_BENIGN_RACE_SIZED(&static_var,                     \
+          _Ty_ANNOTATE_BENIGN_RACE_SIZED(&static_var,                     \
                                       sizeof(static_var),             \
             # static_var ": " description);                           \
         }                                                             \
@@ -491,8 +491,8 @@ int RunningOnValgrind(void);
     }
 #else /* DYNAMIC_ANNOTATIONS_ENABLED == 0 */
 
-#define _Py_ANNOTATE_UNPROTECTED_READ(x) (x)
-#define _Py_ANNOTATE_BENIGN_RACE_STATIC(static_var, description)  /* empty */
+#define _Ty_ANNOTATE_UNPROTECTED_READ(x) (x)
+#define _Ty_ANNOTATE_BENIGN_RACE_STATIC(static_var, description)  /* empty */
 
 #endif /* DYNAMIC_ANNOTATIONS_ENABLED */
 

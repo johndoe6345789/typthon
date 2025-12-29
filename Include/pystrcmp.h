@@ -1,23 +1,23 @@
-#ifndef Py_STRCMP_H
-#define Py_STRCMP_H
+#ifndef Ty_STRCMP_H
+#define Ty_STRCMP_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-PyAPI_FUNC(int) PyOS_mystrnicmp(const char *, const char *, Py_ssize_t);
-PyAPI_FUNC(int) PyOS_mystricmp(const char *, const char *);
+PyAPI_FUNC(int) TyOS_mystrnicmp(const char *, const char *, Ty_ssize_t);
+PyAPI_FUNC(int) TyOS_mystricmp(const char *, const char *);
 
 #ifdef MS_WINDOWS
-#define PyOS_strnicmp strnicmp
-#define PyOS_stricmp stricmp
+#define TyOS_strnicmp strnicmp
+#define TyOS_stricmp stricmp
 #else
-#define PyOS_strnicmp PyOS_mystrnicmp
-#define PyOS_stricmp PyOS_mystricmp
+#define TyOS_strnicmp TyOS_mystrnicmp
+#define TyOS_stricmp TyOS_mystricmp
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* !Py_STRCMP_H */
+#endif /* !Ty_STRCMP_H */

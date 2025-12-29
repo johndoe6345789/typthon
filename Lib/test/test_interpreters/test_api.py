@@ -14,7 +14,7 @@ from test.support import import_helper
 # Raise SkipTest if subinterpreters not supported.
 _interpreters = import_helper.import_module('_interpreters')
 from concurrent import interpreters
-from test.support import Py_GIL_DISABLED
+from test.support import Ty_GIL_DISABLED
 from test.support import force_not_colorized
 import test._crossinterp_definitions as defs
 from concurrent.interpreters import (
@@ -1863,7 +1863,7 @@ class LowLevelTests(TestBase):
                 allow_exec=True,
                 allow_threads=True,
                 allow_daemon_threads=True,
-                check_multi_interp_extensions=bool(Py_GIL_DISABLED),
+                check_multi_interp_extensions=bool(Ty_GIL_DISABLED),
                 gil='shared',
             ),
             'empty': types.SimpleNamespace(
@@ -2066,7 +2066,7 @@ class LowLevelTests(TestBase):
         with self.subTest('custom'):
             orig = _interpreters.new_config('empty')
             orig.use_main_obmalloc = True
-            orig.check_multi_interp_extensions = bool(Py_GIL_DISABLED)
+            orig.check_multi_interp_extensions = bool(Ty_GIL_DISABLED)
             orig.gil = 'shared'
             interpid = _interpreters.create(orig)
             config = _interpreters.get_config(interpid)
@@ -2134,7 +2134,7 @@ class LowLevelTests(TestBase):
         with self.subTest('main'):
             expected = _interpreters.new_config('legacy')
             expected.gil = 'own'
-            if Py_GIL_DISABLED:
+            if Ty_GIL_DISABLED:
                 expected.check_multi_interp_extensions = False
             interpid, *_ = _interpreters.get_main()
             config = _interpreters.get_config(interpid)

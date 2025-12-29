@@ -1,7 +1,7 @@
 /* Low level interface to the Zstandard algorthm & the zstd library. */
 
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
@@ -20,7 +20,7 @@ module _zstd
 
 
 ZstdDict *
-_Py_parse_zstd_dict(const _zstd_state *state, PyObject *dict, int *ptype)
+_Ty_parse_zstd_dict(const _zstd_state *state, TyObject *dict, int *ptype)
 {
     if (state == NULL) {
         return NULL;
@@ -32,12 +32,12 @@ _Py_parse_zstd_dict(const _zstd_state *state, PyObject *dict, int *ptype)
     }
 
     /* Check (ZstdDict, type) */
-    if (PyTuple_CheckExact(dict) && PyTuple_GET_SIZE(dict) == 2
-        && PyObject_TypeCheck(PyTuple_GET_ITEM(dict, 0), state->ZstdDict_type)
-        && PyLong_Check(PyTuple_GET_ITEM(dict, 1)))
+    if (TyTuple_CheckExact(dict) && TyTuple_GET_SIZE(dict) == 2
+        && PyObject_TypeCheck(TyTuple_GET_ITEM(dict, 0), state->ZstdDict_type)
+        && TyLong_Check(TyTuple_GET_ITEM(dict, 1)))
     {
-        int type = PyLong_AsInt(PyTuple_GET_ITEM(dict, 1));
-        if (type == -1 && PyErr_Occurred()) {
+        int type = TyLong_AsInt(TyTuple_GET_ITEM(dict, 1));
+        if (type == -1 && TyErr_Occurred()) {
             return NULL;
         }
         if (type == DICT_TYPE_DIGESTED
@@ -45,12 +45,12 @@ _Py_parse_zstd_dict(const _zstd_state *state, PyObject *dict, int *ptype)
             || type == DICT_TYPE_PREFIX)
         {
             *ptype = type;
-            return (ZstdDict*)PyTuple_GET_ITEM(dict, 0);
+            return (ZstdDict*)TyTuple_GET_ITEM(dict, 0);
         }
     }
 
     /* Wrong type */
-    PyErr_SetString(PyExc_TypeError,
+    TyErr_SetString(TyExc_TypeError,
                     "zstd_dict argument should be a ZstdDict object.");
     return NULL;
 }
@@ -103,9 +103,9 @@ set_zstd_error(const _zstd_state *state, error_type type, size_t zstd_ret)
             break;
 
         default:
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
     }
-    PyErr_Format(state->ZstdError, msg, ZSTD_getErrorName(zstd_ret));
+    TyErr_Format(state->ZstdError, msg, ZSTD_getErrorName(zstd_ret));
 }
 
 typedef struct {
@@ -153,12 +153,12 @@ set_parameter_error(int is_compress, int key_v, int value_v)
 
     if (is_compress) {
         list = cp_list;
-        list_size = Py_ARRAY_LENGTH(cp_list);
+        list_size = Ty_ARRAY_LENGTH(cp_list);
         type = "compression";
     }
     else {
         list = dp_list;
-        list_size = Py_ARRAY_LENGTH(dp_list);
+        list_size = Ty_ARRAY_LENGTH(dp_list);
         type = "decompression";
     }
 
@@ -173,7 +173,7 @@ set_parameter_error(int is_compress, int key_v, int value_v)
 
     /* Unknown parameter */
     if (name == NULL) {
-        PyOS_snprintf(pos_msg, sizeof(pos_msg),
+        TyOS_snprintf(pos_msg, sizeof(pos_msg),
                       "unknown parameter (key %d)", key_v);
         name = pos_msg;
     }
@@ -186,54 +186,54 @@ set_parameter_error(int is_compress, int key_v, int value_v)
         bounds = ZSTD_dParam_getBounds(key_v);
     }
     if (ZSTD_isError(bounds.error)) {
-        PyErr_Format(PyExc_ValueError, "invalid %s parameter '%s'",
+        TyErr_Format(TyExc_ValueError, "invalid %s parameter '%s'",
                      type, name);
         return;
     }
 
     /* Error message */
-    PyErr_Format(PyExc_ValueError,
+    TyErr_Format(TyExc_ValueError,
         "%s parameter '%s' received an illegal value %d; "
         "the valid range is [%d, %d]",
         type, name, value_v, bounds.lowerBound, bounds.upperBound);
 }
 
 static inline _zstd_state*
-get_zstd_state(PyObject *module)
+get_zstd_state(TyObject *module)
 {
-    void *state = PyModule_GetState(module);
+    void *state = TyModule_GetState(module);
     assert(state != NULL);
     return (_zstd_state *)state;
 }
 
-static Py_ssize_t
-calculate_samples_stats(PyBytesObject *samples_bytes, PyObject *samples_sizes,
+static Ty_ssize_t
+calculate_samples_stats(PyBytesObject *samples_bytes, TyObject *samples_sizes,
                     size_t **chunk_sizes)
 {
-    Py_ssize_t chunks_number;
-    Py_ssize_t sizes_sum;
-    Py_ssize_t i;
+    Ty_ssize_t chunks_number;
+    Ty_ssize_t sizes_sum;
+    Ty_ssize_t i;
 
-    chunks_number = PyTuple_GET_SIZE(samples_sizes);
+    chunks_number = TyTuple_GET_SIZE(samples_sizes);
     if ((size_t) chunks_number > UINT32_MAX) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "The number of samples should be <= %u.", UINT32_MAX);
         return -1;
     }
 
     /* Prepare chunk_sizes */
-    *chunk_sizes = PyMem_New(size_t, chunks_number);
+    *chunk_sizes = TyMem_New(size_t, chunks_number);
     if (*chunk_sizes == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
 
-    sizes_sum = PyBytes_GET_SIZE(samples_bytes);
+    sizes_sum = TyBytes_GET_SIZE(samples_bytes);
     for (i = 0; i < chunks_number; i++) {
-        size_t size = PyLong_AsSize_t(PyTuple_GET_ITEM(samples_sizes, i));
+        size_t size = TyLong_AsSize_t(TyTuple_GET_ITEM(samples_sizes, i));
         (*chunk_sizes)[i] = size;
-        if (size == (size_t)-1 && PyErr_Occurred()) {
-            if (PyErr_ExceptionMatches(PyExc_OverflowError)) {
+        if (size == (size_t)-1 && TyErr_Occurred()) {
+            if (TyErr_ExceptionMatches(TyExc_OverflowError)) {
                 goto sum_error;
             }
             return -1;
@@ -246,7 +246,7 @@ calculate_samples_stats(PyBytesObject *samples_bytes, PyObject *samples_sizes,
 
     if (sizes_sum != 0) {
 sum_error:
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "The samples size tuple doesn't match the "
                         "concatenation's size.");
         return -1;
@@ -260,28 +260,28 @@ _zstd.train_dict
 
     samples_bytes: PyBytesObject
         Concatenation of samples.
-    samples_sizes: object(subclass_of='&PyTuple_Type')
+    samples_sizes: object(subclass_of='&TyTuple_Type')
         Tuple of samples' sizes.
-    dict_size: Py_ssize_t
+    dict_size: Ty_ssize_t
         The size of the dictionary.
     /
 
 Train a Zstandard dictionary on sample data.
 [clinic start generated code]*/
 
-static PyObject *
-_zstd_train_dict_impl(PyObject *module, PyBytesObject *samples_bytes,
-                      PyObject *samples_sizes, Py_ssize_t dict_size)
+static TyObject *
+_zstd_train_dict_impl(TyObject *module, PyBytesObject *samples_bytes,
+                      TyObject *samples_sizes, Ty_ssize_t dict_size)
 /*[clinic end generated code: output=8e87fe43935e8f77 input=d20dedb21c72cb62]*/
 {
-    PyObject *dst_dict_bytes = NULL;
+    TyObject *dst_dict_bytes = NULL;
     size_t *chunk_sizes = NULL;
-    Py_ssize_t chunks_number;
+    Ty_ssize_t chunks_number;
     size_t zstd_ret;
 
     /* Check arguments */
     if (dict_size <= 0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "dict_size argument should be positive number.");
         return NULL;
     }
@@ -294,19 +294,19 @@ _zstd_train_dict_impl(PyObject *module, PyBytesObject *samples_bytes,
     }
 
     /* Allocate dict buffer */
-    dst_dict_bytes = PyBytes_FromStringAndSize(NULL, dict_size);
+    dst_dict_bytes = TyBytes_FromStringAndSize(NULL, dict_size);
     if (dst_dict_bytes == NULL) {
         goto error;
     }
 
     /* Train the dictionary */
-    char *dst_dict_buffer = PyBytes_AS_STRING(dst_dict_bytes);
-    const char *samples_buffer = PyBytes_AS_STRING(samples_bytes);
-    Py_BEGIN_ALLOW_THREADS
+    char *dst_dict_buffer = TyBytes_AS_STRING(dst_dict_bytes);
+    const char *samples_buffer = TyBytes_AS_STRING(samples_bytes);
+    Ty_BEGIN_ALLOW_THREADS
     zstd_ret = ZDICT_trainFromBuffer(dst_dict_buffer, dict_size,
                                      samples_buffer,
                                      chunk_sizes, (uint32_t)chunks_number);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     /* Check Zstandard dict error */
     if (ZDICT_isError(zstd_ret)) {
@@ -316,17 +316,17 @@ _zstd_train_dict_impl(PyObject *module, PyBytesObject *samples_bytes,
     }
 
     /* Resize dict_buffer */
-    if (_PyBytes_Resize(&dst_dict_bytes, zstd_ret) < 0) {
+    if (_TyBytes_Resize(&dst_dict_bytes, zstd_ret) < 0) {
         goto error;
     }
 
     goto success;
 
 error:
-    Py_CLEAR(dst_dict_bytes);
+    Ty_CLEAR(dst_dict_bytes);
 
 success:
-    PyMem_Free(chunk_sizes);
+    TyMem_Free(chunk_sizes);
     return dst_dict_bytes;
 }
 
@@ -337,9 +337,9 @@ _zstd.finalize_dict
         Custom dictionary content.
     samples_bytes: PyBytesObject
         Concatenation of samples.
-    samples_sizes: object(subclass_of='&PyTuple_Type')
+    samples_sizes: object(subclass_of='&TyTuple_Type')
         Tuple of samples' sizes.
-    dict_size: Py_ssize_t
+    dict_size: Ty_ssize_t
         The size of the dictionary.
     compression_level: int
         Optimize for a specific Zstandard compression level, 0 means default.
@@ -348,22 +348,22 @@ _zstd.finalize_dict
 Finalize a Zstandard dictionary.
 [clinic start generated code]*/
 
-static PyObject *
-_zstd_finalize_dict_impl(PyObject *module, PyBytesObject *custom_dict_bytes,
+static TyObject *
+_zstd_finalize_dict_impl(TyObject *module, PyBytesObject *custom_dict_bytes,
                          PyBytesObject *samples_bytes,
-                         PyObject *samples_sizes, Py_ssize_t dict_size,
+                         TyObject *samples_sizes, Ty_ssize_t dict_size,
                          int compression_level)
 /*[clinic end generated code: output=f91821ba5ae85bda input=3c7e2480aa08fb56]*/
 {
-    Py_ssize_t chunks_number;
+    Ty_ssize_t chunks_number;
     size_t *chunk_sizes = NULL;
-    PyObject *dst_dict_bytes = NULL;
+    TyObject *dst_dict_bytes = NULL;
     size_t zstd_ret;
     ZDICT_params_t params;
 
     /* Check arguments */
     if (dict_size <= 0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "dict_size argument should be positive number.");
         return NULL;
     }
@@ -376,7 +376,7 @@ _zstd_finalize_dict_impl(PyObject *module, PyBytesObject *custom_dict_bytes,
     }
 
     /* Allocate dict buffer */
-    dst_dict_bytes = PyBytes_FromStringAndSize(NULL, dict_size);
+    dst_dict_bytes = TyBytes_FromStringAndSize(NULL, dict_size);
     if (dst_dict_bytes == NULL) {
         goto error;
     }
@@ -391,14 +391,14 @@ _zstd_finalize_dict_impl(PyObject *module, PyBytesObject *custom_dict_bytes,
     params.dictID = 0;
 
     /* Finalize the dictionary */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     zstd_ret = ZDICT_finalizeDictionary(
-                        PyBytes_AS_STRING(dst_dict_bytes), dict_size,
-                        PyBytes_AS_STRING(custom_dict_bytes),
-                        Py_SIZE(custom_dict_bytes),
-                        PyBytes_AS_STRING(samples_bytes), chunk_sizes,
+                        TyBytes_AS_STRING(dst_dict_bytes), dict_size,
+                        TyBytes_AS_STRING(custom_dict_bytes),
+                        Ty_SIZE(custom_dict_bytes),
+                        TyBytes_AS_STRING(samples_bytes), chunk_sizes,
                         (uint32_t)chunks_number, params);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     /* Check Zstandard dict error */
     if (ZDICT_isError(zstd_ret)) {
@@ -408,17 +408,17 @@ _zstd_finalize_dict_impl(PyObject *module, PyBytesObject *custom_dict_bytes,
     }
 
     /* Resize dict_buffer */
-    if (_PyBytes_Resize(&dst_dict_bytes, zstd_ret) < 0) {
+    if (_TyBytes_Resize(&dst_dict_bytes, zstd_ret) < 0) {
         goto error;
     }
 
     goto success;
 
 error:
-    Py_CLEAR(dst_dict_bytes);
+    Ty_CLEAR(dst_dict_bytes);
 
 success:
-    PyMem_Free(chunk_sizes);
+    TyMem_Free(chunk_sizes);
     return dst_dict_bytes;
 }
 
@@ -434,8 +434,8 @@ _zstd.get_param_bounds
 Get CompressionParameter/DecompressionParameter bounds.
 [clinic start generated code]*/
 
-static PyObject *
-_zstd_get_param_bounds_impl(PyObject *module, int parameter, int is_compress)
+static TyObject *
+_zstd_get_param_bounds_impl(TyObject *module, int parameter, int is_compress)
 /*[clinic end generated code: output=4acf5a876f0620ca input=45742ef0a3531b65]*/
 {
     ZSTD_bounds bound;
@@ -456,21 +456,21 @@ _zstd_get_param_bounds_impl(PyObject *module, int parameter, int is_compress)
         }
     }
 
-    return Py_BuildValue("ii", bound.lowerBound, bound.upperBound);
+    return Ty_BuildValue("ii", bound.lowerBound, bound.upperBound);
 }
 
 /*[clinic input]
 _zstd.get_frame_size
 
-    frame_buffer: Py_buffer
+    frame_buffer: Ty_buffer
         A bytes-like object, it should start from the beginning of a frame,
         and contains at least one complete frame.
 
 Get the size of a Zstandard frame, including the header and optional checksum.
 [clinic start generated code]*/
 
-static PyObject *
-_zstd_get_frame_size_impl(PyObject *module, Py_buffer *frame_buffer)
+static TyObject *
+_zstd_get_frame_size_impl(TyObject *module, Ty_buffer *frame_buffer)
 /*[clinic end generated code: output=a7384c2f8780f442 input=3b9f73f8c8129d38]*/
 {
     size_t frame_size;
@@ -479,7 +479,7 @@ _zstd_get_frame_size_impl(PyObject *module, Py_buffer *frame_buffer)
                                               frame_buffer->len);
     if (ZSTD_isError(frame_size)) {
         _zstd_state* mod_state = get_zstd_state(module);
-        PyErr_Format(mod_state->ZstdError,
+        TyErr_Format(mod_state->ZstdError,
             "Error when finding the compressed size of a Zstandard frame. "
             "Ensure the frame_buffer argument starts from the "
             "beginning of a frame, and its length is not less than this "
@@ -488,20 +488,20 @@ _zstd_get_frame_size_impl(PyObject *module, Py_buffer *frame_buffer)
         return NULL;
     }
 
-    return PyLong_FromSize_t(frame_size);
+    return TyLong_FromSize_t(frame_size);
 }
 
 /*[clinic input]
 _zstd.get_frame_info
 
-    frame_buffer: Py_buffer
+    frame_buffer: Ty_buffer
         A bytes-like object, containing the header of a Zstandard frame.
 
 Get Zstandard frame infomation from a frame header.
 [clinic start generated code]*/
 
-static PyObject *
-_zstd_get_frame_info_impl(PyObject *module, Py_buffer *frame_buffer)
+static TyObject *
+_zstd_get_frame_info_impl(TyObject *module, Ty_buffer *frame_buffer)
 /*[clinic end generated code: output=56e033cf48001929 input=94b240583ae22ca5]*/
 {
     uint64_t decompressed_size;
@@ -515,7 +515,7 @@ _zstd_get_frame_info_impl(PyObject *module, Py_buffer *frame_buffer)
        #define ZSTD_CONTENTSIZE_ERROR   (0ULL - 2) */
     if (decompressed_size == ZSTD_CONTENTSIZE_ERROR) {
         _zstd_state* mod_state = get_zstd_state(module);
-        PyErr_SetString(mod_state->ZstdError,
+        TyErr_SetString(mod_state->ZstdError,
             "Error when getting information from the header of "
             "a Zstandard frame. Ensure the frame_buffer argument "
             "starts from the beginning of a frame, and its length "
@@ -528,38 +528,38 @@ _zstd_get_frame_info_impl(PyObject *module, Py_buffer *frame_buffer)
 
     /* Build tuple */
     if (decompressed_size == ZSTD_CONTENTSIZE_UNKNOWN) {
-        return Py_BuildValue("OI", Py_None, dict_id);
+        return Ty_BuildValue("OI", Ty_None, dict_id);
     }
-    return Py_BuildValue("KI", decompressed_size, dict_id);
+    return Ty_BuildValue("KI", decompressed_size, dict_id);
 }
 
 /*[clinic input]
 _zstd.set_parameter_types
 
-    c_parameter_type: object(subclass_of='&PyType_Type')
+    c_parameter_type: object(subclass_of='&TyType_Type')
         CompressionParameter IntEnum type object
-    d_parameter_type: object(subclass_of='&PyType_Type')
+    d_parameter_type: object(subclass_of='&TyType_Type')
         DecompressionParameter IntEnum type object
 
 Set CompressionParameter and DecompressionParameter types for validity check.
 [clinic start generated code]*/
 
-static PyObject *
-_zstd_set_parameter_types_impl(PyObject *module, PyObject *c_parameter_type,
-                               PyObject *d_parameter_type)
+static TyObject *
+_zstd_set_parameter_types_impl(TyObject *module, TyObject *c_parameter_type,
+                               TyObject *d_parameter_type)
 /*[clinic end generated code: output=f3313b1294f19502 input=75d7a953580fae5f]*/
 {
     _zstd_state* mod_state = get_zstd_state(module);
 
-    Py_INCREF(c_parameter_type);
-    Py_XSETREF(mod_state->CParameter_type, (PyTypeObject*)c_parameter_type);
-    Py_INCREF(d_parameter_type);
-    Py_XSETREF(mod_state->DParameter_type, (PyTypeObject*)d_parameter_type);
+    Ty_INCREF(c_parameter_type);
+    Ty_XSETREF(mod_state->CParameter_type, (TyTypeObject*)c_parameter_type);
+    Ty_INCREF(d_parameter_type);
+    Ty_XSETREF(mod_state->DParameter_type, (TyTypeObject*)d_parameter_type);
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
-static PyMethodDef _zstd_methods[] = {
+static TyMethodDef _zstd_methods[] = {
     _ZSTD_TRAIN_DICT_METHODDEF
     _ZSTD_FINALIZE_DICT_METHODDEF
     _ZSTD_GET_PARAM_BOUNDS_METHODDEF
@@ -570,33 +570,33 @@ static PyMethodDef _zstd_methods[] = {
 };
 
 static int
-_zstd_exec(PyObject *m)
+_zstd_exec(TyObject *m)
 {
 #define ADD_TYPE(TYPE, SPEC)                                                 \
 do {                                                                         \
-    TYPE = (PyTypeObject *)PyType_FromModuleAndSpec(m, &(SPEC), NULL);       \
+    TYPE = (TyTypeObject *)TyType_FromModuleAndSpec(m, &(SPEC), NULL);       \
     if (TYPE == NULL) {                                                      \
         return -1;                                                           \
     }                                                                        \
-    if (PyModule_AddType(m, TYPE) < 0) {                                     \
+    if (TyModule_AddType(m, TYPE) < 0) {                                     \
         return -1;                                                           \
     }                                                                        \
 } while (0)
 
 #define ADD_INT_MACRO(MACRO)                                                 \
-    if (PyModule_AddIntConstant((m), #MACRO, (MACRO)) < 0) {                 \
+    if (TyModule_AddIntConstant((m), #MACRO, (MACRO)) < 0) {                 \
         return -1;                                                           \
     }
 
 #define ADD_INT_CONST_TO_TYPE(TYPE, NAME, VALUE)                             \
 do {                                                                         \
-    PyObject *v = PyLong_FromLong((VALUE));                                  \
-    if (v == NULL || PyObject_SetAttrString((PyObject *)(TYPE),              \
+    TyObject *v = TyLong_FromLong((VALUE));                                  \
+    if (v == NULL || PyObject_SetAttrString((TyObject *)(TYPE),              \
                                             (NAME), v) < 0) {                \
-        Py_XDECREF(v);                                                       \
+        Ty_XDECREF(v);                                                       \
         return -1;                                                           \
     }                                                                        \
-    Py_DECREF(v);                                                            \
+    Ty_DECREF(v);                                                            \
 } while (0)
 
     _zstd_state* mod_state = get_zstd_state(m);
@@ -609,30 +609,30 @@ do {                                                                         \
     ADD_TYPE(mod_state->ZstdDict_type, zstd_dict_type_spec);
     ADD_TYPE(mod_state->ZstdCompressor_type, zstd_compressor_type_spec);
     ADD_TYPE(mod_state->ZstdDecompressor_type, zstd_decompressor_type_spec);
-    mod_state->ZstdError = PyErr_NewExceptionWithDoc(
+    mod_state->ZstdError = TyErr_NewExceptionWithDoc(
         "compression.zstd.ZstdError",
         "An error occurred in the zstd library.",
         NULL, NULL);
     if (mod_state->ZstdError == NULL) {
         return -1;
     }
-    if (PyModule_AddType(m, (PyTypeObject *)mod_state->ZstdError) < 0) {
+    if (TyModule_AddType(m, (TyTypeObject *)mod_state->ZstdError) < 0) {
         return -1;
     }
 
     /* Add constants */
-    if (PyModule_AddIntConstant(m, "zstd_version_number",
+    if (TyModule_AddIntConstant(m, "zstd_version_number",
                                 ZSTD_versionNumber()) < 0) {
         return -1;
     }
 
-    if (PyModule_AddStringConstant(m, "zstd_version",
+    if (TyModule_AddStringConstant(m, "zstd_version",
                                    ZSTD_versionString()) < 0) {
         return -1;
     }
 
 #if ZSTD_VERSION_NUMBER >= 10500
-    if (PyModule_AddIntConstant(m, "ZSTD_CLEVEL_DEFAULT",
+    if (TyModule_AddIntConstant(m, "ZSTD_CLEVEL_DEFAULT",
                                 ZSTD_defaultCLevel()) < 0) {
         return -1;
     }
@@ -640,8 +640,8 @@ do {                                                                         \
     ADD_INT_MACRO(ZSTD_CLEVEL_DEFAULT);
 #endif
 
-    if (PyModule_Add(m, "ZSTD_DStreamOutSize",
-                     PyLong_FromSize_t(ZSTD_DStreamOutSize())) < 0) {
+    if (TyModule_Add(m, "ZSTD_DStreamOutSize",
+                     TyLong_FromSize_t(ZSTD_DStreamOutSize())) < 0) {
         return -1;
     }
 
@@ -691,8 +691,8 @@ do {                                                                         \
     ADD_INT_CONST_TO_TYPE(mod_state->ZstdCompressor_type,
                           "FLUSH_FRAME", ZSTD_e_end);
 
-    /* Make ZstdCompressor immutable (set Py_TPFLAGS_IMMUTABLETYPE) */
-    PyType_Freeze(mod_state->ZstdCompressor_type);
+    /* Make ZstdCompressor immutable (set Ty_TPFLAGS_IMMUTABLETYPE) */
+    TyType_Freeze(mod_state->ZstdCompressor_type);
 
 #undef ADD_TYPE
 #undef ADD_INT_MACRO
@@ -702,53 +702,53 @@ do {                                                                         \
 }
 
 static int
-_zstd_traverse(PyObject *module, visitproc visit, void *arg)
+_zstd_traverse(TyObject *module, visitproc visit, void *arg)
 {
     _zstd_state* mod_state = get_zstd_state(module);
 
-    Py_VISIT(mod_state->ZstdDict_type);
-    Py_VISIT(mod_state->ZstdCompressor_type);
+    Ty_VISIT(mod_state->ZstdDict_type);
+    Ty_VISIT(mod_state->ZstdCompressor_type);
 
-    Py_VISIT(mod_state->ZstdDecompressor_type);
+    Ty_VISIT(mod_state->ZstdDecompressor_type);
 
-    Py_VISIT(mod_state->ZstdError);
+    Ty_VISIT(mod_state->ZstdError);
 
-    Py_VISIT(mod_state->CParameter_type);
-    Py_VISIT(mod_state->DParameter_type);
+    Ty_VISIT(mod_state->CParameter_type);
+    Ty_VISIT(mod_state->DParameter_type);
     return 0;
 }
 
 static int
-_zstd_clear(PyObject *module)
+_zstd_clear(TyObject *module)
 {
     _zstd_state* mod_state = get_zstd_state(module);
 
-    Py_CLEAR(mod_state->ZstdDict_type);
-    Py_CLEAR(mod_state->ZstdCompressor_type);
+    Ty_CLEAR(mod_state->ZstdDict_type);
+    Ty_CLEAR(mod_state->ZstdCompressor_type);
 
-    Py_CLEAR(mod_state->ZstdDecompressor_type);
+    Ty_CLEAR(mod_state->ZstdDecompressor_type);
 
-    Py_CLEAR(mod_state->ZstdError);
+    Ty_CLEAR(mod_state->ZstdError);
 
-    Py_CLEAR(mod_state->CParameter_type);
-    Py_CLEAR(mod_state->DParameter_type);
+    Ty_CLEAR(mod_state->CParameter_type);
+    Ty_CLEAR(mod_state->DParameter_type);
     return 0;
 }
 
 static void
 _zstd_free(void *module)
 {
-    (void)_zstd_clear((PyObject *)module);
+    (void)_zstd_clear((TyObject *)module);
 }
 
 static struct PyModuleDef_Slot _zstd_slots[] = {
-    {Py_mod_exec, _zstd_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, _zstd_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static struct PyModuleDef _zstdmodule = {
+static struct TyModuleDef _zstdmodule = {
     .m_base = PyModuleDef_HEAD_INIT,
     .m_name = "_zstd",
     .m_doc = "Implementation module for Zstandard compression.",

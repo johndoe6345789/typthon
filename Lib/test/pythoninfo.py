@@ -131,20 +131,20 @@ def collect_sys(info_add):
         info_add('sys.%s.encoding' % name, encoding)
 
     # Were we compiled --with-pydebug?
-    Py_DEBUG = hasattr(sys, 'gettotalrefcount')
-    if Py_DEBUG:
+    Ty_DEBUG = hasattr(sys, 'gettotalrefcount')
+    if Ty_DEBUG:
         text = 'Yes (sys.gettotalrefcount() present)'
     else:
         text = 'No (sys.gettotalrefcount() missing)'
-    info_add('build.Py_DEBUG', text)
+    info_add('build.Ty_DEBUG', text)
 
     # Were we compiled --with-trace-refs?
-    Py_TRACE_REFS = hasattr(sys, 'getobjects')
-    if Py_TRACE_REFS:
+    Ty_TRACE_REFS = hasattr(sys, 'getobjects')
+    if Ty_TRACE_REFS:
         text = 'Yes (sys.getobjects() present)'
     else:
         text = 'No (sys.getobjects() missing)'
-    info_add('build.Py_TRACE_REFS', text)
+    info_add('build.Ty_TRACE_REFS', text)
 
     info_add('sys.is_remote_debug_enabled', sys.is_remote_debug_enabled())
 
@@ -527,10 +527,10 @@ def collect_sysconfig(info_add):
         'PY_LDFLAGS',
         'PY_LDFLAGS_NODIST',
         'PY_STDMODULE_CFLAGS',
-        'Py_DEBUG',
-        'Py_ENABLE_SHARED',
-        'Py_GIL_DISABLED',
-        'Py_REMOTE_DEBUG',
+        'Ty_DEBUG',
+        'Ty_ENABLE_SHARED',
+        'Ty_GIL_DISABLED',
+        'Ty_REMOTE_DEBUG',
         'SHELL',
         'SOABI',
         'TEST_MODULES',

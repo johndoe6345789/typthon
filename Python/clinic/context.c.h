@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(_contextvars_Context_get__doc__,
 "get($self, key, default=None, /)\n"
@@ -16,18 +16,18 @@ PyDoc_STRVAR(_contextvars_Context_get__doc__,
 #define _CONTEXTVARS_CONTEXT_GET_METHODDEF    \
     {"get", _PyCFunction_CAST(_contextvars_Context_get), METH_FASTCALL, _contextvars_Context_get__doc__},
 
-static PyObject *
-_contextvars_Context_get_impl(PyContext *self, PyObject *key,
-                              PyObject *default_value);
+static TyObject *
+_contextvars_Context_get_impl(PyContext *self, TyObject *key,
+                              TyObject *default_value);
 
-static PyObject *
-_contextvars_Context_get(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_contextvars_Context_get(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *key;
-    PyObject *default_value = Py_None;
+    TyObject *return_value = NULL;
+    TyObject *key;
+    TyObject *default_value = Ty_None;
 
-    if (!_PyArg_CheckPositional("get", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("get", nargs, 1, 2)) {
         goto exit;
     }
     key = args[0];
@@ -53,11 +53,11 @@ PyDoc_STRVAR(_contextvars_Context_items__doc__,
 #define _CONTEXTVARS_CONTEXT_ITEMS_METHODDEF    \
     {"items", (PyCFunction)_contextvars_Context_items, METH_NOARGS, _contextvars_Context_items__doc__},
 
-static PyObject *
+static TyObject *
 _contextvars_Context_items_impl(PyContext *self);
 
-static PyObject *
-_contextvars_Context_items(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_contextvars_Context_items(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _contextvars_Context_items_impl((PyContext *)self);
 }
@@ -71,11 +71,11 @@ PyDoc_STRVAR(_contextvars_Context_keys__doc__,
 #define _CONTEXTVARS_CONTEXT_KEYS_METHODDEF    \
     {"keys", (PyCFunction)_contextvars_Context_keys, METH_NOARGS, _contextvars_Context_keys__doc__},
 
-static PyObject *
+static TyObject *
 _contextvars_Context_keys_impl(PyContext *self);
 
-static PyObject *
-_contextvars_Context_keys(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_contextvars_Context_keys(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _contextvars_Context_keys_impl((PyContext *)self);
 }
@@ -89,11 +89,11 @@ PyDoc_STRVAR(_contextvars_Context_values__doc__,
 #define _CONTEXTVARS_CONTEXT_VALUES_METHODDEF    \
     {"values", (PyCFunction)_contextvars_Context_values, METH_NOARGS, _contextvars_Context_values__doc__},
 
-static PyObject *
+static TyObject *
 _contextvars_Context_values_impl(PyContext *self);
 
-static PyObject *
-_contextvars_Context_values(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_contextvars_Context_values(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _contextvars_Context_values_impl((PyContext *)self);
 }
@@ -107,11 +107,11 @@ PyDoc_STRVAR(_contextvars_Context_copy__doc__,
 #define _CONTEXTVARS_CONTEXT_COPY_METHODDEF    \
     {"copy", (PyCFunction)_contextvars_Context_copy, METH_NOARGS, _contextvars_Context_copy__doc__},
 
-static PyObject *
+static TyObject *
 _contextvars_Context_copy_impl(PyContext *self);
 
-static PyObject *
-_contextvars_Context_copy(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_contextvars_Context_copy(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return _contextvars_Context_copy_impl((PyContext *)self);
 }
@@ -131,16 +131,16 @@ PyDoc_STRVAR(_contextvars_ContextVar_get__doc__,
 #define _CONTEXTVARS_CONTEXTVAR_GET_METHODDEF    \
     {"get", _PyCFunction_CAST(_contextvars_ContextVar_get), METH_FASTCALL, _contextvars_ContextVar_get__doc__},
 
-static PyObject *
-_contextvars_ContextVar_get_impl(PyContextVar *self, PyObject *default_value);
+static TyObject *
+_contextvars_ContextVar_get_impl(PyContextVar *self, TyObject *default_value);
 
-static PyObject *
-_contextvars_ContextVar_get(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_contextvars_ContextVar_get(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *default_value = NULL;
+    TyObject *return_value = NULL;
+    TyObject *default_value = NULL;
 
-    if (!_PyArg_CheckPositional("get", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("get", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
@@ -168,13 +168,13 @@ PyDoc_STRVAR(_contextvars_ContextVar_set__doc__,
 #define _CONTEXTVARS_CONTEXTVAR_SET_METHODDEF    \
     {"set", (PyCFunction)_contextvars_ContextVar_set, METH_O, _contextvars_ContextVar_set__doc__},
 
-static PyObject *
-_contextvars_ContextVar_set_impl(PyContextVar *self, PyObject *value);
+static TyObject *
+_contextvars_ContextVar_set_impl(PyContextVar *self, TyObject *value);
 
-static PyObject *
-_contextvars_ContextVar_set(PyObject *self, PyObject *value)
+static TyObject *
+_contextvars_ContextVar_set(TyObject *self, TyObject *value)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = _contextvars_ContextVar_set_impl((PyContextVar *)self, value);
 
@@ -193,13 +193,13 @@ PyDoc_STRVAR(_contextvars_ContextVar_reset__doc__,
 #define _CONTEXTVARS_CONTEXTVAR_RESET_METHODDEF    \
     {"reset", (PyCFunction)_contextvars_ContextVar_reset, METH_O, _contextvars_ContextVar_reset__doc__},
 
-static PyObject *
-_contextvars_ContextVar_reset_impl(PyContextVar *self, PyObject *token);
+static TyObject *
+_contextvars_ContextVar_reset_impl(PyContextVar *self, TyObject *token);
 
-static PyObject *
-_contextvars_ContextVar_reset(PyObject *self, PyObject *token)
+static TyObject *
+_contextvars_ContextVar_reset(TyObject *self, TyObject *token)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = _contextvars_ContextVar_reset_impl((PyContextVar *)self, token);
 
@@ -215,11 +215,11 @@ PyDoc_STRVAR(token_enter__doc__,
 #define TOKEN_ENTER_METHODDEF    \
     {"__enter__", (PyCFunction)token_enter, METH_NOARGS, token_enter__doc__},
 
-static PyObject *
+static TyObject *
 token_enter_impl(PyContextToken *self);
 
-static PyObject *
-token_enter(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+token_enter(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return token_enter_impl((PyContextToken *)self);
 }
@@ -233,19 +233,19 @@ PyDoc_STRVAR(token_exit__doc__,
 #define TOKEN_EXIT_METHODDEF    \
     {"__exit__", _PyCFunction_CAST(token_exit), METH_FASTCALL, token_exit__doc__},
 
-static PyObject *
-token_exit_impl(PyContextToken *self, PyObject *type, PyObject *val,
-                PyObject *tb);
+static TyObject *
+token_exit_impl(PyContextToken *self, TyObject *type, TyObject *val,
+                TyObject *tb);
 
-static PyObject *
-token_exit(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+token_exit(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *type;
-    PyObject *val;
-    PyObject *tb;
+    TyObject *return_value = NULL;
+    TyObject *type;
+    TyObject *val;
+    TyObject *tb;
 
-    if (!_PyArg_CheckPositional("__exit__", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("__exit__", nargs, 3, 3)) {
         goto exit;
     }
     type = args[0];

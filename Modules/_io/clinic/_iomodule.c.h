@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(_io_open__doc__,
 "open($module, /, file, mode=\'r\', buffering=-1, encoding=None,\n"
@@ -130,54 +130,54 @@ PyDoc_STRVAR(_io_open__doc__,
 #define _IO_OPEN_METHODDEF    \
     {"open", _PyCFunction_CAST(_io_open), METH_FASTCALL|METH_KEYWORDS, _io_open__doc__},
 
-static PyObject *
-_io_open_impl(PyObject *module, PyObject *file, const char *mode,
+static TyObject *
+_io_open_impl(TyObject *module, TyObject *file, const char *mode,
               int buffering, const char *encoding, const char *errors,
-              const char *newline, int closefd, PyObject *opener);
+              const char *newline, int closefd, TyObject *opener);
 
-static PyObject *
-_io_open(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io_open(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 8
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(file), &_Py_ID(mode), &_Py_ID(buffering), &_Py_ID(encoding), &_Py_ID(errors), &_Py_ID(newline), &_Py_ID(closefd), &_Py_ID(opener), },
+        .ob_item = { &_Ty_ID(file), &_Ty_ID(mode), &_Ty_ID(buffering), &_Ty_ID(encoding), &_Ty_ID(errors), &_Ty_ID(newline), &_Ty_ID(closefd), &_Ty_ID(opener), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"file", "mode", "buffering", "encoding", "errors", "newline", "closefd", "opener", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "open",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[8];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *file;
+    TyObject *argsbuf[8];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *file;
     const char *mode = "r";
     int buffering = -1;
     const char *encoding = NULL;
     const char *errors = NULL;
     const char *newline = NULL;
     int closefd = 1;
-    PyObject *opener = Py_None;
+    TyObject *opener = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 8, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -187,17 +187,17 @@ _io_open(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
         goto skip_optional_pos;
     }
     if (args[1]) {
-        if (!PyUnicode_Check(args[1])) {
-            _PyArg_BadArgument("open", "argument 'mode'", "str", args[1]);
+        if (!TyUnicode_Check(args[1])) {
+            _TyArg_BadArgument("open", "argument 'mode'", "str", args[1]);
             goto exit;
         }
-        Py_ssize_t mode_length;
-        mode = PyUnicode_AsUTF8AndSize(args[1], &mode_length);
+        Ty_ssize_t mode_length;
+        mode = TyUnicode_AsUTF8AndSize(args[1], &mode_length);
         if (mode == NULL) {
             goto exit;
         }
         if (strlen(mode) != (size_t)mode_length) {
-            PyErr_SetString(PyExc_ValueError, "embedded null character");
+            TyErr_SetString(TyExc_ValueError, "embedded null character");
             goto exit;
         }
         if (!--noptargs) {
@@ -205,8 +205,8 @@ _io_open(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
         }
     }
     if (args[2]) {
-        buffering = PyLong_AsInt(args[2]);
-        if (buffering == -1 && PyErr_Occurred()) {
+        buffering = TyLong_AsInt(args[2]);
+        if (buffering == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -214,22 +214,22 @@ _io_open(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
         }
     }
     if (args[3]) {
-        if (args[3] == Py_None) {
+        if (args[3] == Ty_None) {
             encoding = NULL;
         }
-        else if (PyUnicode_Check(args[3])) {
-            Py_ssize_t encoding_length;
-            encoding = PyUnicode_AsUTF8AndSize(args[3], &encoding_length);
+        else if (TyUnicode_Check(args[3])) {
+            Ty_ssize_t encoding_length;
+            encoding = TyUnicode_AsUTF8AndSize(args[3], &encoding_length);
             if (encoding == NULL) {
                 goto exit;
             }
             if (strlen(encoding) != (size_t)encoding_length) {
-                PyErr_SetString(PyExc_ValueError, "embedded null character");
+                TyErr_SetString(TyExc_ValueError, "embedded null character");
                 goto exit;
             }
         }
         else {
-            _PyArg_BadArgument("open", "argument 'encoding'", "str or None", args[3]);
+            _TyArg_BadArgument("open", "argument 'encoding'", "str or None", args[3]);
             goto exit;
         }
         if (!--noptargs) {
@@ -237,22 +237,22 @@ _io_open(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
         }
     }
     if (args[4]) {
-        if (args[4] == Py_None) {
+        if (args[4] == Ty_None) {
             errors = NULL;
         }
-        else if (PyUnicode_Check(args[4])) {
-            Py_ssize_t errors_length;
-            errors = PyUnicode_AsUTF8AndSize(args[4], &errors_length);
+        else if (TyUnicode_Check(args[4])) {
+            Ty_ssize_t errors_length;
+            errors = TyUnicode_AsUTF8AndSize(args[4], &errors_length);
             if (errors == NULL) {
                 goto exit;
             }
             if (strlen(errors) != (size_t)errors_length) {
-                PyErr_SetString(PyExc_ValueError, "embedded null character");
+                TyErr_SetString(TyExc_ValueError, "embedded null character");
                 goto exit;
             }
         }
         else {
-            _PyArg_BadArgument("open", "argument 'errors'", "str or None", args[4]);
+            _TyArg_BadArgument("open", "argument 'errors'", "str or None", args[4]);
             goto exit;
         }
         if (!--noptargs) {
@@ -260,22 +260,22 @@ _io_open(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kw
         }
     }
     if (args[5]) {
-        if (args[5] == Py_None) {
+        if (args[5] == Ty_None) {
             newline = NULL;
         }
-        else if (PyUnicode_Check(args[5])) {
-            Py_ssize_t newline_length;
-            newline = PyUnicode_AsUTF8AndSize(args[5], &newline_length);
+        else if (TyUnicode_Check(args[5])) {
+            Ty_ssize_t newline_length;
+            newline = TyUnicode_AsUTF8AndSize(args[5], &newline_length);
             if (newline == NULL) {
                 goto exit;
             }
             if (strlen(newline) != (size_t)newline_length) {
-                PyErr_SetString(PyExc_ValueError, "embedded null character");
+                TyErr_SetString(TyExc_ValueError, "embedded null character");
                 goto exit;
             }
         }
         else {
-            _PyArg_BadArgument("open", "argument 'newline'", "str or None", args[5]);
+            _TyArg_BadArgument("open", "argument 'newline'", "str or None", args[5]);
             goto exit;
         }
         if (!--noptargs) {
@@ -318,25 +318,25 @@ PyDoc_STRVAR(_io_text_encoding__doc__,
 #define _IO_TEXT_ENCODING_METHODDEF    \
     {"text_encoding", _PyCFunction_CAST(_io_text_encoding), METH_FASTCALL, _io_text_encoding__doc__},
 
-static PyObject *
-_io_text_encoding_impl(PyObject *module, PyObject *encoding, int stacklevel);
+static TyObject *
+_io_text_encoding_impl(TyObject *module, TyObject *encoding, int stacklevel);
 
-static PyObject *
-_io_text_encoding(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io_text_encoding(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *encoding;
+    TyObject *return_value = NULL;
+    TyObject *encoding;
     int stacklevel = 2;
 
-    if (!_PyArg_CheckPositional("text_encoding", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("text_encoding", nargs, 1, 2)) {
         goto exit;
     }
     encoding = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    stacklevel = PyLong_AsInt(args[1]);
-    if (stacklevel == -1 && PyErr_Occurred()) {
+    stacklevel = TyLong_AsInt(args[1]);
+    if (stacklevel == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
@@ -358,50 +358,50 @@ PyDoc_STRVAR(_io_open_code__doc__,
 #define _IO_OPEN_CODE_METHODDEF    \
     {"open_code", _PyCFunction_CAST(_io_open_code), METH_FASTCALL|METH_KEYWORDS, _io_open_code__doc__},
 
-static PyObject *
-_io_open_code_impl(PyObject *module, PyObject *path);
+static TyObject *
+_io_open_code_impl(TyObject *module, TyObject *path);
 
-static PyObject *
-_io_open_code(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io_open_code(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(path), },
+        .ob_item = { &_Ty_ID(path), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"path", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "open_code",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *path;
+    TyObject *argsbuf[1];
+    TyObject *path;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("open_code", "argument 'path'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("open_code", "argument 'path'", "str", args[0]);
         goto exit;
     }
     path = args[0];

@@ -18,19 +18,19 @@ PyDoc_STRVAR(_testcext_add_doc,
 "\n"
 "Return the sum of two integers: x + y.");
 
-static PyObject *
-_testcext_add(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+_testcext_add(TyObject *Py_UNUSED(module), TyObject *args)
 {
     long i, j, res;
     if (!PyArg_ParseTuple(args, "ll:foo", &i, &j)) {
         return NULL;
     }
     res = i + j;
-    return PyLong_FromLong(res);
+    return TyLong_FromLong(res);
 }
 
 
-static PyMethodDef _testcext_methods[] = {
+static TyMethodDef _testcext_methods[] = {
     {"add", _testcext_add, METH_VARARGS, _testcext_add_doc},
     {NULL, NULL, 0, NULL}  // sentinel
 };
@@ -39,14 +39,14 @@ static PyMethodDef _testcext_methods[] = {
 static int
 _testcext_exec(
 #ifdef __STDC_VERSION__
-    PyObject *module
+    TyObject *module
 #else
-    PyObject *Py_UNUSED(module)
+    TyObject *Py_UNUSED(module)
 #endif
     )
 {
 #ifdef __STDC_VERSION__
-    if (PyModule_AddIntMacro(module, __STDC_VERSION__) < 0) {
+    if (TyModule_AddIntMacro(module, __STDC_VERSION__) < 0) {
         return -1;
     }
 #endif
@@ -62,7 +62,7 @@ _testcext_exec(
 // works on all known platforms, and CPython's module and type slots currently
 // need it.
 // (GCC doesn't have a narrower category for this than -Wpedantic.)
-_Py_COMP_DIAG_PUSH
+_Ty_COMP_DIAG_PUSH
 #if defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wpedantic"
 #elif defined(__clang__)
@@ -74,12 +74,12 @@ static PyModuleDef_Slot _testcext_slots[] = {
     {0, NULL}
 };
 
-_Py_COMP_DIAG_POP
+_Ty_COMP_DIAG_POP
 
 
 PyDoc_STRVAR(_testcext_doc, "C test extension.");
 
-static struct PyModuleDef _testcext_module = {
+static struct TyModuleDef _testcext_module = {
     PyModuleDef_HEAD_INIT,  // m_base
     STR(MODULE_NAME),  // m_name
     _testcext_doc,  // m_doc

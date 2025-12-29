@@ -2,76 +2,76 @@
 #include "util.h"
 
 
-static PyObject *
-tuple_get_size(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+tuple_get_size(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_SIZE(PyTuple_GET_SIZE(obj));
+    RETURN_SIZE(TyTuple_GET_SIZE(obj));
 }
 
-static PyObject *
-tuple_get_item(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+tuple_get_item(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "On", &obj, &i)) {
+    TyObject *obj;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "On", &obj, &i)) {
         return NULL;
     }
     NULLABLE(obj);
-    return Py_XNewRef(PyTuple_GET_ITEM(obj, i));
+    return Ty_XNewRef(TyTuple_GET_ITEM(obj, i));
 }
 
-static PyObject *
-tuple_copy(PyObject *tuple)
+static TyObject *
+tuple_copy(TyObject *tuple)
 {
-    Py_ssize_t size = PyTuple_GET_SIZE(tuple);
-    PyObject *newtuple = PyTuple_New(size);
+    Ty_ssize_t size = TyTuple_GET_SIZE(tuple);
+    TyObject *newtuple = TyTuple_New(size);
     if (!newtuple) {
         return NULL;
     }
-    for (Py_ssize_t n = 0; n < size; n++) {
-        PyTuple_SET_ITEM(newtuple, n, Py_XNewRef(PyTuple_GET_ITEM(tuple, n)));
+    for (Ty_ssize_t n = 0; n < size; n++) {
+        TyTuple_SET_ITEM(newtuple, n, Ty_XNewRef(TyTuple_GET_ITEM(tuple, n)));
     }
     return newtuple;
 }
 
-static PyObject *
-tuple_set_item(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+tuple_set_item(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj, *value, *newtuple;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "OnO", &obj, &i, &value)) {
+    TyObject *obj, *value, *newtuple;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "OnO", &obj, &i, &value)) {
         return NULL;
     }
     NULLABLE(value);
-    if (PyTuple_CheckExact(obj)) {
+    if (TyTuple_CheckExact(obj)) {
         newtuple = tuple_copy(obj);
         if (!newtuple) {
             return NULL;
         }
 
-        PyObject *val = PyTuple_GET_ITEM(newtuple, i);
-        PyTuple_SET_ITEM(newtuple, i, Py_XNewRef(value));
-        Py_DECREF(val);
+        TyObject *val = TyTuple_GET_ITEM(newtuple, i);
+        TyTuple_SET_ITEM(newtuple, i, Ty_XNewRef(value));
+        Ty_DECREF(val);
         return newtuple;
     }
     else {
         NULLABLE(obj);
 
-        PyObject *val = PyTuple_GET_ITEM(obj, i);
-        PyTuple_SET_ITEM(obj, i, Py_XNewRef(value));
-        Py_DECREF(val);
-        return Py_XNewRef(obj);
+        TyObject *val = TyTuple_GET_ITEM(obj, i);
+        TyTuple_SET_ITEM(obj, i, Ty_XNewRef(value));
+        Ty_DECREF(val);
+        return Ty_XNewRef(obj);
     }
 }
 
-static PyObject *
-_tuple_resize(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+_tuple_resize(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *tup;
-    Py_ssize_t newsize;
+    TyObject *tup;
+    Ty_ssize_t newsize;
     int new = 1;
-    if (!PyArg_ParseTuple(args, "On|p", &tup, &newsize, &new)) {
+    if (!TyArg_ParseTuple(args, "On|p", &tup, &newsize, &new)) {
         return NULL;
     }
     if (new) {
@@ -82,9 +82,9 @@ _tuple_resize(PyObject *Py_UNUSED(module), PyObject *args)
     }
     else {
         NULLABLE(tup);
-        Py_XINCREF(tup);
+        Ty_XINCREF(tup);
     }
-    int r = _PyTuple_Resize(&tup, newsize);
+    int r = _TyTuple_Resize(&tup, newsize);
     if (r == -1) {
         assert(tup == NULL);
         return NULL;
@@ -92,19 +92,19 @@ _tuple_resize(PyObject *Py_UNUSED(module), PyObject *args)
     return tup;
 }
 
-static PyObject *
-_check_tuple_item_is_NULL(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+_check_tuple_item_is_NULL(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "On", &obj, &i)) {
+    TyObject *obj;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "On", &obj, &i)) {
         return NULL;
     }
-    return PyLong_FromLong(PyTuple_GET_ITEM(obj, i) == NULL);
+    return TyLong_FromLong(TyTuple_GET_ITEM(obj, i) == NULL);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"tuple_get_size", tuple_get_size, METH_O},
     {"tuple_get_item", tuple_get_item, METH_VARARGS},
     {"tuple_set_item", tuple_set_item, METH_VARARGS},
@@ -114,9 +114,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Tuple(PyObject *m)
+_PyTestCapi_Init_Tuple(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

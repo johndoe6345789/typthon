@@ -2473,19 +2473,19 @@ class StrTest(string_tests.StringLikeTest,
         for char in ('a', '\xe9', '\u20ac', '\U0010ffff'):
             code = ord(char)
             if code < 0x80:
-                char_size = 1  # sizeof(Py_UCS1)
+                char_size = 1  # sizeof(Ty_UCS1)
                 struct_size = ascii_struct_size
             elif code < 0x100:
-                char_size = 1  # sizeof(Py_UCS1)
+                char_size = 1  # sizeof(Ty_UCS1)
                 struct_size = compact_struct_size
             elif code < 0x10000:
-                char_size = 2  # sizeof(Py_UCS2)
+                char_size = 2  # sizeof(Ty_UCS2)
                 struct_size = compact_struct_size
             else:
-                char_size = 4  # sizeof(Py_UCS4)
+                char_size = 4  # sizeof(Ty_UCS4)
                 struct_size = compact_struct_size
             # Note: sys.maxsize is half of the actual max allocation because of
-            # the signedness of Py_ssize_t. Strings of maxlen-1 should in principle
+            # the signedness of Ty_ssize_t. Strings of maxlen-1 should in principle
             # be allocatable, given enough memory.
             maxlen = ((sys.maxsize - struct_size) // char_size)
             alloc = lambda: char * maxlen
@@ -2605,7 +2605,7 @@ class StrTest(string_tests.StringLikeTest,
 
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, str)
-        if not support.Py_GIL_DISABLED:
+        if not support.Ty_GIL_DISABLED:
             support.check_free_after_iterating(self, reversed, str)
 
     def test_check_encoding_errors(self):

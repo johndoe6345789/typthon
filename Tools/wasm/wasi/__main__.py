@@ -130,7 +130,7 @@ def build_python_path():
 
 def build_python_is_pydebug():
     """Find out if the build Python is a pydebug build."""
-    test = "import sys, test.support; sys.exit(test.support.Py_DEBUG)"
+    test = "import sys, test.support; sys.exit(test.support.Ty_DEBUG)"
     result = subprocess.run([build_python_path(), "-c", test],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)

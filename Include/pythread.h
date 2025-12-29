@@ -1,5 +1,5 @@
-#ifndef Py_PYTHREAD_H
-#define Py_PYTHREAD_H
+#ifndef Ty_PYTHREAD_H
+#define Ty_PYTHREAD_H
 
 typedef void *PyThread_type_lock;
 
@@ -35,7 +35,7 @@ PyAPI_FUNC(unsigned long) PyThread_start_new_thread(void (*)(void *), void *);
  * In either case there is a risk of invalid references remaining to data on the
  * thread stack.
  */
-Py_DEPRECATED(3.14) PyAPI_FUNC(void) _Py_NO_RETURN PyThread_exit_thread(void);
+Ty_DEPRECATED(3.14) PyAPI_FUNC(void) _Ty_NO_RETURN PyThread_exit_thread(void);
 
 PyAPI_FUNC(unsigned long) PyThread_get_thread_ident(void);
 
@@ -79,8 +79,8 @@ PyAPI_FUNC(void) PyThread_release_lock(PyThread_type_lock);
 PyAPI_FUNC(size_t) PyThread_get_stacksize(void);
 PyAPI_FUNC(int) PyThread_set_stacksize(size_t);
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
-PyAPI_FUNC(PyObject*) PyThread_GetInfo(void);
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03030000
+PyAPI_FUNC(TyObject*) PyThread_GetInfo(void);
 #endif
 
 
@@ -91,41 +91,41 @@ PyAPI_FUNC(PyObject*) PyThread_GetInfo(void);
    platforms, but it is not POSIX-compliant.  Therefore, the new TSS API uses
    opaque data type to represent TSS keys to be compatible (see PEP 539).
 */
-Py_DEPRECATED(3.7) PyAPI_FUNC(int) PyThread_create_key(void);
-Py_DEPRECATED(3.7) PyAPI_FUNC(void) PyThread_delete_key(int key);
-Py_DEPRECATED(3.7) PyAPI_FUNC(int) PyThread_set_key_value(int key,
+Ty_DEPRECATED(3.7) PyAPI_FUNC(int) PyThread_create_key(void);
+Ty_DEPRECATED(3.7) PyAPI_FUNC(void) PyThread_delete_key(int key);
+Ty_DEPRECATED(3.7) PyAPI_FUNC(int) PyThread_set_key_value(int key,
                                                           void *value);
-Py_DEPRECATED(3.7) PyAPI_FUNC(void *) PyThread_get_key_value(int key);
-Py_DEPRECATED(3.7) PyAPI_FUNC(void) PyThread_delete_key_value(int key);
+Ty_DEPRECATED(3.7) PyAPI_FUNC(void *) PyThread_get_key_value(int key);
+Ty_DEPRECATED(3.7) PyAPI_FUNC(void) PyThread_delete_key_value(int key);
 
 /* Cleanup after a fork */
-Py_DEPRECATED(3.7) PyAPI_FUNC(void) PyThread_ReInitTLS(void);
+Ty_DEPRECATED(3.7) PyAPI_FUNC(void) PyThread_ReInitTLS(void);
 
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03070000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03070000
 /* New in 3.7 */
 /* Thread Specific Storage (TSS) API */
 
-typedef struct _Py_tss_t Py_tss_t;  /* opaque */
+typedef struct _Ty_tss_t Ty_tss_t;  /* opaque */
 
-PyAPI_FUNC(Py_tss_t *) PyThread_tss_alloc(void);
-PyAPI_FUNC(void) PyThread_tss_free(Py_tss_t *key);
+PyAPI_FUNC(Ty_tss_t *) PyThread_tss_alloc(void);
+PyAPI_FUNC(void) PyThread_tss_free(Ty_tss_t *key);
 
 /* The parameter key must not be NULL. */
-PyAPI_FUNC(int) PyThread_tss_is_created(Py_tss_t *key);
-PyAPI_FUNC(int) PyThread_tss_create(Py_tss_t *key);
-PyAPI_FUNC(void) PyThread_tss_delete(Py_tss_t *key);
-PyAPI_FUNC(int) PyThread_tss_set(Py_tss_t *key, void *value);
-PyAPI_FUNC(void *) PyThread_tss_get(Py_tss_t *key);
+PyAPI_FUNC(int) PyThread_tss_is_created(Ty_tss_t *key);
+PyAPI_FUNC(int) PyThread_tss_create(Ty_tss_t *key);
+PyAPI_FUNC(void) PyThread_tss_delete(Ty_tss_t *key);
+PyAPI_FUNC(int) PyThread_tss_set(Ty_tss_t *key, void *value);
+PyAPI_FUNC(void *) PyThread_tss_get(Ty_tss_t *key);
 #endif  /* New in 3.7 */
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_PYTHREAD_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_PYTHREAD_H
 #  include "cpython/pythread.h"
-#  undef Py_CPYTHON_PYTHREAD_H
+#  undef Ty_CPYTHON_PYTHREAD_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_PYTHREAD_H */
+#endif /* !Ty_PYTHREAD_H */

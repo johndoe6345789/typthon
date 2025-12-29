@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(memoryview__doc__,
 "memoryview(object)\n"
@@ -14,46 +14,46 @@ PyDoc_STRVAR(memoryview__doc__,
 "\n"
 "Create a new memoryview object which references the given object.");
 
-static PyObject *
-memoryview_impl(PyTypeObject *type, PyObject *object);
+static TyObject *
+memoryview_impl(TyTypeObject *type, TyObject *object);
 
-static PyObject *
-memoryview(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+memoryview(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(object), },
+        .ob_item = { &_Ty_ID(object), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"object", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "memoryview",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    PyObject *object;
+    TyObject *argsbuf[1];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    TyObject *object;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -74,55 +74,55 @@ PyDoc_STRVAR(memoryview__from_flags__doc__,
 #define MEMORYVIEW__FROM_FLAGS_METHODDEF    \
     {"_from_flags", _PyCFunction_CAST(memoryview__from_flags), METH_FASTCALL|METH_KEYWORDS|METH_CLASS, memoryview__from_flags__doc__},
 
-static PyObject *
-memoryview__from_flags_impl(PyTypeObject *type, PyObject *object, int flags);
+static TyObject *
+memoryview__from_flags_impl(TyTypeObject *type, TyObject *object, int flags);
 
-static PyObject *
-memoryview__from_flags(PyObject *type, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+memoryview__from_flags(TyObject *type, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(object), &_Py_ID(flags), },
+        .ob_item = { &_Ty_ID(object), &_Ty_ID(flags), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"object", "flags", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "_from_flags",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *object;
+    TyObject *argsbuf[2];
+    TyObject *object;
     int flags;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     object = args[0];
-    flags = PyLong_AsInt(args[1]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[1]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = memoryview__from_flags_impl((PyTypeObject *)type, object, flags);
+    return_value = memoryview__from_flags_impl((TyTypeObject *)type, object, flags);
 
 exit:
     return return_value;
@@ -137,11 +137,11 @@ PyDoc_STRVAR(memoryview_release__doc__,
 #define MEMORYVIEW_RELEASE_METHODDEF    \
     {"release", (PyCFunction)memoryview_release, METH_NOARGS, memoryview_release__doc__},
 
-static PyObject *
+static TyObject *
 memoryview_release_impl(PyMemoryViewObject *self);
 
-static PyObject *
-memoryview_release(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+memoryview_release(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return memoryview_release_impl((PyMemoryViewObject *)self);
 }
@@ -155,53 +155,53 @@ PyDoc_STRVAR(memoryview_cast__doc__,
 #define MEMORYVIEW_CAST_METHODDEF    \
     {"cast", _PyCFunction_CAST(memoryview_cast), METH_FASTCALL|METH_KEYWORDS, memoryview_cast__doc__},
 
-static PyObject *
-memoryview_cast_impl(PyMemoryViewObject *self, PyObject *format,
-                     PyObject *shape);
+static TyObject *
+memoryview_cast_impl(PyMemoryViewObject *self, TyObject *format,
+                     TyObject *shape);
 
-static PyObject *
-memoryview_cast(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+memoryview_cast(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(format), &_Py_ID(shape), },
+        .ob_item = { &_Ty_ID(format), &_Ty_ID(shape), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"format", "shape", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "cast",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *format;
-    PyObject *shape = NULL;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *format;
+    TyObject *shape = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("cast", "argument 'format'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("cast", "argument 'format'", "str", args[0]);
         goto exit;
     }
     format = args[0];
@@ -225,11 +225,11 @@ PyDoc_STRVAR(memoryview_toreadonly__doc__,
 #define MEMORYVIEW_TOREADONLY_METHODDEF    \
     {"toreadonly", (PyCFunction)memoryview_toreadonly, METH_NOARGS, memoryview_toreadonly__doc__},
 
-static PyObject *
+static TyObject *
 memoryview_toreadonly_impl(PyMemoryViewObject *self);
 
-static PyObject *
-memoryview_toreadonly(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+memoryview_toreadonly(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return memoryview_toreadonly_impl((PyMemoryViewObject *)self);
 }
@@ -243,11 +243,11 @@ PyDoc_STRVAR(memoryview_tolist__doc__,
 #define MEMORYVIEW_TOLIST_METHODDEF    \
     {"tolist", (PyCFunction)memoryview_tolist, METH_NOARGS, memoryview_tolist__doc__},
 
-static PyObject *
+static TyObject *
 memoryview_tolist_impl(PyMemoryViewObject *self);
 
-static PyObject *
-memoryview_tolist(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+memoryview_tolist(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return memoryview_tolist_impl((PyMemoryViewObject *)self);
 }
@@ -267,45 +267,45 @@ PyDoc_STRVAR(memoryview_tobytes__doc__,
 #define MEMORYVIEW_TOBYTES_METHODDEF    \
     {"tobytes", _PyCFunction_CAST(memoryview_tobytes), METH_FASTCALL|METH_KEYWORDS, memoryview_tobytes__doc__},
 
-static PyObject *
+static TyObject *
 memoryview_tobytes_impl(PyMemoryViewObject *self, const char *order);
 
-static PyObject *
-memoryview_tobytes(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+memoryview_tobytes(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(order), },
+        .ob_item = { &_Ty_ID(order), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"order", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "tobytes",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     const char *order = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -313,22 +313,22 @@ memoryview_tobytes(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyOb
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    if (args[0] == Py_None) {
+    if (args[0] == Ty_None) {
         order = NULL;
     }
-    else if (PyUnicode_Check(args[0])) {
-        Py_ssize_t order_length;
-        order = PyUnicode_AsUTF8AndSize(args[0], &order_length);
+    else if (TyUnicode_Check(args[0])) {
+        Ty_ssize_t order_length;
+        order = TyUnicode_AsUTF8AndSize(args[0], &order_length);
         if (order == NULL) {
             goto exit;
         }
         if (strlen(order) != (size_t)order_length) {
-            PyErr_SetString(PyExc_ValueError, "embedded null character");
+            TyErr_SetString(TyExc_ValueError, "embedded null character");
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("tobytes", "argument 'order'", "str or None", args[0]);
+        _TyArg_BadArgument("tobytes", "argument 'order'", "str or None", args[0]);
         goto exit;
     }
 skip_optional_pos:
@@ -364,47 +364,47 @@ PyDoc_STRVAR(memoryview_hex__doc__,
 #define MEMORYVIEW_HEX_METHODDEF    \
     {"hex", _PyCFunction_CAST(memoryview_hex), METH_FASTCALL|METH_KEYWORDS, memoryview_hex__doc__},
 
-static PyObject *
-memoryview_hex_impl(PyMemoryViewObject *self, PyObject *sep,
+static TyObject *
+memoryview_hex_impl(PyMemoryViewObject *self, TyObject *sep,
                     int bytes_per_sep);
 
-static PyObject *
-memoryview_hex(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+memoryview_hex(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(sep), &_Py_ID(bytes_per_sep), },
+        .ob_item = { &_Ty_ID(sep), &_Ty_ID(bytes_per_sep), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"sep", "bytes_per_sep", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "hex",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *sep = NULL;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *sep = NULL;
     int bytes_per_sep = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -418,8 +418,8 @@ memoryview_hex(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject
             goto skip_optional_pos;
         }
     }
-    bytes_per_sep = PyLong_AsInt(args[1]);
-    if (bytes_per_sep == -1 && PyErr_Occurred()) {
+    bytes_per_sep = TyLong_AsInt(args[1]);
+    if (bytes_per_sep == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -438,13 +438,13 @@ PyDoc_STRVAR(memoryview_count__doc__,
 #define MEMORYVIEW_COUNT_METHODDEF    \
     {"count", (PyCFunction)memoryview_count, METH_O, memoryview_count__doc__},
 
-static PyObject *
-memoryview_count_impl(PyMemoryViewObject *self, PyObject *value);
+static TyObject *
+memoryview_count_impl(PyMemoryViewObject *self, TyObject *value);
 
-static PyObject *
-memoryview_count(PyObject *self, PyObject *value)
+static TyObject *
+memoryview_count(TyObject *self, TyObject *value)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = memoryview_count_impl((PyMemoryViewObject *)self, value);
 
@@ -462,32 +462,32 @@ PyDoc_STRVAR(memoryview_index__doc__,
 #define MEMORYVIEW_INDEX_METHODDEF    \
     {"index", _PyCFunction_CAST(memoryview_index), METH_FASTCALL, memoryview_index__doc__},
 
-static PyObject *
-memoryview_index_impl(PyMemoryViewObject *self, PyObject *value,
-                      Py_ssize_t start, Py_ssize_t stop);
+static TyObject *
+memoryview_index_impl(PyMemoryViewObject *self, TyObject *value,
+                      Ty_ssize_t start, Ty_ssize_t stop);
 
-static PyObject *
-memoryview_index(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+memoryview_index(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *value;
-    Py_ssize_t start = 0;
-    Py_ssize_t stop = PY_SSIZE_T_MAX;
+    TyObject *return_value = NULL;
+    TyObject *value;
+    Ty_ssize_t start = 0;
+    Ty_ssize_t stop = PY_SSIZE_T_MAX;
 
-    if (!_PyArg_CheckPositional("index", nargs, 1, 3)) {
+    if (!_TyArg_CheckPositional("index", nargs, 1, 3)) {
         goto exit;
     }
     value = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndexNotNone(args[1], &start)) {
+    if (!_TyEval_SliceIndexNotNone(args[1], &start)) {
         goto exit;
     }
     if (nargs < 3) {
         goto skip_optional;
     }
-    if (!_PyEval_SliceIndexNotNone(args[2], &stop)) {
+    if (!_TyEval_SliceIndexNotNone(args[2], &stop)) {
         goto exit;
     }
 skip_optional:

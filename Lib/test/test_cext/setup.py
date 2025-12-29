@@ -25,7 +25,7 @@ if not support.MS_WINDOWS:
         # Ask for strict(er) compliance with the standard
         '-pedantic-errors',
     ]
-    if not support.Py_GIL_DISABLED:
+    if not support.Ty_GIL_DISABLED:
         CFLAGS.append(
             # gh-116869: The Python C API must be compatible with building
             # with the -Werror=declaration-after-statement compiler flag.
@@ -70,7 +70,7 @@ def main():
         # CC env var overrides sysconfig CC variable in setuptools
         os.environ['CC'] = cmd
 
-    # Define Py_LIMITED_API macro
+    # Define Ty_LIMITED_API macro
     if limited:
         version = sys.hexversion
         cflags.append(f'-DPy_LIMITED_API={version:#x}')

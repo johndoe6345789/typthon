@@ -6,4 +6,4 @@
 #include "pycore_importdl.h"
 
 
-const char *_PyImport_DynLoadFiletab[] = {NULL};
+const char *_TyImport_DynLoadFiletab[] = {NULL};

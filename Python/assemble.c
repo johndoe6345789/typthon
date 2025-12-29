@@ -4,7 +4,7 @@
 #include "pycore_instruction_sequence.h"
 #include "pycore_opcode_utils.h"    // IS_BACKWARDS_JUMP_OPCODE
 #include "pycore_opcode_metadata.h" // is_pseudo_target, _PyOpcode_Caches
-#include "pycore_symtable.h"        // _Py_SourceLocation
+#include "pycore_symtable.h"        // _Ty_SourceLocation
 
 #include <stdbool.h>
 
@@ -22,7 +22,7 @@
         return ERROR;       \
     }
 
-typedef _Py_SourceLocation location;
+typedef _Ty_SourceLocation location;
 typedef _PyInstruction instruction;
 typedef _PyInstructionSequence instr_sequence;
 
@@ -48,13 +48,13 @@ instr_size(instruction *instr)
 }
 
 struct assembler {
-    PyObject *a_bytecode;  /* bytes containing bytecode */
+    TyObject *a_bytecode;  /* bytes containing bytecode */
     int a_offset;              /* offset into bytecode */
-    PyObject *a_except_table;  /* bytes containing exception table */
+    TyObject *a_except_table;  /* bytes containing exception table */
     int a_except_table_off;    /* offset into exception table */
     /* Location Info */
     int a_lineno;          /* lineno of last emitted instruction */
-    PyObject* a_linetable; /* bytes containing location info */
+    TyObject* a_linetable; /* bytes containing location info */
     int a_location_off;    /* offset of last written location info frame */
 };
 
@@ -66,37 +66,37 @@ assemble_init(struct assembler *a, int firstlineno)
     a->a_linetable = NULL;
     a->a_location_off = 0;
     a->a_except_table = NULL;
-    a->a_bytecode = PyBytes_FromStringAndSize(NULL, DEFAULT_CODE_SIZE);
+    a->a_bytecode = TyBytes_FromStringAndSize(NULL, DEFAULT_CODE_SIZE);
     if (a->a_bytecode == NULL) {
         goto error;
     }
-    a->a_linetable = PyBytes_FromStringAndSize(NULL, DEFAULT_CNOTAB_SIZE);
+    a->a_linetable = TyBytes_FromStringAndSize(NULL, DEFAULT_CNOTAB_SIZE);
     if (a->a_linetable == NULL) {
         goto error;
     }
-    a->a_except_table = PyBytes_FromStringAndSize(NULL, DEFAULT_LNOTAB_SIZE);
+    a->a_except_table = TyBytes_FromStringAndSize(NULL, DEFAULT_LNOTAB_SIZE);
     if (a->a_except_table == NULL) {
         goto error;
     }
     return SUCCESS;
 error:
-    Py_XDECREF(a->a_bytecode);
-    Py_XDECREF(a->a_linetable);
-    Py_XDECREF(a->a_except_table);
+    Ty_XDECREF(a->a_bytecode);
+    Ty_XDECREF(a->a_linetable);
+    Ty_XDECREF(a->a_except_table);
     return ERROR;
 }
 
 static void
 assemble_free(struct assembler *a)
 {
-    Py_XDECREF(a->a_bytecode);
-    Py_XDECREF(a->a_linetable);
-    Py_XDECREF(a->a_except_table);
+    Ty_XDECREF(a->a_bytecode);
+    Ty_XDECREF(a->a_linetable);
+    Ty_XDECREF(a->a_except_table);
 }
 
 static inline void
 write_except_byte(struct assembler *a, int byte) {
-    unsigned char *p = (unsigned char *) PyBytes_AS_STRING(a->a_except_table);
+    unsigned char *p = (unsigned char *) TyBytes_AS_STRING(a->a_except_table);
     p[a->a_except_table_off++] = byte;
 }
 
@@ -134,9 +134,9 @@ assemble_emit_exception_table_entry(struct assembler *a, int start, int end,
                                     int handler_offset,
                                     _PyExceptHandlerInfo *handler)
 {
-    Py_ssize_t len = PyBytes_GET_SIZE(a->a_except_table);
+    Ty_ssize_t len = TyBytes_GET_SIZE(a->a_except_table);
     if (a->a_except_table_off + MAX_SIZE_OF_ENTRY >= len) {
-        RETURN_IF_ERROR(_PyBytes_Resize(&a->a_except_table, len * 2));
+        RETURN_IF_ERROR(_TyBytes_Resize(&a->a_except_table, len * 2));
     }
     int size = end-start;
     assert(end > start);
@@ -195,7 +195,7 @@ assemble_exception_table(struct assembler *a, instr_sequence *instrs)
 static void
 write_location_byte(struct assembler* a, int val)
 {
-    PyBytes_AS_STRING(a->a_linetable)[a->a_location_off] = val&255;
+    TyBytes_AS_STRING(a->a_linetable)[a->a_location_off] = val&255;
     a->a_location_off++;
 }
 
@@ -203,7 +203,7 @@ write_location_byte(struct assembler* a, int val)
 static uint8_t *
 location_pointer(struct assembler* a)
 {
-    return (uint8_t *)PyBytes_AS_STRING(a->a_linetable) +
+    return (uint8_t *)TyBytes_AS_STRING(a->a_linetable) +
         a->a_location_off;
 }
 
@@ -285,10 +285,10 @@ write_location_info_no_column(struct assembler* a, int length, int line_delta)
 static int
 write_location_info_entry(struct assembler* a, location loc, int isize)
 {
-    Py_ssize_t len = PyBytes_GET_SIZE(a->a_linetable);
+    Ty_ssize_t len = TyBytes_GET_SIZE(a->a_linetable);
     if (a->a_location_off + THEORETICAL_MAX_ENTRY_SIZE >= len) {
         assert(len > THEORETICAL_MAX_ENTRY_SIZE);
-        RETURN_IF_ERROR(_PyBytes_Resize(&a->a_linetable, len*2));
+        RETURN_IF_ERROR(_TyBytes_Resize(&a->a_linetable, len*2));
     }
     if (loc.lineno == NO_LOCATION.lineno) {
         write_location_info_none(a, isize);
@@ -366,7 +366,7 @@ assemble_location_info(struct assembler *a, instr_sequence *instrs,
 }
 
 static void
-write_instr(_Py_CODEUNIT *codestr, instruction *instr, int ilen)
+write_instr(_Ty_CODEUNIT *codestr, instruction *instr, int ilen)
 {
     int opcode = instr->i_opcode;
     assert(!IS_PSEUDO_INSTR(opcode));
@@ -378,24 +378,24 @@ write_instr(_Py_CODEUNIT *codestr, instruction *instr, int ilen)
             codestr->op.code = EXTENDED_ARG;
             codestr->op.arg = (oparg >> 24) & 0xFF;
             codestr++;
-            _Py_FALLTHROUGH;
+            _Ty_FALLTHROUGH;
         case 3:
             codestr->op.code = EXTENDED_ARG;
             codestr->op.arg = (oparg >> 16) & 0xFF;
             codestr++;
-            _Py_FALLTHROUGH;
+            _Ty_FALLTHROUGH;
         case 2:
             codestr->op.code = EXTENDED_ARG;
             codestr->op.arg = (oparg >> 8) & 0xFF;
             codestr++;
-            _Py_FALLTHROUGH;
+            _Ty_FALLTHROUGH;
         case 1:
             codestr->op.code = opcode;
             codestr->op.arg = oparg & 0xFF;
             codestr++;
             break;
         default:
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
     }
     while (caches--) {
         codestr->op.code = CACHE;
@@ -412,17 +412,17 @@ write_instr(_Py_CODEUNIT *codestr, instruction *instr, int ilen)
 static int
 assemble_emit_instr(struct assembler *a, instruction *instr)
 {
-    Py_ssize_t len = PyBytes_GET_SIZE(a->a_bytecode);
-    _Py_CODEUNIT *code;
+    Ty_ssize_t len = TyBytes_GET_SIZE(a->a_bytecode);
+    _Ty_CODEUNIT *code;
 
     int size = instr_size(instr);
-    if (a->a_offset + size >= len / (int)sizeof(_Py_CODEUNIT)) {
+    if (a->a_offset + size >= len / (int)sizeof(_Ty_CODEUNIT)) {
         if (len > PY_SSIZE_T_MAX / 2) {
             return ERROR;
         }
-        RETURN_IF_ERROR(_PyBytes_Resize(&a->a_bytecode, len * 2));
+        RETURN_IF_ERROR(_TyBytes_Resize(&a->a_bytecode, len * 2));
     }
-    code = (_Py_CODEUNIT *)PyBytes_AS_STRING(a->a_bytecode) + a->a_offset;
+    code = (_Ty_CODEUNIT *)TyBytes_AS_STRING(a->a_bytecode) + a->a_offset;
     a->a_offset += size;
     write_instr(code, instr, size);
     return SUCCESS;
@@ -430,7 +430,7 @@ assemble_emit_instr(struct assembler *a, instruction *instr)
 
 static int
 assemble_emit(struct assembler *a, instr_sequence *instrs,
-              int first_lineno, PyObject *const_cache)
+              int first_lineno, TyObject *const_cache)
 {
     RETURN_IF_ERROR(assemble_init(a, first_lineno));
 
@@ -443,49 +443,49 @@ assemble_emit(struct assembler *a, instr_sequence *instrs,
 
     RETURN_IF_ERROR(assemble_exception_table(a, instrs));
 
-    RETURN_IF_ERROR(_PyBytes_Resize(&a->a_except_table, a->a_except_table_off));
+    RETURN_IF_ERROR(_TyBytes_Resize(&a->a_except_table, a->a_except_table_off));
     RETURN_IF_ERROR(_PyCompile_ConstCacheMergeOne(const_cache, &a->a_except_table));
 
-    RETURN_IF_ERROR(_PyBytes_Resize(&a->a_linetable, a->a_location_off));
+    RETURN_IF_ERROR(_TyBytes_Resize(&a->a_linetable, a->a_location_off));
     RETURN_IF_ERROR(_PyCompile_ConstCacheMergeOne(const_cache, &a->a_linetable));
 
-    RETURN_IF_ERROR(_PyBytes_Resize(&a->a_bytecode, a->a_offset * sizeof(_Py_CODEUNIT)));
+    RETURN_IF_ERROR(_TyBytes_Resize(&a->a_bytecode, a->a_offset * sizeof(_Ty_CODEUNIT)));
     RETURN_IF_ERROR(_PyCompile_ConstCacheMergeOne(const_cache, &a->a_bytecode));
     return SUCCESS;
 }
 
-static PyObject *
-dict_keys_inorder(PyObject *dict, Py_ssize_t offset)
+static TyObject *
+dict_keys_inorder(TyObject *dict, Ty_ssize_t offset)
 {
-    PyObject *tuple, *k, *v;
-    Py_ssize_t pos = 0, size = PyDict_GET_SIZE(dict);
+    TyObject *tuple, *k, *v;
+    Ty_ssize_t pos = 0, size = TyDict_GET_SIZE(dict);
 
-    tuple = PyTuple_New(size);
+    tuple = TyTuple_New(size);
     if (tuple == NULL)
         return NULL;
-    while (PyDict_Next(dict, &pos, &k, &v)) {
-        Py_ssize_t i = PyLong_AsSsize_t(v);
-        if (i == -1 && PyErr_Occurred()) {
-            Py_DECREF(tuple);
+    while (TyDict_Next(dict, &pos, &k, &v)) {
+        Ty_ssize_t i = TyLong_AsSsize_t(v);
+        if (i == -1 && TyErr_Occurred()) {
+            Ty_DECREF(tuple);
             return NULL;
         }
         assert((i - offset) < size);
         assert((i - offset) >= 0);
-        PyTuple_SET_ITEM(tuple, i - offset, Py_NewRef(k));
+        TyTuple_SET_ITEM(tuple, i - offset, Ty_NewRef(k));
     }
     return tuple;
 }
 
 // This is in codeobject.c.
-extern void _Py_set_localsplus_info(int, PyObject *, unsigned char,
-                                   PyObject *, PyObject *);
+extern void _Ty_set_localsplus_info(int, TyObject *, unsigned char,
+                                   TyObject *, TyObject *);
 
 static int
 compute_localsplus_info(_PyCompile_CodeUnitMetadata *umd, int nlocalsplus,
-                        int flags, PyObject *names, PyObject *kinds)
+                        int flags, TyObject *names, TyObject *kinds)
 {
-    PyObject *k, *v;
-    Py_ssize_t pos = 0;
+    TyObject *k, *v;
+    Ty_ssize_t pos = 0;
 
     // Set the locals kinds.  Arg vars fill the first portion of the list.
     struct {
@@ -504,9 +504,9 @@ compute_localsplus_info(_PyCompile_CodeUnitMetadata *umd, int nlocalsplus,
         max = argvarkinds[i].count < 0
             ? INT_MAX
             : max + argvarkinds[i].count;
-        while (pos < max && PyDict_Next(umd->u_varnames, &pos, &k, &v)) {
-            int offset = PyLong_AsInt(v);
-            if (offset == -1 && PyErr_Occurred()) {
+        while (pos < max && TyDict_Next(umd->u_varnames, &pos, &k, &v)) {
+            int offset = TyLong_AsInt(v);
+            if (offset == -1 && TyErr_Occurred()) {
                 return ERROR;
             }
             assert(offset >= 0);
@@ -514,28 +514,28 @@ compute_localsplus_info(_PyCompile_CodeUnitMetadata *umd, int nlocalsplus,
 
             _PyLocals_Kind kind = CO_FAST_LOCAL | argvarkinds[i].kind;
 
-            int has_key = PyDict_Contains(umd->u_fasthidden, k);
+            int has_key = TyDict_Contains(umd->u_fasthidden, k);
             RETURN_IF_ERROR(has_key);
             if (has_key) {
                 kind |= CO_FAST_HIDDEN;
             }
 
-            has_key = PyDict_Contains(umd->u_cellvars, k);
+            has_key = TyDict_Contains(umd->u_cellvars, k);
             RETURN_IF_ERROR(has_key);
             if (has_key) {
                 kind |= CO_FAST_CELL;
             }
 
-            _Py_set_localsplus_info(offset, k, kind, names, kinds);
+            _Ty_set_localsplus_info(offset, k, kind, names, kinds);
         }
     }
-    int nlocals = (int)PyDict_GET_SIZE(umd->u_varnames);
+    int nlocals = (int)TyDict_GET_SIZE(umd->u_varnames);
 
     // This counter mirrors the fix done in fix_cell_offsets().
     int numdropped = 0, cellvar_offset = -1;
     pos = 0;
-    while (PyDict_Next(umd->u_cellvars, &pos, &k, &v)) {
-        int has_name = PyDict_Contains(umd->u_varnames, k);
+    while (TyDict_Next(umd->u_cellvars, &pos, &k, &v)) {
+        int has_name = TyDict_Contains(umd->u_varnames, k);
         RETURN_IF_ERROR(has_name);
         if (has_name) {
             // Skip cells that are already covered by locals.
@@ -543,20 +543,20 @@ compute_localsplus_info(_PyCompile_CodeUnitMetadata *umd, int nlocalsplus,
             continue;
         }
 
-        cellvar_offset = PyLong_AsInt(v);
-        if (cellvar_offset == -1 && PyErr_Occurred()) {
+        cellvar_offset = TyLong_AsInt(v);
+        if (cellvar_offset == -1 && TyErr_Occurred()) {
             return ERROR;
         }
         assert(cellvar_offset >= 0);
         cellvar_offset += nlocals - numdropped;
         assert(cellvar_offset < nlocalsplus);
-        _Py_set_localsplus_info(cellvar_offset, k, CO_FAST_CELL, names, kinds);
+        _Ty_set_localsplus_info(cellvar_offset, k, CO_FAST_CELL, names, kinds);
     }
 
     pos = 0;
-    while (PyDict_Next(umd->u_freevars, &pos, &k, &v)) {
-        int offset = PyLong_AsInt(v);
-        if (offset == -1 && PyErr_Occurred()) {
+    while (TyDict_Next(umd->u_freevars, &pos, &k, &v)) {
+        int offset = TyLong_AsInt(v);
+        if (offset == -1 && TyErr_Occurred()) {
             return ERROR;
         }
         assert(offset >= 0);
@@ -566,21 +566,21 @@ compute_localsplus_info(_PyCompile_CodeUnitMetadata *umd, int nlocalsplus,
            was added to u_freevars with the wrong index due to not taking into
            account cellvars already present, see gh-128632. */
         assert(offset > cellvar_offset);
-        _Py_set_localsplus_info(offset, k, CO_FAST_FREE, names, kinds);
+        _Ty_set_localsplus_info(offset, k, CO_FAST_FREE, names, kinds);
     }
     return SUCCESS;
 }
 
 static PyCodeObject *
-makecode(_PyCompile_CodeUnitMetadata *umd, struct assembler *a, PyObject *const_cache,
-         PyObject *constslist, int maxdepth, int nlocalsplus, int code_flags,
-         PyObject *filename)
+makecode(_PyCompile_CodeUnitMetadata *umd, struct assembler *a, TyObject *const_cache,
+         TyObject *constslist, int maxdepth, int nlocalsplus, int code_flags,
+         TyObject *filename)
 {
     PyCodeObject *co = NULL;
-    PyObject *names = NULL;
-    PyObject *consts = NULL;
-    PyObject *localsplusnames = NULL;
-    PyObject *localspluskinds = NULL;
+    TyObject *names = NULL;
+    TyObject *consts = NULL;
+    TyObject *localsplusnames = NULL;
+    TyObject *localspluskinds = NULL;
     names = dict_keys_inorder(umd->u_names, 0);
     if (!names) {
         goto error;
@@ -589,7 +589,7 @@ makecode(_PyCompile_CodeUnitMetadata *umd, struct assembler *a, PyObject *const_
         goto error;
     }
 
-    consts = PyList_AsTuple(constslist); /* PyCode_New requires a tuple */
+    consts = TyList_AsTuple(constslist); /* TyCode_New requires a tuple */
     if (consts == NULL) {
         goto error;
     }
@@ -605,11 +605,11 @@ makecode(_PyCompile_CodeUnitMetadata *umd, struct assembler *a, PyObject *const_
     assert(INT_MAX - posonlyargcount - posorkwargcount > 0);
     int kwonlyargcount = (int)umd->u_kwonlyargcount;
 
-    localsplusnames = PyTuple_New(nlocalsplus);
+    localsplusnames = TyTuple_New(nlocalsplus);
     if (localsplusnames == NULL) {
         goto error;
     }
-    localspluskinds = PyBytes_FromStringAndSize(NULL, nlocalsplus);
+    localspluskinds = TyBytes_FromStringAndSize(NULL, nlocalsplus);
     if (localspluskinds == NULL) {
         goto error;
     }
@@ -645,7 +645,7 @@ makecode(_PyCompile_CodeUnitMetadata *umd, struct assembler *a, PyObject *const_
         .exceptiontable = a->a_except_table,
     };
 
-   if (_PyCode_Validate(&con) < 0) {
+   if (_TyCode_Validate(&con) < 0) {
         goto error;
     }
 
@@ -654,16 +654,16 @@ makecode(_PyCompile_CodeUnitMetadata *umd, struct assembler *a, PyObject *const_
     }
     con.localsplusnames = localsplusnames;
 
-    co = _PyCode_New(&con);
+    co = _TyCode_New(&con);
     if (co == NULL) {
         goto error;
     }
 
 error:
-    Py_XDECREF(names);
-    Py_XDECREF(consts);
-    Py_XDECREF(localsplusnames);
-    Py_XDECREF(localspluskinds);
+    Ty_XDECREF(names);
+    Ty_XDECREF(consts);
+    Ty_XDECREF(localsplusnames);
+    Ty_XDECREF(localspluskinds);
     return co;
 }
 
@@ -768,7 +768,7 @@ resolve_unconditional_jumps(instr_sequence *instrs)
             default:
                 if (OPCODE_HAS_JUMP(instr->i_opcode) &&
                     IS_PSEUDO_INSTR(instr->i_opcode)) {
-                    Py_UNREACHABLE();
+                    Ty_UNREACHABLE();
                 }
         }
     }
@@ -776,9 +776,9 @@ resolve_unconditional_jumps(instr_sequence *instrs)
 }
 
 PyCodeObject *
-_PyAssemble_MakeCodeObject(_PyCompile_CodeUnitMetadata *umd, PyObject *const_cache,
-                           PyObject *consts, int maxdepth, instr_sequence *instrs,
-                           int nlocalsplus, int code_flags, PyObject *filename)
+_PyAssemble_MakeCodeObject(_PyCompile_CodeUnitMetadata *umd, TyObject *const_cache,
+                           TyObject *consts, int maxdepth, instr_sequence *instrs,
+                           int nlocalsplus, int code_flags, TyObject *filename)
 {
     if (_PyInstructionSequence_ApplyLabelMap(instrs) < 0) {
         return NULL;

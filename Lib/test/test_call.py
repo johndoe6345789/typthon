@@ -1,5 +1,5 @@
 import unittest
-from test.support import (cpython_only, is_wasi, requires_limited_api, Py_DEBUG,
+from test.support import (cpython_only, is_wasi, requires_limited_api, Ty_DEBUG,
                           set_recursion_limit, skip_on_s390x,
                           skip_emscripten_stack_overflow,
                           skip_wasi_stack_overflow, skip_if_sanitizer,
@@ -605,8 +605,8 @@ class FastCallTests(unittest.TestCase):
         compile("pass", "", "exec", x, **x.kwargs)
 
 
-Py_TPFLAGS_HAVE_VECTORCALL = 1 << 11
-Py_TPFLAGS_METHOD_DESCRIPTOR = 1 << 17
+Ty_TPFLAGS_HAVE_VECTORCALL = 1 << 11
+Ty_TPFLAGS_METHOD_DESCRIPTOR = 1 << 17
 
 
 def testfunction(self):
@@ -626,41 +626,41 @@ class TestPEP590(unittest.TestCase):
         import functools
         cached = functools.lru_cache(1)(testfunction)
 
-        self.assertFalse(type(repr).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(list.append).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(list.__add__).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(testfunction).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(cached).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertFalse(type(repr).__flags__ & Ty_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertTrue(type(list.append).__flags__ & Ty_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertTrue(type(list.__add__).__flags__ & Ty_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertTrue(type(testfunction).__flags__ & Ty_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertTrue(type(cached).__flags__ & Ty_TPFLAGS_METHOD_DESCRIPTOR)
 
-        self.assertTrue(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertTrue(_testcapi.MethodDescriptorBase.__flags__ & Ty_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertTrue(_testcapi.MethodDescriptorDerived.__flags__ & Ty_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Ty_TPFLAGS_METHOD_DESCRIPTOR)
 
-        # Mutable heap types should not inherit Py_TPFLAGS_METHOD_DESCRIPTOR
+        # Mutable heap types should not inherit Ty_TPFLAGS_METHOD_DESCRIPTOR
         class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
-        self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertFalse(MethodDescriptorHeap.__flags__ & Ty_TPFLAGS_METHOD_DESCRIPTOR)
 
     def test_vectorcall_flag(self):
-        self.assertTrue(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        self.assertTrue(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        self.assertTrue(_testcapi.MethodDescriptor2.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertTrue(_testcapi.MethodDescriptorBase.__flags__ & Ty_TPFLAGS_HAVE_VECTORCALL)
+        self.assertTrue(_testcapi.MethodDescriptorDerived.__flags__ & Ty_TPFLAGS_HAVE_VECTORCALL)
+        self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Ty_TPFLAGS_HAVE_VECTORCALL)
+        self.assertTrue(_testcapi.MethodDescriptor2.__flags__ & Ty_TPFLAGS_HAVE_VECTORCALL)
 
-        # Mutable heap types should inherit Py_TPFLAGS_HAVE_VECTORCALL,
+        # Mutable heap types should inherit Ty_TPFLAGS_HAVE_VECTORCALL,
         # but should lose it when __call__ is overridden
         class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
-        self.assertTrue(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertTrue(MethodDescriptorHeap.__flags__ & Ty_TPFLAGS_HAVE_VECTORCALL)
         MethodDescriptorHeap.__call__ = print
-        self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertFalse(MethodDescriptorHeap.__flags__ & Ty_TPFLAGS_HAVE_VECTORCALL)
 
-        # Mutable heap types should not inherit Py_TPFLAGS_HAVE_VECTORCALL if
+        # Mutable heap types should not inherit Ty_TPFLAGS_HAVE_VECTORCALL if
         # they define __call__ directly
         class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             def __call__(self):
                 pass
-        self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertFalse(MethodDescriptorHeap.__flags__ & Ty_TPFLAGS_HAVE_VECTORCALL)
 
     def test_vectorcall_override(self):
         # Check that tp_call can correctly override vectorcall.
@@ -1038,7 +1038,7 @@ class TestErrorMessagesSuggestions(unittest.TestCase):
 class TestRecursion(unittest.TestCase):
 
     @skip_on_s390x
-    @unittest.skipIf(is_wasi and Py_DEBUG, "requires deep stack")
+    @unittest.skipIf(is_wasi and Ty_DEBUG, "requires deep stack")
     @skip_if_sanitizer("requires deep stack", thread=True)
     @unittest.skipIf(_testcapi is None, "requires _testcapi")
     @skip_emscripten_stack_overflow()

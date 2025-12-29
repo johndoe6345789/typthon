@@ -1,4 +1,4 @@
-#ifdef _Py_TIER2
+#ifdef _Ty_TIER2
 
 /*
  * This file contains the support code for CPython's uops optimizer.
@@ -17,10 +17,10 @@
 #include "pycore_interp.h"
 #include "pycore_opcode_metadata.h"
 #include "pycore_opcode_utils.h"
-#include "pycore_pystate.h"       // _PyInterpreterState_GET()
+#include "pycore_pystate.h"       // _TyInterpreterState_GET()
 #include "pycore_uop_metadata.h"
 #include "pycore_long.h"
-#include "pycore_interpframe.h"  // _PyFrame_GetCode
+#include "pycore_interpframe.h"  // _TyFrame_GetCode
 #include "pycore_optimizer.h"
 #include "pycore_object.h"
 #include "pycore_function.h"
@@ -32,12 +32,12 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     extern const char *_PyUOpName(int index);
     extern void _PyUOpPrint(const _PyUOpInstruction *uop);
     static const char *const DEBUG_ENV = "PYTHON_OPT_DEBUG";
     static inline int get_lltrace(void) {
-        char *uop_debug = Py_GETENV(DEBUG_ENV);
+        char *uop_debug = Ty_GETENV(DEBUG_ENV);
         int lltrace = 0;
         if (uop_debug != NULL && *uop_debug >= '0') {
             lltrace = *uop_debug - '0';  // TODO: Parse an int and all that
@@ -51,15 +51,15 @@
 #endif
 
 static int
-get_mutations(PyObject* dict) {
-    assert(PyDict_CheckExact(dict));
+get_mutations(TyObject* dict) {
+    assert(TyDict_CheckExact(dict));
     PyDictObject *d = (PyDictObject *)dict;
     return (d->_ma_watcher_tag >> DICT_MAX_WATCHERS) & ((1 << DICT_WATCHED_MUTATION_BITS)-1);
 }
 
 static void
-increment_mutations(PyObject* dict) {
-    assert(PyDict_CheckExact(dict));
+increment_mutations(TyObject* dict) {
+    assert(TyDict_CheckExact(dict));
     PyDictObject *d = (PyDictObject *)dict;
     d->_ma_watcher_tag += (1 << DICT_MAX_WATCHERS);
 }
@@ -71,30 +71,30 @@ increment_mutations(PyObject* dict) {
 #define TYPE_WATCHER_ID  0
 
 static int
-globals_watcher_callback(PyDict_WatchEvent event, PyObject* dict,
-                         PyObject* key, PyObject* new_value)
+globals_watcher_callback(TyDict_WatchEvent event, TyObject* dict,
+                         TyObject* key, TyObject* new_value)
 {
     RARE_EVENT_STAT_INC(watched_globals_modification);
-    assert(get_mutations(dict) < _Py_MAX_ALLOWED_GLOBALS_MODIFICATIONS);
-    _Py_Executors_InvalidateDependency(_PyInterpreterState_GET(), dict, 1);
+    assert(get_mutations(dict) < _Ty_MAX_ALLOWED_GLOBALS_MODIFICATIONS);
+    _Ty_Executors_InvalidateDependency(_TyInterpreterState_GET(), dict, 1);
     increment_mutations(dict);
-    PyDict_Unwatch(GLOBALS_WATCHER_ID, dict);
+    TyDict_Unwatch(GLOBALS_WATCHER_ID, dict);
     return 0;
 }
 
 static int
-type_watcher_callback(PyTypeObject* type)
+type_watcher_callback(TyTypeObject* type)
 {
-    _Py_Executors_InvalidateDependency(_PyInterpreterState_GET(), type, 1);
-    PyType_Unwatch(TYPE_WATCHER_ID, (PyObject *)type);
+    _Ty_Executors_InvalidateDependency(_TyInterpreterState_GET(), type, 1);
+    TyType_Unwatch(TYPE_WATCHER_ID, (TyObject *)type);
     return 0;
 }
 
-static PyObject *
-convert_global_to_const(_PyUOpInstruction *inst, PyObject *obj, bool pop)
+static TyObject *
+convert_global_to_const(_PyUOpInstruction *inst, TyObject *obj, bool pop)
 {
     assert(inst->opcode == _LOAD_GLOBAL_MODULE || inst->opcode == _LOAD_GLOBAL_BUILTINS || inst->opcode == _LOAD_ATTR_MODULE);
-    assert(PyDict_CheckExact(obj));
+    assert(TyDict_CheckExact(obj));
     PyDictObject *dict = (PyDictObject *)obj;
     assert(dict->ma_keys->dk_kind == DICT_KEYS_UNICODE);
     PyDictUnicodeEntry *entries = DK_UNICODE_ENTRIES(dict->ma_keys);
@@ -107,11 +107,11 @@ convert_global_to_const(_PyUOpInstruction *inst, PyObject *obj, bool pop)
     if (keys->dk_version != inst->operand0) {
         return NULL;
     }
-    PyObject *res = entries[index].me_value;
+    TyObject *res = entries[index].me_value;
     if (res == NULL) {
         return NULL;
     }
-    if (_Py_IsImmortal(res)) {
+    if (_Ty_IsImmortal(res)) {
         inst->opcode = pop ? _POP_TOP_LOAD_CONST_INLINE_BORROW : _LOAD_CONST_INLINE_BORROW;
     }
     else {
@@ -126,9 +126,9 @@ convert_global_to_const(_PyUOpInstruction *inst, PyObject *obj, bool pop)
 }
 
 static int
-incorrect_keys(_PyUOpInstruction *inst, PyObject *obj)
+incorrect_keys(_PyUOpInstruction *inst, TyObject *obj)
 {
-    if (!PyDict_CheckExact(obj)) {
+    if (!TyDict_CheckExact(obj)) {
         return 1;
     }
     PyDictObject *dict = (PyDictObject *)obj;
@@ -145,15 +145,15 @@ static int
 remove_globals(_PyInterpreterFrame *frame, _PyUOpInstruction *buffer,
                int buffer_size, _PyBloomFilter *dependencies)
 {
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    PyObject *builtins = frame->f_builtins;
+    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyObject *builtins = frame->f_builtins;
     if (builtins != interp->builtins) {
         OPT_STAT_INC(remove_globals_builtins_changed);
         return 1;
     }
-    PyObject *globals = frame->f_globals;
-    PyFunctionObject *function = _PyFrame_GetFunction(frame);
-    assert(PyFunction_Check(function));
+    TyObject *globals = frame->f_globals;
+    PyFunctionObject *function = _TyFrame_GetFunction(frame);
+    assert(TyFunction_Check(function));
     assert(function->func_builtins == builtins);
     assert(function->func_globals == globals);
     uint32_t function_version = _PyFunction_GetVersionForCurrentState(function);
@@ -186,12 +186,12 @@ remove_globals(_PyInterpreterFrame *frame, _PyUOpInstruction *buffer,
                     OPT_STAT_INC(remove_globals_incorrect_keys);
                     return 0;
                 }
-                if (get_mutations(globals) >= _Py_MAX_ALLOWED_GLOBALS_MODIFICATIONS) {
+                if (get_mutations(globals) >= _Ty_MAX_ALLOWED_GLOBALS_MODIFICATIONS) {
                     continue;
                 }
                 if ((globals_watched & 1) == 0) {
-                    PyDict_Watch(GLOBALS_WATCHER_ID, globals);
-                    _Py_BloomFilter_Add(dependencies, globals);
+                    TyDict_Watch(GLOBALS_WATCHER_ID, globals);
+                    _Ty_BloomFilter_Add(dependencies, globals);
                     globals_watched |= 1;
                 }
                 if (function_checked & 1) {
@@ -208,11 +208,11 @@ remove_globals(_PyInterpreterFrame *frame, _PyUOpInstruction *buffer,
                     OPT_STAT_INC(remove_globals_incorrect_keys);
                     return 0;
                 }
-                if (interp->rare_events.builtin_dict >= _Py_MAX_ALLOWED_BUILTINS_MODIFICATIONS) {
+                if (interp->rare_events.builtin_dict >= _Ty_MAX_ALLOWED_BUILTINS_MODIFICATIONS) {
                     continue;
                 }
                 if ((builtins_watched & 1) == 0) {
-                    PyDict_Watch(BUILTINS_WATCHER_ID, builtins);
+                    TyDict_Watch(BUILTINS_WATCHER_ID, builtins);
                     builtins_watched |= 1;
                 }
                 if (function_checked & globals_watched & 1) {
@@ -224,12 +224,12 @@ remove_globals(_PyInterpreterFrame *frame, _PyUOpInstruction *buffer,
                     OPT_STAT_INC(remove_globals_incorrect_keys);
                     return 0;
                 }
-                if (get_mutations(globals) >= _Py_MAX_ALLOWED_GLOBALS_MODIFICATIONS) {
+                if (get_mutations(globals) >= _Ty_MAX_ALLOWED_GLOBALS_MODIFICATIONS) {
                     continue;
                 }
                 if ((globals_watched & 1) == 0) {
-                    PyDict_Watch(GLOBALS_WATCHER_ID, globals);
-                    _Py_BloomFilter_Add(dependencies, globals);
+                    TyDict_Watch(GLOBALS_WATCHER_ID, globals);
+                    _Ty_BloomFilter_Add(dependencies, globals);
                     globals_watched |= 1;
                 }
                 if ((function_checked & 1) == 0 && buffer[pc-1].opcode == _NOP) {
@@ -255,7 +255,7 @@ remove_globals(_PyInterpreterFrame *frame, _PyUOpInstruction *buffer,
                 if (func == NULL) {
                     return 1;
                 }
-                assert(PyFunction_Check(func));
+                assert(TyFunction_Check(func));
                 function_version = func->func_version;
                 if (prechecked_function_version == function_version) {
                     function_checked |= 1;
@@ -283,7 +283,7 @@ remove_globals(_PyInterpreterFrame *frame, _PyUOpInstruction *buffer,
                 if (func == NULL) {
                     return 1;
                 }
-                assert(PyFunction_Check(func));
+                assert(TyFunction_Check(func));
                 function_version = func->func_version;
                 globals = func->func_globals;
                 builtins = func->func_builtins;
@@ -319,33 +319,33 @@ remove_globals(_PyInterpreterFrame *frame, _PyUOpInstruction *buffer,
     INST->operand0 = OPERAND;
 
 /* Shortened forms for convenience, used in optimizer_bytecodes.c */
-#define sym_is_not_null _Py_uop_sym_is_not_null
-#define sym_is_const _Py_uop_sym_is_const
-#define sym_get_const _Py_uop_sym_get_const
-#define sym_new_unknown _Py_uop_sym_new_unknown
-#define sym_new_not_null _Py_uop_sym_new_not_null
-#define sym_new_type _Py_uop_sym_new_type
-#define sym_is_null _Py_uop_sym_is_null
-#define sym_new_const _Py_uop_sym_new_const
-#define sym_new_null _Py_uop_sym_new_null
-#define sym_has_type _Py_uop_sym_has_type
-#define sym_get_type _Py_uop_sym_get_type
-#define sym_matches_type _Py_uop_sym_matches_type
-#define sym_matches_type_version _Py_uop_sym_matches_type_version
-#define sym_set_null(SYM) _Py_uop_sym_set_null(ctx, SYM)
-#define sym_set_non_null(SYM) _Py_uop_sym_set_non_null(ctx, SYM)
-#define sym_set_type(SYM, TYPE) _Py_uop_sym_set_type(ctx, SYM, TYPE)
-#define sym_set_type_version(SYM, VERSION) _Py_uop_sym_set_type_version(ctx, SYM, VERSION)
-#define sym_set_const(SYM, CNST) _Py_uop_sym_set_const(ctx, SYM, CNST)
-#define sym_is_bottom _Py_uop_sym_is_bottom
-#define sym_truthiness _Py_uop_sym_truthiness
-#define frame_new _Py_uop_frame_new
-#define frame_pop _Py_uop_frame_pop
-#define sym_new_tuple _Py_uop_sym_new_tuple
-#define sym_tuple_getitem _Py_uop_sym_tuple_getitem
-#define sym_tuple_length _Py_uop_sym_tuple_length
-#define sym_is_immortal _Py_uop_sym_is_immortal
-#define sym_new_truthiness _Py_uop_sym_new_truthiness
+#define sym_is_not_null _Ty_uop_sym_is_not_null
+#define sym_is_const _Ty_uop_sym_is_const
+#define sym_get_const _Ty_uop_sym_get_const
+#define sym_new_unknown _Ty_uop_sym_new_unknown
+#define sym_new_not_null _Ty_uop_sym_new_not_null
+#define sym_new_type _Ty_uop_sym_new_type
+#define sym_is_null _Ty_uop_sym_is_null
+#define sym_new_const _Ty_uop_sym_new_const
+#define sym_new_null _Ty_uop_sym_new_null
+#define sym_has_type _Ty_uop_sym_has_type
+#define sym_get_type _Ty_uop_sym_get_type
+#define sym_matches_type _Ty_uop_sym_matches_type
+#define sym_matches_type_version _Ty_uop_sym_matches_type_version
+#define sym_set_null(SYM) _Ty_uop_sym_set_null(ctx, SYM)
+#define sym_set_non_null(SYM) _Ty_uop_sym_set_non_null(ctx, SYM)
+#define sym_set_type(SYM, TYPE) _Ty_uop_sym_set_type(ctx, SYM, TYPE)
+#define sym_set_type_version(SYM, VERSION) _Ty_uop_sym_set_type_version(ctx, SYM, VERSION)
+#define sym_set_const(SYM, CNST) _Ty_uop_sym_set_const(ctx, SYM, CNST)
+#define sym_is_bottom _Ty_uop_sym_is_bottom
+#define sym_truthiness _Ty_uop_sym_truthiness
+#define frame_new _Ty_uop_frame_new
+#define frame_pop _Ty_uop_frame_pop
+#define sym_new_tuple _Ty_uop_sym_new_tuple
+#define sym_tuple_getitem _Ty_uop_sym_tuple_getitem
+#define sym_tuple_length _Ty_uop_sym_tuple_length
+#define sym_is_immortal _Ty_uop_sym_is_immortal
+#define sym_new_truthiness _Ty_uop_sym_new_truthiness
 
 static int
 optimize_to_bool(
@@ -354,14 +354,14 @@ optimize_to_bool(
     JitOptSymbol *value,
     JitOptSymbol **result_ptr)
 {
-    if (sym_matches_type(value, &PyBool_Type)) {
+    if (sym_matches_type(value, &TyBool_Type)) {
         REPLACE_OP(this_instr, _NOP, 0, 0);
         *result_ptr = value;
         return 1;
     }
     int truthiness = sym_truthiness(ctx, value);
     if (truthiness >= 0) {
-        PyObject *load = truthiness ? Py_True : Py_False;
+        TyObject *load = truthiness ? Ty_True : Ty_False;
         REPLACE_OP(this_instr, _POP_TOP_LOAD_CONST_INLINE_BORROW, 0, (uintptr_t)load);
         *result_ptr = sym_new_const(ctx, load);
         return 1;
@@ -396,10 +396,10 @@ get_code(_PyUOpInstruction *op)
     }
     else {
         PyFunctionObject *func = (PyFunctionObject *)operand;
-        assert(PyFunction_Check(func));
+        assert(TyFunction_Check(func));
         co = (PyCodeObject *)func->func_code;
     }
-    assert(PyCode_Check(co));
+    assert(TyCode_Check(co));
     return co;
 }
 
@@ -411,7 +411,7 @@ get_code_with_logging(_PyUOpInstruction *op)
     if (push_operand & 1) {
         co = (PyCodeObject *)(push_operand & ~1);
         DPRINTF(3, "code=%p ", co);
-        assert(PyCode_Check(co));
+        assert(TyCode_Check(co));
     }
     else {
         PyFunctionObject *func = (PyFunctionObject *)push_operand;
@@ -446,8 +446,8 @@ optimize_uops(
     _PyUOpInstruction *first_valid_check_stack = NULL;
     _PyUOpInstruction *corresponding_check_stack = NULL;
 
-    _Py_uop_abstractcontext_init(ctx);
-    _Py_UOpsAbstractFrame *frame = _Py_uop_frame_new(ctx, co, curr_stacklen, NULL, 0);
+    _Ty_uop_abstractcontext_init(ctx);
+    _Ty_UOpsAbstractFrame *frame = _Ty_uop_frame_new(ctx, co, curr_stacklen, NULL, 0);
     if (frame == NULL) {
         return -1;
     }
@@ -466,7 +466,7 @@ optimize_uops(
         opcode = this_instr->opcode;
         JitOptSymbol **stack_pointer = ctx->frame->stack_pointer;
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
         if (get_lltrace() >= 3) {
             printf("%4d abs: ", (int)(this_instr - trace));
             _PyUOpPrint(this_instr);
@@ -480,7 +480,7 @@ optimize_uops(
 
             default:
                 DPRINTF(1, "\nUnknown opcode in abstract interpreter\n");
-                Py_UNREACHABLE();
+                Ty_UNREACHABLE();
         }
         assert(ctx->frame != NULL);
         DPRINTF(3, " stack_level %d\n", STACK_LEVEL());
@@ -499,13 +499,13 @@ optimize_uops(
         // retrying later.
         DPRINTF(3, "\n");
         DPRINTF(1, "Hit bottom in abstract interpreter\n");
-        _Py_uop_abstractcontext_fini(ctx);
+        _Ty_uop_abstractcontext_fini(ctx);
         return 0;
     }
 
     /* Either reached the end or cannot optimize further, but there
      * would be no benefit in retrying later */
-    _Py_uop_abstractcontext_fini(ctx);
+    _Ty_uop_abstractcontext_fini(ctx);
     if (first_valid_check_stack != NULL) {
         assert(first_valid_check_stack->opcode == _CHECK_STACK_SPACE);
         assert(max_space > 0);
@@ -522,7 +522,7 @@ error:
     if (opcode <= MAX_UOP_ID) {
         OPT_ERROR_IN_OPCODE(opcode);
     }
-    _Py_uop_abstractcontext_fini(ctx);
+    _Ty_uop_abstractcontext_fini(ctx);
     return -1;
 
 }
@@ -595,7 +595,7 @@ remove_unneeded_uops(_PyUOpInstruction *buffer, int buffer_size)
                             goto optimize_pop_top_again;
                         }
                 }
-                _Py_FALLTHROUGH;
+                _Ty_FALLTHROUGH;
             }
             default:
             {
@@ -618,14 +618,14 @@ remove_unneeded_uops(_PyUOpInstruction *buffer, int buffer_size)
                 return pc + 1;
         }
     }
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
 
 //  0 - failure, no error raised, just fall back to Tier 1
 // -1 - failure, and raise error
 //  > 0 - length of optimized trace
 int
-_Py_uop_analyze_and_optimize(
+_Ty_uop_analyze_and_optimize(
     _PyInterpreterFrame *frame,
     _PyUOpInstruction *buffer,
     int length,
@@ -641,7 +641,7 @@ _Py_uop_analyze_and_optimize(
     }
 
     length = optimize_uops(
-        _PyFrame_GetCode(frame), buffer,
+        _TyFrame_GetCode(frame), buffer,
         length, curr_stacklen, dependencies);
 
     if (length <= 0) {
@@ -655,4 +655,4 @@ _Py_uop_analyze_and_optimize(
     return length;
 }
 
-#endif /* _Py_TIER2 */
+#endif /* _Ty_TIER2 */

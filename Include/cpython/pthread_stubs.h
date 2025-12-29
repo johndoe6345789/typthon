@@ -1,5 +1,5 @@
-#ifndef Py_CPYTHON_PTRHEAD_STUBS_H
-#define Py_CPYTHON_PTRHEAD_STUBS_H
+#ifndef Ty_CPYTHON_PTRHEAD_STUBS_H
+#define Ty_CPYTHON_PTRHEAD_STUBS_H
 
 #if !defined(HAVE_PTHREAD_STUBS)
 #  error "this header file requires stubbed pthreads."
@@ -102,4 +102,4 @@ PyAPI_FUNC(int) pthread_key_delete(pthread_key_t key);
 PyAPI_FUNC(void *) pthread_getspecific(pthread_key_t key);
 PyAPI_FUNC(int) pthread_setspecific(pthread_key_t key, const void *value);
 
-#endif // Py_CPYTHON_PTRHEAD_STUBS_H
+#endif // Ty_CPYTHON_PTRHEAD_STUBS_H

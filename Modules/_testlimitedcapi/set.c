@@ -1,161 +1,161 @@
 #include "parts.h"
 #include "util.h"
 
-static PyObject *
-set_check(PyObject *self, PyObject *obj)
+static TyObject *
+set_check(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_INT(PySet_Check(obj));
+    RETURN_INT(TySet_Check(obj));
 }
 
-static PyObject *
-set_checkexact(PyObject *self, PyObject *obj)
+static TyObject *
+set_checkexact(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_INT(PySet_CheckExact(obj));
+    RETURN_INT(TySet_CheckExact(obj));
 }
 
-static PyObject *
-frozenset_check(PyObject *self, PyObject *obj)
+static TyObject *
+frozenset_check(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_INT(PyFrozenSet_Check(obj));
+    RETURN_INT(TyFrozenSet_Check(obj));
 }
 
-static PyObject *
-frozenset_checkexact(PyObject *self, PyObject *obj)
+static TyObject *
+frozenset_checkexact(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_INT(PyFrozenSet_CheckExact(obj));
+    RETURN_INT(TyFrozenSet_CheckExact(obj));
 }
 
-static PyObject *
-anyset_check(PyObject *self, PyObject *obj)
+static TyObject *
+anyset_check(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_INT(PyAnySet_Check(obj));
 }
 
-static PyObject *
-anyset_checkexact(PyObject *self, PyObject *obj)
+static TyObject *
+anyset_checkexact(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
     RETURN_INT(PyAnySet_CheckExact(obj));
 }
 
-static PyObject *
-set_new(PyObject *self, PyObject *args)
+static TyObject *
+set_new(TyObject *self, TyObject *args)
 {
-    PyObject *iterable = NULL;
-    if (!PyArg_ParseTuple(args, "|O", &iterable)) {
+    TyObject *iterable = NULL;
+    if (!TyArg_ParseTuple(args, "|O", &iterable)) {
         return NULL;
     }
-    return PySet_New(iterable);
+    return TySet_New(iterable);
 }
 
-static PyObject *
-frozenset_new(PyObject *self, PyObject *args)
+static TyObject *
+frozenset_new(TyObject *self, TyObject *args)
 {
-    PyObject *iterable = NULL;
-    if (!PyArg_ParseTuple(args, "|O", &iterable)) {
+    TyObject *iterable = NULL;
+    if (!TyArg_ParseTuple(args, "|O", &iterable)) {
         return NULL;
     }
-    return PyFrozenSet_New(iterable);
+    return TyFrozenSet_New(iterable);
 }
 
-static PyObject *
-set_size(PyObject *self, PyObject *obj)
+static TyObject *
+set_size(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_SIZE(PySet_Size(obj));
+    RETURN_SIZE(TySet_Size(obj));
 }
 
-static PyObject *
-set_contains(PyObject *self, PyObject *args)
+static TyObject *
+set_contains(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *item;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &item)) {
-        return NULL;
-    }
-    NULLABLE(obj);
-    NULLABLE(item);
-    RETURN_INT(PySet_Contains(obj, item));
-}
-
-static PyObject *
-set_add(PyObject *self, PyObject *args)
-{
-    PyObject *obj, *item;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &item)) {
+    TyObject *obj, *item;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &item)) {
         return NULL;
     }
     NULLABLE(obj);
     NULLABLE(item);
-    RETURN_INT(PySet_Add(obj, item));
+    RETURN_INT(TySet_Contains(obj, item));
 }
 
-static PyObject *
-set_discard(PyObject *self, PyObject *args)
+static TyObject *
+set_add(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *item;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &item)) {
+    TyObject *obj, *item;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &item)) {
         return NULL;
     }
     NULLABLE(obj);
     NULLABLE(item);
-    RETURN_INT(PySet_Discard(obj, item));
+    RETURN_INT(TySet_Add(obj, item));
 }
 
-static PyObject *
-set_pop(PyObject *self, PyObject *obj)
+static TyObject *
+set_discard(TyObject *self, TyObject *args)
+{
+    TyObject *obj, *item;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &item)) {
+        return NULL;
+    }
+    NULLABLE(obj);
+    NULLABLE(item);
+    RETURN_INT(TySet_Discard(obj, item));
+}
+
+static TyObject *
+set_pop(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PySet_Pop(obj);
+    return TySet_Pop(obj);
 }
 
-static PyObject *
-set_clear(PyObject *self, PyObject *obj)
+static TyObject *
+set_clear(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_INT(PySet_Clear(obj));
+    RETURN_INT(TySet_Clear(obj));
 }
 
-static PyObject *
-test_frozenset_add_in_capi(PyObject *self, PyObject *Py_UNUSED(obj))
+static TyObject *
+test_frozenset_add_in_capi(TyObject *self, TyObject *Ty_UNUSED(obj))
 {
-    // Test that `frozenset` can be used with `PySet_Add`,
+    // Test that `frozenset` can be used with `TySet_Add`,
     // when frozenset is just created in CAPI.
-    PyObject *fs = PyFrozenSet_New(NULL);
+    TyObject *fs = TyFrozenSet_New(NULL);
     if (fs == NULL) {
         return NULL;
     }
-    PyObject *num = PyLong_FromLong(1);
+    TyObject *num = TyLong_FromLong(1);
     if (num == NULL) {
         goto error;
     }
-    if (PySet_Add(fs, num) < 0) {
+    if (TySet_Add(fs, num) < 0) {
         goto error;
     }
-    int contains = PySet_Contains(fs, num);
+    int contains = TySet_Contains(fs, num);
     if (contains < 0) {
         goto error;
     }
     else if (contains == 0) {
         goto unexpected;
     }
-    Py_DECREF(fs);
-    Py_DECREF(num);
-    Py_RETURN_NONE;
+    Ty_DECREF(fs);
+    Ty_DECREF(num);
+    Ty_RETURN_NONE;
 
 unexpected:
-    PyErr_SetString(PyExc_ValueError, "set does not contain expected value");
+    TyErr_SetString(TyExc_ValueError, "set does not contain expected value");
 error:
-    Py_DECREF(fs);
-    Py_XDECREF(num);
+    Ty_DECREF(fs);
+    Ty_XDECREF(num);
     return NULL;
 }
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"set_check", set_check, METH_O},
     {"set_checkexact", set_checkexact, METH_O},
     {"frozenset_check", frozenset_check, METH_O},
@@ -179,9 +179,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Set(PyObject *m)
+_PyTestLimitedCAPI_Init_Set(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

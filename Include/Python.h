@@ -2,8 +2,8 @@
 // C extensions should only #include <Python.h>, and not include directly
 // the other Python header files included by <Python.h>.
 
-#ifndef Py_PYTHON_H
-#define Py_PYTHON_H
+#ifndef Ty_PYTHON_H
+#define Ty_PYTHON_H
 
 // Since this is a "meta-include" file, "#ifdef __cplusplus / extern "C" {"
 // is not needed.
@@ -32,13 +32,13 @@
 //
 // The <ctype.h> and <unistd.h> headers are not included by limited C API
 // version 3.13 and newer.
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 < 0x030b0000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 < 0x030b0000
 #  include <errno.h>              // errno
 #  include <stdio.h>              // FILE*
 #  include <stdlib.h>             // getenv()
 #  include <string.h>             // memcpy()
 #endif
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 < 0x030d0000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 < 0x030d0000
 #  include <ctype.h>              // tolower()
 #  ifndef MS_WINDOWS
 #    include <unistd.h>           // close()
@@ -47,15 +47,15 @@
 
 // gh-111506: The free-threaded build is not compatible with the limited API
 // or the stable ABI.
-#if defined(Py_LIMITED_API) && defined(Py_GIL_DISABLED)
+#if defined(Ty_LIMITED_API) && defined(Ty_GIL_DISABLED)
 #  error "The limited API is not currently supported in the free-threaded build"
 #endif
 
-#if defined(Py_GIL_DISABLED) && defined(_MSC_VER)
+#if defined(Ty_GIL_DISABLED) && defined(_MSC_VER)
 #  include <intrin.h>             // __readgsqword()
 #endif
 
-#if defined(Py_GIL_DISABLED) && defined(__MINGW32__)
+#if defined(Ty_GIL_DISABLED) && defined(__MINGW32__)
 #  include <intrin.h>             // __readgsqword()
 #endif
 
@@ -151,4 +151,4 @@
 #pragma warning(pop)
 #endif
 
-#endif /* !Py_PYTHON_H */
+#endif /* !Ty_PYTHON_H */

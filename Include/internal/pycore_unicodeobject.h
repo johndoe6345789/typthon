@@ -1,91 +1,91 @@
-#ifndef Py_INTERNAL_UNICODEOBJECT_H
-#define Py_INTERNAL_UNICODEOBJECT_H
+#ifndef Ty_INTERNAL_UNICODEOBJECT_H
+#define Ty_INTERNAL_UNICODEOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-#include "pycore_fileutils.h"     // _Py_error_handler
-#include "pycore_ucnhash.h"       // _PyUnicode_Name_CAPI
+#include "pycore_fileutils.h"     // _Ty_error_handler
+#include "pycore_ucnhash.h"       // _TyUnicode_Name_CAPI
 
 /* --- Characters Type APIs ----------------------------------------------- */
 
-extern int _PyUnicode_IsXidStart(Py_UCS4 ch);
-extern int _PyUnicode_IsXidContinue(Py_UCS4 ch);
-extern int _PyUnicode_ToLowerFull(Py_UCS4 ch, Py_UCS4 *res);
-extern int _PyUnicode_ToTitleFull(Py_UCS4 ch, Py_UCS4 *res);
-extern int _PyUnicode_ToUpperFull(Py_UCS4 ch, Py_UCS4 *res);
-extern int _PyUnicode_ToFoldedFull(Py_UCS4 ch, Py_UCS4 *res);
-extern int _PyUnicode_IsCaseIgnorable(Py_UCS4 ch);
-extern int _PyUnicode_IsCased(Py_UCS4 ch);
+extern int _TyUnicode_IsXidStart(Ty_UCS4 ch);
+extern int _TyUnicode_IsXidContinue(Ty_UCS4 ch);
+extern int _TyUnicode_ToLowerFull(Ty_UCS4 ch, Ty_UCS4 *res);
+extern int _TyUnicode_ToTitleFull(Ty_UCS4 ch, Ty_UCS4 *res);
+extern int _TyUnicode_ToUpperFull(Ty_UCS4 ch, Ty_UCS4 *res);
+extern int _TyUnicode_ToFoldedFull(Ty_UCS4 ch, Ty_UCS4 *res);
+extern int _TyUnicode_IsCaseIgnorable(Ty_UCS4 ch);
+extern int _TyUnicode_IsCased(Ty_UCS4 ch);
 
 /* --- Unicode API -------------------------------------------------------- */
 
 // Export for '_json' shared extension
-PyAPI_FUNC(int) _PyUnicode_CheckConsistency(
-    PyObject *op,
+PyAPI_FUNC(int) _TyUnicode_CheckConsistency(
+    TyObject *op,
     int check_content);
 
-PyAPI_FUNC(void) _PyUnicode_ExactDealloc(PyObject *op);
-extern Py_ssize_t _PyUnicode_InternedSize(void);
-extern Py_ssize_t _PyUnicode_InternedSize_Immortal(void);
+PyAPI_FUNC(void) _TyUnicode_ExactDealloc(TyObject *op);
+extern Ty_ssize_t _TyUnicode_InternedSize(void);
+extern Ty_ssize_t _TyUnicode_InternedSize_Immortal(void);
 
 // Get a copy of a Unicode string.
 // Export for '_datetime' shared extension.
-PyAPI_FUNC(PyObject*) _PyUnicode_Copy(
-    PyObject *unicode);
+PyAPI_FUNC(TyObject*) _TyUnicode_Copy(
+    TyObject *unicode);
 
-/* Unsafe version of PyUnicode_Fill(): don't check arguments and so may crash
+/* Unsafe version of TyUnicode_Fill(): don't check arguments and so may crash
    if parameters are invalid (e.g. if length is longer than the string). */
-extern void _PyUnicode_FastFill(
-    PyObject *unicode,
-    Py_ssize_t start,
-    Py_ssize_t length,
-    Py_UCS4 fill_char
+extern void _TyUnicode_FastFill(
+    TyObject *unicode,
+    Ty_ssize_t start,
+    Ty_ssize_t length,
+    Ty_UCS4 fill_char
     );
 
-/* Unsafe version of PyUnicode_CopyCharacters(): don't check arguments and so
+/* Unsafe version of TyUnicode_CopyCharacters(): don't check arguments and so
    may crash if parameters are invalid (e.g. if the output string
    is too short). */
-extern void _PyUnicode_FastCopyCharacters(
-    PyObject *to,
-    Py_ssize_t to_start,
-    PyObject *from,
-    Py_ssize_t from_start,
-    Py_ssize_t how_many
+extern void _TyUnicode_FastCopyCharacters(
+    TyObject *to,
+    Ty_ssize_t to_start,
+    TyObject *from,
+    Ty_ssize_t from_start,
+    Ty_ssize_t how_many
     );
 
 /* Create a new string from a buffer of ASCII characters.
    WARNING: Don't check if the string contains any non-ASCII character. */
-extern PyObject* _PyUnicode_FromASCII(
+extern TyObject* _TyUnicode_FromASCII(
     const char *buffer,
-    Py_ssize_t size);
+    Ty_ssize_t size);
 
 /* Compute the maximum character of the substring unicode[start:end].
    Return 127 for an empty string. */
-extern Py_UCS4 _PyUnicode_FindMaxChar (
-    PyObject *unicode,
-    Py_ssize_t start,
-    Py_ssize_t end);
+extern Ty_UCS4 _TyUnicode_FindMaxChar (
+    TyObject *unicode,
+    Ty_ssize_t start,
+    Ty_ssize_t end);
 
 /* --- _PyUnicodeWriter API ----------------------------------------------- */
 
 /* Format the object based on the format_spec, as defined in PEP 3101
    (Advanced String Formatting). */
-extern int _PyUnicode_FormatAdvancedWriter(
+extern int _TyUnicode_FormatAdvancedWriter(
     _PyUnicodeWriter *writer,
-    PyObject *obj,
-    PyObject *format_spec,
-    Py_ssize_t start,
-    Py_ssize_t end);
+    TyObject *obj,
+    TyObject *format_spec,
+    Ty_ssize_t start,
+    Ty_ssize_t end);
 
 /* --- UTF-7 Codecs ------------------------------------------------------- */
 
-extern PyObject* _PyUnicode_EncodeUTF7(
-    PyObject *unicode,          /* Unicode object */
+extern TyObject* _TyUnicode_EncodeUTF7(
+    TyObject *unicode,          /* Unicode object */
     int base64SetO,             /* Encode RFC2152 Set O characters in base64 */
     int base64WhiteSpace,       /* Encode whitespace (sp, ht, nl, cr) in base64 */
     const char *errors);        /* error handling */
@@ -93,15 +93,15 @@ extern PyObject* _PyUnicode_EncodeUTF7(
 /* --- UTF-8 Codecs ------------------------------------------------------- */
 
 // Export for '_tkinter' shared extension.
-PyAPI_FUNC(PyObject*) _PyUnicode_AsUTF8String(
-    PyObject *unicode,
+PyAPI_FUNC(TyObject*) _TyUnicode_AsUTF8String(
+    TyObject *unicode,
     const char *errors);
 
 /* --- UTF-32 Codecs ------------------------------------------------------ */
 
 // Export for '_tkinter' shared extension
-PyAPI_FUNC(PyObject*) _PyUnicode_EncodeUTF32(
-    PyObject *object,           /* Unicode object */
+PyAPI_FUNC(TyObject*) _TyUnicode_EncodeUTF32(
+    TyObject *object,           /* Unicode object */
     const char *errors,         /* error handling */
     int byteorder);             /* byteorder to use 0=BOM+native;-1=LE,1=BE */
 
@@ -122,28 +122,28 @@ PyAPI_FUNC(PyObject*) _PyUnicode_EncodeUTF32(
 // prepended.
 //
 // Export for '_tkinter' shared extension
-PyAPI_FUNC(PyObject*) _PyUnicode_EncodeUTF16(
-    PyObject* unicode,          /* Unicode object */
+PyAPI_FUNC(TyObject*) _TyUnicode_EncodeUTF16(
+    TyObject* unicode,          /* Unicode object */
     const char *errors,         /* error handling */
     int byteorder);             /* byteorder to use 0=BOM+native;-1=LE,1=BE */
 
 /* --- Unicode-Escape Codecs ---------------------------------------------- */
 
-/* Variant of PyUnicode_DecodeUnicodeEscape that supports partial decoding. */
-extern PyObject* _PyUnicode_DecodeUnicodeEscapeStateful(
+/* Variant of TyUnicode_DecodeUnicodeEscape that supports partial decoding. */
+extern TyObject* _TyUnicode_DecodeUnicodeEscapeStateful(
     const char *string,     /* Unicode-Escape encoded string */
-    Py_ssize_t length,      /* size of string */
+    Ty_ssize_t length,      /* size of string */
     const char *errors,     /* error handling */
-    Py_ssize_t *consumed);  /* bytes consumed */
+    Ty_ssize_t *consumed);  /* bytes consumed */
 
-// Helper for PyUnicode_DecodeUnicodeEscape that detects invalid escape
+// Helper for TyUnicode_DecodeUnicodeEscape that detects invalid escape
 // chars.
 // Export for test_peg_generator.
-PyAPI_FUNC(PyObject*) _PyUnicode_DecodeUnicodeEscapeInternal2(
+PyAPI_FUNC(TyObject*) _TyUnicode_DecodeUnicodeEscapeInternal2(
     const char *string,     /* Unicode-Escape encoded string */
-    Py_ssize_t length,      /* size of string */
+    Ty_ssize_t length,      /* size of string */
     const char *errors,     /* error handling */
-    Py_ssize_t *consumed,   /* bytes consumed */
+    Ty_ssize_t *consumed,   /* bytes consumed */
     int *first_invalid_escape_char, /* on return, if not -1, contain the first
                                        invalid escaped char (<= 0xff) or invalid
                                        octal escape (> 0xff) in string. */
@@ -154,23 +154,23 @@ PyAPI_FUNC(PyObject*) _PyUnicode_DecodeUnicodeEscapeInternal2(
 
 /* --- Raw-Unicode-Escape Codecs ---------------------------------------------- */
 
-/* Variant of PyUnicode_DecodeRawUnicodeEscape that supports partial decoding. */
-extern PyObject* _PyUnicode_DecodeRawUnicodeEscapeStateful(
+/* Variant of TyUnicode_DecodeRawUnicodeEscape that supports partial decoding. */
+extern TyObject* _TyUnicode_DecodeRawUnicodeEscapeStateful(
     const char *string,     /* Unicode-Escape encoded string */
-    Py_ssize_t length,      /* size of string */
+    Ty_ssize_t length,      /* size of string */
     const char *errors,     /* error handling */
-    Py_ssize_t *consumed);  /* bytes consumed */
+    Ty_ssize_t *consumed);  /* bytes consumed */
 
 /* --- Latin-1 Codecs ----------------------------------------------------- */
 
-extern PyObject* _PyUnicode_AsLatin1String(
-    PyObject* unicode,
+extern TyObject* _TyUnicode_AsLatin1String(
+    TyObject* unicode,
     const char* errors);
 
 /* --- ASCII Codecs ------------------------------------------------------- */
 
-extern PyObject* _PyUnicode_AsASCIIString(
-    PyObject* unicode,
+extern TyObject* _TyUnicode_AsASCIIString(
+    TyObject* unicode,
     const char* errors);
 
 /* --- Character Map Codecs ----------------------------------------------- */
@@ -185,9 +185,9 @@ extern PyObject* _PyUnicode_AsASCIIString(
    ordinals (ones which cause a LookupError) are left untouched and
    are copied as-is.
 */
-extern PyObject* _PyUnicode_EncodeCharmap(
-    PyObject *unicode,          /* Unicode object */
-    PyObject *mapping,          /* encoding mapping */
+extern TyObject* _TyUnicode_EncodeCharmap(
+    TyObject *unicode,          /* Unicode object */
+    TyObject *mapping,          /* encoding mapping */
     const char *errors);        /* error handling */
 
 /* --- Decimal Encoder ---------------------------------------------------- */
@@ -200,109 +200,109 @@ extern PyObject* _PyUnicode_EncodeCharmap(
 // is neither a decimal digit nor a space to the end into '?'.
 //
 // Export for '_testinternalcapi' shared extension.
-PyAPI_FUNC(PyObject*) _PyUnicode_TransformDecimalAndSpaceToASCII(
-    PyObject *unicode);         /* Unicode object */
+PyAPI_FUNC(TyObject*) _TyUnicode_TransformDecimalAndSpaceToASCII(
+    TyObject *unicode);         /* Unicode object */
 
 /* --- Methods & Slots ---------------------------------------------------- */
 
-PyAPI_FUNC(PyObject*) _PyUnicode_JoinArray(
-    PyObject *separator,
-    PyObject *const *items,
-    Py_ssize_t seqlen
+PyAPI_FUNC(TyObject*) _TyUnicode_JoinArray(
+    TyObject *separator,
+    TyObject *const *items,
+    Ty_ssize_t seqlen
     );
 
 /* Test whether a unicode is equal to ASCII identifier.  Return 1 if true,
    0 otherwise.  The right argument must be ASCII identifier.
    Any error occurs inside will be cleared before return. */
-extern int _PyUnicode_EqualToASCIIId(
-    PyObject *left,             /* Left string */
-    _Py_Identifier *right       /* Right identifier */
+extern int _TyUnicode_EqualToASCIIId(
+    TyObject *left,             /* Left string */
+    _Ty_Identifier *right       /* Right identifier */
     );
 
 // Test whether a unicode is equal to ASCII string.  Return 1 if true,
 // 0 otherwise.  The right argument must be ASCII-encoded string.
 // Any error occurs inside will be cleared before return.
 // Export for '_ctypes' shared extension
-PyAPI_FUNC(int) _PyUnicode_EqualToASCIIString(
-    PyObject *left,
+PyAPI_FUNC(int) _TyUnicode_EqualToASCIIString(
+    TyObject *left,
     const char *right           /* ASCII-encoded string */
     );
 
 /* Externally visible for str.strip(unicode) */
-extern PyObject* _PyUnicode_XStrip(
-    PyObject *self,
+extern TyObject* _TyUnicode_XStrip(
+    TyObject *self,
     int striptype,
-    PyObject *sepobj
+    TyObject *sepobj
     );
 
 
 /* Using explicit passed-in values, insert the thousands grouping
    into the string pointed to by buffer.  For the argument descriptions,
    see Objects/stringlib/localeutil.h */
-extern Py_ssize_t _PyUnicode_InsertThousandsGrouping(
+extern Ty_ssize_t _TyUnicode_InsertThousandsGrouping(
     _PyUnicodeWriter *writer,
-    Py_ssize_t n_buffer,
-    PyObject *digits,
-    Py_ssize_t d_pos,
-    Py_ssize_t n_digits,
-    Py_ssize_t min_width,
+    Ty_ssize_t n_buffer,
+    TyObject *digits,
+    Ty_ssize_t d_pos,
+    Ty_ssize_t n_digits,
+    Ty_ssize_t min_width,
     const char *grouping,
-    PyObject *thousands_sep,
-    Py_UCS4 *maxchar,
+    TyObject *thousands_sep,
+    Ty_UCS4 *maxchar,
     int forward);
 
 /* Dedent a string.
    Behaviour is expected to be an exact match of `textwrap.dedent`.
    Return a new reference on success, NULL with exception set on error.
    */
-extern PyObject* _PyUnicode_Dedent(PyObject *unicode);
+extern TyObject* _TyUnicode_Dedent(TyObject *unicode);
 
 /* --- Misc functions ----------------------------------------------------- */
 
-extern PyObject* _PyUnicode_FormatLong(PyObject *, int, int, int);
+extern TyObject* _TyUnicode_FormatLong(TyObject *, int, int, int);
 
 // Fast equality check when the inputs are known to be exact unicode types.
 // Export for '_pickle' shared extension.
-PyAPI_FUNC(int) _PyUnicode_Equal(PyObject *, PyObject *);
+PyAPI_FUNC(int) _TyUnicode_Equal(TyObject *, TyObject *);
 
-extern int _PyUnicode_WideCharString_Converter(PyObject *, void *);
-extern int _PyUnicode_WideCharString_Opt_Converter(PyObject *, void *);
+extern int _TyUnicode_WideCharString_Converter(TyObject *, void *);
+extern int _TyUnicode_WideCharString_Opt_Converter(TyObject *, void *);
 
 // Export for test_peg_generator
-PyAPI_FUNC(Py_ssize_t) _PyUnicode_ScanIdentifier(PyObject *);
+PyAPI_FUNC(Ty_ssize_t) _TyUnicode_ScanIdentifier(TyObject *);
 
 /* --- Runtime lifecycle -------------------------------------------------- */
 
-extern void _PyUnicode_InitState(PyInterpreterState *);
-extern PyStatus _PyUnicode_InitGlobalObjects(PyInterpreterState *);
-extern PyStatus _PyUnicode_InitTypes(PyInterpreterState *);
-extern void _PyUnicode_Fini(PyInterpreterState *);
-extern void _PyUnicode_FiniTypes(PyInterpreterState *);
+extern void _TyUnicode_InitState(PyInterpreterState *);
+extern PyStatus _TyUnicode_InitGlobalObjects(PyInterpreterState *);
+extern PyStatus _TyUnicode_InitTypes(PyInterpreterState *);
+extern void _TyUnicode_Fini(PyInterpreterState *);
+extern void _TyUnicode_FiniTypes(PyInterpreterState *);
 
-extern PyTypeObject _PyUnicodeASCIIIter_Type;
+extern TyTypeObject _PyUnicodeASCIIIter_Type;
 
 /* --- Interning ---------------------------------------------------------- */
 
-// All these are "ref-neutral", like the public PyUnicode_InternInPlace.
+// All these are "ref-neutral", like the public TyUnicode_InternInPlace.
 
 // Explicit interning routines:
-PyAPI_FUNC(void) _PyUnicode_InternMortal(PyInterpreterState *interp, PyObject **);
-PyAPI_FUNC(void) _PyUnicode_InternImmortal(PyInterpreterState *interp, PyObject **);
+PyAPI_FUNC(void) _TyUnicode_InternMortal(PyInterpreterState *interp, TyObject **);
+PyAPI_FUNC(void) _TyUnicode_InternImmortal(PyInterpreterState *interp, TyObject **);
 // Left here to help backporting:
-PyAPI_FUNC(void) _PyUnicode_InternInPlace(PyInterpreterState *interp, PyObject **p);
+PyAPI_FUNC(void) _TyUnicode_InternInPlace(PyInterpreterState *interp, TyObject **p);
 // Only for singletons in the _PyRuntime struct:
-extern void _PyUnicode_InternStatic(PyInterpreterState *interp, PyObject **);
+extern void _TyUnicode_InternStatic(PyInterpreterState *interp, TyObject **);
 
 /* --- Other API ---------------------------------------------------------- */
 
-extern void _PyUnicode_ClearInterned(PyInterpreterState *interp);
+extern void _TyUnicode_ClearInterned(PyInterpreterState *interp);
 
-// Like PyUnicode_AsUTF8(), but check for embedded null characters.
+// Like TyUnicode_AsUTF8(), but check for embedded null characters.
 // Export for '_sqlite3' shared extension.
-PyAPI_FUNC(const char *) _PyUnicode_AsUTF8NoNUL(PyObject *);
+PyAPI_FUNC(const char *) _TyUnicode_AsUTF8NoNUL(TyObject *);
 
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_UNICODEOBJECT_H */
+#endif /* !Ty_INTERNAL_UNICODEOBJECT_H */

@@ -3,7 +3,7 @@ preserve
 [clinic start generated code]*/
 
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(_testinternalcapi_benchmark_locks__doc__,
 "benchmark_locks($module, num_threads, use_pymutex=True,\n"
@@ -14,33 +14,33 @@ PyDoc_STRVAR(_testinternalcapi_benchmark_locks__doc__,
 #define _TESTINTERNALCAPI_BENCHMARK_LOCKS_METHODDEF    \
     {"benchmark_locks", _PyCFunction_CAST(_testinternalcapi_benchmark_locks), METH_FASTCALL, _testinternalcapi_benchmark_locks__doc__},
 
-static PyObject *
-_testinternalcapi_benchmark_locks_impl(PyObject *module,
-                                       Py_ssize_t num_threads,
+static TyObject *
+_testinternalcapi_benchmark_locks_impl(TyObject *module,
+                                       Ty_ssize_t num_threads,
                                        int use_pymutex,
                                        int critical_section_length,
                                        int time_ms);
 
-static PyObject *
-_testinternalcapi_benchmark_locks(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_testinternalcapi_benchmark_locks(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t num_threads;
+    TyObject *return_value = NULL;
+    Ty_ssize_t num_threads;
     int use_pymutex = 1;
     int critical_section_length = 1;
     int time_ms = 1000;
 
-    if (!_PyArg_CheckPositional("benchmark_locks", nargs, 1, 4)) {
+    if (!_TyArg_CheckPositional("benchmark_locks", nargs, 1, 4)) {
         goto exit;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         num_threads = ival;
@@ -55,15 +55,15 @@ _testinternalcapi_benchmark_locks(PyObject *module, PyObject *const *args, Py_ss
     if (nargs < 3) {
         goto skip_optional;
     }
-    critical_section_length = PyLong_AsInt(args[2]);
-    if (critical_section_length == -1 && PyErr_Occurred()) {
+    critical_section_length = TyLong_AsInt(args[2]);
+    if (critical_section_length == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (nargs < 4) {
         goto skip_optional;
     }
-    time_ms = PyLong_AsInt(args[3]);
-    if (time_ms == -1 && PyErr_Occurred()) {
+    time_ms = TyLong_AsInt(args[3]);
+    if (time_ms == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:

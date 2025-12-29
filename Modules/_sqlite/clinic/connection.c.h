@@ -2,17 +2,17 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 static int
-pysqlite_connection_init_impl(pysqlite_Connection *self, PyObject *database,
+pysqlite_connection_init_impl(pysqlite_Connection *self, TyObject *database,
                               double timeout, int detect_types,
                               const char *isolation_level,
-                              int check_same_thread, PyObject *factory,
+                              int check_same_thread, TyObject *factory,
                               int cache_size, int uri,
                               enum autocommit_mode autocommit);
 
@@ -28,52 +28,52 @@ pysqlite_connection_init_impl(pysqlite_Connection *self, PyObject *database,
 #endif
 
 static int
-pysqlite_connection_init(PyObject *self, PyObject *args, PyObject *kwargs)
+pysqlite_connection_init(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 9
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(database), &_Py_ID(timeout), &_Py_ID(detect_types), &_Py_ID(isolation_level), &_Py_ID(check_same_thread), &_Py_ID(factory), &_Py_ID(cached_statements), &_Py_ID(uri), &_Py_ID(autocommit), },
+        .ob_item = { &_Ty_ID(database), &_Ty_ID(timeout), &_Ty_ID(detect_types), &_Ty_ID(isolation_level), &_Ty_ID(check_same_thread), &_Ty_ID(factory), &_Ty_ID(cached_statements), &_Ty_ID(uri), &_Ty_ID(autocommit), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"database", "timeout", "detect_types", "isolation_level", "check_same_thread", "factory", "cached_statements", "uri", "autocommit", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "Connection",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[9];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *database;
+    TyObject *argsbuf[9];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *database;
     double timeout = 5.0;
     int detect_types = 0;
     const char *isolation_level = "";
     int check_same_thread = 1;
-    PyObject *factory = (PyObject*)clinic_state()->ConnectionType;
+    TyObject *factory = (TyObject*)clinic_state()->ConnectionType;
     int cache_size = 128;
     int uri = 0;
     enum autocommit_mode autocommit = LEGACY_TRANSACTION_CONTROL;
 
     if (nargs > 1 && nargs <= 8) {
-        if (PyErr_WarnEx(PyExc_DeprecationWarning,
+        if (TyErr_WarnEx(TyExc_DeprecationWarning,
                 "Passing more than 1 positional argument to _sqlite3.Connection()"
                 " is deprecated. Parameters 'timeout', 'detect_types', "
                 "'isolation_level', 'check_same_thread', 'factory', "
@@ -83,7 +83,7 @@ pysqlite_connection_init(PyObject *self, PyObject *args, PyObject *kwargs)
             goto exit;
         }
     }
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 8, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -93,13 +93,13 @@ pysqlite_connection_init(PyObject *self, PyObject *args, PyObject *kwargs)
         goto skip_optional_pos;
     }
     if (fastargs[1]) {
-        if (PyFloat_CheckExact(fastargs[1])) {
-            timeout = PyFloat_AS_DOUBLE(fastargs[1]);
+        if (TyFloat_CheckExact(fastargs[1])) {
+            timeout = TyFloat_AS_DOUBLE(fastargs[1]);
         }
         else
         {
-            timeout = PyFloat_AsDouble(fastargs[1]);
-            if (timeout == -1.0 && PyErr_Occurred()) {
+            timeout = TyFloat_AsDouble(fastargs[1]);
+            if (timeout == -1.0 && TyErr_Occurred()) {
                 goto exit;
             }
         }
@@ -108,8 +108,8 @@ pysqlite_connection_init(PyObject *self, PyObject *args, PyObject *kwargs)
         }
     }
     if (fastargs[2]) {
-        detect_types = PyLong_AsInt(fastargs[2]);
-        if (detect_types == -1 && PyErr_Occurred()) {
+        detect_types = TyLong_AsInt(fastargs[2]);
+        if (detect_types == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -140,8 +140,8 @@ pysqlite_connection_init(PyObject *self, PyObject *args, PyObject *kwargs)
         }
     }
     if (fastargs[6]) {
-        cache_size = PyLong_AsInt(fastargs[6]);
-        if (cache_size == -1 && PyErr_Occurred()) {
+        cache_size = TyLong_AsInt(fastargs[6]);
+        if (cache_size == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -180,45 +180,45 @@ PyDoc_STRVAR(pysqlite_connection_cursor__doc__,
 #define PYSQLITE_CONNECTION_CURSOR_METHODDEF    \
     {"cursor", _PyCFunction_CAST(pysqlite_connection_cursor), METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_cursor__doc__},
 
-static PyObject *
-pysqlite_connection_cursor_impl(pysqlite_Connection *self, PyObject *factory);
+static TyObject *
+pysqlite_connection_cursor_impl(pysqlite_Connection *self, TyObject *factory);
 
-static PyObject *
-pysqlite_connection_cursor(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_cursor(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(factory), },
+        .ob_item = { &_Ty_ID(factory), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"factory", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "cursor",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *factory = NULL;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *factory = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -254,78 +254,78 @@ PyDoc_STRVAR(blobopen__doc__,
 #define BLOBOPEN_METHODDEF    \
     {"blobopen", _PyCFunction_CAST(blobopen), METH_FASTCALL|METH_KEYWORDS, blobopen__doc__},
 
-static PyObject *
+static TyObject *
 blobopen_impl(pysqlite_Connection *self, const char *table, const char *col,
               sqlite3_int64 row, int readonly, const char *name);
 
-static PyObject *
-blobopen(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+blobopen(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(readonly), &_Py_ID(name), },
+        .ob_item = { &_Ty_ID(readonly), &_Ty_ID(name), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "", "", "readonly", "name", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "blobopen",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
     const char *table;
     const char *col;
     sqlite3_int64 row;
     int readonly = 0;
     const char *name = "main";
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("blobopen", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("blobopen", "argument 1", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t table_length;
-    table = PyUnicode_AsUTF8AndSize(args[0], &table_length);
+    Ty_ssize_t table_length;
+    table = TyUnicode_AsUTF8AndSize(args[0], &table_length);
     if (table == NULL) {
         goto exit;
     }
     if (strlen(table) != (size_t)table_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("blobopen", "argument 2", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("blobopen", "argument 2", "str", args[1]);
         goto exit;
     }
-    Py_ssize_t col_length;
-    col = PyUnicode_AsUTF8AndSize(args[1], &col_length);
+    Ty_ssize_t col_length;
+    col = TyUnicode_AsUTF8AndSize(args[1], &col_length);
     if (col == NULL) {
         goto exit;
     }
     if (strlen(col) != (size_t)col_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     if (!sqlite3_int64_converter(args[2], &row)) {
@@ -343,17 +343,17 @@ blobopen(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwna
             goto skip_optional_kwonly;
         }
     }
-    if (!PyUnicode_Check(args[4])) {
-        _PyArg_BadArgument("blobopen", "argument 'name'", "str", args[4]);
+    if (!TyUnicode_Check(args[4])) {
+        _TyArg_BadArgument("blobopen", "argument 'name'", "str", args[4]);
         goto exit;
     }
-    Py_ssize_t name_length;
-    name = PyUnicode_AsUTF8AndSize(args[4], &name_length);
+    Ty_ssize_t name_length;
+    name = TyUnicode_AsUTF8AndSize(args[4], &name_length);
     if (name == NULL) {
         goto exit;
     }
     if (strlen(name) != (size_t)name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
 skip_optional_kwonly:
@@ -374,11 +374,11 @@ PyDoc_STRVAR(pysqlite_connection_close__doc__,
 #define PYSQLITE_CONNECTION_CLOSE_METHODDEF    \
     {"close", (PyCFunction)pysqlite_connection_close, METH_NOARGS, pysqlite_connection_close__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_close_impl(pysqlite_Connection *self);
 
-static PyObject *
-pysqlite_connection_close(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+pysqlite_connection_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return pysqlite_connection_close_impl((pysqlite_Connection *)self);
 }
@@ -394,11 +394,11 @@ PyDoc_STRVAR(pysqlite_connection_commit__doc__,
 #define PYSQLITE_CONNECTION_COMMIT_METHODDEF    \
     {"commit", (PyCFunction)pysqlite_connection_commit, METH_NOARGS, pysqlite_connection_commit__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_commit_impl(pysqlite_Connection *self);
 
-static PyObject *
-pysqlite_connection_commit(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+pysqlite_connection_commit(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return pysqlite_connection_commit_impl((pysqlite_Connection *)self);
 }
@@ -414,11 +414,11 @@ PyDoc_STRVAR(pysqlite_connection_rollback__doc__,
 #define PYSQLITE_CONNECTION_ROLLBACK_METHODDEF    \
     {"rollback", (PyCFunction)pysqlite_connection_rollback, METH_NOARGS, pysqlite_connection_rollback__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_rollback_impl(pysqlite_Connection *self);
 
-static PyObject *
-pysqlite_connection_rollback(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+pysqlite_connection_rollback(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return pysqlite_connection_rollback_impl((pysqlite_Connection *)self);
 }
@@ -437,10 +437,10 @@ PyDoc_STRVAR(pysqlite_connection_create_function__doc__,
 #define PYSQLITE_CONNECTION_CREATE_FUNCTION_METHODDEF    \
     {"create_function", _PyCFunction_CAST(pysqlite_connection_create_function), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_create_function__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_create_function_impl(pysqlite_Connection *self,
-                                         PyTypeObject *cls, const char *name,
-                                         int narg, PyObject *func,
+                                         TyTypeObject *cls, const char *name,
+                                         int narg, TyObject *func,
                                          int deterministic);
 
 // Emit compiler warnings when we get to Python 3.15.
@@ -454,51 +454,51 @@ pysqlite_connection_create_function_impl(pysqlite_Connection *self,
 #  endif
 #endif
 
-static PyObject *
-pysqlite_connection_create_function(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_create_function(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(name), &_Py_ID(narg), &_Py_ID(func), &_Py_ID(deterministic), },
+        .ob_item = { &_Ty_ID(name), &_Ty_ID(narg), &_Ty_ID(func), &_Ty_ID(deterministic), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"name", "narg", "func", "deterministic", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "create_function",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
     const char *name;
     int narg;
-    PyObject *func;
+    TyObject *func;
     int deterministic = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     if (nargs < 3) {
-        if (PyErr_WarnEx(PyExc_DeprecationWarning,
+        if (TyErr_WarnEx(TyExc_DeprecationWarning,
                 "Passing keyword arguments 'name', 'narg' and 'func' to "
                 "_sqlite3.Connection.create_function() is deprecated. Parameters "
                 "'name', 'narg' and 'func' will become positional-only in Python "
@@ -507,21 +507,21 @@ pysqlite_connection_create_function(PyObject *self, PyTypeObject *cls, PyObject 
             goto exit;
         }
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("create_function", "argument 'name'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("create_function", "argument 'name'", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t name_length;
-    name = PyUnicode_AsUTF8AndSize(args[0], &name_length);
+    Ty_ssize_t name_length;
+    name = TyUnicode_AsUTF8AndSize(args[0], &name_length);
     if (name == NULL) {
         goto exit;
     }
     if (strlen(name) != (size_t)name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    narg = PyLong_AsInt(args[1]);
-    if (narg == -1 && PyErr_Occurred()) {
+    narg = TyLong_AsInt(args[1]);
+    if (narg == -1 && TyErr_Occurred()) {
         goto exit;
     }
     func = args[2];
@@ -559,53 +559,53 @@ PyDoc_STRVAR(create_window_function__doc__,
 #define CREATE_WINDOW_FUNCTION_METHODDEF    \
     {"create_window_function", _PyCFunction_CAST(create_window_function), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, create_window_function__doc__},
 
-static PyObject *
-create_window_function_impl(pysqlite_Connection *self, PyTypeObject *cls,
+static TyObject *
+create_window_function_impl(pysqlite_Connection *self, TyTypeObject *cls,
                             const char *name, int num_params,
-                            PyObject *aggregate_class);
+                            TyObject *aggregate_class);
 
-static PyObject *
-create_window_function(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+create_window_function(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", "", "", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "create_window_function",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
+    TyObject *argsbuf[3];
     const char *name;
     int num_params;
-    PyObject *aggregate_class;
+    TyObject *aggregate_class;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("create_window_function", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("create_window_function", "argument 1", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t name_length;
-    name = PyUnicode_AsUTF8AndSize(args[0], &name_length);
+    Ty_ssize_t name_length;
+    name = TyUnicode_AsUTF8AndSize(args[0], &name_length);
     if (name == NULL) {
         goto exit;
     }
     if (strlen(name) != (size_t)name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    num_params = PyLong_AsInt(args[1]);
-    if (num_params == -1 && PyErr_Occurred()) {
+    num_params = TyLong_AsInt(args[1]);
+    if (num_params == -1 && TyErr_Occurred()) {
         goto exit;
     }
     aggregate_class = args[2];
@@ -632,11 +632,11 @@ PyDoc_STRVAR(pysqlite_connection_create_aggregate__doc__,
 #define PYSQLITE_CONNECTION_CREATE_AGGREGATE_METHODDEF    \
     {"create_aggregate", _PyCFunction_CAST(pysqlite_connection_create_aggregate), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_create_aggregate__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_create_aggregate_impl(pysqlite_Connection *self,
-                                          PyTypeObject *cls,
+                                          TyTypeObject *cls,
                                           const char *name, int n_arg,
-                                          PyObject *aggregate_class);
+                                          TyObject *aggregate_class);
 
 // Emit compiler warnings when we get to Python 3.15.
 #if PY_VERSION_HEX >= 0x030f00C0
@@ -649,49 +649,49 @@ pysqlite_connection_create_aggregate_impl(pysqlite_Connection *self,
 #  endif
 #endif
 
-static PyObject *
-pysqlite_connection_create_aggregate(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_create_aggregate(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(name), &_Py_ID(n_arg), &_Py_ID(aggregate_class), },
+        .ob_item = { &_Ty_ID(name), &_Ty_ID(n_arg), &_Ty_ID(aggregate_class), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"name", "n_arg", "aggregate_class", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "create_aggregate",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
+    TyObject *argsbuf[3];
     const char *name;
     int n_arg;
-    PyObject *aggregate_class;
+    TyObject *aggregate_class;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     if (nargs < 3) {
-        if (PyErr_WarnEx(PyExc_DeprecationWarning,
+        if (TyErr_WarnEx(TyExc_DeprecationWarning,
                 "Passing keyword arguments 'name', 'n_arg' and 'aggregate_class' "
                 "to _sqlite3.Connection.create_aggregate() is deprecated. "
                 "Parameters 'name', 'n_arg' and 'aggregate_class' will become "
@@ -700,21 +700,21 @@ pysqlite_connection_create_aggregate(PyObject *self, PyTypeObject *cls, PyObject
             goto exit;
         }
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("create_aggregate", "argument 'name'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("create_aggregate", "argument 'name'", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t name_length;
-    name = PyUnicode_AsUTF8AndSize(args[0], &name_length);
+    Ty_ssize_t name_length;
+    name = TyUnicode_AsUTF8AndSize(args[0], &name_length);
     if (name == NULL) {
         goto exit;
     }
     if (strlen(name) != (size_t)name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
-    n_arg = PyLong_AsInt(args[1]);
-    if (n_arg == -1 && PyErr_Occurred()) {
+    n_arg = TyLong_AsInt(args[1]);
+    if (n_arg == -1 && TyErr_Occurred()) {
         goto exit;
     }
     aggregate_class = args[2];
@@ -738,10 +738,10 @@ PyDoc_STRVAR(pysqlite_connection_set_authorizer__doc__,
 #define PYSQLITE_CONNECTION_SET_AUTHORIZER_METHODDEF    \
     {"set_authorizer", _PyCFunction_CAST(pysqlite_connection_set_authorizer), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_set_authorizer__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_set_authorizer_impl(pysqlite_Connection *self,
-                                        PyTypeObject *cls,
-                                        PyObject *callable);
+                                        TyTypeObject *cls,
+                                        TyObject *callable);
 
 // Emit compiler warnings when we get to Python 3.15.
 #if PY_VERSION_HEX >= 0x030f00C0
@@ -754,47 +754,47 @@ pysqlite_connection_set_authorizer_impl(pysqlite_Connection *self,
 #  endif
 #endif
 
-static PyObject *
-pysqlite_connection_set_authorizer(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_set_authorizer(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(authorizer_callback), },
+        .ob_item = { &_Ty_ID(authorizer_callback), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"authorizer_callback", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "set_authorizer",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *callable;
+    TyObject *argsbuf[1];
+    TyObject *callable;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     if (nargs < 1) {
-        if (PyErr_WarnEx(PyExc_DeprecationWarning,
+        if (TyErr_WarnEx(TyExc_DeprecationWarning,
                 "Passing keyword argument 'authorizer_callback' to "
                 "_sqlite3.Connection.set_authorizer() is deprecated. Parameter "
                 "'authorizer_callback' will become positional-only in Python "
@@ -834,10 +834,10 @@ PyDoc_STRVAR(pysqlite_connection_set_progress_handler__doc__,
 #define PYSQLITE_CONNECTION_SET_PROGRESS_HANDLER_METHODDEF    \
     {"set_progress_handler", _PyCFunction_CAST(pysqlite_connection_set_progress_handler), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_set_progress_handler__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_set_progress_handler_impl(pysqlite_Connection *self,
-                                              PyTypeObject *cls,
-                                              PyObject *callable, int n);
+                                              TyTypeObject *cls,
+                                              TyObject *callable, int n);
 
 // Emit compiler warnings when we get to Python 3.15.
 #if PY_VERSION_HEX >= 0x030f00C0
@@ -850,48 +850,48 @@ pysqlite_connection_set_progress_handler_impl(pysqlite_Connection *self,
 #  endif
 #endif
 
-static PyObject *
-pysqlite_connection_set_progress_handler(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_set_progress_handler(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(progress_handler), _Py_LATIN1_CHR('n'), },
+        .ob_item = { &_Ty_ID(progress_handler), _Ty_LATIN1_CHR('n'), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"progress_handler", "n", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "set_progress_handler",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject *callable;
+    TyObject *argsbuf[2];
+    TyObject *callable;
     int n;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     if (nargs < 1) {
-        if (PyErr_WarnEx(PyExc_DeprecationWarning,
+        if (TyErr_WarnEx(TyExc_DeprecationWarning,
                 "Passing keyword argument 'progress_handler' to "
                 "_sqlite3.Connection.set_progress_handler() is deprecated. "
                 "Parameter 'progress_handler' will become positional-only in "
@@ -901,8 +901,8 @@ pysqlite_connection_set_progress_handler(PyObject *self, PyTypeObject *cls, PyOb
         }
     }
     callable = args[0];
-    n = PyLong_AsInt(args[1]);
-    if (n == -1 && PyErr_Occurred()) {
+    n = TyLong_AsInt(args[1]);
+    if (n == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = pysqlite_connection_set_progress_handler_impl((pysqlite_Connection *)self, cls, callable, n);
@@ -925,10 +925,10 @@ PyDoc_STRVAR(pysqlite_connection_set_trace_callback__doc__,
 #define PYSQLITE_CONNECTION_SET_TRACE_CALLBACK_METHODDEF    \
     {"set_trace_callback", _PyCFunction_CAST(pysqlite_connection_set_trace_callback), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_set_trace_callback__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_set_trace_callback_impl(pysqlite_Connection *self,
-                                            PyTypeObject *cls,
-                                            PyObject *callable);
+                                            TyTypeObject *cls,
+                                            TyObject *callable);
 
 // Emit compiler warnings when we get to Python 3.15.
 #if PY_VERSION_HEX >= 0x030f00C0
@@ -941,47 +941,47 @@ pysqlite_connection_set_trace_callback_impl(pysqlite_Connection *self,
 #  endif
 #endif
 
-static PyObject *
-pysqlite_connection_set_trace_callback(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_set_trace_callback(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(trace_callback), },
+        .ob_item = { &_Ty_ID(trace_callback), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"trace_callback", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "set_trace_callback",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *callable;
+    TyObject *argsbuf[1];
+    TyObject *callable;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     if (nargs < 1) {
-        if (PyErr_WarnEx(PyExc_DeprecationWarning,
+        if (TyErr_WarnEx(TyExc_DeprecationWarning,
                 "Passing keyword argument 'trace_callback' to "
                 "_sqlite3.Connection.set_trace_callback() is deprecated. "
                 "Parameter 'trace_callback' will become positional-only in Python"
@@ -1008,14 +1008,14 @@ PyDoc_STRVAR(pysqlite_connection_enable_load_extension__doc__,
 #define PYSQLITE_CONNECTION_ENABLE_LOAD_EXTENSION_METHODDEF    \
     {"enable_load_extension", (PyCFunction)pysqlite_connection_enable_load_extension, METH_O, pysqlite_connection_enable_load_extension__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_enable_load_extension_impl(pysqlite_Connection *self,
                                                int onoff);
 
-static PyObject *
-pysqlite_connection_enable_load_extension(PyObject *self, PyObject *arg)
+static TyObject *
+pysqlite_connection_enable_load_extension(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int onoff;
 
     onoff = PyObject_IsTrue(arg);
@@ -1041,84 +1041,84 @@ PyDoc_STRVAR(pysqlite_connection_load_extension__doc__,
 #define PYSQLITE_CONNECTION_LOAD_EXTENSION_METHODDEF    \
     {"load_extension", _PyCFunction_CAST(pysqlite_connection_load_extension), METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_load_extension__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_load_extension_impl(pysqlite_Connection *self,
                                         const char *extension_name,
                                         const char *entrypoint);
 
-static PyObject *
-pysqlite_connection_load_extension(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_load_extension(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(entrypoint), },
+        .ob_item = { &_Ty_ID(entrypoint), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "entrypoint", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "load_extension",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     const char *extension_name;
     const char *entrypoint = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("load_extension", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("load_extension", "argument 1", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t extension_name_length;
-    extension_name = PyUnicode_AsUTF8AndSize(args[0], &extension_name_length);
+    Ty_ssize_t extension_name_length;
+    extension_name = TyUnicode_AsUTF8AndSize(args[0], &extension_name_length);
     if (extension_name == NULL) {
         goto exit;
     }
     if (strlen(extension_name) != (size_t)extension_name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    if (args[1] == Py_None) {
+    if (args[1] == Ty_None) {
         entrypoint = NULL;
     }
-    else if (PyUnicode_Check(args[1])) {
-        Py_ssize_t entrypoint_length;
-        entrypoint = PyUnicode_AsUTF8AndSize(args[1], &entrypoint_length);
+    else if (TyUnicode_Check(args[1])) {
+        Ty_ssize_t entrypoint_length;
+        entrypoint = TyUnicode_AsUTF8AndSize(args[1], &entrypoint_length);
         if (entrypoint == NULL) {
             goto exit;
         }
         if (strlen(entrypoint) != (size_t)entrypoint_length) {
-            PyErr_SetString(PyExc_ValueError, "embedded null character");
+            TyErr_SetString(TyExc_ValueError, "embedded null character");
             goto exit;
         }
     }
     else {
-        _PyArg_BadArgument("load_extension", "argument 'entrypoint'", "str or None", args[1]);
+        _TyArg_BadArgument("load_extension", "argument 'entrypoint'", "str or None", args[1]);
         goto exit;
     }
 skip_optional_kwonly:
@@ -1139,22 +1139,22 @@ PyDoc_STRVAR(pysqlite_connection_execute__doc__,
 #define PYSQLITE_CONNECTION_EXECUTE_METHODDEF    \
     {"execute", _PyCFunction_CAST(pysqlite_connection_execute), METH_FASTCALL, pysqlite_connection_execute__doc__},
 
-static PyObject *
-pysqlite_connection_execute_impl(pysqlite_Connection *self, PyObject *sql,
-                                 PyObject *parameters);
+static TyObject *
+pysqlite_connection_execute_impl(pysqlite_Connection *self, TyObject *sql,
+                                 TyObject *parameters);
 
-static PyObject *
-pysqlite_connection_execute(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+pysqlite_connection_execute(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *sql;
-    PyObject *parameters = NULL;
+    TyObject *return_value = NULL;
+    TyObject *sql;
+    TyObject *parameters = NULL;
 
-    if (!_PyArg_CheckPositional("execute", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("execute", nargs, 1, 2)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("execute", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("execute", "argument 1", "str", args[0]);
         goto exit;
     }
     sql = args[0];
@@ -1178,22 +1178,22 @@ PyDoc_STRVAR(pysqlite_connection_executemany__doc__,
 #define PYSQLITE_CONNECTION_EXECUTEMANY_METHODDEF    \
     {"executemany", _PyCFunction_CAST(pysqlite_connection_executemany), METH_FASTCALL, pysqlite_connection_executemany__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_executemany_impl(pysqlite_Connection *self,
-                                     PyObject *sql, PyObject *parameters);
+                                     TyObject *sql, TyObject *parameters);
 
-static PyObject *
-pysqlite_connection_executemany(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+pysqlite_connection_executemany(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *sql;
-    PyObject *parameters;
+    TyObject *return_value = NULL;
+    TyObject *sql;
+    TyObject *parameters;
 
-    if (!_PyArg_CheckPositional("executemany", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("executemany", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("executemany", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("executemany", "argument 1", "str", args[0]);
         goto exit;
     }
     sql = args[0];
@@ -1213,14 +1213,14 @@ PyDoc_STRVAR(pysqlite_connection_executescript__doc__,
 #define PYSQLITE_CONNECTION_EXECUTESCRIPT_METHODDEF    \
     {"executescript", (PyCFunction)pysqlite_connection_executescript, METH_O, pysqlite_connection_executescript__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_executescript_impl(pysqlite_Connection *self,
-                                       PyObject *script_obj);
+                                       TyObject *script_obj);
 
-static PyObject *
-pysqlite_connection_executescript(PyObject *self, PyObject *script_obj)
+static TyObject *
+pysqlite_connection_executescript(TyObject *self, TyObject *script_obj)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = pysqlite_connection_executescript_impl((pysqlite_Connection *)self, script_obj);
 
@@ -1236,11 +1236,11 @@ PyDoc_STRVAR(pysqlite_connection_interrupt__doc__,
 #define PYSQLITE_CONNECTION_INTERRUPT_METHODDEF    \
     {"interrupt", (PyCFunction)pysqlite_connection_interrupt, METH_NOARGS, pysqlite_connection_interrupt__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_interrupt_impl(pysqlite_Connection *self);
 
-static PyObject *
-pysqlite_connection_interrupt(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+pysqlite_connection_interrupt(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return pysqlite_connection_interrupt_impl((pysqlite_Connection *)self);
 }
@@ -1257,46 +1257,46 @@ PyDoc_STRVAR(pysqlite_connection_iterdump__doc__,
 #define PYSQLITE_CONNECTION_ITERDUMP_METHODDEF    \
     {"iterdump", _PyCFunction_CAST(pysqlite_connection_iterdump), METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_iterdump__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_iterdump_impl(pysqlite_Connection *self,
-                                  PyObject *filter);
+                                  TyObject *filter);
 
-static PyObject *
-pysqlite_connection_iterdump(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_iterdump(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(filter), },
+        .ob_item = { &_Ty_ID(filter), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"filter", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "iterdump",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *filter = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *filter = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1322,58 +1322,58 @@ PyDoc_STRVAR(pysqlite_connection_backup__doc__,
 #define PYSQLITE_CONNECTION_BACKUP_METHODDEF    \
     {"backup", _PyCFunction_CAST(pysqlite_connection_backup), METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_backup__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_backup_impl(pysqlite_Connection *self,
                                 pysqlite_Connection *target, int pages,
-                                PyObject *progress, const char *name,
+                                TyObject *progress, const char *name,
                                 double sleep);
 
-static PyObject *
-pysqlite_connection_backup(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_backup(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 5
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(target), &_Py_ID(pages), &_Py_ID(progress), &_Py_ID(name), &_Py_ID(sleep), },
+        .ob_item = { &_Ty_ID(target), &_Ty_ID(pages), &_Ty_ID(progress), &_Ty_ID(name), &_Ty_ID(sleep), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"target", "pages", "progress", "name", "sleep", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "backup",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[5];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *argsbuf[5];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
     pysqlite_Connection *target;
     int pages = -1;
-    PyObject *progress = Py_None;
+    TyObject *progress = Ty_None;
     const char *name = "main";
     double sleep = 0.25;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     if (!PyObject_TypeCheck(args[0], clinic_state()->ConnectionType)) {
-        _PyArg_BadArgument("backup", "argument 'target'", (clinic_state()->ConnectionType)->tp_name, args[0]);
+        _TyArg_BadArgument("backup", "argument 'target'", (clinic_state()->ConnectionType)->tp_name, args[0]);
         goto exit;
     }
     target = (pysqlite_Connection *)args[0];
@@ -1381,8 +1381,8 @@ pysqlite_connection_backup(PyObject *self, PyObject *const *args, Py_ssize_t nar
         goto skip_optional_kwonly;
     }
     if (args[1]) {
-        pages = PyLong_AsInt(args[1]);
-        if (pages == -1 && PyErr_Occurred()) {
+        pages = TyLong_AsInt(args[1]);
+        if (pages == -1 && TyErr_Occurred()) {
             goto exit;
         }
         if (!--noptargs) {
@@ -1396,30 +1396,30 @@ pysqlite_connection_backup(PyObject *self, PyObject *const *args, Py_ssize_t nar
         }
     }
     if (args[3]) {
-        if (!PyUnicode_Check(args[3])) {
-            _PyArg_BadArgument("backup", "argument 'name'", "str", args[3]);
+        if (!TyUnicode_Check(args[3])) {
+            _TyArg_BadArgument("backup", "argument 'name'", "str", args[3]);
             goto exit;
         }
-        Py_ssize_t name_length;
-        name = PyUnicode_AsUTF8AndSize(args[3], &name_length);
+        Ty_ssize_t name_length;
+        name = TyUnicode_AsUTF8AndSize(args[3], &name_length);
         if (name == NULL) {
             goto exit;
         }
         if (strlen(name) != (size_t)name_length) {
-            PyErr_SetString(PyExc_ValueError, "embedded null character");
+            TyErr_SetString(TyExc_ValueError, "embedded null character");
             goto exit;
         }
         if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
-    if (PyFloat_CheckExact(args[4])) {
-        sleep = PyFloat_AS_DOUBLE(args[4]);
+    if (TyFloat_CheckExact(args[4])) {
+        sleep = TyFloat_AS_DOUBLE(args[4]);
     }
     else
     {
-        sleep = PyFloat_AsDouble(args[4]);
-        if (sleep == -1.0 && PyErr_Occurred()) {
+        sleep = TyFloat_AsDouble(args[4]);
+        if (sleep == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -1439,49 +1439,49 @@ PyDoc_STRVAR(pysqlite_connection_create_collation__doc__,
 #define PYSQLITE_CONNECTION_CREATE_COLLATION_METHODDEF    \
     {"create_collation", _PyCFunction_CAST(pysqlite_connection_create_collation), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, pysqlite_connection_create_collation__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_create_collation_impl(pysqlite_Connection *self,
-                                          PyTypeObject *cls,
+                                          TyTypeObject *cls,
                                           const char *name,
-                                          PyObject *callable);
+                                          TyObject *callable);
 
-static PyObject *
-pysqlite_connection_create_collation(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+pysqlite_connection_create_collation(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", "", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "create_collation",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
+    TyObject *argsbuf[2];
     const char *name;
-    PyObject *callable;
+    TyObject *callable;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("create_collation", "argument 1", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("create_collation", "argument 1", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t name_length;
-    name = PyUnicode_AsUTF8AndSize(args[0], &name_length);
+    Ty_ssize_t name_length;
+    name = TyUnicode_AsUTF8AndSize(args[0], &name_length);
     if (name == NULL) {
         goto exit;
     }
     if (strlen(name) != (size_t)name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     callable = args[1];
@@ -1510,45 +1510,45 @@ PyDoc_STRVAR(serialize__doc__,
 #define SERIALIZE_METHODDEF    \
     {"serialize", _PyCFunction_CAST(serialize), METH_FASTCALL|METH_KEYWORDS, serialize__doc__},
 
-static PyObject *
+static TyObject *
 serialize_impl(pysqlite_Connection *self, const char *name);
 
-static PyObject *
-serialize(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+serialize(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(name), },
+        .ob_item = { &_Ty_ID(name), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"name", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "serialize",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
     const char *name = "main";
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 0, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -1556,17 +1556,17 @@ serialize(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwn
     if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("serialize", "argument 'name'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("serialize", "argument 'name'", "str", args[0]);
         goto exit;
     }
-    Py_ssize_t name_length;
-    name = PyUnicode_AsUTF8AndSize(args[0], &name_length);
+    Ty_ssize_t name_length;
+    name = TyUnicode_AsUTF8AndSize(args[0], &name_length);
     if (name == NULL) {
         goto exit;
     }
     if (strlen(name) != (size_t)name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
 skip_optional_kwonly:
@@ -1601,54 +1601,54 @@ PyDoc_STRVAR(deserialize__doc__,
 #define DESERIALIZE_METHODDEF    \
     {"deserialize", _PyCFunction_CAST(deserialize), METH_FASTCALL|METH_KEYWORDS, deserialize__doc__},
 
-static PyObject *
-deserialize_impl(pysqlite_Connection *self, Py_buffer *data,
+static TyObject *
+deserialize_impl(pysqlite_Connection *self, Ty_buffer *data,
                  const char *name);
 
-static PyObject *
-deserialize(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+deserialize(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(name), },
+        .ob_item = { &_Ty_ID(name), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "name", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "deserialize",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    Py_buffer data = {NULL, NULL};
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    Ty_buffer data = {NULL, NULL};
     const char *name = "main";
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (PyUnicode_Check(args[0])) {
-        Py_ssize_t len;
-        const char *ptr = PyUnicode_AsUTF8AndSize(args[0], &len);
+    if (TyUnicode_Check(args[0])) {
+        Ty_ssize_t len;
+        const char *ptr = TyUnicode_AsUTF8AndSize(args[0], &len);
         if (ptr == NULL) {
             goto exit;
         }
@@ -1664,17 +1664,17 @@ deserialize(PyObject *self, PyObject *const *args, Py_ssize_t nargs, PyObject *k
     if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    if (!PyUnicode_Check(args[1])) {
-        _PyArg_BadArgument("deserialize", "argument 'name'", "str", args[1]);
+    if (!TyUnicode_Check(args[1])) {
+        _TyArg_BadArgument("deserialize", "argument 'name'", "str", args[1]);
         goto exit;
     }
-    Py_ssize_t name_length;
-    name = PyUnicode_AsUTF8AndSize(args[1], &name_length);
+    Ty_ssize_t name_length;
+    name = TyUnicode_AsUTF8AndSize(args[1], &name_length);
     if (name == NULL) {
         goto exit;
     }
     if (strlen(name) != (size_t)name_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
 skip_optional_kwonly:
@@ -1702,11 +1702,11 @@ PyDoc_STRVAR(pysqlite_connection_enter__doc__,
 #define PYSQLITE_CONNECTION_ENTER_METHODDEF    \
     {"__enter__", (PyCFunction)pysqlite_connection_enter, METH_NOARGS, pysqlite_connection_enter__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_connection_enter_impl(pysqlite_Connection *self);
 
-static PyObject *
-pysqlite_connection_enter(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+pysqlite_connection_enter(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return pysqlite_connection_enter_impl((pysqlite_Connection *)self);
 }
@@ -1722,19 +1722,19 @@ PyDoc_STRVAR(pysqlite_connection_exit__doc__,
 #define PYSQLITE_CONNECTION_EXIT_METHODDEF    \
     {"__exit__", _PyCFunction_CAST(pysqlite_connection_exit), METH_FASTCALL, pysqlite_connection_exit__doc__},
 
-static PyObject *
-pysqlite_connection_exit_impl(pysqlite_Connection *self, PyObject *exc_type,
-                              PyObject *exc_value, PyObject *exc_tb);
+static TyObject *
+pysqlite_connection_exit_impl(pysqlite_Connection *self, TyObject *exc_type,
+                              TyObject *exc_value, TyObject *exc_tb);
 
-static PyObject *
-pysqlite_connection_exit(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+pysqlite_connection_exit(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *exc_type;
-    PyObject *exc_value;
-    PyObject *exc_tb;
+    TyObject *return_value = NULL;
+    TyObject *exc_type;
+    TyObject *exc_value;
+    TyObject *exc_tb;
 
-    if (!_PyArg_CheckPositional("__exit__", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("__exit__", nargs, 3, 3)) {
         goto exit;
     }
     exc_type = args[0];
@@ -1765,25 +1765,25 @@ PyDoc_STRVAR(setlimit__doc__,
 #define SETLIMIT_METHODDEF    \
     {"setlimit", _PyCFunction_CAST(setlimit), METH_FASTCALL, setlimit__doc__},
 
-static PyObject *
+static TyObject *
 setlimit_impl(pysqlite_Connection *self, int category, int limit);
 
-static PyObject *
-setlimit(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+setlimit(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int category;
     int limit;
 
-    if (!_PyArg_CheckPositional("setlimit", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("setlimit", nargs, 2, 2)) {
         goto exit;
     }
-    category = PyLong_AsInt(args[0]);
-    if (category == -1 && PyErr_Occurred()) {
+    category = TyLong_AsInt(args[0]);
+    if (category == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    limit = PyLong_AsInt(args[1]);
-    if (limit == -1 && PyErr_Occurred()) {
+    limit = TyLong_AsInt(args[1]);
+    if (limit == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = setlimit_impl((pysqlite_Connection *)self, category, limit);
@@ -1804,17 +1804,17 @@ PyDoc_STRVAR(getlimit__doc__,
 #define GETLIMIT_METHODDEF    \
     {"getlimit", (PyCFunction)getlimit, METH_O, getlimit__doc__},
 
-static PyObject *
+static TyObject *
 getlimit_impl(pysqlite_Connection *self, int category);
 
-static PyObject *
-getlimit(PyObject *self, PyObject *arg)
+static TyObject *
+getlimit(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int category;
 
-    category = PyLong_AsInt(arg);
-    if (category == -1 && PyErr_Occurred()) {
+    category = TyLong_AsInt(arg);
+    if (category == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = getlimit_impl((pysqlite_Connection *)self, category);
@@ -1835,21 +1835,21 @@ PyDoc_STRVAR(setconfig__doc__,
 #define SETCONFIG_METHODDEF    \
     {"setconfig", _PyCFunction_CAST(setconfig), METH_FASTCALL, setconfig__doc__},
 
-static PyObject *
+static TyObject *
 setconfig_impl(pysqlite_Connection *self, int op, int enable);
 
-static PyObject *
-setconfig(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+setconfig(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int op;
     int enable = 1;
 
-    if (!_PyArg_CheckPositional("setconfig", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("setconfig", nargs, 1, 2)) {
         goto exit;
     }
-    op = PyLong_AsInt(args[0]);
-    if (op == -1 && PyErr_Occurred()) {
+    op = TyLong_AsInt(args[0]);
+    if (op == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (nargs < 2) {
@@ -1881,22 +1881,22 @@ PyDoc_STRVAR(getconfig__doc__,
 static int
 getconfig_impl(pysqlite_Connection *self, int op);
 
-static PyObject *
-getconfig(PyObject *self, PyObject *arg)
+static TyObject *
+getconfig(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int op;
     int _return_value;
 
-    op = PyLong_AsInt(arg);
-    if (op == -1 && PyErr_Occurred()) {
+    op = TyLong_AsInt(arg);
+    if (op == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = getconfig_impl((pysqlite_Connection *)self, op);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;

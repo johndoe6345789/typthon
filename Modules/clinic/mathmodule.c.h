@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(math_gcd__doc__,
 "gcd($module, /, *integers)\n"
@@ -17,16 +17,16 @@ PyDoc_STRVAR(math_gcd__doc__,
 #define MATH_GCD_METHODDEF    \
     {"gcd", _PyCFunction_CAST(math_gcd), METH_FASTCALL, math_gcd__doc__},
 
-static PyObject *
-math_gcd_impl(PyObject *module, PyObject * const *args,
-              Py_ssize_t args_length);
+static TyObject *
+math_gcd_impl(TyObject *module, TyObject * const *args,
+              Ty_ssize_t args_length);
 
-static PyObject *
-math_gcd(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_gcd(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject * const *__clinic_args;
-    Py_ssize_t args_length;
+    TyObject *return_value = NULL;
+    TyObject * const *__clinic_args;
+    Ty_ssize_t args_length;
 
     __clinic_args = args;
     args_length = nargs;
@@ -44,16 +44,16 @@ PyDoc_STRVAR(math_lcm__doc__,
 #define MATH_LCM_METHODDEF    \
     {"lcm", _PyCFunction_CAST(math_lcm), METH_FASTCALL, math_lcm__doc__},
 
-static PyObject *
-math_lcm_impl(PyObject *module, PyObject * const *args,
-              Py_ssize_t args_length);
+static TyObject *
+math_lcm_impl(TyObject *module, TyObject * const *args,
+              Ty_ssize_t args_length);
 
-static PyObject *
-math_lcm(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_lcm(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject * const *__clinic_args;
-    Py_ssize_t args_length;
+    TyObject *return_value = NULL;
+    TyObject * const *__clinic_args;
+    Ty_ssize_t args_length;
 
     __clinic_args = args;
     args_length = nargs;
@@ -136,22 +136,22 @@ PyDoc_STRVAR(math_frexp__doc__,
 #define MATH_FREXP_METHODDEF    \
     {"frexp", (PyCFunction)math_frexp, METH_O, math_frexp__doc__},
 
-static PyObject *
-math_frexp_impl(PyObject *module, double x);
+static TyObject *
+math_frexp_impl(TyObject *module, double x);
 
-static PyObject *
-math_frexp(PyObject *module, PyObject *arg)
+static TyObject *
+math_frexp(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
 
-    if (PyFloat_CheckExact(arg)) {
-        x = PyFloat_AS_DOUBLE(arg);
+    if (TyFloat_CheckExact(arg)) {
+        x = TyFloat_AS_DOUBLE(arg);
     }
     else
     {
-        x = PyFloat_AsDouble(arg);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(arg);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -172,26 +172,26 @@ PyDoc_STRVAR(math_ldexp__doc__,
 #define MATH_LDEXP_METHODDEF    \
     {"ldexp", _PyCFunction_CAST(math_ldexp), METH_FASTCALL, math_ldexp__doc__},
 
-static PyObject *
-math_ldexp_impl(PyObject *module, double x, PyObject *i);
+static TyObject *
+math_ldexp_impl(TyObject *module, double x, TyObject *i);
 
-static PyObject *
-math_ldexp(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_ldexp(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
-    PyObject *i;
+    TyObject *i;
 
-    if (!_PyArg_CheckPositional("ldexp", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("ldexp", nargs, 2, 2)) {
         goto exit;
     }
-    if (PyFloat_CheckExact(args[0])) {
-        x = PyFloat_AS_DOUBLE(args[0]);
+    if (TyFloat_CheckExact(args[0])) {
+        x = TyFloat_AS_DOUBLE(args[0]);
     }
     else
     {
-        x = PyFloat_AsDouble(args[0]);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(args[0]);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -213,22 +213,22 @@ PyDoc_STRVAR(math_modf__doc__,
 #define MATH_MODF_METHODDEF    \
     {"modf", (PyCFunction)math_modf, METH_O, math_modf__doc__},
 
-static PyObject *
-math_modf_impl(PyObject *module, double x);
+static TyObject *
+math_modf_impl(TyObject *module, double x);
 
-static PyObject *
-math_modf(PyObject *module, PyObject *arg)
+static TyObject *
+math_modf(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
 
-    if (PyFloat_CheckExact(arg)) {
-        x = PyFloat_AS_DOUBLE(arg);
+    if (TyFloat_CheckExact(arg)) {
+        x = TyFloat_AS_DOUBLE(arg);
     }
     else
     {
-        x = PyFloat_AsDouble(arg);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(arg);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -267,47 +267,47 @@ PyDoc_STRVAR(math_fma__doc__,
 #define MATH_FMA_METHODDEF    \
     {"fma", _PyCFunction_CAST(math_fma), METH_FASTCALL, math_fma__doc__},
 
-static PyObject *
-math_fma_impl(PyObject *module, double x, double y, double z);
+static TyObject *
+math_fma_impl(TyObject *module, double x, double y, double z);
 
-static PyObject *
-math_fma(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_fma(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
     double y;
     double z;
 
-    if (!_PyArg_CheckPositional("fma", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("fma", nargs, 3, 3)) {
         goto exit;
     }
-    if (PyFloat_CheckExact(args[0])) {
-        x = PyFloat_AS_DOUBLE(args[0]);
+    if (TyFloat_CheckExact(args[0])) {
+        x = TyFloat_AS_DOUBLE(args[0]);
     }
     else
     {
-        x = PyFloat_AsDouble(args[0]);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(args[0]);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
-    if (PyFloat_CheckExact(args[1])) {
-        y = PyFloat_AS_DOUBLE(args[1]);
+    if (TyFloat_CheckExact(args[1])) {
+        y = TyFloat_AS_DOUBLE(args[1]);
     }
     else
     {
-        y = PyFloat_AsDouble(args[1]);
-        if (y == -1.0 && PyErr_Occurred()) {
+        y = TyFloat_AsDouble(args[1]);
+        if (y == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
-    if (PyFloat_CheckExact(args[2])) {
-        z = PyFloat_AS_DOUBLE(args[2]);
+    if (TyFloat_CheckExact(args[2])) {
+        z = TyFloat_AS_DOUBLE(args[2]);
     }
     else
     {
-        z = PyFloat_AsDouble(args[2]);
-        if (z == -1.0 && PyErr_Occurred()) {
+        z = TyFloat_AsDouble(args[2]);
+        if (z == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -328,36 +328,36 @@ PyDoc_STRVAR(math_fmod__doc__,
 #define MATH_FMOD_METHODDEF    \
     {"fmod", _PyCFunction_CAST(math_fmod), METH_FASTCALL, math_fmod__doc__},
 
-static PyObject *
-math_fmod_impl(PyObject *module, double x, double y);
+static TyObject *
+math_fmod_impl(TyObject *module, double x, double y);
 
-static PyObject *
-math_fmod(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_fmod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
     double y;
 
-    if (!_PyArg_CheckPositional("fmod", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("fmod", nargs, 2, 2)) {
         goto exit;
     }
-    if (PyFloat_CheckExact(args[0])) {
-        x = PyFloat_AS_DOUBLE(args[0]);
+    if (TyFloat_CheckExact(args[0])) {
+        x = TyFloat_AS_DOUBLE(args[0]);
     }
     else
     {
-        x = PyFloat_AsDouble(args[0]);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(args[0]);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
-    if (PyFloat_CheckExact(args[1])) {
-        y = PyFloat_AS_DOUBLE(args[1]);
+    if (TyFloat_CheckExact(args[1])) {
+        y = TyFloat_AS_DOUBLE(args[1]);
     }
     else
     {
-        y = PyFloat_AsDouble(args[1]);
-        if (y == -1.0 && PyErr_Occurred()) {
+        y = TyFloat_AsDouble(args[1]);
+        if (y == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -382,17 +382,17 @@ PyDoc_STRVAR(math_dist__doc__,
 #define MATH_DIST_METHODDEF    \
     {"dist", _PyCFunction_CAST(math_dist), METH_FASTCALL, math_dist__doc__},
 
-static PyObject *
-math_dist_impl(PyObject *module, PyObject *p, PyObject *q);
+static TyObject *
+math_dist_impl(TyObject *module, TyObject *p, TyObject *q);
 
-static PyObject *
-math_dist(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_dist(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *p;
-    PyObject *q;
+    TyObject *return_value = NULL;
+    TyObject *p;
+    TyObject *q;
 
-    if (!_PyArg_CheckPositional("dist", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("dist", nargs, 2, 2)) {
         goto exit;
     }
     p = args[0];
@@ -423,16 +423,16 @@ PyDoc_STRVAR(math_hypot__doc__,
 #define MATH_HYPOT_METHODDEF    \
     {"hypot", _PyCFunction_CAST(math_hypot), METH_FASTCALL, math_hypot__doc__},
 
-static PyObject *
-math_hypot_impl(PyObject *module, PyObject * const *args,
-                Py_ssize_t args_length);
+static TyObject *
+math_hypot_impl(TyObject *module, TyObject * const *args,
+                Ty_ssize_t args_length);
 
-static PyObject *
-math_hypot(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_hypot(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject * const *__clinic_args;
-    Py_ssize_t args_length;
+    TyObject *return_value = NULL;
+    TyObject * const *__clinic_args;
+    Ty_ssize_t args_length;
 
     __clinic_args = args;
     args_length = nargs;
@@ -457,17 +457,17 @@ PyDoc_STRVAR(math_sumprod__doc__,
 #define MATH_SUMPROD_METHODDEF    \
     {"sumprod", _PyCFunction_CAST(math_sumprod), METH_FASTCALL, math_sumprod__doc__},
 
-static PyObject *
-math_sumprod_impl(PyObject *module, PyObject *p, PyObject *q);
+static TyObject *
+math_sumprod_impl(TyObject *module, TyObject *p, TyObject *q);
 
-static PyObject *
-math_sumprod(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_sumprod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *p;
-    PyObject *q;
+    TyObject *return_value = NULL;
+    TyObject *p;
+    TyObject *q;
 
-    if (!_PyArg_CheckPositional("sumprod", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("sumprod", nargs, 2, 2)) {
         goto exit;
     }
     p = args[0];
@@ -487,36 +487,36 @@ PyDoc_STRVAR(math_pow__doc__,
 #define MATH_POW_METHODDEF    \
     {"pow", _PyCFunction_CAST(math_pow), METH_FASTCALL, math_pow__doc__},
 
-static PyObject *
-math_pow_impl(PyObject *module, double x, double y);
+static TyObject *
+math_pow_impl(TyObject *module, double x, double y);
 
-static PyObject *
-math_pow(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_pow(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
     double y;
 
-    if (!_PyArg_CheckPositional("pow", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("pow", nargs, 2, 2)) {
         goto exit;
     }
-    if (PyFloat_CheckExact(args[0])) {
-        x = PyFloat_AS_DOUBLE(args[0]);
+    if (TyFloat_CheckExact(args[0])) {
+        x = TyFloat_AS_DOUBLE(args[0]);
     }
     else
     {
-        x = PyFloat_AsDouble(args[0]);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(args[0]);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
-    if (PyFloat_CheckExact(args[1])) {
-        y = PyFloat_AS_DOUBLE(args[1]);
+    if (TyFloat_CheckExact(args[1])) {
+        y = TyFloat_AS_DOUBLE(args[1]);
     }
     else
     {
-        y = PyFloat_AsDouble(args[1]);
-        if (y == -1.0 && PyErr_Occurred()) {
+        y = TyFloat_AsDouble(args[1]);
+        if (y == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -535,22 +535,22 @@ PyDoc_STRVAR(math_degrees__doc__,
 #define MATH_DEGREES_METHODDEF    \
     {"degrees", (PyCFunction)math_degrees, METH_O, math_degrees__doc__},
 
-static PyObject *
-math_degrees_impl(PyObject *module, double x);
+static TyObject *
+math_degrees_impl(TyObject *module, double x);
 
-static PyObject *
-math_degrees(PyObject *module, PyObject *arg)
+static TyObject *
+math_degrees(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
 
-    if (PyFloat_CheckExact(arg)) {
-        x = PyFloat_AS_DOUBLE(arg);
+    if (TyFloat_CheckExact(arg)) {
+        x = TyFloat_AS_DOUBLE(arg);
     }
     else
     {
-        x = PyFloat_AsDouble(arg);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(arg);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -569,22 +569,22 @@ PyDoc_STRVAR(math_radians__doc__,
 #define MATH_RADIANS_METHODDEF    \
     {"radians", (PyCFunction)math_radians, METH_O, math_radians__doc__},
 
-static PyObject *
-math_radians_impl(PyObject *module, double x);
+static TyObject *
+math_radians_impl(TyObject *module, double x);
 
-static PyObject *
-math_radians(PyObject *module, PyObject *arg)
+static TyObject *
+math_radians(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
 
-    if (PyFloat_CheckExact(arg)) {
-        x = PyFloat_AS_DOUBLE(arg);
+    if (TyFloat_CheckExact(arg)) {
+        x = TyFloat_AS_DOUBLE(arg);
     }
     else
     {
-        x = PyFloat_AsDouble(arg);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(arg);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -603,22 +603,22 @@ PyDoc_STRVAR(math_isfinite__doc__,
 #define MATH_ISFINITE_METHODDEF    \
     {"isfinite", (PyCFunction)math_isfinite, METH_O, math_isfinite__doc__},
 
-static PyObject *
-math_isfinite_impl(PyObject *module, double x);
+static TyObject *
+math_isfinite_impl(TyObject *module, double x);
 
-static PyObject *
-math_isfinite(PyObject *module, PyObject *arg)
+static TyObject *
+math_isfinite(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
 
-    if (PyFloat_CheckExact(arg)) {
-        x = PyFloat_AS_DOUBLE(arg);
+    if (TyFloat_CheckExact(arg)) {
+        x = TyFloat_AS_DOUBLE(arg);
     }
     else
     {
-        x = PyFloat_AsDouble(arg);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(arg);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -637,22 +637,22 @@ PyDoc_STRVAR(math_isnan__doc__,
 #define MATH_ISNAN_METHODDEF    \
     {"isnan", (PyCFunction)math_isnan, METH_O, math_isnan__doc__},
 
-static PyObject *
-math_isnan_impl(PyObject *module, double x);
+static TyObject *
+math_isnan_impl(TyObject *module, double x);
 
-static PyObject *
-math_isnan(PyObject *module, PyObject *arg)
+static TyObject *
+math_isnan(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
 
-    if (PyFloat_CheckExact(arg)) {
-        x = PyFloat_AS_DOUBLE(arg);
+    if (TyFloat_CheckExact(arg)) {
+        x = TyFloat_AS_DOUBLE(arg);
     }
     else
     {
-        x = PyFloat_AsDouble(arg);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(arg);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -671,22 +671,22 @@ PyDoc_STRVAR(math_isinf__doc__,
 #define MATH_ISINF_METHODDEF    \
     {"isinf", (PyCFunction)math_isinf, METH_O, math_isinf__doc__},
 
-static PyObject *
-math_isinf_impl(PyObject *module, double x);
+static TyObject *
+math_isinf_impl(TyObject *module, double x);
 
-static PyObject *
-math_isinf(PyObject *module, PyObject *arg)
+static TyObject *
+math_isinf(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
 
-    if (PyFloat_CheckExact(arg)) {
-        x = PyFloat_AS_DOUBLE(arg);
+    if (TyFloat_CheckExact(arg)) {
+        x = TyFloat_AS_DOUBLE(arg);
     }
     else
     {
-        x = PyFloat_AsDouble(arg);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(arg);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -722,70 +722,70 @@ PyDoc_STRVAR(math_isclose__doc__,
     {"isclose", _PyCFunction_CAST(math_isclose), METH_FASTCALL|METH_KEYWORDS, math_isclose__doc__},
 
 static int
-math_isclose_impl(PyObject *module, double a, double b, double rel_tol,
+math_isclose_impl(TyObject *module, double a, double b, double rel_tol,
                   double abs_tol);
 
-static PyObject *
-math_isclose(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+math_isclose(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { _Py_LATIN1_CHR('a'), _Py_LATIN1_CHR('b'), &_Py_ID(rel_tol), &_Py_ID(abs_tol), },
+        .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), &_Ty_ID(rel_tol), &_Ty_ID(abs_tol), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"a", "b", "rel_tol", "abs_tol", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "isclose",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     double a;
     double b;
     double rel_tol = 1e-09;
     double abs_tol = 0.0;
     int _return_value;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (PyFloat_CheckExact(args[0])) {
-        a = PyFloat_AS_DOUBLE(args[0]);
+    if (TyFloat_CheckExact(args[0])) {
+        a = TyFloat_AS_DOUBLE(args[0]);
     }
     else
     {
-        a = PyFloat_AsDouble(args[0]);
-        if (a == -1.0 && PyErr_Occurred()) {
+        a = TyFloat_AsDouble(args[0]);
+        if (a == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
-    if (PyFloat_CheckExact(args[1])) {
-        b = PyFloat_AS_DOUBLE(args[1]);
+    if (TyFloat_CheckExact(args[1])) {
+        b = TyFloat_AS_DOUBLE(args[1]);
     }
     else
     {
-        b = PyFloat_AsDouble(args[1]);
-        if (b == -1.0 && PyErr_Occurred()) {
+        b = TyFloat_AsDouble(args[1]);
+        if (b == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -793,13 +793,13 @@ math_isclose(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject
         goto skip_optional_kwonly;
     }
     if (args[2]) {
-        if (PyFloat_CheckExact(args[2])) {
-            rel_tol = PyFloat_AS_DOUBLE(args[2]);
+        if (TyFloat_CheckExact(args[2])) {
+            rel_tol = TyFloat_AS_DOUBLE(args[2]);
         }
         else
         {
-            rel_tol = PyFloat_AsDouble(args[2]);
-            if (rel_tol == -1.0 && PyErr_Occurred()) {
+            rel_tol = TyFloat_AsDouble(args[2]);
+            if (rel_tol == -1.0 && TyErr_Occurred()) {
                 goto exit;
             }
         }
@@ -807,22 +807,22 @@ math_isclose(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject
             goto skip_optional_kwonly;
         }
     }
-    if (PyFloat_CheckExact(args[3])) {
-        abs_tol = PyFloat_AS_DOUBLE(args[3]);
+    if (TyFloat_CheckExact(args[3])) {
+        abs_tol = TyFloat_AS_DOUBLE(args[3]);
     }
     else
     {
-        abs_tol = PyFloat_AsDouble(args[3]);
-        if (abs_tol == -1.0 && PyErr_Occurred()) {
+        abs_tol = TyFloat_AsDouble(args[3]);
+        if (abs_tol == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
 skip_optional_kwonly:
     _return_value = math_isclose_impl(module, a, b, rel_tol, abs_tol);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyBool_FromLong((long)_return_value);
+    return_value = TyBool_FromLong((long)_return_value);
 
 exit:
     return return_value;
@@ -843,46 +843,46 @@ PyDoc_STRVAR(math_prod__doc__,
 #define MATH_PROD_METHODDEF    \
     {"prod", _PyCFunction_CAST(math_prod), METH_FASTCALL|METH_KEYWORDS, math_prod__doc__},
 
-static PyObject *
-math_prod_impl(PyObject *module, PyObject *iterable, PyObject *start);
+static TyObject *
+math_prod_impl(TyObject *module, TyObject *iterable, TyObject *start);
 
-static PyObject *
-math_prod(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+math_prod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(start), },
+        .ob_item = { &_Ty_ID(start), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "start", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "prod",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *iterable;
-    PyObject *start = NULL;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *iterable;
+    TyObject *start = NULL;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -917,17 +917,17 @@ PyDoc_STRVAR(math_perm__doc__,
 #define MATH_PERM_METHODDEF    \
     {"perm", _PyCFunction_CAST(math_perm), METH_FASTCALL, math_perm__doc__},
 
-static PyObject *
-math_perm_impl(PyObject *module, PyObject *n, PyObject *k);
+static TyObject *
+math_perm_impl(TyObject *module, TyObject *n, TyObject *k);
 
-static PyObject *
-math_perm(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_perm(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *n;
-    PyObject *k = Py_None;
+    TyObject *return_value = NULL;
+    TyObject *n;
+    TyObject *k = Ty_None;
 
-    if (!_PyArg_CheckPositional("perm", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("perm", nargs, 1, 2)) {
         goto exit;
     }
     n = args[0];
@@ -961,17 +961,17 @@ PyDoc_STRVAR(math_comb__doc__,
 #define MATH_COMB_METHODDEF    \
     {"comb", _PyCFunction_CAST(math_comb), METH_FASTCALL, math_comb__doc__},
 
-static PyObject *
-math_comb_impl(PyObject *module, PyObject *n, PyObject *k);
+static TyObject *
+math_comb_impl(TyObject *module, TyObject *n, TyObject *k);
 
-static PyObject *
-math_comb(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+math_comb(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *n;
-    PyObject *k;
+    TyObject *return_value = NULL;
+    TyObject *n;
+    TyObject *k;
 
-    if (!_PyArg_CheckPositional("comb", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("comb", nargs, 2, 2)) {
         goto exit;
     }
     n = args[0];
@@ -996,68 +996,68 @@ PyDoc_STRVAR(math_nextafter__doc__,
 #define MATH_NEXTAFTER_METHODDEF    \
     {"nextafter", _PyCFunction_CAST(math_nextafter), METH_FASTCALL|METH_KEYWORDS, math_nextafter__doc__},
 
-static PyObject *
-math_nextafter_impl(PyObject *module, double x, double y, PyObject *steps);
+static TyObject *
+math_nextafter_impl(TyObject *module, double x, double y, TyObject *steps);
 
-static PyObject *
-math_nextafter(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+math_nextafter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(steps), },
+        .ob_item = { &_Ty_ID(steps), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "", "steps", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "nextafter",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
+    TyObject *argsbuf[3];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 2;
     double x;
     double y;
-    PyObject *steps = Py_None;
+    TyObject *steps = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 2, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (PyFloat_CheckExact(args[0])) {
-        x = PyFloat_AS_DOUBLE(args[0]);
+    if (TyFloat_CheckExact(args[0])) {
+        x = TyFloat_AS_DOUBLE(args[0]);
     }
     else
     {
-        x = PyFloat_AsDouble(args[0]);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(args[0]);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
-    if (PyFloat_CheckExact(args[1])) {
-        y = PyFloat_AS_DOUBLE(args[1]);
+    if (TyFloat_CheckExact(args[1])) {
+        y = TyFloat_AS_DOUBLE(args[1]);
     }
     else
     {
-        y = PyFloat_AsDouble(args[1]);
-        if (y == -1.0 && PyErr_Occurred()) {
+        y = TyFloat_AsDouble(args[1]);
+        if (y == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
@@ -1082,30 +1082,30 @@ PyDoc_STRVAR(math_ulp__doc__,
     {"ulp", (PyCFunction)math_ulp, METH_O, math_ulp__doc__},
 
 static double
-math_ulp_impl(PyObject *module, double x);
+math_ulp_impl(TyObject *module, double x);
 
-static PyObject *
-math_ulp(PyObject *module, PyObject *arg)
+static TyObject *
+math_ulp(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     double x;
     double _return_value;
 
-    if (PyFloat_CheckExact(arg)) {
-        x = PyFloat_AS_DOUBLE(arg);
+    if (TyFloat_CheckExact(arg)) {
+        x = TyFloat_AS_DOUBLE(arg);
     }
     else
     {
-        x = PyFloat_AsDouble(arg);
-        if (x == -1.0 && PyErr_Occurred()) {
+        x = TyFloat_AsDouble(arg);
+        if (x == -1.0 && TyErr_Occurred()) {
             goto exit;
         }
     }
     _return_value = math_ulp_impl(module, x);
-    if ((_return_value == -1.0) && PyErr_Occurred()) {
+    if ((_return_value == -1.0) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyFloat_FromDouble(_return_value);
+    return_value = TyFloat_FromDouble(_return_value);
 
 exit:
     return return_value;

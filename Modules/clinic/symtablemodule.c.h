@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(_symtable_symtable__doc__,
 "symtable($module, source, filename, startstr, /)\n"
@@ -13,36 +13,36 @@ PyDoc_STRVAR(_symtable_symtable__doc__,
 #define _SYMTABLE_SYMTABLE_METHODDEF    \
     {"symtable", _PyCFunction_CAST(_symtable_symtable), METH_FASTCALL, _symtable_symtable__doc__},
 
-static PyObject *
-_symtable_symtable_impl(PyObject *module, PyObject *source,
-                        PyObject *filename, const char *startstr);
+static TyObject *
+_symtable_symtable_impl(TyObject *module, TyObject *source,
+                        TyObject *filename, const char *startstr);
 
-static PyObject *
-_symtable_symtable(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_symtable_symtable(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *source;
-    PyObject *filename;
+    TyObject *return_value = NULL;
+    TyObject *source;
+    TyObject *filename;
     const char *startstr;
 
-    if (!_PyArg_CheckPositional("symtable", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("symtable", nargs, 3, 3)) {
         goto exit;
     }
     source = args[0];
-    if (!PyUnicode_FSDecoder(args[1], &filename)) {
+    if (!TyUnicode_FSDecoder(args[1], &filename)) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[2])) {
-        _PyArg_BadArgument("symtable", "argument 3", "str", args[2]);
+    if (!TyUnicode_Check(args[2])) {
+        _TyArg_BadArgument("symtable", "argument 3", "str", args[2]);
         goto exit;
     }
-    Py_ssize_t startstr_length;
-    startstr = PyUnicode_AsUTF8AndSize(args[2], &startstr_length);
+    Ty_ssize_t startstr_length;
+    startstr = TyUnicode_AsUTF8AndSize(args[2], &startstr_length);
     if (startstr == NULL) {
         goto exit;
     }
     if (strlen(startstr) != (size_t)startstr_length) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         goto exit;
     }
     return_value = _symtable_symtable_impl(module, source, filename, startstr);

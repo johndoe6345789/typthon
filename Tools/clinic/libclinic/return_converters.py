@@ -145,8 +145,8 @@ class unsigned_int_return_converter(unsigned_long_return_converter):
     unsigned_cast = '(unsigned int)'
 
 
-class Py_ssize_t_return_converter(long_return_converter):
-    type = 'Py_ssize_t'
+class Ty_ssize_t_return_converter(long_return_converter):
+    type = 'Ty_ssize_t'
     conversion_fn = 'PyLong_FromSsize_t'
 
 

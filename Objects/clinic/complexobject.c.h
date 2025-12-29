@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_BadArgument()
+#include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
 PyDoc_STRVAR(complex_conjugate__doc__,
 "conjugate($self, /)\n"
@@ -17,11 +17,11 @@ PyDoc_STRVAR(complex_conjugate__doc__,
 #define COMPLEX_CONJUGATE_METHODDEF    \
     {"conjugate", (PyCFunction)complex_conjugate, METH_NOARGS, complex_conjugate__doc__},
 
-static PyObject *
+static TyObject *
 complex_conjugate_impl(PyComplexObject *self);
 
-static PyObject *
-complex_conjugate(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+complex_conjugate(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return complex_conjugate_impl((PyComplexObject *)self);
 }
@@ -34,11 +34,11 @@ PyDoc_STRVAR(complex___getnewargs____doc__,
 #define COMPLEX___GETNEWARGS___METHODDEF    \
     {"__getnewargs__", (PyCFunction)complex___getnewargs__, METH_NOARGS, complex___getnewargs____doc__},
 
-static PyObject *
+static TyObject *
 complex___getnewargs___impl(PyComplexObject *self);
 
-static PyObject *
-complex___getnewargs__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+complex___getnewargs__(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return complex___getnewargs___impl((PyComplexObject *)self);
 }
@@ -52,17 +52,17 @@ PyDoc_STRVAR(complex___format____doc__,
 #define COMPLEX___FORMAT___METHODDEF    \
     {"__format__", (PyCFunction)complex___format__, METH_O, complex___format____doc__},
 
-static PyObject *
-complex___format___impl(PyComplexObject *self, PyObject *format_spec);
+static TyObject *
+complex___format___impl(PyComplexObject *self, TyObject *format_spec);
 
-static PyObject *
-complex___format__(PyObject *self, PyObject *arg)
+static TyObject *
+complex___format__(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *format_spec;
+    TyObject *return_value = NULL;
+    TyObject *format_spec;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("__format__", "argument", "str", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("__format__", "argument", "str", arg);
         goto exit;
     }
     format_spec = arg;
@@ -81,11 +81,11 @@ PyDoc_STRVAR(complex___complex____doc__,
 #define COMPLEX___COMPLEX___METHODDEF    \
     {"__complex__", (PyCFunction)complex___complex__, METH_NOARGS, complex___complex____doc__},
 
-static PyObject *
+static TyObject *
 complex___complex___impl(PyComplexObject *self);
 
-static PyObject *
-complex___complex__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+complex___complex__(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return complex___complex___impl((PyComplexObject *)self);
 }
@@ -101,48 +101,48 @@ PyDoc_STRVAR(complex_new__doc__,
 "If the \'real\' or \'imag\' arguments are given, create a complex number\n"
 "with the specified real and imaginary components.");
 
-static PyObject *
-complex_new_impl(PyTypeObject *type, PyObject *r, PyObject *i);
+static TyObject *
+complex_new_impl(TyTypeObject *type, TyObject *r, TyObject *i);
 
-static PyObject *
-complex_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+complex_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(real), &_Py_ID(imag), },
+        .ob_item = { &_Ty_ID(real), &_Ty_ID(imag), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"real", "imag", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "complex",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 0;
-    PyObject *r = NULL;
-    PyObject *i = NULL;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 0;
+    TyObject *r = NULL;
+    TyObject *i = NULL;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 0, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -173,15 +173,15 @@ PyDoc_STRVAR(complex_from_number__doc__,
 #define COMPLEX_FROM_NUMBER_METHODDEF    \
     {"from_number", (PyCFunction)complex_from_number, METH_O|METH_CLASS, complex_from_number__doc__},
 
-static PyObject *
-complex_from_number_impl(PyTypeObject *type, PyObject *number);
+static TyObject *
+complex_from_number_impl(TyTypeObject *type, TyObject *number);
 
-static PyObject *
-complex_from_number(PyObject *type, PyObject *number)
+static TyObject *
+complex_from_number(TyObject *type, TyObject *number)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    return_value = complex_from_number_impl((PyTypeObject *)type, number);
+    return_value = complex_from_number_impl((TyTypeObject *)type, number);
 
     return return_value;
 }

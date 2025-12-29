@@ -22,12 +22,12 @@
                         (right) - (left));      \
     if (sub == NULL)                            \
         goto onError;                           \
-    if (PyList_Append(list, sub)) {             \
-        Py_DECREF(sub);                         \
+    if (TyList_Append(list, sub)) {             \
+        Ty_DECREF(sub);                         \
         goto onError;                           \
     }                                           \
     else                                        \
-        Py_DECREF(sub);
+        Ty_DECREF(sub);
 
 #define SPLIT_ADD(data, left, right) {          \
     sub = STRINGLIB_NEW((data) + (left),        \
@@ -35,29 +35,29 @@
     if (sub == NULL)                            \
         goto onError;                           \
     if (count < MAX_PREALLOC) {                 \
-        PyList_SET_ITEM(list, count, sub);      \
+        TyList_SET_ITEM(list, count, sub);      \
     } else {                                    \
-        if (PyList_Append(list, sub)) {         \
-            Py_DECREF(sub);                     \
+        if (TyList_Append(list, sub)) {         \
+            Ty_DECREF(sub);                     \
             goto onError;                       \
         }                                       \
         else                                    \
-            Py_DECREF(sub);                     \
+            Ty_DECREF(sub);                     \
     }                                           \
     count++; }
 
 
 /* Always force the list to the expected size. */
-#define FIX_PREALLOC_SIZE(list) Py_SET_SIZE(list, count)
+#define FIX_PREALLOC_SIZE(list) Ty_SET_SIZE(list, count)
 
-Py_LOCAL_INLINE(PyObject *)
-STRINGLIB(split_whitespace)(PyObject* str_obj,
-                           const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                           Py_ssize_t maxcount)
+Ty_LOCAL_INLINE(TyObject *)
+STRINGLIB(split_whitespace)(TyObject* str_obj,
+                           const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                           Ty_ssize_t maxcount)
 {
-    Py_ssize_t i, j, count=0;
-    PyObject *list = PyList_New(PREALLOC_SIZE(maxcount));
-    PyObject *sub;
+    Ty_ssize_t i, j, count=0;
+    TyObject *list = TyList_New(PREALLOC_SIZE(maxcount));
+    TyObject *sub;
 
     if (list == NULL)
         return NULL;
@@ -73,8 +73,8 @@ STRINGLIB(split_whitespace)(PyObject* str_obj,
 #if !STRINGLIB_MUTABLE
         if (j == 0 && i == str_len && STRINGLIB_CHECK_EXACT(str_obj)) {
             /* No whitespace in str_obj, so just use it as list[0] */
-            Py_INCREF(str_obj);
-            PyList_SET_ITEM(list, 0, (PyObject *)str_obj);
+            Ty_INCREF(str_obj);
+            TyList_SET_ITEM(list, 0, (TyObject *)str_obj);
             count++;
             break;
         }
@@ -94,19 +94,19 @@ STRINGLIB(split_whitespace)(PyObject* str_obj,
     return list;
 
   onError:
-    Py_DECREF(list);
+    Ty_DECREF(list);
     return NULL;
 }
 
-Py_LOCAL_INLINE(PyObject *)
-STRINGLIB(split_char)(PyObject* str_obj,
-                     const STRINGLIB_CHAR* str, Py_ssize_t str_len,
+Ty_LOCAL_INLINE(TyObject *)
+STRINGLIB(split_char)(TyObject* str_obj,
+                     const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
                      const STRINGLIB_CHAR ch,
-                     Py_ssize_t maxcount)
+                     Ty_ssize_t maxcount)
 {
-    Py_ssize_t i, j, count=0;
-    PyObject *list = PyList_New(PREALLOC_SIZE(maxcount));
-    PyObject *sub;
+    Ty_ssize_t i, j, count=0;
+    TyObject *list = TyList_New(PREALLOC_SIZE(maxcount));
+    TyObject *sub;
 
     if (list == NULL)
         return NULL;
@@ -125,8 +125,8 @@ STRINGLIB(split_char)(PyObject* str_obj,
 #if !STRINGLIB_MUTABLE
     if (count == 0 && STRINGLIB_CHECK_EXACT(str_obj)) {
         /* ch not in str_obj, so just use str_obj as list[0] */
-        Py_INCREF(str_obj);
-        PyList_SET_ITEM(list, 0, (PyObject *)str_obj);
+        Ty_INCREF(str_obj);
+        TyList_SET_ITEM(list, 0, (TyObject *)str_obj);
         count++;
     } else
 #endif
@@ -137,27 +137,27 @@ STRINGLIB(split_char)(PyObject* str_obj,
     return list;
 
   onError:
-    Py_DECREF(list);
+    Ty_DECREF(list);
     return NULL;
 }
 
-Py_LOCAL_INLINE(PyObject *)
-STRINGLIB(split)(PyObject* str_obj,
-                const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                const STRINGLIB_CHAR* sep, Py_ssize_t sep_len,
-                Py_ssize_t maxcount)
+Ty_LOCAL_INLINE(TyObject *)
+STRINGLIB(split)(TyObject* str_obj,
+                const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                const STRINGLIB_CHAR* sep, Ty_ssize_t sep_len,
+                Ty_ssize_t maxcount)
 {
-    Py_ssize_t i, j, pos, count=0;
-    PyObject *list, *sub;
+    Ty_ssize_t i, j, pos, count=0;
+    TyObject *list, *sub;
 
     if (sep_len == 0) {
-        PyErr_SetString(PyExc_ValueError, "empty separator");
+        TyErr_SetString(TyExc_ValueError, "empty separator");
         return NULL;
     }
     else if (sep_len == 1)
         return STRINGLIB(split_char)(str_obj, str, str_len, sep[0], maxcount);
 
-    list = PyList_New(PREALLOC_SIZE(maxcount));
+    list = TyList_New(PREALLOC_SIZE(maxcount));
     if (list == NULL)
         return NULL;
 
@@ -173,8 +173,8 @@ STRINGLIB(split)(PyObject* str_obj,
 #if !STRINGLIB_MUTABLE
     if (count == 0 && STRINGLIB_CHECK_EXACT(str_obj)) {
         /* No match in str_obj, so just use it as list[0] */
-        Py_INCREF(str_obj);
-        PyList_SET_ITEM(list, 0, (PyObject *)str_obj);
+        Ty_INCREF(str_obj);
+        TyList_SET_ITEM(list, 0, (TyObject *)str_obj);
         count++;
     } else
 #endif
@@ -185,18 +185,18 @@ STRINGLIB(split)(PyObject* str_obj,
     return list;
 
   onError:
-    Py_DECREF(list);
+    Ty_DECREF(list);
     return NULL;
 }
 
-Py_LOCAL_INLINE(PyObject *)
-STRINGLIB(rsplit_whitespace)(PyObject* str_obj,
-                            const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                            Py_ssize_t maxcount)
+Ty_LOCAL_INLINE(TyObject *)
+STRINGLIB(rsplit_whitespace)(TyObject* str_obj,
+                            const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                            Ty_ssize_t maxcount)
 {
-    Py_ssize_t i, j, count=0;
-    PyObject *list = PyList_New(PREALLOC_SIZE(maxcount));
-    PyObject *sub;
+    Ty_ssize_t i, j, count=0;
+    TyObject *list = TyList_New(PREALLOC_SIZE(maxcount));
+    TyObject *sub;
 
     if (list == NULL)
         return NULL;
@@ -212,8 +212,8 @@ STRINGLIB(rsplit_whitespace)(PyObject* str_obj,
 #if !STRINGLIB_MUTABLE
         if (j == str_len - 1 && i < 0 && STRINGLIB_CHECK_EXACT(str_obj)) {
             /* No whitespace in str_obj, so just use it as list[0] */
-            Py_INCREF(str_obj);
-            PyList_SET_ITEM(list, 0, (PyObject *)str_obj);
+            Ty_INCREF(str_obj);
+            TyList_SET_ITEM(list, 0, (TyObject *)str_obj);
             count++;
             break;
         }
@@ -230,24 +230,24 @@ STRINGLIB(rsplit_whitespace)(PyObject* str_obj,
             SPLIT_ADD(str, 0, i + 1);
     }
     FIX_PREALLOC_SIZE(list);
-    if (PyList_Reverse(list) < 0)
+    if (TyList_Reverse(list) < 0)
         goto onError;
     return list;
 
   onError:
-    Py_DECREF(list);
+    Ty_DECREF(list);
     return NULL;
 }
 
-Py_LOCAL_INLINE(PyObject *)
-STRINGLIB(rsplit_char)(PyObject* str_obj,
-                      const STRINGLIB_CHAR* str, Py_ssize_t str_len,
+Ty_LOCAL_INLINE(TyObject *)
+STRINGLIB(rsplit_char)(TyObject* str_obj,
+                      const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
                       const STRINGLIB_CHAR ch,
-                      Py_ssize_t maxcount)
+                      Ty_ssize_t maxcount)
 {
-    Py_ssize_t i, j, count=0;
-    PyObject *list = PyList_New(PREALLOC_SIZE(maxcount));
-    PyObject *sub;
+    Ty_ssize_t i, j, count=0;
+    TyObject *list = TyList_New(PREALLOC_SIZE(maxcount));
+    TyObject *sub;
 
     if (list == NULL)
         return NULL;
@@ -265,8 +265,8 @@ STRINGLIB(rsplit_char)(PyObject* str_obj,
 #if !STRINGLIB_MUTABLE
     if (count == 0 && STRINGLIB_CHECK_EXACT(str_obj)) {
         /* ch not in str_obj, so just use str_obj as list[0] */
-        Py_INCREF(str_obj);
-        PyList_SET_ITEM(list, 0, (PyObject *)str_obj);
+        Ty_INCREF(str_obj);
+        TyList_SET_ITEM(list, 0, (TyObject *)str_obj);
         count++;
     } else
 #endif
@@ -274,32 +274,32 @@ STRINGLIB(rsplit_char)(PyObject* str_obj,
         SPLIT_ADD(str, 0, j + 1);
     }
     FIX_PREALLOC_SIZE(list);
-    if (PyList_Reverse(list) < 0)
+    if (TyList_Reverse(list) < 0)
         goto onError;
     return list;
 
   onError:
-    Py_DECREF(list);
+    Ty_DECREF(list);
     return NULL;
 }
 
-Py_LOCAL_INLINE(PyObject *)
-STRINGLIB(rsplit)(PyObject* str_obj,
-                 const STRINGLIB_CHAR* str, Py_ssize_t str_len,
-                 const STRINGLIB_CHAR* sep, Py_ssize_t sep_len,
-                 Py_ssize_t maxcount)
+Ty_LOCAL_INLINE(TyObject *)
+STRINGLIB(rsplit)(TyObject* str_obj,
+                 const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
+                 const STRINGLIB_CHAR* sep, Ty_ssize_t sep_len,
+                 Ty_ssize_t maxcount)
 {
-    Py_ssize_t j, pos, count=0;
-    PyObject *list, *sub;
+    Ty_ssize_t j, pos, count=0;
+    TyObject *list, *sub;
 
     if (sep_len == 0) {
-        PyErr_SetString(PyExc_ValueError, "empty separator");
+        TyErr_SetString(TyExc_ValueError, "empty separator");
         return NULL;
     }
     else if (sep_len == 1)
         return STRINGLIB(rsplit_char)(str_obj, str, str_len, sep[0], maxcount);
 
-    list = PyList_New(PREALLOC_SIZE(maxcount));
+    list = TyList_New(PREALLOC_SIZE(maxcount));
     if (list == NULL)
         return NULL;
 
@@ -314,8 +314,8 @@ STRINGLIB(rsplit)(PyObject* str_obj,
 #if !STRINGLIB_MUTABLE
     if (count == 0 && STRINGLIB_CHECK_EXACT(str_obj)) {
         /* No match in str_obj, so just use it as list[0] */
-        Py_INCREF(str_obj);
-        PyList_SET_ITEM(list, 0, (PyObject *)str_obj);
+        Ty_INCREF(str_obj);
+        TyList_SET_ITEM(list, 0, (TyObject *)str_obj);
         count++;
     } else
 #endif
@@ -323,38 +323,38 @@ STRINGLIB(rsplit)(PyObject* str_obj,
         SPLIT_ADD(str, 0, j);
     }
     FIX_PREALLOC_SIZE(list);
-    if (PyList_Reverse(list) < 0)
+    if (TyList_Reverse(list) < 0)
         goto onError;
     return list;
 
   onError:
-    Py_DECREF(list);
+    Ty_DECREF(list);
     return NULL;
 }
 
-Py_LOCAL_INLINE(PyObject *)
-STRINGLIB(splitlines)(PyObject* str_obj,
-                     const STRINGLIB_CHAR* str, Py_ssize_t str_len,
+Ty_LOCAL_INLINE(TyObject *)
+STRINGLIB(splitlines)(TyObject* str_obj,
+                     const STRINGLIB_CHAR* str, Ty_ssize_t str_len,
                      int keepends)
 {
     /* This does not use the preallocated list because splitlines is
        usually run with hundreds of newlines.  The overhead of
-       switching between PyList_SET_ITEM and append causes about a
+       switching between TyList_SET_ITEM and append causes about a
        2-3% slowdown for that common case.  A smarter implementation
        could move the if check out, so the SET_ITEMs are done first
        and the appends only done when the prealloc buffer is full.
        That's too much work for little gain.*/
 
-    Py_ssize_t i;
-    Py_ssize_t j;
-    PyObject *list = PyList_New(0);
-    PyObject *sub;
+    Ty_ssize_t i;
+    Ty_ssize_t j;
+    TyObject *list = TyList_New(0);
+    TyObject *sub;
 
     if (list == NULL)
         return NULL;
 
     for (i = j = 0; i < str_len; ) {
-        Py_ssize_t eol;
+        Ty_ssize_t eol;
 
         /* Find a line and append it */
         while (i < str_len && !STRINGLIB_ISLINEBREAK(str[i]))
@@ -373,7 +373,7 @@ STRINGLIB(splitlines)(PyObject* str_obj,
 #if !STRINGLIB_MUTABLE
         if (j == 0 && eol == str_len && STRINGLIB_CHECK_EXACT(str_obj)) {
             /* No linebreak in str_obj, so just use it as list[0] */
-            if (PyList_Append(list, str_obj))
+            if (TyList_Append(list, str_obj))
                 goto onError;
             break;
         }
@@ -384,7 +384,7 @@ STRINGLIB(splitlines)(PyObject* str_obj,
     return list;
 
   onError:
-    Py_DECREF(list);
+    Ty_DECREF(list);
     return NULL;
 }
 

@@ -1,4 +1,4 @@
-#ifndef Py_CPYTHON_TRACEBACK_H
+#ifndef Ty_CPYTHON_TRACEBACK_H
 #  error "this header file must not be included directly"
 #endif
 

@@ -858,7 +858,7 @@ class ClassTests(unittest.TestCase):
 
 from _testinternalcapi import has_inline_values
 
-Py_TPFLAGS_MANAGED_DICT = (1 << 2)
+Ty_TPFLAGS_MANAGED_DICT = (1 << 2)
 
 class Plain:
     pass
@@ -876,8 +876,8 @@ class WithAttrs:
 class TestInlineValues(unittest.TestCase):
 
     def test_flags(self):
-        self.assertEqual(Plain.__flags__ & Py_TPFLAGS_MANAGED_DICT, Py_TPFLAGS_MANAGED_DICT)
-        self.assertEqual(WithAttrs.__flags__ & Py_TPFLAGS_MANAGED_DICT, Py_TPFLAGS_MANAGED_DICT)
+        self.assertEqual(Plain.__flags__ & Ty_TPFLAGS_MANAGED_DICT, Ty_TPFLAGS_MANAGED_DICT)
+        self.assertEqual(WithAttrs.__flags__ & Ty_TPFLAGS_MANAGED_DICT, Ty_TPFLAGS_MANAGED_DICT)
 
     def test_has_inline_values(self):
         c = Plain()

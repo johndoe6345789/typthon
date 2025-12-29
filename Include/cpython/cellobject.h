@@ -1,8 +1,8 @@
 /* Cell object interface */
 
-#ifndef Py_LIMITED_API
-#ifndef Py_CELLOBJECT_H
-#define Py_CELLOBJECT_H
+#ifndef Ty_LIMITED_API
+#ifndef Ty_CELLOBJECT_H
+#define Ty_CELLOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -10,41 +10,41 @@ extern "C" {
 typedef struct {
     PyObject_HEAD
     /* Content of the cell or NULL when empty */
-    PyObject *ob_ref;
+    TyObject *ob_ref;
 } PyCellObject;
 
-PyAPI_DATA(PyTypeObject) PyCell_Type;
+PyAPI_DATA(TyTypeObject) TyCell_Type;
 
-#define PyCell_Check(op) Py_IS_TYPE((op), &PyCell_Type)
+#define TyCell_Check(op) Ty_IS_TYPE((op), &TyCell_Type)
 
-PyAPI_FUNC(PyObject *) PyCell_New(PyObject *);
-PyAPI_FUNC(PyObject *) PyCell_Get(PyObject *);
-PyAPI_FUNC(int) PyCell_Set(PyObject *, PyObject *);
+PyAPI_FUNC(TyObject *) TyCell_New(TyObject *);
+PyAPI_FUNC(TyObject *) TyCell_Get(TyObject *);
+PyAPI_FUNC(int) TyCell_Set(TyObject *, TyObject *);
 
-static inline PyObject* PyCell_GET(PyObject *op) {
-    PyObject *res;
+static inline TyObject* TyCell_GET(TyObject *op) {
+    TyObject *res;
     PyCellObject *cell;
-    assert(PyCell_Check(op));
-    cell = _Py_CAST(PyCellObject*, op);
-    Py_BEGIN_CRITICAL_SECTION(cell);
+    assert(TyCell_Check(op));
+    cell = _Ty_CAST(PyCellObject*, op);
+    Ty_BEGIN_CRITICAL_SECTION(cell);
     res = cell->ob_ref;
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
     return res;
 }
-#define PyCell_GET(op) PyCell_GET(_PyObject_CAST(op))
+#define TyCell_GET(op) TyCell_GET(_TyObject_CAST(op))
 
-static inline void PyCell_SET(PyObject *op, PyObject *value) {
+static inline void TyCell_SET(TyObject *op, TyObject *value) {
     PyCellObject *cell;
-    assert(PyCell_Check(op));
-    cell = _Py_CAST(PyCellObject*, op);
-    Py_BEGIN_CRITICAL_SECTION(cell);
+    assert(TyCell_Check(op));
+    cell = _Ty_CAST(PyCellObject*, op);
+    Ty_BEGIN_CRITICAL_SECTION(cell);
     cell->ob_ref = value;
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 }
-#define PyCell_SET(op, value) PyCell_SET(_PyObject_CAST(op), (value))
+#define TyCell_SET(op, value) TyCell_SET(_TyObject_CAST(op), (value))
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_TUPLEOBJECT_H */
-#endif /* Py_LIMITED_API */
+#endif /* !Ty_TUPLEOBJECT_H */
+#endif /* Ty_LIMITED_API */

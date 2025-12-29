@@ -1,10 +1,10 @@
-#ifndef Py_CPYTHON_BYTESOBJECT_H
+#ifndef Ty_CPYTHON_BYTESOBJECT_H
 #  error "this header file must not be included directly"
 #endif
 
 typedef struct {
     PyObject_VAR_HEAD
-    Py_DEPRECATED(3.11) Py_hash_t ob_shash;
+    Ty_DEPRECATED(3.11) Ty_hash_t ob_shash;
     char ob_sval[1];
 
     /* Invariants:
@@ -14,29 +14,29 @@ typedef struct {
      */
 } PyBytesObject;
 
-PyAPI_FUNC(int) _PyBytes_Resize(PyObject **, Py_ssize_t);
+PyAPI_FUNC(int) _TyBytes_Resize(TyObject **, Ty_ssize_t);
 
 /* Macros and static inline functions, trading safety for speed */
-#define _PyBytes_CAST(op) \
-    (assert(PyBytes_Check(op)), _Py_CAST(PyBytesObject*, op))
+#define _TyBytes_CAST(op) \
+    (assert(TyBytes_Check(op)), _Ty_CAST(PyBytesObject*, op))
 
-static inline char* PyBytes_AS_STRING(PyObject *op)
+static inline char* TyBytes_AS_STRING(TyObject *op)
 {
-    return _PyBytes_CAST(op)->ob_sval;
+    return _TyBytes_CAST(op)->ob_sval;
 }
-#define PyBytes_AS_STRING(op) PyBytes_AS_STRING(_PyObject_CAST(op))
+#define TyBytes_AS_STRING(op) TyBytes_AS_STRING(_TyObject_CAST(op))
 
-static inline Py_ssize_t PyBytes_GET_SIZE(PyObject *op) {
-    PyBytesObject *self = _PyBytes_CAST(op);
-    return Py_SIZE(self);
+static inline Ty_ssize_t TyBytes_GET_SIZE(TyObject *op) {
+    PyBytesObject *self = _TyBytes_CAST(op);
+    return Ty_SIZE(self);
 }
-#define PyBytes_GET_SIZE(self) PyBytes_GET_SIZE(_PyObject_CAST(self))
+#define TyBytes_GET_SIZE(self) TyBytes_GET_SIZE(_TyObject_CAST(self))
 
-PyAPI_FUNC(PyObject*) PyBytes_Join(PyObject *sep, PyObject *iterable);
+PyAPI_FUNC(TyObject*) TyBytes_Join(TyObject *sep, TyObject *iterable);
 
 // Deprecated alias kept for backward compatibility
-Py_DEPRECATED(3.14) static inline PyObject*
-_PyBytes_Join(PyObject *sep, PyObject *iterable)
+Ty_DEPRECATED(3.14) static inline TyObject*
+_TyBytes_Join(TyObject *sep, TyObject *iterable)
 {
-    return PyBytes_Join(sep, iterable);
+    return TyBytes_Join(sep, iterable);
 }

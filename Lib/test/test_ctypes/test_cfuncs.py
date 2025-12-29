@@ -195,7 +195,7 @@ class CFunctions(unittest.TestCase):
 
     @threading_helper.requires_working_threading()
     @support.requires_resource("cpu")
-    @unittest.skipUnless(support.Py_GIL_DISABLED, "only meaningful on free-threading")
+    @unittest.skipUnless(support.Ty_GIL_DISABLED, "only meaningful on free-threading")
     def test_thread_safety(self):
         from threading import Thread
 

@@ -1,5 +1,5 @@
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
@@ -8,8 +8,8 @@
 #  include <windows.h>
 #endif
 
-#include "pycore_bitutils.h"      // _Py_bswap32()
-#include "pycore_call.h"          // _PyObject_CallNoArgs()
+#include "pycore_bitutils.h"      // _Ty_bswap32()
+#include "pycore_call.h"          // _TyObject_CallNoArgs()
 
 #include <ffi.h>
 #include "ctypes.h"
@@ -23,11 +23,11 @@ module _ctypes
 
 #include "clinic/cfield.c.h"
 
-static void pymem_destructor(PyObject *ptr)
+static void pymem_destructor(TyObject *ptr)
 {
     void *p = PyCapsule_GetPointer(ptr, CTYPES_CFIELD_CAPSULE_NAME_PYMEM);
     if (p) {
-        PyMem_Free(p);
+        TyMem_Free(p);
     }
 }
 
@@ -37,14 +37,14 @@ static void pymem_destructor(PyObject *ptr)
   PyCField_Type
 */
 /*[clinic input]
-class _ctypes.CField "PyObject *" "PyObject"
+class _ctypes.CField "TyObject *" "TyObject"
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=602817ea3ffc709c]*/
 
 static inline
-Py_ssize_t NUM_BITS(Py_ssize_t bitsize);
+Ty_ssize_t NUM_BITS(Ty_ssize_t bitsize);
 static inline
-Py_ssize_t LOW_BIT(Py_ssize_t offset);
+Ty_ssize_t LOW_BIT(Ty_ssize_t offset);
 
 
 /*[clinic input]
@@ -52,22 +52,22 @@ Py_ssize_t LOW_BIT(Py_ssize_t offset);
 _ctypes.CField.__new__ as PyCField_new
 
     *
-    name: object(subclass_of='&PyUnicode_Type')
+    name: object(subclass_of='&TyUnicode_Type')
     type as proto: object
-    byte_size: Py_ssize_t
-    byte_offset: Py_ssize_t
-    index: Py_ssize_t
+    byte_size: Ty_ssize_t
+    byte_offset: Ty_ssize_t
+    index: Ty_ssize_t
     _internal_use: bool
     bit_size as bit_size_obj: object = None
     bit_offset as bit_offset_obj: object = None
 
 [clinic start generated code]*/
 
-static PyObject *
-PyCField_new_impl(PyTypeObject *type, PyObject *name, PyObject *proto,
-                  Py_ssize_t byte_size, Py_ssize_t byte_offset,
-                  Py_ssize_t index, int _internal_use,
-                  PyObject *bit_size_obj, PyObject *bit_offset_obj)
+static TyObject *
+PyCField_new_impl(TyTypeObject *type, TyObject *name, TyObject *proto,
+                  Ty_ssize_t byte_size, Ty_ssize_t byte_offset,
+                  Ty_ssize_t index, int _internal_use,
+                  TyObject *bit_size_obj, TyObject *bit_offset_obj)
 /*[clinic end generated code: output=3f2885ee4108b6e2 input=b343436e33c0d782]*/
 {
     CFieldObject* self = NULL;
@@ -75,11 +75,11 @@ PyCField_new_impl(PyTypeObject *type, PyObject *name, PyObject *proto,
     if (!_internal_use) {
         // Do not instantiate outside ctypes, yet.
         // The constructor is internal API and may change without warning.
-        PyErr_Format(PyExc_TypeError, "cannot create %T object", type);
+        TyErr_Format(TyExc_TypeError, "cannot create %T object", type);
         goto error;
     }
     if (byte_size < 0) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "byte size of field %R must not be negative, got %zd",
                      name, byte_size);
         goto error;
@@ -91,20 +91,20 @@ PyCField_new_impl(PyTypeObject *type, PyObject *name, PyObject *proto,
         goto error;
     }
     if (info == NULL) {
-        PyErr_Format(PyExc_TypeError,
+        TyErr_Format(TyExc_TypeError,
                      "type of field %R must be a C type", name);
         goto error;
     }
     if (byte_size != info->size) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "byte size of field %R (%zd) does not match type size (%zd)",
                      name, byte_size, info->size);
         goto error;
     }
 
-    Py_ssize_t bitfield_size = 0;
-    Py_ssize_t bit_offset = 0;
-    if (bit_size_obj != Py_None) {
+    Ty_ssize_t bitfield_size = 0;
+    Ty_ssize_t bit_offset = 0;
+    if (bit_size_obj != Ty_None) {
         // It's a bit field!
         switch(info->ffi_type_pointer.type) {
             case FFI_TYPE_UINT8:
@@ -122,11 +122,11 @@ PyCField_new_impl(PyTypeObject *type, PyObject *name, PyObject *proto,
                 {
                     break;
                 }
-                _Py_FALLTHROUGH;  /* else fall through */
+                _Ty_FALLTHROUGH;  /* else fall through */
             default:
-                PyErr_Format(PyExc_TypeError,
+                TyErr_Format(TyExc_TypeError,
                              "bit fields not allowed for type %s",
-                             ((PyTypeObject*)proto)->tp_name);
+                             ((TyTypeObject*)proto)->tp_name);
                 goto error;
         }
 
@@ -134,41 +134,41 @@ PyCField_new_impl(PyTypeObject *type, PyObject *name, PyObject *proto,
             // Bitfields must "live" in a field defined by a ffi type,
             // so they're limited to about 8 bytes.
             // This check is here to avoid overflow in later checks.
-            PyErr_Format(PyExc_ValueError,
+            TyErr_Format(TyExc_ValueError,
                          "bit field %R size too large, got %zd",
                          name, byte_size);
             goto error;
         }
-        bitfield_size = PyLong_AsSsize_t(bit_size_obj);
+        bitfield_size = TyLong_AsSsize_t(bit_size_obj);
         if ((bitfield_size <= 0) || (bitfield_size > 255)) {
-            if (!PyErr_Occurred()) {
-                PyErr_Format(PyExc_ValueError,
+            if (!TyErr_Occurred()) {
+                TyErr_Format(TyExc_ValueError,
                              "bit size of field %R out of range, got %zd",
                              name, bitfield_size);
             }
             goto error;
         }
-        bit_offset = PyLong_AsSsize_t(bit_offset_obj);
+        bit_offset = TyLong_AsSsize_t(bit_offset_obj);
         if ((bit_offset < 0) || (bit_offset > 255)) {
-            if (!PyErr_Occurred()) {
-                PyErr_Format(PyExc_ValueError,
+            if (!TyErr_Occurred()) {
+                TyErr_Format(TyExc_ValueError,
                              "bit offset of field %R out of range, got %zd",
                              name, bit_offset);
             }
             goto error;
         }
         if ((bitfield_size + bit_offset) > byte_size * 8) {
-            PyErr_Format(
-                PyExc_ValueError,
+            TyErr_Format(
+                TyExc_ValueError,
                 "bit field %R overflows its type (%zd + %zd >= %zd)",
                 name, bit_offset, byte_size*8);
             goto error;
         }
     }
     else {
-        if (bit_offset_obj != Py_None) {
-            PyErr_Format(
-                PyExc_ValueError,
+        if (bit_offset_obj != Ty_None) {
+            TyErr_Format(
+                TyExc_ValueError,
                 "field %R: bit_offset must be specified if bit_size is",
                 name);
             goto error;
@@ -179,13 +179,13 @@ PyCField_new_impl(PyTypeObject *type, PyObject *name, PyObject *proto,
     if (!self) {
         return NULL;
     }
-    self->name = PyUnicode_FromObject(name);
+    self->name = TyUnicode_FromObject(name);
     if (!self->name) {
         goto error;
     }
-    assert(PyUnicode_CheckExact(self->name));
+    assert(TyUnicode_CheckExact(self->name));
 
-    self->proto = Py_NewRef(proto);
+    self->proto = Ty_NewRef(proto);
     self->byte_size = byte_size;
     self->byte_offset = byte_offset;
     self->bitfield_size = (uint8_t)bitfield_size;
@@ -210,7 +210,7 @@ PyCField_new_impl(PyTypeObject *type, PyObject *name, PyObject *proto,
                 goto error;
             }
             if (!iinfo) {
-                PyErr_SetString(PyExc_TypeError,
+                TyErr_SetString(TyExc_TypeError,
                                 "has no _stginfo_");
                 goto error;
             }
@@ -227,38 +227,38 @@ PyCField_new_impl(PyTypeObject *type, PyObject *name, PyObject *proto,
         }
     }
 
-    return (PyObject *)self;
+    return (TyObject *)self;
 error:
-    Py_XDECREF(self);
+    Ty_XDECREF(self);
     return NULL;
 }
 
-static inline Py_ssize_t
+static inline Ty_ssize_t
 _pack_legacy_size(CFieldObject *field)
 {
     if (field->bitfield_size) {
-        Py_ssize_t bit_offset = field->bit_offset;
+        Ty_ssize_t bit_offset = field->bit_offset;
         return (field->bitfield_size << 16) | bit_offset;
     }
     return field->byte_size;
 }
 
 static int
-PyCField_set_lock_held(PyObject *op, PyObject *inst, PyObject *value)
+PyCField_set_lock_held(TyObject *op, TyObject *inst, TyObject *value)
 {
     CDataObject *dst;
     char *ptr;
     CFieldObject *self = _CFieldObject_CAST(op);
-    ctypes_state *st = get_module_state_by_class(Py_TYPE(self));
+    ctypes_state *st = get_module_state_by_class(Ty_TYPE(self));
     if (!CDataObject_Check(st, inst)) {
-        PyErr_SetString(PyExc_TypeError,
+        TyErr_SetString(TyExc_TypeError,
                         "not a ctype instance");
         return -1;
     }
     dst = _CDataObject_CAST(inst);
     ptr = dst->b_ptr + self->byte_offset;
     if (value == NULL) {
-        PyErr_SetString(PyExc_TypeError,
+        TyErr_SetString(TyExc_TypeError,
                         "can't delete attribute");
         return -1;
     }
@@ -267,91 +267,91 @@ PyCField_set_lock_held(PyObject *op, PyObject *inst, PyObject *value)
 }
 
 static int
-PyCField_set(PyObject *op, PyObject *inst, PyObject *value)
+PyCField_set(TyObject *op, TyObject *inst, TyObject *value)
 {
     int res;
-    Py_BEGIN_CRITICAL_SECTION(inst);
+    Ty_BEGIN_CRITICAL_SECTION(inst);
     res = PyCField_set_lock_held(op, inst, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
     return res;
 }
 
-static PyObject *
-PyCField_get(PyObject *op, PyObject *inst, PyObject *type)
+static TyObject *
+PyCField_get(TyObject *op, TyObject *inst, TyObject *type)
 {
     CDataObject *src;
     CFieldObject *self = _CFieldObject_CAST(op);
     if (inst == NULL) {
-        return Py_NewRef(self);
+        return Ty_NewRef(self);
     }
-    ctypes_state *st = get_module_state_by_class(Py_TYPE(self));
+    ctypes_state *st = get_module_state_by_class(Ty_TYPE(self));
     if (!CDataObject_Check(st, inst)) {
-        PyErr_SetString(PyExc_TypeError,
+        TyErr_SetString(TyExc_TypeError,
                         "not a ctype instance");
         return NULL;
     }
     src = _CDataObject_CAST(inst);
-    PyObject *res;
-    Py_BEGIN_CRITICAL_SECTION(inst);
+    TyObject *res;
+    Ty_BEGIN_CRITICAL_SECTION(inst);
     res = PyCData_get(st, self->proto, self->getfunc, inst,
                        self->index, _pack_legacy_size(self),
                        src->b_ptr + self->byte_offset);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
     return res;
 }
 
-static PyObject *
-PyCField_get_legacy_size(PyObject *self, void *Py_UNUSED(closure))
+static TyObject *
+PyCField_get_legacy_size(TyObject *self, void *Ty_UNUSED(closure))
 {
     CFieldObject *field = _CFieldObject_CAST(self);
-    return PyLong_FromSsize_t(_pack_legacy_size(field));
+    return TyLong_FromSsize_t(_pack_legacy_size(field));
 }
 
-static PyObject *
-PyCField_get_bit_size(PyObject *self, void *Py_UNUSED(closure))
+static TyObject *
+PyCField_get_bit_size(TyObject *self, void *Ty_UNUSED(closure))
 {
     CFieldObject *field = _CFieldObject_CAST(self);
     if (field->bitfield_size) {
-        return PyLong_FromSsize_t(field->bitfield_size);
+        return TyLong_FromSsize_t(field->bitfield_size);
     }
     if (field->byte_size < PY_SSIZE_T_MAX / 8) {
-        return PyLong_FromSsize_t(field->byte_size * 8);
+        return TyLong_FromSsize_t(field->byte_size * 8);
     }
 
-    // If the bit size overflows Py_ssize_t, we don't try fitting it in
+    // If the bit size overflows Ty_ssize_t, we don't try fitting it in
     // a bigger C type. Use Python ints.
-    PyObject *byte_size_obj = NULL;
-    PyObject *eight = NULL;
-    PyObject *result = NULL;
+    TyObject *byte_size_obj = NULL;
+    TyObject *eight = NULL;
+    TyObject *result = NULL;
 
-    byte_size_obj = PyLong_FromSsize_t(field->byte_size);
+    byte_size_obj = TyLong_FromSsize_t(field->byte_size);
     if (!byte_size_obj) {
         goto finally;
     }
-    eight = PyLong_FromLong(8);
+    eight = TyLong_FromLong(8);
     if (!eight) {
         goto finally;
     }
     result = PyNumber_Multiply(byte_size_obj, eight);
 finally:
-    Py_XDECREF(byte_size_obj);
-    Py_XDECREF(eight);
+    Ty_XDECREF(byte_size_obj);
+    Ty_XDECREF(eight);
     return result;
 }
 
-static PyObject *
-PyCField_is_bitfield(PyObject *self, void *Py_UNUSED(closure))
+static TyObject *
+PyCField_is_bitfield(TyObject *self, void *Ty_UNUSED(closure))
 {
-    return PyBool_FromLong(_CFieldObject_CAST(self)->bitfield_size);
+    return TyBool_FromLong(_CFieldObject_CAST(self)->bitfield_size);
 }
 
-static PyObject *
-PyCField_is_anonymous(PyObject *self, void *Py_UNUSED(closure))
+static TyObject *
+PyCField_is_anonymous(TyObject *self, void *Ty_UNUSED(closure))
 {
-    return PyBool_FromLong(_CFieldObject_CAST(self)->anonymous);
+    return TyBool_FromLong(_CFieldObject_CAST(self)->anonymous);
 }
 
-static PyGetSetDef PyCField_getset[] = {
+static TyGetSetDef PyCField_getset[] = {
     { "size", PyCField_get_legacy_size, NULL,
         PyDoc_STR("size in bytes of this field. For bitfields, this is a "
                   "legacy packed value; use byte_size instead") },
@@ -365,88 +365,88 @@ static PyGetSetDef PyCField_getset[] = {
     { NULL },
 };
 
-static PyMemberDef PyCField_members[] = {
+static TyMemberDef PyCField_members[] = {
     { "name",
-        .type = Py_T_OBJECT_EX,
+        .type = Ty_T_OBJECT_EX,
         .offset = offsetof(CFieldObject, name),
-        .flags = Py_READONLY,
+        .flags = Ty_READONLY,
         .doc = PyDoc_STR("name of this field") },
     { "type",
-        .type = Py_T_OBJECT_EX,
+        .type = Ty_T_OBJECT_EX,
         .offset = offsetof(CFieldObject, proto),
-        .flags = Py_READONLY,
+        .flags = Ty_READONLY,
         .doc = PyDoc_STR("type of this field") },
     { "offset",
-        .type = Py_T_PYSSIZET,
+        .type = Ty_T_PYSSIZET,
         .offset = offsetof(CFieldObject, byte_offset),
-        .flags = Py_READONLY,
+        .flags = Ty_READONLY,
         .doc = PyDoc_STR(
             "offset in bytes of this field (same as byte_offset)") },
     { "byte_offset",
-        .type = Py_T_PYSSIZET,
+        .type = Ty_T_PYSSIZET,
         .offset = offsetof(CFieldObject, byte_offset),
-        .flags = Py_READONLY,
+        .flags = Ty_READONLY,
         .doc = PyDoc_STR("offset in bytes of this field. "
                          "For bitfields: excludes bit_offset.") },
     { "byte_size",
-        .type = Py_T_PYSSIZET,
+        .type = Ty_T_PYSSIZET,
         .offset = offsetof(CFieldObject, byte_size),
-        .flags = Py_READONLY,
+        .flags = Ty_READONLY,
         .doc = PyDoc_STR("size of this field in bytes") },
     { "bit_offset",
-        .type = Py_T_UBYTE,
+        .type = Ty_T_UBYTE,
         .offset = offsetof(CFieldObject, bit_offset),
-        .flags = Py_READONLY,
+        .flags = Ty_READONLY,
         .doc = PyDoc_STR("additional offset in bits (relative to byte_offset);"
                          " zero for non-bitfields") },
     { NULL },
 };
 
 static int
-PyCField_traverse(PyObject *op, visitproc visit, void *arg)
+PyCField_traverse(TyObject *op, visitproc visit, void *arg)
 {
     CFieldObject *self = _CFieldObject_CAST(op);
-    Py_VISIT(Py_TYPE(self));
-    Py_VISIT(self->proto);
+    Ty_VISIT(Ty_TYPE(self));
+    Ty_VISIT(self->proto);
     return 0;
 }
 
 static int
-PyCField_clear(PyObject *op)
+PyCField_clear(TyObject *op)
 {
     CFieldObject *self = _CFieldObject_CAST(op);
-    Py_CLEAR(self->proto);
-    Py_CLEAR(self->name);
+    Ty_CLEAR(self->proto);
+    Ty_CLEAR(self->name);
     return 0;
 }
 
 static void
-PyCField_dealloc(PyObject *self)
+PyCField_dealloc(TyObject *self)
 {
-    PyTypeObject *tp = Py_TYPE(self);
+    TyTypeObject *tp = Ty_TYPE(self);
     PyObject_GC_UnTrack(self);
     (void)PyCField_clear(self);
-    Py_TYPE(self)->tp_free(self);
-    Py_DECREF(tp);
+    Ty_TYPE(self)->tp_free(self);
+    Ty_DECREF(tp);
 }
 
-static PyObject *
-PyCField_repr(PyObject *self)
+static TyObject *
+PyCField_repr(TyObject *self)
 {
     CFieldObject *field = _CFieldObject_CAST(self);
-    PyObject *result;
-    const char *tp_name = ((PyTypeObject *)field->proto)->tp_name;
+    TyObject *result;
+    const char *tp_name = ((TyTypeObject *)field->proto)->tp_name;
 
     if (field->bitfield_size) {
-        result = PyUnicode_FromFormat(
+        result = TyUnicode_FromFormat(
             "<%T %R type=%s, ofs=%zd, bit_size=%zd, bit_offset=%zd>",
             self,
             field->name, tp_name, field->byte_offset,
-            (Py_ssize_t)field->bitfield_size,
-            (Py_ssize_t)field->bit_offset);
+            (Ty_ssize_t)field->bitfield_size,
+            (Ty_ssize_t)field->bit_offset);
     }
     else {
-        result = PyUnicode_FromFormat(
+        result = TyUnicode_FromFormat(
             "<%T %R type=%s, ofs=%zd, size=%zd>",
             self,
             field->name, tp_name, field->byte_offset,
@@ -455,25 +455,25 @@ PyCField_repr(PyObject *self)
     return result;
 }
 
-static PyType_Slot cfield_slots[] = {
-    {Py_tp_new, PyCField_new},
-    {Py_tp_dealloc, PyCField_dealloc},
-    {Py_tp_repr, PyCField_repr},
-    {Py_tp_doc, (void *)PyDoc_STR("Structure/Union member")},
-    {Py_tp_traverse, PyCField_traverse},
-    {Py_tp_clear, PyCField_clear},
-    {Py_tp_getset, PyCField_getset},
-    {Py_tp_members, PyCField_members},
-    {Py_tp_descr_get, PyCField_get},
-    {Py_tp_descr_set, PyCField_set},
+static TyType_Slot cfield_slots[] = {
+    {Ty_tp_new, PyCField_new},
+    {Ty_tp_dealloc, PyCField_dealloc},
+    {Ty_tp_repr, PyCField_repr},
+    {Ty_tp_doc, (void *)PyDoc_STR("Structure/Union member")},
+    {Ty_tp_traverse, PyCField_traverse},
+    {Ty_tp_clear, PyCField_clear},
+    {Ty_tp_getset, PyCField_getset},
+    {Ty_tp_members, PyCField_members},
+    {Ty_tp_descr_get, PyCField_get},
+    {Ty_tp_descr_set, PyCField_set},
     {0, NULL},
 };
 
-PyType_Spec cfield_spec = {
+TyType_Spec cfield_spec = {
     .name = "ctypes.CField",
     .basicsize = sizeof(CFieldObject),
-    .flags = (Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
-              Py_TPFLAGS_IMMUTABLETYPE),
+    .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC |
+              Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = cfield_slots,
 };
 
@@ -484,11 +484,11 @@ PyType_Spec cfield_spec = {
 
 /* how to decode the size field, for integer get/set functions */
 static inline
-Py_ssize_t LOW_BIT(Py_ssize_t offset) {
+Ty_ssize_t LOW_BIT(Ty_ssize_t offset) {
     return offset & 0xFFFF;
 }
 static inline
-Py_ssize_t NUM_BITS(Py_ssize_t bitsize) {
+Ty_ssize_t NUM_BITS(Ty_ssize_t bitsize) {
     return bitsize >> 16;
 }
 
@@ -516,18 +516,18 @@ Py_ssize_t NUM_BITS(Py_ssize_t bitsize) {
  * instance inserts this object into its 'b_objects' list.
  *
  * For simple Python types like integers or characters, there is nothing that
- * has to been kept alive, so Py_None is returned in these cases.  But this
+ * has to been kept alive, so Ty_None is returned in these cases.  But this
  * makes inspecting the 'b_objects' list, which is accessible from Python for
  * debugging, less useful.
  *
  * So, defining the _CTYPES_DEBUG_KEEP symbol returns the original value
- * instead of Py_None.
+ * instead of Ty_None.
  */
 
 #ifdef _CTYPES_DEBUG_KEEP
-#define _RET(x) Py_INCREF(x); return x
+#define _RET(x) Ty_INCREF(x); return x
 #else
-#define _RET(X) Py_RETURN_NONE
+#define _RET(X) Ty_RETURN_NONE
 #endif
 
 /*****************************************************************
@@ -538,22 +538,22 @@ Py_ssize_t NUM_BITS(Py_ssize_t bitsize) {
  */
 
 #define FIXINT_GETSET(TAG, CTYPE, NBITS, PYAPI_FROMFUNC)                      \
-    static PyObject *                                                         \
-    TAG ## _set(void *ptr, PyObject *value, Py_ssize_t size_arg)              \
+    static TyObject *                                                         \
+    TAG ## _set(void *ptr, TyObject *value, Ty_ssize_t size_arg)              \
     {                                                                         \
         assert(NUM_BITS(size_arg) || (size_arg == (NBITS) / 8));              \
         CTYPE val;                                                            \
-        if (PyLong_Check(value)                                               \
+        if (TyLong_Check(value)                                               \
             && PyUnstable_Long_IsCompact((PyLongObject *)value))              \
         {                                                                     \
             val = (CTYPE)PyUnstable_Long_CompactValue(                        \
                       (PyLongObject *)value);                                 \
         }                                                                     \
         else {                                                                \
-            Py_ssize_t res = PyLong_AsNativeBytes(                            \
+            Ty_ssize_t res = TyLong_AsNativeBytes(                            \
                 value, &val, (NBITS) / 8,                                     \
-                Py_ASNATIVEBYTES_NATIVE_ENDIAN                                \
-                | Py_ASNATIVEBYTES_ALLOW_INDEX);                              \
+                Ty_ASNATIVEBYTES_NATIVE_ENDIAN                                \
+                | Ty_ASNATIVEBYTES_ALLOW_INDEX);                              \
             if (res < 0) {                                                    \
                 return NULL;                                                  \
             }                                                                 \
@@ -565,8 +565,8 @@ Py_ssize_t NUM_BITS(Py_ssize_t bitsize) {
         _RET(value);                                                          \
     }                                                                         \
                                                                               \
-    static PyObject *                                                         \
-    TAG ## _get(void *ptr, Py_ssize_t size_arg)                               \
+    static TyObject *                                                         \
+    TAG ## _get(void *ptr, Ty_ssize_t size_arg)                               \
     {                                                                         \
         assert(NUM_BITS(size_arg) || (size_arg == (NBITS) / 8));              \
         CTYPE val;                                                            \
@@ -579,15 +579,15 @@ Py_ssize_t NUM_BITS(Py_ssize_t bitsize) {
 /* Another macro for byte-swapped variants (e.g. `i8_set_sw`/`i8_get_sw`) */
 
 #define FIXINT_GETSET_SW(TAG, CTYPE, NBITS, PYAPI_FROMFUNC, PY_SWAPFUNC)      \
-    static PyObject *                                                         \
-    TAG ## _set_sw(void *ptr, PyObject *value, Py_ssize_t size_arg)           \
+    static TyObject *                                                         \
+    TAG ## _set_sw(void *ptr, TyObject *value, Ty_ssize_t size_arg)           \
     {                                                                         \
         CTYPE val;                                                            \
-        PyObject *res = TAG ## _set(&val, value, (NBITS) / 8);                \
+        TyObject *res = TAG ## _set(&val, value, (NBITS) / 8);                \
         if (res == NULL) {                                                    \
             return NULL;                                                      \
         }                                                                     \
-        Py_DECREF(res);                                                       \
+        Ty_DECREF(res);                                                       \
         CTYPE field;                                                          \
         memcpy(&field, ptr, sizeof(field));                                   \
         field = PY_SWAPFUNC(field);                                           \
@@ -597,8 +597,8 @@ Py_ssize_t NUM_BITS(Py_ssize_t bitsize) {
         _RET(value);                                                          \
     }                                                                         \
                                                                               \
-    static PyObject *                                                         \
-    TAG ## _get_sw(void *ptr, Py_ssize_t size_arg)                            \
+    static TyObject *                                                         \
+    TAG ## _get_sw(void *ptr, Ty_ssize_t size_arg)                            \
     {                                                                         \
         assert(NUM_BITS(size_arg) || (size_arg == (NBITS) / 8));              \
         CTYPE val;                                                            \
@@ -624,27 +624,27 @@ for nbits in 8, 16, 32, 64:
             f'{sgn}{nbits}',
             f'{u}int{nbits}_t',
             f'{nbits}',
-            f'PyLong_From{U}Int{apibits}',
+            f'TyLong_From{U}Int{apibits}',
         ]
         print(f'FIXINT_GETSET({", ".join(parts)})')
         if nbits > 8:
-            parts.append(f'_Py_bswap{nbits}')
+            parts.append(f'_Ty_bswap{nbits}')
             print(f'FIXINT_GETSET_SW({", ".join(parts)})')
 [python start generated code]*/
-FIXINT_GETSET(i8, int8_t, 8, PyLong_FromInt32)
-FIXINT_GETSET(u8, uint8_t, 8, PyLong_FromUInt32)
-FIXINT_GETSET(i16, int16_t, 16, PyLong_FromInt32)
-FIXINT_GETSET_SW(i16, int16_t, 16, PyLong_FromInt32, _Py_bswap16)
-FIXINT_GETSET(u16, uint16_t, 16, PyLong_FromUInt32)
-FIXINT_GETSET_SW(u16, uint16_t, 16, PyLong_FromUInt32, _Py_bswap16)
-FIXINT_GETSET(i32, int32_t, 32, PyLong_FromInt32)
-FIXINT_GETSET_SW(i32, int32_t, 32, PyLong_FromInt32, _Py_bswap32)
-FIXINT_GETSET(u32, uint32_t, 32, PyLong_FromUInt32)
-FIXINT_GETSET_SW(u32, uint32_t, 32, PyLong_FromUInt32, _Py_bswap32)
-FIXINT_GETSET(i64, int64_t, 64, PyLong_FromInt64)
-FIXINT_GETSET_SW(i64, int64_t, 64, PyLong_FromInt64, _Py_bswap64)
-FIXINT_GETSET(u64, uint64_t, 64, PyLong_FromUInt64)
-FIXINT_GETSET_SW(u64, uint64_t, 64, PyLong_FromUInt64, _Py_bswap64)
+FIXINT_GETSET(i8, int8_t, 8, TyLong_FromInt32)
+FIXINT_GETSET(u8, uint8_t, 8, TyLong_FromUInt32)
+FIXINT_GETSET(i16, int16_t, 16, TyLong_FromInt32)
+FIXINT_GETSET_SW(i16, int16_t, 16, TyLong_FromInt32, _Ty_bswap16)
+FIXINT_GETSET(u16, uint16_t, 16, TyLong_FromUInt32)
+FIXINT_GETSET_SW(u16, uint16_t, 16, TyLong_FromUInt32, _Ty_bswap16)
+FIXINT_GETSET(i32, int32_t, 32, TyLong_FromInt32)
+FIXINT_GETSET_SW(i32, int32_t, 32, TyLong_FromInt32, _Ty_bswap32)
+FIXINT_GETSET(u32, uint32_t, 32, TyLong_FromUInt32)
+FIXINT_GETSET_SW(u32, uint32_t, 32, TyLong_FromUInt32, _Ty_bswap32)
+FIXINT_GETSET(i64, int64_t, 64, TyLong_FromInt64)
+FIXINT_GETSET_SW(i64, int64_t, 64, TyLong_FromInt64, _Ty_bswap64)
+FIXINT_GETSET(u64, uint64_t, 64, TyLong_FromUInt64)
+FIXINT_GETSET_SW(u64, uint64_t, 64, TyLong_FromUInt64, _Ty_bswap64)
 /*[python end generated code: output=3d60c96fa58e07d5 input=0b7e166f2ea18e70]*/
 
 // For one-byte types, swapped variants are the same as native
@@ -666,8 +666,8 @@ FIXINT_GETSET_SW(u64, uint64_t, 64, PyLong_FromUInt64, _Py_bswap64)
 #define VARIANT_TRUE 0xFFFF
 #endif
 /* v: short BOOL - VARIANT_BOOL */
-static PyObject *
-v_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+v_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(short int)));
     switch (PyObject_IsTrue(value)) {
@@ -682,16 +682,16 @@ v_set(void *ptr, PyObject *value, Py_ssize_t size)
     }
 }
 
-static PyObject *
-v_get(void *ptr, Py_ssize_t size)
+static TyObject *
+v_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(short int)));
-    return PyBool_FromLong((long)*(short int *)ptr);
+    return TyBool_FromLong((long)*(short int *)ptr);
 }
 
 /* bool ('?'): bool (i.e. _Bool) */
-static PyObject *
-bool_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+bool_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(bool)));
     switch (PyObject_IsTrue(value)) {
@@ -706,60 +706,60 @@ bool_set(void *ptr, PyObject *value, Py_ssize_t size)
     }
 }
 
-static PyObject *
-bool_get(void *ptr, Py_ssize_t size)
+static TyObject *
+bool_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(bool)));
-    return PyBool_FromLong((long)*(bool *)ptr);
+    return TyBool_FromLong((long)*(bool *)ptr);
 }
 
 /* g: long double */
-static PyObject *
-g_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+g_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(long double)));
     long double x;
 
-    x = PyFloat_AsDouble(value);
-    if (x == -1 && PyErr_Occurred())
+    x = TyFloat_AsDouble(value);
+    if (x == -1 && TyErr_Occurred())
         return NULL;
     memcpy(ptr, &x, sizeof(long double));
     _RET(value);
 }
 
-static PyObject *
-g_get(void *ptr, Py_ssize_t size)
+static TyObject *
+g_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(long double)));
     long double val;
     memcpy(&val, ptr, sizeof(long double));
-    return PyFloat_FromDouble(val);
+    return TyFloat_FromDouble(val);
 }
 
 /* d: double */
-static PyObject *
-d_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+d_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(double)));
     double x;
 
-    x = PyFloat_AsDouble(value);
-    if (x == -1 && PyErr_Occurred())
+    x = TyFloat_AsDouble(value);
+    if (x == -1 && TyErr_Occurred())
         return NULL;
     memcpy(ptr, &x, sizeof(double));
     _RET(value);
 }
 
-static PyObject *
-d_get(void *ptr, Py_ssize_t size)
+static TyObject *
+d_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(double)));
     double val;
     memcpy(&val, ptr, sizeof(val));
-    return PyFloat_FromDouble(val);
+    return TyFloat_FromDouble(val);
 }
 
-#if defined(_Py_FFI_SUPPORT_C_COMPLEX)
+#if defined(_Ty_FFI_SUPPORT_C_COMPLEX)
 
 /* We don't use _Complex types here, using arrays instead, as the C11+
    standard says: "Each complex type has the same representation and alignment
@@ -768,13 +768,13 @@ d_get(void *ptr, Py_ssize_t size)
    the second element to the imaginary part, of the complex number." */
 
 /* D: double complex */
-static PyObject *
-D_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+D_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == 2*sizeof(double)));
-    Py_complex c = PyComplex_AsCComplex(value);
+    Ty_complex c = TyComplex_AsCComplex(value);
 
-    if (c.real == -1 && PyErr_Occurred()) {
+    if (c.real == -1 && TyErr_Occurred()) {
         return NULL;
     }
     double x[2] = {c.real, c.imag};
@@ -782,24 +782,24 @@ D_set(void *ptr, PyObject *value, Py_ssize_t size)
     _RET(value);
 }
 
-static PyObject *
-D_get(void *ptr, Py_ssize_t size)
+static TyObject *
+D_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == 2*sizeof(double)));
     double x[2];
 
     memcpy(&x, ptr, sizeof(x));
-    return PyComplex_FromDoubles(x[0], x[1]);
+    return TyComplex_FromDoubles(x[0], x[1]);
 }
 
 /* F: float complex */
-static PyObject *
-F_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+F_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == 2*sizeof(float)));
-    Py_complex c = PyComplex_AsCComplex(value);
+    Ty_complex c = TyComplex_AsCComplex(value);
 
-    if (c.real == -1 && PyErr_Occurred()) {
+    if (c.real == -1 && TyErr_Occurred()) {
         return NULL;
     }
     float x[2] = {(float)c.real, (float)c.imag};
@@ -807,24 +807,24 @@ F_set(void *ptr, PyObject *value, Py_ssize_t size)
     _RET(value);
 }
 
-static PyObject *
-F_get(void *ptr, Py_ssize_t size)
+static TyObject *
+F_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == 2*sizeof(float)));
     float x[2];
 
     memcpy(&x, ptr, sizeof(x));
-    return PyComplex_FromDoubles(x[0], x[1]);
+    return TyComplex_FromDoubles(x[0], x[1]);
 }
 
 /* G: long double complex */
-static PyObject *
-G_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+G_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == 2*sizeof(long double)));
-    Py_complex c = PyComplex_AsCComplex(value);
+    Ty_complex c = TyComplex_AsCComplex(value);
 
-    if (c.real == -1 && PyErr_Occurred()) {
+    if (c.real == -1 && TyErr_Occurred()) {
         return NULL;
     }
     long double x[2] = {c.real, c.imag};
@@ -832,98 +832,98 @@ G_set(void *ptr, PyObject *value, Py_ssize_t size)
     _RET(value);
 }
 
-static PyObject *
-G_get(void *ptr, Py_ssize_t size)
+static TyObject *
+G_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == 2*sizeof(long double)));
     long double x[2];
 
     memcpy(&x, ptr, sizeof(x));
-    return PyComplex_FromDoubles((double)x[0], (double)x[1]);
+    return TyComplex_FromDoubles((double)x[0], (double)x[1]);
 }
 #endif
 
 /* d: double */
-static PyObject *
-d_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+d_set_sw(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(double)));
     double x;
 
-    x = PyFloat_AsDouble(value);
-    if (x == -1 && PyErr_Occurred())
+    x = TyFloat_AsDouble(value);
+    if (x == -1 && TyErr_Occurred())
         return NULL;
 #ifdef WORDS_BIGENDIAN
-    if (PyFloat_Pack8(x, ptr, 1))
+    if (TyFloat_Pack8(x, ptr, 1))
         return NULL;
 #else
-    if (PyFloat_Pack8(x, ptr, 0))
+    if (TyFloat_Pack8(x, ptr, 0))
         return NULL;
 #endif
     _RET(value);
 }
 
-static PyObject *
-d_get_sw(void *ptr, Py_ssize_t size)
+static TyObject *
+d_get_sw(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(double)));
 #ifdef WORDS_BIGENDIAN
-    return PyFloat_FromDouble(PyFloat_Unpack8(ptr, 1));
+    return TyFloat_FromDouble(TyFloat_Unpack8(ptr, 1));
 #else
-    return PyFloat_FromDouble(PyFloat_Unpack8(ptr, 0));
+    return TyFloat_FromDouble(TyFloat_Unpack8(ptr, 0));
 #endif
 }
 
 /* f: float */
-static PyObject *
-f_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+f_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(float)));
     float x;
 
-    x = (float)PyFloat_AsDouble(value);
-    if (x == -1 && PyErr_Occurred())
+    x = (float)TyFloat_AsDouble(value);
+    if (x == -1 && TyErr_Occurred())
         return NULL;
     memcpy(ptr, &x, sizeof(x));
     _RET(value);
 }
 
-static PyObject *
-f_get(void *ptr, Py_ssize_t size)
+static TyObject *
+f_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(float)));
     float val;
     memcpy(&val, ptr, sizeof(val));
-    return PyFloat_FromDouble(val);
+    return TyFloat_FromDouble(val);
 }
 
-static PyObject *
-f_set_sw(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+f_set_sw(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(float)));
     float x;
 
-    x = (float)PyFloat_AsDouble(value);
-    if (x == -1 && PyErr_Occurred())
+    x = (float)TyFloat_AsDouble(value);
+    if (x == -1 && TyErr_Occurred())
         return NULL;
 #ifdef WORDS_BIGENDIAN
-    if (PyFloat_Pack4(x, ptr, 1))
+    if (TyFloat_Pack4(x, ptr, 1))
         return NULL;
 #else
-    if (PyFloat_Pack4(x, ptr, 0))
+    if (TyFloat_Pack4(x, ptr, 0))
         return NULL;
 #endif
     _RET(value);
 }
 
-static PyObject *
-f_get_sw(void *ptr, Py_ssize_t size)
+static TyObject *
+f_get_sw(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(float)));
 #ifdef WORDS_BIGENDIAN
-    return PyFloat_FromDouble(PyFloat_Unpack4(ptr, 1));
+    return TyFloat_FromDouble(TyFloat_Unpack4(ptr, 1));
 #else
-    return PyFloat_FromDouble(PyFloat_Unpack4(ptr, 0));
+    return TyFloat_FromDouble(TyFloat_Unpack4(ptr, 0));
 #endif
 }
 
@@ -931,79 +931,79 @@ f_get_sw(void *ptr, Py_ssize_t size)
 /*
   py_object refcounts:
 
-  1. If we have a py_object instance, O_get must Py_INCREF the returned
+  1. If we have a py_object instance, O_get must Ty_INCREF the returned
   object, of course.  If O_get is called from a function result, no py_object
-  instance is created - so callproc.c::GetResult has to call Py_DECREF.
+  instance is created - so callproc.c::GetResult has to call Ty_DECREF.
 
   2. The memory block in py_object owns a refcount.  So, py_object must call
-  Py_DECREF on destruction.  Maybe only when b_needsfree is non-zero.
+  Ty_DECREF on destruction.  Maybe only when b_needsfree is non-zero.
 */
-static PyObject *
-O_get(void *ptr, Py_ssize_t size)
+static TyObject *
+O_get(void *ptr, Ty_ssize_t size)
 {
-    assert(NUM_BITS(size) || (size == sizeof(PyObject *)));
-    PyObject *ob = *(PyObject **)ptr;
+    assert(NUM_BITS(size) || (size == sizeof(TyObject *)));
+    TyObject *ob = *(TyObject **)ptr;
     if (ob == NULL) {
-        if (!PyErr_Occurred())
+        if (!TyErr_Occurred())
             /* Set an error if not yet set */
-            PyErr_SetString(PyExc_ValueError,
-                            "PyObject is NULL");
+            TyErr_SetString(TyExc_ValueError,
+                            "TyObject is NULL");
         return NULL;
     }
-    return Py_NewRef(ob);
+    return Ty_NewRef(ob);
 }
 
-static PyObject *
-O_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+O_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
-    assert(NUM_BITS(size) || (size == sizeof(PyObject *)));
+    assert(NUM_BITS(size) || (size == sizeof(TyObject *)));
     /* Hm, does the memory block need it's own refcount or not? */
-    *(PyObject **)ptr = value;
-    return Py_NewRef(value);
+    *(TyObject **)ptr = value;
+    return Ty_NewRef(value);
 }
 
 
 /* c: a single byte-character */
-static PyObject *
-c_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+c_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(char)));
-    if (PyBytes_Check(value)) {
-        if (PyBytes_GET_SIZE(value) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(value)) {
+        if (TyBytes_GET_SIZE(value) != 1) {
+            TyErr_Format(TyExc_TypeError,
                         "one character bytes, bytearray, or an integer "
                         "in range(256) expected, not bytes of length %zd",
-                        PyBytes_GET_SIZE(value));
+                        TyBytes_GET_SIZE(value));
             return NULL;
         }
-        *(char *)ptr = PyBytes_AS_STRING(value)[0];
+        *(char *)ptr = TyBytes_AS_STRING(value)[0];
         _RET(value);
     }
-    if (PyByteArray_Check(value)) {
-        if (PyByteArray_GET_SIZE(value) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyByteArray_Check(value)) {
+        if (TyByteArray_GET_SIZE(value) != 1) {
+            TyErr_Format(TyExc_TypeError,
                         "one character bytes, bytearray, or an integer "
                         "in range(256) expected, not bytearray of length %zd",
-                        PyByteArray_GET_SIZE(value));
+                        TyByteArray_GET_SIZE(value));
             return NULL;
         }
-        *(char *)ptr = PyByteArray_AS_STRING(value)[0];
+        *(char *)ptr = TyByteArray_AS_STRING(value)[0];
         _RET(value);
     }
-    if (PyLong_Check(value)) {
+    if (TyLong_Check(value)) {
         int overflow;
-        long longval = PyLong_AsLongAndOverflow(value, &overflow);
-        if (longval == -1 && PyErr_Occurred()) {
+        long longval = TyLong_AsLongAndOverflow(value, &overflow);
+        if (longval == -1 && TyErr_Occurred()) {
             return NULL;
         }
         if (overflow || longval < 0 || longval >= 256) {
-            PyErr_SetString(PyExc_TypeError, "integer not in range(256)");
+            TyErr_SetString(TyExc_TypeError, "integer not in range(256)");
             return NULL;
         }
         *(char *)ptr = (char)longval;
         _RET(value);
     }
-    PyErr_Format(PyExc_TypeError,
+    TyErr_Format(TyExc_TypeError,
                  "one character bytes, bytearray, or an integer "
                  "in range(256) expected, not %T",
                  value);
@@ -1011,36 +1011,36 @@ c_set(void *ptr, PyObject *value, Py_ssize_t size)
 }
 
 
-static PyObject *
-c_get(void *ptr, Py_ssize_t size)
+static TyObject *
+c_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(char)));
-    return PyBytes_FromStringAndSize((char *)ptr, 1);
+    return TyBytes_FromStringAndSize((char *)ptr, 1);
 }
 
 /* u: a single wchar_t character */
-static PyObject *
-u_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+u_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(wchar_t)));
-    Py_ssize_t len;
+    Ty_ssize_t len;
     wchar_t chars[2];
-    if (!PyUnicode_Check(value)) {
-        PyErr_Format(PyExc_TypeError,
+    if (!TyUnicode_Check(value)) {
+        TyErr_Format(TyExc_TypeError,
                      "a unicode character expected, not instance of %T",
                      value);
         return NULL;
     }
 
-    len = PyUnicode_AsWideChar(value, chars, 2);
+    len = TyUnicode_AsWideChar(value, chars, 2);
     if (len != 1) {
-        if (PyUnicode_GET_LENGTH(value) != 1) {
-            PyErr_Format(PyExc_TypeError,
+        if (TyUnicode_GET_LENGTH(value) != 1) {
+            TyErr_Format(TyExc_TypeError,
                          "a unicode character expected, not a string of length %zd",
-                         PyUnicode_GET_LENGTH(value));
+                         TyUnicode_GET_LENGTH(value));
         }
         else {
-            PyErr_Format(PyExc_TypeError,
+            TyErr_Format(TyExc_TypeError,
                          "the string %A cannot be converted to a single wchar_t character",
                          value);
         }
@@ -1053,18 +1053,18 @@ u_set(void *ptr, PyObject *value, Py_ssize_t size)
 }
 
 
-static PyObject *
-u_get(void *ptr, Py_ssize_t size)
+static TyObject *
+u_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(wchar_t)));
-    return PyUnicode_FromWideChar((wchar_t *)ptr, 1);
+    return TyUnicode_FromWideChar((wchar_t *)ptr, 1);
 }
 
 /* U: a wchar_t* unicode string */
-static PyObject *
-U_get(void *ptr, Py_ssize_t size)
+static TyObject *
+U_get(void *ptr, Ty_ssize_t size)
 {
-    Py_ssize_t len;
+    Ty_ssize_t len;
     wchar_t *p;
 
     size /= sizeof(wchar_t); /* we count character units here, not bytes */
@@ -1081,49 +1081,49 @@ U_get(void *ptr, Py_ssize_t size)
             break;
     }
 
-    return PyUnicode_FromWideChar((wchar_t *)ptr, len);
+    return TyUnicode_FromWideChar((wchar_t *)ptr, len);
 }
 
-static PyObject *
-U_set(void *ptr, PyObject *value, Py_ssize_t length)
+static TyObject *
+U_set(void *ptr, TyObject *value, Ty_ssize_t length)
 {
     /* It's easier to calculate in characters than in bytes */
     length /= sizeof(wchar_t);
 
-    if (!PyUnicode_Check(value)) {
-        PyErr_Format(PyExc_TypeError,
+    if (!TyUnicode_Check(value)) {
+        TyErr_Format(TyExc_TypeError,
                         "unicode string expected instead of %s instance",
-                        Py_TYPE(value)->tp_name);
+                        Ty_TYPE(value)->tp_name);
         return NULL;
     }
 
-    Py_ssize_t size = PyUnicode_AsWideChar(value, NULL, 0);
+    Ty_ssize_t size = TyUnicode_AsWideChar(value, NULL, 0);
     if (size < 0) {
         return NULL;
     }
-    // PyUnicode_AsWideChar() returns number of wchars including trailing null byte,
+    // TyUnicode_AsWideChar() returns number of wchars including trailing null byte,
     // when it is called with NULL.
     size--;
     assert(size >= 0);
     if (size > length) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "string too long (%zd, maximum length %zd)",
                      size, length);
         return NULL;
     }
-    if (PyUnicode_AsWideChar(value, (wchar_t *)ptr, length) == -1) {
+    if (TyUnicode_AsWideChar(value, (wchar_t *)ptr, length) == -1) {
         return NULL;
     }
 
-    return Py_NewRef(value);
+    return Ty_NewRef(value);
 }
 
 
 /* s: a byte string */
-static PyObject *
-s_get(void *ptr, Py_ssize_t size)
+static TyObject *
+s_get(void *ptr, Ty_ssize_t size)
 {
-    Py_ssize_t i;
+    Ty_ssize_t i;
     char *p;
 
     p = (char *)ptr;
@@ -1132,23 +1132,23 @@ s_get(void *ptr, Py_ssize_t size)
             break;
     }
 
-    return PyBytes_FromStringAndSize((char *)ptr, (Py_ssize_t)i);
+    return TyBytes_FromStringAndSize((char *)ptr, (Ty_ssize_t)i);
 }
 
-static PyObject *
-s_set(void *ptr, PyObject *value, Py_ssize_t length)
+static TyObject *
+s_set(void *ptr, TyObject *value, Ty_ssize_t length)
 {
     const char *data;
-    Py_ssize_t size;
+    Ty_ssize_t size;
 
-    if(!PyBytes_Check(value)) {
-        PyErr_Format(PyExc_TypeError,
+    if(!TyBytes_Check(value)) {
+        TyErr_Format(TyExc_TypeError,
                      "expected bytes, %s found",
-                     Py_TYPE(value)->tp_name);
+                     Ty_TYPE(value)->tp_name);
         return NULL;
     }
 
-    data = PyBytes_AS_STRING(value);
+    data = TyBytes_AS_STRING(value);
     // bpo-39593: Use strlen() to truncate the string at the first null character.
     size = strlen(data);
 
@@ -1158,7 +1158,7 @@ s_set(void *ptr, PyObject *value, Py_ssize_t length)
          */
         ++size;
     } else if (size > length) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "bytes too long (%zd, maximum length %zd)",
                      size, length);
         return NULL;
@@ -1170,127 +1170,127 @@ s_set(void *ptr, PyObject *value, Py_ssize_t length)
 }
 
 /* z: a byte string, can be set from integer pointer */
-static PyObject *
-z_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+z_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
-    if (value == Py_None) {
+    if (value == Ty_None) {
         *(char **)ptr = NULL;
-        return Py_NewRef(value);
+        return Ty_NewRef(value);
     }
-    if (PyBytes_Check(value)) {
-        *(const char **)ptr = PyBytes_AsString(value);
-        return Py_NewRef(value);
-    } else if (PyLong_Check(value)) {
+    if (TyBytes_Check(value)) {
+        *(const char **)ptr = TyBytes_AsString(value);
+        return Ty_NewRef(value);
+    } else if (TyLong_Check(value)) {
 #if SIZEOF_VOID_P == SIZEOF_LONG_LONG
-        *(char **)ptr = (char *)PyLong_AsUnsignedLongLongMask(value);
+        *(char **)ptr = (char *)TyLong_AsUnsignedLongLongMask(value);
 #else
-        *(char **)ptr = (char *)PyLong_AsUnsignedLongMask(value);
+        *(char **)ptr = (char *)TyLong_AsUnsignedLongMask(value);
 #endif
         _RET(value);
     }
-    PyErr_Format(PyExc_TypeError,
+    TyErr_Format(TyExc_TypeError,
                  "bytes or integer address expected instead of %s instance",
-                 Py_TYPE(value)->tp_name);
+                 Ty_TYPE(value)->tp_name);
     return NULL;
 }
 
-static PyObject *
-z_get(void *ptr, Py_ssize_t size)
+static TyObject *
+z_get(void *ptr, Ty_ssize_t size)
 {
     /* XXX What about invalid pointers ??? */
     if (*(void **)ptr) {
-        return PyBytes_FromStringAndSize(*(char **)ptr,
+        return TyBytes_FromStringAndSize(*(char **)ptr,
                                          strlen(*(char **)ptr));
     } else {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
 }
 
 /* Z: a wchar* string, can be set from integer pointer */
-static PyObject *
-Z_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+Z_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
-    PyObject *keep;
+    TyObject *keep;
     wchar_t *buffer;
-    Py_ssize_t bsize;
+    Ty_ssize_t bsize;
 
-    if (value == Py_None) {
+    if (value == Ty_None) {
         *(wchar_t **)ptr = NULL;
-        return Py_NewRef(value);
+        return Ty_NewRef(value);
     }
-    if (PyLong_Check(value)) {
+    if (TyLong_Check(value)) {
 #if SIZEOF_VOID_P == SIZEOF_LONG_LONG
-        *(wchar_t **)ptr = (wchar_t *)PyLong_AsUnsignedLongLongMask(value);
+        *(wchar_t **)ptr = (wchar_t *)TyLong_AsUnsignedLongLongMask(value);
 #else
-        *(wchar_t **)ptr = (wchar_t *)PyLong_AsUnsignedLongMask(value);
+        *(wchar_t **)ptr = (wchar_t *)TyLong_AsUnsignedLongMask(value);
 #endif
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
-    if (!PyUnicode_Check(value)) {
-        PyErr_Format(PyExc_TypeError,
+    if (!TyUnicode_Check(value)) {
+        TyErr_Format(TyExc_TypeError,
                      "unicode string or integer address expected instead of %s instance",
-                     Py_TYPE(value)->tp_name);
+                     Ty_TYPE(value)->tp_name);
         return NULL;
     }
 
     /* We must create a wchar_t* buffer from the unicode object,
        and keep it alive */
-    buffer = PyUnicode_AsWideCharString(value, &bsize);
+    buffer = TyUnicode_AsWideCharString(value, &bsize);
     if (!buffer)
         return NULL;
     keep = PyCapsule_New(buffer, CTYPES_CFIELD_CAPSULE_NAME_PYMEM, pymem_destructor);
     if (!keep) {
-        PyMem_Free(buffer);
+        TyMem_Free(buffer);
         return NULL;
     }
     *(wchar_t **)ptr = buffer;
     return keep;
 }
 
-static PyObject *
-Z_get(void *ptr, Py_ssize_t size)
+static TyObject *
+Z_get(void *ptr, Ty_ssize_t size)
 {
     wchar_t *p;
     p = *(wchar_t **)ptr;
     if (p) {
-        return PyUnicode_FromWideChar(p, wcslen(p));
+        return TyUnicode_FromWideChar(p, wcslen(p));
     } else {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
 }
 
 
 #ifdef MS_WIN32
 /* X: COM BSTR (wide-char string to be handled handled using Windows API) */
-static PyObject *
-X_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+X_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     BSTR bstr;
 
     /* convert value into a PyUnicodeObject or NULL */
-    if (Py_None == value) {
+    if (Ty_None == value) {
         value = NULL;
-    } else if (!PyUnicode_Check(value)) {
-        PyErr_Format(PyExc_TypeError,
+    } else if (!TyUnicode_Check(value)) {
+        TyErr_Format(TyExc_TypeError,
                         "unicode string expected instead of %s instance",
-                        Py_TYPE(value)->tp_name);
+                        Ty_TYPE(value)->tp_name);
         return NULL;
     }
 
     /* create a BSTR from value */
     if (value) {
-        Py_ssize_t wsize;
-        wchar_t *wvalue = PyUnicode_AsWideCharString(value, &wsize);
+        Ty_ssize_t wsize;
+        wchar_t *wvalue = TyUnicode_AsWideCharString(value, &wsize);
         if (wvalue == NULL) {
             return NULL;
         }
         if ((unsigned) wsize != wsize) {
-            PyErr_SetString(PyExc_ValueError, "String too long for BSTR");
-            PyMem_Free(wvalue);
+            TyErr_SetString(TyExc_ValueError, "String too long for BSTR");
+            TyMem_Free(wvalue);
             return NULL;
         }
         bstr = SysAllocStringLen(wvalue, (unsigned)wsize);
-        PyMem_Free(wvalue);
+        TyMem_Free(wvalue);
     } else
         bstr = NULL;
 
@@ -1306,63 +1306,63 @@ X_set(void *ptr, PyObject *value, Py_ssize_t size)
 }
 
 
-static PyObject *
-X_get(void *ptr, Py_ssize_t size)
+static TyObject *
+X_get(void *ptr, Ty_ssize_t size)
 {
     BSTR p;
     p = *(BSTR *)ptr;
     if (p)
-        return PyUnicode_FromWideChar(p, SysStringLen(p));
+        return TyUnicode_FromWideChar(p, SysStringLen(p));
     else {
         /* Hm, it seems NULL pointer and zero length string are the
            same in BSTR, see Don Box, p 81
         */
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
 }
 #endif
 
 /* P: generic pointer */
-static PyObject *
-P_set(void *ptr, PyObject *value, Py_ssize_t size)
+static TyObject *
+P_set(void *ptr, TyObject *value, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(void *)));
     void *v;
-    if (value == Py_None) {
+    if (value == Ty_None) {
         *(void **)ptr = NULL;
         _RET(value);
     }
 
-    if (!PyLong_Check(value)) {
-        PyErr_SetString(PyExc_TypeError,
+    if (!TyLong_Check(value)) {
+        TyErr_SetString(TyExc_TypeError,
                         "cannot be converted to pointer");
         return NULL;
     }
 
 #if SIZEOF_VOID_P <= SIZEOF_LONG
-    v = (void *)PyLong_AsUnsignedLongMask(value);
+    v = (void *)TyLong_AsUnsignedLongMask(value);
 #else
 #if SIZEOF_LONG_LONG < SIZEOF_VOID_P
-#   error "PyLong_AsVoidPtr: sizeof(long long) < sizeof(void*)"
+#   error "TyLong_AsVoidPtr: sizeof(long long) < sizeof(void*)"
 #endif
-    v = (void *)PyLong_AsUnsignedLongLongMask(value);
+    v = (void *)TyLong_AsUnsignedLongLongMask(value);
 #endif
 
-    if (PyErr_Occurred())
+    if (TyErr_Occurred())
         return NULL;
 
     *(void **)ptr = v;
     _RET(value);
 }
 
-static PyObject *
-P_get(void *ptr, Py_ssize_t size)
+static TyObject *
+P_get(void *ptr, Ty_ssize_t size)
 {
     assert(NUM_BITS(size) || (size == sizeof(void *)));
     if (*(void **)ptr == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
-    return PyLong_FromVoidPtr(*(void **)ptr);
+    return TyLong_FromVoidPtr(*(void **)ptr);
 }
 
 /* Table with info about all formats.
@@ -1434,7 +1434,7 @@ static struct formattable formattable;
  */
 
 static inline struct fielddesc *
-_ctypes_fixint_fielddesc(Py_ssize_t nbytes, bool is_signed)
+_ctypes_fixint_fielddesc(Ty_ssize_t nbytes, bool is_signed)
 {
 #define _PACK(NBYTES, SGN) ((NBYTES<<2) + (SGN ? 1 : 0))
     switch (_PACK(nbytes, is_signed)) {
@@ -1460,13 +1460,13 @@ for nbytes in 8, 16, 32, 64:
      * (`char`, `short`, `int`, `long`, `long long`) have 1, 2, 4, or 8 bytes
      * (i.e. 8 to 64 bits).
      */
-    Py_UNREACHABLE();
+    Ty_UNREACHABLE();
 }
 
 
 /* Macro to call _ctypes_fixint_fielddesc for a given C type. */
 
-_Py_COMP_DIAG_PUSH
+_Ty_COMP_DIAG_PUSH
 #if defined(__GNUC__) && (__GNUC__ < 14)
 /* The signedness check expands to an expression that's always true or false.
  * Older GCC gives a '-Wtype-limits' warning for this, which is a GCC bug
@@ -1599,8 +1599,8 @@ for base_code, base_c_type in [
     ///////////////////////////////////////////////////////////////////////////
 
     TABLE_ENTRY_SW(d, &ffi_type_double);
-#if defined(_Py_FFI_SUPPORT_C_COMPLEX)
-    if (Py_FFI_COMPLEX_AVAILABLE) {
+#if defined(_Ty_FFI_SUPPORT_C_COMPLEX)
+    if (Ty_FFI_COMPLEX_AVAILABLE) {
         TABLE_ENTRY(D, &ffi_type_complex_double);
         TABLE_ENTRY(F, &ffi_type_complex_float);
         TABLE_ENTRY(G, &ffi_type_complex_longdouble);
@@ -1679,7 +1679,7 @@ print(f"    formattable.simple_type_chars[i] = 0;")
 
 }
 #undef FIXINT_FIELDDESC_FOR
-_Py_COMP_DIAG_POP
+_Ty_COMP_DIAG_POP
 
 char *
 _ctypes_get_simple_type_chars(void) {

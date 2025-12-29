@@ -2,64 +2,64 @@
 #include "util.h"
 
 
-static PyObject *
-complex_check(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+complex_check(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyComplex_Check(obj));
+    return TyLong_FromLong(TyComplex_Check(obj));
 }
 
-static PyObject *
-complex_checkexact(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+complex_checkexact(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyComplex_CheckExact(obj));
+    return TyLong_FromLong(TyComplex_CheckExact(obj));
 }
 
-static PyObject *
-complex_fromdoubles(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+complex_fromdoubles(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     double real, imag;
 
-    if (!PyArg_ParseTuple(args, "dd", &real, &imag)) {
+    if (!TyArg_ParseTuple(args, "dd", &real, &imag)) {
         return NULL;
     }
 
-    return PyComplex_FromDoubles(real, imag);
+    return TyComplex_FromDoubles(real, imag);
 }
 
-static PyObject *
-complex_realasdouble(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+complex_realasdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     double real;
 
     NULLABLE(obj);
-    real = PyComplex_RealAsDouble(obj);
+    real = TyComplex_RealAsDouble(obj);
 
-    if (real == -1. && PyErr_Occurred()) {
+    if (real == -1. && TyErr_Occurred()) {
         return NULL;
     }
 
-    return PyFloat_FromDouble(real);
+    return TyFloat_FromDouble(real);
 }
 
-static PyObject *
-complex_imagasdouble(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+complex_imagasdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     double imag;
 
     NULLABLE(obj);
-    imag = PyComplex_ImagAsDouble(obj);
+    imag = TyComplex_ImagAsDouble(obj);
 
-    if (imag == -1. && PyErr_Occurred()) {
+    if (imag == -1. && TyErr_Occurred()) {
         return NULL;
     }
 
-    return PyFloat_FromDouble(imag);
+    return TyFloat_FromDouble(imag);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"complex_check", complex_check, METH_O},
     {"complex_checkexact", complex_checkexact, METH_O},
     {"complex_fromdoubles", complex_fromdoubles, METH_VARARGS},
@@ -69,9 +69,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Complex(PyObject *mod)
+_PyTestLimitedCAPI_Init_Complex(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 

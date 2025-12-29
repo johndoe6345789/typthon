@@ -1,8 +1,8 @@
-#ifndef Py_INTERNAL_MIMALLOC_H
-#define Py_INTERNAL_MIMALLOC_H
+#ifndef Ty_INTERNAL_MIMALLOC_H
+#define Ty_INTERNAL_MIMALLOC_H
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #if defined(MIMALLOC_H) || defined(MIMALLOC_TYPES_H)
@@ -10,29 +10,29 @@
 #endif
 
 typedef enum {
-    _Py_MIMALLOC_HEAP_MEM = 0,      // PyMem_Malloc() and friends
-    _Py_MIMALLOC_HEAP_OBJECT = 1,   // non-GC objects
-    _Py_MIMALLOC_HEAP_GC = 2,       // GC objects without pre-header
-    _Py_MIMALLOC_HEAP_GC_PRE = 3,   // GC objects with pre-header
-    _Py_MIMALLOC_HEAP_COUNT
-} _Py_mimalloc_heap_id;
+    _Ty_MIMALLOC_HEAP_MEM = 0,      // TyMem_Malloc() and friends
+    _Ty_MIMALLOC_HEAP_OBJECT = 1,   // non-GC objects
+    _Ty_MIMALLOC_HEAP_GC = 2,       // GC objects without pre-header
+    _Ty_MIMALLOC_HEAP_GC_PRE = 3,   // GC objects with pre-header
+    _Ty_MIMALLOC_HEAP_COUNT
+} _Ty_mimalloc_heap_id;
 
 #include "pycore_pymem.h"
 
 #ifdef WITH_MIMALLOC
-#  ifdef Py_GIL_DISABLED
-#    define MI_PRIM_THREAD_ID   _Py_ThreadId
+#  ifdef Ty_GIL_DISABLED
+#    define MI_PRIM_THREAD_ID   _Ty_ThreadId
 #  endif
 #  define MI_DEBUG_UNINIT     PYMEM_CLEANBYTE
 #  define MI_DEBUG_FREED      PYMEM_DEADBYTE
 #  define MI_DEBUG_PADDING    PYMEM_FORBIDDENBYTE
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 #  define MI_DEBUG 2
 #else
 #  define MI_DEBUG 0
 #endif
 
-#ifdef _Py_THREAD_SANITIZER
+#ifdef _Ty_THREAD_SANITIZER
 #  define MI_TSAN 1
 #endif
 
@@ -50,7 +50,7 @@ extern "C++" {
 
 #endif
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 struct _mimalloc_interp_state {
     // When exiting, threads place any segments with live blocks in this
     // shared pool for other threads to claim and reuse.
@@ -59,11 +59,11 @@ struct _mimalloc_interp_state {
 
 struct _mimalloc_thread_state {
     mi_heap_t *current_object_heap;
-    mi_heap_t heaps[_Py_MIMALLOC_HEAP_COUNT];
+    mi_heap_t heaps[_Ty_MIMALLOC_HEAP_COUNT];
     mi_tld_t tld;
     int initialized;
     struct llist_node page_list;
 };
 #endif
 
-#endif // Py_INTERNAL_MIMALLOC_H
+#endif // Ty_INTERNAL_MIMALLOC_H

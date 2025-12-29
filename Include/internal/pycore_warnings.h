@@ -1,21 +1,21 @@
-#ifndef Py_INTERNAL_WARNINGS_H
-#define Py_INTERNAL_WARNINGS_H
+#ifndef Ty_INTERNAL_WARNINGS_H
+#define Ty_INTERNAL_WARNINGS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-extern int _PyWarnings_InitState(PyInterpreterState *interp);
+extern int _TyWarnings_InitState(PyInterpreterState *interp);
 
-extern PyObject* _PyWarnings_Init(void);
+extern TyObject* _TyWarnings_Init(void);
 
-extern void _PyErr_WarnUnawaitedCoroutine(PyObject *coro);
-extern void _PyErr_WarnUnawaitedAgenMethod(PyAsyncGenObject *agen, PyObject *method);
+extern void _TyErr_WarnUnawaitedCoroutine(TyObject *coro);
+extern void _TyErr_WarnUnawaitedAgenMethod(PyAsyncGenObject *agen, TyObject *method);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_WARNINGS_H */
+#endif /* !Ty_INTERNAL_WARNINGS_H */

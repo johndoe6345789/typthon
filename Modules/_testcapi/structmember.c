@@ -3,7 +3,7 @@
 
 
 // This defines two classes that contain all the simple member types, one
-// using "new" Py_-prefixed API, and the other using "old" <structmember.h>.
+// using "new" Ty_-prefixed API, and the other using "old" <structmember.h>.
 // They should behave identically in Python.
 
 typedef struct {
@@ -16,7 +16,7 @@ typedef struct {
     unsigned int uint_member;
     long long_member;
     unsigned long ulong_member;
-    Py_ssize_t pyssizet_member;
+    Ty_ssize_t pyssizet_member;
     float float_member;
     double double_member;
     char inplace_member[6];
@@ -31,28 +31,28 @@ typedef struct {
 } test_structmembers;
 
 
-static struct PyMemberDef test_members_newapi[] = {
-    {"T_BOOL", Py_T_BOOL, offsetof(test_structmembers, structmembers.bool_member), 0, NULL},
-    {"T_BYTE", Py_T_BYTE, offsetof(test_structmembers, structmembers.byte_member), 0, NULL},
-    {"T_UBYTE", Py_T_UBYTE, offsetof(test_structmembers, structmembers.ubyte_member), 0, NULL},
-    {"T_SHORT", Py_T_SHORT, offsetof(test_structmembers, structmembers.short_member), 0, NULL},
-    {"T_USHORT", Py_T_USHORT, offsetof(test_structmembers, structmembers.ushort_member), 0, NULL},
-    {"T_INT", Py_T_INT, offsetof(test_structmembers, structmembers.int_member), 0, NULL},
-    {"T_UINT", Py_T_UINT, offsetof(test_structmembers, structmembers.uint_member), 0, NULL},
-    {"T_LONG", Py_T_LONG, offsetof(test_structmembers, structmembers.long_member), 0, NULL},
-    {"T_ULONG", Py_T_ULONG, offsetof(test_structmembers, structmembers.ulong_member), 0, NULL},
-    {"T_PYSSIZET", Py_T_PYSSIZET, offsetof(test_structmembers, structmembers.pyssizet_member), 0, NULL},
-    {"T_FLOAT", Py_T_FLOAT, offsetof(test_structmembers, structmembers.float_member), 0, NULL},
-    {"T_DOUBLE", Py_T_DOUBLE, offsetof(test_structmembers, structmembers.double_member), 0, NULL},
-    {"T_STRING_INPLACE", Py_T_STRING_INPLACE, offsetof(test_structmembers, structmembers.inplace_member), 0, NULL},
-    {"T_LONGLONG", Py_T_LONGLONG, offsetof(test_structmembers, structmembers.longlong_member), 0, NULL},
-    {"T_ULONGLONG", Py_T_ULONGLONG, offsetof(test_structmembers, structmembers.ulonglong_member), 0, NULL},
-    {"T_CHAR", Py_T_CHAR, offsetof(test_structmembers, structmembers.char_member), 0, NULL},
+static struct TyMemberDef test_members_newapi[] = {
+    {"T_BOOL", Ty_T_BOOL, offsetof(test_structmembers, structmembers.bool_member), 0, NULL},
+    {"T_BYTE", Ty_T_BYTE, offsetof(test_structmembers, structmembers.byte_member), 0, NULL},
+    {"T_UBYTE", Ty_T_UBYTE, offsetof(test_structmembers, structmembers.ubyte_member), 0, NULL},
+    {"T_SHORT", Ty_T_SHORT, offsetof(test_structmembers, structmembers.short_member), 0, NULL},
+    {"T_USHORT", Ty_T_USHORT, offsetof(test_structmembers, structmembers.ushort_member), 0, NULL},
+    {"T_INT", Ty_T_INT, offsetof(test_structmembers, structmembers.int_member), 0, NULL},
+    {"T_UINT", Ty_T_UINT, offsetof(test_structmembers, structmembers.uint_member), 0, NULL},
+    {"T_LONG", Ty_T_LONG, offsetof(test_structmembers, structmembers.long_member), 0, NULL},
+    {"T_ULONG", Ty_T_ULONG, offsetof(test_structmembers, structmembers.ulong_member), 0, NULL},
+    {"T_PYSSIZET", Ty_T_PYSSIZET, offsetof(test_structmembers, structmembers.pyssizet_member), 0, NULL},
+    {"T_FLOAT", Ty_T_FLOAT, offsetof(test_structmembers, structmembers.float_member), 0, NULL},
+    {"T_DOUBLE", Ty_T_DOUBLE, offsetof(test_structmembers, structmembers.double_member), 0, NULL},
+    {"T_STRING_INPLACE", Ty_T_STRING_INPLACE, offsetof(test_structmembers, structmembers.inplace_member), 0, NULL},
+    {"T_LONGLONG", Ty_T_LONGLONG, offsetof(test_structmembers, structmembers.longlong_member), 0, NULL},
+    {"T_ULONGLONG", Ty_T_ULONGLONG, offsetof(test_structmembers, structmembers.ulonglong_member), 0, NULL},
+    {"T_CHAR", Ty_T_CHAR, offsetof(test_structmembers, structmembers.char_member), 0, NULL},
     {NULL}
 };
 
-static PyObject *
-test_structmembers_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+test_structmembers_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
     static char *keywords[] = {
         "T_BOOL", "T_BYTE", "T_UBYTE", "T_SHORT", "T_USHORT",
@@ -63,13 +63,13 @@ test_structmembers_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
     static const char fmt[] = "|bbBhHiIlknfds#LKc";
     test_structmembers *ob;
     const char *s = NULL;
-    Py_ssize_t string_len = 0;
+    Ty_ssize_t string_len = 0;
     ob = PyObject_New(test_structmembers, type);
     if (ob == NULL) {
         return NULL;
     }
     memset(&ob->structmembers, 0, sizeof(all_structmembers));
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, fmt, keywords,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs, fmt, keywords,
                                      &ob->structmembers.bool_member,
                                      &ob->structmembers.byte_member,
                                      &ob->structmembers.ubyte_member,
@@ -87,13 +87,13 @@ test_structmembers_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
                                      &ob->structmembers.ulonglong_member,
                                      &ob->structmembers.char_member))
     {
-        Py_DECREF(ob);
+        Ty_DECREF(ob);
         return NULL;
     }
     if (s != NULL) {
         if (string_len > 5) {
-            Py_DECREF(ob);
-            PyErr_SetString(PyExc_ValueError, "string too long");
+            Ty_DECREF(ob);
+            TyErr_SetString(TyExc_ValueError, "string too long");
             return NULL;
         }
         strcpy(ob->structmembers.inplace_member, s);
@@ -101,25 +101,25 @@ test_structmembers_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
     else {
         strcpy(ob->structmembers.inplace_member, "");
     }
-    return (PyObject *)ob;
+    return (TyObject *)ob;
 }
 
-static PyType_Slot test_structmembers_slots[] = {
-    {Py_tp_new, test_structmembers_new},
-    {Py_tp_members, test_members_newapi},
+static TyType_Slot test_structmembers_slots[] = {
+    {Ty_tp_new, test_structmembers_new},
+    {Ty_tp_members, test_members_newapi},
     {0},
 };
 
-static PyType_Spec test_structmembers_spec = {
+static TyType_Spec test_structmembers_spec = {
     .name = "_testcapi._test_structmembersType_NewAPI",
-    .flags = Py_TPFLAGS_DEFAULT,
+    .flags = Ty_TPFLAGS_DEFAULT,
     .basicsize = sizeof(test_structmembers),
     .slots = test_structmembers_slots,
 };
 
 #include <structmember.h>
 
-static struct PyMemberDef test_members[] = {
+static struct TyMemberDef test_members[] = {
     {"T_BOOL", T_BOOL, offsetof(test_structmembers, structmembers.bool_member), 0, NULL},
     {"T_BYTE", T_BYTE, offsetof(test_structmembers, structmembers.byte_member), 0, NULL},
     {"T_UBYTE", T_UBYTE, offsetof(test_structmembers, structmembers.ubyte_member), 0, NULL},
@@ -141,13 +141,13 @@ static struct PyMemberDef test_members[] = {
 
 
 static void
-test_structmembers_free(PyObject *ob)
+test_structmembers_free(TyObject *ob)
 {
     PyObject_Free(ob);
 }
 
 /* Designated initializers would work too, but this does test the *old* API */
-static PyTypeObject test_structmembersType_OldAPI= {
+static TyTypeObject test_structmembersType_OldAPI= {
     PyVarObject_HEAD_INIT(NULL, 0)
     "test_structmembersType_OldAPI",
     sizeof(test_structmembers),         /* tp_basicsize */
@@ -190,28 +190,28 @@ static PyTypeObject test_structmembersType_OldAPI= {
 
 
 int
-_PyTestCapi_Init_Structmember(PyObject *m)
+_PyTestCapi_Init_Structmember(TyObject *m)
 {
     int res;
-    res = PyType_Ready(&test_structmembersType_OldAPI);
+    res = TyType_Ready(&test_structmembersType_OldAPI);
     if (res < 0) {
         return -1;
     }
-    res = PyModule_AddObjectRef(
+    res = TyModule_AddObjectRef(
         m,
         "_test_structmembersType_OldAPI",
-        (PyObject *)&test_structmembersType_OldAPI);
+        (TyObject *)&test_structmembersType_OldAPI);
     if (res < 0) {
         return -1;
     }
 
-    PyObject *test_structmembersType_NewAPI = PyType_FromModuleAndSpec(
+    TyObject *test_structmembersType_NewAPI = TyType_FromModuleAndSpec(
         m, &test_structmembers_spec, NULL);
     if (!test_structmembersType_NewAPI) {
         return -1;
     }
-    res = PyModule_AddType(m, (PyTypeObject*)test_structmembersType_NewAPI);
-    Py_DECREF(test_structmembersType_NewAPI);
+    res = TyModule_AddType(m, (TyTypeObject*)test_structmembersType_NewAPI);
+    Ty_DECREF(test_structmembersType_NewAPI);
     if (res < 0) {
         return -1;
     }

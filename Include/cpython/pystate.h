@@ -1,17 +1,17 @@
-#ifndef Py_CPYTHON_PYSTATE_H
+#ifndef Ty_CPYTHON_PYSTATE_H
 #  error "this header file must not be included directly"
 #endif
 
 
 /* private interpreter helpers */
 
-PyAPI_FUNC(int) _PyInterpreterState_RequiresIDRef(PyInterpreterState *);
-PyAPI_FUNC(void) _PyInterpreterState_RequireIDRef(PyInterpreterState *, int);
+PyAPI_FUNC(int) _TyInterpreterState_RequiresIDRef(PyInterpreterState *);
+PyAPI_FUNC(void) _TyInterpreterState_RequireIDRef(PyInterpreterState *, int);
 
 /* State unique per thread */
 
-/* Py_tracefunc return -1 when raising an exception, or 0 for success. */
-typedef int (*Py_tracefunc)(PyObject *, PyFrameObject *, int, PyObject *);
+/* Ty_tracefunc return -1 when raising an exception, or 0 for success. */
+typedef int (*Ty_tracefunc)(TyObject *, PyFrameObject *, int, TyObject *);
 
 /* The following values are used for 'what' for tracefunc functions
  *
@@ -28,10 +28,10 @@ typedef int (*Py_tracefunc)(PyObject *, PyFrameObject *, int, PyObject *);
 #define PyTrace_OPCODE 7
 
 /* Remote debugger support */
-#define Py_MAX_SCRIPT_PATH_SIZE 512
+#define Ty_MAX_SCRIPT_PATH_SIZE 512
 typedef struct {
     int32_t debugger_pending_call;
-    char debugger_script_path[Py_MAX_SCRIPT_PATH_SIZE];
+    char debugger_script_path[Ty_MAX_SCRIPT_PATH_SIZE];
 } _PyRemoteDebuggerSupport;
 
 typedef struct _err_stackitem {
@@ -48,17 +48,17 @@ typedef struct _err_stackitem {
      */
 
     /* The exception currently being handled in this context, if any. */
-    PyObject *exc_value;
+    TyObject *exc_value;
 
     struct _err_stackitem *previous_item;
 
-} _PyErr_StackItem;
+} _TyErr_StackItem;
 
 typedef struct _stack_chunk {
     struct _stack_chunk *previous;
     size_t size;
     size_t top;
-    PyObject * data[1]; /* Variable sized */
+    TyObject * data[1]; /* Variable sized */
 } _PyStackChunk;
 
 /* Minimum size of data stack chunk */
@@ -99,14 +99,14 @@ struct _ts {
         /* padding to align to 4 bytes */
         unsigned int :24;
     } _status;
-#ifdef Py_BUILD_CORE
-#  define _PyThreadState_WHENCE_NOTSET -1
-#  define _PyThreadState_WHENCE_UNKNOWN 0
-#  define _PyThreadState_WHENCE_INIT 1
-#  define _PyThreadState_WHENCE_FINI 2
-#  define _PyThreadState_WHENCE_THREADING 3
-#  define _PyThreadState_WHENCE_GILSTATE 4
-#  define _PyThreadState_WHENCE_EXEC 5
+#ifdef Ty_BUILD_CORE
+#  define _TyThreadState_WHENCE_NOTSET -1
+#  define _TyThreadState_WHENCE_UNKNOWN 0
+#  define _TyThreadState_WHENCE_INIT 1
+#  define _TyThreadState_WHENCE_FINI 2
+#  define _TyThreadState_WHENCE_THREADING 3
+#  define _TyThreadState_WHENCE_GILSTATE 4
+#  define _TyThreadState_WHENCE_EXEC 5
 #endif
 
     /* Currently holds the GIL. Must be its own field to avoid data races */
@@ -114,7 +114,7 @@ struct _ts {
 
     int _whence;
 
-    /* Thread state (_Py_THREAD_ATTACHED, _Py_THREAD_DETACHED, _Py_THREAD_SUSPENDED).
+    /* Thread state (_Ty_THREAD_ATTACHED, _Ty_THREAD_DETACHED, _Ty_THREAD_SUSPENDED).
        See Include/internal/pycore_pystate.h for more details. */
     int state;
 
@@ -131,24 +131,24 @@ struct _ts {
     /* Pointer to currently executing frame. */
     struct _PyInterpreterFrame *current_frame;
 
-    Py_tracefunc c_profilefunc;
-    Py_tracefunc c_tracefunc;
-    PyObject *c_profileobj;
-    PyObject *c_traceobj;
+    Ty_tracefunc c_profilefunc;
+    Ty_tracefunc c_tracefunc;
+    TyObject *c_profileobj;
+    TyObject *c_traceobj;
 
     /* The exception currently being raised */
-    PyObject *current_exception;
+    TyObject *current_exception;
 
     /* Pointer to the top of the exception stack for the exceptions
-     * we may be currently handling.  (See _PyErr_StackItem above.)
+     * we may be currently handling.  (See _TyErr_StackItem above.)
      * This is never NULL. */
-    _PyErr_StackItem *exc_info;
+    _TyErr_StackItem *exc_info;
 
-    PyObject *dict;  /* Stores per-thread state */
+    TyObject *dict;  /* Stores per-thread state */
 
     int gilstate_counter;
 
-    PyObject *async_exc; /* Asynchronous exception to raise */
+    TyObject *async_exc; /* Asynchronous exception to raise */
     unsigned long thread_id; /* Thread id where this tstate was created */
 
     /* Native thread id where this tstate was created. This will be 0 except on
@@ -157,29 +157,29 @@ struct _ts {
      */
     unsigned long native_thread_id;
 
-    PyObject *delete_later;
+    TyObject *delete_later;
 
     /* Tagged pointer to top-most critical section, or zero if there is no
      * active critical section. Critical sections are only used in
-     * `--disable-gil` builds (i.e., when Py_GIL_DISABLED is defined to 1). In the
+     * `--disable-gil` builds (i.e., when Ty_GIL_DISABLED is defined to 1). In the
      * default build, this field is always zero.
      */
     uintptr_t critical_section;
 
     int coroutine_origin_tracking_depth;
 
-    PyObject *async_gen_firstiter;
-    PyObject *async_gen_finalizer;
+    TyObject *async_gen_firstiter;
+    TyObject *async_gen_finalizer;
 
-    PyObject *context;
+    TyObject *context;
     uint64_t context_ver;
 
     /* Unique thread state id. */
     uint64_t id;
 
     _PyStackChunk *datastack_chunk;
-    PyObject **datastack_top;
-    PyObject **datastack_limit;
+    TyObject **datastack_top;
+    TyObject **datastack_limit;
     /* XXX signal handlers should also be here */
 
     /* The following fields are here to avoid allocation during init.
@@ -194,70 +194,70 @@ struct _ts {
        // compatibility.  See https://bugs.python.org/issue45953#msg412046.
 
     /* The thread's exception stack entry.  (Always the last entry.) */
-    _PyErr_StackItem exc_state;
+    _TyErr_StackItem exc_state;
 
-    PyObject *current_executor;
+    TyObject *current_executor;
 
     uint64_t dict_global_version;
 
     /* Used to store/retrieve `threading.local` keys/values for this thread */
-    PyObject *threading_local_key;
+    TyObject *threading_local_key;
 
     /* Used by `threading.local`s to be remove keys/values for dying threads.
        The PyThreadObject must hold the only reference to this value.
     */
-    PyObject *threading_local_sentinel;
+    TyObject *threading_local_sentinel;
     _PyRemoteDebuggerSupport remote_debugger_support;
 };
 
 /* other API */
 
-/* Similar to PyThreadState_Get(), but don't issue a fatal error
+/* Similar to TyThreadState_Get(), but don't issue a fatal error
  * if it is NULL. */
-PyAPI_FUNC(PyThreadState *) PyThreadState_GetUnchecked(void);
+PyAPI_FUNC(PyThreadState *) TyThreadState_GetUnchecked(void);
 
 // Deprecated alias kept for backward compatibility
-Py_DEPRECATED(3.14) static inline PyThreadState*
-_PyThreadState_UncheckedGet(void)
+Ty_DEPRECATED(3.14) static inline PyThreadState*
+_TyThreadState_UncheckedGet(void)
 {
-    return PyThreadState_GetUnchecked();
+    return TyThreadState_GetUnchecked();
 }
 
 // Disable tracing and profiling.
-PyAPI_FUNC(void) PyThreadState_EnterTracing(PyThreadState *tstate);
+PyAPI_FUNC(void) TyThreadState_EnterTracing(PyThreadState *tstate);
 
 // Reset tracing and profiling: enable them if a trace function or a profile
 // function is set, otherwise disable them.
-PyAPI_FUNC(void) PyThreadState_LeaveTracing(PyThreadState *tstate);
+PyAPI_FUNC(void) TyThreadState_LeaveTracing(PyThreadState *tstate);
 
 /* PyGILState */
 
 /* Helper/diagnostic function - return 1 if the current thread
    currently holds the GIL, 0 otherwise.
 
-   The function returns 1 if _PyGILState_check_enabled is non-zero. */
-PyAPI_FUNC(int) PyGILState_Check(void);
+   The function returns 1 if _TyGILState_check_enabled is non-zero. */
+PyAPI_FUNC(int) TyGILState_Check(void);
 
 /* The implementation of sys._current_frames()  Returns a dict mapping
    thread id to that thread's current frame.
 */
-PyAPI_FUNC(PyObject*) _PyThread_CurrentFrames(void);
+PyAPI_FUNC(TyObject*) _PyThread_CurrentFrames(void);
 
 /* Routines for advanced debuggers, requested by David Beazley.
    Don't use unless you know what you are doing! */
-PyAPI_FUNC(PyInterpreterState *) PyInterpreterState_Main(void);
-PyAPI_FUNC(PyInterpreterState *) PyInterpreterState_Head(void);
-PyAPI_FUNC(PyInterpreterState *) PyInterpreterState_Next(PyInterpreterState *);
-PyAPI_FUNC(PyThreadState *) PyInterpreterState_ThreadHead(PyInterpreterState *);
-PyAPI_FUNC(PyThreadState *) PyThreadState_Next(PyThreadState *);
-PyAPI_FUNC(void) PyThreadState_DeleteCurrent(void);
+PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Main(void);
+PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Head(void);
+PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Next(PyInterpreterState *);
+PyAPI_FUNC(PyThreadState *) TyInterpreterState_ThreadHead(PyInterpreterState *);
+PyAPI_FUNC(PyThreadState *) TyThreadState_Next(PyThreadState *);
+PyAPI_FUNC(void) TyThreadState_DeleteCurrent(void);
 
 /* Frame evaluation API */
 
-typedef PyObject* (*_PyFrameEvalFunction)(PyThreadState *tstate, struct _PyInterpreterFrame *, int);
+typedef TyObject* (*_PyFrameEvalFunction)(PyThreadState *tstate, struct _PyInterpreterFrame *, int);
 
-PyAPI_FUNC(_PyFrameEvalFunction) _PyInterpreterState_GetEvalFrameFunc(
+PyAPI_FUNC(_PyFrameEvalFunction) _TyInterpreterState_GetEvalFrameFunc(
     PyInterpreterState *interp);
-PyAPI_FUNC(void) _PyInterpreterState_SetEvalFrameFunc(
+PyAPI_FUNC(void) _TyInterpreterState_SetEvalFrameFunc(
     PyInterpreterState *interp,
     _PyFrameEvalFunction eval_frame);

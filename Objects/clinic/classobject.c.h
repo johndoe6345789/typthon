@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(method___reduce____doc__,
 "__reduce__($self, /)\n"
@@ -12,11 +12,11 @@ PyDoc_STRVAR(method___reduce____doc__,
 #define METHOD___REDUCE___METHODDEF    \
     {"__reduce__", (PyCFunction)method___reduce__, METH_NOARGS, method___reduce____doc__},
 
-static PyObject *
+static TyObject *
 method___reduce___impl(PyMethodObject *self);
 
-static PyObject *
-method___reduce__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+method___reduce__(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return method___reduce___impl((PyMethodObject *)self);
 }
@@ -27,26 +27,26 @@ PyDoc_STRVAR(method_new__doc__,
 "\n"
 "Create a bound instance method object.");
 
-static PyObject *
-method_new_impl(PyTypeObject *type, PyObject *function, PyObject *instance);
+static TyObject *
+method_new_impl(TyTypeObject *type, TyObject *function, TyObject *instance);
 
-static PyObject *
-method_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+method_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = &PyMethod_Type;
-    PyObject *function;
-    PyObject *instance;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = &TyMethod_Type;
+    TyObject *function;
+    TyObject *instance;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("method", kwargs)) {
+        !_TyArg_NoKeywords("method", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("method", PyTuple_GET_SIZE(args), 2, 2)) {
+    if (!_TyArg_CheckPositional("method", TyTuple_GET_SIZE(args), 2, 2)) {
         goto exit;
     }
-    function = PyTuple_GET_ITEM(args, 0);
-    instance = PyTuple_GET_ITEM(args, 1);
+    function = TyTuple_GET_ITEM(args, 0);
+    instance = TyTuple_GET_ITEM(args, 1);
     return_value = method_new_impl(type, function, instance);
 
 exit:
@@ -59,24 +59,24 @@ PyDoc_STRVAR(instancemethod_new__doc__,
 "\n"
 "Bind a function to a class.");
 
-static PyObject *
-instancemethod_new_impl(PyTypeObject *type, PyObject *function);
+static TyObject *
+instancemethod_new_impl(TyTypeObject *type, TyObject *function);
 
-static PyObject *
-instancemethod_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+instancemethod_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = &PyInstanceMethod_Type;
-    PyObject *function;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = &PyInstanceMethod_Type;
+    TyObject *function;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("instancemethod", kwargs)) {
+        !_TyArg_NoKeywords("instancemethod", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("instancemethod", PyTuple_GET_SIZE(args), 1, 1)) {
+    if (!_TyArg_CheckPositional("instancemethod", TyTuple_GET_SIZE(args), 1, 1)) {
         goto exit;
     }
-    function = PyTuple_GET_ITEM(args, 0);
+    function = TyTuple_GET_ITEM(args, 0);
     return_value = instancemethod_new_impl(type, function);
 
 exit:

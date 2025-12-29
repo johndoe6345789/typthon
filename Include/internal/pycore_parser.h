@@ -1,26 +1,26 @@
-#ifndef Py_INTERNAL_PARSER_H
-#define Py_INTERNAL_PARSER_H
+#ifndef Ty_INTERNAL_PARSER_H
+#define Ty_INTERNAL_PARSER_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 
 #include "pycore_ast.h"             // struct _expr
-#include "pycore_global_strings.h"  // _Py_DECLARE_STR()
+#include "pycore_global_strings.h"  // _Ty_DECLARE_STR()
 #include "pycore_pyarena.h"         // PyArena
 
-_Py_DECLARE_STR(empty, "")
-#if defined(Py_DEBUG) && defined(Py_GIL_DISABLED)
+_Ty_DECLARE_STR(empty, "")
+#if defined(Ty_DEBUG) && defined(Ty_GIL_DISABLED)
 #define _parser_runtime_state_INIT \
     { \
         .mutex = {0}, \
         .dummy_name = { \
             .kind = Name_kind, \
-            .v.Name.id = &_Py_STR(empty), \
+            .v.Name.id = &_Ty_STR(empty), \
             .v.Name.ctx = Load, \
             .lineno = 1, \
             .col_offset = 0, \
@@ -33,7 +33,7 @@ _Py_DECLARE_STR(empty, "")
     { \
         .dummy_name = { \
             .kind = Name_kind, \
-            .v.Name.id = &_Py_STR(empty), \
+            .v.Name.id = &_Ty_STR(empty), \
             .v.Name.ctx = Load, \
             .lineno = 1, \
             .col_offset = 0, \
@@ -43,16 +43,16 @@ _Py_DECLARE_STR(empty, "")
     }
 #endif
 
-extern struct _mod* _PyParser_ASTFromString(
+extern struct _mod* _TyParser_ASTFromString(
     const char *str,
-    PyObject* filename,
+    TyObject* filename,
     int mode,
     PyCompilerFlags *flags,
     PyArena *arena);
 
-extern struct _mod* _PyParser_ASTFromFile(
+extern struct _mod* _TyParser_ASTFromFile(
     FILE *fp,
-    PyObject *filename_ob,
+    TyObject *filename_ob,
     const char *enc,
     int mode,
     const char *ps1,
@@ -60,19 +60,19 @@ extern struct _mod* _PyParser_ASTFromFile(
     PyCompilerFlags *flags,
     int *errcode,
     PyArena *arena);
-extern struct _mod* _PyParser_InteractiveASTFromFile(
+extern struct _mod* _TyParser_InteractiveASTFromFile(
     FILE *fp,
-    PyObject *filename_ob,
+    TyObject *filename_ob,
     const char *enc,
     int mode,
     const char *ps1,
     const char *ps2,
     PyCompilerFlags *flags,
     int *errcode,
-    PyObject **interactive_src,
+    TyObject **interactive_src,
     PyArena *arena);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_PARSER_H */
+#endif /* !Ty_INTERNAL_PARSER_H */

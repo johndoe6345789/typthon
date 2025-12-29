@@ -4,7 +4,7 @@
 #include "pycore_pathconfig.h"
 
 PyStatus
-_PyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
+_TyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
 {
-    return PyStatus_Error("path configuration is unsupported");
+    return TyStatus_Error("path configuration is unsupported");
 }

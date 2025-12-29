@@ -1,7 +1,7 @@
 /* -*- Mode: C; c-file-style: "python" -*- */
 
 #include <Python.h>
-#include "pycore_dtoa.h"          // _Py_dg_strtod()
+#include "pycore_dtoa.h"          // _Ty_dg_strtod()
 #include "pycore_pymath.h"        // _PY_SHORT_FLOAT_REPR
 
 #include <locale.h>               // localeconv()
@@ -12,20 +12,20 @@
 static int
 case_insensitive_match(const char *s, const char *t)
 {
-    while(*t && Py_TOLOWER(*s) == *t) {
+    while(*t && Ty_TOLOWER(*s) == *t) {
         s++;
         t++;
     }
     return *t ? 0 : 1;
 }
 
-/* _Py_parse_inf_or_nan: Attempt to parse a string of the form "nan", "inf" or
+/* _Ty_parse_inf_or_nan: Attempt to parse a string of the form "nan", "inf" or
    "infinity", with an optional leading sign of "+" or "-".  On success,
    return the NaN or Infinity as a double and set *endptr to point just beyond
    the successfully parsed portion of the string.  On failure, return -1.0 and
    set *endptr to point to the start of the string. */
 double
-_Py_parse_inf_or_nan(const char *p, char **endptr)
+_Ty_parse_inf_or_nan(const char *p, char **endptr)
 {
     double retval;
     const char *s;
@@ -43,11 +43,11 @@ _Py_parse_inf_or_nan(const char *p, char **endptr)
         s += 3;
         if (case_insensitive_match(s, "inity"))
             s += 5;
-        retval = negate ? -Py_INFINITY : Py_INFINITY;
+        retval = negate ? -Ty_INFINITY : Ty_INFINITY;
     }
     else if (case_insensitive_match(s, "nan")) {
         s += 3;
-        retval = negate ? -fabs(Py_NAN) : fabs(Py_NAN);
+        retval = negate ? -fabs(Ty_NAN) : fabs(Ty_NAN);
     }
     else {
         s = p;
@@ -59,7 +59,7 @@ _Py_parse_inf_or_nan(const char *p, char **endptr)
 
 
 /**
- * _PyOS_ascii_strtod:
+ * _TyOS_ascii_strtod:
  * @nptr:    the string to convert to a numeric value.
  * @endptr:  if non-%NULL, it returns the character after
  *           the last character used in the conversion.
@@ -90,23 +90,23 @@ _Py_parse_inf_or_nan(const char *p, char **endptr)
 #if _PY_SHORT_FLOAT_REPR == 1
 
 static double
-_PyOS_ascii_strtod(const char *nptr, char **endptr)
+_TyOS_ascii_strtod(const char *nptr, char **endptr)
 {
     double result;
-    _Py_SET_53BIT_PRECISION_HEADER;
+    _Ty_SET_53BIT_PRECISION_HEADER;
 
     assert(nptr != NULL);
     /* Set errno to zero, so that we can distinguish zero results
        and underflows */
     errno = 0;
 
-    _Py_SET_53BIT_PRECISION_START;
-    result = _Py_dg_strtod(nptr, endptr);
-    _Py_SET_53BIT_PRECISION_END;
+    _Ty_SET_53BIT_PRECISION_START;
+    result = _Ty_dg_strtod(nptr, endptr);
+    _Ty_SET_53BIT_PRECISION_END;
 
     if (*endptr == nptr)
         /* string might represent an inf or nan */
-        result = _Py_parse_inf_or_nan(nptr, endptr);
+        result = _Ty_parse_inf_or_nan(nptr, endptr);
 
     return result;
 
@@ -118,12 +118,12 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
    Use system strtod;  since strtod is locale aware, we may
    have to first fix the decimal separator.
 
-   Note that unlike _Py_dg_strtod, the system strtod may not always give
+   Note that unlike _Ty_dg_strtod, the system strtod may not always give
    correctly rounded results.
 */
 
 static double
-_PyOS_ascii_strtod(const char *nptr, char **endptr)
+_TyOS_ascii_strtod(const char *nptr, char **endptr)
 {
     char *fail_pos;
     double val;
@@ -148,7 +148,7 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
     decimal_point_pos = NULL;
 
     /* Parse infinities and nans */
-    val = _Py_parse_inf_or_nan(nptr, endptr);
+    val = _Ty_parse_inf_or_nan(nptr, endptr);
     if (*endptr != nptr)
         return val;
 
@@ -175,7 +175,7 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
         goto invalid_string;
 
     /* Check that what's left begins with a digit or decimal point */
-    if (!Py_ISDIGIT(*p) && *p != '.')
+    if (!Ty_ISDIGIT(*p) && *p != '.')
         goto invalid_string;
 
     digits_pos = p;
@@ -186,7 +186,7 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
            swapped for the current locale's decimal point before we
            call strtod.  On the other hand, if we find the current
            locale's decimal point then the input is invalid. */
-        while (Py_ISDIGIT(*p))
+        while (Ty_ISDIGIT(*p))
             p++;
 
         if (*p == '.')
@@ -194,14 +194,14 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
             decimal_point_pos = p++;
 
             /* locate end of number */
-            while (Py_ISDIGIT(*p))
+            while (Ty_ISDIGIT(*p))
                 p++;
 
             if (*p == 'e' || *p == 'E')
                 p++;
             if (*p == '+' || *p == '-')
                 p++;
-            while (Py_ISDIGIT(*p))
+            while (Ty_ISDIGIT(*p))
                 p++;
             end = p;
         }
@@ -216,7 +216,7 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
         char *copy, *c;
         /* Create a copy of the input, with the '.' converted to the
            locale-specific decimal point */
-        copy = (char *)PyMem_Malloc(end - digits_pos +
+        copy = (char *)TyMem_Malloc(end - digits_pos +
                                     1 + decimal_point_len);
         if (copy == NULL) {
             *endptr = (char *)nptr;
@@ -247,7 +247,7 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
                     (fail_pos - copy);
         }
 
-        PyMem_Free(copy);
+        TyMem_Free(copy);
 
     }
     else {
@@ -271,7 +271,7 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
 
 #endif
 
-/* PyOS_string_to_double converts a null-terminated byte string s (interpreted
+/* TyOS_string_to_double converts a null-terminated byte string s (interpreted
    as a string of ASCII characters) to a float.  The string should not have
    leading or trailing whitespace.  The conversion is independent of the
    current locale.
@@ -286,7 +286,7 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
    string, -1.0 is returned and again ValueError is raised.
 
    On overflow (e.g., when trying to convert '1e500' on an IEEE 754 machine),
-   if overflow_exception is NULL then +-Py_INFINITY is returned, and no Python
+   if overflow_exception is NULL then +-Ty_INFINITY is returned, and no Python
    exception is raised.  Otherwise, overflow_exception should point to
    a Python exception, this exception will be raised, -1.0 will be returned,
    and *endptr will point just past the end of the converted value.
@@ -296,30 +296,30 @@ _PyOS_ascii_strtod(const char *nptr, char **endptr)
 */
 
 double
-PyOS_string_to_double(const char *s,
+TyOS_string_to_double(const char *s,
                       char **endptr,
-                      PyObject *overflow_exception)
+                      TyObject *overflow_exception)
 {
     double x, result=-1.0;
     char *fail_pos;
 
     errno = 0;
-    x = _PyOS_ascii_strtod(s, &fail_pos);
+    x = _TyOS_ascii_strtod(s, &fail_pos);
 
     if (errno == ENOMEM) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         fail_pos = (char *)s;
     }
     else if (!endptr && (fail_pos == s || *fail_pos != '\0'))
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                       "could not convert string to float: "
                       "'%.200s'", s);
     else if (fail_pos == s)
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                       "could not convert string to float: "
                       "'%.200s'", s);
     else if (errno == ERANGE && fabs(x) >= 1.0 && overflow_exception)
-        PyErr_Format(overflow_exception,
+        TyErr_Format(overflow_exception,
                       "value too large to convert to float: "
                       "'%.200s'", s);
     else
@@ -341,15 +341,15 @@ PyOS_string_to_double(const char *s,
    This is used to implement underscore-agnostic conversion for floats
    and complex numbers.
 */
-PyObject *
-_Py_string_to_number_with_underscores(
-    const char *s, Py_ssize_t orig_len, const char *what, PyObject *obj, void *arg,
-    PyObject *(*innerfunc)(const char *, Py_ssize_t, void *))
+TyObject *
+_Ty_string_to_number_with_underscores(
+    const char *s, Ty_ssize_t orig_len, const char *what, TyObject *obj, void *arg,
+    TyObject *(*innerfunc)(const char *, Ty_ssize_t, void *))
 {
     char prev;
     const char *p, *last;
     char *dup, *end;
-    PyObject *result;
+    TyObject *result;
 
     assert(s[orig_len] == '\0');
 
@@ -357,9 +357,9 @@ _Py_string_to_number_with_underscores(
         return innerfunc(s, orig_len, arg);
     }
 
-    dup = PyMem_Malloc(orig_len + 1);
+    dup = TyMem_Malloc(orig_len + 1);
     if (dup == NULL) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
     end = dup;
     prev = '\0';
@@ -390,12 +390,12 @@ _Py_string_to_number_with_underscores(
     }
     *end = '\0';
     result = innerfunc(dup, end - dup, arg);
-    PyMem_Free(dup);
+    TyMem_Free(dup);
     return result;
 
   error:
-    PyMem_Free(dup);
-    PyErr_Format(PyExc_ValueError,
+    TyMem_Free(dup);
+    TyErr_Format(TyExc_ValueError,
                  "could not convert string to %s: "
                  "%R", what, obj);
     return NULL;
@@ -406,7 +406,7 @@ _Py_string_to_number_with_underscores(
 /* Given a string that may have a decimal point in the current
    locale, change it back to a dot.  Since the string cannot get
    longer, no need for a maximum buffer size parameter. */
-Py_LOCAL_INLINE(void)
+Ty_LOCAL_INLINE(void)
 change_decimal_from_locale_to_dot(char* buffer)
 {
     struct lconv *locale_data = localeconv();
@@ -417,7 +417,7 @@ change_decimal_from_locale_to_dot(char* buffer)
 
         if (*buffer == '+' || *buffer == '-')
             buffer++;
-        while (Py_ISDIGIT(*buffer))
+        while (Ty_ISDIGIT(*buffer))
             buffer++;
         if (strncmp(buffer, decimal_point, decimal_point_len) == 0) {
             *buffer = '.';
@@ -444,7 +444,7 @@ as necessary to represent the exponent.
 
 /* Ensure that any exponent, if present, is at least MIN_EXPONENT_DIGITS
    in length. */
-Py_LOCAL_INLINE(void)
+Ty_LOCAL_INLINE(void)
 ensure_minimum_exponent_length(char* buffer, size_t buf_size)
 {
     char *p = strpbrk(buffer, "eE");
@@ -460,7 +460,7 @@ ensure_minimum_exponent_length(char* buffer, size_t buf_size)
 
         /* Find the end of the exponent, keeping track of leading
            zeros. */
-        while (*p && Py_ISDIGIT(*p)) {
+        while (*p && Ty_ISDIGIT(*p)) {
             if (in_leading_zeros && *p == '0')
                 ++leading_zero_cnt;
             if (*p != '0')
@@ -512,7 +512,7 @@ ensure_minimum_exponent_length(char* buffer, size_t buf_size)
    remove the decimal point if all digits following it are zero.  The numeric
    string must end in '\0', and should not have any leading or trailing
    whitespace.  Assumes that the decimal point is '.'. */
-Py_LOCAL_INLINE(void)
+Ty_LOCAL_INLINE(void)
 remove_trailing_zeros(char *buffer)
 {
     char *old_fraction_end, *new_fraction_end, *end, *p;
@@ -521,7 +521,7 @@ remove_trailing_zeros(char *buffer)
     if (*p == '-' || *p == '+')
         /* Skip leading sign, if present */
         ++p;
-    while (Py_ISDIGIT(*p))
+    while (Ty_ISDIGIT(*p))
         ++p;
 
     /* if there's no decimal point there's nothing to do */
@@ -529,7 +529,7 @@ remove_trailing_zeros(char *buffer)
         return;
 
     /* scan any digits after the point */
-    while (Py_ISDIGIT(*p))
+    while (Ty_ISDIGIT(*p))
         ++p;
     old_fraction_end = p;
 
@@ -558,7 +558,7 @@ remove_trailing_zeros(char *buffer)
 
    Returns a pointer to the fixed buffer, or NULL on failure.
 */
-Py_LOCAL_INLINE(char *)
+Ty_LOCAL_INLINE(char *)
 ensure_decimal_point(char* buffer, size_t buf_size, int precision)
 {
     int digit_count, insert_count = 0, convert_to_exp = 0;
@@ -572,19 +572,19 @@ ensure_decimal_point(char* buffer, size_t buf_size, int precision)
            ever be '-', but it can't hurt to check for both. */
         ++p;
     digits_start = p;
-    while (*p && Py_ISDIGIT(*p))
+    while (*p && Ty_ISDIGIT(*p))
         ++p;
-    digit_count = Py_SAFE_DOWNCAST(p - digits_start, Py_ssize_t, int);
+    digit_count = Ty_SAFE_DOWNCAST(p - digits_start, Ty_ssize_t, int);
 
     if (*p == '.') {
-        if (Py_ISDIGIT(*(p+1))) {
+        if (Ty_ISDIGIT(*(p+1))) {
             /* Nothing to do, we already have a decimal
                point and a digit after it */
         }
         else {
             /* We have a decimal point, but no following
                digit.  Insert a zero after the decimal. */
-            /* can't ever get here via PyOS_double_to_string */
+            /* can't ever get here via TyOS_double_to_string */
             assert(precision == -1);
             ++p;
             chars_to_insert = "0";
@@ -639,9 +639,9 @@ ensure_decimal_point(char* buffer, size_t buf_size, int precision)
         /* Add exponent.  It's okay to use lower case 'e': we only
            arrive here as a result of using the empty format code or
            repr/str builtins and those never want an upper case 'E' */
-        written = PyOS_snprintf(p, buf_avail, "e%+.02d", digit_count-1);
+        written = TyOS_snprintf(p, buf_avail, "e%+.02d", digit_count-1);
         if (!(0 <= written &&
-              written < Py_SAFE_DOWNCAST(buf_avail, size_t, int)))
+              written < Ty_SAFE_DOWNCAST(buf_avail, size_t, int)))
             /* output truncated, or something else bad happened */
             return NULL;
         remove_trailing_zeros(buffer);
@@ -653,7 +653,7 @@ ensure_decimal_point(char* buffer, size_t buf_size, int precision)
 #define FLOAT_FORMATBUFLEN 120
 
 /**
- * _PyOS_ascii_formatd:
+ * _TyOS_ascii_formatd:
  * @buffer: A buffer to place the resulting string in
  * @buf_size: The length of the buffer.
  * @format: The printf()-style format to use for the
@@ -673,7 +673,7 @@ ensure_decimal_point(char* buffer, size_t buf_size, int precision)
  * On failure returns NULL but does not set any Python exception.
  **/
 static char *
-_PyOS_ascii_formatd(char       *buffer,
+_TyOS_ascii_formatd(char       *buffer,
                    size_t      buf_size,
                    const char *format,
                    double      d,
@@ -725,8 +725,8 @@ _PyOS_ascii_formatd(char       *buffer,
     }
 
 
-    /* Have PyOS_snprintf do the hard work */
-    PyOS_snprintf(buffer, buf_size, format, d);
+    /* Have TyOS_snprintf do the hard work */
+    TyOS_snprintf(buffer, buf_size, format, d);
 
     /* Do various fixups on the return string */
 
@@ -752,16 +752,16 @@ _PyOS_ascii_formatd(char       *buffer,
     return buffer;
 }
 
-/* The fallback code to use if _Py_dg_dtoa is not available. */
+/* The fallback code to use if _Ty_dg_dtoa is not available. */
 
-char * PyOS_double_to_string(double val,
+char * TyOS_double_to_string(double val,
                                          char format_code,
                                          int precision,
                                          int flags,
                                          int *type)
 {
     char format[32];
-    Py_ssize_t bufsize;
+    Ty_ssize_t bufsize;
     char *buf;
     int t, exp;
     int upper = 0;
@@ -787,7 +787,7 @@ char * PyOS_double_to_string(double val,
     case 'r':          /* repr format */
         /* Supplied precision is unused, must be 0. */
         if (precision != 0) {
-            PyErr_BadInternalCall();
+            TyErr_BadInternalCall();
             return NULL;
         }
         /* The repr() precision (17 significant decimal digits) is the
@@ -800,7 +800,7 @@ char * PyOS_double_to_string(double val,
         format_code = 'g';
         break;
     default:
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         return NULL;
     }
 
@@ -853,33 +853,33 @@ char * PyOS_double_to_string(double val,
         }
     }
 
-    buf = PyMem_Malloc(bufsize);
+    buf = TyMem_Malloc(bufsize);
     if (buf == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
 
     /* Handle nan and inf. */
     if (isnan(val)) {
         strcpy(buf, "nan");
-        t = Py_DTST_NAN;
+        t = Ty_DTST_NAN;
     } else if (isinf(val)) {
         if (copysign(1., val) == 1.)
             strcpy(buf, "inf");
         else
             strcpy(buf, "-inf");
-        t = Py_DTST_INFINITE;
+        t = Ty_DTST_INFINITE;
     } else {
-        t = Py_DTST_FINITE;
-        if (flags & Py_DTSF_ADD_DOT_0)
+        t = Ty_DTST_FINITE;
+        if (flags & Ty_DTSF_ADD_DOT_0)
             format_code = 'Z';
 
-        PyOS_snprintf(format, sizeof(format), "%%%s.%i%c",
-                      (flags & Py_DTSF_ALT ? "#" : ""), precision,
+        TyOS_snprintf(format, sizeof(format), "%%%s.%i%c",
+                      (flags & Ty_DTSF_ALT ? "#" : ""), precision,
                       format_code);
-        _PyOS_ascii_formatd(buf, bufsize, format, val, precision);
+        _TyOS_ascii_formatd(buf, bufsize, format, val, precision);
 
-        if (flags & Py_DTSF_NO_NEG_0 && buf[0] == '-') {
+        if (flags & Ty_DTSF_NO_NEG_0 && buf[0] == '-') {
             char *buf2 = buf + 1;
             while (*buf2 == '0' || *buf2 == '.') {
                 ++buf2;
@@ -894,7 +894,7 @@ char * PyOS_double_to_string(double val,
 
     /* Add sign when requested.  It's convenient (esp. when formatting
      complex numbers) to include a sign even for inf and nan. */
-    if (flags & Py_DTSF_SIGN && buf[0] != '-') {
+    if (flags & Ty_DTSF_SIGN && buf[0] != '-') {
         size_t len = strlen(buf);
         /* the bufsize calculations above should ensure that we've got
            space to add a sign */
@@ -906,7 +906,7 @@ char * PyOS_double_to_string(double val,
         /* Convert to upper case. */
         char *p1;
         for (p1 = buf; *p1; p1++)
-            *p1 = Py_TOUPPER(*p1);
+            *p1 = Ty_TOUPPER(*p1);
     }
 
     if (type)
@@ -916,7 +916,7 @@ char * PyOS_double_to_string(double val,
 
 #else  // _PY_SHORT_FLOAT_REPR == 1
 
-/* _Py_dg_dtoa is available. */
+/* _Ty_dg_dtoa is available. */
 
 /* I'm using a lookup table here so that I don't have to invent a non-locale
    specific way to convert to uppercase */
@@ -937,7 +937,7 @@ static const char * const uc_float_strings[] = {
 };
 
 
-/* Convert a double d to a string, and return a PyMem_Malloc'd block of
+/* Convert a double d to a string, and return a TyMem_Malloc'd block of
    memory contain the resulting string.
 
    Arguments:
@@ -957,11 +957,11 @@ static const char * const uc_float_strings[] = {
        be nonzero.
      type, if non-NULL, will be set to one of these constants to identify
        the type of the 'd' argument:
-     Py_DTST_FINITE
-     Py_DTST_INFINITE
-     Py_DTST_NAN
+     Ty_DTST_FINITE
+     Ty_DTST_INFINITE
+     Ty_DTST_NAN
 
-   Returns a PyMem_Malloc'd block of memory containing the resulting string,
+   Returns a TyMem_Malloc'd block of memory containing the resulting string,
     or NULL on error. If NULL is returned, the Python error has been set.
  */
 
@@ -974,23 +974,23 @@ format_float_short(double d, char format_code,
 {
     char *buf = NULL;
     char *p = NULL;
-    Py_ssize_t bufsize = 0;
+    Ty_ssize_t bufsize = 0;
     char *digits, *digits_end;
     int decpt_as_int, sign, exp_len, exp = 0, use_exp = 0;
-    Py_ssize_t decpt, digits_len, vdigits_start, vdigits_end;
-    _Py_SET_53BIT_PRECISION_HEADER;
+    Ty_ssize_t decpt, digits_len, vdigits_start, vdigits_end;
+    _Ty_SET_53BIT_PRECISION_HEADER;
 
-    /* _Py_dg_dtoa returns a digit string (no decimal point or exponent).
-       Must be matched by a call to _Py_dg_freedtoa. */
-    _Py_SET_53BIT_PRECISION_START;
-    digits = _Py_dg_dtoa(d, mode, precision, &decpt_as_int, &sign,
+    /* _Ty_dg_dtoa returns a digit string (no decimal point or exponent).
+       Must be matched by a call to _Ty_dg_freedtoa. */
+    _Ty_SET_53BIT_PRECISION_START;
+    digits = _Ty_dg_dtoa(d, mode, precision, &decpt_as_int, &sign,
                          &digits_end);
-    _Py_SET_53BIT_PRECISION_END;
+    _Ty_SET_53BIT_PRECISION_END;
 
-    decpt = (Py_ssize_t)decpt_as_int;
+    decpt = (Ty_ssize_t)decpt_as_int;
     if (digits == NULL) {
         /* The only failure mode is no memory. */
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         goto exit;
     }
     assert(digits_end != NULL && digits_end >= digits);
@@ -1001,7 +1001,7 @@ format_float_short(double d, char format_code,
         sign = 0;
     }
 
-    if (digits_len && !Py_ISDIGIT(digits[0])) {
+    if (digits_len && !Ty_ISDIGIT(digits[0])) {
         /* Infinities and nans here; adapt Gay's output,
            so convert Infinity to inf and NaN to nan, and
            ignore sign of nan. Then return. */
@@ -1012,9 +1012,9 @@ format_float_short(double d, char format_code,
 
         /* We only need 5 bytes to hold the result "+inf\0" . */
         bufsize = 5; /* Used later in an assert. */
-        buf = (char *)PyMem_Malloc(bufsize);
+        buf = (char *)TyMem_Malloc(bufsize);
         if (buf == NULL) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             goto exit;
         }
         p = buf;
@@ -1030,26 +1030,26 @@ format_float_short(double d, char format_code,
             p += 3;
 
             if (type)
-                *type = Py_DTST_INFINITE;
+                *type = Ty_DTST_INFINITE;
         }
         else if (digits[0] == 'n' || digits[0] == 'N') {
             strncpy(p, float_strings[OFS_NAN], 3);
             p += 3;
 
             if (type)
-                *type = Py_DTST_NAN;
+                *type = Ty_DTST_NAN;
         }
         else {
             /* shouldn't get here: Gay's code should always return
                something starting with a digit, an 'I',  or 'N' */
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
         }
         goto exit;
     }
 
     /* The result must be finite (not inf or nan). */
     if (type)
-        *type = Py_DTST_FINITE;
+        *type = Ty_DTST_FINITE;
 
 
     /* We got digits back, format them.  We may need to pad 'digits'
@@ -1100,7 +1100,7 @@ format_float_short(double d, char format_code,
             use_exp = 1;
         break;
     default:
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         goto exit;
     }
 
@@ -1139,9 +1139,9 @@ format_float_short(double d, char format_code,
 
     /* Now allocate the memory and initialize p to point to the start of
        it. */
-    buf = (char *)PyMem_Malloc(bufsize);
+    buf = (char *)TyMem_Malloc(bufsize);
     if (buf == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         goto exit;
     }
     p = buf;
@@ -1212,13 +1212,13 @@ format_float_short(double d, char format_code,
         assert(p-buf < bufsize);
     }
     if (digits)
-        _Py_dg_freedtoa(digits);
+        _Ty_dg_freedtoa(digits);
 
     return buf;
 }
 
 
-char * PyOS_double_to_string(double val,
+char * TyOS_double_to_string(double val,
                                          char format_code,
                                          int precision,
                                          int flags,
@@ -1234,7 +1234,7 @@ char * PyOS_double_to_string(double val,
     case 'E':
         float_strings = uc_float_strings;
         format_code = 'e';
-        _Py_FALLTHROUGH;
+        _Ty_FALLTHROUGH;
     case 'e':
         mode = 2;
         precision++;
@@ -1244,7 +1244,7 @@ char * PyOS_double_to_string(double val,
     case 'F':
         float_strings = uc_float_strings;
         format_code = 'f';
-        _Py_FALLTHROUGH;
+        _Ty_FALLTHROUGH;
     case 'f':
         mode = 3;
         break;
@@ -1253,7 +1253,7 @@ char * PyOS_double_to_string(double val,
     case 'G':
         float_strings = uc_float_strings;
         format_code = 'g';
-        _Py_FALLTHROUGH;
+        _Ty_FALLTHROUGH;
     case 'g':
         mode = 2;
         /* precision 0 makes no sense for 'g' format; interpret as 1 */
@@ -1266,21 +1266,21 @@ char * PyOS_double_to_string(double val,
         mode = 0;
         /* Supplied precision is unused, must be 0. */
         if (precision != 0) {
-            PyErr_BadInternalCall();
+            TyErr_BadInternalCall();
             return NULL;
         }
         break;
 
     default:
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         return NULL;
     }
 
     return format_float_short(val, format_code, mode, precision,
-                              flags & Py_DTSF_SIGN,
-                              flags & Py_DTSF_ADD_DOT_0,
-                              flags & Py_DTSF_ALT,
-                              flags & Py_DTSF_NO_NEG_0,
+                              flags & Ty_DTSF_SIGN,
+                              flags & Ty_DTSF_ADD_DOT_0,
+                              flags & Ty_DTSF_ALT,
+                              flags & Ty_DTSF_NO_NEG_0,
                               float_strings, type);
 }
 #endif  // _PY_SHORT_FLOAT_REPR == 1

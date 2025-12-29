@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_UnpackKeywords()
+#include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
 PyDoc_STRVAR(_testinternalcapi_compiler_cleandoc__doc__,
 "compiler_cleandoc($module, /, doc)\n"
@@ -17,50 +17,50 @@ PyDoc_STRVAR(_testinternalcapi_compiler_cleandoc__doc__,
 #define _TESTINTERNALCAPI_COMPILER_CLEANDOC_METHODDEF    \
     {"compiler_cleandoc", _PyCFunction_CAST(_testinternalcapi_compiler_cleandoc), METH_FASTCALL|METH_KEYWORDS, _testinternalcapi_compiler_cleandoc__doc__},
 
-static PyObject *
-_testinternalcapi_compiler_cleandoc_impl(PyObject *module, PyObject *doc);
+static TyObject *
+_testinternalcapi_compiler_cleandoc_impl(TyObject *module, TyObject *doc);
 
-static PyObject *
-_testinternalcapi_compiler_cleandoc(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_testinternalcapi_compiler_cleandoc(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(doc), },
+        .ob_item = { &_Ty_ID(doc), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"doc", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "compiler_cleandoc",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *doc;
+    TyObject *argsbuf[1];
+    TyObject *doc;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
-    if (!PyUnicode_Check(args[0])) {
-        _PyArg_BadArgument("compiler_cleandoc", "argument 'doc'", "str", args[0]);
+    if (!TyUnicode_Check(args[0])) {
+        _TyArg_BadArgument("compiler_cleandoc", "argument 'doc'", "str", args[0]);
         goto exit;
     }
     doc = args[0];
@@ -79,11 +79,11 @@ PyDoc_STRVAR(_testinternalcapi_new_instruction_sequence__doc__,
 #define _TESTINTERNALCAPI_NEW_INSTRUCTION_SEQUENCE_METHODDEF    \
     {"new_instruction_sequence", (PyCFunction)_testinternalcapi_new_instruction_sequence, METH_NOARGS, _testinternalcapi_new_instruction_sequence__doc__},
 
-static PyObject *
-_testinternalcapi_new_instruction_sequence_impl(PyObject *module);
+static TyObject *
+_testinternalcapi_new_instruction_sequence_impl(TyObject *module);
 
-static PyObject *
-_testinternalcapi_new_instruction_sequence(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_testinternalcapi_new_instruction_sequence(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return _testinternalcapi_new_instruction_sequence_impl(module);
 }
@@ -97,65 +97,65 @@ PyDoc_STRVAR(_testinternalcapi_compiler_codegen__doc__,
 #define _TESTINTERNALCAPI_COMPILER_CODEGEN_METHODDEF    \
     {"compiler_codegen", _PyCFunction_CAST(_testinternalcapi_compiler_codegen), METH_FASTCALL|METH_KEYWORDS, _testinternalcapi_compiler_codegen__doc__},
 
-static PyObject *
-_testinternalcapi_compiler_codegen_impl(PyObject *module, PyObject *ast,
-                                        PyObject *filename, int optimize,
+static TyObject *
+_testinternalcapi_compiler_codegen_impl(TyObject *module, TyObject *ast,
+                                        TyObject *filename, int optimize,
                                         int compile_mode);
 
-static PyObject *
-_testinternalcapi_compiler_codegen(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_testinternalcapi_compiler_codegen(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 4
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(ast), &_Py_ID(filename), &_Py_ID(optimize), &_Py_ID(compile_mode), },
+        .ob_item = { &_Ty_ID(ast), &_Ty_ID(filename), &_Ty_ID(optimize), &_Ty_ID(compile_mode), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"ast", "filename", "optimize", "compile_mode", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "compiler_codegen",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[4];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 3;
-    PyObject *ast;
-    PyObject *filename;
+    TyObject *argsbuf[4];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 3;
+    TyObject *ast;
+    TyObject *filename;
     int optimize;
     int compile_mode = 0;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 4, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     ast = args[0];
     filename = args[1];
-    optimize = PyLong_AsInt(args[2]);
-    if (optimize == -1 && PyErr_Occurred()) {
+    optimize = TyLong_AsInt(args[2]);
+    if (optimize == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (!noptargs) {
         goto skip_optional_pos;
     }
-    compile_mode = PyLong_AsInt(args[3]);
-    if (compile_mode == -1 && PyErr_Occurred()) {
+    compile_mode = TyLong_AsInt(args[3]);
+    if (compile_mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_pos:
@@ -174,55 +174,55 @@ PyDoc_STRVAR(_testinternalcapi_optimize_cfg__doc__,
 #define _TESTINTERNALCAPI_OPTIMIZE_CFG_METHODDEF    \
     {"optimize_cfg", _PyCFunction_CAST(_testinternalcapi_optimize_cfg), METH_FASTCALL|METH_KEYWORDS, _testinternalcapi_optimize_cfg__doc__},
 
-static PyObject *
-_testinternalcapi_optimize_cfg_impl(PyObject *module, PyObject *instructions,
-                                    PyObject *consts, int nlocals);
+static TyObject *
+_testinternalcapi_optimize_cfg_impl(TyObject *module, TyObject *instructions,
+                                    TyObject *consts, int nlocals);
 
-static PyObject *
-_testinternalcapi_optimize_cfg(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_testinternalcapi_optimize_cfg(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(instructions), &_Py_ID(consts), &_Py_ID(nlocals), },
+        .ob_item = { &_Ty_ID(instructions), &_Ty_ID(consts), &_Ty_ID(nlocals), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"instructions", "consts", "nlocals", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "optimize_cfg",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject *instructions;
-    PyObject *consts;
+    TyObject *argsbuf[3];
+    TyObject *instructions;
+    TyObject *consts;
     int nlocals;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
     }
     instructions = args[0];
     consts = args[1];
-    nlocals = PyLong_AsInt(args[2]);
-    if (nlocals == -1 && PyErr_Occurred()) {
+    nlocals = TyLong_AsInt(args[2]);
+    if (nlocals == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = _testinternalcapi_optimize_cfg_impl(module, instructions, consts, nlocals);
@@ -240,49 +240,49 @@ PyDoc_STRVAR(_testinternalcapi_assemble_code_object__doc__,
 #define _TESTINTERNALCAPI_ASSEMBLE_CODE_OBJECT_METHODDEF    \
     {"assemble_code_object", _PyCFunction_CAST(_testinternalcapi_assemble_code_object), METH_FASTCALL|METH_KEYWORDS, _testinternalcapi_assemble_code_object__doc__},
 
-static PyObject *
-_testinternalcapi_assemble_code_object_impl(PyObject *module,
-                                            PyObject *filename,
-                                            PyObject *instructions,
-                                            PyObject *metadata);
+static TyObject *
+_testinternalcapi_assemble_code_object_impl(TyObject *module,
+                                            TyObject *filename,
+                                            TyObject *instructions,
+                                            TyObject *metadata);
 
-static PyObject *
-_testinternalcapi_assemble_code_object(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_testinternalcapi_assemble_code_object(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 3
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(filename), &_Py_ID(instructions), &_Py_ID(metadata), },
+        .ob_item = { &_Ty_ID(filename), &_Ty_ID(instructions), &_Ty_ID(metadata), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"filename", "instructions", "metadata", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "assemble_code_object",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[3];
-    PyObject *filename;
-    PyObject *instructions;
-    PyObject *metadata;
+    TyObject *argsbuf[3];
+    TyObject *filename;
+    TyObject *instructions;
+    TyObject *metadata;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 3, /*maxpos*/ 3, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -304,11 +304,11 @@ PyDoc_STRVAR(_testinternalcapi_test_long_numbits__doc__,
 #define _TESTINTERNALCAPI_TEST_LONG_NUMBITS_METHODDEF    \
     {"test_long_numbits", (PyCFunction)_testinternalcapi_test_long_numbits, METH_NOARGS, _testinternalcapi_test_long_numbits__doc__},
 
-static PyObject *
-_testinternalcapi_test_long_numbits_impl(PyObject *module);
+static TyObject *
+_testinternalcapi_test_long_numbits_impl(TyObject *module);
 
-static PyObject *
-_testinternalcapi_test_long_numbits(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_testinternalcapi_test_long_numbits(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return _testinternalcapi_test_long_numbits_impl(module);
 }
@@ -317,50 +317,50 @@ PyDoc_STRVAR(gh_119213_getargs__doc__,
 "gh_119213_getargs($module, /, spam=None)\n"
 "--\n"
 "\n"
-"Test _PyArg_Parser.kwtuple");
+"Test _TyArg_Parser.kwtuple");
 
 #define GH_119213_GETARGS_METHODDEF    \
     {"gh_119213_getargs", _PyCFunction_CAST(gh_119213_getargs), METH_FASTCALL|METH_KEYWORDS, gh_119213_getargs__doc__},
 
-static PyObject *
-gh_119213_getargs_impl(PyObject *module, PyObject *spam);
+static TyObject *
+gh_119213_getargs_impl(TyObject *module, TyObject *spam);
 
-static PyObject *
-gh_119213_getargs(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+gh_119213_getargs(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(spam), },
+        .ob_item = { &_Ty_ID(spam), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"spam", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "gh_119213_getargs",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 0;
-    PyObject *spam = Py_None;
+    TyObject *argsbuf[1];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 0;
+    TyObject *spam = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -384,11 +384,11 @@ PyDoc_STRVAR(get_next_dict_keys_version__doc__,
 #define GET_NEXT_DICT_KEYS_VERSION_METHODDEF    \
     {"get_next_dict_keys_version", (PyCFunction)get_next_dict_keys_version, METH_NOARGS, get_next_dict_keys_version__doc__},
 
-static PyObject *
-get_next_dict_keys_version_impl(PyObject *module);
+static TyObject *
+get_next_dict_keys_version_impl(TyObject *module);
 
-static PyObject *
-get_next_dict_keys_version(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+get_next_dict_keys_version(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return get_next_dict_keys_version_impl(module);
 }

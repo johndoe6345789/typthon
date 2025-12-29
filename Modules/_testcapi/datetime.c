@@ -5,16 +5,16 @@
 
 static int test_run_counter = 0;
 
-static PyObject *
-test_datetime_capi(PyObject *self, PyObject *args)
+static TyObject *
+test_datetime_capi(TyObject *self, TyObject *args)
 {
     if (PyDateTimeAPI) {
         if (test_run_counter) {
             /* Probably regrtest.py -R */
-            Py_RETURN_NONE;
+            Ty_RETURN_NONE;
         }
         else {
-            PyErr_SetString(PyExc_AssertionError,
+            TyErr_SetString(TyExc_AssertionError,
                             "PyDateTime_CAPI somehow initialized");
             return NULL;
         }
@@ -27,55 +27,55 @@ test_datetime_capi(PyObject *self, PyObject *args)
     }
     // The following C API types need to outlive interpreters, since the
     // borrowed references to them can be held by users without being updated.
-    assert(!PyType_HasFeature(PyDateTimeAPI->DateType, Py_TPFLAGS_HEAPTYPE));
-    assert(!PyType_HasFeature(PyDateTimeAPI->TimeType, Py_TPFLAGS_HEAPTYPE));
-    assert(!PyType_HasFeature(PyDateTimeAPI->DateTimeType, Py_TPFLAGS_HEAPTYPE));
-    assert(!PyType_HasFeature(PyDateTimeAPI->DeltaType, Py_TPFLAGS_HEAPTYPE));
-    assert(!PyType_HasFeature(PyDateTimeAPI->TZInfoType, Py_TPFLAGS_HEAPTYPE));
-    Py_RETURN_NONE;
+    assert(!TyType_HasFeature(PyDateTimeAPI->DateType, Ty_TPFLAGS_HEAPTYPE));
+    assert(!TyType_HasFeature(PyDateTimeAPI->TimeType, Ty_TPFLAGS_HEAPTYPE));
+    assert(!TyType_HasFeature(PyDateTimeAPI->DateTimeType, Ty_TPFLAGS_HEAPTYPE));
+    assert(!TyType_HasFeature(PyDateTimeAPI->DeltaType, Ty_TPFLAGS_HEAPTYPE));
+    assert(!TyType_HasFeature(PyDateTimeAPI->TZInfoType, Ty_TPFLAGS_HEAPTYPE));
+    Ty_RETURN_NONE;
 }
 
 /* Functions exposing the C API type checking for testing */
 #define MAKE_DATETIME_CHECK_FUNC(check_method, exact_method)    \
 do {                                                            \
-    PyObject *obj;                                              \
+    TyObject *obj;                                              \
     int exact = 0;                                              \
-    if (!PyArg_ParseTuple(args, "O|p", &obj, &exact)) {         \
+    if (!TyArg_ParseTuple(args, "O|p", &obj, &exact)) {         \
         return NULL;                                            \
     }                                                           \
     int rv = exact?exact_method(obj):check_method(obj);         \
     if (rv) {                                                   \
-        Py_RETURN_TRUE;                                         \
+        Ty_RETURN_TRUE;                                         \
     }                                                           \
-    Py_RETURN_FALSE;                                            \
+    Ty_RETURN_FALSE;                                            \
 } while (0)                                                     \
 
-static PyObject *
-datetime_check_date(PyObject *self, PyObject *args)
+static TyObject *
+datetime_check_date(TyObject *self, TyObject *args)
 {
     MAKE_DATETIME_CHECK_FUNC(PyDate_Check, PyDate_CheckExact);
 }
 
-static PyObject *
-datetime_check_time(PyObject *self, PyObject *args)
+static TyObject *
+datetime_check_time(TyObject *self, TyObject *args)
 {
     MAKE_DATETIME_CHECK_FUNC(PyTime_Check, PyTime_CheckExact);
 }
 
-static PyObject *
-datetime_check_datetime(PyObject *self, PyObject *args)
+static TyObject *
+datetime_check_datetime(TyObject *self, TyObject *args)
 {
     MAKE_DATETIME_CHECK_FUNC(PyDateTime_Check, PyDateTime_CheckExact);
 }
 
-static PyObject *
-datetime_check_delta(PyObject *self, PyObject *args)
+static TyObject *
+datetime_check_delta(TyObject *self, TyObject *args)
 {
     MAKE_DATETIME_CHECK_FUNC(PyDelta_Check, PyDelta_CheckExact);
 }
 
-static PyObject *
-datetime_check_tzinfo(PyObject *self, PyObject *args)
+static TyObject *
+datetime_check_tzinfo(TyObject *self, TyObject *args)
 {
     MAKE_DATETIME_CHECK_FUNC(PyTZInfo_Check, PyTZInfo_CheckExact);
 }
@@ -87,106 +87,106 @@ datetime_check_tzinfo(PyObject *self, PyObject *args)
    2. timezone with offset and name from PyTimeZone_FromOffsetAndName
    3. timezone with offset (no name) from PyTimeZone_FromOffset
 */
-static PyObject *
-make_timezones_capi(PyObject *self, PyObject *args)
+static TyObject *
+make_timezones_capi(TyObject *self, TyObject *args)
 {
-    PyObject *offset = PyDelta_FromDSU(0, -18000, 0);
-    PyObject *name = PyUnicode_FromString("EST");
+    TyObject *offset = PyDelta_FromDSU(0, -18000, 0);
+    TyObject *name = TyUnicode_FromString("EST");
     if (offset == NULL || name == NULL) {
-        Py_XDECREF(offset);
-        Py_XDECREF(name);
+        Ty_XDECREF(offset);
+        Ty_XDECREF(name);
         return NULL;
     }
 
-    PyObject *est_zone_capi = PyDateTimeAPI->TimeZone_FromTimeZone(offset, name);
-    PyObject *est_zone_macro = PyTimeZone_FromOffsetAndName(offset, name);
-    PyObject *est_zone_macro_noname = PyTimeZone_FromOffset(offset);
-    Py_DECREF(offset);
-    Py_DECREF(name);
+    TyObject *est_zone_capi = PyDateTimeAPI->TimeZone_FromTimeZone(offset, name);
+    TyObject *est_zone_macro = PyTimeZone_FromOffsetAndName(offset, name);
+    TyObject *est_zone_macro_noname = PyTimeZone_FromOffset(offset);
+    Ty_DECREF(offset);
+    Ty_DECREF(name);
     if (est_zone_capi == NULL || est_zone_macro == NULL ||
         est_zone_macro_noname == NULL)
     {
         goto error;
     }
-    PyObject *rv = PyTuple_New(3);
+    TyObject *rv = TyTuple_New(3);
     if (rv == NULL) {
         goto error;
     }
 
-    PyTuple_SET_ITEM(rv, 0, est_zone_capi);
-    PyTuple_SET_ITEM(rv, 1, est_zone_macro);
-    PyTuple_SET_ITEM(rv, 2, est_zone_macro_noname);
+    TyTuple_SET_ITEM(rv, 0, est_zone_capi);
+    TyTuple_SET_ITEM(rv, 1, est_zone_macro);
+    TyTuple_SET_ITEM(rv, 2, est_zone_macro_noname);
 
     return rv;
 error:
-    Py_XDECREF(est_zone_capi);
-    Py_XDECREF(est_zone_macro);
-    Py_XDECREF(est_zone_macro_noname);
+    Ty_XDECREF(est_zone_capi);
+    Ty_XDECREF(est_zone_macro);
+    Ty_XDECREF(est_zone_macro_noname);
     return NULL;
 }
 
-static PyObject *
-get_timezones_offset_zero(PyObject *self, PyObject *args)
+static TyObject *
+get_timezones_offset_zero(TyObject *self, TyObject *args)
 {
-    PyObject *offset = PyDelta_FromDSU(0, 0, 0);
-    PyObject *name = Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+    TyObject *offset = PyDelta_FromDSU(0, 0, 0);
+    TyObject *name = Ty_GetConstant(Ty_CONSTANT_EMPTY_STR);
     if (offset == NULL || name == NULL) {
-        Py_XDECREF(offset);
-        Py_XDECREF(name);
+        Ty_XDECREF(offset);
+        Ty_XDECREF(name);
         return NULL;
     }
 
     // These two should return the UTC singleton
-    PyObject *utc_singleton_0 = PyTimeZone_FromOffset(offset);
-    PyObject *utc_singleton_1 = PyTimeZone_FromOffsetAndName(offset, NULL);
+    TyObject *utc_singleton_0 = PyTimeZone_FromOffset(offset);
+    TyObject *utc_singleton_1 = PyTimeZone_FromOffsetAndName(offset, NULL);
 
     // This one will return +00:00 zone, but not the UTC singleton
-    PyObject *non_utc_zone = PyTimeZone_FromOffsetAndName(offset, name);
-    Py_DECREF(offset);
-    Py_DECREF(name);
+    TyObject *non_utc_zone = PyTimeZone_FromOffsetAndName(offset, name);
+    Ty_DECREF(offset);
+    Ty_DECREF(name);
     if (utc_singleton_0 == NULL || utc_singleton_1 == NULL ||
         non_utc_zone == NULL)
     {
         goto error;
     }
 
-    PyObject *rv = PyTuple_New(3);
+    TyObject *rv = TyTuple_New(3);
     if (rv == NULL) {
         goto error;
     }
-    PyTuple_SET_ITEM(rv, 0, utc_singleton_0);
-    PyTuple_SET_ITEM(rv, 1, utc_singleton_1);
-    PyTuple_SET_ITEM(rv, 2, non_utc_zone);
+    TyTuple_SET_ITEM(rv, 0, utc_singleton_0);
+    TyTuple_SET_ITEM(rv, 1, utc_singleton_1);
+    TyTuple_SET_ITEM(rv, 2, non_utc_zone);
 
     return rv;
 error:
-    Py_XDECREF(utc_singleton_0);
-    Py_XDECREF(utc_singleton_1);
-    Py_XDECREF(non_utc_zone);
+    Ty_XDECREF(utc_singleton_0);
+    Ty_XDECREF(utc_singleton_1);
+    Ty_XDECREF(non_utc_zone);
     return NULL;
 }
 
-static PyObject *
-get_timezone_utc_capi(PyObject *self, PyObject *args)
+static TyObject *
+get_timezone_utc_capi(TyObject *self, TyObject *args)
 {
     int macro = 0;
-    if (!PyArg_ParseTuple(args, "|p", &macro)) {
+    if (!TyArg_ParseTuple(args, "|p", &macro)) {
         return NULL;
     }
     if (macro) {
-        return Py_NewRef(PyDateTime_TimeZone_UTC);
+        return Ty_NewRef(PyDateTime_TimeZone_UTC);
     }
-    return Py_NewRef(PyDateTimeAPI->TimeZone_UTC);
+    return Ty_NewRef(PyDateTimeAPI->TimeZone_UTC);
 }
 
-static PyObject *
-get_date_fromdate(PyObject *self, PyObject *args)
+static TyObject *
+get_date_fromdate(TyObject *self, TyObject *args)
 {
-    PyObject *rv = NULL;
+    TyObject *rv = NULL;
     int macro;
     int year, month, day;
 
-    if (!PyArg_ParseTuple(args, "piii", &macro, &year, &month, &day)) {
+    if (!TyArg_ParseTuple(args, "piii", &macro, &year, &month, &day)) {
         return NULL;
     }
 
@@ -201,15 +201,15 @@ get_date_fromdate(PyObject *self, PyObject *args)
     return rv;
 }
 
-static PyObject *
-get_datetime_fromdateandtime(PyObject *self, PyObject *args)
+static TyObject *
+get_datetime_fromdateandtime(TyObject *self, TyObject *args)
 {
-    PyObject *rv = NULL;
+    TyObject *rv = NULL;
     int macro;
     int year, month, day;
     int hour, minute, second, microsecond;
 
-    if (!PyArg_ParseTuple(args, "piiiiiii",
+    if (!TyArg_ParseTuple(args, "piiiiiii",
                           &macro,
                           &year, &month, &day,
                           &hour, &minute, &second, &microsecond)) {
@@ -225,21 +225,21 @@ get_datetime_fromdateandtime(PyObject *self, PyObject *args)
         rv = PyDateTimeAPI->DateTime_FromDateAndTime(
                 year, month, day,
                 hour, minute, second, microsecond,
-                Py_None,
+                Ty_None,
                 PyDateTimeAPI->DateTimeType);
     }
     return rv;
 }
 
-static PyObject *
-get_datetime_fromdateandtimeandfold(PyObject *self, PyObject *args)
+static TyObject *
+get_datetime_fromdateandtimeandfold(TyObject *self, TyObject *args)
 {
-    PyObject *rv = NULL;
+    TyObject *rv = NULL;
     int macro;
     int year, month, day;
     int hour, minute, second, microsecond, fold;
 
-    if (!PyArg_ParseTuple(args, "piiiiiiii",
+    if (!TyArg_ParseTuple(args, "piiiiiiii",
                           &macro,
                           &year, &month, &day,
                           &hour, &minute, &second, &microsecond,
@@ -257,21 +257,21 @@ get_datetime_fromdateandtimeandfold(PyObject *self, PyObject *args)
         rv = PyDateTimeAPI->DateTime_FromDateAndTimeAndFold(
                 year, month, day,
                 hour, minute, second, microsecond,
-                Py_None,
+                Ty_None,
                 fold,
                 PyDateTimeAPI->DateTimeType);
     }
     return rv;
 }
 
-static PyObject *
-get_time_fromtime(PyObject *self, PyObject *args)
+static TyObject *
+get_time_fromtime(TyObject *self, TyObject *args)
 {
-    PyObject *rv = NULL;
+    TyObject *rv = NULL;
     int macro;
     int hour, minute, second, microsecond;
 
-    if (!PyArg_ParseTuple(args, "piiii",
+    if (!TyArg_ParseTuple(args, "piiii",
                           &macro,
                           &hour, &minute, &second, &microsecond))
     {
@@ -284,20 +284,20 @@ get_time_fromtime(PyObject *self, PyObject *args)
     else {
         rv = PyDateTimeAPI->Time_FromTime(
                 hour, minute, second, microsecond,
-                Py_None,
+                Ty_None,
                 PyDateTimeAPI->TimeType);
     }
     return rv;
 }
 
-static PyObject *
-get_time_fromtimeandfold(PyObject *self, PyObject *args)
+static TyObject *
+get_time_fromtimeandfold(TyObject *self, TyObject *args)
 {
-    PyObject *rv = NULL;
+    TyObject *rv = NULL;
     int macro;
     int hour, minute, second, microsecond, fold;
 
-    if (!PyArg_ParseTuple(args, "piiiii",
+    if (!TyArg_ParseTuple(args, "piiiii",
                           &macro,
                           &hour, &minute, &second, &microsecond,
                           &fold)) {
@@ -310,21 +310,21 @@ get_time_fromtimeandfold(PyObject *self, PyObject *args)
     else {
         rv = PyDateTimeAPI->Time_FromTimeAndFold(
                 hour, minute, second, microsecond,
-                Py_None,
+                Ty_None,
                 fold,
                 PyDateTimeAPI->TimeType);
     }
     return rv;
 }
 
-static PyObject *
-get_delta_fromdsu(PyObject *self, PyObject *args)
+static TyObject *
+get_delta_fromdsu(TyObject *self, TyObject *args)
 {
-    PyObject *rv = NULL;
+    TyObject *rv = NULL;
     int macro;
     int days, seconds, microseconds;
 
-    if (!PyArg_ParseTuple(args, "piii",
+    if (!TyArg_ParseTuple(args, "piii",
                           &macro,
                           &days, &seconds, &microseconds)) {
         return NULL;
@@ -342,18 +342,18 @@ get_delta_fromdsu(PyObject *self, PyObject *args)
     return rv;
 }
 
-static PyObject *
-get_date_fromtimestamp(PyObject *self, PyObject *args)
+static TyObject *
+get_date_fromtimestamp(TyObject *self, TyObject *args)
 {
-    PyObject *tsargs = NULL, *ts = NULL, *rv = NULL;
+    TyObject *tsargs = NULL, *ts = NULL, *rv = NULL;
     int macro = 0;
 
-    if (!PyArg_ParseTuple(args, "O|p", &ts, &macro)) {
+    if (!TyArg_ParseTuple(args, "O|p", &ts, &macro)) {
         return NULL;
     }
 
     // Construct the argument tuple
-    if ((tsargs = PyTuple_Pack(1, ts)) == NULL) {
+    if ((tsargs = TyTuple_Pack(1, ts)) == NULL) {
         return NULL;
     }
 
@@ -363,30 +363,30 @@ get_date_fromtimestamp(PyObject *self, PyObject *args)
     }
     else {
         rv = PyDateTimeAPI->Date_FromTimestamp(
-                (PyObject *)PyDateTimeAPI->DateType, tsargs
+                (TyObject *)PyDateTimeAPI->DateType, tsargs
         );
     }
 
-    Py_DECREF(tsargs);
+    Ty_DECREF(tsargs);
     return rv;
 }
 
-static PyObject *
-get_datetime_fromtimestamp(PyObject *self, PyObject *args)
+static TyObject *
+get_datetime_fromtimestamp(TyObject *self, TyObject *args)
 {
     int macro = 0;
     int usetz = 0;
-    PyObject *tsargs = NULL, *ts = NULL, *tzinfo = Py_None, *rv = NULL;
-    if (!PyArg_ParseTuple(args, "OO|pp", &ts, &tzinfo, &usetz, &macro)) {
+    TyObject *tsargs = NULL, *ts = NULL, *tzinfo = Ty_None, *rv = NULL;
+    if (!TyArg_ParseTuple(args, "OO|pp", &ts, &tzinfo, &usetz, &macro)) {
         return NULL;
     }
 
     // Construct the argument tuple
     if (usetz) {
-        tsargs = PyTuple_Pack(2, ts, tzinfo);
+        tsargs = TyTuple_Pack(2, ts, tzinfo);
     }
     else {
-        tsargs = PyTuple_Pack(1, ts);
+        tsargs = TyTuple_Pack(1, ts);
     }
 
     if (tsargs == NULL) {
@@ -399,16 +399,16 @@ get_datetime_fromtimestamp(PyObject *self, PyObject *args)
     }
     else {
         rv = PyDateTimeAPI->DateTime_FromTimestamp(
-                (PyObject *)PyDateTimeAPI->DateTimeType, tsargs, NULL
+                (TyObject *)PyDateTimeAPI->DateTimeType, tsargs, NULL
         );
     }
 
-    Py_DECREF(tsargs);
+    Ty_DECREF(tsargs);
     return rv;
 }
 
-static PyObject *
-test_PyDateTime_GET(PyObject *self, PyObject *obj)
+static TyObject *
+test_PyDateTime_GET(TyObject *self, TyObject *obj)
 {
     int year, month, day;
 
@@ -416,44 +416,44 @@ test_PyDateTime_GET(PyObject *self, PyObject *obj)
     month = PyDateTime_GET_MONTH(obj);
     day = PyDateTime_GET_DAY(obj);
 
-    return Py_BuildValue("(iii)", year, month, day);
+    return Ty_BuildValue("(iii)", year, month, day);
 }
 
-static PyObject *
-test_PyDateTime_DATE_GET(PyObject *self, PyObject *obj)
+static TyObject *
+test_PyDateTime_DATE_GET(TyObject *self, TyObject *obj)
 {
     int hour = PyDateTime_DATE_GET_HOUR(obj);
     int minute = PyDateTime_DATE_GET_MINUTE(obj);
     int second = PyDateTime_DATE_GET_SECOND(obj);
     int microsecond = PyDateTime_DATE_GET_MICROSECOND(obj);
-    PyObject *tzinfo = PyDateTime_DATE_GET_TZINFO(obj);
+    TyObject *tzinfo = PyDateTime_DATE_GET_TZINFO(obj);
 
-    return Py_BuildValue("(iiiiO)", hour, minute, second, microsecond, tzinfo);
+    return Ty_BuildValue("(iiiiO)", hour, minute, second, microsecond, tzinfo);
 }
 
-static PyObject *
-test_PyDateTime_TIME_GET(PyObject *self, PyObject *obj)
+static TyObject *
+test_PyDateTime_TIME_GET(TyObject *self, TyObject *obj)
 {
     int hour = PyDateTime_TIME_GET_HOUR(obj);
     int minute = PyDateTime_TIME_GET_MINUTE(obj);
     int second = PyDateTime_TIME_GET_SECOND(obj);
     int microsecond = PyDateTime_TIME_GET_MICROSECOND(obj);
-    PyObject *tzinfo = PyDateTime_TIME_GET_TZINFO(obj);
+    TyObject *tzinfo = PyDateTime_TIME_GET_TZINFO(obj);
 
-    return Py_BuildValue("(iiiiO)", hour, minute, second, microsecond, tzinfo);
+    return Ty_BuildValue("(iiiiO)", hour, minute, second, microsecond, tzinfo);
 }
 
-static PyObject *
-test_PyDateTime_DELTA_GET(PyObject *self, PyObject *obj)
+static TyObject *
+test_PyDateTime_DELTA_GET(TyObject *self, TyObject *obj)
 {
     int days = PyDateTime_DELTA_GET_DAYS(obj);
     int seconds = PyDateTime_DELTA_GET_SECONDS(obj);
     int microseconds = PyDateTime_DELTA_GET_MICROSECONDS(obj);
 
-    return Py_BuildValue("(iii)", days, seconds, microseconds);
+    return Ty_BuildValue("(iii)", days, seconds, microseconds);
 }
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"PyDateTime_DATE_GET",         test_PyDateTime_DATE_GET,       METH_O},
     {"PyDateTime_DELTA_GET",        test_PyDateTime_DELTA_GET,      METH_O},
     {"PyDateTime_GET",              test_PyDateTime_GET,            METH_O},
@@ -479,9 +479,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_DateTime(PyObject *mod)
+_PyTestCapi_Init_DateTime(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
     return 0;
@@ -493,7 +493,7 @@ _PyTestCapi_Init_DateTime(PyObject *mod)
  */
 
 static int
-_testcapi_datetime_exec(PyObject *mod)
+_testcapi_datetime_exec(TyObject *mod)
 {
     if (test_datetime_capi(NULL, NULL) == NULL)  {
         return -1;
@@ -502,13 +502,13 @@ _testcapi_datetime_exec(PyObject *mod)
 }
 
 static PyModuleDef_Slot _testcapi_datetime_slots[] = {
-    {Py_mod_exec, _testcapi_datetime_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, _testcapi_datetime_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static struct PyModuleDef _testcapi_datetime_module = {
+static struct TyModuleDef _testcapi_datetime_module = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testcapi_datetime",
     .m_size = 0,

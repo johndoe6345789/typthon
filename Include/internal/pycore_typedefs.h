@@ -1,8 +1,8 @@
-#ifndef Py_INTERNAL_TYPEDEFS_H
-#define Py_INTERNAL_TYPEDEFS_H
+#ifndef Ty_INTERNAL_TYPEDEFS_H
+#define Ty_INTERNAL_TYPEDEFS_H
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #ifdef __cplusplus
@@ -15,4 +15,4 @@ typedef struct pyruntimestate _PyRuntimeState;
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_INTERNAL_TYPEDEFS_H
+#endif  // !Ty_INTERNAL_TYPEDEFS_H

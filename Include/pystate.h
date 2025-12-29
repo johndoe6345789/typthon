@@ -1,8 +1,8 @@
 /* Thread and interpreter state structures and their interfaces */
 
 
-#ifndef Py_PYSTATE_H
-#define Py_PYSTATE_H
+#ifndef Ty_PYSTATE_H
+#define Ty_PYSTATE_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -11,11 +11,11 @@ extern "C" {
 removed (with effort). */
 #define MAX_CO_EXTRA_USERS 255
 
-PyAPI_FUNC(PyInterpreterState *) PyInterpreterState_New(void);
-PyAPI_FUNC(void) PyInterpreterState_Clear(PyInterpreterState *);
-PyAPI_FUNC(void) PyInterpreterState_Delete(PyInterpreterState *);
+PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_New(void);
+PyAPI_FUNC(void) TyInterpreterState_Clear(PyInterpreterState *);
+PyAPI_FUNC(void) TyInterpreterState_Delete(PyInterpreterState *);
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03090000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03090000
 /* New in 3.9 */
 /* Get the current interpreter state.
 
@@ -23,31 +23,31 @@ PyAPI_FUNC(void) PyInterpreterState_Delete(PyInterpreterState *);
    interpreter. It cannot return NULL.
 
    The caller must hold the GIL. */
-PyAPI_FUNC(PyInterpreterState *) PyInterpreterState_Get(void);
+PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Get(void);
 #endif
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03080000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03080000
 /* New in 3.8 */
-PyAPI_FUNC(PyObject *) PyInterpreterState_GetDict(PyInterpreterState *);
+PyAPI_FUNC(TyObject *) TyInterpreterState_GetDict(PyInterpreterState *);
 #endif
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03070000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03070000
 /* New in 3.7 */
-PyAPI_FUNC(int64_t) PyInterpreterState_GetID(PyInterpreterState *);
+PyAPI_FUNC(int64_t) TyInterpreterState_GetID(PyInterpreterState *);
 #endif
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03030000
 
 /* State unique per thread */
 
 /* New in 3.3 */
-PyAPI_FUNC(int) PyState_AddModule(PyObject*, PyModuleDef*);
-PyAPI_FUNC(int) PyState_RemoveModule(PyModuleDef*);
+PyAPI_FUNC(int) PyState_AddModule(TyObject*, TyModuleDef*);
+PyAPI_FUNC(int) PyState_RemoveModule(TyModuleDef*);
 #endif
-PyAPI_FUNC(PyObject*) PyState_FindModule(PyModuleDef*);
+PyAPI_FUNC(TyObject*) PyState_FindModule(TyModuleDef*);
 
-PyAPI_FUNC(PyThreadState *) PyThreadState_New(PyInterpreterState *);
-PyAPI_FUNC(void) PyThreadState_Clear(PyThreadState *);
-PyAPI_FUNC(void) PyThreadState_Delete(PyThreadState *);
+PyAPI_FUNC(PyThreadState *) TyThreadState_New(PyInterpreterState *);
+PyAPI_FUNC(void) TyThreadState_Clear(PyThreadState *);
+PyAPI_FUNC(void) TyThreadState_Delete(PyThreadState *);
 
 /* Get the current thread state.
 
@@ -56,60 +56,60 @@ PyAPI_FUNC(void) PyThreadState_Delete(PyThreadState *);
 
    The caller must hold the GIL.
 
-   See also PyThreadState_GetUnchecked() and _PyThreadState_GET(). */
-PyAPI_FUNC(PyThreadState *) PyThreadState_Get(void);
+   See also TyThreadState_GetUnchecked() and _TyThreadState_GET(). */
+PyAPI_FUNC(PyThreadState *) TyThreadState_Get(void);
 
-// Alias to PyThreadState_Get()
-#define PyThreadState_GET() PyThreadState_Get()
+// Alias to TyThreadState_Get()
+#define TyThreadState_GET() TyThreadState_Get()
 
-PyAPI_FUNC(PyThreadState *) PyThreadState_Swap(PyThreadState *);
-PyAPI_FUNC(PyObject *) PyThreadState_GetDict(void);
-PyAPI_FUNC(int) PyThreadState_SetAsyncExc(unsigned long, PyObject *);
+PyAPI_FUNC(PyThreadState *) TyThreadState_Swap(PyThreadState *);
+PyAPI_FUNC(TyObject *) TyThreadState_GetDict(void);
+PyAPI_FUNC(int) TyThreadState_SetAsyncExc(unsigned long, TyObject *);
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03090000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03090000
 /* New in 3.9 */
-PyAPI_FUNC(PyInterpreterState*) PyThreadState_GetInterpreter(PyThreadState *tstate);
-PyAPI_FUNC(PyFrameObject*) PyThreadState_GetFrame(PyThreadState *tstate);
-PyAPI_FUNC(uint64_t) PyThreadState_GetID(PyThreadState *tstate);
+PyAPI_FUNC(PyInterpreterState*) TyThreadState_GetInterpreter(PyThreadState *tstate);
+PyAPI_FUNC(PyFrameObject*) TyThreadState_GetFrame(PyThreadState *tstate);
+PyAPI_FUNC(uint64_t) TyThreadState_GetID(PyThreadState *tstate);
 #endif
 
 typedef
-    enum {PyGILState_LOCKED, PyGILState_UNLOCKED}
-        PyGILState_STATE;
+    enum {TyGILState_LOCKED, TyGILState_UNLOCKED}
+        TyGILState_STATE;
 
 
 /* Ensure that the current thread is ready to call the Python
    C API, regardless of the current state of Python, or of its
    thread lock.  This may be called as many times as desired
    by a thread so long as each call is matched with a call to
-   PyGILState_Release().  In general, other thread-state APIs may
+   TyGILState_Release().  In general, other thread-state APIs may
    be used between _Ensure() and _Release() calls, so long as the
    thread-state is restored to its previous state before the Release().
-   For example, normal use of the Py_BEGIN_ALLOW_THREADS/
-   Py_END_ALLOW_THREADS macros are acceptable.
+   For example, normal use of the Ty_BEGIN_ALLOW_THREADS/
+   Ty_END_ALLOW_THREADS macros are acceptable.
 
    The return value is an opaque "handle" to the thread state when
-   PyGILState_Ensure() was called, and must be passed to
-   PyGILState_Release() to ensure Python is left in the same state. Even
+   TyGILState_Ensure() was called, and must be passed to
+   TyGILState_Release() to ensure Python is left in the same state. Even
    though recursive calls are allowed, these handles can *not* be shared -
-   each unique call to PyGILState_Ensure must save the handle for its
-   call to PyGILState_Release.
+   each unique call to TyGILState_Ensure must save the handle for its
+   call to TyGILState_Release.
 
    When the function returns, the current thread will hold the GIL.
 
    Failure is a fatal error.
 */
-PyAPI_FUNC(PyGILState_STATE) PyGILState_Ensure(void);
+PyAPI_FUNC(TyGILState_STATE) TyGILState_Ensure(void);
 
 /* Release any resources previously acquired.  After this call, Python's
    state will be the same as it was prior to the corresponding
-   PyGILState_Ensure() call (but generally this state will be unknown to
+   TyGILState_Ensure() call (but generally this state will be unknown to
    the caller, hence the use of the GILState API.)
 
-   Every call to PyGILState_Ensure must be matched by a call to
-   PyGILState_Release on the same thread.
+   Every call to TyGILState_Ensure must be matched by a call to
+   TyGILState_Release on the same thread.
 */
-PyAPI_FUNC(void) PyGILState_Release(PyGILState_STATE);
+PyAPI_FUNC(void) TyGILState_Release(TyGILState_STATE);
 
 /* Helper/diagnostic function - get the current thread state for
    this thread.  May return NULL if no GILState API has been used
@@ -117,16 +117,16 @@ PyAPI_FUNC(void) PyGILState_Release(PyGILState_STATE);
    thread-state, even if no auto-thread-state call has been made
    on the main thread.
 */
-PyAPI_FUNC(PyThreadState *) PyGILState_GetThisThreadState(void);
+PyAPI_FUNC(PyThreadState *) TyGILState_GetThisThreadState(void);
 
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_PYSTATE_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_PYSTATE_H
 #  include "cpython/pystate.h"
-#  undef Py_CPYTHON_PYSTATE_H
+#  undef Ty_CPYTHON_PYSTATE_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_PYSTATE_H */
+#endif /* !Ty_PYSTATE_H */

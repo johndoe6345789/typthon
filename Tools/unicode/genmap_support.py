@@ -76,7 +76,7 @@ class DecodeMapWriter:
         if not wide:
             self.fp.write(f"static const ucs2_t __{self.prefix}_decmap[{len(self.filler)}] = {{\n")
         else:
-            self.fp.write(f"static const Py_UCS4 __{self.prefix}_decmap[{len(self.filler)}] = {{\n")
+            self.fp.write(f"static const Ty_UCS4 __{self.prefix}_decmap[{len(self.filler)}] = {{\n")
 
         self.filler.printout(self.fp)
         self.fp.write("};\n\n")

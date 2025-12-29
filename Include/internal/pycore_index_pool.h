@@ -1,5 +1,5 @@
-#ifndef Py_INTERNAL_INDEX_POOL_H
-#define Py_INTERNAL_INDEX_POOL_H
+#ifndef Ty_INTERNAL_INDEX_POOL_H
+#define Ty_INTERNAL_INDEX_POOL_H
 
 #include "Python.h"
 
@@ -7,11 +7,11 @@
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 
 #include "pycore_interp_structs.h"
 
@@ -28,9 +28,9 @@ extern void _PyIndexPool_FreeIndex(_PyIndexPool *indices, int32_t index);
 
 extern void _PyIndexPool_Fini(_PyIndexPool *indices);
 
-#endif // Py_GIL_DISABLED
+#endif // Ty_GIL_DISABLED
 
 #ifdef __cplusplus
 }
 #endif
-#endif // !Py_INTERNAL_INDEX_POOL_H
+#endif // !Ty_INTERNAL_INDEX_POOL_H

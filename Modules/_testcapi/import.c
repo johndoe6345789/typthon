@@ -1,44 +1,44 @@
 #include "parts.h"
 #include "util.h"
 
-// Test PyImport_ImportModuleAttr()
-static PyObject *
-pyimport_importmoduleattr(PyObject *self, PyObject *args)
+// Test TyImport_ImportModuleAttr()
+static TyObject *
+pyimport_importmoduleattr(TyObject *self, TyObject *args)
 {
-    PyObject *mod_name, *attr_name;
-    if (!PyArg_ParseTuple(args, "OO", &mod_name, &attr_name)) {
+    TyObject *mod_name, *attr_name;
+    if (!TyArg_ParseTuple(args, "OO", &mod_name, &attr_name)) {
         return NULL;
     }
     NULLABLE(mod_name);
     NULLABLE(attr_name);
 
-    return PyImport_ImportModuleAttr(mod_name, attr_name);
+    return TyImport_ImportModuleAttr(mod_name, attr_name);
 }
 
 
-// Test PyImport_ImportModuleAttrString()
-static PyObject *
-pyimport_importmoduleattrstring(PyObject *self, PyObject *args)
+// Test TyImport_ImportModuleAttrString()
+static TyObject *
+pyimport_importmoduleattrstring(TyObject *self, TyObject *args)
 {
     const char *mod_name, *attr_name;
-    Py_ssize_t len;
-    if (!PyArg_ParseTuple(args, "z#z#", &mod_name, &len, &attr_name, &len)) {
+    Ty_ssize_t len;
+    if (!TyArg_ParseTuple(args, "z#z#", &mod_name, &len, &attr_name, &len)) {
         return NULL;
     }
 
-    return PyImport_ImportModuleAttrString(mod_name, attr_name);
+    return TyImport_ImportModuleAttrString(mod_name, attr_name);
 }
 
 
-static PyMethodDef test_methods[] = {
-    {"PyImport_ImportModuleAttr", pyimport_importmoduleattr, METH_VARARGS},
-    {"PyImport_ImportModuleAttrString", pyimport_importmoduleattrstring, METH_VARARGS},
+static TyMethodDef test_methods[] = {
+    {"TyImport_ImportModuleAttr", pyimport_importmoduleattr, METH_VARARGS},
+    {"TyImport_ImportModuleAttrString", pyimport_importmoduleattrstring, METH_VARARGS},
     {NULL},
 };
 
 int
-_PyTestCapi_Init_Import(PyObject *m)
+_PyTestCapi_Init_Import(TyObject *m)
 {
-    return PyModule_AddFunctions(m, test_methods);
+    return TyModule_AddFunctions(m, test_methods);
 }
 

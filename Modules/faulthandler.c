@@ -1,14 +1,14 @@
 #include "Python.h"
-#include "pycore_ceval.h"         // _PyEval_IsGILEnabled()
-#include "pycore_initconfig.h"    // _PyStatus_ERR()
-#include "pycore_pyerrors.h"      // _Py_DumpExtensionModules()
+#include "pycore_ceval.h"         // _TyEval_IsGILEnabled()
+#include "pycore_initconfig.h"    // _TyStatus_ERR()
+#include "pycore_pyerrors.h"      // _Ty_DumpExtensionModules()
 #include "pycore_fileutils.h"     // _PyFile_Flush
-#include "pycore_pystate.h"       // _PyThreadState_GET()
-#include "pycore_runtime.h"       // _Py_ID()
-#include "pycore_signal.h"        // Py_NSIG
-#include "pycore_sysmodule.h"     // _PySys_GetRequiredAttr()
-#include "pycore_time.h"          // _PyTime_FromSecondsObject()
-#include "pycore_traceback.h"     // _Py_DumpTracebackThreads
+#include "pycore_pystate.h"       // _TyThreadState_GET()
+#include "pycore_runtime.h"       // _Ty_ID()
+#include "pycore_signal.h"        // Ty_NSIG
+#include "pycore_sysmodule.h"     // _TySys_GetRequiredAttr()
+#include "pycore_time.h"          // _TyTime_FromSecondsObject()
+#include "pycore_traceback.h"     // _Ty_DumpTracebackThreads
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>             // _exit()
 #endif
@@ -37,14 +37,14 @@
 /* Allocate at maximum 100 MiB of the stack to raise the stack overflow */
 #define STACK_OVERFLOW_MAX_SIZE (100 * 1024 * 1024)
 
-#define PUTS(fd, str) (void)_Py_write_noraise(fd, str, strlen(str))
+#define PUTS(fd, str) (void)_Ty_write_noraise(fd, str, strlen(str))
 
 
 typedef struct {
     int signum;
     int enabled;
     const char* name;
-    _Py_sighandler_t previous;
+    _Ty_sighandler_t previous;
     int all_threads;
 } fault_handler_t;
 
@@ -71,7 +71,7 @@ static fault_handler_t faulthandler_handlers[] = {
        handler fails in faulthandler_fatal_error() */
     {SIGSEGV, 0, "Segmentation fault", }
 };
-/* Calculate array length using sizeof instead of Py_ARRAY_LENGTH to avoid 
+/* Calculate array length using sizeof instead of Ty_ARRAY_LENGTH to avoid 
    non-constant initializer error */
 static const size_t faulthandler_nsignals = \
     sizeof(faulthandler_handlers) / sizeof(faulthandler_handlers[0]);
@@ -85,44 +85,44 @@ static const size_t faulthandler_nsignals = \
 /* Get the file descriptor of a file by calling its fileno() method and then
    call its flush() method.
 
-   If file is NULL or Py_None, use sys.stderr as the new file.
+   If file is NULL or Ty_None, use sys.stderr as the new file.
    If file is an integer, it will be treated as file descriptor.
 
    On success, return the file descriptor and write the new file into *file_ptr.
    On error, return -1. */
 
 static int
-faulthandler_get_fileno(PyObject **file_ptr)
+faulthandler_get_fileno(TyObject **file_ptr)
 {
-    PyObject *result;
+    TyObject *result;
     long fd_long;
     int fd;
-    PyObject *file = *file_ptr;
+    TyObject *file = *file_ptr;
 
-    if (file == NULL || file == Py_None) {
-        file = _PySys_GetRequiredAttr(&_Py_ID(stderr));
+    if (file == NULL || file == Ty_None) {
+        file = _TySys_GetRequiredAttr(&_Ty_ID(stderr));
         if (file == NULL) {
             return -1;
         }
-        if (file == Py_None) {
-            PyErr_SetString(PyExc_RuntimeError, "sys.stderr is None");
-            Py_DECREF(file);
+        if (file == Ty_None) {
+            TyErr_SetString(TyExc_RuntimeError, "sys.stderr is None");
+            Ty_DECREF(file);
             return -1;
         }
     }
-    else if (PyLong_Check(file)) {
-        if (PyBool_Check(file)) {
-            if (PyErr_WarnEx(PyExc_RuntimeWarning,
+    else if (TyLong_Check(file)) {
+        if (TyBool_Check(file)) {
+            if (TyErr_WarnEx(TyExc_RuntimeWarning,
                     "bool is used as a file descriptor", 1))
             {
                 return -1;
             }
         }
-        fd = PyLong_AsInt(file);
-        if (fd == -1 && PyErr_Occurred())
+        fd = TyLong_AsInt(file);
+        if (fd == -1 && TyErr_Occurred())
             return -1;
         if (fd < 0) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "file is not a valid file descriptor");
             return -1;
         }
@@ -130,33 +130,33 @@ faulthandler_get_fileno(PyObject **file_ptr)
         return fd;
     }
     else {
-        Py_INCREF(file);
+        Ty_INCREF(file);
     }
 
-    result = PyObject_CallMethodNoArgs(file, &_Py_ID(fileno));
+    result = PyObject_CallMethodNoArgs(file, &_Ty_ID(fileno));
     if (result == NULL) {
-        Py_DECREF(file);
+        Ty_DECREF(file);
         return -1;
     }
 
     fd = -1;
-    if (PyLong_Check(result)) {
-        fd_long = PyLong_AsLong(result);
+    if (TyLong_Check(result)) {
+        fd_long = TyLong_AsLong(result);
         if (0 <= fd_long && fd_long < INT_MAX)
             fd = (int)fd_long;
     }
-    Py_DECREF(result);
+    Ty_DECREF(result);
 
     if (fd == -1) {
-        PyErr_SetString(PyExc_RuntimeError,
+        TyErr_SetString(TyExc_RuntimeError,
                         "file.fileno() is not a valid file descriptor");
-        Py_DECREF(file);
+        Ty_DECREF(file);
         return -1;
     }
 
     if (_PyFile_Flush(file) < 0) {
         /* ignore flush() error */
-        PyErr_Clear();
+        TyErr_Clear();
     }
     *file_ptr = file;
     return fd;
@@ -167,10 +167,10 @@ faulthandler_get_fileno(PyObject **file_ptr)
 static PyThreadState*
 get_thread_state(void)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
+    PyThreadState *tstate = _TyThreadState_GET();
     if (tstate == NULL) {
         /* just in case but very unlikely... */
-        PyErr_SetString(PyExc_RuntimeError,
+        TyErr_SetString(TyExc_RuntimeError,
                         "unable to get the current thread state");
         return NULL;
     }
@@ -192,21 +192,21 @@ faulthandler_dump_traceback(int fd, int all_threads,
        are thus delivered to the thread that caused the fault. Get the Python
        thread state of the current thread.
 
-       PyThreadState_Get() doesn't give the state of the thread that caused the
+       TyThreadState_Get() doesn't give the state of the thread that caused the
        fault if the thread released the GIL, and so this function cannot be
        used. Read the thread specific storage (TSS) instead: call
-       PyGILState_GetThisThreadState(). */
-    PyThreadState *tstate = PyGILState_GetThisThreadState();
+       TyGILState_GetThisThreadState(). */
+    PyThreadState *tstate = TyGILState_GetThisThreadState();
 
     if (all_threads == 1) {
-        (void)_Py_DumpTracebackThreads(fd, NULL, tstate);
+        (void)_Ty_DumpTracebackThreads(fd, NULL, tstate);
     }
     else {
         if (all_threads == FT_IGNORE_ALL_THREADS) {
             PUTS(fd, "<Cannot show all threads while the GIL is disabled>\n");
         }
         if (tstate != NULL)
-            _Py_DumpTraceback(fd, tstate);
+            _Ty_DumpTraceback(fd, tstate);
     }
 
     reentrant = 0;
@@ -225,24 +225,24 @@ faulthandler_dump_c_stack(int fd)
 
     if (fatal_error.c_stack) {
         PUTS(fd, "\n");
-        _Py_DumpStack(fd);
+        _Ty_DumpStack(fd);
     }
 
     reentrant = 0;
 }
 
-static PyObject*
-faulthandler_dump_traceback_py(PyObject *self,
-                               PyObject *args, PyObject *kwargs)
+static TyObject*
+faulthandler_dump_traceback_py(TyObject *self,
+                               TyObject *args, TyObject *kwargs)
 {
     static char *kwlist[] = {"file", "all_threads", NULL};
-    PyObject *file = NULL;
+    TyObject *file = NULL;
     int all_threads = 1;
     PyThreadState *tstate;
     const char *errmsg;
     int fd;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs,
         "|Op:dump_traceback", kwlist,
         &file, &all_threads))
         return NULL;
@@ -253,42 +253,42 @@ faulthandler_dump_traceback_py(PyObject *self,
 
     tstate = get_thread_state();
     if (tstate == NULL) {
-        Py_XDECREF(file);
+        Ty_XDECREF(file);
         return NULL;
     }
 
     if (all_threads) {
-        PyInterpreterState *interp = _PyInterpreterState_GET();
+        PyInterpreterState *interp = _TyInterpreterState_GET();
         /* gh-128400: Accessing other thread states while they're running
          * isn't safe if those threads are running. */
-        _PyEval_StopTheWorld(interp);
-        errmsg = _Py_DumpTracebackThreads(fd, NULL, tstate);
-        _PyEval_StartTheWorld(interp);
+        _TyEval_StopTheWorld(interp);
+        errmsg = _Ty_DumpTracebackThreads(fd, NULL, tstate);
+        _TyEval_StartTheWorld(interp);
         if (errmsg != NULL) {
-            PyErr_SetString(PyExc_RuntimeError, errmsg);
-            Py_XDECREF(file);
+            TyErr_SetString(TyExc_RuntimeError, errmsg);
+            Ty_XDECREF(file);
             return NULL;
         }
     }
     else {
-        _Py_DumpTraceback(fd, tstate);
+        _Ty_DumpTraceback(fd, tstate);
     }
-    Py_XDECREF(file);
+    Ty_XDECREF(file);
 
-    if (PyErr_CheckSignals())
+    if (TyErr_CheckSignals())
         return NULL;
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
-static PyObject *
-faulthandler_dump_c_stack_py(PyObject *self,
-                             PyObject *args, PyObject *kwargs)
+static TyObject *
+faulthandler_dump_c_stack_py(TyObject *self,
+                             TyObject *args, TyObject *kwargs)
 {
     static char *kwlist[] = {"file", NULL};
-    PyObject *file = NULL;
+    TyObject *file = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs,
         "|O:dump_c_stack", kwlist,
         &file)) {
         return NULL;
@@ -299,14 +299,14 @@ faulthandler_dump_c_stack_py(PyObject *self,
         return NULL;
     }
 
-    _Py_DumpStack(fd);
-    Py_XDECREF(file);
+    _Ty_DumpStack(fd);
+    Ty_XDECREF(file);
 
-    if (PyErr_CheckSignals()) {
+    if (TyErr_CheckSignals()) {
         return NULL;
     }
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 static void
@@ -325,20 +325,20 @@ faulthandler_disable_fatal_handler(fault_handler_t *handler)
 static int
 deduce_all_threads(void)
 {
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
     return fatal_error.all_threads;
 #else
     if (fatal_error.all_threads == 0) {
         return 0;
     }
-    // We can't use _PyThreadState_GET, so use the stored GILstate one
-    PyThreadState *tstate = PyGILState_GetThisThreadState();
+    // We can't use _TyThreadState_GET, so use the stored GILstate one
+    PyThreadState *tstate = TyGILState_GetThisThreadState();
     if (tstate == NULL) {
         return 0;
     }
 
     /* In theory, it's safe to dump all threads if the GIL is enabled */
-    return _PyEval_IsGILEnabled(tstate)
+    return _TyEval_IsGILEnabled(tstate)
         ? fatal_error.all_threads
         : FT_IGNORE_ALL_THREADS;
 #endif
@@ -401,7 +401,7 @@ faulthandler_fatal_error(int signum)
                                 fatal_error.interp);
     faulthandler_dump_c_stack(fd);
 
-    _Py_DumpExtensionModules(fd, fatal_error.interp);
+    _Ty_DumpExtensionModules(fd, fatal_error.interp);
 
     errno = save_errno;
 #ifdef MS_WINDOWS
@@ -458,7 +458,7 @@ faulthandler_exc_handler(struct _EXCEPTION_POINTERS *exc_info)
     case EXCEPTION_STACK_OVERFLOW: PUTS(fd, "stack overflow"); break;
     default:
         PUTS(fd, "code 0x");
-        _Py_DumpHexadecimal(fd, code, 8);
+        _Ty_DumpHexadecimal(fd, code, 8);
     }
     PUTS(fd, "\n\n");
 
@@ -492,17 +492,17 @@ faulthandler_allocate_stack(void)
     }
     /* Allocate an alternate stack for faulthandler() signal handler
        to be able to execute a signal handler on a stack overflow error */
-    stack.ss_sp = PyMem_Malloc(stack.ss_size);
+    stack.ss_sp = TyMem_Malloc(stack.ss_size);
     if (stack.ss_sp == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
 
     int err = sigaltstack(&stack, &old_stack);
     if (err) {
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
         /* Release the stack to retry sigaltstack() next time */
-        PyMem_Free(stack.ss_sp);
+        TyMem_Free(stack.ss_sp);
         stack.ss_sp = NULL;
         return -1;
     }
@@ -553,7 +553,7 @@ faulthandler_enable(void)
         err = (handler->previous == SIG_ERR);
 #endif
         if (err) {
-            PyErr_SetFromErrno(PyExc_RuntimeError);
+            TyErr_SetFromErrno(TyExc_RuntimeError);
             return -1;
         }
 
@@ -567,17 +567,17 @@ faulthandler_enable(void)
     return 0;
 }
 
-static PyObject*
-faulthandler_py_enable(PyObject *self, PyObject *args, PyObject *kwargs)
+static TyObject*
+faulthandler_py_enable(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     static char *kwlist[] = {"file", "all_threads", "c_stack", NULL};
-    PyObject *file = NULL;
+    TyObject *file = NULL;
     int all_threads = 1;
     int fd;
     int c_stack = 1;
     PyThreadState *tstate;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs,
         "|Opp:enable", kwlist, &file, &all_threads, &c_stack))
         return NULL;
 
@@ -587,21 +587,21 @@ faulthandler_py_enable(PyObject *self, PyObject *args, PyObject *kwargs)
 
     tstate = get_thread_state();
     if (tstate == NULL) {
-        Py_XDECREF(file);
+        Ty_XDECREF(file);
         return NULL;
     }
 
-    Py_XSETREF(fatal_error.file, file);
+    Ty_XSETREF(fatal_error.file, file);
     fatal_error.fd = fd;
     fatal_error.all_threads = all_threads;
-    fatal_error.interp = PyThreadState_GetInterpreter(tstate);
+    fatal_error.interp = TyThreadState_GetInterpreter(tstate);
     fatal_error.c_stack = c_stack;
 
     if (faulthandler_enable() < 0) {
         return NULL;
     }
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 static void
@@ -621,23 +621,23 @@ faulthandler_disable(void)
         fatal_error.exc_handler = NULL;
     }
 #endif
-    Py_CLEAR(fatal_error.file);
+    Ty_CLEAR(fatal_error.file);
 }
 
-static PyObject*
-faulthandler_disable_py(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject*
+faulthandler_disable_py(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     if (!fatal_error.enabled) {
-        Py_RETURN_FALSE;
+        Ty_RETURN_FALSE;
     }
     faulthandler_disable();
-    Py_RETURN_TRUE;
+    Ty_RETURN_TRUE;
 }
 
-static PyObject*
-faulthandler_is_enabled(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject*
+faulthandler_is_enabled(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    return PyBool_FromLong(fatal_error.enabled);
+    return TyBool_FromLong(fatal_error.enabled);
 }
 
 static void
@@ -664,9 +664,9 @@ faulthandler_thread(void *unused)
         /* Timeout => dump traceback */
         assert(st == PY_LOCK_FAILURE);
 
-        (void)_Py_write_noraise(thread.fd, thread.header, (int)thread.header_len);
+        (void)_Ty_write_noraise(thread.fd, thread.header, (int)thread.header_len);
 
-        errmsg = _Py_DumpTracebackThreads(thread.fd, thread.interp, NULL);
+        errmsg = _Ty_DumpTracebackThreads(thread.fd, thread.interp, NULL);
         ok = (errmsg == NULL);
 
         if (thread.exit)
@@ -695,9 +695,9 @@ cancel_dump_traceback_later(void)
     /* The main thread should always hold the cancel_event lock */
     PyThread_acquire_lock(thread.cancel_event, 1);
 
-    Py_CLEAR(thread.file);
+    Ty_CLEAR(thread.file);
     if (thread.header) {
-        PyMem_Free(thread.header);
+        TyMem_Free(thread.header);
         thread.header = NULL;
     }
 }
@@ -720,50 +720,50 @@ format_timeout(PyTime_t us)
     min %= 60;
 
     if (us != 0) {
-        PyOS_snprintf(buffer, sizeof(buffer),
+        TyOS_snprintf(buffer, sizeof(buffer),
                       "Timeout (%lu:%02lu:%02lu.%06u)!\n",
                       hour, min, sec, (unsigned int)us);
     }
     else {
-        PyOS_snprintf(buffer, sizeof(buffer),
+        TyOS_snprintf(buffer, sizeof(buffer),
                       "Timeout (%lu:%02lu:%02lu)!\n",
                       hour, min, sec);
     }
-    return _PyMem_Strdup(buffer);
+    return _TyMem_Strdup(buffer);
 }
 
-static PyObject*
-faulthandler_dump_traceback_later(PyObject *self,
-                                   PyObject *args, PyObject *kwargs)
+static TyObject*
+faulthandler_dump_traceback_later(TyObject *self,
+                                   TyObject *args, TyObject *kwargs)
 {
     static char *kwlist[] = {"timeout", "repeat", "file", "exit", NULL};
-    PyObject *timeout_obj;
+    TyObject *timeout_obj;
     PyTime_t timeout, timeout_us;
     int repeat = 0;
-    PyObject *file = NULL;
+    TyObject *file = NULL;
     int fd;
     int exit = 0;
     PyThreadState *tstate;
     char *header;
     size_t header_len;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs,
         "O|iOi:dump_traceback_later", kwlist,
         &timeout_obj, &repeat, &file, &exit))
         return NULL;
 
-    if (_PyTime_FromSecondsObject(&timeout, timeout_obj,
-                                  _PyTime_ROUND_TIMEOUT) < 0) {
+    if (_TyTime_FromSecondsObject(&timeout, timeout_obj,
+                                  _TyTime_ROUND_TIMEOUT) < 0) {
         return NULL;
     }
-    timeout_us = _PyTime_AsMicroseconds(timeout, _PyTime_ROUND_TIMEOUT);
+    timeout_us = _TyTime_AsMicroseconds(timeout, _TyTime_ROUND_TIMEOUT);
     if (timeout_us <= 0) {
-        PyErr_SetString(PyExc_ValueError, "timeout must be greater than 0");
+        TyErr_SetString(TyExc_ValueError, "timeout must be greater than 0");
         return NULL;
     }
     /* Limit to LONG_MAX seconds for format_timeout() */
     if (timeout_us > PY_TIMEOUT_MAX || timeout_us / SEC_TO_US > LONG_MAX) {
-        PyErr_SetString(PyExc_OverflowError,
+        TyErr_SetString(TyExc_OverflowError,
                         "timeout value is too large");
         return NULL;
     }
@@ -781,15 +781,15 @@ faulthandler_dump_traceback_later(PyObject *self,
     if (!thread.running) {
         thread.running = PyThread_allocate_lock();
         if (!thread.running) {
-            Py_XDECREF(file);
-            return PyErr_NoMemory();
+            Ty_XDECREF(file);
+            return TyErr_NoMemory();
         }
     }
     if (!thread.cancel_event) {
         thread.cancel_event = PyThread_allocate_lock();
         if (!thread.cancel_event || !thread.running) {
-            Py_XDECREF(file);
-            return PyErr_NoMemory();
+            Ty_XDECREF(file);
+            return TyErr_NoMemory();
         }
 
         /* cancel_event starts to be acquired: it's only released to cancel
@@ -800,20 +800,20 @@ faulthandler_dump_traceback_later(PyObject *self,
     /* format the timeout */
     header = format_timeout(timeout_us);
     if (header == NULL) {
-        Py_XDECREF(file);
-        return PyErr_NoMemory();
+        Ty_XDECREF(file);
+        return TyErr_NoMemory();
     }
     header_len = strlen(header);
 
     /* Cancel previous thread, if running */
     cancel_dump_traceback_later();
 
-    Py_XSETREF(thread.file, file);
+    Ty_XSETREF(thread.file, file);
     thread.fd = fd;
     /* the downcast is safe: we check that 0 < timeout_us < PY_TIMEOUT_MAX */
     thread.timeout_us = (PY_TIMEOUT_T)timeout_us;
     thread.repeat = repeat;
-    thread.interp = PyThreadState_GetInterpreter(tstate);
+    thread.interp = TyThreadState_GetInterpreter(tstate);
     thread.exit = exit;
     thread.header = header;
     thread.header_len = header_len;
@@ -823,29 +823,29 @@ faulthandler_dump_traceback_later(PyObject *self,
 
     if (PyThread_start_new_thread(faulthandler_thread, NULL) == PYTHREAD_INVALID_THREAD_ID) {
         PyThread_release_lock(thread.running);
-        Py_CLEAR(thread.file);
-        PyMem_Free(header);
+        Ty_CLEAR(thread.file);
+        TyMem_Free(header);
         thread.header = NULL;
-        PyErr_SetString(PyExc_RuntimeError,
+        TyErr_SetString(TyExc_RuntimeError,
                         "unable to start watchdog thread");
         return NULL;
     }
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
-static PyObject*
-faulthandler_cancel_dump_traceback_later_py(PyObject *self,
-                                            PyObject *Py_UNUSED(ignored))
+static TyObject*
+faulthandler_cancel_dump_traceback_later_py(TyObject *self,
+                                            TyObject *Ty_UNUSED(ignored))
 {
     cancel_dump_traceback_later();
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 
 #ifdef FAULTHANDLER_USER
 static int
-faulthandler_register(int signum, int chain, _Py_sighandler_t *previous_p)
+faulthandler_register(int signum, int chain, _Ty_sighandler_t *previous_p)
 {
 #ifdef HAVE_SIGACTION
     struct sigaction action;
@@ -868,7 +868,7 @@ faulthandler_register(int signum, int chain, _Py_sighandler_t *previous_p)
 #endif
     return sigaction(signum, &action, previous_p);
 #else
-    _Py_sighandler_t previous;
+    _Ty_sighandler_t previous;
     previous = signal(signum, faulthandler_user);
     if (previous_p != NULL) {
         *previous_p = previous;
@@ -922,36 +922,36 @@ check_signum(int signum)
 {
     for (size_t i=0; i < faulthandler_nsignals; i++) {
         if (faulthandler_handlers[i].signum == signum) {
-            PyErr_Format(PyExc_RuntimeError,
+            TyErr_Format(TyExc_RuntimeError,
                          "signal %i cannot be registered, "
                          "use enable() instead",
                          signum);
             return 0;
         }
     }
-    if (signum < 1 || Py_NSIG <= signum) {
-        PyErr_SetString(PyExc_ValueError, "signal number out of range");
+    if (signum < 1 || Ty_NSIG <= signum) {
+        TyErr_SetString(TyExc_ValueError, "signal number out of range");
         return 0;
     }
     return 1;
 }
 
-static PyObject*
-faulthandler_register_py(PyObject *self,
-                         PyObject *args, PyObject *kwargs)
+static TyObject*
+faulthandler_register_py(TyObject *self,
+                         TyObject *args, TyObject *kwargs)
 {
     static char *kwlist[] = {"signum", "file", "all_threads", "chain", NULL};
     int signum;
-    PyObject *file = NULL;
+    TyObject *file = NULL;
     int all_threads = 1;
     int chain = 0;
     int fd;
     user_signal_t *user;
-    _Py_sighandler_t previous;
+    _Ty_sighandler_t previous;
     PyThreadState *tstate;
     int err;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+    if (!TyArg_ParseTupleAndKeywords(args, kwargs,
         "i|Opp:register", kwlist,
         &signum, &file, &all_threads, &chain))
         return NULL;
@@ -968,10 +968,10 @@ faulthandler_register_py(PyObject *self,
         return NULL;
 
     if (user_signals == NULL) {
-        user_signals = PyMem_Calloc(Py_NSIG, sizeof(user_signal_t));
+        user_signals = TyMem_Calloc(Ty_NSIG, sizeof(user_signal_t));
         if (user_signals == NULL) {
-            Py_XDECREF(file);
-            return PyErr_NoMemory();
+            Ty_XDECREF(file);
+            return TyErr_NoMemory();
         }
     }
     user = &user_signals[signum];
@@ -979,29 +979,29 @@ faulthandler_register_py(PyObject *self,
     if (!user->enabled) {
 #ifdef FAULTHANDLER_USE_ALT_STACK
         if (faulthandler_allocate_stack() < 0) {
-            Py_XDECREF(file);
+            Ty_XDECREF(file);
             return NULL;
         }
 #endif
 
         err = faulthandler_register(signum, chain, &previous);
         if (err) {
-            PyErr_SetFromErrno(PyExc_OSError);
-            Py_XDECREF(file);
+            TyErr_SetFromErrno(TyExc_OSError);
+            Ty_XDECREF(file);
             return NULL;
         }
 
         user->previous = previous;
     }
 
-    Py_XSETREF(user->file, file);
+    Ty_XSETREF(user->file, file);
     user->fd = fd;
     user->all_threads = all_threads;
     user->chain = chain;
-    user->interp = PyThreadState_GetInterpreter(tstate);
+    user->interp = TyThreadState_GetInterpreter(tstate);
     user->enabled = 1;
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 static int
@@ -1015,30 +1015,30 @@ faulthandler_unregister(user_signal_t *user, int signum)
 #else
     (void)signal(signum, user->previous);
 #endif
-    Py_CLEAR(user->file);
+    Ty_CLEAR(user->file);
     user->fd = -1;
     return 1;
 }
 
-static PyObject*
-faulthandler_unregister_py(PyObject *self, PyObject *args)
+static TyObject*
+faulthandler_unregister_py(TyObject *self, TyObject *args)
 {
     int signum;
     user_signal_t *user;
     int change;
 
-    if (!PyArg_ParseTuple(args, "i:unregister", &signum))
+    if (!TyArg_ParseTuple(args, "i:unregister", &signum))
         return NULL;
 
     if (!check_signum(signum))
         return NULL;
 
     if (user_signals == NULL)
-        Py_RETURN_FALSE;
+        Ty_RETURN_FALSE;
 
     user = &user_signals[signum];
     change = faulthandler_unregister(user, signum);
-    return PyBool_FromLong(change);
+    return TyBool_FromLong(change);
 }
 #endif   /* FAULTHANDLER_USER */
 
@@ -1071,8 +1071,8 @@ faulthandler_suppress_crash_report(void)
 #endif
 }
 
-static PyObject* _Py_NO_SANITIZE_UNDEFINED
-faulthandler_read_null(PyObject *self, PyObject *args)
+static TyObject* _Ty_NO_SANITIZE_UNDEFINED
+faulthandler_read_null(TyObject *self, TyObject *args)
 {
     volatile int *x;
     volatile int y;
@@ -1080,7 +1080,7 @@ faulthandler_read_null(PyObject *self, PyObject *args)
     faulthandler_suppress_crash_report();
     x = NULL;
     y = *x;
-    return PyLong_FromLong(y);
+    return TyLong_FromLong(y);
 
 }
 
@@ -1107,31 +1107,31 @@ faulthandler_raise_sigsegv(void)
 #endif
 }
 
-static PyObject *
-faulthandler_sigsegv(PyObject *self, PyObject *args)
+static TyObject *
+faulthandler_sigsegv(TyObject *self, TyObject *args)
 {
     int release_gil = 0;
-    if (!PyArg_ParseTuple(args, "|i:_sigsegv", &release_gil))
+    if (!TyArg_ParseTuple(args, "|i:_sigsegv", &release_gil))
         return NULL;
 
     if (release_gil) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         faulthandler_raise_sigsegv();
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } else {
         faulthandler_raise_sigsegv();
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
-static void _Py_NO_RETURN
+static void _Ty_NO_RETURN
 faulthandler_fatal_error_thread(void *plock)
 {
-    Py_FatalError("in new thread");
+    Ty_FatalError("in new thread");
 }
 
-static PyObject *
-faulthandler_fatal_error_c_thread(PyObject *self, PyObject *args)
+static TyObject *
+faulthandler_fatal_error_c_thread(TyObject *self, TyObject *args)
 {
     long tid;
     PyThread_type_lock lock;
@@ -1140,28 +1140,28 @@ faulthandler_fatal_error_c_thread(PyObject *self, PyObject *args)
 
     lock = PyThread_allocate_lock();
     if (lock == NULL)
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
 
     PyThread_acquire_lock(lock, WAIT_LOCK);
 
     tid = PyThread_start_new_thread(faulthandler_fatal_error_thread, lock);
     if (tid == -1) {
         PyThread_free_lock(lock);
-        PyErr_SetString(PyExc_RuntimeError, "unable to start the thread");
+        TyErr_SetString(TyExc_RuntimeError, "unable to start the thread");
         return NULL;
     }
 
-    /* wait until the thread completes: it will never occur, since Py_FatalError()
+    /* wait until the thread completes: it will never occur, since Ty_FatalError()
        exits the process immediately. */
     PyThread_acquire_lock(lock, WAIT_LOCK);
     PyThread_release_lock(lock);
     PyThread_free_lock(lock);
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
-static PyObject* _Py_NO_SANITIZE_UNDEFINED
-faulthandler_sigfpe(PyObject *self, PyObject *Py_UNUSED(dummy))
+static TyObject* _Ty_NO_SANITIZE_UNDEFINED
+faulthandler_sigfpe(TyObject *self, TyObject *Ty_UNUSED(dummy))
 {
     faulthandler_suppress_crash_report();
 
@@ -1176,15 +1176,15 @@ faulthandler_sigfpe(PyObject *self, PyObject *Py_UNUSED(dummy))
 
     /* This line is never reached, but we pretend to make something with z
        to silence a compiler warning. */
-    return PyLong_FromLong(z);
+    return TyLong_FromLong(z);
 }
 
-static PyObject *
-faulthandler_sigabrt(PyObject *self, PyObject *args)
+static TyObject *
+faulthandler_sigabrt(TyObject *self, TyObject *args)
 {
     faulthandler_suppress_crash_report();
     abort();
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 #if defined(FAULTHANDLER_USE_ALT_STACK)
@@ -1207,8 +1207,8 @@ stack_overflow(uintptr_t min_sp, uintptr_t max_sp, size_t *depth)
     return stack_overflow(min_sp, max_sp, depth);
 }
 
-static PyObject *
-faulthandler_stack_overflow(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+faulthandler_stack_overflow(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     size_t depth, size;
     uintptr_t sp = (uintptr_t)&depth;
@@ -1236,7 +1236,7 @@ faulthandler_stack_overflow(PyObject *self, PyObject *Py_UNUSED(ignored))
         size = stop - sp;
     else
         size = sp - stop;
-    PyErr_Format(PyExc_RuntimeError,
+    TyErr_Format(TyExc_RuntimeError,
         "unable to raise a stack overflow (allocated %zu bytes "
         "on the stack, %zu recursive calls)",
         size, depth);
@@ -1246,36 +1246,36 @@ faulthandler_stack_overflow(PyObject *self, PyObject *Py_UNUSED(ignored))
 
 
 static int
-faulthandler_traverse(PyObject *module, visitproc visit, void *arg)
+faulthandler_traverse(TyObject *module, visitproc visit, void *arg)
 {
-    Py_VISIT(thread.file);
+    Ty_VISIT(thread.file);
 #ifdef FAULTHANDLER_USER
     if (user_signals != NULL) {
-        for (size_t signum=0; signum < Py_NSIG; signum++)
-            Py_VISIT(user_signals[signum].file);
+        for (size_t signum=0; signum < Ty_NSIG; signum++)
+            Ty_VISIT(user_signals[signum].file);
     }
 #endif
-    Py_VISIT(fatal_error.file);
+    Ty_VISIT(fatal_error.file);
     return 0;
 }
 
 #ifdef MS_WINDOWS
-static PyObject *
-faulthandler_raise_exception(PyObject *self, PyObject *args)
+static TyObject *
+faulthandler_raise_exception(TyObject *self, TyObject *args)
 {
     unsigned int code, flags = 0;
-    if (!PyArg_ParseTuple(args, "I|I:_raise_exception", &code, &flags))
+    if (!TyArg_ParseTuple(args, "I|I:_raise_exception", &code, &flags))
         return NULL;
     faulthandler_suppress_crash_report();
     RaiseException(code, flags, 0, NULL);
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 #endif
 
 PyDoc_STRVAR(module_doc,
 "faulthandler module.");
 
-static PyMethodDef module_methods[] = {
+static TyMethodDef module_methods[] = {
     {"enable",
      _PyCFunction_CAST(faulthandler_py_enable), METH_VARARGS|METH_KEYWORDS,
      PyDoc_STR("enable($module, /, file=sys.stderr, all_threads=True)\n--\n\n"
@@ -1327,7 +1327,7 @@ static PyMethodDef module_methods[] = {
                "Raise a SIGSEGV signal.")},
     {"_fatal_error_c_thread", faulthandler_fatal_error_c_thread, METH_NOARGS,
      PyDoc_STR("_fatal_error_c_thread($module, /)\n--\n\n"
-               "Call Py_FatalError() in a new C thread.")},
+               "Call Ty_FatalError() in a new C thread.")},
     {"_sigabrt", faulthandler_sigabrt, METH_NOARGS,
      PyDoc_STR("_sigabrt($module, /)\n--\n\n"
                "Raise a SIGABRT signal.")},
@@ -1348,29 +1348,29 @@ static PyMethodDef module_methods[] = {
 };
 
 static int
-PyExec_faulthandler(PyObject *module) {
+PyExec_faulthandler(TyObject *module) {
     /* Add constants for unit tests */
 #ifdef MS_WINDOWS
     /* RaiseException() codes (prefixed by an underscore) */
-    if (PyModule_AddIntConstant(module, "_EXCEPTION_ACCESS_VIOLATION",
+    if (TyModule_AddIntConstant(module, "_EXCEPTION_ACCESS_VIOLATION",
                                 EXCEPTION_ACCESS_VIOLATION)) {
         return -1;
     }
-    if (PyModule_AddIntConstant(module, "_EXCEPTION_INT_DIVIDE_BY_ZERO",
+    if (TyModule_AddIntConstant(module, "_EXCEPTION_INT_DIVIDE_BY_ZERO",
                                 EXCEPTION_INT_DIVIDE_BY_ZERO)) {
         return -1;
     }
-    if (PyModule_AddIntConstant(module, "_EXCEPTION_STACK_OVERFLOW",
+    if (TyModule_AddIntConstant(module, "_EXCEPTION_STACK_OVERFLOW",
                                 EXCEPTION_STACK_OVERFLOW)) {
         return -1;
     }
 
     /* RaiseException() flags (prefixed by an underscore) */
-    if (PyModule_AddIntConstant(module, "_EXCEPTION_NONCONTINUABLE",
+    if (TyModule_AddIntConstant(module, "_EXCEPTION_NONCONTINUABLE",
                                 EXCEPTION_NONCONTINUABLE)) {
         return -1;
     }
-    if (PyModule_AddIntConstant(module, "_EXCEPTION_NONCONTINUABLE_EXCEPTION",
+    if (TyModule_AddIntConstant(module, "_EXCEPTION_NONCONTINUABLE_EXCEPTION",
                                 EXCEPTION_NONCONTINUABLE_EXCEPTION)) {
         return -1;
     }
@@ -1379,14 +1379,14 @@ PyExec_faulthandler(PyObject *module) {
 }
 
 static PyModuleDef_Slot faulthandler_slots[] = {
-    {Py_mod_exec, PyExec_faulthandler},
+    {Ty_mod_exec, PyExec_faulthandler},
     // XXX gh-103092: fix isolation.
-    //{Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    //{Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef module_def = {
+static struct TyModuleDef module_def = {
     PyModuleDef_HEAD_INIT,
     .m_name = "faulthandler",
     .m_doc = module_doc,
@@ -1404,17 +1404,17 @@ PyInit_faulthandler(void)
 static int
 faulthandler_init_enable(void)
 {
-    PyObject *enable = PyImport_ImportModuleAttrString("faulthandler", "enable");
+    TyObject *enable = TyImport_ImportModuleAttrString("faulthandler", "enable");
     if (enable == NULL) {
         return -1;
     }
 
-    PyObject *res = PyObject_CallNoArgs(enable);
-    Py_DECREF(enable);
+    TyObject *res = PyObject_CallNoArgs(enable);
+    Ty_DECREF(enable);
     if (res == NULL) {
         return -1;
     }
-    Py_DECREF(res);
+    Ty_DECREF(res);
 
     return 0;
 }
@@ -1445,10 +1445,10 @@ _PyFaulthandler_Init(int enable)
 
     if (enable) {
         if (faulthandler_init_enable() < 0) {
-            return _PyStatus_ERR("failed to enable faulthandler");
+            return _TyStatus_ERR("failed to enable faulthandler");
         }
     }
-    return _PyStatus_OK();
+    return _TyStatus_OK();
 }
 
 void _PyFaulthandler_Fini(void)
@@ -1468,10 +1468,10 @@ void _PyFaulthandler_Fini(void)
 #ifdef FAULTHANDLER_USER
     /* user */
     if (user_signals != NULL) {
-        for (size_t signum=0; signum < Py_NSIG; signum++) {
+        for (size_t signum=0; signum < Ty_NSIG; signum++) {
             faulthandler_unregister(&user_signals[signum], signum);
         }
-        PyMem_Free(user_signals);
+        TyMem_Free(user_signals);
         user_signals = NULL;
     }
 #endif
@@ -1496,7 +1496,7 @@ void _PyFaulthandler_Fini(void)
                    There's not much we can do in this unlikely case */
             }
         }
-        PyMem_Free(stack.ss_sp);
+        TyMem_Free(stack.ss_sp);
         stack.ss_sp = NULL;
     }
 #endif

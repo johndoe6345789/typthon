@@ -1,7 +1,7 @@
 #include "Python.h"
 #include "pycore_ast.h"           // expr_ty
-#include "pycore_pystate.h"       // _PyInterpreterState_GET()
-#include "pycore_runtime.h"       // _Py_ID()
+#include "pycore_pystate.h"       // _TyInterpreterState_GET()
+#include "pycore_runtime.h"       // _Ty_ID()
 #include <stdbool.h>
 
 /* This limited unparser is used to convert annotations back to strings
@@ -9,11 +9,11 @@
  * See ast.unparse for a full unparser (written in Python)
  */
 
-_Py_DECLARE_STR(dbl_open_br, "{{");
-_Py_DECLARE_STR(dbl_close_br, "}}");
+_Ty_DECLARE_STR(dbl_open_br, "{{");
+_Ty_DECLARE_STR(dbl_close_br, "}}");
 
 /* Forward declarations for recursion via helper functions. */
-static PyObject *
+static TyObject *
 expr_as_unicode(expr_ty e, int level);
 static int
 append_ast_expr(PyUnicodeWriter *writer, expr_ty e, int level);
@@ -29,7 +29,7 @@ static int
 append_ast_slice(PyUnicodeWriter *writer, expr_ty e);
 
 static int
-append_char(PyUnicodeWriter *writer, Py_UCS4 ch)
+append_char(PyUnicodeWriter *writer, Ty_UCS4 ch)
 {
     return PyUnicodeWriter_WriteChar(writer, ch);
 }
@@ -84,24 +84,24 @@ append_charp(PyUnicodeWriter *writer, const char *charp)
     } while (0)
 
 static int
-append_repr(PyUnicodeWriter *writer, PyObject *obj)
+append_repr(PyUnicodeWriter *writer, TyObject *obj)
 {
-    PyObject *repr = PyObject_Repr(obj);
+    TyObject *repr = PyObject_Repr(obj);
     if (!repr) {
         return -1;
     }
 
-    if ((PyFloat_CheckExact(obj) && isinf(PyFloat_AS_DOUBLE(obj))) ||
-        PyComplex_CheckExact(obj))
+    if ((TyFloat_CheckExact(obj) && isinf(TyFloat_AS_DOUBLE(obj))) ||
+        TyComplex_CheckExact(obj))
     {
-        _Py_DECLARE_STR(str_replace_inf, "1e309");  // evaluates to inf
-        PyObject *new_repr = PyUnicode_Replace(
+        _Ty_DECLARE_STR(str_replace_inf, "1e309");  // evaluates to inf
+        TyObject *new_repr = TyUnicode_Replace(
             repr,
-            &_Py_ID(inf),
-            &_Py_STR(str_replace_inf),
+            &_Ty_ID(inf),
+            &_Ty_STR(str_replace_inf),
             -1
         );
-        Py_DECREF(repr);
+        Ty_DECREF(repr);
         if (!new_repr) {
             return -1;
         }
@@ -109,7 +109,7 @@ append_repr(PyUnicodeWriter *writer, PyObject *obj)
     }
 
     int ret = PyUnicodeWriter_WriteStr(writer, repr);
-    Py_DECREF(repr);
+    Ty_DECREF(repr);
     return ret;
 }
 
@@ -139,7 +139,7 @@ enum {
 static int
 append_ast_boolop(PyUnicodeWriter *writer, expr_ty e, int level)
 {
-    Py_ssize_t i, value_count;
+    Ty_ssize_t i, value_count;
     asdl_expr_seq *values;
     const char *op = (e->v.BoolOp.op == And) ? " and " : " or ";
     int pr = (e->v.BoolOp.op == And) ? PR_AND : PR_OR;
@@ -180,7 +180,7 @@ append_ast_binop(PyUnicodeWriter *writer, expr_ty e, int level)
     case FloorDiv: op = " // "; pr = PR_TERM; break;
     case Pow: op = " ** "; pr = PR_POWER; rassoc = true; break;
     default:
-        PyErr_SetString(PyExc_SystemError,
+        TyErr_SetString(TyExc_SystemError,
                         "unknown binary operator");
         return -1;
     }
@@ -205,7 +205,7 @@ append_ast_unaryop(PyUnicodeWriter *writer, expr_ty e, int level)
     case UAdd: op = "+"; pr = PR_FACTOR; break;
     case USub: op = "-"; pr = PR_FACTOR; break;
     default:
-        PyErr_SetString(PyExc_SystemError,
+        TyErr_SetString(TyExc_SystemError,
                         "unknown unary operator");
         return -1;
     }
@@ -234,7 +234,7 @@ static int
 append_ast_args(PyUnicodeWriter *writer, arguments_ty args)
 {
     bool first;
-    Py_ssize_t i, di, arg_count, posonlyarg_count, default_count;
+    Ty_ssize_t i, di, arg_count, posonlyarg_count, default_count;
 
     first = true;
 
@@ -300,7 +300,7 @@ static int
 append_ast_lambda(PyUnicodeWriter *writer, expr_ty e, int level)
 {
     APPEND_STR_IF(level > PR_TEST, "(");
-    Py_ssize_t n_positional = (asdl_seq_LEN(e->v.Lambda.args->args) +
+    Ty_ssize_t n_positional = (asdl_seq_LEN(e->v.Lambda.args->args) +
                                asdl_seq_LEN(e->v.Lambda.args->posonlyargs));
     APPEND_STR(n_positional ? "lambda " : "lambda");
     APPEND(args, e->v.Lambda.args);
@@ -326,7 +326,7 @@ append_ast_ifexp(PyUnicodeWriter *writer, expr_ty e, int level)
 static int
 append_ast_dict(PyUnicodeWriter *writer, expr_ty e)
 {
-    Py_ssize_t i, value_count;
+    Ty_ssize_t i, value_count;
     expr_ty key_node;
 
     APPEND_CHAR('{');
@@ -352,7 +352,7 @@ append_ast_dict(PyUnicodeWriter *writer, expr_ty e)
 static int
 append_ast_set(PyUnicodeWriter *writer, expr_ty e)
 {
-    Py_ssize_t i, elem_count;
+    Ty_ssize_t i, elem_count;
 
     APPEND_CHAR('{');
     elem_count = asdl_seq_LEN(e->v.Set.elts);
@@ -367,7 +367,7 @@ append_ast_set(PyUnicodeWriter *writer, expr_ty e)
 static int
 append_ast_list(PyUnicodeWriter *writer, expr_ty e)
 {
-    Py_ssize_t i, elem_count;
+    Ty_ssize_t i, elem_count;
 
     APPEND_CHAR('[');
     elem_count = asdl_seq_LEN(e->v.List.elts);
@@ -382,7 +382,7 @@ append_ast_list(PyUnicodeWriter *writer, expr_ty e)
 static int
 append_ast_tuple(PyUnicodeWriter *writer, expr_ty e, int level)
 {
-    Py_ssize_t i, elem_count;
+    Ty_ssize_t i, elem_count;
 
     elem_count = asdl_seq_LEN(e->v.Tuple.elts);
 
@@ -405,7 +405,7 @@ append_ast_tuple(PyUnicodeWriter *writer, expr_ty e, int level)
 static int
 append_ast_comprehension(PyUnicodeWriter *writer, comprehension_ty gen)
 {
-    Py_ssize_t i, if_count;
+    Ty_ssize_t i, if_count;
 
     APPEND_STR(gen->is_async ? " async for " : " for ");
     APPEND_EXPR(gen->target, PR_TUPLE);
@@ -423,7 +423,7 @@ append_ast_comprehension(PyUnicodeWriter *writer, comprehension_ty gen)
 static int
 append_ast_comprehensions(PyUnicodeWriter *writer, asdl_comprehension_seq *comprehensions)
 {
-    Py_ssize_t i, gen_count;
+    Ty_ssize_t i, gen_count;
     gen_count = asdl_seq_LEN(comprehensions);
 
     for (i = 0; i < gen_count; i++) {
@@ -475,7 +475,7 @@ static int
 append_ast_compare(PyUnicodeWriter *writer, expr_ty e, int level)
 {
     const char *op;
-    Py_ssize_t i, comparator_count;
+    Ty_ssize_t i, comparator_count;
     asdl_expr_seq *comparators;
     asdl_int_seq *ops;
 
@@ -522,7 +522,7 @@ append_ast_compare(PyUnicodeWriter *writer, expr_ty e, int level)
             op = " not in ";
             break;
         default:
-            PyErr_SetString(PyExc_SystemError,
+            TyErr_SetString(TyExc_SystemError,
                             "unexpected comparison kind");
             return -1;
         }
@@ -557,7 +557,7 @@ static int
 append_ast_call(PyUnicodeWriter *writer, expr_ty e)
 {
     bool first;
-    Py_ssize_t i, arg_count, kw_count;
+    Ty_ssize_t i, arg_count, kw_count;
     expr_ty expr;
 
     APPEND_EXPR(e->v.Call.func, PR_ATOM);
@@ -588,31 +588,31 @@ append_ast_call(PyUnicodeWriter *writer, expr_ty e)
     APPEND_CHAR_FINISH(')');
 }
 
-static PyObject *
-escape_braces(PyObject *orig)
+static TyObject *
+escape_braces(TyObject *orig)
 {
-    PyObject *temp;
-    PyObject *result;
-    temp = PyUnicode_Replace(orig, _Py_LATIN1_CHR('{'),
-                             &_Py_STR(dbl_open_br), -1);
+    TyObject *temp;
+    TyObject *result;
+    temp = TyUnicode_Replace(orig, _Ty_LATIN1_CHR('{'),
+                             &_Ty_STR(dbl_open_br), -1);
     if (!temp) {
         return NULL;
     }
-    result = PyUnicode_Replace(temp, _Py_LATIN1_CHR('}'),
-                               &_Py_STR(dbl_close_br), -1);
-    Py_DECREF(temp);
+    result = TyUnicode_Replace(temp, _Ty_LATIN1_CHR('}'),
+                               &_Ty_STR(dbl_close_br), -1);
+    Ty_DECREF(temp);
     return result;
 }
 
 static int
-append_fstring_unicode(PyUnicodeWriter *writer, PyObject *unicode)
+append_fstring_unicode(PyUnicodeWriter *writer, TyObject *unicode)
 {
-    PyObject *escaped;
+    TyObject *escaped;
     int result = -1;
     escaped = escape_braces(unicode);
     if (escaped) {
         result = PyUnicodeWriter_WriteStr(writer, escaped);
-        Py_DECREF(escaped);
+        Ty_DECREF(escaped);
     }
     return result;
 }
@@ -632,7 +632,7 @@ append_fstring_element(PyUnicodeWriter *writer, expr_ty e, bool is_format_spec)
     case Interpolation_kind:
         return append_interpolation(writer, e);
     default:
-        PyErr_SetString(PyExc_SystemError,
+        TyErr_SetString(TyExc_SystemError,
                         "unknown expression kind inside f-string or t-string");
         return -1;
     }
@@ -640,7 +640,7 @@ append_fstring_element(PyUnicodeWriter *writer, expr_ty e, bool is_format_spec)
 
 /* Build body separately to enable wrapping the entire stream of Strs,
    Constants and FormattedValues in one opening and one closing quote. */
-static PyObject *
+static TyObject *
 build_ftstring_body(asdl_expr_seq *values, bool is_format_spec)
 {
     PyUnicodeWriter *body_writer = PyUnicodeWriter_Create(256);
@@ -648,8 +648,8 @@ build_ftstring_body(asdl_expr_seq *values, bool is_format_spec)
         return NULL;
     }
 
-    Py_ssize_t value_count = asdl_seq_LEN(values);
-    for (Py_ssize_t i = 0; i < value_count; ++i) {
+    Ty_ssize_t value_count = asdl_seq_LEN(values);
+    for (Ty_ssize_t i = 0; i < value_count; ++i) {
         if (-1 == append_fstring_element(body_writer,
                                          (expr_ty)asdl_seq_GET(values, i),
                                          is_format_spec
@@ -666,7 +666,7 @@ static int
 append_templatestr(PyUnicodeWriter *writer, expr_ty e)
 {
     int result = -1;
-    PyObject *body = build_ftstring_body(e->v.TemplateStr.values, false);
+    TyObject *body = build_ftstring_body(e->v.TemplateStr.values, false);
     if (!body) {
         return -1;
     }
@@ -676,7 +676,7 @@ append_templatestr(PyUnicodeWriter *writer, expr_ty e)
     {
         result = 0;
     }
-    Py_DECREF(body);
+    Ty_DECREF(body);
     return result;
 }
 
@@ -684,7 +684,7 @@ static int
 append_joinedstr(PyUnicodeWriter *writer, expr_ty e, bool is_format_spec)
 {
     int result = -1;
-    PyObject *body = build_ftstring_body(e->v.JoinedStr.values, is_format_spec);
+    TyObject *body = build_ftstring_body(e->v.JoinedStr.values, is_format_spec);
     if (!body) {
         return -1;
     }
@@ -699,15 +699,15 @@ append_joinedstr(PyUnicodeWriter *writer, expr_ty e, bool is_format_spec)
     else {
         result = PyUnicodeWriter_WriteStr(writer, body);
     }
-    Py_DECREF(body);
+    Ty_DECREF(body);
     return result;
 }
 
 static int
-append_interpolation_str(PyUnicodeWriter *writer, PyObject *str)
+append_interpolation_str(PyUnicodeWriter *writer, TyObject *str)
 {
     const char *outer_brace = "{";
-    if (PyUnicode_Find(str, _Py_LATIN1_CHR('{'), 0, 1, 1) == 0) {
+    if (TyUnicode_Find(str, _Ty_LATIN1_CHR('{'), 0, 1, 1) == 0) {
         /* Expression starts with a brace, split it with a space from the outer
            one. */
         outer_brace = "{ ";
@@ -726,12 +726,12 @@ append_interpolation_value(PyUnicodeWriter *writer, expr_ty e)
 {
     /* Grammar allows PR_TUPLE, but use >PR_TEST for adding parenthesis
        around a lambda with ':' */
-    PyObject *temp_fv_str = expr_as_unicode(e, PR_TEST + 1);
+    TyObject *temp_fv_str = expr_as_unicode(e, PR_TEST + 1);
     if (!temp_fv_str) {
         return -1;
     }
     int result = append_interpolation_str(writer, temp_fv_str);
-    Py_DECREF(temp_fv_str);
+    Ty_DECREF(temp_fv_str);
     return result;
 }
 
@@ -754,7 +754,7 @@ append_interpolation_conversion(PyUnicodeWriter *writer, int conversion)
         conversion_str = "!s";
         break;
     default:
-        PyErr_SetString(PyExc_SystemError,
+        TyErr_SetString(TyExc_SystemError,
                         "unknown f-value conversion kind");
         return -1;
     }
@@ -812,16 +812,16 @@ append_formattedvalue(PyUnicodeWriter *writer, expr_ty e)
 }
 
 static int
-append_ast_constant(PyUnicodeWriter *writer, PyObject *constant)
+append_ast_constant(PyUnicodeWriter *writer, TyObject *constant)
 {
-    if (PyTuple_CheckExact(constant)) {
-        Py_ssize_t i, elem_count;
+    if (TyTuple_CheckExact(constant)) {
+        Ty_ssize_t i, elem_count;
 
-        elem_count = PyTuple_GET_SIZE(constant);
+        elem_count = TyTuple_GET_SIZE(constant);
         APPEND_CHAR('(');
         for (i = 0; i < elem_count; i++) {
             APPEND_STR_IF(i > 0, ", ");
-            if (append_ast_constant(writer, PyTuple_GET_ITEM(constant, i)) < 0) {
+            if (append_ast_constant(writer, TyTuple_GET_ITEM(constant, i)) < 0) {
                 return -1;
             }
         }
@@ -841,7 +841,7 @@ append_ast_attribute(PyUnicodeWriter *writer, expr_ty e)
 
     /* Special case: integers require a space for attribute access to be
        unambiguous. */
-    if (v->kind == Constant_kind && PyLong_CheckExact(v->v.Constant.value)) {
+    if (v->kind == Constant_kind && TyLong_CheckExact(v->v.Constant.value)) {
         period = " .";
     }
     else {
@@ -967,7 +967,7 @@ append_ast_expr(PyUnicodeWriter *writer, expr_ty e, int level)
     case Call_kind:
         return append_ast_call(writer, e);
     case Constant_kind:
-        if (e->v.Constant.value == Py_Ellipsis) {
+        if (e->v.Constant.value == Ty_Ellipsis) {
             APPEND_STR_FINISH("...");
         }
         if (e->v.Constant.kind != NULL
@@ -1002,12 +1002,12 @@ append_ast_expr(PyUnicodeWriter *writer, expr_ty e, int level)
         return append_named_expr(writer, e, level);
     // No default so compiler emits a warning for unhandled cases
     }
-    PyErr_SetString(PyExc_SystemError,
+    TyErr_SetString(TyExc_SystemError,
                     "unknown expression kind");
     return -1;
 }
 
-static PyObject *
+static TyObject *
 expr_as_unicode(expr_ty e, int level)
 {
     PyUnicodeWriter *writer = PyUnicodeWriter_Create(256);
@@ -1022,8 +1022,8 @@ expr_as_unicode(expr_ty e, int level)
     return PyUnicodeWriter_Finish(writer);
 }
 
-PyObject *
-_PyAST_ExprAsUnicode(expr_ty e)
+TyObject *
+_TyAST_ExprAsUnicode(expr_ty e)
 {
     return expr_as_unicode(e, PR_TEST);
 }

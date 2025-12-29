@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_OPCODE_UTILS_H
-#define Py_INTERNAL_OPCODE_UTILS_H
+#ifndef Ty_INTERNAL_OPCODE_UTILS_H
+#define Ty_INTERNAL_OPCODE_UTILS_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #define MAX_REAL_OPCODE 254
@@ -87,4 +87,4 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_OPCODE_UTILS_H */
+#endif /* !Ty_INTERNAL_OPCODE_UTILS_H */

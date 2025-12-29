@@ -1,18 +1,18 @@
-#ifndef Py_INTERNAL_CALL_H
-#define Py_INTERNAL_CALL_H
+#ifndef Ty_INTERNAL_CALL_H
+#define Ty_INTERNAL_CALL_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_code.h"          // EVAL_CALL_STAT_INC_IF_FUNCTION()
-#include "pycore_pystate.h"       // _PyThreadState_GET()
+#include "pycore_pystate.h"       // _TyThreadState_GET()
 #include "pycore_stats.h"
 
-/* Suggested size (number of positional arguments) for arrays of PyObject*
+/* Suggested size (number of positional arguments) for arrays of TyObject*
    allocated on a C stack to avoid allocating memory on the heap memory. Such
    array is used to pass positional arguments to call functions of the
    PyObject_Vectorcall() family.
@@ -24,77 +24,77 @@ extern "C" {
 #define _PY_FASTCALL_SMALL_STACK 5
 
 
-// Export for 'math' shared extension, used via _PyObject_VectorcallTstate()
+// Export for 'math' shared extension, used via _TyObject_VectorcallTstate()
 // static inline function.
-PyAPI_FUNC(PyObject*) _Py_CheckFunctionResult(
+PyAPI_FUNC(TyObject*) _Ty_CheckFunctionResult(
     PyThreadState *tstate,
-    PyObject *callable,
-    PyObject *result,
+    TyObject *callable,
+    TyObject *result,
     const char *where);
 
-extern PyObject* _PyObject_Call_Prepend(
+extern TyObject* _TyObject_Call_Prepend(
     PyThreadState *tstate,
-    PyObject *callable,
-    PyObject *obj,
-    PyObject *args,
-    PyObject *kwargs);
+    TyObject *callable,
+    TyObject *obj,
+    TyObject *args,
+    TyObject *kwargs);
 
-extern PyObject* _PyObject_VectorcallDictTstate(
+extern TyObject* _TyObject_VectorcallDictTstate(
     PyThreadState *tstate,
-    PyObject *callable,
-    PyObject *const *args,
+    TyObject *callable,
+    TyObject *const *args,
     size_t nargsf,
-    PyObject *kwargs);
+    TyObject *kwargs);
 
-extern PyObject* _PyObject_Call(
+extern TyObject* _TyObject_Call(
     PyThreadState *tstate,
-    PyObject *callable,
-    PyObject *args,
-    PyObject *kwargs);
+    TyObject *callable,
+    TyObject *args,
+    TyObject *kwargs);
 
-extern PyObject * _PyObject_CallMethodFormat(
+extern TyObject * _TyObject_CallMethodFormat(
     PyThreadState *tstate,
-    PyObject *callable,
+    TyObject *callable,
     const char *format,
     ...);
 
 // Export for 'array' shared extension
-PyAPI_FUNC(PyObject*) _PyObject_CallMethod(
-    PyObject *obj,
-    PyObject *name,
+PyAPI_FUNC(TyObject*) _TyObject_CallMethod(
+    TyObject *obj,
+    TyObject *name,
     const char *format, ...);
 
-extern PyObject* _PyObject_CallMethodIdObjArgs(
-    PyObject *obj,
-    _Py_Identifier *name,
+extern TyObject* _TyObject_CallMethodIdObjArgs(
+    TyObject *obj,
+    _Ty_Identifier *name,
     ...);
 
-static inline PyObject *
-_PyObject_VectorcallMethodId(
-    _Py_Identifier *name, PyObject *const *args,
-    size_t nargsf, PyObject *kwnames)
+static inline TyObject *
+_TyObject_VectorcallMethodId(
+    _Ty_Identifier *name, TyObject *const *args,
+    size_t nargsf, TyObject *kwnames)
 {
-    PyObject *oname = _PyUnicode_FromId(name); /* borrowed */
+    TyObject *oname = _TyUnicode_FromId(name); /* borrowed */
     if (!oname) {
-        return _Py_NULL;
+        return _Ty_NULL;
     }
     return PyObject_VectorcallMethod(oname, args, nargsf, kwnames);
 }
 
-static inline PyObject *
-_PyObject_CallMethodIdNoArgs(PyObject *self, _Py_Identifier *name)
+static inline TyObject *
+_TyObject_CallMethodIdNoArgs(TyObject *self, _Ty_Identifier *name)
 {
     size_t nargsf = 1 | PY_VECTORCALL_ARGUMENTS_OFFSET;
-    return _PyObject_VectorcallMethodId(name, &self, nargsf, _Py_NULL);
+    return _TyObject_VectorcallMethodId(name, &self, nargsf, _Ty_NULL);
 }
 
-static inline PyObject *
-_PyObject_CallMethodIdOneArg(PyObject *self, _Py_Identifier *name, PyObject *arg)
+static inline TyObject *
+_TyObject_CallMethodIdOneArg(TyObject *self, _Ty_Identifier *name, TyObject *arg)
 {
-    PyObject *args[2] = {self, arg};
+    TyObject *args[2] = {self, arg};
     size_t nargsf = 2 | PY_VECTORCALL_ARGUMENTS_OFFSET;
     assert(arg != NULL);
-    return _PyObject_VectorcallMethodId(name, args, nargsf, _Py_NULL);
+    return _TyObject_VectorcallMethodId(name, args, nargsf, _Ty_NULL);
 }
 
 
@@ -103,27 +103,27 @@ _PyObject_CallMethodIdOneArg(PyObject *self, _Py_Identifier *name, PyObject *arg
 // Call callable using tp_call. Arguments are like PyObject_Vectorcall(),
 // except that nargs is plainly the number of arguments without flags.
 //
-// Export for 'math' shared extension, used via _PyObject_VectorcallTstate()
+// Export for 'math' shared extension, used via _TyObject_VectorcallTstate()
 // static inline function.
-PyAPI_FUNC(PyObject*) _PyObject_MakeTpCall(
+PyAPI_FUNC(TyObject*) _TyObject_MakeTpCall(
     PyThreadState *tstate,
-    PyObject *callable,
-    PyObject *const *args, Py_ssize_t nargs,
-    PyObject *keywords);
+    TyObject *callable,
+    TyObject *const *args, Ty_ssize_t nargs,
+    TyObject *keywords);
 
 // Static inline variant of public PyVectorcall_Function().
 static inline vectorcallfunc
-_PyVectorcall_FunctionInline(PyObject *callable)
+_PyVectorcall_FunctionInline(TyObject *callable)
 {
     assert(callable != NULL);
 
-    PyTypeObject *tp = Py_TYPE(callable);
-    if (!PyType_HasFeature(tp, Py_TPFLAGS_HAVE_VECTORCALL)) {
+    TyTypeObject *tp = Ty_TYPE(callable);
+    if (!TyType_HasFeature(tp, Ty_TPFLAGS_HAVE_VECTORCALL)) {
         return NULL;
     }
     assert(PyCallable_Check(callable));
 
-    Py_ssize_t offset = tp->tp_vectorcall_offset;
+    Ty_ssize_t offset = tp->tp_vectorcall_offset;
     assert(offset > 0);
 
     vectorcallfunc ptr;
@@ -150,57 +150,57 @@ _PyVectorcall_FunctionInline(PyObject *callable)
 
    Return the result on success. Raise an exception and return NULL on
    error. */
-static inline PyObject *
-_PyObject_VectorcallTstate(PyThreadState *tstate, PyObject *callable,
-                           PyObject *const *args, size_t nargsf,
-                           PyObject *kwnames)
+static inline TyObject *
+_TyObject_VectorcallTstate(PyThreadState *tstate, TyObject *callable,
+                           TyObject *const *args, size_t nargsf,
+                           TyObject *kwnames)
 {
     vectorcallfunc func;
-    PyObject *res;
+    TyObject *res;
 
-    assert(kwnames == NULL || PyTuple_Check(kwnames));
+    assert(kwnames == NULL || TyTuple_Check(kwnames));
     assert(args != NULL || PyVectorcall_NARGS(nargsf) == 0);
 
     func = _PyVectorcall_FunctionInline(callable);
     if (func == NULL) {
-        Py_ssize_t nargs = PyVectorcall_NARGS(nargsf);
-        return _PyObject_MakeTpCall(tstate, callable, args, nargs, kwnames);
+        Ty_ssize_t nargs = PyVectorcall_NARGS(nargsf);
+        return _TyObject_MakeTpCall(tstate, callable, args, nargs, kwnames);
     }
     res = func(callable, args, nargsf, kwnames);
-    return _Py_CheckFunctionResult(tstate, callable, res, NULL);
+    return _Ty_CheckFunctionResult(tstate, callable, res, NULL);
 }
 
 
-static inline PyObject *
-_PyObject_CallNoArgsTstate(PyThreadState *tstate, PyObject *func) {
-    return _PyObject_VectorcallTstate(tstate, func, NULL, 0, NULL);
+static inline TyObject *
+_TyObject_CallNoArgsTstate(PyThreadState *tstate, TyObject *func) {
+    return _TyObject_VectorcallTstate(tstate, func, NULL, 0, NULL);
 }
 
 
 // Private static inline function variant of public PyObject_CallNoArgs()
-static inline PyObject *
-_PyObject_CallNoArgs(PyObject *func) {
+static inline TyObject *
+_TyObject_CallNoArgs(TyObject *func) {
     EVAL_CALL_STAT_INC_IF_FUNCTION(EVAL_CALL_API, func);
-    PyThreadState *tstate = _PyThreadState_GET();
-    return _PyObject_VectorcallTstate(tstate, func, NULL, 0, NULL);
+    PyThreadState *tstate = _TyThreadState_GET();
+    return _TyObject_VectorcallTstate(tstate, func, NULL, 0, NULL);
 }
 
 
-extern PyObject *const *
+extern TyObject *const *
 _PyStack_UnpackDict(PyThreadState *tstate,
-    PyObject *const *args, Py_ssize_t nargs,
-    PyObject *kwargs, PyObject **p_kwnames);
+    TyObject *const *args, Ty_ssize_t nargs,
+    TyObject *kwargs, TyObject **p_kwnames);
 
 extern void _PyStack_UnpackDict_Free(
-    PyObject *const *stack,
-    Py_ssize_t nargs,
-    PyObject *kwnames);
+    TyObject *const *stack,
+    Ty_ssize_t nargs,
+    TyObject *kwnames);
 
 extern void _PyStack_UnpackDict_FreeNoDecRef(
-    PyObject *const *stack,
-    PyObject *kwnames);
+    TyObject *const *stack,
+    TyObject *kwnames);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_CALL_H */
+#endif /* !Ty_INTERNAL_CALL_H */

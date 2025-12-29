@@ -9,7 +9,7 @@ import os
 import _opcode
 
 from test.support import (script_helper, requires_specialization,
-                          import_helper, Py_GIL_DISABLED, requires_jit_enabled,
+                          import_helper, Ty_GIL_DISABLED, requires_jit_enabled,
                           reset_code)
 
 _testinternalcapi = import_helper.import_module("_testinternalcapi")
@@ -48,7 +48,7 @@ def get_opnames(ex):
 
 
 @requires_specialization
-@unittest.skipIf(Py_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
+@unittest.skipIf(Ty_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
 @requires_jit_enabled
 class TestExecutorInvalidation(unittest.TestCase):
 
@@ -117,7 +117,7 @@ class TestExecutorInvalidation(unittest.TestCase):
 
 
 @requires_specialization
-@unittest.skipIf(Py_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
+@unittest.skipIf(Ty_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
 @requires_jit_enabled
 @unittest.skipIf(os.getenv("PYTHON_UOPS_OPTIMIZE") == "0", "Needs uop optimizer to run.")
 class TestUops(unittest.TestCase):
@@ -447,7 +447,7 @@ class TestUops(unittest.TestCase):
 
 
 @requires_specialization
-@unittest.skipIf(Py_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
+@unittest.skipIf(Ty_GIL_DISABLED, "optimizer not yet supported in free-threaded builds")
 @requires_jit_enabled
 @unittest.skipIf(os.getenv("PYTHON_UOPS_OPTIMIZE") == "0", "Needs uop optimizer to run.")
 class TestUopsOptimization(unittest.TestCase):

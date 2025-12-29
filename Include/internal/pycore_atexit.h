@@ -1,17 +1,17 @@
-#ifndef Py_INTERNAL_ATEXIT_H
-#define Py_INTERNAL_ATEXIT_H
+#ifndef Ty_INTERNAL_ATEXIT_H
+#define Ty_INTERNAL_ATEXIT_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 #  define _PyAtExit_LockCallbacks(state) PyMutex_Lock(&state->ll_callbacks_lock);
 #  define _PyAtExit_UnlockCallbacks(state) PyMutex_Unlock(&state->ll_callbacks_lock);
 #else
@@ -28,4 +28,4 @@ PyAPI_FUNC(int) _Py_AtExit(
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_ATEXIT_H */
+#endif /* !Ty_INTERNAL_ATEXIT_H */

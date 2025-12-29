@@ -538,7 +538,7 @@ class Stats:
         return {
             Doc(
                 "Optimizer attempts",
-                "The number of times the trace optimizer (_Py_uop_analyze_and_optimize) was run.",
+                "The number of times the trace optimizer (_Ty_uop_analyze_and_optimize) was run.",
             ): (attempts, None),
             Doc(
                 "Optimizer successes",

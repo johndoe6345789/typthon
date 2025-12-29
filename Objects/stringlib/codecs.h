@@ -4,7 +4,7 @@
 # error "codecs.h is specific to Unicode"
 #endif
 
-#include "pycore_bitutils.h"      // _Py_bswap32()
+#include "pycore_bitutils.h"      // _Ty_bswap32()
 
 /* Mask to quickly check whether a C 'size_t' contains a
    non-ASCII, UTF8-encoded char. */
@@ -19,12 +19,12 @@
 /* 10xxxxxx */
 #define IS_CONTINUATION_BYTE(ch) ((ch) >= 0x80 && (ch) < 0xC0)
 
-Py_LOCAL_INLINE(Py_UCS4)
+Ty_LOCAL_INLINE(Ty_UCS4)
 STRINGLIB(utf8_decode)(const char **inptr, const char *end,
                        STRINGLIB_CHAR *dest,
-                       Py_ssize_t *outpos)
+                       Ty_ssize_t *outpos)
 {
-    Py_UCS4 ch;
+    Ty_UCS4 ch;
     const char *s = *inptr;
     STRINGLIB_CHAR *p = dest + *outpos;
 
@@ -39,7 +39,7 @@ STRINGLIB(utf8_decode)(const char **inptr, const char *end,
                First, check if we can do an aligned read, as most CPUs have
                a penalty for unaligned reads.
             */
-            if (_Py_IS_ALIGNED(s, ALIGNOF_SIZE_T)) {
+            if (_Ty_IS_ALIGNED(s, ALIGNOF_SIZE_T)) {
                 /* Help register allocation */
                 const char *_s = s;
                 STRINGLIB_CHAR *_p = p;
@@ -96,7 +96,7 @@ STRINGLIB(utf8_decode)(const char **inptr, const char *end,
 
         if (ch < 0xE0) {
             /* \xC2\x80-\xDF\xBF -- 0080-07FF */
-            Py_UCS4 ch2;
+            Ty_UCS4 ch2;
             if (ch < 0xC2) {
                 /* invalid sequence
                 \x80-\xBF -- continuation byte
@@ -126,7 +126,7 @@ STRINGLIB(utf8_decode)(const char **inptr, const char *end,
 
         if (ch < 0xF0) {
             /* \xE0\xA0\x80-\xEF\xBF\xBF -- 0800-FFFF */
-            Py_UCS4 ch2, ch3;
+            Ty_UCS4 ch2, ch3;
             if (end - s < 3) {
                 /* unexpected end of data: the caller will decide whether
                    it's an error or not */
@@ -176,7 +176,7 @@ STRINGLIB(utf8_decode)(const char **inptr, const char *end,
 
         if (ch < 0xF5) {
             /* \xF0\x90\x80\x80-\xF4\x8F\xBF\xBF -- 10000-10FFFF */
-            Py_UCS4 ch2, ch3, ch4;
+            Ty_UCS4 ch2, ch3, ch4;
             if (end - s < 4) {
                 /* unexpected end of data: the caller will decide whether
                    it's an error or not */
@@ -255,35 +255,35 @@ InvalidContinuation3:
 
 
 /* UTF-8 encoder specialized for a Unicode kind to avoid the slow
-   PyUnicode_READ() macro. Delete some parts of the code depending on the kind:
+   TyUnicode_READ() macro. Delete some parts of the code depending on the kind:
    UCS-1 strings don't need to handle surrogates for example. */
-Py_LOCAL_INLINE(char *)
+Ty_LOCAL_INLINE(char *)
 STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
-                        PyObject *unicode,
+                        TyObject *unicode,
                         const STRINGLIB_CHAR *data,
-                        Py_ssize_t size,
-                        _Py_error_handler error_handler,
+                        Ty_ssize_t size,
+                        _Ty_error_handler error_handler,
                         const char *errors)
 {
-    Py_ssize_t i;                /* index into data of next input character */
+    Ty_ssize_t i;                /* index into data of next input character */
     char *p;                     /* next free byte in output buffer */
 #if STRINGLIB_SIZEOF_CHAR > 1
-    PyObject *error_handler_obj = NULL;
-    PyObject *exc = NULL;
-    PyObject *rep = NULL;
+    TyObject *error_handler_obj = NULL;
+    TyObject *exc = NULL;
+    TyObject *rep = NULL;
 #endif
 #if STRINGLIB_SIZEOF_CHAR == 1
-    const Py_ssize_t max_char_size = 2;
+    const Ty_ssize_t max_char_size = 2;
 #elif STRINGLIB_SIZEOF_CHAR == 2
-    const Py_ssize_t max_char_size = 3;
+    const Ty_ssize_t max_char_size = 3;
 #else /*  STRINGLIB_SIZEOF_CHAR == 4 */
-    const Py_ssize_t max_char_size = 4;
+    const Ty_ssize_t max_char_size = 4;
 #endif
 
     assert(size >= 0);
     if (size > PY_SSIZE_T_MAX / max_char_size) {
         /* integer overflow */
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
 
@@ -293,7 +293,7 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
         return NULL;
 
     for (i = 0; i < size;) {
-        Py_UCS4 ch = data[i++];
+        Ty_UCS4 ch = data[i++];
 
         if (ch < 0x80) {
             /* Encode ASCII */
@@ -310,17 +310,17 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
             *p++ = (char)(0x80 | (ch & 0x3f));
         }
 #if STRINGLIB_SIZEOF_CHAR > 1
-        else if (Py_UNICODE_IS_SURROGATE(ch)) {
-            Py_ssize_t startpos, endpos, newpos;
-            Py_ssize_t k;
-            if (error_handler == _Py_ERROR_UNKNOWN) {
-                error_handler = _Py_GetErrorHandler(errors);
+        else if (Ty_UNICODE_IS_SURROGATE(ch)) {
+            Ty_ssize_t startpos, endpos, newpos;
+            Ty_ssize_t k;
+            if (error_handler == _Ty_ERROR_UNKNOWN) {
+                error_handler = _Ty_GetErrorHandler(errors);
             }
 
             startpos = i-1;
             endpos = startpos+1;
 
-            while ((endpos < size) && Py_UNICODE_IS_SURROGATE(data[endpos]))
+            while ((endpos < size) && Ty_UNICODE_IS_SURROGATE(data[endpos]))
                 endpos++;
 
             /* Only overallocate the buffer if it's not the last write */
@@ -328,15 +328,15 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
 
             switch (error_handler)
             {
-            case _Py_ERROR_REPLACE:
+            case _Ty_ERROR_REPLACE:
                 memset(p, '?', endpos - startpos);
                 p += (endpos - startpos);
-                _Py_FALLTHROUGH;
-            case _Py_ERROR_IGNORE:
+                _Ty_FALLTHROUGH;
+            case _Ty_ERROR_IGNORE:
                 i += (endpos - startpos - 1);
                 break;
 
-            case _Py_ERROR_SURROGATEPASS:
+            case _Ty_ERROR_SURROGATEPASS:
                 for (k=startpos; k<endpos; k++) {
                     ch = data[k];
                     *p++ = (char)(0xe0 | (ch >> 12));
@@ -346,7 +346,7 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
                 i += (endpos - startpos - 1);
                 break;
 
-            case _Py_ERROR_BACKSLASHREPLACE:
+            case _Ty_ERROR_BACKSLASHREPLACE:
                 /* subtract preallocated bytes */
                 writer->min_size -= max_char_size * (endpos - startpos);
                 p = backslashreplace(writer, p,
@@ -356,7 +356,7 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
                 i += (endpos - startpos - 1);
                 break;
 
-            case _Py_ERROR_XMLCHARREFREPLACE:
+            case _Ty_ERROR_XMLCHARREFREPLACE:
                 /* subtract preallocated bytes */
                 writer->min_size -= max_char_size * (endpos - startpos);
                 p = xmlcharrefreplace(writer, p,
@@ -366,7 +366,7 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
                 i += (endpos - startpos - 1);
                 break;
 
-            case _Py_ERROR_SURROGATEESCAPE:
+            case _Ty_ERROR_SURROGATEESCAPE:
                 for (k=startpos; k<endpos; k++) {
                     ch = data[k];
                     if (!(0xDC80 <= ch && ch <= 0xDCFF))
@@ -379,7 +379,7 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
                 }
                 startpos = k;
                 assert(startpos < endpos);
-                _Py_FALLTHROUGH;
+                _Ty_FALLTHROUGH;
             default:
                 rep = unicode_encode_call_errorhandler(
                       errors, &error_handler_obj, "utf-8", "surrogates not allowed",
@@ -401,14 +401,14 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
                     writer->overallocate = (newpos < size);
                 }
 
-                if (PyBytes_Check(rep)) {
+                if (TyBytes_Check(rep)) {
                     p = _PyBytesWriter_WriteBytes(writer, p,
-                                                  PyBytes_AS_STRING(rep),
-                                                  PyBytes_GET_SIZE(rep));
+                                                  TyBytes_AS_STRING(rep),
+                                                  TyBytes_GET_SIZE(rep));
                 }
                 else {
                     /* rep is unicode */
-                    if (!PyUnicode_IS_ASCII(rep)) {
+                    if (!TyUnicode_IS_ASCII(rep)) {
                         raise_encode_exception(&exc, "utf-8", unicode,
                                                startpos, endpos,
                                                "surrogates not allowed");
@@ -416,13 +416,13 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
                     }
 
                     p = _PyBytesWriter_WriteBytes(writer, p,
-                                                  PyUnicode_DATA(rep),
-                                                  PyUnicode_GET_LENGTH(rep));
+                                                  TyUnicode_DATA(rep),
+                                                  TyUnicode_GET_LENGTH(rep));
                 }
 
                 if (p == NULL)
                     goto error;
-                Py_CLEAR(rep);
+                Ty_CLEAR(rep);
 
                 i = newpos;
             }
@@ -455,16 +455,16 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
     }
 
 #if STRINGLIB_SIZEOF_CHAR > 1
-    Py_XDECREF(error_handler_obj);
-    Py_XDECREF(exc);
+    Ty_XDECREF(error_handler_obj);
+    Ty_XDECREF(exc);
 #endif
     return p;
 
 #if STRINGLIB_SIZEOF_CHAR > 1
  error:
-    Py_XDECREF(rep);
-    Py_XDECREF(error_handler_obj);
-    Py_XDECREF(exc);
+    Ty_XDECREF(rep);
+    Ty_XDECREF(error_handler_obj);
+    Ty_XDECREF(exc);
     return NULL;
 #endif
 }
@@ -497,12 +497,12 @@ STRINGLIB(utf8_encoder)(_PyBytesWriter *writer,
 #define SWAB(value)             ((((value) >> 8) & STRIPPED_MASK) | \
                                  (((value) & STRIPPED_MASK) << 8))
 
-Py_LOCAL_INLINE(Py_UCS4)
+Ty_LOCAL_INLINE(Ty_UCS4)
 STRINGLIB(utf16_decode)(const unsigned char **inptr, const unsigned char *e,
-                        STRINGLIB_CHAR *dest, Py_ssize_t *outpos,
+                        STRINGLIB_CHAR *dest, Ty_ssize_t *outpos,
                         int native_ordering)
 {
-    Py_UCS4 ch;
+    Ty_UCS4 ch;
     const unsigned char *q = *inptr;
     STRINGLIB_CHAR *p = dest + *outpos;
     /* Offsets from q for retrieving byte pairs in the right order. */
@@ -514,10 +514,10 @@ STRINGLIB(utf16_decode)(const unsigned char **inptr, const unsigned char *e,
     --e;
 
     while (q < e) {
-        Py_UCS4 ch2;
+        Ty_UCS4 ch2;
         /* First check for possible aligned read of a C 'long'. Unaligned
            reads are more expensive, better to defer to another iteration. */
-        if (_Py_IS_ALIGNED(q, ALIGNOF_LONG)) {
+        if (_Ty_IS_ALIGNED(q, ALIGNOF_LONG)) {
             /* Fast path for runs of in-range non-surrogate chars. */
             const unsigned char *_q = q;
             while (_q + SIZEOF_LONG <= e) {
@@ -568,7 +568,7 @@ STRINGLIB(utf16_decode)(const unsigned char **inptr, const unsigned char *e,
 
         ch = (q[ihi] << 8) | q[ilo];
         q += 2;
-        if (!Py_UNICODE_IS_SURROGATE(ch)) {
+        if (!Ty_UNICODE_IS_SURROGATE(ch)) {
 #if STRINGLIB_SIZEOF_CHAR < 2
             if (ch > STRINGLIB_MAX_CHAR)
                 /* Out-of-range */
@@ -579,15 +579,15 @@ STRINGLIB(utf16_decode)(const unsigned char **inptr, const unsigned char *e,
         }
 
         /* UTF-16 code pair: */
-        if (!Py_UNICODE_IS_HIGH_SURROGATE(ch))
+        if (!Ty_UNICODE_IS_HIGH_SURROGATE(ch))
             goto IllegalEncoding;
         if (q >= e)
             goto UnexpectedEnd;
         ch2 = (q[ihi] << 8) | q[ilo];
         q += 2;
-        if (!Py_UNICODE_IS_LOW_SURROGATE(ch2))
+        if (!Ty_UNICODE_IS_LOW_SURROGATE(ch2))
             goto IllegalSurrogate;
-        ch = Py_UNICODE_JOIN_SURROGATES(ch, ch2);
+        ch = Ty_UNICODE_JOIN_SURROGATES(ch, ch2);
 #if STRINGLIB_SIZEOF_CHAR < 4
         /* Out-of-range */
         goto Return;
@@ -617,9 +617,9 @@ IllegalSurrogate:
 
 
 #if STRINGLIB_MAX_CHAR >= 0x80
-Py_LOCAL_INLINE(Py_ssize_t)
+Ty_LOCAL_INLINE(Ty_ssize_t)
 STRINGLIB(utf16_encode)(const STRINGLIB_CHAR *in,
-                        Py_ssize_t len,
+                        Ty_ssize_t len,
                         unsigned short **outptr,
                         int native_ordering)
 {
@@ -627,7 +627,7 @@ STRINGLIB(utf16_encode)(const STRINGLIB_CHAR *in,
     const STRINGLIB_CHAR *end = in + len;
 #if STRINGLIB_SIZEOF_CHAR == 1
     if (native_ordering) {
-        const STRINGLIB_CHAR *unrolled_end = in + _Py_SIZE_ROUND_DOWN(len, 4);
+        const STRINGLIB_CHAR *unrolled_end = in + _Ty_SIZE_ROUND_DOWN(len, 4);
         while (in < unrolled_end) {
             out[0] = in[0];
             out[1] = in[1];
@@ -640,7 +640,7 @@ STRINGLIB(utf16_encode)(const STRINGLIB_CHAR *in,
         }
     } else {
 # define SWAB2(CH)  ((CH) << 8) /* high byte is zero */
-        const STRINGLIB_CHAR *unrolled_end = in + _Py_SIZE_ROUND_DOWN(len, 4);
+        const STRINGLIB_CHAR *unrolled_end = in + _Ty_SIZE_ROUND_DOWN(len, 4);
         while (in < unrolled_end) {
             out[0] = SWAB2(in[0]);
             out[1] = SWAB2(in[1]);
@@ -649,8 +649,8 @@ STRINGLIB(utf16_encode)(const STRINGLIB_CHAR *in,
             in += 4; out += 4;
         }
         while (in < end) {
-            Py_UCS4 ch = *in++;
-            *out++ = SWAB2((Py_UCS2)ch);
+            Ty_UCS4 ch = *in++;
+            *out++ = SWAB2((Ty_UCS2)ch);
         }
 #undef SWAB2
     }
@@ -659,7 +659,7 @@ STRINGLIB(utf16_encode)(const STRINGLIB_CHAR *in,
 #else
     if (native_ordering) {
 #if STRINGLIB_MAX_CHAR < 0x10000
-        const STRINGLIB_CHAR *unrolled_end = in + _Py_SIZE_ROUND_DOWN(len, 4);
+        const STRINGLIB_CHAR *unrolled_end = in + _Ty_SIZE_ROUND_DOWN(len, 4);
         while (in < unrolled_end) {
             /* check if any character is a surrogate character */
             if (((in[0] ^ 0xd800) &
@@ -675,7 +675,7 @@ STRINGLIB(utf16_encode)(const STRINGLIB_CHAR *in,
         }
 #endif
         while (in < end) {
-            Py_UCS4 ch;
+            Ty_UCS4 ch;
             ch = *in++;
             if (ch < 0xd800)
                 *out++ = ch;
@@ -684,8 +684,8 @@ STRINGLIB(utf16_encode)(const STRINGLIB_CHAR *in,
                 goto fail;
 #if STRINGLIB_MAX_CHAR >= 0x10000
             else if (ch >= 0x10000) {
-                out[0] = Py_UNICODE_HIGH_SURROGATE(ch);
-                out[1] = Py_UNICODE_LOW_SURROGATE(ch);
+                out[0] = Ty_UNICODE_HIGH_SURROGATE(ch);
+                out[1] = Ty_UNICODE_LOW_SURROGATE(ch);
                 out += 2;
             }
 #endif
@@ -695,7 +695,7 @@ STRINGLIB(utf16_encode)(const STRINGLIB_CHAR *in,
     } else {
 #define SWAB2(CH)  (((CH) << 8) | ((CH) >> 8))
 #if STRINGLIB_MAX_CHAR < 0x10000
-        const STRINGLIB_CHAR *unrolled_end = in + _Py_SIZE_ROUND_DOWN(len, 4);
+        const STRINGLIB_CHAR *unrolled_end = in + _Ty_SIZE_ROUND_DOWN(len, 4);
         while (in < unrolled_end) {
             /* check if any character is a surrogate character */
             if (((in[0] ^ 0xd800) &
@@ -711,23 +711,23 @@ STRINGLIB(utf16_encode)(const STRINGLIB_CHAR *in,
         }
 #endif
         while (in < end) {
-            Py_UCS4 ch = *in++;
+            Ty_UCS4 ch = *in++;
             if (ch < 0xd800)
-                *out++ = SWAB2((Py_UCS2)ch);
+                *out++ = SWAB2((Ty_UCS2)ch);
             else if (ch < 0xe000)
                 /* reject surrogate characters (U+D800-U+DFFF) */
                 goto fail;
 #if STRINGLIB_MAX_CHAR >= 0x10000
             else if (ch >= 0x10000) {
-                Py_UCS2 ch1 = Py_UNICODE_HIGH_SURROGATE(ch);
-                Py_UCS2 ch2 = Py_UNICODE_LOW_SURROGATE(ch);
+                Ty_UCS2 ch1 = Ty_UNICODE_HIGH_SURROGATE(ch);
+                Ty_UCS2 ch2 = Ty_UNICODE_LOW_SURROGATE(ch);
                 out[0] = SWAB2(ch1);
                 out[1] = SWAB2(ch2);
                 out += 2;
             }
 #endif
             else
-                *out++ = SWAB2((Py_UCS2)ch);
+                *out++ = SWAB2((Ty_UCS2)ch);
         }
 #undef SWAB2
     }
@@ -750,20 +750,20 @@ STRINGLIB(SWAB4)(STRINGLIB_CHAR ch)
     /* high bytes are zero */
     return ((word & 0x00FFu) << 24) | ((word & 0xFF00u) << 8);
 #else
-    return _Py_bswap32(word);
+    return _Ty_bswap32(word);
 #endif
 }
 
-Py_LOCAL_INLINE(Py_ssize_t)
+Ty_LOCAL_INLINE(Ty_ssize_t)
 STRINGLIB(utf32_encode)(const STRINGLIB_CHAR *in,
-                        Py_ssize_t len,
+                        Ty_ssize_t len,
                         uint32_t **outptr,
                         int native_ordering)
 {
     uint32_t *out = *outptr;
     const STRINGLIB_CHAR *end = in + len;
     if (native_ordering) {
-        const STRINGLIB_CHAR *unrolled_end = in + _Py_SIZE_ROUND_DOWN(len, 4);
+        const STRINGLIB_CHAR *unrolled_end = in + _Ty_SIZE_ROUND_DOWN(len, 4);
         while (in < unrolled_end) {
 #if STRINGLIB_SIZEOF_CHAR > 1
             /* check if any character is a surrogate character */
@@ -780,10 +780,10 @@ STRINGLIB(utf32_encode)(const STRINGLIB_CHAR *in,
             in += 4; out += 4;
         }
         while (in < end) {
-            Py_UCS4 ch;
+            Ty_UCS4 ch;
             ch = *in++;
 #if STRINGLIB_SIZEOF_CHAR > 1
-            if (Py_UNICODE_IS_SURROGATE(ch)) {
+            if (Ty_UNICODE_IS_SURROGATE(ch)) {
                 /* reject surrogate characters (U+D800-U+DFFF) */
                 goto fail;
             }
@@ -791,7 +791,7 @@ STRINGLIB(utf32_encode)(const STRINGLIB_CHAR *in,
             *out++ = ch;
         }
     } else {
-        const STRINGLIB_CHAR *unrolled_end = in + _Py_SIZE_ROUND_DOWN(len, 4);
+        const STRINGLIB_CHAR *unrolled_end = in + _Ty_SIZE_ROUND_DOWN(len, 4);
         while (in < unrolled_end) {
 #if STRINGLIB_SIZEOF_CHAR > 1
             /* check if any character is a surrogate character */
@@ -808,9 +808,9 @@ STRINGLIB(utf32_encode)(const STRINGLIB_CHAR *in,
             in += 4; out += 4;
         }
         while (in < end) {
-            Py_UCS4 ch = *in++;
+            Ty_UCS4 ch = *in++;
 #if STRINGLIB_SIZEOF_CHAR > 1
-            if (Py_UNICODE_IS_SURROGATE(ch)) {
+            if (Ty_UNICODE_IS_SURROGATE(ch)) {
                 /* reject surrogate characters (U+D800-U+DFFF) */
                 goto fail;
             }

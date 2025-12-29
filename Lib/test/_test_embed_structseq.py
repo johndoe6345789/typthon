@@ -4,7 +4,7 @@ import unittest
 
 
 # bpo-46417: Test that structseq types used by the sys module are still
-# valid when Py_Finalize()/Py_Initialize() are called multiple times.
+# valid when Ty_Finalize()/Ty_Initialize() are called multiple times.
 class TestStructSeq(unittest.TestCase):
     # test PyTypeObject members
     def check_structseq(self, obj_type):

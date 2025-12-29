@@ -1,5 +1,5 @@
-#ifndef Py_OPCODE_H
-#define Py_OPCODE_H
+#ifndef Ty_OPCODE_H
+#define Ty_OPCODE_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -40,4 +40,4 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_OPCODE_H */
+#endif /* !Ty_OPCODE_H */

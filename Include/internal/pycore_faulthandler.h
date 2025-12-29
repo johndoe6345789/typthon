@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_FAULTHANDLER_H
-#define Py_INTERNAL_FAULTHANDLER_H
+#ifndef Ty_INTERNAL_FAULTHANDLER_H
+#define Ty_INTERNAL_FAULTHANDLER_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #ifdef HAVE_SIGACTION
@@ -27,20 +27,20 @@ extern "C" {
 #  ifdef HAVE_SIGALTSTACK
 #    define FAULTHANDLER_USE_ALT_STACK
 #  endif
-typedef struct sigaction _Py_sighandler_t;
+typedef struct sigaction _Ty_sighandler_t;
 #else
-typedef PyOS_sighandler_t _Py_sighandler_t;
+typedef TyOS_sighandler_t _Ty_sighandler_t;
 #endif  // HAVE_SIGACTION
 
 
 #ifdef FAULTHANDLER_USER
 struct faulthandler_user_signal {
     int enabled;
-    PyObject *file;
+    TyObject *file;
     int fd;
     int all_threads;
     int chain;
-    _Py_sighandler_t previous;
+    _Ty_sighandler_t previous;
     PyInterpreterState *interp;
 };
 #endif /* FAULTHANDLER_USER */
@@ -49,7 +49,7 @@ struct faulthandler_user_signal {
 struct _faulthandler_runtime_state {
     struct {
         int enabled;
-        PyObject *file;
+        TyObject *file;
         int fd;
         int all_threads;
         PyInterpreterState *interp;
@@ -60,7 +60,7 @@ struct _faulthandler_runtime_state {
     } fatal_error;
 
     struct {
-        PyObject *file;
+        TyObject *file;
         int fd;
         PY_TIMEOUT_T timeout_us;   /* timeout in microseconds */
         int repeat;
@@ -97,4 +97,4 @@ struct _faulthandler_runtime_state {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_FAULTHANDLER_H */
+#endif /* !Ty_INTERNAL_FAULTHANDLER_H */

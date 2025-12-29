@@ -1,4 +1,4 @@
-#include "pycore_weakref.h"       // _PyWeakref_GET_REF()
+#include "pycore_weakref.h"       // _TyWeakref_GET_REF()
 
 
 typedef struct _dlcontext {
@@ -13,7 +13,7 @@ typedef _PyXIData_regitem_t dlregitem_t;
 static void _xidregistry_init(dlregistry_t *);
 static void _xidregistry_fini(dlregistry_t *);
 static _PyXIData_getdata_t _lookup_getdata_from_registry(
-                                            dlcontext_t *, PyObject *);
+                                            dlcontext_t *, TyObject *);
 
 
 /* used in crossinterp.c */
@@ -35,12 +35,12 @@ get_lookup_context(PyThreadState *tstate, dlcontext_t *res)
 {
     _PyXI_global_state_t *global = _PyXI_GET_GLOBAL_STATE(tstate->interp);
     if (global == NULL) {
-        assert(PyErr_Occurred());
+        assert(TyErr_Occurred());
         return -1;
     }
     _PyXI_state_t *local = _PyXI_GET_STATE(tstate->interp);
     if (local == NULL) {
-        assert(PyErr_Occurred());
+        assert(TyErr_Occurred());
         return -1;
     }
     *res = (dlcontext_t){
@@ -51,7 +51,7 @@ get_lookup_context(PyThreadState *tstate, dlcontext_t *res)
 }
 
 static _PyXIData_getdata_t
-lookup_getdata(dlcontext_t *ctx, PyObject *obj)
+lookup_getdata(dlcontext_t *ctx, TyObject *obj)
 {
    /* Cross-interpreter objects are looked up by exact match on the class.
       We can reassess this policy when we move from a global registry to a
@@ -62,10 +62,10 @@ lookup_getdata(dlcontext_t *ctx, PyObject *obj)
 
 /* exported API */
 
-PyObject *
+TyObject *
 _PyXIData_GetNotShareableErrorType(PyThreadState *tstate)
 {
-    PyObject *exctype = get_notshareableerror_type(tstate);
+    TyObject *exctype = get_notshareableerror_type(tstate);
     assert(exctype != NULL);
     return exctype;
 }
@@ -73,7 +73,7 @@ _PyXIData_GetNotShareableErrorType(PyThreadState *tstate)
 void
 _PyXIData_SetNotShareableError(PyThreadState *tstate, const char *msg)
 {
-    PyObject *cause = NULL;
+    TyObject *cause = NULL;
     set_notshareableerror(tstate, cause, 1, msg);
 }
 
@@ -81,7 +81,7 @@ void
 _PyXIData_FormatNotShareableError(PyThreadState *tstate,
                                   const char *format, ...)
 {
-    PyObject *cause = NULL;
+    TyObject *cause = NULL;
     va_list vargs;
     va_start(vargs, format);
     format_notshareableerror_v(tstate, cause, 1, format, vargs);
@@ -91,33 +91,33 @@ _PyXIData_FormatNotShareableError(PyThreadState *tstate,
 int
 _PyXI_UnwrapNotShareableError(PyThreadState * tstate, _PyXI_failure *failure)
 {
-    PyObject *exctype = get_notshareableerror_type(tstate);
+    TyObject *exctype = get_notshareableerror_type(tstate);
     assert(exctype != NULL);
-    if (!_PyErr_ExceptionMatches(tstate, exctype)) {
+    if (!_TyErr_ExceptionMatches(tstate, exctype)) {
         return -1;
     }
-    PyObject *exc = _PyErr_GetRaisedException(tstate);
+    TyObject *exc = _TyErr_GetRaisedException(tstate);
     if (failure != NULL) {
         _PyXI_errcode code = _PyXI_ERR_NOT_SHAREABLE;
         if (_PyXI_InitFailure(failure, code, exc) < 0) {
             return -1;
         }
     }
-    PyObject *cause = PyException_GetCause(exc);
+    TyObject *cause = PyException_GetCause(exc);
     if (cause != NULL) {
-        Py_DECREF(exc);
+        Ty_DECREF(exc);
         exc = cause;
     }
     else {
         assert(PyException_GetContext(exc) == NULL);
     }
-    _PyErr_SetRaisedException(tstate, exc);
+    _TyErr_SetRaisedException(tstate, exc);
     return 0;
 }
 
 
 _PyXIData_getdata_t
-_PyXIData_Lookup(PyThreadState *tstate, PyObject *obj)
+_PyXIData_Lookup(PyThreadState *tstate, TyObject *obj)
 {
     dlcontext_t ctx;
     if (get_lookup_context(tstate, &ctx) < 0) {
@@ -192,9 +192,9 @@ _xidregistry_unlock(dlregistry_t *registry)
 /* accessing the registry */
 
 static inline dlregistry_t *
-_get_xidregistry_for_type(dlcontext_t *ctx, PyTypeObject *cls)
+_get_xidregistry_for_type(dlcontext_t *ctx, TyTypeObject *cls)
 {
-    if (cls->tp_flags & Py_TPFLAGS_HEAPTYPE) {
+    if (cls->tp_flags & Ty_TPFLAGS_HEAPTYPE) {
         return &ctx->local->registry;
     }
     return &ctx->global->registry;
@@ -203,22 +203,22 @@ _get_xidregistry_for_type(dlcontext_t *ctx, PyTypeObject *cls)
 static dlregitem_t* _xidregistry_remove_entry(dlregistry_t *, dlregitem_t *);
 
 static dlregitem_t *
-_xidregistry_find_type(dlregistry_t *xidregistry, PyTypeObject *cls)
+_xidregistry_find_type(dlregistry_t *xidregistry, TyTypeObject *cls)
 {
     dlregitem_t *cur = xidregistry->head;
     while (cur != NULL) {
         if (cur->weakref != NULL) {
             // cur is/was a heap type.
-            PyObject *registered = _PyWeakref_GET_REF(cur->weakref);
+            TyObject *registered = _TyWeakref_GET_REF(cur->weakref);
             if (registered == NULL) {
                 // The weakly ref'ed object was freed.
                 cur = _xidregistry_remove_entry(xidregistry, cur);
                 continue;
             }
-            assert(PyType_Check(registered));
-            assert(cur->cls == (PyTypeObject *)registered);
-            assert(cur->cls->tp_flags & Py_TPFLAGS_HEAPTYPE);
-            Py_DECREF(registered);
+            assert(TyType_Check(registered));
+            assert(cur->cls == (TyTypeObject *)registered);
+            assert(cur->cls->tp_flags & Ty_TPFLAGS_HEAPTYPE);
+            Ty_DECREF(registered);
         }
         if (cur->cls == cls) {
             return cur;
@@ -229,9 +229,9 @@ _xidregistry_find_type(dlregistry_t *xidregistry, PyTypeObject *cls)
 }
 
 static _PyXIData_getdata_t
-_lookup_getdata_from_registry(dlcontext_t *ctx, PyObject *obj)
+_lookup_getdata_from_registry(dlcontext_t *ctx, TyObject *obj)
 {
-    PyTypeObject *cls = Py_TYPE(obj);
+    TyTypeObject *cls = Ty_TYPE(obj);
 
     dlregistry_t *xidregistry = _get_xidregistry_for_type(ctx, cls);
     _xidregistry_lock(xidregistry);
@@ -250,9 +250,9 @@ _lookup_getdata_from_registry(dlcontext_t *ctx, PyObject *obj)
 
 static int
 _xidregistry_add_type(dlregistry_t *xidregistry,
-                      PyTypeObject *cls, _PyXIData_getdata_t getdata)
+                      TyTypeObject *cls, _PyXIData_getdata_t getdata)
 {
-    dlregitem_t *newhead = PyMem_RawMalloc(sizeof(dlregitem_t));
+    dlregitem_t *newhead = TyMem_RawMalloc(sizeof(dlregitem_t));
     if (newhead == NULL) {
         return -1;
     }
@@ -263,11 +263,11 @@ _xidregistry_add_type(dlregistry_t *xidregistry,
         .refcount = 1,
         .getdata = getdata,
     };
-    if (cls->tp_flags & Py_TPFLAGS_HEAPTYPE) {
+    if (cls->tp_flags & Ty_TPFLAGS_HEAPTYPE) {
         // XXX Assign a callback to clear the entry from the registry?
-        newhead->weakref = PyWeakref_NewRef((PyObject *)cls, NULL);
+        newhead->weakref = PyWeakref_NewRef((TyObject *)cls, NULL);
         if (newhead->weakref == NULL) {
-            PyMem_RawFree(newhead);
+            TyMem_RawFree(newhead);
             return -1;
         }
     }
@@ -294,8 +294,8 @@ _xidregistry_remove_entry(dlregistry_t *xidregistry, dlregitem_t *entry)
     if (next != NULL) {
         next->prev = entry->prev;
     }
-    Py_XDECREF(entry->weakref);
-    PyMem_RawFree(entry);
+    Ty_XDECREF(entry->weakref);
+    TyMem_RawFree(entry);
     return next;
 }
 
@@ -306,22 +306,22 @@ _xidregistry_clear(dlregistry_t *xidregistry)
     xidregistry->head = NULL;
     while (cur != NULL) {
         dlregitem_t *next = cur->next;
-        Py_XDECREF(cur->weakref);
-        PyMem_RawFree(cur);
+        Ty_XDECREF(cur->weakref);
+        TyMem_RawFree(cur);
         cur = next;
     }
 }
 
 int
 _PyXIData_RegisterClass(PyThreadState *tstate,
-                        PyTypeObject *cls, _PyXIData_getdata_t getdata)
+                        TyTypeObject *cls, _PyXIData_getdata_t getdata)
 {
-    if (!PyType_Check(cls)) {
-        PyErr_Format(PyExc_ValueError, "only classes may be registered");
+    if (!TyType_Check(cls)) {
+        TyErr_Format(TyExc_ValueError, "only classes may be registered");
         return -1;
     }
     if (getdata.basic == NULL && getdata.fallback == NULL) {
-        PyErr_Format(PyExc_ValueError, "missing 'getdata' func");
+        TyErr_Format(TyExc_ValueError, "missing 'getdata' func");
         return -1;
     }
 
@@ -349,7 +349,7 @@ finally:
 }
 
 int
-_PyXIData_UnregisterClass(PyThreadState *tstate, PyTypeObject *cls)
+_PyXIData_UnregisterClass(PyThreadState *tstate, TyTypeObject *cls)
 {
     int res = 0;
     dlcontext_t ctx;
@@ -381,53 +381,53 @@ _PyXIData_UnregisterClass(PyThreadState *tstate, PyTypeObject *cls)
 // bytes
 
 int
-_PyBytes_GetData(PyObject *obj, _PyBytes_data_t *data)
+_TyBytes_GetData(TyObject *obj, _TyBytes_data_t *data)
 {
-    if (!PyBytes_Check(obj)) {
-        PyErr_Format(PyExc_TypeError, "expected bytes, got %R", obj);
+    if (!TyBytes_Check(obj)) {
+        TyErr_Format(TyExc_TypeError, "expected bytes, got %R", obj);
         return -1;
     }
     char *bytes;
-    Py_ssize_t len;
-    if (PyBytes_AsStringAndSize(obj, &bytes, &len) < 0) {
+    Ty_ssize_t len;
+    if (TyBytes_AsStringAndSize(obj, &bytes, &len) < 0) {
         return -1;
     }
-    *data = (_PyBytes_data_t){
+    *data = (_TyBytes_data_t){
         .bytes = bytes,
         .len = len,
     };
     return 0;
 }
 
-PyObject *
-_PyBytes_FromData(_PyBytes_data_t *data)
+TyObject *
+_TyBytes_FromData(_TyBytes_data_t *data)
 {
-    return PyBytes_FromStringAndSize(data->bytes, data->len);
+    return TyBytes_FromStringAndSize(data->bytes, data->len);
 }
 
-PyObject *
-_PyBytes_FromXIData(_PyXIData_t *xidata)
+TyObject *
+_TyBytes_FromXIData(_PyXIData_t *xidata)
 {
-    _PyBytes_data_t *data = (_PyBytes_data_t *)xidata->data;
+    _TyBytes_data_t *data = (_TyBytes_data_t *)xidata->data;
     assert(_PyXIData_OBJ(xidata) != NULL
-            && PyBytes_Check(_PyXIData_OBJ(xidata)));
-    return _PyBytes_FromData(data);
+            && TyBytes_Check(_PyXIData_OBJ(xidata)));
+    return _TyBytes_FromData(data);
 }
 
 static int
 _bytes_shared(PyThreadState *tstate,
-              PyObject *obj, size_t size, xid_newobjfunc newfunc,
+              TyObject *obj, size_t size, xid_newobjfunc newfunc,
               _PyXIData_t *xidata)
 {
-    assert(size >= sizeof(_PyBytes_data_t));
+    assert(size >= sizeof(_TyBytes_data_t));
     assert(newfunc != NULL);
     if (_PyXIData_InitWithSize(
                         xidata, tstate->interp, size, obj, newfunc) < 0)
     {
         return -1;
     }
-    _PyBytes_data_t *data = (_PyBytes_data_t *)xidata->data;
-    if (_PyBytes_GetData(obj, data) < 0) {
+    _TyBytes_data_t *data = (_TyBytes_data_t *)xidata->data;
+    if (_TyBytes_GetData(obj, data) < 0) {
         _PyXIData_Clear(tstate->interp, xidata);
         return -1;
     }
@@ -435,41 +435,41 @@ _bytes_shared(PyThreadState *tstate,
 }
 
 int
-_PyBytes_GetXIData(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
+_TyBytes_GetXIData(PyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
-    if (!PyBytes_Check(obj)) {
-        PyErr_Format(PyExc_TypeError, "expected bytes, got %R", obj);
+    if (!TyBytes_Check(obj)) {
+        TyErr_Format(TyExc_TypeError, "expected bytes, got %R", obj);
         return -1;
     }
-    size_t size = sizeof(_PyBytes_data_t);
-    return _bytes_shared(tstate, obj, size, _PyBytes_FromXIData, xidata);
+    size_t size = sizeof(_TyBytes_data_t);
+    return _bytes_shared(tstate, obj, size, _TyBytes_FromXIData, xidata);
 }
 
-_PyBytes_data_t *
-_PyBytes_GetXIDataWrapped(PyThreadState *tstate,
-                          PyObject *obj, size_t size, xid_newobjfunc newfunc,
+_TyBytes_data_t *
+_TyBytes_GetXIDataWrapped(PyThreadState *tstate,
+                          TyObject *obj, size_t size, xid_newobjfunc newfunc,
                           _PyXIData_t *xidata)
 {
-    if (!PyBytes_Check(obj)) {
-        PyErr_Format(PyExc_TypeError, "expected bytes, got %R", obj);
+    if (!TyBytes_Check(obj)) {
+        TyErr_Format(TyExc_TypeError, "expected bytes, got %R", obj);
         return NULL;
     }
-    if (size < sizeof(_PyBytes_data_t)) {
-        PyErr_Format(PyExc_ValueError, "expected size >= %d, got %d",
-                     sizeof(_PyBytes_data_t), size);
+    if (size < sizeof(_TyBytes_data_t)) {
+        TyErr_Format(TyExc_ValueError, "expected size >= %d, got %d",
+                     sizeof(_TyBytes_data_t), size);
         return NULL;
     }
     if (newfunc == NULL) {
-        if (size == sizeof(_PyBytes_data_t)) {
-            PyErr_SetString(PyExc_ValueError, "missing new_object func");
+        if (size == sizeof(_TyBytes_data_t)) {
+            TyErr_SetString(TyExc_ValueError, "missing new_object func");
             return NULL;
         }
-        newfunc = _PyBytes_FromXIData;
+        newfunc = _TyBytes_FromXIData;
     }
     if (_bytes_shared(tstate, obj, size, newfunc, xidata) < 0) {
         return NULL;
     }
-    return (_PyBytes_data_t *)xidata->data;
+    return (_TyBytes_data_t *)xidata->data;
 }
 
 // str
@@ -477,18 +477,18 @@ _PyBytes_GetXIDataWrapped(PyThreadState *tstate,
 struct _shared_str_data {
     int kind;
     const void *buffer;
-    Py_ssize_t len;
+    Ty_ssize_t len;
 };
 
-static PyObject *
+static TyObject *
 _new_str_object(_PyXIData_t *xidata)
 {
     struct _shared_str_data *shared = (struct _shared_str_data *)(xidata->data);
-    return PyUnicode_FromKindAndData(shared->kind, shared->buffer, shared->len);
+    return TyUnicode_FromKindAndData(shared->kind, shared->buffer, shared->len);
 }
 
 static int
-_str_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
+_str_shared(PyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
     if (_PyXIData_InitWithSize(
             xidata, tstate->interp, sizeof(struct _shared_str_data), obj,
@@ -498,31 +498,31 @@ _str_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
         return -1;
     }
     struct _shared_str_data *shared = (struct _shared_str_data *)xidata->data;
-    shared->kind = PyUnicode_KIND(obj);
-    shared->buffer = PyUnicode_DATA(obj);
-    shared->len = PyUnicode_GET_LENGTH(obj);
+    shared->kind = TyUnicode_KIND(obj);
+    shared->buffer = TyUnicode_DATA(obj);
+    shared->len = TyUnicode_GET_LENGTH(obj);
     return 0;
 }
 
 // int
 
-static PyObject *
+static TyObject *
 _new_long_object(_PyXIData_t *xidata)
 {
-    return PyLong_FromSsize_t((Py_ssize_t)(xidata->data));
+    return TyLong_FromSsize_t((Ty_ssize_t)(xidata->data));
 }
 
 static int
-_long_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
+_long_shared(PyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
     /* Note that this means the size of shareable ints is bounded by
      * sys.maxsize.  Hence on 32-bit architectures that is half the
      * size of maximum shareable ints on 64-bit.
      */
-    Py_ssize_t value = PyLong_AsSsize_t(obj);
-    if (value == -1 && PyErr_Occurred()) {
-        if (PyErr_ExceptionMatches(PyExc_OverflowError)) {
-            PyErr_SetString(PyExc_OverflowError, "try sending as bytes");
+    Ty_ssize_t value = TyLong_AsSsize_t(obj);
+    if (value == -1 && TyErr_Occurred()) {
+        if (TyErr_ExceptionMatches(TyExc_OverflowError)) {
+            TyErr_SetString(TyExc_OverflowError, "try sending as bytes");
         }
         return -1;
     }
@@ -533,15 +533,15 @@ _long_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
 
 // float
 
-static PyObject *
+static TyObject *
 _new_float_object(_PyXIData_t *xidata)
 {
     double * value_ptr = xidata->data;
-    return PyFloat_FromDouble(*value_ptr);
+    return TyFloat_FromDouble(*value_ptr);
 }
 
 static int
-_float_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
+_float_shared(PyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
     if (_PyXIData_InitWithSize(
             xidata, tstate->interp, sizeof(double), NULL,
@@ -551,21 +551,21 @@ _float_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
         return -1;
     }
     double *shared = (double *)xidata->data;
-    *shared = PyFloat_AsDouble(obj);
+    *shared = TyFloat_AsDouble(obj);
     return 0;
 }
 
 // None
 
-static PyObject *
+static TyObject *
 _new_none_object(_PyXIData_t *xidata)
 {
     // XXX Singleton refcounts are problematic across interpreters...
-    return Py_NewRef(Py_None);
+    return Ty_NewRef(Ty_None);
 }
 
 static int
-_none_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
+_none_shared(PyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
     _PyXIData_Init(xidata, tstate->interp, NULL, NULL, _new_none_object);
     // xidata->data, xidata->obj and xidata->free remain NULL
@@ -574,20 +574,20 @@ _none_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
 
 // bool
 
-static PyObject *
+static TyObject *
 _new_bool_object(_PyXIData_t *xidata)
 {
     if (xidata->data){
-        Py_RETURN_TRUE;
+        Ty_RETURN_TRUE;
     }
-    Py_RETURN_FALSE;
+    Ty_RETURN_FALSE;
 }
 
 static int
-_bool_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
+_bool_shared(PyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
     _PyXIData_Init(xidata, tstate->interp,
-            (void *) (Py_IsTrue(obj) ? (uintptr_t) 1 : (uintptr_t) 0), NULL,
+            (void *) (Ty_IsTrue(obj) ? (uintptr_t) 1 : (uintptr_t) 0), NULL,
             _new_bool_object);
     // xidata->obj and xidata->free remain NULL
     return 0;
@@ -596,26 +596,26 @@ _bool_shared(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
 // tuple
 
 struct _shared_tuple_data {
-    Py_ssize_t len;
+    Ty_ssize_t len;
     _PyXIData_t **items;
 };
 
-static PyObject *
+static TyObject *
 _new_tuple_object(_PyXIData_t *xidata)
 {
     struct _shared_tuple_data *shared = (struct _shared_tuple_data *)(xidata->data);
-    PyObject *tuple = PyTuple_New(shared->len);
+    TyObject *tuple = TyTuple_New(shared->len);
     if (tuple == NULL) {
         return NULL;
     }
 
-    for (Py_ssize_t i = 0; i < shared->len; i++) {
-        PyObject *item = _PyXIData_NewObject(shared->items[i]);
+    for (Ty_ssize_t i = 0; i < shared->len; i++) {
+        TyObject *item = _PyXIData_NewObject(shared->items[i]);
         if (item == NULL){
-            Py_DECREF(tuple);
+            Ty_DECREF(tuple);
             return NULL;
         }
-        PyTuple_SET_ITEM(tuple, i, item);
+        TyTuple_SET_ITEM(tuple, i, item);
     }
     return tuple;
 }
@@ -625,55 +625,55 @@ _tuple_shared_free(void* data)
 {
     struct _shared_tuple_data *shared = (struct _shared_tuple_data *)(data);
 #ifndef NDEBUG
-    int64_t interpid = PyInterpreterState_GetID(_PyInterpreterState_GET());
+    int64_t interpid = TyInterpreterState_GetID(_TyInterpreterState_GET());
 #endif
-    for (Py_ssize_t i = 0; i < shared->len; i++) {
+    for (Ty_ssize_t i = 0; i < shared->len; i++) {
         if (shared->items[i] != NULL) {
             assert(_PyXIData_INTERPID(shared->items[i]) == interpid);
             _PyXIData_Release(shared->items[i]);
-            PyMem_RawFree(shared->items[i]);
+            TyMem_RawFree(shared->items[i]);
             shared->items[i] = NULL;
         }
     }
-    PyMem_Free(shared->items);
-    PyMem_RawFree(shared);
+    TyMem_Free(shared->items);
+    TyMem_RawFree(shared);
 }
 
 static int
-_tuple_shared(PyThreadState *tstate, PyObject *obj, xidata_fallback_t fallback,
+_tuple_shared(PyThreadState *tstate, TyObject *obj, xidata_fallback_t fallback,
               _PyXIData_t *xidata)
 {
-    Py_ssize_t len = PyTuple_GET_SIZE(obj);
+    Ty_ssize_t len = TyTuple_GET_SIZE(obj);
     if (len < 0) {
         return -1;
     }
-    struct _shared_tuple_data *shared = PyMem_RawMalloc(sizeof(struct _shared_tuple_data));
+    struct _shared_tuple_data *shared = TyMem_RawMalloc(sizeof(struct _shared_tuple_data));
     if (shared == NULL){
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
 
     shared->len = len;
-    shared->items = (_PyXIData_t **) PyMem_Calloc(shared->len, sizeof(_PyXIData_t *));
+    shared->items = (_PyXIData_t **) TyMem_Calloc(shared->len, sizeof(_PyXIData_t *));
     if (shared->items == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
 
-    for (Py_ssize_t i = 0; i < shared->len; i++) {
+    for (Ty_ssize_t i = 0; i < shared->len; i++) {
         _PyXIData_t *xidata_i = _PyXIData_New();
         if (xidata_i == NULL) {
-            goto error;  // PyErr_NoMemory already set
+            goto error;  // TyErr_NoMemory already set
         }
-        PyObject *item = PyTuple_GET_ITEM(obj, i);
+        TyObject *item = TyTuple_GET_ITEM(obj, i);
 
         int res = -1;
-        if (!_Py_EnterRecursiveCallTstate(tstate, " while sharing a tuple")) {
-            res = _PyObject_GetXIData(tstate, item, fallback, xidata_i);
-            _Py_LeaveRecursiveCallTstate(tstate);
+        if (!_Ty_EnterRecursiveCallTstate(tstate, " while sharing a tuple")) {
+            res = _TyObject_GetXIData(tstate, item, fallback, xidata_i);
+            _Ty_LeaveRecursiveCallTstate(tstate);
         }
         if (res < 0) {
-            PyMem_RawFree(xidata_i);
+            TyMem_RawFree(xidata_i);
             goto error;
         }
         shared->items[i] = xidata_i;
@@ -689,94 +689,94 @@ error:
 
 // code
 
-PyObject *
-_PyCode_FromXIData(_PyXIData_t *xidata)
+TyObject *
+_TyCode_FromXIData(_PyXIData_t *xidata)
 {
-    return _PyMarshal_ReadObjectFromXIData(xidata);
+    return _TyMarshal_ReadObjectFromXIData(xidata);
 }
 
 int
-_PyCode_GetXIData(PyThreadState *tstate, PyObject *obj, _PyXIData_t *xidata)
+_TyCode_GetXIData(PyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 {
-    if (!PyCode_Check(obj)) {
+    if (!TyCode_Check(obj)) {
         _PyXIData_FormatNotShareableError(tstate, "expected code, got %R", obj);
         return -1;
     }
-    if (_PyMarshal_GetXIData(tstate, obj, xidata) < 0) {
+    if (_TyMarshal_GetXIData(tstate, obj, xidata) < 0) {
         return -1;
     }
-    assert(_PyXIData_CHECK_NEW_OBJECT(xidata, _PyMarshal_ReadObjectFromXIData));
-    _PyXIData_SET_NEW_OBJECT(xidata, _PyCode_FromXIData);
+    assert(_PyXIData_CHECK_NEW_OBJECT(xidata, _TyMarshal_ReadObjectFromXIData));
+    _PyXIData_SET_NEW_OBJECT(xidata, _TyCode_FromXIData);
     return 0;
 }
 
 // function
 
-PyObject *
+TyObject *
 _PyFunction_FromXIData(_PyXIData_t *xidata)
 {
     // For now "stateless" functions are the only ones we must accommodate.
 
-    PyObject *code = _PyMarshal_ReadObjectFromXIData(xidata);
+    TyObject *code = _TyMarshal_ReadObjectFromXIData(xidata);
     if (code == NULL) {
         return NULL;
     }
     // Create a new function.
     // For stateless functions (no globals) we use __main__ as __globals__,
     // just like we do for builtins like exec().
-    assert(PyCode_Check(code));
-    PyThreadState *tstate = _PyThreadState_GET();
-    PyObject *globals = _PyEval_GetGlobalsFromRunningMain(tstate);  // borrowed
+    assert(TyCode_Check(code));
+    PyThreadState *tstate = _TyThreadState_GET();
+    TyObject *globals = _TyEval_GetGlobalsFromRunningMain(tstate);  // borrowed
     if (globals == NULL) {
-        if (_PyErr_Occurred(tstate)) {
-            Py_DECREF(code);
+        if (_TyErr_Occurred(tstate)) {
+            Ty_DECREF(code);
             return NULL;
         }
-        globals = PyDict_New();
+        globals = TyDict_New();
         if (globals == NULL) {
-            Py_DECREF(code);
+            Ty_DECREF(code);
             return NULL;
         }
     }
     else {
-        Py_INCREF(globals);
+        Ty_INCREF(globals);
     }
-    if (_PyEval_EnsureBuiltins(tstate, globals, NULL) < 0) {
-        Py_DECREF(code);
-        Py_DECREF(globals);
+    if (_TyEval_EnsureBuiltins(tstate, globals, NULL) < 0) {
+        Ty_DECREF(code);
+        Ty_DECREF(globals);
         return NULL;
     }
-    PyObject *func = PyFunction_New(code, globals);
-    Py_DECREF(code);
-    Py_DECREF(globals);
+    TyObject *func = TyFunction_New(code, globals);
+    Ty_DECREF(code);
+    Ty_DECREF(globals);
     return func;
 }
 
 int
-_PyFunction_GetXIData(PyThreadState *tstate, PyObject *func,
+_PyFunction_GetXIData(PyThreadState *tstate, TyObject *func,
                       _PyXIData_t *xidata)
 {
-    if (!PyFunction_Check(func)) {
+    if (!TyFunction_Check(func)) {
         const char *msg = "expected a function, got %R";
         format_notshareableerror(tstate, NULL, 0, msg, func);
         return -1;
     }
     if (_PyFunction_VerifyStateless(tstate, func) < 0) {
-        PyObject *cause = _PyErr_GetRaisedException(tstate);
+        TyObject *cause = _TyErr_GetRaisedException(tstate);
         assert(cause != NULL);
         const char *msg = "only stateless functions are shareable";
         set_notshareableerror(tstate, cause, 0, msg);
-        Py_DECREF(cause);
+        Ty_DECREF(cause);
         return -1;
     }
-    PyObject *code = PyFunction_GET_CODE(func);
+    TyObject *code = TyFunction_GET_CODE(func);
 
     // Ideally code objects would be immortal and directly shareable.
     // In the meantime, we use marshal.
-    if (_PyMarshal_GetXIData(tstate, code, xidata) < 0) {
+    if (_TyMarshal_GetXIData(tstate, code, xidata) < 0) {
         return -1;
     }
-    // Replace _PyMarshal_ReadObjectFromXIData.
+    // Replace _TyMarshal_ReadObjectFromXIData.
     // (_PyFunction_FromXIData() will call it.)
     _PyXIData_SET_NEW_OBJECT(xidata, _PyFunction_FromXIData);
     return 0;
@@ -789,47 +789,47 @@ static void
 _register_builtins_for_crossinterpreter_data(dlregistry_t *xidregistry)
 {
 #define REGISTER(TYPE, GETDATA) \
-    _xidregistry_add_type(xidregistry, (PyTypeObject *)TYPE, \
+    _xidregistry_add_type(xidregistry, (TyTypeObject *)TYPE, \
                           ((_PyXIData_getdata_t){.basic=(GETDATA)}))
 #define REGISTER_FALLBACK(TYPE, GETDATA) \
-    _xidregistry_add_type(xidregistry, (PyTypeObject *)TYPE, \
+    _xidregistry_add_type(xidregistry, (TyTypeObject *)TYPE, \
                           ((_PyXIData_getdata_t){.fallback=(GETDATA)}))
     // None
-    if (REGISTER(Py_TYPE(Py_None), _none_shared) != 0) {
-        Py_FatalError("could not register None for cross-interpreter sharing");
+    if (REGISTER(Ty_TYPE(Ty_None), _none_shared) != 0) {
+        Ty_FatalError("could not register None for cross-interpreter sharing");
     }
 
     // int
-    if (REGISTER(&PyLong_Type, _long_shared) != 0) {
-        Py_FatalError("could not register int for cross-interpreter sharing");
+    if (REGISTER(&TyLong_Type, _long_shared) != 0) {
+        Ty_FatalError("could not register int for cross-interpreter sharing");
     }
 
     // bytes
-    if (REGISTER(&PyBytes_Type, _PyBytes_GetXIData) != 0) {
-        Py_FatalError("could not register bytes for cross-interpreter sharing");
+    if (REGISTER(&TyBytes_Type, _TyBytes_GetXIData) != 0) {
+        Ty_FatalError("could not register bytes for cross-interpreter sharing");
     }
 
     // str
-    if (REGISTER(&PyUnicode_Type, _str_shared) != 0) {
-        Py_FatalError("could not register str for cross-interpreter sharing");
+    if (REGISTER(&TyUnicode_Type, _str_shared) != 0) {
+        Ty_FatalError("could not register str for cross-interpreter sharing");
     }
 
     // bool
-    if (REGISTER(&PyBool_Type, _bool_shared) != 0) {
-        Py_FatalError("could not register bool for cross-interpreter sharing");
+    if (REGISTER(&TyBool_Type, _bool_shared) != 0) {
+        Ty_FatalError("could not register bool for cross-interpreter sharing");
     }
 
     // float
-    if (REGISTER(&PyFloat_Type, _float_shared) != 0) {
-        Py_FatalError("could not register float for cross-interpreter sharing");
+    if (REGISTER(&TyFloat_Type, _float_shared) != 0) {
+        Ty_FatalError("could not register float for cross-interpreter sharing");
     }
 
     // tuple
-    if (REGISTER_FALLBACK(&PyTuple_Type, _tuple_shared) != 0) {
-        Py_FatalError("could not register tuple for cross-interpreter sharing");
+    if (REGISTER_FALLBACK(&TyTuple_Type, _tuple_shared) != 0) {
+        Ty_FatalError("could not register tuple for cross-interpreter sharing");
     }
 
-    // For now, we do not register PyCode_Type or PyFunction_Type.
+    // For now, we do not register TyCode_Type or TyFunction_Type.
 #undef REGISTER
 #undef REGISTER_FALLBACK
 }

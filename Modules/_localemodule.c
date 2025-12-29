@@ -10,8 +10,8 @@ This software comes with no warranty. Use at your own risk.
 ******************************************************************/
 
 #include "Python.h"
-#include "pycore_fileutils.h"     // _Py_GetLocaleconvNumeric()
-#include "pycore_pymem.h"         // _PyMem_Strdup()
+#include "pycore_fileutils.h"     // _Ty_GetLocaleconvNumeric()
+#include "pycore_pymem.h"         // _TyMem_Strdup()
 
 #include <locale.h>               // setlocale()
 #include <string.h>               // strlen()
@@ -34,13 +34,13 @@ This software comes with no warranty. Use at your own risk.
 PyDoc_STRVAR(locale__doc__, "Support for POSIX locales.");
 
 typedef struct _locale_state {
-    PyObject *Error;
+    TyObject *Error;
 } _locale_state;
 
 static inline _locale_state*
-get_locale_state(PyObject *m)
+get_locale_state(TyObject *m)
 {
-    void *state = PyModule_GetState(m);
+    void *state = TyModule_GetState(m);
     assert(state != NULL);
     return (_locale_state *)state;
 }
@@ -55,33 +55,33 @@ module _locale
 /* support functions for formatting floating-point numbers */
 
 /* the grouping is terminated by either 0 or CHAR_MAX */
-static PyObject*
+static TyObject*
 copy_grouping(const char* s)
 {
     int i;
-    PyObject *result, *val = NULL;
+    TyObject *result, *val = NULL;
 
     if (s[0] == '\0') {
         /* empty string: no grouping at all */
-        return PyList_New(0);
+        return TyList_New(0);
     }
 
     for (i = 0; s[i] != '\0' && s[i] != CHAR_MAX; i++)
         ; /* nothing */
 
-    result = PyList_New(i+1);
+    result = TyList_New(i+1);
     if (!result)
         return NULL;
 
     i = -1;
     do {
         i++;
-        val = PyLong_FromLong(s[i]);
+        val = TyLong_FromLong(s[i]);
         if (val == NULL) {
-            Py_DECREF(result);
+            Ty_DECREF(result);
             return NULL;
         }
-        PyList_SET_ITEM(result, i, val);
+        TyList_SET_ITEM(result, i, val);
     } while (s[i] != '\0' && s[i] != CHAR_MAX);
 
     return result;
@@ -97,17 +97,17 @@ _locale.setlocale
 Activates/queries locale processing.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_setlocale_impl(PyObject *module, int category, const char *locale)
+static TyObject *
+_locale_setlocale_impl(TyObject *module, int category, const char *locale)
 /*[clinic end generated code: output=a0e777ae5d2ff117 input=dbe18f1d66c57a6a]*/
 {
     char *result;
-    PyObject *result_object;
+    TyObject *result_object;
 
 #if defined(MS_WINDOWS)
     if (category < LC_MIN || category > LC_MAX)
     {
-        PyErr_SetString(get_locale_state(module)->Error,
+        TyErr_SetString(get_locale_state(module)->Error,
                         "invalid locale category");
         return NULL;
     }
@@ -118,22 +118,22 @@ _locale_setlocale_impl(PyObject *module, int category, const char *locale)
         result = setlocale(category, locale);
         if (!result) {
             /* operation failed, no setting was changed */
-            PyErr_SetString(get_locale_state(module)->Error,
+            TyErr_SetString(get_locale_state(module)->Error,
                             "unsupported locale setting");
             return NULL;
         }
-        result_object = PyUnicode_DecodeLocale(result, NULL);
+        result_object = TyUnicode_DecodeLocale(result, NULL);
         if (!result_object)
             return NULL;
     } else {
         /* get locale */
         result = setlocale(category, NULL);
         if (!result) {
-            PyErr_SetString(get_locale_state(module)->Error,
+            TyErr_SetString(get_locale_state(module)->Error,
                             "locale query failed");
             return NULL;
         }
-        result_object = PyUnicode_DecodeLocale(result, NULL);
+        result_object = TyUnicode_DecodeLocale(result, NULL);
     }
     return result_object;
 }
@@ -156,7 +156,7 @@ is_all_ascii(const char *str)
 }
 
 static int
-locale_decode_monetary(PyObject *dict, struct lconv *lc)
+locale_decode_monetary(TyObject *dict, struct lconv *lc)
 {
 #ifndef MS_WINDOWS
     int change_locale;
@@ -170,14 +170,14 @@ locale_decode_monetary(PyObject *dict, struct lconv *lc)
     if (change_locale) {
         oldloc = setlocale(LC_CTYPE, NULL);
         if (!oldloc) {
-            PyErr_SetString(PyExc_RuntimeWarning,
+            TyErr_SetString(TyExc_RuntimeWarning,
                             "failed to get LC_CTYPE locale");
             return -1;
         }
 
-        oldloc = _PyMem_Strdup(oldloc);
+        oldloc = _TyMem_Strdup(oldloc);
         if (!oldloc) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return -1;
         }
 
@@ -194,26 +194,26 @@ locale_decode_monetary(PyObject *dict, struct lconv *lc)
         }
     }
 
-#define GET_LOCALE_STRING(ATTR) PyUnicode_DecodeLocale(lc->ATTR, NULL)
+#define GET_LOCALE_STRING(ATTR) TyUnicode_DecodeLocale(lc->ATTR, NULL)
 #else  /* MS_WINDOWS */
 /* Use _W_* fields of Windows struct lconv */
-#define GET_LOCALE_STRING(ATTR) PyUnicode_FromWideChar(lc->_W_ ## ATTR, -1)
+#define GET_LOCALE_STRING(ATTR) TyUnicode_FromWideChar(lc->_W_ ## ATTR, -1)
 #endif /* MS_WINDOWS */
 
     int res = -1;
 
 #define RESULT_STRING(ATTR) \
     do { \
-        PyObject *obj; \
+        TyObject *obj; \
         obj = GET_LOCALE_STRING(ATTR); \
         if (obj == NULL) { \
             goto done; \
         } \
-        if (PyDict_SetItemString(dict, Py_STRINGIFY(ATTR), obj) < 0) { \
-            Py_DECREF(obj); \
+        if (TyDict_SetItemString(dict, Ty_STRINGIFY(ATTR), obj) < 0) { \
+            Ty_DECREF(obj); \
             goto done; \
         } \
-        Py_DECREF(obj); \
+        Ty_DECREF(obj); \
     } while (0)
 
     RESULT_STRING(int_curr_symbol);
@@ -230,7 +230,7 @@ done:
     if (loc != NULL) {
         setlocale(LC_CTYPE, oldloc);
     }
-    PyMem_Free(oldloc);
+    TyMem_Free(oldloc);
 #endif
     return res;
 }
@@ -241,15 +241,15 @@ _locale.localeconv
 Returns numeric and monetary locale-specific parameters.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_localeconv_impl(PyObject *module)
+static TyObject *
+_locale_localeconv_impl(TyObject *module)
 /*[clinic end generated code: output=43a54515e0a2aef5 input=f1132d15accf4444]*/
 {
-    PyObject* result;
+    TyObject* result;
     struct lconv *lc;
-    PyObject *x;
+    TyObject *x;
 
-    result = PyDict_New();
+    result = TyDict_New();
     if (!result) {
         return NULL;
     }
@@ -264,18 +264,18 @@ _locale_localeconv_impl(PyObject *module)
     do { \
         if (obj == NULL) \
             goto failed; \
-        if (PyDict_SetItemString(result, key, obj) < 0) { \
-            Py_DECREF(obj); \
+        if (TyDict_SetItemString(result, key, obj) < 0) { \
+            Ty_DECREF(obj); \
             goto failed; \
         } \
-        Py_DECREF(obj); \
+        Ty_DECREF(obj); \
     } while (0)
 
 #ifdef MS_WINDOWS
 /* Use _W_* fields of Windows struct lconv */
-#define GET_LOCALE_STRING(ATTR) PyUnicode_FromWideChar(lc->_W_ ## ATTR, -1)
+#define GET_LOCALE_STRING(ATTR) TyUnicode_FromWideChar(lc->_W_ ## ATTR, -1)
 #else
-#define GET_LOCALE_STRING(ATTR) PyUnicode_DecodeLocale(lc->ATTR, NULL)
+#define GET_LOCALE_STRING(ATTR) TyUnicode_DecodeLocale(lc->ATTR, NULL)
 #endif
 #define RESULT_STRING(s)\
     do { \
@@ -285,7 +285,7 @@ _locale_localeconv_impl(PyObject *module)
 
 #define RESULT_INT(i)\
     do { \
-        x = PyLong_FromLong(lc->i); \
+        x = TyLong_FromLong(lc->i); \
         RESULT(#i, x); \
     } while (0)
 
@@ -308,25 +308,25 @@ _locale_localeconv_impl(PyObject *module)
     RESULT_INT(n_sign_posn);
 
     /* Numeric information: LC_NUMERIC encoding */
-    PyObject *decimal_point = NULL, *thousands_sep = NULL;
-    if (_Py_GetLocaleconvNumeric(lc, &decimal_point, &thousands_sep) < 0) {
-        Py_XDECREF(decimal_point);
-        Py_XDECREF(thousands_sep);
+    TyObject *decimal_point = NULL, *thousands_sep = NULL;
+    if (_Ty_GetLocaleconvNumeric(lc, &decimal_point, &thousands_sep) < 0) {
+        Ty_XDECREF(decimal_point);
+        Ty_XDECREF(thousands_sep);
         goto failed;
     }
 
-    if (PyDict_SetItemString(result, "decimal_point", decimal_point) < 0) {
-        Py_DECREF(decimal_point);
-        Py_DECREF(thousands_sep);
+    if (TyDict_SetItemString(result, "decimal_point", decimal_point) < 0) {
+        Ty_DECREF(decimal_point);
+        Ty_DECREF(thousands_sep);
         goto failed;
     }
-    Py_DECREF(decimal_point);
+    Ty_DECREF(decimal_point);
 
-    if (PyDict_SetItemString(result, "thousands_sep", thousands_sep) < 0) {
-        Py_DECREF(thousands_sep);
+    if (TyDict_SetItemString(result, "thousands_sep", thousands_sep) < 0) {
+        Ty_DECREF(thousands_sep);
         goto failed;
     }
-    Py_DECREF(thousands_sep);
+    Ty_DECREF(thousands_sep);
 
     x = copy_grouping(lc->grouping);
     RESULT("grouping", x);
@@ -334,7 +334,7 @@ _locale_localeconv_impl(PyObject *module)
     return result;
 
   failed:
-    Py_DECREF(result);
+    Ty_DECREF(result);
     return NULL;
 
 #undef RESULT
@@ -355,26 +355,26 @@ _locale.strcoll
 Compares two strings according to the locale.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_strcoll_impl(PyObject *module, PyObject *os1, PyObject *os2)
+static TyObject *
+_locale_strcoll_impl(TyObject *module, TyObject *os1, TyObject *os2)
 /*[clinic end generated code: output=82ddc6d62c76d618 input=693cd02bcbf38dd8]*/
 {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
     wchar_t *ws1 = NULL, *ws2 = NULL;
 
     /* Convert the unicode strings to wchar[]. */
-    ws1 = PyUnicode_AsWideCharString(os1, NULL);
+    ws1 = TyUnicode_AsWideCharString(os1, NULL);
     if (ws1 == NULL)
         goto done;
-    ws2 = PyUnicode_AsWideCharString(os2, NULL);
+    ws2 = TyUnicode_AsWideCharString(os2, NULL);
     if (ws2 == NULL)
         goto done;
     /* Collate the strings. */
-    result = PyLong_FromLong(wcscoll(ws1, ws2));
+    result = TyLong_FromLong(wcscoll(ws1, ws2));
   done:
     /* Deallocate everything. */
-    if (ws1) PyMem_Free(ws1);
-    if (ws2) PyMem_Free(ws2);
+    if (ws1) TyMem_Free(ws1);
+    if (ws2) TyMem_Free(ws2);
     return result;
 }
 #endif
@@ -390,56 +390,56 @@ _locale.strxfrm
 Return a string that can be used as a key for locale-aware comparisons.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_strxfrm_impl(PyObject *module, PyObject *str)
+static TyObject *
+_locale_strxfrm_impl(TyObject *module, TyObject *str)
 /*[clinic end generated code: output=3081866ebffc01af input=1378bbe6a88b4780]*/
 {
-    Py_ssize_t n1;
+    Ty_ssize_t n1;
     wchar_t *s = NULL, *buf = NULL;
     size_t n2;
-    PyObject *result = NULL;
+    TyObject *result = NULL;
 
-    s = PyUnicode_AsWideCharString(str, &n1);
+    s = TyUnicode_AsWideCharString(str, &n1);
     if (s == NULL)
         goto exit;
     if (wcslen(s) != (size_t)n1) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "embedded null character");
         goto exit;
     }
 
     /* assume no change in size, first */
     n1 = n1 + 1;
-    buf = PyMem_New(wchar_t, n1);
+    buf = TyMem_New(wchar_t, n1);
     if (!buf) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         goto exit;
     }
     errno = 0;
     n2 = wcsxfrm(buf, s, n1);
     if (errno && errno != ERANGE) {
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
         goto exit;
     }
     if (n2 >= (size_t)n1) {
         /* more space needed */
-        wchar_t * new_buf = PyMem_Realloc(buf, (n2+1)*sizeof(wchar_t));
+        wchar_t * new_buf = TyMem_Realloc(buf, (n2+1)*sizeof(wchar_t));
         if (!new_buf) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             goto exit;
         }
         buf = new_buf;
         errno = 0;
         n2 = wcsxfrm(buf, s, n2+1);
         if (errno) {
-            PyErr_SetFromErrno(PyExc_OSError);
+            TyErr_SetFromErrno(TyExc_OSError);
             goto exit;
         }
     }
-    result = PyUnicode_FromWideChar(buf, n2);
+    result = TyUnicode_FromWideChar(buf, n2);
 exit:
-    PyMem_Free(buf);
-    PyMem_Free(s);
+    TyMem_Free(buf);
+    TyMem_Free(s);
     return result;
 }
 #endif
@@ -451,24 +451,24 @@ _locale._getdefaultlocale
 
 [clinic start generated code]*/
 
-static PyObject *
-_locale__getdefaultlocale_impl(PyObject *module)
+static TyObject *
+_locale__getdefaultlocale_impl(TyObject *module)
 /*[clinic end generated code: output=e6254088579534c2 input=003ea41acd17f7c7]*/
 {
     char encoding[20];
     char locale[100];
 
-    PyOS_snprintf(encoding, sizeof(encoding), "cp%u", GetACP());
+    TyOS_snprintf(encoding, sizeof(encoding), "cp%u", GetACP());
 
     if (GetLocaleInfoA(LOCALE_USER_DEFAULT,
                       LOCALE_SISO639LANGNAME,
                       locale, sizeof(locale))) {
-        Py_ssize_t i = strlen(locale);
+        Ty_ssize_t i = strlen(locale);
         locale[i++] = '_';
         if (GetLocaleInfoA(LOCALE_USER_DEFAULT,
                           LOCALE_SISO3166CTRYNAME,
                           locale+i, (int)(sizeof(locale)-i)))
-            return Py_BuildValue("ss", locale, encoding);
+            return Ty_BuildValue("ss", locale, encoding);
     }
 
     /* If we end up here, this windows version didn't know about
@@ -479,12 +479,12 @@ _locale__getdefaultlocale_impl(PyObject *module)
     locale[1] = 'x';
     if (GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_IDEFAULTLANGUAGE,
                       locale+2, sizeof(locale)-2)) {
-        return Py_BuildValue("ss", locale, encoding);
+        return Ty_BuildValue("ss", locale, encoding);
     }
 
     /* cannot determine the language code (very unlikely) */
-    Py_INCREF(Py_None);
-    return Py_BuildValue("Os", Py_None, encoding);
+    Ty_INCREF(Ty_None);
+    return Ty_BuildValue("Os", Ty_None, encoding);
 }
 #endif
 
@@ -605,19 +605,19 @@ change_locale(int category, char **oldloc)
     /* Keep a copy of the LC_CTYPE locale */
     *oldloc = setlocale(LC_CTYPE, NULL);
     if (!*oldloc) {
-        PyErr_SetString(PyExc_RuntimeError, "failed to get LC_CTYPE locale");
+        TyErr_SetString(TyExc_RuntimeError, "failed to get LC_CTYPE locale");
         return -1;
     }
-    *oldloc = _PyMem_Strdup(*oldloc);
+    *oldloc = _TyMem_Strdup(*oldloc);
     if (!*oldloc) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
 
     /* Set a new locale if it is different. */
     char *loc = setlocale(category, NULL);
     if (loc == NULL || strcmp(loc, *oldloc) == 0) {
-        PyMem_Free(*oldloc);
+        TyMem_Free(*oldloc);
         *oldloc = NULL;
         return 0;
     }
@@ -632,13 +632,13 @@ restore_locale(char *oldloc)
 {
     if (oldloc != NULL) {
         setlocale(LC_CTYPE, oldloc);
-        PyMem_Free(oldloc);
+        TyMem_Free(oldloc);
     }
 }
 
 #ifdef __GLIBC__
 #if defined(ALT_DIGITS) || defined(ERA)
-static PyObject *
+static TyObject *
 decode_strings(const char *result, size_t max_count)
 {
     /* Convert a sequence of NUL-separated C strings to a Python string
@@ -648,9 +648,9 @@ decode_strings(const char *result, size_t max_count)
     for (; count < max_count && result[i]; count++) {
         i += strlen(result + i) + 1;
     }
-    char *buf = PyMem_Malloc(i);
+    char *buf = TyMem_Malloc(i);
     if (buf == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     memcpy(buf, result, i);
@@ -660,8 +660,8 @@ decode_strings(const char *result, size_t max_count)
         i += strlen(buf + i);
         buf[i++] = ';';
     }
-    PyObject *pyresult = PyUnicode_DecodeLocale(buf, NULL);
-    PyMem_Free(buf);
+    TyObject *pyresult = TyUnicode_DecodeLocale(buf, NULL);
+    TyMem_Free(buf);
     return pyresult;
 }
 #endif
@@ -676,14 +676,14 @@ _locale.nl_langinfo
 Return the value for the locale information associated with key.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_nl_langinfo_impl(PyObject *module, int item)
+static TyObject *
+_locale_nl_langinfo_impl(TyObject *module, int item)
 /*[clinic end generated code: output=6aea457b47e077a3 input=00798143eecfeddc]*/
 {
     int i;
     /* Check whether this is a supported constant. GNU libc sometimes
        returns numeric values in the char* return value, which would
-       crash PyUnicode_FromString.  */
+       crash TyUnicode_FromString.  */
     for (i = 0; langinfo_constants[i].name; i++) {
         if (langinfo_constants[i].value == item) {
             /* Check NULL as a workaround for GNU libc's returning NULL
@@ -707,7 +707,7 @@ _locale_nl_langinfo_impl(PyObject *module, int item)
             {
                 return NULL;
             }
-            PyObject *pyresult;
+            TyObject *pyresult;
 #ifdef __GLIBC__
             /* According to the POSIX specification the result must be
              * a sequence of semicolon-separated strings.
@@ -726,13 +726,13 @@ _locale_nl_langinfo_impl(PyObject *module, int item)
 #endif
 #endif
             {
-                pyresult = PyUnicode_DecodeLocale(result, NULL);
+                pyresult = TyUnicode_DecodeLocale(result, NULL);
             }
             restore_locale(oldloc);
             return pyresult;
         }
     }
-    PyErr_SetString(PyExc_ValueError, "unsupported langinfo constant");
+    TyErr_SetString(TyExc_ValueError, "unsupported langinfo constant");
     return NULL;
 }
 #endif /* HAVE_LANGINFO_H */
@@ -750,11 +750,11 @@ gettext(msg) -> string
 Return translation of msg.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_gettext_impl(PyObject *module, const char *in)
+static TyObject *
+_locale_gettext_impl(TyObject *module, const char *in)
 /*[clinic end generated code: output=493bb4b38a4704fe input=949fc8efc2bb3bc3]*/
 {
-    return PyUnicode_DecodeLocale(gettext(in), NULL);
+    return TyUnicode_DecodeLocale(gettext(in), NULL);
 }
 
 /*[clinic input]
@@ -769,11 +769,11 @@ dgettext(domain, msg) -> string
 Return translation of msg in domain.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_dgettext_impl(PyObject *module, const char *domain, const char *in)
+static TyObject *
+_locale_dgettext_impl(TyObject *module, const char *domain, const char *in)
 /*[clinic end generated code: output=3c0cd5287b972c8f input=a277388a635109d8]*/
 {
-    return PyUnicode_DecodeLocale(dgettext(domain, in), NULL);
+    return TyUnicode_DecodeLocale(dgettext(domain, in), NULL);
 }
 
 /*[clinic input]
@@ -787,12 +787,12 @@ _locale.dcgettext
 Return translation of msg in domain and category.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_dcgettext_impl(PyObject *module, const char *domain,
+static TyObject *
+_locale_dcgettext_impl(TyObject *module, const char *domain,
                        const char *msgid, int category)
 /*[clinic end generated code: output=0f4cc4fce0aa283f input=ec5f8fed4336de67]*/
 {
-    return PyUnicode_DecodeLocale(dcgettext(domain,msgid,category), NULL);
+    return TyUnicode_DecodeLocale(dcgettext(domain,msgid,category), NULL);
 }
 
 /*[clinic input]
@@ -804,16 +804,16 @@ _locale.textdomain
 Set the C library's textdmain to domain, returning the new domain.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_textdomain_impl(PyObject *module, const char *domain)
+static TyObject *
+_locale_textdomain_impl(TyObject *module, const char *domain)
 /*[clinic end generated code: output=7992df06aadec313 input=66359716f5eb1d38]*/
 {
     domain = textdomain(domain);
     if (!domain) {
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
         return NULL;
     }
-    return PyUnicode_DecodeLocale(domain, NULL);
+    return TyUnicode_DecodeLocale(domain, NULL);
 }
 
 /*[clinic input]
@@ -826,35 +826,35 @@ _locale.bindtextdomain
 Bind the C library's domain to dir.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_bindtextdomain_impl(PyObject *module, const char *domain,
-                            PyObject *dirname_obj)
+static TyObject *
+_locale_bindtextdomain_impl(TyObject *module, const char *domain,
+                            TyObject *dirname_obj)
 /*[clinic end generated code: output=6d6f3c7b345d785c input=c0dff085acfe272b]*/
 {
     const char *dirname, *current_dirname;
-    PyObject *dirname_bytes = NULL, *result;
+    TyObject *dirname_bytes = NULL, *result;
 
     if (!strlen(domain)) {
-        PyErr_SetString(get_locale_state(module)->Error,
+        TyErr_SetString(get_locale_state(module)->Error,
                         "domain must be a non-empty string");
         return 0;
     }
-    if (dirname_obj != Py_None) {
-        if (!PyUnicode_FSConverter(dirname_obj, &dirname_bytes))
+    if (dirname_obj != Ty_None) {
+        if (!TyUnicode_FSConverter(dirname_obj, &dirname_bytes))
             return NULL;
-        dirname = PyBytes_AsString(dirname_bytes);
+        dirname = TyBytes_AsString(dirname_bytes);
     } else {
         dirname_bytes = NULL;
         dirname = NULL;
     }
     current_dirname = bindtextdomain(domain, dirname);
     if (current_dirname == NULL) {
-        PyErr_SetFromErrno(PyExc_OSError);
-        Py_XDECREF(dirname_bytes);
+        TyErr_SetFromErrno(TyExc_OSError);
+        Ty_XDECREF(dirname_bytes);
         return NULL;
     }
-    result = PyUnicode_DecodeLocale(current_dirname, NULL);
-    Py_XDECREF(dirname_bytes);
+    result = TyUnicode_DecodeLocale(current_dirname, NULL);
+    Ty_XDECREF(dirname_bytes);
     return result;
 }
 
@@ -870,16 +870,16 @@ _locale.bind_textdomain_codeset
 Bind the C library's domain to codeset.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_bind_textdomain_codeset_impl(PyObject *module, const char *domain,
+static TyObject *
+_locale_bind_textdomain_codeset_impl(TyObject *module, const char *domain,
                                      const char *codeset)
 /*[clinic end generated code: output=fa452f9c8b1b9e89 input=23fbe3540400f259]*/
 {
     codeset = bind_textdomain_codeset(domain, codeset);
     if (codeset) {
-        return PyUnicode_DecodeLocale(codeset, NULL);
+        return TyUnicode_DecodeLocale(codeset, NULL);
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 #endif  // HAVE_BIND_TEXTDOMAIN_CODESET
 
@@ -892,15 +892,15 @@ _locale.getencoding
 Get the current locale encoding.
 [clinic start generated code]*/
 
-static PyObject *
-_locale_getencoding_impl(PyObject *module)
+static TyObject *
+_locale_getencoding_impl(TyObject *module)
 /*[clinic end generated code: output=86b326b971872e46 input=6503d11e5958b360]*/
 {
-    return _Py_GetLocaleEncodingObject();
+    return _Ty_GetLocaleEncodingObject();
 }
 
 
-static struct PyMethodDef PyLocale_Methods[] = {
+static struct TyMethodDef PyLocale_Methods[] = {
     _LOCALE_SETLOCALE_METHODDEF
     _LOCALE_LOCALECONV_METHODDEF
 #ifdef HAVE_WCSCOLL
@@ -930,14 +930,14 @@ static struct PyMethodDef PyLocale_Methods[] = {
 };
 
 static int
-_locale_exec(PyObject *module)
+_locale_exec(TyObject *module)
 {
 #ifdef HAVE_LANGINFO_H
     int i;
 #endif
 #define ADD_INT(module, value)                                    \
     do {                                                          \
-        if (PyModule_AddIntConstant(module, #value, value) < 0) { \
+        if (TyModule_AddIntConstant(module, #value, value) < 0) { \
             return -1;                                            \
         }                                                         \
     } while (0)
@@ -956,14 +956,14 @@ _locale_exec(PyObject *module)
     ADD_INT(module, CHAR_MAX);
 
     _locale_state *state = get_locale_state(module);
-    state->Error = PyErr_NewException("locale.Error", NULL, NULL);
-    if (PyModule_AddObjectRef(module, "Error", state->Error) < 0) {
+    state->Error = TyErr_NewException("locale.Error", NULL, NULL);
+    if (TyModule_AddObjectRef(module, "Error", state->Error) < 0) {
         return -1;
     }
 
 #ifdef HAVE_LANGINFO_H
     for (i = 0; langinfo_constants[i].name; i++) {
-        if (PyModule_AddIntConstant(module,
+        if (TyModule_AddIntConstant(module,
                                     langinfo_constants[i].name,
                                     langinfo_constants[i].value) < 0) {
             return -1;
@@ -971,7 +971,7 @@ _locale_exec(PyObject *module)
     }
 #endif
 
-    if (PyErr_Occurred()) {
+    if (TyErr_Occurred()) {
         return -1;
     }
     return 0;
@@ -980,35 +980,35 @@ _locale_exec(PyObject *module)
 }
 
 static struct PyModuleDef_Slot _locale_slots[] = {
-    {Py_mod_exec, _locale_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, _locale_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
 static int
-locale_traverse(PyObject *module, visitproc visit, void *arg)
+locale_traverse(TyObject *module, visitproc visit, void *arg)
 {
     _locale_state *state = get_locale_state(module);
-    Py_VISIT(state->Error);
+    Ty_VISIT(state->Error);
     return 0;
 }
 
 static int
-locale_clear(PyObject *module)
+locale_clear(TyObject *module)
 {
     _locale_state *state = get_locale_state(module);
-    Py_CLEAR(state->Error);
+    Ty_CLEAR(state->Error);
     return 0;
 }
 
 static void
 locale_free(void *module)
 {
-    locale_clear((PyObject*)module);
+    locale_clear((TyObject*)module);
 }
 
-static struct PyModuleDef _localemodule = {
+static struct TyModuleDef _localemodule = {
     PyModuleDef_HEAD_INIT,
     "_locale",
     locale__doc__,

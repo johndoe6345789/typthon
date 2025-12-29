@@ -14,8 +14,8 @@ from ctypes import _pointer_type_cache, _pointer_type_cache_fallback
 from test.support import import_helper
 from weakref import WeakSet
 _ctypes_test = import_helper.import_module("_ctypes_test")
-from ._support import (_CData, PyCPointerType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
-                       Py_TPFLAGS_IMMUTABLETYPE)
+from ._support import (_CData, PyCPointerType, Ty_TPFLAGS_DISALLOW_INSTANTIATION,
+                       Ty_TPFLAGS_IMMUTABLETYPE)
 
 
 ctype_types = [c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint,
@@ -37,8 +37,8 @@ class PointersTestCase(unittest.TestCase):
     def test_type_flags(self):
         for cls in _Pointer, PyCPointerType:
             with self.subTest(cls=cls):
-                self.assertTrue(_Pointer.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(_Pointer.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertTrue(_Pointer.__flags__ & Ty_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalse(_Pointer.__flags__ & Ty_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Cannot call the metaclass __init__ more than once

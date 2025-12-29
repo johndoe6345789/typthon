@@ -2,8 +2,8 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(_heapq_heappush__doc__,
 "heappush($module, heap, item, /)\n"
@@ -14,28 +14,28 @@ PyDoc_STRVAR(_heapq_heappush__doc__,
 #define _HEAPQ_HEAPPUSH_METHODDEF    \
     {"heappush", _PyCFunction_CAST(_heapq_heappush), METH_FASTCALL, _heapq_heappush__doc__},
 
-static PyObject *
-_heapq_heappush_impl(PyObject *module, PyObject *heap, PyObject *item);
+static TyObject *
+_heapq_heappush_impl(TyObject *module, TyObject *heap, TyObject *item);
 
-static PyObject *
-_heapq_heappush(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_heapq_heappush(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
-    PyObject *item;
+    TyObject *return_value = NULL;
+    TyObject *heap;
+    TyObject *item;
 
-    if (!_PyArg_CheckPositional("heappush", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("heappush", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyList_Check(args[0])) {
-        _PyArg_BadArgument("heappush", "argument 1", "list", args[0]);
+    if (!TyList_Check(args[0])) {
+        _TyArg_BadArgument("heappush", "argument 1", "list", args[0]);
         goto exit;
     }
     heap = args[0];
     item = args[1];
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heappush_impl(module, heap, item);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -50,23 +50,23 @@ PyDoc_STRVAR(_heapq_heappop__doc__,
 #define _HEAPQ_HEAPPOP_METHODDEF    \
     {"heappop", (PyCFunction)_heapq_heappop, METH_O, _heapq_heappop__doc__},
 
-static PyObject *
-_heapq_heappop_impl(PyObject *module, PyObject *heap);
+static TyObject *
+_heapq_heappop_impl(TyObject *module, TyObject *heap);
 
-static PyObject *
-_heapq_heappop(PyObject *module, PyObject *arg)
+static TyObject *
+_heapq_heappop(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
+    TyObject *return_value = NULL;
+    TyObject *heap;
 
-    if (!PyList_Check(arg)) {
-        _PyArg_BadArgument("heappop", "argument", "list", arg);
+    if (!TyList_Check(arg)) {
+        _TyArg_BadArgument("heappop", "argument", "list", arg);
         goto exit;
     }
     heap = arg;
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heappop_impl(module, heap);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -89,28 +89,28 @@ PyDoc_STRVAR(_heapq_heapreplace__doc__,
 #define _HEAPQ_HEAPREPLACE_METHODDEF    \
     {"heapreplace", _PyCFunction_CAST(_heapq_heapreplace), METH_FASTCALL, _heapq_heapreplace__doc__},
 
-static PyObject *
-_heapq_heapreplace_impl(PyObject *module, PyObject *heap, PyObject *item);
+static TyObject *
+_heapq_heapreplace_impl(TyObject *module, TyObject *heap, TyObject *item);
 
-static PyObject *
-_heapq_heapreplace(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_heapq_heapreplace(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
-    PyObject *item;
+    TyObject *return_value = NULL;
+    TyObject *heap;
+    TyObject *item;
 
-    if (!_PyArg_CheckPositional("heapreplace", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("heapreplace", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyList_Check(args[0])) {
-        _PyArg_BadArgument("heapreplace", "argument 1", "list", args[0]);
+    if (!TyList_Check(args[0])) {
+        _TyArg_BadArgument("heapreplace", "argument 1", "list", args[0]);
         goto exit;
     }
     heap = args[0];
     item = args[1];
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heapreplace_impl(module, heap, item);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -128,28 +128,28 @@ PyDoc_STRVAR(_heapq_heappushpop__doc__,
 #define _HEAPQ_HEAPPUSHPOP_METHODDEF    \
     {"heappushpop", _PyCFunction_CAST(_heapq_heappushpop), METH_FASTCALL, _heapq_heappushpop__doc__},
 
-static PyObject *
-_heapq_heappushpop_impl(PyObject *module, PyObject *heap, PyObject *item);
+static TyObject *
+_heapq_heappushpop_impl(TyObject *module, TyObject *heap, TyObject *item);
 
-static PyObject *
-_heapq_heappushpop(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_heapq_heappushpop(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
-    PyObject *item;
+    TyObject *return_value = NULL;
+    TyObject *heap;
+    TyObject *item;
 
-    if (!_PyArg_CheckPositional("heappushpop", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("heappushpop", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyList_Check(args[0])) {
-        _PyArg_BadArgument("heappushpop", "argument 1", "list", args[0]);
+    if (!TyList_Check(args[0])) {
+        _TyArg_BadArgument("heappushpop", "argument 1", "list", args[0]);
         goto exit;
     }
     heap = args[0];
     item = args[1];
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heappushpop_impl(module, heap, item);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -164,23 +164,23 @@ PyDoc_STRVAR(_heapq_heapify__doc__,
 #define _HEAPQ_HEAPIFY_METHODDEF    \
     {"heapify", (PyCFunction)_heapq_heapify, METH_O, _heapq_heapify__doc__},
 
-static PyObject *
-_heapq_heapify_impl(PyObject *module, PyObject *heap);
+static TyObject *
+_heapq_heapify_impl(TyObject *module, TyObject *heap);
 
-static PyObject *
-_heapq_heapify(PyObject *module, PyObject *arg)
+static TyObject *
+_heapq_heapify(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
+    TyObject *return_value = NULL;
+    TyObject *heap;
 
-    if (!PyList_Check(arg)) {
-        _PyArg_BadArgument("heapify", "argument", "list", arg);
+    if (!TyList_Check(arg)) {
+        _TyArg_BadArgument("heapify", "argument", "list", arg);
         goto exit;
     }
     heap = arg;
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heapify_impl(module, heap);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -195,28 +195,28 @@ PyDoc_STRVAR(_heapq_heappush_max__doc__,
 #define _HEAPQ_HEAPPUSH_MAX_METHODDEF    \
     {"heappush_max", _PyCFunction_CAST(_heapq_heappush_max), METH_FASTCALL, _heapq_heappush_max__doc__},
 
-static PyObject *
-_heapq_heappush_max_impl(PyObject *module, PyObject *heap, PyObject *item);
+static TyObject *
+_heapq_heappush_max_impl(TyObject *module, TyObject *heap, TyObject *item);
 
-static PyObject *
-_heapq_heappush_max(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_heapq_heappush_max(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
-    PyObject *item;
+    TyObject *return_value = NULL;
+    TyObject *heap;
+    TyObject *item;
 
-    if (!_PyArg_CheckPositional("heappush_max", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("heappush_max", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyList_Check(args[0])) {
-        _PyArg_BadArgument("heappush_max", "argument 1", "list", args[0]);
+    if (!TyList_Check(args[0])) {
+        _TyArg_BadArgument("heappush_max", "argument 1", "list", args[0]);
         goto exit;
     }
     heap = args[0];
     item = args[1];
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heappush_max_impl(module, heap, item);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -231,23 +231,23 @@ PyDoc_STRVAR(_heapq_heappop_max__doc__,
 #define _HEAPQ_HEAPPOP_MAX_METHODDEF    \
     {"heappop_max", (PyCFunction)_heapq_heappop_max, METH_O, _heapq_heappop_max__doc__},
 
-static PyObject *
-_heapq_heappop_max_impl(PyObject *module, PyObject *heap);
+static TyObject *
+_heapq_heappop_max_impl(TyObject *module, TyObject *heap);
 
-static PyObject *
-_heapq_heappop_max(PyObject *module, PyObject *arg)
+static TyObject *
+_heapq_heappop_max(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
+    TyObject *return_value = NULL;
+    TyObject *heap;
 
-    if (!PyList_Check(arg)) {
-        _PyArg_BadArgument("heappop_max", "argument", "list", arg);
+    if (!TyList_Check(arg)) {
+        _TyArg_BadArgument("heappop_max", "argument", "list", arg);
         goto exit;
     }
     heap = arg;
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heappop_max_impl(module, heap);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -262,28 +262,28 @@ PyDoc_STRVAR(_heapq_heapreplace_max__doc__,
 #define _HEAPQ_HEAPREPLACE_MAX_METHODDEF    \
     {"heapreplace_max", _PyCFunction_CAST(_heapq_heapreplace_max), METH_FASTCALL, _heapq_heapreplace_max__doc__},
 
-static PyObject *
-_heapq_heapreplace_max_impl(PyObject *module, PyObject *heap, PyObject *item);
+static TyObject *
+_heapq_heapreplace_max_impl(TyObject *module, TyObject *heap, TyObject *item);
 
-static PyObject *
-_heapq_heapreplace_max(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_heapq_heapreplace_max(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
-    PyObject *item;
+    TyObject *return_value = NULL;
+    TyObject *heap;
+    TyObject *item;
 
-    if (!_PyArg_CheckPositional("heapreplace_max", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("heapreplace_max", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyList_Check(args[0])) {
-        _PyArg_BadArgument("heapreplace_max", "argument 1", "list", args[0]);
+    if (!TyList_Check(args[0])) {
+        _TyArg_BadArgument("heapreplace_max", "argument 1", "list", args[0]);
         goto exit;
     }
     heap = args[0];
     item = args[1];
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heapreplace_max_impl(module, heap, item);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -298,23 +298,23 @@ PyDoc_STRVAR(_heapq_heapify_max__doc__,
 #define _HEAPQ_HEAPIFY_MAX_METHODDEF    \
     {"heapify_max", (PyCFunction)_heapq_heapify_max, METH_O, _heapq_heapify_max__doc__},
 
-static PyObject *
-_heapq_heapify_max_impl(PyObject *module, PyObject *heap);
+static TyObject *
+_heapq_heapify_max_impl(TyObject *module, TyObject *heap);
 
-static PyObject *
-_heapq_heapify_max(PyObject *module, PyObject *arg)
+static TyObject *
+_heapq_heapify_max(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
+    TyObject *return_value = NULL;
+    TyObject *heap;
 
-    if (!PyList_Check(arg)) {
-        _PyArg_BadArgument("heapify_max", "argument", "list", arg);
+    if (!TyList_Check(arg)) {
+        _TyArg_BadArgument("heapify_max", "argument", "list", arg);
         goto exit;
     }
     heap = arg;
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heapify_max_impl(module, heap);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -332,28 +332,28 @@ PyDoc_STRVAR(_heapq_heappushpop_max__doc__,
 #define _HEAPQ_HEAPPUSHPOP_MAX_METHODDEF    \
     {"heappushpop_max", _PyCFunction_CAST(_heapq_heappushpop_max), METH_FASTCALL, _heapq_heappushpop_max__doc__},
 
-static PyObject *
-_heapq_heappushpop_max_impl(PyObject *module, PyObject *heap, PyObject *item);
+static TyObject *
+_heapq_heappushpop_max_impl(TyObject *module, TyObject *heap, TyObject *item);
 
-static PyObject *
-_heapq_heappushpop_max(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_heapq_heappushpop_max(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *heap;
-    PyObject *item;
+    TyObject *return_value = NULL;
+    TyObject *heap;
+    TyObject *item;
 
-    if (!_PyArg_CheckPositional("heappushpop_max", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("heappushpop_max", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyList_Check(args[0])) {
-        _PyArg_BadArgument("heappushpop_max", "argument 1", "list", args[0]);
+    if (!TyList_Check(args[0])) {
+        _TyArg_BadArgument("heappushpop_max", "argument 1", "list", args[0]);
         goto exit;
     }
     heap = args[0];
     item = args[1];
-    Py_BEGIN_CRITICAL_SECTION(heap);
+    Ty_BEGIN_CRITICAL_SECTION(heap);
     return_value = _heapq_heappushpop_max_impl(module, heap, item);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;

@@ -4,8 +4,8 @@ from ctypes import (CDLL, Structure, CFUNCTYPE, sizeof, _CFuncPtr,
                     c_void_p, c_char_p, c_char, c_int, c_uint, c_long)
 from test.support import import_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
-from ._support import (_CData, PyCFuncPtrType, Py_TPFLAGS_DISALLOW_INSTANTIATION,
-                       Py_TPFLAGS_IMMUTABLETYPE, StructCheckMixin)
+from ._support import (_CData, PyCFuncPtrType, Ty_TPFLAGS_DISALLOW_INSTANTIATION,
+                       Ty_TPFLAGS_IMMUTABLETYPE, StructCheckMixin)
 
 
 try:
@@ -27,8 +27,8 @@ class CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
     def test_type_flags(self):
         for cls in _CFuncPtr, PyCFuncPtrType:
             with self.subTest(cls=cls):
-                self.assertTrue(_CFuncPtr.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(_CFuncPtr.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertTrue(_CFuncPtr.__flags__ & Ty_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalse(_CFuncPtr.__flags__ & Ty_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Cannot call the metaclass __init__ more than once

@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 
 PyDoc_STRVAR(frame_locals__doc__,
 "Return the mapping used by the frame to look up local variables.");
@@ -21,17 +21,17 @@ PyDoc_STRVAR(frame_locals__doc__,
 #  define FRAME_LOCALS_GETSETDEF {"f_locals", (getter)frame_locals_get, NULL, frame_locals_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_locals_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_locals_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_locals_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_locals_get_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -53,17 +53,17 @@ PyDoc_STRVAR(frame_lineno__doc__,
 #  define FRAME_LINENO_GETSETDEF {"f_lineno", (getter)frame_lineno_get, NULL, frame_lineno_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_lineno_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_lineno_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_lineno_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_lineno_get_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -85,17 +85,17 @@ PyDoc_STRVAR(frame_lasti__doc__,
 #  define FRAME_LASTI_GETSETDEF {"f_lasti", (getter)frame_lasti_get, NULL, frame_lasti_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_lasti_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_lasti_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_lasti_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_lasti_get_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -117,17 +117,17 @@ PyDoc_STRVAR(frame_globals__doc__,
 #  define FRAME_GLOBALS_GETSETDEF {"f_globals", (getter)frame_globals_get, NULL, frame_globals_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_globals_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_globals_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_globals_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_globals_get_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -149,17 +149,17 @@ PyDoc_STRVAR(frame_builtins__doc__,
 #  define FRAME_BUILTINS_GETSETDEF {"f_builtins", (getter)frame_builtins_get, NULL, frame_builtins_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_builtins_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_builtins_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_builtins_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_builtins_get_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -181,11 +181,11 @@ PyDoc_STRVAR(frame_code__doc__,
 #  define FRAME_CODE_GETSETDEF {"f_code", (getter)frame_code_get, NULL, frame_code_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_code_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_code_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_code_get(TyObject *self, void *Ty_UNUSED(context))
 {
     return frame_code_get_impl((PyFrameObject *)self);
 }
@@ -200,17 +200,17 @@ frame_code_get(PyObject *self, void *Py_UNUSED(context))
 #  define FRAME_BACK_GETSETDEF {"f_back", (getter)frame_back_get, NULL, frame_back_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_back_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_back_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_back_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_back_get_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -232,17 +232,17 @@ PyDoc_STRVAR(frame_trace_opcodes__doc__,
 #  define FRAME_TRACE_OPCODES_GETSETDEF {"f_trace_opcodes", (getter)frame_trace_opcodes_get, NULL, frame_trace_opcodes_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_trace_opcodes_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_trace_opcodes_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_trace_opcodes_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_trace_opcodes_get_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -258,16 +258,16 @@ frame_trace_opcodes_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-frame_trace_opcodes_set_impl(PyFrameObject *self, PyObject *value);
+frame_trace_opcodes_set_impl(PyFrameObject *self, TyObject *value);
 
 static int
-frame_trace_opcodes_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+frame_trace_opcodes_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_trace_opcodes_set_impl((PyFrameObject *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -283,16 +283,16 @@ frame_trace_opcodes_set(PyObject *self, PyObject *value, void *Py_UNUSED(context
 #endif
 
 static int
-frame_lineno_set_impl(PyFrameObject *self, PyObject *value);
+frame_lineno_set_impl(PyFrameObject *self, TyObject *value);
 
 static int
-frame_lineno_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+frame_lineno_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_lineno_set_impl((PyFrameObject *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -314,17 +314,17 @@ PyDoc_STRVAR(frame_trace__doc__,
 #  define FRAME_TRACE_GETSETDEF {"f_trace", (getter)frame_trace_get, NULL, frame_trace_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_trace_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_trace_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_trace_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_trace_get_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -340,16 +340,16 @@ frame_trace_get(PyObject *self, void *Py_UNUSED(context))
 #endif
 
 static int
-frame_trace_set_impl(PyFrameObject *self, PyObject *value);
+frame_trace_set_impl(PyFrameObject *self, TyObject *value);
 
 static int
-frame_trace_set(PyObject *self, PyObject *value, void *Py_UNUSED(context))
+frame_trace_set(TyObject *self, TyObject *value, void *Ty_UNUSED(context))
 {
     int return_value;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_trace_set_impl((PyFrameObject *)self, value);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -371,17 +371,17 @@ PyDoc_STRVAR(frame_generator__doc__,
 #  define FRAME_GENERATOR_GETSETDEF {"f_generator", (getter)frame_generator_get, NULL, frame_generator_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 frame_generator_get_impl(PyFrameObject *self);
 
-static PyObject *
-frame_generator_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+frame_generator_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_generator_get_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -395,17 +395,17 @@ PyDoc_STRVAR(frame_clear__doc__,
 #define FRAME_CLEAR_METHODDEF    \
     {"clear", (PyCFunction)frame_clear, METH_NOARGS, frame_clear__doc__},
 
-static PyObject *
+static TyObject *
 frame_clear_impl(PyFrameObject *self);
 
-static PyObject *
-frame_clear(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+frame_clear(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame_clear_impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -419,17 +419,17 @@ PyDoc_STRVAR(frame___sizeof____doc__,
 #define FRAME___SIZEOF___METHODDEF    \
     {"__sizeof__", (PyCFunction)frame___sizeof__, METH_NOARGS, frame___sizeof____doc__},
 
-static PyObject *
+static TyObject *
 frame___sizeof___impl(PyFrameObject *self);
 
-static PyObject *
-frame___sizeof__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+frame___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = frame___sizeof___impl((PyFrameObject *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }

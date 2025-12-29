@@ -40,9 +40,9 @@ we've considered:
 
 The approach with the least performance impact (time and space) is #2,
 mirroring the key order of dict's dk_entries with an array of node pointers.
-While _Py_dict_lookup() does not give us the index into the array,
+While _Ty_dict_lookup() does not give us the index into the array,
 we make use of pointer arithmetic to get that index.  An alternative would
-be to refactor _Py_dict_lookup() to provide the index, explicitly exposing
+be to refactor _Ty_dict_lookup() to provide the index, explicitly exposing
 the implementation detail.  We could even just use a custom lookup function
 for OrderedDict that facilitates our need.  However, both approaches are
 significantly more complicated than just using pointer arithmetic.
@@ -176,7 +176,7 @@ possible.  Furthermore, coupling is limited to as little as is reasonable.
 Concrete API Compatibility
 --------------------------
 
-Use of the concrete C-API for dict (PyDict_*) with OrderedDict is
+Use of the concrete C-API for dict (TyDict_*) with OrderedDict is
 problematic.  (See http://bugs.python.org/issue10977.)  The concrete API
 has a number of hard-coded assumptions tied to the dict implementation.
 This is, in part, due to performance reasons, which is understandable
@@ -190,7 +190,7 @@ the concrete API.
 Here are some ways to address this challenge:
 
 1. Change the relevant usage of the concrete API in CPython and add
-   PyDict_CheckExact() calls to each of the concrete API functions.
+   TyDict_CheckExact() calls to each of the concrete API functions.
 2. Adjust the relevant concrete API functions to explicitly accommodate
    OrderedDict.
 3. As with #1, add the checks, but improve the abstract API with smart fast
@@ -200,7 +200,7 @@ Here are some ways to address this challenge:
 Adding the checks to the concrete API would help make any interpreter
 switch to OrderedDict less painful for extension modules.  However, this
 won't work.  The equivalent C API call to `dict.__setitem__(obj, k, v)`
-is `PyDict_SetItem(obj, k, v)`.  This illustrates how subclasses in C call
+is `TyDict_SetItem(obj, k, v)`.  This illustrates how subclasses in C call
 the base class's methods, since there is no equivalent of super() in the
 C API.  Calling into Python for parent class API would work, but some
 extension modules already rely on this feature of the concrete API.
@@ -210,32 +210,32 @@ For reference, here is a breakdown of some of the dict concrete API:
 ========================== ============= =======================
 concrete API               uses          abstract API
 ========================== ============= =======================
-PyDict_Check                             PyMapping_Check
-(PyDict_CheckExact)                      -
-(PyDict_New)                             -
+TyDict_Check                             PyMapping_Check
+(TyDict_CheckExact)                      -
+(TyDict_New)                             -
 (PyDictProxy_New)                        -
-PyDict_Clear                             -
-PyDict_Contains                          PySequence_Contains
-PyDict_Copy                              -
-PyDict_SetItem                           PyObject_SetItem
-PyDict_SetItemString                     PyMapping_SetItemString
-PyDict_DelItem                           PyMapping_DelItem
-PyDict_DelItemString                     PyMapping_DelItemString
-PyDict_GetItem                           -
-PyDict_GetItemWithError                  PyObject_GetItem
-_PyDict_GetItemIdWithError               -
-PyDict_GetItemString                     PyMapping_GetItemString
-PyDict_Items                             PyMapping_Items
-PyDict_Keys                              PyMapping_Keys
-PyDict_Values                            PyMapping_Values
-PyDict_Size                              PyMapping_Size
+TyDict_Clear                             -
+TyDict_Contains                          PySequence_Contains
+TyDict_Copy                              -
+TyDict_SetItem                           PyObject_SetItem
+TyDict_SetItemString                     PyMapping_SetItemString
+TyDict_DelItem                           PyMapping_DelItem
+TyDict_DelItemString                     PyMapping_DelItemString
+TyDict_GetItem                           -
+TyDict_GetItemWithError                  PyObject_GetItem
+_TyDict_GetItemIdWithError               -
+TyDict_GetItemString                     PyMapping_GetItemString
+TyDict_Items                             PyMapping_Items
+TyDict_Keys                              PyMapping_Keys
+TyDict_Values                            PyMapping_Values
+TyDict_Size                              PyMapping_Size
                                          PyMapping_Length
-PyDict_Next                              PyIter_Next
-_PyDict_Next                             -
-PyDict_Merge                             -
-PyDict_Update                            -
-PyDict_MergeFromSeq2                     -
-PyDict_ClearFreeList                     -
+TyDict_Next                              TyIter_Next
+_TyDict_Next                             -
+TyDict_Merge                             -
+TyDict_Update                            -
+TyDict_MergeFromSeq2                     -
+TyDict_ClearFreeList                     -
 -                                        PyMapping_HasKeyString
 -                                        PyMapping_HasKey
 ========================== ============= =======================
@@ -260,7 +260,7 @@ mp_length         __len__          -                   dict_length
 mp_subscript      __getitem__      -                   dict_subscript
 mp_ass_subscript  __setitem__      -                   dict_ass_sub
                   __delitem__
-tp_hash           __hash__         Py_HashPointer      ..._HashNotImpl
+tp_hash           __hash__         Ty_HashPointer      ..._HashNotImpl
 tp_str            __str__          object_str          -
 tp_getattro       __getattribute__ ..._GenericGetAttr  (repeated)
                   __getattr__
@@ -274,7 +274,7 @@ tp_weaklistoffset (__weakref__)    -                   -
 tp_iter           __iter__         -                   dict_iter
 tp_dictoffset     (__dict__)       -                   -
 tp_init           __init__         object_init         dict_init
-tp_alloc          -                PyType_GenericAlloc (repeated)
+tp_alloc          -                TyType_GenericAlloc (repeated)
 tp_new            __new__          object_new          dict_new
 tp_free           -                PyObject_Free       PyObject_GC_Del
 ================= ================ =================== ================
@@ -465,13 +465,13 @@ later:
 */
 
 #include "Python.h"
-#include "pycore_call.h"             // _PyObject_CallNoArgs()
-#include "pycore_ceval.h"            // _PyEval_GetBuiltin()
-#include "pycore_critical_section.h" //_Py_BEGIN_CRITICAL_SECTION
-#include "pycore_dict.h"             // _Py_dict_lookup()
-#include "pycore_object.h"           // _PyObject_GC_UNTRACK()
-#include "pycore_pyerrors.h"         // _PyErr_ChainExceptions1()
-#include "pycore_tuple.h"            // _PyTuple_Recycle()
+#include "pycore_call.h"             // _TyObject_CallNoArgs()
+#include "pycore_ceval.h"            // _TyEval_GetBuiltin()
+#include "pycore_critical_section.h" //_Ty_BEGIN_CRITICAL_SECTION
+#include "pycore_dict.h"             // _Ty_dict_lookup()
+#include "pycore_object.h"           // _TyObject_GC_UNTRACK()
+#include "pycore_pyerrors.h"         // _TyErr_ChainExceptions1()
+#include "pycore_tuple.h"            // _TyTuple_Recycle()
 #include <stddef.h>                  // offsetof()
 #include "pycore_weakref.h"          // FT_CLEAR_WEAKREFS()
 
@@ -494,15 +494,15 @@ struct _odictobject {
      * by _odict_resize().
      * Note that we rely on implementation details of dict for both. */
     _ODictNode **od_fast_nodes;  /* hash table that mirrors the dict table */
-    Py_ssize_t od_fast_nodes_size;
+    Ty_ssize_t od_fast_nodes_size;
     void *od_resize_sentinel;    /* changes if odict should be resized */
 
     size_t od_state;             /* incremented whenever the LL changes */
-    PyObject *od_inst_dict;      /* OrderedDict().__dict__ */
-    PyObject *od_weakreflist;    /* holds weakrefs to the odict */
+    TyObject *od_inst_dict;      /* OrderedDict().__dict__ */
+    TyObject *od_weakreflist;    /* holds weakrefs to the odict */
 };
 
-#define _PyODictObject_CAST(op) _Py_CAST(PyODictObject*, (op))
+#define _PyODictObject_CAST(op) _Ty_CAST(PyODictObject*, (op))
 
 
 /* ----------------------------------------------
@@ -510,8 +510,8 @@ struct _odictobject {
  */
 
 struct _odictnode {
-    PyObject *key;
-    Py_hash_t hash;
+    TyObject *key;
+    Ty_hash_t hash;
     _ODictNode *next;
     _ODictNode *prev;
 };
@@ -522,7 +522,7 @@ struct _odictnode {
     (node->hash)
 /* borrowed reference */
 #define _odictnode_VALUE(node, od) \
-    PyODict_GetItemWithError((PyObject *)od, _odictnode_KEY(node))
+    PyODict_GetItemWithError((TyObject *)od, _odictnode_KEY(node))
 #define _odictnode_PREV(node) (node->prev)
 #define _odictnode_NEXT(node) (node->next)
 
@@ -533,17 +533,17 @@ struct _odictnode {
     for (node = _odict_FIRST(od); node != NULL; node = _odictnode_NEXT(node))
 
 /* Return the index into the hash table, regardless of a valid node. */
-static Py_ssize_t
-_odict_get_index_raw(PyODictObject *od, PyObject *key, Py_hash_t hash)
+static Ty_ssize_t
+_odict_get_index_raw(PyODictObject *od, TyObject *key, Ty_hash_t hash)
 {
-    PyObject *value = NULL;
+    TyObject *value = NULL;
     PyDictKeysObject *keys = ((PyDictObject *)od)->ma_keys;
-    Py_ssize_t ix;
-#ifdef Py_GIL_DISABLED
-    ix = _Py_dict_lookup_threadsafe((PyDictObject *)od, key, hash, &value);
-    Py_XDECREF(value);
+    Ty_ssize_t ix;
+#ifdef Ty_GIL_DISABLED
+    ix = _Ty_dict_lookup_threadsafe((PyDictObject *)od, key, hash, &value);
+    Ty_XDECREF(value);
 #else
-    ix = _Py_dict_lookup((PyDictObject *)od, key, hash, &value);
+    ix = _Ty_dict_lookup((PyDictObject *)od, key, hash, &value);
 #endif
     if (ix == DKIX_EMPTY) {
         return keys->dk_nentries;  /* index of new entry */
@@ -554,20 +554,20 @@ _odict_get_index_raw(PyODictObject *od, PyObject *key, Py_hash_t hash)
     return ix;
 }
 
-#define ONE ((Py_ssize_t)1)
+#define ONE ((Ty_ssize_t)1)
 
 /* Replace od->od_fast_nodes with a new table matching the size of dict's. */
 static int
 _odict_resize(PyODictObject *od)
 {
-    Py_ssize_t size, i;
+    Ty_ssize_t size, i;
     _ODictNode **fast_nodes, *node;
 
     /* Initialize a new "fast nodes" table. */
     size = ONE << (((PyDictObject *)od)->ma_keys->dk_log2_size);
-    fast_nodes = PyMem_NEW(_ODictNode *, size);
+    fast_nodes = TyMem_NEW(_ODictNode *, size);
     if (fast_nodes == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return -1;
     }
     for (i = 0; i < size; i++)
@@ -578,14 +578,14 @@ _odict_resize(PyODictObject *od)
         i = _odict_get_index_raw(od, _odictnode_KEY(node),
                                  _odictnode_HASH(node));
         if (i < 0) {
-            PyMem_Free(fast_nodes);
+            TyMem_Free(fast_nodes);
             return -1;
         }
         fast_nodes[i] = node;
     }
 
     /* Replace the old fast nodes table. */
-    PyMem_Free(od->od_fast_nodes);
+    TyMem_Free(od->od_fast_nodes);
     od->od_fast_nodes = fast_nodes;
     od->od_fast_nodes_size = size;
     od->od_resize_sentinel = ((PyDictObject *)od)->ma_keys;
@@ -593,8 +593,8 @@ _odict_resize(PyODictObject *od)
 }
 
 /* Return the index into the hash table, regardless of a valid node. */
-static Py_ssize_t
-_odict_get_index(PyODictObject *od, PyObject *key, Py_hash_t hash)
+static Ty_ssize_t
+_odict_get_index(PyODictObject *od, TyObject *key, Ty_hash_t hash)
 {
     PyDictKeysObject *keys;
 
@@ -614,9 +614,9 @@ _odict_get_index(PyODictObject *od, PyObject *key, Py_hash_t hash)
 
 /* Returns NULL if there was some error or the key was not found. */
 static _ODictNode *
-_odict_find_node_hash(PyODictObject *od, PyObject *key, Py_hash_t hash)
+_odict_find_node_hash(PyODictObject *od, TyObject *key, Ty_hash_t hash)
 {
-    Py_ssize_t index;
+    Ty_ssize_t index;
 
     if (_odict_EMPTY(od))
         return NULL;
@@ -628,10 +628,10 @@ _odict_find_node_hash(PyODictObject *od, PyObject *key, Py_hash_t hash)
 }
 
 static _ODictNode *
-_odict_find_node(PyODictObject *od, PyObject *key)
+_odict_find_node(PyODictObject *od, TyObject *key)
 {
-    Py_ssize_t index;
-    Py_hash_t hash;
+    Ty_ssize_t index;
+    Ty_hash_t hash;
 
     if (_odict_EMPTY(od))
         return NULL;
@@ -673,31 +673,31 @@ _odict_add_tail(PyODictObject *od, _ODictNode *node)
 
 /* adds the node to the end of the list */
 static int
-_odict_add_new_node(PyODictObject *od, PyObject *key, Py_hash_t hash)
+_odict_add_new_node(PyODictObject *od, TyObject *key, Ty_hash_t hash)
 {
-    Py_ssize_t i;
+    Ty_ssize_t i;
     _ODictNode *node;
 
-    Py_INCREF(key);
+    Ty_INCREF(key);
     i = _odict_get_index(od, key, hash);
     if (i < 0) {
-        if (!PyErr_Occurred())
-            PyErr_SetObject(PyExc_KeyError, key);
-        Py_DECREF(key);
+        if (!TyErr_Occurred())
+            TyErr_SetObject(TyExc_KeyError, key);
+        Ty_DECREF(key);
         return -1;
     }
     assert(od->od_fast_nodes != NULL);
     if (od->od_fast_nodes[i] != NULL) {
         /* We already have a node for the key so there's no need to add one. */
-        Py_DECREF(key);
+        Ty_DECREF(key);
         return 0;
     }
 
     /* must not be added yet */
-    node = (_ODictNode *)PyMem_Malloc(sizeof(_ODictNode));
+    node = (_ODictNode *)TyMem_Malloc(sizeof(_ODictNode));
     if (node == NULL) {
-        Py_DECREF(key);
-        PyErr_NoMemory();
+        Ty_DECREF(key);
+        TyErr_NoMemory();
         return -1;
     }
 
@@ -711,8 +711,8 @@ _odict_add_new_node(PyODictObject *od, PyObject *key, Py_hash_t hash)
 /* Putting the decref after the free causes problems. */
 #define _odictnode_DEALLOC(node) \
     do { \
-        Py_DECREF(_odictnode_KEY(node)); \
-        PyMem_Free((void *)node); \
+        Ty_DECREF(_odictnode_KEY(node)); \
+        TyMem_Free((void *)node); \
     } while (0)
 
 /* Repeated calls on the same node are no-ops. */
@@ -734,7 +734,7 @@ _odict_remove_node(PyODictObject *od, _ODictNode *node)
     od->od_state++;
 }
 
-/* If someone calls PyDict_DelItem() directly on an OrderedDict, we'll
+/* If someone calls TyDict_DelItem() directly on an OrderedDict, we'll
    get all sorts of problems here.  In PyODict_DelItem we make sure to
    call _odict_clear_node first.
 
@@ -745,16 +745,16 @@ _odict_remove_node(PyODictObject *od, _ODictNode *node)
    the index we got before deleting B.  However, the node for C in
    od_fast_nodes is still at the old dict index of C.  Thus to be sure
    things don't get out of sync, we clear the node in od_fast_nodes
-   *before* calling PyDict_DelItem.
+   *before* calling TyDict_DelItem.
 
    The same must be done for any other OrderedDict operations where
    we modify od_fast_nodes.
 */
 static int
-_odict_clear_node(PyODictObject *od, _ODictNode *node, PyObject *key,
-                  Py_hash_t hash)
+_odict_clear_node(PyODictObject *od, _ODictNode *node, TyObject *key,
+                  Ty_hash_t hash)
 {
-    Py_ssize_t i;
+    Ty_ssize_t i;
 
     assert(key != NULL);
     if (_odict_EMPTY(od)) {
@@ -764,7 +764,7 @@ _odict_clear_node(PyODictObject *od, _ODictNode *node, PyObject *key,
 
     i = _odict_get_index(od, key, hash);
     if (i < 0)
-        return PyErr_Occurred() ? -1 : 0;
+        return TyErr_Occurred() ? -1 : 0;
 
     assert(od->od_fast_nodes != NULL);
     if (node == NULL)
@@ -787,7 +787,7 @@ _odict_clear_nodes(PyODictObject *od)
 {
     _ODictNode *node, *next;
 
-    PyMem_Free(od->od_fast_nodes);
+    TyMem_Free(od->od_fast_nodes);
     od->od_fast_nodes = NULL;
     od->od_fast_nodes_size = 0;
     od->od_resize_sentinel = NULL;
@@ -827,16 +827,16 @@ _odict_keys_equal(PyODictObject *a, PyODictObject *b)
             return 0;
         }
         else {
-            PyObject *key_a = Py_NewRef(_odictnode_KEY(node_a));
-            PyObject *key_b = Py_NewRef(_odictnode_KEY(node_b));
-            int res = PyObject_RichCompareBool(key_a, key_b, Py_EQ);
-            Py_DECREF(key_a);
-            Py_DECREF(key_b);
+            TyObject *key_a = Ty_NewRef(_odictnode_KEY(node_a));
+            TyObject *key_b = Ty_NewRef(_odictnode_KEY(node_b));
+            int res = PyObject_RichCompareBool(key_a, key_b, Ty_EQ);
+            Ty_DECREF(key_a);
+            Ty_DECREF(key_b);
             if (res < 0) {
                 return res;
             }
             else if (a->od_state != state_a || b->od_state != state_b) {
-                PyErr_SetString(PyExc_RuntimeError,
+                TyErr_SetString(TyExc_RuntimeError,
                                 "OrderedDict mutated during iteration");
                 return -1;
             }
@@ -861,7 +861,7 @@ _odict_keys_equal(PyODictObject *a, PyODictObject *b)
 /* mp_ass_subscript: __setitem__() and __delitem__() */
 
 static int
-odict_mp_ass_sub(PyObject *od, PyObject *v, PyObject *w)
+odict_mp_ass_sub(TyObject *od, TyObject *v, TyObject *w)
 {
     if (w == NULL)
         return PyODict_DelItem(od, v);
@@ -882,42 +882,42 @@ static PyMappingMethods odict_as_mapping = {
  * OrderedDict number methods
  */
 
-static int mutablemapping_update_arg(PyObject*, PyObject*);
+static int mutablemapping_update_arg(TyObject*, TyObject*);
 
-static PyObject *
-odict_or(PyObject *left, PyObject *right)
+static TyObject *
+odict_or(TyObject *left, TyObject *right)
 {
-    PyTypeObject *type;
-    PyObject *other;
+    TyTypeObject *type;
+    TyObject *other;
     if (PyODict_Check(left)) {
-        type = Py_TYPE(left);
+        type = Ty_TYPE(left);
         other = right;
     }
     else {
-        type = Py_TYPE(right);
+        type = Ty_TYPE(right);
         other = left;
     }
-    if (!PyDict_Check(other)) {
-        Py_RETURN_NOTIMPLEMENTED;
+    if (!TyDict_Check(other)) {
+        Ty_RETURN_NOTIMPLEMENTED;
     }
-    PyObject *new = PyObject_CallOneArg((PyObject*)type, left);
+    TyObject *new = PyObject_CallOneArg((TyObject*)type, left);
     if (!new) {
         return NULL;
     }
     if (mutablemapping_update_arg(new, right) < 0) {
-        Py_DECREF(new);
+        Ty_DECREF(new);
         return NULL;
     }
     return new;
 }
 
-static PyObject *
-odict_inplace_or(PyObject *self, PyObject *other)
+static TyObject *
+odict_inplace_or(TyObject *self, TyObject *other)
 {
     if (mutablemapping_update_arg(self, other) < 0) {
         return NULL;
     }
-    return Py_NewRef(self);
+    return Ty_NewRef(self);
 }
 
 /* tp_as_number */
@@ -944,11 +944,11 @@ OrderedDict.fromkeys
 Create a new ordered dictionary with keys from iterable and values set to value.
 [clinic start generated code]*/
 
-static PyObject *
-OrderedDict_fromkeys_impl(PyTypeObject *type, PyObject *seq, PyObject *value)
+static TyObject *
+OrderedDict_fromkeys_impl(TyTypeObject *type, TyObject *seq, TyObject *value)
 /*[clinic end generated code: output=c10390d452d78d6d input=1a0476c229c597b3]*/
 {
-    return _PyDict_FromKeys((PyObject *)type, seq, value);
+    return _TyDict_FromKeys((TyObject *)type, seq, value);
 }
 
 /* __sizeof__() */
@@ -956,54 +956,54 @@ OrderedDict_fromkeys_impl(PyTypeObject *type, PyObject *seq, PyObject *value)
 /* OrderedDict.__sizeof__() does not have a docstring. */
 PyDoc_STRVAR(odict_sizeof__doc__, "");
 
-static PyObject *
-odict_sizeof(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odict_sizeof(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     PyODictObject *od = _PyODictObject_CAST(op);
-    Py_ssize_t res = _PyDict_SizeOf((PyDictObject *)od);
+    Ty_ssize_t res = _TyDict_SizeOf((PyDictObject *)od);
     res += sizeof(_ODictNode *) * od->od_fast_nodes_size;  /* od_fast_nodes */
     if (!_odict_EMPTY(od)) {
         res += sizeof(_ODictNode) * PyODict_SIZE(od);  /* linked-list */
     }
-    return PyLong_FromSsize_t(res);
+    return TyLong_FromSsize_t(res);
 }
 
 /* __reduce__() */
 
 PyDoc_STRVAR(odict_reduce__doc__, "Return state information for pickling");
 
-static PyObject *
-odict_reduce(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odict_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     register PyODictObject *od = _PyODictObject_CAST(op);
-    PyObject *state, *result = NULL;
-    PyObject *items_iter, *items, *args = NULL;
+    TyObject *state, *result = NULL;
+    TyObject *items_iter, *items, *args = NULL;
 
     /* capture any instance state */
-    state = _PyObject_GetState((PyObject *)od);
+    state = _TyObject_GetState((TyObject *)od);
     if (state == NULL)
         goto Done;
 
     /* build the result */
-    args = PyTuple_New(0);
+    args = TyTuple_New(0);
     if (args == NULL)
         goto Done;
 
-    items = PyObject_CallMethodNoArgs((PyObject *)od, &_Py_ID(items));
+    items = PyObject_CallMethodNoArgs((TyObject *)od, &_Ty_ID(items));
     if (items == NULL)
         goto Done;
 
     items_iter = PyObject_GetIter(items);
-    Py_DECREF(items);
+    Ty_DECREF(items);
     if (items_iter == NULL)
         goto Done;
 
-    result = PyTuple_Pack(5, Py_TYPE(od), args, state, Py_None, items_iter);
-    Py_DECREF(items_iter);
+    result = TyTuple_Pack(5, Ty_TYPE(od), args, state, Ty_None, items_iter);
+    Ty_DECREF(items_iter);
 
 Done:
-    Py_XDECREF(state);
-    Py_XDECREF(args);
+    Ty_XDECREF(state);
+    Ty_XDECREF(args);
 
     return result;
 }
@@ -1022,37 +1022,37 @@ Insert key with a value of default if key is not in the dictionary.
 Return the value for key if key is in the dictionary, else default.
 [clinic start generated code]*/
 
-static PyObject *
-OrderedDict_setdefault_impl(PyODictObject *self, PyObject *key,
-                            PyObject *default_value)
+static TyObject *
+OrderedDict_setdefault_impl(PyODictObject *self, TyObject *key,
+                            TyObject *default_value)
 /*[clinic end generated code: output=97537cb7c28464b6 input=38e098381c1efbc6]*/
 {
-    PyObject *result = NULL;
+    TyObject *result = NULL;
 
     if (PyODict_CheckExact(self)) {
         result = PyODict_GetItemWithError(self, key);  /* borrowed */
         if (result == NULL) {
-            if (PyErr_Occurred())
+            if (TyErr_Occurred())
                 return NULL;
             assert(_odict_find_node(self, key) == NULL);
-            if (PyODict_SetItem((PyObject *)self, key, default_value) >= 0) {
-                result = Py_NewRef(default_value);
+            if (PyODict_SetItem((TyObject *)self, key, default_value) >= 0) {
+                result = Ty_NewRef(default_value);
             }
         }
         else {
-            Py_INCREF(result);
+            Ty_INCREF(result);
         }
     }
     else {
-        int exists = PySequence_Contains((PyObject *)self, key);
+        int exists = PySequence_Contains((TyObject *)self, key);
         if (exists < 0) {
             return NULL;
         }
         else if (exists) {
-            result = PyObject_GetItem((PyObject *)self, key);
+            result = PyObject_GetItem((TyObject *)self, key);
         }
-        else if (PyObject_SetItem((PyObject *)self, key, default_value) >= 0) {
-            result = Py_NewRef(default_value);
+        else if (PyObject_SetItem((TyObject *)self, key, default_value) >= 0) {
+            result = Ty_NewRef(default_value);
         }
     }
 
@@ -1061,13 +1061,13 @@ OrderedDict_setdefault_impl(PyODictObject *self, PyObject *key,
 
 /* pop() */
 
-static PyObject *
-_odict_popkey_hash(PyObject *od, PyObject *key, PyObject *failobj,
-                   Py_hash_t hash)
+static TyObject *
+_odict_popkey_hash(TyObject *od, TyObject *key, TyObject *failobj,
+                   Ty_hash_t hash)
 {
-    PyObject *value = NULL;
+    TyObject *value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(od);
+    Ty_BEGIN_CRITICAL_SECTION(od);
 
     _ODictNode *node = _odict_find_node_hash(_PyODictObject_CAST(od), key, hash);
     if (node != NULL) {
@@ -1079,21 +1079,21 @@ _odict_popkey_hash(PyObject *od, PyObject *key, PyObject *failobj,
             goto done;
         }
         /* Now delete the value from the dict. */
-        if (_PyDict_Pop_KnownHash((PyDictObject *)od, key, hash,
+        if (_TyDict_Pop_KnownHash((PyDictObject *)od, key, hash,
                                   &value) == 0) {
-            value = Py_NewRef(failobj);
+            value = Ty_NewRef(failobj);
         }
     }
-    else if (value == NULL && !PyErr_Occurred()) {
+    else if (value == NULL && !TyErr_Occurred()) {
         /* Apply the fallback value, if necessary. */
         if (failobj) {
-            value = Py_NewRef(failobj);
+            value = Ty_NewRef(failobj);
         }
         else {
-            PyErr_SetObject(PyExc_KeyError, key);
+            TyErr_SetObject(TyExc_KeyError, key);
         }
     }
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 done:
 
     return value;
@@ -1112,15 +1112,15 @@ If the key is not found, return the default if given; otherwise,
 raise a KeyError.
 [clinic start generated code]*/
 
-static PyObject *
-OrderedDict_pop_impl(PyODictObject *self, PyObject *key,
-                     PyObject *default_value)
+static TyObject *
+OrderedDict_pop_impl(PyODictObject *self, TyObject *key,
+                     TyObject *default_value)
 /*[clinic end generated code: output=7a6447d104e7494b input=7efe36601007dff7]*/
 {
-    Py_hash_t hash = PyObject_Hash(key);
+    Ty_hash_t hash = PyObject_Hash(key);
     if (hash == -1)
         return NULL;
-    return _odict_popkey_hash((PyObject *)self, key, default_value, hash);
+    return _odict_popkey_hash((TyObject *)self, key, default_value, hash);
 }
 
 
@@ -1136,28 +1136,28 @@ Remove and return a (key, value) pair from the dictionary.
 Pairs are returned in LIFO order if last is true or FIFO order if false.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 OrderedDict_popitem_impl(PyODictObject *self, int last)
 /*[clinic end generated code: output=98e7d986690d49eb input=d992ac5ee8305e1a]*/
 {
-    PyObject *key, *value, *item = NULL;
+    TyObject *key, *value, *item = NULL;
     _ODictNode *node;
 
     /* pull the item */
 
     if (_odict_EMPTY(self)) {
-        PyErr_SetString(PyExc_KeyError, "dictionary is empty");
+        TyErr_SetString(TyExc_KeyError, "dictionary is empty");
         return NULL;
     }
 
     node = last ? _odict_LAST(self) : _odict_FIRST(self);
-    key = Py_NewRef(_odictnode_KEY(node));
-    value = _odict_popkey_hash((PyObject *)self, key, NULL, _odictnode_HASH(node));
+    key = Ty_NewRef(_odictnode_KEY(node));
+    value = _odict_popkey_hash((TyObject *)self, key, NULL, _odictnode_HASH(node));
     if (value == NULL)
         return NULL;
-    item = PyTuple_Pack(2, key, value);
-    Py_DECREF(key);
-    Py_DECREF(value);
+    item = TyTuple_Pack(2, key, value);
+    Ty_DECREF(key);
+    Ty_DECREF(value);
     return item;
 }
 
@@ -1166,21 +1166,21 @@ OrderedDict_popitem_impl(PyODictObject *self, int last)
 /* MutableMapping.keys() does not have a docstring. */
 PyDoc_STRVAR(odict_keys__doc__, "");
 
-static PyObject * odictkeys_new(PyObject *od, PyObject *Py_UNUSED(ignored));  /* forward */
+static TyObject * odictkeys_new(TyObject *od, TyObject *Ty_UNUSED(ignored));  /* forward */
 
 /* values() */
 
 /* MutableMapping.values() does not have a docstring. */
 PyDoc_STRVAR(odict_values__doc__, "");
 
-static PyObject * odictvalues_new(PyObject *od, PyObject *Py_UNUSED(ignored));  /* forward */
+static TyObject * odictvalues_new(TyObject *od, TyObject *Ty_UNUSED(ignored));  /* forward */
 
 /* items() */
 
 /* MutableMapping.items() does not have a docstring. */
 PyDoc_STRVAR(odict_items__doc__, "");
 
-static PyObject * odictitems_new(PyObject *od, PyObject *Py_UNUSED(ignored));  /* forward */
+static TyObject * odictitems_new(TyObject *od, TyObject *Ty_UNUSED(ignored));  /* forward */
 
 /* update() */
 
@@ -1188,7 +1188,7 @@ static PyObject * odictitems_new(PyObject *od, PyObject *Py_UNUSED(ignored));  /
 PyDoc_STRVAR(odict_update__doc__, "");
 
 /* forward */
-static PyObject * mutablemapping_update(PyObject *, PyObject *, PyObject *);
+static TyObject * mutablemapping_update(TyObject *, TyObject *, TyObject *);
 
 #define odict_update mutablemapping_update
 
@@ -1197,47 +1197,47 @@ static PyObject * mutablemapping_update(PyObject *, PyObject *, PyObject *);
 PyDoc_STRVAR(odict_clear__doc__,
              "od.clear() -> None.  Remove all items from od.");
 
-static PyObject *
-odict_clear(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odict_clear(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     register PyODictObject *od = _PyODictObject_CAST(op);
-    PyDict_Clear(op);
+    TyDict_Clear(op);
     _odict_clear_nodes(od);
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /* copy() */
 
 /* forward */
-static int _PyODict_SetItem_KnownHash(PyObject *, PyObject *, PyObject *,
-                                      Py_hash_t);
+static int _PyODict_SetItem_KnownHash(TyObject *, TyObject *, TyObject *,
+                                      Ty_hash_t);
 
 PyDoc_STRVAR(odict_copy__doc__, "od.copy() -> a shallow copy of od");
 
-static PyObject *
-odict_copy(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odict_copy(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     register PyODictObject *od = _PyODictObject_CAST(op);
     _ODictNode *node;
-    PyObject *od_copy;
+    TyObject *od_copy;
 
     if (PyODict_CheckExact(od))
         od_copy = PyODict_New();
     else
-        od_copy = _PyObject_CallNoArgs((PyObject *)Py_TYPE(od));
+        od_copy = _TyObject_CallNoArgs((TyObject *)Ty_TYPE(od));
     if (od_copy == NULL)
         return NULL;
 
     if (PyODict_CheckExact(od)) {
         _odict_FOREACH(od, node) {
-            PyObject *key = _odictnode_KEY(node);
-            PyObject *value = _odictnode_VALUE(node, od);
+            TyObject *key = _odictnode_KEY(node);
+            TyObject *value = _odictnode_VALUE(node, od);
             if (value == NULL) {
-                if (!PyErr_Occurred())
-                    PyErr_SetObject(PyExc_KeyError, key);
+                if (!TyErr_Occurred())
+                    TyErr_SetObject(TyExc_KeyError, key);
                 goto fail;
             }
-            if (_PyODict_SetItem_KnownHash((PyObject *)od_copy, key, value,
+            if (_PyODict_SetItem_KnownHash((TyObject *)od_copy, key, value,
                                            _odictnode_HASH(node)) != 0)
                 goto fail;
         }
@@ -1245,13 +1245,13 @@ odict_copy(PyObject *op, PyObject *Py_UNUSED(ignored))
     else {
         _odict_FOREACH(od, node) {
             int res;
-            PyObject *value = PyObject_GetItem((PyObject *)od,
+            TyObject *value = PyObject_GetItem((TyObject *)od,
                                                _odictnode_KEY(node));
             if (value == NULL)
                 goto fail;
-            res = PyObject_SetItem((PyObject *)od_copy,
+            res = PyObject_SetItem((TyObject *)od_copy,
                                    _odictnode_KEY(node), value);
-            Py_DECREF(value);
+            Ty_DECREF(value);
             if (res != 0)
                 goto fail;
         }
@@ -1259,7 +1259,7 @@ odict_copy(PyObject *op, PyObject *Py_UNUSED(ignored))
     return od_copy;
 
 fail:
-    Py_DECREF(od_copy);
+    Ty_DECREF(od_copy);
     return NULL;
 }
 
@@ -1273,10 +1273,10 @@ PyDoc_STRVAR(odict_reversed__doc__, "od.__reversed__() <==> reversed(od)");
 #define _odict_ITER_ITEMS (_odict_ITER_KEYS|_odict_ITER_VALUES)
 
 /* forward */
-static PyObject * odictiter_new(PyODictObject *, int);
+static TyObject * odictiter_new(PyODictObject *, int);
 
-static PyObject *
-odict_reversed(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odict_reversed(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     PyODictObject *od = _PyODictObject_CAST(op);
     return odictiter_new(od, _odict_ITER_KEYS|_odict_ITER_REVERSED);
@@ -1296,22 +1296,22 @@ Move an existing element to the end (or beginning if last is false).
 Raise KeyError if the element does not exist.
 [clinic start generated code]*/
 
-static PyObject *
-OrderedDict_move_to_end_impl(PyODictObject *self, PyObject *key, int last)
+static TyObject *
+OrderedDict_move_to_end_impl(PyODictObject *self, TyObject *key, int last)
 /*[clinic end generated code: output=fafa4c5cc9b92f20 input=d6ceff7132a2fcd7]*/
 {
     _ODictNode *node;
 
     if (_odict_EMPTY(self)) {
-        PyErr_SetObject(PyExc_KeyError, key);
+        TyErr_SetObject(TyExc_KeyError, key);
         return NULL;
     }
     node = last ? _odict_LAST(self) : _odict_FIRST(self);
     if (key != _odictnode_KEY(node)) {
         node = _odict_find_node(self, key);
         if (node == NULL) {
-            if (!PyErr_Occurred())
-                PyErr_SetObject(PyExc_KeyError, key);
+            if (!TyErr_Occurred())
+                TyErr_SetObject(TyExc_KeyError, key);
             return NULL;
         }
         if (last) {
@@ -1329,13 +1329,13 @@ OrderedDict_move_to_end_impl(PyODictObject *self, PyObject *key, int last)
             }
         }
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 
 /* tp_methods */
 
-static PyMethodDef odict_methods[] = {
+static TyMethodDef odict_methods[] = {
 
     /* overridden dict methods */
     ORDEREDDICT_FROMKEYS_METHODDEF
@@ -1374,7 +1374,7 @@ static PyMethodDef odict_methods[] = {
 
 /* tp_getset */
 
-static PyGetSetDef odict_getset[] = {
+static TyGetSetDef odict_getset[] = {
     {"__dict__", PyObject_GenericGetDict, PyObject_GenericSetDict},
     {NULL}
 };
@@ -1386,47 +1386,47 @@ static PyGetSetDef odict_getset[] = {
 /* tp_dealloc */
 
 static void
-odict_dealloc(PyObject *op)
+odict_dealloc(TyObject *op)
 {
     PyODictObject *self = _PyODictObject_CAST(op);
     PyObject_GC_UnTrack(self);
 
-    Py_XDECREF(self->od_inst_dict);
+    Ty_XDECREF(self->od_inst_dict);
     FT_CLEAR_WEAKREFS(op, self->od_weakreflist);
 
     _odict_clear_nodes(self);
-    PyDict_Type.tp_dealloc((PyObject *)self);
+    TyDict_Type.tp_dealloc((TyObject *)self);
 }
 
 /* tp_repr */
 
-static PyObject *
-odict_repr(PyObject *op)
+static TyObject *
+odict_repr(TyObject *op)
 {
     PyODictObject *self = _PyODictObject_CAST(op);
     int i;
-    PyObject *result = NULL, *dcopy = NULL;
+    TyObject *result = NULL, *dcopy = NULL;
 
     if (PyODict_SIZE(self) == 0)
-        return PyUnicode_FromFormat("%s()", _PyType_Name(Py_TYPE(self)));
+        return TyUnicode_FromFormat("%s()", _TyType_Name(Ty_TYPE(self)));
 
-    i = Py_ReprEnter((PyObject *)self);
+    i = Ty_ReprEnter((TyObject *)self);
     if (i != 0) {
-        return i > 0 ? PyUnicode_FromString("...") : NULL;
+        return i > 0 ? TyUnicode_FromString("...") : NULL;
     }
 
-    dcopy = PyDict_Copy((PyObject *)self);
+    dcopy = TyDict_Copy((TyObject *)self);
     if (dcopy == NULL) {
         goto Done;
     }
 
-    result = PyUnicode_FromFormat("%s(%R)",
-                                  _PyType_Name(Py_TYPE(self)),
+    result = TyUnicode_FromFormat("%s(%R)",
+                                  _TyType_Name(Ty_TYPE(self)),
                                   dcopy);
-    Py_DECREF(dcopy);
+    Ty_DECREF(dcopy);
 
 Done:
-    Py_ReprLeave((PyObject *)self);
+    Ty_ReprLeave((TyObject *)self);
     return result;
 }
 
@@ -1438,70 +1438,70 @@ PyDoc_STRVAR(odict_doc,
 /* tp_traverse */
 
 static int
-odict_traverse(PyObject *op, visitproc visit, void *arg)
+odict_traverse(TyObject *op, visitproc visit, void *arg)
 {
     PyODictObject *od = _PyODictObject_CAST(op);
     _ODictNode *node;
 
-    Py_VISIT(od->od_inst_dict);
+    Ty_VISIT(od->od_inst_dict);
     _odict_FOREACH(od, node) {
-        Py_VISIT(_odictnode_KEY(node));
+        Ty_VISIT(_odictnode_KEY(node));
     }
-    return PyDict_Type.tp_traverse((PyObject *)od, visit, arg);
+    return TyDict_Type.tp_traverse((TyObject *)od, visit, arg);
 }
 
 /* tp_clear */
 
 static int
-odict_tp_clear(PyObject *op)
+odict_tp_clear(TyObject *op)
 {
     PyODictObject *od = _PyODictObject_CAST(op);
-    Py_CLEAR(od->od_inst_dict);
-    PyDict_Clear((PyObject *)od);
+    Ty_CLEAR(od->od_inst_dict);
+    TyDict_Clear((TyObject *)od);
     _odict_clear_nodes(od);
     return 0;
 }
 
 /* tp_richcompare */
 
-static PyObject *
-odict_richcompare(PyObject *v, PyObject *w, int op)
+static TyObject *
+odict_richcompare(TyObject *v, TyObject *w, int op)
 {
-    if (!PyODict_Check(v) || !PyDict_Check(w)) {
-        Py_RETURN_NOTIMPLEMENTED;
+    if (!PyODict_Check(v) || !TyDict_Check(w)) {
+        Ty_RETURN_NOTIMPLEMENTED;
     }
 
-    if (op == Py_EQ || op == Py_NE) {
-        PyObject *res, *cmp;
+    if (op == Ty_EQ || op == Ty_NE) {
+        TyObject *res, *cmp;
         int eq;
 
-        cmp = PyDict_Type.tp_richcompare(v, w, op);
+        cmp = TyDict_Type.tp_richcompare(v, w, op);
         if (cmp == NULL)
             return NULL;
         if (!PyODict_Check(w))
             return cmp;
-        if (op == Py_EQ && cmp == Py_False)
+        if (op == Ty_EQ && cmp == Ty_False)
             return cmp;
-        if (op == Py_NE && cmp == Py_True)
+        if (op == Ty_NE && cmp == Ty_True)
             return cmp;
-        Py_DECREF(cmp);
+        Ty_DECREF(cmp);
 
         /* Try comparing odict keys. */
         eq = _odict_keys_equal(_PyODictObject_CAST(v), _PyODictObject_CAST(w));
         if (eq < 0)
             return NULL;
 
-        res = (eq == (op == Py_EQ)) ? Py_True : Py_False;
-        return Py_NewRef(res);
+        res = (eq == (op == Ty_EQ)) ? Ty_True : Ty_False;
+        return Ty_NewRef(res);
     } else {
-        Py_RETURN_NOTIMPLEMENTED;
+        Ty_RETURN_NOTIMPLEMENTED;
     }
 }
 
 /* tp_iter */
 
-static PyObject *
-odict_iter(PyObject *op)
+static TyObject *
+odict_iter(TyObject *op)
 {
     return odictiter_new(_PyODictObject_CAST(op), _odict_ITER_KEYS);
 }
@@ -1509,16 +1509,16 @@ odict_iter(PyObject *op)
 /* tp_init */
 
 static int
-odict_init(PyObject *self, PyObject *args, PyObject *kwds)
+odict_init(TyObject *self, TyObject *args, TyObject *kwds)
 {
-    PyObject *res;
-    Py_ssize_t len = PyObject_Length(args);
+    TyObject *res;
+    Ty_ssize_t len = PyObject_Length(args);
 
     if (len == -1)
         return -1;
     if (len > 1) {
         const char *msg = "expected at most 1 arguments, got %zd";
-        PyErr_Format(PyExc_TypeError, msg, len);
+        TyErr_Format(TyExc_TypeError, msg, len);
         return -1;
     }
 
@@ -1527,15 +1527,15 @@ odict_init(PyObject *self, PyObject *args, PyObject *kwds)
     if (res == NULL) {
         return -1;
     } else {
-        Py_DECREF(res);
+        Ty_DECREF(res);
         return 0;
     }
 }
 
 /* PyODict_Type */
 
-PyTypeObject PyODict_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyODict_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "collections.OrderedDict",                  /* tp_name */
     sizeof(PyODictObject),                      /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -1554,7 +1554,7 @@ PyTypeObject PyODict_Type = {
     0,                                          /* tp_getattro */
     0,                                          /* tp_setattro */
     0,                                          /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,/* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,/* tp_flags */
     odict_doc,                                  /* tp_doc */
     odict_traverse,                             /* tp_traverse */
     odict_tp_clear,                             /* tp_clear */
@@ -1565,13 +1565,13 @@ PyTypeObject PyODict_Type = {
     odict_methods,                              /* tp_methods */
     0,                                          /* tp_members */
     odict_getset,                               /* tp_getset */
-    &PyDict_Type,                               /* tp_base */
+    &TyDict_Type,                               /* tp_base */
     0,                                          /* tp_dict */
     0,                                          /* tp_descr_get */
     0,                                          /* tp_descr_set */
     offsetof(PyODictObject, od_inst_dict),      /* tp_dictoffset */
     odict_init,                                 /* tp_init */
-    PyType_GenericAlloc,                        /* tp_alloc */
+    TyType_GenericAlloc,                        /* tp_alloc */
     0,                                          /* tp_new */
     0,                                          /* tp_free */
 };
@@ -1581,49 +1581,49 @@ PyTypeObject PyODict_Type = {
  * the public OrderedDict API
  */
 
-PyObject *
+TyObject *
 PyODict_New(void)
 {
-    return PyDict_Type.tp_new(&PyODict_Type, NULL, NULL);
+    return TyDict_Type.tp_new(&PyODict_Type, NULL, NULL);
 }
 
 static int
-_PyODict_SetItem_KnownHash(PyObject *od, PyObject *key, PyObject *value,
-                           Py_hash_t hash)
+_PyODict_SetItem_KnownHash(TyObject *od, TyObject *key, TyObject *value,
+                           Ty_hash_t hash)
 {
-    int res = _PyDict_SetItem_KnownHash(od, key, value, hash);
+    int res = _TyDict_SetItem_KnownHash(od, key, value, hash);
     if (res == 0) {
         res = _odict_add_new_node(_PyODictObject_CAST(od), key, hash);
         if (res < 0) {
             /* Revert setting the value on the dict */
-            PyObject *exc = PyErr_GetRaisedException();
-            (void) _PyDict_DelItem_KnownHash(od, key, hash);
-            _PyErr_ChainExceptions1(exc);
+            TyObject *exc = TyErr_GetRaisedException();
+            (void) _TyDict_DelItem_KnownHash(od, key, hash);
+            _TyErr_ChainExceptions1(exc);
         }
     }
     return res;
 }
 
 int
-PyODict_SetItem(PyObject *od, PyObject *key, PyObject *value)
+PyODict_SetItem(TyObject *od, TyObject *key, TyObject *value)
 {
-    Py_hash_t hash = PyObject_Hash(key);
+    Ty_hash_t hash = PyObject_Hash(key);
     if (hash == -1)
         return -1;
     return _PyODict_SetItem_KnownHash(od, key, value, hash);
 }
 
 int
-PyODict_DelItem(PyObject *od, PyObject *key)
+PyODict_DelItem(TyObject *od, TyObject *key)
 {
     int res;
-    Py_hash_t hash = PyObject_Hash(key);
+    Ty_hash_t hash = PyObject_Hash(key);
     if (hash == -1)
         return -1;
     res = _odict_clear_node(_PyODictObject_CAST(od), NULL, key, hash);
     if (res < 0)
         return -1;
-    return _PyDict_DelItem_KnownHash(od, key, hash);
+    return _TyDict_DelItem_KnownHash(od, key, hash);
 }
 
 
@@ -1635,41 +1635,41 @@ typedef struct {
     PyObject_HEAD
     int kind;
     PyODictObject *di_odict;
-    Py_ssize_t di_size;
+    Ty_ssize_t di_size;
     size_t di_state;
-    PyObject *di_current;
-    PyObject *di_result; /* reusable result tuple for iteritems */
+    TyObject *di_current;
+    TyObject *di_result; /* reusable result tuple for iteritems */
 } odictiterobject;
 
 static void
-odictiter_dealloc(PyObject *op)
+odictiter_dealloc(TyObject *op)
 {
     odictiterobject *di = (odictiterobject*)op;
-    _PyObject_GC_UNTRACK(di);
-    Py_XDECREF(di->di_odict);
-    Py_XDECREF(di->di_current);
+    _TyObject_GC_UNTRACK(di);
+    Ty_XDECREF(di->di_odict);
+    Ty_XDECREF(di->di_current);
     if ((di->kind & _odict_ITER_ITEMS) == _odict_ITER_ITEMS) {
-        Py_DECREF(di->di_result);
+        Ty_DECREF(di->di_result);
     }
     PyObject_GC_Del(di);
 }
 
 static int
-odictiter_traverse(PyObject *op, visitproc visit, void *arg)
+odictiter_traverse(TyObject *op, visitproc visit, void *arg)
 {
     odictiterobject *di = (odictiterobject*)op;
-    Py_VISIT(di->di_odict);
-    Py_VISIT(di->di_current);  /* A key could be any type, not just str. */
-    Py_VISIT(di->di_result);
+    Ty_VISIT(di->di_odict);
+    Ty_VISIT(di->di_current);  /* A key could be any type, not just str. */
+    Ty_VISIT(di->di_result);
     return 0;
 }
 
 /* In order to protect against modifications during iteration, we track
  * the current key instead of the current node. */
-static PyObject *
+static TyObject *
 odictiter_nextkey(odictiterobject *di)
 {
-    PyObject *key = NULL;
+    TyObject *key = NULL;
     _ODictNode *node;
     int reversed = di->kind & _odict_ITER_REVERSED;
 
@@ -1680,12 +1680,12 @@ odictiter_nextkey(odictiterobject *di)
 
     /* Check for unsupported changes. */
     if (di->di_odict->od_state != di->di_state) {
-        PyErr_SetString(PyExc_RuntimeError,
+        TyErr_SetString(TyExc_RuntimeError,
                         "OrderedDict mutated during iteration");
         goto done;
     }
     if (di->di_size != PyODict_SIZE(di->di_odict)) {
-        PyErr_SetString(PyExc_RuntimeError,
+        TyErr_SetString(TyExc_RuntimeError,
                         "OrderedDict changed size during iteration");
         di->di_size = -1; /* Make this state sticky */
         return NULL;
@@ -1694,10 +1694,10 @@ odictiter_nextkey(odictiterobject *di)
     /* Get the key. */
     node = _odict_find_node(di->di_odict, di->di_current);
     if (node == NULL) {
-        if (!PyErr_Occurred())
-            PyErr_SetObject(PyExc_KeyError, di->di_current);
+        if (!TyErr_Occurred())
+            TyErr_SetObject(TyExc_KeyError, di->di_current);
         /* Must have been deleted. */
-        Py_CLEAR(di->di_current);
+        Ty_CLEAR(di->di_current);
         return NULL;
     }
     key = di->di_current;
@@ -1709,22 +1709,22 @@ odictiter_nextkey(odictiterobject *di)
         di->di_current = NULL;
     }
     else {
-        di->di_current = Py_NewRef(_odictnode_KEY(node));
+        di->di_current = Ty_NewRef(_odictnode_KEY(node));
     }
 
     return key;
 
 done:
-    Py_CLEAR(di->di_odict);
+    Ty_CLEAR(di->di_odict);
     return key;
 }
 
-static PyObject *
-odictiter_iternext(PyObject *op)
+static TyObject *
+odictiter_iternext(TyObject *op)
 {
     odictiterobject *di = (odictiterobject*)op;
-    PyObject *result, *value;
-    PyObject *key = odictiter_nextkey(di);  /* new reference */
+    TyObject *result, *value;
+    TyObject *key = odictiter_nextkey(di);  /* new reference */
 
     if (key == NULL)
         return NULL;
@@ -1734,50 +1734,50 @@ odictiter_iternext(PyObject *op)
         return key;
     }
 
-    value = PyODict_GetItem((PyObject *)di->di_odict, key);  /* borrowed */
+    value = PyODict_GetItem((TyObject *)di->di_odict, key);  /* borrowed */
     if (value == NULL) {
-        if (!PyErr_Occurred())
-            PyErr_SetObject(PyExc_KeyError, key);
-        Py_DECREF(key);
+        if (!TyErr_Occurred())
+            TyErr_SetObject(TyExc_KeyError, key);
+        Ty_DECREF(key);
         goto done;
     }
-    Py_INCREF(value);
+    Ty_INCREF(value);
 
     /* Handle the values case. */
     if (!(di->kind & _odict_ITER_KEYS)) {
-        Py_DECREF(key);
+        Ty_DECREF(key);
         return value;
     }
 
     /* Handle the items case. */
     result = di->di_result;
 
-    if (Py_REFCNT(result) == 1) {
+    if (Ty_REFCNT(result) == 1) {
         /* not in use so we can reuse it
          * (the common case during iteration) */
-        Py_INCREF(result);
-        Py_DECREF(PyTuple_GET_ITEM(result, 0));  /* borrowed */
-        Py_DECREF(PyTuple_GET_ITEM(result, 1));  /* borrowed */
+        Ty_INCREF(result);
+        Ty_DECREF(TyTuple_GET_ITEM(result, 0));  /* borrowed */
+        Ty_DECREF(TyTuple_GET_ITEM(result, 1));  /* borrowed */
         // bpo-42536: The GC may have untracked this result tuple. Since we're
         // recycling it, make sure it's tracked again:
-        _PyTuple_Recycle(result);
+        _TyTuple_Recycle(result);
     }
     else {
-        result = PyTuple_New(2);
+        result = TyTuple_New(2);
         if (result == NULL) {
-            Py_DECREF(key);
-            Py_DECREF(value);
+            Ty_DECREF(key);
+            Ty_DECREF(value);
             goto done;
         }
     }
 
-    PyTuple_SET_ITEM(result, 0, key);  /* steals reference */
-    PyTuple_SET_ITEM(result, 1, value);  /* steals reference */
+    TyTuple_SET_ITEM(result, 0, key);  /* steals reference */
+    TyTuple_SET_ITEM(result, 1, value);  /* steals reference */
     return result;
 
 done:
-    Py_CLEAR(di->di_current);
-    Py_CLEAR(di->di_odict);
+    Ty_CLEAR(di->di_current);
+    Ty_CLEAR(di->di_odict);
     return NULL;
 }
 
@@ -1785,33 +1785,33 @@ done:
 
 PyDoc_STRVAR(reduce_doc, "Return state information for pickling");
 
-static PyObject *
-odictiter_reduce(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odictiter_reduce(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     odictiterobject *di = (odictiterobject*)op;
 
     /* copy the iterator state */
     odictiterobject tmp = *di;
-    Py_XINCREF(tmp.di_odict);
-    Py_XINCREF(tmp.di_current);
+    Ty_XINCREF(tmp.di_odict);
+    Ty_XINCREF(tmp.di_current);
 
     /* iterate the temporary into a list */
-    PyObject *list = PySequence_List((PyObject*)&tmp);
-    Py_XDECREF(tmp.di_odict);
-    Py_XDECREF(tmp.di_current);
+    TyObject *list = PySequence_List((TyObject*)&tmp);
+    Ty_XDECREF(tmp.di_odict);
+    Ty_XDECREF(tmp.di_current);
     if (list == NULL) {
         return NULL;
     }
-    return Py_BuildValue("N(N)", _PyEval_GetBuiltin(&_Py_ID(iter)), list);
+    return Ty_BuildValue("N(N)", _TyEval_GetBuiltin(&_Ty_ID(iter)), list);
 }
 
-static PyMethodDef odictiter_methods[] = {
+static TyMethodDef odictiter_methods[] = {
     {"__reduce__", odictiter_reduce, METH_NOARGS, reduce_doc},
     {NULL,              NULL}           /* sentinel */
 };
 
-PyTypeObject PyODictIter_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyODictIter_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "odict_iterator",                         /* tp_name */
     sizeof(odictiterobject),                  /* tp_basicsize */
     0,                                        /* tp_itemsize */
@@ -1831,7 +1831,7 @@ PyTypeObject PyODictIter_Type = {
     PyObject_GenericGetAttr,                  /* tp_getattro */
     0,                                        /* tp_setattro */
     0,                                        /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,  /* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,  /* tp_flags */
     0,                                        /* tp_doc */
     odictiter_traverse,                       /* tp_traverse */
     0,                                        /* tp_clear */
@@ -1843,7 +1843,7 @@ PyTypeObject PyODictIter_Type = {
     0,
 };
 
-static PyObject *
+static TyObject *
 odictiter_new(PyODictObject *od, int kind)
 {
     odictiterobject *di;
@@ -1855,9 +1855,9 @@ odictiter_new(PyODictObject *od, int kind)
         return NULL;
 
     if ((kind & _odict_ITER_ITEMS) == _odict_ITER_ITEMS) {
-        di->di_result = PyTuple_Pack(2, Py_None, Py_None);
+        di->di_result = TyTuple_Pack(2, Ty_None, Ty_None);
         if (di->di_result == NULL) {
-            Py_DECREF(di);
+            Ty_DECREF(di);
             return NULL;
         }
     }
@@ -1867,46 +1867,46 @@ odictiter_new(PyODictObject *od, int kind)
 
     di->kind = kind;
     node = reversed ? _odict_LAST(od) : _odict_FIRST(od);
-    di->di_current = node ? Py_NewRef(_odictnode_KEY(node)) : NULL;
+    di->di_current = node ? Ty_NewRef(_odictnode_KEY(node)) : NULL;
     di->di_size = PyODict_SIZE(od);
     di->di_state = od->od_state;
-    di->di_odict = (PyODictObject*)Py_NewRef(od);
+    di->di_odict = (PyODictObject*)Ty_NewRef(od);
 
-    _PyObject_GC_TRACK(di);
-    return (PyObject *)di;
+    _TyObject_GC_TRACK(di);
+    return (TyObject *)di;
 }
 
 /* keys() */
 
-static PyObject *
-odictkeys_iter(PyObject *op)
+static TyObject *
+odictkeys_iter(TyObject *op)
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_KEYS);
 }
 
-static PyObject *
-odictkeys_reversed(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odictkeys_reversed(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_KEYS|_odict_ITER_REVERSED);
 }
 
-static PyMethodDef odictkeys_methods[] = {
+static TyMethodDef odictkeys_methods[] = {
     {"__reversed__", odictkeys_reversed, METH_NOARGS, NULL},
     {NULL,          NULL}           /* sentinel */
 };
 
-PyTypeObject PyODictKeys_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyODictKeys_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "odict_keys",                             /* tp_name */
     0,                                        /* tp_basicsize */
     0,                                        /* tp_itemsize */
@@ -1939,43 +1939,43 @@ PyTypeObject PyODictKeys_Type = {
     &PyDictKeys_Type,                         /* tp_base */
 };
 
-static PyObject *
-odictkeys_new(PyObject *od, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odictkeys_new(TyObject *od, TyObject *Ty_UNUSED(ignored))
 {
     return _PyDictView_New(od, &PyODictKeys_Type);
 }
 
 /* items() */
 
-static PyObject *
-odictitems_iter(PyObject *op)
+static TyObject *
+odictitems_iter(TyObject *op)
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_KEYS|_odict_ITER_VALUES);
 }
 
-static PyObject *
-odictitems_reversed(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odictitems_reversed(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_KEYS|_odict_ITER_VALUES|_odict_ITER_REVERSED);
 }
 
-static PyMethodDef odictitems_methods[] = {
+static TyMethodDef odictitems_methods[] = {
     {"__reversed__", odictitems_reversed, METH_NOARGS, NULL},
     {NULL,          NULL}           /* sentinel */
 };
 
-PyTypeObject PyODictItems_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyODictItems_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "odict_items",                            /* tp_name */
     0,                                        /* tp_basicsize */
     0,                                        /* tp_itemsize */
@@ -2008,43 +2008,43 @@ PyTypeObject PyODictItems_Type = {
     &PyDictItems_Type,                        /* tp_base */
 };
 
-static PyObject *
-odictitems_new(PyObject *od, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odictitems_new(TyObject *od, TyObject *Ty_UNUSED(ignored))
 {
     return _PyDictView_New(od, &PyODictItems_Type);
 }
 
 /* values() */
 
-static PyObject *
-odictvalues_iter(PyObject *op)
+static TyObject *
+odictvalues_iter(TyObject *op)
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_VALUES);
 }
 
-static PyObject *
-odictvalues_reversed(PyObject *op, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odictvalues_reversed(TyObject *op, TyObject *Ty_UNUSED(ignored))
 {
     _PyDictViewObject *dv = (_PyDictViewObject*)op;
     if (dv->dv_dict == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
     return odictiter_new(_PyODictObject_CAST(dv->dv_dict),
             _odict_ITER_VALUES|_odict_ITER_REVERSED);
 }
 
-static PyMethodDef odictvalues_methods[] = {
+static TyMethodDef odictvalues_methods[] = {
     {"__reversed__", odictvalues_reversed, METH_NOARGS, NULL},
     {NULL,          NULL}           /* sentinel */
 };
 
-PyTypeObject PyODictValues_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyODictValues_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "odict_values",                           /* tp_name */
     0,                                        /* tp_basicsize */
     0,                                        /* tp_itemsize */
@@ -2077,8 +2077,8 @@ PyTypeObject PyODictValues_Type = {
     &PyDictValues_Type,                       /* tp_base */
 };
 
-static PyObject *
-odictvalues_new(PyObject *od, PyObject *Py_UNUSED(ignored))
+static TyObject *
+odictvalues_new(TyObject *od, TyObject *Ty_UNUSED(ignored))
 {
     return _PyDictView_New(od, &PyODictValues_Type);
 }
@@ -2128,165 +2128,165 @@ update       __setitem__
 */
 
 static int
-mutablemapping_add_pairs(PyObject *self, PyObject *pairs)
+mutablemapping_add_pairs(TyObject *self, TyObject *pairs)
 {
-    PyObject *pair, *iterator, *unexpected;
+    TyObject *pair, *iterator, *unexpected;
     int res = 0;
 
     iterator = PyObject_GetIter(pairs);
     if (iterator == NULL)
         return -1;
-    PyErr_Clear();
+    TyErr_Clear();
 
-    while ((pair = PyIter_Next(iterator)) != NULL) {
+    while ((pair = TyIter_Next(iterator)) != NULL) {
         /* could be more efficient (see UNPACK_SEQUENCE in ceval.c) */
-        PyObject *key = NULL, *value = NULL;
-        PyObject *pair_iterator = PyObject_GetIter(pair);
+        TyObject *key = NULL, *value = NULL;
+        TyObject *pair_iterator = PyObject_GetIter(pair);
         if (pair_iterator == NULL)
             goto Done;
 
-        key = PyIter_Next(pair_iterator);
+        key = TyIter_Next(pair_iterator);
         if (key == NULL) {
-            if (!PyErr_Occurred())
-                PyErr_SetString(PyExc_ValueError,
+            if (!TyErr_Occurred())
+                TyErr_SetString(TyExc_ValueError,
                                 "need more than 0 values to unpack");
             goto Done;
         }
 
-        value = PyIter_Next(pair_iterator);
+        value = TyIter_Next(pair_iterator);
         if (value == NULL) {
-            if (!PyErr_Occurred())
-                PyErr_SetString(PyExc_ValueError,
+            if (!TyErr_Occurred())
+                TyErr_SetString(TyExc_ValueError,
                                 "need more than 1 value to unpack");
             goto Done;
         }
 
-        unexpected = PyIter_Next(pair_iterator);
+        unexpected = TyIter_Next(pair_iterator);
         if (unexpected != NULL) {
-            Py_DECREF(unexpected);
-            PyErr_SetString(PyExc_ValueError,
+            Ty_DECREF(unexpected);
+            TyErr_SetString(TyExc_ValueError,
                             "too many values to unpack (expected 2)");
             goto Done;
         }
-        else if (PyErr_Occurred())
+        else if (TyErr_Occurred())
             goto Done;
 
         res = PyObject_SetItem(self, key, value);
 
 Done:
-        Py_DECREF(pair);
-        Py_XDECREF(pair_iterator);
-        Py_XDECREF(key);
-        Py_XDECREF(value);
-        if (PyErr_Occurred())
+        Ty_DECREF(pair);
+        Ty_XDECREF(pair_iterator);
+        Ty_XDECREF(key);
+        Ty_XDECREF(value);
+        if (TyErr_Occurred())
             break;
     }
-    Py_DECREF(iterator);
+    Ty_DECREF(iterator);
 
-    if (res < 0 || PyErr_Occurred() != NULL)
+    if (res < 0 || TyErr_Occurred() != NULL)
         return -1;
     else
         return 0;
 }
 
 static int
-mutablemapping_update_arg(PyObject *self, PyObject *arg)
+mutablemapping_update_arg(TyObject *self, TyObject *arg)
 {
     int res = 0;
-    if (PyDict_CheckExact(arg)) {
-        PyObject *items = PyDict_Items(arg);
+    if (TyDict_CheckExact(arg)) {
+        TyObject *items = TyDict_Items(arg);
         if (items == NULL) {
             return -1;
         }
         res = mutablemapping_add_pairs(self, items);
-        Py_DECREF(items);
+        Ty_DECREF(items);
         return res;
     }
-    PyObject *func;
-    if (PyObject_GetOptionalAttr(arg, &_Py_ID(keys), &func) < 0) {
+    TyObject *func;
+    if (PyObject_GetOptionalAttr(arg, &_Ty_ID(keys), &func) < 0) {
         return -1;
     }
     if (func != NULL) {
-        PyObject *keys = _PyObject_CallNoArgs(func);
-        Py_DECREF(func);
+        TyObject *keys = _TyObject_CallNoArgs(func);
+        Ty_DECREF(func);
         if (keys == NULL) {
             return -1;
         }
-        PyObject *iterator = PyObject_GetIter(keys);
-        Py_DECREF(keys);
+        TyObject *iterator = PyObject_GetIter(keys);
+        Ty_DECREF(keys);
         if (iterator == NULL) {
             return -1;
         }
-        PyObject *key;
-        while (res == 0 && (key = PyIter_Next(iterator))) {
-            PyObject *value = PyObject_GetItem(arg, key);
+        TyObject *key;
+        while (res == 0 && (key = TyIter_Next(iterator))) {
+            TyObject *value = PyObject_GetItem(arg, key);
             if (value != NULL) {
                 res = PyObject_SetItem(self, key, value);
-                Py_DECREF(value);
+                Ty_DECREF(value);
             }
             else {
                 res = -1;
             }
-            Py_DECREF(key);
+            Ty_DECREF(key);
         }
-        Py_DECREF(iterator);
-        if (res != 0 || PyErr_Occurred()) {
+        Ty_DECREF(iterator);
+        if (res != 0 || TyErr_Occurred()) {
             return -1;
         }
         return 0;
     }
-    if (PyObject_GetOptionalAttr(arg, &_Py_ID(items), &func) < 0) {
+    if (PyObject_GetOptionalAttr(arg, &_Ty_ID(items), &func) < 0) {
         return -1;
     }
     if (func != NULL) {
-        PyObject *items = _PyObject_CallNoArgs(func);
-        Py_DECREF(func);
+        TyObject *items = _TyObject_CallNoArgs(func);
+        Ty_DECREF(func);
         if (items == NULL) {
             return -1;
         }
         res = mutablemapping_add_pairs(self, items);
-        Py_DECREF(items);
+        Ty_DECREF(items);
         return res;
     }
     res = mutablemapping_add_pairs(self, arg);
     return res;
 }
 
-static PyObject *
-mutablemapping_update(PyObject *self, PyObject *args, PyObject *kwargs)
+static TyObject *
+mutablemapping_update(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int res;
     /* first handle args, if any */
-    assert(args == NULL || PyTuple_Check(args));
-    Py_ssize_t len = (args != NULL) ? PyTuple_GET_SIZE(args) : 0;
+    assert(args == NULL || TyTuple_Check(args));
+    Ty_ssize_t len = (args != NULL) ? TyTuple_GET_SIZE(args) : 0;
     if (len > 1) {
         const char *msg = "update() takes at most 1 positional argument (%zd given)";
-        PyErr_Format(PyExc_TypeError, msg, len);
+        TyErr_Format(TyExc_TypeError, msg, len);
         return NULL;
     }
 
     if (len) {
-        PyObject *other = PyTuple_GET_ITEM(args, 0);  /* borrowed reference */
+        TyObject *other = TyTuple_GET_ITEM(args, 0);  /* borrowed reference */
         assert(other != NULL);
-        Py_INCREF(other);
+        Ty_INCREF(other);
         res = mutablemapping_update_arg(self, other);
-        Py_DECREF(other);
+        Ty_DECREF(other);
         if (res < 0) {
             return NULL;
         }
     }
 
     /* now handle kwargs */
-    assert(kwargs == NULL || PyDict_Check(kwargs));
-    if (kwargs != NULL && PyDict_GET_SIZE(kwargs)) {
-        PyObject *items = PyDict_Items(kwargs);
+    assert(kwargs == NULL || TyDict_Check(kwargs));
+    if (kwargs != NULL && TyDict_GET_SIZE(kwargs)) {
+        TyObject *items = TyDict_Items(kwargs);
         if (items == NULL)
             return NULL;
         res = mutablemapping_add_pairs(self, items);
-        Py_DECREF(items);
+        Ty_DECREF(items);
         if (res == -1)
             return NULL;
     }
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }

@@ -354,7 +354,7 @@ class TestOptimizedCompares(unittest.TestCase):
             [(x,) for x in L].sort()
 
         # The following test is also by ppperry. It ensures that
-        # unsafe_object_compare handles Py_NotImplemented appropriately.
+        # unsafe_object_compare handles Ty_NotImplemented appropriately.
         class PointlessComparator:
             def __lt__(self, other):
                 return NotImplemented

@@ -34,17 +34,17 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(func_def.seed_bits, hash_info.seed_bits)
 
     def test_hash_pointer(self):
-        # Test Py_HashPointer()
+        # Test Ty_HashPointer()
         hash_pointer = _testcapi.hash_pointer
 
         UHASH_T_MASK = ((2 ** (8 * SIZEOF_PY_HASH_T)) - 1)
         HASH_T_MAX = (2 ** (8 * SIZEOF_PY_HASH_T - 1) - 1)
 
         def python_hash_pointer(x):
-            # Py_HashPointer() rotates the pointer bits by 4 bits to the right
+            # Ty_HashPointer() rotates the pointer bits by 4 bits to the right
             x = (x >> 4) | ((x & 15) << (8 * SIZEOF_VOID_P - 4))
 
-            # Convert unsigned uintptr_t (Py_uhash_t) to signed Py_hash_t
+            # Convert unsigned uintptr_t (Ty_uhash_t) to signed Ty_hash_t
             if HASH_T_MAX < x:
                 x = (~x) + 1
                 x &= UHASH_T_MASK
@@ -71,10 +71,10 @@ class CAPITest(unittest.TestCase):
                                  f"hash_pointer({value:x}) = "
                                  f"{hash_pointer(value):x} != {expected:x}")
 
-        # Py_HashPointer(NULL) returns 0
+        # Ty_HashPointer(NULL) returns 0
         self.assertEqual(hash_pointer(0), 0)
 
-        # Py_HashPointer((void*)(uintptr_t)-1) doesn't return -1 but -2
+        # Ty_HashPointer((void*)(uintptr_t)-1) doesn't return -1 but -2
         VOID_P_MAX = -1 & (2 ** (8 * SIZEOF_VOID_P) - 1)
         self.assertEqual(hash_pointer(VOID_P_MAX), -2)
 

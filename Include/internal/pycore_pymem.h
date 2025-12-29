@@ -1,5 +1,5 @@
-#ifndef Py_INTERNAL_PYMEM_H
-#define Py_INTERNAL_PYMEM_H
+#ifndef Ty_INTERNAL_PYMEM_H
+#define Ty_INTERNAL_PYMEM_H
 
 #include "pycore_llist.h"           // struct llist_node
 
@@ -7,24 +7,24 @@
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-// Try to get the allocators name set by _PyMem_SetupAllocators().
+// Try to get the allocators name set by _TyMem_SetupAllocators().
 // Return NULL if unknown.
 // Export for '_testinternalcapi' shared extension.
-PyAPI_FUNC(const char*) _PyMem_GetCurrentAllocatorName(void);
+PyAPI_FUNC(const char*) _TyMem_GetCurrentAllocatorName(void);
 
-// strdup() using PyMem_RawMalloc()
-extern char* _PyMem_RawStrdup(const char *str);
+// strdup() using TyMem_RawMalloc()
+extern char* _TyMem_RawStrdup(const char *str);
 
-// strdup() using PyMem_Malloc().
+// strdup() using TyMem_Malloc().
 // Export for '_pickle ' shared extension.
-PyAPI_FUNC(char*) _PyMem_Strdup(const char *str);
+PyAPI_FUNC(char*) _TyMem_Strdup(const char *str);
 
-// wcsdup() using PyMem_RawMalloc()
-extern wchar_t* _PyMem_RawWcsdup(const wchar_t *str);
+// wcsdup() using TyMem_RawMalloc()
+extern wchar_t* _TyMem_RawWcsdup(const wchar_t *str);
 
 /* Special bytes broadcast into debug memory blocks at appropriate times.
    Strings of these are unlikely to be valid addresses, floats, ints or
@@ -36,7 +36,7 @@ extern wchar_t* _PyMem_RawWcsdup(const wchar_t *str);
 
    Byte patterns 0xCB, 0xDB and 0xFB have been replaced with 0xCD, 0xDD and
    0xFD to use the same values as Windows CRT debug malloc() and free().
-   If modified, _PyMem_IsPtrFreed() should be updated as well. */
+   If modified, _TyMem_IsPtrFreed() should be updated as well. */
 #define PYMEM_CLEANBYTE      0xCD
 #define PYMEM_DEADBYTE       0xDD
 #define PYMEM_FORBIDDENBYTE  0xFD
@@ -50,7 +50,7 @@ extern wchar_t* _PyMem_RawWcsdup(const wchar_t *str);
    fills newly allocated memory with CLEANBYTE (0xCD) and newly freed memory
    with DEADBYTE (0xDD). Detect also "untouchable bytes" marked
    with FORBIDDENBYTE (0xFD). */
-static inline int _PyMem_IsPtrFreed(const void *ptr)
+static inline int _TyMem_IsPtrFreed(const void *ptr)
 {
     uintptr_t value = (uintptr_t)ptr;
 #if SIZEOF_VOID_P == 8
@@ -68,55 +68,55 @@ static inline int _PyMem_IsPtrFreed(const void *ptr)
 #endif
 }
 
-extern int _PyMem_GetAllocatorName(
+extern int _TyMem_GetAllocatorName(
     const char *name,
     PyMemAllocatorName *allocator);
 
 /* Configure the Python memory allocators.
    Pass PYMEM_ALLOCATOR_DEFAULT to use default allocators.
    PYMEM_ALLOCATOR_NOT_SET does nothing. */
-extern int _PyMem_SetupAllocators(PyMemAllocatorName allocator);
+extern int _TyMem_SetupAllocators(PyMemAllocatorName allocator);
 
-// Default raw memory allocator that is not affected by PyMem_SetAllocator()
-extern void *_PyMem_DefaultRawMalloc(size_t);
-extern void *_PyMem_DefaultRawCalloc(size_t, size_t);
-extern void *_PyMem_DefaultRawRealloc(void *, size_t);
-extern void _PyMem_DefaultRawFree(void *);
-extern wchar_t *_PyMem_DefaultRawWcsdup(const wchar_t *str);
+// Default raw memory allocator that is not affected by TyMem_SetAllocator()
+extern void *_TyMem_DefaultRawMalloc(size_t);
+extern void *_TyMem_DefaultRawCalloc(size_t, size_t);
+extern void *_TyMem_DefaultRawRealloc(void *, size_t);
+extern void _TyMem_DefaultRawFree(void *);
+extern wchar_t *_TyMem_DefaultRawWcsdup(const wchar_t *str);
 
 /* Is the debug allocator enabled? */
-extern int _PyMem_DebugEnabled(void);
+extern int _TyMem_DebugEnabled(void);
 
 // Enqueue a pointer to be freed possibly after some delay.
-extern void _PyMem_FreeDelayed(void *ptr, size_t size);
+extern void _TyMem_FreeDelayed(void *ptr, size_t size);
 
 // Enqueue an object to be freed possibly after some delay
-#ifdef Py_GIL_DISABLED
-PyAPI_FUNC(void) _PyObject_XDecRefDelayed(PyObject *obj);
+#ifdef Ty_GIL_DISABLED
+PyAPI_FUNC(void) _TyObject_XDecRefDelayed(TyObject *obj);
 #else
-static inline void _PyObject_XDecRefDelayed(PyObject *obj)
+static inline void _TyObject_XDecRefDelayed(TyObject *obj)
 {
-    Py_XDECREF(obj);
+    Ty_XDECREF(obj);
 }
 #endif
 
 // Periodically process delayed free requests.
-extern void _PyMem_ProcessDelayed(PyThreadState *tstate);
+extern void _TyMem_ProcessDelayed(PyThreadState *tstate);
 
 // Periodically process delayed free requests when the world is stopped.
 // Notify of any objects whic should be freeed.
-typedef void (*delayed_dealloc_cb)(PyObject *, void *);
-extern void _PyMem_ProcessDelayedNoDealloc(PyThreadState *tstate,
+typedef void (*delayed_dealloc_cb)(TyObject *, void *);
+extern void _TyMem_ProcessDelayedNoDealloc(PyThreadState *tstate,
                                            delayed_dealloc_cb cb, void *state);
 
 // Abandon all thread-local delayed free requests and push them to the
 // interpreter's queue.
-extern void _PyMem_AbandonDelayed(PyThreadState *tstate);
+extern void _TyMem_AbandonDelayed(PyThreadState *tstate);
 
 // On interpreter shutdown, frees all delayed free requests.
-extern void _PyMem_FiniDelayed(PyInterpreterState *interp);
+extern void _TyMem_FiniDelayed(PyInterpreterState *interp);
 
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_INTERNAL_PYMEM_H
+#endif  // !Ty_INTERNAL_PYMEM_H

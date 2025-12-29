@@ -7,12 +7,12 @@
 #include "pycore_unionobject.h"   // _PyUnion_Type
 
 static int
-_types_exec(PyObject *m)
+_types_exec(TyObject *m)
 {
 #define EXPORT_STATIC_TYPE(NAME, TYPE)                                   \
     do {                                                                 \
-        assert(PyUnstable_IsImmortal((PyObject *)&(TYPE)));              \
-        if (PyModule_AddObjectRef(m, (NAME), (PyObject *)&(TYPE)) < 0) { \
+        assert(PyUnstable_IsImmortal((TyObject *)&(TYPE)));              \
+        if (TyModule_AddObjectRef(m, (NAME), (TyObject *)&(TYPE)) < 0) { \
             return -1;                                                   \
         }                                                                \
     } while (0)
@@ -22,24 +22,24 @@ _types_exec(PyObject *m)
     // BuiltinMethodType is the same as BuiltinFunctionType
     EXPORT_STATIC_TYPE("BuiltinMethodType", PyCFunction_Type);
     EXPORT_STATIC_TYPE("CapsuleType", PyCapsule_Type);
-    EXPORT_STATIC_TYPE("CellType", PyCell_Type);
+    EXPORT_STATIC_TYPE("CellType", TyCell_Type);
     EXPORT_STATIC_TYPE("ClassMethodDescriptorType", PyClassMethodDescr_Type);
-    EXPORT_STATIC_TYPE("CodeType", PyCode_Type);
-    EXPORT_STATIC_TYPE("CoroutineType", PyCoro_Type);
+    EXPORT_STATIC_TYPE("CodeType", TyCode_Type);
+    EXPORT_STATIC_TYPE("CoroutineType", TyCoro_Type);
     EXPORT_STATIC_TYPE("EllipsisType", PyEllipsis_Type);
-    EXPORT_STATIC_TYPE("FrameType", PyFrame_Type);
-    EXPORT_STATIC_TYPE("FunctionType", PyFunction_Type);
-    EXPORT_STATIC_TYPE("GeneratorType", PyGen_Type);
-    EXPORT_STATIC_TYPE("GenericAlias", Py_GenericAliasType);
+    EXPORT_STATIC_TYPE("FrameType", TyFrame_Type);
+    EXPORT_STATIC_TYPE("FunctionType", TyFunction_Type);
+    EXPORT_STATIC_TYPE("GeneratorType", TyGen_Type);
+    EXPORT_STATIC_TYPE("GenericAlias", Ty_GenericAliasType);
     EXPORT_STATIC_TYPE("GetSetDescriptorType", PyGetSetDescr_Type);
     // LambdaType is the same as FunctionType
-    EXPORT_STATIC_TYPE("LambdaType", PyFunction_Type);
+    EXPORT_STATIC_TYPE("LambdaType", TyFunction_Type);
     EXPORT_STATIC_TYPE("MappingProxyType", PyDictProxy_Type);
     EXPORT_STATIC_TYPE("MemberDescriptorType", PyMemberDescr_Type);
     EXPORT_STATIC_TYPE("MethodDescriptorType", PyMethodDescr_Type);
-    EXPORT_STATIC_TYPE("MethodType", PyMethod_Type);
+    EXPORT_STATIC_TYPE("MethodType", TyMethod_Type);
     EXPORT_STATIC_TYPE("MethodWrapperType", _PyMethodWrapper_Type);
-    EXPORT_STATIC_TYPE("ModuleType", PyModule_Type);
+    EXPORT_STATIC_TYPE("ModuleType", TyModule_Type);
     EXPORT_STATIC_TYPE("NoneType", _PyNone_Type);
     EXPORT_STATIC_TYPE("NotImplementedType", _PyNotImplemented_Type);
     EXPORT_STATIC_TYPE("SimpleNamespace", _PyNamespace_Type);
@@ -51,13 +51,13 @@ _types_exec(PyObject *m)
 }
 
 static struct PyModuleDef_Slot _typesmodule_slots[] = {
-    {Py_mod_exec, _types_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, _types_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef typesmodule = {
+static struct TyModuleDef typesmodule = {
     .m_base = PyModuleDef_HEAD_INIT,
     .m_name = "_types",
     .m_doc = "Define names for built-in types.",

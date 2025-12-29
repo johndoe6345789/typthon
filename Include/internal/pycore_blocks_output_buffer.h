@@ -32,25 +32,25 @@
         _BlocksOutputBuffer_OnError()
 */
 
-#ifndef Py_INTERNAL_BLOCKS_OUTPUT_BUFFER_H
-#define Py_INTERNAL_BLOCKS_OUTPUT_BUFFER_H
+#ifndef Ty_INTERNAL_BLOCKS_OUTPUT_BUFFER_H
+#define Ty_INTERNAL_BLOCKS_OUTPUT_BUFFER_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include "Python.h"
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 typedef struct {
     // List of bytes objects
-    PyObject *list;
+    TyObject *list;
     // Number of whole allocated size
-    Py_ssize_t allocated;
+    Ty_ssize_t allocated;
     // Max length of the buffer, negative number means unlimited length.
-    Py_ssize_t max_length;
+    Ty_ssize_t max_length;
 } _BlocksOutputBuffer;
 
 static const char unable_allocate_msg[] = "Unable to allocate output buffer.";
@@ -61,7 +61,7 @@ static const char unable_allocate_msg[] = "Unable to allocate output buffer.";
 /* Block size sequence */
 #define KB (1024)
 #define MB (1024*1024)
-static const Py_ssize_t BUFFER_BLOCK_SIZE[] =
+static const Ty_ssize_t BUFFER_BLOCK_SIZE[] =
     { 32*KB, 64*KB, 256*KB, 1*MB, 4*MB, 8*MB, 16*MB, 16*MB,
       32*MB, 32*MB, 32*MB, 32*MB, 64*MB, 64*MB, 128*MB, 128*MB,
       OUTPUT_BUFFER_MAX_BLOCK_SIZE };
@@ -102,13 +102,13 @@ static const Py_ssize_t BUFFER_BLOCK_SIZE[] =
    On success, return allocated size (>=0)
    On failure, return -1
 */
-static inline Py_ssize_t
+static inline Ty_ssize_t
 _BlocksOutputBuffer_InitAndGrow(_BlocksOutputBuffer *buffer,
-                                const Py_ssize_t max_length,
+                                const Ty_ssize_t max_length,
                                 void **next_out)
 {
-    PyObject *b;
-    Py_ssize_t block_size;
+    TyObject *b;
+    Ty_ssize_t block_size;
 
     // ensure .list was set to NULL
     assert(buffer->list == NULL);
@@ -121,24 +121,24 @@ _BlocksOutputBuffer_InitAndGrow(_BlocksOutputBuffer *buffer,
     }
 
     // the first block
-    b = PyBytes_FromStringAndSize(NULL, block_size);
+    b = TyBytes_FromStringAndSize(NULL, block_size);
     if (b == NULL) {
         return -1;
     }
 
     // create the list
-    buffer->list = PyList_New(1);
+    buffer->list = TyList_New(1);
     if (buffer->list == NULL) {
-        Py_DECREF(b);
+        Ty_DECREF(b);
         return -1;
     }
-    PyList_SET_ITEM(buffer->list, 0, b);
+    TyList_SET_ITEM(buffer->list, 0, b);
 
     // set variables
     buffer->allocated = block_size;
     buffer->max_length = max_length;
 
-    *next_out = PyBytes_AS_STRING(b);
+    *next_out = TyBytes_AS_STRING(b);
     return block_size;
 }
 
@@ -150,36 +150,36 @@ _BlocksOutputBuffer_InitAndGrow(_BlocksOutputBuffer *buffer,
    On success, return allocated size (>=0)
    On failure, return -1
 */
-static inline Py_ssize_t
+static inline Ty_ssize_t
 _BlocksOutputBuffer_InitWithSize(_BlocksOutputBuffer *buffer,
-                                 const Py_ssize_t init_size,
+                                 const Ty_ssize_t init_size,
                                  void **next_out)
 {
-    PyObject *b;
+    TyObject *b;
 
     // ensure .list was set to NULL
     assert(buffer->list == NULL);
 
     // the first block
-    b = PyBytes_FromStringAndSize(NULL, init_size);
+    b = TyBytes_FromStringAndSize(NULL, init_size);
     if (b == NULL) {
-        PyErr_SetString(PyExc_MemoryError, unable_allocate_msg);
+        TyErr_SetString(TyExc_MemoryError, unable_allocate_msg);
         return -1;
     }
 
     // create the list
-    buffer->list = PyList_New(1);
+    buffer->list = TyList_New(1);
     if (buffer->list == NULL) {
-        Py_DECREF(b);
+        Ty_DECREF(b);
         return -1;
     }
-    PyList_SET_ITEM(buffer->list, 0, b);
+    TyList_SET_ITEM(buffer->list, 0, b);
 
     // set variables
     buffer->allocated = init_size;
     buffer->max_length = -1;
 
-    *next_out = PyBytes_AS_STRING(b);
+    *next_out = TyBytes_AS_STRING(b);
     return init_size;
 }
 
@@ -188,33 +188,33 @@ _BlocksOutputBuffer_InitWithSize(_BlocksOutputBuffer *buffer,
    On success, return allocated size (>=0)
    On failure, return -1
 */
-static inline Py_ssize_t
+static inline Ty_ssize_t
 _BlocksOutputBuffer_Grow(_BlocksOutputBuffer *buffer,
                          void **next_out,
-                         const Py_ssize_t avail_out)
+                         const Ty_ssize_t avail_out)
 {
-    PyObject *b;
-    const Py_ssize_t list_len = Py_SIZE(buffer->list);
-    Py_ssize_t block_size;
+    TyObject *b;
+    const Ty_ssize_t list_len = Ty_SIZE(buffer->list);
+    Ty_ssize_t block_size;
 
     // ensure no gaps in the data
     if (avail_out != 0) {
-        PyErr_SetString(PyExc_SystemError,
+        TyErr_SetString(TyExc_SystemError,
                         "avail_out is non-zero in _BlocksOutputBuffer_Grow().");
         return -1;
     }
 
     // get block size
-    if (list_len < (Py_ssize_t) Py_ARRAY_LENGTH(BUFFER_BLOCK_SIZE)) {
+    if (list_len < (Ty_ssize_t) Ty_ARRAY_LENGTH(BUFFER_BLOCK_SIZE)) {
         block_size = BUFFER_BLOCK_SIZE[list_len];
     } else {
-        block_size = BUFFER_BLOCK_SIZE[Py_ARRAY_LENGTH(BUFFER_BLOCK_SIZE) - 1];
+        block_size = BUFFER_BLOCK_SIZE[Ty_ARRAY_LENGTH(BUFFER_BLOCK_SIZE) - 1];
     }
 
     // check max_length
     if (buffer->max_length >= 0) {
         // if (rest == 0), should not grow the buffer.
-        Py_ssize_t rest = buffer->max_length - buffer->allocated;
+        Ty_ssize_t rest = buffer->max_length - buffer->allocated;
         assert(rest > 0);
 
         // block_size of the last block
@@ -225,33 +225,33 @@ _BlocksOutputBuffer_Grow(_BlocksOutputBuffer *buffer,
 
     // check buffer->allocated overflow
     if (block_size > PY_SSIZE_T_MAX - buffer->allocated) {
-        PyErr_SetString(PyExc_MemoryError, unable_allocate_msg);
+        TyErr_SetString(TyExc_MemoryError, unable_allocate_msg);
         return -1;
     }
 
     // create the block
-    b = PyBytes_FromStringAndSize(NULL, block_size);
+    b = TyBytes_FromStringAndSize(NULL, block_size);
     if (b == NULL) {
-        PyErr_SetString(PyExc_MemoryError, unable_allocate_msg);
+        TyErr_SetString(TyExc_MemoryError, unable_allocate_msg);
         return -1;
     }
-    if (PyList_Append(buffer->list, b) < 0) {
-        Py_DECREF(b);
+    if (TyList_Append(buffer->list, b) < 0) {
+        Ty_DECREF(b);
         return -1;
     }
-    Py_DECREF(b);
+    Ty_DECREF(b);
 
     // set variables
     buffer->allocated += block_size;
 
-    *next_out = PyBytes_AS_STRING(b);
+    *next_out = TyBytes_AS_STRING(b);
     return block_size;
 }
 
 /* Return the current outputted data size. */
-static inline Py_ssize_t
+static inline Ty_ssize_t
 _BlocksOutputBuffer_GetDataSize(_BlocksOutputBuffer *buffer,
-                                const Py_ssize_t avail_out)
+                                const Ty_ssize_t avail_out)
 {
     return buffer->allocated - avail_out;
 }
@@ -261,50 +261,50 @@ _BlocksOutputBuffer_GetDataSize(_BlocksOutputBuffer *buffer,
    Return a bytes object on success
    Return NULL on failure
 */
-static inline PyObject *
+static inline TyObject *
 _BlocksOutputBuffer_Finish(_BlocksOutputBuffer *buffer,
-                           const Py_ssize_t avail_out)
+                           const Ty_ssize_t avail_out)
 {
-    PyObject *result, *block;
-    const Py_ssize_t list_len = Py_SIZE(buffer->list);
+    TyObject *result, *block;
+    const Ty_ssize_t list_len = Ty_SIZE(buffer->list);
 
     // fast path for single block
     if ((list_len == 1 && avail_out == 0) ||
-        (list_len == 2 && Py_SIZE(PyList_GET_ITEM(buffer->list, 1)) == avail_out))
+        (list_len == 2 && Ty_SIZE(TyList_GET_ITEM(buffer->list, 1)) == avail_out))
     {
-        block = PyList_GET_ITEM(buffer->list, 0);
-        Py_INCREF(block);
+        block = TyList_GET_ITEM(buffer->list, 0);
+        Ty_INCREF(block);
 
-        Py_CLEAR(buffer->list);
+        Ty_CLEAR(buffer->list);
         return block;
     }
 
     // final bytes object
-    result = PyBytes_FromStringAndSize(NULL, buffer->allocated - avail_out);
+    result = TyBytes_FromStringAndSize(NULL, buffer->allocated - avail_out);
     if (result == NULL) {
-        PyErr_SetString(PyExc_MemoryError, unable_allocate_msg);
+        TyErr_SetString(TyExc_MemoryError, unable_allocate_msg);
         return NULL;
     }
 
     // memory copy
     if (list_len > 0) {
-        char *posi = PyBytes_AS_STRING(result);
+        char *posi = TyBytes_AS_STRING(result);
 
         // blocks except the last one
-        Py_ssize_t i = 0;
+        Ty_ssize_t i = 0;
         for (; i < list_len-1; i++) {
-            block = PyList_GET_ITEM(buffer->list, i);
-            memcpy(posi, PyBytes_AS_STRING(block), Py_SIZE(block));
-            posi += Py_SIZE(block);
+            block = TyList_GET_ITEM(buffer->list, i);
+            memcpy(posi, TyBytes_AS_STRING(block), Ty_SIZE(block));
+            posi += Ty_SIZE(block);
         }
         // the last block
-        block = PyList_GET_ITEM(buffer->list, i);
-        memcpy(posi, PyBytes_AS_STRING(block), Py_SIZE(block) - avail_out);
+        block = TyList_GET_ITEM(buffer->list, i);
+        memcpy(posi, TyBytes_AS_STRING(block), Ty_SIZE(block) - avail_out);
     } else {
-        assert(Py_SIZE(result) == 0);
+        assert(Ty_SIZE(result) == 0);
     }
 
-    Py_CLEAR(buffer->list);
+    Ty_CLEAR(buffer->list);
     return result;
 }
 
@@ -312,10 +312,10 @@ _BlocksOutputBuffer_Finish(_BlocksOutputBuffer *buffer,
 static inline void
 _BlocksOutputBuffer_OnError(_BlocksOutputBuffer *buffer)
 {
-    Py_CLEAR(buffer->list);
+    Ty_CLEAR(buffer->list);
 }
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* Py_INTERNAL_BLOCKS_OUTPUT_BUFFER_H */
+#endif /* Ty_INTERNAL_BLOCKS_OUTPUT_BUFFER_H */

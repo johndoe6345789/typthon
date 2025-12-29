@@ -1,5 +1,5 @@
-#ifndef Py_FILEUTILS_H
-#define Py_FILEUTILS_H
+#ifndef Ty_FILEUTILS_H
+#define Ty_FILEUTILS_H
 
 /*******************************
  * stat() and fstat() fiddling *
@@ -40,23 +40,23 @@
 extern "C" {
 #endif
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03050000
-PyAPI_FUNC(wchar_t *) Py_DecodeLocale(
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03050000
+PyAPI_FUNC(wchar_t *) Ty_DecodeLocale(
     const char *arg,
     size_t *size);
 
-PyAPI_FUNC(char*) Py_EncodeLocale(
+PyAPI_FUNC(char*) Ty_EncodeLocale(
     const wchar_t *text,
     size_t *error_pos);
 #endif
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_FILEUTILS_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_FILEUTILS_H
 #  include "cpython/fileutils.h"
-#  undef Py_CPYTHON_FILEUTILS_H
+#  undef Ty_CPYTHON_FILEUTILS_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_FILEUTILS_H */
+#endif /* !Ty_FILEUTILS_H */

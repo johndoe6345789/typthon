@@ -18,8 +18,8 @@
 //  }
 //
 
-#ifndef Py_INTERNAL_LLIST_H
-#define Py_INTERNAL_LLIST_H
+#ifndef Ty_INTERNAL_LLIST_H
+#define Ty_INTERNAL_LLIST_H
 
 #include <stddef.h>
 
@@ -27,8 +27,8 @@
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "Py_BUILD_CORE must be defined to include this header"
+#ifndef Ty_BUILD_CORE
+#  error "Ty_BUILD_CORE must be defined to include this header"
 #endif
 
 struct llist_node {
@@ -37,7 +37,7 @@ struct llist_node {
 };
 
 // Get the struct containing a node.
-#define llist_data(node, type, member) (_Py_CONTAINER_OF(node, type, member))
+#define llist_data(node, type, member) (_Ty_CONTAINER_OF(node, type, member))
 
 // Iterate over a list.
 #define llist_for_each(node, head) \
@@ -103,4 +103,4 @@ llist_concat(struct llist_node *head1, struct llist_node *head2)
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_LLIST_H */
+#endif /* !Ty_INTERNAL_LLIST_H */

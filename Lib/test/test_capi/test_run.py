@@ -6,9 +6,9 @@ from test.support.os_helper import unlink, TESTFN, TESTFN_ASCII, TESTFN_UNDECODA
 
 NULL = None
 _testcapi = import_helper.import_module('_testcapi')
-Py_single_input = _testcapi.Py_single_input
-Py_file_input = _testcapi.Py_file_input
-Py_eval_input = _testcapi.Py_eval_input
+Ty_single_input = _testcapi.Ty_single_input
+Ty_file_input = _testcapi.Ty_file_input
+Ty_eval_input = _testcapi.Ty_eval_input
 
 
 class DictSubclass(dict):
@@ -41,7 +41,7 @@ class CAPITest(unittest.TestCase):
         # Test PyRun_StringFlags().
         # XXX: fopen() uses different path encoding than Python on Windows.
         def run(s, *args):
-            return _testcapi.run_stringflags(s, Py_file_input, *args)
+            return _testcapi.run_stringflags(s, Ty_file_input, *args)
         source = b'a\n'
 
         self.assertIsNone(run(b'a\n', dict(a=1)))
@@ -77,7 +77,7 @@ class CAPITest(unittest.TestCase):
             fp.write(b'a\n')
         self.addCleanup(unlink, filename)
         def run(*args):
-            return _testcapi.run_fileexflags(filename, Py_file_input, *args)
+            return _testcapi.run_fileexflags(filename, Ty_file_input, *args)
 
         self.assertIsNone(run(dict(a=1)))
         self.assertIsNone(run(dict(a=1), {}))
@@ -111,7 +111,7 @@ class CAPITest(unittest.TestCase):
             self.addCleanup(unlink, TESTFN_UNDECODABLE)
         except OSError:
             self.skipTest('undecodable paths are not supported')
-        self.assertIsNone(run(TESTFN_UNDECODABLE, Py_file_input, dict(a=1)))
+        self.assertIsNone(run(TESTFN_UNDECODABLE, Ty_file_input, dict(a=1)))
 
 
 if __name__ == '__main__':

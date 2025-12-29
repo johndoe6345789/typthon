@@ -1,8 +1,8 @@
-#ifndef Py_INTERNAL_INTRINSIC_H
-#define Py_INTERNAL_INTRINSIC_H
+#ifndef Ty_INTERNAL_INTRINSIC_H
+#define Ty_INTERNAL_INTRINSIC_H
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 /* Unary Functions: */
@@ -32,8 +32,8 @@
 
 #define MAX_INTRINSIC_2                          5
 
-typedef PyObject *(*intrinsic_func1)(PyThreadState* tstate, PyObject *value);
-typedef PyObject *(*intrinsic_func2)(PyThreadState* tstate, PyObject *value1, PyObject *value2);
+typedef TyObject *(*intrinsic_func1)(PyThreadState* tstate, TyObject *value);
+typedef TyObject *(*intrinsic_func2)(PyThreadState* tstate, TyObject *value1, TyObject *value2);
 
 typedef struct {
     intrinsic_func1 func;
@@ -48,4 +48,4 @@ typedef struct {
 PyAPI_DATA(const intrinsic_func1_info) _PyIntrinsics_UnaryFunctions[];
 PyAPI_DATA(const intrinsic_func2_info) _PyIntrinsics_BinaryFunctions[];
 
-#endif  // !Py_INTERNAL_INTRINSIC_H
+#endif  // !Ty_INTERNAL_INTRINSIC_H

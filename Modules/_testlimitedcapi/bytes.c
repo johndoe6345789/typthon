@@ -2,232 +2,232 @@
 #include "util.h"
 
 
-/* Test PyBytes_Check() */
-static PyObject *
-bytes_check(PyObject *Py_UNUSED(module), PyObject *obj)
+/* Test TyBytes_Check() */
+static TyObject *
+bytes_check(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyBytes_Check(obj));
+    return TyLong_FromLong(TyBytes_Check(obj));
 }
 
-/* Test PyBytes_CheckExact() */
-static PyObject *
-bytes_checkexact(PyObject *Py_UNUSED(module), PyObject *obj)
+/* Test TyBytes_CheckExact() */
+static TyObject *
+bytes_checkexact(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyBytes_CheckExact(obj));
+    return TyLong_FromLong(TyBytes_CheckExact(obj));
 }
 
-/* Test PyBytes_FromStringAndSize() */
-static PyObject *
-bytes_fromstringandsize(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyBytes_FromStringAndSize() */
+static TyObject *
+bytes_fromstringandsize(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *s;
-    Py_ssize_t bsize;
-    Py_ssize_t size = -100;
+    Ty_ssize_t bsize;
+    Ty_ssize_t size = -100;
 
-    if (!PyArg_ParseTuple(args, "z#|n", &s, &bsize, &size)) {
+    if (!TyArg_ParseTuple(args, "z#|n", &s, &bsize, &size)) {
         return NULL;
     }
 
     if (size == -100) {
         size = bsize;
     }
-    return PyBytes_FromStringAndSize(s, size);
+    return TyBytes_FromStringAndSize(s, size);
 }
 
-/* Test PyBytes_FromString() */
-static PyObject *
-bytes_fromstring(PyObject *Py_UNUSED(module), PyObject *arg)
+/* Test TyBytes_FromString() */
+static TyObject *
+bytes_fromstring(TyObject *Ty_UNUSED(module), TyObject *arg)
 {
     const char *s;
-    Py_ssize_t size;
+    Ty_ssize_t size;
 
-    if (!PyArg_Parse(arg, "z#", &s, &size)) {
+    if (!TyArg_Parse(arg, "z#", &s, &size)) {
         return NULL;
     }
-    return PyBytes_FromString(s);
+    return TyBytes_FromString(s);
 }
 
-/* Test PyBytes_FromObject() */
-static PyObject *
-bytes_fromobject(PyObject *Py_UNUSED(module), PyObject *arg)
+/* Test TyBytes_FromObject() */
+static TyObject *
+bytes_fromobject(TyObject *Ty_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
-    return PyBytes_FromObject(arg);
+    return TyBytes_FromObject(arg);
 }
 
-/* Test PyBytes_Size() */
-static PyObject *
-bytes_size(PyObject *Py_UNUSED(module), PyObject *arg)
+/* Test TyBytes_Size() */
+static TyObject *
+bytes_size(TyObject *Ty_UNUSED(module), TyObject *arg)
 {
     NULLABLE(arg);
-    RETURN_SIZE(PyBytes_Size(arg));
+    RETURN_SIZE(TyBytes_Size(arg));
 }
 
-/* Test PyUnicode_AsString() */
-static PyObject *
-bytes_asstring(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyUnicode_AsString() */
+static TyObject *
+bytes_asstring(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t buflen;
+    TyObject *obj;
+    Ty_ssize_t buflen;
     const char *s;
 
-    if (!PyArg_ParseTuple(args, "On", &obj, &buflen))
+    if (!TyArg_ParseTuple(args, "On", &obj, &buflen))
         return NULL;
 
     NULLABLE(obj);
-    s = PyBytes_AsString(obj);
+    s = TyBytes_AsString(obj);
     if (s == NULL)
         return NULL;
 
-    return PyBytes_FromStringAndSize(s, buflen);
+    return TyBytes_FromStringAndSize(s, buflen);
 }
 
-/* Test PyBytes_AsStringAndSize() */
-static PyObject *
-bytes_asstringandsize(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyBytes_AsStringAndSize() */
+static TyObject *
+bytes_asstringandsize(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t buflen;
+    TyObject *obj;
+    Ty_ssize_t buflen;
     char *s = UNINITIALIZED_PTR;
-    Py_ssize_t size = UNINITIALIZED_SIZE;
+    Ty_ssize_t size = UNINITIALIZED_SIZE;
 
-    if (!PyArg_ParseTuple(args, "On", &obj, &buflen))
+    if (!TyArg_ParseTuple(args, "On", &obj, &buflen))
         return NULL;
 
     NULLABLE(obj);
-    if (PyBytes_AsStringAndSize(obj, &s, &size) < 0) {
+    if (TyBytes_AsStringAndSize(obj, &s, &size) < 0) {
         return NULL;
     }
 
     if (s == NULL) {
-        return Py_BuildValue("(On)", Py_None, size);
+        return Ty_BuildValue("(On)", Ty_None, size);
     }
     else {
-        return Py_BuildValue("(y#n)", s, buflen, size);
+        return Ty_BuildValue("(y#n)", s, buflen, size);
     }
 }
 
-static PyObject *
-bytes_asstringandsize_null(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+bytes_asstringandsize_null(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t buflen;
+    TyObject *obj;
+    Ty_ssize_t buflen;
     char *s = UNINITIALIZED_PTR;
 
-    if (!PyArg_ParseTuple(args, "On", &obj, &buflen))
+    if (!TyArg_ParseTuple(args, "On", &obj, &buflen))
         return NULL;
 
     NULLABLE(obj);
-    if (PyBytes_AsStringAndSize(obj, &s, NULL) < 0) {
+    if (TyBytes_AsStringAndSize(obj, &s, NULL) < 0) {
         return NULL;
     }
 
     if (s == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
     else {
-        return PyBytes_FromStringAndSize(s, buflen);
+        return TyBytes_FromStringAndSize(s, buflen);
     }
 }
 
-/* Test PyBytes_Repr() */
-static PyObject *
-bytes_repr(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyBytes_Repr() */
+static TyObject *
+bytes_repr(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
+    TyObject *obj;
     int smartquotes;
-    if (!PyArg_ParseTuple(args, "Oi", &obj, &smartquotes))
+    if (!TyArg_ParseTuple(args, "Oi", &obj, &smartquotes))
         return NULL;
 
     NULLABLE(obj);
-    return PyBytes_Repr(obj, smartquotes);
+    return TyBytes_Repr(obj, smartquotes);
 }
 
-/* Test PyBytes_Concat() */
-static PyObject *
-bytes_concat(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyBytes_Concat() */
+static TyObject *
+bytes_concat(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *left, *right;
+    TyObject *left, *right;
     int new = 0;
 
-    if (!PyArg_ParseTuple(args, "OO|p", &left, &right, &new))
+    if (!TyArg_ParseTuple(args, "OO|p", &left, &right, &new))
         return NULL;
 
     NULLABLE(left);
     NULLABLE(right);
     if (new) {
         assert(left != NULL);
-        assert(PyBytes_CheckExact(left));
-        left = PyBytes_FromStringAndSize(PyBytes_AsString(left),
-                                         PyBytes_Size(left));
+        assert(TyBytes_CheckExact(left));
+        left = TyBytes_FromStringAndSize(TyBytes_AsString(left),
+                                         TyBytes_Size(left));
         if (left == NULL) {
             return NULL;
         }
     }
     else {
-        Py_XINCREF(left);
+        Ty_XINCREF(left);
     }
-    PyBytes_Concat(&left, right);
-    if (left == NULL && !PyErr_Occurred()) {
-        Py_RETURN_NONE;
+    TyBytes_Concat(&left, right);
+    if (left == NULL && !TyErr_Occurred()) {
+        Ty_RETURN_NONE;
     }
     return left;
 }
 
-/* Test PyBytes_ConcatAndDel() */
-static PyObject *
-bytes_concatanddel(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyBytes_ConcatAndDel() */
+static TyObject *
+bytes_concatanddel(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *left, *right;
+    TyObject *left, *right;
     int new = 0;
 
-    if (!PyArg_ParseTuple(args, "OO|p", &left, &right, &new))
+    if (!TyArg_ParseTuple(args, "OO|p", &left, &right, &new))
         return NULL;
 
     NULLABLE(left);
     NULLABLE(right);
     if (new) {
         assert(left != NULL);
-        assert(PyBytes_CheckExact(left));
-        left = PyBytes_FromStringAndSize(PyBytes_AsString(left),
-                                         PyBytes_Size(left));
+        assert(TyBytes_CheckExact(left));
+        left = TyBytes_FromStringAndSize(TyBytes_AsString(left),
+                                         TyBytes_Size(left));
         if (left == NULL) {
             return NULL;
         }
     }
     else {
-        Py_XINCREF(left);
+        Ty_XINCREF(left);
     }
-    Py_XINCREF(right);
-    PyBytes_ConcatAndDel(&left, right);
-    if (left == NULL && !PyErr_Occurred()) {
-        Py_RETURN_NONE;
+    Ty_XINCREF(right);
+    TyBytes_ConcatAndDel(&left, right);
+    if (left == NULL && !TyErr_Occurred()) {
+        Ty_RETURN_NONE;
     }
     return left;
 }
 
-/* Test PyBytes_DecodeEscape() */
-static PyObject *
-bytes_decodeescape(PyObject *Py_UNUSED(module), PyObject *args)
+/* Test TyBytes_DecodeEscape() */
+static TyObject *
+bytes_decodeescape(TyObject *Ty_UNUSED(module), TyObject *args)
 {
     const char *s;
-    Py_ssize_t bsize;
-    Py_ssize_t size = -100;
+    Ty_ssize_t bsize;
+    Ty_ssize_t size = -100;
     const char *errors = NULL;
 
-    if (!PyArg_ParseTuple(args, "z#|zn", &s, &bsize, &errors, &size))
+    if (!TyArg_ParseTuple(args, "z#|zn", &s, &bsize, &errors, &size))
         return NULL;
 
     if (size == -100) {
         size = bsize;
     }
-    return PyBytes_DecodeEscape(s, size, errors, 0, NULL);
+    return TyBytes_DecodeEscape(s, size, errors, 0, NULL);
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"bytes_check", bytes_check, METH_O},
     {"bytes_checkexact", bytes_checkexact, METH_O},
     {"bytes_fromstringandsize", bytes_fromstringandsize, METH_VARARGS},
@@ -245,9 +245,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Bytes(PyObject *m)
+_PyTestLimitedCAPI_Init_Bytes(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

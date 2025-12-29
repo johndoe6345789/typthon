@@ -1,14 +1,14 @@
-#ifndef Py_INTERNAL_TRACEMALLOC_H
-#define Py_INTERNAL_TRACEMALLOC_H
+#ifndef Ty_INTERNAL_TRACEMALLOC_H
+#define Ty_INTERNAL_TRACEMALLOC_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-#include "pycore_hashtable.h"     // _Py_hashtable_t
+#include "pycore_hashtable.h"     // _Ty_hashtable_t
 
 
 struct _PyTraceMalloc_Config {
@@ -43,7 +43,7 @@ __attribute__((packed))
 tracemalloc_frame {
     /* filename cannot be NULL: "<unknown>" is used if the Python frame
        filename is NULL */
-    PyObject *filename;
+    TyObject *filename;
     unsigned int lineno;
 };
 #ifdef _MSC_VER
@@ -51,7 +51,7 @@ tracemalloc_frame {
 #endif
 
 struct tracemalloc_traceback {
-    Py_uhash_t hash;
+    Ty_uhash_t hash;
     /* Number of frames stored */
     uint16_t nframe;
     /* Total number of frames the traceback had */
@@ -78,26 +78,26 @@ struct _tracemalloc_runtime_state {
        Protected by TABLES_LOCK(). */
     size_t peak_traced_memory;
     /* Hash table used as a set to intern filenames:
-       PyObject* => PyObject*.
+       TyObject* => TyObject*.
        Protected by the TABLES_LOCK(). */
-    _Py_hashtable_t *filenames;
+    _Ty_hashtable_t *filenames;
     /* Buffer to store a new traceback in traceback_new().
        Protected by the TABLES_LOCK(). */
     struct tracemalloc_traceback *traceback;
     /* Hash table used as a set to intern tracebacks:
        traceback_t* => traceback_t*
        Protected by the TABLES_LOCK(). */
-    _Py_hashtable_t *tracebacks;
+    _Ty_hashtable_t *tracebacks;
     /* pointer (void*) => trace (trace_t*).
        Protected by TABLES_LOCK(). */
-    _Py_hashtable_t *traces;
-    /* domain (unsigned int) => traces (_Py_hashtable_t).
+    _Ty_hashtable_t *traces;
+    /* domain (unsigned int) => traces (_Ty_hashtable_t).
        Protected by TABLES_LOCK(). */
-    _Py_hashtable_t *domains;
+    _Ty_hashtable_t *domains;
 
     struct tracemalloc_traceback empty_traceback;
 
-    Py_tss_t reentrant_key;
+    Ty_tss_t reentrant_key;
 };
 
 #define _tracemalloc_runtime_state_INIT \
@@ -107,7 +107,7 @@ struct _tracemalloc_runtime_state {
             .tracing = 0, \
             .max_nframe = 1, \
         }, \
-        .reentrant_key = Py_tss_NEEDS_INIT, \
+        .reentrant_key = Ty_tss_NEEDS_INIT, \
     }
 
 
@@ -121,7 +121,7 @@ struct _tracemalloc_runtime_state {
 // Raise an exception and return NULL on error.
 //
 // Export for '_testinternalcapi' shared extension.
-PyAPI_FUNC(PyObject*) _PyTraceMalloc_GetTraceback(
+PyAPI_FUNC(TyObject*) _PyTraceMalloc_GetTraceback(
     unsigned int domain,
     uintptr_t ptr);
 
@@ -132,10 +132,10 @@ extern int _PyTraceMalloc_IsTracing(void);
 extern void _PyTraceMalloc_ClearTraces(void);
 
 /* Clear the tracemalloc traces */
-extern PyObject* _PyTraceMalloc_GetTraces(void);
+extern TyObject* _PyTraceMalloc_GetTraces(void);
 
 /* Clear tracemalloc traceback for an object */
-extern PyObject* _PyTraceMalloc_GetObjectTraceback(PyObject *obj);
+extern TyObject* _PyTraceMalloc_GetObjectTraceback(TyObject *obj);
 
 /* Initialize tracemalloc */
 extern PyStatus _PyTraceMalloc_Init(void);
@@ -153,7 +153,7 @@ extern int _PyTraceMalloc_GetTracebackLimit(void);
 extern size_t _PyTraceMalloc_GetMemory(void);
 
 /* Get the current size and peak size of traced memory blocks as a 2-tuple */
-extern PyObject* _PyTraceMalloc_GetTracedMemory(void);
+extern TyObject* _PyTraceMalloc_GetTracedMemory(void);
 
 /* Set the peak size of traced memory blocks to the current size */
 extern void _PyTraceMalloc_ResetPeak(void);
@@ -161,4 +161,4 @@ extern void _PyTraceMalloc_ResetPeak(void);
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_INTERNAL_TRACEMALLOC_H
+#endif  // !Ty_INTERNAL_TRACEMALLOC_H

@@ -1,6 +1,6 @@
 #include "pycore_interp.h"        // _PyInterpreterState.threads.stacksize
 #include "pycore_pythread.h"      // _POSIX_SEMAPHORES
-#include "pycore_time.h"          // _PyTime_FromMicrosecondsClamup()
+#include "pycore_time.h"          // _TyTime_FromMicrosecondsClamup()
 
 /* Posix threads interface */
 
@@ -63,7 +63,7 @@
    RecursionError exception. In debug mode, Python function calls allocates
    more memory on the stack, so use a stack of 8 MiB. */
 #if defined(__ANDROID__) && defined(THREAD_STACK_SIZE) && THREAD_STACK_SIZE == 0
-#   ifdef Py_DEBUG
+#   ifdef Ty_DEBUG
 #   undef  THREAD_STACK_SIZE
 #   define THREAD_STACK_SIZE    0x800000
 #   endif
@@ -95,7 +95,7 @@
 #endif
 
 /* Thread sanitizer doesn't currently support sem_clockwait */
-#ifdef _Py_THREAD_SANITIZER
+#ifdef _Ty_THREAD_SANITIZER
 #undef HAVE_SEM_CLOCKWAIT
 #endif
 
@@ -153,7 +153,7 @@ _PyThread_cond_init(PyCOND_T *cond)
 void
 _PyThread_cond_after(long long us, struct timespec *abs)
 {
-    PyTime_t timeout = _PyTime_FromMicrosecondsClamp(us);
+    PyTime_t timeout = _TyTime_FromMicrosecondsClamp(us);
     PyTime_t t;
 #ifdef CONDATTR_MONOTONIC
     if (condattr_monotonic) {
@@ -166,8 +166,8 @@ _PyThread_cond_after(long long us, struct timespec *abs)
         // silently ignore error: cannot report error to the caller
         (void)PyTime_TimeRaw(&t);
     }
-    t = _PyTime_Add(t, timeout);
-    _PyTime_AsTimespec_clamp(t, abs);
+    t = _TyTime_Add(t, timeout);
+    _TyTime_AsTimespec_clamp(t, abs);
 }
 
 
@@ -237,7 +237,7 @@ pythread_wrapper(void *arg)
     pythread_callback *callback = arg;
     void (*func)(void *) = callback->func;
     void *func_arg = callback->arg;
-    PyMem_RawFree(arg);
+    TyMem_RawFree(arg);
 
     func(func_arg);
     return NULL;
@@ -263,7 +263,7 @@ do_start_joinable_thread(void (*func)(void *), void *arg, pthread_t* out_id)
         return -1;
 #endif
 #if defined(THREAD_STACK_SIZE)
-    PyThreadState *tstate = _PyThreadState_GET();
+    PyThreadState *tstate = _TyThreadState_GET();
     size_t stacksize = tstate ? tstate->interp->threads.stacksize : 0;
     tss = (stacksize != 0) ? stacksize : THREAD_STACK_SIZE;
     if (tss != 0) {
@@ -277,7 +277,7 @@ do_start_joinable_thread(void (*func)(void *), void *arg, pthread_t* out_id)
     pthread_attr_setscope(&attrs, PTHREAD_SCOPE_SYSTEM);
 #endif
 
-    pythread_callback *callback = PyMem_RawMalloc(sizeof(pythread_callback));
+    pythread_callback *callback = TyMem_RawMalloc(sizeof(pythread_callback));
 
     if (callback == NULL) {
       return -1;
@@ -299,7 +299,7 @@ do_start_joinable_thread(void (*func)(void *), void *arg, pthread_t* out_id)
 #endif
 
     if (status != 0) {
-        PyMem_RawFree(callback);
+        TyMem_RawFree(callback);
         return -1;
     }
     *out_id = th;
@@ -414,7 +414,7 @@ PyThread_get_thread_native_id(void)
 }
 #endif
 
-void _Py_NO_RETURN
+void _Ty_NO_RETURN
 PyThread_exit_thread(void)
 {
     if (!initialized)
@@ -430,7 +430,7 @@ PyThread_exit_thread(void)
 #endif
 }
 
-void _Py_NO_RETURN
+void _Ty_NO_RETURN
 PyThread_hang_thread(void)
 {
     while (1) {
@@ -457,14 +457,14 @@ PyThread_allocate_lock(void)
     if (!initialized)
         PyThread_init_thread();
 
-    lock = (sem_t *)PyMem_RawMalloc(sizeof(sem_t));
+    lock = (sem_t *)TyMem_RawMalloc(sizeof(sem_t));
 
     if (lock) {
         status = sem_init(lock,0,1);
         CHECK_STATUS("sem_init");
 
         if (error) {
-            PyMem_RawFree((void *)lock);
+            TyMem_RawFree((void *)lock);
             lock = NULL;
         }
     }
@@ -486,7 +486,7 @@ PyThread_free_lock(PyThread_type_lock lock)
     status = sem_destroy(thelock);
     CHECK_STATUS("sem_destroy");
 
-    PyMem_RawFree((void *)thelock);
+    TyMem_RawFree((void *)thelock);
 }
 
 /*
@@ -521,7 +521,7 @@ PyThread_acquire_lock_timed(PyThread_type_lock lock, PY_TIMEOUT_T microseconds,
         //
         // _thread.Lock.acquire() and _thread.RLock.acquire() raise an
         // OverflowError if microseconds is greater than PY_TIMEOUT_MAX.
-        timeout = _PyTime_FromMicrosecondsClamp(microseconds);
+        timeout = _TyTime_FromMicrosecondsClamp(microseconds);
     }
     else {
         timeout = -1;
@@ -534,8 +534,8 @@ PyThread_acquire_lock_timed(PyThread_type_lock lock, PY_TIMEOUT_T microseconds,
         PyTime_t now;
         // silently ignore error: cannot report error to the caller
         (void)PyTime_MonotonicRaw(&now);
-        PyTime_t deadline = _PyTime_Add(now, timeout);
-        _PyTime_AsTimespec_clamp(deadline, &abs_timeout);
+        PyTime_t deadline = _TyTime_Add(now, timeout);
+        _TyTime_AsTimespec_clamp(deadline, &abs_timeout);
     }
 #else
     PyTime_t deadline = 0;
@@ -553,10 +553,10 @@ PyThread_acquire_lock_timed(PyThread_type_lock lock, PY_TIMEOUT_T microseconds,
             PyTime_t now;
             // silently ignore error: cannot report error to the caller
             (void)PyTime_TimeRaw(&now);
-            PyTime_t abs_time = _PyTime_Add(now, timeout);
+            PyTime_t abs_time = _TyTime_Add(now, timeout);
 
             struct timespec ts;
-            _PyTime_AsTimespec_clamp(abs_time, &ts);
+            _TyTime_AsTimespec_clamp(abs_time, &ts);
             status = fix_status(sem_timedwait(thelock, &ts));
 #endif
         }
@@ -645,7 +645,7 @@ PyThread_allocate_lock(void)
     if (!initialized)
         PyThread_init_thread();
 
-    lock = (pthread_lock *) PyMem_RawCalloc(1, sizeof(pthread_lock));
+    lock = (pthread_lock *) TyMem_RawCalloc(1, sizeof(pthread_lock));
     if (lock) {
         lock->locked = 0;
 
@@ -656,13 +656,13 @@ PyThread_allocate_lock(void)
            Python-level mutex as a mutex because it can be
            acquired and released in different threads, which
            will cause errors. */
-        _Py_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX(&lock->mut);
+        _Ty_ANNOTATE_PURE_HAPPENS_BEFORE_MUTEX(&lock->mut);
 
         status = _PyThread_cond_init(&lock->lock_released);
         CHECK_STATUS_PTHREAD("pthread_cond_init");
 
         if (error) {
-            PyMem_RawFree((void *)lock);
+            TyMem_RawFree((void *)lock);
             lock = 0;
         }
     }
@@ -687,7 +687,7 @@ PyThread_free_lock(PyThread_type_lock lock)
     status = pthread_mutex_destroy( &thelock->mut );
     CHECK_STATUS_PTHREAD("pthread_mutex_destroy");
 
-    PyMem_RawFree((void *)thelock);
+    TyMem_RawFree((void *)thelock);
 }
 
 PyLockStatus
@@ -840,7 +840,7 @@ _pythread_pthread_set_stacksize(size_t size)
 
     /* set to default */
     if (size == 0) {
-        _PyInterpreterState_GET()->threads.stacksize = 0;
+        _TyInterpreterState_GET()->threads.stacksize = 0;
         return 0;
     }
 
@@ -857,7 +857,7 @@ _pythread_pthread_set_stacksize(size_t size)
             rc = pthread_attr_setstacksize(&attrs, size);
             pthread_attr_destroy(&attrs);
             if (rc == 0) {
-                _PyInterpreterState_GET()->threads.stacksize = size;
+                _TyInterpreterState_GET()->threads.stacksize = size;
                 return 0;
             }
         }
@@ -956,7 +956,7 @@ PyThread_ReInitTLS(void)
 */
 
 int
-PyThread_tss_create(Py_tss_t *key)
+PyThread_tss_create(Ty_tss_t *key)
 {
     assert(key != NULL);
     /* If the key has been created, function is silently skipped. */
@@ -973,7 +973,7 @@ PyThread_tss_create(Py_tss_t *key)
 }
 
 void
-PyThread_tss_delete(Py_tss_t *key)
+PyThread_tss_delete(Ty_tss_t *key)
 {
     assert(key != NULL);
     /* If the key has not been created, function is silently skipped. */
@@ -987,7 +987,7 @@ PyThread_tss_delete(Py_tss_t *key)
 }
 
 int
-PyThread_tss_set(Py_tss_t *key, void *value)
+PyThread_tss_set(Ty_tss_t *key, void *value)
 {
     assert(key != NULL);
     int fail = pthread_setspecific(key->_key, value);
@@ -995,7 +995,7 @@ PyThread_tss_set(Py_tss_t *key, void *value)
 }
 
 void *
-PyThread_tss_get(Py_tss_t *key)
+PyThread_tss_get(Ty_tss_t *key)
 {
     assert(key != NULL);
     return pthread_getspecific(key->_key);

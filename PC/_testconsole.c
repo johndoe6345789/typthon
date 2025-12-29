@@ -1,10 +1,10 @@
 /* Testing module for multi-phase initialization of extension modules (PEP 489)
  */
 
-// Need limited C API version 3.13 for Py_mod_gil
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for Ty_mod_gil
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "Python.h"
@@ -23,27 +23,27 @@ typedef struct {
 } winconsoleio;
 
 
-static int execfunc(PyObject *m)
+static int execfunc(TyObject *m)
 {
     return 0;
 }
 
 PyModuleDef_Slot testconsole_slots[] = {
-    {Py_mod_exec, execfunc},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, execfunc},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
 /*[python input]
 class HANDLE_converter(CConverter):
     type = 'void *'
-    format_unit = '"_Py_PARSE_UINTPTR"'
+    format_unit = '"_Ty_PARSE_UINTPTR"'
 
     def parse_arg(self, argname, displayname, *, limited_capi):
         return self.format_code("""
-            {paramname} = PyLong_AsVoidPtr({argname});
-            if (!{paramname} && PyErr_Occurred()) {{{{
+            {paramname} = TyLong_AsVoidPtr({argname});
+            if (!{paramname} && TyErr_Occurred()) {{{{
                 goto exit;
             }}}}
             """,
@@ -57,38 +57,38 @@ module _testconsole
 
 _testconsole.write_input
     file: object
-    s: Py_buffer
+    s: Ty_buffer
 
 Writes UTF-16-LE encoded bytes to the console as if typed by a user.
 [clinic start generated code]*/
 
-static PyObject *
-_testconsole_write_input_impl(PyObject *module, PyObject *file, Py_buffer *s)
+static TyObject *
+_testconsole_write_input_impl(TyObject *module, TyObject *file, Ty_buffer *s)
 /*[clinic end generated code: output=58631a8985426ad3 input=68062f1bb2e52206]*/
 {
     INPUT_RECORD *rec = NULL;
 
-    PyObject *mod = PyImport_ImportModule("_io");
+    TyObject *mod = TyImport_ImportModule("_io");
     if (mod == NULL) {
         return NULL;
     }
 
-    PyTypeObject *winconsoleio_type = (PyTypeObject *)PyObject_GetAttrString(mod, "_WindowsConsoleIO");
-    Py_DECREF(mod);
+    TyTypeObject *winconsoleio_type = (TyTypeObject *)PyObject_GetAttrString(mod, "_WindowsConsoleIO");
+    Ty_DECREF(mod);
     if (winconsoleio_type == NULL) {
         return NULL;
     }
     int is_subclass = PyObject_TypeCheck(file, winconsoleio_type);
-    Py_DECREF(winconsoleio_type);
+    Ty_DECREF(winconsoleio_type);
     if (!is_subclass) {
-        PyErr_SetString(PyExc_TypeError, "expected raw console object");
+        TyErr_SetString(TyExc_TypeError, "expected raw console object");
         return NULL;
     }
 
     const wchar_t *p = (const wchar_t *)s->buf;
     DWORD size = (DWORD)s->len / sizeof(wchar_t);
 
-    rec = (INPUT_RECORD*)PyMem_Calloc(size, sizeof(INPUT_RECORD));
+    rec = (INPUT_RECORD*)TyMem_Calloc(size, sizeof(INPUT_RECORD));
     if (!rec)
         goto error;
 
@@ -102,7 +102,7 @@ _testconsole_write_input_impl(PyObject *module, PyObject *file, Py_buffer *s)
 
     HANDLE hInput = (HANDLE)_get_osfhandle(((winconsoleio*)file)->fd);
     if (hInput == INVALID_HANDLE_VALUE) {
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
         goto error;
     }
 
@@ -110,18 +110,18 @@ _testconsole_write_input_impl(PyObject *module, PyObject *file, Py_buffer *s)
     while (total < size) {
         DWORD wrote;
         if (!WriteConsoleInputW(hInput, &rec[total], (size - total), &wrote)) {
-            PyErr_SetFromWindowsErr(0);
+            TyErr_SetFromWindowsErr(0);
             goto error;
         }
         total += wrote;
     }
 
-    PyMem_Free((void*)rec);
+    TyMem_Free((void*)rec);
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 error:
     if (rec)
-        PyMem_Free((void*)rec);
+        TyMem_Free((void*)rec);
     return NULL;
 }
 
@@ -132,23 +132,23 @@ _testconsole.read_output
 Reads a str from the console as written to stdout.
 [clinic start generated code]*/
 
-static PyObject *
-_testconsole_read_output_impl(PyObject *module, PyObject *file)
+static TyObject *
+_testconsole_read_output_impl(TyObject *module, TyObject *file)
 /*[clinic end generated code: output=876310d81a73e6d2 input=b3521f64b1b558e3]*/
 {
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 
 #include "clinic\_testconsole.c.h"
 
-PyMethodDef testconsole_methods[] = {
+TyMethodDef testconsole_methods[] = {
     _TESTCONSOLE_WRITE_INPUT_METHODDEF
     _TESTCONSOLE_READ_OUTPUT_METHODDEF
     {NULL, NULL}
 };
 
-static PyModuleDef testconsole_def = {
+static TyModuleDef testconsole_def = {
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "_testconsole",                             /* m_name */
     PyDoc_STR("Test module for the Windows console"), /* m_doc */

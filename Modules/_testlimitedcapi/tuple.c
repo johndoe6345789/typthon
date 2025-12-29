@@ -2,102 +2,102 @@
 #include "util.h"
 
 
-static PyObject *
-tuple_check(PyObject* Py_UNUSED(module), PyObject *obj)
+static TyObject *
+tuple_check(TyObject* Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyTuple_Check(obj));
+    return TyLong_FromLong(TyTuple_Check(obj));
 }
 
-static PyObject *
-tuple_checkexact(PyObject* Py_UNUSED(module), PyObject *obj)
+static TyObject *
+tuple_checkexact(TyObject* Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyTuple_CheckExact(obj));
+    return TyLong_FromLong(TyTuple_CheckExact(obj));
 }
 
-static PyObject *
-tuple_new(PyObject* Py_UNUSED(module), PyObject *len)
+static TyObject *
+tuple_new(TyObject* Ty_UNUSED(module), TyObject *len)
 {
-    return PyTuple_New(PyLong_AsSsize_t(len));
+    return TyTuple_New(TyLong_AsSsize_t(len));
 }
 
-static PyObject *
-tuple_pack(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+tuple_pack(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *arg1 = NULL, *arg2 = NULL;
-    Py_ssize_t size;
+    TyObject *arg1 = NULL, *arg2 = NULL;
+    Ty_ssize_t size;
 
-    if (!PyArg_ParseTuple(args, "n|OO", &size, &arg1, &arg2)) {
+    if (!TyArg_ParseTuple(args, "n|OO", &size, &arg1, &arg2)) {
         return NULL;
     }
     if (arg1) {
         NULLABLE(arg1);
         if (arg2) {
             NULLABLE(arg2);
-            return PyTuple_Pack(size, arg1, arg2);
+            return TyTuple_Pack(size, arg1, arg2);
         }
-        return PyTuple_Pack(size, arg1);
+        return TyTuple_Pack(size, arg1);
     }
-    return PyTuple_Pack(size);
+    return TyTuple_Pack(size);
 }
 
-static PyObject *
-tuple_size(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+tuple_size(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    RETURN_SIZE(PyTuple_Size(obj));
+    RETURN_SIZE(TyTuple_Size(obj));
 }
 
-static PyObject *
-tuple_getitem(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+tuple_getitem(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "On", &obj, &i)) {
+    TyObject *obj;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "On", &obj, &i)) {
         return NULL;
     }
     NULLABLE(obj);
-    return Py_XNewRef(PyTuple_GetItem(obj, i));
+    return Ty_XNewRef(TyTuple_GetItem(obj, i));
 }
 
-static PyObject *
-tuple_getslice(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+tuple_getslice(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t ilow, ihigh;
-    if (!PyArg_ParseTuple(args, "Onn", &obj, &ilow, &ihigh)) {
+    TyObject *obj;
+    Ty_ssize_t ilow, ihigh;
+    if (!TyArg_ParseTuple(args, "Onn", &obj, &ilow, &ihigh)) {
         return NULL;
     }
     NULLABLE(obj);
-    return PyTuple_GetSlice(obj, ilow, ihigh);
+    return TyTuple_GetSlice(obj, ilow, ihigh);
 }
 
-static PyObject *
-tuple_setitem(PyObject *Py_UNUSED(module), PyObject *args)
+static TyObject *
+tuple_setitem(TyObject *Ty_UNUSED(module), TyObject *args)
 {
-    PyObject *obj, *value, *newtuple = NULL;
-    Py_ssize_t i;
-    if (!PyArg_ParseTuple(args, "OnO", &obj, &i, &value)) {
+    TyObject *obj, *value, *newtuple = NULL;
+    Ty_ssize_t i;
+    if (!TyArg_ParseTuple(args, "OnO", &obj, &i, &value)) {
         return NULL;
     }
     NULLABLE(value);
-    if (PyTuple_CheckExact(obj)) {
-        Py_ssize_t size = PyTuple_Size(obj);
-        newtuple = PyTuple_New(size);
+    if (TyTuple_CheckExact(obj)) {
+        Ty_ssize_t size = TyTuple_Size(obj);
+        newtuple = TyTuple_New(size);
         if (!newtuple) {
             return NULL;
         }
-        for (Py_ssize_t n = 0; n < size; n++) {
-            if (PyTuple_SetItem(newtuple, n,
-                                Py_XNewRef(PyTuple_GetItem(obj, n))) == -1) {
-                Py_DECREF(newtuple);
+        for (Ty_ssize_t n = 0; n < size; n++) {
+            if (TyTuple_SetItem(newtuple, n,
+                                Ty_XNewRef(TyTuple_GetItem(obj, n))) == -1) {
+                Ty_DECREF(newtuple);
                 return NULL;
             }
         }
 
-        if (PyTuple_SetItem(newtuple, i, Py_XNewRef(value)) == -1) {
-            Py_DECREF(newtuple);
+        if (TyTuple_SetItem(newtuple, i, Ty_XNewRef(value)) == -1) {
+            Ty_DECREF(newtuple);
             return NULL;
         }
         return newtuple;
@@ -105,15 +105,15 @@ tuple_setitem(PyObject *Py_UNUSED(module), PyObject *args)
     else {
         NULLABLE(obj);
 
-        if (PyTuple_SetItem(obj, i, Py_XNewRef(value)) == -1) {
+        if (TyTuple_SetItem(obj, i, Ty_XNewRef(value)) == -1) {
             return NULL;
         }
-        return Py_XNewRef(obj);
+        return Ty_XNewRef(obj);
     }
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"tuple_check", tuple_check, METH_O},
     {"tuple_checkexact", tuple_checkexact, METH_O},
     {"tuple_new", tuple_new, METH_O},
@@ -126,9 +126,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Tuple(PyObject *m)
+_PyTestLimitedCAPI_Init_Tuple(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

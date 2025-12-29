@@ -3,8 +3,8 @@
 //   Python/bytecodes.c
 // Do not edit!
 
-#ifndef Py_CORE_UOP_METADATA_H
-#define Py_CORE_UOP_METADATA_H
+#ifndef Ty_CORE_UOP_METADATA_H
+#define Ty_CORE_UOP_METADATA_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -1201,4 +1201,4 @@ int _PyUop_num_popped(int opcode, int oparg)
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_CORE_UOP_METADATA_H */
+#endif /* !Ty_CORE_UOP_METADATA_H */

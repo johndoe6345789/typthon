@@ -2,13 +2,13 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_SINGLETON()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_SINGLETON()
 #endif
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
-#include "pycore_modsupport.h"    // _PyArg_BadArgument()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
+#include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
 PyDoc_STRVAR(_io__BufferedIOBase_readinto__doc__,
 "readinto($self, buffer, /)\n"
@@ -18,22 +18,22 @@ PyDoc_STRVAR(_io__BufferedIOBase_readinto__doc__,
 #define _IO__BUFFEREDIOBASE_READINTO_METHODDEF    \
     {"readinto", (PyCFunction)_io__BufferedIOBase_readinto, METH_O, _io__BufferedIOBase_readinto__doc__},
 
-static PyObject *
-_io__BufferedIOBase_readinto_impl(PyObject *self, Py_buffer *buffer);
+static TyObject *
+_io__BufferedIOBase_readinto_impl(TyObject *self, Ty_buffer *buffer);
 
-static PyObject *
-_io__BufferedIOBase_readinto(PyObject *self, PyObject *arg)
+static TyObject *
+_io__BufferedIOBase_readinto(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer buffer = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer buffer = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &buffer, PyBUF_WRITABLE) < 0) {
-        _PyArg_BadArgument("readinto", "argument", "read-write bytes-like object", arg);
+        _TyArg_BadArgument("readinto", "argument", "read-write bytes-like object", arg);
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__BufferedIOBase_readinto_impl(self, &buffer);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for buffer */
@@ -52,22 +52,22 @@ PyDoc_STRVAR(_io__BufferedIOBase_readinto1__doc__,
 #define _IO__BUFFEREDIOBASE_READINTO1_METHODDEF    \
     {"readinto1", (PyCFunction)_io__BufferedIOBase_readinto1, METH_O, _io__BufferedIOBase_readinto1__doc__},
 
-static PyObject *
-_io__BufferedIOBase_readinto1_impl(PyObject *self, Py_buffer *buffer);
+static TyObject *
+_io__BufferedIOBase_readinto1_impl(TyObject *self, Ty_buffer *buffer);
 
-static PyObject *
-_io__BufferedIOBase_readinto1(PyObject *self, PyObject *arg)
+static TyObject *
+_io__BufferedIOBase_readinto1(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer buffer = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer buffer = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &buffer, PyBUF_WRITABLE) < 0) {
-        _PyArg_BadArgument("readinto1", "argument", "read-write bytes-like object", arg);
+        _TyArg_BadArgument("readinto1", "argument", "read-write bytes-like object", arg);
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__BufferedIOBase_readinto1_impl(self, &buffer);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for buffer */
@@ -90,14 +90,14 @@ PyDoc_STRVAR(_io__BufferedIOBase_detach__doc__,
 #define _IO__BUFFEREDIOBASE_DETACH_METHODDEF    \
     {"detach", _PyCFunction_CAST(_io__BufferedIOBase_detach), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io__BufferedIOBase_detach__doc__},
 
-static PyObject *
-_io__BufferedIOBase_detach_impl(PyObject *self, PyTypeObject *cls);
+static TyObject *
+_io__BufferedIOBase_detach_impl(TyObject *self, TyTypeObject *cls);
 
-static PyObject *
-_io__BufferedIOBase_detach(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io__BufferedIOBase_detach(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    if (nargs || (kwnames && PyTuple_GET_SIZE(kwnames))) {
-        PyErr_SetString(PyExc_TypeError, "detach() takes no arguments");
+    if (nargs || (kwnames && TyTuple_GET_SIZE(kwnames))) {
+        TyErr_SetString(TyExc_TypeError, "detach() takes no arguments");
         return NULL;
     }
     return _io__BufferedIOBase_detach_impl(self, cls);
@@ -127,31 +127,31 @@ PyDoc_STRVAR(_io__BufferedIOBase_read__doc__,
 #define _IO__BUFFEREDIOBASE_READ_METHODDEF    \
     {"read", _PyCFunction_CAST(_io__BufferedIOBase_read), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io__BufferedIOBase_read__doc__},
 
-static PyObject *
-_io__BufferedIOBase_read_impl(PyObject *self, PyTypeObject *cls,
-                              int Py_UNUSED(size));
+static TyObject *
+_io__BufferedIOBase_read_impl(TyObject *self, TyTypeObject *cls,
+                              int Ty_UNUSED(size));
 
-static PyObject *
-_io__BufferedIOBase_read(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io__BufferedIOBase_read(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "read",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int size = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -159,8 +159,8 @@ _io__BufferedIOBase_read(PyObject *self, PyTypeObject *cls, PyObject *const *arg
     if (nargs < 1) {
         goto skip_optional_posonly;
     }
-    size = PyLong_AsInt(args[0]);
-    if (size == -1 && PyErr_Occurred()) {
+    size = TyLong_AsInt(args[0]);
+    if (size == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_posonly:
@@ -182,31 +182,31 @@ PyDoc_STRVAR(_io__BufferedIOBase_read1__doc__,
 #define _IO__BUFFEREDIOBASE_READ1_METHODDEF    \
     {"read1", _PyCFunction_CAST(_io__BufferedIOBase_read1), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io__BufferedIOBase_read1__doc__},
 
-static PyObject *
-_io__BufferedIOBase_read1_impl(PyObject *self, PyTypeObject *cls,
-                               int Py_UNUSED(size));
+static TyObject *
+_io__BufferedIOBase_read1_impl(TyObject *self, TyTypeObject *cls,
+                               int Ty_UNUSED(size));
 
-static PyObject *
-_io__BufferedIOBase_read1(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io__BufferedIOBase_read1(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "read1",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
+    TyObject *argsbuf[1];
     int size = -1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -214,8 +214,8 @@ _io__BufferedIOBase_read1(PyObject *self, PyTypeObject *cls, PyObject *const *ar
     if (nargs < 1) {
         goto skip_optional_posonly;
     }
-    size = PyLong_AsInt(args[0]);
-    if (size == -1 && PyErr_Occurred()) {
+    size = TyLong_AsInt(args[0]);
+    if (size == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional_posonly:
@@ -240,31 +240,31 @@ PyDoc_STRVAR(_io__BufferedIOBase_write__doc__,
 #define _IO__BUFFEREDIOBASE_WRITE_METHODDEF    \
     {"write", _PyCFunction_CAST(_io__BufferedIOBase_write), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io__BufferedIOBase_write__doc__},
 
-static PyObject *
-_io__BufferedIOBase_write_impl(PyObject *self, PyTypeObject *cls,
-                               PyObject *Py_UNUSED(b));
+static TyObject *
+_io__BufferedIOBase_write_impl(TyObject *self, TyTypeObject *cls,
+                               TyObject *Ty_UNUSED(b));
 
-static PyObject *
-_io__BufferedIOBase_write(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io__BufferedIOBase_write(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "write",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *b;
+    TyObject *argsbuf[1];
+    TyObject *b;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -284,17 +284,17 @@ PyDoc_STRVAR(_io__Buffered___sizeof____doc__,
 #define _IO__BUFFERED___SIZEOF___METHODDEF    \
     {"__sizeof__", (PyCFunction)_io__Buffered___sizeof__, METH_NOARGS, _io__Buffered___sizeof____doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered___sizeof___impl(buffered *self);
 
-static PyObject *
-_io__Buffered___sizeof__(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered___sizeof__(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered___sizeof___impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -307,13 +307,13 @@ PyDoc_STRVAR(_io__Buffered__dealloc_warn__doc__,
 #define _IO__BUFFERED__DEALLOC_WARN_METHODDEF    \
     {"_dealloc_warn", (PyCFunction)_io__Buffered__dealloc_warn, METH_O, _io__Buffered__dealloc_warn__doc__},
 
-static PyObject *
-_io__Buffered__dealloc_warn_impl(buffered *self, PyObject *source);
+static TyObject *
+_io__Buffered__dealloc_warn_impl(buffered *self, TyObject *source);
 
-static PyObject *
-_io__Buffered__dealloc_warn(PyObject *self, PyObject *source)
+static TyObject *
+_io__Buffered__dealloc_warn(TyObject *self, TyObject *source)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
     return_value = _io__Buffered__dealloc_warn_impl((buffered *)self, source);
 
@@ -328,17 +328,17 @@ PyDoc_STRVAR(_io__Buffered_simple_flush__doc__,
 #define _IO__BUFFERED_SIMPLE_FLUSH_METHODDEF    \
     {"flush", (PyCFunction)_io__Buffered_simple_flush, METH_NOARGS, _io__Buffered_simple_flush__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_simple_flush_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_simple_flush(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_simple_flush(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_simple_flush_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -353,17 +353,17 @@ _io__Buffered_simple_flush(PyObject *self, PyObject *Py_UNUSED(ignored))
 #  define _IO__BUFFERED_CLOSED_GETSETDEF {"closed", (getter)_io__Buffered_closed_get, NULL, _io__Buffered_closed_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _io__Buffered_closed_get_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_closed_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_io__Buffered_closed_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_closed_get_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -376,17 +376,17 @@ PyDoc_STRVAR(_io__Buffered_close__doc__,
 #define _IO__BUFFERED_CLOSE_METHODDEF    \
     {"close", (PyCFunction)_io__Buffered_close, METH_NOARGS, _io__Buffered_close__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_close_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_close(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_close(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_close_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -399,17 +399,17 @@ PyDoc_STRVAR(_io__Buffered_detach__doc__,
 #define _IO__BUFFERED_DETACH_METHODDEF    \
     {"detach", (PyCFunction)_io__Buffered_detach, METH_NOARGS, _io__Buffered_detach__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_detach_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_detach(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_detach(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_detach_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -422,17 +422,17 @@ PyDoc_STRVAR(_io__Buffered_seekable__doc__,
 #define _IO__BUFFERED_SEEKABLE_METHODDEF    \
     {"seekable", (PyCFunction)_io__Buffered_seekable, METH_NOARGS, _io__Buffered_seekable__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_seekable_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_seekable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_seekable(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_seekable_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -445,17 +445,17 @@ PyDoc_STRVAR(_io__Buffered_readable__doc__,
 #define _IO__BUFFERED_READABLE_METHODDEF    \
     {"readable", (PyCFunction)_io__Buffered_readable, METH_NOARGS, _io__Buffered_readable__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_readable_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_readable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_readable(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_readable_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -468,17 +468,17 @@ PyDoc_STRVAR(_io__Buffered_writable__doc__,
 #define _IO__BUFFERED_WRITABLE_METHODDEF    \
     {"writable", (PyCFunction)_io__Buffered_writable, METH_NOARGS, _io__Buffered_writable__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_writable_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_writable(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_writable(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_writable_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -493,17 +493,17 @@ _io__Buffered_writable(PyObject *self, PyObject *Py_UNUSED(ignored))
 #  define _IO__BUFFERED_NAME_GETSETDEF {"name", (getter)_io__Buffered_name_get, NULL, _io__Buffered_name_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _io__Buffered_name_get_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_name_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_io__Buffered_name_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_name_get_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -518,17 +518,17 @@ _io__Buffered_name_get(PyObject *self, void *Py_UNUSED(context))
 #  define _IO__BUFFERED_MODE_GETSETDEF {"mode", (getter)_io__Buffered_mode_get, NULL, _io__Buffered_mode_DOCSTR},
 #endif
 
-static PyObject *
+static TyObject *
 _io__Buffered_mode_get_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_mode_get(PyObject *self, void *Py_UNUSED(context))
+static TyObject *
+_io__Buffered_mode_get(TyObject *self, void *Ty_UNUSED(context))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_mode_get_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -541,17 +541,17 @@ PyDoc_STRVAR(_io__Buffered_fileno__doc__,
 #define _IO__BUFFERED_FILENO_METHODDEF    \
     {"fileno", (PyCFunction)_io__Buffered_fileno, METH_NOARGS, _io__Buffered_fileno__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_fileno_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_fileno(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_fileno(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_fileno_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -564,17 +564,17 @@ PyDoc_STRVAR(_io__Buffered_isatty__doc__,
 #define _IO__BUFFERED_ISATTY_METHODDEF    \
     {"isatty", (PyCFunction)_io__Buffered_isatty, METH_NOARGS, _io__Buffered_isatty__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_isatty_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_isatty(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_isatty(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_isatty_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -587,17 +587,17 @@ PyDoc_STRVAR(_io__Buffered_flush__doc__,
 #define _IO__BUFFERED_FLUSH_METHODDEF    \
     {"flush", (PyCFunction)_io__Buffered_flush, METH_NOARGS, _io__Buffered_flush__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_flush_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_flush(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_flush(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_flush_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -610,37 +610,37 @@ PyDoc_STRVAR(_io__Buffered_peek__doc__,
 #define _IO__BUFFERED_PEEK_METHODDEF    \
     {"peek", _PyCFunction_CAST(_io__Buffered_peek), METH_FASTCALL, _io__Buffered_peek__doc__},
 
-static PyObject *
-_io__Buffered_peek_impl(buffered *self, Py_ssize_t size);
+static TyObject *
+_io__Buffered_peek_impl(buffered *self, Ty_ssize_t size);
 
-static PyObject *
-_io__Buffered_peek(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io__Buffered_peek(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t size = 0;
+    TyObject *return_value = NULL;
+    Ty_ssize_t size = 0;
 
-    if (!_PyArg_CheckPositional("peek", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("peek", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         size = ival;
     }
 skip_optional:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_peek_impl((buffered *)self, size);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -654,28 +654,28 @@ PyDoc_STRVAR(_io__Buffered_read__doc__,
 #define _IO__BUFFERED_READ_METHODDEF    \
     {"read", _PyCFunction_CAST(_io__Buffered_read), METH_FASTCALL, _io__Buffered_read__doc__},
 
-static PyObject *
-_io__Buffered_read_impl(buffered *self, Py_ssize_t n);
+static TyObject *
+_io__Buffered_read_impl(buffered *self, Ty_ssize_t n);
 
-static PyObject *
-_io__Buffered_read(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io__Buffered_read(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t n = -1;
+    TyObject *return_value = NULL;
+    Ty_ssize_t n = -1;
 
-    if (!_PyArg_CheckPositional("read", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("read", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_Py_convert_optional_to_ssize_t(args[0], &n)) {
+    if (!_Ty_convert_optional_to_ssize_t(args[0], &n)) {
         goto exit;
     }
 skip_optional:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_read_impl((buffered *)self, n);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -689,37 +689,37 @@ PyDoc_STRVAR(_io__Buffered_read1__doc__,
 #define _IO__BUFFERED_READ1_METHODDEF    \
     {"read1", _PyCFunction_CAST(_io__Buffered_read1), METH_FASTCALL, _io__Buffered_read1__doc__},
 
-static PyObject *
-_io__Buffered_read1_impl(buffered *self, Py_ssize_t n);
+static TyObject *
+_io__Buffered_read1_impl(buffered *self, Ty_ssize_t n);
 
-static PyObject *
-_io__Buffered_read1(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io__Buffered_read1(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t n = -1;
+    TyObject *return_value = NULL;
+    Ty_ssize_t n = -1;
 
-    if (!_PyArg_CheckPositional("read1", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("read1", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[0]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[0]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         n = ival;
     }
 skip_optional:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_read1_impl((buffered *)self, n);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -733,22 +733,22 @@ PyDoc_STRVAR(_io__Buffered_readinto__doc__,
 #define _IO__BUFFERED_READINTO_METHODDEF    \
     {"readinto", (PyCFunction)_io__Buffered_readinto, METH_O, _io__Buffered_readinto__doc__},
 
-static PyObject *
-_io__Buffered_readinto_impl(buffered *self, Py_buffer *buffer);
+static TyObject *
+_io__Buffered_readinto_impl(buffered *self, Ty_buffer *buffer);
 
-static PyObject *
-_io__Buffered_readinto(PyObject *self, PyObject *arg)
+static TyObject *
+_io__Buffered_readinto(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer buffer = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer buffer = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &buffer, PyBUF_WRITABLE) < 0) {
-        _PyArg_BadArgument("readinto", "argument", "read-write bytes-like object", arg);
+        _TyArg_BadArgument("readinto", "argument", "read-write bytes-like object", arg);
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_readinto_impl((buffered *)self, &buffer);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for buffer */
@@ -767,22 +767,22 @@ PyDoc_STRVAR(_io__Buffered_readinto1__doc__,
 #define _IO__BUFFERED_READINTO1_METHODDEF    \
     {"readinto1", (PyCFunction)_io__Buffered_readinto1, METH_O, _io__Buffered_readinto1__doc__},
 
-static PyObject *
-_io__Buffered_readinto1_impl(buffered *self, Py_buffer *buffer);
+static TyObject *
+_io__Buffered_readinto1_impl(buffered *self, Ty_buffer *buffer);
 
-static PyObject *
-_io__Buffered_readinto1(PyObject *self, PyObject *arg)
+static TyObject *
+_io__Buffered_readinto1(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer buffer = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer buffer = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &buffer, PyBUF_WRITABLE) < 0) {
-        _PyArg_BadArgument("readinto1", "argument", "read-write bytes-like object", arg);
+        _TyArg_BadArgument("readinto1", "argument", "read-write bytes-like object", arg);
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_readinto1_impl((buffered *)self, &buffer);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for buffer */
@@ -801,28 +801,28 @@ PyDoc_STRVAR(_io__Buffered_readline__doc__,
 #define _IO__BUFFERED_READLINE_METHODDEF    \
     {"readline", _PyCFunction_CAST(_io__Buffered_readline), METH_FASTCALL, _io__Buffered_readline__doc__},
 
-static PyObject *
-_io__Buffered_readline_impl(buffered *self, Py_ssize_t size);
+static TyObject *
+_io__Buffered_readline_impl(buffered *self, Ty_ssize_t size);
 
-static PyObject *
-_io__Buffered_readline(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io__Buffered_readline(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t size = -1;
+    TyObject *return_value = NULL;
+    Ty_ssize_t size = -1;
 
-    if (!_PyArg_CheckPositional("readline", nargs, 0, 1)) {
+    if (!_TyArg_CheckPositional("readline", nargs, 0, 1)) {
         goto exit;
     }
     if (nargs < 1) {
         goto skip_optional;
     }
-    if (!_Py_convert_optional_to_ssize_t(args[0], &size)) {
+    if (!_Ty_convert_optional_to_ssize_t(args[0], &size)) {
         goto exit;
     }
 skip_optional:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_readline_impl((buffered *)self, size);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -836,17 +836,17 @@ PyDoc_STRVAR(_io__Buffered_tell__doc__,
 #define _IO__BUFFERED_TELL_METHODDEF    \
     {"tell", (PyCFunction)_io__Buffered_tell, METH_NOARGS, _io__Buffered_tell__doc__},
 
-static PyObject *
+static TyObject *
 _io__Buffered_tell_impl(buffered *self);
 
-static PyObject *
-_io__Buffered_tell(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+_io__Buffered_tell(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
 
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_tell_impl((buffered *)self);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
     return return_value;
 }
@@ -859,31 +859,31 @@ PyDoc_STRVAR(_io__Buffered_seek__doc__,
 #define _IO__BUFFERED_SEEK_METHODDEF    \
     {"seek", _PyCFunction_CAST(_io__Buffered_seek), METH_FASTCALL, _io__Buffered_seek__doc__},
 
-static PyObject *
-_io__Buffered_seek_impl(buffered *self, PyObject *targetobj, int whence);
+static TyObject *
+_io__Buffered_seek_impl(buffered *self, TyObject *targetobj, int whence);
 
-static PyObject *
-_io__Buffered_seek(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_io__Buffered_seek(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *targetobj;
+    TyObject *return_value = NULL;
+    TyObject *targetobj;
     int whence = 0;
 
-    if (!_PyArg_CheckPositional("seek", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("seek", nargs, 1, 2)) {
         goto exit;
     }
     targetobj = args[0];
     if (nargs < 2) {
         goto skip_optional;
     }
-    whence = PyLong_AsInt(args[1]);
-    if (whence == -1 && PyErr_Occurred()) {
+    whence = TyLong_AsInt(args[1]);
+    if (whence == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_seek_impl((buffered *)self, targetobj, whence);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -897,30 +897,30 @@ PyDoc_STRVAR(_io__Buffered_truncate__doc__,
 #define _IO__BUFFERED_TRUNCATE_METHODDEF    \
     {"truncate", _PyCFunction_CAST(_io__Buffered_truncate), METH_METHOD|METH_FASTCALL|METH_KEYWORDS, _io__Buffered_truncate__doc__},
 
-static PyObject *
-_io__Buffered_truncate_impl(buffered *self, PyTypeObject *cls, PyObject *pos);
+static TyObject *
+_io__Buffered_truncate_impl(buffered *self, TyTypeObject *cls, TyObject *pos);
 
-static PyObject *
-_io__Buffered_truncate(PyObject *self, PyTypeObject *cls, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+_io__Buffered_truncate(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-    #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+    #  define KWTUPLE (TyObject *)&_Ty_SINGLETON(tuple_empty)
     #else
     #  define KWTUPLE NULL
     #endif
 
     static const char * const _keywords[] = {"", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "truncate",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[1];
-    PyObject *pos = Py_None;
+    TyObject *argsbuf[1];
+    TyObject *pos = Ty_None;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 0, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -930,9 +930,9 @@ _io__Buffered_truncate(PyObject *self, PyTypeObject *cls, PyObject *const *args,
     }
     pos = args[0];
 skip_optional_posonly:
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io__Buffered_truncate_impl((buffered *)self, cls, pos);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -945,48 +945,48 @@ PyDoc_STRVAR(_io_BufferedReader___init____doc__,
 "Create a new buffered reader using the given readable raw IO object.");
 
 static int
-_io_BufferedReader___init___impl(buffered *self, PyObject *raw,
-                                 Py_ssize_t buffer_size);
+_io_BufferedReader___init___impl(buffered *self, TyObject *raw,
+                                 Ty_ssize_t buffer_size);
 
 static int
-_io_BufferedReader___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+_io_BufferedReader___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(raw), &_Py_ID(buffer_size), },
+        .ob_item = { &_Ty_ID(raw), &_Ty_ID(buffer_size), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"raw", "buffer_size", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "BufferedReader",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *raw;
-    Py_ssize_t buffer_size = DEFAULT_BUFFER_SIZE;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *raw;
+    Ty_ssize_t buffer_size = DEFAULT_BUFFER_SIZE;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -996,13 +996,13 @@ _io_BufferedReader___init__(PyObject *self, PyObject *args, PyObject *kwargs)
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(fastargs[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(fastargs[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         buffer_size = ival;
@@ -1025,48 +1025,48 @@ PyDoc_STRVAR(_io_BufferedWriter___init____doc__,
 "DEFAULT_BUFFER_SIZE.");
 
 static int
-_io_BufferedWriter___init___impl(buffered *self, PyObject *raw,
-                                 Py_ssize_t buffer_size);
+_io_BufferedWriter___init___impl(buffered *self, TyObject *raw,
+                                 Ty_ssize_t buffer_size);
 
 static int
-_io_BufferedWriter___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+_io_BufferedWriter___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(raw), &_Py_ID(buffer_size), },
+        .ob_item = { &_Ty_ID(raw), &_Ty_ID(buffer_size), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"raw", "buffer_size", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "BufferedWriter",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *raw;
-    Py_ssize_t buffer_size = DEFAULT_BUFFER_SIZE;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *raw;
+    Ty_ssize_t buffer_size = DEFAULT_BUFFER_SIZE;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -1076,13 +1076,13 @@ _io_BufferedWriter___init__(PyObject *self, PyObject *args, PyObject *kwargs)
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(fastargs[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(fastargs[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         buffer_size = ival;
@@ -1102,21 +1102,21 @@ PyDoc_STRVAR(_io_BufferedWriter_write__doc__,
 #define _IO_BUFFEREDWRITER_WRITE_METHODDEF    \
     {"write", (PyCFunction)_io_BufferedWriter_write, METH_O, _io_BufferedWriter_write__doc__},
 
-static PyObject *
-_io_BufferedWriter_write_impl(buffered *self, Py_buffer *buffer);
+static TyObject *
+_io_BufferedWriter_write_impl(buffered *self, Ty_buffer *buffer);
 
-static PyObject *
-_io_BufferedWriter_write(PyObject *self, PyObject *arg)
+static TyObject *
+_io_BufferedWriter_write(TyObject *self, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    Py_buffer buffer = {NULL, NULL};
+    TyObject *return_value = NULL;
+    Ty_buffer buffer = {NULL, NULL};
 
     if (PyObject_GetBuffer(arg, &buffer, PyBUF_SIMPLE) != 0) {
         goto exit;
     }
-    Py_BEGIN_CRITICAL_SECTION(self);
+    Ty_BEGIN_CRITICAL_SECTION(self);
     return_value = _io_BufferedWriter_write_impl((buffered *)self, &buffer);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     /* Cleanup for buffer */
@@ -1142,39 +1142,39 @@ PyDoc_STRVAR(_io_BufferedRWPair___init____doc__,
 "DEFAULT_BUFFER_SIZE.");
 
 static int
-_io_BufferedRWPair___init___impl(rwpair *self, PyObject *reader,
-                                 PyObject *writer, Py_ssize_t buffer_size);
+_io_BufferedRWPair___init___impl(rwpair *self, TyObject *reader,
+                                 TyObject *writer, Ty_ssize_t buffer_size);
 
 static int
-_io_BufferedRWPair___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+_io_BufferedRWPair___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    PyTypeObject *base_tp = clinic_state()->PyBufferedRWPair_Type;
-    PyObject *reader;
-    PyObject *writer;
-    Py_ssize_t buffer_size = DEFAULT_BUFFER_SIZE;
+    TyTypeObject *base_tp = clinic_state()->PyBufferedRWPair_Type;
+    TyObject *reader;
+    TyObject *writer;
+    Ty_ssize_t buffer_size = DEFAULT_BUFFER_SIZE;
 
-    if ((Py_IS_TYPE(self, base_tp) ||
-         Py_TYPE(self)->tp_new == base_tp->tp_new) &&
-        !_PyArg_NoKeywords("BufferedRWPair", kwargs)) {
+    if ((Ty_IS_TYPE(self, base_tp) ||
+         Ty_TYPE(self)->tp_new == base_tp->tp_new) &&
+        !_TyArg_NoKeywords("BufferedRWPair", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("BufferedRWPair", PyTuple_GET_SIZE(args), 2, 3)) {
+    if (!_TyArg_CheckPositional("BufferedRWPair", TyTuple_GET_SIZE(args), 2, 3)) {
         goto exit;
     }
-    reader = PyTuple_GET_ITEM(args, 0);
-    writer = PyTuple_GET_ITEM(args, 1);
-    if (PyTuple_GET_SIZE(args) < 3) {
+    reader = TyTuple_GET_ITEM(args, 0);
+    writer = TyTuple_GET_ITEM(args, 1);
+    if (TyTuple_GET_SIZE(args) < 3) {
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(PyTuple_GET_ITEM(args, 2));
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(TyTuple_GET_ITEM(args, 2));
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         buffer_size = ival;
@@ -1197,48 +1197,48 @@ PyDoc_STRVAR(_io_BufferedRandom___init____doc__,
 "defaults to DEFAULT_BUFFER_SIZE.");
 
 static int
-_io_BufferedRandom___init___impl(buffered *self, PyObject *raw,
-                                 Py_ssize_t buffer_size);
+_io_BufferedRandom___init___impl(buffered *self, TyObject *raw,
+                                 Ty_ssize_t buffer_size);
 
 static int
-_io_BufferedRandom___init__(PyObject *self, PyObject *args, PyObject *kwargs)
+_io_BufferedRandom___init__(TyObject *self, TyObject *args, TyObject *kwargs)
 {
     int return_value = -1;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 2
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(raw), &_Py_ID(buffer_size), },
+        .ob_item = { &_Ty_ID(raw), &_Ty_ID(buffer_size), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"raw", "buffer_size", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "BufferedRandom",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    PyObject * const *fastargs;
-    Py_ssize_t nargs = PyTuple_GET_SIZE(args);
-    Py_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - 1;
-    PyObject *raw;
-    Py_ssize_t buffer_size = DEFAULT_BUFFER_SIZE;
+    TyObject *argsbuf[2];
+    TyObject * const *fastargs;
+    Ty_ssize_t nargs = TyTuple_GET_SIZE(args);
+    Ty_ssize_t noptargs = nargs + (kwargs ? TyDict_GET_SIZE(kwargs) : 0) - 1;
+    TyObject *raw;
+    Ty_ssize_t buffer_size = DEFAULT_BUFFER_SIZE;
 
-    fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
+    fastargs = _TyArg_UnpackKeywords(_TyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser,
             /*minpos*/ 1, /*maxpos*/ 2, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!fastargs) {
         goto exit;
@@ -1248,13 +1248,13 @@ _io_BufferedRandom___init__(PyObject *self, PyObject *args, PyObject *kwargs)
         goto skip_optional_pos;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(fastargs[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(fastargs[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         buffer_size = ival;

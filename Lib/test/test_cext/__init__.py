@@ -18,7 +18,7 @@ SETUP = os.path.join(os.path.dirname(__file__), 'setup.py')
 
 # With MSVC on a debug build, the linker fails with: cannot open file
 # 'python311.lib', it should look 'python311_d.lib'.
-@unittest.skipIf(support.MS_WINDOWS and support.Py_DEBUG,
+@unittest.skipIf(support.MS_WINDOWS and support.Ty_DEBUG,
                  'test fails on Windows debug build')
 # Building and running an extension in clang sanitizing mode is not
 # straightforward

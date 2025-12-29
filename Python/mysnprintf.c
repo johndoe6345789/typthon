@@ -13,7 +13,7 @@
 
    The wrappers ensure that str[size-1] is always \0 upon return.
 
-   PyOS_snprintf and PyOS_vsnprintf never write more than size bytes
+   TyOS_snprintf and TyOS_vsnprintf never write more than size bytes
    (including the trailing '\0') into str.
 
    Return value (rv):
@@ -31,26 +31,26 @@
     an error in format codes was detected by libc, or on platforms
     with a non-C99 vsnprintf simply that the buffer wasn't big enough
     to avoid truncation, or on platforms without any vsnprintf that
-    PyMem_Malloc couldn't obtain space for a temp buffer.
+    TyMem_Malloc couldn't obtain space for a temp buffer.
 
    CAUTION:  Unlike C99, str != NULL and size > 0 are required.
    Also, size must be smaller than INT_MAX.
 */
 
 int
-PyOS_snprintf(char *str, size_t size, const  char  *format, ...)
+TyOS_snprintf(char *str, size_t size, const  char  *format, ...)
 {
     int rc;
     va_list va;
 
     va_start(va, format);
-    rc = PyOS_vsnprintf(str, size, format, va);
+    rc = TyOS_vsnprintf(str, size, format, va);
     va_end(va);
     return rc;
 }
 
 int
-PyOS_vsnprintf(char *str, size_t size, const char  *format, va_list va)
+TyOS_vsnprintf(char *str, size_t size, const char  *format, va_list va)
 {
     assert(str != NULL);
     assert(size > 0);

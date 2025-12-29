@@ -3,10 +3,10 @@
  * using the SystemConfiguration framework.
  */
 
-// Need limited C API version 3.13 for Py_mod_gil
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for Ty_mod_gil
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include <Python.h>
@@ -21,24 +21,24 @@ cfnum_to_int32(CFNumberRef num)
     return result;
 }
 
-static PyObject*
+static TyObject*
 cfstring_to_pystring(CFStringRef ref)
 {
     const char* s;
 
     s = CFStringGetCStringPtr(ref, kCFStringEncodingUTF8);
     if (s) {
-        return PyUnicode_DecodeUTF8(s, strlen(s), NULL);
+        return TyUnicode_DecodeUTF8(s, strlen(s), NULL);
 
     } else {
         CFIndex len = CFStringGetLength(ref);
         Boolean ok;
-        PyObject* result;
+        TyObject* result;
         char* buf;
 
-        buf = PyMem_Malloc(len*4);
+        buf = TyMem_Malloc(len*4);
         if (buf == NULL) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             return NULL;
         }
 
@@ -46,50 +46,50 @@ cfstring_to_pystring(CFStringRef ref)
                         buf, len * 4,
                         kCFStringEncodingUTF8);
         if (!ok) {
-            PyMem_Free(buf);
+            TyMem_Free(buf);
             return NULL;
         } else {
-            result = PyUnicode_DecodeUTF8(buf, strlen(buf), NULL);
-            PyMem_Free(buf);
+            result = TyUnicode_DecodeUTF8(buf, strlen(buf), NULL);
+            TyMem_Free(buf);
         }
         return result;
     }
 }
 
 
-static PyObject*
-get_proxy_settings(PyObject* Py_UNUSED(mod), PyObject *Py_UNUSED(ignored))
+static TyObject*
+get_proxy_settings(TyObject* Ty_UNUSED(mod), TyObject *Ty_UNUSED(ignored))
 {
     CFDictionaryRef proxyDict = NULL;
     CFNumberRef aNum = NULL;
     CFArrayRef anArray = NULL;
-    PyObject* result = NULL;
-    PyObject* v;
+    TyObject* result = NULL;
+    TyObject* v;
     int r;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     proxyDict = SCDynamicStoreCopyProxies(NULL);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (!proxyDict) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
 
-    result = PyDict_New();
+    result = TyDict_New();
     if (result == NULL) goto error;
 
     aNum = CFDictionaryGetValue(proxyDict,
         kSCPropNetProxiesExcludeSimpleHostnames);
     if (aNum == NULL) {
-        v = PyBool_FromLong(0);
+        v = TyBool_FromLong(0);
     } else {
-        v = PyBool_FromLong(cfnum_to_int32(aNum));
+        v = TyBool_FromLong(cfnum_to_int32(aNum));
     }
 
     if (v == NULL) goto error;
 
-    r = PyDict_SetItemString(result, "exclude_simple", v);
-    Py_CLEAR(v);
+    r = TyDict_SetItemString(result, "exclude_simple", v);
+    Ty_CLEAR(v);
     if (r == -1) goto error;
 
     anArray = CFDictionaryGetValue(proxyDict,
@@ -97,11 +97,11 @@ get_proxy_settings(PyObject* Py_UNUSED(mod), PyObject *Py_UNUSED(ignored))
     if (anArray != NULL) {
         CFIndex len = CFArrayGetCount(anArray);
         CFIndex i;
-        v = PyTuple_New(len);
+        v = TyTuple_New(len);
         if (v == NULL) goto error;
 
-        r = PyDict_SetItemString(result, "exceptions", v);
-        Py_DECREF(v);
+        r = TyDict_SetItemString(result, "exceptions", v);
+        Ty_DECREF(v);
         if (r == -1) goto error;
 
         for (i = 0; i < len; i++) {
@@ -109,13 +109,13 @@ get_proxy_settings(PyObject* Py_UNUSED(mod), PyObject *Py_UNUSED(ignored))
 
             aString = CFArrayGetValueAtIndex(anArray, i);
             if (aString == NULL) {
-                PyTuple_SetItem(v, i, Py_NewRef(Py_None));
+                TyTuple_SetItem(v, i, Ty_NewRef(Ty_None));
             } else {
-                PyObject* t = cfstring_to_pystring(aString);
+                TyObject* t = cfstring_to_pystring(aString);
                 if (!t) {
-                    PyTuple_SetItem(v, i, Py_NewRef(Py_None));
+                    TyTuple_SetItem(v, i, Ty_NewRef(Ty_None));
                 } else {
-                    PyTuple_SetItem(v, i, t);
+                    TyTuple_SetItem(v, i, t);
                 }
             }
         }
@@ -126,12 +126,12 @@ get_proxy_settings(PyObject* Py_UNUSED(mod), PyObject *Py_UNUSED(ignored))
 
 error:
     if (proxyDict)  CFRelease(proxyDict);
-    Py_XDECREF(result);
+    Ty_XDECREF(result);
     return NULL;
 }
 
 static int
-set_proxy(PyObject* proxies, const char* proto, CFDictionaryRef proxyDict,
+set_proxy(TyObject* proxies, const char* proto, CFDictionaryRef proxyDict,
                 CFStringRef enabledKey,
                 CFStringRef hostKey, CFStringRef portKey)
 {
@@ -146,19 +146,19 @@ set_proxy(PyObject* proxies, const char* proto, CFDictionaryRef proxyDict,
 
         if (hostString) {
             int r;
-            PyObject* h = cfstring_to_pystring(hostString);
-            PyObject* v;
+            TyObject* h = cfstring_to_pystring(hostString);
+            TyObject* v;
             if (h) {
                 if (aNum) {
                     int32_t port = cfnum_to_int32(aNum);
-                    v = PyUnicode_FromFormat("http://%U:%ld", h, (long)port);
+                    v = TyUnicode_FromFormat("http://%U:%ld", h, (long)port);
                 } else {
-                    v = PyUnicode_FromFormat("http://%U", h);
+                    v = TyUnicode_FromFormat("http://%U", h);
                 }
-                Py_DECREF(h);
+                Ty_DECREF(h);
                 if (!v) return -1;
-                r = PyDict_SetItemString(proxies, proto, v);
-                Py_DECREF(v);
+                r = TyDict_SetItemString(proxies, proto, v);
+                Ty_DECREF(v);
                 return r;
             }
         }
@@ -169,22 +169,22 @@ set_proxy(PyObject* proxies, const char* proto, CFDictionaryRef proxyDict,
 
 
 
-static PyObject*
-get_proxies(PyObject* Py_UNUSED(mod), PyObject *Py_UNUSED(ignored))
+static TyObject*
+get_proxies(TyObject* Ty_UNUSED(mod), TyObject *Ty_UNUSED(ignored))
 {
-    PyObject* result = NULL;
+    TyObject* result = NULL;
     int r;
     CFDictionaryRef proxyDict = NULL;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     proxyDict = SCDynamicStoreCopyProxies(NULL);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (proxyDict == NULL) {
-        return PyDict_New();
+        return TyDict_New();
     }
 
-    result = PyDict_New();
+    result = TyDict_New();
     if (result == NULL) goto error;
 
     r = set_proxy(result, "http", proxyDict,
@@ -217,11 +217,11 @@ get_proxies(PyObject* Py_UNUSED(mod), PyObject *Py_UNUSED(ignored))
     return result;
 error:
     if (proxyDict)  CFRelease(proxyDict);
-    Py_XDECREF(result);
+    Ty_XDECREF(result);
     return NULL;
 }
 
-static PyMethodDef mod_methods[] = {
+static TyMethodDef mod_methods[] = {
     {
         "_get_proxy_settings",
         get_proxy_settings,
@@ -238,12 +238,12 @@ static PyMethodDef mod_methods[] = {
 };
 
 static PyModuleDef_Slot _scproxy_slots[] = {
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef _scproxy_module = {
+static struct TyModuleDef _scproxy_module = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_scproxy",
     .m_size = 0,

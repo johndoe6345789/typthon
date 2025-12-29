@@ -1,8 +1,8 @@
-// The PyMem_ family:  low-level memory allocation interfaces.
+// The TyMem_ family:  low-level memory allocation interfaces.
 // See objimpl.h for the PyObject_ memory family.
 
-#ifndef Py_PYMEM_H
-#define Py_PYMEM_H
+#ifndef Ty_PYMEM_H
+#define Ty_PYMEM_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -15,13 +15,13 @@ extern "C" {
    the macros may (or may not) expose details for speed, if you do use the
    macros you must recompile your extensions with each Python release.
 
-   Never mix calls to PyMem_ with calls to the platform malloc/realloc/
+   Never mix calls to TyMem_ with calls to the platform malloc/realloc/
    calloc/free.  For example, on Windows different DLLs may end up using
-   different heaps, and if you use PyMem_Malloc you'll get the memory from the
+   different heaps, and if you use TyMem_Malloc you'll get the memory from the
    heap used by the Python DLL; it could be a disaster if you free()'ed that
-   directly in your own extension.  Using PyMem_Free instead ensures Python
+   directly in your own extension.  Using TyMem_Free instead ensures Python
    can return the memory to the proper heap.  As another example, in
-   a debug build (Py_DEBUG macro), Python wraps all calls to all PyMem_ and
+   a debug build (Ty_DEBUG macro), Python wraps all calls to all TyMem_ and
    PyObject_ memory functions in special debugging wrappers that add additional
    debugging info to dynamic memory blocks.  The system routines have no idea
    what to do with that stuff, and the Python wrappers have no idea what to do
@@ -45,10 +45,10 @@ extern "C" {
    performed on failure (no exception is set, no warning is printed, etc).
 */
 
-PyAPI_FUNC(void *) PyMem_Malloc(size_t size);
-PyAPI_FUNC(void *) PyMem_Calloc(size_t nelem, size_t elsize);
-PyAPI_FUNC(void *) PyMem_Realloc(void *ptr, size_t new_size);
-PyAPI_FUNC(void) PyMem_Free(void *ptr);
+PyAPI_FUNC(void *) TyMem_Malloc(size_t size);
+PyAPI_FUNC(void *) TyMem_Calloc(size_t nelem, size_t elsize);
+PyAPI_FUNC(void *) TyMem_Realloc(void *ptr, size_t new_size);
+PyAPI_FUNC(void) TyMem_Free(void *ptr);
 
 /*
  * Type-oriented memory interface
@@ -60,9 +60,9 @@ PyAPI_FUNC(void) PyMem_Free(void *ptr);
  * overflow checking is always done.
  */
 
-#define PyMem_New(type, n) \
+#define TyMem_New(type, n) \
   ( ((size_t)(n) > PY_SSIZE_T_MAX / sizeof(type)) ? NULL :      \
-        ( (type *) PyMem_Malloc((n) * sizeof(type)) ) )
+        ( (type *) TyMem_Malloc((n) * sizeof(type)) ) )
 
 /*
  * The value of (p) is always clobbered by this macro regardless of success.
@@ -70,41 +70,41 @@ PyAPI_FUNC(void) PyMem_Free(void *ptr);
  * error if so.  This means the original value of (p) MUST be saved for the
  * caller's memory error handler to not lose track of it.
  */
-#define PyMem_Resize(p, type, n) \
+#define TyMem_Resize(p, type, n) \
   ( (p) = ((size_t)(n) > PY_SSIZE_T_MAX / sizeof(type)) ? NULL :        \
-        (type *) PyMem_Realloc((p), (n) * sizeof(type)) )
+        (type *) TyMem_Realloc((p), (n) * sizeof(type)) )
 
 
 // Deprecated aliases only kept for backward compatibility.
-// PyMem_Del and PyMem_DEL are defined with no parameter to be able to use
-// them as function pointers (ex: dealloc = PyMem_Del).
-#define PyMem_MALLOC(n)           PyMem_Malloc((n))
-#define PyMem_NEW(type, n)        PyMem_New(type, (n))
-#define PyMem_REALLOC(p, n)       PyMem_Realloc((p), (n))
-#define PyMem_RESIZE(p, type, n)  PyMem_Resize((p), type, (n))
-#define PyMem_FREE(p)             PyMem_Free((p))
-#define PyMem_Del(p)              PyMem_Free((p))
-#define PyMem_DEL(p)              PyMem_Free((p))
+// TyMem_Del and TyMem_DEL are defined with no parameter to be able to use
+// them as function pointers (ex: dealloc = TyMem_Del).
+#define TyMem_MALLOC(n)           TyMem_Malloc((n))
+#define TyMem_NEW(type, n)        TyMem_New(type, (n))
+#define TyMem_REALLOC(p, n)       TyMem_Realloc((p), (n))
+#define TyMem_RESIZE(p, type, n)  TyMem_Resize((p), type, (n))
+#define TyMem_FREE(p)             TyMem_Free((p))
+#define TyMem_Del(p)              TyMem_Free((p))
+#define TyMem_DEL(p)              TyMem_Free((p))
 
 
-#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030d0000
+#if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x030d0000
 // Memory allocator which doesn't require the GIL to be held.
 // Usually, it's just a thin wrapper to functions of the standard C library:
 // malloc(), calloc(), realloc() and free(). The difference is that
 // tracemalloc can track these memory allocations.
-PyAPI_FUNC(void *) PyMem_RawMalloc(size_t size);
-PyAPI_FUNC(void *) PyMem_RawCalloc(size_t nelem, size_t elsize);
-PyAPI_FUNC(void *) PyMem_RawRealloc(void *ptr, size_t new_size);
-PyAPI_FUNC(void) PyMem_RawFree(void *ptr);
+PyAPI_FUNC(void *) TyMem_RawMalloc(size_t size);
+PyAPI_FUNC(void *) TyMem_RawCalloc(size_t nelem, size_t elsize);
+PyAPI_FUNC(void *) TyMem_RawRealloc(void *ptr, size_t new_size);
+PyAPI_FUNC(void) TyMem_RawFree(void *ptr);
 #endif
 
-#ifndef Py_LIMITED_API
-#  define Py_CPYTHON_PYMEM_H
+#ifndef Ty_LIMITED_API
+#  define Ty_CPYTHON_PYMEM_H
 #  include "cpython/pymem.h"
-#  undef Py_CPYTHON_PYMEM_H
+#  undef Ty_CPYTHON_PYMEM_H
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif   // !Py_PYMEM_H
+#endif   // !Ty_PYMEM_H

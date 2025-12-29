@@ -59,49 +59,49 @@
     #define USE_COMPUTED_GOTOS 0
 #endif
 
-#ifdef Py_STATS
+#ifdef Ty_STATS
 #define INSTRUCTION_STATS(op) \
     do { \
         OPCODE_EXE_INC(op); \
-        if (_Py_stats) _Py_stats->opcode_stats[lastopcode].pair_count[op]++; \
+        if (_Ty_stats) _Ty_stats->opcode_stats[lastopcode].pair_count[op]++; \
         lastopcode = op; \
     } while (0)
 #else
 #define INSTRUCTION_STATS(op) ((void)0)
 #endif
 
-#ifdef Py_STATS
-#   define TAIL_CALL_PARAMS _PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState *tstate, _Py_CODEUNIT *next_instr, int oparg, int lastopcode
+#ifdef Ty_STATS
+#   define TAIL_CALL_PARAMS _PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState *tstate, _Ty_CODEUNIT *next_instr, int oparg, int lastopcode
 #   define TAIL_CALL_ARGS frame, stack_pointer, tstate, next_instr, oparg, lastopcode
 #else
-#   define TAIL_CALL_PARAMS _PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState *tstate, _Py_CODEUNIT *next_instr, int oparg
+#   define TAIL_CALL_PARAMS _PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState *tstate, _Ty_CODEUNIT *next_instr, int oparg
 #   define TAIL_CALL_ARGS frame, stack_pointer, tstate, next_instr, oparg
 #endif
 
-#if Py_TAIL_CALL_INTERP
+#if Ty_TAIL_CALL_INTERP
     // Note: [[clang::musttail]] works for GCC 15, but not __attribute__((musttail)) at the moment.
-#   define Py_MUSTTAIL [[clang::musttail]]
-#   define Py_PRESERVE_NONE_CC __attribute__((preserve_none))
-    Py_PRESERVE_NONE_CC typedef PyObject* (*py_tail_call_funcptr)(TAIL_CALL_PARAMS);
+#   define Ty_MUSTTAIL [[clang::musttail]]
+#   define Ty_PRESERVE_NONE_CC __attribute__((preserve_none))
+    Ty_PRESERVE_NONE_CC typedef TyObject* (*py_tail_call_funcptr)(TAIL_CALL_PARAMS);
 
-#   define TARGET(op) Py_PRESERVE_NONE_CC PyObject *_TAIL_CALL_##op(TAIL_CALL_PARAMS)
+#   define TARGET(op) Ty_PRESERVE_NONE_CC TyObject *_TAIL_CALL_##op(TAIL_CALL_PARAMS)
 #   define DISPATCH_GOTO() \
         do { \
-            Py_MUSTTAIL return (INSTRUCTION_TABLE[opcode])(TAIL_CALL_ARGS); \
+            Ty_MUSTTAIL return (INSTRUCTION_TABLE[opcode])(TAIL_CALL_ARGS); \
         } while (0)
 #   define JUMP_TO_LABEL(name) \
         do { \
-            Py_MUSTTAIL return (_TAIL_CALL_##name)(TAIL_CALL_ARGS); \
+            Ty_MUSTTAIL return (_TAIL_CALL_##name)(TAIL_CALL_ARGS); \
         } while (0)
-#   ifdef Py_STATS
+#   ifdef Ty_STATS
 #       define JUMP_TO_PREDICTED(name) \
             do { \
-                Py_MUSTTAIL return (_TAIL_CALL_##name)(frame, stack_pointer, tstate, this_instr, oparg, lastopcode); \
+                Ty_MUSTTAIL return (_TAIL_CALL_##name)(frame, stack_pointer, tstate, this_instr, oparg, lastopcode); \
             } while (0)
 #   else
 #       define JUMP_TO_PREDICTED(name) \
             do { \
-                Py_MUSTTAIL return (_TAIL_CALL_##name)(frame, stack_pointer, tstate, this_instr, oparg); \
+                Ty_MUSTTAIL return (_TAIL_CALL_##name)(frame, stack_pointer, tstate, this_instr, oparg); \
             } while (0)
 #   endif
 #    define LABEL(name) TARGET(name)
@@ -120,19 +120,19 @@
 #endif
 
 /* PRE_DISPATCH_GOTO() does lltrace if enabled. Normally a no-op */
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 #define PRE_DISPATCH_GOTO() if (frame->lltrace >= 5) { \
     lltrace_instruction(frame, stack_pointer, next_instr, opcode, oparg); }
 #else
 #define PRE_DISPATCH_GOTO() ((void)0)
 #endif
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 #define LLTRACE_RESUME_FRAME() \
 do { \
-    _PyFrame_SetStackPointer(frame, stack_pointer); \
+    _TyFrame_SetStackPointer(frame, stack_pointer); \
     int lltrace = maybe_lltrace_resume_frame(frame, GLOBALS()); \
-    stack_pointer = _PyFrame_GetStackPointer(frame); \
+    stack_pointer = _TyFrame_GetStackPointer(frame); \
     if (lltrace < 0) { \
         JUMP_TO_LABEL(exit_unwind); \
     } \
@@ -142,8 +142,8 @@ do { \
 #define LLTRACE_RESUME_FRAME() ((void)0)
 #endif
 
-#ifdef Py_GIL_DISABLED
-#define QSBR_QUIESCENT_STATE(tstate) _Py_qsbr_quiescent_state(((_PyThreadStateImpl *)tstate)->qsbr)
+#ifdef Ty_GIL_DISABLED
+#define QSBR_QUIESCENT_STATE(tstate) _Ty_qsbr_quiescent_state(((_PyThreadStateImpl *)tstate)->qsbr)
 #else
 #define QSBR_QUIESCENT_STATE(tstate)
 #endif
@@ -168,7 +168,7 @@ do { \
 #define DISPATCH_INLINED(NEW_FRAME)                     \
     do {                                                \
         assert(tstate->interp->eval_frame == NULL);     \
-        _PyFrame_SetStackPointer(frame, stack_pointer); \
+        _TyFrame_SetStackPointer(frame, stack_pointer); \
         assert((NEW_FRAME)->previous == frame);         \
         frame = tstate->current_frame = (NEW_FRAME);     \
         CALL_STAT_INC(inlined_py_calls);                \
@@ -177,24 +177,24 @@ do { \
 
 /* Tuple access macros */
 
-#ifndef Py_DEBUG
-#define GETITEM(v, i) PyTuple_GET_ITEM((v), (i))
+#ifndef Ty_DEBUG
+#define GETITEM(v, i) TyTuple_GET_ITEM((v), (i))
 #else
-static inline PyObject *
-GETITEM(PyObject *v, Py_ssize_t i) {
-    assert(PyTuple_Check(v));
+static inline TyObject *
+GETITEM(TyObject *v, Ty_ssize_t i) {
+    assert(TyTuple_Check(v));
     assert(i >= 0);
-    assert(i < PyTuple_GET_SIZE(v));
-    return PyTuple_GET_ITEM(v, i);
+    assert(i < TyTuple_GET_SIZE(v));
+    return TyTuple_GET_ITEM(v, i);
 }
 #endif
 
 /* Code access macros */
 
 /* The integer overflow is checked by an assertion below. */
-#define INSTR_OFFSET() ((int)(next_instr - _PyFrame_GetBytecode(frame)))
+#define INSTR_OFFSET() ((int)(next_instr - _TyFrame_GetBytecode(frame)))
 #define NEXTOPARG()  do { \
-        _Py_CODEUNIT word  = {.cache = FT_ATOMIC_LOAD_UINT16_RELAXED(*(uint16_t*)next_instr)}; \
+        _Ty_CODEUNIT word  = {.cache = FT_ATOMIC_LOAD_UINT16_RELAXED(*(uint16_t*)next_instr)}; \
         opcode = word.op.code; \
         oparg = word.op.arg; \
     } while (0)
@@ -206,15 +206,15 @@ GETITEM(PyObject *v, Py_ssize_t i) {
 #define JUMPBY(x)       (next_instr += (x))
 #define SKIP_OVER(x)    (next_instr += (x))
 
-#define STACK_LEVEL()     ((int)(stack_pointer - _PyFrame_Stackbase(frame)))
-#define STACK_SIZE()      (_PyFrame_GetCode(frame)->co_stacksize)
+#define STACK_LEVEL()     ((int)(stack_pointer - _TyFrame_Stackbase(frame)))
+#define STACK_SIZE()      (_TyFrame_GetCode(frame)->co_stacksize)
 
 #define WITHIN_STACK_BOUNDS() \
    (frame->owner == FRAME_OWNED_BY_INTERPRETER || (STACK_LEVEL() >= 0 && STACK_LEVEL() <= STACK_SIZE()))
 
 /* Data access macros */
-#define FRAME_CO_CONSTS (_PyFrame_GetCode(frame)->co_consts)
-#define FRAME_CO_NAMES  (_PyFrame_GetCode(frame)->co_names)
+#define FRAME_CO_CONSTS (_TyFrame_GetCode(frame)->co_consts)
+#define FRAME_CO_NAMES  (_TyFrame_GetCode(frame)->co_names)
 
 /* Local variable macros */
 
@@ -222,7 +222,7 @@ GETITEM(PyObject *v, Py_ssize_t i) {
 #define GETLOCAL(i)     (frame->localsplus[i])
 
 
-#ifdef Py_STATS
+#ifdef Ty_STATS
 #define UPDATE_MISS_STATS(INSTNAME)                              \
     do {                                                         \
         STAT_INC(opcode, miss);                                  \
@@ -252,9 +252,9 @@ GETITEM(PyObject *v, Py_ssize_t i) {
 // NOTE: The object must be unlocked on every exit code path and you should
 // avoid any potentially escaping calls (like PyStackRef_CLOSE) while the
 // object is locked.
-#ifdef Py_GIL_DISABLED
-#  define LOCK_OBJECT(op) PyMutex_LockFast(&(_PyObject_CAST(op))->ob_mutex)
-#  define UNLOCK_OBJECT(op) PyMutex_Unlock(&(_PyObject_CAST(op))->ob_mutex)
+#ifdef Ty_GIL_DISABLED
+#  define LOCK_OBJECT(op) PyMutex_LockFast(&(_TyObject_CAST(op))->ob_mutex)
+#  define UNLOCK_OBJECT(op) PyMutex_Unlock(&(_TyObject_CAST(op))->ob_mutex)
 #else
 #  define LOCK_OBJECT(op) (1)
 #  define UNLOCK_OBJECT(op) ((void)0)
@@ -263,15 +263,15 @@ GETITEM(PyObject *v, Py_ssize_t i) {
 #define GLOBALS() frame->f_globals
 #define BUILTINS() frame->f_builtins
 #define LOCALS() frame->f_locals
-#define CONSTS() _PyFrame_GetCode(frame)->co_consts
-#define NAMES() _PyFrame_GetCode(frame)->co_names
+#define CONSTS() _TyFrame_GetCode(frame)->co_consts
+#define NAMES() _TyFrame_GetCode(frame)->co_names
 
 #define DTRACE_FUNCTION_ENTRY()  \
     if (PyDTrace_FUNCTION_ENTRY_ENABLED()) { \
         dtrace_function_entry(frame); \
     }
 
-/* This takes a uint16_t instead of a _Py_BackoffCounter,
+/* This takes a uint16_t instead of a _Ty_BackoffCounter,
  * because it is used directly on the cache entry in generated code,
  * which is always an integral type. */
 #define ADAPTIVE_COUNTER_TRIGGERS(COUNTER) \
@@ -315,9 +315,9 @@ do { \
     if (tstate->tracing) {\
         next_instr = dest; \
     } else { \
-        _PyFrame_SetStackPointer(frame, stack_pointer); \
-        next_instr = _Py_call_instrumentation_jump(this_instr, tstate, event, frame, src, dest); \
-        stack_pointer = _PyFrame_GetStackPointer(frame); \
+        _TyFrame_SetStackPointer(frame, stack_pointer); \
+        next_instr = _Ty_call_instrumentation_jump(this_instr, tstate, event, frame, src, dest); \
+        stack_pointer = _TyFrame_GetStackPointer(frame); \
         if (next_instr == NULL) { \
             next_instr = (dest)+1; \
             JUMP_TO_LABEL(error); \
@@ -326,12 +326,12 @@ do { \
 } while (0);
 
 
-static inline int _Py_EnterRecursivePy(PyThreadState *tstate) {
+static inline int _Ty_EnterRecursivePy(PyThreadState *tstate) {
     return (tstate->py_recursion_remaining-- <= 0) &&
-        _Py_CheckRecursiveCallPy(tstate);
+        _Ty_CheckRecursiveCallPy(tstate);
 }
 
-static inline void _Py_LeaveRecursiveCallPy(PyThreadState *tstate)  {
+static inline void _Ty_LeaveRecursiveCallPy(PyThreadState *tstate)  {
     tstate->py_recursion_remaining++;
 }
 
@@ -347,26 +347,26 @@ static inline void _Py_LeaveRecursiveCallPy(PyThreadState *tstate)  {
 /* There's no STORE_IP(), it's inlined by the code generator. */
 
 #define LOAD_SP() \
-stack_pointer = _PyFrame_GetStackPointer(frame)
+stack_pointer = _TyFrame_GetStackPointer(frame)
 
 #define SAVE_SP() \
-_PyFrame_SetStackPointer(frame, stack_pointer)
+_TyFrame_SetStackPointer(frame, stack_pointer)
 
 /* Tier-switching macros. */
 
-#ifdef _Py_JIT
+#ifdef _Ty_JIT
 #define GOTO_TIER_TWO(EXECUTOR)                        \
 do {                                                   \
     OPT_STAT_INC(traces_executed);                     \
     _PyExecutorObject *_executor = (EXECUTOR);         \
-    tstate->current_executor = (PyObject *)_executor;  \
+    tstate->current_executor = (TyObject *)_executor;  \
     jit_func jitted = _executor->jit_code;             \
     /* Keep the shim frame alive via the executor: */  \
-    Py_INCREF(_executor);                              \
+    Ty_INCREF(_executor);                              \
     next_instr = jitted(frame, stack_pointer, tstate); \
-    Py_DECREF(_executor);                              \
+    Ty_DECREF(_executor);                              \
     frame = tstate->current_frame;                     \
-    stack_pointer = _PyFrame_GetStackPointer(frame);   \
+    stack_pointer = _TyFrame_GetStackPointer(frame);   \
     if (next_instr == NULL) {                          \
         next_instr = frame->instr_ptr;                 \
         JUMP_TO_LABEL(error);                          \
@@ -378,7 +378,7 @@ do {                                                   \
 do { \
     OPT_STAT_INC(traces_executed); \
     _PyExecutorObject *_executor = (EXECUTOR); \
-    tstate->current_executor = (PyObject *)_executor; \
+    tstate->current_executor = (TyObject *)_executor; \
     next_uop = _executor->trace; \
     assert(next_uop->opcode == _START_EXECUTOR); \
     goto enter_tier_two; \
@@ -392,8 +392,8 @@ do { \
         next_instr = (TARGET);                                        \
         assert(tstate->current_executor == NULL);                     \
         OPT_HIST(trace_uop_execution_counter, trace_run_length_hist); \
-        _PyFrame_SetStackPointer(frame, stack_pointer);               \
-        stack_pointer = _PyFrame_GetStackPointer(frame);              \
+        _TyFrame_SetStackPointer(frame, stack_pointer);               \
+        stack_pointer = _TyFrame_GetStackPointer(frame);              \
         if (next_instr == NULL)                                       \
         {                                                             \
             next_instr = frame->instr_ptr;                            \
@@ -412,13 +412,13 @@ do { \
 
 /* Stackref macros */
 
-/* How much scratch space to give stackref to PyObject* conversion. */
+/* How much scratch space to give stackref to TyObject* conversion. */
 #define MAX_STACKREF_SCRATCH 10
 
 #define STACKREFS_TO_PYOBJECTS(ARGS, ARG_COUNT, NAME) \
     /* +1 because vectorcall might use -1 to write self */ \
-    PyObject *NAME##_temp[MAX_STACKREF_SCRATCH+1]; \
-    PyObject **NAME = _PyObjectArray_FromStackRefArray(ARGS, ARG_COUNT, NAME##_temp + 1);
+    TyObject *NAME##_temp[MAX_STACKREF_SCRATCH+1]; \
+    TyObject **NAME = _PyObjectArray_FromStackRefArray(ARGS, ARG_COUNT, NAME##_temp + 1);
 
 #define STACKREFS_TO_PYOBJECTS_CLEANUP(NAME) \
     /* +1 because we +1 previously */ \

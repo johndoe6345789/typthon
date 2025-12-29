@@ -11,7 +11,7 @@ forgotten) from the programmer.
 #include "Python.h"
 #include "windows.h"
 
-#ifdef Py_ENABLE_SHARED
+#ifdef Ty_ENABLE_SHARED
 
 // Python Globals
 HMODULE PyWin_DLLhModule = NULL;
@@ -33,4 +33,4 @@ BOOL    WINAPI  DllMain (HANDLE hInst,
     return TRUE;
 }
 
-#endif /* Py_ENABLE_SHARED */
+#endif /* Ty_ENABLE_SHARED */

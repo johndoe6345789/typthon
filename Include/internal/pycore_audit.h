@@ -1,35 +1,35 @@
-#ifndef Py_INTERNAL_AUDIT_H
-#define Py_INTERNAL_AUDIT_H
+#ifndef Ty_INTERNAL_AUDIT_H
+#define Ty_INTERNAL_AUDIT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 
 /* Runtime audit hook state */
 
-typedef struct _Py_AuditHookEntry {
-    struct _Py_AuditHookEntry *next;
-    Py_AuditHookFunction hookCFunction;
+typedef struct _Ty_AuditHookEntry {
+    struct _Ty_AuditHookEntry *next;
+    Ty_AuditHookFunction hookCFunction;
     void *userData;
-} _Py_AuditHookEntry;
+} _Ty_AuditHookEntry;
 
 
-extern int _PySys_Audit(
+extern int _TySys_Audit(
     PyThreadState *tstate,
     const char *event,
     const char *argFormat,
     ...);
 
-// _PySys_ClearAuditHooks() must not be exported: use extern rather than
+// _TySys_ClearAuditHooks() must not be exported: use extern rather than
 // PyAPI_FUNC(). We want minimal exposure of this function.
-extern void _PySys_ClearAuditHooks(PyThreadState *tstate);
+extern void _TySys_ClearAuditHooks(PyThreadState *tstate);
 
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_AUDIT_H */
+#endif /* !Ty_INTERNAL_AUDIT_H */

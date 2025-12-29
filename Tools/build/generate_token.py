@@ -61,14 +61,14 @@ token_h_template = f"""\
 token_h_template += """\
 
 /* Token types */
-#ifndef Py_INTERNAL_TOKEN_H
-#define Py_INTERNAL_TOKEN_H
+#ifndef Ty_INTERNAL_TOKEN_H
+#define Ty_INTERNAL_TOKEN_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #undef TILDE   /* Prevent clash of our definition with system macro. Ex AIX, ioctl.h */
@@ -100,7 +100,7 @@ PyAPI_FUNC(int) _PyToken_ThreeChars(int, int, int);
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_INTERNAL_TOKEN_H
+#endif  // !Ty_INTERNAL_TOKEN_H
 """
 
 def make_h(infile, outfile='Include/internal/pycore_token.h'):

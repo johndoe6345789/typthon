@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_OPTIMIZER_H
-#define Py_INTERNAL_OPTIMIZER_H
+#ifndef Ty_INTERNAL_OPTIMIZER_H
+#define Ty_INTERNAL_OPTIMIZER_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include "pycore_typedefs.h"      // _PyInterpreterFrame
@@ -21,10 +21,10 @@ typedef struct _PyExecutorLinkListNode {
 
 /* Bloom filter with m = 256
  * https://en.wikipedia.org/wiki/Bloom_filter */
-#define _Py_BLOOM_FILTER_WORDS 8
+#define _Ty_BLOOM_FILTER_WORDS 8
 
 typedef struct {
-    uint32_t bits[_Py_BLOOM_FILTER_WORDS];
+    uint32_t bits[_Ty_BLOOM_FILTER_WORDS];
 } _PyBloomFilter;
 
 typedef struct {
@@ -61,14 +61,14 @@ typedef struct {
     };
     uint64_t operand0;  // A cache entry
     uint64_t operand1;
-#ifdef Py_STATS
+#ifdef Ty_STATS
     uint64_t execution_count;
 #endif
 } _PyUOpInstruction;
 
 typedef struct {
     uint32_t target;
-    _Py_BackoffCounter temperature;
+    _Ty_BackoffCounter temperature;
     struct _PyExecutorObject *executor;
 } _PyExitData;
 
@@ -90,26 +90,26 @@ typedef struct _PyExecutorObject {
 #define EXECUTOR_DELETE_LIST_MAX 100
 
 // Export for '_opcode' shared extension (JIT compiler).
-PyAPI_FUNC(_PyExecutorObject*) _Py_GetExecutor(PyCodeObject *code, int offset);
+PyAPI_FUNC(_PyExecutorObject*) _Ty_GetExecutor(PyCodeObject *code, int offset);
 
-void _Py_ExecutorInit(_PyExecutorObject *, const _PyBloomFilter *);
-void _Py_ExecutorDetach(_PyExecutorObject *);
-void _Py_BloomFilter_Init(_PyBloomFilter *);
-void _Py_BloomFilter_Add(_PyBloomFilter *bloom, void *obj);
-PyAPI_FUNC(void) _Py_Executor_DependsOn(_PyExecutorObject *executor, void *obj);
+void _Ty_ExecutorInit(_PyExecutorObject *, const _PyBloomFilter *);
+void _Ty_ExecutorDetach(_PyExecutorObject *);
+void _Ty_BloomFilter_Init(_PyBloomFilter *);
+void _Ty_BloomFilter_Add(_PyBloomFilter *bloom, void *obj);
+PyAPI_FUNC(void) _Ty_Executor_DependsOn(_PyExecutorObject *executor, void *obj);
 
-#define _Py_MAX_ALLOWED_BUILTINS_MODIFICATIONS 3
-#define _Py_MAX_ALLOWED_GLOBALS_MODIFICATIONS 6
+#define _Ty_MAX_ALLOWED_BUILTINS_MODIFICATIONS 3
+#define _Ty_MAX_ALLOWED_GLOBALS_MODIFICATIONS 6
 
-#ifdef _Py_TIER2
-PyAPI_FUNC(void) _Py_Executors_InvalidateDependency(PyInterpreterState *interp, void *obj, int is_invalidation);
-PyAPI_FUNC(void) _Py_Executors_InvalidateAll(PyInterpreterState *interp, int is_invalidation);
-PyAPI_FUNC(void) _Py_Executors_InvalidateCold(PyInterpreterState *interp);
+#ifdef _Ty_TIER2
+PyAPI_FUNC(void) _Ty_Executors_InvalidateDependency(PyInterpreterState *interp, void *obj, int is_invalidation);
+PyAPI_FUNC(void) _Ty_Executors_InvalidateAll(PyInterpreterState *interp, int is_invalidation);
+PyAPI_FUNC(void) _Ty_Executors_InvalidateCold(PyInterpreterState *interp);
 
 #else
-#  define _Py_Executors_InvalidateDependency(A, B, C) ((void)0)
-#  define _Py_Executors_InvalidateAll(A, B) ((void)0)
-#  define _Py_Executors_InvalidateCold(A) ((void)0)
+#  define _Ty_Executors_InvalidateDependency(A, B, C) ((void)0)
+#  define _Ty_Executors_InvalidateAll(A, B) ((void)0)
+#  define _Ty_Executors_InvalidateCold(A) ((void)0)
 
 #endif
 
@@ -122,11 +122,11 @@ PyAPI_FUNC(void) _Py_Executors_InvalidateCold(PyInterpreterState *interp);
 
 #define TRACE_STACK_SIZE 5
 
-int _Py_uop_analyze_and_optimize(_PyInterpreterFrame *frame,
+int _Ty_uop_analyze_and_optimize(_PyInterpreterFrame *frame,
     _PyUOpInstruction *trace, int trace_len, int curr_stackentries,
     _PyBloomFilter *dependencies);
 
-extern PyTypeObject _PyUOpExecutor_Type;
+extern TyTypeObject _PyUOpExecutor_Type;
 
 
 #define UOP_FORMAT_TARGET 0
@@ -183,7 +183,7 @@ typedef enum _JitSymType {
 typedef struct _jit_opt_known_class {
     uint8_t tag;
     uint32_t version;
-    PyTypeObject *type;
+    TyTypeObject *type;
 } JitOptKnownClass;
 
 typedef struct _jit_opt_known_version {
@@ -193,7 +193,7 @@ typedef struct _jit_opt_known_version {
 
 typedef struct _jit_opt_known_value {
     uint8_t tag;
-    PyObject *value;
+    TyObject *value;
 } JitOptKnownValue;
 
 #define MAX_SYMBOLIC_TUPLE_SIZE 7
@@ -221,7 +221,7 @@ typedef union _jit_opt_symbol {
 
 
 
-struct _Py_UOpsAbstractFrame {
+struct _Ty_UOpsAbstractFrame {
     // Max stacklen
     int stack_len;
     int locals_len;
@@ -231,7 +231,7 @@ struct _Py_UOpsAbstractFrame {
     JitOptSymbol **locals;
 };
 
-typedef struct _Py_UOpsAbstractFrame _Py_UOpsAbstractFrame;
+typedef struct _Ty_UOpsAbstractFrame _Ty_UOpsAbstractFrame;
 
 typedef struct ty_arena {
     int ty_curr_number;
@@ -244,8 +244,8 @@ typedef struct _JitOptContext {
     char out_of_space;
     bool contradiction;
     // The current "executing" frame.
-    _Py_UOpsAbstractFrame *frame;
-    _Py_UOpsAbstractFrame frames[MAX_ABSTRACT_FRAME_DEPTH];
+    _Ty_UOpsAbstractFrame *frame;
+    _Ty_UOpsAbstractFrame frames[MAX_ABSTRACT_FRAME_DEPTH];
     int curr_frame_depth;
 
     // Arena for the symbolic types.
@@ -256,47 +256,47 @@ typedef struct _JitOptContext {
     JitOptSymbol *locals_and_stack[MAX_ABSTRACT_INTERP_SIZE];
 } JitOptContext;
 
-extern bool _Py_uop_sym_is_null(JitOptSymbol *sym);
-extern bool _Py_uop_sym_is_not_null(JitOptSymbol *sym);
-extern bool _Py_uop_sym_is_const(JitOptContext *ctx, JitOptSymbol *sym);
-extern PyObject *_Py_uop_sym_get_const(JitOptContext *ctx, JitOptSymbol *sym);
-extern JitOptSymbol *_Py_uop_sym_new_unknown(JitOptContext *ctx);
-extern JitOptSymbol *_Py_uop_sym_new_not_null(JitOptContext *ctx);
-extern JitOptSymbol *_Py_uop_sym_new_type(
-    JitOptContext *ctx, PyTypeObject *typ);
-extern JitOptSymbol *_Py_uop_sym_new_const(JitOptContext *ctx, PyObject *const_val);
-extern JitOptSymbol *_Py_uop_sym_new_null(JitOptContext *ctx);
-extern bool _Py_uop_sym_has_type(JitOptSymbol *sym);
-extern bool _Py_uop_sym_matches_type(JitOptSymbol *sym, PyTypeObject *typ);
-extern bool _Py_uop_sym_matches_type_version(JitOptSymbol *sym, unsigned int version);
-extern void _Py_uop_sym_set_null(JitOptContext *ctx, JitOptSymbol *sym);
-extern void _Py_uop_sym_set_non_null(JitOptContext *ctx, JitOptSymbol *sym);
-extern void _Py_uop_sym_set_type(JitOptContext *ctx, JitOptSymbol *sym, PyTypeObject *typ);
-extern bool _Py_uop_sym_set_type_version(JitOptContext *ctx, JitOptSymbol *sym, unsigned int version);
-extern void _Py_uop_sym_set_const(JitOptContext *ctx, JitOptSymbol *sym, PyObject *const_val);
-extern bool _Py_uop_sym_is_bottom(JitOptSymbol *sym);
-extern int _Py_uop_sym_truthiness(JitOptContext *ctx, JitOptSymbol *sym);
-extern PyTypeObject *_Py_uop_sym_get_type(JitOptSymbol *sym);
-extern bool _Py_uop_sym_is_immortal(JitOptSymbol *sym);
-extern JitOptSymbol *_Py_uop_sym_new_tuple(JitOptContext *ctx, int size, JitOptSymbol **args);
-extern JitOptSymbol *_Py_uop_sym_tuple_getitem(JitOptContext *ctx, JitOptSymbol *sym, int item);
-extern int _Py_uop_sym_tuple_length(JitOptSymbol *sym);
-extern JitOptSymbol *_Py_uop_sym_new_truthiness(JitOptContext *ctx, JitOptSymbol *value, bool truthy);
+extern bool _Ty_uop_sym_is_null(JitOptSymbol *sym);
+extern bool _Ty_uop_sym_is_not_null(JitOptSymbol *sym);
+extern bool _Ty_uop_sym_is_const(JitOptContext *ctx, JitOptSymbol *sym);
+extern TyObject *_Ty_uop_sym_get_const(JitOptContext *ctx, JitOptSymbol *sym);
+extern JitOptSymbol *_Ty_uop_sym_new_unknown(JitOptContext *ctx);
+extern JitOptSymbol *_Ty_uop_sym_new_not_null(JitOptContext *ctx);
+extern JitOptSymbol *_Ty_uop_sym_new_type(
+    JitOptContext *ctx, TyTypeObject *typ);
+extern JitOptSymbol *_Ty_uop_sym_new_const(JitOptContext *ctx, TyObject *const_val);
+extern JitOptSymbol *_Ty_uop_sym_new_null(JitOptContext *ctx);
+extern bool _Ty_uop_sym_has_type(JitOptSymbol *sym);
+extern bool _Ty_uop_sym_matches_type(JitOptSymbol *sym, TyTypeObject *typ);
+extern bool _Ty_uop_sym_matches_type_version(JitOptSymbol *sym, unsigned int version);
+extern void _Ty_uop_sym_set_null(JitOptContext *ctx, JitOptSymbol *sym);
+extern void _Ty_uop_sym_set_non_null(JitOptContext *ctx, JitOptSymbol *sym);
+extern void _Ty_uop_sym_set_type(JitOptContext *ctx, JitOptSymbol *sym, TyTypeObject *typ);
+extern bool _Ty_uop_sym_set_type_version(JitOptContext *ctx, JitOptSymbol *sym, unsigned int version);
+extern void _Ty_uop_sym_set_const(JitOptContext *ctx, JitOptSymbol *sym, TyObject *const_val);
+extern bool _Ty_uop_sym_is_bottom(JitOptSymbol *sym);
+extern int _Ty_uop_sym_truthiness(JitOptContext *ctx, JitOptSymbol *sym);
+extern TyTypeObject *_Ty_uop_sym_get_type(JitOptSymbol *sym);
+extern bool _Ty_uop_sym_is_immortal(JitOptSymbol *sym);
+extern JitOptSymbol *_Ty_uop_sym_new_tuple(JitOptContext *ctx, int size, JitOptSymbol **args);
+extern JitOptSymbol *_Ty_uop_sym_tuple_getitem(JitOptContext *ctx, JitOptSymbol *sym, int item);
+extern int _Ty_uop_sym_tuple_length(JitOptSymbol *sym);
+extern JitOptSymbol *_Ty_uop_sym_new_truthiness(JitOptContext *ctx, JitOptSymbol *value, bool truthy);
 
-extern void _Py_uop_abstractcontext_init(JitOptContext *ctx);
-extern void _Py_uop_abstractcontext_fini(JitOptContext *ctx);
+extern void _Ty_uop_abstractcontext_init(JitOptContext *ctx);
+extern void _Ty_uop_abstractcontext_fini(JitOptContext *ctx);
 
-extern _Py_UOpsAbstractFrame *_Py_uop_frame_new(
+extern _Ty_UOpsAbstractFrame *_Ty_uop_frame_new(
     JitOptContext *ctx,
     PyCodeObject *co,
     int curr_stackentries,
     JitOptSymbol **args,
     int arg_len);
-extern int _Py_uop_frame_pop(JitOptContext *ctx);
+extern int _Ty_uop_frame_pop(JitOptContext *ctx);
 
-PyAPI_FUNC(PyObject *) _Py_uop_symbols_test(PyObject *self, PyObject *ignored);
+PyAPI_FUNC(TyObject *) _Ty_uop_symbols_test(TyObject *self, TyObject *ignored);
 
-PyAPI_FUNC(int) _PyOptimizer_Optimize(_PyInterpreterFrame *frame, _Py_CODEUNIT *start, _PyExecutorObject **exec_ptr, int chain_depth);
+PyAPI_FUNC(int) _PyOptimizer_Optimize(_PyInterpreterFrame *frame, _Ty_CODEUNIT *start, _PyExecutorObject **exec_ptr, int chain_depth);
 
 static inline int is_terminator(const _PyUOpInstruction *uop)
 {
@@ -308,11 +308,11 @@ static inline int is_terminator(const _PyUOpInstruction *uop)
 }
 
 PyAPI_FUNC(int) _PyDumpExecutors(FILE *out);
-#ifdef _Py_TIER2
-extern void _Py_ClearExecutorDeletionList(PyInterpreterState *interp);
+#ifdef _Ty_TIER2
+extern void _Ty_ClearExecutorDeletionList(PyInterpreterState *interp);
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_OPTIMIZER_H */
+#endif /* !Ty_INTERNAL_OPTIMIZER_H */

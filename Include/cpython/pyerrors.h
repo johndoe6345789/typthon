@@ -1,13 +1,13 @@
-#ifndef Py_CPYTHON_ERRORS_H
+#ifndef Ty_CPYTHON_ERRORS_H
 #  error "this header file must not be included directly"
 #endif
 
 /* Error objects */
 
 /* PyException_HEAD defines the initial segment of every exception class. */
-#define PyException_HEAD PyObject_HEAD PyObject *dict;\
-             PyObject *args; PyObject *notes; PyObject *traceback;\
-             PyObject *context; PyObject *cause;\
+#define PyException_HEAD PyObject_HEAD TyObject *dict;\
+             TyObject *args; TyObject *notes; TyObject *traceback;\
+             TyObject *context; TyObject *cause;\
              char suppress_context;
 
 typedef struct {
@@ -16,71 +16,71 @@ typedef struct {
 
 typedef struct {
     PyException_HEAD
-    PyObject *msg;
-    PyObject *excs;
+    TyObject *msg;
+    TyObject *excs;
 } PyBaseExceptionGroupObject;
 
 typedef struct {
     PyException_HEAD
-    PyObject *msg;
-    PyObject *filename;
-    PyObject *lineno;
-    PyObject *offset;
-    PyObject *end_lineno;
-    PyObject *end_offset;
-    PyObject *text;
-    PyObject *print_file_and_line;
-    PyObject *metadata;
+    TyObject *msg;
+    TyObject *filename;
+    TyObject *lineno;
+    TyObject *offset;
+    TyObject *end_lineno;
+    TyObject *end_offset;
+    TyObject *text;
+    TyObject *print_file_and_line;
+    TyObject *metadata;
 } PySyntaxErrorObject;
 
 typedef struct {
     PyException_HEAD
-    PyObject *msg;
-    PyObject *name;
-    PyObject *path;
-    PyObject *name_from;
+    TyObject *msg;
+    TyObject *name;
+    TyObject *path;
+    TyObject *name_from;
 } PyImportErrorObject;
 
 typedef struct {
     PyException_HEAD
-    PyObject *encoding;
-    PyObject *object;
-    Py_ssize_t start;
-    Py_ssize_t end;
-    PyObject *reason;
+    TyObject *encoding;
+    TyObject *object;
+    Ty_ssize_t start;
+    Ty_ssize_t end;
+    TyObject *reason;
 } PyUnicodeErrorObject;
 
 typedef struct {
     PyException_HEAD
-    PyObject *code;
+    TyObject *code;
 } PySystemExitObject;
 
 typedef struct {
     PyException_HEAD
-    PyObject *myerrno;
-    PyObject *strerror;
-    PyObject *filename;
-    PyObject *filename2;
+    TyObject *myerrno;
+    TyObject *strerror;
+    TyObject *filename;
+    TyObject *filename2;
 #ifdef MS_WINDOWS
-    PyObject *winerror;
+    TyObject *winerror;
 #endif
-    Py_ssize_t written;   /* only for BlockingIOError, -1 otherwise */
+    Ty_ssize_t written;   /* only for BlockingIOError, -1 otherwise */
 } PyOSErrorObject;
 
 typedef struct {
     PyException_HEAD
-    PyObject *value;
+    TyObject *value;
 } PyStopIterationObject;
 
 typedef struct {
     PyException_HEAD
-    PyObject *name;
+    TyObject *name;
 } PyNameErrorObject;
 
 typedef struct {
     PyException_HEAD
-    PyObject *obj;
-    PyObject *name;
+    TyObject *obj;
+    TyObject *name;
 } PyAttributeErrorObject;
 
 /* Compatibility typedefs */
@@ -91,13 +91,13 @@ typedef PyOSErrorObject PyWindowsErrorObject;
 
 /* Context manipulation (PEP 3134) */
 
-PyAPI_FUNC(void) _PyErr_ChainExceptions1(PyObject *);
+PyAPI_FUNC(void) _TyErr_ChainExceptions1(TyObject *);
 
 /* In exceptions.c */
 
-PyAPI_FUNC(PyObject*) PyUnstable_Exc_PrepReraiseStar(
-     PyObject *orig,
-     PyObject *excs);
+PyAPI_FUNC(TyObject*) PyUnstable_Exc_PrepReraiseStar(
+     TyObject *orig,
+     TyObject *excs);
 
 /* In signalmodule.c */
 
@@ -105,28 +105,28 @@ PyAPI_FUNC(int) PySignal_SetWakeupFd(int fd);
 
 /* Support for adding program text to SyntaxErrors */
 
-PyAPI_FUNC(void) PyErr_SyntaxLocationObject(
-    PyObject *filename,
+PyAPI_FUNC(void) TyErr_SyntaxLocationObject(
+    TyObject *filename,
     int lineno,
     int col_offset);
 
-PyAPI_FUNC(void) PyErr_RangedSyntaxLocationObject(
-    PyObject *filename,
+PyAPI_FUNC(void) TyErr_RangedSyntaxLocationObject(
+    TyObject *filename,
     int lineno,
     int col_offset,
     int end_lineno,
     int end_col_offset);
 
-PyAPI_FUNC(PyObject *) PyErr_ProgramTextObject(
-    PyObject *filename,
+PyAPI_FUNC(TyObject *) TyErr_ProgramTextObject(
+    TyObject *filename,
     int lineno);
 
-PyAPI_FUNC(void) _Py_NO_RETURN _Py_FatalErrorFunc(
+PyAPI_FUNC(void) _Ty_NO_RETURN _Ty_FatalErrorFunc(
     const char *func,
     const char *message);
 
-PyAPI_FUNC(void) PyErr_FormatUnraisable(const char *, ...);
+PyAPI_FUNC(void) TyErr_FormatUnraisable(const char *, ...);
 
-PyAPI_DATA(PyObject *) PyExc_PythonFinalizationError;
+PyAPI_DATA(TyObject *) TyExc_PythonFinalizationError;
 
-#define Py_FatalError(message) _Py_FatalErrorFunc(__func__, (message))
+#define Ty_FatalError(message) _Ty_FatalErrorFunc(__func__, (message))

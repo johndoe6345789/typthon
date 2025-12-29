@@ -1,31 +1,31 @@
 /* Python's malloc wrappers (see pymem.h) */
 
 #include "Python.h"
-#include "pycore_interp.h"        // _PyInterpreterState_HasFeature
+#include "pycore_interp.h"        // _TyInterpreterState_HasFeature
 #include "pycore_object.h"        // _PyDebugAllocatorStats() definition
 #include "pycore_obmalloc.h"
 #include "pycore_obmalloc_init.h"
-#include "pycore_pyerrors.h"      // _Py_FatalErrorFormat()
+#include "pycore_pyerrors.h"      // _Ty_FatalErrorFormat()
 #include "pycore_pymem.h"
-#include "pycore_pystate.h"       // _PyInterpreterState_GET
+#include "pycore_pystate.h"       // _TyInterpreterState_GET
 #include "pycore_stats.h"         // OBJECT_STAT_INC_COND()
 
 #include <stdlib.h>               // malloc()
 #include <stdbool.h>
 #ifdef WITH_MIMALLOC
 // Forward declarations of functions used in our mimalloc modifications
-static void _PyMem_mi_page_clear_qsbr(mi_page_t *page);
-static bool _PyMem_mi_page_is_safe_to_free(mi_page_t *page);
-static bool _PyMem_mi_page_maybe_free(mi_page_t *page, mi_page_queue_t *pq, bool force);
-static void _PyMem_mi_page_reclaimed(mi_page_t *page);
-static void _PyMem_mi_heap_collect_qsbr(mi_heap_t *heap);
+static void _TyMem_mi_page_clear_qsbr(mi_page_t *page);
+static bool _TyMem_mi_page_is_safe_to_free(mi_page_t *page);
+static bool _TyMem_mi_page_maybe_free(mi_page_t *page, mi_page_queue_t *pq, bool force);
+static void _TyMem_mi_page_reclaimed(mi_page_t *page);
+static void _TyMem_mi_heap_collect_qsbr(mi_heap_t *heap);
 #  include "pycore_mimalloc.h"
 #  include "mimalloc/static.c"
 #  include "mimalloc/internal.h"  // for stats
 #endif
 
-#if defined(Py_GIL_DISABLED) && !defined(WITH_MIMALLOC)
-#  error "Py_GIL_DISABLED requires WITH_MIMALLOC"
+#if defined(Ty_GIL_DISABLED) && !defined(WITH_MIMALLOC)
+#  error "Ty_GIL_DISABLED requires WITH_MIMALLOC"
 #endif
 
 #undef  uint
@@ -33,10 +33,10 @@ static void _PyMem_mi_heap_collect_qsbr(mi_heap_t *heap);
 
 
 /* Defined in tracemalloc.c */
-extern void _PyMem_DumpTraceback(int fd, const void *ptr);
+extern void _TyMem_DumpTraceback(int fd, const void *ptr);
 
-static void _PyObject_DebugDumpAddress(const void *p);
-static void _PyMem_DebugCheckAddress(const char *func, char api_id, const void *p);
+static void _TyObject_DebugDumpAddress(const void *p);
+static void _TyMem_DebugCheckAddress(const char *func, char api_id, const void *p);
 
 
 static void set_up_debug_hooks_domain_unlocked(PyMemAllocatorDomain domain);
@@ -52,9 +52,9 @@ static void set_allocator_unlocked(PyMemAllocatorDomain, PyMemAllocatorEx *);
 /* the default raw allocator (wraps malloc) */
 
 void *
-_PyMem_RawMalloc(void *Py_UNUSED(ctx), size_t size)
+_TyMem_RawMalloc(void *Ty_UNUSED(ctx), size_t size)
 {
-    /* PyMem_RawMalloc(0) means malloc(1). Some systems would return NULL
+    /* TyMem_RawMalloc(0) means malloc(1). Some systems would return NULL
        for malloc(0), which would be treated as an error. Some platforms would
        return a pointer with no memory behind it, which would break pymalloc.
        To solve these problems, allocate an extra byte. */
@@ -64,9 +64,9 @@ _PyMem_RawMalloc(void *Py_UNUSED(ctx), size_t size)
 }
 
 void *
-_PyMem_RawCalloc(void *Py_UNUSED(ctx), size_t nelem, size_t elsize)
+_TyMem_RawCalloc(void *Ty_UNUSED(ctx), size_t nelem, size_t elsize)
 {
-    /* PyMem_RawCalloc(0, 0) means calloc(1, 1). Some systems would return NULL
+    /* TyMem_RawCalloc(0, 0) means calloc(1, 1). Some systems would return NULL
        for calloc(0, 0), which would be treated as an error. Some platforms
        would return a pointer with no memory behind it, which would break
        pymalloc.  To solve these problems, allocate an extra byte. */
@@ -78,7 +78,7 @@ _PyMem_RawCalloc(void *Py_UNUSED(ctx), size_t nelem, size_t elsize)
 }
 
 void *
-_PyMem_RawRealloc(void *Py_UNUSED(ctx), void *ptr, size_t size)
+_TyMem_RawRealloc(void *Ty_UNUSED(ctx), void *ptr, size_t size)
 {
     if (size == 0)
         size = 1;
@@ -86,7 +86,7 @@ _PyMem_RawRealloc(void *Py_UNUSED(ctx), void *ptr, size_t size)
 }
 
 void
-_PyMem_RawFree(void *Py_UNUSED(ctx), void *ptr)
+_TyMem_RawFree(void *Ty_UNUSED(ctx), void *ptr)
 {
     free(ptr);
 }
@@ -94,9 +94,9 @@ _PyMem_RawFree(void *Py_UNUSED(ctx), void *ptr)
 #ifdef WITH_MIMALLOC
 
 static void
-_PyMem_mi_page_clear_qsbr(mi_page_t *page)
+_TyMem_mi_page_clear_qsbr(mi_page_t *page)
 {
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     // Clear the QSBR goal and remove the page from the QSBR linked list.
     page->qsbr_goal = 0;
     if (page->qsbr_node.next != NULL) {
@@ -107,24 +107,24 @@ _PyMem_mi_page_clear_qsbr(mi_page_t *page)
 
 // Check if an empty, newly reclaimed page is safe to free now.
 static bool
-_PyMem_mi_page_is_safe_to_free(mi_page_t *page)
+_TyMem_mi_page_is_safe_to_free(mi_page_t *page)
 {
     assert(mi_page_all_free(page));
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     assert(page->qsbr_node.next == NULL);
     if (page->use_qsbr && page->qsbr_goal != 0) {
-        _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
+        _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
         if (tstate == NULL) {
             return false;
         }
-        return _Py_qbsr_goal_reached(tstate->qsbr, page->qsbr_goal);
+        return _Ty_qbsr_goal_reached(tstate->qsbr, page->qsbr_goal);
     }
 #endif
     return true;
 
 }
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 
 // If we are deferring collection of more than this amount of memory for
 // mimalloc pages, advance the write sequence.  Advancing allows these
@@ -152,26 +152,26 @@ should_advance_qsbr_for_page(struct _qsbr_thread_state *qsbr, mi_page_t *page)
 #endif
 
 static bool
-_PyMem_mi_page_maybe_free(mi_page_t *page, mi_page_queue_t *pq, bool force)
+_TyMem_mi_page_maybe_free(mi_page_t *page, mi_page_queue_t *pq, bool force)
 {
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     assert(mi_page_all_free(page));
     if (page->use_qsbr) {
-        _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)PyThreadState_GET();
-        if (page->qsbr_goal != 0 && _Py_qbsr_goal_reached(tstate->qsbr, page->qsbr_goal)) {
-            _PyMem_mi_page_clear_qsbr(page);
+        _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)TyThreadState_GET();
+        if (page->qsbr_goal != 0 && _Ty_qbsr_goal_reached(tstate->qsbr, page->qsbr_goal)) {
+            _TyMem_mi_page_clear_qsbr(page);
             _mi_page_free(page, pq, force);
             return true;
         }
 
-        _PyMem_mi_page_clear_qsbr(page);
+        _TyMem_mi_page_clear_qsbr(page);
         page->retire_expire = 0;
 
         if (should_advance_qsbr_for_page(tstate->qsbr, page)) {
-            page->qsbr_goal = _Py_qsbr_advance(tstate->qsbr->shared);
+            page->qsbr_goal = _Ty_qsbr_advance(tstate->qsbr->shared);
         }
         else {
-            page->qsbr_goal = _Py_qsbr_shared_next(tstate->qsbr->shared);
+            page->qsbr_goal = _Ty_qsbr_shared_next(tstate->qsbr->shared);
         }
 
         llist_insert_tail(&tstate->mimalloc.page_list, &page->qsbr_node);
@@ -183,14 +183,14 @@ _PyMem_mi_page_maybe_free(mi_page_t *page, mi_page_queue_t *pq, bool force)
 }
 
 static void
-_PyMem_mi_page_reclaimed(mi_page_t *page)
+_TyMem_mi_page_reclaimed(mi_page_t *page)
 {
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     assert(page->qsbr_node.next == NULL);
     if (page->qsbr_goal != 0) {
         if (mi_page_all_free(page)) {
             assert(page->qsbr_node.next == NULL);
-            _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)PyThreadState_GET();
+            _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)TyThreadState_GET();
             page->retire_expire = 0;
             llist_insert_tail(&tstate->mimalloc.page_list, &page->qsbr_node);
         }
@@ -202,14 +202,14 @@ _PyMem_mi_page_reclaimed(mi_page_t *page)
 }
 
 static void
-_PyMem_mi_heap_collect_qsbr(mi_heap_t *heap)
+_TyMem_mi_heap_collect_qsbr(mi_heap_t *heap)
 {
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     if (!heap->page_use_qsbr) {
         return;
     }
 
-    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
+    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
     struct llist_node *head = &tstate->mimalloc.page_list;
     if (llist_empty(head)) {
         return;
@@ -220,26 +220,26 @@ _PyMem_mi_heap_collect_qsbr(mi_heap_t *heap)
         mi_page_t *page = llist_data(node, mi_page_t, qsbr_node);
         if (!mi_page_all_free(page)) {
             // We allocated from this page some point after the delayed free
-            _PyMem_mi_page_clear_qsbr(page);
+            _TyMem_mi_page_clear_qsbr(page);
             continue;
         }
 
-        if (!_Py_qsbr_poll(tstate->qsbr, page->qsbr_goal)) {
+        if (!_Ty_qsbr_poll(tstate->qsbr, page->qsbr_goal)) {
             return;
         }
 
-        _PyMem_mi_page_clear_qsbr(page);
+        _TyMem_mi_page_clear_qsbr(page);
         _mi_page_free(page, mi_page_queue_of(page), false);
     }
 #endif
 }
 
 void *
-_PyMem_MiMalloc(void *ctx, size_t size)
+_TyMem_MiMalloc(void *ctx, size_t size)
 {
-#ifdef Py_GIL_DISABLED
-    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
-    mi_heap_t *heap = &tstate->mimalloc.heaps[_Py_MIMALLOC_HEAP_MEM];
+#ifdef Ty_GIL_DISABLED
+    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
+    mi_heap_t *heap = &tstate->mimalloc.heaps[_Ty_MIMALLOC_HEAP_MEM];
     return mi_heap_malloc(heap, size);
 #else
     return mi_malloc(size);
@@ -247,11 +247,11 @@ _PyMem_MiMalloc(void *ctx, size_t size)
 }
 
 void *
-_PyMem_MiCalloc(void *ctx, size_t nelem, size_t elsize)
+_TyMem_MiCalloc(void *ctx, size_t nelem, size_t elsize)
 {
-#ifdef Py_GIL_DISABLED
-    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
-    mi_heap_t *heap = &tstate->mimalloc.heaps[_Py_MIMALLOC_HEAP_MEM];
+#ifdef Ty_GIL_DISABLED
+    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
+    mi_heap_t *heap = &tstate->mimalloc.heaps[_Ty_MIMALLOC_HEAP_MEM];
     return mi_heap_calloc(heap, nelem, elsize);
 #else
     return mi_calloc(nelem, elsize);
@@ -259,11 +259,11 @@ _PyMem_MiCalloc(void *ctx, size_t nelem, size_t elsize)
 }
 
 void *
-_PyMem_MiRealloc(void *ctx, void *ptr, size_t size)
+_TyMem_MiRealloc(void *ctx, void *ptr, size_t size)
 {
-#ifdef Py_GIL_DISABLED
-    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
-    mi_heap_t *heap = &tstate->mimalloc.heaps[_Py_MIMALLOC_HEAP_MEM];
+#ifdef Ty_GIL_DISABLED
+    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
+    mi_heap_t *heap = &tstate->mimalloc.heaps[_Ty_MIMALLOC_HEAP_MEM];
     return mi_heap_realloc(heap, ptr, size);
 #else
     return mi_realloc(ptr, size);
@@ -271,16 +271,16 @@ _PyMem_MiRealloc(void *ctx, void *ptr, size_t size)
 }
 
 void
-_PyMem_MiFree(void *ctx, void *ptr)
+_TyMem_MiFree(void *ctx, void *ptr)
 {
     mi_free(ptr);
 }
 
 void *
-_PyObject_MiMalloc(void *ctx, size_t nbytes)
+_TyObject_MiMalloc(void *ctx, size_t nbytes)
 {
-#ifdef Py_GIL_DISABLED
-    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
+#ifdef Ty_GIL_DISABLED
+    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
     mi_heap_t *heap = tstate->mimalloc.current_object_heap;
     return mi_heap_malloc(heap, nbytes);
 #else
@@ -289,10 +289,10 @@ _PyObject_MiMalloc(void *ctx, size_t nbytes)
 }
 
 void *
-_PyObject_MiCalloc(void *ctx, size_t nelem, size_t elsize)
+_TyObject_MiCalloc(void *ctx, size_t nelem, size_t elsize)
 {
-#ifdef Py_GIL_DISABLED
-    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
+#ifdef Ty_GIL_DISABLED
+    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
     mi_heap_t *heap = tstate->mimalloc.current_object_heap;
     return mi_heap_calloc(heap, nelem, elsize);
 #else
@@ -302,10 +302,10 @@ _PyObject_MiCalloc(void *ctx, size_t nelem, size_t elsize)
 
 
 void *
-_PyObject_MiRealloc(void *ctx, void *ptr, size_t nbytes)
+_TyObject_MiRealloc(void *ctx, void *ptr, size_t nbytes)
 {
-#ifdef Py_GIL_DISABLED
-    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
+#ifdef Ty_GIL_DISABLED
+    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
     mi_heap_t *heap = tstate->mimalloc.current_object_heap;
     return mi_heap_realloc(heap, ptr, nbytes);
 #else
@@ -314,7 +314,7 @@ _PyObject_MiRealloc(void *ctx, void *ptr, size_t nbytes)
 }
 
 void
-_PyObject_MiFree(void *ctx, void *ptr)
+_TyObject_MiFree(void *ctx, void *ptr)
 {
     mi_free(ptr);
 }
@@ -322,12 +322,12 @@ _PyObject_MiFree(void *ctx, void *ptr)
 #endif // WITH_MIMALLOC
 
 
-#define MALLOC_ALLOC {NULL, _PyMem_RawMalloc, _PyMem_RawCalloc, _PyMem_RawRealloc, _PyMem_RawFree}
+#define MALLOC_ALLOC {NULL, _TyMem_RawMalloc, _TyMem_RawCalloc, _TyMem_RawRealloc, _TyMem_RawFree}
 
 
 #ifdef WITH_MIMALLOC
-#  define MIMALLOC_ALLOC {NULL, _PyMem_MiMalloc, _PyMem_MiCalloc, _PyMem_MiRealloc, _PyMem_MiFree}
-#  define MIMALLOC_OBJALLOC {NULL, _PyObject_MiMalloc, _PyObject_MiCalloc, _PyObject_MiRealloc, _PyObject_MiFree}
+#  define MIMALLOC_ALLOC {NULL, _TyMem_MiMalloc, _TyMem_MiCalloc, _TyMem_MiRealloc, _TyMem_MiFree}
+#  define MIMALLOC_OBJALLOC {NULL, _TyObject_MiMalloc, _TyObject_MiCalloc, _TyObject_MiRealloc, _TyObject_MiFree}
 #endif
 
 /* the pymalloc allocator */
@@ -335,15 +335,15 @@ _PyObject_MiFree(void *ctx, void *ptr)
 // The actual implementation is further down.
 
 #if defined(WITH_PYMALLOC)
-void* _PyObject_Malloc(void *ctx, size_t size);
-void* _PyObject_Calloc(void *ctx, size_t nelem, size_t elsize);
-void _PyObject_Free(void *ctx, void *p);
-void* _PyObject_Realloc(void *ctx, void *ptr, size_t size);
-#  define PYMALLOC_ALLOC {NULL, _PyObject_Malloc, _PyObject_Calloc, _PyObject_Realloc, _PyObject_Free}
+void* _TyObject_Malloc(void *ctx, size_t size);
+void* _TyObject_Calloc(void *ctx, size_t nelem, size_t elsize);
+void _TyObject_Free(void *ctx, void *p);
+void* _TyObject_Realloc(void *ctx, void *ptr, size_t size);
+#  define PYMALLOC_ALLOC {NULL, _TyObject_Malloc, _TyObject_Calloc, _TyObject_Realloc, _TyObject_Free}
 #endif  // WITH_PYMALLOC
 
-#if defined(Py_GIL_DISABLED)
-// Py_GIL_DISABLED requires using mimalloc for "mem" and "obj" domains.
+#if defined(Ty_GIL_DISABLED)
+// Ty_GIL_DISABLED requires using mimalloc for "mem" and "obj" domains.
 #  define PYRAW_ALLOC MALLOC_ALLOC
 #  define PYMEM_ALLOC MIMALLOC_ALLOC
 #  define PYOBJ_ALLOC MIMALLOC_OBJALLOC
@@ -362,67 +362,67 @@ void* _PyObject_Realloc(void *ctx, void *ptr, size_t size);
 
 // The actual implementation is further down.
 
-void* _PyMem_DebugRawMalloc(void *ctx, size_t size);
-void* _PyMem_DebugRawCalloc(void *ctx, size_t nelem, size_t elsize);
-void* _PyMem_DebugRawRealloc(void *ctx, void *ptr, size_t size);
-void _PyMem_DebugRawFree(void *ctx, void *ptr);
+void* _TyMem_DebugRawMalloc(void *ctx, size_t size);
+void* _TyMem_DebugRawCalloc(void *ctx, size_t nelem, size_t elsize);
+void* _TyMem_DebugRawRealloc(void *ctx, void *ptr, size_t size);
+void _TyMem_DebugRawFree(void *ctx, void *ptr);
 
-void* _PyMem_DebugMalloc(void *ctx, size_t size);
-void* _PyMem_DebugCalloc(void *ctx, size_t nelem, size_t elsize);
-void* _PyMem_DebugRealloc(void *ctx, void *ptr, size_t size);
-void _PyMem_DebugFree(void *ctx, void *p);
+void* _TyMem_DebugMalloc(void *ctx, size_t size);
+void* _TyMem_DebugCalloc(void *ctx, size_t nelem, size_t elsize);
+void* _TyMem_DebugRealloc(void *ctx, void *ptr, size_t size);
+void _TyMem_DebugFree(void *ctx, void *p);
 
 #define PYDBGRAW_ALLOC \
-    {&_PyRuntime.allocators.debug.raw, _PyMem_DebugRawMalloc, _PyMem_DebugRawCalloc, _PyMem_DebugRawRealloc, _PyMem_DebugRawFree}
+    {&_PyRuntime.allocators.debug.raw, _TyMem_DebugRawMalloc, _TyMem_DebugRawCalloc, _TyMem_DebugRawRealloc, _TyMem_DebugRawFree}
 #define PYDBGMEM_ALLOC \
-    {&_PyRuntime.allocators.debug.mem, _PyMem_DebugMalloc, _PyMem_DebugCalloc, _PyMem_DebugRealloc, _PyMem_DebugFree}
+    {&_PyRuntime.allocators.debug.mem, _TyMem_DebugMalloc, _TyMem_DebugCalloc, _TyMem_DebugRealloc, _TyMem_DebugFree}
 #define PYDBGOBJ_ALLOC \
-    {&_PyRuntime.allocators.debug.obj, _PyMem_DebugMalloc, _PyMem_DebugCalloc, _PyMem_DebugRealloc, _PyMem_DebugFree}
+    {&_PyRuntime.allocators.debug.obj, _TyMem_DebugMalloc, _TyMem_DebugCalloc, _TyMem_DebugRealloc, _TyMem_DebugFree}
 
 /* default raw allocator (not swappable) */
 
 void *
-_PyMem_DefaultRawMalloc(size_t size)
+_TyMem_DefaultRawMalloc(size_t size)
 {
-#ifdef Py_DEBUG
-    return _PyMem_DebugRawMalloc(&_PyRuntime.allocators.debug.raw, size);
+#ifdef Ty_DEBUG
+    return _TyMem_DebugRawMalloc(&_PyRuntime.allocators.debug.raw, size);
 #else
-    return _PyMem_RawMalloc(NULL, size);
+    return _TyMem_RawMalloc(NULL, size);
 #endif
 }
 
 void *
-_PyMem_DefaultRawCalloc(size_t nelem, size_t elsize)
+_TyMem_DefaultRawCalloc(size_t nelem, size_t elsize)
 {
-#ifdef Py_DEBUG
-    return _PyMem_DebugRawCalloc(&_PyRuntime.allocators.debug.raw, nelem, elsize);
+#ifdef Ty_DEBUG
+    return _TyMem_DebugRawCalloc(&_PyRuntime.allocators.debug.raw, nelem, elsize);
 #else
-    return _PyMem_RawCalloc(NULL, nelem, elsize);
+    return _TyMem_RawCalloc(NULL, nelem, elsize);
 #endif
 }
 
 void *
-_PyMem_DefaultRawRealloc(void *ptr, size_t size)
+_TyMem_DefaultRawRealloc(void *ptr, size_t size)
 {
-#ifdef Py_DEBUG
-    return _PyMem_DebugRawRealloc(&_PyRuntime.allocators.debug.raw, ptr, size);
+#ifdef Ty_DEBUG
+    return _TyMem_DebugRawRealloc(&_PyRuntime.allocators.debug.raw, ptr, size);
 #else
-    return _PyMem_RawRealloc(NULL, ptr, size);
+    return _TyMem_RawRealloc(NULL, ptr, size);
 #endif
 }
 
 void
-_PyMem_DefaultRawFree(void *ptr)
+_TyMem_DefaultRawFree(void *ptr)
 {
-#ifdef Py_DEBUG
-    _PyMem_DebugRawFree(&_PyRuntime.allocators.debug.raw, ptr);
+#ifdef Ty_DEBUG
+    _TyMem_DebugRawFree(&_PyRuntime.allocators.debug.raw, ptr);
 #else
-    _PyMem_RawFree(NULL, ptr);
+    _TyMem_RawFree(NULL, ptr);
 #endif
 }
 
 wchar_t*
-_PyMem_DefaultRawWcsdup(const wchar_t *str)
+_TyMem_DefaultRawWcsdup(const wchar_t *str)
 {
     assert(str != NULL);
 
@@ -432,7 +432,7 @@ _PyMem_DefaultRawWcsdup(const wchar_t *str)
     }
 
     size_t size = (len + 1) * sizeof(wchar_t);
-    wchar_t *str2 = _PyMem_DefaultRawMalloc(size);
+    wchar_t *str2 = _TyMem_DefaultRawMalloc(size);
     if (str2 == NULL) {
         return NULL;
     }
@@ -455,7 +455,7 @@ _PyMem_DefaultRawWcsdup(const wchar_t *str)
 #endif
 
 void *
-_PyMem_ArenaAlloc(void *Py_UNUSED(ctx), size_t size)
+_TyMem_ArenaAlloc(void *Ty_UNUSED(ctx), size_t size)
 {
 #ifdef MS_WINDOWS
     return VirtualAlloc(NULL, size,
@@ -474,11 +474,11 @@ _PyMem_ArenaAlloc(void *Py_UNUSED(ctx), size_t size)
 }
 
 void
-_PyMem_ArenaFree(void *Py_UNUSED(ctx), void *ptr,
+_TyMem_ArenaFree(void *Ty_UNUSED(ctx), void *ptr,
 #if defined(ARENAS_USE_MMAP)
     size_t size
 #else
-    size_t Py_UNUSED(size)
+    size_t Ty_UNUSED(size)
 #endif
 )
 {
@@ -505,11 +505,11 @@ _PyMem_ArenaFree(void *Py_UNUSED(ctx), void *ptr,
 
 
 #define ALLOCATORS_MUTEX (_PyRuntime.allocators.mutex)
-#define _PyMem_Raw (_PyRuntime.allocators.standard.raw)
+#define _TyMem_Raw (_PyRuntime.allocators.standard.raw)
 #define _PyMem (_PyRuntime.allocators.standard.mem)
 #define _PyObject (_PyRuntime.allocators.standard.obj)
-#define _PyMem_Debug (_PyRuntime.allocators.debug)
-#define _PyObject_Arena (_PyRuntime.allocators.obj_arena)
+#define _TyMem_Debug (_PyRuntime.allocators.debug)
+#define _TyObject_Arena (_PyRuntime.allocators.obj_arena)
 
 
 /***************************/
@@ -549,14 +549,14 @@ set_default_allocator_unlocked(PyMemAllocatorDomain domain, int debug,
 }
 
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 static const int pydebug = 1;
 #else
 static const int pydebug = 0;
 #endif
 
 int
-_PyMem_GetAllocatorName(const char *name, PyMemAllocatorName *allocator)
+_TyMem_GetAllocatorName(const char *name, PyMemAllocatorName *allocator)
 {
     if (name == NULL || *name == '\0') {
         /* PYTHONMALLOC is empty or is not set or ignored (-E/-I command line
@@ -569,7 +569,7 @@ _PyMem_GetAllocatorName(const char *name, PyMemAllocatorName *allocator)
     else if (strcmp(name, "debug") == 0) {
         *allocator = PYMEM_ALLOCATOR_DEBUG;
     }
-#if defined(WITH_PYMALLOC) && !defined(Py_GIL_DISABLED)
+#if defined(WITH_PYMALLOC) && !defined(Ty_GIL_DISABLED)
     else if (strcmp(name, "pymalloc") == 0) {
         *allocator = PYMEM_ALLOCATOR_PYMALLOC;
     }
@@ -585,7 +585,7 @@ _PyMem_GetAllocatorName(const char *name, PyMemAllocatorName *allocator)
         *allocator = PYMEM_ALLOCATOR_MIMALLOC_DEBUG;
     }
 #endif
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
     else if (strcmp(name, "malloc") == 0) {
         *allocator = PYMEM_ALLOCATOR_MALLOC;
     }
@@ -690,7 +690,7 @@ set_up_allocators_unlocked(PyMemAllocatorName allocator)
 }
 
 int
-_PyMem_SetupAllocators(PyMemAllocatorName allocator)
+_TyMem_SetupAllocators(PyMemAllocatorName allocator)
 {
     PyMutex_Lock(&ALLOCATORS_MUTEX);
     int res = set_up_allocators_unlocked(allocator);
@@ -718,14 +718,14 @@ get_current_allocator_name_unlocked(void)
     PyMemAllocatorEx mimalloc_obj = MIMALLOC_OBJALLOC;
 #endif
 
-    if (pymemallocator_eq(&_PyMem_Raw, &malloc_alloc) &&
+    if (pymemallocator_eq(&_TyMem_Raw, &malloc_alloc) &&
         pymemallocator_eq(&_PyMem, &malloc_alloc) &&
         pymemallocator_eq(&_PyObject, &malloc_alloc))
     {
         return "malloc";
     }
 #ifdef WITH_PYMALLOC
-    if (pymemallocator_eq(&_PyMem_Raw, &malloc_alloc) &&
+    if (pymemallocator_eq(&_TyMem_Raw, &malloc_alloc) &&
         pymemallocator_eq(&_PyMem, &pymalloc) &&
         pymemallocator_eq(&_PyObject, &pymalloc))
     {
@@ -733,7 +733,7 @@ get_current_allocator_name_unlocked(void)
     }
 #endif
 #ifdef WITH_MIMALLOC
-    if (pymemallocator_eq(&_PyMem_Raw, &malloc_alloc) &&
+    if (pymemallocator_eq(&_TyMem_Raw, &malloc_alloc) &&
         pymemallocator_eq(&_PyMem, &mimalloc) &&
         pymemallocator_eq(&_PyObject, &mimalloc_obj))
     {
@@ -745,29 +745,29 @@ get_current_allocator_name_unlocked(void)
     PyMemAllocatorEx dbg_mem = PYDBGMEM_ALLOC;
     PyMemAllocatorEx dbg_obj = PYDBGOBJ_ALLOC;
 
-    if (pymemallocator_eq(&_PyMem_Raw, &dbg_raw) &&
+    if (pymemallocator_eq(&_TyMem_Raw, &dbg_raw) &&
         pymemallocator_eq(&_PyMem, &dbg_mem) &&
         pymemallocator_eq(&_PyObject, &dbg_obj))
     {
         /* Debug hooks installed */
-        if (pymemallocator_eq(&_PyMem_Debug.raw.alloc, &malloc_alloc) &&
-            pymemallocator_eq(&_PyMem_Debug.mem.alloc, &malloc_alloc) &&
-            pymemallocator_eq(&_PyMem_Debug.obj.alloc, &malloc_alloc))
+        if (pymemallocator_eq(&_TyMem_Debug.raw.alloc, &malloc_alloc) &&
+            pymemallocator_eq(&_TyMem_Debug.mem.alloc, &malloc_alloc) &&
+            pymemallocator_eq(&_TyMem_Debug.obj.alloc, &malloc_alloc))
         {
             return "malloc_debug";
         }
 #ifdef WITH_PYMALLOC
-        if (pymemallocator_eq(&_PyMem_Debug.raw.alloc, &malloc_alloc) &&
-            pymemallocator_eq(&_PyMem_Debug.mem.alloc, &pymalloc) &&
-            pymemallocator_eq(&_PyMem_Debug.obj.alloc, &pymalloc))
+        if (pymemallocator_eq(&_TyMem_Debug.raw.alloc, &malloc_alloc) &&
+            pymemallocator_eq(&_TyMem_Debug.mem.alloc, &pymalloc) &&
+            pymemallocator_eq(&_TyMem_Debug.obj.alloc, &pymalloc))
         {
             return "pymalloc_debug";
         }
 #endif
 #ifdef WITH_MIMALLOC
-        if (pymemallocator_eq(&_PyMem_Debug.raw.alloc, &malloc_alloc) &&
-            pymemallocator_eq(&_PyMem_Debug.mem.alloc, &mimalloc) &&
-            pymemallocator_eq(&_PyMem_Debug.obj.alloc, &mimalloc_obj))
+        if (pymemallocator_eq(&_TyMem_Debug.raw.alloc, &malloc_alloc) &&
+            pymemallocator_eq(&_TyMem_Debug.mem.alloc, &mimalloc) &&
+            pymemallocator_eq(&_TyMem_Debug.obj.alloc, &mimalloc_obj))
         {
             return "mimalloc_debug";
         }
@@ -777,7 +777,7 @@ get_current_allocator_name_unlocked(void)
 }
 
 const char*
-_PyMem_GetCurrentAllocatorName(void)
+_TyMem_GetCurrentAllocatorName(void)
 {
     PyMutex_Lock(&ALLOCATORS_MUTEX);
     const char *name = get_current_allocator_name_unlocked();
@@ -787,35 +787,35 @@ _PyMem_GetCurrentAllocatorName(void)
 
 
 int
-_PyMem_DebugEnabled(void)
+_TyMem_DebugEnabled(void)
 {
     return _PyRuntime.allocators.is_debug_enabled;
 }
 
 #ifdef WITH_PYMALLOC
 static int
-_PyMem_PymallocEnabled(void)
+_TyMem_PymallocEnabled(void)
 {
-    if (_PyMem_DebugEnabled()) {
-        return (_PyMem_Debug.obj.alloc.malloc == _PyObject_Malloc);
+    if (_TyMem_DebugEnabled()) {
+        return (_TyMem_Debug.obj.alloc.malloc == _TyObject_Malloc);
     }
     else {
-        return (_PyObject.malloc == _PyObject_Malloc);
+        return (_PyObject.malloc == _TyObject_Malloc);
     }
 }
 
 #ifdef WITH_MIMALLOC
 static int
-_PyMem_MimallocEnabled(void)
+_TyMem_MimallocEnabled(void)
 {
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     return 1;
 #else
-    if (_PyMem_DebugEnabled()) {
-        return (_PyMem_Debug.obj.alloc.malloc == _PyObject_MiMalloc);
+    if (_TyMem_DebugEnabled()) {
+        return (_TyMem_Debug.obj.alloc.malloc == _TyObject_MiMalloc);
     }
     else {
-        return (_PyObject.malloc == _PyObject_MiMalloc);
+        return (_PyObject.malloc == _TyObject_MiMalloc);
     }
 #endif
 }
@@ -830,42 +830,42 @@ set_up_debug_hooks_domain_unlocked(PyMemAllocatorDomain domain)
     PyMemAllocatorEx alloc;
 
     if (domain == PYMEM_DOMAIN_RAW) {
-        if (_PyMem_Raw.malloc == _PyMem_DebugRawMalloc) {
+        if (_TyMem_Raw.malloc == _TyMem_DebugRawMalloc) {
             return;
         }
 
-        get_allocator_unlocked(domain, &_PyMem_Debug.raw.alloc);
-        alloc.ctx = &_PyMem_Debug.raw;
-        alloc.malloc = _PyMem_DebugRawMalloc;
-        alloc.calloc = _PyMem_DebugRawCalloc;
-        alloc.realloc = _PyMem_DebugRawRealloc;
-        alloc.free = _PyMem_DebugRawFree;
+        get_allocator_unlocked(domain, &_TyMem_Debug.raw.alloc);
+        alloc.ctx = &_TyMem_Debug.raw;
+        alloc.malloc = _TyMem_DebugRawMalloc;
+        alloc.calloc = _TyMem_DebugRawCalloc;
+        alloc.realloc = _TyMem_DebugRawRealloc;
+        alloc.free = _TyMem_DebugRawFree;
         set_allocator_unlocked(domain, &alloc);
     }
     else if (domain == PYMEM_DOMAIN_MEM) {
-        if (_PyMem.malloc == _PyMem_DebugMalloc) {
+        if (_PyMem.malloc == _TyMem_DebugMalloc) {
             return;
         }
 
-        get_allocator_unlocked(domain, &_PyMem_Debug.mem.alloc);
-        alloc.ctx = &_PyMem_Debug.mem;
-        alloc.malloc = _PyMem_DebugMalloc;
-        alloc.calloc = _PyMem_DebugCalloc;
-        alloc.realloc = _PyMem_DebugRealloc;
-        alloc.free = _PyMem_DebugFree;
+        get_allocator_unlocked(domain, &_TyMem_Debug.mem.alloc);
+        alloc.ctx = &_TyMem_Debug.mem;
+        alloc.malloc = _TyMem_DebugMalloc;
+        alloc.calloc = _TyMem_DebugCalloc;
+        alloc.realloc = _TyMem_DebugRealloc;
+        alloc.free = _TyMem_DebugFree;
         set_allocator_unlocked(domain, &alloc);
     }
     else if (domain == PYMEM_DOMAIN_OBJ)  {
-        if (_PyObject.malloc == _PyMem_DebugMalloc) {
+        if (_PyObject.malloc == _TyMem_DebugMalloc) {
             return;
         }
 
-        get_allocator_unlocked(domain, &_PyMem_Debug.obj.alloc);
-        alloc.ctx = &_PyMem_Debug.obj;
-        alloc.malloc = _PyMem_DebugMalloc;
-        alloc.calloc = _PyMem_DebugCalloc;
-        alloc.realloc = _PyMem_DebugRealloc;
-        alloc.free = _PyMem_DebugFree;
+        get_allocator_unlocked(domain, &_TyMem_Debug.obj.alloc);
+        alloc.ctx = &_TyMem_Debug.obj;
+        alloc.malloc = _TyMem_DebugMalloc;
+        alloc.calloc = _TyMem_DebugCalloc;
+        alloc.realloc = _TyMem_DebugRealloc;
+        alloc.free = _TyMem_DebugFree;
         set_allocator_unlocked(domain, &alloc);
     }
 }
@@ -881,7 +881,7 @@ set_up_debug_hooks_unlocked(void)
 }
 
 void
-PyMem_SetupDebugHooks(void)
+TyMem_SetupDebugHooks(void)
 {
     PyMutex_Lock(&ALLOCATORS_MUTEX);
     set_up_debug_hooks_unlocked();
@@ -893,7 +893,7 @@ get_allocator_unlocked(PyMemAllocatorDomain domain, PyMemAllocatorEx *allocator)
 {
     switch(domain)
     {
-    case PYMEM_DOMAIN_RAW: *allocator = _PyMem_Raw; break;
+    case PYMEM_DOMAIN_RAW: *allocator = _TyMem_Raw; break;
     case PYMEM_DOMAIN_MEM: *allocator = _PyMem; break;
     case PYMEM_DOMAIN_OBJ: *allocator = _PyObject; break;
     default:
@@ -911,7 +911,7 @@ set_allocator_unlocked(PyMemAllocatorDomain domain, PyMemAllocatorEx *allocator)
 {
     switch(domain)
     {
-    case PYMEM_DOMAIN_RAW: _PyMem_Raw = *allocator; break;
+    case PYMEM_DOMAIN_RAW: _TyMem_Raw = *allocator; break;
     case PYMEM_DOMAIN_MEM: _PyMem = *allocator; break;
     case PYMEM_DOMAIN_OBJ: _PyObject = *allocator; break;
     /* ignore unknown domain */
@@ -919,7 +919,7 @@ set_allocator_unlocked(PyMemAllocatorDomain domain, PyMemAllocatorEx *allocator)
 }
 
 void
-PyMem_GetAllocator(PyMemAllocatorDomain domain, PyMemAllocatorEx *allocator)
+TyMem_GetAllocator(PyMemAllocatorDomain domain, PyMemAllocatorEx *allocator)
 {
     PyMutex_Lock(&ALLOCATORS_MUTEX);
     get_allocator_unlocked(domain, allocator);
@@ -927,7 +927,7 @@ PyMem_GetAllocator(PyMemAllocatorDomain domain, PyMemAllocatorEx *allocator)
 }
 
 void
-PyMem_SetAllocator(PyMemAllocatorDomain domain, PyMemAllocatorEx *allocator)
+TyMem_SetAllocator(PyMemAllocatorDomain domain, PyMemAllocatorEx *allocator)
 {
     PyMutex_Lock(&ALLOCATORS_MUTEX);
     set_allocator_unlocked(domain, allocator);
@@ -938,7 +938,7 @@ void
 PyObject_GetArenaAllocator(PyObjectArenaAllocator *allocator)
 {
     PyMutex_Lock(&ALLOCATORS_MUTEX);
-    *allocator = _PyObject_Arena;
+    *allocator = _TyObject_Arena;
     PyMutex_Unlock(&ALLOCATORS_MUTEX);
 }
 
@@ -946,7 +946,7 @@ void
 PyObject_SetArenaAllocator(PyObjectArenaAllocator *allocator)
 {
     PyMutex_Lock(&ALLOCATORS_MUTEX);
-    _PyObject_Arena = *allocator;
+    _TyObject_Arena = *allocator;
     PyMutex_Unlock(&ALLOCATORS_MUTEX);
 }
 
@@ -970,15 +970,15 @@ PyObject_SetArenaAllocator(PyObjectArenaAllocator *allocator)
 /*************************/
 
 void *
-_PyObject_VirtualAlloc(size_t size)
+_TyObject_VirtualAlloc(size_t size)
 {
-    return _PyObject_Arena.alloc(_PyObject_Arena.ctx, size);
+    return _TyObject_Arena.alloc(_TyObject_Arena.ctx, size);
 }
 
 void
-_PyObject_VirtualFree(void *obj, size_t size)
+_TyObject_VirtualFree(void *obj, size_t size)
 {
-    _PyObject_Arena.free(_PyObject_Arena.ctx, obj, size);
+    _TyObject_Arena.free(_TyObject_Arena.ctx, obj, size);
 }
 
 
@@ -987,40 +987,40 @@ _PyObject_VirtualFree(void *obj, size_t size)
 /***********************/
 
 void *
-PyMem_RawMalloc(size_t size)
+TyMem_RawMalloc(size_t size)
 {
     /*
      * Limit ourselves to PY_SSIZE_T_MAX bytes to prevent security holes.
-     * Most python internals blindly use a signed Py_ssize_t to track
+     * Most python internals blindly use a signed Ty_ssize_t to track
      * things without checking for overflows or negatives.
      * As size_t is unsigned, checking for size < 0 is not required.
      */
     if (size > (size_t)PY_SSIZE_T_MAX)
         return NULL;
-    return _PyMem_Raw.malloc(_PyMem_Raw.ctx, size);
+    return _TyMem_Raw.malloc(_TyMem_Raw.ctx, size);
 }
 
 void *
-PyMem_RawCalloc(size_t nelem, size_t elsize)
+TyMem_RawCalloc(size_t nelem, size_t elsize)
 {
-    /* see PyMem_RawMalloc() */
+    /* see TyMem_RawMalloc() */
     if (elsize != 0 && nelem > (size_t)PY_SSIZE_T_MAX / elsize)
         return NULL;
-    return _PyMem_Raw.calloc(_PyMem_Raw.ctx, nelem, elsize);
+    return _TyMem_Raw.calloc(_TyMem_Raw.ctx, nelem, elsize);
 }
 
 void*
-PyMem_RawRealloc(void *ptr, size_t new_size)
+TyMem_RawRealloc(void *ptr, size_t new_size)
 {
-    /* see PyMem_RawMalloc() */
+    /* see TyMem_RawMalloc() */
     if (new_size > (size_t)PY_SSIZE_T_MAX)
         return NULL;
-    return _PyMem_Raw.realloc(_PyMem_Raw.ctx, ptr, new_size);
+    return _TyMem_Raw.realloc(_TyMem_Raw.ctx, ptr, new_size);
 }
 
-void PyMem_RawFree(void *ptr)
+void TyMem_RawFree(void *ptr)
 {
-    _PyMem_Raw.free(_PyMem_Raw.ctx, ptr);
+    _TyMem_Raw.free(_TyMem_Raw.ctx, ptr);
 }
 
 
@@ -1029,9 +1029,9 @@ void PyMem_RawFree(void *ptr)
 /***********************/
 
 void *
-PyMem_Malloc(size_t size)
+TyMem_Malloc(size_t size)
 {
-    /* see PyMem_RawMalloc() */
+    /* see TyMem_RawMalloc() */
     if (size > (size_t)PY_SSIZE_T_MAX)
         return NULL;
     OBJECT_STAT_INC_COND(allocations512, size < 512);
@@ -1042,9 +1042,9 @@ PyMem_Malloc(size_t size)
 }
 
 void *
-PyMem_Calloc(size_t nelem, size_t elsize)
+TyMem_Calloc(size_t nelem, size_t elsize)
 {
-    /* see PyMem_RawMalloc() */
+    /* see TyMem_RawMalloc() */
     if (elsize != 0 && nelem > (size_t)PY_SSIZE_T_MAX / elsize)
         return NULL;
     OBJECT_STAT_INC_COND(allocations512, elsize < 512);
@@ -1055,16 +1055,16 @@ PyMem_Calloc(size_t nelem, size_t elsize)
 }
 
 void *
-PyMem_Realloc(void *ptr, size_t new_size)
+TyMem_Realloc(void *ptr, size_t new_size)
 {
-    /* see PyMem_RawMalloc() */
+    /* see TyMem_RawMalloc() */
     if (new_size > (size_t)PY_SSIZE_T_MAX)
         return NULL;
     return _PyMem.realloc(_PyMem.ctx, ptr, new_size);
 }
 
 void
-PyMem_Free(void *ptr)
+TyMem_Free(void *ptr)
 {
     OBJECT_STAT_INC(frees);
     _PyMem.free(_PyMem.ctx, ptr);
@@ -1076,7 +1076,7 @@ PyMem_Free(void *ptr)
 /***************************/
 
 wchar_t*
-_PyMem_RawWcsdup(const wchar_t *str)
+_TyMem_RawWcsdup(const wchar_t *str)
 {
     assert(str != NULL);
 
@@ -1086,7 +1086,7 @@ _PyMem_RawWcsdup(const wchar_t *str)
     }
 
     size_t size = (len + 1) * sizeof(wchar_t);
-    wchar_t *str2 = PyMem_RawMalloc(size);
+    wchar_t *str2 = TyMem_RawMalloc(size);
     if (str2 == NULL) {
         return NULL;
     }
@@ -1096,11 +1096,11 @@ _PyMem_RawWcsdup(const wchar_t *str)
 }
 
 char *
-_PyMem_RawStrdup(const char *str)
+_TyMem_RawStrdup(const char *str)
 {
     assert(str != NULL);
     size_t size = strlen(str) + 1;
-    char *copy = PyMem_RawMalloc(size);
+    char *copy = TyMem_RawMalloc(size);
     if (copy == NULL) {
         return NULL;
     }
@@ -1109,11 +1109,11 @@ _PyMem_RawStrdup(const char *str)
 }
 
 char *
-_PyMem_Strdup(const char *str)
+_TyMem_Strdup(const char *str)
 {
     assert(str != NULL);
     size_t size = strlen(str) + 1;
-    char *copy = PyMem_Malloc(size);
+    char *copy = TyMem_Malloc(size);
     if (copy == NULL) {
         return NULL;
     }
@@ -1122,7 +1122,7 @@ _PyMem_Strdup(const char *str)
 }
 
 /***********************************************/
-/* Delayed freeing support for Py_GIL_DISABLED */
+/* Delayed freeing support for Ty_GIL_DISABLED */
 /***********************************************/
 
 // So that sizeof(struct _mem_work_chunk) is 4096 bytes on 64-bit platforms.
@@ -1139,8 +1139,8 @@ struct _mem_work_chunk {
     // Linked list node of chunks in queue
     struct llist_node node;
 
-    Py_ssize_t rd_idx;  // index of next item to read
-    Py_ssize_t wr_idx;  // index of next item to write
+    Ty_ssize_t rd_idx;  // index of next item to read
+    Ty_ssize_t wr_idx;  // index of next item to write
     struct _mem_work_item array[WORK_ITEMS_PER_CHUNK];
 };
 
@@ -1154,29 +1154,29 @@ static void
 free_work_item(uintptr_t ptr, delayed_dealloc_cb cb, void *state)
 {
     if (work_item_should_decref(ptr)) {
-        PyObject *obj = (PyObject *)(ptr - 1);
-#ifdef Py_GIL_DISABLED
+        TyObject *obj = (TyObject *)(ptr - 1);
+#ifdef Ty_GIL_DISABLED
         if (cb == NULL) {
-            assert(!_PyInterpreterState_GET()->stoptheworld.world_stopped);
-            Py_DECREF(obj);
+            assert(!_TyInterpreterState_GET()->stoptheworld.world_stopped);
+            Ty_DECREF(obj);
             return;
         }
-        assert(_PyInterpreterState_GET()->stoptheworld.world_stopped);
-        Py_ssize_t refcount = _Py_ExplicitMergeRefcount(obj, -1);
+        assert(_TyInterpreterState_GET()->stoptheworld.world_stopped);
+        Ty_ssize_t refcount = _Ty_ExplicitMergeRefcount(obj, -1);
         if (refcount == 0) {
             cb(obj, state);
         }
 #else
-        Py_DECREF(obj);
+        Ty_DECREF(obj);
 #endif
     }
     else {
-        PyMem_Free((void *)ptr);
+        TyMem_Free((void *)ptr);
     }
 }
 
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 
 // For deferred advance on free: the number of deferred items before advancing
 // the write sequence.  This is based on WORK_ITEMS_PER_CHUNK.  We ideally
@@ -1214,11 +1214,11 @@ should_advance_qsbr_for_free(struct _qsbr_thread_state *qsbr, size_t size)
 static void
 free_delayed(uintptr_t ptr, size_t size)
 {
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
     free_work_item(ptr, NULL, NULL);
 #else
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    if (_PyInterpreterState_GetFinalizing(interp) != NULL ||
+    PyInterpreterState *interp = _TyInterpreterState_GET();
+    if (_TyInterpreterState_GetFinalizing(interp) != NULL ||
         interp->stoptheworld.world_stopped)
     {
         // Free immediately during interpreter shutdown or if the world is
@@ -1228,7 +1228,7 @@ free_delayed(uintptr_t ptr, size_t size)
         return;
     }
 
-    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
+    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
     struct llist_node *head = &tstate->mem_free_queue;
 
     struct _mem_work_chunk *buf = NULL;
@@ -1242,7 +1242,7 @@ free_delayed(uintptr_t ptr, size_t size)
     }
 
     if (buf == NULL) {
-        buf = PyMem_Calloc(1, sizeof(*buf));
+        buf = TyMem_Calloc(1, sizeof(*buf));
         if (buf != NULL) {
             llist_insert_tail(head, &buf->node);
         }
@@ -1250,21 +1250,21 @@ free_delayed(uintptr_t ptr, size_t size)
 
     if (buf == NULL) {
         // failed to allocate a buffer, free immediately
-        PyObject *to_dealloc = NULL;
-        _PyEval_StopTheWorld(tstate->base.interp);
+        TyObject *to_dealloc = NULL;
+        _TyEval_StopTheWorld(tstate->base.interp);
         if (work_item_should_decref(ptr)) {
-            PyObject *obj = (PyObject *)(ptr - 1);
-            Py_ssize_t refcount = _Py_ExplicitMergeRefcount(obj, -1);
+            TyObject *obj = (TyObject *)(ptr - 1);
+            Ty_ssize_t refcount = _Ty_ExplicitMergeRefcount(obj, -1);
             if (refcount == 0) {
                 to_dealloc = obj;
             }
         }
         else {
-            PyMem_Free((void *)ptr);
+            TyMem_Free((void *)ptr);
         }
-        _PyEval_StartTheWorld(tstate->base.interp);
+        _TyEval_StartTheWorld(tstate->base.interp);
         if (to_dealloc != NULL) {
-            _Py_Dealloc(to_dealloc);
+            _Ty_Dealloc(to_dealloc);
         }
         return;
     }
@@ -1272,10 +1272,10 @@ free_delayed(uintptr_t ptr, size_t size)
     assert(buf != NULL && buf->wr_idx < WORK_ITEMS_PER_CHUNK);
     uint64_t seq;
     if (should_advance_qsbr_for_free(tstate->qsbr, size)) {
-        seq = _Py_qsbr_advance(tstate->qsbr->shared);
+        seq = _Ty_qsbr_advance(tstate->qsbr->shared);
     }
     else {
-        seq = _Py_qsbr_shared_next(tstate->qsbr->shared);
+        seq = _Ty_qsbr_shared_next(tstate->qsbr->shared);
     }
     buf->array[buf->wr_idx].ptr = ptr;
     buf->array[buf->wr_idx].qsbr_goal = seq;
@@ -1285,13 +1285,13 @@ free_delayed(uintptr_t ptr, size_t size)
         // Normally the processing of delayed items is done from the eval
         // breaker.  Processing here is a safety measure to ensure too much
         // work does not accumulate.
-        _PyMem_ProcessDelayed((PyThreadState *)tstate);
+        _TyMem_ProcessDelayed((PyThreadState *)tstate);
     }
 #endif
 }
 
 void
-_PyMem_FreeDelayed(void *ptr, size_t size)
+_TyMem_FreeDelayed(void *ptr, size_t size)
 {
     assert(!((uintptr_t)ptr & 0x01));
     if (ptr != NULL) {
@@ -1299,9 +1299,9 @@ _PyMem_FreeDelayed(void *ptr, size_t size)
     }
 }
 
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
 void
-_PyObject_XDecRefDelayed(PyObject *ptr)
+_TyObject_XDecRefDelayed(TyObject *ptr)
 {
     assert(!((uintptr_t)ptr & 0x01));
     if (ptr != NULL) {
@@ -1328,7 +1328,7 @@ process_queue(struct llist_node *head, _PyThreadStateImpl *tstate,
 
         if (buf->rd_idx < buf->wr_idx) {
             struct _mem_work_item *item = &buf->array[buf->rd_idx];
-            if (!_Py_qsbr_poll(tstate->qsbr, item->qsbr_goal)) {
+            if (!_Ty_qsbr_poll(tstate->qsbr, item->qsbr_goal)) {
                 return;
             }
 
@@ -1346,12 +1346,12 @@ process_queue(struct llist_node *head, _PyThreadStateImpl *tstate,
         }
 
         llist_remove(&buf->node);
-        PyMem_Free(buf);
+        TyMem_Free(buf);
     }
 }
 
 static void
-process_interp_queue(struct _Py_mem_interp_free_queue *queue,
+process_interp_queue(struct _Ty_mem_interp_free_queue *queue,
                      _PyThreadStateImpl *tstate, delayed_dealloc_cb cb,
                      void *state)
 {
@@ -1359,15 +1359,15 @@ process_interp_queue(struct _Py_mem_interp_free_queue *queue,
     process_queue(&queue->head, tstate, false, cb, state);
 
     int more_work = !llist_empty(&queue->head);
-    _Py_atomic_store_int_relaxed(&queue->has_work, more_work);
+    _Ty_atomic_store_int_relaxed(&queue->has_work, more_work);
 }
 
 static void
-maybe_process_interp_queue(struct _Py_mem_interp_free_queue *queue,
+maybe_process_interp_queue(struct _Ty_mem_interp_free_queue *queue,
                            _PyThreadStateImpl *tstate, delayed_dealloc_cb cb,
                            void *state)
 {
-    if (!_Py_atomic_load_int_relaxed(&queue->has_work)) {
+    if (!_Ty_atomic_load_int_relaxed(&queue->has_work)) {
         return;
     }
 
@@ -1379,7 +1379,7 @@ maybe_process_interp_queue(struct _Py_mem_interp_free_queue *queue,
 }
 
 void
-_PyMem_ProcessDelayed(PyThreadState *tstate)
+_TyMem_ProcessDelayed(PyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
     _PyThreadStateImpl *tstate_impl = (_PyThreadStateImpl *)tstate;
@@ -1394,7 +1394,7 @@ _PyMem_ProcessDelayed(PyThreadState *tstate)
 }
 
 void
-_PyMem_ProcessDelayedNoDealloc(PyThreadState *tstate, delayed_dealloc_cb cb, void *state)
+_TyMem_ProcessDelayedNoDealloc(PyThreadState *tstate, delayed_dealloc_cb cb, void *state)
 {
     PyInterpreterState *interp = tstate->interp;
     _PyThreadStateImpl *tstate_impl = (_PyThreadStateImpl *)tstate;
@@ -1407,7 +1407,7 @@ _PyMem_ProcessDelayedNoDealloc(PyThreadState *tstate, delayed_dealloc_cb cb, voi
 }
 
 void
-_PyMem_AbandonDelayed(PyThreadState *tstate)
+_TyMem_AbandonDelayed(PyThreadState *tstate)
 {
     PyInterpreterState *interp = tstate->interp;
     struct llist_node *queue = &((_PyThreadStateImpl *)tstate)->mem_free_queue;
@@ -1420,7 +1420,7 @@ _PyMem_AbandonDelayed(PyThreadState *tstate)
     struct _mem_work_chunk *buf = work_queue_first(queue);
     if (buf->rd_idx == buf->wr_idx) {
         llist_remove(&buf->node);
-        PyMem_Free(buf);
+        TyMem_Free(buf);
         assert(llist_empty(queue));
         return;
     }
@@ -1431,7 +1431,7 @@ _PyMem_AbandonDelayed(PyThreadState *tstate)
     llist_concat(&interp->mem_free_queue.head, queue);
 
     // Process the merged queue now (see gh-130794).
-    _PyThreadStateImpl *this_tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
+    _PyThreadStateImpl *this_tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
     process_interp_queue(&interp->mem_free_queue, this_tstate, NULL, NULL);
 
     PyMutex_Unlock(&interp->mem_free_queue.mutex);
@@ -1440,7 +1440,7 @@ _PyMem_AbandonDelayed(PyThreadState *tstate)
 }
 
 void
-_PyMem_FiniDelayed(PyInterpreterState *interp)
+_TyMem_FiniDelayed(PyInterpreterState *interp)
 {
     struct llist_node *head = &interp->mem_free_queue.head;
     while (!llist_empty(head)) {
@@ -1457,7 +1457,7 @@ _PyMem_FiniDelayed(PyInterpreterState *interp)
         }
 
         llist_remove(&buf->node);
-        PyMem_Free(buf);
+        TyMem_Free(buf);
     }
 }
 
@@ -1468,7 +1468,7 @@ _PyMem_FiniDelayed(PyInterpreterState *interp)
 void *
 PyObject_Malloc(size_t size)
 {
-    /* see PyMem_RawMalloc() */
+    /* see TyMem_RawMalloc() */
     if (size > (size_t)PY_SSIZE_T_MAX)
         return NULL;
     OBJECT_STAT_INC_COND(allocations512, size < 512);
@@ -1481,7 +1481,7 @@ PyObject_Malloc(size_t size)
 void *
 PyObject_Calloc(size_t nelem, size_t elsize)
 {
-    /* see PyMem_RawMalloc() */
+    /* see TyMem_RawMalloc() */
     if (elsize != 0 && nelem > (size_t)PY_SSIZE_T_MAX / elsize)
         return NULL;
     OBJECT_STAT_INC_COND(allocations512, elsize < 512);
@@ -1494,7 +1494,7 @@ PyObject_Calloc(size_t nelem, size_t elsize)
 void *
 PyObject_Realloc(void *ptr, size_t new_size)
 {
-    /* see PyMem_RawMalloc() */
+    /* see TyMem_RawMalloc() */
     if (new_size > (size_t)PY_SSIZE_T_MAX)
         return NULL;
     return _PyObject.realloc(_PyObject.ctx, ptr, new_size);
@@ -1539,15 +1539,15 @@ static bool obmalloc_state_initialized;
 static inline int
 has_own_state(PyInterpreterState *interp)
 {
-    return (_Py_IsMainInterpreter(interp) ||
-            !(interp->feature_flags & Py_RTFLAGS_USE_MAIN_OBMALLOC) ||
-            _Py_IsMainInterpreterFinalizing(interp));
+    return (_Ty_IsMainInterpreter(interp) ||
+            !(interp->feature_flags & Ty_RTFLAGS_USE_MAIN_OBMALLOC) ||
+            _Ty_IsMainInterpreterFinalizing(interp));
 }
 
 static inline OMState *
 get_state(void)
 {
-    PyInterpreterState *interp = _PyInterpreterState_GET();
+    PyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->obmalloc != NULL); // otherwise not initialized or freed
     return interp->obmalloc;
 }
@@ -1573,21 +1573,21 @@ static bool count_blocks(
     return 1;
 }
 
-static Py_ssize_t
+static Ty_ssize_t
 get_mimalloc_allocated_blocks(PyInterpreterState *interp)
 {
     size_t allocated_blocks = 0;
-#ifdef Py_GIL_DISABLED
-    _Py_FOR_EACH_TSTATE_UNLOCKED(interp, t) {
+#ifdef Ty_GIL_DISABLED
+    _Ty_FOR_EACH_TSTATE_UNLOCKED(interp, t) {
         _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)t;
-        for (int i = 0; i < _Py_MIMALLOC_HEAP_COUNT; i++) {
+        for (int i = 0; i < _Ty_MIMALLOC_HEAP_COUNT; i++) {
             mi_heap_t *heap = &tstate->mimalloc.heaps[i];
             mi_heap_visit_blocks(heap, false, &count_blocks, &allocated_blocks);
         }
     }
 
     mi_abandoned_pool_t *pool = &interp->mimalloc.abandoned_pool;
-    for (uint8_t tag = 0; tag < _Py_MIMALLOC_HEAP_COUNT; tag++) {
+    for (uint8_t tag = 0; tag < _Ty_MIMALLOC_HEAP_COUNT; tag++) {
         _mi_abandoned_pool_visit_blocks(pool, tag, false, &count_blocks,
                                         &allocated_blocks);
     }
@@ -1600,20 +1600,20 @@ get_mimalloc_allocated_blocks(PyInterpreterState *interp)
 }
 #endif
 
-Py_ssize_t
-_PyInterpreterState_GetAllocatedBlocks(PyInterpreterState *interp)
+Ty_ssize_t
+_TyInterpreterState_GetAllocatedBlocks(PyInterpreterState *interp)
 {
 #ifdef WITH_MIMALLOC
-    if (_PyMem_MimallocEnabled()) {
+    if (_TyMem_MimallocEnabled()) {
         return get_mimalloc_allocated_blocks(interp);
     }
 #endif
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     assert(has_own_state(interp));
 #else
     if (!has_own_state(interp)) {
-        _Py_FatalErrorFunc(__func__,
+        _Ty_FatalErrorFunc(__func__,
                            "the interpreter doesn't have its own allocator");
     }
 #endif
@@ -1623,7 +1623,7 @@ _PyInterpreterState_GetAllocatedBlocks(PyInterpreterState *interp)
         return 0;
     }
 
-    Py_ssize_t n = raw_allocated_blocks;
+    Ty_ssize_t n = raw_allocated_blocks;
     /* add up allocated blocks for used pools */
     for (uint i = 0; i < maxarenas; ++i) {
         /* Skip arenas which are not allocated. */
@@ -1631,7 +1631,7 @@ _PyInterpreterState_GetAllocatedBlocks(PyInterpreterState *interp)
             continue;
         }
 
-        uintptr_t base = (uintptr_t)_Py_ALIGN_UP(allarenas[i].address, POOL_SIZE);
+        uintptr_t base = (uintptr_t)_Ty_ALIGN_UP(allarenas[i].address, POOL_SIZE);
 
         /* visit every pool in the arena */
         assert(base <= (uintptr_t) allarenas[i].pool_address);
@@ -1646,20 +1646,20 @@ _PyInterpreterState_GetAllocatedBlocks(PyInterpreterState *interp)
 static void free_obmalloc_arenas(PyInterpreterState *interp);
 
 void
-_PyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *interp)
+_TyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *interp)
 {
 #ifdef WITH_MIMALLOC
-    if (_PyMem_MimallocEnabled()) {
-        Py_ssize_t leaked = _PyInterpreterState_GetAllocatedBlocks(interp);
+    if (_TyMem_MimallocEnabled()) {
+        Ty_ssize_t leaked = _TyInterpreterState_GetAllocatedBlocks(interp);
         interp->runtime->obmalloc.interpreter_leaks += leaked;
         return;
     }
 #endif
     if (has_own_state(interp) && interp->obmalloc != NULL) {
-        Py_ssize_t leaked = _PyInterpreterState_GetAllocatedBlocks(interp);
+        Ty_ssize_t leaked = _TyInterpreterState_GetAllocatedBlocks(interp);
         assert(has_own_state(interp) || leaked == 0);
         interp->runtime->obmalloc.interpreter_leaks += leaked;
-        if (_PyMem_obmalloc_state_on_heap(interp) && leaked == 0) {
+        if (_TyMem_obmalloc_state_on_heap(interp) && leaked == 0) {
             // free the obmalloc arenas and radix tree nodes.  If leaked > 0
             // then some of the memory allocated by obmalloc has not been
             // freed.  It might be safe to free the arenas in that case but
@@ -1672,64 +1672,64 @@ _PyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *interp)
     }
 }
 
-static Py_ssize_t get_num_global_allocated_blocks(_PyRuntimeState *);
+static Ty_ssize_t get_num_global_allocated_blocks(_PyRuntimeState *);
 
 /* We preserve the number of blocks leaked during runtime finalization,
    so they can be reported if the runtime is initialized again. */
 // XXX We don't lose any information by dropping this,
 // so we should consider doing so.
-static Py_ssize_t last_final_leaks = 0;
+static Ty_ssize_t last_final_leaks = 0;
 
 void
-_Py_FinalizeAllocatedBlocks(_PyRuntimeState *runtime)
+_Ty_FinalizeAllocatedBlocks(_PyRuntimeState *runtime)
 {
     last_final_leaks = get_num_global_allocated_blocks(runtime);
     runtime->obmalloc.interpreter_leaks = 0;
 }
 
-static Py_ssize_t
+static Ty_ssize_t
 get_num_global_allocated_blocks(_PyRuntimeState *runtime)
 {
-    Py_ssize_t total = 0;
+    Ty_ssize_t total = 0;
     if (_PyRuntimeState_GetFinalizing(runtime) != NULL) {
-        PyInterpreterState *interp = _PyInterpreterState_Main();
+        PyInterpreterState *interp = _TyInterpreterState_Main();
         if (interp == NULL) {
             /* We are at the very end of runtime finalization.
                We can't rely on finalizing->interp since that thread
                state is probably already freed, so we don't worry
                about it. */
-            assert(PyInterpreterState_Head() == NULL);
+            assert(TyInterpreterState_Head() == NULL);
         }
         else {
             assert(interp != NULL);
             /* It is probably the last interpreter but not necessarily. */
-            assert(PyInterpreterState_Next(interp) == NULL);
-            total += _PyInterpreterState_GetAllocatedBlocks(interp);
+            assert(TyInterpreterState_Next(interp) == NULL);
+            total += _TyInterpreterState_GetAllocatedBlocks(interp);
         }
     }
     else {
-        _PyEval_StopTheWorldAll(&_PyRuntime);
+        _TyEval_StopTheWorldAll(&_PyRuntime);
         HEAD_LOCK(runtime);
-        PyInterpreterState *interp = PyInterpreterState_Head();
+        PyInterpreterState *interp = TyInterpreterState_Head();
         assert(interp != NULL);
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
         int got_main = 0;
 #endif
-        for (; interp != NULL; interp = PyInterpreterState_Next(interp)) {
-#ifdef Py_DEBUG
-            if (_Py_IsMainInterpreter(interp)) {
+        for (; interp != NULL; interp = TyInterpreterState_Next(interp)) {
+#ifdef Ty_DEBUG
+            if (_Ty_IsMainInterpreter(interp)) {
                 assert(!got_main);
                 got_main = 1;
                 assert(has_own_state(interp));
             }
 #endif
             if (has_own_state(interp)) {
-                total += _PyInterpreterState_GetAllocatedBlocks(interp);
+                total += _TyInterpreterState_GetAllocatedBlocks(interp);
             }
         }
         HEAD_UNLOCK(runtime);
-        _PyEval_StartTheWorldAll(&_PyRuntime);
-#ifdef Py_DEBUG
+        _TyEval_StartTheWorldAll(&_PyRuntime);
+#ifdef Ty_DEBUG
         assert(got_main);
 #endif
     }
@@ -1738,8 +1738,8 @@ get_num_global_allocated_blocks(_PyRuntimeState *runtime)
     return total;
 }
 
-Py_ssize_t
-_Py_GetGlobalAllocatedBlocks(void)
+Ty_ssize_t
+_Ty_GetGlobalAllocatedBlocks(void)
 {
     return get_num_global_allocated_blocks(&_PyRuntime);
 }
@@ -1756,7 +1756,7 @@ _Py_GetGlobalAllocatedBlocks(void)
 
 /* Return a pointer to a bottom tree node, return NULL if it doesn't exist or
  * it cannot be created */
-static inline Py_ALWAYS_INLINE arena_map_bot_t *
+static inline Ty_ALWAYS_INLINE arena_map_bot_t *
 arena_map_get(OMState *state, pymem_block *p, int create)
 {
 #ifdef USE_INTERIOR_NODES
@@ -1767,7 +1767,7 @@ arena_map_get(OMState *state, pymem_block *p, int create)
         if (!create) {
             return NULL;
         }
-        arena_map_mid_t *n = PyMem_RawCalloc(1, sizeof(arena_map_mid_t));
+        arena_map_mid_t *n = TyMem_RawCalloc(1, sizeof(arena_map_mid_t));
         if (n == NULL) {
             return NULL;
         }
@@ -1779,7 +1779,7 @@ arena_map_get(OMState *state, pymem_block *p, int create)
         if (!create) {
             return NULL;
         }
-        arena_map_bot_t *n = PyMem_RawCalloc(1, sizeof(arena_map_bot_t));
+        arena_map_bot_t *n = TyMem_RawCalloc(1, sizeof(arena_map_bot_t));
         if (n == NULL) {
             return NULL;
         }
@@ -1862,7 +1862,7 @@ arena_map_mark_used(OMState *state, uintptr_t arena_base, int is_used)
 }
 
 /* Return true if 'p' is a pointer inside an obmalloc arena.
- * _PyObject_Free() calls this so it needs to be very fast. */
+ * _TyObject_Free() calls this so it needs to be very fast. */
 static int
 arena_map_is_used(OMState *state, pymem_block *p)
 {
@@ -1897,12 +1897,12 @@ new_arena(OMState *state)
 
     int debug_stats = _PyRuntime.obmalloc.dump_debug_stats;
     if (debug_stats == -1) {
-        const char *opt = Py_GETENV("PYTHONMALLOCSTATS");
+        const char *opt = Ty_GETENV("PYTHONMALLOCSTATS");
         debug_stats = (opt != NULL && *opt != '\0');
         _PyRuntime.obmalloc.dump_debug_stats = debug_stats;
     }
     if (debug_stats) {
-        _PyObject_DebugMallocStats(stderr);
+        _TyObject_DebugMallocStats(stderr);
     }
 
     if (unused_arena_objects == NULL) {
@@ -1921,7 +1921,7 @@ new_arena(OMState *state)
             return NULL;                /* overflow */
 #endif
         nbytes = numarenas * sizeof(*allarenas);
-        arenaobj = (struct arena_object *)PyMem_RawRealloc(allarenas, nbytes);
+        arenaobj = (struct arena_object *)TyMem_RawRealloc(allarenas, nbytes);
         if (arenaobj == NULL)
             return NULL;
         allarenas = arenaobj;
@@ -1952,12 +1952,12 @@ new_arena(OMState *state)
     arenaobj = unused_arena_objects;
     unused_arena_objects = arenaobj->nextarena;
     assert(arenaobj->address == 0);
-    address = _PyObject_Arena.alloc(_PyObject_Arena.ctx, ARENA_SIZE);
+    address = _TyObject_Arena.alloc(_TyObject_Arena.ctx, ARENA_SIZE);
 #if WITH_PYMALLOC_RADIX_TREE
     if (address != NULL) {
         if (!arena_map_mark_used(state, (uintptr_t)address, 1)) {
             /* marking arena in radix tree failed, abort */
-            _PyObject_Arena.free(_PyObject_Arena.ctx, address, ARENA_SIZE);
+            _TyObject_Arena.free(_TyObject_Arena.ctx, address, ARENA_SIZE);
             address = NULL;
         }
     }
@@ -1998,7 +1998,7 @@ new_arena(OMState *state)
    pymalloc.  When the radix tree is used, 'poolp' is unused.
  */
 static bool
-address_in_range(OMState *state, void *p, poolp Py_UNUSED(pool))
+address_in_range(OMState *state, void *p, poolp Ty_UNUSED(pool))
 {
     return arena_map_is_used(state, p);
 }
@@ -2078,9 +2078,9 @@ obmalloc controls.  Since this test is needed at every entry point, it's
 extremely desirable that it be this fast.
 */
 
-static bool _Py_NO_SANITIZE_ADDRESS
-            _Py_NO_SANITIZE_THREAD
-            _Py_NO_SANITIZE_MEMORY
+static bool _Ty_NO_SANITIZE_ADDRESS
+            _Ty_NO_SANITIZE_THREAD
+            _Ty_NO_SANITIZE_MEMORY
 address_in_range(OMState *state, void *p, poolp pool)
 {
     // Since address_in_range may be reading from memory which was not allocated
@@ -2259,7 +2259,7 @@ allocate_from_new_pool(OMState *state, uint size)
    or when the max memory limit has been reached.
 */
 static inline void*
-pymalloc_alloc(OMState *state, void *Py_UNUSED(ctx), size_t nbytes)
+pymalloc_alloc(OMState *state, void *Ty_UNUSED(ctx), size_t nbytes)
 {
 #ifdef WITH_VALGRIND
     if (UNLIKELY(running_on_valgrind == -1)) {
@@ -2307,7 +2307,7 @@ pymalloc_alloc(OMState *state, void *Py_UNUSED(ctx), size_t nbytes)
 
 
 void *
-_PyObject_Malloc(void *ctx, size_t nbytes)
+_TyObject_Malloc(void *ctx, size_t nbytes)
 {
     OMState *state = get_state();
     void* ptr = pymalloc_alloc(state, ctx, nbytes);
@@ -2315,7 +2315,7 @@ _PyObject_Malloc(void *ctx, size_t nbytes)
         return ptr;
     }
 
-    ptr = PyMem_RawMalloc(nbytes);
+    ptr = TyMem_RawMalloc(nbytes);
     if (ptr != NULL) {
         raw_allocated_blocks++;
     }
@@ -2324,7 +2324,7 @@ _PyObject_Malloc(void *ctx, size_t nbytes)
 
 
 void *
-_PyObject_Calloc(void *ctx, size_t nelem, size_t elsize)
+_TyObject_Calloc(void *ctx, size_t nelem, size_t elsize)
 {
     assert(elsize == 0 || nelem <= (size_t)PY_SSIZE_T_MAX / elsize);
     size_t nbytes = nelem * elsize;
@@ -2336,7 +2336,7 @@ _PyObject_Calloc(void *ctx, size_t nelem, size_t elsize)
         return ptr;
     }
 
-    ptr = PyMem_RawCalloc(nelem, elsize);
+    ptr = TyMem_RawCalloc(nelem, elsize);
     if (ptr != NULL) {
         raw_allocated_blocks++;
     }
@@ -2448,7 +2448,7 @@ insert_to_freepool(OMState *state, poolp pool)
 #endif
 
         /* Free the entire arena. */
-        _PyObject_Arena.free(_PyObject_Arena.ctx,
+        _TyObject_Arena.free(_TyObject_Arena.ctx,
                              (void *)ao->address, ARENA_SIZE);
         ao->address = 0;                        /* mark unassociated */
         --narenas_currently_allocated;
@@ -2531,7 +2531,7 @@ insert_to_freepool(OMState *state, poolp pool)
    Return 1 if it was freed.
    Return 0 if the block was not allocated by pymalloc_alloc(). */
 static inline int
-pymalloc_free(OMState *state, void *Py_UNUSED(ctx), void *p)
+pymalloc_free(OMState *state, void *Ty_UNUSED(ctx), void *p)
 {
     assert(p != NULL);
 
@@ -2589,7 +2589,7 @@ pymalloc_free(OMState *state, void *Py_UNUSED(ctx), void *p)
 
 
 void
-_PyObject_Free(void *ctx, void *p)
+_TyObject_Free(void *ctx, void *p)
 {
     /* PyObject_Free(NULL) has no effect */
     if (p == NULL) {
@@ -2599,7 +2599,7 @@ _PyObject_Free(void *ctx, void *p)
     OMState *state = get_state();
     if (UNLIKELY(!pymalloc_free(state, ctx, p))) {
         /* pymalloc didn't allocate this address */
-        PyMem_RawFree(p);
+        TyMem_RawFree(p);
         raw_allocated_blocks--;
     }
 }
@@ -2666,10 +2666,10 @@ pymalloc_realloc(OMState *state, void *ctx,
         size = nbytes;
     }
 
-    bp = _PyObject_Malloc(ctx, nbytes);
+    bp = _TyObject_Malloc(ctx, nbytes);
     if (bp != NULL) {
         memcpy(bp, p, size);
-        _PyObject_Free(ctx, p);
+        _TyObject_Free(ctx, p);
     }
     *newptr_p = bp;
     return 1;
@@ -2677,12 +2677,12 @@ pymalloc_realloc(OMState *state, void *ctx,
 
 
 void *
-_PyObject_Realloc(void *ctx, void *ptr, size_t nbytes)
+_TyObject_Realloc(void *ctx, void *ptr, size_t nbytes)
 {
     void *ptr2;
 
     if (ptr == NULL) {
-        return _PyObject_Malloc(ctx, nbytes);
+        return _TyObject_Malloc(ctx, nbytes);
     }
 
     OMState *state = get_state();
@@ -2690,7 +2690,7 @@ _PyObject_Realloc(void *ctx, void *ptr, size_t nbytes)
         return ptr2;
     }
 
-    return PyMem_RawRealloc(ptr, nbytes);
+    return TyMem_RawRealloc(ptr, nbytes);
 }
 
 #else   /* ! WITH_PYMALLOC */
@@ -2699,26 +2699,26 @@ _PyObject_Realloc(void *ctx, void *ptr, size_t nbytes)
 /* pymalloc not enabled:  Redirect the entry points to malloc.  These will
  * only be used by extensions that are compiled with pymalloc enabled. */
 
-Py_ssize_t
-_PyInterpreterState_GetAllocatedBlocks(PyInterpreterState *Py_UNUSED(interp))
+Ty_ssize_t
+_TyInterpreterState_GetAllocatedBlocks(PyInterpreterState *Ty_UNUSED(interp))
 {
     return 0;
 }
 
-Py_ssize_t
-_Py_GetGlobalAllocatedBlocks(void)
+Ty_ssize_t
+_Ty_GetGlobalAllocatedBlocks(void)
 {
     return 0;
 }
 
 void
-_PyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *Py_UNUSED(interp))
+_TyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *Ty_UNUSED(interp))
 {
     return;
 }
 
 void
-_Py_FinalizeAllocatedBlocks(_PyRuntimeState *Py_UNUSED(runtime))
+_Ty_FinalizeAllocatedBlocks(_PyRuntimeState *Ty_UNUSED(runtime))
 {
     return;
 }
@@ -2787,11 +2787,11 @@ static void
 fill_mem_debug(debug_alloc_api_t *api, void *data, int c, size_t nbytes,
                bool is_alloc)
 {
-#ifdef Py_GIL_DISABLED
+#ifdef Ty_GIL_DISABLED
     if (api->api_id == 'o') {
-        // Don't overwrite the first few bytes of a PyObject allocation in the
+        // Don't overwrite the first few bytes of a TyObject allocation in the
         // free-threaded build
-        _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
+        _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
         size_t debug_offset;
         if (is_alloc) {
             debug_offset = tstate->mimalloc.current_object_heap->debug_offset;
@@ -2828,8 +2828,8 @@ p[2*S: 2*S+n]
 p[2*S+n: 2*S+n+S]
     Copies of PYMEM_FORBIDDENBYTE.  Used to catch over- writes and reads.
 p[2*S+n+S: 2*S+n+2*S]
-    A serial number, incremented by 1 on each call to _PyMem_DebugMalloc
-    and _PyMem_DebugRealloc.
+    A serial number, incremented by 1 on each call to _TyMem_DebugMalloc
+    and _TyMem_DebugRealloc.
     This is a big-endian size_t.
     If "bad memory" is detected later, the serial number gives an
     excellent way to set a breakpoint on the next run, to capture the
@@ -2840,7 +2840,7 @@ for 3 * S extra bytes, and omits the last serialno field.
 */
 
 static void *
-_PyMem_DebugRawAlloc(int use_calloc, void *ctx, size_t nbytes)
+_TyMem_DebugRawAlloc(int use_calloc, void *ctx, size_t nbytes)
 {
     debug_alloc_api_t *api = (debug_alloc_api_t *)ctx;
     uint8_t *p;           /* base address of malloc'ed pad block */
@@ -2849,7 +2849,7 @@ _PyMem_DebugRawAlloc(int use_calloc, void *ctx, size_t nbytes)
     size_t total;         /* nbytes + PYMEM_DEBUG_EXTRA_BYTES */
 
     if (nbytes > (size_t)PY_SSIZE_T_MAX - PYMEM_DEBUG_EXTRA_BYTES) {
-        /* integer overflow: can't represent total as a Py_ssize_t */
+        /* integer overflow: can't represent total as a Ty_ssize_t */
         return NULL;
     }
     total = nbytes + PYMEM_DEBUG_EXTRA_BYTES;
@@ -2900,18 +2900,18 @@ _PyMem_DebugRawAlloc(int use_calloc, void *ctx, size_t nbytes)
 }
 
 void *
-_PyMem_DebugRawMalloc(void *ctx, size_t nbytes)
+_TyMem_DebugRawMalloc(void *ctx, size_t nbytes)
 {
-    return _PyMem_DebugRawAlloc(0, ctx, nbytes);
+    return _TyMem_DebugRawAlloc(0, ctx, nbytes);
 }
 
 void *
-_PyMem_DebugRawCalloc(void *ctx, size_t nelem, size_t elsize)
+_TyMem_DebugRawCalloc(void *ctx, size_t nelem, size_t elsize)
 {
     size_t nbytes;
     assert(elsize == 0 || nelem <= (size_t)PY_SSIZE_T_MAX / elsize);
     nbytes = nelem * elsize;
-    return _PyMem_DebugRawAlloc(1, ctx, nbytes);
+    return _TyMem_DebugRawAlloc(1, ctx, nbytes);
 }
 
 
@@ -2921,9 +2921,9 @@ _PyMem_DebugRawCalloc(void *ctx, size_t nelem, size_t elsize)
    Then calls the underlying free.
 */
 void
-_PyMem_DebugRawFree(void *ctx, void *p)
+_TyMem_DebugRawFree(void *ctx, void *p)
 {
-    /* PyMem_Free(NULL) has no effect */
+    /* TyMem_Free(NULL) has no effect */
     if (p == NULL) {
         return;
     }
@@ -2932,7 +2932,7 @@ _PyMem_DebugRawFree(void *ctx, void *p)
     uint8_t *q = (uint8_t *)p - 2*SST;  /* address returned from malloc */
     size_t nbytes;
 
-    _PyMem_DebugCheckAddress(__func__, api->api_id, p);
+    _TyMem_DebugCheckAddress(__func__, api->api_id, p);
     nbytes = read_size_t(q);
     nbytes += PYMEM_DEBUG_EXTRA_BYTES - 2*SST;
     memset(q, PYMEM_DEADBYTE, 2*SST);
@@ -2942,10 +2942,10 @@ _PyMem_DebugRawFree(void *ctx, void *p)
 
 
 void *
-_PyMem_DebugRawRealloc(void *ctx, void *p, size_t nbytes)
+_TyMem_DebugRawRealloc(void *ctx, void *p, size_t nbytes)
 {
     if (p == NULL) {
-        return _PyMem_DebugRawAlloc(0, ctx, nbytes);
+        return _TyMem_DebugRawAlloc(0, ctx, nbytes);
     }
 
     debug_alloc_api_t *api = (debug_alloc_api_t *)ctx;
@@ -2957,13 +2957,13 @@ _PyMem_DebugRawRealloc(void *ctx, void *p, size_t nbytes)
     size_t original_nbytes;
 #define ERASED_SIZE 64
 
-    _PyMem_DebugCheckAddress(__func__, api->api_id, p);
+    _TyMem_DebugCheckAddress(__func__, api->api_id, p);
 
     data = (uint8_t *)p;
     head = data - 2*SST;
     original_nbytes = read_size_t(head);
     if (nbytes > (size_t)PY_SSIZE_T_MAX - PYMEM_DEBUG_EXTRA_BYTES) {
-        /* integer overflow: can't represent total as a Py_ssize_t */
+        /* integer overflow: can't represent total as a Ty_ssize_t */
         return NULL;
     }
     total = nbytes + PYMEM_DEBUG_EXTRA_BYTES;
@@ -2972,7 +2972,7 @@ _PyMem_DebugRawRealloc(void *ctx, void *p, size_t nbytes)
 #ifdef PYMEM_DEBUG_SERIALNO
     size_t block_serialno = read_size_t(tail + SST);
 #endif
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
     /* Mark the header, the trailer, ERASED_SIZE bytes at the begin and
        ERASED_SIZE bytes at the end as dead and save the copy of erased bytes.
      */
@@ -3017,17 +3017,17 @@ _PyMem_DebugRawRealloc(void *ctx, void *p, size_t nbytes)
     write_size_t(tail + SST, block_serialno);
 #endif
 
-#ifndef Py_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
     /* Restore saved bytes. */
     if (original_nbytes <= sizeof(save)) {
-        memcpy(data, save, Py_MIN(nbytes, original_nbytes));
+        memcpy(data, save, Ty_MIN(nbytes, original_nbytes));
     }
     else {
         size_t i = original_nbytes - ERASED_SIZE;
-        memcpy(data, save, Py_MIN(nbytes, ERASED_SIZE));
+        memcpy(data, save, Ty_MIN(nbytes, ERASED_SIZE));
         if (nbytes > i) {
             memcpy(data + i, &save[ERASED_SIZE],
-                   Py_MIN(nbytes - i, ERASED_SIZE));
+                   Ty_MIN(nbytes - i, ERASED_SIZE));
         }
     }
 #endif
@@ -3046,60 +3046,60 @@ _PyMem_DebugRawRealloc(void *ctx, void *p, size_t nbytes)
 }
 
 static inline void
-_PyMem_DebugCheckGIL(const char *func)
+_TyMem_DebugCheckGIL(const char *func)
 {
-    PyThreadState *tstate = _PyThreadState_GET();
+    PyThreadState *tstate = _TyThreadState_GET();
     if (tstate == NULL) {
-#ifndef Py_GIL_DISABLED
-        _Py_FatalErrorFunc(func,
+#ifndef Ty_GIL_DISABLED
+        _Ty_FatalErrorFunc(func,
                            "Python memory allocator called "
                            "without holding the GIL");
 #else
-        _Py_FatalErrorFunc(func,
+        _Ty_FatalErrorFunc(func,
                            "Python memory allocator called "
                            "without an active thread state. "
-                           "Are you trying to call it inside of a Py_BEGIN_ALLOW_THREADS block?");
+                           "Are you trying to call it inside of a Ty_BEGIN_ALLOW_THREADS block?");
 #endif
     }
 }
 
 void *
-_PyMem_DebugMalloc(void *ctx, size_t nbytes)
+_TyMem_DebugMalloc(void *ctx, size_t nbytes)
 {
-    _PyMem_DebugCheckGIL(__func__);
-    return _PyMem_DebugRawMalloc(ctx, nbytes);
+    _TyMem_DebugCheckGIL(__func__);
+    return _TyMem_DebugRawMalloc(ctx, nbytes);
 }
 
 void *
-_PyMem_DebugCalloc(void *ctx, size_t nelem, size_t elsize)
+_TyMem_DebugCalloc(void *ctx, size_t nelem, size_t elsize)
 {
-    _PyMem_DebugCheckGIL(__func__);
-    return _PyMem_DebugRawCalloc(ctx, nelem, elsize);
+    _TyMem_DebugCheckGIL(__func__);
+    return _TyMem_DebugRawCalloc(ctx, nelem, elsize);
 }
 
 
 void
-_PyMem_DebugFree(void *ctx, void *ptr)
+_TyMem_DebugFree(void *ctx, void *ptr)
 {
-    _PyMem_DebugCheckGIL(__func__);
-    _PyMem_DebugRawFree(ctx, ptr);
+    _TyMem_DebugCheckGIL(__func__);
+    _TyMem_DebugRawFree(ctx, ptr);
 }
 
 
 void *
-_PyMem_DebugRealloc(void *ctx, void *ptr, size_t nbytes)
+_TyMem_DebugRealloc(void *ctx, void *ptr, size_t nbytes)
 {
-    _PyMem_DebugCheckGIL(__func__);
-    return _PyMem_DebugRawRealloc(ctx, ptr, nbytes);
+    _TyMem_DebugCheckGIL(__func__);
+    return _TyMem_DebugRawRealloc(ctx, ptr, nbytes);
 }
 
 /* Check the forbidden bytes on both ends of the memory allocated for p.
- * If anything is wrong, print info to stderr via _PyObject_DebugDumpAddress,
- * and call Py_FatalError to kill the program.
+ * If anything is wrong, print info to stderr via _TyObject_DebugDumpAddress,
+ * and call Ty_FatalError to kill the program.
  * The API id, is also checked.
  */
 static void
-_PyMem_DebugCheckAddress(const char *func, char api, const void *p)
+_TyMem_DebugCheckAddress(const char *func, char api, const void *p)
 {
     assert(p != NULL);
 
@@ -3112,8 +3112,8 @@ _PyMem_DebugCheckAddress(const char *func, char api, const void *p)
     /* Check the API id */
     id = (char)q[-SST];
     if (id != api) {
-        _PyObject_DebugDumpAddress(p);
-        _Py_FatalErrorFormat(func,
+        _TyObject_DebugDumpAddress(p);
+        _Ty_FatalErrorFormat(func,
                              "bad ID: Allocated using API '%c', "
                              "verified using API '%c'",
                              id, api);
@@ -3125,8 +3125,8 @@ _PyMem_DebugCheckAddress(const char *func, char api, const void *p)
      */
     for (i = SST-1; i >= 1; --i) {
         if (*(q-i) != PYMEM_FORBIDDENBYTE) {
-            _PyObject_DebugDumpAddress(p);
-            _Py_FatalErrorFunc(func, "bad leading pad byte");
+            _TyObject_DebugDumpAddress(p);
+            _Ty_FatalErrorFunc(func, "bad leading pad byte");
         }
     }
 
@@ -3134,15 +3134,15 @@ _PyMem_DebugCheckAddress(const char *func, char api, const void *p)
     tail = q + nbytes;
     for (i = 0; i < SST; ++i) {
         if (tail[i] != PYMEM_FORBIDDENBYTE) {
-            _PyObject_DebugDumpAddress(p);
-            _Py_FatalErrorFunc(func, "bad trailing pad byte");
+            _TyObject_DebugDumpAddress(p);
+            _Ty_FatalErrorFunc(func, "bad trailing pad byte");
         }
     }
 }
 
 /* Display info to stderr about the memory block at p. */
 static void
-_PyObject_DebugDumpAddress(const void *p)
+_TyObject_DebugDumpAddress(const void *p)
 {
     const uint8_t *q = (const uint8_t *)p;
     const uint8_t *tail;
@@ -3246,7 +3246,7 @@ _PyObject_DebugDumpAddress(const void *p)
     fputc('\n', stderr);
 
     fflush(stderr);
-    _PyMem_DumpTraceback(fileno(stderr), p);
+    _TyMem_DumpTraceback(fileno(stderr), p);
 }
 
 
@@ -3292,23 +3292,23 @@ _PyDebugAllocatorStats(FILE *out,
 {
     char buf1[128];
     char buf2[128];
-    PyOS_snprintf(buf1, sizeof(buf1),
+    TyOS_snprintf(buf1, sizeof(buf1),
                   "%d %ss * %zd bytes each",
                   num_blocks, block_name, sizeof_block);
-    PyOS_snprintf(buf2, sizeof(buf2),
+    TyOS_snprintf(buf2, sizeof(buf2),
                   "%48s ", buf1);
     (void)printone(out, buf2, num_blocks * sizeof_block);
 }
 
 // Return true if the obmalloc state structure is heap allocated,
-// by PyMem_RawCalloc().  For the main interpreter, this structure
+// by TyMem_RawCalloc().  For the main interpreter, this structure
 // allocated in the BSS.  Allocating that way gives some memory savings
 // and a small performance win (at least on a demand paged OS).  On
 // 64-bit platforms, the obmalloc structure is 256 kB. Most of that
 // memory is for the arena_map_top array.  Since normally only one entry
 // of that array is used, only one page of resident memory is actually
 // used, rather than the full 256 kB.
-bool _PyMem_obmalloc_state_on_heap(PyInterpreterState *interp)
+bool _TyMem_obmalloc_state_on_heap(PyInterpreterState *interp)
 {
 #if WITH_PYMALLOC
     return interp->obmalloc && interp->obmalloc != &obmalloc_state_main;
@@ -3329,21 +3329,21 @@ init_obmalloc_pools(PyInterpreterState *interp)
 }
 #endif /* WITH_PYMALLOC */
 
-int _PyMem_init_obmalloc(PyInterpreterState *interp)
+int _TyMem_init_obmalloc(PyInterpreterState *interp)
 {
 #ifdef WITH_PYMALLOC
     /* Initialize obmalloc, but only for subinterpreters,
        since the main interpreter is initialized statically. */
-    if (_Py_IsMainInterpreter(interp)
-            || _PyInterpreterState_HasFeature(interp,
-                                              Py_RTFLAGS_USE_MAIN_OBMALLOC)) {
+    if (_Ty_IsMainInterpreter(interp)
+            || _TyInterpreterState_HasFeature(interp,
+                                              Ty_RTFLAGS_USE_MAIN_OBMALLOC)) {
         interp->obmalloc = &obmalloc_state_main;
         if (!obmalloc_state_initialized) {
             init_obmalloc_pools(interp);
             obmalloc_state_initialized = true;
         }
     } else {
-        interp->obmalloc = PyMem_RawCalloc(1, sizeof(struct _obmalloc_state));
+        interp->obmalloc = TyMem_RawCalloc(1, sizeof(struct _obmalloc_state));
         if (interp->obmalloc == NULL) {
             return -1;
         }
@@ -3363,11 +3363,11 @@ free_obmalloc_arenas(PyInterpreterState *interp)
     for (uint i = 0; i < maxarenas; ++i) {
         // free each obmalloc memory arena
         struct arena_object *ao = &allarenas[i];
-        _PyObject_Arena.free(_PyObject_Arena.ctx,
+        _TyObject_Arena.free(_TyObject_Arena.ctx,
                              (void *)ao->address, ARENA_SIZE);
     }
     // free the array containing pointers to all arenas
-    PyMem_RawFree(allarenas);
+    TyMem_RawFree(allarenas);
 #if WITH_PYMALLOC_RADIX_TREE
 #ifdef USE_INTERIOR_NODES
     // Free the middle and bottom nodes of the radix tree.  These are allocated
@@ -3382,15 +3382,15 @@ free_obmalloc_arenas(PyInterpreterState *interp)
             if (bot == NULL) {
                 continue;
             }
-            PyMem_RawFree(bot);
+            TyMem_RawFree(bot);
          }
-         PyMem_RawFree(mid);
+         TyMem_RawFree(mid);
     }
 #endif
 #endif
 }
 
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
 /* Is target in the list?  The list is traversed via the nextpool pointers.
  * The list may be NULL-terminated, or circular.  Return 1 if target is in
  * list, else 0.
@@ -3525,7 +3525,7 @@ pymalloc_print_stats(FILE *out)
 
             if (p->ref.count == 0) {
                 /* currently unused */
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
                 assert(pool_is_in_list(p, allarenas[i].freepools));
 #endif
                 continue;
@@ -3534,7 +3534,7 @@ pymalloc_print_stats(FILE *out)
             numblocks[sz] += p->ref.count;
             freeblocks = NUMBLOCKS(sz) - p->ref.count;
             numfreeblocks[sz] += freeblocks;
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
             if (freeblocks > 0)
                 assert(pool_is_in_list(p, usedpools[sz + sz]));
 #endif
@@ -3565,7 +3565,7 @@ pymalloc_print_stats(FILE *out)
     }
     fputc('\n', out);
 #ifdef PYMEM_DEBUG_SERIALNO
-    if (_PyMem_DebugEnabled()) {
+    if (_TyMem_DebugEnabled()) {
         (void)printone(out, "# times object malloc called", serialno);
     }
 #endif
@@ -3574,7 +3574,7 @@ pymalloc_print_stats(FILE *out)
     (void)printone(out, "# arenas highwater mark", narenas_highwater);
     (void)printone(out, "# arenas allocated current", narenas);
 
-    PyOS_snprintf(buf, sizeof(buf),
+    TyOS_snprintf(buf, sizeof(buf),
                   "%zu arenas * %d bytes/arena",
                   narenas, ARENA_SIZE);
     (void)printone(out, buf, narenas * ARENA_SIZE);
@@ -3585,7 +3585,7 @@ pymalloc_print_stats(FILE *out)
     total = printone(out, "# bytes in allocated blocks", allocated_bytes);
     total += printone(out, "# bytes in available blocks", available_bytes);
 
-    PyOS_snprintf(buf, sizeof(buf),
+    TyOS_snprintf(buf, sizeof(buf),
         "%u unused pools * %d bytes", numfreepools, POOL_SIZE);
     total += printone(out, buf, (size_t)numfreepools * POOL_SIZE);
 
@@ -3615,23 +3615,23 @@ pymalloc_print_stats(FILE *out)
 }
 
 /* Print summary info to "out" about the state of pymalloc's structures.
- * In Py_DEBUG mode, also perform some expensive internal consistency
+ * In Ty_DEBUG mode, also perform some expensive internal consistency
  * checks.
  *
  * Return 0 if the memory debug hooks are not installed or no statistics was
  * written into out, return 1 otherwise.
  */
 int
-_PyObject_DebugMallocStats(FILE *out)
+_TyObject_DebugMallocStats(FILE *out)
 {
 #ifdef WITH_MIMALLOC
-    if (_PyMem_MimallocEnabled()) {
+    if (_TyMem_MimallocEnabled()) {
         py_mimalloc_print_stats(out);
         return 1;
     }
     else
 #endif
-    if (_PyMem_PymallocEnabled()) {
+    if (_TyMem_PymallocEnabled()) {
         pymalloc_print_stats(out);
         return 1;
     }

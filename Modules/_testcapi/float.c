@@ -19,11 +19,11 @@ _testcapi.float_pack
     le: int
     /
 
-Test PyFloat_Pack2(), PyFloat_Pack4() and PyFloat_Pack8()
+Test TyFloat_Pack2(), TyFloat_Pack4() and TyFloat_Pack8()
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_float_pack_impl(PyObject *module, int size, double d, int le)
+static TyObject *
+_testcapi_float_pack_impl(TyObject *module, int size, double d, int le)
 /*[clinic end generated code: output=7899bd98f8b6cb04 input=52c9115121999c98]*/
 {
     switch (size)
@@ -31,31 +31,31 @@ _testcapi_float_pack_impl(PyObject *module, int size, double d, int le)
     case 2:
     {
         char data[2];
-        if (PyFloat_Pack2(d, data, le) < 0) {
+        if (TyFloat_Pack2(d, data, le) < 0) {
             return NULL;
         }
-        return PyBytes_FromStringAndSize(data, Py_ARRAY_LENGTH(data));
+        return TyBytes_FromStringAndSize(data, Ty_ARRAY_LENGTH(data));
     }
     case 4:
     {
         char data[4];
-        if (PyFloat_Pack4(d, data, le) < 0) {
+        if (TyFloat_Pack4(d, data, le) < 0) {
             return NULL;
         }
-        return PyBytes_FromStringAndSize(data, Py_ARRAY_LENGTH(data));
+        return TyBytes_FromStringAndSize(data, Ty_ARRAY_LENGTH(data));
     }
     case 8:
     {
         char data[8];
-        if (PyFloat_Pack8(d, data, le) < 0) {
+        if (TyFloat_Pack8(d, data, le) < 0) {
             return NULL;
         }
-        return PyBytes_FromStringAndSize(data, Py_ARRAY_LENGTH(data));
+        return TyBytes_FromStringAndSize(data, Ty_ARRAY_LENGTH(data));
     }
     default: break;
     }
 
-    PyErr_SetString(PyExc_ValueError, "size must 2, 4 or 8");
+    TyErr_SetString(TyExc_ValueError, "size must 2, 4 or 8");
     return NULL;
 }
 
@@ -67,50 +67,50 @@ _testcapi.float_unpack
     le: int
     /
 
-Test PyFloat_Unpack2(), PyFloat_Unpack4() and PyFloat_Unpack8()
+Test TyFloat_Unpack2(), TyFloat_Unpack4() and TyFloat_Unpack8()
 [clinic start generated code]*/
 
-static PyObject *
-_testcapi_float_unpack_impl(PyObject *module, const char *data,
-                            Py_ssize_t data_length, int le)
+static TyObject *
+_testcapi_float_unpack_impl(TyObject *module, const char *data,
+                            Ty_ssize_t data_length, int le)
 /*[clinic end generated code: output=617059f889ddbfe4 input=c095e4bb75a696cd]*/
 {
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     double d;
     switch (data_length)
     {
     case 2:
-        d = PyFloat_Unpack2(data, le);
+        d = TyFloat_Unpack2(data, le);
         break;
     case 4:
-        d = PyFloat_Unpack4(data, le);
+        d = TyFloat_Unpack4(data, le);
         break;
     case 8:
-        d = PyFloat_Unpack8(data, le);
+        d = TyFloat_Unpack8(data, le);
         break;
     default:
-        PyErr_SetString(PyExc_ValueError, "data length must 2, 4 or 8 bytes");
+        TyErr_SetString(TyExc_ValueError, "data length must 2, 4 or 8 bytes");
         return NULL;
     }
 
-    if (d == -1.0 && PyErr_Occurred()) {
+    if (d == -1.0 && TyErr_Occurred()) {
         return NULL;
     }
-    return PyFloat_FromDouble(d);
+    return TyFloat_FromDouble(d);
 }
 
 
-/* Test PyOS_string_to_double. */
-static PyObject *
-test_string_to_double(PyObject *self, PyObject *Py_UNUSED(ignored))
+/* Test TyOS_string_to_double. */
+static TyObject *
+test_string_to_double(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     double result;
     const char *msg;
 
 #define CHECK_STRING(STR, expected) \
     do { \
-        result = PyOS_string_to_double(STR, NULL, NULL); \
-        if (result == -1.0 && PyErr_Occurred()) { \
+        result = TyOS_string_to_double(STR, NULL, NULL); \
+        if (result == -1.0 && TyErr_Occurred()) { \
             return NULL; \
         } \
         if (result != (double)expected) { \
@@ -121,10 +121,10 @@ test_string_to_double(PyObject *self, PyObject *Py_UNUSED(ignored))
 
 #define CHECK_INVALID(STR) \
     do { \
-        result = PyOS_string_to_double(STR, NULL, NULL); \
-        if (result == -1.0 && PyErr_Occurred()) { \
-            if (PyErr_ExceptionMatches(PyExc_ValueError)) { \
-                PyErr_Clear(); \
+        result = TyOS_string_to_double(STR, NULL, NULL); \
+        if (result == -1.0 && TyErr_Occurred()) { \
+            if (TyErr_ExceptionMatches(TyExc_ValueError)) { \
+                TyErr_Clear(); \
             } \
             else { \
                 return NULL; \
@@ -148,16 +148,16 @@ test_string_to_double(PyObject *self, PyObject *Py_UNUSED(ignored))
     CHECK_INVALID("3\n");
     CHECK_INVALID("123abc");
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
   fail:
-    PyErr_Format(PyExc_AssertionError, "test_string_to_double: %s", msg);
+    TyErr_Format(TyExc_AssertionError, "test_string_to_double: %s", msg);
     return NULL;
 #undef CHECK_STRING
 #undef CHECK_INVALID
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     _TESTCAPI_FLOAT_PACK_METHODDEF
     _TESTCAPI_FLOAT_UNPACK_METHODDEF
     {"test_string_to_double", test_string_to_double, METH_NOARGS},
@@ -165,9 +165,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Float(PyObject *mod)
+_PyTestCapi_Init_Float(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 

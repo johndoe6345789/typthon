@@ -1,6 +1,6 @@
-#ifndef Py_LIMITED_API
-#ifndef Py_TRACEMALLOC_H
-#define Py_TRACEMALLOC_H
+#ifndef Ty_LIMITED_API
+#ifndef Ty_TRACEMALLOC_H
+#define Ty_TRACEMALLOC_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -28,5 +28,5 @@ PyAPI_FUNC(int) PyTraceMalloc_Untrack(
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_TRACEMALLOC_H
-#endif  // !Py_LIMITED_API
+#endif  // !Ty_TRACEMALLOC_H
+#endif  // !Ty_LIMITED_API

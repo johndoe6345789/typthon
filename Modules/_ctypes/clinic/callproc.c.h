@@ -3,8 +3,8 @@ preserve
 [clinic start generated code]*/
 
 #include "pycore_abstract.h"      // _PyNumber_Index()
-#include "pycore_critical_section.h"// Py_BEGIN_CRITICAL_SECTION()
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(_ctypes_sizeof__doc__,
 "sizeof($module, obj, /)\n"
@@ -24,21 +24,21 @@ PyDoc_STRVAR(_ctypes_byref__doc__,
 #define _CTYPES_BYREF_METHODDEF    \
     {"byref", _PyCFunction_CAST(_ctypes_byref), METH_FASTCALL, _ctypes_byref__doc__},
 
-static PyObject *
-_ctypes_byref_impl(PyObject *module, PyObject *obj, Py_ssize_t offset);
+static TyObject *
+_ctypes_byref_impl(TyObject *module, TyObject *obj, Ty_ssize_t offset);
 
-static PyObject *
-_ctypes_byref(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_ctypes_byref(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *obj;
-    Py_ssize_t offset = 0;
+    TyObject *return_value = NULL;
+    TyObject *obj;
+    Ty_ssize_t offset = 0;
 
-    if (!_PyArg_CheckPositional("byref", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("byref", nargs, 1, 2)) {
         goto exit;
     }
     if (!PyObject_TypeCheck(args[0], clinic_state()->PyCData_Type)) {
-        _PyArg_BadArgument("byref", "argument 1", (clinic_state()->PyCData_Type)->tp_name, args[0]);
+        _TyArg_BadArgument("byref", "argument 1", (clinic_state()->PyCData_Type)->tp_name, args[0]);
         goto exit;
     }
     obj = args[0];
@@ -46,21 +46,21 @@ _ctypes_byref(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
         goto skip_optional;
     }
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         offset = ival;
     }
 skip_optional:
-    Py_BEGIN_CRITICAL_SECTION(obj);
+    Ty_BEGIN_CRITICAL_SECTION(obj);
     return_value = _ctypes_byref_impl(module, obj, offset);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -75,23 +75,23 @@ PyDoc_STRVAR(_ctypes_addressof__doc__,
 #define _CTYPES_ADDRESSOF_METHODDEF    \
     {"addressof", (PyCFunction)_ctypes_addressof, METH_O, _ctypes_addressof__doc__},
 
-static PyObject *
-_ctypes_addressof_impl(PyObject *module, PyObject *obj);
+static TyObject *
+_ctypes_addressof_impl(TyObject *module, TyObject *obj);
 
-static PyObject *
-_ctypes_addressof(PyObject *module, PyObject *arg)
+static TyObject *
+_ctypes_addressof(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
-    PyObject *obj;
+    TyObject *return_value = NULL;
+    TyObject *obj;
 
     if (!PyObject_TypeCheck(arg, clinic_state()->PyCData_Type)) {
-        _PyArg_BadArgument("addressof", "argument", (clinic_state()->PyCData_Type)->tp_name, arg);
+        _TyArg_BadArgument("addressof", "argument", (clinic_state()->PyCData_Type)->tp_name, arg);
         goto exit;
     }
     obj = arg;
-    Py_BEGIN_CRITICAL_SECTION(obj);
+    Ty_BEGIN_CRITICAL_SECTION(obj);
     return_value = _ctypes_addressof_impl(module, obj);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;
@@ -105,39 +105,39 @@ PyDoc_STRVAR(_ctypes_resize__doc__,
 #define _CTYPES_RESIZE_METHODDEF    \
     {"resize", _PyCFunction_CAST(_ctypes_resize), METH_FASTCALL, _ctypes_resize__doc__},
 
-static PyObject *
-_ctypes_resize_impl(PyObject *module, CDataObject *obj, Py_ssize_t size);
+static TyObject *
+_ctypes_resize_impl(TyObject *module, CDataObject *obj, Ty_ssize_t size);
 
-static PyObject *
-_ctypes_resize(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_ctypes_resize(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     CDataObject *obj;
-    Py_ssize_t size;
+    Ty_ssize_t size;
 
-    if (!_PyArg_CheckPositional("resize", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("resize", nargs, 2, 2)) {
         goto exit;
     }
     if (!PyObject_TypeCheck(args[0], clinic_state()->PyCData_Type)) {
-        _PyArg_BadArgument("resize", "argument 1", (clinic_state()->PyCData_Type)->tp_name, args[0]);
+        _TyArg_BadArgument("resize", "argument 1", (clinic_state()->PyCData_Type)->tp_name, args[0]);
         goto exit;
     }
     obj = (CDataObject *)args[0];
     {
-        Py_ssize_t ival = -1;
-        PyObject *iobj = _PyNumber_Index(args[1]);
+        Ty_ssize_t ival = -1;
+        TyObject *iobj = _PyNumber_Index(args[1]);
         if (iobj != NULL) {
-            ival = PyLong_AsSsize_t(iobj);
-            Py_DECREF(iobj);
+            ival = TyLong_AsSsize_t(iobj);
+            Ty_DECREF(iobj);
         }
-        if (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && TyErr_Occurred()) {
             goto exit;
         }
         size = ival;
     }
-    Py_BEGIN_CRITICAL_SECTION(obj);
+    Ty_BEGIN_CRITICAL_SECTION(obj);
     return_value = _ctypes_resize_impl(module, obj, size);
-    Py_END_CRITICAL_SECTION();
+    Ty_END_CRITICAL_SECTION();
 
 exit:
     return return_value;

@@ -17,7 +17,7 @@ from test.support import script_helper, ALWAYS_EQ
 from test.support import gc_collect
 from test.support import import_helper
 from test.support import threading_helper
-from test.support import is_wasi, Py_DEBUG
+from test.support import is_wasi, Ty_DEBUG
 
 # Used in ReferencesTestCase.test_ref_created_during_del() .
 ref_from_del = None
@@ -965,7 +965,7 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(hash(a), hash(42))
         self.assertRaises(TypeError, hash, b)
 
-    @unittest.skipIf(is_wasi and Py_DEBUG, "requires deep stack")
+    @unittest.skipIf(is_wasi and Ty_DEBUG, "requires deep stack")
     def test_trashcan_16602(self):
         # Issue #16602: when a weakref's target was part of a long
         # deallocation chain, the trashcan mechanism could delay clearing
@@ -1042,7 +1042,7 @@ class ReferencesTestCase(TestBase):
         """).strip()
         res, _ = script_helper.run_python_until_end("-c", code)
         stderr = res.err.decode("ascii", "backslashreplace")
-        self.assertNotRegex(stderr, "_Py_Dealloc: Deallocator of type 'TestObj'")
+        self.assertNotRegex(stderr, "_Ty_Dealloc: Deallocator of type 'TestObj'")
 
 
 class SubclassableWeakrefTestCase(TestBase):
@@ -1290,7 +1290,7 @@ class MappingTestCase(TestBase):
 
     COUNT = 10
 
-    if support.check_sanitizer(thread=True) and support.Py_GIL_DISABLED:
+    if support.check_sanitizer(thread=True) and support.Ty_GIL_DISABLED:
         # Reduce iteration count to get acceptable latency
         NUM_THREADED_ITERATIONS = 1000
     else:

@@ -2,10 +2,10 @@
 posixshmem - A Python extension that provides shm_open() and shm_unlink()
 */
 
-// Need limited C API version 3.13 for Py_mod_gil
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for Ty_mod_gil
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include <Python.h>
@@ -42,30 +42,30 @@ Open a shared memory object.  Returns a file descriptor (integer).
 [clinic start generated code]*/
 
 static int
-_posixshmem_shm_open_impl(PyObject *module, PyObject *path, int flags,
+_posixshmem_shm_open_impl(TyObject *module, TyObject *path, int flags,
                           int mode)
 /*[clinic end generated code: output=8d110171a4fa20df input=e83b58fa802fac25]*/
 {
     int fd;
     int async_err = 0;
-    Py_ssize_t name_size;
-    const char *name = PyUnicode_AsUTF8AndSize(path, &name_size);
+    Ty_ssize_t name_size;
+    const char *name = TyUnicode_AsUTF8AndSize(path, &name_size);
     if (name == NULL) {
         return -1;
     }
     if (strlen(name) != (size_t)name_size) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         return -1;
     }
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         fd = shm_open(name, flags, mode);
-        Py_END_ALLOW_THREADS
-    } while (fd < 0 && errno == EINTR && !(async_err = PyErr_CheckSignals()));
+        Ty_END_ALLOW_THREADS
+    } while (fd < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
     if (fd < 0) {
         if (!async_err)
-            PyErr_SetFromErrnoWithFilenameObject(PyExc_OSError, path);
+            TyErr_SetFromErrnoWithFilenameObject(TyExc_OSError, path);
         return -1;
     }
 
@@ -87,40 +87,40 @@ region.
 
 [clinic start generated code]*/
 
-static PyObject *
-_posixshmem_shm_unlink_impl(PyObject *module, PyObject *path)
+static TyObject *
+_posixshmem_shm_unlink_impl(TyObject *module, TyObject *path)
 /*[clinic end generated code: output=42f8b23d134b9ff5 input=298369d013dcad63]*/
 {
     int rv;
     int async_err = 0;
-    Py_ssize_t name_size;
-    const char *name = PyUnicode_AsUTF8AndSize(path, &name_size);
+    Ty_ssize_t name_size;
+    const char *name = TyUnicode_AsUTF8AndSize(path, &name_size);
     if (name == NULL) {
         return NULL;
     }
     if (strlen(name) != (size_t)name_size) {
-        PyErr_SetString(PyExc_ValueError, "embedded null character");
+        TyErr_SetString(TyExc_ValueError, "embedded null character");
         return NULL;
     }
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         rv = shm_unlink(name);
-        Py_END_ALLOW_THREADS
-    } while (rv < 0 && errno == EINTR && !(async_err = PyErr_CheckSignals()));
+        Ty_END_ALLOW_THREADS
+    } while (rv < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
     if (rv < 0) {
         if (!async_err)
-            PyErr_SetFromErrnoWithFilenameObject(PyExc_OSError, path);
+            TyErr_SetFromErrnoWithFilenameObject(TyExc_OSError, path);
         return NULL;
     }
 
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 #endif /* HAVE_SHM_UNLINK */
 
 #include "clinic/posixshmem.c.h"
 
-static PyMethodDef module_methods[ ] = {
+static TyMethodDef module_methods[ ] = {
     _POSIXSHMEM_SHM_OPEN_METHODDEF
     _POSIXSHMEM_SHM_UNLINK_METHODDEF
     {NULL} /* Sentinel */
@@ -128,13 +128,13 @@ static PyMethodDef module_methods[ ] = {
 
 
 static PyModuleDef_Slot module_slots[] = {
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
 
-static struct PyModuleDef _posixshmemmodule = {
+static struct TyModuleDef _posixshmemmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_posixshmem",
     .m_doc = "POSIX shared memory module",

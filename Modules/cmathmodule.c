@@ -2,18 +2,18 @@
 
 /* much code borrowed from mathmodule.c */
 
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
-#include "pycore_complexobject.h" // _Py_c_neg()
+#include "pycore_complexobject.h" // _Ty_c_neg()
 #include "pycore_pymath.h"        // _PY_SHORT_FLOAT_REPR
 /* we need DBL_MAX, DBL_MIN, DBL_EPSILON, DBL_MANT_DIG and FLT_RADIX from
    float.h.  We assume that FLT_RADIX is either 2 or 16. */
 #include <float.h>
 
-/* For _Py_log1p with workarounds for buggy handling of zeros. */
+/* For _Ty_log1p with workarounds for buggy handling of zeros. */
 #include "_math.h"
 
 #include "clinic/cmathmodule.c.h"
@@ -23,27 +23,27 @@ module cmath
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=308d6839f4a46333]*/
 
 /*[python input]
-class Py_complex_protected_converter(Py_complex_converter):
+class Ty_complex_protected_converter(Ty_complex_converter):
     def modify(self):
         return 'errno = 0;'
 
 
-class Py_complex_protected_return_converter(CReturnConverter):
-    type = "Py_complex"
+class Ty_complex_protected_return_converter(CReturnConverter):
+    type = "Ty_complex"
 
     def render(self, function, data):
         self.declare(data)
         data.return_conversion.append("""
 if (errno == EDOM) {
-    PyErr_SetString(PyExc_ValueError, "math domain error");
+    TyErr_SetString(TyExc_ValueError, "math domain error");
     goto exit;
 }
 else if (errno == ERANGE) {
-    PyErr_SetString(PyExc_OverflowError, "math range error");
+    TyErr_SetString(TyExc_OverflowError, "math range error");
     goto exit;
 }
 else {
-    return_value = PyComplex_FromCComplex(_return_value);
+    return_value = TyComplex_FromCComplex(_return_value);
 }
 """.strip())
 [python start generated code]*/
@@ -90,13 +90,13 @@ else {
 
 
 /* forward declarations */
-static Py_complex cmath_asinh_impl(PyObject *, Py_complex);
-static Py_complex cmath_atanh_impl(PyObject *, Py_complex);
-static Py_complex cmath_cosh_impl(PyObject *, Py_complex);
-static Py_complex cmath_sinh_impl(PyObject *, Py_complex);
-static Py_complex cmath_sqrt_impl(PyObject *, Py_complex);
-static Py_complex cmath_tanh_impl(PyObject *, Py_complex);
-static PyObject * math_error(void);
+static Ty_complex cmath_asinh_impl(TyObject *, Ty_complex);
+static Ty_complex cmath_atanh_impl(TyObject *, Ty_complex);
+static Ty_complex cmath_cosh_impl(TyObject *, Ty_complex);
+static Ty_complex cmath_sinh_impl(TyObject *, Ty_complex);
+static Ty_complex cmath_sqrt_impl(TyObject *, Ty_complex);
+static Ty_complex cmath_tanh_impl(TyObject *, Ty_complex);
+static TyObject * math_error(void);
 
 /* Code to deal with special values (infinities, NaNs, etc.). */
 
@@ -146,12 +146,12 @@ special_type(double d)
                     [special_type((z).imag)];         \
     }
 
-#define P Py_MATH_PI
-#define P14 0.25*Py_MATH_PI
-#define P12 0.5*Py_MATH_PI
-#define P34 0.75*Py_MATH_PI
-#define INF Py_INFINITY
-#define N Py_NAN
+#define P Ty_MATH_PI
+#define P14 0.25*Ty_MATH_PI
+#define P12 0.5*Ty_MATH_PI
+#define P34 0.75*Ty_MATH_PI
+#define INF Ty_INFINITY
+#define N Ty_NAN
 #define U -9.5426319407711027e33 /* unlikely value, used as placeholder */
 
 /* First, the C functions that do the real work.  Each of the c_*
@@ -163,22 +163,22 @@ special_type(double d)
    raised.
 */
 
-static Py_complex acos_special_values[7][7];
+static Ty_complex acos_special_values[7][7];
 
 /*[clinic input]
-cmath.acos -> Py_complex_protected
+cmath.acos -> Ty_complex_protected
 
-    z: Py_complex_protected
+    z: Ty_complex_protected
     /
 
 Return the arc cosine of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_acos_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_acos_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=40bd42853fd460ae input=bd6cbd78ae851927]*/
 {
-    Py_complex s1, s2, r;
+    Ty_complex s1, s2, r;
 
     SPECIAL_VALUE(z, acos_special_values);
 
@@ -202,7 +202,7 @@ cmath_acos_impl(PyObject *module, Py_complex z)
 }
 
 
-static Py_complex acosh_special_values[7][7];
+static Ty_complex acosh_special_values[7][7];
 
 /*[clinic input]
 cmath.acosh = cmath.acos
@@ -210,11 +210,11 @@ cmath.acosh = cmath.acos
 Return the inverse hyperbolic cosine of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_acosh_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_acosh_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=3e2454d4fcf404ca input=3f61bee7d703e53c]*/
 {
-    Py_complex s1, s2, r;
+    Ty_complex s1, s2, r;
 
     SPECIAL_VALUE(z, acosh_special_values);
 
@@ -242,12 +242,12 @@ cmath.asin = cmath.acos
 Return the arc sine of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_asin_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_asin_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=3b264cd1b16bf4e1 input=be0bf0cfdd5239c5]*/
 {
     /* asin(z) = -i asinh(iz) */
-    Py_complex s, r;
+    Ty_complex s, r;
     s.real = -z.imag;
     s.imag = z.real;
     s = cmath_asinh_impl(module, s);
@@ -257,7 +257,7 @@ cmath_asin_impl(PyObject *module, Py_complex z)
 }
 
 
-static Py_complex asinh_special_values[7][7];
+static Ty_complex asinh_special_values[7][7];
 
 /*[clinic input]
 cmath.asinh = cmath.acos
@@ -265,11 +265,11 @@ cmath.asinh = cmath.acos
 Return the inverse hyperbolic sine of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_asinh_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_asinh_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=733d8107841a7599 input=5c09448fcfc89a79]*/
 {
-    Py_complex s1, s2, r;
+    Ty_complex s1, s2, r;
 
     SPECIAL_VALUE(z, asinh_special_values);
 
@@ -303,12 +303,12 @@ cmath.atan = cmath.acos
 Return the arc tangent of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_atan_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_atan_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=b6bfc497058acba4 input=3b21ff7d5eac632a]*/
 {
     /* atan(z) = -i atanh(iz) */
-    Py_complex s, r;
+    Ty_complex s, r;
     s.real = -z.imag;
     s.imag = z.real;
     s = cmath_atanh_impl(module, s);
@@ -318,7 +318,7 @@ cmath_atan_impl(PyObject *module, Py_complex z)
 }
 
 
-static Py_complex atanh_special_values[7][7];
+static Ty_complex atanh_special_values[7][7];
 
 /*[clinic input]
 cmath.atanh = cmath.acos
@@ -326,18 +326,18 @@ cmath.atanh = cmath.acos
 Return the inverse hyperbolic tangent of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_atanh_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_atanh_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=e83355f93a989c9e input=2b3fdb82fb34487b]*/
 {
-    Py_complex r;
+    Ty_complex r;
     double ay, h;
 
     SPECIAL_VALUE(z, atanh_special_values);
 
     /* Reduce to case where z.real >= 0., using atanh(z) = -atanh(-z). */
     if (z.real < 0.) {
-        return _Py_c_neg(cmath_atanh_impl(module, _Py_c_neg(z)));
+        return _Ty_c_neg(cmath_atanh_impl(module, _Ty_c_neg(z)));
     }
 
     ay = fabs(z.imag);
@@ -349,7 +349,7 @@ cmath_atanh_impl(PyObject *module, Py_complex z)
         */
         h = hypot(z.real/2., z.imag/2.);  /* safe from overflow */
         r.real = z.real/4./h/h;
-        r.imag = copysign(Py_MATH_PI/2., z.imag);
+        r.imag = copysign(Ty_MATH_PI/2., z.imag);
         errno = 0;
     } else if (z.real == 1. && ay < CM_SQRT_DBL_MIN) {
         /* C99 standard says:  atanh(1+/-0.) should be inf +/- 0i */
@@ -377,12 +377,12 @@ cmath.cos = cmath.acos
 Return the cosine of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_cos_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_cos_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=fd64918d5b3186db input=6022e39b77127ac7]*/
 {
     /* cos(z) = cosh(iz) */
-    Py_complex r;
+    Ty_complex r;
     r.real = -z.imag;
     r.imag = z.real;
     r = cmath_cosh_impl(module, r);
@@ -391,7 +391,7 @@ cmath_cos_impl(PyObject *module, Py_complex z)
 
 
 /* cosh(infinity + i*y) needs to be dealt with specially */
-static Py_complex cosh_special_values[7][7];
+static Ty_complex cosh_special_values[7][7];
 
 /*[clinic input]
 cmath.cosh = cmath.acos
@@ -399,11 +399,11 @@ cmath.cosh = cmath.acos
 Return the hyperbolic cosine of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_cosh_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_cosh_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=2e969047da601bdb input=d6b66339e9cc332b]*/
 {
-    Py_complex r;
+    Ty_complex r;
     double x_minus_one;
 
     /* special treatment for cosh(+/-inf + iy) if y is not a NaN */
@@ -436,8 +436,8 @@ cmath_cosh_impl(PyObject *module, Py_complex z)
         /* deal correctly with cases where cosh(z.real) overflows but
            cosh(z) does not. */
         x_minus_one = z.real - copysign(1., z.real);
-        r.real = cos(z.imag) * cosh(x_minus_one) * Py_MATH_E;
-        r.imag = sin(z.imag) * sinh(x_minus_one) * Py_MATH_E;
+        r.real = cos(z.imag) * cosh(x_minus_one) * Ty_MATH_E;
+        r.imag = sin(z.imag) * sinh(x_minus_one) * Ty_MATH_E;
     } else {
         r.real = cos(z.imag) * cosh(z.real);
         r.imag = sin(z.imag) * sinh(z.real);
@@ -453,7 +453,7 @@ cmath_cosh_impl(PyObject *module, Py_complex z)
 
 /* exp(infinity + i*y) and exp(-infinity + i*y) need special treatment for
    finite y */
-static Py_complex exp_special_values[7][7];
+static Ty_complex exp_special_values[7][7];
 
 /*[clinic input]
 cmath.exp = cmath.acos
@@ -461,11 +461,11 @@ cmath.exp = cmath.acos
 Return the exponential value e**z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_exp_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_exp_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=edcec61fb9dfda6c input=8b9e6cf8a92174c3]*/
 {
-    Py_complex r;
+    Ty_complex r;
     double l;
 
     if (!isfinite(z.real) || !isfinite(z.imag)) {
@@ -497,8 +497,8 @@ cmath_exp_impl(PyObject *module, Py_complex z)
 
     if (z.real > CM_LOG_LARGE_DOUBLE) {
         l = exp(z.real-1.);
-        r.real = l*cos(z.imag)*Py_MATH_E;
-        r.imag = l*sin(z.imag)*Py_MATH_E;
+        r.real = l*cos(z.imag)*Ty_MATH_E;
+        r.imag = l*sin(z.imag)*Ty_MATH_E;
     } else {
         l = exp(z.real);
         r.real = l*cos(z.imag);
@@ -512,10 +512,10 @@ cmath_exp_impl(PyObject *module, Py_complex z)
     return r;
 }
 
-static Py_complex log_special_values[7][7];
+static Ty_complex log_special_values[7][7];
 
-static Py_complex
-c_log(Py_complex z)
+static Ty_complex
+c_log(Ty_complex z)
 {
     /*
        The usual formula for the real part is log(hypot(z.real, z.imag)).
@@ -545,7 +545,7 @@ c_log(Py_complex z)
 
      */
 
-    Py_complex r;
+    Ty_complex r;
     double ax, ay, am, an, h;
 
     SPECIAL_VALUE(z, log_special_values);
@@ -590,11 +590,11 @@ cmath.log10 = cmath.acos
 Return the base-10 logarithm of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_log10_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_log10_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=2922779a7c38cbe1 input=cff5644f73c1519c]*/
 {
-    Py_complex r;
+    Ty_complex r;
     int errno_save;
 
     r = c_log(z);
@@ -612,12 +612,12 @@ cmath.sin = cmath.acos
 Return the sine of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_sin_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_sin_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=980370d2ff0bb5aa input=2d3519842a8b4b85]*/
 {
     /* sin(z) = -i sin(iz) */
-    Py_complex s, r;
+    Ty_complex s, r;
     s.real = -z.imag;
     s.imag = z.real;
     s = cmath_sinh_impl(module, s);
@@ -628,7 +628,7 @@ cmath_sin_impl(PyObject *module, Py_complex z)
 
 
 /* sinh(infinity + i*y) needs to be dealt with specially */
-static Py_complex sinh_special_values[7][7];
+static Ty_complex sinh_special_values[7][7];
 
 /*[clinic input]
 cmath.sinh = cmath.acos
@@ -636,11 +636,11 @@ cmath.sinh = cmath.acos
 Return the hyperbolic sine of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_sinh_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_sinh_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=38b0a6cce26f3536 input=d2d3fc8c1ddfd2dd]*/
 {
-    Py_complex r;
+    Ty_complex r;
     double x_minus_one;
 
     /* special treatment for sinh(+/-inf + iy) if y is finite and
@@ -672,8 +672,8 @@ cmath_sinh_impl(PyObject *module, Py_complex z)
 
     if (fabs(z.real) > CM_LOG_LARGE_DOUBLE) {
         x_minus_one = z.real - copysign(1., z.real);
-        r.real = cos(z.imag) * sinh(x_minus_one) * Py_MATH_E;
-        r.imag = sin(z.imag) * cosh(x_minus_one) * Py_MATH_E;
+        r.real = cos(z.imag) * sinh(x_minus_one) * Ty_MATH_E;
+        r.imag = sin(z.imag) * cosh(x_minus_one) * Ty_MATH_E;
     } else {
         r.real = cos(z.imag) * sinh(z.real);
         r.imag = sin(z.imag) * cosh(z.real);
@@ -687,7 +687,7 @@ cmath_sinh_impl(PyObject *module, Py_complex z)
 }
 
 
-static Py_complex sqrt_special_values[7][7];
+static Ty_complex sqrt_special_values[7][7];
 
 /*[clinic input]
 cmath.sqrt = cmath.acos
@@ -695,8 +695,8 @@ cmath.sqrt = cmath.acos
 Return the square root of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_sqrt_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_sqrt_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=b6507b3029c339fc input=7088b166fc9a58c7]*/
 {
     /*
@@ -726,7 +726,7 @@ cmath_sqrt_impl(PyObject *module, Py_complex z)
     */
 
 
-    Py_complex r;
+    Ty_complex r;
     double s,d;
     double ax, ay;
 
@@ -770,12 +770,12 @@ cmath.tan = cmath.acos
 Return the tangent of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_tan_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_tan_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=7c5f13158a72eb13 input=fc167e528767888e]*/
 {
     /* tan(z) = -i tanh(iz) */
-    Py_complex s, r;
+    Ty_complex s, r;
     s.real = -z.imag;
     s.imag = z.real;
     s = cmath_tanh_impl(module, s);
@@ -786,7 +786,7 @@ cmath_tan_impl(PyObject *module, Py_complex z)
 
 
 /* tanh(infinity + i*y) needs to be dealt with specially */
-static Py_complex tanh_special_values[7][7];
+static Ty_complex tanh_special_values[7][7];
 
 /*[clinic input]
 cmath.tanh = cmath.acos
@@ -794,8 +794,8 @@ cmath.tanh = cmath.acos
 Return the hyperbolic tangent of z.
 [clinic start generated code]*/
 
-static Py_complex
-cmath_tanh_impl(PyObject *module, Py_complex z)
+static Ty_complex
+cmath_tanh_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=36d547ef7aca116c input=22f67f9dc6d29685]*/
 {
     /* Formula:
@@ -810,7 +810,7 @@ cmath_tanh_impl(PyObject *module, Py_complex z)
 
     */
 
-    Py_complex r;
+    Ty_complex r;
     double tx, ty, cx, txty, denom;
 
     /* special treatment for tanh(+/-inf + iy) if y is finite and
@@ -863,7 +863,7 @@ cmath_tanh_impl(PyObject *module, Py_complex z)
 /*[clinic input]
 cmath.log
 
-    z as x: Py_complex
+    z as x: Ty_complex
     base as y_obj: object = NULL
     /
 
@@ -872,39 +872,39 @@ log(z[, base]) -> the logarithm of z to the given base.
 If the base is not specified, returns the natural logarithm (base e) of z.
 [clinic start generated code]*/
 
-static PyObject *
-cmath_log_impl(PyObject *module, Py_complex x, PyObject *y_obj)
+static TyObject *
+cmath_log_impl(TyObject *module, Ty_complex x, TyObject *y_obj)
 /*[clinic end generated code: output=4effdb7d258e0d94 input=e1f81d4fcfd26497]*/
 {
-    Py_complex y;
+    Ty_complex y;
 
     errno = 0;
     x = c_log(x);
     if (y_obj != NULL) {
-        y = PyComplex_AsCComplex(y_obj);
-        if (PyErr_Occurred()) {
+        y = TyComplex_AsCComplex(y_obj);
+        if (TyErr_Occurred()) {
             return NULL;
         }
         y = c_log(y);
-        x = _Py_c_quot(x, y);
+        x = _Ty_c_quot(x, y);
     }
     if (errno != 0)
         return math_error();
-    return PyComplex_FromCComplex(x);
+    return TyComplex_FromCComplex(x);
 }
 
 
 /* And now the glue to make them available from Python: */
 
-static PyObject *
+static TyObject *
 math_error(void)
 {
     if (errno == EDOM)
-        PyErr_SetString(PyExc_ValueError, "math domain error");
+        TyErr_SetString(TyExc_ValueError, "math domain error");
     else if (errno == ERANGE)
-        PyErr_SetString(PyExc_OverflowError, "math range error");
+        TyErr_SetString(TyExc_OverflowError, "math range error");
     else    /* Unexpected math error */
-        PyErr_SetFromErrno(PyExc_ValueError);
+        TyErr_SetFromErrno(TyExc_ValueError);
     return NULL;
 }
 
@@ -912,14 +912,14 @@ math_error(void)
 /*[clinic input]
 cmath.phase
 
-    z: Py_complex
+    z: Ty_complex
     /
 
 Return argument, also known as the phase angle, of a complex.
 [clinic start generated code]*/
 
-static PyObject *
-cmath_phase_impl(PyObject *module, Py_complex z)
+static TyObject *
+cmath_phase_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=50725086a7bfd253 input=5cf75228ba94b69d]*/
 {
     double phi;
@@ -929,13 +929,13 @@ cmath_phase_impl(PyObject *module, Py_complex z)
     if (errno != 0)
         return math_error();
     else
-        return PyFloat_FromDouble(phi);
+        return TyFloat_FromDouble(phi);
 }
 
 /*[clinic input]
 cmath.polar
 
-    z: Py_complex
+    z: Ty_complex
     /
 
 Convert a complex from rectangular coordinates to polar coordinates.
@@ -943,19 +943,19 @@ Convert a complex from rectangular coordinates to polar coordinates.
 r is the distance from 0 and phi the phase angle.
 [clinic start generated code]*/
 
-static PyObject *
-cmath_polar_impl(PyObject *module, Py_complex z)
+static TyObject *
+cmath_polar_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=d0a8147c41dbb654 input=26c353574fd1a861]*/
 {
     double r, phi;
 
     errno = 0;
     phi = atan2(z.imag, z.real); /* should not cause any exception */
-    r = _Py_c_abs(z); /* sets errno to ERANGE on overflow */
+    r = _Ty_c_abs(z); /* sets errno to ERANGE on overflow */
     if (errno != 0)
         return math_error();
     else
-        return Py_BuildValue("dd", r, phi);
+        return Ty_BuildValue("dd", r, phi);
 }
 
 /*
@@ -969,7 +969,7 @@ cmath_polar_impl(PyObject *module, Py_complex z)
 
 */
 
-static Py_complex rect_special_values[7][7];
+static Ty_complex rect_special_values[7][7];
 
 /*[clinic input]
 cmath.rect
@@ -981,11 +981,11 @@ cmath.rect
 Convert from polar coordinates to rectangular coordinates.
 [clinic start generated code]*/
 
-static PyObject *
-cmath_rect_impl(PyObject *module, double r, double phi)
+static TyObject *
+cmath_rect_impl(TyObject *module, double r, double phi)
 /*[clinic end generated code: output=385a0690925df2d5 input=24c5646d147efd69]*/
 {
-    Py_complex z;
+    Ty_complex z;
     errno = 0;
 
     /* deal with special values */
@@ -1031,7 +1031,7 @@ cmath_rect_impl(PyObject *module, double r, double phi)
     if (errno != 0)
         return math_error();
     else
-        return PyComplex_FromCComplex(z);
+        return TyComplex_FromCComplex(z);
 }
 
 /*[clinic input]
@@ -1040,11 +1040,11 @@ cmath.isfinite = cmath.polar
 Return True if both the real and imaginary parts of z are finite, else False.
 [clinic start generated code]*/
 
-static PyObject *
-cmath_isfinite_impl(PyObject *module, Py_complex z)
+static TyObject *
+cmath_isfinite_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=ac76611e2c774a36 input=848e7ee701895815]*/
 {
-    return PyBool_FromLong(isfinite(z.real) && isfinite(z.imag));
+    return TyBool_FromLong(isfinite(z.real) && isfinite(z.imag));
 }
 
 /*[clinic input]
@@ -1053,11 +1053,11 @@ cmath.isnan = cmath.polar
 Checks if the real or imaginary part of z not a number (NaN).
 [clinic start generated code]*/
 
-static PyObject *
-cmath_isnan_impl(PyObject *module, Py_complex z)
+static TyObject *
+cmath_isnan_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=e7abf6e0b28beab7 input=71799f5d284c9baf]*/
 {
-    return PyBool_FromLong(isnan(z.real) || isnan(z.imag));
+    return TyBool_FromLong(isnan(z.real) || isnan(z.imag));
 }
 
 /*[clinic input]
@@ -1066,18 +1066,18 @@ cmath.isinf = cmath.polar
 Checks if the real or imaginary part of z is infinite.
 [clinic start generated code]*/
 
-static PyObject *
-cmath_isinf_impl(PyObject *module, Py_complex z)
+static TyObject *
+cmath_isinf_impl(TyObject *module, Ty_complex z)
 /*[clinic end generated code: output=502a75a79c773469 input=363df155c7181329]*/
 {
-    return PyBool_FromLong(isinf(z.real) || isinf(z.imag));
+    return TyBool_FromLong(isinf(z.real) || isinf(z.imag));
 }
 
 /*[clinic input]
 cmath.isclose -> bool
 
-    a: Py_complex
-    b: Py_complex
+    a: Ty_complex
+    b: Ty_complex
     *
     rel_tol: double = 1e-09
         maximum difference for being considered "close", relative to the
@@ -1098,7 +1098,7 @@ not close to anything, even itself. inf and -inf are only close to themselves.
 [clinic start generated code]*/
 
 static int
-cmath_isclose_impl(PyObject *module, Py_complex a, Py_complex b,
+cmath_isclose_impl(TyObject *module, Ty_complex a, Ty_complex b,
                    double rel_tol, double abs_tol)
 /*[clinic end generated code: output=8a2486cc6e0014d1 input=df9636d7de1d4ac3]*/
 {
@@ -1106,7 +1106,7 @@ cmath_isclose_impl(PyObject *module, Py_complex a, Py_complex b,
 
     /* sanity check on the inputs */
     if (rel_tol < 0.0 || abs_tol < 0.0 ) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "tolerances must be non-negative");
         return -1;
     }
@@ -1133,10 +1133,10 @@ cmath_isclose_impl(PyObject *module, Py_complex a, Py_complex b,
        this is essentially the "weak" test from the Boost library
     */
 
-    diff = _Py_c_abs(_Py_c_diff(a, b));
+    diff = _Ty_c_abs(_Ty_c_diff(a, b));
 
-    return (((diff <= rel_tol * _Py_c_abs(b)) ||
-             (diff <= rel_tol * _Py_c_abs(a))) ||
+    return (((diff <= rel_tol * _Ty_c_abs(b)) ||
+             (diff <= rel_tol * _Ty_c_abs(a))) ||
             (diff <= abs_tol));
 }
 
@@ -1144,7 +1144,7 @@ PyDoc_STRVAR(module_doc,
 "This module provides access to mathematical functions for complex\n"
 "numbers.");
 
-static PyMethodDef cmath_methods[] = {
+static TyMethodDef cmath_methods[] = {
     CMATH_ACOS_METHODDEF
     CMATH_ACOSH_METHODDEF
     CMATH_ASIN_METHODDEF
@@ -1172,37 +1172,37 @@ static PyMethodDef cmath_methods[] = {
 };
 
 static int
-cmath_exec(PyObject *mod)
+cmath_exec(TyObject *mod)
 {
-    if (PyModule_Add(mod, "pi", PyFloat_FromDouble(Py_MATH_PI)) < 0) {
+    if (TyModule_Add(mod, "pi", TyFloat_FromDouble(Ty_MATH_PI)) < 0) {
         return -1;
     }
-    if (PyModule_Add(mod, "e", PyFloat_FromDouble(Py_MATH_E)) < 0) {
+    if (TyModule_Add(mod, "e", TyFloat_FromDouble(Ty_MATH_E)) < 0) {
         return -1;
     }
     // 2pi
-    if (PyModule_Add(mod, "tau", PyFloat_FromDouble(Py_MATH_TAU)) < 0) {
+    if (TyModule_Add(mod, "tau", TyFloat_FromDouble(Ty_MATH_TAU)) < 0) {
         return -1;
     }
-    if (PyModule_Add(mod, "inf", PyFloat_FromDouble(Py_INFINITY)) < 0) {
+    if (TyModule_Add(mod, "inf", TyFloat_FromDouble(Ty_INFINITY)) < 0) {
         return -1;
     }
 
-    Py_complex infj = {0.0, Py_INFINITY};
-    if (PyModule_Add(mod, "infj", PyComplex_FromCComplex(infj)) < 0) {
+    Ty_complex infj = {0.0, Ty_INFINITY};
+    if (TyModule_Add(mod, "infj", TyComplex_FromCComplex(infj)) < 0) {
         return -1;
     }
-    if (PyModule_Add(mod, "nan", PyFloat_FromDouble(fabs(Py_NAN))) < 0) {
+    if (TyModule_Add(mod, "nan", TyFloat_FromDouble(fabs(Ty_NAN))) < 0) {
         return -1;
     }
-    Py_complex nanj = {0.0, fabs(Py_NAN)};
-    if (PyModule_Add(mod, "nanj", PyComplex_FromCComplex(nanj)) < 0) {
+    Ty_complex nanj = {0.0, fabs(Ty_NAN)};
+    if (TyModule_Add(mod, "nanj", TyComplex_FromCComplex(nanj)) < 0) {
         return -1;
     }
 
     /* initialize special value tables */
 
-#define INIT_SPECIAL_VALUES(NAME, BODY) { Py_complex* p = (Py_complex*)NAME; BODY }
+#define INIT_SPECIAL_VALUES(NAME, BODY) { Ty_complex* p = (Ty_complex*)NAME; BODY }
 #define C(REAL, IMAG) p->real = REAL; p->imag = IMAG; ++p;
 
     INIT_SPECIAL_VALUES(acos_special_values, {
@@ -1318,13 +1318,13 @@ cmath_exec(PyObject *mod)
 }
 
 static PyModuleDef_Slot cmath_slots[] = {
-    {Py_mod_exec, cmath_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, cmath_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef cmathmodule = {
+static struct TyModuleDef cmathmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "cmath",
     .m_doc = module_doc,

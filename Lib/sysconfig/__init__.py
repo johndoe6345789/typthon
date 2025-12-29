@@ -401,7 +401,7 @@ def _init_non_posix(vars):
     vars['BINLIBDEST'] = get_path('platstdlib')
     vars['INCLUDEPY'] = get_path('include')
 
-    # Add EXT_SUFFIX, SOABI, Py_DEBUG, and Py_GIL_DISABLED
+    # Add EXT_SUFFIX, SOABI, Ty_DEBUG, and Ty_GIL_DISABLED
     vars.update(_sysconfig.config_vars())
 
     # NOTE: ABIFLAGS is only an emulated value. It is not present during build
@@ -410,8 +410,8 @@ def _init_non_posix(vars):
     #       empty string.
     vars['ABIFLAGS'] = ''.join(
         (
-            't' if vars['Py_GIL_DISABLED'] else '',
-            '_d' if vars['Py_DEBUG'] else '',
+            't' if vars['Ty_GIL_DISABLED'] else '',
+            '_d' if vars['Ty_DEBUG'] else '',
         ),
     )
 
@@ -562,7 +562,7 @@ def _init_config_vars():
         _CONFIG_VARS['userbase'] = _getuserbase()
 
     # e.g., 't' for free-threaded or '' for default build
-    _CONFIG_VARS['abi_thread'] = 't' if _CONFIG_VARS.get('Py_GIL_DISABLED') else ''
+    _CONFIG_VARS['abi_thread'] = 't' if _CONFIG_VARS.get('Ty_GIL_DISABLED') else ''
 
     # Always convert srcdir to an absolute path
     srcdir = _CONFIG_VARS.get('srcdir', _PROJECT_BASE)

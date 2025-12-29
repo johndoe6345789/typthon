@@ -11,10 +11,10 @@
  *
  */
 
-// Need limited C API version 3.13 for PyModule_Add() on Windows
-#include "pyconfig.h"   // Py_GIL_DISABLED
-#ifndef Py_GIL_DISABLED
-#  define Py_LIMITED_API 0x030d0000
+// Need limited C API version 3.13 for TyModule_Add() on Windows
+#include "pyconfig.h"   // Ty_GIL_DISABLED
+#ifndef Ty_GIL_DISABLED
+#  define Ty_LIMITED_API 0x030d0000
 #endif
 
 #include "Python.h"
@@ -290,30 +290,30 @@ typedef unsigned short mode_t;
 
 
 static mode_t
-_PyLong_AsMode_t(PyObject *op)
+_TyLong_AsMode_t(TyObject *op)
 {
     unsigned long value;
     mode_t mode;
 
-    if (PyLong_Check(op)) {
-        value = PyLong_AsUnsignedLong(op);
+    if (TyLong_Check(op)) {
+        value = TyLong_AsUnsignedLong(op);
     }
     else {
         op = PyNumber_Index(op);
         if (op == NULL) {
             return (mode_t)-1;
         }
-        value = PyLong_AsUnsignedLong(op);
-        Py_DECREF(op);
+        value = TyLong_AsUnsignedLong(op);
+        Ty_DECREF(op);
     }
 
-    if ((value == (unsigned long)-1) && PyErr_Occurred()) {
+    if ((value == (unsigned long)-1) && TyErr_Occurred()) {
         return (mode_t)-1;
     }
 
     mode = (mode_t)value;
     if ((unsigned long)mode != value) {
-        PyErr_SetString(PyExc_OverflowError, "mode out of range");
+        TyErr_SetString(TyExc_OverflowError, "mode out of range");
         return (mode_t)-1;
     }
     return mode;
@@ -321,13 +321,13 @@ _PyLong_AsMode_t(PyObject *op)
 
 
 #define stat_S_ISFUNC(isfunc, doc)                             \
-    static PyObject *                                          \
-    stat_ ##isfunc (PyObject *self, PyObject *omode)           \
+    static TyObject *                                          \
+    stat_ ##isfunc (TyObject *self, TyObject *omode)           \
     {                                                          \
-       mode_t mode = _PyLong_AsMode_t(omode);                   \
-       if ((mode == (mode_t)-1) && PyErr_Occurred())           \
+       mode_t mode = _TyLong_AsMode_t(omode);                   \
+       if ((mode == (mode_t)-1) && TyErr_Occurred())           \
            return NULL;                                        \
-       return PyBool_FromLong(isfunc(mode));                   \
+       return TyBool_FromLong(isfunc(mode));                   \
     }                                                          \
     PyDoc_STRVAR(stat_ ## isfunc ## _doc, doc)
 
@@ -375,26 +375,26 @@ stat_S_ISFUNC(S_ISWHT,
 PyDoc_STRVAR(stat_S_IMODE_doc,
 "Return the portion of the file's mode that can be set by os.chmod().");
 
-static PyObject *
-stat_S_IMODE(PyObject *self, PyObject *omode)
+static TyObject *
+stat_S_IMODE(TyObject *self, TyObject *omode)
 {
-    mode_t mode = _PyLong_AsMode_t(omode);
-    if ((mode == (mode_t)-1) && PyErr_Occurred())
+    mode_t mode = _TyLong_AsMode_t(omode);
+    if ((mode == (mode_t)-1) && TyErr_Occurred())
         return NULL;
-    return PyLong_FromUnsignedLong(mode & S_IMODE);
+    return TyLong_FromUnsignedLong(mode & S_IMODE);
 }
 
 
 PyDoc_STRVAR(stat_S_IFMT_doc,
 "Return the portion of the file's mode that describes the file type.");
 
-static PyObject *
-stat_S_IFMT(PyObject *self, PyObject *omode)
+static TyObject *
+stat_S_IFMT(TyObject *self, TyObject *omode)
 {
-    mode_t mode = _PyLong_AsMode_t(omode);
-    if ((mode == (mode_t)-1) && PyErr_Occurred())
+    mode_t mode = _TyLong_AsMode_t(omode);
+    if ((mode == (mode_t)-1) && TyErr_Occurred())
         return NULL;
-    return PyLong_FromUnsignedLong(mode & S_IFMT);
+    return TyLong_FromUnsignedLong(mode & S_IFMT);
 }
 
 /* file type chars according to
@@ -449,23 +449,23 @@ fileperm(mode_t mode, char *buf)
 PyDoc_STRVAR(stat_filemode_doc,
 "Convert a file's mode to a string of the form '-rwxrwxrwx'");
 
-static PyObject *
-stat_filemode(PyObject *self, PyObject *omode)
+static TyObject *
+stat_filemode(TyObject *self, TyObject *omode)
 {
     char buf[10];
     mode_t mode;
 
-    mode = _PyLong_AsMode_t(omode);
-    if ((mode == (mode_t)-1) && PyErr_Occurred())
+    mode = _TyLong_AsMode_t(omode);
+    if ((mode == (mode_t)-1) && TyErr_Occurred())
         return NULL;
 
     buf[0] = filetype(mode);
     fileperm(mode, &buf[1]);
-    return PyUnicode_FromStringAndSize(buf, 10);
+    return TyUnicode_FromStringAndSize(buf, 10);
 }
 
 
-static PyMethodDef stat_methods[] = {
+static TyMethodDef stat_methods[] = {
     {"S_ISDIR",         stat_S_ISDIR,  METH_O, stat_S_ISDIR_doc},
     {"S_ISCHR",         stat_S_ISCHR,  METH_O, stat_S_ISCHR_doc},
     {"S_ISBLK",         stat_S_ISBLK,  METH_O, stat_S_ISBLK_doc},
@@ -561,11 +561,11 @@ ST_CTIME\n\
 
 
 static int
-stat_exec(PyObject *module)
+stat_exec(TyObject *module)
 {
 #define ADD_INT_MACRO(module, macro)                                  \
     do {                                                              \
-        if (PyModule_AddIntConstant(module, #macro, macro) < 0) {     \
+        if (TyModule_AddIntConstant(module, #macro, macro) < 0) {     \
             return -1;                                                \
         }                                                             \
     } while (0)
@@ -645,8 +645,8 @@ stat_exec(PyObject *module)
         "ST_CTIME"
     };
 
-    for (int i = 0; i < (int)Py_ARRAY_LENGTH(st_constants); i++) {
-        if (PyModule_AddIntConstant(module, st_constants[i], i) < 0) {
+    for (int i = 0; i < (int)Ty_ARRAY_LENGTH(st_constants); i++) {
+        if (TyModule_AddIntConstant(module, st_constants[i], i) < 0) {
             return -1;
         }
     }
@@ -670,16 +670,16 @@ stat_exec(PyObject *module)
     ADD_INT_MACRO(module, FILE_ATTRIBUTE_TEMPORARY);
     ADD_INT_MACRO(module, FILE_ATTRIBUTE_VIRTUAL);
 
-    if (PyModule_Add(module, "IO_REPARSE_TAG_SYMLINK",
-            PyLong_FromUnsignedLong(IO_REPARSE_TAG_SYMLINK)) < 0) {
+    if (TyModule_Add(module, "IO_REPARSE_TAG_SYMLINK",
+            TyLong_FromUnsignedLong(IO_REPARSE_TAG_SYMLINK)) < 0) {
         return -1;
     }
-    if (PyModule_Add(module, "IO_REPARSE_TAG_MOUNT_POINT",
-            PyLong_FromUnsignedLong(IO_REPARSE_TAG_MOUNT_POINT)) < 0) {
+    if (TyModule_Add(module, "IO_REPARSE_TAG_MOUNT_POINT",
+            TyLong_FromUnsignedLong(IO_REPARSE_TAG_MOUNT_POINT)) < 0) {
         return -1;
     }
-    if (PyModule_Add(module, "IO_REPARSE_TAG_APPEXECLINK",
-            PyLong_FromUnsignedLong(IO_REPARSE_TAG_APPEXECLINK)) < 0) {
+    if (TyModule_Add(module, "IO_REPARSE_TAG_APPEXECLINK",
+            TyLong_FromUnsignedLong(IO_REPARSE_TAG_APPEXECLINK)) < 0) {
         return -1;
     }
 #endif
@@ -689,14 +689,14 @@ stat_exec(PyObject *module)
 
 
 static PyModuleDef_Slot stat_slots[] = {
-    {Py_mod_exec, stat_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, stat_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
 
-static struct PyModuleDef statmodule = {
+static struct TyModuleDef statmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_stat",
     .m_doc = module_doc,

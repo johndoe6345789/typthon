@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(msvcrt_heapmin__doc__,
 "heapmin($module, /)\n"
@@ -16,11 +16,11 @@ PyDoc_STRVAR(msvcrt_heapmin__doc__,
 #define MSVCRT_HEAPMIN_METHODDEF    \
     {"heapmin", (PyCFunction)msvcrt_heapmin, METH_NOARGS, msvcrt_heapmin__doc__},
 
-static PyObject *
-msvcrt_heapmin_impl(PyObject *module);
+static TyObject *
+msvcrt_heapmin_impl(TyObject *module);
 
-static PyObject *
-msvcrt_heapmin(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+msvcrt_heapmin(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return msvcrt_heapmin_impl(module);
 }
@@ -41,30 +41,30 @@ PyDoc_STRVAR(msvcrt_locking__doc__,
 #define MSVCRT_LOCKING_METHODDEF    \
     {"locking", _PyCFunction_CAST(msvcrt_locking), METH_FASTCALL, msvcrt_locking__doc__},
 
-static PyObject *
-msvcrt_locking_impl(PyObject *module, int fd, int mode, long nbytes);
+static TyObject *
+msvcrt_locking_impl(TyObject *module, int fd, int mode, long nbytes);
 
-static PyObject *
-msvcrt_locking(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+msvcrt_locking(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int mode;
     long nbytes;
 
-    if (!_PyArg_CheckPositional("locking", nargs, 3, 3)) {
+    if (!_TyArg_CheckPositional("locking", nargs, 3, 3)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    mode = PyLong_AsInt(args[1]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[1]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    nbytes = PyLong_AsLong(args[2]);
-    if (nbytes == -1 && PyErr_Occurred()) {
+    nbytes = TyLong_AsLong(args[2]);
+    if (nbytes == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = msvcrt_locking_impl(module, fd, mode, nbytes);
@@ -88,32 +88,32 @@ PyDoc_STRVAR(msvcrt_setmode__doc__,
     {"setmode", _PyCFunction_CAST(msvcrt_setmode), METH_FASTCALL, msvcrt_setmode__doc__},
 
 static long
-msvcrt_setmode_impl(PyObject *module, int fd, int flags);
+msvcrt_setmode_impl(TyObject *module, int fd, int flags);
 
-static PyObject *
-msvcrt_setmode(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+msvcrt_setmode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     int flags;
     long _return_value;
 
-    if (!_PyArg_CheckPositional("setmode", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("setmode", nargs, 2, 2)) {
         goto exit;
     }
-    fd = PyLong_AsInt(args[0]);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(args[0]);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    flags = PyLong_AsInt(args[1]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[1]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = msvcrt_setmode_impl(module, fd, flags);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     return return_value;
@@ -133,32 +133,32 @@ PyDoc_STRVAR(msvcrt_open_osfhandle__doc__,
     {"open_osfhandle", _PyCFunction_CAST(msvcrt_open_osfhandle), METH_FASTCALL, msvcrt_open_osfhandle__doc__},
 
 static long
-msvcrt_open_osfhandle_impl(PyObject *module, void *handle, int flags);
+msvcrt_open_osfhandle_impl(TyObject *module, void *handle, int flags);
 
-static PyObject *
-msvcrt_open_osfhandle(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+msvcrt_open_osfhandle(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     void *handle;
     int flags;
     long _return_value;
 
-    if (!_PyArg_CheckPositional("open_osfhandle", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("open_osfhandle", nargs, 2, 2)) {
         goto exit;
     }
-    handle = PyLong_AsVoidPtr(args[0]);
-    if (!handle && PyErr_Occurred()) {
+    handle = TyLong_AsVoidPtr(args[0]);
+    if (!handle && TyErr_Occurred()) {
         goto exit;
     }
-    flags = PyLong_AsInt(args[1]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[1]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = msvcrt_open_osfhandle_impl(module, handle, flags);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     return return_value;
@@ -176,24 +176,24 @@ PyDoc_STRVAR(msvcrt_get_osfhandle__doc__,
     {"get_osfhandle", (PyCFunction)msvcrt_get_osfhandle, METH_O, msvcrt_get_osfhandle__doc__},
 
 static void *
-msvcrt_get_osfhandle_impl(PyObject *module, int fd);
+msvcrt_get_osfhandle_impl(TyObject *module, int fd);
 
-static PyObject *
-msvcrt_get_osfhandle(PyObject *module, PyObject *arg)
+static TyObject *
+msvcrt_get_osfhandle(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int fd;
     void *_return_value;
 
-    fd = PyLong_AsInt(arg);
-    if (fd == -1 && PyErr_Occurred()) {
+    fd = TyLong_AsInt(arg);
+    if (fd == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = msvcrt_get_osfhandle_impl(module, fd);
-    if ((_return_value == NULL || _return_value == INVALID_HANDLE_VALUE) && PyErr_Occurred()) {
+    if ((_return_value == NULL || _return_value == INVALID_HANDLE_VALUE) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromVoidPtr(_return_value);
+    return_value = TyLong_FromVoidPtr(_return_value);
 
 exit:
     return return_value;
@@ -209,19 +209,19 @@ PyDoc_STRVAR(msvcrt_kbhit__doc__,
     {"kbhit", (PyCFunction)msvcrt_kbhit, METH_NOARGS, msvcrt_kbhit__doc__},
 
 static long
-msvcrt_kbhit_impl(PyObject *module);
+msvcrt_kbhit_impl(TyObject *module);
 
-static PyObject *
-msvcrt_kbhit(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+msvcrt_kbhit(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     long _return_value;
 
     _return_value = msvcrt_kbhit_impl(module);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     return return_value;
@@ -243,16 +243,16 @@ PyDoc_STRVAR(msvcrt_getch__doc__,
     {"getch", (PyCFunction)msvcrt_getch, METH_NOARGS, msvcrt_getch__doc__},
 
 static int
-msvcrt_getch_impl(PyObject *module);
+msvcrt_getch_impl(TyObject *module);
 
-static PyObject *
-msvcrt_getch(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+msvcrt_getch(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     char s[1];
 
     s[0] = msvcrt_getch_impl(module);
-    return_value = PyBytes_FromStringAndSize(s, 1);
+    return_value = TyBytes_FromStringAndSize(s, 1);
 
     return return_value;
 }
@@ -269,16 +269,16 @@ PyDoc_STRVAR(msvcrt_getwch__doc__,
     {"getwch", (PyCFunction)msvcrt_getwch, METH_NOARGS, msvcrt_getwch__doc__},
 
 static wchar_t
-msvcrt_getwch_impl(PyObject *module);
+msvcrt_getwch_impl(TyObject *module);
 
-static PyObject *
-msvcrt_getwch(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+msvcrt_getwch(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     wchar_t _return_value;
 
     _return_value = msvcrt_getwch_impl(module);
-    return_value = PyUnicode_FromOrdinal(_return_value);
+    return_value = TyUnicode_FromOrdinal(_return_value);
 
     return return_value;
 }
@@ -295,16 +295,16 @@ PyDoc_STRVAR(msvcrt_getche__doc__,
     {"getche", (PyCFunction)msvcrt_getche, METH_NOARGS, msvcrt_getche__doc__},
 
 static int
-msvcrt_getche_impl(PyObject *module);
+msvcrt_getche_impl(TyObject *module);
 
-static PyObject *
-msvcrt_getche(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+msvcrt_getche(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     char s[1];
 
     s[0] = msvcrt_getche_impl(module);
-    return_value = PyBytes_FromStringAndSize(s, 1);
+    return_value = TyBytes_FromStringAndSize(s, 1);
 
     return return_value;
 }
@@ -321,16 +321,16 @@ PyDoc_STRVAR(msvcrt_getwche__doc__,
     {"getwche", (PyCFunction)msvcrt_getwche, METH_NOARGS, msvcrt_getwche__doc__},
 
 static wchar_t
-msvcrt_getwche_impl(PyObject *module);
+msvcrt_getwche_impl(TyObject *module);
 
-static PyObject *
-msvcrt_getwche(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+msvcrt_getwche(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     wchar_t _return_value;
 
     _return_value = msvcrt_getwche_impl(module);
-    return_value = PyUnicode_FromOrdinal(_return_value);
+    return_value = TyUnicode_FromOrdinal(_return_value);
 
     return return_value;
 }
@@ -346,37 +346,37 @@ PyDoc_STRVAR(msvcrt_putch__doc__,
 #define MSVCRT_PUTCH_METHODDEF    \
     {"putch", (PyCFunction)msvcrt_putch, METH_O, msvcrt_putch__doc__},
 
-static PyObject *
-msvcrt_putch_impl(PyObject *module, char char_value);
+static TyObject *
+msvcrt_putch_impl(TyObject *module, char char_value);
 
-static PyObject *
-msvcrt_putch(PyObject *module, PyObject *arg)
+static TyObject *
+msvcrt_putch(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     char char_value;
 
-    if (PyBytes_Check(arg)) {
-        if (PyBytes_GET_SIZE(arg) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(arg)) {
+        if (TyBytes_GET_SIZE(arg) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "putch(): argument must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(arg));
+                TyBytes_GET_SIZE(arg));
             goto exit;
         }
-        char_value = PyBytes_AS_STRING(arg)[0];
+        char_value = TyBytes_AS_STRING(arg)[0];
     }
-    else if (PyByteArray_Check(arg)) {
-        if (PyByteArray_GET_SIZE(arg) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(arg)) {
+        if (TyByteArray_GET_SIZE(arg) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "putch(): argument must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(arg));
+                TyByteArray_GET_SIZE(arg));
             goto exit;
         }
-        char_value = PyByteArray_AS_STRING(arg)[0];
+        char_value = TyByteArray_AS_STRING(arg)[0];
     }
     else {
-        _PyArg_BadArgument("putch", "argument", "a byte string of length 1", arg);
+        _TyArg_BadArgument("putch", "argument", "a byte string of length 1", arg);
         goto exit;
     }
     return_value = msvcrt_putch_impl(module, char_value);
@@ -396,27 +396,27 @@ PyDoc_STRVAR(msvcrt_putwch__doc__,
 #define MSVCRT_PUTWCH_METHODDEF    \
     {"putwch", (PyCFunction)msvcrt_putwch, METH_O, msvcrt_putwch__doc__},
 
-static PyObject *
-msvcrt_putwch_impl(PyObject *module, int unicode_char);
+static TyObject *
+msvcrt_putwch_impl(TyObject *module, int unicode_char);
 
-static PyObject *
-msvcrt_putwch(PyObject *module, PyObject *arg)
+static TyObject *
+msvcrt_putwch(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int unicode_char;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("putwch", "argument", "a unicode character", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("putwch", "argument", "a unicode character", arg);
         goto exit;
     }
-    if (PyUnicode_GET_LENGTH(arg) != 1) {
-        PyErr_Format(PyExc_TypeError,
+    if (TyUnicode_GET_LENGTH(arg) != 1) {
+        TyErr_Format(TyExc_TypeError,
             "putwch(): argument must be a unicode character, "
             "not a string of length %zd",
-            PyUnicode_GET_LENGTH(arg));
+            TyUnicode_GET_LENGTH(arg));
         goto exit;
     }
-    unicode_char = PyUnicode_READ_CHAR(arg, 0);
+    unicode_char = TyUnicode_READ_CHAR(arg, 0);
     return_value = msvcrt_putwch_impl(module, unicode_char);
 
 exit:
@@ -438,37 +438,37 @@ PyDoc_STRVAR(msvcrt_ungetch__doc__,
 #define MSVCRT_UNGETCH_METHODDEF    \
     {"ungetch", (PyCFunction)msvcrt_ungetch, METH_O, msvcrt_ungetch__doc__},
 
-static PyObject *
-msvcrt_ungetch_impl(PyObject *module, char char_value);
+static TyObject *
+msvcrt_ungetch_impl(TyObject *module, char char_value);
 
-static PyObject *
-msvcrt_ungetch(PyObject *module, PyObject *arg)
+static TyObject *
+msvcrt_ungetch(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     char char_value;
 
-    if (PyBytes_Check(arg)) {
-        if (PyBytes_GET_SIZE(arg) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    if (TyBytes_Check(arg)) {
+        if (TyBytes_GET_SIZE(arg) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "ungetch(): argument must be a byte string of length 1, "
                 "not a bytes object of length %zd",
-                PyBytes_GET_SIZE(arg));
+                TyBytes_GET_SIZE(arg));
             goto exit;
         }
-        char_value = PyBytes_AS_STRING(arg)[0];
+        char_value = TyBytes_AS_STRING(arg)[0];
     }
-    else if (PyByteArray_Check(arg)) {
-        if (PyByteArray_GET_SIZE(arg) != 1) {
-            PyErr_Format(PyExc_TypeError,
+    else if (TyByteArray_Check(arg)) {
+        if (TyByteArray_GET_SIZE(arg) != 1) {
+            TyErr_Format(TyExc_TypeError,
                 "ungetch(): argument must be a byte string of length 1, "
                 "not a bytearray object of length %zd",
-                PyByteArray_GET_SIZE(arg));
+                TyByteArray_GET_SIZE(arg));
             goto exit;
         }
-        char_value = PyByteArray_AS_STRING(arg)[0];
+        char_value = TyByteArray_AS_STRING(arg)[0];
     }
     else {
-        _PyArg_BadArgument("ungetch", "argument", "a byte string of length 1", arg);
+        _TyArg_BadArgument("ungetch", "argument", "a byte string of length 1", arg);
         goto exit;
     }
     return_value = msvcrt_ungetch_impl(module, char_value);
@@ -488,27 +488,27 @@ PyDoc_STRVAR(msvcrt_ungetwch__doc__,
 #define MSVCRT_UNGETWCH_METHODDEF    \
     {"ungetwch", (PyCFunction)msvcrt_ungetwch, METH_O, msvcrt_ungetwch__doc__},
 
-static PyObject *
-msvcrt_ungetwch_impl(PyObject *module, int unicode_char);
+static TyObject *
+msvcrt_ungetwch_impl(TyObject *module, int unicode_char);
 
-static PyObject *
-msvcrt_ungetwch(PyObject *module, PyObject *arg)
+static TyObject *
+msvcrt_ungetwch(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int unicode_char;
 
-    if (!PyUnicode_Check(arg)) {
-        _PyArg_BadArgument("ungetwch", "argument", "a unicode character", arg);
+    if (!TyUnicode_Check(arg)) {
+        _TyArg_BadArgument("ungetwch", "argument", "a unicode character", arg);
         goto exit;
     }
-    if (PyUnicode_GET_LENGTH(arg) != 1) {
-        PyErr_Format(PyExc_TypeError,
+    if (TyUnicode_GET_LENGTH(arg) != 1) {
+        TyErr_Format(TyExc_TypeError,
             "ungetwch(): argument must be a unicode character, "
             "not a string of length %zd",
-            PyUnicode_GET_LENGTH(arg));
+            TyUnicode_GET_LENGTH(arg));
         goto exit;
     }
-    unicode_char = PyUnicode_READ_CHAR(arg, 0);
+    unicode_char = TyUnicode_READ_CHAR(arg, 0);
     return_value = msvcrt_ungetwch_impl(module, unicode_char);
 
 exit:
@@ -531,32 +531,32 @@ PyDoc_STRVAR(msvcrt_CrtSetReportFile__doc__,
     {"CrtSetReportFile", _PyCFunction_CAST(msvcrt_CrtSetReportFile), METH_FASTCALL, msvcrt_CrtSetReportFile__doc__},
 
 static void *
-msvcrt_CrtSetReportFile_impl(PyObject *module, int type, void *file);
+msvcrt_CrtSetReportFile_impl(TyObject *module, int type, void *file);
 
-static PyObject *
-msvcrt_CrtSetReportFile(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+msvcrt_CrtSetReportFile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int type;
     void *file;
     void *_return_value;
 
-    if (!_PyArg_CheckPositional("CrtSetReportFile", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("CrtSetReportFile", nargs, 2, 2)) {
         goto exit;
     }
-    type = PyLong_AsInt(args[0]);
-    if (type == -1 && PyErr_Occurred()) {
+    type = TyLong_AsInt(args[0]);
+    if (type == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    file = PyLong_AsVoidPtr(args[1]);
-    if (!file && PyErr_Occurred()) {
+    file = TyLong_AsVoidPtr(args[1]);
+    if (!file && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = msvcrt_CrtSetReportFile_impl(module, type, file);
-    if ((_return_value == NULL || _return_value == INVALID_HANDLE_VALUE) && PyErr_Occurred()) {
+    if ((_return_value == NULL || _return_value == INVALID_HANDLE_VALUE) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromVoidPtr(_return_value);
+    return_value = TyLong_FromVoidPtr(_return_value);
 
 exit:
     return return_value;
@@ -578,32 +578,32 @@ PyDoc_STRVAR(msvcrt_CrtSetReportMode__doc__,
     {"CrtSetReportMode", _PyCFunction_CAST(msvcrt_CrtSetReportMode), METH_FASTCALL, msvcrt_CrtSetReportMode__doc__},
 
 static long
-msvcrt_CrtSetReportMode_impl(PyObject *module, int type, int mode);
+msvcrt_CrtSetReportMode_impl(TyObject *module, int type, int mode);
 
-static PyObject *
-msvcrt_CrtSetReportMode(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+msvcrt_CrtSetReportMode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int type;
     int mode;
     long _return_value;
 
-    if (!_PyArg_CheckPositional("CrtSetReportMode", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("CrtSetReportMode", nargs, 2, 2)) {
         goto exit;
     }
-    type = PyLong_AsInt(args[0]);
-    if (type == -1 && PyErr_Occurred()) {
+    type = TyLong_AsInt(args[0]);
+    if (type == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    mode = PyLong_AsInt(args[1]);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(args[1]);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = msvcrt_CrtSetReportMode_impl(module, type, mode);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     return return_value;
@@ -625,24 +625,24 @@ PyDoc_STRVAR(msvcrt_set_error_mode__doc__,
     {"set_error_mode", (PyCFunction)msvcrt_set_error_mode, METH_O, msvcrt_set_error_mode__doc__},
 
 static long
-msvcrt_set_error_mode_impl(PyObject *module, int mode);
+msvcrt_set_error_mode_impl(TyObject *module, int mode);
 
-static PyObject *
-msvcrt_set_error_mode(PyObject *module, PyObject *arg)
+static TyObject *
+msvcrt_set_error_mode(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int mode;
     long _return_value;
 
-    mode = PyLong_AsInt(arg);
-    if (mode == -1 && PyErr_Occurred()) {
+    mode = TyLong_AsInt(arg);
+    if (mode == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = msvcrt_set_error_mode_impl(module, mode);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     return return_value;
@@ -661,11 +661,11 @@ PyDoc_STRVAR(msvcrt_GetErrorMode__doc__,
 #define MSVCRT_GETERRORMODE_METHODDEF    \
     {"GetErrorMode", (PyCFunction)msvcrt_GetErrorMode, METH_NOARGS, msvcrt_GetErrorMode__doc__},
 
-static PyObject *
-msvcrt_GetErrorMode_impl(PyObject *module);
+static TyObject *
+msvcrt_GetErrorMode_impl(TyObject *module);
 
-static PyObject *
-msvcrt_GetErrorMode(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+msvcrt_GetErrorMode(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return msvcrt_GetErrorMode_impl(module);
 }
@@ -681,17 +681,17 @@ PyDoc_STRVAR(msvcrt_SetErrorMode__doc__,
 #define MSVCRT_SETERRORMODE_METHODDEF    \
     {"SetErrorMode", (PyCFunction)msvcrt_SetErrorMode, METH_O, msvcrt_SetErrorMode__doc__},
 
-static PyObject *
-msvcrt_SetErrorMode_impl(PyObject *module, unsigned int mode);
+static TyObject *
+msvcrt_SetErrorMode_impl(TyObject *module, unsigned int mode);
 
-static PyObject *
-msvcrt_SetErrorMode(PyObject *module, PyObject *arg)
+static TyObject *
+msvcrt_SetErrorMode(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned int mode;
 
-    mode = (unsigned int)PyLong_AsUnsignedLongMask(arg);
-    if (mode == (unsigned int)-1 && PyErr_Occurred()) {
+    mode = (unsigned int)TyLong_AsUnsignedLongMask(arg);
+    if (mode == (unsigned int)-1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = msvcrt_SetErrorMode_impl(module, mode);

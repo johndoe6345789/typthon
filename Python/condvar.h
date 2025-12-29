@@ -66,7 +66,7 @@ void _PyThread_cond_after(long long us, struct timespec *abs);
 #define PyCOND_WAIT(cond, mut)  pthread_cond_wait((cond), (mut))
 
 /* return 0 for success, 1 on timeout, -1 on error */
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_TIMEDWAIT(PyCOND_T *cond, PyMUTEX_T *mut, long long us)
 {
     struct timespec abs_timeout;
@@ -106,28 +106,28 @@ PyCOND_TIMEDWAIT(PyCOND_T *cond, PyMUTEX_T *mut, long long us)
    http://www.cse.wustl.edu/~schmidt/win32-cv-1.html
 */
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyMUTEX_INIT(PyMUTEX_T *cs)
 {
     InitializeCriticalSection(cs);
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyMUTEX_FINI(PyMUTEX_T *cs)
 {
     DeleteCriticalSection(cs);
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyMUTEX_LOCK(PyMUTEX_T *cs)
 {
     EnterCriticalSection(cs);
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyMUTEX_UNLOCK(PyMUTEX_T *cs)
 {
     LeaveCriticalSection(cs);
@@ -135,7 +135,7 @@ PyMUTEX_UNLOCK(PyMUTEX_T *cs)
 }
 
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_INIT(PyCOND_T *cv)
 {
     /* A semaphore with a "large" max value,  The positive value
@@ -149,7 +149,7 @@ PyCOND_INIT(PyCOND_T *cv)
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_FINI(PyCOND_T *cv)
 {
     return CloseHandle(cv->sem) ? 0 : -1;
@@ -158,7 +158,7 @@ PyCOND_FINI(PyCOND_T *cv)
 /* this implementation can detect a timeout.  Returns 1 on timeout,
  * 0 otherwise (and -1 on error)
  */
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 _PyCOND_WAIT_MS(PyCOND_T *cv, PyMUTEX_T *cs, DWORD ms)
 {
     DWORD wait;
@@ -189,20 +189,20 @@ _PyCOND_WAIT_MS(PyCOND_T *cv, PyMUTEX_T *cs, DWORD ms)
     return wait != WAIT_OBJECT_0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_WAIT(PyCOND_T *cv, PyMUTEX_T *cs)
 {
     int result = _PyCOND_WAIT_MS(cv, cs, INFINITE);
     return result >= 0 ? 0 : result;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_TIMEDWAIT(PyCOND_T *cv, PyMUTEX_T *cs, long long us)
 {
     return _PyCOND_WAIT_MS(cv, cs, (DWORD)(us/1000));
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_SIGNAL(PyCOND_T *cv)
 {
     /* this test allows PyCOND_SIGNAL to be a no-op unless required
@@ -220,7 +220,7 @@ PyCOND_SIGNAL(PyCOND_T *cv)
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_BROADCAST(PyCOND_T *cv)
 {
     int waiting = cv->waiting;
@@ -233,54 +233,54 @@ PyCOND_BROADCAST(PyCOND_T *cv)
 
 #else /* !_PY_EMULATED_WIN_CV */
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyMUTEX_INIT(PyMUTEX_T *cs)
 {
     InitializeSRWLock(cs);
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyMUTEX_FINI(PyMUTEX_T *cs)
 {
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyMUTEX_LOCK(PyMUTEX_T *cs)
 {
     AcquireSRWLockExclusive(cs);
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyMUTEX_UNLOCK(PyMUTEX_T *cs)
 {
     ReleaseSRWLockExclusive(cs);
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_INIT(PyCOND_T *cv)
 {
     InitializeConditionVariable(cv);
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_FINI(PyCOND_T *cv)
 {
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_WAIT(PyCOND_T *cv, PyMUTEX_T *cs)
 {
     return SleepConditionVariableSRW(cv, cs, INFINITE, 0) ? 0 : -1;
 }
 
 /* return 0 for success, 1 on timeout, -1 on error */
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_TIMEDWAIT(PyCOND_T *cv, PyMUTEX_T *cs, long long us)
 {
     BOOL success = SleepConditionVariableSRW(cv, cs, (DWORD)(us/1000), 0);
@@ -293,14 +293,14 @@ PyCOND_TIMEDWAIT(PyCOND_T *cv, PyMUTEX_T *cs, long long us)
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_SIGNAL(PyCOND_T *cv)
 {
     WakeConditionVariable(cv);
     return 0;
 }
 
-Py_LOCAL_INLINE(int)
+Ty_LOCAL_INLINE(int)
 PyCOND_BROADCAST(PyCOND_T *cv)
 {
     WakeAllConditionVariable(cv);

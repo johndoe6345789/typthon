@@ -1022,7 +1022,7 @@ class DSLParser:
                     value = ast.literal_eval(expr)
                     py_default = repr(value)
                     if isinstance(value, (bool, NoneType)):
-                        c_default = "Py_" + py_default
+                        c_default = "Ty_" + py_default
                     elif isinstance(value, str):
                         c_default = libclinic.c_repr(value)
                     else:

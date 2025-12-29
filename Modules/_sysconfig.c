@@ -1,13 +1,13 @@
 // _sysconfig provides data for the Python sysconfig module
 
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
 
-#include "pycore_importdl.h"   // _PyImport_DynLoadFiletab
-#include "pycore_long.h"       // _PyLong_GetZero, _PyLong_GetOne
+#include "pycore_importdl.h"   // _TyImport_DynLoadFiletab
+#include "pycore_long.h"       // _TyLong_GetZero, _TyLong_GetOne
 
 
 /*[clinic input]
@@ -19,14 +19,14 @@ module _sysconfig
 
 #ifdef MS_WINDOWS
 static int
-add_string_value(PyObject *dict, const char *key, const char *str_value)
+add_string_value(TyObject *dict, const char *key, const char *str_value)
 {
-    PyObject *value = PyUnicode_FromString(str_value);
+    TyObject *value = TyUnicode_FromString(str_value);
     if (value == NULL) {
         return -1;
     }
-    int err = PyDict_SetItemString(dict, key, value);
-    Py_DECREF(value);
+    int err = TyDict_SetItemString(dict, key, value);
+    Ty_DECREF(value);
     return err;
 }
 #endif
@@ -37,43 +37,43 @@ _sysconfig.config_vars
 Returns a dictionary containing build variables intended to be exposed by sysconfig.
 [clinic start generated code]*/
 
-static PyObject *
-_sysconfig_config_vars_impl(PyObject *module)
+static TyObject *
+_sysconfig_config_vars_impl(TyObject *module)
 /*[clinic end generated code: output=9c41cdee63ea9487 input=391ff42f3af57d01]*/
 {
-    PyObject *config = PyDict_New();
+    TyObject *config = TyDict_New();
     if (config == NULL) {
         return NULL;
     }
 
 #ifdef MS_WINDOWS
     if (add_string_value(config, "EXT_SUFFIX", PYD_TAGGED_SUFFIX) < 0) {
-        Py_DECREF(config);
+        Ty_DECREF(config);
         return NULL;
     }
     if (add_string_value(config, "SOABI", PYD_SOABI) < 0) {
-        Py_DECREF(config);
+        Ty_DECREF(config);
         return NULL;
     }
 #endif
 
-#ifdef Py_GIL_DISABLED
-    PyObject *py_gil_disabled = _PyLong_GetOne();
+#ifdef Ty_GIL_DISABLED
+    TyObject *py_gil_disabled = _TyLong_GetOne();
 #else
-    PyObject *py_gil_disabled = _PyLong_GetZero();
+    TyObject *py_gil_disabled = _TyLong_GetZero();
 #endif
-    if (PyDict_SetItemString(config, "Py_GIL_DISABLED", py_gil_disabled) < 0) {
-        Py_DECREF(config);
+    if (TyDict_SetItemString(config, "Ty_GIL_DISABLED", py_gil_disabled) < 0) {
+        Ty_DECREF(config);
         return NULL;
     }
 
-#ifdef Py_DEBUG
-    PyObject *py_debug = _PyLong_GetOne();
+#ifdef Ty_DEBUG
+    TyObject *py_debug = _TyLong_GetOne();
 #else
-    PyObject *py_debug = _PyLong_GetZero();
+    TyObject *py_debug = _TyLong_GetZero();
 #endif
-    if (PyDict_SetItemString(config, "Py_DEBUG", py_debug) < 0) {
-        Py_DECREF(config);
+    if (TyDict_SetItemString(config, "Ty_DEBUG", py_debug) < 0) {
+        Ty_DECREF(config);
         return NULL;
     }
 
@@ -83,18 +83,18 @@ _sysconfig_config_vars_impl(PyObject *module)
 PyDoc_STRVAR(sysconfig__doc__,
 "A helper for the sysconfig module.");
 
-static struct PyMethodDef sysconfig_methods[] = {
+static struct TyMethodDef sysconfig_methods[] = {
     _SYSCONFIG_CONFIG_VARS_METHODDEF
     {NULL, NULL}
 };
 
 static PyModuleDef_Slot sysconfig_slots[] = {
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static PyModuleDef sysconfig_module = {
+static TyModuleDef sysconfig_module = {
     .m_base = PyModuleDef_HEAD_INIT,
     .m_name = "_sysconfig",
     .m_doc = sysconfig__doc__,

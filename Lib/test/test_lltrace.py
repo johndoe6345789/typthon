@@ -15,7 +15,7 @@ def example():
     print(x, y)
 
 
-@unittest.skipUnless(support.Py_DEBUG, "lltrace requires Py_DEBUG")
+@unittest.skipUnless(support.Ty_DEBUG, "lltrace requires Ty_DEBUG")
 class TestLLTrace(unittest.TestCase):
 
     def run_code(self, code):

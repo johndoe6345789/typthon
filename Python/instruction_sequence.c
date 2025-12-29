@@ -7,14 +7,14 @@
 
 #include "Python.h"
 
-#include "pycore_c_array.h" // _Py_CArray_EnsureCapacity
+#include "pycore_c_array.h" // _Ty_CArray_EnsureCapacity
 #include "pycore_compile.h" // _PyInstruction
 #include "pycore_opcode_utils.h"
 #include "pycore_opcode_metadata.h" // OPCODE_HAS_ARG, etc
 
 typedef _PyInstruction instruction;
 typedef _PyInstructionSequence instr_sequence;
-typedef _Py_SourceLocation location;
+typedef _Ty_SourceLocation location;
 
 #define INITIAL_INSTR_SEQUENCE_SIZE 100
 #define INITIAL_INSTR_SEQUENCE_LABELS_MAP_SIZE 10
@@ -38,14 +38,14 @@ instr_sequence_next_inst(instr_sequence *seq) {
     assert(seq->s_instrs != NULL || seq->s_used == 0);
 
 
-    _Py_c_array_t array = {
+    _Ty_c_array_t array = {
         .array = (void*)seq->s_instrs,
         .allocated_entries = seq->s_allocated,
         .item_size = sizeof(instruction),
         .initial_num_entries = INITIAL_INSTR_SEQUENCE_SIZE,
     };
 
-    RETURN_IF_ERROR(_Py_CArray_EnsureCapacity(&array, seq->s_used + 1));
+    RETURN_IF_ERROR(_Ty_CArray_EnsureCapacity(&array, seq->s_used + 1));
     seq->s_instrs = array.array;
     seq->s_allocated = array.allocated_entries;
 
@@ -65,14 +65,14 @@ int
 _PyInstructionSequence_UseLabel(instr_sequence *seq, int lbl)
 {
     int old_size = seq->s_labelmap_size;
-    _Py_c_array_t array = {
+    _Ty_c_array_t array = {
         .array = (void*)seq->s_labelmap,
         .allocated_entries = seq->s_labelmap_size,
         .item_size = sizeof(int),
         .initial_num_entries = INITIAL_INSTR_SEQUENCE_LABELS_MAP_SIZE,
     };
 
-    RETURN_IF_ERROR(_Py_CArray_EnsureCapacity(&array, lbl));
+    RETURN_IF_ERROR(_Ty_CArray_EnsureCapacity(&array, lbl));
     seq->s_labelmap = array.array;
     seq->s_labelmap_size = array.allocated_entries;
 
@@ -104,7 +104,7 @@ _PyInstructionSequence_ApplyLabelMap(instr_sequence *instrs)
         }
     }
     /* Clear label map so it's never used again */
-    PyMem_Free(instrs->s_labelmap);
+    TyMem_Free(instrs->s_labelmap);
     instrs->s_labelmap = NULL;
     instrs->s_labelmap_size = 0;
     return SUCCESS;
@@ -167,12 +167,12 @@ int
 _PyInstructionSequence_AddNested(instr_sequence *seq, instr_sequence *nested)
 {
     if (seq->s_nested == NULL) {
-        seq->s_nested = PyList_New(0);
+        seq->s_nested = TyList_New(0);
         if (seq->s_nested == NULL) {
             return ERROR;
         }
     }
-    if (PyList_Append(seq->s_nested, (PyObject*)nested) < 0) {
+    if (TyList_Append(seq->s_nested, (TyObject*)nested) < 0) {
         return ERROR;
     }
     return SUCCESS;
@@ -180,17 +180,17 @@ _PyInstructionSequence_AddNested(instr_sequence *seq, instr_sequence *nested)
 
 void
 PyInstructionSequence_Fini(instr_sequence *seq) {
-    Py_XDECREF(seq->s_nested);
+    Ty_XDECREF(seq->s_nested);
 
-    PyMem_Free(seq->s_labelmap);
+    TyMem_Free(seq->s_labelmap);
     seq->s_labelmap = NULL;
 
-    PyMem_Free(seq->s_instrs);
+    TyMem_Free(seq->s_instrs);
     seq->s_instrs = NULL;
 
     if (seq->s_annotations_code != NULL) {
         PyInstructionSequence_Fini(seq->s_annotations_code);
-        Py_CLEAR(seq->s_annotations_code);
+        Ty_CLEAR(seq->s_annotations_code);
     }
 
 }
@@ -221,14 +221,14 @@ inst_seq_create(void)
     return seq;
 }
 
-PyObject*
+TyObject*
 _PyInstructionSequence_New(void)
 {
     _PyInstructionSequence *seq = inst_seq_create();
     if (seq == NULL) {
         return NULL;
     }
-    return (PyObject*)seq;
+    return (TyObject*)seq;
 }
 
 /*[clinic input]
@@ -238,11 +238,11 @@ InstructionSequenceType.__new__ as inst_seq_new
 Create a new InstructionSequence object.
 [clinic start generated code]*/
 
-static PyObject *
-inst_seq_new_impl(PyTypeObject *type)
+static TyObject *
+inst_seq_new_impl(TyTypeObject *type)
 /*[clinic end generated code: output=98881de92c8876f6 input=b393150146849c74]*/
 {
-    return (PyObject*)inst_seq_create();
+    return (TyObject*)inst_seq_create();
 }
 
 /*[clinic input]
@@ -253,7 +253,7 @@ InstructionSequenceType.use_label
 Place label at current location.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 InstructionSequenceType_use_label_impl(_PyInstructionSequence *self,
                                        int label)
 /*[clinic end generated code: output=4c06bbacb2854755 input=da55f49bb91841f3]*/
@@ -262,7 +262,7 @@ InstructionSequenceType_use_label_impl(_PyInstructionSequence *self,
     if (_PyInstructionSequence_UseLabel(self, label) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -278,17 +278,17 @@ InstructionSequenceType.addop
 Append an instruction.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 InstructionSequenceType_addop_impl(_PyInstructionSequence *self, int opcode,
                                    int oparg, int lineno, int col_offset,
                                    int end_lineno, int end_col_offset)
 /*[clinic end generated code: output=af0cc22c048dfbf3 input=012762ac88198713]*/
 {
-    _Py_SourceLocation loc = {lineno, col_offset, end_lineno, end_col_offset};
+    _Ty_SourceLocation loc = {lineno, col_offset, end_lineno, end_col_offset};
     if (_PyInstructionSequence_Addop(self, opcode, oparg, loc) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -313,21 +313,21 @@ InstructionSequenceType.add_nested
 Add a nested sequence.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 InstructionSequenceType_add_nested_impl(_PyInstructionSequence *self,
-                                        PyObject *nested)
+                                        TyObject *nested)
 /*[clinic end generated code: output=14540fad459f7971 input=f2c482568b3b3c0f]*/
 {
     if (!_PyInstructionSequence_Check(nested)) {
-        PyErr_Format(PyExc_TypeError,
+        TyErr_Format(TyExc_TypeError,
                      "expected an instruction sequence, not %T",
-                     Py_TYPE(nested));
+                     Ty_TYPE(nested));
         return NULL;
     }
     if (_PyInstructionSequence_AddNested(self, (_PyInstructionSequence*)nested) < 0) {
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -336,14 +336,14 @@ InstructionSequenceType.get_nested
 Add a nested sequence.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 InstructionSequenceType_get_nested_impl(_PyInstructionSequence *self)
 /*[clinic end generated code: output=f415112c292630cb input=e429e474c57b95b4]*/
 {
     if (self->s_nested == NULL) {
-        return PyList_New(0);
+        return TyList_New(0);
     }
-    return Py_NewRef(self->s_nested);
+    return Ty_NewRef(self->s_nested);
 }
 
 /*[clinic input]
@@ -352,31 +352,31 @@ InstructionSequenceType.get_instructions
 Return the instructions as a list of tuples or labels.
 [clinic start generated code]*/
 
-static PyObject *
+static TyObject *
 InstructionSequenceType_get_instructions_impl(_PyInstructionSequence *self)
 /*[clinic end generated code: output=23f4f3f894c301b3 input=fbadb5dadb611291]*/
 {
     if (_PyInstructionSequence_ApplyLabelMap(self) < 0) {
         return NULL;
     }
-    PyObject *instructions = PyList_New(0);
+    TyObject *instructions = TyList_New(0);
     if (instructions == NULL) {
         return NULL;
     }
     for (int i = 0; i < self->s_used; i++) {
         instruction *instr = &self->s_instrs[i];
         location loc = instr->i_loc;
-        PyObject *inst_tuple;
+        TyObject *inst_tuple;
 
         if (OPCODE_HAS_ARG(instr->i_opcode)) {
-            inst_tuple = Py_BuildValue(
+            inst_tuple = Ty_BuildValue(
                 "(iiiiii)", instr->i_opcode, instr->i_oparg,
                 loc.lineno, loc.end_lineno,
                 loc.col_offset, loc.end_col_offset);
         }
         else {
-            inst_tuple = Py_BuildValue(
-                "(iOiiii)", instr->i_opcode, Py_None,
+            inst_tuple = Ty_BuildValue(
+                "(iOiiii)", instr->i_opcode, Ty_None,
                 loc.lineno, loc.end_lineno,
                 loc.col_offset, loc.end_col_offset);
         }
@@ -384,19 +384,19 @@ InstructionSequenceType_get_instructions_impl(_PyInstructionSequence *self)
             goto error;
         }
 
-        int res = PyList_Append(instructions, inst_tuple);
-        Py_DECREF(inst_tuple);
+        int res = TyList_Append(instructions, inst_tuple);
+        Ty_DECREF(inst_tuple);
         if (res != 0) {
             goto error;
         }
     }
     return instructions;
 error:
-    Py_XDECREF(instructions);
+    Ty_XDECREF(instructions);
     return NULL;
 }
 
-static PyMethodDef inst_seq_methods[] = {
+static TyMethodDef inst_seq_methods[] = {
    INSTRUCTIONSEQUENCETYPE_ADDOP_METHODDEF
    INSTRUCTIONSEQUENCETYPE_NEW_LABEL_METHODDEF
    INSTRUCTIONSEQUENCETYPE_USE_LABEL_METHODDEF
@@ -406,16 +406,16 @@ static PyMethodDef inst_seq_methods[] = {
    {NULL, NULL, 0, NULL},
 };
 
-static PyMemberDef inst_seq_memberlist[] = {
+static TyMemberDef inst_seq_memberlist[] = {
     {NULL}      /* Sentinel */
 };
 
-static PyGetSetDef inst_seq_getsetters[] = {
+static TyGetSetDef inst_seq_getsetters[] = {
     {NULL}      /* Sentinel */
 };
 
 static void
-inst_seq_dealloc(PyObject *op)
+inst_seq_dealloc(TyObject *op)
 {
     _PyInstructionSequence *seq = (_PyInstructionSequence *)op;
     PyObject_GC_UnTrack(seq);
@@ -424,25 +424,25 @@ inst_seq_dealloc(PyObject *op)
 }
 
 static int
-inst_seq_traverse(PyObject *op, visitproc visit, void *arg)
+inst_seq_traverse(TyObject *op, visitproc visit, void *arg)
 {
     _PyInstructionSequence *seq = (_PyInstructionSequence *)op;
-    Py_VISIT(seq->s_nested);
-    Py_VISIT((PyObject *)seq->s_annotations_code);
+    Ty_VISIT(seq->s_nested);
+    Ty_VISIT((TyObject *)seq->s_annotations_code);
     return 0;
 }
 
 static int
-inst_seq_clear(PyObject *op)
+inst_seq_clear(TyObject *op)
 {
     _PyInstructionSequence *seq = (_PyInstructionSequence *)op;
-    Py_CLEAR(seq->s_nested);
-    Py_CLEAR(seq->s_annotations_code);
+    Ty_CLEAR(seq->s_nested);
+    Ty_CLEAR(seq->s_annotations_code);
     return 0;
 }
 
-PyTypeObject _PyInstructionSequence_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject _PyInstructionSequence_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     "InstructionSequence",
     sizeof(_PyInstructionSequence),
     0,
@@ -461,7 +461,7 @@ PyTypeObject _PyInstructionSequence_Type = {
     PyObject_GenericGetAttr,  /* tp_getattro */
     0,                  /* tp_setattro */
     0,                  /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,/* tp_flags */
+    Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,/* tp_flags */
     inst_seq_new__doc__,                    /* tp_doc */
     inst_seq_traverse,                      /* tp_traverse */
     inst_seq_clear,                         /* tp_clear */

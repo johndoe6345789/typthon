@@ -29,11 +29,11 @@ class BaseUnsignedIntConverter(CConverter):
             return super().parse_arg(argname, displayname, limited_capi=limited_capi)
         return self.format_code("""
             {{{{
-                Py_ssize_t _bytes = PyLong_AsNativeBytes({argname}, &{paramname}, sizeof({type}),
-                        Py_ASNATIVEBYTES_NATIVE_ENDIAN |
-                        Py_ASNATIVEBYTES_ALLOW_INDEX |
-                        Py_ASNATIVEBYTES_REJECT_NEGATIVE |
-                        Py_ASNATIVEBYTES_UNSIGNED_BUFFER);
+                Ty_ssize_t _bytes = PyLong_AsNativeBytes({argname}, &{paramname}, sizeof({type}),
+                        Ty_ASNATIVEBYTES_NATIVE_ENDIAN |
+                        Ty_ASNATIVEBYTES_ALLOW_INDEX |
+                        Ty_ASNATIVEBYTES_REJECT_NEGATIVE |
+                        Ty_ASNATIVEBYTES_UNSIGNED_BUFFER);
                 if (_bytes < 0) {{{{
                     goto exit;
                 }}}}
@@ -78,7 +78,7 @@ class bool_converter(CConverter):
             fail(f"bool_converter: illegal 'accept' argument {accept!r}")
         if self.default is not unspecified and self.default is not unknown:
             self.default = bool(self.default)
-            if self.c_default in {'Py_True', 'Py_False'}:
+            if self.c_default in {'Ty_True', 'Ty_False'}:
                 self.c_default = str(int(self.default))
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | None:
@@ -441,8 +441,8 @@ class unsigned_long_long_converter(BaseUnsignedIntConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class Py_ssize_t_converter(CConverter):
-    type = 'Py_ssize_t'
+class Ty_ssize_t_converter(CConverter):
+    type = 'Ty_ssize_t'
     c_ignored_default = "0"
 
     def converter_init(self, *, accept: TypeSet = {int}) -> None:
@@ -450,14 +450,14 @@ class Py_ssize_t_converter(CConverter):
             self.format_unit = 'n'
             self.default_type = int
         elif accept == {int, NoneType}:
-            self.converter = '_Py_convert_optional_to_ssize_t'
+            self.converter = '_Ty_convert_optional_to_ssize_t'
         else:
-            fail(f"Py_ssize_t_converter: illegal 'accept' argument {accept!r}")
+            fail(f"Ty_ssize_t_converter: illegal 'accept' argument {accept!r}")
 
     def use_converter(self) -> None:
-        if self.converter == '_Py_convert_optional_to_ssize_t':
+        if self.converter == '_Ty_convert_optional_to_ssize_t':
             self.add_include('pycore_abstract.h',
-                             '_Py_convert_optional_to_ssize_t()')
+                             '_Ty_convert_optional_to_ssize_t()')
 
     def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | None:
         if self.format_unit == 'n':
@@ -468,11 +468,11 @@ class Py_ssize_t_converter(CConverter):
                 self.add_include('pycore_abstract.h', '_PyNumber_Index()')
             return self.format_code("""
                 {{{{
-                    Py_ssize_t ival = -1;
+                    Ty_ssize_t ival = -1;
                     PyObject *iobj = {PyNumber_Index}({argname});
                     if (iobj != NULL) {{{{
                         ival = PyLong_AsSsize_t(iobj);
-                        Py_DECREF(iobj);
+                        Ty_DECREF(iobj);
                     }}}}
                     if (ival == -1 && PyErr_Occurred()) {{{{
                         goto exit;
@@ -485,7 +485,7 @@ class Py_ssize_t_converter(CConverter):
         if not limited_capi:
             return super().parse_arg(argname, displayname, limited_capi=limited_capi)
         return self.format_code("""
-            if ({argname} != Py_None) {{{{
+            if ({argname} != Ty_None) {{{{
                 if (PyIndex_Check({argname})) {{{{
                     {paramname} = PyNumber_AsSsize_t({argname}, PyExc_OverflowError);
                     if ({paramname} == -1 && PyErr_Occurred()) {{{{
@@ -504,7 +504,7 @@ class Py_ssize_t_converter(CConverter):
 
 
 class slice_index_converter(CConverter):
-    type = 'Py_ssize_t'
+    type = 'Ty_ssize_t'
 
     def converter_init(self, *, accept: TypeSet = {int, NoneType}) -> None:
         if accept == {int}:
@@ -521,7 +521,7 @@ class slice_index_converter(CConverter):
             return super().parse_arg(argname, displayname, limited_capi=limited_capi)
         if self.nullable:
             return self.format_code("""
-                if (!Py_IsNone({argname})) {{{{
+                if (!Ty_IsNone({argname})) {{{{
                     if (PyIndex_Check({argname})) {{{{
                         {paramname} = PyNumber_AsSsize_t({argname}, NULL);
                         if ({paramname} == -1 && PyErr_Occurred()) {{{{
@@ -656,8 +656,8 @@ class double_converter(CConverter):
         return super().parse_arg(argname, displayname, limited_capi=limited_capi)
 
 
-class Py_complex_converter(CConverter):
-    type = 'Py_complex'
+class Ty_complex_converter(CConverter):
+    type = 'Ty_complex'
     default_type = complex
     format_unit = 'D'
     c_ignored_default = "{0.0, 0.0}"
@@ -751,7 +751,7 @@ class str_converter(CConverter):
             # sorry, clinic can't support preallocated buffers
             # for es# and et#
             self.c_default = "NULL"
-        if NoneType in accept and self.c_default == "Py_None":
+        if NoneType in accept and self.c_default == "Ty_None":
             self.c_default = "NULL"
 
     def post_parsing(self) -> str:
@@ -768,7 +768,7 @@ class str_converter(CConverter):
                     {bad_argument}
                     goto exit;
                 }}}}
-                Py_ssize_t {length_name};
+                Ty_ssize_t {length_name};
                 {paramname} = PyUnicode_AsUTF8AndSize({argname}, &{length_name});
                 if ({paramname} == NULL) {{{{
                     goto exit;
@@ -783,11 +783,11 @@ class str_converter(CConverter):
                 length_name=self.length_name)
         if self.format_unit == 'z':
             return self.format_code("""
-                if ({argname} == Py_None) {{{{
+                if ({argname} == Ty_None) {{{{
                     {paramname} = NULL;
                 }}}}
                 else if (PyUnicode_Check({argname})) {{{{
-                    Py_ssize_t {length_name};
+                    Ty_ssize_t {length_name};
                     {paramname} = PyUnicode_AsUTF8AndSize({argname}, &{length_name});
                     if ({paramname} == NULL) {{{{
                         goto exit;
@@ -924,7 +924,7 @@ class unicode_converter(CConverter):
 @add_legacy_c_converter('u#', zeroes=True)
 @add_legacy_c_converter('Z', accept={str, NoneType})
 @add_legacy_c_converter('Z#', accept={str, NoneType}, zeroes=True)
-class Py_UNICODE_converter(CConverter):
+class Ty_UNICODE_converter(CConverter):
     type = 'const wchar_t *'
     default_type = (str, Null, NoneType)
 
@@ -945,7 +945,7 @@ class Py_UNICODE_converter(CConverter):
             elif accept == {str, NoneType}:
                 self.converter = '_PyUnicode_WideCharString_Opt_Converter'
             else:
-                fail(f"Py_UNICODE_converter: illegal 'accept' argument {accept!r}")
+                fail(f"Ty_UNICODE_converter: illegal 'accept' argument {accept!r}")
         self.c_default = "NULL"
 
     def cleanup(self) -> str:
@@ -972,7 +972,7 @@ class Py_UNICODE_converter(CConverter):
                 )
             elif self.accept == {str, NoneType}:
                 return self.format_code("""
-                    if ({argname} == Py_None) {{{{
+                    if ({argname} == Ty_None) {{{{
                         {paramname} = NULL;
                     }}}}
                     else if (PyUnicode_Check({argname})) {{{{
@@ -995,15 +995,15 @@ class Py_UNICODE_converter(CConverter):
 @add_legacy_c_converter('s*', accept={str, buffer})
 @add_legacy_c_converter('z*', accept={str, buffer, NoneType})
 @add_legacy_c_converter('w*', accept={rwbuffer})
-class Py_buffer_converter(CConverter):
-    type = 'Py_buffer'
+class Ty_buffer_converter(CConverter):
+    type = 'Ty_buffer'
     format_unit = 'y*'
     impl_by_reference = True
     c_ignored_default = "{NULL, NULL}"
 
     def converter_init(self, *, accept: TypeSet = {buffer}) -> None:
         if self.default not in (unspecified, None):
-            fail("The only legal default value for Py_buffer is None.")
+            fail("The only legal default value for Ty_buffer is None.")
 
         self.c_default = self.c_ignored_default
 
@@ -1016,7 +1016,7 @@ class Py_buffer_converter(CConverter):
         elif accept == {rwbuffer}:
             format_unit = 'w*'
         else:
-            fail("Py_buffer_converter: illegal combination of arguments")
+            fail("Ty_buffer_converter: illegal combination of arguments")
 
         self.format_unit = format_unit
 
@@ -1038,7 +1038,7 @@ class Py_buffer_converter(CConverter):
         elif self.format_unit == 's*':
             return self.format_code("""
                 if (PyUnicode_Check({argname})) {{{{
-                    Py_ssize_t len;
+                    Ty_ssize_t len;
                     const char *ptr = PyUnicode_AsUTF8AndSize({argname}, &len);
                     if (ptr == NULL) {{{{
                         goto exit;
@@ -1191,8 +1191,8 @@ class self_converter(CConverter):
                     '({0} == base_tp || {0}->tp_init == base_tp->tp_init)'
                  ).format(self.name)
             else:
-                type_check = ('(Py_IS_TYPE({0}, base_tp) ||\n        '
-                              ' Py_TYPE({0})->tp_new == base_tp->tp_new)'
+                type_check = ('(Ty_IS_TYPE({0}, base_tp) ||\n        '
+                              ' Ty_TYPE({0})->tp_new == base_tp->tp_new)'
                              ).format(self.name)
 
             line = f'{type_check} &&\n        '
@@ -1229,7 +1229,7 @@ class varpos_tuple_converter(VarPosCConverter):
     c_default = 'NULL'
 
     def cleanup(self) -> str:
-        return f"""Py_XDECREF({self.parser_name});\n"""
+        return f"""Ty_XDECREF({self.parser_name});\n"""
 
     def parse_vararg(self, *, pos_only: int, min_pos: int, max_pos: int,
                      fastcall: bool, limited_capi: bool) -> str:
@@ -1237,7 +1237,7 @@ class varpos_tuple_converter(VarPosCConverter):
         if fastcall:
             if limited_capi:
                 if min(pos_only, min_pos) < max_pos:
-                    size = f'Py_MAX(nargs - {max_pos}, 0)'
+                    size = f'Ty_MAX(nargs - {max_pos}, 0)'
                 else:
                     size = f'nargs - {max_pos}' if max_pos else 'nargs'
                 return f"""
@@ -1245,8 +1245,8 @@ class varpos_tuple_converter(VarPosCConverter):
                     if (!{paramname}) {{{{
                         goto exit;
                     }}}}
-                    for (Py_ssize_t i = {max_pos}; i < nargs; ++i) {{{{
-                        PyTuple_SET_ITEM({paramname}, i - {max_pos}, Py_NewRef(args[i]));
+                    for (Ty_ssize_t i = {max_pos}; i < nargs; ++i) {{{{
+                        PyTuple_SET_ITEM({paramname}, i - {max_pos}, Ty_NewRef(args[i]));
                     }}}}
                     """
             else:
@@ -1278,7 +1278,7 @@ class varpos_tuple_converter(VarPosCConverter):
                     }}}}
                     """
             else:
-                return f"{paramname} = Py_NewRef(args);\n"
+                return f"{paramname} = Ty_NewRef(args);\n"
 
 
 class varpos_array_converter(VarPosCConverter):
@@ -1296,7 +1296,7 @@ class varpos_array_converter(VarPosCConverter):
         if max_pos:
             if min(pos_only, min_pos) < max_pos:
                 start = f'{size} > {max_pos} ? {start} + {max_pos} : {start}'
-                size = f'Py_MAX(0, {size} - {max_pos})'
+                size = f'Ty_MAX(0, {size} - {max_pos})'
             else:
                 start = f'{start} + {max_pos}'
                 size = f'{size} - {max_pos}'

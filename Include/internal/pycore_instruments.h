@@ -1,11 +1,11 @@
-#ifndef Py_INTERNAL_INSTRUMENT_H
-#define Py_INTERNAL_INSTRUMENT_H
+#ifndef Ty_INTERNAL_INSTRUMENT_H
+#define Ty_INTERNAL_INSTRUMENT_H
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-#include "pycore_structs.h"       // _Py_CODEUNIT
+#include "pycore_structs.h"       // _Ty_CODEUNIT
 #include "pycore_typedefs.h"      // _PyInterpreterFrame
 
 #ifdef __cplusplus
@@ -27,46 +27,46 @@ typedef uint32_t _PyMonitoringEventSet;
 #define PY_MONITORING_SYS_TRACE_ID 7
 
 
-PyObject *_PyMonitoring_RegisterCallback(int tool_id, int event_id, PyObject *obj);
+TyObject *_PyMonitoring_RegisterCallback(int tool_id, int event_id, TyObject *obj);
 
 int _PyMonitoring_SetEvents(int tool_id, _PyMonitoringEventSet events);
 int _PyMonitoring_SetLocalEvents(PyCodeObject *code, int tool_id, _PyMonitoringEventSet events);
 int _PyMonitoring_GetLocalEvents(PyCodeObject *code, int tool_id, _PyMonitoringEventSet *events);
 
 extern int
-_Py_call_instrumentation(PyThreadState *tstate, int event,
-    _PyInterpreterFrame *frame, _Py_CODEUNIT *instr);
+_Ty_call_instrumentation(PyThreadState *tstate, int event,
+    _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr);
 
 extern int
-_Py_call_instrumentation_line(PyThreadState *tstate, _PyInterpreterFrame* frame,
-                              _Py_CODEUNIT *instr, _Py_CODEUNIT *prev);
+_Ty_call_instrumentation_line(PyThreadState *tstate, _PyInterpreterFrame* frame,
+                              _Ty_CODEUNIT *instr, _Ty_CODEUNIT *prev);
 
 extern int
-_Py_call_instrumentation_instruction(
-    PyThreadState *tstate, _PyInterpreterFrame* frame, _Py_CODEUNIT *instr);
+_Ty_call_instrumentation_instruction(
+    PyThreadState *tstate, _PyInterpreterFrame* frame, _Ty_CODEUNIT *instr);
 
-_Py_CODEUNIT *
-_Py_call_instrumentation_jump(
-    _Py_CODEUNIT *instr, PyThreadState *tstate, int event,
-    _PyInterpreterFrame *frame, _Py_CODEUNIT *src, _Py_CODEUNIT *dest);
-
-extern int
-_Py_call_instrumentation_arg(PyThreadState *tstate, int event,
-    _PyInterpreterFrame *frame, _Py_CODEUNIT *instr, PyObject *arg);
+_Ty_CODEUNIT *
+_Ty_call_instrumentation_jump(
+    _Ty_CODEUNIT *instr, PyThreadState *tstate, int event,
+    _PyInterpreterFrame *frame, _Ty_CODEUNIT *src, _Ty_CODEUNIT *dest);
 
 extern int
-_Py_call_instrumentation_2args(PyThreadState *tstate, int event,
-    _PyInterpreterFrame *frame, _Py_CODEUNIT *instr, PyObject *arg0, PyObject *arg1);
+_Ty_call_instrumentation_arg(PyThreadState *tstate, int event,
+    _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, TyObject *arg);
+
+extern int
+_Ty_call_instrumentation_2args(PyThreadState *tstate, int event,
+    _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, TyObject *arg0, TyObject *arg1);
 
 extern void
-_Py_call_instrumentation_exc2(PyThreadState *tstate, int event,
-    _PyInterpreterFrame *frame, _Py_CODEUNIT *instr, PyObject *arg0, PyObject *arg1);
+_Ty_call_instrumentation_exc2(PyThreadState *tstate, int event,
+    _PyInterpreterFrame *frame, _Ty_CODEUNIT *instr, TyObject *arg0, TyObject *arg1);
 
 extern int
-_Py_Instrumentation_GetLine(PyCodeObject *code, int index);
+_Ty_Instrumentation_GetLine(PyCodeObject *code, int index);
 
-extern PyObject _PyInstrumentation_MISSING;
-extern PyObject _PyInstrumentation_DISABLE;
+extern TyObject _PyInstrumentation_MISSING;
+extern TyObject _PyInstrumentation_DISABLE;
 
 
 /* Total tool ids available */
@@ -79,18 +79,18 @@ extern PyObject _PyInstrumentation_DISABLE;
 #define _PY_MONITORING_EVENTS 19
 
 /* Tables of which tools are active for each monitored event. */
-typedef struct _Py_LocalMonitors {
+typedef struct _Ty_LocalMonitors {
     uint8_t tools[_PY_MONITORING_LOCAL_EVENTS];
-} _Py_LocalMonitors;
+} _Ty_LocalMonitors;
 
-typedef struct _Py_GlobalMonitors {
+typedef struct _Ty_GlobalMonitors {
     uint8_t tools[_PY_MONITORING_UNGROUPED_EVENTS];
-} _Py_GlobalMonitors;
+} _Ty_GlobalMonitors;
 
 /* Ancillary data structure used for instrumentation.
    Line instrumentation creates this with sufficient
    space for one entry per code unit. The total size
-   of the data will be `bytes_per_entry * Py_SIZE(code)` */
+   of the data will be `bytes_per_entry * Ty_SIZE(code)` */
 typedef struct {
     uint8_t bytes_per_entry;
     uint8_t data[1];
@@ -102,9 +102,9 @@ typedef struct {
  */
 typedef struct _PyCoMonitoringData {
     /* Monitoring specific to this code object */
-    _Py_LocalMonitors local_monitors;
+    _Ty_LocalMonitors local_monitors;
     /* Monitoring that is active on this code object */
-    _Py_LocalMonitors active_monitors;
+    _Ty_LocalMonitors active_monitors;
     /* The tools that are to be notified for events for the matching code unit */
     uint8_t *tools;
     /* The version of tools when they instrument the code */
@@ -124,4 +124,4 @@ typedef struct _PyCoMonitoringData {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_INSTRUMENT_H */
+#endif /* !Ty_INTERNAL_INSTRUMENT_H */

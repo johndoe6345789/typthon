@@ -26,7 +26,7 @@ def generate_uop_ids(
 ) -> None:
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, False)
-    with out.header_guard("Py_CORE_UOP_IDS_H"):
+    with out.header_guard("Ty_CORE_UOP_IDS_H"):
         next_id = 1 if distinct_namespace else 300
         # These two are first by convention
         out.emit(f"#define _EXIT_TRACE {next_id}\n")

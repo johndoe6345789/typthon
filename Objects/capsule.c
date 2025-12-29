@@ -2,8 +2,8 @@
 
 #include "Python.h"
 #include "pycore_capsule.h"       // export _PyCapsule_SetTraverse()
-#include "pycore_gc.h"            // _PyObject_GC_IS_TRACKED()
-#include "pycore_object.h"        // _PyObject_GC_TRACK()
+#include "pycore_gc.h"            // _TyObject_GC_IS_TRACKED()
+#include "pycore_object.h"        // _TyObject_GC_TRACK()
 
 
 /* Internal structure of PyCapsule */
@@ -22,7 +22,7 @@ typedef struct {
 
 
 static int
-_is_legal_capsule(PyObject *op, const char *invalid_capsule)
+_is_legal_capsule(TyObject *op, const char *invalid_capsule)
 {
     if (!op || !PyCapsule_CheckExact(op)) {
         goto error;
@@ -35,7 +35,7 @@ _is_legal_capsule(PyObject *op, const char *invalid_capsule)
     return 1;
 
 error:
-    PyErr_SetString(PyExc_ValueError, invalid_capsule);
+    TyErr_SetString(TyExc_ValueError, invalid_capsule);
     return 0;
 }
 
@@ -56,13 +56,13 @@ name_matches(const char *name1, const char *name2) {
 
 
 
-PyObject *
+TyObject *
 PyCapsule_New(void *pointer, const char *name, PyCapsule_Destructor destructor)
 {
     PyCapsule *capsule;
 
     if (!pointer) {
-        PyErr_SetString(PyExc_ValueError, "PyCapsule_New called with null pointer");
+        TyErr_SetString(TyExc_ValueError, "PyCapsule_New called with null pointer");
         return NULL;
     }
 
@@ -79,12 +79,12 @@ PyCapsule_New(void *pointer, const char *name, PyCapsule_Destructor destructor)
     capsule->clear_func = NULL;
     // Only track the object by the GC when _PyCapsule_SetTraverse() is called
 
-    return (PyObject *)capsule;
+    return (TyObject *)capsule;
 }
 
 
 int
-PyCapsule_IsValid(PyObject *op, const char *name)
+PyCapsule_IsValid(TyObject *op, const char *name)
 {
     PyCapsule *capsule = (PyCapsule *)op;
 
@@ -96,7 +96,7 @@ PyCapsule_IsValid(PyObject *op, const char *name)
 
 
 void *
-PyCapsule_GetPointer(PyObject *op, const char *name)
+PyCapsule_GetPointer(TyObject *op, const char *name)
 {
     if (!is_legal_capsule(op, "PyCapsule_GetPointer")) {
         return NULL;
@@ -104,7 +104,7 @@ PyCapsule_GetPointer(PyObject *op, const char *name)
     PyCapsule *capsule = (PyCapsule *)op;
 
     if (!name_matches(name, capsule->name)) {
-        PyErr_SetString(PyExc_ValueError, "PyCapsule_GetPointer called with incorrect name");
+        TyErr_SetString(TyExc_ValueError, "PyCapsule_GetPointer called with incorrect name");
         return NULL;
     }
 
@@ -113,7 +113,7 @@ PyCapsule_GetPointer(PyObject *op, const char *name)
 
 
 const char *
-PyCapsule_GetName(PyObject *op)
+PyCapsule_GetName(TyObject *op)
 {
     if (!is_legal_capsule(op, "PyCapsule_GetName")) {
         return NULL;
@@ -124,7 +124,7 @@ PyCapsule_GetName(PyObject *op)
 
 
 PyCapsule_Destructor
-PyCapsule_GetDestructor(PyObject *op)
+PyCapsule_GetDestructor(TyObject *op)
 {
     if (!is_legal_capsule(op, "PyCapsule_GetDestructor")) {
         return NULL;
@@ -135,7 +135,7 @@ PyCapsule_GetDestructor(PyObject *op)
 
 
 void *
-PyCapsule_GetContext(PyObject *op)
+PyCapsule_GetContext(TyObject *op)
 {
     if (!is_legal_capsule(op, "PyCapsule_GetContext")) {
         return NULL;
@@ -146,7 +146,7 @@ PyCapsule_GetContext(PyObject *op)
 
 
 int
-PyCapsule_SetPointer(PyObject *op, void *pointer)
+PyCapsule_SetPointer(TyObject *op, void *pointer)
 {
     if (!is_legal_capsule(op, "PyCapsule_SetPointer")) {
         return -1;
@@ -154,7 +154,7 @@ PyCapsule_SetPointer(PyObject *op, void *pointer)
     PyCapsule *capsule = (PyCapsule *)op;
 
     if (!pointer) {
-        PyErr_SetString(PyExc_ValueError, "PyCapsule_SetPointer called with null pointer");
+        TyErr_SetString(TyExc_ValueError, "PyCapsule_SetPointer called with null pointer");
         return -1;
     }
 
@@ -164,7 +164,7 @@ PyCapsule_SetPointer(PyObject *op, void *pointer)
 
 
 int
-PyCapsule_SetName(PyObject *op, const char *name)
+PyCapsule_SetName(TyObject *op, const char *name)
 {
     if (!is_legal_capsule(op, "PyCapsule_SetName")) {
         return -1;
@@ -177,7 +177,7 @@ PyCapsule_SetName(PyObject *op, const char *name)
 
 
 int
-PyCapsule_SetDestructor(PyObject *op, PyCapsule_Destructor destructor)
+PyCapsule_SetDestructor(TyObject *op, PyCapsule_Destructor destructor)
 {
     if (!is_legal_capsule(op, "PyCapsule_SetDestructor")) {
         return -1;
@@ -190,7 +190,7 @@ PyCapsule_SetDestructor(PyObject *op, PyCapsule_Destructor destructor)
 
 
 int
-PyCapsule_SetContext(PyObject *op, void *context)
+PyCapsule_SetContext(TyObject *op, void *context)
 {
     if (!is_legal_capsule(op, "PyCapsule_SetContext")) {
         return -1;
@@ -203,7 +203,7 @@ PyCapsule_SetContext(PyObject *op, void *context)
 
 
 int
-_PyCapsule_SetTraverse(PyObject *op, traverseproc traverse_func, inquiry clear_func)
+_PyCapsule_SetTraverse(TyObject *op, traverseproc traverse_func, inquiry clear_func)
 {
     if (!is_legal_capsule(op, "_PyCapsule_SetTraverse")) {
         return -1;
@@ -211,13 +211,13 @@ _PyCapsule_SetTraverse(PyObject *op, traverseproc traverse_func, inquiry clear_f
     PyCapsule *capsule = (PyCapsule *)op;
 
     if (traverse_func == NULL || clear_func == NULL) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "_PyCapsule_SetTraverse() called with NULL callback");
         return -1;
     }
 
-    if (!_PyObject_GC_IS_TRACKED(op)) {
-        _PyObject_GC_TRACK(op);
+    if (!_TyObject_GC_IS_TRACKED(op)) {
+        _TyObject_GC_TRACK(op);
     }
 
     capsule->traverse_func = traverse_func;
@@ -229,14 +229,14 @@ _PyCapsule_SetTraverse(PyObject *op, traverseproc traverse_func, inquiry clear_f
 void *
 PyCapsule_Import(const char *name, int no_block)
 {
-    PyObject *object = NULL;
+    TyObject *object = NULL;
     void *return_value = NULL;
     char *trace;
     size_t name_length = (strlen(name) + 1) * sizeof(char);
-    char *name_dup = (char *)PyMem_Malloc(name_length);
+    char *name_dup = (char *)TyMem_Malloc(name_length);
 
     if (!name_dup) {
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
     }
 
     memcpy(name_dup, name, name_length);
@@ -249,13 +249,13 @@ PyCapsule_Import(const char *name, int no_block)
         }
 
         if (object == NULL) {
-            object = PyImport_ImportModule(trace);
+            object = TyImport_ImportModule(trace);
             if (!object) {
-                PyErr_Format(PyExc_ImportError, "PyCapsule_Import could not import module \"%s\"", trace);
+                TyErr_Format(TyExc_ImportError, "PyCapsule_Import could not import module \"%s\"", trace);
             }
         } else {
-            PyObject *object2 = PyObject_GetAttrString(object, trace);
-            Py_SETREF(object, object2);
+            TyObject *object2 = PyObject_GetAttrString(object, trace);
+            Ty_SETREF(object, object2);
         }
         if (!object) {
             goto EXIT;
@@ -269,22 +269,22 @@ PyCapsule_Import(const char *name, int no_block)
         PyCapsule *capsule = (PyCapsule *)object;
         return_value = capsule->pointer;
     } else {
-        PyErr_Format(PyExc_AttributeError,
+        TyErr_Format(TyExc_AttributeError,
             "PyCapsule_Import \"%s\" is not valid",
             name);
     }
 
 EXIT:
-    Py_XDECREF(object);
+    Ty_XDECREF(object);
     if (name_dup) {
-        PyMem_Free(name_dup);
+        TyMem_Free(name_dup);
     }
     return return_value;
 }
 
 
 static void
-capsule_dealloc(PyObject *op)
+capsule_dealloc(TyObject *op)
 {
     PyCapsule *capsule = _PyCapsule_CAST(op);
     PyObject_GC_UnTrack(op);
@@ -295,8 +295,8 @@ capsule_dealloc(PyObject *op)
 }
 
 
-static PyObject *
-capsule_repr(PyObject *o)
+static TyObject *
+capsule_repr(TyObject *o)
 {
     PyCapsule *capsule = _PyCapsule_CAST(o);
     const char *name;
@@ -310,13 +310,13 @@ capsule_repr(PyObject *o)
         name = "NULL";
     }
 
-    return PyUnicode_FromFormat("<capsule object %s%s%s at %p>",
+    return TyUnicode_FromFormat("<capsule object %s%s%s at %p>",
         quote, name, quote, capsule);
 }
 
 
 static int
-capsule_traverse(PyObject *self, visitproc visit, void *arg)
+capsule_traverse(TyObject *self, visitproc visit, void *arg)
 {
     // Capsule object is only tracked by the GC
     // if _PyCapsule_SetTraverse() is called, but
@@ -330,7 +330,7 @@ capsule_traverse(PyObject *self, visitproc visit, void *arg)
 
 
 static int
-capsule_clear(PyObject *self)
+capsule_clear(TyObject *self)
 {
     // Capsule object is only tracked by the GC
     // if _PyCapsule_SetTraverse() is called
@@ -351,10 +351,10 @@ to other extension modules, so that extension modules can use the\n\
 Python import mechanism to link to one another.\n\
 ");
 
-PyTypeObject PyCapsule_Type = {
-    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+TyTypeObject PyCapsule_Type = {
+    PyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "PyCapsule",
-    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+    .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,
     .tp_basicsize = sizeof(PyCapsule),
     .tp_dealloc = capsule_dealloc,
     .tp_repr = capsule_repr,

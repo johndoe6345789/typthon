@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(_weakref_getweakrefcount__doc__,
 "getweakrefcount($module, object, /)\n"
@@ -13,20 +13,20 @@ PyDoc_STRVAR(_weakref_getweakrefcount__doc__,
 #define _WEAKREF_GETWEAKREFCOUNT_METHODDEF    \
     {"getweakrefcount", (PyCFunction)_weakref_getweakrefcount, METH_O, _weakref_getweakrefcount__doc__},
 
-static Py_ssize_t
-_weakref_getweakrefcount_impl(PyObject *module, PyObject *object);
+static Ty_ssize_t
+_weakref_getweakrefcount_impl(TyObject *module, TyObject *object);
 
-static PyObject *
-_weakref_getweakrefcount(PyObject *module, PyObject *object)
+static TyObject *
+_weakref_getweakrefcount(TyObject *module, TyObject *object)
 {
-    PyObject *return_value = NULL;
-    Py_ssize_t _return_value;
+    TyObject *return_value = NULL;
+    Ty_ssize_t _return_value;
 
     _return_value = _weakref_getweakrefcount_impl(module, object);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromSsize_t(_return_value);
+    return_value = TyLong_FromSsize_t(_return_value);
 
 exit:
     return return_value;
@@ -41,22 +41,22 @@ PyDoc_STRVAR(_weakref__remove_dead_weakref__doc__,
 #define _WEAKREF__REMOVE_DEAD_WEAKREF_METHODDEF    \
     {"_remove_dead_weakref", _PyCFunction_CAST(_weakref__remove_dead_weakref), METH_FASTCALL, _weakref__remove_dead_weakref__doc__},
 
-static PyObject *
-_weakref__remove_dead_weakref_impl(PyObject *module, PyObject *dct,
-                                   PyObject *key);
+static TyObject *
+_weakref__remove_dead_weakref_impl(TyObject *module, TyObject *dct,
+                                   TyObject *key);
 
-static PyObject *
-_weakref__remove_dead_weakref(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_weakref__remove_dead_weakref(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *dct;
-    PyObject *key;
+    TyObject *return_value = NULL;
+    TyObject *dct;
+    TyObject *key;
 
-    if (!_PyArg_CheckPositional("_remove_dead_weakref", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("_remove_dead_weakref", nargs, 2, 2)) {
         goto exit;
     }
-    if (!PyDict_Check(args[0])) {
-        _PyArg_BadArgument("_remove_dead_weakref", "argument 1", "dict", args[0]);
+    if (!TyDict_Check(args[0])) {
+        _TyArg_BadArgument("_remove_dead_weakref", "argument 1", "dict", args[0]);
         goto exit;
     }
     dct = args[0];
@@ -88,17 +88,17 @@ PyDoc_STRVAR(_weakref_proxy__doc__,
 #define _WEAKREF_PROXY_METHODDEF    \
     {"proxy", _PyCFunction_CAST(_weakref_proxy), METH_FASTCALL, _weakref_proxy__doc__},
 
-static PyObject *
-_weakref_proxy_impl(PyObject *module, PyObject *object, PyObject *callback);
+static TyObject *
+_weakref_proxy_impl(TyObject *module, TyObject *object, TyObject *callback);
 
-static PyObject *
-_weakref_proxy(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+_weakref_proxy(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
-    PyObject *object;
-    PyObject *callback = NULL;
+    TyObject *return_value = NULL;
+    TyObject *object;
+    TyObject *callback = NULL;
 
-    if (!_PyArg_CheckPositional("proxy", nargs, 1, 2)) {
+    if (!_TyArg_CheckPositional("proxy", nargs, 1, 2)) {
         goto exit;
     }
     object = args[0];

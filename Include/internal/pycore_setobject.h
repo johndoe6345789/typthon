@@ -1,41 +1,41 @@
-#ifndef Py_INTERNAL_SETOBJECT_H
-#define Py_INTERNAL_SETOBJECT_H
+#ifndef Ty_INTERNAL_SETOBJECT_H
+#define Ty_INTERNAL_SETOBJECT_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 // Export for '_abc' shared extension
-PyAPI_FUNC(int) _PySet_NextEntry(
-    PyObject *set,
-    Py_ssize_t *pos,
-    PyObject **key,
-    Py_hash_t *hash);
+PyAPI_FUNC(int) _TySet_NextEntry(
+    TyObject *set,
+    Ty_ssize_t *pos,
+    TyObject **key,
+    Ty_hash_t *hash);
 
 // Export for '_pickle' shared extension
-PyAPI_FUNC(int) _PySet_NextEntryRef(
-    PyObject *set,
-    Py_ssize_t *pos,
-    PyObject **key,
-    Py_hash_t *hash);
+PyAPI_FUNC(int) _TySet_NextEntryRef(
+    TyObject *set,
+    Ty_ssize_t *pos,
+    TyObject **key,
+    Ty_hash_t *hash);
 
 // Export for '_pickle' shared extension
-PyAPI_FUNC(int) _PySet_Update(PyObject *set, PyObject *iterable);
+PyAPI_FUNC(int) _TySet_Update(TyObject *set, TyObject *iterable);
 
 // Export for the gdb plugin's (python-gdb.py) benefit
-PyAPI_DATA(PyObject *) _PySet_Dummy;
+PyAPI_DATA(TyObject *) _TySet_Dummy;
 
-PyAPI_FUNC(int) _PySet_Contains(PySetObject *so, PyObject *key);
+PyAPI_FUNC(int) _TySet_Contains(PySetObject *so, TyObject *key);
 
-// Clears the set without acquiring locks. Used by _PyCode_Fini.
-extern void _PySet_ClearInternal(PySetObject *so);
+// Clears the set without acquiring locks. Used by _TyCode_Fini.
+extern void _TySet_ClearInternal(PySetObject *so);
 
-PyAPI_FUNC(int) _PySet_AddTakeRef(PySetObject *so, PyObject *key);
+PyAPI_FUNC(int) _TySet_AddTakeRef(PySetObject *so, TyObject *key);
 
 #ifdef __cplusplus
 }
 #endif
-#endif  // !Py_INTERNAL_SETOBJECT_H
+#endif  // !Ty_INTERNAL_SETOBJECT_H

@@ -2,11 +2,11 @@
 preserve
 [clinic start generated code]*/
 
-#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-#  include "pycore_gc.h"          // PyGC_Head
-#  include "pycore_runtime.h"     // _Py_ID()
+#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+#  include "pycore_gc.h"          // TyGC_Head
+#  include "pycore_runtime.h"     // _Ty_ID()
 #endif
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
 PyDoc_STRVAR(signal_default_int_handler__doc__,
 "default_int_handler($module, signalnum, frame, /)\n"
@@ -19,22 +19,22 @@ PyDoc_STRVAR(signal_default_int_handler__doc__,
 #define SIGNAL_DEFAULT_INT_HANDLER_METHODDEF    \
     {"default_int_handler", _PyCFunction_CAST(signal_default_int_handler), METH_FASTCALL, signal_default_int_handler__doc__},
 
-static PyObject *
-signal_default_int_handler_impl(PyObject *module, int signalnum,
-                                PyObject *frame);
+static TyObject *
+signal_default_int_handler_impl(TyObject *module, int signalnum,
+                                TyObject *frame);
 
-static PyObject *
-signal_default_int_handler(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+signal_default_int_handler(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int signalnum;
-    PyObject *frame;
+    TyObject *frame;
 
-    if (!_PyArg_CheckPositional("default_int_handler", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("default_int_handler", nargs, 2, 2)) {
         goto exit;
     }
-    signalnum = PyLong_AsInt(args[0]);
-    if (signalnum == -1 && PyErr_Occurred()) {
+    signalnum = TyLong_AsInt(args[0]);
+    if (signalnum == -1 && TyErr_Occurred()) {
         goto exit;
     }
     frame = args[1];
@@ -56,24 +56,24 @@ PyDoc_STRVAR(signal_alarm__doc__,
     {"alarm", (PyCFunction)signal_alarm, METH_O, signal_alarm__doc__},
 
 static long
-signal_alarm_impl(PyObject *module, int seconds);
+signal_alarm_impl(TyObject *module, int seconds);
 
-static PyObject *
-signal_alarm(PyObject *module, PyObject *arg)
+static TyObject *
+signal_alarm(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int seconds;
     long _return_value;
 
-    seconds = PyLong_AsInt(arg);
-    if (seconds == -1 && PyErr_Occurred()) {
+    seconds = TyLong_AsInt(arg);
+    if (seconds == -1 && TyErr_Occurred()) {
         goto exit;
     }
     _return_value = signal_alarm_impl(module, seconds);
-    if ((_return_value == -1) && PyErr_Occurred()) {
+    if ((_return_value == -1) && TyErr_Occurred()) {
         goto exit;
     }
-    return_value = PyLong_FromLong(_return_value);
+    return_value = TyLong_FromLong(_return_value);
 
 exit:
     return return_value;
@@ -92,11 +92,11 @@ PyDoc_STRVAR(signal_pause__doc__,
 #define SIGNAL_PAUSE_METHODDEF    \
     {"pause", (PyCFunction)signal_pause, METH_NOARGS, signal_pause__doc__},
 
-static PyObject *
-signal_pause_impl(PyObject *module);
+static TyObject *
+signal_pause_impl(TyObject *module);
 
-static PyObject *
-signal_pause(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+signal_pause(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return signal_pause_impl(module);
 }
@@ -112,17 +112,17 @@ PyDoc_STRVAR(signal_raise_signal__doc__,
 #define SIGNAL_RAISE_SIGNAL_METHODDEF    \
     {"raise_signal", (PyCFunction)signal_raise_signal, METH_O, signal_raise_signal__doc__},
 
-static PyObject *
-signal_raise_signal_impl(PyObject *module, int signalnum);
+static TyObject *
+signal_raise_signal_impl(TyObject *module, int signalnum);
 
-static PyObject *
-signal_raise_signal(PyObject *module, PyObject *arg)
+static TyObject *
+signal_raise_signal(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int signalnum;
 
-    signalnum = PyLong_AsInt(arg);
-    if (signalnum == -1 && PyErr_Occurred()) {
+    signalnum = TyLong_AsInt(arg);
+    if (signalnum == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = signal_raise_signal_impl(module, signalnum);
@@ -147,21 +147,21 @@ PyDoc_STRVAR(signal_signal__doc__,
 #define SIGNAL_SIGNAL_METHODDEF    \
     {"signal", _PyCFunction_CAST(signal_signal), METH_FASTCALL, signal_signal__doc__},
 
-static PyObject *
-signal_signal_impl(PyObject *module, int signalnum, PyObject *handler);
+static TyObject *
+signal_signal_impl(TyObject *module, int signalnum, TyObject *handler);
 
-static PyObject *
-signal_signal(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+signal_signal(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int signalnum;
-    PyObject *handler;
+    TyObject *handler;
 
-    if (!_PyArg_CheckPositional("signal", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("signal", nargs, 2, 2)) {
         goto exit;
     }
-    signalnum = PyLong_AsInt(args[0]);
-    if (signalnum == -1 && PyErr_Occurred()) {
+    signalnum = TyLong_AsInt(args[0]);
+    if (signalnum == -1 && TyErr_Occurred()) {
         goto exit;
     }
     handler = args[1];
@@ -186,17 +186,17 @@ PyDoc_STRVAR(signal_getsignal__doc__,
 #define SIGNAL_GETSIGNAL_METHODDEF    \
     {"getsignal", (PyCFunction)signal_getsignal, METH_O, signal_getsignal__doc__},
 
-static PyObject *
-signal_getsignal_impl(PyObject *module, int signalnum);
+static TyObject *
+signal_getsignal_impl(TyObject *module, int signalnum);
 
-static PyObject *
-signal_getsignal(PyObject *module, PyObject *arg)
+static TyObject *
+signal_getsignal(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int signalnum;
 
-    signalnum = PyLong_AsInt(arg);
-    if (signalnum == -1 && PyErr_Occurred()) {
+    signalnum = TyLong_AsInt(arg);
+    if (signalnum == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = signal_getsignal_impl(module, signalnum);
@@ -218,17 +218,17 @@ PyDoc_STRVAR(signal_strsignal__doc__,
 #define SIGNAL_STRSIGNAL_METHODDEF    \
     {"strsignal", (PyCFunction)signal_strsignal, METH_O, signal_strsignal__doc__},
 
-static PyObject *
-signal_strsignal_impl(PyObject *module, int signalnum);
+static TyObject *
+signal_strsignal_impl(TyObject *module, int signalnum);
 
-static PyObject *
-signal_strsignal(PyObject *module, PyObject *arg)
+static TyObject *
+signal_strsignal(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int signalnum;
 
-    signalnum = PyLong_AsInt(arg);
-    if (signalnum == -1 && PyErr_Occurred()) {
+    signalnum = TyLong_AsInt(arg);
+    if (signalnum == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = signal_strsignal_impl(module, signalnum);
@@ -251,25 +251,25 @@ PyDoc_STRVAR(signal_siginterrupt__doc__,
 #define SIGNAL_SIGINTERRUPT_METHODDEF    \
     {"siginterrupt", _PyCFunction_CAST(signal_siginterrupt), METH_FASTCALL, signal_siginterrupt__doc__},
 
-static PyObject *
-signal_siginterrupt_impl(PyObject *module, int signalnum, int flag);
+static TyObject *
+signal_siginterrupt_impl(TyObject *module, int signalnum, int flag);
 
-static PyObject *
-signal_siginterrupt(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+signal_siginterrupt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int signalnum;
     int flag;
 
-    if (!_PyArg_CheckPositional("siginterrupt", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("siginterrupt", nargs, 2, 2)) {
         goto exit;
     }
-    signalnum = PyLong_AsInt(args[0]);
-    if (signalnum == -1 && PyErr_Occurred()) {
+    signalnum = TyLong_AsInt(args[0]);
+    if (signalnum == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    flag = PyLong_AsInt(args[1]);
-    if (flag == -1 && PyErr_Occurred()) {
+    flag = TyLong_AsInt(args[1]);
+    if (flag == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = signal_siginterrupt_impl(module, signalnum, flag);
@@ -294,47 +294,47 @@ PyDoc_STRVAR(signal_set_wakeup_fd__doc__,
 #define SIGNAL_SET_WAKEUP_FD_METHODDEF    \
     {"set_wakeup_fd", _PyCFunction_CAST(signal_set_wakeup_fd), METH_FASTCALL|METH_KEYWORDS, signal_set_wakeup_fd__doc__},
 
-static PyObject *
-signal_set_wakeup_fd_impl(PyObject *module, PyObject *fdobj,
+static TyObject *
+signal_set_wakeup_fd_impl(TyObject *module, TyObject *fdobj,
                           int warn_on_full_buffer);
 
-static PyObject *
-signal_set_wakeup_fd(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+static TyObject *
+signal_set_wakeup_fd(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwnames)
 {
-    PyObject *return_value = NULL;
-    #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+    TyObject *return_value = NULL;
+    #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
     #define NUM_KEYWORDS 1
     static struct {
-        PyGC_Head _this_is_not_used;
+        TyGC_Head _this_is_not_used;
         PyObject_VAR_HEAD
-        Py_hash_t ob_hash;
-        PyObject *ob_item[NUM_KEYWORDS];
+        Ty_hash_t ob_hash;
+        TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
+        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
-        .ob_item = { &_Py_ID(warn_on_full_buffer), },
+        .ob_item = { &_Ty_ID(warn_on_full_buffer), },
     };
     #undef NUM_KEYWORDS
     #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-    #else  // !Py_BUILD_CORE
+    #else  // !Ty_BUILD_CORE
     #  define KWTUPLE NULL
-    #endif  // !Py_BUILD_CORE
+    #endif  // !Ty_BUILD_CORE
 
     static const char * const _keywords[] = {"", "warn_on_full_buffer", NULL};
-    static _PyArg_Parser _parser = {
+    static _TyArg_Parser _parser = {
         .keywords = _keywords,
         .fname = "set_wakeup_fd",
         .kwtuple = KWTUPLE,
     };
     #undef KWTUPLE
-    PyObject *argsbuf[2];
-    Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
-    PyObject *fdobj;
+    TyObject *argsbuf[2];
+    Ty_ssize_t noptargs = nargs + (kwnames ? TyTuple_GET_SIZE(kwnames) : 0) - 1;
+    TyObject *fdobj;
     int warn_on_full_buffer = 1;
 
-    args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
+    args = _TyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser,
             /*minpos*/ 1, /*maxpos*/ 1, /*minkw*/ 0, /*varpos*/ 0, argsbuf);
     if (!args) {
         goto exit;
@@ -370,23 +370,23 @@ PyDoc_STRVAR(signal_setitimer__doc__,
 #define SIGNAL_SETITIMER_METHODDEF    \
     {"setitimer", _PyCFunction_CAST(signal_setitimer), METH_FASTCALL, signal_setitimer__doc__},
 
-static PyObject *
-signal_setitimer_impl(PyObject *module, int which, PyObject *seconds,
-                      PyObject *interval);
+static TyObject *
+signal_setitimer_impl(TyObject *module, int which, TyObject *seconds,
+                      TyObject *interval);
 
-static PyObject *
-signal_setitimer(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+signal_setitimer(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int which;
-    PyObject *seconds;
-    PyObject *interval = NULL;
+    TyObject *seconds;
+    TyObject *interval = NULL;
 
-    if (!_PyArg_CheckPositional("setitimer", nargs, 2, 3)) {
+    if (!_TyArg_CheckPositional("setitimer", nargs, 2, 3)) {
         goto exit;
     }
-    which = PyLong_AsInt(args[0]);
-    if (which == -1 && PyErr_Occurred()) {
+    which = TyLong_AsInt(args[0]);
+    if (which == -1 && TyErr_Occurred()) {
         goto exit;
     }
     seconds = args[1];
@@ -414,17 +414,17 @@ PyDoc_STRVAR(signal_getitimer__doc__,
 #define SIGNAL_GETITIMER_METHODDEF    \
     {"getitimer", (PyCFunction)signal_getitimer, METH_O, signal_getitimer__doc__},
 
-static PyObject *
-signal_getitimer_impl(PyObject *module, int which);
+static TyObject *
+signal_getitimer_impl(TyObject *module, int which);
 
-static PyObject *
-signal_getitimer(PyObject *module, PyObject *arg)
+static TyObject *
+signal_getitimer(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int which;
 
-    which = PyLong_AsInt(arg);
-    if (which == -1 && PyErr_Occurred()) {
+    which = TyLong_AsInt(arg);
+    if (which == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = signal_getitimer_impl(module, which);
@@ -446,24 +446,24 @@ PyDoc_STRVAR(signal_pthread_sigmask__doc__,
 #define SIGNAL_PTHREAD_SIGMASK_METHODDEF    \
     {"pthread_sigmask", _PyCFunction_CAST(signal_pthread_sigmask), METH_FASTCALL, signal_pthread_sigmask__doc__},
 
-static PyObject *
-signal_pthread_sigmask_impl(PyObject *module, int how, sigset_t mask);
+static TyObject *
+signal_pthread_sigmask_impl(TyObject *module, int how, sigset_t mask);
 
-static PyObject *
-signal_pthread_sigmask(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+signal_pthread_sigmask(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int how;
     sigset_t mask;
 
-    if (!_PyArg_CheckPositional("pthread_sigmask", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("pthread_sigmask", nargs, 2, 2)) {
         goto exit;
     }
-    how = PyLong_AsInt(args[0]);
-    if (how == -1 && PyErr_Occurred()) {
+    how = TyLong_AsInt(args[0]);
+    if (how == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    if (!_Py_Sigset_Converter(args[1], &mask)) {
+    if (!_Ty_Sigset_Converter(args[1], &mask)) {
         goto exit;
     }
     return_value = signal_pthread_sigmask_impl(module, how, mask);
@@ -488,11 +488,11 @@ PyDoc_STRVAR(signal_sigpending__doc__,
 #define SIGNAL_SIGPENDING_METHODDEF    \
     {"sigpending", (PyCFunction)signal_sigpending, METH_NOARGS, signal_sigpending__doc__},
 
-static PyObject *
-signal_sigpending_impl(PyObject *module);
+static TyObject *
+signal_sigpending_impl(TyObject *module);
 
-static PyObject *
-signal_sigpending(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+signal_sigpending(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return signal_sigpending_impl(module);
 }
@@ -514,16 +514,16 @@ PyDoc_STRVAR(signal_sigwait__doc__,
 #define SIGNAL_SIGWAIT_METHODDEF    \
     {"sigwait", (PyCFunction)signal_sigwait, METH_O, signal_sigwait__doc__},
 
-static PyObject *
-signal_sigwait_impl(PyObject *module, sigset_t sigset);
+static TyObject *
+signal_sigwait_impl(TyObject *module, sigset_t sigset);
 
-static PyObject *
-signal_sigwait(PyObject *module, PyObject *arg)
+static TyObject *
+signal_sigwait(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     sigset_t sigset;
 
-    if (!_Py_Sigset_Converter(arg, &sigset)) {
+    if (!_Ty_Sigset_Converter(arg, &sigset)) {
         goto exit;
     }
     return_value = signal_sigwait_impl(module, sigset);
@@ -548,11 +548,11 @@ PyDoc_STRVAR(signal_valid_signals__doc__,
 #define SIGNAL_VALID_SIGNALS_METHODDEF    \
     {"valid_signals", (PyCFunction)signal_valid_signals, METH_NOARGS, signal_valid_signals__doc__},
 
-static PyObject *
-signal_valid_signals_impl(PyObject *module);
+static TyObject *
+signal_valid_signals_impl(TyObject *module);
 
-static PyObject *
-signal_valid_signals(PyObject *module, PyObject *Py_UNUSED(ignored))
+static TyObject *
+signal_valid_signals(TyObject *module, TyObject *Ty_UNUSED(ignored))
 {
     return signal_valid_signals_impl(module);
 }
@@ -572,16 +572,16 @@ PyDoc_STRVAR(signal_sigwaitinfo__doc__,
 #define SIGNAL_SIGWAITINFO_METHODDEF    \
     {"sigwaitinfo", (PyCFunction)signal_sigwaitinfo, METH_O, signal_sigwaitinfo__doc__},
 
-static PyObject *
-signal_sigwaitinfo_impl(PyObject *module, sigset_t sigset);
+static TyObject *
+signal_sigwaitinfo_impl(TyObject *module, sigset_t sigset);
 
-static PyObject *
-signal_sigwaitinfo(PyObject *module, PyObject *arg)
+static TyObject *
+signal_sigwaitinfo(TyObject *module, TyObject *arg)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     sigset_t sigset;
 
-    if (!_Py_Sigset_Converter(arg, &sigset)) {
+    if (!_Ty_Sigset_Converter(arg, &sigset)) {
         goto exit;
     }
     return_value = signal_sigwaitinfo_impl(module, sigset);
@@ -605,21 +605,21 @@ PyDoc_STRVAR(signal_sigtimedwait__doc__,
 #define SIGNAL_SIGTIMEDWAIT_METHODDEF    \
     {"sigtimedwait", _PyCFunction_CAST(signal_sigtimedwait), METH_FASTCALL, signal_sigtimedwait__doc__},
 
-static PyObject *
-signal_sigtimedwait_impl(PyObject *module, sigset_t sigset,
-                         PyObject *timeout_obj);
+static TyObject *
+signal_sigtimedwait_impl(TyObject *module, sigset_t sigset,
+                         TyObject *timeout_obj);
 
-static PyObject *
-signal_sigtimedwait(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+signal_sigtimedwait(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     sigset_t sigset;
-    PyObject *timeout_obj;
+    TyObject *timeout_obj;
 
-    if (!_PyArg_CheckPositional("sigtimedwait", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("sigtimedwait", nargs, 2, 2)) {
         goto exit;
     }
-    if (!_Py_Sigset_Converter(args[0], &sigset)) {
+    if (!_Ty_Sigset_Converter(args[0], &sigset)) {
         goto exit;
     }
     timeout_obj = args[1];
@@ -642,27 +642,27 @@ PyDoc_STRVAR(signal_pthread_kill__doc__,
 #define SIGNAL_PTHREAD_KILL_METHODDEF    \
     {"pthread_kill", _PyCFunction_CAST(signal_pthread_kill), METH_FASTCALL, signal_pthread_kill__doc__},
 
-static PyObject *
-signal_pthread_kill_impl(PyObject *module, unsigned long thread_id,
+static TyObject *
+signal_pthread_kill_impl(TyObject *module, unsigned long thread_id,
                          int signalnum);
 
-static PyObject *
-signal_pthread_kill(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+signal_pthread_kill(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     unsigned long thread_id;
     int signalnum;
 
-    if (!_PyArg_CheckPositional("pthread_kill", nargs, 2, 2)) {
+    if (!_TyArg_CheckPositional("pthread_kill", nargs, 2, 2)) {
         goto exit;
     }
     if (!PyIndex_Check(args[0])) {
-        _PyArg_BadArgument("pthread_kill", "argument 1", "int", args[0]);
+        _TyArg_BadArgument("pthread_kill", "argument 1", "int", args[0]);
         goto exit;
     }
-    thread_id = PyLong_AsUnsignedLongMask(args[0]);
-    signalnum = PyLong_AsInt(args[1]);
-    if (signalnum == -1 && PyErr_Occurred()) {
+    thread_id = TyLong_AsUnsignedLongMask(args[0]);
+    signalnum = TyLong_AsInt(args[1]);
+    if (signalnum == -1 && TyErr_Occurred()) {
         goto exit;
     }
     return_value = signal_pthread_kill_impl(module, thread_id, signalnum);
@@ -684,28 +684,28 @@ PyDoc_STRVAR(signal_pidfd_send_signal__doc__,
 #define SIGNAL_PIDFD_SEND_SIGNAL_METHODDEF    \
     {"pidfd_send_signal", _PyCFunction_CAST(signal_pidfd_send_signal), METH_FASTCALL, signal_pidfd_send_signal__doc__},
 
-static PyObject *
-signal_pidfd_send_signal_impl(PyObject *module, int pidfd, int signalnum,
-                              PyObject *siginfo, int flags);
+static TyObject *
+signal_pidfd_send_signal_impl(TyObject *module, int pidfd, int signalnum,
+                              TyObject *siginfo, int flags);
 
-static PyObject *
-signal_pidfd_send_signal(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
+static TyObject *
+signal_pidfd_send_signal(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
 {
-    PyObject *return_value = NULL;
+    TyObject *return_value = NULL;
     int pidfd;
     int signalnum;
-    PyObject *siginfo = Py_None;
+    TyObject *siginfo = Ty_None;
     int flags = 0;
 
-    if (!_PyArg_CheckPositional("pidfd_send_signal", nargs, 2, 4)) {
+    if (!_TyArg_CheckPositional("pidfd_send_signal", nargs, 2, 4)) {
         goto exit;
     }
-    pidfd = PyLong_AsInt(args[0]);
-    if (pidfd == -1 && PyErr_Occurred()) {
+    pidfd = TyLong_AsInt(args[0]);
+    if (pidfd == -1 && TyErr_Occurred()) {
         goto exit;
     }
-    signalnum = PyLong_AsInt(args[1]);
-    if (signalnum == -1 && PyErr_Occurred()) {
+    signalnum = TyLong_AsInt(args[1]);
+    if (signalnum == -1 && TyErr_Occurred()) {
         goto exit;
     }
     if (nargs < 3) {
@@ -715,8 +715,8 @@ signal_pidfd_send_signal(PyObject *module, PyObject *const *args, Py_ssize_t nar
     if (nargs < 4) {
         goto skip_optional;
     }
-    flags = PyLong_AsInt(args[3]);
-    if (flags == -1 && PyErr_Occurred()) {
+    flags = TyLong_AsInt(args[3]);
+    if (flags == -1 && TyErr_Occurred()) {
         goto exit;
     }
 skip_optional:

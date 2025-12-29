@@ -77,7 +77,7 @@ struct SOCKADDR_BTH_REDEF {
 typedef int socklen_t;
 # endif /* IPPROTO_IPV6 */
 
-/* Remove ifdef once Py_WINVER >= 0x0604
+/* Remove ifdef once Ty_WINVER >= 0x0604
  * socket.h only defines AF_HYPERV if _WIN32_WINNT is at that level or higher
  * so for now it's just manually defined.
  */
@@ -226,8 +226,8 @@ typedef int socklen_t;
 #endif
 #endif // __EMSCRIPTEN__
 
-#ifndef Py__SOCKET_H
-#define Py__SOCKET_H
+#ifndef Ty__SOCKET_H
+#define Ty__SOCKET_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -251,11 +251,11 @@ typedef int SOCKET_T;
 #endif
 
 #if SIZEOF_SOCKET_T <= SIZEOF_LONG
-#define PyLong_FromSocket_t(fd) PyLong_FromLong((SOCKET_T)(fd))
-#define PyLong_AsSocket_t(fd) (SOCKET_T)PyLong_AsLong(fd)
+#define TyLong_FromSocket_t(fd) TyLong_FromLong((SOCKET_T)(fd))
+#define TyLong_AsSocket_t(fd) (SOCKET_T)TyLong_AsLong(fd)
 #else
-#define PyLong_FromSocket_t(fd) PyLong_FromLongLong((SOCKET_T)(fd))
-#define PyLong_AsSocket_t(fd) (SOCKET_T)PyLong_AsLongLong(fd)
+#define TyLong_FromSocket_t(fd) TyLong_FromLongLong((SOCKET_T)(fd))
+#define TyLong_AsSocket_t(fd) (SOCKET_T)TyLong_AsLongLong(fd)
 #endif
 
 // AF_HYPERV is only supported on Windows
@@ -330,7 +330,7 @@ typedef struct {
     int sock_family;            /* Address family, e.g., AF_INET */
     int sock_type;              /* Socket type, e.g., SOCK_STREAM */
     int sock_proto;             /* Protocol type, usually 0 */
-    PyObject *(*errorhandler)(void); /* Error handler; checks
+    TyObject *(*errorhandler)(void); /* Error handler; checks
                                         errno, returns NULL and
                                         sets a Python exception */
     PyTime_t sock_timeout;     /* Operation timeout in seconds;
@@ -376,11 +376,11 @@ typedef struct {
     Now use the C API as if it were defined in the using
     module:
 
-    if (!PyArg_ParseTuple(args, "O!|zz:ssl",
+    if (!TyArg_ParseTuple(args, "O!|zz:ssl",
 
                           PySocketModule.Sock_Type,
 
-                          (PyObject*)&Sock,
+                          (TyObject*)&Sock,
                           &key_file, &cert_file))
         return NULL;
 
@@ -394,9 +394,9 @@ typedef struct {
 /* C API for usage by other Python modules.
  * Always add new things to the end for binary compatibility. */
 typedef struct {
-    PyTypeObject *Sock_Type;
-    PyObject *error;
-    PyObject *timeout_error;
+    TyTypeObject *Sock_Type;
+    TyObject *error;
+    TyObject *timeout_error;
 } PySocketModule_APIObject;
 
 #define PySocketModule_ImportModuleAndAPI() PyCapsule_Import(PySocket_CAPSULE_NAME, 1)
@@ -404,4 +404,4 @@ typedef struct {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py__SOCKET_H */
+#endif /* !Ty__SOCKET_H */

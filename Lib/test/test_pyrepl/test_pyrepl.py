@@ -11,7 +11,7 @@ import tempfile
 from pkgutil import ModuleInfo
 from unittest import TestCase, skipUnless, skipIf, SkipTest
 from unittest.mock import patch
-from test.support import force_not_colorized, make_clean_env, Py_DEBUG
+from test.support import force_not_colorized, make_clean_env, Ty_DEBUG
 from test.support import has_subprocess_support, SHORT_TIMEOUT, STDLIB_DIR
 from test.support.import_helper import import_module
 from test.support.os_helper import EnvironmentVarGuard, unlink
@@ -1750,7 +1750,7 @@ class TestMain(ReplTestCase):
         # because of how run_repl works.
         self.assertNotIn(">>> \n>>> >>>", cleaned_output)
 
-    @skipUnless(Py_DEBUG, '-X showrefcount requires a Python debug build')
+    @skipUnless(Ty_DEBUG, '-X showrefcount requires a Python debug build')
     def test_showrefcount(self):
         env = os.environ.copy()
         env.pop("PYTHON_BASIC_REPL", "")

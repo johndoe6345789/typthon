@@ -15,10 +15,10 @@ typedef struct {
     sqlite3_blob *blob;
     int offset;
 
-    PyObject *in_weakreflist;
+    TyObject *in_weakreflist;
 } pysqlite_Blob;
 
-int pysqlite_blob_setup_types(PyObject *mod);
+int pysqlite_blob_setup_types(TyObject *mod);
 void pysqlite_close_all_blobs(pysqlite_Connection *self);
 
 #endif

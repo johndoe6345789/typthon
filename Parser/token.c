@@ -5,7 +5,7 @@
 
 /* Token names */
 
-const char * const _PyParser_TokenNames[] = {
+const char * const _TyParser_TokenNames[] = {
     "ENDMARKER",
     "NAME",
     "NUMBER",

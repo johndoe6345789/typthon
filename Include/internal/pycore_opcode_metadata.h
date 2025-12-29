@@ -3,14 +3,14 @@
 //   Python/bytecodes.c
 // Do not edit!
 
-#ifndef Py_CORE_OPCODE_METADATA_H
-#define Py_CORE_OPCODE_METADATA_H
+#ifndef Ty_CORE_OPCODE_METADATA_H
+#define Ty_CORE_OPCODE_METADATA_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 #include <stdbool.h>              // bool
@@ -2114,4 +2114,4 @@ is_pseudo_target(int pseudo, int target) {
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_CORE_OPCODE_METADATA_H */
+#endif /* !Ty_CORE_OPCODE_METADATA_H */

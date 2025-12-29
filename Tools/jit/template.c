@@ -51,7 +51,7 @@
 do {                                                                       \
     OPT_STAT_INC(traces_executed);                                         \
     _PyExecutorObject *_executor = (EXECUTOR);                             \
-    tstate->current_executor = (PyObject *)_executor;                      \
+    tstate->current_executor = (TyObject *)_executor;                      \
     jit_func_preserve_none jitted = _executor->jit_side_entry;             \
     __attribute__((musttail)) return jitted(frame, stack_pointer, tstate); \
 } while (0)
@@ -60,7 +60,7 @@ do {                                                                       \
 #define GOTO_TIER_ONE(TARGET)                       \
 do {                                                \
     tstate->current_executor = NULL;                \
-    _PyFrame_SetStackPointer(frame, stack_pointer); \
+    _TyFrame_SetStackPointer(frame, stack_pointer); \
     return TARGET;                                  \
 } while (0)
 
@@ -88,14 +88,14 @@ do {                                                                     \
 
 #define TIER_TWO 2
 
-__attribute__((preserve_none)) _Py_CODEUNIT *
+__attribute__((preserve_none)) _Ty_CODEUNIT *
 _JIT_ENTRY(_PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState *tstate)
 {
     // Locals that the instruction implementations expect to exist:
     PATCH_VALUE(_PyExecutorObject *, current_executor, _JIT_EXECUTOR)
     int oparg;
     int uopcode = _JIT_OPCODE;
-    _Py_CODEUNIT *next_instr;
+    _Ty_CODEUNIT *next_instr;
     // Other stuff we need handy:
     PATCH_VALUE(uint16_t, _oparg, _JIT_OPARG)
 #if SIZEOF_VOID_P == 8
@@ -117,7 +117,7 @@ _JIT_ENTRY(_PyInterpreterFrame *frame, _PyStackRef *stack_pointer, PyThreadState
         // The actual instruction definition gets inserted here:
         CASE
         default:
-            Py_UNREACHABLE();
+            Ty_UNREACHABLE();
     }
     PATCH_JUMP(_JIT_CONTINUE);
 }

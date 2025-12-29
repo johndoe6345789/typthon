@@ -671,7 +671,7 @@ class TestBase(unittest.TestCase):
     @requires_test_modules
     def run_temp_from_capi(self, script, config='legacy'):
         if config is False:
-            # Force using Py_NewInterpreter().
+            # Force using Ty_NewInterpreter().
             run_in_interp = (lambda s, c: _testcapi.run_in_subinterp(s))
             config = None
         else:

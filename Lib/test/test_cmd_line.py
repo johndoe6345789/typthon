@@ -143,7 +143,7 @@ class CmdLineTest(unittest.TestCase):
         # "-X showrefcount" shows the refcount, but only in debug builds
         rc, out, err = run_python('-I', '-X', 'showrefcount', '-c', code)
         self.assertEqual(out.rstrip(), b"{'showrefcount': True}")
-        if support.Py_DEBUG:
+        if support.Ty_DEBUG:
             # bpo-46417: Tolerate negative reference count which can occur
             # because of bugs in C extensions. This test is only about checking
             # the showrefcount feature.
@@ -257,13 +257,13 @@ class CmdLineTest(unittest.TestCase):
             env=env)
         stdout, stderr = p.communicate()
         if p.returncode == 1:
-            # _Py_char2wchar() decoded b'\xff' as '\udcff' (b'\xff' is not
+            # _Ty_char2wchar() decoded b'\xff' as '\udcff' (b'\xff' is not
             # decodable from ASCII) and run_command() failed on
             # PyUnicode_AsUTF8String(). This is the expected behaviour on
             # Linux.
             pattern = b"Unable to decode the command from the command line:"
         elif p.returncode == 0:
-            # _Py_char2wchar() decoded b'\xff' as '\xff' even if the locale is
+            # _Ty_char2wchar() decoded b'\xff' as '\xff' even if the locale is
             # C and the locale encoding is ASCII. It occurs on FreeBSD, Solaris
             # and Mac OS X.
             pattern = b"'\\xff' "
@@ -277,7 +277,7 @@ class CmdLineTest(unittest.TestCase):
     @unittest.skipIf(sys.platform == 'win32',
                      'Windows has a native unicode API')
     def test_invalid_utf8_arg(self):
-        # bpo-35883: Py_DecodeLocale() must escape b'\xfd\xbf\xbf\xbb\xba\xba'
+        # bpo-35883: Ty_DecodeLocale() must escape b'\xfd\xbf\xbf\xbb\xba\xba'
         # byte sequence with surrogateescape rather than decoding it as the
         # U+7fffbeba character which is outside the [U+0000; U+10ffff] range of
         # Python Unicode characters.
@@ -721,7 +721,7 @@ class CmdLineTest(unittest.TestCase):
         code = ("import warnings; "
                 "print(' '.join('%s::%s' % (f[0], f[2].__name__) "
                                 "for f in warnings.filters))")
-        if support.Py_DEBUG:
+        if support.Ty_DEBUG:
             expected_filters = "default::Warning"
         else:
             expected_filters = ("default::Warning "
@@ -754,7 +754,7 @@ class CmdLineTest(unittest.TestCase):
                 out = self.run_xdev("-c", code, check_exitcode=False)
             if support.with_pymalloc():
                 alloc_name = "pymalloc_debug"
-            elif support.Py_GIL_DISABLED:
+            elif support.Ty_GIL_DISABLED:
                 alloc_name = "mimalloc_debug"
             else:
                 alloc_name = "malloc_debug"
@@ -795,7 +795,7 @@ class CmdLineTest(unittest.TestCase):
         expected_filters = ("error::BytesWarning "
                             "once::UserWarning "
                             "always::UserWarning")
-        if not support.Py_DEBUG:
+        if not support.Ty_DEBUG:
             expected_filters += (" "
                                  "default::DeprecationWarning "
                                  "ignore::DeprecationWarning "
@@ -832,17 +832,17 @@ class CmdLineTest(unittest.TestCase):
     @support.cpython_only
     def test_pythonmalloc(self):
         # Test the PYTHONMALLOC environment variable
-        malloc = not support.Py_GIL_DISABLED
+        malloc = not support.Ty_GIL_DISABLED
         pymalloc = support.with_pymalloc()
         mimalloc = support.with_mimalloc()
-        if support.Py_GIL_DISABLED:
-            default_name = 'mimalloc_debug' if support.Py_DEBUG else 'mimalloc'
+        if support.Ty_GIL_DISABLED:
+            default_name = 'mimalloc_debug' if support.Ty_DEBUG else 'mimalloc'
             default_name_debug = 'mimalloc_debug'
         elif pymalloc:
-            default_name = 'pymalloc_debug' if support.Py_DEBUG else 'pymalloc'
+            default_name = 'pymalloc_debug' if support.Ty_DEBUG else 'pymalloc'
             default_name_debug = 'pymalloc_debug'
         else:
-            default_name = 'malloc_debug' if support.Py_DEBUG else 'malloc'
+            default_name = 'malloc_debug' if support.Ty_DEBUG else 'malloc'
             default_name_debug = 'malloc_debug'
 
         tests = [
@@ -894,7 +894,7 @@ class CmdLineTest(unittest.TestCase):
             (None, '1', '1', "-X gil=1"),
         ]
 
-        if support.Py_GIL_DISABLED:
+        if support.Ty_GIL_DISABLED:
             cases.extend(
                 [
                     (None, None, 'None', "no options set"),
@@ -935,7 +935,7 @@ class CmdLineTest(unittest.TestCase):
         rc, out, err = assert_python_ok('-c', code, PYTHONASYNCIODEBUG='1')
         self.assertIn(b'True', out)
 
-    @unittest.skipUnless(sysconfig.get_config_var('Py_TRACE_REFS'), "Requires --with-trace-refs build option")
+    @unittest.skipUnless(sysconfig.get_config_var('Ty_TRACE_REFS'), "Requires --with-trace-refs build option")
     def test_python_dump_refs(self):
         code = 'import sys; sys._clear_type_cache()'
         # TODO: Remove warnings context manager once sys._clear_type_cache is removed
@@ -944,7 +944,7 @@ class CmdLineTest(unittest.TestCase):
             rc, out, err = assert_python_ok('-c', code, PYTHONDUMPREFS='1')
         self.assertEqual(rc, 0)
 
-    @unittest.skipUnless(sysconfig.get_config_var('Py_TRACE_REFS'), "Requires --with-trace-refs build option")
+    @unittest.skipUnless(sysconfig.get_config_var('Ty_TRACE_REFS'), "Requires --with-trace-refs build option")
     def test_python_dump_refs_file(self):
         with tempfile.NamedTemporaryFile() as dump_file:
             code = 'import sys; sys._clear_type_cache()'
@@ -1196,9 +1196,9 @@ class CmdLineTest(unittest.TestCase):
         out = res.out.strip().decode("utf-8")
         return tuple(int(i) for i in out.split())
 
-    @unittest.skipUnless(support.Py_GIL_DISABLED,
+    @unittest.skipUnless(support.Ty_GIL_DISABLED,
                          "PYTHON_TLBC and -X tlbc"
-                         " only supported in Py_GIL_DISABLED builds")
+                         " only supported in Ty_GIL_DISABLED builds")
     @threading_helper.requires_working_threading()
     def test_disable_thread_local_bytecode(self):
         code = """if 1:
@@ -1211,9 +1211,9 @@ class CmdLineTest(unittest.TestCase):
         assert_python_ok("-W", "always", "-X", "tlbc=0", "-c", code)
         assert_python_ok("-W", "always", "-c", code, PYTHON_TLBC="0")
 
-    @unittest.skipUnless(support.Py_GIL_DISABLED,
+    @unittest.skipUnless(support.Ty_GIL_DISABLED,
                          "PYTHON_TLBC and -X tlbc"
-                         " only supported in Py_GIL_DISABLED builds")
+                         " only supported in Ty_GIL_DISABLED builds")
     @threading_helper.requires_working_threading()
     def test_enable_thread_local_bytecode(self):
         code = """if 1:
@@ -1228,9 +1228,9 @@ class CmdLineTest(unittest.TestCase):
         assert_python_ok("-W", "always", "-X", "tlbc=1", "-c", code)
         assert_python_ok("-W", "always", "-c", code, PYTHON_TLBC="1")
 
-    @unittest.skipUnless(support.Py_GIL_DISABLED,
+    @unittest.skipUnless(support.Ty_GIL_DISABLED,
                          "PYTHON_TLBC and -X tlbc"
-                         " only supported in Py_GIL_DISABLED builds")
+                         " only supported in Ty_GIL_DISABLED builds")
     def test_invalid_thread_local_bytecode(self):
         rc, out, err = assert_python_failure("-X", "tlbc")
         self.assertIn(b"tlbc=n: n is missing or invalid", err)

@@ -1,4 +1,4 @@
-#ifndef Py_CPYTHON_PYTHREAD_H
+#ifndef Ty_CPYTHON_PYTHREAD_H
 #  error "this header file must not be included directly"
 #endif
 
@@ -28,16 +28,16 @@ PyAPI_DATA(const long long) PY_TIMEOUT_MAX;
 #   error "Require native threads. See https://bugs.python.org/issue31370"
 #endif
 
-/* When Py_LIMITED_API is not defined, the type layout of Py_tss_t is
+/* When Ty_LIMITED_API is not defined, the type layout of Ty_tss_t is
    exposed to allow static allocation in the API clients.  Even in this case,
    you must handle TSS keys through API functions due to compatibility.
 */
-struct _Py_tss_t {
+struct _Ty_tss_t {
     int _is_initialized;
     NATIVE_TSS_KEY_T _key;
 };
 
 #undef NATIVE_TSS_KEY_T
 
-/* When static allocation, you must initialize with Py_tss_NEEDS_INIT. */
-#define Py_tss_NEEDS_INIT   {0}
+/* When static allocation, you must initialize with Ty_tss_NEEDS_INIT. */
+#define Ty_tss_NEEDS_INIT   {0}

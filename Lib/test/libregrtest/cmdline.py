@@ -2,7 +2,7 @@ import argparse
 import os.path
 import shlex
 import sys
-from test.support import os_helper, Py_DEBUG
+from test.support import os_helper, Ty_DEBUG
 from .utils import ALL_RESOURCES, RESOURCE_NAMES, TestFilter
 
 
@@ -490,7 +490,7 @@ def _parse_args(args, **kwargs):
         parser.error("-s and -f don't go together!")
     if ns.trace:
         if ns.use_mp is not None:
-            if not Py_DEBUG:
+            if not Ty_DEBUG:
                 parser.error("need --with-pydebug to use -T and -j together")
         else:
             print(

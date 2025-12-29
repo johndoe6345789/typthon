@@ -2,37 +2,37 @@
 preserve
 [clinic start generated code]*/
 
-#include "pycore_modsupport.h"    // _PyArg_CheckPositional()
+#include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-static PyObject *
-pysqlite_row_new_impl(PyTypeObject *type, pysqlite_Cursor *cursor,
-                      PyObject *data);
+static TyObject *
+pysqlite_row_new_impl(TyTypeObject *type, pysqlite_Cursor *cursor,
+                      TyObject *data);
 
-static PyObject *
-pysqlite_row_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+static TyObject *
+pysqlite_row_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
 {
-    PyObject *return_value = NULL;
-    PyTypeObject *base_tp = clinic_state()->RowType;
+    TyObject *return_value = NULL;
+    TyTypeObject *base_tp = clinic_state()->RowType;
     pysqlite_Cursor *cursor;
-    PyObject *data;
+    TyObject *data;
 
     if ((type == base_tp || type->tp_init == base_tp->tp_init) &&
-        !_PyArg_NoKeywords("Row", kwargs)) {
+        !_TyArg_NoKeywords("Row", kwargs)) {
         goto exit;
     }
-    if (!_PyArg_CheckPositional("Row", PyTuple_GET_SIZE(args), 2, 2)) {
+    if (!_TyArg_CheckPositional("Row", TyTuple_GET_SIZE(args), 2, 2)) {
         goto exit;
     }
-    if (!PyObject_TypeCheck(PyTuple_GET_ITEM(args, 0), clinic_state()->CursorType)) {
-        _PyArg_BadArgument("Row", "argument 1", (clinic_state()->CursorType)->tp_name, PyTuple_GET_ITEM(args, 0));
+    if (!PyObject_TypeCheck(TyTuple_GET_ITEM(args, 0), clinic_state()->CursorType)) {
+        _TyArg_BadArgument("Row", "argument 1", (clinic_state()->CursorType)->tp_name, TyTuple_GET_ITEM(args, 0));
         goto exit;
     }
-    cursor = (pysqlite_Cursor *)PyTuple_GET_ITEM(args, 0);
-    if (!PyTuple_Check(PyTuple_GET_ITEM(args, 1))) {
-        _PyArg_BadArgument("Row", "argument 2", "tuple", PyTuple_GET_ITEM(args, 1));
+    cursor = (pysqlite_Cursor *)TyTuple_GET_ITEM(args, 0);
+    if (!TyTuple_Check(TyTuple_GET_ITEM(args, 1))) {
+        _TyArg_BadArgument("Row", "argument 2", "tuple", TyTuple_GET_ITEM(args, 1));
         goto exit;
     }
-    data = PyTuple_GET_ITEM(args, 1);
+    data = TyTuple_GET_ITEM(args, 1);
     return_value = pysqlite_row_new_impl(type, cursor, data);
 
 exit:
@@ -48,11 +48,11 @@ PyDoc_STRVAR(pysqlite_row_keys__doc__,
 #define PYSQLITE_ROW_KEYS_METHODDEF    \
     {"keys", (PyCFunction)pysqlite_row_keys, METH_NOARGS, pysqlite_row_keys__doc__},
 
-static PyObject *
+static TyObject *
 pysqlite_row_keys_impl(pysqlite_Row *self);
 
-static PyObject *
-pysqlite_row_keys(PyObject *self, PyObject *Py_UNUSED(ignored))
+static TyObject *
+pysqlite_row_keys(TyObject *self, TyObject *Ty_UNUSED(ignored))
 {
     return pysqlite_row_keys_impl((pysqlite_Row *)self);
 }

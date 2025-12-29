@@ -6,16 +6,16 @@
 
 #include "Python.h"
 #include "pycore_gc.h"
-#include "pycore_object.h"      // _PyObject_IS_GC()
-#include "pycore_pystate.h"     // _PyInterpreterState_GET()
-#include "pycore_tuple.h"       // _PyTuple_FromArray()
+#include "pycore_object.h"      // _TyObject_IS_GC()
+#include "pycore_pystate.h"     // _TyInterpreterState_GET()
+#include "pycore_tuple.h"       // _TyTuple_FromArray()
 
 typedef struct _gc_runtime_state GCState;
 
 static GCState *
 get_gc_state(void)
 {
-    PyInterpreterState *interp = _PyInterpreterState_GET();
+    PyInterpreterState *interp = _TyInterpreterState_GET();
     return &interp->gc;
 }
 
@@ -31,12 +31,12 @@ gc.enable
 Enable automatic garbage collection.
 [clinic start generated code]*/
 
-static PyObject *
-gc_enable_impl(PyObject *module)
+static TyObject *
+gc_enable_impl(TyObject *module)
 /*[clinic end generated code: output=45a427e9dce9155c input=81ac4940ca579707]*/
 {
-    PyGC_Enable();
-    Py_RETURN_NONE;
+    TyGC_Enable();
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -45,12 +45,12 @@ gc.disable
 Disable automatic garbage collection.
 [clinic start generated code]*/
 
-static PyObject *
-gc_disable_impl(PyObject *module)
+static TyObject *
+gc_disable_impl(TyObject *module)
 /*[clinic end generated code: output=97d1030f7aa9d279 input=8c2e5a14e800d83b]*/
 {
-    PyGC_Disable();
-    Py_RETURN_NONE;
+    TyGC_Disable();
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -60,14 +60,14 @@ Returns true if automatic garbage collection is enabled.
 [clinic start generated code]*/
 
 static int
-gc_isenabled_impl(PyObject *module)
+gc_isenabled_impl(TyObject *module)
 /*[clinic end generated code: output=1874298331c49130 input=30005e0422373b31]*/
 {
-    return PyGC_IsEnabled();
+    return TyGC_IsEnabled();
 }
 
 /*[clinic input]
-gc.collect -> Py_ssize_t
+gc.collect -> Ty_ssize_t
 
     generation: int(c_default="NUM_GENERATIONS - 1") = 2
 
@@ -80,18 +80,18 @@ is raised if the generation number is invalid.
 The number of unreachable objects is returned.
 [clinic start generated code]*/
 
-static Py_ssize_t
-gc_collect_impl(PyObject *module, int generation)
+static Ty_ssize_t
+gc_collect_impl(TyObject *module, int generation)
 /*[clinic end generated code: output=b697e633043233c7 input=40720128b682d879]*/
 {
-    PyThreadState *tstate = _PyThreadState_GET();
+    PyThreadState *tstate = _TyThreadState_GET();
 
     if (generation < 0 || generation >= NUM_GENERATIONS) {
-        _PyErr_SetString(tstate, PyExc_ValueError, "invalid generation");
+        _TyErr_SetString(tstate, TyExc_ValueError, "invalid generation");
         return -1;
     }
 
-    return _PyGC_Collect(tstate, generation, _Py_GC_REASON_MANUAL);
+    return _TyGC_Collect(tstate, generation, _Ty_GC_REASON_MANUAL);
 }
 
 /*[clinic input]
@@ -112,13 +112,13 @@ Set the garbage collection debugging flags.
 Debugging information is written to sys.stderr.
 [clinic start generated code]*/
 
-static PyObject *
-gc_set_debug_impl(PyObject *module, int flags)
+static TyObject *
+gc_set_debug_impl(TyObject *module, int flags)
 /*[clinic end generated code: output=7c8366575486b228 input=5e5ce15e84fbed15]*/
 {
     GCState *gcstate = get_gc_state();
     gcstate->debug = flags;
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -128,7 +128,7 @@ Get the garbage collection debugging flags.
 [clinic start generated code]*/
 
 static int
-gc_get_debug_impl(PyObject *module)
+gc_get_debug_impl(TyObject *module)
 /*[clinic end generated code: output=91242f3506cd1e50 input=91a101e1c3b98366]*/
 {
     GCState *gcstate = get_gc_state();
@@ -152,8 +152,8 @@ Set the collection thresholds (the collection frequency).
 Setting 'threshold0' to zero disables collection.
 [clinic start generated code]*/
 
-static PyObject *
-gc_set_threshold_impl(PyObject *module, int threshold0, int group_right_1,
+static TyObject *
+gc_set_threshold_impl(TyObject *module, int threshold0, int group_right_1,
                       int threshold1, int group_right_2, int threshold2)
 /*[clinic end generated code: output=2e3c7c7dd59060f3 input=0d9612db50984eec]*/
 {
@@ -166,7 +166,7 @@ gc_set_threshold_impl(PyObject *module, int threshold0, int group_right_1,
     if (group_right_2) {
         gcstate->old[1].threshold = threshold2;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -175,12 +175,12 @@ gc.get_threshold
 Return the current collection thresholds.
 [clinic start generated code]*/
 
-static PyObject *
-gc_get_threshold_impl(PyObject *module)
+static TyObject *
+gc_get_threshold_impl(TyObject *module)
 /*[clinic end generated code: output=7902bc9f41ecbbd8 input=286d79918034d6e6]*/
 {
     GCState *gcstate = get_gc_state();
-    return Py_BuildValue("(iii)",
+    return Ty_BuildValue("(iii)",
                          gcstate->young.threshold,
                          gcstate->old[0].threshold,
                          0);
@@ -192,22 +192,22 @@ gc.get_count
 Return a three-tuple of the current collection counts.
 [clinic start generated code]*/
 
-static PyObject *
-gc_get_count_impl(PyObject *module)
+static TyObject *
+gc_get_count_impl(TyObject *module)
 /*[clinic end generated code: output=354012e67b16398f input=a392794a08251751]*/
 {
     GCState *gcstate = get_gc_state();
 
-#ifdef Py_GIL_DISABLED
-    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_PyThreadState_GET();
+#ifdef Ty_GIL_DISABLED
+    _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)_TyThreadState_GET();
     struct _gc_thread_state *gc = &tstate->gc;
 
     // Flush the local allocation count to the global count
-    _Py_atomic_add_int(&gcstate->young.count, (int)gc->alloc_count);
+    _Ty_atomic_add_int(&gcstate->young.count, (int)gc->alloc_count);
     gc->alloc_count = 0;
 #endif
 
-    return Py_BuildValue("(iii)",
+    return Ty_BuildValue("(iii)",
                          gcstate->young.count,
                          gcstate->old[gcstate->visited_space].count,
                          gcstate->old[gcstate->visited_space^1].count);
@@ -221,36 +221,36 @@ gc.get_referrers
 Return the list of objects that directly refer to any of 'objs'.
 [clinic start generated code]*/
 
-static PyObject *
-gc_get_referrers_impl(PyObject *module, PyObject *objs)
+static TyObject *
+gc_get_referrers_impl(TyObject *module, TyObject *objs)
 /*[clinic end generated code: output=929d6dff26f609b9 input=9102be7ebee69ee3]*/
 {
-    if (PySys_Audit("gc.get_referrers", "(O)", objs) < 0) {
+    if (TySys_Audit("gc.get_referrers", "(O)", objs) < 0) {
         return NULL;
     }
 
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    return _PyGC_GetReferrers(interp, objs);
+    PyInterpreterState *interp = _TyInterpreterState_GET();
+    return _TyGC_GetReferrers(interp, objs);
 }
 
 /* Append obj to list; return true if error (out of memory), false if OK. */
 static int
-referentsvisit(PyObject *obj, void *arg)
+referentsvisit(TyObject *obj, void *arg)
 {
-    PyObject *list = arg;
-    return PyList_Append(list, obj) < 0;
+    TyObject *list = arg;
+    return TyList_Append(list, obj) < 0;
 }
 
 static int
-append_referrents(PyObject *result, PyObject *args)
+append_referrents(TyObject *result, TyObject *args)
 {
-    for (Py_ssize_t i = 0; i < PyTuple_GET_SIZE(args); i++) {
-        PyObject *obj = PyTuple_GET_ITEM(args, i);
-        if (!_PyObject_IS_GC(obj)) {
+    for (Ty_ssize_t i = 0; i < TyTuple_GET_SIZE(args); i++) {
+        TyObject *obj = TyTuple_GET_ITEM(args, i);
+        if (!_TyObject_IS_GC(obj)) {
             continue;
         }
 
-        traverseproc traverse = Py_TYPE(obj)->tp_traverse;
+        traverseproc traverse = Ty_TYPE(obj)->tp_traverse;
         if (!traverse) {
             continue;
         }
@@ -269,27 +269,27 @@ gc.get_referents
 Return the list of objects that are directly referred to by 'objs'.
 [clinic start generated code]*/
 
-static PyObject *
-gc_get_referents_impl(PyObject *module, PyObject *objs)
+static TyObject *
+gc_get_referents_impl(TyObject *module, TyObject *objs)
 /*[clinic end generated code: output=6dfde40cd1588e1d input=55c078a6d0248fe0]*/
 {
-    if (PySys_Audit("gc.get_referents", "(O)", objs) < 0) {
+    if (TySys_Audit("gc.get_referents", "(O)", objs) < 0) {
         return NULL;
     }
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    PyObject *result = PyList_New(0);
+    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyObject *result = TyList_New(0);
 
     if (result == NULL) {
         return NULL;
     }
 
     // NOTE: stop the world is a no-op in default build
-    _PyEval_StopTheWorld(interp);
+    _TyEval_StopTheWorld(interp);
     int err = append_referrents(result, objs);
-    _PyEval_StartTheWorld(interp);
+    _TyEval_StartTheWorld(interp);
 
     if (err < 0) {
-        Py_CLEAR(result);
+        Ty_CLEAR(result);
     }
 
     return result;
@@ -297,7 +297,7 @@ gc_get_referents_impl(PyObject *module, PyObject *objs)
 
 /*[clinic input]
 gc.get_objects
-    generation: Py_ssize_t(accept={int, NoneType}, c_default="-1") = None
+    generation: Ty_ssize_t(accept={int, NoneType}, c_default="-1") = None
         Generation to extract the objects from.
 
 Return a list of objects tracked by the collector (excluding the list returned).
@@ -306,29 +306,29 @@ If generation is not None, return only the objects tracked by the collector
 that are in that generation.
 [clinic start generated code]*/
 
-static PyObject *
-gc_get_objects_impl(PyObject *module, Py_ssize_t generation)
+static TyObject *
+gc_get_objects_impl(TyObject *module, Ty_ssize_t generation)
 /*[clinic end generated code: output=48b35fea4ba6cb0e input=ef7da9df9806754c]*/
 {
-    if (PySys_Audit("gc.get_objects", "n", generation) < 0) {
+    if (TySys_Audit("gc.get_objects", "n", generation) < 0) {
         return NULL;
     }
 
     if (generation >= NUM_GENERATIONS) {
-        return PyErr_Format(PyExc_ValueError,
+        return TyErr_Format(TyExc_ValueError,
                             "generation parameter must be less than the number of "
                             "available generations (%i)",
                             NUM_GENERATIONS);
     }
 
     if (generation < -1) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "generation parameter cannot be negative");
         return NULL;
     }
 
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    return _PyGC_GetObjects(interp, (int)generation);
+    PyInterpreterState *interp = _TyInterpreterState_GET();
+    return _TyGC_GetObjects(interp, (int)generation);
 }
 
 /*[clinic input]
@@ -337,8 +337,8 @@ gc.get_stats
 Return a list of dictionaries containing per-generation statistics.
 [clinic start generated code]*/
 
-static PyObject *
-gc_get_stats_impl(PyObject *module)
+static TyObject *
+gc_get_stats_impl(TyObject *module)
 /*[clinic end generated code: output=a8ab1d8a5d26f3ab input=1ef4ed9d17b1a470]*/
 {
     int i;
@@ -351,30 +351,30 @@ gc_get_stats_impl(PyObject *module)
         stats[i] = gcstate->generation_stats[i];
     }
 
-    PyObject *result = PyList_New(0);
+    TyObject *result = TyList_New(0);
     if (result == NULL)
         return NULL;
 
     for (i = 0; i < NUM_GENERATIONS; i++) {
-        PyObject *dict;
+        TyObject *dict;
         st = &stats[i];
-        dict = Py_BuildValue("{snsnsn}",
+        dict = Ty_BuildValue("{snsnsn}",
                              "collections", st->collections,
                              "collected", st->collected,
                              "uncollectable", st->uncollectable
                             );
         if (dict == NULL)
             goto error;
-        if (PyList_Append(result, dict)) {
-            Py_DECREF(dict);
+        if (TyList_Append(result, dict)) {
+            Ty_DECREF(dict);
             goto error;
         }
-        Py_DECREF(dict);
+        Ty_DECREF(dict);
     }
     return result;
 
 error:
-    Py_XDECREF(result);
+    Ty_XDECREF(result);
     return NULL;
 }
 
@@ -391,7 +391,7 @@ Simple atomic objects will return false.
 [clinic start generated code]*/
 
 static int
-gc_is_tracked_impl(PyObject *module, PyObject *obj)
+gc_is_tracked_impl(TyObject *module, TyObject *obj)
 /*[clinic end generated code: output=91c8d086b7f47a33 input=423b98ec680c3126]*/
 {
     return PyObject_GC_IsTracked(obj);
@@ -407,7 +407,7 @@ Returns true if the object has been already finalized by the GC.
 [clinic start generated code]*/
 
 static int
-gc_is_finalized_impl(PyObject *module, PyObject *obj)
+gc_is_finalized_impl(TyObject *module, TyObject *obj)
 /*[clinic end generated code: output=401ff5d6fc660429 input=ca4d111c8f8c4e3a]*/
 {
     return PyObject_GC_IsFinalized(obj);
@@ -423,13 +423,13 @@ Note: collection before a POSIX fork() call may free pages for future allocation
 which can cause copy-on-write.
 [clinic start generated code]*/
 
-static PyObject *
-gc_freeze_impl(PyObject *module)
+static TyObject *
+gc_freeze_impl(TyObject *module)
 /*[clinic end generated code: output=502159d9cdc4c139 input=b602b16ac5febbe5]*/
 {
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    _PyGC_Freeze(interp);
-    Py_RETURN_NONE;
+    PyInterpreterState *interp = _TyInterpreterState_GET();
+    _TyGC_Freeze(interp);
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -440,27 +440,27 @@ Unfreeze all objects in the permanent generation.
 Put all objects in the permanent generation back into oldest generation.
 [clinic start generated code]*/
 
-static PyObject *
-gc_unfreeze_impl(PyObject *module)
+static TyObject *
+gc_unfreeze_impl(TyObject *module)
 /*[clinic end generated code: output=1c15f2043b25e169 input=2dd52b170f4cef6c]*/
 {
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    _PyGC_Unfreeze(interp);
-    Py_RETURN_NONE;
+    PyInterpreterState *interp = _TyInterpreterState_GET();
+    _TyGC_Unfreeze(interp);
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
-gc.get_freeze_count -> Py_ssize_t
+gc.get_freeze_count -> Ty_ssize_t
 
 Return the number of objects in the permanent generation.
 [clinic start generated code]*/
 
-static Py_ssize_t
-gc_get_freeze_count_impl(PyObject *module)
+static Ty_ssize_t
+gc_get_freeze_count_impl(TyObject *module)
 /*[clinic end generated code: output=61cbd9f43aa032e1 input=45ffbc65cfe2a6ed]*/
 {
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    return _PyGC_GetFreezeCount(interp);
+    PyInterpreterState *interp = _TyInterpreterState_GET();
+    return _TyGC_GetFreezeCount(interp);
 }
 
 
@@ -486,7 +486,7 @@ PyDoc_STRVAR(gc__doc__,
 "unfreeze() -- Unfreeze all objects in the permanent generation.\n"
 "get_freeze_count() -- Return the number of objects in the permanent generation.\n");
 
-static PyMethodDef GcMethods[] = {
+static TyMethodDef GcMethods[] = {
     GC_ENABLE_METHODDEF
     GC_DISABLE_METHODDEF
     GC_ISENABLED_METHODDEF
@@ -509,22 +509,22 @@ static PyMethodDef GcMethods[] = {
 };
 
 static int
-gcmodule_exec(PyObject *module)
+gcmodule_exec(TyObject *module)
 {
     GCState *gcstate = get_gc_state();
 
-    /* garbage and callbacks are initialized by _PyGC_Init() early in
+    /* garbage and callbacks are initialized by _TyGC_Init() early in
      * interpreter lifecycle. */
     assert(gcstate->garbage != NULL);
-    if (PyModule_AddObjectRef(module, "garbage", gcstate->garbage) < 0) {
+    if (TyModule_AddObjectRef(module, "garbage", gcstate->garbage) < 0) {
         return -1;
     }
     assert(gcstate->callbacks != NULL);
-    if (PyModule_AddObjectRef(module, "callbacks", gcstate->callbacks) < 0) {
+    if (TyModule_AddObjectRef(module, "callbacks", gcstate->callbacks) < 0) {
         return -1;
     }
 
-#define ADD_INT(NAME) if (PyModule_AddIntConstant(module, #NAME, _PyGC_ ## NAME) < 0) { return -1; }
+#define ADD_INT(NAME) if (TyModule_AddIntConstant(module, #NAME, _TyGC_ ## NAME) < 0) { return -1; }
     ADD_INT(DEBUG_STATS);
     ADD_INT(DEBUG_COLLECTABLE);
     ADD_INT(DEBUG_UNCOLLECTABLE);
@@ -535,13 +535,13 @@ gcmodule_exec(PyObject *module)
 }
 
 static PyModuleDef_Slot gcmodule_slots[] = {
-    {Py_mod_exec, gcmodule_exec},
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_exec, gcmodule_exec},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef gcmodule = {
+static struct TyModuleDef gcmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "gc",
     .m_doc = gc__doc__,

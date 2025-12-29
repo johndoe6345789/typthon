@@ -54,7 +54,7 @@ def fixup_build_ext(cmd: Incomplete) -> None:
     """
     if os.name == "nt":
         cmd.debug = sys.executable.endswith("_d.exe")
-    elif sysconfig.get_config_var("Py_ENABLE_SHARED"):
+    elif sysconfig.get_config_var("Ty_ENABLE_SHARED"):
         # To further add to the shared builds fun on Unix, we can't just add
         # library_dirs to the Extension() instance because that doesn't get
         # plumbed through to the final compiler command.
@@ -106,9 +106,9 @@ def compile_c_extension(
     extension_name = source_file_path.stem
     extra_compile_args = get_extra_flags("CFLAGS", "PY_CFLAGS_NODIST")
     extra_compile_args.append("-DPy_BUILD_CORE_MODULE")
-    # Define _Py_TEST_PEGEN to not call PyAST_Validate() in Parser/pegen.c
+    # Define _Ty_TEST_PEGEN to not call PyAST_Validate() in Parser/pegen.c
     extra_compile_args.append("-D_Py_TEST_PEGEN")
-    if sys.platform == "win32" and sysconfig.get_config_var("Py_GIL_DISABLED"):
+    if sys.platform == "win32" and sysconfig.get_config_var("Ty_GIL_DISABLED"):
         extra_compile_args.append("-DPy_GIL_DISABLED")
     extra_link_args = get_extra_flags("LDFLAGS", "PY_LDFLAGS_NODIST")
     if keep_asserts:

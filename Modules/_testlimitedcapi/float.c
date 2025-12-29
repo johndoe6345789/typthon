@@ -2,73 +2,73 @@
 #include "util.h"
 
 
-static PyObject *
-float_check(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+float_check(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyFloat_Check(obj));
+    return TyLong_FromLong(TyFloat_Check(obj));
 }
 
-static PyObject *
-float_checkexact(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+float_checkexact(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromLong(PyFloat_CheckExact(obj));
+    return TyLong_FromLong(TyFloat_CheckExact(obj));
 }
 
-static PyObject *
-float_fromstring(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+float_fromstring(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     NULLABLE(obj);
-    return PyFloat_FromString(obj);
+    return TyFloat_FromString(obj);
 }
 
-static PyObject *
-float_fromdouble(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+float_fromdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     double d;
 
-    if (!PyArg_Parse(obj, "d", &d)) {
+    if (!TyArg_Parse(obj, "d", &d)) {
         return NULL;
     }
 
-    return PyFloat_FromDouble(d);
+    return TyFloat_FromDouble(d);
 }
 
-static PyObject *
-float_asdouble(PyObject *Py_UNUSED(module), PyObject *obj)
+static TyObject *
+float_asdouble(TyObject *Ty_UNUSED(module), TyObject *obj)
 {
     double d;
 
     NULLABLE(obj);
-    d = PyFloat_AsDouble(obj);
-    if (d == -1. && PyErr_Occurred()) {
+    d = TyFloat_AsDouble(obj);
+    if (d == -1. && TyErr_Occurred()) {
         return NULL;
     }
 
-    return PyFloat_FromDouble(d);
+    return TyFloat_FromDouble(d);
 }
 
-static PyObject *
-float_getinfo(PyObject *Py_UNUSED(module), PyObject *Py_UNUSED(arg))
+static TyObject *
+float_getinfo(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(arg))
 {
-    return PyFloat_GetInfo();
+    return TyFloat_GetInfo();
 }
 
-static PyObject *
-float_getmax(PyObject *Py_UNUSED(module), PyObject *Py_UNUSED(arg))
+static TyObject *
+float_getmax(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(arg))
 {
-    return PyFloat_FromDouble(PyFloat_GetMax());
+    return TyFloat_FromDouble(TyFloat_GetMax());
 }
 
-static PyObject *
-float_getmin(PyObject *Py_UNUSED(module), PyObject *Py_UNUSED(arg))
+static TyObject *
+float_getmin(TyObject *Ty_UNUSED(module), TyObject *Ty_UNUSED(arg))
 {
-    return PyFloat_FromDouble(PyFloat_GetMin());
+    return TyFloat_FromDouble(TyFloat_GetMin());
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"float_check", float_check, METH_O},
     {"float_checkexact", float_checkexact, METH_O},
     {"float_fromstring", float_fromstring, METH_O},
@@ -81,9 +81,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestLimitedCAPI_Init_Float(PyObject *mod)
+_PyTestLimitedCAPI_Init_Float(TyObject *mod)
 {
-    if (PyModule_AddFunctions(mod, test_methods) < 0) {
+    if (TyModule_AddFunctions(mod, test_methods) < 0) {
         return -1;
     }
 

@@ -3337,7 +3337,7 @@ less likely to be able to resolve annotations at runtime.
     * a Python class that has been registered as
       "collections.abc.Sequence"
 
-    * a builtin class that has its (CPython) "Py_TPFLAGS_SEQUENCE" bit
+    * a builtin class that has its (CPython) "Ty_TPFLAGS_SEQUENCE" bit
       set
 
     * a class that inherits from any of the above
@@ -3368,7 +3368,7 @@ less likely to be able to resolve annotations at runtime.
     * a Python class that has been registered as
       "collections.abc.Mapping"
 
-    * a builtin class that has its (CPython) "Py_TPFLAGS_MAPPING" bit
+    * a builtin class that has its (CPython) "Ty_TPFLAGS_MAPPING" bit
       set
 
     * a class that inherits from any of the above
@@ -3703,7 +3703,7 @@ object.__hash__(self)
    Note:
 
      "hash()" truncates the value returned from an object’s custom
-     "__hash__()" method to the size of a "Py_ssize_t".  This is
+     "__hash__()" method to the size of a "Ty_ssize_t".  This is
      typically 8 bytes on 64-bit builds and 4 bytes on 32-bit builds.
      If an object’s   "__hash__()" must interoperate on builds of
      different bit sizes, be sure to check the width on all supported
@@ -8089,7 +8089,7 @@ object.__hash__(self)
    Note:
 
      "hash()" truncates the value returned from an object’s custom
-     "__hash__()" method to the size of a "Py_ssize_t".  This is
+     "__hash__()" method to the size of a "Ty_ssize_t".  This is
      typically 8 bytes on 64-bit builds and 4 bytes on 32-bit builds.
      If an object’s   "__hash__()" must interoperate on builds of
      different bit sizes, be sure to check the width on all supported

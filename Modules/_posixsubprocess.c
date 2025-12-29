@@ -1,13 +1,13 @@
 /* Authors: Gregory P. Smith & Jeffrey Yasskin */
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 #include "Python.h"
-#include "pycore_fileutils.h"     // _Py_set_inheritable_async_safe()
-#include "pycore_interp.h"        // _PyInterpreterState_GetFinalizing()
-#include "pycore_pystate.h"       // _PyInterpreterState_GET()
-#include "pycore_signal.h"        // _Py_RestoreSignals()
+#include "pycore_fileutils.h"     // _Ty_set_inheritable_async_safe()
+#include "pycore_interp.h"        // _TyInterpreterState_GetFinalizing()
+#include "pycore_pystate.h"       // _TyInterpreterState_GET()
+#include "pycore_signal.h"        // _Ty_RestoreSignals()
 
 #if defined(HAVE_PIPE2) && !defined(_GNU_SOURCE)
 #  define _GNU_SOURCE
@@ -35,7 +35,7 @@
 
 #include "posixmodule.h"
 
-#ifdef _Py_MEMORY_SANITIZER
+#ifdef _Ty_MEMORY_SANITIZER
 # include <sanitizer/msan_interface.h>
 #endif
 
@@ -77,7 +77,7 @@
 
 #define POSIX_CALL(call)   do { if ((call) == -1) goto error; } while (0)
 
-static struct PyModuleDef _posixsubprocessmodule;
+static struct TyModuleDef _posixsubprocessmodule;
 
 /*[clinic input]
 module _posixsubprocess
@@ -87,12 +87,12 @@ module _posixsubprocess
 /*[python input]
 class pid_t_converter(CConverter):
     type = 'pid_t'
-    format_unit = '" _Py_PARSE_PID "'
+    format_unit = '" _Ty_PARSE_PID "'
 
     def parse_arg(self, argname, displayname, *, limited_capi):
         return self.format_code("""
-            {paramname} = PyLong_AsPid({argname});
-            if ({paramname} == -1 && PyErr_Occurred()) {{{{
+            {paramname} = TyLong_AsPid({argname});
+            if ({paramname} == -1 && TyErr_Occurred()) {{{{
                 goto exit;
             }}}}
             """,
@@ -142,17 +142,17 @@ _is_fdescfs_mounted_on_dev_fd(void)
 
 /* Returns 1 if there is a problem with fd_sequence, 0 otherwise. */
 static int
-_sanity_check_python_fd_sequence(PyObject *fd_sequence)
+_sanity_check_python_fd_sequence(TyObject *fd_sequence)
 {
-    Py_ssize_t seq_idx;
+    Ty_ssize_t seq_idx;
     long prev_fd = -1;
-    for (seq_idx = 0; seq_idx < PyTuple_GET_SIZE(fd_sequence); ++seq_idx) {
-        PyObject* py_fd = PyTuple_GET_ITEM(fd_sequence, seq_idx);
+    for (seq_idx = 0; seq_idx < TyTuple_GET_SIZE(fd_sequence); ++seq_idx) {
+        TyObject* py_fd = TyTuple_GET_ITEM(fd_sequence, seq_idx);
         long iter_fd;
-        if (!PyLong_Check(py_fd)) {
+        if (!TyLong_Check(py_fd)) {
             return 1;
         }
-        iter_fd = PyLong_AsLong(py_fd);
+        iter_fd = TyLong_AsLong(py_fd);
         if (iter_fd < 0 || iter_fd <= prev_fd || iter_fd > INT_MAX) {
             /* Negative, overflow, unsorted, too big for a fd. */
             return 1;
@@ -166,11 +166,11 @@ _sanity_check_python_fd_sequence(PyObject *fd_sequence)
 /* Is fd found in the sorted Python Sequence? */
 static int
 _is_fd_in_sorted_fd_sequence(int fd, int *fd_sequence,
-                             Py_ssize_t fd_sequence_len)
+                             Ty_ssize_t fd_sequence_len)
 {
     /* Binary search. */
-    Py_ssize_t search_min = 0;
-    Py_ssize_t search_max = fd_sequence_len - 1;
+    Ty_ssize_t search_min = 0;
+    Ty_ssize_t search_max = fd_sequence_len - 1;
     if (search_max < 0)
         return 0;
     do {
@@ -188,23 +188,23 @@ _is_fd_in_sorted_fd_sequence(int fd, int *fd_sequence,
 
 
 // Forward declaration
-static void _Py_FreeCharPArray(char *const array[]);
+static void _Ty_FreeCharPArray(char *const array[]);
 
 /*
  * Flatten a sequence of bytes() objects into a C array of
  * NULL terminated string pointers with a NULL char* terminating the array.
  * (ie: an argv or env list)
  *
- * Memory allocated for the returned list is allocated using PyMem_Malloc()
- * and MUST be freed by _Py_FreeCharPArray().
+ * Memory allocated for the returned list is allocated using TyMem_Malloc()
+ * and MUST be freed by _Ty_FreeCharPArray().
  */
 static char *const *
-_PySequence_BytesToCharpArray(PyObject* self)
+_PySequence_BytesToCharpArray(TyObject* self)
 {
     char **array;
-    Py_ssize_t i, argc;
-    PyObject *item = NULL;
-    Py_ssize_t size;
+    Ty_ssize_t i, argc;
+    TyObject *item = NULL;
+    Ty_ssize_t size;
 
     argc = PySequence_Size(self);
     if (argc == -1)
@@ -213,13 +213,13 @@ _PySequence_BytesToCharpArray(PyObject* self)
     assert(argc >= 0);
 
     if ((size_t)argc > (PY_SSIZE_T_MAX-sizeof(char *)) / sizeof(char *)) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
 
-    array = PyMem_Malloc((argc + 1) * sizeof(char *));
+    array = TyMem_Malloc((argc + 1) * sizeof(char *));
     if (array == NULL) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         return NULL;
     }
     for (i = 0; i < argc; ++i) {
@@ -231,40 +231,40 @@ _PySequence_BytesToCharpArray(PyObject* self)
             goto fail;
         }
         /* check for embedded null bytes */
-        if (PyBytes_AsStringAndSize(item, &data, NULL) < 0) {
+        if (TyBytes_AsStringAndSize(item, &data, NULL) < 0) {
             /* NULL terminate before freeing. */
             array[i] = NULL;
             goto fail;
         }
-        size = PyBytes_GET_SIZE(item) + 1;
-        array[i] = PyMem_Malloc(size);
+        size = TyBytes_GET_SIZE(item) + 1;
+        array[i] = TyMem_Malloc(size);
         if (!array[i]) {
-            PyErr_NoMemory();
+            TyErr_NoMemory();
             goto fail;
         }
         memcpy(array[i], data, size);
-        Py_DECREF(item);
+        Ty_DECREF(item);
     }
     array[argc] = NULL;
 
     return array;
 
 fail:
-    Py_XDECREF(item);
-    _Py_FreeCharPArray(array);
+    Ty_XDECREF(item);
+    _Ty_FreeCharPArray(array);
     return NULL;
 }
 
 
 /* Free's a NULL terminated char** array of C strings. */
 static void
-_Py_FreeCharPArray(char *const array[])
+_Ty_FreeCharPArray(char *const array[])
 {
-    Py_ssize_t i;
+    Ty_ssize_t i;
     for (i = 0; array[i] != NULL; ++i) {
-        PyMem_Free(array[i]);
+        TyMem_Free(array[i]);
     }
-    PyMem_Free((void*)array);
+    TyMem_Free((void*)array);
 }
 
 
@@ -279,19 +279,19 @@ _Py_FreeCharPArray(char *const array[])
  * Returns: -1 on error, 0 on success.
  */
 static int
-convert_fds_to_keep_to_c(PyObject *py_fds_to_keep, int *c_fds_to_keep)
+convert_fds_to_keep_to_c(TyObject *py_fds_to_keep, int *c_fds_to_keep)
 {
-    Py_ssize_t i, len;
+    Ty_ssize_t i, len;
 
-    len = PyTuple_GET_SIZE(py_fds_to_keep);
+    len = TyTuple_GET_SIZE(py_fds_to_keep);
     for (i = 0; i < len; ++i) {
-        PyObject* fdobj = PyTuple_GET_ITEM(py_fds_to_keep, i);
-        long fd = PyLong_AsLong(fdobj);
-        if (fd == -1 && PyErr_Occurred()) {
+        TyObject* fdobj = TyTuple_GET_ITEM(py_fds_to_keep, i);
+        long fd = TyLong_AsLong(fdobj);
+        if (fd == -1 && TyErr_Occurred()) {
             return -1;
         }
         if (fd < 0 || fd > INT_MAX) {
-            PyErr_SetString(PyExc_ValueError,
+            TyErr_SetString(TyExc_ValueError,
                             "fd out of range in fds_to_keep.");
             return -1;
         }
@@ -305,9 +305,9 @@ convert_fds_to_keep_to_c(PyObject *py_fds_to_keep, int *c_fds_to_keep)
  * after fork() or vfork().
  */
 static int
-make_inheritable(int *c_fds_to_keep, Py_ssize_t len, int errpipe_write)
+make_inheritable(int *c_fds_to_keep, Ty_ssize_t len, int errpipe_write)
 {
-    Py_ssize_t i;
+    Ty_ssize_t i;
 
     for (i = 0; i < len; ++i) {
         int fd = c_fds_to_keep[i];
@@ -317,7 +317,7 @@ make_inheritable(int *c_fds_to_keep, Py_ssize_t len, int errpipe_write)
                called. */
             continue;
         }
-        if (_Py_set_inheritable_async_safe(fd, 1, NULL) < 0)
+        if (_Ty_set_inheritable_async_safe(fd, 1, NULL) < 0)
             return -1;
     }
     return 0;
@@ -364,13 +364,13 @@ static int
 _close_range_except(int start_fd,
                     int end_fd,
                     int *fds_to_keep,
-                    Py_ssize_t fds_to_keep_len,
+                    Ty_ssize_t fds_to_keep_len,
                     int (*closer)(int, int))
 {
     if (end_fd == -1) {
-        end_fd = Py_MIN(safe_get_max_fd(), INT_MAX);
+        end_fd = Ty_MIN(safe_get_max_fd(), INT_MAX);
     }
-    Py_ssize_t keep_seq_idx;
+    Ty_ssize_t keep_seq_idx;
     /* As fds_to_keep is sorted we can loop through the list closing
      * fds in between any in the keep list falling within our range. */
     for (keep_seq_idx = 0; keep_seq_idx < fds_to_keep_len; ++keep_seq_idx) {
@@ -429,11 +429,11 @@ _brute_force_closer(int first, int last)
  * it with some cpp #define magic to work on other OSes as well if you want.
  */
 static void
-_close_open_fds_safe(int start_fd, int *fds_to_keep, Py_ssize_t fds_to_keep_len)
+_close_open_fds_safe(int start_fd, int *fds_to_keep, Ty_ssize_t fds_to_keep_len)
 {
     int fd_dir_fd;
 
-    fd_dir_fd = _Py_open_noraise(FD_DIR, O_RDONLY);
+    fd_dir_fd = _Ty_open_noraise(FD_DIR, O_RDONLY);
     if (fd_dir_fd == -1) {
         /* No way to get a list of open fds. */
         _close_range_except(start_fd, -1,
@@ -448,7 +448,7 @@ _close_open_fds_safe(int start_fd, int *fds_to_keep, Py_ssize_t fds_to_keep_len)
                                 sizeof(buffer))) > 0) {
             struct linux_dirent64 *entry;
             int offset;
-#ifdef _Py_MEMORY_SANITIZER
+#ifdef _Ty_MEMORY_SANITIZER
             __msan_unpoison(buffer, bytes);
 #endif
             for (offset = 0; offset < bytes; offset += entry->d_reclen) {
@@ -474,7 +474,7 @@ _close_open_fds_safe(int start_fd, int *fds_to_keep, Py_ssize_t fds_to_keep_len)
 static int
 _unsafe_closer(int first, int last)
 {
-    _Py_closerange(first, last);
+    _Ty_closerange(first, last);
     return 0;
 }
 
@@ -493,7 +493,7 @@ _unsafe_closer(int first, int last)
  */
 static void
 _close_open_fds_maybe_unsafe(int start_fd, int *fds_to_keep,
-                             Py_ssize_t fds_to_keep_len)
+                             Ty_ssize_t fds_to_keep_len)
 {
     DIR *proc_fd_dir;
 #ifndef HAVE_DIRFD
@@ -569,7 +569,7 @@ _close_range_closer(int first, int last)
 #endif
 
 static void
-_close_open_fds(int start_fd, int *fds_to_keep, Py_ssize_t fds_to_keep_len)
+_close_open_fds(int start_fd, int *fds_to_keep, Ty_ssize_t fds_to_keep_len)
 {
 #ifdef HAVE_ASYNC_SAFE_CLOSE_RANGE
     if (_close_range_except(
@@ -656,7 +656,7 @@ reset_signal_handlers(const sigset_t *child_sigmask)
  * If vfork-unsafe functionality is desired after vfork(), consider using
  * syscall() to obtain it.
  */
-Py_NO_INLINE static void
+Ty_NO_INLINE static void
 child_exec(char *const exec_array[],
            char *const argv[],
            char *const envp[],
@@ -668,15 +668,15 @@ child_exec(char *const exec_array[],
            int close_fds, int restore_signals,
            int call_setsid, pid_t pgid_to_set,
            gid_t gid,
-           Py_ssize_t extra_group_size, const gid_t *extra_groups,
+           Ty_ssize_t extra_group_size, const gid_t *extra_groups,
            uid_t uid, int child_umask,
            const void *child_sigmask,
-           int *fds_to_keep, Py_ssize_t fds_to_keep_len,
-           PyObject *preexec_fn,
-           PyObject *preexec_fn_args_tuple)
+           int *fds_to_keep, Ty_ssize_t fds_to_keep_len,
+           TyObject *preexec_fn,
+           TyObject *preexec_fn_args_tuple)
 {
     int i, saved_errno;
-    PyObject *result;
+    TyObject *result;
     /* Indicate to the parent that the error happened before exec(). */
     const char *err_msg = "noexec";
     /* Buffer large enough to hold a hex integer.  We can't malloc. */
@@ -699,14 +699,14 @@ child_exec(char *const exec_array[],
     if (c2pwrite == 0) {
         POSIX_CALL(c2pwrite = dup(c2pwrite));
         /* issue32270 */
-        if (_Py_set_inheritable_async_safe(c2pwrite, 0, NULL) < 0) {
+        if (_Ty_set_inheritable_async_safe(c2pwrite, 0, NULL) < 0) {
             goto error;
         }
     }
     while (errwrite == 0 || errwrite == 1) {
         POSIX_CALL(errwrite = dup(errwrite));
         /* issue32270 */
-        if (_Py_set_inheritable_async_safe(errwrite, 0, NULL) < 0) {
+        if (_Ty_set_inheritable_async_safe(errwrite, 0, NULL) < 0) {
             goto error;
         }
     }
@@ -715,21 +715,21 @@ child_exec(char *const exec_array[],
        dup2() removes the CLOEXEC flag but we must do it ourselves if dup2()
        would be a no-op (issue #10806). */
     if (p2cread == 0) {
-        if (_Py_set_inheritable_async_safe(p2cread, 1, NULL) < 0)
+        if (_Ty_set_inheritable_async_safe(p2cread, 1, NULL) < 0)
             goto error;
     }
     else if (p2cread != -1)
         POSIX_CALL(dup2(p2cread, 0));  /* stdin */
 
     if (c2pwrite == 1) {
-        if (_Py_set_inheritable_async_safe(c2pwrite, 1, NULL) < 0)
+        if (_Ty_set_inheritable_async_safe(c2pwrite, 1, NULL) < 0)
             goto error;
     }
     else if (c2pwrite != -1)
         POSIX_CALL(dup2(c2pwrite, 1));  /* stdout */
 
     if (errwrite == 2) {
-        if (_Py_set_inheritable_async_safe(errwrite, 1, NULL) < 0)
+        if (_Ty_set_inheritable_async_safe(errwrite, 1, NULL) < 0)
             goto error;
     }
     else if (errwrite != -1)
@@ -749,7 +749,7 @@ child_exec(char *const exec_array[],
         umask(child_umask);  /* umask() always succeeds. */
 
     if (restore_signals) {
-        _Py_RestoreSignals();
+        _Ty_RestoreSignals();
     }
 
 #ifdef VFORK_USABLE
@@ -767,7 +767,7 @@ child_exec(char *const exec_array[],
 #endif
 
 #ifdef HAVE_SETPGID
-    static_assert(_Py_IS_TYPE_SIGNED(pid_t), "pid_t is unsigned");
+    static_assert(_Ty_IS_TYPE_SIGNED(pid_t), "pid_t is unsigned");
     if (pgid_to_set >= 0) {
         POSIX_CALL(setpgid(0, pgid_to_set));
     }
@@ -792,7 +792,7 @@ child_exec(char *const exec_array[],
 
 
     err_msg = "";
-    if (preexec_fn != Py_None && preexec_fn_args_tuple) {
+    if (preexec_fn != Ty_None && preexec_fn_args_tuple) {
         /* This is where the user has asked us to deadlock their program. */
         result = PyObject_Call(preexec_fn, preexec_fn_args_tuple, NULL);
         if (result == NULL) {
@@ -805,7 +805,7 @@ child_exec(char *const exec_array[],
             errno = 0;  /* We don't want to report an OSError. */
             goto error;
         }
-        /* Py_DECREF(result); - We're about to exec so why bother? */
+        /* Ty_DECREF(result); - We're about to exec so why bother? */
     }
 
     /* close FDs after executing preexec_fn, which might open FDs */
@@ -837,24 +837,24 @@ error:
     /* Report the posix error to our parent process. */
     /* We ignore all write() return values as the total size of our writes is
        less than PIPEBUF and we cannot do anything about an error anyways.
-       Use _Py_write_noraise() to retry write() if it is interrupted by a
+       Use _Ty_write_noraise() to retry write() if it is interrupted by a
        signal (fails with EINTR). */
     if (saved_errno) {
         char *cur;
-        _Py_write_noraise(errpipe_write, "OSError:", 8);
+        _Ty_write_noraise(errpipe_write, "OSError:", 8);
         cur = hex_errno + sizeof(hex_errno);
         while (saved_errno != 0 && cur != hex_errno) {
-            *--cur = Py_hexdigits[saved_errno % 16];
+            *--cur = Ty_hexdigits[saved_errno % 16];
             saved_errno /= 16;
         }
-        _Py_write_noraise(errpipe_write, cur, hex_errno + sizeof(hex_errno) - cur);
-        _Py_write_noraise(errpipe_write, ":", 1);
+        _Ty_write_noraise(errpipe_write, cur, hex_errno + sizeof(hex_errno) - cur);
+        _Ty_write_noraise(errpipe_write, ":", 1);
         /* We can't call strerror(saved_errno).  It is not async signal safe.
          * The parent process will look the error message up. */
     } else {
-        _Py_write_noraise(errpipe_write, "SubprocessError:0:", 18);
+        _Ty_write_noraise(errpipe_write, "SubprocessError:0:", 18);
     }
-    _Py_write_noraise(errpipe_write, err_msg, strlen(err_msg));
+    _Ty_write_noraise(errpipe_write, err_msg, strlen(err_msg));
 }
 
 
@@ -866,7 +866,7 @@ error:
  * child_exec() should not be inlined to avoid spurious -Wclobber warnings from
  * GCC (see bpo-35823).
  */
-Py_NO_INLINE static pid_t
+Ty_NO_INLINE static pid_t
 do_fork_exec(char *const exec_array[],
              char *const argv[],
              char *const envp[],
@@ -878,12 +878,12 @@ do_fork_exec(char *const exec_array[],
              int close_fds, int restore_signals,
              int call_setsid, pid_t pgid_to_set,
              gid_t gid,
-             Py_ssize_t extra_group_size, const gid_t *extra_groups,
+             Ty_ssize_t extra_group_size, const gid_t *extra_groups,
              uid_t uid, int child_umask,
              const void *child_sigmask,
-             int *fds_to_keep, Py_ssize_t fds_to_keep_len,
-             PyObject *preexec_fn,
-             PyObject *preexec_fn_args_tuple)
+             int *fds_to_keep, Ty_ssize_t fds_to_keep_len,
+             TyObject *preexec_fn,
+             TyObject *preexec_fn_args_tuple)
 {
 
     pid_t pid;
@@ -895,7 +895,7 @@ do_fork_exec(char *const exec_array[],
         assert(uid == (uid_t)-1);
         assert(gid == (gid_t)-1);
         assert(extra_group_size < 0);
-        assert(preexec_fn == Py_None);
+        assert(preexec_fn == Ty_None);
 
         /* Drop the GIL so that other threads can continue execution while this
          * thread in the parent remains blocked per vfork-semantics on the
@@ -907,11 +907,11 @@ do_fork_exec(char *const exec_array[],
          * is a little more usable. See the child_exec() comment - The child
          * MUST NOT re-acquire the GIL.
          */
-        vfork_tstate_save = PyEval_SaveThread();
+        vfork_tstate_save = TyEval_SaveThread();
         pid = vfork();
         if (pid != 0) {
             // Not in the child process, reacquire the GIL.
-            PyEval_RestoreThread(vfork_tstate_save);
+            TyEval_RestoreThread(vfork_tstate_save);
         }
         if (pid == (pid_t)-1) {
             /* If vfork() fails, fall back to using fork(). When it isn't
@@ -935,12 +935,12 @@ do_fork_exec(char *const exec_array[],
      * the code below.
      */
 
-    if (preexec_fn != Py_None) {
+    if (preexec_fn != Ty_None) {
         /* We'll be calling back into Python later so we need to do this.
          * This call may not be async-signal-safe but neither is calling
          * back into Python.  The user asked us to use hope as a strategy
          * to avoid deadlock... */
-        PyOS_AfterFork_Child();
+        TyOS_AfterFork_Child();
     }
 
     child_exec(exec_array, argv, envp, cwd,
@@ -960,7 +960,7 @@ _posixsubprocess.fork_exec as subprocess_fork_exec
     args as process_args: object
     executable_list: object
     close_fds: bool
-    pass_fds as py_fds_to_keep: object(subclass_of='&PyTuple_Type')
+    pass_fds as py_fds_to_keep: object(subclass_of='&TyTuple_Type')
     cwd as cwd_obj: object
     env as env_list: object
     p2cread: int
@@ -1004,24 +1004,24 @@ Returns: the child process's PID.
 Raises: Only on an error in the parent process.
 [clinic start generated code]*/
 
-static PyObject *
-subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
-                          PyObject *executable_list, int close_fds,
-                          PyObject *py_fds_to_keep, PyObject *cwd_obj,
-                          PyObject *env_list, int p2cread, int p2cwrite,
+static TyObject *
+subprocess_fork_exec_impl(TyObject *module, TyObject *process_args,
+                          TyObject *executable_list, int close_fds,
+                          TyObject *py_fds_to_keep, TyObject *cwd_obj,
+                          TyObject *env_list, int p2cread, int p2cwrite,
                           int c2pread, int c2pwrite, int errread,
                           int errwrite, int errpipe_read, int errpipe_write,
                           int restore_signals, int call_setsid,
-                          pid_t pgid_to_set, PyObject *gid_object,
-                          PyObject *extra_groups_packed,
-                          PyObject *uid_object, int child_umask,
-                          PyObject *preexec_fn)
+                          pid_t pgid_to_set, TyObject *gid_object,
+                          TyObject *extra_groups_packed,
+                          TyObject *uid_object, int child_umask,
+                          TyObject *preexec_fn)
 /*[clinic end generated code: output=288464dc56e373c7 input=f311c3bcb5dd55c8]*/
 {
-    PyObject *converted_args = NULL, *fast_args = NULL;
-    PyObject *preexec_fn_args_tuple = NULL;
+    TyObject *converted_args = NULL, *fast_args = NULL;
+    TyObject *preexec_fn_args_tuple = NULL;
     gid_t *extra_groups = NULL;
-    PyObject *cwd_obj2 = NULL;
+    TyObject *cwd_obj2 = NULL;
     const char *cwd = NULL;
     pid_t pid = -1;
     int need_to_reenable_gc = 0;
@@ -1029,34 +1029,34 @@ subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
     int need_after_fork = 0;
     int saved_errno = 0;
     int *c_fds_to_keep = NULL;
-    Py_ssize_t fds_to_keep_len = PyTuple_GET_SIZE(py_fds_to_keep);
+    Ty_ssize_t fds_to_keep_len = TyTuple_GET_SIZE(py_fds_to_keep);
 
-    PyInterpreterState *interp = _PyInterpreterState_GET();
-    if ((preexec_fn != Py_None) &&
-        _PyInterpreterState_GetFinalizing(interp) != NULL)
+    PyInterpreterState *interp = _TyInterpreterState_GET();
+    if ((preexec_fn != Ty_None) &&
+        _TyInterpreterState_GetFinalizing(interp) != NULL)
     {
-        PyErr_SetString(PyExc_PythonFinalizationError,
+        TyErr_SetString(TyExc_PythonFinalizationError,
                         "preexec_fn not supported at interpreter shutdown");
         return NULL;
     }
-    if ((preexec_fn != Py_None) && (interp != PyInterpreterState_Main())) {
-        PyErr_SetString(PyExc_RuntimeError,
+    if ((preexec_fn != Ty_None) && (interp != TyInterpreterState_Main())) {
+        TyErr_SetString(TyExc_RuntimeError,
                         "preexec_fn not supported within subinterpreters");
         return NULL;
     }
 
     if (close_fds && errpipe_write < 3) {  /* precondition */
-        PyErr_SetString(PyExc_ValueError, "errpipe_write must be >= 3");
+        TyErr_SetString(TyExc_ValueError, "errpipe_write must be >= 3");
         return NULL;
     }
     if (_sanity_check_python_fd_sequence(py_fds_to_keep)) {
-        PyErr_SetString(PyExc_ValueError, "bad value(s) in fds_to_keep");
+        TyErr_SetString(TyExc_ValueError, "bad value(s) in fds_to_keep");
         return NULL;
     }
 
     /* We need to call gc.disable() when we'll be calling preexec_fn */
-    if (preexec_fn != Py_None) {
-        need_to_reenable_gc = PyGC_Disable();
+    if (preexec_fn != Ty_None) {
+        need_to_reenable_gc = TyGC_Disable();
     }
 
     char *const *exec_array = _PySequence_BytesToCharpArray(executable_list);
@@ -1066,46 +1066,46 @@ subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
     /* Convert args and env into appropriate arguments for exec() */
     /* These conversions are done in the parent process to avoid allocating
        or freeing memory in the child process. */
-    if (process_args != Py_None) {
-        Py_ssize_t num_args;
+    if (process_args != Ty_None) {
+        Ty_ssize_t num_args;
         /* Equivalent to:  */
-        /*  tuple(PyUnicode_FSConverter(arg) for arg in process_args)  */
+        /*  tuple(TyUnicode_FSConverter(arg) for arg in process_args)  */
         fast_args = PySequence_Fast(process_args, "argv must be a tuple");
         if (fast_args == NULL)
             goto cleanup;
         num_args = PySequence_Fast_GET_SIZE(fast_args);
-        converted_args = PyTuple_New(num_args);
+        converted_args = TyTuple_New(num_args);
         if (converted_args == NULL)
             goto cleanup;
-        for (Py_ssize_t arg_num = 0; arg_num < num_args; ++arg_num) {
-            PyObject *borrowed_arg, *converted_arg;
+        for (Ty_ssize_t arg_num = 0; arg_num < num_args; ++arg_num) {
+            TyObject *borrowed_arg, *converted_arg;
             if (PySequence_Fast_GET_SIZE(fast_args) != num_args) {
-                PyErr_SetString(PyExc_RuntimeError, "args changed during iteration");
+                TyErr_SetString(TyExc_RuntimeError, "args changed during iteration");
                 goto cleanup;
             }
             borrowed_arg = PySequence_Fast_GET_ITEM(fast_args, arg_num);
-            if (PyUnicode_FSConverter(borrowed_arg, &converted_arg) == 0)
+            if (TyUnicode_FSConverter(borrowed_arg, &converted_arg) == 0)
                 goto cleanup;
-            PyTuple_SET_ITEM(converted_args, arg_num, converted_arg);
+            TyTuple_SET_ITEM(converted_args, arg_num, converted_arg);
         }
 
         argv = _PySequence_BytesToCharpArray(converted_args);
-        Py_CLEAR(converted_args);
-        Py_CLEAR(fast_args);
+        Ty_CLEAR(converted_args);
+        Ty_CLEAR(fast_args);
         if (!argv)
             goto cleanup;
     }
 
-    if (env_list != Py_None) {
+    if (env_list != Ty_None) {
         envp = _PySequence_BytesToCharpArray(env_list);
         if (!envp)
             goto cleanup;
     }
 
-    if (cwd_obj != Py_None) {
-        if (PyUnicode_FSConverter(cwd_obj, &cwd_obj2) == 0)
+    if (cwd_obj != Ty_None) {
+        if (TyUnicode_FSConverter(cwd_obj, &cwd_obj2) == 0)
             goto cleanup;
-        cwd = PyBytes_AsString(cwd_obj2);
+        cwd = TyBytes_AsString(cwd_obj2);
     }
 
     // Special initial value meaning that subprocess API was called with
@@ -1113,12 +1113,12 @@ subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
     // We use this to differentiate between code desiring a setgroups(0, NULL)
     // call vs no call at all.  The fast vfork() code path could be used when
     // there is no setgroups call.
-    Py_ssize_t extra_group_size = -2;
+    Ty_ssize_t extra_group_size = -2;
 
-    if (extra_groups_packed != Py_None) {
+    if (extra_groups_packed != Ty_None) {
 #ifdef HAVE_SETGROUPS
-        if (!PyList_Check(extra_groups_packed)) {
-            PyErr_SetString(PyExc_TypeError,
+        if (!TyList_Check(extra_groups_packed)) {
+            TyErr_SetString(TyExc_TypeError,
                     "setgroups argument must be a list");
             goto cleanup;
         }
@@ -1128,75 +1128,75 @@ subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
             goto cleanup;
 
         if (extra_group_size > MAX_GROUPS) {
-            PyErr_SetString(PyExc_ValueError, "too many extra_groups");
+            TyErr_SetString(TyExc_ValueError, "too many extra_groups");
             goto cleanup;
         }
 
         /* Deliberately keep extra_groups == NULL for extra_group_size == 0 */
         if (extra_group_size > 0) {
-            extra_groups = PyMem_RawMalloc(extra_group_size * sizeof(gid_t));
+            extra_groups = TyMem_RawMalloc(extra_group_size * sizeof(gid_t));
             if (extra_groups == NULL) {
-                PyErr_SetString(PyExc_MemoryError,
+                TyErr_SetString(TyExc_MemoryError,
                         "failed to allocate memory for group list");
                 goto cleanup;
             }
         }
 
-        for (Py_ssize_t i = 0; i < extra_group_size; i++) {
-            PyObject *elem;
+        for (Ty_ssize_t i = 0; i < extra_group_size; i++) {
+            TyObject *elem;
             elem = PySequence_GetItem(extra_groups_packed, i);
             if (!elem)
                 goto cleanup;
-            if (!PyLong_Check(elem)) {
-                PyErr_SetString(PyExc_TypeError,
+            if (!TyLong_Check(elem)) {
+                TyErr_SetString(TyExc_TypeError,
                                 "extra_groups must be integers");
-                Py_DECREF(elem);
+                Ty_DECREF(elem);
                 goto cleanup;
             } else {
                 gid_t gid;
-                if (!_Py_Gid_Converter(elem, &gid)) {
-                    Py_DECREF(elem);
-                    PyErr_SetString(PyExc_ValueError, "invalid group id");
+                if (!_Ty_Gid_Converter(elem, &gid)) {
+                    Ty_DECREF(elem);
+                    TyErr_SetString(TyExc_ValueError, "invalid group id");
                     goto cleanup;
                 }
                 extra_groups[i] = gid;
             }
-            Py_DECREF(elem);
+            Ty_DECREF(elem);
         }
 
 #else /* HAVE_SETGROUPS */
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         goto cleanup;
 #endif /* HAVE_SETGROUPS */
     }
 
     gid_t gid = (gid_t)-1;
-    if (gid_object != Py_None) {
+    if (gid_object != Ty_None) {
 #ifdef HAVE_SETREGID
-        if (!_Py_Gid_Converter(gid_object, &gid))
+        if (!_Ty_Gid_Converter(gid_object, &gid))
             goto cleanup;
 
 #else /* HAVE_SETREGID */
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         goto cleanup;
 #endif /* HAVE_SETREUID */
     }
 
     uid_t uid = (uid_t)-1;
-    if (uid_object != Py_None) {
+    if (uid_object != Ty_None) {
 #ifdef HAVE_SETREUID
-        if (!_Py_Uid_Converter(uid_object, &uid))
+        if (!_Ty_Uid_Converter(uid_object, &uid))
             goto cleanup;
 
 #else /* HAVE_SETREUID */
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         goto cleanup;
 #endif /* HAVE_SETREUID */
     }
 
-    c_fds_to_keep = PyMem_Malloc(fds_to_keep_len * sizeof(int));
+    c_fds_to_keep = TyMem_Malloc(fds_to_keep_len * sizeof(int));
     if (c_fds_to_keep == NULL) {
-        PyErr_SetString(PyExc_MemoryError, "failed to malloc c_fds_to_keep");
+        TyErr_SetString(TyExc_MemoryError, "failed to malloc c_fds_to_keep");
         goto cleanup;
     }
     if (convert_fds_to_keep_to_c(py_fds_to_keep, c_fds_to_keep) < 0) {
@@ -1208,7 +1208,7 @@ subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
      * The audit hook receives the original object, so would nevertheless
      * be able to detect weird behaviour, hence we do not add extra
      * complexity or performance penalties to attempt to avoid this. */
-    if (PySys_Audit("_posixsubprocess.fork_exec",
+    if (TySys_Audit("_posixsubprocess.fork_exec",
                     "OOO",
                     executable_list,
                     process_args,
@@ -1217,13 +1217,13 @@ subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
     }
 
     /* This must be the last thing done before fork() because we do not
-     * want to call PyOS_BeforeFork() if there is any chance of another
+     * want to call TyOS_BeforeFork() if there is any chance of another
      * error leading to the cleanup: code without calling fork(). */
-    if (preexec_fn != Py_None) {
-        preexec_fn_args_tuple = PyTuple_New(0);
+    if (preexec_fn != Ty_None) {
+        preexec_fn_args_tuple = TyTuple_New(0);
         if (!preexec_fn_args_tuple)
             goto cleanup;
-        PyOS_BeforeFork();
+        TyOS_BeforeFork();
         need_after_fork = 1;
     }
 
@@ -1232,7 +1232,7 @@ subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
 #ifdef VFORK_USABLE
     /* Use vfork() only if it's safe. See the comment above child_exec(). */
     sigset_t old_sigs;
-    if (preexec_fn == Py_None &&
+    if (preexec_fn == Ty_None &&
         uid == (uid_t)-1 && gid == (gid_t)-1 && extra_group_size < 0) {
         /* Block all signals to ensure that no signal handlers are run in the
          * child process while it shares memory with us. Note that signals
@@ -1286,37 +1286,37 @@ subprocess_fork_exec_impl(PyObject *module, PyObject *process_args,
 #endif
 
     if (need_after_fork)
-        PyOS_AfterFork_Parent();
+        TyOS_AfterFork_Parent();
 
 cleanup:
     if (c_fds_to_keep != NULL) {
-        PyMem_Free(c_fds_to_keep);
+        TyMem_Free(c_fds_to_keep);
     }
 
     if (saved_errno != 0) {
         errno = saved_errno;
-        /* We can't call this above as PyOS_AfterFork_Parent() calls back
+        /* We can't call this above as TyOS_AfterFork_Parent() calls back
          * into Python code which would see the unreturned error. */
-        PyErr_SetFromErrno(PyExc_OSError);
+        TyErr_SetFromErrno(TyExc_OSError);
     }
 
-    Py_XDECREF(preexec_fn_args_tuple);
-    PyMem_RawFree(extra_groups);
-    Py_XDECREF(cwd_obj2);
+    Ty_XDECREF(preexec_fn_args_tuple);
+    TyMem_RawFree(extra_groups);
+    Ty_XDECREF(cwd_obj2);
     if (envp)
-        _Py_FreeCharPArray(envp);
-    Py_XDECREF(converted_args);
-    Py_XDECREF(fast_args);
+        _Ty_FreeCharPArray(envp);
+    Ty_XDECREF(converted_args);
+    Ty_XDECREF(fast_args);
     if (argv)
-        _Py_FreeCharPArray(argv);
+        _Ty_FreeCharPArray(argv);
     if (exec_array)
-        _Py_FreeCharPArray(exec_array);
+        _Ty_FreeCharPArray(exec_array);
 
     if (need_to_reenable_gc) {
-        PyGC_Enable();
+        TyGC_Enable();
     }
 
-    return pid == -1 ? NULL : PyLong_FromPid(pid);
+    return pid == -1 ? NULL : TyLong_FromPid(pid);
 }
 
 /* module level code ********************************************************/
@@ -1324,18 +1324,18 @@ cleanup:
 PyDoc_STRVAR(module_doc,
 "A POSIX helper for the subprocess module.");
 
-static PyMethodDef module_methods[] = {
+static TyMethodDef module_methods[] = {
     SUBPROCESS_FORK_EXEC_METHODDEF
     {NULL, NULL}  /* sentinel */
 };
 
 static PyModuleDef_Slot _posixsubprocess_slots[] = {
-    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL}
 };
 
-static struct PyModuleDef _posixsubprocessmodule = {
+static struct TyModuleDef _posixsubprocessmodule = {
         PyModuleDef_HEAD_INIT,
         .m_name = "_posixsubprocess",
         .m_doc = module_doc,

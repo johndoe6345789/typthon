@@ -39,33 +39,33 @@ def declare_parser(
         if not p.is_positional_only() and not p.is_vararg()
     ])
 
-    condition = '#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)'
+    condition = '#if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)'
     if limited_capi:
         declarations = """
             #define KWTUPLE NULL
         """
     elif num_keywords == 0:
         declarations = """
-            #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
-            #  define KWTUPLE (PyObject *)&_Py_SINGLETON(tuple_empty)
+            #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
+            #  define KWTUPLE (PyObject *)&_Ty_SINGLETON(tuple_empty)
             #else
             #  define KWTUPLE NULL
             #endif
         """
 
-        codegen.add_include('pycore_runtime.h', '_Py_SINGLETON()',
+        codegen.add_include('pycore_runtime.h', '_Ty_SINGLETON()',
                             condition=condition)
     else:
         # XXX Why do we not statically allocate the tuple
         # for non-builtin modules?
         declarations = """
-            #if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)
+            #if defined(Ty_BUILD_CORE) && !defined(Ty_BUILD_CORE_MODULE)
 
             #define NUM_KEYWORDS %d
             static struct {{
                 PyGC_Head _this_is_not_used;
                 PyObject_VAR_HEAD
-                Py_hash_t ob_hash;
+                Ty_hash_t ob_hash;
                 PyObject *ob_item[NUM_KEYWORDS];
             }} _kwtuple = {{
                 .ob_base = PyVarObject_HEAD_INIT(&PyTuple_Type, NUM_KEYWORDS)
@@ -75,14 +75,14 @@ def declare_parser(
             #undef NUM_KEYWORDS
             #define KWTUPLE (&_kwtuple.ob_base.ob_base)
 
-            #else  // !Py_BUILD_CORE
+            #else  // !Ty_BUILD_CORE
             #  define KWTUPLE NULL
-            #endif  // !Py_BUILD_CORE
+            #endif  // !Ty_BUILD_CORE
         """ % num_keywords
 
         codegen.add_include('pycore_gc.h', 'PyGC_Head',
                             condition=condition)
-        codegen.add_include('pycore_runtime.h', '_Py_ID()',
+        codegen.add_include('pycore_runtime.h', '_Ty_ID()',
                             condition=condition)
 
     declarations += """
@@ -112,27 +112,27 @@ PARSER_PROTOTYPE_VARARGS: Final[str] = libclinic.normalize_snippet("""
 """)
 PARSER_PROTOTYPE_FASTCALL: Final[str] = libclinic.normalize_snippet("""
     static PyObject *
-    {c_basename}({self_type}{self_name}, PyObject *const *args, Py_ssize_t nargs)
+    {c_basename}({self_type}{self_name}, PyObject *const *args, Ty_ssize_t nargs)
 """)
 PARSER_PROTOTYPE_FASTCALL_KEYWORDS: Final[str] = libclinic.normalize_snippet("""
     static PyObject *
-    {c_basename}({self_type}{self_name}, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+    {c_basename}({self_type}{self_name}, PyObject *const *args, Ty_ssize_t nargs, PyObject *kwnames)
 """)
 PARSER_PROTOTYPE_DEF_CLASS: Final[str] = libclinic.normalize_snippet("""
     static PyObject *
-    {c_basename}({self_type}{self_name}, PyTypeObject *{defining_class_name}, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
+    {c_basename}({self_type}{self_name}, PyTypeObject *{defining_class_name}, PyObject *const *args, Ty_ssize_t nargs, PyObject *kwnames)
 """)
 PARSER_PROTOTYPE_NOARGS: Final[str] = libclinic.normalize_snippet("""
     static PyObject *
-    {c_basename}({self_type}{self_name}, PyObject *Py_UNUSED(ignored))
+    {c_basename}({self_type}{self_name}, PyObject *Ty_UNUSED(ignored))
 """)
 PARSER_PROTOTYPE_GETTER: Final[str] = libclinic.normalize_snippet("""
     static PyObject *
-    {c_basename}({self_type}{self_name}, void *Py_UNUSED(context))
+    {c_basename}({self_type}{self_name}, void *Ty_UNUSED(context))
 """)
 PARSER_PROTOTYPE_SETTER: Final[str] = libclinic.normalize_snippet("""
     static int
-    {c_basename}({self_type}{self_name}, PyObject *value, void *Py_UNUSED(context))
+    {c_basename}({self_type}{self_name}, PyObject *value, void *Ty_UNUSED(context))
 """)
 METH_O_PROTOTYPE: Final[str] = libclinic.normalize_snippet("""
     static PyObject *
@@ -259,7 +259,7 @@ class ParseArgsCodeGen:
 
         if self.func.critical_section:
             self.codegen.add_include('pycore_critical_section.h',
-                                     'Py_BEGIN_CRITICAL_SECTION()')
+                                     'Ty_BEGIN_CRITICAL_SECTION()')
         if self.func.disable_fastcall:
             self.fastcall = False
         else:
@@ -495,7 +495,7 @@ class ParseArgsCodeGen:
         max_args = NO_VARARG if self.varpos else self.max_pos
         if self.limited_capi:
             if nargs != 'nargs':
-                nargs_def = f'Py_ssize_t nargs = {nargs};'
+                nargs_def = f'Ty_ssize_t nargs = {nargs};'
                 parser_code.append(libclinic.normalize_snippet(nargs_def, indent=4))
                 nargs = 'nargs'
             if self.min_pos == max_args:
@@ -616,7 +616,7 @@ class ParseArgsCodeGen:
             if not self.varpos:
                 nargs = "nargs"
             else:
-                nargs = f"Py_MIN(nargs, {self.max_pos})" if self.max_pos else "0"
+                nargs = f"Ty_MIN(nargs, {self.max_pos})" if self.max_pos else "0"
 
             if self.fastcall:
                 self.flags = "METH_FASTCALL|METH_KEYWORDS"

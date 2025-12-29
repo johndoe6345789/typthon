@@ -4,14 +4,14 @@
  * recently, it was largely rewritten by Guido van Rossum.
  */
 
-#ifndef Py_BUILD_CORE_BUILTIN
-#  define Py_BUILD_CORE_MODULE 1
+#ifndef Ty_BUILD_CORE_BUILTIN
+#  define Ty_BUILD_CORE_MODULE 1
 #endif
 
 /* Standard definitions */
 #include "Python.h"
 #include "pycore_pyatomic_ft_wrappers.h"
-#include "pycore_pylifecycle.h"   // _Py_SetLocaleFromEnv()
+#include "pycore_pylifecycle.h"   // _Ty_SetLocaleFromEnv()
 
 #include <errno.h>                // errno
 #include <signal.h>               // SIGWINCH
@@ -92,19 +92,19 @@ static char *completer_word_break_characters;
 
 typedef struct {
   /* Specify hook functions in Python */
-  PyObject *completion_display_matches_hook;
-  PyObject *startup_hook;
-  PyObject *pre_input_hook;
+  TyObject *completion_display_matches_hook;
+  TyObject *startup_hook;
+  TyObject *pre_input_hook;
 
-  PyObject *completer; /* Specify a word completer in Python */
-  PyObject *begidx;
-  PyObject *endidx;
+  TyObject *completer; /* Specify a word completer in Python */
+  TyObject *begidx;
+  TyObject *endidx;
 } readlinestate;
 
 static inline readlinestate*
-get_readline_state(PyObject *module)
+get_readline_state(TyObject *module)
 {
-    void *state = PyModule_GetState(module);
+    void *state = TyModule_GetState(module);
     assert(state != NULL);
     return (readlinestate *)state;
 }
@@ -115,65 +115,65 @@ module readline
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=ad49da781b9c8721]*/
 
 static int
-readline_clear(PyObject *m)
+readline_clear(TyObject *m)
 {
    readlinestate *state = get_readline_state(m);
-   Py_CLEAR(state->completion_display_matches_hook);
-   Py_CLEAR(state->startup_hook);
-   Py_CLEAR(state->pre_input_hook);
-   Py_CLEAR(state->completer);
-   Py_CLEAR(state->begidx);
-   Py_CLEAR(state->endidx);
+   Ty_CLEAR(state->completion_display_matches_hook);
+   Ty_CLEAR(state->startup_hook);
+   Ty_CLEAR(state->pre_input_hook);
+   Ty_CLEAR(state->completer);
+   Ty_CLEAR(state->begidx);
+   Ty_CLEAR(state->endidx);
    return 0;
 }
 
 static int
-readline_traverse(PyObject *m, visitproc visit, void *arg)
+readline_traverse(TyObject *m, visitproc visit, void *arg)
 {
     readlinestate *state = get_readline_state(m);
-    Py_VISIT(state->completion_display_matches_hook);
-    Py_VISIT(state->startup_hook);
-    Py_VISIT(state->pre_input_hook);
-    Py_VISIT(state->completer);
-    Py_VISIT(state->begidx);
-    Py_VISIT(state->endidx);
+    Ty_VISIT(state->completion_display_matches_hook);
+    Ty_VISIT(state->startup_hook);
+    Ty_VISIT(state->pre_input_hook);
+    Ty_VISIT(state->completer);
+    Ty_VISIT(state->begidx);
+    Ty_VISIT(state->endidx);
     return 0;
 }
 
 static void
 readline_free(void *m)
 {
-    readline_clear((PyObject *)m);
+    readline_clear((TyObject *)m);
 }
 
-static PyModuleDef readlinemodule;
+static TyModuleDef readlinemodule;
 
 static inline readlinestate*
 get_hook_module_state(void)
 {
-    PyObject *mod = PyState_FindModule(&readlinemodule);
+    TyObject *mod = PyState_FindModule(&readlinemodule);
     if (mod == NULL){
-        PyErr_Clear();
+        TyErr_Clear();
         return NULL;
     }
-    Py_INCREF(mod);
+    Ty_INCREF(mod);
     readlinestate *state = get_readline_state(mod);
-    Py_DECREF(mod);
+    Ty_DECREF(mod);
     return state;
 }
 
 /* Convert to/from multibyte C strings */
 
-static PyObject *
-encode(PyObject *b)
+static TyObject *
+encode(TyObject *b)
 {
-    return PyUnicode_EncodeLocale(b, "surrogateescape");
+    return TyUnicode_EncodeLocale(b, "surrogateescape");
 }
 
-static PyObject *
+static TyObject *
 decode(const char *s)
 {
-    return PyUnicode_DecodeLocale(s, "surrogateescape");
+    return TyUnicode_DecodeLocale(s, "surrogateescape");
 }
 
 
@@ -209,27 +209,27 @@ readline.parse_and_bind
 Execute the init line provided in the string argument.
 [clinic start generated code]*/
 
-static PyObject *
-readline_parse_and_bind_impl(PyObject *module, PyObject *string)
+static TyObject *
+readline_parse_and_bind_impl(TyObject *module, TyObject *string)
 /*[clinic end generated code: output=828d9b6630d434f5 input=cefdc0f9f62f9fcc]*/
 {
     char *copy;
-    PyObject *encoded = encode(string);
+    TyObject *encoded = encode(string);
     if (encoded == NULL) {
         return NULL;
     }
     /* Make a copy -- rl_parse_and_bind() modifies its argument */
     /* Bernard Herzog */
-    copy = PyMem_Malloc(1 + PyBytes_GET_SIZE(encoded));
+    copy = TyMem_Malloc(1 + TyBytes_GET_SIZE(encoded));
     if (copy == NULL) {
-        Py_DECREF(encoded);
-        return PyErr_NoMemory();
+        Ty_DECREF(encoded);
+        return TyErr_NoMemory();
     }
-    strcpy(copy, PyBytes_AS_STRING(encoded));
-    Py_DECREF(encoded);
+    strcpy(copy, TyBytes_AS_STRING(encoded));
+    Ty_DECREF(encoded);
     rl_parse_and_bind(copy);
-    PyMem_Free(copy); /* Free the copy */
-    Py_RETURN_NONE;
+    TyMem_Free(copy); /* Free the copy */
+    Ty_RETURN_NONE;
 }
 
 /* Exported function to parse a readline init file */
@@ -246,33 +246,33 @@ Execute a readline initialization file.
 The default filename is the last filename used.
 [clinic start generated code]*/
 
-static PyObject *
-readline_read_init_file_impl(PyObject *module, PyObject *filename_obj)
+static TyObject *
+readline_read_init_file_impl(TyObject *module, TyObject *filename_obj)
 /*[clinic end generated code: output=8e059b676142831e input=62b767adfab6cc15]*/
 {
-    PyObject *filename_bytes;
-    if (filename_obj != Py_None) {
-        if (!PyUnicode_FSConverter(filename_obj, &filename_bytes))
+    TyObject *filename_bytes;
+    if (filename_obj != Ty_None) {
+        if (!TyUnicode_FSConverter(filename_obj, &filename_bytes))
             return NULL;
-        if (PySys_Audit("open", "OCi", filename_obj, 'r', 0) < 0) {
+        if (TySys_Audit("open", "OCi", filename_obj, 'r', 0) < 0) {
             return NULL;
         }
-        errno = rl_read_init_file(PyBytes_AS_STRING(filename_bytes));
-        Py_DECREF(filename_bytes);
+        errno = rl_read_init_file(TyBytes_AS_STRING(filename_bytes));
+        Ty_DECREF(filename_bytes);
     } else {
         /* We have the choice to either try to exactly reproduce the
          * logic to find the filename, ignore it, or provide a dummy value.
          * In contract to the history file manipulations, there's no
          * clear default to choose. */
-        if (PySys_Audit("open", "sCi", "<readline_init_file>", 'r', 0) < 0) {
+        if (TySys_Audit("open", "sCi", "<readline_init_file>", 'r', 0) < 0) {
             return NULL;
         }
         errno = rl_read_init_file(NULL);
     }
     if (errno)
-        return PyErr_SetFromErrno(PyExc_OSError);
+        return TyErr_SetFromErrno(TyExc_OSError);
     disable_bracketed_paste();
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /* Exported function to load a readline history file */
@@ -289,30 +289,30 @@ Load a readline history file.
 The default filename is ~/.history.
 [clinic start generated code]*/
 
-static PyObject *
-readline_read_history_file_impl(PyObject *module, PyObject *filename_obj)
+static TyObject *
+readline_read_history_file_impl(TyObject *module, TyObject *filename_obj)
 /*[clinic end generated code: output=66a951836fb54fbb input=5d86fd7813172a67]*/
 {
-    PyObject *filename_bytes;
-    if (filename_obj != Py_None) {
-        if (!PyUnicode_FSConverter(filename_obj, &filename_bytes))
+    TyObject *filename_bytes;
+    if (filename_obj != Ty_None) {
+        if (!TyUnicode_FSConverter(filename_obj, &filename_bytes))
             return NULL;
-        if (PySys_Audit("open", "OCi", filename_obj, 'r', 0) < 0) {
+        if (TySys_Audit("open", "OCi", filename_obj, 'r', 0) < 0) {
             return NULL;
         }
-        errno = read_history(PyBytes_AS_STRING(filename_bytes));
-        Py_DECREF(filename_bytes);
+        errno = read_history(TyBytes_AS_STRING(filename_bytes));
+        Ty_DECREF(filename_bytes);
     } else {
         /* Use the documented default filename here,
          * even though readline expands it different internally. */
-        if (PySys_Audit("open", "sCi", "~/.history", 'r', 0) < 0) {
+        if (TySys_Audit("open", "sCi", "~/.history", 'r', 0) < 0) {
             return NULL;
         }
         errno = read_history(NULL);
     }
     if (errno)
-        return PyErr_SetFromErrno(PyExc_OSError);
-    Py_RETURN_NONE;
+        return TyErr_SetFromErrno(TyExc_OSError);
+    Ty_RETURN_NONE;
 }
 
 static int _history_length = -1; /* do not truncate history by default */
@@ -331,18 +331,18 @@ Save a readline history file.
 The default filename is ~/.history.
 [clinic start generated code]*/
 
-static PyObject *
-readline_write_history_file_impl(PyObject *module, PyObject *filename_obj)
+static TyObject *
+readline_write_history_file_impl(TyObject *module, TyObject *filename_obj)
 /*[clinic end generated code: output=fbcad13d8ef59ae6 input=34aaada95120cfaa]*/
 {
-    PyObject *filename_bytes;
+    TyObject *filename_bytes;
     const char *filename;
     int err;
-    if (filename_obj != Py_None) {
-        if (!PyUnicode_FSConverter(filename_obj, &filename_bytes))
+    if (filename_obj != Ty_None) {
+        if (!TyUnicode_FSConverter(filename_obj, &filename_bytes))
             return NULL;
-        filename = PyBytes_AS_STRING(filename_bytes);
-        if (PySys_Audit("open", "OCi", filename_obj, 'w', 0) < 0) {
+        filename = TyBytes_AS_STRING(filename_bytes);
+        if (TySys_Audit("open", "OCi", filename_obj, 'w', 0) < 0) {
             return NULL;
         }
     } else {
@@ -350,7 +350,7 @@ readline_write_history_file_impl(PyObject *module, PyObject *filename_obj)
         filename = NULL;
         /* Use the documented default filename here,
          * even though readline expands it different internally. */
-        if (PySys_Audit("open", "sCi", "~/.history", 'w', 0) < 0) {
+        if (TySys_Audit("open", "sCi", "~/.history", 'w', 0) < 0) {
             return NULL;
         }
     }
@@ -358,11 +358,11 @@ readline_write_history_file_impl(PyObject *module, PyObject *filename_obj)
     int history_length = FT_ATOMIC_LOAD_INT_RELAXED(_history_length);
     if (!err && history_length >= 0)
         history_truncate_file(filename, history_length);
-    Py_XDECREF(filename_bytes);
+    Ty_XDECREF(filename_bytes);
     errno = err;
     if (errno)
-        return PyErr_SetFromErrno(PyExc_OSError);
-    Py_RETURN_NONE;
+        return TyErr_SetFromErrno(TyExc_OSError);
+    Ty_RETURN_NONE;
 }
 
 #ifdef HAVE_RL_APPEND_HISTORY
@@ -381,25 +381,25 @@ Append the last nelements items of the history list to file.
 The default filename is ~/.history.
 [clinic start generated code]*/
 
-static PyObject *
-readline_append_history_file_impl(PyObject *module, int nelements,
-                                  PyObject *filename_obj)
+static TyObject *
+readline_append_history_file_impl(TyObject *module, int nelements,
+                                  TyObject *filename_obj)
 /*[clinic end generated code: output=5df06fc9da56e4e4 input=78a6061a8d3a0275]*/
 {
     if (nelements < 0)
     {
-        PyErr_SetString(PyExc_ValueError, "nelements must be positive");
+        TyErr_SetString(TyExc_ValueError, "nelements must be positive");
         return NULL;
     }
 
-    PyObject *filename_bytes;
+    TyObject *filename_bytes;
     const char *filename;
     int err;
-    if (filename_obj != Py_None) {
-        if (!PyUnicode_FSConverter(filename_obj, &filename_bytes))
+    if (filename_obj != Ty_None) {
+        if (!TyUnicode_FSConverter(filename_obj, &filename_bytes))
             return NULL;
-        filename = PyBytes_AS_STRING(filename_bytes);
-        if (PySys_Audit("open", "OCi", filename_obj, 'a', 0) < 0) {
+        filename = TyBytes_AS_STRING(filename_bytes);
+        if (TySys_Audit("open", "OCi", filename_obj, 'a', 0) < 0) {
             return NULL;
         }
     } else {
@@ -407,7 +407,7 @@ readline_append_history_file_impl(PyObject *module, int nelements,
         filename = NULL;
         /* Use the documented default filename here,
          * even though readline expands it different internally. */
-        if (PySys_Audit("open", "sCi", "~/.history", 'a', 0) < 0) {
+        if (TySys_Audit("open", "sCi", "~/.history", 'a', 0) < 0) {
             return NULL;
         }
     }
@@ -416,11 +416,11 @@ readline_append_history_file_impl(PyObject *module, int nelements,
     int history_length = FT_ATOMIC_LOAD_INT_RELAXED(_history_length);
     if (!err && history_length >= 0)
         history_truncate_file(filename, history_length);
-    Py_XDECREF(filename_bytes);
+    Ty_XDECREF(filename_bytes);
     errno = err;
     if (errno)
-        return PyErr_SetFromErrno(PyExc_OSError);
-    Py_RETURN_NONE;
+        return TyErr_SetFromErrno(TyExc_OSError);
+    Ty_RETURN_NONE;
 }
 #endif
 
@@ -438,12 +438,12 @@ Set the maximal number of lines which will be written to the history file.
 A negative length is used to inhibit history truncation.
 [clinic start generated code]*/
 
-static PyObject *
-readline_set_history_length_impl(PyObject *module, int length)
+static TyObject *
+readline_set_history_length_impl(TyObject *module, int length)
 /*[clinic end generated code: output=e161a53e45987dc7 input=b8901bf16488b760]*/
 {
     FT_ATOMIC_STORE_INT_RELAXED(_history_length, length);
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /* Get history length */
@@ -454,32 +454,32 @@ readline.get_history_length
 Return the maximum number of lines that will be written to the history file.
 [clinic start generated code]*/
 
-static PyObject *
-readline_get_history_length_impl(PyObject *module)
+static TyObject *
+readline_get_history_length_impl(TyObject *module)
 /*[clinic end generated code: output=83a2eeae35b6d2b9 input=5dce2eeba4327817]*/
 {
     int history_length = FT_ATOMIC_LOAD_INT_RELAXED(_history_length);
-    return PyLong_FromLong(history_length);
+    return TyLong_FromLong(history_length);
 }
 
 /* Generic hook function setter */
 
-static PyObject *
-set_hook(const char *funcname, PyObject **hook_var, PyObject *function)
+static TyObject *
+set_hook(const char *funcname, TyObject **hook_var, TyObject *function)
 {
-    if (function == Py_None) {
-        Py_CLEAR(*hook_var);
+    if (function == Ty_None) {
+        Ty_CLEAR(*hook_var);
     }
     else if (PyCallable_Check(function)) {
-        Py_XSETREF(*hook_var, Py_NewRef(function));
+        Ty_XSETREF(*hook_var, Ty_NewRef(function));
     }
     else {
-        PyErr_Format(PyExc_TypeError,
+        TyErr_Format(TyExc_TypeError,
                      "set_%.50s(func): argument not callable",
                      funcname);
         return NULL;
     }
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -496,13 +496,13 @@ The function is called as
 once each time matches need to be displayed.
 [clinic start generated code]*/
 
-static PyObject *
-readline_set_completion_display_matches_hook_impl(PyObject *module,
-                                                  PyObject *function)
+static TyObject *
+readline_set_completion_display_matches_hook_impl(TyObject *module,
+                                                  TyObject *function)
 /*[clinic end generated code: output=516e5cb8db75a328 input=ea4191e4a07d28d3]*/
 {
     readlinestate *state = get_readline_state(module);
-    PyObject *result = set_hook("completion_display_matches_hook",
+    TyObject *result = set_hook("completion_display_matches_hook",
                     &state->completion_display_matches_hook,
                     function);
 #ifdef HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
@@ -533,8 +533,8 @@ The function is called with no arguments just
 before readline prints the first prompt.
 [clinic start generated code]*/
 
-static PyObject *
-readline_set_startup_hook_impl(PyObject *module, PyObject *function)
+static TyObject *
+readline_set_startup_hook_impl(TyObject *module, TyObject *function)
 /*[clinic end generated code: output=02cd0e0c4fa082ad input=11fce34992f1125e]*/
 {
     readlinestate *state = get_readline_state(module);
@@ -560,8 +560,8 @@ has been printed and just before readline starts reading input
 characters.
 [clinic start generated code]*/
 
-static PyObject *
-readline_set_pre_input_hook_impl(PyObject *module, PyObject *function)
+static TyObject *
+readline_set_pre_input_hook_impl(TyObject *module, TyObject *function)
 /*[clinic end generated code: output=fe1a96505096f464 input=96d3d5ff4a0c7c28]*/
 {
     readlinestate *state = get_readline_state(module);
@@ -579,11 +579,11 @@ readline.get_completion_type
 Get the type of completion being attempted.
 [clinic start generated code]*/
 
-static PyObject *
-readline_get_completion_type_impl(PyObject *module)
+static TyObject *
+readline_get_completion_type_impl(TyObject *module)
 /*[clinic end generated code: output=5c54d58a04997c07 input=04b92bc7a82dac91]*/
 {
-  return PyLong_FromLong(rl_completion_type);
+  return TyLong_FromLong(rl_completion_type);
 }
 
 /* Get the beginning index for the scope of the tab-completion */
@@ -594,12 +594,12 @@ readline.get_begidx
 Get the beginning index of the completion scope.
 [clinic start generated code]*/
 
-static PyObject *
-readline_get_begidx_impl(PyObject *module)
+static TyObject *
+readline_get_begidx_impl(TyObject *module)
 /*[clinic end generated code: output=362616ee8ed1b2b1 input=e083b81c8eb4bac3]*/
 {
     readlinestate *state = get_readline_state(module);
-    return Py_NewRef(state->begidx);
+    return Ty_NewRef(state->begidx);
 }
 
 /* Get the ending index for the scope of the tab-completion */
@@ -610,12 +610,12 @@ readline.get_endidx
 Get the ending index of the completion scope.
 [clinic start generated code]*/
 
-static PyObject *
-readline_get_endidx_impl(PyObject *module)
+static TyObject *
+readline_get_endidx_impl(TyObject *module)
 /*[clinic end generated code: output=7f763350b12d7517 input=d4c7e34a625fd770]*/
 {
     readlinestate *state = get_readline_state(module);
-    return Py_NewRef(state->endidx);
+    return Ty_NewRef(state->endidx);
 }
 
 /* Set the tab-completion word-delimiters that readline uses */
@@ -630,20 +630,20 @@ readline.set_completer_delims
 Set the word delimiters for completion.
 [clinic start generated code]*/
 
-static PyObject *
-readline_set_completer_delims_impl(PyObject *module, PyObject *string)
+static TyObject *
+readline_set_completer_delims_impl(TyObject *module, TyObject *string)
 /*[clinic end generated code: output=017e48e9704a2f64 input=6c87bb1cbed7fcf1]*/
 {
     char *break_chars;
-    PyObject *encoded = encode(string);
+    TyObject *encoded = encode(string);
     if (encoded == NULL) {
         return NULL;
     }
     /* Keep a reference to the allocated memory in the module state in case
        some other module modifies rl_completer_word_break_characters
        (see issue #17289). */
-    break_chars = strdup(PyBytes_AS_STRING(encoded));
-    Py_DECREF(encoded);
+    break_chars = strdup(TyBytes_AS_STRING(encoded));
+    Ty_DECREF(encoded);
     if (break_chars) {
         free(completer_word_break_characters);
         completer_word_break_characters = break_chars;
@@ -655,10 +655,10 @@ readline_set_completer_delims_impl(PyObject *module, PyObject *string)
         }
 #endif
         rl_completer_word_break_characters = break_chars;
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
     else
-        return PyErr_NoMemory();
+        return TyErr_NoMemory();
 }
 
 /* _py_free_history_entry_lock_held: Utility function to free a history entry. */
@@ -703,27 +703,27 @@ readline.remove_history_item
 Remove history item given by its zero-based position.
 [clinic start generated code]*/
 
-static PyObject *
-readline_remove_history_item_impl(PyObject *module, int entry_number)
+static TyObject *
+readline_remove_history_item_impl(TyObject *module, int entry_number)
 /*[clinic end generated code: output=ab114f029208c7e8 input=847d7cc7e7c25852]*/
 {
     HIST_ENTRY *entry;
 
     if (entry_number < 0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "History index cannot be negative");
         return NULL;
     }
     entry = remove_history(entry_number);
     if (!entry) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "No history item at position %d",
                       entry_number);
         return NULL;
     }
     /* free memory allocated for the history entry */
     _py_free_history_entry_lock_held(entry);
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /*[clinic input]
@@ -739,16 +739,16 @@ Replaces history item given by its position with contents of line.
 pos is zero-based.
 [clinic start generated code]*/
 
-static PyObject *
-readline_replace_history_item_impl(PyObject *module, int entry_number,
-                                   PyObject *line)
+static TyObject *
+readline_replace_history_item_impl(TyObject *module, int entry_number,
+                                   TyObject *line)
 /*[clinic end generated code: output=f8cec2770ca125eb input=b44c8dcdc2dd87fe]*/
 {
-    PyObject *encoded;
+    TyObject *encoded;
     HIST_ENTRY *old_entry;
 
     if (entry_number < 0) {
-        PyErr_SetString(PyExc_ValueError,
+        TyErr_SetString(TyExc_ValueError,
                         "History index cannot be negative");
         return NULL;
     }
@@ -758,17 +758,17 @@ readline_replace_history_item_impl(PyObject *module, int entry_number,
     }
     old_entry = replace_history_entry(
         entry_number + libedit_append_replace_history_offset,
-        PyBytes_AS_STRING(encoded), (void *)NULL);
-    Py_DECREF(encoded);
+        TyBytes_AS_STRING(encoded), (void *)NULL);
+    Ty_DECREF(encoded);
     if (!old_entry) {
-        PyErr_Format(PyExc_ValueError,
+        TyErr_Format(TyExc_ValueError,
                      "No history item at position %d",
                      entry_number);
         return NULL;
     }
     /* free memory allocated for the old history entry */
     _py_free_history_entry_lock_held(old_entry);
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 /* Add a line to the history buffer */
@@ -783,17 +783,17 @@ readline.add_history
 Add an item to the history buffer.
 [clinic start generated code]*/
 
-static PyObject *
-readline_add_history_impl(PyObject *module, PyObject *string)
+static TyObject *
+readline_add_history_impl(TyObject *module, TyObject *string)
 /*[clinic end generated code: output=89047062042ac344 input=faa7053b8612513b]*/
 {
-    PyObject *encoded = encode(string);
+    TyObject *encoded = encode(string);
     if (encoded == NULL) {
         return NULL;
     }
-    add_history(PyBytes_AS_STRING(encoded));
-    Py_DECREF(encoded);
-    Py_RETURN_NONE;
+    add_history(TyBytes_AS_STRING(encoded));
+    Ty_DECREF(encoded);
+    Ty_RETURN_NONE;
 }
 
 static int should_auto_add_history = 1;
@@ -809,13 +809,13 @@ readline.set_auto_history
 Enables or disables automatic history.
 [clinic start generated code]*/
 
-static PyObject *
-readline_set_auto_history_impl(PyObject *module,
+static TyObject *
+readline_set_auto_history_impl(TyObject *module,
                                int _should_auto_add_history)
 /*[clinic end generated code: output=619c6968246fd82b input=3d413073a1a03355]*/
 {
     should_auto_add_history = _should_auto_add_history;
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 
@@ -828,8 +828,8 @@ readline.get_completer_delims
 Get the word delimiters for completion.
 [clinic start generated code]*/
 
-static PyObject *
-readline_get_completer_delims_impl(PyObject *module)
+static TyObject *
+readline_get_completer_delims_impl(TyObject *module)
 /*[clinic end generated code: output=6b060280fa68ef43 input=80583cdf8176bcdd]*/
 {
     return decode(rl_completer_word_break_characters);
@@ -851,8 +851,8 @@ for state in 0, 1, 2, ..., until it returns a non-string.
 It should return the next possible completion starting with 'text'.
 [clinic start generated code]*/
 
-static PyObject *
-readline_set_completer_impl(PyObject *module, PyObject *function)
+static TyObject *
+readline_set_completer_impl(TyObject *module, TyObject *function)
 /*[clinic end generated code: output=171a2a60f81d3204 input=97f539d8d0bfcb95]*/
 {
     readlinestate *state = get_readline_state(module);
@@ -865,15 +865,15 @@ readline.get_completer
 Get the current completer function.
 [clinic start generated code]*/
 
-static PyObject *
-readline_get_completer_impl(PyObject *module)
+static TyObject *
+readline_get_completer_impl(TyObject *module)
 /*[clinic end generated code: output=6e6bbd8226d14475 input=6457522e56d70d13]*/
 {
     readlinestate *state = get_readline_state(module);
     if (state->completer == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
-    return Py_NewRef(state->completer);
+    return Ty_NewRef(state->completer);
 }
 
 /* Private function to get current length of history.  XXX It may be
@@ -907,8 +907,8 @@ readline.get_history_item
 Return the current contents of history item at one-based index.
 [clinic start generated code]*/
 
-static PyObject *
-readline_get_history_item_impl(PyObject *module, int idx)
+static TyObject *
+readline_get_history_item_impl(TyObject *module, int idx)
 /*[clinic end generated code: output=83d3e53ea5f34b3d input=2835b50c7bde705f]*/
 {
     HIST_ENTRY *hist_ent;
@@ -929,13 +929,13 @@ readline_get_history_item_impl(PyObject *module, int idx)
          */
         if (idx < (0 + libedit_history_start)
                 || idx >= (length + libedit_history_start)) {
-            Py_RETURN_NONE;
+            Ty_RETURN_NONE;
         }
     }
     if ((hist_ent = history_get(idx)))
         return decode(hist_ent->line);
     else {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
 }
 
@@ -948,11 +948,11 @@ readline.get_current_history_length
 Return the current (not the maximum) length of history.
 [clinic start generated code]*/
 
-static PyObject *
-readline_get_current_history_length_impl(PyObject *module)
+static TyObject *
+readline_get_current_history_length_impl(TyObject *module)
 /*[clinic end generated code: output=436b294f12ba1e3f input=22e9fd0abbc2fd8d]*/
 {
-    return PyLong_FromLong((long)_py_get_history_length_lock_held());
+    return TyLong_FromLong((long)_py_get_history_length_lock_held());
 }
 
 /* Exported function to read the current line buffer */
@@ -964,8 +964,8 @@ readline.get_line_buffer
 Return the current contents of the line buffer.
 [clinic start generated code]*/
 
-static PyObject *
-readline_get_line_buffer_impl(PyObject *module)
+static TyObject *
+readline_get_line_buffer_impl(TyObject *module)
 /*[clinic end generated code: output=d22f9025ecad80e4 input=8e02e0fe081feece]*/
 {
     return decode(rl_line_buffer);
@@ -982,12 +982,12 @@ readline.clear_history
 Clear the current readline history.
 [clinic start generated code]*/
 
-static PyObject *
-readline_clear_history_impl(PyObject *module)
+static TyObject *
+readline_clear_history_impl(TyObject *module)
 /*[clinic end generated code: output=1f2dbb0dfa5d5ebb input=b2c6b11551593053]*/
 {
     clear_history();
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 #endif
 
@@ -1004,17 +1004,17 @@ readline.insert_text
 Insert text into the line buffer at the cursor position.
 [clinic start generated code]*/
 
-static PyObject *
-readline_insert_text_impl(PyObject *module, PyObject *string)
+static TyObject *
+readline_insert_text_impl(TyObject *module, TyObject *string)
 /*[clinic end generated code: output=4bf4e176f68750e0 input=2f401f4316df33c2]*/
 {
-    PyObject *encoded = encode(string);
+    TyObject *encoded = encode(string);
     if (encoded == NULL) {
         return NULL;
     }
-    rl_insert_text(PyBytes_AS_STRING(encoded));
-    Py_DECREF(encoded);
-    Py_RETURN_NONE;
+    rl_insert_text(TyBytes_AS_STRING(encoded));
+    Ty_DECREF(encoded);
+    Ty_RETURN_NONE;
 }
 
 /* Redisplay the line buffer */
@@ -1026,19 +1026,19 @@ readline.redisplay
 Change what's displayed on the screen to reflect contents of the line buffer.
 [clinic start generated code]*/
 
-static PyObject *
-readline_redisplay_impl(PyObject *module)
+static TyObject *
+readline_redisplay_impl(TyObject *module)
 /*[clinic end generated code: output=a8b9725827c3c34b input=5895fd014615ff58]*/
 {
     rl_redisplay();
-    Py_RETURN_NONE;
+    Ty_RETURN_NONE;
 }
 
 #include "clinic/readline.c.h"
 
 /* Table of functions exported by the module */
 
-static struct PyMethodDef readline_methods[] =
+static struct TyMethodDef readline_methods[] =
 {
     READLINE_PARSE_AND_BIND_METHODDEF
     READLINE_GET_LINE_BUFFER_METHODDEF
@@ -1080,26 +1080,26 @@ static struct PyMethodDef readline_methods[] =
 /* C function to call the Python hooks. */
 
 static int
-on_hook(PyObject *func)
+on_hook(TyObject *func)
 {
     int result = 0;
     if (func != NULL) {
-        PyObject *r;
+        TyObject *r;
         r = PyObject_CallNoArgs(func);
         if (r == NULL)
             goto error;
-        if (r == Py_None)
+        if (r == Ty_None)
             result = 0;
         else {
-            result = PyLong_AsInt(r);
-            if (result == -1 && PyErr_Occurred())
+            result = TyLong_AsInt(r);
+            if (result == -1 && TyErr_Occurred())
                 goto error;
         }
-        Py_DECREF(r);
+        Ty_DECREF(r);
         goto done;
       error:
-        PyErr_Clear();
-        Py_XDECREF(r);
+        TyErr_Clear();
+        Ty_XDECREF(r);
       done:
         return result;
     }
@@ -1107,41 +1107,41 @@ on_hook(PyObject *func)
 }
 
 static int
-#if defined(_RL_FUNCTION_TYPEDEF) || !defined(Py_RL_STARTUP_HOOK_TAKES_ARGS)
+#if defined(_RL_FUNCTION_TYPEDEF) || !defined(Ty_RL_STARTUP_HOOK_TAKES_ARGS)
 on_startup_hook(void)
 #else
-on_startup_hook(const char *Py_UNUSED(text), int Py_UNUSED(state))
+on_startup_hook(const char *Ty_UNUSED(text), int Ty_UNUSED(state))
 #endif
 {
     int r;
-    PyGILState_STATE gilstate = PyGILState_Ensure();
+    TyGILState_STATE gilstate = TyGILState_Ensure();
     readlinestate *state = get_hook_module_state();
     if (state == NULL) {
-        PyGILState_Release(gilstate);
+        TyGILState_Release(gilstate);
         return -1;
     }
     r = on_hook(state->startup_hook);
-    PyGILState_Release(gilstate);
+    TyGILState_Release(gilstate);
     return r;
 }
 
 #ifdef HAVE_RL_PRE_INPUT_HOOK
 static int
-#if defined(_RL_FUNCTION_TYPEDEF) || !defined(Py_RL_STARTUP_HOOK_TAKES_ARGS)
+#if defined(_RL_FUNCTION_TYPEDEF) || !defined(Ty_RL_STARTUP_HOOK_TAKES_ARGS)
 on_pre_input_hook(void)
 #else
-on_pre_input_hook(const char *Py_UNUSED(text), int Py_UNUSED(state))
+on_pre_input_hook(const char *Ty_UNUSED(text), int Ty_UNUSED(state))
 #endif
 {
     int r;
-    PyGILState_STATE gilstate = PyGILState_Ensure();
+    TyGILState_STATE gilstate = TyGILState_Ensure();
     readlinestate *state = get_hook_module_state();
     if (state == NULL) {
-        PyGILState_Release(gilstate);
+        TyGILState_Release(gilstate);
         return -1;
     }
     r = on_hook(state->pre_input_hook);
-    PyGILState_Release(gilstate);
+    TyGILState_Release(gilstate);
     return r;
 }
 #endif
@@ -1155,21 +1155,21 @@ on_completion_display_matches_hook(char **matches,
                                    int num_matches, int max_length)
 {
     int i;
-    PyObject *sub, *m=NULL, *s=NULL, *r=NULL;
-    PyGILState_STATE gilstate = PyGILState_Ensure();
+    TyObject *sub, *m=NULL, *s=NULL, *r=NULL;
+    TyGILState_STATE gilstate = TyGILState_Ensure();
     readlinestate *state = get_hook_module_state();
     if (state == NULL) {
-        PyGILState_Release(gilstate);
+        TyGILState_Release(gilstate);
         return;
     }
-    m = PyList_New(num_matches);
+    m = TyList_New(num_matches);
     if (m == NULL)
         goto error;
     for (i = 0; i < num_matches; i++) {
         s = decode(matches[i+1]);
         if (s == NULL)
             goto error;
-        PyList_SET_ITEM(m, i, s);
+        TyList_SET_ITEM(m, i, s);
     }
     sub = decode(matches[0]);
     r = PyObject_CallFunction(state->completion_display_matches_hook,
@@ -1178,25 +1178,25 @@ on_completion_display_matches_hook(char **matches,
     m=NULL;
 
     if (r == NULL ||
-        (r != Py_None && PyLong_AsLong(r) == -1 && PyErr_Occurred())) {
+        (r != Ty_None && TyLong_AsLong(r) == -1 && TyErr_Occurred())) {
         goto error;
     }
-    Py_CLEAR(r);
+    Ty_CLEAR(r);
 
     if (0) {
     error:
-        PyErr_Clear();
-        Py_XDECREF(m);
-        Py_XDECREF(r);
+        TyErr_Clear();
+        Ty_XDECREF(m);
+        Ty_XDECREF(r);
     }
-    PyGILState_Release(gilstate);
+    TyGILState_Release(gilstate);
 }
 
 #endif
 
 #ifdef HAVE_RL_RESIZE_TERMINAL
 static volatile sig_atomic_t sigwinch_received;
-static PyOS_sighandler_t sigwinch_ohandler;
+static TyOS_sighandler_t sigwinch_ohandler;
 
 static void
 readline_sigwinch_handler(int signum)
@@ -1209,7 +1209,7 @@ readline_sigwinch_handler(int signum)
 #ifndef HAVE_SIGACTION
     /* If the handler was installed with signal() rather than sigaction(),
     we need to reinstall it. */
-    PyOS_setsig(SIGWINCH, readline_sigwinch_handler);
+    TyOS_setsig(SIGWINCH, readline_sigwinch_handler);
 #endif
 }
 #endif
@@ -1220,39 +1220,39 @@ static char *
 on_completion(const char *text, int state)
 {
     char *result = NULL;
-    PyGILState_STATE gilstate = PyGILState_Ensure();
+    TyGILState_STATE gilstate = TyGILState_Ensure();
     readlinestate *module_state = get_hook_module_state();
     if (module_state == NULL) {
-        PyGILState_Release(gilstate);
+        TyGILState_Release(gilstate);
         return NULL;
     }
     if (module_state->completer != NULL) {
-        PyObject *r = NULL, *t;
+        TyObject *r = NULL, *t;
         rl_attempted_completion_over = 1;
         t = decode(text);
         r = PyObject_CallFunction(module_state->completer, "Ni", t, state);
         if (r == NULL)
             goto error;
-        if (r == Py_None) {
+        if (r == Ty_None) {
             result = NULL;
         }
         else {
-            PyObject *encoded = encode(r);
+            TyObject *encoded = encode(r);
             if (encoded == NULL)
                 goto error;
-            result = strdup(PyBytes_AS_STRING(encoded));
-            Py_DECREF(encoded);
+            result = strdup(TyBytes_AS_STRING(encoded));
+            Ty_DECREF(encoded);
         }
-        Py_DECREF(r);
+        Ty_DECREF(r);
         goto done;
       error:
-        PyErr_Clear();
-        Py_XDECREF(r);
+        TyErr_Clear();
+        Ty_XDECREF(r);
       done:
-        PyGILState_Release(gilstate);
+        TyGILState_Release(gilstate);
         return result;
     }
-    PyGILState_Release(gilstate);
+    TyGILState_Release(gilstate);
     return result;
 }
 
@@ -1267,7 +1267,7 @@ flex_complete(const char *text, int start, int end)
     char saved;
     size_t start_size, end_size;
     wchar_t *s;
-    PyGILState_STATE gilstate = PyGILState_Ensure();
+    TyGILState_STATE gilstate = TyGILState_Ensure();
     readlinestate *state = get_hook_module_state();
 #ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
     rl_completion_append_character ='\0';
@@ -1278,32 +1278,32 @@ flex_complete(const char *text, int start, int end)
 
     saved = rl_line_buffer[start];
     rl_line_buffer[start] = 0;
-    s = Py_DecodeLocale(rl_line_buffer, &start_size);
+    s = Ty_DecodeLocale(rl_line_buffer, &start_size);
     rl_line_buffer[start] = saved;
     if (s == NULL) {
         goto done;
     }
-    PyMem_RawFree(s);
+    TyMem_RawFree(s);
     saved = rl_line_buffer[end];
     rl_line_buffer[end] = 0;
-    s = Py_DecodeLocale(rl_line_buffer + start, &end_size);
+    s = Ty_DecodeLocale(rl_line_buffer + start, &end_size);
     rl_line_buffer[end] = saved;
     if (s == NULL) {
         goto done;
     }
-    PyMem_RawFree(s);
+    TyMem_RawFree(s);
     start = (int)start_size;
     end = start + (int)end_size;
 
 done:
     if (state) {
-        Py_XDECREF(state->begidx);
-        Py_XDECREF(state->endidx);
-        state->begidx = PyLong_FromLong((long) start);
-        state->endidx = PyLong_FromLong((long) end);
+        Ty_XDECREF(state->begidx);
+        Ty_XDECREF(state->endidx);
+        state->begidx = TyLong_FromLong((long) start);
+        state->endidx = TyLong_FromLong((long) end);
     }
     result = completion_matches((char *)text, *on_completion);
-    PyGILState_Release(gilstate);
+    TyGILState_Release(gilstate);
     return result;
 }
 
@@ -1365,7 +1365,7 @@ setup_readline(readlinestate *mod_state)
     rl_bind_key_in_map ('\033', rl_complete, emacs_meta_keymap);
 #ifdef HAVE_RL_RESIZE_TERMINAL
     /* Set up signal handler for window resize */
-    sigwinch_ohandler = PyOS_setsig(SIGWINCH, readline_sigwinch_handler);
+    sigwinch_ohandler = TyOS_setsig(SIGWINCH, readline_sigwinch_handler);
 #endif
     /* Set our hook functions */
     rl_startup_hook = on_startup_hook;
@@ -1389,8 +1389,8 @@ setup_readline(readlinestate *mod_state)
 #endif
     rl_completer_word_break_characters = completer_word_break_characters;
 
-    mod_state->begidx = PyLong_FromLong(0L);
-    mod_state->endidx = PyLong_FromLong(0L);
+    mod_state->begidx = TyLong_FromLong(0L);
+    mod_state->endidx = TyLong_FromLong(0L);
 
     if (!using_libedit_emulation)
     {
@@ -1437,7 +1437,7 @@ static char *
 readline_until_enter_or_signal(const char *prompt, int *signal)
 {
     // Defined in Parser/myreadline.c
-    extern PyThreadState *_PyOS_ReadlineTState;
+    extern PyThreadState *_TyOS_ReadlineTState;
 
     char * not_done_reading = "";
     fd_set selectset;
@@ -1462,7 +1462,7 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
             /* [Bug #1552726] Only limit the pause if an input hook has been
                defined.  */
             struct timeval *timeoutp = NULL;
-            if (PyOS_InputHook)
+            if (TyOS_InputHook)
                 timeoutp = &timeout;
 #ifdef HAVE_RL_RESIZE_TERMINAL
             /* Update readline's view of the window size after SIGWINCH */
@@ -1476,7 +1476,7 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
             has_input = select(fileno(rl_instream) + 1, &selectset,
                                NULL, NULL, timeoutp);
             err = errno;
-            if(PyOS_InputHook) PyOS_InputHook();
+            if(TyOS_InputHook) TyOS_InputHook();
         }
 
         if (has_input > 0) {
@@ -1484,9 +1484,9 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
         }
         else if (err == EINTR) {
             int s;
-            PyEval_RestoreThread(_PyOS_ReadlineTState);
-            s = PyErr_CheckSignals();
-            PyEval_SaveThread();
+            TyEval_RestoreThread(_TyOS_ReadlineTState);
+            s = TyErr_CheckSignals();
+            TyEval_SaveThread();
             if (s < 0) {
                 rl_free_line_state();
 #if defined(RL_READLINE_VERSION) && RL_READLINE_VERSION >= 0x0700
@@ -1514,8 +1514,8 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 #ifdef SAVE_LOCALE
     char *saved_locale = strdup(setlocale(LC_CTYPE, NULL));
     if (!saved_locale)
-        Py_FatalError("not enough memory to save locale");
-    _Py_SetLocaleFromEnv(LC_CTYPE);
+        Ty_FatalError("not enough memory to save locale");
+    _Ty_SetLocaleFromEnv(LC_CTYPE);
 #endif
 
     if (sys_stdin != rl_instream || sys_stdout != rl_outstream) {
@@ -1536,7 +1536,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 
     /* We got an EOF, return an empty string. */
     if (p == NULL) {
-        p = PyMem_RawMalloc(1);
+        p = TyMem_RawMalloc(1);
         if (p != NULL)
             *p = '\0';
         RESTORE_LOCALE(saved_locale)
@@ -1561,10 +1561,10 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
         if (strcmp(p, line))
             add_history(p);
     }
-    /* Copy the malloc'ed buffer into a PyMem_Malloc'ed one and
+    /* Copy the malloc'ed buffer into a TyMem_Malloc'ed one and
        release the original. */
     char *q = p;
-    p = PyMem_RawMalloc(n+2);
+    p = TyMem_RawMalloc(n+2);
     if (p != NULL) {
         memcpy(p, q, n);
         p[n] = '\n';
@@ -1584,7 +1584,7 @@ PyDoc_STRVAR(doc_module,
 PyDoc_STRVAR(doc_module_le,
 "Importing this module enables command line editing using libedit readline.");
 
-static struct PyModuleDef readlinemodule = {
+static struct TyModuleDef readlinemodule = {
     PyModuleDef_HEAD_INIT,
     "readline",
     doc_module,
@@ -1601,7 +1601,7 @@ PyMODINIT_FUNC
 PyInit_readline(void)
 {
     const char *backend = "readline";
-    PyObject *m;
+    TyObject *m;
     readlinestate *mod_state;
 
     if (strncmp(rl_library_version, libedit_version_tag, strlen(libedit_version_tag)) == 0) {
@@ -1614,47 +1614,47 @@ PyInit_readline(void)
     }
 
 
-    m = PyModule_Create(&readlinemodule);
+    m = TyModule_Create(&readlinemodule);
 
     if (m == NULL)
         return NULL;
-#ifdef Py_GIL_DISABLED
-    PyUnstable_Module_SetGIL(m, Py_MOD_GIL_NOT_USED);
+#ifdef Ty_GIL_DISABLED
+    PyUnstable_Module_SetGIL(m, Ty_MOD_GIL_NOT_USED);
 #endif
 
-    if (PyModule_AddIntConstant(m, "_READLINE_VERSION",
+    if (TyModule_AddIntConstant(m, "_READLINE_VERSION",
                                 RL_READLINE_VERSION) < 0) {
         goto error;
     }
-    if (PyModule_AddIntConstant(m, "_READLINE_RUNTIME_VERSION",
+    if (TyModule_AddIntConstant(m, "_READLINE_RUNTIME_VERSION",
                                 rl_readline_version) < 0) {
         goto error;
     }
-    if (PyModule_AddStringConstant(m, "_READLINE_LIBRARY_VERSION",
+    if (TyModule_AddStringConstant(m, "_READLINE_LIBRARY_VERSION",
                                    rl_library_version) < 0)
     {
         goto error;
     }
 
-    if (PyModule_AddStringConstant(m, "backend", backend) < 0) {
+    if (TyModule_AddStringConstant(m, "backend", backend) < 0) {
         goto error;
     }
 
-    mod_state = (readlinestate *) PyModule_GetState(m);
+    mod_state = (readlinestate *) TyModule_GetState(m);
     if (mod_state == NULL){
         goto error;
     }
-    PyOS_ReadlineFunctionPointer = call_readline;
+    TyOS_ReadlineFunctionPointer = call_readline;
     if (setup_readline(mod_state) < 0) {
-        PyErr_NoMemory();
+        TyErr_NoMemory();
         goto error;
     }
-    if (PyErr_Occurred()){
+    if (TyErr_Occurred()){
         goto error;
     }
     return m;
 
 error:
-    Py_DECREF(m);
+    Ty_DECREF(m);
     return NULL;
 }

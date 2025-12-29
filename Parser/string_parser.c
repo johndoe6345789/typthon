@@ -1,6 +1,6 @@
 #include <Python.h>
-#include "pycore_bytesobject.h"   // _PyBytes_DecodeEscape()
-#include "pycore_unicodeobject.h" // _PyUnicode_DecodeUnicodeEscapeInternal()
+#include "pycore_bytesobject.h"   // _TyBytes_DecodeEscape()
+#include "pycore_unicodeobject.h" // _TyUnicode_DecodeUnicodeEscapeInternal()
 
 #include "lexer/state.h"
 #include "pegen.h"
@@ -27,14 +27,14 @@ warn_invalid_escape_sequence(Parser *p, const char* buffer, const char *first_in
     }
 
     int octal = ('4' <= c && c <= '7');
-    PyObject *msg =
+    TyObject *msg =
         octal
-        ? PyUnicode_FromFormat(
+        ? TyUnicode_FromFormat(
               "\"\\%.3s\" is an invalid octal escape sequence. "
               "Such sequences will not work in the future. "
               "Did you mean \"\\\\%.3s\"? A raw string is also an option.",
               first_invalid_escape, first_invalid_escape)
-        : PyUnicode_FromFormat(
+        : TyUnicode_FromFormat(
               "\"\\%c\" is an invalid escape sequence. "
               "Such sequences will not work in the future. "
               "Did you mean \"\\\\%c\"? A raw string is also an option.",
@@ -42,12 +42,12 @@ warn_invalid_escape_sequence(Parser *p, const char* buffer, const char *first_in
     if (msg == NULL) {
         return -1;
     }
-    PyObject *category;
+    TyObject *category;
     if (p->feature_version >= 12) {
-        category = PyExc_SyntaxWarning;
+        category = TyExc_SyntaxWarning;
     }
     else {
-        category = PyExc_DeprecationWarning;
+        category = TyExc_DeprecationWarning;
     }
 
     // Calculate the lineno and the col_offset of the invalid escape sequence
@@ -70,8 +70,8 @@ warn_invalid_escape_sequence(Parser *p, const char* buffer, const char *first_in
     char first_quote = 0;
     if (lineno == t->lineno) {
         int quote_count = 0;
-        char* tok = PyBytes_AsString(t->bytes);
-        for (int i = 0; i < PyBytes_Size(t->bytes); i++) {
+        char* tok = TyBytes_AsString(t->bytes);
+        for (int i = 0; i < TyBytes_Size(t->bytes); i++) {
             if (tok[i] == '\'' || tok[i] == '\"') {
                 if (quote_count == 0) {
                     first_quote = tok[i];
@@ -87,38 +87,38 @@ warn_invalid_escape_sequence(Parser *p, const char* buffer, const char *first_in
         col_offset += quote_count;
     }
 
-    if (PyErr_WarnExplicitObject(category, msg, p->tok->filename,
+    if (TyErr_WarnExplicitObject(category, msg, p->tok->filename,
                                  lineno, NULL, NULL) < 0) {
-        if (PyErr_ExceptionMatches(category)) {
+        if (TyErr_ExceptionMatches(category)) {
             /* Replace the Syntax/DeprecationWarning exception with a SyntaxError
                to get a more accurate error report */
-            PyErr_Clear();
+            TyErr_Clear();
 
             /* This is needed, in order for the SyntaxError to point to the token t,
-               since _PyPegen_raise_error uses p->tokens[p->fill - 1] for the
+               since _TyPegen_raise_error uses p->tokens[p->fill - 1] for the
                error location, if p->known_err_token is not set. */
             p->known_err_token = t;
             if (octal) {
-                RAISE_ERROR_KNOWN_LOCATION(p, PyExc_SyntaxError, lineno, col_offset-1, lineno, col_offset+1,
+                RAISE_ERROR_KNOWN_LOCATION(p, TyExc_SyntaxError, lineno, col_offset-1, lineno, col_offset+1,
                     "\"\\%.3s\" is an invalid octal escape sequence. "
                     "Did you mean \"\\\\%.3s\"? A raw string is also an option.",
                     first_invalid_escape, first_invalid_escape);
             }
             else {
-                RAISE_ERROR_KNOWN_LOCATION(p, PyExc_SyntaxError, lineno, col_offset-1, lineno, col_offset+1,
+                RAISE_ERROR_KNOWN_LOCATION(p, TyExc_SyntaxError, lineno, col_offset-1, lineno, col_offset+1,
                     "\"\\%c\" is an invalid escape sequence. "
                     "Did you mean \"\\\\%c\"? A raw string is also an option.",
                     c, c);
             }
         }
-        Py_DECREF(msg);
+        Ty_DECREF(msg);
         return -1;
     }
-    Py_DECREF(msg);
+    Ty_DECREF(msg);
     return 0;
 }
 
-static PyObject *
+static TyObject *
 decode_utf8(const char **sPtr, const char *end)
 {
     const char *s;
@@ -128,14 +128,14 @@ decode_utf8(const char **sPtr, const char *end)
         s++;
     }
     *sPtr = s;
-    return PyUnicode_DecodeUTF8(t, s - t, NULL);
+    return TyUnicode_DecodeUTF8(t, s - t, NULL);
 }
 
-static PyObject *
+static TyObject *
 decode_unicode_with_escapes(Parser *parser, const char *s, size_t len, Token *t)
 {
-    PyObject *v;
-    PyObject *u;
+    TyObject *v;
+    TyObject *u;
     char *buf;
     char *p;
     const char *end;
@@ -146,11 +146,11 @@ decode_unicode_with_escapes(Parser *parser, const char *s, size_t len, Token *t)
     }
     /* "ä" (2 bytes) may become "\U000000E4" (10 bytes), or 1:5
        "\ä" (3 bytes) may become "\u005c\U000000E4" (16 bytes), or ~1:6 */
-    u = PyBytes_FromStringAndSize((char *)NULL, (Py_ssize_t)len * 6);
+    u = TyBytes_FromStringAndSize((char *)NULL, (Ty_ssize_t)len * 6);
     if (u == NULL) {
         return NULL;
     }
-    p = buf = PyBytes_AsString(u);
+    p = buf = TyBytes_AsString(u);
     if (p == NULL) {
         return NULL;
     }
@@ -167,27 +167,27 @@ decode_unicode_with_escapes(Parser *parser, const char *s, size_t len, Token *t)
             }
         }
         if (*s & 0x80) {
-            PyObject *w;
+            TyObject *w;
             int kind;
             const void *data;
-            Py_ssize_t w_len;
-            Py_ssize_t i;
+            Ty_ssize_t w_len;
+            Ty_ssize_t i;
             w = decode_utf8(&s, end);
             if (w == NULL) {
-                Py_DECREF(u);
+                Ty_DECREF(u);
                 return NULL;
             }
-            kind = PyUnicode_KIND(w);
-            data = PyUnicode_DATA(w);
-            w_len = PyUnicode_GET_LENGTH(w);
+            kind = TyUnicode_KIND(w);
+            data = TyUnicode_DATA(w);
+            w_len = TyUnicode_GET_LENGTH(w);
             for (i = 0; i < w_len; i++) {
-                Py_UCS4 chr = PyUnicode_READ(kind, data, i);
+                Ty_UCS4 chr = TyUnicode_READ(kind, data, i);
                 sprintf(p, "\\U%08x", chr);
                 p += 10;
             }
             /* Should be impossible to overflow */
-            assert(p - buf <= PyBytes_GET_SIZE(u));
-            Py_DECREF(w);
+            assert(p - buf <= TyBytes_GET_SIZE(u));
+            Ty_DECREF(w);
         }
         else {
             *p++ = *s++;
@@ -198,7 +198,7 @@ decode_unicode_with_escapes(Parser *parser, const char *s, size_t len, Token *t)
 
     int first_invalid_escape_char;
     const char *first_invalid_escape_ptr;
-    v = _PyUnicode_DecodeUnicodeEscapeInternal2(s, (Py_ssize_t)len, NULL, NULL,
+    v = _TyUnicode_DecodeUnicodeEscapeInternal2(s, (Ty_ssize_t)len, NULL, NULL,
                                                 &first_invalid_escape_char,
                                                 &first_invalid_escape_ptr);
 
@@ -208,21 +208,21 @@ decode_unicode_with_escapes(Parser *parser, const char *s, size_t len, Token *t)
         if (warn_invalid_escape_sequence(parser, s, first_invalid_escape_ptr, t) < 0) {
             /* We have not decref u before because first_invalid_escape_ptr
                points inside u. */
-            Py_XDECREF(u);
-            Py_DECREF(v);
+            Ty_XDECREF(u);
+            Ty_DECREF(v);
             return NULL;
         }
     }
-    Py_XDECREF(u);
+    Ty_XDECREF(u);
     return v;
 }
 
-static PyObject *
-decode_bytes_with_escapes(Parser *p, const char *s, Py_ssize_t len, Token *t)
+static TyObject *
+decode_bytes_with_escapes(Parser *p, const char *s, Ty_ssize_t len, Token *t)
 {
     int first_invalid_escape_char;
     const char *first_invalid_escape_ptr;
-    PyObject *result = _PyBytes_DecodeEscape2(s, len, NULL,
+    TyObject *result = _TyBytes_DecodeEscape2(s, len, NULL,
                                               &first_invalid_escape_char,
                                               &first_invalid_escape_ptr);
     if (result == NULL) {
@@ -231,39 +231,39 @@ decode_bytes_with_escapes(Parser *p, const char *s, Py_ssize_t len, Token *t)
 
     if (first_invalid_escape_ptr != NULL) {
         if (warn_invalid_escape_sequence(p, s, first_invalid_escape_ptr, t) < 0) {
-            Py_DECREF(result);
+            Ty_DECREF(result);
             return NULL;
         }
     }
     return result;
 }
 
-PyObject *
-_PyPegen_decode_string(Parser *p, int raw, const char *s, size_t len, Token *t)
+TyObject *
+_TyPegen_decode_string(Parser *p, int raw, const char *s, size_t len, Token *t)
 {
     if (raw) {
-        return PyUnicode_DecodeUTF8Stateful(s, (Py_ssize_t)len, NULL, NULL);
+        return TyUnicode_DecodeUTF8Stateful(s, (Ty_ssize_t)len, NULL, NULL);
     }
     return decode_unicode_with_escapes(p, s, len, t);
 }
 
 /* s must include the bracketing quote characters, and r, b &/or f prefixes
     (if any), and embedded escape sequences (if any). (f-strings are handled by the parser)
-   _PyPegen_parse_string parses it, and returns the decoded Python string object. */
-PyObject *
-_PyPegen_parse_string(Parser *p, Token *t)
+   _TyPegen_parse_string parses it, and returns the decoded Python string object. */
+TyObject *
+_TyPegen_parse_string(Parser *p, Token *t)
 {
-    const char *s = PyBytes_AsString(t->bytes);
+    const char *s = TyBytes_AsString(t->bytes);
     if (s == NULL) {
         return NULL;
     }
 
     size_t len;
-    int quote = Py_CHARMASK(*s);
+    int quote = Ty_CHARMASK(*s);
     int bytesmode = 0;
     int rawmode = 0;
 
-    if (Py_ISALPHA(quote)) {
+    if (Ty_ISALPHA(quote)) {
         while (!bytesmode || !rawmode) {
             if (quote == 'b' || quote == 'B') {
                 quote =(unsigned char)*++s;
@@ -283,7 +283,7 @@ _PyPegen_parse_string(Parser *p, Token *t)
     }
 
     if (quote != '\'' && quote != '\"') {
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         return NULL;
     }
 
@@ -295,12 +295,12 @@ _PyPegen_parse_string(Parser *p, Token *t)
     assert(len >= 1);
 
     if (len > INT_MAX) {
-        PyErr_SetString(PyExc_OverflowError, "string to parse is too long");
+        TyErr_SetString(TyExc_OverflowError, "string to parse is too long");
         return NULL;
     }
     if (s[--len] != quote) {
         /* Last quote char must match the first. */
-        PyErr_BadInternalCall();
+        TyErr_BadInternalCall();
         return NULL;
     }
     if (len >= 4 && s[0] == quote && s[1] == quote) {
@@ -311,7 +311,7 @@ _PyPegen_parse_string(Parser *p, Token *t)
         len -= 2;
         /* And check that the last two match. */
         if (s[--len] != quote || s[--len] != quote) {
-            PyErr_BadInternalCall();
+            TyErr_BadInternalCall();
             return NULL;
         }
     }
@@ -322,7 +322,7 @@ _PyPegen_parse_string(Parser *p, Token *t)
         /* Disallow non-ASCII characters. */
         const char *ch;
         for (ch = s; *ch; ch++) {
-            if (Py_CHARMASK(*ch) >= 0x80) {
+            if (Ty_CHARMASK(*ch) >= 0x80) {
                 RAISE_SYNTAX_ERROR_KNOWN_LOCATION(
                                    t,
                                    "bytes can only contain ASCII "
@@ -331,9 +331,9 @@ _PyPegen_parse_string(Parser *p, Token *t)
             }
         }
         if (rawmode) {
-            return PyBytes_FromStringAndSize(s, (Py_ssize_t)len);
+            return TyBytes_FromStringAndSize(s, (Ty_ssize_t)len);
         }
-        return decode_bytes_with_escapes(p, s, (Py_ssize_t)len, t);
+        return decode_bytes_with_escapes(p, s, (Ty_ssize_t)len, t);
     }
-    return _PyPegen_decode_string(p, rawmode, s, len, t);
+    return _TyPegen_decode_string(p, rawmode, s, len, t);
 }

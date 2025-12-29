@@ -15,47 +15,47 @@ _suggestions._generate_suggestions
 Returns the candidate in candidates that's closest to item
 [clinic start generated code]*/
 
-static PyObject *
-_suggestions__generate_suggestions_impl(PyObject *module,
-                                        PyObject *candidates, PyObject *item)
+static TyObject *
+_suggestions__generate_suggestions_impl(TyObject *module,
+                                        TyObject *candidates, TyObject *item)
 /*[clinic end generated code: output=79be7b653ae5e7ca input=ba2a8dddc654e33a]*/
 {
    // Check if dir is a list
-    if (!PyList_CheckExact(candidates)) {
-        PyErr_SetString(PyExc_TypeError, "candidates must be a list");
+    if (!TyList_CheckExact(candidates)) {
+        TyErr_SetString(TyExc_TypeError, "candidates must be a list");
         return NULL;
     }
 
     // Check if all elements in the list are Unicode
-    Py_ssize_t size = PyList_Size(candidates);
-    for (Py_ssize_t i = 0; i < size; ++i) {
-        PyObject *elem = PyList_GetItem(candidates, i);
-        if (!PyUnicode_Check(elem)) {
-            PyErr_SetString(PyExc_TypeError, "all elements in 'candidates' must be strings");
+    Ty_ssize_t size = TyList_Size(candidates);
+    for (Ty_ssize_t i = 0; i < size; ++i) {
+        TyObject *elem = TyList_GetItem(candidates, i);
+        if (!TyUnicode_Check(elem)) {
+            TyErr_SetString(TyExc_TypeError, "all elements in 'candidates' must be strings");
             return NULL;
         }
     }
 
-    PyObject* result =  _Py_CalculateSuggestions(candidates, item);
-    if (!result && !PyErr_Occurred()) {
-        Py_RETURN_NONE;
+    TyObject* result =  _Ty_CalculateSuggestions(candidates, item);
+    if (!result && !TyErr_Occurred()) {
+        Ty_RETURN_NONE;
     }
     return result;
 }
 
 
-static PyMethodDef module_methods[] = {
+static TyMethodDef module_methods[] = {
     _SUGGESTIONS__GENERATE_SUGGESTIONS_METHODDEF
     {NULL, NULL, 0, NULL} // Sentinel
 };
 
 static PyModuleDef_Slot module_slots[] = {
-    {Py_mod_multiple_interpreters, Py_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
-    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+    {Ty_mod_multiple_interpreters, Ty_MOD_MULTIPLE_INTERPRETERS_NOT_SUPPORTED},
+    {Ty_mod_gil, Ty_MOD_GIL_NOT_USED},
     {0, NULL},
 };
 
-static struct PyModuleDef suggestions_module = {
+static struct TyModuleDef suggestions_module = {
     PyModuleDef_HEAD_INIT,
     "_suggestions",
     NULL,

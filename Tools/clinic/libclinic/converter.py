@@ -107,7 +107,7 @@ class CConverter(metaclass=CConverterAutoRegister):
     # Every non-abstract subclass should supply a valid value.
     c_ignored_default: str = 'NULL'
 
-    # If true, wrap with Py_UNUSED.
+    # If true, wrap with Ty_UNUSED.
     unused = False
 
     # The C converter *function* to be used, if any.
@@ -249,7 +249,7 @@ class CConverter(metaclass=CConverterAutoRegister):
         # impl_parameters
         data.impl_parameters.append(self.simple_declaration(by_reference=self.impl_by_reference))
         if self.length:
-            data.impl_parameters.append(f"Py_ssize_t {self.length_name}")
+            data.impl_parameters.append(f"Ty_ssize_t {self.length_name}")
 
     def _render_non_self(
             self,
@@ -360,7 +360,7 @@ class CConverter(metaclass=CConverterAutoRegister):
         else:
             name = self.name
             if self.unused:
-                name = f"Py_UNUSED({name})"
+                name = f"Ty_UNUSED({name})"
         prototype.append(name)
         return "".join(prototype)
 
@@ -378,7 +378,7 @@ class CConverter(metaclass=CConverterAutoRegister):
         declaration.append(";")
         if self.length:
             declaration.append('\n')
-            declaration.append(f"Py_ssize_t {self.length_name};")
+            declaration.append(f"Ty_ssize_t {self.length_name};")
         return "".join(declaration)
 
     def initialize(self) -> str:

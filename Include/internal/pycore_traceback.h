@@ -1,18 +1,18 @@
-#ifndef Py_INTERNAL_TRACEBACK_H
-#define Py_INTERNAL_TRACEBACK_H
+#ifndef Ty_INTERNAL_TRACEBACK_H
+#define Ty_INTERNAL_TRACEBACK_H
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef Py_BUILD_CORE
-#  error "this header requires Py_BUILD_CORE define"
+#ifndef Ty_BUILD_CORE
+#  error "this header requires Ty_BUILD_CORE define"
 #endif
 
 // Export for '_ctypes' shared extension
-PyAPI_FUNC(int) _Py_DisplaySourceLine(PyObject *, PyObject *, int, int, int *, PyObject **);
+PyAPI_FUNC(int) _Ty_DisplaySourceLine(TyObject *, TyObject *, int, int, int *, TyObject **);
 
 // Export for 'pyexact' shared extension
-PyAPI_FUNC(void) _PyTraceback_Add(const char *, const char *, int);
+PyAPI_FUNC(void) _TyTraceback_Add(const char *, const char *, int);
 
 /* Write the Python traceback into the file 'fd'. For example:
 
@@ -31,7 +31,7 @@ PyAPI_FUNC(void) _PyTraceback_Add(const char *, const char *, int);
 
    This function is signal safe. */
 
-extern void _Py_DumpTraceback(
+extern void _Ty_DumpTraceback(
     int fd,
     PyThreadState *tstate);
 
@@ -41,7 +41,7 @@ extern void _Py_DumpTraceback(
    Return NULL on success, or an error message on error.
 
    This function is written for debug purpose only. It calls
-   _Py_DumpTraceback() for each thread, and so has the same limitations. It
+   _Ty_DumpTraceback() for each thread, and so has the same limitations. It
    only write the traceback of the first 100 threads: write "..." if there are
    more threads.
 
@@ -51,14 +51,14 @@ extern void _Py_DumpTraceback(
 
    If interp is NULL, the function tries to get the interpreter state from
    the current Python thread state, or from
-   _PyGILState_GetInterpreterStateUnsafe() in last resort.
+   _TyGILState_GetInterpreterStateUnsafe() in last resort.
 
    It is better to pass NULL to interp and current_tstate, the function tries
    different options to retrieve this information.
 
    This function is signal safe. */
 
-extern const char* _Py_DumpTracebackThreads(
+extern const char* _Ty_DumpTracebackThreads(
     int fd,
     PyInterpreterState *interp,
     PyThreadState *current_tstate);
@@ -69,24 +69,24 @@ extern const char* _Py_DumpTracebackThreads(
    Do nothing if text is not a Unicode object.
 
    This function is signal safe. */
-extern void _Py_DumpASCII(int fd, PyObject *text);
+extern void _Ty_DumpASCII(int fd, TyObject *text);
 
 /* Format an integer as decimal into the file descriptor fd.
 
    This function is signal safe. */
-extern void _Py_DumpDecimal(
+extern void _Ty_DumpDecimal(
     int fd,
     size_t value);
 
 /* Format an integer as hexadecimal with width digits into fd file descriptor.
    The function is signal safe. */
-extern void _Py_DumpHexadecimal(
+extern void _Ty_DumpHexadecimal(
     int fd,
     uintptr_t value,
-    Py_ssize_t width);
+    Ty_ssize_t width);
 
-extern PyObject* _PyTraceBack_FromFrame(
-    PyObject *tb_next,
+extern TyObject* _PyTraceBack_FromFrame(
+    TyObject *tb_next,
     PyFrameObject *frame);
 
 #define EXCEPTION_TB_HEADER "Traceback (most recent call last):\n"
@@ -95,14 +95,14 @@ extern PyObject* _PyTraceBack_FromFrame(
 /* Write the traceback tb to file f. Prefix each line with
    indent spaces followed by the margin (if it is not NULL). */
 extern int _PyTraceBack_Print(
-    PyObject *tb, const char *header, PyObject *f);
-extern int _Py_WriteIndentedMargin(int, const char*, PyObject *);
-extern int _Py_WriteIndent(int, PyObject *);
+    TyObject *tb, const char *header, TyObject *f);
+extern int _Ty_WriteIndentedMargin(int, const char*, TyObject *);
+extern int _Ty_WriteIndent(int, TyObject *);
 
 // Export for the faulthandler module
-PyAPI_FUNC(void) _Py_DumpStack(int fd);
+PyAPI_FUNC(void) _Ty_DumpStack(int fd);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* !Py_INTERNAL_TRACEBACK_H */
+#endif /* !Ty_INTERNAL_TRACEBACK_H */

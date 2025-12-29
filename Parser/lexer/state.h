@@ -28,7 +28,7 @@ struct token {
     int level;
     int lineno, col_offset, end_lineno, end_col_offset;
     const char *start, *end;
-    PyObject *metadata;
+    TyObject *metadata;
 };
 
 enum tokenizer_mode_kind_t {
@@ -56,11 +56,11 @@ typedef struct _tokenizer_mode {
     const char* multi_line_start;
     int first_line;
 
-    Py_ssize_t start_offset;
-    Py_ssize_t multi_line_start_offset;
+    Ty_ssize_t start_offset;
+    Ty_ssize_t multi_line_start_offset;
 
-    Py_ssize_t last_expr_size;
-    Py_ssize_t last_expr_end;
+    Ty_ssize_t last_expr_size;
+    Ty_ssize_t last_expr_end;
     char* last_expr_buffer;
     int in_debug;
     int in_format_spec;
@@ -99,7 +99,7 @@ struct tok_state {
     char parenstack[MAXLEVEL];
     int parenlinenostack[MAXLEVEL];
     int parencolstack[MAXLEVEL];
-    PyObject *filename;
+    TyObject *filename;
     /* Stuff for checking on different tab sizes */
     int altindstack[MAXINDENT];         /* Stack of alternate indents */
     /* Stuff for PEP 0263 */
@@ -111,9 +111,9 @@ struct tok_state {
     const char* multi_line_start; /* pointer to start of first line of
                                      a single line or multi line string
                                      expression (cf. issue 16806) */
-    PyObject *decoding_readline; /* open(...).readline */
-    PyObject *decoding_buffer;
-    PyObject *readline;     /* readline() function */
+    TyObject *decoding_readline; /* open(...).readline */
+    TyObject *decoding_buffer;
+    TyObject *readline;     /* readline() function */
     const char* enc;        /* Encoding for the current str. */
     char* str;          /* Source string being tokenized (if tokenizing from a string)*/
     char* input;       /* Tokenizer's newline translated copy of the string. */
@@ -131,7 +131,7 @@ struct tok_state {
     int tok_extra_tokens;
     int comment_newline;
     int implicit_newline;
-#ifdef Py_DEBUG
+#ifdef Ty_DEBUG
     int debug;
 #endif
 };

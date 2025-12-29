@@ -2,11 +2,11 @@
 #include "util.h"
 
 
-static PyObject *
-object_getoptionalattr(PyObject *self, PyObject *args)
+static TyObject *
+object_getoptionalattr(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *attr_name, *value = UNINITIALIZED_PTR;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
+    TyObject *obj, *attr_name, *value = UNINITIALIZED_PTR;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -18,22 +18,22 @@ object_getoptionalattr(PyObject *self, PyObject *args)
             return NULL;
         case 0:
             assert(value == NULL);
-            return Py_NewRef(PyExc_AttributeError);
+            return Ty_NewRef(TyExc_AttributeError);
         case 1:
             return value;
         default:
-            Py_FatalError("PyObject_GetOptionalAttr() returned invalid code");
-            Py_UNREACHABLE();
+            Ty_FatalError("PyObject_GetOptionalAttr() returned invalid code");
+            Ty_UNREACHABLE();
     }
 }
 
-static PyObject *
-object_getoptionalattrstring(PyObject *self, PyObject *args)
+static TyObject *
+object_getoptionalattrstring(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *value = UNINITIALIZED_PTR;
+    TyObject *obj, *value = UNINITIALIZED_PTR;
     const char *attr_name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -44,20 +44,20 @@ object_getoptionalattrstring(PyObject *self, PyObject *args)
             return NULL;
         case 0:
             assert(value == NULL);
-            return Py_NewRef(PyExc_AttributeError);
+            return Ty_NewRef(TyExc_AttributeError);
         case 1:
             return value;
         default:
-            Py_FatalError("PyObject_GetOptionalAttrString() returned invalid code");
-            Py_UNREACHABLE();
+            Ty_FatalError("PyObject_GetOptionalAttrString() returned invalid code");
+            Ty_UNREACHABLE();
     }
 }
 
-static PyObject *
-object_hasattrwitherror(PyObject *self, PyObject *args)
+static TyObject *
+object_hasattrwitherror(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *attr_name;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
+    TyObject *obj, *attr_name;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -65,26 +65,26 @@ object_hasattrwitherror(PyObject *self, PyObject *args)
     RETURN_INT(PyObject_HasAttrWithError(obj, attr_name));
 }
 
-static PyObject *
-object_hasattrstringwitherror(PyObject *self, PyObject *args)
+static TyObject *
+object_hasattrstringwitherror(TyObject *self, TyObject *args)
 {
-    PyObject *obj;
+    TyObject *obj;
     const char *attr_name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
         return NULL;
     }
     NULLABLE(obj);
     RETURN_INT(PyObject_HasAttrStringWithError(obj, attr_name));
 }
 
-static PyObject *
-mapping_getoptionalitemstring(PyObject *self, PyObject *args)
+static TyObject *
+mapping_getoptionalitemstring(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *value = UNINITIALIZED_PTR;
+    TyObject *obj, *value = UNINITIALIZED_PTR;
     const char *attr_name;
-    Py_ssize_t size;
-    if (!PyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
+    Ty_ssize_t size;
+    if (!TyArg_ParseTuple(args, "Oz#", &obj, &attr_name, &size)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -95,20 +95,20 @@ mapping_getoptionalitemstring(PyObject *self, PyObject *args)
             return NULL;
         case 0:
             assert(value == NULL);
-            return Py_NewRef(PyExc_KeyError);
+            return Ty_NewRef(TyExc_KeyError);
         case 1:
             return value;
         default:
-            Py_FatalError("PyMapping_GetOptionalItemString() returned invalid code");
-            Py_UNREACHABLE();
+            Ty_FatalError("PyMapping_GetOptionalItemString() returned invalid code");
+            Ty_UNREACHABLE();
     }
 }
 
-static PyObject *
-mapping_getoptionalitem(PyObject *self, PyObject *args)
+static TyObject *
+mapping_getoptionalitem(TyObject *self, TyObject *args)
 {
-    PyObject *obj, *attr_name, *value = UNINITIALIZED_PTR;
-    if (!PyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
+    TyObject *obj, *attr_name, *value = UNINITIALIZED_PTR;
+    if (!TyArg_ParseTuple(args, "OO", &obj, &attr_name)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -120,57 +120,57 @@ mapping_getoptionalitem(PyObject *self, PyObject *args)
             return NULL;
         case 0:
             assert(value == NULL);
-            return Py_NewRef(PyExc_KeyError);
+            return Ty_NewRef(TyExc_KeyError);
         case 1:
             return value;
         default:
-            Py_FatalError("PyMapping_GetOptionalItem() returned invalid code");
-            Py_UNREACHABLE();
+            Ty_FatalError("PyMapping_GetOptionalItem() returned invalid code");
+            Ty_UNREACHABLE();
     }
 }
 
-static PyObject *
-pyiter_next(PyObject *self, PyObject *iter)
+static TyObject *
+pyiter_next(TyObject *self, TyObject *iter)
 {
-    PyObject *item = PyIter_Next(iter);
-    if (item == NULL && !PyErr_Occurred()) {
-        Py_RETURN_NONE;
+    TyObject *item = TyIter_Next(iter);
+    if (item == NULL && !TyErr_Occurred()) {
+        Ty_RETURN_NONE;
     }
     return item;
 }
 
-static PyObject *
-pyiter_nextitem(PyObject *self, PyObject *iter)
+static TyObject *
+pyiter_nextitem(TyObject *self, TyObject *iter)
 {
-    PyObject *item;
-    int rc = PyIter_NextItem(iter, &item);
+    TyObject *item;
+    int rc = TyIter_NextItem(iter, &item);
     if (rc < 0) {
-        assert(PyErr_Occurred());
+        assert(TyErr_Occurred());
         assert(item == NULL);
         return NULL;
     }
-    assert(!PyErr_Occurred());
+    assert(!TyErr_Occurred());
     if (item == NULL) {
-        Py_RETURN_NONE;
+        Ty_RETURN_NONE;
     }
     return item;
 }
 
 
-static PyObject *
-sequence_fast_get_size(PyObject *self, PyObject *obj)
+static TyObject *
+sequence_fast_get_size(TyObject *self, TyObject *obj)
 {
     NULLABLE(obj);
-    return PyLong_FromSsize_t(PySequence_Fast_GET_SIZE(obj));
+    return TyLong_FromSsize_t(PySequence_Fast_GET_SIZE(obj));
 }
 
 
-static PyObject *
-sequence_fast_get_item(PyObject *self, PyObject *args)
+static TyObject *
+sequence_fast_get_item(TyObject *self, TyObject *args)
 {
-    PyObject *obj;
-    Py_ssize_t index;
-    if (!PyArg_ParseTuple(args, "On", &obj, &index)) {
+    TyObject *obj;
+    Ty_ssize_t index;
+    if (!TyArg_ParseTuple(args, "On", &obj, &index)) {
         return NULL;
     }
     NULLABLE(obj);
@@ -178,7 +178,7 @@ sequence_fast_get_item(PyObject *self, PyObject *args)
 }
 
 
-static PyMethodDef test_methods[] = {
+static TyMethodDef test_methods[] = {
     {"object_getoptionalattr", object_getoptionalattr, METH_VARARGS},
     {"object_getoptionalattrstring", object_getoptionalattrstring, METH_VARARGS},
     {"object_hasattrwitherror", object_hasattrwitherror, METH_VARARGS},
@@ -186,8 +186,8 @@ static PyMethodDef test_methods[] = {
     {"mapping_getoptionalitem", mapping_getoptionalitem, METH_VARARGS},
     {"mapping_getoptionalitemstring", mapping_getoptionalitemstring, METH_VARARGS},
 
-    {"PyIter_Next", pyiter_next, METH_O},
-    {"PyIter_NextItem", pyiter_nextitem, METH_O},
+    {"TyIter_Next", pyiter_next, METH_O},
+    {"TyIter_NextItem", pyiter_nextitem, METH_O},
 
     {"sequence_fast_get_size", sequence_fast_get_size, METH_O},
     {"sequence_fast_get_item", sequence_fast_get_item, METH_VARARGS},
@@ -195,9 +195,9 @@ static PyMethodDef test_methods[] = {
 };
 
 int
-_PyTestCapi_Init_Abstract(PyObject *m)
+_PyTestCapi_Init_Abstract(TyObject *m)
 {
-    if (PyModule_AddFunctions(m, test_methods) < 0) {
+    if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
 

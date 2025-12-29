@@ -39,9 +39,9 @@ static const DBCHAR big5hkscs_pairenc_table[4] = {0x8862, 0x8864, 0x88a3, 0x88a5
 ENCODER(big5hkscs)
 {
     while (*inpos < inlen) {
-        Py_UCS4 c = INCHAR1;
+        Ty_UCS4 c = INCHAR1;
         DBCHAR code;
-        Py_ssize_t insize;
+        Ty_ssize_t insize;
 
         if (c < 0x80) {
             REQUIRE_OUTBUF(1);
@@ -56,7 +56,7 @@ ENCODER(big5hkscs)
         if (c < 0x10000) {
             if (TRYMAP_ENC(big5hkscs_bmp, code, c)) {
                 if (code == MULTIC) {
-                    Py_UCS4 c2;
+                    Ty_UCS4 c2;
                     if (inlen - *inpos >= 2)
                         c2 = INCHAR2;
                     else
@@ -111,7 +111,7 @@ DECODER(big5hkscs)
 {
     while (inleft > 0) {
         unsigned char c = INBYTE1;
-        Py_UCS4 decoded;
+        Ty_UCS4 decoded;
 
         if (c < 0x80) {
             OUTCHAR(c);
