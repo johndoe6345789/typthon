@@ -28,21 +28,21 @@ produce the following backtrace when sampling from foo():
 
     _TyEval_EvalFrameDefault -----> Evaluation frame of foo()
     _TyEval_Vector
-    _PyFunction_Vectorcall
+    _TyFunction_Vectorcall
     PyObject_Vectorcall
     call_function
 
     _TyEval_EvalFrameDefault ------> Evaluation frame of bar()
     _TyEval_EvalFrame
     _TyEval_Vector
-    _PyFunction_Vectorcall
+    _TyFunction_Vectorcall
     PyObject_Vectorcall
     call_function
 
     _TyEval_EvalFrameDefault -------> Evaluation frame of baz()
     _TyEval_EvalFrame
     _TyEval_Vector
-    _PyFunction_Vectorcall
+    _TyFunction_Vectorcall
     PyObject_Vectorcall
     call_function
 
@@ -66,7 +66,7 @@ frames from the previous example it will see;
     _TyEval_EvalFrameDefault -----> Evaluation frame of foo()
     [Jit compiled code 3]
     _TyEval_Vector
-    _PyFunction_Vectorcall
+    _TyFunction_Vectorcall
     PyObject_Vectorcall
     call_function
 
@@ -74,7 +74,7 @@ frames from the previous example it will see;
     [Jit compiled code 2]
     _TyEval_EvalFrame
     _TyEval_Vector
-    _PyFunction_Vectorcall
+    _TyFunction_Vectorcall
     PyObject_Vectorcall
     call_function
 
@@ -82,7 +82,7 @@ frames from the previous example it will see;
     [Jit compiled code 1]
     _TyEval_EvalFrame
     _TyEval_Vector
-    _PyFunction_Vectorcall
+    _TyFunction_Vectorcall
     PyObject_Vectorcall
     call_function
 

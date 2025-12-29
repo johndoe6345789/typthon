@@ -28,7 +28,7 @@
 #include <windows.h>
 #endif
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "The io module provides the Python interfaces to stream handling. The\n"
 "builtin open function is defined in this module.\n"
 "\n"
@@ -477,7 +477,7 @@ _io_text_encoding_impl(TyObject *module, TyObject *encoding, int stacklevel)
 /*[clinic end generated code: output=91b2cfea6934cc0c input=4999aa8b3d90f3d4]*/
 {
     if (encoding == NULL || encoding == Ty_None) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         if (_TyInterpreterState_GetConfig(interp)->warn_default_encoding) {
             if (TyErr_WarnEx(TyExc_EncodingWarning,
                              "'encoding' argument not specified", stacklevel)) {

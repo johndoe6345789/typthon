@@ -440,22 +440,22 @@ static TyGetSetDef SHA3_getseters[] = {
         .slots = type_slots \
     }
 
-PyDoc_STRVAR(sha3_224__doc__,
+TyDoc_STRVAR(sha3_224__doc__,
 "sha3_224([data], *, usedforsecurity=True) -> SHA3 object\n\
 \n\
 Return a new SHA3 hash object with a hashbit length of 28 bytes.");
 
-PyDoc_STRVAR(sha3_256__doc__,
+TyDoc_STRVAR(sha3_256__doc__,
 "sha3_256([data], *, usedforsecurity=True) -> SHA3 object\n\
 \n\
 Return a new SHA3 hash object with a hashbit length of 32 bytes.");
 
-PyDoc_STRVAR(sha3_384__doc__,
+TyDoc_STRVAR(sha3_384__doc__,
 "sha3_384([data], *, usedforsecurity=True) -> SHA3 object\n\
 \n\
 Return a new SHA3 hash object with a hashbit length of 48 bytes.");
 
-PyDoc_STRVAR(sha3_512__doc__,
+TyDoc_STRVAR(sha3_512__doc__,
 "sha3_512([data], *, usedforsecurity=True) -> SHA3 object\n\
 \n\
 Return a new SHA3 hash object with a hashbit length of 64 bytes.");
@@ -570,12 +570,12 @@ static TyMethodDef SHAKE_methods[] = {
     {NULL,        NULL}         /* sentinel */
 };
 
-PyDoc_STRVAR(shake_128__doc__,
+TyDoc_STRVAR(shake_128__doc__,
 "shake_128([data], *, usedforsecurity=True) -> SHAKE object\n\
 \n\
 Return a new SHAKE hash object.");
 
-PyDoc_STRVAR(shake_256__doc__,
+TyDoc_STRVAR(shake_256__doc__,
 "shake_256([data], *, usedforsecurity=True) -> SHAKE object\n\
 \n\
 Return a new SHAKE hash object.");

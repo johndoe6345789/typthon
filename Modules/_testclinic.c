@@ -1700,7 +1700,7 @@ static struct TyMethodDef test_class_methods[] = {
 };
 
 static TyTypeObject TestClass = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testclinic.TestClass",
     .tp_basicsize = sizeof(TyObject),
     .tp_flags = Ty_TPFLAGS_DEFAULT,
@@ -1763,7 +1763,7 @@ static struct TyMethodDef depr_star_new_methods[] = {
 };
 
 static TyTypeObject DeprStarNew = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testclinic.DeprStarNew",
     .tp_basicsize = sizeof(TyObject),
     .tp_new = depr_star_new,
@@ -1804,7 +1804,7 @@ static struct TyMethodDef depr_star_init_methods[] = {
 };
 
 static TyTypeObject DeprStarInit = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testclinic.DeprStarInit",
     .tp_basicsize = sizeof(TyObject),
     .tp_new = TyType_GenericNew,
@@ -1835,7 +1835,7 @@ depr_star_init_noinline_impl(TyObject *self, TyObject *a, TyObject *b,
 }
 
 static TyTypeObject DeprStarInitNoInline = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testclinic.DeprStarInitNoInline",
     .tp_basicsize = sizeof(TyObject),
     .tp_new = TyType_GenericNew,
@@ -1861,7 +1861,7 @@ depr_kwd_new_impl(TyTypeObject *type, TyObject *a)
 }
 
 static TyTypeObject DeprKwdNew = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testclinic.DeprKwdNew",
     .tp_basicsize = sizeof(TyObject),
     .tp_new = depr_kwd_new,
@@ -1885,7 +1885,7 @@ depr_kwd_init_impl(TyObject *self, TyObject *a)
 }
 
 static TyTypeObject DeprKwdInit = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testclinic.DeprKwdInit",
     .tp_basicsize = sizeof(TyObject),
     .tp_new = TyType_GenericNew,
@@ -1915,7 +1915,7 @@ depr_kwd_init_noinline_impl(TyObject *self, TyObject *a, TyObject *b,
 }
 
 static TyTypeObject DeprKwdInitNoInline = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testclinic.DeprKwdInitNoInline",
     .tp_basicsize = sizeof(TyObject),
     .tp_new = TyType_GenericNew,

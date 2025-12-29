@@ -31,7 +31,7 @@ This software comes with no warranty. Use at your own risk.
 #  include <windows.h>
 #endif
 
-PyDoc_STRVAR(locale__doc__, "Support for POSIX locales.");
+TyDoc_STRVAR(locale__doc__, "Support for POSIX locales.");
 
 typedef struct _locale_state {
     TyObject *Error;

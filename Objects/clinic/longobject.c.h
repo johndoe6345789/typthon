@@ -25,7 +25,7 @@ long_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(base), },
     };
@@ -72,7 +72,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(int___getnewargs____doc__,
+TyDoc_STRVAR(int___getnewargs____doc__,
 "__getnewargs__($self, /)\n"
 "--\n"
 "\n");
@@ -89,7 +89,7 @@ int___getnewargs__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return int___getnewargs___impl(self);
 }
 
-PyDoc_STRVAR(int___format____doc__,
+TyDoc_STRVAR(int___format____doc__,
 "__format__($self, format_spec, /)\n"
 "--\n"
 "\n"
@@ -118,7 +118,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(int___round____doc__,
+TyDoc_STRVAR(int___round____doc__,
 "__round__($self, ndigits=None, /)\n"
 "--\n"
 "\n"
@@ -152,7 +152,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(int___sizeof____doc__,
+TyDoc_STRVAR(int___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -180,7 +180,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(int_bit_length__doc__,
+TyDoc_STRVAR(int_bit_length__doc__,
 "bit_length($self, /)\n"
 "--\n"
 "\n"
@@ -203,7 +203,7 @@ int_bit_length(TyObject *self, TyObject *Py_UNUSED(ignored))
     return int_bit_length_impl(self);
 }
 
-PyDoc_STRVAR(int_bit_count__doc__,
+TyDoc_STRVAR(int_bit_count__doc__,
 "bit_count($self, /)\n"
 "--\n"
 "\n"
@@ -228,7 +228,7 @@ int_bit_count(TyObject *self, TyObject *Py_UNUSED(ignored))
     return int_bit_count_impl(self);
 }
 
-PyDoc_STRVAR(int_as_integer_ratio__doc__,
+TyDoc_STRVAR(int_as_integer_ratio__doc__,
 "as_integer_ratio($self, /)\n"
 "--\n"
 "\n"
@@ -255,7 +255,7 @@ int_as_integer_ratio(TyObject *self, TyObject *Py_UNUSED(ignored))
     return int_as_integer_ratio_impl(self);
 }
 
-PyDoc_STRVAR(int_to_bytes__doc__,
+TyDoc_STRVAR(int_to_bytes__doc__,
 "to_bytes($self, /, length=1, byteorder=\'big\', *, signed=False)\n"
 "--\n"
 "\n"
@@ -296,7 +296,7 @@ int_to_bytes(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(length), &_Ty_ID(byteorder), &_Ty_ID(signed), },
     };
@@ -370,7 +370,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(int_from_bytes__doc__,
+TyDoc_STRVAR(int_from_bytes__doc__,
 "from_bytes($type, /, bytes, byteorder=\'big\', *, signed=False)\n"
 "--\n"
 "\n"
@@ -410,7 +410,7 @@ int_from_bytes(TyObject *type, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(bytes), &_Ty_ID(byteorder), &_Ty_ID(signed), },
     };
@@ -468,7 +468,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(int_is_integer__doc__,
+TyDoc_STRVAR(int_is_integer__doc__,
 "is_integer($self, /)\n"
 "--\n"
 "\n"

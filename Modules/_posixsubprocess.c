@@ -1031,7 +1031,7 @@ subprocess_fork_exec_impl(TyObject *module, TyObject *process_args,
     int *c_fds_to_keep = NULL;
     Ty_ssize_t fds_to_keep_len = TyTuple_GET_SIZE(py_fds_to_keep);
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if ((preexec_fn != Ty_None) &&
         _TyInterpreterState_GetFinalizing(interp) != NULL)
     {
@@ -1321,7 +1321,7 @@ cleanup:
 
 /* module level code ********************************************************/
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "A POSIX helper for the subprocess module.");
 
 static TyMethodDef module_methods[] = {

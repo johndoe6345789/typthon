@@ -34,7 +34,7 @@ typedef struct {
     TyObject *str_verify_code;
     TyObject *str_verify_message;
     /* keylog lock */
-    PyThread_type_lock keylog_lock;
+    TyThread_type_lock keylog_lock;
 } _sslmodulestate;
 
 static struct TyModuleDef _sslmodule_def;

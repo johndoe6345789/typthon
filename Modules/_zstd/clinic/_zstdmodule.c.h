@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_zstd_train_dict__doc__,
+TyDoc_STRVAR(_zstd_train_dict__doc__,
 "train_dict($module, samples_bytes, samples_sizes, dict_size, /)\n"
 "--\n"
 "\n"
@@ -68,7 +68,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_finalize_dict__doc__,
+TyDoc_STRVAR(_zstd_finalize_dict__doc__,
 "finalize_dict($module, custom_dict_bytes, samples_bytes, samples_sizes,\n"
 "              dict_size, compression_level, /)\n"
 "--\n"
@@ -145,7 +145,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_get_param_bounds__doc__,
+TyDoc_STRVAR(_zstd_get_param_bounds__doc__,
 "get_param_bounds($module, /, parameter, is_compress)\n"
 "--\n"
 "\n"
@@ -175,7 +175,7 @@ _zstd_get_param_bounds(TyObject *module, TyObject *const *args, Ty_ssize_t nargs
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(parameter), &_Ty_ID(is_compress), },
     };
@@ -216,7 +216,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_get_frame_size__doc__,
+TyDoc_STRVAR(_zstd_get_frame_size__doc__,
 "get_frame_size($module, /, frame_buffer)\n"
 "--\n"
 "\n"
@@ -245,7 +245,7 @@ _zstd_get_frame_size(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(frame_buffer), },
     };
@@ -285,7 +285,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_get_frame_info__doc__,
+TyDoc_STRVAR(_zstd_get_frame_info__doc__,
 "get_frame_info($module, /, frame_buffer)\n"
 "--\n"
 "\n"
@@ -313,7 +313,7 @@ _zstd_get_frame_info(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(frame_buffer), },
     };
@@ -353,7 +353,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_set_parameter_types__doc__,
+TyDoc_STRVAR(_zstd_set_parameter_types__doc__,
 "set_parameter_types($module, /, c_parameter_type, d_parameter_type)\n"
 "--\n"
 "\n"
@@ -384,7 +384,7 @@ _zstd_set_parameter_types(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(c_parameter_type), &_Ty_ID(d_parameter_type), },
     };

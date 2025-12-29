@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_suggestions__generate_suggestions__doc__,
+TyDoc_STRVAR(_suggestions__generate_suggestions__doc__,
 "_generate_suggestions($module, candidates, item, /)\n"
 "--\n"
 "\n"

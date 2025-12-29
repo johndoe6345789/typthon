@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(MD5Type_copy__doc__,
+TyDoc_STRVAR(MD5Type_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -30,7 +30,7 @@ MD5Type_copy(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize_
     return MD5Type_copy_impl((MD5object *)self, cls);
 }
 
-PyDoc_STRVAR(MD5Type_digest__doc__,
+TyDoc_STRVAR(MD5Type_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -48,7 +48,7 @@ MD5Type_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return MD5Type_digest_impl((MD5object *)self);
 }
 
-PyDoc_STRVAR(MD5Type_hexdigest__doc__,
+TyDoc_STRVAR(MD5Type_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -66,7 +66,7 @@ MD5Type_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return MD5Type_hexdigest_impl((MD5object *)self);
 }
 
-PyDoc_STRVAR(MD5Type_update__doc__,
+TyDoc_STRVAR(MD5Type_update__doc__,
 "update($self, obj, /)\n"
 "--\n"
 "\n"
@@ -88,7 +88,7 @@ MD5Type_update(TyObject *self, TyObject *obj)
     return return_value;
 }
 
-PyDoc_STRVAR(_md5_md5__doc__,
+TyDoc_STRVAR(_md5_md5__doc__,
 "md5($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -114,7 +114,7 @@ _md5_md5(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };

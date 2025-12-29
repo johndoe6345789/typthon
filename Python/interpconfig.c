@@ -248,7 +248,7 @@ _PyInterpreterConfig_UpdateFromDict(PyInterpreterConfig *config, TyObject *dict)
 
 int
 _PyInterpreterConfig_InitFromState(PyInterpreterConfig *config,
-                                   PyInterpreterState *interp)
+                                   TyInterpreterState *interp)
 {
     // Populate the config by re-constructing the values from the interpreter.
     *config = (PyInterpreterConfig){

@@ -68,7 +68,7 @@ typedef struct {
     PyObject_HEAD
     Ty_ssize_t it_index;
     PyListObject *it_seq; /* Set to NULL when iterator is exhausted */
-} _PyListIterObject;
+} _TyListIterObject;
 
 union _PyStackRef;
 

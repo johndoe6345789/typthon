@@ -9,7 +9,7 @@ preserve
 #include "pycore_long.h"          // _TyLong_UnsignedLong_Converter()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(py_sha3_new__doc__,
+TyDoc_STRVAR(py_sha3_new__doc__,
 "sha3_224(data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -32,7 +32,7 @@ py_sha3_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -93,7 +93,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sha3_sha3_224_copy__doc__,
+TyDoc_STRVAR(_sha3_sha3_224_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -111,7 +111,7 @@ _sha3_sha3_224_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _sha3_sha3_224_copy_impl((SHA3object *)self);
 }
 
-PyDoc_STRVAR(_sha3_sha3_224_digest__doc__,
+TyDoc_STRVAR(_sha3_sha3_224_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -129,7 +129,7 @@ _sha3_sha3_224_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _sha3_sha3_224_digest_impl((SHA3object *)self);
 }
 
-PyDoc_STRVAR(_sha3_sha3_224_hexdigest__doc__,
+TyDoc_STRVAR(_sha3_sha3_224_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -147,7 +147,7 @@ _sha3_sha3_224_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _sha3_sha3_224_hexdigest_impl((SHA3object *)self);
 }
 
-PyDoc_STRVAR(_sha3_sha3_224_update__doc__,
+TyDoc_STRVAR(_sha3_sha3_224_update__doc__,
 "update($self, data, /)\n"
 "--\n"
 "\n"
@@ -169,7 +169,7 @@ _sha3_sha3_224_update(TyObject *self, TyObject *data)
     return return_value;
 }
 
-PyDoc_STRVAR(_sha3_shake_128_digest__doc__,
+TyDoc_STRVAR(_sha3_shake_128_digest__doc__,
 "digest($self, /, length)\n"
 "--\n"
 "\n"
@@ -194,7 +194,7 @@ _sha3_shake_128_digest(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(length), },
     };
@@ -229,7 +229,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sha3_shake_128_hexdigest__doc__,
+TyDoc_STRVAR(_sha3_shake_128_hexdigest__doc__,
 "hexdigest($self, /, length)\n"
 "--\n"
 "\n"
@@ -254,7 +254,7 @@ _sha3_shake_128_hexdigest(TyObject *self, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(length), },
     };

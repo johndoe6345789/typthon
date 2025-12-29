@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(mappingproxy_new__doc__,
+TyDoc_STRVAR(mappingproxy_new__doc__,
 "mappingproxy(mapping)\n"
 "--\n"
 "\n"
@@ -30,7 +30,7 @@ mappingproxy_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(mapping), },
     };
@@ -65,7 +65,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(property_init__doc__,
+TyDoc_STRVAR(property_init__doc__,
 "property(fget=None, fset=None, fdel=None, doc=None)\n"
 "--\n"
 "\n"
@@ -119,7 +119,7 @@ property_init(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fget), &_Ty_ID(fset), &_Ty_ID(fdel), &_Ty_ID(doc), },
     };

@@ -715,7 +715,7 @@ descr_traverse(TyObject *self, visitproc visit, void *arg)
 }
 
 TyTypeObject PyMethodDescr_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "method_descriptor",
     sizeof(PyMethodDescrObject),
     0,
@@ -755,7 +755,7 @@ TyTypeObject PyMethodDescr_Type = {
 
 /* This is for METH_CLASS in C, not for "f = classmethod(f)" in Python! */
 TyTypeObject PyClassMethodDescr_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "classmethod_descriptor",
     sizeof(PyMethodDescrObject),
     0,
@@ -792,7 +792,7 @@ TyTypeObject PyClassMethodDescr_Type = {
 };
 
 TyTypeObject PyMemberDescr_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "member_descriptor",
     sizeof(PyMemberDescrObject),
     0,
@@ -829,7 +829,7 @@ TyTypeObject PyMemberDescr_Type = {
 };
 
 TyTypeObject PyGetSetDescr_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "getset_descriptor",
     sizeof(PyGetSetDescrObject),
     0,
@@ -866,7 +866,7 @@ TyTypeObject PyGetSetDescr_Type = {
 };
 
 TyTypeObject PyWrapperDescr_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "wrapper_descriptor",
     sizeof(PyWrapperDescrObject),
     0,
@@ -1167,20 +1167,20 @@ mappingproxy_reversed(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 static TyMethodDef mappingproxy_methods[] = {
     {"get",       _PyCFunction_CAST(mappingproxy_get), METH_FASTCALL,
-     PyDoc_STR("get($self, key, default=None, /)\n--\n\n"
+     TyDoc_STR("get($self, key, default=None, /)\n--\n\n"
         "Return the value for key if key is in the mapping, else default.")},
     {"keys",      mappingproxy_keys,       METH_NOARGS,
-     PyDoc_STR("D.keys() -> a set-like object providing a view on D's keys")},
+     TyDoc_STR("D.keys() -> a set-like object providing a view on D's keys")},
     {"values",    mappingproxy_values,     METH_NOARGS,
-     PyDoc_STR("D.values() -> an object providing a view on D's values")},
+     TyDoc_STR("D.values() -> an object providing a view on D's values")},
     {"items",     mappingproxy_items,      METH_NOARGS,
-     PyDoc_STR("D.items() -> a set-like object providing a view on D's items")},
+     TyDoc_STR("D.items() -> a set-like object providing a view on D's items")},
     {"copy",      mappingproxy_copy,       METH_NOARGS,
-     PyDoc_STR("D.copy() -> a shallow copy of D")},
+     TyDoc_STR("D.copy() -> a shallow copy of D")},
     {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS,
-     PyDoc_STR("See PEP 585")},
+     TyDoc_STR("See PEP 585")},
     {"__reversed__", mappingproxy_reversed, METH_NOARGS,
-     PyDoc_STR("D.__reversed__() -> reverse iterator")},
+     TyDoc_STR("D.__reversed__() -> reverse iterator")},
     {0}
 };
 
@@ -1447,7 +1447,7 @@ wrapper_traverse(TyObject *self, visitproc visit, void *arg)
 }
 
 TyTypeObject _PyMethodWrapper_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "method-wrapper",                           /* tp_name */
     sizeof(wrapperobject),                      /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -1566,7 +1566,7 @@ static TyMemberDef property_members[] = {
 };
 
 
-PyDoc_STRVAR(getter_doc,
+TyDoc_STRVAR(getter_doc,
              "Descriptor to obtain a copy of the property with a different getter.");
 
 static TyObject *
@@ -1576,7 +1576,7 @@ property_getter(TyObject *self, TyObject *getter)
 }
 
 
-PyDoc_STRVAR(setter_doc,
+TyDoc_STRVAR(setter_doc,
              "Descriptor to obtain a copy of the property with a different setter.");
 
 static TyObject *
@@ -1586,7 +1586,7 @@ property_setter(TyObject *self, TyObject *setter)
 }
 
 
-PyDoc_STRVAR(deleter_doc,
+TyDoc_STRVAR(deleter_doc,
              "Descriptor to obtain a copy of the property with a different deleter.");
 
 static TyObject *
@@ -1596,7 +1596,7 @@ property_deleter(TyObject *self, TyObject *deleter)
 }
 
 
-PyDoc_STRVAR(set_name_doc,
+TyDoc_STRVAR(set_name_doc,
              "__set_name__($self, owner, name, /)\n"
              "--\n"
              "\n"
@@ -1995,7 +1995,7 @@ property_clear(TyObject *self)
 #include "clinic/descrobject.c.h"
 
 TyTypeObject PyDictProxy_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "mappingproxy",                             /* tp_name */
     sizeof(mappingproxyobject),                 /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -2038,7 +2038,7 @@ TyTypeObject PyDictProxy_Type = {
 };
 
 TyTypeObject TyProperty_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "property",                                 /* tp_name */
     sizeof(propertyobject),                     /* tp_basicsize */
     0,                                          /* tp_itemsize */

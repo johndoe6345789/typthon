@@ -1379,10 +1379,10 @@ dummy_func(
             #if TIER_ONE
             assert(frame->instr_ptr->op.code == INSTRUMENTED_LINE ||
                    frame->instr_ptr->op.code == INSTRUMENTED_INSTRUCTION ||
-                   _PyOpcode_Deopt[frame->instr_ptr->op.code] == SEND ||
-                   _PyOpcode_Deopt[frame->instr_ptr->op.code] == FOR_ITER ||
-                   _PyOpcode_Deopt[frame->instr_ptr->op.code] == INTERPRETER_EXIT ||
-                   _PyOpcode_Deopt[frame->instr_ptr->op.code] == ENTER_EXECUTOR);
+                   _TyOpcode_Deopt[frame->instr_ptr->op.code] == SEND ||
+                   _TyOpcode_Deopt[frame->instr_ptr->op.code] == FOR_ITER ||
+                   _TyOpcode_Deopt[frame->instr_ptr->op.code] == INTERPRETER_EXIT ||
+                   _TyOpcode_Deopt[frame->instr_ptr->op.code] == ENTER_EXECUTOR);
             #endif
             RELOAD_STACK();
             LOAD_IP(1 + INLINE_CACHE_ENTRIES_SEND);
@@ -2983,7 +2983,7 @@ dummy_func(
                 opcode = executor->vm_data.opcode;
                 oparg = (oparg & ~255) | executor->vm_data.oparg;
                 next_instr = this_instr;
-                if (_PyOpcode_Caches[_PyOpcode_Deopt[opcode]]) {
+                if (_TyOpcode_Caches[_TyOpcode_Deopt[opcode]]) {
                     PAUSE_ADAPTIVE_COUNTER(this_instr[1].counter);
                 }
                 DISPATCH_GOTO();
@@ -3252,7 +3252,7 @@ dummy_func(
             EXIT_IF(Ty_TYPE(iter_o) != &PyListIter_Type);
 #ifdef Ty_GIL_DISABLED
             EXIT_IF(!_TyObject_IsUniquelyReferenced(iter_o));
-            _PyListIterObject *it = (_PyListIterObject *)iter_o;
+            _TyListIterObject *it = (_TyListIterObject *)iter_o;
             EXIT_IF(!_Ty_IsOwnedByCurrentThread((TyObject *)it->it_seq) ||
                     !_TyObject_GC_IS_SHARED(it->it_seq));
 #endif
@@ -3269,7 +3269,7 @@ dummy_func(
             assert(_TyObject_IsUniquelyReferenced(iter_o));
             (void)iter_o;
 #else
-            _PyListIterObject *it = (_PyListIterObject *)iter_o;
+            _TyListIterObject *it = (_TyListIterObject *)iter_o;
             STAT_INC(FOR_ITER, hit);
             PyListObject *seq = it->it_seq;
             if (seq == NULL || (size_t)it->it_index >= (size_t)TyList_GET_SIZE(seq)) {
@@ -3289,7 +3289,7 @@ dummy_func(
         op(_GUARD_NOT_EXHAUSTED_LIST, (iter -- iter)) {
 #ifndef Ty_GIL_DISABLED
             TyObject *iter_o = PyStackRef_AsPyObjectBorrow(iter);
-            _PyListIterObject *it = (_PyListIterObject *)iter_o;
+            _TyListIterObject *it = (_TyListIterObject *)iter_o;
             assert(Ty_TYPE(iter_o) == &PyListIter_Type);
             PyListObject *seq = it->it_seq;
             EXIT_IF(seq == NULL);
@@ -3302,7 +3302,7 @@ dummy_func(
 
         replaced op(_ITER_NEXT_LIST, (iter -- iter, next)) {
             TyObject *iter_o = PyStackRef_AsPyObjectBorrow(iter);
-            _PyListIterObject *it = (_PyListIterObject *)iter_o;
+            _TyListIterObject *it = (_TyListIterObject *)iter_o;
             assert(Ty_TYPE(iter_o) == &PyListIter_Type);
             PyListObject *seq = it->it_seq;
             assert(seq);
@@ -3331,7 +3331,7 @@ dummy_func(
         // Only used by Tier 2
         op(_ITER_NEXT_LIST_TIER_TWO, (iter -- iter, next)) {
             TyObject *iter_o = PyStackRef_AsPyObjectBorrow(iter);
-            _PyListIterObject *it = (_PyListIterObject *)iter_o;
+            _TyListIterObject *it = (_TyListIterObject *)iter_o;
             assert(Ty_TYPE(iter_o) == &PyListIter_Type);
             PyListObject *seq = it->it_seq;
             assert(seq);
@@ -3766,7 +3766,7 @@ dummy_func(
             // Check if the call can be inlined or not
             if (Ty_TYPE(callable_o) == &TyFunction_Type &&
                 tstate->interp->eval_frame == NULL &&
-                ((PyFunctionObject *)callable_o)->vectorcall == _PyFunction_Vectorcall)
+                ((PyFunctionObject *)callable_o)->vectorcall == _TyFunction_Vectorcall)
             {
                 int code_flags = ((PyCodeObject*)TyFunction_GET_CODE(callable_o))->co_flags;
                 TyObject *locals = code_flags & CO_OPTIMIZED ? NULL : Ty_NewRef(TyFunction_GET_GLOBALS(callable_o));
@@ -4356,7 +4356,7 @@ dummy_func(
 
         op(_GUARD_CALLABLE_LEN, (callable, unused, unused -- callable, unused, unused)){
             TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
-            PyInterpreterState *interp = tstate->interp;
+            TyInterpreterState *interp = tstate->interp;
             DEOPT_IF(callable_o != interp->callable_cache.len);
         }
 
@@ -4391,7 +4391,7 @@ dummy_func(
                 total_args++;
             }
             DEOPT_IF(total_args != 2);
-            PyInterpreterState *interp = tstate->interp;
+            TyInterpreterState *interp = tstate->interp;
             DEOPT_IF(callable_o != interp->callable_cache.isinstance);
             STAT_INC(CALL, hit);
             _PyStackRef cls_stackref = arguments[1];
@@ -4411,7 +4411,7 @@ dummy_func(
             TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
             TyObject *self_o = PyStackRef_AsPyObjectBorrow(self);
 
-            PyInterpreterState *interp = tstate->interp;
+            TyInterpreterState *interp = tstate->interp;
             DEOPT_IF(callable_o != interp->callable_cache.list_append);
             DEOPT_IF(self_o == NULL);
             DEOPT_IF(!TyList_Check(self_o));
@@ -4643,7 +4643,7 @@ dummy_func(
             // Check if the call can be inlined or not
             if (Ty_TYPE(callable_o) == &TyFunction_Type &&
                 tstate->interp->eval_frame == NULL &&
-                ((PyFunctionObject *)callable_o)->vectorcall == _PyFunction_Vectorcall)
+                ((PyFunctionObject *)callable_o)->vectorcall == _TyFunction_Vectorcall)
             {
                 int code_flags = ((PyCodeObject*)TyFunction_GET_CODE(callable_o))->co_flags;
                 TyObject *locals = code_flags & CO_OPTIMIZED ? NULL : Ty_NewRef(TyFunction_GET_GLOBALS(callable_o));
@@ -4906,7 +4906,7 @@ dummy_func(
             else {
                 if (Ty_TYPE(func) == &TyFunction_Type &&
                     tstate->interp->eval_frame == NULL &&
-                    ((PyFunctionObject *)func)->vectorcall == _PyFunction_Vectorcall) {
+                    ((PyFunctionObject *)func)->vectorcall == _TyFunction_Vectorcall) {
                     TyObject *callargs = PyStackRef_AsPyObjectSteal(callargs_st);
                     assert(TyTuple_CheckExact(callargs));
                     TyObject *kwargs = PyStackRef_IsNull(kwargs_st) ? NULL : PyStackRef_AsPyObjectSteal(kwargs_st);
@@ -4961,7 +4961,7 @@ dummy_func(
             PyStackRef_CLOSE(codeobj_st);
             ERROR_IF(func_obj == NULL);
 
-            _PyFunction_SetVersion(
+            _TyFunction_SetVersion(
                 func_obj, ((PyCodeObject *)codeobj)->co_version);
             func = PyStackRef_FromPyObjectSteal((TyObject *)func_obj);
         }
@@ -5107,7 +5107,7 @@ dummy_func(
                     DISPATCH();
                 }
             }
-            if (_PyOpcode_Caches[original_opcode]) {
+            if (_TyOpcode_Caches[original_opcode]) {
                 _PyBinaryOpCache *cache = (_PyBinaryOpCache *)(next_instr+1);
                 /* Prevent the underlying instruction from specializing
                 * and overwriting the instrumentation. */
@@ -5122,7 +5122,7 @@ dummy_func(
                 tstate, frame, this_instr);
             ERROR_IF(next_opcode < 0);
             next_instr = this_instr;
-            if (_PyOpcode_Caches[next_opcode]) {
+            if (_TyOpcode_Caches[next_opcode]) {
                 PAUSE_ADAPTIVE_COUNTER(next_instr[1].counter);
             }
             assert(next_opcode > 0 && next_opcode < 256);
@@ -5278,7 +5278,7 @@ dummy_func(
                 printf(", exit %lu, temp %d, target %d -> %s]\n",
                     exit - current_executor->exits, exit->temperature.value_and_backoff,
                     (int)(target - _TyFrame_GetBytecode(frame)),
-                    _PyOpcode_OpName[target->op.code]);
+                    _TyOpcode_OpName[target->op.code]);
             }
         #endif
             if (exit->executor && !exit->executor->vm_data.valid) {

@@ -157,7 +157,7 @@ error:
 
 
 static int
-pymain_sys_path_add_path0(PyInterpreterState *interp, TyObject *path0)
+pymain_sys_path_add_path0(TyInterpreterState *interp, TyObject *path0)
 {
     TyObject *sys_path;
     TyObject *sysdict = interp->sysdict;
@@ -613,7 +613,7 @@ static void
 pymain_run_python(int *exitcode)
 {
     TyObject *main_importer_path = NULL;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     /* pymain_run_stdin() modify the config */
     PyConfig *config = (PyConfig*)_TyInterpreterState_GetConfig(interp);
 

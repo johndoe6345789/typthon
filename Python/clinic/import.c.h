@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_imp_lock_held__doc__,
+TyDoc_STRVAR(_imp_lock_held__doc__,
 "lock_held($module, /)\n"
 "--\n"
 "\n"
@@ -28,7 +28,7 @@ _imp_lock_held(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _imp_lock_held_impl(module);
 }
 
-PyDoc_STRVAR(_imp_acquire_lock__doc__,
+TyDoc_STRVAR(_imp_acquire_lock__doc__,
 "acquire_lock($module, /)\n"
 "--\n"
 "\n"
@@ -49,7 +49,7 @@ _imp_acquire_lock(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _imp_acquire_lock_impl(module);
 }
 
-PyDoc_STRVAR(_imp_release_lock__doc__,
+TyDoc_STRVAR(_imp_release_lock__doc__,
 "release_lock($module, /)\n"
 "--\n"
 "\n"
@@ -69,7 +69,7 @@ _imp_release_lock(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _imp_release_lock_impl(module);
 }
 
-PyDoc_STRVAR(_imp__fix_co_filename__doc__,
+TyDoc_STRVAR(_imp__fix_co_filename__doc__,
 "_fix_co_filename($module, code, path, /)\n"
 "--\n"
 "\n"
@@ -113,7 +113,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_imp_create_builtin__doc__,
+TyDoc_STRVAR(_imp_create_builtin__doc__,
 "create_builtin($module, spec, /)\n"
 "--\n"
 "\n"
@@ -122,7 +122,7 @@ PyDoc_STRVAR(_imp_create_builtin__doc__,
 #define _IMP_CREATE_BUILTIN_METHODDEF    \
     {"create_builtin", (PyCFunction)_imp_create_builtin, METH_O, _imp_create_builtin__doc__},
 
-PyDoc_STRVAR(_imp_extension_suffixes__doc__,
+TyDoc_STRVAR(_imp_extension_suffixes__doc__,
 "extension_suffixes($module, /)\n"
 "--\n"
 "\n"
@@ -140,7 +140,7 @@ _imp_extension_suffixes(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _imp_extension_suffixes_impl(module);
 }
 
-PyDoc_STRVAR(_imp_init_frozen__doc__,
+TyDoc_STRVAR(_imp_init_frozen__doc__,
 "init_frozen($module, name, /)\n"
 "--\n"
 "\n"
@@ -169,7 +169,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_imp_find_frozen__doc__,
+TyDoc_STRVAR(_imp_find_frozen__doc__,
 "find_frozen($module, name, /, *, withdata=False)\n"
 "--\n"
 "\n"
@@ -202,7 +202,7 @@ _imp_find_frozen(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(withdata), },
     };
@@ -249,7 +249,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_imp_get_frozen_object__doc__,
+TyDoc_STRVAR(_imp_get_frozen_object__doc__,
 "get_frozen_object($module, name, data=None, /)\n"
 "--\n"
 "\n"
@@ -288,7 +288,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_imp_is_frozen_package__doc__,
+TyDoc_STRVAR(_imp_is_frozen_package__doc__,
 "is_frozen_package($module, name, /)\n"
 "--\n"
 "\n"
@@ -317,7 +317,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_imp_is_builtin__doc__,
+TyDoc_STRVAR(_imp_is_builtin__doc__,
 "is_builtin($module, name, /)\n"
 "--\n"
 "\n"
@@ -346,7 +346,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_imp_is_frozen__doc__,
+TyDoc_STRVAR(_imp_is_frozen__doc__,
 "is_frozen($module, name, /)\n"
 "--\n"
 "\n"
@@ -375,7 +375,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_imp__frozen_module_names__doc__,
+TyDoc_STRVAR(_imp__frozen_module_names__doc__,
 "_frozen_module_names($module, /)\n"
 "--\n"
 "\n"
@@ -393,7 +393,7 @@ _imp__frozen_module_names(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _imp__frozen_module_names_impl(module);
 }
 
-PyDoc_STRVAR(_imp__override_frozen_modules_for_tests__doc__,
+TyDoc_STRVAR(_imp__override_frozen_modules_for_tests__doc__,
 "_override_frozen_modules_for_tests($module, override, /)\n"
 "--\n"
 "\n"
@@ -424,7 +424,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_imp__override_multi_interp_extensions_check__doc__,
+TyDoc_STRVAR(_imp__override_multi_interp_extensions_check__doc__,
 "_override_multi_interp_extensions_check($module, override, /)\n"
 "--\n"
 "\n"
@@ -457,7 +457,7 @@ exit:
 
 #if defined(HAVE_DYNAMIC_LOADING)
 
-PyDoc_STRVAR(_imp_create_dynamic__doc__,
+TyDoc_STRVAR(_imp_create_dynamic__doc__,
 "create_dynamic($module, spec, file=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -495,7 +495,7 @@ exit:
 
 #if defined(HAVE_DYNAMIC_LOADING)
 
-PyDoc_STRVAR(_imp_exec_dynamic__doc__,
+TyDoc_STRVAR(_imp_exec_dynamic__doc__,
 "exec_dynamic($module, mod, /)\n"
 "--\n"
 "\n"
@@ -525,7 +525,7 @@ exit:
 
 #endif /* defined(HAVE_DYNAMIC_LOADING) */
 
-PyDoc_STRVAR(_imp_exec_builtin__doc__,
+TyDoc_STRVAR(_imp_exec_builtin__doc__,
 "exec_builtin($module, mod, /)\n"
 "--\n"
 "\n"
@@ -553,7 +553,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_imp_source_hash__doc__,
+TyDoc_STRVAR(_imp_source_hash__doc__,
 "source_hash($module, /, key, source)\n"
 "--\n"
 "\n");
@@ -577,7 +577,7 @@ _imp_source_hash(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(source), },
     };

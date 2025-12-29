@@ -354,7 +354,7 @@ meth_hash(TyObject *self)
 
 
 TyTypeObject PyCFunction_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "builtin_function_or_method",
     sizeof(PyCFunctionObject),
     0,
@@ -390,7 +390,7 @@ TyTypeObject PyCFunction_Type = {
 };
 
 TyTypeObject PyCMethod_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "builtin_method",
     .tp_basicsize = sizeof(PyCMethodObject),
     .tp_base = &PyCFunction_Type,

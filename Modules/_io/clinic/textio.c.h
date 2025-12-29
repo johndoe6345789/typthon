@@ -10,7 +10,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_io__TextIOBase_detach__doc__,
+TyDoc_STRVAR(_io__TextIOBase_detach__doc__,
 "detach($self, /)\n"
 "--\n"
 "\n"
@@ -34,7 +34,7 @@ _io__TextIOBase_detach(TyObject *self, TyTypeObject *cls, TyObject *const *args,
     return _io__TextIOBase_detach_impl(self, cls);
 }
 
-PyDoc_STRVAR(_io__TextIOBase_read__doc__,
+TyDoc_STRVAR(_io__TextIOBase_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -89,7 +89,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__TextIOBase_readline__doc__,
+TyDoc_STRVAR(_io__TextIOBase_readline__doc__,
 "readline($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -144,7 +144,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__TextIOBase_write__doc__,
+TyDoc_STRVAR(_io__TextIOBase_write__doc__,
 "write($self, s, /)\n"
 "--\n"
 "\n"
@@ -204,7 +204,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__TextIOBase_encoding__doc__,
+TyDoc_STRVAR(_io__TextIOBase_encoding__doc__,
 "Encoding of the text stream.\n"
 "\n"
 "Subclasses should override.");
@@ -232,7 +232,7 @@ _io__TextIOBase_encoding_get(TyObject *self, void *Py_UNUSED(context))
     return _io__TextIOBase_encoding_get_impl(self);
 }
 
-PyDoc_STRVAR(_io__TextIOBase_newlines__doc__,
+TyDoc_STRVAR(_io__TextIOBase_newlines__doc__,
 "Line endings translated so far.\n"
 "\n"
 "Only line endings translated during reading are considered.\n"
@@ -262,7 +262,7 @@ _io__TextIOBase_newlines_get(TyObject *self, void *Py_UNUSED(context))
     return _io__TextIOBase_newlines_get_impl(self);
 }
 
-PyDoc_STRVAR(_io__TextIOBase_errors__doc__,
+TyDoc_STRVAR(_io__TextIOBase_errors__doc__,
 "The error setting of the decoder or encoder.\n"
 "\n"
 "Subclasses should override.");
@@ -290,7 +290,7 @@ _io__TextIOBase_errors_get(TyObject *self, void *Py_UNUSED(context))
     return _io__TextIOBase_errors_get_impl(self);
 }
 
-PyDoc_STRVAR(_io_IncrementalNewlineDecoder___init____doc__,
+TyDoc_STRVAR(_io_IncrementalNewlineDecoder___init____doc__,
 "IncrementalNewlineDecoder(decoder, translate, errors=\'strict\')\n"
 "--\n"
 "\n"
@@ -321,7 +321,7 @@ _io_IncrementalNewlineDecoder___init__(TyObject *self, TyObject *args, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(decoder), &_Ty_ID(translate), &_Ty_ID(errors), },
     };
@@ -368,7 +368,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_IncrementalNewlineDecoder_decode__doc__,
+TyDoc_STRVAR(_io_IncrementalNewlineDecoder_decode__doc__,
 "decode($self, /, input, final=False)\n"
 "--\n"
 "\n");
@@ -393,7 +393,7 @@ _io_IncrementalNewlineDecoder_decode(TyObject *self, TyObject *const *args, Ty_s
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(input), &_Ty_ID(final), },
     };
@@ -436,7 +436,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_IncrementalNewlineDecoder_getstate__doc__,
+TyDoc_STRVAR(_io_IncrementalNewlineDecoder_getstate__doc__,
 "getstate($self, /)\n"
 "--\n"
 "\n");
@@ -453,7 +453,7 @@ _io_IncrementalNewlineDecoder_getstate(TyObject *self, TyObject *Py_UNUSED(ignor
     return _io_IncrementalNewlineDecoder_getstate_impl((nldecoder_object *)self);
 }
 
-PyDoc_STRVAR(_io_IncrementalNewlineDecoder_setstate__doc__,
+TyDoc_STRVAR(_io_IncrementalNewlineDecoder_setstate__doc__,
 "setstate($self, state, /)\n"
 "--\n"
 "\n");
@@ -475,7 +475,7 @@ _io_IncrementalNewlineDecoder_setstate(TyObject *self, TyObject *state)
     return return_value;
 }
 
-PyDoc_STRVAR(_io_IncrementalNewlineDecoder_reset__doc__,
+TyDoc_STRVAR(_io_IncrementalNewlineDecoder_reset__doc__,
 "reset($self, /)\n"
 "--\n"
 "\n");
@@ -492,7 +492,7 @@ _io_IncrementalNewlineDecoder_reset(TyObject *self, TyObject *Py_UNUSED(ignored)
     return _io_IncrementalNewlineDecoder_reset_impl((nldecoder_object *)self);
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper___init____doc__,
+TyDoc_STRVAR(_io_TextIOWrapper___init____doc__,
 "TextIOWrapper(buffer, encoding=None, errors=None, newline=None,\n"
 "              line_buffering=False, write_through=False)\n"
 "--\n"
@@ -545,7 +545,7 @@ _io_TextIOWrapper___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(buffer), &_Ty_ID(encoding), &_Ty_ID(errors), &_Ty_ID(newline), &_Ty_ID(line_buffering), &_Ty_ID(write_through), },
     };
@@ -655,7 +655,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_reconfigure__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_reconfigure__doc__,
 "reconfigure($self, /, *, encoding=None, errors=None, newline=None,\n"
 "            line_buffering=None, write_through=None)\n"
 "--\n"
@@ -686,7 +686,7 @@ _io_TextIOWrapper_reconfigure(TyObject *self, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(encoding), &_Ty_ID(errors), &_Ty_ID(newline), &_Ty_ID(line_buffering), &_Ty_ID(write_through), },
     };
@@ -754,7 +754,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_detach__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_detach__doc__,
 "detach($self, /)\n"
 "--\n"
 "\n");
@@ -777,7 +777,7 @@ _io_TextIOWrapper_detach(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_write__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_write__doc__,
 "write($self, text, /)\n"
 "--\n"
 "\n");
@@ -807,7 +807,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_read__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n");
@@ -842,7 +842,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_readline__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_readline__doc__,
 "readline($self, size=-1, /)\n"
 "--\n"
 "\n");
@@ -886,7 +886,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_seek__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_seek__doc__,
 "seek($self, cookie, whence=os.SEEK_SET, /)\n"
 "--\n"
 "\n"
@@ -942,7 +942,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_tell__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_tell__doc__,
 "tell($self, /)\n"
 "--\n"
 "\n"
@@ -969,7 +969,7 @@ _io_TextIOWrapper_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_truncate__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_truncate__doc__,
 "truncate($self, pos=None, /)\n"
 "--\n"
 "\n");
@@ -1002,7 +1002,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_fileno__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_fileno__doc__,
 "fileno($self, /)\n"
 "--\n"
 "\n");
@@ -1025,7 +1025,7 @@ _io_TextIOWrapper_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_seekable__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_seekable__doc__,
 "seekable($self, /)\n"
 "--\n"
 "\n");
@@ -1048,7 +1048,7 @@ _io_TextIOWrapper_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_readable__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_readable__doc__,
 "readable($self, /)\n"
 "--\n"
 "\n");
@@ -1071,7 +1071,7 @@ _io_TextIOWrapper_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_writable__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_writable__doc__,
 "writable($self, /)\n"
 "--\n"
 "\n");
@@ -1094,7 +1094,7 @@ _io_TextIOWrapper_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_isatty__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_isatty__doc__,
 "isatty($self, /)\n"
 "--\n"
 "\n");
@@ -1117,7 +1117,7 @@ _io_TextIOWrapper_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_flush__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n");
@@ -1140,7 +1140,7 @@ _io_TextIOWrapper_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_TextIOWrapper_close__doc__,
+TyDoc_STRVAR(_io_TextIOWrapper_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n");

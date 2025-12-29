@@ -2454,7 +2454,7 @@ bytearray_decode_impl(PyByteArrayObject *self, const char *encoding,
     return TyUnicode_FromEncodedObject((TyObject*)self, encoding, errors);
 }
 
-PyDoc_STRVAR(alloc_doc,
+TyDoc_STRVAR(alloc_doc,
 "B.__alloc__() -> int\n\
 \n\
 Return the number of bytes actually allocated.");
@@ -2782,7 +2782,7 @@ static PyNumberMethods bytearray_as_number = {
     bytearray_mod,  /*nb_remainder*/
 };
 
-PyDoc_STRVAR(bytearray_doc,
+TyDoc_STRVAR(bytearray_doc,
 "bytearray(iterable_of_ints) -> bytearray\n\
 bytearray(string, encoding[, errors]) -> bytearray\n\
 bytearray(bytes_or_buffer) -> mutable copy of bytes_or_buffer\n\
@@ -2800,7 +2800,7 @@ Construct a mutable bytearray object from:\n\
 static TyObject *bytearray_iter(TyObject *seq);
 
 TyTypeObject TyByteArray_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "bytearray",
     sizeof(PyByteArrayObject),
     0,
@@ -2919,7 +2919,7 @@ bytearrayiter_length_hint(TyObject *self, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSsize_t(len);
 }
 
-PyDoc_STRVAR(length_hint_doc,
+TyDoc_STRVAR(length_hint_doc,
     "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
@@ -2962,7 +2962,7 @@ bytearrayiter_setstate(TyObject *self, TyObject *state)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
+TyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
 static TyMethodDef bytearrayiter_methods[] = {
     {"__length_hint__", bytearrayiter_length_hint, METH_NOARGS,
@@ -2975,7 +2975,7 @@ static TyMethodDef bytearrayiter_methods[] = {
 };
 
 TyTypeObject PyByteArrayIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "bytearray_iterator",              /* tp_name */
     sizeof(bytesiterobject),           /* tp_basicsize */
     0,                                 /* tp_itemsize */

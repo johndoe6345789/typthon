@@ -136,16 +136,16 @@ interpolation_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 
 static TyMethodDef interpolation_methods[] = {
     {"__reduce__", interpolation_reduce, METH_NOARGS,
-        PyDoc_STR("__reduce__() -> (cls, state)")},
+        TyDoc_STR("__reduce__() -> (cls, state)")},
     {"__class_getitem__", Ty_GenericAlias,
-        METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+        METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL, NULL},
 };
 
 TyTypeObject _PyInterpolation_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "string.templatelib.Interpolation",
-    .tp_doc = PyDoc_STR("Interpolation object"),
+    .tp_doc = TyDoc_STR("Interpolation object"),
     .tp_basicsize = sizeof(interpolationobject),
     .tp_itemsize = 0,
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,
@@ -161,7 +161,7 @@ TyTypeObject _PyInterpolation_Type = {
 };
 
 TyStatus
-_PyInterpolation_InitTypes(PyInterpreterState *interp)
+_PyInterpolation_InitTypes(TyInterpreterState *interp)
 {
     TyObject *tuple = Ty_BuildValue("(ssss)", "value", "expression", "conversion", "format_spec");
     if (!tuple) {

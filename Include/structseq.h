@@ -7,37 +7,37 @@
 extern "C" {
 #endif
 
-typedef struct PyStructSequence_Field {
+typedef struct TyStructSequence_Field {
     const char *name;
     const char *doc;
-} PyStructSequence_Field;
+} TyStructSequence_Field;
 
-typedef struct PyStructSequence_Desc {
+typedef struct TyStructSequence_Desc {
     const char *name;
     const char *doc;
-    PyStructSequence_Field *fields;
+    TyStructSequence_Field *fields;
     int n_in_sequence;
-} PyStructSequence_Desc;
+} TyStructSequence_Desc;
 
-PyAPI_DATA(const char * const) PyStructSequence_UnnamedField;
+PyAPI_DATA(const char * const) TyStructSequence_UnnamedField;
 
 #ifndef Ty_LIMITED_API
-PyAPI_FUNC(void) PyStructSequence_InitType(TyTypeObject *type,
-                                           PyStructSequence_Desc *desc);
-PyAPI_FUNC(int) PyStructSequence_InitType2(TyTypeObject *type,
-                                           PyStructSequence_Desc *desc);
+PyAPI_FUNC(void) TyStructSequence_InitType(TyTypeObject *type,
+                                           TyStructSequence_Desc *desc);
+PyAPI_FUNC(int) TyStructSequence_InitType2(TyTypeObject *type,
+                                           TyStructSequence_Desc *desc);
 #endif
-PyAPI_FUNC(TyTypeObject*) PyStructSequence_NewType(PyStructSequence_Desc *desc);
+PyAPI_FUNC(TyTypeObject*) TyStructSequence_NewType(TyStructSequence_Desc *desc);
 
-PyAPI_FUNC(TyObject *) PyStructSequence_New(TyTypeObject* type);
+PyAPI_FUNC(TyObject *) TyStructSequence_New(TyTypeObject* type);
 
-PyAPI_FUNC(void) PyStructSequence_SetItem(TyObject*, Ty_ssize_t, TyObject*);
-PyAPI_FUNC(TyObject*) PyStructSequence_GetItem(TyObject*, Ty_ssize_t);
+PyAPI_FUNC(void) TyStructSequence_SetItem(TyObject*, Ty_ssize_t, TyObject*);
+PyAPI_FUNC(TyObject*) TyStructSequence_GetItem(TyObject*, Ty_ssize_t);
 
 #ifndef Ty_LIMITED_API
 typedef PyTupleObject PyStructSequence;
-#define PyStructSequence_SET_ITEM PyStructSequence_SetItem
-#define PyStructSequence_GET_ITEM PyStructSequence_GetItem
+#define TyStructSequence_SET_ITEM TyStructSequence_SetItem
+#define TyStructSequence_GET_ITEM TyStructSequence_GetItem
 #endif
 
 #ifdef __cplusplus

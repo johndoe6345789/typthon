@@ -1327,7 +1327,7 @@ static struct TyMemberDef cursor_members[] =
 };
 
 static const char cursor_doc[] =
-PyDoc_STR("SQLite database cursor class.");
+TyDoc_STR("SQLite database cursor class.");
 
 static TyType_Slot cursor_slots[] = {
     {Ty_tp_dealloc, cursor_dealloc},

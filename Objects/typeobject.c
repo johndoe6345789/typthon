@@ -5,7 +5,7 @@
 #include "pycore_call.h"          // _TyObject_VectorcallTstate()
 #include "pycore_code.h"          // CO_FAST_FREE
 #include "pycore_dict.h"          // _TyDict_KeysSize()
-#include "pycore_function.h"      // _PyFunction_GetVersionForCurrentState()
+#include "pycore_function.h"      // _TyFunction_GetVersionForCurrentState()
 #include "pycore_interpframe.h"   // _PyInterpreterFrame
 #include "pycore_lock.h"          // _PySeqLock_*
 #include "pycore_long.h"          // _TyLong_IsNegative(), _TyLong_GetOne()
@@ -149,7 +149,7 @@ managed_static_type_index_clear(TyTypeObject *self)
 }
 
 static TyTypeObject *
-static_ext_type_lookup(PyInterpreterState *interp, size_t index,
+static_ext_type_lookup(TyInterpreterState *interp, size_t index,
                        int64_t *p_interp_count)
 {
     assert(interp->runtime == &_PyRuntime);
@@ -173,7 +173,7 @@ static_ext_type_lookup(PyInterpreterState *interp, size_t index,
 }
 
 static managed_static_type_state *
-managed_static_type_state_get(PyInterpreterState *interp, TyTypeObject *self)
+managed_static_type_state_get(TyInterpreterState *interp, TyTypeObject *self)
 {
     // It's probably a builtin type.
     size_t index = managed_static_type_index_get(self);
@@ -190,7 +190,7 @@ managed_static_type_state_get(PyInterpreterState *interp, TyTypeObject *self)
 
 /* For static types we store some state in an array on each interpreter. */
 managed_static_type_state *
-_PyStaticType_GetState(PyInterpreterState *interp, TyTypeObject *self)
+_PyStaticType_GetState(TyInterpreterState *interp, TyTypeObject *self)
 {
     assert(self->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN);
     return managed_static_type_state_get(interp, self);
@@ -198,7 +198,7 @@ _PyStaticType_GetState(PyInterpreterState *interp, TyTypeObject *self)
 
 /* Set the type's per-interpreter state. */
 static void
-managed_static_type_state_init(PyInterpreterState *interp, TyTypeObject *self,
+managed_static_type_state_init(TyInterpreterState *interp, TyTypeObject *self,
                                int isbuiltin, int initial)
 {
     assert(interp->runtime == &_PyRuntime);
@@ -270,7 +270,7 @@ managed_static_type_state_init(PyInterpreterState *interp, TyTypeObject *self,
 /* Reset the type's per-interpreter state.
    This basically undoes what managed_static_type_state_init() did. */
 static void
-managed_static_type_state_clear(PyInterpreterState *interp, TyTypeObject *self,
+managed_static_type_state_clear(TyInterpreterState *interp, TyTypeObject *self,
                                 int isbuiltin, int final)
 {
     size_t index = managed_static_type_index_get(self);
@@ -319,7 +319,7 @@ managed_static_type_state_clear(PyInterpreterState *interp, TyTypeObject *self,
 TyObject *
 _PyStaticType_GetBuiltins(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     Ty_ssize_t count = (Ty_ssize_t)interp->types.builtins.num_initialized;
     assert(count <= _Ty_MAX_MANAGED_STATIC_BUILTIN_TYPES);
 
@@ -380,7 +380,7 @@ static inline void
 start_readying(TyTypeObject *type)
 {
     if (type->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = managed_static_type_state_get(interp, type);
         assert(state != NULL);
         assert(!state->readying);
@@ -395,7 +395,7 @@ static inline void
 stop_readying(TyTypeObject *type)
 {
     if (type->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = managed_static_type_state_get(interp, type);
         assert(state != NULL);
         assert(state->readying);
@@ -410,7 +410,7 @@ static inline int
 is_readying(TyTypeObject *type)
 {
     if (type->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = managed_static_type_state_get(interp, type);
         assert(state != NULL);
         return state->readying;
@@ -425,7 +425,7 @@ static inline TyObject *
 lookup_tp_dict(TyTypeObject *self)
 {
     if (self->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = _PyStaticType_GetState(interp, self);
         assert(state != NULL);
         return state->tp_dict;
@@ -451,7 +451,7 @@ static inline void
 set_tp_dict(TyTypeObject *self, TyObject *dict)
 {
     if (self->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = _PyStaticType_GetState(interp, self);
         assert(state != NULL);
         state->tp_dict = dict;
@@ -464,7 +464,7 @@ static inline void
 clear_tp_dict(TyTypeObject *self)
 {
     if (self->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = _PyStaticType_GetState(interp, self);
         assert(state != NULL);
         Ty_CLEAR(state->tp_dict);
@@ -613,7 +613,7 @@ init_tp_subclasses(TyTypeObject *self)
         return NULL;
     }
     if (self->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = _PyStaticType_GetState(interp, self);
         state->tp_subclasses = subclasses;
         return subclasses;
@@ -629,7 +629,7 @@ clear_tp_subclasses(TyTypeObject *self)
        callers also test if tp_subclasses is NULL to check if a static type
        has no subclass. */
     if (self->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = _PyStaticType_GetState(interp, self);
         Ty_CLEAR(state->tp_subclasses);
         return;
@@ -641,7 +641,7 @@ static inline TyObject *
 lookup_tp_subclasses(TyTypeObject *self)
 {
     if (self->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = _PyStaticType_GetState(interp, self);
         assert(state != NULL);
         return state->tp_subclasses;
@@ -652,7 +652,7 @@ lookup_tp_subclasses(TyTypeObject *self)
 int
 _TyType_HasSubclasses(TyTypeObject *self)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (self->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN
         // XXX _PyStaticType_GetState() should never return NULL.
         && _PyStaticType_GetState(interp, self) == NULL)
@@ -865,7 +865,7 @@ _TyType_GetTextSignatureFromInternalDoc(const char *name, const char *internal_d
 static struct type_cache*
 get_type_cache(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return &interp->types.type_cache;
 }
 
@@ -889,7 +889,7 @@ type_cache_clear(struct type_cache *cache, TyObject *value)
 
 
 void
-_TyType_InitCache(PyInterpreterState *interp)
+_TyType_InitCache(TyInterpreterState *interp)
 {
     struct type_cache *cache = &interp->types.type_cache;
     for (Ty_ssize_t i = 0; i < (1 << MCACHE_SIZE_EXP); i++) {
@@ -906,7 +906,7 @@ _TyType_InitCache(PyInterpreterState *interp)
 
 
 static unsigned int
-_TyType_ClearCache(PyInterpreterState *interp)
+_TyType_ClearCache(TyInterpreterState *interp)
 {
     struct type_cache *cache = &interp->types.type_cache;
     // Set to None, rather than NULL, so _TyType_LookupRef() can
@@ -920,13 +920,13 @@ _TyType_ClearCache(PyInterpreterState *interp)
 unsigned int
 TyType_ClearCache(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return _TyType_ClearCache(interp);
 }
 
 
 void
-_PyTypes_Fini(PyInterpreterState *interp)
+_PyTypes_Fini(TyInterpreterState *interp)
 {
     struct type_cache *cache = &interp->types.type_cache;
     type_cache_clear(cache, NULL);
@@ -946,7 +946,7 @@ _PyTypes_Fini(PyInterpreterState *interp)
 int
 TyType_AddWatcher(TyType_WatchCallback callback)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     // start at 1, 0 is reserved for cpython optimizer
     for (int i = 1; i < TYPE_MAX_WATCHERS; i++) {
@@ -961,7 +961,7 @@ TyType_AddWatcher(TyType_WatchCallback callback)
 }
 
 static inline int
-validate_watcher_id(PyInterpreterState *interp, int watcher_id)
+validate_watcher_id(TyInterpreterState *interp, int watcher_id)
 {
     if (watcher_id < 0 || watcher_id >= TYPE_MAX_WATCHERS) {
         TyErr_Format(TyExc_ValueError, "Invalid type watcher ID %d", watcher_id);
@@ -977,7 +977,7 @@ validate_watcher_id(PyInterpreterState *interp, int watcher_id)
 int
 TyType_ClearWatcher(int watcher_id)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (validate_watcher_id(interp, watcher_id) < 0) {
         return -1;
     }
@@ -985,7 +985,7 @@ TyType_ClearWatcher(int watcher_id)
     return 0;
 }
 
-static int assign_version_tag(PyInterpreterState *interp, TyTypeObject *type);
+static int assign_version_tag(TyInterpreterState *interp, TyTypeObject *type);
 
 int
 TyType_Watch(int watcher_id, TyObject* obj)
@@ -995,7 +995,7 @@ TyType_Watch(int watcher_id, TyObject* obj)
         return -1;
     }
     TyTypeObject *type = (TyTypeObject *)obj;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (validate_watcher_id(interp, watcher_id) < 0) {
         return -1;
     }
@@ -1015,7 +1015,7 @@ TyType_Unwatch(int watcher_id, TyObject* obj)
         return -1;
     }
     TyTypeObject *type = (TyTypeObject *)obj;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (validate_watcher_id(interp, watcher_id)) {
         return -1;
     }
@@ -1029,7 +1029,7 @@ set_version_unlocked(TyTypeObject *tp, unsigned int version)
     ASSERT_TYPE_LOCK_HELD();
     assert(version == 0 || (tp->tp_versions_used != _Ty_ATTR_CACHE_UNUSED));
 #ifndef Ty_GIL_DISABLED
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     // lookup the old version and set to null
     if (tp->tp_version_tag != 0) {
         TyTypeObject **slot =
@@ -1099,7 +1099,7 @@ type_modified_unlocked(TyTypeObject *type)
 
     // Notify registered type watchers, if any
     if (type->tp_watched) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         int bits = type->tp_watched;
         int i = 0;
         while (bits) {
@@ -1233,7 +1233,7 @@ _TyType_LookupByVersion(unsigned int version)
 #ifdef Ty_GIL_DISABLED
     return NULL;
 #else
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     TyTypeObject **slot =
         interp->types.type_version_cache
         + (version % TYPE_VERSION_CACHE_SIZE);
@@ -1271,7 +1271,7 @@ next_global_version_tag(void)
 }
 
 static int
-assign_version_tag(PyInterpreterState *interp, TyTypeObject *type)
+assign_version_tag(TyInterpreterState *interp, TyTypeObject *type)
 {
     ASSERT_TYPE_LOCK_HELD();
 
@@ -1322,7 +1322,7 @@ assign_version_tag(PyInterpreterState *interp, TyTypeObject *type)
 
 int PyUnstable_Type_AssignVersionTag(TyTypeObject *type)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     int assigned;
     BEGIN_TYPE_LOCK();
     assigned = assign_version_tag(interp, type);
@@ -1476,7 +1476,7 @@ type_module(TyTypeObject *type)
             mod = TyUnicode_FromStringAndSize(
                 type->tp_name, (Ty_ssize_t)(s - type->tp_name));
             if (mod != NULL) {
-                PyInterpreterState *interp = _TyInterpreterState_GET();
+                TyInterpreterState *interp = _TyInterpreterState_GET();
                 _TyUnicode_InternMortal(interp, &mod);
             }
         }
@@ -3772,21 +3772,21 @@ subtype_getweakref(TyObject *obj, void *context)
 
 static TyGetSetDef subtype_getsets_full[] = {
     {"__dict__", subtype_dict, subtype_setdict,
-     PyDoc_STR("dictionary for instance variables")},
+     TyDoc_STR("dictionary for instance variables")},
     {"__weakref__", subtype_getweakref, NULL,
-     PyDoc_STR("list of weak references to the object")},
+     TyDoc_STR("list of weak references to the object")},
     {0}
 };
 
 static TyGetSetDef subtype_getsets_dict_only[] = {
     {"__dict__", subtype_dict, subtype_setdict,
-     PyDoc_STR("dictionary for instance variables")},
+     TyDoc_STR("dictionary for instance variables")},
     {0}
 };
 
 static TyGetSetDef subtype_getsets_weakref_only[] = {
     {"__weakref__", subtype_getweakref, NULL,
-     PyDoc_STR("list of weak references to the object")},
+     TyDoc_STR("list of weak references to the object")},
     {0}
 };
 
@@ -5819,7 +5819,7 @@ _TyType_LookupStackRefAndVersion(TyTypeObject *type, TyObject *name, _PyStackRef
 
     TyObject *res;
     int error;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     int has_version = 0;
     unsigned int assigned_version = 0;
     BEGIN_TYPE_LOCK();
@@ -5913,8 +5913,8 @@ _TyType_CacheGetItemForSpecialization(PyHeapTypeObject *ht, TyObject *descriptor
     // This pointer is invalidated by TyType_Modified (see the comment on
     // struct _specialization_cache):
     PyFunctionObject *func = (PyFunctionObject *)descriptor;
-    uint32_t version = _PyFunction_GetVersionForCurrentState(func);
-    can_cache = can_cache && _PyFunction_IsVersionValid(version);
+    uint32_t version = _TyFunction_GetVersionForCurrentState(func);
+    can_cache = can_cache && _TyFunction_IsVersionValid(version);
 #ifdef Ty_GIL_DISABLED
     can_cache = can_cache && _TyObject_HasDeferredRefcount(descriptor);
 #endif
@@ -6158,7 +6158,7 @@ type_setattro(TyObject *self, TyObject *name, TyObject *value)
             return -1;
     }
     if (!TyUnicode_CHECK_INTERNED(name)) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         _TyUnicode_InternMortal(interp, &name);
         if (!TyUnicode_CHECK_INTERNED(name)) {
             TyErr_SetString(TyExc_MemoryError,
@@ -6271,7 +6271,7 @@ clear_static_tp_subclasses(TyTypeObject *type, int isbuiltin)
 }
 
 static void
-clear_static_type_objects(PyInterpreterState *interp, TyTypeObject *type,
+clear_static_type_objects(TyInterpreterState *interp, TyTypeObject *type,
                           int isbuiltin, int final)
 {
     if (final) {
@@ -6285,7 +6285,7 @@ clear_static_type_objects(PyInterpreterState *interp, TyTypeObject *type,
 
 
 static void
-fini_static_type(PyInterpreterState *interp, TyTypeObject *type,
+fini_static_type(TyInterpreterState *interp, TyTypeObject *type,
                  int isbuiltin, int final)
 {
     assert(type->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN);
@@ -6308,7 +6308,7 @@ fini_static_type(PyInterpreterState *interp, TyTypeObject *type,
 }
 
 void
-_PyTypes_FiniExtTypes(PyInterpreterState *interp)
+_PyTypes_FiniExtTypes(TyInterpreterState *interp)
 {
     for (size_t i = _Ty_MAX_MANAGED_STATIC_EXT_TYPES; i > 0; i--) {
         if (interp->types.for_extensions.num_initialized == 0) {
@@ -6325,7 +6325,7 @@ _PyTypes_FiniExtTypes(PyInterpreterState *interp)
 }
 
 void
-_PyStaticType_FiniBuiltin(PyInterpreterState *interp, TyTypeObject *type)
+_PyStaticType_FiniBuiltin(TyInterpreterState *interp, TyTypeObject *type)
 {
     fini_static_type(interp, type, 1, _Ty_IsMainInterpreter(interp));
 }
@@ -6509,7 +6509,7 @@ static TyMethodDef type_methods[] = {
     TYPE___SUBCLASSES___METHODDEF
     {"__prepare__", _PyCFunction_CAST(type_prepare),
      METH_FASTCALL | METH_KEYWORDS | METH_CLASS,
-     PyDoc_STR("__prepare__($cls, name, bases, /, **kwds)\n"
+     TyDoc_STR("__prepare__($cls, name, bases, /, **kwds)\n"
                "--\n"
                "\n"
                "Create the namespace for the class statement")},
@@ -6520,7 +6520,7 @@ static TyMethodDef type_methods[] = {
     {0}
 };
 
-PyDoc_STRVAR(type_doc,
+TyDoc_STRVAR(type_doc,
 "type(object) -> the object's type\n"
 "type(name, bases, dict, **kwds) -> a new type");
 
@@ -6618,7 +6618,7 @@ static PyNumberMethods type_as_number = {
 };
 
 TyTypeObject TyType_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "type",                                     /* tp_name */
     sizeof(PyHeapTypeObject),                   /* tp_basicsize */
     sizeof(TyMemberDef),                        /* tp_itemsize */
@@ -7130,7 +7130,7 @@ object_set_class(TyObject *self, TyObject *value, void *closure)
     }
 
 #ifdef Ty_GIL_DISABLED
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyEval_StopTheWorld(interp);
 #endif
     TyTypeObject *oldto = Ty_TYPE(self);
@@ -7151,7 +7151,7 @@ object_set_class(TyObject *self, TyObject *value, void *closure)
 
 static TyGetSetDef object_getsets[] = {
     {"__class__", object_get_class, object_set_class,
-     PyDoc_STR("the object's class")},
+     TyDoc_STR("the object's class")},
     {0}
 };
 
@@ -7700,7 +7700,7 @@ object___reduce_ex___impl(TyObject *self, int protocol)
             return NULL;
         }
 
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         override = (clsreduce != _Ty_INTERP_CACHED_OBJECT(interp, objreduce));
         Ty_DECREF(clsreduce);
         if (override) {
@@ -7721,7 +7721,7 @@ object_subclasshook(TyObject *cls, TyObject *args)
     Py_RETURN_NOTIMPLEMENTED;
 }
 
-PyDoc_STRVAR(object_subclasshook_doc,
+TyDoc_STRVAR(object_subclasshook_doc,
 "Abstract classes can override this to customize issubclass().\n"
 "\n"
 "This is invoked early on by abc.ABCMeta.__subclasscheck__().\n"
@@ -7735,7 +7735,7 @@ object_init_subclass(TyObject *cls, TyObject *arg)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(object_init_subclass_doc,
+TyDoc_STRVAR(object_init_subclass_doc,
 "This method is called when a class is subclassed.\n"
 "\n"
 "The default implementation does nothing. It may be\n"
@@ -7859,14 +7859,14 @@ static TyMethodDef object_methods[] = {
     {0}
 };
 
-PyDoc_STRVAR(object_doc,
+TyDoc_STRVAR(object_doc,
 "object()\n--\n\n"
 "The base class of the class hierarchy.\n\n"
 "When called, it accepts no arguments and returns a new featureless\n"
 "instance that has no instance attributes and cannot be given any.\n");
 
 TyTypeObject PyBaseObject_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "object",                                   /* tp_name */
     sizeof(TyObject),                           /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -8924,7 +8924,7 @@ TyType_Ready(TyTypeObject *type)
 
 
 static int
-init_static_type(PyInterpreterState *interp, TyTypeObject *self,
+init_static_type(TyInterpreterState *interp, TyTypeObject *self,
                  int isbuiltin, int initial)
 {
     assert(_Ty_IsImmortal((TyObject *)self));
@@ -8964,13 +8964,13 @@ init_static_type(PyInterpreterState *interp, TyTypeObject *self,
 }
 
 int
-_PyStaticType_InitForExtension(PyInterpreterState *interp, TyTypeObject *self)
+_PyStaticType_InitForExtension(TyInterpreterState *interp, TyTypeObject *self)
 {
     return init_static_type(interp, self, 0, ((self->tp_flags & Ty_TPFLAGS_READY) == 0));
 }
 
 int
-_PyStaticType_InitBuiltin(PyInterpreterState *interp, TyTypeObject *self)
+_PyStaticType_InitBuiltin(TyInterpreterState *interp, TyTypeObject *self)
 {
     return init_static_type(interp, self, 1, _Ty_IsMainInterpreter(interp));
 }
@@ -9767,7 +9767,7 @@ tp_new_wrapper(TyObject *self, TyObject *args, TyObject *kwds)
 
 static struct TyMethodDef tp_new_methoddef[] = {
     {"__new__", _PyCFunction_CAST(tp_new_wrapper), METH_VARARGS|METH_KEYWORDS,
-     PyDoc_STR("__new__($type, *args, **kwargs)\n--\n\n"
+     TyDoc_STR("__new__($type, *args, **kwargs)\n--\n\n"
                "Create and return a new object.  "
                "See help(type) for accurate signature.")},
     {0}
@@ -10563,7 +10563,7 @@ static PyBufferProcs bufferwrapper_as_buffer = {
 
 
 TyTypeObject _PyBufferWrapper_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "_buffer_wrapper",
     .tp_basicsize = sizeof(PyBufferWrapper),
     .tp_alloc = TyType_GenericAlloc,
@@ -10803,13 +10803,13 @@ an all-zero entry.
 
 #define TPSLOT(NAME, SLOT, FUNCTION, WRAPPER, DOC) \
     {#NAME, offsetof(TyTypeObject, SLOT), (void *)(FUNCTION), WRAPPER, \
-     PyDoc_STR(DOC), .name_strobj = &_Ty_ID(NAME)}
+     TyDoc_STR(DOC), .name_strobj = &_Ty_ID(NAME)}
 #define FLSLOT(NAME, SLOT, FUNCTION, WRAPPER, DOC, FLAGS) \
     {#NAME, offsetof(TyTypeObject, SLOT), (void *)(FUNCTION), WRAPPER, \
-     PyDoc_STR(DOC), FLAGS, .name_strobj = &_Ty_ID(NAME) }
+     TyDoc_STR(DOC), FLAGS, .name_strobj = &_Ty_ID(NAME) }
 #define ETSLOT(NAME, SLOT, FUNCTION, WRAPPER, DOC) \
     {#NAME, offsetof(PyHeapTypeObject, SLOT), (void *)(FUNCTION), WRAPPER, \
-     PyDoc_STR(DOC), .name_strobj = &_Ty_ID(NAME) }
+     TyDoc_STR(DOC), .name_strobj = &_Ty_ID(NAME) }
 #define BUFSLOT(NAME, SLOT, FUNCTION, WRAPPER, DOC) \
     ETSLOT(NAME, as_buffer.SLOT, FUNCTION, WRAPPER, DOC)
 #define AMSLOT(NAME, SLOT, FUNCTION, WRAPPER, DOC) \
@@ -11088,7 +11088,7 @@ resolve_slotdups(TyTypeObject *type, TyObject *name)
     /* XXX Maybe this could be optimized more -- but is it worth it? */
 
     /* pname and ptrs act as a little cache */
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 #define pname _Ty_INTERP_CACHED_OBJECT(interp, type_slots_pname)
 #define ptrs _Ty_INTERP_CACHED_OBJECT(interp, type_slots_ptrs)
     pytype_slotdef *p, **pp;
@@ -11965,7 +11965,7 @@ super_init_without_args(_PyInterpreterFrame *cframe, TyTypeObject **type_p,
     if ((_PyLocals_GetKind(co->co_localspluskinds, 0) & CO_FAST_CELL) &&
             (_PyInterpreterFrame_LASTI(cframe) >= 0)) {
         // MAKE_CELL and COPY_FREE_VARS have no quickened forms, so no need
-        // to use _PyOpcode_Deopt here:
+        // to use _TyOpcode_Deopt here:
         assert(_TyCode_CODE(co)[0].op.code == MAKE_CELL ||
                 _TyCode_CODE(co)[0].op.code == COPY_FREE_VARS);
         assert(TyCell_Check(firstarg));
@@ -12085,7 +12085,7 @@ super_init_impl(TyObject *self, TyTypeObject *type, TyObject *obj) {
     return 0;
 }
 
-PyDoc_STRVAR(super_doc,
+TyDoc_STRVAR(super_doc,
 "super() -> same as super(__class__, <first argument>)\n"
 "super(type) -> unbound super object\n"
 "super(type, obj) -> bound super object; requires isinstance(obj, type)\n"
@@ -12154,7 +12154,7 @@ fail:
 }
 
 TyTypeObject TySuper_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "super",                                    /* tp_name */
     sizeof(superobject),                        /* tp_basicsize */
     0,                                          /* tp_itemsize */

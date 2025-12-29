@@ -26,7 +26,7 @@
 #define MODINIT_FUNC_NAME RESOLVE_MODINIT_FUNC_NAME(MODULE_NAME)
 
 
-static PyInterpreterState *
+static TyInterpreterState *
 _get_current_interp(void)
 {
     // TyInterpreterState_Get() aborts if lookup fails, so don't need
@@ -55,7 +55,7 @@ _get_current_module(void)
 
 
 static int
-is_running_main(PyInterpreterState *interp)
+is_running_main(TyInterpreterState *interp)
 {
     if (_TyInterpreterState_IsRunningMain(interp)) {
         return 1;
@@ -161,7 +161,7 @@ xibufferview_dealloc(TyObject *op)
 {
     xibufferview *self = (xibufferview *)op;
     if (self->view != NULL) {
-        PyInterpreterState *interp =
+        TyInterpreterState *interp =
                         _TyInterpreterState_LookUpID(self->interpid);
         if (interp == NULL) {
             /* The interpreter is no longer alive. */
@@ -478,7 +478,7 @@ _interp_call_pack(TyThreadState *tstate, struct interp_call *call,
                       "expected a callable, got %R", func);
         return -1;
     }
-    if (_PyFunction_GetXIData(tstate, func, &call->_preallocated.func) < 0) {
+    if (_TyFunction_GetXIData(tstate, func, &call->_preallocated.func) < 0) {
         TyObject *exc = _TyErr_GetRaisedException(tstate);
         if (_PyPickle_GetXIData(tstate, func, &call->_preallocated.func) < 0) {
             _TyErr_SetRaisedException(tstate, exc);
@@ -647,7 +647,7 @@ _run_result_clear(struct run_result *runres)
 }
 
 static int
-_run_in_interpreter(TyThreadState *tstate, PyInterpreterState *interp,
+_run_in_interpreter(TyThreadState *tstate, TyInterpreterState *interp,
                      _PyXIData_t *script, struct interp_call *call,
                      TyObject *shareables, struct run_result *runres)
 {
@@ -729,16 +729,16 @@ finally:
 /* module level code ********************************************************/
 
 static long
-get_whence(PyInterpreterState *interp)
+get_whence(TyInterpreterState *interp)
 {
     return _TyInterpreterState_GetWhence(interp);
 }
 
 
-static PyInterpreterState *
+static TyInterpreterState *
 resolve_interp(TyObject *idobj, int restricted, int reqready, const char *op)
 {
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
     if (idobj == NULL) {
         interp = TyInterpreterState_Get();
     }
@@ -778,7 +778,7 @@ resolve_interp(TyObject *idobj, int restricted, int reqready, const char *op)
 
 
 static TyObject *
-get_summary(PyInterpreterState *interp)
+get_summary(TyInterpreterState *interp)
 {
     TyObject *idobj = _TyInterpreterState_GetIDObject(interp);
     if (idobj == NULL) {
@@ -829,7 +829,7 @@ interp_new_config(TyObject *self, TyObject *args, TyObject *kwds)
     return configobj;
 }
 
-PyDoc_STRVAR(new_config_doc,
+TyDoc_STRVAR(new_config_doc,
 "new_config(name='isolated', /, **overrides) -> type.SimpleNamespace\n\
 \n\
 Return a representation of a new PyInterpreterConfig.\n\
@@ -858,7 +858,7 @@ interp_create(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     long whence = _TyInterpreterState_WHENCE_STDLIB;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             _PyXI_NewInterpreter(&config, &whence, NULL, NULL);
     if (interp == NULL) {
         // XXX Move the chained exception to interpreters.create()?
@@ -885,7 +885,7 @@ interp_create(TyObject *self, TyObject *args, TyObject *kwds)
 }
 
 
-PyDoc_STRVAR(create_doc,
+TyDoc_STRVAR(create_doc,
 "create([config], *, reqrefs=False) -> ID\n\
 \n\
 Create a new interpreter and return a unique generated ID.\n\
@@ -915,14 +915,14 @@ interp_destroy(TyObject *self, TyObject *args, TyObject *kwds)
 
     // Look up the interpreter.
     int reqready = 0;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(id, restricted, reqready, "destroy");
     if (interp == NULL) {
         return NULL;
     }
 
     // Ensure we don't try to destroy the current interpreter.
-    PyInterpreterState *current = _get_current_interp();
+    TyInterpreterState *current = _get_current_interp();
     if (current == NULL) {
         return NULL;
     }
@@ -946,7 +946,7 @@ interp_destroy(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(destroy_doc,
+TyDoc_STRVAR(destroy_doc,
 "destroy(id, *, restrict=False)\n\
 \n\
 Destroy the identified interpreter.\n\
@@ -972,7 +972,7 @@ interp_list_all(TyObject *self, TyObject *args, TyObject *kwargs)
         return NULL;
     }
 
-    PyInterpreterState *interp = TyInterpreterState_Head();
+    TyInterpreterState *interp = TyInterpreterState_Head();
     while (interp != NULL) {
         if (!reqready || _TyInterpreterState_IsReady(interp)) {
             TyObject *item = get_summary(interp);
@@ -995,7 +995,7 @@ interp_list_all(TyObject *self, TyObject *args, TyObject *kwargs)
     return ids;
 }
 
-PyDoc_STRVAR(list_all_doc,
+TyDoc_STRVAR(list_all_doc,
 "list_all() -> [(ID, whence)]\n\
 \n\
 Return a list containing the ID of every existing interpreter.");
@@ -1004,7 +1004,7 @@ Return a list containing the ID of every existing interpreter.");
 static TyObject *
 interp_get_current(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyInterpreterState *interp =_get_current_interp();
+    TyInterpreterState *interp =_get_current_interp();
     if (interp == NULL) {
         return NULL;
     }
@@ -1012,7 +1012,7 @@ interp_get_current(TyObject *self, TyObject *Py_UNUSED(ignored))
     return get_summary(interp);
 }
 
-PyDoc_STRVAR(get_current_doc,
+TyDoc_STRVAR(get_current_doc,
 "get_current() -> (ID, whence)\n\
 \n\
 Return the ID of current interpreter.");
@@ -1021,12 +1021,12 @@ Return the ID of current interpreter.");
 static TyObject *
 interp_get_main(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyInterpreterState *interp = _TyInterpreterState_Main();
+    TyInterpreterState *interp = _TyInterpreterState_Main();
     assert(_TyInterpreterState_IsReady(interp));
     return get_summary(interp);
 }
 
-PyDoc_STRVAR(get_main_doc,
+TyDoc_STRVAR(get_main_doc,
 "get_main() -> (ID, whence)\n\
 \n\
 Return the ID of main interpreter.");
@@ -1047,7 +1047,7 @@ interp_set___main___attrs(TyObject *self, TyObject *args, TyObject *kwargs)
 
     // Look up the interpreter.
     int reqready = 1;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(id, restricted, reqready, "update __main__ for");
     if (interp == NULL) {
         return NULL;
@@ -1091,7 +1091,7 @@ interp_set___main___attrs(TyObject *self, TyObject *args, TyObject *kwargs)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(set___main___attrs_doc,
+TyDoc_STRVAR(set___main___attrs_doc,
 "set___main___attrs(id, ns, *, restrict=False)\n\
 \n\
 Bind the given attributes in the interpreter's __main__ module.");
@@ -1127,7 +1127,7 @@ interp_exec(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     int reqready = 1;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(id, restricted, reqready, "exec code for");
     if (interp == NULL) {
         return NULL;
@@ -1153,7 +1153,7 @@ interp_exec(TyObject *self, TyObject *args, TyObject *kwds)
 #undef FUNCNAME
 }
 
-PyDoc_STRVAR(exec_doc,
+TyDoc_STRVAR(exec_doc,
 "exec(id, code, shared=None, *, restrict=False)\n\
 \n\
 Execute the provided code in the identified interpreter.\n\
@@ -1188,7 +1188,7 @@ interp_run_string(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     int reqready = 1;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(id, restricted, reqready, "run a string in");
     if (interp == NULL) {
         return NULL;
@@ -1217,7 +1217,7 @@ interp_run_string(TyObject *self, TyObject *args, TyObject *kwds)
 #undef FUNCNAME
 }
 
-PyDoc_STRVAR(run_string_doc,
+TyDoc_STRVAR(run_string_doc,
 "run_string(id, script, shared=None, *, restrict=False)\n\
 \n\
 Execute the provided string in the identified interpreter.\n\
@@ -1242,7 +1242,7 @@ interp_run_func(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     int reqready = 1;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(id, restricted, reqready, "run a function in");
     if (interp == NULL) {
         return NULL;
@@ -1280,7 +1280,7 @@ interp_run_func(TyObject *self, TyObject *args, TyObject *kwds)
 #undef FUNCNAME
 }
 
-PyDoc_STRVAR(run_func_doc,
+TyDoc_STRVAR(run_func_doc,
 "run_func(id, func, shared=None, *, restrict=False)\n\
 \n\
 Execute the body of the provided function in the identified interpreter.\n\
@@ -1312,7 +1312,7 @@ interp_call(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     int reqready = 1;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(id, restricted, reqready, "make a call in");
     if (interp == NULL) {
         return NULL;
@@ -1344,7 +1344,7 @@ finally:
 #undef FUNCNAME
 }
 
-PyDoc_STRVAR(call_doc,
+TyDoc_STRVAR(call_doc,
 "call(id, callable, args=None, kwargs=None, *, restrict=False)\n\
 \n\
 Call the provided object in the identified interpreter.\n\
@@ -1369,7 +1369,7 @@ object_is_shareable(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_FALSE;
 }
 
-PyDoc_STRVAR(is_shareable_doc,
+TyDoc_STRVAR(is_shareable_doc,
 "is_shareable(obj) -> bool\n\
 \n\
 Return True if the object's data may be shared between interpreters and\n\
@@ -1390,7 +1390,7 @@ interp_is_running(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     int reqready = 1;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(id, restricted, reqready, "check if running for");
     if (interp == NULL) {
         return NULL;
@@ -1402,7 +1402,7 @@ interp_is_running(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_FALSE;
 }
 
-PyDoc_STRVAR(is_running_doc,
+TyDoc_STRVAR(is_running_doc,
 "is_running(id, *, restrict=False) -> bool\n\
 \n\
 Return whether or not the identified interpreter is running.");
@@ -1422,7 +1422,7 @@ interp_get_config(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     int reqready = 0;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(idobj, restricted, reqready, "get the config of");
     if (interp == NULL) {
         return NULL;
@@ -1442,7 +1442,7 @@ interp_get_config(TyObject *self, TyObject *args, TyObject *kwds)
     return configobj;
 }
 
-PyDoc_STRVAR(get_config_doc,
+TyDoc_STRVAR(get_config_doc,
 "get_config(id, *, restrict=False) -> types.SimpleNamespace\n\
 \n\
 Return a representation of the config used to initialize the interpreter.");
@@ -1459,7 +1459,7 @@ interp_whence(TyObject *self, TyObject *args, TyObject *kwds)
         return NULL;
     }
 
-    PyInterpreterState *interp = look_up_interp(id);
+    TyInterpreterState *interp = look_up_interp(id);
     if (interp == NULL) {
         return NULL;
     }
@@ -1468,7 +1468,7 @@ interp_whence(TyObject *self, TyObject *args, TyObject *kwds)
     return TyLong_FromLong(whence);
 }
 
-PyDoc_STRVAR(whence_doc,
+TyDoc_STRVAR(whence_doc,
 "whence(id) -> int\n\
 \n\
 Return an identifier for where the interpreter was created.");
@@ -1489,7 +1489,7 @@ interp_incref(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     int reqready = 1;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(id, restricted, reqready, "incref");
     if (interp == NULL) {
         return NULL;
@@ -1518,7 +1518,7 @@ interp_decref(TyObject *self, TyObject *args, TyObject *kwds)
     }
 
     int reqready = 1;
-    PyInterpreterState *interp = \
+    TyInterpreterState *interp = \
             resolve_interp(id, restricted, reqready, "decref");
     if (interp == NULL) {
         return NULL;
@@ -1589,7 +1589,7 @@ finally:
     return captured;
 }
 
-PyDoc_STRVAR(capture_exception_doc,
+TyDoc_STRVAR(capture_exception_doc,
 "capture_exception(exc=None) -> types.SimpleNamespace\n\
 \n\
 Return a snapshot of an exception.  If \"exc\" is None\n\
@@ -1648,7 +1648,7 @@ static TyMethodDef module_functions[] = {
 
 /* initialization function */
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module provides primitive operations to manage Python interpreters.\n\
 The 'interpreters' module provides a more convenient interface.");
 

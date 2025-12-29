@@ -2517,7 +2517,7 @@ hamt_baseiter_new(TyTypeObject *type, binaryfunc yield, PyHamtObject *o)
 
 
 TyTypeObject _PyHamtItems_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "items",
     ITERATOR_TYPE_SHARED_SLOTS
 };
@@ -2540,7 +2540,7 @@ _TyHamt_NewIterItems(PyHamtObject *o)
 
 
 TyTypeObject _PyHamtKeys_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "keys",
     ITERATOR_TYPE_SHARED_SLOTS
 };
@@ -2563,7 +2563,7 @@ _TyHamt_NewIterKeys(PyHamtObject *o)
 
 
 TyTypeObject _PyHamtValues_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "values",
     ITERATOR_TYPE_SHARED_SLOTS
 };
@@ -2806,7 +2806,7 @@ static PyMappingMethods PyHamt_as_mapping = {
 };
 
 TyTypeObject _TyHamt_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "hamt",
     sizeof(PyHamtObject),
     .tp_methods = PyHamt_methods,
@@ -2829,7 +2829,7 @@ TyTypeObject _TyHamt_Type = {
 
 
 TyTypeObject _TyHamt_ArrayNode_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "hamt_array_node",
     sizeof(PyHamtNode_Array),
     0,
@@ -2842,7 +2842,7 @@ TyTypeObject _TyHamt_ArrayNode_Type = {
 };
 
 TyTypeObject _TyHamt_BitmapNode_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "hamt_bitmap_node",
     sizeof(PyHamtNode_Bitmap) - sizeof(TyObject *),
     sizeof(TyObject *),
@@ -2855,7 +2855,7 @@ TyTypeObject _TyHamt_BitmapNode_Type = {
 };
 
 TyTypeObject _TyHamt_CollisionNode_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "hamt_collision_node",
     sizeof(PyHamtNode_Collision) - sizeof(TyObject *),
     sizeof(TyObject *),

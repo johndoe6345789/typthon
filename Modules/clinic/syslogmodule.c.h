@@ -9,7 +9,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(syslog_openlog__doc__,
+TyDoc_STRVAR(syslog_openlog__doc__,
 "openlog($module, /, ident=<unrepresentable>, logoption=0,\n"
 "        facility=LOG_USER)\n"
 "--\n"
@@ -36,7 +36,7 @@ syslog_openlog(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(ident), &_Ty_ID(logoption), &_Ty_ID(facility), },
     };
@@ -100,7 +100,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(syslog_syslog__doc__,
+TyDoc_STRVAR(syslog_syslog__doc__,
 "syslog([priority=LOG_INFO,] message)\n"
 "Send the string message to the system logger.");
 
@@ -143,7 +143,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(syslog_closelog__doc__,
+TyDoc_STRVAR(syslog_closelog__doc__,
 "closelog($module, /)\n"
 "--\n"
 "\n"
@@ -167,7 +167,7 @@ syslog_closelog(TyObject *module, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(syslog_setlogmask__doc__,
+TyDoc_STRVAR(syslog_setlogmask__doc__,
 "setlogmask($module, maskpri, /)\n"
 "--\n"
 "\n"
@@ -200,7 +200,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(syslog_LOG_MASK__doc__,
+TyDoc_STRVAR(syslog_LOG_MASK__doc__,
 "LOG_MASK($module, pri, /)\n"
 "--\n"
 "\n"
@@ -233,7 +233,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(syslog_LOG_UPTO__doc__,
+TyDoc_STRVAR(syslog_LOG_UPTO__doc__,
 "LOG_UPTO($module, pri, /)\n"
 "--\n"
 "\n"

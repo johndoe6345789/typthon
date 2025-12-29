@@ -16,7 +16,7 @@
 #include "pycore_compile.h"       // _TyAST_Compile()
 #include "pycore_fileutils.h"     // _PyFile_Flush
 #include "pycore_import.h"        // _TyImport_GetImportlibExternalLoader()
-#include "pycore_interp.h"        // PyInterpreterState.importlib
+#include "pycore_interp.h"        // TyInterpreterState.importlib
 #include "pycore_object.h"        // _PyDebug_PrintTotalRefs()
 #include "pycore_parser.h"        // _TyParser_ASTFromString()
 #include "pycore_pyerrors.h"      // _TyErr_GetRaisedException()
@@ -435,7 +435,7 @@ maybe_pyc_file(FILE *fp, TyObject *filename, int closeit)
 static int
 set_main_loader(TyObject *d, TyObject *filename, const char *loader_name)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     TyObject *loader_type = _TyImport_GetImportlibExternalLoader(interp,
                                                                  loader_name);
     if (loader_type == NULL) {
@@ -1089,7 +1089,7 @@ print_exception_cause_and_context(struct exception_print_context *ctx,
         Ty_DECREF(cause);
         return err;
     }
-    if (((PyBaseExceptionObject *)value)->suppress_context) {
+    if (((TyBaseExceptionObject *)value)->suppress_context) {
         return 0;
     }
     TyObject *context = PyException_GetContext(value);
@@ -1373,7 +1373,7 @@ run_mod(mod_ty mod, TyObject *filename, TyObject *globals, TyObject *locals,
     TyThreadState *tstate = _TyThreadState_GET();
     TyObject* interactive_filename = filename;
     if (interactive_src) {
-        PyInterpreterState *interp = tstate->interp;
+        TyInterpreterState *interp = tstate->interp;
         if (generate_new_source) {
             interactive_filename = TyUnicode_FromFormat(
                 "%U-%d", filename, interp->_interactive_src_count++);

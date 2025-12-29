@@ -289,7 +289,7 @@ dump_instr(cfg_instr *i)
         sprintf(arg, "target: %p [%d] ", i->i_target, i->i_oparg);
     }
     fprintf(stderr, "line: %d, %s (%d)  %s%s\n",
-                    i->i_loc.lineno, _PyOpcode_OpName[i->i_opcode], i->i_opcode, arg, jump);
+                    i->i_loc.lineno, _TyOpcode_OpName[i->i_opcode], i->i_opcode, arg, jump);
 }
 
 static inline int
@@ -769,12 +769,12 @@ get_stack_effects(int opcode, int oparg, int jump, stack_effects *effects)
     if (opcode < 0) {
         return -1;
     }
-    if ((opcode <= MAX_REAL_OPCODE) && (_PyOpcode_Deopt[opcode] != opcode)) {
+    if ((opcode <= MAX_REAL_OPCODE) && (_TyOpcode_Deopt[opcode] != opcode)) {
         // Specialized instructions are not supported.
         return -1;
     }
-    int popped = _PyOpcode_num_popped(opcode, oparg);
-    int pushed = _PyOpcode_num_pushed(opcode, oparg);
+    int popped = _TyOpcode_num_popped(opcode, oparg);
+    int pushed = _TyOpcode_num_pushed(opcode, oparg);
     if (popped < 0 || pushed < 0) {
         return -1;
     }
@@ -2875,8 +2875,8 @@ optimize_load_fast(cfg_builder *g)
                 case MATCH_MAPPING:
                 case MATCH_SEQUENCE:
                 case WITH_EXCEPT_START: {
-                    int num_popped = _PyOpcode_num_popped(opcode, oparg);
-                    int num_pushed = _PyOpcode_num_pushed(opcode, oparg);
+                    int num_popped = _TyOpcode_num_popped(opcode, oparg);
+                    int num_pushed = _TyOpcode_num_pushed(opcode, oparg);
                     int net_pushed = num_pushed - num_popped;
                     assert(net_pushed >= 0);
                     for (int i = 0; i < net_pushed; i++) {
@@ -2894,8 +2894,8 @@ optimize_load_fast(cfg_builder *g)
                 case RERAISE:
                 case SET_ADD:
                 case SET_UPDATE: {
-                    int num_popped = _PyOpcode_num_popped(opcode, oparg);
-                    int num_pushed = _PyOpcode_num_pushed(opcode, oparg);
+                    int num_popped = _TyOpcode_num_popped(opcode, oparg);
+                    int num_pushed = _TyOpcode_num_pushed(opcode, oparg);
                     int net_popped = num_popped - num_pushed;
                     assert(net_popped > 0);
                     for (int i = 0; i < net_popped; i++) {
@@ -2906,8 +2906,8 @@ optimize_load_fast(cfg_builder *g)
 
                 case END_SEND:
                 case SET_FUNCTION_ATTRIBUTE: {
-                    assert(_PyOpcode_num_popped(opcode, oparg) == 2);
-                    assert(_PyOpcode_num_pushed(opcode, oparg) == 1);
+                    assert(_TyOpcode_num_popped(opcode, oparg) == 2);
+                    assert(_TyOpcode_num_pushed(opcode, oparg) == 1);
                     ref tos = ref_stack_pop(&refs);
                     ref_stack_pop(&refs);
                     PUSH_REF(tos.instr, tos.local);
@@ -2960,8 +2960,8 @@ optimize_load_fast(cfg_builder *g)
 
                 // Opcodes that consume all of their inputs
                 default: {
-                    int num_popped = _PyOpcode_num_popped(opcode, oparg);
-                    int num_pushed = _PyOpcode_num_pushed(opcode, oparg);
+                    int num_popped = _TyOpcode_num_popped(opcode, oparg);
+                    int num_pushed = _TyOpcode_num_pushed(opcode, oparg);
                     if (HAS_TARGET(instr->i_opcode)) {
                         load_fast_push_block(&sp, instr->i_target, refs.size - num_popped + num_pushed);
                     }

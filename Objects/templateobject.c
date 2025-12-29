@@ -65,9 +65,9 @@ templateiter_traverse(TyObject *op, visitproc visit, void *arg)
 }
 
 TyTypeObject _PyTemplateIter_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "string.templatelib.TemplateIter",
-    .tp_doc = PyDoc_STR("Template iterator object"),
+    .tp_doc = TyDoc_STR("Template iterator object"),
     .tp_basicsize = sizeof(templateiterobject),
     .tp_itemsize = 0,
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,
@@ -337,7 +337,7 @@ static TyMemberDef template_members[] = {
 
 static TyGetSetDef template_getset[] = {
     {"values", template_values_get, NULL,
-     PyDoc_STR("Values of interpolations"), NULL},
+     TyDoc_STR("Values of interpolations"), NULL},
     {NULL},
 };
 
@@ -371,14 +371,14 @@ template_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 static TyMethodDef template_methods[] = {
     {"__reduce__", template_reduce, METH_NOARGS, NULL},
     {"__class_getitem__", Ty_GenericAlias,
-        METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+        METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL, NULL},
 };
 
 TyTypeObject _PyTemplate_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "string.templatelib.Template",
-    .tp_doc = PyDoc_STR("Template object"),
+    .tp_doc = TyDoc_STR("Template object"),
     .tp_basicsize = sizeof(templateobject),
     .tp_itemsize = 0,
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,

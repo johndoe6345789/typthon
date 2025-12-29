@@ -42,14 +42,14 @@ TyFloat_GetMin(void)
 
 static TyTypeObject FloatInfoType;
 
-PyDoc_STRVAR(floatinfo__doc__,
+TyDoc_STRVAR(floatinfo__doc__,
 "sys.float_info\n\
 \n\
 A named tuple holding information about the float type. It contains low level\n\
 information about the precision and internal representation. Please study\n\
 your system's :file:`float.h` for more information.");
 
-static PyStructSequence_Field floatinfo_fields[] = {
+static TyStructSequence_Field floatinfo_fields[] = {
     {"max",             "DBL_MAX -- maximum representable finite float"},
     {"max_exp",         "DBL_MAX_EXP -- maximum int e such that radix**(e-1) "
                     "is representable"},
@@ -71,7 +71,7 @@ static PyStructSequence_Field floatinfo_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc floatinfo_desc = {
+static TyStructSequence_Desc floatinfo_desc = {
     "sys.float_info",           /* name */
     floatinfo__doc__,           /* doc */
     floatinfo_fields,           /* fields */
@@ -84,7 +84,7 @@ TyFloat_GetInfo(void)
     TyObject* floatinfo;
     int pos = 0;
 
-    floatinfo = PyStructSequence_New(&FloatInfoType);
+    floatinfo = TyStructSequence_New(&FloatInfoType);
     if (floatinfo == NULL) {
         return NULL;
     }
@@ -96,7 +96,7 @@ TyFloat_GetInfo(void)
             Ty_CLEAR(floatinfo);                            \
             return NULL;                                    \
         }                                                   \
-        PyStructSequence_SET_ITEM(floatinfo, pos++, flag);  \
+        TyStructSequence_SET_ITEM(floatinfo, pos++, flag);  \
     } while (0)
 
 #define SetIntFlag(FLAG) SetFlag(TyLong_FromLong((FLAG)))
@@ -1855,7 +1855,7 @@ static PyNumberMethods float_as_number = {
 };
 
 TyTypeObject TyFloat_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "float",
     sizeof(PyFloatObject),
     0,
@@ -1951,7 +1951,7 @@ _init_global_state(void)
 }
 
 void
-_TyFloat_InitState(PyInterpreterState *interp)
+_TyFloat_InitState(TyInterpreterState *interp)
 {
     if (!_Ty_IsMainInterpreter(interp)) {
         return;
@@ -1960,7 +1960,7 @@ _TyFloat_InitState(PyInterpreterState *interp)
 }
 
 TyStatus
-_TyFloat_InitTypes(PyInterpreterState *interp)
+_TyFloat_InitTypes(TyInterpreterState *interp)
 {
     /* Init float info */
     if (_PyStructSequence_InitBuiltin(interp, &FloatInfoType,
@@ -1973,7 +1973,7 @@ _TyFloat_InitTypes(PyInterpreterState *interp)
 }
 
 void
-_TyFloat_FiniType(PyInterpreterState *interp)
+_TyFloat_FiniType(TyInterpreterState *interp)
 {
     _PyStructSequence_FiniBuiltin(interp, &FloatInfoType);
 }

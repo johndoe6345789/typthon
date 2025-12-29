@@ -545,7 +545,7 @@ _Ty_subs_parameters(TyObject *self, TyObject *args, TyObject *parameters, TyObje
     return newargs;
 }
 
-PyDoc_STRVAR(genericalias__doc__,
+TyDoc_STRVAR(genericalias__doc__,
 "GenericAlias(origin, args, /)\n"
 "--\n\n"
 "Represent a PEP 585 generic type\n"
@@ -823,7 +823,7 @@ ga_unpacked_tuple_args(TyObject *self, void *unused)
 }
 
 static TyGetSetDef ga_properties[] = {
-    {"__parameters__", ga_parameters, NULL, PyDoc_STR("Type variables in the GenericAlias."), NULL},
+    {"__parameters__", ga_parameters, NULL, TyDoc_STR("Type variables in the GenericAlias."), NULL},
     {"__typing_unpacked_tuple_args__", ga_unpacked_tuple_args, NULL, NULL},
     {0}
 };
@@ -951,7 +951,7 @@ static TyMethodDef ga_iter_methods[] = {
 // gh-91632: _Ty_GenericAliasIterType is exported  to be cleared
 // in _PyTypes_FiniTypes.
 TyTypeObject _Ty_GenericAliasIterType = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "generic_alias_iterator",
     .tp_basicsize = sizeof(gaiterobject),
     .tp_iter = PyObject_SelfIter,
@@ -978,7 +978,7 @@ ga_iter(TyObject *self) {
 // - argument clinic?
 // - cache?
 TyTypeObject Ty_GenericAliasType = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "types.GenericAlias",
     .tp_doc = genericalias__doc__,
     .tp_basicsize = sizeof(gaobject),

@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_tracemalloc_is_tracing__doc__,
+TyDoc_STRVAR(_tracemalloc_is_tracing__doc__,
 "is_tracing($module, /)\n"
 "--\n"
 "\n"
@@ -22,7 +22,7 @@ _tracemalloc_is_tracing(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _tracemalloc_is_tracing_impl(module);
 }
 
-PyDoc_STRVAR(_tracemalloc_clear_traces__doc__,
+TyDoc_STRVAR(_tracemalloc_clear_traces__doc__,
 "clear_traces($module, /)\n"
 "--\n"
 "\n"
@@ -40,7 +40,7 @@ _tracemalloc_clear_traces(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _tracemalloc_clear_traces_impl(module);
 }
 
-PyDoc_STRVAR(_tracemalloc__get_traces__doc__,
+TyDoc_STRVAR(_tracemalloc__get_traces__doc__,
 "_get_traces($module, /)\n"
 "--\n"
 "\n"
@@ -63,7 +63,7 @@ _tracemalloc__get_traces(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _tracemalloc__get_traces_impl(module);
 }
 
-PyDoc_STRVAR(_tracemalloc__get_object_traceback__doc__,
+TyDoc_STRVAR(_tracemalloc__get_object_traceback__doc__,
 "_get_object_traceback($module, obj, /)\n"
 "--\n"
 "\n"
@@ -76,7 +76,7 @@ PyDoc_STRVAR(_tracemalloc__get_object_traceback__doc__,
 #define _TRACEMALLOC__GET_OBJECT_TRACEBACK_METHODDEF    \
     {"_get_object_traceback", (PyCFunction)_tracemalloc__get_object_traceback, METH_O, _tracemalloc__get_object_traceback__doc__},
 
-PyDoc_STRVAR(_tracemalloc_start__doc__,
+TyDoc_STRVAR(_tracemalloc_start__doc__,
 "start($module, nframe=1, /)\n"
 "--\n"
 "\n"
@@ -114,7 +114,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tracemalloc_stop__doc__,
+TyDoc_STRVAR(_tracemalloc_stop__doc__,
 "stop($module, /)\n"
 "--\n"
 "\n"
@@ -134,7 +134,7 @@ _tracemalloc_stop(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _tracemalloc_stop_impl(module);
 }
 
-PyDoc_STRVAR(_tracemalloc_get_traceback_limit__doc__,
+TyDoc_STRVAR(_tracemalloc_get_traceback_limit__doc__,
 "get_traceback_limit($module, /)\n"
 "--\n"
 "\n"
@@ -155,7 +155,7 @@ _tracemalloc_get_traceback_limit(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _tracemalloc_get_traceback_limit_impl(module);
 }
 
-PyDoc_STRVAR(_tracemalloc_get_tracemalloc_memory__doc__,
+TyDoc_STRVAR(_tracemalloc_get_tracemalloc_memory__doc__,
 "get_tracemalloc_memory($module, /)\n"
 "--\n"
 "\n"
@@ -175,7 +175,7 @@ _tracemalloc_get_tracemalloc_memory(TyObject *module, TyObject *Py_UNUSED(ignore
     return _tracemalloc_get_tracemalloc_memory_impl(module);
 }
 
-PyDoc_STRVAR(_tracemalloc_get_traced_memory__doc__,
+TyDoc_STRVAR(_tracemalloc_get_traced_memory__doc__,
 "get_traced_memory($module, /)\n"
 "--\n"
 "\n"
@@ -195,7 +195,7 @@ _tracemalloc_get_traced_memory(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _tracemalloc_get_traced_memory_impl(module);
 }
 
-PyDoc_STRVAR(_tracemalloc_reset_peak__doc__,
+TyDoc_STRVAR(_tracemalloc_reset_peak__doc__,
 "reset_peak($module, /)\n"
 "--\n"
 "\n"

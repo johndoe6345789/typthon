@@ -612,7 +612,7 @@ module os
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=94a0f0f978acae17]*/
 
-PyDoc_STRVAR(posix__doc__,
+TyDoc_STRVAR(posix__doc__,
 "This module provides access to operating system functionality that is\n\
 standardized by the C Standard and the POSIX standard (a thinly\n\
 disguised Unix interface).  Refer to the library manual and\n\
@@ -662,7 +662,7 @@ run_at_forkers(TyObject *lst, int reverse)
 void
 TyOS_BeforeFork(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     run_at_forkers(interp->before_forkers, 1);
 
     _TyImport_AcquireLock(interp);
@@ -676,7 +676,7 @@ TyOS_AfterFork_Parent(void)
     HEAD_UNLOCK(&_PyRuntime);
     _TyEval_StartTheWorldAll(&_PyRuntime);
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyImport_ReleaseLock(interp);
     run_at_forkers(interp->after_forkers_parent, 0);
 }
@@ -705,9 +705,9 @@ TyOS_AfterFork_Child(void)
     TyThreadState *tstate = _TyThreadState_GET();
     _Ty_EnsureTstateNotNULL(tstate);
 
-    assert(tstate->thread_id == PyThread_get_thread_ident());
+    assert(tstate->thread_id == TyThread_get_thread_ident());
 #ifdef PY_HAVE_THREAD_NATIVE_ID
-    tstate->native_thread_id = PyThread_get_thread_native_id();
+    tstate->native_thread_id = TyThread_get_thread_native_id();
 #endif
 
 #ifdef Ty_GIL_DISABLED
@@ -1906,11 +1906,11 @@ posix_fildes_fd(int fd, int (*func)(int))
     int async_err = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
         res = (*func)(fd);
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (res != 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (res != 0)
         return (!async_err) ? posix_error() : NULL;
@@ -2309,7 +2309,7 @@ win32_stat(const wchar_t* path, struct _Ty_stat_struct *result)
 
 #endif /* MS_WINDOWS */
 
-PyDoc_STRVAR(stat_result__doc__,
+TyDoc_STRVAR(stat_result__doc__,
 "stat_result: Result from stat, fstat, or lstat.\n\n\
 This object may be accessed either as a tuple of\n\
   (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime)\n\
@@ -2320,7 +2320,7 @@ or st_flags, they are available as attributes only.\n\
 \n\
 See os.stat for more information.");
 
-static PyStructSequence_Field stat_result_fields[] = {
+static TyStructSequence_Field stat_result_fields[] = {
     {"st_mode",    "protection bits"},
     {"st_ino",     "inode"},
     {"st_dev",     "device"},
@@ -2328,7 +2328,7 @@ static PyStructSequence_Field stat_result_fields[] = {
     {"st_uid",     "user ID of owner"},
     {"st_gid",     "group ID of owner"},
     {"st_size",    "total size, in bytes"},
-    /* The NULL is replaced with PyStructSequence_UnnamedField later. */
+    /* The NULL is replaced with TyStructSequence_UnnamedField later. */
     {NULL,   "integer time of last access"},
     {NULL,   "integer time of last modification"},
     {NULL,   "integer time of last change"},
@@ -2431,14 +2431,14 @@ static PyStructSequence_Field stat_result_fields[] = {
 #define ST_REPARSE_TAG_IDX ST_FSTYPE_IDX
 #endif
 
-static PyStructSequence_Desc stat_result_desc = {
+static TyStructSequence_Desc stat_result_desc = {
     "stat_result", /* name */
     stat_result__doc__, /* doc */
     stat_result_fields,
     10
 };
 
-PyDoc_STRVAR(statvfs_result__doc__,
+TyDoc_STRVAR(statvfs_result__doc__,
 "statvfs_result: Result from statvfs or fstatvfs.\n\n\
 This object may be accessed either as a tuple of\n\
   (bsize, frsize, blocks, bfree, bavail, files, ffree, favail, flag, namemax),\n\
@@ -2446,7 +2446,7 @@ or via the attributes f_bsize, f_frsize, f_blocks, f_bfree, and so on.\n\
 \n\
 See os.statvfs for more information.");
 
-static PyStructSequence_Field statvfs_result_fields[] = {
+static TyStructSequence_Field statvfs_result_fields[] = {
     {"f_bsize",  },
     {"f_frsize", },
     {"f_blocks", },
@@ -2461,7 +2461,7 @@ static PyStructSequence_Field statvfs_result_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc statvfs_result_desc = {
+static TyStructSequence_Desc statvfs_result_desc = {
     "statvfs_result", /* name */
     statvfs_result__doc__, /* doc */
     statvfs_result_fields,
@@ -2469,7 +2469,7 @@ static PyStructSequence_Desc statvfs_result_desc = {
 };
 
 #if defined(HAVE_WAITID)
-PyDoc_STRVAR(waitid_result__doc__,
+TyDoc_STRVAR(waitid_result__doc__,
 "waitid_result: Result from waitid.\n\n\
 This object may be accessed either as a tuple of\n\
   (si_pid, si_uid, si_signo, si_status, si_code),\n\
@@ -2477,7 +2477,7 @@ or via the attributes si_pid, si_uid, and so on.\n\
 \n\
 See os.waitid for more information.");
 
-static PyStructSequence_Field waitid_result_fields[] = {
+static TyStructSequence_Field waitid_result_fields[] = {
     {"si_pid",  },
     {"si_uid", },
     {"si_signo", },
@@ -2486,7 +2486,7 @@ static PyStructSequence_Field waitid_result_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc waitid_result_desc = {
+static TyStructSequence_Desc waitid_result_desc = {
     "waitid_result", /* name */
     waitid_result__doc__, /* doc */
     waitid_result_fields,
@@ -2500,7 +2500,7 @@ statresult_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
     PyStructSequence *result;
     int i;
 
-    // ht_module doesn't get set in PyStructSequence_NewType(),
+    // ht_module doesn't get set in TyStructSequence_NewType(),
     // so we can't use TyType_GetModule().
     TyObject *mod = TyImport_GetModule(MODNAME_OBJ);
     if (mod == NULL) {
@@ -2615,15 +2615,15 @@ fill_time(TyObject *module, TyObject *v, int s_index, int f_index, int ns_index,
     }
 
     if (s_index >= 0) {
-        PyStructSequence_SET_ITEM(v, s_index, s);
+        TyStructSequence_SET_ITEM(v, s_index, s);
         s = NULL;
     }
     if (f_index >= 0) {
-        PyStructSequence_SET_ITEM(v, f_index, float_s);
+        TyStructSequence_SET_ITEM(v, f_index, float_s);
         float_s = NULL;
     }
     if (ns_index >= 0) {
-        PyStructSequence_SET_ITEM(v, ns_index, ns_total);
+        TyStructSequence_SET_ITEM(v, ns_index, ns_total);
         ns_total = NULL;
     }
 
@@ -2674,7 +2674,7 @@ _pystat_fromstructstat(TyObject *module, STRUCT_STAT *st)
     assert(!TyErr_Occurred());
 
     TyObject *StatResultType = get_posix_state(module)->StatResultType;
-    TyObject *v = PyStructSequence_New((TyTypeObject *)StatResultType);
+    TyObject *v = TyStructSequence_New((TyTypeObject *)StatResultType);
     if (v == NULL) {
         return NULL;
     }
@@ -2685,7 +2685,7 @@ _pystat_fromstructstat(TyObject *module, STRUCT_STAT *st)
         if (obj == NULL) { \
             goto error; \
         } \
-        PyStructSequence_SET_ITEM(v, (pos), obj); \
+        TyStructSequence_SET_ITEM(v, (pos), obj); \
     } while (0)
 
     SET_ITEM(0, TyLong_FromLong((long)st->st_mode));
@@ -2814,7 +2814,7 @@ posix_do_stat(TyObject *module, const char *function_name, path_t *path,
         fd_and_follow_symlinks_invalid("stat", path->fd, follow_symlinks))
         return NULL;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (path->fd != -1)
         result = FSTAT(path->fd, &st);
 #ifdef MS_WINDOWS
@@ -2842,7 +2842,7 @@ posix_do_stat(TyObject *module, const char *function_name, path_t *path,
 #endif /* HAVE_FSTATAT */
         result = STAT(path->narrow, &st);
 #endif /* MS_WINDOWS */
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 #ifdef HAVE_FSTATAT
     if (fstatat_unavailable) {
@@ -3328,9 +3328,9 @@ os_access_impl(TyObject *module, path_t *path, int mode, int dir_fd,
 #endif
 
 #ifdef MS_WINDOWS
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     attr = GetFileAttributesW(path->wide);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     /*
      * Access is possible if
@@ -3346,7 +3346,7 @@ os_access_impl(TyObject *module, path_t *path, int mode, int dir_fd,
             (attr & FILE_ATTRIBUTE_DIRECTORY));
 #else
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_FACCESSAT
     if ((dir_fd != DEFAULT_DIR_FD) ||
         effective_ids ||
@@ -3366,7 +3366,7 @@ os_access_impl(TyObject *module, path_t *path, int mode, int dir_fd,
     else
 #endif
         result = access(path->narrow, mode);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 #ifdef HAVE_FACCESSAT
     if (faccessat_unavailable) {
@@ -3490,7 +3490,7 @@ os_chdir_impl(TyObject *module, path_t *path)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef MS_WINDOWS
     /* on unix, success = 0, on windows, success = !0 */
     result = !win32_wchdir(path->wide);
@@ -3502,7 +3502,7 @@ os_chdir_impl(TyObject *module, path_t *path)
 #endif
         result = chdir(path->narrow);
 #endif
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (result) {
         return path_error(path);
@@ -3651,7 +3651,7 @@ os_chmod_impl(TyObject *module, path_t *path, int mode, int dir_fd,
 
 #ifdef MS_WINDOWS
     result = 0;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (path->fd != -1) {
         result = win32_fchmod(path->fd, mode);
     }
@@ -3668,12 +3668,12 @@ os_chmod_impl(TyObject *module, path_t *path, int mode, int dir_fd,
     else {
         result = win32_lchmod(path->wide, mode);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (!result) {
         return path_error(path);
     }
 #else /* MS_WINDOWS */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_FCHMOD
     if (path->fd != -1)
         result = fchmod(path->fd, mode);
@@ -3728,7 +3728,7 @@ os_chmod_impl(TyObject *module, path_t *path, int mode, int dir_fd,
         errno = ENOSYS;
 #endif
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (result) {
 #ifdef HAVE_FCHMODAT
@@ -3786,18 +3786,18 @@ os_fchmod_impl(TyObject *module, int fd, int mode)
 
 #ifdef MS_WINDOWS
     res = 0;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = win32_fchmod(fd, mode);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (!res) {
         return TyErr_SetFromWindowsErr(0);
     }
 #else /* MS_WINDOWS */
     int async_err = 0;
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = fchmod(fd, mode);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (res != 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (res != 0)
         return (!async_err) ? posix_error() : NULL;
@@ -3830,17 +3830,17 @@ os_lchmod_impl(TyObject *module, path_t *path, int mode)
         return NULL;
     }
 #ifdef MS_WINDOWS
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = win32_lchmod(path->wide, mode);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (!res) {
         path_error(path);
         return NULL;
     }
 #else /* MS_WINDOWS */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = lchmod(path->narrow, mode);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0) {
         path_error(path);
         return NULL;
@@ -3885,14 +3885,14 @@ os_chflags_impl(TyObject *module, path_t *path, unsigned long flags,
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_LCHFLAGS
     if (!follow_symlinks)
         result = lchflags(path->narrow, flags);
     else
 #endif
         result = chflags(path->narrow, flags);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (result)
         return path_error(path);
@@ -3923,9 +3923,9 @@ os_lchflags_impl(TyObject *module, path_t *path, unsigned long flags)
     if (TySys_Audit("os.chflags", "Ok", path->object, flags) < 0) {
         return NULL;
     }
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = lchflags(path->narrow, flags);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0) {
         return path_error(path);
     }
@@ -3948,9 +3948,9 @@ os_chroot_impl(TyObject *module, path_t *path)
 /*[clinic end generated code: output=de80befc763a4475 input=14822965652c3dc3]*/
 {
     int res;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = chroot(path->narrow);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0)
         return path_error(path);
     Py_RETURN_NONE;
@@ -3987,9 +3987,9 @@ static TyObject *
 os_sync_impl(TyObject *module)
 /*[clinic end generated code: output=2796b1f0818cd71c input=84749fe5e9b404ff]*/
 {
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     sync();
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     Py_RETURN_NONE;
 }
 #endif /* HAVE_SYNC */
@@ -4081,7 +4081,7 @@ os_chown_impl(TyObject *module, path_t *path, uid_t uid, gid_t gid,
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_FCHOWN
     if (path->fd != -1)
         result = fchown(path->fd, uid, gid);
@@ -4103,7 +4103,7 @@ os_chown_impl(TyObject *module, path_t *path, uid_t uid, gid_t gid,
     } else
 #endif
         result = chown(path->narrow, uid, gid);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 #ifdef HAVE_FCHOWNAT
     if (fchownat_unsupported) {
@@ -4149,9 +4149,9 @@ os_fchown_impl(TyObject *module, int fd, uid_t uid, gid_t gid)
     }
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = fchown(fd, uid, gid);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (res != 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (res != 0)
         return (!async_err) ? posix_error() : NULL;
@@ -4183,9 +4183,9 @@ os_lchown_impl(TyObject *module, path_t *path, uid_t uid, gid_t gid)
     if (TySys_Audit("os.chown", "OIIi", path->object, uid, gid, -1) < 0) {
         return NULL;
     }
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = lchown(path->narrow, uid, gid);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0) {
         return path_error(path);
     }
@@ -4202,7 +4202,7 @@ posix_getcwd(int use_bytes)
     wchar_t *wbuf2 = wbuf;
     DWORD len;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     len = GetCurrentDirectoryW(Ty_ARRAY_LENGTH(wbuf), wbuf);
     /* If the buffer is large enough, len does not include the
        terminating \0. If the buffer is too small, len includes
@@ -4218,7 +4218,7 @@ posix_getcwd(int use_bytes)
             len = GetCurrentDirectoryW(len, wbuf2);
         }
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (!wbuf2) {
         TyErr_NoMemory();
@@ -4251,7 +4251,7 @@ posix_getcwd(int use_bytes)
     char *cwd = NULL;
     size_t buflen = 0;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     do {
         char *newbuf;
         if (buflen <= PY_SSIZE_T_MAX - chunk) {
@@ -4270,7 +4270,7 @@ posix_getcwd(int use_bytes)
 
         cwd = getcwd(buf, buflen);
     } while (cwd == NULL && errno == ERANGE);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (buf == NULL) {
         return TyErr_NoMemory();
@@ -4417,14 +4417,14 @@ os_link_impl(TyObject *module, path_t *src, path_t *dst, int src_dir_fd,
     }
 
 #ifdef MS_WINDOWS
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = CreateHardLinkW(dst->wide, src->wide, NULL);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (!result)
         return path_error2(src, dst);
 #else
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_LINKAT
     if (HAVE_LINKAT_RUNTIME) {
         result = linkat(src_dir_fd, src->narrow,
@@ -4437,7 +4437,7 @@ os_link_impl(TyObject *module, path_t *src, path_t *dst, int src_dir_fd,
         /* linkat not available */
         result = link(src->narrow, dst->narrow);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (result)
         return path_error2(src, dst);
@@ -4488,9 +4488,9 @@ _listdir_windows_no_opendir(path_t *path, TyObject *list)
     if ((list = TyList_New(0)) == NULL) {
         goto exit;
     }
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     hFindFile = FindFirstFileW(wnamebuf, &wFileData);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (hFindFile == INVALID_HANDLE_VALUE) {
         int error = GetLastError();
         if (error == ERROR_FILE_NOT_FOUND)
@@ -4519,9 +4519,9 @@ _listdir_windows_no_opendir(path_t *path, TyObject *list)
             }
             Ty_DECREF(v);
         }
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         result = FindNextFileW(hFindFile, &wFileData);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         /* FindNextFile sets error to ERROR_NO_MORE_FILES if
            it got to the end of the directory. */
         if (!result && GetLastError() != ERROR_NO_MORE_FILES) {
@@ -4569,9 +4569,9 @@ _posix_listdir(path_t *path, TyObject *list)
 
         return_str = 1;
 
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         dirp = fdopendir(fd);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
       } else {
         TyErr_SetString(TyExc_TypeError,
             "listdir: path should be string, bytes, os.PathLike or None, not int");
@@ -4592,9 +4592,9 @@ _posix_listdir(path_t *path, TyObject *list)
             return_str = 1;
         }
 
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         dirp = opendir(name);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
 
     if (dirp == NULL) {
@@ -4602,9 +4602,9 @@ _posix_listdir(path_t *path, TyObject *list)
         list = NULL;
 #ifdef HAVE_FDOPENDIR
         if (fd != -1) {
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             close(fd);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
         }
 #endif
         goto exit;
@@ -4614,9 +4614,9 @@ _posix_listdir(path_t *path, TyObject *list)
     }
     for (;;) {
         errno = 0;
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         ep = readdir(dirp);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         if (ep == NULL) {
             if (errno == 0) {
                 break;
@@ -4648,13 +4648,13 @@ _posix_listdir(path_t *path, TyObject *list)
 
 exit:
     if (dirp != NULL) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_FDOPENDIR
         if (fd > -1)
             rewinddir(dirp);
 #endif
         closedir(dirp);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
 
     return list;
@@ -4723,9 +4723,9 @@ os_listdrives_impl(TyObject *module)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS;
+    Ty_BEGIN_ALLOW_THREADS;
     buflen = GetLogicalDriveStringsW(buflen, buffer);
-    Py_END_ALLOW_THREADS;
+    Ty_END_ALLOW_THREADS;
 
     if (!buflen) {
         TyErr_SetFromWindowsErr(0);
@@ -4773,12 +4773,12 @@ os_listvolumes_impl(TyObject *module)
     }
 
     int err = 0;
-    Py_BEGIN_ALLOW_THREADS;
+    Ty_BEGIN_ALLOW_THREADS;
     find = FindFirstVolumeW(buffer, Ty_ARRAY_LENGTH(buffer));
     if (find == INVALID_HANDLE_VALUE) {
         err = GetLastError();
     }
-    Py_END_ALLOW_THREADS;
+    Ty_END_ALLOW_THREADS;
 
     while (!err) {
         TyObject *s = TyUnicode_FromWideChar(buffer, -1);
@@ -4789,17 +4789,17 @@ os_listvolumes_impl(TyObject *module)
         }
         Ty_DECREF(s);
 
-        Py_BEGIN_ALLOW_THREADS;
+        Ty_BEGIN_ALLOW_THREADS;
         if (!FindNextVolumeW(find, buffer, Ty_ARRAY_LENGTH(buffer))) {
             err = GetLastError();
         }
-        Py_END_ALLOW_THREADS;
+        Ty_END_ALLOW_THREADS;
     }
 
     if (find != INVALID_HANDLE_VALUE) {
-        Py_BEGIN_ALLOW_THREADS;
+        Ty_BEGIN_ALLOW_THREADS;
         FindVolumeClose(find);
-        Py_END_ALLOW_THREADS;
+        Ty_END_ALLOW_THREADS;
     }
     if (err && err != ERROR_NO_MORE_FILES) {
         TyErr_SetFromWindowsErr(err);
@@ -4834,9 +4834,9 @@ os_listmounts_impl(TyObject *module, path_t *volume)
     TyObject *result = NULL;
 
     /* Ensure we have a valid volume path before continuing */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     attributes = GetFileAttributesW(volume->wide);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (attributes == INVALID_FILE_ATTRIBUTES &&
         GetLastError() == ERROR_UNRECOGNIZED_VOLUME)
     {
@@ -4849,10 +4849,10 @@ os_listmounts_impl(TyObject *module, path_t *volume)
 
     while (1) {
         BOOL success;
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         success = GetVolumePathNamesForVolumeNameW(volume->wide, buffer,
                                                    buflen, &buflen);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         if (success) {
             break;
         }
@@ -4915,7 +4915,7 @@ os__path_isdevdrive_impl(TyObject *module, path_t *path)
     TyObject *r = NULL;
     wchar_t volume[MAX_PATH];
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (!GetVolumePathNameW(path->wide, volume, MAX_PATH)) {
         /* invalid path of some kind */
         /* Note that this also includes the case where a volume is mounted
@@ -4964,7 +4964,7 @@ os__path_isdevdrive_impl(TyObject *module, path_t *path)
             }
         }
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (err) {
         TyErr_SetFromWindowsErr(err);
@@ -5074,7 +5074,7 @@ os__getfinalpathname_impl(TyObject *module, path_t *path)
     int result_length;
     TyObject *result;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     hFile = CreateFileW(
         path->wide,
         0, /* desired access */
@@ -5084,7 +5084,7 @@ os__getfinalpathname_impl(TyObject *module, path_t *path)
         /* FILE_FLAG_BACKUP_SEMANTICS is required to open a directory */
         FILE_FLAG_BACKUP_SEMANTICS,
         NULL);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (hFile == INVALID_HANDLE_VALUE) {
         return win32_error_object("CreateFileW", path->object);
@@ -5093,10 +5093,10 @@ os__getfinalpathname_impl(TyObject *module, path_t *path)
     /* We have a good handle to the target, use it to determine the
        target path name. */
     while (1) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         result_length = GetFinalPathNameByHandleW(hFile, target_path,
                                                   buf_size, VOLUME_NAME_DOS);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (!result_length) {
             result = win32_error_object("GetFinalPathNameByHandleW",
@@ -5149,9 +5149,9 @@ os__findfirstfile_impl(TyObject *module, path_t *path)
     WIN32_FIND_DATAW wFileData;
     WCHAR *wRealFileName;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     hFindFile = FindFirstFileW(path->wide, &wFileData);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (hFindFile == INVALID_HANDLE_VALUE) {
         path_error(path);
@@ -5194,10 +5194,10 @@ os__getvolumepathname_impl(TyObject *module, path_t *path)
     if (mountpath == NULL)
         return TyErr_NoMemory();
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     ret = GetVolumePathNameW(path->wide, mountpath,
                              Py_SAFE_DOWNCAST(buflen, size_t, DWORD));
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (!ret) {
         result = win32_error_object("_getvolumepathname", path->object);
@@ -5239,9 +5239,9 @@ os__path_splitroot_impl(TyObject *module, path_t *path)
         *p = L'\\';
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     ret = PathCchSkipRoot(buffer, &end);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (FAILED(ret)) {
         result = Ty_BuildValue("sO", "", path->object);
     } else if (end != buffer) {
@@ -5446,7 +5446,7 @@ _testFileExists(path_t *path, BOOL followLinks)
         return FALSE;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (path->fd != -1) {
         HANDLE hfile = _Ty_get_osfhandle_noraise(path->fd);
         if (hfile != INVALID_HANDLE_VALUE) {
@@ -5458,7 +5458,7 @@ _testFileExists(path_t *path, BOOL followLinks)
     else if (path->wide) {
         result = _testFileExistsByName(path->wide, followLinks);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     return result;
 }
@@ -5472,7 +5472,7 @@ _testFileType(path_t *path, int testedType)
         return FALSE;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (path->fd != -1) {
         HANDLE hfile = _Ty_get_osfhandle_noraise(path->fd);
         if (hfile != INVALID_HANDLE_VALUE) {
@@ -5482,7 +5482,7 @@ _testFileType(path_t *path, int testedType)
     else if (path->wide) {
         result = _testFileTypeByName(path->wide, testedType);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     return result;
 }
@@ -5726,7 +5726,7 @@ os_mkdir_impl(TyObject *module, path_t *path, int mode, int dir_fd)
     }
 
 #ifdef MS_WINDOWS
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (mode == 0700 /* 0o700 */) {
         ULONG sdSize;
         pSecAttr = &secAttr;
@@ -5751,7 +5751,7 @@ os_mkdir_impl(TyObject *module, path_t *path, int mode, int dir_fd)
             error = GetLastError();
         }
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (error) {
         return TyErr_SetFromWindowsErr(error);
@@ -5760,7 +5760,7 @@ os_mkdir_impl(TyObject *module, path_t *path, int mode, int dir_fd)
         return path_error(path);
     }
 #else
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #if HAVE_MKDIRAT
     if (dir_fd != DEFAULT_DIR_FD) {
       if (HAVE_MKDIRAT_RUNTIME) {
@@ -5776,7 +5776,7 @@ os_mkdir_impl(TyObject *module, path_t *path, int mode, int dir_fd)
 #else
         result = mkdir(path->narrow, mode);
 #endif
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 #if HAVE_MKDIRAT
     if (mkdirat_unavailable) {
@@ -5921,15 +5921,15 @@ internal_rename(path_t *src, path_t *dst, int src_dir_fd, int dst_dir_fd, int is
     }
 
 #ifdef MS_WINDOWS
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = MoveFileExW(src->wide, dst->wide, flags);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (!result)
         return path_error2(src, dst);
 
 #else
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_RENAMEAT
     if (dir_fd_specified) {
         if (HAVE_RENAMEAT_RUNTIME) {
@@ -5940,7 +5940,7 @@ internal_rename(path_t *src, path_t *dst, int src_dir_fd, int dst_dir_fd, int is
     } else
 #endif
     result = rename(src->narrow, dst->narrow);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 
 #ifdef HAVE_RENAMEAT
@@ -6034,7 +6034,7 @@ os_rmdir_impl(TyObject *module, path_t *path, int dir_fd)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef MS_WINDOWS
     /* Windows, success=1, UNIX, success=0 */
     result = !RemoveDirectoryW(path->wide);
@@ -6051,7 +6051,7 @@ os_rmdir_impl(TyObject *module, path_t *path, int dir_fd)
 #endif
         result = rmdir(path->narrow);
 #endif
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 #ifdef HAVE_UNLINKAT
     if (unlinkat_unavailable) {
@@ -6087,11 +6087,11 @@ os_system_impl(TyObject *module, const wchar_t *command)
         return -1;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
     result = _wsystem(command);
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     return result;
 }
 #else /* MS_WINDOWS */
@@ -6114,9 +6114,9 @@ os_system_impl(TyObject *module, TyObject *command)
         return -1;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = system(bytes);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     return result;
 }
 #endif
@@ -6214,7 +6214,7 @@ os_unlink_impl(TyObject *module, path_t *path, int dir_fd)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
 #ifdef MS_WINDOWS
     /* Windows, success=1, UNIX, success=0 */
@@ -6233,7 +6233,7 @@ os_unlink_impl(TyObject *module, path_t *path, int dir_fd)
         result = unlink(path->narrow);
 #endif
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 #ifdef HAVE_UNLINKAT
     if (unlinkat_unavailable) {
@@ -6268,7 +6268,7 @@ os_remove_impl(TyObject *module, path_t *path, int dir_fd)
 }
 
 
-static PyStructSequence_Field uname_result_fields[] = {
+static TyStructSequence_Field uname_result_fields[] = {
     {"sysname",    "operating system name"},
     {"nodename",   "name of machine on network (implementation-defined)"},
     {"release",    "operating system release"},
@@ -6277,7 +6277,7 @@ static PyStructSequence_Field uname_result_fields[] = {
     {NULL}
 };
 
-PyDoc_STRVAR(uname_result__doc__,
+TyDoc_STRVAR(uname_result__doc__,
 "uname_result: Result from os.uname().\n\n\
 This object may be accessed either as a tuple of\n\
   (sysname, nodename, release, version, machine),\n\
@@ -6285,7 +6285,7 @@ or via the attributes sysname, nodename, release, version, and machine.\n\
 \n\
 See os.uname for more information.");
 
-static PyStructSequence_Desc uname_result_desc = {
+static TyStructSequence_Desc uname_result_desc = {
     MODNAME ".uname_result", /* name */
     uname_result__doc__, /* doc */
     uname_result_fields,
@@ -6311,14 +6311,14 @@ os_uname_impl(TyObject *module)
     int res;
     TyObject *value;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = uname(&u);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0)
         return posix_error();
 
     TyObject *UnameResultType = get_posix_state(module)->UnameResultType;
-    value = PyStructSequence_New((TyTypeObject *)UnameResultType);
+    value = TyStructSequence_New((TyTypeObject *)UnameResultType);
     if (value == NULL)
         return NULL;
 
@@ -6329,7 +6329,7 @@ os_uname_impl(TyObject *module)
         Ty_DECREF(value); \
         return NULL; \
     } \
-    PyStructSequence_SET_ITEM(value, i, o); \
+    TyStructSequence_SET_ITEM(value, i, o); \
     } \
 
     SET(0, u.sysname);
@@ -6700,11 +6700,11 @@ os_utime_impl(TyObject *module, path_t *path, TyObject *times, TyObject *ns,
     }
 
 #ifdef MS_WINDOWS
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     hFile = CreateFileW(path->wide, FILE_WRITE_ATTRIBUTES, 0,
                         NULL, OPEN_EXISTING,
                         FILE_FLAG_BACKUP_SEMANTICS, NULL);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (hFile == INVALID_HANDLE_VALUE) {
         path_error(path);
         return NULL;
@@ -6725,7 +6725,7 @@ os_utime_impl(TyObject *module, path_t *path, TyObject *times, TyObject *ns,
     }
     CloseHandle(hFile);
 #else /* MS_WINDOWS */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 
 #ifdef UTIME_HAVE_NOFOLLOW_SYMLINKS
     if ((!follow_symlinks) && (dir_fd == DEFAULT_DIR_FD))
@@ -6748,7 +6748,7 @@ os_utime_impl(TyObject *module, path_t *path, TyObject *times, TyObject *ns,
 
     result = utime_default(&utime, path->narrow);
 
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 #if defined(__APPLE__) && defined(HAVE_UTIMENSAT)
     /* See utime_dir_fd implementation */
@@ -6983,7 +6983,7 @@ os_execv_impl(TyObject *module, path_t *path, TyObject *argv)
     EXECV_CHAR **argvlist;
     Ty_ssize_t argc;
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (!_TyInterpreterState_HasFeature(interp, Py_RTFLAGS_EXEC)) {
         TyErr_SetString(TyExc_RuntimeError,
                         "exec not supported for isolated subinterpreters");
@@ -7057,7 +7057,7 @@ os_execve_impl(TyObject *module, path_t *path, TyObject *argv, TyObject *env)
     EXECV_CHAR **envlist;
     Ty_ssize_t argc, envc;
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (!_TyInterpreterState_HasFeature(interp, Py_RTFLAGS_EXEC)) {
         TyErr_SetString(TyExc_RuntimeError,
                         "exec not supported for isolated subinterpreters");
@@ -7759,7 +7759,7 @@ os_spawnv_impl(TyObject *module, int mode, path_t *path, TyObject *argv)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
 #ifdef HAVE_WSPAWNV
     spawnval = _wspawnv(mode, path->wide, argvlist);
@@ -7769,7 +7769,7 @@ os_spawnv_impl(TyObject *module, int mode, path_t *path, TyObject *argv)
     spawnval = _spawnv(mode, path->narrow, argvlist);
 #endif
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     int saved_errno = errno;
     free_string_array(argvlist, argc);
@@ -7875,7 +7875,7 @@ os_spawnve_impl(TyObject *module, int mode, path_t *path, TyObject *argv,
         goto fail_2;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
 #ifdef HAVE_WSPAWNV
     spawnval = _wspawnve(mode, path->wide, argvlist, envlist);
@@ -7886,7 +7886,7 @@ os_spawnve_impl(TyObject *module, int mode, path_t *path, TyObject *argv,
     spawnval = _spawnve(mode, path->narrow, argvlist, envlist);
 #endif
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (spawnval == -1)
         (void) posix_error();
@@ -7945,7 +7945,7 @@ os_register_at_fork_impl(TyObject *module, TyObject *before,
                          TyObject *after_in_child, TyObject *after_in_parent)
 /*[clinic end generated code: output=5398ac75e8e97625 input=cd1187aa85d2312e]*/
 {
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
 
     if (!before && !after_in_child && !after_in_parent) {
         TyErr_SetString(TyExc_TypeError, "At least one argument is required.");
@@ -8092,7 +8092,7 @@ os_fork1_impl(TyObject *module)
 {
     pid_t pid;
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (_TyInterpreterState_GetFinalizing(interp) != NULL) {
         TyErr_SetString(TyExc_PythonFinalizationError,
                         "can't fork at interpreter shutdown");
@@ -8137,7 +8137,7 @@ os_fork_impl(TyObject *module)
 /*[clinic end generated code: output=3626c81f98985d49 input=13c956413110eeaa]*/
 {
     pid_t pid;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (_TyInterpreterState_GetFinalizing(interp) != NULL) {
         TyErr_SetString(TyExc_PythonFinalizationError,
                         "can't fork at interpreter shutdown");
@@ -8259,17 +8259,17 @@ os_sched_param_impl(TyTypeObject *type, TyObject *sched_priority)
 {
     TyObject *res;
 
-    res = PyStructSequence_New(type);
+    res = TyStructSequence_New(type);
     if (!res)
         return NULL;
-    PyStructSequence_SET_ITEM(res, 0, Ty_NewRef(sched_priority));
+    TyStructSequence_SET_ITEM(res, 0, Ty_NewRef(sched_priority));
     return res;
 }
 
 static TyObject *
 os_sched_param_reduce(TyObject *self, TyObject *Py_UNUSED(dummy))
 {
-    return Ty_BuildValue("(O(N))", Ty_TYPE(self), PyStructSequence_GetItem(self, 0));
+    return Ty_BuildValue("(O(N))", Ty_TYPE(self), TyStructSequence_GetItem(self, 0));
 }
 
 static TyMethodDef os_sched_param_reduce_method = {
@@ -8278,12 +8278,12 @@ static TyMethodDef os_sched_param_reduce_method = {
 
 PyDoc_VAR(os_sched_param__doc__);
 
-static PyStructSequence_Field sched_param_fields[] = {
+static TyStructSequence_Field sched_param_fields[] = {
     {"sched_priority", "the scheduling priority"},
     {0}
 };
 
-static PyStructSequence_Desc sched_param_desc = {
+static TyStructSequence_Desc sched_param_desc = {
     "sched_param", /* name */
     os_sched_param__doc__, /* doc */
     sched_param_fields,
@@ -8299,7 +8299,7 @@ convert_sched_param(TyObject *module, TyObject *param, struct sched_param *res)
         TyErr_SetString(TyExc_TypeError, "must have a sched_param object");
         return 0;
     }
-    priority = TyLong_AsLong(PyStructSequence_GET_ITEM(param, 0));
+    priority = TyLong_AsLong(TyStructSequence_GET_ITEM(param, 0));
     if (priority == -1 && TyErr_Occurred())
         return 0;
     if (priority > INT_MAX || priority < INT_MIN) {
@@ -8372,7 +8372,7 @@ os_sched_getparam_impl(TyObject *module, pid_t pid)
     if (sched_getparam(pid, &param))
         return posix_error();
     TyObject *SchedParamType = get_posix_state(module)->SchedParamType;
-    result = PyStructSequence_New((TyTypeObject *)SchedParamType);
+    result = TyStructSequence_New((TyTypeObject *)SchedParamType);
     if (!result)
         return NULL;
     priority = TyLong_FromLong(param.sched_priority);
@@ -8380,7 +8380,7 @@ os_sched_getparam_impl(TyObject *module, pid_t pid)
         Ty_DECREF(result);
         return NULL;
     }
-    PyStructSequence_SET_ITEM(result, 0, priority);
+    TyStructSequence_SET_ITEM(result, 0, priority);
     return result;
 }
 
@@ -8452,9 +8452,9 @@ os_sched_yield_impl(TyObject *module)
 /*[clinic end generated code: output=902323500f222cac input=e54d6f98189391d4]*/
 {
     int result;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = sched_yield();
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result < 0) {
         return posix_error();
     }
@@ -8994,7 +8994,7 @@ os_forkpty_impl(TyObject *module)
     int master_fd = -1;
     pid_t pid;
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (_TyInterpreterState_GetFinalizing(interp) != NULL) {
         TyErr_SetString(TyExc_PythonFinalizationError,
                         "can't fork at interpreter shutdown");
@@ -9940,7 +9940,7 @@ wait_helper(TyObject *module, pid_t pid, int status, struct rusage *ru)
         return NULL;
 
     /* XXX(nnorwitz): Copied (w/mods) from resource.c, there should be only one. */
-    result = PyStructSequence_New((TyTypeObject*) struct_rusage);
+    result = TyStructSequence_New((TyTypeObject*) struct_rusage);
     Ty_DECREF(struct_rusage);
     if (!result)
         return NULL;
@@ -9958,7 +9958,7 @@ wait_helper(TyObject *module, pid_t pid, int status, struct rusage *ru)
             Ty_DECREF(result);                               \
             return NULL;                                     \
         }                                                    \
-        PyStructSequence_SET_ITEM(result, pos++, item);      \
+        TyStructSequence_SET_ITEM(result, pos++, item);      \
     } while(0)
 
     SET_RESULT(TyFloat_FromDouble(doubletime(ru->ru_utime)));
@@ -10006,9 +10006,9 @@ os_wait3_impl(TyObject *module, int options)
     WAIT_STATUS_INT(status) = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         pid = wait3(&status, options, &ru);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (pid < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (pid < 0)
         return (!async_err) ? posix_error() : NULL;
@@ -10043,9 +10043,9 @@ os_wait4_impl(TyObject *module, pid_t pid, int options)
     WAIT_STATUS_INT(status) = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = wait4(pid, &status, options, &ru);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (res < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (res < 0)
         return (!async_err) ? posix_error() : NULL;
@@ -10085,9 +10085,9 @@ os_waitid_impl(TyObject *module, idtype_t idtype, id_t id, int options)
     si.si_pid = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = waitid(idtype, id, &si, options);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (res < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (res < 0)
         return (!async_err) ? posix_error() : NULL;
@@ -10096,7 +10096,7 @@ os_waitid_impl(TyObject *module, idtype_t idtype, id_t id, int options)
         Py_RETURN_NONE;
 
     TyObject *WaitidResultType = get_posix_state(module)->WaitidResultType;
-    result = PyStructSequence_New((TyTypeObject *)WaitidResultType);
+    result = TyStructSequence_New((TyTypeObject *)WaitidResultType);
     if (!result)
         return NULL;
 
@@ -10109,7 +10109,7 @@ os_waitid_impl(TyObject *module, idtype_t idtype, id_t id, int options)
             Ty_DECREF(result);                               \
             return NULL;                                     \
         }                                                    \
-        PyStructSequence_SET_ITEM(result, pos++, item);      \
+        TyStructSequence_SET_ITEM(result, pos++, item);      \
     } while(0)
 
     SET_RESULT(TyLong_FromPid(si.si_pid));
@@ -10150,9 +10150,9 @@ os_waitpid_impl(TyObject *module, pid_t pid, int options)
     WAIT_STATUS_INT(status) = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = waitpid(pid, &status, options);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (res < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (res < 0)
         return (!async_err) ? posix_error() : NULL;
@@ -10184,11 +10184,11 @@ os_waitpid_impl(TyObject *module, intptr_t pid, int options)
     int async_err = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
         res = _cwait(&status, pid, options);
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (res < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (res < 0)
         return (!async_err) ? posix_error() : NULL;
@@ -10221,9 +10221,9 @@ os_wait_impl(TyObject *module)
     WAIT_STATUS_INT(status) = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         pid = wait(&status);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (pid < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (pid < 0)
         return (!async_err) ? posix_error() : NULL;
@@ -10277,9 +10277,9 @@ os_setns_impl(TyObject *module, int fd, int nstype)
 {
     int res;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = setns(fd, nstype);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (res != 0) {
         return posix_error();
@@ -10305,9 +10305,9 @@ os_unshare_impl(TyObject *module, int flags)
 {
     int res;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = unshare(flags);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (res != 0) {
         return posix_error();
@@ -10346,7 +10346,7 @@ os_readlink_impl(TyObject *module, path_t *path, int dir_fd)
     int readlinkat_unavailable = 0;
 #endif
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_READLINKAT
     if (dir_fd != DEFAULT_DIR_FD) {
         if (HAVE_READLINKAT_RUNTIME) {
@@ -10357,7 +10357,7 @@ os_readlink_impl(TyObject *module, path_t *path, int dir_fd)
     } else
 #endif
         length = readlink(path->narrow, buffer, MAXPATHLEN);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 #ifdef HAVE_READLINKAT
     if (readlinkat_unavailable) {
@@ -10384,7 +10384,7 @@ os_readlink_impl(TyObject *module, path_t *path, int dir_fd)
     TyObject *result = NULL;
 
     /* First get a handle to the reparse point */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     reparse_point_handle = CreateFileW(
         path->wide,
         0,
@@ -10405,7 +10405,7 @@ os_readlink_impl(TyObject *module, path_t *path, int dir_fd)
             );
         CloseHandle(reparse_point_handle);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (io_result == 0) {
         return path_error(path);
@@ -10578,7 +10578,7 @@ os_symlink_impl(TyObject *module, path_t *src, path_t *dst,
         flags |= SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
     /* if src is a directory, ensure flags==1 (target_is_directory bit) */
     if (target_is_directory || _check_dirW(src->wide, dst->wide)) {
@@ -10587,12 +10587,12 @@ os_symlink_impl(TyObject *module, path_t *src, path_t *dst,
 
     result = CreateSymbolicLinkW(dst->wide, src->wide, flags);
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (windows_has_symlink_unprivileged_flag && !result &&
         ERROR_INVALID_PARAMETER == GetLastError()) {
 
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
         /* This error might be caused by
         SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE not being supported.
@@ -10607,7 +10607,7 @@ os_symlink_impl(TyObject *module, path_t *src, path_t *dst,
         flags &= ~(SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE);
         result = CreateSymbolicLinkW(dst->wide, src->wide, flags);
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (result || ERROR_INVALID_PARAMETER != GetLastError()) {
             windows_has_symlink_unprivileged_flag = FALSE;
@@ -10619,7 +10619,7 @@ os_symlink_impl(TyObject *module, path_t *src, path_t *dst,
 
 #else
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_SYMLINKAT
     if (dir_fd != DEFAULT_DIR_FD) {
         if (HAVE_SYMLINKAT_RUNTIME) {
@@ -10630,7 +10630,7 @@ os_symlink_impl(TyObject *module, path_t *src, path_t *dst,
     } else
 #endif
         result = symlink(src->narrow, dst->narrow);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
 #ifdef HAVE_SYMLINKAT
     if (symlinkat_unavailable) {
@@ -10648,7 +10648,7 @@ os_symlink_impl(TyObject *module, path_t *src, path_t *dst,
 #endif /* HAVE_SYMLINK */
 
 
-static PyStructSequence_Field times_result_fields[] = {
+static TyStructSequence_Field times_result_fields[] = {
     {"user",    "user time"},
     {"system",   "system time"},
     {"children_user",    "user time of children"},
@@ -10657,7 +10657,7 @@ static PyStructSequence_Field times_result_fields[] = {
     {NULL}
 };
 
-PyDoc_STRVAR(times_result__doc__,
+TyDoc_STRVAR(times_result__doc__,
 "times_result: Result from os.times().\n\n\
 This object may be accessed either as a tuple of\n\
   (user, system, children_user, children_system, elapsed),\n\
@@ -10666,7 +10666,7 @@ and elapsed.\n\
 \n\
 See os.times for more information.");
 
-static PyStructSequence_Desc times_result_desc = {
+static TyStructSequence_Desc times_result_desc = {
     "times_result", /* name */
     times_result__doc__, /* doc */
     times_result_fields,
@@ -10679,7 +10679,7 @@ build_times_result(TyObject *module, double user, double system,
     double elapsed)
 {
     TyObject *TimesResultType = get_posix_state(module)->TimesResultType;
-    TyObject *value = PyStructSequence_New((TyTypeObject *)TimesResultType);
+    TyObject *value = TyStructSequence_New((TyTypeObject *)TimesResultType);
     if (value == NULL)
         return NULL;
 
@@ -10690,7 +10690,7 @@ build_times_result(TyObject *module, double user, double system,
         Ty_DECREF(value); \
         return NULL; \
     } \
-    PyStructSequence_SET_ITEM(value, i, o); \
+    TyStructSequence_SET_ITEM(value, i, o); \
     } \
 
     SET(0, user);
@@ -10789,7 +10789,7 @@ build_itimerspec(const struct itimerspec* curr_value)
 static TyObject *
 build_itimerspec_ns(const struct itimerspec* curr_value)
 {
-    PyTime_t value, interval;
+    TyTime_t value, interval;
     if (_TyTime_FromTimespec(&value, &curr_value->it_value) < 0) {
         return NULL;
     }
@@ -10829,10 +10829,10 @@ os_timerfd_create_impl(TyObject *module, int clockid, int flags)
 
 {
     int fd;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     flags |= TFD_CLOEXEC;  // PEP 446: always create non-inheritable FD
     fd = timerfd_create(clockid, flags);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (fd == -1) {
         return TyErr_SetFromErrno(TyExc_OSError);
     }
@@ -10861,7 +10861,7 @@ os_timerfd_settime_impl(TyObject *module, int fd, int flags,
                         double initial_double, double interval_double)
 /*[clinic end generated code: output=df4c1bce6859224e input=81d2c0d7e936e8a7]*/
 {
-    PyTime_t initial, interval;
+    TyTime_t initial, interval;
     if (_TyTime_FromSecondsDouble(initial_double, _TyTime_ROUND_FLOOR,
                                   &initial) < 0) {
         return NULL;
@@ -10882,9 +10882,9 @@ os_timerfd_settime_impl(TyObject *module, int fd, int flags,
     }
 
     int result;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = timerfd_settime(fd, flags, &new_value, &old_value);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result == -1) {
         return TyErr_SetFromErrno(TyExc_OSError);
     }
@@ -10925,9 +10925,9 @@ os_timerfd_settime_ns_impl(TyObject *module, int fd, int flags,
         TyErr_SetString(TyExc_ValueError, "invalid interval value");
         return NULL;
     }
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = timerfd_settime(fd, flags, &new_value, &old_value);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result == -1) {
         return TyErr_SetFromErrno(TyExc_OSError);
     }
@@ -10950,9 +10950,9 @@ os_timerfd_gettime_impl(TyObject *module, int fd)
 {
     struct itimerspec curr_value;
     int result;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = timerfd_gettime(fd, &curr_value);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result == -1) {
         return TyErr_SetFromErrno(TyExc_OSError);
     }
@@ -10976,9 +10976,9 @@ os_timerfd_gettime_ns_impl(TyObject *module, int fd)
 {
     struct itimerspec curr_value;
     int result;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = timerfd_gettime(fd, &curr_value);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result == -1) {
         return TyErr_SetFromErrno(TyExc_OSError);
     }
@@ -11149,7 +11149,7 @@ os_open_impl(TyObject *module, path_t *path, int flags, int mode, int dir_fd)
 
     _Ty_BEGIN_SUPPRESS_IPH
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
 #ifdef MS_WINDOWS
         fd = _wopen(path->wide, flags, mode);
 #else
@@ -11166,7 +11166,7 @@ os_open_impl(TyObject *module, path_t *path, int flags, int mode, int dir_fd)
 #endif /* HAVE_OPENAT */
             fd = open(path->narrow, flags, mode);
 #endif /* !MS_WINDOWS */
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (fd < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     _Ty_END_SUPPRESS_IPH
 
@@ -11211,11 +11211,11 @@ os_close_impl(TyObject *module, int fd)
      * and http://linux.derkeiler.com/Mailing-Lists/Kernel/2005-09/3000.html
      * for more details.
      */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
     res = close(fd);
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -11235,9 +11235,9 @@ static TyObject *
 os_closerange_impl(TyObject *module, int fd_low, int fd_high)
 /*[clinic end generated code: output=0ce5c20fcda681c2 input=5855a3d053ebd4ec]*/
 {
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_closerange(fd_low, fd_high - 1);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     Py_RETURN_NONE;
 }
 
@@ -11286,11 +11286,11 @@ os_dup2_impl(TyObject *module, int fd, int fd2, int inheritable)
      * upon close(), and therefore below.
      */
 #ifdef MS_WINDOWS
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
     res = dup2(fd, fd2);
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0) {
         posix_error();
         return -1;
@@ -11304,12 +11304,12 @@ os_dup2_impl(TyObject *module, int fd, int fd2, int inheritable)
     }
 
 #elif defined(HAVE_FCNTL_H) && defined(F_DUP2FD_CLOEXEC)
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (!inheritable)
         res = fcntl(fd, F_DUP2FD_CLOEXEC, fd2);
     else
         res = dup2(fd, fd2);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0) {
         posix_error();
         return -1;
@@ -11319,9 +11319,9 @@ os_dup2_impl(TyObject *module, int fd, int fd2, int inheritable)
 
 #ifdef HAVE_DUP3
     if (!inheritable && dup3_works != 0) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = dup3(fd, fd2, O_CLOEXEC);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         if (res < 0) {
             if (dup3_works == -1)
                 dup3_works = (errno != ENOSYS);
@@ -11335,9 +11335,9 @@ os_dup2_impl(TyObject *module, int fd, int fd2, int inheritable)
     if (inheritable || dup3_works == 0)
     {
 #endif
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = dup2(fd, fd2);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         if (res < 0) {
             posix_error();
             return -1;
@@ -11384,9 +11384,9 @@ os_lockf_impl(TyObject *module, int fd, int command, Ty_off_t length)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = lockf(fd, command, length);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (res < 0)
         return posix_error();
@@ -11430,7 +11430,7 @@ os_lseek_impl(TyObject *module, int fd, Ty_off_t position, int how)
     }
 #endif /* SEEK_END */
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
 #ifdef MS_WINDOWS
     result = _lseeki64(fd, position, how);
@@ -11438,7 +11438,7 @@ os_lseek_impl(TyObject *module, int fd, Ty_off_t position, int how)
     result = lseek(fd, position, how);
 #endif
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result < 0)
         posix_error();
 
@@ -11617,9 +11617,9 @@ os_readv_impl(TyObject *module, int fd, TyObject *buffers)
         return -1;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         n = readv(fd, iov, cnt);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (n < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
     int saved_errno = errno;
@@ -11669,11 +11669,11 @@ os_pread_impl(TyObject *module, int fd, Ty_ssize_t length, Ty_off_t offset)
         return NULL;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
         n = pread(fd, TyBytes_AS_STRING(buffer), length, offset);
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (n < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
     if (n < 0) {
@@ -11749,11 +11749,11 @@ os_preadv_impl(TyObject *module, int fd, TyObject *buffers, Ty_off_t offset,
     }
 #ifdef HAVE_PREADV2
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
         n = preadv2(fd, iov, cnt, offset, flags);
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (n < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 #else
     do {
@@ -11765,11 +11765,11 @@ os_preadv_impl(TyObject *module, int fd, TyObject *buffers, Ty_off_t offset,
 #pragma clang diagnostic ignored "-Wunguarded-availability"
 #pragma clang diagnostic ignored "-Wunguarded-availability-new"
 #endif
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
         n = preadv(fd, iov, cnt, offset);
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (n < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
 #if defined(__APPLE__) && defined(__clang__)
@@ -11941,13 +11941,13 @@ os_sendfile_impl(TyObject *module, int out_fd, int in_fd, TyObject *offobj,
 
     _Ty_BEGIN_SUPPRESS_IPH
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
 #ifdef __APPLE__
         ret = sendfile(in_fd, out_fd, offset, &sbytes, &sf, flags);
 #else
         ret = sendfile(in_fd, out_fd, offset, count, &sf, &sbytes, flags);
 #endif
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (ret < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     _Ty_END_SUPPRESS_IPH
 
@@ -11985,9 +11985,9 @@ done:
 #ifdef __linux__
     if (offobj == Ty_None) {
         do {
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             ret = sendfile(out_fd, in_fd, NULL, count);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
         } while (ret < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
         if (ret < 0)
             return (!async_err) ? posix_error() : NULL;
@@ -12004,9 +12004,9 @@ done:
     struct stat st;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         ret = fstat(in_fd, &st);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (ret != 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (ret < 0)
         return (!async_err) ? posix_error() : NULL;
@@ -12025,7 +12025,7 @@ done:
 #endif
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         ret = sendfile(out_fd, in_fd, &offset, count);
 #if defined(__sun) && defined(__SVR4)
         // This handles illumos-specific sendfile() partial write behavior,
@@ -12034,7 +12034,7 @@ done:
             ret = offset - original_offset;
         }
 #endif
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (ret < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (ret < 0)
         return (!async_err) ? posix_error() : NULL;
@@ -12062,9 +12062,9 @@ os__fcopyfile_impl(TyObject *module, int in_fd, int out_fd, int flags)
 {
     int ret;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     ret = fcopyfile(in_fd, out_fd, NULL, flags);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (ret < 0)
         return posix_error();
     Py_RETURN_NONE;
@@ -12092,9 +12092,9 @@ os_fstat_impl(TyObject *module, int fd)
     int async_err = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = FSTAT(fd, &st);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (res != 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
     if (res != 0) {
 #ifdef MS_WINDOWS
@@ -12124,11 +12124,11 @@ os_isatty_impl(TyObject *module, int fd)
 /*[clinic end generated code: output=6a48c8b4e644ca00 input=08ce94aa1eaf7b5e]*/
 {
     int return_value;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
     return_value = isatty(fd);
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     return return_value;
 }
 
@@ -12161,7 +12161,7 @@ os_pipe_impl(TyObject *module)
     attr.lpSecurityDescriptor = NULL;
     attr.bInheritHandle = FALSE;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     ok = CreatePipe(&read, &write, &attr, 0);
     if (ok) {
         fds[0] = _Ty_open_osfhandle_noraise(read, _O_RDONLY | _O_NOINHERIT);
@@ -12172,23 +12172,23 @@ os_pipe_impl(TyObject *module)
             ok = 0;
         }
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (!ok)
         return TyErr_SetFromWindowsErr(0);
 #else
 
 #ifdef HAVE_PIPE2
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = pipe2(fds, O_CLOEXEC);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (res != 0 && errno == ENOSYS)
     {
 #endif
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = pipe(fds);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (res == 0) {
             if (_Ty_set_inheritable(fds[0], 0, NULL) < 0) {
@@ -12282,9 +12282,9 @@ os_writev_impl(TyObject *module, int fd, TyObject *buffers)
     }
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         result = writev(fd, iov, cnt);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
     if (result < 0 && !async_err)
@@ -12320,11 +12320,11 @@ os_pwrite_impl(TyObject *module, int fd, Ty_buffer *buffer, Ty_off_t offset)
     int async_err = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
         size = pwrite(fd, buffer->buf, (size_t)buffer->len, offset);
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (size < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
     if (size < 0 && !async_err)
@@ -12395,11 +12395,11 @@ os_pwritev_impl(TyObject *module, int fd, TyObject *buffers, Ty_off_t offset,
     }
 #ifdef HAVE_PWRITEV2
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
         result = pwritev2(fd, iov, cnt, offset, flags);
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 #else
 
@@ -12412,11 +12412,11 @@ os_pwritev_impl(TyObject *module, int fd, TyObject *buffers, Ty_off_t offset,
 #pragma clang diagnostic ignored "-Wunguarded-availability-new"
 #endif
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
         result = pwritev(fd, iov, cnt, offset);
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
 #if defined(__APPLE__) && defined(__clang__)
@@ -12493,9 +12493,9 @@ os_copy_file_range_impl(TyObject *module, int src, int dst, Ty_ssize_t count,
     }
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         ret = copy_file_range(src, p_offset_src, dst, p_offset_dst, count, flags);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (ret < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
     if (ret < 0) {
@@ -12562,9 +12562,9 @@ os_splice_impl(TyObject *module, int src, int dst, Ty_ssize_t count,
     }
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         ret = splice(src, p_offset_src, dst, p_offset_dst, count, flags);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (ret < 0 && errno == EINTR && !(async_err = TyErr_CheckSignals()));
 
     if (ret < 0) {
@@ -12603,7 +12603,7 @@ os_mkfifo_impl(TyObject *module, path_t *path, int mode, int dir_fd)
 #endif
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_MKFIFOAT
         if (dir_fd != DEFAULT_DIR_FD) {
             if (HAVE_MKFIFOAT_RUNTIME) {
@@ -12616,7 +12616,7 @@ os_mkfifo_impl(TyObject *module, path_t *path, int mode, int dir_fd)
         } else
 #endif
             result = mkfifo(path->narrow, mode);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result != 0 && errno == EINTR &&
              !(async_err = TyErr_CheckSignals()));
 
@@ -12672,7 +12672,7 @@ os_mknod_impl(TyObject *module, path_t *path, int mode, dev_t device,
 #endif
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_MKNODAT
         if (dir_fd != DEFAULT_DIR_FD) {
             if (HAVE_MKNODAT_RUNTIME) {
@@ -12685,7 +12685,7 @@ os_mknod_impl(TyObject *module, path_t *path, int mode, dev_t device,
         } else
 #endif
             result = mknod(path->narrow, mode, device);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result != 0 && errno == EINTR &&
              !(async_err = TyErr_CheckSignals()));
 #ifdef HAVE_MKNODAT
@@ -12806,7 +12806,7 @@ os_ftruncate_impl(TyObject *module, int fd, Ty_off_t length)
     }
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         _Ty_BEGIN_SUPPRESS_IPH
 #ifdef MS_WINDOWS
         result = _chsize_s(fd, length);
@@ -12814,7 +12814,7 @@ os_ftruncate_impl(TyObject *module, int fd, Ty_off_t length)
         result = ftruncate(fd, length);
 #endif
         _Ty_END_SUPPRESS_IPH
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result != 0 && errno == EINTR &&
              !(async_err = TyErr_CheckSignals()));
     if (result != 0)
@@ -12852,7 +12852,7 @@ os_truncate_impl(TyObject *module, path_t *path, Ty_off_t length)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     _Ty_BEGIN_SUPPRESS_IPH
 #ifdef MS_WINDOWS
     fd = _wopen(path->wide, _O_WRONLY | _O_BINARY | _O_NOINHERIT);
@@ -12868,7 +12868,7 @@ os_truncate_impl(TyObject *module, path_t *path, Ty_off_t length)
     result = truncate(path->narrow, length);
 #endif
     _Ty_END_SUPPRESS_IPH
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result < 0)
         return posix_path_error(path);
 
@@ -12913,9 +12913,9 @@ os_posix_fallocate_impl(TyObject *module, int fd, Ty_off_t offset,
     int async_err = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         result = posix_fallocate(fd, offset, length);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result == EINTR && !(async_err = TyErr_CheckSignals()));
 
     if (result == 0)
@@ -12960,9 +12960,9 @@ os_posix_fadvise_impl(TyObject *module, int fd, Ty_off_t offset,
     int async_err = 0;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         result = posix_fadvise(fd, offset, length, advice);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result == EINTR && !(async_err = TyErr_CheckSignals()));
 
     if (result == 0)
@@ -13350,7 +13350,7 @@ os_WSTOPSIG_impl(TyObject *module, int status)
 static TyObject*
 _pystatvfs_fromstructstatfs(TyObject *module, struct statfs st) {
     TyObject *StatVFSResultType = get_posix_state(module)->StatVFSResultType;
-    TyObject *v = PyStructSequence_New((TyTypeObject *)StatVFSResultType);
+    TyObject *v = TyStructSequence_New((TyTypeObject *)StatVFSResultType);
     if (v == NULL) {
         return NULL;
     }
@@ -13372,7 +13372,7 @@ _pystatvfs_fromstructstatfs(TyObject *module, struct statfs st) {
             Ty_DECREF((SEQ));                            \
             return NULL;                                 \
         }                                                \
-        PyStructSequence_SET_ITEM((SEQ), (INDEX), obj);  \
+        TyStructSequence_SET_ITEM((SEQ), (INDEX), obj);  \
     } while (0)
 
     SET_ITEM(v, 0, TyLong_FromLong((long) st.f_iosize));
@@ -13400,7 +13400,7 @@ _pystatvfs_fromstructstatfs(TyObject *module, struct statfs st) {
 static TyObject*
 _pystatvfs_fromstructstatvfs(TyObject *module, struct statvfs st) {
     TyObject *StatVFSResultType = get_posix_state(module)->StatVFSResultType;
-    TyObject *v = PyStructSequence_New((TyTypeObject *)StatVFSResultType);
+    TyObject *v = TyStructSequence_New((TyTypeObject *)StatVFSResultType);
     if (v == NULL)
         return NULL;
 
@@ -13413,7 +13413,7 @@ _pystatvfs_fromstructstatvfs(TyObject *module, struct statvfs st) {
             Ty_DECREF(v);                                    \
             return NULL;                                     \
         }                                                    \
-        PyStructSequence_SET_ITEM(v, pos++, item);           \
+        TyStructSequence_SET_ITEM(v, pos++, item);           \
     } while(0)
 
 #if !defined(HAVE_LARGEFILE_SUPPORT)
@@ -13477,9 +13477,9 @@ os_fstatvfs_impl(TyObject *module, int fd)
      * the former uses 32-bit values for block counts.
      */
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         result = fstatfs(fd, &st);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result != 0 && errno == EINTR &&
              !(async_err = TyErr_CheckSignals()));
     if (result != 0)
@@ -13490,9 +13490,9 @@ os_fstatvfs_impl(TyObject *module, int fd)
     struct statvfs st;
 
     do {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         result = fstatvfs(fd, &st);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     } while (result != 0 && errno == EINTR &&
              !(async_err = TyErr_CheckSignals()));
     if (result != 0)
@@ -13530,13 +13530,13 @@ os_statvfs_impl(TyObject *module, path_t *path)
      */
     struct statfs st;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (path->fd != -1) {
         result = fstatfs(path->fd, &st);
     }
     else
         result = statfs(path->narrow, &st);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (result) {
         return path_error(path);
@@ -13547,7 +13547,7 @@ os_statvfs_impl(TyObject *module, path_t *path)
 #else
     struct statvfs st;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_FSTATVFS
     if (path->fd != -1) {
         result = fstatvfs(path->fd, &st);
@@ -13555,7 +13555,7 @@ os_statvfs_impl(TyObject *module, path_t *path)
     else
 #endif
         result = statvfs(path->narrow, &st);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (result) {
         return path_error(path);
@@ -13584,9 +13584,9 @@ os__getdiskusage_impl(TyObject *module, path_t *path)
     ULARGE_INTEGER _, total, free;
     DWORD err = 0;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     retval = GetDiskFreeSpaceExW(path->wide, &_, &total, &free);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (retval == 0) {
         if (GetLastError() == ERROR_DIRECTORY) {
             wchar_t *dir_path = NULL;
@@ -13599,9 +13599,9 @@ os__getdiskusage_impl(TyObject *module, path_t *path)
             wcscpy_s(dir_path, path->length + 1, path->wide);
 
             if (_dirnameW(dir_path) != -1) {
-                Py_BEGIN_ALLOW_THREADS
+                Ty_BEGIN_ALLOW_THREADS
                 retval = GetDiskFreeSpaceExW(dir_path, &_, &total, &free);
-                Py_END_ALLOW_THREADS
+                Ty_END_ALLOW_THREADS
             }
             /* Record the last error in case it's modified by TyMem_Free. */
             err = GetLastError();
@@ -14640,7 +14640,7 @@ check_ShellExecute(void)
 
     /* only recheck */
     if (-1 == has_ShellExecute) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         /* Security note: this call is not vulnerable to "DLL hijacking".
            SHELL32 is part of "KnownDLLs" and so Windows always load
            the system SHELL32.DLL, even if there is another SHELL32.DLL
@@ -14653,7 +14653,7 @@ check_ShellExecute(void)
         } else {
             has_ShellExecute = 0;
         }
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
     return has_ShellExecute;
 }
@@ -14719,10 +14719,10 @@ os_startfile_impl(TyObject *module, path_t *filepath,
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     rc = Py_ShellExecuteW((HWND)0, operation, filepath->wide,
                           arguments, cwd->wide, show_cmd);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (rc <= (HINSTANCE)32) {
         win32_error_object("startfile", filepath->object);
@@ -14911,14 +14911,14 @@ os_getxattr_impl(TyObject *module, path_t *path, path_t *attribute,
             return NULL;
         ptr = TyBytes_AS_STRING(buffer);
 
-        Py_BEGIN_ALLOW_THREADS;
+        Ty_BEGIN_ALLOW_THREADS;
         if (path->fd >= 0)
             result = fgetxattr(path->fd, attribute->narrow, ptr, buffer_size);
         else if (follow_symlinks)
             result = getxattr(path->narrow, attribute->narrow, ptr, buffer_size);
         else
             result = lgetxattr(path->narrow, attribute->narrow, ptr, buffer_size);
-        Py_END_ALLOW_THREADS;
+        Ty_END_ALLOW_THREADS;
 
         if (result < 0) {
             if (errno == ERANGE) {
@@ -14975,7 +14975,7 @@ os_setxattr_impl(TyObject *module, path_t *path, path_t *attribute,
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS;
+    Ty_BEGIN_ALLOW_THREADS;
     if (path->fd > -1)
         result = fsetxattr(path->fd, attribute->narrow,
                            value->buf, value->len, flags);
@@ -14985,7 +14985,7 @@ os_setxattr_impl(TyObject *module, path_t *path, path_t *attribute,
     else
         result = lsetxattr(path->narrow, attribute->narrow,
                            value->buf, value->len, flags);
-    Py_END_ALLOW_THREADS;
+    Ty_END_ALLOW_THREADS;
 
     if (result) {
         path_error(path);
@@ -15027,14 +15027,14 @@ os_removexattr_impl(TyObject *module, path_t *path, path_t *attribute,
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS;
+    Ty_BEGIN_ALLOW_THREADS;
     if (path->fd > -1)
         result = fremovexattr(path->fd, attribute->narrow);
     else if (follow_symlinks)
         result = removexattr(path->narrow, attribute->narrow);
     else
         result = lremovexattr(path->narrow, attribute->narrow);
-    Py_END_ALLOW_THREADS;
+    Ty_END_ALLOW_THREADS;
 
     if (result) {
         return path_error(path);
@@ -15095,14 +15095,14 @@ os_listxattr_impl(TyObject *module, path_t *path, int follow_symlinks)
             break;
         }
 
-        Py_BEGIN_ALLOW_THREADS;
+        Ty_BEGIN_ALLOW_THREADS;
         if (path->fd > -1)
             length = flistxattr(path->fd, buffer, buffer_size);
         else if (follow_symlinks)
             length = listxattr(name, buffer, buffer_size);
         else
             length = llistxattr(name, buffer, buffer_size);
-        Py_END_ALLOW_THREADS;
+        Ty_END_ALLOW_THREADS;
 
         if (length < 0) {
             if (errno == ERANGE) {
@@ -15194,9 +15194,9 @@ os_memfd_create_impl(TyObject *module, TyObject *name, unsigned int flags)
 {
     int fd;
     const char *bytes = TyBytes_AS_STRING(name);
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     fd = memfd_create(bytes, flags);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (fd == -1) {
         return TyErr_SetFromErrno(TyExc_OSError);
     }
@@ -15221,9 +15221,9 @@ os_eventfd_impl(TyObject *module, unsigned int initval, int flags)
 {
     /* initval is limited to uint32_t, internal counter is uint64_t */
     int fd;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     fd = eventfd(initval, flags);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (fd == -1) {
         return TyErr_SetFromErrno(TyExc_OSError);
     }
@@ -15244,9 +15244,9 @@ os_eventfd_read_impl(TyObject *module, int fd)
 {
     eventfd_t value;
     int result;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = eventfd_read(fd, &value);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result == -1) {
         return TyErr_SetFromErrno(TyExc_OSError);
     }
@@ -15267,9 +15267,9 @@ os_eventfd_write_impl(TyObject *module, int fd, unsigned long long value)
 /*[clinic end generated code: output=bebd9040bbf987f5 input=156de8555be5a949]*/
 {
     int result;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = eventfd_write(fd, value);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result == -1) {
         return TyErr_SetFromErrno(TyExc_OSError);
     }
@@ -15279,16 +15279,16 @@ os_eventfd_write_impl(TyObject *module, int fd, unsigned long long value)
 
 /* Terminal size querying */
 
-PyDoc_STRVAR(TerminalSize_docstring,
+TyDoc_STRVAR(TerminalSize_docstring,
     "A tuple of (columns, lines) for holding terminal window size");
 
-static PyStructSequence_Field TerminalSize_fields[] = {
+static TyStructSequence_Field TerminalSize_fields[] = {
     {"columns", "width of the terminal window in characters"},
     {"lines", "height of the terminal window in characters"},
     {NULL, NULL}
 };
 
-static PyStructSequence_Desc TerminalSize_desc = {
+static TyStructSequence_Desc TerminalSize_desc = {
     "os.terminal_size",
     TerminalSize_docstring,
     TerminalSize_fields,
@@ -15359,7 +15359,7 @@ os_get_terminal_size_impl(TyObject *module, int fd)
 #endif /* TERMSIZE_USE_CONIO */
 
     TyObject *TerminalSizeType = get_posix_state(module)->TerminalSizeType;
-    termsize = PyStructSequence_New((TyTypeObject *)TerminalSizeType);
+    termsize = TyStructSequence_New((TyTypeObject *)TerminalSizeType);
     if (termsize == NULL)
         return NULL;
 
@@ -15372,7 +15372,7 @@ os_get_terminal_size_impl(TyObject *module, int fd)
             Ty_DECREF(termsize);                             \
             return NULL;                                     \
         }                                                    \
-        PyStructSequence_SET_ITEM(termsize, pos++, item);    \
+        TyStructSequence_SET_ITEM(termsize, pos++, item);    \
     } while(0)
 
     SET_TERMSIZE(TyLong_FromLong(columns));
@@ -15690,10 +15690,10 @@ DirEntry_fetch_stat(TyObject *module, DirEntry *self, int follow_symlinks)
     if (self->dir_fd != DEFAULT_DIR_FD) {
 #ifdef HAVE_FSTATAT
       if (HAVE_FSTATAT_RUNTIME) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         result = fstatat(self->dir_fd, path, &st,
                          follow_symlinks ? 0 : AT_SYMLINK_NOFOLLOW);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
       } else
 
 #endif /* HAVE_FSTATAT */
@@ -15706,14 +15706,14 @@ DirEntry_fetch_stat(TyObject *module, DirEntry *self, int follow_symlinks)
     else
 #endif
     {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         if (follow_symlinks) {
             result = STAT(path, &st);
         }
         else {
             result = LSTAT(path, &st);
         }
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
 
     int saved_errno = errno;
@@ -15979,7 +15979,7 @@ static TyMethodDef DirEntry_methods[] = {
     OS_DIRENTRY_INODE_METHODDEF
     OS_DIRENTRY___FSPATH___METHODDEF
     {"__class_getitem__",       Ty_GenericAlias,
-    METH_O|METH_CLASS,          PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,          TyDoc_STR("See PEP 585")},
     {NULL}
 };
 
@@ -16225,9 +16225,9 @@ ScandirIterator_closedir(ScandirIterator *iterator)
         return;
 
     iterator->handle = INVALID_HANDLE_VALUE;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     FindClose(handle);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 }
 
 static TyObject *
@@ -16244,9 +16244,9 @@ ScandirIterator_iternext(TyObject *op)
 
     while (1) {
         if (!iterator->first_time) {
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             success = FindNextFileW(iterator->handle, file_data);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
             if (!success) {
                 /* Error or no more files */
                 if (GetLastError() != ERROR_NO_MORE_FILES)
@@ -16292,13 +16292,13 @@ ScandirIterator_closedir(ScandirIterator *iterator)
         return;
 
     iterator->dirp = NULL;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_FDOPENDIR
     if (iterator->path.fd != -1)
         rewinddir(dirp);
 #endif
     closedir(dirp);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     return;
 }
 
@@ -16317,9 +16317,9 @@ ScandirIterator_iternext(TyObject *op)
 
     while (1) {
         errno = 0;
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         direntp = readdir(iterator->dirp);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (!direntp) {
             /* Error or no more files */
@@ -16499,9 +16499,9 @@ os_scandir_impl(TyObject *module, path_t *path)
     if (!path_strW)
         goto error;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     iterator->handle = FindFirstFileW(path_strW, &iterator->file_data);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (iterator->handle == INVALID_HANDLE_VALUE) {
         path_error(&iterator->path);
@@ -16519,9 +16519,9 @@ os_scandir_impl(TyObject *module, path_t *path)
         if (fd == -1)
             goto error;
 
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         iterator->dirp = fdopendir(fd);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
       } else {
         TyErr_SetString(TyExc_TypeError,
             "scandir: path should be string, bytes, os.PathLike or None, not int");
@@ -16536,18 +16536,18 @@ os_scandir_impl(TyObject *module, path_t *path)
         else
             path_str = ".";
 
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         iterator->dirp = opendir(path_str);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
 
     if (!iterator->dirp) {
         path_error(&iterator->path);
 #ifdef HAVE_FDOPENDIR
         if (fd != -1) {
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             close(fd);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
         }
 #endif
         goto error;
@@ -16718,11 +16718,11 @@ os__add_dll_directory_impl(TyObject *module, path_t *path)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (!(cookie = AddDllDirectory(path->wide))) {
         err = GetLastError();
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (err) {
         return win32_error_object_err("add_dll_directory",
@@ -16760,11 +16760,11 @@ os__remove_dll_directory_impl(TyObject *module, TyObject *cookie)
     cookieValue = (DLL_DIRECTORY_COOKIE)PyCapsule_GetPointer(
         cookie, "DLL directory cookie");
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (!RemoveDllDirectory(cookieValue)) {
         err = GetLastError();
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (err) {
         return win32_error_object_err("remove_dll_directory",
@@ -16905,9 +16905,9 @@ os__inputhook_impl(TyObject *module)
 {
      int result = 0;
      if (TyOS_InputHook) {
-         Py_BEGIN_ALLOW_THREADS;
+         Ty_BEGIN_ALLOW_THREADS;
          result = TyOS_InputHook();
-         Py_END_ALLOW_THREADS;
+         Ty_END_ALLOW_THREADS;
      }
      return TyLong_FromLong(result);
 }
@@ -18083,17 +18083,17 @@ posixmodule_exec(TyObject *m)
 
 #if defined(HAVE_WAITID)
     waitid_result_desc.name = MODNAME ".waitid_result";
-    state->WaitidResultType = (TyObject *)PyStructSequence_NewType(&waitid_result_desc);
+    state->WaitidResultType = (TyObject *)TyStructSequence_NewType(&waitid_result_desc);
     if (TyModule_AddObjectRef(m, "waitid_result", state->WaitidResultType) < 0) {
         return -1;
     }
 #endif
 
     stat_result_desc.name = "os.stat_result"; /* see issue #19209 */
-    stat_result_desc.fields[7].name = PyStructSequence_UnnamedField;
-    stat_result_desc.fields[8].name = PyStructSequence_UnnamedField;
-    stat_result_desc.fields[9].name = PyStructSequence_UnnamedField;
-    state->StatResultType = (TyObject *)PyStructSequence_NewType(&stat_result_desc);
+    stat_result_desc.fields[7].name = TyStructSequence_UnnamedField;
+    stat_result_desc.fields[8].name = TyStructSequence_UnnamedField;
+    stat_result_desc.fields[9].name = TyStructSequence_UnnamedField;
+    state->StatResultType = (TyObject *)TyStructSequence_NewType(&stat_result_desc);
     if (TyModule_AddObjectRef(m, "stat_result", state->StatResultType) < 0) {
         return -1;
     }
@@ -18101,14 +18101,14 @@ posixmodule_exec(TyObject *m)
     ((TyTypeObject *)state->StatResultType)->tp_new = statresult_new;
 
     statvfs_result_desc.name = "os.statvfs_result"; /* see issue #19209 */
-    state->StatVFSResultType = (TyObject *)PyStructSequence_NewType(&statvfs_result_desc);
+    state->StatVFSResultType = (TyObject *)TyStructSequence_NewType(&statvfs_result_desc);
     if (TyModule_AddObjectRef(m, "statvfs_result", state->StatVFSResultType) < 0) {
         return -1;
     }
 
 #if defined(HAVE_SCHED_SETPARAM) || defined(HAVE_SCHED_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDPARAM)
     sched_param_desc.name = MODNAME ".sched_param";
-    state->SchedParamType = (TyObject *)PyStructSequence_NewType(&sched_param_desc);
+    state->SchedParamType = (TyObject *)TyStructSequence_NewType(&sched_param_desc);
     if (TyModule_AddObjectRef(m, "sched_param", state->SchedParamType) < 0) {
         return -1;
     }
@@ -18122,7 +18122,7 @@ posixmodule_exec(TyObject *m)
 #endif
 
     /* initialize TerminalSize_info */
-    state->TerminalSizeType = (TyObject *)PyStructSequence_NewType(&TerminalSize_desc);
+    state->TerminalSizeType = (TyObject *)TyStructSequence_NewType(&TerminalSize_desc);
     if (TyModule_AddObjectRef(m, "terminal_size", state->TerminalSizeType) < 0) {
         return -1;
     }
@@ -18140,12 +18140,12 @@ posixmodule_exec(TyObject *m)
     }
 
     times_result_desc.name = MODNAME ".times_result";
-    state->TimesResultType = (TyObject *)PyStructSequence_NewType(&times_result_desc);
+    state->TimesResultType = (TyObject *)TyStructSequence_NewType(&times_result_desc);
     if (TyModule_AddObjectRef(m, "times_result", state->TimesResultType) < 0) {
         return -1;
     }
 
-    state->UnameResultType = (TyObject *)PyStructSequence_NewType(&uname_result_desc);
+    state->UnameResultType = (TyObject *)TyStructSequence_NewType(&uname_result_desc);
     if (TyModule_AddObjectRef(m, "uname_result", state->UnameResultType) < 0) {
         return -1;
     }

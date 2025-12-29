@@ -21,7 +21,7 @@ test_object_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_object_converter__doc__,
+TyDoc_STRVAR(test_object_converter__doc__,
 "test_object_converter($module, a, b, c, d, /)\n"
 "--\n"
 "\n");
@@ -72,7 +72,7 @@ cloned = test_object_converter
 Check the clone feature.
 [clinic start generated code]*/
 
-PyDoc_STRVAR(cloned__doc__,
+TyDoc_STRVAR(cloned__doc__,
 "cloned($module, a, b, c, d, /)\n"
 "--\n"
 "\n"
@@ -127,7 +127,7 @@ test_object_converter_one_arg
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_object_converter_one_arg__doc__,
+TyDoc_STRVAR(test_object_converter_one_arg__doc__,
 "test_object_converter_one_arg($module, a, /)\n"
 "--\n"
 "\n");
@@ -149,7 +149,7 @@ test_objects_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_objects_converter__doc__,
+TyDoc_STRVAR(test_objects_converter__doc__,
 "test_objects_converter($module, a, b=<unrepresentable>, /)\n"
 "--\n"
 "\n");
@@ -204,7 +204,7 @@ test_object_converter_subclass_of
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_object_converter_subclass_of__doc__,
+TyDoc_STRVAR(test_object_converter_subclass_of__doc__,
 "test_object_converter_subclass_of($module, a, b, c, d, e, f, g, h, i,\n"
 "                                  j, /)\n"
 "--\n"
@@ -309,7 +309,7 @@ test_PyBytesObject_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_PyBytesObject_converter__doc__,
+TyDoc_STRVAR(test_PyBytesObject_converter__doc__,
 "test_PyBytesObject_converter($module, a, /)\n"
 "--\n"
 "\n");
@@ -350,7 +350,7 @@ test_PyByteArrayObject_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_PyByteArrayObject_converter__doc__,
+TyDoc_STRVAR(test_PyByteArrayObject_converter__doc__,
 "test_PyByteArrayObject_converter($module, a, /)\n"
 "--\n"
 "\n");
@@ -391,7 +391,7 @@ test_unicode_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_unicode_converter__doc__,
+TyDoc_STRVAR(test_unicode_converter__doc__,
 "test_unicode_converter($module, a, /)\n"
 "--\n"
 "\n");
@@ -434,7 +434,7 @@ test_bool_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_bool_converter__doc__,
+TyDoc_STRVAR(test_bool_converter__doc__,
 "test_bool_converter($module, a=True, b=True, c=True, /)\n"
 "--\n"
 "\n");
@@ -510,7 +510,7 @@ test_char_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_char_converter__doc__,
+TyDoc_STRVAR(test_char_converter__doc__,
 "test_char_converter($module, a=b\'A\', b=b\'\\x07\', c=b\'\\x08\', d=b\'\\t\',\n"
 "                    e=b\'\\n\', f=b\'\\x0b\', g=b\'\\x0c\', h=b\'\\r\', i=b\'\"\',\n"
 "                    j=b\"\'\", k=b\'?\', l=b\'\\\\\', m=b\'\\x00\', n=b\'\\xff\', /)\n"
@@ -949,7 +949,7 @@ test_unsigned_char_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_unsigned_char_converter__doc__,
+TyDoc_STRVAR(test_unsigned_char_converter__doc__,
 "test_unsigned_char_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1049,7 +1049,7 @@ test_short_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_short_converter__doc__,
+TyDoc_STRVAR(test_short_converter__doc__,
 "test_short_converter($module, a=12, /)\n"
 "--\n"
 "\n");
@@ -1113,7 +1113,7 @@ test_unsigned_short_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_unsigned_short_converter__doc__,
+TyDoc_STRVAR(test_unsigned_short_converter__doc__,
 "test_unsigned_short_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1179,7 +1179,7 @@ test_int_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_int_converter__doc__,
+TyDoc_STRVAR(test_int_converter__doc__,
 "test_int_converter($module, a=12, b=34, c=45, d=67, /)\n"
 "--\n"
 "\n");
@@ -1260,7 +1260,7 @@ test_unsigned_int_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_unsigned_int_converter__doc__,
+TyDoc_STRVAR(test_unsigned_int_converter__doc__,
 "test_unsigned_int_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1323,7 +1323,7 @@ test_long_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_long_converter__doc__,
+TyDoc_STRVAR(test_long_converter__doc__,
 "test_long_converter($module, a=12, /)\n"
 "--\n"
 "\n");
@@ -1372,7 +1372,7 @@ test_unsigned_long_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_unsigned_long_converter__doc__,
+TyDoc_STRVAR(test_unsigned_long_converter__doc__,
 "test_unsigned_long_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1436,7 +1436,7 @@ test_long_long_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_long_long_converter__doc__,
+TyDoc_STRVAR(test_long_long_converter__doc__,
 "test_long_long_converter($module, a=12, /)\n"
 "--\n"
 "\n");
@@ -1485,7 +1485,7 @@ test_unsigned_long_long_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_unsigned_long_long_converter__doc__,
+TyDoc_STRVAR(test_unsigned_long_long_converter__doc__,
 "test_unsigned_long_long_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1555,7 +1555,7 @@ test_Py_ssize_t_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_Py_ssize_t_converter__doc__,
+TyDoc_STRVAR(test_Py_ssize_t_converter__doc__,
 "test_Py_ssize_t_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1637,7 +1637,7 @@ test_slice_index_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_slice_index_converter__doc__,
+TyDoc_STRVAR(test_slice_index_converter__doc__,
 "test_slice_index_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1699,7 +1699,7 @@ test_size_t_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_size_t_converter__doc__,
+TyDoc_STRVAR(test_size_t_converter__doc__,
 "test_size_t_converter($module, a=12, /)\n"
 "--\n"
 "\n");
@@ -1745,7 +1745,7 @@ test_float_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_float_converter__doc__,
+TyDoc_STRVAR(test_float_converter__doc__,
 "test_float_converter($module, a=12.5, /)\n"
 "--\n"
 "\n");
@@ -1798,7 +1798,7 @@ test_double_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_double_converter__doc__,
+TyDoc_STRVAR(test_double_converter__doc__,
 "test_double_converter($module, a=12.5, /)\n"
 "--\n"
 "\n");
@@ -1851,7 +1851,7 @@ test_Py_complex_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_Py_complex_converter__doc__,
+TyDoc_STRVAR(test_Py_complex_converter__doc__,
 "test_Py_complex_converter($module, a, /)\n"
 "--\n"
 "\n");
@@ -1898,7 +1898,7 @@ test_str_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_str_converter__doc__,
+TyDoc_STRVAR(test_str_converter__doc__,
 "test_str_converter($module, a=<unrepresentable>, b=\'ab\', c=\'cd\',\n"
 "                   d=\'cef\', e=\'gh\', f=\'ij\', g=\'kl\', h=\'mn\', /)\n"
 "--\n"
@@ -1961,7 +1961,7 @@ test_str_converter_encoding
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_str_converter_encoding__doc__,
+TyDoc_STRVAR(test_str_converter_encoding__doc__,
 "test_str_converter_encoding($module, a, b, c, d, e, /)\n"
 "--\n"
 "\n");
@@ -2025,7 +2025,7 @@ test_Py_UNICODE_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_Py_UNICODE_converter__doc__,
+TyDoc_STRVAR(test_Py_UNICODE_converter__doc__,
 "test_Py_UNICODE_converter($module, a, b, c, d, e, /)\n"
 "--\n"
 "\n");
@@ -2088,7 +2088,7 @@ test_Py_buffer_converter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_Py_buffer_converter__doc__,
+TyDoc_STRVAR(test_Py_buffer_converter__doc__,
 "test_Py_buffer_converter($module, a, b, c, d, e, /)\n"
 "--\n"
 "\n");
@@ -2155,7 +2155,7 @@ test_keywords
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_keywords__doc__,
+TyDoc_STRVAR(test_keywords__doc__,
 "test_keywords($module, /, a, b)\n"
 "--\n"
 "\n");
@@ -2179,7 +2179,7 @@ test_keywords(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
@@ -2228,7 +2228,7 @@ test_keywords_kwonly
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_keywords_kwonly__doc__,
+TyDoc_STRVAR(test_keywords_kwonly__doc__,
 "test_keywords_kwonly($module, /, a, *, b)\n"
 "--\n"
 "\n");
@@ -2252,7 +2252,7 @@ test_keywords_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
@@ -2301,7 +2301,7 @@ test_keywords_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_keywords_opt__doc__,
+TyDoc_STRVAR(test_keywords_opt__doc__,
 "test_keywords_opt($module, /, a, b=None, c=None)\n"
 "--\n"
 "\n");
@@ -2326,7 +2326,7 @@ test_keywords_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -2390,7 +2390,7 @@ test_keywords_opt_kwonly
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_keywords_opt_kwonly__doc__,
+TyDoc_STRVAR(test_keywords_opt_kwonly__doc__,
 "test_keywords_opt_kwonly($module, /, a, b=None, *, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -2415,7 +2415,7 @@ test_keywords_opt_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -2489,7 +2489,7 @@ test_keywords_kwonly_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_keywords_kwonly_opt__doc__,
+TyDoc_STRVAR(test_keywords_kwonly_opt__doc__,
 "test_keywords_kwonly_opt($module, /, a, *, b=None, c=None)\n"
 "--\n"
 "\n");
@@ -2514,7 +2514,7 @@ test_keywords_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -2576,7 +2576,7 @@ test_posonly_keywords
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_keywords__doc__,
+TyDoc_STRVAR(test_posonly_keywords__doc__,
 "test_posonly_keywords($module, a, /, b)\n"
 "--\n"
 "\n");
@@ -2600,7 +2600,7 @@ test_posonly_keywords(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
@@ -2650,7 +2650,7 @@ test_posonly_kwonly
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_kwonly__doc__,
+TyDoc_STRVAR(test_posonly_kwonly__doc__,
 "test_posonly_kwonly($module, a, /, *, c)\n"
 "--\n"
 "\n");
@@ -2674,7 +2674,7 @@ test_posonly_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('c'), },
     };
@@ -2725,7 +2725,7 @@ test_posonly_keywords_kwonly
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_keywords_kwonly__doc__,
+TyDoc_STRVAR(test_posonly_keywords_kwonly__doc__,
 "test_posonly_keywords_kwonly($module, a, /, b, *, c)\n"
 "--\n"
 "\n");
@@ -2750,7 +2750,7 @@ test_posonly_keywords_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -2804,7 +2804,7 @@ test_posonly_keywords_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_keywords_opt__doc__,
+TyDoc_STRVAR(test_posonly_keywords_opt__doc__,
 "test_posonly_keywords_opt($module, a, /, b, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -2829,7 +2829,7 @@ test_posonly_keywords_opt(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -2894,7 +2894,7 @@ test_posonly_keywords_opt2
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_keywords_opt2__doc__,
+TyDoc_STRVAR(test_posonly_keywords_opt2__doc__,
 "test_posonly_keywords_opt2($module, a, /, b=None, c=None)\n"
 "--\n"
 "\n");
@@ -2919,7 +2919,7 @@ test_posonly_keywords_opt2(TyObject *module, TyObject *const *args, Ty_ssize_t n
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -2983,7 +2983,7 @@ test_posonly_opt_keywords_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_opt_keywords_opt__doc__,
+TyDoc_STRVAR(test_posonly_opt_keywords_opt__doc__,
 "test_posonly_opt_keywords_opt($module, a, b=None, /, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -3008,7 +3008,7 @@ test_posonly_opt_keywords_opt(TyObject *module, TyObject *const *args, Ty_ssize_
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -3080,7 +3080,7 @@ test_posonly_kwonly_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_kwonly_opt__doc__,
+TyDoc_STRVAR(test_posonly_kwonly_opt__doc__,
 "test_posonly_kwonly_opt($module, a, /, *, b, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -3105,7 +3105,7 @@ test_posonly_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -3171,7 +3171,7 @@ test_posonly_kwonly_opt2
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_kwonly_opt2__doc__,
+TyDoc_STRVAR(test_posonly_kwonly_opt2__doc__,
 "test_posonly_kwonly_opt2($module, a, /, *, b=None, c=None)\n"
 "--\n"
 "\n");
@@ -3196,7 +3196,7 @@ test_posonly_kwonly_opt2(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -3261,7 +3261,7 @@ test_posonly_opt_kwonly_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_opt_kwonly_opt__doc__,
+TyDoc_STRVAR(test_posonly_opt_kwonly_opt__doc__,
 "test_posonly_opt_kwonly_opt($module, a, b=None, /, *, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -3286,7 +3286,7 @@ test_posonly_opt_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -3359,7 +3359,7 @@ test_posonly_keywords_kwonly_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_keywords_kwonly_opt__doc__,
+TyDoc_STRVAR(test_posonly_keywords_kwonly_opt__doc__,
 "test_posonly_keywords_kwonly_opt($module, a, /, b, *, c, d=None, e=None)\n"
 "--\n"
 "\n");
@@ -3385,7 +3385,7 @@ test_posonly_keywords_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssi
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), },
     };
@@ -3455,7 +3455,7 @@ test_posonly_keywords_kwonly_opt2
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_keywords_kwonly_opt2__doc__,
+TyDoc_STRVAR(test_posonly_keywords_kwonly_opt2__doc__,
 "test_posonly_keywords_kwonly_opt2($module, a, /, b, *, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -3480,7 +3480,7 @@ test_posonly_keywords_kwonly_opt2(TyObject *module, TyObject *const *args, Ty_ss
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -3548,7 +3548,7 @@ test_posonly_keywords_opt_kwonly_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_keywords_opt_kwonly_opt__doc__,
+TyDoc_STRVAR(test_posonly_keywords_opt_kwonly_opt__doc__,
 "test_posonly_keywords_opt_kwonly_opt($module, a, /, b, c=None, *,\n"
 "                                     d=None, e=None)\n"
 "--\n"
@@ -3575,7 +3575,7 @@ test_posonly_keywords_opt_kwonly_opt(TyObject *module, TyObject *const *args, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), },
     };
@@ -3655,7 +3655,7 @@ test_posonly_keywords_opt2_kwonly_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_keywords_opt2_kwonly_opt__doc__,
+TyDoc_STRVAR(test_posonly_keywords_opt2_kwonly_opt__doc__,
 "test_posonly_keywords_opt2_kwonly_opt($module, a, /, b=None, c=None, *,\n"
 "                                      d=None, e=None)\n"
 "--\n"
@@ -3682,7 +3682,7 @@ test_posonly_keywords_opt2_kwonly_opt(TyObject *module, TyObject *const *args, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), },
     };
@@ -3768,7 +3768,7 @@ test_posonly_opt_keywords_opt_kwonly_opt
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_posonly_opt_keywords_opt_kwonly_opt__doc__,
+TyDoc_STRVAR(test_posonly_opt_keywords_opt_kwonly_opt__doc__,
 "test_posonly_opt_keywords_opt_kwonly_opt($module, a, b=None, /, c=None,\n"
 "                                         d=None, *, e=None, f=None)\n"
 "--\n"
@@ -3796,7 +3796,7 @@ test_posonly_opt_keywords_opt_kwonly_opt(TyObject *module, TyObject *const *args
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), _Ty_LATIN1_CHR('f'), },
     };
@@ -3884,7 +3884,7 @@ test_keyword_only_parameter
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_keyword_only_parameter__doc__,
+TyDoc_STRVAR(test_keyword_only_parameter__doc__,
 "test_keyword_only_parameter($module, /, *, co_lnotab=None)\n"
 "--\n"
 "\n");
@@ -3908,7 +3908,7 @@ test_keyword_only_parameter(TyObject *module, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(co_lnotab), },
     };
@@ -4035,7 +4035,7 @@ output pop
 
 #if defined(CONDITION_A)
 
-PyDoc_STRVAR(test_preprocessor_guarded_condition_a__doc__,
+TyDoc_STRVAR(test_preprocessor_guarded_condition_a__doc__,
 "test_preprocessor_guarded_condition_a($module, /)\n"
 "--\n"
 "\n");
@@ -4053,7 +4053,7 @@ test_preprocessor_guarded_condition_a(TyObject *module, TyObject *Py_UNUSED(igno
 
 #if !defined(CONDITION_A) && (CONDITION_B)
 
-PyDoc_STRVAR(test_preprocessor_guarded_elif_condition_b__doc__,
+TyDoc_STRVAR(test_preprocessor_guarded_elif_condition_b__doc__,
 "test_preprocessor_guarded_elif_condition_b($module, /)\n"
 "--\n"
 "\n");
@@ -4071,7 +4071,7 @@ test_preprocessor_guarded_elif_condition_b(TyObject *module, TyObject *Py_UNUSED
 
 #if !defined(CONDITION_A) && !(CONDITION_B)
 
-PyDoc_STRVAR(test_preprocessor_guarded_else__doc__,
+TyDoc_STRVAR(test_preprocessor_guarded_else__doc__,
 "test_preprocessor_guarded_else($module, /)\n"
 "--\n"
 "\n");
@@ -4089,7 +4089,7 @@ test_preprocessor_guarded_else(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if !defined(CONDITION_C)
 
-PyDoc_STRVAR(test_preprocessor_guarded_ifndef_condition_c__doc__,
+TyDoc_STRVAR(test_preprocessor_guarded_ifndef_condition_c__doc__,
 "test_preprocessor_guarded_ifndef_condition_c($module, /)\n"
 "--\n"
 "\n");
@@ -4107,7 +4107,7 @@ test_preprocessor_guarded_ifndef_condition_c(TyObject *module, TyObject *Py_UNUS
 
 #if defined(CONDITION_C)
 
-PyDoc_STRVAR(test_preprocessor_guarded_ifndef_not_condition_c__doc__,
+TyDoc_STRVAR(test_preprocessor_guarded_ifndef_not_condition_c__doc__,
 "test_preprocessor_guarded_ifndef_not_condition_c($module, /)\n"
 "--\n"
 "\n");
@@ -4125,7 +4125,7 @@ test_preprocessor_guarded_ifndef_not_condition_c(TyObject *module, TyObject *Py_
 
 #if (CONDITION_D)
 
-PyDoc_STRVAR(test_preprocessor_guarded_if_with_continuation__doc__,
+TyDoc_STRVAR(test_preprocessor_guarded_if_with_continuation__doc__,
 "test_preprocessor_guarded_if_with_continuation($module, /)\n"
 "--\n"
 "\n");
@@ -4143,7 +4143,7 @@ test_preprocessor_guarded_if_with_continuation(TyObject *module, TyObject *Py_UN
 
 #if (CONDITION_E || CONDITION_F)
 
-PyDoc_STRVAR(test_preprocessor_guarded_if_e_or_f__doc__,
+TyDoc_STRVAR(test_preprocessor_guarded_if_e_or_f__doc__,
 "test_preprocessor_guarded_if_e_or_f($module, /)\n"
 "--\n"
 "\n"
@@ -4199,7 +4199,7 @@ test_vararg_and_posonly
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_vararg_and_posonly__doc__,
+TyDoc_STRVAR(test_vararg_and_posonly__doc__,
 "test_vararg_and_posonly($module, a, /, *args)\n"
 "--\n"
 "\n");
@@ -4247,7 +4247,7 @@ test_vararg
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_vararg__doc__,
+TyDoc_STRVAR(test_vararg__doc__,
 "test_vararg($module, /, a, *args)\n"
 "--\n"
 "\n");
@@ -4271,7 +4271,7 @@ test_vararg(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -4329,7 +4329,7 @@ test_vararg_with_default
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_vararg_with_default__doc__,
+TyDoc_STRVAR(test_vararg_with_default__doc__,
 "test_vararg_with_default($module, /, a, *args, b=False)\n"
 "--\n"
 "\n");
@@ -4354,7 +4354,7 @@ test_vararg_with_default(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
@@ -4423,7 +4423,7 @@ test_vararg_with_only_defaults
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_vararg_with_only_defaults__doc__,
+TyDoc_STRVAR(test_vararg_with_only_defaults__doc__,
 "test_vararg_with_only_defaults($module, /, *args, b=False, c=\' \')\n"
 "--\n"
 "\n");
@@ -4448,7 +4448,7 @@ test_vararg_with_only_defaults(TyObject *module, TyObject *const *args, Ty_ssize
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -4516,7 +4516,7 @@ test_paramname_module
     module as mod: object
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_paramname_module__doc__,
+TyDoc_STRVAR(test_paramname_module__doc__,
 "test_paramname_module($module, /, module)\n"
 "--\n"
 "\n");
@@ -4540,7 +4540,7 @@ test_paramname_module(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(module), },
     };
@@ -4592,7 +4592,7 @@ mangle1
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(mangle1__doc__,
+TyDoc_STRVAR(mangle1__doc__,
 "mangle1($module, /, args, kwnames, return_value, _keywords, _parser,\n"
 "        argsbuf, fastargs, nargs, noptargs)\n"
 "--\n"
@@ -4620,7 +4620,7 @@ mangle1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwn
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(args), &_Ty_ID(kwnames), &_Ty_ID(return_value), &_Ty_ID(_keywords), &_Ty_ID(_parser), &_Ty_ID(argsbuf), &_Ty_ID(fastargs), &_Ty_ID(nargs), &_Ty_ID(noptargs), },
     };
@@ -4685,7 +4685,7 @@ mangle2
 
 [clinic start generated code]*/
 
-PyDoc_STRVAR(mangle2__doc__,
+TyDoc_STRVAR(mangle2__doc__,
 "mangle2($module, /, args, kwargs, return_value)\n"
 "--\n"
 "\n");
@@ -4710,7 +4710,7 @@ mangle2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwn
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(args), &_Ty_ID(kwargs), &_Ty_ID(return_value), },
     };
@@ -4760,7 +4760,7 @@ Test.cls_with_param
     a: int
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test_cls_with_param__doc__,
+TyDoc_STRVAR(Test_cls_with_param__doc__,
 "cls_with_param($self, /, a)\n"
 "--\n"
 "\n");
@@ -4784,7 +4784,7 @@ Test_cls_with_param(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -4830,7 +4830,7 @@ Test.__init__
 Empty init method.
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test___init____doc__,
+TyDoc_STRVAR(Test___init____doc__,
 "Test()\n"
 "--\n"
 "\n"
@@ -4872,7 +4872,7 @@ Test.__new__
 Empty new method.
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test__doc__,
+TyDoc_STRVAR(Test__doc__,
 "Test()\n"
 "--\n"
 "\n"
@@ -4912,7 +4912,7 @@ Test.cls_no_params
     /
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test_cls_no_params__doc__,
+TyDoc_STRVAR(Test_cls_no_params__doc__,
 "cls_no_params($self, /)\n"
 "--\n"
 "\n");
@@ -4944,7 +4944,7 @@ Test.metho_not_default_return_converter -> int
     /
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test_metho_not_default_return_converter__doc__,
+TyDoc_STRVAR(Test_metho_not_default_return_converter__doc__,
 "metho_not_default_return_converter($self, a, /)\n"
 "--\n"
 "\n");
@@ -4983,7 +4983,7 @@ Test.an_metho_arg_named_arg
     /
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test_an_metho_arg_named_arg__doc__,
+TyDoc_STRVAR(Test_an_metho_arg_named_arg__doc__,
 "an_metho_arg_named_arg($self, arg, /)\n"
 "--\n"
 "\n"
@@ -5026,7 +5026,7 @@ Test.__init__
 Varargs init method. For example, nargs is translated to TyTuple_GET_SIZE.
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test___init____doc__,
+TyDoc_STRVAR(Test___init____doc__,
 "Test(*args)\n"
 "--\n"
 "\n"
@@ -5069,7 +5069,7 @@ Test.__new__
 Varargs new method. For example, nargs is translated to TyTuple_GET_SIZE.
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test__doc__,
+TyDoc_STRVAR(Test__doc__,
 "Test(*args)\n"
 "--\n"
 "\n"
@@ -5110,7 +5110,7 @@ Test.__init__
 Init method with positional or keyword arguments.
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test___init____doc__,
+TyDoc_STRVAR(Test___init____doc__,
 "Test(a)\n"
 "--\n"
 "\n"
@@ -5132,7 +5132,7 @@ Test___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -5177,7 +5177,7 @@ Test___init___impl(TestObj *self, TyObject *a)
 Test.class_method
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test_class_method__doc__,
+TyDoc_STRVAR(Test_class_method__doc__,
 "class_method($type, /)\n"
 "--\n"
 "\n");
@@ -5204,7 +5204,7 @@ Test_class_method_impl(TyTypeObject *type)
 Test.static_method
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test_static_method__doc__,
+TyDoc_STRVAR(Test_static_method__doc__,
 "static_method()\n"
 "--\n"
 "\n");
@@ -5231,7 +5231,7 @@ Test_static_method_impl()
 Test.meth_coexist
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test_meth_coexist__doc__,
+TyDoc_STRVAR(Test_meth_coexist__doc__,
 "meth_coexist($self, /)\n"
 "--\n"
 "\n");
@@ -5351,7 +5351,7 @@ Test.setter_first_with_docstr
 my silly docstring
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test_setter_first_with_docstr__doc__,
+TyDoc_STRVAR(Test_setter_first_with_docstr__doc__,
 "my silly docstring");
 #if defined(Test_setter_first_with_docstr_DOCSTR)
 #   undef Test_setter_first_with_docstr_DOCSTR
@@ -5429,7 +5429,7 @@ dump test1
 output pop
 [clinic start generated code]*/
 
-PyDoc_STRVAR(new_dest__doc__,
+TyDoc_STRVAR(new_dest__doc__,
 "new_dest($module, /, a)\n"
 "--\n"
 "\n"
@@ -5443,7 +5443,7 @@ mangled_c_keyword_identifier
 The 'int' param should be mangled as 'int_value'
 [clinic start generated code]*/
 
-PyDoc_STRVAR(mangled_c_keyword_identifier__doc__,
+TyDoc_STRVAR(mangled_c_keyword_identifier__doc__,
 "mangled_c_keyword_identifier($module, /, i)\n"
 "--\n"
 "\n"
@@ -5468,7 +5468,7 @@ mangled_c_keyword_identifier(TyObject *module, TyObject *const *args, Ty_ssize_t
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('i'), },
     };
@@ -5513,7 +5513,7 @@ mangled_c_keyword_identifier_impl(TyObject *module, int int_value)
 bool_return -> bool
 [clinic start generated code]*/
 
-PyDoc_STRVAR(bool_return__doc__,
+TyDoc_STRVAR(bool_return__doc__,
 "bool_return($module, /)\n"
 "--\n"
 "\n");
@@ -5549,7 +5549,7 @@ bool_return_impl(TyObject *module)
 double_return -> double
 [clinic start generated code]*/
 
-PyDoc_STRVAR(double_return__doc__,
+TyDoc_STRVAR(double_return__doc__,
 "double_return($module, /)\n"
 "--\n"
 "\n");
@@ -5591,7 +5591,7 @@ Test.__init__
 Should generate two PyArg_ParseTuple calls.
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test___init____doc__,
+TyDoc_STRVAR(Test___init____doc__,
 "Test(a, [b])\n"
 "Should generate two PyArg_ParseTuple calls.");
 
@@ -5649,7 +5649,7 @@ Test._pyarg_parsestackandkeywords
 Check that _TyArg_ParseStackAndKeywords() is generated.
 [clinic start generated code]*/
 
-PyDoc_STRVAR(Test__pyarg_parsestackandkeywords__doc__,
+TyDoc_STRVAR(Test__pyarg_parsestackandkeywords__doc__,
 "_pyarg_parsestackandkeywords($self, key, /)\n"
 "--\n"
 "\n"
@@ -5705,7 +5705,7 @@ fn_with_default_binop_expr
     arg: object(c_default='CONST_A + CONST_B') = a+b
 [clinic start generated code]*/
 
-PyDoc_STRVAR(fn_with_default_binop_expr__doc__,
+TyDoc_STRVAR(fn_with_default_binop_expr__doc__,
 "fn_with_default_binop_expr($module, /, arg=a+b)\n"
 "--\n"
 "\n");
@@ -5729,7 +5729,7 @@ fn_with_default_binop_expr(TyObject *module, TyObject *const *args, Ty_ssize_t n
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(arg), },
     };
@@ -5791,7 +5791,7 @@ The signature should have the default a='Hello!',
 as given by the Custom converter.
 [clinic start generated code]*/
 
-PyDoc_STRVAR(docstr_fallback_to_converter_default__doc__,
+TyDoc_STRVAR(docstr_fallback_to_converter_default__doc__,
 "docstr_fallback_to_converter_default($module, /, a=\'Hello!\')\n"
 "--\n"
 "\n"
@@ -5821,7 +5821,7 @@ docstr_fallback_to_converter_default(TyObject *module, TyObject *const *args, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -5866,7 +5866,7 @@ docstr_fallback_to_converter_default_impl(TyObject *module, str a)
 test_critical_section
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_critical_section__doc__,
+TyDoc_STRVAR(test_critical_section__doc__,
 "test_critical_section($module, /)\n"
 "--\n"
 "\n");
@@ -5901,7 +5901,7 @@ test_critical_section_meth_o
     /
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_critical_section_meth_o__doc__,
+TyDoc_STRVAR(test_critical_section_meth_o__doc__,
 "test_critical_section_meth_o($module, a, /)\n"
 "--\n"
 "\n");
@@ -5943,7 +5943,7 @@ test_critical_section_object
 test_critical_section_object
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_critical_section_object__doc__,
+TyDoc_STRVAR(test_critical_section_object__doc__,
 "test_critical_section_object($module, a, /)\n"
 "--\n"
 "\n"
@@ -5987,7 +5987,7 @@ test_critical_section_object2
 test_critical_section_object2
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_critical_section_object2__doc__,
+TyDoc_STRVAR(test_critical_section_object2__doc__,
 "test_critical_section_object2($module, a, b, /)\n"
 "--\n"
 "\n"

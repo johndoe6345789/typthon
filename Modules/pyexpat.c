@@ -1601,7 +1601,7 @@ static TyGetSetDef xmlparse_getsetlist[] = {
 #undef XMLPARSE_GETTER_DEF
 #undef XMLPARSE_GETTER_SETTER_DEF
 
-PyDoc_STRVAR(Xmlparsetype__doc__, "XML parser");
+TyDoc_STRVAR(Xmlparsetype__doc__, "XML parser");
 
 static TyType_Slot _xml_parse_type_spec_slots[] = {
     {Ty_tp_dealloc, xmlparse_dealloc},
@@ -1699,7 +1699,7 @@ static struct TyMethodDef pyexpat_methods[] = {
 
 /* Module docstring */
 
-PyDoc_STRVAR(pyexpat_module_documentation,
+TyDoc_STRVAR(pyexpat_module_documentation,
 "Python wrapper for Expat parser.");
 
 /* Initialization function for the module */

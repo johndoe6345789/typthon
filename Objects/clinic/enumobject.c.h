@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(enum_new__doc__,
+TyDoc_STRVAR(enum_new__doc__,
 "enumerate(iterable, start=0)\n"
 "--\n"
 "\n"
@@ -39,7 +39,7 @@ enum_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(iterable), &_Ty_ID(start), },
     };
@@ -81,7 +81,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(reversed_new__doc__,
+TyDoc_STRVAR(reversed_new__doc__,
 "reversed(sequence, /)\n"
 "--\n"
 "\n"

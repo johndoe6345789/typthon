@@ -7,7 +7,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_dbm_dbm_close__doc__,
+TyDoc_STRVAR(_dbm_dbm_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -25,7 +25,7 @@ _dbm_dbm_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _dbm_dbm_close_impl((dbmobject *)self);
 }
 
-PyDoc_STRVAR(_dbm_dbm_keys__doc__,
+TyDoc_STRVAR(_dbm_dbm_keys__doc__,
 "keys($self, /)\n"
 "--\n"
 "\n"
@@ -47,7 +47,7 @@ _dbm_dbm_keys(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize
     return _dbm_dbm_keys_impl((dbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_dbm_dbm_get__doc__,
+TyDoc_STRVAR(_dbm_dbm_get__doc__,
 "get($self, key, default=None, /)\n"
 "--\n"
 "\n"
@@ -91,7 +91,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_dbm_dbm_setdefault__doc__,
+TyDoc_STRVAR(_dbm_dbm_setdefault__doc__,
 "setdefault($self, key, default=b\'\', /)\n"
 "--\n"
 "\n"
@@ -137,7 +137,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_dbm_dbm_clear__doc__,
+TyDoc_STRVAR(_dbm_dbm_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -159,7 +159,7 @@ _dbm_dbm_clear(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssiz
     return _dbm_dbm_clear_impl((dbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(dbmopen__doc__,
+TyDoc_STRVAR(dbmopen__doc__,
 "open($module, filename, flags=\'r\', mode=0o666, /)\n"
 "--\n"
 "\n"

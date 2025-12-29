@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(signal_default_int_handler__doc__,
+TyDoc_STRVAR(signal_default_int_handler__doc__,
 "default_int_handler($module, signalnum, frame, /)\n"
 "--\n"
 "\n"
@@ -46,7 +46,7 @@ exit:
 
 #if defined(HAVE_ALARM)
 
-PyDoc_STRVAR(signal_alarm__doc__,
+TyDoc_STRVAR(signal_alarm__doc__,
 "alarm($module, seconds, /)\n"
 "--\n"
 "\n"
@@ -83,7 +83,7 @@ exit:
 
 #if defined(HAVE_PAUSE)
 
-PyDoc_STRVAR(signal_pause__doc__,
+TyDoc_STRVAR(signal_pause__doc__,
 "pause($module, /)\n"
 "--\n"
 "\n"
@@ -103,7 +103,7 @@ signal_pause(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(HAVE_PAUSE) */
 
-PyDoc_STRVAR(signal_raise_signal__doc__,
+TyDoc_STRVAR(signal_raise_signal__doc__,
 "raise_signal($module, signalnum, /)\n"
 "--\n"
 "\n"
@@ -131,7 +131,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(signal_signal__doc__,
+TyDoc_STRVAR(signal_signal__doc__,
 "signal($module, signalnum, handler, /)\n"
 "--\n"
 "\n"
@@ -171,7 +171,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(signal_getsignal__doc__,
+TyDoc_STRVAR(signal_getsignal__doc__,
 "getsignal($module, signalnum, /)\n"
 "--\n"
 "\n"
@@ -205,7 +205,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(signal_strsignal__doc__,
+TyDoc_STRVAR(signal_strsignal__doc__,
 "strsignal($module, signalnum, /)\n"
 "--\n"
 "\n"
@@ -239,7 +239,7 @@ exit:
 
 #if defined(HAVE_SIGINTERRUPT)
 
-PyDoc_STRVAR(signal_siginterrupt__doc__,
+TyDoc_STRVAR(signal_siginterrupt__doc__,
 "siginterrupt($module, signalnum, flag, /)\n"
 "--\n"
 "\n"
@@ -280,7 +280,7 @@ exit:
 
 #endif /* defined(HAVE_SIGINTERRUPT) */
 
-PyDoc_STRVAR(signal_set_wakeup_fd__doc__,
+TyDoc_STRVAR(signal_set_wakeup_fd__doc__,
 "set_wakeup_fd($module, fd, /, *, warn_on_full_buffer=True)\n"
 "--\n"
 "\n"
@@ -311,7 +311,7 @@ signal_set_wakeup_fd(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(warn_on_full_buffer), },
     };
@@ -356,7 +356,7 @@ exit:
 
 #if defined(HAVE_SETITIMER)
 
-PyDoc_STRVAR(signal_setitimer__doc__,
+TyDoc_STRVAR(signal_setitimer__doc__,
 "setitimer($module, which, seconds, interval=0.0, /)\n"
 "--\n"
 "\n"
@@ -405,7 +405,7 @@ exit:
 
 #if defined(HAVE_GETITIMER)
 
-PyDoc_STRVAR(signal_getitimer__doc__,
+TyDoc_STRVAR(signal_getitimer__doc__,
 "getitimer($module, which, /)\n"
 "--\n"
 "\n"
@@ -437,7 +437,7 @@ exit:
 
 #if defined(HAVE_SIGSET_T) && defined(PYPTHREAD_SIGMASK)
 
-PyDoc_STRVAR(signal_pthread_sigmask__doc__,
+TyDoc_STRVAR(signal_pthread_sigmask__doc__,
 "pthread_sigmask($module, how, mask, /)\n"
 "--\n"
 "\n"
@@ -476,7 +476,7 @@ exit:
 
 #if defined(HAVE_SIGSET_T) && defined(HAVE_SIGPENDING)
 
-PyDoc_STRVAR(signal_sigpending__doc__,
+TyDoc_STRVAR(signal_sigpending__doc__,
 "sigpending($module, /)\n"
 "--\n"
 "\n"
@@ -501,7 +501,7 @@ signal_sigpending(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SIGSET_T) && defined(HAVE_SIGWAIT)
 
-PyDoc_STRVAR(signal_sigwait__doc__,
+TyDoc_STRVAR(signal_sigwait__doc__,
 "sigwait($module, sigset, /)\n"
 "--\n"
 "\n"
@@ -536,7 +536,7 @@ exit:
 
 #if ((defined(HAVE_SIGFILLSET) && defined(HAVE_SIGSET_T)) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(signal_valid_signals__doc__,
+TyDoc_STRVAR(signal_valid_signals__doc__,
 "valid_signals($module, /)\n"
 "--\n"
 "\n"
@@ -561,7 +561,7 @@ signal_valid_signals(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SIGSET_T) && defined(HAVE_SIGWAITINFO)
 
-PyDoc_STRVAR(signal_sigwaitinfo__doc__,
+TyDoc_STRVAR(signal_sigwaitinfo__doc__,
 "sigwaitinfo($module, sigset, /)\n"
 "--\n"
 "\n"
@@ -594,7 +594,7 @@ exit:
 
 #if defined(HAVE_SIGSET_T) && defined(HAVE_SIGTIMEDWAIT)
 
-PyDoc_STRVAR(signal_sigtimedwait__doc__,
+TyDoc_STRVAR(signal_sigtimedwait__doc__,
 "sigtimedwait($module, sigset, timeout, /)\n"
 "--\n"
 "\n"
@@ -633,7 +633,7 @@ exit:
 
 #if defined(HAVE_PTHREAD_KILL)
 
-PyDoc_STRVAR(signal_pthread_kill__doc__,
+TyDoc_STRVAR(signal_pthread_kill__doc__,
 "pthread_kill($module, thread_id, signalnum, /)\n"
 "--\n"
 "\n"
@@ -675,7 +675,7 @@ exit:
 
 #if (defined(__linux__) && defined(__NR_pidfd_send_signal) && !(defined(__ANDROID__) && __ANDROID_API__ < 31))
 
-PyDoc_STRVAR(signal_pidfd_send_signal__doc__,
+TyDoc_STRVAR(signal_pidfd_send_signal__doc__,
 "pidfd_send_signal($module, pidfd, signalnum, siginfo=None, flags=0, /)\n"
 "--\n"
 "\n"

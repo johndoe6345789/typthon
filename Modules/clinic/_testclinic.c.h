@@ -11,7 +11,7 @@ preserve
 #include "pycore_runtime.h"       // _Ty_ID()
 #include "pycore_tuple.h"         // _TyTuple_FromArray()
 
-PyDoc_STRVAR(test_empty_function__doc__,
+TyDoc_STRVAR(test_empty_function__doc__,
 "test_empty_function($module, /)\n"
 "--\n"
 "\n");
@@ -28,7 +28,7 @@ test_empty_function(TyObject *module, TyObject *Py_UNUSED(ignored))
     return test_empty_function_impl(module);
 }
 
-PyDoc_STRVAR(objects_converter__doc__,
+TyDoc_STRVAR(objects_converter__doc__,
 "objects_converter($module, a, b=<unrepresentable>, /)\n"
 "--\n"
 "\n");
@@ -61,7 +61,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_object_converter__doc__,
+TyDoc_STRVAR(bytes_object_converter__doc__,
 "bytes_object_converter($module, a, /)\n"
 "--\n"
 "\n");
@@ -89,7 +89,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(byte_array_object_converter__doc__,
+TyDoc_STRVAR(byte_array_object_converter__doc__,
 "byte_array_object_converter($module, a, /)\n"
 "--\n"
 "\n");
@@ -117,7 +117,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_converter__doc__,
+TyDoc_STRVAR(unicode_converter__doc__,
 "unicode_converter($module, a, /)\n"
 "--\n"
 "\n");
@@ -145,7 +145,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bool_converter__doc__,
+TyDoc_STRVAR(bool_converter__doc__,
 "bool_converter($module, a=True, b=True, c=True, /)\n"
 "--\n"
 "\n");
@@ -195,7 +195,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bool_converter_c_default__doc__,
+TyDoc_STRVAR(bool_converter_c_default__doc__,
 "bool_converter_c_default($module, a=True, b=False, c=True, d=x, /)\n"
 "--\n"
 "\n");
@@ -253,7 +253,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(char_converter__doc__,
+TyDoc_STRVAR(char_converter__doc__,
 "char_converter($module, a=b\'A\', b=b\'\\x07\', c=b\'\\x08\', d=b\'\\t\', e=b\'\\n\',\n"
 "               f=b\'\\x0b\', g=b\'\\x0c\', h=b\'\\r\', i=b\'\"\', j=b\"\'\", k=b\'?\',\n"
 "               l=b\'\\\\\', m=b\'\\x00\', n=b\'\\xff\', /)\n"
@@ -675,7 +675,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unsigned_char_converter__doc__,
+TyDoc_STRVAR(unsigned_char_converter__doc__,
 "unsigned_char_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -761,7 +761,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(short_converter__doc__,
+TyDoc_STRVAR(short_converter__doc__,
 "short_converter($module, a=12, /)\n"
 "--\n"
 "\n");
@@ -810,7 +810,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unsigned_short_converter__doc__,
+TyDoc_STRVAR(unsigned_short_converter__doc__,
 "unsigned_short_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -859,7 +859,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(int_converter__doc__,
+TyDoc_STRVAR(int_converter__doc__,
 "int_converter($module, a=12, b=34, c=45, /)\n"
 "--\n"
 "\n");
@@ -917,7 +917,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unsigned_int_converter__doc__,
+TyDoc_STRVAR(unsigned_int_converter__doc__,
 "unsigned_int_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -966,7 +966,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(long_converter__doc__,
+TyDoc_STRVAR(long_converter__doc__,
 "long_converter($module, a=12, /)\n"
 "--\n"
 "\n");
@@ -1000,7 +1000,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unsigned_long_converter__doc__,
+TyDoc_STRVAR(unsigned_long_converter__doc__,
 "unsigned_long_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1050,7 +1050,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(long_long_converter__doc__,
+TyDoc_STRVAR(long_long_converter__doc__,
 "long_long_converter($module, a=12, /)\n"
 "--\n"
 "\n");
@@ -1084,7 +1084,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unsigned_long_long_converter__doc__,
+TyDoc_STRVAR(unsigned_long_long_converter__doc__,
 "unsigned_long_long_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1134,7 +1134,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(py_ssize_t_converter__doc__,
+TyDoc_STRVAR(py_ssize_t_converter__doc__,
 "py_ssize_t_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1200,7 +1200,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(slice_index_converter__doc__,
+TyDoc_STRVAR(slice_index_converter__doc__,
 "slice_index_converter($module, a=12, b=34, c=56, /)\n"
 "--\n"
 "\n");
@@ -1248,7 +1248,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(size_t_converter__doc__,
+TyDoc_STRVAR(size_t_converter__doc__,
 "size_t_converter($module, a=12, /)\n"
 "--\n"
 "\n");
@@ -1281,7 +1281,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(float_converter__doc__,
+TyDoc_STRVAR(float_converter__doc__,
 "float_converter($module, a=12.5, /)\n"
 "--\n"
 "\n");
@@ -1321,7 +1321,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(double_converter__doc__,
+TyDoc_STRVAR(double_converter__doc__,
 "double_converter($module, a=12.5, /)\n"
 "--\n"
 "\n");
@@ -1361,7 +1361,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(py_complex_converter__doc__,
+TyDoc_STRVAR(py_complex_converter__doc__,
 "py_complex_converter($module, a, /)\n"
 "--\n"
 "\n");
@@ -1388,7 +1388,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(str_converter__doc__,
+TyDoc_STRVAR(str_converter__doc__,
 "str_converter($module, a=\'a\', b=\'b\', c=\'c\', /)\n"
 "--\n"
 "\n");
@@ -1419,7 +1419,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(str_converter_encoding__doc__,
+TyDoc_STRVAR(str_converter_encoding__doc__,
 "str_converter_encoding($module, a, b, c, /)\n"
 "--\n"
 "\n");
@@ -1456,7 +1456,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(py_buffer_converter__doc__,
+TyDoc_STRVAR(py_buffer_converter__doc__,
 "py_buffer_converter($module, a, b, /)\n"
 "--\n"
 "\n");
@@ -1493,7 +1493,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(keywords__doc__,
+TyDoc_STRVAR(keywords__doc__,
 "keywords($module, /, a, b)\n"
 "--\n"
 "\n");
@@ -1517,7 +1517,7 @@ keywords(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
@@ -1552,7 +1552,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(keywords_kwonly__doc__,
+TyDoc_STRVAR(keywords_kwonly__doc__,
 "keywords_kwonly($module, /, a, *, b)\n"
 "--\n"
 "\n");
@@ -1576,7 +1576,7 @@ keywords_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
@@ -1611,7 +1611,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(keywords_opt__doc__,
+TyDoc_STRVAR(keywords_opt__doc__,
 "keywords_opt($module, /, a, b=None, c=None)\n"
 "--\n"
 "\n");
@@ -1635,7 +1635,7 @@ keywords_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -1682,7 +1682,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(keywords_opt_kwonly__doc__,
+TyDoc_STRVAR(keywords_opt_kwonly__doc__,
 "keywords_opt_kwonly($module, /, a, b=None, *, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -1707,7 +1707,7 @@ keywords_opt_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -1765,7 +1765,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(keywords_kwonly_opt__doc__,
+TyDoc_STRVAR(keywords_kwonly_opt__doc__,
 "keywords_kwonly_opt($module, /, a, *, b=None, c=None)\n"
 "--\n"
 "\n");
@@ -1790,7 +1790,7 @@ keywords_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -1837,7 +1837,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_keywords__doc__,
+TyDoc_STRVAR(posonly_keywords__doc__,
 "posonly_keywords($module, a, /, b)\n"
 "--\n"
 "\n");
@@ -1861,7 +1861,7 @@ posonly_keywords(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
@@ -1896,7 +1896,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_kwonly__doc__,
+TyDoc_STRVAR(posonly_kwonly__doc__,
 "posonly_kwonly($module, a, /, *, b)\n"
 "--\n"
 "\n");
@@ -1920,7 +1920,7 @@ posonly_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
@@ -1955,7 +1955,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_keywords_kwonly__doc__,
+TyDoc_STRVAR(posonly_keywords_kwonly__doc__,
 "posonly_keywords_kwonly($module, a, /, b, *, c)\n"
 "--\n"
 "\n");
@@ -1980,7 +1980,7 @@ posonly_keywords_kwonly(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -2017,7 +2017,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_keywords_opt__doc__,
+TyDoc_STRVAR(posonly_keywords_opt__doc__,
 "posonly_keywords_opt($module, a, /, b, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -2042,7 +2042,7 @@ posonly_keywords_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -2091,7 +2091,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_opt_keywords_opt__doc__,
+TyDoc_STRVAR(posonly_opt_keywords_opt__doc__,
 "posonly_opt_keywords_opt($module, a, b=None, /, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -2116,7 +2116,7 @@ posonly_opt_keywords_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -2170,7 +2170,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_kwonly_opt__doc__,
+TyDoc_STRVAR(posonly_kwonly_opt__doc__,
 "posonly_kwonly_opt($module, a, /, *, b, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -2195,7 +2195,7 @@ posonly_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -2244,7 +2244,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_opt_kwonly_opt__doc__,
+TyDoc_STRVAR(posonly_opt_kwonly_opt__doc__,
 "posonly_opt_kwonly_opt($module, a, b=None, /, *, c=None, d=None)\n"
 "--\n"
 "\n");
@@ -2269,7 +2269,7 @@ posonly_opt_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -2323,7 +2323,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_keywords_kwonly_opt__doc__,
+TyDoc_STRVAR(posonly_keywords_kwonly_opt__doc__,
 "posonly_keywords_kwonly_opt($module, a, /, b, *, c, d=None, e=None)\n"
 "--\n"
 "\n");
@@ -2348,7 +2348,7 @@ posonly_keywords_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), },
     };
@@ -2399,7 +2399,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_keywords_opt_kwonly_opt__doc__,
+TyDoc_STRVAR(posonly_keywords_opt_kwonly_opt__doc__,
 "posonly_keywords_opt_kwonly_opt($module, a, /, b, c=None, *, d=None,\n"
 "                                e=None)\n"
 "--\n"
@@ -2426,7 +2426,7 @@ posonly_keywords_opt_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssiz
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), },
     };
@@ -2486,7 +2486,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_opt_keywords_opt_kwonly_opt__doc__,
+TyDoc_STRVAR(posonly_opt_keywords_opt_kwonly_opt__doc__,
 "posonly_opt_keywords_opt_kwonly_opt($module, a, b=None, /, c=None, *,\n"
 "                                    d=None)\n"
 "--\n"
@@ -2513,7 +2513,7 @@ posonly_opt_keywords_opt_kwonly_opt(TyObject *module, TyObject *const *args, Ty_
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -2571,7 +2571,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(keyword_only_parameter__doc__,
+TyDoc_STRVAR(keyword_only_parameter__doc__,
 "keyword_only_parameter($module, /, *, a)\n"
 "--\n"
 "\n");
@@ -2595,7 +2595,7 @@ keyword_only_parameter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -2628,7 +2628,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(varpos__doc__,
+TyDoc_STRVAR(varpos__doc__,
 "varpos($module, /, *args)\n"
 "--\n"
 "\n");
@@ -2658,7 +2658,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_varpos__doc__,
+TyDoc_STRVAR(posonly_varpos__doc__,
 "posonly_varpos($module, a, b, /, *args)\n"
 "--\n"
 "\n");
@@ -2696,7 +2696,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_req_opt_varpos__doc__,
+TyDoc_STRVAR(posonly_req_opt_varpos__doc__,
 "posonly_req_opt_varpos($module, a, b=False, /, *args)\n"
 "--\n"
 "\n");
@@ -2740,7 +2740,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_poskw_varpos__doc__,
+TyDoc_STRVAR(posonly_poskw_varpos__doc__,
 "posonly_poskw_varpos($module, a, /, b, *args)\n"
 "--\n"
 "\n");
@@ -2765,7 +2765,7 @@ posonly_poskw_varpos(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
@@ -2811,7 +2811,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(poskw_varpos__doc__,
+TyDoc_STRVAR(poskw_varpos__doc__,
 "poskw_varpos($module, /, a, *args)\n"
 "--\n"
 "\n");
@@ -2835,7 +2835,7 @@ poskw_varpos(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -2879,7 +2879,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(poskw_varpos_kwonly_opt__doc__,
+TyDoc_STRVAR(poskw_varpos_kwonly_opt__doc__,
 "poskw_varpos_kwonly_opt($module, /, a, *args, b=False)\n"
 "--\n"
 "\n");
@@ -2904,7 +2904,7 @@ poskw_varpos_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
@@ -2958,7 +2958,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(poskw_varpos_kwonly_opt2__doc__,
+TyDoc_STRVAR(poskw_varpos_kwonly_opt2__doc__,
 "poskw_varpos_kwonly_opt2($module, /, a, *args, b=False, c=False)\n"
 "--\n"
 "\n");
@@ -2983,7 +2983,7 @@ poskw_varpos_kwonly_opt2(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -3041,7 +3041,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(varpos_kwonly_opt__doc__,
+TyDoc_STRVAR(varpos_kwonly_opt__doc__,
 "varpos_kwonly_opt($module, /, *args, b=False)\n"
 "--\n"
 "\n");
@@ -3065,7 +3065,7 @@ varpos_kwonly_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
@@ -3112,7 +3112,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(varpos_kwonly_req_opt__doc__,
+TyDoc_STRVAR(varpos_kwonly_req_opt__doc__,
 "varpos_kwonly_req_opt($module, /, *args, a, b=False, c=False)\n"
 "--\n"
 "\n");
@@ -3137,7 +3137,7 @@ varpos_kwonly_req_opt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -3193,7 +3193,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(varpos_array__doc__,
+TyDoc_STRVAR(varpos_array__doc__,
 "varpos_array($module, /, *args)\n"
 "--\n"
 "\n");
@@ -3219,7 +3219,7 @@ varpos_array(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_varpos_array__doc__,
+TyDoc_STRVAR(posonly_varpos_array__doc__,
 "posonly_varpos_array($module, a, b, /, *args)\n"
 "--\n"
 "\n");
@@ -3253,7 +3253,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_req_opt_varpos_array__doc__,
+TyDoc_STRVAR(posonly_req_opt_varpos_array__doc__,
 "posonly_req_opt_varpos_array($module, a, b=False, /, *args)\n"
 "--\n"
 "\n");
@@ -3292,7 +3292,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(posonly_poskw_varpos_array__doc__,
+TyDoc_STRVAR(posonly_poskw_varpos_array__doc__,
 "posonly_poskw_varpos_array($module, a, /, b, *args)\n"
 "--\n"
 "\n");
@@ -3318,7 +3318,7 @@ posonly_poskw_varpos_array(TyObject *module, TyObject *const *args, Ty_ssize_t n
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
@@ -3358,7 +3358,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gh_32092_oob__doc__,
+TyDoc_STRVAR(gh_32092_oob__doc__,
 "gh_32092_oob($module, /, pos1, pos2, *varargs, kw1=None, kw2=None)\n"
 "--\n"
 "\n"
@@ -3384,7 +3384,7 @@ gh_32092_oob(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(pos1), &_Ty_ID(pos2), &_Ty_ID(kw1), &_Ty_ID(kw2), },
     };
@@ -3444,7 +3444,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gh_32092_kw_pass__doc__,
+TyDoc_STRVAR(gh_32092_kw_pass__doc__,
 "gh_32092_kw_pass($module, /, pos, *args, kw=None)\n"
 "--\n"
 "\n"
@@ -3470,7 +3470,7 @@ gh_32092_kw_pass(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(pos), &_Ty_ID(kw), },
     };
@@ -3521,7 +3521,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gh_99233_refcount__doc__,
+TyDoc_STRVAR(gh_99233_refcount__doc__,
 "gh_99233_refcount($module, /, *args)\n"
 "--\n"
 "\n"
@@ -3552,7 +3552,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gh_99240_double_free__doc__,
+TyDoc_STRVAR(gh_99240_double_free__doc__,
 "gh_99240_double_free($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -3585,7 +3585,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(null_or_tuple_for_varargs__doc__,
+TyDoc_STRVAR(null_or_tuple_for_varargs__doc__,
 "null_or_tuple_for_varargs($module, /, name, *constraints,\n"
 "                          covariant=False)\n"
 "--\n"
@@ -3612,7 +3612,7 @@ null_or_tuple_for_varargs(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(covariant), },
     };
@@ -3666,7 +3666,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(clone_f1__doc__,
+TyDoc_STRVAR(clone_f1__doc__,
 "clone_f1($module, /, path)\n"
 "--\n"
 "\n");
@@ -3690,7 +3690,7 @@ clone_f1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -3735,7 +3735,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(clone_f2__doc__,
+TyDoc_STRVAR(clone_f2__doc__,
 "clone_f2($module, /, path)\n"
 "--\n"
 "\n");
@@ -3759,7 +3759,7 @@ clone_f2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -3804,7 +3804,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(clone_with_conv_f1__doc__,
+TyDoc_STRVAR(clone_with_conv_f1__doc__,
 "clone_with_conv_f1($module, /, path=None)\n"
 "--\n"
 "\n");
@@ -3828,7 +3828,7 @@ clone_with_conv_f1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -3870,7 +3870,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(clone_with_conv_f2__doc__,
+TyDoc_STRVAR(clone_with_conv_f2__doc__,
 "clone_with_conv_f2($module, /, path=None)\n"
 "--\n"
 "\n");
@@ -3894,7 +3894,7 @@ clone_with_conv_f2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -3936,7 +3936,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_get_defining_class__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_get_defining_class__doc__,
 "get_defining_class($self, /)\n"
 "--\n"
 "\n");
@@ -3958,7 +3958,7 @@ _testclinic_TestClass_get_defining_class(TyObject *self, TyTypeObject *cls, TyOb
     return _testclinic_TestClass_get_defining_class_impl(self, cls);
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_get_defining_class_arg__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_get_defining_class_arg__doc__,
 "get_defining_class_arg($self, /, arg)\n"
 "--\n"
 "\n");
@@ -3984,7 +3984,7 @@ _testclinic_TestClass_get_defining_class_arg(TyObject *self, TyTypeObject *cls, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(arg), },
     };
@@ -4017,7 +4017,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_defclass_varpos__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_defclass_varpos__doc__,
 "defclass_varpos($self, /, *args)\n"
 "--\n"
 "\n");
@@ -4068,7 +4068,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_defclass_posonly_varpos__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_defclass_posonly_varpos__doc__,
 "defclass_posonly_varpos($self, a, b, /, *args)\n"
 "--\n"
 "\n");
@@ -4125,7 +4125,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_varpos_no_fastcall__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_varpos_no_fastcall__doc__,
 "varpos_no_fastcall($type, /, *args)\n"
 "--\n"
 "\n");
@@ -4152,7 +4152,7 @@ _testclinic_TestClass_varpos_no_fastcall(TyObject *type, TyObject *args)
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_posonly_varpos_no_fastcall__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_posonly_varpos_no_fastcall__doc__,
 "posonly_varpos_no_fastcall($type, a, b, /, *args)\n"
 "--\n"
 "\n");
@@ -4192,7 +4192,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_posonly_req_opt_varpos_no_fastcall__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_posonly_req_opt_varpos_no_fastcall__doc__,
 "posonly_req_opt_varpos_no_fastcall($type, a, b=False, /, *args)\n"
 "--\n"
 "\n");
@@ -4236,7 +4236,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_posonly_poskw_varpos_no_fastcall__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_posonly_poskw_varpos_no_fastcall__doc__,
 "posonly_poskw_varpos_no_fastcall($type, a, /, b, *args)\n"
 "--\n"
 "\n");
@@ -4263,7 +4263,7 @@ _testclinic_TestClass_posonly_poskw_varpos_no_fastcall(TyObject *type, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
@@ -4308,7 +4308,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_varpos_array_no_fastcall__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_varpos_array_no_fastcall__doc__,
 "varpos_array_no_fastcall($type, /, *args)\n"
 "--\n"
 "\n");
@@ -4335,7 +4335,7 @@ _testclinic_TestClass_varpos_array_no_fastcall(TyObject *type, TyObject *args)
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_posonly_varpos_array_no_fastcall__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_posonly_varpos_array_no_fastcall__doc__,
 "posonly_varpos_array_no_fastcall($type, a, b, /, *args)\n"
 "--\n"
 "\n");
@@ -4372,7 +4372,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_posonly_req_opt_varpos_array_no_fastcall__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_posonly_req_opt_varpos_array_no_fastcall__doc__,
 "posonly_req_opt_varpos_array_no_fastcall($type, a, b=False, /, *args)\n"
 "--\n"
 "\n");
@@ -4413,7 +4413,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testclinic_TestClass_posonly_poskw_varpos_array_no_fastcall__doc__,
+TyDoc_STRVAR(_testclinic_TestClass_posonly_poskw_varpos_array_no_fastcall__doc__,
 "posonly_poskw_varpos_array_no_fastcall($type, a, /, b, *args)\n"
 "--\n"
 "\n");
@@ -4441,7 +4441,7 @@ _testclinic_TestClass_posonly_poskw_varpos_array_no_fastcall(TyObject *type, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };

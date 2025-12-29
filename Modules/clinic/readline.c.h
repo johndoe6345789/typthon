@@ -5,7 +5,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(readline_parse_and_bind__doc__,
+TyDoc_STRVAR(readline_parse_and_bind__doc__,
 "parse_and_bind($module, string, /)\n"
 "--\n"
 "\n"
@@ -29,7 +29,7 @@ readline_parse_and_bind(TyObject *module, TyObject *string)
     return return_value;
 }
 
-PyDoc_STRVAR(readline_read_init_file__doc__,
+TyDoc_STRVAR(readline_read_init_file__doc__,
 "read_init_file($module, filename=None, /)\n"
 "--\n"
 "\n"
@@ -65,7 +65,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(readline_read_history_file__doc__,
+TyDoc_STRVAR(readline_read_history_file__doc__,
 "read_history_file($module, filename=None, /)\n"
 "--\n"
 "\n"
@@ -101,7 +101,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(readline_write_history_file__doc__,
+TyDoc_STRVAR(readline_write_history_file__doc__,
 "write_history_file($module, filename=None, /)\n"
 "--\n"
 "\n"
@@ -139,7 +139,7 @@ exit:
 
 #if defined(HAVE_RL_APPEND_HISTORY)
 
-PyDoc_STRVAR(readline_append_history_file__doc__,
+TyDoc_STRVAR(readline_append_history_file__doc__,
 "append_history_file($module, nelements, filename=None, /)\n"
 "--\n"
 "\n"
@@ -183,7 +183,7 @@ exit:
 
 #endif /* defined(HAVE_RL_APPEND_HISTORY) */
 
-PyDoc_STRVAR(readline_set_history_length__doc__,
+TyDoc_STRVAR(readline_set_history_length__doc__,
 "set_history_length($module, length, /)\n"
 "--\n"
 "\n"
@@ -213,7 +213,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(readline_get_history_length__doc__,
+TyDoc_STRVAR(readline_get_history_length__doc__,
 "get_history_length($module, /)\n"
 "--\n"
 "\n"
@@ -231,7 +231,7 @@ readline_get_history_length(TyObject *module, TyObject *Py_UNUSED(ignored))
     return readline_get_history_length_impl(module);
 }
 
-PyDoc_STRVAR(readline_set_completion_display_matches_hook__doc__,
+TyDoc_STRVAR(readline_set_completion_display_matches_hook__doc__,
 "set_completion_display_matches_hook($module, function=None, /)\n"
 "--\n"
 "\n"
@@ -270,7 +270,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(readline_set_startup_hook__doc__,
+TyDoc_STRVAR(readline_set_startup_hook__doc__,
 "set_startup_hook($module, function=None, /)\n"
 "--\n"
 "\n"
@@ -309,7 +309,7 @@ exit:
 
 #if defined(HAVE_RL_PRE_INPUT_HOOK)
 
-PyDoc_STRVAR(readline_set_pre_input_hook__doc__,
+TyDoc_STRVAR(readline_set_pre_input_hook__doc__,
 "set_pre_input_hook($module, function=None, /)\n"
 "--\n"
 "\n"
@@ -349,7 +349,7 @@ exit:
 
 #endif /* defined(HAVE_RL_PRE_INPUT_HOOK) */
 
-PyDoc_STRVAR(readline_get_completion_type__doc__,
+TyDoc_STRVAR(readline_get_completion_type__doc__,
 "get_completion_type($module, /)\n"
 "--\n"
 "\n"
@@ -367,7 +367,7 @@ readline_get_completion_type(TyObject *module, TyObject *Py_UNUSED(ignored))
     return readline_get_completion_type_impl(module);
 }
 
-PyDoc_STRVAR(readline_get_begidx__doc__,
+TyDoc_STRVAR(readline_get_begidx__doc__,
 "get_begidx($module, /)\n"
 "--\n"
 "\n"
@@ -385,7 +385,7 @@ readline_get_begidx(TyObject *module, TyObject *Py_UNUSED(ignored))
     return readline_get_begidx_impl(module);
 }
 
-PyDoc_STRVAR(readline_get_endidx__doc__,
+TyDoc_STRVAR(readline_get_endidx__doc__,
 "get_endidx($module, /)\n"
 "--\n"
 "\n"
@@ -403,7 +403,7 @@ readline_get_endidx(TyObject *module, TyObject *Py_UNUSED(ignored))
     return readline_get_endidx_impl(module);
 }
 
-PyDoc_STRVAR(readline_set_completer_delims__doc__,
+TyDoc_STRVAR(readline_set_completer_delims__doc__,
 "set_completer_delims($module, string, /)\n"
 "--\n"
 "\n"
@@ -427,7 +427,7 @@ readline_set_completer_delims(TyObject *module, TyObject *string)
     return return_value;
 }
 
-PyDoc_STRVAR(readline_remove_history_item__doc__,
+TyDoc_STRVAR(readline_remove_history_item__doc__,
 "remove_history_item($module, pos, /)\n"
 "--\n"
 "\n"
@@ -457,7 +457,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(readline_replace_history_item__doc__,
+TyDoc_STRVAR(readline_replace_history_item__doc__,
 "replace_history_item($module, pos, line, /)\n"
 "--\n"
 "\n"
@@ -499,7 +499,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(readline_add_history__doc__,
+TyDoc_STRVAR(readline_add_history__doc__,
 "add_history($module, string, /)\n"
 "--\n"
 "\n"
@@ -523,7 +523,7 @@ readline_add_history(TyObject *module, TyObject *string)
     return return_value;
 }
 
-PyDoc_STRVAR(readline_set_auto_history__doc__,
+TyDoc_STRVAR(readline_set_auto_history__doc__,
 "set_auto_history($module, enabled, /)\n"
 "--\n"
 "\n"
@@ -552,7 +552,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(readline_get_completer_delims__doc__,
+TyDoc_STRVAR(readline_get_completer_delims__doc__,
 "get_completer_delims($module, /)\n"
 "--\n"
 "\n"
@@ -576,7 +576,7 @@ readline_get_completer_delims(TyObject *module, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(readline_set_completer__doc__,
+TyDoc_STRVAR(readline_set_completer__doc__,
 "set_completer($module, function=None, /)\n"
 "--\n"
 "\n"
@@ -614,7 +614,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(readline_get_completer__doc__,
+TyDoc_STRVAR(readline_get_completer__doc__,
 "get_completer($module, /)\n"
 "--\n"
 "\n"
@@ -632,7 +632,7 @@ readline_get_completer(TyObject *module, TyObject *Py_UNUSED(ignored))
     return readline_get_completer_impl(module);
 }
 
-PyDoc_STRVAR(readline_get_history_item__doc__,
+TyDoc_STRVAR(readline_get_history_item__doc__,
 "get_history_item($module, index, /)\n"
 "--\n"
 "\n"
@@ -662,7 +662,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(readline_get_current_history_length__doc__,
+TyDoc_STRVAR(readline_get_current_history_length__doc__,
 "get_current_history_length($module, /)\n"
 "--\n"
 "\n"
@@ -686,7 +686,7 @@ readline_get_current_history_length(TyObject *module, TyObject *Py_UNUSED(ignore
     return return_value;
 }
 
-PyDoc_STRVAR(readline_get_line_buffer__doc__,
+TyDoc_STRVAR(readline_get_line_buffer__doc__,
 "get_line_buffer($module, /)\n"
 "--\n"
 "\n"
@@ -712,7 +712,7 @@ readline_get_line_buffer(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_RL_COMPLETION_APPEND_CHARACTER)
 
-PyDoc_STRVAR(readline_clear_history__doc__,
+TyDoc_STRVAR(readline_clear_history__doc__,
 "clear_history($module, /)\n"
 "--\n"
 "\n"
@@ -738,7 +738,7 @@ readline_clear_history(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(HAVE_RL_COMPLETION_APPEND_CHARACTER) */
 
-PyDoc_STRVAR(readline_insert_text__doc__,
+TyDoc_STRVAR(readline_insert_text__doc__,
 "insert_text($module, string, /)\n"
 "--\n"
 "\n"
@@ -762,7 +762,7 @@ readline_insert_text(TyObject *module, TyObject *string)
     return return_value;
 }
 
-PyDoc_STRVAR(readline_redisplay__doc__,
+TyDoc_STRVAR(readline_redisplay__doc__,
 "redisplay($module, /)\n"
 "--\n"
 "\n"

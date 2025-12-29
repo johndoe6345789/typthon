@@ -380,7 +380,7 @@ equally good collision statistics, needed less code & used less memory.
 
 */
 
-static int dictresize(PyInterpreterState *interp, PyDictObject *mp,
+static int dictresize(TyInterpreterState *interp, PyDictObject *mp,
                       uint8_t log_newsize, int unicode);
 
 static TyObject* dict_iter(TyObject *dict);
@@ -444,7 +444,7 @@ dictkeys_incref(PyDictKeysObject *dk)
 }
 
 static inline void
-dictkeys_decref(PyInterpreterState *interp, PyDictKeysObject *dk, bool use_qsbr)
+dictkeys_decref(TyInterpreterState *interp, PyDictKeysObject *dk, bool use_qsbr)
 {
     if (FT_ATOMIC_LOAD_SSIZE_RELAXED(dk->dk_refcnt) < 0) {
         assert(FT_ATOMIC_LOAD_SSIZE_RELAXED(dk->dk_refcnt) == _Ty_DICT_IMMORTAL_INITIAL_REFCNT);
@@ -753,7 +753,7 @@ _TyDict_CheckConsistency(TyObject *op, int check_content)
 
 
 static PyDictKeysObject*
-new_keys_object(PyInterpreterState *interp, uint8_t log2_size, bool unicode)
+new_keys_object(TyInterpreterState *interp, uint8_t log2_size, bool unicode)
 {
     Ty_ssize_t usable;
     int log2_bytes;
@@ -867,7 +867,7 @@ free_values(PyDictValues *values, bool use_qsbr)
 
 /* Consumes a reference to the keys object */
 static TyObject *
-new_dict(PyInterpreterState *interp,
+new_dict(TyInterpreterState *interp,
          PyDictKeysObject *keys, PyDictValues *values,
          Ty_ssize_t used, int free_values_on_failure)
 {
@@ -894,7 +894,7 @@ new_dict(PyInterpreterState *interp,
 }
 
 static TyObject *
-new_dict_with_shared_keys(PyInterpreterState *interp, PyDictKeysObject *keys)
+new_dict_with_shared_keys(TyInterpreterState *interp, PyDictKeysObject *keys)
 {
     size_t size = shared_keys_usable_size(keys);
     PyDictValues *values = new_values(size);
@@ -971,7 +971,7 @@ clone_combined_dict_keys(PyDictObject *orig)
 TyObject *
 TyDict_New(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     /* We don't incref Ty_EMPTY_KEYS here because it is immortal. */
     return new_dict(interp, Ty_EMPTY_KEYS, NULL, 0, 0);
 }
@@ -1714,13 +1714,13 @@ find_empty_slot(PyDictKeysObject *keys, Ty_hash_t hash)
 }
 
 static int
-insertion_resize(PyInterpreterState *interp, PyDictObject *mp, int unicode)
+insertion_resize(TyInterpreterState *interp, PyDictObject *mp, int unicode)
 {
     return dictresize(interp, mp, calculate_log2_keysize(GROWTH_RATE(mp)), unicode);
 }
 
 static inline int
-insert_combined_dict(PyInterpreterState *interp, PyDictObject *mp,
+insert_combined_dict(TyInterpreterState *interp, PyDictObject *mp,
                      Ty_hash_t hash, TyObject *key, TyObject *value)
 {
     if (mp->ma_keys->dk_usable <= 0) {
@@ -1787,7 +1787,7 @@ insert_split_key(PyDictKeysObject *keys, TyObject *key, Ty_hash_t hash)
 }
 
 static void
-insert_split_value(PyInterpreterState *interp, PyDictObject *mp, TyObject *key, TyObject *value, Ty_ssize_t ix)
+insert_split_value(TyInterpreterState *interp, PyDictObject *mp, TyObject *key, TyObject *value, Ty_ssize_t ix)
 {
     assert(TyUnicode_CheckExact(key));
     ASSERT_DICT_LOCKED(mp);
@@ -1815,7 +1815,7 @@ Returns -1 if an error occurred, or 0 on success.
 Consumes key and value references.
 */
 static int
-insertdict(PyInterpreterState *interp, PyDictObject *mp,
+insertdict(TyInterpreterState *interp, PyDictObject *mp,
            TyObject *key, Ty_hash_t hash, TyObject *value)
 {
     TyObject *old_value;
@@ -1886,7 +1886,7 @@ Fail:
 // Same as insertdict but specialized for ma_keys == Ty_EMPTY_KEYS.
 // Consumes key and value references.
 static int
-insert_to_emptydict(PyInterpreterState *interp, PyDictObject *mp,
+insert_to_emptydict(TyInterpreterState *interp, PyDictObject *mp,
                     TyObject *key, Ty_hash_t hash, TyObject *value)
 {
     assert(mp->ma_keys == Ty_EMPTY_KEYS);
@@ -1989,7 +1989,7 @@ This function supports:
  - Generic -> Generic
 */
 static int
-dictresize(PyInterpreterState *interp, PyDictObject *mp,
+dictresize(TyInterpreterState *interp, PyDictObject *mp,
            uint8_t log2_newsize, int unicode)
 {
     PyDictKeysObject *oldkeys, *newkeys;
@@ -2141,7 +2141,7 @@ dictresize(PyInterpreterState *interp, PyDictObject *mp,
 }
 
 static TyObject *
-dict_new_presized(PyInterpreterState *interp, Ty_ssize_t minused, bool unicode)
+dict_new_presized(TyInterpreterState *interp, Ty_ssize_t minused, bool unicode)
 {
     const uint8_t log2_max_presize = 17;
     const Ty_ssize_t max_presize = ((Ty_ssize_t)1) << log2_max_presize;
@@ -2171,7 +2171,7 @@ dict_new_presized(PyInterpreterState *interp, Ty_ssize_t minused, bool unicode)
 TyObject *
 _TyDict_NewPresized(Ty_ssize_t minused)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return dict_new_presized(interp, minused, false);
 }
 
@@ -2182,7 +2182,7 @@ _TyDict_FromItems(TyObject *const *keys, Ty_ssize_t keys_offset,
 {
     bool unicode = true;
     TyObject *const *ks = keys;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     for (Ty_ssize_t i = 0; i < length; i++) {
         if (!TyUnicode_CheckExact(*ks)) {
@@ -2617,7 +2617,7 @@ setitem_take2_lock_held(PyDictObject *mp, TyObject *key, TyObject *value)
         return -1;
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     if (mp->ma_keys == Ty_EMPTY_KEYS) {
         return insert_to_emptydict(interp, mp, key, hash, value);
@@ -2669,7 +2669,7 @@ int
 _TyDict_SetItem_KnownHash_LockHeld(PyDictObject *mp, TyObject *key, TyObject *value,
                                    Ty_hash_t hash)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (mp->ma_keys == Ty_EMPTY_KEYS) {
         return insert_to_emptydict(interp, mp, Ty_NewRef(key), hash, Ty_NewRef(value));
     }
@@ -2795,7 +2795,7 @@ delitem_knownhash_lock_held(TyObject *op, TyObject *key, Ty_hash_t hash)
         return -1;
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyDict_NotifyEvent(interp, TyDict_EVENT_DELETED, mp, key, NULL);
     delitem_common(mp, hash, ix, old_value);
     return 0;
@@ -2842,7 +2842,7 @@ delitemif_lock_held(TyObject *op, TyObject *key,
         return -1;
 
     if (res > 0) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         _TyDict_NotifyEvent(interp, TyDict_EVENT_DELETED, mp, key, NULL);
         delitem_common(mp, hash, ix, old_value);
         return 1;
@@ -2887,7 +2887,7 @@ clear_lock_held(TyObject *op)
         return;
     }
     /* Empty the dict... */
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyDict_NotifyEvent(interp, TyDict_EVENT_CLEARED, mp, NULL, NULL);
     // We don't inc ref empty keys because they're immortal
     ensure_shared_on_resize(mp);
@@ -3054,7 +3054,7 @@ _TyDict_Pop_KnownHash(PyDictObject *mp, TyObject *key, Ty_hash_t hash,
     }
 
     assert(old_value != NULL);
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyDict_NotifyEvent(interp, TyDict_EVENT_DELETED, mp, key, NULL);
     delitem_common(mp, hash, ix, Ty_NewRef(old_value));
 
@@ -3150,7 +3150,7 @@ _TyDict_Pop(TyObject *dict, TyObject *key, TyObject *default_value)
 }
 
 static PyDictObject *
-dict_dict_fromkeys(PyInterpreterState *interp, PyDictObject *mp,
+dict_dict_fromkeys(TyInterpreterState *interp, PyDictObject *mp,
                    TyObject *iterable, TyObject *value)
 {
     TyObject *oldvalue;
@@ -3177,7 +3177,7 @@ dict_dict_fromkeys(PyInterpreterState *interp, PyDictObject *mp,
 }
 
 static PyDictObject *
-dict_set_fromkeys(PyInterpreterState *interp, PyDictObject *mp,
+dict_set_fromkeys(TyInterpreterState *interp, PyDictObject *mp,
                   TyObject *iterable, TyObject *value)
 {
     Ty_ssize_t pos = 0;
@@ -3209,7 +3209,7 @@ _TyDict_FromKeys(TyObject *cls, TyObject *iterable, TyObject *value)
     TyObject *key;
     TyObject *d;
     int status;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     d = _TyObject_CallNoArgs(cls);
     if (d == NULL)
@@ -3279,7 +3279,7 @@ static void
 dict_dealloc(TyObject *self)
 {
     PyDictObject *mp = (PyDictObject *)self;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyObject_ResurrectStart(self);
     _TyDict_NotifyEvent(interp, TyDict_EVENT_DEALLOCATED, mp, NULL, NULL);
     if (_TyObject_ResurrectEnd(self)) {
@@ -3803,7 +3803,7 @@ TyDict_MergeFromSeq2(TyObject *d, TyObject *seq2, int override)
 }
 
 static int
-dict_dict_merge(PyInterpreterState *interp, PyDictObject *mp, PyDictObject *other, int override)
+dict_dict_merge(TyInterpreterState *interp, PyDictObject *mp, PyDictObject *other, int override)
 {
     ASSERT_DICT_LOCKED(mp);
     ASSERT_DICT_LOCKED(other);
@@ -3902,7 +3902,7 @@ dict_dict_merge(PyInterpreterState *interp, PyDictObject *mp, PyDictObject *othe
 }
 
 static int
-dict_merge(PyInterpreterState *interp, TyObject *a, TyObject *b, int override)
+dict_merge(TyInterpreterState *interp, TyObject *a, TyObject *b, int override)
 {
     PyDictObject *mp, *other;
 
@@ -4004,14 +4004,14 @@ slow_exit:
 int
 TyDict_Update(TyObject *a, TyObject *b)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return dict_merge(interp, a, b, 1);
 }
 
 int
 TyDict_Merge(TyObject *a, TyObject *b, int override)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     /* XXX Deprecate override not in (0, 1). */
     return dict_merge(interp, a, b, override != 0);
 }
@@ -4019,7 +4019,7 @@ TyDict_Merge(TyObject *a, TyObject *b, int override)
 int
 _TyDict_MergeEx(TyObject *a, TyObject *b, int override)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return dict_merge(interp, a, b, override);
 }
 
@@ -4062,7 +4062,7 @@ copy_lock_held(TyObject *o)
 {
     TyObject *copy;
     PyDictObject *mp;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     ASSERT_DICT_LOCKED(o);
 
@@ -4326,7 +4326,7 @@ dict_setdefault_ref_lock_held(TyObject *d, TyObject *key, TyObject *default_valu
     PyDictObject *mp = (PyDictObject *)d;
     TyObject *value;
     Ty_hash_t hash;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     ASSERT_DICT_LOCKED(d);
 
@@ -4532,7 +4532,7 @@ dict_popitem_impl(PyDictObject *self)
 {
     Ty_ssize_t i, j;
     TyObject *res;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     ASSERT_DICT_LOCKED(self);
 
@@ -4731,10 +4731,10 @@ dict_ior(TyObject *self, TyObject *other)
     return Ty_NewRef(self);
 }
 
-PyDoc_STRVAR(getitem__doc__,
+TyDoc_STRVAR(getitem__doc__,
 "__getitem__($self, key, /)\n--\n\nReturn self[key].");
 
-PyDoc_STRVAR(update__doc__,
+TyDoc_STRVAR(update__doc__,
 "D.update([E, ]**F) -> None.  Update D from mapping/iterable E and F.\n\
 If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k]\n\
 If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v\n\
@@ -4760,7 +4760,7 @@ static TyMethodDef mapp_methods[] = {
     DICT_CLEAR_METHODDEF
     DICT_COPY_METHODDEF
     DICT___REVERSED___METHODDEF
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL,              NULL}   /* sentinel */
 };
 
@@ -4913,7 +4913,7 @@ dict_iter(TyObject *self)
     return dictiter_new(dict, &PyDictIterKey_Type);
 }
 
-PyDoc_STRVAR(dictionary_doc,
+TyDoc_STRVAR(dictionary_doc,
 "dict() -> new empty dictionary\n"
 "dict(mapping) -> new dictionary initialized from a mapping object's\n"
 "    (key, value) pairs\n"
@@ -4925,7 +4925,7 @@ PyDoc_STRVAR(dictionary_doc,
 "    in the keyword argument list.  For example:  dict(one=1, two=2)");
 
 TyTypeObject TyDict_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict",
     sizeof(PyDictObject),
     0,
@@ -5021,7 +5021,7 @@ TyDict_SetItemString(TyObject *v, const char *key, TyObject *item)
     kv = TyUnicode_FromString(key);
     if (kv == NULL)
         return -1;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyUnicode_InternImmortal(interp, &kv); /* XXX Should we really? */
     err = TyDict_SetItem(v, kv, item);
     Ty_DECREF(kv);
@@ -5132,13 +5132,13 @@ dictiter_len(TyObject *self, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSize_t(len);
 }
 
-PyDoc_STRVAR(length_hint_doc,
+TyDoc_STRVAR(length_hint_doc,
              "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
 dictiter_reduce(TyObject *di, TyObject *Py_UNUSED(ignored));
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
 static TyMethodDef dictiter_methods[] = {
     {"__length_hint__", dictiter_len,                   METH_NOARGS,
@@ -5247,7 +5247,7 @@ dictiter_iternextkey(TyObject *self)
 }
 
 TyTypeObject PyDictIterKey_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict_keyiterator",                         /* tp_name */
     sizeof(dictiterobject),                     /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -5370,7 +5370,7 @@ dictiter_iternextvalue(TyObject *self)
 }
 
 TyTypeObject PyDictIterValue_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict_valueiterator",                       /* tp_name */
     sizeof(dictiterobject),                     /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -5679,7 +5679,7 @@ dictiter_iternextitem(TyObject *self)
 }
 
 TyTypeObject PyDictIterItem_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict_itemiterator",                        /* tp_name */
     sizeof(dictiterobject),                     /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -5827,7 +5827,7 @@ dictreviter_iternext(TyObject *self)
 }
 
 TyTypeObject PyDictRevIterKey_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict_reversekeyiterator",
     sizeof(dictiterobject),
     .tp_dealloc = dictiter_dealloc,
@@ -5869,7 +5869,7 @@ dictiter_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
 }
 
 TyTypeObject PyDictRevIterItem_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict_reverseitemiterator",
     sizeof(dictiterobject),
     .tp_dealloc = dictiter_dealloc,
@@ -5881,7 +5881,7 @@ TyTypeObject PyDictRevIterItem_Type = {
 };
 
 TyTypeObject PyDictRevIterValue_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict_reversevalueiterator",
     sizeof(dictiterobject),
     .tp_dealloc = dictiter_dealloc,
@@ -5961,7 +5961,7 @@ dictview_mapping(TyObject *view, void *Py_UNUSED(ignored)) {
 
 static TyGetSetDef dictview_getset[] = {
     {"mapping", dictview_mapping, NULL,
-     PyDoc_STR("dictionary that this view refers to"), NULL},
+     TyDoc_STR("dictionary that this view refers to"), NULL},
     {0}
 };
 
@@ -6445,12 +6445,12 @@ dictviews_isdisjoint(TyObject *self, TyObject *other)
     Py_RETURN_TRUE;
 }
 
-PyDoc_STRVAR(isdisjoint_doc,
+TyDoc_STRVAR(isdisjoint_doc,
 "Return True if the view and the given iterable have a null intersection.");
 
 static TyObject* dictkeys_reversed(TyObject *dv, TyObject *Py_UNUSED(ignored));
 
-PyDoc_STRVAR(reversed_keys_doc,
+TyDoc_STRVAR(reversed_keys_doc,
 "Return a reverse iterator over the dict keys.");
 
 static TyMethodDef dictkeys_methods[] = {
@@ -6462,7 +6462,7 @@ static TyMethodDef dictkeys_methods[] = {
 };
 
 TyTypeObject PyDictKeys_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict_keys",                                /* tp_name */
     sizeof(_PyDictViewObject),                  /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -6562,7 +6562,7 @@ static PySequenceMethods dictitems_as_sequence = {
 
 static TyObject* dictitems_reversed(TyObject *dv, TyObject *Py_UNUSED(ignored));
 
-PyDoc_STRVAR(reversed_items_doc,
+TyDoc_STRVAR(reversed_items_doc,
 "Return a reverse iterator over the dict items.");
 
 static TyMethodDef dictitems_methods[] = {
@@ -6574,7 +6574,7 @@ static TyMethodDef dictitems_methods[] = {
 };
 
 TyTypeObject PyDictItems_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict_items",                               /* tp_name */
     sizeof(_PyDictViewObject),                  /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -6654,7 +6654,7 @@ static PySequenceMethods dictvalues_as_sequence = {
 
 static TyObject* dictvalues_reversed(TyObject *dv, TyObject *Py_UNUSED(ignored));
 
-PyDoc_STRVAR(reversed_values_doc,
+TyDoc_STRVAR(reversed_values_doc,
 "Return a reverse iterator over the dict values.");
 
 static TyMethodDef dictvalues_methods[] = {
@@ -6664,7 +6664,7 @@ static TyMethodDef dictvalues_methods[] = {
 };
 
 TyTypeObject PyDictValues_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "dict_values",                              /* tp_name */
     sizeof(_PyDictViewObject),                  /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -6725,7 +6725,7 @@ dictvalues_reversed(TyObject *self, TyObject *Py_UNUSED(ignored))
 PyDictKeysObject *
 _TyDict_NewKeysForClass(PyHeapTypeObject *cls)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     PyDictKeysObject *keys = new_keys_object(
             interp, NEXT_LOG2_SHARED_KEYS_MAX_SIZE, 1);
@@ -6792,7 +6792,7 @@ _TyObject_InitInlineValues(TyObject *obj, TyTypeObject *tp)
 }
 
 static PyDictObject *
-make_dict_from_instance_attributes(PyInterpreterState *interp,
+make_dict_from_instance_attributes(TyInterpreterState *interp,
                                    PyDictKeysObject *keys, PyDictValues *values)
 {
     dictkeys_incref(keys);
@@ -6818,7 +6818,7 @@ _TyObject_MaterializeManagedDict_LockHeld(TyObject *obj)
     PyDictValues *values = _TyObject_InlineValues(obj);
     PyDictObject *dict;
     if (values->valid) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         PyDictKeysObject *keys = CACHED_KEYS(Ty_TYPE(obj));
         dict = make_dict_from_instance_attributes(interp, keys, values);
     }
@@ -6943,7 +6943,7 @@ store_instance_attr_lock_held(TyObject *obj, PyDictValues *values,
     }
 
     if (dict) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         TyDict_WatchEvent event = (old_value == NULL ? TyDict_EVENT_ADDED :
                                    value == NULL ? TyDict_EVENT_DELETED :
                                    TyDict_EVENT_MODIFIED);
@@ -7449,7 +7449,7 @@ PyObject_ClearManagedDict(TyObject *obj)
                                        "clearing an object managed dict");
                 /* Clear the dict */
                 Ty_BEGIN_CRITICAL_SECTION(dict);
-                PyInterpreterState *interp = _TyInterpreterState_GET();
+                TyInterpreterState *interp = _TyInterpreterState_GET();
                 PyDictKeysObject *oldkeys = dict->ma_keys;
                 set_keys(dict, Ty_EMPTY_KEYS);
                 dict->ma_values = NULL;
@@ -7520,7 +7520,7 @@ ensure_nonmanaged_dict(TyObject *obj, TyObject **dictptr)
 #endif
         TyTypeObject *tp = Ty_TYPE(obj);
         if (_TyType_HasFeature(tp, Ty_TPFLAGS_HEAPTYPE) && (cached = CACHED_KEYS(tp))) {
-            PyInterpreterState *interp = _TyInterpreterState_GET();
+            TyInterpreterState *interp = _TyInterpreterState_GET();
             assert(!_TyType_HasFeature(tp, Ty_TPFLAGS_INLINE_VALUES));
             dict = new_dict_with_shared_keys(interp, cached);
         }
@@ -7578,12 +7578,12 @@ _PyObjectDict_SetItem(TyTypeObject *tp, TyObject *obj, TyObject **dictptr,
 void
 _PyDictKeys_DecRef(PyDictKeysObject *keys)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     dictkeys_decref(interp, keys, false);
 }
 
 static inline uint32_t
-get_next_dict_keys_version(PyInterpreterState *interp)
+get_next_dict_keys_version(TyInterpreterState *interp)
 {
 #ifdef Ty_GIL_DISABLED
     uint32_t v;
@@ -7607,7 +7607,7 @@ get_next_dict_keys_version(PyInterpreterState *interp)
 // In free-threaded builds the caller must ensure that the keys object is not
 // being mutated concurrently by another thread.
 uint32_t
-_PyDictKeys_GetVersionForCurrentState(PyInterpreterState *interp,
+_PyDictKeys_GetVersionForCurrentState(TyInterpreterState *interp,
                                       PyDictKeysObject *dictkeys)
 {
     uint32_t dk_version = FT_ATOMIC_LOAD_UINT32_RELAXED(dictkeys->dk_version);
@@ -7620,7 +7620,7 @@ _PyDictKeys_GetVersionForCurrentState(PyInterpreterState *interp,
 }
 
 uint32_t
-_TyDict_GetKeysVersionForCurrentState(PyInterpreterState *interp,
+_TyDict_GetKeysVersionForCurrentState(TyInterpreterState *interp,
                                       PyDictObject *dict)
 {
     ASSERT_DICT_LOCKED((TyObject *) dict);
@@ -7631,7 +7631,7 @@ _TyDict_GetKeysVersionForCurrentState(PyInterpreterState *interp,
 }
 
 static inline int
-validate_watcher_id(PyInterpreterState *interp, int watcher_id)
+validate_watcher_id(TyInterpreterState *interp, int watcher_id)
 {
     if (watcher_id < 0 || watcher_id >= DICT_MAX_WATCHERS) {
         TyErr_Format(TyExc_ValueError, "Invalid dict watcher ID %d", watcher_id);
@@ -7651,7 +7651,7 @@ TyDict_Watch(int watcher_id, TyObject* dict)
         TyErr_SetString(TyExc_ValueError, "Cannot watch non-dictionary");
         return -1;
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (validate_watcher_id(interp, watcher_id)) {
         return -1;
     }
@@ -7666,7 +7666,7 @@ TyDict_Unwatch(int watcher_id, TyObject* dict)
         TyErr_SetString(TyExc_ValueError, "Cannot watch non-dictionary");
         return -1;
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (validate_watcher_id(interp, watcher_id)) {
         return -1;
     }
@@ -7677,7 +7677,7 @@ TyDict_Unwatch(int watcher_id, TyObject* dict)
 int
 TyDict_AddWatcher(TyDict_WatchCallback callback)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     /* Start at 2, as 0 and 1 are reserved for CPython */
     for (int i = 2; i < DICT_MAX_WATCHERS; i++) {
@@ -7694,7 +7694,7 @@ TyDict_AddWatcher(TyDict_WatchCallback callback)
 int
 TyDict_ClearWatcher(int watcher_id)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (validate_watcher_id(interp, watcher_id)) {
         return -1;
     }
@@ -7721,7 +7721,7 @@ _TyDict_SendEvent(int watcher_bits,
                   TyObject *key,
                   TyObject *value)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     for (int i = 0; i < DICT_MAX_WATCHERS; i++) {
         if (watcher_bits & 1) {
             TyDict_WatchCallback cb = interp->dict_state.watchers[i];

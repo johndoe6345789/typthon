@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_hmac_new__doc__,
+TyDoc_STRVAR(_hmac_new__doc__,
 "new($module, /, key, msg=None, digestmod=None)\n"
 "--\n"
 "\n"
@@ -34,7 +34,7 @@ _hmac_new(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(msg), &_Ty_ID(digestmod), },
     };
@@ -81,7 +81,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_HMAC_copy__doc__,
+TyDoc_STRVAR(_hmac_HMAC_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -103,7 +103,7 @@ _hmac_HMAC_copy(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssi
     return _hmac_HMAC_copy_impl((HMACObject *)self, cls);
 }
 
-PyDoc_STRVAR(_hmac_HMAC_update__doc__,
+TyDoc_STRVAR(_hmac_HMAC_update__doc__,
 "update($self, /, msg)\n"
 "--\n"
 "\n"
@@ -128,7 +128,7 @@ _hmac_HMAC_update(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(msg), },
     };
@@ -161,7 +161,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_HMAC_digest__doc__,
+TyDoc_STRVAR(_hmac_HMAC_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -181,7 +181,7 @@ _hmac_HMAC_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _hmac_HMAC_digest_impl((HMACObject *)self);
 }
 
-PyDoc_STRVAR(_hmac_HMAC_hexdigest__doc__,
+TyDoc_STRVAR(_hmac_HMAC_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -261,7 +261,7 @@ _hmac_HMAC_digest_size_get(TyObject *self, void *Py_UNUSED(context))
     return _hmac_HMAC_digest_size_get_impl((HMACObject *)self);
 }
 
-PyDoc_STRVAR(_hmac_compute_digest__doc__,
+TyDoc_STRVAR(_hmac_compute_digest__doc__,
 "compute_digest($module, /, key, msg, digest)\n"
 "--\n"
 "\n");
@@ -286,7 +286,7 @@ _hmac_compute_digest(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(msg), &_Ty_ID(digest), },
     };
@@ -323,7 +323,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_md5__doc__,
+TyDoc_STRVAR(_hmac_compute_md5__doc__,
 "compute_md5($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -352,7 +352,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_sha1__doc__,
+TyDoc_STRVAR(_hmac_compute_sha1__doc__,
 "compute_sha1($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -381,7 +381,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_sha2_224__doc__,
+TyDoc_STRVAR(_hmac_compute_sha2_224__doc__,
 "compute_sha224($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -410,7 +410,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_sha2_256__doc__,
+TyDoc_STRVAR(_hmac_compute_sha2_256__doc__,
 "compute_sha256($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -439,7 +439,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_sha2_384__doc__,
+TyDoc_STRVAR(_hmac_compute_sha2_384__doc__,
 "compute_sha384($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -468,7 +468,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_sha2_512__doc__,
+TyDoc_STRVAR(_hmac_compute_sha2_512__doc__,
 "compute_sha512($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -497,7 +497,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_sha3_224__doc__,
+TyDoc_STRVAR(_hmac_compute_sha3_224__doc__,
 "compute_sha3_224($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -526,7 +526,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_sha3_256__doc__,
+TyDoc_STRVAR(_hmac_compute_sha3_256__doc__,
 "compute_sha3_256($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -555,7 +555,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_sha3_384__doc__,
+TyDoc_STRVAR(_hmac_compute_sha3_384__doc__,
 "compute_sha3_384($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -584,7 +584,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_sha3_512__doc__,
+TyDoc_STRVAR(_hmac_compute_sha3_512__doc__,
 "compute_sha3_512($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -613,7 +613,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_blake2s_32__doc__,
+TyDoc_STRVAR(_hmac_compute_blake2s_32__doc__,
 "compute_blake2s_32($module, key, msg, /)\n"
 "--\n"
 "\n");
@@ -642,7 +642,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hmac_compute_blake2b_32__doc__,
+TyDoc_STRVAR(_hmac_compute_blake2b_32__doc__,
 "compute_blake2b_32($module, key, msg, /)\n"
 "--\n"
 "\n");

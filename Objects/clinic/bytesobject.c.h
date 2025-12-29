@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(bytes___bytes____doc__,
+TyDoc_STRVAR(bytes___bytes____doc__,
 "__bytes__($self, /)\n"
 "--\n"
 "\n"
@@ -27,7 +27,7 @@ bytes___bytes__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return bytes___bytes___impl((PyBytesObject *)self);
 }
 
-PyDoc_STRVAR(bytes_split__doc__,
+TyDoc_STRVAR(bytes_split__doc__,
 "split($self, /, sep=None, maxsplit=-1)\n"
 "--\n"
 "\n"
@@ -60,7 +60,7 @@ bytes_split(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(sep), &_Ty_ID(maxsplit), },
     };
@@ -116,7 +116,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_partition__doc__,
+TyDoc_STRVAR(bytes_partition__doc__,
 "partition($self, sep, /)\n"
 "--\n"
 "\n"
@@ -155,7 +155,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_rpartition__doc__,
+TyDoc_STRVAR(bytes_rpartition__doc__,
 "rpartition($self, sep, /)\n"
 "--\n"
 "\n"
@@ -194,7 +194,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_rsplit__doc__,
+TyDoc_STRVAR(bytes_rsplit__doc__,
 "rsplit($self, /, sep=None, maxsplit=-1)\n"
 "--\n"
 "\n"
@@ -229,7 +229,7 @@ bytes_rsplit(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(sep), &_Ty_ID(maxsplit), },
     };
@@ -285,7 +285,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_join__doc__,
+TyDoc_STRVAR(bytes_join__doc__,
 "join($self, iterable_of_bytes, /)\n"
 "--\n"
 "\n"
@@ -313,7 +313,7 @@ bytes_join(TyObject *self, TyObject *iterable_of_bytes)
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_find__doc__,
+TyDoc_STRVAR(bytes_find__doc__,
 "find($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -364,7 +364,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_index__doc__,
+TyDoc_STRVAR(bytes_index__doc__,
 "index($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -415,7 +415,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_rfind__doc__,
+TyDoc_STRVAR(bytes_rfind__doc__,
 "rfind($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -466,7 +466,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_rindex__doc__,
+TyDoc_STRVAR(bytes_rindex__doc__,
 "rindex($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -517,7 +517,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_strip__doc__,
+TyDoc_STRVAR(bytes_strip__doc__,
 "strip($self, bytes=None, /)\n"
 "--\n"
 "\n"
@@ -551,7 +551,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_lstrip__doc__,
+TyDoc_STRVAR(bytes_lstrip__doc__,
 "lstrip($self, bytes=None, /)\n"
 "--\n"
 "\n"
@@ -585,7 +585,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_rstrip__doc__,
+TyDoc_STRVAR(bytes_rstrip__doc__,
 "rstrip($self, bytes=None, /)\n"
 "--\n"
 "\n"
@@ -619,7 +619,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_count__doc__,
+TyDoc_STRVAR(bytes_count__doc__,
 "count($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -668,7 +668,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_translate__doc__,
+TyDoc_STRVAR(bytes_translate__doc__,
 "translate($self, table, /, delete=b\'\')\n"
 "--\n"
 "\n"
@@ -700,7 +700,7 @@ bytes_translate(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(delete), },
     };
@@ -740,7 +740,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_maketrans__doc__,
+TyDoc_STRVAR(bytes_maketrans__doc__,
 "maketrans(frm, to, /)\n"
 "--\n"
 "\n"
@@ -788,7 +788,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_replace__doc__,
+TyDoc_STRVAR(bytes_replace__doc__,
 "replace($self, old, new, count=-1, /)\n"
 "--\n"
 "\n"
@@ -856,7 +856,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_removeprefix__doc__,
+TyDoc_STRVAR(bytes_removeprefix__doc__,
 "removeprefix($self, prefix, /)\n"
 "--\n"
 "\n"
@@ -891,7 +891,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_removesuffix__doc__,
+TyDoc_STRVAR(bytes_removesuffix__doc__,
 "removesuffix($self, suffix, /)\n"
 "--\n"
 "\n"
@@ -927,7 +927,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_startswith__doc__,
+TyDoc_STRVAR(bytes_startswith__doc__,
 "startswith($self, prefix[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -978,7 +978,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_endswith__doc__,
+TyDoc_STRVAR(bytes_endswith__doc__,
 "endswith($self, suffix[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -1029,7 +1029,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_decode__doc__,
+TyDoc_STRVAR(bytes_decode__doc__,
 "decode($self, /, encoding=\'utf-8\', errors=\'strict\')\n"
 "--\n"
 "\n"
@@ -1064,7 +1064,7 @@ bytes_decode(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(encoding), &_Ty_ID(errors), },
     };
@@ -1133,7 +1133,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_splitlines__doc__,
+TyDoc_STRVAR(bytes_splitlines__doc__,
 "splitlines($self, /, keepends=False)\n"
 "--\n"
 "\n"
@@ -1161,7 +1161,7 @@ bytes_splitlines(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(keepends), },
     };
@@ -1202,7 +1202,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_fromhex__doc__,
+TyDoc_STRVAR(bytes_fromhex__doc__,
 "fromhex($type, string, /)\n"
 "--\n"
 "\n"
@@ -1227,7 +1227,7 @@ bytes_fromhex(TyObject *type, TyObject *string)
     return return_value;
 }
 
-PyDoc_STRVAR(bytes_hex__doc__,
+TyDoc_STRVAR(bytes_hex__doc__,
 "hex($self, /, sep=<unrepresentable>, bytes_per_sep=1)\n"
 "--\n"
 "\n"
@@ -1269,7 +1269,7 @@ bytes_hex(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwn
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(sep), &_Ty_ID(bytes_per_sep), },
     };
@@ -1334,7 +1334,7 @@ bytes_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(source), &_Ty_ID(encoding), &_Ty_ID(errors), },
     };

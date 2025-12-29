@@ -96,9 +96,9 @@ tracemalloc_error(const char *format, ...)
 static int
 get_reentrant(void)
 {
-    assert(PyThread_tss_is_created(&tracemalloc_reentrant_key));
+    assert(TyThread_tss_is_created(&tracemalloc_reentrant_key));
 
-    void *ptr = PyThread_tss_get(&tracemalloc_reentrant_key);
+    void *ptr = TyThread_tss_get(&tracemalloc_reentrant_key);
     if (ptr != NULL) {
         assert(ptr == REENTRANT);
         return 1;
@@ -112,15 +112,15 @@ static void
 set_reentrant(int reentrant)
 {
     assert(reentrant == 0 || reentrant == 1);
-    assert(PyThread_tss_is_created(&tracemalloc_reentrant_key));
+    assert(TyThread_tss_is_created(&tracemalloc_reentrant_key));
 
     if (reentrant) {
         assert(!get_reentrant());
-        PyThread_tss_set(&tracemalloc_reentrant_key, REENTRANT);
+        TyThread_tss_set(&tracemalloc_reentrant_key, REENTRANT);
     }
     else {
         assert(get_reentrant());
-        PyThread_tss_set(&tracemalloc_reentrant_key, NULL);
+        TyThread_tss_set(&tracemalloc_reentrant_key, NULL);
     }
 }
 
@@ -733,7 +733,7 @@ _PyTraceMalloc_Init(void)
 
     TyMem_GetAllocator(PYMEM_DOMAIN_RAW, &allocators.raw);
 
-    if (PyThread_tss_create(&tracemalloc_reentrant_key) != 0) {
+    if (TyThread_tss_create(&tracemalloc_reentrant_key) != 0) {
         return _TyStatus_NO_MEMORY();
     }
 
@@ -781,7 +781,7 @@ tracemalloc_deinit(void)
     _Ty_hashtable_destroy(tracemalloc_tracebacks);
     _Ty_hashtable_destroy(tracemalloc_filenames);
 
-    PyThread_tss_delete(&tracemalloc_reentrant_key);
+    TyThread_tss_delete(&tracemalloc_reentrant_key);
 }
 
 

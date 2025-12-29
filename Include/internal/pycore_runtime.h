@@ -50,7 +50,7 @@ _PyRuntimeState_SetFinalizing(_PyRuntimeState *runtime, TyThreadState *tstate) {
     }
     else {
         // XXX Re-enable this assert once gh-109860 is fixed.
-        //assert(tstate->thread_id == PyThread_get_thread_ident());
+        //assert(tstate->thread_id == TyThread_get_thread_ident());
         _Ty_atomic_store_ulong_relaxed(&runtime->_finalizing_id,
                                        tstate->thread_id);
     }

@@ -179,7 +179,7 @@ get_thread_state(void)
 
 static void
 faulthandler_dump_traceback(int fd, int all_threads,
-                            PyInterpreterState *interp)
+                            TyInterpreterState *interp)
 {
     static volatile int reentrant = 0;
 
@@ -258,7 +258,7 @@ faulthandler_dump_traceback_py(TyObject *self,
     }
 
     if (all_threads) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         /* gh-128400: Accessing other thread states while they're running
          * isn't safe if those threads are running. */
         _TyEval_StopTheWorld(interp);
@@ -643,7 +643,7 @@ faulthandler_is_enabled(TyObject *self, TyObject *Py_UNUSED(ignored))
 static void
 faulthandler_thread(void *unused)
 {
-    PyLockStatus st;
+    TyLockStatus st;
     const char* errmsg;
     int ok;
 #if defined(HAVE_PTHREAD_SIGMASK) && !defined(HAVE_BROKEN_PTHREAD_SIGMASK)
@@ -655,10 +655,10 @@ faulthandler_thread(void *unused)
 #endif
 
     do {
-        st = PyThread_acquire_lock_timed(thread.cancel_event,
+        st = TyThread_acquire_lock_timed(thread.cancel_event,
                                          thread.timeout_us, 0);
         if (st == PY_LOCK_ACQUIRED) {
-            PyThread_release_lock(thread.cancel_event);
+            TyThread_release_lock(thread.cancel_event);
             break;
         }
         /* Timeout => dump traceback */
@@ -674,7 +674,7 @@ faulthandler_thread(void *unused)
     } while (ok && thread.repeat);
 
     /* The only way out */
-    PyThread_release_lock(thread.running);
+    TyThread_release_lock(thread.running);
 }
 
 static void
@@ -686,14 +686,14 @@ cancel_dump_traceback_later(void)
     }
 
     /* Notify cancellation */
-    PyThread_release_lock(thread.cancel_event);
+    TyThread_release_lock(thread.cancel_event);
 
     /* Wait for thread to join */
-    PyThread_acquire_lock(thread.running, 1);
-    PyThread_release_lock(thread.running);
+    TyThread_acquire_lock(thread.running, 1);
+    TyThread_release_lock(thread.running);
 
     /* The main thread should always hold the cancel_event lock */
-    PyThread_acquire_lock(thread.cancel_event, 1);
+    TyThread_acquire_lock(thread.cancel_event, 1);
 
     Ty_CLEAR(thread.file);
     if (thread.header) {
@@ -705,7 +705,7 @@ cancel_dump_traceback_later(void)
 #define SEC_TO_US (1000 * 1000)
 
 static char*
-format_timeout(PyTime_t us)
+format_timeout(TyTime_t us)
 {
     unsigned long sec, min, hour;
     char buffer[100];
@@ -738,7 +738,7 @@ faulthandler_dump_traceback_later(TyObject *self,
 {
     static char *kwlist[] = {"timeout", "repeat", "file", "exit", NULL};
     TyObject *timeout_obj;
-    PyTime_t timeout, timeout_us;
+    TyTime_t timeout, timeout_us;
     int repeat = 0;
     TyObject *file = NULL;
     int fd;
@@ -779,14 +779,14 @@ faulthandler_dump_traceback_later(TyObject *self,
     }
 
     if (!thread.running) {
-        thread.running = PyThread_allocate_lock();
+        thread.running = TyThread_allocate_lock();
         if (!thread.running) {
             Ty_XDECREF(file);
             return TyErr_NoMemory();
         }
     }
     if (!thread.cancel_event) {
-        thread.cancel_event = PyThread_allocate_lock();
+        thread.cancel_event = TyThread_allocate_lock();
         if (!thread.cancel_event || !thread.running) {
             Ty_XDECREF(file);
             return TyErr_NoMemory();
@@ -794,7 +794,7 @@ faulthandler_dump_traceback_later(TyObject *self,
 
         /* cancel_event starts to be acquired: it's only released to cancel
            the thread. */
-        PyThread_acquire_lock(thread.cancel_event, 1);
+        TyThread_acquire_lock(thread.cancel_event, 1);
     }
 
     /* format the timeout */
@@ -819,10 +819,10 @@ faulthandler_dump_traceback_later(TyObject *self,
     thread.header_len = header_len;
 
     /* Arm these locks to serve as events when released */
-    PyThread_acquire_lock(thread.running, 1);
+    TyThread_acquire_lock(thread.running, 1);
 
-    if (PyThread_start_new_thread(faulthandler_thread, NULL) == PYTHREAD_INVALID_THREAD_ID) {
-        PyThread_release_lock(thread.running);
+    if (TyThread_start_new_thread(faulthandler_thread, NULL) == PYTHREAD_INVALID_THREAD_ID) {
+        TyThread_release_lock(thread.running);
         Ty_CLEAR(thread.file);
         TyMem_Free(header);
         thread.header = NULL;
@@ -1134,28 +1134,28 @@ static TyObject *
 faulthandler_fatal_error_c_thread(TyObject *self, TyObject *args)
 {
     long tid;
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
 
     faulthandler_suppress_crash_report();
 
-    lock = PyThread_allocate_lock();
+    lock = TyThread_allocate_lock();
     if (lock == NULL)
         return TyErr_NoMemory();
 
-    PyThread_acquire_lock(lock, WAIT_LOCK);
+    TyThread_acquire_lock(lock, WAIT_LOCK);
 
-    tid = PyThread_start_new_thread(faulthandler_fatal_error_thread, lock);
+    tid = TyThread_start_new_thread(faulthandler_fatal_error_thread, lock);
     if (tid == -1) {
-        PyThread_free_lock(lock);
+        TyThread_free_lock(lock);
         TyErr_SetString(TyExc_RuntimeError, "unable to start the thread");
         return NULL;
     }
 
     /* wait until the thread completes: it will never occur, since Ty_FatalError()
        exits the process immediately. */
-    PyThread_acquire_lock(lock, WAIT_LOCK);
-    PyThread_release_lock(lock);
-    PyThread_free_lock(lock);
+    TyThread_acquire_lock(lock, WAIT_LOCK);
+    TyThread_release_lock(lock);
+    TyThread_free_lock(lock);
 
     Py_RETURN_NONE;
 }
@@ -1272,76 +1272,76 @@ faulthandler_raise_exception(TyObject *self, TyObject *args)
 }
 #endif
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "faulthandler module.");
 
 static TyMethodDef module_methods[] = {
     {"enable",
      _PyCFunction_CAST(faulthandler_py_enable), METH_VARARGS|METH_KEYWORDS,
-     PyDoc_STR("enable($module, /, file=sys.stderr, all_threads=True)\n--\n\n"
+     TyDoc_STR("enable($module, /, file=sys.stderr, all_threads=True)\n--\n\n"
                "Enable the fault handler.")},
     {"disable", faulthandler_disable_py, METH_NOARGS,
-     PyDoc_STR("disable($module, /)\n--\n\n"
+     TyDoc_STR("disable($module, /)\n--\n\n"
                "Disable the fault handler.")},
     {"is_enabled", faulthandler_is_enabled, METH_NOARGS,
-     PyDoc_STR("is_enabled($module, /)\n--\n\n"
+     TyDoc_STR("is_enabled($module, /)\n--\n\n"
                "Check if the handler is enabled.")},
     {"dump_traceback",
      _PyCFunction_CAST(faulthandler_dump_traceback_py), METH_VARARGS|METH_KEYWORDS,
-     PyDoc_STR("dump_traceback($module, /, file=sys.stderr, all_threads=True)\n--\n\n"
+     TyDoc_STR("dump_traceback($module, /, file=sys.stderr, all_threads=True)\n--\n\n"
                "Dump the traceback of the current thread, or of all threads "
                "if all_threads is True, into file.")},
      {"dump_c_stack",
       _PyCFunction_CAST(faulthandler_dump_c_stack_py), METH_VARARGS|METH_KEYWORDS,
-      PyDoc_STR("dump_c_stack($module, /, file=sys.stderr)\n--\n\n"
+      TyDoc_STR("dump_c_stack($module, /, file=sys.stderr)\n--\n\n"
               "Dump the C stack of the current thread.")},
     {"dump_traceback_later",
      _PyCFunction_CAST(faulthandler_dump_traceback_later), METH_VARARGS|METH_KEYWORDS,
-     PyDoc_STR("dump_traceback_later($module, /, timeout, repeat=False, file=sys.stderr, exit=False)\n--\n\n"
+     TyDoc_STR("dump_traceback_later($module, /, timeout, repeat=False, file=sys.stderr, exit=False)\n--\n\n"
                "Dump the traceback of all threads in timeout seconds,\n"
                "or each timeout seconds if repeat is True. If exit is True, "
                "call _exit(1) which is not safe.")},
     {"cancel_dump_traceback_later",
      faulthandler_cancel_dump_traceback_later_py, METH_NOARGS,
-     PyDoc_STR("cancel_dump_traceback_later($module, /)\n--\n\n"
+     TyDoc_STR("cancel_dump_traceback_later($module, /)\n--\n\n"
                "Cancel the previous call to dump_traceback_later().")},
 #ifdef FAULTHANDLER_USER
     {"register",
      _PyCFunction_CAST(faulthandler_register_py), METH_VARARGS|METH_KEYWORDS,
-     PyDoc_STR("register($module, /, signum, file=sys.stderr, all_threads=True, chain=False)\n--\n\n"
+     TyDoc_STR("register($module, /, signum, file=sys.stderr, all_threads=True, chain=False)\n--\n\n"
                "Register a handler for the signal 'signum': dump the "
                "traceback of the current thread, or of all threads if "
                "all_threads is True, into file.")},
     {"unregister",
      _PyCFunction_CAST(faulthandler_unregister_py), METH_VARARGS,
-     PyDoc_STR("unregister($module, signum, /)\n--\n\n"
+     TyDoc_STR("unregister($module, signum, /)\n--\n\n"
                "Unregister the handler of the signal "
                "'signum' registered by register().")},
 #endif
     {"_read_null", faulthandler_read_null, METH_NOARGS,
-     PyDoc_STR("_read_null($module, /)\n--\n\n"
+     TyDoc_STR("_read_null($module, /)\n--\n\n"
                "Read from NULL, raise "
                "a SIGSEGV or SIGBUS signal depending on the platform.")},
     {"_sigsegv", faulthandler_sigsegv, METH_VARARGS,
-     PyDoc_STR("_sigsegv($module, release_gil=False, /)\n--\n\n"
+     TyDoc_STR("_sigsegv($module, release_gil=False, /)\n--\n\n"
                "Raise a SIGSEGV signal.")},
     {"_fatal_error_c_thread", faulthandler_fatal_error_c_thread, METH_NOARGS,
-     PyDoc_STR("_fatal_error_c_thread($module, /)\n--\n\n"
+     TyDoc_STR("_fatal_error_c_thread($module, /)\n--\n\n"
                "Call Ty_FatalError() in a new C thread.")},
     {"_sigabrt", faulthandler_sigabrt, METH_NOARGS,
-     PyDoc_STR("_sigabrt($module, /)\n--\n\n"
+     TyDoc_STR("_sigabrt($module, /)\n--\n\n"
                "Raise a SIGABRT signal.")},
     {"_sigfpe", faulthandler_sigfpe, METH_NOARGS,
-     PyDoc_STR("_sigfpe($module, /)\n--\n\n"
+     TyDoc_STR("_sigfpe($module, /)\n--\n\n"
                "Raise a SIGFPE signal.")},
 #ifdef FAULTHANDLER_STACK_OVERFLOW
     {"_stack_overflow", faulthandler_stack_overflow, METH_NOARGS,
-     PyDoc_STR("_stack_overflow($module, /)\n--\n\n"
+     TyDoc_STR("_stack_overflow($module, /)\n--\n\n"
                "Recursive call to raise a stack overflow.")},
 #endif
 #ifdef MS_WINDOWS
     {"_raise_exception", faulthandler_raise_exception, METH_VARARGS,
-     PyDoc_STR("_raise_exception($module, code, flags=0, /)\n--\n\n"
+     TyDoc_STR("_raise_exception($module, code, flags=0, /)\n--\n\n"
                "Call RaiseException(code, flags).")},
 #endif
     {NULL, NULL}  /* sentinel */
@@ -1456,12 +1456,12 @@ void _PyFaulthandler_Fini(void)
     /* later */
     if (thread.cancel_event) {
         cancel_dump_traceback_later();
-        PyThread_release_lock(thread.cancel_event);
-        PyThread_free_lock(thread.cancel_event);
+        TyThread_release_lock(thread.cancel_event);
+        TyThread_free_lock(thread.cancel_event);
         thread.cancel_event = NULL;
     }
     if (thread.running) {
-        PyThread_free_lock(thread.running);
+        TyThread_free_lock(thread.running);
         thread.running = NULL;
     }
 

@@ -9,7 +9,7 @@ preserve
 #include "pycore_long.h"          // _TyLong_Size_t_Converter()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_winapi_Overlapped_GetOverlappedResult__doc__,
+TyDoc_STRVAR(_winapi_Overlapped_GetOverlappedResult__doc__,
 "GetOverlappedResult($self, wait, /)\n"
 "--\n"
 "\n");
@@ -36,7 +36,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_Overlapped_getbuffer__doc__,
+TyDoc_STRVAR(_winapi_Overlapped_getbuffer__doc__,
 "getbuffer($self, /)\n"
 "--\n"
 "\n");
@@ -53,7 +53,7 @@ _winapi_Overlapped_getbuffer(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _winapi_Overlapped_getbuffer_impl((OverlappedObject *)self);
 }
 
-PyDoc_STRVAR(_winapi_Overlapped_cancel__doc__,
+TyDoc_STRVAR(_winapi_Overlapped_cancel__doc__,
 "cancel($self, /)\n"
 "--\n"
 "\n");
@@ -70,7 +70,7 @@ _winapi_Overlapped_cancel(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _winapi_Overlapped_cancel_impl((OverlappedObject *)self);
 }
 
-PyDoc_STRVAR(_winapi_CloseHandle__doc__,
+TyDoc_STRVAR(_winapi_CloseHandle__doc__,
 "CloseHandle($module, handle, /)\n"
 "--\n"
 "\n"
@@ -97,7 +97,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_ConnectNamedPipe__doc__,
+TyDoc_STRVAR(_winapi_ConnectNamedPipe__doc__,
 "ConnectNamedPipe($module, /, handle, overlapped=False)\n"
 "--\n"
 "\n");
@@ -122,7 +122,7 @@ _winapi_ConnectNamedPipe(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(handle), &_Ty_ID(overlapped), },
     };
@@ -153,7 +153,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_CreateEventW__doc__,
+TyDoc_STRVAR(_winapi_CreateEventW__doc__,
 "CreateEventW($module, /, security_attributes, manual_reset,\n"
 "             initial_state, name)\n"
 "--\n"
@@ -181,7 +181,7 @@ _winapi_CreateEventW(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(security_attributes), &_Ty_ID(manual_reset), &_Ty_ID(initial_state), &_Ty_ID(name), },
     };
@@ -225,7 +225,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_CreateFile__doc__,
+TyDoc_STRVAR(_winapi_CreateFile__doc__,
 "CreateFile($module, file_name, desired_access, share_mode,\n"
 "           security_attributes, creation_disposition,\n"
 "           flags_and_attributes, template_file, /)\n"
@@ -275,7 +275,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_CreateFileMapping__doc__,
+TyDoc_STRVAR(_winapi_CreateFileMapping__doc__,
 "CreateFileMapping($module, file_handle, security_attributes, protect,\n"
 "                  max_size_high, max_size_low, name, /)\n"
 "--\n"
@@ -322,7 +322,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_CreateJunction__doc__,
+TyDoc_STRVAR(_winapi_CreateJunction__doc__,
 "CreateJunction($module, src_path, dst_path, /)\n"
 "--\n"
 "\n");
@@ -371,7 +371,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_CreateMutexW__doc__,
+TyDoc_STRVAR(_winapi_CreateMutexW__doc__,
 "CreateMutexW($module, /, security_attributes, initial_owner, name)\n"
 "--\n"
 "\n");
@@ -397,7 +397,7 @@ _winapi_CreateMutexW(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(security_attributes), &_Ty_ID(initial_owner), &_Ty_ID(name), },
     };
@@ -440,7 +440,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_CreateNamedPipe__doc__,
+TyDoc_STRVAR(_winapi_CreateNamedPipe__doc__,
 "CreateNamedPipe($module, name, open_mode, pipe_mode, max_instances,\n"
 "                out_buffer_size, in_buffer_size, default_timeout,\n"
 "                security_attributes, /)\n"
@@ -491,7 +491,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_CreatePipe__doc__,
+TyDoc_STRVAR(_winapi_CreatePipe__doc__,
 "CreatePipe($module, pipe_attrs, size, /)\n"
 "--\n"
 "\n"
@@ -525,7 +525,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_CreateProcess__doc__,
+TyDoc_STRVAR(_winapi_CreateProcess__doc__,
 "CreateProcess($module, application_name, command_line, proc_attrs,\n"
 "              thread_attrs, inherit_handles, creation_flags,\n"
 "              env_mapping, current_directory, startup_info, /)\n"
@@ -583,7 +583,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_DuplicateHandle__doc__,
+TyDoc_STRVAR(_winapi_DuplicateHandle__doc__,
 "DuplicateHandle($module, source_process_handle, source_handle,\n"
 "                target_process_handle, desired_access, inherit_handle,\n"
 "                options=0, /)\n"
@@ -634,7 +634,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_ExitProcess__doc__,
+TyDoc_STRVAR(_winapi_ExitProcess__doc__,
 "ExitProcess($module, ExitCode, /)\n"
 "--\n"
 "\n");
@@ -660,7 +660,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_GetCurrentProcess__doc__,
+TyDoc_STRVAR(_winapi_GetCurrentProcess__doc__,
 "GetCurrentProcess($module, /)\n"
 "--\n"
 "\n"
@@ -691,7 +691,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_GetExitCodeProcess__doc__,
+TyDoc_STRVAR(_winapi_GetExitCodeProcess__doc__,
 "GetExitCodeProcess($module, process, /)\n"
 "--\n"
 "\n"
@@ -723,7 +723,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_GetLastError__doc__,
+TyDoc_STRVAR(_winapi_GetLastError__doc__,
 "GetLastError($module, /)\n"
 "--\n"
 "\n");
@@ -750,7 +750,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_GetLongPathName__doc__,
+TyDoc_STRVAR(_winapi_GetLongPathName__doc__,
 "GetLongPathName($module, /, path)\n"
 "--\n"
 "\n"
@@ -780,7 +780,7 @@ _winapi_GetLongPathName(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -823,7 +823,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_GetModuleFileName__doc__,
+TyDoc_STRVAR(_winapi_GetModuleFileName__doc__,
 "GetModuleFileName($module, module_handle, /)\n"
 "--\n"
 "\n"
@@ -857,7 +857,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_GetShortPathName__doc__,
+TyDoc_STRVAR(_winapi_GetShortPathName__doc__,
 "GetShortPathName($module, /, path)\n"
 "--\n"
 "\n"
@@ -887,7 +887,7 @@ _winapi_GetShortPathName(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -930,7 +930,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_GetStdHandle__doc__,
+TyDoc_STRVAR(_winapi_GetStdHandle__doc__,
 "GetStdHandle($module, std_handle, /)\n"
 "--\n"
 "\n"
@@ -970,7 +970,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_GetVersion__doc__,
+TyDoc_STRVAR(_winapi_GetVersion__doc__,
 "GetVersion($module, /)\n"
 "--\n"
 "\n"
@@ -998,7 +998,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_MapViewOfFile__doc__,
+TyDoc_STRVAR(_winapi_MapViewOfFile__doc__,
 "MapViewOfFile($module, file_map, desired_access, file_offset_high,\n"
 "              file_offset_low, number_bytes, /)\n"
 "--\n"
@@ -1037,7 +1037,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_UnmapViewOfFile__doc__,
+TyDoc_STRVAR(_winapi_UnmapViewOfFile__doc__,
 "UnmapViewOfFile($module, address, /)\n"
 "--\n"
 "\n");
@@ -1063,7 +1063,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_OpenEventW__doc__,
+TyDoc_STRVAR(_winapi_OpenEventW__doc__,
 "OpenEventW($module, /, desired_access, inherit_handle, name)\n"
 "--\n"
 "\n");
@@ -1088,7 +1088,7 @@ _winapi_OpenEventW(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(desired_access), &_Ty_ID(inherit_handle), &_Ty_ID(name), },
     };
@@ -1131,7 +1131,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_OpenMutexW__doc__,
+TyDoc_STRVAR(_winapi_OpenMutexW__doc__,
 "OpenMutexW($module, /, desired_access, inherit_handle, name)\n"
 "--\n"
 "\n");
@@ -1156,7 +1156,7 @@ _winapi_OpenMutexW(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(desired_access), &_Ty_ID(inherit_handle), &_Ty_ID(name), },
     };
@@ -1199,7 +1199,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_OpenFileMapping__doc__,
+TyDoc_STRVAR(_winapi_OpenFileMapping__doc__,
 "OpenFileMapping($module, desired_access, inherit_handle, name, /)\n"
 "--\n"
 "\n");
@@ -1240,7 +1240,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_OpenProcess__doc__,
+TyDoc_STRVAR(_winapi_OpenProcess__doc__,
 "OpenProcess($module, desired_access, inherit_handle, process_id, /)\n"
 "--\n"
 "\n");
@@ -1278,7 +1278,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_PeekNamedPipe__doc__,
+TyDoc_STRVAR(_winapi_PeekNamedPipe__doc__,
 "PeekNamedPipe($module, handle, size=0, /)\n"
 "--\n"
 "\n");
@@ -1306,7 +1306,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_LCMapStringEx__doc__,
+TyDoc_STRVAR(_winapi_LCMapStringEx__doc__,
 "LCMapStringEx($module, /, locale, flags, src)\n"
 "--\n"
 "\n");
@@ -1331,7 +1331,7 @@ _winapi_LCMapStringEx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(locale), &_Ty_ID(flags), &_Ty_ID(src), },
     };
@@ -1366,7 +1366,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_ReadFile__doc__,
+TyDoc_STRVAR(_winapi_ReadFile__doc__,
 "ReadFile($module, /, handle, size, overlapped=False)\n"
 "--\n"
 "\n");
@@ -1391,7 +1391,7 @@ _winapi_ReadFile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(handle), &_Ty_ID(size), &_Ty_ID(overlapped), },
     };
@@ -1423,7 +1423,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_ReleaseMutex__doc__,
+TyDoc_STRVAR(_winapi_ReleaseMutex__doc__,
 "ReleaseMutex($module, /, mutex)\n"
 "--\n"
 "\n");
@@ -1447,7 +1447,7 @@ _winapi_ReleaseMutex(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(mutex), },
     };
@@ -1477,7 +1477,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_ResetEvent__doc__,
+TyDoc_STRVAR(_winapi_ResetEvent__doc__,
 "ResetEvent($module, /, event)\n"
 "--\n"
 "\n");
@@ -1501,7 +1501,7 @@ _winapi_ResetEvent(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(event), },
     };
@@ -1531,7 +1531,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_SetEvent__doc__,
+TyDoc_STRVAR(_winapi_SetEvent__doc__,
 "SetEvent($module, /, event)\n"
 "--\n"
 "\n");
@@ -1555,7 +1555,7 @@ _winapi_SetEvent(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(event), },
     };
@@ -1585,7 +1585,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_SetNamedPipeHandleState__doc__,
+TyDoc_STRVAR(_winapi_SetNamedPipeHandleState__doc__,
 "SetNamedPipeHandleState($module, named_pipe, mode,\n"
 "                        max_collection_count, collect_data_timeout, /)\n"
 "--\n"
@@ -1619,7 +1619,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_TerminateProcess__doc__,
+TyDoc_STRVAR(_winapi_TerminateProcess__doc__,
 "TerminateProcess($module, handle, exit_code, /)\n"
 "--\n"
 "\n"
@@ -1649,7 +1649,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_VirtualQuerySize__doc__,
+TyDoc_STRVAR(_winapi_VirtualQuerySize__doc__,
 "VirtualQuerySize($module, address, /)\n"
 "--\n"
 "\n");
@@ -1680,7 +1680,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_WaitNamedPipe__doc__,
+TyDoc_STRVAR(_winapi_WaitNamedPipe__doc__,
 "WaitNamedPipe($module, name, timeout, /)\n"
 "--\n"
 "\n");
@@ -1711,7 +1711,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_BatchedWaitForMultipleObjects__doc__,
+TyDoc_STRVAR(_winapi_BatchedWaitForMultipleObjects__doc__,
 "BatchedWaitForMultipleObjects($module, /, handle_seq, wait_all,\n"
 "                              milliseconds=_winapi.INFINITE)\n"
 "--\n"
@@ -1752,7 +1752,7 @@ _winapi_BatchedWaitForMultipleObjects(TyObject *module, TyObject *const *args, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(handle_seq), &_Ty_ID(wait_all), &_Ty_ID(milliseconds), },
     };
@@ -1784,7 +1784,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_WaitForMultipleObjects__doc__,
+TyDoc_STRVAR(_winapi_WaitForMultipleObjects__doc__,
 "WaitForMultipleObjects($module, handle_seq, wait_flag,\n"
 "                       milliseconds=_winapi.INFINITE, /)\n"
 "--\n"
@@ -1815,7 +1815,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_WaitForSingleObject__doc__,
+TyDoc_STRVAR(_winapi_WaitForSingleObject__doc__,
 "WaitForSingleObject($module, handle, milliseconds, /)\n"
 "--\n"
 "\n"
@@ -1854,7 +1854,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_WriteFile__doc__,
+TyDoc_STRVAR(_winapi_WriteFile__doc__,
 "WriteFile($module, /, handle, buffer, overlapped=False)\n"
 "--\n"
 "\n");
@@ -1879,7 +1879,7 @@ _winapi_WriteFile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(handle), &_Ty_ID(buffer), &_Ty_ID(overlapped), },
     };
@@ -1911,7 +1911,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_GetACP__doc__,
+TyDoc_STRVAR(_winapi_GetACP__doc__,
 "GetACP($module, /)\n"
 "--\n"
 "\n"
@@ -1929,7 +1929,7 @@ _winapi_GetACP(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _winapi_GetACP_impl(module);
 }
 
-PyDoc_STRVAR(_winapi_GetFileType__doc__,
+TyDoc_STRVAR(_winapi_GetFileType__doc__,
 "GetFileType($module, /, handle)\n"
 "--\n"
 "\n");
@@ -1953,7 +1953,7 @@ _winapi_GetFileType(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(handle), },
     };
@@ -1988,7 +1988,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi__mimetypes_read_windows_registry__doc__,
+TyDoc_STRVAR(_winapi__mimetypes_read_windows_registry__doc__,
 "_mimetypes_read_windows_registry($module, /, on_type_read)\n"
 "--\n"
 "\n"
@@ -2017,7 +2017,7 @@ _winapi__mimetypes_read_windows_registry(TyObject *module, TyObject *const *args
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(on_type_read), },
     };
@@ -2050,7 +2050,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_NeedCurrentDirectoryForExePath__doc__,
+TyDoc_STRVAR(_winapi_NeedCurrentDirectoryForExePath__doc__,
 "NeedCurrentDirectoryForExePath($module, exe_name, /)\n"
 "--\n"
 "\n");
@@ -2090,7 +2090,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_winapi_CopyFile2__doc__,
+TyDoc_STRVAR(_winapi_CopyFile2__doc__,
 "CopyFile2($module, /, existing_file_name, new_file_name, flags,\n"
 "          progress_routine=None)\n"
 "--\n"
@@ -2124,7 +2124,7 @@ _winapi_CopyFile2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(existing_file_name), &_Ty_ID(new_file_name), &_Ty_ID(flags), &_Ty_ID(progress_routine), },
     };

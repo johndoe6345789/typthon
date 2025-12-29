@@ -54,7 +54,7 @@ Ty_FrozenMain(int argc, char **argv)
         Ty_ExitStatusException(status);
     }
 
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     if (_TyInterpreterState_SetRunningMain(interp) < 0) {
         TyErr_Print();
         exit(1);

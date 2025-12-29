@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_lsprof_Profiler_getstats__doc__,
+TyDoc_STRVAR(_lsprof_Profiler_getstats__doc__,
 "getstats($self, /)\n"
 "--\n"
 "\n"
@@ -52,7 +52,7 @@ _lsprof_Profiler_getstats(TyObject *self, TyTypeObject *cls, TyObject *const *ar
     return _lsprof_Profiler_getstats_impl((ProfilerObject *)self, cls);
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__pystart_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__pystart_callback__doc__,
 "_pystart_callback($self, code, instruction_offset, /)\n"
 "--\n"
 "\n");
@@ -82,7 +82,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__pythrow_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__pythrow_callback__doc__,
 "_pythrow_callback($self, code, instruction_offset, exception, /)\n"
 "--\n"
 "\n");
@@ -115,7 +115,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__pyreturn_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__pyreturn_callback__doc__,
 "_pyreturn_callback($self, code, instruction_offset, retval, /)\n"
 "--\n"
 "\n");
@@ -149,7 +149,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__ccall_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__ccall_callback__doc__,
 "_ccall_callback($self, code, instruction_offset, callable, self_arg, /)\n"
 "--\n"
 "\n");
@@ -184,7 +184,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler__creturn_callback__doc__,
+TyDoc_STRVAR(_lsprof_Profiler__creturn_callback__doc__,
 "_creturn_callback($self, code, instruction_offset, callable, self_arg,\n"
 "                  /)\n"
 "--\n"
@@ -221,7 +221,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler_enable__doc__,
+TyDoc_STRVAR(_lsprof_Profiler_enable__doc__,
 "enable($self, /, subcalls=True, builtins=True)\n"
 "--\n"
 "\n"
@@ -254,7 +254,7 @@ _lsprof_Profiler_enable(TyObject *self, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(subcalls), &_Ty_ID(builtins), },
     };
@@ -305,7 +305,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lsprof_Profiler_disable__doc__,
+TyDoc_STRVAR(_lsprof_Profiler_disable__doc__,
 "disable($self, /)\n"
 "--\n"
 "\n"
@@ -323,7 +323,7 @@ _lsprof_Profiler_disable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _lsprof_Profiler_disable_impl((ProfilerObject *)self);
 }
 
-PyDoc_STRVAR(_lsprof_Profiler_clear__doc__,
+TyDoc_STRVAR(_lsprof_Profiler_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -341,7 +341,7 @@ _lsprof_Profiler_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _lsprof_Profiler_clear_impl((ProfilerObject *)self);
 }
 
-PyDoc_STRVAR(profiler_init__doc__,
+TyDoc_STRVAR(profiler_init__doc__,
 "Profiler(timer=None, timeunit=0.0, subcalls=True, builtins=True)\n"
 "--\n"
 "\n"
@@ -369,7 +369,7 @@ profiler_init(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(timer), &_Ty_ID(timeunit), &_Ty_ID(subcalls), &_Ty_ID(builtins), },
     };

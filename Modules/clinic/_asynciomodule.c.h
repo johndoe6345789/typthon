@@ -9,7 +9,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_asyncio_Future___init____doc__,
+TyDoc_STRVAR(_asyncio_Future___init____doc__,
 "Future(*, loop=None)\n"
 "--\n"
 "\n"
@@ -42,7 +42,7 @@ _asyncio_Future___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(loop), },
     };
@@ -82,7 +82,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_result__doc__,
+TyDoc_STRVAR(_asyncio_Future_result__doc__,
 "result($self, /)\n"
 "--\n"
 "\n"
@@ -110,7 +110,7 @@ _asyncio_Future_result(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_exception__doc__,
+TyDoc_STRVAR(_asyncio_Future_exception__doc__,
 "exception($self, /)\n"
 "--\n"
 "\n"
@@ -144,7 +144,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_set_result__doc__,
+TyDoc_STRVAR(_asyncio_Future_set_result__doc__,
 "set_result($self, result, /)\n"
 "--\n"
 "\n"
@@ -194,7 +194,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_set_exception__doc__,
+TyDoc_STRVAR(_asyncio_Future_set_exception__doc__,
 "set_exception($self, exception, /)\n"
 "--\n"
 "\n"
@@ -244,7 +244,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_add_done_callback__doc__,
+TyDoc_STRVAR(_asyncio_Future_add_done_callback__doc__,
 "add_done_callback($self, fn, /, *, context=<unrepresentable>)\n"
 "--\n"
 "\n"
@@ -274,7 +274,7 @@ _asyncio_Future_add_done_callback(TyObject *self, TyTypeObject *cls, TyObject *c
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(context), },
     };
@@ -316,7 +316,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_remove_done_callback__doc__,
+TyDoc_STRVAR(_asyncio_Future_remove_done_callback__doc__,
 "remove_done_callback($self, fn, /)\n"
 "--\n"
 "\n"
@@ -365,7 +365,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_cancel__doc__,
+TyDoc_STRVAR(_asyncio_Future_cancel__doc__,
 "cancel($self, /, msg=None)\n"
 "--\n"
 "\n"
@@ -395,7 +395,7 @@ _asyncio_Future_cancel(TyObject *self, TyTypeObject *cls, TyObject *const *args,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(msg), },
     };
@@ -435,7 +435,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_cancelled__doc__,
+TyDoc_STRVAR(_asyncio_Future_cancelled__doc__,
 "cancelled($self, /)\n"
 "--\n"
 "\n"
@@ -459,7 +459,7 @@ _asyncio_Future_cancelled(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_done__doc__,
+TyDoc_STRVAR(_asyncio_Future_done__doc__,
 "done($self, /)\n"
 "--\n"
 "\n"
@@ -486,7 +486,7 @@ _asyncio_Future_done(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future_get_loop__doc__,
+TyDoc_STRVAR(_asyncio_Future_get_loop__doc__,
 "get_loop($self, /)\n"
 "--\n"
 "\n"
@@ -841,7 +841,7 @@ _asyncio_Future__state_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Future__make_cancelled_error__doc__,
+TyDoc_STRVAR(_asyncio_Future__make_cancelled_error__doc__,
 "_make_cancelled_error($self, /)\n"
 "--\n"
 "\n"
@@ -868,7 +868,7 @@ _asyncio_Future__make_cancelled_error(TyObject *self, TyObject *Py_UNUSED(ignore
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task___init____doc__,
+TyDoc_STRVAR(_asyncio_Task___init____doc__,
 "Task(coro, *, loop=None, name=None, context=None, eager_start=False)\n"
 "--\n"
 "\n"
@@ -892,7 +892,7 @@ _asyncio_Task___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(coro), &_Ty_ID(loop), &_Ty_ID(name), &_Ty_ID(context), &_Ty_ID(eager_start), },
     };
@@ -1083,7 +1083,7 @@ _asyncio_Task__fut_waiter_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task__make_cancelled_error__doc__,
+TyDoc_STRVAR(_asyncio_Task__make_cancelled_error__doc__,
 "_make_cancelled_error($self, /)\n"
 "--\n"
 "\n"
@@ -1110,7 +1110,7 @@ _asyncio_Task__make_cancelled_error(TyObject *self, TyObject *Py_UNUSED(ignored)
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_cancel__doc__,
+TyDoc_STRVAR(_asyncio_Task_cancel__doc__,
 "cancel($self, /, msg=None)\n"
 "--\n"
 "\n"
@@ -1154,7 +1154,7 @@ _asyncio_Task_cancel(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(msg), },
     };
@@ -1194,7 +1194,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_cancelling__doc__,
+TyDoc_STRVAR(_asyncio_Task_cancelling__doc__,
 "cancelling($self, /)\n"
 "--\n"
 "\n"
@@ -1221,7 +1221,7 @@ _asyncio_Task_cancelling(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_uncancel__doc__,
+TyDoc_STRVAR(_asyncio_Task_uncancel__doc__,
 "uncancel($self, /)\n"
 "--\n"
 "\n"
@@ -1250,7 +1250,7 @@ _asyncio_Task_uncancel(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_get_stack__doc__,
+TyDoc_STRVAR(_asyncio_Task_get_stack__doc__,
 "get_stack($self, /, *, limit=None)\n"
 "--\n"
 "\n"
@@ -1294,7 +1294,7 @@ _asyncio_Task_get_stack(TyObject *self, TyTypeObject *cls, TyObject *const *args
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(limit), },
     };
@@ -1332,7 +1332,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_print_stack__doc__,
+TyDoc_STRVAR(_asyncio_Task_print_stack__doc__,
 "print_stack($self, /, *, limit=None, file=None)\n"
 "--\n"
 "\n"
@@ -1364,7 +1364,7 @@ _asyncio_Task_print_stack(TyObject *self, TyTypeObject *cls, TyObject *const *ar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(limit), &_Ty_ID(file), },
     };
@@ -1409,7 +1409,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_set_result__doc__,
+TyDoc_STRVAR(_asyncio_Task_set_result__doc__,
 "set_result($self, result, /)\n"
 "--\n"
 "\n");
@@ -1430,7 +1430,7 @@ _asyncio_Task_set_result(TyObject *self, TyObject *result)
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_set_exception__doc__,
+TyDoc_STRVAR(_asyncio_Task_set_exception__doc__,
 "set_exception($self, exception, /)\n"
 "--\n"
 "\n");
@@ -1451,7 +1451,7 @@ _asyncio_Task_set_exception(TyObject *self, TyObject *exception)
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_get_coro__doc__,
+TyDoc_STRVAR(_asyncio_Task_get_coro__doc__,
 "get_coro($self, /)\n"
 "--\n"
 "\n");
@@ -1474,7 +1474,7 @@ _asyncio_Task_get_coro(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_get_context__doc__,
+TyDoc_STRVAR(_asyncio_Task_get_context__doc__,
 "get_context($self, /)\n"
 "--\n"
 "\n");
@@ -1491,7 +1491,7 @@ _asyncio_Task_get_context(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _asyncio_Task_get_context_impl((TaskObj *)self);
 }
 
-PyDoc_STRVAR(_asyncio_Task_get_name__doc__,
+TyDoc_STRVAR(_asyncio_Task_get_name__doc__,
 "get_name($self, /)\n"
 "--\n"
 "\n");
@@ -1514,7 +1514,7 @@ _asyncio_Task_get_name(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_Task_set_name__doc__,
+TyDoc_STRVAR(_asyncio_Task_set_name__doc__,
 "set_name($self, value, /)\n"
 "--\n"
 "\n");
@@ -1537,7 +1537,7 @@ _asyncio_Task_set_name(TyObject *self, TyObject *value)
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio__get_running_loop__doc__,
+TyDoc_STRVAR(_asyncio__get_running_loop__doc__,
 "_get_running_loop($module, /)\n"
 "--\n"
 "\n"
@@ -1558,7 +1558,7 @@ _asyncio__get_running_loop(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _asyncio__get_running_loop_impl(module);
 }
 
-PyDoc_STRVAR(_asyncio__set_running_loop__doc__,
+TyDoc_STRVAR(_asyncio__set_running_loop__doc__,
 "_set_running_loop($module, loop, /)\n"
 "--\n"
 "\n"
@@ -1570,7 +1570,7 @@ PyDoc_STRVAR(_asyncio__set_running_loop__doc__,
 #define _ASYNCIO__SET_RUNNING_LOOP_METHODDEF    \
     {"_set_running_loop", (PyCFunction)_asyncio__set_running_loop, METH_O, _asyncio__set_running_loop__doc__},
 
-PyDoc_STRVAR(_asyncio_get_event_loop__doc__,
+TyDoc_STRVAR(_asyncio_get_event_loop__doc__,
 "get_event_loop($module, /)\n"
 "--\n"
 "\n"
@@ -1595,7 +1595,7 @@ _asyncio_get_event_loop(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _asyncio_get_event_loop_impl(module);
 }
 
-PyDoc_STRVAR(_asyncio_get_running_loop__doc__,
+TyDoc_STRVAR(_asyncio_get_running_loop__doc__,
 "get_running_loop($module, /)\n"
 "--\n"
 "\n"
@@ -1615,7 +1615,7 @@ _asyncio_get_running_loop(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _asyncio_get_running_loop_impl(module);
 }
 
-PyDoc_STRVAR(_asyncio__register_task__doc__,
+TyDoc_STRVAR(_asyncio__register_task__doc__,
 "_register_task($module, /, task)\n"
 "--\n"
 "\n"
@@ -1642,7 +1642,7 @@ _asyncio__register_task(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(task), },
     };
@@ -1675,7 +1675,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio__register_eager_task__doc__,
+TyDoc_STRVAR(_asyncio__register_eager_task__doc__,
 "_register_eager_task($module, /, task)\n"
 "--\n"
 "\n"
@@ -1702,7 +1702,7 @@ _asyncio__register_eager_task(TyObject *module, TyObject *const *args, Ty_ssize_
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(task), },
     };
@@ -1735,7 +1735,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio__unregister_task__doc__,
+TyDoc_STRVAR(_asyncio__unregister_task__doc__,
 "_unregister_task($module, /, task)\n"
 "--\n"
 "\n"
@@ -1762,7 +1762,7 @@ _asyncio__unregister_task(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(task), },
     };
@@ -1795,7 +1795,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio__unregister_eager_task__doc__,
+TyDoc_STRVAR(_asyncio__unregister_eager_task__doc__,
 "_unregister_eager_task($module, /, task)\n"
 "--\n"
 "\n"
@@ -1822,7 +1822,7 @@ _asyncio__unregister_eager_task(TyObject *module, TyObject *const *args, Ty_ssiz
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(task), },
     };
@@ -1855,7 +1855,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio__enter_task__doc__,
+TyDoc_STRVAR(_asyncio__enter_task__doc__,
 "_enter_task($module, /, loop, task)\n"
 "--\n"
 "\n"
@@ -1884,7 +1884,7 @@ _asyncio__enter_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(loop), &_Ty_ID(task), },
     };
@@ -1919,7 +1919,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio__leave_task__doc__,
+TyDoc_STRVAR(_asyncio__leave_task__doc__,
 "_leave_task($module, /, loop, task)\n"
 "--\n"
 "\n"
@@ -1948,7 +1948,7 @@ _asyncio__leave_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(loop), &_Ty_ID(task), },
     };
@@ -1983,7 +1983,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio__swap_current_task__doc__,
+TyDoc_STRVAR(_asyncio__swap_current_task__doc__,
 "_swap_current_task($module, /, loop, task)\n"
 "--\n"
 "\n"
@@ -2011,7 +2011,7 @@ _asyncio__swap_current_task(TyObject *module, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(loop), &_Ty_ID(task), },
     };
@@ -2046,7 +2046,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_current_task__doc__,
+TyDoc_STRVAR(_asyncio_current_task__doc__,
 "current_task($module, /, loop=None)\n"
 "--\n"
 "\n"
@@ -2071,7 +2071,7 @@ _asyncio_current_task(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(loop), },
     };
@@ -2109,7 +2109,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_all_tasks__doc__,
+TyDoc_STRVAR(_asyncio_all_tasks__doc__,
 "all_tasks($module, /, loop=None)\n"
 "--\n"
 "\n"
@@ -2134,7 +2134,7 @@ _asyncio_all_tasks(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(loop), },
     };
@@ -2172,7 +2172,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_future_add_to_awaited_by__doc__,
+TyDoc_STRVAR(_asyncio_future_add_to_awaited_by__doc__,
 "future_add_to_awaited_by($module, fut, waiter, /)\n"
 "--\n"
 "\n"
@@ -2203,7 +2203,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_asyncio_future_discard_from_awaited_by__doc__,
+TyDoc_STRVAR(_asyncio_future_discard_from_awaited_by__doc__,
 "future_discard_from_awaited_by($module, fut, waiter, /)\n"
 "--\n"
 "\n");

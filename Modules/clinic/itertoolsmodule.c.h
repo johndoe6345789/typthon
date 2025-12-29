@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(batched_new__doc__,
+TyDoc_STRVAR(batched_new__doc__,
 "batched(iterable, n, *, strict=False)\n"
 "--\n"
 "\n"
@@ -47,7 +47,7 @@ batched_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(iterable), _Ty_LATIN1_CHR('n'), &_Ty_ID(strict), },
     };
@@ -105,7 +105,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pairwise_new__doc__,
+TyDoc_STRVAR(pairwise_new__doc__,
 "pairwise(iterable, /)\n"
 "--\n"
 "\n"
@@ -137,7 +137,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_groupby__doc__,
+TyDoc_STRVAR(itertools_groupby__doc__,
 "groupby(iterable, key=None)\n"
 "--\n"
 "\n"
@@ -166,7 +166,7 @@ itertools_groupby(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(iterable), &_Ty_ID(key), },
     };
@@ -239,7 +239,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_teedataobject__doc__,
+TyDoc_STRVAR(itertools_teedataobject__doc__,
 "teedataobject(iterable, values, next, /)\n"
 "--\n"
 "\n"
@@ -278,7 +278,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools__tee__doc__,
+TyDoc_STRVAR(itertools__tee__doc__,
 "_tee(iterable, /)\n"
 "--\n"
 "\n"
@@ -308,7 +308,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_tee__doc__,
+TyDoc_STRVAR(itertools_tee__doc__,
 "tee($module, iterable, n=2, /)\n"
 "--\n"
 "\n"
@@ -353,7 +353,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_cycle__doc__,
+TyDoc_STRVAR(itertools_cycle__doc__,
 "cycle(iterable, /)\n"
 "--\n"
 "\n"
@@ -383,7 +383,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_dropwhile__doc__,
+TyDoc_STRVAR(itertools_dropwhile__doc__,
 "dropwhile(predicate, iterable, /)\n"
 "--\n"
 "\n"
@@ -417,7 +417,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_takewhile__doc__,
+TyDoc_STRVAR(itertools_takewhile__doc__,
 "takewhile(predicate, iterable, /)\n"
 "--\n"
 "\n"
@@ -449,7 +449,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_starmap__doc__,
+TyDoc_STRVAR(itertools_starmap__doc__,
 "starmap(function, iterable, /)\n"
 "--\n"
 "\n"
@@ -481,7 +481,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_chain_from_iterable__doc__,
+TyDoc_STRVAR(itertools_chain_from_iterable__doc__,
 "from_iterable($type, iterable, /)\n"
 "--\n"
 "\n"
@@ -503,7 +503,7 @@ itertools_chain_from_iterable(TyObject *type, TyObject *arg)
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_combinations__doc__,
+TyDoc_STRVAR(itertools_combinations__doc__,
 "combinations(iterable, r)\n"
 "--\n"
 "\n"
@@ -528,7 +528,7 @@ itertools_combinations(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(iterable), _Ty_LATIN1_CHR('r'), },
     };
@@ -576,7 +576,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_combinations_with_replacement__doc__,
+TyDoc_STRVAR(itertools_combinations_with_replacement__doc__,
 "combinations_with_replacement(iterable, r)\n"
 "--\n"
 "\n"
@@ -602,7 +602,7 @@ itertools_combinations_with_replacement(TyTypeObject *type, TyObject *args, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(iterable), _Ty_LATIN1_CHR('r'), },
     };
@@ -650,7 +650,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_permutations__doc__,
+TyDoc_STRVAR(itertools_permutations__doc__,
 "permutations(iterable, r=None)\n"
 "--\n"
 "\n"
@@ -675,7 +675,7 @@ itertools_permutations(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(iterable), _Ty_LATIN1_CHR('r'), },
     };
@@ -717,7 +717,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_accumulate__doc__,
+TyDoc_STRVAR(itertools_accumulate__doc__,
 "accumulate(iterable, func=None, *, initial=None)\n"
 "--\n"
 "\n"
@@ -740,7 +740,7 @@ itertools_accumulate(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(iterable), &_Ty_ID(func), &_Ty_ID(initial), },
     };
@@ -793,7 +793,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_compress__doc__,
+TyDoc_STRVAR(itertools_compress__doc__,
 "compress(data, selectors)\n"
 "--\n"
 "\n"
@@ -818,7 +818,7 @@ itertools_compress(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(selectors), },
     };
@@ -855,7 +855,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_filterfalse__doc__,
+TyDoc_STRVAR(itertools_filterfalse__doc__,
 "filterfalse(function, iterable, /)\n"
 "--\n"
 "\n"
@@ -889,7 +889,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(itertools_count__doc__,
+TyDoc_STRVAR(itertools_count__doc__,
 "count(start=0, step=1)\n"
 "--\n"
 "\n"
@@ -919,7 +919,7 @@ itertools_count(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(start), &_Ty_ID(step), },
     };

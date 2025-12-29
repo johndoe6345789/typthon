@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(pysqlite_complete_statement__doc__,
+TyDoc_STRVAR(pysqlite_complete_statement__doc__,
 "complete_statement($module, /, statement)\n"
 "--\n"
 "\n"
@@ -33,7 +33,7 @@ pysqlite_complete_statement(TyObject *module, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(statement), },
     };
@@ -78,7 +78,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_register_adapter__doc__,
+TyDoc_STRVAR(pysqlite_register_adapter__doc__,
 "register_adapter($module, type, adapter, /)\n"
 "--\n"
 "\n"
@@ -109,7 +109,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_register_converter__doc__,
+TyDoc_STRVAR(pysqlite_register_converter__doc__,
 "register_converter($module, typename, converter, /)\n"
 "--\n"
 "\n"
@@ -144,7 +144,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_enable_callback_trace__doc__,
+TyDoc_STRVAR(pysqlite_enable_callback_trace__doc__,
 "enable_callback_tracebacks($module, enable, /)\n"
 "--\n"
 "\n"
@@ -172,7 +172,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_adapt__doc__,
+TyDoc_STRVAR(pysqlite_adapt__doc__,
 "adapt($module, obj, proto=PrepareProtocolType, alt=<unrepresentable>, /)\n"
 "--\n"
 "\n"

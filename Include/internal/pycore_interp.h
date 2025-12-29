@@ -8,7 +8,7 @@ extern "C" {
 #  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-#include "pycore_interp_structs.h" // PyInterpreterState
+#include "pycore_interp_structs.h" // TyInterpreterState
 
 
 /* interpreter state */
@@ -28,24 +28,24 @@ extern "C" {
 extern void _TyInterpreterState_Clear(TyThreadState *tstate);
 
 static inline TyThreadState*
-_TyInterpreterState_GetFinalizing(PyInterpreterState *interp) {
+_TyInterpreterState_GetFinalizing(TyInterpreterState *interp) {
     return (TyThreadState*)_Ty_atomic_load_ptr_relaxed(&interp->_finalizing);
 }
 
 static inline unsigned long
-_TyInterpreterState_GetFinalizingID(PyInterpreterState *interp) {
+_TyInterpreterState_GetFinalizingID(TyInterpreterState *interp) {
     return _Ty_atomic_load_ulong_relaxed(&interp->_finalizing_id);
 }
 
 static inline void
-_TyInterpreterState_SetFinalizing(PyInterpreterState *interp, TyThreadState *tstate) {
+_TyInterpreterState_SetFinalizing(TyInterpreterState *interp, TyThreadState *tstate) {
     _Ty_atomic_store_ptr_relaxed(&interp->_finalizing, tstate);
     if (tstate == NULL) {
         _Ty_atomic_store_ulong_relaxed(&interp->_finalizing_id, 0);
     }
     else {
         // XXX Re-enable this assert once gh-109860 is fixed.
-        //assert(tstate->thread_id == PyThread_get_thread_ident());
+        //assert(tstate->thread_id == TyThread_get_thread_ident());
         _Ty_atomic_store_ulong_relaxed(&interp->_finalizing_id,
                                        tstate->thread_id);
     }
@@ -54,16 +54,16 @@ _TyInterpreterState_SetFinalizing(PyInterpreterState *interp, TyThreadState *tst
 
 // Exports for the _testinternalcapi module.
 PyAPI_FUNC(int64_t) _TyInterpreterState_ObjectToID(TyObject *);
-PyAPI_FUNC(PyInterpreterState *) _TyInterpreterState_LookUpID(int64_t);
-PyAPI_FUNC(PyInterpreterState *) _TyInterpreterState_LookUpIDObject(TyObject *);
-PyAPI_FUNC(void) _TyInterpreterState_IDIncref(PyInterpreterState *);
-PyAPI_FUNC(void) _TyInterpreterState_IDDecref(PyInterpreterState *);
+PyAPI_FUNC(TyInterpreterState *) _TyInterpreterState_LookUpID(int64_t);
+PyAPI_FUNC(TyInterpreterState *) _TyInterpreterState_LookUpIDObject(TyObject *);
+PyAPI_FUNC(void) _TyInterpreterState_IDIncref(TyInterpreterState *);
+PyAPI_FUNC(void) _TyInterpreterState_IDDecref(TyInterpreterState *);
 
-PyAPI_FUNC(int) _TyInterpreterState_IsReady(PyInterpreterState *interp);
+PyAPI_FUNC(int) _TyInterpreterState_IsReady(TyInterpreterState *interp);
 
-PyAPI_FUNC(long) _TyInterpreterState_GetWhence(PyInterpreterState *interp);
+PyAPI_FUNC(long) _TyInterpreterState_GetWhence(TyInterpreterState *interp);
 extern void _TyInterpreterState_SetWhence(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     long whence);
 
 /*
@@ -93,15 +93,15 @@ might not be allowed in the current interpreter (i.e. os.fork() would fail).
 /* Set if os.exec*() is allowed. */
 #define Ty_RTFLAGS_EXEC (1UL << 16)
 
-extern int _TyInterpreterState_HasFeature(PyInterpreterState *interp,
+extern int _TyInterpreterState_HasFeature(TyInterpreterState *interp,
                                           unsigned long feature);
 
 PyAPI_FUNC(TyStatus) _TyInterpreterState_New(
     TyThreadState *tstate,
-    PyInterpreterState **pinterp);
+    TyInterpreterState **pinterp);
 
 extern const PyConfig* _TyInterpreterState_GetConfig(
-    PyInterpreterState *interp);
+    TyInterpreterState *interp);
 
 #ifdef __cplusplus
 }

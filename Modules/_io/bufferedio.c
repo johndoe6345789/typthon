@@ -31,7 +31,7 @@ class _io.BufferedRandom "buffered *" "clinic_state()->PyBufferedRandom_Type"
 /*
  * BufferedIOBase class, inherits from IOBase.
  */
-PyDoc_STRVAR(bufferediobase_doc,
+TyDoc_STRVAR(bufferediobase_doc,
     "Base class for buffered IO objects.\n"
     "\n"
     "The main difference with RawIOBase is that the read() method\n"
@@ -253,7 +253,7 @@ typedef struct {
        isn't ready for writing. */
     Ty_off_t write_end;
 
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
     volatile unsigned long owner;
 
     Ty_ssize_t buffer_size;
@@ -294,17 +294,17 @@ static int
 _enter_buffered_busy(buffered *self)
 {
     int relax_locking;
-    PyLockStatus st;
-    if (self->owner == PyThread_get_thread_ident()) {
+    TyLockStatus st;
+    if (self->owner == TyThread_get_thread_ident()) {
         TyErr_Format(TyExc_RuntimeError,
                      "reentrant call inside %R", self);
         return 0;
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     relax_locking = _Ty_IsInterpreterFinalizing(interp);
     Ty_BEGIN_ALLOW_THREADS
     if (!relax_locking)
-        st = PyThread_acquire_lock(self->lock, 1);
+        st = TyThread_acquire_lock(self->lock, 1);
     else {
         /* When finalizing, we don't want a deadlock to happen with daemon
          * threads abruptly shut down while they owned the lock.
@@ -312,7 +312,7 @@ _enter_buffered_busy(buffered *self)
          * Note that non-daemon threads have already exited here, so this
          * shouldn't affect carefully written threaded I/O code.
          */
-        st = PyThread_acquire_lock_timed(self->lock, (PY_TIMEOUT_T)1e6, 0);
+        st = TyThread_acquire_lock_timed(self->lock, (PY_TIMEOUT_T)1e6, 0);
     }
     Ty_END_ALLOW_THREADS
     if (relax_locking && st != PY_LOCK_ACQUIRED) {
@@ -326,14 +326,14 @@ _enter_buffered_busy(buffered *self)
 }
 
 #define ENTER_BUFFERED(self) \
-    ( (PyThread_acquire_lock(self->lock, 0) ? \
+    ( (TyThread_acquire_lock(self->lock, 0) ? \
        1 : _enter_buffered_busy(self)) \
-     && (self->owner = PyThread_get_thread_ident(), 1) )
+     && (self->owner = TyThread_get_thread_ident(), 1) )
 
 #define LEAVE_BUFFERED(self) \
     do { \
         self->owner = 0; \
-        PyThread_release_lock(self->lock); \
+        TyThread_release_lock(self->lock); \
     } while(0);
 
 #define CHECK_INITIALIZED(self) \
@@ -428,7 +428,7 @@ buffered_dealloc(TyObject *op)
         self->buffer = NULL;
     }
     if (self->lock) {
-        PyThread_free_lock(self->lock);
+        TyThread_free_lock(self->lock);
         self->lock = NULL;
     }
     (void)buffered_clear(op);
@@ -842,8 +842,8 @@ _buffered_init(buffered *self)
         return -1;
     }
     if (self->lock)
-        PyThread_free_lock(self->lock);
-    self->lock = PyThread_allocate_lock();
+        TyThread_free_lock(self->lock);
+    self->lock = TyThread_allocate_lock();
     if (self->lock == NULL) {
         TyErr_SetString(TyExc_RuntimeError, "can't allocate read lock");
         return -1;

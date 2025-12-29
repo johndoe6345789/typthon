@@ -128,7 +128,7 @@ _PySSL_keylog_callback(const SSL *ssl, const char *line)
 
     ssl_obj = (PySSLSocket *)SSL_get_app_data(ssl);
     assert(Ty_IS_TYPE(ssl_obj, get_state_sock(ssl_obj)->PySSLSocket_Type));
-    PyThread_type_lock lock = get_state_sock(ssl_obj)->keylog_lock;
+    TyThread_type_lock lock = get_state_sock(ssl_obj)->keylog_lock;
     assert(lock != NULL);
     if (ssl_obj->ctx->keylog_bio == NULL) {
         return;
@@ -141,11 +141,11 @@ _PySSL_keylog_callback(const SSL *ssl, const char *line)
      */
 
     PySSL_BEGIN_ALLOW_THREADS
-    PyThread_acquire_lock(lock, 1);
+    TyThread_acquire_lock(lock, 1);
     res = BIO_printf(ssl_obj->ctx->keylog_bio, "%s\n", line);
     e = errno;
     (void)BIO_flush(ssl_obj->ctx->keylog_bio);
-    PyThread_release_lock(lock);
+    TyThread_release_lock(lock);
     PySSL_END_ALLOW_THREADS
 
     if (res == -1) {

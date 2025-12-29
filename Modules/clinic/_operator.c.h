@@ -5,7 +5,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_operator_truth__doc__,
+TyDoc_STRVAR(_operator_truth__doc__,
 "truth($module, a, /)\n"
 "--\n"
 "\n"
@@ -33,7 +33,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_add__doc__,
+TyDoc_STRVAR(_operator_add__doc__,
 "add($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -63,7 +63,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_sub__doc__,
+TyDoc_STRVAR(_operator_sub__doc__,
 "sub($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -93,7 +93,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_mul__doc__,
+TyDoc_STRVAR(_operator_mul__doc__,
 "mul($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -123,7 +123,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_matmul__doc__,
+TyDoc_STRVAR(_operator_matmul__doc__,
 "matmul($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -153,7 +153,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_floordiv__doc__,
+TyDoc_STRVAR(_operator_floordiv__doc__,
 "floordiv($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -183,7 +183,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_truediv__doc__,
+TyDoc_STRVAR(_operator_truediv__doc__,
 "truediv($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -213,7 +213,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_mod__doc__,
+TyDoc_STRVAR(_operator_mod__doc__,
 "mod($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -243,7 +243,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_neg__doc__,
+TyDoc_STRVAR(_operator_neg__doc__,
 "neg($module, a, /)\n"
 "--\n"
 "\n"
@@ -252,7 +252,7 @@ PyDoc_STRVAR(_operator_neg__doc__,
 #define _OPERATOR_NEG_METHODDEF    \
     {"neg", (PyCFunction)_operator_neg, METH_O, _operator_neg__doc__},
 
-PyDoc_STRVAR(_operator_pos__doc__,
+TyDoc_STRVAR(_operator_pos__doc__,
 "pos($module, a, /)\n"
 "--\n"
 "\n"
@@ -261,7 +261,7 @@ PyDoc_STRVAR(_operator_pos__doc__,
 #define _OPERATOR_POS_METHODDEF    \
     {"pos", (PyCFunction)_operator_pos, METH_O, _operator_pos__doc__},
 
-PyDoc_STRVAR(_operator_abs__doc__,
+TyDoc_STRVAR(_operator_abs__doc__,
 "abs($module, a, /)\n"
 "--\n"
 "\n"
@@ -270,7 +270,7 @@ PyDoc_STRVAR(_operator_abs__doc__,
 #define _OPERATOR_ABS_METHODDEF    \
     {"abs", (PyCFunction)_operator_abs, METH_O, _operator_abs__doc__},
 
-PyDoc_STRVAR(_operator_inv__doc__,
+TyDoc_STRVAR(_operator_inv__doc__,
 "inv($module, a, /)\n"
 "--\n"
 "\n"
@@ -279,7 +279,7 @@ PyDoc_STRVAR(_operator_inv__doc__,
 #define _OPERATOR_INV_METHODDEF    \
     {"inv", (PyCFunction)_operator_inv, METH_O, _operator_inv__doc__},
 
-PyDoc_STRVAR(_operator_invert__doc__,
+TyDoc_STRVAR(_operator_invert__doc__,
 "invert($module, a, /)\n"
 "--\n"
 "\n"
@@ -288,7 +288,7 @@ PyDoc_STRVAR(_operator_invert__doc__,
 #define _OPERATOR_INVERT_METHODDEF    \
     {"invert", (PyCFunction)_operator_invert, METH_O, _operator_invert__doc__},
 
-PyDoc_STRVAR(_operator_lshift__doc__,
+TyDoc_STRVAR(_operator_lshift__doc__,
 "lshift($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -318,7 +318,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_rshift__doc__,
+TyDoc_STRVAR(_operator_rshift__doc__,
 "rshift($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -348,7 +348,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_not___doc__,
+TyDoc_STRVAR(_operator_not___doc__,
 "not_($module, a, /)\n"
 "--\n"
 "\n"
@@ -376,7 +376,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_and___doc__,
+TyDoc_STRVAR(_operator_and___doc__,
 "and_($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -406,7 +406,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_xor__doc__,
+TyDoc_STRVAR(_operator_xor__doc__,
 "xor($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -436,7 +436,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_or___doc__,
+TyDoc_STRVAR(_operator_or___doc__,
 "or_($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -466,7 +466,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_iadd__doc__,
+TyDoc_STRVAR(_operator_iadd__doc__,
 "iadd($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -496,7 +496,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_isub__doc__,
+TyDoc_STRVAR(_operator_isub__doc__,
 "isub($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -526,7 +526,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_imul__doc__,
+TyDoc_STRVAR(_operator_imul__doc__,
 "imul($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -556,7 +556,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_imatmul__doc__,
+TyDoc_STRVAR(_operator_imatmul__doc__,
 "imatmul($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -586,7 +586,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_ifloordiv__doc__,
+TyDoc_STRVAR(_operator_ifloordiv__doc__,
 "ifloordiv($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -616,7 +616,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_itruediv__doc__,
+TyDoc_STRVAR(_operator_itruediv__doc__,
 "itruediv($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -646,7 +646,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_imod__doc__,
+TyDoc_STRVAR(_operator_imod__doc__,
 "imod($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -676,7 +676,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_ilshift__doc__,
+TyDoc_STRVAR(_operator_ilshift__doc__,
 "ilshift($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -706,7 +706,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_irshift__doc__,
+TyDoc_STRVAR(_operator_irshift__doc__,
 "irshift($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -736,7 +736,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_iand__doc__,
+TyDoc_STRVAR(_operator_iand__doc__,
 "iand($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -766,7 +766,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_ixor__doc__,
+TyDoc_STRVAR(_operator_ixor__doc__,
 "ixor($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -796,7 +796,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_ior__doc__,
+TyDoc_STRVAR(_operator_ior__doc__,
 "ior($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -826,7 +826,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_concat__doc__,
+TyDoc_STRVAR(_operator_concat__doc__,
 "concat($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -856,7 +856,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_iconcat__doc__,
+TyDoc_STRVAR(_operator_iconcat__doc__,
 "iconcat($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -886,7 +886,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_contains__doc__,
+TyDoc_STRVAR(_operator_contains__doc__,
 "contains($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -921,7 +921,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_indexOf__doc__,
+TyDoc_STRVAR(_operator_indexOf__doc__,
 "indexOf($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -956,7 +956,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_countOf__doc__,
+TyDoc_STRVAR(_operator_countOf__doc__,
 "countOf($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -991,7 +991,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_getitem__doc__,
+TyDoc_STRVAR(_operator_getitem__doc__,
 "getitem($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1021,7 +1021,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_setitem__doc__,
+TyDoc_STRVAR(_operator_setitem__doc__,
 "setitem($module, a, b, c, /)\n"
 "--\n"
 "\n"
@@ -1054,7 +1054,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_delitem__doc__,
+TyDoc_STRVAR(_operator_delitem__doc__,
 "delitem($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1084,7 +1084,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_eq__doc__,
+TyDoc_STRVAR(_operator_eq__doc__,
 "eq($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1114,7 +1114,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_ne__doc__,
+TyDoc_STRVAR(_operator_ne__doc__,
 "ne($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1144,7 +1144,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_lt__doc__,
+TyDoc_STRVAR(_operator_lt__doc__,
 "lt($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1174,7 +1174,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_le__doc__,
+TyDoc_STRVAR(_operator_le__doc__,
 "le($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1204,7 +1204,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_gt__doc__,
+TyDoc_STRVAR(_operator_gt__doc__,
 "gt($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1234,7 +1234,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_ge__doc__,
+TyDoc_STRVAR(_operator_ge__doc__,
 "ge($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1264,7 +1264,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_pow__doc__,
+TyDoc_STRVAR(_operator_pow__doc__,
 "pow($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1294,7 +1294,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_ipow__doc__,
+TyDoc_STRVAR(_operator_ipow__doc__,
 "ipow($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1324,7 +1324,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_index__doc__,
+TyDoc_STRVAR(_operator_index__doc__,
 "index($module, a, /)\n"
 "--\n"
 "\n"
@@ -1333,7 +1333,7 @@ PyDoc_STRVAR(_operator_index__doc__,
 #define _OPERATOR_INDEX_METHODDEF    \
     {"index", (PyCFunction)_operator_index, METH_O, _operator_index__doc__},
 
-PyDoc_STRVAR(_operator_is___doc__,
+TyDoc_STRVAR(_operator_is___doc__,
 "is_($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1363,7 +1363,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_is_not__doc__,
+TyDoc_STRVAR(_operator_is_not__doc__,
 "is_not($module, a, b, /)\n"
 "--\n"
 "\n"
@@ -1393,7 +1393,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator_is_none__doc__,
+TyDoc_STRVAR(_operator_is_none__doc__,
 "is_none($module, a, /)\n"
 "--\n"
 "\n"
@@ -1402,7 +1402,7 @@ PyDoc_STRVAR(_operator_is_none__doc__,
 #define _OPERATOR_IS_NONE_METHODDEF    \
     {"is_none", (PyCFunction)_operator_is_none, METH_O, _operator_is_none__doc__},
 
-PyDoc_STRVAR(_operator_is_not_none__doc__,
+TyDoc_STRVAR(_operator_is_not_none__doc__,
 "is_not_none($module, a, /)\n"
 "--\n"
 "\n"
@@ -1411,7 +1411,7 @@ PyDoc_STRVAR(_operator_is_not_none__doc__,
 #define _OPERATOR_IS_NOT_NONE_METHODDEF    \
     {"is_not_none", (PyCFunction)_operator_is_not_none, METH_O, _operator_is_not_none__doc__},
 
-PyDoc_STRVAR(_operator_length_hint__doc__,
+TyDoc_STRVAR(_operator_length_hint__doc__,
 "length_hint($module, obj, default=0, /)\n"
 "--\n"
 "\n"
@@ -1468,7 +1468,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_operator__compare_digest__doc__,
+TyDoc_STRVAR(_operator__compare_digest__doc__,
 "_compare_digest($module, a, b, /)\n"
 "--\n"
 "\n"

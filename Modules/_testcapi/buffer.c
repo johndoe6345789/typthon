@@ -86,7 +86,7 @@ static struct TyMemberDef testbuf_members[] = {
 };
 
 static TyTypeObject testBufType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "testBufType",
     .tp_basicsize = sizeof(testBufObject),
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,

@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
-PyDoc_STRVAR(type___instancecheck____doc__,
+TyDoc_STRVAR(type___instancecheck____doc__,
 "__instancecheck__($self, instance, /)\n"
 "--\n"
 "\n"
@@ -32,7 +32,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(type___subclasscheck____doc__,
+TyDoc_STRVAR(type___subclasscheck____doc__,
 "__subclasscheck__($self, subclass, /)\n"
 "--\n"
 "\n"
@@ -60,7 +60,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(type_mro__doc__,
+TyDoc_STRVAR(type_mro__doc__,
 "mro($self, /)\n"
 "--\n"
 "\n"
@@ -78,7 +78,7 @@ type_mro(TyObject *self, TyObject *Py_UNUSED(ignored))
     return type_mro_impl((TyTypeObject *)self);
 }
 
-PyDoc_STRVAR(type___subclasses____doc__,
+TyDoc_STRVAR(type___subclasses____doc__,
 "__subclasses__($self, /)\n"
 "--\n"
 "\n"
@@ -96,7 +96,7 @@ type___subclasses__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return type___subclasses___impl((TyTypeObject *)self);
 }
 
-PyDoc_STRVAR(type___dir____doc__,
+TyDoc_STRVAR(type___dir____doc__,
 "__dir__($self, /)\n"
 "--\n"
 "\n"
@@ -114,7 +114,7 @@ type___dir__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return type___dir___impl((TyTypeObject *)self);
 }
 
-PyDoc_STRVAR(type___sizeof____doc__,
+TyDoc_STRVAR(type___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -132,7 +132,7 @@ type___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return type___sizeof___impl((TyTypeObject *)self);
 }
 
-PyDoc_STRVAR(object___getstate____doc__,
+TyDoc_STRVAR(object___getstate____doc__,
 "__getstate__($self, /)\n"
 "--\n"
 "\n"
@@ -150,7 +150,7 @@ object___getstate__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return object___getstate___impl(self);
 }
 
-PyDoc_STRVAR(object___reduce____doc__,
+TyDoc_STRVAR(object___reduce____doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n"
@@ -168,7 +168,7 @@ object___reduce__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return object___reduce___impl(self);
 }
 
-PyDoc_STRVAR(object___reduce_ex____doc__,
+TyDoc_STRVAR(object___reduce_ex____doc__,
 "__reduce_ex__($self, protocol, /)\n"
 "--\n"
 "\n"
@@ -196,7 +196,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(object___format____doc__,
+TyDoc_STRVAR(object___format____doc__,
 "__format__($self, format_spec, /)\n"
 "--\n"
 "\n"
@@ -227,7 +227,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(object___sizeof____doc__,
+TyDoc_STRVAR(object___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -245,7 +245,7 @@ object___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return object___sizeof___impl(self);
 }
 
-PyDoc_STRVAR(object___dir____doc__,
+TyDoc_STRVAR(object___dir____doc__,
 "__dir__($self, /)\n"
 "--\n"
 "\n"

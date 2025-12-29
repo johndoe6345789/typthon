@@ -28,7 +28,7 @@ PyCField_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(type), &_Ty_ID(byte_size), &_Ty_ID(byte_offset), &_Ty_ID(index), &_Ty_ID(_internal_use), &_Ty_ID(bit_size), &_Ty_ID(bit_offset), },
     };

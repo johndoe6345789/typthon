@@ -1,21 +1,21 @@
 #include "parts.h"
 
 
-PyDoc_STRVAR(docstring_empty,
+TyDoc_STRVAR(docstring_empty,
 ""
 );
 
-PyDoc_STRVAR(docstring_no_signature,
+TyDoc_STRVAR(docstring_no_signature,
 "This docstring has no signature."
 );
 
-PyDoc_STRVAR(docstring_with_invalid_signature,
+TyDoc_STRVAR(docstring_with_invalid_signature,
 "docstring_with_invalid_signature($module, /, boo)\n"
 "\n"
 "This docstring has an invalid signature."
 );
 
-PyDoc_STRVAR(docstring_with_invalid_signature2,
+TyDoc_STRVAR(docstring_with_invalid_signature2,
 "docstring_with_invalid_signature2($module, /, boo)\n"
 "\n"
 "--\n"
@@ -23,20 +23,20 @@ PyDoc_STRVAR(docstring_with_invalid_signature2,
 "This docstring also has an invalid signature."
 );
 
-PyDoc_STRVAR(docstring_with_signature,
+TyDoc_STRVAR(docstring_with_signature,
 "docstring_with_signature($module, /, sig)\n"
 "--\n"
 "\n"
 "This docstring has a valid signature."
 );
 
-PyDoc_STRVAR(docstring_with_signature_but_no_doc,
+TyDoc_STRVAR(docstring_with_signature_but_no_doc,
 "docstring_with_signature_but_no_doc($module, /, sig)\n"
 "--\n"
 "\n"
 );
 
-PyDoc_STRVAR(docstring_with_signature_and_extra_newlines,
+TyDoc_STRVAR(docstring_with_signature_and_extra_newlines,
 "docstring_with_signature_and_extra_newlines($module, /, parameter)\n"
 "--\n"
 "\n"
@@ -44,7 +44,7 @@ PyDoc_STRVAR(docstring_with_signature_and_extra_newlines,
 "This docstring has a valid signature and some extra newlines."
 );
 
-PyDoc_STRVAR(docstring_with_signature_with_defaults,
+TyDoc_STRVAR(docstring_with_signature_with_defaults,
 "docstring_with_signature_with_defaults(module, s='avocado',\n"
 "        b=b'bytes', d=3.14, i=35, n=None, t=True, f=False,\n"
 "        local=the_number_three, sys=sys.maxsize,\n"
@@ -99,10 +99,10 @@ static TyMethodDef test_methods[] = {
         test_with_docstring, METH_VARARGS},
     {"test_with_docstring",
         test_with_docstring,              METH_VARARGS,
-        PyDoc_STR("This is a pretty normal docstring.")},
+        TyDoc_STR("This is a pretty normal docstring.")},
     {"func_with_unrepresentable_signature",
         test_with_docstring, METH_VARARGS,
-        PyDoc_STR(
+        TyDoc_STR(
             "func_with_unrepresentable_signature($module, /, a, b=<x>)\n"
             "--\n\n"
             "This docstring has a signature with unrepresentable default."
@@ -139,7 +139,7 @@ static TyMethodDef DocStringNoSignatureTest_methods[] = {
 };
 
 static TyTypeObject DocStringNoSignatureTest = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testcapi.DocStringNoSignatureTest",
     .tp_basicsize = sizeof(TyObject),
     .tp_flags = Ty_TPFLAGS_DEFAULT,
@@ -150,28 +150,28 @@ static TyTypeObject DocStringNoSignatureTest = {
 static TyMethodDef DocStringUnrepresentableSignatureTest_methods[] = {
     {"meth",
         test_with_docstring, METH_VARARGS,
-        PyDoc_STR(
+        TyDoc_STR(
             "meth($self, /, a, b=<x>)\n"
             "--\n\n"
             "This docstring has a signature with unrepresentable default."
         )},
     {"classmeth",
         test_with_docstring, METH_VARARGS|METH_CLASS,
-        PyDoc_STR(
+        TyDoc_STR(
             "classmeth($type, /, a, b=<x>)\n"
             "--\n\n"
             "This docstring has a signature with unrepresentable default."
         )},
     {"staticmeth",
         test_with_docstring, METH_VARARGS|METH_STATIC,
-        PyDoc_STR(
+        TyDoc_STR(
             "staticmeth(a, b=<x>)\n"
             "--\n\n"
             "This docstring has a signature with unrepresentable default."
         )},
     {"with_default",
         test_with_docstring, METH_VARARGS,
-        PyDoc_STR(
+        TyDoc_STR(
             "with_default($self, /, x=ONE)\n"
             "--\n\n"
             "This instance method has a default parameter value from the module scope."
@@ -180,7 +180,7 @@ static TyMethodDef DocStringUnrepresentableSignatureTest_methods[] = {
 };
 
 static TyTypeObject DocStringUnrepresentableSignatureTest = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "_testcapi.DocStringUnrepresentableSignatureTest",
     .tp_basicsize = sizeof(TyObject),
     .tp_flags = Ty_TPFLAGS_DEFAULT,

@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(_testlimitedcapi_call_vectorcall__doc__,
+TyDoc_STRVAR(_testlimitedcapi_call_vectorcall__doc__,
 "call_vectorcall($module, callable, /)\n"
 "--\n"
 "\n");
@@ -10,7 +10,7 @@ PyDoc_STRVAR(_testlimitedcapi_call_vectorcall__doc__,
 #define _TESTLIMITEDCAPI_CALL_VECTORCALL_METHODDEF    \
     {"call_vectorcall", (PyCFunction)_testlimitedcapi_call_vectorcall, METH_O, _testlimitedcapi_call_vectorcall__doc__},
 
-PyDoc_STRVAR(_testlimitedcapi_call_vectorcall_method__doc__,
+TyDoc_STRVAR(_testlimitedcapi_call_vectorcall_method__doc__,
 "call_vectorcall_method($module, callable, /)\n"
 "--\n"
 "\n");

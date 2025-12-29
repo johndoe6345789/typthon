@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(subprocess_fork_exec__doc__,
+TyDoc_STRVAR(subprocess_fork_exec__doc__,
 "fork_exec($module, args, executable_list, close_fds, pass_fds, cwd,\n"
 "          env, p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite,\n"
 "          errpipe_read, errpipe_write, restore_signals, call_setsid,\n"

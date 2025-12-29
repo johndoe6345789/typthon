@@ -7,7 +7,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_gdbm_gdbm_get__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_get__doc__,
 "get($self, key, default=None, /)\n"
 "--\n"
 "\n"
@@ -41,7 +41,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_setdefault__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_setdefault__doc__,
 "setdefault($self, key, default=None, /)\n"
 "--\n"
 "\n"
@@ -76,7 +76,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_close__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -94,7 +94,7 @@ _gdbm_gdbm_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _gdbm_gdbm_close_impl((gdbmobject *)self);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_keys__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_keys__doc__,
 "keys($self, /)\n"
 "--\n"
 "\n"
@@ -116,7 +116,7 @@ _gdbm_gdbm_keys(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssi
     return _gdbm_gdbm_keys_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_firstkey__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_firstkey__doc__,
 "firstkey($self, /)\n"
 "--\n"
 "\n"
@@ -142,7 +142,7 @@ _gdbm_gdbm_firstkey(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty
     return _gdbm_gdbm_firstkey_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_nextkey__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_nextkey__doc__,
 "nextkey($self, key, /)\n"
 "--\n"
 "\n"
@@ -193,7 +193,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_reorganize__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_reorganize__doc__,
 "reorganize($self, /)\n"
 "--\n"
 "\n"
@@ -221,7 +221,7 @@ _gdbm_gdbm_reorganize(TyObject *self, TyTypeObject *cls, TyObject *const *args, 
     return _gdbm_gdbm_reorganize_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_sync__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_sync__doc__,
 "sync($self, /)\n"
 "--\n"
 "\n"
@@ -246,7 +246,7 @@ _gdbm_gdbm_sync(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssi
     return _gdbm_gdbm_sync_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(_gdbm_gdbm_clear__doc__,
+TyDoc_STRVAR(_gdbm_gdbm_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -268,7 +268,7 @@ _gdbm_gdbm_clear(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ss
     return _gdbm_gdbm_clear_impl((gdbmobject *)self, cls);
 }
 
-PyDoc_STRVAR(dbmopen__doc__,
+TyDoc_STRVAR(dbmopen__doc__,
 "open($module, filename, flags=\'r\', mode=0o666, /)\n"
 "--\n"
 "\n"

@@ -55,7 +55,7 @@ typedef struct {
 static inline _functools_state *
 get_functools_state_by_type(TyTypeObject *type);
 
-PyDoc_STRVAR(placeholder_doc,
+TyDoc_STRVAR(placeholder_doc,
 "The type of the Placeholder singleton.\n\n"
 "Used as a placeholder for partial arguments.");
 
@@ -577,7 +577,7 @@ partial_call(TyObject *self, TyObject *args, TyObject *kwargs)
     return res;
 }
 
-PyDoc_STRVAR(partial_doc,
+TyDoc_STRVAR(partial_doc,
 "partial(func, /, *args, **keywords)\n--\n\n\
 Create a new function with partial application of the given arguments\n\
 and keywords.");
@@ -754,7 +754,7 @@ static TyMethodDef partial_methods[] = {
     {"__reduce__", partial_reduce, METH_NOARGS},
     {"__setstate__", partial_setstate, METH_O},
     {"__class_getitem__",    Ty_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     {NULL,              NULL}           /* sentinel */
 };
 
@@ -828,7 +828,7 @@ keyobject_traverse(TyObject *op, visitproc visit, void *arg)
 static TyMemberDef keyobject_members[] = {
     {"obj", _Ty_T_OBJECT,
      offsetof(keyobject, object), 0,
-     PyDoc_STR("Value wrapped by a key function.")},
+     TyDoc_STR("Value wrapped by a key function.")},
     {NULL}
 };
 
@@ -1738,7 +1738,7 @@ lru_cache_tp_traverse(TyObject *op, visitproc visit, void *arg)
 }
 
 
-PyDoc_STRVAR(lru_cache_doc,
+TyDoc_STRVAR(lru_cache_doc,
 "Create a cached callable that wraps another function.\n\
 \n\
 user_function:      the function being cached\n\
@@ -1801,7 +1801,7 @@ static TyType_Spec lru_cache_type_spec = {
 
 /* module level code ********************************************************/
 
-PyDoc_STRVAR(_functools_doc,
+TyDoc_STRVAR(_functools_doc,
 "Tools that operate on functions.");
 
 static TyMethodDef _functools_methods[] = {

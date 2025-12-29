@@ -20,8 +20,8 @@ struct _ProfilerEntry;
 /* represents a function called from another function */
 typedef struct _ProfilerSubEntry {
     rotating_node_t header;
-    PyTime_t tt;
-    PyTime_t it;
+    TyTime_t tt;
+    TyTime_t it;
     long callcount;
     long recursivecallcount;
     long recursionLevel;
@@ -31,8 +31,8 @@ typedef struct _ProfilerSubEntry {
 typedef struct _ProfilerEntry {
     rotating_node_t header;
     TyObject *userObj; /* PyCodeObject, or a descriptive str for builtins */
-    PyTime_t tt; /* total time in this entry */
-    PyTime_t it; /* inline time in this entry (not in subcalls) */
+    TyTime_t tt; /* total time in this entry */
+    TyTime_t it; /* inline time in this entry (not in subcalls) */
     long callcount; /* how many times this was called */
     long recursivecallcount; /* how many times called recursively */
     long recursionLevel;
@@ -40,8 +40,8 @@ typedef struct _ProfilerEntry {
 } ProfilerEntry;
 
 typedef struct _ProfilerContext {
-    PyTime_t t0;
-    PyTime_t subt;
+    TyTime_t t0;
+    TyTime_t subt;
     struct _ProfilerContext *previous;
     ProfilerEntry *ctxEntry;
 } ProfilerContext;
@@ -90,7 +90,7 @@ _lsprof_get_state(TyObject *module)
 
 /*** External Timers ***/
 
-static PyTime_t CallExternalTimer(ProfilerObject *pObj)
+static TyTime_t CallExternalTimer(ProfilerObject *pObj)
 {
     TyObject *o = NULL;
 
@@ -106,7 +106,7 @@ static PyTime_t CallExternalTimer(ProfilerObject *pObj)
         return 0;
     }
 
-    PyTime_t result;
+    TyTime_t result;
     int err;
     if (pObj->externalTimerUnit > 0.0) {
         /* interpret the result as an integer that will be scaled
@@ -115,7 +115,7 @@ static PyTime_t CallExternalTimer(ProfilerObject *pObj)
     }
     else {
         /* interpret the result as a double measured in seconds.
-           As the profiler works with PyTime_t internally
+           As the profiler works with TyTime_t internally
            we convert it to a large integer */
         err = _TyTime_FromSecondsObject(&result, o, _TyTime_ROUND_FLOOR);
     }
@@ -128,14 +128,14 @@ static PyTime_t CallExternalTimer(ProfilerObject *pObj)
     return result;
 }
 
-static inline PyTime_t
+static inline TyTime_t
 call_timer(ProfilerObject *pObj)
 {
     if (pObj->externalTimer != NULL) {
         return CallExternalTimer(pObj);
     }
     else {
-        PyTime_t t;
+        TyTime_t t;
         (void)PyTime_PerfCounterRaw(&t);
         return t;
     }
@@ -327,8 +327,8 @@ initContext(ProfilerObject *pObj, ProfilerContext *self, ProfilerEntry *entry)
 static void
 Stop(ProfilerObject *pObj, ProfilerContext *self, ProfilerEntry *entry)
 {
-    PyTime_t tt = call_timer(pObj) - self->t0;
-    PyTime_t it = tt - self->subt;
+    TyTime_t tt = call_timer(pObj) - self->t0;
+    TyTime_t it = tt - self->subt;
     if (self->previous)
         self->previous->subt += tt;
     pObj->currentProfilerContext = self->previous;
@@ -433,7 +433,7 @@ pending_exception(ProfilerObject *pObj)
 
 /************************************************************/
 
-static PyStructSequence_Field profiler_entry_fields[] = {
+static TyStructSequence_Field profiler_entry_fields[] = {
     {"code",         "code object or built-in function name"},
     {"callcount",    "how many times this was called"},
     {"reccallcount", "how many times called recursively"},
@@ -443,7 +443,7 @@ static PyStructSequence_Field profiler_entry_fields[] = {
     {0}
 };
 
-static PyStructSequence_Field profiler_subentry_fields[] = {
+static TyStructSequence_Field profiler_subentry_fields[] = {
     {"code",         "called code object or built-in function name"},
     {"callcount",    "how many times this is called"},
     {"reccallcount", "how many times this is called recursively"},
@@ -452,14 +452,14 @@ static PyStructSequence_Field profiler_subentry_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc profiler_entry_desc = {
+static TyStructSequence_Desc profiler_entry_desc = {
     .name = "_lsprof.profiler_entry",
     .fields = profiler_entry_fields,
     .doc = NULL,
     .n_in_sequence = 6
 };
 
-static PyStructSequence_Desc profiler_subentry_desc = {
+static TyStructSequence_Desc profiler_subentry_desc = {
     .name = "_lsprof.profiler_subentry",
     .fields = profiler_subentry_fields,
     .doc = NULL,
@@ -573,7 +573,7 @@ _lsprof_Profiler_getstats_impl(ProfilerObject *self, TyTypeObject *cls)
         return NULL;
     }
     if (!self->externalTimer || self->externalTimerUnit == 0.0) {
-        PyTime_t onesec = _TyTime_FromSeconds(1);
+        TyTime_t onesec = _TyTime_FromSeconds(1);
         collect.factor = (double)1 / onesec;
     }
     else {
@@ -1092,7 +1092,7 @@ _lsprof_exec(TyObject *module)
         return -1;
     }
 
-    state->stats_entry_type = PyStructSequence_NewType(&profiler_entry_desc);
+    state->stats_entry_type = TyStructSequence_NewType(&profiler_entry_desc);
     if (state->stats_entry_type == NULL) {
         return -1;
     }
@@ -1100,7 +1100,7 @@ _lsprof_exec(TyObject *module)
         return -1;
     }
 
-    state->stats_subentry_type = PyStructSequence_NewType(&profiler_subentry_desc);
+    state->stats_subentry_type = TyStructSequence_NewType(&profiler_subentry_desc);
     if (state->stats_subentry_type == NULL) {
         return -1;
     }

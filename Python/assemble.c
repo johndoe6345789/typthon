@@ -3,7 +3,7 @@
 #include "pycore_compile.h"
 #include "pycore_instruction_sequence.h"
 #include "pycore_opcode_utils.h"    // IS_BACKWARDS_JUMP_OPCODE
-#include "pycore_opcode_metadata.h" // is_pseudo_target, _PyOpcode_Caches
+#include "pycore_opcode_metadata.h" // is_pseudo_target, _TyOpcode_Caches
 #include "pycore_symtable.h"        // _Ty_SourceLocation
 
 #include <stdbool.h>
@@ -43,7 +43,7 @@ instr_size(instruction *instr)
     assert(!IS_PSEUDO_INSTR(opcode));
     assert(OPCODE_HAS_ARG(opcode) || oparg == 0);
     int extended_args = (0xFFFFFF < oparg) + (0xFFFF < oparg) + (0xFF < oparg);
-    int caches = _PyOpcode_Caches[opcode];
+    int caches = _TyOpcode_Caches[opcode];
     return extended_args + 1 + caches;
 }
 
@@ -372,7 +372,7 @@ write_instr(_Ty_CODEUNIT *codestr, instruction *instr, int ilen)
     assert(!IS_PSEUDO_INSTR(opcode));
     int oparg = instr->i_oparg;
     assert(OPCODE_HAS_ARG(opcode) || oparg == 0);
-    int caches = _PyOpcode_Caches[opcode];
+    int caches = _TyOpcode_Caches[opcode];
     switch (ilen - caches) {
         case 4:
             codestr->op.code = EXTENDED_ARG;

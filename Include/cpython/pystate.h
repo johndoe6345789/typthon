@@ -5,8 +5,8 @@
 
 /* private interpreter helpers */
 
-PyAPI_FUNC(int) _TyInterpreterState_RequiresIDRef(PyInterpreterState *);
-PyAPI_FUNC(void) _TyInterpreterState_RequireIDRef(PyInterpreterState *, int);
+PyAPI_FUNC(int) _TyInterpreterState_RequiresIDRef(TyInterpreterState *);
+PyAPI_FUNC(void) _TyInterpreterState_RequireIDRef(TyInterpreterState *, int);
 
 /* State unique per thread */
 
@@ -68,7 +68,7 @@ struct _ts {
 
     TyThreadState *prev;
     TyThreadState *next;
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
 
     /* The global instrumentation version in high bits, plus flags indicating
        when to break out of the interpreter loop in lower bits. See details in
@@ -187,7 +187,7 @@ struct _ts {
        These fields should not be accessed directly outside of init.
        This is indicated by an underscore prefix on the field names.
 
-       All other PyInterpreterState pointer fields are populated when
+       All other TyInterpreterState pointer fields are populated when
        needed and default to NULL.
        */
        // Note some fields do not have a leading underscore for backward
@@ -245,10 +245,10 @@ PyAPI_FUNC(TyObject*) _PyThread_CurrentFrames(void);
 
 /* Routines for advanced debuggers, requested by David Beazley.
    Don't use unless you know what you are doing! */
-PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Main(void);
-PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Head(void);
-PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Next(PyInterpreterState *);
-PyAPI_FUNC(TyThreadState *) TyInterpreterState_ThreadHead(PyInterpreterState *);
+PyAPI_FUNC(TyInterpreterState *) TyInterpreterState_Main(void);
+PyAPI_FUNC(TyInterpreterState *) TyInterpreterState_Head(void);
+PyAPI_FUNC(TyInterpreterState *) TyInterpreterState_Next(TyInterpreterState *);
+PyAPI_FUNC(TyThreadState *) TyInterpreterState_ThreadHead(TyInterpreterState *);
 PyAPI_FUNC(TyThreadState *) TyThreadState_Next(TyThreadState *);
 PyAPI_FUNC(void) TyThreadState_DeleteCurrent(void);
 
@@ -257,7 +257,7 @@ PyAPI_FUNC(void) TyThreadState_DeleteCurrent(void);
 typedef TyObject* (*_PyFrameEvalFunction)(TyThreadState *tstate, struct _PyInterpreterFrame *, int);
 
 PyAPI_FUNC(_PyFrameEvalFunction) _TyInterpreterState_GetEvalFrameFunc(
-    PyInterpreterState *interp);
+    TyInterpreterState *interp);
 PyAPI_FUNC(void) _TyInterpreterState_SetEvalFrameFunc(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     _PyFrameEvalFunction eval_frame);

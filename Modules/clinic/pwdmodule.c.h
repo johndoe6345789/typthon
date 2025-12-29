@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(pwd_getpwuid__doc__,
+TyDoc_STRVAR(pwd_getpwuid__doc__,
 "getpwuid($module, uidobj, /)\n"
 "--\n"
 "\n"
@@ -13,7 +13,7 @@ PyDoc_STRVAR(pwd_getpwuid__doc__,
 #define PWD_GETPWUID_METHODDEF    \
     {"getpwuid", (PyCFunction)pwd_getpwuid, METH_O, pwd_getpwuid__doc__},
 
-PyDoc_STRVAR(pwd_getpwnam__doc__,
+TyDoc_STRVAR(pwd_getpwnam__doc__,
 "getpwnam($module, name, /)\n"
 "--\n"
 "\n"
@@ -46,7 +46,7 @@ exit:
 
 #if defined(HAVE_GETPWENT)
 
-PyDoc_STRVAR(pwd_getpwall__doc__,
+TyDoc_STRVAR(pwd_getpwall__doc__,
 "getpwall($module, /)\n"
 "--\n"
 "\n"

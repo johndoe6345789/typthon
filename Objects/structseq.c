@@ -11,7 +11,7 @@
 #include "pycore_initconfig.h"    // _TyStatus_OK()
 #include "pycore_modsupport.h"    // _TyArg_NoPositional()
 #include "pycore_object.h"        // _TyObject_GC_TRACK()
-#include "pycore_structseq.h"     // PyStructSequence_InitType()
+#include "pycore_structseq.h"     // TyStructSequence_InitType()
 #include "pycore_tuple.h"         // _TyTuple_FromArray()
 #include "pycore_typeobject.h"    // _PyStaticType_FiniBuiltin()
 
@@ -22,7 +22,7 @@ static const char match_args_key[] = "__match_args__";
 
 /* Fields with this name have only a field index, not a field name.
    They are only allowed for indices < n_visible_fields. */
-const char * const PyStructSequence_UnnamedField = "unnamed field";
+const char * const TyStructSequence_UnnamedField = "unnamed field";
 
 static Ty_ssize_t
 get_type_attr_as_size(TyTypeObject *tp, TyObject *name)
@@ -58,7 +58,7 @@ get_real_size(TyObject *op)
 }
 
 TyObject *
-PyStructSequence_New(TyTypeObject *type)
+TyStructSequence_New(TyTypeObject *type)
 {
     PyStructSequence *obj;
     Ty_ssize_t size = REAL_SIZE_TP(type), i;
@@ -84,7 +84,7 @@ PyStructSequence_New(TyTypeObject *type)
 }
 
 void
-PyStructSequence_SetItem(TyObject *op, Ty_ssize_t index, TyObject *value)
+TyStructSequence_SetItem(TyObject *op, Ty_ssize_t index, TyObject *value)
 {
     PyTupleObject *tuple = _TyTuple_CAST(op);
     assert(0 <= index);
@@ -97,7 +97,7 @@ PyStructSequence_SetItem(TyObject *op, Ty_ssize_t index, TyObject *value)
 }
 
 TyObject*
-PyStructSequence_GetItem(TyObject *op, Ty_ssize_t index)
+TyStructSequence_GetItem(TyObject *op, Ty_ssize_t index)
 {
     assert(0 <= index);
 #ifndef NDEBUG
@@ -221,7 +221,7 @@ structseq_new_impl(TyTypeObject *type, TyObject *arg, TyObject *dict)
         }
     }
 
-    res = (PyStructSequence*) PyStructSequence_New(type);
+    res = (PyStructSequence*) TyStructSequence_New(type);
     if (res == NULL) {
         Ty_DECREF(arg);
         return NULL;
@@ -316,7 +316,7 @@ structseq_repr(TyObject *op)
         if (PyUnicodeWriter_WriteChar(writer, '=') < 0) {
             goto error;
         }
-        TyObject *value = PyStructSequence_GetItem((TyObject*)obj, i);
+        TyObject *value = TyStructSequence_GetItem((TyObject*)obj, i);
         assert(value != NULL);
         if (PyUnicodeWriter_WriteRepr(writer, value) < 0) {
             goto error;
@@ -408,7 +408,7 @@ structseq_replace(TyObject *op, TyObject *args, TyObject *kwargs)
         return NULL;
     }
 
-    result = (PyStructSequence *) PyStructSequence_New(Ty_TYPE(self));
+    result = (PyStructSequence *) TyStructSequence_New(Ty_TYPE(self));
     if (!result) {
         return NULL;
     }
@@ -455,18 +455,18 @@ error:
 static TyMethodDef structseq_methods[] = {
     {"__reduce__", structseq_reduce, METH_NOARGS, NULL},
     {"__replace__", _PyCFunction_CAST(structseq_replace), METH_VARARGS | METH_KEYWORDS,
-     PyDoc_STR("__replace__($self, /, **changes)\n--\n\n"
+     TyDoc_STR("__replace__($self, /, **changes)\n--\n\n"
         "Return a copy of the structure with new values for the specified fields.")},
     {NULL, NULL}  // sentinel
 };
 
 static Ty_ssize_t
-count_members(PyStructSequence_Desc *desc, Ty_ssize_t *n_unnamed_members) {
+count_members(TyStructSequence_Desc *desc, Ty_ssize_t *n_unnamed_members) {
     Ty_ssize_t i;
 
     *n_unnamed_members = 0;
     for (i = 0; desc->fields[i].name != NULL; ++i) {
-        if (desc->fields[i].name == PyStructSequence_UnnamedField) {
+        if (desc->fields[i].name == TyStructSequence_UnnamedField) {
             (*n_unnamed_members)++;
         }
     }
@@ -474,7 +474,7 @@ count_members(PyStructSequence_Desc *desc, Ty_ssize_t *n_unnamed_members) {
 }
 
 static int
-initialize_structseq_dict(PyStructSequence_Desc *desc, TyObject* dict,
+initialize_structseq_dict(TyStructSequence_Desc *desc, TyObject* dict,
                           Ty_ssize_t n_members, Ty_ssize_t n_unnamed_members) {
     TyObject *v;
 
@@ -503,7 +503,7 @@ initialize_structseq_dict(PyStructSequence_Desc *desc, TyObject* dict,
     }
 
     for (i = k = 0; i < desc->n_in_sequence; ++i) {
-        if (desc->fields[i].name == PyStructSequence_UnnamedField) {
+        if (desc->fields[i].name == TyStructSequence_UnnamedField) {
             continue;
         }
         TyObject* new_member = TyUnicode_FromString(desc->fields[i].name);
@@ -531,7 +531,7 @@ error:
 }
 
 static TyMemberDef *
-initialize_members(PyStructSequence_Desc *desc,
+initialize_members(TyStructSequence_Desc *desc,
                    Ty_ssize_t n_members, Ty_ssize_t n_unnamed_members)
 {
     TyMemberDef *members;
@@ -544,7 +544,7 @@ initialize_members(PyStructSequence_Desc *desc,
 
     Ty_ssize_t i, k;
     for (i = k = 0; i < n_members; ++i) {
-        if (desc->fields[i].name == PyStructSequence_UnnamedField) {
+        if (desc->fields[i].name == TyStructSequence_UnnamedField) {
             continue;
         }
 
@@ -565,7 +565,7 @@ initialize_members(PyStructSequence_Desc *desc,
 
 
 static void
-initialize_static_fields(TyTypeObject *type, PyStructSequence_Desc *desc,
+initialize_static_fields(TyTypeObject *type, TyStructSequence_Desc *desc,
                          TyMemberDef *tp_members, Ty_ssize_t n_members,
                          unsigned long tp_flags)
 {
@@ -587,7 +587,7 @@ initialize_static_fields(TyTypeObject *type, PyStructSequence_Desc *desc,
 }
 
 static int
-initialize_static_type(TyTypeObject *type, PyStructSequence_Desc *desc,
+initialize_static_type(TyTypeObject *type, TyStructSequence_Desc *desc,
                        Ty_ssize_t n_members, Ty_ssize_t n_unnamed_members) {
     /* initialize_static_fields() should have been called already. */
     if (TyType_Ready(type) < 0) {
@@ -605,9 +605,9 @@ initialize_static_type(TyTypeObject *type, PyStructSequence_Desc *desc,
 }
 
 int
-_PyStructSequence_InitBuiltinWithFlags(PyInterpreterState *interp,
+_PyStructSequence_InitBuiltinWithFlags(TyInterpreterState *interp,
                                        TyTypeObject *type,
-                                       PyStructSequence_Desc *desc,
+                                       TyStructSequence_Desc *desc,
                                        unsigned long tp_flags)
 {
     if (Ty_TYPE(type) == NULL) {
@@ -664,7 +664,7 @@ error:
 }
 
 int
-PyStructSequence_InitType2(TyTypeObject *type, PyStructSequence_Desc *desc)
+TyStructSequence_InitType2(TyTypeObject *type, TyStructSequence_Desc *desc)
 {
     TyMemberDef *members;
     Ty_ssize_t n_members, n_unnamed_members;
@@ -672,7 +672,7 @@ PyStructSequence_InitType2(TyTypeObject *type, PyStructSequence_Desc *desc)
 #ifdef Ty_TRACE_REFS
     /* if the type object was traced, remove it first
        before overwriting its storage */
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (_PyRefchain_IsTraced(interp, (TyObject *)type)) {
         _Ty_ForgetReference((TyObject *)type);
     }
@@ -698,9 +698,9 @@ PyStructSequence_InitType2(TyTypeObject *type, PyStructSequence_Desc *desc)
 }
 
 void
-PyStructSequence_InitType(TyTypeObject *type, PyStructSequence_Desc *desc)
+TyStructSequence_InitType(TyTypeObject *type, TyStructSequence_Desc *desc)
 {
-    (void)PyStructSequence_InitType2(type, desc);
+    (void)TyStructSequence_InitType2(type, desc);
 }
 
 
@@ -709,7 +709,7 @@ PyStructSequence_InitType(TyTypeObject *type, PyStructSequence_Desc *desc)
    initialized via _PyStructSequence_InitBuiltinWithFlags(). */
 
 void
-_PyStructSequence_FiniBuiltin(PyInterpreterState *interp, TyTypeObject *type)
+_PyStructSequence_FiniBuiltin(TyInterpreterState *interp, TyTypeObject *type)
 {
     // Ensure that the type is initialized
     assert(type->tp_name != NULL);
@@ -736,7 +736,7 @@ _PyStructSequence_FiniBuiltin(PyInterpreterState *interp, TyTypeObject *type)
 
 
 TyTypeObject *
-_PyStructSequence_NewType(PyStructSequence_Desc *desc, unsigned long tp_flags)
+_PyStructSequence_NewType(TyStructSequence_Desc *desc, unsigned long tp_flags)
 {
     TyMemberDef *members;
     TyTypeObject *type;
@@ -788,7 +788,7 @@ _PyStructSequence_NewType(PyStructSequence_Desc *desc, unsigned long tp_flags)
 
 
 TyTypeObject *
-PyStructSequence_NewType(PyStructSequence_Desc *desc)
+TyStructSequence_NewType(TyStructSequence_Desc *desc)
 {
     return _PyStructSequence_NewType(desc, 0);
 }

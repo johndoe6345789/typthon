@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(monitoring_use_tool_id__doc__,
+TyDoc_STRVAR(monitoring_use_tool_id__doc__,
 "use_tool_id($module, tool_id, name, /)\n"
 "--\n"
 "\n");
@@ -36,7 +36,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(monitoring_clear_tool_id__doc__,
+TyDoc_STRVAR(monitoring_clear_tool_id__doc__,
 "clear_tool_id($module, tool_id, /)\n"
 "--\n"
 "\n");
@@ -63,7 +63,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(monitoring_free_tool_id__doc__,
+TyDoc_STRVAR(monitoring_free_tool_id__doc__,
 "free_tool_id($module, tool_id, /)\n"
 "--\n"
 "\n");
@@ -90,7 +90,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(monitoring_get_tool__doc__,
+TyDoc_STRVAR(monitoring_get_tool__doc__,
 "get_tool($module, tool_id, /)\n"
 "--\n"
 "\n");
@@ -117,7 +117,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(monitoring_register_callback__doc__,
+TyDoc_STRVAR(monitoring_register_callback__doc__,
 "register_callback($module, tool_id, event, func, /)\n"
 "--\n"
 "\n");
@@ -155,7 +155,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(monitoring_get_events__doc__,
+TyDoc_STRVAR(monitoring_get_events__doc__,
 "get_events($module, tool_id, /)\n"
 "--\n"
 "\n");
@@ -187,7 +187,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(monitoring_set_events__doc__,
+TyDoc_STRVAR(monitoring_set_events__doc__,
 "set_events($module, tool_id, event_set, /)\n"
 "--\n"
 "\n");
@@ -222,7 +222,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(monitoring_get_local_events__doc__,
+TyDoc_STRVAR(monitoring_get_local_events__doc__,
 "get_local_events($module, tool_id, code, /)\n"
 "--\n"
 "\n");
@@ -260,7 +260,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(monitoring_set_local_events__doc__,
+TyDoc_STRVAR(monitoring_set_local_events__doc__,
 "set_local_events($module, tool_id, code, event_set, /)\n"
 "--\n"
 "\n");
@@ -298,7 +298,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(monitoring_restart_events__doc__,
+TyDoc_STRVAR(monitoring_restart_events__doc__,
 "restart_events($module, /)\n"
 "--\n"
 "\n");
@@ -315,7 +315,7 @@ monitoring_restart_events(TyObject *module, TyObject *Py_UNUSED(ignored))
     return monitoring_restart_events_impl(module);
 }
 
-PyDoc_STRVAR(monitoring__all_events__doc__,
+TyDoc_STRVAR(monitoring__all_events__doc__,
 "_all_events($module, /)\n"
 "--\n"
 "\n");

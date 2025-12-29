@@ -9,7 +9,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo__doc__,
 "ZoneInfo(key)\n"
 "--\n"
 "\n"
@@ -31,7 +31,7 @@ zoneinfo_ZoneInfo(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), },
     };
@@ -68,7 +68,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_from_file__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_from_file__doc__,
 "from_file($type, file_obj, /, key=None)\n"
 "--\n"
 "\n"
@@ -94,7 +94,7 @@ zoneinfo_ZoneInfo_from_file(TyObject *type, TyTypeObject *cls, TyObject *const *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), },
     };
@@ -134,7 +134,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_no_cache__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_no_cache__doc__,
 "no_cache($type, /, key)\n"
 "--\n"
 "\n"
@@ -160,7 +160,7 @@ zoneinfo_ZoneInfo_no_cache(TyObject *type, TyTypeObject *cls, TyObject *const *a
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), },
     };
@@ -193,7 +193,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_clear_cache__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_clear_cache__doc__,
 "clear_cache($type, /, *, only_keys=None)\n"
 "--\n"
 "\n"
@@ -219,7 +219,7 @@ zoneinfo_ZoneInfo_clear_cache(TyObject *type, TyTypeObject *cls, TyObject *const
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(only_keys), },
     };
@@ -259,7 +259,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_utcoffset__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_utcoffset__doc__,
 "utcoffset($self, dt, /)\n"
 "--\n"
 "\n"
@@ -304,7 +304,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_dst__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_dst__doc__,
 "dst($self, dt, /)\n"
 "--\n"
 "\n"
@@ -348,7 +348,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo_tzname__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo_tzname__doc__,
 "tzname($self, dt, /)\n"
 "--\n"
 "\n"
@@ -393,7 +393,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zoneinfo_ZoneInfo__unpickle__doc__,
+TyDoc_STRVAR(zoneinfo_ZoneInfo__unpickle__doc__,
 "_unpickle($type, key, from_cache, /)\n"
 "--\n"
 "\n"

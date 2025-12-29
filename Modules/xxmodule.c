@@ -58,7 +58,7 @@ Xxo_demo(TyObject *Py_UNUSED(op), TyObject *args)
 }
 
 static TyMethodDef Xxo_methods[] = {
-    {"demo", Xxo_demo,  METH_VARARGS, PyDoc_STR("demo() -> None")},
+    {"demo", Xxo_demo,  METH_VARARGS, TyDoc_STR("demo() -> None")},
     {NULL, NULL}  /* sentinel */
 };
 
@@ -102,7 +102,7 @@ Xxo_setattr(TyObject *op, const char *name, TyObject *v)
 static TyTypeObject Xxo_Type = {
     /* The ob_type field must be initialized in the module init function
      * to be portable to Windows without using C++. */
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "xxmodule.Xxo",             /*tp_name*/
     sizeof(XxoObject),          /*tp_basicsize*/
     0,                          /*tp_itemsize*/
@@ -148,7 +148,7 @@ static TyTypeObject Xxo_Type = {
 
 /* Function of two integers returning integer */
 
-PyDoc_STRVAR(xx_foo_doc,
+TyDoc_STRVAR(xx_foo_doc,
 "foo(i,j)\n\
 \n\
 Return the sum of i and j.");
@@ -218,7 +218,7 @@ xx_roj(TyObject *self, TyObject *args)
 static TyTypeObject Str_Type = {
     /* The ob_type field must be initialized in the module init function
      * to be portable to Windows without using C++. */
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "xxmodule.Str",             /*tp_name*/
     0,                          /*tp_basicsize*/
     0,                          /*tp_itemsize*/
@@ -272,7 +272,7 @@ null_richcompare(TyObject *self, TyObject *other, int op)
 static TyTypeObject Null_Type = {
     /* The ob_type field must be initialized in the module init function
      * to be portable to Windows without using C++. */
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "xxmodule.Null",            /*tp_name*/
     0,                          /*tp_basicsize*/
     0,                          /*tp_itemsize*/
@@ -323,17 +323,17 @@ static TyTypeObject Null_Type = {
 
 static TyMethodDef xx_methods[] = {
     {"roj",             xx_roj,         METH_VARARGS,
-        PyDoc_STR("roj(a,b) -> None")},
+        TyDoc_STR("roj(a,b) -> None")},
     {"foo",             xx_foo,         METH_VARARGS,
         xx_foo_doc},
     {"new",             xx_new,         METH_VARARGS,
-        PyDoc_STR("new() -> new Xx object")},
+        TyDoc_STR("new() -> new Xx object")},
     {"bug",             xx_bug,         METH_VARARGS,
-        PyDoc_STR("bug(o) -> None")},
+        TyDoc_STR("bug(o) -> None")},
     {NULL,              NULL}           /* sentinel */
 };
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This is a template module just for instruction.");
 
 

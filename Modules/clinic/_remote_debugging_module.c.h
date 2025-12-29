@@ -9,7 +9,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_remote_debugging_RemoteUnwinder___init____doc__,
+TyDoc_STRVAR(_remote_debugging_RemoteUnwinder___init____doc__,
 "RemoteUnwinder(pid, *, all_threads=False, only_active_thread=False,\n"
 "               debug=False)\n"
 "--\n"
@@ -53,7 +53,7 @@ _remote_debugging_RemoteUnwinder___init__(TyObject *self, TyObject *args, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(pid), &_Ty_ID(all_threads), &_Ty_ID(only_active_thread), &_Ty_ID(debug), },
     };
@@ -121,7 +121,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_remote_debugging_RemoteUnwinder_get_stack_trace__doc__,
+TyDoc_STRVAR(_remote_debugging_RemoteUnwinder_get_stack_trace__doc__,
 "get_stack_trace($self, /)\n"
 "--\n"
 "\n"
@@ -174,7 +174,7 @@ _remote_debugging_RemoteUnwinder_get_stack_trace(TyObject *self, TyObject *Py_UN
     return return_value;
 }
 
-PyDoc_STRVAR(_remote_debugging_RemoteUnwinder_get_all_awaited_by__doc__,
+TyDoc_STRVAR(_remote_debugging_RemoteUnwinder_get_all_awaited_by__doc__,
 "get_all_awaited_by($self, /)\n"
 "--\n"
 "\n"
@@ -231,7 +231,7 @@ _remote_debugging_RemoteUnwinder_get_all_awaited_by(TyObject *self, TyObject *Py
     return return_value;
 }
 
-PyDoc_STRVAR(_remote_debugging_RemoteUnwinder_get_async_stack_trace__doc__,
+TyDoc_STRVAR(_remote_debugging_RemoteUnwinder_get_async_stack_trace__doc__,
 "get_async_stack_trace($self, /)\n"
 "--\n"
 "\n"

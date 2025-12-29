@@ -299,17 +299,17 @@ enum_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
     return result;
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
 static TyMethodDef enum_methods[] = {
     {"__reduce__", enum_reduce, METH_NOARGS, reduce_doc},
     {"__class_getitem__",    Ty_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     {NULL,              NULL}           /* sentinel */
 };
 
 TyTypeObject PyEnum_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "enumerate",                    /* tp_name */
     sizeof(enumobject),             /* tp_basicsize */
     0,                              /* tp_itemsize */
@@ -491,7 +491,7 @@ reversed_len(TyObject *op, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSsize_t((seqsize < position)  ?  0  :  position);
 }
 
-PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
+TyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
 reversed_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
@@ -530,7 +530,7 @@ reversed_setstate(TyObject *op, TyObject *state)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
+TyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
 static TyMethodDef reversediter_methods[] = {
     {"__length_hint__", reversed_len, METH_NOARGS, length_hint_doc},
@@ -540,7 +540,7 @@ static TyMethodDef reversediter_methods[] = {
 };
 
 TyTypeObject PyReversed_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "reversed",                     /* tp_name */
     sizeof(reversedobject),         /* tp_basicsize */
     0,                              /* tp_itemsize */

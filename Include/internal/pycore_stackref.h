@@ -59,7 +59,7 @@ PyAPI_FUNC(TyObject *) _Ty_stackref_get_object(_PyStackRef ref);
 PyAPI_FUNC(TyObject *) _Ty_stackref_close(_PyStackRef ref, const char *filename, int linenumber);
 PyAPI_FUNC(_PyStackRef) _Ty_stackref_create(TyObject *obj, const char *filename, int linenumber);
 PyAPI_FUNC(void) _Ty_stackref_record_borrow(_PyStackRef ref, const char *filename, int linenumber);
-extern void _Ty_stackref_associate(PyInterpreterState *interp, TyObject *obj, _PyStackRef ref);
+extern void _Ty_stackref_associate(TyInterpreterState *interp, TyObject *obj, _PyStackRef ref);
 
 static const _PyStackRef PyStackRef_NULL = { .index = 0 };
 

@@ -65,8 +65,8 @@ extern int _TyErr_SetModuleNotFoundError(TyObject *name);
 
 /* runtime lifecycle */
 
-extern TyStatus _TyErr_InitTypes(PyInterpreterState *);
-extern void _TyErr_FiniTypes(PyInterpreterState *);
+extern TyStatus _TyErr_InitTypes(TyInterpreterState *);
+extern void _TyErr_FiniTypes(TyInterpreterState *);
 
 
 /* other API */
@@ -178,7 +178,7 @@ extern TyObject* _PyExc_PrepReraiseStar(
 
 extern int _TyErr_CheckSignalsTstate(TyThreadState *tstate);
 
-extern void _Ty_DumpExtensionModules(int fd, PyInterpreterState *interp);
+extern void _Ty_DumpExtensionModules(int fd, TyInterpreterState *interp);
 extern TyObject* _Ty_CalculateSuggestions(TyObject *dir, TyObject *name);
 extern TyObject* _Ty_Offer_Suggestions(TyObject* exception);
 

@@ -1140,7 +1140,7 @@ cmath_isclose_impl(TyObject *module, Ty_complex a, Ty_complex b,
             (diff <= abs_tol));
 }
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module provides access to mathematical functions for complex\n"
 "numbers.");
 

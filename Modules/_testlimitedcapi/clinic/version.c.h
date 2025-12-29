@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(_testlimitedcapi_pack_full_version__doc__,
+TyDoc_STRVAR(_testlimitedcapi_pack_full_version__doc__,
 "pack_full_version($module, major, minor, micro, level, serial, /)\n"
 "--\n"
 "\n");
@@ -55,7 +55,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testlimitedcapi_pack_version__doc__,
+TyDoc_STRVAR(_testlimitedcapi_pack_version__doc__,
 "pack_version($module, major, minor, /)\n"
 "--\n"
 "\n");

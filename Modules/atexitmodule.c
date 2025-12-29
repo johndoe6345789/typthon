@@ -9,7 +9,7 @@
 #include "Python.h"
 #include "pycore_atexit.h"        // export _Ty_AtExit()
 #include "pycore_initconfig.h"    // _TyStatus_NO_MEMORY
-#include "pycore_interp.h"        // PyInterpreterState.atexit
+#include "pycore_interp.h"        // TyInterpreterState.atexit
 #include "pycore_pystate.h"       // _TyInterpreterState_GET
 
 /* ===================================================================== */
@@ -18,13 +18,13 @@
 static inline struct atexit_state*
 get_atexit_state(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return &interp->atexit;
 }
 
 
 int
-PyUnstable_AtExit(PyInterpreterState *interp,
+PyUnstable_AtExit(TyInterpreterState *interp,
                   atexit_datacallbackfunc func, void *data)
 {
     TyThreadState *tstate = _TyThreadState_GET();
@@ -64,7 +64,7 @@ atexit_cleanup(struct atexit_state *state)
 
 
 TyStatus
-_PyAtExit_Init(PyInterpreterState *interp)
+_PyAtExit_Init(TyInterpreterState *interp)
 {
     struct atexit_state *state = &interp->atexit;
     // _PyAtExit_Init() must only be called once
@@ -78,7 +78,7 @@ _PyAtExit_Init(PyInterpreterState *interp)
 }
 
 void
-_PyAtExit_Fini(PyInterpreterState *interp)
+_PyAtExit_Fini(TyInterpreterState *interp)
 {
     // In theory, there shouldn't be any threads left by now, so we
     // won't lock this.
@@ -145,7 +145,7 @@ atexit_callfuncs(struct atexit_state *state)
 
 
 void
-_PyAtExit_Call(PyInterpreterState *interp)
+_PyAtExit_Call(TyInterpreterState *interp)
 {
     struct atexit_state *state = &interp->atexit;
     atexit_callfuncs(state);
@@ -156,7 +156,7 @@ _PyAtExit_Call(PyInterpreterState *interp)
 /* Module methods. */
 
 
-PyDoc_STRVAR(atexit_register__doc__,
+TyDoc_STRVAR(atexit_register__doc__,
 "register($module, func, /, *args, **kwargs)\n\
 --\n\
 \n\
@@ -208,7 +208,7 @@ atexit_register(TyObject *module, TyObject *args, TyObject *kwargs)
     return Ty_NewRef(func);
 }
 
-PyDoc_STRVAR(atexit_run_exitfuncs__doc__,
+TyDoc_STRVAR(atexit_run_exitfuncs__doc__,
 "_run_exitfuncs($module, /)\n\
 --\n\
 \n\
@@ -224,7 +224,7 @@ atexit_run_exitfuncs(TyObject *module, TyObject *Py_UNUSED(dummy))
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(atexit_clear__doc__,
+TyDoc_STRVAR(atexit_clear__doc__,
 "_clear($module, /)\n\
 --\n\
 \n\
@@ -237,7 +237,7 @@ atexit_clear(TyObject *module, TyObject *Py_UNUSED(dummy))
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(atexit_ncallbacks__doc__,
+TyDoc_STRVAR(atexit_ncallbacks__doc__,
 "_ncallbacks($module, /)\n\
 --\n\
 \n\
@@ -276,7 +276,7 @@ atexit_unregister_locked(TyObject *callbacks, TyObject *func)
     return 0;
 }
 
-PyDoc_STRVAR(atexit_unregister__doc__,
+TyDoc_STRVAR(atexit_unregister__doc__,
 "unregister($module, func, /)\n\
 --\n\
 \n\
@@ -313,7 +313,7 @@ static TyMethodDef atexit_methods[] = {
 /* ===================================================================== */
 /* Initialization function. */
 
-PyDoc_STRVAR(atexit__doc__,
+TyDoc_STRVAR(atexit__doc__,
 "allow programmer to define multiple exit functions to be executed\n\
 upon normal program termination.\n\
 \n\

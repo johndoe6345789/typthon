@@ -77,10 +77,10 @@ EnterNonRecursiveMutex(PNRMUTEX mutex, DWORD milliseconds)
         }
     } else if (milliseconds != 0) {
         /* wait at least until the deadline */
-        PyTime_t timeout = (PyTime_t)milliseconds * (1000 * 1000);
-        PyTime_t deadline = _PyDeadline_Init(timeout);
+        TyTime_t timeout = (TyTime_t)milliseconds * (1000 * 1000);
+        TyTime_t deadline = _PyDeadline_Init(timeout);
         while (mutex->locked) {
-            PyTime_t microseconds = _TyTime_AsMicroseconds(timeout,
+            TyTime_t microseconds = _TyTime_AsMicroseconds(timeout,
                                                            _TyTime_ROUND_TIMEOUT);
             if (PyCOND_TIMEDWAIT(&mutex->cv, &mutex->cs, microseconds) < 0) {
                 result = WAIT_FAILED;
@@ -147,17 +147,17 @@ LeaveNonRecursiveMutex(PNRMUTEX mutex)
 }
 #endif /* _PY_USE_CV_LOCKS */
 
-unsigned long PyThread_get_thread_ident(void);
+unsigned long TyThread_get_thread_ident(void);
 
 #ifdef PY_HAVE_THREAD_NATIVE_ID
-unsigned long PyThread_get_thread_native_id(void);
+unsigned long TyThread_get_thread_native_id(void);
 #endif
 
 /*
  * Initialization for the current runtime.
  */
 static void
-PyThread__init_thread(void)
+TyThread__init_thread(void)
 {
     // Initialization of the C package should not be needed.
 }
@@ -185,14 +185,14 @@ bootstrap(void *call)
 }
 
 int
-PyThread_start_joinable_thread(void (*func)(void *), void *arg,
-                               PyThread_ident_t* ident, PyThread_handle_t* handle) {
+TyThread_start_joinable_thread(void (*func)(void *), void *arg,
+                               TyThread_ident_t* ident, TyThread_handle_t* handle) {
     HANDLE hThread;
     unsigned threadID;
     callobj *obj;
 
     if (!initialized)
-        PyThread_init_thread();
+        TyThread_init_thread();
 
     obj = (callobj*)HeapAlloc(GetProcessHeap(), 0, sizeof(*obj));
     if (!obj)
@@ -214,15 +214,15 @@ PyThread_start_joinable_thread(void (*func)(void *), void *arg,
     }
     *ident = threadID;
     // The cast is safe since HANDLE is pointer-sized
-    *handle = (PyThread_handle_t) hThread;
+    *handle = (TyThread_handle_t) hThread;
     return 0;
 }
 
 unsigned long
-PyThread_start_new_thread(void (*func)(void *), void *arg) {
-    PyThread_handle_t handle;
-    PyThread_ident_t ident;
-    if (PyThread_start_joinable_thread(func, arg, &ident, &handle)) {
+TyThread_start_new_thread(void (*func)(void *), void *arg) {
+    TyThread_handle_t handle;
+    TyThread_ident_t ident;
+    if (TyThread_start_joinable_thread(func, arg, &ident, &handle)) {
         return PYTHREAD_INVALID_THREAD_ID;
     }
     CloseHandle((HANDLE) handle);
@@ -231,7 +231,7 @@ PyThread_start_new_thread(void (*func)(void *), void *arg) {
 }
 
 int
-PyThread_join_thread(PyThread_handle_t handle) {
+TyThread_join_thread(TyThread_handle_t handle) {
     HANDLE hThread = (HANDLE) handle;
     int errored = (WaitForSingleObject(hThread, INFINITE) != WAIT_OBJECT_0);
     CloseHandle(hThread);
@@ -239,7 +239,7 @@ PyThread_join_thread(PyThread_handle_t handle) {
 }
 
 int
-PyThread_detach_thread(PyThread_handle_t handle) {
+TyThread_detach_thread(TyThread_handle_t handle) {
     HANDLE hThread = (HANDLE) handle;
     return (CloseHandle(hThread) == 0);
 }
@@ -248,19 +248,19 @@ PyThread_detach_thread(PyThread_handle_t handle) {
  * Return the thread Id instead of a handle. The Id is said to uniquely identify the
  * thread in the system
  */
-PyThread_ident_t
-PyThread_get_thread_ident_ex(void)
+TyThread_ident_t
+TyThread_get_thread_ident_ex(void)
 {
     if (!initialized)
-        PyThread_init_thread();
+        TyThread_init_thread();
 
     return GetCurrentThreadId();
 }
 
 unsigned long
-PyThread_get_thread_ident(void)
+TyThread_get_thread_ident(void)
 {
-    return (unsigned long) PyThread_get_thread_ident_ex();
+    return (unsigned long) TyThread_get_thread_ident_ex();
 }
 
 
@@ -271,10 +271,10 @@ PyThread_get_thread_ident(void)
  * from the time the thread is created until the thread has been terminated.
  */
 unsigned long
-PyThread_get_thread_native_id(void)
+TyThread_get_thread_native_id(void)
 {
     if (!initialized) {
-        PyThread_init_thread();
+        TyThread_init_thread();
     }
 
     DWORD native_id;
@@ -284,7 +284,7 @@ PyThread_get_thread_native_id(void)
 #endif
 
 void _Ty_NO_RETURN
-PyThread_exit_thread(void)
+TyThread_exit_thread(void)
 {
     if (!initialized)
         exit(0);
@@ -293,7 +293,7 @@ PyThread_exit_thread(void)
 }
 
 void _Ty_NO_RETURN
-PyThread_hang_thread(void)
+TyThread_hang_thread(void)
 {
     while (1) {
         SleepEx(INFINITE, TRUE);
@@ -305,24 +305,24 @@ PyThread_hang_thread(void)
  * I [Dag] tried to implement it with mutex but I could find a way to
  * tell whether a thread already own the lock or not.
  */
-PyThread_type_lock
-PyThread_allocate_lock(void)
+TyThread_type_lock
+TyThread_allocate_lock(void)
 {
     PNRMUTEX mutex;
 
     if (!initialized)
-        PyThread_init_thread();
+        TyThread_init_thread();
 
     mutex = AllocNonRecursiveMutex() ;
 
-    PyThread_type_lock aLock = (PyThread_type_lock) mutex;
+    TyThread_type_lock aLock = (TyThread_type_lock) mutex;
     assert(aLock);
 
     return aLock;
 }
 
 void
-PyThread_free_lock(PyThread_type_lock aLock)
+TyThread_free_lock(TyThread_type_lock aLock)
 {
     FreeNonRecursiveMutex(aLock) ;
 }
@@ -338,15 +338,15 @@ const DWORD TIMEOUT_MS_MAX = 0xFFFFFFFE;
  * and 0 if the lock was not acquired. This means a 0 is returned
  * if the lock has already been acquired by this thread!
  */
-PyLockStatus
-PyThread_acquire_lock_timed(PyThread_type_lock aLock,
+TyLockStatus
+TyThread_acquire_lock_timed(TyThread_type_lock aLock,
                             PY_TIMEOUT_T microseconds, int intr_flag)
 {
     assert(aLock);
 
     /* Fow now, intr_flag does nothing on Windows, and lock acquires are
      * uninterruptible.  */
-    PyLockStatus success;
+    TyLockStatus success;
     PY_TIMEOUT_T milliseconds;
 
     if (microseconds >= 0) {
@@ -356,7 +356,7 @@ PyThread_acquire_lock_timed(PyThread_type_lock aLock,
             milliseconds++;
         }
         if (milliseconds > (PY_TIMEOUT_T)TIMEOUT_MS_MAX) {
-            // bpo-41710: PyThread_acquire_lock_timed() cannot report timeout
+            // bpo-41710: TyThread_acquire_lock_timed() cannot report timeout
             // overflow to the caller, so clamp the timeout to
             // [0, TIMEOUT_MS_MAX] milliseconds.
             //
@@ -381,13 +381,13 @@ PyThread_acquire_lock_timed(PyThread_type_lock aLock,
     return success;
 }
 int
-PyThread_acquire_lock(PyThread_type_lock aLock, int waitflag)
+TyThread_acquire_lock(TyThread_type_lock aLock, int waitflag)
 {
-    return PyThread_acquire_lock_timed(aLock, waitflag ? -1 : 0, 0);
+    return TyThread_acquire_lock_timed(aLock, waitflag ? -1 : 0, 0);
 }
 
 void
-PyThread_release_lock(PyThread_type_lock aLock)
+TyThread_release_lock(TyThread_type_lock aLock)
 {
     assert(aLock);
     (void)LeaveNonRecursiveMutex((PNRMUTEX) aLock);
@@ -427,7 +427,7 @@ _pythread_nt_set_stacksize(size_t size)
 */
 
 int
-PyThread_create_key(void)
+TyThread_create_key(void)
 {
     DWORD result = TlsAlloc();
     if (result == TLS_OUT_OF_INDEXES)
@@ -436,26 +436,26 @@ PyThread_create_key(void)
 }
 
 void
-PyThread_delete_key(int key)
+TyThread_delete_key(int key)
 {
     TlsFree(key);
 }
 
 int
-PyThread_set_key_value(int key, void *value)
+TyThread_set_key_value(int key, void *value)
 {
     BOOL ok = TlsSetValue(key, value);
     return ok ? 0 : -1;
 }
 
 void *
-PyThread_get_key_value(int key)
+TyThread_get_key_value(int key)
 {
     return TlsGetValue(key);
 }
 
 void
-PyThread_delete_key_value(int key)
+TyThread_delete_key_value(int key)
 {
     /* NULL is used as "key missing", and it is also the default
      * given by TlsGetValue() if nothing has been set yet.
@@ -468,7 +468,7 @@ PyThread_delete_key_value(int key)
  * the native TLS functions.  And forking isn't supported on Windows either.
  */
 void
-PyThread_ReInitTLS(void)
+TyThread_ReInitTLS(void)
 {
 }
 
@@ -479,7 +479,7 @@ PyThread_ReInitTLS(void)
 */
 
 int
-PyThread_tss_create(Ty_tss_t *key)
+TyThread_tss_create(Ty_tss_t *key)
 {
     assert(key != NULL);
     /* If the key has been created, function is silently skipped. */
@@ -498,7 +498,7 @@ PyThread_tss_create(Ty_tss_t *key)
 }
 
 void
-PyThread_tss_delete(Ty_tss_t *key)
+TyThread_tss_delete(Ty_tss_t *key)
 {
     assert(key != NULL);
     /* If the key has not been created, function is silently skipped. */
@@ -512,7 +512,7 @@ PyThread_tss_delete(Ty_tss_t *key)
 }
 
 int
-PyThread_tss_set(Ty_tss_t *key, void *value)
+TyThread_tss_set(Ty_tss_t *key, void *value)
 {
     assert(key != NULL);
     BOOL ok = TlsSetValue(key->_key, value);
@@ -520,7 +520,7 @@ PyThread_tss_set(Ty_tss_t *key, void *value)
 }
 
 void *
-PyThread_tss_get(Ty_tss_t *key)
+TyThread_tss_get(Ty_tss_t *key)
 {
     assert(key != NULL);
     int err = GetLastError();

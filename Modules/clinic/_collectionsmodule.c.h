@@ -10,7 +10,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(deque_pop__doc__,
+TyDoc_STRVAR(deque_pop__doc__,
 "pop($self, /)\n"
 "--\n"
 "\n"
@@ -34,7 +34,7 @@ deque_pop(TyObject *deque, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(deque_popleft__doc__,
+TyDoc_STRVAR(deque_popleft__doc__,
 "popleft($self, /)\n"
 "--\n"
 "\n"
@@ -58,7 +58,7 @@ deque_popleft(TyObject *deque, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(deque_append__doc__,
+TyDoc_STRVAR(deque_append__doc__,
 "append($self, item, /)\n"
 "--\n"
 "\n"
@@ -82,7 +82,7 @@ deque_append(TyObject *deque, TyObject *item)
     return return_value;
 }
 
-PyDoc_STRVAR(deque_appendleft__doc__,
+TyDoc_STRVAR(deque_appendleft__doc__,
 "appendleft($self, item, /)\n"
 "--\n"
 "\n"
@@ -106,7 +106,7 @@ deque_appendleft(TyObject *deque, TyObject *item)
     return return_value;
 }
 
-PyDoc_STRVAR(deque_extend__doc__,
+TyDoc_STRVAR(deque_extend__doc__,
 "extend($self, iterable, /)\n"
 "--\n"
 "\n"
@@ -130,7 +130,7 @@ deque_extend(TyObject *deque, TyObject *iterable)
     return return_value;
 }
 
-PyDoc_STRVAR(deque_extendleft__doc__,
+TyDoc_STRVAR(deque_extendleft__doc__,
 "extendleft($self, iterable, /)\n"
 "--\n"
 "\n"
@@ -154,7 +154,7 @@ deque_extendleft(TyObject *deque, TyObject *iterable)
     return return_value;
 }
 
-PyDoc_STRVAR(deque_copy__doc__,
+TyDoc_STRVAR(deque_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -178,7 +178,7 @@ deque_copy(TyObject *deque, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(deque___copy____doc__,
+TyDoc_STRVAR(deque___copy____doc__,
 "__copy__($self, /)\n"
 "--\n"
 "\n"
@@ -202,7 +202,7 @@ deque___copy__(TyObject *deque, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(deque_clearmethod__doc__,
+TyDoc_STRVAR(deque_clearmethod__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -226,7 +226,7 @@ deque_clearmethod(TyObject *deque, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(deque_rotate__doc__,
+TyDoc_STRVAR(deque_rotate__doc__,
 "rotate($self, n=1, /)\n"
 "--\n"
 "\n"
@@ -271,7 +271,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(deque_reverse__doc__,
+TyDoc_STRVAR(deque_reverse__doc__,
 "reverse($self, /)\n"
 "--\n"
 "\n"
@@ -295,7 +295,7 @@ deque_reverse(TyObject *deque, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(deque_count__doc__,
+TyDoc_STRVAR(deque_count__doc__,
 "count($self, value, /)\n"
 "--\n"
 "\n"
@@ -319,7 +319,7 @@ deque_count(TyObject *deque, TyObject *v)
     return return_value;
 }
 
-PyDoc_STRVAR(deque_index__doc__,
+TyDoc_STRVAR(deque_index__doc__,
 "index($self, value, [start, [stop]])\n"
 "--\n"
 "\n"
@@ -367,7 +367,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(deque_insert__doc__,
+TyDoc_STRVAR(deque_insert__doc__,
 "insert($self, index, value, /)\n"
 "--\n"
 "\n"
@@ -410,7 +410,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(deque_remove__doc__,
+TyDoc_STRVAR(deque_remove__doc__,
 "remove($self, value, /)\n"
 "--\n"
 "\n"
@@ -434,7 +434,7 @@ deque_remove(TyObject *deque, TyObject *value)
     return return_value;
 }
 
-PyDoc_STRVAR(deque___reduce____doc__,
+TyDoc_STRVAR(deque___reduce____doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n"
@@ -452,7 +452,7 @@ deque___reduce__(TyObject *deque, TyObject *Py_UNUSED(ignored))
     return deque___reduce___impl((dequeobject *)deque);
 }
 
-PyDoc_STRVAR(deque_init__doc__,
+TyDoc_STRVAR(deque_init__doc__,
 "deque([iterable[, maxlen]])\n"
 "--\n"
 "\n"
@@ -474,7 +474,7 @@ deque_init(TyObject *deque, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(iterable), &_Ty_ID(maxlen), },
     };
@@ -523,7 +523,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(deque___sizeof____doc__,
+TyDoc_STRVAR(deque___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -547,7 +547,7 @@ deque___sizeof__(TyObject *deque, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(deque___reversed____doc__,
+TyDoc_STRVAR(deque___reversed____doc__,
 "__reversed__($self, /)\n"
 "--\n"
 "\n"
@@ -565,7 +565,7 @@ deque___reversed__(TyObject *deque, TyObject *Py_UNUSED(ignored))
     return deque___reversed___impl((dequeobject *)deque);
 }
 
-PyDoc_STRVAR(_collections__count_elements__doc__,
+TyDoc_STRVAR(_collections__count_elements__doc__,
 "_count_elements($module, mapping, iterable, /)\n"
 "--\n"
 "\n"

@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
-PyDoc_STRVAR(_lzma_LZMACompressor_compress__doc__,
+TyDoc_STRVAR(_lzma_LZMACompressor_compress__doc__,
 "compress($self, data, /)\n"
 "--\n"
 "\n"
@@ -46,7 +46,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lzma_LZMACompressor_flush__doc__,
+TyDoc_STRVAR(_lzma_LZMACompressor_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n"
@@ -68,7 +68,7 @@ _lzma_LZMACompressor_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _lzma_LZMACompressor_flush_impl((Compressor *)self);
 }
 
-PyDoc_STRVAR(_lzma_LZMADecompressor_decompress__doc__,
+TyDoc_STRVAR(_lzma_LZMADecompressor_decompress__doc__,
 "decompress($self, /, data, max_length=-1)\n"
 "--\n"
 "\n"
@@ -107,7 +107,7 @@ _lzma_LZMADecompressor_decompress(TyObject *self, TyObject *const *args, Ty_ssiz
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(max_length), },
     };
@@ -165,7 +165,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lzma_LZMADecompressor__doc__,
+TyDoc_STRVAR(_lzma_LZMADecompressor__doc__,
 "LZMADecompressor(format=FORMAT_AUTO, memlimit=None, filters=None)\n"
 "--\n"
 "\n"
@@ -205,7 +205,7 @@ _lzma_LZMADecompressor(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(format), &_Ty_ID(memlimit), &_Ty_ID(filters), },
     };
@@ -262,7 +262,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lzma_is_check_supported__doc__,
+TyDoc_STRVAR(_lzma_is_check_supported__doc__,
 "is_check_supported($module, check_id, /)\n"
 "--\n"
 "\n"
@@ -292,7 +292,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_lzma__decode_filter_properties__doc__,
+TyDoc_STRVAR(_lzma__decode_filter_properties__doc__,
 "_decode_filter_properties($module, filter_id, encoded_props, /)\n"
 "--\n"
 "\n"

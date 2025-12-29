@@ -954,7 +954,7 @@ OrderedDict_fromkeys_impl(TyTypeObject *type, TyObject *seq, TyObject *value)
 /* __sizeof__() */
 
 /* OrderedDict.__sizeof__() does not have a docstring. */
-PyDoc_STRVAR(odict_sizeof__doc__, "");
+TyDoc_STRVAR(odict_sizeof__doc__, "");
 
 static TyObject *
 odict_sizeof(TyObject *op, TyObject *Py_UNUSED(ignored))
@@ -970,7 +970,7 @@ odict_sizeof(TyObject *op, TyObject *Py_UNUSED(ignored))
 
 /* __reduce__() */
 
-PyDoc_STRVAR(odict_reduce__doc__, "Return state information for pickling");
+TyDoc_STRVAR(odict_reduce__doc__, "Return state information for pickling");
 
 static TyObject *
 odict_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
@@ -1164,28 +1164,28 @@ OrderedDict_popitem_impl(PyODictObject *self, int last)
 /* keys() */
 
 /* MutableMapping.keys() does not have a docstring. */
-PyDoc_STRVAR(odict_keys__doc__, "");
+TyDoc_STRVAR(odict_keys__doc__, "");
 
 static TyObject * odictkeys_new(TyObject *od, TyObject *Py_UNUSED(ignored));  /* forward */
 
 /* values() */
 
 /* MutableMapping.values() does not have a docstring. */
-PyDoc_STRVAR(odict_values__doc__, "");
+TyDoc_STRVAR(odict_values__doc__, "");
 
 static TyObject * odictvalues_new(TyObject *od, TyObject *Py_UNUSED(ignored));  /* forward */
 
 /* items() */
 
 /* MutableMapping.items() does not have a docstring. */
-PyDoc_STRVAR(odict_items__doc__, "");
+TyDoc_STRVAR(odict_items__doc__, "");
 
 static TyObject * odictitems_new(TyObject *od, TyObject *Py_UNUSED(ignored));  /* forward */
 
 /* update() */
 
 /* MutableMapping.update() does not have a docstring. */
-PyDoc_STRVAR(odict_update__doc__, "");
+TyDoc_STRVAR(odict_update__doc__, "");
 
 /* forward */
 static TyObject * mutablemapping_update(TyObject *, TyObject *, TyObject *);
@@ -1194,7 +1194,7 @@ static TyObject * mutablemapping_update(TyObject *, TyObject *, TyObject *);
 
 /* clear() */
 
-PyDoc_STRVAR(odict_clear__doc__,
+TyDoc_STRVAR(odict_clear__doc__,
              "od.clear() -> None.  Remove all items from od.");
 
 static TyObject *
@@ -1212,7 +1212,7 @@ odict_clear(TyObject *op, TyObject *Py_UNUSED(ignored))
 static int _PyODict_SetItem_KnownHash(TyObject *, TyObject *, TyObject *,
                                       Ty_hash_t);
 
-PyDoc_STRVAR(odict_copy__doc__, "od.copy() -> a shallow copy of od");
+TyDoc_STRVAR(odict_copy__doc__, "od.copy() -> a shallow copy of od");
 
 static TyObject *
 odict_copy(TyObject *op, TyObject *Py_UNUSED(ignored))
@@ -1265,7 +1265,7 @@ fail:
 
 /* __reversed__() */
 
-PyDoc_STRVAR(odict_reversed__doc__, "od.__reversed__() <==> reversed(od)");
+TyDoc_STRVAR(odict_reversed__doc__, "od.__reversed__() <==> reversed(od)");
 
 #define _odict_ITER_REVERSED 1
 #define _odict_ITER_KEYS 2
@@ -1432,7 +1432,7 @@ Done:
 
 /* tp_doc */
 
-PyDoc_STRVAR(odict_doc,
+TyDoc_STRVAR(odict_doc,
         "Dictionary that remembers insertion order");
 
 /* tp_traverse */
@@ -1535,7 +1535,7 @@ odict_init(TyObject *self, TyObject *args, TyObject *kwds)
 /* PyODict_Type */
 
 TyTypeObject PyODict_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "collections.OrderedDict",                  /* tp_name */
     sizeof(PyODictObject),                      /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -1783,7 +1783,7 @@ done:
 
 /* No need for tp_clear because odictiterobject is not mutable. */
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling");
 
 static TyObject *
 odictiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
@@ -1811,7 +1811,7 @@ static TyMethodDef odictiter_methods[] = {
 };
 
 TyTypeObject PyODictIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "odict_iterator",                         /* tp_name */
     sizeof(odictiterobject),                  /* tp_basicsize */
     0,                                        /* tp_itemsize */
@@ -1906,7 +1906,7 @@ static TyMethodDef odictkeys_methods[] = {
 };
 
 TyTypeObject PyODictKeys_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "odict_keys",                             /* tp_name */
     0,                                        /* tp_basicsize */
     0,                                        /* tp_itemsize */
@@ -1975,7 +1975,7 @@ static TyMethodDef odictitems_methods[] = {
 };
 
 TyTypeObject PyODictItems_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "odict_items",                            /* tp_name */
     0,                                        /* tp_basicsize */
     0,                                        /* tp_itemsize */
@@ -2044,7 +2044,7 @@ static TyMethodDef odictvalues_methods[] = {
 };
 
 TyTypeObject PyODictValues_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "odict_values",                           /* tp_name */
     0,                                        /* tp_basicsize */
     0,                                        /* tp_itemsize */

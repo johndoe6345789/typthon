@@ -429,7 +429,7 @@ static TyGetSetDef stdprinter_getsetlist[] = {
 };
 
 TyTypeObject PyStdPrinter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "stderrprinter",                            /* tp_name */
     sizeof(PyStdPrinter_Object),                /* tp_basicsize */
     0,                                          /* tp_itemsize */

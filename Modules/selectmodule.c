@@ -296,7 +296,7 @@ select_select_impl(TyObject *module, TyObject *rlist, TyObject *wlist,
     struct timeval tv, *tvp;
     int imax, omax, emax, max;
     int n;
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
 
     if (timeout_obj == Ty_None)
         tvp = (struct timeval *)NULL;
@@ -624,7 +624,7 @@ select_poll_poll_impl(pollObject *self, TyObject *timeout_obj)
     TyObject *result_list = NULL;
     int poll_result, i, j;
     TyObject *value = NULL, *num = NULL;
-    PyTime_t timeout = -1, ms = -1, deadline = 0;
+    TyTime_t timeout = -1, ms = -1, deadline = 0;
     int async_err = 0;
 
     if (timeout_obj != Ty_None) {
@@ -959,7 +959,7 @@ select_devpoll_poll_impl(devpollObject *self, TyObject *timeout_obj)
     TyObject *result_list = NULL;
     int poll_result, i;
     TyObject *value, *num1, *num2;
-    PyTime_t timeout, ms, deadline = 0;
+    TyTime_t timeout, ms, deadline = 0;
 
     if (self->fd_devpoll < 0)
         return devpoll_err_closed();
@@ -1581,7 +1581,7 @@ select_epoll_poll_impl(pyEpoll_Object *self, TyObject *timeout_obj,
     int nfds, i;
     TyObject *elist = NULL, *etuple = NULL;
     struct epoll_event *evs = NULL;
-    PyTime_t timeout = -1, ms = -1, deadline = 0;
+    TyTime_t timeout = -1, ms = -1, deadline = 0;
 
     if (self->epfd < 0)
         return pyepoll_err_closed();
@@ -1724,7 +1724,7 @@ static TyGetSetDef pyepoll_getsetlist[] = {
     {0},
 };
 
-PyDoc_STRVAR(pyepoll_doc,
+TyDoc_STRVAR(pyepoll_doc,
 "select.epoll(sizehint=-1, flags=0)\n\
 \n\
 Returns an epolling object\n\
@@ -1768,7 +1768,7 @@ the maximum number of monitored events.");
 #include <sys/event.h>
 #endif
 
-PyDoc_STRVAR(kqueue_event_doc,
+TyDoc_STRVAR(kqueue_event_doc,
 "kevent(ident, filter=KQ_FILTER_READ, flags=KQ_EV_ADD, fflags=0, data=0, udata=0)\n\
 \n\
 This object is the equivalent of the struct kevent for the C API.\n\
@@ -2308,7 +2308,7 @@ select_kqueue_control_impl(kqueue_queue_Object *self, TyObject *changelist,
     struct kevent *chl = NULL;
     struct timespec timeoutspec;
     struct timespec *ptimeoutspec;
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
     _selectstate *state = _selectstate_by_type(Ty_TYPE(self));
 
     if (self->kqfd < 0)
@@ -2578,7 +2578,7 @@ static TyMethodDef select_methods[] = {
     {0,         0},     /* sentinel */
 };
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module supports asynchronous I/O on multiple file descriptors.\n\
 \n\
 *** IMPORTANT NOTICE ***\n\

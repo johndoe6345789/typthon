@@ -39,7 +39,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_row_keys__doc__,
+TyDoc_STRVAR(pysqlite_row_keys__doc__,
 "keys($self, /)\n"
 "--\n"
 "\n"

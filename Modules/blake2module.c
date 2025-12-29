@@ -147,7 +147,7 @@ static inline bool has_simd256(cpu_flags *flags) {
 static TyType_Spec blake2b_type_spec;
 static TyType_Spec blake2s_type_spec;
 
-PyDoc_STRVAR(blake2mod__doc__,
+TyDoc_STRVAR(blake2mod__doc__,
 "_blake2b provides BLAKE2b for hashlib\n"
 );
 

@@ -43,7 +43,7 @@ _Ty_stackref_get_object(_PyStackRef ref)
     if (ref.index == 0) {
         return NULL;
     }
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     assert(interp != NULL);
     if (ref.index >= interp->next_stackref) {
         _Ty_FatalErrorFormat(__func__, "Garbled stack ref with ID %" PRIu64 "\n", ref.index);
@@ -64,7 +64,7 @@ PyStackRef_Is(_PyStackRef a, _PyStackRef b)
 TyObject *
 _Ty_stackref_close(_PyStackRef ref, const char *filename, int linenumber)
 {
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     if (ref.index >= interp->next_stackref) {
         _Ty_FatalErrorFormat(__func__, "Invalid StackRef with ID %" PRIu64 " at %s:%d\n", (void *)ref.index, filename, linenumber);
 
@@ -112,7 +112,7 @@ _Ty_stackref_create(TyObject *obj, const char *filename, int linenumber)
     if (obj == NULL) {
         Ty_FatalError("Cannot create a stackref for NULL");
     }
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     uint64_t new_id = interp->next_stackref;
     interp->next_stackref = new_id + 2;
     TableEntry *entry = make_table_entry(obj, filename, linenumber);
@@ -131,7 +131,7 @@ _Ty_stackref_record_borrow(_PyStackRef ref, const char *filename, int linenumber
     if (ref.index < INITIAL_STACKREF_INDEX) {
         return;
     }
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     TableEntry *entry = _Ty_hashtable_get(interp->open_stackrefs_table, (void *)ref.index);
     if (entry == NULL) {
 #ifdef Ty_STACKREF_CLOSE_DEBUG
@@ -150,7 +150,7 @@ _Ty_stackref_record_borrow(_PyStackRef ref, const char *filename, int linenumber
 
 
 void
-_Ty_stackref_associate(PyInterpreterState *interp, TyObject *obj, _PyStackRef ref)
+_Ty_stackref_associate(TyInterpreterState *interp, TyObject *obj, _PyStackRef ref)
 {
     assert(ref.index < INITIAL_STACKREF_INDEX);
     TableEntry *entry = make_table_entry(obj, "builtin-object", 0);
@@ -180,7 +180,7 @@ report_leak(_Ty_hashtable_t *ht, const void *key, const void *value, void *leak)
 }
 
 void
-_Ty_stackref_report_leaks(PyInterpreterState *interp)
+_Ty_stackref_report_leaks(TyInterpreterState *interp)
 {
     int leak = 0;
     _Ty_hashtable_foreach(interp->open_stackrefs_table, report_leak, &leak);

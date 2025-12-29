@@ -329,7 +329,7 @@ _TyLong_AsMode_t(TyObject *op)
            return NULL;                                        \
        return TyBool_FromLong(isfunc(mode));                   \
     }                                                          \
-    PyDoc_STRVAR(stat_ ## isfunc ## _doc, doc)
+    TyDoc_STRVAR(stat_ ## isfunc ## _doc, doc)
 
 stat_S_ISFUNC(S_ISDIR,
     "S_ISDIR(mode) -> bool\n\n"
@@ -372,7 +372,7 @@ stat_S_ISFUNC(S_ISWHT,
     "Return True if mode is from a whiteout.");
 
 
-PyDoc_STRVAR(stat_S_IMODE_doc,
+TyDoc_STRVAR(stat_S_IMODE_doc,
 "Return the portion of the file's mode that can be set by os.chmod().");
 
 static TyObject *
@@ -385,7 +385,7 @@ stat_S_IMODE(TyObject *self, TyObject *omode)
 }
 
 
-PyDoc_STRVAR(stat_S_IFMT_doc,
+TyDoc_STRVAR(stat_S_IFMT_doc,
 "Return the portion of the file's mode that describes the file type.");
 
 static TyObject *
@@ -446,7 +446,7 @@ fileperm(mode_t mode, char *buf)
     }
 }
 
-PyDoc_STRVAR(stat_filemode_doc,
+TyDoc_STRVAR(stat_filemode_doc,
 "Convert a file's mode to a string of the form '-rwxrwxrwx'");
 
 static TyObject *
@@ -483,7 +483,7 @@ static TyMethodDef stat_methods[] = {
 };
 
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "S_IFMT_: file type bits\n\
 S_IFDIR: directory\n\
 S_IFCHR: character device\n\

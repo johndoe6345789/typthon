@@ -60,7 +60,7 @@ extern void _Ty_DumpTraceback(
 
 extern const char* _Ty_DumpTracebackThreads(
     int fd,
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     TyThreadState *current_tstate);
 
 /* Write a Unicode object into the file descriptor fd. Encode the string to

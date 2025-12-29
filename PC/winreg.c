@@ -40,7 +40,7 @@ static BOOL PyHKEY_Close(winreg_state *st, TyObject *obHandle);
     TyErr_SetFromWindowsErr(rc)
 
 /* Doc strings */
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module provides access to the Windows registry API.\n"
 "\n"
 "Functions:\n"
@@ -82,7 +82,7 @@ PyDoc_STRVAR(module_doc,
 
 
 /* PyHKEY docstrings */
-PyDoc_STRVAR(PyHKEY_doc,
+TyDoc_STRVAR(PyHKEY_doc,
 "PyHKEY Object - A Python object, representing a win32 registry key.\n"
 "\n"
 "This object wraps a Windows HKEY object, automatically closing it when\n"

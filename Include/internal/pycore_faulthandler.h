@@ -41,7 +41,7 @@ struct faulthandler_user_signal {
     int all_threads;
     int chain;
     _Ty_sighandler_t previous;
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
 };
 #endif /* FAULTHANDLER_USER */
 
@@ -52,7 +52,7 @@ struct _faulthandler_runtime_state {
         TyObject *file;
         int fd;
         int all_threads;
-        PyInterpreterState *interp;
+        TyInterpreterState *interp;
 #ifdef MS_WINDOWS
         void *exc_handler;
 #endif
@@ -64,16 +64,16 @@ struct _faulthandler_runtime_state {
         int fd;
         PY_TIMEOUT_T timeout_us;   /* timeout in microseconds */
         int repeat;
-        PyInterpreterState *interp;
+        TyInterpreterState *interp;
         int exit;
         char *header;
         size_t header_len;
         /* The main thread always holds this lock. It is only released when
            faulthandler_thread() is interrupted before this thread exits, or at
            Python exit. */
-        PyThread_type_lock cancel_event;
+        TyThread_type_lock cancel_event;
         /* released by child thread when joined */
-        PyThread_type_lock running;
+        TyThread_type_lock running;
     } thread;
 
 #ifdef FAULTHANDLER_USER

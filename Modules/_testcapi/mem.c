@@ -591,8 +591,8 @@ tracemalloc_track_race_thread(void *data)
     PyTraceMalloc_Track(123, 10, 1);
     PyTraceMalloc_Untrack(123, 10);
 
-    PyThread_type_lock lock = (PyThread_type_lock)data;
-    PyThread_release_lock(lock);
+    TyThread_type_lock lock = (TyThread_type_lock)data;
+    TyThread_release_lock(lock);
 }
 
 // gh-128679: Test fix for tracemalloc.stop() race condition
@@ -602,7 +602,7 @@ tracemalloc_track_race(TyObject *self, TyObject *args)
 #define NTHREAD 50
     TyObject *tracemalloc = NULL;
     TyObject *stop = NULL;
-    PyThread_type_lock locks[NTHREAD];
+    TyThread_type_lock locks[NTHREAD];
     memset(locks, 0, sizeof(locks));
 
     // Call tracemalloc.start()
@@ -629,16 +629,16 @@ tracemalloc_track_race(TyObject *self, TyObject *args)
 
     // Start threads
     for (size_t i = 0; i < NTHREAD; i++) {
-        PyThread_type_lock lock = PyThread_allocate_lock();
+        TyThread_type_lock lock = TyThread_allocate_lock();
         if (!lock) {
             TyErr_NoMemory();
             goto error;
         }
         locks[i] = lock;
-        PyThread_acquire_lock(lock, 1);
+        TyThread_acquire_lock(lock, 1);
 
         unsigned long thread;
-        thread = PyThread_start_new_thread(tracemalloc_track_race_thread,
+        thread = TyThread_start_new_thread(tracemalloc_track_race_thread,
                                            (void*)lock);
         if (thread == (unsigned long)-1) {
             TyErr_SetString(TyExc_RuntimeError, "can't start new thread");
@@ -657,16 +657,16 @@ tracemalloc_track_race(TyObject *self, TyObject *args)
     // Wait until threads complete with the GIL released
     Ty_BEGIN_ALLOW_THREADS
     for (size_t i = 0; i < NTHREAD; i++) {
-        PyThread_type_lock lock = locks[i];
-        PyThread_acquire_lock(lock, 1);
-        PyThread_release_lock(lock);
+        TyThread_type_lock lock = locks[i];
+        TyThread_acquire_lock(lock, 1);
+        TyThread_release_lock(lock);
     }
     Ty_END_ALLOW_THREADS
 
     // Free threads locks
     for (size_t i=0; i < NTHREAD; i++) {
-        PyThread_type_lock lock = locks[i];
-        PyThread_free_lock(lock);
+        TyThread_type_lock lock = locks[i];
+        TyThread_free_lock(lock);
     }
     Py_RETURN_NONE;
 
@@ -674,9 +674,9 @@ error:
     Ty_CLEAR(tracemalloc);
     Ty_CLEAR(stop);
     for (size_t i=0; i < NTHREAD; i++) {
-        PyThread_type_lock lock = locks[i];
+        TyThread_type_lock lock = locks[i];
         if (lock) {
-            PyThread_free_lock(lock);
+            TyThread_free_lock(lock);
         }
     }
     return NULL;
@@ -690,9 +690,9 @@ static TyMethodDef test_methods[] = {
     {"pymem_malloc_without_gil",      pymem_malloc_without_gil,      METH_NOARGS},
     {"pyobject_malloc_without_gil",   pyobject_malloc_without_gil,   METH_NOARGS},
     {"remove_mem_hooks",              remove_mem_hooks,              METH_NOARGS,
-        PyDoc_STR("Remove memory hooks.")},
+        TyDoc_STR("Remove memory hooks.")},
     {"set_nomemory",                  set_nomemory,                  METH_VARARGS,
-        PyDoc_STR("set_nomemory(start:int, stop:int = 0)")},
+        TyDoc_STR("set_nomemory(start:int, stop:int = 0)")},
     {"test_pymem_alloc0",             test_pymem_alloc0,             METH_NOARGS},
     {"test_pymem_setallocators",      test_pymem_setallocators,      METH_NOARGS},
     {"test_pymem_setrawallocators",   test_pymem_setrawallocators,   METH_NOARGS},

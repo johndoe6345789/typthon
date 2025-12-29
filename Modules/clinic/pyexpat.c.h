@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(pyexpat_xmlparser_SetReparseDeferralEnabled__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_SetReparseDeferralEnabled__doc__,
 "SetReparseDeferralEnabled($self, enabled, /)\n"
 "--\n"
 "\n"
@@ -37,7 +37,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pyexpat_xmlparser_GetReparseDeferralEnabled__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_GetReparseDeferralEnabled__doc__,
 "GetReparseDeferralEnabled($self, /)\n"
 "--\n"
 "\n"
@@ -55,7 +55,7 @@ pyexpat_xmlparser_GetReparseDeferralEnabled(TyObject *self, TyObject *Py_UNUSED(
     return pyexpat_xmlparser_GetReparseDeferralEnabled_impl((xmlparseobject *)self);
 }
 
-PyDoc_STRVAR(pyexpat_xmlparser_Parse__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_Parse__doc__,
 "Parse($self, data, isfinal=False, /)\n"
 "--\n"
 "\n"
@@ -111,7 +111,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pyexpat_xmlparser_ParseFile__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_ParseFile__doc__,
 "ParseFile($self, file, /)\n"
 "--\n"
 "\n"
@@ -156,7 +156,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pyexpat_xmlparser_SetBase__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_SetBase__doc__,
 "SetBase($self, base, /)\n"
 "--\n"
 "\n"
@@ -193,7 +193,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pyexpat_xmlparser_GetBase__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_GetBase__doc__,
 "GetBase($self, /)\n"
 "--\n"
 "\n"
@@ -211,7 +211,7 @@ pyexpat_xmlparser_GetBase(TyObject *self, TyObject *Py_UNUSED(ignored))
     return pyexpat_xmlparser_GetBase_impl((xmlparseobject *)self);
 }
 
-PyDoc_STRVAR(pyexpat_xmlparser_GetInputContext__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_GetInputContext__doc__,
 "GetInputContext($self, /)\n"
 "--\n"
 "\n"
@@ -232,7 +232,7 @@ pyexpat_xmlparser_GetInputContext(TyObject *self, TyObject *Py_UNUSED(ignored))
     return pyexpat_xmlparser_GetInputContext_impl((xmlparseobject *)self);
 }
 
-PyDoc_STRVAR(pyexpat_xmlparser_ExternalEntityParserCreate__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_ExternalEntityParserCreate__doc__,
 "ExternalEntityParserCreate($self, context, encoding=<unrepresentable>,\n"
 "                           /)\n"
 "--\n"
@@ -315,7 +315,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pyexpat_xmlparser_SetParamEntityParsing__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_SetParamEntityParsing__doc__,
 "SetParamEntityParsing($self, flag, /)\n"
 "--\n"
 "\n"
@@ -350,7 +350,7 @@ exit:
 
 #if (XML_COMBINED_VERSION >= 19505)
 
-PyDoc_STRVAR(pyexpat_xmlparser_UseForeignDTD__doc__,
+TyDoc_STRVAR(pyexpat_xmlparser_UseForeignDTD__doc__,
 "UseForeignDTD($self, flag=True, /)\n"
 "--\n"
 "\n"
@@ -408,7 +408,7 @@ exit:
 
 #endif /* (XML_COMBINED_VERSION >= 19505) */
 
-PyDoc_STRVAR(pyexpat_ParserCreate__doc__,
+TyDoc_STRVAR(pyexpat_ParserCreate__doc__,
 "ParserCreate($module, /, encoding=None, namespace_separator=None,\n"
 "             intern=<unrepresentable>)\n"
 "--\n"
@@ -435,7 +435,7 @@ pyexpat_ParserCreate(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(encoding), &_Ty_ID(namespace_separator), &_Ty_ID(intern), },
     };
@@ -521,7 +521,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pyexpat_ErrorString__doc__,
+TyDoc_STRVAR(pyexpat_ErrorString__doc__,
 "ErrorString($module, code, /)\n"
 "--\n"
 "\n"

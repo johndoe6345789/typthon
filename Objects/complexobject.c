@@ -1379,7 +1379,7 @@ static PyNumberMethods complex_as_number = {
 };
 
 TyTypeObject TyComplex_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "complex",
     sizeof(PyComplexObject),
     0,

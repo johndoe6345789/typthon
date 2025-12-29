@@ -21,7 +21,7 @@ TyCell_New(TyObject *obj)
     return (TyObject *)op;
 }
 
-PyDoc_STRVAR(cell_new_doc,
+TyDoc_STRVAR(cell_new_doc,
 "cell([contents])\n"
 "--\n"
 "\n"
@@ -170,7 +170,7 @@ static TyGetSetDef cell_getsetlist[] = {
 };
 
 TyTypeObject TyCell_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "cell",
     sizeof(PyCellObject),
     0,

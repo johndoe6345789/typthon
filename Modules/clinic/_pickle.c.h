@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_pickle_Pickler_clear_memo__doc__,
+TyDoc_STRVAR(_pickle_Pickler_clear_memo__doc__,
 "clear_memo($self, /)\n"
 "--\n"
 "\n"
@@ -31,7 +31,7 @@ _pickle_Pickler_clear_memo(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _pickle_Pickler_clear_memo_impl((PicklerObject *)self);
 }
 
-PyDoc_STRVAR(_pickle_Pickler_dump__doc__,
+TyDoc_STRVAR(_pickle_Pickler_dump__doc__,
 "dump($self, obj, /)\n"
 "--\n"
 "\n"
@@ -76,7 +76,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_Pickler___sizeof____doc__,
+TyDoc_STRVAR(_pickle_Pickler___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -104,7 +104,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_Pickler___init____doc__,
+TyDoc_STRVAR(_pickle_Pickler___init____doc__,
 "Pickler(file, protocol=None, fix_imports=True, buffer_callback=None)\n"
 "--\n"
 "\n"
@@ -157,7 +157,7 @@ _pickle_Pickler___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(file), &_Ty_ID(protocol), &_Ty_ID(fix_imports), &_Ty_ID(buffer_callback), },
     };
@@ -216,7 +216,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_PicklerMemoProxy_clear__doc__,
+TyDoc_STRVAR(_pickle_PicklerMemoProxy_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -234,7 +234,7 @@ _pickle_PicklerMemoProxy_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _pickle_PicklerMemoProxy_clear_impl((PicklerMemoProxyObject *)self);
 }
 
-PyDoc_STRVAR(_pickle_PicklerMemoProxy_copy__doc__,
+TyDoc_STRVAR(_pickle_PicklerMemoProxy_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -252,7 +252,7 @@ _pickle_PicklerMemoProxy_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _pickle_PicklerMemoProxy_copy_impl((PicklerMemoProxyObject *)self);
 }
 
-PyDoc_STRVAR(_pickle_PicklerMemoProxy___reduce____doc__,
+TyDoc_STRVAR(_pickle_PicklerMemoProxy___reduce____doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n"
@@ -270,7 +270,7 @@ _pickle_PicklerMemoProxy___reduce__(TyObject *self, TyObject *Py_UNUSED(ignored)
     return _pickle_PicklerMemoProxy___reduce___impl((PicklerMemoProxyObject *)self);
 }
 
-PyDoc_STRVAR(_pickle_Unpickler_persistent_load__doc__,
+TyDoc_STRVAR(_pickle_Unpickler_persistent_load__doc__,
 "persistent_load($self, pid, /)\n"
 "--\n"
 "\n");
@@ -314,7 +314,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_Unpickler_load__doc__,
+TyDoc_STRVAR(_pickle_Unpickler_load__doc__,
 "load($self, /)\n"
 "--\n"
 "\n"
@@ -340,7 +340,7 @@ _pickle_Unpickler_load(TyObject *self, TyTypeObject *cls, TyObject *const *args,
     return _pickle_Unpickler_load_impl((UnpicklerObject *)self, cls);
 }
 
-PyDoc_STRVAR(_pickle_Unpickler_find_class__doc__,
+TyDoc_STRVAR(_pickle_Unpickler_find_class__doc__,
 "find_class($self, module_name, global_name, /)\n"
 "--\n"
 "\n"
@@ -395,7 +395,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_Unpickler___sizeof____doc__,
+TyDoc_STRVAR(_pickle_Unpickler___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -423,7 +423,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_Unpickler___init____doc__,
+TyDoc_STRVAR(_pickle_Unpickler___init____doc__,
 "Unpickler(file, *, fix_imports=True, encoding=\'ASCII\', errors=\'strict\',\n"
 "          buffers=())\n"
 "--\n"
@@ -467,7 +467,7 @@ _pickle_Unpickler___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(file), &_Ty_ID(fix_imports), &_Ty_ID(encoding), &_Ty_ID(errors), &_Ty_ID(buffers), },
     };
@@ -557,7 +557,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_UnpicklerMemoProxy_clear__doc__,
+TyDoc_STRVAR(_pickle_UnpicklerMemoProxy_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -575,7 +575,7 @@ _pickle_UnpicklerMemoProxy_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _pickle_UnpicklerMemoProxy_clear_impl((UnpicklerMemoProxyObject *)self);
 }
 
-PyDoc_STRVAR(_pickle_UnpicklerMemoProxy_copy__doc__,
+TyDoc_STRVAR(_pickle_UnpicklerMemoProxy_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -593,7 +593,7 @@ _pickle_UnpicklerMemoProxy_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _pickle_UnpicklerMemoProxy_copy_impl((UnpicklerMemoProxyObject *)self);
 }
 
-PyDoc_STRVAR(_pickle_UnpicklerMemoProxy___reduce____doc__,
+TyDoc_STRVAR(_pickle_UnpicklerMemoProxy___reduce____doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n"
@@ -611,7 +611,7 @@ _pickle_UnpicklerMemoProxy___reduce__(TyObject *self, TyObject *Py_UNUSED(ignore
     return _pickle_UnpicklerMemoProxy___reduce___impl((UnpicklerMemoProxyObject *)self);
 }
 
-PyDoc_STRVAR(_pickle_dump__doc__,
+TyDoc_STRVAR(_pickle_dump__doc__,
 "dump($module, /, obj, file, protocol=None, *, fix_imports=True,\n"
 "     buffer_callback=None)\n"
 "--\n"
@@ -664,7 +664,7 @@ _pickle_dump(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(obj), &_Ty_ID(file), &_Ty_ID(protocol), &_Ty_ID(fix_imports), &_Ty_ID(buffer_callback), },
     };
@@ -727,7 +727,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_dumps__doc__,
+TyDoc_STRVAR(_pickle_dumps__doc__,
 "dumps($module, /, obj, protocol=None, *, fix_imports=True,\n"
 "      buffer_callback=None)\n"
 "--\n"
@@ -771,7 +771,7 @@ _pickle_dumps(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(obj), &_Ty_ID(protocol), &_Ty_ID(fix_imports), &_Ty_ID(buffer_callback), },
     };
@@ -832,7 +832,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_load__doc__,
+TyDoc_STRVAR(_pickle_load__doc__,
 "load($module, /, file, *, fix_imports=True, encoding=\'ASCII\',\n"
 "     errors=\'strict\', buffers=())\n"
 "--\n"
@@ -882,7 +882,7 @@ _pickle_load(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(file), &_Ty_ID(fix_imports), &_Ty_ID(encoding), &_Ty_ID(errors), &_Ty_ID(buffers), },
     };
@@ -970,7 +970,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_pickle_loads__doc__,
+TyDoc_STRVAR(_pickle_loads__doc__,
 "loads($module, data, /, *, fix_imports=True, encoding=\'ASCII\',\n"
 "      errors=\'strict\', buffers=())\n"
 "--\n"
@@ -1011,7 +1011,7 @@ _pickle_loads(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fix_imports), &_Ty_ID(encoding), &_Ty_ID(errors), &_Ty_ID(buffers), },
     };

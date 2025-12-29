@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(SHA256Type_copy__doc__,
+TyDoc_STRVAR(SHA256Type_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -30,7 +30,7 @@ SHA256Type_copy(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssi
     return SHA256Type_copy_impl((SHA256object *)self, cls);
 }
 
-PyDoc_STRVAR(SHA512Type_copy__doc__,
+TyDoc_STRVAR(SHA512Type_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -52,7 +52,7 @@ SHA512Type_copy(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssi
     return SHA512Type_copy_impl((SHA512object *)self, cls);
 }
 
-PyDoc_STRVAR(SHA256Type_digest__doc__,
+TyDoc_STRVAR(SHA256Type_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -70,7 +70,7 @@ SHA256Type_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return SHA256Type_digest_impl((SHA256object *)self);
 }
 
-PyDoc_STRVAR(SHA512Type_digest__doc__,
+TyDoc_STRVAR(SHA512Type_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -88,7 +88,7 @@ SHA512Type_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return SHA512Type_digest_impl((SHA512object *)self);
 }
 
-PyDoc_STRVAR(SHA256Type_hexdigest__doc__,
+TyDoc_STRVAR(SHA256Type_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -106,7 +106,7 @@ SHA256Type_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return SHA256Type_hexdigest_impl((SHA256object *)self);
 }
 
-PyDoc_STRVAR(SHA512Type_hexdigest__doc__,
+TyDoc_STRVAR(SHA512Type_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -124,7 +124,7 @@ SHA512Type_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return SHA512Type_hexdigest_impl((SHA512object *)self);
 }
 
-PyDoc_STRVAR(SHA256Type_update__doc__,
+TyDoc_STRVAR(SHA256Type_update__doc__,
 "update($self, obj, /)\n"
 "--\n"
 "\n"
@@ -146,7 +146,7 @@ SHA256Type_update(TyObject *self, TyObject *obj)
     return return_value;
 }
 
-PyDoc_STRVAR(SHA512Type_update__doc__,
+TyDoc_STRVAR(SHA512Type_update__doc__,
 "update($self, obj, /)\n"
 "--\n"
 "\n"
@@ -168,7 +168,7 @@ SHA512Type_update(TyObject *self, TyObject *obj)
     return return_value;
 }
 
-PyDoc_STRVAR(_sha2_sha256__doc__,
+TyDoc_STRVAR(_sha2_sha256__doc__,
 "sha256($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -194,7 +194,7 @@ _sha2_sha256(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -253,7 +253,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sha2_sha224__doc__,
+TyDoc_STRVAR(_sha2_sha224__doc__,
 "sha224($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -279,7 +279,7 @@ _sha2_sha224(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -338,7 +338,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sha2_sha512__doc__,
+TyDoc_STRVAR(_sha2_sha512__doc__,
 "sha512($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -364,7 +364,7 @@ _sha2_sha512(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -423,7 +423,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sha2_sha384__doc__,
+TyDoc_STRVAR(_sha2_sha384__doc__,
 "sha384($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -449,7 +449,7 @@ _sha2_sha384(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };

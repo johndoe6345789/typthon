@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_testcapi_pyobject_fastcalldict__doc__,
+TyDoc_STRVAR(_testcapi_pyobject_fastcalldict__doc__,
 "pyobject_fastcalldict($module, func, func_args, kwargs, /)\n"
 "--\n"
 "\n");
@@ -36,7 +36,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_pyobject_vectorcall__doc__,
+TyDoc_STRVAR(_testcapi_pyobject_vectorcall__doc__,
 "pyobject_vectorcall($module, func, func_args, kwnames, /)\n"
 "--\n"
 "\n");
@@ -68,7 +68,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_pyvectorcall_call__doc__,
+TyDoc_STRVAR(_testcapi_pyvectorcall_call__doc__,
 "pyvectorcall_call($module, func, argstuple, kwargs=<unrepresentable>, /)\n"
 "--\n"
 "\n");
@@ -104,7 +104,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_VectorCallClass_set_vectorcall__doc__,
+TyDoc_STRVAR(_testcapi_VectorCallClass_set_vectorcall__doc__,
 "set_vectorcall($self, type, /)\n"
 "--\n"
 "\n"
@@ -134,7 +134,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_make_vectorcall_class__doc__,
+TyDoc_STRVAR(_testcapi_make_vectorcall_class__doc__,
 "make_vectorcall_class($module, base=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -173,7 +173,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_has_vectorcall_flag__doc__,
+TyDoc_STRVAR(_testcapi_has_vectorcall_flag__doc__,
 "has_vectorcall_flag($module, type, /)\n"
 "--\n"
 "\n"

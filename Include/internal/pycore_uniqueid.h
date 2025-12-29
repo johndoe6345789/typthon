@@ -44,7 +44,7 @@ extern void _TyObject_MergePerThreadRefcounts(_PyThreadStateImpl *tstate);
 extern void _TyObject_FinalizePerThreadRefcounts(_PyThreadStateImpl *tstate);
 
 // Frees the interpreter's pool of type ids.
-extern void _TyObject_FinalizeUniqueIdPool(PyInterpreterState *interp);
+extern void _TyObject_FinalizeUniqueIdPool(TyInterpreterState *interp);
 
 // Increfs the object, resizing the thread-local refcount array if necessary.
 PyAPI_FUNC(void) _TyObject_ThreadIncrefSlow(TyObject *obj, size_t idx);

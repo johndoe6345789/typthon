@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_testcapi_err_set_raised__doc__,
+TyDoc_STRVAR(_testcapi_err_set_raised__doc__,
 "err_set_raised($module, exception, /)\n"
 "--\n"
 "\n");
@@ -16,7 +16,7 @@ PyDoc_STRVAR(_testcapi_err_set_raised__doc__,
 #define _TESTCAPI_ERR_SET_RAISED_METHODDEF    \
     {"err_set_raised", (PyCFunction)_testcapi_err_set_raised, METH_O, _testcapi_err_set_raised__doc__},
 
-PyDoc_STRVAR(_testcapi_exception_print__doc__,
+TyDoc_STRVAR(_testcapi_exception_print__doc__,
 "exception_print($module, exception, legacy=False, /)\n"
 "--\n"
 "\n"
@@ -53,7 +53,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_make_exception_with_doc__doc__,
+TyDoc_STRVAR(_testcapi_make_exception_with_doc__doc__,
 "make_exception_with_doc($module, /, name, doc=<unrepresentable>,\n"
 "                        base=<unrepresentable>, dict=<unrepresentable>)\n"
 "--\n"
@@ -81,7 +81,7 @@ _testcapi_make_exception_with_doc(TyObject *module, TyObject *const *args, Ty_ss
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(doc), &_Ty_ID(base), &_Ty_ID(dict), },
     };
@@ -159,7 +159,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_exc_set_object__doc__,
+TyDoc_STRVAR(_testcapi_exc_set_object__doc__,
 "exc_set_object($module, exception, obj, /)\n"
 "--\n"
 "\n");
@@ -188,7 +188,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_exc_set_object_fetch__doc__,
+TyDoc_STRVAR(_testcapi_exc_set_object_fetch__doc__,
 "exc_set_object_fetch($module, exception, obj, /)\n"
 "--\n"
 "\n");
@@ -218,7 +218,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_err_setstring__doc__,
+TyDoc_STRVAR(_testcapi_err_setstring__doc__,
 "err_setstring($module, exc, value, /)\n"
 "--\n"
 "\n");
@@ -248,7 +248,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_err_setfromerrnowithfilename__doc__,
+TyDoc_STRVAR(_testcapi_err_setfromerrnowithfilename__doc__,
 "err_setfromerrnowithfilename($module, error, exc, value, /)\n"
 "--\n"
 "\n");
@@ -280,7 +280,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_raise_exception__doc__,
+TyDoc_STRVAR(_testcapi_raise_exception__doc__,
 "raise_exception($module, exception, num_args, /)\n"
 "--\n"
 "\n");
@@ -312,7 +312,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_raise_memoryerror__doc__,
+TyDoc_STRVAR(_testcapi_raise_memoryerror__doc__,
 "raise_memoryerror($module, /)\n"
 "--\n"
 "\n");
@@ -329,7 +329,7 @@ _testcapi_raise_memoryerror(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _testcapi_raise_memoryerror_impl(module);
 }
 
-PyDoc_STRVAR(_testcapi_fatal_error__doc__,
+TyDoc_STRVAR(_testcapi_fatal_error__doc__,
 "fatal_error($module, message, release_gil=False, /)\n"
 "--\n"
 "\n");
@@ -358,7 +358,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_set_exc_info__doc__,
+TyDoc_STRVAR(_testcapi_set_exc_info__doc__,
 "set_exc_info($module, new_type, new_value, new_tb, /)\n"
 "--\n"
 "\n");
@@ -390,7 +390,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_set_exception__doc__,
+TyDoc_STRVAR(_testcapi_set_exception__doc__,
 "set_exception($module, new_exc, /)\n"
 "--\n"
 "\n");
@@ -398,7 +398,7 @@ PyDoc_STRVAR(_testcapi_set_exception__doc__,
 #define _TESTCAPI_SET_EXCEPTION_METHODDEF    \
     {"set_exception", (PyCFunction)_testcapi_set_exception, METH_O, _testcapi_set_exception__doc__},
 
-PyDoc_STRVAR(_testcapi_traceback_print__doc__,
+TyDoc_STRVAR(_testcapi_traceback_print__doc__,
 "traceback_print($module, traceback, file, /)\n"
 "--\n"
 "\n"
@@ -429,7 +429,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_unstable_exc_prep_reraise_star__doc__,
+TyDoc_STRVAR(_testcapi_unstable_exc_prep_reraise_star__doc__,
 "unstable_exc_prep_reraise_star($module, orig, excs, /)\n"
 "--\n"
 "\n"

@@ -183,7 +183,7 @@ picklebuf_raw(TyObject *op, TyObject *Py_UNUSED(ignored))
     return m;
 }
 
-PyDoc_STRVAR(picklebuf_raw_doc,
+TyDoc_STRVAR(picklebuf_raw_doc,
 "raw($self, /)\n--\n\
 \n\
 Return a memoryview of the raw memory underlying this buffer.\n\
@@ -197,7 +197,7 @@ picklebuf_release(TyObject *op, TyObject *Py_UNUSED(ignored))
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(picklebuf_release_doc,
+TyDoc_STRVAR(picklebuf_release_doc,
 "release($self, /)\n--\n\
 \n\
 Release the underlying buffer exposed by the PickleBuffer object.");
@@ -209,9 +209,9 @@ static TyMethodDef picklebuf_methods[] = {
 };
 
 TyTypeObject PyPickleBuffer_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "pickle.PickleBuffer",
-    .tp_doc = PyDoc_STR("Wrapper for potentially out-of-band buffers"),
+    .tp_doc = TyDoc_STR("Wrapper for potentially out-of-band buffers"),
     .tp_basicsize = sizeof(PyPickleBufferObject),
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,
     .tp_new = picklebuf_new,

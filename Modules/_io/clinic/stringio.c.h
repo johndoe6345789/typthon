@@ -10,7 +10,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_io_StringIO_getvalue__doc__,
+TyDoc_STRVAR(_io_StringIO_getvalue__doc__,
 "getvalue($self, /)\n"
 "--\n"
 "\n"
@@ -34,7 +34,7 @@ _io_StringIO_getvalue(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_tell__doc__,
+TyDoc_STRVAR(_io_StringIO_tell__doc__,
 "tell($self, /)\n"
 "--\n"
 "\n"
@@ -58,7 +58,7 @@ _io_StringIO_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_read__doc__,
+TyDoc_STRVAR(_io_StringIO_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -97,7 +97,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_readline__doc__,
+TyDoc_STRVAR(_io_StringIO_readline__doc__,
 "readline($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -135,7 +135,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_truncate__doc__,
+TyDoc_STRVAR(_io_StringIO_truncate__doc__,
 "truncate($self, pos=None, /)\n"
 "--\n"
 "\n"
@@ -175,7 +175,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_seek__doc__,
+TyDoc_STRVAR(_io_StringIO_seek__doc__,
 "seek($self, pos, whence=0, /)\n"
 "--\n"
 "\n"
@@ -231,7 +231,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_write__doc__,
+TyDoc_STRVAR(_io_StringIO_write__doc__,
 "write($self, s, /)\n"
 "--\n"
 "\n"
@@ -258,7 +258,7 @@ _io_StringIO_write(TyObject *self, TyObject *obj)
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_close__doc__,
+TyDoc_STRVAR(_io_StringIO_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -287,7 +287,7 @@ _io_StringIO_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO___init____doc__,
+TyDoc_STRVAR(_io_StringIO___init____doc__,
 "StringIO(initial_value=\'\', newline=\'\\n\')\n"
 "--\n"
 "\n"
@@ -313,7 +313,7 @@ _io_StringIO___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(initial_value), &_Ty_ID(newline), },
     };
@@ -360,7 +360,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_readable__doc__,
+TyDoc_STRVAR(_io_StringIO_readable__doc__,
 "readable($self, /)\n"
 "--\n"
 "\n"
@@ -384,7 +384,7 @@ _io_StringIO_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_writable__doc__,
+TyDoc_STRVAR(_io_StringIO_writable__doc__,
 "writable($self, /)\n"
 "--\n"
 "\n"
@@ -408,7 +408,7 @@ _io_StringIO_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO_seekable__doc__,
+TyDoc_STRVAR(_io_StringIO_seekable__doc__,
 "seekable($self, /)\n"
 "--\n"
 "\n"
@@ -432,7 +432,7 @@ _io_StringIO_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO___getstate____doc__,
+TyDoc_STRVAR(_io_StringIO___getstate____doc__,
 "__getstate__($self, /)\n"
 "--\n"
 "\n");
@@ -455,7 +455,7 @@ _io_StringIO___getstate__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io_StringIO___setstate____doc__,
+TyDoc_STRVAR(_io_StringIO___setstate____doc__,
 "__setstate__($self, state, /)\n"
 "--\n"
 "\n");

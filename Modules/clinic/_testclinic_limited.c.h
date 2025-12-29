@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(test_empty_function__doc__,
+TyDoc_STRVAR(test_empty_function__doc__,
 "test_empty_function($module, /)\n"
 "--\n"
 "\n");
@@ -19,7 +19,7 @@ test_empty_function(TyObject *module, TyObject *Py_UNUSED(ignored))
     return test_empty_function_impl(module);
 }
 
-PyDoc_STRVAR(my_int_func__doc__,
+TyDoc_STRVAR(my_int_func__doc__,
 "my_int_func($module, arg, /)\n"
 "--\n"
 "\n");
@@ -51,7 +51,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(my_int_sum__doc__,
+TyDoc_STRVAR(my_int_sum__doc__,
 "my_int_sum($module, x, y, /)\n"
 "--\n"
 "\n");
@@ -92,7 +92,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(my_float_sum__doc__,
+TyDoc_STRVAR(my_float_sum__doc__,
 "my_float_sum($module, x, y, /)\n"
 "--\n"
 "\n");
@@ -133,7 +133,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(my_double_sum__doc__,
+TyDoc_STRVAR(my_double_sum__doc__,
 "my_double_sum($module, x, y, /)\n"
 "--\n"
 "\n");
@@ -174,7 +174,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(get_file_descriptor__doc__,
+TyDoc_STRVAR(get_file_descriptor__doc__,
 "get_file_descriptor($module, file, /)\n"
 "--\n"
 "\n"

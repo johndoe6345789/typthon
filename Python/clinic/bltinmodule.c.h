@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(builtin___import____doc__,
+TyDoc_STRVAR(builtin___import____doc__,
 "__import__($module, /, name, globals=None, locals=None, fromlist=(),\n"
 "           level=0)\n"
 "--\n"
@@ -49,7 +49,7 @@ builtin___import__(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(globals), &_Ty_ID(locals), &_Ty_ID(fromlist), &_Ty_ID(level), },
     };
@@ -113,7 +113,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_abs__doc__,
+TyDoc_STRVAR(builtin_abs__doc__,
 "abs($module, x, /)\n"
 "--\n"
 "\n"
@@ -122,7 +122,7 @@ PyDoc_STRVAR(builtin_abs__doc__,
 #define BUILTIN_ABS_METHODDEF    \
     {"abs", (PyCFunction)builtin_abs, METH_O, builtin_abs__doc__},
 
-PyDoc_STRVAR(builtin_all__doc__,
+TyDoc_STRVAR(builtin_all__doc__,
 "all($module, iterable, /)\n"
 "--\n"
 "\n"
@@ -133,7 +133,7 @@ PyDoc_STRVAR(builtin_all__doc__,
 #define BUILTIN_ALL_METHODDEF    \
     {"all", (PyCFunction)builtin_all, METH_O, builtin_all__doc__},
 
-PyDoc_STRVAR(builtin_any__doc__,
+TyDoc_STRVAR(builtin_any__doc__,
 "any($module, iterable, /)\n"
 "--\n"
 "\n"
@@ -144,7 +144,7 @@ PyDoc_STRVAR(builtin_any__doc__,
 #define BUILTIN_ANY_METHODDEF    \
     {"any", (PyCFunction)builtin_any, METH_O, builtin_any__doc__},
 
-PyDoc_STRVAR(builtin_ascii__doc__,
+TyDoc_STRVAR(builtin_ascii__doc__,
 "ascii($module, obj, /)\n"
 "--\n"
 "\n"
@@ -158,7 +158,7 @@ PyDoc_STRVAR(builtin_ascii__doc__,
 #define BUILTIN_ASCII_METHODDEF    \
     {"ascii", (PyCFunction)builtin_ascii, METH_O, builtin_ascii__doc__},
 
-PyDoc_STRVAR(builtin_bin__doc__,
+TyDoc_STRVAR(builtin_bin__doc__,
 "bin($module, number, /)\n"
 "--\n"
 "\n"
@@ -170,7 +170,7 @@ PyDoc_STRVAR(builtin_bin__doc__,
 #define BUILTIN_BIN_METHODDEF    \
     {"bin", (PyCFunction)builtin_bin, METH_O, builtin_bin__doc__},
 
-PyDoc_STRVAR(builtin_callable__doc__,
+TyDoc_STRVAR(builtin_callable__doc__,
 "callable($module, obj, /)\n"
 "--\n"
 "\n"
@@ -182,7 +182,7 @@ PyDoc_STRVAR(builtin_callable__doc__,
 #define BUILTIN_CALLABLE_METHODDEF    \
     {"callable", (PyCFunction)builtin_callable, METH_O, builtin_callable__doc__},
 
-PyDoc_STRVAR(builtin_format__doc__,
+TyDoc_STRVAR(builtin_format__doc__,
 "format($module, value, format_spec=\'\', /)\n"
 "--\n"
 "\n"
@@ -227,7 +227,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_chr__doc__,
+TyDoc_STRVAR(builtin_chr__doc__,
 "chr($module, i, /)\n"
 "--\n"
 "\n"
@@ -236,7 +236,7 @@ PyDoc_STRVAR(builtin_chr__doc__,
 #define BUILTIN_CHR_METHODDEF    \
     {"chr", (PyCFunction)builtin_chr, METH_O, builtin_chr__doc__},
 
-PyDoc_STRVAR(builtin_compile__doc__,
+TyDoc_STRVAR(builtin_compile__doc__,
 "compile($module, /, source, filename, mode, flags=0,\n"
 "        dont_inherit=False, optimize=-1, *, _feature_version=-1)\n"
 "--\n"
@@ -275,7 +275,7 @@ builtin_compile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(source), &_Ty_ID(filename), &_Ty_ID(mode), &_Ty_ID(flags), &_Ty_ID(dont_inherit), &_Ty_ID(optimize), &_Ty_ID(_feature_version), },
     };
@@ -370,7 +370,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_divmod__doc__,
+TyDoc_STRVAR(builtin_divmod__doc__,
 "divmod($module, x, y, /)\n"
 "--\n"
 "\n"
@@ -400,7 +400,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_eval__doc__,
+TyDoc_STRVAR(builtin_eval__doc__,
 "eval($module, source, /, globals=None, locals=None)\n"
 "--\n"
 "\n"
@@ -432,7 +432,7 @@ builtin_eval(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(globals), &_Ty_ID(locals), },
     };
@@ -479,7 +479,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_exec__doc__,
+TyDoc_STRVAR(builtin_exec__doc__,
 "exec($module, source, /, globals=None, locals=None, *, closure=None)\n"
 "--\n"
 "\n"
@@ -513,7 +513,7 @@ builtin_exec(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(globals), &_Ty_ID(locals), &_Ty_ID(closure), },
     };
@@ -571,7 +571,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_globals__doc__,
+TyDoc_STRVAR(builtin_globals__doc__,
 "globals($module, /)\n"
 "--\n"
 "\n"
@@ -592,7 +592,7 @@ builtin_globals(TyObject *module, TyObject *Py_UNUSED(ignored))
     return builtin_globals_impl(module);
 }
 
-PyDoc_STRVAR(builtin_hasattr__doc__,
+TyDoc_STRVAR(builtin_hasattr__doc__,
 "hasattr($module, obj, name, /)\n"
 "--\n"
 "\n"
@@ -624,7 +624,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_id__doc__,
+TyDoc_STRVAR(builtin_id__doc__,
 "id($module, obj, /)\n"
 "--\n"
 "\n"
@@ -649,7 +649,7 @@ builtin_id(TyObject *self, TyObject *v)
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_setattr__doc__,
+TyDoc_STRVAR(builtin_setattr__doc__,
 "setattr($module, obj, name, value, /)\n"
 "--\n"
 "\n"
@@ -684,7 +684,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_delattr__doc__,
+TyDoc_STRVAR(builtin_delattr__doc__,
 "delattr($module, obj, name, /)\n"
 "--\n"
 "\n"
@@ -716,7 +716,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_hash__doc__,
+TyDoc_STRVAR(builtin_hash__doc__,
 "hash($module, obj, /)\n"
 "--\n"
 "\n"
@@ -728,7 +728,7 @@ PyDoc_STRVAR(builtin_hash__doc__,
 #define BUILTIN_HASH_METHODDEF    \
     {"hash", (PyCFunction)builtin_hash, METH_O, builtin_hash__doc__},
 
-PyDoc_STRVAR(builtin_hex__doc__,
+TyDoc_STRVAR(builtin_hex__doc__,
 "hex($module, number, /)\n"
 "--\n"
 "\n"
@@ -740,7 +740,7 @@ PyDoc_STRVAR(builtin_hex__doc__,
 #define BUILTIN_HEX_METHODDEF    \
     {"hex", (PyCFunction)builtin_hex, METH_O, builtin_hex__doc__},
 
-PyDoc_STRVAR(builtin_aiter__doc__,
+TyDoc_STRVAR(builtin_aiter__doc__,
 "aiter($module, async_iterable, /)\n"
 "--\n"
 "\n"
@@ -749,7 +749,7 @@ PyDoc_STRVAR(builtin_aiter__doc__,
 #define BUILTIN_AITER_METHODDEF    \
     {"aiter", (PyCFunction)builtin_aiter, METH_O, builtin_aiter__doc__},
 
-PyDoc_STRVAR(builtin_anext__doc__,
+TyDoc_STRVAR(builtin_anext__doc__,
 "anext($module, aiterator, default=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -787,7 +787,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_len__doc__,
+TyDoc_STRVAR(builtin_len__doc__,
 "len($module, obj, /)\n"
 "--\n"
 "\n"
@@ -796,7 +796,7 @@ PyDoc_STRVAR(builtin_len__doc__,
 #define BUILTIN_LEN_METHODDEF    \
     {"len", (PyCFunction)builtin_len, METH_O, builtin_len__doc__},
 
-PyDoc_STRVAR(builtin_locals__doc__,
+TyDoc_STRVAR(builtin_locals__doc__,
 "locals($module, /)\n"
 "--\n"
 "\n"
@@ -818,7 +818,7 @@ builtin_locals(TyObject *module, TyObject *Py_UNUSED(ignored))
     return builtin_locals_impl(module);
 }
 
-PyDoc_STRVAR(builtin_oct__doc__,
+TyDoc_STRVAR(builtin_oct__doc__,
 "oct($module, number, /)\n"
 "--\n"
 "\n"
@@ -830,7 +830,7 @@ PyDoc_STRVAR(builtin_oct__doc__,
 #define BUILTIN_OCT_METHODDEF    \
     {"oct", (PyCFunction)builtin_oct, METH_O, builtin_oct__doc__},
 
-PyDoc_STRVAR(builtin_ord__doc__,
+TyDoc_STRVAR(builtin_ord__doc__,
 "ord($module, c, /)\n"
 "--\n"
 "\n"
@@ -839,7 +839,7 @@ PyDoc_STRVAR(builtin_ord__doc__,
 #define BUILTIN_ORD_METHODDEF    \
     {"ord", (PyCFunction)builtin_ord, METH_O, builtin_ord__doc__},
 
-PyDoc_STRVAR(builtin_pow__doc__,
+TyDoc_STRVAR(builtin_pow__doc__,
 "pow($module, /, base, exp, mod=None)\n"
 "--\n"
 "\n"
@@ -868,7 +868,7 @@ builtin_pow(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(base), &_Ty_ID(exp), &_Ty_ID(mod), },
     };
@@ -910,7 +910,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_print__doc__,
+TyDoc_STRVAR(builtin_print__doc__,
 "print($module, /, *args, sep=\' \', end=\'\\n\', file=None, flush=False)\n"
 "--\n"
 "\n"
@@ -946,7 +946,7 @@ builtin_print(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(sep), &_Ty_ID(end), &_Ty_ID(file), &_Ty_ID(flush), },
     };
@@ -1013,7 +1013,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_input__doc__,
+TyDoc_STRVAR(builtin_input__doc__,
 "input($module, prompt=\'\', /)\n"
 "--\n"
 "\n"
@@ -1051,7 +1051,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_repr__doc__,
+TyDoc_STRVAR(builtin_repr__doc__,
 "repr($module, obj, /)\n"
 "--\n"
 "\n"
@@ -1062,7 +1062,7 @@ PyDoc_STRVAR(builtin_repr__doc__,
 #define BUILTIN_REPR_METHODDEF    \
     {"repr", (PyCFunction)builtin_repr, METH_O, builtin_repr__doc__},
 
-PyDoc_STRVAR(builtin_round__doc__,
+TyDoc_STRVAR(builtin_round__doc__,
 "round($module, /, number, ndigits=None)\n"
 "--\n"
 "\n"
@@ -1090,7 +1090,7 @@ builtin_round(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(number), &_Ty_ID(ndigits), },
     };
@@ -1130,7 +1130,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_sum__doc__,
+TyDoc_STRVAR(builtin_sum__doc__,
 "sum($module, iterable, /, start=0)\n"
 "--\n"
 "\n"
@@ -1159,7 +1159,7 @@ builtin_sum(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(start), },
     };
@@ -1199,7 +1199,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_isinstance__doc__,
+TyDoc_STRVAR(builtin_isinstance__doc__,
 "isinstance($module, obj, class_or_tuple, /)\n"
 "--\n"
 "\n"
@@ -1234,7 +1234,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(builtin_issubclass__doc__,
+TyDoc_STRVAR(builtin_issubclass__doc__,
 "issubclass($module, cls, class_or_tuple, /)\n"
 "--\n"
 "\n"

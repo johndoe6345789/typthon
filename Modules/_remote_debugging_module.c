@@ -64,14 +64,14 @@
 #endif
 
 #ifdef Ty_GIL_DISABLED
-#define INTERP_STATE_MIN_SIZE MAX(MAX(MAX(offsetof(PyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
-                                          offsetof(PyInterpreterState, tlbc_indices.tlbc_generation) + sizeof(uint32_t)), \
-                                      offsetof(PyInterpreterState, threads.head) + sizeof(void*)), \
-                                  offsetof(PyInterpreterState, _gil.last_holder) + sizeof(TyThreadState*))
+#define INTERP_STATE_MIN_SIZE MAX(MAX(MAX(offsetof(TyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
+                                          offsetof(TyInterpreterState, tlbc_indices.tlbc_generation) + sizeof(uint32_t)), \
+                                      offsetof(TyInterpreterState, threads.head) + sizeof(void*)), \
+                                  offsetof(TyInterpreterState, _gil.last_holder) + sizeof(TyThreadState*))
 #else
-#define INTERP_STATE_MIN_SIZE MAX(MAX(offsetof(PyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
-                                      offsetof(PyInterpreterState, threads.head) + sizeof(void*)), \
-                                  offsetof(PyInterpreterState, _gil.last_holder) + sizeof(TyThreadState*))
+#define INTERP_STATE_MIN_SIZE MAX(MAX(offsetof(TyInterpreterState, _code_object_generation) + sizeof(uint64_t), \
+                                      offsetof(TyInterpreterState, threads.head) + sizeof(void*)), \
+                                  offsetof(TyInterpreterState, _gil.last_holder) + sizeof(TyThreadState*))
 #endif
 #define INTERP_STATE_BUFFER_SIZE MAX(INTERP_STATE_MIN_SIZE, 256)
 
@@ -106,7 +106,7 @@ struct _Ty_AsyncioModuleDebugOffsets {
  * ============================================================================ */
 
 // TaskInfo structseq type - replaces 4-tuple (task_id, task_name, coroutine_stack, awaited_by)
-static PyStructSequence_Field TaskInfo_fields[] = {
+static TyStructSequence_Field TaskInfo_fields[] = {
     {"task_id", "Task ID (memory address)"},
     {"task_name", "Task name"},
     {"coroutine_stack", "Coroutine call stack"},
@@ -114,7 +114,7 @@ static PyStructSequence_Field TaskInfo_fields[] = {
     {NULL}
 };
 
-static PyStructSequence_Desc TaskInfo_desc = {
+static TyStructSequence_Desc TaskInfo_desc = {
     "_remote_debugging.TaskInfo",
     "Information about an asyncio task",
     TaskInfo_fields,
@@ -122,14 +122,14 @@ static PyStructSequence_Desc TaskInfo_desc = {
 };
 
 // FrameInfo structseq type - replaces 3-tuple (filename, lineno, funcname)
-static PyStructSequence_Field FrameInfo_fields[] = {
+static TyStructSequence_Field FrameInfo_fields[] = {
     {"filename", "Source code filename"},
     {"lineno", "Line number"},
     {"funcname", "Function name"},
     {NULL}
 };
 
-static PyStructSequence_Desc FrameInfo_desc = {
+static TyStructSequence_Desc FrameInfo_desc = {
     "_remote_debugging.FrameInfo",
     "Information about a frame",
     FrameInfo_fields,
@@ -137,13 +137,13 @@ static PyStructSequence_Desc FrameInfo_desc = {
 };
 
 // CoroInfo structseq type - replaces 2-tuple (call_stack, task_name)
-static PyStructSequence_Field CoroInfo_fields[] = {
+static TyStructSequence_Field CoroInfo_fields[] = {
     {"call_stack", "Coroutine call stack"},
     {"task_name", "Task name"},
     {NULL}
 };
 
-static PyStructSequence_Desc CoroInfo_desc = {
+static TyStructSequence_Desc CoroInfo_desc = {
     "_remote_debugging.CoroInfo",
     "Information about a coroutine",
     CoroInfo_fields,
@@ -151,13 +151,13 @@ static PyStructSequence_Desc CoroInfo_desc = {
 };
 
 // ThreadInfo structseq type - replaces 2-tuple (thread_id, frame_info)
-static PyStructSequence_Field ThreadInfo_fields[] = {
+static TyStructSequence_Field ThreadInfo_fields[] = {
     {"thread_id", "Thread ID"},
     {"frame_info", "Frame information"},
     {NULL}
 };
 
-static PyStructSequence_Desc ThreadInfo_desc = {
+static TyStructSequence_Desc ThreadInfo_desc = {
     "_remote_debugging.ThreadInfo",
     "Information about a thread",
     ThreadInfo_fields,
@@ -165,13 +165,13 @@ static PyStructSequence_Desc ThreadInfo_desc = {
 };
 
 // AwaitedInfo structseq type - replaces 2-tuple (tid, awaited_by_list)
-static PyStructSequence_Field AwaitedInfo_fields[] = {
+static TyStructSequence_Field AwaitedInfo_fields[] = {
     {"thread_id", "Thread ID"},
     {"awaited_by", "List of tasks awaited by this thread"},
     {NULL}
 };
 
-static PyStructSequence_Desc AwaitedInfo_desc = {
+static TyStructSequence_Desc AwaitedInfo_desc = {
     "_remote_debugging.AwaitedInfo",
     "Information about what a thread is awaiting",
     AwaitedInfo_fields,
@@ -1112,15 +1112,15 @@ create_task_result(
 
     // Create final CoroInfo result
     RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
-    result = PyStructSequence_New(state->CoroInfo_Type);
+    result = TyStructSequence_New(state->CoroInfo_Type);
     if (result == NULL) {
         set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create CoroInfo");
         goto error;
     }
 
-    // PyStructSequence_SetItem steals references, so we don't need to DECREF on success
-    PyStructSequence_SetItem(result, 0, call_stack);  // This steals the reference
-    PyStructSequence_SetItem(result, 1, tn);  // This steals the reference
+    // TyStructSequence_SetItem steals references, so we don't need to DECREF on success
+    TyStructSequence_SetItem(result, 0, call_stack);  // This steals the reference
+    TyStructSequence_SetItem(result, 1, tn);  // This steals the reference
 
     return result;
 
@@ -1159,7 +1159,7 @@ parse_task(
     } else {
         // Create an empty CoroInfo for non-task objects
         RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
-        result = PyStructSequence_New(state->CoroInfo_Type);
+        result = TyStructSequence_New(state->CoroInfo_Type);
         if (result == NULL) {
             set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create empty CoroInfo");
             goto error;
@@ -1175,8 +1175,8 @@ parse_task(
             set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to create task name");
             goto error;
         }
-        PyStructSequence_SetItem(result, 0, empty_list);  // This steals the reference
-        PyStructSequence_SetItem(result, 1, task_name);  // This steals the reference
+        TyStructSequence_SetItem(result, 0, empty_list);  // This steals the reference
+        TyStructSequence_SetItem(result, 1, task_name);  // This steals the reference
     }
     if (TyList_Append(render_to, result)) {
         set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append task result to render list");
@@ -1235,16 +1235,16 @@ process_single_task_node(
     }
 
     RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
-    result_item = PyStructSequence_New(state->TaskInfo_Type);
+    result_item = TyStructSequence_New(state->TaskInfo_Type);
     if (result_item == NULL) {
         set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create TaskInfo in single task node");
         goto error;
     }
 
-    PyStructSequence_SetItem(result_item, 0, task_id);  // steals ref
-    PyStructSequence_SetItem(result_item, 1, tn);  // steals ref
-    PyStructSequence_SetItem(result_item, 2, coroutine_stack);  // steals ref
-    PyStructSequence_SetItem(result_item, 3, current_awaited_by);  // steals ref
+    TyStructSequence_SetItem(result_item, 0, task_id);  // steals ref
+    TyStructSequence_SetItem(result_item, 1, tn);  // steals ref
+    TyStructSequence_SetItem(result_item, 2, coroutine_stack);  // steals ref
+    TyStructSequence_SetItem(result_item, 3, current_awaited_by);  // steals ref
 
     // References transferred to tuple
     task_id = NULL;
@@ -1263,7 +1263,7 @@ process_single_task_node(
     Ty_DECREF(result_item);
 
     // Get back current_awaited_by reference for parse_task_awaited_by
-    current_awaited_by = PyStructSequence_GetItem(result_item, 3);
+    current_awaited_by = TyStructSequence_GetItem(result_item, 3);
     if (parse_task_awaited_by(unwinder, task_addr, current_awaited_by) < 0) {
         set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to parse awaited_by in single task node");
         // No cleanup needed here since all references were transferred to result_item
@@ -1346,7 +1346,7 @@ process_running_task_chain(
     }
 
     // Get the chain from the current frame to this task
-    TyObject *coro_chain = PyStructSequence_GET_ITEM(task_info, 2);
+    TyObject *coro_chain = TyStructSequence_GET_ITEM(task_info, 2);
     assert(coro_chain != NULL);
     if (TyList_GET_SIZE(coro_chain) != 1) {
         set_exception_cause(unwinder, TyExc_RuntimeError, "Coro chain is not a single item");
@@ -1354,7 +1354,7 @@ process_running_task_chain(
     }
     TyObject *coro_info = TyList_GET_ITEM(coro_chain, 0);
     assert(coro_info != NULL);
-    TyObject *frame_chain = PyStructSequence_GET_ITEM(coro_info, 0);
+    TyObject *frame_chain = TyStructSequence_GET_ITEM(coro_info, 0);
     assert(frame_chain != NULL);
 
     // Clear the coro_chain
@@ -1415,7 +1415,7 @@ process_thread_for_async_stack_trace(
         }
 
         RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
-        TyObject *awaited_info = PyStructSequence_New(state->AwaitedInfo_Type);
+        TyObject *awaited_info = TyStructSequence_New(state->AwaitedInfo_Type);
         if (awaited_info == NULL) {
             Ty_DECREF(tid_py);
             Ty_DECREF(task_list);
@@ -1423,8 +1423,8 @@ process_thread_for_async_stack_trace(
             return -1;
         }
 
-        PyStructSequence_SetItem(awaited_info, 0, tid_py);  // steals ref
-        PyStructSequence_SetItem(awaited_info, 1, task_list);  // steals ref
+        TyStructSequence_SetItem(awaited_info, 0, tid_py);  // steals ref
+        TyStructSequence_SetItem(awaited_info, 1, task_list);  // steals ref
 
         if (TyList_Append(result, awaited_info)) {
             Ty_DECREF(awaited_info);
@@ -1859,7 +1859,7 @@ done_tlbc:
     }
 
     RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
-    tuple = PyStructSequence_New(state->FrameInfo_Type);
+    tuple = TyStructSequence_New(state->FrameInfo_Type);
     if (!tuple) {
         set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create FrameInfo for code object");
         goto error;
@@ -1867,9 +1867,9 @@ done_tlbc:
 
     Ty_INCREF(meta->func_name);
     Ty_INCREF(meta->file_name);
-    PyStructSequence_SetItem(tuple, 0, meta->file_name);
-    PyStructSequence_SetItem(tuple, 1, lineno);
-    PyStructSequence_SetItem(tuple, 2, meta->func_name);
+    TyStructSequence_SetItem(tuple, 0, meta->file_name);
+    TyStructSequence_SetItem(tuple, 1, lineno);
+    TyStructSequence_SetItem(tuple, 2, meta->func_name);
 
     *result = tuple;
     return 0;
@@ -2327,7 +2327,7 @@ append_awaited_by(
     }
 
     RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
-    TyObject *result_item = PyStructSequence_New(state->AwaitedInfo_Type);
+    TyObject *result_item = TyStructSequence_New(state->AwaitedInfo_Type);
     if (result_item == NULL) {
         Ty_DECREF(tid_py);
         Ty_DECREF(awaited_by_for_thread);
@@ -2335,8 +2335,8 @@ append_awaited_by(
         return -1;
     }
 
-    PyStructSequence_SetItem(result_item, 0, tid_py);  // steals ref
-    PyStructSequence_SetItem(result_item, 1, awaited_by_for_thread);  // steals ref
+    TyStructSequence_SetItem(result_item, 0, tid_py);  // steals ref
+    TyStructSequence_SetItem(result_item, 1, awaited_by_for_thread);  // steals ref
     if (TyList_Append(result, result_item)) {
         Ty_DECREF(result_item);
         set_exception_cause(unwinder, TyExc_RuntimeError, "Failed to append awaited_by result item");
@@ -2462,14 +2462,14 @@ unwind_stack_for_thread(
     }
 
     RemoteDebuggingState *state = RemoteDebugging_GetStateFromObject((TyObject*)unwinder);
-    result = PyStructSequence_New(state->ThreadInfo_Type);
+    result = TyStructSequence_New(state->ThreadInfo_Type);
     if (result == NULL) {
         set_exception_cause(unwinder, TyExc_MemoryError, "Failed to create ThreadInfo");
         goto error;
     }
 
-    PyStructSequence_SetItem(result, 0, thread_id);  // Steals reference
-    PyStructSequence_SetItem(result, 1, frame_info); // Steals reference
+    TyStructSequence_SetItem(result, 0, thread_id);  // Steals reference
+    TyStructSequence_SetItem(result, 1, frame_info); // Steals reference
 
     cleanup_stack_chunks(&chunks);
     return result;
@@ -2992,7 +2992,7 @@ _remote_debugging_exec(TyObject *m)
     }
 
     // Initialize structseq types
-    st->TaskInfo_Type = PyStructSequence_NewType(&TaskInfo_desc);
+    st->TaskInfo_Type = TyStructSequence_NewType(&TaskInfo_desc);
     if (st->TaskInfo_Type == NULL) {
         return -1;
     }
@@ -3000,7 +3000,7 @@ _remote_debugging_exec(TyObject *m)
         return -1;
     }
 
-    st->FrameInfo_Type = PyStructSequence_NewType(&FrameInfo_desc);
+    st->FrameInfo_Type = TyStructSequence_NewType(&FrameInfo_desc);
     if (st->FrameInfo_Type == NULL) {
         return -1;
     }
@@ -3008,7 +3008,7 @@ _remote_debugging_exec(TyObject *m)
         return -1;
     }
 
-    st->CoroInfo_Type = PyStructSequence_NewType(&CoroInfo_desc);
+    st->CoroInfo_Type = TyStructSequence_NewType(&CoroInfo_desc);
     if (st->CoroInfo_Type == NULL) {
         return -1;
     }
@@ -3016,7 +3016,7 @@ _remote_debugging_exec(TyObject *m)
         return -1;
     }
 
-    st->ThreadInfo_Type = PyStructSequence_NewType(&ThreadInfo_desc);
+    st->ThreadInfo_Type = TyStructSequence_NewType(&ThreadInfo_desc);
     if (st->ThreadInfo_Type == NULL) {
         return -1;
     }
@@ -3024,7 +3024,7 @@ _remote_debugging_exec(TyObject *m)
         return -1;
     }
 
-    st->AwaitedInfo_Type = PyStructSequence_NewType(&AwaitedInfo_desc);
+    st->AwaitedInfo_Type = TyStructSequence_NewType(&AwaitedInfo_desc);
     if (st->AwaitedInfo_Type == NULL) {
         return -1;
     }

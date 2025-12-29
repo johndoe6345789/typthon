@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_ssl_Certificate_public_bytes__doc__,
+TyDoc_STRVAR(_ssl_Certificate_public_bytes__doc__,
 "public_bytes($self, /, format=Encoding.PEM)\n"
 "--\n"
 "\n");
@@ -32,7 +32,7 @@ _ssl_Certificate_public_bytes(TyObject *self, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(format), },
     };
@@ -73,7 +73,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_ssl_Certificate_get_info__doc__,
+TyDoc_STRVAR(_ssl_Certificate_get_info__doc__,
 "get_info($self, /)\n"
 "--\n"
 "\n");

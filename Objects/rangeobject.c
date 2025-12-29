@@ -156,7 +156,7 @@ range_vectorcall(TyObject *rangetype, TyObject *const *args,
     return range_from_array((TyTypeObject *)rangetype, args, nargs);
 }
 
-PyDoc_STRVAR(range_doc,
+TyDoc_STRVAR(range_doc,
 "range(stop) -> range object\n\
 range(start, stop[, step]) -> range object\n\
 \n\
@@ -753,13 +753,13 @@ static PyNumberMethods range_as_number = {
 static TyObject * range_iter(TyObject *seq);
 static TyObject * range_reverse(TyObject *seq, TyObject *Py_UNUSED(ignored));
 
-PyDoc_STRVAR(reverse_doc,
+TyDoc_STRVAR(reverse_doc,
 "Return a reverse iterator.");
 
-PyDoc_STRVAR(count_doc,
+TyDoc_STRVAR(count_doc,
 "rangeobject.count(value) -> integer -- return number of occurrences of value");
 
-PyDoc_STRVAR(index_doc,
+TyDoc_STRVAR(index_doc,
 "rangeobject.index(value) -> integer -- return index of value.\n"
 "Raise ValueError if the value is not present.");
 
@@ -779,7 +779,7 @@ static TyMemberDef range_members[] = {
 };
 
 TyTypeObject TyRange_Type = {
-        PyVarObject_HEAD_INIT(&TyType_Type, 0)
+        TyVarObject_HEAD_INIT(&TyType_Type, 0)
         "range",                /* Name of this type */
         sizeof(rangeobject),    /* Basic object size */
         0,                      /* Item size for varobject */
@@ -847,7 +847,7 @@ rangeiter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
     return TyLong_FromLong(r->len);
 }
 
-PyDoc_STRVAR(length_hint_doc,
+TyDoc_STRVAR(length_hint_doc,
              "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
@@ -904,8 +904,8 @@ rangeiter_dealloc(TyObject *self)
     _Ty_FREELIST_FREE(range_iters, (_PyRangeIterObject *)self, PyObject_Free);
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
-PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
 static TyMethodDef rangeiter_methods[] = {
     {"__length_hint__", rangeiter_len, METH_NOARGS, length_hint_doc},
@@ -915,7 +915,7 @@ static TyMethodDef rangeiter_methods[] = {
 };
 
 TyTypeObject PyRangeIter_Type = {
-        PyVarObject_HEAD_INIT(&TyType_Type, 0)
+        TyVarObject_HEAD_INIT(&TyType_Type, 0)
         "range_iterator",                       /* tp_name */
         sizeof(_PyRangeIterObject),             /* tp_basicsize */
         0,                                      /* tp_itemsize */
@@ -1119,7 +1119,7 @@ longrangeiter_next(TyObject *op)
 }
 
 TyTypeObject PyLongRangeIter_Type = {
-        PyVarObject_HEAD_INIT(&TyType_Type, 0)
+        TyVarObject_HEAD_INIT(&TyType_Type, 0)
         "longrange_iterator",                   /* tp_name */
         sizeof(longrangeiterobject),            /* tp_basicsize */
         0,                                      /* tp_itemsize */

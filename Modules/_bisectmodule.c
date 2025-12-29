@@ -426,7 +426,7 @@ static TyMethodDef bisect_methods[] = {
     {NULL, NULL} /* sentinel */
 };
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "Bisection algorithms.\n\
 \n\
 This module provides support for maintaining a list in sorted order without\n\

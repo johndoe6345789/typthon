@@ -9,7 +9,7 @@
  * Clearing the free lists may give back memory to the OS earlier.
  */
 void
-_TyGC_ClearAllFreeLists(PyInterpreterState *interp)
+_TyGC_ClearAllFreeLists(TyInterpreterState *interp)
 {
     _TyObject_ClearFreeLists(&interp->object_state.freelists, 0);
 }

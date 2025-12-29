@@ -858,7 +858,7 @@ setiter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSsize_t(len);
 }
 
-PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
+TyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
 setiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
@@ -878,7 +878,7 @@ setiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
     return Ty_BuildValue("N(N)", _TyEval_GetBuiltin(&_Ty_ID(iter)), list);
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
 static TyMethodDef setiter_methods[] = {
     {"__length_hint__", setiter_len, METH_NOARGS, length_hint_doc},
@@ -930,7 +930,7 @@ static TyObject *setiter_iternext(TyObject *self)
 }
 
 TyTypeObject PySetIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "set_iterator",                             /* tp_name */
     sizeof(setiterobject),                      /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -2502,7 +2502,7 @@ static TyMethodDef set_methods[] = {
     SET_SYMMETRIC_DIFFERENCE_UPDATE_METHODDEF
     SET_UNION_METHODDEF
     SET_UPDATE_METHODDEF
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL,              NULL}   /* sentinel */
 };
 
@@ -2538,14 +2538,14 @@ static PyNumberMethods set_as_number = {
     set_ior,                            /*nb_inplace_or*/
 };
 
-PyDoc_STRVAR(set_doc,
+TyDoc_STRVAR(set_doc,
 "set(iterable=(), /)\n\
 --\n\
 \n\
 Build an unordered collection of unique elements.");
 
 TyTypeObject TySet_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "set",                              /* tp_name */
     sizeof(PySetObject),                /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -2606,7 +2606,7 @@ static TyMethodDef frozenset_methods[] = {
     SET___SIZEOF___METHODDEF
     SET_SYMMETRIC_DIFFERENCE_METHODDEF
     SET_UNION_METHODDEF
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL,              NULL}   /* sentinel */
 };
 
@@ -2629,14 +2629,14 @@ static PyNumberMethods frozenset_as_number = {
     set_or,                             /*nb_or*/
 };
 
-PyDoc_STRVAR(frozenset_doc,
+TyDoc_STRVAR(frozenset_doc,
 "frozenset(iterable=(), /)\n\
 --\n\
 \n\
 Build an immutable unordered collection of unique elements.");
 
 TyTypeObject TyFrozenSet_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "frozenset",                        /* tp_name */
     sizeof(PySetObject),                /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -2841,7 +2841,7 @@ dummy_dealloc(TyObject* ignore)
 }
 
 static TyTypeObject _PySetDummy_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "<dummy key> type",
     0,
     0,

@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 
-PyDoc_STRVAR(set_pop__doc__,
+TyDoc_STRVAR(set_pop__doc__,
 "pop($self, /)\n"
 "--\n"
 "\n"
@@ -30,7 +30,7 @@ set_pop(TyObject *so, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(set_update__doc__,
+TyDoc_STRVAR(set_update__doc__,
 "update($self, /, *others)\n"
 "--\n"
 "\n"
@@ -57,7 +57,7 @@ set_update(TyObject *so, TyObject *const *args, Ty_ssize_t nargs)
     return return_value;
 }
 
-PyDoc_STRVAR(set_copy__doc__,
+TyDoc_STRVAR(set_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -81,7 +81,7 @@ set_copy(TyObject *so, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(frozenset_copy__doc__,
+TyDoc_STRVAR(frozenset_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -105,7 +105,7 @@ frozenset_copy(TyObject *so, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(set_clear__doc__,
+TyDoc_STRVAR(set_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -129,7 +129,7 @@ set_clear(TyObject *so, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(set_union__doc__,
+TyDoc_STRVAR(set_union__doc__,
 "union($self, /, *others)\n"
 "--\n"
 "\n"
@@ -156,7 +156,7 @@ set_union(TyObject *so, TyObject *const *args, Ty_ssize_t nargs)
     return return_value;
 }
 
-PyDoc_STRVAR(set_intersection_multi__doc__,
+TyDoc_STRVAR(set_intersection_multi__doc__,
 "intersection($self, /, *others)\n"
 "--\n"
 "\n"
@@ -183,7 +183,7 @@ set_intersection_multi(TyObject *so, TyObject *const *args, Ty_ssize_t nargs)
     return return_value;
 }
 
-PyDoc_STRVAR(set_intersection_update_multi__doc__,
+TyDoc_STRVAR(set_intersection_update_multi__doc__,
 "intersection_update($self, /, *others)\n"
 "--\n"
 "\n"
@@ -210,7 +210,7 @@ set_intersection_update_multi(TyObject *so, TyObject *const *args, Ty_ssize_t na
     return return_value;
 }
 
-PyDoc_STRVAR(set_isdisjoint__doc__,
+TyDoc_STRVAR(set_isdisjoint__doc__,
 "isdisjoint($self, other, /)\n"
 "--\n"
 "\n"
@@ -234,7 +234,7 @@ set_isdisjoint(TyObject *so, TyObject *other)
     return return_value;
 }
 
-PyDoc_STRVAR(set_difference_update__doc__,
+TyDoc_STRVAR(set_difference_update__doc__,
 "difference_update($self, /, *others)\n"
 "--\n"
 "\n"
@@ -261,7 +261,7 @@ set_difference_update(TyObject *so, TyObject *const *args, Ty_ssize_t nargs)
     return return_value;
 }
 
-PyDoc_STRVAR(set_difference_multi__doc__,
+TyDoc_STRVAR(set_difference_multi__doc__,
 "difference($self, /, *others)\n"
 "--\n"
 "\n"
@@ -288,7 +288,7 @@ set_difference_multi(TyObject *so, TyObject *const *args, Ty_ssize_t nargs)
     return return_value;
 }
 
-PyDoc_STRVAR(set_symmetric_difference_update__doc__,
+TyDoc_STRVAR(set_symmetric_difference_update__doc__,
 "symmetric_difference_update($self, other, /)\n"
 "--\n"
 "\n"
@@ -310,7 +310,7 @@ set_symmetric_difference_update(TyObject *so, TyObject *other)
     return return_value;
 }
 
-PyDoc_STRVAR(set_symmetric_difference__doc__,
+TyDoc_STRVAR(set_symmetric_difference__doc__,
 "symmetric_difference($self, other, /)\n"
 "--\n"
 "\n"
@@ -334,7 +334,7 @@ set_symmetric_difference(TyObject *so, TyObject *other)
     return return_value;
 }
 
-PyDoc_STRVAR(set_issubset__doc__,
+TyDoc_STRVAR(set_issubset__doc__,
 "issubset($self, other, /)\n"
 "--\n"
 "\n"
@@ -358,7 +358,7 @@ set_issubset(TyObject *so, TyObject *other)
     return return_value;
 }
 
-PyDoc_STRVAR(set_issuperset__doc__,
+TyDoc_STRVAR(set_issuperset__doc__,
 "issuperset($self, other, /)\n"
 "--\n"
 "\n"
@@ -382,7 +382,7 @@ set_issuperset(TyObject *so, TyObject *other)
     return return_value;
 }
 
-PyDoc_STRVAR(set_add__doc__,
+TyDoc_STRVAR(set_add__doc__,
 "add($self, object, /)\n"
 "--\n"
 "\n"
@@ -408,7 +408,7 @@ set_add(TyObject *so, TyObject *key)
     return return_value;
 }
 
-PyDoc_STRVAR(set___contains____doc__,
+TyDoc_STRVAR(set___contains____doc__,
 "__contains__($self, object, /)\n"
 "--\n"
 "\n"
@@ -432,7 +432,7 @@ set___contains__(TyObject *so, TyObject *key)
     return return_value;
 }
 
-PyDoc_STRVAR(frozenset___contains____doc__,
+TyDoc_STRVAR(frozenset___contains____doc__,
 "__contains__($self, object, /)\n"
 "--\n"
 "\n"
@@ -454,7 +454,7 @@ frozenset___contains__(TyObject *so, TyObject *key)
     return return_value;
 }
 
-PyDoc_STRVAR(set_remove__doc__,
+TyDoc_STRVAR(set_remove__doc__,
 "remove($self, object, /)\n"
 "--\n"
 "\n"
@@ -480,7 +480,7 @@ set_remove(TyObject *so, TyObject *key)
     return return_value;
 }
 
-PyDoc_STRVAR(set_discard__doc__,
+TyDoc_STRVAR(set_discard__doc__,
 "discard($self, object, /)\n"
 "--\n"
 "\n"
@@ -507,7 +507,7 @@ set_discard(TyObject *so, TyObject *key)
     return return_value;
 }
 
-PyDoc_STRVAR(set___reduce____doc__,
+TyDoc_STRVAR(set___reduce____doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n"
@@ -531,7 +531,7 @@ set___reduce__(TyObject *so, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(set___sizeof____doc__,
+TyDoc_STRVAR(set___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"

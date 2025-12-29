@@ -1063,7 +1063,7 @@ static TyMethodDef formatteriter_methods[] = {
 };
 
 static TyTypeObject PyFormatterIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "formatteriterator",                /* tp_name */
     sizeof(formatteriterobject),        /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -1197,7 +1197,7 @@ static TyMethodDef fieldnameiter_methods[] = {
 };
 
 static TyTypeObject PyFieldNameIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "fieldnameiterator",                /* tp_name */
     sizeof(fieldnameiterobject),        /* tp_basicsize */
     0,                                  /* tp_itemsize */

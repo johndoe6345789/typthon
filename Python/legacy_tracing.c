@@ -397,7 +397,7 @@ sys_trace_jump_func(
 }
 
 TyTypeObject _PyLegacyEventHandler_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "sys.legacy_event_handler",
     sizeof(_PyLegacyEventHandler),
     .tp_vectorcall_offset = offsetof(_PyLegacyEventHandler, vectorcall),

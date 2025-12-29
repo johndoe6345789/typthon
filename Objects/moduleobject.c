@@ -5,7 +5,7 @@
 #include "pycore_dict.h"          // _TyDict_EnablePerThreadRefcounting()
 #include "pycore_fileutils.h"     // _Ty_wgetcwd
 #include "pycore_import.h"        // _TyImport_GetNextModuleIndex()
-#include "pycore_interp.h"        // PyInterpreterState.importlib
+#include "pycore_interp.h"        // TyInterpreterState.importlib
 #include "pycore_long.h"          // _TyLong_GetOne()
 #include "pycore_modsupport.h"    // _TyModule_CreateInitialized()
 #include "pycore_moduleobject.h"  // _TyModule_GetDef()
@@ -30,7 +30,7 @@ static TyMemberDef module_members[] = {
 
 
 TyTypeObject PyModuleDef_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "moduledef",                                /* tp_name */
     sizeof(TyModuleDef),                        /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -279,7 +279,7 @@ TyModule_FromDefAndSpec2(TyModuleDef* def, TyObject *spec, int module_api_versio
     int has_execution_slots = 0;
     const char *name;
     int ret;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     PyModuleDef_Init(def);
 
@@ -848,7 +848,7 @@ static TyObject *
 module_repr(TyObject *self)
 {
     PyModuleObject *m = _TyModule_CAST(self);
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return _TyImport_ImportlibModuleRepr(interp, (TyObject *)m);
 }
 
@@ -1210,7 +1210,7 @@ module_dir(TyObject *self, TyObject *args)
 
 static TyMethodDef module_methods[] = {
     {"__dir__", module_dir, METH_NOARGS,
-     PyDoc_STR("__dir__() -> list\nspecialized dir() implementation")},
+     TyDoc_STR("__dir__() -> list\nspecialized dir() implementation")},
     {0}
 };
 
@@ -1397,7 +1397,7 @@ static TyGetSetDef module_getsets[] = {
 };
 
 TyTypeObject TyModule_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "module",                                   /* tp_name */
     sizeof(PyModuleObject),                     /* tp_basicsize */
     0,                                          /* tp_itemsize */

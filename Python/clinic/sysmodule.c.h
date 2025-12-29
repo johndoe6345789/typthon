@@ -9,7 +9,7 @@ preserve
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 #include "pycore_tuple.h"         // _TyTuple_FromArray()
 
-PyDoc_STRVAR(sys_addaudithook__doc__,
+TyDoc_STRVAR(sys_addaudithook__doc__,
 "addaudithook($module, /, hook)\n"
 "--\n"
 "\n"
@@ -34,7 +34,7 @@ sys_addaudithook(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(hook), },
     };
@@ -67,7 +67,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_audit__doc__,
+TyDoc_STRVAR(sys_audit__doc__,
 "audit($module, event, /, *args)\n"
 "--\n"
 "\n"
@@ -115,7 +115,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_displayhook__doc__,
+TyDoc_STRVAR(sys_displayhook__doc__,
 "displayhook($module, object, /)\n"
 "--\n"
 "\n"
@@ -124,7 +124,7 @@ PyDoc_STRVAR(sys_displayhook__doc__,
 #define SYS_DISPLAYHOOK_METHODDEF    \
     {"displayhook", (PyCFunction)sys_displayhook, METH_O, sys_displayhook__doc__},
 
-PyDoc_STRVAR(sys_excepthook__doc__,
+TyDoc_STRVAR(sys_excepthook__doc__,
 "excepthook($module, exctype, value, traceback, /)\n"
 "--\n"
 "\n"
@@ -157,7 +157,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_exception__doc__,
+TyDoc_STRVAR(sys_exception__doc__,
 "exception($module, /)\n"
 "--\n"
 "\n"
@@ -179,7 +179,7 @@ sys_exception(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_exception_impl(module);
 }
 
-PyDoc_STRVAR(sys_exc_info__doc__,
+TyDoc_STRVAR(sys_exc_info__doc__,
 "exc_info($module, /)\n"
 "--\n"
 "\n"
@@ -200,7 +200,7 @@ sys_exc_info(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_exc_info_impl(module);
 }
 
-PyDoc_STRVAR(sys_unraisablehook__doc__,
+TyDoc_STRVAR(sys_unraisablehook__doc__,
 "unraisablehook($module, unraisable, /)\n"
 "--\n"
 "\n"
@@ -217,7 +217,7 @@ PyDoc_STRVAR(sys_unraisablehook__doc__,
 #define SYS_UNRAISABLEHOOK_METHODDEF    \
     {"unraisablehook", (PyCFunction)sys_unraisablehook, METH_O, sys_unraisablehook__doc__},
 
-PyDoc_STRVAR(sys_exit__doc__,
+TyDoc_STRVAR(sys_exit__doc__,
 "exit($module, status=None, /)\n"
 "--\n"
 "\n"
@@ -254,7 +254,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_getdefaultencoding__doc__,
+TyDoc_STRVAR(sys_getdefaultencoding__doc__,
 "getdefaultencoding($module, /)\n"
 "--\n"
 "\n"
@@ -272,7 +272,7 @@ sys_getdefaultencoding(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_getdefaultencoding_impl(module);
 }
 
-PyDoc_STRVAR(sys_getfilesystemencoding__doc__,
+TyDoc_STRVAR(sys_getfilesystemencoding__doc__,
 "getfilesystemencoding($module, /)\n"
 "--\n"
 "\n"
@@ -290,7 +290,7 @@ sys_getfilesystemencoding(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_getfilesystemencoding_impl(module);
 }
 
-PyDoc_STRVAR(sys_getfilesystemencodeerrors__doc__,
+TyDoc_STRVAR(sys_getfilesystemencodeerrors__doc__,
 "getfilesystemencodeerrors($module, /)\n"
 "--\n"
 "\n"
@@ -308,7 +308,7 @@ sys_getfilesystemencodeerrors(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_getfilesystemencodeerrors_impl(module);
 }
 
-PyDoc_STRVAR(sys_intern__doc__,
+TyDoc_STRVAR(sys_intern__doc__,
 "intern($module, string, /)\n"
 "--\n"
 "\n"
@@ -341,7 +341,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys__is_interned__doc__,
+TyDoc_STRVAR(sys__is_interned__doc__,
 "_is_interned($module, string, /)\n"
 "--\n"
 "\n"
@@ -375,7 +375,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys__is_immortal__doc__,
+TyDoc_STRVAR(sys__is_immortal__doc__,
 "_is_immortal($module, op, /)\n"
 "--\n"
 "\n"
@@ -405,7 +405,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_settrace__doc__,
+TyDoc_STRVAR(sys_settrace__doc__,
 "settrace($module, function, /)\n"
 "--\n"
 "\n"
@@ -417,7 +417,7 @@ PyDoc_STRVAR(sys_settrace__doc__,
 #define SYS_SETTRACE_METHODDEF    \
     {"settrace", (PyCFunction)sys_settrace, METH_O, sys_settrace__doc__},
 
-PyDoc_STRVAR(sys__settraceallthreads__doc__,
+TyDoc_STRVAR(sys__settraceallthreads__doc__,
 "_settraceallthreads($module, function, /)\n"
 "--\n"
 "\n"
@@ -429,7 +429,7 @@ PyDoc_STRVAR(sys__settraceallthreads__doc__,
 #define SYS__SETTRACEALLTHREADS_METHODDEF    \
     {"_settraceallthreads", (PyCFunction)sys__settraceallthreads, METH_O, sys__settraceallthreads__doc__},
 
-PyDoc_STRVAR(sys_gettrace__doc__,
+TyDoc_STRVAR(sys_gettrace__doc__,
 "gettrace($module, /)\n"
 "--\n"
 "\n"
@@ -449,7 +449,7 @@ sys_gettrace(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_gettrace_impl(module);
 }
 
-PyDoc_STRVAR(sys_setprofile__doc__,
+TyDoc_STRVAR(sys_setprofile__doc__,
 "setprofile($module, function, /)\n"
 "--\n"
 "\n"
@@ -461,7 +461,7 @@ PyDoc_STRVAR(sys_setprofile__doc__,
 #define SYS_SETPROFILE_METHODDEF    \
     {"setprofile", (PyCFunction)sys_setprofile, METH_O, sys_setprofile__doc__},
 
-PyDoc_STRVAR(sys__setprofileallthreads__doc__,
+TyDoc_STRVAR(sys__setprofileallthreads__doc__,
 "_setprofileallthreads($module, function, /)\n"
 "--\n"
 "\n"
@@ -473,7 +473,7 @@ PyDoc_STRVAR(sys__setprofileallthreads__doc__,
 #define SYS__SETPROFILEALLTHREADS_METHODDEF    \
     {"_setprofileallthreads", (PyCFunction)sys__setprofileallthreads, METH_O, sys__setprofileallthreads__doc__},
 
-PyDoc_STRVAR(sys_getprofile__doc__,
+TyDoc_STRVAR(sys_getprofile__doc__,
 "getprofile($module, /)\n"
 "--\n"
 "\n"
@@ -493,7 +493,7 @@ sys_getprofile(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_getprofile_impl(module);
 }
 
-PyDoc_STRVAR(sys_setswitchinterval__doc__,
+TyDoc_STRVAR(sys_setswitchinterval__doc__,
 "setswitchinterval($module, interval, /)\n"
 "--\n"
 "\n"
@@ -534,7 +534,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_getswitchinterval__doc__,
+TyDoc_STRVAR(sys_getswitchinterval__doc__,
 "getswitchinterval($module, /)\n"
 "--\n"
 "\n"
@@ -562,7 +562,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_setrecursionlimit__doc__,
+TyDoc_STRVAR(sys_setrecursionlimit__doc__,
 "setrecursionlimit($module, limit, /)\n"
 "--\n"
 "\n"
@@ -594,7 +594,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_set_coroutine_origin_tracking_depth__doc__,
+TyDoc_STRVAR(sys_set_coroutine_origin_tracking_depth__doc__,
 "set_coroutine_origin_tracking_depth($module, /, depth)\n"
 "--\n"
 "\n"
@@ -624,7 +624,7 @@ sys_set_coroutine_origin_tracking_depth(TyObject *module, TyObject *const *args,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(depth), },
     };
@@ -660,7 +660,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_get_coroutine_origin_tracking_depth__doc__,
+TyDoc_STRVAR(sys_get_coroutine_origin_tracking_depth__doc__,
 "get_coroutine_origin_tracking_depth($module, /)\n"
 "--\n"
 "\n"
@@ -688,7 +688,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_get_asyncgen_hooks__doc__,
+TyDoc_STRVAR(sys_get_asyncgen_hooks__doc__,
 "get_asyncgen_hooks($module, /)\n"
 "--\n"
 "\n"
@@ -708,7 +708,7 @@ sys_get_asyncgen_hooks(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_get_asyncgen_hooks_impl(module);
 }
 
-PyDoc_STRVAR(sys_getrecursionlimit__doc__,
+TyDoc_STRVAR(sys_getrecursionlimit__doc__,
 "getrecursionlimit($module, /)\n"
 "--\n"
 "\n"
@@ -732,7 +732,7 @@ sys_getrecursionlimit(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(sys_getwindowsversion__doc__,
+TyDoc_STRVAR(sys_getwindowsversion__doc__,
 "getwindowsversion($module, /)\n"
 "--\n"
 "\n"
@@ -764,7 +764,7 @@ sys_getwindowsversion(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(sys__enablelegacywindowsfsencoding__doc__,
+TyDoc_STRVAR(sys__enablelegacywindowsfsencoding__doc__,
 "_enablelegacywindowsfsencoding($module, /)\n"
 "--\n"
 "\n"
@@ -792,7 +792,7 @@ sys__enablelegacywindowsfsencoding(TyObject *module, TyObject *Py_UNUSED(ignored
 
 #if defined(HAVE_DLOPEN)
 
-PyDoc_STRVAR(sys_setdlopenflags__doc__,
+TyDoc_STRVAR(sys_setdlopenflags__doc__,
 "setdlopenflags($module, flags, /)\n"
 "--\n"
 "\n"
@@ -832,7 +832,7 @@ exit:
 
 #if defined(HAVE_DLOPEN)
 
-PyDoc_STRVAR(sys_getdlopenflags__doc__,
+TyDoc_STRVAR(sys_getdlopenflags__doc__,
 "getdlopenflags($module, /)\n"
 "--\n"
 "\n"
@@ -856,7 +856,7 @@ sys_getdlopenflags(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(USE_MALLOPT)
 
-PyDoc_STRVAR(sys_mdebug__doc__,
+TyDoc_STRVAR(sys_mdebug__doc__,
 "mdebug($module, flag, /)\n"
 "--\n"
 "\n");
@@ -885,7 +885,7 @@ exit:
 
 #endif /* defined(USE_MALLOPT) */
 
-PyDoc_STRVAR(sys_get_int_max_str_digits__doc__,
+TyDoc_STRVAR(sys_get_int_max_str_digits__doc__,
 "get_int_max_str_digits($module, /)\n"
 "--\n"
 "\n"
@@ -903,7 +903,7 @@ sys_get_int_max_str_digits(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_get_int_max_str_digits_impl(module);
 }
 
-PyDoc_STRVAR(sys_set_int_max_str_digits__doc__,
+TyDoc_STRVAR(sys_set_int_max_str_digits__doc__,
 "set_int_max_str_digits($module, /, maxdigits)\n"
 "--\n"
 "\n"
@@ -928,7 +928,7 @@ sys_set_int_max_str_digits(TyObject *module, TyObject *const *args, Ty_ssize_t n
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(maxdigits), },
     };
@@ -964,7 +964,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_getrefcount__doc__,
+TyDoc_STRVAR(sys_getrefcount__doc__,
 "getrefcount($module, object, /)\n"
 "--\n"
 "\n"
@@ -998,7 +998,7 @@ exit:
 
 #if defined(Ty_REF_DEBUG)
 
-PyDoc_STRVAR(sys_gettotalrefcount__doc__,
+TyDoc_STRVAR(sys_gettotalrefcount__doc__,
 "gettotalrefcount($module, /)\n"
 "--\n"
 "\n");
@@ -1027,7 +1027,7 @@ exit:
 
 #endif /* defined(Ty_REF_DEBUG) */
 
-PyDoc_STRVAR(sys_getallocatedblocks__doc__,
+TyDoc_STRVAR(sys_getallocatedblocks__doc__,
 "getallocatedblocks($module, /)\n"
 "--\n"
 "\n"
@@ -1055,7 +1055,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_getunicodeinternedsize__doc__,
+TyDoc_STRVAR(sys_getunicodeinternedsize__doc__,
 "getunicodeinternedsize($module, /, *, _only_immortal=False)\n"
 "--\n"
 "\n"
@@ -1080,7 +1080,7 @@ sys_getunicodeinternedsize(TyObject *module, TyObject *const *args, Ty_ssize_t n
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(_only_immortal), },
     };
@@ -1126,7 +1126,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys__getframe__doc__,
+TyDoc_STRVAR(sys__getframe__doc__,
 "_getframe($module, depth=0, /)\n"
 "--\n"
 "\n"
@@ -1169,7 +1169,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys__current_frames__doc__,
+TyDoc_STRVAR(sys__current_frames__doc__,
 "_current_frames($module, /)\n"
 "--\n"
 "\n"
@@ -1189,7 +1189,7 @@ sys__current_frames(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys__current_frames_impl(module);
 }
 
-PyDoc_STRVAR(sys__current_exceptions__doc__,
+TyDoc_STRVAR(sys__current_exceptions__doc__,
 "_current_exceptions($module, /)\n"
 "--\n"
 "\n"
@@ -1209,7 +1209,7 @@ sys__current_exceptions(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys__current_exceptions_impl(module);
 }
 
-PyDoc_STRVAR(sys_call_tracing__doc__,
+TyDoc_STRVAR(sys_call_tracing__doc__,
 "call_tracing($module, func, args, /)\n"
 "--\n"
 "\n"
@@ -1247,7 +1247,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys__debugmallocstats__doc__,
+TyDoc_STRVAR(sys__debugmallocstats__doc__,
 "_debugmallocstats($module, /)\n"
 "--\n"
 "\n"
@@ -1268,7 +1268,7 @@ sys__debugmallocstats(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys__debugmallocstats_impl(module);
 }
 
-PyDoc_STRVAR(sys__clear_type_cache__doc__,
+TyDoc_STRVAR(sys__clear_type_cache__doc__,
 "_clear_type_cache($module, /)\n"
 "--\n"
 "\n"
@@ -1286,7 +1286,7 @@ sys__clear_type_cache(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys__clear_type_cache_impl(module);
 }
 
-PyDoc_STRVAR(sys__clear_internal_caches__doc__,
+TyDoc_STRVAR(sys__clear_internal_caches__doc__,
 "_clear_internal_caches($module, /)\n"
 "--\n"
 "\n"
@@ -1304,7 +1304,7 @@ sys__clear_internal_caches(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys__clear_internal_caches_impl(module);
 }
 
-PyDoc_STRVAR(sys_is_finalizing__doc__,
+TyDoc_STRVAR(sys_is_finalizing__doc__,
 "is_finalizing($module, /)\n"
 "--\n"
 "\n"
@@ -1324,7 +1324,7 @@ sys_is_finalizing(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(Ty_STATS)
 
-PyDoc_STRVAR(sys__stats_on__doc__,
+TyDoc_STRVAR(sys__stats_on__doc__,
 "_stats_on($module, /)\n"
 "--\n"
 "\n"
@@ -1346,7 +1346,7 @@ sys__stats_on(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(Ty_STATS)
 
-PyDoc_STRVAR(sys__stats_off__doc__,
+TyDoc_STRVAR(sys__stats_off__doc__,
 "_stats_off($module, /)\n"
 "--\n"
 "\n"
@@ -1368,7 +1368,7 @@ sys__stats_off(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(Ty_STATS)
 
-PyDoc_STRVAR(sys__stats_clear__doc__,
+TyDoc_STRVAR(sys__stats_clear__doc__,
 "_stats_clear($module, /)\n"
 "--\n"
 "\n"
@@ -1390,7 +1390,7 @@ sys__stats_clear(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(Ty_STATS)
 
-PyDoc_STRVAR(sys__stats_dump__doc__,
+TyDoc_STRVAR(sys__stats_dump__doc__,
 "_stats_dump($module, /)\n"
 "--\n"
 "\n"
@@ -1424,7 +1424,7 @@ exit:
 
 #if defined(ANDROID_API_LEVEL)
 
-PyDoc_STRVAR(sys_getandroidapilevel__doc__,
+TyDoc_STRVAR(sys_getandroidapilevel__doc__,
 "getandroidapilevel($module, /)\n"
 "--\n"
 "\n"
@@ -1444,7 +1444,7 @@ sys_getandroidapilevel(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(ANDROID_API_LEVEL) */
 
-PyDoc_STRVAR(sys_activate_stack_trampoline__doc__,
+TyDoc_STRVAR(sys_activate_stack_trampoline__doc__,
 "activate_stack_trampoline($module, backend, /)\n"
 "--\n"
 "\n"
@@ -1481,7 +1481,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys_deactivate_stack_trampoline__doc__,
+TyDoc_STRVAR(sys_deactivate_stack_trampoline__doc__,
 "deactivate_stack_trampoline($module, /)\n"
 "--\n"
 "\n"
@@ -1501,7 +1501,7 @@ sys_deactivate_stack_trampoline(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_deactivate_stack_trampoline_impl(module);
 }
 
-PyDoc_STRVAR(sys_is_stack_trampoline_active__doc__,
+TyDoc_STRVAR(sys_is_stack_trampoline_active__doc__,
 "is_stack_trampoline_active($module, /)\n"
 "--\n"
 "\n"
@@ -1519,7 +1519,7 @@ sys_is_stack_trampoline_active(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_is_stack_trampoline_active_impl(module);
 }
 
-PyDoc_STRVAR(sys_is_remote_debug_enabled__doc__,
+TyDoc_STRVAR(sys_is_remote_debug_enabled__doc__,
 "is_remote_debug_enabled($module, /)\n"
 "--\n"
 "\n"
@@ -1537,7 +1537,7 @@ sys_is_remote_debug_enabled(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys_is_remote_debug_enabled_impl(module);
 }
 
-PyDoc_STRVAR(sys_remote_exec__doc__,
+TyDoc_STRVAR(sys_remote_exec__doc__,
 "remote_exec($module, /, pid, script)\n"
 "--\n"
 "\n"
@@ -1579,7 +1579,7 @@ sys_remote_exec(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(pid), &_Ty_ID(script), },
     };
@@ -1617,7 +1617,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys__dump_tracelets__doc__,
+TyDoc_STRVAR(sys__dump_tracelets__doc__,
 "_dump_tracelets($module, /, outpath)\n"
 "--\n"
 "\n"
@@ -1642,7 +1642,7 @@ sys__dump_tracelets(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(outpath), },
     };
@@ -1675,7 +1675,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys__getframemodulename__doc__,
+TyDoc_STRVAR(sys__getframemodulename__doc__,
 "_getframemodulename($module, /, depth=0)\n"
 "--\n"
 "\n"
@@ -1706,7 +1706,7 @@ sys__getframemodulename(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(depth), },
     };
@@ -1747,7 +1747,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys__get_cpu_count_config__doc__,
+TyDoc_STRVAR(sys__get_cpu_count_config__doc__,
 "_get_cpu_count_config($module, /)\n"
 "--\n"
 "\n"
@@ -1775,7 +1775,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(sys__baserepl__doc__,
+TyDoc_STRVAR(sys__baserepl__doc__,
 "_baserepl($module, /)\n"
 "--\n"
 "\n"
@@ -1793,7 +1793,7 @@ sys__baserepl(TyObject *module, TyObject *Py_UNUSED(ignored))
     return sys__baserepl_impl(module);
 }
 
-PyDoc_STRVAR(sys__is_gil_enabled__doc__,
+TyDoc_STRVAR(sys__is_gil_enabled__doc__,
 "_is_gil_enabled($module, /)\n"
 "--\n"
 "\n"
@@ -1821,7 +1821,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_jit_is_available__doc__,
+TyDoc_STRVAR(_jit_is_available__doc__,
 "is_available($module, /)\n"
 "--\n"
 "\n"
@@ -1849,7 +1849,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_jit_is_enabled__doc__,
+TyDoc_STRVAR(_jit_is_enabled__doc__,
 "is_enabled($module, /)\n"
 "--\n"
 "\n"
@@ -1877,7 +1877,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_jit_is_active__doc__,
+TyDoc_STRVAR(_jit_is_active__doc__,
 "is_active($module, /)\n"
 "--\n"
 "\n"

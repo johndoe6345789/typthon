@@ -12,7 +12,7 @@ PyAPI_FUNC(void) _Ty_ForgetReference(TyObject *op);
 PyAPI_FUNC(Ty_ssize_t) _Ty_GetGlobalRefTotal(void);
 #  define _Ty_GetRefTotal() _Ty_GetGlobalRefTotal()
 PyAPI_FUNC(Ty_ssize_t) _Ty_GetLegacyRefTotal(void);
-PyAPI_FUNC(Ty_ssize_t) _TyInterpreterState_GetRefTotal(PyInterpreterState *);
+PyAPI_FUNC(Ty_ssize_t) _TyInterpreterState_GetRefTotal(TyInterpreterState *);
 #endif
 
 
@@ -38,7 +38,7 @@ PyAPI_FUNC(Ty_ssize_t) _TyInterpreterState_GetRefTotal(PyInterpreterState *);
 */
 typedef struct _Ty_Identifier {
     const char* string;
-    // Index in PyInterpreterState.unicode.ids.array. It is process-wide
+    // Index in TyInterpreterState.unicode.ids.array. It is process-wide
     // unique and must be initialized to -1.
     Ty_ssize_t index;
     // Hidden PyMutex struct for non free-threaded build.

@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _Ty_convert_optional_to_ssize_t()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_io_BytesIO_readable__doc__,
+TyDoc_STRVAR(_io_BytesIO_readable__doc__,
 "readable($self, /)\n"
 "--\n"
 "\n"
@@ -27,7 +27,7 @@ _io_BytesIO_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_BytesIO_readable_impl((bytesio *)self);
 }
 
-PyDoc_STRVAR(_io_BytesIO_writable__doc__,
+TyDoc_STRVAR(_io_BytesIO_writable__doc__,
 "writable($self, /)\n"
 "--\n"
 "\n"
@@ -45,7 +45,7 @@ _io_BytesIO_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_BytesIO_writable_impl((bytesio *)self);
 }
 
-PyDoc_STRVAR(_io_BytesIO_seekable__doc__,
+TyDoc_STRVAR(_io_BytesIO_seekable__doc__,
 "seekable($self, /)\n"
 "--\n"
 "\n"
@@ -63,7 +63,7 @@ _io_BytesIO_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_BytesIO_seekable_impl((bytesio *)self);
 }
 
-PyDoc_STRVAR(_io_BytesIO_flush__doc__,
+TyDoc_STRVAR(_io_BytesIO_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n"
@@ -81,7 +81,7 @@ _io_BytesIO_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_BytesIO_flush_impl((bytesio *)self);
 }
 
-PyDoc_STRVAR(_io_BytesIO_getbuffer__doc__,
+TyDoc_STRVAR(_io_BytesIO_getbuffer__doc__,
 "getbuffer($self, /)\n"
 "--\n"
 "\n"
@@ -103,7 +103,7 @@ _io_BytesIO_getbuffer(TyObject *self, TyTypeObject *cls, TyObject *const *args, 
     return _io_BytesIO_getbuffer_impl((bytesio *)self, cls);
 }
 
-PyDoc_STRVAR(_io_BytesIO_getvalue__doc__,
+TyDoc_STRVAR(_io_BytesIO_getvalue__doc__,
 "getvalue($self, /)\n"
 "--\n"
 "\n"
@@ -121,7 +121,7 @@ _io_BytesIO_getvalue(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_BytesIO_getvalue_impl((bytesio *)self);
 }
 
-PyDoc_STRVAR(_io_BytesIO_isatty__doc__,
+TyDoc_STRVAR(_io_BytesIO_isatty__doc__,
 "isatty($self, /)\n"
 "--\n"
 "\n"
@@ -141,7 +141,7 @@ _io_BytesIO_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_BytesIO_isatty_impl((bytesio *)self);
 }
 
-PyDoc_STRVAR(_io_BytesIO_tell__doc__,
+TyDoc_STRVAR(_io_BytesIO_tell__doc__,
 "tell($self, /)\n"
 "--\n"
 "\n"
@@ -159,7 +159,7 @@ _io_BytesIO_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_BytesIO_tell_impl((bytesio *)self);
 }
 
-PyDoc_STRVAR(_io_BytesIO_read__doc__,
+TyDoc_STRVAR(_io_BytesIO_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -196,7 +196,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BytesIO_read1__doc__,
+TyDoc_STRVAR(_io_BytesIO_read1__doc__,
 "read1($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -233,7 +233,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BytesIO_readline__doc__,
+TyDoc_STRVAR(_io_BytesIO_readline__doc__,
 "readline($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -271,7 +271,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BytesIO_readlines__doc__,
+TyDoc_STRVAR(_io_BytesIO_readlines__doc__,
 "readlines($self, size=None, /)\n"
 "--\n"
 "\n"
@@ -307,7 +307,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BytesIO_readinto__doc__,
+TyDoc_STRVAR(_io_BytesIO_readinto__doc__,
 "readinto($self, buffer, /)\n"
 "--\n"
 "\n"
@@ -343,7 +343,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BytesIO_truncate__doc__,
+TyDoc_STRVAR(_io_BytesIO_truncate__doc__,
 "truncate($self, size=None, /)\n"
 "--\n"
 "\n"
@@ -380,7 +380,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BytesIO_seek__doc__,
+TyDoc_STRVAR(_io_BytesIO_seek__doc__,
 "seek($self, pos, whence=0, /)\n"
 "--\n"
 "\n"
@@ -434,7 +434,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BytesIO_write__doc__,
+TyDoc_STRVAR(_io_BytesIO_write__doc__,
 "write($self, b, /)\n"
 "--\n"
 "\n"
@@ -458,7 +458,7 @@ _io_BytesIO_write(TyObject *self, TyObject *b)
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BytesIO_writelines__doc__,
+TyDoc_STRVAR(_io_BytesIO_writelines__doc__,
 "writelines($self, lines, /)\n"
 "--\n"
 "\n"
@@ -484,7 +484,7 @@ _io_BytesIO_writelines(TyObject *self, TyObject *lines)
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BytesIO_close__doc__,
+TyDoc_STRVAR(_io_BytesIO_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -502,7 +502,7 @@ _io_BytesIO_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_BytesIO_close_impl((bytesio *)self);
 }
 
-PyDoc_STRVAR(_io_BytesIO___init____doc__,
+TyDoc_STRVAR(_io_BytesIO___init____doc__,
 "BytesIO(initial_bytes=b\'\')\n"
 "--\n"
 "\n"
@@ -524,7 +524,7 @@ _io_BytesIO___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(initial_bytes), },
     };

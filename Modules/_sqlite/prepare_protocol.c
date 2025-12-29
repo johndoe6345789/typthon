@@ -45,7 +45,7 @@ pysqlite_prepare_protocol_dealloc(TyObject *self)
     Ty_DECREF(tp);
 }
 
-PyDoc_STRVAR(doc, "PEP 246 style object adaption protocol type.");
+TyDoc_STRVAR(doc, "PEP 246 style object adaption protocol type.");
 
 static TyType_Slot type_slots[] = {
     {Ty_tp_dealloc, pysqlite_prepare_protocol_dealloc},

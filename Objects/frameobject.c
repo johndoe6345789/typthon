@@ -6,12 +6,12 @@
 #include "pycore_code.h"          // CO_FAST_LOCAL
 #include "pycore_dict.h"          // _TyDict_LoadBuiltinsFromGlobals()
 #include "pycore_frame.h"         // PyFrameObject
-#include "pycore_function.h"      // _PyFunction_FromConstructor()
+#include "pycore_function.h"      // _TyFunction_FromConstructor()
 #include "pycore_genobject.h"     // _TyGen_GetGeneratorFromFrame()
 #include "pycore_interpframe.h"   // _TyFrame_GetLocalsArray()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 #include "pycore_object.h"        // _TyObject_GC_UNTRACK()
-#include "pycore_opcode_metadata.h" // _PyOpcode_Caches
+#include "pycore_opcode_metadata.h" // _TyOpcode_Caches
 #include "pycore_optimizer.h"     // _Ty_Executors_InvalidateDependency()
 #include "pycore_unicodeobject.h" // _TyUnicode_Equal()
 
@@ -914,7 +914,7 @@ static TyMethodDef framelocalsproxy_methods[] = {
 };
 
 TyTypeObject PyFrameLocalsProxy_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "FrameLocalsProxy",
     .tp_basicsize = sizeof(PyFrameLocalsProxyObject),
     .tp_dealloc = framelocalsproxy_dealloc,
@@ -1340,7 +1340,7 @@ mark_stacks(PyCodeObject *code_obj, int len)
                 stacks[i] = next_stack;
             }
             oparg = (oparg << 8) | inst.op.arg;
-            int next_i = i + _PyOpcode_Caches[opcode] + 1;
+            int next_i = i + _TyOpcode_Caches[opcode] + 1;
             if (next_stack == UNINITIALIZED) {
                 i = next_i;
                 continue;
@@ -2056,7 +2056,7 @@ static TyMethodDef frame_methods[] = {
 };
 
 TyTypeObject TyFrame_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "frame",
     offsetof(PyFrameObject, _f_frame_data) +
     offsetof(_PyInterpreterFrame, localsplus),
@@ -2139,7 +2139,7 @@ TyFrame_New(TyThreadState *tstate, PyCodeObject *code,
         .fc_kwdefaults = NULL,
         .fc_closure = NULL
     };
-    PyFunctionObject *func = _PyFunction_FromConstructor(&desc);
+    PyFunctionObject *func = _TyFunction_FromConstructor(&desc);
     _Ty_DECREF_BUILTINS(builtins);
     if (func == NULL) {
         return NULL;
@@ -2164,7 +2164,7 @@ TyFrame_New(TyThreadState *tstate, PyCodeObject *code,
 static void
 frame_init_get_vars(_PyInterpreterFrame *frame)
 {
-    // COPY_FREE_VARS has no quickened forms, so no need to use _PyOpcode_Deopt
+    // COPY_FREE_VARS has no quickened forms, so no need to use _TyOpcode_Deopt
     // here:
     PyCodeObject *co = _TyFrame_GetCode(frame);
     int lasti = _PyInterpreterFrame_LASTI(frame);

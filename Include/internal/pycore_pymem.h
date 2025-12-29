@@ -114,7 +114,7 @@ extern void _TyMem_ProcessDelayedNoDealloc(TyThreadState *tstate,
 extern void _TyMem_AbandonDelayed(TyThreadState *tstate);
 
 // On interpreter shutdown, frees all delayed free requests.
-extern void _TyMem_FiniDelayed(PyInterpreterState *interp);
+extern void _TyMem_FiniDelayed(TyInterpreterState *interp);
 
 #ifdef __cplusplus
 }

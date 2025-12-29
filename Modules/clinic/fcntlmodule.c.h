@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(fcntl_fcntl__doc__,
+TyDoc_STRVAR(fcntl_fcntl__doc__,
 "fcntl($module, fd, cmd, arg=0, /)\n"
 "--\n"
 "\n"
@@ -59,7 +59,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(fcntl_ioctl__doc__,
+TyDoc_STRVAR(fcntl_ioctl__doc__,
 "ioctl($module, fd, request, arg=0, mutate_flag=True, /)\n"
 "--\n"
 "\n"
@@ -143,7 +143,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(fcntl_flock__doc__,
+TyDoc_STRVAR(fcntl_flock__doc__,
 "flock($module, fd, operation, /)\n"
 "--\n"
 "\n"
@@ -183,7 +183,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(fcntl_lockf__doc__,
+TyDoc_STRVAR(fcntl_lockf__doc__,
 "lockf($module, fd, cmd, len=0, start=0, whence=0, /)\n"
 "--\n"
 "\n"

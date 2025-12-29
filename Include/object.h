@@ -86,7 +86,7 @@ whose size is determined when the object is allocated.
     },
 #endif
 
-#define PyVarObject_HEAD_INIT(type, size) \
+#define TyVarObject_HEAD_INIT(type, size) \
     {                                     \
         PyObject_HEAD_INIT(type)          \
         (size)                            \

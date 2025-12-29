@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_NoKeywords()
 
-PyDoc_STRVAR(inst_seq_new__doc__,
+TyDoc_STRVAR(inst_seq_new__doc__,
 "InstructionSequenceType()\n"
 "--\n"
 "\n"
@@ -37,7 +37,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(InstructionSequenceType_use_label__doc__,
+TyDoc_STRVAR(InstructionSequenceType_use_label__doc__,
 "use_label($self, /, label)\n"
 "--\n"
 "\n"
@@ -63,7 +63,7 @@ InstructionSequenceType_use_label(TyObject *self, TyObject *const *args, Ty_ssiz
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(label), },
     };
@@ -99,7 +99,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(InstructionSequenceType_addop__doc__,
+TyDoc_STRVAR(InstructionSequenceType_addop__doc__,
 "addop($self, /, opcode, oparg, lineno, col_offset, end_lineno,\n"
 "      end_col_offset)\n"
 "--\n"
@@ -127,7 +127,7 @@ InstructionSequenceType_addop(TyObject *self, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(opcode), &_Ty_ID(oparg), &_Ty_ID(lineno), &_Ty_ID(col_offset), &_Ty_ID(end_lineno), &_Ty_ID(end_col_offset), },
     };
@@ -188,7 +188,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(InstructionSequenceType_new_label__doc__,
+TyDoc_STRVAR(InstructionSequenceType_new_label__doc__,
 "new_label($self, /)\n"
 "--\n"
 "\n"
@@ -216,7 +216,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(InstructionSequenceType_add_nested__doc__,
+TyDoc_STRVAR(InstructionSequenceType_add_nested__doc__,
 "add_nested($self, /, nested)\n"
 "--\n"
 "\n"
@@ -242,7 +242,7 @@ InstructionSequenceType_add_nested(TyObject *self, TyObject *const *args, Ty_ssi
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(nested), },
     };
@@ -275,7 +275,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(InstructionSequenceType_get_nested__doc__,
+TyDoc_STRVAR(InstructionSequenceType_get_nested__doc__,
 "get_nested($self, /)\n"
 "--\n"
 "\n"
@@ -293,7 +293,7 @@ InstructionSequenceType_get_nested(TyObject *self, TyObject *Py_UNUSED(ignored))
     return InstructionSequenceType_get_nested_impl((_PyInstructionSequence *)self);
 }
 
-PyDoc_STRVAR(InstructionSequenceType_get_instructions__doc__,
+TyDoc_STRVAR(InstructionSequenceType_get_instructions__doc__,
 "get_instructions($self, /)\n"
 "--\n"
 "\n"

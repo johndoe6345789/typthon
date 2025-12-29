@@ -9,7 +9,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_NoKeywords()
 
-PyDoc_STRVAR(simplequeue_new__doc__,
+TyDoc_STRVAR(simplequeue_new__doc__,
 "SimpleQueue()\n"
 "--\n"
 "\n"
@@ -38,7 +38,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_queue_SimpleQueue_put__doc__,
+TyDoc_STRVAR(_queue_SimpleQueue_put__doc__,
 "put($self, /, item, block=True, timeout=None)\n"
 "--\n"
 "\n"
@@ -67,7 +67,7 @@ _queue_SimpleQueue_put(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(item), &_Ty_ID(block), &_Ty_ID(timeout), },
     };
@@ -119,7 +119,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_queue_SimpleQueue_put_nowait__doc__,
+TyDoc_STRVAR(_queue_SimpleQueue_put_nowait__doc__,
 "put_nowait($self, /, item)\n"
 "--\n"
 "\n"
@@ -147,7 +147,7 @@ _queue_SimpleQueue_put_nowait(TyObject *self, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(item), },
     };
@@ -182,7 +182,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_queue_SimpleQueue_get__doc__,
+TyDoc_STRVAR(_queue_SimpleQueue_get__doc__,
 "get($self, /, block=True, timeout=None)\n"
 "--\n"
 "\n"
@@ -216,7 +216,7 @@ _queue_SimpleQueue_get(TyObject *self, TyTypeObject *cls, TyObject *const *args,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(block), &_Ty_ID(timeout), },
     };
@@ -266,7 +266,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_queue_SimpleQueue_get_nowait__doc__,
+TyDoc_STRVAR(_queue_SimpleQueue_get_nowait__doc__,
 "get_nowait($self, /)\n"
 "--\n"
 "\n"
@@ -299,7 +299,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_queue_SimpleQueue_empty__doc__,
+TyDoc_STRVAR(_queue_SimpleQueue_empty__doc__,
 "empty($self, /)\n"
 "--\n"
 "\n"
@@ -329,7 +329,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_queue_SimpleQueue_qsize__doc__,
+TyDoc_STRVAR(_queue_SimpleQueue_qsize__doc__,
 "qsize($self, /)\n"
 "--\n"
 "\n"

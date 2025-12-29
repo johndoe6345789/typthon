@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 
-PyDoc_STRVAR(frame_locals__doc__,
+TyDoc_STRVAR(frame_locals__doc__,
 "Return the mapping used by the frame to look up local variables.");
 #if defined(frame_locals_DOCSTR)
 #   undef frame_locals_DOCSTR
@@ -36,7 +36,7 @@ frame_locals_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(frame_lineno__doc__,
+TyDoc_STRVAR(frame_lineno__doc__,
 "Return the current line number in the frame.");
 #if defined(frame_lineno_DOCSTR)
 #   undef frame_lineno_DOCSTR
@@ -68,7 +68,7 @@ frame_lineno_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(frame_lasti__doc__,
+TyDoc_STRVAR(frame_lasti__doc__,
 "Return the index of the last attempted instruction in the frame.");
 #if defined(frame_lasti_DOCSTR)
 #   undef frame_lasti_DOCSTR
@@ -100,7 +100,7 @@ frame_lasti_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(frame_globals__doc__,
+TyDoc_STRVAR(frame_globals__doc__,
 "Return the global variables in the frame.");
 #if defined(frame_globals_DOCSTR)
 #   undef frame_globals_DOCSTR
@@ -132,7 +132,7 @@ frame_globals_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(frame_builtins__doc__,
+TyDoc_STRVAR(frame_builtins__doc__,
 "Return the built-in variables in the frame.");
 #if defined(frame_builtins_DOCSTR)
 #   undef frame_builtins_DOCSTR
@@ -164,7 +164,7 @@ frame_builtins_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(frame_code__doc__,
+TyDoc_STRVAR(frame_code__doc__,
 "Return the code object being executed in this frame.");
 #if defined(frame_code_DOCSTR)
 #   undef frame_code_DOCSTR
@@ -215,7 +215,7 @@ frame_back_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(frame_trace_opcodes__doc__,
+TyDoc_STRVAR(frame_trace_opcodes__doc__,
 "Return True if opcode tracing is enabled, False otherwise.");
 #if defined(frame_trace_opcodes_DOCSTR)
 #   undef frame_trace_opcodes_DOCSTR
@@ -297,7 +297,7 @@ frame_lineno_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(frame_trace__doc__,
+TyDoc_STRVAR(frame_trace__doc__,
 "Return the trace function for this frame, or None if no trace function is set.");
 #if defined(frame_trace_DOCSTR)
 #   undef frame_trace_DOCSTR
@@ -354,7 +354,7 @@ frame_trace_set(TyObject *self, TyObject *value, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(frame_generator__doc__,
+TyDoc_STRVAR(frame_generator__doc__,
 "Return the generator or coroutine associated with this frame, or None.");
 #if defined(frame_generator_DOCSTR)
 #   undef frame_generator_DOCSTR
@@ -386,7 +386,7 @@ frame_generator_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(frame_clear__doc__,
+TyDoc_STRVAR(frame_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -410,7 +410,7 @@ frame_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(frame___sizeof____doc__,
+TyDoc_STRVAR(frame___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"

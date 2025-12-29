@@ -54,7 +54,7 @@ extern "C" {
 # define _Ty_Debug_Free_Threaded 1
 # define _Ty_Debug_code_object_co_tlbc offsetof(PyCodeObject, co_tlbc)
 # define _Ty_Debug_interpreter_frame_tlbc_index offsetof(_PyInterpreterFrame, tlbc_index)
-# define _Ty_Debug_interpreter_state_tlbc_generation offsetof(PyInterpreterState, tlbc_indices.tlbc_generation)
+# define _Ty_Debug_interpreter_state_tlbc_generation offsetof(TyInterpreterState, tlbc_indices.tlbc_generation)
 #else
 # define _Ty_Debug_gilruntimestate_enabled 0
 # define _Ty_Debug_Free_Threaded 0
@@ -246,21 +246,21 @@ typedef struct _Ty_DebugOffsets {
         .interpreters_head = offsetof(_PyRuntimeState, interpreters.head), \
     }, \
     .interpreter_state = { \
-        .size = sizeof(PyInterpreterState), \
-        .id = offsetof(PyInterpreterState, id), \
-        .next = offsetof(PyInterpreterState, next), \
-        .threads_head = offsetof(PyInterpreterState, threads.head), \
-        .threads_main = offsetof(PyInterpreterState, threads.main), \
-        .gc = offsetof(PyInterpreterState, gc), \
-        .imports_modules = offsetof(PyInterpreterState, imports.modules), \
-        .sysdict = offsetof(PyInterpreterState, sysdict), \
-        .builtins = offsetof(PyInterpreterState, builtins), \
-        .ceval_gil = offsetof(PyInterpreterState, ceval.gil), \
-        .gil_runtime_state = offsetof(PyInterpreterState, _gil), \
+        .size = sizeof(TyInterpreterState), \
+        .id = offsetof(TyInterpreterState, id), \
+        .next = offsetof(TyInterpreterState, next), \
+        .threads_head = offsetof(TyInterpreterState, threads.head), \
+        .threads_main = offsetof(TyInterpreterState, threads.main), \
+        .gc = offsetof(TyInterpreterState, gc), \
+        .imports_modules = offsetof(TyInterpreterState, imports.modules), \
+        .sysdict = offsetof(TyInterpreterState, sysdict), \
+        .builtins = offsetof(TyInterpreterState, builtins), \
+        .ceval_gil = offsetof(TyInterpreterState, ceval.gil), \
+        .gil_runtime_state = offsetof(TyInterpreterState, _gil), \
         .gil_runtime_state_enabled = _Ty_Debug_gilruntimestate_enabled, \
-        .gil_runtime_state_locked = offsetof(PyInterpreterState, _gil.locked), \
-        .gil_runtime_state_holder = offsetof(PyInterpreterState, _gil.last_holder), \
-        .code_object_generation = offsetof(PyInterpreterState, _code_object_generation), \
+        .gil_runtime_state_locked = offsetof(TyInterpreterState, _gil.locked), \
+        .gil_runtime_state_holder = offsetof(TyInterpreterState, _gil.last_holder), \
+        .code_object_generation = offsetof(TyInterpreterState, _code_object_generation), \
         .tlbc_generation = _Ty_Debug_interpreter_state_tlbc_generation, \
     }, \
     .thread_state = { \
@@ -365,7 +365,7 @@ typedef struct _Ty_DebugOffsets {
     .debugger_support = { \
         .eval_breaker = offsetof(TyThreadState, eval_breaker), \
         .remote_debugger_support = offsetof(TyThreadState, remote_debugger_support),  \
-        .remote_debugging_enabled = offsetof(PyInterpreterState, config.remote_debug),  \
+        .remote_debugging_enabled = offsetof(TyInterpreterState, config.remote_debug),  \
         .debugger_pending_call = offsetof(_PyRemoteDebuggerSupport, debugger_pending_call),  \
         .debugger_script_path = offsetof(_PyRemoteDebuggerSupport, debugger_script_path),  \
         .debugger_script_path_size = Ty_MAX_SCRIPT_PATH_SIZE, \

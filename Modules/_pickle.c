@@ -25,7 +25,7 @@
 #include <stdlib.h>               // strtol()
 
 
-PyDoc_STRVAR(pickle_module_doc,
+TyDoc_STRVAR(pickle_module_doc,
 "Optimized C implementation for the Python pickle module.");
 
 /*[clinic input]
@@ -4726,7 +4726,7 @@ _pickle_Pickler___sizeof___impl(PicklerObject *self)
 
 static struct TyMethodDef Pickler_methods[] = {
     {"persistent_id", persistent_id, METH_O,
-        PyDoc_STR("persistent_id($self, obj, /)\n--\n\n")},
+        TyDoc_STR("persistent_id($self, obj, /)\n--\n\n")},
     _PICKLE_PICKLER_DUMP_METHODDEF
     _PICKLE_PICKLER_CLEAR_MEMO_METHODDEF
     _PICKLE_PICKLER___SIZEOF___METHODDEF
@@ -6746,7 +6746,7 @@ load_build(PickleState *st, UnpicklerObject *self)
                interned.  we should try to do that here. */
             Ty_INCREF(d_key);
             if (TyUnicode_CheckExact(d_key)) {
-                PyInterpreterState *interp = _TyInterpreterState_GET();
+                TyInterpreterState *interp = _TyInterpreterState_GET();
                 _TyUnicode_InternMortal(interp, &d_key);
             }
             if (PyObject_SetItem(dict, d_key, d_value) < 0) {

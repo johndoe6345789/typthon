@@ -8,7 +8,7 @@ preserve
 #include "pycore_abstract.h"      // _Ty_convert_optional_to_ssize_t()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_io__IOBase_seek__doc__,
+TyDoc_STRVAR(_io__IOBase_seek__doc__,
 "seek($self, offset, whence=os.SEEK_SET, /)\n"
 "--\n"
 "\n"
@@ -79,7 +79,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__IOBase_tell__doc__,
+TyDoc_STRVAR(_io__IOBase_tell__doc__,
 "tell($self, /)\n"
 "--\n"
 "\n"
@@ -97,7 +97,7 @@ _io__IOBase_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io__IOBase_tell_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_truncate__doc__,
+TyDoc_STRVAR(_io__IOBase_truncate__doc__,
 "truncate($self, size=None, /)\n"
 "--\n"
 "\n"
@@ -149,7 +149,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__IOBase_flush__doc__,
+TyDoc_STRVAR(_io__IOBase_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n"
@@ -169,7 +169,7 @@ _io__IOBase_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io__IOBase_flush_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_close__doc__,
+TyDoc_STRVAR(_io__IOBase_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -189,7 +189,7 @@ _io__IOBase_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io__IOBase_close_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_seekable__doc__,
+TyDoc_STRVAR(_io__IOBase_seekable__doc__,
 "seekable($self, /)\n"
 "--\n"
 "\n"
@@ -210,7 +210,7 @@ _io__IOBase_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io__IOBase_seekable_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_readable__doc__,
+TyDoc_STRVAR(_io__IOBase_readable__doc__,
 "readable($self, /)\n"
 "--\n"
 "\n"
@@ -230,7 +230,7 @@ _io__IOBase_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io__IOBase_readable_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_writable__doc__,
+TyDoc_STRVAR(_io__IOBase_writable__doc__,
 "writable($self, /)\n"
 "--\n"
 "\n"
@@ -250,7 +250,7 @@ _io__IOBase_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io__IOBase_writable_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_fileno__doc__,
+TyDoc_STRVAR(_io__IOBase_fileno__doc__,
 "fileno($self, /)\n"
 "--\n"
 "\n"
@@ -274,7 +274,7 @@ _io__IOBase_fileno(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_
     return _io__IOBase_fileno_impl(self, cls);
 }
 
-PyDoc_STRVAR(_io__IOBase_isatty__doc__,
+TyDoc_STRVAR(_io__IOBase_isatty__doc__,
 "isatty($self, /)\n"
 "--\n"
 "\n"
@@ -294,7 +294,7 @@ _io__IOBase_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io__IOBase_isatty_impl(self);
 }
 
-PyDoc_STRVAR(_io__IOBase_readline__doc__,
+TyDoc_STRVAR(_io__IOBase_readline__doc__,
 "readline($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -334,7 +334,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__IOBase_readlines__doc__,
+TyDoc_STRVAR(_io__IOBase_readlines__doc__,
 "readlines($self, hint=-1, /)\n"
 "--\n"
 "\n"
@@ -372,7 +372,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__IOBase_writelines__doc__,
+TyDoc_STRVAR(_io__IOBase_writelines__doc__,
 "writelines($self, lines, /)\n"
 "--\n"
 "\n"
@@ -384,7 +384,7 @@ PyDoc_STRVAR(_io__IOBase_writelines__doc__,
 #define _IO__IOBASE_WRITELINES_METHODDEF    \
     {"writelines", (PyCFunction)_io__IOBase_writelines, METH_O, _io__IOBase_writelines__doc__},
 
-PyDoc_STRVAR(_io__RawIOBase_read__doc__,
+TyDoc_STRVAR(_io__RawIOBase_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n");
@@ -426,7 +426,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__RawIOBase_readall__doc__,
+TyDoc_STRVAR(_io__RawIOBase_readall__doc__,
 "readall($self, /)\n"
 "--\n"
 "\n"

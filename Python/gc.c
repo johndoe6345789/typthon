@@ -6,7 +6,7 @@
 #include "pycore_ceval.h"         // _Ty_set_eval_breaker_bit()
 #include "pycore_dict.h"          // _PyInlineValuesSize()
 #include "pycore_initconfig.h"    // _TyStatus_OK()
-#include "pycore_interp.h"        // PyInterpreterState.gc
+#include "pycore_interp.h"        // TyInterpreterState.gc
 #include "pycore_interpframe.h"   // _TyFrame_GetLocalsArray()
 #include "pycore_object_alloc.h"  // _TyObject_MallocWithType()
 #include "pycore_pystate.h"       // _TyThreadState_GET()
@@ -146,7 +146,7 @@ GEN_HEAD(GCState *gcstate, int n)
 static GCState *
 get_gc_state(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return &interp->gc;
 }
 
@@ -173,7 +173,7 @@ _TyGC_InitState(GCState *gcstate)
 
 
 TyStatus
-_TyGC_Init(PyInterpreterState *interp)
+_TyGC_Init(TyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
 
@@ -1475,7 +1475,7 @@ mark_all_reachable(TyGC_Head *reachable, TyGC_Head *visited, int visited_space)
 }
 
 static intptr_t
-mark_stacks(PyInterpreterState *interp, TyGC_Head *visited, int visited_space, bool start)
+mark_stacks(TyInterpreterState *interp, TyGC_Head *visited, int visited_space, bool start)
 {
     TyGC_Head reachable;
     gc_list_init(&reachable);
@@ -1534,7 +1534,7 @@ mark_stacks(PyInterpreterState *interp, TyGC_Head *visited, int visited_space, b
 }
 
 static intptr_t
-mark_global_roots(PyInterpreterState *interp, TyGC_Head *visited, int visited_space)
+mark_global_roots(TyInterpreterState *interp, TyGC_Head *visited, int visited_space)
 {
     TyGC_Head reachable;
     gc_list_init(&reachable);
@@ -1870,7 +1870,7 @@ gc_referrers_for(TyObject *objs, TyGC_Head *list, TyObject *resultlist)
 }
 
 TyObject *
-_TyGC_GetReferrers(PyInterpreterState *interp, TyObject *objs)
+_TyGC_GetReferrers(TyInterpreterState *interp, TyObject *objs)
 {
     TyObject *result = TyList_New(0);
     if (!result) {
@@ -1888,7 +1888,7 @@ _TyGC_GetReferrers(PyInterpreterState *interp, TyObject *objs)
 }
 
 TyObject *
-_TyGC_GetObjects(PyInterpreterState *interp, int generation)
+_TyGC_GetObjects(TyInterpreterState *interp, int generation)
 {
     assert(generation >= -1 && generation < NUM_GENERATIONS);
     GCState *gcstate = &interp->gc;
@@ -1924,7 +1924,7 @@ error:
 }
 
 void
-_TyGC_Freeze(PyInterpreterState *interp)
+_TyGC_Freeze(TyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
     /* The permanent_generation must be visited */
@@ -1947,7 +1947,7 @@ _TyGC_Freeze(PyInterpreterState *interp)
 }
 
 void
-_TyGC_Unfreeze(PyInterpreterState *interp)
+_TyGC_Unfreeze(TyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
     gc_list_merge(&gcstate->permanent_generation.head,
@@ -1956,7 +1956,7 @@ _TyGC_Unfreeze(PyInterpreterState *interp)
 }
 
 Ty_ssize_t
-_TyGC_GetFreezeCount(PyInterpreterState *interp)
+_TyGC_GetFreezeCount(TyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
     return gc_list_size(&gcstate->permanent_generation.head);
@@ -2083,7 +2083,7 @@ _TyGC_CollectNoFail(TyThreadState *tstate)
 }
 
 void
-_TyGC_DumpShutdownStats(PyInterpreterState *interp)
+_TyGC_DumpShutdownStats(TyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
     if (!(gcstate->debug & _TyGC_DEBUG_SAVEALL)
@@ -2133,7 +2133,7 @@ finalize_unlink_gc_head(TyGC_Head *gc) {
 }
 
 void
-_TyGC_Fini(PyInterpreterState *interp)
+_TyGC_Fini(TyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
     Ty_CLEAR(gcstate->garbage);

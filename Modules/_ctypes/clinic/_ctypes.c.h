@@ -9,7 +9,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_ctypes_CType_Type___sizeof____doc__,
+TyDoc_STRVAR(_ctypes_CType_Type___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -31,7 +31,7 @@ _ctypes_CType_Type___sizeof__(TyObject *self, TyTypeObject *cls, TyObject *const
     return _ctypes_CType_Type___sizeof___impl(self, cls);
 }
 
-PyDoc_STRVAR(CDataType_from_address__doc__,
+TyDoc_STRVAR(CDataType_from_address__doc__,
 "from_address($self, value, /)\n"
 "--\n"
 "\n"
@@ -78,7 +78,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(CDataType_from_buffer__doc__,
+TyDoc_STRVAR(CDataType_from_buffer__doc__,
 "from_buffer($self, obj, offset=0, /)\n"
 "--\n"
 "\n"
@@ -142,7 +142,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(CDataType_from_buffer_copy__doc__,
+TyDoc_STRVAR(CDataType_from_buffer_copy__doc__,
 "from_buffer_copy($self, buffer, offset=0, /)\n"
 "--\n"
 "\n"
@@ -213,7 +213,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(CDataType_in_dll__doc__,
+TyDoc_STRVAR(CDataType_in_dll__doc__,
 "in_dll($self, dll, name, /)\n"
 "--\n"
 "\n"
@@ -274,7 +274,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(CDataType_from_param__doc__,
+TyDoc_STRVAR(CDataType_from_param__doc__,
 "from_param($self, value, /)\n"
 "--\n"
 "\n"
@@ -318,7 +318,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(PyCPointerType_set_type__doc__,
+TyDoc_STRVAR(PyCPointerType_set_type__doc__,
 "set_type($self, type, /)\n"
 "--\n"
 "\n");
@@ -362,7 +362,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(PyCPointerType_from_param__doc__,
+TyDoc_STRVAR(PyCPointerType_from_param__doc__,
 "from_param($self, value, /)\n"
 "--\n"
 "\n"
@@ -507,7 +507,7 @@ _ctypes_PyCArrayType_Type_value_set(TyObject *self, TyObject *value, void *Py_UN
     return return_value;
 }
 
-PyDoc_STRVAR(c_wchar_p_from_param__doc__,
+TyDoc_STRVAR(c_wchar_p_from_param__doc__,
 "from_param($self, value, /)\n"
 "--\n"
 "\n");
@@ -550,7 +550,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(c_char_p_from_param__doc__,
+TyDoc_STRVAR(c_char_p_from_param__doc__,
 "from_param($self, value, /)\n"
 "--\n"
 "\n");
@@ -593,7 +593,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(c_void_p_from_param__doc__,
+TyDoc_STRVAR(c_void_p_from_param__doc__,
 "from_param($self, value, /)\n"
 "--\n"
 "\n");
@@ -636,7 +636,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(PyCSimpleType_from_param__doc__,
+TyDoc_STRVAR(PyCSimpleType_from_param__doc__,
 "from_param($self, value, /)\n"
 "--\n"
 "\n"
@@ -681,7 +681,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_ctypes_PyCData___reduce____doc__,
+TyDoc_STRVAR(_ctypes_PyCData___reduce____doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n");
@@ -709,7 +709,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_ctypes_PyCData___setstate____doc__,
+TyDoc_STRVAR(_ctypes_PyCData___setstate____doc__,
 "__setstate__($self, dict, data, /)\n"
 "--\n"
 "\n");
@@ -741,7 +741,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_ctypes_PyCData___ctypes_from_outparam____doc__,
+TyDoc_STRVAR(_ctypes_PyCData___ctypes_from_outparam____doc__,
 "__ctypes_from_outparam__($self, /)\n"
 "--\n"
 "\n"
@@ -784,7 +784,7 @@ _ctypes_CFuncPtr_errcheck_set(TyObject *self, TyObject *value, void *Py_UNUSED(c
     return return_value;
 }
 
-PyDoc_STRVAR(_ctypes_CFuncPtr_errcheck__doc__,
+TyDoc_STRVAR(_ctypes_CFuncPtr_errcheck__doc__,
 "a function to check for errors");
 #if defined(_ctypes_CFuncPtr_errcheck_DOCSTR)
 #   undef _ctypes_CFuncPtr_errcheck_DOCSTR
@@ -841,7 +841,7 @@ _ctypes_CFuncPtr_restype_set(TyObject *self, TyObject *value, void *Py_UNUSED(co
     return return_value;
 }
 
-PyDoc_STRVAR(_ctypes_CFuncPtr_restype__doc__,
+TyDoc_STRVAR(_ctypes_CFuncPtr_restype__doc__,
 "specify the result type");
 #if defined(_ctypes_CFuncPtr_restype_DOCSTR)
 #   undef _ctypes_CFuncPtr_restype_DOCSTR
@@ -898,7 +898,7 @@ _ctypes_CFuncPtr_argtypes_set(TyObject *self, TyObject *value, void *Py_UNUSED(c
     return return_value;
 }
 
-PyDoc_STRVAR(_ctypes_CFuncPtr_argtypes__doc__,
+TyDoc_STRVAR(_ctypes_CFuncPtr_argtypes__doc__,
 "specify the argument types");
 #if defined(_ctypes_CFuncPtr_argtypes_DOCSTR)
 #   undef _ctypes_CFuncPtr_argtypes_DOCSTR
@@ -980,7 +980,7 @@ _ctypes_Simple_value_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(Simple_from_outparm__doc__,
+TyDoc_STRVAR(Simple_from_outparm__doc__,
 "__ctypes_from_outparam__($self, /)\n"
 "--\n"
 "\n");

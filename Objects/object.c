@@ -111,14 +111,14 @@ _Ty_FinalizeRefTotal(_PyRuntimeState *runtime)
 }
 
 void
-_TyInterpreterState_FinalizeRefTotal(PyInterpreterState *interp)
+_TyInterpreterState_FinalizeRefTotal(TyInterpreterState *interp)
 {
     interp->runtime->object_state.interpreter_leaks += REFTOTAL(interp);
     REFTOTAL(interp) = 0;
 }
 
 static inline Ty_ssize_t
-get_reftotal(PyInterpreterState *interp)
+get_reftotal(TyInterpreterState *interp)
 {
     /* For a single interpreter, we ignore the legacy _Ty_RefTotal,
        since we can't determine which interpreter updated it. */
@@ -140,7 +140,7 @@ get_global_reftotal(_PyRuntimeState *runtime)
 
     /* Add up the total from each interpreter. */
     HEAD_LOCK(&_PyRuntime);
-    PyInterpreterState *interp = TyInterpreterState_Head();
+    TyInterpreterState *interp = TyInterpreterState_Head();
     for (; interp != NULL; interp = TyInterpreterState_Next(interp)) {
         total += get_reftotal(interp);
     }
@@ -177,7 +177,7 @@ _PyDebug_PrintTotalRefs(void) {
 #define REFCHAIN_VALUE ((void*)(uintptr_t)1)
 
 static inline int
-has_own_refchain(PyInterpreterState *interp)
+has_own_refchain(TyInterpreterState *interp)
 {
     if (interp->feature_flags & Ty_RTFLAGS_USE_MAIN_OBMALLOC) {
         return (_Ty_IsMainInterpreter(interp)
@@ -187,7 +187,7 @@ has_own_refchain(PyInterpreterState *interp)
 }
 
 static int
-refchain_init(PyInterpreterState *interp)
+refchain_init(TyInterpreterState *interp)
 {
     if (!has_own_refchain(interp)) {
         // Legacy subinterpreters share a refchain with the main interpreter.
@@ -210,7 +210,7 @@ refchain_init(PyInterpreterState *interp)
 }
 
 static void
-refchain_fini(PyInterpreterState *interp)
+refchain_fini(TyInterpreterState *interp)
 {
     if (has_own_refchain(interp) && REFCHAIN(interp) != NULL) {
         _Ty_hashtable_destroy(REFCHAIN(interp));
@@ -219,14 +219,14 @@ refchain_fini(PyInterpreterState *interp)
 }
 
 bool
-_PyRefchain_IsTraced(PyInterpreterState *interp, TyObject *obj)
+_PyRefchain_IsTraced(TyInterpreterState *interp, TyObject *obj)
 {
     return (_Ty_hashtable_get(REFCHAIN(interp), obj) == REFCHAIN_VALUE);
 }
 
 
 static void
-_PyRefchain_Trace(PyInterpreterState *interp, TyObject *obj)
+_PyRefchain_Trace(TyInterpreterState *interp, TyObject *obj)
 {
     if (_Ty_hashtable_set(REFCHAIN(interp), obj, REFCHAIN_VALUE) < 0) {
         // Use a fatal error because _Ty_NewReference() cannot report
@@ -237,7 +237,7 @@ _PyRefchain_Trace(PyInterpreterState *interp, TyObject *obj)
 
 
 static void
-_PyRefchain_Remove(PyInterpreterState *interp, TyObject *obj)
+_PyRefchain_Remove(TyInterpreterState *interp, TyObject *obj)
 {
     void *value = _Ty_hashtable_steal(REFCHAIN(interp), obj);
 #ifndef NDEBUG
@@ -257,7 +257,7 @@ _PyRefchain_Remove(PyInterpreterState *interp, TyObject *obj)
 void
 _Ty_AddToAllObjects(TyObject *op)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (!_PyRefchain_IsTraced(interp, op)) {
         _PyRefchain_Trace(interp, op);
     }
@@ -320,7 +320,7 @@ _Ty_GetLegacyRefTotal(void)
 }
 
 Ty_ssize_t
-_TyInterpreterState_GetRefTotal(PyInterpreterState *interp)
+_TyInterpreterState_GetRefTotal(TyInterpreterState *interp)
 {
     HEAD_LOCK(&_PyRuntime);
     Ty_ssize_t total = get_reftotal(interp);
@@ -1447,7 +1447,7 @@ PyObject_SetAttr(TyObject *v, TyObject *name, TyObject *value)
     }
     Ty_INCREF(name);
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyUnicode_InternMortal(interp, &name);
     if (tp->tp_setattro != NULL) {
         err = (*tp->tp_setattro)(v, name, value);
@@ -2133,13 +2133,13 @@ static PyNumberMethods none_as_number = {
     0,                          /* nb_index */
 };
 
-PyDoc_STRVAR(none_doc,
+TyDoc_STRVAR(none_doc,
 "NoneType()\n"
 "--\n\n"
 "The type of the None singleton.");
 
 TyTypeObject _PyNone_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "NoneType",
     0,
     0,
@@ -2233,13 +2233,13 @@ static PyNumberMethods notimplemented_as_number = {
     .nb_bool = notimplemented_bool,
 };
 
-PyDoc_STRVAR(notimplemented_doc,
+TyDoc_STRVAR(notimplemented_doc,
 "NotImplementedType()\n"
 "--\n\n"
 "The type of the NotImplemented singleton.");
 
 TyTypeObject _PyNotImplemented_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "NotImplementedType",
     0,
     0,
@@ -2283,7 +2283,7 @@ TyObject _Ty_NotImplementedStruct = _TyObject_HEAD_INIT(&_PyNotImplemented_Type)
 
 
 TyStatus
-_TyObject_InitState(PyInterpreterState *interp)
+_TyObject_InitState(TyInterpreterState *interp)
 {
 #ifdef Ty_TRACE_REFS
     if (refchain_init(interp) < 0) {
@@ -2294,7 +2294,7 @@ _TyObject_InitState(PyInterpreterState *interp)
 }
 
 void
-_TyObject_FiniState(PyInterpreterState *interp)
+_TyObject_FiniState(TyInterpreterState *interp)
 {
 #ifdef Ty_TRACE_REFS
     refchain_fini(interp);
@@ -2440,7 +2440,7 @@ static TyTypeObject* static_types[] = {
 
 
 TyStatus
-_PyTypes_InitTypes(PyInterpreterState *interp)
+_PyTypes_InitTypes(TyInterpreterState *interp)
 {
     // All other static types (unless initialized elsewhere)
     for (size_t i=0; i < Ty_ARRAY_LENGTH(static_types); i++) {
@@ -2479,7 +2479,7 @@ _PyTypes_InitTypes(PyInterpreterState *interp)
 // subclasses are not cleared properly. Leave the static type unchanged in this
 // case.
 void
-_PyTypes_FiniTypes(PyInterpreterState *interp)
+_PyTypes_FiniTypes(TyInterpreterState *interp)
 {
     // Deallocate types in the reverse order to deallocate subclasses before
     // their base classes.
@@ -2668,7 +2668,7 @@ _Ty_ForgetReference(TyObject *op)
         _TyObject_ASSERT_FAILED_MSG(op, "negative refcnt");
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
 #ifdef SLOW_UNREF_CHECK
     if (!_PyRefchain_Get(interp, op)) {
@@ -2704,7 +2704,7 @@ _Ty_PrintReference(_Ty_hashtable_t *ht,
  * interpreter must be in a healthy state.
  */
 void
-_Ty_PrintReferences(PyInterpreterState *interp, FILE *fp)
+_Ty_PrintReferences(TyInterpreterState *interp, FILE *fp)
 {
     if (interp == NULL) {
         interp = _TyInterpreterState_Main();
@@ -2735,7 +2735,7 @@ _Ty_PrintReferenceAddress(_Ty_hashtable_t *ht,
 // The call in Ty_FinalizeEx() is okay since the main interpreter
 // is statically allocated.
 void
-_Ty_PrintReferenceAddresses(PyInterpreterState *interp, FILE *fp)
+_Ty_PrintReferenceAddresses(TyInterpreterState *interp, FILE *fp)
 {
     fprintf(fp, "Remaining object addresses:\n");
     _Ty_hashtable_foreach(REFCHAIN(interp), _Ty_PrintReferenceAddress, fp);
@@ -2816,7 +2816,7 @@ _Ty_GetObjects(TyObject *self, TyObject *args)
         .type = type,
         .limit = limit,
     };
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     int res = _Ty_hashtable_foreach(REFCHAIN(interp), _Ty_GetObject, &data);
     if (res == _PY_GETOBJECTS_ERROR) {
         Ty_DECREF(list);

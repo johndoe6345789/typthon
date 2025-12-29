@@ -10,7 +10,7 @@ preserve
 #include "pycore_long.h"          // _TyLong_UnsignedInt_Converter()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(os_stat__doc__,
+TyDoc_STRVAR(os_stat__doc__,
 "stat($module, /, path, *, dir_fd=None, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -54,7 +54,7 @@ os_stat(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwn
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), &_Ty_ID(follow_symlinks), },
     };
@@ -111,7 +111,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_lstat__doc__,
+TyDoc_STRVAR(os_lstat__doc__,
 "lstat($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -139,7 +139,7 @@ os_lstat(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
@@ -186,7 +186,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_access__doc__,
+TyDoc_STRVAR(os_access__doc__,
 "access($module, /, path, mode, *, dir_fd=None, effective_ids=False,\n"
 "       follow_symlinks=True)\n"
 "--\n"
@@ -238,7 +238,7 @@ os_access(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(dir_fd), &_Ty_ID(effective_ids), &_Ty_ID(follow_symlinks), },
     };
@@ -317,7 +317,7 @@ exit:
 
 #if defined(HAVE_TTYNAME_R)
 
-PyDoc_STRVAR(os_ttyname__doc__,
+TyDoc_STRVAR(os_ttyname__doc__,
 "ttyname($module, fd, /)\n"
 "--\n"
 "\n"
@@ -352,7 +352,7 @@ exit:
 
 #if defined(HAVE_CTERMID)
 
-PyDoc_STRVAR(os_ctermid__doc__,
+TyDoc_STRVAR(os_ctermid__doc__,
 "ctermid($module, /)\n"
 "--\n"
 "\n"
@@ -372,7 +372,7 @@ os_ctermid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(HAVE_CTERMID) */
 
-PyDoc_STRVAR(os_chdir__doc__,
+TyDoc_STRVAR(os_chdir__doc__,
 "chdir($module, /, path)\n"
 "--\n"
 "\n"
@@ -401,7 +401,7 @@ os_chdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -441,7 +441,7 @@ exit:
 
 #if defined(HAVE_FCHDIR)
 
-PyDoc_STRVAR(os_fchdir__doc__,
+TyDoc_STRVAR(os_fchdir__doc__,
 "fchdir($module, /, fd)\n"
 "--\n"
 "\n"
@@ -469,7 +469,7 @@ os_fchdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), },
     };
@@ -507,7 +507,7 @@ exit:
 
 #endif /* defined(HAVE_FCHDIR) */
 
-PyDoc_STRVAR(os_chmod__doc__,
+TyDoc_STRVAR(os_chmod__doc__,
 "chmod($module, /, path, mode, *, dir_fd=None,\n"
 "      follow_symlinks=(os.name != \'nt\'))\n"
 "--\n"
@@ -557,7 +557,7 @@ os_chmod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(dir_fd), &_Ty_ID(follow_symlinks), },
     };
@@ -621,7 +621,7 @@ exit:
 
 #if (defined(HAVE_FCHMOD) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(os_fchmod__doc__,
+TyDoc_STRVAR(os_fchmod__doc__,
 "fchmod($module, /, fd, mode)\n"
 "--\n"
 "\n"
@@ -656,7 +656,7 @@ os_fchmod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), &_Ty_ID(mode), },
     };
@@ -701,7 +701,7 @@ exit:
 
 #if (defined(HAVE_LCHMOD) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(os_lchmod__doc__,
+TyDoc_STRVAR(os_lchmod__doc__,
 "lchmod($module, /, path, mode)\n"
 "--\n"
 "\n"
@@ -729,7 +729,7 @@ os_lchmod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), },
     };
@@ -776,7 +776,7 @@ exit:
 
 #if defined(HAVE_CHFLAGS)
 
-PyDoc_STRVAR(os_chflags__doc__,
+TyDoc_STRVAR(os_chflags__doc__,
 "chflags($module, /, path, flags, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -808,7 +808,7 @@ os_chflags(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(flags), &_Ty_ID(follow_symlinks), },
     };
@@ -866,7 +866,7 @@ exit:
 
 #if defined(HAVE_LCHFLAGS)
 
-PyDoc_STRVAR(os_lchflags__doc__,
+TyDoc_STRVAR(os_lchflags__doc__,
 "lchflags($module, /, path, flags)\n"
 "--\n"
 "\n"
@@ -894,7 +894,7 @@ os_lchflags(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(flags), },
     };
@@ -942,7 +942,7 @@ exit:
 
 #if defined(HAVE_CHROOT)
 
-PyDoc_STRVAR(os_chroot__doc__,
+TyDoc_STRVAR(os_chroot__doc__,
 "chroot($module, /, path)\n"
 "--\n"
 "\n"
@@ -967,7 +967,7 @@ os_chroot(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -1009,7 +1009,7 @@ exit:
 
 #if defined(HAVE_FSYNC)
 
-PyDoc_STRVAR(os_fsync__doc__,
+TyDoc_STRVAR(os_fsync__doc__,
 "fsync($module, /, fd)\n"
 "--\n"
 "\n"
@@ -1034,7 +1034,7 @@ os_fsync(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), },
     };
@@ -1074,7 +1074,7 @@ exit:
 
 #if defined(HAVE_SYNC)
 
-PyDoc_STRVAR(os_sync__doc__,
+TyDoc_STRVAR(os_sync__doc__,
 "sync($module, /)\n"
 "--\n"
 "\n"
@@ -1096,7 +1096,7 @@ os_sync(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_FDATASYNC)
 
-PyDoc_STRVAR(os_fdatasync__doc__,
+TyDoc_STRVAR(os_fdatasync__doc__,
 "fdatasync($module, /, fd)\n"
 "--\n"
 "\n"
@@ -1121,7 +1121,7 @@ os_fdatasync(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), },
     };
@@ -1161,7 +1161,7 @@ exit:
 
 #if defined(HAVE_CHOWN)
 
-PyDoc_STRVAR(os_chown__doc__,
+TyDoc_STRVAR(os_chown__doc__,
 "chown($module, /, path, uid, gid, *, dir_fd=None, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -1211,7 +1211,7 @@ os_chown(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(uid), &_Ty_ID(gid), &_Ty_ID(dir_fd), &_Ty_ID(follow_symlinks), },
     };
@@ -1280,7 +1280,7 @@ exit:
 
 #if defined(HAVE_FCHOWN)
 
-PyDoc_STRVAR(os_fchown__doc__,
+TyDoc_STRVAR(os_fchown__doc__,
 "fchown($module, /, fd, uid, gid)\n"
 "--\n"
 "\n"
@@ -1307,7 +1307,7 @@ os_fchown(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), &_Ty_ID(uid), &_Ty_ID(gid), },
     };
@@ -1355,7 +1355,7 @@ exit:
 
 #if defined(HAVE_LCHOWN)
 
-PyDoc_STRVAR(os_lchown__doc__,
+TyDoc_STRVAR(os_lchown__doc__,
 "lchown($module, /, path, uid, gid)\n"
 "--\n"
 "\n"
@@ -1383,7 +1383,7 @@ os_lchown(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(uid), &_Ty_ID(gid), },
     };
@@ -1431,7 +1431,7 @@ exit:
 
 #endif /* defined(HAVE_LCHOWN) */
 
-PyDoc_STRVAR(os_getcwd__doc__,
+TyDoc_STRVAR(os_getcwd__doc__,
 "getcwd($module, /)\n"
 "--\n"
 "\n"
@@ -1449,7 +1449,7 @@ os_getcwd(TyObject *module, TyObject *Py_UNUSED(ignored))
     return os_getcwd_impl(module);
 }
 
-PyDoc_STRVAR(os_getcwdb__doc__,
+TyDoc_STRVAR(os_getcwdb__doc__,
 "getcwdb($module, /)\n"
 "--\n"
 "\n"
@@ -1469,7 +1469,7 @@ os_getcwdb(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_LINK)
 
-PyDoc_STRVAR(os_link__doc__,
+TyDoc_STRVAR(os_link__doc__,
 "link($module, /, src, dst, *, src_dir_fd=None, dst_dir_fd=None,\n"
 "     follow_symlinks=(os.name != \'nt\'))\n"
 "--\n"
@@ -1506,7 +1506,7 @@ os_link(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwn
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(src_dir_fd), &_Ty_ID(dst_dir_fd), &_Ty_ID(follow_symlinks), },
     };
@@ -1580,7 +1580,7 @@ exit:
 
 #endif /* defined(HAVE_LINK) */
 
-PyDoc_STRVAR(os_listdir__doc__,
+TyDoc_STRVAR(os_listdir__doc__,
 "listdir($module, /, path=None)\n"
 "--\n"
 "\n"
@@ -1616,7 +1616,7 @@ os_listdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -1661,7 +1661,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_listdrives__doc__,
+TyDoc_STRVAR(os_listdrives__doc__,
 "listdrives($module, /)\n"
 "--\n"
 "\n"
@@ -1685,7 +1685,7 @@ os_listdrives(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_listvolumes__doc__,
+TyDoc_STRVAR(os_listvolumes__doc__,
 "listvolumes($module, /)\n"
 "--\n"
 "\n"
@@ -1709,7 +1709,7 @@ os_listvolumes(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_listmounts__doc__,
+TyDoc_STRVAR(os_listmounts__doc__,
 "listmounts($module, /, volume)\n"
 "--\n"
 "\n"
@@ -1736,7 +1736,7 @@ os_listmounts(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(volume), },
     };
@@ -1778,7 +1778,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_isdevdrive__doc__,
+TyDoc_STRVAR(os__path_isdevdrive__doc__,
 "_path_isdevdrive($module, /, path)\n"
 "--\n"
 "\n"
@@ -1803,7 +1803,7 @@ os__path_isdevdrive(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -1845,7 +1845,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__getfullpathname__doc__,
+TyDoc_STRVAR(os__getfullpathname__doc__,
 "_getfullpathname($module, path, /)\n"
 "--\n"
 "\n");
@@ -1878,7 +1878,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__getfinalpathname__doc__,
+TyDoc_STRVAR(os__getfinalpathname__doc__,
 "_getfinalpathname($module, path, /)\n"
 "--\n"
 "\n"
@@ -1912,7 +1912,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__findfirstfile__doc__,
+TyDoc_STRVAR(os__findfirstfile__doc__,
 "_findfirstfile($module, path, /)\n"
 "--\n"
 "\n"
@@ -1946,7 +1946,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__getvolumepathname__doc__,
+TyDoc_STRVAR(os__getvolumepathname__doc__,
 "_getvolumepathname($module, /, path)\n"
 "--\n"
 "\n"
@@ -1971,7 +1971,7 @@ os__getvolumepathname(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -2013,7 +2013,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_splitroot__doc__,
+TyDoc_STRVAR(os__path_splitroot__doc__,
 "_path_splitroot($module, /, path)\n"
 "--\n"
 "\n"
@@ -2038,7 +2038,7 @@ os__path_splitroot(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -2080,7 +2080,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_exists__doc__,
+TyDoc_STRVAR(os__path_exists__doc__,
 "_path_exists($module, /, path)\n"
 "--\n"
 "\n"
@@ -2105,7 +2105,7 @@ os__path_exists(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -2152,7 +2152,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_lexists__doc__,
+TyDoc_STRVAR(os__path_lexists__doc__,
 "_path_lexists($module, /, path)\n"
 "--\n"
 "\n"
@@ -2177,7 +2177,7 @@ os__path_lexists(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -2224,7 +2224,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_isdir__doc__,
+TyDoc_STRVAR(os__path_isdir__doc__,
 "_path_isdir($module, /, s)\n"
 "--\n"
 "\n"
@@ -2249,7 +2249,7 @@ os__path_isdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('s'), },
     };
@@ -2296,7 +2296,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_isfile__doc__,
+TyDoc_STRVAR(os__path_isfile__doc__,
 "_path_isfile($module, /, path)\n"
 "--\n"
 "\n"
@@ -2321,7 +2321,7 @@ os__path_isfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -2368,7 +2368,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_islink__doc__,
+TyDoc_STRVAR(os__path_islink__doc__,
 "_path_islink($module, /, path)\n"
 "--\n"
 "\n"
@@ -2393,7 +2393,7 @@ os__path_islink(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -2440,7 +2440,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__path_isjunction__doc__,
+TyDoc_STRVAR(os__path_isjunction__doc__,
 "_path_isjunction($module, /, path)\n"
 "--\n"
 "\n"
@@ -2465,7 +2465,7 @@ os__path_isjunction(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -2510,7 +2510,7 @@ exit:
 
 #endif /* defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(os__path_splitroot_ex__doc__,
+TyDoc_STRVAR(os__path_splitroot_ex__doc__,
 "_path_splitroot_ex($module, /, p)\n"
 "--\n"
 "\n"
@@ -2537,7 +2537,7 @@ os__path_splitroot_ex(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('p'), },
     };
@@ -2575,7 +2575,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os__path_normpath__doc__,
+TyDoc_STRVAR(os__path_normpath__doc__,
 "_path_normpath($module, /, path)\n"
 "--\n"
 "\n"
@@ -2600,7 +2600,7 @@ os__path_normpath(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -2638,7 +2638,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_mkdir__doc__,
+TyDoc_STRVAR(os_mkdir__doc__,
 "mkdir($module, /, path, mode=511, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -2671,7 +2671,7 @@ os_mkdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(dir_fd), },
     };
@@ -2734,7 +2734,7 @@ exit:
 
 #if defined(HAVE_NICE)
 
-PyDoc_STRVAR(os_nice__doc__,
+TyDoc_STRVAR(os_nice__doc__,
 "nice($module, increment, /)\n"
 "--\n"
 "\n"
@@ -2766,7 +2766,7 @@ exit:
 
 #if defined(HAVE_GETPRIORITY)
 
-PyDoc_STRVAR(os_getpriority__doc__,
+TyDoc_STRVAR(os_getpriority__doc__,
 "getpriority($module, /, which, who)\n"
 "--\n"
 "\n"
@@ -2791,7 +2791,7 @@ os_getpriority(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(which), &_Ty_ID(who), },
     };
@@ -2836,7 +2836,7 @@ exit:
 
 #if defined(HAVE_SETPRIORITY)
 
-PyDoc_STRVAR(os_setpriority__doc__,
+TyDoc_STRVAR(os_setpriority__doc__,
 "setpriority($module, /, which, who, priority)\n"
 "--\n"
 "\n"
@@ -2861,7 +2861,7 @@ os_setpriority(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(which), &_Ty_ID(who), &_Ty_ID(priority), },
     };
@@ -2909,7 +2909,7 @@ exit:
 
 #endif /* defined(HAVE_SETPRIORITY) */
 
-PyDoc_STRVAR(os_rename__doc__,
+TyDoc_STRVAR(os_rename__doc__,
 "rename($module, /, src, dst, *, src_dir_fd=None, dst_dir_fd=None)\n"
 "--\n"
 "\n"
@@ -2941,7 +2941,7 @@ os_rename(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(src_dir_fd), &_Ty_ID(dst_dir_fd), },
     };
@@ -3003,7 +3003,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_replace__doc__,
+TyDoc_STRVAR(os_replace__doc__,
 "replace($module, /, src, dst, *, src_dir_fd=None, dst_dir_fd=None)\n"
 "--\n"
 "\n"
@@ -3035,7 +3035,7 @@ os_replace(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(src_dir_fd), &_Ty_ID(dst_dir_fd), },
     };
@@ -3097,7 +3097,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_rmdir__doc__,
+TyDoc_STRVAR(os_rmdir__doc__,
 "rmdir($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -3127,7 +3127,7 @@ os_rmdir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
@@ -3176,7 +3176,7 @@ exit:
 
 #if defined(HAVE_SYSTEM) && defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_system__doc__,
+TyDoc_STRVAR(os_system__doc__,
 "system($module, /, command)\n"
 "--\n"
 "\n"
@@ -3201,7 +3201,7 @@ os_system(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(command), },
     };
@@ -3253,7 +3253,7 @@ exit:
 
 #if defined(HAVE_SYSTEM) && !defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_system__doc__,
+TyDoc_STRVAR(os_system__doc__,
 "system($module, /, command)\n"
 "--\n"
 "\n"
@@ -3278,7 +3278,7 @@ os_system(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(command), },
     };
@@ -3325,7 +3325,7 @@ exit:
 
 #if defined(HAVE_UMASK)
 
-PyDoc_STRVAR(os_umask__doc__,
+TyDoc_STRVAR(os_umask__doc__,
 "umask($module, mask, /)\n"
 "--\n"
 "\n"
@@ -3355,7 +3355,7 @@ exit:
 
 #endif /* defined(HAVE_UMASK) */
 
-PyDoc_STRVAR(os_unlink__doc__,
+TyDoc_STRVAR(os_unlink__doc__,
 "unlink($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -3385,7 +3385,7 @@ os_unlink(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
@@ -3432,7 +3432,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_remove__doc__,
+TyDoc_STRVAR(os_remove__doc__,
 "remove($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -3462,7 +3462,7 @@ os_remove(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
@@ -3511,7 +3511,7 @@ exit:
 
 #if defined(HAVE_UNAME)
 
-PyDoc_STRVAR(os_uname__doc__,
+TyDoc_STRVAR(os_uname__doc__,
 "uname($module, /)\n"
 "--\n"
 "\n"
@@ -3534,7 +3534,7 @@ os_uname(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(HAVE_UNAME) */
 
-PyDoc_STRVAR(os_utime__doc__,
+TyDoc_STRVAR(os_utime__doc__,
 "utime($module, /, path, times=None, *, ns=<unrepresentable>,\n"
 "      dir_fd=None, follow_symlinks=True)\n"
 "--\n"
@@ -3583,7 +3583,7 @@ os_utime(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(times), &_Ty_ID(ns), &_Ty_ID(dir_fd), &_Ty_ID(follow_symlinks), },
     };
@@ -3658,7 +3658,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os__exit__doc__,
+TyDoc_STRVAR(os__exit__doc__,
 "_exit($module, /, status)\n"
 "--\n"
 "\n"
@@ -3683,7 +3683,7 @@ os__exit(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(status), },
     };
@@ -3721,7 +3721,7 @@ exit:
 
 #if defined(HAVE_EXECV)
 
-PyDoc_STRVAR(os_execv__doc__,
+TyDoc_STRVAR(os_execv__doc__,
 "execv($module, path, argv, /)\n"
 "--\n"
 "\n"
@@ -3765,7 +3765,7 @@ exit:
 
 #if defined(HAVE_EXECV)
 
-PyDoc_STRVAR(os_execve__doc__,
+TyDoc_STRVAR(os_execve__doc__,
 "execve($module, /, path, argv, env)\n"
 "--\n"
 "\n"
@@ -3797,7 +3797,7 @@ os_execve(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(argv), &_Ty_ID(env), },
     };
@@ -3843,7 +3843,7 @@ exit:
 
 #if defined(HAVE_POSIX_SPAWN)
 
-PyDoc_STRVAR(os_posix_spawn__doc__,
+TyDoc_STRVAR(os_posix_spawn__doc__,
 "posix_spawn($module, path, argv, env, /, *, file_actions=(),\n"
 "            setpgroup=<unrepresentable>, resetids=False, setsid=False,\n"
 "            setsigmask=(), setsigdef=(), scheduler=<unrepresentable>)\n"
@@ -3895,7 +3895,7 @@ os_posix_spawn(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(file_actions), &_Ty_ID(setpgroup), &_Ty_ID(resetids), &_Ty_ID(setsid), &_Ty_ID(setsigmask), &_Ty_ID(setsigdef), &_Ty_ID(scheduler), },
     };
@@ -3996,7 +3996,7 @@ exit:
 
 #if defined(HAVE_POSIX_SPAWNP)
 
-PyDoc_STRVAR(os_posix_spawnp__doc__,
+TyDoc_STRVAR(os_posix_spawnp__doc__,
 "posix_spawnp($module, path, argv, env, /, *, file_actions=(),\n"
 "             setpgroup=<unrepresentable>, resetids=False, setsid=False,\n"
 "             setsigmask=(), setsigdef=(), scheduler=<unrepresentable>)\n"
@@ -4048,7 +4048,7 @@ os_posix_spawnp(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(file_actions), &_Ty_ID(setpgroup), &_Ty_ID(resetids), &_Ty_ID(setsid), &_Ty_ID(setsigmask), &_Ty_ID(setsigdef), &_Ty_ID(scheduler), },
     };
@@ -4149,7 +4149,7 @@ exit:
 
 #if (defined(HAVE_SPAWNV) || defined(HAVE_WSPAWNV) || defined(HAVE_RTPSPAWN))
 
-PyDoc_STRVAR(os_spawnv__doc__,
+TyDoc_STRVAR(os_spawnv__doc__,
 "spawnv($module, mode, path, argv, /)\n"
 "--\n"
 "\n"
@@ -4200,7 +4200,7 @@ exit:
 
 #if (defined(HAVE_SPAWNV) || defined(HAVE_WSPAWNV) || defined(HAVE_RTPSPAWN))
 
-PyDoc_STRVAR(os_spawnve__doc__,
+TyDoc_STRVAR(os_spawnve__doc__,
 "spawnve($module, mode, path, argv, env, /)\n"
 "--\n"
 "\n"
@@ -4256,7 +4256,7 @@ exit:
 
 #if defined(HAVE_FORK)
 
-PyDoc_STRVAR(os_register_at_fork__doc__,
+TyDoc_STRVAR(os_register_at_fork__doc__,
 "register_at_fork($module, /, *, before=<unrepresentable>,\n"
 "                 after_in_child=<unrepresentable>,\n"
 "                 after_in_parent=<unrepresentable>)\n"
@@ -4294,7 +4294,7 @@ os_register_at_fork(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(before), &_Ty_ID(after_in_child), &_Ty_ID(after_in_parent), },
     };
@@ -4350,7 +4350,7 @@ exit:
 
 #if defined(HAVE_FORK1)
 
-PyDoc_STRVAR(os_fork1__doc__,
+TyDoc_STRVAR(os_fork1__doc__,
 "fork1($module, /)\n"
 "--\n"
 "\n"
@@ -4374,7 +4374,7 @@ os_fork1(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_FORK)
 
-PyDoc_STRVAR(os_fork__doc__,
+TyDoc_STRVAR(os_fork__doc__,
 "fork($module, /)\n"
 "--\n"
 "\n"
@@ -4398,7 +4398,7 @@ os_fork(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_GET_PRIORITY_MAX)
 
-PyDoc_STRVAR(os_sched_get_priority_max__doc__,
+TyDoc_STRVAR(os_sched_get_priority_max__doc__,
 "sched_get_priority_max($module, /, policy)\n"
 "--\n"
 "\n"
@@ -4423,7 +4423,7 @@ os_sched_get_priority_max(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(policy), },
     };
@@ -4463,7 +4463,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_GET_PRIORITY_MAX)
 
-PyDoc_STRVAR(os_sched_get_priority_min__doc__,
+TyDoc_STRVAR(os_sched_get_priority_min__doc__,
 "sched_get_priority_min($module, /, policy)\n"
 "--\n"
 "\n"
@@ -4488,7 +4488,7 @@ os_sched_get_priority_min(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(policy), },
     };
@@ -4528,7 +4528,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETSCHEDULER)
 
-PyDoc_STRVAR(os_sched_getscheduler__doc__,
+TyDoc_STRVAR(os_sched_getscheduler__doc__,
 "sched_getscheduler($module, pid, /)\n"
 "--\n"
 "\n"
@@ -4562,7 +4562,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && (defined(HAVE_SCHED_SETPARAM) || defined(HAVE_SCHED_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDPARAM))
 
-PyDoc_STRVAR(os_sched_param__doc__,
+TyDoc_STRVAR(os_sched_param__doc__,
 "sched_param(sched_priority)\n"
 "--\n"
 "\n"
@@ -4587,7 +4587,7 @@ os_sched_param(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(sched_priority), },
     };
@@ -4626,7 +4626,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETSCHEDULER)
 
-PyDoc_STRVAR(os_sched_setscheduler__doc__,
+TyDoc_STRVAR(os_sched_setscheduler__doc__,
 "sched_setscheduler($module, pid, policy, param, /)\n"
 "--\n"
 "\n"
@@ -4672,7 +4672,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETPARAM)
 
-PyDoc_STRVAR(os_sched_getparam__doc__,
+TyDoc_STRVAR(os_sched_getparam__doc__,
 "sched_getparam($module, pid, /)\n"
 "--\n"
 "\n"
@@ -4707,7 +4707,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETPARAM)
 
-PyDoc_STRVAR(os_sched_setparam__doc__,
+TyDoc_STRVAR(os_sched_setparam__doc__,
 "sched_setparam($module, pid, param, /)\n"
 "--\n"
 "\n"
@@ -4747,7 +4747,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_RR_GET_INTERVAL)
 
-PyDoc_STRVAR(os_sched_rr_get_interval__doc__,
+TyDoc_STRVAR(os_sched_rr_get_interval__doc__,
 "sched_rr_get_interval($module, pid, /)\n"
 "--\n"
 "\n"
@@ -4786,7 +4786,7 @@ exit:
 
 #if defined(HAVE_SCHED_H)
 
-PyDoc_STRVAR(os_sched_yield__doc__,
+TyDoc_STRVAR(os_sched_yield__doc__,
 "sched_yield($module, /)\n"
 "--\n"
 "\n"
@@ -4808,7 +4808,7 @@ os_sched_yield(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETAFFINITY)
 
-PyDoc_STRVAR(os_sched_setaffinity__doc__,
+TyDoc_STRVAR(os_sched_setaffinity__doc__,
 "sched_setaffinity($module, pid, mask, /)\n"
 "--\n"
 "\n"
@@ -4847,7 +4847,7 @@ exit:
 
 #if defined(HAVE_SCHED_H) && defined(HAVE_SCHED_SETAFFINITY)
 
-PyDoc_STRVAR(os_sched_getaffinity__doc__,
+TyDoc_STRVAR(os_sched_getaffinity__doc__,
 "sched_getaffinity($module, pid, /)\n"
 "--\n"
 "\n"
@@ -4881,7 +4881,7 @@ exit:
 
 #if defined(HAVE_POSIX_OPENPT)
 
-PyDoc_STRVAR(os_posix_openpt__doc__,
+TyDoc_STRVAR(os_posix_openpt__doc__,
 "posix_openpt($module, oflag, /)\n"
 "--\n"
 "\n"
@@ -4922,7 +4922,7 @@ exit:
 
 #if defined(HAVE_GRANTPT)
 
-PyDoc_STRVAR(os_grantpt__doc__,
+TyDoc_STRVAR(os_grantpt__doc__,
 "grantpt($module, fd, /)\n"
 "--\n"
 "\n"
@@ -4959,7 +4959,7 @@ exit:
 
 #if defined(HAVE_UNLOCKPT)
 
-PyDoc_STRVAR(os_unlockpt__doc__,
+TyDoc_STRVAR(os_unlockpt__doc__,
 "unlockpt($module, fd, /)\n"
 "--\n"
 "\n"
@@ -4996,7 +4996,7 @@ exit:
 
 #if (defined(HAVE_PTSNAME) || defined(HAVE_PTSNAME_R))
 
-PyDoc_STRVAR(os_ptsname__doc__,
+TyDoc_STRVAR(os_ptsname__doc__,
 "ptsname($module, fd, /)\n"
 "--\n"
 "\n"
@@ -5034,7 +5034,7 @@ exit:
 
 #if (defined(HAVE_OPENPTY) || defined(HAVE__GETPTY) || defined(HAVE_DEV_PTMX))
 
-PyDoc_STRVAR(os_openpty__doc__,
+TyDoc_STRVAR(os_openpty__doc__,
 "openpty($module, /)\n"
 "--\n"
 "\n"
@@ -5059,7 +5059,7 @@ os_openpty(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if (defined(HAVE_LOGIN_TTY) || defined(HAVE_FALLBACK_LOGIN_TTY))
 
-PyDoc_STRVAR(os_login_tty__doc__,
+TyDoc_STRVAR(os_login_tty__doc__,
 "login_tty($module, fd, /)\n"
 "--\n"
 "\n"
@@ -5095,7 +5095,7 @@ exit:
 
 #if defined(HAVE_FORKPTY)
 
-PyDoc_STRVAR(os_forkpty__doc__,
+TyDoc_STRVAR(os_forkpty__doc__,
 "forkpty($module, /)\n"
 "--\n"
 "\n"
@@ -5122,7 +5122,7 @@ os_forkpty(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETEGID)
 
-PyDoc_STRVAR(os_getegid__doc__,
+TyDoc_STRVAR(os_getegid__doc__,
 "getegid($module, /)\n"
 "--\n"
 "\n"
@@ -5144,7 +5144,7 @@ os_getegid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETEUID)
 
-PyDoc_STRVAR(os_geteuid__doc__,
+TyDoc_STRVAR(os_geteuid__doc__,
 "geteuid($module, /)\n"
 "--\n"
 "\n"
@@ -5166,7 +5166,7 @@ os_geteuid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETGID)
 
-PyDoc_STRVAR(os_getgid__doc__,
+TyDoc_STRVAR(os_getgid__doc__,
 "getgid($module, /)\n"
 "--\n"
 "\n"
@@ -5188,7 +5188,7 @@ os_getgid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETPID)
 
-PyDoc_STRVAR(os_getpid__doc__,
+TyDoc_STRVAR(os_getpid__doc__,
 "getpid($module, /)\n"
 "--\n"
 "\n"
@@ -5210,7 +5210,7 @@ os_getpid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETGROUPLIST) && defined(__APPLE__)
 
-PyDoc_STRVAR(os_getgrouplist__doc__,
+TyDoc_STRVAR(os_getgrouplist__doc__,
 "getgrouplist($module, user, group, /)\n"
 "--\n"
 "\n"
@@ -5264,7 +5264,7 @@ exit:
 
 #if defined(HAVE_GETGROUPLIST) && !defined(__APPLE__)
 
-PyDoc_STRVAR(os_getgrouplist__doc__,
+TyDoc_STRVAR(os_getgrouplist__doc__,
 "getgrouplist($module, user, group, /)\n"
 "--\n"
 "\n"
@@ -5317,7 +5317,7 @@ exit:
 
 #if defined(HAVE_GETGROUPS)
 
-PyDoc_STRVAR(os_getgroups__doc__,
+TyDoc_STRVAR(os_getgroups__doc__,
 "getgroups($module, /)\n"
 "--\n"
 "\n"
@@ -5339,7 +5339,7 @@ os_getgroups(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_INITGROUPS) && defined(__APPLE__)
 
-PyDoc_STRVAR(os_initgroups__doc__,
+TyDoc_STRVAR(os_initgroups__doc__,
 "initgroups($module, username, gid, /)\n"
 "--\n"
 "\n"
@@ -5385,7 +5385,7 @@ exit:
 
 #if defined(HAVE_INITGROUPS) && !defined(__APPLE__)
 
-PyDoc_STRVAR(os_initgroups__doc__,
+TyDoc_STRVAR(os_initgroups__doc__,
 "initgroups($module, username, gid, /)\n"
 "--\n"
 "\n"
@@ -5430,7 +5430,7 @@ exit:
 
 #if defined(HAVE_GETPGID)
 
-PyDoc_STRVAR(os_getpgid__doc__,
+TyDoc_STRVAR(os_getpgid__doc__,
 "getpgid($module, /, pid)\n"
 "--\n"
 "\n"
@@ -5455,7 +5455,7 @@ os_getpgid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(pid), },
     };
@@ -5495,7 +5495,7 @@ exit:
 
 #if defined(HAVE_GETPGRP)
 
-PyDoc_STRVAR(os_getpgrp__doc__,
+TyDoc_STRVAR(os_getpgrp__doc__,
 "getpgrp($module, /)\n"
 "--\n"
 "\n"
@@ -5517,7 +5517,7 @@ os_getpgrp(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SETPGRP)
 
-PyDoc_STRVAR(os_setpgrp__doc__,
+TyDoc_STRVAR(os_setpgrp__doc__,
 "setpgrp($module, /)\n"
 "--\n"
 "\n"
@@ -5539,7 +5539,7 @@ os_setpgrp(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETPPID)
 
-PyDoc_STRVAR(os_getppid__doc__,
+TyDoc_STRVAR(os_getppid__doc__,
 "getppid($module, /)\n"
 "--\n"
 "\n"
@@ -5564,7 +5564,7 @@ os_getppid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETLOGIN)
 
-PyDoc_STRVAR(os_getlogin__doc__,
+TyDoc_STRVAR(os_getlogin__doc__,
 "getlogin($module, /)\n"
 "--\n"
 "\n"
@@ -5586,7 +5586,7 @@ os_getlogin(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETUID)
 
-PyDoc_STRVAR(os_getuid__doc__,
+TyDoc_STRVAR(os_getuid__doc__,
 "getuid($module, /)\n"
 "--\n"
 "\n"
@@ -5608,7 +5608,7 @@ os_getuid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_KILL)
 
-PyDoc_STRVAR(os_kill__doc__,
+TyDoc_STRVAR(os_kill__doc__,
 "kill($module, pid, signal, /)\n"
 "--\n"
 "\n"
@@ -5656,7 +5656,7 @@ exit:
 
 #if defined(HAVE_KILLPG)
 
-PyDoc_STRVAR(os_killpg__doc__,
+TyDoc_STRVAR(os_killpg__doc__,
 "killpg($module, pgid, signal, /)\n"
 "--\n"
 "\n"
@@ -5696,7 +5696,7 @@ exit:
 
 #if defined(HAVE_PLOCK)
 
-PyDoc_STRVAR(os_plock__doc__,
+TyDoc_STRVAR(os_plock__doc__,
 "plock($module, op, /)\n"
 "--\n"
 "\n"
@@ -5728,7 +5728,7 @@ exit:
 
 #if defined(HAVE_SETUID)
 
-PyDoc_STRVAR(os_setuid__doc__,
+TyDoc_STRVAR(os_setuid__doc__,
 "setuid($module, uid, /)\n"
 "--\n"
 "\n"
@@ -5759,7 +5759,7 @@ exit:
 
 #if defined(HAVE_SETEUID)
 
-PyDoc_STRVAR(os_seteuid__doc__,
+TyDoc_STRVAR(os_seteuid__doc__,
 "seteuid($module, euid, /)\n"
 "--\n"
 "\n"
@@ -5790,7 +5790,7 @@ exit:
 
 #if defined(HAVE_SETEGID)
 
-PyDoc_STRVAR(os_setegid__doc__,
+TyDoc_STRVAR(os_setegid__doc__,
 "setegid($module, egid, /)\n"
 "--\n"
 "\n"
@@ -5821,7 +5821,7 @@ exit:
 
 #if defined(HAVE_SETREUID)
 
-PyDoc_STRVAR(os_setreuid__doc__,
+TyDoc_STRVAR(os_setreuid__doc__,
 "setreuid($module, ruid, euid, /)\n"
 "--\n"
 "\n"
@@ -5859,7 +5859,7 @@ exit:
 
 #if defined(HAVE_SETREGID)
 
-PyDoc_STRVAR(os_setregid__doc__,
+TyDoc_STRVAR(os_setregid__doc__,
 "setregid($module, rgid, egid, /)\n"
 "--\n"
 "\n"
@@ -5897,7 +5897,7 @@ exit:
 
 #if defined(HAVE_SETGID)
 
-PyDoc_STRVAR(os_setgid__doc__,
+TyDoc_STRVAR(os_setgid__doc__,
 "setgid($module, gid, /)\n"
 "--\n"
 "\n"
@@ -5928,7 +5928,7 @@ exit:
 
 #if defined(HAVE_SETGROUPS)
 
-PyDoc_STRVAR(os_setgroups__doc__,
+TyDoc_STRVAR(os_setgroups__doc__,
 "setgroups($module, groups, /)\n"
 "--\n"
 "\n"
@@ -5941,7 +5941,7 @@ PyDoc_STRVAR(os_setgroups__doc__,
 
 #if defined(HAVE_WAIT3)
 
-PyDoc_STRVAR(os_wait3__doc__,
+TyDoc_STRVAR(os_wait3__doc__,
 "wait3($module, /, options)\n"
 "--\n"
 "\n"
@@ -5969,7 +5969,7 @@ os_wait3(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(options), },
     };
@@ -6009,7 +6009,7 @@ exit:
 
 #if defined(HAVE_WAIT4)
 
-PyDoc_STRVAR(os_wait4__doc__,
+TyDoc_STRVAR(os_wait4__doc__,
 "wait4($module, /, pid, options)\n"
 "--\n"
 "\n"
@@ -6037,7 +6037,7 @@ os_wait4(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(pid), &_Ty_ID(options), },
     };
@@ -6082,7 +6082,7 @@ exit:
 
 #if defined(HAVE_WAITID)
 
-PyDoc_STRVAR(os_waitid__doc__,
+TyDoc_STRVAR(os_waitid__doc__,
 "waitid($module, idtype, id, options, /)\n"
 "--\n"
 "\n"
@@ -6137,7 +6137,7 @@ exit:
 
 #if defined(HAVE_WAITPID)
 
-PyDoc_STRVAR(os_waitpid__doc__,
+TyDoc_STRVAR(os_waitpid__doc__,
 "waitpid($module, pid, options, /)\n"
 "--\n"
 "\n"
@@ -6182,7 +6182,7 @@ exit:
 
 #if !defined(HAVE_WAITPID) && defined(HAVE_CWAIT)
 
-PyDoc_STRVAR(os_waitpid__doc__,
+TyDoc_STRVAR(os_waitpid__doc__,
 "waitpid($module, pid, options, /)\n"
 "--\n"
 "\n"
@@ -6227,7 +6227,7 @@ exit:
 
 #if defined(HAVE_WAIT)
 
-PyDoc_STRVAR(os_wait__doc__,
+TyDoc_STRVAR(os_wait__doc__,
 "wait($module, /)\n"
 "--\n"
 "\n"
@@ -6252,7 +6252,7 @@ os_wait(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if (defined(__linux__) && defined(__NR_pidfd_open) && !(defined(__ANDROID__) && __ANDROID_API__ < 31))
 
-PyDoc_STRVAR(os_pidfd_open__doc__,
+TyDoc_STRVAR(os_pidfd_open__doc__,
 "pidfd_open($module, /, pid, flags=0)\n"
 "--\n"
 "\n"
@@ -6280,7 +6280,7 @@ os_pidfd_open(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(pid), &_Ty_ID(flags), },
     };
@@ -6329,7 +6329,7 @@ exit:
 
 #if defined(HAVE_SETNS)
 
-PyDoc_STRVAR(os_setns__doc__,
+TyDoc_STRVAR(os_setns__doc__,
 "setns($module, /, fd, nstype=0)\n"
 "--\n"
 "\n"
@@ -6359,7 +6359,7 @@ os_setns(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), &_Ty_ID(nstype), },
     };
@@ -6409,7 +6409,7 @@ exit:
 
 #if defined(HAVE_UNSHARE)
 
-PyDoc_STRVAR(os_unshare__doc__,
+TyDoc_STRVAR(os_unshare__doc__,
 "unshare($module, /, flags)\n"
 "--\n"
 "\n"
@@ -6437,7 +6437,7 @@ os_unshare(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(flags), },
     };
@@ -6477,7 +6477,7 @@ exit:
 
 #if (defined(HAVE_READLINK) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(os_readlink__doc__,
+TyDoc_STRVAR(os_readlink__doc__,
 "readlink($module, /, path, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -6508,7 +6508,7 @@ os_readlink(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(dir_fd), },
     };
@@ -6559,7 +6559,7 @@ exit:
 
 #if defined(HAVE_SYMLINK)
 
-PyDoc_STRVAR(os_symlink__doc__,
+TyDoc_STRVAR(os_symlink__doc__,
 "symlink($module, /, src, dst, target_is_directory=False, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -6595,7 +6595,7 @@ os_symlink(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(target_is_directory), &_Ty_ID(dir_fd), },
     };
@@ -6664,7 +6664,7 @@ exit:
 
 #endif /* defined(HAVE_SYMLINK) */
 
-PyDoc_STRVAR(os_times__doc__,
+TyDoc_STRVAR(os_times__doc__,
 "times($module, /)\n"
 "--\n"
 "\n"
@@ -6688,7 +6688,7 @@ os_times(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_create__doc__,
+TyDoc_STRVAR(os_timerfd_create__doc__,
 "timerfd_create($module, clockid, /, *, flags=0)\n"
 "--\n"
 "\n"
@@ -6729,7 +6729,7 @@ os_timerfd_create(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(flags), },
     };
@@ -6779,7 +6779,7 @@ exit:
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_settime__doc__,
+TyDoc_STRVAR(os_timerfd_settime__doc__,
 "timerfd_settime($module, fd, /, *, flags=0, initial=0.0, interval=0.0)\n"
 "--\n"
 "\n"
@@ -6814,7 +6814,7 @@ os_timerfd_settime(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(flags), &_Ty_ID(initial), &_Ty_ID(interval), },
     };
@@ -6896,7 +6896,7 @@ exit:
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_settime_ns__doc__,
+TyDoc_STRVAR(os_timerfd_settime_ns__doc__,
 "timerfd_settime_ns($module, fd, /, *, flags=0, initial=0, interval=0)\n"
 "--\n"
 "\n"
@@ -6931,7 +6931,7 @@ os_timerfd_settime_ns(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(flags), &_Ty_ID(initial), &_Ty_ID(interval), },
     };
@@ -7001,7 +7001,7 @@ exit:
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_gettime__doc__,
+TyDoc_STRVAR(os_timerfd_gettime__doc__,
 "timerfd_gettime($module, fd, /)\n"
 "--\n"
 "\n"
@@ -7036,7 +7036,7 @@ exit:
 
 #if defined(HAVE_TIMERFD_CREATE)
 
-PyDoc_STRVAR(os_timerfd_gettime_ns__doc__,
+TyDoc_STRVAR(os_timerfd_gettime_ns__doc__,
 "timerfd_gettime_ns($module, fd, /)\n"
 "--\n"
 "\n"
@@ -7071,7 +7071,7 @@ exit:
 
 #if defined(HAVE_GETSID)
 
-PyDoc_STRVAR(os_getsid__doc__,
+TyDoc_STRVAR(os_getsid__doc__,
 "getsid($module, pid, /)\n"
 "--\n"
 "\n"
@@ -7103,7 +7103,7 @@ exit:
 
 #if defined(HAVE_SETSID)
 
-PyDoc_STRVAR(os_setsid__doc__,
+TyDoc_STRVAR(os_setsid__doc__,
 "setsid($module, /)\n"
 "--\n"
 "\n"
@@ -7125,7 +7125,7 @@ os_setsid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_SETPGID)
 
-PyDoc_STRVAR(os_setpgid__doc__,
+TyDoc_STRVAR(os_setpgid__doc__,
 "setpgid($module, pid, pgrp, /)\n"
 "--\n"
 "\n"
@@ -7165,7 +7165,7 @@ exit:
 
 #if defined(HAVE_TCGETPGRP)
 
-PyDoc_STRVAR(os_tcgetpgrp__doc__,
+TyDoc_STRVAR(os_tcgetpgrp__doc__,
 "tcgetpgrp($module, fd, /)\n"
 "--\n"
 "\n"
@@ -7197,7 +7197,7 @@ exit:
 
 #if defined(HAVE_TCSETPGRP)
 
-PyDoc_STRVAR(os_tcsetpgrp__doc__,
+TyDoc_STRVAR(os_tcsetpgrp__doc__,
 "tcsetpgrp($module, fd, pgid, /)\n"
 "--\n"
 "\n"
@@ -7235,7 +7235,7 @@ exit:
 
 #endif /* defined(HAVE_TCSETPGRP) */
 
-PyDoc_STRVAR(os_open__doc__,
+TyDoc_STRVAR(os_open__doc__,
 "open($module, /, path, flags, mode=511, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -7265,7 +7265,7 @@ os_open(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwn
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(flags), &_Ty_ID(mode), &_Ty_ID(dir_fd), },
     };
@@ -7336,7 +7336,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_close__doc__,
+TyDoc_STRVAR(os_close__doc__,
 "close($module, /, fd)\n"
 "--\n"
 "\n"
@@ -7361,7 +7361,7 @@ os_close(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), },
     };
@@ -7397,7 +7397,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_closerange__doc__,
+TyDoc_STRVAR(os_closerange__doc__,
 "closerange($module, fd_low, fd_high, /)\n"
 "--\n"
 "\n"
@@ -7433,7 +7433,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_dup__doc__,
+TyDoc_STRVAR(os_dup__doc__,
 "dup($module, fd, /)\n"
 "--\n"
 "\n"
@@ -7468,7 +7468,7 @@ exit:
 
 #if ((defined(HAVE_DUP3) || defined(F_DUPFD) || defined(MS_WINDOWS)))
 
-PyDoc_STRVAR(os_dup2__doc__,
+TyDoc_STRVAR(os_dup2__doc__,
 "dup2($module, /, fd, fd2, inheritable=True)\n"
 "--\n"
 "\n"
@@ -7493,7 +7493,7 @@ os_dup2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwn
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), &_Ty_ID(fd2), &_Ty_ID(inheritable), },
     };
@@ -7553,7 +7553,7 @@ exit:
 
 #if defined(HAVE_LOCKF)
 
-PyDoc_STRVAR(os_lockf__doc__,
+TyDoc_STRVAR(os_lockf__doc__,
 "lockf($module, fd, command, length, /)\n"
 "--\n"
 "\n"
@@ -7602,7 +7602,7 @@ exit:
 
 #endif /* defined(HAVE_LOCKF) */
 
-PyDoc_STRVAR(os_lseek__doc__,
+TyDoc_STRVAR(os_lseek__doc__,
 "lseek($module, fd, position, whence, /)\n"
 "--\n"
 "\n"
@@ -7659,7 +7659,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_read__doc__,
+TyDoc_STRVAR(os_read__doc__,
 "read($module, fd, length, /)\n"
 "--\n"
 "\n"
@@ -7703,7 +7703,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_readinto__doc__,
+TyDoc_STRVAR(os_readinto__doc__,
 "readinto($module, fd, buffer, /)\n"
 "--\n"
 "\n"
@@ -7761,7 +7761,7 @@ exit:
 
 #if defined(HAVE_READV)
 
-PyDoc_STRVAR(os_readv__doc__,
+TyDoc_STRVAR(os_readv__doc__,
 "readv($module, fd, buffers, /)\n"
 "--\n"
 "\n"
@@ -7811,7 +7811,7 @@ exit:
 
 #if defined(HAVE_PREAD)
 
-PyDoc_STRVAR(os_pread__doc__,
+TyDoc_STRVAR(os_pread__doc__,
 "pread($module, fd, length, offset, /)\n"
 "--\n"
 "\n"
@@ -7866,7 +7866,7 @@ exit:
 
 #if (defined(HAVE_PREADV) || defined (HAVE_PREADV2))
 
-PyDoc_STRVAR(os_preadv__doc__,
+TyDoc_STRVAR(os_preadv__doc__,
 "preadv($module, fd, buffers, offset, flags=0, /)\n"
 "--\n"
 "\n"
@@ -7934,7 +7934,7 @@ exit:
 
 #endif /* (defined(HAVE_PREADV) || defined (HAVE_PREADV2)) */
 
-PyDoc_STRVAR(os_write__doc__,
+TyDoc_STRVAR(os_write__doc__,
 "write($module, fd, data, /)\n"
 "--\n"
 "\n"
@@ -7981,7 +7981,7 @@ exit:
 
 #if defined(HAVE_SENDFILE) && defined(__APPLE__)
 
-PyDoc_STRVAR(os_sendfile__doc__,
+TyDoc_STRVAR(os_sendfile__doc__,
 "sendfile($module, /, out_fd, in_fd, offset, count, headers=(),\n"
 "         trailers=(), flags=0)\n"
 "--\n"
@@ -8009,7 +8009,7 @@ os_sendfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(out_fd), &_Ty_ID(in_fd), &_Ty_ID(offset), &_Ty_ID(count), &_Ty_ID(headers), &_Ty_ID(trailers), &_Ty_ID(flags), },
     };
@@ -8086,7 +8086,7 @@ exit:
 
 #if defined(HAVE_SENDFILE) && !defined(__APPLE__) && (defined(__FreeBSD__) || defined(__DragonFly__))
 
-PyDoc_STRVAR(os_sendfile__doc__,
+TyDoc_STRVAR(os_sendfile__doc__,
 "sendfile($module, /, out_fd, in_fd, offset, count, headers=(),\n"
 "         trailers=(), flags=0)\n"
 "--\n"
@@ -8114,7 +8114,7 @@ os_sendfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(out_fd), &_Ty_ID(in_fd), &_Ty_ID(offset), &_Ty_ID(count), &_Ty_ID(headers), &_Ty_ID(trailers), &_Ty_ID(flags), },
     };
@@ -8200,7 +8200,7 @@ exit:
 
 #if defined(HAVE_SENDFILE) && !defined(__APPLE__) && !(defined(__FreeBSD__) || defined(__DragonFly__))
 
-PyDoc_STRVAR(os_sendfile__doc__,
+TyDoc_STRVAR(os_sendfile__doc__,
 "sendfile($module, /, out_fd, in_fd, offset, count)\n"
 "--\n"
 "\n"
@@ -8226,7 +8226,7 @@ os_sendfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(out_fd), &_Ty_ID(in_fd), &_Ty_ID(offset), &_Ty_ID(count), },
     };
@@ -8286,7 +8286,7 @@ exit:
 
 #if defined(__APPLE__)
 
-PyDoc_STRVAR(os__fcopyfile__doc__,
+TyDoc_STRVAR(os__fcopyfile__doc__,
 "_fcopyfile($module, in_fd, out_fd, flags, /)\n"
 "--\n"
 "\n"
@@ -8329,7 +8329,7 @@ exit:
 
 #endif /* defined(__APPLE__) */
 
-PyDoc_STRVAR(os_fstat__doc__,
+TyDoc_STRVAR(os_fstat__doc__,
 "fstat($module, /, fd)\n"
 "--\n"
 "\n"
@@ -8357,7 +8357,7 @@ os_fstat(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), },
     };
@@ -8393,7 +8393,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_isatty__doc__,
+TyDoc_STRVAR(os_isatty__doc__,
 "isatty($module, fd, /)\n"
 "--\n"
 "\n"
@@ -8431,7 +8431,7 @@ exit:
 
 #if defined(HAVE_PIPE)
 
-PyDoc_STRVAR(os_pipe__doc__,
+TyDoc_STRVAR(os_pipe__doc__,
 "pipe($module, /)\n"
 "--\n"
 "\n"
@@ -8456,7 +8456,7 @@ os_pipe(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_PIPE2)
 
-PyDoc_STRVAR(os_pipe2__doc__,
+TyDoc_STRVAR(os_pipe2__doc__,
 "pipe2($module, flags, /)\n"
 "--\n"
 "\n"
@@ -8494,7 +8494,7 @@ exit:
 
 #if defined(HAVE_WRITEV)
 
-PyDoc_STRVAR(os_writev__doc__,
+TyDoc_STRVAR(os_writev__doc__,
 "writev($module, fd, buffers, /)\n"
 "--\n"
 "\n"
@@ -8539,7 +8539,7 @@ exit:
 
 #if defined(HAVE_PWRITE)
 
-PyDoc_STRVAR(os_pwrite__doc__,
+TyDoc_STRVAR(os_pwrite__doc__,
 "pwrite($module, fd, buffer, offset, /)\n"
 "--\n"
 "\n"
@@ -8596,7 +8596,7 @@ exit:
 
 #if (defined(HAVE_PWRITEV) || defined (HAVE_PWRITEV2))
 
-PyDoc_STRVAR(os_pwritev__doc__,
+TyDoc_STRVAR(os_pwritev__doc__,
 "pwritev($module, fd, buffers, offset, flags=0, /)\n"
 "--\n"
 "\n"
@@ -8667,7 +8667,7 @@ exit:
 
 #if defined(HAVE_COPY_FILE_RANGE)
 
-PyDoc_STRVAR(os_copy_file_range__doc__,
+TyDoc_STRVAR(os_copy_file_range__doc__,
 "copy_file_range($module, /, src, dst, count, offset_src=None,\n"
 "                offset_dst=None)\n"
 "--\n"
@@ -8708,7 +8708,7 @@ os_copy_file_range(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(count), &_Ty_ID(offset_src), &_Ty_ID(offset_dst), },
     };
@@ -8780,7 +8780,7 @@ exit:
 
 #if ((defined(HAVE_SPLICE) && !defined(_AIX)))
 
-PyDoc_STRVAR(os_splice__doc__,
+TyDoc_STRVAR(os_splice__doc__,
 "splice($module, /, src, dst, count, offset_src=None, offset_dst=None,\n"
 "       flags=0)\n"
 "--\n"
@@ -8825,7 +8825,7 @@ os_splice(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(src), &_Ty_ID(dst), &_Ty_ID(count), &_Ty_ID(offset_src), &_Ty_ID(offset_dst), &_Ty_ID(flags), },
     };
@@ -8906,7 +8906,7 @@ exit:
 
 #if defined(HAVE_MKFIFO)
 
-PyDoc_STRVAR(os_mkfifo__doc__,
+TyDoc_STRVAR(os_mkfifo__doc__,
 "mkfifo($module, /, path, mode=438, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -8936,7 +8936,7 @@ os_mkfifo(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(dir_fd), },
     };
@@ -9001,7 +9001,7 @@ exit:
 
 #if (defined(HAVE_MKNOD) && defined(HAVE_MAKEDEV))
 
-PyDoc_STRVAR(os_mknod__doc__,
+TyDoc_STRVAR(os_mknod__doc__,
 "mknod($module, /, path, mode=384, device=0, *, dir_fd=None)\n"
 "--\n"
 "\n"
@@ -9039,7 +9039,7 @@ os_mknod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(mode), &_Ty_ID(device), &_Ty_ID(dir_fd), },
     };
@@ -9113,7 +9113,7 @@ exit:
 
 #if defined(HAVE_DEVICE_MACROS)
 
-PyDoc_STRVAR(os_major__doc__,
+TyDoc_STRVAR(os_major__doc__,
 "major($module, device, /)\n"
 "--\n"
 "\n"
@@ -9144,7 +9144,7 @@ exit:
 
 #if defined(HAVE_DEVICE_MACROS)
 
-PyDoc_STRVAR(os_minor__doc__,
+TyDoc_STRVAR(os_minor__doc__,
 "minor($module, device, /)\n"
 "--\n"
 "\n"
@@ -9175,7 +9175,7 @@ exit:
 
 #if defined(HAVE_DEVICE_MACROS)
 
-PyDoc_STRVAR(os_makedev__doc__,
+TyDoc_STRVAR(os_makedev__doc__,
 "makedev($module, major, minor, /)\n"
 "--\n"
 "\n"
@@ -9218,7 +9218,7 @@ exit:
 
 #if (defined HAVE_FTRUNCATE || defined MS_WINDOWS)
 
-PyDoc_STRVAR(os_ftruncate__doc__,
+TyDoc_STRVAR(os_ftruncate__doc__,
 "ftruncate($module, fd, length, /)\n"
 "--\n"
 "\n"
@@ -9257,7 +9257,7 @@ exit:
 
 #if (defined HAVE_TRUNCATE || defined MS_WINDOWS)
 
-PyDoc_STRVAR(os_truncate__doc__,
+TyDoc_STRVAR(os_truncate__doc__,
 "truncate($module, /, path, length)\n"
 "--\n"
 "\n"
@@ -9285,7 +9285,7 @@ os_truncate(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(length), },
     };
@@ -9331,7 +9331,7 @@ exit:
 
 #if (defined(HAVE_POSIX_FALLOCATE) && !defined(POSIX_FADVISE_AIX_BUG) && !defined(__wasi__))
 
-PyDoc_STRVAR(os_posix_fallocate__doc__,
+TyDoc_STRVAR(os_posix_fallocate__doc__,
 "posix_fallocate($module, fd, offset, length, /)\n"
 "--\n"
 "\n"
@@ -9378,7 +9378,7 @@ exit:
 
 #if (defined(HAVE_POSIX_FADVISE) && !defined(POSIX_FADVISE_AIX_BUG))
 
-PyDoc_STRVAR(os_posix_fadvise__doc__,
+TyDoc_STRVAR(os_posix_fadvise__doc__,
 "posix_fadvise($module, fd, offset, length, advice, /)\n"
 "--\n"
 "\n"
@@ -9435,7 +9435,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_putenv__doc__,
+TyDoc_STRVAR(os_putenv__doc__,
 "putenv($module, name, value, /)\n"
 "--\n"
 "\n"
@@ -9477,7 +9477,7 @@ exit:
 
 #if !defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_putenv__doc__,
+TyDoc_STRVAR(os_putenv__doc__,
 "putenv($module, name, value, /)\n"
 "--\n"
 "\n"
@@ -9520,7 +9520,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_unsetenv__doc__,
+TyDoc_STRVAR(os_unsetenv__doc__,
 "unsetenv($module, name, /)\n"
 "--\n"
 "\n"
@@ -9553,7 +9553,7 @@ exit:
 
 #if !defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_unsetenv__doc__,
+TyDoc_STRVAR(os_unsetenv__doc__,
 "unsetenv($module, name, /)\n"
 "--\n"
 "\n"
@@ -9585,7 +9585,7 @@ exit:
 
 #endif /* !defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(os_strerror__doc__,
+TyDoc_STRVAR(os_strerror__doc__,
 "strerror($module, code, /)\n"
 "--\n"
 "\n"
@@ -9615,7 +9615,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WCOREDUMP)
 
-PyDoc_STRVAR(os_WCOREDUMP__doc__,
+TyDoc_STRVAR(os_WCOREDUMP__doc__,
 "WCOREDUMP($module, status, /)\n"
 "--\n"
 "\n"
@@ -9652,7 +9652,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WIFCONTINUED)
 
-PyDoc_STRVAR(os_WIFCONTINUED__doc__,
+TyDoc_STRVAR(os_WIFCONTINUED__doc__,
 "WIFCONTINUED($module, /, status)\n"
 "--\n"
 "\n"
@@ -9680,7 +9680,7 @@ os_WIFCONTINUED(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(status), },
     };
@@ -9725,7 +9725,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WIFSTOPPED)
 
-PyDoc_STRVAR(os_WIFSTOPPED__doc__,
+TyDoc_STRVAR(os_WIFSTOPPED__doc__,
 "WIFSTOPPED($module, /, status)\n"
 "--\n"
 "\n"
@@ -9750,7 +9750,7 @@ os_WIFSTOPPED(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(status), },
     };
@@ -9795,7 +9795,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WIFSIGNALED)
 
-PyDoc_STRVAR(os_WIFSIGNALED__doc__,
+TyDoc_STRVAR(os_WIFSIGNALED__doc__,
 "WIFSIGNALED($module, /, status)\n"
 "--\n"
 "\n"
@@ -9820,7 +9820,7 @@ os_WIFSIGNALED(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(status), },
     };
@@ -9865,7 +9865,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WIFEXITED)
 
-PyDoc_STRVAR(os_WIFEXITED__doc__,
+TyDoc_STRVAR(os_WIFEXITED__doc__,
 "WIFEXITED($module, /, status)\n"
 "--\n"
 "\n"
@@ -9890,7 +9890,7 @@ os_WIFEXITED(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(status), },
     };
@@ -9935,7 +9935,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WEXITSTATUS)
 
-PyDoc_STRVAR(os_WEXITSTATUS__doc__,
+TyDoc_STRVAR(os_WEXITSTATUS__doc__,
 "WEXITSTATUS($module, /, status)\n"
 "--\n"
 "\n"
@@ -9960,7 +9960,7 @@ os_WEXITSTATUS(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(status), },
     };
@@ -10005,7 +10005,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WTERMSIG)
 
-PyDoc_STRVAR(os_WTERMSIG__doc__,
+TyDoc_STRVAR(os_WTERMSIG__doc__,
 "WTERMSIG($module, /, status)\n"
 "--\n"
 "\n"
@@ -10030,7 +10030,7 @@ os_WTERMSIG(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(status), },
     };
@@ -10075,7 +10075,7 @@ exit:
 
 #if defined(HAVE_SYS_WAIT_H) && defined(WSTOPSIG)
 
-PyDoc_STRVAR(os_WSTOPSIG__doc__,
+TyDoc_STRVAR(os_WSTOPSIG__doc__,
 "WSTOPSIG($module, /, status)\n"
 "--\n"
 "\n"
@@ -10100,7 +10100,7 @@ os_WSTOPSIG(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(status), },
     };
@@ -10145,7 +10145,7 @@ exit:
 
 #if (defined(HAVE_FSTATVFS) && defined(HAVE_SYS_STATVFS_H))
 
-PyDoc_STRVAR(os_fstatvfs__doc__,
+TyDoc_STRVAR(os_fstatvfs__doc__,
 "fstatvfs($module, fd, /)\n"
 "--\n"
 "\n"
@@ -10179,7 +10179,7 @@ exit:
 
 #if (defined(HAVE_STATVFS) && defined(HAVE_SYS_STATVFS_H))
 
-PyDoc_STRVAR(os_statvfs__doc__,
+TyDoc_STRVAR(os_statvfs__doc__,
 "statvfs($module, /, path)\n"
 "--\n"
 "\n"
@@ -10208,7 +10208,7 @@ os_statvfs(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -10250,7 +10250,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__getdiskusage__doc__,
+TyDoc_STRVAR(os__getdiskusage__doc__,
 "_getdiskusage($module, /, path)\n"
 "--\n"
 "\n"
@@ -10275,7 +10275,7 @@ os__getdiskusage(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -10317,7 +10317,7 @@ exit:
 
 #if defined(HAVE_FPATHCONF)
 
-PyDoc_STRVAR(os_fpathconf__doc__,
+TyDoc_STRVAR(os_fpathconf__doc__,
 "fpathconf($module, fd, name, /)\n"
 "--\n"
 "\n"
@@ -10363,7 +10363,7 @@ exit:
 
 #if defined(HAVE_PATHCONF)
 
-PyDoc_STRVAR(os_pathconf__doc__,
+TyDoc_STRVAR(os_pathconf__doc__,
 "pathconf($module, /, path, name)\n"
 "--\n"
 "\n"
@@ -10392,7 +10392,7 @@ os_pathconf(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(name), },
     };
@@ -10443,7 +10443,7 @@ exit:
 
 #if defined(HAVE_CONFSTR)
 
-PyDoc_STRVAR(os_confstr__doc__,
+TyDoc_STRVAR(os_confstr__doc__,
 "confstr($module, name, /)\n"
 "--\n"
 "\n"
@@ -10474,7 +10474,7 @@ exit:
 
 #if defined(HAVE_SYSCONF)
 
-PyDoc_STRVAR(os_sysconf__doc__,
+TyDoc_STRVAR(os_sysconf__doc__,
 "sysconf($module, name, /)\n"
 "--\n"
 "\n"
@@ -10508,7 +10508,7 @@ exit:
 
 #endif /* defined(HAVE_SYSCONF) */
 
-PyDoc_STRVAR(os_abort__doc__,
+TyDoc_STRVAR(os_abort__doc__,
 "abort($module, /)\n"
 "--\n"
 "\n"
@@ -10531,7 +10531,7 @@ os_abort(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_startfile__doc__,
+TyDoc_STRVAR(os_startfile__doc__,
 "startfile($module, /, filepath, operation=<unrepresentable>,\n"
 "          arguments=<unrepresentable>, cwd=None, show_cmd=1)\n"
 "--\n"
@@ -10584,7 +10584,7 @@ os_startfile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(filepath), &_Ty_ID(operation), &_Ty_ID(arguments), &_Ty_ID(cwd), &_Ty_ID(show_cmd), },
     };
@@ -10679,7 +10679,7 @@ exit:
 
 #if defined(HAVE_GETLOADAVG)
 
-PyDoc_STRVAR(os_getloadavg__doc__,
+TyDoc_STRVAR(os_getloadavg__doc__,
 "getloadavg($module, /)\n"
 "--\n"
 "\n"
@@ -10703,7 +10703,7 @@ os_getloadavg(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(HAVE_GETLOADAVG) */
 
-PyDoc_STRVAR(os_device_encoding__doc__,
+TyDoc_STRVAR(os_device_encoding__doc__,
 "device_encoding($module, /, fd)\n"
 "--\n"
 "\n"
@@ -10731,7 +10731,7 @@ os_device_encoding(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), },
     };
@@ -10769,7 +10769,7 @@ exit:
 
 #if defined(HAVE_SETRESUID)
 
-PyDoc_STRVAR(os_setresuid__doc__,
+TyDoc_STRVAR(os_setresuid__doc__,
 "setresuid($module, ruid, euid, suid, /)\n"
 "--\n"
 "\n"
@@ -10811,7 +10811,7 @@ exit:
 
 #if defined(HAVE_SETRESGID)
 
-PyDoc_STRVAR(os_setresgid__doc__,
+TyDoc_STRVAR(os_setresgid__doc__,
 "setresgid($module, rgid, egid, sgid, /)\n"
 "--\n"
 "\n"
@@ -10853,7 +10853,7 @@ exit:
 
 #if defined(HAVE_GETRESUID)
 
-PyDoc_STRVAR(os_getresuid__doc__,
+TyDoc_STRVAR(os_getresuid__doc__,
 "getresuid($module, /)\n"
 "--\n"
 "\n"
@@ -10875,7 +10875,7 @@ os_getresuid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_GETRESGID)
 
-PyDoc_STRVAR(os_getresgid__doc__,
+TyDoc_STRVAR(os_getresgid__doc__,
 "getresgid($module, /)\n"
 "--\n"
 "\n"
@@ -10897,7 +10897,7 @@ os_getresgid(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(USE_XATTRS)
 
-PyDoc_STRVAR(os_getxattr__doc__,
+TyDoc_STRVAR(os_getxattr__doc__,
 "getxattr($module, /, path, attribute, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -10928,7 +10928,7 @@ os_getxattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(attribute), &_Ty_ID(follow_symlinks), },
     };
@@ -10986,7 +10986,7 @@ exit:
 
 #if defined(USE_XATTRS)
 
-PyDoc_STRVAR(os_setxattr__doc__,
+TyDoc_STRVAR(os_setxattr__doc__,
 "setxattr($module, /, path, attribute, value, flags=0, *,\n"
 "         follow_symlinks=True)\n"
 "--\n"
@@ -11018,7 +11018,7 @@ os_setxattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(attribute), &_Ty_ID(value), &_Ty_ID(flags), &_Ty_ID(follow_symlinks), },
     };
@@ -11098,7 +11098,7 @@ exit:
 
 #if defined(USE_XATTRS)
 
-PyDoc_STRVAR(os_removexattr__doc__,
+TyDoc_STRVAR(os_removexattr__doc__,
 "removexattr($module, /, path, attribute, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -11129,7 +11129,7 @@ os_removexattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(attribute), &_Ty_ID(follow_symlinks), },
     };
@@ -11187,7 +11187,7 @@ exit:
 
 #if defined(USE_XATTRS)
 
-PyDoc_STRVAR(os_listxattr__doc__,
+TyDoc_STRVAR(os_listxattr__doc__,
 "listxattr($module, /, path=None, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -11218,7 +11218,7 @@ os_listxattr(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(follow_symlinks), },
     };
@@ -11277,7 +11277,7 @@ exit:
 
 #endif /* defined(USE_XATTRS) */
 
-PyDoc_STRVAR(os_urandom__doc__,
+TyDoc_STRVAR(os_urandom__doc__,
 "urandom($module, size, /)\n"
 "--\n"
 "\n"
@@ -11315,7 +11315,7 @@ exit:
 
 #if defined(HAVE_MEMFD_CREATE)
 
-PyDoc_STRVAR(os_memfd_create__doc__,
+TyDoc_STRVAR(os_memfd_create__doc__,
 "memfd_create($module, /, name, flags=MFD_CLOEXEC)\n"
 "--\n"
 "\n");
@@ -11339,7 +11339,7 @@ os_memfd_create(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(flags), },
     };
@@ -11391,7 +11391,7 @@ exit:
 
 #if (defined(HAVE_EVENTFD) && defined(EFD_CLOEXEC))
 
-PyDoc_STRVAR(os_eventfd__doc__,
+TyDoc_STRVAR(os_eventfd__doc__,
 "eventfd($module, /, initval, flags=EFD_CLOEXEC)\n"
 "--\n"
 "\n"
@@ -11416,7 +11416,7 @@ os_eventfd(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(initval), &_Ty_ID(flags), },
     };
@@ -11465,7 +11465,7 @@ exit:
 
 #if (defined(HAVE_EVENTFD) && defined(EFD_CLOEXEC))
 
-PyDoc_STRVAR(os_eventfd_read__doc__,
+TyDoc_STRVAR(os_eventfd_read__doc__,
 "eventfd_read($module, /, fd)\n"
 "--\n"
 "\n"
@@ -11490,7 +11490,7 @@ os_eventfd_read(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), },
     };
@@ -11530,7 +11530,7 @@ exit:
 
 #if (defined(HAVE_EVENTFD) && defined(EFD_CLOEXEC))
 
-PyDoc_STRVAR(os_eventfd_write__doc__,
+TyDoc_STRVAR(os_eventfd_write__doc__,
 "eventfd_write($module, /, fd, value)\n"
 "--\n"
 "\n"
@@ -11555,7 +11555,7 @@ os_eventfd_write(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), &_Ty_ID(value), },
     };
@@ -11599,7 +11599,7 @@ exit:
 
 #if (defined(TERMSIZE_USE_CONIO) || defined(TERMSIZE_USE_IOCTL))
 
-PyDoc_STRVAR(os_get_terminal_size__doc__,
+TyDoc_STRVAR(os_get_terminal_size__doc__,
 "get_terminal_size($module, fd=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -11648,7 +11648,7 @@ exit:
 
 #endif /* (defined(TERMSIZE_USE_CONIO) || defined(TERMSIZE_USE_IOCTL)) */
 
-PyDoc_STRVAR(os_cpu_count__doc__,
+TyDoc_STRVAR(os_cpu_count__doc__,
 "cpu_count($module, /)\n"
 "--\n"
 "\n"
@@ -11668,7 +11668,7 @@ os_cpu_count(TyObject *module, TyObject *Py_UNUSED(ignored))
     return os_cpu_count_impl(module);
 }
 
-PyDoc_STRVAR(os_get_inheritable__doc__,
+TyDoc_STRVAR(os_get_inheritable__doc__,
 "get_inheritable($module, fd, /)\n"
 "--\n"
 "\n"
@@ -11701,7 +11701,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_set_inheritable__doc__,
+TyDoc_STRVAR(os_set_inheritable__doc__,
 "set_inheritable($module, fd, inheritable, /)\n"
 "--\n"
 "\n"
@@ -11739,7 +11739,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_get_handle_inheritable__doc__,
+TyDoc_STRVAR(os_get_handle_inheritable__doc__,
 "get_handle_inheritable($module, handle, /)\n"
 "--\n"
 "\n"
@@ -11776,7 +11776,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os_set_handle_inheritable__doc__,
+TyDoc_STRVAR(os_set_handle_inheritable__doc__,
 "set_handle_inheritable($module, handle, inheritable, /)\n"
 "--\n"
 "\n"
@@ -11815,7 +11815,7 @@ exit:
 
 #endif /* defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(os_get_blocking__doc__,
+TyDoc_STRVAR(os_get_blocking__doc__,
 "get_blocking($module, fd, /)\n"
 "--\n"
 "\n"
@@ -11850,7 +11850,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_set_blocking__doc__,
+TyDoc_STRVAR(os_set_blocking__doc__,
 "set_blocking($module, fd, blocking, /)\n"
 "--\n"
 "\n"
@@ -11889,7 +11889,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_is_symlink__doc__,
+TyDoc_STRVAR(os_DirEntry_is_symlink__doc__,
 "is_symlink($self, /)\n"
 "--\n"
 "\n"
@@ -11921,7 +11921,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_is_junction__doc__,
+TyDoc_STRVAR(os_DirEntry_is_junction__doc__,
 "is_junction($self, /)\n"
 "--\n"
 "\n"
@@ -11949,7 +11949,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_stat__doc__,
+TyDoc_STRVAR(os_DirEntry_stat__doc__,
 "stat($self, /, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -11975,7 +11975,7 @@ os_DirEntry_stat(TyObject *self, TyTypeObject *defining_class, TyObject *const *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(follow_symlinks), },
     };
@@ -12016,7 +12016,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_is_dir__doc__,
+TyDoc_STRVAR(os_DirEntry_is_dir__doc__,
 "is_dir($self, /, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -12042,7 +12042,7 @@ os_DirEntry_is_dir(TyObject *self, TyTypeObject *defining_class, TyObject *const
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(follow_symlinks), },
     };
@@ -12088,7 +12088,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_is_file__doc__,
+TyDoc_STRVAR(os_DirEntry_is_file__doc__,
 "is_file($self, /, *, follow_symlinks=True)\n"
 "--\n"
 "\n"
@@ -12114,7 +12114,7 @@ os_DirEntry_is_file(TyObject *self, TyTypeObject *defining_class, TyObject *cons
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(follow_symlinks), },
     };
@@ -12160,7 +12160,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_DirEntry_inode__doc__,
+TyDoc_STRVAR(os_DirEntry_inode__doc__,
 "inode($self, /)\n"
 "--\n"
 "\n"
@@ -12178,7 +12178,7 @@ os_DirEntry_inode(TyObject *self, TyObject *Py_UNUSED(ignored))
     return os_DirEntry_inode_impl((DirEntry *)self);
 }
 
-PyDoc_STRVAR(os_DirEntry___fspath____doc__,
+TyDoc_STRVAR(os_DirEntry___fspath____doc__,
 "__fspath__($self, /)\n"
 "--\n"
 "\n"
@@ -12196,7 +12196,7 @@ os_DirEntry___fspath__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return os_DirEntry___fspath___impl((DirEntry *)self);
 }
 
-PyDoc_STRVAR(os_scandir__doc__,
+TyDoc_STRVAR(os_scandir__doc__,
 "scandir($module, /, path=None)\n"
 "--\n"
 "\n"
@@ -12227,7 +12227,7 @@ os_scandir(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -12270,7 +12270,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(os_fspath__doc__,
+TyDoc_STRVAR(os_fspath__doc__,
 "fspath($module, /, path)\n"
 "--\n"
 "\n"
@@ -12299,7 +12299,7 @@ os_fspath(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -12334,7 +12334,7 @@ exit:
 
 #if defined(HAVE_GETRANDOM_SYSCALL)
 
-PyDoc_STRVAR(os_getrandom__doc__,
+TyDoc_STRVAR(os_getrandom__doc__,
 "getrandom($module, /, size, flags=0)\n"
 "--\n"
 "\n"
@@ -12359,7 +12359,7 @@ os_getrandom(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(size), &_Ty_ID(flags), },
     };
@@ -12417,7 +12417,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_APP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(os__add_dll_directory__doc__,
+TyDoc_STRVAR(os__add_dll_directory__doc__,
 "_add_dll_directory($module, /, path)\n"
 "--\n"
 "\n"
@@ -12449,7 +12449,7 @@ os__add_dll_directory(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };
@@ -12491,7 +12491,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_APP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(os__remove_dll_directory__doc__,
+TyDoc_STRVAR(os__remove_dll_directory__doc__,
 "_remove_dll_directory($module, /, cookie)\n"
 "--\n"
 "\n"
@@ -12520,7 +12520,7 @@ os__remove_dll_directory(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(cookie), },
     };
@@ -12557,7 +12557,7 @@ exit:
 
 #if (defined(WIFEXITED) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(os_waitstatus_to_exitcode__doc__,
+TyDoc_STRVAR(os_waitstatus_to_exitcode__doc__,
 "waitstatus_to_exitcode($module, /, status)\n"
 "--\n"
 "\n"
@@ -12594,7 +12594,7 @@ os_waitstatus_to_exitcode(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(status), },
     };
@@ -12631,7 +12631,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(os__supports_virtual_terminal__doc__,
+TyDoc_STRVAR(os__supports_virtual_terminal__doc__,
 "_supports_virtual_terminal($module, /)\n"
 "--\n"
 "\n"
@@ -12651,7 +12651,7 @@ os__supports_virtual_terminal(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(os__inputhook__doc__,
+TyDoc_STRVAR(os__inputhook__doc__,
 "_inputhook($module, /)\n"
 "--\n"
 "\n"
@@ -12669,7 +12669,7 @@ os__inputhook(TyObject *module, TyObject *Py_UNUSED(ignored))
     return os__inputhook_impl(module);
 }
 
-PyDoc_STRVAR(os__is_inputhook_installed__doc__,
+TyDoc_STRVAR(os__is_inputhook_installed__doc__,
 "_is_inputhook_installed($module, /)\n"
 "--\n"
 "\n"
@@ -12687,7 +12687,7 @@ os__is_inputhook_installed(TyObject *module, TyObject *Py_UNUSED(ignored))
     return os__is_inputhook_installed_impl(module);
 }
 
-PyDoc_STRVAR(os__create_environ__doc__,
+TyDoc_STRVAR(os__create_environ__doc__,
 "_create_environ($module, /)\n"
 "--\n"
 "\n"
@@ -12707,7 +12707,7 @@ os__create_environ(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(__EMSCRIPTEN__)
 
-PyDoc_STRVAR(os__emscripten_debugger__doc__,
+TyDoc_STRVAR(os__emscripten_debugger__doc__,
 "_emscripten_debugger($module, /)\n"
 "--\n"
 "\n"

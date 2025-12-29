@@ -10,7 +10,7 @@
 #include "pycore_call.h"          // _TyObject_CallMethod()
 #include "pycore_codecs.h"        // _PyCodecInfo_GetIncrementalDecoder()
 #include "pycore_fileutils.h"     // _Ty_GetLocaleEncoding()
-#include "pycore_interp.h"        // PyInterpreterState.fs_codec
+#include "pycore_interp.h"        // TyInterpreterState.fs_codec
 #include "pycore_long.h"          // _TyLong_GetZero()
 #include "pycore_object.h"        // _TyObject_GC_UNTRACK()
 #include "pycore_pyerrors.h"      // _TyErr_ChainExceptions1()
@@ -37,7 +37,7 @@ typedef struct textio textio;
 
 /* TextIOBase */
 
-PyDoc_STRVAR(textiobase_doc,
+TyDoc_STRVAR(textiobase_doc,
     "Base class for text I/O.\n"
     "\n"
     "This class provides a character and line based interface to stream\n"
@@ -1025,7 +1025,7 @@ io_check_errors(TyObject *errors)
 {
     assert(errors != NULL && errors != Ty_None);
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 #ifndef Ty_DEBUG
     /* In release mode, only check in development mode (-X dev) */
     if (!_TyInterpreterState_GetConfig(interp)->dev_mode) {
@@ -1109,7 +1109,7 @@ _io_TextIOWrapper___init___impl(textio *self, TyObject *buffer,
     self->detached = 0;
 
     if (encoding == NULL) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         if (_TyInterpreterState_GetConfig(interp)->warn_default_encoding) {
             if (TyErr_WarnEx(TyExc_EncodingWarning,
                              "'encoding' argument not specified", 1)) {

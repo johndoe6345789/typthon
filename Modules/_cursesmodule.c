@@ -1313,7 +1313,7 @@ int py_mvwdelch(WINDOW *w, int y, int x)
 /* chgat, added by Fabian Kreutz <fabian.kreutz at gmx.net> */
 #ifdef HAVE_CURSES_WCHGAT
 
-PyDoc_STRVAR(_curses_window_chgat__doc__,
+TyDoc_STRVAR(_curses_window_chgat__doc__,
 "chgat([y, x,] [n=-1,] attr)\n"
 "Set the attributes of characters.\n"
 "\n"
@@ -1553,14 +1553,14 @@ _curses_window_getch_impl(PyCursesWindowObject *self, int group_right_1,
 {
     int rtn;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (!group_right_1) {
         rtn = wgetch(self->win);
     }
     else {
         rtn = mvwgetch(self->win, y, x);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (rtn == ERR) {
         // We suppress ERR returned by wgetch() in nodelay mode
@@ -1600,14 +1600,14 @@ _curses_window_getkey_impl(PyCursesWindowObject *self, int group_right_1,
 {
     int rtn;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (!group_right_1) {
         rtn = wgetch(self->win);
     }
     else {
         rtn = mvwgetch(self->win, y, x);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (rtn == ERR) {
         /* getch() returns ERR in nodelay mode */
@@ -1659,14 +1659,14 @@ _curses_window_get_wch_impl(PyCursesWindowObject *self, int group_right_1,
     int ct;
     wint_t rtn;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     if (!group_right_1) {
         ct = wget_wch(self->win ,&rtn);
     }
     else {
         ct = mvwget_wch(self->win, y, x, &rtn);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (ct == ERR) {
         if (TyErr_CheckSignals())
@@ -1724,7 +1724,7 @@ curses_clinic_parse_optional_xy_n(TyObject *args,
     }
 }
 
-PyDoc_STRVAR(_curses_window_getstr__doc__,
+TyDoc_STRVAR(_curses_window_getstr__doc__,
 "getstr([[y, x,] n=2047])\n"
 "Read a string from the user, with primitive line editing capacity.\n"
 "\n"
@@ -1758,7 +1758,7 @@ PyCursesWindow_getstr(TyObject *op, TyObject *args)
     char *buf = TyBytes_AS_STRING(res);
 
     if (use_xy) {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
 #ifdef STRICT_SYSV_CURSES
         rtn = wmove(self->win, y, x) == ERR
                 ? ERR
@@ -1766,12 +1766,12 @@ PyCursesWindow_getstr(TyObject *op, TyObject *args)
 #else
         rtn = mvwgetnstr(self->win, y, x, buf, n);
 #endif
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
     else {
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         rtn = wgetnstr(self->win, buf, n);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
 
     if (rtn == ERR) {
@@ -1904,7 +1904,7 @@ _curses_window_inch_impl(PyCursesWindowObject *self, int group_right_1,
     return rtn;
 }
 
-PyDoc_STRVAR(_curses_window_instr__doc__,
+TyDoc_STRVAR(_curses_window_instr__doc__,
 "instr([y, x,] n=2047)\n"
 "Return a string of characters, extracted from the window.\n"
 "\n"
@@ -2203,10 +2203,10 @@ _curses_window_noutrefresh_impl(PyCursesWindowObject *self)
                             "requires 6 arguments");
             return NULL;
         }
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         rtn = pnoutrefresh(self->win, pminrow, pmincol,
                            sminrow, smincol, smaxrow, smaxcol);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         return PyCursesCheckERR_ForWin(self, rtn, "pnoutrefresh");
     }
     if (group_right_1) {
@@ -2215,9 +2215,9 @@ _curses_window_noutrefresh_impl(PyCursesWindowObject *self)
         return NULL;
     }
 #endif
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     rtn = wnoutrefresh(self->win);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     return PyCursesCheckERR_ForWin(self, rtn, "wnoutrefresh");
 }
 
@@ -2427,10 +2427,10 @@ _curses_window_refresh_impl(PyCursesWindowObject *self, int group_right_1,
                             "refresh() for a pad requires 6 arguments");
             return NULL;
         }
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         rtn = prefresh(self->win, pminrow, pmincol,
                        sminrow, smincol, smaxrow, smaxcol);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         return PyCursesCheckERR_ForWin(self, rtn, "prefresh");
     }
 #endif
@@ -2439,9 +2439,9 @@ _curses_window_refresh_impl(PyCursesWindowObject *self, int group_right_1,
                         "refresh() takes no arguments (6 given)");
         return NULL;
     }
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     rtn = wrefresh(self->win);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     return PyCursesCheckERR_ForWin(self, rtn, "prefresh");
 }
 
@@ -4806,19 +4806,19 @@ _curses_assume_default_colors_impl(TyObject *module, int fg, int bg)
 
 #ifdef NCURSES_VERSION
 
-PyDoc_STRVAR(ncurses_version__doc__,
+TyDoc_STRVAR(ncurses_version__doc__,
 "curses.ncurses_version\n\
 \n\
 Ncurses version information as a named tuple.");
 
-static PyStructSequence_Field ncurses_version_fields[] = {
+static TyStructSequence_Field ncurses_version_fields[] = {
     {"major", "Major release number"},
     {"minor", "Minor release number"},
     {"patch", "Patch release number"},
     {0}
 };
 
-static PyStructSequence_Desc ncurses_version_desc = {
+static TyStructSequence_Desc ncurses_version_desc = {
     "curses.ncurses_version",  /* name */
     ncurses_version__doc__,    /* doc */
     ncurses_version_fields,    /* fields */
@@ -4828,7 +4828,7 @@ static PyStructSequence_Desc ncurses_version_desc = {
 static TyObject *
 make_ncurses_version(TyTypeObject *type)
 {
-    TyObject *ncurses_version = PyStructSequence_New(type);
+    TyObject *ncurses_version = TyStructSequence_New(type);
     if (ncurses_version == NULL) {
         return NULL;
     }
@@ -4847,7 +4847,7 @@ make_ncurses_version(TyTypeObject *type)
             Ty_DECREF(ncurses_version);                         \
             return NULL;                                        \
         }                                                       \
-        PyStructSequence_SET_ITEM(ncurses_version, INDEX, o);   \
+        TyStructSequence_SET_ITEM(ncurses_version, INDEX, o);   \
     } while (0)
 
     SET_VERSION_COMPONENT(0, major);

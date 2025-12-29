@@ -29,7 +29,7 @@ PyAPI_FUNC(int) _TyEval_SliceIndexNotNone(TyObject *, Ty_ssize_t *);
 
 typedef struct {
     FILE* perf_map;
-    PyThread_type_lock map_lock;
+    TyThread_type_lock map_lock;
 } PerfMapState;
 
 PyAPI_FUNC(int) PyUnstable_PerfMapState_Init(void);

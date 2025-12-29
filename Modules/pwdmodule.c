@@ -20,7 +20,7 @@ module pwd
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=60f628ef356b97b6]*/
 
-static PyStructSequence_Field struct_pwd_type_fields[] = {
+static TyStructSequence_Field struct_pwd_type_fields[] = {
     {"pw_name", "user name"},
     {"pw_passwd", "password"},
     {"pw_uid", "user id"},
@@ -31,20 +31,20 @@ static PyStructSequence_Field struct_pwd_type_fields[] = {
     {0}
 };
 
-PyDoc_STRVAR(struct_passwd__doc__,
+TyDoc_STRVAR(struct_passwd__doc__,
 "pwd.struct_passwd: Results from getpw*() routines.\n\n\
 This object may be accessed either as a tuple of\n\
   (pw_name,pw_passwd,pw_uid,pw_gid,pw_gecos,pw_dir,pw_shell)\n\
 or via the object attributes as named in the above tuple.");
 
-static PyStructSequence_Desc struct_pwd_type_desc = {
+static TyStructSequence_Desc struct_pwd_type_desc = {
     "pwd.struct_passwd",
     struct_passwd__doc__,
     struct_pwd_type_fields,
     7,
 };
 
-PyDoc_STRVAR(pwd__doc__,
+TyDoc_STRVAR(pwd__doc__,
 "This module provides access to the Unix password database.\n\
 It is available on all Unix versions.\n\
 \n\
@@ -74,7 +74,7 @@ static struct TyModuleDef pwdmodule;
 static TyObject *
 mkpwent(TyObject *module, struct passwd *p)
 {
-    TyObject *v = PyStructSequence_New(get_pwd_state(module)->StructPwdType);
+    TyObject *v = TyStructSequence_New(get_pwd_state(module)->StructPwdType);
     if (v == NULL) {
         return NULL;
     }
@@ -90,7 +90,7 @@ mkpwent(TyObject *module, struct passwd *p)
         if (item == NULL) {                                  \
             goto error;                                      \
         }                                                    \
-        PyStructSequence_SetItem(v, setIndex++, item);       \
+        TyStructSequence_SetItem(v, setIndex++, item);       \
     } while(0)
 
     SET_STRING(p->pw_name);
@@ -331,7 +331,7 @@ pwdmodule_exec(TyObject *module)
 {
     pwdmodulestate *state = get_pwd_state(module);
 
-    state->StructPwdType = PyStructSequence_NewType(&struct_pwd_type_desc);
+    state->StructPwdType = TyStructSequence_NewType(&struct_pwd_type_desc);
     if (state->StructPwdType == NULL) {
         return -1;
     }

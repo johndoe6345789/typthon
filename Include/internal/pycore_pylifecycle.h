@@ -28,43 +28,43 @@ extern int _Ty_IsLocaleCoercionTarget(const char *ctype_loc);
 
 extern void _Ty_InitVersion(void);
 extern TyStatus _PyFaulthandler_Init(int enable);
-extern TyObject * _PyBuiltin_Init(PyInterpreterState *interp);
+extern TyObject * _PyBuiltin_Init(TyInterpreterState *interp);
 extern TyStatus _TySys_Create(
     TyThreadState *tstate,
     TyObject **sysmod_p);
 extern TyStatus _TySys_ReadPreinitWarnOptions(PyWideStringList *options);
 extern TyStatus _TySys_ReadPreinitXOptions(PyConfig *config);
 extern int _TySys_UpdateConfig(TyThreadState *tstate);
-extern void _TySys_FiniTypes(PyInterpreterState *interp);
+extern void _TySys_FiniTypes(TyInterpreterState *interp);
 extern int _PyBuiltins_AddExceptions(TyObject * bltinmod);
 extern TyStatus _Ty_HashRandomization_Init(const PyConfig *);
 
-extern TyStatus _TyGC_Init(PyInterpreterState *interp);
-extern TyStatus _PyAtExit_Init(PyInterpreterState *interp);
-extern TyStatus _PyDateTime_InitTypes(PyInterpreterState *interp);
+extern TyStatus _TyGC_Init(TyInterpreterState *interp);
+extern TyStatus _PyAtExit_Init(TyInterpreterState *interp);
+extern TyStatus _PyDateTime_InitTypes(TyInterpreterState *interp);
 
 /* Various internal finalizers */
 
 extern int _PySignal_Init(int install_signal_handlers);
 extern void _PySignal_Fini(void);
 
-extern void _TyGC_Fini(PyInterpreterState *interp);
+extern void _TyGC_Fini(TyInterpreterState *interp);
 extern void _Ty_HashRandomization_Fini(void);
 extern void _PyFaulthandler_Fini(void);
 extern void _PyHash_Fini(void);
 extern void _PyTraceMalloc_Fini(void);
-extern void _TyWarnings_Fini(PyInterpreterState *interp);
-extern void _TyAST_Fini(PyInterpreterState *interp);
-extern void _PyAtExit_Fini(PyInterpreterState *interp);
-extern void _PyThread_FiniType(PyInterpreterState *interp);
+extern void _TyWarnings_Fini(TyInterpreterState *interp);
+extern void _TyAST_Fini(TyInterpreterState *interp);
+extern void _PyAtExit_Fini(TyInterpreterState *interp);
+extern void _PyThread_FiniType(TyInterpreterState *interp);
 extern void _TyArg_Fini(void);
 extern void _Ty_FinalizeAllocatedBlocks(_PyRuntimeState *);
 
-extern TyStatus _TyGILState_Init(PyInterpreterState *interp);
+extern TyStatus _TyGILState_Init(TyInterpreterState *interp);
 extern void _TyGILState_SetTstate(TyThreadState *tstate);
-extern void _TyGILState_Fini(PyInterpreterState *interp);
+extern void _TyGILState_Fini(TyInterpreterState *interp);
 
-extern void _TyGC_DumpShutdownStats(PyInterpreterState *interp);
+extern void _TyGC_DumpShutdownStats(TyInterpreterState *interp);
 
 extern TyStatus _Ty_PreInitializeFromPyArgv(
     const PyPreConfig *src_config,
@@ -86,7 +86,7 @@ extern void _TyErr_DisplayException(TyObject *file, TyObject *exc);
 
 extern void _TyThreadState_DeleteCurrent(TyThreadState *tstate);
 
-extern void _PyAtExit_Call(PyInterpreterState *interp);
+extern void _PyAtExit_Call(TyInterpreterState *interp);
 
 extern int _Ty_IsCoreInitialized(void);
 
@@ -96,7 +96,7 @@ extern const char* _Ty_gitidentifier(void);
 extern const char* _Ty_gitversion(void);
 
 // Export for '_asyncio' shared extension
-PyAPI_FUNC(int) _Ty_IsInterpreterFinalizing(PyInterpreterState *interp);
+PyAPI_FUNC(int) _Ty_IsInterpreterFinalizing(TyInterpreterState *interp);
 
 /* Random */
 extern int _TyOS_URandom(void *buffer, Ty_ssize_t size);
@@ -120,7 +120,7 @@ int _PyRun_SimpleStringFlagsWithName(const char *command, const char* name, PyCo
 // Export for _testinternalcapi shared extension
 PyAPI_FUNC(int) _PyInterpreterConfig_InitFromState(
     PyInterpreterConfig *,
-    PyInterpreterState *);
+    TyInterpreterState *);
 PyAPI_FUNC(TyObject *) _PyInterpreterConfig_AsDict(PyInterpreterConfig *);
 PyAPI_FUNC(int) _PyInterpreterConfig_InitFromDict(
     PyInterpreterConfig *,

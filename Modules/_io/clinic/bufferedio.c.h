@@ -10,7 +10,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
-PyDoc_STRVAR(_io__BufferedIOBase_readinto__doc__,
+TyDoc_STRVAR(_io__BufferedIOBase_readinto__doc__,
 "readinto($self, buffer, /)\n"
 "--\n"
 "\n");
@@ -44,7 +44,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__BufferedIOBase_readinto1__doc__,
+TyDoc_STRVAR(_io__BufferedIOBase_readinto1__doc__,
 "readinto1($self, buffer, /)\n"
 "--\n"
 "\n");
@@ -78,7 +78,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__BufferedIOBase_detach__doc__,
+TyDoc_STRVAR(_io__BufferedIOBase_detach__doc__,
 "detach($self, /)\n"
 "--\n"
 "\n"
@@ -103,7 +103,7 @@ _io__BufferedIOBase_detach(TyObject *self, TyTypeObject *cls, TyObject *const *a
     return _io__BufferedIOBase_detach_impl(self, cls);
 }
 
-PyDoc_STRVAR(_io__BufferedIOBase_read__doc__,
+TyDoc_STRVAR(_io__BufferedIOBase_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -170,7 +170,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__BufferedIOBase_read1__doc__,
+TyDoc_STRVAR(_io__BufferedIOBase_read1__doc__,
 "read1($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -225,7 +225,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__BufferedIOBase_write__doc__,
+TyDoc_STRVAR(_io__BufferedIOBase_write__doc__,
 "write($self, b, /)\n"
 "--\n"
 "\n"
@@ -276,7 +276,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered___sizeof____doc__,
+TyDoc_STRVAR(_io__Buffered___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n");
@@ -299,7 +299,7 @@ _io__Buffered___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered__dealloc_warn__doc__,
+TyDoc_STRVAR(_io__Buffered__dealloc_warn__doc__,
 "_dealloc_warn($self, source, /)\n"
 "--\n"
 "\n");
@@ -320,7 +320,7 @@ _io__Buffered__dealloc_warn(TyObject *self, TyObject *source)
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_simple_flush__doc__,
+TyDoc_STRVAR(_io__Buffered_simple_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n");
@@ -368,7 +368,7 @@ _io__Buffered_closed_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_close__doc__,
+TyDoc_STRVAR(_io__Buffered_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n");
@@ -391,7 +391,7 @@ _io__Buffered_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_detach__doc__,
+TyDoc_STRVAR(_io__Buffered_detach__doc__,
 "detach($self, /)\n"
 "--\n"
 "\n");
@@ -414,7 +414,7 @@ _io__Buffered_detach(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_seekable__doc__,
+TyDoc_STRVAR(_io__Buffered_seekable__doc__,
 "seekable($self, /)\n"
 "--\n"
 "\n");
@@ -437,7 +437,7 @@ _io__Buffered_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_readable__doc__,
+TyDoc_STRVAR(_io__Buffered_readable__doc__,
 "readable($self, /)\n"
 "--\n"
 "\n");
@@ -460,7 +460,7 @@ _io__Buffered_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_writable__doc__,
+TyDoc_STRVAR(_io__Buffered_writable__doc__,
 "writable($self, /)\n"
 "--\n"
 "\n");
@@ -533,7 +533,7 @@ _io__Buffered_mode_get(TyObject *self, void *Py_UNUSED(context))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_fileno__doc__,
+TyDoc_STRVAR(_io__Buffered_fileno__doc__,
 "fileno($self, /)\n"
 "--\n"
 "\n");
@@ -556,7 +556,7 @@ _io__Buffered_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_isatty__doc__,
+TyDoc_STRVAR(_io__Buffered_isatty__doc__,
 "isatty($self, /)\n"
 "--\n"
 "\n");
@@ -579,7 +579,7 @@ _io__Buffered_isatty(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_flush__doc__,
+TyDoc_STRVAR(_io__Buffered_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n");
@@ -602,7 +602,7 @@ _io__Buffered_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_peek__doc__,
+TyDoc_STRVAR(_io__Buffered_peek__doc__,
 "peek($self, size=0, /)\n"
 "--\n"
 "\n");
@@ -646,7 +646,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_read__doc__,
+TyDoc_STRVAR(_io__Buffered_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n");
@@ -681,7 +681,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_read1__doc__,
+TyDoc_STRVAR(_io__Buffered_read1__doc__,
 "read1($self, size=-1, /)\n"
 "--\n"
 "\n");
@@ -725,7 +725,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_readinto__doc__,
+TyDoc_STRVAR(_io__Buffered_readinto__doc__,
 "readinto($self, buffer, /)\n"
 "--\n"
 "\n");
@@ -759,7 +759,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_readinto1__doc__,
+TyDoc_STRVAR(_io__Buffered_readinto1__doc__,
 "readinto1($self, buffer, /)\n"
 "--\n"
 "\n");
@@ -793,7 +793,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_readline__doc__,
+TyDoc_STRVAR(_io__Buffered_readline__doc__,
 "readline($self, size=-1, /)\n"
 "--\n"
 "\n");
@@ -828,7 +828,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_tell__doc__,
+TyDoc_STRVAR(_io__Buffered_tell__doc__,
 "tell($self, /)\n"
 "--\n"
 "\n");
@@ -851,7 +851,7 @@ _io__Buffered_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_seek__doc__,
+TyDoc_STRVAR(_io__Buffered_seek__doc__,
 "seek($self, target, whence=0, /)\n"
 "--\n"
 "\n");
@@ -889,7 +889,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io__Buffered_truncate__doc__,
+TyDoc_STRVAR(_io__Buffered_truncate__doc__,
 "truncate($self, pos=None, /)\n"
 "--\n"
 "\n");
@@ -938,7 +938,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BufferedReader___init____doc__,
+TyDoc_STRVAR(_io_BufferedReader___init____doc__,
 "BufferedReader(raw, buffer_size=DEFAULT_BUFFER_SIZE)\n"
 "--\n"
 "\n"
@@ -961,7 +961,7 @@ _io_BufferedReader___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(raw), &_Ty_ID(buffer_size), },
     };
@@ -1014,7 +1014,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BufferedWriter___init____doc__,
+TyDoc_STRVAR(_io_BufferedWriter___init____doc__,
 "BufferedWriter(raw, buffer_size=DEFAULT_BUFFER_SIZE)\n"
 "--\n"
 "\n"
@@ -1041,7 +1041,7 @@ _io_BufferedWriter___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(raw), &_Ty_ID(buffer_size), },
     };
@@ -1094,7 +1094,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BufferedWriter_write__doc__,
+TyDoc_STRVAR(_io_BufferedWriter_write__doc__,
 "write($self, buffer, /)\n"
 "--\n"
 "\n");
@@ -1127,7 +1127,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BufferedRWPair___init____doc__,
+TyDoc_STRVAR(_io_BufferedRWPair___init____doc__,
 "BufferedRWPair(reader, writer, buffer_size=DEFAULT_BUFFER_SIZE, /)\n"
 "--\n"
 "\n"
@@ -1186,7 +1186,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_BufferedRandom___init____doc__,
+TyDoc_STRVAR(_io_BufferedRandom___init____doc__,
 "BufferedRandom(raw, buffer_size=DEFAULT_BUFFER_SIZE)\n"
 "--\n"
 "\n"
@@ -1213,7 +1213,7 @@ _io_BufferedRandom___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(raw), &_Ty_ID(buffer_size), },
     };

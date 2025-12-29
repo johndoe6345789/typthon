@@ -9,7 +9,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_functools_cmp_to_key__doc__,
+TyDoc_STRVAR(_functools_cmp_to_key__doc__,
 "cmp_to_key($module, /, mycmp)\n"
 "--\n"
 "\n"
@@ -37,7 +37,7 @@ _functools_cmp_to_key(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(mycmp), },
     };
@@ -70,7 +70,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_functools_reduce__doc__,
+TyDoc_STRVAR(_functools_reduce__doc__,
 "reduce($module, function, iterable, /, initial=<unrepresentable>)\n"
 "--\n"
 "\n"
@@ -103,7 +103,7 @@ _functools_reduce(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(initial), },
     };
@@ -145,7 +145,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_functools__lru_cache_wrapper_cache_info__doc__,
+TyDoc_STRVAR(_functools__lru_cache_wrapper_cache_info__doc__,
 "cache_info($self, /)\n"
 "--\n"
 "\n"
@@ -169,7 +169,7 @@ _functools__lru_cache_wrapper_cache_info(TyObject *self, TyObject *Py_UNUSED(ign
     return return_value;
 }
 
-PyDoc_STRVAR(_functools__lru_cache_wrapper_cache_clear__doc__,
+TyDoc_STRVAR(_functools__lru_cache_wrapper_cache_clear__doc__,
 "cache_clear($self, /)\n"
 "--\n"
 "\n"

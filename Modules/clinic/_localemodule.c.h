@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_locale_setlocale__doc__,
+TyDoc_STRVAR(_locale_setlocale__doc__,
 "setlocale($module, category, locale=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -58,7 +58,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_locale_localeconv__doc__,
+TyDoc_STRVAR(_locale_localeconv__doc__,
 "localeconv($module, /)\n"
 "--\n"
 "\n"
@@ -78,7 +78,7 @@ _locale_localeconv(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_WCSCOLL)
 
-PyDoc_STRVAR(_locale_strcoll__doc__,
+TyDoc_STRVAR(_locale_strcoll__doc__,
 "strcoll($module, os1, os2, /)\n"
 "--\n"
 "\n"
@@ -120,7 +120,7 @@ exit:
 
 #if defined(HAVE_WCSXFRM)
 
-PyDoc_STRVAR(_locale_strxfrm__doc__,
+TyDoc_STRVAR(_locale_strxfrm__doc__,
 "strxfrm($module, string, /)\n"
 "--\n"
 "\n"
@@ -153,7 +153,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_locale__getdefaultlocale__doc__,
+TyDoc_STRVAR(_locale__getdefaultlocale__doc__,
 "_getdefaultlocale($module, /)\n"
 "--\n"
 "\n");
@@ -174,7 +174,7 @@ _locale__getdefaultlocale(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_LANGINFO_H)
 
-PyDoc_STRVAR(_locale_nl_langinfo__doc__,
+TyDoc_STRVAR(_locale_nl_langinfo__doc__,
 "nl_langinfo($module, key, /)\n"
 "--\n"
 "\n"
@@ -206,7 +206,7 @@ exit:
 
 #if defined(HAVE_LIBINTL_H)
 
-PyDoc_STRVAR(_locale_gettext__doc__,
+TyDoc_STRVAR(_locale_gettext__doc__,
 "gettext($module, msg, /)\n"
 "--\n"
 "\n"
@@ -249,7 +249,7 @@ exit:
 
 #if defined(HAVE_LIBINTL_H)
 
-PyDoc_STRVAR(_locale_dgettext__doc__,
+TyDoc_STRVAR(_locale_dgettext__doc__,
 "dgettext($module, domain, msg, /)\n"
 "--\n"
 "\n"
@@ -314,7 +314,7 @@ exit:
 
 #if defined(HAVE_LIBINTL_H)
 
-PyDoc_STRVAR(_locale_dcgettext__doc__,
+TyDoc_STRVAR(_locale_dcgettext__doc__,
 "dcgettext($module, domain, msg, category, /)\n"
 "--\n"
 "\n"
@@ -383,7 +383,7 @@ exit:
 
 #if defined(HAVE_LIBINTL_H)
 
-PyDoc_STRVAR(_locale_textdomain__doc__,
+TyDoc_STRVAR(_locale_textdomain__doc__,
 "textdomain($module, domain, /)\n"
 "--\n"
 "\n"
@@ -429,7 +429,7 @@ exit:
 
 #if defined(HAVE_LIBINTL_H)
 
-PyDoc_STRVAR(_locale_bindtextdomain__doc__,
+TyDoc_STRVAR(_locale_bindtextdomain__doc__,
 "bindtextdomain($module, domain, dir, /)\n"
 "--\n"
 "\n"
@@ -476,7 +476,7 @@ exit:
 
 #if defined(HAVE_LIBINTL_H) && defined(HAVE_BIND_TEXTDOMAIN_CODESET)
 
-PyDoc_STRVAR(_locale_bind_textdomain_codeset__doc__,
+TyDoc_STRVAR(_locale_bind_textdomain_codeset__doc__,
 "bind_textdomain_codeset($module, domain, codeset, /)\n"
 "--\n"
 "\n"
@@ -538,7 +538,7 @@ exit:
 
 #endif /* defined(HAVE_LIBINTL_H) && defined(HAVE_BIND_TEXTDOMAIN_CODESET) */
 
-PyDoc_STRVAR(_locale_getencoding__doc__,
+TyDoc_STRVAR(_locale_getencoding__doc__,
 "getencoding($module, /)\n"
 "--\n"
 "\n"

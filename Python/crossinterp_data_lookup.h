@@ -713,7 +713,7 @@ _TyCode_GetXIData(TyThreadState *tstate, TyObject *obj, _PyXIData_t *xidata)
 // function
 
 TyObject *
-_PyFunction_FromXIData(_PyXIData_t *xidata)
+_TyFunction_FromXIData(_PyXIData_t *xidata)
 {
     // For now "stateless" functions are the only ones we must accommodate.
 
@@ -753,7 +753,7 @@ _PyFunction_FromXIData(_PyXIData_t *xidata)
 }
 
 int
-_PyFunction_GetXIData(TyThreadState *tstate, TyObject *func,
+_TyFunction_GetXIData(TyThreadState *tstate, TyObject *func,
                       _PyXIData_t *xidata)
 {
     if (!TyFunction_Check(func)) {
@@ -761,7 +761,7 @@ _PyFunction_GetXIData(TyThreadState *tstate, TyObject *func,
         format_notshareableerror(tstate, NULL, 0, msg, func);
         return -1;
     }
-    if (_PyFunction_VerifyStateless(tstate, func) < 0) {
+    if (_TyFunction_VerifyStateless(tstate, func) < 0) {
         TyObject *cause = _TyErr_GetRaisedException(tstate);
         assert(cause != NULL);
         const char *msg = "only stateless functions are shareable";
@@ -777,8 +777,8 @@ _PyFunction_GetXIData(TyThreadState *tstate, TyObject *func,
         return -1;
     }
     // Replace _TyMarshal_ReadObjectFromXIData.
-    // (_PyFunction_FromXIData() will call it.)
-    _PyXIData_SET_NEW_OBJECT(xidata, _PyFunction_FromXIData);
+    // (_TyFunction_FromXIData() will call it.)
+    _PyXIData_SET_NEW_OBJECT(xidata, _TyFunction_FromXIData);
     return 0;
 }
 

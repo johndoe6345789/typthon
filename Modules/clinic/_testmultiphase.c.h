@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_testmultiphase_StateAccessType_get_defining_module__doc__,
+TyDoc_STRVAR(_testmultiphase_StateAccessType_get_defining_module__doc__,
 "get_defining_module($self, /)\n"
 "--\n"
 "\n"
@@ -34,7 +34,7 @@ _testmultiphase_StateAccessType_get_defining_module(TyObject *self, TyTypeObject
     return _testmultiphase_StateAccessType_get_defining_module_impl((StateAccessTypeObject *)self, cls);
 }
 
-PyDoc_STRVAR(_testmultiphase_StateAccessType_getmodulebydef_bad_def__doc__,
+TyDoc_STRVAR(_testmultiphase_StateAccessType_getmodulebydef_bad_def__doc__,
 "getmodulebydef_bad_def($self, /)\n"
 "--\n"
 "\n"
@@ -57,7 +57,7 @@ _testmultiphase_StateAccessType_getmodulebydef_bad_def(TyObject *self, TyTypeObj
     return _testmultiphase_StateAccessType_getmodulebydef_bad_def_impl((StateAccessTypeObject *)self, cls);
 }
 
-PyDoc_STRVAR(_testmultiphase_StateAccessType_increment_count_clinic__doc__,
+TyDoc_STRVAR(_testmultiphase_StateAccessType_increment_count_clinic__doc__,
 "increment_count_clinic($self, /, n=1, *, twice=False)\n"
 "--\n"
 "\n"
@@ -88,7 +88,7 @@ _testmultiphase_StateAccessType_increment_count_clinic(TyObject *self, TyTypeObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('n'), &_Ty_ID(twice), },
     };
@@ -143,7 +143,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testmultiphase_StateAccessType_get_count__doc__,
+TyDoc_STRVAR(_testmultiphase_StateAccessType_get_count__doc__,
 "get_count($self, /)\n"
 "--\n"
 "\n"

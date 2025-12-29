@@ -5,7 +5,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_heapq_heappush__doc__,
+TyDoc_STRVAR(_heapq_heappush__doc__,
 "heappush($module, heap, item, /)\n"
 "--\n"
 "\n"
@@ -41,7 +41,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_heapq_heappop__doc__,
+TyDoc_STRVAR(_heapq_heappop__doc__,
 "heappop($module, heap, /)\n"
 "--\n"
 "\n"
@@ -72,7 +72,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_heapq_heapreplace__doc__,
+TyDoc_STRVAR(_heapq_heapreplace__doc__,
 "heapreplace($module, heap, item, /)\n"
 "--\n"
 "\n"
@@ -116,7 +116,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_heapq_heappushpop__doc__,
+TyDoc_STRVAR(_heapq_heappushpop__doc__,
 "heappushpop($module, heap, item, /)\n"
 "--\n"
 "\n"
@@ -155,7 +155,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_heapq_heapify__doc__,
+TyDoc_STRVAR(_heapq_heapify__doc__,
 "heapify($module, heap, /)\n"
 "--\n"
 "\n"
@@ -186,7 +186,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_heapq_heappush_max__doc__,
+TyDoc_STRVAR(_heapq_heappush_max__doc__,
 "heappush_max($module, heap, item, /)\n"
 "--\n"
 "\n"
@@ -222,7 +222,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_heapq_heappop_max__doc__,
+TyDoc_STRVAR(_heapq_heappop_max__doc__,
 "heappop_max($module, heap, /)\n"
 "--\n"
 "\n"
@@ -253,7 +253,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_heapq_heapreplace_max__doc__,
+TyDoc_STRVAR(_heapq_heapreplace_max__doc__,
 "heapreplace_max($module, heap, item, /)\n"
 "--\n"
 "\n"
@@ -289,7 +289,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_heapq_heapify_max__doc__,
+TyDoc_STRVAR(_heapq_heapify_max__doc__,
 "heapify_max($module, heap, /)\n"
 "--\n"
 "\n"
@@ -320,7 +320,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_heapq_heappushpop_max__doc__,
+TyDoc_STRVAR(_heapq_heappushpop_max__doc__,
 "heappushpop_max($module, heap, item, /)\n"
 "--\n"
 "\n"

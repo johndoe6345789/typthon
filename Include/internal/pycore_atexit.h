@@ -21,7 +21,7 @@ extern "C" {
 
 // Export for '_interpchannels' shared extension
 PyAPI_FUNC(int) _Py_AtExit(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     atexit_datacallbackfunc func,
     void *data);
 

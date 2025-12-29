@@ -962,7 +962,7 @@ tee_copy(TyObject *op, TyObject *Py_UNUSED(ignored))
     return (TyObject *)tee_copy_impl(to);
 }
 
-PyDoc_STRVAR(teecopy_doc, "Returns an independent iterator.");
+TyDoc_STRVAR(teecopy_doc, "Returns an independent iterator.");
 
 static TyObject *
 tee_fromiterable(itertools_state *state, TyObject *iterable)
@@ -1647,7 +1647,7 @@ empty:
     return NULL;
 }
 
-PyDoc_STRVAR(islice_doc,
+TyDoc_STRVAR(islice_doc,
 "islice(iterable, stop) --> islice object\n\
 islice(iterable, start, stop[, step]) --> islice object\n\
 \n\
@@ -1914,7 +1914,7 @@ chain_next(TyObject *op)
     return NULL;
 }
 
-PyDoc_STRVAR(chain_doc,
+TyDoc_STRVAR(chain_doc,
 "chain(*iterables)\n\
 --\n\
 \n\
@@ -1925,7 +1925,7 @@ iterable, until all of the iterables are exhausted.");
 static TyMethodDef chain_methods[] = {
     ITERTOOLS_CHAIN_FROM_ITERABLE_METHODDEF
     {"__class_getitem__",    Ty_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     {NULL,              NULL}           /* sentinel */
 };
 
@@ -2068,7 +2068,7 @@ product_sizeof(TyObject *op, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSize_t(res);
 }
 
-PyDoc_STRVAR(sizeof_doc, "Returns size in memory, in bytes.");
+TyDoc_STRVAR(sizeof_doc, "Returns size in memory, in bytes.");
 
 static int
 product_traverse(TyObject *op, visitproc visit, void *arg)
@@ -2172,7 +2172,7 @@ static TyMethodDef product_methods[] = {
     {NULL,              NULL}   /* sentinel */
 };
 
-PyDoc_STRVAR(product_doc,
+TyDoc_STRVAR(product_doc,
 "product(*iterables, repeat=1)\n\
 --\n\
 \n\
@@ -3663,14 +3663,14 @@ repeat_len(TyObject *op, TyObject *Py_UNUSED(args))
     return TyLong_FromSize_t(ro->cnt);
 }
 
-PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
+TyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyMethodDef repeat_methods[] = {
     {"__length_hint__", repeat_len, METH_NOARGS, length_hint_doc},
     {NULL,              NULL}           /* sentinel */
 };
 
-PyDoc_STRVAR(repeat_doc,
+TyDoc_STRVAR(repeat_doc,
 "repeat(object [,times]) -> create an iterator which returns the object\n\
 for the specified number of times.  If not specified, returns the object\n\
 endlessly.");
@@ -3875,7 +3875,7 @@ zip_longest_next(TyObject *op)
     return result;
 }
 
-PyDoc_STRVAR(zip_longest_doc,
+TyDoc_STRVAR(zip_longest_doc,
 "zip_longest(*iterables, fillvalue=None)\n\
 --\n\
 \n\
@@ -3910,7 +3910,7 @@ static TyType_Spec ziplongest_spec = {
 
 /* module level code ********************************************************/
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "Functional tools for creating and using iterators.\n\
 \n\
 Infinite iterators:\n\

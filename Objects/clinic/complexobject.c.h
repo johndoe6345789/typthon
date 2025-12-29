@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
-PyDoc_STRVAR(complex_conjugate__doc__,
+TyDoc_STRVAR(complex_conjugate__doc__,
 "conjugate($self, /)\n"
 "--\n"
 "\n"
@@ -26,7 +26,7 @@ complex_conjugate(TyObject *self, TyObject *Py_UNUSED(ignored))
     return complex_conjugate_impl((PyComplexObject *)self);
 }
 
-PyDoc_STRVAR(complex___getnewargs____doc__,
+TyDoc_STRVAR(complex___getnewargs____doc__,
 "__getnewargs__($self, /)\n"
 "--\n"
 "\n");
@@ -43,7 +43,7 @@ complex___getnewargs__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return complex___getnewargs___impl((PyComplexObject *)self);
 }
 
-PyDoc_STRVAR(complex___format____doc__,
+TyDoc_STRVAR(complex___format____doc__,
 "__format__($self, format_spec, /)\n"
 "--\n"
 "\n"
@@ -72,7 +72,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(complex___complex____doc__,
+TyDoc_STRVAR(complex___complex____doc__,
 "__complex__($self, /)\n"
 "--\n"
 "\n"
@@ -90,7 +90,7 @@ complex___complex__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return complex___complex___impl((PyComplexObject *)self);
 }
 
-PyDoc_STRVAR(complex_new__doc__,
+TyDoc_STRVAR(complex_new__doc__,
 "complex(real=0, imag=0)\n"
 "--\n"
 "\n"
@@ -117,7 +117,7 @@ complex_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(real), &_Ty_ID(imag), },
     };
@@ -164,7 +164,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(complex_from_number__doc__,
+TyDoc_STRVAR(complex_from_number__doc__,
 "from_number($type, number, /)\n"
 "--\n"
 "\n"

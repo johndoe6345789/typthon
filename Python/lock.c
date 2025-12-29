@@ -19,7 +19,7 @@
 // If a thread waits on a lock for longer than TIME_TO_BE_FAIR_NS (1 ms), then
 // the unlocking thread directly hands off ownership of the lock. This avoids
 // starvation.
-static const PyTime_t TIME_TO_BE_FAIR_NS = 1000*1000;
+static const TyTime_t TIME_TO_BE_FAIR_NS = 1000*1000;
 
 // Spin for a bit before parking the thread. This is only enabled for
 // `--disable-gil` builds because it is unlikely to be helpful if the GIL is
@@ -33,7 +33,7 @@ static const int MAX_SPIN_COUNT = 0;
 struct mutex_entry {
     // The time after which the unlocking thread should hand off lock ownership
     // directly to the waiting thread. Written by the waiting thread.
-    PyTime_t time_to_be_fair;
+    TyTime_t time_to_be_fair;
 
     // Set to 1 if the lock was handed off. Written by the unlocking thread.
     int handed_off;
@@ -49,8 +49,8 @@ _Ty_yield(void)
 #endif
 }
 
-PyLockStatus
-_PyMutex_LockTimed(PyMutex *m, PyTime_t timeout, _PyLockFlags flags)
+TyLockStatus
+_PyMutex_LockTimed(PyMutex *m, TyTime_t timeout, _PyLockFlags flags)
 {
     uint8_t v = _Ty_atomic_load_uint8_relaxed(&m->_bits);
     if ((v & _Ty_LOCKED) == 0) {
@@ -62,10 +62,10 @@ _PyMutex_LockTimed(PyMutex *m, PyTime_t timeout, _PyLockFlags flags)
         return PY_LOCK_FAILURE;
     }
 
-    PyTime_t now;
+    TyTime_t now;
     // silently ignore error: cannot report error to the caller
     (void)PyTime_MonotonicRaw(&now);
-    PyTime_t endtime = 0;
+    TyTime_t endtime = 0;
     if (timeout > 0) {
         endtime = _TyTime_Add(now, timeout);
     }
@@ -143,7 +143,7 @@ mutex_unpark(void *arg, void *park_arg, int has_more_waiters)
     struct mutex_entry *entry = (struct mutex_entry*)park_arg;
     uint8_t v = 0;
     if (entry) {
-        PyTime_t now;
+        TyTime_t now;
         // silently ignore error: cannot report error to the caller
         (void)PyTime_MonotonicRaw(&now);
         int should_be_fair = now > entry->time_to_be_fair;
@@ -276,7 +276,7 @@ PyEvent_Wait(PyEvent *evt)
 }
 
 int
-PyEvent_WaitTimed(PyEvent *evt, PyTime_t timeout_ns, int detach)
+PyEvent_WaitTimed(PyEvent *evt, TyTime_t timeout_ns, int detach)
 {
     for (;;) {
         uint8_t v = _Ty_atomic_load_uint8(&evt->v);
@@ -357,7 +357,7 @@ _PyOnceFlag_CallOnceSlow(_PyOnceFlag *flag, _Ty_once_fn_t *fn, void *arg)
 }
 
 static int
-recursive_mutex_is_owned_by(_PyRecursiveMutex *m, PyThread_ident_t tid)
+recursive_mutex_is_owned_by(_PyRecursiveMutex *m, TyThread_ident_t tid)
 {
     return _Ty_atomic_load_ullong_relaxed(&m->thread) == tid;
 }
@@ -365,13 +365,13 @@ recursive_mutex_is_owned_by(_PyRecursiveMutex *m, PyThread_ident_t tid)
 int
 _PyRecursiveMutex_IsLockedByCurrentThread(_PyRecursiveMutex *m)
 {
-    return recursive_mutex_is_owned_by(m, PyThread_get_thread_ident_ex());
+    return recursive_mutex_is_owned_by(m, TyThread_get_thread_ident_ex());
 }
 
 void
 _PyRecursiveMutex_Lock(_PyRecursiveMutex *m)
 {
-    PyThread_ident_t thread = PyThread_get_thread_ident_ex();
+    TyThread_ident_t thread = TyThread_get_thread_ident_ex();
     if (recursive_mutex_is_owned_by(m, thread)) {
         m->level++;
         return;
@@ -381,15 +381,15 @@ _PyRecursiveMutex_Lock(_PyRecursiveMutex *m)
     assert(m->level == 0);
 }
 
-PyLockStatus
-_PyRecursiveMutex_LockTimed(_PyRecursiveMutex *m, PyTime_t timeout, _PyLockFlags flags)
+TyLockStatus
+_PyRecursiveMutex_LockTimed(_PyRecursiveMutex *m, TyTime_t timeout, _PyLockFlags flags)
 {
-    PyThread_ident_t thread = PyThread_get_thread_ident_ex();
+    TyThread_ident_t thread = TyThread_get_thread_ident_ex();
     if (recursive_mutex_is_owned_by(m, thread)) {
         m->level++;
         return PY_LOCK_ACQUIRED;
     }
-    PyLockStatus s = _PyMutex_LockTimed(&m->mutex, timeout, flags);
+    TyLockStatus s = _PyMutex_LockTimed(&m->mutex, timeout, flags);
     if (s == PY_LOCK_ACQUIRED) {
         _Ty_atomic_store_ullong_relaxed(&m->thread, thread);
         assert(m->level == 0);
@@ -409,7 +409,7 @@ _PyRecursiveMutex_Unlock(_PyRecursiveMutex *m)
 int
 _PyRecursiveMutex_TryUnlock(_PyRecursiveMutex *m)
 {
-    PyThread_ident_t thread = PyThread_get_thread_ident_ex();
+    TyThread_ident_t thread = TyThread_get_thread_ident_ex();
     if (!recursive_mutex_is_owned_by(m, thread)) {
         return -1;
     }

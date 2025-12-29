@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(EncodingMap_size__doc__,
+TyDoc_STRVAR(EncodingMap_size__doc__,
 "size($self, /)\n"
 "--\n"
 "\n"
@@ -27,7 +27,7 @@ EncodingMap_size(TyObject *self, TyObject *Py_UNUSED(ignored))
     return EncodingMap_size_impl((struct encoding_map *)self);
 }
 
-PyDoc_STRVAR(unicode_title__doc__,
+TyDoc_STRVAR(unicode_title__doc__,
 "title($self, /)\n"
 "--\n"
 "\n"
@@ -48,7 +48,7 @@ unicode_title(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_title_impl(self);
 }
 
-PyDoc_STRVAR(unicode_capitalize__doc__,
+TyDoc_STRVAR(unicode_capitalize__doc__,
 "capitalize($self, /)\n"
 "--\n"
 "\n"
@@ -69,7 +69,7 @@ unicode_capitalize(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_capitalize_impl(self);
 }
 
-PyDoc_STRVAR(unicode_casefold__doc__,
+TyDoc_STRVAR(unicode_casefold__doc__,
 "casefold($self, /)\n"
 "--\n"
 "\n"
@@ -87,7 +87,7 @@ unicode_casefold(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_casefold_impl(self);
 }
 
-PyDoc_STRVAR(unicode_center__doc__,
+TyDoc_STRVAR(unicode_center__doc__,
 "center($self, width, fillchar=\' \', /)\n"
 "--\n"
 "\n"
@@ -136,7 +136,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_count__doc__,
+TyDoc_STRVAR(unicode_count__doc__,
 "count($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -191,7 +191,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_encode__doc__,
+TyDoc_STRVAR(unicode_encode__doc__,
 "encode($self, /, encoding=\'utf-8\', errors=\'strict\')\n"
 "--\n"
 "\n"
@@ -225,7 +225,7 @@ unicode_encode(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(encoding), &_Ty_ID(errors), },
     };
@@ -294,7 +294,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_expandtabs__doc__,
+TyDoc_STRVAR(unicode_expandtabs__doc__,
 "expandtabs($self, /, tabsize=8)\n"
 "--\n"
 "\n"
@@ -321,7 +321,7 @@ unicode_expandtabs(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(tabsize), },
     };
@@ -362,7 +362,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_find__doc__,
+TyDoc_STRVAR(unicode_find__doc__,
 "find($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -418,7 +418,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_index__doc__,
+TyDoc_STRVAR(unicode_index__doc__,
 "index($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -474,7 +474,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_isascii__doc__,
+TyDoc_STRVAR(unicode_isascii__doc__,
 "isascii($self, /)\n"
 "--\n"
 "\n"
@@ -495,7 +495,7 @@ unicode_isascii(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isascii_impl(self);
 }
 
-PyDoc_STRVAR(unicode_islower__doc__,
+TyDoc_STRVAR(unicode_islower__doc__,
 "islower($self, /)\n"
 "--\n"
 "\n"
@@ -516,7 +516,7 @@ unicode_islower(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_islower_impl(self);
 }
 
-PyDoc_STRVAR(unicode_isupper__doc__,
+TyDoc_STRVAR(unicode_isupper__doc__,
 "isupper($self, /)\n"
 "--\n"
 "\n"
@@ -537,7 +537,7 @@ unicode_isupper(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isupper_impl(self);
 }
 
-PyDoc_STRVAR(unicode_istitle__doc__,
+TyDoc_STRVAR(unicode_istitle__doc__,
 "istitle($self, /)\n"
 "--\n"
 "\n"
@@ -558,7 +558,7 @@ unicode_istitle(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_istitle_impl(self);
 }
 
-PyDoc_STRVAR(unicode_isspace__doc__,
+TyDoc_STRVAR(unicode_isspace__doc__,
 "isspace($self, /)\n"
 "--\n"
 "\n"
@@ -579,7 +579,7 @@ unicode_isspace(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isspace_impl(self);
 }
 
-PyDoc_STRVAR(unicode_isalpha__doc__,
+TyDoc_STRVAR(unicode_isalpha__doc__,
 "isalpha($self, /)\n"
 "--\n"
 "\n"
@@ -600,7 +600,7 @@ unicode_isalpha(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isalpha_impl(self);
 }
 
-PyDoc_STRVAR(unicode_isalnum__doc__,
+TyDoc_STRVAR(unicode_isalnum__doc__,
 "isalnum($self, /)\n"
 "--\n"
 "\n"
@@ -621,7 +621,7 @@ unicode_isalnum(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isalnum_impl(self);
 }
 
-PyDoc_STRVAR(unicode_isdecimal__doc__,
+TyDoc_STRVAR(unicode_isdecimal__doc__,
 "isdecimal($self, /)\n"
 "--\n"
 "\n"
@@ -642,7 +642,7 @@ unicode_isdecimal(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isdecimal_impl(self);
 }
 
-PyDoc_STRVAR(unicode_isdigit__doc__,
+TyDoc_STRVAR(unicode_isdigit__doc__,
 "isdigit($self, /)\n"
 "--\n"
 "\n"
@@ -663,7 +663,7 @@ unicode_isdigit(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isdigit_impl(self);
 }
 
-PyDoc_STRVAR(unicode_isnumeric__doc__,
+TyDoc_STRVAR(unicode_isnumeric__doc__,
 "isnumeric($self, /)\n"
 "--\n"
 "\n"
@@ -684,7 +684,7 @@ unicode_isnumeric(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isnumeric_impl(self);
 }
 
-PyDoc_STRVAR(unicode_isidentifier__doc__,
+TyDoc_STRVAR(unicode_isidentifier__doc__,
 "isidentifier($self, /)\n"
 "--\n"
 "\n"
@@ -705,7 +705,7 @@ unicode_isidentifier(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isidentifier_impl(self);
 }
 
-PyDoc_STRVAR(unicode_isprintable__doc__,
+TyDoc_STRVAR(unicode_isprintable__doc__,
 "isprintable($self, /)\n"
 "--\n"
 "\n"
@@ -725,7 +725,7 @@ unicode_isprintable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_isprintable_impl(self);
 }
 
-PyDoc_STRVAR(unicode_join__doc__,
+TyDoc_STRVAR(unicode_join__doc__,
 "join($self, iterable, /)\n"
 "--\n"
 "\n"
@@ -739,7 +739,7 @@ PyDoc_STRVAR(unicode_join__doc__,
 #define UNICODE_JOIN_METHODDEF    \
     {"join", (PyCFunction)unicode_join, METH_O, unicode_join__doc__},
 
-PyDoc_STRVAR(unicode_ljust__doc__,
+TyDoc_STRVAR(unicode_ljust__doc__,
 "ljust($self, width, fillchar=\' \', /)\n"
 "--\n"
 "\n"
@@ -788,7 +788,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_lower__doc__,
+TyDoc_STRVAR(unicode_lower__doc__,
 "lower($self, /)\n"
 "--\n"
 "\n"
@@ -806,7 +806,7 @@ unicode_lower(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_lower_impl(self);
 }
 
-PyDoc_STRVAR(unicode_strip__doc__,
+TyDoc_STRVAR(unicode_strip__doc__,
 "strip($self, chars=None, /)\n"
 "--\n"
 "\n"
@@ -840,7 +840,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_lstrip__doc__,
+TyDoc_STRVAR(unicode_lstrip__doc__,
 "lstrip($self, chars=None, /)\n"
 "--\n"
 "\n"
@@ -874,7 +874,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_rstrip__doc__,
+TyDoc_STRVAR(unicode_rstrip__doc__,
 "rstrip($self, chars=None, /)\n"
 "--\n"
 "\n"
@@ -908,7 +908,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_replace__doc__,
+TyDoc_STRVAR(unicode_replace__doc__,
 "replace($self, old, new, /, count=-1)\n"
 "--\n"
 "\n"
@@ -941,7 +941,7 @@ unicode_replace(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(count), },
     };
@@ -1002,7 +1002,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_removeprefix__doc__,
+TyDoc_STRVAR(unicode_removeprefix__doc__,
 "removeprefix($self, prefix, /)\n"
 "--\n"
 "\n"
@@ -1034,7 +1034,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_removesuffix__doc__,
+TyDoc_STRVAR(unicode_removesuffix__doc__,
 "removesuffix($self, suffix, /)\n"
 "--\n"
 "\n"
@@ -1067,7 +1067,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_rfind__doc__,
+TyDoc_STRVAR(unicode_rfind__doc__,
 "rfind($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -1123,7 +1123,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_rindex__doc__,
+TyDoc_STRVAR(unicode_rindex__doc__,
 "rindex($self, sub[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -1179,7 +1179,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_rjust__doc__,
+TyDoc_STRVAR(unicode_rjust__doc__,
 "rjust($self, width, fillchar=\' \', /)\n"
 "--\n"
 "\n"
@@ -1228,7 +1228,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_split__doc__,
+TyDoc_STRVAR(unicode_split__doc__,
 "split($self, /, sep=None, maxsplit=-1)\n"
 "--\n"
 "\n"
@@ -1269,7 +1269,7 @@ unicode_split(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(sep), &_Ty_ID(maxsplit), },
     };
@@ -1325,7 +1325,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_partition__doc__,
+TyDoc_STRVAR(unicode_partition__doc__,
 "partition($self, sep, /)\n"
 "--\n"
 "\n"
@@ -1341,7 +1341,7 @@ PyDoc_STRVAR(unicode_partition__doc__,
 #define UNICODE_PARTITION_METHODDEF    \
     {"partition", (PyCFunction)unicode_partition, METH_O, unicode_partition__doc__},
 
-PyDoc_STRVAR(unicode_rpartition__doc__,
+TyDoc_STRVAR(unicode_rpartition__doc__,
 "rpartition($self, sep, /)\n"
 "--\n"
 "\n"
@@ -1357,7 +1357,7 @@ PyDoc_STRVAR(unicode_rpartition__doc__,
 #define UNICODE_RPARTITION_METHODDEF    \
     {"rpartition", (PyCFunction)unicode_rpartition, METH_O, unicode_rpartition__doc__},
 
-PyDoc_STRVAR(unicode_rsplit__doc__,
+TyDoc_STRVAR(unicode_rsplit__doc__,
 "rsplit($self, /, sep=None, maxsplit=-1)\n"
 "--\n"
 "\n"
@@ -1394,7 +1394,7 @@ unicode_rsplit(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(sep), &_Ty_ID(maxsplit), },
     };
@@ -1450,7 +1450,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_splitlines__doc__,
+TyDoc_STRVAR(unicode_splitlines__doc__,
 "splitlines($self, /, keepends=False)\n"
 "--\n"
 "\n"
@@ -1478,7 +1478,7 @@ unicode_splitlines(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(keepends), },
     };
@@ -1519,7 +1519,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_swapcase__doc__,
+TyDoc_STRVAR(unicode_swapcase__doc__,
 "swapcase($self, /)\n"
 "--\n"
 "\n"
@@ -1537,7 +1537,7 @@ unicode_swapcase(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_swapcase_impl(self);
 }
 
-PyDoc_STRVAR(unicode_maketrans__doc__,
+TyDoc_STRVAR(unicode_maketrans__doc__,
 "maketrans(x, y=<unrepresentable>, z=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -1592,7 +1592,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_translate__doc__,
+TyDoc_STRVAR(unicode_translate__doc__,
 "translate($self, table, /)\n"
 "--\n"
 "\n"
@@ -1609,7 +1609,7 @@ PyDoc_STRVAR(unicode_translate__doc__,
 #define UNICODE_TRANSLATE_METHODDEF    \
     {"translate", (PyCFunction)unicode_translate, METH_O, unicode_translate__doc__},
 
-PyDoc_STRVAR(unicode_upper__doc__,
+TyDoc_STRVAR(unicode_upper__doc__,
 "upper($self, /)\n"
 "--\n"
 "\n"
@@ -1627,7 +1627,7 @@ unicode_upper(TyObject *self, TyObject *Py_UNUSED(ignored))
     return unicode_upper_impl(self);
 }
 
-PyDoc_STRVAR(unicode_zfill__doc__,
+TyDoc_STRVAR(unicode_zfill__doc__,
 "zfill($self, width, /)\n"
 "--\n"
 "\n"
@@ -1665,7 +1665,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_startswith__doc__,
+TyDoc_STRVAR(unicode_startswith__doc__,
 "startswith($self, prefix[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -1716,7 +1716,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_endswith__doc__,
+TyDoc_STRVAR(unicode_endswith__doc__,
 "endswith($self, suffix[, start[, end]], /)\n"
 "--\n"
 "\n"
@@ -1767,7 +1767,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode___format____doc__,
+TyDoc_STRVAR(unicode___format____doc__,
 "__format__($self, format_spec, /)\n"
 "--\n"
 "\n"
@@ -1796,7 +1796,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicode_sizeof__doc__,
+TyDoc_STRVAR(unicode_sizeof__doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -1831,7 +1831,7 @@ unicode_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(object), &_Ty_ID(encoding), &_Ty_ID(errors), },
     };

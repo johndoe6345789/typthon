@@ -166,7 +166,7 @@ TySys_GetObject(const char *name)
 }
 
 static int
-sys_set_object(PyInterpreterState *interp, TyObject *key, TyObject *v)
+sys_set_object(TyInterpreterState *interp, TyObject *key, TyObject *v)
 {
     if (key == NULL) {
         return -1;
@@ -190,12 +190,12 @@ sys_set_object(PyInterpreterState *interp, TyObject *key, TyObject *v)
 int
 _TySys_SetAttr(TyObject *key, TyObject *v)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return sys_set_object(interp, key, v);
 }
 
 static int
-sys_set_object_str(PyInterpreterState *interp, const char *name, TyObject *v)
+sys_set_object_str(TyInterpreterState *interp, const char *name, TyObject *v)
 {
     TyObject *key = v ? TyUnicode_InternFromString(name)
                       : TyUnicode_FromString(name);
@@ -207,12 +207,12 @@ sys_set_object_str(PyInterpreterState *interp, const char *name, TyObject *v)
 int
 TySys_SetObject(const char *name, TyObject *v)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return sys_set_object_str(interp, name, v);
 }
 
 int
-_TySys_ClearAttrString(PyInterpreterState *interp,
+_TySys_ClearAttrString(TyInterpreterState *interp,
                        const char *name, int verbose)
 {
     if (verbose) {
@@ -227,7 +227,7 @@ _TySys_ClearAttrString(PyInterpreterState *interp,
 
 
 static int
-should_audit(PyInterpreterState *interp)
+should_audit(TyInterpreterState *interp)
 {
     /* interp must not be NULL, but test it just in case for extra safety */
     assert(interp != NULL);
@@ -257,7 +257,7 @@ sys_audit_tstate(TyThreadState *ts, const char *event,
     assert(ts == _TyThreadState_GET());
 
     /* Early exit when no hooks are registered */
-    PyInterpreterState *is = ts->interp;
+    TyInterpreterState *is = ts->interp;
     if (!should_audit(is)) {
         return 0;
     }
@@ -534,7 +534,7 @@ sys_addaudithook_impl(TyObject *module, TyObject *hook)
         return NULL;
     }
 
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     if (interp->audit_hooks == NULL) {
         interp->audit_hooks = TyList_New(0);
         if (interp->audit_hooks == NULL) {
@@ -667,7 +667,7 @@ sys_breakpointhook(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyOb
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(breakpointhook_doc,
+TyDoc_STRVAR(breakpointhook_doc,
 "breakpointhook($module, /, *args, **kwargs)\n"
 "--\n"
 "\n"
@@ -952,7 +952,7 @@ static TyObject *
 sys_getfilesystemencoding_impl(TyObject *module)
 /*[clinic end generated code: output=1dc4bdbe9be44aa7 input=8475f8649b8c7d8c]*/
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     if (wcscmp(config->filesystem_encoding, L"utf-8") == 0) {
@@ -977,7 +977,7 @@ static TyObject *
 sys_getfilesystemencodeerrors_impl(TyObject *module)
 /*[clinic end generated code: output=ba77b36bbf7c96f5 input=22a1e8365566f1e5]*/
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
     TyObject *u = TyUnicode_FromWideChar(config->filesystem_errors, -1);
     if (u == NULL) {
@@ -1005,7 +1005,7 @@ sys_intern_impl(TyObject *module, TyObject *s)
 /*[clinic end generated code: output=be680c24f5c9e5d6 input=849483c006924e2f]*/
 {
     if (TyUnicode_CheckExact(s)) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         Ty_INCREF(s);
         _TyUnicode_InternMortal(interp, &s);
         return s;
@@ -1410,19 +1410,19 @@ sys_get_coroutine_origin_tracking_depth_impl(TyObject *module)
 
 static TyTypeObject AsyncGenHooksType;
 
-PyDoc_STRVAR(asyncgen_hooks_doc,
+TyDoc_STRVAR(asyncgen_hooks_doc,
 "asyncgen_hooks\n\
 \n\
 A named tuple providing information about asynchronous\n\
 generators hooks.  The attributes are read only.");
 
-static PyStructSequence_Field asyncgen_hooks_fields[] = {
+static TyStructSequence_Field asyncgen_hooks_fields[] = {
     {"firstiter", "Hook to intercept first iteration"},
     {"finalizer", "Hook to intercept finalization"},
     {0}
 };
 
-static PyStructSequence_Desc asyncgen_hooks_desc = {
+static TyStructSequence_Desc asyncgen_hooks_desc = {
     "asyncgen_hooks",          /* name */
     asyncgen_hooks_doc,        /* doc */
     asyncgen_hooks_fields ,    /* fields */
@@ -1487,7 +1487,7 @@ error:
     return NULL;
 }
 
-PyDoc_STRVAR(set_asyncgen_hooks_doc,
+TyDoc_STRVAR(set_asyncgen_hooks_doc,
 "set_asyncgen_hooks([firstiter] [, finalizer])\n\
 \n\
 Set a finalizer for async generators objects."
@@ -1509,7 +1509,7 @@ sys_get_asyncgen_hooks_impl(TyObject *module)
     TyObject *firstiter = _TyEval_GetAsyncGenFirstiter();
     TyObject *finalizer = _TyEval_GetAsyncGenFinalizer();
 
-    res = PyStructSequence_New(&AsyncGenHooksType);
+    res = TyStructSequence_New(&AsyncGenHooksType);
     if (res == NULL) {
         return NULL;
     }
@@ -1522,8 +1522,8 @@ sys_get_asyncgen_hooks_impl(TyObject *module)
         finalizer = Ty_None;
     }
 
-    PyStructSequence_SET_ITEM(res, 0, Ty_NewRef(firstiter));
-    PyStructSequence_SET_ITEM(res, 1, Ty_NewRef(finalizer));
+    TyStructSequence_SET_ITEM(res, 0, Ty_NewRef(firstiter));
+    TyStructSequence_SET_ITEM(res, 1, Ty_NewRef(finalizer));
 
     return res;
 }
@@ -1531,13 +1531,13 @@ sys_get_asyncgen_hooks_impl(TyObject *module)
 
 static TyTypeObject Hash_InfoType;
 
-PyDoc_STRVAR(hash_info_doc,
+TyDoc_STRVAR(hash_info_doc,
 "hash_info\n\
 \n\
 A named tuple providing parameters used for computing\n\
 hashes. The attributes are read only.");
 
-static PyStructSequence_Field hash_info_fields[] = {
+static TyStructSequence_Field hash_info_fields[] = {
     {"width", "width of the type used for hashing, in bits"},
     {"modulus", "prime number giving the modulus on which the hash "
                 "function is based"},
@@ -1552,7 +1552,7 @@ static PyStructSequence_Field hash_info_fields[] = {
     {NULL, NULL}
 };
 
-static PyStructSequence_Desc hash_info_desc = {
+static TyStructSequence_Desc hash_info_desc = {
     "sys.hash_info",
     hash_info_doc,
     hash_info_fields,
@@ -1565,7 +1565,7 @@ get_hash_info(TyThreadState *tstate)
     TyObject *hash_info;
     int field = 0;
     PyHash_FuncDef *hashfunc;
-    hash_info = PyStructSequence_New(&Hash_InfoType);
+    hash_info = TyStructSequence_New(&Hash_InfoType);
     if (hash_info == NULL) {
         return NULL;
     }
@@ -1578,7 +1578,7 @@ get_hash_info(TyThreadState *tstate)
             Ty_CLEAR(hash_info);                             \
             return NULL;                                     \
         }                                                    \
-        PyStructSequence_SET_ITEM(hash_info, field++, item); \
+        TyStructSequence_SET_ITEM(hash_info, field++, item); \
     } while(0)
 
     SET_HASH_INFO_ITEM(TyLong_FromLong(8 * sizeof(Ty_hash_t)));
@@ -1616,7 +1616,7 @@ sys_getrecursionlimit_impl(TyObject *module)
 
 static TyTypeObject WindowsVersionType = { 0 };
 
-static PyStructSequence_Field windows_version_fields[] = {
+static TyStructSequence_Field windows_version_fields[] = {
     {"major", "Major version number"},
     {"minor", "Minor version number"},
     {"build", "Build number"},
@@ -1630,7 +1630,7 @@ static PyStructSequence_Field windows_version_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc windows_version_desc = {
+static TyStructSequence_Desc windows_version_desc = {
     "sys.getwindowsversion",       /* name */
     sys_getwindowsversion__doc__,  /* doc */
     windows_version_fields,        /* fields */
@@ -1726,7 +1726,7 @@ sys_getwindowsversion_impl(TyObject *module)
     if (!GetVersionExW((OSVERSIONINFOW*) &ver))
         return TyErr_SetFromWindowsErr(0);
 
-    version = PyStructSequence_New(&WindowsVersionType);
+    version = TyStructSequence_New(&WindowsVersionType);
     if (version == NULL)
         return NULL;
 
@@ -1736,7 +1736,7 @@ sys_getwindowsversion_impl(TyObject *module)
         if (item == NULL) {                                  \
             goto error;                                      \
         }                                                    \
-        PyStructSequence_SET_ITEM(version, pos++, item);     \
+        TyStructSequence_SET_ITEM(version, pos++, item);     \
     } while(0)
 
     SET_VERSION_INFO(TyLong_FromLong(ver.dwMajorVersion));
@@ -1838,7 +1838,7 @@ static TyObject *
 sys_setdlopenflags_impl(TyObject *module, int new_val)
 /*[clinic end generated code: output=ec918b7fe0a37281 input=4c838211e857a77f]*/
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyImport_SetDLOpenFlags(interp, new_val);
     Py_RETURN_NONE;
 }
@@ -1856,7 +1856,7 @@ static TyObject *
 sys_getdlopenflags_impl(TyObject *module)
 /*[clinic end generated code: output=e92cd1bc5005da6e input=dc4ea0899c53b4b6]*/
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return TyLong_FromLong(
             _TyImport_GetDLOpenFlags(interp));
 }
@@ -1895,7 +1895,7 @@ static TyObject *
 sys_get_int_max_str_digits_impl(TyObject *module)
 /*[clinic end generated code: output=0042f5e8ae0e8631 input=61bf9f99bc8b112d]*/
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return TyLong_FromLong(interp->long_state.max_str_digits);
 }
 
@@ -1997,7 +1997,7 @@ sys_getsizeof(TyObject *self, TyObject *args, TyObject *kwds)
     return TyLong_FromSize_t(size);
 }
 
-PyDoc_STRVAR(getsizeof_doc,
+TyDoc_STRVAR(getsizeof_doc,
 "getsizeof(object [, default]) -> int\n\
 \n\
 Return the size of object in bytes.");
@@ -2234,7 +2234,7 @@ sys__clear_internal_caches_impl(TyObject *module)
 /*[clinic end generated code: output=0ee128670a4966d6 input=253e741ca744f6e8]*/
 {
 #ifdef _Ty_TIER2
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _Ty_Executors_InvalidateAll(interp, 0);
 #endif
 #ifdef Ty_GIL_DISABLED
@@ -2684,7 +2684,7 @@ PyAPI_FUNC(int) PyUnstable_PerfMapState_Init(void) {
             return -1;
         }
     }
-    perf_map_state.map_lock = PyThread_allocate_lock();
+    perf_map_state.map_lock = TyThread_allocate_lock();
     if (perf_map_state.map_lock == NULL) {
         fclose(perf_map_state.perf_map);
         return -2;
@@ -2705,10 +2705,10 @@ PyAPI_FUNC(int) PyUnstable_WritePerfMapEntry(
             return ret;
         }
     }
-    PyThread_acquire_lock(perf_map_state.map_lock, 1);
+    TyThread_acquire_lock(perf_map_state.map_lock, 1);
     fprintf(perf_map_state.perf_map, "%" PRIxPTR " %x %s\n", (uintptr_t) code_addr, code_size, entry_name);
     fflush(perf_map_state.perf_map);
-    PyThread_release_lock(perf_map_state.map_lock);
+    TyThread_release_lock(perf_map_state.map_lock);
 #endif
     return 0;
 }
@@ -2717,12 +2717,12 @@ PyAPI_FUNC(void) PyUnstable_PerfMapState_Fini(void) {
 #ifndef MS_WINDOWS
     if (perf_map_state.perf_map != NULL) {
         // close the file
-        PyThread_acquire_lock(perf_map_state.map_lock, 1);
+        TyThread_acquire_lock(perf_map_state.map_lock, 1);
         fclose(perf_map_state.perf_map);
-        PyThread_release_lock(perf_map_state.map_lock);
+        TyThread_release_lock(perf_map_state.map_lock);
 
         // clean up the lock and state
-        PyThread_free_lock(perf_map_state.map_lock);
+        TyThread_free_lock(perf_map_state.map_lock);
         perf_map_state.perf_map = NULL;
     }
 #endif
@@ -2741,7 +2741,7 @@ PyAPI_FUNC(int) PyUnstable_CopyPerfMapFile(const char* parent_filename) {
         return -1;
     }
     char buf[4096];
-    PyThread_acquire_lock(perf_map_state.map_lock, 1);
+    TyThread_acquire_lock(perf_map_state.map_lock, 1);
     int fflush_result = 0, result = 0;
     while (1) {
         size_t bytes_read = fread(buf, 1, sizeof(buf), from);
@@ -2757,7 +2757,7 @@ PyAPI_FUNC(int) PyUnstable_CopyPerfMapFile(const char* parent_filename) {
     }
 close_and_release:
     fclose(from);
-    PyThread_release_lock(perf_map_state.map_lock);
+    TyThread_release_lock(perf_map_state.map_lock);
     return result;
 #endif
     return 0;
@@ -3224,7 +3224,7 @@ TySys_GetXOptions(void)
    or other abomination that however *does* understand longer strings,
    get rid of the !!! comment in the middle and the quotes that surround it. */
 PyDoc_VAR(sys_doc) =
-PyDoc_STR(
+TyDoc_STR(
 "This module provides access to some objects used or maintained by the\n\
 interpreter and to functions that interact strongly with the interpreter.\n\
 \n\
@@ -3255,7 +3255,7 @@ last_traceback -- traceback of last uncaught exception\n\
 "
 )
 /* concatenating string here */
-PyDoc_STR(
+TyDoc_STR(
 "\n\
 Static objects:\n\
 \n\
@@ -3280,7 +3280,7 @@ version_info -- version information as a named tuple\n\
 )
 #ifdef MS_COREDLL
 /* concatenating string here */
-PyDoc_STR(
+TyDoc_STR(
 "dllhandle -- [Windows only] integer handle of the Python DLL\n\
 winver -- [Windows only] version number of the Python DLL\n\
 "
@@ -3288,12 +3288,12 @@ winver -- [Windows only] version number of the Python DLL\n\
 #endif /* MS_COREDLL */
 #ifdef MS_WINDOWS
 /* concatenating string here */
-PyDoc_STR(
+TyDoc_STR(
 "_enablelegacywindowsfsencoding -- [Windows only]\n\
 "
 )
 #endif
-PyDoc_STR(
+TyDoc_STR(
 "__stdin__ -- the original stdin; don't touch!\n\
 __stdout__ -- the original stdout; don't touch!\n\
 __stderr__ -- the original stderr; don't touch!\n\
@@ -3322,14 +3322,14 @@ settrace() -- set the global debug tracing function\n\
 /* end of sys_doc */ ;
 
 
-PyDoc_STRVAR(flags__doc__,
+TyDoc_STRVAR(flags__doc__,
 "sys.flags\n\
 \n\
 Flags provided through command line arguments or environment vars.");
 
 static TyTypeObject FlagsType;
 
-static PyStructSequence_Field flags_fields[] = {
+static TyStructSequence_Field flags_fields[] = {
     {"debug",                   "-d"},
     {"inspect",                 "-i"},
     {"interactive",             "-i"},
@@ -3356,7 +3356,7 @@ static PyStructSequence_Field flags_fields[] = {
 
 #define SYS_FLAGS_INT_MAX_STR_DIGITS 17
 
-static PyStructSequence_Desc flags_desc = {
+static TyStructSequence_Desc flags_desc = {
     "sys.flags",        /* name */
     flags__doc__,       /* doc */
     flags_fields,       /* fields */
@@ -3368,8 +3368,8 @@ sys_set_flag(TyObject *flags, Ty_ssize_t pos, TyObject *value)
 {
     assert(pos >= 0 && pos < (Ty_ssize_t)(Ty_ARRAY_LENGTH(flags_fields) - 1));
 
-    TyObject *old_value = PyStructSequence_GET_ITEM(flags, pos);
-    PyStructSequence_SET_ITEM(flags, pos, Ty_NewRef(value));
+    TyObject *old_value = TyStructSequence_GET_ITEM(flags, pos);
+    TyStructSequence_SET_ITEM(flags, pos, Ty_NewRef(value));
     Ty_XDECREF(old_value);
 }
 
@@ -3403,7 +3403,7 @@ _TySys_SetFlagInt(Ty_ssize_t pos, int value)
 
 
 static int
-set_flags_from_config(PyInterpreterState *interp, TyObject *flags)
+set_flags_from_config(TyInterpreterState *interp, TyObject *flags)
 {
     const PyPreConfig *preconfig = &interp->runtime->preconfig;
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
@@ -3460,9 +3460,9 @@ set_flags_from_config(PyInterpreterState *interp, TyObject *flags)
 
 
 static TyObject*
-make_flags(PyInterpreterState *interp)
+make_flags(TyInterpreterState *interp)
 {
-    TyObject *flags = PyStructSequence_New(&FlagsType);
+    TyObject *flags = TyStructSequence_New(&FlagsType);
     if (flags == NULL) {
         return NULL;
     }
@@ -3475,14 +3475,14 @@ make_flags(PyInterpreterState *interp)
 }
 
 
-PyDoc_STRVAR(version_info__doc__,
+TyDoc_STRVAR(version_info__doc__,
 "sys.version_info\n\
 \n\
 Version information as a named tuple.");
 
 static TyTypeObject VersionInfoType;
 
-static PyStructSequence_Field version_info_fields[] = {
+static TyStructSequence_Field version_info_fields[] = {
     {"major", "Major release number"},
     {"minor", "Minor release number"},
     {"micro", "Patch release number"},
@@ -3491,7 +3491,7 @@ static PyStructSequence_Field version_info_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc version_info_desc = {
+static TyStructSequence_Desc version_info_desc = {
     "sys.version_info",     /* name */
     version_info__doc__,    /* doc */
     version_info_fields,    /* fields */
@@ -3505,7 +3505,7 @@ make_version_info(TyThreadState *tstate)
     char *s;
     int pos = 0;
 
-    version_info = PyStructSequence_New(&VersionInfoType);
+    version_info = TyStructSequence_New(&VersionInfoType);
     if (version_info == NULL) {
         return NULL;
     }
@@ -3525,9 +3525,9 @@ make_version_info(TyThreadState *tstate)
 #endif
 
 #define SetIntItem(flag) \
-    PyStructSequence_SET_ITEM(version_info, pos++, TyLong_FromLong(flag))
+    TyStructSequence_SET_ITEM(version_info, pos++, TyLong_FromLong(flag))
 #define SetStrItem(flag) \
-    PyStructSequence_SET_ITEM(version_info, pos++, TyUnicode_FromString(flag))
+    TyStructSequence_SET_ITEM(version_info, pos++, TyUnicode_FromString(flag))
 
     SetIntItem(PY_MAJOR_VERSION);
     SetIntItem(PY_MINOR_VERSION);
@@ -3631,14 +3631,14 @@ error:
 
 #ifdef __EMSCRIPTEN__
 
-PyDoc_STRVAR(emscripten_info__doc__,
+TyDoc_STRVAR(emscripten_info__doc__,
 "sys._emscripten_info\n\
 \n\
 WebAssembly Emscripten platform information.");
 
 static TyTypeObject *EmscriptenInfoType;
 
-static PyStructSequence_Field emscripten_info_fields[] = {
+static TyStructSequence_Field emscripten_info_fields[] = {
     {"emscripten_version", "Emscripten version (major, minor, micro)"},
     {"runtime", "Runtime (Node.JS version, browser user agent)"},
     {"pthreads", "pthread support"},
@@ -3646,7 +3646,7 @@ static PyStructSequence_Field emscripten_info_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc emscripten_info_desc = {
+static TyStructSequence_Desc emscripten_info_desc = {
     "sys._emscripten_info",     /* name */
     emscripten_info__doc__ ,    /* doc */
     emscripten_info_fields,     /* fields */
@@ -3680,7 +3680,7 @@ make_emscripten_info(void)
     char *ua;
     int pos = 0;
 
-    emscripten_info = PyStructSequence_New(EmscriptenInfoType);
+    emscripten_info = TyStructSequence_New(EmscriptenInfoType);
     if (emscripten_info == NULL) {
         return NULL;
     }
@@ -3690,7 +3690,7 @@ make_emscripten_info(void)
     if (version == NULL) {
         goto error;
     }
-    PyStructSequence_SET_ITEM(emscripten_info, pos++, version);
+    TyStructSequence_SET_ITEM(emscripten_info, pos++, version);
 
     ua = _Ty_emscripten_runtime();
     if (ua != NULL) {
@@ -3699,13 +3699,13 @@ make_emscripten_info(void)
         if (oua == NULL) {
             goto error;
         }
-        PyStructSequence_SET_ITEM(emscripten_info, pos++, oua);
+        TyStructSequence_SET_ITEM(emscripten_info, pos++, oua);
     } else {
-        PyStructSequence_SET_ITEM(emscripten_info, pos++, Ty_NewRef(Ty_None));
+        TyStructSequence_SET_ITEM(emscripten_info, pos++, Ty_NewRef(Ty_None));
     }
 
 #define SetBoolItem(flag) \
-    PyStructSequence_SET_ITEM(emscripten_info, pos++, TyBool_FromLong(flag))
+    TyStructSequence_SET_ITEM(emscripten_info, pos++, TyBool_FromLong(flag))
 
 #ifdef __EMSCRIPTEN_PTHREADS__
     SetBoolItem(1);
@@ -3767,7 +3767,7 @@ _TySys_InitCore(TyThreadState *tstate, TyObject *sysdict)
 {
     TyObject *version_info;
     int res;
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     /* stdin/stdout/stderr are set in pylifecycle.c */
 
@@ -3852,7 +3852,7 @@ _TySys_InitCore(TyThreadState *tstate, TyObject *sysdict)
     SET_SYS_FROM_STRING("float_repr_style", "legacy");
 #endif
 
-    SET_SYS("thread_info", PyThread_GetInfo());
+    SET_SYS("thread_info", TyThread_GetInfo());
 
     /* initialize asyncgen_hooks */
     if (_PyStructSequence_InitBuiltin(interp, &AsyncGenHooksType,
@@ -3863,7 +3863,7 @@ _TySys_InitCore(TyThreadState *tstate, TyObject *sysdict)
 
 #ifdef __EMSCRIPTEN__
     if (EmscriptenInfoType == NULL) {
-        EmscriptenInfoType = PyStructSequence_NewType(&emscripten_info_desc);
+        EmscriptenInfoType = TyStructSequence_NewType(&emscripten_info_desc);
         if (EmscriptenInfoType == NULL) {
             goto type_init_failed;
         }
@@ -3894,7 +3894,7 @@ err_occurred:
 int
 _TySys_UpdateConfig(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     TyObject *sysdict = interp->sysdict;
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
     int res;
@@ -4009,7 +4009,7 @@ module _jit
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=10952f74d7bbd972]*/
 
-PyDoc_STRVAR(_jit_doc, "Utilities for observing just-in-time compilation.");
+TyDoc_STRVAR(_jit_doc, "Utilities for observing just-in-time compilation.");
 
 /*[clinic input]
 _jit.is_available -> bool
@@ -4076,7 +4076,7 @@ _TySys_Create(TyThreadState *tstate, TyObject **sysmod_p)
 {
     assert(!_TyErr_Occurred(tstate));
 
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     TyObject *modules = _TyImport_InitModules(interp);
     if (modules == NULL) {
@@ -4151,7 +4151,7 @@ error:
 
 
 void
-_TySys_FiniTypes(PyInterpreterState *interp)
+_TySys_FiniTypes(TyInterpreterState *interp)
 {
     _PyStructSequence_FiniBuiltin(interp, &VersionInfoType);
     _PyStructSequence_FiniBuiltin(interp, &FlagsType);
@@ -4208,7 +4208,7 @@ TySys_SetPath(const wchar_t *path)
     TyObject *v;
     if ((v = makepathobject(path, DELIM)) == NULL)
         Ty_FatalError("can't create sys.path");
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (sys_set_object(interp, &_Ty_ID(path), v) != 0) {
         Ty_FatalError("can't assign sys.path");
     }
@@ -4457,9 +4457,9 @@ _TySys_SetIntMaxStrDigits(int maxdigits)
         return -1;
     }
 
-    // Set PyInterpreterState.long_state.max_str_digits
-    // and PyInterpreterState.config.int_max_str_digits.
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    // Set TyInterpreterState.long_state.max_str_digits
+    // and TyInterpreterState.config.int_max_str_digits.
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     interp->long_state.max_str_digits = maxdigits;
     interp->config.int_max_str_digits = maxdigits;
     return 0;

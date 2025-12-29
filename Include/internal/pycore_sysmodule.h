@@ -18,7 +18,7 @@ PyAPI_FUNC(size_t) _TySys_GetSizeOf(TyObject *);
 
 extern int _TySys_SetAttr(TyObject *, TyObject *);
 
-extern int _TySys_ClearAttrString(PyInterpreterState *interp,
+extern int _TySys_ClearAttrString(TyInterpreterState *interp,
                                   const char *name, int verbose);
 
 extern int _TySys_SetFlagObj(Ty_ssize_t pos, TyObject *new_value);

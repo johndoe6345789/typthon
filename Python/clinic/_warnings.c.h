@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(warnings_acquire_lock__doc__,
+TyDoc_STRVAR(warnings_acquire_lock__doc__,
 "_acquire_lock($module, /)\n"
 "--\n"
 "\n");
@@ -26,7 +26,7 @@ warnings_acquire_lock(TyObject *module, TyObject *Py_UNUSED(ignored))
     return warnings_acquire_lock_impl(module);
 }
 
-PyDoc_STRVAR(warnings_release_lock__doc__,
+TyDoc_STRVAR(warnings_release_lock__doc__,
 "_release_lock($module, /)\n"
 "--\n"
 "\n");
@@ -43,7 +43,7 @@ warnings_release_lock(TyObject *module, TyObject *Py_UNUSED(ignored))
     return warnings_release_lock_impl(module);
 }
 
-PyDoc_STRVAR(warnings_warn__doc__,
+TyDoc_STRVAR(warnings_warn__doc__,
 "warn($module, /, message, category=None, stacklevel=1, source=None, *,\n"
 "     skip_file_prefixes=<unrepresentable>)\n"
 "--\n"
@@ -84,7 +84,7 @@ warnings_warn(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(message), &_Ty_ID(category), &_Ty_ID(stacklevel), &_Ty_ID(source), &_Ty_ID(skip_file_prefixes), },
     };
@@ -164,7 +164,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(warnings_warn_explicit__doc__,
+TyDoc_STRVAR(warnings_warn_explicit__doc__,
 "warn_explicit($module, /, message, category, filename, lineno,\n"
 "              module=<unrepresentable>, registry=None,\n"
 "              module_globals=None, source=None)\n"
@@ -194,7 +194,7 @@ warnings_warn_explicit(TyObject *module, TyObject *const *args, Ty_ssize_t nargs
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(message), &_Ty_ID(category), &_Ty_ID(filename), &_Ty_ID(lineno), &_Ty_ID(module), &_Ty_ID(registry), &_Ty_ID(module_globals), &_Ty_ID(source), },
     };
@@ -268,7 +268,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(warnings_filters_mutated_lock_held__doc__,
+TyDoc_STRVAR(warnings_filters_mutated_lock_held__doc__,
 "_filters_mutated_lock_held($module, /)\n"
 "--\n"
 "\n");

@@ -343,7 +343,7 @@ method_descr_get(TyObject *meth, TyObject *obj, TyObject *cls)
 }
 
 TyTypeObject TyMethod_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "method",
     .tp_basicsize = sizeof(PyMethodObject),
     .tp_dealloc = method_dealloc,
@@ -546,7 +546,7 @@ instancemethod_new_impl(TyTypeObject *type, TyObject *function)
 }
 
 TyTypeObject PyInstanceMethod_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "instancemethod",
     .tp_basicsize = sizeof(PyInstanceMethodObject),
     .tp_dealloc = instancemethod_dealloc,

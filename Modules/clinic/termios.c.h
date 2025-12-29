@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(termios_tcgetattr__doc__,
+TyDoc_STRVAR(termios_tcgetattr__doc__,
 "tcgetattr($module, fd, /)\n"
 "--\n"
 "\n"
@@ -37,7 +37,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcsetattr__doc__,
+TyDoc_STRVAR(termios_tcsetattr__doc__,
 "tcsetattr($module, fd, when, attributes, /)\n"
 "--\n"
 "\n"
@@ -83,7 +83,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcsendbreak__doc__,
+TyDoc_STRVAR(termios_tcsendbreak__doc__,
 "tcsendbreak($module, fd, duration, /)\n"
 "--\n"
 "\n"
@@ -123,7 +123,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcdrain__doc__,
+TyDoc_STRVAR(termios_tcdrain__doc__,
 "tcdrain($module, fd, /)\n"
 "--\n"
 "\n"
@@ -151,7 +151,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcflush__doc__,
+TyDoc_STRVAR(termios_tcflush__doc__,
 "tcflush($module, fd, queue, /)\n"
 "--\n"
 "\n"
@@ -192,7 +192,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcflow__doc__,
+TyDoc_STRVAR(termios_tcflow__doc__,
 "tcflow($module, fd, action, /)\n"
 "--\n"
 "\n"
@@ -233,7 +233,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcgetwinsize__doc__,
+TyDoc_STRVAR(termios_tcgetwinsize__doc__,
 "tcgetwinsize($module, fd, /)\n"
 "--\n"
 "\n"
@@ -263,7 +263,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(termios_tcsetwinsize__doc__,
+TyDoc_STRVAR(termios_tcsetwinsize__doc__,
 "tcsetwinsize($module, fd, winsize, /)\n"
 "--\n"
 "\n"

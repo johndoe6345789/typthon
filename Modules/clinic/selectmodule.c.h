@@ -10,7 +10,7 @@ preserve
 #include "pycore_long.h"          // _TyLong_UnsignedShort_Converter()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(select_select__doc__,
+TyDoc_STRVAR(select_select__doc__,
 "select($module, rlist, wlist, xlist, timeout=None, /)\n"
 "--\n"
 "\n"
@@ -72,7 +72,7 @@ exit:
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL))
 
-PyDoc_STRVAR(select_poll_register__doc__,
+TyDoc_STRVAR(select_poll_register__doc__,
 "register($self, fd,\n"
 "         eventmask=select.POLLIN | select.POLLPRI | select.POLLOUT, /)\n"
 "--\n"
@@ -123,7 +123,7 @@ exit:
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL))
 
-PyDoc_STRVAR(select_poll_modify__doc__,
+TyDoc_STRVAR(select_poll_modify__doc__,
 "modify($self, fd, eventmask, /)\n"
 "--\n"
 "\n"
@@ -170,7 +170,7 @@ exit:
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL))
 
-PyDoc_STRVAR(select_poll_unregister__doc__,
+TyDoc_STRVAR(select_poll_unregister__doc__,
 "unregister($self, fd, /)\n"
 "--\n"
 "\n"
@@ -204,7 +204,7 @@ exit:
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL))
 
-PyDoc_STRVAR(select_poll_poll__doc__,
+TyDoc_STRVAR(select_poll_poll__doc__,
 "poll($self, timeout=None, /)\n"
 "--\n"
 "\n"
@@ -249,7 +249,7 @@ exit:
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL)) && defined(HAVE_SYS_DEVPOLL_H)
 
-PyDoc_STRVAR(select_devpoll_register__doc__,
+TyDoc_STRVAR(select_devpoll_register__doc__,
 "register($self, fd,\n"
 "         eventmask=select.POLLIN | select.POLLPRI | select.POLLOUT, /)\n"
 "--\n"
@@ -302,7 +302,7 @@ exit:
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL)) && defined(HAVE_SYS_DEVPOLL_H)
 
-PyDoc_STRVAR(select_devpoll_modify__doc__,
+TyDoc_STRVAR(select_devpoll_modify__doc__,
 "modify($self, fd,\n"
 "       eventmask=select.POLLIN | select.POLLPRI | select.POLLOUT, /)\n"
 "--\n"
@@ -355,7 +355,7 @@ exit:
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL)) && defined(HAVE_SYS_DEVPOLL_H)
 
-PyDoc_STRVAR(select_devpoll_unregister__doc__,
+TyDoc_STRVAR(select_devpoll_unregister__doc__,
 "unregister($self, fd, /)\n"
 "--\n"
 "\n"
@@ -389,7 +389,7 @@ exit:
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL)) && defined(HAVE_SYS_DEVPOLL_H)
 
-PyDoc_STRVAR(select_devpoll_poll__doc__,
+TyDoc_STRVAR(select_devpoll_poll__doc__,
 "poll($self, timeout=None, /)\n"
 "--\n"
 "\n"
@@ -434,7 +434,7 @@ exit:
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL)) && defined(HAVE_SYS_DEVPOLL_H)
 
-PyDoc_STRVAR(select_devpoll_close__doc__,
+TyDoc_STRVAR(select_devpoll_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -464,7 +464,7 @@ select_devpoll_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL)) && defined(HAVE_SYS_DEVPOLL_H)
 
-PyDoc_STRVAR(select_devpoll_fileno__doc__,
+TyDoc_STRVAR(select_devpoll_fileno__doc__,
 "fileno($self, /)\n"
 "--\n"
 "\n"
@@ -492,7 +492,7 @@ select_devpoll_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL))
 
-PyDoc_STRVAR(select_poll__doc__,
+TyDoc_STRVAR(select_poll__doc__,
 "poll($module, /)\n"
 "--\n"
 "\n"
@@ -517,7 +517,7 @@ select_poll(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if (defined(HAVE_POLL) && !defined(HAVE_BROKEN_POLL)) && defined(HAVE_SYS_DEVPOLL_H)
 
-PyDoc_STRVAR(select_devpoll__doc__,
+TyDoc_STRVAR(select_devpoll__doc__,
 "devpoll($module, /)\n"
 "--\n"
 "\n"
@@ -542,7 +542,7 @@ select_devpoll(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll__doc__,
+TyDoc_STRVAR(select_epoll__doc__,
 "epoll(sizehint=-1, flags=0)\n"
 "--\n"
 "\n"
@@ -573,7 +573,7 @@ select_epoll(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(sizehint), &_Ty_ID(flags), },
     };
@@ -630,7 +630,7 @@ exit:
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll_close__doc__,
+TyDoc_STRVAR(select_epoll_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -660,7 +660,7 @@ select_epoll_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll_fileno__doc__,
+TyDoc_STRVAR(select_epoll_fileno__doc__,
 "fileno($self, /)\n"
 "--\n"
 "\n"
@@ -682,7 +682,7 @@ select_epoll_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll_fromfd__doc__,
+TyDoc_STRVAR(select_epoll_fromfd__doc__,
 "fromfd($type, fd, /)\n"
 "--\n"
 "\n"
@@ -714,7 +714,7 @@ exit:
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll_register__doc__,
+TyDoc_STRVAR(select_epoll_register__doc__,
 "register($self, /, fd,\n"
 "         eventmask=select.EPOLLIN | select.EPOLLPRI | select.EPOLLOUT)\n"
 "--\n"
@@ -748,7 +748,7 @@ select_epoll_register(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), &_Ty_ID(eventmask), },
     };
@@ -798,7 +798,7 @@ exit:
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll_modify__doc__,
+TyDoc_STRVAR(select_epoll_modify__doc__,
 "modify($self, /, fd, eventmask)\n"
 "--\n"
 "\n"
@@ -829,7 +829,7 @@ select_epoll_modify(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), &_Ty_ID(eventmask), },
     };
@@ -874,7 +874,7 @@ exit:
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll_unregister__doc__,
+TyDoc_STRVAR(select_epoll_unregister__doc__,
 "unregister($self, /, fd)\n"
 "--\n"
 "\n"
@@ -902,7 +902,7 @@ select_epoll_unregister(TyObject *self, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(fd), },
     };
@@ -942,7 +942,7 @@ exit:
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll_poll__doc__,
+TyDoc_STRVAR(select_epoll_poll__doc__,
 "poll($self, /, timeout=None, maxevents=-1)\n"
 "--\n"
 "\n"
@@ -977,7 +977,7 @@ select_epoll_poll(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(timeout), &_Ty_ID(maxevents), },
     };
@@ -1029,7 +1029,7 @@ exit:
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll___enter____doc__,
+TyDoc_STRVAR(select_epoll___enter____doc__,
 "__enter__($self, /)\n"
 "--\n"
 "\n");
@@ -1050,7 +1050,7 @@ select_epoll___enter__(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_EPOLL)
 
-PyDoc_STRVAR(select_epoll___exit____doc__,
+TyDoc_STRVAR(select_epoll___exit____doc__,
 "__exit__($self, exc_type=None, exc_value=None, exc_tb=None, /)\n"
 "--\n"
 "\n");
@@ -1096,7 +1096,7 @@ exit:
 
 #if defined(HAVE_KQUEUE)
 
-PyDoc_STRVAR(select_kqueue__doc__,
+TyDoc_STRVAR(select_kqueue__doc__,
 "kqueue()\n"
 "--\n"
 "\n"
@@ -1141,7 +1141,7 @@ exit:
 
 #if defined(HAVE_KQUEUE)
 
-PyDoc_STRVAR(select_kqueue_close__doc__,
+TyDoc_STRVAR(select_kqueue_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -1171,7 +1171,7 @@ select_kqueue_close(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_KQUEUE)
 
-PyDoc_STRVAR(select_kqueue_fileno__doc__,
+TyDoc_STRVAR(select_kqueue_fileno__doc__,
 "fileno($self, /)\n"
 "--\n"
 "\n"
@@ -1193,7 +1193,7 @@ select_kqueue_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_KQUEUE)
 
-PyDoc_STRVAR(select_kqueue_fromfd__doc__,
+TyDoc_STRVAR(select_kqueue_fromfd__doc__,
 "fromfd($type, fd, /)\n"
 "--\n"
 "\n"
@@ -1225,7 +1225,7 @@ exit:
 
 #if defined(HAVE_KQUEUE)
 
-PyDoc_STRVAR(select_kqueue_control__doc__,
+TyDoc_STRVAR(select_kqueue_control__doc__,
 "control($self, changelist, maxevents, timeout=None, /)\n"
 "--\n"
 "\n"

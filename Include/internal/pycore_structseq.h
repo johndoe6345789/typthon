@@ -13,25 +13,25 @@ extern "C" {
 
 // Export for '_curses' shared extension
 PyAPI_FUNC(TyTypeObject*) _PyStructSequence_NewType(
-    PyStructSequence_Desc *desc,
+    TyStructSequence_Desc *desc,
     unsigned long tp_flags);
 
 extern int _PyStructSequence_InitBuiltinWithFlags(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     TyTypeObject *type,
-    PyStructSequence_Desc *desc,
+    TyStructSequence_Desc *desc,
     unsigned long tp_flags);
 
 static inline int
-_PyStructSequence_InitBuiltin(PyInterpreterState *interp,
+_PyStructSequence_InitBuiltin(TyInterpreterState *interp,
                               TyTypeObject *type,
-                              PyStructSequence_Desc *desc)
+                              TyStructSequence_Desc *desc)
 {
     return _PyStructSequence_InitBuiltinWithFlags(interp, type, desc, 0);
 }
 
 extern void _PyStructSequence_FiniBuiltin(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     TyTypeObject *type);
 
 #ifdef __cplusplus

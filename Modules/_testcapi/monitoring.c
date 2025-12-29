@@ -97,9 +97,9 @@ end:
 }
 
 static TyTypeObject PyCodeLike_Type = {
-    .ob_base = PyVarObject_HEAD_INIT(NULL, 0)
+    .ob_base = TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "monitoring.CodeLike",
-    .tp_doc = PyDoc_STR("CodeLike objects"),
+    .tp_doc = TyDoc_STR("CodeLike objects"),
     .tp_basicsize = sizeof(PyCodeLikeObject),
     .tp_itemsize = 0,
     .tp_flags = Ty_TPFLAGS_DEFAULT,

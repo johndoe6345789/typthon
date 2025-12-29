@@ -172,12 +172,12 @@ OutputBuffer_WindowOnError(_BlocksOutputBuffer *buffer, _Uint32Window *window)
 
 
 #define ENTER_ZLIB(obj) do {                      \
-    if (!PyThread_acquire_lock((obj)->lock, 0)) { \
+    if (!TyThread_acquire_lock((obj)->lock, 0)) { \
         Ty_BEGIN_ALLOW_THREADS                    \
-        PyThread_acquire_lock((obj)->lock, 1);    \
+        TyThread_acquire_lock((obj)->lock, 1);    \
         Ty_END_ALLOW_THREADS                      \
     } } while (0)
-#define LEAVE_ZLIB(obj) PyThread_release_lock((obj)->lock);
+#define LEAVE_ZLIB(obj) TyThread_release_lock((obj)->lock);
 
 
 /* The following parameters are copied from zutil.h, version 0.95 */
@@ -218,7 +218,7 @@ typedef struct
     char eof;
     bool is_initialised;
     TyObject *zdict;
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
 } compobject;
 
 #define _compobject_CAST(op)    ((compobject *)op)
@@ -279,7 +279,7 @@ newcompobject(TyTypeObject *type)
         Ty_DECREF(self);
         return NULL;
     }
-    self->lock = PyThread_allocate_lock();
+    self->lock = TyThread_allocate_lock();
     if (self->lock == NULL) {
         Ty_DECREF(self);
         TyErr_SetString(TyExc_MemoryError, "Unable to allocate lock");
@@ -709,7 +709,7 @@ static void
 Dealloc(compobject *self)
 {
     TyTypeObject *type = Ty_TYPE(self);
-    PyThread_free_lock(self->lock);
+    TyThread_free_lock(self->lock);
     Ty_XDECREF(self->unused_data);
     Ty_XDECREF(self->unconsumed_tail);
     Ty_XDECREF(self->zdict);
@@ -1344,7 +1344,7 @@ typedef struct {
     PyObject_HEAD
     z_stream zst;
     TyObject *zdict;
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
     TyObject *unused_data;
     uint8_t *input_buffer;
     Ty_ssize_t input_buffer_size;
@@ -1367,7 +1367,7 @@ ZlibDecompressor_dealloc(TyObject *op)
 {
     ZlibDecompressor *self = (ZlibDecompressor*)op;
     TyObject *type = (TyObject *)Ty_TYPE(self);
-    PyThread_free_lock(self->lock);
+    TyThread_free_lock(self->lock);
     if (self->is_initialised) {
         inflateEnd(&self->zst);
     }
@@ -1698,7 +1698,7 @@ zlib_ZlibDecompressor_decompress_impl(ZlibDecompressor *self,
     return result;
 }
 
-PyDoc_STRVAR(ZlibDecompressor__new____doc__,
+TyDoc_STRVAR(ZlibDecompressor__new____doc__,
 "_ZlibDecompressor(wbits=15, zdict=b\'\')\n"
 "--\n"
 "\n"
@@ -1749,7 +1749,7 @@ ZlibDecompressor__new__(TyTypeObject *cls,
         Ty_CLEAR(self);
         return NULL;
     }
-    self->lock = PyThread_allocate_lock();
+    self->lock = TyThread_allocate_lock();
     if (self->lock == NULL) {
         Ty_DECREF(self);
         TyErr_SetString(TyExc_MemoryError, "Unable to allocate lock");
@@ -1817,13 +1817,13 @@ static TyMemberDef Decomp_members[] = {
     {NULL},
 };
 
-PyDoc_STRVAR(ZlibDecompressor_eof__doc__,
+TyDoc_STRVAR(ZlibDecompressor_eof__doc__,
 "True if the end-of-stream marker has been reached.");
 
-PyDoc_STRVAR(ZlibDecompressor_unused_data__doc__,
+TyDoc_STRVAR(ZlibDecompressor_unused_data__doc__,
 "Data found after the end of the compressed stream.");
 
-PyDoc_STRVAR(ZlibDecompressor_needs_input_doc,
+TyDoc_STRVAR(ZlibDecompressor_needs_input_doc,
 "True if more input is needed before more decompressed data can be produced.");
 
 static TyMemberDef ZlibDecompressor_members[] = {
@@ -1981,7 +1981,7 @@ static TyType_Spec ZlibDecompressor_type_spec = {
     .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = ZlibDecompressor_type_slots,
 };
-PyDoc_STRVAR(zlib_module_documentation,
+TyDoc_STRVAR(zlib_module_documentation,
 "The functions in this module allow compression and decompression using the\n"
 "zlib library, which is based on GNU zip.\n"
 "\n"

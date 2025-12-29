@@ -46,7 +46,7 @@ class _multiprocessing.SemLock "SemLockObject *" "&_PyMp_SemLockType"
 
 #include "clinic/semaphore.c.h"
 
-#define ISMINE(o) (o->count > 0 && PyThread_get_thread_ident() == o->last_tid)
+#define ISMINE(o) (o->count > 0 && TyThread_get_thread_ident() == o->last_tid)
 
 
 #ifdef MS_WINDOWS
@@ -382,7 +382,7 @@ _multiprocessing_SemLock_acquire_impl(SemLockObject *self, int blocking,
     }
 
     ++self->count;
-    self->last_tid = PyThread_get_thread_ident();
+    self->last_tid = TyThread_get_thread_ident();
 
     Py_RETURN_TRUE;
 }
@@ -775,7 +775,7 @@ static TyType_Slot _PyMp_SemLockType_slots[] = {
     {Ty_tp_new, _multiprocessing_SemLock},
     {Ty_tp_traverse, semlock_traverse},
     {Ty_tp_free, PyObject_GC_Del},
-    {Ty_tp_doc, (void *)PyDoc_STR("Semaphore/Mutex type")},
+    {Ty_tp_doc, (void *)TyDoc_STR("Semaphore/Mutex type")},
     {0, 0},
 };
 

@@ -61,7 +61,7 @@ CThunkObject_dealloc(TyObject *myself)
 }
 
 static TyType_Slot cthunk_slots[] = {
-    {Ty_tp_doc, (void *)PyDoc_STR("CThunkObject")},
+    {Ty_tp_doc, (void *)TyDoc_STR("CThunkObject")},
     {Ty_tp_dealloc, CThunkObject_dealloc},
     {Ty_tp_traverse, CThunkObject_traverse},
     {Ty_tp_clear, CThunkObject_clear},

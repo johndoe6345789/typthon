@@ -48,8 +48,8 @@ extern "C" {
 
 /* runtime lifecycle */
 
-extern TyStatus _TyLong_InitTypes(PyInterpreterState *);
-extern void _TyLong_FiniTypes(PyInterpreterState *interp);
+extern TyStatus _TyLong_InitTypes(TyInterpreterState *);
+extern void _TyLong_FiniTypes(TyInterpreterState *interp);
 
 
 /* other API */

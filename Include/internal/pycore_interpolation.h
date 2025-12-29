@@ -16,7 +16,7 @@ extern TyTypeObject _PyInterpolation_Type;
 PyAPI_FUNC(TyObject *) _PyInterpolation_Build(TyObject *value, TyObject *str,
                                               int conversion, TyObject *format_spec);
 
-extern TyStatus _PyInterpolation_InitTypes(PyInterpreterState *interp);
+extern TyStatus _PyInterpolation_InitTypes(TyInterpreterState *interp);
 extern TyObject *_PyInterpolation_GetValueRef(TyObject *interpolation);
 
 #ifdef __cplusplus

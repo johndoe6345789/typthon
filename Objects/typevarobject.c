@@ -105,13 +105,13 @@ nodefault_dealloc(TyObject *nodefault)
     _Ty_SetImmortal(nodefault);
 }
 
-PyDoc_STRVAR(nodefault_doc,
+TyDoc_STRVAR(nodefault_doc,
 "NoDefaultType()\n"
 "--\n\n"
 "The type of the NoDefault singleton.");
 
 TyTypeObject _PyNoDefault_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "NoDefaultType",
     .tp_dealloc = nodefault_dealloc,
     .tp_repr = NoDefault_repr,
@@ -233,7 +233,7 @@ constevaluator_alloc(TyObject *value)
 
 }
 
-PyDoc_STRVAR(constevaluator_doc,
+TyDoc_STRVAR(constevaluator_doc,
 "_ConstEvaluator()\n"
 "--\n\n"
 "Internal type for implementing evaluation functions.");
@@ -865,7 +865,7 @@ static TyMethodDef typevar_methods[] = {
     {0}
 };
 
-PyDoc_STRVAR(typevar_doc,
+TyDoc_STRVAR(typevar_doc,
 "Type variable.\n\
 \n\
 The preferred way to construct a type variable is via the dedicated\n\
@@ -1045,7 +1045,7 @@ static TyMethodDef paramspecargs_methods[] = {
     {0}
 };
 
-PyDoc_STRVAR(paramspecargs_doc,
+TyDoc_STRVAR(paramspecargs_doc,
 "The args for a ParamSpec object.\n\
 \n\
 Given a ParamSpec object P, P.args is an instance of ParamSpecArgs.\n\
@@ -1125,7 +1125,7 @@ static TyMethodDef paramspeckwargs_methods[] = {
     {0}
 };
 
-PyDoc_STRVAR(paramspeckwargs_doc,
+TyDoc_STRVAR(paramspeckwargs_doc,
 "The kwargs for a ParamSpec object.\n\
 \n\
 Given a ParamSpec object P, P.kwargs is an instance of ParamSpecKwargs.\n\
@@ -1270,8 +1270,8 @@ paramspec_evaluate_default(TyObject *op, void *Py_UNUSED(closure))
 }
 
 static TyGetSetDef paramspec_getset[] = {
-    {"args", paramspec_args, NULL, PyDoc_STR("Represents positional arguments."), NULL},
-    {"kwargs", paramspec_kwargs, NULL, PyDoc_STR("Represents keyword arguments."), NULL},
+    {"args", paramspec_args, NULL, TyDoc_STR("Represents positional arguments."), NULL},
+    {"kwargs", paramspec_kwargs, NULL, TyDoc_STR("Represents keyword arguments."), NULL},
     {"__default__", paramspec_default, NULL, "The default value for this ParamSpec.", NULL},
     {"evaluate_default", paramspec_evaluate_default, NULL, NULL, NULL},
     {0},
@@ -1433,7 +1433,7 @@ static TyMethodDef paramspec_methods[] = {
     {0}
 };
 
-PyDoc_STRVAR(paramspec_doc,
+TyDoc_STRVAR(paramspec_doc,
 "Parameter specification variable.\n\
 \n\
 The preferred way to construct a parameter specification is via the\n\
@@ -1742,7 +1742,7 @@ static TyMethodDef typevartuple_methods[] = {
     {0}
 };
 
-PyDoc_STRVAR(typevartuple_doc,
+TyDoc_STRVAR(typevartuple_doc,
 "Type variable tuple. A specialized form of type variable that enables\n\
 variadic generics.\n\
 \n\
@@ -2118,7 +2118,7 @@ typealias_new_impl(TyTypeObject *type, TyObject *name, TyObject *value,
     return ta;
 }
 
-PyDoc_STRVAR(typealias_doc,
+TyDoc_STRVAR(typealias_doc,
 "Type alias.\n\
 \n\
 Type aliases are created through the type statement::\n\
@@ -2152,7 +2152,7 @@ static PyMappingMethods typealias_as_mapping = {
 };
 
 TyTypeObject _PyTypeAlias_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "typing.TypeAliasType",
     .tp_basicsize = sizeof(typealiasobject),
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_IMMUTABLETYPE | Ty_TPFLAGS_HAVE_GC,
@@ -2185,7 +2185,7 @@ _Ty_make_typealias(TyThreadState* unused, TyObject *args)
     return (TyObject *)typealias_alloc(name, type_params, compute_value, NULL, NULL);
 }
 
-PyDoc_STRVAR(generic_doc,
+TyDoc_STRVAR(generic_doc,
 "Abstract base class for generic types.\n\
 \n\
 On Python 3.12 and newer, generic classes implicitly inherit from\n\
@@ -2209,7 +2209,7 @@ follows::\n\
             return default\n\
 ");
 
-PyDoc_STRVAR(generic_class_getitem_doc,
+TyDoc_STRVAR(generic_class_getitem_doc,
 "Parameterizes a generic class.\n\
 \n\
 At least, parameterizing a generic class is the *main* thing this\n\
@@ -2274,7 +2274,7 @@ _Ty_subscript_generic(TyThreadState* unused, TyObject *params)
 {
     params = unpack_typevartuples(params);
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (interp->cached_objects.generic_type == NULL) {
         TyErr_SetString(TyExc_SystemError, "Cannot find Generic type");
         return NULL;
@@ -2291,7 +2291,7 @@ static TyMethodDef generic_methods[] = {
      generic_class_getitem_doc},
     {"__init_subclass__", _PyCFunction_CAST(generic_init_subclass),
      METH_VARARGS | METH_KEYWORDS | METH_CLASS,
-     PyDoc_STR("Function to initialize subclasses.")},
+     TyDoc_STR("Function to initialize subclasses.")},
     {NULL} /* Sentinel */
 };
 
@@ -2328,7 +2328,7 @@ TyType_Spec generic_spec = {
     .slots = generic_slots,
 };
 
-int _Ty_initialize_generic(PyInterpreterState *interp)
+int _Ty_initialize_generic(TyInterpreterState *interp)
 {
 #define MAKE_TYPE(name) \
     do { \
@@ -2350,7 +2350,7 @@ int _Ty_initialize_generic(PyInterpreterState *interp)
     return 0;
 }
 
-void _Ty_clear_generic_types(PyInterpreterState *interp)
+void _Ty_clear_generic_types(TyInterpreterState *interp)
 {
     Ty_CLEAR(interp->cached_objects.generic_type);
     Ty_CLEAR(interp->cached_objects.typevar_type);

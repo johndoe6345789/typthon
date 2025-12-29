@@ -187,7 +187,7 @@ _Ty_CheckPython3(void)
 
     /* For back-compat, also search {sys.prefix}\DLLs, though
        that has not been a normal install layout for a while */
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     PyConfig *config = (PyConfig*)_TyInterpreterState_GetConfig(interp);
     assert(config->prefix);
     if (config->prefix) {

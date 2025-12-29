@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(method___reduce____doc__,
+TyDoc_STRVAR(method___reduce____doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n");
@@ -21,7 +21,7 @@ method___reduce__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return method___reduce___impl((PyMethodObject *)self);
 }
 
-PyDoc_STRVAR(method_new__doc__,
+TyDoc_STRVAR(method_new__doc__,
 "method(function, instance, /)\n"
 "--\n"
 "\n"
@@ -53,7 +53,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(instancemethod_new__doc__,
+TyDoc_STRVAR(instancemethod_new__doc__,
 "instancemethod(function, /)\n"
 "--\n"
 "\n"

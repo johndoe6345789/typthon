@@ -6,7 +6,7 @@ preserve
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_multiprocessing_closesocket__doc__,
+TyDoc_STRVAR(_multiprocessing_closesocket__doc__,
 "closesocket($module, handle, /)\n"
 "--\n"
 "\n");
@@ -37,7 +37,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_multiprocessing_recv__doc__,
+TyDoc_STRVAR(_multiprocessing_recv__doc__,
 "recv($module, handle, size, /)\n"
 "--\n"
 "\n");
@@ -76,7 +76,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_multiprocessing_send__doc__,
+TyDoc_STRVAR(_multiprocessing_send__doc__,
 "send($module, handle, buf, /)\n"
 "--\n"
 "\n");
@@ -117,7 +117,7 @@ exit:
 
 #endif /* defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(_multiprocessing_sem_unlink__doc__,
+TyDoc_STRVAR(_multiprocessing_sem_unlink__doc__,
 "sem_unlink($module, name, /)\n"
 "--\n"
 "\n");

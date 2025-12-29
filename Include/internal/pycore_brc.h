@@ -54,9 +54,9 @@ void _Ty_brc_init_thread(TyThreadState *tstate);
 void _Ty_brc_remove_thread(TyThreadState *tstate);
 
 // Initialize per-interpreter state
-void _Ty_brc_init_state(PyInterpreterState *interp);
+void _Ty_brc_init_state(TyInterpreterState *interp);
 
-void _Ty_brc_after_fork(PyInterpreterState *interp);
+void _Ty_brc_after_fork(TyInterpreterState *interp);
 
 // Enqueues an object to be merged by it's owning thread (tid). This
 // steals a reference to the object.

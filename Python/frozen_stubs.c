@@ -64,7 +64,7 @@ _Ty_gitversion(void)
 
 /* DL open flags stub */
 int
-_TyImport_GetDLOpenFlags(PyInterpreterState *interp)
+_TyImport_GetDLOpenFlags(TyInterpreterState *interp)
 {
     return 0x102; /* RTLD_NOW | RTLD_GLOBAL */
 }

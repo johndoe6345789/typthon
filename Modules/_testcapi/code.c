@@ -2,7 +2,7 @@
 #include "util.h"
 
 static Ty_ssize_t
-get_code_extra_index(PyInterpreterState* interp) {
+get_code_extra_index(TyInterpreterState* interp) {
     Ty_ssize_t result = -1;
 
     static const char *key = "_testcapi.frame_evaluation.code_index";
@@ -50,7 +50,7 @@ test_code_extra(TyObject* self, TyObject *Py_UNUSED(callable))
     TyObject *test_func = NULL;
 
     // Get or initialize interpreter-specific code object storage index
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     if (!interp) {
         return NULL;
     }

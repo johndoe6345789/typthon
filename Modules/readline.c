@@ -1578,10 +1578,10 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 
 /* Initialize the module */
 
-PyDoc_STRVAR(doc_module,
+TyDoc_STRVAR(doc_module,
 "Importing this module enables command line editing using GNU readline.");
 
-PyDoc_STRVAR(doc_module_le,
+TyDoc_STRVAR(doc_module_le,
 "Importing this module enables command line editing using libedit readline.");
 
 static struct TyModuleDef readlinemodule = {

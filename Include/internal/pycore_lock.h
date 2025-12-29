@@ -52,8 +52,8 @@ typedef enum _PyLockFlags {
 
 // Lock a mutex with an optional timeout and additional options. See
 // _PyLockFlags for details.
-extern PyAPI_FUNC(PyLockStatus)
-_PyMutex_LockTimed(PyMutex *m, PyTime_t timeout_ns, _PyLockFlags flags);
+extern PyAPI_FUNC(TyLockStatus)
+_PyMutex_LockTimed(PyMutex *m, TyTime_t timeout_ns, _PyLockFlags flags);
 
 // Lock a mutex with additional options. See _PyLockFlags for details.
 static inline void
@@ -92,7 +92,7 @@ PyAPI_FUNC(void) PyEvent_Wait(PyEvent *evt);
 // and 0 if the timeout expired or thread was interrupted. If `detach` is
 // true, then the thread will detach/release the GIL while waiting.
 PyAPI_FUNC(int)
-PyEvent_WaitTimed(PyEvent *evt, PyTime_t timeout_ns, int detach);
+PyEvent_WaitTimed(PyEvent *evt, TyTime_t timeout_ns, int detach);
 
 // _PyRawMutex implements a word-sized mutex that that does not depend on the
 // parking lot API, and therefore can be used in the parking lot
@@ -155,13 +155,13 @@ _PyOnceFlag_CallOnce(_PyOnceFlag *flag, _Ty_once_fn_t *fn, void *arg)
 // A recursive mutex. The mutex should zero-initialized.
 typedef struct {
     PyMutex mutex;
-    unsigned long long thread;  // i.e., PyThread_get_thread_ident_ex()
+    unsigned long long thread;  // i.e., TyThread_get_thread_ident_ex()
     size_t level;
 } _PyRecursiveMutex;
 
 PyAPI_FUNC(int) _PyRecursiveMutex_IsLockedByCurrentThread(_PyRecursiveMutex *m);
 PyAPI_FUNC(void) _PyRecursiveMutex_Lock(_PyRecursiveMutex *m);
-extern PyLockStatus _PyRecursiveMutex_LockTimed(_PyRecursiveMutex *m, PyTime_t timeout, _PyLockFlags flags);
+extern TyLockStatus _PyRecursiveMutex_LockTimed(_PyRecursiveMutex *m, TyTime_t timeout, _PyLockFlags flags);
 PyAPI_FUNC(void) _PyRecursiveMutex_Unlock(_PyRecursiveMutex *m);
 extern int _PyRecursiveMutex_TryUnlock(_PyRecursiveMutex *m);
 

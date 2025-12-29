@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(float_is_integer__doc__,
+TyDoc_STRVAR(float_is_integer__doc__,
 "is_integer($self, /)\n"
 "--\n"
 "\n"
@@ -22,7 +22,7 @@ float_is_integer(TyObject *self, TyObject *Py_UNUSED(ignored))
     return float_is_integer_impl(self);
 }
 
-PyDoc_STRVAR(float___trunc____doc__,
+TyDoc_STRVAR(float___trunc____doc__,
 "__trunc__($self, /)\n"
 "--\n"
 "\n"
@@ -40,7 +40,7 @@ float___trunc__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return float___trunc___impl(self);
 }
 
-PyDoc_STRVAR(float___floor____doc__,
+TyDoc_STRVAR(float___floor____doc__,
 "__floor__($self, /)\n"
 "--\n"
 "\n"
@@ -58,7 +58,7 @@ float___floor__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return float___floor___impl(self);
 }
 
-PyDoc_STRVAR(float___ceil____doc__,
+TyDoc_STRVAR(float___ceil____doc__,
 "__ceil__($self, /)\n"
 "--\n"
 "\n"
@@ -76,7 +76,7 @@ float___ceil__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return float___ceil___impl(self);
 }
 
-PyDoc_STRVAR(float___round____doc__,
+TyDoc_STRVAR(float___round____doc__,
 "__round__($self, ndigits=None, /)\n"
 "--\n"
 "\n"
@@ -110,7 +110,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(float_conjugate__doc__,
+TyDoc_STRVAR(float_conjugate__doc__,
 "conjugate($self, /)\n"
 "--\n"
 "\n"
@@ -128,7 +128,7 @@ float_conjugate(TyObject *self, TyObject *Py_UNUSED(ignored))
     return float_conjugate_impl(self);
 }
 
-PyDoc_STRVAR(float_hex__doc__,
+TyDoc_STRVAR(float_hex__doc__,
 "hex($self, /)\n"
 "--\n"
 "\n"
@@ -151,7 +151,7 @@ float_hex(TyObject *self, TyObject *Py_UNUSED(ignored))
     return float_hex_impl(self);
 }
 
-PyDoc_STRVAR(float_fromhex__doc__,
+TyDoc_STRVAR(float_fromhex__doc__,
 "fromhex($type, string, /)\n"
 "--\n"
 "\n"
@@ -178,7 +178,7 @@ float_fromhex(TyObject *type, TyObject *string)
     return return_value;
 }
 
-PyDoc_STRVAR(float_as_integer_ratio__doc__,
+TyDoc_STRVAR(float_as_integer_ratio__doc__,
 "as_integer_ratio($self, /)\n"
 "--\n"
 "\n"
@@ -206,7 +206,7 @@ float_as_integer_ratio(TyObject *self, TyObject *Py_UNUSED(ignored))
     return float_as_integer_ratio_impl(self);
 }
 
-PyDoc_STRVAR(float_new__doc__,
+TyDoc_STRVAR(float_new__doc__,
 "float(x=0, /)\n"
 "--\n"
 "\n"
@@ -240,7 +240,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(float_from_number__doc__,
+TyDoc_STRVAR(float_from_number__doc__,
 "from_number($type, number, /)\n"
 "--\n"
 "\n"
@@ -262,7 +262,7 @@ float_from_number(TyObject *type, TyObject *number)
     return return_value;
 }
 
-PyDoc_STRVAR(float___getnewargs____doc__,
+TyDoc_STRVAR(float___getnewargs____doc__,
 "__getnewargs__($self, /)\n"
 "--\n"
 "\n");
@@ -279,7 +279,7 @@ float___getnewargs__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return float___getnewargs___impl(self);
 }
 
-PyDoc_STRVAR(float___getformat____doc__,
+TyDoc_STRVAR(float___getformat____doc__,
 "__getformat__($type, typestr, /)\n"
 "--\n"
 "\n"
@@ -325,7 +325,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(float___format____doc__,
+TyDoc_STRVAR(float___format____doc__,
 "__format__($self, format_spec, /)\n"
 "--\n"
 "\n"

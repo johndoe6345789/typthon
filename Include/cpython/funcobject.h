@@ -82,43 +82,43 @@ PyAPI_FUNC(int) TyFunction_SetClosure(TyObject *, TyObject *);
 PyAPI_FUNC(TyObject *) TyFunction_GetAnnotations(TyObject *);
 PyAPI_FUNC(int) TyFunction_SetAnnotations(TyObject *, TyObject *);
 
-#define _PyFunction_CAST(func) \
+#define _TyFunction_CAST(func) \
     (assert(TyFunction_Check(func)), _Py_CAST(PyFunctionObject*, func))
 
 /* Static inline functions for direct access to these values.
    Type checks are *not* done, so use with care. */
 static inline TyObject* TyFunction_GET_CODE(TyObject *func) {
-    return _PyFunction_CAST(func)->func_code;
+    return _TyFunction_CAST(func)->func_code;
 }
 #define TyFunction_GET_CODE(func) TyFunction_GET_CODE(_TyObject_CAST(func))
 
 static inline TyObject* TyFunction_GET_GLOBALS(TyObject *func) {
-    return _PyFunction_CAST(func)->func_globals;
+    return _TyFunction_CAST(func)->func_globals;
 }
 #define TyFunction_GET_GLOBALS(func) TyFunction_GET_GLOBALS(_TyObject_CAST(func))
 
 static inline TyObject* TyFunction_GET_MODULE(TyObject *func) {
-    return _PyFunction_CAST(func)->func_module;
+    return _TyFunction_CAST(func)->func_module;
 }
 #define TyFunction_GET_MODULE(func) TyFunction_GET_MODULE(_TyObject_CAST(func))
 
 static inline TyObject* TyFunction_GET_DEFAULTS(TyObject *func) {
-    return _PyFunction_CAST(func)->func_defaults;
+    return _TyFunction_CAST(func)->func_defaults;
 }
 #define TyFunction_GET_DEFAULTS(func) TyFunction_GET_DEFAULTS(_TyObject_CAST(func))
 
 static inline TyObject* TyFunction_GET_KW_DEFAULTS(TyObject *func) {
-    return _PyFunction_CAST(func)->func_kwdefaults;
+    return _TyFunction_CAST(func)->func_kwdefaults;
 }
 #define TyFunction_GET_KW_DEFAULTS(func) TyFunction_GET_KW_DEFAULTS(_TyObject_CAST(func))
 
 static inline TyObject* TyFunction_GET_CLOSURE(TyObject *func) {
-    return _PyFunction_CAST(func)->func_closure;
+    return _TyFunction_CAST(func)->func_closure;
 }
 #define TyFunction_GET_CLOSURE(func) TyFunction_GET_CLOSURE(_TyObject_CAST(func))
 
 static inline TyObject* TyFunction_GET_ANNOTATIONS(TyObject *func) {
-    return _PyFunction_CAST(func)->func_annotations;
+    return _TyFunction_CAST(func)->func_annotations;
 }
 #define TyFunction_GET_ANNOTATIONS(func) TyFunction_GET_ANNOTATIONS(_TyObject_CAST(func))
 

@@ -2605,14 +2605,14 @@ static TyMethodDef zoneinfo_methods[] = {
     ZONEINFO_ZONEINFO_DST_METHODDEF
     ZONEINFO_ZONEINFO_TZNAME_METHODDEF
     {"fromutc", zoneinfo_fromutc, METH_O,
-     PyDoc_STR("Given a datetime with local time in UTC, retrieve an adjusted "
+     TyDoc_STR("Given a datetime with local time in UTC, retrieve an adjusted "
                "datetime in local time.")},
     {"__reduce__", zoneinfo_reduce, METH_NOARGS,
-     PyDoc_STR("Function for serialization with the pickle protocol.")},
+     TyDoc_STR("Function for serialization with the pickle protocol.")},
     ZONEINFO_ZONEINFO__UNPICKLE_METHODDEF
     {"__init_subclass__", _PyCFunction_CAST(zoneinfo_init_subclass),
      METH_VARARGS | METH_KEYWORDS | METH_CLASS,
-     PyDoc_STR("Function to initialize subclasses.")},
+     TyDoc_STR("Function to initialize subclasses.")},
     {NULL} /* Sentinel */
 };
 

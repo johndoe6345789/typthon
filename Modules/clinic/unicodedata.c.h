@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(unicodedata_UCD_decimal__doc__,
+TyDoc_STRVAR(unicodedata_UCD_decimal__doc__,
 "decimal($self, chr, default=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -54,7 +54,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_digit__doc__,
+TyDoc_STRVAR(unicodedata_UCD_digit__doc__,
 "digit($self, chr, default=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -103,7 +103,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_numeric__doc__,
+TyDoc_STRVAR(unicodedata_UCD_numeric__doc__,
 "numeric($self, chr, default=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -153,7 +153,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_category__doc__,
+TyDoc_STRVAR(unicodedata_UCD_category__doc__,
 "category($self, chr, /)\n"
 "--\n"
 "\n"
@@ -189,7 +189,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_bidirectional__doc__,
+TyDoc_STRVAR(unicodedata_UCD_bidirectional__doc__,
 "bidirectional($self, chr, /)\n"
 "--\n"
 "\n"
@@ -227,7 +227,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_combining__doc__,
+TyDoc_STRVAR(unicodedata_UCD_combining__doc__,
 "combining($self, chr, /)\n"
 "--\n"
 "\n"
@@ -270,7 +270,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_mirrored__doc__,
+TyDoc_STRVAR(unicodedata_UCD_mirrored__doc__,
 "mirrored($self, chr, /)\n"
 "--\n"
 "\n"
@@ -314,7 +314,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_east_asian_width__doc__,
+TyDoc_STRVAR(unicodedata_UCD_east_asian_width__doc__,
 "east_asian_width($self, chr, /)\n"
 "--\n"
 "\n"
@@ -350,7 +350,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_decomposition__doc__,
+TyDoc_STRVAR(unicodedata_UCD_decomposition__doc__,
 "decomposition($self, chr, /)\n"
 "--\n"
 "\n"
@@ -388,7 +388,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_is_normalized__doc__,
+TyDoc_STRVAR(unicodedata_UCD_is_normalized__doc__,
 "is_normalized($self, form, unistr, /)\n"
 "--\n"
 "\n"
@@ -429,7 +429,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_normalize__doc__,
+TyDoc_STRVAR(unicodedata_UCD_normalize__doc__,
 "normalize($self, form, unistr, /)\n"
 "--\n"
 "\n"
@@ -470,7 +470,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_name__doc__,
+TyDoc_STRVAR(unicodedata_UCD_name__doc__,
 "name($self, chr, default=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -518,7 +518,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unicodedata_UCD_lookup__doc__,
+TyDoc_STRVAR(unicodedata_UCD_lookup__doc__,
 "lookup($self, name, /)\n"
 "--\n"
 "\n"

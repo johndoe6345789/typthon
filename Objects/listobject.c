@@ -7,8 +7,8 @@
 #include "pycore_dict.h"          // _PyDictViewObject
 #include "pycore_freelist.h"      // _Ty_FREELIST_FREE(), _Ty_FREELIST_POP()
 #include "pycore_pyatomic_ft_wrappers.h"
-#include "pycore_interp.h"        // PyInterpreterState.list
-#include "pycore_list.h"          // struct _Ty_list_freelist, _PyListIterObject
+#include "pycore_interp.h"        // TyInterpreterState.list
+#include "pycore_list.h"          // struct _Ty_list_freelist, _TyListIterObject
 #include "pycore_long.h"          // _TyLong_DigitCount
 #include "pycore_modsupport.h"    // _TyArg_NoKwnames()
 #include "pycore_object.h"        // _TyObject_GC_TRACK(), _PyDebugAllocatorStats()
@@ -3548,7 +3548,7 @@ static TyObject *list_subscript(TyObject*, TyObject*);
 
 static TyMethodDef list_methods[] = {
     {"__getitem__", list_subscript, METH_O|METH_COEXIST,
-     PyDoc_STR("__getitem__($self, index, /)\n--\n\nReturn self[index].")},
+     TyDoc_STR("__getitem__($self, index, /)\n--\n\nReturn self[index].")},
     LIST___REVERSED___METHODDEF
     LIST___SIZEOF___METHODDEF
     PY_LIST_CLEAR_METHODDEF
@@ -3562,7 +3562,7 @@ static TyMethodDef list_methods[] = {
     LIST_COUNT_METHODDEF
     LIST_REVERSE_METHODDEF
     LIST_SORT_METHODDEF
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL,              NULL}           /* sentinel */
 };
 
@@ -3871,7 +3871,7 @@ static PyMappingMethods list_as_mapping = {
 };
 
 TyTypeObject TyList_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "list",
     sizeof(PyListObject),
     0,
@@ -3926,9 +3926,9 @@ static TyObject *listiter_reduce_general(void *_it, int forward);
 static TyObject *listiter_reduce(TyObject *, TyObject *);
 static TyObject *listiter_setstate(TyObject *, TyObject *state);
 
-PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
-PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
+TyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
 static TyMethodDef listiter_methods[] = {
     {"__length_hint__", listiter_len, METH_NOARGS, length_hint_doc},
@@ -3938,9 +3938,9 @@ static TyMethodDef listiter_methods[] = {
 };
 
 TyTypeObject PyListIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "list_iterator",                            /* tp_name */
-    sizeof(_PyListIterObject),                  /* tp_basicsize */
+    sizeof(_TyListIterObject),                  /* tp_basicsize */
     0,                                          /* tp_itemsize */
     /* methods */
     listiter_dealloc,               /* tp_dealloc */
@@ -3978,9 +3978,9 @@ list_iter(TyObject *seq)
         TyErr_BadInternalCall();
         return NULL;
     }
-    _PyListIterObject *it = _Ty_FREELIST_POP(_PyListIterObject, list_iters);
+    _TyListIterObject *it = _Ty_FREELIST_POP(_TyListIterObject, list_iters);
     if (it == NULL) {
-        it = PyObject_GC_New(_PyListIterObject, &PyListIter_Type);
+        it = PyObject_GC_New(_TyListIterObject, &PyListIter_Type);
         if (it == NULL) {
             return NULL;
         }
@@ -3994,7 +3994,7 @@ list_iter(TyObject *seq)
 static void
 listiter_dealloc(TyObject *self)
 {
-    _PyListIterObject *it = (_PyListIterObject *)self;
+    _TyListIterObject *it = (_TyListIterObject *)self;
     _TyObject_GC_UNTRACK(it);
     Ty_XDECREF(it->it_seq);
     assert(Ty_IS_TYPE(self, &PyListIter_Type));
@@ -4004,14 +4004,14 @@ listiter_dealloc(TyObject *self)
 static int
 listiter_traverse(TyObject *it, visitproc visit, void *arg)
 {
-    Ty_VISIT(((_PyListIterObject *)it)->it_seq);
+    Ty_VISIT(((_TyListIterObject *)it)->it_seq);
     return 0;
 }
 
 static TyObject *
 listiter_next(TyObject *self)
 {
-    _PyListIterObject *it = (_PyListIterObject *)self;
+    _TyListIterObject *it = (_TyListIterObject *)self;
     Ty_ssize_t index = FT_ATOMIC_LOAD_SSIZE_RELAXED(it->it_index);
     if (index < 0) {
         return NULL;
@@ -4036,7 +4036,7 @@ static TyObject *
 listiter_len(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     assert(self != NULL);
-    _PyListIterObject *it = (_PyListIterObject *)self;
+    _TyListIterObject *it = (_TyListIterObject *)self;
     Ty_ssize_t index = FT_ATOMIC_LOAD_SSIZE_RELAXED(it->it_index);
     if (index >= 0) {
         Ty_ssize_t len = TyList_GET_SIZE(it->it_seq) - index;
@@ -4055,7 +4055,7 @@ listiter_reduce(TyObject *it, TyObject *Py_UNUSED(ignored))
 static TyObject *
 listiter_setstate(TyObject *self, TyObject *state)
 {
-    _PyListIterObject *it = (_PyListIterObject *)self;
+    _TyListIterObject *it = (_TyListIterObject *)self;
     Ty_ssize_t index = TyLong_AsSsize_t(state);
     if (index == -1 && TyErr_Occurred())
         return NULL;
@@ -4092,7 +4092,7 @@ static TyMethodDef listreviter_methods[] = {
 };
 
 TyTypeObject PyListRevIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "list_reverseiterator",                     /* tp_name */
     sizeof(listreviterobject),                  /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -4235,7 +4235,7 @@ listiter_reduce_general(void *_it, int forward)
 
     if (forward) {
         iter = _TyEval_GetBuiltin(&_Ty_ID(iter));
-        _PyListIterObject *it = (_PyListIterObject *)_it;
+        _TyListIterObject *it = (_TyListIterObject *)_it;
         Ty_ssize_t idx = FT_ATOMIC_LOAD_SSIZE_RELAXED(it->it_index);
         if (idx >= 0) {
             return Ty_BuildValue("N(O)n", iter, it->it_seq, idx);

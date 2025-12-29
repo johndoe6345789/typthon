@@ -958,7 +958,7 @@ static PyModuleDef_Slot errno_slots[] = {
     {0, NULL}
 };
 
-PyDoc_STRVAR(errno__doc__,
+TyDoc_STRVAR(errno__doc__,
 "This module makes available standard errno system symbols.\n\
 \n\
 The value of each symbol is the corresponding integer value,\n\

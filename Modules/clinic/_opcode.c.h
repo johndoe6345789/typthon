@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_opcode_stack_effect__doc__,
+TyDoc_STRVAR(_opcode_stack_effect__doc__,
 "stack_effect($module, opcode, oparg=None, /, *, jump=None)\n"
 "--\n"
 "\n"
@@ -34,7 +34,7 @@ _opcode_stack_effect(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(jump), },
     };
@@ -89,7 +89,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_opcode_is_valid__doc__,
+TyDoc_STRVAR(_opcode_is_valid__doc__,
 "is_valid($module, /, opcode)\n"
 "--\n"
 "\n"
@@ -114,7 +114,7 @@ _opcode_is_valid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(opcode), },
     };
@@ -155,7 +155,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_opcode_has_arg__doc__,
+TyDoc_STRVAR(_opcode_has_arg__doc__,
 "has_arg($module, /, opcode)\n"
 "--\n"
 "\n"
@@ -180,7 +180,7 @@ _opcode_has_arg(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(opcode), },
     };
@@ -221,7 +221,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_opcode_has_const__doc__,
+TyDoc_STRVAR(_opcode_has_const__doc__,
 "has_const($module, /, opcode)\n"
 "--\n"
 "\n"
@@ -246,7 +246,7 @@ _opcode_has_const(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(opcode), },
     };
@@ -287,7 +287,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_opcode_has_name__doc__,
+TyDoc_STRVAR(_opcode_has_name__doc__,
 "has_name($module, /, opcode)\n"
 "--\n"
 "\n"
@@ -312,7 +312,7 @@ _opcode_has_name(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(opcode), },
     };
@@ -353,7 +353,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_opcode_has_jump__doc__,
+TyDoc_STRVAR(_opcode_has_jump__doc__,
 "has_jump($module, /, opcode)\n"
 "--\n"
 "\n"
@@ -378,7 +378,7 @@ _opcode_has_jump(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(opcode), },
     };
@@ -419,7 +419,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_opcode_has_free__doc__,
+TyDoc_STRVAR(_opcode_has_free__doc__,
 "has_free($module, /, opcode)\n"
 "--\n"
 "\n"
@@ -449,7 +449,7 @@ _opcode_has_free(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(opcode), },
     };
@@ -490,7 +490,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_opcode_has_local__doc__,
+TyDoc_STRVAR(_opcode_has_local__doc__,
 "has_local($module, /, opcode)\n"
 "--\n"
 "\n"
@@ -515,7 +515,7 @@ _opcode_has_local(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(opcode), },
     };
@@ -556,7 +556,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_opcode_has_exc__doc__,
+TyDoc_STRVAR(_opcode_has_exc__doc__,
 "has_exc($module, /, opcode)\n"
 "--\n"
 "\n"
@@ -581,7 +581,7 @@ _opcode_has_exc(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(opcode), },
     };
@@ -622,7 +622,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_opcode_get_specialization_stats__doc__,
+TyDoc_STRVAR(_opcode_get_specialization_stats__doc__,
 "get_specialization_stats($module, /)\n"
 "--\n"
 "\n"
@@ -640,7 +640,7 @@ _opcode_get_specialization_stats(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _opcode_get_specialization_stats_impl(module);
 }
 
-PyDoc_STRVAR(_opcode_get_nb_ops__doc__,
+TyDoc_STRVAR(_opcode_get_nb_ops__doc__,
 "get_nb_ops($module, /)\n"
 "--\n"
 "\n"
@@ -660,7 +660,7 @@ _opcode_get_nb_ops(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _opcode_get_nb_ops_impl(module);
 }
 
-PyDoc_STRVAR(_opcode_get_intrinsic1_descs__doc__,
+TyDoc_STRVAR(_opcode_get_intrinsic1_descs__doc__,
 "get_intrinsic1_descs($module, /)\n"
 "--\n"
 "\n"
@@ -678,7 +678,7 @@ _opcode_get_intrinsic1_descs(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _opcode_get_intrinsic1_descs_impl(module);
 }
 
-PyDoc_STRVAR(_opcode_get_intrinsic2_descs__doc__,
+TyDoc_STRVAR(_opcode_get_intrinsic2_descs__doc__,
 "get_intrinsic2_descs($module, /)\n"
 "--\n"
 "\n"
@@ -696,7 +696,7 @@ _opcode_get_intrinsic2_descs(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _opcode_get_intrinsic2_descs_impl(module);
 }
 
-PyDoc_STRVAR(_opcode_get_special_method_names__doc__,
+TyDoc_STRVAR(_opcode_get_special_method_names__doc__,
 "get_special_method_names($module, /)\n"
 "--\n"
 "\n"
@@ -714,7 +714,7 @@ _opcode_get_special_method_names(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _opcode_get_special_method_names_impl(module);
 }
 
-PyDoc_STRVAR(_opcode_get_executor__doc__,
+TyDoc_STRVAR(_opcode_get_executor__doc__,
 "get_executor($module, /, code, offset)\n"
 "--\n"
 "\n"
@@ -739,7 +739,7 @@ _opcode_get_executor(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(code), &_Ty_ID(offset), },
     };

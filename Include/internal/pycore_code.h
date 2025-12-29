@@ -49,8 +49,8 @@ _py_set_opcode(_Ty_CODEUNIT *word, uint8_t opcode)
     (CODE->_co_instrumentation_version > 0)
 
 
-extern TyStatus _TyCode_Init(PyInterpreterState *interp);
-extern void _TyCode_Fini(PyInterpreterState *interp);
+extern TyStatus _TyCode_Init(TyInterpreterState *interp);
+extern void _TyCode_Fini(TyInterpreterState *interp);
 
 
 /* PEP 659
@@ -509,7 +509,7 @@ typedef struct {
 
 #define COMPARISON_NOT_EQUALS (COMPARISON_UNORDERED | COMPARISON_LESS_THAN | COMPARISON_GREATER_THAN)
 
-extern int _Ty_Instrument(PyCodeObject *co, PyInterpreterState *interp);
+extern int _Ty_Instrument(PyCodeObject *co, TyInterpreterState *interp);
 
 extern _Ty_CODEUNIT _Ty_GetBaseCodeUnit(PyCodeObject *code, int offset);
 
@@ -551,7 +551,7 @@ extern _Ty_CODEUNIT *_TyCode_GetTLBC(PyCodeObject *co);
 // arrays
 //
 // Returns the reserved index or -1 on error.
-extern int32_t _Ty_ReserveTLBCIndex(PyInterpreterState *interp);
+extern int32_t _Ty_ReserveTLBCIndex(TyInterpreterState *interp);
 
 // Release the current thread's index into thread-local bytecode arrays
 extern void _Ty_ClearTLBCIndex(_PyThreadStateImpl *tstate);
@@ -559,7 +559,7 @@ extern void _Ty_ClearTLBCIndex(_PyThreadStateImpl *tstate);
 // Free all TLBC copies not associated with live threads.
 //
 // Returns 0 on success or -1 on error.
-extern int _Ty_ClearUnusedTLBC(PyInterpreterState *interp);
+extern int _Ty_ClearUnusedTLBC(TyInterpreterState *interp);
 #endif
 
 

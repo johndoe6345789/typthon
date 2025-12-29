@@ -3,7 +3,7 @@
 #include "Python.h"
 #include "pycore_code.h"          // _TyCode_VerifyStateless()
 #include "pycore_dict.h"          // _Ty_INCREF_DICT()
-#include "pycore_function.h"      // _PyFunction_Vectorcall
+#include "pycore_function.h"      // _TyFunction_Vectorcall
 #include "pycore_long.h"          // _TyLong_GetOne()
 #include "pycore_modsupport.h"    // _TyArg_NoKeywords()
 #include "pycore_object.h"        // _TyObject_GC_UNTRACK()
@@ -26,7 +26,7 @@ func_event_name(TyFunction_WatchEvent event) {
 }
 
 static void
-notify_func_watchers(PyInterpreterState *interp, TyFunction_WatchEvent event,
+notify_func_watchers(TyInterpreterState *interp, TyFunction_WatchEvent event,
                      PyFunctionObject *func, TyObject *new_value)
 {
     uint8_t bits = interp->active_func_watchers;
@@ -53,7 +53,7 @@ handle_func_event(TyFunction_WatchEvent event, PyFunctionObject *func,
                   TyObject *new_value)
 {
     assert(Ty_REFCNT(func) > 0);
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->_initialized);
     if (interp->active_func_watchers) {
         notify_func_watchers(interp, event, func, new_value);
@@ -72,7 +72,7 @@ handle_func_event(TyFunction_WatchEvent event, PyFunctionObject *func,
 int
 TyFunction_AddWatcher(TyFunction_WatchCallback callback)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->_initialized);
     for (int i = 0; i < FUNC_MAX_WATCHERS; i++) {
         if (interp->func_watchers[i] == NULL) {
@@ -88,7 +88,7 @@ TyFunction_AddWatcher(TyFunction_WatchCallback callback)
 int
 TyFunction_ClearWatcher(int watcher_id)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (watcher_id < 0 || watcher_id >= FUNC_MAX_WATCHERS) {
         TyErr_Format(TyExc_ValueError, "invalid func watcher ID %d",
                      watcher_id);
@@ -104,7 +104,7 @@ TyFunction_ClearWatcher(int watcher_id)
     return 0;
 }
 PyFunctionObject *
-_PyFunction_FromConstructor(PyFrameConstructor *constr)
+_TyFunction_FromConstructor(PyFrameConstructor *constr)
 {
     TyObject *module;
     if (TyDict_GetItemRef(constr->fc_globals, &_Ty_ID(__name__), &module) < 0) {
@@ -134,7 +134,7 @@ _PyFunction_FromConstructor(PyFrameConstructor *constr)
     op->func_annotations = NULL;
     op->func_annotate = NULL;
     op->func_typeparams = NULL;
-    op->vectorcall = _PyFunction_Vectorcall;
+    op->vectorcall = _TyFunction_Vectorcall;
     op->func_version = FUNC_VERSION_UNSET;
     // NOTE: functions created via FrameConstructor do not use deferred
     // reference counting because they are typically not part of cycles
@@ -212,7 +212,7 @@ TyFunction_NewWithQualName(TyObject *code, TyObject *globals, TyObject *qualname
     op->func_annotations = NULL;
     op->func_annotate = NULL;
     op->func_typeparams = NULL;
-    op->vectorcall = _PyFunction_Vectorcall;
+    op->vectorcall = _TyFunction_Vectorcall;
     op->func_version = FUNC_VERSION_UNSET;
     if (((code_obj->co_flags & CO_NESTED) == 0) ||
         (code_obj->co_flags & CO_METHOD)) {
@@ -299,7 +299,7 @@ functions is running.
 
 #ifndef Ty_GIL_DISABLED
 static inline struct _func_version_cache_item *
-get_cache_item(PyInterpreterState *interp, uint32_t version)
+get_cache_item(TyInterpreterState *interp, uint32_t version)
 {
     return interp->func_state.func_version_cache +
            (version % FUNC_VERSION_CACHE_SIZE);
@@ -307,7 +307,7 @@ get_cache_item(PyInterpreterState *interp, uint32_t version)
 #endif
 
 void
-_PyFunction_SetVersion(PyFunctionObject *func, uint32_t version)
+_TyFunction_SetVersion(PyFunctionObject *func, uint32_t version)
 {
     assert(func->func_version == FUNC_VERSION_UNSET);
     assert(version >= FUNC_VERSION_FIRST_VALID);
@@ -315,7 +315,7 @@ _PyFunction_SetVersion(PyFunctionObject *func, uint32_t version)
     // based on the version, so we do not need to stop the world to set it.
     func->func_version = version;
 #ifndef Ty_GIL_DISABLED
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _func_version_cache_item *slot = get_cache_item(interp, version);
     slot->func = func;
     slot->code = func->func_code;
@@ -323,7 +323,7 @@ _PyFunction_SetVersion(PyFunctionObject *func, uint32_t version)
 }
 
 static void
-func_clear_version(PyInterpreterState *interp, PyFunctionObject *func)
+func_clear_version(TyInterpreterState *interp, PyFunctionObject *func)
 {
     if (func->func_version < FUNC_VERSION_FIRST_VALID) {
         // Version was never set or has already been cleared.
@@ -342,23 +342,23 @@ func_clear_version(PyInterpreterState *interp, PyFunctionObject *func)
 
 // Called when any of the critical function attributes are changed
 static void
-_PyFunction_ClearVersion(PyFunctionObject *func)
+_TyFunction_ClearVersion(PyFunctionObject *func)
 {
     if (func->func_version < FUNC_VERSION_FIRST_VALID) {
         // Version was never set or has already been cleared.
         return;
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyEval_StopTheWorld(interp);
     func_clear_version(interp, func);
     _TyEval_StartTheWorld(interp);
 }
 
 void
-_PyFunction_ClearCodeByVersion(uint32_t version)
+_TyFunction_ClearCodeByVersion(uint32_t version)
 {
 #ifndef Ty_GIL_DISABLED
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _func_version_cache_item *slot = get_cache_item(interp, version);
     if (slot->code) {
         assert(TyCode_Check(slot->code));
@@ -372,12 +372,12 @@ _PyFunction_ClearCodeByVersion(uint32_t version)
 }
 
 PyFunctionObject *
-_PyFunction_LookupByVersion(uint32_t version, TyObject **p_code)
+_TyFunction_LookupByVersion(uint32_t version, TyObject **p_code)
 {
 #ifdef Ty_GIL_DISABLED
     return NULL;
 #else
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _func_version_cache_item *slot = get_cache_item(interp, version);
     if (slot->code) {
         assert(TyCode_Check(slot->code));
@@ -398,7 +398,7 @@ _PyFunction_LookupByVersion(uint32_t version, TyObject **p_code)
 }
 
 uint32_t
-_PyFunction_GetVersionForCurrentState(PyFunctionObject *func)
+_TyFunction_GetVersionForCurrentState(PyFunctionObject *func)
 {
     return func->func_version;
 }
@@ -467,7 +467,7 @@ TyFunction_SetDefaults(TyObject *op, TyObject *defaults)
     }
     handle_func_event(TyFunction_EVENT_MODIFY_DEFAULTS,
                       (PyFunctionObject *) op, defaults);
-    _PyFunction_ClearVersion((PyFunctionObject *)op);
+    _TyFunction_ClearVersion((PyFunctionObject *)op);
     Ty_XSETREF(((PyFunctionObject *)op)->func_defaults, defaults);
     return 0;
 }
@@ -476,7 +476,7 @@ void
 TyFunction_SetVectorcall(PyFunctionObject *func, vectorcallfunc vectorcall)
 {
     assert(func != NULL);
-    _PyFunction_ClearVersion(func);
+    _TyFunction_ClearVersion(func);
     func->vectorcall = vectorcall;
 }
 
@@ -509,7 +509,7 @@ TyFunction_SetKwDefaults(TyObject *op, TyObject *defaults)
     }
     handle_func_event(TyFunction_EVENT_MODIFY_KWDEFAULTS,
                       (PyFunctionObject *) op, defaults);
-    _PyFunction_ClearVersion((PyFunctionObject *)op);
+    _TyFunction_ClearVersion((PyFunctionObject *)op);
     Ty_XSETREF(((PyFunctionObject *)op)->func_kwdefaults, defaults);
     return 0;
 }
@@ -542,7 +542,7 @@ TyFunction_SetClosure(TyObject *op, TyObject *closure)
                      Ty_TYPE(closure)->tp_name);
         return -1;
     }
-    _PyFunction_ClearVersion((PyFunctionObject *)op);
+    _TyFunction_ClearVersion((PyFunctionObject *)op);
     Ty_XSETREF(((PyFunctionObject *)op)->func_closure, closure);
     return 0;
 }
@@ -649,7 +649,7 @@ class function "PyFunctionObject *" "&TyFunction_Type"
 static TyObject *
 func_get_code(TyObject *self, void *Py_UNUSED(ignored))
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     if (TySys_Audit("object.__getattr__", "Os", op, "__code__") < 0) {
         return NULL;
     }
@@ -660,7 +660,7 @@ func_get_code(TyObject *self, void *Py_UNUSED(ignored))
 static int
 func_set_code(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
 
     /* Not legal to del f.func_code or to set it to anything
      * other than a code object. */
@@ -701,7 +701,7 @@ func_set_code(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
     }
 
     handle_func_event(TyFunction_EVENT_MODIFY_CODE, op, value);
-    _PyFunction_ClearVersion(op);
+    _TyFunction_ClearVersion(op);
     Ty_XSETREF(op->func_code, Ty_NewRef(value));
     return 0;
 }
@@ -709,14 +709,14 @@ func_set_code(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 static TyObject *
 func_get_name(TyObject *self, void *Py_UNUSED(ignored))
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     return Ty_NewRef(op->func_name);
 }
 
 static int
 func_set_name(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     /* Not legal to del f.func_name or to set it to anything
      * other than a string object. */
     if (value == NULL || !TyUnicode_Check(value)) {
@@ -731,14 +731,14 @@ func_set_name(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 static TyObject *
 func_get_qualname(TyObject *self, void *Py_UNUSED(ignored))
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     return Ty_NewRef(op->func_qualname);
 }
 
 static int
 func_set_qualname(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     /* Not legal to del f.__qualname__ or to set it to anything
      * other than a string object. */
     if (value == NULL || !TyUnicode_Check(value)) {
@@ -753,7 +753,7 @@ func_set_qualname(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 static TyObject *
 func_get_defaults(TyObject *self, void *Py_UNUSED(ignored))
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     if (TySys_Audit("object.__getattr__", "Os", op, "__defaults__") < 0) {
         return NULL;
     }
@@ -768,7 +768,7 @@ func_set_defaults(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
     /* Legal to del f.func_defaults.
      * Can only set func_defaults to NULL or a tuple. */
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     if (value == Ty_None)
         value = NULL;
     if (value != NULL && !TyTuple_Check(value)) {
@@ -787,7 +787,7 @@ func_set_defaults(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
     }
 
     handle_func_event(TyFunction_EVENT_MODIFY_DEFAULTS, op, value);
-    _PyFunction_ClearVersion(op);
+    _TyFunction_ClearVersion(op);
     Ty_XSETREF(op->func_defaults, Ty_XNewRef(value));
     return 0;
 }
@@ -795,7 +795,7 @@ func_set_defaults(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 static TyObject *
 func_get_kwdefaults(TyObject *self, void *Py_UNUSED(ignored))
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     if (TySys_Audit("object.__getattr__", "Os",
                     op, "__kwdefaults__") < 0) {
         return NULL;
@@ -809,7 +809,7 @@ func_get_kwdefaults(TyObject *self, void *Py_UNUSED(ignored))
 static int
 func_set_kwdefaults(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     if (value == Ty_None)
         value = NULL;
     /* Legal to del f.func_kwdefaults.
@@ -830,7 +830,7 @@ func_set_kwdefaults(TyObject *self, TyObject *value, void *Py_UNUSED(ignored))
     }
 
     handle_func_event(TyFunction_EVENT_MODIFY_KWDEFAULTS, op, value);
-    _PyFunction_ClearVersion(op);
+    _TyFunction_ClearVersion(op);
     Ty_XSETREF(op->func_kwdefaults, Ty_XNewRef(value));
     return 0;
 }
@@ -1108,7 +1108,7 @@ func_new_impl(TyTypeObject *type, PyCodeObject *code, TyObject *globals,
 static int
 func_clear(TyObject *self)
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     func_clear_version(_TyInterpreterState_GET(), op);
     TyObject *globals = op->func_globals;
     op->func_globals = NULL;
@@ -1142,7 +1142,7 @@ func_clear(TyObject *self)
 static void
 func_dealloc(TyObject *self)
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     _TyObject_ResurrectStart(self);
     handle_func_event(TyFunction_EVENT_DESTROY, op, NULL);
     if (_TyObject_ResurrectEnd(self)) {
@@ -1161,7 +1161,7 @@ func_dealloc(TyObject *self)
 static TyObject*
 func_repr(TyObject *self)
 {
-    PyFunctionObject *op = _PyFunction_CAST(self);
+    PyFunctionObject *op = _TyFunction_CAST(self);
     return TyUnicode_FromFormat("<function %U at %p>",
                                 op->func_qualname, op);
 }
@@ -1169,7 +1169,7 @@ func_repr(TyObject *self)
 static int
 func_traverse(TyObject *self, visitproc visit, void *arg)
 {
-    PyFunctionObject *f = _PyFunction_CAST(self);
+    PyFunctionObject *f = _TyFunction_CAST(self);
     Ty_VISIT(f->func_code);
     Ty_VISIT(f->func_globals);
     Ty_VISIT(f->func_builtins);
@@ -1198,7 +1198,7 @@ func_descr_get(TyObject *func, TyObject *obj, TyObject *type)
 }
 
 TyTypeObject TyFunction_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "function",
     sizeof(PyFunctionObject),
     0,
@@ -1242,7 +1242,7 @@ TyTypeObject TyFunction_Type = {
 
 
 int
-_PyFunction_VerifyStateless(TyThreadState *tstate, TyObject *func)
+_TyFunction_VerifyStateless(TyThreadState *tstate, TyObject *func)
 {
     assert(!TyErr_Occurred());
     assert(TyFunction_Check(func));
@@ -1255,7 +1255,7 @@ _PyFunction_VerifyStateless(TyThreadState *tstate, TyObject *func)
         return -1;
     }
     // Check the builtins.
-    TyObject *builtinsns = _PyFunction_GET_BUILTINS(func);
+    TyObject *builtinsns = _TyFunction_GET_BUILTINS(func);
     if (builtinsns != NULL && !TyDict_Check(builtinsns)) {
         _TyErr_Format(tstate, TyExc_TypeError,
                       "unsupported builtins %R", builtinsns);
@@ -1555,7 +1555,7 @@ cm_repr(TyObject *self)
     return TyUnicode_FromFormat("<classmethod(%R)>", cm->cm_callable);
 }
 
-PyDoc_STRVAR(classmethod_doc,
+TyDoc_STRVAR(classmethod_doc,
 "classmethod(function, /)\n\
 --\n\
 \n\
@@ -1579,7 +1579,7 @@ Class methods are different than C++ or Java static methods.\n\
 If you want those, see the staticmethod builtin.");
 
 TyTypeObject TyClassMethod_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "classmethod",
     sizeof(classmethod),
     0,
@@ -1792,7 +1792,7 @@ sm_repr(TyObject *self)
     return TyUnicode_FromFormat("<staticmethod(%R)>", sm->sm_callable);
 }
 
-PyDoc_STRVAR(staticmethod_doc,
+TyDoc_STRVAR(staticmethod_doc,
 "staticmethod(function, /)\n\
 --\n\
 \n\
@@ -1814,7 +1814,7 @@ Static methods in Python are similar to those found in Java or C++.\n\
 For a more advanced concept, see the classmethod builtin.");
 
 TyTypeObject TyStaticMethod_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "staticmethod",
     sizeof(staticmethod),
     0,

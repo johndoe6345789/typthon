@@ -25,11 +25,11 @@ PyAPI_DATA(TyObject *) TyExc_InterpreterNotFoundError;
 
 typedef int (*_Ty_simple_func)(void *);
 extern int _Ty_CallInInterpreter(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     _Ty_simple_func func,
     void *arg);
 extern int _Ty_CallInInterpreterAndRawFree(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     _Ty_simple_func func,
     void *arg);
 
@@ -62,7 +62,7 @@ struct _xidata {
     // _TyObject_GetXIData() was called.  This should only
     // be set by the cross-interpreter machinery.
     //
-    // We use the ID rather than the PyInterpreterState to avoid issues
+    // We use the ID rather than the TyInterpreterState to avoid issues
     // with deleted interpreters.  Note that IDs are never re-used, so
     // each one will always correspond to a specific interpreter
     // (whether still alive or not).
@@ -97,13 +97,13 @@ PyAPI_FUNC(void) _PyXIData_Free(_PyXIData_t *data);
 
 PyAPI_FUNC(void) _PyXIData_Init(
         _PyXIData_t *data,
-        PyInterpreterState *interp, void *shared, TyObject *obj,
+        TyInterpreterState *interp, void *shared, TyObject *obj,
         xid_newobjfunc new_object);
 PyAPI_FUNC(int) _PyXIData_InitWithSize(
         _PyXIData_t *,
-        PyInterpreterState *interp, const size_t, TyObject *,
+        TyInterpreterState *interp, const size_t, TyObject *,
         xid_newobjfunc);
-PyAPI_FUNC(void) _PyXIData_Clear(PyInterpreterState *, _PyXIData_t *);
+PyAPI_FUNC(void) _PyXIData_Clear(TyInterpreterState *, _PyXIData_t *);
 
 // Normally the Init* functions are sufficient.  The only time
 // additional initialization might be needed is to set the "free" func,
@@ -222,8 +222,8 @@ PyAPI_FUNC(int) _TyCode_GetPureScriptXIData(
         _PyXIData_t *);
 
 // _TyObject_GetXIData() for functions
-PyAPI_FUNC(TyObject *) _PyFunction_FromXIData(_PyXIData_t *);
-PyAPI_FUNC(int) _PyFunction_GetXIData(
+PyAPI_FUNC(TyObject *) _TyFunction_FromXIData(_PyXIData_t *);
+PyAPI_FUNC(int) _TyFunction_GetXIData(
         TyThreadState *,
         TyObject *,
         _PyXIData_t *);
@@ -271,16 +271,16 @@ typedef struct {
 #define _PyXI_GET_STATE(interp) (&(interp)->xi)
 
 #ifndef Ty_BUILD_CORE_MODULE
-extern TyStatus _PyXI_Init(PyInterpreterState *interp);
-extern void _PyXI_Fini(PyInterpreterState *interp);
-extern TyStatus _PyXI_InitTypes(PyInterpreterState *interp);
-extern void _PyXI_FiniTypes(PyInterpreterState *interp);
+extern TyStatus _PyXI_Init(TyInterpreterState *interp);
+extern void _PyXI_Fini(TyInterpreterState *interp);
+extern TyStatus _PyXI_InitTypes(TyInterpreterState *interp);
+extern void _PyXI_FiniTypes(TyInterpreterState *interp);
 #endif  // Ty_BUILD_CORE_MODULE
 
 int _Ty_xi_global_state_init(_PyXI_global_state_t *);
 void _Ty_xi_global_state_fini(_PyXI_global_state_t *);
-int _Ty_xi_state_init(_PyXI_state_t *, PyInterpreterState *);
-void _Ty_xi_state_fini(_PyXI_state_t *, PyInterpreterState *);
+int _Ty_xi_state_init(_PyXI_state_t *, TyInterpreterState *);
+void _Ty_xi_state_fini(_PyXI_state_t *, TyInterpreterState *);
 
 
 /***************************/
@@ -362,7 +362,7 @@ PyAPI_FUNC(void) _PyXI_ClearResult(_PyXI_session_result *);
 
 PyAPI_FUNC(int) _PyXI_Enter(
     _PyXI_session *session,
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     TyObject *nsupdates,
     _PyXI_session_result *);
 PyAPI_FUNC(int) _PyXI_Exit(
@@ -389,13 +389,13 @@ PyAPI_FUNC(TyObject *) _PyXI_GetPreserved(
 /*************/
 
 // Export for _testinternalcapi shared extension
-PyAPI_FUNC(PyInterpreterState *) _PyXI_NewInterpreter(
+PyAPI_FUNC(TyInterpreterState *) _PyXI_NewInterpreter(
     PyInterpreterConfig *config,
     long *maybe_whence,
     TyThreadState **p_tstate,
     TyThreadState **p_save_tstate);
 PyAPI_FUNC(void) _PyXI_EndInterpreter(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     TyThreadState *tstate,
     TyThreadState **p_save_tstate);
 

@@ -40,7 +40,7 @@ pysqlite_connection_init(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(database), &_Ty_ID(timeout), &_Ty_ID(detect_types), &_Ty_ID(isolation_level), &_Ty_ID(check_same_thread), &_Ty_ID(factory), &_Ty_ID(cached_statements), &_Ty_ID(uri), &_Ty_ID(autocommit), },
     };
@@ -171,7 +171,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_cursor__doc__,
+TyDoc_STRVAR(pysqlite_connection_cursor__doc__,
 "cursor($self, /, factory=<unrepresentable>)\n"
 "--\n"
 "\n"
@@ -196,7 +196,7 @@ pysqlite_connection_cursor(TyObject *self, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(factory), },
     };
@@ -234,7 +234,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(blobopen__doc__,
+TyDoc_STRVAR(blobopen__doc__,
 "blobopen($self, table, column, row, /, *, readonly=False, name=\'main\')\n"
 "--\n"
 "\n"
@@ -271,7 +271,7 @@ blobopen(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwna
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(readonly), &_Ty_ID(name), },
     };
@@ -363,7 +363,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_close__doc__,
+TyDoc_STRVAR(pysqlite_connection_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -383,7 +383,7 @@ pysqlite_connection_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return pysqlite_connection_close_impl((pysqlite_Connection *)self);
 }
 
-PyDoc_STRVAR(pysqlite_connection_commit__doc__,
+TyDoc_STRVAR(pysqlite_connection_commit__doc__,
 "commit($self, /)\n"
 "--\n"
 "\n"
@@ -403,7 +403,7 @@ pysqlite_connection_commit(TyObject *self, TyObject *Py_UNUSED(ignored))
     return pysqlite_connection_commit_impl((pysqlite_Connection *)self);
 }
 
-PyDoc_STRVAR(pysqlite_connection_rollback__doc__,
+TyDoc_STRVAR(pysqlite_connection_rollback__doc__,
 "rollback($self, /)\n"
 "--\n"
 "\n"
@@ -423,7 +423,7 @@ pysqlite_connection_rollback(TyObject *self, TyObject *Py_UNUSED(ignored))
     return pysqlite_connection_rollback_impl((pysqlite_Connection *)self);
 }
 
-PyDoc_STRVAR(pysqlite_connection_create_function__doc__,
+TyDoc_STRVAR(pysqlite_connection_create_function__doc__,
 "create_function($self, /, name, narg, func, *, deterministic=False)\n"
 "--\n"
 "\n"
@@ -467,7 +467,7 @@ pysqlite_connection_create_function(TyObject *self, TyTypeObject *cls, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(narg), &_Ty_ID(func), &_Ty_ID(deterministic), },
     };
@@ -541,7 +541,7 @@ exit:
 
 #if defined(HAVE_WINDOW_FUNCTIONS)
 
-PyDoc_STRVAR(create_window_function__doc__,
+TyDoc_STRVAR(create_window_function__doc__,
 "create_window_function($self, name, num_params, aggregate_class, /)\n"
 "--\n"
 "\n"
@@ -617,7 +617,7 @@ exit:
 
 #endif /* defined(HAVE_WINDOW_FUNCTIONS) */
 
-PyDoc_STRVAR(pysqlite_connection_create_aggregate__doc__,
+TyDoc_STRVAR(pysqlite_connection_create_aggregate__doc__,
 "create_aggregate($self, /, name, n_arg, aggregate_class)\n"
 "--\n"
 "\n"
@@ -662,7 +662,7 @@ pysqlite_connection_create_aggregate(TyObject *self, TyTypeObject *cls, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(n_arg), &_Ty_ID(aggregate_class), },
     };
@@ -724,7 +724,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_set_authorizer__doc__,
+TyDoc_STRVAR(pysqlite_connection_set_authorizer__doc__,
 "set_authorizer($self, /, authorizer_callback)\n"
 "--\n"
 "\n"
@@ -767,7 +767,7 @@ pysqlite_connection_set_authorizer(TyObject *self, TyTypeObject *cls, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(authorizer_callback), },
     };
@@ -810,7 +810,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_set_progress_handler__doc__,
+TyDoc_STRVAR(pysqlite_connection_set_progress_handler__doc__,
 "set_progress_handler($self, /, progress_handler, n)\n"
 "--\n"
 "\n"
@@ -863,7 +863,7 @@ pysqlite_connection_set_progress_handler(TyObject *self, TyTypeObject *cls, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(progress_handler), _Ty_LATIN1_CHR('n'), },
     };
@@ -911,7 +911,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_set_trace_callback__doc__,
+TyDoc_STRVAR(pysqlite_connection_set_trace_callback__doc__,
 "set_trace_callback($self, /, trace_callback)\n"
 "--\n"
 "\n"
@@ -954,7 +954,7 @@ pysqlite_connection_set_trace_callback(TyObject *self, TyTypeObject *cls, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(trace_callback), },
     };
@@ -999,7 +999,7 @@ exit:
 
 #if defined(PY_SQLITE_ENABLE_LOAD_EXTENSION)
 
-PyDoc_STRVAR(pysqlite_connection_enable_load_extension__doc__,
+TyDoc_STRVAR(pysqlite_connection_enable_load_extension__doc__,
 "enable_load_extension($self, enable, /)\n"
 "--\n"
 "\n"
@@ -1032,7 +1032,7 @@ exit:
 
 #if defined(PY_SQLITE_ENABLE_LOAD_EXTENSION)
 
-PyDoc_STRVAR(pysqlite_connection_load_extension__doc__,
+TyDoc_STRVAR(pysqlite_connection_load_extension__doc__,
 "load_extension($self, name, /, *, entrypoint=None)\n"
 "--\n"
 "\n"
@@ -1059,7 +1059,7 @@ pysqlite_connection_load_extension(TyObject *self, TyObject *const *args, Ty_ssi
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(entrypoint), },
     };
@@ -1130,7 +1130,7 @@ exit:
 
 #endif /* defined(PY_SQLITE_ENABLE_LOAD_EXTENSION) */
 
-PyDoc_STRVAR(pysqlite_connection_execute__doc__,
+TyDoc_STRVAR(pysqlite_connection_execute__doc__,
 "execute($self, sql, parameters=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -1169,7 +1169,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_executemany__doc__,
+TyDoc_STRVAR(pysqlite_connection_executemany__doc__,
 "executemany($self, sql, parameters, /)\n"
 "--\n"
 "\n"
@@ -1204,7 +1204,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_executescript__doc__,
+TyDoc_STRVAR(pysqlite_connection_executescript__doc__,
 "executescript($self, sql_script, /)\n"
 "--\n"
 "\n"
@@ -1227,7 +1227,7 @@ pysqlite_connection_executescript(TyObject *self, TyObject *script_obj)
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_interrupt__doc__,
+TyDoc_STRVAR(pysqlite_connection_interrupt__doc__,
 "interrupt($self, /)\n"
 "--\n"
 "\n"
@@ -1245,7 +1245,7 @@ pysqlite_connection_interrupt(TyObject *self, TyObject *Py_UNUSED(ignored))
     return pysqlite_connection_interrupt_impl((pysqlite_Connection *)self);
 }
 
-PyDoc_STRVAR(pysqlite_connection_iterdump__doc__,
+TyDoc_STRVAR(pysqlite_connection_iterdump__doc__,
 "iterdump($self, /, *, filter=None)\n"
 "--\n"
 "\n"
@@ -1274,7 +1274,7 @@ pysqlite_connection_iterdump(TyObject *self, TyObject *const *args, Ty_ssize_t n
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(filter), },
     };
@@ -1312,7 +1312,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_backup__doc__,
+TyDoc_STRVAR(pysqlite_connection_backup__doc__,
 "backup($self, /, target, *, pages=-1, progress=None, name=\'main\',\n"
 "       sleep=0.25)\n"
 "--\n"
@@ -1341,7 +1341,7 @@ pysqlite_connection_backup(TyObject *self, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(target), &_Ty_ID(pages), &_Ty_ID(progress), &_Ty_ID(name), &_Ty_ID(sleep), },
     };
@@ -1430,7 +1430,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_connection_create_collation__doc__,
+TyDoc_STRVAR(pysqlite_connection_create_collation__doc__,
 "create_collation($self, name, callback, /)\n"
 "--\n"
 "\n"
@@ -1493,7 +1493,7 @@ exit:
 
 #if defined(PY_SQLITE_HAVE_SERIALIZE)
 
-PyDoc_STRVAR(serialize__doc__,
+TyDoc_STRVAR(serialize__doc__,
 "serialize($self, /, *, name=\'main\')\n"
 "--\n"
 "\n"
@@ -1526,7 +1526,7 @@ serialize(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwn
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), },
     };
@@ -1580,7 +1580,7 @@ exit:
 
 #if defined(PY_SQLITE_HAVE_SERIALIZE)
 
-PyDoc_STRVAR(deserialize__doc__,
+TyDoc_STRVAR(deserialize__doc__,
 "deserialize($self, data, /, *, name=\'main\')\n"
 "--\n"
 "\n"
@@ -1618,7 +1618,7 @@ deserialize(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), },
     };
@@ -1691,7 +1691,7 @@ exit:
 
 #endif /* defined(PY_SQLITE_HAVE_SERIALIZE) */
 
-PyDoc_STRVAR(pysqlite_connection_enter__doc__,
+TyDoc_STRVAR(pysqlite_connection_enter__doc__,
 "__enter__($self, /)\n"
 "--\n"
 "\n"
@@ -1711,7 +1711,7 @@ pysqlite_connection_enter(TyObject *self, TyObject *Py_UNUSED(ignored))
     return pysqlite_connection_enter_impl((pysqlite_Connection *)self);
 }
 
-PyDoc_STRVAR(pysqlite_connection_exit__doc__,
+TyDoc_STRVAR(pysqlite_connection_exit__doc__,
 "__exit__($self, type, value, traceback, /)\n"
 "--\n"
 "\n"
@@ -1746,7 +1746,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(setlimit__doc__,
+TyDoc_STRVAR(setlimit__doc__,
 "setlimit($self, category, limit, /)\n"
 "--\n"
 "\n"
@@ -1792,7 +1792,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(getlimit__doc__,
+TyDoc_STRVAR(getlimit__doc__,
 "getlimit($self, category, /)\n"
 "--\n"
 "\n"
@@ -1823,7 +1823,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(setconfig__doc__,
+TyDoc_STRVAR(setconfig__doc__,
 "setconfig($self, op, enable=True, /)\n"
 "--\n"
 "\n"
@@ -1866,7 +1866,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(getconfig__doc__,
+TyDoc_STRVAR(getconfig__doc__,
 "getconfig($self, op, /)\n"
 "--\n"
 "\n"

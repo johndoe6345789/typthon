@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_zstd_ZstdDict_new__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_new__doc__,
 "ZstdDict(dict_content, /, *, is_raw=False)\n"
 "--\n"
 "\n"
@@ -41,7 +41,7 @@ _zstd_ZstdDict_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(is_raw), },
     };
@@ -93,7 +93,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_ZstdDict_dict_content__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_dict_content__doc__,
 "The content of a Zstandard dictionary, as a bytes object.");
 #if defined(_zstd_ZstdDict_dict_content_DOCSTR)
 #   undef _zstd_ZstdDict_dict_content_DOCSTR
@@ -119,7 +119,7 @@ _zstd_ZstdDict_dict_content_get(TyObject *self, void *Py_UNUSED(context))
     return _zstd_ZstdDict_dict_content_get_impl((ZstdDict *)self);
 }
 
-PyDoc_STRVAR(_zstd_ZstdDict_as_digested_dict__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_as_digested_dict__doc__,
 "Load as a digested dictionary to compressor.\n"
 "\n"
 "Pass this attribute as zstd_dict argument:\n"
@@ -155,7 +155,7 @@ _zstd_ZstdDict_as_digested_dict_get(TyObject *self, void *Py_UNUSED(context))
     return _zstd_ZstdDict_as_digested_dict_get_impl((ZstdDict *)self);
 }
 
-PyDoc_STRVAR(_zstd_ZstdDict_as_undigested_dict__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_as_undigested_dict__doc__,
 "Load as an undigested dictionary to compressor.\n"
 "\n"
 "Pass this attribute as zstd_dict argument:\n"
@@ -189,7 +189,7 @@ _zstd_ZstdDict_as_undigested_dict_get(TyObject *self, void *Py_UNUSED(context))
     return _zstd_ZstdDict_as_undigested_dict_get_impl((ZstdDict *)self);
 }
 
-PyDoc_STRVAR(_zstd_ZstdDict_as_prefix__doc__,
+TyDoc_STRVAR(_zstd_ZstdDict_as_prefix__doc__,
 "Load as a prefix to compressor/decompressor.\n"
 "\n"
 "Pass this attribute as zstd_dict argument:\n"

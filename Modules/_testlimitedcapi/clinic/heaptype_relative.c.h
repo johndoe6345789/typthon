@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(make_heaptype_with_member__doc__,
+TyDoc_STRVAR(make_heaptype_with_member__doc__,
 "make_heaptype_with_member($module, /, extra_base_size=0, basicsize=0,\n"
 "                          member_offset=0, add_relative_flag=False, *,\n"
 "                          member_name=\'memb\', member_flags=0,\n"

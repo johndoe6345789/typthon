@@ -11,9 +11,9 @@ extern "C" {
 removed (with effort). */
 #define MAX_CO_EXTRA_USERS 255
 
-PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_New(void);
-PyAPI_FUNC(void) TyInterpreterState_Clear(PyInterpreterState *);
-PyAPI_FUNC(void) TyInterpreterState_Delete(PyInterpreterState *);
+PyAPI_FUNC(TyInterpreterState *) TyInterpreterState_New(void);
+PyAPI_FUNC(void) TyInterpreterState_Clear(TyInterpreterState *);
+PyAPI_FUNC(void) TyInterpreterState_Delete(TyInterpreterState *);
 
 #if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03090000
 /* New in 3.9 */
@@ -23,17 +23,17 @@ PyAPI_FUNC(void) TyInterpreterState_Delete(PyInterpreterState *);
    interpreter. It cannot return NULL.
 
    The caller must hold the GIL. */
-PyAPI_FUNC(PyInterpreterState *) TyInterpreterState_Get(void);
+PyAPI_FUNC(TyInterpreterState *) TyInterpreterState_Get(void);
 #endif
 
 #if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03080000
 /* New in 3.8 */
-PyAPI_FUNC(TyObject *) TyInterpreterState_GetDict(PyInterpreterState *);
+PyAPI_FUNC(TyObject *) TyInterpreterState_GetDict(TyInterpreterState *);
 #endif
 
 #if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03070000
 /* New in 3.7 */
-PyAPI_FUNC(int64_t) TyInterpreterState_GetID(PyInterpreterState *);
+PyAPI_FUNC(int64_t) TyInterpreterState_GetID(TyInterpreterState *);
 #endif
 #if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03030000
 
@@ -45,7 +45,7 @@ PyAPI_FUNC(int) PyState_RemoveModule(TyModuleDef*);
 #endif
 PyAPI_FUNC(TyObject*) PyState_FindModule(TyModuleDef*);
 
-PyAPI_FUNC(TyThreadState *) TyThreadState_New(PyInterpreterState *);
+PyAPI_FUNC(TyThreadState *) TyThreadState_New(TyInterpreterState *);
 PyAPI_FUNC(void) TyThreadState_Clear(TyThreadState *);
 PyAPI_FUNC(void) TyThreadState_Delete(TyThreadState *);
 
@@ -68,7 +68,7 @@ PyAPI_FUNC(int) TyThreadState_SetAsyncExc(unsigned long, TyObject *);
 
 #if !defined(Ty_LIMITED_API) || Ty_LIMITED_API+0 >= 0x03090000
 /* New in 3.9 */
-PyAPI_FUNC(PyInterpreterState*) TyThreadState_GetInterpreter(TyThreadState *tstate);
+PyAPI_FUNC(TyInterpreterState*) TyThreadState_GetInterpreter(TyThreadState *tstate);
 PyAPI_FUNC(PyFrameObject*) TyThreadState_GetFrame(TyThreadState *tstate);
 PyAPI_FUNC(uint64_t) TyThreadState_GetID(TyThreadState *tstate);
 #endif

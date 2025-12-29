@@ -3076,7 +3076,7 @@ bytes_subtype_new(TyTypeObject *type, TyObject *tmp)
     return pnew;
 }
 
-PyDoc_STRVAR(bytes_doc,
+TyDoc_STRVAR(bytes_doc,
 "bytes(iterable_of_ints) -> bytes\n\
 bytes(string, encoding[, errors]) -> bytes\n\
 bytes(bytes_or_buffer) -> immutable copy of bytes_or_buffer\n\
@@ -3092,7 +3092,7 @@ Construct an immutable array of bytes from:\n\
 static TyObject *bytes_iter(TyObject *seq);
 
 TyTypeObject TyBytes_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "bytes",
     PyBytesObject_SIZE,
     sizeof(char),
@@ -3328,7 +3328,7 @@ striter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSsize_t(len);
 }
 
-PyDoc_STRVAR(length_hint_doc,
+TyDoc_STRVAR(length_hint_doc,
              "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
@@ -3347,7 +3347,7 @@ striter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
     }
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
 static TyObject *
 striter_setstate(TyObject *op, TyObject *state)
@@ -3366,7 +3366,7 @@ striter_setstate(TyObject *op, TyObject *state)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
+TyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
 static TyMethodDef striter_methods[] = {
     {"__length_hint__", striter_len, METH_NOARGS, length_hint_doc},
@@ -3376,7 +3376,7 @@ static TyMethodDef striter_methods[] = {
 };
 
 TyTypeObject PyBytesIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "bytes_iterator",                           /* tp_name */
     sizeof(striterobject),                      /* tp_basicsize */
     0,                                          /* tp_itemsize */

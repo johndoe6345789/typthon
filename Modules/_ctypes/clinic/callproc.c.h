@@ -6,7 +6,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_ctypes_sizeof__doc__,
+TyDoc_STRVAR(_ctypes_sizeof__doc__,
 "sizeof($module, obj, /)\n"
 "--\n"
 "\n"
@@ -15,7 +15,7 @@ PyDoc_STRVAR(_ctypes_sizeof__doc__,
 #define _CTYPES_SIZEOF_METHODDEF    \
     {"sizeof", (PyCFunction)_ctypes_sizeof, METH_O, _ctypes_sizeof__doc__},
 
-PyDoc_STRVAR(_ctypes_byref__doc__,
+TyDoc_STRVAR(_ctypes_byref__doc__,
 "byref($module, obj, offset=0, /)\n"
 "--\n"
 "\n"
@@ -66,7 +66,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_ctypes_addressof__doc__,
+TyDoc_STRVAR(_ctypes_addressof__doc__,
 "addressof($module, obj, /)\n"
 "--\n"
 "\n"
@@ -97,7 +97,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_ctypes_resize__doc__,
+TyDoc_STRVAR(_ctypes_resize__doc__,
 "resize($module, obj, size, /)\n"
 "--\n"
 "\n");

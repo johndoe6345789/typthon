@@ -738,7 +738,7 @@ EVP_get_name(TyObject *op, void *Py_UNUSED(closure))
 static TyGetSetDef EVP_getseters[] = {
     {"digest_size", EVP_get_digest_size, NULL, NULL, NULL},
     {"block_size", EVP_get_block_size, NULL, NULL, NULL},
-    {"name", EVP_get_name, NULL, NULL, PyDoc_STR("algorithm name.")},
+    {"name", EVP_get_name, NULL, NULL, TyDoc_STR("algorithm name.")},
     {NULL}  /* Sentinel */
 };
 
@@ -756,7 +756,7 @@ EVP_repr(TyObject *self)
     return repr;
 }
 
-PyDoc_STRVAR(hashtype_doc,
+TyDoc_STRVAR(hashtype_doc,
 "HASH(name, string=b\'\')\n"
 "--\n"
 "\n"
@@ -907,7 +907,7 @@ static TyGetSetDef EVPXOF_getseters[] = {
     {NULL}  /* Sentinel */
 };
 
-PyDoc_STRVAR(hashxoftype_doc,
+TyDoc_STRVAR(hashxoftype_doc,
 "HASHXOF(name, string=b\'\')\n"
 "--\n"
 "\n"
@@ -1903,7 +1903,7 @@ static TyGetSetDef HMAC_getset[] = {
 };
 
 
-PyDoc_STRVAR(hmactype_doc,
+TyDoc_STRVAR(hmactype_doc,
 "The object used to calculate HMAC of a message.\n\
 \n\
 Methods:\n\

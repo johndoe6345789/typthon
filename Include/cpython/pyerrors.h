@@ -12,7 +12,7 @@
 
 typedef struct {
     PyException_HEAD
-} PyBaseExceptionObject;
+} TyBaseExceptionObject;
 
 typedef struct {
     PyException_HEAD

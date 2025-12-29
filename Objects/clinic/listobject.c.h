@@ -10,7 +10,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(list_insert__doc__,
+TyDoc_STRVAR(list_insert__doc__,
 "insert($self, index, object, /)\n"
 "--\n"
 "\n"
@@ -53,7 +53,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(py_list_clear__doc__,
+TyDoc_STRVAR(py_list_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -77,7 +77,7 @@ py_list_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(list_copy__doc__,
+TyDoc_STRVAR(list_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -101,7 +101,7 @@ list_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(list_append__doc__,
+TyDoc_STRVAR(list_append__doc__,
 "append($self, object, /)\n"
 "--\n"
 "\n"
@@ -125,7 +125,7 @@ list_append(TyObject *self, TyObject *object)
     return return_value;
 }
 
-PyDoc_STRVAR(list_extend__doc__,
+TyDoc_STRVAR(list_extend__doc__,
 "extend($self, iterable, /)\n"
 "--\n"
 "\n"
@@ -147,7 +147,7 @@ list_extend(TyObject *self, TyObject *iterable)
     return return_value;
 }
 
-PyDoc_STRVAR(list_pop__doc__,
+TyDoc_STRVAR(list_pop__doc__,
 "pop($self, index=-1, /)\n"
 "--\n"
 "\n"
@@ -194,7 +194,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(list_sort__doc__,
+TyDoc_STRVAR(list_sort__doc__,
 "sort($self, /, *, key=None, reverse=False)\n"
 "--\n"
 "\n"
@@ -227,7 +227,7 @@ list_sort(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *kwn
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(reverse), },
     };
@@ -277,7 +277,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(list_reverse__doc__,
+TyDoc_STRVAR(list_reverse__doc__,
 "reverse($self, /)\n"
 "--\n"
 "\n"
@@ -301,7 +301,7 @@ list_reverse(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(list_index__doc__,
+TyDoc_STRVAR(list_index__doc__,
 "index($self, value, start=0, stop=sys.maxsize, /)\n"
 "--\n"
 "\n"
@@ -347,7 +347,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(list_count__doc__,
+TyDoc_STRVAR(list_count__doc__,
 "count($self, value, /)\n"
 "--\n"
 "\n"
@@ -369,7 +369,7 @@ list_count(TyObject *self, TyObject *value)
     return return_value;
 }
 
-PyDoc_STRVAR(list_remove__doc__,
+TyDoc_STRVAR(list_remove__doc__,
 "remove($self, value, /)\n"
 "--\n"
 "\n"
@@ -395,7 +395,7 @@ list_remove(TyObject *self, TyObject *value)
     return return_value;
 }
 
-PyDoc_STRVAR(list___init____doc__,
+TyDoc_STRVAR(list___init____doc__,
 "list(iterable=(), /)\n"
 "--\n"
 "\n"
@@ -433,7 +433,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(list___sizeof____doc__,
+TyDoc_STRVAR(list___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -451,7 +451,7 @@ list___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return list___sizeof___impl((PyListObject *)self);
 }
 
-PyDoc_STRVAR(list___reversed____doc__,
+TyDoc_STRVAR(list___reversed____doc__,
 "__reversed__($self, /)\n"
 "--\n"
 "\n"

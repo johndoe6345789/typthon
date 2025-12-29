@@ -10,7 +10,7 @@ preserve
 
 #if (defined(HAVE_PTHREAD_GETNAME_NP) || defined(HAVE_PTHREAD_GET_NAME_NP) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(_thread__get_name__doc__,
+TyDoc_STRVAR(_thread__get_name__doc__,
 "_get_name($module, /)\n"
 "--\n"
 "\n"
@@ -32,7 +32,7 @@ _thread__get_name(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if (defined(HAVE_PTHREAD_SETNAME_NP) || defined(HAVE_PTHREAD_SET_NAME_NP) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(_thread_set_name__doc__,
+TyDoc_STRVAR(_thread_set_name__doc__,
 "set_name($module, /, name)\n"
 "--\n"
 "\n"
@@ -57,7 +57,7 @@ _thread_set_name(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), },
     };

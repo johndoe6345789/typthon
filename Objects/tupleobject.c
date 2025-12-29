@@ -848,7 +848,7 @@ static TyMethodDef tuple_methods[] = {
     TUPLE___GETNEWARGS___METHODDEF
     TUPLE_INDEX_METHODDEF
     TUPLE_COUNT_METHODDEF
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL,              NULL}           /* sentinel */
 };
 
@@ -861,7 +861,7 @@ static PyMappingMethods tuple_as_mapping = {
 static TyObject *tuple_iter(TyObject *seq);
 
 TyTypeObject TyTuple_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "tuple",
     sizeof(PyTupleObject) - sizeof(TyObject *),
     sizeof(TyObject *),
@@ -1048,7 +1048,7 @@ tupleiter_len(TyObject *self, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSsize_t(len);
 }
 
-PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
+TyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
 tupleiter_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
@@ -1088,8 +1088,8 @@ tupleiter_setstate(TyObject *self, TyObject *state)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
-PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
 static TyMethodDef tupleiter_methods[] = {
     {"__length_hint__", tupleiter_len, METH_NOARGS, length_hint_doc},
@@ -1099,7 +1099,7 @@ static TyMethodDef tupleiter_methods[] = {
 };
 
 TyTypeObject PyTupleIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "tuple_iterator",                           /* tp_name */
     sizeof(_PyTupleIterObject),                 /* tp_basicsize */
     0,                                          /* tp_itemsize */

@@ -6,7 +6,7 @@ preserve
 #include "pycore_long.h"          // _TyLong_UInt64_Converter()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_random_Random_random__doc__,
+TyDoc_STRVAR(_random_Random_random__doc__,
 "random($self, /)\n"
 "--\n"
 "\n"
@@ -30,7 +30,7 @@ _random_Random_random(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_random_Random_seed__doc__,
+TyDoc_STRVAR(_random_Random_seed__doc__,
 "seed($self, n=None, /)\n"
 "--\n"
 "\n"
@@ -67,7 +67,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_random_Random_getstate__doc__,
+TyDoc_STRVAR(_random_Random_getstate__doc__,
 "getstate($self, /)\n"
 "--\n"
 "\n"
@@ -91,7 +91,7 @@ _random_Random_getstate(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(_random_Random_setstate__doc__,
+TyDoc_STRVAR(_random_Random_setstate__doc__,
 "setstate($self, state, /)\n"
 "--\n"
 "\n"
@@ -115,7 +115,7 @@ _random_Random_setstate(TyObject *self, TyObject *state)
     return return_value;
 }
 
-PyDoc_STRVAR(_random_Random_getrandbits__doc__,
+TyDoc_STRVAR(_random_Random_getrandbits__doc__,
 "getrandbits($self, k, /)\n"
 "--\n"
 "\n"

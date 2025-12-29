@@ -5,7 +5,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(dict_fromkeys__doc__,
+TyDoc_STRVAR(dict_fromkeys__doc__,
 "fromkeys($type, iterable, value=None, /)\n"
 "--\n"
 "\n"
@@ -39,7 +39,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(dict_copy__doc__,
+TyDoc_STRVAR(dict_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -57,7 +57,7 @@ dict_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
     return dict_copy_impl((PyDictObject *)self);
 }
 
-PyDoc_STRVAR(dict___contains____doc__,
+TyDoc_STRVAR(dict___contains____doc__,
 "__contains__($self, key, /)\n"
 "--\n"
 "\n"
@@ -79,7 +79,7 @@ dict___contains__(TyObject *self, TyObject *key)
     return return_value;
 }
 
-PyDoc_STRVAR(dict_get__doc__,
+TyDoc_STRVAR(dict_get__doc__,
 "get($self, key, default=None, /)\n"
 "--\n"
 "\n"
@@ -113,7 +113,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(dict_setdefault__doc__,
+TyDoc_STRVAR(dict_setdefault__doc__,
 "setdefault($self, key, default=None, /)\n"
 "--\n"
 "\n"
@@ -152,7 +152,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(dict_clear__doc__,
+TyDoc_STRVAR(dict_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -170,7 +170,7 @@ dict_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
     return dict_clear_impl((PyDictObject *)self);
 }
 
-PyDoc_STRVAR(dict_pop__doc__,
+TyDoc_STRVAR(dict_pop__doc__,
 "pop($self, key, default=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -207,7 +207,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(dict_popitem__doc__,
+TyDoc_STRVAR(dict_popitem__doc__,
 "popitem($self, /)\n"
 "--\n"
 "\n"
@@ -234,7 +234,7 @@ dict_popitem(TyObject *self, TyObject *Py_UNUSED(ignored))
     return return_value;
 }
 
-PyDoc_STRVAR(dict___sizeof____doc__,
+TyDoc_STRVAR(dict___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -252,7 +252,7 @@ dict___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return dict___sizeof___impl((PyDictObject *)self);
 }
 
-PyDoc_STRVAR(dict___reversed____doc__,
+TyDoc_STRVAR(dict___reversed____doc__,
 "__reversed__($self, /)\n"
 "--\n"
 "\n"
@@ -270,7 +270,7 @@ dict___reversed__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return dict___reversed___impl((PyDictObject *)self);
 }
 
-PyDoc_STRVAR(dict_keys__doc__,
+TyDoc_STRVAR(dict_keys__doc__,
 "keys($self, /)\n"
 "--\n"
 "\n"
@@ -288,7 +288,7 @@ dict_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
     return dict_keys_impl((PyDictObject *)self);
 }
 
-PyDoc_STRVAR(dict_items__doc__,
+TyDoc_STRVAR(dict_items__doc__,
 "items($self, /)\n"
 "--\n"
 "\n"
@@ -306,7 +306,7 @@ dict_items(TyObject *self, TyObject *Py_UNUSED(ignored))
     return dict_items_impl((PyDictObject *)self);
 }
 
-PyDoc_STRVAR(dict_values__doc__,
+TyDoc_STRVAR(dict_values__doc__,
 "values($self, /)\n"
 "--\n"
 "\n"

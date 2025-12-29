@@ -35,10 +35,10 @@ extern "C" {
 
 /* runtime lifecycle */
 
-extern TyStatus _PyTypes_InitTypes(PyInterpreterState *);
-extern void _PyTypes_FiniTypes(PyInterpreterState *);
-extern void _PyTypes_FiniExtTypes(PyInterpreterState *interp);
-extern void _PyTypes_Fini(PyInterpreterState *);
+extern TyStatus _PyTypes_InitTypes(TyInterpreterState *);
+extern void _PyTypes_FiniTypes(TyInterpreterState *);
+extern void _PyTypes_FiniExtTypes(TyInterpreterState *interp);
+extern void _PyTypes_Fini(TyInterpreterState *);
 extern void _PyTypes_AfterFork(void);
 
 static inline TyObject **
@@ -49,21 +49,21 @@ _PyStaticType_GET_WEAKREFS_LISTPTR(managed_static_type_state *state)
 }
 
 extern int _PyStaticType_InitBuiltin(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     TyTypeObject *type);
 extern void _PyStaticType_FiniBuiltin(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     TyTypeObject *type);
 extern void _PyStaticType_ClearWeakRefs(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     TyTypeObject *type);
 extern managed_static_type_state * _PyStaticType_GetState(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     TyTypeObject *type);
 
 // Export for '_datetime' shared extension.
 PyAPI_FUNC(int) _PyStaticType_InitForExtension(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
      TyTypeObject *self);
 
 // Export for _testinternalcapi extension.

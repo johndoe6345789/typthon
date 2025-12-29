@@ -3552,7 +3552,7 @@ _Ty_GetConfigsAsDict(void)
     Ty_CLEAR(dict);
 
     /* pre config */
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     const PyPreConfig *pre_config = &interp->runtime->preconfig;
     dict = _TyPreConfig_AsDict(pre_config);
     if (dict == NULL) {
@@ -4327,7 +4327,7 @@ config_get(const PyConfig *config, const PyConfigSpec *spec,
         }
 
         if (strcmp(spec->name, "int_max_str_digits") == 0) {
-            PyInterpreterState *interp = _TyInterpreterState_GET();
+            TyInterpreterState *interp = _TyInterpreterState_GET();
             return TyLong_FromLong(interp->long_state.max_str_digits);
         }
     }
@@ -4508,7 +4508,7 @@ error:
 static int
 config_set_sys_flag(const PyConfigSpec *spec, int int_value)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     PyConfig *config = &interp->config;
 
     if (spec->type == PyConfig_MEMBER_BOOL) {
@@ -4562,7 +4562,7 @@ error:
 static int
 config_set_int_attr(const PyConfigSpec *spec, int value)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     PyConfig *config = &interp->config;
     int *member = config_get_spec_member(config, spec);
     *member = value;
@@ -4683,7 +4683,7 @@ PyConfig_Set(const char *name, TyObject *value)
     }
 
     if (spec->sys.attr != NULL) {
-        // Set the sys attribute, but don't set PyInterpreterState.config
+        // Set the sys attribute, but don't set TyInterpreterState.config
         // to keep the code simple.
         return TySys_SetObject(spec->sys.attr, value);
     }

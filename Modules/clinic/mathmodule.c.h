@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(math_gcd__doc__,
+TyDoc_STRVAR(math_gcd__doc__,
 "gcd($module, /, *integers)\n"
 "--\n"
 "\n"
@@ -35,7 +35,7 @@ math_gcd(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
     return return_value;
 }
 
-PyDoc_STRVAR(math_lcm__doc__,
+TyDoc_STRVAR(math_lcm__doc__,
 "lcm($module, /, *integers)\n"
 "--\n"
 "\n"
@@ -62,7 +62,7 @@ math_lcm(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
     return return_value;
 }
 
-PyDoc_STRVAR(math_ceil__doc__,
+TyDoc_STRVAR(math_ceil__doc__,
 "ceil($module, x, /)\n"
 "--\n"
 "\n"
@@ -73,7 +73,7 @@ PyDoc_STRVAR(math_ceil__doc__,
 #define MATH_CEIL_METHODDEF    \
     {"ceil", (PyCFunction)math_ceil, METH_O, math_ceil__doc__},
 
-PyDoc_STRVAR(math_floor__doc__,
+TyDoc_STRVAR(math_floor__doc__,
 "floor($module, x, /)\n"
 "--\n"
 "\n"
@@ -84,7 +84,7 @@ PyDoc_STRVAR(math_floor__doc__,
 #define MATH_FLOOR_METHODDEF    \
     {"floor", (PyCFunction)math_floor, METH_O, math_floor__doc__},
 
-PyDoc_STRVAR(math_fsum__doc__,
+TyDoc_STRVAR(math_fsum__doc__,
 "fsum($module, seq, /)\n"
 "--\n"
 "\n"
@@ -95,7 +95,7 @@ PyDoc_STRVAR(math_fsum__doc__,
 #define MATH_FSUM_METHODDEF    \
     {"fsum", (PyCFunction)math_fsum, METH_O, math_fsum__doc__},
 
-PyDoc_STRVAR(math_isqrt__doc__,
+TyDoc_STRVAR(math_isqrt__doc__,
 "isqrt($module, n, /)\n"
 "--\n"
 "\n"
@@ -104,7 +104,7 @@ PyDoc_STRVAR(math_isqrt__doc__,
 #define MATH_ISQRT_METHODDEF    \
     {"isqrt", (PyCFunction)math_isqrt, METH_O, math_isqrt__doc__},
 
-PyDoc_STRVAR(math_factorial__doc__,
+TyDoc_STRVAR(math_factorial__doc__,
 "factorial($module, n, /)\n"
 "--\n"
 "\n"
@@ -113,7 +113,7 @@ PyDoc_STRVAR(math_factorial__doc__,
 #define MATH_FACTORIAL_METHODDEF    \
     {"factorial", (PyCFunction)math_factorial, METH_O, math_factorial__doc__},
 
-PyDoc_STRVAR(math_trunc__doc__,
+TyDoc_STRVAR(math_trunc__doc__,
 "trunc($module, x, /)\n"
 "--\n"
 "\n"
@@ -124,7 +124,7 @@ PyDoc_STRVAR(math_trunc__doc__,
 #define MATH_TRUNC_METHODDEF    \
     {"trunc", (PyCFunction)math_trunc, METH_O, math_trunc__doc__},
 
-PyDoc_STRVAR(math_frexp__doc__,
+TyDoc_STRVAR(math_frexp__doc__,
 "frexp($module, x, /)\n"
 "--\n"
 "\n"
@@ -161,7 +161,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_ldexp__doc__,
+TyDoc_STRVAR(math_ldexp__doc__,
 "ldexp($module, x, i, /)\n"
 "--\n"
 "\n"
@@ -202,7 +202,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_modf__doc__,
+TyDoc_STRVAR(math_modf__doc__,
 "modf($module, x, /)\n"
 "--\n"
 "\n"
@@ -238,7 +238,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_log2__doc__,
+TyDoc_STRVAR(math_log2__doc__,
 "log2($module, x, /)\n"
 "--\n"
 "\n"
@@ -247,7 +247,7 @@ PyDoc_STRVAR(math_log2__doc__,
 #define MATH_LOG2_METHODDEF    \
     {"log2", (PyCFunction)math_log2, METH_O, math_log2__doc__},
 
-PyDoc_STRVAR(math_log10__doc__,
+TyDoc_STRVAR(math_log10__doc__,
 "log10($module, x, /)\n"
 "--\n"
 "\n"
@@ -256,7 +256,7 @@ PyDoc_STRVAR(math_log10__doc__,
 #define MATH_LOG10_METHODDEF    \
     {"log10", (PyCFunction)math_log10, METH_O, math_log10__doc__},
 
-PyDoc_STRVAR(math_fma__doc__,
+TyDoc_STRVAR(math_fma__doc__,
 "fma($module, x, y, z, /)\n"
 "--\n"
 "\n"
@@ -317,7 +317,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_fmod__doc__,
+TyDoc_STRVAR(math_fmod__doc__,
 "fmod($module, x, y, /)\n"
 "--\n"
 "\n"
@@ -367,7 +367,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_dist__doc__,
+TyDoc_STRVAR(math_dist__doc__,
 "dist($module, p, q, /)\n"
 "--\n"
 "\n"
@@ -403,7 +403,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_hypot__doc__,
+TyDoc_STRVAR(math_hypot__doc__,
 "hypot($module, /, *coordinates)\n"
 "--\n"
 "\n"
@@ -441,7 +441,7 @@ math_hypot(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
     return return_value;
 }
 
-PyDoc_STRVAR(math_sumprod__doc__,
+TyDoc_STRVAR(math_sumprod__doc__,
 "sumprod($module, p, q, /)\n"
 "--\n"
 "\n"
@@ -478,7 +478,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_pow__doc__,
+TyDoc_STRVAR(math_pow__doc__,
 "pow($module, x, y, /)\n"
 "--\n"
 "\n"
@@ -526,7 +526,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_degrees__doc__,
+TyDoc_STRVAR(math_degrees__doc__,
 "degrees($module, x, /)\n"
 "--\n"
 "\n"
@@ -560,7 +560,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_radians__doc__,
+TyDoc_STRVAR(math_radians__doc__,
 "radians($module, x, /)\n"
 "--\n"
 "\n"
@@ -594,7 +594,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_isfinite__doc__,
+TyDoc_STRVAR(math_isfinite__doc__,
 "isfinite($module, x, /)\n"
 "--\n"
 "\n"
@@ -628,7 +628,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_isnan__doc__,
+TyDoc_STRVAR(math_isnan__doc__,
 "isnan($module, x, /)\n"
 "--\n"
 "\n"
@@ -662,7 +662,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_isinf__doc__,
+TyDoc_STRVAR(math_isinf__doc__,
 "isinf($module, x, /)\n"
 "--\n"
 "\n"
@@ -696,7 +696,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_isclose__doc__,
+TyDoc_STRVAR(math_isclose__doc__,
 "isclose($module, /, a, b, *, rel_tol=1e-09, abs_tol=0.0)\n"
 "--\n"
 "\n"
@@ -738,7 +738,7 @@ math_isclose(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), &_Ty_ID(rel_tol), &_Ty_ID(abs_tol), },
     };
@@ -828,7 +828,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_prod__doc__,
+TyDoc_STRVAR(math_prod__doc__,
 "prod($module, iterable, /, *, start=1)\n"
 "--\n"
 "\n"
@@ -859,7 +859,7 @@ math_prod(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(start), },
     };
@@ -899,7 +899,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_perm__doc__,
+TyDoc_STRVAR(math_perm__doc__,
 "perm($module, n, k=None, /)\n"
 "--\n"
 "\n"
@@ -942,7 +942,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_comb__doc__,
+TyDoc_STRVAR(math_comb__doc__,
 "comb($module, n, k, /)\n"
 "--\n"
 "\n"
@@ -982,7 +982,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_nextafter__doc__,
+TyDoc_STRVAR(math_nextafter__doc__,
 "nextafter($module, x, y, /, *, steps=None)\n"
 "--\n"
 "\n"
@@ -1012,7 +1012,7 @@ math_nextafter(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(steps), },
     };
@@ -1072,7 +1072,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(math_ulp__doc__,
+TyDoc_STRVAR(math_ulp__doc__,
 "ulp($module, x, /)\n"
 "--\n"
 "\n"

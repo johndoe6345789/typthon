@@ -11,7 +11,7 @@ preserve
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_HKEYType_Close__doc__,
+TyDoc_STRVAR(winreg_HKEYType_Close__doc__,
 "Close($self, /)\n"
 "--\n"
 "\n"
@@ -35,7 +35,7 @@ winreg_HKEYType_Close(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_HKEYType_Detach__doc__,
+TyDoc_STRVAR(winreg_HKEYType_Detach__doc__,
 "Detach($self, /)\n"
 "--\n"
 "\n"
@@ -65,7 +65,7 @@ winreg_HKEYType_Detach(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_HKEYType___enter____doc__,
+TyDoc_STRVAR(winreg_HKEYType___enter____doc__,
 "__enter__($self, /)\n"
 "--\n"
 "\n");
@@ -92,7 +92,7 @@ winreg_HKEYType___enter__(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_HKEYType___exit____doc__,
+TyDoc_STRVAR(winreg_HKEYType___exit____doc__,
 "__exit__($self, exc_type, exc_value, traceback, /)\n"
 "--\n"
 "\n");
@@ -128,7 +128,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_CloseKey__doc__,
+TyDoc_STRVAR(winreg_CloseKey__doc__,
 "CloseKey($module, hkey, /)\n"
 "--\n"
 "\n"
@@ -147,7 +147,7 @@ PyDoc_STRVAR(winreg_CloseKey__doc__,
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES)) && (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(winreg_ConnectRegistry__doc__,
+TyDoc_STRVAR(winreg_ConnectRegistry__doc__,
 "ConnectRegistry($module, computer_name, key, /)\n"
 "--\n"
 "\n"
@@ -213,7 +213,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_CreateKey__doc__,
+TyDoc_STRVAR(winreg_CreateKey__doc__,
 "CreateKey($module, key, sub_key, /)\n"
 "--\n"
 "\n"
@@ -282,7 +282,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_CreateKeyEx__doc__,
+TyDoc_STRVAR(winreg_CreateKeyEx__doc__,
 "CreateKeyEx($module, /, key, sub_key, reserved=0,\n"
 "            access=winreg.KEY_WRITE)\n"
 "--\n"
@@ -327,7 +327,7 @@ winreg_CreateKeyEx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(sub_key), &_Ty_ID(reserved), &_Ty_ID(access), },
     };
@@ -408,7 +408,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_DeleteKey__doc__,
+TyDoc_STRVAR(winreg_DeleteKey__doc__,
 "DeleteKey($module, key, sub_key, /)\n"
 "--\n"
 "\n"
@@ -466,7 +466,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_DeleteKeyEx__doc__,
+TyDoc_STRVAR(winreg_DeleteKeyEx__doc__,
 "DeleteKeyEx($module, /, key, sub_key, access=winreg.KEY_WOW64_64KEY,\n"
 "            reserved=0)\n"
 "--\n"
@@ -514,7 +514,7 @@ winreg_DeleteKeyEx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(sub_key), &_Ty_ID(access), &_Ty_ID(reserved), },
     };
@@ -585,7 +585,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_DeleteValue__doc__,
+TyDoc_STRVAR(winreg_DeleteValue__doc__,
 "DeleteValue($module, key, value, /)\n"
 "--\n"
 "\n"
@@ -641,7 +641,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_EnumKey__doc__,
+TyDoc_STRVAR(winreg_EnumKey__doc__,
 "EnumKey($module, key, index, /)\n"
 "--\n"
 "\n"
@@ -689,7 +689,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_EnumValue__doc__,
+TyDoc_STRVAR(winreg_EnumValue__doc__,
 "EnumValue($module, key, index, /)\n"
 "--\n"
 "\n"
@@ -746,7 +746,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_ExpandEnvironmentStrings__doc__,
+TyDoc_STRVAR(winreg_ExpandEnvironmentStrings__doc__,
 "ExpandEnvironmentStrings($module, string, /)\n"
 "--\n"
 "\n"
@@ -785,7 +785,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES)) && (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(winreg_FlushKey__doc__,
+TyDoc_STRVAR(winreg_FlushKey__doc__,
 "FlushKey($module, key, /)\n"
 "--\n"
 "\n"
@@ -829,7 +829,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES)) && (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(winreg_LoadKey__doc__,
+TyDoc_STRVAR(winreg_LoadKey__doc__,
 "LoadKey($module, key, sub_key, file_name, /)\n"
 "--\n"
 "\n"
@@ -909,7 +909,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_OpenKey__doc__,
+TyDoc_STRVAR(winreg_OpenKey__doc__,
 "OpenKey($module, /, key, sub_key, reserved=0, access=winreg.KEY_READ)\n"
 "--\n"
 "\n"
@@ -948,7 +948,7 @@ winreg_OpenKey(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(sub_key), &_Ty_ID(reserved), &_Ty_ID(access), },
     };
@@ -1029,7 +1029,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_OpenKeyEx__doc__,
+TyDoc_STRVAR(winreg_OpenKeyEx__doc__,
 "OpenKeyEx($module, /, key, sub_key, reserved=0, access=winreg.KEY_READ)\n"
 "--\n"
 "\n"
@@ -1068,7 +1068,7 @@ winreg_OpenKeyEx(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(sub_key), &_Ty_ID(reserved), &_Ty_ID(access), },
     };
@@ -1149,7 +1149,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_QueryInfoKey__doc__,
+TyDoc_STRVAR(winreg_QueryInfoKey__doc__,
 "QueryInfoKey($module, key, /)\n"
 "--\n"
 "\n"
@@ -1189,7 +1189,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_QueryValue__doc__,
+TyDoc_STRVAR(winreg_QueryValue__doc__,
 "QueryValue($module, key, sub_key, /)\n"
 "--\n"
 "\n"
@@ -1254,7 +1254,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_QueryValueEx__doc__,
+TyDoc_STRVAR(winreg_QueryValueEx__doc__,
 "QueryValueEx($module, key, name, /)\n"
 "--\n"
 "\n"
@@ -1315,7 +1315,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES)) && (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(winreg_SaveKey__doc__,
+TyDoc_STRVAR(winreg_SaveKey__doc__,
 "SaveKey($module, key, file_name, /)\n"
 "--\n"
 "\n"
@@ -1376,7 +1376,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_SetValue__doc__,
+TyDoc_STRVAR(winreg_SetValue__doc__,
 "SetValue($module, key, sub_key, type, value, /)\n"
 "--\n"
 "\n"
@@ -1458,7 +1458,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES))
 
-PyDoc_STRVAR(winreg_SetValueEx__doc__,
+TyDoc_STRVAR(winreg_SetValueEx__doc__,
 "SetValueEx($module, key, value_name, reserved, type, value, /)\n"
 "--\n"
 "\n"
@@ -1555,7 +1555,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES)) && (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(winreg_DisableReflectionKey__doc__,
+TyDoc_STRVAR(winreg_DisableReflectionKey__doc__,
 "DisableReflectionKey($module, key, /)\n"
 "--\n"
 "\n"
@@ -1595,7 +1595,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES)) && (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(winreg_EnableReflectionKey__doc__,
+TyDoc_STRVAR(winreg_EnableReflectionKey__doc__,
 "EnableReflectionKey($module, key, /)\n"
 "--\n"
 "\n"
@@ -1633,7 +1633,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM) || defined(MS_WINDOWS_GAMES)) && (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(winreg_QueryReflectionKey__doc__,
+TyDoc_STRVAR(winreg_QueryReflectionKey__doc__,
 "QueryReflectionKey($module, key, /)\n"
 "--\n"
 "\n"

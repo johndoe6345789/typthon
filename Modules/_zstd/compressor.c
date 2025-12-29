@@ -747,7 +747,7 @@ static TyMethodDef ZstdCompressor_methods[] = {
     {NULL, NULL}
 };
 
-PyDoc_STRVAR(ZstdCompressor_last_mode_doc,
+TyDoc_STRVAR(ZstdCompressor_last_mode_doc,
 "The last mode used to this compressor object, its value can be .CONTINUE,\n"
 ".FLUSH_BLOCK, .FLUSH_FRAME. Initialized to .FLUSH_FRAME.\n\n"
 "It can be used to get the current state of a compressor, such as, data\n"

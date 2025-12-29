@@ -98,19 +98,19 @@ OutputBuffer_OnError(_BlocksOutputBuffer *buffer)
 
 
 #define ACQUIRE_LOCK(obj) do { \
-    if (!PyThread_acquire_lock((obj)->lock, 0)) { \
+    if (!TyThread_acquire_lock((obj)->lock, 0)) { \
         Ty_BEGIN_ALLOW_THREADS \
-        PyThread_acquire_lock((obj)->lock, 1); \
+        TyThread_acquire_lock((obj)->lock, 1); \
         Ty_END_ALLOW_THREADS \
     } } while (0)
-#define RELEASE_LOCK(obj) PyThread_release_lock((obj)->lock)
+#define RELEASE_LOCK(obj) TyThread_release_lock((obj)->lock)
 
 
 typedef struct {
     PyObject_HEAD
     bz_stream bzs;
     int flushed;
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
 } BZ2Compressor;
 
 typedef struct {
@@ -126,7 +126,7 @@ typedef struct {
        separately. Conversion and looping is encapsulated in
        decompress_buf() */
     size_t bzs_avail_in_real;
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
 } BZ2Decompressor;
 
 #define _BZ2Compressor_CAST(op)     ((BZ2Compressor *)(op))
@@ -357,7 +357,7 @@ _bz2_BZ2Compressor_impl(TyTypeObject *type, int compresslevel)
         return NULL;
     }
 
-    self->lock = PyThread_allocate_lock();
+    self->lock = TyThread_allocate_lock();
     if (self->lock == NULL) {
         Ty_DECREF(self);
         TyErr_SetString(TyExc_MemoryError, "Unable to allocate lock");
@@ -384,7 +384,7 @@ BZ2Compressor_dealloc(TyObject *op)
     BZ2Compressor *self = _BZ2Compressor_CAST(op);
     BZ2_bzCompressEnd(&self->bzs);
     if (self->lock != NULL) {
-        PyThread_free_lock(self->lock);
+        TyThread_free_lock(self->lock);
     }
     TyTypeObject *tp = Ty_TYPE(self);
     tp->tp_free((TyObject *)self);
@@ -657,7 +657,7 @@ _bz2_BZ2Decompressor_impl(TyTypeObject *type)
         return NULL;
     }
 
-    self->lock = PyThread_allocate_lock();
+    self->lock = TyThread_allocate_lock();
     if (self->lock == NULL) {
         Ty_DECREF(self);
         TyErr_SetString(TyExc_MemoryError, "Unable to allocate lock");
@@ -694,7 +694,7 @@ BZ2Decompressor_dealloc(TyObject *op)
     BZ2_bzDecompressEnd(&self->bzs);
     Ty_CLEAR(self->unused_data);
     if (self->lock != NULL) {
-        PyThread_free_lock(self->lock);
+        TyThread_free_lock(self->lock);
     }
 
     TyTypeObject *tp = Ty_TYPE(self);
@@ -714,13 +714,13 @@ static TyMethodDef BZ2Decompressor_methods[] = {
     {NULL}
 };
 
-PyDoc_STRVAR(BZ2Decompressor_eof__doc__,
+TyDoc_STRVAR(BZ2Decompressor_eof__doc__,
 "True if the end-of-stream marker has been reached.");
 
-PyDoc_STRVAR(BZ2Decompressor_unused_data__doc__,
+TyDoc_STRVAR(BZ2Decompressor_unused_data__doc__,
 "Data found after the end of the compressed stream.");
 
-PyDoc_STRVAR(BZ2Decompressor_needs_input_doc,
+TyDoc_STRVAR(BZ2Decompressor_needs_input_doc,
 "True if more input is needed before more decompressed data can be produced.");
 
 static TyMemberDef BZ2Decompressor_members[] = {

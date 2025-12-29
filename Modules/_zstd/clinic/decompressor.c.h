@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_zstd_ZstdDecompressor_new__doc__,
+TyDoc_STRVAR(_zstd_ZstdDecompressor_new__doc__,
 "ZstdDecompressor(zstd_dict=None, options=None)\n"
 "--\n"
 "\n"
@@ -40,7 +40,7 @@ _zstd_ZstdDecompressor_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(zstd_dict), &_Ty_ID(options), },
     };
@@ -87,7 +87,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_ZstdDecompressor_unused_data__doc__,
+TyDoc_STRVAR(_zstd_ZstdDecompressor_unused_data__doc__,
 "A bytes object of un-consumed input data.\n"
 "\n"
 "When ZstdDecompressor object stops after a frame is\n"
@@ -116,7 +116,7 @@ _zstd_ZstdDecompressor_unused_data_get(TyObject *self, void *Py_UNUSED(context))
     return _zstd_ZstdDecompressor_unused_data_get_impl((ZstdDecompressor *)self);
 }
 
-PyDoc_STRVAR(_zstd_ZstdDecompressor_decompress__doc__,
+TyDoc_STRVAR(_zstd_ZstdDecompressor_decompress__doc__,
 "decompress($self, /, data, max_length=-1)\n"
 "--\n"
 "\n"
@@ -163,7 +163,7 @@ _zstd_ZstdDecompressor_decompress(TyObject *self, TyObject *const *args, Ty_ssiz
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(max_length), },
     };

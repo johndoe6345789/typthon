@@ -344,7 +344,7 @@ Balloc(int k)
     int x;
     Bigint *rv;
     unsigned int len;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     if (k <= Bigint_Kmax && (rv = freelist[k]))
         freelist[k] = rv->next;
@@ -379,7 +379,7 @@ Bfree(Bigint *v)
         if (v->k > Bigint_Kmax)
             FREE((void*)v);
         else {
-            PyInterpreterState *interp = _TyInterpreterState_GET();
+            TyInterpreterState *interp = _TyInterpreterState_GET();
             v->next = freelist[v->k];
             freelist[v->k] = v;
         }
@@ -694,7 +694,7 @@ pow5mult(Bigint *b, int k)
 
     if (!(k >>= 2))
         return b;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     p5s = interp->dtoa.p5s;
     for(;;) {
         assert(p5s != interp->dtoa.p5s + Bigint_Pow5size);
@@ -2804,7 +2804,7 @@ _Ty_dg_dtoa(double dd, int mode, int ndigits,
 #endif  // _PY_SHORT_FLOAT_REPR == 1
 
 TyStatus
-_PyDtoa_Init(PyInterpreterState *interp)
+_PyDtoa_Init(TyInterpreterState *interp)
 {
 #if _PY_SHORT_FLOAT_REPR == 1 && !defined(Ty_USING_MEMORY_DEBUGGER)
     Bigint **p5s = interp->dtoa.p5s;
@@ -2830,7 +2830,7 @@ _PyDtoa_Init(PyInterpreterState *interp)
 }
 
 void
-_PyDtoa_Fini(PyInterpreterState *interp)
+_PyDtoa_Fini(TyInterpreterState *interp)
 {
 #if _PY_SHORT_FLOAT_REPR == 1 && !defined(Ty_USING_MEMORY_DEBUGGER)
     Bigint **p5s = interp->dtoa.p5s;

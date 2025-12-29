@@ -340,7 +340,7 @@ capsule_clear(TyObject *self)
 }
 
 
-PyDoc_STRVAR(PyCapsule_Type__doc__,
+TyDoc_STRVAR(PyCapsule_Type__doc__,
 "Capsule objects let you wrap a C \"void *\" pointer in a Python\n\
 object.  They're a way of passing data through the Python interpreter\n\
 without creating your own custom type.\n\
@@ -352,7 +352,7 @@ Python import mechanism to link to one another.\n\
 ");
 
 TyTypeObject PyCapsule_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "PyCapsule",
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_HAVE_GC,
     .tp_basicsize = sizeof(PyCapsule),

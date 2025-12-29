@@ -37,7 +37,7 @@ _globals (static struct globals):
     channels (struct _channels):
         numopen (int64_t)
         next_id; (int64_t)
-        mutex (PyThread_type_lock)
+        mutex (TyThread_type_lock)
         head (linked list of struct _channelref *):
             cid (int64_t)
             objcount (Ty_ssize_t)
@@ -45,7 +45,7 @@ _globals (static struct globals):
                 ...
             chan (struct _channel *):
                 open (int)
-                mutex (PyThread_type_lock)
+                mutex (TyThread_type_lock)
                 closing (struct _channel_closing *):
                     ref (struct _channelref *):
                         ...
@@ -137,7 +137,7 @@ _release_xid_data(_PyXIData_t *data, int flags)
 }
 
 
-static PyInterpreterState *
+static TyInterpreterState *
 _get_current_interp(void)
 {
     // TyInterpreterState_Get() aborts if lookup fails, so don't need
@@ -201,9 +201,9 @@ add_new_exception(TyObject *mod, const char *name, TyObject *base)
     add_new_exception(MOD, MODULE_NAME_STR "." Ty_STRINGIFY(NAME), BASE)
 
 static int
-wait_for_lock(PyThread_type_lock mutex, PY_TIMEOUT_T timeout)
+wait_for_lock(TyThread_type_lock mutex, PY_TIMEOUT_T timeout)
 {
-    PyLockStatus res = PyThread_acquire_lock_timed_with_retries(mutex, timeout);
+    TyLockStatus res = TyThread_acquire_lock_timed_with_retries(mutex, timeout);
     if (res == PY_LOCK_INTR) {
         /* KeyboardInterrupt, etc. */
         assert(TyErr_Occurred());
@@ -216,7 +216,7 @@ wait_for_lock(PyThread_type_lock mutex, PY_TIMEOUT_T timeout)
         return -1;
     }
     assert(res == PY_LOCK_ACQUIRED);
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
     return 0;
 }
 
@@ -451,7 +451,7 @@ handle_channel_error(int err, TyObject *mod, int64_t cid)
 typedef uintptr_t _channelitem_id_t;
 
 typedef struct wait_info {
-    PyThread_type_lock mutex;
+    TyThread_type_lock mutex;
     enum {
         WAITING_NO_STATUS = 0,
         WAITING_ACQUIRED = 1,
@@ -465,7 +465,7 @@ typedef struct wait_info {
 static int
 _waiting_init(_waiting_t *waiting)
 {
-    PyThread_type_lock mutex = PyThread_allocate_lock();
+    TyThread_type_lock mutex = TyThread_allocate_lock();
     if (mutex == NULL) {
         TyErr_NoMemory();
         return -1;
@@ -484,7 +484,7 @@ _waiting_clear(_waiting_t *waiting)
     assert(waiting->status != WAITING_ACQUIRED
            && waiting->status != WAITING_RELEASING);
     if (waiting->mutex != NULL) {
-        PyThread_free_lock(waiting->mutex);
+        TyThread_free_lock(waiting->mutex);
         waiting->mutex = NULL;
     }
 }
@@ -499,7 +499,7 @@ static void
 _waiting_acquire(_waiting_t *waiting)
 {
     assert(waiting->status == WAITING_NO_STATUS);
-    PyThread_acquire_lock(waiting->mutex, NOWAIT_LOCK);
+    TyThread_acquire_lock(waiting->mutex, NOWAIT_LOCK);
     waiting->status = WAITING_ACQUIRED;
 }
 
@@ -511,7 +511,7 @@ _waiting_release(_waiting_t *waiting, int received)
     assert(!waiting->received);
 
     waiting->status = WAITING_RELEASING;
-    PyThread_release_lock(waiting->mutex);
+    TyThread_release_lock(waiting->mutex);
     if (waiting->received != received) {
         assert(received == 1);
         waiting->received = received;
@@ -1098,7 +1098,7 @@ static void _channel_clear_closing(struct _channel *);
 static void _channel_finish_closing(struct _channel *);
 
 typedef struct _channel {
-    PyThread_type_lock mutex;
+    TyThread_type_lock mutex;
     _channelqueue *queue;
     _channelends *ends;
     struct _channeldefaults {
@@ -1110,7 +1110,7 @@ typedef struct _channel {
 } _channel_state;
 
 static _channel_state *
-_channel_new(PyThread_type_lock mutex, struct _channeldefaults defaults)
+_channel_new(TyThread_type_lock mutex, struct _channeldefaults defaults)
 {
     assert(check_unbound(defaults.unboundop));
     _channel_state *chan = GLOBAL_MALLOC(_channel_state);
@@ -1139,12 +1139,12 @@ static void
 _channel_free(_channel_state *chan)
 {
     _channel_clear_closing(chan);
-    PyThread_acquire_lock(chan->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(chan->mutex, WAIT_LOCK);
     _channelqueue_free(chan->queue);
     _channelends_free(chan->ends);
-    PyThread_release_lock(chan->mutex);
+    TyThread_release_lock(chan->mutex);
 
-    PyThread_free_lock(chan->mutex);
+    TyThread_free_lock(chan->mutex);
     GLOBAL_FREE(chan);
 }
 
@@ -1153,7 +1153,7 @@ _channel_add(_channel_state *chan, int64_t interpid,
              _PyXIData_t *data, _waiting_t *waiting, unboundop_t unboundop)
 {
     int res = -1;
-    PyThread_acquire_lock(chan->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(chan->mutex, WAIT_LOCK);
 
     if (!chan->open) {
         res = ERR_CHANNEL_CLOSED;
@@ -1171,7 +1171,7 @@ _channel_add(_channel_state *chan, int64_t interpid,
 
     res = 0;
 done:
-    PyThread_release_lock(chan->mutex);
+    TyThread_release_lock(chan->mutex);
     return res;
 }
 
@@ -1180,7 +1180,7 @@ _channel_next(_channel_state *chan, int64_t interpid,
               _PyXIData_t **p_data, _waiting_t **p_waiting, int *p_unboundop)
 {
     int err = 0;
-    PyThread_acquire_lock(chan->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(chan->mutex, WAIT_LOCK);
 
     if (!chan->open) {
         err = ERR_CHANNEL_CLOSED;
@@ -1203,7 +1203,7 @@ _channel_next(_channel_state *chan, int64_t interpid,
     }
 
 done:
-    PyThread_release_lock(chan->mutex);
+    TyThread_release_lock(chan->mutex);
     if (chan->queue->count == 0) {
         _channel_finish_closing(chan);
     }
@@ -1216,9 +1216,9 @@ _channel_remove(_channel_state *chan, _channelitem_id_t itemid)
     _PyXIData_t *data = NULL;
     _waiting_t *waiting = NULL;
 
-    PyThread_acquire_lock(chan->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(chan->mutex, WAIT_LOCK);
     _channelqueue_remove(chan->queue, itemid, &data, &waiting);
-    PyThread_release_lock(chan->mutex);
+    TyThread_release_lock(chan->mutex);
 
     (void)_release_xid_data(data, XID_IGNORE_EXC | XID_FREE);
     if (waiting != NULL) {
@@ -1233,7 +1233,7 @@ _channel_remove(_channel_state *chan, _channelitem_id_t itemid)
 static int
 _channel_release_interpreter(_channel_state *chan, int64_t interpid, int end)
 {
-    PyThread_acquire_lock(chan->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(chan->mutex, WAIT_LOCK);
 
     int res = -1;
     if (!chan->open) {
@@ -1250,7 +1250,7 @@ _channel_release_interpreter(_channel_state *chan, int64_t interpid, int end)
 
     res = 0;
 done:
-    PyThread_release_lock(chan->mutex);
+    TyThread_release_lock(chan->mutex);
     return res;
 }
 
@@ -1258,7 +1258,7 @@ static int
 _channel_release_all(_channel_state *chan, int end, int force)
 {
     int res = -1;
-    PyThread_acquire_lock(chan->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(chan->mutex, WAIT_LOCK);
 
     if (!chan->open) {
         res = ERR_CHANNEL_CLOSED;
@@ -1279,20 +1279,20 @@ _channel_release_all(_channel_state *chan, int end, int force)
 
     res = 0;
 done:
-    PyThread_release_lock(chan->mutex);
+    TyThread_release_lock(chan->mutex);
     return res;
 }
 
 static void
 _channel_clear_interpreter(_channel_state *chan, int64_t interpid)
 {
-    PyThread_acquire_lock(chan->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(chan->mutex, WAIT_LOCK);
 
     _channelqueue_clear_interpreter(chan->queue, interpid);
     _channelends_clear_interpreter(chan->ends, interpid);
     chan->open = _channelends_is_open(chan->ends);
 
-    PyThread_release_lock(chan->mutex);
+    TyThread_release_lock(chan->mutex);
 }
 
 
@@ -1361,14 +1361,14 @@ _channelref_find(_channelref *first, int64_t cid, _channelref **pprev)
 
 
 typedef struct _channels {
-    PyThread_type_lock mutex;
+    TyThread_type_lock mutex;
     _channelref *head;
     int64_t numopen;
     int64_t next_id;
 } _channels;
 
 static void
-_channels_init(_channels *channels, PyThread_type_lock mutex)
+_channels_init(_channels *channels, TyThread_type_lock mutex)
 {
     assert(mutex != NULL);
     assert(channels->mutex == NULL);
@@ -1381,16 +1381,16 @@ _channels_init(_channels *channels, PyThread_type_lock mutex)
 }
 
 static void
-_channels_fini(_channels *channels, PyThread_type_lock *p_mutex)
+_channels_fini(_channels *channels, TyThread_type_lock *p_mutex)
 {
-    PyThread_type_lock mutex = channels->mutex;
+    TyThread_type_lock mutex = channels->mutex;
     assert(mutex != NULL);
 
-    PyThread_acquire_lock(mutex, WAIT_LOCK);
+    TyThread_acquire_lock(mutex, WAIT_LOCK);
     assert(channels->numopen == 0);
     assert(channels->head == NULL);
     *channels = (_channels){0};
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
 
     *p_mutex = mutex;
 }
@@ -1408,12 +1408,12 @@ _channels_next_id(_channels *channels)  // needs lock
 }
 
 static int
-_channels_lookup(_channels *channels, int64_t cid, PyThread_type_lock *pmutex,
+_channels_lookup(_channels *channels, int64_t cid, TyThread_type_lock *pmutex,
                  _channel_state **res)
 {
     int err = -1;
     _channel_state *chan = NULL;
-    PyThread_acquire_lock(channels->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(channels->mutex, WAIT_LOCK);
     if (pmutex != NULL) {
         *pmutex = NULL;
     }
@@ -1438,7 +1438,7 @@ _channels_lookup(_channels *channels, int64_t cid, PyThread_type_lock *pmutex,
 
 done:
     if (pmutex == NULL || *pmutex == NULL) {
-        PyThread_release_lock(channels->mutex);
+        TyThread_release_lock(channels->mutex);
     }
     *res = chan;
     return err;
@@ -1448,7 +1448,7 @@ static int64_t
 _channels_add(_channels *channels, _channel_state *chan)
 {
     int64_t cid = -1;
-    PyThread_acquire_lock(channels->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(channels->mutex, WAIT_LOCK);
 
     // Create a new ref.
     int64_t _cid = _channels_next_id(channels);
@@ -1469,19 +1469,19 @@ _channels_add(_channels *channels, _channel_state *chan)
 
     cid = _cid;
 done:
-    PyThread_release_lock(channels->mutex);
+    TyThread_release_lock(channels->mutex);
     return cid;
 }
 
 /* forward */
-static int _channel_set_closing(_channelref *, PyThread_type_lock);
+static int _channel_set_closing(_channelref *, TyThread_type_lock);
 
 static int
 _channels_close(_channels *channels, int64_t cid, _channel_state **pchan,
                 int end, int force)
 {
     int res = -1;
-    PyThread_acquire_lock(channels->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(channels->mutex, WAIT_LOCK);
     if (pchan != NULL) {
         *pchan = NULL;
     }
@@ -1537,7 +1537,7 @@ _channels_close(_channels *channels, int64_t cid, _channel_state **pchan,
 
     res = 0;
 done:
-    PyThread_release_lock(channels->mutex);
+    TyThread_release_lock(channels->mutex);
     return res;
 }
 
@@ -1563,7 +1563,7 @@ static int
 _channels_remove(_channels *channels, int64_t cid, _channel_state **pchan)
 {
     int res = -1;
-    PyThread_acquire_lock(channels->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(channels->mutex, WAIT_LOCK);
 
     if (pchan != NULL) {
         *pchan = NULL;
@@ -1580,7 +1580,7 @@ _channels_remove(_channels *channels, int64_t cid, _channel_state **pchan)
 
     res = 0;
 done:
-    PyThread_release_lock(channels->mutex);
+    TyThread_release_lock(channels->mutex);
     return res;
 }
 
@@ -1588,7 +1588,7 @@ static int
 _channels_add_id_object(_channels *channels, int64_t cid)
 {
     int res = -1;
-    PyThread_acquire_lock(channels->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(channels->mutex, WAIT_LOCK);
 
     _channelref *ref = _channelref_find(channels->head, cid, NULL);
     if (ref == NULL) {
@@ -1599,14 +1599,14 @@ _channels_add_id_object(_channels *channels, int64_t cid)
 
     res = 0;
 done:
-    PyThread_release_lock(channels->mutex);
+    TyThread_release_lock(channels->mutex);
     return res;
 }
 
 static void
 _channels_release_cid_object(_channels *channels, int64_t cid)
 {
-    PyThread_acquire_lock(channels->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(channels->mutex, WAIT_LOCK);
 
     _channelref *prev = NULL;
     _channelref *ref = _channelref_find(channels->head, cid, &prev);
@@ -1626,7 +1626,7 @@ _channels_release_cid_object(_channels *channels, int64_t cid)
     }
 
 done:
-    PyThread_release_lock(channels->mutex);
+    TyThread_release_lock(channels->mutex);
 }
 
 struct channel_id_and_info {
@@ -1638,7 +1638,7 @@ static struct channel_id_and_info *
 _channels_list_all(_channels *channels, int64_t *count)
 {
     struct channel_id_and_info *cids = NULL;
-    PyThread_acquire_lock(channels->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(channels->mutex, WAIT_LOCK);
     struct channel_id_and_info *ids =
         TyMem_NEW(struct channel_id_and_info, (Ty_ssize_t)(channels->numopen));
     if (ids == NULL) {
@@ -1655,14 +1655,14 @@ _channels_list_all(_channels *channels, int64_t *count)
 
     cids = ids;
 done:
-    PyThread_release_lock(channels->mutex);
+    TyThread_release_lock(channels->mutex);
     return cids;
 }
 
 static void
 _channels_clear_interpreter(_channels *channels, int64_t interpid)
 {
-    PyThread_acquire_lock(channels->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(channels->mutex, WAIT_LOCK);
 
     _channelref *ref = channels->head;
     for (; ref != NULL; ref = ref->next) {
@@ -1671,7 +1671,7 @@ _channels_clear_interpreter(_channels *channels, int64_t interpid)
         }
     }
 
-    PyThread_release_lock(channels->mutex);
+    TyThread_release_lock(channels->mutex);
 }
 
 
@@ -1682,14 +1682,14 @@ struct _channel_closing {
 };
 
 static int
-_channel_set_closing(_channelref *ref, PyThread_type_lock mutex) {
+_channel_set_closing(_channelref *ref, TyThread_type_lock mutex) {
     _channel_state *chan = ref->chan;
     if (chan == NULL) {
         // already closed
         return 0;
     }
     int res = -1;
-    PyThread_acquire_lock(chan->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(chan->mutex, WAIT_LOCK);
     if (chan->closing != NULL) {
         res = ERR_CHANNEL_CLOSED;
         goto done;
@@ -1702,18 +1702,18 @@ _channel_set_closing(_channelref *ref, PyThread_type_lock mutex) {
 
     res = 0;
 done:
-    PyThread_release_lock(chan->mutex);
+    TyThread_release_lock(chan->mutex);
     return res;
 }
 
 static void
 _channel_clear_closing(_channel_state *chan) {
-    PyThread_acquire_lock(chan->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(chan->mutex, WAIT_LOCK);
     if (chan->closing != NULL) {
         GLOBAL_FREE(chan->closing);
         chan->closing = NULL;
     }
-    PyThread_release_lock(chan->mutex);
+    TyThread_release_lock(chan->mutex);
 }
 
 static void
@@ -1736,13 +1736,13 @@ _channel_finish_closing(_channel_state *chan) {
 static int64_t
 channel_create(_channels *channels, struct _channeldefaults defaults)
 {
-    PyThread_type_lock mutex = PyThread_allocate_lock();
+    TyThread_type_lock mutex = TyThread_allocate_lock();
     if (mutex == NULL) {
         return ERR_CHANNEL_MUTEX_INIT;
     }
     _channel_state *chan = _channel_new(mutex, defaults);
     if (chan == NULL) {
-        PyThread_free_lock(mutex);
+        TyThread_free_lock(mutex);
         return -1;
     }
     int64_t cid = _channels_add(channels, chan);
@@ -1775,11 +1775,11 @@ channel_send(_channels *channels, int64_t cid, TyObject *obj,
              _waiting_t *waiting, unboundop_t unboundop, xidata_fallback_t fallback)
 {
     TyThreadState *tstate = _TyThreadState_GET();
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     int64_t interpid = TyInterpreterState_GetID(interp);
 
     // Look up the channel.
-    PyThread_type_lock mutex = NULL;
+    TyThread_type_lock mutex = NULL;
     _channel_state *chan = NULL;
     int err = _channels_lookup(channels, cid, &mutex, &chan);
     if (err != 0) {
@@ -1789,25 +1789,25 @@ channel_send(_channels *channels, int64_t cid, TyObject *obj,
     // Past this point we are responsible for releasing the mutex.
 
     if (chan->closing != NULL) {
-        PyThread_release_lock(mutex);
+        TyThread_release_lock(mutex);
         return ERR_CHANNEL_CLOSED;
     }
 
     // Convert the object to cross-interpreter data.
     _PyXIData_t *data = _PyXIData_New();
     if (data == NULL) {
-        PyThread_release_lock(mutex);
+        TyThread_release_lock(mutex);
         return -1;
     }
     if (_TyObject_GetXIData(tstate, obj, fallback, data) != 0) {
-        PyThread_release_lock(mutex);
+        TyThread_release_lock(mutex);
         GLOBAL_FREE(data);
         return -1;
     }
 
     // Add the data to the channel.
     int res = _channel_add(chan, interpid, data, waiting, unboundop);
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
     if (res != 0) {
         // We may chain an exception here:
         (void)_release_xid_data(data, 0);
@@ -1823,7 +1823,7 @@ static void
 channel_clear_sent(_channels *channels, int64_t cid, _waiting_t *waiting)
 {
     // Look up the channel.
-    PyThread_type_lock mutex = NULL;
+    TyThread_type_lock mutex = NULL;
     _channel_state *chan = NULL;
     int err = _channels_lookup(channels, cid, &mutex, &chan);
     if (err != 0) {
@@ -1837,7 +1837,7 @@ channel_clear_sent(_channels *channels, int64_t cid, _waiting_t *waiting)
     _channelitem_id_t itemid = _waiting_get_itemid(waiting);
     _channel_remove(chan, itemid);
 
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
 }
 
 // Like channel_send(), but strictly wait for the object to be received.
@@ -1902,7 +1902,7 @@ channel_recv(_channels *channels, int64_t cid, TyObject **res, int *p_unboundop)
     int err;
     *res = NULL;
 
-    PyInterpreterState *interp = _get_current_interp();
+    TyInterpreterState *interp = _get_current_interp();
     if (interp == NULL) {
         // XXX Is this always an error?
         if (TyErr_Occurred()) {
@@ -1913,7 +1913,7 @@ channel_recv(_channels *channels, int64_t cid, TyObject **res, int *p_unboundop)
     int64_t interpid = TyInterpreterState_GetID(interp);
 
     // Look up the channel.
-    PyThread_type_lock mutex = NULL;
+    TyThread_type_lock mutex = NULL;
     _channel_state *chan = NULL;
     err = _channels_lookup(channels, cid, &mutex, &chan);
     if (err != 0) {
@@ -1926,7 +1926,7 @@ channel_recv(_channels *channels, int64_t cid, TyObject **res, int *p_unboundop)
     _PyXIData_t *data = NULL;
     _waiting_t *waiting = NULL;
     err = _channel_next(chan, interpid, &data, &waiting, p_unboundop);
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
     if (err != 0) {
         return err;
     }
@@ -1975,14 +1975,14 @@ channel_recv(_channels *channels, int64_t cid, TyObject **res, int *p_unboundop)
 static int
 channel_release(_channels *channels, int64_t cid, int send, int recv)
 {
-    PyInterpreterState *interp = _get_current_interp();
+    TyInterpreterState *interp = _get_current_interp();
     if (interp == NULL) {
         return -1;
     }
     int64_t interpid = TyInterpreterState_GetID(interp);
 
     // Look up the channel.
-    PyThread_type_lock mutex = NULL;
+    TyThread_type_lock mutex = NULL;
     _channel_state *chan = NULL;
     int err = _channels_lookup(channels, cid, &mutex, &chan);
     if (err != 0) {
@@ -1992,7 +1992,7 @@ channel_release(_channels *channels, int64_t cid, int send, int recv)
 
     // Close one or both of the two ends.
     int res = _channel_release_interpreter(chan, interpid, send-recv);
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
     return res;
 }
 
@@ -2029,21 +2029,21 @@ channel_is_associated(_channels *channels, int64_t cid, int64_t interpid,
 static int
 channel_get_defaults(_channels *channels, int64_t cid, struct _channeldefaults *defaults)
 {
-    PyThread_type_lock mutex = NULL;
+    TyThread_type_lock mutex = NULL;
     _channel_state *channel = NULL;
     int err = _channels_lookup(channels, cid, &mutex, &channel);
     if (err != 0) {
         return err;
     }
     *defaults = channel->defaults;
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
     return 0;
 }
 
 static int
 _channel_get_count(_channels *channels, int64_t cid, Ty_ssize_t *p_count)
 {
-    PyThread_type_lock mutex = NULL;
+    TyThread_type_lock mutex = NULL;
     _channel_state *chan = NULL;
     int err = _channels_lookup(channels, cid, &mutex, &chan);
     if (err != 0) {
@@ -2051,7 +2051,7 @@ _channel_get_count(_channels *channels, int64_t cid, Ty_ssize_t *p_count)
     }
     assert(chan != NULL);
     int64_t count = chan->queue->count;
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
 
     *p_count = (Ty_ssize_t)count;
     return 0;
@@ -2090,14 +2090,14 @@ _channel_get_info(_channels *channels, int64_t cid, struct channel_info *info)
     *info = (struct channel_info){0};
 
     // Get the current interpreter.
-    PyInterpreterState *interp = _get_current_interp();
+    TyInterpreterState *interp = _get_current_interp();
     if (interp == NULL) {
         return -1;
     }
     int64_t interpid = TyInterpreterState_GetID(interp);
 
     // Hold the global lock until we're done.
-    PyThread_acquire_lock(channels->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(channels->mutex, WAIT_LOCK);
 
     // Find the channel.
     _channelref *ref = _channelref_find(channels->head, cid, NULL);
@@ -2193,16 +2193,16 @@ _channel_get_info(_channels *channels, int64_t cid, struct channel_info *info)
     }
 
 finally:
-    PyThread_release_lock(channels->mutex);
+    TyThread_release_lock(channels->mutex);
     return err;
 }
 
-PyDoc_STRVAR(channel_info_doc,
+TyDoc_STRVAR(channel_info_doc,
 "ChannelInfo\n\
 \n\
 A named tuple of a channel's state.");
 
-static PyStructSequence_Field channel_info_fields[] = {
+static TyStructSequence_Field channel_info_fields[] = {
     {"open", "both ends are open"},
     {"closing", "send is closed, recv is non-empty"},
     {"closed", "both ends are closed"},
@@ -2231,7 +2231,7 @@ static PyStructSequence_Field channel_info_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc channel_info_desc = {
+static TyStructSequence_Desc channel_info_desc = {
     .name = MODULE_NAME_STR ".ChannelInfo",
     .doc = channel_info_doc,
     .fields = channel_info_fields,
@@ -2247,14 +2247,14 @@ new_channel_info(TyObject *mod, struct channel_info *info)
     }
 
     assert(state->ChannelInfoType != NULL);
-    TyObject *self = PyStructSequence_New(state->ChannelInfoType);
+    TyObject *self = TyStructSequence_New(state->ChannelInfoType);
     if (self == NULL) {
         return NULL;
     }
 
     int pos = 0;
 #define SET_BOOL(val) \
-    PyStructSequence_SET_ITEM(self, pos++, \
+    TyStructSequence_SET_ITEM(self, pos++, \
                               Ty_NewRef(val ? Ty_True : Ty_False))
 #define SET_COUNT(val) \
     do { \
@@ -2263,7 +2263,7 @@ new_channel_info(TyObject *mod, struct channel_info *info)
             Ty_CLEAR(self); \
             return NULL; \
         } \
-        PyStructSequence_SET_ITEM(self, pos++, obj); \
+        TyStructSequence_SET_ITEM(self, pos++, obj); \
     } while(0)
     SET_BOOL(info->status.closed == 0);
     SET_BOOL(info->status.closed == -1);
@@ -2684,15 +2684,15 @@ static int _channelid_end_recv = CHANNEL_RECV;
 
 static TyGetSetDef channelid_getsets[] = {
     {"end", channelid_end, NULL,
-     PyDoc_STR("'send', 'recv', or 'both'")},
+     TyDoc_STR("'send', 'recv', or 'both'")},
     {"send", channelid_end, NULL,
-     PyDoc_STR("the 'send' end of the channel"), &_channelid_end_send},
+     TyDoc_STR("the 'send' end of the channel"), &_channelid_end_send},
     {"recv", channelid_end, NULL,
-     PyDoc_STR("the 'recv' end of the channel"), &_channelid_end_recv},
+     TyDoc_STR("the 'recv' end of the channel"), &_channelid_end_recv},
     {NULL}
 };
 
-PyDoc_STRVAR(channelid_doc,
+TyDoc_STRVAR(channelid_doc,
 "A channel ID identifies a channel and may be used as an int.");
 
 static TyType_Slot channelid_typeslots[] = {
@@ -2861,7 +2861,7 @@ _globals_init(void)
     _globals.module_count++;
     if (_globals.module_count == 1) {
         // Called for the first time.
-        PyThread_type_lock mutex = PyThread_allocate_lock();
+        TyThread_type_lock mutex = TyThread_allocate_lock();
         if (mutex == NULL) {
             _globals.module_count--;
             PyMutex_Unlock(&_globals.mutex);
@@ -2880,10 +2880,10 @@ _globals_fini(void)
     assert(_globals.module_count > 0);
     _globals.module_count--;
     if (_globals.module_count == 0) {
-        PyThread_type_lock mutex;
+        TyThread_type_lock mutex;
         _channels_fini(&_globals.channels, &mutex);
         assert(mutex != NULL);
-        PyThread_free_lock(mutex);
+        TyThread_free_lock(mutex);
     }
     PyMutex_Unlock(&_globals.mutex);
 }
@@ -2900,7 +2900,7 @@ clear_interpreter(void *data)
     if (_globals.module_count == 0) {
         return;
     }
-    PyInterpreterState *interp = (PyInterpreterState *)data;
+    TyInterpreterState *interp = (TyInterpreterState *)data;
     assert(interp == _get_current_interp());
     int64_t interpid = TyInterpreterState_GetID(interp);
     _channels_clear_interpreter(&_globals.channels, interpid);
@@ -2956,7 +2956,7 @@ channelsmod_create(TyObject *self, TyObject *args, TyObject *kwds)
     return (TyObject *)cidobj;
 }
 
-PyDoc_STRVAR(channelsmod_create_doc,
+TyDoc_STRVAR(channelsmod_create_doc,
 "channel_create(unboundop) -> cid\n\
 \n\
 Create a new cross-interpreter channel and return a unique generated ID.");
@@ -2982,7 +2982,7 @@ channelsmod_destroy(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(channelsmod_destroy_doc,
+TyDoc_STRVAR(channelsmod_destroy_doc,
 "channel_destroy(cid)\n\
 \n\
 Close and finalize the channel.  Afterward attempts to use the channel\n\
@@ -3039,7 +3039,7 @@ finally:
     return ids;
 }
 
-PyDoc_STRVAR(channelsmod_list_all_doc,
+TyDoc_STRVAR(channelsmod_list_all_doc,
 "channel_list_all() -> [cid]\n\
 \n\
 Return the list of all IDs for active channels.");
@@ -3055,7 +3055,7 @@ channelsmod_list_interpreters(TyObject *self, TyObject *args, TyObject *kwds)
     int send = 0;           /* Send or receive end? */
     int64_t interpid;
     TyObject *ids, *interpid_obj;
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
 
     if (!TyArg_ParseTupleAndKeywords(
             args, kwds, "O&$p:channel_list_interpreters",
@@ -3101,7 +3101,7 @@ finally:
     return ids;
 }
 
-PyDoc_STRVAR(channelsmod_list_interpreters_doc,
+TyDoc_STRVAR(channelsmod_list_interpreters_doc,
 "channel_list_interpreters(cid, *, send) -> [id]\n\
 \n\
 Return the list of all interpreter IDs associated with an end of the channel.\n\
@@ -3133,7 +3133,7 @@ channelsmod_send(TyObject *self, TyObject *args, TyObject *kwds)
     }
     int64_t cid = cid_data.cid;
     PY_TIMEOUT_T timeout;
-    if (PyThread_ParseTimeoutArg(timeout_obj, blocking, &timeout) < 0) {
+    if (TyThread_ParseTimeoutArg(timeout_obj, blocking, &timeout) < 0) {
         return NULL;
     }
     struct _channeldefaults defaults = {-1, -1};
@@ -3169,7 +3169,7 @@ channelsmod_send(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(channelsmod_send_doc,
+TyDoc_STRVAR(channelsmod_send_doc,
 "channel_send(cid, obj, *, blocking=True, timeout=None)\n\
 \n\
 Add the object's data to the channel's queue.\n\
@@ -3198,7 +3198,7 @@ channelsmod_send_buffer(TyObject *self, TyObject *args, TyObject *kwds)
     }
     int64_t cid = cid_data.cid;
     PY_TIMEOUT_T timeout;
-    if (PyThread_ParseTimeoutArg(timeout_obj, blocking, &timeout) < 0) {
+    if (TyThread_ParseTimeoutArg(timeout_obj, blocking, &timeout) < 0) {
         return NULL;
     }
     struct _channeldefaults defaults = {-1, -1};
@@ -3240,7 +3240,7 @@ channelsmod_send_buffer(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(channelsmod_send_buffer_doc,
+TyDoc_STRVAR(channelsmod_send_buffer_doc,
 "channel_send_buffer(cid, obj, *, blocking=True, timeout=None)\n\
 \n\
 Add the object's buffer to the channel's queue.\n\
@@ -3282,7 +3282,7 @@ channelsmod_recv(TyObject *self, TyObject *args, TyObject *kwds)
     return res;
 }
 
-PyDoc_STRVAR(channelsmod_recv_doc,
+TyDoc_STRVAR(channelsmod_recv_doc,
 "channel_recv(cid, [default]) -> (obj, unboundop)\n\
 \n\
 Return a new object from the data at the front of the channel's queue.\n\
@@ -3316,7 +3316,7 @@ channelsmod_close(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(channelsmod_close_doc,
+TyDoc_STRVAR(channelsmod_close_doc,
 "channel_close(cid, *, send=None, recv=None, force=False)\n\
 \n\
 Close the channel for all interpreters.\n\
@@ -3377,7 +3377,7 @@ channelsmod_release(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(channelsmod_release_doc,
+TyDoc_STRVAR(channelsmod_release_doc,
 "channel_release(cid, *, send=None, recv=None, force=True)\n\
 \n\
 Close the channel for the current interpreter.  'send' and 'recv'\n\
@@ -3407,7 +3407,7 @@ channelsmod_get_count(TyObject *self, TyObject *args, TyObject *kwds)
     return TyLong_FromSsize_t(count);
 }
 
-PyDoc_STRVAR(channelsmod_get_count_doc,
+TyDoc_STRVAR(channelsmod_get_count_doc,
 "get_count(cid)\n\
 \n\
 Return the number of items in the channel.");
@@ -3434,7 +3434,7 @@ channelsmod_get_info(TyObject *self, TyObject *args, TyObject *kwds)
     return new_channel_info(self, &info);
 }
 
-PyDoc_STRVAR(channelsmod_get_info_doc,
+TyDoc_STRVAR(channelsmod_get_info_doc,
 "get_info(cid)\n\
 \n\
 Return details about the channel.");
@@ -3463,7 +3463,7 @@ channelsmod_get_channel_defaults(TyObject *self, TyObject *args, TyObject *kwds)
     return res;
 }
 
-PyDoc_STRVAR(channelsmod_get_channel_defaults_doc,
+TyDoc_STRVAR(channelsmod_get_channel_defaults_doc,
 "get_channel_defaults(cid)\n\
 \n\
 Return the channel's default values, set when it was created.");
@@ -3549,7 +3549,7 @@ static TyMethodDef module_functions[] = {
 
 /* initialization function */
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module provides primitive operations to manage Python interpreters.\n\
 The 'interpreters' module provides a more convenient interface.");
 
@@ -3574,7 +3574,7 @@ module_exec(TyObject *mod)
     /* Add other types */
 
     // ChannelInfo
-    state->ChannelInfoType = PyStructSequence_NewType(&channel_info_desc);
+    state->ChannelInfoType = TyStructSequence_NewType(&channel_info_desc);
     if (state->ChannelInfoType == NULL) {
         goto error;
     }
@@ -3589,7 +3589,7 @@ module_exec(TyObject *mod)
     }
 
     /* Make sure chnnels drop objects owned by this interpreter. */
-    PyInterpreterState *interp = _get_current_interp();
+    TyInterpreterState *interp = _get_current_interp();
     PyUnstable_AtExit(interp, clear_interpreter, (void *)interp);
 
     return 0;

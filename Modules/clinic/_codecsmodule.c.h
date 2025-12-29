@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
-PyDoc_STRVAR(_codecs_register__doc__,
+TyDoc_STRVAR(_codecs_register__doc__,
 "register($module, search_function, /)\n"
 "--\n"
 "\n"
@@ -21,7 +21,7 @@ PyDoc_STRVAR(_codecs_register__doc__,
 #define _CODECS_REGISTER_METHODDEF    \
     {"register", (PyCFunction)_codecs_register, METH_O, _codecs_register__doc__},
 
-PyDoc_STRVAR(_codecs_unregister__doc__,
+TyDoc_STRVAR(_codecs_unregister__doc__,
 "unregister($module, search_function, /)\n"
 "--\n"
 "\n"
@@ -32,7 +32,7 @@ PyDoc_STRVAR(_codecs_unregister__doc__,
 #define _CODECS_UNREGISTER_METHODDEF    \
     {"unregister", (PyCFunction)_codecs_unregister, METH_O, _codecs_unregister__doc__},
 
-PyDoc_STRVAR(_codecs_lookup__doc__,
+TyDoc_STRVAR(_codecs_lookup__doc__,
 "lookup($module, encoding, /)\n"
 "--\n"
 "\n"
@@ -69,7 +69,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_encode__doc__,
+TyDoc_STRVAR(_codecs_encode__doc__,
 "encode($module, /, obj, encoding=\'utf-8\', errors=\'strict\')\n"
 "--\n"
 "\n"
@@ -101,7 +101,7 @@ _codecs_encode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(obj), &_Ty_ID(encoding), &_Ty_ID(errors), },
     };
@@ -172,7 +172,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_decode__doc__,
+TyDoc_STRVAR(_codecs_decode__doc__,
 "decode($module, /, obj, encoding=\'utf-8\', errors=\'strict\')\n"
 "--\n"
 "\n"
@@ -204,7 +204,7 @@ _codecs_decode(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(obj), &_Ty_ID(encoding), &_Ty_ID(errors), },
     };
@@ -275,7 +275,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_escape_decode__doc__,
+TyDoc_STRVAR(_codecs_escape_decode__doc__,
 "escape_decode($module, data, errors=None, /)\n"
 "--\n"
 "\n");
@@ -345,7 +345,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_escape_encode__doc__,
+TyDoc_STRVAR(_codecs_escape_encode__doc__,
 "escape_encode($module, data, errors=None, /)\n"
 "--\n"
 "\n");
@@ -400,7 +400,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_7_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_7_decode__doc__,
 "utf_7_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -466,7 +466,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_8_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_8_decode__doc__,
 "utf_8_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -532,7 +532,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_16_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_16_decode__doc__,
 "utf_16_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -598,7 +598,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_16_le_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_16_le_decode__doc__,
 "utf_16_le_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -664,7 +664,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_16_be_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_16_be_decode__doc__,
 "utf_16_be_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -730,7 +730,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_16_ex_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_16_ex_decode__doc__,
 "utf_16_ex_decode($module, data, errors=None, byteorder=0, final=False,\n"
 "                 /)\n"
 "--\n"
@@ -805,7 +805,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_32_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_32_decode__doc__,
 "utf_32_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -871,7 +871,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_32_le_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_32_le_decode__doc__,
 "utf_32_le_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -937,7 +937,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_32_be_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_32_be_decode__doc__,
 "utf_32_be_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -1003,7 +1003,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_32_ex_decode__doc__,
+TyDoc_STRVAR(_codecs_utf_32_ex_decode__doc__,
 "utf_32_ex_decode($module, data, errors=None, byteorder=0, final=False,\n"
 "                 /)\n"
 "--\n"
@@ -1078,7 +1078,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_unicode_escape_decode__doc__,
+TyDoc_STRVAR(_codecs_unicode_escape_decode__doc__,
 "unicode_escape_decode($module, data, errors=None, final=True, /)\n"
 "--\n"
 "\n");
@@ -1156,7 +1156,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_raw_unicode_escape_decode__doc__,
+TyDoc_STRVAR(_codecs_raw_unicode_escape_decode__doc__,
 "raw_unicode_escape_decode($module, data, errors=None, final=True, /)\n"
 "--\n"
 "\n");
@@ -1234,7 +1234,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_latin_1_decode__doc__,
+TyDoc_STRVAR(_codecs_latin_1_decode__doc__,
 "latin_1_decode($module, data, errors=None, /)\n"
 "--\n"
 "\n");
@@ -1292,7 +1292,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_ascii_decode__doc__,
+TyDoc_STRVAR(_codecs_ascii_decode__doc__,
 "ascii_decode($module, data, errors=None, /)\n"
 "--\n"
 "\n");
@@ -1350,7 +1350,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_charmap_decode__doc__,
+TyDoc_STRVAR(_codecs_charmap_decode__doc__,
 "charmap_decode($module, data, errors=None, mapping=None, /)\n"
 "--\n"
 "\n");
@@ -1415,7 +1415,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_codecs_mbcs_decode__doc__,
+TyDoc_STRVAR(_codecs_mbcs_decode__doc__,
 "mbcs_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -1485,7 +1485,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_codecs_oem_decode__doc__,
+TyDoc_STRVAR(_codecs_oem_decode__doc__,
 "oem_decode($module, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -1555,7 +1555,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_codecs_code_page_decode__doc__,
+TyDoc_STRVAR(_codecs_code_page_decode__doc__,
 "code_page_decode($module, codepage, data, errors=None, final=False, /)\n"
 "--\n"
 "\n");
@@ -1628,7 +1628,7 @@ exit:
 
 #endif /* defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(_codecs_readbuffer_encode__doc__,
+TyDoc_STRVAR(_codecs_readbuffer_encode__doc__,
 "readbuffer_encode($module, data, errors=None, /)\n"
 "--\n"
 "\n");
@@ -1698,7 +1698,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_7_encode__doc__,
+TyDoc_STRVAR(_codecs_utf_7_encode__doc__,
 "utf_7_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -1753,7 +1753,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_8_encode__doc__,
+TyDoc_STRVAR(_codecs_utf_8_encode__doc__,
 "utf_8_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -1808,7 +1808,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_16_encode__doc__,
+TyDoc_STRVAR(_codecs_utf_16_encode__doc__,
 "utf_16_encode($module, str, errors=None, byteorder=0, /)\n"
 "--\n"
 "\n");
@@ -1871,7 +1871,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_16_le_encode__doc__,
+TyDoc_STRVAR(_codecs_utf_16_le_encode__doc__,
 "utf_16_le_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -1926,7 +1926,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_16_be_encode__doc__,
+TyDoc_STRVAR(_codecs_utf_16_be_encode__doc__,
 "utf_16_be_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -1981,7 +1981,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_32_encode__doc__,
+TyDoc_STRVAR(_codecs_utf_32_encode__doc__,
 "utf_32_encode($module, str, errors=None, byteorder=0, /)\n"
 "--\n"
 "\n");
@@ -2044,7 +2044,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_32_le_encode__doc__,
+TyDoc_STRVAR(_codecs_utf_32_le_encode__doc__,
 "utf_32_le_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -2099,7 +2099,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_utf_32_be_encode__doc__,
+TyDoc_STRVAR(_codecs_utf_32_be_encode__doc__,
 "utf_32_be_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -2154,7 +2154,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_unicode_escape_encode__doc__,
+TyDoc_STRVAR(_codecs_unicode_escape_encode__doc__,
 "unicode_escape_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -2209,7 +2209,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_raw_unicode_escape_encode__doc__,
+TyDoc_STRVAR(_codecs_raw_unicode_escape_encode__doc__,
 "raw_unicode_escape_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -2264,7 +2264,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_latin_1_encode__doc__,
+TyDoc_STRVAR(_codecs_latin_1_encode__doc__,
 "latin_1_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -2319,7 +2319,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_ascii_encode__doc__,
+TyDoc_STRVAR(_codecs_ascii_encode__doc__,
 "ascii_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -2374,7 +2374,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_charmap_encode__doc__,
+TyDoc_STRVAR(_codecs_charmap_encode__doc__,
 "charmap_encode($module, str, errors=None, mapping=None, /)\n"
 "--\n"
 "\n");
@@ -2434,7 +2434,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_charmap_build__doc__,
+TyDoc_STRVAR(_codecs_charmap_build__doc__,
 "charmap_build($module, map, /)\n"
 "--\n"
 "\n");
@@ -2464,7 +2464,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_codecs_mbcs_encode__doc__,
+TyDoc_STRVAR(_codecs_mbcs_encode__doc__,
 "mbcs_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -2522,7 +2522,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_codecs_oem_encode__doc__,
+TyDoc_STRVAR(_codecs_oem_encode__doc__,
 "oem_encode($module, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -2580,7 +2580,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_codecs_code_page_encode__doc__,
+TyDoc_STRVAR(_codecs_code_page_encode__doc__,
 "code_page_encode($module, code_page, str, errors=None, /)\n"
 "--\n"
 "\n");
@@ -2642,7 +2642,7 @@ exit:
 
 #endif /* defined(MS_WINDOWS) */
 
-PyDoc_STRVAR(_codecs_register_error__doc__,
+TyDoc_STRVAR(_codecs_register_error__doc__,
 "register_error($module, errors, handler, /)\n"
 "--\n"
 "\n"
@@ -2689,7 +2689,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs__unregister_error__doc__,
+TyDoc_STRVAR(_codecs__unregister_error__doc__,
 "_unregister_error($module, errors, /)\n"
 "--\n"
 "\n"
@@ -2739,7 +2739,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_codecs_lookup_error__doc__,
+TyDoc_STRVAR(_codecs_lookup_error__doc__,
 "lookup_error($module, name, /)\n"
 "--\n"
 "\n"

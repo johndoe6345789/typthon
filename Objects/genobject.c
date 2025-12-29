@@ -314,7 +314,7 @@ gen_send_ex(PyGenObject *gen, TyObject *arg, int exc, int closing)
     return result;
 }
 
-PyDoc_STRVAR(send_doc,
+TyDoc_STRVAR(send_doc,
 "send(arg) -> send 'arg' into generator,\n\
 return next yielded value or raise StopIteration.");
 
@@ -324,7 +324,7 @@ gen_send(TyObject *gen, TyObject *arg)
     return gen_send_ex((PyGenObject*)gen, arg, 0, 0);
 }
 
-PyDoc_STRVAR(close_doc,
+TyDoc_STRVAR(close_doc,
 "close() -> raise GeneratorExit inside generator.");
 
 /*
@@ -451,7 +451,7 @@ gen_close(TyObject *self, TyObject *args)
 }
 
 
-PyDoc_STRVAR(throw_doc,
+TyDoc_STRVAR(throw_doc,
 "throw(value)\n\
 throw(type[,value[,tb]])\n\
 \n\
@@ -809,11 +809,11 @@ gen_getcode(TyObject *self, void *Py_UNUSED(ignored))
 
 static TyGetSetDef gen_getsetlist[] = {
     {"__name__", gen_get_name, gen_set_name,
-     PyDoc_STR("name of the generator")},
+     TyDoc_STR("name of the generator")},
     {"__qualname__", gen_get_qualname, gen_set_qualname,
-     PyDoc_STR("qualified name of the generator")},
+     TyDoc_STR("qualified name of the generator")},
     {"gi_yieldfrom", gen_getyieldfrom, NULL,
-     PyDoc_STR("object being iterated by yield from, or None")},
+     TyDoc_STR("object being iterated by yield from, or None")},
     {"gi_running", gen_getrunning, NULL, NULL},
     {"gi_frame", gen_getframe,  NULL, NULL},
     {"gi_suspended", gen_getsuspended,  NULL, NULL},
@@ -836,7 +836,7 @@ gen_sizeof(TyObject *op, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSsize_t(res);
 }
 
-PyDoc_STRVAR(sizeof__doc__,
+TyDoc_STRVAR(sizeof__doc__,
 "gen.__sizeof__() -> size of gen in memory, in bytes");
 
 static TyMethodDef gen_methods[] = {
@@ -844,7 +844,7 @@ static TyMethodDef gen_methods[] = {
     {"throw", _PyCFunction_CAST(gen_throw), METH_FASTCALL, throw_doc},
     {"close", gen_close, METH_NOARGS, close_doc},
     {"__sizeof__", gen_sizeof, METH_NOARGS, sizeof__doc__},
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL, NULL}        /* Sentinel */
 };
 
@@ -857,7 +857,7 @@ static PyAsyncMethods gen_as_async = {
 
 
 TyTypeObject TyGen_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "generator",                                /* tp_name */
     offsetof(PyGenObject, gi_iframe.localsplus), /* tp_basicsize */
     sizeof(TyObject *),                         /* tp_itemsize */
@@ -1165,11 +1165,11 @@ cr_getcode(TyObject *coro, void *Py_UNUSED(ignored))
 
 static TyGetSetDef coro_getsetlist[] = {
     {"__name__", gen_get_name, gen_set_name,
-     PyDoc_STR("name of the coroutine")},
+     TyDoc_STR("name of the coroutine")},
     {"__qualname__", gen_get_qualname, gen_set_qualname,
-     PyDoc_STR("qualified name of the coroutine")},
+     TyDoc_STR("qualified name of the coroutine")},
     {"cr_await", coro_get_cr_await, NULL,
-     PyDoc_STR("object being awaited on, or None")},
+     TyDoc_STR("object being awaited on, or None")},
     {"cr_running", cr_getrunning, NULL, NULL},
     {"cr_frame", cr_getframe, NULL, NULL},
     {"cr_code", cr_getcode, NULL, NULL},
@@ -1182,11 +1182,11 @@ static TyMemberDef coro_memberlist[] = {
     {NULL}      /* Sentinel */
 };
 
-PyDoc_STRVAR(coro_send_doc,
+TyDoc_STRVAR(coro_send_doc,
 "send(arg) -> send 'arg' into coroutine,\n\
 return next iterated value or raise StopIteration.");
 
-PyDoc_STRVAR(coro_throw_doc,
+TyDoc_STRVAR(coro_throw_doc,
 "throw(value)\n\
 throw(type[,value[,traceback]])\n\
 \n\
@@ -1196,7 +1196,7 @@ the (type, val, tb) signature is deprecated, \n\
 and may be removed in a future version of Python.");
 
 
-PyDoc_STRVAR(coro_close_doc,
+TyDoc_STRVAR(coro_close_doc,
 "close() -> raise GeneratorExit inside coroutine.");
 
 static TyMethodDef coro_methods[] = {
@@ -1204,7 +1204,7 @@ static TyMethodDef coro_methods[] = {
     {"throw",_PyCFunction_CAST(gen_throw), METH_FASTCALL, coro_throw_doc},
     {"close", gen_close, METH_NOARGS, coro_close_doc},
     {"__sizeof__", gen_sizeof, METH_NOARGS, sizeof__doc__},
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL, NULL}        /* Sentinel */
 };
 
@@ -1216,7 +1216,7 @@ static PyAsyncMethods coro_as_async = {
 };
 
 TyTypeObject TyCoro_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "coroutine",                                /* tp_name */
     offsetof(PyCoroObject, cr_iframe.localsplus),/* tp_basicsize */
     sizeof(TyObject *),                         /* tp_itemsize */
@@ -1321,7 +1321,7 @@ static TyMethodDef coro_wrapper_methods[] = {
 };
 
 TyTypeObject _PyCoroWrapper_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "coroutine_wrapper",
     sizeof(PyCoroWrapper),                      /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -1599,11 +1599,11 @@ ag_getsuspended(TyObject *self, void *Py_UNUSED(ignored))
 
 static TyGetSetDef async_gen_getsetlist[] = {
     {"__name__", gen_get_name, gen_set_name,
-     PyDoc_STR("name of the async generator")},
+     TyDoc_STR("name of the async generator")},
     {"__qualname__", gen_get_qualname, gen_set_qualname,
-     PyDoc_STR("qualified name of the async generator")},
+     TyDoc_STR("qualified name of the async generator")},
     {"ag_await", coro_get_cr_await, NULL,
-     PyDoc_STR("object being awaited on, or None")},
+     TyDoc_STR("object being awaited on, or None")},
      {"ag_frame", ag_getframe, NULL, NULL},
      {"ag_code", ag_getcode, NULL, NULL},
      {"ag_suspended", ag_getsuspended, NULL, NULL},
@@ -1616,13 +1616,13 @@ static TyMemberDef async_gen_memberlist[] = {
     {NULL}      /* Sentinel */
 };
 
-PyDoc_STRVAR(async_aclose_doc,
+TyDoc_STRVAR(async_aclose_doc,
 "aclose() -> raise GeneratorExit inside generator.");
 
-PyDoc_STRVAR(async_asend_doc,
+TyDoc_STRVAR(async_asend_doc,
 "asend(v) -> send 'v' in generator.");
 
-PyDoc_STRVAR(async_athrow_doc,
+TyDoc_STRVAR(async_athrow_doc,
 "athrow(value)\n\
 athrow(type[,value[,tb]])\n\
 \n\
@@ -1636,7 +1636,7 @@ static TyMethodDef async_gen_methods[] = {
     {"aclose", async_gen_aclose, METH_NOARGS, async_aclose_doc},
     {"__sizeof__", gen_sizeof, METH_NOARGS, sizeof__doc__},
     {"__class_getitem__",    Ty_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     {NULL, NULL}        /* Sentinel */
 };
 
@@ -1650,7 +1650,7 @@ static PyAsyncMethods async_gen_as_async = {
 
 
 TyTypeObject PyAsyncGen_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "async_generator",                          /* tp_name */
     offsetof(PyAsyncGenObject, ag_iframe.localsplus), /* tp_basicsize */
     sizeof(TyObject *),                         /* tp_itemsize */
@@ -1914,7 +1914,7 @@ static PyAsyncMethods async_gen_asend_as_async = {
 
 
 TyTypeObject _PyAsyncGenASend_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "async_generator_asend",                    /* tp_name */
     sizeof(PyAsyncGenASend),                    /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -2000,7 +2000,7 @@ async_gen_wrapped_val_traverse(TyObject *self, visitproc visit, void *arg)
 
 
 TyTypeObject _PyAsyncGenWrappedValue_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "async_generator_wrapped_value",            /* tp_name */
     sizeof(_PyAsyncGenWrappedValue),            /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -2357,7 +2357,7 @@ static PyAsyncMethods async_gen_athrow_as_async = {
 
 
 TyTypeObject _PyAsyncGenAThrow_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "async_generator_athrow",                   /* tp_name */
     sizeof(PyAsyncGenAThrow),                   /* tp_basicsize */
     0,                                          /* tp_itemsize */

@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
-PyDoc_STRVAR(_tkinter_tkapp_eval__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_eval__doc__,
 "eval($self, script, /)\n"
 "--\n"
 "\n");
@@ -40,7 +40,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_evalfile__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_evalfile__doc__,
 "evalfile($self, fileName, /)\n"
 "--\n"
 "\n");
@@ -76,7 +76,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_record__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_record__doc__,
 "record($self, script, /)\n"
 "--\n"
 "\n");
@@ -112,7 +112,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_adderrorinfo__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_adderrorinfo__doc__,
 "adderrorinfo($self, msg, /)\n"
 "--\n"
 "\n");
@@ -148,7 +148,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_getint__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_getint__doc__,
 "getint($self, arg, /)\n"
 "--\n"
 "\n");
@@ -169,7 +169,7 @@ _tkinter_tkapp_getint(TyObject *self, TyObject *arg)
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_getdouble__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_getdouble__doc__,
 "getdouble($self, arg, /)\n"
 "--\n"
 "\n");
@@ -190,7 +190,7 @@ _tkinter_tkapp_getdouble(TyObject *self, TyObject *arg)
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_getboolean__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_getboolean__doc__,
 "getboolean($self, arg, /)\n"
 "--\n"
 "\n");
@@ -211,7 +211,7 @@ _tkinter_tkapp_getboolean(TyObject *self, TyObject *arg)
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_exprstring__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_exprstring__doc__,
 "exprstring($self, s, /)\n"
 "--\n"
 "\n");
@@ -247,7 +247,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_exprlong__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_exprlong__doc__,
 "exprlong($self, s, /)\n"
 "--\n"
 "\n");
@@ -283,7 +283,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_exprdouble__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_exprdouble__doc__,
 "exprdouble($self, s, /)\n"
 "--\n"
 "\n");
@@ -319,7 +319,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_exprboolean__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_exprboolean__doc__,
 "exprboolean($self, s, /)\n"
 "--\n"
 "\n");
@@ -355,7 +355,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_splitlist__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_splitlist__doc__,
 "splitlist($self, arg, /)\n"
 "--\n"
 "\n");
@@ -376,7 +376,7 @@ _tkinter_tkapp_splitlist(TyObject *self, TyObject *arg)
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_createcommand__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_createcommand__doc__,
 "createcommand($self, name, func, /)\n"
 "--\n"
 "\n");
@@ -418,7 +418,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_deletecommand__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_deletecommand__doc__,
 "deletecommand($self, name, /)\n"
 "--\n"
 "\n");
@@ -456,7 +456,7 @@ exit:
 
 #if defined(HAVE_CREATEFILEHANDLER)
 
-PyDoc_STRVAR(_tkinter_tkapp_createfilehandler__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_createfilehandler__doc__,
 "createfilehandler($self, file, mask, func, /)\n"
 "--\n"
 "\n");
@@ -495,7 +495,7 @@ exit:
 
 #if defined(HAVE_CREATEFILEHANDLER)
 
-PyDoc_STRVAR(_tkinter_tkapp_deletefilehandler__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_deletefilehandler__doc__,
 "deletefilehandler($self, file, /)\n"
 "--\n"
 "\n");
@@ -518,7 +518,7 @@ _tkinter_tkapp_deletefilehandler(TyObject *self, TyObject *file)
 
 #endif /* defined(HAVE_CREATEFILEHANDLER) */
 
-PyDoc_STRVAR(_tkinter_tktimertoken_deletetimerhandler__doc__,
+TyDoc_STRVAR(_tkinter_tktimertoken_deletetimerhandler__doc__,
 "deletetimerhandler($self, /)\n"
 "--\n"
 "\n");
@@ -535,7 +535,7 @@ _tkinter_tktimertoken_deletetimerhandler(TyObject *self, TyObject *Py_UNUSED(ign
     return _tkinter_tktimertoken_deletetimerhandler_impl((TkttObject *)self);
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_createtimerhandler__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_createtimerhandler__doc__,
 "createtimerhandler($self, milliseconds, func, /)\n"
 "--\n"
 "\n");
@@ -568,7 +568,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_mainloop__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_mainloop__doc__,
 "mainloop($self, threshold=0, /)\n"
 "--\n"
 "\n");
@@ -602,7 +602,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_dooneevent__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_dooneevent__doc__,
 "dooneevent($self, flags=0, /)\n"
 "--\n"
 "\n");
@@ -636,7 +636,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_quit__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_quit__doc__,
 "quit($self, /)\n"
 "--\n"
 "\n");
@@ -653,7 +653,7 @@ _tkinter_tkapp_quit(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _tkinter_tkapp_quit_impl((TkappObject *)self);
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_interpaddr__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_interpaddr__doc__,
 "interpaddr($self, /)\n"
 "--\n"
 "\n");
@@ -670,7 +670,7 @@ _tkinter_tkapp_interpaddr(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _tkinter_tkapp_interpaddr_impl((TkappObject *)self);
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_loadtk__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_loadtk__doc__,
 "loadtk($self, /)\n"
 "--\n"
 "\n");
@@ -687,7 +687,7 @@ _tkinter_tkapp_loadtk(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _tkinter_tkapp_loadtk_impl((TkappObject *)self);
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_settrace__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_settrace__doc__,
 "settrace($self, func, /)\n"
 "--\n"
 "\n"
@@ -709,7 +709,7 @@ _tkinter_tkapp_settrace(TyObject *self, TyObject *func)
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_gettrace__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_gettrace__doc__,
 "gettrace($self, /)\n"
 "--\n"
 "\n"
@@ -727,7 +727,7 @@ _tkinter_tkapp_gettrace(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _tkinter_tkapp_gettrace_impl((TkappObject *)self);
 }
 
-PyDoc_STRVAR(_tkinter_tkapp_willdispatch__doc__,
+TyDoc_STRVAR(_tkinter_tkapp_willdispatch__doc__,
 "willdispatch($self, /)\n"
 "--\n"
 "\n");
@@ -744,7 +744,7 @@ _tkinter_tkapp_willdispatch(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _tkinter_tkapp_willdispatch_impl((TkappObject *)self);
 }
 
-PyDoc_STRVAR(_tkinter__flatten__doc__,
+TyDoc_STRVAR(_tkinter__flatten__doc__,
 "_flatten($module, item, /)\n"
 "--\n"
 "\n");
@@ -752,7 +752,7 @@ PyDoc_STRVAR(_tkinter__flatten__doc__,
 #define _TKINTER__FLATTEN_METHODDEF    \
     {"_flatten", (PyCFunction)_tkinter__flatten, METH_O, _tkinter__flatten__doc__},
 
-PyDoc_STRVAR(_tkinter_create__doc__,
+TyDoc_STRVAR(_tkinter_create__doc__,
 "create($module, screenName=None, baseName=\'\', className=\'Tk\',\n"
 "       interactive=False, wantobjects=0, wantTk=True, sync=False,\n"
 "       use=None, /)\n"
@@ -901,7 +901,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_setbusywaitinterval__doc__,
+TyDoc_STRVAR(_tkinter_setbusywaitinterval__doc__,
 "setbusywaitinterval($module, new_val, /)\n"
 "--\n"
 "\n"
@@ -931,7 +931,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_tkinter_getbusywaitinterval__doc__,
+TyDoc_STRVAR(_tkinter_getbusywaitinterval__doc__,
 "getbusywaitinterval($module, /)\n"
 "--\n"
 "\n"

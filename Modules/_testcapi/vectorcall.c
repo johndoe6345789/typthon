@@ -314,7 +314,7 @@ call_return_args(TyObject *self, TyObject *args, TyObject *kwargs)
 }
 
 static TyTypeObject MethodDescriptorBase_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "MethodDescriptorBase",
     sizeof(MethodDescriptorObject),
     .tp_new = MethodDescriptor_new,
@@ -326,13 +326,13 @@ static TyTypeObject MethodDescriptorBase_Type = {
 };
 
 static TyTypeObject MethodDescriptorDerived_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "MethodDescriptorDerived",
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE,
 };
 
 static TyTypeObject MethodDescriptorNopGet_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "MethodDescriptorNopGet",
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE,
     .tp_call = call_return_args,
@@ -357,7 +357,7 @@ MethodDescriptor2_new(TyTypeObject* type, TyObject* args, TyObject *kw)
 }
 
 static TyTypeObject MethodDescriptor2_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "MethodDescriptor2",
     sizeof(MethodDescriptor2Object),
     .tp_new = MethodDescriptor2_new,

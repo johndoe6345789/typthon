@@ -353,15 +353,15 @@ PyCField_is_anonymous(TyObject *self, void *Py_UNUSED(closure))
 
 static TyGetSetDef PyCField_getset[] = {
     { "size", PyCField_get_legacy_size, NULL,
-        PyDoc_STR("size in bytes of this field. For bitfields, this is a "
+        TyDoc_STR("size in bytes of this field. For bitfields, this is a "
                   "legacy packed value; use byte_size instead") },
 
     { "bit_size", PyCField_get_bit_size, NULL,
-        PyDoc_STR("size of this field in bits") },
+        TyDoc_STR("size of this field in bits") },
     { "is_bitfield", PyCField_is_bitfield, NULL,
-        PyDoc_STR("true if this is a bitfield") },
+        TyDoc_STR("true if this is a bitfield") },
     { "is_anonymous", PyCField_is_anonymous, NULL,
-        PyDoc_STR("true if this field is anonymous") },
+        TyDoc_STR("true if this field is anonymous") },
     { NULL },
 };
 
@@ -370,34 +370,34 @@ static TyMemberDef PyCField_members[] = {
         .type = Ty_T_OBJECT_EX,
         .offset = offsetof(CFieldObject, name),
         .flags = Py_READONLY,
-        .doc = PyDoc_STR("name of this field") },
+        .doc = TyDoc_STR("name of this field") },
     { "type",
         .type = Ty_T_OBJECT_EX,
         .offset = offsetof(CFieldObject, proto),
         .flags = Py_READONLY,
-        .doc = PyDoc_STR("type of this field") },
+        .doc = TyDoc_STR("type of this field") },
     { "offset",
         .type = Ty_T_PYSSIZET,
         .offset = offsetof(CFieldObject, byte_offset),
         .flags = Py_READONLY,
-        .doc = PyDoc_STR(
+        .doc = TyDoc_STR(
             "offset in bytes of this field (same as byte_offset)") },
     { "byte_offset",
         .type = Ty_T_PYSSIZET,
         .offset = offsetof(CFieldObject, byte_offset),
         .flags = Py_READONLY,
-        .doc = PyDoc_STR("offset in bytes of this field. "
+        .doc = TyDoc_STR("offset in bytes of this field. "
                          "For bitfields: excludes bit_offset.") },
     { "byte_size",
         .type = Ty_T_PYSSIZET,
         .offset = offsetof(CFieldObject, byte_size),
         .flags = Py_READONLY,
-        .doc = PyDoc_STR("size of this field in bytes") },
+        .doc = TyDoc_STR("size of this field in bytes") },
     { "bit_offset",
         .type = Ty_T_UBYTE,
         .offset = offsetof(CFieldObject, bit_offset),
         .flags = Py_READONLY,
-        .doc = PyDoc_STR("additional offset in bits (relative to byte_offset);"
+        .doc = TyDoc_STR("additional offset in bits (relative to byte_offset);"
                          " zero for non-bitfields") },
     { NULL },
 };
@@ -459,7 +459,7 @@ static TyType_Slot cfield_slots[] = {
     {Ty_tp_new, PyCField_new},
     {Ty_tp_dealloc, PyCField_dealloc},
     {Ty_tp_repr, PyCField_repr},
-    {Ty_tp_doc, (void *)PyDoc_STR("Structure/Union member")},
+    {Ty_tp_doc, (void *)TyDoc_STR("Structure/Union member")},
     {Ty_tp_traverse, PyCField_traverse},
     {Ty_tp_clear, PyCField_clear},
     {Ty_tp_getset, PyCField_getset},

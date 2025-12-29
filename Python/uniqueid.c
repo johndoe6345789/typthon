@@ -79,7 +79,7 @@ resize_local_refcounts(_PyThreadStateImpl *tstate)
 Ty_ssize_t
 _TyObject_AssignUniqueId(TyObject *obj)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _Ty_unique_id_pool *pool = &interp->unique_ids;
 
     LOCK_POOL(pool);
@@ -104,7 +104,7 @@ _TyObject_AssignUniqueId(TyObject *obj)
 void
 _TyObject_ReleaseUniqueId(Ty_ssize_t unique_id)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _Ty_unique_id_pool *pool = &interp->unique_ids;
 
     LOCK_POOL(pool);
@@ -201,7 +201,7 @@ _TyObject_FinalizePerThreadRefcounts(_PyThreadStateImpl *tstate)
 }
 
 void
-_TyObject_FinalizeUniqueIdPool(PyInterpreterState *interp)
+_TyObject_FinalizeUniqueIdPool(TyInterpreterState *interp)
 {
     struct _Ty_unique_id_pool *pool = &interp->unique_ids;
 

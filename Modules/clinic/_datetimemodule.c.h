@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(datetime_date_fromtimestamp__doc__,
+TyDoc_STRVAR(datetime_date_fromtimestamp__doc__,
 "fromtimestamp($type, timestamp, /)\n"
 "--\n"
 "\n"
@@ -50,7 +50,7 @@ iso_calendar_date_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(year), &_Ty_ID(week), &_Ty_ID(weekday), },
     };
@@ -98,7 +98,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(datetime_date_replace__doc__,
+TyDoc_STRVAR(datetime_date_replace__doc__,
 "replace($self, /, year=unchanged, month=unchanged, day=unchanged)\n"
 "--\n"
 "\n"
@@ -124,7 +124,7 @@ datetime_date_replace(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(year), &_Ty_ID(month), &_Ty_ID(day), },
     };
@@ -185,7 +185,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(datetime_time_replace__doc__,
+TyDoc_STRVAR(datetime_time_replace__doc__,
 "replace($self, /, hour=unchanged, minute=unchanged, second=unchanged,\n"
 "        microsecond=unchanged, tzinfo=unchanged, *, fold=unchanged)\n"
 "--\n"
@@ -213,7 +213,7 @@ datetime_time_replace(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(hour), &_Ty_ID(minute), &_Ty_ID(second), &_Ty_ID(microsecond), &_Ty_ID(tzinfo), &_Ty_ID(fold), },
     };
@@ -305,7 +305,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(datetime_datetime_now__doc__,
+TyDoc_STRVAR(datetime_datetime_now__doc__,
 "now($type, /, tz=None)\n"
 "--\n"
 "\n"
@@ -335,7 +335,7 @@ datetime_datetime_now(TyObject *type, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(tz), },
     };
@@ -373,7 +373,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(datetime_datetime_replace__doc__,
+TyDoc_STRVAR(datetime_datetime_replace__doc__,
 "replace($self, /, year=unchanged, month=unchanged, day=unchanged,\n"
 "        hour=unchanged, minute=unchanged, second=unchanged,\n"
 "        microsecond=unchanged, tzinfo=unchanged, *, fold=unchanged)\n"
@@ -403,7 +403,7 @@ datetime_datetime_replace(TyObject *self, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(year), &_Ty_ID(month), &_Ty_ID(day), &_Ty_ID(hour), &_Ty_ID(minute), &_Ty_ID(second), &_Ty_ID(microsecond), &_Ty_ID(tzinfo), &_Ty_ID(fold), },
     };

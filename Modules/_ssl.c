@@ -381,7 +381,7 @@ class _ssl.SSLSession "PySSLSession *" "get_state_type(type)->PySSLSession_Type"
 
 #include "clinic/_ssl.c.h"
 
-static int PySSL_select(PySocketSockObject *s, int writing, PyTime_t timeout);
+static int PySSL_select(PySocketSockObject *s, int writing, TyTime_t timeout);
 
 typedef enum {
     SOCKET_IS_NONBLOCKING,
@@ -426,27 +426,27 @@ static inline PySocketSockObject* GET_SOCKET(PySSLSocket *obj) {
  * SSL errors.
  */
 
-PyDoc_STRVAR(SSLError_doc,
+TyDoc_STRVAR(SSLError_doc,
 "An error occurred in the SSL implementation.");
 
-PyDoc_STRVAR(SSLCertVerificationError_doc,
+TyDoc_STRVAR(SSLCertVerificationError_doc,
 "A certificate could not be verified.");
 
-PyDoc_STRVAR(SSLZeroReturnError_doc,
+TyDoc_STRVAR(SSLZeroReturnError_doc,
 "SSL/TLS session closed cleanly.");
 
-PyDoc_STRVAR(SSLWantReadError_doc,
+TyDoc_STRVAR(SSLWantReadError_doc,
 "Non-blocking SSL socket needs to read more data\n"
 "before the requested operation can be completed.");
 
-PyDoc_STRVAR(SSLWantWriteError_doc,
+TyDoc_STRVAR(SSLWantWriteError_doc,
 "Non-blocking SSL socket needs to write more data\n"
 "before the requested operation can be completed.");
 
-PyDoc_STRVAR(SSLSyscallError_doc,
+TyDoc_STRVAR(SSLSyscallError_doc,
 "System error when attempting SSL operation.");
 
-PyDoc_STRVAR(SSLEOFError_doc,
+TyDoc_STRVAR(SSLEOFError_doc,
 "SSL/TLS connection terminated abruptly.");
 
 static TyObject *
@@ -1007,7 +1007,7 @@ _ssl__SSLSocket_do_handshake_impl(PySSLSocket *self)
     _PySSLError err;
     int sockstate, nonblocking;
     PySocketSockObject *sock = GET_SOCKET(self);
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
     int has_timeout;
 
     if (sock) {
@@ -2378,12 +2378,12 @@ PySSL_dealloc(TyObject *op)
  */
 
 static int
-PySSL_select(PySocketSockObject *s, int writing, PyTime_t timeout)
+PySSL_select(PySocketSockObject *s, int writing, TyTime_t timeout)
 {
     int rc;
 #ifdef HAVE_POLL
     struct pollfd pollfd;
-    PyTime_t ms;
+    TyTime_t ms;
 #else
     int nfds;
     fd_set fds;
@@ -2463,7 +2463,7 @@ _ssl__SSLSocket_write_impl(PySSLSocket *self, Ty_buffer *b)
     _PySSLError err;
     int nonblocking;
     PySocketSockObject *sock = GET_SOCKET(self);
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
     int has_timeout;
 
     if (sock != NULL) {
@@ -2603,7 +2603,7 @@ _ssl__SSLSocket_read_impl(PySSLSocket *self, Ty_ssize_t len,
     _PySSLError err;
     int nonblocking;
     PySocketSockObject *sock = GET_SOCKET(self);
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
     int has_timeout;
 
     if (!group_right_1 && len < 0) {
@@ -2736,7 +2736,7 @@ _ssl__SSLSocket_shutdown_impl(PySSLSocket *self)
     int sockstate, nonblocking, ret;
     int zeros = 0;
     PySocketSockObject *sock = GET_SOCKET(self);
-    PyTime_t timeout, deadline = 0;
+    TyTime_t timeout, deadline = 0;
     int has_timeout;
 
     if (sock != NULL) {
@@ -4590,9 +4590,9 @@ _ssl__SSLContext_set_default_verify_paths_impl(PySSLContext *self)
 /*[clinic end generated code: output=0bee74e6e09deaaa input=939a88e78f634119]*/
 {
     int rc;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     rc = SSL_CTX_set_default_verify_paths(self->ctx);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (!rc) {
         _setSSLError(get_state_ctx(self), NULL, 0, __FILE__, __LINE__);
         return NULL;
@@ -6282,7 +6282,7 @@ static TyMethodDef PySSL_methods[] = {
 };
 
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "Implementation module for SSL socket operations.  See the socket module\n\
 for documentation.");
 
@@ -6817,7 +6817,7 @@ static int
 sslmodule_init_lock(TyObject *module)
 {
     _sslmodulestate *state = get_ssl_state(module);
-    state->keylog_lock = PyThread_allocate_lock();
+    state->keylog_lock = TyThread_allocate_lock();
     if (state->keylog_lock == NULL) {
         TyErr_NoMemory();
         return -1;
@@ -6895,7 +6895,7 @@ sslmodule_free(void *m)
 {
     sslmodule_clear((TyObject *)m);
     _sslmodulestate *state = get_ssl_state(m);
-    PyThread_free_lock(state->keylog_lock);
+    TyThread_free_lock(state->keylog_lock);
 }
 
 static struct TyModuleDef _sslmodule_def = {

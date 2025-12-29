@@ -22,7 +22,7 @@ typedef struct PyCodeObject PyCodeObject;
 typedef struct _frame PyFrameObject;
 
 typedef struct _ts TyThreadState;
-typedef struct _is PyInterpreterState;
+typedef struct _is TyInterpreterState;
 
 #ifdef __cplusplus
 }

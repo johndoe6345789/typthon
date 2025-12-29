@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(memoryview__doc__,
+TyDoc_STRVAR(memoryview__doc__,
 "memoryview(object)\n"
 "--\n"
 "\n"
@@ -30,7 +30,7 @@ memoryview(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(object), },
     };
@@ -65,7 +65,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(memoryview__from_flags__doc__,
+TyDoc_STRVAR(memoryview__from_flags__doc__,
 "_from_flags($type, /, object, flags)\n"
 "--\n"
 "\n"
@@ -90,7 +90,7 @@ memoryview__from_flags(TyObject *type, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(object), &_Ty_ID(flags), },
     };
@@ -128,7 +128,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(memoryview_release__doc__,
+TyDoc_STRVAR(memoryview_release__doc__,
 "release($self, /)\n"
 "--\n"
 "\n"
@@ -146,7 +146,7 @@ memoryview_release(TyObject *self, TyObject *Py_UNUSED(ignored))
     return memoryview_release_impl((PyMemoryViewObject *)self);
 }
 
-PyDoc_STRVAR(memoryview_cast__doc__,
+TyDoc_STRVAR(memoryview_cast__doc__,
 "cast($self, /, format, shape=<unrepresentable>)\n"
 "--\n"
 "\n"
@@ -172,7 +172,7 @@ memoryview_cast(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(format), &_Ty_ID(shape), },
     };
@@ -216,7 +216,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(memoryview_toreadonly__doc__,
+TyDoc_STRVAR(memoryview_toreadonly__doc__,
 "toreadonly($self, /)\n"
 "--\n"
 "\n"
@@ -234,7 +234,7 @@ memoryview_toreadonly(TyObject *self, TyObject *Py_UNUSED(ignored))
     return memoryview_toreadonly_impl((PyMemoryViewObject *)self);
 }
 
-PyDoc_STRVAR(memoryview_tolist__doc__,
+TyDoc_STRVAR(memoryview_tolist__doc__,
 "tolist($self, /)\n"
 "--\n"
 "\n"
@@ -252,7 +252,7 @@ memoryview_tolist(TyObject *self, TyObject *Py_UNUSED(ignored))
     return memoryview_tolist_impl((PyMemoryViewObject *)self);
 }
 
-PyDoc_STRVAR(memoryview_tobytes__doc__,
+TyDoc_STRVAR(memoryview_tobytes__doc__,
 "tobytes($self, /, order=\'C\')\n"
 "--\n"
 "\n"
@@ -283,7 +283,7 @@ memoryview_tobytes(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(order), },
     };
@@ -338,7 +338,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(memoryview_hex__doc__,
+TyDoc_STRVAR(memoryview_hex__doc__,
 "hex($self, /, sep=<unrepresentable>, bytes_per_sep=1)\n"
 "--\n"
 "\n"
@@ -381,7 +381,7 @@ memoryview_hex(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(sep), &_Ty_ID(bytes_per_sep), },
     };
@@ -429,7 +429,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(memoryview_count__doc__,
+TyDoc_STRVAR(memoryview_count__doc__,
 "count($self, value, /)\n"
 "--\n"
 "\n"
@@ -451,7 +451,7 @@ memoryview_count(TyObject *self, TyObject *value)
     return return_value;
 }
 
-PyDoc_STRVAR(memoryview_index__doc__,
+TyDoc_STRVAR(memoryview_index__doc__,
 "index($self, value, start=0, stop=sys.maxsize, /)\n"
 "--\n"
 "\n"

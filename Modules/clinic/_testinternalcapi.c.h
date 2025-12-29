@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_testinternalcapi_compiler_cleandoc__doc__,
+TyDoc_STRVAR(_testinternalcapi_compiler_cleandoc__doc__,
 "compiler_cleandoc($module, /, doc)\n"
 "--\n"
 "\n"
@@ -33,7 +33,7 @@ _testinternalcapi_compiler_cleandoc(TyObject *module, TyObject *const *args, Ty_
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(doc), },
     };
@@ -70,7 +70,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testinternalcapi_new_instruction_sequence__doc__,
+TyDoc_STRVAR(_testinternalcapi_new_instruction_sequence__doc__,
 "new_instruction_sequence($module, /)\n"
 "--\n"
 "\n"
@@ -88,7 +88,7 @@ _testinternalcapi_new_instruction_sequence(TyObject *module, TyObject *Py_UNUSED
     return _testinternalcapi_new_instruction_sequence_impl(module);
 }
 
-PyDoc_STRVAR(_testinternalcapi_compiler_codegen__doc__,
+TyDoc_STRVAR(_testinternalcapi_compiler_codegen__doc__,
 "compiler_codegen($module, /, ast, filename, optimize, compile_mode=0)\n"
 "--\n"
 "\n"
@@ -115,7 +115,7 @@ _testinternalcapi_compiler_codegen(TyObject *module, TyObject *const *args, Ty_s
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(ast), &_Ty_ID(filename), &_Ty_ID(optimize), &_Ty_ID(compile_mode), },
     };
@@ -165,7 +165,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testinternalcapi_optimize_cfg__doc__,
+TyDoc_STRVAR(_testinternalcapi_optimize_cfg__doc__,
 "optimize_cfg($module, /, instructions, consts, nlocals)\n"
 "--\n"
 "\n"
@@ -191,7 +191,7 @@ _testinternalcapi_optimize_cfg(TyObject *module, TyObject *const *args, Ty_ssize
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(instructions), &_Ty_ID(consts), &_Ty_ID(nlocals), },
     };
@@ -231,7 +231,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testinternalcapi_assemble_code_object__doc__,
+TyDoc_STRVAR(_testinternalcapi_assemble_code_object__doc__,
 "assemble_code_object($module, /, filename, instructions, metadata)\n"
 "--\n"
 "\n"
@@ -259,7 +259,7 @@ _testinternalcapi_assemble_code_object(TyObject *module, TyObject *const *args, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(filename), &_Ty_ID(instructions), &_Ty_ID(metadata), },
     };
@@ -296,7 +296,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testinternalcapi_test_long_numbits__doc__,
+TyDoc_STRVAR(_testinternalcapi_test_long_numbits__doc__,
 "test_long_numbits($module, /)\n"
 "--\n"
 "\n");
@@ -313,7 +313,7 @@ _testinternalcapi_test_long_numbits(TyObject *module, TyObject *Py_UNUSED(ignore
     return _testinternalcapi_test_long_numbits_impl(module);
 }
 
-PyDoc_STRVAR(gh_119213_getargs__doc__,
+TyDoc_STRVAR(gh_119213_getargs__doc__,
 "gh_119213_getargs($module, /, spam=None)\n"
 "--\n"
 "\n"
@@ -338,7 +338,7 @@ gh_119213_getargs(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(spam), },
     };
@@ -376,7 +376,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(get_next_dict_keys_version__doc__,
+TyDoc_STRVAR(get_next_dict_keys_version__doc__,
 "get_next_dict_keys_version($module, /)\n"
 "--\n"
 "\n");

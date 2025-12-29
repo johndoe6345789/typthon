@@ -48,7 +48,7 @@ OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "pycore_format.h"        // F_LJUST
 #include "pycore_freelist.h"      // _Ty_FREELIST_FREE(), _Ty_FREELIST_POP()
 #include "pycore_initconfig.h"    // _TyStatus_OK()
-#include "pycore_interp.h"        // PyInterpreterState.fs_codec
+#include "pycore_interp.h"        // TyInterpreterState.fs_codec
 #include "pycore_long.h"          // _TyLong_FormatWriter()
 #include "pycore_object.h"        // _TyObject_GC_TRACK(), _Ty_FatalRefcountError()
 #include "pycore_pathconfig.h"    // _Ty_DumpPathConfig()
@@ -264,7 +264,7 @@ static inline TyObject* unicode_get_empty(void)
 /* This dictionary holds per-interpreter interned strings.
  * See InternalDocs/string_interning.md for details.
  */
-static inline TyObject *get_interned_dict(PyInterpreterState *interp)
+static inline TyObject *get_interned_dict(TyInterpreterState *interp)
 {
     return _Ty_INTERP_CACHED_OBJECT(interp, interned_strings);
 }
@@ -336,14 +336,14 @@ hashtable_unicode_compare(const void *key1, const void *key2)
    ensure they get freed after all other interpreters are freed.
 */
 static bool
-has_shared_intern_dict(PyInterpreterState *interp)
+has_shared_intern_dict(TyInterpreterState *interp)
 {
-    PyInterpreterState *main_interp = _TyInterpreterState_Main();
+    TyInterpreterState *main_interp = _TyInterpreterState_Main();
     return interp != main_interp  && interp->feature_flags & Ty_RTFLAGS_USE_MAIN_OBMALLOC;
 }
 
 static int
-init_interned_dict(PyInterpreterState *interp)
+init_interned_dict(TyInterpreterState *interp)
 {
     assert(get_interned_dict(interp) == NULL);
     TyObject *interned;
@@ -362,7 +362,7 @@ init_interned_dict(PyInterpreterState *interp)
 }
 
 static void
-clear_interned_dict(PyInterpreterState *interp)
+clear_interned_dict(TyInterpreterState *interp)
 {
     TyObject *interned = get_interned_dict(interp);
     if (interned != NULL) {
@@ -376,7 +376,7 @@ clear_interned_dict(PyInterpreterState *interp)
 }
 
 static TyStatus
-init_global_interned_strings(PyInterpreterState *interp)
+init_global_interned_strings(TyInterpreterState *interp)
 {
     assert(INTERNED_STRINGS == NULL);
     _Ty_hashtable_allocator_t hashtable_alloc = {TyMem_RawMalloc, TyMem_RawFree};
@@ -618,7 +618,7 @@ unicode_check_encoding_errors(const char *encoding, const char *errors)
         return 0;
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 #ifndef Ty_DEBUG
     /* In release mode, only check in development mode (-X dev) */
     if (!_TyInterpreterState_GetConfig(interp)->dev_mode) {
@@ -1746,7 +1746,7 @@ unicode_dealloc(TyObject *unicode)
             _Ty_IncRefTotal(_TyThreadState_GET());
             _Ty_IncRefTotal(_TyThreadState_GET());
 #endif
-            PyInterpreterState *interp = _TyInterpreterState_GET();
+            TyInterpreterState *interp = _TyInterpreterState_GET();
             TyObject *interned = get_interned_dict(interp);
             assert(interned != NULL);
             TyObject *popped;
@@ -2181,7 +2181,7 @@ TyObject *
 _TyUnicode_FromId(_Ty_Identifier *id)
 {
     PyMutex_Lock((PyMutex *)&id->mutex);
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _Ty_unicode_ids *ids = &interp->unicode.ids;
 
     Ty_ssize_t index = _Ty_atomic_load_ssize(&id->index);
@@ -3885,7 +3885,7 @@ TyUnicode_EncodeLocale(TyObject *unicode, const char *errors)
 TyObject *
 TyUnicode_EncodeFSDefault(TyObject *unicode)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _Ty_unicode_fs_codec *fs_codec = &interp->unicode.fs_codec;
     if (fs_codec->utf8) {
         return unicode_encode_utf8(unicode,
@@ -4123,7 +4123,7 @@ TyUnicode_DecodeFSDefault(const char *s) {
 TyObject*
 TyUnicode_DecodeFSDefaultAndSize(const char *s, Ty_ssize_t size)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _Ty_unicode_fs_codec *fs_codec = &interp->unicode.fs_codec;
     if (fs_codec->utf8) {
         return unicode_decode_utf8(s, size,
@@ -6603,7 +6603,7 @@ TyUnicode_AsUTF16String(TyObject *unicode)
 _TyUnicode_Name_CAPI *
 _TyUnicode_GetNameCAPI(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyUnicode_Name_CAPI *ucnhash_capi;
 
     ucnhash_capi = _Ty_atomic_load_ptr(&interp->unicode.ucnhash_capi);
@@ -8682,7 +8682,7 @@ static TyMethodDef encoding_map_methods[] = {
 };
 
 static TyTypeObject EncodingMapType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "EncodingMap",
     .tp_basicsize = sizeof(struct encoding_map),
     /* methods */
@@ -14225,14 +14225,14 @@ _PyUnicodeWriter_Dealloc(_PyUnicodeWriter *writer)
 
 #include "stringlib/unicode_format.h"
 
-PyDoc_STRVAR(format__doc__,
+TyDoc_STRVAR(format__doc__,
              "format($self, /, *args, **kwargs)\n\
 --\n\
 \n\
 Return a formatted version of the string, using substitutions from args and kwargs.\n\
 The substitutions are identified by braces ('{' and '}').");
 
-PyDoc_STRVAR(format_map__doc__,
+TyDoc_STRVAR(format_map__doc__,
              "format_map($self, mapping, /)\n\
 --\n\
 \n\
@@ -15743,7 +15743,7 @@ _TyUnicode_ExactDealloc(TyObject *op)
     unicode_dealloc(op);
 }
 
-PyDoc_STRVAR(unicode_doc,
+TyDoc_STRVAR(unicode_doc,
 "str(object='') -> str\n\
 str(bytes_or_buffer[, encoding[, errors]]) -> str\n\
 \n\
@@ -15758,7 +15758,7 @@ errors defaults to 'strict'.");
 static TyObject *unicode_iter(TyObject *seq);
 
 TyTypeObject TyUnicode_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "str",                        /* tp_name */
     sizeof(PyUnicodeObject),      /* tp_basicsize */
     0,                            /* tp_itemsize */
@@ -15831,7 +15831,7 @@ _init_global_state(void)
 }
 
 void
-_TyUnicode_InitState(PyInterpreterState *interp)
+_TyUnicode_InitState(TyInterpreterState *interp)
 {
     if (!_Ty_IsMainInterpreter(interp)) {
         return;
@@ -15841,7 +15841,7 @@ _TyUnicode_InitState(PyInterpreterState *interp)
 
 
 TyStatus
-_TyUnicode_InitGlobalObjects(PyInterpreterState *interp)
+_TyUnicode_InitGlobalObjects(TyInterpreterState *interp)
 {
     if (_Ty_IsMainInterpreter(interp)) {
         TyStatus status = init_global_interned_strings(interp);
@@ -15861,7 +15861,7 @@ _TyUnicode_InitGlobalObjects(PyInterpreterState *interp)
 
 
 TyStatus
-_TyUnicode_InitTypes(PyInterpreterState *interp)
+_TyUnicode_InitTypes(TyInterpreterState *interp)
 {
     if (_PyStaticType_InitBuiltin(interp, &EncodingMapType) < 0) {
         goto error;
@@ -15879,7 +15879,7 @@ error:
 }
 
 static /* non-null */ TyObject*
-intern_static(PyInterpreterState *interp, TyObject *s /* stolen */)
+intern_static(TyInterpreterState *interp, TyObject *s /* stolen */)
 {
     // Note that this steals a reference to `s`, but in many cases that
     // stolen ref is returned, requiring no decref/incref.
@@ -15918,7 +15918,7 @@ intern_static(PyInterpreterState *interp, TyObject *s /* stolen */)
 }
 
 void
-_TyUnicode_InternStatic(PyInterpreterState *interp, TyObject **p)
+_TyUnicode_InternStatic(TyInterpreterState *interp, TyObject **p)
 {
     // This should only be called as part of runtime initialization
     assert(!Ty_IsInitialized());
@@ -15945,7 +15945,7 @@ immortalize_interned(TyObject *s)
 }
 
 static /* non-null */ TyObject*
-intern_common(PyInterpreterState *interp, TyObject *s /* stolen */,
+intern_common(TyInterpreterState *interp, TyObject *s /* stolen */,
               bool immortalize)
 {
     // Note that this steals a reference to `s`, but in many cases that
@@ -16076,14 +16076,14 @@ intern_common(PyInterpreterState *interp, TyObject *s /* stolen */,
 }
 
 void
-_TyUnicode_InternImmortal(PyInterpreterState *interp, TyObject **p)
+_TyUnicode_InternImmortal(TyInterpreterState *interp, TyObject **p)
 {
     *p = intern_common(interp, *p, 1);
     assert(*p);
 }
 
 void
-_TyUnicode_InternMortal(PyInterpreterState *interp, TyObject **p)
+_TyUnicode_InternMortal(TyInterpreterState *interp, TyObject **p)
 {
     *p = intern_common(interp, *p, 0);
     assert(*p);
@@ -16091,7 +16091,7 @@ _TyUnicode_InternMortal(PyInterpreterState *interp, TyObject **p)
 
 
 void
-_TyUnicode_InternInPlace(PyInterpreterState *interp, TyObject **p)
+_TyUnicode_InternInPlace(TyInterpreterState *interp, TyObject **p)
 {
     _TyUnicode_InternImmortal(interp, p);
     return;
@@ -16100,7 +16100,7 @@ _TyUnicode_InternInPlace(PyInterpreterState *interp, TyObject **p)
 void
 TyUnicode_InternInPlace(TyObject **p)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyUnicode_InternMortal(interp, p);
 }
 
@@ -16109,7 +16109,7 @@ PyAPI_FUNC(void) TyUnicode_InternImmortal(TyObject **);
 void
 TyUnicode_InternImmortal(TyObject **p)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyUnicode_InternImmortal(interp, p);
 }
 
@@ -16120,14 +16120,14 @@ TyUnicode_InternFromString(const char *cp)
     if (s == NULL) {
         return NULL;
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyUnicode_InternMortal(interp, &s);
     return s;
 }
 
 
 void
-_TyUnicode_ClearInterned(PyInterpreterState *interp)
+_TyUnicode_ClearInterned(TyInterpreterState *interp)
 {
     TyObject *interned = get_interned_dict(interp);
     if (interned == NULL) {
@@ -16298,7 +16298,7 @@ unicodeiter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSsize_t(len);
 }
 
-PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
+TyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
 unicodeiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
@@ -16322,7 +16322,7 @@ unicodeiter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
     }
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
 static TyObject *
 unicodeiter_setstate(TyObject *op, TyObject *state)
@@ -16341,7 +16341,7 @@ unicodeiter_setstate(TyObject *op, TyObject *state)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
+TyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
 static TyMethodDef unicodeiter_methods[] = {
     {"__length_hint__", unicodeiter_len, METH_NOARGS, length_hint_doc},
@@ -16351,7 +16351,7 @@ static TyMethodDef unicodeiter_methods[] = {
 };
 
 TyTypeObject PyUnicodeIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "str_iterator",         /* tp_name */
     sizeof(unicodeiterobject),      /* tp_basicsize */
     0,                  /* tp_itemsize */
@@ -16384,7 +16384,7 @@ TyTypeObject PyUnicodeIter_Type = {
 };
 
 TyTypeObject _PyUnicodeASCIIIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "str_ascii_iterator",
     .tp_basicsize = sizeof(unicodeiterobject),
     .tp_dealloc = unicodeiter_dealloc,
@@ -16484,7 +16484,7 @@ error:
 
 
 static TyStatus
-init_stdio_encoding(PyInterpreterState *interp)
+init_stdio_encoding(TyInterpreterState *interp)
 {
     /* Update the stdio encoding to the normalized Python codec name. */
     PyConfig *config = (PyConfig*)_TyInterpreterState_GetConfig(interp);
@@ -16497,7 +16497,7 @@ init_stdio_encoding(PyInterpreterState *interp)
 
 
 static int
-init_fs_codec(PyInterpreterState *interp)
+init_fs_codec(TyInterpreterState *interp)
 {
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
 
@@ -16556,7 +16556,7 @@ init_fs_codec(PyInterpreterState *interp)
 static TyStatus
 init_fs_encoding(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     /* Update the filesystem encoding to the normalized Python codec name.
        For example, replace "ANSI_X3.4-1968" (locale encoding) with "ascii"
@@ -16607,7 +16607,7 @@ _TyUnicode_FiniEncodings(struct _Ty_unicode_fs_codec *fs_codec)
 int
 _TyUnicode_EnableLegacyWindowsFSEncoding(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     PyConfig *config = (PyConfig *)_TyInterpreterState_GetConfig(interp);
 
     /* Set the filesystem encoding to mbcs/replace (PEP 529) */
@@ -16640,7 +16640,7 @@ unicode_is_finalizing(void)
 
 
 void
-_TyUnicode_FiniTypes(PyInterpreterState *interp)
+_TyUnicode_FiniTypes(TyInterpreterState *interp)
 {
     _PyStaticType_FiniBuiltin(interp, &EncodingMapType);
     _PyStaticType_FiniBuiltin(interp, &PyFieldNameIter_Type);
@@ -16649,7 +16649,7 @@ _TyUnicode_FiniTypes(PyInterpreterState *interp)
 
 
 void
-_TyUnicode_Fini(PyInterpreterState *interp)
+_TyUnicode_Fini(TyInterpreterState *interp)
 {
     struct _Ty_unicode_state *state = &interp->unicode;
 
@@ -16672,9 +16672,9 @@ _TyUnicode_Fini(PyInterpreterState *interp)
 
 static TyMethodDef _string_methods[] = {
     {"formatter_field_name_split", formatter_field_name_split,
-     METH_O, PyDoc_STR("split the argument as a field name")},
+     METH_O, TyDoc_STR("split the argument as a field name")},
     {"formatter_parser", formatter_parser,
-     METH_O, PyDoc_STR("parse the argument as a format string")},
+     METH_O, TyDoc_STR("parse the argument as a format string")},
     {NULL, NULL}
 };
 
@@ -16687,7 +16687,7 @@ static PyModuleDef_Slot module_slots[] = {
 static struct TyModuleDef _string_module = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_string",
-    .m_doc = PyDoc_STR("string helper module"),
+    .m_doc = TyDoc_STR("string helper module"),
     .m_size = 0,
     .m_methods = _string_methods,
     .m_slots = module_slots,

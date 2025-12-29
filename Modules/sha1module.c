@@ -42,7 +42,7 @@ typedef struct {
     // Prevents undefined behavior via multiple threads entering the C API.
     bool use_mutex;
     PyMutex mutex;
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
     Hacl_Hash_SHA1_state_t *hash_state;
 } SHA1object;
 

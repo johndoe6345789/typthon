@@ -6,7 +6,7 @@
 #include "osdefs.h"               // MAXPATHLEN
 #include "pycore_ceval.h"         // _Ty_simple_func
 #include "pycore_crossinterp.h"   // _PyXIData_t
-#include "pycore_function.h"      // _PyFunction_VerifyStateless()
+#include "pycore_function.h"      // _TyFunction_VerifyStateless()
 #include "pycore_global_strings.h"  // _Ty_ID()
 #include "pycore_import.h"        // _TyImport_SetModule()
 #include "pycore_initconfig.h"    // _TyStatus_OK()
@@ -246,8 +246,8 @@ restore_main(TyThreadState *tstate, struct sync_module *main)
 /**************/
 
 typedef struct xi_exceptions exceptions_t;
-static int init_static_exctypes(exceptions_t *, PyInterpreterState *);
-static void fini_static_exctypes(exceptions_t *, PyInterpreterState *);
+static int init_static_exctypes(exceptions_t *, TyInterpreterState *);
+static void fini_static_exctypes(exceptions_t *, TyInterpreterState *);
 static int init_heap_exctypes(exceptions_t *);
 static void fini_heap_exctypes(exceptions_t *);
 #include "crossinterp_exceptions.h"
@@ -258,7 +258,7 @@ static void fini_heap_exctypes(exceptions_t *);
 /***************************/
 
 int
-_Ty_CallInInterpreter(PyInterpreterState *interp,
+_Ty_CallInInterpreter(TyInterpreterState *interp,
                       _Ty_simple_func func, void *arg)
 {
     if (interp == PyInterpreterState_Get()) {
@@ -270,7 +270,7 @@ _Ty_CallInInterpreter(PyInterpreterState *interp,
 }
 
 int
-_Ty_CallInInterpreterAndRawFree(PyInterpreterState *interp,
+_Ty_CallInInterpreterAndRawFree(TyInterpreterState *interp,
                                 _Ty_simple_func func, void *arg)
 {
     if (interp == PyInterpreterState_Get()) {
@@ -316,7 +316,7 @@ _PyXIData_New(void)
 void
 _PyXIData_Free(_PyXIData_t *xid)
 {
-    PyInterpreterState *interp = PyInterpreterState_Get();
+    TyInterpreterState *interp = PyInterpreterState_Get();
     _PyXIData_Clear(interp, xid);
     TyMem_RawFree(xid);
 }
@@ -353,7 +353,7 @@ _xidata_clear(_PyXIData_t *xidata)
 
 void
 _PyXIData_Init(_PyXIData_t *xidata,
-               PyInterpreterState *interp,
+               TyInterpreterState *interp,
                void *shared, TyObject *obj,
                xid_newobjfunc new_object)
 {
@@ -377,7 +377,7 @@ _PyXIData_Init(_PyXIData_t *xidata,
 
 int
 _PyXIData_InitWithSize(_PyXIData_t *xidata,
-                       PyInterpreterState *interp,
+                       TyInterpreterState *interp,
                        const size_t size, TyObject *obj,
                        xid_newobjfunc new_object)
 {
@@ -395,7 +395,7 @@ _PyXIData_InitWithSize(_PyXIData_t *xidata,
 }
 
 void
-_PyXIData_Clear(PyInterpreterState *interp, _PyXIData_t *xidata)
+_PyXIData_Clear(TyInterpreterState *interp, _PyXIData_t *xidata)
 {
     assert(xidata != NULL);
     // This must be called in the owning interpreter.
@@ -470,7 +470,7 @@ static int
 _get_xidata(TyThreadState *tstate,
             TyObject *obj, xidata_fallback_t fallback, _PyXIData_t *xidata)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     assert(xidata->data == NULL);
     assert(xidata->obj == NULL);
@@ -541,7 +541,7 @@ _TyObject_GetXIData(TyThreadState *tstate,
             }
             TyObject *exc = _TyErr_GetRaisedException(tstate);
             if (TyFunction_Check(obj)) {
-                if (_PyFunction_GetXIData(tstate, obj, xidata) == 0) {
+                if (_TyFunction_GetXIData(tstate, obj, xidata) == 0) {
                     Ty_DECREF(exc);
                     return 0;
                 }
@@ -889,7 +889,7 @@ get_script_xidata(TyThreadState *tstate, TyObject *obj, int pure,
         assert(code != NULL);
         Ty_INCREF(code);
         if (pure) {
-            if (_PyFunction_VerifyStateless(tstate, obj) < 0) {
+            if (_TyFunction_VerifyStateless(tstate, obj) < 0) {
                 goto error;
             }
             checked = 1;
@@ -999,7 +999,7 @@ _xidata_release(_PyXIData_t *xidata, int rawfree)
     }
 
     // Switch to the original interpreter.
-    PyInterpreterState *interp = _TyInterpreterState_LookUpID(
+    TyInterpreterState *interp = _TyInterpreterState_LookUpID(
                                         _PyXIData_INTERPID(xidata));
     if (interp == NULL) {
         // The interpreter was already destroyed.
@@ -1686,7 +1686,7 @@ _PyXI_ExcInfoAsObject(_PyXI_excinfo *info)
 /* error codes */
 
 static int
-_PyXI_ApplyErrorCode(_PyXI_errcode code, PyInterpreterState *interp)
+_PyXI_ApplyErrorCode(_PyXI_errcode code, TyInterpreterState *interp)
 {
     TyThreadState *tstate = _TyThreadState_GET();
 
@@ -1828,7 +1828,7 @@ _PyXI_InitFailure(_PyXI_failure *failure, _PyXI_errcode code, TyObject *obj)
 
 typedef struct {
     // The originating interpreter.
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
     // The error to propagate, if different from the uncaught exception.
     _PyXI_failure *override;
     _PyXI_failure _override;
@@ -2422,7 +2422,7 @@ _destroy_sharedns(_PyXI_namespace *ns)
         _sharedns_free(ns);
         return;
     }
-    PyInterpreterState *interp = _TyInterpreterState_LookUpID(interpid0);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpID(interpid0);
     if (interp == PyInterpreterState_Get()) {
         _sharedns_free(ns);
         return;
@@ -2514,7 +2514,7 @@ _session_is_active(_PyXI_session *session)
 /* enter/exit a cross-interpreter session */
 
 static void
-_enter_session(_PyXI_session *session, PyInterpreterState *interp)
+_enter_session(_PyXI_session *session, TyInterpreterState *interp)
 {
     // Set here and cleared in _exit_session().
     assert(session->status == SESSION_UNUSED);
@@ -2607,7 +2607,7 @@ static const char * capture_session_error(_PyXI_session *, _PyXI_error *,
 
 int
 _PyXI_Enter(_PyXI_session *session,
-            PyInterpreterState *interp, TyObject *nsupdates,
+            TyInterpreterState *interp, TyObject *nsupdates,
             _PyXI_session_result *result)
 {
 #ifndef NDEBUG
@@ -3074,7 +3074,7 @@ _Ty_xi_global_state_fini(_PyXI_global_state_t *state)
 }
 
 int
-_Ty_xi_state_init(_PyXI_state_t *state, PyInterpreterState *interp)
+_Ty_xi_state_init(_PyXI_state_t *state, TyInterpreterState *interp)
 {
     assert(state != NULL);
     assert(interp == NULL || state == _PyXI_GET_STATE(interp));
@@ -3096,7 +3096,7 @@ _Ty_xi_state_init(_PyXI_state_t *state, PyInterpreterState *interp)
 }
 
 void
-_Ty_xi_state_fini(_PyXI_state_t *state, PyInterpreterState *interp)
+_Ty_xi_state_fini(_PyXI_state_t *state, TyInterpreterState *interp)
 {
     assert(state != NULL);
     assert(interp == NULL || state == _PyXI_GET_STATE(interp));
@@ -3111,7 +3111,7 @@ _Ty_xi_state_fini(_PyXI_state_t *state, PyInterpreterState *interp)
 
 
 TyStatus
-_PyXI_Init(PyInterpreterState *interp)
+_PyXI_Init(TyInterpreterState *interp)
 {
     if (_Ty_IsMainInterpreter(interp)) {
         _PyXI_global_state_t *global_state = _PyXI_GET_GLOBAL_STATE(interp);
@@ -3148,7 +3148,7 @@ _PyXI_Init(PyInterpreterState *interp)
 // since we must clear some heap objects.
 
 void
-_PyXI_Fini(PyInterpreterState *interp)
+_PyXI_Fini(TyInterpreterState *interp)
 {
     _PyXI_state_t *state = _PyXI_GET_STATE(interp);
 #ifndef NDEBUG
@@ -3168,7 +3168,7 @@ _PyXI_Fini(PyInterpreterState *interp)
 }
 
 TyStatus
-_PyXI_InitTypes(PyInterpreterState *interp)
+_PyXI_InitTypes(TyInterpreterState *interp)
 {
     if (init_static_exctypes(&_PyXI_GET_STATE(interp)->exceptions, interp) < 0) {
         TyErr_PrintEx(0);
@@ -3181,7 +3181,7 @@ _PyXI_InitTypes(PyInterpreterState *interp)
 }
 
 void
-_PyXI_FiniTypes(PyInterpreterState *interp)
+_PyXI_FiniTypes(TyInterpreterState *interp)
 {
     // We would finalize heap types here too but that leads to ref leaks.
     // Instead, we finalize them in _PyXI_Fini().
@@ -3193,7 +3193,7 @@ _PyXI_FiniTypes(PyInterpreterState *interp)
 /* other API */
 /*************/
 
-PyInterpreterState *
+TyInterpreterState *
 _PyXI_NewInterpreter(PyInterpreterConfig *config, long *maybe_whence,
                      TyThreadState **p_tstate, TyThreadState **p_save_tstate)
 {
@@ -3215,7 +3215,7 @@ _PyXI_NewInterpreter(PyInterpreterConfig *config, long *maybe_whence,
         return NULL;
     }
     assert(tstate != NULL);
-    PyInterpreterState *interp = PyThreadState_GetInterpreter(tstate);
+    TyInterpreterState *interp = PyThreadState_GetInterpreter(tstate);
 
     long whence = _TyInterpreterState_WHENCE_XI;
     if (maybe_whence != NULL) {
@@ -3241,7 +3241,7 @@ _PyXI_NewInterpreter(PyInterpreterConfig *config, long *maybe_whence,
 }
 
 void
-_PyXI_EndInterpreter(PyInterpreterState *interp,
+_PyXI_EndInterpreter(TyInterpreterState *interp,
                      TyThreadState *tstate, TyThreadState **p_save_tstate)
 {
 #ifndef NDEBUG

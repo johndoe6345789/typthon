@@ -104,7 +104,7 @@ iter_len(TyObject *op, TyObject *Py_UNUSED(ignored))
     return TyLong_FromLong(0);
 }
 
-PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
+TyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
 iter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
@@ -122,7 +122,7 @@ iter_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
         return Ty_BuildValue("N(())", iter);
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
 static TyObject *
 iter_setstate(TyObject *op, TyObject *state)
@@ -139,7 +139,7 @@ iter_setstate(TyObject *op, TyObject *state)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
+TyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
 static TyMethodDef seqiter_methods[] = {
     {"__length_hint__", iter_len, METH_NOARGS, length_hint_doc},
@@ -149,7 +149,7 @@ static TyMethodDef seqiter_methods[] = {
 };
 
 TyTypeObject TySeqIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "iterator",                                 /* tp_name */
     sizeof(seqiterobject),                      /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -275,7 +275,7 @@ static TyMethodDef calliter_methods[] = {
 };
 
 TyTypeObject TyCallIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "callable_iterator",                        /* tp_name */
     sizeof(calliterobject),                     /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -460,12 +460,12 @@ anextawaitable_close(TyObject *op, TyObject *Py_UNUSED(dummy))
 }
 
 
-PyDoc_STRVAR(send_doc,
+TyDoc_STRVAR(send_doc,
 "send(arg) -> send 'arg' into the wrapped iterator,\n\
 return next yielded value or raise StopIteration.");
 
 
-PyDoc_STRVAR(throw_doc,
+TyDoc_STRVAR(throw_doc,
 "throw(value)\n\
 throw(typ[,val[,tb]])\n\
 \n\
@@ -475,7 +475,7 @@ the (type, val, tb) signature is deprecated, \n\
 and may be removed in a future version of Python.");
 
 
-PyDoc_STRVAR(close_doc,
+TyDoc_STRVAR(close_doc,
 "close() -> raise GeneratorExit inside generator.");
 
 
@@ -495,7 +495,7 @@ static PyAsyncMethods anextawaitable_as_async = {
 };
 
 TyTypeObject _PyAnextAwaitable_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "anext_awaitable",                          /* tp_name */
     sizeof(anextawaitableobject),               /* tp_basicsize */
     0,                                          /* tp_itemsize */

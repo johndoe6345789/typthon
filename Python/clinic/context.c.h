@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_contextvars_Context_get__doc__,
+TyDoc_STRVAR(_contextvars_Context_get__doc__,
 "get($self, key, default=None, /)\n"
 "--\n"
 "\n"
@@ -42,7 +42,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_contextvars_Context_items__doc__,
+TyDoc_STRVAR(_contextvars_Context_items__doc__,
 "items($self, /)\n"
 "--\n"
 "\n"
@@ -62,7 +62,7 @@ _contextvars_Context_items(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _contextvars_Context_items_impl((PyContext *)self);
 }
 
-PyDoc_STRVAR(_contextvars_Context_keys__doc__,
+TyDoc_STRVAR(_contextvars_Context_keys__doc__,
 "keys($self, /)\n"
 "--\n"
 "\n"
@@ -80,7 +80,7 @@ _contextvars_Context_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _contextvars_Context_keys_impl((PyContext *)self);
 }
 
-PyDoc_STRVAR(_contextvars_Context_values__doc__,
+TyDoc_STRVAR(_contextvars_Context_values__doc__,
 "values($self, /)\n"
 "--\n"
 "\n"
@@ -98,7 +98,7 @@ _contextvars_Context_values(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _contextvars_Context_values_impl((PyContext *)self);
 }
 
-PyDoc_STRVAR(_contextvars_Context_copy__doc__,
+TyDoc_STRVAR(_contextvars_Context_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -116,7 +116,7 @@ _contextvars_Context_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _contextvars_Context_copy_impl((PyContext *)self);
 }
 
-PyDoc_STRVAR(_contextvars_ContextVar_get__doc__,
+TyDoc_STRVAR(_contextvars_ContextVar_get__doc__,
 "get($self, default=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -154,7 +154,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_contextvars_ContextVar_set__doc__,
+TyDoc_STRVAR(_contextvars_ContextVar_set__doc__,
 "set($self, value, /)\n"
 "--\n"
 "\n"
@@ -181,7 +181,7 @@ _contextvars_ContextVar_set(TyObject *self, TyObject *value)
     return return_value;
 }
 
-PyDoc_STRVAR(_contextvars_ContextVar_reset__doc__,
+TyDoc_STRVAR(_contextvars_ContextVar_reset__doc__,
 "reset($self, token, /)\n"
 "--\n"
 "\n"
@@ -206,7 +206,7 @@ _contextvars_ContextVar_reset(TyObject *self, TyObject *token)
     return return_value;
 }
 
-PyDoc_STRVAR(token_enter__doc__,
+TyDoc_STRVAR(token_enter__doc__,
 "__enter__($self, /)\n"
 "--\n"
 "\n"
@@ -224,7 +224,7 @@ token_enter(TyObject *self, TyObject *Py_UNUSED(ignored))
     return token_enter_impl((PyContextToken *)self);
 }
 
-PyDoc_STRVAR(token_exit__doc__,
+TyDoc_STRVAR(token_exit__doc__,
 "__exit__($self, type, val, tb, /)\n"
 "--\n"
 "\n"

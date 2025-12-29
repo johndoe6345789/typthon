@@ -54,7 +54,7 @@ module termios
 
 #include "clinic/termios.c.h"
 
-PyDoc_STRVAR(termios__doc__,
+TyDoc_STRVAR(termios__doc__,
 "This module provides an interface to the Posix calls for tty I/O control.\n\
 For a complete description of these calls, see the Posix or Unix manual\n\
 pages. It is only available for those Unix versions that support Posix\n\

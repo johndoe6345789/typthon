@@ -27,7 +27,7 @@
 
 // Get the hashtable bucket for a given thread id.
 static struct _brc_bucket *
-get_bucket(PyInterpreterState *interp, uintptr_t tid)
+get_bucket(TyInterpreterState *interp, uintptr_t tid)
 {
     return &interp->brc.table[tid % _Ty_BRC_NUM_BUCKETS];
 }
@@ -53,7 +53,7 @@ find_thread_state(struct _brc_bucket *bucket, uintptr_t thread_id)
 void
 _Ty_brc_queue_object(TyObject *ob)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     uintptr_t ob_tid = _Ty_atomic_load_uintptr(&ob->ob_tid);
     if (ob_tid == 0) {
@@ -132,7 +132,7 @@ _Ty_brc_merge_refcounts(TyThreadState *tstate)
 }
 
 void
-_Ty_brc_init_state(PyInterpreterState *interp)
+_Ty_brc_init_state(TyInterpreterState *interp)
 {
     struct _brc_state *brc = &interp->brc;
     for (Ty_ssize_t i = 0; i < _Ty_BRC_NUM_BUCKETS; i++) {
@@ -193,7 +193,7 @@ _Ty_brc_remove_thread(TyThreadState *tstate)
 }
 
 void
-_Ty_brc_after_fork(PyInterpreterState *interp)
+_Ty_brc_after_fork(TyInterpreterState *interp)
 {
     // Unlock all bucket mutexes. Some of the buckets may be locked because
     // locks can be handed off to a parked thread (see lock.c). We don't have

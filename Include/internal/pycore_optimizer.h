@@ -102,9 +102,9 @@ PyAPI_FUNC(void) _Ty_Executor_DependsOn(_PyExecutorObject *executor, void *obj);
 #define _Ty_MAX_ALLOWED_GLOBALS_MODIFICATIONS 6
 
 #ifdef _Ty_TIER2
-PyAPI_FUNC(void) _Ty_Executors_InvalidateDependency(PyInterpreterState *interp, void *obj, int is_invalidation);
-PyAPI_FUNC(void) _Ty_Executors_InvalidateAll(PyInterpreterState *interp, int is_invalidation);
-PyAPI_FUNC(void) _Ty_Executors_InvalidateCold(PyInterpreterState *interp);
+PyAPI_FUNC(void) _Ty_Executors_InvalidateDependency(TyInterpreterState *interp, void *obj, int is_invalidation);
+PyAPI_FUNC(void) _Ty_Executors_InvalidateAll(TyInterpreterState *interp, int is_invalidation);
+PyAPI_FUNC(void) _Ty_Executors_InvalidateCold(TyInterpreterState *interp);
 
 #else
 #  define _Ty_Executors_InvalidateDependency(A, B, C) ((void)0)
@@ -309,7 +309,7 @@ static inline int is_terminator(const _PyUOpInstruction *uop)
 
 PyAPI_FUNC(int) _PyDumpExecutors(FILE *out);
 #ifdef _Ty_TIER2
-extern void _Ty_ClearExecutorDeletionList(PyInterpreterState *interp);
+extern void _Ty_ClearExecutorDeletionList(TyInterpreterState *interp);
 #endif
 
 #ifdef __cplusplus

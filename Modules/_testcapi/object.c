@@ -153,7 +153,7 @@ MyObject_dealloc(TyObject *op)
 }
 
 static TyTypeObject MyType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "MyType",
     .tp_basicsize = sizeof(TyObject),
     .tp_dealloc = MyObject_dealloc,

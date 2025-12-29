@@ -38,7 +38,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_cursor_execute__doc__,
+TyDoc_STRVAR(pysqlite_cursor_execute__doc__,
 "execute($self, sql, parameters=(), /)\n"
 "--\n"
 "\n"
@@ -77,7 +77,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_cursor_executemany__doc__,
+TyDoc_STRVAR(pysqlite_cursor_executemany__doc__,
 "executemany($self, sql, seq_of_parameters, /)\n"
 "--\n"
 "\n"
@@ -112,7 +112,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_cursor_executescript__doc__,
+TyDoc_STRVAR(pysqlite_cursor_executescript__doc__,
 "executescript($self, sql_script, /)\n"
 "--\n"
 "\n"
@@ -150,7 +150,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_cursor_fetchone__doc__,
+TyDoc_STRVAR(pysqlite_cursor_fetchone__doc__,
 "fetchone($self, /)\n"
 "--\n"
 "\n"
@@ -168,7 +168,7 @@ pysqlite_cursor_fetchone(TyObject *self, TyObject *Py_UNUSED(ignored))
     return pysqlite_cursor_fetchone_impl((pysqlite_Cursor *)self);
 }
 
-PyDoc_STRVAR(pysqlite_cursor_fetchmany__doc__,
+TyDoc_STRVAR(pysqlite_cursor_fetchmany__doc__,
 "fetchmany($self, /, size=1)\n"
 "--\n"
 "\n"
@@ -196,7 +196,7 @@ pysqlite_cursor_fetchmany(TyObject *self, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(size), },
     };
@@ -237,7 +237,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_cursor_fetchall__doc__,
+TyDoc_STRVAR(pysqlite_cursor_fetchall__doc__,
 "fetchall($self, /)\n"
 "--\n"
 "\n"
@@ -255,7 +255,7 @@ pysqlite_cursor_fetchall(TyObject *self, TyObject *Py_UNUSED(ignored))
     return pysqlite_cursor_fetchall_impl((pysqlite_Cursor *)self);
 }
 
-PyDoc_STRVAR(pysqlite_cursor_setinputsizes__doc__,
+TyDoc_STRVAR(pysqlite_cursor_setinputsizes__doc__,
 "setinputsizes($self, sizes, /)\n"
 "--\n"
 "\n"
@@ -277,7 +277,7 @@ pysqlite_cursor_setinputsizes(TyObject *self, TyObject *sizes)
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_cursor_setoutputsize__doc__,
+TyDoc_STRVAR(pysqlite_cursor_setoutputsize__doc__,
 "setoutputsize($self, size, column=None, /)\n"
 "--\n"
 "\n"
@@ -312,7 +312,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(pysqlite_cursor_close__doc__,
+TyDoc_STRVAR(pysqlite_cursor_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"

@@ -442,7 +442,7 @@ inst_seq_clear(TyObject *op)
 }
 
 TyTypeObject _PyInstructionSequence_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "InstructionSequence",
     sizeof(_PyInstructionSequence),
     0,

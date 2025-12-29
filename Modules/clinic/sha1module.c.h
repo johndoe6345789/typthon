@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(SHA1Type_copy__doc__,
+TyDoc_STRVAR(SHA1Type_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -30,7 +30,7 @@ SHA1Type_copy(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ssize
     return SHA1Type_copy_impl((SHA1object *)self, cls);
 }
 
-PyDoc_STRVAR(SHA1Type_digest__doc__,
+TyDoc_STRVAR(SHA1Type_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -48,7 +48,7 @@ SHA1Type_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return SHA1Type_digest_impl((SHA1object *)self);
 }
 
-PyDoc_STRVAR(SHA1Type_hexdigest__doc__,
+TyDoc_STRVAR(SHA1Type_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -66,7 +66,7 @@ SHA1Type_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return SHA1Type_hexdigest_impl((SHA1object *)self);
 }
 
-PyDoc_STRVAR(SHA1Type_update__doc__,
+TyDoc_STRVAR(SHA1Type_update__doc__,
 "update($self, obj, /)\n"
 "--\n"
 "\n"
@@ -88,7 +88,7 @@ SHA1Type_update(TyObject *self, TyObject *obj)
     return return_value;
 }
 
-PyDoc_STRVAR(_sha1_sha1__doc__,
+TyDoc_STRVAR(_sha1_sha1__doc__,
 "sha1($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -114,7 +114,7 @@ _sha1_sha1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };

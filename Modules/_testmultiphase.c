@@ -71,7 +71,7 @@ Example_demo(TyObject *op, TyObject *args)
 
 static TyMethodDef Example_methods[] = {
     {"demo",            Example_demo,  METH_VARARGS,
-        PyDoc_STR("demo() -> None")},
+        TyDoc_STR("demo() -> None")},
     {NULL,              NULL}           /* sentinel */
 };
 
@@ -208,7 +208,7 @@ _testmultiphase_StateAccessType_increment_count_clinic_impl(StateAccessTypeObjec
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(_StateAccessType_decrement_count__doc__,
+TyDoc_STRVAR(_StateAccessType_decrement_count__doc__,
 "decrement_count($self, /, n=1, *, twice=None)\n"
 "--\n"
 "\n"
@@ -301,7 +301,7 @@ static TyType_Spec StateAccessType_spec = {
 
 /* Function of two integers returning integer */
 
-PyDoc_STRVAR(testexport_foo_doc,
+TyDoc_STRVAR(testexport_foo_doc,
 "foo(i,j)\n\
 \n\
 Return the sum of i and j.");
@@ -319,7 +319,7 @@ testexport_foo(TyObject *self, TyObject *args)
 
 /* Test that PyState registration fails  */
 
-PyDoc_STRVAR(call_state_registration_func_doc,
+TyDoc_STRVAR(call_state_registration_func_doc,
 "register_state(0): call PyState_FindModule()\n\
 register_state(1): call PyState_AddModule()\n\
 register_state(2): call PyState_RemoveModule()");
@@ -425,7 +425,7 @@ static int execfunc(TyObject *m)
 #define TEST_MODULE_DEF(name, slots, methods) { \
     PyModuleDef_HEAD_INIT,                      /* m_base */ \
     name,                                       /* m_name */ \
-    PyDoc_STR("Test module " name),             /* m_doc */ \
+    TyDoc_STR("Test module " name),             /* m_doc */ \
     0,                                          /* m_size */ \
     methods,                                    /* m_methods */ \
     slots,                                      /* m_slots */ \
@@ -494,7 +494,7 @@ PyInit__testmultiphase_nonmodule(void)
     return PyModuleDef_Init(&def_nonmodule);
 }
 
-PyDoc_STRVAR(nonmodule_bar_doc,
+TyDoc_STRVAR(nonmodule_bar_doc,
 "bar(i,j)\n\
 \n\
 Return the difference of i - j.");
@@ -534,7 +534,7 @@ static PyModuleDef_Slot nonascii_slots[] = {
 static TyModuleDef def_nonascii_latin = { \
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "_testmultiphase_nonascii_latin",           /* m_name */
-    PyDoc_STR("Module named in Czech"),         /* m_doc */
+    TyDoc_STR("Module named in Czech"),         /* m_doc */
     0,                                          /* m_size */
     NULL,                                       /* m_methods */
     nonascii_slots,                             /* m_slots */
@@ -552,7 +552,7 @@ PyInitU__testmultiphase_zkouka_naten_evc07gi8e(void)
 static TyModuleDef def_nonascii_kana = { \
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "_testmultiphase_nonascii_kana",            /* m_name */
-    PyDoc_STR("Module named in Japanese"),      /* m_doc */
+    TyDoc_STR("Module named in Japanese"),      /* m_doc */
     0,                                          /* m_size */
     NULL,                                       /* m_methods */
     nonascii_slots,                             /* m_slots */
@@ -619,7 +619,7 @@ PyInit__testmultiphase_bad_slot_negative(void)
 static TyModuleDef def_create_int_with_state = { \
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "create_with_state",                        /* m_name */
-    PyDoc_STR("Not a PyModuleObject object, but requests per-module state"),
+    TyDoc_STR("Not a PyModuleObject object, but requests per-module state"),
     10,                                         /* m_size */
     NULL,                                       /* m_methods */
     slots_create_nonmodule,                     /* m_slots */
@@ -638,7 +638,7 @@ PyInit__testmultiphase_create_int_with_state(void)
 static TyModuleDef def_negative_size = { \
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "negative_size",                            /* m_name */
-    PyDoc_STR("TyModuleDef with negative m_size"),
+    TyDoc_STR("TyModuleDef with negative m_size"),
     -1,                                         /* m_size */
     NULL,                                       /* m_methods */
     slots_create_nonmodule,                     /* m_slots */
@@ -880,7 +880,7 @@ static PyModuleDef_Slot meth_state_access_slots[] = {
 static TyModuleDef def_meth_state_access = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_testmultiphase_meth_state_access",
-    .m_doc = PyDoc_STR("Module testing access"
+    .m_doc = TyDoc_STR("Module testing access"
                        " to state from methods."),
     .m_size = sizeof(meth_state),
     .m_slots = meth_state_access_slots,
@@ -895,7 +895,7 @@ PyInit__testmultiphase_meth_state_access(void)
 static TyModuleDef def_module_state_shared = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_test_module_state_shared",
-    .m_doc = PyDoc_STR("Regression Test module for single-phase init."),
+    .m_doc = TyDoc_STR("Regression Test module for single-phase init."),
     .m_size = -1,
 };
 

@@ -109,7 +109,7 @@ bool_xor(TyObject *a, TyObject *b)
 
 /* Doc string */
 
-PyDoc_STRVAR(bool_doc,
+TyDoc_STRVAR(bool_doc,
 "bool(object=False, /)\n\
 --\n\
 \n\
@@ -169,7 +169,7 @@ bool_dealloc(TyObject *boolean)
 /* The type object for bool.  Note that this cannot be subclassed! */
 
 TyTypeObject TyBool_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "bool",
     offsetof(struct _longobject, long_value.ob_digit),  /* tp_basicsize */
     sizeof(digit),                              /* tp_itemsize */

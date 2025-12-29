@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(winsound_PlaySound__doc__,
+TyDoc_STRVAR(winsound_PlaySound__doc__,
 "PlaySound($module, /, sound, flags)\n"
 "--\n"
 "\n"
@@ -36,7 +36,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(winsound_Beep__doc__,
+TyDoc_STRVAR(winsound_Beep__doc__,
 "Beep($module, /, frequency, duration)\n"
 "--\n"
 "\n"
@@ -71,7 +71,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(winsound_MessageBeep__doc__,
+TyDoc_STRVAR(winsound_MessageBeep__doc__,
 "MessageBeep($module, /, type=MB_OK)\n"
 "--\n"
 "\n"

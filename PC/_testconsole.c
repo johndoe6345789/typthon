@@ -151,7 +151,7 @@ TyMethodDef testconsole_methods[] = {
 static TyModuleDef testconsole_def = {
     PyModuleDef_HEAD_INIT,                      /* m_base */
     "_testconsole",                             /* m_name */
-    PyDoc_STR("Test module for the Windows console"), /* m_doc */
+    TyDoc_STR("Test module for the Windows console"), /* m_doc */
     0,                                          /* m_size */
     testconsole_methods,                        /* m_methods */
     testconsole_slots,                          /* m_slots */

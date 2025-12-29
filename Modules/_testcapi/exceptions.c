@@ -535,9 +535,9 @@ recurse_infinitely_error_init(TyObject *self, TyObject *args, TyObject *kwds)
 
 static TyTypeObject PyRecursingInfinitelyError_Type = {
     .tp_name = "RecursingInfinitelyError",
-    .tp_basicsize = sizeof(PyBaseExceptionObject),
+    .tp_basicsize = sizeof(TyBaseExceptionObject),
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE,
-    .tp_doc = PyDoc_STR("Instantiating this exception starts infinite recursion."),
+    .tp_doc = TyDoc_STR("Instantiating this exception starts infinite recursion."),
     .tp_init = recurse_infinitely_error_init,
 };
 

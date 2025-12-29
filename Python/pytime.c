@@ -2,7 +2,7 @@
 #include "pycore_initconfig.h"    // _TyStatus_ERR
 #include "pycore_pystate.h"       // _Ty_AssertHoldsTstate()
 #include "pycore_runtime.h"       // _PyRuntime
-#include "pycore_time.h"          // PyTime_t
+#include "pycore_time.h"          // TyTime_t
 
 #include <time.h>                 // gmtime_r()
 #ifdef HAVE_SYS_TIME_H
@@ -54,18 +54,18 @@
 #endif
 
 #if PyTime_MIN + PyTime_MAX != -1
-#  error "PyTime_t is not a two's complement integer type"
+#  error "TyTime_t is not a two's complement integer type"
 #endif
 
 
-static PyTime_t
-_TyTime_GCD(PyTime_t x, PyTime_t y)
+static TyTime_t
+_TyTime_GCD(TyTime_t x, TyTime_t y)
 {
     // Euclidean algorithm
     assert(x >= 1);
     assert(y >= 1);
     while (y != 0) {
-        PyTime_t tmp = y;
+        TyTime_t tmp = y;
         y = x % y;
         x = tmp;
     }
@@ -75,13 +75,13 @@ _TyTime_GCD(PyTime_t x, PyTime_t y)
 
 
 int
-_PyTimeFraction_Set(_PyTimeFraction *frac, PyTime_t numer, PyTime_t denom)
+_PyTimeFraction_Set(_PyTimeFraction *frac, TyTime_t numer, TyTime_t denom)
 {
     if (numer < 1 || denom < 1) {
         return -1;
     }
 
-    PyTime_t gcd = _TyTime_GCD(numer, denom);
+    TyTime_t gcd = _TyTime_GCD(numer, denom);
     frac->numer = numer / gcd;
     frac->denom = denom / gcd;
     return 0;
@@ -107,13 +107,13 @@ static void
 pytime_overflow(void)
 {
     TyErr_SetString(TyExc_OverflowError,
-                    "timestamp too large to convert to C PyTime_t");
+                    "timestamp too large to convert to C TyTime_t");
 }
 
 
 // Compute t1 + t2. Clamp to [PyTime_MIN; PyTime_MAX] on overflow.
 static inline int
-pytime_add(PyTime_t *t1, PyTime_t t2)
+pytime_add(TyTime_t *t1, TyTime_t t2)
 {
     if (t2 > 0 && *t1 > PyTime_MAX - t2) {
         *t1 = PyTime_MAX;
@@ -130,8 +130,8 @@ pytime_add(PyTime_t *t1, PyTime_t t2)
 }
 
 
-PyTime_t
-_TyTime_Add(PyTime_t t1, PyTime_t t2)
+TyTime_t
+_TyTime_Add(TyTime_t t1, TyTime_t t2)
 {
     (void)pytime_add(&t1, t2);
     return t1;
@@ -139,7 +139,7 @@ _TyTime_Add(PyTime_t t1, PyTime_t t2)
 
 
 static inline int
-pytime_mul_check_overflow(PyTime_t a, PyTime_t b)
+pytime_mul_check_overflow(TyTime_t a, TyTime_t b)
 {
     if (b != 0) {
         assert(b > 0);
@@ -153,7 +153,7 @@ pytime_mul_check_overflow(PyTime_t a, PyTime_t b)
 
 // Compute t * k. Clamp to [PyTime_MIN; PyTime_MAX] on overflow.
 static inline int
-pytime_mul(PyTime_t *t, PyTime_t k)
+pytime_mul(TyTime_t *t, TyTime_t k)
 {
     assert(k >= 0);
     if (pytime_mul_check_overflow(*t, k)) {
@@ -168,19 +168,19 @@ pytime_mul(PyTime_t *t, PyTime_t k)
 
 
 // Compute t * k. Clamp to [PyTime_MIN; PyTime_MAX] on overflow.
-static inline PyTime_t
-_TyTime_Mul(PyTime_t t, PyTime_t k)
+static inline TyTime_t
+_TyTime_Mul(TyTime_t t, TyTime_t k)
 {
     (void)pytime_mul(&t, k);
     return t;
 }
 
 
-PyTime_t
-_PyTimeFraction_Mul(PyTime_t ticks, const _PyTimeFraction *frac)
+TyTime_t
+_PyTimeFraction_Mul(TyTime_t ticks, const _PyTimeFraction *frac)
 {
-    const PyTime_t mul = frac->numer;
-    const PyTime_t div = frac->denom;
+    const TyTime_t mul = frac->numer;
+    const TyTime_t div = frac->denom;
 
     if (div == 1) {
         // Fast-path taken by mach_absolute_time() with 1/1 time base.
@@ -192,7 +192,7 @@ _PyTimeFraction_Mul(PyTime_t ticks, const _PyTimeFraction *frac)
 
        (ticks * mul) / div == (ticks / div) * mul + (ticks % div) * mul / div
     */
-    PyTime_t intpart, remaining;
+    TyTime_t intpart, remaining;
     intpart = ticks / div;
     ticks %= div;
     remaining = _TyTime_Mul(ticks, mul) / div;
@@ -234,17 +234,17 @@ _TyLong_FromTime_t(time_t t)
 }
 
 
-// Convert PyTime_t to time_t.
+// Convert TyTime_t to time_t.
 // Return 0 on success. Return -1 and clamp the value on overflow.
 static int
-_TyTime_AsTime_t(PyTime_t t, time_t *t2)
+_TyTime_AsTime_t(TyTime_t t, time_t *t2)
 {
 #if SIZEOF_TIME_T < _SIZEOF_PYTIME_T
-    if ((PyTime_t)PY_TIME_T_MAX < t) {
+    if ((TyTime_t)PY_TIME_T_MAX < t) {
         *t2 = PY_TIME_T_MAX;
         return -1;
     }
-    if (t < (PyTime_t)PY_TIME_T_MIN) {
+    if (t < (TyTime_t)PY_TIME_T_MIN) {
         *t2 = PY_TIME_T_MIN;
         return -1;
     }
@@ -255,17 +255,17 @@ _TyTime_AsTime_t(PyTime_t t, time_t *t2)
 
 
 #ifdef MS_WINDOWS
-// Convert PyTime_t to long.
+// Convert TyTime_t to long.
 // Return 0 on success. Return -1 and clamp the value on overflow.
 static int
-_TyTime_AsCLong(PyTime_t t, long *t2)
+_TyTime_AsCLong(TyTime_t t, long *t2)
 {
 #if SIZEOF_LONG < _SIZEOF_PYTIME_T
-    if ((PyTime_t)LONG_MAX < t) {
+    if ((TyTime_t)LONG_MAX < t) {
         *t2 = LONG_MAX;
         return -1;
     }
-    if (t < (PyTime_t)LONG_MIN) {
+    if (t < (TyTime_t)LONG_MIN) {
         *t2 = LONG_MIN;
         return -1;
     }
@@ -444,16 +444,16 @@ _TyTime_ObjectToTimeval(TyObject *obj, time_t *sec, long *usec,
 }
 
 
-PyTime_t
+TyTime_t
 _TyTime_FromSeconds(int seconds)
 {
     /* ensure that integer overflow cannot happen, int type should have 32
-       bits, whereas PyTime_t type has at least 64 bits (SEC_TO_NS takes 30
+       bits, whereas TyTime_t type has at least 64 bits (SEC_TO_NS takes 30
        bits). */
-    static_assert(INT_MAX <= PyTime_MAX / SEC_TO_NS, "PyTime_t overflow");
-    static_assert(INT_MIN >= PyTime_MIN / SEC_TO_NS, "PyTime_t underflow");
+    static_assert(INT_MAX <= PyTime_MAX / SEC_TO_NS, "TyTime_t overflow");
+    static_assert(INT_MIN >= PyTime_MIN / SEC_TO_NS, "TyTime_t underflow");
 
-    PyTime_t t = (PyTime_t)seconds;
+    TyTime_t t = (TyTime_t)seconds;
     assert((t >= 0 && t <= PyTime_MAX / SEC_TO_NS)
            || (t < 0 && t >= PyTime_MIN / SEC_TO_NS));
     t *= SEC_TO_NS;
@@ -461,16 +461,16 @@ _TyTime_FromSeconds(int seconds)
 }
 
 
-PyTime_t
-_TyTime_FromMicrosecondsClamp(PyTime_t us)
+TyTime_t
+_TyTime_FromMicrosecondsClamp(TyTime_t us)
 {
-    PyTime_t ns = _TyTime_Mul(us, US_TO_NS);
+    TyTime_t ns = _TyTime_Mul(us, US_TO_NS);
     return ns;
 }
 
 
 int
-_TyTime_FromLong(PyTime_t *tp, TyObject *obj)
+_TyTime_FromLong(TyTime_t *tp, TyObject *obj)
 {
     if (!TyLong_Check(obj)) {
         TyErr_Format(TyExc_TypeError, "expect int, got %s",
@@ -478,8 +478,8 @@ _TyTime_FromLong(PyTime_t *tp, TyObject *obj)
         return -1;
     }
 
-    static_assert(sizeof(long long) == sizeof(PyTime_t),
-                  "PyTime_t is not long long");
+    static_assert(sizeof(long long) == sizeof(TyTime_t),
+                  "TyTime_t is not long long");
     long long nsec = TyLong_AsLongLong(obj);
     if (nsec == -1 && TyErr_Occurred()) {
         if (TyErr_ExceptionMatches(TyExc_OverflowError)) {
@@ -488,7 +488,7 @@ _TyTime_FromLong(PyTime_t *tp, TyObject *obj)
         return -1;
     }
 
-    PyTime_t t = (PyTime_t)nsec;
+    TyTime_t t = (TyTime_t)nsec;
     *tp = t;
     return 0;
 }
@@ -496,13 +496,13 @@ _TyTime_FromLong(PyTime_t *tp, TyObject *obj)
 
 #ifdef HAVE_CLOCK_GETTIME
 static int
-pytime_fromtimespec(PyTime_t *tp, const struct timespec *ts, int raise_exc)
+pytime_fromtimespec(TyTime_t *tp, const struct timespec *ts, int raise_exc)
 {
-    PyTime_t t, tv_nsec;
+    TyTime_t t, tv_nsec;
 
-    static_assert(sizeof(ts->tv_sec) <= sizeof(PyTime_t),
-                  "timespec.tv_sec is larger than PyTime_t");
-    t = (PyTime_t)ts->tv_sec;
+    static_assert(sizeof(ts->tv_sec) <= sizeof(TyTime_t),
+                  "timespec.tv_sec is larger than TyTime_t");
+    t = (TyTime_t)ts->tv_sec;
 
     int res1 = pytime_mul(&t, SEC_TO_NS);
 
@@ -519,7 +519,7 @@ pytime_fromtimespec(PyTime_t *tp, const struct timespec *ts, int raise_exc)
 }
 
 int
-_TyTime_FromTimespec(PyTime_t *tp, const struct timespec *ts)
+_TyTime_FromTimespec(TyTime_t *tp, const struct timespec *ts)
 {
     return pytime_fromtimespec(tp, ts, 1);
 }
@@ -528,15 +528,15 @@ _TyTime_FromTimespec(PyTime_t *tp, const struct timespec *ts)
 
 #ifndef MS_WINDOWS
 static int
-pytime_fromtimeval(PyTime_t *tp, struct timeval *tv, int raise_exc)
+pytime_fromtimeval(TyTime_t *tp, struct timeval *tv, int raise_exc)
 {
-    static_assert(sizeof(tv->tv_sec) <= sizeof(PyTime_t),
-                  "timeval.tv_sec is larger than PyTime_t");
-    PyTime_t t = (PyTime_t)tv->tv_sec;
+    static_assert(sizeof(tv->tv_sec) <= sizeof(TyTime_t),
+                  "timeval.tv_sec is larger than TyTime_t");
+    TyTime_t t = (TyTime_t)tv->tv_sec;
 
     int res1 = pytime_mul(&t, SEC_TO_NS);
 
-    PyTime_t usec = (PyTime_t)tv->tv_usec * US_TO_NS;
+    TyTime_t usec = (TyTime_t)tv->tv_usec * US_TO_NS;
     int res2 = pytime_add(&t, usec);
 
     *tp = t;
@@ -550,7 +550,7 @@ pytime_fromtimeval(PyTime_t *tp, struct timeval *tv, int raise_exc)
 
 
 int
-_TyTime_FromTimeval(PyTime_t *tp, struct timeval *tv)
+_TyTime_FromTimeval(TyTime_t *tp, struct timeval *tv)
 {
     return pytime_fromtimeval(tp, tv, 1);
 }
@@ -558,7 +558,7 @@ _TyTime_FromTimeval(PyTime_t *tp, struct timeval *tv)
 
 
 static int
-pytime_from_double(PyTime_t *tp, double value, _TyTime_round_t round,
+pytime_from_double(TyTime_t *tp, double value, _TyTime_round_t round,
                    long unit_to_ns)
 {
     /* volatile avoids optimization changing how numbers are rounded */
@@ -575,7 +575,7 @@ pytime_from_double(PyTime_t *tp, double value, _TyTime_round_t round,
         *tp = 0;
         return -1;
     }
-    PyTime_t ns = (PyTime_t)d;
+    TyTime_t ns = (TyTime_t)d;
 
     *tp = ns;
     return 0;
@@ -583,7 +583,7 @@ pytime_from_double(PyTime_t *tp, double value, _TyTime_round_t round,
 
 
 static int
-pytime_from_object(PyTime_t *tp, TyObject *obj, _TyTime_round_t round,
+pytime_from_object(TyTime_t *tp, TyObject *obj, _TyTime_round_t round,
                    long unit_to_ns)
 {
     if (TyFloat_Check(obj)) {
@@ -609,9 +609,9 @@ pytime_from_object(PyTime_t *tp, TyObject *obj, _TyTime_round_t round,
         return -1;
     }
 
-    static_assert(sizeof(long long) <= sizeof(PyTime_t),
-                  "PyTime_t is smaller than long long");
-    PyTime_t ns = (PyTime_t)sec;
+    static_assert(sizeof(long long) <= sizeof(TyTime_t),
+                  "TyTime_t is smaller than long long");
+    TyTime_t ns = (TyTime_t)sec;
     if (pytime_mul(&ns, unit_to_ns) < 0) {
         pytime_overflow();
         return -1;
@@ -623,21 +623,21 @@ pytime_from_object(PyTime_t *tp, TyObject *obj, _TyTime_round_t round,
 
 
 int
-_TyTime_FromSecondsObject(PyTime_t *tp, TyObject *obj, _TyTime_round_t round)
+_TyTime_FromSecondsObject(TyTime_t *tp, TyObject *obj, _TyTime_round_t round)
 {
     return pytime_from_object(tp, obj, round, SEC_TO_NS);
 }
 
 
 int
-_TyTime_FromMillisecondsObject(PyTime_t *tp, TyObject *obj, _TyTime_round_t round)
+_TyTime_FromMillisecondsObject(TyTime_t *tp, TyObject *obj, _TyTime_round_t round)
 {
     return pytime_from_object(tp, obj, round, MS_TO_NS);
 }
 
 
 double
-PyTime_AsSecondsDouble(PyTime_t ns)
+PyTime_AsSecondsDouble(TyTime_t ns)
 {
     /* volatile avoids optimization changing how numbers are rounded */
     volatile double d;
@@ -645,7 +645,7 @@ PyTime_AsSecondsDouble(PyTime_t ns)
     if (ns % SEC_TO_NS == 0) {
         /* Divide using integers to avoid rounding issues on the integer part.
            1e-9 cannot be stored exactly in IEEE 64-bit. */
-        PyTime_t secs = ns / SEC_TO_NS;
+        TyTime_t secs = ns / SEC_TO_NS;
         d = (double)secs;
     }
     else {
@@ -657,28 +657,28 @@ PyTime_AsSecondsDouble(PyTime_t ns)
 
 
 TyObject *
-_TyTime_AsLong(PyTime_t ns)
+_TyTime_AsLong(TyTime_t ns)
 {
-    static_assert(sizeof(long long) >= sizeof(PyTime_t),
-                  "PyTime_t is larger than long long");
+    static_assert(sizeof(long long) >= sizeof(TyTime_t),
+                  "TyTime_t is larger than long long");
     return TyLong_FromLongLong((long long)ns);
 }
 
 int
-_TyTime_FromSecondsDouble(double seconds, _TyTime_round_t round, PyTime_t *result)
+_TyTime_FromSecondsDouble(double seconds, _TyTime_round_t round, TyTime_t *result)
 {
     return pytime_from_double(result, seconds, round, SEC_TO_NS);
 }
 
 
-static PyTime_t
-pytime_divide_round_up(const PyTime_t t, const PyTime_t k)
+static TyTime_t
+pytime_divide_round_up(const TyTime_t t, const TyTime_t k)
 {
     assert(k > 1);
     if (t >= 0) {
         // Don't use (t + k - 1) / k to avoid integer overflow
         // if t is equal to PyTime_MAX
-        PyTime_t q = t / k;
+        TyTime_t q = t / k;
         if (t % k) {
             q += 1;
         }
@@ -687,7 +687,7 @@ pytime_divide_round_up(const PyTime_t t, const PyTime_t k)
     else {
         // Don't use (t - (k - 1)) / k to avoid integer overflow
         // if t is equals to PyTime_MIN.
-        PyTime_t q = t / k;
+        TyTime_t q = t / k;
         if (t % k) {
             q -= 1;
         }
@@ -696,15 +696,15 @@ pytime_divide_round_up(const PyTime_t t, const PyTime_t k)
 }
 
 
-static PyTime_t
-pytime_divide(const PyTime_t t, const PyTime_t k,
+static TyTime_t
+pytime_divide(const TyTime_t t, const TyTime_t k,
               const _TyTime_round_t round)
 {
     assert(k > 1);
     if (round == _TyTime_ROUND_HALF_EVEN) {
-        PyTime_t x = t / k;
-        PyTime_t r = t % k;
-        PyTime_t abs_r = Ty_ABS(r);
+        TyTime_t x = t / k;
+        TyTime_t r = t % k;
+        TyTime_t abs_r = Ty_ABS(r);
         if (abs_r > k / 2 || (abs_r == k / 2 && (Ty_ABS(x) & 1))) {
             if (t >= 0) {
                 x++;
@@ -743,12 +743,12 @@ pytime_divide(const PyTime_t t, const PyTime_t k,
 // Return 0 on success.
 // Return -1 on underflow and store (PyTime_MIN, 0) in (pq, pr).
 static int
-pytime_divmod(const PyTime_t t, const PyTime_t k,
-              PyTime_t *pq, PyTime_t *pr)
+pytime_divmod(const TyTime_t t, const TyTime_t k,
+              TyTime_t *pq, TyTime_t *pr)
 {
     assert(k > 1);
-    PyTime_t q = t / k;
-    PyTime_t r = t % k;
+    TyTime_t q = t / k;
+    TyTime_t r = t % k;
     if (r < 0) {
         if (q == PyTime_MIN) {
             *pq = PyTime_MIN;
@@ -767,35 +767,35 @@ pytime_divmod(const PyTime_t t, const PyTime_t k,
 
 
 #ifdef MS_WINDOWS
-PyTime_t
-_TyTime_As100Nanoseconds(PyTime_t ns, _TyTime_round_t round)
+TyTime_t
+_TyTime_As100Nanoseconds(TyTime_t ns, _TyTime_round_t round)
 {
     return pytime_divide(ns, NS_TO_100NS, round);
 }
 #endif
 
 
-PyTime_t
-_TyTime_AsMicroseconds(PyTime_t ns, _TyTime_round_t round)
+TyTime_t
+_TyTime_AsMicroseconds(TyTime_t ns, _TyTime_round_t round)
 {
     return pytime_divide(ns, NS_TO_US, round);
 }
 
 
-PyTime_t
-_TyTime_AsMilliseconds(PyTime_t ns, _TyTime_round_t round)
+TyTime_t
+_TyTime_AsMilliseconds(TyTime_t ns, _TyTime_round_t round)
 {
     return pytime_divide(ns, NS_TO_MS, round);
 }
 
 
 static int
-pytime_as_timeval(PyTime_t ns, PyTime_t *ptv_sec, int *ptv_usec,
+pytime_as_timeval(TyTime_t ns, TyTime_t *ptv_sec, int *ptv_usec,
                   _TyTime_round_t round)
 {
-    PyTime_t us = pytime_divide(ns, US_TO_NS, round);
+    TyTime_t us = pytime_divide(ns, US_TO_NS, round);
 
-    PyTime_t tv_sec, tv_usec;
+    TyTime_t tv_sec, tv_usec;
     int res = pytime_divmod(us, SEC_TO_US, &tv_sec, &tv_usec);
     *ptv_sec = tv_sec;
     *ptv_usec = (int)tv_usec;
@@ -804,10 +804,10 @@ pytime_as_timeval(PyTime_t ns, PyTime_t *ptv_sec, int *ptv_usec,
 
 
 static int
-pytime_as_timeval_struct(PyTime_t t, struct timeval *tv,
+pytime_as_timeval_struct(TyTime_t t, struct timeval *tv,
                          _TyTime_round_t round, int raise_exc)
 {
-    PyTime_t tv_sec;
+    TyTime_t tv_sec;
     int tv_usec;
     int res = pytime_as_timeval(t, &tv_sec, &tv_usec, round);
     int res2;
@@ -831,24 +831,24 @@ pytime_as_timeval_struct(PyTime_t t, struct timeval *tv,
 
 
 int
-_TyTime_AsTimeval(PyTime_t t, struct timeval *tv, _TyTime_round_t round)
+_TyTime_AsTimeval(TyTime_t t, struct timeval *tv, _TyTime_round_t round)
 {
     return pytime_as_timeval_struct(t, tv, round, 1);
 }
 
 
 void
-_TyTime_AsTimeval_clamp(PyTime_t t, struct timeval *tv, _TyTime_round_t round)
+_TyTime_AsTimeval_clamp(TyTime_t t, struct timeval *tv, _TyTime_round_t round)
 {
     (void)pytime_as_timeval_struct(t, tv, round, 0);
 }
 
 
 int
-_TyTime_AsTimevalTime_t(PyTime_t t, time_t *p_secs, int *us,
+_TyTime_AsTimevalTime_t(TyTime_t t, time_t *p_secs, int *us,
                         _TyTime_round_t round)
 {
-    PyTime_t secs;
+    TyTime_t secs;
     if (pytime_as_timeval(t, &secs, us, round) < 0) {
         pytime_time_t_overflow();
         return -1;
@@ -864,9 +864,9 @@ _TyTime_AsTimevalTime_t(PyTime_t t, time_t *p_secs, int *us,
 
 #if defined(HAVE_CLOCK_GETTIME) || defined(HAVE_KQUEUE)
 static int
-pytime_as_timespec(PyTime_t ns, struct timespec *ts, int raise_exc)
+pytime_as_timespec(TyTime_t ns, struct timespec *ts, int raise_exc)
 {
-    PyTime_t tv_sec, tv_nsec;
+    TyTime_t tv_sec, tv_nsec;
     int res = pytime_divmod(ns, SEC_TO_NS, &tv_sec, &tv_nsec);
 
     int res2 = _TyTime_AsTime_t(tv_sec, &ts->tv_sec);
@@ -883,13 +883,13 @@ pytime_as_timespec(PyTime_t ns, struct timespec *ts, int raise_exc)
 }
 
 void
-_TyTime_AsTimespec_clamp(PyTime_t t, struct timespec *ts)
+_TyTime_AsTimespec_clamp(TyTime_t t, struct timespec *ts)
 {
     (void)pytime_as_timespec(t, ts, 0);
 }
 
 int
-_TyTime_AsTimespec(PyTime_t t, struct timespec *ts)
+_TyTime_AsTimespec(TyTime_t t, struct timespec *ts)
 {
     return pytime_as_timespec(t, ts, 1);
 }
@@ -898,7 +898,7 @@ _TyTime_AsTimespec(PyTime_t t, struct timespec *ts)
 
 // N.B. If raise_exc=0, this may be called without a thread state.
 static int
-py_get_system_clock(PyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
+py_get_system_clock(TyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
 {
     assert(info == NULL || raise_exc);
     if (raise_exc) {
@@ -916,7 +916,7 @@ py_get_system_clock(PyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
     /* 11,644,473,600,000,000,000: number of nanoseconds between
        the 1st january 1601 and the 1st january 1970 (369 years + 89 leap
        days). */
-    PyTime_t ns = (large.QuadPart - 116444736000000000) * 100;
+    TyTime_t ns = (large.QuadPart - 116444736000000000) * 100;
     *tp = ns;
     if (info) {
         // GetSystemTimePreciseAsFileTime() is implemented using
@@ -1006,7 +1006,7 @@ py_get_system_clock(PyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
 
 
 int
-PyTime_Time(PyTime_t *result)
+PyTime_Time(TyTime_t *result)
 {
     if (py_get_system_clock(result, NULL, 1) < 0) {
         *result = 0;
@@ -1017,7 +1017,7 @@ PyTime_Time(PyTime_t *result)
 
 
 int
-PyTime_TimeRaw(PyTime_t *result)
+PyTime_TimeRaw(TyTime_t *result)
 {
     if (py_get_system_clock(result, NULL, 0) < 0) {
         *result = 0;
@@ -1028,7 +1028,7 @@ PyTime_TimeRaw(PyTime_t *result)
 
 
 int
-_TyTime_TimeWithInfo(PyTime_t *t, _Ty_clock_info_t *info)
+_TyTime_TimeWithInfo(TyTime_t *t, _Ty_clock_info_t *info)
 {
     return py_get_system_clock(t, info, 1);
 }
@@ -1046,8 +1046,8 @@ py_win_perf_counter_frequency(_PyTimeFraction *base)
     // Since Windows XP, frequency cannot be zero.
     assert(frequency >= 1);
 
-    Ty_BUILD_ASSERT(sizeof(PyTime_t) == sizeof(frequency));
-    PyTime_t denom = (PyTime_t)frequency;
+    Ty_BUILD_ASSERT(sizeof(TyTime_t) == sizeof(frequency));
+    TyTime_t denom = (TyTime_t)frequency;
 
     // Known QueryPerformanceFrequency() values:
     //
@@ -1062,7 +1062,7 @@ py_win_perf_counter_frequency(_PyTimeFraction *base)
 
 // N.B. If raise_exc=0, this may be called without the GIL.
 static int
-py_get_win_perf_counter(PyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
+py_get_win_perf_counter(TyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
 {
     assert(info == NULL || raise_exc);
 
@@ -1077,12 +1077,12 @@ py_get_win_perf_counter(PyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
     QueryPerformanceCounter(&now);
     LONGLONG ticksll = now.QuadPart;
 
-    /* Make sure that casting LONGLONG to PyTime_t cannot overflow,
+    /* Make sure that casting LONGLONG to TyTime_t cannot overflow,
        both types are signed */
-    PyTime_t ticks;
+    TyTime_t ticks;
     static_assert(sizeof(ticksll) <= sizeof(ticks),
-                  "LONGLONG is larger than PyTime_t");
-    ticks = (PyTime_t)ticksll;
+                  "LONGLONG is larger than TyTime_t");
+    ticks = (TyTime_t)ticksll;
 
     *tp = _PyTimeFraction_Mul(ticks, &_PyRuntime.time.base);
     return 0;
@@ -1100,13 +1100,13 @@ py_mach_timebase_info(_PyTimeFraction *base)
     (void)mach_timebase_info(&timebase);
 
     // Check that timebase.numer and timebase.denom can be casted to
-    // PyTime_t. In practice, timebase uses uint32_t, so casting cannot
+    // TyTime_t. In practice, timebase uses uint32_t, so casting cannot
     // overflow. At the end, only make sure that the type is uint32_t
-    // (PyTime_t is 64-bit long).
-    Ty_BUILD_ASSERT(sizeof(timebase.numer) <= sizeof(PyTime_t));
-    Ty_BUILD_ASSERT(sizeof(timebase.denom) <= sizeof(PyTime_t));
-    PyTime_t numer = (PyTime_t)timebase.numer;
-    PyTime_t denom = (PyTime_t)timebase.denom;
+    // (TyTime_t is 64-bit long).
+    Ty_BUILD_ASSERT(sizeof(timebase.numer) <= sizeof(TyTime_t));
+    Ty_BUILD_ASSERT(sizeof(timebase.denom) <= sizeof(TyTime_t));
+    TyTime_t numer = (TyTime_t)timebase.numer;
+    TyTime_t denom = (TyTime_t)timebase.denom;
 
     // Known time bases:
     //
@@ -1134,7 +1134,7 @@ _TyTime_Init(struct _Ty_time_runtime_state *state)
 
 // N.B. If raise_exc=0, this may be called without a thread state.
 static int
-py_get_monotonic_clock(PyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
+py_get_monotonic_clock(TyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
 {
     assert(info == NULL || raise_exc);
     if (raise_exc) {
@@ -1157,9 +1157,9 @@ py_get_monotonic_clock(PyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
     uint64_t uticks = mach_absolute_time();
     // unsigned => signed
     assert(uticks <= (uint64_t)PyTime_MAX);
-    PyTime_t ticks = (PyTime_t)uticks;
+    TyTime_t ticks = (TyTime_t)uticks;
 
-    PyTime_t ns = _PyTimeFraction_Mul(ticks, &_PyRuntime.time.base);
+    TyTime_t ns = _PyTimeFraction_Mul(ticks, &_PyRuntime.time.base);
     *tp = ns;
 
 #elif defined(__hpux)
@@ -1220,7 +1220,7 @@ py_get_monotonic_clock(PyTime_t *tp, _Ty_clock_info_t *info, int raise_exc)
 
 
 int
-PyTime_Monotonic(PyTime_t *result)
+PyTime_Monotonic(TyTime_t *result)
 {
     if (py_get_monotonic_clock(result, NULL, 1) < 0) {
         *result = 0;
@@ -1231,7 +1231,7 @@ PyTime_Monotonic(PyTime_t *result)
 
 
 int
-PyTime_MonotonicRaw(PyTime_t *result)
+PyTime_MonotonicRaw(TyTime_t *result)
 {
     if (py_get_monotonic_clock(result, NULL, 0) < 0) {
         *result = 0;
@@ -1242,28 +1242,28 @@ PyTime_MonotonicRaw(PyTime_t *result)
 
 
 int
-_TyTime_MonotonicWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
+_TyTime_MonotonicWithInfo(TyTime_t *tp, _Ty_clock_info_t *info)
 {
     return py_get_monotonic_clock(tp, info, 1);
 }
 
 
 int
-_TyTime_PerfCounterWithInfo(PyTime_t *t, _Ty_clock_info_t *info)
+_TyTime_PerfCounterWithInfo(TyTime_t *t, _Ty_clock_info_t *info)
 {
     return _TyTime_MonotonicWithInfo(t, info);
 }
 
 
 int
-PyTime_PerfCounter(PyTime_t *result)
+PyTime_PerfCounter(TyTime_t *result)
 {
     return PyTime_Monotonic(result);
 }
 
 
 int
-PyTime_PerfCounterRaw(PyTime_t *result)
+PyTime_PerfCounterRaw(TyTime_t *result)
 {
     return PyTime_MonotonicRaw(result);
 }
@@ -1336,20 +1336,20 @@ _TyTime_gmtime(time_t t, struct tm *tm)
 }
 
 
-PyTime_t
-_PyDeadline_Init(PyTime_t timeout)
+TyTime_t
+_PyDeadline_Init(TyTime_t timeout)
 {
-    PyTime_t now;
+    TyTime_t now;
     // silently ignore error: cannot report error to the caller
     (void)PyTime_MonotonicRaw(&now);
     return _TyTime_Add(now, timeout);
 }
 
 
-PyTime_t
-_PyDeadline_Get(PyTime_t deadline)
+TyTime_t
+_PyDeadline_Get(TyTime_t deadline)
 {
-    PyTime_t now;
+    TyTime_t now;
     // silently ignore error: cannot report error to the caller
     (void)PyTime_MonotonicRaw(&now);
     return deadline - now;

@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_BadArgument()
 
-PyDoc_STRVAR(_bz2_BZ2Compressor_compress__doc__,
+TyDoc_STRVAR(_bz2_BZ2Compressor_compress__doc__,
 "compress($self, data, /)\n"
 "--\n"
 "\n"
@@ -46,7 +46,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_bz2_BZ2Compressor_flush__doc__,
+TyDoc_STRVAR(_bz2_BZ2Compressor_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n"
@@ -68,7 +68,7 @@ _bz2_BZ2Compressor_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _bz2_BZ2Compressor_flush_impl((BZ2Compressor *)self);
 }
 
-PyDoc_STRVAR(_bz2_BZ2Compressor__doc__,
+TyDoc_STRVAR(_bz2_BZ2Compressor__doc__,
 "BZ2Compressor(compresslevel=9, /)\n"
 "--\n"
 "\n"
@@ -110,7 +110,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_bz2_BZ2Decompressor_decompress__doc__,
+TyDoc_STRVAR(_bz2_BZ2Decompressor_decompress__doc__,
 "decompress($self, /, data, max_length=-1)\n"
 "--\n"
 "\n"
@@ -149,7 +149,7 @@ _bz2_BZ2Decompressor_decompress(TyObject *self, TyObject *const *args, Ty_ssize_
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(max_length), },
     };
@@ -207,7 +207,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_bz2_BZ2Decompressor__doc__,
+TyDoc_STRVAR(_bz2_BZ2Decompressor__doc__,
 "BZ2Decompressor()\n"
 "--\n"
 "\n"

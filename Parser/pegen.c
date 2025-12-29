@@ -554,7 +554,7 @@ _TyPegen_new_identifier(Parser *p, const char *n)
             goto error;
         }
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyUnicode_InternImmortal(interp, &id);
     if (_TyArena_AddPyObject(p->arena, id) < 0)
     {

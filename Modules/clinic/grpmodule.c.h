@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(grp_getgrgid__doc__,
+TyDoc_STRVAR(grp_getgrgid__doc__,
 "getgrgid($module, /, id)\n"
 "--\n"
 "\n"
@@ -35,7 +35,7 @@ grp_getgrgid(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(id), },
     };
@@ -68,7 +68,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(grp_getgrnam__doc__,
+TyDoc_STRVAR(grp_getgrnam__doc__,
 "getgrnam($module, /, name)\n"
 "--\n"
 "\n"
@@ -95,7 +95,7 @@ grp_getgrnam(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), },
     };
@@ -132,7 +132,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(grp_getgrall__doc__,
+TyDoc_STRVAR(grp_getgrall__doc__,
 "getgrall($module, /)\n"
 "--\n"
 "\n"

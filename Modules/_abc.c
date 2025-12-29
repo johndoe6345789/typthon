@@ -16,7 +16,7 @@ module _abc
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=964f5328e1aefcda]*/
 
-PyDoc_STRVAR(_abc__doc__,
+TyDoc_STRVAR(_abc__doc__,
 "Module contains faster C implementation of abc.ABCMeta");
 
 typedef struct {
@@ -142,7 +142,7 @@ abc_data_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
     return (TyObject *) self;
 }
 
-PyDoc_STRVAR(abc_data_doc,
+TyDoc_STRVAR(abc_data_doc,
 "Internal state held by ABC machinery.");
 
 static TyType_Slot _abc_data_type_spec_slots[] = {

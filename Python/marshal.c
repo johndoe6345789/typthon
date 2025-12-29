@@ -1307,7 +1307,7 @@ r_object(RFILE *p)
             if (is_interned) {
                 // marshal is meant to serialize .pyc files with code
                 // objects, and code-related strings are currently immortal.
-                PyInterpreterState *interp = _TyInterpreterState_GET();
+                TyInterpreterState *interp = _TyInterpreterState_GET();
                 _TyUnicode_InternImmortal(interp, &v);
             }
             retval = v;
@@ -1344,7 +1344,7 @@ r_object(RFILE *p)
         if (is_interned) {
             // marshal is meant to serialize .pyc files with code
             // objects, and code-related strings are currently immortal.
-            PyInterpreterState *interp = _TyInterpreterState_GET();
+            TyInterpreterState *interp = _TyInterpreterState_GET();
             _TyUnicode_InternImmortal(interp, &v);
         }
         retval = v;
@@ -2067,7 +2067,7 @@ static TyMethodDef marshal_methods[] = {
 };
 
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module contains functions that can read and write Python values in\n\
 a binary format. The format is specific to Python, but independent of\n\
 machine architecture issues.\n\

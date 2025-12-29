@@ -306,7 +306,7 @@ pysqlite_connection_init_impl(pysqlite_Connection *self, TyObject *database,
     self->isolation_level = isolation_level;
     self->autocommit = autocommit;
     self->check_same_thread = check_same_thread;
-    self->thread_ident = PyThread_get_thread_ident();
+    self->thread_ident = TyThread_get_thread_ident();
     self->statement_cache = statement_cache;
     self->cursors = cursors;
     self->blobs = blobs;
@@ -487,7 +487,7 @@ connection_finalize(TyObject *self)
 
     /* If close is implicitly called as a result of interpreter
      * tear-down, we must not call back into Python. */
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     int teardown = _Ty_IsInterpreterFinalizing(interp);
     if (teardown && con->db) {
         remove_callbacks(con->db);
@@ -1733,11 +1733,11 @@ pysqlite_connection_load_extension_impl(pysqlite_Connection *self,
 int pysqlite_check_thread(pysqlite_Connection* self)
 {
     if (self->check_same_thread) {
-        if (PyThread_get_thread_ident() != self->thread_ident) {
+        if (TyThread_get_thread_ident() != self->thread_ident) {
             TyErr_Format(self->ProgrammingError,
                         "SQLite objects created in a thread can only be used in that same thread. "
                         "The object was created in thread id %lu and this is thread id %lu.",
-                        self->thread_ident, PyThread_get_thread_ident());
+                        self->thread_ident, TyThread_get_thread_ident());
             return 0;
         }
 
@@ -2614,7 +2614,7 @@ get_sig(TyObject *Py_UNUSED(self), void *Py_UNUSED(closure))
 
 
 static const char connection_doc[] =
-PyDoc_STR("SQLite database connection object.");
+TyDoc_STR("SQLite database connection object.");
 
 static TyGetSetDef connection_getset[] = {
     {"isolation_level", pysqlite_connection_get_isolation_level,

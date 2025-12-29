@@ -275,7 +275,7 @@ static TyType_Spec HeapCTypeWithRelativeDict_spec = {
             {NULL} /* Sentinel */
         }},
         {Ty_tp_members, (TyMemberDef[]) {
-            {"dictobj", _Py_T_OBJECT,
+            {"dictobj", _Ty_T_OBJECT,
              offsetof(HeapCTypeWithDictStruct, dict),
              Ty_RELATIVE_OFFSET},
             {"__dictoffset__", Ty_T_PYSSIZET,
@@ -312,7 +312,7 @@ static TyType_Spec HeapCTypeWithRelativeWeakref_spec = {
     .slots = (TyType_Slot[]) {
         {Ty_tp_dealloc, heapctypewithrelativeweakref_dealloc},
         {Ty_tp_members, (TyMemberDef[]) {
-            {"weakreflist", _Py_T_OBJECT,
+            {"weakreflist", _Ty_T_OBJECT,
              offsetof(HeapCTypeWithWeakrefStruct, weakreflist),
              Ty_RELATIVE_OFFSET},
             {"__weaklistoffset__", Ty_T_PYSSIZET,

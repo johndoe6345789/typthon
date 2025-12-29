@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_io_open__doc__,
+TyDoc_STRVAR(_io_open__doc__,
 "open($module, /, file, mode=\'r\', buffering=-1, encoding=None,\n"
 "     errors=None, newline=None, closefd=True, opener=None)\n"
 "--\n"
@@ -148,7 +148,7 @@ _io_open(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *kw
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(file), &_Ty_ID(mode), &_Ty_ID(buffering), &_Ty_ID(encoding), &_Ty_ID(errors), &_Ty_ID(newline), &_Ty_ID(closefd), &_Ty_ID(opener), },
     };
@@ -299,7 +299,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_text_encoding__doc__,
+TyDoc_STRVAR(_io_text_encoding__doc__,
 "text_encoding($module, encoding, stacklevel=2, /)\n"
 "--\n"
 "\n"
@@ -346,7 +346,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_open_code__doc__,
+TyDoc_STRVAR(_io_open_code__doc__,
 "open_code($module, /, path)\n"
 "--\n"
 "\n"
@@ -374,7 +374,7 @@ _io_open_code(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), },
     };

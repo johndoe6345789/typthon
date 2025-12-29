@@ -39,7 +39,7 @@ typedef struct {
 
 #define iobase_CAST(op) ((iobase *)(op))
 
-PyDoc_STRVAR(iobase_doc,
+TyDoc_STRVAR(iobase_doc,
     "The abstract base class for all I/O classes.\n"
     "\n"
     "This class provides dummy implementations for many methods that\n"
@@ -895,7 +895,7 @@ TyType_Spec iobase_spec = {
 /*
  * RawIOBase class, Inherits from IOBase.
  */
-PyDoc_STRVAR(rawiobase_doc,
+TyDoc_STRVAR(rawiobase_doc,
              "Base class for raw binary I/O.");
 
 /*

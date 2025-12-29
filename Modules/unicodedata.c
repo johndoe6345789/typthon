@@ -1625,7 +1625,7 @@ static TyType_Spec ucd_type_spec = {
     .slots = ucd_type_slots
 };
 
-PyDoc_STRVAR(unicodedata_docstring,
+TyDoc_STRVAR(unicodedata_docstring,
 "This module provides access to the Unicode Character Database which\n\
 defines character properties for all Unicode characters. The data in\n\
 this database is based on the UnicodeData.txt file version\n\

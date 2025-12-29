@@ -12,16 +12,16 @@ extern "C" {
 #include "pycore_hashtable.h"     // _Ty_hashtable_t
 #include "pycore_interp_structs.h" // _import_state
 
-extern int _TyImport_IsInitialized(PyInterpreterState *);
+extern int _TyImport_IsInitialized(TyInterpreterState *);
 
 // Export for 'pyexpat' shared extension
 PyAPI_FUNC(int) _TyImport_SetModule(TyObject *name, TyObject *module);
 
 extern int _TyImport_SetModuleString(const char *name, TyObject* module);
 
-extern void _TyImport_AcquireLock(PyInterpreterState *interp);
-extern void _TyImport_ReleaseLock(PyInterpreterState *interp);
-extern void _TyImport_ReInitLock(PyInterpreterState *interp);
+extern void _TyImport_AcquireLock(TyInterpreterState *interp);
+extern void _TyImport_ReleaseLock(TyInterpreterState *interp);
+extern void _TyImport_ReInitLock(TyInterpreterState *interp);
 
 // This is used exclusively for the sys and builtins modules:
 extern int _TyImport_FixupBuiltin(
@@ -52,38 +52,38 @@ extern int _TyImport_FixupBuiltin(
         }, \
     }
 
-extern void _TyImport_ClearCore(PyInterpreterState *interp);
+extern void _TyImport_ClearCore(TyInterpreterState *interp);
 
 extern Ty_ssize_t _TyImport_GetNextModuleIndex(void);
 extern const char * _TyImport_ResolveNameWithPackageContext(const char *name);
 extern const char * _TyImport_SwapPackageContext(const char *newcontext);
 
-extern int _TyImport_GetDLOpenFlags(PyInterpreterState *interp);
-extern void _TyImport_SetDLOpenFlags(PyInterpreterState *interp, int new_val);
+extern int _TyImport_GetDLOpenFlags(TyInterpreterState *interp);
+extern void _TyImport_SetDLOpenFlags(TyInterpreterState *interp, int new_val);
 
-extern TyObject * _TyImport_InitModules(PyInterpreterState *interp);
-extern TyObject * _TyImport_GetModules(PyInterpreterState *interp);
-extern TyObject * _TyImport_GetModulesRef(PyInterpreterState *interp);
-extern void _TyImport_ClearModules(PyInterpreterState *interp);
+extern TyObject * _TyImport_InitModules(TyInterpreterState *interp);
+extern TyObject * _TyImport_GetModules(TyInterpreterState *interp);
+extern TyObject * _TyImport_GetModulesRef(TyInterpreterState *interp);
+extern void _TyImport_ClearModules(TyInterpreterState *interp);
 
-extern void _TyImport_ClearModulesByIndex(PyInterpreterState *interp);
+extern void _TyImport_ClearModulesByIndex(TyInterpreterState *interp);
 
-extern int _TyImport_InitDefaultImportFunc(PyInterpreterState *interp);
+extern int _TyImport_InitDefaultImportFunc(TyInterpreterState *interp);
 extern int _TyImport_IsDefaultImportFunc(
-        PyInterpreterState *interp,
+        TyInterpreterState *interp,
         TyObject *func);
 
 extern TyObject * _TyImport_GetImportlibLoader(
-        PyInterpreterState *interp,
+        TyInterpreterState *interp,
         const char *loader_name);
 extern TyObject * _TyImport_GetImportlibExternalLoader(
-        PyInterpreterState *interp,
+        TyInterpreterState *interp,
         const char *loader_name);
 extern TyObject * _TyImport_BlessMyLoader(
-        PyInterpreterState *interp,
+        TyInterpreterState *interp,
         TyObject *module_globals);
 extern TyObject * _TyImport_ImportlibModuleRepr(
-        PyInterpreterState *interp,
+        TyInterpreterState *interp,
         TyObject *module);
 
 
@@ -96,8 +96,8 @@ extern TyStatus _TyImport_InitCore(
         TyObject *sysmod,
         int importlib);
 extern TyStatus _TyImport_InitExternal(TyThreadState *tstate);
-extern void _TyImport_FiniCore(PyInterpreterState *interp);
-extern void _TyImport_FiniExternal(PyInterpreterState *interp);
+extern void _TyImport_FiniCore(TyInterpreterState *interp);
+extern void _TyImport_FiniExternal(TyInterpreterState *interp);
 
 
 extern TyObject* _TyImport_GetBuiltinModuleNames(void);

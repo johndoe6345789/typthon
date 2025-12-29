@@ -149,11 +149,11 @@
 
 /* Define macros for inline documentation. */
 #define PyDoc_VAR(name) static const char name[]
-#define PyDoc_STRVAR(name,str) PyDoc_VAR(name) = PyDoc_STR(str)
+#define TyDoc_STRVAR(name,str) PyDoc_VAR(name) = TyDoc_STR(str)
 #ifdef WITH_DOC_STRINGS
-#define PyDoc_STR(str) str
+#define TyDoc_STR(str) str
 #else
-#define PyDoc_STR(str) ""
+#define TyDoc_STR(str) ""
 #endif
 
 /* Below "a" is a power of 2. */

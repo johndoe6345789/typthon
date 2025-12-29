@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(msvcrt_heapmin__doc__,
+TyDoc_STRVAR(msvcrt_heapmin__doc__,
 "heapmin($module, /)\n"
 "--\n"
 "\n"
@@ -25,7 +25,7 @@ msvcrt_heapmin(TyObject *module, TyObject *Py_UNUSED(ignored))
     return msvcrt_heapmin_impl(module);
 }
 
-PyDoc_STRVAR(msvcrt_locking__doc__,
+TyDoc_STRVAR(msvcrt_locking__doc__,
 "locking($module, fd, mode, nbytes, /)\n"
 "--\n"
 "\n"
@@ -73,7 +73,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(msvcrt_setmode__doc__,
+TyDoc_STRVAR(msvcrt_setmode__doc__,
 "setmode($module, fd, mode, /)\n"
 "--\n"
 "\n"
@@ -119,7 +119,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(msvcrt_open_osfhandle__doc__,
+TyDoc_STRVAR(msvcrt_open_osfhandle__doc__,
 "open_osfhandle($module, handle, flags, /)\n"
 "--\n"
 "\n"
@@ -164,7 +164,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(msvcrt_get_osfhandle__doc__,
+TyDoc_STRVAR(msvcrt_get_osfhandle__doc__,
 "get_osfhandle($module, fd, /)\n"
 "--\n"
 "\n"
@@ -199,7 +199,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(msvcrt_kbhit__doc__,
+TyDoc_STRVAR(msvcrt_kbhit__doc__,
 "kbhit($module, /)\n"
 "--\n"
 "\n"
@@ -227,7 +227,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(msvcrt_getch__doc__,
+TyDoc_STRVAR(msvcrt_getch__doc__,
 "getch($module, /)\n"
 "--\n"
 "\n"
@@ -259,7 +259,7 @@ msvcrt_getch(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(MS_WINDOWS_DESKTOP)
 
-PyDoc_STRVAR(msvcrt_getwch__doc__,
+TyDoc_STRVAR(msvcrt_getwch__doc__,
 "getwch($module, /)\n"
 "--\n"
 "\n"
@@ -285,7 +285,7 @@ msvcrt_getwch(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(MS_WINDOWS_DESKTOP) */
 
-PyDoc_STRVAR(msvcrt_getche__doc__,
+TyDoc_STRVAR(msvcrt_getche__doc__,
 "getche($module, /)\n"
 "--\n"
 "\n"
@@ -311,7 +311,7 @@ msvcrt_getche(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(MS_WINDOWS_DESKTOP)
 
-PyDoc_STRVAR(msvcrt_getwche__doc__,
+TyDoc_STRVAR(msvcrt_getwche__doc__,
 "getwche($module, /)\n"
 "--\n"
 "\n"
@@ -337,7 +337,7 @@ msvcrt_getwche(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(MS_WINDOWS_DESKTOP) */
 
-PyDoc_STRVAR(msvcrt_putch__doc__,
+TyDoc_STRVAR(msvcrt_putch__doc__,
 "putch($module, char, /)\n"
 "--\n"
 "\n"
@@ -387,7 +387,7 @@ exit:
 
 #if defined(MS_WINDOWS_DESKTOP)
 
-PyDoc_STRVAR(msvcrt_putwch__doc__,
+TyDoc_STRVAR(msvcrt_putwch__doc__,
 "putwch($module, unicode_char, /)\n"
 "--\n"
 "\n"
@@ -425,7 +425,7 @@ exit:
 
 #endif /* defined(MS_WINDOWS_DESKTOP) */
 
-PyDoc_STRVAR(msvcrt_ungetch__doc__,
+TyDoc_STRVAR(msvcrt_ungetch__doc__,
 "ungetch($module, char, /)\n"
 "--\n"
 "\n"
@@ -479,7 +479,7 @@ exit:
 
 #if defined(MS_WINDOWS_DESKTOP)
 
-PyDoc_STRVAR(msvcrt_ungetwch__doc__,
+TyDoc_STRVAR(msvcrt_ungetwch__doc__,
 "ungetwch($module, unicode_char, /)\n"
 "--\n"
 "\n"
@@ -519,7 +519,7 @@ exit:
 
 #if defined(_DEBUG)
 
-PyDoc_STRVAR(msvcrt_CrtSetReportFile__doc__,
+TyDoc_STRVAR(msvcrt_CrtSetReportFile__doc__,
 "CrtSetReportFile($module, type, file, /)\n"
 "--\n"
 "\n"
@@ -566,7 +566,7 @@ exit:
 
 #if defined(_DEBUG)
 
-PyDoc_STRVAR(msvcrt_CrtSetReportMode__doc__,
+TyDoc_STRVAR(msvcrt_CrtSetReportMode__doc__,
 "CrtSetReportMode($module, type, mode, /)\n"
 "--\n"
 "\n"
@@ -613,7 +613,7 @@ exit:
 
 #if defined(_DEBUG)
 
-PyDoc_STRVAR(msvcrt_set_error_mode__doc__,
+TyDoc_STRVAR(msvcrt_set_error_mode__doc__,
 "set_error_mode($module, mode, /)\n"
 "--\n"
 "\n"
@@ -652,7 +652,7 @@ exit:
 
 #if (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_APP) || defined(MS_WINDOWS_SYSTEM))
 
-PyDoc_STRVAR(msvcrt_GetErrorMode__doc__,
+TyDoc_STRVAR(msvcrt_GetErrorMode__doc__,
 "GetErrorMode($module, /)\n"
 "--\n"
 "\n"
@@ -672,7 +672,7 @@ msvcrt_GetErrorMode(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* (defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_APP) || defined(MS_WINDOWS_SYSTEM)) */
 
-PyDoc_STRVAR(msvcrt_SetErrorMode__doc__,
+TyDoc_STRVAR(msvcrt_SetErrorMode__doc__,
 "SetErrorMode($module, mode, /)\n"
 "--\n"
 "\n"

@@ -7,7 +7,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_curses_panel_panel_bottom__doc__,
+TyDoc_STRVAR(_curses_panel_panel_bottom__doc__,
 "bottom($self, /)\n"
 "--\n"
 "\n"
@@ -29,7 +29,7 @@ _curses_panel_panel_bottom(TyObject *self, TyTypeObject *cls, TyObject *const *a
     return _curses_panel_panel_bottom_impl((PyCursesPanelObject *)self, cls);
 }
 
-PyDoc_STRVAR(_curses_panel_panel_hide__doc__,
+TyDoc_STRVAR(_curses_panel_panel_hide__doc__,
 "hide($self, /)\n"
 "--\n"
 "\n"
@@ -53,7 +53,7 @@ _curses_panel_panel_hide(TyObject *self, TyTypeObject *cls, TyObject *const *arg
     return _curses_panel_panel_hide_impl((PyCursesPanelObject *)self, cls);
 }
 
-PyDoc_STRVAR(_curses_panel_panel_show__doc__,
+TyDoc_STRVAR(_curses_panel_panel_show__doc__,
 "show($self, /)\n"
 "--\n"
 "\n"
@@ -75,7 +75,7 @@ _curses_panel_panel_show(TyObject *self, TyTypeObject *cls, TyObject *const *arg
     return _curses_panel_panel_show_impl((PyCursesPanelObject *)self, cls);
 }
 
-PyDoc_STRVAR(_curses_panel_panel_top__doc__,
+TyDoc_STRVAR(_curses_panel_panel_top__doc__,
 "top($self, /)\n"
 "--\n"
 "\n"
@@ -97,7 +97,7 @@ _curses_panel_panel_top(TyObject *self, TyTypeObject *cls, TyObject *const *args
     return _curses_panel_panel_top_impl((PyCursesPanelObject *)self, cls);
 }
 
-PyDoc_STRVAR(_curses_panel_panel_above__doc__,
+TyDoc_STRVAR(_curses_panel_panel_above__doc__,
 "above($self, /)\n"
 "--\n"
 "\n"
@@ -115,7 +115,7 @@ _curses_panel_panel_above(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _curses_panel_panel_above_impl((PyCursesPanelObject *)self);
 }
 
-PyDoc_STRVAR(_curses_panel_panel_below__doc__,
+TyDoc_STRVAR(_curses_panel_panel_below__doc__,
 "below($self, /)\n"
 "--\n"
 "\n"
@@ -133,7 +133,7 @@ _curses_panel_panel_below(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _curses_panel_panel_below_impl((PyCursesPanelObject *)self);
 }
 
-PyDoc_STRVAR(_curses_panel_panel_hidden__doc__,
+TyDoc_STRVAR(_curses_panel_panel_hidden__doc__,
 "hidden($self, /)\n"
 "--\n"
 "\n"
@@ -151,7 +151,7 @@ _curses_panel_panel_hidden(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _curses_panel_panel_hidden_impl((PyCursesPanelObject *)self);
 }
 
-PyDoc_STRVAR(_curses_panel_panel_move__doc__,
+TyDoc_STRVAR(_curses_panel_panel_move__doc__,
 "move($self, y, x, /)\n"
 "--\n"
 "\n"
@@ -204,7 +204,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_panel_panel_window__doc__,
+TyDoc_STRVAR(_curses_panel_panel_window__doc__,
 "window($self, /)\n"
 "--\n"
 "\n"
@@ -222,7 +222,7 @@ _curses_panel_panel_window(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _curses_panel_panel_window_impl((PyCursesPanelObject *)self);
 }
 
-PyDoc_STRVAR(_curses_panel_panel_replace__doc__,
+TyDoc_STRVAR(_curses_panel_panel_replace__doc__,
 "replace($self, win, /)\n"
 "--\n"
 "\n"
@@ -272,7 +272,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_panel_panel_set_userptr__doc__,
+TyDoc_STRVAR(_curses_panel_panel_set_userptr__doc__,
 "set_userptr($self, obj, /)\n"
 "--\n"
 "\n"
@@ -317,7 +317,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_panel_panel_userptr__doc__,
+TyDoc_STRVAR(_curses_panel_panel_userptr__doc__,
 "userptr($self, /)\n"
 "--\n"
 "\n"
@@ -340,7 +340,7 @@ _curses_panel_panel_userptr(TyObject *self, TyTypeObject *cls, TyObject *const *
     return _curses_panel_panel_userptr_impl((PyCursesPanelObject *)self, cls);
 }
 
-PyDoc_STRVAR(_curses_panel_bottom_panel__doc__,
+TyDoc_STRVAR(_curses_panel_bottom_panel__doc__,
 "bottom_panel($module, /)\n"
 "--\n"
 "\n"
@@ -358,7 +358,7 @@ _curses_panel_bottom_panel(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_panel_bottom_panel_impl(module);
 }
 
-PyDoc_STRVAR(_curses_panel_new_panel__doc__,
+TyDoc_STRVAR(_curses_panel_new_panel__doc__,
 "new_panel($module, win, /)\n"
 "--\n"
 "\n"
@@ -387,7 +387,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_panel_top_panel__doc__,
+TyDoc_STRVAR(_curses_panel_top_panel__doc__,
 "top_panel($module, /)\n"
 "--\n"
 "\n"
@@ -405,7 +405,7 @@ _curses_panel_top_panel(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_panel_top_panel_impl(module);
 }
 
-PyDoc_STRVAR(_curses_panel_update_panels__doc__,
+TyDoc_STRVAR(_curses_panel_update_panels__doc__,
 "update_panels($module, /)\n"
 "--\n"
 "\n"

@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _Ty_convert_optional_to_ssize_t()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_io_FileIO_close__doc__,
+TyDoc_STRVAR(_io_FileIO_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -34,7 +34,7 @@ _io_FileIO_close(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_ss
     return _io_FileIO_close_impl((fileio *)self, cls);
 }
 
-PyDoc_STRVAR(_io_FileIO___init____doc__,
+TyDoc_STRVAR(_io_FileIO___init____doc__,
 "FileIO(file, mode=\'r\', closefd=True, opener=None)\n"
 "--\n"
 "\n"
@@ -69,7 +69,7 @@ _io_FileIO___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(file), &_Ty_ID(mode), &_Ty_ID(closefd), &_Ty_ID(opener), },
     };
@@ -140,7 +140,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_FileIO_fileno__doc__,
+TyDoc_STRVAR(_io_FileIO_fileno__doc__,
 "fileno($self, /)\n"
 "--\n"
 "\n"
@@ -158,7 +158,7 @@ _io_FileIO_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_FileIO_fileno_impl((fileio *)self);
 }
 
-PyDoc_STRVAR(_io_FileIO_readable__doc__,
+TyDoc_STRVAR(_io_FileIO_readable__doc__,
 "readable($self, /)\n"
 "--\n"
 "\n"
@@ -176,7 +176,7 @@ _io_FileIO_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_FileIO_readable_impl((fileio *)self);
 }
 
-PyDoc_STRVAR(_io_FileIO_writable__doc__,
+TyDoc_STRVAR(_io_FileIO_writable__doc__,
 "writable($self, /)\n"
 "--\n"
 "\n"
@@ -194,7 +194,7 @@ _io_FileIO_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_FileIO_writable_impl((fileio *)self);
 }
 
-PyDoc_STRVAR(_io_FileIO_seekable__doc__,
+TyDoc_STRVAR(_io_FileIO_seekable__doc__,
 "seekable($self, /)\n"
 "--\n"
 "\n"
@@ -212,7 +212,7 @@ _io_FileIO_seekable(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_FileIO_seekable_impl((fileio *)self);
 }
 
-PyDoc_STRVAR(_io_FileIO_readinto__doc__,
+TyDoc_STRVAR(_io_FileIO_readinto__doc__,
 "readinto($self, buffer, /)\n"
 "--\n"
 "\n"
@@ -264,7 +264,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_FileIO_readall__doc__,
+TyDoc_STRVAR(_io_FileIO_readall__doc__,
 "readall($self, /)\n"
 "--\n"
 "\n"
@@ -288,7 +288,7 @@ _io_FileIO_readall(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _io_FileIO_readall_impl((fileio *)self);
 }
 
-PyDoc_STRVAR(_io_FileIO_read__doc__,
+TyDoc_STRVAR(_io_FileIO_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -347,7 +347,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_FileIO_write__doc__,
+TyDoc_STRVAR(_io_FileIO_write__doc__,
 "write($self, b, /)\n"
 "--\n"
 "\n"
@@ -402,7 +402,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_FileIO_seek__doc__,
+TyDoc_STRVAR(_io_FileIO_seek__doc__,
 "seek($self, pos, whence=0, /)\n"
 "--\n"
 "\n"
@@ -447,7 +447,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_io_FileIO_tell__doc__,
+TyDoc_STRVAR(_io_FileIO_tell__doc__,
 "tell($self, /)\n"
 "--\n"
 "\n"
@@ -469,7 +469,7 @@ _io_FileIO_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_FTRUNCATE)
 
-PyDoc_STRVAR(_io_FileIO_truncate__doc__,
+TyDoc_STRVAR(_io_FileIO_truncate__doc__,
 "truncate($self, size=None, /)\n"
 "--\n"
 "\n"
@@ -522,7 +522,7 @@ exit:
 
 #endif /* defined(HAVE_FTRUNCATE) */
 
-PyDoc_STRVAR(_io_FileIO_isatty__doc__,
+TyDoc_STRVAR(_io_FileIO_isatty__doc__,
 "isatty($self, /)\n"
 "--\n"
 "\n"

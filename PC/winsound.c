@@ -45,7 +45,7 @@
 #include <windows.h>
 #include <mmsystem.h>
 
-PyDoc_STRVAR(sound_module_doc,
+TyDoc_STRVAR(sound_module_doc,
 "PlaySound(sound, flags) - play a sound\n"
 "SND_FILENAME - sound is a wav file name\n"
 "SND_ALIAS - sound is a registry sound association name\n"

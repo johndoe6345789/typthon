@@ -33,7 +33,7 @@
 #include <stddef.h>
 
 #ifdef Ty_DEBUG
-    extern const char *_PyUOpName(int index);
+    extern const char *_TyUOpName(int index);
     extern void _PyUOpPrint(const _PyUOpInstruction *uop);
     static const char *const DEBUG_ENV = "PYTHON_OPT_DEBUG";
     static inline int get_lltrace(void) {
@@ -145,7 +145,7 @@ static int
 remove_globals(_PyInterpreterFrame *frame, _PyUOpInstruction *buffer,
                int buffer_size, _PyBloomFilter *dependencies)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     TyObject *builtins = frame->f_builtins;
     if (builtins != interp->builtins) {
         OPT_STAT_INC(remove_globals_builtins_changed);
@@ -156,7 +156,7 @@ remove_globals(_PyInterpreterFrame *frame, _PyUOpInstruction *buffer,
     assert(TyFunction_Check(function));
     assert(function->func_builtins == builtins);
     assert(function->func_globals == globals);
-    uint32_t function_version = _PyFunction_GetVersionForCurrentState(function);
+    uint32_t function_version = _TyFunction_GetVersionForCurrentState(function);
     /* In order to treat globals as constants, we need to
      * know that the globals dict is the one we expected, and
      * that it hasn't changed

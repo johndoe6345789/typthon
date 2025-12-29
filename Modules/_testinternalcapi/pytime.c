@@ -16,7 +16,7 @@ test_pytime_fromseconds(TyObject *self, TyObject *args)
     if (!TyArg_ParseTuple(args, "i", &seconds)) {
         return NULL;
     }
-    PyTime_t ts = _TyTime_FromSeconds(seconds);
+    TyTime_t ts = _TyTime_FromSeconds(seconds);
     return _TyTime_AsLong(ts);
 }
 
@@ -45,7 +45,7 @@ test_pytime_fromsecondsobject(TyObject *self, TyObject *args)
     if (check_time_rounding(round) < 0) {
         return NULL;
     }
-    PyTime_t ts;
+    TyTime_t ts;
     if (_TyTime_FromSecondsObject(&ts, obj, round) == -1) {
         return NULL;
     }
@@ -63,7 +63,7 @@ test_PyTime_AsTimeval(TyObject *self, TyObject *args)
     if (check_time_rounding(round) < 0) {
         return NULL;
     }
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_FromLong(&t, obj) < 0) {
         return NULL;
     }
@@ -90,7 +90,7 @@ test_PyTime_AsTimeval_clamp(TyObject *self, TyObject *args)
     if (check_time_rounding(round) < 0) {
         return NULL;
     }
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_FromLong(&t, obj) < 0) {
         return NULL;
     }
@@ -112,7 +112,7 @@ test_PyTime_AsTimespec(TyObject *self, TyObject *args)
     if (!TyArg_ParseTuple(args, "O", &obj)) {
         return NULL;
     }
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_FromLong(&t, obj) < 0) {
         return NULL;
     }
@@ -130,7 +130,7 @@ test_PyTime_AsTimespec_clamp(TyObject *self, TyObject *args)
     if (!TyArg_ParseTuple(args, "O", &obj)) {
         return NULL;
     }
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_FromLong(&t, obj) < 0) {
         return NULL;
     }
@@ -148,14 +148,14 @@ test_PyTime_AsMilliseconds(TyObject *self, TyObject *args)
     if (!TyArg_ParseTuple(args, "Oi", &obj, &round)) {
         return NULL;
     }
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_FromLong(&t, obj) < 0) {
         return NULL;
     }
     if (check_time_rounding(round) < 0) {
         return NULL;
     }
-    PyTime_t ms = _TyTime_AsMilliseconds(t, round);
+    TyTime_t ms = _TyTime_AsMilliseconds(t, round);
     return _TyTime_AsLong(ms);
 }
 
@@ -167,14 +167,14 @@ test_PyTime_AsMicroseconds(TyObject *self, TyObject *args)
     if (!TyArg_ParseTuple(args, "Oi", &obj, &round)) {
         return NULL;
     }
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_FromLong(&t, obj) < 0) {
         return NULL;
     }
     if (check_time_rounding(round) < 0) {
         return NULL;
     }
-    PyTime_t us = _TyTime_AsMicroseconds(t, round);
+    TyTime_t us = _TyTime_AsMicroseconds(t, round);
     return _TyTime_AsLong(us);
 }
 

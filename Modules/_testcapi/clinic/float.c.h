@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_testcapi_float_pack__doc__,
+TyDoc_STRVAR(_testcapi_float_pack__doc__,
 "float_pack($module, size, d, le, /)\n"
 "--\n"
 "\n"
@@ -51,7 +51,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_float_unpack__doc__,
+TyDoc_STRVAR(_testcapi_float_unpack__doc__,
 "float_unpack($module, data, le, /)\n"
 "--\n"
 "\n"

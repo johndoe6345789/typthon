@@ -11,10 +11,10 @@ extern "C" {
 
 /* runtime lifecycle */
 
-extern TyStatus _PyExc_InitState(PyInterpreterState *);
-extern TyStatus _PyExc_InitGlobalObjects(PyInterpreterState *);
-extern int _PyExc_InitTypes(PyInterpreterState *);
-extern void _PyExc_Fini(PyInterpreterState *);
+extern TyStatus _PyExc_InitState(TyInterpreterState *);
+extern TyStatus _PyExc_InitGlobalObjects(TyInterpreterState *);
+extern int _PyExc_InitTypes(TyInterpreterState *);
+extern void _PyExc_Fini(TyInterpreterState *);
 
 
 /* other API */
@@ -22,7 +22,7 @@ extern void _PyExc_Fini(PyInterpreterState *);
 struct _Py_exc_state {
     // The dict mapping from errno codes to OSError subclasses
     TyObject *errnomap;
-    PyBaseExceptionObject *memerrors_freelist;
+    TyBaseExceptionObject *memerrors_freelist;
     int memerrors_numfree;
 #ifdef Ty_GIL_DISABLED
     PyMutex memerrors_lock;
@@ -31,7 +31,7 @@ struct _Py_exc_state {
     TyObject *TyExc_ExceptionGroup;
 };
 
-extern void _PyExc_ClearExceptionGroupType(PyInterpreterState *);
+extern void _PyExc_ClearExceptionGroupType(TyInterpreterState *);
 
 
 #ifdef __cplusplus

@@ -11,7 +11,7 @@ extern "C" {
 #include "dynamic_annotations.h"  // _Ty_ANNOTATE_RWLOCK_CREATE
 
 #include "pycore_code.h"          // _TyCode_GetTLBCFast()
-#include "pycore_interp.h"        // PyInterpreterState.eval_frame
+#include "pycore_interp.h"        // TyInterpreterState.eval_frame
 #include "pycore_pystate.h"       // _TyThreadState_GET()
 #include "pycore_stats.h"         // EVAL_CALL_STAT_INC()
 #include "pycore_typedefs.h"      // _PyInterpreterFrame
@@ -44,7 +44,7 @@ PyAPI_FUNC(int) _TyEval_MakePendingCalls(TyThreadState *);
 #endif
 
 extern void _Ty_FinishPendingCalls(TyThreadState *tstate);
-extern void _TyEval_InitState(PyInterpreterState *);
+extern void _TyEval_InitState(TyInterpreterState *);
 extern void _TyEval_SignalReceived(void);
 
 // bitwise flags:
@@ -57,7 +57,7 @@ typedef int _Ty_add_pending_call_result;
 
 // Export for '_testinternalcapi' shared extension
 PyAPI_FUNC(_Ty_add_pending_call_result) _TyEval_AddPendingCall(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     _Ty_pending_call_func func,
     void *arg,
     int flags);
@@ -129,11 +129,11 @@ _TyEval_Vector(TyThreadState *tstate,
 
 extern int _TyEval_ThreadsInitialized(void);
 extern void _TyEval_InitGIL(TyThreadState *tstate, int own_gil);
-extern void _TyEval_FiniGIL(PyInterpreterState *interp);
+extern void _TyEval_FiniGIL(TyInterpreterState *interp);
 
 extern void _TyEval_AcquireLock(TyThreadState *tstate);
 
-extern void _TyEval_ReleaseLock(PyInterpreterState *, TyThreadState *,
+extern void _TyEval_ReleaseLock(TyInterpreterState *, TyThreadState *,
                                 int final_release);
 
 #ifdef Ty_GIL_DISABLED
@@ -341,8 +341,8 @@ _Ty_eval_breaker_bit_is_set(TyThreadState *tstate, uintptr_t bit)
 
 // Free-threaded builds use these functions to set or unset a bit on all
 // threads in the given interpreter.
-void _Ty_set_eval_breaker_bit_all(PyInterpreterState *interp, uintptr_t bit);
-void _Ty_unset_eval_breaker_bit_all(PyInterpreterState *interp, uintptr_t bit);
+void _Ty_set_eval_breaker_bit_all(TyInterpreterState *interp, uintptr_t bit);
+void _Ty_unset_eval_breaker_bit_all(TyInterpreterState *interp, uintptr_t bit);
 
 PyAPI_FUNC(_PyStackRef) _TyFloat_FromDouble_ConsumeInputs(_PyStackRef left, _PyStackRef right, double value);
 

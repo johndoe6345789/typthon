@@ -573,7 +573,7 @@ err:
 /* Since dialect is now a heap type, it inherits pickling method for
  * protocol 0 and 1 from object, therefore it needs to be overridden */
 
-PyDoc_STRVAR(dialect_reduce_doc, "raises an exception to avoid pickling");
+TyDoc_STRVAR(dialect_reduce_doc, "raises an exception to avoid pickling");
 
 static TyObject *
 Dialect_reduce(TyObject *self, TyObject *args) {
@@ -588,7 +588,7 @@ static struct TyMethodDef dialect_methods[] = {
     {NULL, NULL}
 };
 
-PyDoc_STRVAR(Dialect_Type_doc,
+TyDoc_STRVAR(Dialect_Type_doc,
 "CSV dialect\n"
 "\n"
 "The Dialect type records CSV parsing and generation options.\n");
@@ -1021,7 +1021,7 @@ Reader_clear(TyObject *op)
     return 0;
 }
 
-PyDoc_STRVAR(Reader_Type_doc,
+TyDoc_STRVAR(Reader_Type_doc,
 "CSV reader\n"
 "\n"
 "Reader objects are responsible for reading and parsing tabular data\n"
@@ -1303,7 +1303,7 @@ join_append_lineterminator(WriterObj *self)
     return 1;
 }
 
-PyDoc_STRVAR(csv_writerow_doc,
+TyDoc_STRVAR(csv_writerow_doc,
 "writerow(iterable)\n"
 "\n"
 "Construct and write a CSV record from an iterable of fields.  Non-string\n"
@@ -1413,7 +1413,7 @@ csv_writerow(TyObject *op, TyObject *seq)
     return result;
 }
 
-PyDoc_STRVAR(csv_writerows_doc,
+TyDoc_STRVAR(csv_writerows_doc,
 "writerows(iterable of iterables)\n"
 "\n"
 "Construct and write a series of iterables to a csv file.  Non-string\n"
@@ -1494,7 +1494,7 @@ Writer_dealloc(TyObject *op)
     Ty_DECREF(tp);
 }
 
-PyDoc_STRVAR(Writer_Type_doc,
+TyDoc_STRVAR(Writer_Type_doc,
 "CSV writer\n"
 "\n"
 "Writer objects are responsible for generating tabular data\n"
@@ -1702,9 +1702,9 @@ TyType_Spec error_spec = {
  * MODULE
  */
 
-PyDoc_STRVAR(csv_module_doc, "CSV parsing and writing.\n");
+TyDoc_STRVAR(csv_module_doc, "CSV parsing and writing.\n");
 
-PyDoc_STRVAR(csv_reader_doc,
+TyDoc_STRVAR(csv_reader_doc,
 "    csv_reader = reader(iterable [, dialect='excel']\n"
 "                        [optional keyword args])\n"
 "    for row in csv_reader:\n"
@@ -1719,7 +1719,7 @@ PyDoc_STRVAR(csv_reader_doc,
 "The returned object is an iterator.  Each iteration returns a row\n"
 "of the CSV file (which can span multiple input lines).\n");
 
-PyDoc_STRVAR(csv_writer_doc,
+TyDoc_STRVAR(csv_writer_doc,
 "    csv_writer = csv.writer(fileobj [, dialect='excel']\n"
 "                            [optional keyword args])\n"
 "    for row in sequence:\n"
@@ -1733,7 +1733,7 @@ PyDoc_STRVAR(csv_writer_doc,
 "\n"
 "The \"fileobj\" argument can be any object that supports the file API.\n");
 
-PyDoc_STRVAR(csv_register_dialect_doc,
+TyDoc_STRVAR(csv_register_dialect_doc,
 "Create a mapping from a string name to a dialect class.\n"
 "    dialect = csv.register_dialect(name[, dialect[, **fmtparams]])");
 

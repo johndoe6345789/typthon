@@ -8,7 +8,7 @@ extern "C" {
 #  error "this header requires Ty_BUILD_CORE define"
 #endif
 
-extern int _TyWarnings_InitState(PyInterpreterState *interp);
+extern int _TyWarnings_InitState(TyInterpreterState *interp);
 
 extern TyObject* _TyWarnings_Init(void);
 

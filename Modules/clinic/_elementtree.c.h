@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_elementtree_Element_append__doc__,
+TyDoc_STRVAR(_elementtree_Element_append__doc__,
 "append($self, subelement, /)\n"
 "--\n"
 "\n");
@@ -57,7 +57,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_clear__doc__,
+TyDoc_STRVAR(_elementtree_Element_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n");
@@ -74,7 +74,7 @@ _elementtree_Element_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _elementtree_Element_clear_impl((ElementObject *)self);
 }
 
-PyDoc_STRVAR(_elementtree_Element___copy____doc__,
+TyDoc_STRVAR(_elementtree_Element___copy____doc__,
 "__copy__($self, /)\n"
 "--\n"
 "\n");
@@ -95,7 +95,7 @@ _elementtree_Element___copy__(TyObject *self, TyTypeObject *cls, TyObject *const
     return _elementtree_Element___copy___impl((ElementObject *)self, cls);
 }
 
-PyDoc_STRVAR(_elementtree_Element___deepcopy____doc__,
+TyDoc_STRVAR(_elementtree_Element___deepcopy____doc__,
 "__deepcopy__($self, memo, /)\n"
 "--\n"
 "\n");
@@ -123,7 +123,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element___sizeof____doc__,
+TyDoc_STRVAR(_elementtree_Element___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n");
@@ -150,7 +150,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element___getstate____doc__,
+TyDoc_STRVAR(_elementtree_Element___getstate____doc__,
 "__getstate__($self, /)\n"
 "--\n"
 "\n");
@@ -167,7 +167,7 @@ _elementtree_Element___getstate__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _elementtree_Element___getstate___impl((ElementObject *)self);
 }
 
-PyDoc_STRVAR(_elementtree_Element___setstate____doc__,
+TyDoc_STRVAR(_elementtree_Element___setstate____doc__,
 "__setstate__($self, state, /)\n"
 "--\n"
 "\n");
@@ -211,7 +211,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_extend__doc__,
+TyDoc_STRVAR(_elementtree_Element_extend__doc__,
 "extend($self, elements, /)\n"
 "--\n"
 "\n");
@@ -255,7 +255,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_find__doc__,
+TyDoc_STRVAR(_elementtree_Element_find__doc__,
 "find($self, /, path, namespaces=None)\n"
 "--\n"
 "\n");
@@ -280,7 +280,7 @@ _elementtree_Element_find(TyObject *self, TyTypeObject *cls, TyObject *const *ar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(namespaces), },
     };
@@ -320,7 +320,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_findtext__doc__,
+TyDoc_STRVAR(_elementtree_Element_findtext__doc__,
 "findtext($self, /, path, default=None, namespaces=None)\n"
 "--\n"
 "\n");
@@ -346,7 +346,7 @@ _elementtree_Element_findtext(TyObject *self, TyTypeObject *cls, TyObject *const
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(default), &_Ty_ID(namespaces), },
     };
@@ -393,7 +393,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_findall__doc__,
+TyDoc_STRVAR(_elementtree_Element_findall__doc__,
 "findall($self, /, path, namespaces=None)\n"
 "--\n"
 "\n");
@@ -418,7 +418,7 @@ _elementtree_Element_findall(TyObject *self, TyTypeObject *cls, TyObject *const 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(namespaces), },
     };
@@ -458,7 +458,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_iterfind__doc__,
+TyDoc_STRVAR(_elementtree_Element_iterfind__doc__,
 "iterfind($self, /, path, namespaces=None)\n"
 "--\n"
 "\n");
@@ -483,7 +483,7 @@ _elementtree_Element_iterfind(TyObject *self, TyTypeObject *cls, TyObject *const
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(path), &_Ty_ID(namespaces), },
     };
@@ -523,7 +523,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_get__doc__,
+TyDoc_STRVAR(_elementtree_Element_get__doc__,
 "get($self, /, key, default=None)\n"
 "--\n"
 "\n");
@@ -548,7 +548,7 @@ _elementtree_Element_get(TyObject *self, TyObject *const *args, Ty_ssize_t nargs
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(default), },
     };
@@ -588,7 +588,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_iter__doc__,
+TyDoc_STRVAR(_elementtree_Element_iter__doc__,
 "iter($self, /, tag=None)\n"
 "--\n"
 "\n");
@@ -613,7 +613,7 @@ _elementtree_Element_iter(TyObject *self, TyTypeObject *cls, TyObject *const *ar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(tag), },
     };
@@ -651,7 +651,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_itertext__doc__,
+TyDoc_STRVAR(_elementtree_Element_itertext__doc__,
 "itertext($self, /)\n"
 "--\n"
 "\n");
@@ -672,7 +672,7 @@ _elementtree_Element_itertext(TyObject *self, TyTypeObject *cls, TyObject *const
     return _elementtree_Element_itertext_impl((ElementObject *)self, cls);
 }
 
-PyDoc_STRVAR(_elementtree_Element_insert__doc__,
+TyDoc_STRVAR(_elementtree_Element_insert__doc__,
 "insert($self, index, subelement, /)\n"
 "--\n"
 "\n");
@@ -717,7 +717,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_items__doc__,
+TyDoc_STRVAR(_elementtree_Element_items__doc__,
 "items($self, /)\n"
 "--\n"
 "\n");
@@ -734,7 +734,7 @@ _elementtree_Element_items(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _elementtree_Element_items_impl((ElementObject *)self);
 }
 
-PyDoc_STRVAR(_elementtree_Element_keys__doc__,
+TyDoc_STRVAR(_elementtree_Element_keys__doc__,
 "keys($self, /)\n"
 "--\n"
 "\n");
@@ -751,7 +751,7 @@ _elementtree_Element_keys(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _elementtree_Element_keys_impl((ElementObject *)self);
 }
 
-PyDoc_STRVAR(_elementtree_Element_makeelement__doc__,
+TyDoc_STRVAR(_elementtree_Element_makeelement__doc__,
 "makeelement($self, tag, attrib, /)\n"
 "--\n"
 "\n");
@@ -801,7 +801,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_remove__doc__,
+TyDoc_STRVAR(_elementtree_Element_remove__doc__,
 "remove($self, subelement, /)\n"
 "--\n"
 "\n");
@@ -829,7 +829,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_Element_set__doc__,
+TyDoc_STRVAR(_elementtree_Element_set__doc__,
 "set($self, key, value, /)\n"
 "--\n"
 "\n");
@@ -879,7 +879,7 @@ _elementtree_TreeBuilder___init__(TyObject *self, TyObject *args, TyObject *kwar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(element_factory), &_Ty_ID(comment_factory), &_Ty_ID(pi_factory), &_Ty_ID(insert_comments), &_Ty_ID(insert_pis), },
     };
@@ -957,7 +957,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree__set_factories__doc__,
+TyDoc_STRVAR(_elementtree__set_factories__doc__,
 "_set_factories($module, comment_factory, pi_factory, /)\n"
 "--\n"
 "\n"
@@ -990,7 +990,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_TreeBuilder_data__doc__,
+TyDoc_STRVAR(_elementtree_TreeBuilder_data__doc__,
 "data($self, data, /)\n"
 "--\n"
 "\n");
@@ -1011,7 +1011,7 @@ _elementtree_TreeBuilder_data(TyObject *self, TyObject *data)
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_TreeBuilder_end__doc__,
+TyDoc_STRVAR(_elementtree_TreeBuilder_end__doc__,
 "end($self, tag, /)\n"
 "--\n"
 "\n");
@@ -1032,7 +1032,7 @@ _elementtree_TreeBuilder_end(TyObject *self, TyObject *tag)
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_TreeBuilder_comment__doc__,
+TyDoc_STRVAR(_elementtree_TreeBuilder_comment__doc__,
 "comment($self, text, /)\n"
 "--\n"
 "\n");
@@ -1054,7 +1054,7 @@ _elementtree_TreeBuilder_comment(TyObject *self, TyObject *text)
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_TreeBuilder_pi__doc__,
+TyDoc_STRVAR(_elementtree_TreeBuilder_pi__doc__,
 "pi($self, target, text=None, /)\n"
 "--\n"
 "\n");
@@ -1088,7 +1088,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_TreeBuilder_close__doc__,
+TyDoc_STRVAR(_elementtree_TreeBuilder_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n");
@@ -1105,7 +1105,7 @@ _elementtree_TreeBuilder_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _elementtree_TreeBuilder_close_impl((TreeBuilderObject *)self);
 }
 
-PyDoc_STRVAR(_elementtree_TreeBuilder_start__doc__,
+TyDoc_STRVAR(_elementtree_TreeBuilder_start__doc__,
 "start($self, tag, attrs, /)\n"
 "--\n"
 "\n");
@@ -1156,7 +1156,7 @@ _elementtree_XMLParser___init__(TyObject *self, TyObject *args, TyObject *kwargs
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(target), &_Ty_ID(encoding), },
     };
@@ -1220,7 +1220,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_XMLParser_close__doc__,
+TyDoc_STRVAR(_elementtree_XMLParser_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n");
@@ -1237,7 +1237,7 @@ _elementtree_XMLParser_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _elementtree_XMLParser_close_impl((XMLParserObject *)self);
 }
 
-PyDoc_STRVAR(_elementtree_XMLParser_flush__doc__,
+TyDoc_STRVAR(_elementtree_XMLParser_flush__doc__,
 "flush($self, /)\n"
 "--\n"
 "\n");
@@ -1254,7 +1254,7 @@ _elementtree_XMLParser_flush(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _elementtree_XMLParser_flush_impl((XMLParserObject *)self);
 }
 
-PyDoc_STRVAR(_elementtree_XMLParser_feed__doc__,
+TyDoc_STRVAR(_elementtree_XMLParser_feed__doc__,
 "feed($self, data, /)\n"
 "--\n"
 "\n");
@@ -1275,7 +1275,7 @@ _elementtree_XMLParser_feed(TyObject *self, TyObject *data)
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_XMLParser__parse_whole__doc__,
+TyDoc_STRVAR(_elementtree_XMLParser__parse_whole__doc__,
 "_parse_whole($self, file, /)\n"
 "--\n"
 "\n");
@@ -1297,7 +1297,7 @@ _elementtree_XMLParser__parse_whole(TyObject *self, TyObject *file)
     return return_value;
 }
 
-PyDoc_STRVAR(_elementtree_XMLParser__setevents__doc__,
+TyDoc_STRVAR(_elementtree_XMLParser__setevents__doc__,
 "_setevents($self, events_queue, events_to_report=None, /)\n"
 "--\n"
 "\n");

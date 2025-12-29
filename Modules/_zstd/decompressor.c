@@ -656,11 +656,11 @@ static TyMethodDef ZstdDecompressor_methods[] = {
     {NULL, NULL}
 };
 
-PyDoc_STRVAR(ZstdDecompressor_eof_doc,
+TyDoc_STRVAR(ZstdDecompressor_eof_doc,
 "True means the end of the first frame has been reached. If decompress data\n"
 "after that, an EOFError exception will be raised.");
 
-PyDoc_STRVAR(ZstdDecompressor_needs_input_doc,
+TyDoc_STRVAR(ZstdDecompressor_needs_input_doc,
 "If the max_length output limit in .decompress() method has been reached,\n"
 "and the decompressor has (or may has) unconsumed input data, it will be set\n"
 "to False. In this case, passing b'' to the .decompress() method may output\n"

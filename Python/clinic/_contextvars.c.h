@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(_contextvars_copy_context__doc__,
+TyDoc_STRVAR(_contextvars_copy_context__doc__,
 "copy_context($module, /)\n"
 "--\n"
 "\n");

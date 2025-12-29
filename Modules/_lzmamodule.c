@@ -73,12 +73,12 @@ OutputBuffer_OnError(_BlocksOutputBuffer *buffer)
 
 
 #define ACQUIRE_LOCK(obj) do { \
-    if (!PyThread_acquire_lock((obj)->lock, 0)) { \
+    if (!TyThread_acquire_lock((obj)->lock, 0)) { \
         Ty_BEGIN_ALLOW_THREADS \
-        PyThread_acquire_lock((obj)->lock, 1); \
+        TyThread_acquire_lock((obj)->lock, 1); \
         Ty_END_ALLOW_THREADS \
     } } while (0)
-#define RELEASE_LOCK(obj) PyThread_release_lock((obj)->lock)
+#define RELEASE_LOCK(obj) TyThread_release_lock((obj)->lock)
 
 typedef struct {
     TyTypeObject *lzma_compressor_type;
@@ -111,7 +111,7 @@ typedef struct {
     lzma_allocator alloc;
     lzma_stream lzs;
     int flushed;
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
 } Compressor;
 
 typedef struct {
@@ -124,7 +124,7 @@ typedef struct {
     char needs_input;
     uint8_t *input_buffer;
     size_t input_buffer_size;
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
 } Decompressor;
 
 #define Compressor_CAST(op)     ((Compressor *)(op))
@@ -820,7 +820,7 @@ Compressor_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
     self->alloc.free = PyLzma_Free;
     self->lzs.allocator = &self->alloc;
 
-    self->lock = PyThread_allocate_lock();
+    self->lock = TyThread_allocate_lock();
     if (self->lock == NULL) {
         Ty_DECREF(self);
         TyErr_SetString(TyExc_MemoryError, "Unable to allocate lock");
@@ -869,7 +869,7 @@ Compressor_dealloc(TyObject *op)
     Compressor *self = Compressor_CAST(op);
     lzma_end(&self->lzs);
     if (self->lock != NULL) {
-        PyThread_free_lock(self->lock);
+        TyThread_free_lock(self->lock);
     }
     TyTypeObject *tp = Ty_TYPE(self);
     tp->tp_free(self);
@@ -889,7 +889,7 @@ Compressor_traverse(TyObject *self, visitproc visit, void *arg)
     return 0;
 }
 
-PyDoc_STRVAR(Compressor_doc,
+TyDoc_STRVAR(Compressor_doc,
 "LZMACompressor(format=FORMAT_XZ, check=-1, preset=None, filters=None)\n"
 "\n"
 "Create a compressor object for compressing data incrementally.\n"
@@ -1251,7 +1251,7 @@ _lzma_LZMADecompressor_impl(TyTypeObject *type, int format,
     self->lzs.allocator = &self->alloc;
     self->lzs.next_in = NULL;
 
-    self->lock = PyThread_allocate_lock();
+    self->lock = TyThread_allocate_lock();
     if (self->lock == NULL) {
         Ty_DECREF(self);
         TyErr_SetString(TyExc_MemoryError, "Unable to allocate lock");
@@ -1320,7 +1320,7 @@ Decompressor_dealloc(TyObject *op)
     lzma_end(&self->lzs);
     Ty_CLEAR(self->unused_data);
     if (self->lock != NULL) {
-        PyThread_free_lock(self->lock);
+        TyThread_free_lock(self->lock);
     }
     TyTypeObject *tp = Ty_TYPE(self);
     tp->tp_free(self);
@@ -1339,16 +1339,16 @@ static TyMethodDef Decompressor_methods[] = {
     {NULL}
 };
 
-PyDoc_STRVAR(Decompressor_check_doc,
+TyDoc_STRVAR(Decompressor_check_doc,
 "ID of the integrity check used by the input stream.");
 
-PyDoc_STRVAR(Decompressor_eof_doc,
+TyDoc_STRVAR(Decompressor_eof_doc,
 "True if the end-of-stream marker has been reached.");
 
-PyDoc_STRVAR(Decompressor_needs_input_doc,
+TyDoc_STRVAR(Decompressor_needs_input_doc,
 "True if more input is needed before more decompressed data can be produced.");
 
-PyDoc_STRVAR(Decompressor_unused_data_doc,
+TyDoc_STRVAR(Decompressor_unused_data_doc,
 "Data found after the end of the compressed stream.");
 
 static TyMemberDef Decompressor_members[] = {
@@ -1404,7 +1404,7 @@ _lzma_is_check_supported_impl(TyObject *module, int check_id)
     return TyBool_FromLong(lzma_check_is_supported(check_id));
 }
 
-PyDoc_STRVAR(_lzma__encode_filter_properties__doc__,
+TyDoc_STRVAR(_lzma__encode_filter_properties__doc__,
 "_encode_filter_properties($module, filter, /)\n"
 "--\n"
 "\n"

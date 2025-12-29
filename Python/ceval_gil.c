@@ -70,7 +70,7 @@ copy_eval_breaker_bits(uintptr_t *from, uintptr_t *to, uintptr_t mask)
 // When attaching a thread, set the global instrumentation version and
 // _PY_CALLS_TO_DO_BIT from the current state of the interpreter.
 static inline void
-update_eval_breaker_for_thread(PyInterpreterState *interp, TyThreadState *tstate)
+update_eval_breaker_for_thread(TyInterpreterState *interp, TyThreadState *tstate)
 {
 #ifdef Ty_GIL_DISABLED
     // Free-threaded builds eagerly update the eval_breaker on *all* threads as
@@ -213,7 +213,7 @@ drop_gil_impl(TyThreadState *tstate, struct _gil_runtime_state *gil)
 }
 
 static void
-drop_gil(PyInterpreterState *interp, TyThreadState *tstate, int final_release)
+drop_gil(TyInterpreterState *interp, TyThreadState *tstate, int final_release)
 {
     struct _ceval_state *ceval = &interp->ceval;
     /* If final_release is true, the caller is indicating that we're releasing
@@ -307,7 +307,7 @@ take_gil(TyThreadState *tstate)
     }
 
     assert(_TyThreadState_CheckConsistency(tstate));
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     struct _gil_runtime_state *gil = interp->ceval.gil;
 #ifdef Ty_GIL_DISABLED
     if (!_Ty_atomic_load_int_relaxed(&gil->enabled)) {
@@ -419,7 +419,7 @@ take_gil(TyThreadState *tstate)
 
 void _TyEval_SetSwitchInterval(unsigned long microseconds)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _gil_runtime_state *gil = interp->ceval.gil;
     assert(gil != NULL);
     _Ty_atomic_store_ulong_relaxed(&gil->interval, microseconds);
@@ -427,7 +427,7 @@ void _TyEval_SetSwitchInterval(unsigned long microseconds)
 
 unsigned long _TyEval_GetSwitchInterval(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _gil_runtime_state *gil = interp->ceval.gil;
     assert(gil != NULL);
     return _Ty_atomic_load_ulong_relaxed(&gil->interval);
@@ -440,7 +440,7 @@ _TyEval_ThreadsInitialized(void)
     /* XXX This is only needed for an assert in TyGILState_Ensure(),
      * which currently does not work with subinterpreters.
      * Thus we only use the main interpreter. */
-    PyInterpreterState *interp = _TyInterpreterState_Main();
+    TyInterpreterState *interp = _TyInterpreterState_Main();
     if (interp == NULL) {
         return 0;
     }
@@ -474,7 +474,7 @@ current_thread_holds_gil(struct _gil_runtime_state *gil, TyThreadState *tstate)
 #endif
 
 static void
-init_shared_gil(PyInterpreterState *interp, struct _gil_runtime_state *gil)
+init_shared_gil(TyInterpreterState *interp, struct _gil_runtime_state *gil)
 {
     assert(gil_created(gil));
     interp->ceval.gil = gil;
@@ -482,7 +482,7 @@ init_shared_gil(PyInterpreterState *interp, struct _gil_runtime_state *gil)
 }
 
 static void
-init_own_gil(PyInterpreterState *interp, struct _gil_runtime_state *gil)
+init_own_gil(TyInterpreterState *interp, struct _gil_runtime_state *gil)
 {
     assert(!gil_created(gil));
 #ifdef Ty_GIL_DISABLED
@@ -501,14 +501,14 @@ _TyEval_InitGIL(TyThreadState *tstate, int own_gil)
     assert(tstate->interp->ceval.gil == NULL);
     if (!own_gil) {
         /* The interpreter will share the main interpreter's instead. */
-        PyInterpreterState *main_interp = _TyInterpreterState_Main();
+        TyInterpreterState *main_interp = _TyInterpreterState_Main();
         assert(tstate->interp != main_interp);
         struct _gil_runtime_state *gil = main_interp->ceval.gil;
         init_shared_gil(tstate->interp, gil);
         assert(!current_thread_holds_gil(gil, tstate));
     }
     else {
-        PyThread_init_thread();
+        TyThread_init_thread();
         init_own_gil(tstate->interp, &tstate->interp->_gil);
     }
 
@@ -517,7 +517,7 @@ _TyEval_InitGIL(TyThreadState *tstate, int own_gil)
 }
 
 void
-_TyEval_FiniGIL(PyInterpreterState *interp)
+_TyEval_FiniGIL(TyInterpreterState *interp)
 {
     struct _gil_runtime_state *gil = interp->ceval.gil;
     if (gil == NULL) {
@@ -527,7 +527,7 @@ _TyEval_FiniGIL(PyInterpreterState *interp)
     }
     else if (!interp->ceval.own_gil) {
 #ifdef Ty_DEBUG
-        PyInterpreterState *main_interp = _TyInterpreterState_Main();
+        TyInterpreterState *main_interp = _TyInterpreterState_Main();
         assert(main_interp != NULL && interp != main_interp);
         assert(interp->ceval.gil == main_interp->ceval.gil);
 #endif
@@ -589,7 +589,7 @@ _TyEval_AcquireLock(TyThreadState *tstate)
 }
 
 void
-_TyEval_ReleaseLock(PyInterpreterState *interp,
+_TyEval_ReleaseLock(TyInterpreterState *interp,
                     TyThreadState *tstate,
                     int final_release)
 {
@@ -668,7 +668,7 @@ _TyEval_SignalReceived(void)
 
 #ifndef Ty_GIL_DISABLED
 static void
-signal_active_thread(PyInterpreterState *interp, uintptr_t bit)
+signal_active_thread(TyInterpreterState *interp, uintptr_t bit)
 {
     struct _gil_runtime_state *gil = interp->ceval.gil;
 
@@ -773,7 +773,7 @@ _pop_pending_call(struct _pending_calls *pending,
  */
 
 _Ty_add_pending_call_result
-_TyEval_AddPendingCall(PyInterpreterState *interp,
+_TyEval_AddPendingCall(TyInterpreterState *interp,
                        _Ty_pending_call_func func, void *arg, int flags)
 {
     struct _pending_calls *pending = &interp->ceval.pending;
@@ -808,7 +808,7 @@ Ty_AddPendingCall(_Ty_pending_call_func func, void *arg)
 {
     /* Legacy users of this API will continue to target the main thread
        (of the main interpreter). */
-    PyInterpreterState *interp = _TyInterpreterState_Main();
+    TyInterpreterState *interp = _TyInterpreterState_Main();
     _Ty_add_pending_call_result r =
         _TyEval_AddPendingCall(interp, func, arg, _Ty_PENDING_MAINTHREADONLY);
     if (r == _Ty_ADD_PENDING_FULL) {
@@ -885,7 +885,7 @@ finally:
 }
 
 static void
-signal_pending_calls(TyThreadState *tstate, PyInterpreterState *interp)
+signal_pending_calls(TyThreadState *tstate, TyInterpreterState *interp)
 {
 #ifdef Ty_GIL_DISABLED
     _Ty_set_eval_breaker_bit_all(interp, _PY_CALLS_TO_DO_BIT);
@@ -895,7 +895,7 @@ signal_pending_calls(TyThreadState *tstate, PyInterpreterState *interp)
 }
 
 static void
-unsignal_pending_calls(TyThreadState *tstate, PyInterpreterState *interp)
+unsignal_pending_calls(TyThreadState *tstate, TyInterpreterState *interp)
 {
 #ifdef Ty_GIL_DISABLED
     _Ty_unset_eval_breaker_bit_all(interp, _PY_CALLS_TO_DO_BIT);
@@ -919,7 +919,7 @@ clear_pending_handling_thread(struct _pending_calls *pending)
 static int
 make_pending_calls(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     struct _pending_calls *pending = &interp->ceval.pending;
     struct _pending_calls *pending_main = &_PyRuntime.ceval.pending_mainthread;
 
@@ -977,7 +977,7 @@ make_pending_calls(TyThreadState *tstate)
 
 
 void
-_Ty_set_eval_breaker_bit_all(PyInterpreterState *interp, uintptr_t bit)
+_Ty_set_eval_breaker_bit_all(TyInterpreterState *interp, uintptr_t bit)
 {
     _Ty_FOR_EACH_TSTATE_BEGIN(interp, tstate) {
         _Ty_set_eval_breaker_bit(tstate, bit);
@@ -986,7 +986,7 @@ _Ty_set_eval_breaker_bit_all(PyInterpreterState *interp, uintptr_t bit)
 }
 
 void
-_Ty_unset_eval_breaker_bit_all(PyInterpreterState *interp, uintptr_t bit)
+_Ty_unset_eval_breaker_bit_all(TyInterpreterState *interp, uintptr_t bit)
 {
     _Ty_FOR_EACH_TSTATE_BEGIN(interp, tstate) {
         _Ty_unset_eval_breaker_bit(tstate, bit);
@@ -1071,7 +1071,7 @@ Ty_MakePendingCalls(void)
 }
 
 void
-_TyEval_InitState(PyInterpreterState *interp)
+_TyEval_InitState(TyInterpreterState *interp)
 {
     _gil_initialize(&interp->_gil);
 }
@@ -1326,7 +1326,7 @@ int _PyRunRemoteDebugger(TyThreadState *tstate)
 * expensive if computed each time, so a while back we switched
 * to using pre-computed, per-interpreter variables for the checks,
 * and later consolidated that to a single "eval breaker" variable
-* (now a PyInterpreterState field).
+* (now a TyInterpreterState field).
 *
 * For the longest time, the eval breaker check would happen
 * frequently, every 5 or so times through the loop, regardless

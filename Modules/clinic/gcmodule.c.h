@@ -10,7 +10,7 @@ preserve
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 #include "pycore_tuple.h"         // _TyTuple_FromArray()
 
-PyDoc_STRVAR(gc_enable__doc__,
+TyDoc_STRVAR(gc_enable__doc__,
 "enable($module, /)\n"
 "--\n"
 "\n"
@@ -28,7 +28,7 @@ gc_enable(TyObject *module, TyObject *Py_UNUSED(ignored))
     return gc_enable_impl(module);
 }
 
-PyDoc_STRVAR(gc_disable__doc__,
+TyDoc_STRVAR(gc_disable__doc__,
 "disable($module, /)\n"
 "--\n"
 "\n"
@@ -46,7 +46,7 @@ gc_disable(TyObject *module, TyObject *Py_UNUSED(ignored))
     return gc_disable_impl(module);
 }
 
-PyDoc_STRVAR(gc_isenabled__doc__,
+TyDoc_STRVAR(gc_isenabled__doc__,
 "isenabled($module, /)\n"
 "--\n"
 "\n"
@@ -74,7 +74,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_collect__doc__,
+TyDoc_STRVAR(gc_collect__doc__,
 "collect($module, /, generation=2)\n"
 "--\n"
 "\n"
@@ -105,7 +105,7 @@ gc_collect(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(generation), },
     };
@@ -151,7 +151,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_set_debug__doc__,
+TyDoc_STRVAR(gc_set_debug__doc__,
 "set_debug($module, flags, /)\n"
 "--\n"
 "\n"
@@ -190,7 +190,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_debug__doc__,
+TyDoc_STRVAR(gc_get_debug__doc__,
 "get_debug($module, /)\n"
 "--\n"
 "\n"
@@ -218,7 +218,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_set_threshold__doc__,
+TyDoc_STRVAR(gc_set_threshold__doc__,
 "set_threshold(threshold0, [threshold1, [threshold2]])\n"
 "Set the collection thresholds (the collection frequency).\n"
 "\n"
@@ -270,7 +270,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_threshold__doc__,
+TyDoc_STRVAR(gc_get_threshold__doc__,
 "get_threshold($module, /)\n"
 "--\n"
 "\n"
@@ -288,7 +288,7 @@ gc_get_threshold(TyObject *module, TyObject *Py_UNUSED(ignored))
     return gc_get_threshold_impl(module);
 }
 
-PyDoc_STRVAR(gc_get_count__doc__,
+TyDoc_STRVAR(gc_get_count__doc__,
 "get_count($module, /)\n"
 "--\n"
 "\n"
@@ -306,7 +306,7 @@ gc_get_count(TyObject *module, TyObject *Py_UNUSED(ignored))
     return gc_get_count_impl(module);
 }
 
-PyDoc_STRVAR(gc_get_referrers__doc__,
+TyDoc_STRVAR(gc_get_referrers__doc__,
 "get_referrers($module, /, *objs)\n"
 "--\n"
 "\n"
@@ -337,7 +337,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_referents__doc__,
+TyDoc_STRVAR(gc_get_referents__doc__,
 "get_referents($module, /, *objs)\n"
 "--\n"
 "\n"
@@ -368,7 +368,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_objects__doc__,
+TyDoc_STRVAR(gc_get_objects__doc__,
 "get_objects($module, /, generation=None)\n"
 "--\n"
 "\n"
@@ -399,7 +399,7 @@ gc_get_objects(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(generation), },
     };
@@ -439,7 +439,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_get_stats__doc__,
+TyDoc_STRVAR(gc_get_stats__doc__,
 "get_stats($module, /)\n"
 "--\n"
 "\n"
@@ -457,7 +457,7 @@ gc_get_stats(TyObject *module, TyObject *Py_UNUSED(ignored))
     return gc_get_stats_impl(module);
 }
 
-PyDoc_STRVAR(gc_is_tracked__doc__,
+TyDoc_STRVAR(gc_is_tracked__doc__,
 "is_tracked($module, obj, /)\n"
 "--\n"
 "\n"
@@ -487,7 +487,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_is_finalized__doc__,
+TyDoc_STRVAR(gc_is_finalized__doc__,
 "is_finalized($module, obj, /)\n"
 "--\n"
 "\n"
@@ -515,7 +515,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(gc_freeze__doc__,
+TyDoc_STRVAR(gc_freeze__doc__,
 "freeze($module, /)\n"
 "--\n"
 "\n"
@@ -537,7 +537,7 @@ gc_freeze(TyObject *module, TyObject *Py_UNUSED(ignored))
     return gc_freeze_impl(module);
 }
 
-PyDoc_STRVAR(gc_unfreeze__doc__,
+TyDoc_STRVAR(gc_unfreeze__doc__,
 "unfreeze($module, /)\n"
 "--\n"
 "\n"
@@ -557,7 +557,7 @@ gc_unfreeze(TyObject *module, TyObject *Py_UNUSED(ignored))
     return gc_unfreeze_impl(module);
 }
 
-PyDoc_STRVAR(gc_get_freeze_count__doc__,
+TyDoc_STRVAR(gc_get_freeze_count__doc__,
 "get_freeze_count($module, /)\n"
 "--\n"
 "\n"

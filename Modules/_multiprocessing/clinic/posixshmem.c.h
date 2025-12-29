@@ -4,7 +4,7 @@ preserve
 
 #if defined(HAVE_SHM_OPEN)
 
-PyDoc_STRVAR(_posixshmem_shm_open__doc__,
+TyDoc_STRVAR(_posixshmem_shm_open__doc__,
 "shm_open($module, /, path, flags, mode=511)\n"
 "--\n"
 "\n"
@@ -44,7 +44,7 @@ exit:
 
 #if defined(HAVE_SHM_UNLINK)
 
-PyDoc_STRVAR(_posixshmem_shm_unlink__doc__,
+TyDoc_STRVAR(_posixshmem_shm_unlink__doc__,
 "shm_unlink($module, path, /)\n"
 "--\n"
 "\n"

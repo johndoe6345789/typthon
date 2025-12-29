@@ -86,7 +86,7 @@ PyAPI_FUNC(TyObject*) _Ty_GetSpecializationStats(void);
 
 #define RARE_EVENT_INC(name) \
     do { \
-        PyInterpreterState *interp = TyInterpreterState_Get(); \
+        TyInterpreterState *interp = TyInterpreterState_Get(); \
         RARE_EVENT_INTERP_INC(interp, name); \
     } while (0); \
 

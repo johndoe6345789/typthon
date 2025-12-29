@@ -209,7 +209,7 @@ static TyMemberDef ste_memberlist[] = {
 };
 
 TyTypeObject PySTEntry_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "symtable entry",
     sizeof(PySTEntryObject),
     0,

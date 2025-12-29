@@ -1259,7 +1259,7 @@ static struct TyMethodDef binascii_module_methods[] = {
 
 
 /* Initialization function for the module (*must* be called PyInit_binascii) */
-PyDoc_STRVAR(doc_binascii, "Conversion between binary data and ASCII");
+TyDoc_STRVAR(doc_binascii, "Conversion between binary data and ASCII");
 
 static int
 binascii_exec(TyObject *module)

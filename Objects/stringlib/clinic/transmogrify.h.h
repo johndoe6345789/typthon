@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(stringlib_expandtabs__doc__,
+TyDoc_STRVAR(stringlib_expandtabs__doc__,
 "expandtabs($self, /, tabsize=8)\n"
 "--\n"
 "\n"
@@ -36,7 +36,7 @@ stringlib_expandtabs(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(tabsize), },
     };
@@ -77,7 +77,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(stringlib_ljust__doc__,
+TyDoc_STRVAR(stringlib_ljust__doc__,
 "ljust($self, width, fillchar=b\' \', /)\n"
 "--\n"
 "\n"
@@ -147,7 +147,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(stringlib_rjust__doc__,
+TyDoc_STRVAR(stringlib_rjust__doc__,
 "rjust($self, width, fillchar=b\' \', /)\n"
 "--\n"
 "\n"
@@ -217,7 +217,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(stringlib_center__doc__,
+TyDoc_STRVAR(stringlib_center__doc__,
 "center($self, width, fillchar=b\' \', /)\n"
 "--\n"
 "\n"
@@ -287,7 +287,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(stringlib_zfill__doc__,
+TyDoc_STRVAR(stringlib_zfill__doc__,
 "zfill($self, width, /)\n"
 "--\n"
 "\n"

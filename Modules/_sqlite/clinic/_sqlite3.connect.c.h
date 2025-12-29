@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(pysqlite_connect__doc__,
+TyDoc_STRVAR(pysqlite_connect__doc__,
 "connect($module, /, database, timeout=5.0, detect_types=0,\n"
 "        isolation_level=\'\', check_same_thread=True,\n"
 "        factory=ConnectionType, cached_statements=128, uri=False, *,\n"

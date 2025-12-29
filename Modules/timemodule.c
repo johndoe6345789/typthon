@@ -71,7 +71,7 @@ module time
 
 
 /* Forward declarations */
-static int pysleep(PyTime_t timeout);
+static int pysleep(TyTime_t timeout);
 
 
 typedef struct {
@@ -97,7 +97,7 @@ get_time_state(TyObject *module)
 
 
 static TyObject*
-_TyFloat_FromPyTime(PyTime_t t)
+_TyFloat_FromPyTime(TyTime_t t)
 {
     double d = PyTime_AsSecondsDouble(t);
     return TyFloat_FromDouble(d);
@@ -107,7 +107,7 @@ _TyFloat_FromPyTime(PyTime_t t)
 static TyObject *
 time_time(TyObject *self, TyObject *unused)
 {
-    PyTime_t t;
+    TyTime_t t;
     if (PyTime_Time(&t) < 0) {
         return NULL;
     }
@@ -115,7 +115,7 @@ time_time(TyObject *self, TyObject *unused)
 }
 
 
-PyDoc_STRVAR(time_doc,
+TyDoc_STRVAR(time_doc,
 "time() -> floating-point number\n\
 \n\
 Return the current time in seconds since the Epoch.\n\
@@ -124,14 +124,14 @@ Fractions of a second may be present if the system clock provides them.");
 static TyObject *
 time_time_ns(TyObject *self, TyObject *unused)
 {
-    PyTime_t t;
+    TyTime_t t;
     if (PyTime_Time(&t) < 0) {
         return NULL;
     }
     return _TyTime_AsLong(t);
 }
 
-PyDoc_STRVAR(time_ns_doc,
+TyDoc_STRVAR(time_ns_doc,
 "time_ns() -> int\n\
 \n\
 Return the current time in nanoseconds since the Epoch.");
@@ -147,7 +147,7 @@ Return the current time in nanoseconds since the Epoch.");
 #endif
 
 static int
-py_clock(time_module_state *state, PyTime_t *tp, _Ty_clock_info_t *info)
+py_clock(time_module_state *state, TyTime_t *tp, _Ty_clock_info_t *info)
 {
     _PyTimeFraction *base = &state->clock_base;
 
@@ -257,7 +257,7 @@ time_clock_gettime_ns_impl(TyObject *module, clockid_t clk_id)
         return NULL;
     }
 
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_FromTimespec(&t, &ts) < 0) {
         return NULL;
     }
@@ -271,7 +271,7 @@ time_clock_settime(TyObject *self, TyObject *args)
 {
     int clk_id;
     TyObject *obj;
-    PyTime_t t;
+    TyTime_t t;
     struct timespec tp;
     int ret;
 
@@ -292,7 +292,7 @@ time_clock_settime(TyObject *self, TyObject *args)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(clock_settime_doc,
+TyDoc_STRVAR(clock_settime_doc,
 "clock_settime(clk_id, time)\n\
 \n\
 Set the time of the specified clock clk_id.");
@@ -302,7 +302,7 @@ time_clock_settime_ns(TyObject *self, TyObject *args)
 {
     int clk_id;
     TyObject *obj;
-    PyTime_t t;
+    TyTime_t t;
     struct timespec ts;
     int ret;
 
@@ -325,7 +325,7 @@ time_clock_settime_ns(TyObject *self, TyObject *args)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(clock_settime_ns_doc,
+TyDoc_STRVAR(clock_settime_ns_doc,
 "clock_settime_ns(clk_id, time)\n\
 \n\
 Set the time of the specified clock clk_id with nanoseconds.");
@@ -351,7 +351,7 @@ time_clock_getres(TyObject *self, TyObject *args)
     return TyFloat_FromDouble(tp.tv_sec + tp.tv_nsec * 1e-9);
 }
 
-PyDoc_STRVAR(clock_getres_doc,
+TyDoc_STRVAR(clock_getres_doc,
 "clock_getres(clk_id) -> floating-point number\n\
 \n\
 Return the resolution (precision) of the specified clock clk_id.");
@@ -384,7 +384,7 @@ time_pthread_getcpuclockid(TyObject *self, TyObject *args)
     return TyLong_FromLong(clk_id);
 }
 
-PyDoc_STRVAR(pthread_getcpuclockid_doc,
+TyDoc_STRVAR(pthread_getcpuclockid_doc,
 "pthread_getcpuclockid(thread_id) -> int\n\
 \n\
 Return the clk_id of a thread's CPU time clock.");
@@ -397,7 +397,7 @@ time_sleep(TyObject *self, TyObject *timeout_obj)
         return NULL;
     }
 
-    PyTime_t timeout;
+    TyTime_t timeout;
     if (_TyTime_FromSecondsObject(&timeout, timeout_obj, _TyTime_ROUND_TIMEOUT))
         return NULL;
     if (timeout < 0) {
@@ -411,13 +411,13 @@ time_sleep(TyObject *self, TyObject *timeout_obj)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(sleep_doc,
+TyDoc_STRVAR(sleep_doc,
 "sleep(seconds)\n\
 \n\
 Delay execution for a given number of seconds.  The argument may be\n\
 a floating-point number for subsecond precision.");
 
-static PyStructSequence_Field struct_time_type_fields[] = {
+static TyStructSequence_Field struct_time_type_fields[] = {
     {"tm_year", "year, for example, 1993"},
     {"tm_mon", "month of year, range [1, 12]"},
     {"tm_mday", "day of month, range [1, 31]"},
@@ -432,7 +432,7 @@ static PyStructSequence_Field struct_time_type_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc struct_time_type_desc = {
+static TyStructSequence_Desc struct_time_type_desc = {
     "time.struct_time",
     "The time value as returned by gmtime(), localtime(), and strptime(), and\n"
     " accepted by asctime(), mktime() and strftime().  May be considered as a\n"
@@ -460,7 +460,7 @@ tmtotuple(time_module_state *state, struct tm *p
 #endif
 )
 {
-    TyObject *v = PyStructSequence_New(state->struct_time_type);
+    TyObject *v = TyStructSequence_New(state->struct_time_type);
     if (v == NULL)
         return NULL;
 
@@ -471,7 +471,7 @@ tmtotuple(time_module_state *state, struct tm *p
             Ty_DECREF(v);                           \
             return NULL;                            \
         }                                           \
-        PyStructSequence_SET_ITEM(v, (INDEX), obj); \
+        TyStructSequence_SET_ITEM(v, (INDEX), obj); \
     } while (0)
 
 #define SET(INDEX, VAL) \
@@ -557,7 +557,7 @@ timegm(struct tm *p)
 }
 #endif
 
-PyDoc_STRVAR(gmtime_doc,
+TyDoc_STRVAR(gmtime_doc,
 "gmtime([seconds]) -> (tm_year, tm_mon, tm_mday, tm_hour, tm_min,\n\
                        tm_sec, tm_wday, tm_yday, tm_isdst)\n\
 \n\
@@ -597,7 +597,7 @@ time_localtime(TyObject *module, TyObject *args)
 static const char *utc_string = NULL;
 #endif
 
-PyDoc_STRVAR(localtime_doc,
+TyDoc_STRVAR(localtime_doc,
 "localtime([seconds]) -> (tm_year,tm_mon,tm_mday,tm_hour,tm_min,\n\
                           tm_sec,tm_wday,tm_yday,tm_isdst)\n\
 \n\
@@ -639,7 +639,7 @@ gettmarg(time_module_state *state, TyObject *args,
 #ifdef HAVE_STRUCT_TM_TM_ZONE
     if (Ty_IS_TYPE(args, state->struct_time_type)) {
         TyObject *item;
-        item = PyStructSequence_GET_ITEM(args, 9);
+        item = TyStructSequence_GET_ITEM(args, 9);
         if (item != Ty_None) {
             p->tm_zone = (char *)TyUnicode_AsUTF8(item);
             if (p->tm_zone == NULL) {
@@ -660,7 +660,7 @@ gettmarg(time_module_state *state, TyObject *args,
             }
 #endif
         }
-        item = PyStructSequence_GET_ITEM(args, 10);
+        item = TyStructSequence_GET_ITEM(args, 10);
         if (item != Ty_None) {
             p->tm_gmtoff = TyLong_AsLong(item);
             if (TyErr_Occurred())
@@ -967,7 +967,7 @@ error:
 
 #undef time_char
 #undef format_time
-PyDoc_STRVAR(strftime_doc,
+TyDoc_STRVAR(strftime_doc,
 "strftime(format[, tuple]) -> string\n\
 \n\
 Convert a time tuple to a string according to a format specification.\n\
@@ -992,7 +992,7 @@ time_strptime(TyObject *self, TyObject *args)
 }
 
 
-PyDoc_STRVAR(strptime_doc,
+TyDoc_STRVAR(strptime_doc,
 "strptime(string, format) -> struct_time\n\
 \n\
 Parse a string to a time tuple according to a format specification.\n\
@@ -1045,7 +1045,7 @@ time_asctime(TyObject *module, TyObject *args)
     return _asctime(&buf);
 }
 
-PyDoc_STRVAR(asctime_doc,
+TyDoc_STRVAR(asctime_doc,
 "asctime([tuple]) -> string\n\
 \n\
 Convert a time tuple to a string, e.g. 'Sat Jun 06 16:26:11 1998'.\n\
@@ -1064,7 +1064,7 @@ time_ctime(TyObject *self, TyObject *args)
     return _asctime(&buf);
 }
 
-PyDoc_STRVAR(ctime_doc,
+TyDoc_STRVAR(ctime_doc,
 "ctime(seconds) -> string\n\
 \n\
 Convert a time in seconds since the Epoch to a string in local time.\n\
@@ -1142,7 +1142,7 @@ time_mktime(TyObject *module, TyObject *tm_tuple)
     return TyFloat_FromDouble((double)tt);
 }
 
-PyDoc_STRVAR(mktime_doc,
+TyDoc_STRVAR(mktime_doc,
 "mktime(tuple) -> floating-point number\n\
 \n\
 Convert a time tuple in local time to seconds since the Epoch.\n\
@@ -1179,7 +1179,7 @@ time_tzset(TyObject *self, TyObject *unused)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(tzset_doc,
+TyDoc_STRVAR(tzset_doc,
 "tzset()\n\
 \n\
 Initialize, or reinitialize, the local timezone to the value stored in\n\
@@ -1197,14 +1197,14 @@ should not be relied on.");
 static TyObject *
 time_monotonic(TyObject *self, TyObject *unused)
 {
-    PyTime_t t;
+    TyTime_t t;
     if (PyTime_Monotonic(&t) < 0) {
         return NULL;
     }
     return _TyFloat_FromPyTime(t);
 }
 
-PyDoc_STRVAR(monotonic_doc,
+TyDoc_STRVAR(monotonic_doc,
 "monotonic() -> float\n\
 \n\
 Monotonic clock, cannot go backward.");
@@ -1212,14 +1212,14 @@ Monotonic clock, cannot go backward.");
 static TyObject *
 time_monotonic_ns(TyObject *self, TyObject *unused)
 {
-    PyTime_t t;
+    TyTime_t t;
     if (PyTime_Monotonic(&t) < 0) {
         return NULL;
     }
     return _TyTime_AsLong(t);
 }
 
-PyDoc_STRVAR(monotonic_ns_doc,
+TyDoc_STRVAR(monotonic_ns_doc,
 "monotonic_ns() -> int\n\
 \n\
 Monotonic clock, cannot go backward, as nanoseconds.");
@@ -1228,14 +1228,14 @@ Monotonic clock, cannot go backward, as nanoseconds.");
 static TyObject *
 time_perf_counter(TyObject *self, TyObject *unused)
 {
-    PyTime_t t;
+    TyTime_t t;
     if (PyTime_PerfCounter(&t) < 0) {
         return NULL;
     }
     return _TyFloat_FromPyTime(t);
 }
 
-PyDoc_STRVAR(perf_counter_doc,
+TyDoc_STRVAR(perf_counter_doc,
 "perf_counter() -> float\n\
 \n\
 Performance counter for benchmarking.");
@@ -1244,14 +1244,14 @@ Performance counter for benchmarking.");
 static TyObject *
 time_perf_counter_ns(TyObject *self, TyObject *unused)
 {
-    PyTime_t t;
+    TyTime_t t;
     if (PyTime_PerfCounter(&t) < 0) {
         return NULL;
     }
     return _TyTime_AsLong(t);
 }
 
-PyDoc_STRVAR(perf_counter_ns_doc,
+TyDoc_STRVAR(perf_counter_ns_doc,
 "perf_counter_ns() -> int\n\
 \n\
 Performance counter for benchmarking as nanoseconds.");
@@ -1260,7 +1260,7 @@ Performance counter for benchmarking as nanoseconds.");
 // gh-115714: Don't use times() on WASI.
 #if defined(HAVE_TIMES) && !defined(__wasi__)
 static int
-process_time_times(time_module_state *state, PyTime_t *tp,
+process_time_times(time_module_state *state, TyTime_t *tp,
                    _Ty_clock_info_t *info)
 {
     _PyTimeFraction *base = &state->times_base;
@@ -1277,7 +1277,7 @@ process_time_times(time_module_state *state, PyTime_t *tp,
         info->adjustable = 0;
     }
 
-    PyTime_t ns;
+    TyTime_t ns;
     ns = _PyTimeFraction_Mul(process.tms_utime, base);
     ns += _PyTimeFraction_Mul(process.tms_stime, base);
     *tp = ns;
@@ -1287,14 +1287,14 @@ process_time_times(time_module_state *state, PyTime_t *tp,
 
 
 static int
-py_process_time(time_module_state *state, PyTime_t *tp,
+py_process_time(time_module_state *state, TyTime_t *tp,
                 _Ty_clock_info_t *info)
 {
 #if defined(MS_WINDOWS)
     HANDLE process;
     FILETIME creation_time, exit_time, kernel_time, user_time;
     ULARGE_INTEGER large;
-    PyTime_t ktime, utime;
+    TyTime_t ktime, utime;
     BOOL ok;
 
     process = GetCurrentProcess();
@@ -1373,7 +1373,7 @@ py_process_time(time_module_state *state, PyTime_t *tp,
     struct rusage ru;
 
     if (getrusage(RUSAGE_SELF, &ru) == 0) {
-        PyTime_t utime, stime;
+        TyTime_t utime, stime;
 
         if (info) {
             info->implementation = "getrusage(RUSAGE_SELF)";
@@ -1389,7 +1389,7 @@ py_process_time(time_module_state *state, PyTime_t *tp,
             return -1;
         }
 
-        PyTime_t total = utime + stime;
+        TyTime_t total = utime + stime;
         *tp = total;
         return 0;
     }
@@ -1417,14 +1417,14 @@ static TyObject *
 time_process_time(TyObject *module, TyObject *unused)
 {
     time_module_state *state = get_time_state(module);
-    PyTime_t t;
+    TyTime_t t;
     if (py_process_time(state, &t, NULL) < 0) {
         return NULL;
     }
     return _TyFloat_FromPyTime(t);
 }
 
-PyDoc_STRVAR(process_time_doc,
+TyDoc_STRVAR(process_time_doc,
 "process_time() -> float\n\
 \n\
 Process time for profiling: sum of the kernel and user-space CPU time.");
@@ -1433,14 +1433,14 @@ static TyObject *
 time_process_time_ns(TyObject *module, TyObject *unused)
 {
     time_module_state *state = get_time_state(module);
-    PyTime_t t;
+    TyTime_t t;
     if (py_process_time(state, &t, NULL) < 0) {
         return NULL;
     }
     return _TyTime_AsLong(t);
 }
 
-PyDoc_STRVAR(process_time_ns_doc,
+TyDoc_STRVAR(process_time_ns_doc,
 "process_time() -> int\n\
 \n\
 Process time for profiling as nanoseconds:\n\
@@ -1450,12 +1450,12 @@ sum of the kernel and user-space CPU time.");
 #if defined(MS_WINDOWS)
 #define HAVE_THREAD_TIME
 static int
-_TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
+_TyTime_GetThreadTimeWithInfo(TyTime_t *tp, _Ty_clock_info_t *info)
 {
     HANDLE thread;
     FILETIME creation_time, exit_time, kernel_time, user_time;
     ULARGE_INTEGER large;
-    PyTime_t ktime, utime;
+    TyTime_t ktime, utime;
     BOOL ok;
 
     thread =  GetCurrentThread();
@@ -1489,7 +1489,7 @@ _TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
 #elif defined(_AIX)
 #define HAVE_THREAD_TIME
 static int
-_TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
+_TyTime_GetThreadTimeWithInfo(TyTime_t *tp, _Ty_clock_info_t *info)
 {
     /* bpo-40192: On AIX, thread_cputime() is preferred: it has nanosecond
        resolution, whereas clock_gettime(CLOCK_THREAD_CPUTIME_ID)
@@ -1513,7 +1513,7 @@ _TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
 #elif defined(__sun) && defined(__SVR4)
 #define HAVE_THREAD_TIME
 static int
-_TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
+_TyTime_GetThreadTimeWithInfo(TyTime_t *tp, _Ty_clock_info_t *info)
 {
     /* bpo-35455: On Solaris, CLOCK_THREAD_CPUTIME_ID clock is not always
        available; use gethrvtime() to substitute this functionality. */
@@ -1541,7 +1541,7 @@ _TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
 
 #if defined(__APPLE__) && _Ty__has_attribute(availability)
 static int
-_TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
+_TyTime_GetThreadTimeWithInfo(TyTime_t *tp, _Ty_clock_info_t *info)
      __attribute__((availability(macos, introduced=10.12)))
      __attribute__((availability(ios, introduced=10.0)))
      __attribute__((availability(tvos, introduced=10.0)))
@@ -1549,7 +1549,7 @@ _TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
 #endif
 
 static int
-_TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
+_TyTime_GetThreadTimeWithInfo(TyTime_t *tp, _Ty_clock_info_t *info)
 {
     struct timespec ts;
     const clockid_t clk_id = CLOCK_THREAD_CPUTIME_ID;
@@ -1591,14 +1591,14 @@ _TyTime_GetThreadTimeWithInfo(PyTime_t *tp, _Ty_clock_info_t *info)
 static TyObject *
 time_thread_time(TyObject *self, TyObject *unused)
 {
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_GetThreadTimeWithInfo(&t, NULL) < 0) {
         return NULL;
     }
     return _TyFloat_FromPyTime(t);
 }
 
-PyDoc_STRVAR(thread_time_doc,
+TyDoc_STRVAR(thread_time_doc,
 "thread_time() -> float\n\
 \n\
 Thread time for profiling: sum of the kernel and user-space CPU time.");
@@ -1606,14 +1606,14 @@ Thread time for profiling: sum of the kernel and user-space CPU time.");
 static TyObject *
 time_thread_time_ns(TyObject *self, TyObject *unused)
 {
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_GetThreadTimeWithInfo(&t, NULL) < 0) {
         return NULL;
     }
     return _TyTime_AsLong(t);
 }
 
-PyDoc_STRVAR(thread_time_ns_doc,
+TyDoc_STRVAR(thread_time_ns_doc,
 "thread_time() -> int\n\
 \n\
 Thread time for profiling as nanoseconds:\n\
@@ -1632,7 +1632,7 @@ time_get_clock_info(TyObject *module, TyObject *args)
     char *name;
     _Ty_clock_info_t info;
     TyObject *obj = NULL, *dict, *ns;
-    PyTime_t t;
+    TyTime_t t;
 
     if (!TyArg_ParseTuple(args, "s:get_clock_info", &name)) {
         return NULL;
@@ -1749,7 +1749,7 @@ error:
     return NULL;
 }
 
-PyDoc_STRVAR(get_clock_info_doc,
+TyDoc_STRVAR(get_clock_info_doc,
 "get_clock_info(name: str) -> dict\n\
 \n\
 Get information of the specified clock.");
@@ -1948,7 +1948,7 @@ static TyMethodDef time_methods[] = {
 };
 
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module provides various functions to manipulate time values.\n\
 \n\
 There are two standard representations of time.  One is the number\n\
@@ -2099,7 +2099,7 @@ time_exec(TyObject *module)
     }
 
     // struct_time type
-    state->struct_time_type = PyStructSequence_NewType(&struct_time_type_desc);
+    state->struct_time_type = TyStructSequence_NewType(&struct_time_type_desc);
     if (state->struct_time_type == NULL) {
         return -1;
     }
@@ -2213,7 +2213,7 @@ PyInit_time(void)
 // On error, raise an exception and return -1.
 // On success, return 0.
 static int
-pysleep(PyTime_t timeout)
+pysleep(TyTime_t timeout)
 {
     assert(timeout >= 0);
 
@@ -2225,7 +2225,7 @@ pysleep(PyTime_t timeout)
 #else
     struct timeval timeout_tv;
 #endif
-    PyTime_t deadline, monotonic;
+    TyTime_t deadline, monotonic;
     int err = 0;
 
     if (PyTime_Monotonic(&monotonic) < 0) {
@@ -2294,7 +2294,7 @@ pysleep(PyTime_t timeout)
 
     return 0;
 #else  // MS_WINDOWS
-    PyTime_t timeout_100ns = _TyTime_As100Nanoseconds(timeout,
+    TyTime_t timeout_100ns = _TyTime_As100Nanoseconds(timeout,
                                                        _TyTime_ROUND_CEILING);
 
     // Maintain Windows Sleep() semantics for time.sleep(0)

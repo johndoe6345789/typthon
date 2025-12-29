@@ -54,23 +54,23 @@ extern "C" {
 extern int _Ty_IsMainThread(void);
 
 // Export for '_testinternalcapi' shared extension
-PyAPI_FUNC(PyInterpreterState*) _TyInterpreterState_Main(void);
+PyAPI_FUNC(TyInterpreterState*) _TyInterpreterState_Main(void);
 
 static inline int
-_Ty_IsMainInterpreter(PyInterpreterState *interp)
+_Ty_IsMainInterpreter(TyInterpreterState *interp)
 {
     return (interp == _TyInterpreterState_Main());
 }
 
-extern int _Ty_IsMainInterpreterFinalizing(PyInterpreterState *interp);
+extern int _Ty_IsMainInterpreterFinalizing(TyInterpreterState *interp);
 
 // Export for _interpreters module.
-PyAPI_FUNC(TyObject *) _TyInterpreterState_GetIDObject(PyInterpreterState *);
+PyAPI_FUNC(TyObject *) _TyInterpreterState_GetIDObject(TyInterpreterState *);
 
 // Export for _interpreters module.
-PyAPI_FUNC(int) _TyInterpreterState_SetRunningMain(PyInterpreterState *);
-PyAPI_FUNC(void) _TyInterpreterState_SetNotRunningMain(PyInterpreterState *);
-PyAPI_FUNC(int) _TyInterpreterState_IsRunningMain(PyInterpreterState *);
+PyAPI_FUNC(int) _TyInterpreterState_SetRunningMain(TyInterpreterState *);
+PyAPI_FUNC(void) _TyInterpreterState_SetNotRunningMain(TyInterpreterState *);
+PyAPI_FUNC(int) _TyInterpreterState_IsRunningMain(TyInterpreterState *);
 PyAPI_FUNC(void) _TyErr_SetInterpreterAlreadyRunning(void);
 
 extern int _TyThreadState_IsRunningMain(TyThreadState *);
@@ -80,7 +80,7 @@ extern const PyConfig* _Ty_GetMainConfig(void);
 
 /* Only handle signals on the main thread of the main interpreter. */
 static inline int
-_Ty_ThreadCanHandleSignals(PyInterpreterState *interp)
+_Ty_ThreadCanHandleSignals(TyInterpreterState *interp)
 {
     return (_Ty_IsMainThread() && _Ty_IsMainInterpreter(interp));
 }
@@ -167,8 +167,8 @@ extern void _TyEval_StartTheWorldAll(_PyRuntimeState *runtime);
 // Perform a stop-the-world pause for threads in the specified interpreter.
 //
 // NOTE: This is a no-op outside of Ty_GIL_DISABLED builds.
-extern PyAPI_FUNC(void) _TyEval_StopTheWorld(PyInterpreterState *interp);
-extern PyAPI_FUNC(void) _TyEval_StartTheWorld(PyInterpreterState *interp);
+extern PyAPI_FUNC(void) _TyEval_StopTheWorld(TyInterpreterState *interp);
+extern PyAPI_FUNC(void) _TyEval_StartTheWorld(TyInterpreterState *interp);
 
 
 static inline void
@@ -203,7 +203,7 @@ _Ty_EnsureFuncTstateNotNULL(const char *func, TyThreadState *tstate)
 
    See also TyInterpreterState_Get()
    and _TyGILState_GetInterpreterStateUnsafe(). */
-static inline PyInterpreterState* _TyInterpreterState_GET(void) {
+static inline TyInterpreterState* _TyInterpreterState_GET(void) {
     TyThreadState *tstate = _TyThreadState_GET();
 #ifdef Ty_DEBUG
     _Ty_EnsureTstateNotNULL(tstate);
@@ -216,11 +216,11 @@ static inline PyInterpreterState* _TyInterpreterState_GET(void) {
 
 // Export for _testinternalcapi
 PyAPI_FUNC(TyThreadState *) _TyThreadState_New(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     int whence);
 extern void _TyThreadState_Bind(TyThreadState *tstate);
 PyAPI_FUNC(TyThreadState *) _TyThreadState_NewBound(
-    PyInterpreterState *interp,
+    TyInterpreterState *interp,
     int whence);
 extern TyThreadState * _TyThreadState_RemoveExcept(TyThreadState *tstate);
 extern void _TyThreadState_DeleteList(TyThreadState *list, int is_after_fork);
@@ -276,14 +276,14 @@ extern int _TyOS_InterruptOccurred(TyThreadState *tstate);
 // Export for test_peg_generator.
 PyAPI_FUNC(const PyConfig*) _Ty_GetConfig(void);
 
-// Get the single PyInterpreterState used by this process' GILState
+// Get the single TyInterpreterState used by this process' GILState
 // implementation.
 //
 // This function doesn't check for error. Return NULL before _TyGILState_Init()
 // is called and after _TyGILState_Fini() is called.
 //
 // See also TyInterpreterState_Get() and _TyInterpreterState_GET().
-extern PyInterpreterState* _TyGILState_GetInterpreterStateUnsafe(void);
+extern TyInterpreterState* _TyGILState_GetInterpreterStateUnsafe(void);
 
 extern TyObject * _Ty_GetMainModule(TyThreadState *);
 extern int _Ty_CheckMainModule(TyObject *module);

@@ -11,7 +11,7 @@ preserve
 #include "pycore_runtime.h"       // _Ty_ID()
 #include "pycore_tuple.h"         // _TyTuple_FromArray()
 
-PyDoc_STRVAR(depr_star_new__doc__,
+TyDoc_STRVAR(depr_star_new__doc__,
 "DeprStarNew(a=None)\n"
 "--\n"
 "\n"
@@ -49,7 +49,7 @@ depr_star_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -98,7 +98,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_new_clone__doc__,
+TyDoc_STRVAR(depr_star_new_clone__doc__,
 "cloned($self, /, a=None)\n"
 "--\n"
 "\n"
@@ -137,7 +137,7 @@ depr_star_new_clone(TyObject *type, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -184,7 +184,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_init__doc__,
+TyDoc_STRVAR(depr_star_init__doc__,
 "DeprStarInit(a=None)\n"
 "--\n"
 "\n"
@@ -222,7 +222,7 @@ depr_star_init(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -271,7 +271,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_init_clone__doc__,
+TyDoc_STRVAR(depr_star_init_clone__doc__,
 "cloned($self, /, a=None)\n"
 "--\n"
 "\n"
@@ -310,7 +310,7 @@ depr_star_init_clone(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -385,7 +385,7 @@ depr_star_init_noinline(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -429,7 +429,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_new__doc__,
+TyDoc_STRVAR(depr_kwd_new__doc__,
 "DeprKwdNew(a=None)\n"
 "--\n"
 "\n"
@@ -466,7 +466,7 @@ depr_kwd_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -515,7 +515,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_init__doc__,
+TyDoc_STRVAR(depr_kwd_init__doc__,
 "DeprKwdInit(a=None)\n"
 "--\n"
 "\n"
@@ -552,7 +552,7 @@ depr_kwd_init(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -629,7 +629,7 @@ depr_kwd_init_noinline(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -676,7 +676,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_pos0_len1__doc__,
+TyDoc_STRVAR(depr_star_pos0_len1__doc__,
 "depr_star_pos0_len1($module, /, a)\n"
 "--\n"
 "\n"
@@ -715,7 +715,7 @@ depr_star_pos0_len1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), },
     };
@@ -757,7 +757,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_pos0_len2__doc__,
+TyDoc_STRVAR(depr_star_pos0_len2__doc__,
 "depr_star_pos0_len2($module, /, a, b)\n"
 "--\n"
 "\n"
@@ -796,7 +796,7 @@ depr_star_pos0_len2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
@@ -840,7 +840,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_pos0_len3_with_kwd__doc__,
+TyDoc_STRVAR(depr_star_pos0_len3_with_kwd__doc__,
 "depr_star_pos0_len3_with_kwd($module, /, a, b, c, *, d)\n"
 "--\n"
 "\n"
@@ -880,7 +880,7 @@ depr_star_pos0_len3_with_kwd(TyObject *module, TyObject *const *args, Ty_ssize_t
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -928,7 +928,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_pos1_len1_opt__doc__,
+TyDoc_STRVAR(depr_star_pos1_len1_opt__doc__,
 "depr_star_pos1_len1_opt($module, /, a, b=None)\n"
 "--\n"
 "\n"
@@ -967,7 +967,7 @@ depr_star_pos1_len1_opt(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
@@ -1016,7 +1016,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_pos1_len1__doc__,
+TyDoc_STRVAR(depr_star_pos1_len1__doc__,
 "depr_star_pos1_len1($module, /, a, b)\n"
 "--\n"
 "\n"
@@ -1055,7 +1055,7 @@ depr_star_pos1_len1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), },
     };
@@ -1099,7 +1099,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_pos1_len2_with_kwd__doc__,
+TyDoc_STRVAR(depr_star_pos1_len2_with_kwd__doc__,
 "depr_star_pos1_len2_with_kwd($module, /, a, b, c, *, d)\n"
 "--\n"
 "\n"
@@ -1139,7 +1139,7 @@ depr_star_pos1_len2_with_kwd(TyObject *module, TyObject *const *args, Ty_ssize_t
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -1187,7 +1187,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_pos2_len1__doc__,
+TyDoc_STRVAR(depr_star_pos2_len1__doc__,
 "depr_star_pos2_len1($module, /, a, b, c)\n"
 "--\n"
 "\n"
@@ -1227,7 +1227,7 @@ depr_star_pos2_len1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -1273,7 +1273,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_pos2_len2__doc__,
+TyDoc_STRVAR(depr_star_pos2_len2__doc__,
 "depr_star_pos2_len2($module, /, a, b, c, d)\n"
 "--\n"
 "\n"
@@ -1313,7 +1313,7 @@ depr_star_pos2_len2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -1361,7 +1361,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_pos2_len2_with_kwd__doc__,
+TyDoc_STRVAR(depr_star_pos2_len2_with_kwd__doc__,
 "depr_star_pos2_len2_with_kwd($module, /, a, b, c, d, *, e)\n"
 "--\n"
 "\n"
@@ -1401,7 +1401,7 @@ depr_star_pos2_len2_with_kwd(TyObject *module, TyObject *const *args, Ty_ssize_t
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), },
     };
@@ -1451,7 +1451,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_noinline__doc__,
+TyDoc_STRVAR(depr_star_noinline__doc__,
 "depr_star_noinline($module, /, a, b, c=None, *, d=\'\')\n"
 "--\n"
 "\n"
@@ -1491,7 +1491,7 @@ depr_star_noinline(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -1534,7 +1534,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_star_multi__doc__,
+TyDoc_STRVAR(depr_star_multi__doc__,
 "depr_star_multi($module, /, a, b, c, d, e, f, g, *, h)\n"
 "--\n"
 "\n"
@@ -1577,7 +1577,7 @@ depr_star_multi(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), _Ty_LATIN1_CHR('f'), _Ty_LATIN1_CHR('g'), _Ty_LATIN1_CHR('h'), },
     };
@@ -1635,7 +1635,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_required_1__doc__,
+TyDoc_STRVAR(depr_kwd_required_1__doc__,
 "depr_kwd_required_1($module, a, /, b)\n"
 "--\n"
 "\n"
@@ -1673,7 +1673,7 @@ depr_kwd_required_1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
@@ -1717,7 +1717,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_required_2__doc__,
+TyDoc_STRVAR(depr_kwd_required_2__doc__,
 "depr_kwd_required_2($module, a, /, b, c)\n"
 "--\n"
 "\n"
@@ -1757,7 +1757,7 @@ depr_kwd_required_2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -1803,7 +1803,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_optional_1__doc__,
+TyDoc_STRVAR(depr_kwd_optional_1__doc__,
 "depr_kwd_optional_1($module, a, /, b=None)\n"
 "--\n"
 "\n"
@@ -1841,7 +1841,7 @@ depr_kwd_optional_1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), },
     };
@@ -1890,7 +1890,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_optional_2__doc__,
+TyDoc_STRVAR(depr_kwd_optional_2__doc__,
 "depr_kwd_optional_2($module, a, /, b=None, c=None)\n"
 "--\n"
 "\n"
@@ -1930,7 +1930,7 @@ depr_kwd_optional_2(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -1986,7 +1986,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_optional_3__doc__,
+TyDoc_STRVAR(depr_kwd_optional_3__doc__,
 "depr_kwd_optional_3($module, /, a=None, b=None, c=None)\n"
 "--\n"
 "\n"
@@ -2026,7 +2026,7 @@ depr_kwd_optional_3(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -2087,7 +2087,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_required_optional__doc__,
+TyDoc_STRVAR(depr_kwd_required_optional__doc__,
 "depr_kwd_required_optional($module, a, /, b, c=None)\n"
 "--\n"
 "\n"
@@ -2127,7 +2127,7 @@ depr_kwd_required_optional(TyObject *module, TyObject *const *args, Ty_ssize_t n
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), },
     };
@@ -2178,7 +2178,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_noinline__doc__,
+TyDoc_STRVAR(depr_kwd_noinline__doc__,
 "depr_kwd_noinline($module, a, /, b, c=None, d=\'\')\n"
 "--\n"
 "\n"
@@ -2218,7 +2218,7 @@ depr_kwd_noinline(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), },
     };
@@ -2264,7 +2264,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_kwd_multi__doc__,
+TyDoc_STRVAR(depr_kwd_multi__doc__,
 "depr_kwd_multi($module, a, /, b, c, d, e, f, g, h)\n"
 "--\n"
 "\n"
@@ -2307,7 +2307,7 @@ depr_kwd_multi(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), _Ty_LATIN1_CHR('f'), _Ty_LATIN1_CHR('g'), _Ty_LATIN1_CHR('h'), },
     };
@@ -2365,7 +2365,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(depr_multi__doc__,
+TyDoc_STRVAR(depr_multi__doc__,
 "depr_multi($module, a, /, b, c, d, e, f, *, g)\n"
 "--\n"
 "\n"
@@ -2411,7 +2411,7 @@ depr_multi(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('b'), _Ty_LATIN1_CHR('c'), _Ty_LATIN1_CHR('d'), _Ty_LATIN1_CHR('e'), _Ty_LATIN1_CHR('f'), _Ty_LATIN1_CHR('g'), },
     };

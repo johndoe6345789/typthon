@@ -87,8 +87,8 @@ struct _parser_runtime_state {
 };
 
 typedef struct {
-    PyTime_t numer;
-    PyTime_t denom;
+    TyTime_t numer;
+    TyTime_t denom;
 } _PyTimeFraction;
 
 struct _Ty_time_runtime_state {
@@ -188,11 +188,11 @@ struct pyruntimestate {
     struct pyinterpreters {
         PyMutex mutex;
         /* The linked list of interpreters, newest first. */
-        PyInterpreterState *head;
+        TyInterpreterState *head;
         /* The runtime's initial interpreter, which has a special role
            in the operation of the runtime.  It is also often the only
            interpreter. */
-        PyInterpreterState *main;
+        TyInterpreterState *main;
         /* next_id is an auto-numbered sequence of small
            integers.  It gets initialized in _TyInterpreterState_Enable(),
            which is called in Ty_Initialize(), and used in
@@ -241,11 +241,11 @@ struct pyruntimestate {
         /* bpo-26558: Flag to disable TyGILState_Check().
            If set to non-zero, TyGILState_Check() always return 1. */
         int check_enabled;
-        /* The single PyInterpreterState used by this process'
+        /* The single TyInterpreterState used by this process'
            GILState implementation
         */
         /* TODO: Given interp_main, it may be possible to kill this ref */
-        PyInterpreterState *autoInterpreterState;
+        TyInterpreterState *autoInterpreterState;
     } gilstate;
     struct _getargs_runtime_state {
         struct _TyArg_Parser *static_parsers;
@@ -299,12 +299,12 @@ struct pyruntimestate {
        For now there are some exceptions to that rule, which require
        allocation during init.  These will be addressed on a case-by-case
        basis.  Most notably, we don't pre-allocated the several mutex
-       (PyThread_type_lock) fields, because on Windows we only ever get
+       (TyThread_type_lock) fields, because on Windows we only ever get
        a pointer type.
        */
 
     /* _PyRuntimeState.interpreters.main */
-    PyInterpreterState _main_interpreter;
+    TyInterpreterState _main_interpreter;
     // _main_interpreter should be the last field of _PyRuntimeState.
     // See https://github.com/python/cpython/issues/127117.
 };

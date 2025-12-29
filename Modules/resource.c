@@ -42,14 +42,14 @@ class pid_t_converter(CConverter):
 
 #include "clinic/resource.c.h"
 
-PyDoc_STRVAR(struct_rusage__doc__,
+TyDoc_STRVAR(struct_rusage__doc__,
 "struct_rusage: Result from getrusage.\n\n"
 "This object may be accessed either as a tuple of\n"
 "    (utime,stime,maxrss,ixrss,idrss,isrss,minflt,majflt,\n"
 "    nswap,inblock,oublock,msgsnd,msgrcv,nsignals,nvcsw,nivcsw)\n"
 "or via the attributes ru_utime, ru_stime, ru_maxrss, and so on.");
 
-static PyStructSequence_Field struct_rusage_fields[] = {
+static TyStructSequence_Field struct_rusage_fields[] = {
     {"ru_utime",        "user time used"},
     {"ru_stime",        "system time used"},
     {"ru_maxrss",       "max. resident set size"},
@@ -69,7 +69,7 @@ static PyStructSequence_Field struct_rusage_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc struct_rusage_desc = {
+static TyStructSequence_Desc struct_rusage_desc = {
     "resource.struct_rusage",           /* name */
     struct_rusage__doc__,       /* doc */
     struct_rusage_fields,       /* fields */
@@ -117,29 +117,29 @@ resource_getrusage_impl(TyObject *module, int who)
         return NULL;
     }
 
-    result = PyStructSequence_New(
+    result = TyStructSequence_New(
         get_resource_state(module)->StructRUsageType);
     if (!result)
         return NULL;
 
-    PyStructSequence_SetItem(result, 0,
+    TyStructSequence_SetItem(result, 0,
                     TyFloat_FromDouble(doubletime(ru.ru_utime)));
-    PyStructSequence_SetItem(result, 1,
+    TyStructSequence_SetItem(result, 1,
                     TyFloat_FromDouble(doubletime(ru.ru_stime)));
-    PyStructSequence_SetItem(result, 2, TyLong_FromLong(ru.ru_maxrss));
-    PyStructSequence_SetItem(result, 3, TyLong_FromLong(ru.ru_ixrss));
-    PyStructSequence_SetItem(result, 4, TyLong_FromLong(ru.ru_idrss));
-    PyStructSequence_SetItem(result, 5, TyLong_FromLong(ru.ru_isrss));
-    PyStructSequence_SetItem(result, 6, TyLong_FromLong(ru.ru_minflt));
-    PyStructSequence_SetItem(result, 7, TyLong_FromLong(ru.ru_majflt));
-    PyStructSequence_SetItem(result, 8, TyLong_FromLong(ru.ru_nswap));
-    PyStructSequence_SetItem(result, 9, TyLong_FromLong(ru.ru_inblock));
-    PyStructSequence_SetItem(result, 10, TyLong_FromLong(ru.ru_oublock));
-    PyStructSequence_SetItem(result, 11, TyLong_FromLong(ru.ru_msgsnd));
-    PyStructSequence_SetItem(result, 12, TyLong_FromLong(ru.ru_msgrcv));
-    PyStructSequence_SetItem(result, 13, TyLong_FromLong(ru.ru_nsignals));
-    PyStructSequence_SetItem(result, 14, TyLong_FromLong(ru.ru_nvcsw));
-    PyStructSequence_SetItem(result, 15, TyLong_FromLong(ru.ru_nivcsw));
+    TyStructSequence_SetItem(result, 2, TyLong_FromLong(ru.ru_maxrss));
+    TyStructSequence_SetItem(result, 3, TyLong_FromLong(ru.ru_ixrss));
+    TyStructSequence_SetItem(result, 4, TyLong_FromLong(ru.ru_idrss));
+    TyStructSequence_SetItem(result, 5, TyLong_FromLong(ru.ru_isrss));
+    TyStructSequence_SetItem(result, 6, TyLong_FromLong(ru.ru_minflt));
+    TyStructSequence_SetItem(result, 7, TyLong_FromLong(ru.ru_majflt));
+    TyStructSequence_SetItem(result, 8, TyLong_FromLong(ru.ru_nswap));
+    TyStructSequence_SetItem(result, 9, TyLong_FromLong(ru.ru_inblock));
+    TyStructSequence_SetItem(result, 10, TyLong_FromLong(ru.ru_oublock));
+    TyStructSequence_SetItem(result, 11, TyLong_FromLong(ru.ru_msgsnd));
+    TyStructSequence_SetItem(result, 12, TyLong_FromLong(ru.ru_msgrcv));
+    TyStructSequence_SetItem(result, 13, TyLong_FromLong(ru.ru_nsignals));
+    TyStructSequence_SetItem(result, 14, TyLong_FromLong(ru.ru_nvcsw));
+    TyStructSequence_SetItem(result, 15, TyLong_FromLong(ru.ru_nivcsw));
 
     if (TyErr_Occurred()) {
         Ty_DECREF(result);
@@ -378,7 +378,7 @@ resource_exec(TyObject *module)
         return -1;
     }
 
-    state->StructRUsageType = PyStructSequence_NewType(&struct_rusage_desc);
+    state->StructRUsageType = TyStructSequence_NewType(&struct_rusage_desc);
     if (state->StructRUsageType == NULL) {
         return -1;
     }

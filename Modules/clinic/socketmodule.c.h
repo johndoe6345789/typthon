@@ -9,7 +9,7 @@ preserve
 #include "pycore_long.h"          // _TyLong_UInt16_Converter()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_socket_socket_close__doc__,
+TyDoc_STRVAR(_socket_socket_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -46,7 +46,7 @@ sock_initobj(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(family), &_Ty_ID(type), &_Ty_ID(proto), &_Ty_ID(fileno), },
     };
@@ -116,7 +116,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_socket_ntohs__doc__,
+TyDoc_STRVAR(_socket_ntohs__doc__,
 "ntohs($module, integer, /)\n"
 "--\n"
 "\n"
@@ -143,7 +143,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_socket_ntohl__doc__,
+TyDoc_STRVAR(_socket_ntohl__doc__,
 "ntohl($module, integer, /)\n"
 "--\n"
 "\n"
@@ -170,7 +170,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_socket_htons__doc__,
+TyDoc_STRVAR(_socket_htons__doc__,
 "htons($module, integer, /)\n"
 "--\n"
 "\n"
@@ -197,7 +197,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_socket_htonl__doc__,
+TyDoc_STRVAR(_socket_htonl__doc__,
 "htonl($module, integer, /)\n"
 "--\n"
 "\n"
@@ -224,7 +224,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_socket_inet_aton__doc__,
+TyDoc_STRVAR(_socket_inet_aton__doc__,
 "inet_aton($module, ip_addr, /)\n"
 "--\n"
 "\n"
@@ -263,7 +263,7 @@ exit:
 
 #if defined(HAVE_INET_NTOA)
 
-PyDoc_STRVAR(_socket_inet_ntoa__doc__,
+TyDoc_STRVAR(_socket_inet_ntoa__doc__,
 "inet_ntoa($module, packed_ip, /)\n"
 "--\n"
 "\n"
@@ -299,7 +299,7 @@ exit:
 
 #if (defined(HAVE_IF_NAMEINDEX) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(_socket_if_nametoindex__doc__,
+TyDoc_STRVAR(_socket_if_nametoindex__doc__,
 "if_nametoindex($module, oname, /)\n"
 "--\n"
 "\n"
@@ -330,7 +330,7 @@ exit:
 
 #if (defined(HAVE_IF_NAMEINDEX) || defined(MS_WINDOWS))
 
-PyDoc_STRVAR(_socket_if_indextoname__doc__,
+TyDoc_STRVAR(_socket_if_indextoname__doc__,
 "if_indextoname($module, if_index, /)\n"
 "--\n"
 "\n"

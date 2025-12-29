@@ -9,7 +9,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(function___annotate____doc__,
+TyDoc_STRVAR(function___annotate____doc__,
 "Get the code object for a function.");
 #if defined(function___annotate___DOCSTR)
 #   undef function___annotate___DOCSTR
@@ -66,7 +66,7 @@ function___annotate___set(TyObject *self, TyObject *value, void *Py_UNUSED(conte
     return return_value;
 }
 
-PyDoc_STRVAR(function___annotations____doc__,
+TyDoc_STRVAR(function___annotations____doc__,
 "Dict of annotations in a function object.");
 #if defined(function___annotations___DOCSTR)
 #   undef function___annotations___DOCSTR
@@ -123,7 +123,7 @@ function___annotations___set(TyObject *self, TyObject *value, void *Py_UNUSED(co
     return return_value;
 }
 
-PyDoc_STRVAR(function___type_params____doc__,
+TyDoc_STRVAR(function___type_params____doc__,
 "Get the declared type parameters for a function.");
 #if defined(function___type_params___DOCSTR)
 #   undef function___type_params___DOCSTR
@@ -180,7 +180,7 @@ function___type_params___set(TyObject *self, TyObject *value, void *Py_UNUSED(co
     return return_value;
 }
 
-PyDoc_STRVAR(func_new__doc__,
+TyDoc_STRVAR(func_new__doc__,
 "function(code, globals, name=None, argdefs=None, closure=None,\n"
 "         kwdefaults=None)\n"
 "--\n"
@@ -218,7 +218,7 @@ func_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(code), &_Ty_ID(globals), &_Ty_ID(name), &_Ty_ID(argdefs), &_Ty_ID(closure), &_Ty_ID(kwdefaults), },
     };

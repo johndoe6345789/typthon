@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(blob_close__doc__,
+TyDoc_STRVAR(blob_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -22,7 +22,7 @@ blob_close(TyObject *self, TyObject *Py_UNUSED(ignored))
     return blob_close_impl((pysqlite_Blob *)self);
 }
 
-PyDoc_STRVAR(blob_read__doc__,
+TyDoc_STRVAR(blob_read__doc__,
 "read($self, length=-1, /)\n"
 "--\n"
 "\n"
@@ -64,7 +64,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(blob_write__doc__,
+TyDoc_STRVAR(blob_write__doc__,
 "write($self, data, /)\n"
 "--\n"
 "\n"
@@ -99,7 +99,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(blob_seek__doc__,
+TyDoc_STRVAR(blob_seek__doc__,
 "seek($self, offset, origin=0, /)\n"
 "--\n"
 "\n"
@@ -143,7 +143,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(blob_tell__doc__,
+TyDoc_STRVAR(blob_tell__doc__,
 "tell($self, /)\n"
 "--\n"
 "\n"
@@ -161,7 +161,7 @@ blob_tell(TyObject *self, TyObject *Py_UNUSED(ignored))
     return blob_tell_impl((pysqlite_Blob *)self);
 }
 
-PyDoc_STRVAR(blob_enter__doc__,
+TyDoc_STRVAR(blob_enter__doc__,
 "__enter__($self, /)\n"
 "--\n"
 "\n"
@@ -179,7 +179,7 @@ blob_enter(TyObject *self, TyObject *Py_UNUSED(ignored))
     return blob_enter_impl((pysqlite_Blob *)self);
 }
 
-PyDoc_STRVAR(blob_exit__doc__,
+TyDoc_STRVAR(blob_exit__doc__,
 "__exit__($self, type, val, tb, /)\n"
 "--\n"
 "\n"

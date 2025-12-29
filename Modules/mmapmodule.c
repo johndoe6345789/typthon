@@ -1451,7 +1451,7 @@ mmap_ass_subscript(TyObject *op, TyObject *item, TyObject *value)
 static TyObject *
 new_mmap_object(TyTypeObject *type, TyObject *args, TyObject *kwdict);
 
-PyDoc_STRVAR(mmap_doc,
+TyDoc_STRVAR(mmap_doc,
 "Windows: mmap(fileno, length[, tagname[, access[, offset]]])\n\
 \n\
 Maps length bytes from the file specified by the file handle fileno,\n\

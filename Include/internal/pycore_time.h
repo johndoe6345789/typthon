@@ -1,6 +1,6 @@
-// Internal PyTime_t C API: see Doc/c-api/time.rst for the documentation.
+// Internal TyTime_t C API: see Doc/c-api/time.rst for the documentation.
 //
-// The PyTime_t type is an integer to support directly common arithmetic
+// The TyTime_t type is an integer to support directly common arithmetic
 // operations such as t1 + t2.
 //
 // Time formats:
@@ -14,9 +14,9 @@
 // * timeval structure, 1 microsecond (10^-6 seconds).
 // * timespec structure, 1 nanosecond (10^-9 seconds).
 //
-// Note that PyTime_t is now specified as int64_t, in nanoseconds.
+// Note that TyTime_t is now specified as int64_t, in nanoseconds.
 // (If we need to change this, we'll need new public API with new names.)
-// Previously, PyTime_t was configurable (in theory); some comments and code
+// Previously, TyTime_t was configurable (in theory); some comments and code
 // might still allude to that.
 //
 // Integer overflows are detected and raise OverflowError. Conversion to a
@@ -43,7 +43,7 @@
 //
 // Internally, operations like (t * k / q) with integers are implemented in a
 // way to reduce the risk of integer overflow. Such operation is used to convert a
-// clock value expressed in ticks with a frequency to PyTime_t, like
+// clock value expressed in ticks with a frequency to TyTime_t, like
 // QueryPerformanceCounter() with QueryPerformanceFrequency() on Windows.
 
 
@@ -130,66 +130,66 @@ PyAPI_FUNC(int) _TyTime_ObjectToTimespec(
 
 // Create a timestamp from a number of seconds.
 // Export for '_socket' shared extension.
-PyAPI_FUNC(PyTime_t) _TyTime_FromSeconds(int seconds);
+PyAPI_FUNC(TyTime_t) _TyTime_FromSeconds(int seconds);
 
 // Create a timestamp from a number of seconds in double.
 extern int _TyTime_FromSecondsDouble(
     double seconds,
     _TyTime_round_t round,
-    PyTime_t *result);
+    TyTime_t *result);
 
 // Macro to create a timestamp from a number of seconds, no integer overflow.
 // Only use the macro for small values, prefer _TyTime_FromSeconds().
 #define _PYTIME_FROMSECONDS(seconds) \
-            ((PyTime_t)(seconds) * (1000 * 1000 * 1000))
+            ((TyTime_t)(seconds) * (1000 * 1000 * 1000))
 
 // Create a timestamp from a number of microseconds.
 // Clamp to [PyTime_MIN; PyTime_MAX] on overflow.
-extern PyTime_t _TyTime_FromMicrosecondsClamp(PyTime_t us);
+extern TyTime_t _TyTime_FromMicrosecondsClamp(TyTime_t us);
 
 // Create a timestamp from a Python int object (number of nanoseconds).
 // Export for '_lsprof' shared extension.
-PyAPI_FUNC(int) _TyTime_FromLong(PyTime_t *t,
+PyAPI_FUNC(int) _TyTime_FromLong(TyTime_t *t,
     TyObject *obj);
 
 // Convert a number of seconds (Python float or int) to a timestamp.
 // Raise an exception and return -1 on error, return 0 on success.
 // Export for '_socket' shared extension.
-PyAPI_FUNC(int) _TyTime_FromSecondsObject(PyTime_t *t,
+PyAPI_FUNC(int) _TyTime_FromSecondsObject(TyTime_t *t,
     TyObject *obj,
     _TyTime_round_t round);
 
 // Convert a number of milliseconds (Python float or int, 10^-3) to a timestamp.
 // Raise an exception and return -1 on error, return 0 on success.
 // Export for 'select' shared extension.
-PyAPI_FUNC(int) _TyTime_FromMillisecondsObject(PyTime_t *t,
+PyAPI_FUNC(int) _TyTime_FromMillisecondsObject(TyTime_t *t,
     TyObject *obj,
     _TyTime_round_t round);
 
 // Convert timestamp to a number of milliseconds (10^-3 seconds).
 // Export for '_ssl' shared extension.
-PyAPI_FUNC(PyTime_t) _TyTime_AsMilliseconds(PyTime_t t,
+PyAPI_FUNC(TyTime_t) _TyTime_AsMilliseconds(TyTime_t t,
     _TyTime_round_t round);
 
 // Convert timestamp to a number of microseconds (10^-6 seconds).
 // Export for '_queue' shared extension.
-PyAPI_FUNC(PyTime_t) _TyTime_AsMicroseconds(PyTime_t t,
+PyAPI_FUNC(TyTime_t) _TyTime_AsMicroseconds(TyTime_t t,
     _TyTime_round_t round);
 
 #ifdef MS_WINDOWS
 // Convert timestamp to a number of 100 nanoseconds (10^-7 seconds).
-extern PyTime_t _TyTime_As100Nanoseconds(PyTime_t t,
+extern TyTime_t _TyTime_As100Nanoseconds(TyTime_t t,
     _TyTime_round_t round);
 #endif
 
 // Convert a timestamp (number of nanoseconds) as a Python int object.
 // Export for '_testinternalcapi' shared extension.
-PyAPI_FUNC(TyObject*) _TyTime_AsLong(PyTime_t t);
+PyAPI_FUNC(TyObject*) _TyTime_AsLong(TyTime_t t);
 
 #ifndef MS_WINDOWS
 // Create a timestamp from a timeval structure.
 // Raise an exception and return -1 on overflow, return 0 on success.
-extern int _TyTime_FromTimeval(PyTime_t *tp, struct timeval *tv);
+extern int _TyTime_FromTimeval(TyTime_t *tp, struct timeval *tv);
 #endif
 
 // Convert a timestamp to a timeval structure (microsecond resolution).
@@ -197,14 +197,14 @@ extern int _TyTime_FromTimeval(PyTime_t *tp, struct timeval *tv);
 // Raise an exception and return -1 if the conversion overflowed,
 // return 0 on success.
 // Export for 'select' shared extension.
-PyAPI_FUNC(int) _TyTime_AsTimeval(PyTime_t t,
+PyAPI_FUNC(int) _TyTime_AsTimeval(TyTime_t t,
     struct timeval *tv,
     _TyTime_round_t round);
 
 // Similar to _TyTime_AsTimeval() but don't raise an exception on overflow.
-// On overflow, clamp tv_sec to PyTime_t min/max.
+// On overflow, clamp tv_sec to TyTime_t min/max.
 // Export for 'select' shared extension.
-PyAPI_FUNC(void) _TyTime_AsTimeval_clamp(PyTime_t t,
+PyAPI_FUNC(void) _TyTime_AsTimeval_clamp(TyTime_t t,
     struct timeval *tv,
     _TyTime_round_t round);
 
@@ -216,7 +216,7 @@ PyAPI_FUNC(void) _TyTime_AsTimeval_clamp(PyTime_t t,
 // return 0 on success.
 // Export for '_datetime' shared extension.
 PyAPI_FUNC(int) _TyTime_AsTimevalTime_t(
-    PyTime_t t,
+    TyTime_t t,
     time_t *secs,
     int *us,
     _TyTime_round_t round);
@@ -224,23 +224,23 @@ PyAPI_FUNC(int) _TyTime_AsTimevalTime_t(
 #if defined(HAVE_CLOCK_GETTIME) || defined(HAVE_KQUEUE)
 // Create a timestamp from a timespec structure.
 // Raise an exception and return -1 on overflow, return 0 on success.
-extern int _TyTime_FromTimespec(PyTime_t *tp, const struct timespec *ts);
+extern int _TyTime_FromTimespec(TyTime_t *tp, const struct timespec *ts);
 
 // Convert a timestamp to a timespec structure (nanosecond resolution).
 // tv_nsec is always positive.
 // Raise an exception and return -1 on error, return 0 on success.
 // Export for '_testinternalcapi' shared extension.
-PyAPI_FUNC(int) _TyTime_AsTimespec(PyTime_t t, struct timespec *ts);
+PyAPI_FUNC(int) _TyTime_AsTimespec(TyTime_t t, struct timespec *ts);
 
 // Similar to _TyTime_AsTimespec() but don't raise an exception on overflow.
-// On overflow, clamp tv_sec to PyTime_t min/max.
+// On overflow, clamp tv_sec to TyTime_t min/max.
 // Export for '_testinternalcapi' shared extension.
-PyAPI_FUNC(void) _TyTime_AsTimespec_clamp(PyTime_t t, struct timespec *ts);
+PyAPI_FUNC(void) _TyTime_AsTimespec_clamp(TyTime_t t, struct timespec *ts);
 #endif
 
 
 // Compute t1 + t2. Clamp to [PyTime_MIN; PyTime_MAX] on overflow.
-extern PyTime_t _TyTime_Add(PyTime_t t1, PyTime_t t2);
+extern TyTime_t _TyTime_Add(TyTime_t t1, TyTime_t t2);
 
 // Structure used by time.get_clock_info()
 typedef struct {
@@ -254,7 +254,7 @@ typedef struct {
 // On success, set *t and *info (if not NULL), and return 0.
 // On error, raise an exception and return -1.
 extern int _TyTime_TimeWithInfo(
-    PyTime_t *t,
+    TyTime_t *t,
     _Ty_clock_info_t *info);
 
 // Get the time of a monotonic clock, i.e. a clock that cannot go backwards.
@@ -267,7 +267,7 @@ extern int _TyTime_TimeWithInfo(
 // Return 0 on success, raise an exception and return -1 on error.
 // Export for '_testsinglephase' shared extension.
 PyAPI_FUNC(int) _TyTime_MonotonicWithInfo(
-    PyTime_t *t,
+    TyTime_t *t,
     _Ty_clock_info_t *info);
 
 
@@ -289,7 +289,7 @@ PyAPI_FUNC(int) _TyTime_gmtime(time_t t, struct tm *tm);
 //
 // Return 0 on success, raise an exception and return -1 on error.
 extern int _TyTime_PerfCounterWithInfo(
-    PyTime_t *t,
+    TyTime_t *t,
     _Ty_clock_info_t *info);
 
 
@@ -298,12 +298,12 @@ extern int _TyTime_PerfCounterWithInfo(
 // Create a deadline.
 // Pseudo code: return PyTime_MonotonicRaw() + timeout
 // Export for '_ssl' shared extension.
-PyAPI_FUNC(PyTime_t) _PyDeadline_Init(PyTime_t timeout);
+PyAPI_FUNC(TyTime_t) _PyDeadline_Init(TyTime_t timeout);
 
 // Get remaining time from a deadline.
 // Pseudo code: return deadline - PyTime_MonotonicRaw()
 // Export for '_ssl' shared extension.
-PyAPI_FUNC(PyTime_t) _PyDeadline_Get(PyTime_t deadline);
+PyAPI_FUNC(TyTime_t) _PyDeadline_Get(TyTime_t deadline);
 
 
 // --- _PyTimeFraction -------------------------------------------------------
@@ -313,13 +313,13 @@ PyAPI_FUNC(PyTime_t) _PyDeadline_Get(PyTime_t deadline);
 // Return -1 if the fraction is invalid.
 extern int _PyTimeFraction_Set(
     _PyTimeFraction *frac,
-    PyTime_t numer,
-    PyTime_t denom);
+    TyTime_t numer,
+    TyTime_t denom);
 
 // Compute ticks * frac.numer / frac.denom.
 // Clamp to [PyTime_MIN; PyTime_MAX] on overflow.
-extern PyTime_t _PyTimeFraction_Mul(
-    PyTime_t ticks,
+extern TyTime_t _PyTimeFraction_Mul(
+    TyTime_t ticks,
     const _PyTimeFraction *frac);
 
 // Compute a clock resolution: frac.numer / frac.denom / 1e9.

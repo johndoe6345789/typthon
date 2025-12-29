@@ -1591,7 +1591,7 @@ done:
     return result;
 }
 
-PyDoc_STRVAR(pattern_doc, "Compiled regular expression object.");
+TyDoc_STRVAR(pattern_doc, "Compiled regular expression object.");
 
 /* PatternObject's 'groupindex' method. */
 static TyObject *
@@ -2664,11 +2664,11 @@ _sre_SRE_Match___deepcopy___impl(MatchObject *self, TyObject *memo)
     return Ty_NewRef(self);
 }
 
-PyDoc_STRVAR(match_doc,
+TyDoc_STRVAR(match_doc,
 "The result of re.match() and re.search().\n\
 Match objects always have a boolean value of True.");
 
-PyDoc_STRVAR(match_group_doc,
+TyDoc_STRVAR(match_group_doc,
 "group([group1, ...]) -> str or tuple.\n\
     Return subgroup(s) of the match by indices or names.\n\
     For 0 returns the entire match.");
@@ -3172,7 +3172,7 @@ static TyMethodDef pattern_methods[] = {
     _SRE_SRE_PATTERN___DEEPCOPY___METHODDEF
     _SRE_SRE_PATTERN__FAIL_AFTER_METHODDEF
     {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS,
-     PyDoc_STR("See PEP 585")},
+     TyDoc_STR("See PEP 585")},
     {NULL, NULL}
 };
 
@@ -3228,7 +3228,7 @@ static TyMethodDef match_methods[] = {
     _SRE_SRE_MATCH___COPY___METHODDEF
     _SRE_SRE_MATCH___DEEPCOPY___METHODDEF
     {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS,
-     PyDoc_STR("See PEP 585")},
+     TyDoc_STR("See PEP 585")},
     {NULL, NULL}
 };
 

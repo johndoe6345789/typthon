@@ -80,7 +80,7 @@ _sysconfig_config_vars_impl(TyObject *module)
     return config;
 }
 
-PyDoc_STRVAR(sysconfig__doc__,
+TyDoc_STRVAR(sysconfig__doc__,
 "A helper for the sysconfig module.");
 
 static struct TyMethodDef sysconfig_methods[] = {

@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_weakref_getweakrefcount__doc__,
+TyDoc_STRVAR(_weakref_getweakrefcount__doc__,
 "getweakrefcount($module, object, /)\n"
 "--\n"
 "\n"
@@ -32,7 +32,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_weakref__remove_dead_weakref__doc__,
+TyDoc_STRVAR(_weakref__remove_dead_weakref__doc__,
 "_remove_dead_weakref($module, dct, key, /)\n"
 "--\n"
 "\n"
@@ -67,7 +67,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_weakref_getweakrefs__doc__,
+TyDoc_STRVAR(_weakref_getweakrefs__doc__,
 "getweakrefs($module, object, /)\n"
 "--\n"
 "\n"
@@ -76,7 +76,7 @@ PyDoc_STRVAR(_weakref_getweakrefs__doc__,
 #define _WEAKREF_GETWEAKREFS_METHODDEF    \
     {"getweakrefs", (PyCFunction)_weakref_getweakrefs, METH_O, _weakref_getweakrefs__doc__},
 
-PyDoc_STRVAR(_weakref_proxy__doc__,
+TyDoc_STRVAR(_weakref_proxy__doc__,
 "proxy($module, object, callback=None, /)\n"
 "--\n"
 "\n"

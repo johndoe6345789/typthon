@@ -1362,14 +1362,14 @@ TyErr_NewExceptionWithDoc(const char *name, const char *doc,
 }
 
 
-PyDoc_STRVAR(UnraisableHookArgs__doc__,
+TyDoc_STRVAR(UnraisableHookArgs__doc__,
 "UnraisableHookArgs\n\
 \n\
 Type used to pass arguments to sys.unraisablehook.");
 
 static TyTypeObject UnraisableHookArgsType;
 
-static PyStructSequence_Field UnraisableHookArgs_fields[] = {
+static TyStructSequence_Field UnraisableHookArgs_fields[] = {
     {"exc_type", "Exception type"},
     {"exc_value", "Exception value"},
     {"exc_traceback", "Exception traceback"},
@@ -1378,7 +1378,7 @@ static PyStructSequence_Field UnraisableHookArgs_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc UnraisableHookArgs_desc = {
+static TyStructSequence_Desc UnraisableHookArgs_desc = {
     .name = "UnraisableHookArgs",
     .doc = UnraisableHookArgs__doc__,
     .fields = UnraisableHookArgs_fields,
@@ -1387,7 +1387,7 @@ static PyStructSequence_Desc UnraisableHookArgs_desc = {
 
 
 TyStatus
-_TyErr_InitTypes(PyInterpreterState *interp)
+_TyErr_InitTypes(TyInterpreterState *interp)
 {
     if (_PyStructSequence_InitBuiltin(interp, &UnraisableHookArgsType,
                                       &UnraisableHookArgs_desc) < 0)
@@ -1399,7 +1399,7 @@ _TyErr_InitTypes(PyInterpreterState *interp)
 
 
 void
-_TyErr_FiniTypes(PyInterpreterState *interp)
+_TyErr_FiniTypes(TyInterpreterState *interp)
 {
     _PyStructSequence_FiniBuiltin(interp, &UnraisableHookArgsType);
 }
@@ -1410,7 +1410,7 @@ make_unraisable_hook_args(TyThreadState *tstate, TyObject *exc_type,
                           TyObject *exc_value, TyObject *exc_tb,
                           TyObject *err_msg, TyObject *obj)
 {
-    TyObject *args = PyStructSequence_New(&UnraisableHookArgsType);
+    TyObject *args = TyStructSequence_New(&UnraisableHookArgsType);
     if (args == NULL) {
         return NULL;
     }
@@ -1421,7 +1421,7 @@ make_unraisable_hook_args(TyThreadState *tstate, TyObject *exc_type,
             if (exc_type == NULL) { \
                 exc_type = Ty_None; \
             } \
-            PyStructSequence_SET_ITEM(args, pos++, Ty_NewRef(exc_type)); \
+            TyStructSequence_SET_ITEM(args, pos++, Ty_NewRef(exc_type)); \
         } while (0)
 
 
@@ -1599,11 +1599,11 @@ _TyErr_WriteUnraisableDefaultHook(TyObject *args)
     }
 
     /* Borrowed references */
-    TyObject *exc_type = PyStructSequence_GET_ITEM(args, 0);
-    TyObject *exc_value = PyStructSequence_GET_ITEM(args, 1);
-    TyObject *exc_tb = PyStructSequence_GET_ITEM(args, 2);
-    TyObject *err_msg = PyStructSequence_GET_ITEM(args, 3);
-    TyObject *obj = PyStructSequence_GET_ITEM(args, 4);
+    TyObject *exc_type = TyStructSequence_GET_ITEM(args, 0);
+    TyObject *exc_value = TyStructSequence_GET_ITEM(args, 1);
+    TyObject *exc_tb = TyStructSequence_GET_ITEM(args, 2);
+    TyObject *err_msg = TyStructSequence_GET_ITEM(args, 3);
+    TyObject *obj = TyStructSequence_GET_ITEM(args, 4);
 
     if (write_unraisable_exc(tstate, exc_type, exc_value, exc_tb, err_msg, obj) < 0) {
         return NULL;

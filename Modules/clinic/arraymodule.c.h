@@ -8,7 +8,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(array_array_clear__doc__,
+TyDoc_STRVAR(array_array_clear__doc__,
 "clear($self, /)\n"
 "--\n"
 "\n"
@@ -26,7 +26,7 @@ array_array_clear(TyObject *self, TyObject *Py_UNUSED(ignored))
     return array_array_clear_impl((arrayobject *)self);
 }
 
-PyDoc_STRVAR(array_array___copy____doc__,
+TyDoc_STRVAR(array_array___copy____doc__,
 "__copy__($self, /)\n"
 "--\n"
 "\n"
@@ -44,7 +44,7 @@ array_array___copy__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return array_array___copy___impl((arrayobject *)self);
 }
 
-PyDoc_STRVAR(array_array___deepcopy____doc__,
+TyDoc_STRVAR(array_array___deepcopy____doc__,
 "__deepcopy__($self, unused, /)\n"
 "--\n"
 "\n"
@@ -66,7 +66,7 @@ array_array___deepcopy__(TyObject *self, TyObject *unused)
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_count__doc__,
+TyDoc_STRVAR(array_array_count__doc__,
 "count($self, v, /)\n"
 "--\n"
 "\n"
@@ -88,7 +88,7 @@ array_array_count(TyObject *self, TyObject *v)
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_index__doc__,
+TyDoc_STRVAR(array_array_index__doc__,
 "index($self, v, start=0, stop=sys.maxsize, /)\n"
 "--\n"
 "\n"
@@ -134,7 +134,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_remove__doc__,
+TyDoc_STRVAR(array_array_remove__doc__,
 "remove($self, v, /)\n"
 "--\n"
 "\n"
@@ -156,7 +156,7 @@ array_array_remove(TyObject *self, TyObject *v)
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_pop__doc__,
+TyDoc_STRVAR(array_array_pop__doc__,
 "pop($self, i=-1, /)\n"
 "--\n"
 "\n"
@@ -201,7 +201,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_extend__doc__,
+TyDoc_STRVAR(array_array_extend__doc__,
 "extend($self, bb, /)\n"
 "--\n"
 "\n"
@@ -245,7 +245,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_insert__doc__,
+TyDoc_STRVAR(array_array_insert__doc__,
 "insert($self, i, v, /)\n"
 "--\n"
 "\n"
@@ -286,7 +286,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_buffer_info__doc__,
+TyDoc_STRVAR(array_array_buffer_info__doc__,
 "buffer_info($self, /)\n"
 "--\n"
 "\n"
@@ -307,7 +307,7 @@ array_array_buffer_info(TyObject *self, TyObject *Py_UNUSED(ignored))
     return array_array_buffer_info_impl((arrayobject *)self);
 }
 
-PyDoc_STRVAR(array_array_append__doc__,
+TyDoc_STRVAR(array_array_append__doc__,
 "append($self, v, /)\n"
 "--\n"
 "\n"
@@ -329,7 +329,7 @@ array_array_append(TyObject *self, TyObject *v)
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_byteswap__doc__,
+TyDoc_STRVAR(array_array_byteswap__doc__,
 "byteswap($self, /)\n"
 "--\n"
 "\n"
@@ -350,7 +350,7 @@ array_array_byteswap(TyObject *self, TyObject *Py_UNUSED(ignored))
     return array_array_byteswap_impl((arrayobject *)self);
 }
 
-PyDoc_STRVAR(array_array_reverse__doc__,
+TyDoc_STRVAR(array_array_reverse__doc__,
 "reverse($self, /)\n"
 "--\n"
 "\n"
@@ -368,7 +368,7 @@ array_array_reverse(TyObject *self, TyObject *Py_UNUSED(ignored))
     return array_array_reverse_impl((arrayobject *)self);
 }
 
-PyDoc_STRVAR(array_array_fromfile__doc__,
+TyDoc_STRVAR(array_array_fromfile__doc__,
 "fromfile($self, f, n, /)\n"
 "--\n"
 "\n"
@@ -426,7 +426,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_tofile__doc__,
+TyDoc_STRVAR(array_array_tofile__doc__,
 "tofile($self, f, /)\n"
 "--\n"
 "\n"
@@ -470,7 +470,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_fromlist__doc__,
+TyDoc_STRVAR(array_array_fromlist__doc__,
 "fromlist($self, list, /)\n"
 "--\n"
 "\n"
@@ -492,7 +492,7 @@ array_array_fromlist(TyObject *self, TyObject *list)
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_tolist__doc__,
+TyDoc_STRVAR(array_array_tolist__doc__,
 "tolist($self, /)\n"
 "--\n"
 "\n"
@@ -510,7 +510,7 @@ array_array_tolist(TyObject *self, TyObject *Py_UNUSED(ignored))
     return array_array_tolist_impl((arrayobject *)self);
 }
 
-PyDoc_STRVAR(array_array_frombytes__doc__,
+TyDoc_STRVAR(array_array_frombytes__doc__,
 "frombytes($self, buffer, /)\n"
 "--\n"
 "\n"
@@ -542,7 +542,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_tobytes__doc__,
+TyDoc_STRVAR(array_array_tobytes__doc__,
 "tobytes($self, /)\n"
 "--\n"
 "\n"
@@ -560,7 +560,7 @@ array_array_tobytes(TyObject *self, TyObject *Py_UNUSED(ignored))
     return array_array_tobytes_impl((arrayobject *)self);
 }
 
-PyDoc_STRVAR(array_array_fromunicode__doc__,
+TyDoc_STRVAR(array_array_fromunicode__doc__,
 "fromunicode($self, ustr, /)\n"
 "--\n"
 "\n"
@@ -593,7 +593,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_array_tounicode__doc__,
+TyDoc_STRVAR(array_array_tounicode__doc__,
 "tounicode($self, /)\n"
 "--\n"
 "\n"
@@ -615,7 +615,7 @@ array_array_tounicode(TyObject *self, TyObject *Py_UNUSED(ignored))
     return array_array_tounicode_impl((arrayobject *)self);
 }
 
-PyDoc_STRVAR(array_array___sizeof____doc__,
+TyDoc_STRVAR(array_array___sizeof____doc__,
 "__sizeof__($self, /)\n"
 "--\n"
 "\n"
@@ -633,7 +633,7 @@ array_array___sizeof__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return array_array___sizeof___impl((arrayobject *)self);
 }
 
-PyDoc_STRVAR(array__array_reconstructor__doc__,
+TyDoc_STRVAR(array__array_reconstructor__doc__,
 "_array_reconstructor($module, arraytype, typecode, mformat_code, items,\n"
 "                     /)\n"
 "--\n"
@@ -685,7 +685,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_array___reduce_ex____doc__,
+TyDoc_STRVAR(array_array___reduce_ex____doc__,
 "__reduce_ex__($self, value, /)\n"
 "--\n"
 "\n"
@@ -730,7 +730,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(array_arrayiterator___reduce____doc__,
+TyDoc_STRVAR(array_arrayiterator___reduce____doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n"
@@ -752,7 +752,7 @@ array_arrayiterator___reduce__(TyObject *self, TyTypeObject *cls, TyObject *cons
     return array_arrayiterator___reduce___impl((arrayiterobject *)self, cls);
 }
 
-PyDoc_STRVAR(array_arrayiterator___setstate____doc__,
+TyDoc_STRVAR(array_arrayiterator___setstate____doc__,
 "__setstate__($self, state, /)\n"
 "--\n"
 "\n"

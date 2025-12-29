@@ -32,7 +32,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "Python.h"
-#include "pycore_interp.h"          // PyInterpreterState
+#include "pycore_interp.h"          // TyInterpreterState
 #include "pycore_pystate.h"         // _TyThreadState_GET()
 #include "pycore_qsbr.h"
 #include "pycore_tstate.h"          // _PyThreadStateImpl
@@ -181,7 +181,7 @@ _Ty_qsbr_detach(struct _qsbr_thread_state *qsbr)
 }
 
 Ty_ssize_t
-_Ty_qsbr_reserve(PyInterpreterState *interp)
+_Ty_qsbr_reserve(TyInterpreterState *interp)
 {
     struct _qsbr_shared *shared = &interp->qsbr;
 
@@ -210,7 +210,7 @@ _Ty_qsbr_reserve(PyInterpreterState *interp)
 }
 
 void
-_Ty_qsbr_register(_PyThreadStateImpl *tstate, PyInterpreterState *interp,
+_Ty_qsbr_register(_PyThreadStateImpl *tstate, TyInterpreterState *interp,
                   Ty_ssize_t index)
 {
     // Associate the QSBR state with the thread state
@@ -253,7 +253,7 @@ _Ty_qsbr_unregister(TyThreadState *tstate)
 }
 
 void
-_Ty_qsbr_fini(PyInterpreterState *interp)
+_Ty_qsbr_fini(TyInterpreterState *interp)
 {
     struct _qsbr_shared *shared = &interp->qsbr;
     TyMem_RawFree(shared->array);

@@ -263,7 +263,7 @@ random_seed_urandom(RandomObject *self)
 static int
 random_seed_time_pid(RandomObject *self)
 {
-    PyTime_t now;
+    TyTime_t now;
     if (PyTime_Time(&now) < 0) {
         return -1;
     }
@@ -582,7 +582,7 @@ static TyMethodDef random_methods[] = {
     {NULL,              NULL}           /* sentinel */
 };
 
-PyDoc_STRVAR(random_doc,
+TyDoc_STRVAR(random_doc,
 "Random() -> create a random number generator with its own internal state.");
 
 static TyType_Slot Random_Type_slots[] = {
@@ -602,7 +602,7 @@ static TyType_Spec Random_Type_spec = {
     Random_Type_slots
 };
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "Module implements the Mersenne Twister random number generator.");
 
 static int

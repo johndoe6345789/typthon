@@ -2,7 +2,7 @@
 #include "pycore_call.h"          // _TyObject_CallNoArgsTstate()
 #include "pycore_ceval.h"         // _Ty_EnterRecursiveCallTstate()
 #include "pycore_dict.h"          // _TyDict_FromItems()
-#include "pycore_function.h"      // _PyFunction_Vectorcall() definition
+#include "pycore_function.h"      // _TyFunction_Vectorcall() definition
 #include "pycore_modsupport.h"    // _Ty_VaBuildStack()
 #include "pycore_object.h"        // _PyCFunctionWithKeywords_TrampolineCall()
 #include "pycore_pyerrors.h"      // _TyErr_Occurred()
@@ -399,7 +399,7 @@ PyObject_CallOneArg(TyObject *func, TyObject *arg)
 /* --- PyFunction call functions ---------------------------------- */
 
 TyObject *
-_PyFunction_Vectorcall(TyObject *func, TyObject* const* stack,
+_TyFunction_Vectorcall(TyObject *func, TyObject* const* stack,
                        size_t nargsf, TyObject *kwnames)
 {
     assert(TyFunction_Check(func));

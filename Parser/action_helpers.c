@@ -126,7 +126,7 @@ _TyPegen_join_names_with_dot(Parser *p, expr_ty first_name, expr_ty second_name)
     if (!uni) {
         return NULL;
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyUnicode_InternImmortal(interp, &uni);
     if (_TyArena_AddPyObject(p->arena, uni) < 0) {
         Ty_DECREF(uni);

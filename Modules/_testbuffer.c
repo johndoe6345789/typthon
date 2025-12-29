@@ -2652,7 +2652,7 @@ static TyMethodDef ndarray_methods[] =
 };
 
 static TyTypeObject NDArray_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "ndarray",                   /* Name of this type */
     sizeof(NDArrayObject),       /* Basic object size */
     0,                           /* Item size for varobject */
@@ -2772,7 +2772,7 @@ static PyBufferProcs staticarray_as_buffer = {
 };
 
 static TyTypeObject StaticArray_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "staticarray",                   /* Name of this type */
     sizeof(StaticArrayObject),       /* Basic object size */
     0,                               /* Item size for varobject */

@@ -92,7 +92,7 @@ _PySemaphore_Destroy(_PySemaphore *sema)
 }
 
 static int
-_PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
+_PySemaphore_PlatformWait(_PySemaphore *sema, TyTime_t timeout)
 {
     int res;
 #if defined(MS_WINDOWS)
@@ -102,9 +102,9 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
         millis = INFINITE;
     }
     else {
-        PyTime_t div = _TyTime_AsMilliseconds(timeout, _TyTime_ROUND_TIMEOUT);
+        TyTime_t div = _TyTime_AsMilliseconds(timeout, _TyTime_ROUND_TIMEOUT);
         // Prevent overflow with clamping the result
-        if ((PyTime_t)PY_DWORD_MAX < div) {
+        if ((TyTime_t)PY_DWORD_MAX < div) {
             millis = PY_DWORD_MAX;
         }
         else {
@@ -150,18 +150,18 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
         struct timespec ts;
 
 #if defined(CLOCK_MONOTONIC) && defined(HAVE_SEM_CLOCKWAIT) && !defined(_Ty_THREAD_SANITIZER)
-        PyTime_t now;
+        TyTime_t now;
         // silently ignore error: cannot report error to the caller
         (void)PyTime_MonotonicRaw(&now);
-        PyTime_t deadline = _TyTime_Add(now, timeout);
+        TyTime_t deadline = _TyTime_Add(now, timeout);
         _TyTime_AsTimespec_clamp(deadline, &ts);
 
         err = sem_clockwait(&sema->platform_sem, CLOCK_MONOTONIC, &ts);
 #else
-        PyTime_t now;
+        TyTime_t now;
         // silently ignore error: cannot report error to the caller
         (void)PyTime_TimeRaw(&now);
-        PyTime_t deadline = _TyTime_Add(now, timeout);
+        TyTime_t deadline = _TyTime_Add(now, timeout);
 
         _TyTime_AsTimespec_clamp(deadline, &ts);
 
@@ -198,9 +198,9 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
             _TyTime_AsTimespec_clamp(timeout, &ts);
             err = pthread_cond_timedwait_relative_np(&sema->cond, &sema->mutex, &ts);
 #else
-            PyTime_t now;
+            TyTime_t now;
             (void)PyTime_TimeRaw(&now);
-            PyTime_t deadline = _TyTime_Add(now, timeout);
+            TyTime_t deadline = _TyTime_Add(now, timeout);
             _TyTime_AsTimespec_clamp(deadline, &ts);
 
             err = pthread_cond_timedwait(&sema->cond, &sema->mutex, &ts);
@@ -226,7 +226,7 @@ _PySemaphore_PlatformWait(_PySemaphore *sema, PyTime_t timeout)
 }
 
 int
-_PySemaphore_Wait(_PySemaphore *sema, PyTime_t timeout, int detach)
+_PySemaphore_Wait(_PySemaphore *sema, TyTime_t timeout, int detach)
 {
     TyThreadState *tstate = NULL;
     if (detach) {
@@ -323,7 +323,7 @@ atomic_memcmp(const void *addr, const void *expected, size_t addr_size)
 
 int
 _PyParkingLot_Park(const void *addr, const void *expected, size_t size,
-                   PyTime_t timeout_ns, void *park_arg, int detach)
+                   TyTime_t timeout_ns, void *park_arg, int detach)
 {
     struct wait_entry wait = {
         .park_arg = park_arg,

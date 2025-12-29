@@ -118,7 +118,7 @@ ZstdDict_dealloc(TyObject *ob)
     Ty_DECREF(tp);
 }
 
-PyDoc_STRVAR(ZstdDict_dictid_doc,
+TyDoc_STRVAR(ZstdDict_dictid_doc,
 "the Zstandard dictionary, an int between 0 and 2**32.\n\n"
 "A non-zero value represents an ordinary Zstandard dictionary, "
 "conforming to the standardised format.\n\n"

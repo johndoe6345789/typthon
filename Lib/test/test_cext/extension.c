@@ -13,7 +13,7 @@
 #define _STR(NAME) #NAME
 #define STR(NAME) _STR(NAME)
 
-PyDoc_STRVAR(_testcext_add_doc,
+TyDoc_STRVAR(_testcext_add_doc,
 "add(x, y)\n"
 "\n"
 "Return the sum of two integers: x + y.");
@@ -77,7 +77,7 @@ static PyModuleDef_Slot _testcext_slots[] = {
 _Ty_COMP_DIAG_POP
 
 
-PyDoc_STRVAR(_testcext_doc, "C test extension.");
+TyDoc_STRVAR(_testcext_doc, "C test extension.");
 
 static struct TyModuleDef _testcext_module = {
     PyModuleDef_HEAD_INIT,  // m_base

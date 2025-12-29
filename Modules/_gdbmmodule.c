@@ -58,7 +58,7 @@ class _gdbm.gdbm "gdbmobject *" "&Gdbmtype"
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=38ae71cedfc7172b]*/
 
-PyDoc_STRVAR(gdbmmodule__doc__,
+TyDoc_STRVAR(gdbmmodule__doc__,
 "This module provides an interface to the GNU DBM (GDBM) library.\n\
 \n\
 This module is quite similar to the dbm module, but uses GDBM instead to\n\
@@ -86,7 +86,7 @@ typedef struct {
         return NULL;                                                 \
     }
 
-PyDoc_STRVAR(gdbm_object__doc__,
+TyDoc_STRVAR(gdbm_object__doc__,
 "This object represents a GDBM database.\n\
 GDBM objects behave like mappings (dictionaries), except that keys and\n\
 values are always immutable bytes-like objects or strings.  Printing\n\

@@ -5,7 +5,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_testinternalcapi_benchmark_locks__doc__,
+TyDoc_STRVAR(_testinternalcapi_benchmark_locks__doc__,
 "benchmark_locks($module, num_threads, use_pymutex=True,\n"
 "                critical_section_length=1, time_ms=1000, /)\n"
 "--\n"

@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_testcapi_watch_dict__doc__,
+TyDoc_STRVAR(_testcapi_watch_dict__doc__,
 "watch_dict($module, watcher_id, dict, /)\n"
 "--\n"
 "\n");
@@ -36,7 +36,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_unwatch_dict__doc__,
+TyDoc_STRVAR(_testcapi_unwatch_dict__doc__,
 "unwatch_dict($module, watcher_id, dict, /)\n"
 "--\n"
 "\n");
@@ -68,7 +68,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_watch_type__doc__,
+TyDoc_STRVAR(_testcapi_watch_type__doc__,
 "watch_type($module, watcher_id, type, /)\n"
 "--\n"
 "\n");
@@ -100,7 +100,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_unwatch_type__doc__,
+TyDoc_STRVAR(_testcapi_unwatch_type__doc__,
 "unwatch_type($module, watcher_id, type, /)\n"
 "--\n"
 "\n");
@@ -132,7 +132,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_set_func_defaults_via_capi__doc__,
+TyDoc_STRVAR(_testcapi_set_func_defaults_via_capi__doc__,
 "set_func_defaults_via_capi($module, func, defaults, /)\n"
 "--\n"
 "\n");
@@ -162,7 +162,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_set_func_kwdefaults_via_capi__doc__,
+TyDoc_STRVAR(_testcapi_set_func_kwdefaults_via_capi__doc__,
 "set_func_kwdefaults_via_capi($module, func, defaults, /)\n"
 "--\n"
 "\n");

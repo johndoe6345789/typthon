@@ -491,13 +491,13 @@ static TyMemberDef weakref_members[] = {
 
 static TyMethodDef weakref_methods[] = {
     {"__class_getitem__",    Ty_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     {NULL} /* Sentinel */
 };
 
 TyTypeObject
 _TyWeakref_RefType = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "weakref.ReferenceType",
     .tp_basicsize = sizeof(PyWeakReference),
     .tp_dealloc = weakref_dealloc,
@@ -850,7 +850,7 @@ static PyMappingMethods proxy_as_mapping = {
 
 TyTypeObject
 _TyWeakref_ProxyType = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "weakref.ProxyType",
     sizeof(PyWeakReference),
     0,
@@ -885,7 +885,7 @@ _TyWeakref_ProxyType = {
 
 TyTypeObject
 _TyWeakref_CallableProxyType = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "weakref.CallableProxyType",
     sizeof(PyWeakReference),
     0,
@@ -1101,7 +1101,7 @@ PyUnstable_Object_ClearWeakRefsNoCallbacks(TyObject *obj)
  * or anything else.
  */
 void
-_PyStaticType_ClearWeakRefs(PyInterpreterState *interp, TyTypeObject *type)
+_PyStaticType_ClearWeakRefs(TyInterpreterState *interp, TyTypeObject *type)
 {
     managed_static_type_state *state = _PyStaticType_GetState(interp, type);
     TyObject **list = _PyStaticType_GET_WEAKREFS_LISTPTR(state);

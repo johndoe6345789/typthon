@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_curses_window_addch__doc__,
+TyDoc_STRVAR(_curses_window_addch__doc__,
 "addch([y, x,] ch, [attr=_curses.A_NORMAL])\n"
 "Paint the character.\n"
 "\n"
@@ -80,7 +80,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_addstr__doc__,
+TyDoc_STRVAR(_curses_window_addstr__doc__,
 "addstr([y, x,] str, [attr])\n"
 "Paint the string.\n"
 "\n"
@@ -152,7 +152,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_addnstr__doc__,
+TyDoc_STRVAR(_curses_window_addnstr__doc__,
 "addnstr([y, x,] str, n, [attr])\n"
 "Paint at most n characters of the string.\n"
 "\n"
@@ -227,7 +227,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_bkgd__doc__,
+TyDoc_STRVAR(_curses_window_bkgd__doc__,
 "bkgd($self, ch, attr=_curses.A_NORMAL, /)\n"
 "--\n"
 "\n"
@@ -269,7 +269,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_attroff__doc__,
+TyDoc_STRVAR(_curses_window_attroff__doc__,
 "attroff($self, attr, /)\n"
 "--\n"
 "\n"
@@ -297,7 +297,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_attron__doc__,
+TyDoc_STRVAR(_curses_window_attron__doc__,
 "attron($self, attr, /)\n"
 "--\n"
 "\n"
@@ -325,7 +325,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_attrset__doc__,
+TyDoc_STRVAR(_curses_window_attrset__doc__,
 "attrset($self, attr, /)\n"
 "--\n"
 "\n"
@@ -353,7 +353,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_bkgdset__doc__,
+TyDoc_STRVAR(_curses_window_bkgdset__doc__,
 "bkgdset($self, ch, attr=_curses.A_NORMAL, /)\n"
 "--\n"
 "\n"
@@ -396,7 +396,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_border__doc__,
+TyDoc_STRVAR(_curses_window_border__doc__,
 "border($self, ls=_curses.ACS_VLINE, rs=_curses.ACS_VLINE,\n"
 "       ts=_curses.ACS_HLINE, bs=_curses.ACS_HLINE,\n"
 "       tl=_curses.ACS_ULCORNER, tr=_curses.ACS_URCORNER,\n"
@@ -491,7 +491,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_box__doc__,
+TyDoc_STRVAR(_curses_window_box__doc__,
 "box([verch=0, horch=0])\n"
 "Draw a border around the edges of the window.\n"
 "\n"
@@ -537,7 +537,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_delch__doc__,
+TyDoc_STRVAR(_curses_window_delch__doc__,
 "delch([y, x])\n"
 "Delete any character at (y, x).\n"
 "\n"
@@ -580,7 +580,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_derwin__doc__,
+TyDoc_STRVAR(_curses_window_derwin__doc__,
 "derwin([nlines=0, ncols=0,] begin_y, begin_x)\n"
 "Create a sub-window (window-relative coordinates).\n"
 "\n"
@@ -636,7 +636,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_echochar__doc__,
+TyDoc_STRVAR(_curses_window_echochar__doc__,
 "echochar($self, ch, attr=_curses.A_NORMAL, /)\n"
 "--\n"
 "\n"
@@ -681,7 +681,7 @@ exit:
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_window_enclose__doc__,
+TyDoc_STRVAR(_curses_window_enclose__doc__,
 "enclose($self, y, x, /)\n"
 "--\n"
 "\n"
@@ -724,7 +724,7 @@ exit:
 
 #endif /* defined(NCURSES_MOUSE_VERSION) */
 
-PyDoc_STRVAR(_curses_window_getbkgd__doc__,
+TyDoc_STRVAR(_curses_window_getbkgd__doc__,
 "getbkgd($self, /)\n"
 "--\n"
 "\n"
@@ -752,7 +752,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_getch__doc__,
+TyDoc_STRVAR(_curses_window_getch__doc__,
 "getch([y, x])\n"
 "Get a character code from terminal keyboard.\n"
 "\n"
@@ -799,7 +799,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_getkey__doc__,
+TyDoc_STRVAR(_curses_window_getkey__doc__,
 "getkey([y, x])\n"
 "Get a character (string) from terminal keyboard.\n"
 "\n"
@@ -848,7 +848,7 @@ exit:
 
 #if defined(HAVE_NCURSESW)
 
-PyDoc_STRVAR(_curses_window_get_wch__doc__,
+TyDoc_STRVAR(_curses_window_get_wch__doc__,
 "get_wch([y, x])\n"
 "Get a wide character from terminal keyboard.\n"
 "\n"
@@ -896,7 +896,7 @@ exit:
 
 #endif /* defined(HAVE_NCURSESW) */
 
-PyDoc_STRVAR(_curses_window_hline__doc__,
+TyDoc_STRVAR(_curses_window_hline__doc__,
 "hline([y, x,] ch, n, [attr=_curses.A_NORMAL])\n"
 "Display a horizontal line.\n"
 "\n"
@@ -966,7 +966,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_insch__doc__,
+TyDoc_STRVAR(_curses_window_insch__doc__,
 "insch([y, x,] ch, [attr=_curses.A_NORMAL])\n"
 "Insert a character before the current or specified position.\n"
 "\n"
@@ -1036,7 +1036,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_inch__doc__,
+TyDoc_STRVAR(_curses_window_inch__doc__,
 "inch([y, x])\n"
 "Return the character at the given position in the window.\n"
 "\n"
@@ -1086,7 +1086,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_insstr__doc__,
+TyDoc_STRVAR(_curses_window_insstr__doc__,
 "insstr([y, x,] str, [attr])\n"
 "Insert the string before the current or specified position.\n"
 "\n"
@@ -1159,7 +1159,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_insnstr__doc__,
+TyDoc_STRVAR(_curses_window_insnstr__doc__,
 "insnstr([y, x,] str, n, [attr])\n"
 "Insert at most n characters of the string.\n"
 "\n"
@@ -1236,7 +1236,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_is_linetouched__doc__,
+TyDoc_STRVAR(_curses_window_is_linetouched__doc__,
 "is_linetouched($self, line, /)\n"
 "--\n"
 "\n"
@@ -1271,7 +1271,7 @@ exit:
 
 #if defined(py_is_pad)
 
-PyDoc_STRVAR(_curses_window_noutrefresh__doc__,
+TyDoc_STRVAR(_curses_window_noutrefresh__doc__,
 "noutrefresh([pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol])\n"
 "Mark for refresh but wait.\n"
 "\n"
@@ -1323,7 +1323,7 @@ exit:
 
 #if !defined(py_is_pad)
 
-PyDoc_STRVAR(_curses_window_noutrefresh__doc__,
+TyDoc_STRVAR(_curses_window_noutrefresh__doc__,
 "noutrefresh($self, /)\n"
 "--\n"
 "\n"
@@ -1347,7 +1347,7 @@ _curses_window_noutrefresh(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #endif /* !defined(py_is_pad) */
 
-PyDoc_STRVAR(_curses_window_overlay__doc__,
+TyDoc_STRVAR(_curses_window_overlay__doc__,
 "overlay(destwin, [sminrow, smincol, dminrow, dmincol, dmaxrow, dmaxcol])\n"
 "Overlay the window on top of destwin.\n"
 "\n"
@@ -1404,7 +1404,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_overwrite__doc__,
+TyDoc_STRVAR(_curses_window_overwrite__doc__,
 "overwrite(destwin, [sminrow, smincol, dminrow, dmincol, dmaxrow,\n"
 "          dmaxcol])\n"
 "Overwrite the window on top of destwin.\n"
@@ -1463,7 +1463,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_putwin__doc__,
+TyDoc_STRVAR(_curses_window_putwin__doc__,
 "putwin($self, file, /)\n"
 "--\n"
 "\n"
@@ -1487,7 +1487,7 @@ _curses_window_putwin(TyObject *self, TyObject *file)
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_redrawln__doc__,
+TyDoc_STRVAR(_curses_window_redrawln__doc__,
 "redrawln($self, beg, num, /)\n"
 "--\n"
 "\n"
@@ -1530,7 +1530,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_refresh__doc__,
+TyDoc_STRVAR(_curses_window_refresh__doc__,
 "refresh([pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol])\n"
 "Update the display immediately.\n"
 "\n"
@@ -1585,7 +1585,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_setscrreg__doc__,
+TyDoc_STRVAR(_curses_window_setscrreg__doc__,
 "setscrreg($self, top, bottom, /)\n"
 "--\n"
 "\n"
@@ -1629,7 +1629,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_subwin__doc__,
+TyDoc_STRVAR(_curses_window_subwin__doc__,
 "subwin([nlines=0, ncols=0,] begin_y, begin_x)\n"
 "Create a sub-window (screen-relative coordinates).\n"
 "\n"
@@ -1684,7 +1684,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_scroll__doc__,
+TyDoc_STRVAR(_curses_window_scroll__doc__,
 "scroll([lines=1])\n"
 "Scroll the screen or scrolling region.\n"
 "\n"
@@ -1726,7 +1726,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_touchline__doc__,
+TyDoc_STRVAR(_curses_window_touchline__doc__,
 "touchline(start, count, [changed=True])\n"
 "Pretend count lines have been changed, starting with line start.\n"
 "\n"
@@ -1771,7 +1771,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_window_vline__doc__,
+TyDoc_STRVAR(_curses_window_vline__doc__,
 "vline([y, x,] ch, n, [attr=_curses.A_NORMAL])\n"
 "Display a vertical line.\n"
 "\n"
@@ -1843,7 +1843,7 @@ exit:
 
 #if defined(HAVE_CURSES_FILTER)
 
-PyDoc_STRVAR(_curses_filter__doc__,
+TyDoc_STRVAR(_curses_filter__doc__,
 "filter($module, /)\n"
 "--\n"
 "\n");
@@ -1862,7 +1862,7 @@ _curses_filter(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* defined(HAVE_CURSES_FILTER) */
 
-PyDoc_STRVAR(_curses_baudrate__doc__,
+TyDoc_STRVAR(_curses_baudrate__doc__,
 "baudrate($module, /)\n"
 "--\n"
 "\n"
@@ -1880,7 +1880,7 @@ _curses_baudrate(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_baudrate_impl(module);
 }
 
-PyDoc_STRVAR(_curses_beep__doc__,
+TyDoc_STRVAR(_curses_beep__doc__,
 "beep($module, /)\n"
 "--\n"
 "\n"
@@ -1898,7 +1898,7 @@ _curses_beep(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_beep_impl(module);
 }
 
-PyDoc_STRVAR(_curses_can_change_color__doc__,
+TyDoc_STRVAR(_curses_can_change_color__doc__,
 "can_change_color($module, /)\n"
 "--\n"
 "\n"
@@ -1916,7 +1916,7 @@ _curses_can_change_color(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_can_change_color_impl(module);
 }
 
-PyDoc_STRVAR(_curses_cbreak__doc__,
+TyDoc_STRVAR(_curses_cbreak__doc__,
 "cbreak($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -1960,7 +1960,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_color_content__doc__,
+TyDoc_STRVAR(_curses_color_content__doc__,
 "color_content($module, color_number, /)\n"
 "--\n"
 "\n"
@@ -1993,7 +1993,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_color_pair__doc__,
+TyDoc_STRVAR(_curses_color_pair__doc__,
 "color_pair($module, pair_number, /)\n"
 "--\n"
 "\n"
@@ -2027,7 +2027,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_curs_set__doc__,
+TyDoc_STRVAR(_curses_curs_set__doc__,
 "curs_set($module, visibility, /)\n"
 "--\n"
 "\n"
@@ -2063,7 +2063,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_def_prog_mode__doc__,
+TyDoc_STRVAR(_curses_def_prog_mode__doc__,
 "def_prog_mode($module, /)\n"
 "--\n"
 "\n"
@@ -2085,7 +2085,7 @@ _curses_def_prog_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_def_prog_mode_impl(module);
 }
 
-PyDoc_STRVAR(_curses_def_shell_mode__doc__,
+TyDoc_STRVAR(_curses_def_shell_mode__doc__,
 "def_shell_mode($module, /)\n"
 "--\n"
 "\n"
@@ -2107,7 +2107,7 @@ _curses_def_shell_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_def_shell_mode_impl(module);
 }
 
-PyDoc_STRVAR(_curses_delay_output__doc__,
+TyDoc_STRVAR(_curses_delay_output__doc__,
 "delay_output($module, ms, /)\n"
 "--\n"
 "\n"
@@ -2138,7 +2138,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_doupdate__doc__,
+TyDoc_STRVAR(_curses_doupdate__doc__,
 "doupdate($module, /)\n"
 "--\n"
 "\n"
@@ -2156,7 +2156,7 @@ _curses_doupdate(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_doupdate_impl(module);
 }
 
-PyDoc_STRVAR(_curses_echo__doc__,
+TyDoc_STRVAR(_curses_echo__doc__,
 "echo($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -2196,7 +2196,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_endwin__doc__,
+TyDoc_STRVAR(_curses_endwin__doc__,
 "endwin($module, /)\n"
 "--\n"
 "\n"
@@ -2214,7 +2214,7 @@ _curses_endwin(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_endwin_impl(module);
 }
 
-PyDoc_STRVAR(_curses_erasechar__doc__,
+TyDoc_STRVAR(_curses_erasechar__doc__,
 "erasechar($module, /)\n"
 "--\n"
 "\n"
@@ -2232,7 +2232,7 @@ _curses_erasechar(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_erasechar_impl(module);
 }
 
-PyDoc_STRVAR(_curses_flash__doc__,
+TyDoc_STRVAR(_curses_flash__doc__,
 "flash($module, /)\n"
 "--\n"
 "\n"
@@ -2252,7 +2252,7 @@ _curses_flash(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_flash_impl(module);
 }
 
-PyDoc_STRVAR(_curses_flushinp__doc__,
+TyDoc_STRVAR(_curses_flushinp__doc__,
 "flushinp($module, /)\n"
 "--\n"
 "\n"
@@ -2275,7 +2275,7 @@ _curses_flushinp(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(getsyx)
 
-PyDoc_STRVAR(_curses_getsyx__doc__,
+TyDoc_STRVAR(_curses_getsyx__doc__,
 "getsyx($module, /)\n"
 "--\n"
 "\n"
@@ -2299,7 +2299,7 @@ _curses_getsyx(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_getmouse__doc__,
+TyDoc_STRVAR(_curses_getmouse__doc__,
 "getmouse($module, /)\n"
 "--\n"
 "\n"
@@ -2324,7 +2324,7 @@ _curses_getmouse(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_ungetmouse__doc__,
+TyDoc_STRVAR(_curses_ungetmouse__doc__,
 "ungetmouse($module, id, x, y, z, bstate, /)\n"
 "--\n"
 "\n"
@@ -2396,7 +2396,7 @@ exit:
 
 #endif /* defined(NCURSES_MOUSE_VERSION) */
 
-PyDoc_STRVAR(_curses_getwin__doc__,
+TyDoc_STRVAR(_curses_getwin__doc__,
 "getwin($module, file, /)\n"
 "--\n"
 "\n"
@@ -2408,7 +2408,7 @@ PyDoc_STRVAR(_curses_getwin__doc__,
 #define _CURSES_GETWIN_METHODDEF    \
     {"getwin", (PyCFunction)_curses_getwin, METH_O, _curses_getwin__doc__},
 
-PyDoc_STRVAR(_curses_halfdelay__doc__,
+TyDoc_STRVAR(_curses_halfdelay__doc__,
 "halfdelay($module, tenths, /)\n"
 "--\n"
 "\n"
@@ -2456,7 +2456,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_has_colors__doc__,
+TyDoc_STRVAR(_curses_has_colors__doc__,
 "has_colors($module, /)\n"
 "--\n"
 "\n"
@@ -2474,7 +2474,7 @@ _curses_has_colors(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_has_colors_impl(module);
 }
 
-PyDoc_STRVAR(_curses_has_ic__doc__,
+TyDoc_STRVAR(_curses_has_ic__doc__,
 "has_ic($module, /)\n"
 "--\n"
 "\n"
@@ -2492,7 +2492,7 @@ _curses_has_ic(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_has_ic_impl(module);
 }
 
-PyDoc_STRVAR(_curses_has_il__doc__,
+TyDoc_STRVAR(_curses_has_il__doc__,
 "has_il($module, /)\n"
 "--\n"
 "\n"
@@ -2512,7 +2512,7 @@ _curses_has_il(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_CURSES_HAS_KEY)
 
-PyDoc_STRVAR(_curses_has_key__doc__,
+TyDoc_STRVAR(_curses_has_key__doc__,
 "has_key($module, key, /)\n"
 "--\n"
 "\n"
@@ -2545,7 +2545,7 @@ exit:
 
 #endif /* defined(HAVE_CURSES_HAS_KEY) */
 
-PyDoc_STRVAR(_curses_init_color__doc__,
+TyDoc_STRVAR(_curses_init_color__doc__,
 "init_color($module, color_number, r, g, b, /)\n"
 "--\n"
 "\n"
@@ -2601,7 +2601,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_init_pair__doc__,
+TyDoc_STRVAR(_curses_init_pair__doc__,
 "init_pair($module, pair_number, fg, bg, /)\n"
 "--\n"
 "\n"
@@ -2649,7 +2649,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_initscr__doc__,
+TyDoc_STRVAR(_curses_initscr__doc__,
 "initscr($module, /)\n"
 "--\n"
 "\n"
@@ -2669,7 +2669,7 @@ _curses_initscr(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_initscr_impl(module);
 }
 
-PyDoc_STRVAR(_curses_setupterm__doc__,
+TyDoc_STRVAR(_curses_setupterm__doc__,
 "setupterm($module, /, term=None, fd=-1)\n"
 "--\n"
 "\n"
@@ -2701,7 +2701,7 @@ _curses_setupterm(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(term), &_Ty_ID(fd), },
     };
@@ -2768,7 +2768,7 @@ exit:
 
 #if (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102)
 
-PyDoc_STRVAR(_curses_get_escdelay__doc__,
+TyDoc_STRVAR(_curses_get_escdelay__doc__,
 "get_escdelay($module, /)\n"
 "--\n"
 "\n"
@@ -2794,7 +2794,7 @@ _curses_get_escdelay(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102)
 
-PyDoc_STRVAR(_curses_set_escdelay__doc__,
+TyDoc_STRVAR(_curses_set_escdelay__doc__,
 "set_escdelay($module, ms, /)\n"
 "--\n"
 "\n"
@@ -2833,7 +2833,7 @@ exit:
 
 #if (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102)
 
-PyDoc_STRVAR(_curses_get_tabsize__doc__,
+TyDoc_STRVAR(_curses_get_tabsize__doc__,
 "get_tabsize($module, /)\n"
 "--\n"
 "\n"
@@ -2858,7 +2858,7 @@ _curses_get_tabsize(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102)
 
-PyDoc_STRVAR(_curses_set_tabsize__doc__,
+TyDoc_STRVAR(_curses_set_tabsize__doc__,
 "set_tabsize($module, size, /)\n"
 "--\n"
 "\n"
@@ -2894,7 +2894,7 @@ exit:
 
 #endif /* (defined(NCURSES_EXT_FUNCS) && NCURSES_EXT_FUNCS >= 20081102) */
 
-PyDoc_STRVAR(_curses_intrflush__doc__,
+TyDoc_STRVAR(_curses_intrflush__doc__,
 "intrflush($module, flag, /)\n"
 "--\n"
 "\n");
@@ -2921,7 +2921,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_isendwin__doc__,
+TyDoc_STRVAR(_curses_isendwin__doc__,
 "isendwin($module, /)\n"
 "--\n"
 "\n"
@@ -2941,7 +2941,7 @@ _curses_isendwin(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_CURSES_IS_TERM_RESIZED)
 
-PyDoc_STRVAR(_curses_is_term_resized__doc__,
+TyDoc_STRVAR(_curses_is_term_resized__doc__,
 "is_term_resized($module, nlines, ncols, /)\n"
 "--\n"
 "\n"
@@ -2984,7 +2984,7 @@ exit:
 
 #endif /* defined(HAVE_CURSES_IS_TERM_RESIZED) */
 
-PyDoc_STRVAR(_curses_keyname__doc__,
+TyDoc_STRVAR(_curses_keyname__doc__,
 "keyname($module, key, /)\n"
 "--\n"
 "\n"
@@ -3015,7 +3015,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_killchar__doc__,
+TyDoc_STRVAR(_curses_killchar__doc__,
 "killchar($module, /)\n"
 "--\n"
 "\n"
@@ -3033,7 +3033,7 @@ _curses_killchar(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_killchar_impl(module);
 }
 
-PyDoc_STRVAR(_curses_longname__doc__,
+TyDoc_STRVAR(_curses_longname__doc__,
 "longname($module, /)\n"
 "--\n"
 "\n"
@@ -3054,7 +3054,7 @@ _curses_longname(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_longname_impl(module);
 }
 
-PyDoc_STRVAR(_curses_meta__doc__,
+TyDoc_STRVAR(_curses_meta__doc__,
 "meta($module, yes, /)\n"
 "--\n"
 "\n"
@@ -3087,7 +3087,7 @@ exit:
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_mouseinterval__doc__,
+TyDoc_STRVAR(_curses_mouseinterval__doc__,
 "mouseinterval($module, interval, /)\n"
 "--\n"
 "\n"
@@ -3126,7 +3126,7 @@ exit:
 
 #if defined(NCURSES_MOUSE_VERSION)
 
-PyDoc_STRVAR(_curses_mousemask__doc__,
+TyDoc_STRVAR(_curses_mousemask__doc__,
 "mousemask($module, newmask, /)\n"
 "--\n"
 "\n"
@@ -3162,7 +3162,7 @@ exit:
 
 #endif /* defined(NCURSES_MOUSE_VERSION) */
 
-PyDoc_STRVAR(_curses_napms__doc__,
+TyDoc_STRVAR(_curses_napms__doc__,
 "napms($module, ms, /)\n"
 "--\n"
 "\n"
@@ -3198,7 +3198,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_newpad__doc__,
+TyDoc_STRVAR(_curses_newpad__doc__,
 "newpad($module, nlines, ncols, /)\n"
 "--\n"
 "\n"
@@ -3239,7 +3239,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_newwin__doc__,
+TyDoc_STRVAR(_curses_newwin__doc__,
 "newwin(nlines, ncols, [begin_y=0, begin_x=0])\n"
 "Return a new window.\n"
 "\n"
@@ -3294,7 +3294,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_nl__doc__,
+TyDoc_STRVAR(_curses_nl__doc__,
 "nl($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -3335,7 +3335,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_nocbreak__doc__,
+TyDoc_STRVAR(_curses_nocbreak__doc__,
 "nocbreak($module, /)\n"
 "--\n"
 "\n"
@@ -3355,7 +3355,7 @@ _curses_nocbreak(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_nocbreak_impl(module);
 }
 
-PyDoc_STRVAR(_curses_noecho__doc__,
+TyDoc_STRVAR(_curses_noecho__doc__,
 "noecho($module, /)\n"
 "--\n"
 "\n"
@@ -3375,7 +3375,7 @@ _curses_noecho(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_noecho_impl(module);
 }
 
-PyDoc_STRVAR(_curses_nonl__doc__,
+TyDoc_STRVAR(_curses_nonl__doc__,
 "nonl($module, /)\n"
 "--\n"
 "\n"
@@ -3396,7 +3396,7 @@ _curses_nonl(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_nonl_impl(module);
 }
 
-PyDoc_STRVAR(_curses_noqiflush__doc__,
+TyDoc_STRVAR(_curses_noqiflush__doc__,
 "noqiflush($module, /)\n"
 "--\n"
 "\n"
@@ -3417,7 +3417,7 @@ _curses_noqiflush(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_noqiflush_impl(module);
 }
 
-PyDoc_STRVAR(_curses_noraw__doc__,
+TyDoc_STRVAR(_curses_noraw__doc__,
 "noraw($module, /)\n"
 "--\n"
 "\n"
@@ -3437,7 +3437,7 @@ _curses_noraw(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_noraw_impl(module);
 }
 
-PyDoc_STRVAR(_curses_pair_content__doc__,
+TyDoc_STRVAR(_curses_pair_content__doc__,
 "pair_content($module, pair_number, /)\n"
 "--\n"
 "\n"
@@ -3467,7 +3467,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_pair_number__doc__,
+TyDoc_STRVAR(_curses_pair_number__doc__,
 "pair_number($module, attr, /)\n"
 "--\n"
 "\n"
@@ -3497,7 +3497,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_putp__doc__,
+TyDoc_STRVAR(_curses_putp__doc__,
 "putp($module, string, /)\n"
 "--\n"
 "\n"
@@ -3526,7 +3526,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_qiflush__doc__,
+TyDoc_STRVAR(_curses_qiflush__doc__,
 "qiflush($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -3569,7 +3569,7 @@ exit:
 
 #if (defined(HAVE_CURSES_RESIZETERM) || defined(HAVE_CURSES_RESIZE_TERM))
 
-PyDoc_STRVAR(_curses_update_lines_cols__doc__,
+TyDoc_STRVAR(_curses_update_lines_cols__doc__,
 "update_lines_cols($module, /)\n"
 "--\n"
 "\n");
@@ -3588,7 +3588,7 @@ _curses_update_lines_cols(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #endif /* (defined(HAVE_CURSES_RESIZETERM) || defined(HAVE_CURSES_RESIZE_TERM)) */
 
-PyDoc_STRVAR(_curses_raw__doc__,
+TyDoc_STRVAR(_curses_raw__doc__,
 "raw($module, flag=True, /)\n"
 "--\n"
 "\n"
@@ -3630,7 +3630,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_reset_prog_mode__doc__,
+TyDoc_STRVAR(_curses_reset_prog_mode__doc__,
 "reset_prog_mode($module, /)\n"
 "--\n"
 "\n"
@@ -3648,7 +3648,7 @@ _curses_reset_prog_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_reset_prog_mode_impl(module);
 }
 
-PyDoc_STRVAR(_curses_reset_shell_mode__doc__,
+TyDoc_STRVAR(_curses_reset_shell_mode__doc__,
 "reset_shell_mode($module, /)\n"
 "--\n"
 "\n"
@@ -3666,7 +3666,7 @@ _curses_reset_shell_mode(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_reset_shell_mode_impl(module);
 }
 
-PyDoc_STRVAR(_curses_resetty__doc__,
+TyDoc_STRVAR(_curses_resetty__doc__,
 "resetty($module, /)\n"
 "--\n"
 "\n"
@@ -3686,7 +3686,7 @@ _curses_resetty(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_CURSES_RESIZETERM)
 
-PyDoc_STRVAR(_curses_resizeterm__doc__,
+TyDoc_STRVAR(_curses_resizeterm__doc__,
 "resizeterm($module, nlines, ncols, /)\n"
 "--\n"
 "\n"
@@ -3764,7 +3764,7 @@ exit:
 
 #if defined(HAVE_CURSES_RESIZE_TERM)
 
-PyDoc_STRVAR(_curses_resize_term__doc__,
+TyDoc_STRVAR(_curses_resize_term__doc__,
 "resize_term($module, nlines, ncols, /)\n"
 "--\n"
 "\n"
@@ -3843,7 +3843,7 @@ exit:
 
 #endif /* defined(HAVE_CURSES_RESIZE_TERM) */
 
-PyDoc_STRVAR(_curses_savetty__doc__,
+TyDoc_STRVAR(_curses_savetty__doc__,
 "savetty($module, /)\n"
 "--\n"
 "\n"
@@ -3863,7 +3863,7 @@ _curses_savetty(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if defined(getsyx)
 
-PyDoc_STRVAR(_curses_setsyx__doc__,
+TyDoc_STRVAR(_curses_setsyx__doc__,
 "setsyx($module, y, x, /)\n"
 "--\n"
 "\n"
@@ -3908,7 +3908,7 @@ exit:
 
 #endif /* defined(getsyx) */
 
-PyDoc_STRVAR(_curses_start_color__doc__,
+TyDoc_STRVAR(_curses_start_color__doc__,
 "start_color($module, /)\n"
 "--\n"
 "\n"
@@ -3933,7 +3933,7 @@ _curses_start_color(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_start_color_impl(module);
 }
 
-PyDoc_STRVAR(_curses_termattrs__doc__,
+TyDoc_STRVAR(_curses_termattrs__doc__,
 "termattrs($module, /)\n"
 "--\n"
 "\n"
@@ -3951,7 +3951,7 @@ _curses_termattrs(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_termattrs_impl(module);
 }
 
-PyDoc_STRVAR(_curses_termname__doc__,
+TyDoc_STRVAR(_curses_termname__doc__,
 "termname($module, /)\n"
 "--\n"
 "\n"
@@ -3969,7 +3969,7 @@ _curses_termname(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _curses_termname_impl(module);
 }
 
-PyDoc_STRVAR(_curses_tigetflag__doc__,
+TyDoc_STRVAR(_curses_tigetflag__doc__,
 "tigetflag($module, capname, /)\n"
 "--\n"
 "\n"
@@ -4012,7 +4012,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_tigetnum__doc__,
+TyDoc_STRVAR(_curses_tigetnum__doc__,
 "tigetnum($module, capname, /)\n"
 "--\n"
 "\n"
@@ -4055,7 +4055,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_tigetstr__doc__,
+TyDoc_STRVAR(_curses_tigetstr__doc__,
 "tigetstr($module, capname, /)\n"
 "--\n"
 "\n"
@@ -4098,7 +4098,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_curses_tparm__doc__,
+TyDoc_STRVAR(_curses_tparm__doc__,
 "tparm($module, str, i1=0, i2=0, i3=0, i4=0, i5=0, i6=0, i7=0, i8=0,\n"
 "      i9=0, /)\n"
 "--\n"
@@ -4142,7 +4142,7 @@ exit:
 
 #if defined(HAVE_CURSES_TYPEAHEAD)
 
-PyDoc_STRVAR(_curses_typeahead__doc__,
+TyDoc_STRVAR(_curses_typeahead__doc__,
 "typeahead($module, fd, /)\n"
 "--\n"
 "\n"
@@ -4177,7 +4177,7 @@ exit:
 
 #endif /* defined(HAVE_CURSES_TYPEAHEAD) */
 
-PyDoc_STRVAR(_curses_unctrl__doc__,
+TyDoc_STRVAR(_curses_unctrl__doc__,
 "unctrl($module, ch, /)\n"
 "--\n"
 "\n"
@@ -4189,7 +4189,7 @@ PyDoc_STRVAR(_curses_unctrl__doc__,
 #define _CURSES_UNCTRL_METHODDEF    \
     {"unctrl", (PyCFunction)_curses_unctrl, METH_O, _curses_unctrl__doc__},
 
-PyDoc_STRVAR(_curses_ungetch__doc__,
+TyDoc_STRVAR(_curses_ungetch__doc__,
 "ungetch($module, ch, /)\n"
 "--\n"
 "\n"
@@ -4200,7 +4200,7 @@ PyDoc_STRVAR(_curses_ungetch__doc__,
 
 #if defined(HAVE_NCURSESW)
 
-PyDoc_STRVAR(_curses_unget_wch__doc__,
+TyDoc_STRVAR(_curses_unget_wch__doc__,
 "unget_wch($module, ch, /)\n"
 "--\n"
 "\n"
@@ -4213,7 +4213,7 @@ PyDoc_STRVAR(_curses_unget_wch__doc__,
 
 #if defined(HAVE_CURSES_USE_ENV)
 
-PyDoc_STRVAR(_curses_use_env__doc__,
+TyDoc_STRVAR(_curses_use_env__doc__,
 "use_env($module, flag, /)\n"
 "--\n"
 "\n"
@@ -4254,7 +4254,7 @@ exit:
 
 #if !defined(STRICT_SYSV_CURSES)
 
-PyDoc_STRVAR(_curses_use_default_colors__doc__,
+TyDoc_STRVAR(_curses_use_default_colors__doc__,
 "use_default_colors($module, /)\n"
 "--\n"
 "\n"
@@ -4276,7 +4276,7 @@ _curses_use_default_colors(TyObject *module, TyObject *Py_UNUSED(ignored))
 
 #if !defined(STRICT_SYSV_CURSES)
 
-PyDoc_STRVAR(_curses_assume_default_colors__doc__,
+TyDoc_STRVAR(_curses_assume_default_colors__doc__,
 "assume_default_colors($module, fg, bg, /)\n"
 "--\n"
 "\n"
@@ -4319,7 +4319,7 @@ exit:
 
 #endif /* !defined(STRICT_SYSV_CURSES) */
 
-PyDoc_STRVAR(_curses_has_extended_color_support__doc__,
+TyDoc_STRVAR(_curses_has_extended_color_support__doc__,
 "has_extended_color_support($module, /)\n"
 "--\n"
 "\n"

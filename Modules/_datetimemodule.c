@@ -125,7 +125,7 @@ get_module_state(TyObject *module)
 #define INTERP_KEY ((TyObject *)&_Ty_ID(cached_datetime_module))
 
 static TyObject *
-get_current_module(PyInterpreterState *interp)
+get_current_module(TyInterpreterState *interp)
 {
     TyObject *mod = NULL;
 
@@ -158,7 +158,7 @@ static TyModuleDef datetimemodule;
 static datetime_state *
 _get_current_state(TyObject **p_mod)
 {
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     TyObject *mod = get_current_module(interp);
     if (mod == NULL) {
         assert(!TyErr_Occurred());
@@ -183,7 +183,7 @@ _get_current_state(TyObject **p_mod)
     Ty_DECREF(MOD_VAR)
 
 static int
-set_current_module(PyInterpreterState *interp, TyObject *mod)
+set_current_module(TyInterpreterState *interp, TyObject *mod)
 {
     assert(mod != NULL);
     TyObject *dict = TyInterpreterState_GetDict(interp);
@@ -200,7 +200,7 @@ set_current_module(PyInterpreterState *interp, TyObject *mod)
 }
 
 static void
-clear_current_module(PyInterpreterState *interp, TyObject *expected)
+clear_current_module(TyInterpreterState *interp, TyObject *expected)
 {
     TyObject *exc = TyErr_GetRaisedException();
 
@@ -3008,28 +3008,28 @@ delta_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
 static TyMemberDef delta_members[] = {
 
     {"days",         Ty_T_INT, OFFSET(days),         Py_READONLY,
-     PyDoc_STR("Number of days.")},
+     TyDoc_STR("Number of days.")},
 
     {"seconds",      Ty_T_INT, OFFSET(seconds),      Py_READONLY,
-     PyDoc_STR("Number of seconds (>= 0 and less than 1 day).")},
+     TyDoc_STR("Number of seconds (>= 0 and less than 1 day).")},
 
     {"microseconds", Ty_T_INT, OFFSET(microseconds), Py_READONLY,
-     PyDoc_STR("Number of microseconds (>= 0 and less than 1 second).")},
+     TyDoc_STR("Number of microseconds (>= 0 and less than 1 second).")},
     {NULL}
 };
 
 static TyMethodDef delta_methods[] = {
     {"total_seconds", delta_total_seconds, METH_NOARGS,
-     PyDoc_STR("Total seconds in the duration.")},
+     TyDoc_STR("Total seconds in the duration.")},
 
     {"__reduce__", delta_reduce, METH_NOARGS,
-     PyDoc_STR("__reduce__() -> (cls, state)")},
+     TyDoc_STR("__reduce__() -> (cls, state)")},
 
     {NULL,      NULL},
 };
 
 static const char delta_doc[] =
-PyDoc_STR("Difference between two datetime values.\n\n"
+TyDoc_STR("Difference between two datetime values.\n\n"
           "timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, "
           "minutes=0, hours=0, weeks=0)\n\n"
           "All arguments are optional and default to 0.\n"
@@ -3072,7 +3072,7 @@ static PyNumberMethods delta_as_number = {
 };
 
 static TyTypeObject PyDateTime_DeltaType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "datetime.timedelta",                               /* tp_name */
     sizeof(PyDateTime_Delta),                           /* tp_basicsize */
     0,                                                  /* tp_itemsize */
@@ -3600,7 +3600,7 @@ date_isoweekday(TyObject *self, TyObject *Py_UNUSED(dummy))
     return TyLong_FromLong(dow + 1);
 }
 
-PyDoc_STRVAR(iso_calendar_date__doc__,
+TyDoc_STRVAR(iso_calendar_date__doc__,
 "The result of date.isocalendar() or datetime.isocalendar()\n\n\
 This object may be accessed either as a tuple of\n\
   ((year, week, weekday)\n\
@@ -3683,7 +3683,7 @@ static TyGetSetDef iso_calendar_date_getset[] = {
 
 static TyMethodDef iso_calendar_date_methods[] = {
     {"__reduce__", iso_calendar_date_reduce, METH_NOARGS,
-     PyDoc_STR("__reduce__() -> (cls, state)")},
+     TyDoc_STR("__reduce__() -> (cls, state)")},
     {NULL, NULL},
 };
 
@@ -3891,72 +3891,72 @@ static TyMethodDef date_methods[] = {
     DATETIME_DATE_FROMTIMESTAMP_METHODDEF
 
     {"fromordinal", date_fromordinal, METH_VARARGS | METH_CLASS,
-     PyDoc_STR("int -> date corresponding to a proleptic Gregorian "
+     TyDoc_STR("int -> date corresponding to a proleptic Gregorian "
                "ordinal.")},
 
      {"fromisoformat", date_fromisoformat,  METH_O | METH_CLASS,
-      PyDoc_STR("str -> Construct a date from a string in ISO 8601 format.")},
+      TyDoc_STR("str -> Construct a date from a string in ISO 8601 format.")},
 
      {"fromisocalendar", _PyCFunction_CAST(date_fromisocalendar),
       METH_VARARGS | METH_KEYWORDS | METH_CLASS,
-      PyDoc_STR("int, int, int -> Construct a date from the ISO year, week "
+      TyDoc_STR("int, int, int -> Construct a date from the ISO year, week "
                 "number and weekday.\n\n"
                 "This is the inverse of the date.isocalendar() function")},
 
     {"strptime", date_strptime, METH_VARARGS | METH_CLASS,
-     PyDoc_STR("string, format -> new date parsed from a string "
+     TyDoc_STR("string, format -> new date parsed from a string "
                "(like time.strptime()).")},
 
     {"today", date_today, METH_NOARGS | METH_CLASS,
-     PyDoc_STR("Current date or datetime:  same as "
+     TyDoc_STR("Current date or datetime:  same as "
                "self.__class__.fromtimestamp(time.time()).")},
 
     /* Instance methods: */
 
     {"ctime", date_ctime, METH_NOARGS,
-     PyDoc_STR("Return ctime() style string.")},
+     TyDoc_STR("Return ctime() style string.")},
 
     {"strftime", _PyCFunction_CAST(date_strftime), METH_VARARGS | METH_KEYWORDS,
-     PyDoc_STR("format -> strftime() style string.")},
+     TyDoc_STR("format -> strftime() style string.")},
 
     {"__format__", date_format, METH_VARARGS,
-     PyDoc_STR("Formats self with strftime.")},
+     TyDoc_STR("Formats self with strftime.")},
 
     {"timetuple", date_timetuple, METH_NOARGS,
-     PyDoc_STR("Return time tuple, compatible with time.localtime().")},
+     TyDoc_STR("Return time tuple, compatible with time.localtime().")},
 
     {"isocalendar", date_isocalendar,  METH_NOARGS,
-     PyDoc_STR("Return a named tuple containing ISO year, week number, and "
+     TyDoc_STR("Return a named tuple containing ISO year, week number, and "
                "weekday.")},
 
     {"isoformat", date_isoformat, METH_NOARGS,
-     PyDoc_STR("Return string in ISO 8601 format, YYYY-MM-DD.")},
+     TyDoc_STR("Return string in ISO 8601 format, YYYY-MM-DD.")},
 
     {"isoweekday", date_isoweekday, METH_NOARGS,
-     PyDoc_STR("Return the day of the week represented by the date.\n"
+     TyDoc_STR("Return the day of the week represented by the date.\n"
                "Monday == 1 ... Sunday == 7")},
 
     {"toordinal", date_toordinal, METH_NOARGS,
-     PyDoc_STR("Return proleptic Gregorian ordinal.  January 1 of year "
+     TyDoc_STR("Return proleptic Gregorian ordinal.  January 1 of year "
                "1 is day 1.")},
 
     {"weekday", date_weekday, METH_NOARGS,
-     PyDoc_STR("Return the day of the week represented by the date.\n"
+     TyDoc_STR("Return the day of the week represented by the date.\n"
                "Monday == 0 ... Sunday == 6")},
 
     DATETIME_DATE_REPLACE_METHODDEF
 
     {"__replace__", _PyCFunction_CAST(datetime_date_replace), METH_FASTCALL | METH_KEYWORDS,
-     PyDoc_STR("__replace__($self, /, **changes)\n--\n\nThe same as replace().")},
+     TyDoc_STR("__replace__($self, /, **changes)\n--\n\nThe same as replace().")},
 
     {"__reduce__", date_reduce, METH_NOARGS,
-     PyDoc_STR("__reduce__() -> (cls, state)")},
+     TyDoc_STR("__reduce__() -> (cls, state)")},
 
     {NULL,      NULL}
 };
 
 static const char date_doc[] =
-PyDoc_STR("date(year, month, day) --> date object");
+TyDoc_STR("date(year, month, day) --> date object");
 
 static PyNumberMethods date_as_number = {
     date_add,                                           /* nb_add */
@@ -3972,7 +3972,7 @@ static PyNumberMethods date_as_number = {
 };
 
 static TyTypeObject PyDateTime_DateType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "datetime.date",                                    /* tp_name */
     sizeof(PyDateTime_Date),                            /* tp_basicsize */
     0,                                                  /* tp_itemsize */
@@ -4176,29 +4176,29 @@ tzinfo_reduce(TyObject *self, TyObject *Py_UNUSED(dummy))
 static TyMethodDef tzinfo_methods[] = {
 
     {"tzname", tzinfo_tzname, METH_O,
-     PyDoc_STR("datetime -> string name of time zone.")},
+     TyDoc_STR("datetime -> string name of time zone.")},
 
     {"utcoffset", tzinfo_utcoffset, METH_O,
-     PyDoc_STR("datetime -> timedelta showing offset from UTC, negative "
+     TyDoc_STR("datetime -> timedelta showing offset from UTC, negative "
            "values indicating West of UTC")},
 
     {"dst", tzinfo_dst, METH_O,
-     PyDoc_STR("datetime -> DST offset as timedelta positive east of UTC.")},
+     TyDoc_STR("datetime -> DST offset as timedelta positive east of UTC.")},
 
     {"fromutc", tzinfo_fromutc, METH_O,
-     PyDoc_STR("datetime in UTC -> datetime in local time.")},
+     TyDoc_STR("datetime in UTC -> datetime in local time.")},
 
     {"__reduce__",  tzinfo_reduce, METH_NOARGS,
-     PyDoc_STR("-> (cls, state)")},
+     TyDoc_STR("-> (cls, state)")},
 
     {NULL, NULL}
 };
 
 static const char tzinfo_doc[] =
-PyDoc_STR("Abstract base class for time zone info objects.");
+TyDoc_STR("Abstract base class for time zone info objects.");
 
 static TyTypeObject PyDateTime_TZInfoType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "datetime.tzinfo",                          /* tp_name */
     sizeof(PyDateTime_TZInfo),                  /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -4420,29 +4420,29 @@ timezone_getinitargs(TyObject *op, TyObject *Py_UNUSED(dummy))
 
 static TyMethodDef timezone_methods[] = {
     {"tzname", timezone_tzname, METH_O,
-     PyDoc_STR("If name is specified when timezone is created, returns the name."
+     TyDoc_STR("If name is specified when timezone is created, returns the name."
                "  Otherwise returns offset as 'UTC(+|-)HH:MM'.")},
 
     {"utcoffset", timezone_utcoffset, METH_O,
-     PyDoc_STR("Return fixed offset.")},
+     TyDoc_STR("Return fixed offset.")},
 
     {"dst", timezone_dst, METH_O,
-     PyDoc_STR("Return None.")},
+     TyDoc_STR("Return None.")},
 
     {"fromutc", timezone_fromutc, METH_O,
-     PyDoc_STR("datetime in UTC -> datetime in local time.")},
+     TyDoc_STR("datetime in UTC -> datetime in local time.")},
 
     {"__getinitargs__", timezone_getinitargs, METH_NOARGS,
-     PyDoc_STR("pickle support")},
+     TyDoc_STR("pickle support")},
 
     {NULL, NULL}
 };
 
 static const char timezone_doc[] =
-PyDoc_STR("Fixed offset from UTC implementation of tzinfo.");
+TyDoc_STR("Fixed offset from UTC implementation of tzinfo.");
 
 static TyTypeObject PyDateTime_TimeZoneType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "datetime.timezone",              /* tp_name */
     sizeof(PyDateTime_TimeZone),      /* tp_basicsize */
     0,                                /* tp_itemsize */
@@ -5126,13 +5126,13 @@ static TyMethodDef time_methods[] = {
 
     {"strptime", time_strptime,
      METH_VARARGS | METH_CLASS,
-     PyDoc_STR("string, format -> new time parsed from a string "
+     TyDoc_STR("string, format -> new time parsed from a string "
                "(like time.strptime()).")},
 
     /* Instance methods: */
 
     {"isoformat", _PyCFunction_CAST(time_isoformat), METH_VARARGS | METH_KEYWORDS,
-     PyDoc_STR("Return string in ISO 8601 format, [HH[:MM[:SS[.mmm[uuu]]]]]"
+     TyDoc_STR("Return string in ISO 8601 format, [HH[:MM[:SS[.mmm[uuu]]]]]"
                "[+HH:MM].\n\n"
                "The optional argument timespec specifies the number "
                "of additional terms\nof the time to include. Valid "
@@ -5140,45 +5140,45 @@ static TyMethodDef time_methods[] = {
                "'milliseconds' and 'microseconds'.\n")},
 
     {"strftime", _PyCFunction_CAST(time_strftime), METH_VARARGS | METH_KEYWORDS,
-     PyDoc_STR("format -> strftime() style string.")},
+     TyDoc_STR("format -> strftime() style string.")},
 
     {"__format__", date_format, METH_VARARGS,
-     PyDoc_STR("Formats self with strftime.")},
+     TyDoc_STR("Formats self with strftime.")},
 
     {"utcoffset", time_utcoffset, METH_NOARGS,
-     PyDoc_STR("Return self.tzinfo.utcoffset(self).")},
+     TyDoc_STR("Return self.tzinfo.utcoffset(self).")},
 
     {"tzname", time_tzname, METH_NOARGS,
-     PyDoc_STR("Return self.tzinfo.tzname(self).")},
+     TyDoc_STR("Return self.tzinfo.tzname(self).")},
 
     {"dst", time_dst, METH_NOARGS,
-     PyDoc_STR("Return self.tzinfo.dst(self).")},
+     TyDoc_STR("Return self.tzinfo.dst(self).")},
 
     DATETIME_TIME_REPLACE_METHODDEF
 
     {"__replace__", _PyCFunction_CAST(datetime_time_replace), METH_FASTCALL | METH_KEYWORDS,
-     PyDoc_STR("__replace__($self, /, **changes)\n--\n\nThe same as replace().")},
+     TyDoc_STR("__replace__($self, /, **changes)\n--\n\nThe same as replace().")},
 
      {"fromisoformat", time_fromisoformat, METH_O | METH_CLASS,
-     PyDoc_STR("string -> time from a string in ISO 8601 format")},
+     TyDoc_STR("string -> time from a string in ISO 8601 format")},
 
     {"__reduce_ex__", time_reduce_ex, METH_VARARGS,
-     PyDoc_STR("__reduce_ex__(proto) -> (cls, state)")},
+     TyDoc_STR("__reduce_ex__(proto) -> (cls, state)")},
 
     {"__reduce__", time_reduce, METH_NOARGS,
-     PyDoc_STR("__reduce__() -> (cls, state)")},
+     TyDoc_STR("__reduce__() -> (cls, state)")},
 
     {NULL,      NULL}
 };
 
 static const char time_doc[] =
-PyDoc_STR("time([hour[, minute[, second[, microsecond[, tzinfo]]]]]) --> a time object\n\
+TyDoc_STR("time([hour[, minute[, second[, microsecond[, tzinfo]]]]]) --> a time object\n\
 \n\
 All arguments are optional. tzinfo may be None, or an instance of\n\
 a tzinfo subclass. The remaining arguments may be ints.\n");
 
 static TyTypeObject PyDateTime_TimeType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "datetime.time",                            /* tp_name */
     sizeof(PyDateTime_Time),                    /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -5527,7 +5527,7 @@ datetime_from_timestamp(TyObject *cls, TM_FUNC f, TyObject *timestamp,
 static TyObject *
 datetime_best_possible(TyObject *cls, TM_FUNC f, TyObject *tzinfo)
 {
-    PyTime_t ts;
+    TyTime_t ts;
     if (PyTime_Time(&ts) < 0) {
         return NULL;
     }
@@ -6995,54 +6995,54 @@ static TyMethodDef datetime_methods[] = {
 
     {"utcnow", datetime_utcnow,
      METH_NOARGS | METH_CLASS,
-     PyDoc_STR("Return a new datetime representing UTC day and time.")},
+     TyDoc_STR("Return a new datetime representing UTC day and time.")},
 
     {"fromtimestamp", _PyCFunction_CAST(datetime_fromtimestamp),
      METH_VARARGS | METH_KEYWORDS | METH_CLASS,
-     PyDoc_STR("timestamp[, tz] -> tz's local time from POSIX timestamp.")},
+     TyDoc_STR("timestamp[, tz] -> tz's local time from POSIX timestamp.")},
 
     {"utcfromtimestamp", datetime_utcfromtimestamp,
      METH_VARARGS | METH_CLASS,
-     PyDoc_STR("Construct a naive UTC datetime from a POSIX timestamp.")},
+     TyDoc_STR("Construct a naive UTC datetime from a POSIX timestamp.")},
 
     {"strptime", datetime_strptime,
      METH_VARARGS | METH_CLASS,
-     PyDoc_STR("string, format -> new datetime parsed from a string "
+     TyDoc_STR("string, format -> new datetime parsed from a string "
                "(like time.strptime()).")},
 
     {"combine", _PyCFunction_CAST(datetime_combine),
      METH_VARARGS | METH_KEYWORDS | METH_CLASS,
-     PyDoc_STR("date, time -> datetime with same date and time fields")},
+     TyDoc_STR("date, time -> datetime with same date and time fields")},
 
     {"fromisoformat", datetime_fromisoformat,
      METH_O | METH_CLASS,
-     PyDoc_STR("string -> datetime from a string in most ISO 8601 formats")},
+     TyDoc_STR("string -> datetime from a string in most ISO 8601 formats")},
 
     /* Instance methods: */
 
     {"date", datetime_getdate, METH_NOARGS,
-     PyDoc_STR("Return date object with same year, month and day.")},
+     TyDoc_STR("Return date object with same year, month and day.")},
 
     {"time", datetime_gettime, METH_NOARGS,
-     PyDoc_STR("Return time object with same time but with tzinfo=None.")},
+     TyDoc_STR("Return time object with same time but with tzinfo=None.")},
 
     {"timetz", datetime_gettimetz, METH_NOARGS,
-     PyDoc_STR("Return time object with same time and tzinfo.")},
+     TyDoc_STR("Return time object with same time and tzinfo.")},
 
     {"ctime", datetime_ctime, METH_NOARGS,
-     PyDoc_STR("Return ctime() style string.")},
+     TyDoc_STR("Return ctime() style string.")},
 
     {"timetuple", datetime_timetuple, METH_NOARGS,
-     PyDoc_STR("Return time tuple, compatible with time.localtime().")},
+     TyDoc_STR("Return time tuple, compatible with time.localtime().")},
 
     {"timestamp", datetime_timestamp, METH_NOARGS,
-     PyDoc_STR("Return POSIX timestamp as float.")},
+     TyDoc_STR("Return POSIX timestamp as float.")},
 
     {"utctimetuple", datetime_utctimetuple, METH_NOARGS,
-     PyDoc_STR("Return UTC time tuple, compatible with time.localtime().")},
+     TyDoc_STR("Return UTC time tuple, compatible with time.localtime().")},
 
     {"isoformat", _PyCFunction_CAST(datetime_isoformat), METH_VARARGS | METH_KEYWORDS,
-     PyDoc_STR("[sep] -> string in ISO 8601 format, "
+     TyDoc_STR("[sep] -> string in ISO 8601 format, "
                "YYYY-MM-DDT[HH[:MM[:SS[.mmm[uuu]]]]][+HH:MM].\n"
                "sep is used to separate the year from the time, and "
                "defaults to 'T'.\n"
@@ -7052,33 +7052,33 @@ static TyMethodDef datetime_methods[] = {
                "'milliseconds' and 'microseconds'.\n")},
 
     {"utcoffset", datetime_utcoffset, METH_NOARGS,
-     PyDoc_STR("Return self.tzinfo.utcoffset(self).")},
+     TyDoc_STR("Return self.tzinfo.utcoffset(self).")},
 
     {"tzname", datetime_tzname,   METH_NOARGS,
-     PyDoc_STR("Return self.tzinfo.tzname(self).")},
+     TyDoc_STR("Return self.tzinfo.tzname(self).")},
 
     {"dst", datetime_dst, METH_NOARGS,
-     PyDoc_STR("Return self.tzinfo.dst(self).")},
+     TyDoc_STR("Return self.tzinfo.dst(self).")},
 
     DATETIME_DATETIME_REPLACE_METHODDEF
 
     {"__replace__", _PyCFunction_CAST(datetime_datetime_replace), METH_FASTCALL | METH_KEYWORDS,
-     PyDoc_STR("__replace__($self, /, **changes)\n--\n\nThe same as replace().")},
+     TyDoc_STR("__replace__($self, /, **changes)\n--\n\nThe same as replace().")},
 
     {"astimezone",  _PyCFunction_CAST(datetime_astimezone), METH_VARARGS | METH_KEYWORDS,
-     PyDoc_STR("tz -> convert to local time in new timezone tz\n")},
+     TyDoc_STR("tz -> convert to local time in new timezone tz\n")},
 
     {"__reduce_ex__", datetime_reduce_ex, METH_VARARGS,
-     PyDoc_STR("__reduce_ex__(proto) -> (cls, state)")},
+     TyDoc_STR("__reduce_ex__(proto) -> (cls, state)")},
 
     {"__reduce__", datetime_reduce, METH_NOARGS,
-     PyDoc_STR("__reduce__() -> (cls, state)")},
+     TyDoc_STR("__reduce__() -> (cls, state)")},
 
     {NULL,      NULL}
 };
 
 static const char datetime_doc[] =
-PyDoc_STR("datetime(year, month, day[, hour[, minute[, second[, microsecond[,tzinfo]]]]])\n\
+TyDoc_STR("datetime(year, month, day[, hour[, minute[, second[, microsecond[,tzinfo]]]]])\n\
 \n\
 The year, month and day arguments are required. tzinfo may be None, or an\n\
 instance of a tzinfo subclass. The remaining arguments may be ints.\n");
@@ -7097,7 +7097,7 @@ static PyNumberMethods datetime_as_number = {
 };
 
 static TyTypeObject PyDateTime_DateTimeType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "datetime.datetime",                        /* tp_name */
     sizeof(PyDateTime_DateTime),                /* tp_basicsize */
     0,                                          /* tp_itemsize */
@@ -7309,7 +7309,7 @@ clear_state(datetime_state *st)
 
 
 TyStatus
-_PyDateTime_InitTypes(PyInterpreterState *interp)
+_PyDateTime_InitTypes(TyInterpreterState *interp)
 {
     /* Bases classes must be initialized before subclasses,
      * so capi_types must have the types in the appropriate order. */
@@ -7402,7 +7402,7 @@ _datetime_exec(TyObject *module)
     int rc = -1;
     datetime_state *st = get_module_state(module);
 
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     TyObject *old_module = get_current_module(interp);
     if (TyErr_Occurred()) {
         assert(old_module == NULL);
@@ -7499,7 +7499,7 @@ module_clear(TyObject *mod)
     datetime_state *st = get_module_state(mod);
     clear_state(st);
 
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     clear_current_module(interp, mod);
 
     // The runtime takes care of the static types for us.

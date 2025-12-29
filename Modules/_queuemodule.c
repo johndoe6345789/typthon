@@ -379,13 +379,13 @@ _queue_SimpleQueue_get_impl(simplequeueobject *self, TyTypeObject *cls,
                             int block, TyObject *timeout_obj)
 /*[clinic end generated code: output=5c2cca914cd1e55b input=f7836c65e5839c51]*/
 {
-    PyTime_t endtime = 0;
+    TyTime_t endtime = 0;
 
-    // XXX Use PyThread_ParseTimeoutArg().
+    // XXX Use TyThread_ParseTimeoutArg().
 
     if (block != 0 && !Ty_IsNone(timeout_obj)) {
         /* With timeout */
-        PyTime_t timeout;
+        TyTime_t timeout;
         if (_TyTime_FromSecondsObject(&timeout,
                                       timeout_obj, _TyTime_ROUND_CEILING) < 0) {
             return NULL;
@@ -535,7 +535,7 @@ static TyMethodDef simplequeue_methods[] = {
     _QUEUE_SIMPLEQUEUE_PUT_NOWAIT_METHODDEF
     _QUEUE_SIMPLEQUEUE_QSIZE_METHODDEF
     {"__class_getitem__",    Ty_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     {NULL,           NULL}              /* sentinel */
 };
 
@@ -566,7 +566,7 @@ static TyType_Spec simplequeue_spec = {
 
 /* Initialization function */
 
-PyDoc_STRVAR(queue_module_doc,
+TyDoc_STRVAR(queue_module_doc,
 "C implementation of the Python queue module.\n\
 This module is an implementation detail, please do not use it directly.");
 

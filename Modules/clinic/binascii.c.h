@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(binascii_a2b_uu__doc__,
+TyDoc_STRVAR(binascii_a2b_uu__doc__,
 "a2b_uu($module, data, /)\n"
 "--\n"
 "\n"
@@ -39,7 +39,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_b2a_uu__doc__,
+TyDoc_STRVAR(binascii_b2a_uu__doc__,
 "b2a_uu($module, data, /, *, backtick=False)\n"
 "--\n"
 "\n"
@@ -64,7 +64,7 @@ binascii_b2a_uu(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(backtick), },
     };
@@ -114,7 +114,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_a2b_base64__doc__,
+TyDoc_STRVAR(binascii_a2b_base64__doc__,
 "a2b_base64($module, data, /, *, strict_mode=False)\n"
 "--\n"
 "\n"
@@ -143,7 +143,7 @@ binascii_a2b_base64(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(strict_mode), },
     };
@@ -192,7 +192,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_b2a_base64__doc__,
+TyDoc_STRVAR(binascii_b2a_base64__doc__,
 "b2a_base64($module, data, /, *, newline=True)\n"
 "--\n"
 "\n"
@@ -217,7 +217,7 @@ binascii_b2a_base64(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(newline), },
     };
@@ -267,7 +267,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_crc_hqx__doc__,
+TyDoc_STRVAR(binascii_crc_hqx__doc__,
 "crc_hqx($module, data, crc, /)\n"
 "--\n"
 "\n"
@@ -307,7 +307,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_crc32__doc__,
+TyDoc_STRVAR(binascii_crc32__doc__,
 "crc32($module, data, crc=0, /)\n"
 "--\n"
 "\n"
@@ -356,7 +356,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_b2a_hex__doc__,
+TyDoc_STRVAR(binascii_b2a_hex__doc__,
 "b2a_hex($module, /, data, sep=<unrepresentable>, bytes_per_sep=1)\n"
 "--\n"
 "\n"
@@ -399,7 +399,7 @@ binascii_b2a_hex(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(sep), &_Ty_ID(bytes_per_sep), },
     };
@@ -456,7 +456,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_hexlify__doc__,
+TyDoc_STRVAR(binascii_hexlify__doc__,
 "hexlify($module, /, data, sep=<unrepresentable>, bytes_per_sep=1)\n"
 "--\n"
 "\n"
@@ -491,7 +491,7 @@ binascii_hexlify(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(sep), &_Ty_ID(bytes_per_sep), },
     };
@@ -548,7 +548,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_a2b_hex__doc__,
+TyDoc_STRVAR(binascii_a2b_hex__doc__,
 "a2b_hex($module, hexstr, /)\n"
 "--\n"
 "\n"
@@ -582,7 +582,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_unhexlify__doc__,
+TyDoc_STRVAR(binascii_unhexlify__doc__,
 "unhexlify($module, hexstr, /)\n"
 "--\n"
 "\n"
@@ -615,7 +615,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_a2b_qp__doc__,
+TyDoc_STRVAR(binascii_a2b_qp__doc__,
 "a2b_qp($module, /, data, header=False)\n"
 "--\n"
 "\n"
@@ -640,7 +640,7 @@ binascii_a2b_qp(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(header), },
     };
@@ -689,7 +689,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(binascii_b2a_qp__doc__,
+TyDoc_STRVAR(binascii_b2a_qp__doc__,
 "b2a_qp($module, /, data, quotetabs=False, istext=True, header=False)\n"
 "--\n"
 "\n"
@@ -719,7 +719,7 @@ binascii_b2a_qp(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(quotetabs), &_Ty_ID(istext), &_Ty_ID(header), },
     };

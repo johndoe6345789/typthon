@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(_sysconfig_config_vars__doc__,
+TyDoc_STRVAR(_sysconfig_config_vars__doc__,
 "config_vars($module, /)\n"
 "--\n"
 "\n"

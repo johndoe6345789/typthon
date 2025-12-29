@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(typevar_new__doc__,
+TyDoc_STRVAR(typevar_new__doc__,
 "typevar(name, *constraints, bound=None, default=typing.NoDefault,\n"
 "        covariant=False, contravariant=False, infer_variance=False)\n"
 "--\n"
@@ -33,7 +33,7 @@ typevar_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(bound), &_Ty_ID(default), &_Ty_ID(covariant), &_Ty_ID(contravariant), &_Ty_ID(infer_variance), },
     };
@@ -124,7 +124,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(typevar_typing_subst__doc__,
+TyDoc_STRVAR(typevar_typing_subst__doc__,
 "__typing_subst__($self, arg, /)\n"
 "--\n"
 "\n");
@@ -145,7 +145,7 @@ typevar_typing_subst(TyObject *self, TyObject *arg)
     return return_value;
 }
 
-PyDoc_STRVAR(typevar_typing_prepare_subst__doc__,
+TyDoc_STRVAR(typevar_typing_prepare_subst__doc__,
 "__typing_prepare_subst__($self, alias, args, /)\n"
 "--\n"
 "\n");
@@ -175,7 +175,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(typevar_reduce__doc__,
+TyDoc_STRVAR(typevar_reduce__doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n");
@@ -192,7 +192,7 @@ typevar_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
     return typevar_reduce_impl((typevarobject *)self);
 }
 
-PyDoc_STRVAR(typevar_has_default__doc__,
+TyDoc_STRVAR(typevar_has_default__doc__,
 "has_default($self, /)\n"
 "--\n"
 "\n");
@@ -209,7 +209,7 @@ typevar_has_default(TyObject *self, TyObject *Py_UNUSED(ignored))
     return typevar_has_default_impl((typevarobject *)self);
 }
 
-PyDoc_STRVAR(paramspecargs_new__doc__,
+TyDoc_STRVAR(paramspecargs_new__doc__,
 "paramspecargs(origin)\n"
 "--\n"
 "\n"
@@ -231,7 +231,7 @@ paramspecargs_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(origin), },
     };
@@ -266,7 +266,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(paramspeckwargs_new__doc__,
+TyDoc_STRVAR(paramspeckwargs_new__doc__,
 "paramspeckwargs(origin)\n"
 "--\n"
 "\n"
@@ -288,7 +288,7 @@ paramspeckwargs_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(origin), },
     };
@@ -323,7 +323,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(paramspec_new__doc__,
+TyDoc_STRVAR(paramspec_new__doc__,
 "paramspec(name, *, bound=None, default=typing.NoDefault,\n"
 "          covariant=False, contravariant=False, infer_variance=False)\n"
 "--\n"
@@ -348,7 +348,7 @@ paramspec_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(bound), &_Ty_ID(default), &_Ty_ID(covariant), &_Ty_ID(contravariant), &_Ty_ID(infer_variance), },
     };
@@ -431,7 +431,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(paramspec_typing_subst__doc__,
+TyDoc_STRVAR(paramspec_typing_subst__doc__,
 "__typing_subst__($self, arg, /)\n"
 "--\n"
 "\n");
@@ -452,7 +452,7 @@ paramspec_typing_subst(TyObject *self, TyObject *arg)
     return return_value;
 }
 
-PyDoc_STRVAR(paramspec_typing_prepare_subst__doc__,
+TyDoc_STRVAR(paramspec_typing_prepare_subst__doc__,
 "__typing_prepare_subst__($self, alias, args, /)\n"
 "--\n"
 "\n");
@@ -482,7 +482,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(paramspec_reduce__doc__,
+TyDoc_STRVAR(paramspec_reduce__doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n");
@@ -499,7 +499,7 @@ paramspec_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
     return paramspec_reduce_impl((paramspecobject *)self);
 }
 
-PyDoc_STRVAR(paramspec_has_default__doc__,
+TyDoc_STRVAR(paramspec_has_default__doc__,
 "has_default($self, /)\n"
 "--\n"
 "\n");
@@ -516,7 +516,7 @@ paramspec_has_default(TyObject *self, TyObject *Py_UNUSED(ignored))
     return paramspec_has_default_impl((paramspecobject *)self);
 }
 
-PyDoc_STRVAR(typevartuple__doc__,
+TyDoc_STRVAR(typevartuple__doc__,
 "typevartuple(name, *, default=typing.NoDefault)\n"
 "--\n"
 "\n"
@@ -539,7 +539,7 @@ typevartuple(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(default), },
     };
@@ -585,7 +585,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(typevartuple_typing_subst__doc__,
+TyDoc_STRVAR(typevartuple_typing_subst__doc__,
 "__typing_subst__($self, arg, /)\n"
 "--\n"
 "\n");
@@ -606,7 +606,7 @@ typevartuple_typing_subst(TyObject *self, TyObject *arg)
     return return_value;
 }
 
-PyDoc_STRVAR(typevartuple_typing_prepare_subst__doc__,
+TyDoc_STRVAR(typevartuple_typing_prepare_subst__doc__,
 "__typing_prepare_subst__($self, alias, args, /)\n"
 "--\n"
 "\n");
@@ -636,7 +636,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(typevartuple_reduce__doc__,
+TyDoc_STRVAR(typevartuple_reduce__doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n");
@@ -653,7 +653,7 @@ typevartuple_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
     return typevartuple_reduce_impl((typevartupleobject *)self);
 }
 
-PyDoc_STRVAR(typevartuple_has_default__doc__,
+TyDoc_STRVAR(typevartuple_has_default__doc__,
 "has_default($self, /)\n"
 "--\n"
 "\n");
@@ -670,7 +670,7 @@ typevartuple_has_default(TyObject *self, TyObject *Py_UNUSED(ignored))
     return typevartuple_has_default_impl((typevartupleobject *)self);
 }
 
-PyDoc_STRVAR(typealias_reduce__doc__,
+TyDoc_STRVAR(typealias_reduce__doc__,
 "__reduce__($self, /)\n"
 "--\n"
 "\n");
@@ -687,7 +687,7 @@ typealias_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
     return typealias_reduce_impl((typealiasobject *)self);
 }
 
-PyDoc_STRVAR(typealias_new__doc__,
+TyDoc_STRVAR(typealias_new__doc__,
 "typealias(name, value, *, type_params=<unrepresentable>)\n"
 "--\n"
 "\n"
@@ -710,7 +710,7 @@ typealias_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(value), &_Ty_ID(type_params), },
     };

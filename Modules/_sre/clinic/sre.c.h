@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_sre_getcodesize__doc__,
+TyDoc_STRVAR(_sre_getcodesize__doc__,
 "getcodesize($module, /)\n"
 "--\n"
 "\n");
@@ -36,7 +36,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_ascii_iscased__doc__,
+TyDoc_STRVAR(_sre_ascii_iscased__doc__,
 "ascii_iscased($module, character, /)\n"
 "--\n"
 "\n");
@@ -68,7 +68,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_unicode_iscased__doc__,
+TyDoc_STRVAR(_sre_unicode_iscased__doc__,
 "unicode_iscased($module, character, /)\n"
 "--\n"
 "\n");
@@ -100,7 +100,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_ascii_tolower__doc__,
+TyDoc_STRVAR(_sre_ascii_tolower__doc__,
 "ascii_tolower($module, character, /)\n"
 "--\n"
 "\n");
@@ -132,7 +132,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_unicode_tolower__doc__,
+TyDoc_STRVAR(_sre_unicode_tolower__doc__,
 "unicode_tolower($module, character, /)\n"
 "--\n"
 "\n");
@@ -164,7 +164,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_match__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_match__doc__,
 "match($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -191,7 +191,7 @@ _sre_SRE_Pattern_match(TyObject *self, TyTypeObject *cls, TyObject *const *args,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
@@ -260,7 +260,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_fullmatch__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_fullmatch__doc__,
 "fullmatch($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -287,7 +287,7 @@ _sre_SRE_Pattern_fullmatch(TyObject *self, TyTypeObject *cls, TyObject *const *a
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
@@ -356,7 +356,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_search__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_search__doc__,
 "search($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -385,7 +385,7 @@ _sre_SRE_Pattern_search(TyObject *self, TyTypeObject *cls, TyObject *const *args
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
@@ -454,7 +454,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_findall__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_findall__doc__,
 "findall($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -480,7 +480,7 @@ _sre_SRE_Pattern_findall(TyObject *self, TyObject *const *args, Ty_ssize_t nargs
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
@@ -549,7 +549,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_finditer__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_finditer__doc__,
 "finditer($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n"
@@ -578,7 +578,7 @@ _sre_SRE_Pattern_finditer(TyObject *self, TyTypeObject *cls, TyObject *const *ar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
@@ -647,7 +647,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_scanner__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_scanner__doc__,
 "scanner($self, /, string, pos=0, endpos=sys.maxsize)\n"
 "--\n"
 "\n");
@@ -673,7 +673,7 @@ _sre_SRE_Pattern_scanner(TyObject *self, TyTypeObject *cls, TyObject *const *arg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(string), &_Ty_ID(pos), &_Ty_ID(endpos), },
     };
@@ -742,7 +742,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_split__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_split__doc__,
 "split($self, /, string, maxsplit=0)\n"
 "--\n"
 "\n"
@@ -768,7 +768,7 @@ _sre_SRE_Pattern_split(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(string), &_Ty_ID(maxsplit), },
     };
@@ -819,7 +819,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_sub__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_sub__doc__,
 "sub($self, /, repl, string, count=0)\n"
 "--\n"
 "\n"
@@ -845,7 +845,7 @@ _sre_SRE_Pattern_sub(TyObject *self, TyTypeObject *cls, TyObject *const *args, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(repl), &_Ty_ID(string), &_Ty_ID(count), },
     };
@@ -898,7 +898,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern_subn__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern_subn__doc__,
 "subn($self, /, repl, string, count=0)\n"
 "--\n"
 "\n"
@@ -925,7 +925,7 @@ _sre_SRE_Pattern_subn(TyObject *self, TyTypeObject *cls, TyObject *const *args, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(repl), &_Ty_ID(string), &_Ty_ID(count), },
     };
@@ -978,7 +978,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern___copy____doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern___copy____doc__,
 "__copy__($self, /)\n"
 "--\n"
 "\n");
@@ -995,7 +995,7 @@ _sre_SRE_Pattern___copy__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _sre_SRE_Pattern___copy___impl((PatternObject *)self);
 }
 
-PyDoc_STRVAR(_sre_SRE_Pattern___deepcopy____doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern___deepcopy____doc__,
 "__deepcopy__($self, memo, /)\n"
 "--\n"
 "\n");
@@ -1018,7 +1018,7 @@ _sre_SRE_Pattern___deepcopy__(TyObject *self, TyObject *memo)
 
 #if defined(Ty_DEBUG)
 
-PyDoc_STRVAR(_sre_SRE_Pattern__fail_after__doc__,
+TyDoc_STRVAR(_sre_SRE_Pattern__fail_after__doc__,
 "_fail_after($self, count, exception, /)\n"
 "--\n"
 "\n"
@@ -1054,7 +1054,7 @@ exit:
 
 #endif /* defined(Ty_DEBUG) */
 
-PyDoc_STRVAR(_sre_compile__doc__,
+TyDoc_STRVAR(_sre_compile__doc__,
 "compile($module, /, pattern, flags, code, groups, groupindex,\n"
 "        indexgroup)\n"
 "--\n"
@@ -1081,7 +1081,7 @@ _sre_compile(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(pattern), &_Ty_ID(flags), &_Ty_ID(code), &_Ty_ID(groups), &_Ty_ID(groupindex), &_Ty_ID(indexgroup), },
     };
@@ -1150,7 +1150,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_template__doc__,
+TyDoc_STRVAR(_sre_template__doc__,
 "template($module, pattern, template, /)\n"
 "--\n"
 "\n"
@@ -1189,7 +1189,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_expand__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_expand__doc__,
 "expand($self, /, template)\n"
 "--\n"
 "\n"
@@ -1214,7 +1214,7 @@ _sre_SRE_Match_expand(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(template), },
     };
@@ -1247,7 +1247,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_groups__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_groups__doc__,
 "groups($self, /, default=None)\n"
 "--\n"
 "\n"
@@ -1275,7 +1275,7 @@ _sre_SRE_Match_groups(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(default), },
     };
@@ -1313,7 +1313,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_groupdict__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_groupdict__doc__,
 "groupdict($self, /, default=None)\n"
 "--\n"
 "\n"
@@ -1341,7 +1341,7 @@ _sre_SRE_Match_groupdict(TyObject *self, TyObject *const *args, Ty_ssize_t nargs
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(default), },
     };
@@ -1379,7 +1379,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_start__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_start__doc__,
 "start($self, group=0, /)\n"
 "--\n"
 "\n"
@@ -1416,7 +1416,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_end__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_end__doc__,
 "end($self, group=0, /)\n"
 "--\n"
 "\n"
@@ -1453,7 +1453,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match_span__doc__,
+TyDoc_STRVAR(_sre_SRE_Match_span__doc__,
 "span($self, group=0, /)\n"
 "--\n"
 "\n"
@@ -1485,7 +1485,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Match___copy____doc__,
+TyDoc_STRVAR(_sre_SRE_Match___copy____doc__,
 "__copy__($self, /)\n"
 "--\n"
 "\n");
@@ -1502,7 +1502,7 @@ _sre_SRE_Match___copy__(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _sre_SRE_Match___copy___impl((MatchObject *)self);
 }
 
-PyDoc_STRVAR(_sre_SRE_Match___deepcopy____doc__,
+TyDoc_STRVAR(_sre_SRE_Match___deepcopy____doc__,
 "__deepcopy__($self, memo, /)\n"
 "--\n"
 "\n");
@@ -1523,7 +1523,7 @@ _sre_SRE_Match___deepcopy__(TyObject *self, TyObject *memo)
     return return_value;
 }
 
-PyDoc_STRVAR(_sre_SRE_Scanner_match__doc__,
+TyDoc_STRVAR(_sre_SRE_Scanner_match__doc__,
 "match($self, /)\n"
 "--\n"
 "\n");
@@ -1544,7 +1544,7 @@ _sre_SRE_Scanner_match(TyObject *self, TyTypeObject *cls, TyObject *const *args,
     return _sre_SRE_Scanner_match_impl((ScannerObject *)self, cls);
 }
 
-PyDoc_STRVAR(_sre_SRE_Scanner_search__doc__,
+TyDoc_STRVAR(_sre_SRE_Scanner_search__doc__,
 "search($self, /)\n"
 "--\n"
 "\n");

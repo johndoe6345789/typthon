@@ -333,7 +333,7 @@ typedef struct {
     TyObject *(*errorhandler)(void); /* Error handler; checks
                                         errno, returns NULL and
                                         sets a Python exception */
-    PyTime_t sock_timeout;     /* Operation timeout in seconds;
+    TyTime_t sock_timeout;     /* Operation timeout in seconds;
                                         0.0 means non-blocking */
     struct _socket_state *state;
 #ifdef MS_WINDOWS

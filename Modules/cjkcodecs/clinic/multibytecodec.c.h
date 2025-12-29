@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_multibytecodec_MultibyteCodec_encode__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteCodec_encode__doc__,
 "encode($self, /, input, errors=None)\n"
 "--\n"
 "\n"
@@ -40,7 +40,7 @@ _multibytecodec_MultibyteCodec_encode(TyObject *self, TyObject *const *args, Ty_
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(input), &_Ty_ID(errors), },
     };
@@ -97,7 +97,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteCodec_decode__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteCodec_decode__doc__,
 "decode($self, /, input, errors=None)\n"
 "--\n"
 "\n"
@@ -129,7 +129,7 @@ _multibytecodec_MultibyteCodec_decode(TyObject *self, TyObject *const *args, Ty_
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(input), &_Ty_ID(errors), },
     };
@@ -193,7 +193,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteIncrementalEncoder_encode__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteIncrementalEncoder_encode__doc__,
 "encode($self, /, input, final=False)\n"
 "--\n"
 "\n");
@@ -219,7 +219,7 @@ _multibytecodec_MultibyteIncrementalEncoder_encode(TyObject *self, TyObject *con
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(input), &_Ty_ID(final), },
     };
@@ -262,7 +262,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteIncrementalEncoder_getstate__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteIncrementalEncoder_getstate__doc__,
 "getstate($self, /)\n"
 "--\n"
 "\n");
@@ -279,7 +279,7 @@ _multibytecodec_MultibyteIncrementalEncoder_getstate(TyObject *self, TyObject *P
     return _multibytecodec_MultibyteIncrementalEncoder_getstate_impl((MultibyteIncrementalEncoderObject *)self);
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteIncrementalEncoder_setstate__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteIncrementalEncoder_setstate__doc__,
 "setstate($self, state, /)\n"
 "--\n"
 "\n");
@@ -308,7 +308,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteIncrementalEncoder_reset__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteIncrementalEncoder_reset__doc__,
 "reset($self, /)\n"
 "--\n"
 "\n");
@@ -325,7 +325,7 @@ _multibytecodec_MultibyteIncrementalEncoder_reset(TyObject *self, TyObject *Py_U
     return _multibytecodec_MultibyteIncrementalEncoder_reset_impl((MultibyteIncrementalEncoderObject *)self);
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteIncrementalDecoder_decode__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteIncrementalDecoder_decode__doc__,
 "decode($self, /, input, final=False)\n"
 "--\n"
 "\n");
@@ -351,7 +351,7 @@ _multibytecodec_MultibyteIncrementalDecoder_decode(TyObject *self, TyObject *con
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(input), &_Ty_ID(final), },
     };
@@ -401,7 +401,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteIncrementalDecoder_getstate__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteIncrementalDecoder_getstate__doc__,
 "getstate($self, /)\n"
 "--\n"
 "\n");
@@ -418,7 +418,7 @@ _multibytecodec_MultibyteIncrementalDecoder_getstate(TyObject *self, TyObject *P
     return _multibytecodec_MultibyteIncrementalDecoder_getstate_impl((MultibyteIncrementalDecoderObject *)self);
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteIncrementalDecoder_setstate__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteIncrementalDecoder_setstate__doc__,
 "setstate($self, state, /)\n"
 "--\n"
 "\n");
@@ -447,7 +447,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteIncrementalDecoder_reset__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteIncrementalDecoder_reset__doc__,
 "reset($self, /)\n"
 "--\n"
 "\n");
@@ -464,7 +464,7 @@ _multibytecodec_MultibyteIncrementalDecoder_reset(TyObject *self, TyObject *Py_U
     return _multibytecodec_MultibyteIncrementalDecoder_reset_impl((MultibyteIncrementalDecoderObject *)self);
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteStreamReader_read__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteStreamReader_read__doc__,
 "read($self, sizeobj=None, /)\n"
 "--\n"
 "\n");
@@ -496,7 +496,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteStreamReader_readline__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteStreamReader_readline__doc__,
 "readline($self, sizeobj=None, /)\n"
 "--\n"
 "\n");
@@ -528,7 +528,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteStreamReader_readlines__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteStreamReader_readlines__doc__,
 "readlines($self, sizehintobj=None, /)\n"
 "--\n"
 "\n");
@@ -560,7 +560,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteStreamReader_reset__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteStreamReader_reset__doc__,
 "reset($self, /)\n"
 "--\n"
 "\n");
@@ -577,7 +577,7 @@ _multibytecodec_MultibyteStreamReader_reset(TyObject *self, TyObject *Py_UNUSED(
     return _multibytecodec_MultibyteStreamReader_reset_impl((MultibyteStreamReaderObject *)self);
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteStreamWriter_write__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteStreamWriter_write__doc__,
 "write($self, strobj, /)\n"
 "--\n"
 "\n");
@@ -622,7 +622,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteStreamWriter_writelines__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteStreamWriter_writelines__doc__,
 "writelines($self, lines, /)\n"
 "--\n"
 "\n");
@@ -667,7 +667,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_multibytecodec_MultibyteStreamWriter_reset__doc__,
+TyDoc_STRVAR(_multibytecodec_MultibyteStreamWriter_reset__doc__,
 "reset($self, /)\n"
 "--\n"
 "\n");
@@ -689,7 +689,7 @@ _multibytecodec_MultibyteStreamWriter_reset(TyObject *self, TyTypeObject *cls, T
     return _multibytecodec_MultibyteStreamWriter_reset_impl((MultibyteStreamWriterObject *)self, cls);
 }
 
-PyDoc_STRVAR(_multibytecodec___create_codec__doc__,
+TyDoc_STRVAR(_multibytecodec___create_codec__doc__,
 "__create_codec($module, arg, /)\n"
 "--\n"
 "\n");

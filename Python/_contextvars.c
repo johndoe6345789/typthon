@@ -20,7 +20,7 @@ _contextvars_copy_context_impl(TyObject *module)
 }
 
 
-PyDoc_STRVAR(module_doc, "Context Variables");
+TyDoc_STRVAR(module_doc, "Context Variables");
 
 static TyMethodDef _contextvars_methods[] = {
     _CONTEXTVARS_COPY_CONTEXT_METHODDEF

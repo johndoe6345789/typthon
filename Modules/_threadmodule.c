@@ -102,8 +102,8 @@ typedef struct {
 
     // The `ident`, `os_handle`, `has_os_handle`, and `state` fields are
     // protected by `mutex`.
-    PyThread_ident_t ident;
-    PyThread_handle_t os_handle;
+    TyThread_ident_t ident;
+    TyThread_handle_t os_handle;
     int has_os_handle;
 
     // Holds a value from the `ThreadHandleState` enum.
@@ -140,17 +140,17 @@ set_thread_handle_state(ThreadHandle *handle, ThreadHandleState state)
     PyMutex_Unlock(&handle->mutex);
 }
 
-static PyThread_ident_t
+static TyThread_ident_t
 ThreadHandle_ident(ThreadHandle *handle)
 {
     PyMutex_Lock(&handle->mutex);
-    PyThread_ident_t ident = handle->ident;
+    TyThread_ident_t ident = handle->ident;
     PyMutex_Unlock(&handle->mutex);
     return ident;
 }
 
 static int
-ThreadHandle_get_os_handle(ThreadHandle *handle, PyThread_handle_t *os_handle)
+ThreadHandle_get_os_handle(ThreadHandle *handle, TyThread_handle_t *os_handle)
 {
     PyMutex_Lock(&handle->mutex);
     int has_os_handle = handle->has_os_handle;
@@ -228,7 +228,7 @@ detach_thread(ThreadHandle *self)
         return 0;
     }
     // This is typically short so no need to release the GIL
-    if (PyThread_detach_thread(self->os_handle)) {
+    if (TyThread_detach_thread(self->os_handle)) {
         fprintf(stderr, "detach_thread: failed detaching thread\n");
         return -1;
     }
@@ -272,7 +272,7 @@ _PyThread_AfterFork(struct _pythread_runtime_state *state)
     // after-fork handler. We do this before calling any Python code to ensure
     // that it happens before any ThreadHandles are deallocated, such as by a
     // GC cycle.
-    PyThread_ident_t current = PyThread_get_thread_ident_ex();
+    TyThread_ident_t current = TyThread_get_thread_ident_ex();
 
     struct llist_node *node;
     llist_for_each_safe(node, &state->handles) {
@@ -383,7 +383,7 @@ exit:
     _PyEvent_Notify(&handle->thread_is_exiting);
     ThreadHandle_decref(handle);
 
-    // bpo-44434: Don't call explicitly PyThread_exit_thread(). On Linux with
+    // bpo-44434: Don't call explicitly TyThread_exit_thread(). On Linux with
     // the glibc, pthread_exit() can abort the whole process if dlopen() fails
     // to open the libgcc_s.so library (ex: EMFILE error).
     return;
@@ -424,7 +424,7 @@ ThreadHandle_start(ThreadHandle *self, TyObject *func, TyObject *args,
         TyErr_NoMemory();
         goto start_failed;
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     boot->tstate = _TyThreadState_New(interp, _TyThreadState_WHENCE_THREADING);
     if (boot->tstate == NULL) {
         TyMem_RawFree(boot);
@@ -440,9 +440,9 @@ ThreadHandle_start(ThreadHandle *self, TyObject *func, TyObject *args,
     ThreadHandle_incref(self);
     boot->handle_ready = (PyEvent){0};
 
-    PyThread_ident_t ident;
-    PyThread_handle_t os_handle;
-    if (PyThread_start_joinable_thread(thread_run, boot, &ident, &os_handle)) {
+    TyThread_ident_t ident;
+    TyThread_handle_t os_handle;
+    if (TyThread_start_joinable_thread(thread_run, boot, &ident, &os_handle)) {
         TyThreadState_Clear(boot->tstate);
         TyThreadState_Delete(boot->tstate);
         thread_bootstate_free(boot, 1);
@@ -474,11 +474,11 @@ join_thread(void *arg)
 {
     ThreadHandle *handle = (ThreadHandle*)arg;
     assert(get_thread_handle_state(handle) == THREAD_HANDLE_RUNNING);
-    PyThread_handle_t os_handle;
+    TyThread_handle_t os_handle;
     if (ThreadHandle_get_os_handle(handle, &os_handle)) {
         int err = 0;
         Ty_BEGIN_ALLOW_THREADS
-        err = PyThread_join_thread(os_handle);
+        err = TyThread_join_thread(os_handle);
         Ty_END_ALLOW_THREADS
         if (err) {
             TyErr_SetString(ThreadError, "Failed joining thread");
@@ -501,7 +501,7 @@ check_started(ThreadHandle *self)
 }
 
 static int
-ThreadHandle_join(ThreadHandle *self, PyTime_t timeout_ns)
+ThreadHandle_join(ThreadHandle *self, TyTime_t timeout_ns)
 {
     if (check_started(self) < 0) {
         return -1;
@@ -518,8 +518,8 @@ ThreadHandle_join(ThreadHandle *self, PyTime_t timeout_ns)
     // `thread_run` returns.  We can be sure that we are not attempting to join
     // ourselves if the handle's thread is about to exit.
     if (!_PyEvent_IsSet(&self->thread_is_exiting)) {
-        if (ThreadHandle_ident(self) == PyThread_get_thread_ident_ex()) {
-            // PyThread_join_thread() would deadlock or error out.
+        if (ThreadHandle_ident(self) == TyThread_get_thread_ident_ex()) {
+            // TyThread_join_thread() would deadlock or error out.
             TyErr_SetString(ThreadError, "Cannot join current thread");
             return -1;
         }
@@ -535,7 +535,7 @@ ThreadHandle_join(ThreadHandle *self, PyTime_t timeout_ns)
     }
 
     // Wait until the deadline for the thread to exit.
-    PyTime_t deadline = timeout_ns != -1 ? _PyDeadline_Init(timeout_ns) : 0;
+    TyTime_t deadline = timeout_ns != -1 ? _PyDeadline_Init(timeout_ns) : 0;
     int detach = 1;
     while (!PyEvent_WaitTimed(&self->thread_is_exiting, timeout_ns, detach)) {
         if (deadline) {
@@ -649,7 +649,7 @@ static TyObject *
 PyThreadHandleObject_repr(TyObject *op)
 {
     PyThreadHandleObject *self = PyThreadHandleObject_CAST(op);
-    PyThread_ident_t ident = ThreadHandle_ident(self->handle);
+    TyThread_ident_t ident = ThreadHandle_ident(self->handle);
     return TyUnicode_FromFormat("<%s object: ident=%" PY_FORMAT_THREAD_IDENT_T ">",
                                 Ty_TYPE(self)->tp_name, ident);
 }
@@ -671,7 +671,7 @@ PyThreadHandleObject_join(TyObject *op, TyObject *args)
         return NULL;
     }
 
-    PyTime_t timeout_ns = -1;
+    TyTime_t timeout_ns = -1;
     if (timeout_obj != NULL) {
         if (_TyTime_FromSecondsObject(&timeout_ns, timeout_obj,
                                       _TyTime_ROUND_TIMEOUT) < 0) {
@@ -766,7 +766,7 @@ lock_dealloc(TyObject *self)
 
 static int
 lock_acquire_parse_args(TyObject *args, TyObject *kwds,
-                        PyTime_t *timeout)
+                        TyTime_t *timeout)
 {
     char *kwlist[] = {"blocking", "timeout", NULL};
     int blocking = 1;
@@ -775,9 +775,9 @@ lock_acquire_parse_args(TyObject *args, TyObject *kwds,
                                      &blocking, &timeout_obj))
         return -1;
 
-    // XXX Use PyThread_ParseTimeoutArg().
+    // XXX Use TyThread_ParseTimeoutArg().
 
-    const PyTime_t unset_timeout = _TyTime_FromSeconds(-1);
+    const TyTime_t unset_timeout = _TyTime_FromSeconds(-1);
     *timeout = unset_timeout;
 
     if (timeout_obj
@@ -798,7 +798,7 @@ lock_acquire_parse_args(TyObject *args, TyObject *kwds,
     if (!blocking)
         *timeout = 0;
     else if (*timeout != unset_timeout) {
-        PyTime_t microseconds;
+        TyTime_t microseconds;
 
         microseconds = _TyTime_AsMicroseconds(*timeout, _TyTime_ROUND_TIMEOUT);
         if (microseconds > PY_TIMEOUT_MAX) {
@@ -815,12 +815,12 @@ lock_PyThread_acquire_lock(TyObject *op, TyObject *args, TyObject *kwds)
 {
     lockobject *self = lockobject_CAST(op);
 
-    PyTime_t timeout;
+    TyTime_t timeout;
     if (lock_acquire_parse_args(args, kwds, &timeout) < 0) {
         return NULL;
     }
 
-    PyLockStatus r = _PyMutex_LockTimed(&self->lock, timeout,
+    TyLockStatus r = _PyMutex_LockTimed(&self->lock, timeout,
                                         _PY_LOCK_HANDLE_SIGNALS | _PY_LOCK_DETACH);
     if (r == PY_LOCK_INTR) {
         return NULL;
@@ -829,7 +829,7 @@ lock_PyThread_acquire_lock(TyObject *op, TyObject *args, TyObject *kwds)
     return TyBool_FromLong(r == PY_LOCK_ACQUIRED);
 }
 
-PyDoc_STRVAR(acquire_doc,
+TyDoc_STRVAR(acquire_doc,
 "acquire($self, /, blocking=True, timeout=-1)\n\
 --\n\
 \n\
@@ -840,13 +840,13 @@ With an argument, this will only block if the argument is true,\n\
 and the return value reflects whether the lock is acquired.\n\
 The blocking operation is interruptible.");
 
-PyDoc_STRVAR(acquire_lock_doc,
+TyDoc_STRVAR(acquire_lock_doc,
 "acquire_lock($self, /, blocking=True, timeout=-1)\n\
 --\n\
 \n\
 An obsolete synonym of acquire().");
 
-PyDoc_STRVAR(enter_doc,
+TyDoc_STRVAR(enter_doc,
 "__enter__($self, /)\n\
 --\n\
 \n\
@@ -865,7 +865,7 @@ lock_PyThread_release_lock(TyObject *op, TyObject *Py_UNUSED(dummy))
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(release_doc,
+TyDoc_STRVAR(release_doc,
 "release($self, /)\n\
 --\n\
 \n\
@@ -873,13 +873,13 @@ Release the lock, allowing another thread that is blocked waiting for\n\
 the lock to acquire the lock.  The lock must be in the locked state,\n\
 but it needn't be locked by the same thread that unlocks it.");
 
-PyDoc_STRVAR(release_lock_doc,
+TyDoc_STRVAR(release_lock_doc,
 "release_lock($self, /)\n\
 --\n\
 \n\
 An obsolete synonym of release().");
 
-PyDoc_STRVAR(lock_exit_doc,
+TyDoc_STRVAR(lock_exit_doc,
 "__exit__($self, /, *exc_info)\n\
 --\n\
 \n\
@@ -892,13 +892,13 @@ lock_locked_lock(TyObject *op, TyObject *Py_UNUSED(dummy))
     return TyBool_FromLong(PyMutex_IsLocked(&self->lock));
 }
 
-PyDoc_STRVAR(locked_doc,
+TyDoc_STRVAR(locked_doc,
 "locked($self, /)\n\
 --\n\
 \n\
 Return whether the lock is in the locked state.");
 
-PyDoc_STRVAR(locked_lock_doc,
+TyDoc_STRVAR(locked_lock_doc,
 "locked_lock($self, /)\n\
 --\n\
 \n\
@@ -968,7 +968,7 @@ static TyMethodDef lock_methods[] = {
     {NULL,           NULL}              /* sentinel */
 };
 
-PyDoc_STRVAR(lock_doc,
+TyDoc_STRVAR(lock_doc,
 "lock()\n\
 --\n\
 \n\
@@ -1038,13 +1038,13 @@ static TyObject *
 rlock_acquire(TyObject *op, TyObject *args, TyObject *kwds)
 {
     rlockobject *self = rlockobject_CAST(op);
-    PyTime_t timeout;
+    TyTime_t timeout;
 
     if (lock_acquire_parse_args(args, kwds, &timeout) < 0) {
         return NULL;
     }
 
-    PyLockStatus r = _PyRecursiveMutex_LockTimed(&self->lock, timeout,
+    TyLockStatus r = _PyRecursiveMutex_LockTimed(&self->lock, timeout,
                                                  _PY_LOCK_HANDLE_SIGNALS | _PY_LOCK_DETACH);
     if (r == PY_LOCK_INTR) {
         return NULL;
@@ -1053,7 +1053,7 @@ rlock_acquire(TyObject *op, TyObject *args, TyObject *kwds)
     return TyBool_FromLong(r == PY_LOCK_ACQUIRED);
 }
 
-PyDoc_STRVAR(rlock_acquire_doc,
+TyDoc_STRVAR(rlock_acquire_doc,
 "acquire($self, /, blocking=True, timeout=-1)\n\
 --\n\
 \n\
@@ -1070,7 +1070,7 @@ Precisely, if the current thread already holds the lock, its\n\
 internal counter is simply incremented. If nobody holds the lock,\n\
 the lock is taken and its internal counter initialized to 1.");
 
-PyDoc_STRVAR(rlock_enter_doc,
+TyDoc_STRVAR(rlock_enter_doc,
 "__enter__($self, /)\n\
 --\n\
 \n\
@@ -1088,7 +1088,7 @@ rlock_release(TyObject *op, TyObject *Py_UNUSED(dummy))
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(rlock_release_doc,
+TyDoc_STRVAR(rlock_release_doc,
 "release($self, /)\n\
 --\n\
 \n\
@@ -1101,7 +1101,7 @@ Do note that if the lock was acquire()d several times in a row by the\n\
 current thread, release() needs to be called as many times for the lock\n\
 to be available for other threads.");
 
-PyDoc_STRVAR(rlock_exit_doc,
+TyDoc_STRVAR(rlock_exit_doc,
 "__exit__($self, /, *exc_info)\n\
 --\n\
 \n\
@@ -1115,7 +1115,7 @@ rlock_locked(TyObject *op, TyObject *Py_UNUSED(ignored))
     return TyBool_FromLong(is_locked);
 }
 
-PyDoc_STRVAR(rlock_locked_doc,
+TyDoc_STRVAR(rlock_locked_doc,
 "locked()\n\
 \n\
 Return a boolean indicating whether this object is locked right now.");
@@ -1124,7 +1124,7 @@ static TyObject *
 rlock_acquire_restore(TyObject *op, TyObject *args)
 {
     rlockobject *self = rlockobject_CAST(op);
-    PyThread_ident_t owner;
+    TyThread_ident_t owner;
     Ty_ssize_t count;
 
     if (!TyArg_ParseTuple(args, "(n" Ty_PARSE_THREAD_IDENT_T "):_acquire_restore",
@@ -1137,7 +1137,7 @@ rlock_acquire_restore(TyObject *op, TyObject *args)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(rlock_acquire_restore_doc,
+TyDoc_STRVAR(rlock_acquire_restore_doc,
 "_acquire_restore($self, state, /)\n\
 --\n\
 \n\
@@ -1154,14 +1154,14 @@ rlock_release_save(TyObject *op, TyObject *Py_UNUSED(dummy))
         return NULL;
     }
 
-    PyThread_ident_t owner = self->lock.thread;
+    TyThread_ident_t owner = self->lock.thread;
     Ty_ssize_t count = self->lock.level + 1;
     self->lock.level = 0;  // ensure the unlock releases the lock
     _PyRecursiveMutex_Unlock(&self->lock);
     return Ty_BuildValue("n" Ty_PARSE_THREAD_IDENT_T, count, owner);
 }
 
-PyDoc_STRVAR(rlock_release_save_doc,
+TyDoc_STRVAR(rlock_release_save_doc,
 "_release_save($self, /)\n\
 --\n\
 \n\
@@ -1177,7 +1177,7 @@ rlock_recursion_count(TyObject *op, TyObject *Py_UNUSED(dummy))
     return TyLong_FromLong(0);
 }
 
-PyDoc_STRVAR(rlock_recursion_count_doc,
+TyDoc_STRVAR(rlock_recursion_count_doc,
 "_recursion_count($self, /)\n\
 --\n\
 \n\
@@ -1191,7 +1191,7 @@ rlock_is_owned(TyObject *op, TyObject *Py_UNUSED(dummy))
     return TyBool_FromLong(owned);
 }
 
-PyDoc_STRVAR(rlock_is_owned_doc,
+TyDoc_STRVAR(rlock_is_owned_doc,
 "_is_owned($self, /)\n\
 --\n\
 \n\
@@ -1212,7 +1212,7 @@ static TyObject *
 rlock_repr(TyObject *op)
 {
     rlockobject *self = rlockobject_CAST(op);
-    PyThread_ident_t owner = self->lock.thread;
+    TyThread_ident_t owner = self->lock.thread;
     int locked = rlock_locked_impl(self);
     size_t count;
     if (locked) {
@@ -1823,7 +1823,7 @@ clear_locals(TyObject *locals_and_key, TyObject *dummyweakref)
 static TyObject *
 thread_daemon_threads_allowed(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (interp->feature_flags & Ty_RTFLAGS_DAEMON_THREADS) {
         Py_RETURN_TRUE;
     }
@@ -1832,7 +1832,7 @@ thread_daemon_threads_allowed(TyObject *module, TyObject *Py_UNUSED(ignored))
     }
 }
 
-PyDoc_STRVAR(daemon_threads_allowed_doc,
+TyDoc_STRVAR(daemon_threads_allowed_doc,
 "daemon_threads_allowed($module, /)\n\
 --\n\
 \n\
@@ -1843,7 +1843,7 @@ static int
 do_start_new_thread(thread_module_state *state, TyObject *func, TyObject *args,
                     TyObject *kwargs, ThreadHandle *handle, int daemon)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (!_TyInterpreterState_HasFeature(interp, Ty_RTFLAGS_THREADS)) {
         TyErr_SetString(TyExc_RuntimeError,
                         "thread is not supported for isolated subinterpreters");
@@ -1913,12 +1913,12 @@ thread_PyThread_start_new_thread(TyObject *module, TyObject *fargs)
         ThreadHandle_decref(handle);
         return NULL;
     }
-    PyThread_ident_t ident = ThreadHandle_ident(handle);
+    TyThread_ident_t ident = ThreadHandle_ident(handle);
     ThreadHandle_decref(handle);
     return TyLong_FromUnsignedLongLong(ident);
 }
 
-PyDoc_STRVAR(start_new_thread_doc,
+TyDoc_STRVAR(start_new_thread_doc,
 "start_new_thread($module, function, args, kwargs={}, /)\n\
 --\n\
 \n\
@@ -1931,7 +1931,7 @@ is ignored.  The thread will also exit when the function raises an\n\
 unhandled exception; a stack trace will be printed unless the exception\n\
 is SystemExit.");
 
-PyDoc_STRVAR(start_new_doc,
+TyDoc_STRVAR(start_new_doc,
 "start_new($module, function, args, kwargs={}, /)\n\
 --\n\
 \n\
@@ -1987,7 +1987,7 @@ thread_PyThread_start_joinable_thread(TyObject *module, TyObject *fargs,
     return (TyObject *) hobj;
 }
 
-PyDoc_STRVAR(start_joinable_doc,
+TyDoc_STRVAR(start_joinable_doc,
 "start_joinable_thread($module, /, function, handle=None, daemon=True)\n\
 --\n\
 \n\
@@ -2008,14 +2008,14 @@ thread_PyThread_exit_thread(TyObject *self, TyObject *Py_UNUSED(ignored))
     return NULL;
 }
 
-PyDoc_STRVAR(exit_doc,
+TyDoc_STRVAR(exit_doc,
 "exit($module, /)\n\
 --\n\
 \n\
 This is synonymous to ``raise SystemExit''.  It will cause the current\n\
 thread to exit silently unless the exception is caught.");
 
-PyDoc_STRVAR(exit_thread_doc,
+TyDoc_STRVAR(exit_thread_doc,
 "exit_thread($module, /)\n\
 --\n\
 \n\
@@ -2036,7 +2036,7 @@ thread_PyThread_interrupt_main(TyObject *self, TyObject *args)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(interrupt_doc,
+TyDoc_STRVAR(interrupt_doc,
 "interrupt_main($module, signum=signal.SIGINT, /)\n\
 --\n\
 \n\
@@ -2054,14 +2054,14 @@ thread_PyThread_allocate_lock(TyObject *module, TyObject *Py_UNUSED(ignored))
     return (TyObject *) newlockobject(module);
 }
 
-PyDoc_STRVAR(allocate_lock_doc,
+TyDoc_STRVAR(allocate_lock_doc,
 "allocate_lock($module, /)\n\
 --\n\
 \n\
 Create a new lock object. See help(type(threading.Lock())) for\n\
 information about locks.");
 
-PyDoc_STRVAR(allocate_doc,
+TyDoc_STRVAR(allocate_doc,
 "allocate($module, /)\n\
 --\n\
 \n\
@@ -2070,7 +2070,7 @@ An obsolete synonym of allocate_lock().");
 static TyObject *
 thread_get_ident(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyThread_ident_t ident = PyThread_get_thread_ident_ex();
+    TyThread_ident_t ident = TyThread_get_thread_ident_ex();
     if (ident == PYTHREAD_INVALID_THREAD_ID) {
         TyErr_SetString(ThreadError, "no current thread ident");
         return NULL;
@@ -2078,7 +2078,7 @@ thread_get_ident(TyObject *self, TyObject *Py_UNUSED(ignored))
     return TyLong_FromUnsignedLongLong(ident);
 }
 
-PyDoc_STRVAR(get_ident_doc,
+TyDoc_STRVAR(get_ident_doc,
 "get_ident($module, /)\n\
 --\n\
 \n\
@@ -2094,11 +2094,11 @@ A thread's identity may be reused for another thread after it exits.");
 static TyObject *
 thread_get_native_id(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    unsigned long native_id = PyThread_get_thread_native_id();
+    unsigned long native_id = TyThread_get_thread_native_id();
     return TyLong_FromUnsignedLong(native_id);
 }
 
-PyDoc_STRVAR(get_native_id_doc,
+TyDoc_STRVAR(get_native_id_doc,
 "get_native_id($module, /)\n\
 --\n\
 \n\
@@ -2110,11 +2110,11 @@ particular thread within a system.");
 static TyObject *
 thread__count(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return TyLong_FromSsize_t(_Ty_atomic_load_ssize(&interp->threads.count));
 }
 
-PyDoc_STRVAR(_count_doc,
+TyDoc_STRVAR(_count_doc,
 "_count($module, /)\n\
 --\n\
 \n\
@@ -2142,9 +2142,9 @@ thread_stack_size(TyObject *self, TyObject *args)
         return NULL;
     }
 
-    old_size = PyThread_get_stacksize();
+    old_size = TyThread_get_stacksize();
 
-    rc = PyThread_set_stacksize((size_t) new_size);
+    rc = TyThread_set_stacksize((size_t) new_size);
     if (rc == -1) {
         TyErr_Format(TyExc_ValueError,
                      "size not valid: %zd bytes",
@@ -2160,7 +2160,7 @@ thread_stack_size(TyObject *self, TyObject *args)
     return TyLong_FromSsize_t((Ty_ssize_t) old_size);
 }
 
-PyDoc_STRVAR(stack_size_doc,
+TyDoc_STRVAR(stack_size_doc,
 "stack_size($module, size=0, /)\n\
 --\n\
 \n\
@@ -2204,7 +2204,7 @@ thread_excepthook_file(TyObject *file, TyObject *exc_type, TyObject *exc_value,
         Ty_DECREF(name);
     }
     else {
-        PyThread_ident_t ident = PyThread_get_thread_ident_ex();
+        TyThread_ident_t ident = TyThread_get_thread_ident_ex();
         TyObject *str = TyUnicode_FromFormat("%" PY_FORMAT_THREAD_IDENT_T, ident);
         if (str != NULL) {
             if (TyFile_WriteObject(str, file, Ty_PRINT_RAW) < 0) {
@@ -2238,12 +2238,12 @@ thread_excepthook_file(TyObject *file, TyObject *exc_type, TyObject *exc_value,
 }
 
 
-PyDoc_STRVAR(ExceptHookArgs__doc__,
+TyDoc_STRVAR(ExceptHookArgs__doc__,
 "ExceptHookArgs\n\
 \n\
 Type used to pass arguments to threading.excepthook.");
 
-static PyStructSequence_Field ExceptHookArgs_fields[] = {
+static TyStructSequence_Field ExceptHookArgs_fields[] = {
     {"exc_type", "Exception type"},
     {"exc_value", "Exception value"},
     {"exc_traceback", "Exception traceback"},
@@ -2251,7 +2251,7 @@ static PyStructSequence_Field ExceptHookArgs_fields[] = {
     {0}
 };
 
-static PyStructSequence_Desc ExceptHookArgs_desc = {
+static TyStructSequence_Desc ExceptHookArgs_desc = {
     .name = "_thread._ExceptHookArgs",
     .doc = ExceptHookArgs__doc__,
     .fields = ExceptHookArgs_fields,
@@ -2272,16 +2272,16 @@ thread_excepthook(TyObject *module, TyObject *args)
     }
 
     /* Borrowed reference */
-    TyObject *exc_type = PyStructSequence_GET_ITEM(args, 0);
+    TyObject *exc_type = TyStructSequence_GET_ITEM(args, 0);
     if (exc_type == TyExc_SystemExit) {
         /* silently ignore SystemExit */
         Py_RETURN_NONE;
     }
 
     /* Borrowed references */
-    TyObject *exc_value = PyStructSequence_GET_ITEM(args, 1);
-    TyObject *exc_tb = PyStructSequence_GET_ITEM(args, 2);
-    TyObject *thread = PyStructSequence_GET_ITEM(args, 3);
+    TyObject *exc_value = TyStructSequence_GET_ITEM(args, 1);
+    TyObject *exc_tb = TyStructSequence_GET_ITEM(args, 2);
+    TyObject *thread = TyStructSequence_GET_ITEM(args, 3);
 
     TyObject *file;
     if (_TySys_GetOptionalAttr( &_Ty_ID(stderr), &file) < 0) {
@@ -2316,7 +2316,7 @@ thread_excepthook(TyObject *module, TyObject *args)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(excepthook_doc,
+TyDoc_STRVAR(excepthook_doc,
 "_excepthook($module, args, /)\n\
 --\n\
 \n\
@@ -2325,11 +2325,11 @@ Handle uncaught Thread.run() exception.");
 static TyObject *
 thread__is_main_interpreter(TyObject *module, TyObject *Py_UNUSED(ignored))
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return TyBool_FromLong(_Ty_IsMainInterpreter(interp));
 }
 
-PyDoc_STRVAR(thread__is_main_interpreter_doc,
+TyDoc_STRVAR(thread__is_main_interpreter_doc,
 "_is_main_interpreter($module, /)\n\
 --\n\
 \n\
@@ -2338,7 +2338,7 @@ Return True if the current interpreter is the main Python interpreter.");
 static TyObject *
 thread_shutdown(TyObject *self, TyObject *args)
 {
-    PyThread_ident_t ident = PyThread_get_thread_ident_ex();
+    TyThread_ident_t ident = TyThread_get_thread_ident_ex();
     thread_module_state *state = get_thread_state(self);
 
     for (;;) {
@@ -2377,7 +2377,7 @@ thread_shutdown(TyObject *self, TyObject *args)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(shutdown_doc,
+TyDoc_STRVAR(shutdown_doc,
 "_shutdown($module, /)\n\
 --\n\
 \n\
@@ -2391,7 +2391,7 @@ thread__make_thread_handle(TyObject *module, TyObject *identobj)
         TyErr_SetString(TyExc_TypeError, "ident must be an integer");
         return NULL;
     }
-    PyThread_ident_t ident = TyLong_AsUnsignedLongLong(identobj);
+    TyThread_ident_t ident = TyLong_AsUnsignedLongLong(identobj);
     if (TyErr_Occurred()) {
         return NULL;
     }
@@ -2407,7 +2407,7 @@ thread__make_thread_handle(TyObject *module, TyObject *identobj)
     return (TyObject*) hobj;
 }
 
-PyDoc_STRVAR(thread__make_thread_handle_doc,
+TyDoc_STRVAR(thread__make_thread_handle_doc,
 "_make_thread_handle($module, ident, /)\n\
 --\n\
 \n\
@@ -2420,7 +2420,7 @@ thread__get_main_thread_ident(TyObject *module, TyObject *Py_UNUSED(ignored))
     return TyLong_FromUnsignedLongLong(_PyRuntime.main_thread);
 }
 
-PyDoc_STRVAR(thread__get_main_thread_ident_doc,
+TyDoc_STRVAR(thread__get_main_thread_ident_doc,
 "_get_main_thread_ident($module, /)\n\
 --\n\
 \n\
@@ -2506,7 +2506,7 @@ _thread_set_name_impl(TyObject *module, TyObject *name_obj)
 #else
     // Encode the thread name to the filesystem encoding using the "replace"
     // error handler
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     const char *encoding = interp->unicode.fs_codec.encoding;
 #endif
     TyObject *name_encoded;
@@ -2636,7 +2636,7 @@ thread_module_exec(TyObject *module)
     TyObject *d = TyModule_GetDict(module);
 
     // Initialize the C thread library
-    PyThread_init_thread();
+    TyThread_init_thread();
 
     // _ThreadHandle
     state->thread_handle_type = (TyTypeObject *)TyType_FromSpec(&ThreadHandle_Type_spec);
@@ -2692,7 +2692,7 @@ thread_module_exec(TyObject *module)
     }
 
     // _ExceptHookArgs type
-    state->excepthook_type = PyStructSequence_NewType(&ExceptHookArgs_desc);
+    state->excepthook_type = TyStructSequence_NewType(&ExceptHookArgs_desc);
     if (state->excepthook_type == NULL) {
         return -1;
     }
@@ -2786,7 +2786,7 @@ thread_module_free(void *module)
 
 
 
-PyDoc_STRVAR(thread_doc,
+TyDoc_STRVAR(thread_doc,
 "This module provides primitive operations to write multi-threaded programs.\n\
 The 'threading' module provides a more convenient interface.");
 

@@ -550,7 +550,7 @@ static TyMethodDef TestMethods[] = {
 };
 
 
-PyDoc_STRVAR(heapdocctype__doc__,
+TyDoc_STRVAR(heapdocctype__doc__,
 "HeapDocCType(arg1, arg2)\n"
 "--\n"
 "\n"
@@ -591,7 +591,7 @@ static TyType_Spec NullTpDocType_spec = {
 };
 
 
-PyDoc_STRVAR(heapgctype__doc__,
+TyDoc_STRVAR(heapgctype__doc__,
 "A heap type with GC, and with overridden dealloc.\n\n"
 "The 'value' attribute is set to 10 in __init__.");
 
@@ -647,7 +647,7 @@ static TyType_Spec HeapGcCType_spec = {
     HeapGcCType_slots
 };
 
-PyDoc_STRVAR(heapctype__doc__,
+TyDoc_STRVAR(heapctype__doc__,
 "A heap type without GC, but with overridden dealloc.\n\n"
 "The 'value' attribute is set to 10 in __init__.");
 
@@ -676,7 +676,7 @@ static TyType_Spec HeapCType_spec = {
     HeapCType_slots
 };
 
-PyDoc_STRVAR(heapctypesubclass__doc__,
+TyDoc_STRVAR(heapctypesubclass__doc__,
 "Subclass of HeapCType, without GC.\n\n"
 "__init__ sets the 'value' attribute to 10 and 'value2' to 20.");
 
@@ -717,7 +717,7 @@ static TyType_Spec HeapCTypeSubclass_spec = {
     HeapCTypeSubclass_slots
 };
 
-PyDoc_STRVAR(heapctypewithbuffer__doc__,
+TyDoc_STRVAR(heapctypewithbuffer__doc__,
 "Heap type with buffer support.\n\n"
 "The buffer is set to [b'1', b'2', b'3', b'4']");
 
@@ -760,7 +760,7 @@ static TyType_Spec HeapCTypeWithBuffer_spec = {
     HeapCTypeWithBuffer_slots
 };
 
-PyDoc_STRVAR(heapctypesubclasswithfinalizer__doc__,
+TyDoc_STRVAR(heapctypesubclasswithfinalizer__doc__,
 "Subclass of HeapCType with a finalizer that reassigns __class__.\n\n"
 "__class__ is set to plain HeapCTypeSubclass during finalization.\n"
 "__init__ sets the 'value' attribute to 10 and 'value2' to 20.");
@@ -1063,7 +1063,7 @@ static TyType_Spec HeapCTypeWithWeakref2_spec = {
     HeapCTypeWithWeakref_slots
 };
 
-PyDoc_STRVAR(heapctypesetattr__doc__,
+TyDoc_STRVAR(heapctypesetattr__doc__,
 "A heap type without GC, but with overridden __setattr__.\n\n"
 "The 'value' attribute is set to 10 in __init__ and updated via attribute setting.");
 
@@ -1222,7 +1222,7 @@ static TyType_Spec HeapCTypeVectorcall_spec = {
     HeapCTypeVectorcall_slots
 };
 
-PyDoc_STRVAR(HeapCCollection_doc,
+TyDoc_STRVAR(HeapCCollection_doc,
 "Tuple-like heap type that uses PyObject_GetItemData for items.");
 
 static TyObject*

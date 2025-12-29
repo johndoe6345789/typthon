@@ -238,7 +238,7 @@ static inline void _TyObject_GC_TRACK(
                           "object is in generation which is garbage collected",
                           filename, lineno, __func__);
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     TyGC_Head *generation0 = &interp->gc.young.head;
     TyGC_Head *last = (TyGC_Head*)(generation0->_gc_prev);
     _PyGCHead_SET_NEXT(last, gc);
@@ -332,17 +332,17 @@ extern Ty_ssize_t _TyGC_Collect(TyThreadState *tstate, int generation, _TyGC_Rea
 extern void _TyGC_CollectNoFail(TyThreadState *tstate);
 
 /* Freeze objects tracked by the GC and ignore them in future collections. */
-extern void _TyGC_Freeze(PyInterpreterState *interp);
+extern void _TyGC_Freeze(TyInterpreterState *interp);
 /* Unfreezes objects placing them in the oldest generation */
-extern void _TyGC_Unfreeze(PyInterpreterState *interp);
+extern void _TyGC_Unfreeze(TyInterpreterState *interp);
 /* Number of frozen objects */
-extern Ty_ssize_t _TyGC_GetFreezeCount(PyInterpreterState *interp);
+extern Ty_ssize_t _TyGC_GetFreezeCount(TyInterpreterState *interp);
 
-extern TyObject *_TyGC_GetObjects(PyInterpreterState *interp, int generation);
-extern TyObject *_TyGC_GetReferrers(PyInterpreterState *interp, TyObject *objs);
+extern TyObject *_TyGC_GetObjects(TyInterpreterState *interp, int generation);
+extern TyObject *_TyGC_GetReferrers(TyInterpreterState *interp, TyObject *objs);
 
 // Functions to clear types free lists
-extern void _TyGC_ClearAllFreeLists(PyInterpreterState *interp);
+extern void _TyGC_ClearAllFreeLists(TyInterpreterState *interp);
 extern void _Ty_ScheduleGC(TyThreadState *tstate);
 extern void _Ty_RunGC(TyThreadState *tstate);
 
@@ -353,7 +353,7 @@ extern int _TyGC_VisitFrameStack(_PyInterpreterFrame *frame, visitproc visit, vo
 extern int _TyGC_VisitStackRef(union _PyStackRef *ref, visitproc visit, void *arg);
 
 #ifdef Ty_GIL_DISABLED
-extern void _TyGC_VisitObjectsWorldStopped(PyInterpreterState *interp,
+extern void _TyGC_VisitObjectsWorldStopped(TyInterpreterState *interp,
                                            gcvisitobjects_t callback, void *arg);
 #endif
 

@@ -117,7 +117,7 @@ Local naming conventions:
 #endif
 
 /* Socket object documentation */
-PyDoc_STRVAR(sock_doc,
+TyDoc_STRVAR(sock_doc,
 "socket(family=AF_INET, type=SOCK_STREAM, proto=0) -> socket object\n\
 socket(family=-1, type=-1, proto=-1, fileno=None) -> socket object\n\
 \n\
@@ -545,7 +545,7 @@ typedef struct _socket_state {
     TyObject *socket_gaierror;
 
     /* Default timeout for new sockets */
-    PyTime_t defaulttimeout;
+    TyTime_t defaulttimeout;
 } socket_state;
 
 #if defined(HAVE_ACCEPT) || defined(HAVE_ACCEPT4)
@@ -802,7 +802,7 @@ internal_setblocking(PySocketSockObject *s, int block)
     int delay_flag, new_delay_flag;
 #endif
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifndef MS_WINDOWS
 #if (defined(HAVE_SYS_IOCTL_H) && defined(FIONBIO))
     block = !block;
@@ -829,7 +829,7 @@ internal_setblocking(PySocketSockObject *s, int block)
     result = 0;
 
   done:
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (result) {
 #ifndef MS_WINDOWS
@@ -843,13 +843,13 @@ internal_setblocking(PySocketSockObject *s, int block)
 }
 
 static int
-internal_select(PySocketSockObject *s, int writing, PyTime_t interval,
+internal_select(PySocketSockObject *s, int writing, TyTime_t interval,
                 int connect)
 {
     int n;
 #ifdef HAVE_POLL
     struct pollfd pollfd;
-    PyTime_t ms;
+    TyTime_t ms;
 #else
     fd_set fds, efds;
     struct timeval tv, *tvp;
@@ -896,9 +896,9 @@ internal_select(PySocketSockObject *s, int writing, PyTime_t interval,
     }
     assert(INT_MIN <= ms && ms <= INT_MAX);
 
-    Py_BEGIN_ALLOW_THREADS;
+    Ty_BEGIN_ALLOW_THREADS;
     n = poll(&pollfd, 1, (int)ms);
-    Py_END_ALLOW_THREADS;
+    Ty_END_ALLOW_THREADS;
 #else
     if (interval >= 0) {
         _TyTime_AsTimeval_clamp(interval, &tv, _TyTime_ROUND_CEILING);
@@ -919,14 +919,14 @@ internal_select(PySocketSockObject *s, int writing, PyTime_t interval,
     }
 
     /* See if the socket is ready */
-    Py_BEGIN_ALLOW_THREADS;
+    Ty_BEGIN_ALLOW_THREADS;
     if (writing)
         n = select(Py_SAFE_DOWNCAST(get_sock_fd(s)+1, SOCKET_T, int),
                    NULL, &fds, &efds, tvp);
     else
         n = select(Py_SAFE_DOWNCAST(get_sock_fd(s)+1, SOCKET_T, int),
                    &fds, NULL, &efds, tvp);
-    Py_END_ALLOW_THREADS;
+    Ty_END_ALLOW_THREADS;
 #endif
 
     if (n < 0)
@@ -962,10 +962,10 @@ sock_call_ex(PySocketSockObject *s,
              void *data,
              int connect,
              int *err,
-             PyTime_t timeout)
+             TyTime_t timeout)
 {
     int has_timeout = (timeout > 0);
-    PyTime_t deadline = 0;
+    TyTime_t deadline = 0;
     int deadline_initialized = 0;
     int res;
 
@@ -979,7 +979,7 @@ sock_call_ex(PySocketSockObject *s,
            runs asynchronously. */
         if (has_timeout || connect) {
             if (has_timeout) {
-                PyTime_t interval;
+                TyTime_t interval;
 
                 if (deadline_initialized) {
                     /* recompute the timeout */
@@ -1037,9 +1037,9 @@ sock_call_ex(PySocketSockObject *s,
         /* inner loop to retry sock_func() when sock_func() is interrupted
            by a signal */
         while (1) {
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             res = sock_func(s, data);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
 
             if (res) {
                 /* sock_func() succeeded */
@@ -1166,7 +1166,7 @@ new_sockobject(socket_state *state, SOCKET_T fd, int family, int type,
 /* Lock to allow python interpreter to continue, but only allow one
    thread to be in gethostbyname or getaddrinfo */
 #if defined(USE_GETHOSTBYNAME_LOCK)
-static PyThread_type_lock netdb_lock;
+static TyThread_type_lock netdb_lock;
 #endif
 
 
@@ -1191,9 +1191,9 @@ setipaddr(socket_state *state, const char *name, struct sockaddr *addr_ret,
         hints.ai_family = af;
         hints.ai_socktype = SOCK_DGRAM;         /*dummy*/
         hints.ai_flags = AI_PASSIVE;
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         error = getaddrinfo(NULL, "0", &hints, &res);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         /* We assume that those thread-unsafe getaddrinfo() versions
            *are* safe regarding their return value, ie. that a
            subsequent call to getaddrinfo() does not destroy the
@@ -1298,7 +1298,7 @@ setipaddr(socket_state *state, const char *name, struct sockaddr *addr_ret,
     /* perform a name resolution */
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = af;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     error = getaddrinfo(name, NULL, &hints, &res);
 #if defined(__digital__) && defined(__unix__)
     if (error == EAI_NONAME && af == AF_UNSPEC) {
@@ -1308,7 +1308,7 @@ setipaddr(socket_state *state, const char *name, struct sockaddr *addr_ret,
         error = getaddrinfo(name, NULL, &hints, &res);
     }
 #endif
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (error) {
         res = NULL;  // no-op, remind us that it is invalid; gh-100795
         set_gaierror(state, error);
@@ -3136,7 +3136,7 @@ finally:
     return res;
 }
 
-PyDoc_STRVAR(accept_doc,
+TyDoc_STRVAR(accept_doc,
 "_accept() -> (integer, address info)\n\
 \n\
 Wait for an incoming connection.  Return a new socket file descriptor\n\
@@ -3167,7 +3167,7 @@ sock_setblocking(TyObject *self, TyObject *arg)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(setblocking_doc,
+TyDoc_STRVAR(setblocking_doc,
 "setblocking(flag)\n\
 \n\
 Set the socket to blocking (flag is true) or non-blocking (false).\n\
@@ -3190,20 +3190,20 @@ sock_getblocking(TyObject *self, TyObject *Py_UNUSED(ignored))
     }
 }
 
-PyDoc_STRVAR(getblocking_doc,
+TyDoc_STRVAR(getblocking_doc,
 "getblocking()\n\
 \n\
 Returns True if socket is in blocking mode, or False if it\n\
 is in non-blocking mode.");
 
 static int
-socket_parse_timeout(PyTime_t *timeout, TyObject *timeout_obj)
+socket_parse_timeout(TyTime_t *timeout, TyObject *timeout_obj)
 {
 #ifdef MS_WINDOWS
     struct timeval tv;
 #endif
 #ifndef HAVE_POLL
-    PyTime_t ms;
+    TyTime_t ms;
 #endif
     int overflow = 0;
 
@@ -3246,7 +3246,7 @@ socket_parse_timeout(PyTime_t *timeout, TyObject *timeout_obj)
 static TyObject *
 sock_settimeout(TyObject *self, TyObject *arg)
 {
-    PyTime_t timeout;
+    TyTime_t timeout;
 
     if (socket_parse_timeout(&timeout, arg) < 0)
         return NULL;
@@ -3282,7 +3282,7 @@ sock_settimeout(TyObject *self, TyObject *arg)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(settimeout_doc,
+TyDoc_STRVAR(settimeout_doc,
 "settimeout(timeout)\n\
 \n\
 Set a timeout on socket operations.  'timeout' can be a float,\n\
@@ -3317,7 +3317,7 @@ sock_gettimeout_getter(TyObject *self, void *Py_UNUSED(closure))
     return sock_gettimeout_impl(self, NULL);
 }
 
-PyDoc_STRVAR(gettimeout_doc,
+TyDoc_STRVAR(gettimeout_doc,
 "gettimeout() -> timeout\n\
 \n\
 Returns the timeout in seconds (float) associated with socket\n\
@@ -3419,7 +3419,7 @@ done:
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(setsockopt_doc,
+TyDoc_STRVAR(setsockopt_doc,
 "setsockopt(level, option, value: int)\n\
 setsockopt(level, option, value: buffer)\n\
 setsockopt(level, option, None, optlen: int)\n\
@@ -3500,7 +3500,7 @@ sock_getsockopt(TyObject *self, TyObject *args)
     return buf;
 }
 
-PyDoc_STRVAR(getsockopt_doc,
+TyDoc_STRVAR(getsockopt_doc,
 "getsockopt(level, option[, buffersize]) -> value\n\
 \n\
 Get a socket option.  See the Unix manual for level and option.\n\
@@ -3528,15 +3528,15 @@ sock_bind(TyObject *self, TyObject *addro)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = bind(get_sock_fd(s), SAS2SA(&addrbuf), addrlen);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0)
         return s->errorhandler();
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(bind_doc,
+TyDoc_STRVAR(bind_doc,
 "bind(address)\n\
 \n\
 Bind the socket to a local address.  For IP sockets, the address is a\n\
@@ -3573,9 +3573,9 @@ _socket_socket_close_impl(PySocketSockObject *s)
            http://lwn.net/Articles/576478/ and
            http://linux.derkeiler.com/Mailing-Lists/Kernel/2005-09/3000.html
            for more details. */
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         res = SOCKETCLOSE(fd);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
         /* bpo-30319: The peer can already have closed the connection.
            Python ignores ECONNRESET on close(). */
         if (res < 0 && errno != ECONNRESET) {
@@ -3594,7 +3594,7 @@ sock_detach(TyObject *self, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSocket_t(fd);
 }
 
-PyDoc_STRVAR(detach_doc,
+TyDoc_STRVAR(detach_doc,
 "detach()\n\
 \n\
 Close the socket object without closing the underlying file descriptor.\n\
@@ -3641,9 +3641,9 @@ internal_connect(PySocketSockObject *s, struct sockaddr *addr, int addrlen,
 {
     int res, err, wait_connect;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = connect(get_sock_fd(s), addr, addrlen);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (!res) {
         /* connect() succeeded, the socket is connected */
@@ -3729,7 +3729,7 @@ sock_connect(TyObject *self, TyObject *addro)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(connect_doc,
+TyDoc_STRVAR(connect_doc,
 "connect(address)\n\
 \n\
 Connect the socket to a remote address.  For IP sockets, the address\n\
@@ -3763,7 +3763,7 @@ sock_connect_ex(TyObject *self, TyObject *addro)
     return TyLong_FromLong((long) res);
 }
 
-PyDoc_STRVAR(connect_ex_doc,
+TyDoc_STRVAR(connect_ex_doc,
 "connect_ex(address) -> errno\n\
 \n\
 This is like connect(address), but returns an error code (the errno value)\n\
@@ -3780,7 +3780,7 @@ sock_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
     return TyLong_FromSocket_t(get_sock_fd(s));
 }
 
-PyDoc_STRVAR(fileno_doc,
+TyDoc_STRVAR(fileno_doc,
 "fileno() -> integer\n\
 \n\
 Return the integer file descriptor of the socket.");
@@ -3801,16 +3801,16 @@ sock_getsockname(TyObject *self, TyObject *Py_UNUSED(ignored))
     if (!getsockaddrlen(s, &addrlen))
         return NULL;
     memset(&addrbuf, 0, addrlen);
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = getsockname(get_sock_fd(s), SAS2SA(&addrbuf), &addrlen);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0)
         return s->errorhandler();
     return makesockaddr(get_sock_fd(s), SAS2SA(&addrbuf), addrlen,
                         s->sock_proto);
 }
 
-PyDoc_STRVAR(getsockname_doc,
+TyDoc_STRVAR(getsockname_doc,
 "getsockname() -> address info\n\
 \n\
 Return the address of the local endpoint. The format depends on the\n\
@@ -3835,16 +3835,16 @@ sock_getpeername(TyObject *self, TyObject *Py_UNUSED(ignored))
     if (!getsockaddrlen(s, &addrlen))
         return NULL;
     memset(&addrbuf, 0, addrlen);
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = getpeername(get_sock_fd(s), SAS2SA(&addrbuf), &addrlen);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0)
         return s->errorhandler();
     return makesockaddr(get_sock_fd(s), SAS2SA(&addrbuf), addrlen,
                         s->sock_proto);
 }
 
-PyDoc_STRVAR(getpeername_doc,
+TyDoc_STRVAR(getpeername_doc,
 "getpeername() -> address info\n\
 \n\
 Return the address of the remote endpoint.  For IP sockets, the address\n\
@@ -3868,19 +3868,19 @@ sock_listen(TyObject *self, TyObject *args)
     if (!TyArg_ParseTuple(args, "|i:listen", &backlog))
         return NULL;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     /* To avoid problems on systems that don't allow a negative backlog
      * (which doesn't make sense anyway) we force a minimum value of 0. */
     if (backlog < 0)
         backlog = 0;
     res = listen(get_sock_fd(s), backlog);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0)
         return s->errorhandler();
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(listen_doc,
+TyDoc_STRVAR(listen_doc,
 "listen([backlog])\n\
 \n\
 Enable a server to accept connections.  If backlog is specified, it must be\n\
@@ -3987,7 +3987,7 @@ sock_recv(TyObject *self, TyObject *args)
     return buf;
 }
 
-PyDoc_STRVAR(recv_doc,
+TyDoc_STRVAR(recv_doc,
 "recv(buffersize[, flags]) -> data\n\
 \n\
 Receive up to buffersize bytes from the socket.  For the optional flags\n\
@@ -4049,7 +4049,7 @@ sock_recv_into(TyObject *self, TyObject *args, TyObject *kwds)
     return TyLong_FromSsize_t(readlen);
 }
 
-PyDoc_STRVAR(recv_into_doc,
+TyDoc_STRVAR(recv_into_doc,
 "recv_into(buffer, [nbytes[, flags]]) -> nbytes_read\n\
 \n\
 A version of recv() that stores its data into a buffer rather than creating\n\
@@ -4181,7 +4181,7 @@ finally:
     return ret;
 }
 
-PyDoc_STRVAR(recvfrom_doc,
+TyDoc_STRVAR(recvfrom_doc,
 "recvfrom(buffersize[, flags]) -> (data, address info)\n\
 \n\
 Like recv(buffersize, flags) but also return the sender's address info.");
@@ -4239,7 +4239,7 @@ sock_recvfrom_into(TyObject *self, TyObject *args, TyObject* kwds)
     return Ty_BuildValue("nN", readlen, addr);
 }
 
-PyDoc_STRVAR(recvfrom_into_doc,
+TyDoc_STRVAR(recvfrom_into_doc,
 "recvfrom_into(buffer[, nbytes[, flags]]) -> (nbytes, address info)\n\
 \n\
 Like recv_into(buffer[, nbytes[, flags]]) but also return the sender's address info.");
@@ -4449,7 +4449,7 @@ sock_recvmsg(TyObject *self, TyObject *args)
     return retval;
 }
 
-PyDoc_STRVAR(recvmsg_doc,
+TyDoc_STRVAR(recvmsg_doc,
 "recvmsg(bufsize[, ancbufsize[, flags]]) -> (data, ancdata, msg_flags, address)\n\
 \n\
 Receive normal data (up to bufsize bytes) and ancillary data from the\n\
@@ -4541,7 +4541,7 @@ finally:
     return retval;
 }
 
-PyDoc_STRVAR(recvmsg_into_doc,
+TyDoc_STRVAR(recvmsg_into_doc,
 "recvmsg_into(buffers[, ancbufsize[, flags]]) -> (nbytes, ancdata, msg_flags, address)\n\
 \n\
 Receive normal data and ancillary data from the socket, scattering the\n\
@@ -4628,7 +4628,7 @@ sock_send(TyObject *self, TyObject *args)
     return TyLong_FromSsize_t(ctx.result);
 }
 
-PyDoc_STRVAR(send_doc,
+TyDoc_STRVAR(send_doc,
 "send(data[, flags]) -> count\n\
 \n\
 Send a data string to the socket.  For the optional flags\n\
@@ -4649,8 +4649,8 @@ sock_sendall(TyObject *self, TyObject *args)
     Ty_buffer pbuf;
     struct sock_send ctx;
     int has_timeout = (s->sock_timeout > 0);
-    PyTime_t timeout = s->sock_timeout;
-    PyTime_t deadline = 0;
+    TyTime_t timeout = s->sock_timeout;
+    TyTime_t deadline = 0;
     int deadline_initialized = 0;
     TyObject *res = NULL;
 
@@ -4707,7 +4707,7 @@ done:
     return res;
 }
 
-PyDoc_STRVAR(sendall_doc,
+TyDoc_STRVAR(sendall_doc,
 "sendall(data[, flags])\n\
 \n\
 Send a data string to the socket.  For the optional flags\n\
@@ -4806,7 +4806,7 @@ sock_sendto(TyObject *self, TyObject *args)
     return TyLong_FromSsize_t(ctx.result);
 }
 
-PyDoc_STRVAR(sendto_doc,
+TyDoc_STRVAR(sendto_doc,
 "sendto(data[, flags], address) -> count\n\
 \n\
 Like send(data, flags) but allows specifying the destination address.\n\
@@ -5078,7 +5078,7 @@ finally:
     return retval;
 }
 
-PyDoc_STRVAR(sendmsg_doc,
+TyDoc_STRVAR(sendmsg_doc,
 "sendmsg(buffers[, ancdata[, flags[, address]]]) -> count\n\
 \n\
 Send normal and ancillary data to the socket, gathering the\n\
@@ -5257,7 +5257,7 @@ sock_sendmsg_afalg(TyObject *s, TyObject *args, TyObject *kwds)
     return retval;
 }
 
-PyDoc_STRVAR(sendmsg_afalg_doc,
+TyDoc_STRVAR(sendmsg_afalg_doc,
 "sendmsg_afalg([msg], *, op[, iv[, assoclen[, flags=MSG_MORE]]])\n\
 \n\
 Set operation mode, IV and length of associated data for an AF_ALG\n\
@@ -5278,15 +5278,15 @@ sock_shutdown(TyObject *self, TyObject *arg)
     how = TyLong_AsInt(arg);
     if (how == -1 && TyErr_Occurred())
         return NULL;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = shutdown(get_sock_fd(s), how);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0)
         return s->errorhandler();
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(shutdown_doc,
+TyDoc_STRVAR(shutdown_doc,
 "shutdown(flag)\n\
 \n\
 Shut down the reading side of the socket (flag == SHUT_RD), the writing side\n\
@@ -5342,7 +5342,7 @@ sock_ioctl(TyObject *self, TyObject *arg)
         return NULL;
     }
 }
-PyDoc_STRVAR(sock_ioctl_doc,
+TyDoc_STRVAR(sock_ioctl_doc,
 "ioctl(cmd, option) -> long\n\
 \n\
 Control the socket with WSAIoctl syscall. Currently supported 'cmd' values are\n\
@@ -5364,14 +5364,14 @@ sock_share(TyObject *self, TyObject *arg)
     if (!TyArg_ParseTuple(arg, "I", &processId))
         return NULL;
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     result = WSADuplicateSocketW(get_sock_fd(s), processId, &info);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (result == SOCKET_ERROR)
         return set_error();
     return TyBytes_FromStringAndSize((const char*)&info, sizeof(info));
 }
-PyDoc_STRVAR(sock_share_doc,
+TyDoc_STRVAR(sock_share_doc,
 "share(process_id) -> bytes\n\
 \n\
 Share the socket with another process.  The target process id\n\
@@ -5473,7 +5473,7 @@ static TyMemberDef sock_memberlist[] = {
 };
 
 static TyGetSetDef sock_getsetlist[] = {
-    {"timeout", sock_gettimeout_getter, NULL, PyDoc_STR("the socket timeout")},
+    {"timeout", sock_gettimeout_getter, NULL, TyDoc_STR("the socket timeout")},
     {NULL} /* sentinel */
 };
 
@@ -5507,9 +5507,9 @@ sock_finalize(TyObject *self)
         set_sock_fd(s, INVALID_SOCKET);
 
         /* We do not want to retry upon EINTR: see sock_close() */
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         (void) SOCKETCLOSE(fd);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
     }
 
     /* Restore the saved exception. */
@@ -5656,10 +5656,10 @@ sock_initobj_impl(PySocketSockObject *self, int family, int type, int proto,
                 return -1;
             }
 
-            Py_BEGIN_ALLOW_THREADS
+            Ty_BEGIN_ALLOW_THREADS
             fd = WSASocketW(FROM_PROTOCOL_INFO, FROM_PROTOCOL_INFO,
                      FROM_PROTOCOL_INFO, &info, 0, WSA_FLAG_OVERLAPPED);
-            Py_END_ALLOW_THREADS
+            Ty_END_ALLOW_THREADS
             if (fd == INVALID_SOCKET) {
                 set_error();
                 return -1;
@@ -5761,11 +5761,11 @@ sock_initobj_impl(PySocketSockObject *self, int family, int type, int proto,
             proto = 0;
         }
 #ifdef MS_WINDOWS
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
         fd = WSASocketW(family, type, proto,
                         NULL, 0,
                         WSA_FLAG_OVERLAPPED | WSA_FLAG_NO_HANDLE_INHERIT);
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (fd == INVALID_SOCKET) {
             set_error();
@@ -5773,7 +5773,7 @@ sock_initobj_impl(PySocketSockObject *self, int family, int type, int proto,
         }
 #else
         /* UNIX */
-        Py_BEGIN_ALLOW_THREADS
+        Ty_BEGIN_ALLOW_THREADS
 #ifdef SOCK_CLOEXEC
         if (_Ty_atomic_load_int_relaxed(&sock_cloexec_works) != 0) {
             fd = socket(family, type | SOCK_CLOEXEC, proto);
@@ -5794,7 +5794,7 @@ sock_initobj_impl(PySocketSockObject *self, int family, int type, int proto,
         {
             fd = socket(family, type, proto);
         }
-        Py_END_ALLOW_THREADS
+        Ty_END_ALLOW_THREADS
 
         if (fd == INVALID_SOCKET) {
             set_error();
@@ -5893,9 +5893,9 @@ socket_gethostname(TyObject *self, TyObject *unused)
 #else
     char buf[1024];
     int res;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = gethostname(buf, (int) sizeof buf - 1);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (res < 0)
         return set_error();
     buf[sizeof buf - 1] = '\0';
@@ -5903,14 +5903,14 @@ socket_gethostname(TyObject *self, TyObject *unused)
 #endif
 }
 
-PyDoc_STRVAR(gethostname_doc,
+TyDoc_STRVAR(gethostname_doc,
 "gethostname() -> string\n\
 \n\
 Return the current host name.");
 #endif
 
 #ifdef HAVE_SETHOSTNAME
-PyDoc_STRVAR(sethostname_doc,
+TyDoc_STRVAR(sethostname_doc,
 "sethostname(name)\n\n\
 Sets the hostname to name.");
 
@@ -5980,7 +5980,7 @@ finally:
     return ret;
 }
 
-PyDoc_STRVAR(gethostbyname_doc,
+TyDoc_STRVAR(gethostbyname_doc,
 "gethostbyname(host) -> address\n\
 \n\
 Return the IP address (a string of the form '255.255.255.255') for a host.");
@@ -6179,7 +6179,7 @@ socket_gethostbyname_ex(TyObject *self, TyObject *args)
     if (setipaddr(state, name, SAS2SA(&addr), sizeof(addr), AF_INET) < 0) {
         goto finally;
     }
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_GETHOSTBYNAME_R
 #if   defined(HAVE_GETHOSTBYNAME_R_6_ARG)
     gethostbyname_r(name, &hp_allocated, buf, buf_len,
@@ -6193,12 +6193,12 @@ socket_gethostbyname_ex(TyObject *self, TyObject *args)
 #endif
 #else /* not HAVE_GETHOSTBYNAME_R */
 #ifdef USE_GETHOSTBYNAME_LOCK
-    PyThread_acquire_lock(netdb_lock, 1);
+    TyThread_acquire_lock(netdb_lock, 1);
 #endif
     SUPPRESS_DEPRECATED_CALL
     h = gethostbyname(name);
 #endif /* HAVE_GETHOSTBYNAME_R */
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     /* Some C libraries would require addr.__ss_family instead of
        addr.ss_family.
        Therefore, we cast the sockaddr_storage into sockaddr to
@@ -6207,14 +6207,14 @@ socket_gethostbyname_ex(TyObject *self, TyObject *args)
     ret = gethost_common(state, h, SAS2SA(&addr), sizeof(addr),
                          sa->sa_family);
 #ifdef USE_GETHOSTBYNAME_LOCK
-    PyThread_release_lock(netdb_lock);
+    TyThread_release_lock(netdb_lock);
 #endif
 finally:
     TyMem_Free(name);
     return ret;
 }
 
-PyDoc_STRVAR(ghbn_ex_doc,
+TyDoc_STRVAR(ghbn_ex_doc,
 "gethostbyname_ex(host) -> (name, aliaslist, addresslist)\n\
 \n\
 Return the true host name, a list of aliases, and a list of IP addresses,\n\
@@ -6282,7 +6282,7 @@ socket_gethostbyaddr(TyObject *self, TyObject *args)
         TyErr_SetString(TyExc_OSError, "unsupported address family");
         goto finally;
     }
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef HAVE_GETHOSTBYNAME_R
 #if   defined(HAVE_GETHOSTBYNAME_R_6_ARG)
     gethostbyaddr_r(ap, al, af,
@@ -6298,22 +6298,22 @@ socket_gethostbyaddr(TyObject *self, TyObject *args)
 #endif
 #else /* not HAVE_GETHOSTBYNAME_R */
 #ifdef USE_GETHOSTBYNAME_LOCK
-    PyThread_acquire_lock(netdb_lock, 1);
+    TyThread_acquire_lock(netdb_lock, 1);
 #endif
     SUPPRESS_DEPRECATED_CALL
     h = gethostbyaddr(ap, al, af);
 #endif /* HAVE_GETHOSTBYNAME_R */
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     ret = gethost_common(state, h, SAS2SA(&addr), sizeof(addr), af);
 #ifdef USE_GETHOSTBYNAME_LOCK
-    PyThread_release_lock(netdb_lock);
+    TyThread_release_lock(netdb_lock);
 #endif
 finally:
     TyMem_Free(ip_num);
     return ret;
 }
 
-PyDoc_STRVAR(gethostbyaddr_doc,
+TyDoc_STRVAR(gethostbyaddr_doc,
 "gethostbyaddr(host) -> (name, aliaslist, addresslist)\n\
 \n\
 Return the true host name, a list of aliases, and a list of IP addresses,\n\
@@ -6338,9 +6338,9 @@ socket_getservbyname(TyObject *self, TyObject *args)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     sp = getservbyname(name, proto);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (sp == NULL) {
         TyErr_SetString(TyExc_OSError, "service/proto not found");
         return NULL;
@@ -6348,7 +6348,7 @@ socket_getservbyname(TyObject *self, TyObject *args)
     return TyLong_FromLong((long) ntohs(sp->s_port));
 }
 
-PyDoc_STRVAR(getservbyname_doc,
+TyDoc_STRVAR(getservbyname_doc,
 "getservbyname(servicename[, protocolname]) -> integer\n\
 \n\
 Return a port number from a service name and protocol name.\n\
@@ -6381,9 +6381,9 @@ socket_getservbyport(TyObject *self, TyObject *args)
         return NULL;
     }
 
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     sp = getservbyport(htons((short)port), proto);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (sp == NULL) {
         TyErr_SetString(TyExc_OSError, "port/proto not found");
         return NULL;
@@ -6391,7 +6391,7 @@ socket_getservbyport(TyObject *self, TyObject *args)
     return TyUnicode_FromString(sp->s_name);
 }
 
-PyDoc_STRVAR(getservbyport_doc,
+TyDoc_STRVAR(getservbyport_doc,
 "getservbyport(port[, protocolname]) -> string\n\
 \n\
 Return the service name from a port number and protocol name.\n\
@@ -6412,9 +6412,9 @@ socket_getprotobyname(TyObject *self, TyObject *args)
     struct protoent *sp;
     if (!TyArg_ParseTuple(args, "s:getprotobyname", &name))
         return NULL;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     sp = getprotobyname(name);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (sp == NULL) {
         TyErr_SetString(TyExc_OSError, "protocol not found");
         return NULL;
@@ -6422,7 +6422,7 @@ socket_getprotobyname(TyObject *self, TyObject *args)
     return TyLong_FromLong((long) sp->p_proto);
 }
 
-PyDoc_STRVAR(getprotobyname_doc,
+TyDoc_STRVAR(getprotobyname_doc,
 "getprotobyname(name) -> integer\n\
 \n\
 Return the protocol number for the named protocol.  (Rarely used.)");
@@ -6437,9 +6437,9 @@ socket_close(TyObject *self, TyObject *fdobj)
     fd = TyLong_AsSocket_t(fdobj);
     if (fd == (SOCKET_T)(-1) && TyErr_Occurred())
         return NULL;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     res = SOCKETCLOSE(fd);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     /* bpo-30319: The peer can already have closed the connection.
        Python ignores ECONNRESET on close(). */
     if (res < 0 && !CHECK_ERRNO(ECONNRESET)) {
@@ -6448,7 +6448,7 @@ socket_close(TyObject *self, TyObject *fdobj)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(close_doc,
+TyDoc_STRVAR(close_doc,
 "close(integer) -> None\n\
 \n\
 Close an integer socket file descriptor.  This is like os.close(), but for\n\
@@ -6502,7 +6502,7 @@ socket_dup(TyObject *self, TyObject *fdobj)
     return newfdobj;
 }
 
-PyDoc_STRVAR(dup_doc,
+TyDoc_STRVAR(dup_doc,
 "dup(integer) -> integer\n\
 \n\
 Duplicate an integer socket file descriptor.  This is like os.dup(), but for\n\
@@ -6541,7 +6541,7 @@ socket_socketpair(TyObject *self, TyObject *args)
         return NULL;
 
     /* Create a pair of socket fds */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
 #ifdef SOCK_CLOEXEC
     if (_Ty_atomic_load_int_relaxed(&sock_cloexec_works) != 0) {
         ret = socketpair(family, type | SOCK_CLOEXEC, proto, sv);
@@ -6561,7 +6561,7 @@ socket_socketpair(TyObject *self, TyObject *args)
     {
         ret = socketpair(family, type, proto, sv);
     }
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
 
     if (ret < 0)
         return set_error();
@@ -6591,7 +6591,7 @@ finally:
     return res;
 }
 
-PyDoc_STRVAR(socketpair_doc,
+TyDoc_STRVAR(socketpair_doc,
 "socketpair([family[, type [, proto]]]) -> (socket object, socket object)\n\
 \n\
 Create a pair of socket objects from the sockets returned by the platform\n\
@@ -6769,7 +6769,7 @@ _socket_inet_ntoa_impl(TyObject *module, Ty_buffer *packed_ip)
 
 #ifdef HAVE_INET_PTON
 
-PyDoc_STRVAR(inet_pton_doc,
+TyDoc_STRVAR(inet_pton_doc,
 "inet_pton(af, ip) -> packed IP address string\n\
 \n\
 Convert an IP address from string format to a packed string suitable\n\
@@ -6820,7 +6820,7 @@ socket_inet_pton(TyObject *self, TyObject *args)
     }
 }
 
-PyDoc_STRVAR(inet_ntop_doc,
+TyDoc_STRVAR(inet_ntop_doc,
 "inet_ntop(af, packed_ip) -> string formatted IP address\n\
 \n\
 Convert a packed IP address of the given family to string format.");
@@ -6964,9 +6964,9 @@ socket_getaddrinfo(TyObject *self, TyObject *args, TyObject* kwargs)
     hints.ai_socktype = socktype;
     hints.ai_protocol = protocol;
     hints.ai_flags = flags;
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     error = getaddrinfo(hptr, pptr, &hints, &res0);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (error) {
         res0 = NULL;  // gh-100795
         socket_state *state = get_module_state(self);
@@ -7011,7 +7011,7 @@ socket_getaddrinfo(TyObject *self, TyObject *args, TyObject* kwargs)
     return (TyObject *)NULL;
 }
 
-PyDoc_STRVAR(getaddrinfo_doc,
+TyDoc_STRVAR(getaddrinfo_doc,
 "getaddrinfo(host, port [, family, type, proto, flags])\n\
     -> list of (family, type, proto, canonname, sockaddr)\n\
 \n\
@@ -7064,9 +7064,9 @@ socket_getnameinfo(TyObject *self, TyObject *args)
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_DGRAM;     /* make numeric port happy */
     hints.ai_flags = AI_NUMERICHOST;    /* don't do any name resolution */
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     error = getaddrinfo(hostp, pbuf, &hints, &res);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (error) {
         res = NULL;  // gh-100795
         socket_state *state = get_module_state(self);
@@ -7099,10 +7099,10 @@ socket_getnameinfo(TyObject *self, TyObject *args)
         }
 #endif
     }
-    Py_BEGIN_ALLOW_THREADS
+    Ty_BEGIN_ALLOW_THREADS
     error = getnameinfo(res->ai_addr, (socklen_t) res->ai_addrlen,
                     hbuf, sizeof(hbuf), pbuf, sizeof(pbuf), flags);
-    Py_END_ALLOW_THREADS
+    Ty_END_ALLOW_THREADS
     if (error) {
         socket_state *state = get_module_state(self);
         set_gaierror(state, error);
@@ -7120,7 +7120,7 @@ fail:
     return ret;
 }
 
-PyDoc_STRVAR(getnameinfo_doc,
+TyDoc_STRVAR(getnameinfo_doc,
 "getnameinfo(sockaddr, flags) --> (host, port)\n\
 \n\
 Get host and port for a sockaddr.");
@@ -7132,7 +7132,7 @@ static TyObject *
 socket_getdefaulttimeout(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     socket_state *state = get_module_state(self);
-    PyTime_t timeout = _Ty_atomic_load_int64_relaxed(&state->defaulttimeout);
+    TyTime_t timeout = _Ty_atomic_load_int64_relaxed(&state->defaulttimeout);
     if (timeout < 0) {
         Py_RETURN_NONE;
     }
@@ -7142,7 +7142,7 @@ socket_getdefaulttimeout(TyObject *self, TyObject *Py_UNUSED(ignored))
     }
 }
 
-PyDoc_STRVAR(getdefaulttimeout_doc,
+TyDoc_STRVAR(getdefaulttimeout_doc,
 "getdefaulttimeout() -> timeout\n\
 \n\
 Returns the default timeout in seconds (float) for new socket objects.\n\
@@ -7152,7 +7152,7 @@ When the socket module is first imported, the default is None.");
 static TyObject *
 socket_setdefaulttimeout(TyObject *self, TyObject *arg)
 {
-    PyTime_t timeout;
+    TyTime_t timeout;
 
     if (socket_parse_timeout(&timeout, arg) < 0)
         return NULL;
@@ -7163,7 +7163,7 @@ socket_setdefaulttimeout(TyObject *self, TyObject *arg)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(setdefaulttimeout_doc,
+TyDoc_STRVAR(setdefaulttimeout_doc,
 "setdefaulttimeout(timeout)\n\
 \n\
 Set the default timeout in seconds (float) for new socket objects.\n\
@@ -7254,7 +7254,7 @@ socket_if_nameindex(TyObject *self, TyObject *arg)
 #endif
 }
 
-PyDoc_STRVAR(if_nameindex_doc,
+TyDoc_STRVAR(if_nameindex_doc,
 "if_nameindex()\n\
 \n\
 Returns a list of network interface information (index, name) tuples.");
@@ -7331,7 +7331,7 @@ socket_CMSG_LEN(TyObject *self, TyObject *args)
     return TyLong_FromSize_t(result);
 }
 
-PyDoc_STRVAR(CMSG_LEN_doc,
+TyDoc_STRVAR(CMSG_LEN_doc,
 "CMSG_LEN(length) -> control message length\n\
 \n\
 Return the total length, without trailing padding, of an ancillary\n\
@@ -7362,7 +7362,7 @@ socket_CMSG_SPACE(TyObject *self, TyObject *args)
     return TyLong_FromSize_t(result);
 }
 
-PyDoc_STRVAR(CMSG_SPACE_doc,
+TyDoc_STRVAR(CMSG_SPACE_doc,
 "CMSG_SPACE(length) -> buffer size\n\
 \n\
 Return the buffer size needed for recvmsg() to receive an ancillary\n\
@@ -7575,7 +7575,7 @@ sock_get_api(socket_state *state)
    WSACleanup() is scheduled to be made at exit time.
 */
 
-PyDoc_STRVAR(socket_doc,
+TyDoc_STRVAR(socket_doc,
 "Implementation module for socket operations.\n\
 \n\
 See the socket module for documentation.");
@@ -9218,7 +9218,7 @@ socket_exec(TyObject *m)
 
     /* Initialize gethostbyname lock */
 #if defined(USE_GETHOSTBYNAME_LOCK)
-    netdb_lock = PyThread_allocate_lock();
+    netdb_lock = TyThread_allocate_lock();
 #endif
 
 #ifdef MS_WINDOWS

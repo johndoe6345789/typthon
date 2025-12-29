@@ -205,9 +205,9 @@ lltrace_instruction(_PyInterpreterFrame *frame,
         dump_stack(frame, stack_pointer);
         offset = (int)(next_instr - _TyFrame_GetBytecode(frame));
     }
-    const char *opname = _PyOpcode_OpName[opcode];
+    const char *opname = _TyOpcode_OpName[opcode];
     assert(opname != NULL);
-    if (OPCODE_HAS_ARG((int)_PyOpcode_Deopt[opcode])) {
+    if (OPCODE_HAS_ARG((int)_TyOpcode_Deopt[opcode])) {
         printf("%d: %s %d\n", offset * 2, opname, oparg);
     }
     else {
@@ -309,14 +309,14 @@ _PyEvalFramePushAndInit_Ex(TyThreadState *tstate, _PyStackRef func,
 int
 Ty_GetRecursionLimit(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return interp->ceval.recursion_limit;
 }
 
 void
 Ty_SetRecursionLimit(int new_limit)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyEval_StopTheWorld(interp);
     interp->ceval.recursion_limit = new_limit;
     _Ty_FOR_EACH_TSTATE_BEGIN(interp, p) {
@@ -844,7 +844,7 @@ TyEval_EvalCode(TyObject *co, TyObject *globals, TyObject *locals)
         .fc_kwdefaults = NULL,
         .fc_closure = NULL
     };
-    PyFunctionObject *func = _PyFunction_FromConstructor(&desc);
+    PyFunctionObject *func = _TyFunction_FromConstructor(&desc);
     _Ty_DECREF_BUILTINS(builtins);
     if (func == NULL) {
         return NULL;
@@ -1190,7 +1190,7 @@ jump_to_error_target:
         _PyUOpPrint(&next_uop[-1]);
         printf(" @ %d -> %s]\n",
                (int)(next_uop - current_executor->trace - 1),
-               _PyOpcode_OpName[frame->instr_ptr->op.code]);
+               _TyOpcode_OpName[frame->instr_ptr->op.code]);
     }
 #endif
     assert(next_uop[-1].format == UOP_FORMAT_JUMP);
@@ -2018,7 +2018,7 @@ TyEval_EvalCodeEx(TyObject *_co, TyObject *globals, TyObject *locals,
         .fc_kwdefaults = kwdefs,
         .fc_closure = closure
     };
-    func = _PyFunction_FromConstructor(&constr);
+    func = _TyFunction_FromConstructor(&constr);
     if (func == NULL) {
         goto fail;
     }
@@ -2490,7 +2490,7 @@ void
 TyEval_SetProfileAllThreads(Ty_tracefunc func, TyObject *arg)
 {
     TyThreadState *this_tstate = _TyThreadState_GET();
-    PyInterpreterState* interp = this_tstate->interp;
+    TyInterpreterState* interp = this_tstate->interp;
 
     _PyRuntimeState *runtime = &_PyRuntime;
     HEAD_LOCK(runtime);
@@ -2521,7 +2521,7 @@ void
 TyEval_SetTraceAllThreads(Ty_tracefunc func, TyObject *arg)
 {
     TyThreadState *this_tstate = _TyThreadState_GET();
-    PyInterpreterState* interp = this_tstate->interp;
+    TyInterpreterState* interp = this_tstate->interp;
 
     _PyRuntimeState *runtime = &_PyRuntime;
     HEAD_LOCK(runtime);
@@ -3378,7 +3378,7 @@ _TyEval_FormatAwaitableError(TyThreadState *tstate, TyTypeObject *type, int opar
 Ty_ssize_t
 PyUnstable_Eval_RequestCodeExtraIndex(freefunc free)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     Ty_ssize_t new_index;
 
     if (interp->co_extra_user_count == MAX_CO_EXTRA_USERS - 1) {

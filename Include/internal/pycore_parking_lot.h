@@ -59,7 +59,7 @@ enum {
 //  }
 PyAPI_FUNC(int)
 _PyParkingLot_Park(const void *address, const void *expected,
-                   size_t address_size, PyTime_t timeout_ns,
+                   size_t address_size, TyTime_t timeout_ns,
                    void *park_arg, int detach);
 
 // Callback for _PyParkingLot_Unpark:

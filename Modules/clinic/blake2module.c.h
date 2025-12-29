@@ -9,7 +9,7 @@ preserve
 #include "pycore_long.h"          // _TyLong_UnsignedLong_Converter()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(py_blake2b_new__doc__,
+TyDoc_STRVAR(py_blake2b_new__doc__,
 "blake2b(data=b\'\', *, digest_size=_blake2.blake2b.MAX_DIGEST_SIZE,\n"
 "        key=b\'\', salt=b\'\', person=b\'\', fanout=1, depth=1, leaf_size=0,\n"
 "        node_offset=0, node_depth=0, inner_size=0, last_node=False,\n"
@@ -39,7 +39,7 @@ py_blake2b_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(digest_size), &_Ty_ID(key), &_Ty_ID(salt), &_Ty_ID(person), &_Ty_ID(fanout), &_Ty_ID(depth), &_Ty_ID(leaf_size), &_Ty_ID(node_offset), &_Ty_ID(node_depth), &_Ty_ID(inner_size), &_Ty_ID(last_node), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -218,7 +218,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(py_blake2s_new__doc__,
+TyDoc_STRVAR(py_blake2s_new__doc__,
 "blake2s(data=b\'\', *, digest_size=_blake2.blake2s.MAX_DIGEST_SIZE,\n"
 "        key=b\'\', salt=b\'\', person=b\'\', fanout=1, depth=1, leaf_size=0,\n"
 "        node_offset=0, node_depth=0, inner_size=0, last_node=False,\n"
@@ -248,7 +248,7 @@ py_blake2s_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(digest_size), &_Ty_ID(key), &_Ty_ID(salt), &_Ty_ID(person), &_Ty_ID(fanout), &_Ty_ID(depth), &_Ty_ID(leaf_size), &_Ty_ID(node_offset), &_Ty_ID(node_depth), &_Ty_ID(inner_size), &_Ty_ID(last_node), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -427,7 +427,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_blake2_blake2b_copy__doc__,
+TyDoc_STRVAR(_blake2_blake2b_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -445,7 +445,7 @@ _blake2_blake2b_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _blake2_blake2b_copy_impl((Blake2Object *)self);
 }
 
-PyDoc_STRVAR(_blake2_blake2b_update__doc__,
+TyDoc_STRVAR(_blake2_blake2b_update__doc__,
 "update($self, data, /)\n"
 "--\n"
 "\n"
@@ -467,7 +467,7 @@ _blake2_blake2b_update(TyObject *self, TyObject *data)
     return return_value;
 }
 
-PyDoc_STRVAR(_blake2_blake2b_digest__doc__,
+TyDoc_STRVAR(_blake2_blake2b_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -485,7 +485,7 @@ _blake2_blake2b_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _blake2_blake2b_digest_impl((Blake2Object *)self);
 }
 
-PyDoc_STRVAR(_blake2_blake2b_hexdigest__doc__,
+TyDoc_STRVAR(_blake2_blake2b_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"

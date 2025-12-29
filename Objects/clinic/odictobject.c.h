@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(OrderedDict_fromkeys__doc__,
+TyDoc_STRVAR(OrderedDict_fromkeys__doc__,
 "fromkeys($type, /, iterable, value=None)\n"
 "--\n"
 "\n"
@@ -33,7 +33,7 @@ OrderedDict_fromkeys(TyObject *type, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(iterable), &_Ty_ID(value), },
     };
@@ -73,7 +73,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(OrderedDict_setdefault__doc__,
+TyDoc_STRVAR(OrderedDict_setdefault__doc__,
 "setdefault($self, /, key, default=None)\n"
 "--\n"
 "\n"
@@ -101,7 +101,7 @@ OrderedDict_setdefault(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(default), },
     };
@@ -141,7 +141,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(OrderedDict_pop__doc__,
+TyDoc_STRVAR(OrderedDict_pop__doc__,
 "pop($self, /, key, default=<unrepresentable>)\n"
 "--\n"
 "\n"
@@ -170,7 +170,7 @@ OrderedDict_pop(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(default), },
     };
@@ -210,7 +210,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(OrderedDict_popitem__doc__,
+TyDoc_STRVAR(OrderedDict_popitem__doc__,
 "popitem($self, /, last=True)\n"
 "--\n"
 "\n"
@@ -237,7 +237,7 @@ OrderedDict_popitem(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(last), },
     };
@@ -278,7 +278,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(OrderedDict_move_to_end__doc__,
+TyDoc_STRVAR(OrderedDict_move_to_end__doc__,
 "move_to_end($self, /, key, last=True)\n"
 "--\n"
 "\n"
@@ -305,7 +305,7 @@ OrderedDict_move_to_end(TyObject *self, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(last), },
     };

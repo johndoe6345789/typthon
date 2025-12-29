@@ -10,7 +10,7 @@ Copyright (c) Corporation for National Research Initiatives.
 
 #include "Python.h"
 #include "pycore_call.h"          // _TyObject_CallNoArgs()
-#include "pycore_interp.h"        // PyInterpreterState.codec_search_path
+#include "pycore_interp.h"        // TyInterpreterState.codec_search_path
 #include "pycore_pyerrors.h"      // _TyErr_FormatNote()
 #include "pycore_pystate.h"       // _TyInterpreterState_GET()
 #include "pycore_runtime.h"       // _Ty_ID()
@@ -30,7 +30,7 @@ const char *Ty_hexdigits = "0123456789abcdef";
 
 int PyCodec_Register(TyObject *search_function)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->codecs.initialized);
     if (search_function == NULL) {
         TyErr_BadArgument();
@@ -56,7 +56,7 @@ int PyCodec_Register(TyObject *search_function)
 int
 PyCodec_Unregister(TyObject *search_function)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (interp->codecs.initialized != 1) {
         /* Do nothing if codecs state was cleared (only possible during
            interpreter shutdown). */
@@ -145,7 +145,7 @@ TyObject *_PyCodec_Lookup(const char *encoding)
         return NULL;
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->codecs.initialized);
 
     /* Convert the encoding to a normalized Python string: all
@@ -624,7 +624,7 @@ TyObject *_PyCodec_DecodeText(TyObject *object,
    Return 0 on success, -1 on error */
 int PyCodec_RegisterError(const char *name, TyObject *error)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->codecs.initialized);
     if (!PyCallable_Check(error)) {
         TyErr_SetString(TyExc_TypeError, "handler must be callable");
@@ -643,7 +643,7 @@ int _PyCodec_UnregisterError(const char *name)
             return -1;
         }
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->codecs.initialized);
     return TyDict_PopString(interp->codecs.error_registry, name, NULL);
 }
@@ -653,7 +653,7 @@ int _PyCodec_UnregisterError(const char *name)
    the error handling callback for strict encoding will be returned. */
 TyObject *PyCodec_LookupError(const char *name)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->codecs.initialized);
 
     if (name==NULL)
@@ -1568,7 +1568,7 @@ surrogateescape_errors(TyObject *Py_UNUSED(self), TyObject *exc)
 
 
 TyStatus
-_PyCodec_InitRegistry(PyInterpreterState *interp)
+_PyCodec_InitRegistry(TyInterpreterState *interp)
 {
     static struct {
         const char *name;
@@ -1581,7 +1581,7 @@ _PyCodec_InitRegistry(PyInterpreterState *interp)
                 "strict_errors",
                 strict_errors,
                 METH_O,
-                PyDoc_STR("Implements the 'strict' error handling, which "
+                TyDoc_STR("Implements the 'strict' error handling, which "
                           "raises a UnicodeError on coding errors.")
             }
         },
@@ -1591,7 +1591,7 @@ _PyCodec_InitRegistry(PyInterpreterState *interp)
                 "ignore_errors",
                 ignore_errors,
                 METH_O,
-                PyDoc_STR("Implements the 'ignore' error handling, which "
+                TyDoc_STR("Implements the 'ignore' error handling, which "
                           "ignores malformed data and continues.")
             }
         },
@@ -1601,7 +1601,7 @@ _PyCodec_InitRegistry(PyInterpreterState *interp)
                 "replace_errors",
                 replace_errors,
                 METH_O,
-                PyDoc_STR("Implements the 'replace' error handling, which "
+                TyDoc_STR("Implements the 'replace' error handling, which "
                           "replaces malformed data with a replacement marker.")
             }
         },
@@ -1611,7 +1611,7 @@ _PyCodec_InitRegistry(PyInterpreterState *interp)
                 "xmlcharrefreplace_errors",
                 xmlcharrefreplace_errors,
                 METH_O,
-                PyDoc_STR("Implements the 'xmlcharrefreplace' error handling, "
+                TyDoc_STR("Implements the 'xmlcharrefreplace' error handling, "
                           "which replaces an unencodable character with the "
                           "appropriate XML character reference.")
             }
@@ -1622,7 +1622,7 @@ _PyCodec_InitRegistry(PyInterpreterState *interp)
                 "backslashreplace_errors",
                 backslashreplace_errors,
                 METH_O,
-                PyDoc_STR("Implements the 'backslashreplace' error handling, "
+                TyDoc_STR("Implements the 'backslashreplace' error handling, "
                           "which replaces malformed data with a backslashed "
                           "escape sequence.")
             }
@@ -1633,7 +1633,7 @@ _PyCodec_InitRegistry(PyInterpreterState *interp)
                 "namereplace_errors",
                 namereplace_errors,
                 METH_O,
-                PyDoc_STR("Implements the 'namereplace' error handling, "
+                TyDoc_STR("Implements the 'namereplace' error handling, "
                           "which replaces an unencodable character with a "
                           "\\N{...} escape sequence.")
             }
@@ -1699,7 +1699,7 @@ _PyCodec_InitRegistry(PyInterpreterState *interp)
 }
 
 void
-_PyCodec_Fini(PyInterpreterState *interp)
+_PyCodec_Fini(TyInterpreterState *interp)
 {
     Ty_CLEAR(interp->codecs.search_path);
     Ty_CLEAR(interp->codecs.search_cache);

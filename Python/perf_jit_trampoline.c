@@ -234,7 +234,7 @@ typedef struct {
  */
 typedef struct {
     FILE* perf_map;          // File handle for the jitdump file
-    PyThread_type_lock map_lock;  // Thread synchronization lock
+    TyThread_type_lock map_lock;  // Thread synchronization lock
     void* mapped_buffer;     // Memory-mapped region (signals perf we're active)
     size_t mapped_size;      // Size of the mapped region
     int code_id;             // Counter for unique code region identifiers
@@ -1086,7 +1086,7 @@ static void* perf_map_jit_init(void) {
      * simultaneously. This lock ensures thread-safe access to the
      * global jitdump state.
      */
-    perf_jit_map_state.map_lock = PyThread_allocate_lock();
+    perf_jit_map_state.map_lock = TyThread_allocate_lock();
     if (perf_jit_map_state.map_lock == NULL) {
         fclose(perf_jit_map_state.perf_map);
         return NULL;  // Failed to create lock
@@ -1308,12 +1308,12 @@ static int perf_map_jit_fini(void* state) {
      * and ensures all data is properly flushed.
      */
     if (perf_jit_map_state.perf_map != NULL) {
-        PyThread_acquire_lock(perf_jit_map_state.map_lock, 1);
+        TyThread_acquire_lock(perf_jit_map_state.map_lock, 1);
         fclose(perf_jit_map_state.perf_map);  // This also flushes buffers
-        PyThread_release_lock(perf_jit_map_state.map_lock);
+        TyThread_release_lock(perf_jit_map_state.map_lock);
 
         /* Clean up synchronization primitive */
-        PyThread_free_lock(perf_jit_map_state.map_lock);
+        TyThread_free_lock(perf_jit_map_state.map_lock);
         perf_jit_map_state.perf_map = NULL;
     }
 

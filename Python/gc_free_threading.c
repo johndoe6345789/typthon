@@ -7,7 +7,7 @@
 #include "pycore_freelist.h"      // _TyObject_ClearFreeLists()
 #include "pycore_genobject.h"     // _TyGen_GetGeneratorFromFrame()
 #include "pycore_initconfig.h"    // _TyStatus_NO_MEMORY()
-#include "pycore_interp.h"        // PyInterpreterState.gc
+#include "pycore_interp.h"        // TyInterpreterState.gc
 #include "pycore_interpframe.h"   // _TyFrame_GetLocalsArray()
 #include "pycore_object_alloc.h"  // _TyObject_MallocWithType()
 #include "pycore_pystate.h"       // _TyThreadState_GET()
@@ -91,7 +91,7 @@ struct visitor_args {
 // Per-collection state
 struct collection_state {
     struct visitor_args base;
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
     GCState *gcstate;
     _TyGC_Reason reason;
     // GH-129236: If we see an active frame without a valid stack pointer,
@@ -375,7 +375,7 @@ op_from_block(void *block, void *arg, bool include_frozen)
 }
 
 static int
-gc_visit_heaps_lock_held(PyInterpreterState *interp, mi_block_visit_fun *visitor,
+gc_visit_heaps_lock_held(TyInterpreterState *interp, mi_block_visit_fun *visitor,
                          struct visitor_args *arg)
 {
     // Offset of TyObject header from start of memory block.
@@ -427,7 +427,7 @@ gc_visit_heaps_lock_held(PyInterpreterState *interp, mi_block_visit_fun *visitor
 // NOTE: It is not safe to allocate or free any mimalloc managed memory while
 // this function is running.
 static int
-gc_visit_heaps(PyInterpreterState *interp, mi_block_visit_fun *visitor,
+gc_visit_heaps(TyInterpreterState *interp, mi_block_visit_fun *visitor,
                struct visitor_args *arg)
 {
     // Other threads in the interpreter must be paused so that we can safely
@@ -454,7 +454,7 @@ gc_visit_stackref(_PyStackRef stackref)
 
 // Add 1 to the gc_refs for every deferred reference on each thread's stack.
 static void
-gc_visit_thread_stacks(PyInterpreterState *interp, struct collection_state *state)
+gc_visit_thread_stacks(TyInterpreterState *interp, struct collection_state *state)
 {
     _Py_FOR_EACH_TSTATE_BEGIN(interp, p) {
         _PyCStackRef *c_ref = ((_PyThreadStateImpl *)p)->c_stack_refs;
@@ -823,7 +823,7 @@ gc_mark_traverse_tuple(TyObject *self, void *args)
 }
 
 static void
-gc_abort_mark_alive(PyInterpreterState *interp,
+gc_abort_mark_alive(TyInterpreterState *interp,
                     struct collection_state *state,
                     gc_mark_args_t *args)
 {
@@ -851,7 +851,7 @@ gc_visit_stackref_mark_alive(gc_mark_args_t *args, _PyStackRef stackref)
 }
 
 static int
-gc_visit_thread_stacks_mark_alive(PyInterpreterState *interp, gc_mark_args_t *args)
+gc_visit_thread_stacks_mark_alive(TyInterpreterState *interp, gc_mark_args_t *args)
 {
     int err = 0;
     _Py_FOR_EACH_TSTATE_BEGIN(interp, p) {
@@ -929,7 +929,7 @@ queue_freed_object(TyObject *obj, void *arg)
 }
 
 static void
-process_delayed_frees(PyInterpreterState *interp, struct collection_state *state)
+process_delayed_frees(TyInterpreterState *interp, struct collection_state *state)
 {
     // While we are in a "stop the world" pause, we can observe the latest
     // write sequence by advancing the write sequence immediately.
@@ -1355,7 +1355,7 @@ gc_propagate_alive(gc_mark_args_t *args)
 //
 // Returns -1 on failure (out of memory).
 static int
-gc_mark_alive_from_roots(PyInterpreterState *interp,
+gc_mark_alive_from_roots(TyInterpreterState *interp,
                          struct collection_state *state)
 {
 #ifdef GC_DEBUG
@@ -1419,7 +1419,7 @@ gc_mark_alive_from_roots(PyInterpreterState *interp,
 
 
 static int
-deduce_unreachable_heap(PyInterpreterState *interp,
+deduce_unreachable_heap(TyInterpreterState *interp,
                         struct collection_state *state)
 {
 
@@ -1575,7 +1575,7 @@ call_weakref_callbacks(struct collection_state *state)
 static GCState *
 get_gc_state(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return &interp->gc;
 }
 
@@ -1589,7 +1589,7 @@ _TyGC_InitState(GCState *gcstate)
 
 
 TyStatus
-_TyGC_Init(PyInterpreterState *interp)
+_TyGC_Init(TyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
 
@@ -2139,7 +2139,7 @@ record_deallocation(TyThreadState *tstate)
 }
 
 static void
-gc_collect_internal(PyInterpreterState *interp, struct collection_state *state, int generation)
+gc_collect_internal(TyInterpreterState *interp, struct collection_state *state, int generation)
 {
     _TyEval_StopTheWorld(interp);
 
@@ -2259,7 +2259,7 @@ gc_collect_main(TyThreadState *tstate, int generation, _TyGC_Reason reason)
 {
     Ty_ssize_t m = 0; /* # objects collected */
     Ty_ssize_t n = 0; /* # unreachable objects that couldn't be collected */
-    PyTime_t t1 = 0;   /* initialize to prevent a compiler warning */
+    TyTime_t t1 = 0;   /* initialize to prevent a compiler warning */
     GCState *gcstate = &tstate->interp->gc;
 
     // gc_collect_main() must not be called before _TyGC_Init
@@ -2303,7 +2303,7 @@ gc_collect_main(TyThreadState *tstate, int generation, _TyGC_Reason reason)
         PyDTrace_GC_START(generation);
     }
 
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     struct collection_state state = {
         .interp = interp,
@@ -2317,7 +2317,7 @@ gc_collect_main(TyThreadState *tstate, int generation, _TyGC_Reason reason)
     n = state.uncollectable;
 
     if (gcstate->debug & _TyGC_DEBUG_STATS) {
-        PyTime_t t2;
+        TyTime_t t2;
         (void)PyTime_PerfCounterRaw(&t2);
         double d = PyTime_AsSecondsDouble(t2 - t1);
         TySys_WriteStderr(
@@ -2436,7 +2436,7 @@ visit_get_referrers(const mi_heap_t *heap, const mi_heap_area_t *area,
 }
 
 TyObject *
-_TyGC_GetReferrers(PyInterpreterState *interp, TyObject *objs)
+_TyGC_GetReferrers(TyInterpreterState *interp, TyObject *objs)
 {
     // NOTE: We can't append to the PyListObject during gc_visit_heaps()
     // because TyList_Append() may reclaim an abandoned mimalloc segments
@@ -2481,7 +2481,7 @@ visit_get_objects(const mi_heap_t *heap, const mi_heap_area_t *area,
 }
 
 TyObject *
-_TyGC_GetObjects(PyInterpreterState *interp, int generation)
+_TyGC_GetObjects(TyInterpreterState *interp, int generation)
 {
     // NOTE: We can't append to the PyListObject during gc_visit_heaps()
     // because TyList_Append() may reclaim an abandoned mimalloc segments
@@ -2511,7 +2511,7 @@ visit_freeze(const mi_heap_t *heap, const mi_heap_area_t *area,
 }
 
 void
-_TyGC_Freeze(PyInterpreterState *interp)
+_TyGC_Freeze(TyInterpreterState *interp)
 {
     struct visitor_args args;
     _TyEval_StopTheWorld(interp);
@@ -2533,7 +2533,7 @@ visit_unfreeze(const mi_heap_t *heap, const mi_heap_area_t *area,
 }
 
 void
-_TyGC_Unfreeze(PyInterpreterState *interp)
+_TyGC_Unfreeze(TyInterpreterState *interp)
 {
     struct visitor_args args;
     _TyEval_StopTheWorld(interp);
@@ -2561,7 +2561,7 @@ visit_count_frozen(const mi_heap_t *heap, const mi_heap_area_t *area,
 }
 
 Ty_ssize_t
-_TyGC_GetFreezeCount(PyInterpreterState *interp)
+_TyGC_GetFreezeCount(TyInterpreterState *interp)
 {
     struct count_frozen_args args = { .count = 0 };
     _TyEval_StopTheWorld(interp);
@@ -2630,7 +2630,7 @@ _TyGC_CollectNoFail(TyThreadState *tstate)
 }
 
 void
-_TyGC_DumpShutdownStats(PyInterpreterState *interp)
+_TyGC_DumpShutdownStats(TyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
     if (!(gcstate->debug & _TyGC_DEBUG_SAVEALL)
@@ -2673,7 +2673,7 @@ _TyGC_DumpShutdownStats(PyInterpreterState *interp)
 
 
 void
-_TyGC_Fini(PyInterpreterState *interp)
+_TyGC_Fini(TyInterpreterState *interp)
 {
     GCState *gcstate = &interp->gc;
     Ty_CLEAR(gcstate->garbage);
@@ -2915,7 +2915,7 @@ custom_visitor_wrapper(const mi_heap_t *heap, const mi_heap_area_t *area,
 }
 
 void
-_TyGC_VisitObjectsWorldStopped(PyInterpreterState *interp,
+_TyGC_VisitObjectsWorldStopped(TyInterpreterState *interp,
                                gcvisitobjects_t callback, void *arg)
 {
     struct custom_visitor_args wrapper = {
@@ -2928,7 +2928,7 @@ _TyGC_VisitObjectsWorldStopped(PyInterpreterState *interp,
 void
 PyUnstable_GC_VisitObjects(gcvisitobjects_t callback, void *arg)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyEval_StopTheWorld(interp);
     _TyGC_VisitObjectsWorldStopped(interp, callback, arg);
     _TyEval_StartTheWorld(interp);
@@ -2942,7 +2942,7 @@ PyUnstable_GC_VisitObjects(gcvisitobjects_t callback, void *arg)
  * GC should clear all freelists by traversing all threads.
  */
 void
-_TyGC_ClearAllFreeLists(PyInterpreterState *interp)
+_TyGC_ClearAllFreeLists(TyInterpreterState *interp)
 {
     _Py_FOR_EACH_TSTATE_BEGIN(interp, p) {
         _PyThreadStateImpl *tstate = (_PyThreadStateImpl *)p;

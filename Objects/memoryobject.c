@@ -145,7 +145,7 @@ mbuf_clear(TyObject *_self)
 }
 
 TyTypeObject _PyManagedBuffer_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "managedbuffer",
     sizeof(_PyManagedBufferObject),
     0,
@@ -3379,36 +3379,36 @@ memory_contiguous(TyObject *_self, void *Py_UNUSED(ignored))
     return TyBool_FromLong(MV_ANY_CONTIGUOUS(self->flags));
 }
 
-PyDoc_STRVAR(memory_obj_doc,
+TyDoc_STRVAR(memory_obj_doc,
              "The underlying object of the memoryview.");
-PyDoc_STRVAR(memory_nbytes_doc,
+TyDoc_STRVAR(memory_nbytes_doc,
              "The amount of space in bytes that the array would use in\n"
              " a contiguous representation.");
-PyDoc_STRVAR(memory_readonly_doc,
+TyDoc_STRVAR(memory_readonly_doc,
              "A bool indicating whether the memory is read only.");
-PyDoc_STRVAR(memory_itemsize_doc,
+TyDoc_STRVAR(memory_itemsize_doc,
              "The size in bytes of each element of the memoryview.");
-PyDoc_STRVAR(memory_format_doc,
+TyDoc_STRVAR(memory_format_doc,
              "A string containing the format (in struct module style)\n"
              " for each element in the view.");
-PyDoc_STRVAR(memory_ndim_doc,
+TyDoc_STRVAR(memory_ndim_doc,
              "An integer indicating how many dimensions of a multi-dimensional\n"
              " array the memory represents.");
-PyDoc_STRVAR(memory_shape_doc,
+TyDoc_STRVAR(memory_shape_doc,
              "A tuple of ndim integers giving the shape of the memory\n"
              " as an N-dimensional array.");
-PyDoc_STRVAR(memory_strides_doc,
+TyDoc_STRVAR(memory_strides_doc,
              "A tuple of ndim integers giving the size in bytes to access\n"
              " each element for each dimension of the array.");
-PyDoc_STRVAR(memory_suboffsets_doc,
+TyDoc_STRVAR(memory_suboffsets_doc,
              "A tuple of integers used internally for PIL-style arrays.");
-PyDoc_STRVAR(memory_c_contiguous_doc,
+TyDoc_STRVAR(memory_c_contiguous_doc,
              "A bool indicating whether the memory is C contiguous.");
-PyDoc_STRVAR(memory_f_contiguous_doc,
+TyDoc_STRVAR(memory_f_contiguous_doc,
              "A bool indicating whether the memory is Fortran contiguous.");
-PyDoc_STRVAR(memory_contiguous_doc,
+TyDoc_STRVAR(memory_contiguous_doc,
              "A bool indicating whether the memory is contiguous.");
-PyDoc_STRVAR(memory_exit_doc,
+TyDoc_STRVAR(memory_exit_doc,
              "__exit__($self, /, *exc_info)\n--\n\n"
              "Release the underlying buffer exposed by the memoryview object.");
 
@@ -3442,7 +3442,7 @@ static TyMethodDef memory_methods[] = {
     MEMORYVIEW_INDEX_METHODDEF
     {"__enter__",   memory_enter, METH_NOARGS, NULL},
     {"__exit__",    memory_exit, METH_VARARGS, memory_exit_doc},
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL,          NULL}
 };
 
@@ -3544,7 +3544,7 @@ memory_iter(TyObject *seq)
 }
 
 TyTypeObject _PyMemoryIter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "memory_iterator",
     .tp_basicsize = sizeof(memoryiterobject),
     // methods
@@ -3557,7 +3557,7 @@ TyTypeObject _PyMemoryIter_Type = {
 };
 
 TyTypeObject TyMemoryView_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "memoryview",                             /* tp_name */
     offsetof(PyMemoryViewObject, ob_array),   /* tp_basicsize */
     sizeof(Ty_ssize_t),                       /* tp_itemsize */

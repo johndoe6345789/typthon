@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(code_new__doc__,
+TyDoc_STRVAR(code_new__doc__,
 "code(argcount, posonlyargcount, kwonlyargcount, nlocals, stacksize,\n"
 "     flags, codestring, constants, names, varnames, filename, name,\n"
 "     qualname, firstlineno, linetable, exceptiontable, freevars=(),\n"
@@ -153,7 +153,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(code_replace__doc__,
+TyDoc_STRVAR(code_replace__doc__,
 "replace($self, /, **changes)\n"
 "--\n"
 "\n"
@@ -186,7 +186,7 @@ code_replace(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(co_argcount), &_Ty_ID(co_posonlyargcount), &_Ty_ID(co_kwonlyargcount), &_Ty_ID(co_nlocals), &_Ty_ID(co_stacksize), &_Ty_ID(co_flags), &_Ty_ID(co_firstlineno), &_Ty_ID(co_code), &_Ty_ID(co_consts), &_Ty_ID(co_names), &_Ty_ID(co_varnames), &_Ty_ID(co_freevars), &_Ty_ID(co_cellvars), &_Ty_ID(co_filename), &_Ty_ID(co_name), &_Ty_ID(co_qualname), &_Ty_ID(co_linetable), &_Ty_ID(co_exceptiontable), },
     };
@@ -408,7 +408,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(code__varname_from_oparg__doc__,
+TyDoc_STRVAR(code__varname_from_oparg__doc__,
 "_varname_from_oparg($self, /, oparg)\n"
 "--\n"
 "\n"
@@ -435,7 +435,7 @@ code__varname_from_oparg(TyObject *self, TyObject *const *args, Ty_ssize_t nargs
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(oparg), },
     };

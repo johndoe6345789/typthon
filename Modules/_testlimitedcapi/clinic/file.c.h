@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(_testcapi_pyfile_getline__doc__,
+TyDoc_STRVAR(_testcapi_pyfile_getline__doc__,
 "pyfile_getline($module, file, n, /)\n"
 "--\n"
 "\n");
@@ -35,7 +35,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_pyfile_writeobject__doc__,
+TyDoc_STRVAR(_testcapi_pyfile_writeobject__doc__,
 "pyfile_writeobject($module, obj, file, flags, /)\n"
 "--\n"
 "\n");
@@ -71,7 +71,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_pyobject_asfiledescriptor__doc__,
+TyDoc_STRVAR(_testcapi_pyobject_asfiledescriptor__doc__,
 "pyobject_asfiledescriptor($module, obj, /)\n"
 "--\n"
 "\n");

@@ -4,7 +4,7 @@ preserve
 
 #if defined(HAVE_GETRUSAGE)
 
-PyDoc_STRVAR(resource_getrusage__doc__,
+TyDoc_STRVAR(resource_getrusage__doc__,
 "getrusage($module, who, /)\n"
 "--\n"
 "\n");
@@ -33,7 +33,7 @@ exit:
 
 #endif /* defined(HAVE_GETRUSAGE) */
 
-PyDoc_STRVAR(resource_getrlimit__doc__,
+TyDoc_STRVAR(resource_getrlimit__doc__,
 "getrlimit($module, resource, /)\n"
 "--\n"
 "\n");
@@ -60,7 +60,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(resource_setrlimit__doc__,
+TyDoc_STRVAR(resource_setrlimit__doc__,
 "setrlimit($module, resource, limits, /)\n"
 "--\n"
 "\n");
@@ -95,7 +95,7 @@ exit:
 
 #if defined(HAVE_PRLIMIT)
 
-PyDoc_STRVAR(resource_prlimit__doc__,
+TyDoc_STRVAR(resource_prlimit__doc__,
 "prlimit($module, pid, resource, limits=None, /)\n"
 "--\n"
 "\n");
@@ -144,7 +144,7 @@ exit:
 
 #endif /* defined(HAVE_PRLIMIT) */
 
-PyDoc_STRVAR(resource_getpagesize__doc__,
+TyDoc_STRVAR(resource_getpagesize__doc__,
 "getpagesize($module, /)\n"
 "--\n"
 "\n");

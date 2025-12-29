@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(zlib_compress__doc__,
+TyDoc_STRVAR(zlib_compress__doc__,
 "compress($module, data, /, level=Z_DEFAULT_COMPRESSION, wbits=MAX_WBITS)\n"
 "--\n"
 "\n"
@@ -41,7 +41,7 @@ zlib_compress(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(level), &_Ty_ID(wbits), },
     };
@@ -101,7 +101,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zlib_decompress__doc__,
+TyDoc_STRVAR(zlib_decompress__doc__,
 "decompress($module, data, /, wbits=MAX_WBITS, bufsize=DEF_BUF_SIZE)\n"
 "--\n"
 "\n"
@@ -134,7 +134,7 @@ zlib_decompress(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(wbits), &_Ty_ID(bufsize), },
     };
@@ -202,7 +202,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zlib_compressobj__doc__,
+TyDoc_STRVAR(zlib_compressobj__doc__,
 "compressobj($module, /, level=Z_DEFAULT_COMPRESSION, method=DEFLATED,\n"
 "            wbits=MAX_WBITS, memLevel=DEF_MEM_LEVEL,\n"
 "            strategy=Z_DEFAULT_STRATEGY, zdict=None)\n"
@@ -252,7 +252,7 @@ zlib_compressobj(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(level), &_Ty_ID(method), &_Ty_ID(wbits), &_Ty_ID(memLevel), &_Ty_ID(strategy), &_Ty_ID(zdict), },
     };
@@ -347,7 +347,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zlib_decompressobj__doc__,
+TyDoc_STRVAR(zlib_decompressobj__doc__,
 "decompressobj($module, /, wbits=MAX_WBITS, zdict=b\'\')\n"
 "--\n"
 "\n"
@@ -378,7 +378,7 @@ zlib_decompressobj(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(wbits), &_Ty_ID(zdict), },
     };
@@ -426,7 +426,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zlib_Compress_compress__doc__,
+TyDoc_STRVAR(zlib_Compress_compress__doc__,
 "compress($self, data, /)\n"
 "--\n"
 "\n"
@@ -485,7 +485,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zlib_Decompress_decompress__doc__,
+TyDoc_STRVAR(zlib_Decompress_decompress__doc__,
 "decompress($self, data, /, max_length=0)\n"
 "--\n"
 "\n"
@@ -522,7 +522,7 @@ zlib_Decompress_decompress(TyObject *self, TyTypeObject *cls, TyObject *const *a
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(max_length), },
     };
@@ -580,7 +580,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zlib_Compress_flush__doc__,
+TyDoc_STRVAR(zlib_Compress_flush__doc__,
 "flush($self, mode=zlib.Z_FINISH, /)\n"
 "--\n"
 "\n"
@@ -639,7 +639,7 @@ exit:
 
 #if defined(HAVE_ZLIB_COPY)
 
-PyDoc_STRVAR(zlib_Compress_copy__doc__,
+TyDoc_STRVAR(zlib_Compress_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -665,7 +665,7 @@ zlib_Compress_copy(TyObject *self, TyTypeObject *cls, TyObject *const *args, Ty_
 
 #if defined(HAVE_ZLIB_COPY)
 
-PyDoc_STRVAR(zlib_Compress___copy____doc__,
+TyDoc_STRVAR(zlib_Compress___copy____doc__,
 "__copy__($self, /)\n"
 "--\n"
 "\n");
@@ -690,7 +690,7 @@ zlib_Compress___copy__(TyObject *self, TyTypeObject *cls, TyObject *const *args,
 
 #if defined(HAVE_ZLIB_COPY)
 
-PyDoc_STRVAR(zlib_Compress___deepcopy____doc__,
+TyDoc_STRVAR(zlib_Compress___deepcopy____doc__,
 "__deepcopy__($self, memo, /)\n"
 "--\n"
 "\n");
@@ -738,7 +738,7 @@ exit:
 
 #if defined(HAVE_ZLIB_COPY)
 
-PyDoc_STRVAR(zlib_Decompress_copy__doc__,
+TyDoc_STRVAR(zlib_Decompress_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -764,7 +764,7 @@ zlib_Decompress_copy(TyObject *self, TyTypeObject *cls, TyObject *const *args, T
 
 #if defined(HAVE_ZLIB_COPY)
 
-PyDoc_STRVAR(zlib_Decompress___copy____doc__,
+TyDoc_STRVAR(zlib_Decompress___copy____doc__,
 "__copy__($self, /)\n"
 "--\n"
 "\n");
@@ -789,7 +789,7 @@ zlib_Decompress___copy__(TyObject *self, TyTypeObject *cls, TyObject *const *arg
 
 #if defined(HAVE_ZLIB_COPY)
 
-PyDoc_STRVAR(zlib_Decompress___deepcopy____doc__,
+TyDoc_STRVAR(zlib_Decompress___deepcopy____doc__,
 "__deepcopy__($self, memo, /)\n"
 "--\n"
 "\n");
@@ -835,7 +835,7 @@ exit:
 
 #endif /* defined(HAVE_ZLIB_COPY) */
 
-PyDoc_STRVAR(zlib_Decompress_flush__doc__,
+TyDoc_STRVAR(zlib_Decompress_flush__doc__,
 "flush($self, length=zlib.DEF_BUF_SIZE, /)\n"
 "--\n"
 "\n"
@@ -898,7 +898,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zlib_ZlibDecompressor_decompress__doc__,
+TyDoc_STRVAR(zlib_ZlibDecompressor_decompress__doc__,
 "decompress($self, /, data, max_length=-1)\n"
 "--\n"
 "\n"
@@ -937,7 +937,7 @@ zlib_ZlibDecompressor_decompress(TyObject *self, TyObject *const *args, Ty_ssize
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(max_length), },
     };
@@ -995,7 +995,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zlib_adler32__doc__,
+TyDoc_STRVAR(zlib_adler32__doc__,
 "adler32($module, data, value=1, /)\n"
 "--\n"
 "\n"
@@ -1044,7 +1044,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(zlib_crc32__doc__,
+TyDoc_STRVAR(zlib_crc32__doc__,
 "crc32($module, data, value=0, /)\n"
 "--\n"
 "\n"

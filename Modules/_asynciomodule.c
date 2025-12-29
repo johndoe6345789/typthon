@@ -130,8 +130,8 @@ GENERATE_DEBUG_SECTION(AsyncioDebug, Ty_AsyncioModuleDebugOffsets _AsyncioDebug)
            .task_node = offsetof(TaskObj, task_node),
        },
        .asyncio_interpreter_state = {
-            .size = sizeof(PyInterpreterState),
-            .asyncio_tasks_head = offsetof(PyInterpreterState, asyncio_tasks_head),
+            .size = sizeof(TyInterpreterState),
+            .asyncio_tasks_head = offsetof(TyInterpreterState, asyncio_tasks_head),
        },
        .asyncio_thread_state = {
            .size = sizeof(_PyThreadStateImpl),
@@ -1755,7 +1755,7 @@ static TyMethodDef FutureType_methods[] = {
     _ASYNCIO_FUTURE_DONE_METHODDEF
     _ASYNCIO_FUTURE_GET_LOOP_METHODDEF
     _ASYNCIO_FUTURE__MAKE_CANCELLED_ERROR_METHODDEF
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL, NULL}        /* Sentinel */
 };
 
@@ -2948,7 +2948,7 @@ static TyMethodDef TaskType_methods[] = {
     _ASYNCIO_TASK_SET_NAME_METHODDEF
     _ASYNCIO_TASK_GET_CORO_METHODDEF
     _ASYNCIO_TASK_GET_CONTEXT_METHODDEF
-    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {NULL, NULL}        /* Sentinel */
 };
 
@@ -3925,7 +3925,7 @@ _asyncio_current_task_impl(TyObject *module, TyObject *loop)
     TyObject *ret = Ty_None;
     // Stop the world and traverse the per-thread current tasks
     // and return the task if the loop matches
-    PyInterpreterState *interp = ts->base.interp;
+    TyInterpreterState *interp = ts->base.interp;
     _TyEval_StopTheWorld(interp);
     _Ty_FOR_EACH_TSTATE_BEGIN(interp, p) {
         ts = (_PyThreadStateImpl *)p;
@@ -4008,7 +4008,7 @@ add_tasks_llist(struct llist_node *head, PyListObject *tasks)
 }
 
 static inline int
-add_tasks_interp(PyInterpreterState *interp, PyListObject *tasks)
+add_tasks_interp(TyInterpreterState *interp, PyListObject *tasks)
 {
 #ifdef Ty_GIL_DISABLED
     assert(interp->stoptheworld.world_stopped);
@@ -4079,7 +4079,7 @@ _asyncio_all_tasks_impl(TyObject *module, TyObject *loop)
         return NULL;
     }
 
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     // Stop the world and traverse the per-thread linked list
     // of asyncio tasks for every thread, as well as the
     // interpreter's linked list, and add them to `tasks`.
@@ -4337,7 +4337,7 @@ fail:
 #undef GET_MOD_ATTR
 }
 
-PyDoc_STRVAR(module_doc, "Accelerator module for asyncio");
+TyDoc_STRVAR(module_doc, "Accelerator module for asyncio");
 
 static TyMethodDef asyncio_methods[] = {
     _ASYNCIO_CURRENT_TASK_METHODDEF

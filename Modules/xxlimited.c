@@ -230,7 +230,7 @@ Xxo_demo(TyObject *op, TyTypeObject *defining_class,
 
 static TyMethodDef Xxo_methods[] = {
     {"demo",            _PyCFunction_CAST(Xxo_demo),
-     METH_METHOD | METH_FASTCALL | METH_KEYWORDS, PyDoc_STR("demo(o) -> o")},
+     METH_METHOD | METH_FASTCALL | METH_KEYWORDS, TyDoc_STR("demo(o) -> o")},
     {NULL,              NULL}           /* sentinel */
 };
 
@@ -265,7 +265,7 @@ Xxo_get_x_exports(TyObject *op, void *Py_UNUSED(closure))
 
 /* Xxo type definition */
 
-PyDoc_STRVAR(Xxo_doc,
+TyDoc_STRVAR(Xxo_doc,
              "A class that explicitly stores attributes in an internal dict");
 
 static TyGetSetDef Xxo_getsetlist[] = {
@@ -313,7 +313,7 @@ static TyType_Spec Str_Type_spec = {
 
 /* Function of two integers returning integer (with C "long int" arithmetic) */
 
-PyDoc_STRVAR(xx_foo_doc,
+TyDoc_STRVAR(xx_foo_doc,
 "foo(i,j)\n\
 \n\
 Return the sum of i and j.");
@@ -351,14 +351,14 @@ static TyMethodDef xx_methods[] = {
     {"foo",             xx_foo,         METH_VARARGS,
         xx_foo_doc},
     {"new",             xx_new,         METH_NOARGS,
-        PyDoc_STR("new() -> new Xx object")},
+        TyDoc_STR("new() -> new Xx object")},
     {NULL,              NULL}           /* sentinel */
 };
 
 
 /* The module itself */
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This is a template module just for instruction.");
 
 static int

@@ -86,7 +86,7 @@
 
 
 /* Forward declarations */
-static TyStatus add_main_module(PyInterpreterState *interp);
+static TyStatus add_main_module(TyInterpreterState *interp);
 static TyStatus init_import_site(void);
 static TyStatus init_set_builtins_open(void);
 static TyStatus init_sys_streams(TyThreadState *tstate);
@@ -451,7 +451,7 @@ pyinit_core_reconfigure(_PyRuntimeState *runtime,
     }
     *tstate_p = tstate;
 
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     if (interp == NULL) {
         return _TyStatus_ERR("can't make main interpreter");
     }
@@ -523,7 +523,7 @@ pycore_init_runtime(_PyRuntimeState *runtime,
 
 
 static TyStatus
-init_interp_settings(PyInterpreterState *interp,
+init_interp_settings(TyInterpreterState *interp,
                      const PyInterpreterConfig *config)
 {
     assert(interp->feature_flags == 0);
@@ -598,7 +598,7 @@ init_interp_create_gil(TyThreadState *tstate, int gil)
 static int
 builtins_dict_watcher(TyDict_WatchEvent event, TyObject *dict, TyObject *key, TyObject *new_value)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 #ifdef _Ty_TIER2
     if (interp->rare_events.builtin_dict < _Ty_MAX_ALLOWED_BUILTINS_MODIFICATIONS) {
         _Ty_Executors_InvalidateAll(interp, 1);
@@ -614,7 +614,7 @@ pycore_create_interpreter(_PyRuntimeState *runtime,
                           TyThreadState **tstate_p)
 {
     TyStatus status;
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
     status = _TyInterpreterState_New(NULL, &interp);
     if (_TyStatus_EXCEPTION(status)) {
         return status;
@@ -680,7 +680,7 @@ pycore_create_interpreter(_PyRuntimeState *runtime,
 
 
 static TyStatus
-pycore_init_global_objects(PyInterpreterState *interp)
+pycore_init_global_objects(TyInterpreterState *interp)
 {
     TyStatus status;
 
@@ -702,7 +702,7 @@ pycore_init_global_objects(PyInterpreterState *interp)
 
 
 static TyStatus
-pycore_init_types(PyInterpreterState *interp)
+pycore_init_types(TyInterpreterState *interp)
 {
     TyStatus status;
 
@@ -771,7 +771,7 @@ pycore_init_types(PyInterpreterState *interp)
 static TyStatus
 pycore_init_builtins(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     TyObject *bimod = _PyBuiltin_Init(interp);
     if (bimod == NULL) {
@@ -863,7 +863,7 @@ pycore_interp_init(TyThreadState *tstate)
     if (_tstate->c_stack_hard_limit == 0) {
         _Ty_InitializeRecursionLimits(tstate);
     }
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     TyStatus status;
     TyObject *sysmod = NULL;
 
@@ -1146,7 +1146,7 @@ pyinit_main_reconfigure(TyThreadState *tstate)
 static void
 run_presite(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     if (!config->run_presite) {
@@ -1180,7 +1180,7 @@ init_interp_main(TyThreadState *tstate)
 
     TyStatus status;
     int is_main_interp = _Ty_IsMainInterpreter(tstate->interp);
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     const PyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     if (!config->_install_importlib) {
@@ -1401,7 +1401,7 @@ init_interp_main(TyThreadState *tstate)
 static TyStatus
 pyinit_main(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     if (!interp->runtime->core_initialized) {
         return _TyStatus_ERR("runtime core not initialized");
     }
@@ -1508,7 +1508,7 @@ finalize_modules_delete_special(TyThreadState *tstate, int verbose)
         NULL
     };
 
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     if (verbose) {
         TySys_WriteStderr("# clear builtins._\n");
     }
@@ -1636,7 +1636,7 @@ finalize_clear_modules_dict(TyObject *modules)
 static void
 finalize_restore_builtins(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     TyObject *dict = TyDict_Copy(interp->builtins);
     if (dict == NULL) {
         TyErr_FormatUnraisable("Exception ignored while restoring builtins");
@@ -1650,7 +1650,7 @@ finalize_restore_builtins(TyThreadState *tstate)
 
 
 static void
-finalize_modules_clear_weaklist(PyInterpreterState *interp,
+finalize_modules_clear_weaklist(TyInterpreterState *interp,
                                 TyObject *weaklist, int verbose)
 {
     // First clear modules imported later
@@ -1677,7 +1677,7 @@ finalize_modules_clear_weaklist(PyInterpreterState *interp,
 
 
 static void
-finalize_clear_sys_builtins_dict(PyInterpreterState *interp, int verbose)
+finalize_clear_sys_builtins_dict(TyInterpreterState *interp, int verbose)
 {
     // Clear sys dict
     if (verbose) {
@@ -1698,7 +1698,7 @@ finalize_clear_sys_builtins_dict(PyInterpreterState *interp, int verbose)
 static void
 finalize_modules(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     // Invalidate all executors and turn off JIT:
     interp->jit = false;
@@ -1773,7 +1773,7 @@ finalize_modules(TyThreadState *tstate)
     finalize_clear_sys_builtins_dict(interp, verbose);
 
     // Clear module dict copies stored in the interpreter state:
-    // clear PyInterpreterState.modules_by_index and
+    // clear TyInterpreterState.modules_by_index and
     // clear TyModuleDef.m_base.m_copy (of extensions not using the multi-phase
     // initialization API)
     _TyImport_ClearModulesByIndex(interp);
@@ -1857,7 +1857,7 @@ flush_std_files(void)
 
 
 static void
-finalize_interp_types(PyInterpreterState *interp)
+finalize_interp_types(TyInterpreterState *interp)
 {
     _PyTypes_FiniExtTypes(interp);
     _TyUnicode_FiniTypes(interp);
@@ -1940,7 +1940,7 @@ finalize_interp_clear(TyThreadState *tstate)
 
 
 static void
-finalize_interp_delete(PyInterpreterState *interp)
+finalize_interp_delete(TyInterpreterState *interp)
 {
     /* Cleanup auto-thread-state */
     _TyGILState_Fini(interp);
@@ -1969,7 +1969,7 @@ resolve_final_tstate(_PyRuntimeState *runtime)
     TyThreadState *main_tstate = runtime->main_tstate;
     assert(main_tstate != NULL);
     assert(main_tstate->thread_id == runtime->main_thread);
-    PyInterpreterState *main_interp = _TyInterpreterState_Main();
+    TyInterpreterState *main_interp = _TyInterpreterState_Main();
     assert(main_tstate->interp == main_interp);
 
     TyThreadState *tstate = _TyThreadState_GET();
@@ -2062,7 +2062,7 @@ _Ty_Finalize(_PyRuntimeState *runtime)
     /* Ensure that remaining threads are detached */
     _TyEval_StopTheWorldAll(runtime);
 
-    /* Remaining daemon threads will be trapped in PyThread_hang_thread
+    /* Remaining daemon threads will be trapped in TyThread_hang_thread
        when they attempt to take the GIL (ex: TyEval_RestoreThread()). */
     _TyInterpreterState_SetFinalizing(tstate->interp, tstate);
     _PyRuntimeState_SetFinalizing(runtime, tstate);
@@ -2298,7 +2298,7 @@ new_interpreter(TyThreadState **tstate_p,
        interpreters: disable TyGILState_Check(). */
     runtime->gilstate.check_enabled = 0;
 
-    PyInterpreterState *interp = TyInterpreterState_New();
+    TyInterpreterState *interp = TyInterpreterState_New();
     if (interp == NULL) {
         *tstate_p = NULL;
         return _TyStatus_OK();
@@ -2326,7 +2326,7 @@ new_interpreter(TyThreadState **tstate_p,
     else
     {
         /* No current thread state, copy from the main interpreter */
-        PyInterpreterState *main_interp = _TyInterpreterState_Main();
+        TyInterpreterState *main_interp = _TyInterpreterState_Main();
         src_config = _TyInterpreterState_GetConfig(main_interp);
     }
 
@@ -2430,7 +2430,7 @@ Ty_NewInterpreter(void)
 void
 Ty_EndInterpreter(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     if (tstate != _TyThreadState_GET()) {
         Ty_FatalError("thread is not current");
@@ -2467,7 +2467,7 @@ Ty_EndInterpreter(TyThreadState *tstate)
 }
 
 int
-_Ty_IsInterpreterFinalizing(PyInterpreterState *interp)
+_Ty_IsInterpreterFinalizing(TyInterpreterState *interp)
 {
     /* We check the runtime first since, in a daemon thread,
        interp might be dangling pointer. */
@@ -2482,14 +2482,14 @@ static void
 finalize_subinterpreters(void)
 {
     TyThreadState *final_tstate = _TyThreadState_GET();
-    PyInterpreterState *main_interp = _TyInterpreterState_Main();
+    TyInterpreterState *main_interp = _TyInterpreterState_Main();
     assert(final_tstate->interp == main_interp);
     _PyRuntimeState *runtime = main_interp->runtime;
     struct pyinterpreters *interpreters = &runtime->interpreters;
 
     /* Get the first interpreter in the list. */
     HEAD_LOCK(runtime);
-    PyInterpreterState *interp = interpreters->head;
+    TyInterpreterState *interp = interpreters->head;
     if (interp == main_interp) {
         interp = interp->next;
     }
@@ -2554,7 +2554,7 @@ finalize_subinterpreters(void)
 /* Add the __main__ module */
 
 static TyStatus
-add_main_module(PyInterpreterState *interp)
+add_main_module(TyInterpreterState *interp)
 {
     TyObject *m, *d;
     m = TyImport_AddModuleObject(&_Ty_ID(__main__));
@@ -3020,7 +3020,7 @@ done:
 
 
 static void
-_Ty_FatalError_DumpTracebacks(int fd, PyInterpreterState *interp,
+_Ty_FatalError_DumpTracebacks(int fd, TyInterpreterState *interp,
                               TyThreadState *tstate)
 {
     PUTS(fd, "\n");
@@ -3191,7 +3191,7 @@ release_dict_lock_for_dump(TyObject *obj)
 // allocations and keep the implementation simple. For example, the list is not
 // sorted on purpose.
 void
-_Ty_DumpExtensionModules(int fd, PyInterpreterState *interp)
+_Ty_DumpExtensionModules(int fd, TyInterpreterState *interp)
 {
     if (interp == NULL) {
         return;
@@ -3329,7 +3329,7 @@ fatal_error(int fd, int header, const char *prefix, const char *msg,
        tss_tstate != tstate if the current Python thread does not hold the GIL.
        */
     TyThreadState *tstate = _TyThreadState_GET();
-    PyInterpreterState *interp = NULL;
+    TyInterpreterState *interp = NULL;
     TyThreadState *tss_tstate = TyGILState_GetThisThreadState();
     if (tstate != NULL) {
         interp = tstate->interp;

@@ -1976,10 +1976,10 @@
             #if TIER_ONE
             assert(frame->instr_ptr->op.code == INSTRUMENTED_LINE ||
                   frame->instr_ptr->op.code == INSTRUMENTED_INSTRUCTION ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == SEND ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == FOR_ITER ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == INTERPRETER_EXIT ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == ENTER_EXECUTOR);
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == SEND ||
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == FOR_ITER ||
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == INTERPRETER_EXIT ||
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == ENTER_EXECUTOR);
             #endif
             stack_pointer = _TyFrame_GetStackPointer(frame);
             LOAD_IP(1 + INLINE_CACHE_ENTRIES_SEND);
@@ -4325,7 +4325,7 @@
                 UOP_STAT_INC(uopcode, miss);
                 JUMP_TO_JUMP_TARGET();
             }
-            _PyListIterObject *it = (_PyListIterObject *)iter_o;
+            _TyListIterObject *it = (_TyListIterObject *)iter_o;
             if (!_Py_IsOwnedByCurrentThread((TyObject *)it->it_seq) ||
                     !_TyObject_GC_IS_SHARED(it->it_seq)) {
                 UOP_STAT_INC(uopcode, miss);
@@ -4342,7 +4342,7 @@
             iter = stack_pointer[-1];
             #ifndef Ty_GIL_DISABLED
             TyObject *iter_o = PyStackRef_AsPyObjectBorrow(iter);
-            _PyListIterObject *it = (_PyListIterObject *)iter_o;
+            _TyListIterObject *it = (_TyListIterObject *)iter_o;
             assert(Ty_TYPE(iter_o) == &PyListIter_Type);
             PyListObject *seq = it->it_seq;
             if (seq == NULL) {
@@ -4367,7 +4367,7 @@
             _PyStackRef next;
             iter = stack_pointer[-1];
             TyObject *iter_o = PyStackRef_AsPyObjectBorrow(iter);
-            _PyListIterObject *it = (_PyListIterObject *)iter_o;
+            _TyListIterObject *it = (_TyListIterObject *)iter_o;
             assert(Ty_TYPE(iter_o) == &PyListIter_Type);
             PyListObject *seq = it->it_seq;
             assert(seq);
@@ -5817,7 +5817,7 @@
             _PyStackRef callable;
             callable = stack_pointer[-3];
             TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
-            PyInterpreterState *interp = tstate->interp;
+            TyInterpreterState *interp = tstate->interp;
             if (callable_o != interp->callable_cache.len) {
                 UOP_STAT_INC(uopcode, miss);
                 JUMP_TO_JUMP_TARGET();
@@ -5884,7 +5884,7 @@
                 UOP_STAT_INC(uopcode, miss);
                 JUMP_TO_JUMP_TARGET();
             }
-            PyInterpreterState *interp = tstate->interp;
+            TyInterpreterState *interp = tstate->interp;
             if (callable_o != interp->callable_cache.isinstance) {
                 UOP_STAT_INC(uopcode, miss);
                 JUMP_TO_JUMP_TARGET();
@@ -5931,7 +5931,7 @@
             assert(oparg == 1);
             TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
             TyObject *self_o = PyStackRef_AsPyObjectBorrow(self);
-            PyInterpreterState *interp = tstate->interp;
+            TyInterpreterState *interp = tstate->interp;
             if (callable_o != interp->callable_cache.list_append) {
                 UOP_STAT_INC(uopcode, miss);
                 JUMP_TO_JUMP_TARGET();
@@ -6600,7 +6600,7 @@
             if (func_obj == NULL) {
                 JUMP_TO_ERROR();
             }
-            _PyFunction_SetVersion(
+            _TyFunction_SetVersion(
                                    func_obj, ((PyCodeObject *)codeobj)->co_version);
             func = PyStackRef_FromPyObjectSteal((TyObject *)func_obj);
             stack_pointer[0] = func;
@@ -6966,7 +6966,7 @@
                 printf(", exit %lu, temp %d, target %d -> %s]\n",
                        exit - current_executor->exits, exit->temperature.value_and_backoff,
                        (int)(target - _TyFrame_GetBytecode(frame)),
-                       _PyOpcode_OpName[target->op.code]);
+                       _TyOpcode_OpName[target->op.code]);
                 stack_pointer = _TyFrame_GetStackPointer(frame);
             }
             #endif

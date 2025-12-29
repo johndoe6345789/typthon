@@ -2042,7 +2042,7 @@ long_to_decimal_string_internal(TyObject *aa,
     */
     if (size_a >= 10 * _PY_LONG_MAX_STR_DIGITS_THRESHOLD
                   / (3 * TyLong_SHIFT) + 2) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         int max_str_digits = interp->long_state.max_str_digits;
         if ((max_str_digits > 0) &&
             (max_str_digits / (3 * TyLong_SHIFT) <= (size_a - 11) / 10)) {
@@ -2123,7 +2123,7 @@ long_to_decimal_string_internal(TyObject *aa,
         strlen++;
     }
     if (strlen > _PY_LONG_MAX_STR_DIGITS_THRESHOLD) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         int max_str_digits = interp->long_state.max_str_digits;
         Ty_ssize_t strlen_nosign = strlen - negative;
         if ((max_str_digits > 0) && (strlen_nosign > max_str_digits)) {
@@ -2935,7 +2935,7 @@ long_from_string_base(const char **str, int base, PyLongObject **res)
         /* Limit the size to avoid excessive computation attacks exploiting the
          * quadratic algorithm. */
         if (digits > _PY_LONG_MAX_STR_DIGITS_THRESHOLD) {
-            PyInterpreterState *interp = _TyInterpreterState_GET();
+            TyInterpreterState *interp = _TyInterpreterState_GET();
             int max_str_digits = interp->long_state.max_str_digits;
             if ((max_str_digits > 0) && (digits > max_str_digits)) {
                 TyErr_Format(TyExc_ValueError, _MAX_STR_DIGITS_ERROR_FMT_TO_INT,
@@ -6486,7 +6486,7 @@ static TyGetSetDef long_getset[] = {
     {NULL}  /* Sentinel */
 };
 
-PyDoc_STRVAR(long_doc,
+TyDoc_STRVAR(long_doc,
 "int([x]) -> integer\n\
 int(x, base=10) -> integer\n\
 \n\
@@ -6540,7 +6540,7 @@ static PyNumberMethods long_as_number = {
 };
 
 TyTypeObject TyLong_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "int",                                      /* tp_name */
     offsetof(PyLongObject, long_value.ob_digit),  /* tp_basicsize */
     sizeof(digit),                              /* tp_itemsize */
@@ -6587,13 +6587,13 @@ TyTypeObject TyLong_Type = {
 
 static TyTypeObject Int_InfoType;
 
-PyDoc_STRVAR(int_info__doc__,
+TyDoc_STRVAR(int_info__doc__,
 "sys.int_info\n\
 \n\
 A named tuple that holds information about Python's\n\
 internal representation of integers.  The attributes are read only.");
 
-static PyStructSequence_Field int_info_fields[] = {
+static TyStructSequence_Field int_info_fields[] = {
     {"bits_per_digit", "size of a digit in bits"},
     {"sizeof_digit", "size in bytes of the C type used to represent a digit"},
     {"default_max_str_digits", "maximum string conversion digits limitation"},
@@ -6601,7 +6601,7 @@ static PyStructSequence_Field int_info_fields[] = {
     {NULL, NULL}
 };
 
-static PyStructSequence_Desc int_info_desc = {
+static TyStructSequence_Desc int_info_desc = {
     "sys.int_info",   /* name */
     int_info__doc__,  /* doc */
     int_info_fields,  /* fields */
@@ -6613,12 +6613,12 @@ TyLong_GetInfo(void)
 {
     TyObject* int_info;
     int field = 0;
-    int_info = PyStructSequence_New(&Int_InfoType);
+    int_info = TyStructSequence_New(&Int_InfoType);
     if (int_info == NULL)
         return NULL;
-    PyStructSequence_SET_ITEM(int_info, field++,
+    TyStructSequence_SET_ITEM(int_info, field++,
                               TyLong_FromLong(TyLong_SHIFT));
-    PyStructSequence_SET_ITEM(int_info, field++,
+    TyStructSequence_SET_ITEM(int_info, field++,
                               TyLong_FromLong(sizeof(digit)));
     /*
      * The following two fields were added after investigating uses of
@@ -6627,9 +6627,9 @@ TyLong_GetInfo(void)
      * sequence unpacking. Cython and sympy also refer to sys.int_info but only
      * as info for debugging. No concern about adding these in a backport.
      */
-    PyStructSequence_SET_ITEM(int_info, field++,
+    TyStructSequence_SET_ITEM(int_info, field++,
                               TyLong_FromLong(_PY_LONG_DEFAULT_MAX_STR_DIGITS));
-    PyStructSequence_SET_ITEM(int_info, field++,
+    TyStructSequence_SET_ITEM(int_info, field++,
                               TyLong_FromLong(_PY_LONG_MAX_STR_DIGITS_THRESHOLD));
     if (TyErr_Occurred()) {
         Ty_CLEAR(int_info);
@@ -6642,7 +6642,7 @@ TyLong_GetInfo(void)
 /* runtime lifecycle */
 
 TyStatus
-_TyLong_InitTypes(PyInterpreterState *interp)
+_TyLong_InitTypes(TyInterpreterState *interp)
 {
     /* initialize int_info */
     if (_PyStructSequence_InitBuiltin(interp, &Int_InfoType,
@@ -6656,7 +6656,7 @@ _TyLong_InitTypes(PyInterpreterState *interp)
 
 
 void
-_TyLong_FiniTypes(PyInterpreterState *interp)
+_TyLong_FiniTypes(TyInterpreterState *interp)
 {
     _PyStructSequence_FiniBuiltin(interp, &Int_InfoType);
 }

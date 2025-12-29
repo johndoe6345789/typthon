@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(marshal_dump__doc__,
+TyDoc_STRVAR(marshal_dump__doc__,
 "dump($module, value, file, version=version, /, *, allow_code=True)\n"
 "--\n"
 "\n"
@@ -47,7 +47,7 @@ marshal_dump(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(allow_code), },
     };
@@ -102,7 +102,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(marshal_load__doc__,
+TyDoc_STRVAR(marshal_load__doc__,
 "load($module, file, /, *, allow_code=True)\n"
 "--\n"
 "\n"
@@ -139,7 +139,7 @@ marshal_load(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(allow_code), },
     };
@@ -182,7 +182,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(marshal_dumps__doc__,
+TyDoc_STRVAR(marshal_dumps__doc__,
 "dumps($module, value, version=version, /, *, allow_code=True)\n"
 "--\n"
 "\n"
@@ -218,7 +218,7 @@ marshal_dumps(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(allow_code), },
     };
@@ -271,7 +271,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(marshal_loads__doc__,
+TyDoc_STRVAR(marshal_loads__doc__,
 "loads($module, bytes, /, *, allow_code=True)\n"
 "--\n"
 "\n"
@@ -302,7 +302,7 @@ marshal_loads(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(allow_code), },
     };

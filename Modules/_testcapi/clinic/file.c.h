@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_testcapi_pyfile_newstdprinter__doc__,
+TyDoc_STRVAR(_testcapi_pyfile_newstdprinter__doc__,
 "pyfile_newstdprinter($module, fd, /)\n"
 "--\n"
 "\n");
@@ -31,7 +31,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_py_fopen__doc__,
+TyDoc_STRVAR(_testcapi_py_fopen__doc__,
 "py_fopen($module, path, mode, /)\n"
 "--\n"
 "\n"
@@ -62,7 +62,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_testcapi_py_universalnewlinefgets__doc__,
+TyDoc_STRVAR(_testcapi_py_universalnewlinefgets__doc__,
 "py_universalnewlinefgets($module, file, size, /)\n"
 "--\n"
 "\n"

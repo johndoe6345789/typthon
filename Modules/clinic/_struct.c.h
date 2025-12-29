@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(Struct___init____doc__,
+TyDoc_STRVAR(Struct___init____doc__,
 "Struct(format)\n"
 "--\n"
 "\n"
@@ -36,7 +36,7 @@ Struct___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(format), },
     };
@@ -71,7 +71,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(Struct_unpack__doc__,
+TyDoc_STRVAR(Struct_unpack__doc__,
 "unpack($self, buffer, /)\n"
 "--\n"
 "\n"
@@ -108,7 +108,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(Struct_unpack_from__doc__,
+TyDoc_STRVAR(Struct_unpack_from__doc__,
 "unpack_from($self, /, buffer, offset=0)\n"
 "--\n"
 "\n"
@@ -141,7 +141,7 @@ Struct_unpack_from(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(buffer), &_Ty_ID(offset), },
     };
@@ -199,7 +199,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(Struct_iter_unpack__doc__,
+TyDoc_STRVAR(Struct_iter_unpack__doc__,
 "iter_unpack($self, buffer, /)\n"
 "--\n"
 "\n"
@@ -226,7 +226,7 @@ Struct_iter_unpack(TyObject *self, TyObject *buffer)
     return return_value;
 }
 
-PyDoc_STRVAR(_clearcache__doc__,
+TyDoc_STRVAR(_clearcache__doc__,
 "_clearcache($module, /)\n"
 "--\n"
 "\n"
@@ -244,7 +244,7 @@ _clearcache(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _clearcache_impl(module);
 }
 
-PyDoc_STRVAR(calcsize__doc__,
+TyDoc_STRVAR(calcsize__doc__,
 "calcsize($module, format, /)\n"
 "--\n"
 "\n"
@@ -279,7 +279,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unpack__doc__,
+TyDoc_STRVAR(unpack__doc__,
 "unpack($module, format, buffer, /)\n"
 "--\n"
 "\n"
@@ -324,7 +324,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(unpack_from__doc__,
+TyDoc_STRVAR(unpack_from__doc__,
 "unpack_from($module, format, /, buffer, offset=0)\n"
 "--\n"
 "\n"
@@ -354,7 +354,7 @@ unpack_from(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(buffer), &_Ty_ID(offset), },
     };
@@ -418,7 +418,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(iter_unpack__doc__,
+TyDoc_STRVAR(iter_unpack__doc__,
 "iter_unpack($module, format, buffer, /)\n"
 "--\n"
 "\n"

@@ -316,11 +316,11 @@ _TyType_HasFeature(TyTypeObject *type, unsigned long feature) {
     return ((FT_ATOMIC_LOAD_ULONG_RELAXED(type->tp_flags) & feature) != 0);
 }
 
-extern void _TyType_InitCache(PyInterpreterState *interp);
+extern void _TyType_InitCache(TyInterpreterState *interp);
 
-extern TyStatus _TyObject_InitState(PyInterpreterState *interp);
-extern void _TyObject_FiniState(PyInterpreterState *interp);
-extern bool _PyRefchain_IsTraced(PyInterpreterState *interp, TyObject *obj);
+extern TyStatus _TyObject_InitState(TyInterpreterState *interp);
+extern void _TyObject_FiniState(TyInterpreterState *interp);
+extern bool _PyRefchain_IsTraced(TyInterpreterState *interp, TyObject *obj);
 
 // Macros used for per-thread reference counting in the free threading build.
 // They resolve to normal Ty_INCREF/DECREF calls in the default build.
@@ -768,15 +768,15 @@ _Ty_TryIncref(TyObject *op)
 }
 
 #ifdef Ty_REF_DEBUG
-extern void _TyInterpreterState_FinalizeRefTotal(PyInterpreterState *);
+extern void _TyInterpreterState_FinalizeRefTotal(TyInterpreterState *);
 extern void _Ty_FinalizeRefTotal(_PyRuntimeState *);
 extern void _PyDebug_PrintTotalRefs(void);
 #endif
 
 #ifdef Ty_TRACE_REFS
 extern void _Ty_AddToAllObjects(TyObject *op);
-extern void _Ty_PrintReferences(PyInterpreterState *, FILE *);
-extern void _Ty_PrintReferenceAddresses(PyInterpreterState *, FILE *);
+extern void _Ty_PrintReferences(TyInterpreterState *, FILE *);
+extern void _Ty_PrintReferenceAddresses(TyInterpreterState *, FILE *);
 #endif
 
 
@@ -794,7 +794,7 @@ _TyObject_GET_WEAKREFS_LISTPTR(TyObject *op)
 {
     if (TyType_Check(op) &&
             ((TyTypeObject *)op)->tp_flags & _Ty_TPFLAGS_STATIC_BUILTIN) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         managed_static_type_state *state = _PyStaticType_GetState(
                                                 interp, (TyTypeObject *)op);
         return _PyStaticType_GET_WEAKREFS_LISTPTR(state);

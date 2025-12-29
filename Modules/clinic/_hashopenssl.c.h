@@ -10,7 +10,7 @@ preserve
 #include "pycore_long.h"          // _TyLong_UnsignedLong_Converter()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(EVP_copy__doc__,
+TyDoc_STRVAR(EVP_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -28,7 +28,7 @@ EVP_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
     return EVP_copy_impl((EVPobject *)self);
 }
 
-PyDoc_STRVAR(EVP_digest__doc__,
+TyDoc_STRVAR(EVP_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -46,7 +46,7 @@ EVP_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return EVP_digest_impl((EVPobject *)self);
 }
 
-PyDoc_STRVAR(EVP_hexdigest__doc__,
+TyDoc_STRVAR(EVP_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -64,7 +64,7 @@ EVP_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return EVP_hexdigest_impl((EVPobject *)self);
 }
 
-PyDoc_STRVAR(EVP_update__doc__,
+TyDoc_STRVAR(EVP_update__doc__,
 "update($self, obj, /)\n"
 "--\n"
 "\n"
@@ -88,7 +88,7 @@ EVP_update(TyObject *self, TyObject *obj)
 
 #if defined(PY_OPENSSL_HAS_SHAKE)
 
-PyDoc_STRVAR(EVPXOF_digest__doc__,
+TyDoc_STRVAR(EVPXOF_digest__doc__,
 "digest($self, /, length)\n"
 "--\n"
 "\n"
@@ -113,7 +113,7 @@ EVPXOF_digest(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(length), },
     };
@@ -161,7 +161,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHAKE)
 
-PyDoc_STRVAR(EVPXOF_hexdigest__doc__,
+TyDoc_STRVAR(EVPXOF_hexdigest__doc__,
 "hexdigest($self, /, length)\n"
 "--\n"
 "\n"
@@ -186,7 +186,7 @@ EVPXOF_hexdigest(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObje
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(length), },
     };
@@ -232,7 +232,7 @@ exit:
 
 #endif /* defined(PY_OPENSSL_HAS_SHAKE) */
 
-PyDoc_STRVAR(_hashlib_new__doc__,
+TyDoc_STRVAR(_hashlib_new__doc__,
 "new($module, /, name, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -263,7 +263,7 @@ _hashlib_new(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -336,7 +336,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_md5__doc__,
+TyDoc_STRVAR(_hashlib_openssl_md5__doc__,
 "openssl_md5($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -362,7 +362,7 @@ _hashlib_openssl_md5(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -421,7 +421,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha1__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha1__doc__,
 "openssl_sha1($module, /, data=b\'\', *, usedforsecurity=True, string=None)\n"
 "--\n"
 "\n"
@@ -447,7 +447,7 @@ _hashlib_openssl_sha1(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -506,7 +506,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha224__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha224__doc__,
 "openssl_sha224($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "               string=None)\n"
 "--\n"
@@ -533,7 +533,7 @@ _hashlib_openssl_sha224(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -592,7 +592,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha256__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha256__doc__,
 "openssl_sha256($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "               string=None)\n"
 "--\n"
@@ -619,7 +619,7 @@ _hashlib_openssl_sha256(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -678,7 +678,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha384__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha384__doc__,
 "openssl_sha384($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "               string=None)\n"
 "--\n"
@@ -705,7 +705,7 @@ _hashlib_openssl_sha384(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -764,7 +764,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_openssl_sha512__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha512__doc__,
 "openssl_sha512($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "               string=None)\n"
 "--\n"
@@ -791,7 +791,7 @@ _hashlib_openssl_sha512(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -852,7 +852,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHA3)
 
-PyDoc_STRVAR(_hashlib_openssl_sha3_224__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha3_224__doc__,
 "openssl_sha3_224($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                 string=None)\n"
 "--\n"
@@ -879,7 +879,7 @@ _hashlib_openssl_sha3_224(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -942,7 +942,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHA3)
 
-PyDoc_STRVAR(_hashlib_openssl_sha3_256__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha3_256__doc__,
 "openssl_sha3_256($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                 string=None)\n"
 "--\n"
@@ -969,7 +969,7 @@ _hashlib_openssl_sha3_256(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -1032,7 +1032,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHA3)
 
-PyDoc_STRVAR(_hashlib_openssl_sha3_384__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha3_384__doc__,
 "openssl_sha3_384($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                 string=None)\n"
 "--\n"
@@ -1059,7 +1059,7 @@ _hashlib_openssl_sha3_384(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -1122,7 +1122,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHA3)
 
-PyDoc_STRVAR(_hashlib_openssl_sha3_512__doc__,
+TyDoc_STRVAR(_hashlib_openssl_sha3_512__doc__,
 "openssl_sha3_512($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                 string=None)\n"
 "--\n"
@@ -1149,7 +1149,7 @@ _hashlib_openssl_sha3_512(TyObject *module, TyObject *const *args, Ty_ssize_t na
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -1212,7 +1212,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHAKE)
 
-PyDoc_STRVAR(_hashlib_openssl_shake_128__doc__,
+TyDoc_STRVAR(_hashlib_openssl_shake_128__doc__,
 "openssl_shake_128($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                  string=None)\n"
 "--\n"
@@ -1239,7 +1239,7 @@ _hashlib_openssl_shake_128(TyObject *module, TyObject *const *args, Ty_ssize_t n
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -1302,7 +1302,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SHAKE)
 
-PyDoc_STRVAR(_hashlib_openssl_shake_256__doc__,
+TyDoc_STRVAR(_hashlib_openssl_shake_256__doc__,
 "openssl_shake_256($module, /, data=b\'\', *, usedforsecurity=True,\n"
 "                  string=None)\n"
 "--\n"
@@ -1329,7 +1329,7 @@ _hashlib_openssl_shake_256(TyObject *module, TyObject *const *args, Ty_ssize_t n
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(usedforsecurity), &_Ty_ID(string), },
     };
@@ -1390,7 +1390,7 @@ exit:
 
 #endif /* defined(PY_OPENSSL_HAS_SHAKE) */
 
-PyDoc_STRVAR(pbkdf2_hmac__doc__,
+TyDoc_STRVAR(pbkdf2_hmac__doc__,
 "pbkdf2_hmac($module, /, hash_name, password, salt, iterations,\n"
 "            dklen=None)\n"
 "--\n"
@@ -1418,7 +1418,7 @@ pbkdf2_hmac(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObject 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(hash_name), &_Ty_ID(password), &_Ty_ID(salt), &_Ty_ID(iterations), &_Ty_ID(dklen), },
     };
@@ -1494,7 +1494,7 @@ exit:
 
 #if defined(PY_OPENSSL_HAS_SCRYPT)
 
-PyDoc_STRVAR(_hashlib_scrypt__doc__,
+TyDoc_STRVAR(_hashlib_scrypt__doc__,
 "scrypt($module, /, password, *, salt, n, r, p, maxmem=0, dklen=64)\n"
 "--\n"
 "\n"
@@ -1521,7 +1521,7 @@ _hashlib_scrypt(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObj
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(password), &_Ty_ID(salt), _Ty_LATIN1_CHR('n'), _Ty_LATIN1_CHR('r'), _Ty_LATIN1_CHR('p'), &_Ty_ID(maxmem), &_Ty_ID(dklen), },
     };
@@ -1603,7 +1603,7 @@ exit:
 
 #endif /* defined(PY_OPENSSL_HAS_SCRYPT) */
 
-PyDoc_STRVAR(_hashlib_hmac_singleshot__doc__,
+TyDoc_STRVAR(_hashlib_hmac_singleshot__doc__,
 "hmac_digest($module, /, key, msg, digest)\n"
 "--\n"
 "\n"
@@ -1629,7 +1629,7 @@ _hashlib_hmac_singleshot(TyObject *module, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(msg), &_Ty_ID(digest), },
     };
@@ -1679,7 +1679,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_hmac_new__doc__,
+TyDoc_STRVAR(_hashlib_hmac_new__doc__,
 "hmac_new($module, /, key, msg=b\'\', digestmod=None)\n"
 "--\n"
 "\n"
@@ -1705,7 +1705,7 @@ _hashlib_hmac_new(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyO
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(key), &_Ty_ID(msg), &_Ty_ID(digestmod), },
     };
@@ -1759,7 +1759,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_HMAC_copy__doc__,
+TyDoc_STRVAR(_hashlib_HMAC_copy__doc__,
 "copy($self, /)\n"
 "--\n"
 "\n"
@@ -1777,7 +1777,7 @@ _hashlib_HMAC_copy(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _hashlib_HMAC_copy_impl((HMACobject *)self);
 }
 
-PyDoc_STRVAR(_hashlib_HMAC_update__doc__,
+TyDoc_STRVAR(_hashlib_HMAC_update__doc__,
 "update($self, /, msg)\n"
 "--\n"
 "\n"
@@ -1802,7 +1802,7 @@ _hashlib_HMAC_update(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, Ty
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(msg), },
     };
@@ -1835,7 +1835,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_HMAC_digest__doc__,
+TyDoc_STRVAR(_hashlib_HMAC_digest__doc__,
 "digest($self, /)\n"
 "--\n"
 "\n"
@@ -1853,7 +1853,7 @@ _hashlib_HMAC_digest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _hashlib_HMAC_digest_impl((HMACobject *)self);
 }
 
-PyDoc_STRVAR(_hashlib_HMAC_hexdigest__doc__,
+TyDoc_STRVAR(_hashlib_HMAC_hexdigest__doc__,
 "hexdigest($self, /)\n"
 "--\n"
 "\n"
@@ -1874,7 +1874,7 @@ _hashlib_HMAC_hexdigest(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _hashlib_HMAC_hexdigest_impl((HMACobject *)self);
 }
 
-PyDoc_STRVAR(_hashlib_get_fips_mode__doc__,
+TyDoc_STRVAR(_hashlib_get_fips_mode__doc__,
 "get_fips_mode($module, /)\n"
 "--\n"
 "\n"
@@ -1909,7 +1909,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_hashlib_compare_digest__doc__,
+TyDoc_STRVAR(_hashlib_compare_digest__doc__,
 "compare_digest($module, a, b, /)\n"
 "--\n"
 "\n"

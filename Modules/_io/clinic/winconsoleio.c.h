@@ -11,7 +11,7 @@ preserve
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO_close__doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO_close__doc__,
 "close($self, /)\n"
 "--\n"
 "\n"
@@ -40,7 +40,7 @@ _io__WindowsConsoleIO_close(TyObject *self, TyTypeObject *cls, TyObject *const *
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO___init____doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO___init____doc__,
 "_WindowsConsoleIO(file, mode=\'r\', closefd=True, opener=None)\n"
 "--\n"
 "\n"
@@ -68,7 +68,7 @@ _io__WindowsConsoleIO___init__(TyObject *self, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(file), &_Ty_ID(mode), &_Ty_ID(closefd), &_Ty_ID(opener), },
     };
@@ -143,7 +143,7 @@ exit:
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO_fileno__doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO_fileno__doc__,
 "fileno($self, /)\n"
 "--\n"
 "\n"
@@ -165,7 +165,7 @@ _io__WindowsConsoleIO_fileno(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO_readable__doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO_readable__doc__,
 "readable($self, /)\n"
 "--\n"
 "\n"
@@ -187,7 +187,7 @@ _io__WindowsConsoleIO_readable(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO_writable__doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO_writable__doc__,
 "writable($self, /)\n"
 "--\n"
 "\n"
@@ -209,7 +209,7 @@ _io__WindowsConsoleIO_writable(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO_readinto__doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO_readinto__doc__,
 "readinto($self, buffer, /)\n"
 "--\n"
 "\n"
@@ -266,7 +266,7 @@ exit:
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO_readall__doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO_readall__doc__,
 "readall($self, /)\n"
 "--\n"
 "\n"
@@ -290,7 +290,7 @@ _io__WindowsConsoleIO_readall(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO_read__doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO_read__doc__,
 "read($self, size=-1, /)\n"
 "--\n"
 "\n"
@@ -349,7 +349,7 @@ exit:
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO_write__doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO_write__doc__,
 "write($self, b, /)\n"
 "--\n"
 "\n"
@@ -408,7 +408,7 @@ exit:
 
 #if defined(HAVE_WINDOWS_CONSOLE_IO)
 
-PyDoc_STRVAR(_io__WindowsConsoleIO_isatty__doc__,
+TyDoc_STRVAR(_io__WindowsConsoleIO_isatty__doc__,
 "isatty($self, /)\n"
 "--\n"
 "\n"

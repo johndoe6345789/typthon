@@ -2179,7 +2179,7 @@ s_pack_internal(PyStructObject *soself, TyObject *const *args, int offset,
 }
 
 
-PyDoc_STRVAR(s_pack__doc__,
+TyDoc_STRVAR(s_pack__doc__,
 "S.pack(v1, v2, ...) -> bytes\n\
 \n\
 Return a bytes object containing values v1, v2, ... packed according\n\
@@ -2222,7 +2222,7 @@ s_pack(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
     return _PyBytesWriter_Finish(&writer, buf + soself->s_size);
 }
 
-PyDoc_STRVAR(s_pack_into__doc__,
+TyDoc_STRVAR(s_pack_into__doc__,
 "S.pack_into(buffer, offset, v1, v2, ...)\n\
 \n\
 Pack the values v1, v2, ... according to the format string S.format\n\
@@ -2339,7 +2339,7 @@ s_get_size(TyObject *op, void *Py_UNUSED(closure))
     return TyLong_FromSsize_t(self->s_size);
 }
 
-PyDoc_STRVAR(s_sizeof__doc__,
+TyDoc_STRVAR(s_sizeof__doc__,
 "S.__sizeof__() -> size of S in memory, in bytes");
 
 static TyObject *
@@ -2385,12 +2385,12 @@ static TyMemberDef s_members[] = {
 };
 
 static TyGetSetDef s_getsetlist[] = {
-    {"format", s_get_format, NULL, PyDoc_STR("struct format string"), NULL},
-    {"size", s_get_size, NULL, PyDoc_STR("struct size in bytes"), NULL},
+    {"format", s_get_format, NULL, TyDoc_STR("struct format string"), NULL},
+    {"size", s_get_size, NULL, TyDoc_STR("struct size in bytes"), NULL},
     {NULL} /* sentinel */
 };
 
-PyDoc_STRVAR(s__doc__,
+TyDoc_STRVAR(s__doc__,
 "Struct(fmt) --> compiled struct object\n"
 "\n"
 );
@@ -2490,7 +2490,7 @@ calcsize_impl(TyObject *module, PyStructObject *s_object)
     return s_object->s_size;
 }
 
-PyDoc_STRVAR(pack_doc,
+TyDoc_STRVAR(pack_doc,
 "pack(format, v1, v2, ...) -> bytes\n\
 \n\
 Return a bytes object containing the values v1, v2, ... packed according\n\
@@ -2516,7 +2516,7 @@ pack(TyObject *module, TyObject *const *args, Ty_ssize_t nargs)
     return result;
 }
 
-PyDoc_STRVAR(pack_into_doc,
+TyDoc_STRVAR(pack_into_doc,
 "pack_into(format, buffer, offset, v1, v2, ...)\n\
 \n\
 Pack the values v1, v2, ... according to the format string and write\n\
@@ -2625,7 +2625,7 @@ static struct TyMethodDef module_functions[] = {
 
 /* Module initialization */
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "Functions to convert between Python values and C structs.\n\
 Python bytes objects are used to hold the data representing the C struct\n\
 and also as format strings (explained below) to describe the layout of data\n\

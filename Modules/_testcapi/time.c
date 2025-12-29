@@ -2,7 +2,7 @@
 
 
 static int
-pytime_from_nanoseconds(PyTime_t *tp, TyObject *obj)
+pytime_from_nanoseconds(TyTime_t *tp, TyObject *obj)
 {
     if (!TyLong_Check(obj)) {
         TyErr_Format(TyExc_TypeError, "expect int, got %s",
@@ -15,8 +15,8 @@ pytime_from_nanoseconds(PyTime_t *tp, TyObject *obj)
         return -1;
     }
 
-    Ty_BUILD_ASSERT(sizeof(long long) == sizeof(PyTime_t));
-    *tp = (PyTime_t)nsec;
+    Ty_BUILD_ASSERT(sizeof(long long) == sizeof(TyTime_t));
+    *tp = (TyTime_t)nsec;
     return 0;
 }
 
@@ -28,7 +28,7 @@ test_pytime_assecondsdouble(TyObject *Py_UNUSED(self), TyObject *args)
     if (!TyArg_ParseTuple(args, "O", &obj)) {
         return NULL;
     }
-    PyTime_t ts;
+    TyTime_t ts;
     if (pytime_from_nanoseconds(&ts, obj) < 0) {
         return NULL;
     }
@@ -38,7 +38,7 @@ test_pytime_assecondsdouble(TyObject *Py_UNUSED(self), TyObject *args)
 
 
 static TyObject*
-pytime_as_float(PyTime_t t)
+pytime_as_float(TyTime_t t)
 {
     return TyFloat_FromDouble(PyTime_AsSecondsDouble(t));
 }
@@ -48,7 +48,7 @@ pytime_as_float(PyTime_t t)
 static TyObject*
 test_pytime_monotonic(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
-    PyTime_t t;
+    TyTime_t t;
     int res = PyTime_Monotonic(&t);
     if (res < 0) {
         assert(t == 0);
@@ -62,7 +62,7 @@ test_pytime_monotonic(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 static TyObject*
 test_pytime_monotonic_raw(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
-    PyTime_t t;
+    TyTime_t t;
     int res;
     Ty_BEGIN_ALLOW_THREADS
     res = PyTime_MonotonicRaw(&t);
@@ -80,7 +80,7 @@ test_pytime_monotonic_raw(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 static TyObject*
 test_pytime_perf_counter(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
-    PyTime_t t;
+    TyTime_t t;
     int res = PyTime_PerfCounter(&t);
     if (res < 0) {
         assert(t == 0);
@@ -94,7 +94,7 @@ test_pytime_perf_counter(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 static TyObject*
 test_pytime_perf_counter_raw(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
-    PyTime_t t;
+    TyTime_t t;
     int res;
     Ty_BEGIN_ALLOW_THREADS
     res = PyTime_PerfCounterRaw(&t);
@@ -112,7 +112,7 @@ test_pytime_perf_counter_raw(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args
 static TyObject*
 test_pytime_time(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
-    PyTime_t t;
+    TyTime_t t;
     int res = PyTime_Time(&t);
     if (res < 0) {
         assert(t == 0);
@@ -126,7 +126,7 @@ test_pytime_time(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 static TyObject*
 test_pytime_time_raw(TyObject *Py_UNUSED(self), TyObject *Py_UNUSED(args))
 {
-    PyTime_t t;
+    TyTime_t t;
     int res;
     Ty_BEGIN_ALLOW_THREADS
     res = PyTime_TimeRaw(&t);
@@ -158,7 +158,7 @@ _PyTestCapi_Init_Time(TyObject *m)
     if (TyModule_AddFunctions(m, test_methods) < 0) {
         return -1;
     }
-    Ty_BUILD_ASSERT(sizeof(long long) == sizeof(PyTime_t));
+    Ty_BUILD_ASSERT(sizeof(long long) == sizeof(TyTime_t));
     if (TyModule_AddObject(m, "PyTime_MIN", TyLong_FromLongLong(PyTime_MIN)) < 0) {
         return 1;
     }

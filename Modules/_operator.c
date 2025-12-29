@@ -28,7 +28,7 @@ module _operator
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=672ecf48487521e7]*/
 
-PyDoc_STRVAR(operator_doc,
+TyDoc_STRVAR(operator_doc,
 "Operator interface.\n\
 \n\
 This module exports a set of functions implemented in C corresponding\n\
@@ -915,7 +915,7 @@ _operator__compare_digest_impl(TyObject *module, TyObject *a, TyObject *b)
     return TyBool_FromLong(rc);
 }
 
-PyDoc_STRVAR(_operator_call__doc__,
+TyDoc_STRVAR(_operator_call__doc__,
 "call($module, obj, /, *args, **kwargs)\n"
 "--\n"
 "\n"
@@ -1197,7 +1197,7 @@ itemgetter_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
     return TyTuple_Pack(2, Ty_TYPE(ig), ig->item);
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling");
 
 static TyMethodDef itemgetter_methods[] = {
     {"__reduce__", itemgetter_reduce, METH_NOARGS,
@@ -1210,7 +1210,7 @@ static TyMemberDef itemgetter_members[] = {
     {NULL} /* Sentinel */
 };
 
-PyDoc_STRVAR(itemgetter_doc,
+TyDoc_STRVAR(itemgetter_doc,
 "itemgetter(item, /, *items)\n--\n\n\
 Return a callable object that fetches the given item(s) from its operand.\n\
 After f = itemgetter(2), the call f(r) returns r[2].\n\
@@ -1279,7 +1279,7 @@ attrgetter_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
         return NULL;
 
     /* prepare attr while checking args */
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     for (idx = 0; idx < nattrs; ++idx) {
         TyObject *item = TyTuple_GET_ITEM(args, idx);
         int dot_count;
@@ -1575,7 +1575,7 @@ static TyMemberDef attrgetter_members[] = {
     {NULL} /* Sentinel*/
 };
 
-PyDoc_STRVAR(attrgetter_doc,
+TyDoc_STRVAR(attrgetter_doc,
 "attrgetter(attr, /, *attrs)\n--\n\n\
 Return a callable object that fetches the given attribute(s) from its operand.\n\
 After f = attrgetter('name'), the call f(r) returns r.name.\n\
@@ -1717,7 +1717,7 @@ methodcaller_new(TyTypeObject *type, TyObject *args, TyObject *kwds)
     mc->kwds = Ty_XNewRef(kwds);
 
     Ty_INCREF(name);
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyUnicode_InternMortal(interp, &name);
     mc->name = name;
 
@@ -1917,7 +1917,7 @@ static TyMemberDef methodcaller_members[] = {
     {NULL}
 };
 
-PyDoc_STRVAR(methodcaller_doc,
+TyDoc_STRVAR(methodcaller_doc,
 "methodcaller(name, /, *args, **kwargs)\n--\n\n\
 Return a callable object that calls the given method on its operand.\n\
 After f = methodcaller('name'), the call f(r) returns r.name().\n\

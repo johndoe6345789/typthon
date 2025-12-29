@@ -131,7 +131,7 @@ static TyMethodDef statistics_methods[] = {
     {NULL, NULL, 0, NULL}
 };
 
-PyDoc_STRVAR(statistics_doc,
+TyDoc_STRVAR(statistics_doc,
 "Accelerators for the statistics module.\n");
 
 static struct PyModuleDef_Slot _statisticsmodule_slots[] = {

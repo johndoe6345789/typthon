@@ -2,7 +2,7 @@
 preserve
 [clinic start generated code]*/
 
-PyDoc_STRVAR(_testlimitedcapi_test_long_api__doc__,
+TyDoc_STRVAR(_testlimitedcapi_test_long_api__doc__,
 "test_long_api($module, /)\n"
 "--\n"
 "\n");
@@ -19,7 +19,7 @@ _testlimitedcapi_test_long_api(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _testlimitedcapi_test_long_api_impl(module);
 }
 
-PyDoc_STRVAR(_testlimitedcapi_test_longlong_api__doc__,
+TyDoc_STRVAR(_testlimitedcapi_test_longlong_api__doc__,
 "test_longlong_api($module, /)\n"
 "--\n"
 "\n");
@@ -36,7 +36,7 @@ _testlimitedcapi_test_longlong_api(TyObject *module, TyObject *Py_UNUSED(ignored
     return _testlimitedcapi_test_longlong_api_impl(module);
 }
 
-PyDoc_STRVAR(_testlimitedcapi_test_long_and_overflow__doc__,
+TyDoc_STRVAR(_testlimitedcapi_test_long_and_overflow__doc__,
 "test_long_and_overflow($module, /)\n"
 "--\n"
 "\n"
@@ -57,7 +57,7 @@ _testlimitedcapi_test_long_and_overflow(TyObject *module, TyObject *Py_UNUSED(ig
     return _testlimitedcapi_test_long_and_overflow_impl(module);
 }
 
-PyDoc_STRVAR(_testlimitedcapi_test_long_long_and_overflow__doc__,
+TyDoc_STRVAR(_testlimitedcapi_test_long_long_and_overflow__doc__,
 "test_long_long_and_overflow($module, /)\n"
 "--\n"
 "\n"
@@ -78,7 +78,7 @@ _testlimitedcapi_test_long_long_and_overflow(TyObject *module, TyObject *Py_UNUS
     return _testlimitedcapi_test_long_long_and_overflow_impl(module);
 }
 
-PyDoc_STRVAR(_testlimitedcapi_test_long_as_size_t__doc__,
+TyDoc_STRVAR(_testlimitedcapi_test_long_as_size_t__doc__,
 "test_long_as_size_t($module, /)\n"
 "--\n"
 "\n"
@@ -99,7 +99,7 @@ _testlimitedcapi_test_long_as_size_t(TyObject *module, TyObject *Py_UNUSED(ignor
     return _testlimitedcapi_test_long_as_size_t_impl(module);
 }
 
-PyDoc_STRVAR(_testlimitedcapi_test_long_as_unsigned_long_long_mask__doc__,
+TyDoc_STRVAR(_testlimitedcapi_test_long_as_unsigned_long_long_mask__doc__,
 "test_long_as_unsigned_long_long_mask($module, /)\n"
 "--\n"
 "\n");
@@ -116,7 +116,7 @@ _testlimitedcapi_test_long_as_unsigned_long_long_mask(TyObject *module, TyObject
     return _testlimitedcapi_test_long_as_unsigned_long_long_mask_impl(module);
 }
 
-PyDoc_STRVAR(_testlimitedcapi_test_long_as_double__doc__,
+TyDoc_STRVAR(_testlimitedcapi_test_long_as_double__doc__,
 "test_long_as_double($module, /)\n"
 "--\n"
 "\n");
@@ -133,7 +133,7 @@ _testlimitedcapi_test_long_as_double(TyObject *module, TyObject *Py_UNUSED(ignor
     return _testlimitedcapi_test_long_as_double_impl(module);
 }
 
-PyDoc_STRVAR(_testlimitedcapi_PyLong_AsInt__doc__,
+TyDoc_STRVAR(_testlimitedcapi_PyLong_AsInt__doc__,
 "TyLong_AsInt($module, arg, /)\n"
 "--\n"
 "\n");

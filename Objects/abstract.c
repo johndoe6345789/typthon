@@ -826,14 +826,14 @@ _buffer_release_call(void *arg)
 }
 
 int
-_PyBuffer_ReleaseInInterpreter(PyInterpreterState *interp,
+_PyBuffer_ReleaseInInterpreter(TyInterpreterState *interp,
                                Ty_buffer *view)
 {
     return _Ty_CallInInterpreter(interp, _buffer_release_call, view);
 }
 
 int
-_PyBuffer_ReleaseInInterpreterAndRawFree(PyInterpreterState *interp,
+_PyBuffer_ReleaseInInterpreterAndRawFree(TyInterpreterState *interp,
                                          Ty_buffer *view)
 {
     return _Ty_CallInInterpreterAndRawFree(interp, _buffer_release_call, view);

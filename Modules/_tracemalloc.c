@@ -200,7 +200,7 @@ static TyMethodDef module_methods[] = {
     {NULL, NULL}
 };
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "Debug module to trace memory blocks allocated by Python.");
 
 static struct TyModuleDef module_def = {

@@ -15,10 +15,10 @@ _ensure_current_cause(TyThreadState *tstate, TyObject *cause)
 
 /* InterpreterError extends Exception */
 
-static TyTypeObject _PyExc_InterpreterError = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+static TyTypeObject _TyExc_InterpreterError = {
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "concurrent.interpreters.InterpreterError",
-    .tp_doc = PyDoc_STR("A cross-interpreter operation failed"),
+    .tp_doc = TyDoc_STR("A cross-interpreter operation failed"),
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     //.tp_traverse = ((TyTypeObject *)TyExc_Exception)->tp_traverse,
     //.tp_clear = ((TyTypeObject *)TyExc_Exception)->tp_clear,
@@ -28,10 +28,10 @@ TyObject *TyExc_InterpreterError = (TyObject *)&_PyExc_InterpreterError;
 
 /* InterpreterNotFoundError extends InterpreterError */
 
-static TyTypeObject _PyExc_InterpreterNotFoundError = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+static TyTypeObject _TyExc_InterpreterNotFoundError = {
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "concurrent.interpreters.InterpreterNotFoundError",
-    .tp_doc = PyDoc_STR("An interpreter was not found"),
+    .tp_doc = TyDoc_STR("An interpreter was not found"),
     .tp_flags = Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE | Ty_TPFLAGS_HAVE_GC,
     //.tp_traverse = ((TyTypeObject *)TyExc_Exception)->tp_traverse,
     //.tp_clear = ((TyTypeObject *)TyExc_Exception)->tp_clear,
@@ -135,7 +135,7 @@ format_notshareableerror(TyThreadState *tstate, TyObject *cause, int force,
 /* lifecycle */
 
 static int
-init_static_exctypes(exceptions_t *state, PyInterpreterState *interp)
+init_static_exctypes(exceptions_t *state, TyInterpreterState *interp)
 {
     assert(state == &_PyXI_GET_STATE(interp)->exceptions);
     TyTypeObject *base = (TyTypeObject *)TyExc_Exception;
@@ -166,7 +166,7 @@ error:
 }
 
 static void
-fini_static_exctypes(exceptions_t *state, PyInterpreterState *interp)
+fini_static_exctypes(exceptions_t *state, TyInterpreterState *interp)
 {
     assert(state == &_PyXI_GET_STATE(interp)->exceptions);
     if (state->TyExc_InterpreterNotFoundError != NULL) {

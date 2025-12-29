@@ -268,7 +268,7 @@ struct _import_runtime_state {
     /* The most recent value assigned to a TyModuleDef.m_base.m_index.
        This is incremented each time PyModuleDef_Init() is called,
        which is just about every time an extension module is imported.
-       See PyInterpreterState.modules_by_index for more info. */
+       See TyInterpreterState.modules_by_index for more info. */
     Ty_ssize_t last_module_index;
     struct {
         /* A lock to guard the cache. */
@@ -323,7 +323,7 @@ struct _import_state {
     /* diagnostic info in TyImport_ImportModuleLevelObject() */
     struct {
         int import_level;
-        PyTime_t accumulated;
+        TyTime_t accumulated;
         int header;
     } find_and_load;
 };
@@ -361,7 +361,7 @@ struct codecs_state {
 };
 
 // Support for stop-the-world events. This exists in both the PyRuntime struct
-// for global pauses and in each PyInterpreterState for per-interpreter pauses.
+// for global pauses and in each TyInterpreterState for per-interpreter pauses.
 struct _stoptheworld_state {
     PyMutex mutex;       // Serializes stop-the-world attempts.
 
@@ -537,7 +537,7 @@ struct types_state {
        The first time a static builtin type is initialized, all the
        normal TyType_Ready() stuff happens.  The only difference from
        normal is that there are three TyTypeObject fields holding
-       objects which are stored here (on PyInterpreterState) rather
+       objects which are stored here (on TyInterpreterState) rather
        than in the corresponding TyTypeObject fields.  Those are:
        tp_dict (cls.__dict__), tp_subclasses (cls.__subclasses__),
        and tp_weaklist.
@@ -546,7 +546,7 @@ struct types_state {
        is still initialized, but only the interpreter-specific portion,
        namely those three objects.
 
-       Those objects are stored in the PyInterpreterState.types.builtins
+       Those objects are stored in the TyInterpreterState.types.builtins
        array, at the index corresponding to each specific static builtin
        type.  That index (a size_t value) is stored in the tp_subclasses
        field.  For static builtin types, we re-purposed the now-unused
@@ -696,7 +696,7 @@ struct _Ty_interp_static_objects {
         // hamt_empty is here instead of global because of its weakreflist.
         _TyGC_Head_UNUSED _hamt_empty_gc_not_used;
         PyHamtObject hamt_empty;
-        PyBaseExceptionObject last_resort_memory_error;
+        TyBaseExceptionObject last_resort_memory_error;
     } singletons;
 };
 
@@ -756,10 +756,10 @@ struct _Ty_unique_id_pool {
 #endif
 
 
-/* PyInterpreterState holds the global state for one of the runtime's
+/* TyInterpreterState holds the global state for one of the runtime's
    interpreters.  Typically the initial (main) interpreter is the only one.
 
-   The PyInterpreterState typedef is in Include/pytypedefs.h.
+   The TyInterpreterState typedef is in Include/pytypedefs.h.
    */
 struct _is {
 
@@ -774,7 +774,7 @@ struct _is {
      */
     void *_malloced;
 
-    PyInterpreterState *next;
+    TyInterpreterState *next;
 
     int64_t id;
     Ty_ssize_t id_refcount;
@@ -825,10 +825,10 @@ struct _is {
     struct _gc_runtime_state gc;
 
     /* The following fields are here to avoid allocation during init.
-       The data is exposed through PyInterpreterState pointer fields.
+       The data is exposed through TyInterpreterState pointer fields.
        These fields should not be accessed directly outside of init.
 
-       All other PyInterpreterState pointer fields are populated when
+       All other TyInterpreterState pointer fields are populated when
        needed and default to NULL.
 
        For now there are some exceptions to that rule, which require
@@ -967,9 +967,9 @@ struct _is {
 #  endif
 #endif
 
-    /* the initial PyInterpreterState.threads.head */
+    /* the initial TyInterpreterState.threads.head */
     _PyThreadStateImpl _initial_thread;
-    // _initial_thread should be the last field of PyInterpreterState.
+    // _initial_thread should be the last field of TyInterpreterState.
     // See https://github.com/python/cpython/issues/127117.
 };
 

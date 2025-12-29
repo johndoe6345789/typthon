@@ -61,13 +61,13 @@ static TyMethodDef ellipsis_methods[] = {
     {NULL, NULL}
 };
 
-PyDoc_STRVAR(ellipsis_doc,
+TyDoc_STRVAR(ellipsis_doc,
 "ellipsis()\n"
 "--\n\n"
 "The type of the Ellipsis singleton.");
 
 TyTypeObject PyEllipsis_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "ellipsis",                         /* tp_name */
     0,                                  /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -337,7 +337,7 @@ slice_new(TyTypeObject *type, TyObject *args, TyObject *kw)
     return TySlice_New(start, stop, step);
 }
 
-PyDoc_STRVAR(slice_doc,
+TyDoc_STRVAR(slice_doc,
 "slice(stop)\n\
 slice(start, stop[, step])\n\
 \n\
@@ -549,7 +549,7 @@ slice_indices(TyObject *op, TyObject* len)
         return Ty_BuildValue("(NNN)", start, stop, step);
 }
 
-PyDoc_STRVAR(slice_indices_doc,
+TyDoc_STRVAR(slice_indices_doc,
 "S.indices(len) -> (start, stop, stride)\n\
 \n\
 Assuming a sequence of length len, calculate the start and stop\n\
@@ -564,7 +564,7 @@ slice_reduce(TyObject *op, TyObject *Py_UNUSED(ignored))
     return Ty_BuildValue("O(OOO)", Ty_TYPE(self), self->start, self->stop, self->step);
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
 static TyMethodDef slice_methods[] = {
     {"indices", slice_indices, METH_O, slice_indices_doc},
@@ -667,7 +667,7 @@ slice_hash(TyObject *op)
 }
 
 TyTypeObject TySlice_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "slice",                    /* Name of this type */
     sizeof(PySliceObject),      /* Basic object size */
     0,                          /* Item size for varobject */

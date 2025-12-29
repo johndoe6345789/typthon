@@ -121,7 +121,7 @@ notify_context_watchers(TyThreadState *ts, PyContextEvent event, TyObject *ctx)
         ctx = Ty_None;
     }
     assert(Ty_REFCNT(ctx) > 0);
-    PyInterpreterState *interp = ts->interp;
+    TyInterpreterState *interp = ts->interp;
     assert(interp->_initialized);
     uint8_t bits = interp->active_context_watchers;
     int i = 0;
@@ -145,7 +145,7 @@ notify_context_watchers(TyThreadState *ts, PyContextEvent event, TyObject *ctx)
 int
 PyContext_AddWatcher(PyContext_WatchCallback callback)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->_initialized);
 
     for (int i = 0; i < CONTEXT_MAX_WATCHERS; i++) {
@@ -164,7 +164,7 @@ PyContext_AddWatcher(PyContext_WatchCallback callback)
 int
 PyContext_ClearWatcher(int watcher_id)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->_initialized);
     if (watcher_id < 0 || watcher_id >= CONTEXT_MAX_WATCHERS) {
         TyErr_Format(TyExc_ValueError, "Invalid context watcher ID %d", watcher_id);
@@ -757,7 +757,7 @@ static PyMappingMethods PyContext_as_mapping = {
 };
 
 TyTypeObject PyContext_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "_contextvars.Context",
     sizeof(PyContext),
     .tp_methods = PyContext_methods,
@@ -1102,12 +1102,12 @@ static TyMethodDef PyContextVar_methods[] = {
     _CONTEXTVARS_CONTEXTVAR_SET_METHODDEF
     _CONTEXTVARS_CONTEXTVAR_RESET_METHODDEF
     {"__class_getitem__", Ty_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     {NULL, NULL}
 };
 
 TyTypeObject PyContextVar_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "_contextvars.ContextVar",
     sizeof(PyContextVar),
     .tp_methods = PyContextVar_methods,
@@ -1268,14 +1268,14 @@ token_exit_impl(PyContextToken *self, TyObject *type, TyObject *val,
 
 static TyMethodDef PyContextTokenType_methods[] = {
     {"__class_getitem__",    Ty_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     TOKEN_ENTER_METHODDEF
     TOKEN_EXIT_METHODDEF
     {NULL}
 };
 
 TyTypeObject PyContextToken_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "_contextvars.Token",
     sizeof(PyContextToken),
     .tp_methods = PyContextTokenType_methods,
@@ -1334,7 +1334,7 @@ context_token_missing_tp_dealloc(TyObject *Py_UNUSED(self))
 
 
 TyTypeObject _PyContextTokenMissing_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "Token.MISSING",
     sizeof(_PyContextTokenMissing),
     .tp_dealloc = context_token_missing_tp_dealloc,
@@ -1355,7 +1355,7 @@ get_token_missing(void)
 
 
 TyStatus
-_TyContext_Init(PyInterpreterState *interp)
+_TyContext_Init(TyInterpreterState *interp)
 {
     if (!_Ty_IsMainInterpreter(interp)) {
         return _TyStatus_OK();

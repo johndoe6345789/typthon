@@ -273,11 +273,11 @@ PyAPI_FUNC(Ty_ssize_t) _TyUnicode_ScanIdentifier(TyObject *);
 
 /* --- Runtime lifecycle -------------------------------------------------- */
 
-extern void _TyUnicode_InitState(PyInterpreterState *);
-extern TyStatus _TyUnicode_InitGlobalObjects(PyInterpreterState *);
-extern TyStatus _TyUnicode_InitTypes(PyInterpreterState *);
-extern void _TyUnicode_Fini(PyInterpreterState *);
-extern void _TyUnicode_FiniTypes(PyInterpreterState *);
+extern void _TyUnicode_InitState(TyInterpreterState *);
+extern TyStatus _TyUnicode_InitGlobalObjects(TyInterpreterState *);
+extern TyStatus _TyUnicode_InitTypes(TyInterpreterState *);
+extern void _TyUnicode_Fini(TyInterpreterState *);
+extern void _TyUnicode_FiniTypes(TyInterpreterState *);
 
 extern TyTypeObject _PyUnicodeASCIIIter_Type;
 
@@ -286,16 +286,16 @@ extern TyTypeObject _PyUnicodeASCIIIter_Type;
 // All these are "ref-neutral", like the public TyUnicode_InternInPlace.
 
 // Explicit interning routines:
-PyAPI_FUNC(void) _TyUnicode_InternMortal(PyInterpreterState *interp, TyObject **);
-PyAPI_FUNC(void) _TyUnicode_InternImmortal(PyInterpreterState *interp, TyObject **);
+PyAPI_FUNC(void) _TyUnicode_InternMortal(TyInterpreterState *interp, TyObject **);
+PyAPI_FUNC(void) _TyUnicode_InternImmortal(TyInterpreterState *interp, TyObject **);
 // Left here to help backporting:
-PyAPI_FUNC(void) _TyUnicode_InternInPlace(PyInterpreterState *interp, TyObject **p);
+PyAPI_FUNC(void) _TyUnicode_InternInPlace(TyInterpreterState *interp, TyObject **p);
 // Only for singletons in the _PyRuntime struct:
-extern void _TyUnicode_InternStatic(PyInterpreterState *interp, TyObject **);
+extern void _TyUnicode_InternStatic(TyInterpreterState *interp, TyObject **);
 
 /* --- Other API ---------------------------------------------------------- */
 
-extern void _TyUnicode_ClearInterned(PyInterpreterState *interp);
+extern void _TyUnicode_ClearInterned(TyInterpreterState *interp);
 
 // Like TyUnicode_AsUTF8(), but check for embedded null characters.
 // Export for '_sqlite3' shared extension.

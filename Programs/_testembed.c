@@ -8,7 +8,7 @@
 #include <Python.h>
 #include "pycore_initconfig.h"    // _TyConfig_InitCompatConfig()
 #include "pycore_runtime.h"       // _PyRuntime
-#include "pycore_pythread.h"      // PyThread_start_joinable_thread()
+#include "pycore_pythread.h"      // TyThread_start_joinable_thread()
 #include "pycore_import.h"        // _TyImport_FrozenBootstrap
 #include <inttypes.h>
 #include <stdio.h>
@@ -112,7 +112,7 @@ static void print_subinterp(void)
     /* Output information about the interpreter in the format
        expected in Lib/test/test_capi.py (test_subinterps). */
     TyThreadState *ts = TyThreadState_Get();
-    PyInterpreterState *interp = ts->interp;
+    TyInterpreterState *interp = ts->interp;
     int64_t id = TyInterpreterState_GetID(interp);
     printf("interp %" PRId64 " <0x%" PRIXPTR ">, thread state <0x%" PRIXPTR ">: ",
             id, (uintptr_t)interp, (uintptr_t)ts);
@@ -405,7 +405,7 @@ static int test_pre_initialization_sys_options(void)
 /* bpo-20891: Avoid race condition when initialising the GIL */
 static void bpo20891_thread(void *lockp)
 {
-    PyThread_type_lock lock = *((PyThread_type_lock*)lockp);
+    TyThread_type_lock lock = *((TyThread_type_lock*)lockp);
 
     TyGILState_STATE state = TyGILState_Ensure();
     if (!TyGILState_Check()) {
@@ -415,7 +415,7 @@ static void bpo20891_thread(void *lockp)
 
     TyGILState_Release(state);
 
-    PyThread_release_lock(lock);
+    TyThread_release_lock(lock);
 }
 
 static int test_bpo20891(void)
@@ -425,27 +425,27 @@ static int test_bpo20891(void)
 
     /* bpo-20891: Calling TyGILState_Ensure in a non-Python thread must not
        crash. */
-    PyThread_type_lock lock = PyThread_allocate_lock();
+    TyThread_type_lock lock = TyThread_allocate_lock();
     if (!lock) {
-        error("PyThread_allocate_lock failed!");
+        error("TyThread_allocate_lock failed!");
         return 1;
     }
 
     _testembed_Py_InitializeFromConfig();
 
-    unsigned long thrd = PyThread_start_new_thread(bpo20891_thread, &lock);
+    unsigned long thrd = TyThread_start_new_thread(bpo20891_thread, &lock);
     if (thrd == PYTHREAD_INVALID_THREAD_ID) {
-        error("PyThread_start_new_thread failed!");
+        error("TyThread_start_new_thread failed!");
         return 1;
     }
-    PyThread_acquire_lock(lock, WAIT_LOCK);
+    TyThread_acquire_lock(lock, WAIT_LOCK);
 
     Ty_BEGIN_ALLOW_THREADS
     /* wait until the thread exit */
-    PyThread_acquire_lock(lock, WAIT_LOCK);
+    TyThread_acquire_lock(lock, WAIT_LOCK);
     Ty_END_ALLOW_THREADS
 
-    PyThread_free_lock(lock);
+    TyThread_free_lock(lock);
 
     Ty_Finalize();
 
@@ -2212,12 +2212,12 @@ static void do_init(void *unused)
 
 static int test_init_in_background_thread(void)
 {
-    PyThread_handle_t handle;
-    PyThread_ident_t ident;
-    if (PyThread_start_joinable_thread(&do_init, NULL, &ident, &handle) < 0) {
+    TyThread_handle_t handle;
+    TyThread_ident_t ident;
+    if (TyThread_start_joinable_thread(&do_init, NULL, &ident, &handle) < 0) {
         return -1;
     }
-    return PyThread_join_thread(handle);
+    return TyThread_join_thread(handle);
 }
 
 

@@ -4,7 +4,7 @@
 #include <time.h>                 // clock()
 
 
-PyDoc_STRVAR(xxsubtype__doc__,
+TyDoc_STRVAR(xxsubtype__doc__,
 "xxsubtype is an example module showing how to subtype builtin types from C.\n"
 "test_descr.py in the standard test suite requires it in order to complete.\n"
 "If you don't care about the examples, and don't intend to run the Python\n"
@@ -69,17 +69,17 @@ spamlist_specialmeth(TyObject *self, TyObject *args, TyObject *kw)
 
 static TyMethodDef spamlist_methods[] = {
     {"getstate", spamlist_getstate, METH_VARARGS,
-        PyDoc_STR("getstate() -> state")},
+        TyDoc_STR("getstate() -> state")},
     {"setstate", spamlist_setstate, METH_VARARGS,
-        PyDoc_STR("setstate(state)")},
+        TyDoc_STR("setstate(state)")},
     /* These entries differ only in the flags; they are used by the tests
        in test.test_descr. */
     {"classmeth", _PyCFunction_CAST(spamlist_specialmeth),
         METH_VARARGS | METH_KEYWORDS | METH_CLASS,
-        PyDoc_STR("classmeth(*args, **kw)")},
+        TyDoc_STR("classmeth(*args, **kw)")},
     {"staticmeth", _PyCFunction_CAST(spamlist_specialmeth),
         METH_VARARGS | METH_KEYWORDS | METH_STATIC,
-        PyDoc_STR("staticmeth(*args, **kw)")},
+        TyDoc_STR("staticmeth(*args, **kw)")},
     {NULL,      NULL},
 };
 
@@ -103,12 +103,12 @@ spamlist_state_get(TyObject *op, void *Py_UNUSED(closure))
 
 static TyGetSetDef spamlist_getsets[] = {
     {"state", spamlist_state_get, NULL,
-     PyDoc_STR("an int variable for demonstration purposes")},
+     TyDoc_STR("an int variable for demonstration purposes")},
     {0}
 };
 
 static TyTypeObject spamlist_type = {
-    PyVarObject_HEAD_INIT(DEFERRED_ADDRESS(&TyType_Type), 0)
+    TyVarObject_HEAD_INIT(DEFERRED_ADDRESS(&TyType_Type), 0)
     "xxsubtype.spamlist",
     sizeof(spamlistobject),
     0,
@@ -182,9 +182,9 @@ spamdict_setstate(TyObject *op, TyObject *args)
 
 static TyMethodDef spamdict_methods[] = {
     {"getstate", spamdict_getstate, METH_VARARGS,
-        PyDoc_STR("getstate() -> state")},
+        TyDoc_STR("getstate() -> state")},
     {"setstate", spamdict_setstate, METH_VARARGS,
-        PyDoc_STR("setstate(state)")},
+        TyDoc_STR("setstate(state)")},
     {NULL,      NULL},
 };
 
@@ -201,12 +201,12 @@ spamdict_init(TyObject *op, TyObject *args, TyObject *kwds)
 
 static TyMemberDef spamdict_members[] = {
     {"state", Ty_T_INT, offsetof(spamdictobject, state), Py_READONLY,
-     PyDoc_STR("an int variable for demonstration purposes")},
+     TyDoc_STR("an int variable for demonstration purposes")},
     {0}
 };
 
 static TyTypeObject spamdict_type = {
-    PyVarObject_HEAD_INIT(DEFERRED_ADDRESS(&TyType_Type), 0)
+    TyVarObject_HEAD_INIT(DEFERRED_ADDRESS(&TyType_Type), 0)
     "xxsubtype.spamdict",
     sizeof(spamdictobject),
     0,

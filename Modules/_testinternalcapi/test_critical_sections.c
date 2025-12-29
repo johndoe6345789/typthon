@@ -189,7 +189,7 @@ test_critical_sections_threads(TyObject *self, TyObject *Py_UNUSED(args))
     assert(test_data.obj3 != NULL);
 
     for (Ty_ssize_t i = 0; i < NUM_THREADS; i++) {
-        PyThread_start_new_thread(&thread_critical_sections, &test_data);
+        TyThread_start_new_thread(&thread_critical_sections, &test_data);
     }
     PyEvent_Wait(&test_data.done_event);
 
@@ -275,7 +275,7 @@ test_critical_sections_gc(TyObject *self, TyObject *Py_UNUSED(args))
     assert(test_data.obj != NULL);
 
     for (Ty_ssize_t i = 0; i < NUM_THREADS; i++) {
-        PyThread_start_new_thread(&thread_gc, &test_data);
+        TyThread_start_new_thread(&thread_gc, &test_data);
     }
     PyEvent_Wait(&test_data.done_event);
     Ty_DECREF(test_data.obj);

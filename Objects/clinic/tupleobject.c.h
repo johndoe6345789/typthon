@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(tuple_index__doc__,
+TyDoc_STRVAR(tuple_index__doc__,
 "index($self, value, start=0, stop=sys.maxsize, /)\n"
 "--\n"
 "\n"
@@ -50,7 +50,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(tuple_count__doc__,
+TyDoc_STRVAR(tuple_count__doc__,
 "count($self, value, /)\n"
 "--\n"
 "\n"
@@ -72,7 +72,7 @@ tuple_count(TyObject *self, TyObject *value)
     return return_value;
 }
 
-PyDoc_STRVAR(tuple_new__doc__,
+TyDoc_STRVAR(tuple_new__doc__,
 "tuple(iterable=(), /)\n"
 "--\n"
 "\n"
@@ -111,7 +111,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(tuple___getnewargs____doc__,
+TyDoc_STRVAR(tuple___getnewargs____doc__,
 "__getnewargs__($self, /)\n"
 "--\n"
 "\n");

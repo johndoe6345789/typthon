@@ -2,13 +2,13 @@
 #include "opcode.h"
 
 #include "pycore_code.h"          // _PyCodeConstructor
-#include "pycore_function.h"      // _PyFunction_ClearCodeByVersion()
+#include "pycore_function.h"      // _TyFunction_ClearCodeByVersion()
 #include "pycore_hashtable.h"     // _Ty_hashtable_t
 #include "pycore_index_pool.h"    // _PyIndexPool_Fini()
 #include "pycore_initconfig.h"    // _TyStatus_OK()
-#include "pycore_interp.h"        // PyInterpreterState.co_extra_freefuncs
+#include "pycore_interp.h"        // TyInterpreterState.co_extra_freefuncs
 #include "pycore_interpframe.h"   // FRAME_SPECIALS_SIZE
-#include "pycore_opcode_metadata.h" // _PyOpcode_Caches
+#include "pycore_opcode_metadata.h" // _TyOpcode_Caches
 #include "pycore_opcode_utils.h"  // RESUME_AT_FUNC_START
 #include "pycore_optimizer.h"     // _Ty_ExecutorDetach
 #include "pycore_pymem.h"         // _TyMem_FreeDelayed()
@@ -41,7 +41,7 @@ static void
 notify_code_watchers(PyCodeEvent event, PyCodeObject *co)
 {
     assert(Ty_REFCNT(co) > 0);
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->_initialized);
     uint8_t bits = interp->active_code_watchers;
     int i = 0;
@@ -65,7 +65,7 @@ notify_code_watchers(PyCodeEvent event, PyCodeObject *co)
 int
 TyCode_AddWatcher(TyCode_WatchCallback callback)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->_initialized);
 
     for (int i = 0; i < CODE_MAX_WATCHERS; i++) {
@@ -81,7 +81,7 @@ TyCode_AddWatcher(TyCode_WatchCallback callback)
 }
 
 static inline int
-validate_watcher_id(PyInterpreterState *interp, int watcher_id)
+validate_watcher_id(TyInterpreterState *interp, int watcher_id)
 {
     if (watcher_id < 0 || watcher_id >= CODE_MAX_WATCHERS) {
         TyErr_Format(TyExc_ValueError, "Invalid code watcher ID %d", watcher_id);
@@ -97,7 +97,7 @@ validate_watcher_id(PyInterpreterState *interp, int watcher_id)
 int
 TyCode_ClearWatcher(int watcher_id)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->_initialized);
     if (validate_watcher_id(interp, watcher_id) < 0) {
         return -1;
@@ -181,7 +181,7 @@ should_immortalize_constant(TyObject *v)
 static int
 intern_strings(TyObject *tuple)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     Ty_ssize_t i;
 
     for (i = TyTuple_GET_SIZE(tuple); --i >= 0; ) {
@@ -202,7 +202,7 @@ intern_strings(TyObject *tuple)
 static int
 intern_constants(TyObject *tuple, int *modified)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     for (Ty_ssize_t i = TyTuple_GET_SIZE(tuple); --i >= 0; ) {
         TyObject *v = TyTuple_GET_ITEM(tuple, i);
         if (TyUnicode_CheckExact(v)) {
@@ -518,7 +518,7 @@ init_code(PyCodeObject *co, struct _PyCodeConstructor *con)
         con->stacksize = 1;
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     co->co_filename = Ty_NewRef(con->filename);
     co->co_name = Ty_NewRef(con->name);
     co->co_qualname = Ty_NewRef(con->qualname);
@@ -687,7 +687,7 @@ static int
 intern_code_constants(struct _PyCodeConstructor *con)
 {
 #ifdef Ty_GIL_DISABLED
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct _py_code_state *state = &interp->code_state;
     PyMutex_Lock(&state->mutex);
 #endif
@@ -840,7 +840,7 @@ PyUnstable_Code_NewWithPosOnlyArgs(
         _Ty_CODEUNIT *code_data = (_Ty_CODEUNIT *)TyBytes_AS_STRING(code);
         Ty_ssize_t num_code_units = code_len / sizeof(_Ty_CODEUNIT);
         int extended_arg = 0;
-        for (int i = 0; i < num_code_units; i += 1 + _PyOpcode_Caches[code_data[i].op.code]) {
+        for (int i = 0; i < num_code_units; i += 1 + _TyOpcode_Caches[code_data[i].op.code]) {
             _Ty_CODEUNIT *instr = &code_data[i];
             uint8_t opcode = instr->op.code;
             if (opcode == EXTENDED_ARG) {
@@ -1394,7 +1394,7 @@ lineiter_next(TyObject *self)
 }
 
 TyTypeObject _PyLineIterator = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "line_iterator",                    /* tp_name */
     sizeof(lineiterator),               /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -1487,7 +1487,7 @@ positionsiter_next(TyObject *self)
 }
 
 TyTypeObject _PyPositionsIterator = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "positions_iterator",               /* tp_name */
     sizeof(positionsiterator),          /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -1579,7 +1579,7 @@ PyUnstable_Code_GetExtra(TyObject *code, Ty_ssize_t index, void **extra)
 int
 PyUnstable_Code_SetExtra(TyObject *code, Ty_ssize_t index, void *extra)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     if (!TyCode_Check(code) || index < 0 ||
             index >= interp->co_extra_user_count) {
@@ -2192,7 +2192,7 @@ deopt_code(PyCodeObject *code, _Ty_CODEUNIT *instructions)
     for (int i = 0; i < len; i++) {
         _Ty_CODEUNIT inst = _Ty_GetBaseCodeUnit(code, i);
         assert(inst.op.code < MIN_SPECIALIZED_OPCODE);
-        int caches = _PyOpcode_Caches[inst.op.code];
+        int caches = _TyOpcode_Caches[inst.op.code];
         instructions[i] = inst;
         for (int j = 1; j <= caches; j++) {
             instructions[i+j].cache = 0;
@@ -2397,9 +2397,9 @@ code_dealloc(TyObject *self)
     PyObject_GC_UnTrack(co);
 #endif
 
-    _PyFunction_ClearCodeByVersion(co->co_version);
+    _TyFunction_ClearCodeByVersion(co->co_version);
     if (co->co_extra != NULL) {
-        PyInterpreterState *interp = _TyInterpreterState_GET();
+        TyInterpreterState *interp = _TyInterpreterState_GET();
         _PyCodeObjectExtra *co_extra = co->co_extra;
 
         for (Ty_ssize_t i = 0; i < co_extra->ce_size; i++) {
@@ -2522,7 +2522,7 @@ code_richcompare(TyObject *self, TyObject *other, int op)
         if (co_instr.cache != cp_instr.cache) {
             goto unequal;
         }
-        i += _PyOpcode_Caches[co_instr.op.code];
+        i += _TyOpcode_Caches[co_instr.op.code];
     }
 
     /* compare constants */
@@ -2605,7 +2605,7 @@ code_hash(TyObject *self)
         _Ty_CODEUNIT co_instr = _Ty_GetBaseCodeUnit(co, i);
         SCRAMBLE_IN(co_instr.op.code);
         SCRAMBLE_IN(co_instr.op.arg);
-        i += _PyOpcode_Caches[co_instr.op.code];
+        i += _TyOpcode_Caches[co_instr.op.code];
     }
     if ((Ty_hash_t)uhash == -1) {
         return -2;
@@ -2867,13 +2867,13 @@ static struct TyMethodDef code_methods[] = {
     CODE_REPLACE_METHODDEF
     CODE__VARNAME_FROM_OPARG_METHODDEF
     {"__replace__", _PyCFunction_CAST(code_replace), METH_FASTCALL|METH_KEYWORDS,
-     PyDoc_STR("__replace__($self, /, **changes)\n--\n\nThe same as replace().")},
+     TyDoc_STR("__replace__($self, /, **changes)\n--\n\nThe same as replace().")},
     {NULL, NULL}                /* sentinel */
 };
 
 
 TyTypeObject TyCode_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "code",
     offsetof(PyCodeObject, co_code_adaptive),
     sizeof(_Ty_CODEUNIT),
@@ -3093,7 +3093,7 @@ _TyCode_ConstantKey(TyObject *op)
 static TyObject *
 intern_one_constant(TyObject *op)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _Ty_hashtable_t *consts = interp->code_state.constants;
 
     assert(!TyUnicode_CheckExact(op));  // strings are interned separately
@@ -3248,7 +3248,7 @@ destroy_key(void *key)
 #endif
 
 TyStatus
-_TyCode_Init(PyInterpreterState *interp)
+_TyCode_Init(TyInterpreterState *interp)
 {
 #ifdef Ty_GIL_DISABLED
     struct _py_code_state *state = &interp->code_state;
@@ -3262,7 +3262,7 @@ _TyCode_Init(PyInterpreterState *interp)
 }
 
 void
-_TyCode_Fini(PyInterpreterState *interp)
+_TyCode_Fini(TyInterpreterState *interp)
 {
 #ifdef Ty_GIL_DISABLED
     // Free interned constants
@@ -3299,7 +3299,7 @@ _TyCode_Fini(PyInterpreterState *interp)
 // not to overwrite an instruction that was instrumented concurrently.
 
 int32_t
-_Ty_ReserveTLBCIndex(PyInterpreterState *interp)
+_Ty_ReserveTLBCIndex(TyInterpreterState *interp)
 {
     if (interp->config.tlbc_enabled) {
         return _PyIndexPool_AllocIndex(&interp->tlbc_indices);
@@ -3311,7 +3311,7 @@ _Ty_ReserveTLBCIndex(PyInterpreterState *interp)
 void
 _Ty_ClearTLBCIndex(_PyThreadStateImpl *tstate)
 {
-    PyInterpreterState *interp = ((TyThreadState *)tstate)->interp;
+    TyInterpreterState *interp = ((TyThreadState *)tstate)->interp;
     if (interp->config.tlbc_enabled) {
         _PyIndexPool_FreeIndex(&interp->tlbc_indices, tstate->tlbc_index);
     }
@@ -3339,7 +3339,7 @@ deopt_code_unit(PyCodeObject *code, int i)
         .cache = FT_ATOMIC_LOAD_UINT16_RELAXED(*(uint16_t *)src_instr)};
     int opcode = inst.op.code;
     if (opcode < MIN_INSTRUMENTED_OPCODE) {
-        inst.op.code = _PyOpcode_Deopt[opcode];
+        inst.op.code = _TyOpcode_Deopt[opcode];
         assert(inst.op.code < MIN_SPECIALIZED_OPCODE);
     }
     // JIT should not be enabled with free-threading
@@ -3436,7 +3436,7 @@ flag_is_set(struct flag_set *flags, Ty_ssize_t idx)
 
 // Set the flag for each tlbc index in use
 static int
-get_indices_in_use(PyInterpreterState *interp, struct flag_set *in_use)
+get_indices_in_use(TyInterpreterState *interp, struct flag_set *in_use)
 {
     assert(interp->stoptheworld.world_stopped);
     assert(in_use->flags == NULL);
@@ -3522,7 +3522,7 @@ free_unused_bytecode(PyCodeObject *co, struct flag_set *indices_in_use)
 }
 
 int
-_Ty_ClearUnusedTLBC(PyInterpreterState *interp)
+_Ty_ClearUnusedTLBC(TyInterpreterState *interp)
 {
     struct get_code_args args = {
         .code_objs = {NULL},

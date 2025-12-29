@@ -174,7 +174,7 @@ timeval_from_double(TyObject *obj, struct timeval *tv)
         return 0;
     }
 
-    PyTime_t t;
+    TyTime_t t;
     if (_TyTime_FromSecondsObject(&t, obj, _TyTime_ROUND_CEILING) < 0) {
         return -1;
     }
@@ -302,7 +302,7 @@ trip_signal(int sig_num)
 
     int fd = wakeup.fd;
     if (fd != INVALID_FD) {
-        PyInterpreterState *interp = _TyInterpreterState_Main();
+        TyInterpreterState *interp = _TyInterpreterState_Main();
         unsigned char byte = (unsigned char)sig_num;
 #ifdef MS_WINDOWS
         if (wakeup.use_send) {
@@ -1093,7 +1093,7 @@ signal_valid_signals_impl(TyObject *module)
 
 
 #if defined(HAVE_SIGWAITINFO) || defined(HAVE_SIGTIMEDWAIT)
-static PyStructSequence_Field struct_siginfo_fields[] = {
+static TyStructSequence_Field struct_siginfo_fields[] = {
     {"si_signo",        "signal number"},
     {"si_code",         "signal code"},
     {"si_errno",        "errno associated with this signal"},
@@ -1104,13 +1104,13 @@ static PyStructSequence_Field struct_siginfo_fields[] = {
     {0}
 };
 
-PyDoc_STRVAR(struct_siginfo__doc__,
+TyDoc_STRVAR(struct_siginfo__doc__,
 "struct_siginfo: Result from sigwaitinfo or sigtimedwait.\n\n\
 This object may be accessed either as a tuple of\n\
 (si_signo, si_code, si_errno, si_pid, si_uid, si_status, si_band),\n\
 or via the attributes si_signo, si_code, and so on.");
 
-static PyStructSequence_Desc struct_siginfo_desc = {
+static TyStructSequence_Desc struct_siginfo_desc = {
     "signal.struct_siginfo",           /* name */
     struct_siginfo__doc__,       /* doc */
     struct_siginfo_fields,       /* fields */
@@ -1121,28 +1121,28 @@ static PyStructSequence_Desc struct_siginfo_desc = {
 static TyObject *
 fill_siginfo(_signal_module_state *state, siginfo_t *si)
 {
-    TyObject *result = PyStructSequence_New(state->siginfo_type);
+    TyObject *result = TyStructSequence_New(state->siginfo_type);
     if (!result)
         return NULL;
 
-    PyStructSequence_SET_ITEM(result, 0, TyLong_FromLong((long)(si->si_signo)));
-    PyStructSequence_SET_ITEM(result, 1, TyLong_FromLong((long)(si->si_code)));
+    TyStructSequence_SET_ITEM(result, 0, TyLong_FromLong((long)(si->si_signo)));
+    TyStructSequence_SET_ITEM(result, 1, TyLong_FromLong((long)(si->si_code)));
 #ifdef __VXWORKS__
-    PyStructSequence_SET_ITEM(result, 2, TyLong_FromLong(0L));
-    PyStructSequence_SET_ITEM(result, 3, TyLong_FromLong(0L));
-    PyStructSequence_SET_ITEM(result, 4, TyLong_FromLong(0L));
-    PyStructSequence_SET_ITEM(result, 5, TyLong_FromLong(0L));
+    TyStructSequence_SET_ITEM(result, 2, TyLong_FromLong(0L));
+    TyStructSequence_SET_ITEM(result, 3, TyLong_FromLong(0L));
+    TyStructSequence_SET_ITEM(result, 4, TyLong_FromLong(0L));
+    TyStructSequence_SET_ITEM(result, 5, TyLong_FromLong(0L));
 #else
-    PyStructSequence_SET_ITEM(result, 2, TyLong_FromLong((long)(si->si_errno)));
-    PyStructSequence_SET_ITEM(result, 3, TyLong_FromPid(si->si_pid));
-    PyStructSequence_SET_ITEM(result, 4, _TyLong_FromUid(si->si_uid));
-    PyStructSequence_SET_ITEM(result, 5,
+    TyStructSequence_SET_ITEM(result, 2, TyLong_FromLong((long)(si->si_errno)));
+    TyStructSequence_SET_ITEM(result, 3, TyLong_FromPid(si->si_pid));
+    TyStructSequence_SET_ITEM(result, 4, _TyLong_FromUid(si->si_uid));
+    TyStructSequence_SET_ITEM(result, 5,
                                 TyLong_FromLong((long)(si->si_status)));
 #endif
 #ifdef HAVE_SIGINFO_T_SI_BAND
-    PyStructSequence_SET_ITEM(result, 6, TyLong_FromLong(si->si_band));
+    TyStructSequence_SET_ITEM(result, 6, TyLong_FromLong(si->si_band));
 #else
-    PyStructSequence_SET_ITEM(result, 6, TyLong_FromLong(0L));
+    TyStructSequence_SET_ITEM(result, 6, TyLong_FromLong(0L));
 #endif
     if (TyErr_Occurred()) {
         Ty_DECREF(result);
@@ -1209,7 +1209,7 @@ signal_sigtimedwait_impl(TyObject *module, sigset_t sigset,
                          TyObject *timeout_obj)
 /*[clinic end generated code: output=59c8971e8ae18a64 input=955773219c1596cd]*/
 {
-    PyTime_t timeout;
+    TyTime_t timeout;
     if (_TyTime_FromSecondsObject(&timeout,
                                   timeout_obj, _TyTime_ROUND_CEILING) < 0)
         return NULL;
@@ -1219,7 +1219,7 @@ signal_sigtimedwait_impl(TyObject *module, sigset_t sigset,
         return NULL;
     }
 
-    PyTime_t deadline = _PyDeadline_Init(timeout);
+    TyTime_t deadline = _PyDeadline_Init(timeout);
     siginfo_t si;
 
     do {
@@ -1364,7 +1364,7 @@ static TyMethodDef signal_methods[] = {
 };
 
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module provides mechanisms to use signal handlers in Python.\n\
 \n\
 Functions:\n\
@@ -1649,7 +1649,7 @@ signal_module_exec(TyObject *m)
 #endif
 
 #if defined(HAVE_SIGWAITINFO) || defined(HAVE_SIGTIMEDWAIT)
-    modstate->siginfo_type = PyStructSequence_NewType(&struct_siginfo_desc);
+    modstate->siginfo_type = TyStructSequence_NewType(&struct_siginfo_desc);
     if (modstate->siginfo_type == NULL) {
         return -1;
     }
@@ -2053,7 +2053,7 @@ _PySignal_AfterFork(void)
 int
 _TyOS_IsMainThread(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return _Ty_ThreadCanHandleSignals(interp);
 }
 

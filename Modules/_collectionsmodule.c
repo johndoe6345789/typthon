@@ -1610,7 +1610,7 @@ deque___reduce___impl(dequeobject *deque)
     }
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
 static TyObject *
 deque_repr(TyObject *deque)
@@ -1838,7 +1838,7 @@ static TyMethodDef deque_methods[] = {
     DEQUE_ROTATE_METHODDEF
     DEQUE___SIZEOF___METHODDEF
     {"__class_getitem__",       Ty_GenericAlias,
-        METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+        METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     {NULL,              NULL}   /* sentinel */
 };
 
@@ -2033,7 +2033,7 @@ dequeiter_len(TyObject *op, TyObject *Py_UNUSED(dummy))
     return TyLong_FromSsize_t(len);
 }
 
-PyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
+TyDoc_STRVAR(length_hint_doc, "Private method returning an estimate of len(list(it)).");
 
 static TyObject *
 dequeiter_reduce(TyObject *op, TyObject *Py_UNUSED(dummy))
@@ -2206,7 +2206,7 @@ typedef struct {
 
 static TyType_Spec defdict_spec;
 
-PyDoc_STRVAR(defdict_missing_doc,
+TyDoc_STRVAR(defdict_missing_doc,
 "__missing__(key) # Called by __getitem__ for missing key; pseudo-code:\n\
   if self.default_factory is None: raise KeyError((key,))\n\
   self[key] = value = self.default_factory()\n\
@@ -2246,7 +2246,7 @@ new_defdict(TyObject *op, TyObject *arg)
         dd->default_factory ? dd->default_factory : Ty_None, arg, NULL);
 }
 
-PyDoc_STRVAR(defdict_copy_doc, "D.copy() -> a shallow copy of D.");
+TyDoc_STRVAR(defdict_copy_doc, "D.copy() -> a shallow copy of D.");
 
 static TyObject *
 defdict_copy(TyObject *op, TyObject *Py_UNUSED(dummy))
@@ -2324,14 +2324,14 @@ static TyMethodDef defdict_methods[] = {
     {"__reduce__", defdict_reduce, METH_NOARGS,
      reduce_doc},
     {"__class_getitem__", Ty_GenericAlias, METH_O|METH_CLASS,
-     PyDoc_STR("See PEP 585")},
+     TyDoc_STR("See PEP 585")},
     {NULL}
 };
 
 static TyMemberDef defdict_members[] = {
     {"default_factory", _Ty_T_OBJECT,
      offsetof(defdictobject, default_factory), 0,
-     PyDoc_STR("Factory for default value called by __missing__().")},
+     TyDoc_STR("Factory for default value called by __missing__().")},
     {NULL}
 };
 
@@ -2467,7 +2467,7 @@ defdict_init(TyObject *self, TyObject *args, TyObject *kwds)
     return result;
 }
 
-PyDoc_STRVAR(defdict_doc,
+TyDoc_STRVAR(defdict_doc,
 "defaultdict(default_factory=None, /, [...]) --> dict with default factory\n\
 \n\
 The default factory is called without arguments to produce\n\
@@ -2810,7 +2810,7 @@ collections_free(void *module)
     (void)collections_clear((TyObject *)module);
 }
 
-PyDoc_STRVAR(collections_doc,
+TyDoc_STRVAR(collections_doc,
 "High performance data structures.\n\
 - deque:        ordered collection accessible from endpoints only\n\
 - defaultdict:  dict subclass with a default value factory\n\

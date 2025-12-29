@@ -11,7 +11,7 @@ preserve
 
 #if defined(HAVE_MP_SEMAPHORE) && defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_multiprocessing_SemLock_acquire__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock_acquire__doc__,
 "acquire($self, /, block=True, timeout=None)\n"
 "--\n"
 "\n"
@@ -37,7 +37,7 @@ _multiprocessing_SemLock_acquire(TyObject *self, TyObject *const *args, Ty_ssize
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(block), &_Ty_ID(timeout), },
     };
@@ -91,7 +91,7 @@ exit:
 
 #if defined(HAVE_MP_SEMAPHORE) && defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_multiprocessing_SemLock_release__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock_release__doc__,
 "release($self, /)\n"
 "--\n"
 "\n"
@@ -119,7 +119,7 @@ _multiprocessing_SemLock_release(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_MP_SEMAPHORE) && !defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_multiprocessing_SemLock_acquire__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock_acquire__doc__,
 "acquire($self, /, block=True, timeout=None)\n"
 "--\n"
 "\n"
@@ -145,7 +145,7 @@ _multiprocessing_SemLock_acquire(TyObject *self, TyObject *const *args, Ty_ssize
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(block), &_Ty_ID(timeout), },
     };
@@ -199,7 +199,7 @@ exit:
 
 #if defined(HAVE_MP_SEMAPHORE) && !defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_multiprocessing_SemLock_release__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock_release__doc__,
 "release($self, /)\n"
 "--\n"
 "\n"
@@ -244,7 +244,7 @@ _multiprocessing_SemLock(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(kind), &_Ty_ID(value), &_Ty_ID(maxvalue), &_Ty_ID(name), &_Ty_ID(unlink), },
     };
@@ -315,7 +315,7 @@ exit:
 
 #if defined(HAVE_MP_SEMAPHORE)
 
-PyDoc_STRVAR(_multiprocessing_SemLock__rebuild__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock__rebuild__doc__,
 "_rebuild($type, handle, kind, maxvalue, name, /)\n"
 "--\n"
 "\n");
@@ -351,7 +351,7 @@ exit:
 
 #if defined(HAVE_MP_SEMAPHORE)
 
-PyDoc_STRVAR(_multiprocessing_SemLock__count__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock__count__doc__,
 "_count($self, /)\n"
 "--\n"
 "\n"
@@ -379,7 +379,7 @@ _multiprocessing_SemLock__count(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_MP_SEMAPHORE)
 
-PyDoc_STRVAR(_multiprocessing_SemLock__is_mine__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock__is_mine__doc__,
 "_is_mine($self, /)\n"
 "--\n"
 "\n"
@@ -401,7 +401,7 @@ _multiprocessing_SemLock__is_mine(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_MP_SEMAPHORE)
 
-PyDoc_STRVAR(_multiprocessing_SemLock__get_value__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock__get_value__doc__,
 "_get_value($self, /)\n"
 "--\n"
 "\n"
@@ -423,7 +423,7 @@ _multiprocessing_SemLock__get_value(TyObject *self, TyObject *Py_UNUSED(ignored)
 
 #if defined(HAVE_MP_SEMAPHORE)
 
-PyDoc_STRVAR(_multiprocessing_SemLock__is_zero__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock__is_zero__doc__,
 "_is_zero($self, /)\n"
 "--\n"
 "\n"
@@ -445,7 +445,7 @@ _multiprocessing_SemLock__is_zero(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_MP_SEMAPHORE)
 
-PyDoc_STRVAR(_multiprocessing_SemLock__after_fork__doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock__after_fork__doc__,
 "_after_fork($self, /)\n"
 "--\n"
 "\n"
@@ -467,7 +467,7 @@ _multiprocessing_SemLock__after_fork(TyObject *self, TyObject *Py_UNUSED(ignored
 
 #if defined(HAVE_MP_SEMAPHORE)
 
-PyDoc_STRVAR(_multiprocessing_SemLock___enter____doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock___enter____doc__,
 "__enter__($self, /)\n"
 "--\n"
 "\n"
@@ -495,7 +495,7 @@ _multiprocessing_SemLock___enter__(TyObject *self, TyObject *Py_UNUSED(ignored))
 
 #if defined(HAVE_MP_SEMAPHORE)
 
-PyDoc_STRVAR(_multiprocessing_SemLock___exit____doc__,
+TyDoc_STRVAR(_multiprocessing_SemLock___exit____doc__,
 "__exit__($self, exc_type=None, exc_value=None, exc_tb=None, /)\n"
 "--\n"
 "\n"

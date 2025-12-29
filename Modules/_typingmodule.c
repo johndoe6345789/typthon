@@ -40,13 +40,13 @@ static TyMethodDef typing_methods[] = {
     {NULL, NULL, 0, NULL}
 };
 
-PyDoc_STRVAR(typing_doc,
+TyDoc_STRVAR(typing_doc,
 "Primitives and accelerators for the typing module.\n");
 
 static int
 _typing_exec(TyObject *m)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
 #define EXPORT_TYPE(name, typename) \
     if (TyModule_AddObjectRef(m, name, \

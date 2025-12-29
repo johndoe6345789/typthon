@@ -4,7 +4,7 @@ preserve
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_testconsole_write_input__doc__,
+TyDoc_STRVAR(_testconsole_write_input__doc__,
 "write_input($module, /, file, s)\n"
 "--\n"
 "\n"
@@ -42,7 +42,7 @@ exit:
 
 #if defined(MS_WINDOWS)
 
-PyDoc_STRVAR(_testconsole_read_output__doc__,
+TyDoc_STRVAR(_testconsole_read_output__doc__,
 "read_output($module, /, file)\n"
 "--\n"
 "\n"

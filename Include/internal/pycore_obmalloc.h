@@ -684,10 +684,10 @@ void _TyObject_VirtualFree(void *, size_t size);
 extern Ty_ssize_t _Ty_GetGlobalAllocatedBlocks(void);
 #define _Ty_GetAllocatedBlocks() \
     _Ty_GetGlobalAllocatedBlocks()
-extern Ty_ssize_t _TyInterpreterState_GetAllocatedBlocks(PyInterpreterState *);
-extern void _TyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *);
-extern int _TyMem_init_obmalloc(PyInterpreterState *interp);
-extern bool _TyMem_obmalloc_state_on_heap(PyInterpreterState *interp);
+extern Ty_ssize_t _TyInterpreterState_GetAllocatedBlocks(TyInterpreterState *);
+extern void _TyInterpreterState_FinalizeAllocatedBlocks(TyInterpreterState *);
+extern int _TyMem_init_obmalloc(TyInterpreterState *interp);
+extern bool _TyMem_obmalloc_state_on_heap(TyInterpreterState *interp);
 
 
 #ifdef WITH_PYMALLOC

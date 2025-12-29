@@ -522,7 +522,7 @@ extern "C" {
 #    elif defined(__GNUC__)  /* includes clang */
 #      define _Ty_thread_local __thread
 #    else
-       // fall back to the PyThread_tss_*() API, or ignore.
+       // fall back to the TyThread_tss_*() API, or ignore.
 #      undef HAVE_THREAD_LOCAL
 #    endif
 #  endif
@@ -543,7 +543,7 @@ extern "C" {
 #endif
 
 /* Mark a function which cannot return. Example:
-   PyAPI_FUNC(void) _Ty_NO_RETURN PyThread_exit_thread(void);
+   PyAPI_FUNC(void) _Ty_NO_RETURN TyThread_exit_thread(void);
 
    XLC support is intentionally omitted due to bpo-40244 */
 #ifndef _Ty_NO_RETURN

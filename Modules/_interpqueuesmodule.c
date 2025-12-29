@@ -62,7 +62,7 @@ _release_xid_data(_PyXIData_t *data, int flags)
     return res;
 }
 
-static PyInterpreterState *
+static TyInterpreterState *
 _get_current_interp(void)
 {
     // TyInterpreterState_Get() aborts if lookup fails, so don't need
@@ -515,7 +515,7 @@ _queueitem_clear_interpreter(_queueitem *item)
 
 typedef struct _queue {
     Ty_ssize_t num_waiters;  // protected by global lock
-    PyThread_type_lock mutex;
+    TyThread_type_lock mutex;
     int alive;
     struct _queueitems {
         Ty_ssize_t maxsize;
@@ -533,7 +533,7 @@ static int
 _queue_init(_queue *queue, Ty_ssize_t maxsize, struct _queuedefaults defaults)
 {
     assert(check_unbound(defaults.unboundop));
-    PyThread_type_lock mutex = PyThread_allocate_lock();
+    TyThread_type_lock mutex = TyThread_allocate_lock();
     if (mutex == NULL) {
         return ERR_QUEUE_ALLOC;
     }
@@ -555,7 +555,7 @@ _queue_clear(_queue *queue)
     assert(queue->num_waiters == 0);
     _queueitem_free_all(queue->items.first);
     assert(queue->mutex != NULL);
-    PyThread_free_lock(queue->mutex);
+    TyThread_free_lock(queue->mutex);
     *queue = (_queue){0};
 }
 
@@ -565,25 +565,25 @@ static void
 _queue_kill_and_wait(_queue *queue)
 {
     // Mark it as dead.
-    PyThread_acquire_lock(queue->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(queue->mutex, WAIT_LOCK);
     assert(queue->alive);
     queue->alive = 0;
-    PyThread_release_lock(queue->mutex);
+    TyThread_release_lock(queue->mutex);
 
     // Wait for all waiters to fail.
     while (queue->num_waiters > 0) {
-        PyThread_acquire_lock(queue->mutex, WAIT_LOCK);
-        PyThread_release_lock(queue->mutex);
+        TyThread_acquire_lock(queue->mutex, WAIT_LOCK);
+        TyThread_release_lock(queue->mutex);
     };
 }
 
 static void
-_queue_mark_waiter(_queue *queue, PyThread_type_lock parent_mutex)
+_queue_mark_waiter(_queue *queue, TyThread_type_lock parent_mutex)
 {
     if (parent_mutex != NULL) {
-        PyThread_acquire_lock(parent_mutex, WAIT_LOCK);
+        TyThread_acquire_lock(parent_mutex, WAIT_LOCK);
         queue->num_waiters += 1;
-        PyThread_release_lock(parent_mutex);
+        TyThread_release_lock(parent_mutex);
     }
     else {
         // The caller must be holding the parent lock already.
@@ -592,12 +592,12 @@ _queue_mark_waiter(_queue *queue, PyThread_type_lock parent_mutex)
 }
 
 static void
-_queue_unmark_waiter(_queue *queue, PyThread_type_lock parent_mutex)
+_queue_unmark_waiter(_queue *queue, TyThread_type_lock parent_mutex)
 {
     if (parent_mutex != NULL) {
-        PyThread_acquire_lock(parent_mutex, WAIT_LOCK);
+        TyThread_acquire_lock(parent_mutex, WAIT_LOCK);
         queue->num_waiters -= 1;
-        PyThread_release_lock(parent_mutex);
+        TyThread_release_lock(parent_mutex);
     }
     else {
         // The caller must be holding the parent lock already.
@@ -609,9 +609,9 @@ static int
 _queue_lock(_queue *queue)
 {
     // The queue must be marked as a waiter already.
-    PyThread_acquire_lock(queue->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(queue->mutex, WAIT_LOCK);
     if (!queue->alive) {
-        PyThread_release_lock(queue->mutex);
+        TyThread_release_lock(queue->mutex);
         return ERR_QUEUE_NOT_FOUND;
     }
     return 0;
@@ -620,7 +620,7 @@ _queue_lock(_queue *queue)
 static void
 _queue_unlock(_queue *queue)
 {
-    PyThread_release_lock(queue->mutex);
+    TyThread_release_lock(queue->mutex);
 }
 
 static int
@@ -828,14 +828,14 @@ _queuerefs_clear(_queueref *head)
 /* a collection of queues ***************************************************/
 
 typedef struct _queues {
-    PyThread_type_lock mutex;
+    TyThread_type_lock mutex;
     _queueref *head;
     int64_t count;
     int64_t next_id;
 } _queues;
 
 static void
-_queues_init(_queues *queues, PyThread_type_lock mutex)
+_queues_init(_queues *queues, TyThread_type_lock mutex)
 {
     assert(mutex != NULL);
     assert(queues->mutex == NULL);
@@ -848,18 +848,18 @@ _queues_init(_queues *queues, PyThread_type_lock mutex)
 }
 
 static void
-_queues_fini(_queues *queues, PyThread_type_lock *p_mutex)
+_queues_fini(_queues *queues, TyThread_type_lock *p_mutex)
 {
-    PyThread_type_lock mutex = queues->mutex;
+    TyThread_type_lock mutex = queues->mutex;
     assert(mutex != NULL);
 
-    PyThread_acquire_lock(mutex, WAIT_LOCK);
+    TyThread_acquire_lock(mutex, WAIT_LOCK);
     if (queues->count > 0) {
         assert(queues->head != NULL);
         _queuerefs_clear(queues->head);
     }
     *queues = (_queues){0};
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
 
     *p_mutex = mutex;
 }
@@ -879,11 +879,11 @@ _queues_next_id(_queues *queues)  // needs lock
 static int
 _queues_lookup(_queues *queues, int64_t qid, _queue **res)
 {
-    PyThread_acquire_lock(queues->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(queues->mutex, WAIT_LOCK);
 
     _queueref *ref = _queuerefs_find(queues->head, qid, NULL);
     if (ref == NULL) {
-        PyThread_release_lock(queues->mutex);
+        TyThread_release_lock(queues->mutex);
         return ERR_QUEUE_NOT_FOUND;
     }
     assert(ref->queue != NULL);
@@ -891,7 +891,7 @@ _queues_lookup(_queues *queues, int64_t qid, _queue **res)
     _queue_mark_waiter(queue, NULL);
     // The caller must unmark it.
 
-    PyThread_release_lock(queues->mutex);
+    TyThread_release_lock(queues->mutex);
 
     *res = queue;
     return 0;
@@ -901,7 +901,7 @@ static int64_t
 _queues_add(_queues *queues, _queue *queue)
 {
     int64_t qid = -1;
-    PyThread_acquire_lock(queues->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(queues->mutex, WAIT_LOCK);
 
     // Create a new ref.
     int64_t _qid = _queues_next_id(queues);
@@ -926,7 +926,7 @@ _queues_add(_queues *queues, _queue *queue)
 
     qid = _qid;
 done:
-    PyThread_release_lock(queues->mutex);
+    TyThread_release_lock(queues->mutex);
     return qid;
 }
 
@@ -953,17 +953,17 @@ _queues_remove_ref(_queues *queues, _queueref *ref, _queueref *prev,
 static int
 _queues_remove(_queues *queues, int64_t qid, _queue **p_queue)
 {
-    PyThread_acquire_lock(queues->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(queues->mutex, WAIT_LOCK);
 
     _queueref *prev = NULL;
     _queueref *ref = _queuerefs_find(queues->head, qid, &prev);
     if (ref == NULL) {
-        PyThread_release_lock(queues->mutex);
+        TyThread_release_lock(queues->mutex);
         return ERR_QUEUE_NOT_FOUND;
     }
 
     _queues_remove_ref(queues, ref, prev, p_queue);
-    PyThread_release_lock(queues->mutex);
+    TyThread_release_lock(queues->mutex);
 
     return 0;
 }
@@ -973,7 +973,7 @@ _queues_incref(_queues *queues, int64_t qid)
 {
     // XXX Track interpreter IDs?
     int res = -1;
-    PyThread_acquire_lock(queues->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(queues->mutex, WAIT_LOCK);
 
     _queueref *ref = _queuerefs_find(queues->head, qid, NULL);
     if (ref == NULL) {
@@ -985,7 +985,7 @@ _queues_incref(_queues *queues, int64_t qid)
 
     res = 0;
 done:
-    PyThread_release_lock(queues->mutex);
+    TyThread_release_lock(queues->mutex);
     return res;
 }
 
@@ -993,7 +993,7 @@ static int
 _queues_decref(_queues *queues, int64_t qid)
 {
     int res = -1;
-    PyThread_acquire_lock(queues->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(queues->mutex, WAIT_LOCK);
 
     _queueref *prev = NULL;
     _queueref *ref = _queuerefs_find(queues->head, qid, &prev);
@@ -1014,7 +1014,7 @@ _queues_decref(_queues *queues, int64_t qid)
     if (ref->refcount == 0) {
         _queue *queue = NULL;
         _queues_remove_ref(queues, ref, prev, &queue);
-        PyThread_release_lock(queues->mutex);
+        TyThread_release_lock(queues->mutex);
 
         _queue_kill_and_wait(queue);
         _queue_free(queue);
@@ -1023,7 +1023,7 @@ _queues_decref(_queues *queues, int64_t qid)
 
     res = 0;
 finally:
-    PyThread_release_lock(queues->mutex);
+    TyThread_release_lock(queues->mutex);
     return res;
 }
 
@@ -1036,7 +1036,7 @@ static struct queue_id_and_info *
 _queues_list_all(_queues *queues, int64_t *p_count)
 {
     struct queue_id_and_info *qids = NULL;
-    PyThread_acquire_lock(queues->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(queues->mutex, WAIT_LOCK);
     struct queue_id_and_info *ids = TyMem_NEW(struct queue_id_and_info,
                                               (Ty_ssize_t)(queues->count));
     if (ids == NULL) {
@@ -1052,14 +1052,14 @@ _queues_list_all(_queues *queues, int64_t *p_count)
 
     qids = ids;
 done:
-    PyThread_release_lock(queues->mutex);
+    TyThread_release_lock(queues->mutex);
     return qids;
 }
 
 static void
 _queues_clear_interpreter(_queues *queues, int64_t interpid)
 {
-    PyThread_acquire_lock(queues->mutex, WAIT_LOCK);
+    TyThread_acquire_lock(queues->mutex, WAIT_LOCK);
 
     _queueref *ref = queues->head;
     for (; ref != NULL; ref = ref->next) {
@@ -1067,7 +1067,7 @@ _queues_clear_interpreter(_queues *queues, int64_t interpid)
         _queue_clear_interpreter(ref->queue, interpid);
     }
 
-    PyThread_release_lock(queues->mutex);
+    TyThread_release_lock(queues->mutex);
 }
 
 
@@ -1419,7 +1419,7 @@ _globals_init(void)
     _globals.module_count++;
     if (_globals.module_count == 1) {
         // Called for the first time.
-        PyThread_type_lock mutex = PyThread_allocate_lock();
+        TyThread_type_lock mutex = TyThread_allocate_lock();
         if (mutex == NULL) {
             _globals.module_count--;
             PyMutex_Unlock(&_globals.mutex);
@@ -1438,10 +1438,10 @@ _globals_fini(void)
     assert(_globals.module_count > 0);
     _globals.module_count--;
     if (_globals.module_count == 0) {
-        PyThread_type_lock mutex;
+        TyThread_type_lock mutex;
         _queues_fini(&_globals.queues, &mutex);
         assert(mutex != NULL);
-        PyThread_free_lock(mutex);
+        TyThread_free_lock(mutex);
     }
     PyMutex_Unlock(&_globals.mutex);
 }
@@ -1459,7 +1459,7 @@ clear_interpreter(void *data)
     if (_globals.module_count == 0) {
         return;
     }
-    PyInterpreterState *interp = (PyInterpreterState *)data;
+    TyInterpreterState *interp = (TyInterpreterState *)data;
     assert(interp == _get_current_interp());
     int64_t interpid = TyInterpreterState_GetID(interp);
     _queues_clear_interpreter(&_globals.queues, interpid);
@@ -1524,7 +1524,7 @@ queuesmod_create(TyObject *self, TyObject *args, TyObject *kwds)
     return qidobj;
 }
 
-PyDoc_STRVAR(queuesmod_create_doc,
+TyDoc_STRVAR(queuesmod_create_doc,
 "create(maxsize, unboundop, fallback) -> qid\n\
 \n\
 Create a new cross-interpreter queue and return its unique generated ID.\n\
@@ -1551,7 +1551,7 @@ queuesmod_destroy(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(queuesmod_destroy_doc,
+TyDoc_STRVAR(queuesmod_destroy_doc,
 "destroy(qid)\n\
 \n\
 Clear and destroy the queue.  Afterward attempts to use the queue\n\
@@ -1589,7 +1589,7 @@ finally:
     return ids;
 }
 
-PyDoc_STRVAR(queuesmod_list_all_doc,
+TyDoc_STRVAR(queuesmod_list_all_doc,
 "list_all() -> [(qid, unboundop, fallback)]\n\
 \n\
 Return the list of IDs for all queues.\n\
@@ -1636,7 +1636,7 @@ queuesmod_put(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(queuesmod_put_doc,
+TyDoc_STRVAR(queuesmod_put_doc,
 "put(qid, obj)\n\
 \n\
 Add the object's data to the queue.");
@@ -1668,7 +1668,7 @@ queuesmod_get(TyObject *self, TyObject *args, TyObject *kwds)
     return res;
 }
 
-PyDoc_STRVAR(queuesmod_get_doc,
+TyDoc_STRVAR(queuesmod_get_doc,
 "get(qid) -> (obj, unboundop)\n\
 \n\
 Return a new object from the data at the front of the queue.\n\
@@ -1699,7 +1699,7 @@ queuesmod_bind(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(queuesmod_bind_doc,
+TyDoc_STRVAR(queuesmod_bind_doc,
 "bind(qid)\n\
 \n\
 Take a reference to the identified queue.\n\
@@ -1729,7 +1729,7 @@ queuesmod_release(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(queuesmod_release_doc,
+TyDoc_STRVAR(queuesmod_release_doc,
 "release(qid)\n\
 \n\
 Release a reference to the queue.\n\
@@ -1755,7 +1755,7 @@ queuesmod_get_maxsize(TyObject *self, TyObject *args, TyObject *kwds)
     return TyLong_FromLongLong(maxsize);
 }
 
-PyDoc_STRVAR(queuesmod_get_maxsize_doc,
+TyDoc_STRVAR(queuesmod_get_maxsize_doc,
 "get_maxsize(qid)\n\
 \n\
 Return the maximum number of items in the queue.");
@@ -1782,7 +1782,7 @@ queuesmod_get_queue_defaults(TyObject *self, TyObject *args, TyObject *kwds)
     return res;
 }
 
-PyDoc_STRVAR(queuesmod_get_queue_defaults_doc,
+TyDoc_STRVAR(queuesmod_get_queue_defaults_doc,
 "get_queue_defaults(qid)\n\
 \n\
 Return the queue's default values, set when it was created.");
@@ -1810,7 +1810,7 @@ queuesmod_is_full(TyObject *self, TyObject *args, TyObject *kwds)
     Py_RETURN_FALSE;
 }
 
-PyDoc_STRVAR(queuesmod_is_full_doc,
+TyDoc_STRVAR(queuesmod_is_full_doc,
 "is_full(qid)\n\
 \n\
 Return true if the queue has a maxsize and has reached it.");
@@ -1836,7 +1836,7 @@ queuesmod_get_count(TyObject *self, TyObject *args, TyObject *kwds)
     return TyLong_FromSsize_t(count);
 }
 
-PyDoc_STRVAR(queuesmod_get_count_doc,
+TyDoc_STRVAR(queuesmod_get_count_doc,
 "get_count(qid)\n\
 \n\
 Return the number of items in the queue.");
@@ -1913,7 +1913,7 @@ static TyMethodDef module_functions[] = {
 
 /* initialization function */
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module provides primitive operations to manage Python interpreters.\n\
 The 'interpreters' module provides a more convenient interface.");
 
@@ -1931,7 +1931,7 @@ module_exec(TyObject *mod)
     }
 
     /* Make sure queues drop objects owned by this interpreter. */
-    PyInterpreterState *interp = _get_current_interp();
+    TyInterpreterState *interp = _get_current_interp();
     PyUnstable_AtExit(interp, clear_interpreter, (void *)interp);
 
     return 0;

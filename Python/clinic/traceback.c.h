@@ -9,7 +9,7 @@ preserve
 #include "pycore_critical_section.h"// Ty_BEGIN_CRITICAL_SECTION()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(tb_new__doc__,
+TyDoc_STRVAR(tb_new__doc__,
 "traceback(tb_next, tb_frame, tb_lasti, tb_lineno)\n"
 "--\n"
 "\n"
@@ -32,7 +32,7 @@ tb_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(tb_next), &_Ty_ID(tb_frame), &_Ty_ID(tb_lasti), &_Ty_ID(tb_lineno), },
     };

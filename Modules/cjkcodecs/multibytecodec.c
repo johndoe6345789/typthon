@@ -207,7 +207,7 @@ codecctx_errors_set(TyObject *op, TyObject *value, void *Py_UNUSED(closure))
 /* This getset handlers list is used by all the stateful codec objects */
 static TyGetSetDef codecctx_getsets[] = {
     {"errors", codecctx_errors_get, codecctx_errors_set,
-     PyDoc_STR("how to treat errors")},
+     TyDoc_STR("how to treat errors")},
     {NULL,}
 };
 

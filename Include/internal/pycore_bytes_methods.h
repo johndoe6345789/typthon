@@ -76,7 +76,7 @@ extern const char _Ty_center__doc__[];
 extern const char _Ty_zfill__doc__[];
 
 /* this is needed because some docs are shared from the .o, not static */
-#define PyDoc_STRVAR_shared(name,str) const char name[] = PyDoc_STR(str)
+#define PyDoc_STRVAR_shared(name,str) const char name[] = TyDoc_STR(str)
 
 #endif /* !Ty_BYTES_CTYPE_H */
 #endif /* !Ty_LIMITED_API */

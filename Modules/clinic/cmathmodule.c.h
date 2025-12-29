@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(cmath_acos__doc__,
+TyDoc_STRVAR(cmath_acos__doc__,
 "acos($module, z, /)\n"
 "--\n"
 "\n"
@@ -50,7 +50,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_acosh__doc__,
+TyDoc_STRVAR(cmath_acosh__doc__,
 "acosh($module, z, /)\n"
 "--\n"
 "\n"
@@ -92,7 +92,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_asin__doc__,
+TyDoc_STRVAR(cmath_asin__doc__,
 "asin($module, z, /)\n"
 "--\n"
 "\n"
@@ -134,7 +134,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_asinh__doc__,
+TyDoc_STRVAR(cmath_asinh__doc__,
 "asinh($module, z, /)\n"
 "--\n"
 "\n"
@@ -176,7 +176,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_atan__doc__,
+TyDoc_STRVAR(cmath_atan__doc__,
 "atan($module, z, /)\n"
 "--\n"
 "\n"
@@ -218,7 +218,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_atanh__doc__,
+TyDoc_STRVAR(cmath_atanh__doc__,
 "atanh($module, z, /)\n"
 "--\n"
 "\n"
@@ -260,7 +260,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_cos__doc__,
+TyDoc_STRVAR(cmath_cos__doc__,
 "cos($module, z, /)\n"
 "--\n"
 "\n"
@@ -302,7 +302,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_cosh__doc__,
+TyDoc_STRVAR(cmath_cosh__doc__,
 "cosh($module, z, /)\n"
 "--\n"
 "\n"
@@ -344,7 +344,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_exp__doc__,
+TyDoc_STRVAR(cmath_exp__doc__,
 "exp($module, z, /)\n"
 "--\n"
 "\n"
@@ -386,7 +386,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_log10__doc__,
+TyDoc_STRVAR(cmath_log10__doc__,
 "log10($module, z, /)\n"
 "--\n"
 "\n"
@@ -428,7 +428,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_sin__doc__,
+TyDoc_STRVAR(cmath_sin__doc__,
 "sin($module, z, /)\n"
 "--\n"
 "\n"
@@ -470,7 +470,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_sinh__doc__,
+TyDoc_STRVAR(cmath_sinh__doc__,
 "sinh($module, z, /)\n"
 "--\n"
 "\n"
@@ -512,7 +512,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_sqrt__doc__,
+TyDoc_STRVAR(cmath_sqrt__doc__,
 "sqrt($module, z, /)\n"
 "--\n"
 "\n"
@@ -554,7 +554,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_tan__doc__,
+TyDoc_STRVAR(cmath_tan__doc__,
 "tan($module, z, /)\n"
 "--\n"
 "\n"
@@ -596,7 +596,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_tanh__doc__,
+TyDoc_STRVAR(cmath_tanh__doc__,
 "tanh($module, z, /)\n"
 "--\n"
 "\n"
@@ -638,7 +638,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_log__doc__,
+TyDoc_STRVAR(cmath_log__doc__,
 "log($module, z, base=<unrepresentable>, /)\n"
 "--\n"
 "\n"
@@ -677,7 +677,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_phase__doc__,
+TyDoc_STRVAR(cmath_phase__doc__,
 "phase($module, z, /)\n"
 "--\n"
 "\n"
@@ -705,7 +705,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_polar__doc__,
+TyDoc_STRVAR(cmath_polar__doc__,
 "polar($module, z, /)\n"
 "--\n"
 "\n"
@@ -735,7 +735,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_rect__doc__,
+TyDoc_STRVAR(cmath_rect__doc__,
 "rect($module, r, phi, /)\n"
 "--\n"
 "\n"
@@ -783,7 +783,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_isfinite__doc__,
+TyDoc_STRVAR(cmath_isfinite__doc__,
 "isfinite($module, z, /)\n"
 "--\n"
 "\n"
@@ -811,7 +811,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_isnan__doc__,
+TyDoc_STRVAR(cmath_isnan__doc__,
 "isnan($module, z, /)\n"
 "--\n"
 "\n"
@@ -839,7 +839,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_isinf__doc__,
+TyDoc_STRVAR(cmath_isinf__doc__,
 "isinf($module, z, /)\n"
 "--\n"
 "\n"
@@ -867,7 +867,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(cmath_isclose__doc__,
+TyDoc_STRVAR(cmath_isclose__doc__,
 "isclose($module, /, a, b, *, rel_tol=1e-09, abs_tol=0.0)\n"
 "--\n"
 "\n"
@@ -908,7 +908,7 @@ cmath_isclose(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyObjec
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('b'), &_Ty_ID(rel_tol), &_Ty_ID(abs_tol), },
     };

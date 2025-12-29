@@ -19,7 +19,7 @@ module grp
 [clinic start generated code]*/
 /*[clinic end generated code: output=da39a3ee5e6b4b0d input=cade63f2ed1bd9f8]*/
 
-static PyStructSequence_Field struct_group_type_fields[] = {
+static TyStructSequence_Field struct_group_type_fields[] = {
    {"gr_name", "group name"},
    {"gr_passwd", "password"},
    {"gr_gid", "group id"},
@@ -27,13 +27,13 @@ static PyStructSequence_Field struct_group_type_fields[] = {
    {0}
 };
 
-PyDoc_STRVAR(struct_group__doc__,
+TyDoc_STRVAR(struct_group__doc__,
 "grp.struct_group: Results from getgr*() routines.\n\n\
 This object may be accessed either as a tuple of\n\
   (gr_name,gr_passwd,gr_gid,gr_mem)\n\
 or via the object attributes as named in the above tuple.\n");
 
-static PyStructSequence_Desc struct_group_type_desc = {
+static TyStructSequence_Desc struct_group_type_desc = {
    "grp.struct_group",
    struct_group__doc__,
    struct_group_type_fields,
@@ -69,7 +69,7 @@ mkgrent(TyObject *module, struct group *p)
     TyObject *v, *w;
     char **member;
 
-    v = PyStructSequence_New(get_grp_state(module)->StructGrpType);
+    v = TyStructSequence_New(get_grp_state(module)->StructGrpType);
     if (v == NULL)
         return NULL;
 
@@ -94,7 +94,7 @@ mkgrent(TyObject *module, struct group *p)
         Ty_DECREF(x);
     }
 
-#define SET(i,val) PyStructSequence_SetItem(v, i, val)
+#define SET(i,val) TyStructSequence_SetItem(v, i, val)
     SET(setIndex++, TyUnicode_DecodeFSDefault(p->gr_name));
     if (p->gr_passwd)
             SET(setIndex++, TyUnicode_DecodeFSDefault(p->gr_passwd));
@@ -338,7 +338,7 @@ static TyMethodDef grp_methods[] = {
     {NULL, NULL}
 };
 
-PyDoc_STRVAR(grp__doc__,
+TyDoc_STRVAR(grp__doc__,
 "Access to the Unix group database.\n\
 \n\
 Group entries are reported as 4-tuples containing the following fields\n\
@@ -359,7 +359,7 @@ grpmodule_exec(TyObject *module)
 {
     grpmodulestate *state = get_grp_state(module);
 
-    state->StructGrpType = PyStructSequence_NewType(&struct_group_type_desc);
+    state->StructGrpType = TyStructSequence_NewType(&struct_group_type_desc);
     if (state->StructGrpType == NULL) {
         return -1;
     }

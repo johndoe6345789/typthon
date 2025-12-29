@@ -9,7 +9,7 @@ preserve
 #include "pycore_abstract.h"      // _PyNumber_Index()
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_bisect_bisect_right__doc__,
+TyDoc_STRVAR(_bisect_bisect_right__doc__,
 "bisect_right($module, /, a, x, lo=0, hi=None, *, key=None)\n"
 "--\n"
 "\n"
@@ -44,7 +44,7 @@ _bisect_bisect_right(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('x'), &_Ty_ID(lo), &_Ty_ID(hi), &_Ty_ID(key), },
     };
@@ -122,7 +122,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_bisect_insort_right__doc__,
+TyDoc_STRVAR(_bisect_insort_right__doc__,
 "insort_right($module, /, a, x, lo=0, hi=None, *, key=None)\n"
 "--\n"
 "\n"
@@ -155,7 +155,7 @@ _bisect_insort_right(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('x'), &_Ty_ID(lo), &_Ty_ID(hi), &_Ty_ID(key), },
     };
@@ -228,7 +228,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_bisect_bisect_left__doc__,
+TyDoc_STRVAR(_bisect_bisect_left__doc__,
 "bisect_left($module, /, a, x, lo=0, hi=None, *, key=None)\n"
 "--\n"
 "\n"
@@ -263,7 +263,7 @@ _bisect_bisect_left(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('x'), &_Ty_ID(lo), &_Ty_ID(hi), &_Ty_ID(key), },
     };
@@ -341,7 +341,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_bisect_insort_left__doc__,
+TyDoc_STRVAR(_bisect_insort_left__doc__,
 "insort_left($module, /, a, x, lo=0, hi=None, *, key=None)\n"
 "--\n"
 "\n"
@@ -374,7 +374,7 @@ _bisect_insort_left(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, T
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { _Ty_LATIN1_CHR('a'), _Ty_LATIN1_CHR('x'), &_Ty_ID(lo), &_Ty_ID(hi), &_Ty_ID(key), },
     };

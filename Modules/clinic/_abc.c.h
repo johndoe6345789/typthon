@@ -4,7 +4,7 @@ preserve
 
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_abc__reset_registry__doc__,
+TyDoc_STRVAR(_abc__reset_registry__doc__,
 "_reset_registry($module, self, /)\n"
 "--\n"
 "\n"
@@ -15,7 +15,7 @@ PyDoc_STRVAR(_abc__reset_registry__doc__,
 #define _ABC__RESET_REGISTRY_METHODDEF    \
     {"_reset_registry", (PyCFunction)_abc__reset_registry, METH_O, _abc__reset_registry__doc__},
 
-PyDoc_STRVAR(_abc__reset_caches__doc__,
+TyDoc_STRVAR(_abc__reset_caches__doc__,
 "_reset_caches($module, self, /)\n"
 "--\n"
 "\n"
@@ -26,7 +26,7 @@ PyDoc_STRVAR(_abc__reset_caches__doc__,
 #define _ABC__RESET_CACHES_METHODDEF    \
     {"_reset_caches", (PyCFunction)_abc__reset_caches, METH_O, _abc__reset_caches__doc__},
 
-PyDoc_STRVAR(_abc__get_dump__doc__,
+TyDoc_STRVAR(_abc__get_dump__doc__,
 "_get_dump($module, self, /)\n"
 "--\n"
 "\n"
@@ -39,7 +39,7 @@ PyDoc_STRVAR(_abc__get_dump__doc__,
 #define _ABC__GET_DUMP_METHODDEF    \
     {"_get_dump", (PyCFunction)_abc__get_dump, METH_O, _abc__get_dump__doc__},
 
-PyDoc_STRVAR(_abc__abc_init__doc__,
+TyDoc_STRVAR(_abc__abc_init__doc__,
 "_abc_init($module, self, /)\n"
 "--\n"
 "\n"
@@ -48,7 +48,7 @@ PyDoc_STRVAR(_abc__abc_init__doc__,
 #define _ABC__ABC_INIT_METHODDEF    \
     {"_abc_init", (PyCFunction)_abc__abc_init, METH_O, _abc__abc_init__doc__},
 
-PyDoc_STRVAR(_abc__abc_register__doc__,
+TyDoc_STRVAR(_abc__abc_register__doc__,
 "_abc_register($module, self, subclass, /)\n"
 "--\n"
 "\n"
@@ -78,7 +78,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_abc__abc_instancecheck__doc__,
+TyDoc_STRVAR(_abc__abc_instancecheck__doc__,
 "_abc_instancecheck($module, self, instance, /)\n"
 "--\n"
 "\n"
@@ -109,7 +109,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_abc__abc_subclasscheck__doc__,
+TyDoc_STRVAR(_abc__abc_subclasscheck__doc__,
 "_abc_subclasscheck($module, self, subclass, /)\n"
 "--\n"
 "\n"
@@ -140,7 +140,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_abc_get_cache_token__doc__,
+TyDoc_STRVAR(_abc_get_cache_token__doc__,
 "get_cache_token($module, /)\n"
 "--\n"
 "\n"

@@ -4,7 +4,7 @@ preserve
 
 #if defined(HAVE_CLOCK_GETTIME)
 
-PyDoc_STRVAR(time_clock_gettime__doc__,
+TyDoc_STRVAR(time_clock_gettime__doc__,
 "clock_gettime($module, clk_id, /)\n"
 "--\n"
 "\n"
@@ -35,7 +35,7 @@ exit:
 
 #if defined(HAVE_CLOCK_GETTIME)
 
-PyDoc_STRVAR(time_clock_gettime_ns__doc__,
+TyDoc_STRVAR(time_clock_gettime_ns__doc__,
 "clock_gettime_ns($module, clk_id, /)\n"
 "--\n"
 "\n"

@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_zstd_ZstdCompressor_new__doc__,
+TyDoc_STRVAR(_zstd_ZstdCompressor_new__doc__,
 "ZstdCompressor(level=None, options=None, zstd_dict=None)\n"
 "--\n"
 "\n"
@@ -41,7 +41,7 @@ _zstd_ZstdCompressor_new(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(level), &_Ty_ID(options), &_Ty_ID(zstd_dict), },
     };
@@ -95,7 +95,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_ZstdCompressor_compress__doc__,
+TyDoc_STRVAR(_zstd_ZstdCompressor_compress__doc__,
 "compress($self, /, data, mode=ZstdCompressor.CONTINUE)\n"
 "--\n"
 "\n"
@@ -129,7 +129,7 @@ _zstd_ZstdCompressor_compress(TyObject *self, TyObject *const *args, Ty_ssize_t 
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(data), &_Ty_ID(mode), },
     };
@@ -179,7 +179,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_ZstdCompressor_flush__doc__,
+TyDoc_STRVAR(_zstd_ZstdCompressor_flush__doc__,
 "flush($self, /, mode=ZstdCompressor.FLUSH_FRAME)\n"
 "--\n"
 "\n"
@@ -212,7 +212,7 @@ _zstd_ZstdCompressor_flush(TyObject *self, TyObject *const *args, Ty_ssize_t nar
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(mode), },
     };
@@ -253,7 +253,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_zstd_ZstdCompressor_set_pledged_input_size__doc__,
+TyDoc_STRVAR(_zstd_ZstdCompressor_set_pledged_input_size__doc__,
 "set_pledged_input_size($self, size, /)\n"
 "--\n"
 "\n"

@@ -2,7 +2,7 @@
 
 #include "parts.h"
 #include "pycore_lock.h"
-#include "pycore_pythread.h"      // PyThread_get_thread_ident_ex()
+#include "pycore_pythread.h"      // TyThread_get_thread_ident_ex()
 
 #include "clinic/test_lock.c.h"
 
@@ -78,7 +78,7 @@ test_lock_two_threads(TyObject *self, TyObject *obj)
     PyMutex_Lock(&test_data.m);
     assert(test_data.m._bits == 1);
 
-    PyThread_start_new_thread(lock_thread, &test_data);
+    TyThread_start_new_thread(lock_thread, &test_data);
 
     // wait up to two seconds for the lock_thread to attempt to lock "m"
     int iters = 0;
@@ -139,7 +139,7 @@ test_lock_counter(TyObject *self, TyObject *obj)
 
     for (Ty_ssize_t i = 0; i < COUNTER_THREADS; i++) {
         thread_data[i].test_data = &test_data;
-        PyThread_start_new_thread(counter_thread, &thread_data[i]);
+        TyThread_start_new_thread(counter_thread, &thread_data[i]);
     }
 
     for (Ty_ssize_t i = 0; i < COUNTER_THREADS; i++) {
@@ -182,7 +182,7 @@ test_lock_counter_slow(TyObject *self, TyObject *obj)
 
     for (Ty_ssize_t i = 0; i < COUNTER_THREADS; i++) {
         thread_data[i].test_data = &test_data;
-        PyThread_start_new_thread(slow_counter_thread, &thread_data[i]);
+        TyThread_start_new_thread(slow_counter_thread, &thread_data[i]);
     }
 
     for (Ty_ssize_t i = 0; i < COUNTER_THREADS; i++) {
@@ -198,7 +198,7 @@ struct bench_data_locks {
     int use_pymutex;
     int critical_section_length;
     char padding[200];
-    PyThread_type_lock lock;
+    TyThread_type_lock lock;
     PyMutex m;
     double value;
     Ty_ssize_t total_iters;
@@ -230,12 +230,12 @@ thread_benchmark_locks(void *arg)
             PyMutex_Unlock(&bench_data->m);
         }
         else {
-            PyThread_acquire_lock(bench_data->lock, 1);
+            TyThread_acquire_lock(bench_data->lock, 1);
             for (int i = 0; i < critical_section_length; i++) {
                 bench_data->value += my_value;
                 my_value = bench_data->value;
             }
-            PyThread_release_lock(bench_data->lock);
+            TyThread_release_lock(bench_data->lock);
         }
         iters++;
     }
@@ -276,7 +276,7 @@ _testinternalcapi_benchmark_locks_impl(TyObject *module,
     bench_data.use_pymutex = use_pymutex;
     bench_data.critical_section_length = critical_section_length;
 
-    bench_data.lock = PyThread_allocate_lock();
+    bench_data.lock = TyThread_allocate_lock();
     if (bench_data.lock == NULL) {
         return TyErr_NoMemory();
     }
@@ -293,14 +293,14 @@ _testinternalcapi_benchmark_locks_impl(TyObject *module,
         goto exit;
     }
 
-    PyTime_t start, end;
+    TyTime_t start, end;
     if (PyTime_PerfCounter(&start) < 0) {
         goto exit;
     }
 
     for (Ty_ssize_t i = 0; i < num_threads; i++) {
         thread_data[i].bench_data = &bench_data;
-        PyThread_start_new_thread(thread_benchmark_locks, &thread_data[i]);
+        TyThread_start_new_thread(thread_benchmark_locks, &thread_data[i]);
     }
 
     // Let the threads run for `time_ms` milliseconds
@@ -332,7 +332,7 @@ _testinternalcapi_benchmark_locks_impl(TyObject *module,
     res = Ty_BuildValue("(dO)", rate, thread_iters);
 
 exit:
-    PyThread_free_lock(bench_data.lock);
+    TyThread_free_lock(bench_data.lock);
     TyMem_Free(thread_data);
     Ty_XDECREF(thread_iters);
     return res;
@@ -449,15 +449,15 @@ test_lock_rwlock(TyObject *self, TyObject *obj)
     assert(test_data.rw.bits == 0);
 
     // Start two readers
-    PyThread_start_new_thread(rdlock_thread, &test_data);
-    PyThread_start_new_thread(rdlock_thread, &test_data);
+    TyThread_start_new_thread(rdlock_thread, &test_data);
+    TyThread_start_new_thread(rdlock_thread, &test_data);
 
     // wait up to two seconds for the threads to attempt to read-lock "rw"
     wait_until(&test_data.rw.bits, 8);
     assert(test_data.rw.bits == 8);
 
     // start writer (while readers hold lock)
-    PyThread_start_new_thread(wrlock_thread, &test_data);
+    TyThread_start_new_thread(wrlock_thread, &test_data);
     wait_until(&test_data.rw.bits, 10);
     assert(test_data.rw.bits == 10);
 
@@ -487,7 +487,7 @@ test_lock_recursive(TyObject *self, TyObject *obj)
     assert(!_PyRecursiveMutex_IsLockedByCurrentThread(&m));
 
     _PyRecursiveMutex_Lock(&m);
-    assert(m.thread == PyThread_get_thread_ident_ex());
+    assert(m.thread == TyThread_get_thread_ident_ex());
     assert(PyMutex_IsLocked(&m.mutex));
     assert(m.level == 0);
 

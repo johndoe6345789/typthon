@@ -89,7 +89,7 @@ extern TyObject *_TyDict_FromKeys(TyObject *, TyObject *, TyObject *);
 /* Gets a version number unique to the current state of the keys of dict, if possible.
  * Returns the version number, or zero if it was not possible to get a version number. */
 extern uint32_t _PyDictKeys_GetVersionForCurrentState(
-        PyInterpreterState *interp, PyDictKeysObject *dictkeys);
+        TyInterpreterState *interp, PyDictKeysObject *dictkeys);
 
 /* Gets a version number unique to the current state of the keys of dict, if possible.
  *
@@ -100,7 +100,7 @@ extern uint32_t _PyDictKeys_GetVersionForCurrentState(
  *
  * Returns the version number, or zero if it was not possible to get a version number. */
 extern uint32_t _TyDict_GetKeysVersionForCurrentState(
-        PyInterpreterState *interp, PyDictObject *dict);
+        TyInterpreterState *interp, PyDictObject *dict);
 
 extern size_t _TyDict_KeysSize(PyDictKeysObject *keys);
 
@@ -271,7 +271,7 @@ _TyDict_SendEvent(int watcher_bits,
                   TyObject *value);
 
 static inline void
-_TyDict_NotifyEvent(PyInterpreterState *interp,
+_TyDict_NotifyEvent(TyInterpreterState *interp,
                     TyDict_WatchEvent event,
                     PyDictObject *mp,
                     TyObject *key,

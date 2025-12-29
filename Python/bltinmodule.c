@@ -246,7 +246,7 @@ error:
     return cls;
 }
 
-PyDoc_STRVAR(build_class_doc,
+TyDoc_STRVAR(build_class_doc,
 "__build_class__(func, name, /, *bases, [metaclass], **kwds) -> class\n\
 \n\
 Internal helper function used by the class statement.");
@@ -480,7 +480,7 @@ builtin_breakpoint(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyOb
     return retval;
 }
 
-PyDoc_STRVAR(breakpoint_doc,
+TyDoc_STRVAR(breakpoint_doc,
 "breakpoint($module, /, *args, **kws)\n\
 --\n\
 \n\
@@ -623,14 +623,14 @@ filter_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
     return Ty_BuildValue("O(OO)", Ty_TYPE(lz), lz->func, lz->it);
 }
 
-PyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
+TyDoc_STRVAR(reduce_doc, "Return state information for pickling.");
 
 static TyMethodDef filter_methods[] = {
     {"__reduce__", filter_reduce, METH_NOARGS, reduce_doc},
     {NULL,           NULL}           /* sentinel */
 };
 
-PyDoc_STRVAR(filter_doc,
+TyDoc_STRVAR(filter_doc,
 "filter(function, iterable, /)\n\
 --\n\
 \n\
@@ -638,7 +638,7 @@ Return an iterator yielding those items of iterable for which function(item)\n\
 is true. If function is None, return the items that are true.");
 
 TyTypeObject PyFilter_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "filter",                           /* tp_name */
     sizeof(filterobject),               /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -904,7 +904,7 @@ builtin_dir(TyObject *self, TyObject *args)
     return PyObject_Dir(arg);
 }
 
-PyDoc_STRVAR(dir_doc,
+TyDoc_STRVAR(dir_doc,
 "dir([object]) -> list of strings\n"
 "\n"
 "If called without an argument, return the names in the current scope.\n"
@@ -1247,7 +1247,7 @@ builtin_getattr(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
     return result;
 }
 
-PyDoc_STRVAR(getattr_doc,
+TyDoc_STRVAR(getattr_doc,
 "getattr(object, name[, default]) -> value\n\
 \n\
 Get a named attribute from an object; getattr(x, 'y') is equivalent to x.y.\n\
@@ -1585,7 +1585,7 @@ map_reduce(TyObject *self, TyObject *Py_UNUSED(ignored))
     return Ty_BuildValue("ON", Ty_TYPE(lz), args);
 }
 
-PyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
+TyDoc_STRVAR(setstate_doc, "Set state information for unpickling.");
 
 static TyObject *
 map_setstate(TyObject *self, TyObject *state)
@@ -1606,7 +1606,7 @@ static TyMethodDef map_methods[] = {
 };
 
 
-PyDoc_STRVAR(map_doc,
+TyDoc_STRVAR(map_doc,
 "map(function, iterable, /, *iterables, strict=False)\n\
 --\n\
 \n\
@@ -1617,7 +1617,7 @@ If strict is true and one of the arguments is exhausted before the others,\n\
 raise a ValueError.");
 
 TyTypeObject PyMap_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "map",                              /* tp_name */
     sizeof(mapobject),                  /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -1698,7 +1698,7 @@ builtin_next(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
     }
 }
 
-PyDoc_STRVAR(next_doc,
+TyDoc_STRVAR(next_doc,
 "next(iterator[, default])\n\
 \n\
 Return the next item from the iterator. If default is given and the iterator\n\
@@ -1817,7 +1817,7 @@ builtin_iter(TyObject *self, TyObject *const *args, Ty_ssize_t nargs)
     return TyCallIter_New(v, sentinel);
 }
 
-PyDoc_STRVAR(iter_doc,
+TyDoc_STRVAR(iter_doc,
 "iter(iterable) -> iterator\n\
 iter(callable, sentinel) -> iterator\n\
 \n\
@@ -2069,7 +2069,7 @@ builtin_min(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
     return min_max(args, nargs, kwnames, Py_LT);
 }
 
-PyDoc_STRVAR(min_doc,
+TyDoc_STRVAR(min_doc,
 "min(iterable, *[, default=obj, key=func]) -> value\n\
 min(arg1, arg2, *args, *[, key=func]) -> value\n\
 \n\
@@ -2086,7 +2086,7 @@ builtin_max(TyObject *self, TyObject *const *args, Ty_ssize_t nargs, TyObject *k
     return min_max(args, nargs, kwnames, Py_GT);
 }
 
-PyDoc_STRVAR(max_doc,
+TyDoc_STRVAR(max_doc,
 "max(iterable, *[, default=obj, key=func]) -> value\n\
 max(arg1, arg2, *args, *[, key=func]) -> value\n\
 \n\
@@ -2622,7 +2622,7 @@ A custom key function can be supplied to customize the sort order, and the
 reverse flag can be set to request the result in descending order.
 [end disabled clinic input]*/
 
-PyDoc_STRVAR(builtin_sorted__doc__,
+TyDoc_STRVAR(builtin_sorted__doc__,
 "sorted($module, iterable, /, *, key=None, reverse=False)\n"
 "--\n"
 "\n"
@@ -2702,7 +2702,7 @@ builtin_vars(TyObject *self, TyObject *args)
     return d;
 }
 
-PyDoc_STRVAR(vars_doc,
+TyDoc_STRVAR(vars_doc,
 "vars([object]) -> dictionary\n\
 \n\
 Without arguments, equivalent to locals().\n\
@@ -3274,7 +3274,7 @@ static TyMethodDef zip_methods[] = {
     {NULL}  /* sentinel */
 };
 
-PyDoc_STRVAR(zip_doc,
+TyDoc_STRVAR(zip_doc,
 "zip(*iterables, strict=False)\n\
 --\n\
 \n\
@@ -3290,7 +3290,7 @@ raise a ValueError.\n\
    [('a', 0, 0), ('b', 1, 1), ('c', 2, 2)]");
 
 TyTypeObject PyZip_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "zip",                              /* tp_name */
     sizeof(zipobject),                  /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -3383,7 +3383,7 @@ static TyMethodDef builtin_methods[] = {
     {NULL,              NULL},
 };
 
-PyDoc_STRVAR(builtin_doc,
+TyDoc_STRVAR(builtin_doc,
 "Built-in functions, types, exceptions, and other objects.\n\
 \n\
 This module provides direct access to all 'built-in'\n\
@@ -3409,7 +3409,7 @@ static struct TyModuleDef builtinsmodule = {
 
 
 TyObject *
-_PyBuiltin_Init(PyInterpreterState *interp)
+_PyBuiltin_Init(TyInterpreterState *interp)
 {
     TyObject *mod, *dict, *debug;
 

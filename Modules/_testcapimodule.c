@@ -173,7 +173,7 @@ test_sizeof_c_types(TyObject *self, TyObject *Py_UNUSED(ignored))
  *   TyType_Ready if it hasn't already been called
  */
 static TyTypeObject _HashInheritanceTester_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "hashinheritancetester",            /* Name of this type */
     sizeof(TyObject),           /* Basic object size */
     0,                          /* Item size for varobject */
@@ -480,7 +480,7 @@ set_errno(TyObject *self, TyObject *args)
  * synchronization caused rare segfaults, so rare that they were seen only
  * on a Mac buildbot (although they were possible on any box).
  */
-static PyThread_type_lock thread_done = NULL;
+static TyThread_type_lock thread_done = NULL;
 
 static int
 _make_call(void *callable)
@@ -502,7 +502,7 @@ static void
 _make_call_from_thread(void *callable)
 {
     _make_call(callable);
-    PyThread_release_lock(thread_done);
+    TyThread_release_lock(thread_done);
 }
 
 static TyObject *
@@ -520,19 +520,19 @@ test_thread_state(TyObject *self, TyObject *args)
         return NULL;
     }
 
-    thread_done = PyThread_allocate_lock();
+    thread_done = TyThread_allocate_lock();
     if (thread_done == NULL)
         return TyErr_NoMemory();
-    PyThread_acquire_lock(thread_done, 1);
+    TyThread_acquire_lock(thread_done, 1);
 
     /* Start a new thread with our callback. */
-    PyThread_start_new_thread(_make_call_from_thread, fn);
+    TyThread_start_new_thread(_make_call_from_thread, fn);
     /* Make the callback with the thread lock held by this thread */
     success &= _make_call(fn);
     /* Do it all again, but this time with the thread-lock released */
     Ty_BEGIN_ALLOW_THREADS
     success &= _make_call(fn);
-    PyThread_acquire_lock(thread_done, 1);  /* wait for thread to finish */
+    TyThread_acquire_lock(thread_done, 1);  /* wait for thread to finish */
     Ty_END_ALLOW_THREADS
 
     /* And once more with and without a thread
@@ -540,15 +540,15 @@ test_thread_state(TyObject *self, TyObject *args)
        to test <wink>
     */
     Ty_BEGIN_ALLOW_THREADS
-    PyThread_start_new_thread(_make_call_from_thread, fn);
+    TyThread_start_new_thread(_make_call_from_thread, fn);
     success &= _make_call(fn);
-    PyThread_acquire_lock(thread_done, 1);  /* wait for thread to finish */
+    TyThread_acquire_lock(thread_done, 1);  /* wait for thread to finish */
     Ty_END_ALLOW_THREADS
 
     /* Release lock we acquired above.  This is required on HP-UX. */
-    PyThread_release_lock(thread_done);
+    TyThread_release_lock(thread_done);
 
-    PyThread_free_lock(thread_done);
+    TyThread_free_lock(thread_done);
     if (!success)
         return NULL;
     Py_RETURN_NONE;
@@ -563,12 +563,12 @@ gilstate_ensure_release(TyObject *module, TyObject *Py_UNUSED(ignored))
 }
 
 #ifndef MS_WINDOWS
-static PyThread_type_lock wait_done = NULL;
+static TyThread_type_lock wait_done = NULL;
 
 static void wait_for_lock(void *unused) {
-    PyThread_acquire_lock(wait_done, 1);
-    PyThread_release_lock(wait_done);
-    PyThread_free_lock(wait_done);
+    TyThread_acquire_lock(wait_done, 1);
+    TyThread_release_lock(wait_done);
+    TyThread_free_lock(wait_done);
     wait_done = NULL;
 }
 
@@ -582,11 +582,11 @@ spawn_pthread_waiter(TyObject *self, TyObject *Py_UNUSED(ignored))
         TyErr_SetString(TyExc_RuntimeError, "thread already running");
         return NULL;
     }
-    wait_done = PyThread_allocate_lock();
+    wait_done = TyThread_allocate_lock();
     if (wait_done == NULL)
         return TyErr_NoMemory();
-    PyThread_acquire_lock(wait_done, 1);
-    PyThread_start_new_thread(wait_for_lock, NULL);
+    TyThread_acquire_lock(wait_done, 1);
+    TyThread_start_new_thread(wait_for_lock, NULL);
     Py_RETURN_NONE;
 }
 
@@ -597,7 +597,7 @@ end_spawned_pthread(TyObject *self, TyObject *Py_UNUSED(ignored))
         TyErr_SetString(TyExc_RuntimeError, "call _spawn_pthread_waiter 1st");
         return NULL;
     }
-    PyThread_release_lock(wait_done);
+    TyThread_release_lock(wait_done);
     Py_RETURN_NONE;
 }
 #endif  // not MS_WINDOWS
@@ -1248,19 +1248,19 @@ static TyObject *
 test_structseq_newtype_doesnt_leak(TyObject *Py_UNUSED(self),
                               TyObject *Py_UNUSED(args))
 {
-    PyStructSequence_Desc descr;
-    PyStructSequence_Field descr_fields[3];
+    TyStructSequence_Desc descr;
+    TyStructSequence_Field descr_fields[3];
 
-    descr_fields[0] = (PyStructSequence_Field){"foo", "foo value"};
-    descr_fields[1] = (PyStructSequence_Field){NULL, "some hidden value"};
-    descr_fields[2] = (PyStructSequence_Field){0, NULL};
+    descr_fields[0] = (TyStructSequence_Field){"foo", "foo value"};
+    descr_fields[1] = (TyStructSequence_Field){NULL, "some hidden value"};
+    descr_fields[2] = (TyStructSequence_Field){0, NULL};
 
     descr.name = "_testcapi.test_descr";
     descr.doc = "This is used to test for memory leaks in NewType";
     descr.fields = descr_fields;
     descr.n_in_sequence = 1;
 
-    TyTypeObject* structseq_type = PyStructSequence_NewType(&descr);
+    TyTypeObject* structseq_type = TyStructSequence_NewType(&descr);
     if (structseq_type == NULL) {
         return NULL;
     }
@@ -1275,13 +1275,13 @@ static TyObject *
 test_structseq_newtype_null_descr_doc(TyObject *Py_UNUSED(self),
                               TyObject *Py_UNUSED(args))
 {
-    PyStructSequence_Field descr_fields[1] = {
-        (PyStructSequence_Field){NULL, NULL}
+    TyStructSequence_Field descr_fields[1] = {
+        (TyStructSequence_Field){NULL, NULL}
     };
     // Test specifically for NULL .doc field.
-    PyStructSequence_Desc descr = {"_testcapi.test_descr", NULL, &descr_fields[0], 0};
+    TyStructSequence_Desc descr = {"_testcapi.test_descr", NULL, &descr_fields[0], 0};
 
-    TyTypeObject* structseq_type = PyStructSequence_NewType(&descr);
+    TyTypeObject* structseq_type = TyStructSequence_NewType(&descr);
     assert(structseq_type != NULL);
     assert(TyType_Check(structseq_type));
     assert(TyType_FastSubclass(structseq_type, Ty_TPFLAGS_TUPLE_SUBCLASS));
@@ -1291,8 +1291,8 @@ test_structseq_newtype_null_descr_doc(TyObject *Py_UNUSED(self),
 }
 
 typedef struct {
-    PyThread_type_lock start_event;
-    PyThread_type_lock exit_event;
+    TyThread_type_lock start_event;
+    TyThread_type_lock exit_event;
     TyObject *callback;
 } test_c_thread_t;
 
@@ -1303,7 +1303,7 @@ temporary_c_thread(void *data)
     TyGILState_STATE state;
     TyObject *res;
 
-    PyThread_release_lock(test_c_thread->start_event);
+    TyThread_release_lock(test_c_thread->start_event);
 
     /* Allocate a Python thread state for this thread */
     state = TyGILState_Ensure();
@@ -1321,7 +1321,7 @@ temporary_c_thread(void *data)
     /* Destroy the Python thread state for this thread */
     TyGILState_Release(state);
 
-    PyThread_release_lock(test_c_thread->exit_event);
+    TyThread_release_lock(test_c_thread->exit_event);
 }
 
 static test_c_thread_t test_c_thread;
@@ -1338,8 +1338,8 @@ call_in_temporary_c_thread(TyObject *self, TyObject *args)
         return NULL;
     }
 
-    test_c_thread.start_event = PyThread_allocate_lock();
-    test_c_thread.exit_event = PyThread_allocate_lock();
+    test_c_thread.start_event = TyThread_allocate_lock();
+    test_c_thread.exit_event = TyThread_allocate_lock();
     test_c_thread.callback = NULL;
     if (!test_c_thread.start_event || !test_c_thread.exit_event) {
         TyErr_SetString(TyExc_RuntimeError, "could not allocate lock");
@@ -1348,27 +1348,27 @@ call_in_temporary_c_thread(TyObject *self, TyObject *args)
 
     test_c_thread.callback = Ty_NewRef(callback);
 
-    PyThread_acquire_lock(test_c_thread.start_event, 1);
-    PyThread_acquire_lock(test_c_thread.exit_event, 1);
+    TyThread_acquire_lock(test_c_thread.start_event, 1);
+    TyThread_acquire_lock(test_c_thread.exit_event, 1);
 
-    thread = PyThread_start_new_thread(temporary_c_thread, &test_c_thread);
+    thread = TyThread_start_new_thread(temporary_c_thread, &test_c_thread);
     if (thread == -1) {
         TyErr_SetString(TyExc_RuntimeError, "unable to start the thread");
-        PyThread_release_lock(test_c_thread.start_event);
-        PyThread_release_lock(test_c_thread.exit_event);
+        TyThread_release_lock(test_c_thread.start_event);
+        TyThread_release_lock(test_c_thread.exit_event);
         goto exit;
     }
 
-    PyThread_acquire_lock(test_c_thread.start_event, 1);
-    PyThread_release_lock(test_c_thread.start_event);
+    TyThread_acquire_lock(test_c_thread.start_event, 1);
+    TyThread_release_lock(test_c_thread.start_event);
 
     if (!wait) {
         Py_RETURN_NONE;
     }
 
     Ty_BEGIN_ALLOW_THREADS
-        PyThread_acquire_lock(test_c_thread.exit_event, 1);
-        PyThread_release_lock(test_c_thread.exit_event);
+        TyThread_acquire_lock(test_c_thread.exit_event, 1);
+        TyThread_release_lock(test_c_thread.exit_event);
     Ty_END_ALLOW_THREADS
 
     res = Ty_NewRef(Ty_None);
@@ -1376,11 +1376,11 @@ call_in_temporary_c_thread(TyObject *self, TyObject *args)
 exit:
     Ty_CLEAR(test_c_thread.callback);
     if (test_c_thread.start_event) {
-        PyThread_free_lock(test_c_thread.start_event);
+        TyThread_free_lock(test_c_thread.start_event);
         test_c_thread.start_event = NULL;
     }
     if (test_c_thread.exit_event) {
-        PyThread_free_lock(test_c_thread.exit_event);
+        TyThread_free_lock(test_c_thread.exit_event);
         test_c_thread.exit_event = NULL;
     }
     return res;
@@ -1390,13 +1390,13 @@ static TyObject *
 join_temporary_c_thread(TyObject *self, TyObject *Py_UNUSED(ignored))
 {
     Ty_BEGIN_ALLOW_THREADS
-        PyThread_acquire_lock(test_c_thread.exit_event, 1);
-        PyThread_release_lock(test_c_thread.exit_event);
+        TyThread_acquire_lock(test_c_thread.exit_event, 1);
+        TyThread_release_lock(test_c_thread.exit_event);
     Ty_END_ALLOW_THREADS
     Ty_CLEAR(test_c_thread.callback);
-    PyThread_free_lock(test_c_thread.start_event);
+    TyThread_free_lock(test_c_thread.start_event);
     test_c_thread.start_event = NULL;
-    PyThread_free_lock(test_c_thread.exit_event);
+    TyThread_free_lock(test_c_thread.exit_event);
     test_c_thread.exit_event = NULL;
     Py_RETURN_NONE;
 }
@@ -1630,56 +1630,56 @@ static TyObject *
 test_pythread_tss_key_state(TyObject *self, TyObject *args)
 {
     Ty_tss_t tss_key = Ty_tss_NEEDS_INIT;
-    if (PyThread_tss_is_created(&tss_key)) {
+    if (TyThread_tss_is_created(&tss_key)) {
         return raiseTestError(self, "test_pythread_tss_key_state",
                               "TSS key not in an uninitialized state at "
                               "creation time");
     }
-    if (PyThread_tss_create(&tss_key) != 0) {
-        TyErr_SetString(TyExc_RuntimeError, "PyThread_tss_create failed");
+    if (TyThread_tss_create(&tss_key) != 0) {
+        TyErr_SetString(TyExc_RuntimeError, "TyThread_tss_create failed");
         return NULL;
     }
-    if (!PyThread_tss_is_created(&tss_key)) {
+    if (!TyThread_tss_is_created(&tss_key)) {
         return raiseTestError(self, "test_pythread_tss_key_state",
-                              "PyThread_tss_create succeeded, "
+                              "TyThread_tss_create succeeded, "
                               "but with TSS key in an uninitialized state");
     }
-    if (PyThread_tss_create(&tss_key) != 0) {
+    if (TyThread_tss_create(&tss_key) != 0) {
         return raiseTestError(self, "test_pythread_tss_key_state",
-                              "PyThread_tss_create unsuccessful with "
+                              "TyThread_tss_create unsuccessful with "
                               "an already initialized key");
     }
 #define CHECK_TSS_API(expr) \
     do { \
         (void)(expr); \
-        if (!PyThread_tss_is_created(&tss_key)) { \
+        if (!TyThread_tss_is_created(&tss_key)) { \
             return raiseTestError(self, "test_pythread_tss_key_state", \
                                   "TSS key initialization state was not " \
                                   "preserved after calling " #expr); \
         } \
     } while (0)
 
-    CHECK_TSS_API(PyThread_tss_set(&tss_key, NULL));
-    CHECK_TSS_API(PyThread_tss_get(&tss_key));
+    CHECK_TSS_API(TyThread_tss_set(&tss_key, NULL));
+    CHECK_TSS_API(TyThread_tss_get(&tss_key));
 #undef CHECK_TSS_API
-    PyThread_tss_delete(&tss_key);
-    if (PyThread_tss_is_created(&tss_key)) {
+    TyThread_tss_delete(&tss_key);
+    if (TyThread_tss_is_created(&tss_key)) {
         return raiseTestError(self, "test_pythread_tss_key_state",
-                              "PyThread_tss_delete called, but did not "
+                              "TyThread_tss_delete called, but did not "
                               "set the key state to uninitialized");
     }
 
-    Ty_tss_t *ptr_key = PyThread_tss_alloc();
+    Ty_tss_t *ptr_key = TyThread_tss_alloc();
     if (ptr_key == NULL) {
-        TyErr_SetString(TyExc_RuntimeError, "PyThread_tss_alloc failed");
+        TyErr_SetString(TyExc_RuntimeError, "TyThread_tss_alloc failed");
         return NULL;
     }
-    if (PyThread_tss_is_created(ptr_key)) {
+    if (TyThread_tss_is_created(ptr_key)) {
         return raiseTestError(self, "test_pythread_tss_key_state",
                               "TSS key not in an uninitialized state at "
                               "allocation time");
     }
-    PyThread_tss_free(ptr_key);
+    TyThread_tss_free(ptr_key);
     ptr_key = NULL;
     Py_RETURN_NONE;
 }
@@ -1815,7 +1815,7 @@ pynumber_tobase(TyObject *module, TyObject *args)
 static TyTypeObject BasicStaticTypes[NUM_BASIC_STATIC_TYPES] = {
 #define INIT_BASIC_STATIC_TYPE \
     { \
-        PyVarObject_HEAD_INIT(NULL, 0) \
+        TyVarObject_HEAD_INIT(NULL, 0) \
         .tp_name = "BasicStaticType", \
         .tp_basicsize = sizeof(TyObject), \
     }
@@ -1885,7 +1885,7 @@ test_tstate_capi(TyObject *self, TyObject *Py_UNUSED(args))
     // dict is a borrowed reference
 
     // TyThreadState_GetInterpreter()
-    PyInterpreterState *interp = TyThreadState_GetInterpreter(tstate);
+    TyInterpreterState *interp = TyThreadState_GetInterpreter(tstate);
     assert(interp != NULL);
 
     // TyThreadState_GetFrame()
@@ -2455,7 +2455,7 @@ finalize_thread_hang(TyObject *self, TyObject *callback)
 struct atexit_data {
     int called;
     TyThreadState *tstate;
-    PyInterpreterState *interp;
+    TyInterpreterState *interp;
 };
 
 static void
@@ -2592,7 +2592,7 @@ static TyMethodDef TestMethods[] = {
     {"run_in_subinterp",        run_in_subinterp,                METH_VARARGS},
     {"create_cfunction",        create_cfunction,                METH_NOARGS},
     {"call_in_temporary_c_thread", call_in_temporary_c_thread, METH_VARARGS,
-     PyDoc_STR("set_error_class(error_class) -> None")},
+     TyDoc_STR("set_error_class(error_class) -> None")},
     {"join_temporary_c_thread", join_temporary_c_thread, METH_NOARGS},
     {"pymarshal_write_long_to_file",
         pymarshal_write_long_to_file, METH_VARARGS},
@@ -2706,7 +2706,7 @@ static PyNumberMethods matmulType_as_number = {
 };
 
 static TyTypeObject matmulType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "matmulType",
     sizeof(matmulObject),               /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -2762,7 +2762,7 @@ static PyNumberMethods ipowType_as_number = {
 };
 
 static TyTypeObject ipowType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "ipowType",
     .tp_basicsize = sizeof(ipowObject),
     .tp_as_number = &ipowType_as_number,
@@ -2821,7 +2821,7 @@ static PyAsyncMethods awaitType_as_async = {
 
 
 static TyTypeObject awaitType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "awaitType",
     sizeof(awaitObject),                /* tp_basicsize */
     0,                                  /* tp_itemsize */
@@ -2893,7 +2893,7 @@ MyList_dealloc(TyObject *self)
 }
 
 static TyTypeObject MyList_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "MyList",
     sizeof(MyListObject),
     0,
@@ -2961,7 +2961,7 @@ static TyMethodDef generic_alias_methods[] = {
 };
 
 static TyTypeObject GenericAlias_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "GenericAlias",
     sizeof(PyGenericAliasObject),
     0,
@@ -2997,7 +2997,7 @@ static TyMethodDef generic_methods[] = {
 };
 
 static TyTypeObject Generic_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "Generic",
     sizeof(PyGenericObject),
     0,
@@ -3017,13 +3017,13 @@ static TyMethodDef meth_instance_methods[] = {
 
 
 static TyTypeObject MethInstance_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "MethInstance",
     sizeof(TyObject),
     .tp_new = TyType_GenericNew,
     .tp_flags = Ty_TPFLAGS_DEFAULT,
     .tp_methods = meth_instance_methods,
-    .tp_doc = (char*)PyDoc_STR(
+    .tp_doc = (char*)TyDoc_STR(
         "Class with normal (instance) methods to test calling conventions"),
 };
 
@@ -3039,13 +3039,13 @@ static TyMethodDef meth_class_methods[] = {
 
 
 static TyTypeObject MethClass_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "MethClass",
     sizeof(TyObject),
     .tp_new = TyType_GenericNew,
     .tp_flags = Ty_TPFLAGS_DEFAULT,
     .tp_methods = meth_class_methods,
-    .tp_doc = PyDoc_STR(
+    .tp_doc = TyDoc_STR(
         "Class with class methods to test calling conventions"),
 };
 
@@ -3061,13 +3061,13 @@ static TyMethodDef meth_static_methods[] = {
 
 
 static TyTypeObject MethStatic_Type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "MethStatic",
     sizeof(TyObject),
     .tp_new = TyType_GenericNew,
     .tp_flags = Ty_TPFLAGS_DEFAULT,
     .tp_methods = meth_static_methods,
-    .tp_doc = PyDoc_STR(
+    .tp_doc = TyDoc_STR(
         "Class with static methods to test calling conventions"),
 };
 
@@ -3105,12 +3105,12 @@ ContainerNoGC_dealloc(TyObject *op)
 
 static TyMemberDef ContainerNoGC_members[] = {
     {"value", _Ty_T_OBJECT, offsetof(ContainerNoGCobject, value), Py_READONLY,
-     PyDoc_STR("a container value for test purposes")},
+     TyDoc_STR("a container value for test purposes")},
     {0}
 };
 
 static TyTypeObject ContainerNoGC_type = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    TyVarObject_HEAD_INIT(NULL, 0)
     "_testcapi.ContainerNoGC",
     sizeof(ContainerNoGCobject),
     .tp_dealloc = ContainerNoGC_dealloc,

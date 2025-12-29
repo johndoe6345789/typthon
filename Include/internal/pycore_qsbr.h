@@ -149,19 +149,19 @@ _Ty_qsbr_detach(struct _qsbr_thread_state *qsbr);
 
 // Reserves (allocates) a QSBR state and returns its index.
 extern Ty_ssize_t
-_Ty_qsbr_reserve(PyInterpreterState *interp);
+_Ty_qsbr_reserve(TyInterpreterState *interp);
 
 // Associates a TyThreadState with the QSBR state at the given index
 extern void
 _Ty_qsbr_register(struct _PyThreadStateImpl *tstate,
-                  PyInterpreterState *interp, Ty_ssize_t index);
+                  TyInterpreterState *interp, Ty_ssize_t index);
 
 // Disassociates a TyThreadState from the QSBR state and frees the QSBR state.
 extern void
 _Ty_qsbr_unregister(TyThreadState *tstate);
 
 extern void
-_Ty_qsbr_fini(PyInterpreterState *interp);
+_Ty_qsbr_fini(TyInterpreterState *interp);
 
 extern void
 _Ty_qsbr_after_fork(struct _PyThreadStateImpl *tstate);

@@ -586,7 +586,7 @@ PyCArg_repr(TyObject *op)
 }
 
 static TyMemberDef PyCArgType_members[] = {
-    { "_obj", _Py_T_OBJECT,
+    { "_obj", _Ty_T_OBJECT,
       offsetof(PyCArgObject, obj), Py_READONLY,
       "the wrapped object" },
     { NULL },
@@ -1373,7 +1373,7 @@ _parse_voidp(TyObject *obj, void *arg)
 
 #ifdef MS_WIN32
 
-PyDoc_STRVAR(format_error_doc,
+TyDoc_STRVAR(format_error_doc,
 "FormatError([integer]) -> string\n\
 \n\
 Convert a win32 error code into a string. If the error code is not\n\
@@ -1397,7 +1397,7 @@ static TyObject *format_error(TyObject *self, TyObject *args)
     return result;
 }
 
-PyDoc_STRVAR(load_library_doc,
+TyDoc_STRVAR(load_library_doc,
 "LoadLibrary(name, load_flags) -> handle\n\
 \n\
 Load an executable (usually a DLL), and return a handle to it.\n\
@@ -1448,7 +1448,7 @@ static TyObject *load_library(TyObject *self, TyObject *args)
 #endif
 }
 
-PyDoc_STRVAR(free_library_doc,
+TyDoc_STRVAR(free_library_doc,
 "FreeLibrary(handle) -> void\n\
 \n\
 Free the handle of an executable previously loaded by LoadLibrary.\n");
@@ -1471,7 +1471,7 @@ static TyObject *free_library(TyObject *self, TyObject *args)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(copy_com_pointer_doc,
+TyDoc_STRVAR(copy_com_pointer_doc,
 "CopyComPointer(src, dst) -> HRESULT value\n");
 
 static TyObject *
@@ -1772,7 +1772,7 @@ _ctypes_sizeof(TyObject *module, TyObject *obj)
     return NULL;
 }
 
-PyDoc_STRVAR(alignment_doc,
+TyDoc_STRVAR(alignment_doc,
 "alignment(C type) -> integer\n"
 "alignment(C instance) -> integer\n"
 "Return the alignment requirements of a C instance");

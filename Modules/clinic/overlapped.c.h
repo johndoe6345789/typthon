@@ -9,7 +9,7 @@ preserve
 #include "pycore_long.h"          // _TyLong_UnsignedLong_Converter()
 #include "pycore_modsupport.h"    // _TyArg_CheckPositional()
 
-PyDoc_STRVAR(_overlapped_CreateIoCompletionPort__doc__,
+TyDoc_STRVAR(_overlapped_CreateIoCompletionPort__doc__,
 "CreateIoCompletionPort($module, handle, port, key, concurrency, /)\n"
 "--\n"
 "\n"
@@ -57,7 +57,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_GetQueuedCompletionStatus__doc__,
+TyDoc_STRVAR(_overlapped_GetQueuedCompletionStatus__doc__,
 "GetQueuedCompletionStatus($module, port, msecs, /)\n"
 "--\n"
 "\n"
@@ -96,7 +96,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_PostQueuedCompletionStatus__doc__,
+TyDoc_STRVAR(_overlapped_PostQueuedCompletionStatus__doc__,
 "PostQueuedCompletionStatus($module, port, bytes, key, address, /)\n"
 "--\n"
 "\n"
@@ -145,7 +145,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_RegisterWaitWithQueue__doc__,
+TyDoc_STRVAR(_overlapped_RegisterWaitWithQueue__doc__,
 "RegisterWaitWithQueue($module, Object, CompletionPort, Overlapped,\n"
 "                      Timeout, /)\n"
 "--\n"
@@ -194,7 +194,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_UnregisterWait__doc__,
+TyDoc_STRVAR(_overlapped_UnregisterWait__doc__,
 "UnregisterWait($module, WaitHandle, /)\n"
 "--\n"
 "\n"
@@ -222,7 +222,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_UnregisterWaitEx__doc__,
+TyDoc_STRVAR(_overlapped_UnregisterWaitEx__doc__,
 "UnregisterWaitEx($module, WaitHandle, Event, /)\n"
 "--\n"
 "\n"
@@ -259,7 +259,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_CreateEvent__doc__,
+TyDoc_STRVAR(_overlapped_CreateEvent__doc__,
 "CreateEvent($module, EventAttributes, ManualReset, InitialState, Name,\n"
 "            /)\n"
 "--\n"
@@ -319,7 +319,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_SetEvent__doc__,
+TyDoc_STRVAR(_overlapped_SetEvent__doc__,
 "SetEvent($module, Handle, /)\n"
 "--\n"
 "\n"
@@ -347,7 +347,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_ResetEvent__doc__,
+TyDoc_STRVAR(_overlapped_ResetEvent__doc__,
 "ResetEvent($module, Handle, /)\n"
 "--\n"
 "\n"
@@ -375,7 +375,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_BindLocal__doc__,
+TyDoc_STRVAR(_overlapped_BindLocal__doc__,
 "BindLocal($module, handle, family, /)\n"
 "--\n"
 "\n"
@@ -413,7 +413,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_FormatMessage__doc__,
+TyDoc_STRVAR(_overlapped_FormatMessage__doc__,
 "FormatMessage($module, error_code, /)\n"
 "--\n"
 "\n"
@@ -440,7 +440,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped__doc__,
 "Overlapped(event=_overlapped.INVALID_HANDLE_VALUE)\n"
 "--\n"
 "\n"
@@ -462,7 +462,7 @@ _overlapped_Overlapped(TyTypeObject *type, TyObject *args, TyObject *kwargs)
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(event), },
     };
@@ -505,7 +505,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_cancel__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_cancel__doc__,
 "cancel($self, /)\n"
 "--\n"
 "\n"
@@ -523,7 +523,7 @@ _overlapped_Overlapped_cancel(TyObject *self, TyObject *Py_UNUSED(ignored))
     return _overlapped_Overlapped_cancel_impl((OverlappedObject *)self);
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_getresult__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_getresult__doc__,
 "getresult($self, wait=False, /)\n"
 "--\n"
 "\n"
@@ -561,7 +561,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_ReadFile__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_ReadFile__doc__,
 "ReadFile($self, handle, size, /)\n"
 "--\n"
 "\n"
@@ -597,7 +597,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_ReadFileInto__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_ReadFileInto__doc__,
 "ReadFileInto($self, handle, buf, /)\n"
 "--\n"
 "\n"
@@ -638,7 +638,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_WSARecv__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_WSARecv__doc__,
 "WSARecv($self, handle, size, flags=0, /)\n"
 "--\n"
 "\n"
@@ -682,7 +682,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_WSARecvInto__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_WSARecvInto__doc__,
 "WSARecvInto($self, handle, buf, flags, /)\n"
 "--\n"
 "\n"
@@ -728,7 +728,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_WriteFile__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_WriteFile__doc__,
 "WriteFile($self, handle, buf, /)\n"
 "--\n"
 "\n"
@@ -769,7 +769,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_WSASend__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_WSASend__doc__,
 "WSASend($self, handle, buf, flags, /)\n"
 "--\n"
 "\n"
@@ -814,7 +814,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_AcceptEx__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_AcceptEx__doc__,
 "AcceptEx($self, listen_handle, accept_handle, /)\n"
 "--\n"
 "\n"
@@ -852,7 +852,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_ConnectEx__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_ConnectEx__doc__,
 "ConnectEx($self, client_handle, address_as_bytes, /)\n"
 "--\n"
 "\n"
@@ -893,7 +893,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_DisconnectEx__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_DisconnectEx__doc__,
 "DisconnectEx($self, handle, flags, /)\n"
 "--\n"
 "\n");
@@ -928,7 +928,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_TransmitFile__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_TransmitFile__doc__,
 "TransmitFile($self, socket, file, offset, offset_high, count_to_write,\n"
 "             count_per_send, flags, /)\n"
 "--\n"
@@ -989,7 +989,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_ConnectNamedPipe__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_ConnectNamedPipe__doc__,
 "ConnectNamedPipe($self, handle, /)\n"
 "--\n"
 "\n"
@@ -1018,7 +1018,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_ConnectPipe__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_ConnectPipe__doc__,
 "ConnectPipe($self, addr, /)\n"
 "--\n"
 "\n"
@@ -1054,7 +1054,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_WSAConnect__doc__,
+TyDoc_STRVAR(_overlapped_WSAConnect__doc__,
 "WSAConnect($module, client_handle, address_as_bytes, /)\n"
 "--\n"
 "\n"
@@ -1092,7 +1092,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_WSASendTo__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_WSASendTo__doc__,
 "WSASendTo($self, handle, buf, flags, address_as_bytes, /)\n"
 "--\n"
 "\n"
@@ -1144,7 +1144,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_WSARecvFrom__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_WSARecvFrom__doc__,
 "WSARecvFrom($self, handle, size, flags=0, /)\n"
 "--\n"
 "\n"
@@ -1189,7 +1189,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_overlapped_Overlapped_WSARecvFromInto__doc__,
+TyDoc_STRVAR(_overlapped_Overlapped_WSARecvFromInto__doc__,
 "WSARecvFromInto($self, handle, buf, size, flags=0, /)\n"
 "--\n"
 "\n"

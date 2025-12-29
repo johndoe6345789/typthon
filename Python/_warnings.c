@@ -16,7 +16,7 @@
 
 #define MODULE_NAME "_warnings"
 
-PyDoc_STRVAR(warnings__doc__,
+TyDoc_STRVAR(warnings__doc__,
 MODULE_NAME " provides basic warning filtering support.\n"
 "It is a helper module to speed up interpreter start-up.");
 
@@ -26,7 +26,7 @@ MODULE_NAME " provides basic warning filtering support.\n"
 typedef struct _warnings_runtime_state WarningsState;
 
 static inline int
-check_interp(PyInterpreterState *interp)
+check_interp(TyInterpreterState *interp)
 {
     if (interp == NULL) {
         TyErr_SetString(TyExc_RuntimeError,
@@ -37,10 +37,10 @@ check_interp(PyInterpreterState *interp)
     return 1;
 }
 
-static inline PyInterpreterState *
+static inline TyInterpreterState *
 get_current_interp(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return check_interp(interp) ? interp : NULL;
 }
 
@@ -57,7 +57,7 @@ get_current_tstate(void)
 
 /* Given a module object, get its per-module state. */
 static WarningsState *
-warnings_get_state(PyInterpreterState *interp)
+warnings_get_state(TyInterpreterState *interp)
 {
     return &interp->warnings;
 }
@@ -97,7 +97,7 @@ create_filter(TyObject *category, TyObject *action_str, const char *modname)
 #endif
 
 static TyObject *
-init_filters(PyInterpreterState *interp)
+init_filters(TyInterpreterState *interp)
 {
 #ifdef Ty_DEBUG
     /* Ty_DEBUG builds show all warnings by default */
@@ -132,7 +132,7 @@ init_filters(PyInterpreterState *interp)
 
 /* Initialize the given warnings module state. */
 int
-_TyWarnings_InitState(PyInterpreterState *interp)
+_TyWarnings_InitState(TyInterpreterState *interp)
 {
     WarningsState *st = &interp->warnings;
 
@@ -172,7 +172,7 @@ _TyWarnings_InitState(PyInterpreterState *interp)
 /*************************************************************************/
 
 static int
-check_matched(PyInterpreterState *interp, TyObject *obj, TyObject *arg)
+check_matched(TyInterpreterState *interp, TyObject *obj, TyObject *arg)
 {
     TyObject *result;
     int rc;
@@ -208,7 +208,7 @@ check_matched(PyInterpreterState *interp, TyObject *obj, TyObject *arg)
    A NULL return value can mean false or an error.
 */
 static TyObject *
-get_warnings_attr(PyInterpreterState *interp, TyObject *attr, int try_import)
+get_warnings_attr(TyInterpreterState *interp, TyObject *attr, int try_import)
 {
     TyObject *warnings_module, *obj;
 
@@ -243,7 +243,7 @@ get_warnings_attr(PyInterpreterState *interp, TyObject *attr, int try_import)
 }
 
 static inline void
-warnings_lock(PyInterpreterState *interp)
+warnings_lock(TyInterpreterState *interp)
 {
     WarningsState *st = warnings_get_state(interp);
     assert(st != NULL);
@@ -251,7 +251,7 @@ warnings_lock(PyInterpreterState *interp)
 }
 
 static inline int
-warnings_unlock(PyInterpreterState *interp)
+warnings_unlock(TyInterpreterState *interp)
 {
     WarningsState *st = warnings_get_state(interp);
     assert(st != NULL);
@@ -265,7 +265,7 @@ warnings_lock_held(WarningsState *st)
 }
 
 static TyObject *
-get_warnings_context(PyInterpreterState *interp)
+get_warnings_context(TyInterpreterState *interp)
 {
     WarningsState *st = warnings_get_state(interp);
     assert(PyContextVar_CheckExact(st->context));
@@ -280,7 +280,7 @@ get_warnings_context(PyInterpreterState *interp)
 }
 
 static TyObject *
-get_warnings_context_filters(PyInterpreterState *interp)
+get_warnings_context_filters(TyInterpreterState *interp)
 {
     TyObject *ctx = get_warnings_context(interp);
     if (ctx == NULL) {
@@ -305,7 +305,7 @@ get_warnings_context_filters(PyInterpreterState *interp)
 
 // Returns a borrowed reference to the list.
 static TyObject *
-get_warnings_filters(PyInterpreterState *interp)
+get_warnings_filters(TyInterpreterState *interp)
 {
     WarningsState *st = warnings_get_state(interp);
     TyObject *warnings_filters = GET_WARNINGS_ATTR(interp, filters, 0);
@@ -335,7 +335,7 @@ static TyObject *
 warnings_acquire_lock_impl(TyObject *module)
 /*[clinic end generated code: output=594313457d1bf8e1 input=46ec20e55acca52f]*/
 {
-    PyInterpreterState *interp = get_current_interp();
+    TyInterpreterState *interp = get_current_interp();
     if (interp == NULL) {
         return NULL;
     }
@@ -352,7 +352,7 @@ static TyObject *
 warnings_release_lock_impl(TyObject *module)
 /*[clinic end generated code: output=d73d5a8789396750 input=ea01bb77870c5693]*/
 {
-    PyInterpreterState *interp = get_current_interp();
+    TyInterpreterState *interp = get_current_interp();
     if (interp == NULL) {
         return NULL;
     }
@@ -364,7 +364,7 @@ warnings_release_lock_impl(TyObject *module)
 }
 
 static TyObject *
-get_once_registry(PyInterpreterState *interp)
+get_once_registry(TyInterpreterState *interp)
 {
     WarningsState *st = warnings_get_state(interp);
     assert(st != NULL);
@@ -392,7 +392,7 @@ get_once_registry(PyInterpreterState *interp)
 
 
 static TyObject *
-get_default_action(PyInterpreterState *interp)
+get_default_action(TyInterpreterState *interp)
 {
     WarningsState *st = warnings_get_state(interp);
     assert(st != NULL);
@@ -422,7 +422,7 @@ get_default_action(PyInterpreterState *interp)
 /* Search filters list of match, returns false on error.  If no match
  * then 'matched_action' is NULL.  */
 static bool
-filter_search(PyInterpreterState *interp, TyObject *category,
+filter_search(TyInterpreterState *interp, TyObject *category,
               TyObject *text, Ty_ssize_t lineno,
               TyObject *module, char *list_name, TyObject *filters,
               TyObject **item, TyObject **matched_action) {
@@ -503,7 +503,7 @@ filter_search(PyInterpreterState *interp, TyObject *category,
 
 /* The item is a new reference. */
 static TyObject*
-get_filter(PyInterpreterState *interp, TyObject *category,
+get_filter(TyInterpreterState *interp, TyObject *category,
            TyObject *text, Ty_ssize_t lineno,
            TyObject *module, TyObject **item)
 {
@@ -562,7 +562,7 @@ get_filter(PyInterpreterState *interp, TyObject *category,
 
 
 static int
-already_warned(PyInterpreterState *interp, TyObject *registry, TyObject *key,
+already_warned(TyInterpreterState *interp, TyObject *registry, TyObject *key,
                int should_set)
 {
     TyObject *already_warned;
@@ -647,7 +647,7 @@ normalize_module(TyObject *filename)
 }
 
 static int
-update_registry(PyInterpreterState *interp, TyObject *registry, TyObject *text,
+update_registry(TyInterpreterState *interp, TyObject *registry, TyObject *text,
                 TyObject *category, int add_zero)
 {
     TyObject *altkey;
@@ -740,7 +740,7 @@ call_show_warning(TyThreadState *tstate, TyObject *category,
                   TyObject *sourceline, TyObject *source)
 {
     TyObject *show_fn, *msg, *res, *warnmsg_cls = NULL;
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     /* The Python implementation is able to log the traceback where the source
        was allocated, whereas the C implementation doesn't. */
@@ -799,7 +799,7 @@ warn_explicit(TyThreadState *tstate, TyObject *category, TyObject *message,
     TyObject *item = NULL;
     TyObject *action;
     int rc;
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
 
     /* module can be None if a warning is emitted late during Python shutdown.
        In this case, the Python warnings module was probably unloaded, filters
@@ -1049,7 +1049,7 @@ setup_context(Ty_ssize_t stack_level,
             }
         }
     }
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     PyFrameObject *f = TyThreadState_GetFrame(tstate);
     // Stack level comparisons to Python code is off by one as there is no
     // warnings-related stack level to avoid.
@@ -1220,7 +1220,7 @@ warnings_warn_impl(TyObject *module, TyObject *message, TyObject *category,
 }
 
 static TyObject *
-get_source_line(PyInterpreterState *interp, TyObject *module_globals, int lineno)
+get_source_line(TyInterpreterState *interp, TyObject *module_globals, int lineno)
 {
     TyObject *loader;
     TyObject *module_name;
@@ -1336,7 +1336,7 @@ static TyObject *
 warnings_filters_mutated_lock_held_impl(TyObject *module)
 /*[clinic end generated code: output=df5c84f044e856ec input=34208bf03d70e432]*/
 {
-    PyInterpreterState *interp = get_current_interp();
+    TyInterpreterState *interp = get_current_interp();
     if (interp == NULL) {
         return NULL;
     }
@@ -1615,7 +1615,7 @@ _TyErr_WarnUnawaitedCoroutine(TyObject *coro)
        an exception.
     */
     int warned = 0;
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp != NULL);
     TyObject *fn = GET_WARNINGS_ATTR(interp, _warn_unawaited_coroutine, 1);
     if (fn) {
@@ -1658,7 +1658,7 @@ static TyMethodDef warnings_functions[] = {
 static int
 warnings_module_exec(TyObject *module)
 {
-    PyInterpreterState *interp = get_current_interp();
+    TyInterpreterState *interp = get_current_interp();
     if (interp == NULL) {
         return -1;
     }
@@ -1707,7 +1707,7 @@ _TyWarnings_Init(void)
 
 // We need this to ensure that warnings still work until late in finalization.
 void
-_TyWarnings_Fini(PyInterpreterState *interp)
+_TyWarnings_Fini(TyInterpreterState *interp)
 {
     warnings_clear_state(&interp->warnings);
 }

@@ -195,7 +195,7 @@ _DictRemover_call(TyObject *myself, TyObject *args, TyObject *kw)
     Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(dictremover_doc, "deletes a key from a dictionary");
+TyDoc_STRVAR(dictremover_doc, "deletes a key from a dictionary");
 
 static TyType_Slot dictremover_slots[] = {
     {Ty_tp_dealloc, _DictRemover_dealloc},
@@ -1187,7 +1187,7 @@ UnionType_setattro(TyObject *self, TyObject *key, TyObject *value)
 
 static TyType_Slot pycstruct_type_slots[] = {
     {Ty_tp_setattro, PyCStructType_setattro},
-    {Ty_tp_doc, PyDoc_STR("metatype for the CData Objects")},
+    {Ty_tp_doc, TyDoc_STR("metatype for the CData Objects")},
     {Ty_tp_methods, CDataType_methods},
     {Ty_tp_init, PyCStructType_init},
     {0, NULL},
@@ -1202,7 +1202,7 @@ static TyType_Spec pycstruct_type_spec = {
 
 static TyType_Slot union_type_slots[] = {
     {Ty_tp_setattro, UnionType_setattro},
-    {Ty_tp_doc, PyDoc_STR("metatype for the Union Objects")},
+    {Ty_tp_doc, TyDoc_STR("metatype for the Union Objects")},
     {Ty_tp_methods, CDataType_methods},
     {Ty_tp_init, UnionType_init},
     {0, NULL},
@@ -1455,7 +1455,7 @@ static TyMethodDef PyCPointerType_methods[] = {
 };
 
 static TyType_Slot pycpointer_type_slots[] = {
-    {Ty_tp_doc, PyDoc_STR("metatype for the Pointer Objects")},
+    {Ty_tp_doc, TyDoc_STR("metatype for the Pointer Objects")},
     {Ty_tp_methods, PyCPointerType_methods},
     {Ty_tp_init, PyCPointerType_init},
     {0, NULL},
@@ -1843,7 +1843,7 @@ error:
 }
 
 static TyType_Slot pycarray_type_slots[] = {
-    {Ty_tp_doc, PyDoc_STR("metatype for the Array Objects")},
+    {Ty_tp_doc, TyDoc_STR("metatype for the Array Objects")},
     {Ty_tp_methods, CDataType_methods},
     {Ty_tp_init, PyCArrayType_init},
     {0, NULL},
@@ -2596,7 +2596,7 @@ static TyMethodDef PyCSimpleType_methods[] = {
 };
 
 static TyType_Slot pycsimple_type_slots[] = {
-    {Ty_tp_doc, PyDoc_STR("metatype for the PyCSimpleType Objects")},
+    {Ty_tp_doc, TyDoc_STR("metatype for the PyCSimpleType Objects")},
     {Ty_tp_methods, PyCSimpleType_methods},
     {Ty_tp_init, PyCSimpleType_init},
     {0, NULL},
@@ -2854,7 +2854,7 @@ PyCFuncPtrType_init(TyObject *self, TyObject *args, TyObject *kwds)
 }
 
 static TyType_Slot pycfuncptr_type_slots[] = {
-    {Ty_tp_doc, PyDoc_STR("metatype for C function pointers")},
+    {Ty_tp_doc, TyDoc_STR("metatype for C function pointers")},
     {Ty_tp_methods, CDataType_methods},
     {Ty_tp_init, PyCFuncPtrType_init},
     {0, NULL},
@@ -3038,13 +3038,13 @@ PyCData_dealloc(TyObject *self)
 }
 
 static TyMemberDef PyCData_members[] = {
-    { "_b_base_", _Py_T_OBJECT,
+    { "_b_base_", _Ty_T_OBJECT,
       offsetof(CDataObject, b_base), Py_READONLY,
       "the base object" },
     { "_b_needsfree_", Ty_T_INT,
       offsetof(CDataObject, b_needsfree), Py_READONLY,
       "whether the object owns the memory or not" },
-    { "_objects", _Py_T_OBJECT,
+    { "_objects", _Ty_T_OBJECT,
       offsetof(CDataObject, b_objects), Py_READONLY,
       "internal objects tree (NEVER CHANGE THIS OBJECT!)"},
     { NULL },
@@ -3221,7 +3221,7 @@ static TyMethodDef PyCData_methods[] = {
 static TyType_Slot pycdata_slots[] = {
     {Ty_tp_dealloc, PyCData_dealloc},
     {Ty_tp_hash, PyCData_nohash},
-    {Ty_tp_doc, PyDoc_STR("XXX to be provided")},
+    {Ty_tp_doc, TyDoc_STR("XXX to be provided")},
     {Ty_tp_traverse, PyCData_traverse},
     {Ty_tp_clear, PyCData_clear},
     {Ty_tp_methods, PyCData_methods},
@@ -4772,7 +4772,7 @@ static TyType_Slot pycfuncptr_slots[] = {
     {Ty_tp_dealloc, PyCFuncPtr_dealloc},
     {Ty_tp_repr, PyCFuncPtr_repr},
     {Ty_tp_call, PyCFuncPtr_call},
-    {Ty_tp_doc, PyDoc_STR("Function Pointer")},
+    {Ty_tp_doc, TyDoc_STR("Function Pointer")},
     {Ty_tp_traverse, PyCFuncPtr_traverse},
     {Ty_tp_clear, PyCFuncPtr_clear},
     {Ty_tp_getset, PyCFuncPtr_getsets},
@@ -4913,7 +4913,7 @@ Struct_init(TyObject *self, TyObject *args, TyObject *kwds)
 }
 
 static TyType_Slot pycstruct_slots[] = {
-    {Ty_tp_doc, PyDoc_STR("Structure base class")},
+    {Ty_tp_doc, TyDoc_STR("Structure base class")},
     {Ty_tp_init, Struct_init},
     {Ty_tp_new, GenericPyCData_new},
     {Ty_bf_getbuffer, PyCData_NewGetBuffer},
@@ -4928,7 +4928,7 @@ static TyType_Spec pycstruct_spec = {
 };
 
 static TyType_Slot pycunion_slots[] = {
-    {Ty_tp_doc, PyDoc_STR("Union base class")},
+    {Ty_tp_doc, TyDoc_STR("Union base class")},
     {Ty_tp_init, Struct_init},
     {Ty_tp_new, GenericPyCData_new},
     {Ty_bf_getbuffer, PyCData_NewGetBuffer},
@@ -5260,11 +5260,11 @@ Array_length(TyObject *myself)
 
 static TyMethodDef Array_methods[] = {
     {"__class_getitem__",    Ty_GenericAlias,
-    METH_O|METH_CLASS,       PyDoc_STR("See PEP 585")},
+    METH_O|METH_CLASS,       TyDoc_STR("See PEP 585")},
     { NULL, NULL }
 };
 
-PyDoc_STRVAR(array_doc,
+TyDoc_STRVAR(array_doc,
 "Abstract base class for arrays.\n"
 "\n"
 "The recommended way to create concrete array types is by multiplying any\n"
@@ -5499,7 +5499,7 @@ Simple_repr(TyObject *self)
 
 static TyType_Slot pycsimple_slots[] = {
     {Ty_tp_repr, &Simple_repr},
-    {Ty_tp_doc, PyDoc_STR("XXX to be provided")},
+    {Ty_tp_doc, TyDoc_STR("XXX to be provided")},
     {Ty_tp_methods, Simple_methods},
     {Ty_tp_getset, Simple_getsets},
     {Ty_tp_init, Simple_init},
@@ -5940,7 +5940,7 @@ Pointer_bool(TyObject *self)
 }
 
 static TyType_Slot pycpointer_slots[] = {
-    {Ty_tp_doc, (void *)PyDoc_STR("XXX to be provided")},
+    {Ty_tp_doc, (void *)TyDoc_STR("XXX to be provided")},
     {Ty_tp_getset, Pointer_getsets},
     {Ty_tp_init, Pointer_init},
     {Ty_tp_new, Pointer_new},
@@ -5964,12 +5964,12 @@ static TyType_Spec pycpointer_spec = {
  *  Module initialization.
  */
 
-PyDoc_STRVAR(_ctypes__doc__,
+TyDoc_STRVAR(_ctypes__doc__,
 "Create and manipulate C compatible data types in Python.");
 
 #ifdef MS_WIN32
 
-PyDoc_STRVAR(comerror_doc, "Raised when a COM method call failed.");
+TyDoc_STRVAR(comerror_doc, "Raised when a COM method call failed.");
 
 int
 comerror_init(TyObject *self, TyObject *args, TyObject *kwds)
@@ -6002,7 +6002,7 @@ comerror_init(TyObject *self, TyObject *args, TyObject *kwds)
         return -1;
 
     Ty_INCREF(args);
-    Ty_SETREF(((PyBaseExceptionObject *)self)->args, args);
+    Ty_SETREF(((TyBaseExceptionObject *)self)->args, args);
 
     return 0;
 }
@@ -6031,7 +6031,7 @@ comerror_dealloc(TyObject *self)
 }
 
 static TyType_Slot comerror_slots[] = {
-    {Ty_tp_doc, (void *)PyDoc_STR(comerror_doc)},
+    {Ty_tp_doc, (void *)TyDoc_STR(comerror_doc)},
     {Ty_tp_init, comerror_init},
     {Ty_tp_traverse, comerror_traverse},
     {Ty_tp_dealloc, comerror_dealloc},
@@ -6041,7 +6041,7 @@ static TyType_Slot comerror_slots[] = {
 
 static TyType_Spec comerror_spec = {
     .name = "_ctypes.COMError",
-    .basicsize = sizeof(PyBaseExceptionObject),
+    .basicsize = sizeof(TyBaseExceptionObject),
     .flags = (Ty_TPFLAGS_DEFAULT | Ty_TPFLAGS_BASETYPE |
               Ty_TPFLAGS_HAVE_GC | Ty_TPFLAGS_IMMUTABLETYPE),
     .slots = comerror_slots,

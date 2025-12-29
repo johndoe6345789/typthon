@@ -1050,31 +1050,31 @@ math_2(TyObject *const *args, Ty_ssize_t nargs,
     static TyObject * math_##funcname(TyObject *self, TyObject *args) { \
         return math_1(args, func, can_overflow, NULL);                  \
     }\
-    PyDoc_STRVAR(math_##funcname##_doc, docstring);
+    TyDoc_STRVAR(math_##funcname##_doc, docstring);
 
 #define FUNC1D(funcname, func, can_overflow, docstring, err_msg)        \
     static TyObject * math_##funcname(TyObject *self, TyObject *args) { \
         return math_1(args, func, can_overflow, err_msg);               \
     }\
-    PyDoc_STRVAR(math_##funcname##_doc, docstring);
+    TyDoc_STRVAR(math_##funcname##_doc, docstring);
 
 #define FUNC1A(funcname, func, docstring)                               \
     static TyObject * math_##funcname(TyObject *self, TyObject *args) { \
         return math_1a(args, func, NULL);                               \
     }\
-    PyDoc_STRVAR(math_##funcname##_doc, docstring);
+    TyDoc_STRVAR(math_##funcname##_doc, docstring);
 
 #define FUNC1AD(funcname, func, docstring, err_msg)                     \
     static TyObject * math_##funcname(TyObject *self, TyObject *args) { \
         return math_1a(args, func, err_msg);                            \
     }\
-    PyDoc_STRVAR(math_##funcname##_doc, docstring);
+    TyDoc_STRVAR(math_##funcname##_doc, docstring);
 
 #define FUNC2(funcname, func, docstring) \
     static TyObject * math_##funcname(TyObject *self, TyObject *const *args, Ty_ssize_t nargs) { \
         return math_2(args, nargs, func, #funcname); \
     }\
-    PyDoc_STRVAR(math_##funcname##_doc, docstring);
+    TyDoc_STRVAR(math_##funcname##_doc, docstring);
 
 FUNC1D(acos, acos, 0,
       "acos($module, x, /)\n--\n\n"
@@ -2298,7 +2298,7 @@ math_log(TyObject *module, TyObject * const *args, Ty_ssize_t nargs)
     return ans;
 }
 
-PyDoc_STRVAR(math_log_doc,
+TyDoc_STRVAR(math_log_doc,
 "log(x, [base=math.e])\n\
 Return the logarithm of x to the given base.\n\n\
 If the base is not specified, returns the natural logarithm (base e) of x.");
@@ -4181,7 +4181,7 @@ static PyModuleDef_Slot math_slots[] = {
     {0, NULL}
 };
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "This module provides access to the mathematical functions\n"
 "defined by the C standard.");
 

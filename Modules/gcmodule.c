@@ -15,7 +15,7 @@ typedef struct _gc_runtime_state GCState;
 static GCState *
 get_gc_state(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return &interp->gc;
 }
 
@@ -229,7 +229,7 @@ gc_get_referrers_impl(TyObject *module, TyObject *objs)
         return NULL;
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return _TyGC_GetReferrers(interp, objs);
 }
 
@@ -276,7 +276,7 @@ gc_get_referents_impl(TyObject *module, TyObject *objs)
     if (TySys_Audit("gc.get_referents", "(O)", objs) < 0) {
         return NULL;
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     TyObject *result = TyList_New(0);
 
     if (result == NULL) {
@@ -327,7 +327,7 @@ gc_get_objects_impl(TyObject *module, Ty_ssize_t generation)
         return NULL;
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return _TyGC_GetObjects(interp, (int)generation);
 }
 
@@ -427,7 +427,7 @@ static TyObject *
 gc_freeze_impl(TyObject *module)
 /*[clinic end generated code: output=502159d9cdc4c139 input=b602b16ac5febbe5]*/
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyGC_Freeze(interp);
     Py_RETURN_NONE;
 }
@@ -444,7 +444,7 @@ static TyObject *
 gc_unfreeze_impl(TyObject *module)
 /*[clinic end generated code: output=1c15f2043b25e169 input=2dd52b170f4cef6c]*/
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     _TyGC_Unfreeze(interp);
     Py_RETURN_NONE;
 }
@@ -459,12 +459,12 @@ static Ty_ssize_t
 gc_get_freeze_count_impl(TyObject *module)
 /*[clinic end generated code: output=61cbd9f43aa032e1 input=45ffbc65cfe2a6ed]*/
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     return _TyGC_GetFreezeCount(interp);
 }
 
 
-PyDoc_STRVAR(gc__doc__,
+TyDoc_STRVAR(gc__doc__,
 "This module provides access to the garbage collector for reference cycles.\n"
 "\n"
 "enable() -- Enable automatic garbage collection.\n"

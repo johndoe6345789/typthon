@@ -383,13 +383,13 @@ union_origin(TyObject *Py_UNUSED(self), void *Py_UNUSED(ignored))
 
 static TyGetSetDef union_properties[] = {
     {"__name__", union_name, NULL,
-     PyDoc_STR("Name of the type"), NULL},
+     TyDoc_STR("Name of the type"), NULL},
     {"__qualname__", union_name, NULL,
-     PyDoc_STR("Qualified name of the type"), NULL},
+     TyDoc_STR("Qualified name of the type"), NULL},
     {"__origin__", union_origin, NULL,
-     PyDoc_STR("Always returns the type"), NULL},
+     TyDoc_STR("Always returns the type"), NULL},
     {"__parameters__", union_parameters, NULL,
-     PyDoc_STR("Type variables in the types.UnionType."), NULL},
+     TyDoc_STR("Type variables in the types.UnionType."), NULL},
     {0}
 };
 
@@ -500,14 +500,14 @@ union_mro_entries(TyObject *self, TyObject *args)
 
 static TyMethodDef union_methods[] = {
     {"__mro_entries__", union_mro_entries, METH_O},
-    {"__class_getitem__", union_class_getitem, METH_O|METH_CLASS, PyDoc_STR("See PEP 585")},
+    {"__class_getitem__", union_class_getitem, METH_O|METH_CLASS, TyDoc_STR("See PEP 585")},
     {0}
 };
 
 TyTypeObject _PyUnion_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     .tp_name = "typing.Union",
-    .tp_doc = PyDoc_STR("Represent a union type\n"
+    .tp_doc = TyDoc_STR("Represent a union type\n"
               "\n"
               "E.g. for int | str"),
     .tp_basicsize = sizeof(unionobject),

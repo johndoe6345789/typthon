@@ -8,7 +8,7 @@ preserve
 #endif
 #include "pycore_modsupport.h"    // _TyArg_UnpackKeywords()
 
-PyDoc_STRVAR(_csv_list_dialects__doc__,
+TyDoc_STRVAR(_csv_list_dialects__doc__,
 "list_dialects($module, /)\n"
 "--\n"
 "\n"
@@ -28,7 +28,7 @@ _csv_list_dialects(TyObject *module, TyObject *Py_UNUSED(ignored))
     return _csv_list_dialects_impl(module);
 }
 
-PyDoc_STRVAR(_csv_unregister_dialect__doc__,
+TyDoc_STRVAR(_csv_unregister_dialect__doc__,
 "unregister_dialect($module, /, name)\n"
 "--\n"
 "\n"
@@ -55,7 +55,7 @@ _csv_unregister_dialect(TyObject *module, TyObject *const *args, Ty_ssize_t narg
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), },
     };
@@ -88,7 +88,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_csv_get_dialect__doc__,
+TyDoc_STRVAR(_csv_get_dialect__doc__,
 "get_dialect($module, /, name)\n"
 "--\n"
 "\n"
@@ -115,7 +115,7 @@ _csv_get_dialect(TyObject *module, TyObject *const *args, Ty_ssize_t nargs, TyOb
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(name), },
     };
@@ -148,7 +148,7 @@ exit:
     return return_value;
 }
 
-PyDoc_STRVAR(_csv_field_size_limit__doc__,
+TyDoc_STRVAR(_csv_field_size_limit__doc__,
 "field_size_limit($module, /, new_limit=<unrepresentable>)\n"
 "--\n"
 "\n"
@@ -178,7 +178,7 @@ _csv_field_size_limit(TyObject *module, TyObject *const *args, Ty_ssize_t nargs,
         Ty_hash_t ob_hash;
         TyObject *ob_item[NUM_KEYWORDS];
     } _kwtuple = {
-        .ob_base = PyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
+        .ob_base = TyVarObject_HEAD_INIT(&TyTuple_Type, NUM_KEYWORDS)
         .ob_hash = -1,
         .ob_item = { &_Ty_ID(new_limit), },
     };

@@ -20,7 +20,7 @@ static int init_types(void *arg);
 static struct ast_state*
 get_ast_state(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     struct ast_state *state = &interp->ast;
     assert(!state->finalized);
     if (_PyOnceFlag_CallOnce(&state->once, (_Ty_once_fn_t *)&init_types, state) < 0) {
@@ -29,7 +29,7 @@ get_ast_state(void)
     return state;
 }
 
-void _TyAST_Fini(PyInterpreterState *interp)
+void _TyAST_Fini(TyInterpreterState *interp)
 {
     struct ast_state *state = &interp->ast;
 
@@ -5735,7 +5735,7 @@ static TyMemberDef ast_type_members[] = {
 static TyMethodDef ast_type_methods[] = {
     {"__reduce__", ast_type_reduce, METH_NOARGS, NULL},
     {"__replace__", _PyCFunction_CAST(ast_type_replace), METH_VARARGS | METH_KEYWORDS,
-     PyDoc_STR("__replace__($self, /, **fields)\n--\n\n"
+     TyDoc_STR("__replace__($self, /, **fields)\n--\n\n"
                "Return a copy of the AST node with new values "
                "for the specified fields.")},
     {NULL}
@@ -18400,7 +18400,7 @@ static PyModuleDef_Slot astmodule_slots[] = {
 static struct TyModuleDef _astmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "_ast",
-    // The _ast module uses a per-interpreter state (PyInterpreterState.ast)
+    // The _ast module uses a per-interpreter state (TyInterpreterState.ast)
     .m_size = 0,
     .m_slots = astmodule_slots,
 };

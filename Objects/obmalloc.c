@@ -1217,7 +1217,7 @@ free_delayed(uintptr_t ptr, size_t size)
 #ifndef Ty_GIL_DISABLED
     free_work_item(ptr, NULL, NULL);
 #else
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     if (_TyInterpreterState_GetFinalizing(interp) != NULL ||
         interp->stoptheworld.world_stopped)
     {
@@ -1381,7 +1381,7 @@ maybe_process_interp_queue(struct _Ty_mem_interp_free_queue *queue,
 void
 _TyMem_ProcessDelayed(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     _PyThreadStateImpl *tstate_impl = (_PyThreadStateImpl *)tstate;
 
     tstate_impl->qsbr->should_process = false;
@@ -1396,7 +1396,7 @@ _TyMem_ProcessDelayed(TyThreadState *tstate)
 void
 _TyMem_ProcessDelayedNoDealloc(TyThreadState *tstate, delayed_dealloc_cb cb, void *state)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     _PyThreadStateImpl *tstate_impl = (_PyThreadStateImpl *)tstate;
 
     // Process thread-local work
@@ -1409,7 +1409,7 @@ _TyMem_ProcessDelayedNoDealloc(TyThreadState *tstate, delayed_dealloc_cb cb, voi
 void
 _TyMem_AbandonDelayed(TyThreadState *tstate)
 {
-    PyInterpreterState *interp = tstate->interp;
+    TyInterpreterState *interp = tstate->interp;
     struct llist_node *queue = &((_PyThreadStateImpl *)tstate)->mem_free_queue;
 
     if (llist_empty(queue)) {
@@ -1440,7 +1440,7 @@ _TyMem_AbandonDelayed(TyThreadState *tstate)
 }
 
 void
-_TyMem_FiniDelayed(PyInterpreterState *interp)
+_TyMem_FiniDelayed(TyInterpreterState *interp)
 {
     struct llist_node *head = &interp->mem_free_queue.head;
     while (!llist_empty(head)) {
@@ -1537,7 +1537,7 @@ static struct _obmalloc_state obmalloc_state_main;
 static bool obmalloc_state_initialized;
 
 static inline int
-has_own_state(PyInterpreterState *interp)
+has_own_state(TyInterpreterState *interp)
 {
     return (_Ty_IsMainInterpreter(interp) ||
             !(interp->feature_flags & Ty_RTFLAGS_USE_MAIN_OBMALLOC) ||
@@ -1547,7 +1547,7 @@ has_own_state(PyInterpreterState *interp)
 static inline OMState *
 get_state(void)
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     assert(interp->obmalloc != NULL); // otherwise not initialized or freed
     return interp->obmalloc;
 }
@@ -1574,7 +1574,7 @@ static bool count_blocks(
 }
 
 static Ty_ssize_t
-get_mimalloc_allocated_blocks(PyInterpreterState *interp)
+get_mimalloc_allocated_blocks(TyInterpreterState *interp)
 {
     size_t allocated_blocks = 0;
 #ifdef Ty_GIL_DISABLED
@@ -1601,7 +1601,7 @@ get_mimalloc_allocated_blocks(PyInterpreterState *interp)
 #endif
 
 Ty_ssize_t
-_TyInterpreterState_GetAllocatedBlocks(PyInterpreterState *interp)
+_TyInterpreterState_GetAllocatedBlocks(TyInterpreterState *interp)
 {
 #ifdef WITH_MIMALLOC
     if (_TyMem_MimallocEnabled()) {
@@ -1643,10 +1643,10 @@ _TyInterpreterState_GetAllocatedBlocks(PyInterpreterState *interp)
     return n;
 }
 
-static void free_obmalloc_arenas(PyInterpreterState *interp);
+static void free_obmalloc_arenas(TyInterpreterState *interp);
 
 void
-_TyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *interp)
+_TyInterpreterState_FinalizeAllocatedBlocks(TyInterpreterState *interp)
 {
 #ifdef WITH_MIMALLOC
     if (_TyMem_MimallocEnabled()) {
@@ -1692,7 +1692,7 @@ get_num_global_allocated_blocks(_PyRuntimeState *runtime)
 {
     Ty_ssize_t total = 0;
     if (_PyRuntimeState_GetFinalizing(runtime) != NULL) {
-        PyInterpreterState *interp = _TyInterpreterState_Main();
+        TyInterpreterState *interp = _TyInterpreterState_Main();
         if (interp == NULL) {
             /* We are at the very end of runtime finalization.
                We can't rely on finalizing->interp since that thread
@@ -1710,7 +1710,7 @@ get_num_global_allocated_blocks(_PyRuntimeState *runtime)
     else {
         _TyEval_StopTheWorldAll(&_PyRuntime);
         HEAD_LOCK(runtime);
-        PyInterpreterState *interp = TyInterpreterState_Head();
+        TyInterpreterState *interp = TyInterpreterState_Head();
         assert(interp != NULL);
 #ifdef Ty_DEBUG
         int got_main = 0;
@@ -2700,7 +2700,7 @@ _TyObject_Realloc(void *ctx, void *ptr, size_t nbytes)
  * only be used by extensions that are compiled with pymalloc enabled. */
 
 Ty_ssize_t
-_TyInterpreterState_GetAllocatedBlocks(PyInterpreterState *Py_UNUSED(interp))
+_TyInterpreterState_GetAllocatedBlocks(TyInterpreterState *Py_UNUSED(interp))
 {
     return 0;
 }
@@ -2712,7 +2712,7 @@ _Ty_GetGlobalAllocatedBlocks(void)
 }
 
 void
-_TyInterpreterState_FinalizeAllocatedBlocks(PyInterpreterState *Py_UNUSED(interp))
+_TyInterpreterState_FinalizeAllocatedBlocks(TyInterpreterState *Py_UNUSED(interp))
 {
     return;
 }
@@ -3308,7 +3308,7 @@ _PyDebugAllocatorStats(FILE *out,
 // memory is for the arena_map_top array.  Since normally only one entry
 // of that array is used, only one page of resident memory is actually
 // used, rather than the full 256 kB.
-bool _TyMem_obmalloc_state_on_heap(PyInterpreterState *interp)
+bool _TyMem_obmalloc_state_on_heap(TyInterpreterState *interp)
 {
 #if WITH_PYMALLOC
     return interp->obmalloc && interp->obmalloc != &obmalloc_state_main;
@@ -3319,7 +3319,7 @@ bool _TyMem_obmalloc_state_on_heap(PyInterpreterState *interp)
 
 #ifdef WITH_PYMALLOC
 static void
-init_obmalloc_pools(PyInterpreterState *interp)
+init_obmalloc_pools(TyInterpreterState *interp)
 {
     // initialize the obmalloc->pools structure.  This must be done
     // before the obmalloc alloc/free functions can be called.
@@ -3329,7 +3329,7 @@ init_obmalloc_pools(PyInterpreterState *interp)
 }
 #endif /* WITH_PYMALLOC */
 
-int _TyMem_init_obmalloc(PyInterpreterState *interp)
+int _TyMem_init_obmalloc(TyInterpreterState *interp)
 {
 #ifdef WITH_PYMALLOC
     /* Initialize obmalloc, but only for subinterpreters,
@@ -3357,7 +3357,7 @@ int _TyMem_init_obmalloc(PyInterpreterState *interp)
 #ifdef WITH_PYMALLOC
 
 static void
-free_obmalloc_arenas(PyInterpreterState *interp)
+free_obmalloc_arenas(TyInterpreterState *interp)
 {
     OMState *state = interp->obmalloc;
     for (uint i = 0; i < maxarenas; ++i) {

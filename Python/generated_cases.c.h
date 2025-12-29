@@ -102,7 +102,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyFloat_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -112,7 +112,7 @@
                 TyObject *left_o = PyStackRef_AsPyObjectBorrow(left);
                 if (!TyFloat_CheckExact(left_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -160,7 +160,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyLong_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -170,7 +170,7 @@
                 TyObject *left_o = PyStackRef_AsPyObjectBorrow(left);
                 if (!TyLong_CheckExact(left_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -221,7 +221,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyUnicode_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -231,7 +231,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyUnicode_CheckExact(o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -289,7 +289,7 @@
                 stack_pointer = _TyFrame_GetStackPointer(frame);
                 if (!res) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -344,7 +344,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyUnicode_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -354,7 +354,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyUnicode_CheckExact(o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -377,7 +377,7 @@
                 assert(TyUnicode_CheckExact(left_o));
                 if (PyStackRef_AsPyObjectBorrow(*target_local) != left_o) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 STAT_INC(BINARY_OP, hit);
@@ -427,7 +427,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyFloat_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -437,7 +437,7 @@
                 TyObject *left_o = PyStackRef_AsPyObjectBorrow(left);
                 if (!TyFloat_CheckExact(left_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -485,7 +485,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyLong_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -495,7 +495,7 @@
                 TyObject *left_o = PyStackRef_AsPyObjectBorrow(left);
                 if (!TyLong_CheckExact(left_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -545,7 +545,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyDict_CheckExact(o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -610,7 +610,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -620,28 +620,28 @@
                 TyTypeObject *tp = Ty_TYPE(PyStackRef_AsPyObjectBorrow(container));
                 if (!TyType_HasFeature(tp, Ty_TPFLAGS_HEAPTYPE)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 PyHeapTypeObject *ht = (PyHeapTypeObject *)tp;
                 TyObject *getitem_o = FT_ATOMIC_LOAD_PTR_ACQUIRE(ht->_spec_cache.getitem);
                 if (getitem_o == NULL) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 assert(TyFunction_Check(getitem_o));
                 uint32_t cached_version = FT_ATOMIC_LOAD_UINT32_RELAXED(ht->_spec_cache.getitem_version);
                 if (((PyFunctionObject *)getitem_o)->func_version != cached_version) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 PyCodeObject *code = (PyCodeObject *)TyFunction_GET_CODE(getitem_o);
                 assert(code->co_argcount == 2);
                 if (!_TyThreadState_HasStackSpace(tstate, code->co_framesize)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 getitem = PyStackRef_FromPyObjectNew(getitem_o);
@@ -695,7 +695,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyLong_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -705,7 +705,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyList_CheckExact(o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -720,7 +720,7 @@
                 assert(TyList_CheckExact(list));
                 if (!_TyLong_IsNonNegativeCompact((PyLongObject *)sub)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 Ty_ssize_t index = ((PyLongObject*)sub)->long_value.ob_digit[0];
@@ -730,7 +730,7 @@
                 stack_pointer = _TyFrame_GetStackPointer(frame);
                 if (res_o == NULL) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 STAT_INC(BINARY_OP, hit);
@@ -738,7 +738,7 @@
                 #else
                 if (index >= TyList_GET_SIZE(list)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 STAT_INC(BINARY_OP, hit);
@@ -785,7 +785,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(tos);
                 if (!TySlice_Check(o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -795,7 +795,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyList_CheckExact(o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -857,7 +857,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyLong_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -867,7 +867,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyUnicode_CheckExact(o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -882,19 +882,19 @@
                 assert(TyUnicode_CheckExact(str));
                 if (!_TyLong_IsNonNegativeCompact((PyLongObject *)sub)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 Ty_ssize_t index = ((PyLongObject*)sub)->long_value.ob_digit[0];
                 if (TyUnicode_GET_LENGTH(str) <= index) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 Ty_UCS4 c = TyUnicode_READ_CHAR(str, index);
                 if (Ty_ARRAY_LENGTH(_Ty_SINGLETON(strings).ascii) <= c) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 STAT_INC(BINARY_OP, hit);
@@ -935,7 +935,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyLong_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -945,7 +945,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyTuple_CheckExact(o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -960,13 +960,13 @@
                 assert(TyTuple_CheckExact(tuple));
                 if (!_TyLong_IsNonNegativeCompact((PyLongObject *)sub)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 Ty_ssize_t index = ((PyLongObject*)sub)->long_value.ob_digit[0];
                 if (index >= TyTuple_GET_SIZE(tuple)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
                 STAT_INC(BINARY_OP, hit);
@@ -1007,7 +1007,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyFloat_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -1017,7 +1017,7 @@
                 TyObject *left_o = PyStackRef_AsPyObjectBorrow(left);
                 if (!TyFloat_CheckExact(left_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -1065,7 +1065,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyLong_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -1075,7 +1075,7 @@
                 TyObject *left_o = PyStackRef_AsPyObjectBorrow(left);
                 if (!TyLong_CheckExact(left_o)) {
                     UPDATE_MISS_STATS(BINARY_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (BINARY_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (BINARY_OP));
                     JUMP_TO_PREDICTED(BINARY_OP);
                 }
             }
@@ -1569,7 +1569,7 @@
                 }
                 if (Ty_TYPE(callable_o) == &TyFunction_Type &&
                     tstate->interp->eval_frame == NULL &&
-                    ((PyFunctionObject *)callable_o)->vectorcall == _PyFunction_Vectorcall)
+                    ((PyFunctionObject *)callable_o)->vectorcall == _TyFunction_Vectorcall)
                 {
                     int code_flags = ((PyCodeObject*)TyFunction_GET_CODE(callable_o))->co_flags;
                     TyObject *locals = code_flags & CO_OPTIMIZED ? NULL : Ty_NewRef(TyFunction_GET_GLOBALS(callable_o));
@@ -1715,7 +1715,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -1727,18 +1727,18 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (!PyStackRef_IsNull(self_or_null)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (!TyType_Check(callable_o)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 TyTypeObject *tp = (TyTypeObject *)callable_o;
                 if (FT_ATOMIC_LOAD_UINT32_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 assert(tp->tp_new == PyBaseObject_Type.tp_new);
@@ -1749,7 +1749,7 @@
                 PyCodeObject *code = (PyCodeObject *)init_func->func_code;
                 if (!_TyThreadState_HasStackSpace(tstate, code->co_framesize + _Ty_InitCleanup.co_framesize)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 STAT_INC(CALL, hit);
@@ -1834,7 +1834,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -1844,12 +1844,12 @@
                 callable = stack_pointer[-2 - oparg];
                 if (!PyStackRef_IsNull(null)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (Ty_TYPE(PyStackRef_AsPyObjectBorrow(callable)) != &TyMethod_Type) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -1875,13 +1875,13 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (!TyFunction_Check(callable_o)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 PyFunctionObject *func = (PyFunctionObject *)callable_o;
                 if (func->func_version != func_version) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -1893,7 +1893,7 @@
                 PyCodeObject *code = (PyCodeObject *)func->func_code;
                 if (code->co_argcount != oparg + (!PyStackRef_IsNull(self_or_null))) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -1904,7 +1904,7 @@
                 PyCodeObject *code = (PyCodeObject *)func->func_code;
                 if (!_TyThreadState_HasStackSpace(tstate, code->co_framesize)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -1912,7 +1912,7 @@
             {
                 if (tstate->py_recursion_remaining <= 1) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -1976,7 +1976,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -1988,23 +1988,23 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (Ty_TYPE(callable_o) != &TyMethod_Type) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 TyObject *func = ((PyMethodObject *)callable_o)->im_func;
                 if (!TyFunction_Check(func)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (((PyFunctionObject *)func)->func_version != func_version) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (!PyStackRef_IsNull(null)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -2029,7 +2029,7 @@
             {
                 if (tstate->py_recursion_remaining <= 1) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -2108,7 +2108,7 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (!TyType_Check(callable_o)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 TyTypeObject *tp = (TyTypeObject *)callable_o;
@@ -2120,7 +2120,7 @@
                 }
                 if (tp->tp_vectorcall == NULL) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 STAT_INC(CALL, hit);
@@ -2227,12 +2227,12 @@
                 }
                 if (!PyCFunction_CheckExact(callable_o)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (PyCFunction_GET_FLAGS(callable_o) != METH_FASTCALL) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 STAT_INC(CALL, hit);
@@ -2344,12 +2344,12 @@
                 }
                 if (!PyCFunction_CheckExact(callable_o)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (PyCFunction_GET_FLAGS(callable_o) != (METH_FASTCALL | METH_KEYWORDS)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 STAT_INC(CALL, hit);
@@ -2460,22 +2460,22 @@
                 }
                 if (total_args != 1) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (!PyCFunction_CheckExact(callable_o)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (PyCFunction_GET_FLAGS(callable_o) != METH_O) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (_Ty_ReachedRecursionLimit(tstate)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 STAT_INC(CALL, hit);
@@ -2621,7 +2621,7 @@
                 else {
                     if (Ty_TYPE(func) == &TyFunction_Type &&
                         tstate->interp->eval_frame == NULL &&
-                        ((PyFunctionObject *)func)->vectorcall == _PyFunction_Vectorcall) {
+                        ((PyFunctionObject *)func)->vectorcall == _TyFunction_Vectorcall) {
                         TyObject *callargs = PyStackRef_AsPyObjectSteal(callargs_st);
                         assert(TyTuple_CheckExact(callargs));
                         TyObject *kwargs = PyStackRef_IsNull(kwargs_st) ? NULL : PyStackRef_AsPyObjectSteal(kwargs_st);
@@ -2795,13 +2795,13 @@
             }
             if (total_args != 2) {
                 UPDATE_MISS_STATS(CALL);
-                assert(_PyOpcode_Deopt[opcode] == (CALL));
+                assert(_TyOpcode_Deopt[opcode] == (CALL));
                 JUMP_TO_PREDICTED(CALL);
             }
-            PyInterpreterState *interp = tstate->interp;
+            TyInterpreterState *interp = tstate->interp;
             if (callable_o != interp->callable_cache.isinstance) {
                 UPDATE_MISS_STATS(CALL);
-                assert(_PyOpcode_Deopt[opcode] == (CALL));
+                assert(_TyOpcode_Deopt[opcode] == (CALL));
                 JUMP_TO_PREDICTED(CALL);
             }
             STAT_INC(CALL, hit);
@@ -2902,7 +2902,7 @@
                 int positional_args = total_args - (int)TyTuple_GET_SIZE(kwnames_o);
                 if (Ty_TYPE(callable_o) == &TyFunction_Type &&
                     tstate->interp->eval_frame == NULL &&
-                    ((PyFunctionObject *)callable_o)->vectorcall == _PyFunction_Vectorcall)
+                    ((PyFunctionObject *)callable_o)->vectorcall == _TyFunction_Vectorcall)
                 {
                     int code_flags = ((PyCodeObject*)TyFunction_GET_CODE(callable_o))->co_flags;
                     TyObject *locals = code_flags & CO_OPTIMIZED ? NULL : Ty_NewRef(TyFunction_GET_GLOBALS(callable_o));
@@ -3039,7 +3039,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
             }
@@ -3051,23 +3051,23 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (Ty_TYPE(callable_o) != &TyMethod_Type) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
                 TyObject *func = ((PyMethodObject *)callable_o)->im_func;
                 if (!TyFunction_Check(func)) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
                 if (((PyFunctionObject *)func)->func_version != func_version) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
                 if (!PyStackRef_IsNull(null)) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
             }
@@ -3172,12 +3172,12 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (TyFunction_Check(callable_o)) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
                 if (Ty_TYPE(callable_o) == &TyMethod_Type) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
             }
@@ -3303,7 +3303,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
             }
@@ -3314,13 +3314,13 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (!TyFunction_Check(callable_o)) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
                 PyFunctionObject *func = (PyFunctionObject *)callable_o;
                 if (func->func_version != func_version) {
                     UPDATE_MISS_STATS(CALL_KW);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL_KW));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL_KW));
                     JUMP_TO_PREDICTED(CALL_KW);
                 }
             }
@@ -3406,7 +3406,7 @@
                 null = stack_pointer[-2];
                 if (!PyStackRef_IsNull(null)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -3414,10 +3414,10 @@
             {
                 callable = stack_pointer[-3];
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
-                PyInterpreterState *interp = tstate->interp;
+                TyInterpreterState *interp = tstate->interp;
                 if (callable_o != interp->callable_cache.len) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -3478,25 +3478,25 @@
             assert(oparg == 1);
             TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
             TyObject *self_o = PyStackRef_AsPyObjectBorrow(self);
-            PyInterpreterState *interp = tstate->interp;
+            TyInterpreterState *interp = tstate->interp;
             if (callable_o != interp->callable_cache.list_append) {
                 UPDATE_MISS_STATS(CALL);
-                assert(_PyOpcode_Deopt[opcode] == (CALL));
+                assert(_TyOpcode_Deopt[opcode] == (CALL));
                 JUMP_TO_PREDICTED(CALL);
             }
             if (self_o == NULL) {
                 UPDATE_MISS_STATS(CALL);
-                assert(_PyOpcode_Deopt[opcode] == (CALL));
+                assert(_TyOpcode_Deopt[opcode] == (CALL));
                 JUMP_TO_PREDICTED(CALL);
             }
             if (!TyList_Check(self_o)) {
                 UPDATE_MISS_STATS(CALL);
-                assert(_PyOpcode_Deopt[opcode] == (CALL));
+                assert(_TyOpcode_Deopt[opcode] == (CALL));
                 JUMP_TO_PREDICTED(CALL);
             }
             if (!LOCK_OBJECT(self_o)) {
                 UPDATE_MISS_STATS(CALL);
-                assert(_PyOpcode_Deopt[opcode] == (CALL));
+                assert(_TyOpcode_Deopt[opcode] == (CALL));
                 JUMP_TO_PREDICTED(CALL);
             }
             STAT_INC(CALL, hit);
@@ -3554,26 +3554,26 @@
                 }
                 if (total_args == 0) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 PyMethodDescrObject *method = (PyMethodDescrObject *)callable_o;
                 if (!Ty_IS_TYPE(method, &PyMethodDescr_Type)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 TyMethodDef *meth = method->d_method;
                 if (meth->ml_flags != METH_FASTCALL) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 TyObject *self = PyStackRef_AsPyObjectBorrow(arguments[0]);
                 assert(self != NULL);
                 if (!Ty_IS_TYPE(self, method->d_common.d_type)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 STAT_INC(CALL, hit);
@@ -3683,19 +3683,19 @@
                 }
                 if (total_args == 0) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 PyMethodDescrObject *method = (PyMethodDescrObject *)callable_o;
                 if (!Ty_IS_TYPE(method, &PyMethodDescr_Type)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 TyMethodDef *meth = method->d_method;
                 if (meth->ml_flags != (METH_FASTCALL|METH_KEYWORDS)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 TyTypeObject *d_type = method->d_common.d_type;
@@ -3703,7 +3703,7 @@
                 assert(self != NULL);
                 if (!Ty_IS_TYPE(self, d_type)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 STAT_INC(CALL, hit);
@@ -3814,13 +3814,13 @@
                 }
                 if (total_args != 1) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 PyMethodDescrObject *method = (PyMethodDescrObject *)callable_o;
                 if (!Ty_IS_TYPE(method, &PyMethodDescr_Type)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 TyMethodDef *meth = method->d_method;
@@ -3828,17 +3828,17 @@
                 TyObject *self = PyStackRef_AsPyObjectBorrow(self_stackref);
                 if (!Ty_IS_TYPE(self, method->d_common.d_type)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (meth->ml_flags != METH_NOARGS) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (_Ty_ReachedRecursionLimit(tstate)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 STAT_INC(CALL, hit);
@@ -3916,23 +3916,23 @@
                 PyMethodDescrObject *method = (PyMethodDescrObject *)callable_o;
                 if (total_args != 2) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (!Ty_IS_TYPE(method, &PyMethodDescr_Type)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 TyMethodDef *meth = method->d_method;
                 if (meth->ml_flags != METH_O) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (_Ty_ReachedRecursionLimit(tstate)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 _PyStackRef arg_stackref = arguments[1];
@@ -3940,7 +3940,7 @@
                 if (!Ty_IS_TYPE(PyStackRef_AsPyObjectBorrow(self_stackref),
                                 method->d_common.d_type)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 STAT_INC(CALL, hit);
@@ -4022,12 +4022,12 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (TyFunction_Check(callable_o)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 if (Ty_TYPE(callable_o) == &TyMethod_Type) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4141,7 +4141,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4152,13 +4152,13 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (!TyFunction_Check(callable_o)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 PyFunctionObject *func = (PyFunctionObject *)callable_o;
                 if (func->func_version != func_version) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4171,7 +4171,7 @@
                 PyCodeObject *code = (PyCodeObject *)func->func_code;
                 if (code->co_argcount != oparg + (!PyStackRef_IsNull(self_or_null))) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4182,7 +4182,7 @@
                 PyCodeObject *code = (PyCodeObject *)func->func_code;
                 if (!_TyThreadState_HasStackSpace(tstate, code->co_framesize)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4190,7 +4190,7 @@
             {
                 if (tstate->py_recursion_remaining <= 1) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4253,7 +4253,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4264,13 +4264,13 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (!TyFunction_Check(callable_o)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
                 PyFunctionObject *func = (PyFunctionObject *)callable_o;
                 if (func->func_version != func_version) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4278,7 +4278,7 @@
             {
                 if (tstate->py_recursion_remaining <= 1) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4355,7 +4355,7 @@
                 null = stack_pointer[-2];
                 if (!PyStackRef_IsNull(null)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4365,7 +4365,7 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (callable_o != (TyObject *)&TyUnicode_Type) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4435,7 +4435,7 @@
                 null = stack_pointer[-2];
                 if (!PyStackRef_IsNull(null)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4445,7 +4445,7 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (callable_o != (TyObject *)&TyTuple_Type) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4515,7 +4515,7 @@
                 null = stack_pointer[-2];
                 if (!PyStackRef_IsNull(null)) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4525,7 +4525,7 @@
                 TyObject *callable_o = PyStackRef_AsPyObjectBorrow(callable);
                 if (callable_o != (TyObject *)&TyType_Type) {
                     UPDATE_MISS_STATS(CALL);
-                    assert(_PyOpcode_Deopt[opcode] == (CALL));
+                    assert(_TyOpcode_Deopt[opcode] == (CALL));
                     JUMP_TO_PREDICTED(CALL);
                 }
             }
@@ -4809,7 +4809,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyFloat_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(COMPARE_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (COMPARE_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (COMPARE_OP));
                     JUMP_TO_PREDICTED(COMPARE_OP);
                 }
             }
@@ -4819,7 +4819,7 @@
                 TyObject *left_o = PyStackRef_AsPyObjectBorrow(left);
                 if (!TyFloat_CheckExact(left_o)) {
                     UPDATE_MISS_STATS(COMPARE_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (COMPARE_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (COMPARE_OP));
                     JUMP_TO_PREDICTED(COMPARE_OP);
                 }
             }
@@ -4864,7 +4864,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyLong_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(COMPARE_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (COMPARE_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (COMPARE_OP));
                     JUMP_TO_PREDICTED(COMPARE_OP);
                 }
             }
@@ -4874,7 +4874,7 @@
                 TyObject *left_o = PyStackRef_AsPyObjectBorrow(left);
                 if (!TyLong_CheckExact(left_o)) {
                     UPDATE_MISS_STATS(COMPARE_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (COMPARE_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (COMPARE_OP));
                     JUMP_TO_PREDICTED(COMPARE_OP);
                 }
             }
@@ -4886,12 +4886,12 @@
                 TyObject *right_o = PyStackRef_AsPyObjectBorrow(right);
                 if (!_TyLong_IsCompact((PyLongObject *)left_o)) {
                     UPDATE_MISS_STATS(COMPARE_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (COMPARE_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (COMPARE_OP));
                     JUMP_TO_PREDICTED(COMPARE_OP);
                 }
                 if (!_TyLong_IsCompact((PyLongObject *)right_o)) {
                     UPDATE_MISS_STATS(COMPARE_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (COMPARE_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (COMPARE_OP));
                     JUMP_TO_PREDICTED(COMPARE_OP);
                 }
                 STAT_INC(COMPARE_OP, hit);
@@ -4932,7 +4932,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyUnicode_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(COMPARE_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (COMPARE_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (COMPARE_OP));
                     JUMP_TO_PREDICTED(COMPARE_OP);
                 }
             }
@@ -4942,7 +4942,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyUnicode_CheckExact(o)) {
                     UPDATE_MISS_STATS(COMPARE_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (COMPARE_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (COMPARE_OP));
                     JUMP_TO_PREDICTED(COMPARE_OP);
                 }
             }
@@ -5050,7 +5050,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(tos);
                 if (!TyDict_CheckExact(o)) {
                     UPDATE_MISS_STATS(CONTAINS_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (CONTAINS_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (CONTAINS_OP));
                     JUMP_TO_PREDICTED(CONTAINS_OP);
                 }
             }
@@ -5108,7 +5108,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(tos);
                 if (!PyAnySet_CheckExact(o)) {
                     UPDATE_MISS_STATS(CONTAINS_OP);
-                    assert(_PyOpcode_Deopt[opcode] == (CONTAINS_OP));
+                    assert(_TyOpcode_Deopt[opcode] == (CONTAINS_OP));
                     JUMP_TO_PREDICTED(CONTAINS_OP);
                 }
             }
@@ -5568,7 +5568,7 @@
                 opcode = executor->vm_data.opcode;
                 oparg = (oparg & ~255) | executor->vm_data.oparg;
                 next_instr = this_instr;
-                if (_PyOpcode_Caches[_PyOpcode_Deopt[opcode]]) {
+                if (_TyOpcode_Caches[_TyOpcode_Deopt[opcode]]) {
                     PAUSE_ADAPTIVE_COUNTER(this_instr[1].counter);
                 }
                 DISPATCH_GOTO();
@@ -5781,7 +5781,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
             }
@@ -5791,19 +5791,19 @@
                 PyGenObject *gen = (PyGenObject *)PyStackRef_AsPyObjectBorrow(iter);
                 if (Ty_TYPE(gen) != &TyGen_Type) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 #ifdef Ty_GIL_DISABLED
                 if (!_TyObject_IsUniquelyReferenced((TyObject *)gen)) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 #endif
                 if (gen->gi_frame_state >= FRAME_EXECUTING) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 STAT_INC(FOR_ITER, hit);
@@ -5852,20 +5852,20 @@
                 TyObject *iter_o = PyStackRef_AsPyObjectBorrow(iter);
                 if (Ty_TYPE(iter_o) != &PyListIter_Type) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 #ifdef Ty_GIL_DISABLED
                 if (!_TyObject_IsUniquelyReferenced(iter_o)) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
-                _PyListIterObject *it = (_PyListIterObject *)iter_o;
+                _TyListIterObject *it = (_TyListIterObject *)iter_o;
                 if (!_Ty_IsOwnedByCurrentThread((TyObject *)it->it_seq) ||
                     !_TyObject_GC_IS_SHARED(it->it_seq)) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 #endif
@@ -5878,7 +5878,7 @@
                 assert(_TyObject_IsUniquelyReferenced(iter_o));
                 (void)iter_o;
                 #else
-                _PyListIterObject *it = (_PyListIterObject *)iter_o;
+                _TyListIterObject *it = (_TyListIterObject *)iter_o;
                 STAT_INC(FOR_ITER, hit);
                 PyListObject *seq = it->it_seq;
                 if (seq == NULL || (size_t)it->it_index >= (size_t)TyList_GET_SIZE(seq)) {
@@ -5897,7 +5897,7 @@
             // _ITER_NEXT_LIST
             {
                 TyObject *iter_o = PyStackRef_AsPyObjectBorrow(iter);
-                _PyListIterObject *it = (_PyListIterObject *)iter_o;
+                _TyListIterObject *it = (_TyListIterObject *)iter_o;
                 assert(Ty_TYPE(iter_o) == &PyListIter_Type);
                 PyListObject *seq = it->it_seq;
                 assert(seq);
@@ -5911,7 +5911,7 @@
                 stack_pointer = _TyFrame_GetStackPointer(frame);
                 if (result < 0) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 if (result == 0) {
@@ -5951,13 +5951,13 @@
                 _PyRangeIterObject *r = (_PyRangeIterObject *)PyStackRef_AsPyObjectBorrow(iter);
                 if (Ty_TYPE(r) != &PyRangeIter_Type) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 #ifdef Ty_GIL_DISABLED
                 if (!_TyObject_IsUniquelyReferenced((TyObject *)r)) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 #endif
@@ -6018,13 +6018,13 @@
                 TyObject *iter_o = PyStackRef_AsPyObjectBorrow(iter);
                 if (Ty_TYPE(iter_o) != &PyTupleIter_Type) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 #ifdef Ty_GIL_DISABLED
                 if (!_TyObject_IsUniquelyReferenced(iter_o)) {
                     UPDATE_MISS_STATS(FOR_ITER);
-                    assert(_PyOpcode_Deopt[opcode] == (FOR_ITER));
+                    assert(_TyOpcode_Deopt[opcode] == (FOR_ITER));
                     JUMP_TO_PREDICTED(FOR_ITER);
                 }
                 #endif
@@ -6437,7 +6437,7 @@
                 }
                 if (Ty_TYPE(callable_o) == &TyFunction_Type &&
                     tstate->interp->eval_frame == NULL &&
-                    ((PyFunctionObject *)callable_o)->vectorcall == _PyFunction_Vectorcall)
+                    ((PyFunctionObject *)callable_o)->vectorcall == _TyFunction_Vectorcall)
                 {
                     int code_flags = ((PyCodeObject*)TyFunction_GET_CODE(callable_o))->co_flags;
                     TyObject *locals = code_flags & CO_OPTIMIZED ? NULL : Ty_NewRef(TyFunction_GET_GLOBALS(callable_o));
@@ -6653,7 +6653,7 @@
                 else {
                     if (Ty_TYPE(func) == &TyFunction_Type &&
                         tstate->interp->eval_frame == NULL &&
-                        ((PyFunctionObject *)func)->vectorcall == _PyFunction_Vectorcall) {
+                        ((PyFunctionObject *)func)->vectorcall == _TyFunction_Vectorcall) {
                         TyObject *callargs = PyStackRef_AsPyObjectSteal(callargs_st);
                         assert(TyTuple_CheckExact(callargs));
                         TyObject *kwargs = PyStackRef_IsNull(kwargs_st) ? NULL : PyStackRef_AsPyObjectSteal(kwargs_st);
@@ -6806,7 +6806,7 @@
                 int positional_args = total_args - (int)TyTuple_GET_SIZE(kwnames_o);
                 if (Ty_TYPE(callable_o) == &TyFunction_Type &&
                     tstate->interp->eval_frame == NULL &&
-                    ((PyFunctionObject *)callable_o)->vectorcall == _PyFunction_Vectorcall)
+                    ((PyFunctionObject *)callable_o)->vectorcall == _TyFunction_Vectorcall)
                 {
                     int code_flags = ((PyCodeObject*)TyFunction_GET_CODE(callable_o))->co_flags;
                     TyObject *locals = code_flags & CO_OPTIMIZED ? NULL : Ty_NewRef(TyFunction_GET_GLOBALS(callable_o));
@@ -7105,7 +7105,7 @@
                 JUMP_TO_LABEL(error);
             }
             next_instr = this_instr;
-            if (_PyOpcode_Caches[next_opcode]) {
+            if (_TyOpcode_Caches[next_opcode]) {
                 PAUSE_ADAPTIVE_COUNTER(next_instr[1].counter);
             }
             assert(next_opcode > 0 && next_opcode < 256);
@@ -7190,7 +7190,7 @@
                     DISPATCH();
                 }
             }
-            if (_PyOpcode_Caches[original_opcode]) {
+            if (_TyOpcode_Caches[original_opcode]) {
                 _PyBinaryOpCache *cache = (_PyBinaryOpCache *)(next_instr+1);
                 PAUSE_ADAPTIVE_COUNTER(cache->counter);
             }
@@ -7643,10 +7643,10 @@
                 #if TIER_ONE
                 assert(frame->instr_ptr->op.code == INSTRUMENTED_LINE ||
                   frame->instr_ptr->op.code == INSTRUMENTED_INSTRUCTION ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == SEND ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == FOR_ITER ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == INTERPRETER_EXIT ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == ENTER_EXECUTOR);
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == SEND ||
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == FOR_ITER ||
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == INTERPRETER_EXIT ||
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == ENTER_EXECUTOR);
                 #endif
                 stack_pointer = _TyFrame_GetStackPointer(frame);
                 LOAD_IP(1 + INLINE_CACHE_ENTRIES_SEND);
@@ -8065,13 +8065,13 @@
                 TyObject *owner_o = PyStackRef_AsPyObjectBorrow(owner);
                 if (!TyType_Check(owner_o)) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(((TyTypeObject *)owner_o)->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8123,13 +8123,13 @@
                 TyObject *owner_o = PyStackRef_AsPyObjectBorrow(owner);
                 if (!TyType_Check(owner_o)) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(((TyTypeObject *)owner_o)->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8140,7 +8140,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8190,14 +8190,14 @@
             assert((oparg & 1) == 0);
             if (tstate->interp->eval_frame) {
                 UPDATE_MISS_STATS(LOAD_ATTR);
-                assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                 JUMP_TO_PREDICTED(LOAD_ATTR);
             }
             TyTypeObject *cls = Ty_TYPE(owner_o);
             assert(type_version != 0);
             if (FT_ATOMIC_LOAD_UINT_RELAXED(cls->tp_version_tag) != type_version) {
                 UPDATE_MISS_STATS(LOAD_ATTR);
-                assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                 JUMP_TO_PREDICTED(LOAD_ATTR);
             }
             assert(Ty_IS_TYPE(getattribute, &TyFunction_Type));
@@ -8205,14 +8205,14 @@
             assert(func_version != 0);
             if (f->func_version != func_version) {
                 UPDATE_MISS_STATS(LOAD_ATTR);
-                assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                 JUMP_TO_PREDICTED(LOAD_ATTR);
             }
             PyCodeObject *code = (PyCodeObject *)f->func_code;
             assert(code->co_argcount == 2);
             if (!_TyThreadState_HasStackSpace(tstate, code->co_framesize)) {
                 UPDATE_MISS_STATS(LOAD_ATTR);
-                assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                 JUMP_TO_PREDICTED(LOAD_ATTR);
             }
             STAT_INC(LOAD_ATTR, hit);
@@ -8250,7 +8250,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8261,7 +8261,7 @@
                 assert(Ty_TYPE(owner_o)->tp_flags & Ty_TPFLAGS_INLINE_VALUES);
                 if (!FT_ATOMIC_LOAD_UINT8(_TyObject_InlineValues(owner_o)->valid)) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8273,7 +8273,7 @@
                 TyObject *attr_o = FT_ATOMIC_LOAD_PTR_ACQUIRE(*value_ptr);
                 if (attr_o == NULL) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 #ifdef Ty_GIL_DISABLED
@@ -8281,7 +8281,7 @@
                 if (!increfed) {
                     if (true) {
                         UPDATE_MISS_STATS(LOAD_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                         JUMP_TO_PREDICTED(LOAD_ATTR);
                     }
                 }
@@ -8330,7 +8330,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8341,7 +8341,7 @@
                 TyObject *dict = FT_ATOMIC_LOAD_PTR_ACQUIRE(*(TyObject **)ptr);
                 if (dict != NULL) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8386,7 +8386,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8432,7 +8432,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8443,7 +8443,7 @@
                 PyDictValues *ivs = _TyObject_InlineValues(owner_o);
                 if (!FT_ATOMIC_LOAD_UINT8(ivs->valid)) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8455,7 +8455,7 @@
                 PyDictKeysObject *keys = owner_heap_type->ht_cached_keys;
                 if (FT_ATOMIC_LOAD_UINT32_RELAXED(keys->dk_version) != keys_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8499,7 +8499,7 @@
                 TyObject *owner_o = PyStackRef_AsPyObjectBorrow(owner);
                 if (Ty_TYPE(owner_o)->tp_getattro != TyModule_Type.tp_getattro) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 PyDictObject *dict = (PyDictObject *)((PyModuleObject *)owner_o)->md_dict;
@@ -8507,7 +8507,7 @@
                 PyDictKeysObject *keys = FT_ATOMIC_LOAD_PTR_ACQUIRE(dict->ma_keys);
                 if (FT_ATOMIC_LOAD_UINT32_RELAXED(keys->dk_version) != dict_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 assert(keys->dk_kind == DICT_KEYS_UNICODE);
@@ -8516,7 +8516,7 @@
                 TyObject *attr_o = FT_ATOMIC_LOAD_PTR_RELAXED(ep->me_value);
                 if (attr_o == NULL) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 #ifdef Ty_GIL_DISABLED
@@ -8524,7 +8524,7 @@
                 if (!increfed) {
                     if (true) {
                         UPDATE_MISS_STATS(LOAD_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                         JUMP_TO_PREDICTED(LOAD_ATTR);
                     }
                 }
@@ -8572,7 +8572,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8619,7 +8619,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8630,7 +8630,7 @@
                 PyDictValues *ivs = _TyObject_InlineValues(owner_o);
                 if (!FT_ATOMIC_LOAD_UINT8(ivs->valid)) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8642,7 +8642,7 @@
                 PyDictKeysObject *keys = owner_heap_type->ht_cached_keys;
                 if (FT_ATOMIC_LOAD_UINT32_RELAXED(keys->dk_version) != keys_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8683,7 +8683,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8695,7 +8695,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8709,22 +8709,22 @@
                 PyCodeObject *code = (PyCodeObject *)f->func_code;
                 if ((code->co_flags & (CO_VARKEYWORDS | CO_VARARGS | CO_OPTIMIZED)) != CO_OPTIMIZED) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 if (code->co_kwonlyargcount) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 if (code->co_argcount != 1) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 if (!_TyThreadState_HasStackSpace(tstate, code->co_framesize)) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 STAT_INC(LOAD_ATTR, hit);
@@ -8781,7 +8781,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8793,14 +8793,14 @@
                 TyObject *attr_o = FT_ATOMIC_LOAD_PTR(*addr);
                 if (attr_o == NULL) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 #ifdef Ty_GIL_DISABLED
                 int increfed = _Ty_TryIncrefCompareStackRef(addr, attr_o, &attr);
                 if (!increfed) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 #else
@@ -8850,7 +8850,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
             }
@@ -8862,7 +8862,7 @@
                 PyDictObject *dict = _TyObject_GetManagedDict(owner_o);
                 if (dict == NULL) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 PyDictKeysObject *dk = FT_ATOMIC_LOAD_PTR(dict->ma_keys);
@@ -8870,7 +8870,7 @@
                 #ifdef Ty_GIL_DISABLED
                 if (!_Ty_IsOwnedByCurrentThread((TyObject *)dict) && !_TyObject_GC_IS_SHARED(dict)) {
                     UPDATE_MISS_STATS(LOAD_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                     JUMP_TO_PREDICTED(LOAD_ATTR);
                 }
                 #endif
@@ -8878,7 +8878,7 @@
                 if (hint >= (size_t)FT_ATOMIC_LOAD_SSIZE_RELAXED(dk->dk_nentries)) {
                     if (true) {
                         UPDATE_MISS_STATS(LOAD_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                         JUMP_TO_PREDICTED(LOAD_ATTR);
                     }
                 }
@@ -8886,7 +8886,7 @@
                 if (dk->dk_kind != DICT_KEYS_UNICODE) {
                     if (true) {
                         UPDATE_MISS_STATS(LOAD_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                         JUMP_TO_PREDICTED(LOAD_ATTR);
                     }
                 }
@@ -8894,7 +8894,7 @@
                 if (FT_ATOMIC_LOAD_PTR_RELAXED(ep->me_key) != name) {
                     if (true) {
                         UPDATE_MISS_STATS(LOAD_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                         JUMP_TO_PREDICTED(LOAD_ATTR);
                     }
                 }
@@ -8902,7 +8902,7 @@
                 if (attr_o == NULL) {
                     if (true) {
                         UPDATE_MISS_STATS(LOAD_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                         JUMP_TO_PREDICTED(LOAD_ATTR);
                     }
                 }
@@ -8912,7 +8912,7 @@
                 if (!increfed) {
                     if (true) {
                         UPDATE_MISS_STATS(LOAD_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (LOAD_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (LOAD_ATTR));
                         JUMP_TO_PREDICTED(LOAD_ATTR);
                     }
                 }
@@ -9398,13 +9398,13 @@
                 PyDictObject *dict = (PyDictObject *)GLOBALS();
                 if (!TyDict_CheckExact(dict)) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 PyDictKeysObject *keys = FT_ATOMIC_LOAD_PTR_ACQUIRE(dict->ma_keys);
                 if (FT_ATOMIC_LOAD_UINT32_RELAXED(keys->dk_version) != version) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 assert(DK_IS_UNICODE(keys));
@@ -9416,13 +9416,13 @@
                 PyDictObject *dict = (PyDictObject *)BUILTINS();
                 if (!TyDict_CheckExact(dict)) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 PyDictKeysObject *keys = FT_ATOMIC_LOAD_PTR_ACQUIRE(dict->ma_keys);
                 if (FT_ATOMIC_LOAD_UINT32_RELAXED(keys->dk_version) != version) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 assert(DK_IS_UNICODE(keys));
@@ -9430,14 +9430,14 @@
                 TyObject *res_o = FT_ATOMIC_LOAD_PTR_RELAXED(entries[index].me_value);
                 if (res_o == NULL) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 #if Ty_GIL_DISABLED
                 int increfed = _Ty_TryIncrefCompareStackRef(&entries[index].me_value, res_o, &res);
                 if (!increfed) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 #else
@@ -9482,13 +9482,13 @@
                 PyDictObject *dict = (PyDictObject *)GLOBALS();
                 if (!TyDict_CheckExact(dict)) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 PyDictKeysObject *keys = FT_ATOMIC_LOAD_PTR_ACQUIRE(dict->ma_keys);
                 if (FT_ATOMIC_LOAD_UINT32_RELAXED(keys->dk_version) != version) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 assert(DK_IS_UNICODE(keys));
@@ -9497,14 +9497,14 @@
                 TyObject *res_o = FT_ATOMIC_LOAD_PTR_RELAXED(entries[index].me_value);
                 if (res_o == NULL) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 #if Ty_GIL_DISABLED
                 int increfed = _Ty_TryIncrefCompareStackRef(&entries[index].me_value, res_o, &res);
                 if (!increfed) {
                     UPDATE_MISS_STATS(LOAD_GLOBAL);
-                    assert(_PyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
+                    assert(_TyOpcode_Deopt[opcode] == (LOAD_GLOBAL));
                     JUMP_TO_PREDICTED(LOAD_GLOBAL);
                 }
                 #else
@@ -9798,12 +9798,12 @@
             assert(!(oparg & 1));
             if (global_super != (TyObject *)&TySuper_Type) {
                 UPDATE_MISS_STATS(LOAD_SUPER_ATTR);
-                assert(_PyOpcode_Deopt[opcode] == (LOAD_SUPER_ATTR));
+                assert(_TyOpcode_Deopt[opcode] == (LOAD_SUPER_ATTR));
                 JUMP_TO_PREDICTED(LOAD_SUPER_ATTR);
             }
             if (!TyType_Check(class)) {
                 UPDATE_MISS_STATS(LOAD_SUPER_ATTR);
-                assert(_PyOpcode_Deopt[opcode] == (LOAD_SUPER_ATTR));
+                assert(_TyOpcode_Deopt[opcode] == (LOAD_SUPER_ATTR));
                 JUMP_TO_PREDICTED(LOAD_SUPER_ATTR);
             }
             STAT_INC(LOAD_SUPER_ATTR, hit);
@@ -9861,12 +9861,12 @@
             assert(oparg & 1);
             if (global_super != (TyObject *)&TySuper_Type) {
                 UPDATE_MISS_STATS(LOAD_SUPER_ATTR);
-                assert(_PyOpcode_Deopt[opcode] == (LOAD_SUPER_ATTR));
+                assert(_TyOpcode_Deopt[opcode] == (LOAD_SUPER_ATTR));
                 JUMP_TO_PREDICTED(LOAD_SUPER_ATTR);
             }
             if (!TyType_Check(class)) {
                 UPDATE_MISS_STATS(LOAD_SUPER_ATTR);
-                assert(_PyOpcode_Deopt[opcode] == (LOAD_SUPER_ATTR));
+                assert(_TyOpcode_Deopt[opcode] == (LOAD_SUPER_ATTR));
                 JUMP_TO_PREDICTED(LOAD_SUPER_ATTR);
             }
             STAT_INC(LOAD_SUPER_ATTR, hit);
@@ -9958,7 +9958,7 @@
             if (func_obj == NULL) {
                 JUMP_TO_LABEL(error);
             }
-            _PyFunction_SetVersion(
+            _TyFunction_SetVersion(
                                    func_obj, ((PyCodeObject *)codeobj)->co_version);
             func = PyStackRef_FromPyObjectSteal((TyObject *)func_obj);
             stack_pointer[0] = func;
@@ -10527,7 +10527,7 @@
             #if defined(__EMSCRIPTEN__)
             if (_Ty_emscripten_signal_clock == 0) {
                 UPDATE_MISS_STATS(RESUME);
-                assert(_PyOpcode_Deopt[opcode] == (RESUME));
+                assert(_TyOpcode_Deopt[opcode] == (RESUME));
                 JUMP_TO_PREDICTED(RESUME);
             }
             _Ty_emscripten_signal_clock -= Ty_EMSCRIPTEN_SIGNAL_HANDLING;
@@ -10537,14 +10537,14 @@
             assert((version & _PY_EVAL_EVENTS_MASK) == 0);
             if (eval_breaker != version) {
                 UPDATE_MISS_STATS(RESUME);
-                assert(_PyOpcode_Deopt[opcode] == (RESUME));
+                assert(_TyOpcode_Deopt[opcode] == (RESUME));
                 JUMP_TO_PREDICTED(RESUME);
             }
             #ifdef Ty_GIL_DISABLED
             if (frame->tlbc_index !=
                 ((_PyThreadStateImpl *)tstate)->tlbc_index) {
                 UPDATE_MISS_STATS(RESUME);
-                assert(_PyOpcode_Deopt[opcode] == (RESUME));
+                assert(_TyOpcode_Deopt[opcode] == (RESUME));
                 JUMP_TO_PREDICTED(RESUME);
             }
             #endif
@@ -10746,7 +10746,7 @@
             {
                 if (tstate->interp->eval_frame) {
                     UPDATE_MISS_STATS(SEND);
-                    assert(_PyOpcode_Deopt[opcode] == (SEND));
+                    assert(_TyOpcode_Deopt[opcode] == (SEND));
                     JUMP_TO_PREDICTED(SEND);
                 }
             }
@@ -10757,12 +10757,12 @@
                 PyGenObject *gen = (PyGenObject *)PyStackRef_AsPyObjectBorrow(receiver);
                 if (Ty_TYPE(gen) != &TyGen_Type && Ty_TYPE(gen) != &TyCoro_Type) {
                     UPDATE_MISS_STATS(SEND);
-                    assert(_PyOpcode_Deopt[opcode] == (SEND));
+                    assert(_TyOpcode_Deopt[opcode] == (SEND));
                     JUMP_TO_PREDICTED(SEND);
                 }
                 if (gen->gi_frame_state >= FRAME_EXECUTING) {
                     UPDATE_MISS_STATS(SEND);
-                    assert(_PyOpcode_Deopt[opcode] == (SEND));
+                    assert(_TyOpcode_Deopt[opcode] == (SEND));
                     JUMP_TO_PREDICTED(SEND);
                 }
                 STAT_INC(SEND, hit);
@@ -10998,7 +10998,7 @@
                 assert(type_version != 0);
                 if (!LOCK_OBJECT(owner_o)) {
                     UPDATE_MISS_STATS(STORE_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                     JUMP_TO_PREDICTED(STORE_ATTR);
                 }
                 TyTypeObject *tp = Ty_TYPE(owner_o);
@@ -11006,7 +11006,7 @@
                     UNLOCK_OBJECT(owner_o);
                     if (true) {
                         UPDATE_MISS_STATS(STORE_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                         JUMP_TO_PREDICTED(STORE_ATTR);
                     }
                 }
@@ -11021,7 +11021,7 @@
                     UNLOCK_OBJECT(owner_o);
                     if (true) {
                         UPDATE_MISS_STATS(STORE_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                         JUMP_TO_PREDICTED(STORE_ATTR);
                     }
                 }
@@ -11074,7 +11074,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(STORE_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                     JUMP_TO_PREDICTED(STORE_ATTR);
                 }
             }
@@ -11085,7 +11085,7 @@
                 TyObject *owner_o = PyStackRef_AsPyObjectBorrow(owner);
                 if (!LOCK_OBJECT(owner_o)) {
                     UPDATE_MISS_STATS(STORE_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                     JUMP_TO_PREDICTED(STORE_ATTR);
                 }
                 char *addr = (char *)owner_o + index;
@@ -11125,7 +11125,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(STORE_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                     JUMP_TO_PREDICTED(STORE_ATTR);
                 }
             }
@@ -11138,12 +11138,12 @@
                 PyDictObject *dict = _TyObject_GetManagedDict(owner_o);
                 if (dict == NULL) {
                     UPDATE_MISS_STATS(STORE_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                     JUMP_TO_PREDICTED(STORE_ATTR);
                 }
                 if (!LOCK_OBJECT(dict)) {
                     UPDATE_MISS_STATS(STORE_ATTR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                     JUMP_TO_PREDICTED(STORE_ATTR);
                 }
                 #ifdef Ty_GIL_DISABLED
@@ -11151,7 +11151,7 @@
                     UNLOCK_OBJECT(dict);
                     if (true) {
                         UPDATE_MISS_STATS(STORE_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                         JUMP_TO_PREDICTED(STORE_ATTR);
                     }
                 }
@@ -11163,7 +11163,7 @@
                     UNLOCK_OBJECT(dict);
                     if (true) {
                         UPDATE_MISS_STATS(STORE_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                         JUMP_TO_PREDICTED(STORE_ATTR);
                     }
                 }
@@ -11172,7 +11172,7 @@
                     UNLOCK_OBJECT(dict);
                     if (true) {
                         UPDATE_MISS_STATS(STORE_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                         JUMP_TO_PREDICTED(STORE_ATTR);
                     }
                 }
@@ -11181,7 +11181,7 @@
                     UNLOCK_OBJECT(dict);
                     if (true) {
                         UPDATE_MISS_STATS(STORE_ATTR);
-                        assert(_PyOpcode_Deopt[opcode] == (STORE_ATTR));
+                        assert(_TyOpcode_Deopt[opcode] == (STORE_ATTR));
                         JUMP_TO_PREDICTED(STORE_ATTR);
                     }
                 }
@@ -11521,7 +11521,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyDict_CheckExact(o)) {
                     UPDATE_MISS_STATS(STORE_SUBSCR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_SUBSCR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_SUBSCR));
                     JUMP_TO_PREDICTED(STORE_SUBSCR);
                 }
             }
@@ -11572,7 +11572,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyLong_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(STORE_SUBSCR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_SUBSCR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_SUBSCR));
                     JUMP_TO_PREDICTED(STORE_SUBSCR);
                 }
             }
@@ -11582,7 +11582,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(nos);
                 if (!TyList_CheckExact(o)) {
                     UPDATE_MISS_STATS(STORE_SUBSCR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_SUBSCR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_SUBSCR));
                     JUMP_TO_PREDICTED(STORE_SUBSCR);
                 }
             }
@@ -11598,20 +11598,20 @@
                 assert(TyList_CheckExact(list));
                 if (!_TyLong_IsNonNegativeCompact((PyLongObject *)sub)) {
                     UPDATE_MISS_STATS(STORE_SUBSCR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_SUBSCR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_SUBSCR));
                     JUMP_TO_PREDICTED(STORE_SUBSCR);
                 }
                 Ty_ssize_t index = ((PyLongObject*)sub)->long_value.ob_digit[0];
                 if (!LOCK_OBJECT(list)) {
                     UPDATE_MISS_STATS(STORE_SUBSCR);
-                    assert(_PyOpcode_Deopt[opcode] == (STORE_SUBSCR));
+                    assert(_TyOpcode_Deopt[opcode] == (STORE_SUBSCR));
                     JUMP_TO_PREDICTED(STORE_SUBSCR);
                 }
                 if (index >= TyList_GET_SIZE(list)) {
                     UNLOCK_OBJECT(list);
                     if (true) {
                         UPDATE_MISS_STATS(STORE_SUBSCR);
-                        assert(_PyOpcode_Deopt[opcode] == (STORE_SUBSCR));
+                        assert(_TyOpcode_Deopt[opcode] == (STORE_SUBSCR));
                         JUMP_TO_PREDICTED(STORE_SUBSCR);
                     }
                 }
@@ -11728,7 +11728,7 @@
                 assert(type_version != 0);
                 if (FT_ATOMIC_LOAD_UINT_RELAXED(tp->tp_version_tag) != type_version) {
                     UPDATE_MISS_STATS(TO_BOOL);
-                    assert(_PyOpcode_Deopt[opcode] == (TO_BOOL));
+                    assert(_TyOpcode_Deopt[opcode] == (TO_BOOL));
                     JUMP_TO_PREDICTED(TO_BOOL);
                 }
             }
@@ -11765,7 +11765,7 @@
             value = stack_pointer[-1];
             if (!PyStackRef_BoolCheck(value)) {
                 UPDATE_MISS_STATS(TO_BOOL);
-                assert(_PyOpcode_Deopt[opcode] == (TO_BOOL));
+                assert(_TyOpcode_Deopt[opcode] == (TO_BOOL));
                 JUMP_TO_PREDICTED(TO_BOOL);
             }
             STAT_INC(TO_BOOL, hit);
@@ -11791,7 +11791,7 @@
             TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
             if (!TyLong_CheckExact(value_o)) {
                 UPDATE_MISS_STATS(TO_BOOL);
-                assert(_PyOpcode_Deopt[opcode] == (TO_BOOL));
+                assert(_TyOpcode_Deopt[opcode] == (TO_BOOL));
                 JUMP_TO_PREDICTED(TO_BOOL);
             }
             STAT_INC(TO_BOOL, hit);
@@ -11832,7 +11832,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(tos);
                 if (!TyList_CheckExact(o)) {
                     UPDATE_MISS_STATS(TO_BOOL);
-                    assert(_PyOpcode_Deopt[opcode] == (TO_BOOL));
+                    assert(_TyOpcode_Deopt[opcode] == (TO_BOOL));
                     JUMP_TO_PREDICTED(TO_BOOL);
                 }
             }
@@ -11873,7 +11873,7 @@
             value = stack_pointer[-1];
             if (!PyStackRef_IsNone(value)) {
                 UPDATE_MISS_STATS(TO_BOOL);
-                assert(_PyOpcode_Deopt[opcode] == (TO_BOOL));
+                assert(_TyOpcode_Deopt[opcode] == (TO_BOOL));
                 JUMP_TO_PREDICTED(TO_BOOL);
             }
             STAT_INC(TO_BOOL, hit);
@@ -11901,7 +11901,7 @@
                 TyObject *value_o = PyStackRef_AsPyObjectBorrow(value);
                 if (!TyUnicode_CheckExact(value_o)) {
                     UPDATE_MISS_STATS(TO_BOOL);
-                    assert(_PyOpcode_Deopt[opcode] == (TO_BOOL));
+                    assert(_TyOpcode_Deopt[opcode] == (TO_BOOL));
                     JUMP_TO_PREDICTED(TO_BOOL);
                 }
             }
@@ -12104,7 +12104,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(tos);
                 if (!TyList_CheckExact(o)) {
                     UPDATE_MISS_STATS(UNPACK_SEQUENCE);
-                    assert(_PyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
+                    assert(_TyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
                     JUMP_TO_PREDICTED(UNPACK_SEQUENCE);
                 }
             }
@@ -12117,14 +12117,14 @@
                 assert(TyList_CheckExact(seq_o));
                 if (!LOCK_OBJECT(seq_o)) {
                     UPDATE_MISS_STATS(UNPACK_SEQUENCE);
-                    assert(_PyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
+                    assert(_TyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
                     JUMP_TO_PREDICTED(UNPACK_SEQUENCE);
                 }
                 if (TyList_GET_SIZE(seq_o) != oparg) {
                     UNLOCK_OBJECT(seq_o);
                     if (true) {
                         UPDATE_MISS_STATS(UNPACK_SEQUENCE);
-                        assert(_PyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
+                        assert(_TyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
                         JUMP_TO_PREDICTED(UNPACK_SEQUENCE);
                     }
                 }
@@ -12163,7 +12163,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(tos);
                 if (!TyTuple_CheckExact(o)) {
                     UPDATE_MISS_STATS(UNPACK_SEQUENCE);
-                    assert(_PyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
+                    assert(_TyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
                     JUMP_TO_PREDICTED(UNPACK_SEQUENCE);
                 }
             }
@@ -12176,7 +12176,7 @@
                 assert(TyTuple_CheckExact(seq_o));
                 if (TyTuple_GET_SIZE(seq_o) != oparg) {
                     UPDATE_MISS_STATS(UNPACK_SEQUENCE);
-                    assert(_PyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
+                    assert(_TyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
                     JUMP_TO_PREDICTED(UNPACK_SEQUENCE);
                 }
                 STAT_INC(UNPACK_SEQUENCE, hit);
@@ -12214,7 +12214,7 @@
                 TyObject *o = PyStackRef_AsPyObjectBorrow(tos);
                 if (!TyTuple_CheckExact(o)) {
                     UPDATE_MISS_STATS(UNPACK_SEQUENCE);
-                    assert(_PyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
+                    assert(_TyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
                     JUMP_TO_PREDICTED(UNPACK_SEQUENCE);
                 }
             }
@@ -12227,7 +12227,7 @@
                 assert(TyTuple_CheckExact(seq_o));
                 if (TyTuple_GET_SIZE(seq_o) != 2) {
                     UPDATE_MISS_STATS(UNPACK_SEQUENCE);
-                    assert(_PyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
+                    assert(_TyOpcode_Deopt[opcode] == (UNPACK_SEQUENCE));
                     JUMP_TO_PREDICTED(UNPACK_SEQUENCE);
                 }
                 STAT_INC(UNPACK_SEQUENCE, hit);
@@ -12320,10 +12320,10 @@
             #if TIER_ONE
             assert(frame->instr_ptr->op.code == INSTRUMENTED_LINE ||
                   frame->instr_ptr->op.code == INSTRUMENTED_INSTRUCTION ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == SEND ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == FOR_ITER ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == INTERPRETER_EXIT ||
-                  _PyOpcode_Deopt[frame->instr_ptr->op.code] == ENTER_EXECUTOR);
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == SEND ||
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == FOR_ITER ||
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == INTERPRETER_EXIT ||
+                  _TyOpcode_Deopt[frame->instr_ptr->op.code] == ENTER_EXECUTOR);
             #endif
             stack_pointer = _TyFrame_GetStackPointer(frame);
             LOAD_IP(1 + INLINE_CACHE_ENTRIES_SEND);

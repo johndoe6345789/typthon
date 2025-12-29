@@ -650,7 +650,7 @@ static TyMethodDef heapq_methods[] = {
     {NULL, NULL}           /* sentinel */
 };
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "Heap queue algorithm (a.k.a. priority queue).\n\
 \n\
 Heaps are arrays for which a[k] <= a[2*k+1] and a[k] <= a[2*k+2] for\n\
@@ -681,7 +681,7 @@ without surprises: heap[0] is the smallest item, and heap.sort()\n\
 maintains the heap invariant!\n");
 
 
-PyDoc_STRVAR(__about__,
+TyDoc_STRVAR(__about__,
 "Heap queues\n\
 \n\
 [explanation by Fran\xc3\xa7ois Pinard]\n\

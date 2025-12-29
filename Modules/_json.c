@@ -542,7 +542,7 @@ bail:
     return NULL;
 }
 
-PyDoc_STRVAR(pydoc_scanstring,
+TyDoc_STRVAR(pydoc_scanstring,
     "scanstring(string, end, strict=True) -> (string, end)\n"
     "\n"
     "Scan the string s for a JSON string. End is the index of the\n"
@@ -578,7 +578,7 @@ py_scanstring(TyObject* Py_UNUSED(self), TyObject *args)
     return _build_rval_index_tuple(rval, next_end);
 }
 
-PyDoc_STRVAR(pydoc_encode_basestring_ascii,
+TyDoc_STRVAR(pydoc_encode_basestring_ascii,
     "encode_basestring_ascii(string) -> string\n"
     "\n"
     "Return an ASCII-only JSON representation of a Python string"
@@ -603,7 +603,7 @@ py_encode_basestring_ascii(TyObject* Py_UNUSED(self), TyObject *pystr)
 }
 
 
-PyDoc_STRVAR(pydoc_encode_basestring,
+TyDoc_STRVAR(pydoc_encode_basestring,
     "encode_basestring(string) -> string\n"
     "\n"
     "Return a JSON representation of a Python string"
@@ -1201,7 +1201,7 @@ bail:
     return NULL;
 }
 
-PyDoc_STRVAR(scanner_doc, "JSON scanner object");
+TyDoc_STRVAR(scanner_doc, "JSON scanner object");
 
 static TyType_Slot PyScannerType_slots[] = {
     {Ty_tp_doc, (void *)scanner_doc},
@@ -1864,7 +1864,7 @@ encoder_clear(TyObject *op)
     return 0;
 }
 
-PyDoc_STRVAR(encoder_doc, "Encoder(markers, default, encoder, indent, key_separator, item_separator, sort_keys, skipkeys, allow_nan)");
+TyDoc_STRVAR(encoder_doc, "Encoder(markers, default, encoder, indent, key_separator, item_separator, sort_keys, skipkeys, allow_nan)");
 
 static TyType_Slot PyEncoderType_slots[] = {
     {Ty_tp_doc, (void *)encoder_doc},
@@ -1901,7 +1901,7 @@ static TyMethodDef speedups_methods[] = {
     {NULL, NULL, 0, NULL}
 };
 
-PyDoc_STRVAR(module_doc,
+TyDoc_STRVAR(module_doc,
 "json speedups\n");
 
 static int

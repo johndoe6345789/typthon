@@ -21,7 +21,7 @@
 #include "pycore_fileutils.h"     // _Ty_normpath()
 #include "pycore_flowgraph.h"     // _PyCompile_OptimizeCfg()
 #include "pycore_frame.h"         // _PyInterpreterFrame
-#include "pycore_function.h"      // _PyFunction_GET_BUILTINS
+#include "pycore_function.h"      // _TyFunction_GET_BUILTINS
 #include "pycore_gc.h"            // TyGC_Head
 #include "pycore_hashtable.h"     // _Ty_hashtable_new()
 #include "pycore_import.h"        // _TyImport_ClearExtension()
@@ -826,7 +826,7 @@ get_interp_settings(TyObject *self, TyObject *args)
         return NULL;
     }
 
-    PyInterpreterState *interp = NULL;
+    TyInterpreterState *interp = NULL;
     if (interpid < 0) {
         TyThreadState *tstate = _TyThreadState_GET();
         interp = tstate ? tstate->interp : _TyInterpreterState_Main();
@@ -1023,7 +1023,7 @@ get_code_var_counts(TyObject *self, TyObject *_args, TyObject *_kwargs)
             globalsns = TyFunction_GET_GLOBALS(codearg);
         }
         if (builtinsns == NULL) {
-            builtinsns = _PyFunction_GET_BUILTINS(codearg);
+            builtinsns = _TyFunction_GET_BUILTINS(codearg);
         }
         codearg = TyFunction_GET_CODE(codearg);
     }
@@ -1191,7 +1191,7 @@ verify_stateless_code(TyObject *self, TyObject *args, TyObject *kwargs)
             globalsns = TyFunction_GET_GLOBALS(codearg);
         }
         if (builtinsns == NULL) {
-            builtinsns = _PyFunction_GET_BUILTINS(codearg);
+            builtinsns = _TyFunction_GET_BUILTINS(codearg);
         }
         codearg = TyFunction_GET_CODE(codearg);
     }
@@ -1227,7 +1227,7 @@ add_executor_dependency(TyObject *self, TyObject *args)
 static TyObject *
 invalidate_executors(TyObject *self, TyObject *obj)
 {
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
     _Ty_Executors_InvalidateDependency(interp, obj, 1);
     Py_RETURN_NONE;
 }
@@ -1262,7 +1262,7 @@ pending_threadfunc(TyObject *self, TyObject *args, TyObject *kwargs)
     {
         return NULL;
     }
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
 
     /* create the reference for the callbackwhile we hold the lock */
     for (unsigned int i = 0; i < num; i++) {
@@ -1311,11 +1311,11 @@ static struct {
 static int
 _pending_identify_callback(void *arg)
 {
-    PyThread_type_lock mutex = (PyThread_type_lock)arg;
+    TyThread_type_lock mutex = (TyThread_type_lock)arg;
     assert(pending_identify_result.interpid == -1);
     TyThreadState *tstate = TyThreadState_Get();
     pending_identify_result.interpid = TyInterpreterState_GetID(tstate->interp);
-    PyThread_release_lock(mutex);
+    TyThread_release_lock(mutex);
     return 0;
 }
 
@@ -1326,7 +1326,7 @@ pending_identify(TyObject *self, TyObject *args)
     if (!TyArg_ParseTuple(args, "O:pending_identify", &interpid)) {
         return NULL;
     }
-    PyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(interpid);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(interpid);
     if (interp == NULL) {
         if (!TyErr_Occurred()) {
             TyErr_SetString(TyExc_ValueError, "interpreter not found");
@@ -1336,11 +1336,11 @@ pending_identify(TyObject *self, TyObject *args)
 
     pending_identify_result.interpid = -1;
 
-    PyThread_type_lock mutex = PyThread_allocate_lock();
+    TyThread_type_lock mutex = TyThread_allocate_lock();
     if (mutex == NULL) {
         return NULL;
     }
-    PyThread_acquire_lock(mutex, WAIT_LOCK);
+    TyThread_acquire_lock(mutex, WAIT_LOCK);
     /* It gets released in _pending_identify_callback(). */
 
     _Ty_add_pending_call_result r;
@@ -1355,9 +1355,9 @@ pending_identify(TyObject *self, TyObject *args)
     } while (r == _Ty_ADD_PENDING_FULL);
 
     /* Wait for the pending call to complete. */
-    PyThread_acquire_lock(mutex, WAIT_LOCK);
-    PyThread_release_lock(mutex);
-    PyThread_free_lock(mutex);
+    TyThread_acquire_lock(mutex, WAIT_LOCK);
+    TyThread_release_lock(mutex);
+    TyThread_free_lock(mutex);
 
     TyObject *res = TyLong_FromLongLong(pending_identify_result.interpid);
     pending_identify_result.interpid = -1;
@@ -1581,14 +1581,14 @@ _init_interp_config_from_object(PyInterpreterConfig *config, TyObject *obj)
     return 0;
 }
 
-static PyInterpreterState *
+static TyInterpreterState *
 _new_interpreter(PyInterpreterConfig *config, long whence)
 {
     if (whence == _TyInterpreterState_WHENCE_XI) {
         return _PyXI_NewInterpreter(config, &whence, NULL, NULL);
     }
     TyObject *exc = NULL;
-    PyInterpreterState *interp = NULL;
+    TyInterpreterState *interp = NULL;
     if (whence == _TyInterpreterState_WHENCE_UNKNOWN) {
         assert(config == NULL);
         interp = TyInterpreterState_New();
@@ -1674,7 +1674,7 @@ create_interpreter(TyObject *self, TyObject *args, TyObject *kwargs)
     }
 
     // Create the interpreter.
-    PyInterpreterState *interp = _new_interpreter(config, whence);
+    TyInterpreterState *interp = _new_interpreter(config, whence);
     if (interp == NULL) {
         return NULL;
     }
@@ -1704,7 +1704,7 @@ destroy_interpreter(TyObject *self, TyObject *args, TyObject *kwargs)
         return NULL;
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
     if (interp == NULL) {
         return NULL;
     }
@@ -1749,7 +1749,7 @@ exec_interpreter(TyObject *self, TyObject *args, TyObject *kwargs)
         return NULL;
     }
 
-    PyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
     if (interp == NULL) {
         return NULL;
     }
@@ -1821,7 +1821,7 @@ run_in_subinterp_with_config(TyObject *self, TyObject *args, TyObject *kwargs)
         TyThreadState *tstate;
 
         /* Create an interpreter, staying switched to it. */
-        PyInterpreterState *interp = \
+        TyInterpreterState *interp = \
                 _PyXI_NewInterpreter(&config, NULL, &tstate, &save_tstate);
         if (interp == NULL) {
             return NULL;
@@ -1892,7 +1892,7 @@ unused_interpreter_id(TyObject *self, TyObject *Py_UNUSED(ignored))
 static TyObject *
 interpreter_exists(TyObject *self, TyObject *idobj)
 {
-    PyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
     if (interp == NULL) {
         if (TyErr_ExceptionMatches(TyExc_InterpreterNotFoundError)) {
             TyErr_Clear();
@@ -1907,7 +1907,7 @@ interpreter_exists(TyObject *self, TyObject *idobj)
 static TyObject *
 get_interpreter_refcount(TyObject *self, TyObject *idobj)
 {
-    PyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
     if (interp == NULL) {
         return NULL;
     }
@@ -1917,7 +1917,7 @@ get_interpreter_refcount(TyObject *self, TyObject *idobj)
 static TyObject *
 link_interpreter_refcount(TyObject *self, TyObject *idobj)
 {
-    PyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
     if (interp == NULL) {
         assert(TyErr_Occurred());
         return NULL;
@@ -1929,7 +1929,7 @@ link_interpreter_refcount(TyObject *self, TyObject *idobj)
 static TyObject *
 unlink_interpreter_refcount(TyObject *self, TyObject *idobj)
 {
-    PyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
     if (interp == NULL) {
         assert(TyErr_Occurred());
         return NULL;
@@ -1941,7 +1941,7 @@ unlink_interpreter_refcount(TyObject *self, TyObject *idobj)
 static TyObject *
 interpreter_refcount_linked(TyObject *self, TyObject *idobj)
 {
-    PyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
+    TyInterpreterState *interp = _TyInterpreterState_LookUpIDObject(idobj);
     if (interp == NULL) {
         return NULL;
     }
@@ -2022,7 +2022,7 @@ get_crossinterp_data(TyObject *self, TyObject *args, TyObject *kwargs)
         }
     }
     else if (strcmp(mode, "func") == 0) {
-        if (_PyFunction_GetXIData(tstate, obj, xidata) != 0) {
+        if (_TyFunction_GetXIData(tstate, obj, xidata) != 0) {
             goto error;
         }
     }
@@ -2161,7 +2161,7 @@ perf_trampoline_set_persist_after_fork(TyObject *self, TyObject *args)
 static TyObject *
 get_rare_event_counters(TyObject *self, TyObject *type)
 {
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
 
     return Ty_BuildValue(
         "{sksksksksk}",
@@ -2176,7 +2176,7 @@ get_rare_event_counters(TyObject *self, TyObject *type)
 static TyObject *
 reset_rare_event_counters(TyObject *self, TyObject *Py_UNUSED(type))
 {
-    PyInterpreterState *interp = TyInterpreterState_Get();
+    TyInterpreterState *interp = TyInterpreterState_Get();
 
     interp->rare_events.set_class = 0;
     interp->rare_events.set_bases = 0;
@@ -2299,7 +2299,7 @@ static TyObject *
 get_next_dict_keys_version_impl(TyObject *module)
 /*[clinic end generated code: output=e5405a509cf9d423 input=bd1cee7c6b9d3a3c]*/
 {
-    PyInterpreterState *interp = _TyInterpreterState_GET();
+    TyInterpreterState *interp = _TyInterpreterState_GET();
     uint32_t keys_version = interp->dict_state.next_keys_version;
     return TyLong_FromLong(keys_version);
 }
@@ -2430,7 +2430,7 @@ static TyMethodDef module_functions[] = {
     {"has_inline_values", has_inline_values, METH_O},
     {"has_split_table", has_split_table, METH_O},
     {"type_assign_specific_version_unsafe", type_assign_specific_version_unsafe, METH_VARARGS,
-     PyDoc_STR("forcefully assign type->tp_version_tag")},
+     TyDoc_STR("forcefully assign type->tp_version_tag")},
 
 #ifdef Ty_GIL_DISABLED
     {"py_thread_id", get_py_thread_id, METH_NOARGS},

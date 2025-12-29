@@ -5,7 +5,7 @@
 #include "pycore_call.h"          // _TyObject_CallMethodFormat()
 #include "pycore_fileutils.h"     // _Ty_BEGIN_SUPPRESS_IPH
 #include "pycore_frame.h"         // PyFrameObject
-#include "pycore_interp.h"        // PyInterpreterState.gc
+#include "pycore_interp.h"        // TyInterpreterState.gc
 #include "pycore_interpframe.h"   // _TyFrame_GetCode()
 #include "pycore_pyerrors.h"      // _TyErr_GetRaisedException()
 #include "pycore_pystate.h"       // _TyThreadState_GET()
@@ -260,7 +260,7 @@ tb_clear(TyObject *op)
 }
 
 TyTypeObject PyTraceBack_Type = {
-    PyVarObject_HEAD_INIT(&TyType_Type, 0)
+    TyVarObject_HEAD_INIT(&TyType_Type, 0)
     "traceback",
     sizeof(PyTracebackObject),
     0,
@@ -1030,7 +1030,7 @@ tstate_is_freed(TyThreadState *tstate)
 
 
 static int
-interp_is_freed(PyInterpreterState *interp)
+interp_is_freed(TyInterpreterState *interp)
 {
     return _TyMem_IsPtrFreed(interp);
 }
@@ -1154,7 +1154,7 @@ write_thread_id(int fd, TyThreadState *tstate, int is_current)
    The caller is responsible to call TyErr_CheckSignals() to call Python signal
    handlers if signals were received. */
 const char*
-_Ty_DumpTracebackThreads(int fd, PyInterpreterState *interp,
+_Ty_DumpTracebackThreads(int fd, TyInterpreterState *interp,
                          TyThreadState *current_tstate)
 {
     if (current_tstate == NULL) {
