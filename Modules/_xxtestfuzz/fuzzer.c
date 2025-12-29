@@ -582,8 +582,8 @@ int __lsan_is_turned_off(void) { return 1; }
 
 
 int LLVMFuzzerInitialize(int *argc, char ***argv) {
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
     config.install_signal_handlers = 0;
     /* Raise the limit above the default allows exercising larger things
      * now that we fall back to the _pylong module for large values. */

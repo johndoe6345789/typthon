@@ -997,7 +997,7 @@ specialize_dict_access_inline(
     _PyAttrCache *cache = (_PyAttrCache *)(instr + 1);
     PyDictKeysObject *keys = ((PyHeapTypeObject *)type)->ht_cached_keys;
     assert(TyUnicode_CheckExact(name));
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(owner);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(owner);
     Ty_ssize_t index = _PyDictKeys_StringLookupSplit(keys, name);
     assert (index != DKIX_ERROR);
     if (index == DKIX_EMPTY) {
@@ -1026,7 +1026,7 @@ specialize_dict_access_hint(
 {
     _PyAttrCache *cache = (_PyAttrCache *)(instr + 1);
 
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(dict);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(dict);
 #ifdef Ty_GIL_DISABLED
     _TyDict_EnsureSharedOnRead(dict);
 #endif

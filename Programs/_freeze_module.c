@@ -45,7 +45,7 @@ static const char header[] =
 static void
 runtime_init(void)
 {
-    PyConfig config;
+    TyConfig config;
     TyConfig_InitIsolatedConfig(&config);
 
     config.site_import = 0;

@@ -1561,7 +1561,7 @@ _TyImport_CheckGILForModule(TyObject* module, TyObject *module_name)
             }
         }
 
-        const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
+        const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
         if (config->enable_gil == _TyConfig_GIL_DEFAULT && config->verbose) {
             TySys_FormatStderr("# loading module '%U', which requires the GIL\n",
                                module_name);
@@ -4610,7 +4610,7 @@ _imp._override_frozen_modules_for_tests
     override: int
     /
 
-(internal-only) Override PyConfig.use_frozen_modules.
+(internal-only) Override TyConfig.use_frozen_modules.
 
 (-1: "off", 1: "on", 0: no override)
 See frozen_modules() in Lib/test/support/import_helper.py.

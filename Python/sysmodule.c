@@ -425,7 +425,7 @@ _TySys_ClearAuditHooks(TyThreadState *ts)
         return;
     }
 
-    const PyConfig *config = _TyInterpreterState_GetConfig(ts->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(ts->interp);
     if (config->verbose) {
         TySys_WriteStderr("# clear sys.audit hooks\n");
     }
@@ -953,7 +953,7 @@ sys_getfilesystemencoding_impl(TyObject *module)
 /*[clinic end generated code: output=1dc4bdbe9be44aa7 input=8475f8649b8c7d8c]*/
 {
     TyInterpreterState *interp = _TyInterpreterState_GET();
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     if (wcscmp(config->filesystem_encoding, L"utf-8") == 0) {
         return get_utf8_unicode();
@@ -978,7 +978,7 @@ sys_getfilesystemencodeerrors_impl(TyObject *module)
 /*[clinic end generated code: output=ba77b36bbf7c96f5 input=22a1e8365566f1e5]*/
 {
     TyInterpreterState *interp = _TyInterpreterState_GET();
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
     TyObject *u = TyUnicode_FromWideChar(config->filesystem_errors, -1);
     if (u == NULL) {
         return NULL;
@@ -2446,7 +2446,7 @@ sys_is_remote_debug_enabled_impl(TyObject *module)
 #if !defined(Ty_REMOTE_DEBUG) || !defined(Ty_SUPPORTS_REMOTE_DEBUG)
     Py_RETURN_FALSE;
 #else
-    const PyConfig *config = _Ty_GetConfig();
+    const TyConfig *config = _Ty_GetConfig();
     return TyBool_FromLong(config->remote_debug);
 #endif
 }
@@ -2614,14 +2614,14 @@ sys__getframemodulename_impl(TyObject *module, int depth)
 /*[clinic input]
 sys._get_cpu_count_config -> int
 
-Private function for getting PyConfig.cpu_count
+Private function for getting TyConfig.cpu_count
 [clinic start generated code]*/
 
 static int
 sys__get_cpu_count_config_impl(TyObject *module)
 /*[clinic end generated code: output=36611bb5efad16dc input=523e1ade2204084e]*/
 {
-    const PyConfig *config = _Ty_GetConfig();
+    const TyConfig *config = _Ty_GetConfig();
     return config->cpu_count;
 }
 
@@ -2988,7 +2988,7 @@ _TySys_ReadPreinitWarnOptions(PyWideStringList *options)
 
 
 TyStatus
-_TySys_ReadPreinitXOptions(PyConfig *config)
+_TySys_ReadPreinitXOptions(TyConfig *config)
 {
     TyStatus status;
     _Ty_PreInitEntry entry;
@@ -3406,7 +3406,7 @@ static int
 set_flags_from_config(TyInterpreterState *interp, TyObject *flags)
 {
     const TyPreConfig *preconfig = &interp->runtime->preconfig;
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     // _TySys_UpdateConfig() modifies sys.flags in-place:
     // Ty_XDECREF() is needed in this case.
@@ -3889,14 +3889,14 @@ err_occurred:
 }
 
 
-// Update sys attributes for a new PyConfig configuration.
+// Update sys attributes for a new TyConfig configuration.
 // This function also adds attributes that _TySys_InitCore() didn't add.
 int
 _TySys_UpdateConfig(TyThreadState *tstate)
 {
     TyInterpreterState *interp = tstate->interp;
     TyObject *sysdict = interp->sysdict;
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
     int res;
 
 #define COPY_LIST(KEY, VALUE) \

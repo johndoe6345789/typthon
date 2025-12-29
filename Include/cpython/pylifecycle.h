@@ -23,7 +23,7 @@ PyAPI_FUNC(TyStatus) Ty_PreInitializeFromArgs(
 /* Initialization and finalization */
 
 PyAPI_FUNC(TyStatus) Ty_InitializeFromConfig(
-    const PyConfig *config);
+    const TyConfig *config);
 
 PyAPI_FUNC(int) Ty_RunMain(void);
 

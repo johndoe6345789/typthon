@@ -399,7 +399,7 @@ _Ty_SetLocaleFromEnv(int category)
 static int
 interpreter_update_config(TyThreadState *tstate, int only_update_path_config)
 {
-    const PyConfig *config = &tstate->interp->config;
+    const TyConfig *config = &tstate->interp->config;
 
     if (!only_update_path_config) {
         TyStatus status = _TyConfig_Write(config, tstate->interp->runtime);
@@ -442,7 +442,7 @@ interpreter_update_config(TyThreadState *tstate, int only_update_path_config)
 static TyStatus
 pyinit_core_reconfigure(_PyRuntimeState *runtime,
                         TyThreadState **tstate_p,
-                        const PyConfig *config)
+                        const TyConfig *config)
 {
     TyStatus status;
     TyThreadState *tstate = _TyThreadState_GET();
@@ -480,7 +480,7 @@ pyinit_core_reconfigure(_PyRuntimeState *runtime,
 
 static TyStatus
 pycore_init_runtime(_PyRuntimeState *runtime,
-                    const PyConfig *config)
+                    const TyConfig *config)
 {
     if (runtime->initialized) {
         return _TyStatus_ERR("main interpreter already initialized");
@@ -610,7 +610,7 @@ builtins_dict_watcher(TyDict_WatchEvent event, TyObject *dict, TyObject *key, Ty
 
 static TyStatus
 pycore_create_interpreter(_PyRuntimeState *runtime,
-                          const PyConfig *src_config,
+                          const TyConfig *src_config,
                           TyThreadState **tstate_p)
 {
     TyStatus status;
@@ -920,7 +920,7 @@ pycore_interp_init(TyThreadState *tstate)
         goto done;
     }
 
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     status = _TyImport_InitCore(tstate, sysmod, config->_install_importlib);
     if (_TyStatus_EXCEPTION(status)) {
@@ -937,7 +937,7 @@ done:
 static TyStatus
 pyinit_config(_PyRuntimeState *runtime,
               TyThreadState **tstate_p,
-              const PyConfig *config)
+              const TyConfig *config)
 {
     TyStatus status = pycore_init_runtime(runtime, config);
     if (_TyStatus_EXCEPTION(status)) {
@@ -1033,7 +1033,7 @@ Ty_PreInitialize(const TyPreConfig *src_config)
 
 
 TyStatus
-_Ty_PreInitializeFromConfig(const PyConfig *config,
+_Ty_PreInitializeFromConfig(const TyConfig *config,
                             const _PyArgv *args)
 {
     assert(config != NULL);
@@ -1088,7 +1088,7 @@ _Ty_PreInitializeFromConfig(const PyConfig *config,
  */
 static TyStatus
 pyinit_core(_PyRuntimeState *runtime,
-            const PyConfig *src_config,
+            const TyConfig *src_config,
             TyThreadState **tstate_p)
 {
     TyStatus status;
@@ -1098,8 +1098,8 @@ pyinit_core(_PyRuntimeState *runtime,
         return status;
     }
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     status = _TyConfig_Copy(&config, src_config);
     if (_TyStatus_EXCEPTION(status)) {
@@ -1147,7 +1147,7 @@ static void
 run_presite(TyThreadState *tstate)
 {
     TyInterpreterState *interp = tstate->interp;
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     if (!config->run_presite) {
         return;
@@ -1181,7 +1181,7 @@ init_interp_main(TyThreadState *tstate)
     TyStatus status;
     int is_main_interp = _Ty_IsMainInterpreter(tstate->interp);
     TyInterpreterState *interp = tstate->interp;
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     if (!config->_install_importlib) {
         /* Special mode for freeze_importlib: run with no import system
@@ -1419,7 +1419,7 @@ pyinit_main(TyThreadState *tstate)
 
 
 TyStatus
-Ty_InitializeFromConfig(const PyConfig *config)
+Ty_InitializeFromConfig(const TyConfig *config)
 {
     if (config == NULL) {
         return _TyStatus_ERR("initialization config is NULL");
@@ -1467,7 +1467,7 @@ Ty_InitializeEx(int install_sigs)
         return;
     }
 
-    PyConfig config;
+    TyConfig config;
     _TyConfig_InitCompatConfig(&config);
 
     config.install_signal_handlers = install_sigs;
@@ -2319,7 +2319,7 @@ new_interpreter(TyThreadState **tstate_p,
     }
 
     /* Copy the current interpreter config into the new interpreter */
-    const PyConfig *src_config;
+    const TyConfig *src_config;
     if (save_tstate != NULL) {
         src_config = _TyInterpreterState_GetConfig(save_tstate->interp);
     }
@@ -2619,7 +2619,7 @@ init_import_site(void)
 
 /* returns Ty_None if the fd is not valid */
 static TyObject*
-create_stdio(const PyConfig *config, TyObject* io,
+create_stdio(const TyConfig *config, TyObject* io,
     int fd, int write_mode, const char* name,
     const wchar_t* encoding, const wchar_t* errors)
 {
@@ -2800,7 +2800,7 @@ init_sys_streams(TyThreadState *tstate)
     int fd;
     TyObject * encoding_attr;
     TyStatus res = _TyStatus_OK();
-    const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
 
     /* Check that stdin is not a directory
        Using shell redirection, you can redirect stdin to a directory,

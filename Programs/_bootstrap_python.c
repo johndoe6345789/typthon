@@ -54,7 +54,7 @@ main(int argc, char **argv)
 {
     TyStatus status;
 
-    PyConfig config;
+    TyConfig config;
     TyConfig_InitIsolatedConfig(&config);
     // don't warn, pybuilddir.txt does not exist yet
     config.pathconfig_warnings = 0;

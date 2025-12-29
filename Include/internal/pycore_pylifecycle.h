@@ -33,11 +33,11 @@ extern TyStatus _TySys_Create(
     TyThreadState *tstate,
     TyObject **sysmod_p);
 extern TyStatus _TySys_ReadPreinitWarnOptions(PyWideStringList *options);
-extern TyStatus _TySys_ReadPreinitXOptions(PyConfig *config);
+extern TyStatus _TySys_ReadPreinitXOptions(TyConfig *config);
 extern int _TySys_UpdateConfig(TyThreadState *tstate);
 extern void _TySys_FiniTypes(TyInterpreterState *interp);
 extern int _PyBuiltins_AddExceptions(TyObject * bltinmod);
-extern TyStatus _Ty_HashRandomization_Init(const PyConfig *);
+extern TyStatus _Ty_HashRandomization_Init(const TyConfig *);
 
 extern TyStatus _TyGC_Init(TyInterpreterState *interp);
 extern TyStatus _PyAtExit_Init(TyInterpreterState *interp);
@@ -70,7 +70,7 @@ extern TyStatus _Ty_PreInitializeFromPyArgv(
     const TyPreConfig *src_config,
     const struct _PyArgv *args);
 extern TyStatus _Ty_PreInitializeFromConfig(
-    const PyConfig *config,
+    const TyConfig *config,
     const struct _PyArgv *args);
 
 extern wchar_t * _Ty_GetStdlibDir(void);

@@ -397,7 +397,7 @@ TyDoc_STRVAR(_imp__override_frozen_modules_for_tests__doc__,
 "_override_frozen_modules_for_tests($module, override, /)\n"
 "--\n"
 "\n"
-"(internal-only) Override PyConfig.use_frozen_modules.\n"
+"(internal-only) Override TyConfig.use_frozen_modules.\n"
 "\n"
 "(-1: \"off\", 1: \"on\", 0: no override)\n"
 "See frozen_modules() in Lib/test/support/import_helper.py.");

@@ -40,8 +40,8 @@ _Ty_COMP_DIAG_POP
 
 
 /* Set Ty_FileSystemDefaultEncoding and Ty_FileSystemDefaultEncodeErrors
-   global configuration variables to PyConfig.filesystem_encoding and
-   PyConfig.filesystem_errors (encoded to UTF-8).
+   global configuration variables to TyConfig.filesystem_encoding and
+   TyConfig.filesystem_errors (encoded to UTF-8).
 
    Function called by _TyUnicode_InitEncodings(). */
 int
@@ -159,7 +159,7 @@ precmdline_set_preconfig(const _PyPreCmdline *cmdline, TyPreConfig *config)
 
 
 TyStatus
-_PyPreCmdline_SetConfig(const _PyPreCmdline *cmdline, PyConfig *config)
+_PyPreCmdline_SetConfig(const _PyPreCmdline *cmdline, TyConfig *config)
 {
 #define COPY_ATTR(ATTR) \
     config->ATTR = cmdline->ATTR
@@ -357,7 +357,7 @@ _TyPreConfig_InitFromPreConfig(TyPreConfig *config,
 
 
 void
-_TyPreConfig_InitFromConfig(TyPreConfig *preconfig, const PyConfig *config)
+_TyPreConfig_InitFromConfig(TyPreConfig *preconfig, const TyConfig *config)
 {
     _PyConfigInitEnum config_init = (_PyConfigInitEnum)config->_config_init;
     switch (config_init) {
@@ -446,7 +446,7 @@ fail:
 
 
 void
-_TyPreConfig_GetConfig(TyPreConfig *preconfig, const PyConfig *config)
+_TyPreConfig_GetConfig(TyPreConfig *preconfig, const TyConfig *config)
 {
 #define COPY_ATTR(ATTR) \
     if (config->ATTR != -1) { \

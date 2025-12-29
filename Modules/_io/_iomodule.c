@@ -321,7 +321,7 @@ _io_open_impl(TyObject *module, TyObject *file, const char *mode,
     {
         TyObject *RawIO_class = (TyObject *)state->PyFileIO_Type;
 #ifdef HAVE_WINDOWS_CONSOLE_IO
-        const PyConfig *config = _Py_GetConfig();
+        const TyConfig *config = _Py_GetConfig();
         if (!config->legacy_windows_stdio && _PyIO_get_console_type(path_or_fd) != '\0') {
             RawIO_class = (TyObject *)state->PyWindowsConsoleIO_Type;
             encoding = "utf-8";

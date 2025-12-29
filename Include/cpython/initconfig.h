@@ -48,7 +48,7 @@ typedef struct TyPreConfig {
     int _config_init;     /* _PyConfigInitEnum value */
 
     /* Parse Ty_PreInitializeFromBytesArgs() arguments?
-       See PyConfig.parse_argv */
+       See TyConfig.parse_argv */
     int parse_argv;
 
     /* If greater than 0, enable isolated mode: sys.path contains
@@ -128,10 +128,10 @@ PyAPI_FUNC(void) TyPreConfig_InitPythonConfig(TyPreConfig *config);
 PyAPI_FUNC(void) TyPreConfig_InitIsolatedConfig(TyPreConfig *config);
 
 
-/* --- PyConfig ---------------------------------------------- */
+/* --- TyConfig ---------------------------------------------- */
 
 /* This structure is best documented in the Doc/c-api/init_config.rst file. */
-typedef struct PyConfig {
+typedef struct TyConfig {
     int _config_init;     /* _PyConfigInitEnum value */
 
     int isolated;
@@ -241,28 +241,28 @@ typedef struct PyConfig {
     // PYTHON_PRESITE=package.module or -X presite=package.module
     wchar_t *run_presite;
 #endif
-} PyConfig;
+} TyConfig;
 
-PyAPI_FUNC(void) TyConfig_InitPythonConfig(PyConfig *config);
-PyAPI_FUNC(void) TyConfig_InitIsolatedConfig(PyConfig *config);
-PyAPI_FUNC(void) TyConfig_Clear(PyConfig *);
+PyAPI_FUNC(void) TyConfig_InitTyphonConfig(TyConfig *config);
+PyAPI_FUNC(void) TyConfig_InitIsolatedConfig(TyConfig *config);
+PyAPI_FUNC(void) TyConfig_Clear(TyConfig *);
 PyAPI_FUNC(TyStatus) TyConfig_SetString(
-    PyConfig *config,
+    TyConfig *config,
     wchar_t **config_str,
     const wchar_t *str);
 PyAPI_FUNC(TyStatus) TyConfig_SetBytesString(
-    PyConfig *config,
+    TyConfig *config,
     wchar_t **config_str,
     const char *str);
-PyAPI_FUNC(TyStatus) TyConfig_Read(PyConfig *config);
+PyAPI_FUNC(TyStatus) TyConfig_Read(TyConfig *config);
 PyAPI_FUNC(TyStatus) TyConfig_SetBytesArgv(
-    PyConfig *config,
+    TyConfig *config,
     Ty_ssize_t argc,
     char * const *argv);
-PyAPI_FUNC(TyStatus) TyConfig_SetArgv(PyConfig *config,
+PyAPI_FUNC(TyStatus) TyConfig_SetArgv(TyConfig *config,
     Ty_ssize_t argc,
     wchar_t * const *argv);
-PyAPI_FUNC(TyStatus) TyConfig_SetWideStringList(PyConfig *config,
+PyAPI_FUNC(TyStatus) TyConfig_SetWideStringList(TyConfig *config,
     PyWideStringList *list,
     Ty_ssize_t length, wchar_t **items);
 
@@ -279,7 +279,7 @@ PyAPI_FUNC(int) TyConfig_Set(const char *name, TyObject *value);
 
 /* Get the original command line arguments, before Python modified them.
 
-   See also PyConfig.orig_argv. */
+   See also TyConfig.orig_argv. */
 PyAPI_FUNC(void) Ty_GetArgcArgv(int *argc, wchar_t ***argv);
 
 

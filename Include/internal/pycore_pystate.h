@@ -75,7 +75,7 @@ PyAPI_FUNC(void) _TyErr_SetInterpreterAlreadyRunning(void);
 
 extern int _TyThreadState_IsRunningMain(TyThreadState *);
 extern void _TyInterpreterState_ReinitRunningMain(TyThreadState *);
-extern const PyConfig* _Ty_GetMainConfig(void);
+extern const TyConfig* _Ty_GetMainConfig(void);
 
 
 /* Only handle signals on the main thread of the main interpreter. */
@@ -274,7 +274,7 @@ extern int _TyOS_InterruptOccurred(TyThreadState *tstate);
 // Get the configuration of the current interpreter.
 // The caller must hold the GIL.
 // Export for test_peg_generator.
-PyAPI_FUNC(const PyConfig*) _Ty_GetConfig(void);
+PyAPI_FUNC(const TyConfig*) _Ty_GetConfig(void);
 
 // Get the single TyInterpreterState used by this process' GILState
 // implementation.

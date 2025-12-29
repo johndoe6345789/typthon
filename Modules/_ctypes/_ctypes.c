@@ -661,7 +661,7 @@ TyType_Spec pyctype_type_spec = {
 static PyCArgObject *
 StructUnionType_paramfunc(ctypes_state *st, CDataObject *self)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
     PyCArgObject *parg;
     TyObject *obj;
     void *ptr;
@@ -1263,7 +1263,7 @@ PyCPointerType_SetProto(ctypes_state *st, TyObject *self, StgInfo *stginfo, TyOb
 static PyCArgObject *
 PyCPointerType_paramfunc(ctypes_state *st, CDataObject *self)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
     PyCArgObject *parg;
 
     parg = PyCArgObject_new(st);
@@ -1604,7 +1604,7 @@ static TyGetSetDef CharArray_getsets[] = {
 static TyObject *
 WCharArray_get_value_lock_held(TyObject *op)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(op);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(op);
     Ty_ssize_t i;
     TyObject *res;
     CDataObject *self = _CDataObject_CAST(op);
@@ -1629,7 +1629,7 @@ WCharArray_get_value(TyObject *op, void *Py_UNUSED(ignored))
 static int
 WCharArray_set_value_lock_held(TyObject *op, TyObject *value)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(op);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(op);
     CDataObject *self = _CDataObject_CAST(op);
 
     if (value == NULL) {
@@ -1705,7 +1705,7 @@ add_getset(TyTypeObject *type, TyGetSetDef *gsp)
 static PyCArgObject *
 PyCArrayType_paramfunc(ctypes_state *st, CDataObject *self)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
     PyCArgObject *p = PyCArgObject_new(st);
     if (p == NULL)
         return NULL;
@@ -2286,7 +2286,7 @@ static TyObject *CreateSwappedType(ctypes_state *st, TyTypeObject *type,
 static PyCArgObject *
 PyCSimpleType_paramfunc(ctypes_state *st, CDataObject *self)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
     const char *fmt;
     PyCArgObject *parg;
     struct fielddesc *fd;
@@ -2800,7 +2800,7 @@ make_funcptrtype_dict(ctypes_state *st, TyObject *attrdict, StgInfo *stginfo)
 static PyCArgObject *
 PyCFuncPtrType_paramfunc(ctypes_state *st, CDataObject *self)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
     PyCArgObject *parg;
 
     parg = PyCArgObject_new(st);
@@ -2934,7 +2934,7 @@ unique_key(CDataObject *target, Ty_ssize_t index)
 static int
 KeepRef_lock_held(CDataObject *target, Ty_ssize_t index, TyObject *keep)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(target);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(target);
     int result;
     CDataObject *ob;
     TyObject *key;
@@ -3403,7 +3403,7 @@ _PyCData_set(ctypes_state *st,
            CDataObject *dst, TyObject *type, SETFUNC setfunc, TyObject *value,
            Ty_ssize_t size, char *ptr)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(dst);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(dst);
     CDataObject *src;
     int err;
 
@@ -3522,7 +3522,7 @@ PyCData_set(ctypes_state *st,
           TyObject *dst, TyObject *type, SETFUNC setfunc, TyObject *value,
           Ty_ssize_t index, Ty_ssize_t size, char *ptr)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(dst);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(dst);
 
     CDataObject *mem = (CDataObject *)dst;
     TyObject *result;
@@ -4971,7 +4971,7 @@ Array_init(TyObject *self, TyObject *args, TyObject *kw)
 static TyObject *
 Array_item_lock_held(TyObject *myself, Ty_ssize_t index)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(myself);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(myself);
 
     CDataObject *self = _CDataObject_CAST(myself);
     Ty_ssize_t offset, size;
@@ -5011,7 +5011,7 @@ Array_item(TyObject *myself, Ty_ssize_t index)
 static TyObject *
 Array_subscript_lock_held(TyObject *myself, TyObject *item)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(myself);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(myself);
 
     CDataObject *self = _CDataObject_CAST(myself);
 
@@ -5140,7 +5140,7 @@ Array_subscript(TyObject *myself, TyObject *item)
 static int
 Array_ass_item_lock_held(TyObject *myself, Ty_ssize_t index, TyObject *value)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(myself);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(myself);
 
     CDataObject *self = _CDataObject_CAST(myself);
     Ty_ssize_t size, offset;
@@ -5525,7 +5525,7 @@ static TyObject *
 Pointer_item_lock_held(TyObject *myself, Ty_ssize_t index)
 {
     CDataObject *self = _CDataObject_CAST(myself);
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
     Ty_ssize_t size;
     Ty_ssize_t offset;
     TyObject *proto;
@@ -5575,7 +5575,7 @@ static int
 Pointer_ass_item_lock_held(TyObject *myself, Ty_ssize_t index, TyObject *value)
 {
     CDataObject *self = _CDataObject_CAST(myself);
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
     Ty_ssize_t size;
     Ty_ssize_t offset;
     TyObject *proto;
@@ -5630,7 +5630,7 @@ Pointer_ass_item(TyObject *self, Ty_ssize_t index, TyObject *value)
 static TyObject *
 Pointer_get_contents_lock_held(TyObject *self, void *closure)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(self);
     void *deref = *(void **)_CDataObject_CAST(self)->b_ptr;
     if (deref == NULL) {
         TyErr_SetString(TyExc_ValueError,
@@ -5661,7 +5661,7 @@ Pointer_get_contents(TyObject *self, void *closure)
 static int
 Pointer_set_contents_lock_held(TyObject *op, TyObject *value, void *closure)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(op);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(op);
     CDataObject *dst;
     TyObject *keep;
     CDataObject *self = _CDataObject_CAST(op);
@@ -5758,7 +5758,7 @@ static int
 copy_pointer_to_list_lock_held(TyObject *myself, TyObject *np, Ty_ssize_t len,
                                Ty_ssize_t start, Ty_ssize_t step)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(myself);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(myself);
     Ty_ssize_t i;
     size_t cur;
     for (cur = start, i = 0; i < len; cur += step, i++) {
@@ -6091,7 +6091,7 @@ cast_check_pointertype(ctypes_state *st, TyObject *arg)
 static TyObject *
 cast_lock_held(void *ptr, TyObject *src, TyObject *ctype)
 {
-    _Py_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(src);
+    _Ty_CRITICAL_SECTION_ASSERT_OBJECT_LOCKED(src);
     TyObject *mod = TyType_GetModuleByDef(Ty_TYPE(ctype), &_ctypesmodule);
     if (!mod) {
         TyErr_SetString(TyExc_TypeError,

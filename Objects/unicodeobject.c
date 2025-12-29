@@ -3903,7 +3903,7 @@ TyUnicode_EncodeFSDefault(TyObject *unicode)
         /* Before _TyUnicode_InitEncodings() is called, the Python codec
            machinery is not ready and so cannot be used:
            use wcstombs() in this case. */
-        const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+        const TyConfig *config = _TyInterpreterState_GetConfig(interp);
         const wchar_t *filesystem_errors = config->filesystem_errors;
         assert(filesystem_errors != NULL);
         _Ty_error_handler errors = get_error_handler_wide(filesystem_errors);
@@ -4142,7 +4142,7 @@ TyUnicode_DecodeFSDefaultAndSize(const char *s, Ty_ssize_t size)
         /* Before _TyUnicode_InitEncodings() is called, the Python codec
            machinery is not ready and so cannot be used:
            use mbstowcs() in this case. */
-        const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+        const TyConfig *config = _TyInterpreterState_GetConfig(interp);
         const wchar_t *filesystem_errors = config->filesystem_errors;
         assert(filesystem_errors != NULL);
         _Ty_error_handler errors = get_error_handler_wide(filesystem_errors);
@@ -16487,7 +16487,7 @@ static TyStatus
 init_stdio_encoding(TyInterpreterState *interp)
 {
     /* Update the stdio encoding to the normalized Python codec name. */
-    PyConfig *config = (PyConfig*)_TyInterpreterState_GetConfig(interp);
+    TyConfig *config = (TyConfig*)_TyInterpreterState_GetConfig(interp);
     if (config_get_codec_name(&config->stdio_encoding) < 0) {
         return _TyStatus_ERR("failed to get the Python codec name "
                              "of the stdio encoding");
@@ -16499,7 +16499,7 @@ init_stdio_encoding(TyInterpreterState *interp)
 static int
 init_fs_codec(TyInterpreterState *interp)
 {
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     _Ty_error_handler error_handler;
     error_handler = get_error_handler_wide(config->filesystem_errors);
@@ -16561,7 +16561,7 @@ init_fs_encoding(TyThreadState *tstate)
     /* Update the filesystem encoding to the normalized Python codec name.
        For example, replace "ANSI_X3.4-1968" (locale encoding) with "ascii"
        (Python codec name). */
-    PyConfig *config = (PyConfig*)_TyInterpreterState_GetConfig(interp);
+    TyConfig *config = (TyConfig*)_TyInterpreterState_GetConfig(interp);
     if (config_get_codec_name(&config->filesystem_encoding) < 0) {
         _Ty_DumpPathConfig(tstate);
         return _TyStatus_ERR("failed to get the Python codec "
@@ -16608,7 +16608,7 @@ int
 _TyUnicode_EnableLegacyWindowsFSEncoding(void)
 {
     TyInterpreterState *interp = _TyInterpreterState_GET();
-    PyConfig *config = (PyConfig *)_TyInterpreterState_GetConfig(interp);
+    TyConfig *config = (TyConfig *)_TyInterpreterState_GetConfig(interp);
 
     /* Set the filesystem encoding to mbcs/replace (PEP 529) */
     wchar_t *encoding = _TyMem_RawWcsdup(L"mbcs");

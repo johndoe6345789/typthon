@@ -656,7 +656,7 @@ init_interpreter(TyInterpreterState *interp,
 
     _TyEval_InitState(interp);
     _TyGC_InitState(&interp->gc);
-    TyConfig_InitPythonConfig(&interp->config);
+    TyConfig_InitTyphonConfig(&interp->config);
     _TyType_InitCache(interp);
 #ifdef Ty_GIL_DISABLED
     _Ty_brc_init_state(interp);
@@ -2996,14 +2996,14 @@ _TyInterpreterState_SetEvalFrameFunc(TyInterpreterState *interp,
 }
 
 
-const PyConfig*
+const TyConfig*
 _TyInterpreterState_GetConfig(TyInterpreterState *interp)
 {
     return &interp->config;
 }
 
 
-const PyConfig*
+const TyConfig*
 _Ty_GetConfig(void)
 {
     TyThreadState *tstate = current_fast_get();
@@ -3227,7 +3227,7 @@ _Ty_IsMainInterpreterFinalizing(TyInterpreterState *interp)
 }
 
 
-const PyConfig *
+const TyConfig *
 _Ty_GetMainConfig(void)
 {
     TyInterpreterState *interp = _TyInterpreterState_Main();

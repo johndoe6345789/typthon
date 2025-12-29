@@ -15395,7 +15395,7 @@ static TyObject *
 os_cpu_count_impl(TyObject *module)
 /*[clinic end generated code: output=5fc29463c3936a9c input=ba2f6f8980a0e2eb]*/
 {
-    const PyConfig *config = _Ty_GetConfig();
+    const TyConfig *config = _Ty_GetConfig();
     if (config->cpu_count > 0) {
         return TyLong_FromLong(config->cpu_count);
     }

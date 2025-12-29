@@ -50,8 +50,8 @@ pymain_init(const _PyArgv *args)
         return status;
     }
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     /* pass NULL as the config: config is read from command line arguments,
        environment variables, configuration files */
@@ -81,7 +81,7 @@ done:
 
 /* Non-zero if filename, command (-c) or module (-m) is set
    on the command line */
-static inline int config_run_code(const PyConfig *config)
+static inline int config_run_code(const TyConfig *config)
 {
     return (config->run_command != NULL
             || config->run_filename != NULL
@@ -91,7 +91,7 @@ static inline int config_run_code(const PyConfig *config)
 
 /* Return non-zero if stdin is a TTY or if -i command line option is used */
 static int
-stdin_is_interactive(const PyConfig *config)
+stdin_is_interactive(const TyConfig *config)
 {
     return (isatty(fileno(stdin)) || config->interactive);
 }
@@ -102,7 +102,7 @@ static int
 pymain_err_print(int *exitcode_p)
 {
     int exitcode;
-    if (_Py_HandleSystemExitAndKeyboardInterrupt(&exitcode)) {
+    if (_Ty_HandleSystemExitAndKeyboardInterrupt(&exitcode)) {
         *exitcode_p = exitcode;
         return 1;
     }
@@ -183,7 +183,7 @@ pymain_sys_path_add_path0(TyInterpreterState *interp, TyObject *path0)
 
 
 static void
-pymain_header(const PyConfig *config)
+pymain_header(const TyConfig *config)
 {
     if (config->quiet) {
         return;
@@ -201,7 +201,7 @@ pymain_header(const PyConfig *config)
 
 
 static void
-pymain_import_readline(const PyConfig *config)
+pymain_import_readline(const TyConfig *config)
 {
     if (config->isolated) {
         return;
@@ -412,7 +412,7 @@ pymain_run_file_obj(TyObject *program_name, TyObject *filename,
 }
 
 static int
-pymain_run_file(const PyConfig *config)
+pymain_run_file(const TyConfig *config)
 {
     TyObject *filename = TyUnicode_FromWideChar(config->run_filename, -1);
     if (filename == NULL) {
@@ -435,7 +435,7 @@ pymain_run_file(const PyConfig *config)
 
 
 static int
-pymain_run_startup(PyConfig *config, int *exitcode)
+pymain_run_startup(TyConfig *config, int *exitcode)
 {
     int ret;
     if (!config->use_environment) {
@@ -452,7 +452,7 @@ pymain_run_startup(PyConfig *config, int *exitcode)
         goto error;
     }
 #else
-    const char *env = _Py_GetEnv(config->use_environment, "PYTHONSTARTUP");
+    const char *env = _Ty_GetEnv(config->use_environment, "PYTHONSTARTUP");
     if (env == NULL) {
         return 0;
     }
@@ -528,7 +528,7 @@ error:
 
 
 static void
-pymain_set_inspect(PyConfig *config, int inspect)
+pymain_set_inspect(TyConfig *config, int inspect)
 {
     config->inspect = inspect;
 _Ty_COMP_DIAG_PUSH
@@ -539,7 +539,7 @@ _Ty_COMP_DIAG_POP
 
 
 static int
-pymain_run_stdin(PyConfig *config)
+pymain_run_stdin(TyConfig *config)
 {
     if (stdin_is_interactive(config)) {
         // do exit on SystemExit
@@ -565,7 +565,7 @@ pymain_run_stdin(PyConfig *config)
     }
 
     if (!isatty(fileno(stdin))
-        || _Py_GetEnv(config->use_environment, "PYTHON_BASIC_REPL")) {
+        || _Ty_GetEnv(config->use_environment, "PYTHON_BASIC_REPL")) {
         PyCompilerFlags cf = _PyCompilerFlags_INIT;
         int run = TyRun_AnyFileExFlags(stdin, "<stdin>", 0, &cf);
         return (run != 0);
@@ -575,11 +575,11 @@ pymain_run_stdin(PyConfig *config)
 
 
 static void
-pymain_repl(PyConfig *config, int *exitcode)
+pymain_repl(TyConfig *config, int *exitcode)
 {
     /* Check this environment variable at the end, to give programs the
        opportunity to set it from Python. */
-    if (!config->inspect && _Py_GetEnv(config->use_environment, "PYTHONINSPECT")) {
+    if (!config->inspect && _Ty_GetEnv(config->use_environment, "PYTHONINSPECT")) {
         pymain_set_inspect(config, 1);
     }
 
@@ -597,7 +597,7 @@ pymain_repl(PyConfig *config, int *exitcode)
     }
 
     if (!isatty(fileno(stdin))
-        || _Py_GetEnv(config->use_environment, "PYTHON_BASIC_REPL")) {
+        || _Ty_GetEnv(config->use_environment, "PYTHON_BASIC_REPL")) {
         PyCompilerFlags cf = _PyCompilerFlags_INIT;
         int run = TyRun_AnyFileExFlags(stdin, "<stdin>", 0, &cf);
         *exitcode = (run != 0);
@@ -615,7 +615,7 @@ pymain_run_python(int *exitcode)
     TyObject *main_importer_path = NULL;
     TyInterpreterState *interp = _TyInterpreterState_GET();
     /* pymain_run_stdin() modify the config */
-    PyConfig *config = (PyConfig*)_TyInterpreterState_GetConfig(interp);
+    TyConfig *config = (TyConfig*)_TyInterpreterState_GetConfig(interp);
 
     /* ensure path config is written into global variables */
     if (_TyStatus_EXCEPTION(_TyPathConfig_UpdateGlobal(config))) {
@@ -721,7 +721,7 @@ pymain_free(void)
        remain valid after Ty_Finalize(), since
        Ty_Initialize()-Ty_Finalize() can be called multiple times. */
     _TyPathConfig_ClearGlobal();
-    _Py_ClearArgcArgv();
+    _Ty_ClearArgcArgv();
     _PyRuntime_Finalize();
 }
 

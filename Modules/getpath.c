@@ -840,7 +840,7 @@ _Py_Get_Getpath_CodeObject(void)
 /* Perform the actual path calculation.
 
    When compute_path_config is 0, this only reads any initialised path
-   config values into the PyConfig struct. For example, Ty_SetHome() or
+   config values into the TyConfig struct. For example, Ty_SetHome() or
    Ty_SetPath(). The only error should be due to failed memory allocation.
 
    When compute_path_config is 1, full path calculation is performed.
@@ -848,12 +848,12 @@ _Py_Get_Getpath_CodeObject(void)
    effects, and potential unraisable errors that are reported directly
    to stderr.
 
-   Calling this function multiple times on the same PyConfig is only
+   Calling this function multiple times on the same TyConfig is only
    safe because already-configured values are not recalculated. To
-   actually recalculate paths, you need a clean PyConfig.
+   actually recalculate paths, you need a clean TyConfig.
 */
 TyStatus
-_TyConfig_InitPathConfig(PyConfig *config, int compute_path_config)
+_TyConfig_InitPathConfig(TyConfig *config, int compute_path_config)
 {
     TyStatus status = _TyPathConfig_ReadGlobal(config);
 

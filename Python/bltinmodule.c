@@ -3413,7 +3413,7 @@ _PyBuiltin_Init(TyInterpreterState *interp)
 {
     TyObject *mod, *dict, *debug;
 
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
 
     mod = _TyModule_CreateInitialized(&builtinsmodule, PYTHON_API_VERSION);
     if (mod == NULL)

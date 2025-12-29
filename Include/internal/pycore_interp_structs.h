@@ -856,7 +856,7 @@ struct _is {
 
     struct codecs_state codecs;
 
-    PyConfig config;
+    TyConfig config;
     unsigned long feature_flags;
 
     TyObject *dict;  /* Stores per-interpreter state */

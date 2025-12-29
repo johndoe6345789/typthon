@@ -100,7 +100,7 @@ PyAPI_FUNC(TyStatus) _TyInterpreterState_New(
     TyThreadState *tstate,
     TyInterpreterState **pinterp);
 
-extern const PyConfig* _TyInterpreterState_GetConfig(
+extern const TyConfig* _TyInterpreterState_GetConfig(
     TyInterpreterState *interp);
 
 #ifdef __cplusplus

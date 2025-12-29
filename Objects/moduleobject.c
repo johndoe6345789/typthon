@@ -934,7 +934,7 @@ _TyModule_IsPossiblyShadowing(TyObject *origin)
     }
 
     // not sys.flags.safe_path
-    const PyConfig *config = _Ty_GetConfig();
+    const TyConfig *config = _Ty_GetConfig();
     if (config->safe_path) {
         return 0;
     }

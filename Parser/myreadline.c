@@ -263,7 +263,7 @@ TyOS_StdioReadline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
     assert(tstate != NULL);
 
 #ifdef HAVE_WINDOWS_CONSOLE_IO
-    const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (!config->legacy_windows_stdio && sys_stdin == stdin) {
         HANDLE hStdIn, hStdErr;
 

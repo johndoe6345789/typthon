@@ -53,7 +53,7 @@ static void error(const char *msg)
 }
 
 
-static void config_set_string(PyConfig *config, wchar_t **config_str, const wchar_t *str)
+static void config_set_string(TyConfig *config, wchar_t **config_str, const wchar_t *str)
 {
     TyStatus status = TyConfig_SetString(config, config_str, str);
     if (TyStatus_Exception(status)) {
@@ -63,14 +63,14 @@ static void config_set_string(PyConfig *config, wchar_t **config_str, const wcha
 }
 
 
-static void config_set_program_name(PyConfig *config)
+static void config_set_program_name(TyConfig *config)
 {
     const wchar_t *program_name = PROGRAM_NAME;
     config_set_string(config, &config->program_name, program_name);
 }
 
 
-static void init_from_config_clear(PyConfig *config)
+static void init_from_config_clear(TyConfig *config)
 {
     TyStatus status = Ty_InitializeFromConfig(config);
     TyConfig_Clear(config);
@@ -82,7 +82,7 @@ static void init_from_config_clear(PyConfig *config)
 
 static void _testembed_Py_InitializeFromConfig(void)
 {
-    PyConfig config;
+    TyConfig config;
     _TyConfig_InitCompatConfig(&config);
     config_set_program_name(&config);
     init_from_config_clear(&config);
@@ -244,7 +244,7 @@ static void check_stdio_details(const wchar_t *encoding, const wchar_t *errors)
     }
     fflush(stdout);
 
-    PyConfig config;
+    TyConfig config;
     _TyConfig_InitCompatConfig(&config);
     /* Force the given IO encoding */
     if (encoding) {
@@ -502,7 +502,7 @@ static int test_init_initialize_config(void)
 }
 
 
-static void config_set_argv(PyConfig *config, Ty_ssize_t argc, wchar_t * const *argv)
+static void config_set_argv(TyConfig *config, Ty_ssize_t argc, wchar_t * const *argv)
 {
     TyStatus status = TyConfig_SetArgv(config, argc, argv);
     if (TyStatus_Exception(status)) {
@@ -513,7 +513,7 @@ static void config_set_argv(PyConfig *config, Ty_ssize_t argc, wchar_t * const *
 
 
 static void
-config_set_wide_string_list(PyConfig *config, PyWideStringList *list,
+config_set_wide_string_list(TyConfig *config, PyWideStringList *list,
                             Ty_ssize_t length, wchar_t **items)
 {
     TyStatus status = TyConfig_SetWideStringList(config, list, length, items);
@@ -538,7 +538,7 @@ static int check_init_compat_config(int preinit)
         }
     }
 
-    PyConfig config;
+    TyConfig config;
     _TyConfig_InitCompatConfig(&config);
 
     config_set_program_name(&config);
@@ -632,7 +632,7 @@ static int test_init_from_config(void)
         Ty_ExitStatusException(status);
     }
 
-    PyConfig config;
+    TyConfig config;
     _TyConfig_InitCompatConfig(&config);
 
     config.install_signal_handlers = 0;
@@ -772,8 +772,8 @@ static int test_init_from_config(void)
 
 static int check_init_parse_argv(int parse_argv)
 {
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config.parse_argv = parse_argv;
 
@@ -864,8 +864,8 @@ static int test_init_python_env(void)
 {
     set_all_env_vars();
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_program_name(&config);
     init_from_config_clear(&config);
@@ -915,9 +915,9 @@ static int test_init_env_dev_mode_alloc(void)
 
 static int test_init_isolated_flag(void)
 {
-    /* Test PyConfig.isolated=1 */
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    /* Test TyConfig.isolated=1 */
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     Ty_IsolatedFlag = 0;
     config.isolated = 1;
@@ -936,7 +936,7 @@ static int test_init_isolated_flag(void)
 }
 
 
-/* TyPreConfig.isolated=1, PyConfig.isolated=0 */
+/* TyPreConfig.isolated=1, TyConfig.isolated=0 */
 static int test_preinit_isolated1(void)
 {
     TyPreConfig preconfig;
@@ -949,7 +949,7 @@ static int test_preinit_isolated1(void)
         Ty_ExitStatusException(status);
     }
 
-    PyConfig config;
+    TyConfig config;
     _TyConfig_InitCompatConfig(&config);
 
     config_set_program_name(&config);
@@ -962,7 +962,7 @@ static int test_preinit_isolated1(void)
 }
 
 
-/* TyPreConfig.isolated=0, PyConfig.isolated=1 */
+/* TyPreConfig.isolated=0, TyConfig.isolated=1 */
 static int test_preinit_isolated2(void)
 {
     TyPreConfig preconfig;
@@ -975,8 +975,8 @@ static int test_preinit_isolated2(void)
         Ty_ExitStatusException(status);
     }
 
-    /* Test PyConfig.isolated=1 */
-    PyConfig config;
+    /* Test TyConfig.isolated=1 */
+    TyConfig config;
     _TyConfig_InitCompatConfig(&config);
 
     Ty_IsolatedFlag = 0;
@@ -1013,7 +1013,7 @@ static int test_preinit_dont_parse_argv(void)
         Ty_ExitStatusException(status);
     }
 
-    PyConfig config;
+    TyConfig config;
     TyConfig_InitIsolatedConfig(&config);
 
     config.isolated = 0;
@@ -1032,8 +1032,8 @@ static int test_preinit_dont_parse_argv(void)
 
 static int test_preinit_parse_argv(void)
 {
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     /* Pre-initialize implicitly using argv: make sure that -X dev
        is used to configure the allocation in preinitialization */
@@ -1097,7 +1097,7 @@ static int check_preinit_isolated_config(int preinit)
         assert(rt_preconfig->use_environment == 0);
     }
 
-    PyConfig config;
+    TyConfig config;
     TyConfig_InitIsolatedConfig(&config);
 
     config_set_program_name(&config);
@@ -1150,8 +1150,8 @@ static int check_init_python_config(int preinit)
         }
     }
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_program_name(&config);
     init_from_config_clear(&config);
@@ -1188,8 +1188,8 @@ static int test_init_dont_configure_locale(void)
         Ty_ExitStatusException(status);
     }
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_program_name(&config);
     init_from_config_clear(&config);
@@ -1202,8 +1202,8 @@ static int test_init_dont_configure_locale(void)
 
 static int test_init_dev_mode(void)
 {
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     putenv("PYTHONFAULTHANDLER=");
     putenv("PYTHONMALLOC=");
@@ -1486,8 +1486,8 @@ static int test_audit_run_file(void)
 
 static int run_audit_run_test(int argc, wchar_t **argv, void *test)
 {
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config.argv.length = argc;
     config.argv.items = argv;
@@ -1532,8 +1532,8 @@ static int test_audit_run_stdin(void)
 static int test_init_read_set(void)
 {
     TyStatus status;
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_string(&config, &config.program_name, L"./init_read_set");
 
@@ -1574,8 +1574,8 @@ static int test_init_sys_add(void)
     TySys_AddXOption(L"faulthandler");
     TySys_AddWarnOption(L"ignore:::sysadd_warnoption");
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     wchar_t* argv[] = {
         L"python3",
@@ -1662,8 +1662,8 @@ static int test_init_setpath_config(void)
     TyMem_RawFree(path);
     putenv("TESTPATH=");
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config_set_string(&config, &config.program_name, L"conf_program_name");
     config_set_string(&config, &config.executable, L"conf_executable");
@@ -1713,7 +1713,7 @@ static int test_init_is_python_build(void)
         return 1;
     }
 
-    PyConfig config;
+    TyConfig config;
     _TyConfig_InitCompatConfig(&config);
     config_set_program_name(&config);
     config_set_string(&config, &config.home, home);
@@ -1745,8 +1745,8 @@ static int test_init_warnoptions(void)
     TySys_AddWarnOption(L"ignore:::TySys_AddWarnOption1");
     TySys_AddWarnOption(L"ignore:::TySys_AddWarnOption2");
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config.dev_mode = 1;
     config.bytes_warning = 1;
@@ -2013,7 +2013,7 @@ error:
 }
 
 
-static void configure_init_main(PyConfig *config)
+static void configure_init_main(TyConfig *config)
 {
     wchar_t* argv[] = {
         L"python3", L"-c",
@@ -2030,8 +2030,8 @@ static void configure_init_main(PyConfig *config)
 
 static int test_init_run_main(void)
 {
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     configure_init_main(&config);
     init_from_config_clear(&config);
@@ -2042,8 +2042,8 @@ static int test_init_run_main(void)
 
 static int test_run_main(void)
 {
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     wchar_t *argv[] = {L"python3", L"-c",
                        (L"import sys; "
@@ -2073,8 +2073,8 @@ static int test_run_main_loop(void)
 
 static int test_get_argc_argv(void)
 {
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     wchar_t *argv[] = {L"python3", L"-c", L"pass", L"arg2"};
     config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
@@ -2125,8 +2125,8 @@ static int check_use_frozen_modules(const char *rawval)
         return -1;
     }
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
 
     config.parse_argv = 1;
 
@@ -2259,8 +2259,8 @@ static int test_repeated_init_and_inittab(void)
 
         // Initialize Python
         wchar_t* argv[] = {PROGRAM_NAME, L"-c", L"pass"};
-        PyConfig config;
-        TyConfig_InitPythonConfig(&config);
+        TyConfig config;
+        TyConfig_InitTyphonConfig(&config);
         config.isolated = 1;
         config_set_argv(&config, Ty_ARRAY_LENGTH(argv), argv);
         init_from_config_clear(&config);

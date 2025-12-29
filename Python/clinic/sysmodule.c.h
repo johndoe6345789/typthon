@@ -1751,7 +1751,7 @@ TyDoc_STRVAR(sys__get_cpu_count_config__doc__,
 "_get_cpu_count_config($module, /)\n"
 "--\n"
 "\n"
-"Private function for getting PyConfig.cpu_count");
+"Private function for getting TyConfig.cpu_count");
 
 #define SYS__GET_CPU_COUNT_CONFIG_METHODDEF    \
     {"_get_cpu_count_config", (PyCFunction)sys__get_cpu_count_config, METH_NOARGS, sys__get_cpu_count_config__doc__},

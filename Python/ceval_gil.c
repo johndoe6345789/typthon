@@ -486,7 +486,7 @@ init_own_gil(TyInterpreterState *interp, struct _gil_runtime_state *gil)
 {
     assert(!gil_created(gil));
 #ifdef Ty_GIL_DISABLED
-    const PyConfig *config = _TyInterpreterState_GetConfig(interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(interp);
     gil->enabled = config->enable_gil == _TyConfig_GIL_ENABLE ? INT_MAX : 0;
 #endif
     create_gil(gil);
@@ -1080,7 +1080,7 @@ _TyEval_InitState(TyInterpreterState *interp)
 int
 _TyEval_EnableGILTransient(TyThreadState *tstate)
 {
-    const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->enable_gil != _TyConfig_GIL_DEFAULT) {
         return 0;
     }
@@ -1132,7 +1132,7 @@ _TyEval_EnableGILTransient(TyThreadState *tstate)
 int
 _TyEval_EnableGILPermanent(TyThreadState *tstate)
 {
-    const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->enable_gil != _TyConfig_GIL_DEFAULT) {
         return 0;
     }
@@ -1152,7 +1152,7 @@ _TyEval_EnableGILPermanent(TyThreadState *tstate)
 int
 _TyEval_DisableGIL(TyThreadState *tstate)
 {
-    const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->enable_gil != _TyConfig_GIL_DEFAULT) {
         return 0;
     }
@@ -1257,7 +1257,7 @@ static inline void run_remote_debugger_script(TyObject *path)
 
 int _PyRunRemoteDebugger(TyThreadState *tstate)
 {
-    const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->remote_debug == 1
          && tstate->remote_debugger_support.debugger_pending_call == 1)
     {

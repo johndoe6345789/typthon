@@ -550,7 +550,7 @@ _TyOS_URandomNonblock(void *buffer, Ty_ssize_t size)
 
 
 TyStatus
-_Ty_HashRandomization_Init(const PyConfig *config)
+_Ty_HashRandomization_Init(const TyConfig *config)
 {
     void *secret = &_Ty_HashSecret;
     Ty_ssize_t secret_size = sizeof(_Ty_HashSecret_t);

@@ -25,8 +25,8 @@ Ty_FrozenMain(int argc, char **argv)
         Ty_ExitStatusException(status);
     }
 
-    PyConfig config;
-    TyConfig_InitPythonConfig(&config);
+    TyConfig config;
+    TyConfig_InitTyphonConfig(&config);
     // Suppress errors from getpath.c
     config.pathconfig_warnings = 0;
     // Don't parse command line options like -E

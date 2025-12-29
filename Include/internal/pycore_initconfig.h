@@ -119,7 +119,7 @@ extern TyStatus _PyPreCmdline_SetArgv(_PyPreCmdline *cmdline,
     const _PyArgv *args);
 extern TyStatus _PyPreCmdline_SetConfig(
     const _PyPreCmdline *cmdline,
-    PyConfig *config);
+    TyConfig *config);
 extern TyStatus _PyPreCmdline_Read(_PyPreCmdline *cmdline,
     const TyPreConfig *preconfig);
 
@@ -131,19 +131,19 @@ PyAPI_FUNC(void) _TyPreConfig_InitCompatConfig(TyPreConfig *preconfig);
 
 extern void _TyPreConfig_InitFromConfig(
     TyPreConfig *preconfig,
-    const PyConfig *config);
+    const TyConfig *config);
 extern TyStatus _TyPreConfig_InitFromPreConfig(
     TyPreConfig *preconfig,
     const TyPreConfig *config2);
 extern TyObject* _TyPreConfig_AsDict(const TyPreConfig *preconfig);
 extern void _TyPreConfig_GetConfig(TyPreConfig *preconfig,
-    const PyConfig *config);
+    const TyConfig *config);
 extern TyStatus _TyPreConfig_Read(TyPreConfig *preconfig,
     const _PyArgv *args);
 extern TyStatus _TyPreConfig_Write(const TyPreConfig *preconfig);
 
 
-/* --- PyConfig ---------------------------------------------- */
+/* --- TyConfig ---------------------------------------------- */
 
 typedef enum {
     /* Ty_Initialize() API: backward compatibility with Python 3.6 and 3.7 */
@@ -165,22 +165,22 @@ typedef enum {
 } _PyConfigGILEnum;
 
 // Export for '_testembed' program
-PyAPI_FUNC(void) _TyConfig_InitCompatConfig(PyConfig *config);
+PyAPI_FUNC(void) _TyConfig_InitCompatConfig(TyConfig *config);
 
 extern TyStatus _TyConfig_Copy(
-    PyConfig *config,
-    const PyConfig *config2);
+    TyConfig *config,
+    const TyConfig *config2);
 extern TyStatus _TyConfig_InitPathConfig(
-    PyConfig *config,
+    TyConfig *config,
     int compute_path_config);
-extern TyStatus _TyConfig_InitImportConfig(PyConfig *config);
-extern TyStatus _TyConfig_Read(PyConfig *config, int compute_path_config);
-extern TyStatus _TyConfig_Write(const PyConfig *config,
+extern TyStatus _TyConfig_InitImportConfig(TyConfig *config);
+extern TyStatus _TyConfig_Read(TyConfig *config, int compute_path_config);
+extern TyStatus _TyConfig_Write(const TyConfig *config,
     _PyRuntimeState *runtime);
 extern TyStatus _TyConfig_SetPyArgv(
-    PyConfig *config,
+    TyConfig *config,
     const _PyArgv *args);
-extern TyObject* _TyConfig_CreateXOptionsDict(const PyConfig *config);
+extern TyObject* _TyConfig_CreateXOptionsDict(const TyConfig *config);
 
 extern void _Ty_DumpPathConfig(TyThreadState *tstate);
 
@@ -188,8 +188,8 @@ extern void _Ty_DumpPathConfig(TyThreadState *tstate);
 /* --- Function used for testing ---------------------------------- */
 
 // Export these functions for '_testinternalcapi' shared extension
-PyAPI_FUNC(TyObject*) _TyConfig_AsDict(const PyConfig *config);
-PyAPI_FUNC(int) _TyConfig_FromDict(PyConfig *config, TyObject *dict);
+PyAPI_FUNC(TyObject*) _TyConfig_AsDict(const TyConfig *config);
+PyAPI_FUNC(int) _TyConfig_FromDict(TyConfig *config, TyObject *dict);
 PyAPI_FUNC(TyObject*) _Ty_Get_Getpath_CodeObject(void);
 PyAPI_FUNC(TyObject*) _Ty_GetConfigsAsDict(void);
 

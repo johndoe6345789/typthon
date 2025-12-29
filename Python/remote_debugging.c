@@ -382,7 +382,7 @@ _PySysRemoteDebug_SendExec(int pid, int tid, const char *debugger_script_path)
 #else
 
     TyThreadState *tstate = _TyThreadState_GET();
-    const PyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
+    const TyConfig *config = _TyInterpreterState_GetConfig(tstate->interp);
     if (config->remote_debug != 1) {
         TyErr_SetString(TyExc_RuntimeError, "Remote debugging is not enabled");
         return -1;
