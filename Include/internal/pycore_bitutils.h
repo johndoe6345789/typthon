@@ -2,9 +2,9 @@
 
    Bytes swap functions, reverse order of bytes:
 
-   - _Py_bswap16(uint16_t)
-   - _Py_bswap32(uint32_t)
-   - _Py_bswap64(uint64_t)
+   - _Ty_bswap16(uint16_t)
+   - _Ty_bswap32(uint32_t)
+   - _Ty_bswap64(uint64_t)
 */
 
 #ifndef Ty_INTERNAL_BITUTILS_H
@@ -31,7 +31,7 @@ extern "C" {
 
 
 static inline uint16_t
-_Py_bswap16(uint16_t word)
+_Ty_bswap16(uint16_t word)
 {
 #if defined(_PY_HAVE_BUILTIN_BSWAP) || _Ty__has_builtin(__builtin_bswap16)
     return __builtin_bswap16(word);
@@ -63,7 +63,7 @@ _Ty_bswap32(uint32_t word)
 }
 
 static inline uint64_t
-_Py_bswap64(uint64_t word)
+_Ty_bswap64(uint64_t word)
 {
 #if defined(_PY_HAVE_BUILTIN_BSWAP) || _Ty__has_builtin(__builtin_bswap64)
     return __builtin_bswap64(word);
